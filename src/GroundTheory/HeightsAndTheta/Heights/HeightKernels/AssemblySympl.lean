@@ -26,20 +26,15 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights
 
-theorem SymplOmegaMem.full : SymplOmegaMem.Statement :=
-  SymplOmegaMem.proof
+theorem SymplOmegaMem.full : SymplOmegaMem.Statement := GroundTheory.Heights₂.Heights.SymplOmegaMem.proof
 
-theorem SymplCons.full : SymplCons.Statement :=
-  SymplCons.proof
+theorem SymplCons.full : SymplCons.Statement := GroundTheory.Heights₂.Heights.SymplCons.proof
 
-theorem SymplExtVecMul.full : SymplExtVecMul.Statement :=
-  SymplExtVecMul.proof
+theorem SymplExtVecMul.full : SymplExtVecMul.Statement := GroundTheory.Heights₂.Heights.SymplExtVecMul.proof
 
-theorem SymplTwoRow.full : SymplTwoRow.Statement :=
-  SymplTwoRow.proof
+theorem SymplTwoRow.full : SymplTwoRow.Statement := GroundTheory.Heights₂.Heights.SymplTwoRow.proof
 
-theorem SymplGcd.full : SymplGcd.Statement :=
-  SymplGcd.proof
+theorem SymplGcd.full : SymplGcd.Statement := GroundTheory.Heights₂.Heights.SymplGcd.proof
 
 theorem SymplQuadDiag.full : SymplQuadDiag.Statement :=
   SymplQuadDiag.proof

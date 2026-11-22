@@ -46,9 +46,7 @@ lemma vand_split (p q : ℕ) (x : ℕ → ℝ) :
     exact hs2
   rw [← Finset.prod_Ioc_consecutive _ (Nat.zero_le p) (Nat.le_add_right p q), h1, h2]
 
-lemma v_sub (c : Cfg) (i j : ℕ) : c.v i - c.v j = 4 * c.Del * ((j : ℝ) - (i : ℝ)) := by
-  unfold Cfg.v
-  ring
+lemma v_sub (c : Cfg) (i j : ℕ) : c.v i - c.v j = 4 * c.Del * ((j : ℝ) - (i : ℝ)) := Formalism.FourierDecayAlt.P.Sz4.v_sub c i j
 
 lemma v_nonneg (c : Cfg) (h : c.Ok) (i : ℕ) (hi : i + 1 ≤ c.k) : 0 ≤ c.v i := by
   have hki : (i : ℝ) + 1 ≤ (c.k : ℝ) := by exact_mod_cast hi
@@ -461,9 +459,7 @@ lemma vand_head (q : ℕ) (x : ℕ → ℝ) :
   simp only [Finset.Icc_self, Finset.prod_singleton, one_mul]
 
 lemma vand_last (p : ℕ) (x : ℕ → ℝ) :
-    Vand (p + 1) x = Vand p x * ∏ i ∈ Icc 1 p, (x i - x (p + 1)) := by
-  rw [vand_split p 1 x, vand_one]
-  simp only [Finset.Icc_self, Finset.prod_singleton, mul_one, Nat.add_comm 1 p]
+    Vand (p + 1) x = Vand p x * ∏ i ∈ Icc 1 p, (x i - x (p + 1)) := Formalism.FourierDecayAlt.P.Sz4.vand_succ_top p x
 
 lemma u_one (c : Cfg) (de : ℕ → ℝ) : c.u de 1 = c.a := by
   simp [Cfg.u]

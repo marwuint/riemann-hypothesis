@@ -47,7 +47,6 @@ end
 section
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.CovHt
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.covering_short_of_deep_size_flatDeg : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovHt.ShortAlt := by
-  first | exact @_root_.GlobalTheory.CovHt.ShortPf.cover_height_short_section_alt | exact _root_.GlobalTheory.CovHt.ShortPf.cover_height_short_section_alt | (intros; apply _root_.GlobalTheory.CovHt.ShortPf.cover_height_short_section_alt <;> assumption)
+theorem _root_.GlobalTheory.T.covering_short_of_deep_size_flatDeg : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovHt.ShortAlt := GlobalTheory.CovHt.ShortPf.cover_height_short_section_alt
 end
 end

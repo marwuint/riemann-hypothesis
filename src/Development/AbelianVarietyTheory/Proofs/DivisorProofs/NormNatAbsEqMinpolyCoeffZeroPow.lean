@@ -10,13 +10,7 @@ attribute [local instance] CategoryTheory.Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV.AbVar
 
-theorem exists_prime_cast_ne_zero_of_field (k : Type) [Field k] : ∃ l : ℕ, l.Prime ∧ (l : k) ≠ 0 := by
-  obtain ⟨l, hl, hlp⟩ := Nat.exists_infinite_primes (ringChar k + 1)
-  refine ⟨l, hlp, fun h => ?_⟩
-  rw [CharP.cast_eq_zero_iff k (ringChar k)] at h
-  rcases hlp.eq_one_or_self_of_dvd _ h with h1 | h1
-  · exact CharP.ringChar_ne_one h1
-  · omega
+theorem exists_prime_cast_ne_zero_of_field (k : Type) [Field k] : ∃ l : ℕ, l.Prime ∧ (l : k) ≠ 0 := GlobalTheory.AV.AbVar.exists_prime_natCast_ne_zero_of_field k
 
 theorem minpoly_int_coeff_zero_ne_zero {F : Type} [Field F] [NumberField F] (x : 𝓞 F) (hx : x ≠ 0) :
     (minpoly ℤ x).coeff 0 ≠ 0 := by

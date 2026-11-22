@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.picard_torsion_trivial_of_torsors_have_sections : 
       Function.Bijective (Algebra.TensorProduct.productMap
         (Pi.algHom B (fun _ : Multiplicative (ZMod q) => D) (fun _ => AlgHom.id B D))
         (Pi.algHom B (fun _ : Multiplicative (ZMod q) => D) (fun g => (act g).toAlgHom))) → Nonempty (D →ₐ[B] B)) →
-    ∀ c : CommRing.Pic B, c ^ q = 1 → c = 1 := by
-  first | (exact @GlobalTheory.KummerStep.kummer_step) | (exact GlobalTheory.KummerStep.kummer_step) | (intros; apply GlobalTheory.KummerStep.kummer_step  <;> assumption)
+    ∀ c : CommRing.Pic B, c ^ q = 1 → c = 1 := GlobalTheory.KummerStep.kummer_step

@@ -20,14 +20,7 @@ theorem conjO_algebraMap (X : Fields) (hX : X.Ok) (x : 𝓞 X.F) :
   exact hX.star_F _
 
 theorem mem_divs_iff {A : Type} [CommRing A] [IsDedekindDomain A] {a : A} (ha : a ≠ 0) (P : HeightOneSpectrum A) :
-    P ∈ divs a ↔ a ∈ P.asIdeal := by
-  have hfin : {P : HeightOneSpectrum A | a ∈ P.asIdeal}.Finite := by
-    have h0 : Ideal.span {a} ≠ ⊥ := by simpa using ha
-    refine (Ideal.finite_factors h0).subset fun v hv => ?_
-    exact Ideal.dvd_span_singleton.2 hv
-  unfold divs
-  rw [dif_pos hfin, Set.Finite.mem_toFinset]
-  rfl
+    P ∈ divs a ↔ a ∈ P.asIdeal := Formalism.L2.Col.mem_divs ha P
 
 def conjPrime (X : Fields) (P : HeightOneSpectrum (𝓞 X.E)) : HeightOneSpectrum (𝓞 X.E) where
   asIdeal := P.asIdeal.comap X.conjO

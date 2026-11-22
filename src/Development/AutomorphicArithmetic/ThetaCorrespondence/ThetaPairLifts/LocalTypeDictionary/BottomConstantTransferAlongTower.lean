@@ -40,6 +40,5 @@ theorem _root_.GlobalTheory.T.witt_tower_bottom_constant_transfer : _root_.Globa
     GlobalTheory.SqTop.GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →
       NumbersIn D.what₂.embLL S μ₀ → ∀ (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW) (B B' WW₁ : HSp D)
       (Y : Tri T B B' WW₁) (c : T → ℂ), IsBottomTri W i j X → IsBottomTri W i j Y → Y.IsConst W.ψ W.θ c →
-      ∃ u : T → D.what₂.LLˣ, X.IsConst W.ψ W.θ fun t => D.what₂.embLL (u t) * c t := by
-  first | exact @_root_.GlobalTheory.BotTransfer.bottom_constant_transfer_along_tower | exact _root_.GlobalTheory.BotTransfer.bottom_constant_transfer_along_tower | (intros; apply _root_.GlobalTheory.BotTransfer.bottom_constant_transfer_along_tower <;> assumption)
+      ∃ u : T → D.what₂.LLˣ, X.IsConst W.ψ W.θ fun t => D.what₂.embLL (u t) * c t := GlobalTheory.BotTransfer.bottom_constant_transfer_along_tower
 end

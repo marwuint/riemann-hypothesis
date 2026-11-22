@@ -17,5 +17,4 @@ theorem _root_.GlobalTheory.T.squareModel_negSpace_goodSchroedinger : ∀ {D : D
     ∀ (X : Spc D.host.F D.host.E (spW₁ G i j).rank) (Y : Spc D.host.F D.host.E ((spW G i j).rank + (spW₁ G i j).rank))
       (hJ : X.J = (-1 : D.host.E) • (spW₁ G i j).gram) (r s r' s' : ℕ),
       X.IsHerm D.sp.cm.sig B r s → Y.IsSkew D.sp.cm.sig B r' s' →
-      ∃ co vac dom, Model.IsGood (Model.mk (σ := D.sp.cm.sig) (X := X) (W := Y) co vac ((M.ν (.grid (i : ℕ) (j : ℕ))).map (conjU _ (-1) hJ)) dom) B.ψ := by
-  first | exact @GlobalTheory.FunObj.squareModelW₁_good | exact GlobalTheory.FunObj.squareModelW₁_good | (intros; apply GlobalTheory.FunObj.squareModelW₁_good <;> assumption)
+      ∃ co vac dom, Model.IsGood (Model.mk (σ := D.sp.cm.sig) (X := X) (W := Y) co vac ((M.ν (.grid (i : ℕ) (j : ℕ))).map (conjU _ (-1) hJ)) dom) B.ψ := GlobalTheory.FunObj.squareModelW₁_good

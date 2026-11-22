@@ -18,5 +18,4 @@ theorem _root_.GlobalTheory.T.multiplicationPullbacks_differ_by_unit : ∀ (R : 
       sval σ₂ r z J = (val u (r ≫ T.β) z J).val * sval σ (r ≫ (mulA T.G m).left) z J) →
     (∀ (Z : Scheme.{0}) (r : Z ⟶ T.G.left) (z : Z) (J : (Z ⟶ T.G.left) → T.U.LG.L.ι), Good T.U.LG.L z J →
       sval σ'' r z J = (val uG (r ≫ 𝟙 _) z J).val * sval σ' (r ≫ (mulA T.G m).left) z J) →
-    ∃ v : Wˣ, T.Carries (b * v) σ'' σ₂ := by
-  first | exact @GlobalTheory.Mum.Trait.carries_mulPull | exact GlobalTheory.Mum.Trait.carries_mulPull | (intros; apply GlobalTheory.Mum.Trait.carries_mulPull <;> assumption)
+    ∃ v : Wˣ, T.Carries (b * v) σ'' σ₂ := GlobalTheory.Mum.Trait.carries_mulPull

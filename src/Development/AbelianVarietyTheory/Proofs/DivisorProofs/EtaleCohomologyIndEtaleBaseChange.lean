@@ -11,14 +11,9 @@ noncomputable section
 namespace GlobalTheory.EtC.LineAcyc
 
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  dsimp only [spMap]
-  rw [CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp]
+    spMap (g.comp f) = spMap g ≫ spMap f := GlobalTheory.MVGlue.spMap_comp' f g
 
-theorem spMap_id' (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 (sp A) := by
-  dsimp only [spMap]
-  rw [CommRingCat.ofHom_id, Spec.map_id]
-  exact sch.map_id _
+theorem spMap_id' (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 (sp A) := GlobalTheory.EtAlgCD.spMap_id A
 
 theorem pull_bijective_of_ringEquiv {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B)
     (R : Type) [CommRing R] (F : Shv R) (n : ℤ) :

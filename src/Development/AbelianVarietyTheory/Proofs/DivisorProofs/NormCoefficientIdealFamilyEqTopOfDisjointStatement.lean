@@ -8,5 +8,4 @@ theorem _root_.GlobalTheory.T.normCoefficientIdealFamily_eq_top_of_disjoint : �
     (hfd : letI := GlobalTheory.NormSheafDescent.fieldK π hK; letI := GlobalTheory.NormSheafDescent.algKL π
       FiniteDimensional (Z.presheaf.stalk (GlobalTheory.NormSheafDescent.genPt π)) Y.functionField)
     (I : Y.IdealSheafData) (U : Z.affineOpens), (∀ y ∈ I.support, π y ∉ (U : Set Z)) →
-    GlobalTheory.NormSheafDescent.famIdeal π hK hfd I U = ⊤ := by
-  first | exact @GlobalTheory.NormSheafDescent.famIdeal_eq_top_of_disjoint | exact GlobalTheory.NormSheafDescent.famIdeal_eq_top_of_disjoint | (intros; apply GlobalTheory.NormSheafDescent.famIdeal_eq_top_of_disjoint <;> assumption)
+    GlobalTheory.NormSheafDescent.famIdeal π hK hfd I U = ⊤ := GlobalTheory.NormSheafDescent.famIdeal_eq_top_of_disjoint

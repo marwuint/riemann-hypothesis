@@ -9,8 +9,7 @@ open scoped TensorProduct
 namespace GlobalTheory.EtC.GeomZero
 
 theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (y : Sec F U) :
-    Sec.res (k ≫ g) y = Sec.res k (Sec.res g y) := by
-  simp [Sec.res]
+    Sec.res (k ≫ g) y = Sec.res k (Sec.res g y) := GlobalTheory.TwSec.res_comp k g y
 
 theorem res_nsmul {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (n : ℕ) (t : Sec F U) :
     Sec.res g (n • t) = n • Sec.res g t := map_nsmul ((F.obj.map g.op).hom) n t

@@ -26,12 +26,7 @@ theorem mk_le_pow_aleph0_of_denseRange {D X : Type} [TopologicalSpace X] [FirstC
 theorem mk_padic_le (l : ℕ) [Fact l.Prime] : #ℚ_[l] ≤ 𝔠 := by
   simpa using mk_le_pow_aleph0_of_denseRange _ (Padic.denseRange_ratCast l)
 
-theorem mk_padicAlgCl (l : ℕ) [Fact l.Prime] : #(PadicAlgCl l) = 𝔠 :=
-  le_antisymm
-    ((Algebra.IsAlgebraic.cardinalMk_le_max ℚ_[l] (PadicAlgCl l)).trans
-      (max_le (mk_padic_le l) aleph0_le_continuum))
-    ((continuum_le_cardinal_of_nontriviallyNormedField ℚ_[l]).trans
-      (mk_le_of_injective (algebraMap ℚ_[l] (PadicAlgCl l)).injective))
+theorem mk_padicAlgCl (l : ℕ) [Fact l.Prime] : #(PadicAlgCl l) = 𝔠 := GlobalTheory.cardinalMk_padicAlgCl_eq_continuum l
 
 theorem mk_padicComplex (l : ℕ) [Fact l.Prime] : #ℂ_[l] = 𝔠 := by
   refine le_antisymm ?_ (continuum_le_cardinal_of_nontriviallyNormedField ℂ_[l])

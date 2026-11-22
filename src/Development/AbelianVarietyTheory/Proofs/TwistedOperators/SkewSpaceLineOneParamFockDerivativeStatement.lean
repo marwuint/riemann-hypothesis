@@ -23,5 +23,4 @@ theorem _root_.GlobalTheory.T.skewSpaceLine_oneParam_fockDerivative : ∀ (D : D
         (∀ t : ℝ, γ (Multiplicative.ofAdd t) = GlobalTheory.TripleRead.toUX X (Equiv.refl (Fin X.rank)) hJ (h t)) ∧
         ∀ f₀ : WO (sgn ε M) X → ℂ, IsVacF ψ θ (frSgn ε A) B f₀ → ∀ (P : PolF D X.rank M.rank) (z : WO (sgn ε M) X),
           HasDerivAt (fun t : ℝ => ω (1, h t) (ptF (V := sgn ε M) ψ θ (frSgn ε A) B f₀ P) z)
-            (ptF (V := sgn ε M) ψ θ (frSgn ε A) B f₀ (∑ τ, GlobalTheory.RealQuot.actT ε A B eS τ (Y τ) P) z) 0 := by
-  first | exact @GlobalTheory.LieLines.line_deriv | exact GlobalTheory.LieLines.line_deriv | (intros; apply GlobalTheory.LieLines.line_deriv <;> assumption)
+            (ptF (V := sgn ε M) ψ θ (frSgn ε A) B f₀ (∑ τ, GlobalTheory.RealQuot.actT ε A B eS τ (Y τ) P) z) 0 := GlobalTheory.LieLines.line_deriv

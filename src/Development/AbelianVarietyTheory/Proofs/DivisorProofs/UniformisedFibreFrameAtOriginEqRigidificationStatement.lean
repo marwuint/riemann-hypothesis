@@ -15,5 +15,4 @@ theorem _root_.GlobalTheory.T.uniformisedFibre_frame_at_origin_eq_rigidification
     ∀ (g : ℕ) (u : HolUnif x.P.A x.P.L g), u.IsRig x.rig → ∀ (k : x.P.L.ι) (j : D.P.L.ι),
       ⊤ ≤ (u.ex 0).left ⁻¹ᵁ x.P.L.U k → ⊤ ≤ (spMap ((algebraMap (FractionRing R) ℂ).comp (algebraMap R (FractionRing R))) ≫ eSec D.P.A) ⁻¹ᵁ D.P.L.U j →
       valAt' (u.ex 0).left _ (w.s (fun _ => j, k)).val * u.fr k 0 =
-        valF (spMap ((algebraMap (FractionRing R) ℂ).comp (algebraMap R (FractionRing R)))) (LB.wchart D.P.L (fun _ : PUnit => eSec D.P.A) (fun _ => j)) (D.rig.s (fun _ => j)).val := by
-  first | exact @GlobalTheory.RigAtOrigin.frame_at_origin | exact GlobalTheory.RigAtOrigin.frame_at_origin | (intros; apply GlobalTheory.RigAtOrigin.frame_at_origin <;> assumption)
+        valF (spMap ((algebraMap (FractionRing R) ℂ).comp (algebraMap R (FractionRing R)))) (LB.wchart D.P.L (fun _ : PUnit => eSec D.P.A) (fun _ => j)) (D.rig.s (fun _ => j)).val := GlobalTheory.RigAtOrigin.frame_at_origin

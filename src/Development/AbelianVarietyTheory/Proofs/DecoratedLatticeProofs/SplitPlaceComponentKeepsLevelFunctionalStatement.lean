@@ -17,5 +17,4 @@ theorem _root_.GlobalTheory.T.splitPlace_component_keeps_level_functional : ∀ 
     x.1.1 = finM _ (rankN (I.rec7 l Z) j hj) ((β j i).gl g) →
     ∀ h : ((B.T u : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∈ (p i).v.asIdeal,
     Formalism.UG.bc (Formalism.UG.prV (E := (I.rec7 l Z).host.E) (p i).v) x.1 ∈ Formalism.UG.levelVL (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) j hj) (p i).v (A.K j hj b).lev.Lb →
-    Formalism.UG.bc (Formalism.UG.prV (E := (I.rec7 l Z).host.E) (p i).v) x.1 ∈ (A.K j hj b).lev.Uloc (p i).v := by
-  first | exact @GlobalTheory.StabFnLev.comp_mem_Uloc | exact GlobalTheory.StabFnLev.comp_mem_Uloc | (intros; apply GlobalTheory.StabFnLev.comp_mem_Uloc <;> assumption)
+    Formalism.UG.bc (Formalism.UG.prV (E := (I.rec7 l Z).host.E) (p i).v) x.1 ∈ (A.K j hj b).lev.Uloc (p i).v := GlobalTheory.StabFnLev.comp_mem_Uloc

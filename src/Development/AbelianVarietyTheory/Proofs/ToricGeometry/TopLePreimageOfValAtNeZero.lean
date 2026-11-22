@@ -119,8 +119,7 @@ theorem valAt'_units_zpow (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹�
   exact this
 
 theorem valAt'_zpow (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (u : Γ(X, U)ˣ) (n : ℤ) :
-    valAt' x U (u ^ n).val = valAt' x U u.val ^ n :=
-  valAt'_units_zpow x h u n
+    valAt' x U (u ^ n).val = valAt' x U u.val ^ n := GlobalTheory.valAt'_units_zpow x h u n
 
 theorem valAt'_units_inv (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (u : Γ(X, U)ˣ) :
     valAt' x U (u⁻¹).val = (valAt' x U u.val)⁻¹ := by

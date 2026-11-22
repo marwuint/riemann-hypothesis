@@ -12,7 +12,6 @@ namespace GlobalTheory.CompanionTheory.Ar
 
 theorem mem_differentIdeal_ringEquiv_iff :
     ∀ (E : Type) [Field E] [NumberField E] (s : 𝓞 E ≃+* 𝓞 E) (d : 𝓞 E),
-      s d ∈ differentIdeal ℤ (𝓞 E) ↔ d ∈ differentIdeal ℤ (𝓞 E) :=
-  @PositivityTheory.UnitarySelfGeneration.map_mem_differentIdeal_iff
+      s d ∈ differentIdeal ℤ (𝓞 E) ↔ d ∈ differentIdeal ℤ (𝓞 E) := PositivityTheory.UnitarySelfGeneration.map_mem_differentIdeal_iff
 
 end GlobalTheory.CompanionTheory.Ar

@@ -29,11 +29,7 @@ theorem gZ_ne_zero (D : Formalism.BasicNotions.D7) (T T' : D.host.E) (Z : MatZ D
   rw [h0, map_zero, Complex.zero_re] at this
   exact lt_irrefl _ this
 
-theorem gS_ne_zero (D : Formalism.BasicNotions.D7) : ((gS D : D.host.E)) ≠ 0 := by
-  have h1 := (D.host.g_prime 0).pos
-  have h2 := (D.host.g_prime 1).pos
-  unfold gS
-  exact_mod_cast (Nat.mul_pos h1 h2).ne'
+theorem gS_ne_zero (D : Formalism.BasicNotions.D7) : ((gS D : D.host.E)) ≠ 0 := PI.UnitaryGroupMassFormula.CntFormula.R6.gS_ne_zero' D
 
 theorem prod_tri {c : ℚ} (hc : c ≠ 0) :
     ∀ n : ℕ, (∏ a : Fin n, c ^ (-((n : ℤ) - (a : ℕ)))) ^ 2 = c ^ (-((n * (n + 1) : ℕ) : ℤ))

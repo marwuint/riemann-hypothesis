@@ -62,6 +62,5 @@ theorem _root_.GlobalTheory.T.endomorphism_law_from_first_row_twist : _root_.Glo
           lam w • Tflip ch.W ch.S.B t (ch.Phi a) w) ∧
         (((levEnv D.sp.X' R.βX (R.datXt t)).χ ⟨toXf k, hk⟩ : ℂˣ) : ℂ) * c * ∏ w, lam w =
           ∏ w : locPl ch.G t, (locGrid ch.G t w).edgeFactor .one
-            (Pi.mulSingle (0, D.R.m) (GlobalTheory.FirstRowTermLaw.kapAt ch.S.toGridChoice t w k)) (.ex 0 D.R.m) := by
-  first | exact @_root_.GlobalTheory.FirstRowEndLaw.square_identity_reduction | exact _root_.GlobalTheory.FirstRowEndLaw.square_identity_reduction | (intros; apply _root_.GlobalTheory.FirstRowEndLaw.square_identity_reduction <;> assumption)
+            (Pi.mulSingle (0, D.R.m) (GlobalTheory.FirstRowTermLaw.kapAt ch.S.toGridChoice t w k)) (.ex 0 D.R.m) := GlobalTheory.FirstRowEndLaw.square_identity_reduction
 end

@@ -12,7 +12,7 @@ import Formalism.SubspaceCounting.SubspaceCountingProofs.DetDivides
 
 namespace Formalism.G0.Top
 
-theorem walkSharp : Formalism.G0.WalkSharp := Formalism.G0.walkSharp_true
+theorem walkSharp : Formalism.G0.WalkSharp := Formalism.G0.WalkSharpP.main
 
 theorem subspaceCount : Formalism.G0.SubspaceCount := Formalism.G0.countSubspacesEq
 

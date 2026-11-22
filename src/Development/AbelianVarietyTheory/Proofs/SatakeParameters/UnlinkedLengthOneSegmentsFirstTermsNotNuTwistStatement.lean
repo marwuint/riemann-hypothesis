@@ -12,5 +12,4 @@ theorem _root_.GlobalTheory.T.unlinkedLengthOneSegments_firstTerms_not_nuTwist :
     (rc : IrrGL (w.adicCompletion E) → WD h), UpperTheory.Zero.LLC.IsRecT h rc →
     ∀ (c : ℕ) (Δ : Fin c → Segment (w.adicCompletion E)), (∀ i, (Δ i).len = 1) →
       (∀ i j, i ≠ j → ¬ (Δ i).Linked (Δ j)) →
-      GlobalTheory.RoadU.Unlinked (Finset.univ.val.map fun i => (Δ i).first) := by
-  first | (exact @GlobalTheory.UnlinkedFirst.unlinked_first_of_len_one) | (exact GlobalTheory.UnlinkedFirst.unlinked_first_of_len_one) | (intros; apply GlobalTheory.UnlinkedFirst.unlinked_first_of_len_one  <;> assumption)
+      GlobalTheory.RoadU.Unlinked (Finset.univ.val.map fun i => (Δ i).first) := GlobalTheory.UnlinkedFirst.unlinked_first_of_len_one

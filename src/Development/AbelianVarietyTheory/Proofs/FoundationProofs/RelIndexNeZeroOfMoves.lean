@@ -45,14 +45,7 @@ theorem factorization_relIndex_eq {G : Type} [AddCommGroup G] (A A' B : AddSubgr
 
 theorem finite_quot {E : Type} [Field E] [NumberField E] {n : ℕ} (L₀ L : Submodule (𝓞 E) (Fin n → E))
     (h₀ : L₀.FG) (h : Submodule.span E (L : Set (Fin n → E)) = ⊤) :
-    Finite (L₀ ⧸ Submodule.comap L₀.subtype L) := by
-  first
-  | exact @_root_.GlobalTheory.FiniteQuotientComap.finite_quotient_comap
-  | exact _root_.GlobalTheory.FiniteQuotientComap.finite_quotient_comap
-  | (apply _root_.GlobalTheory.FiniteQuotientComap.finite_quotient_comap <;> assumption)
-  | (intros; apply _root_.GlobalTheory.FiniteQuotientComap.finite_quotient_comap <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.FiniteQuotientComap.finite_quotient_comap <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.FiniteQuotientComap.finite_quotient_comap ..)
+    Finite (L₀ ⧸ Submodule.comap L₀.subtype L) := GlobalTheory.FiniteQuotientComap.finite_quotient_comap L₀ L h₀ h
 
 theorem eq_lat {D : D7} {n : ℕ} {g : GL (Fin n) (AE D)} {L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     (h : Moves D g L) : L = AdLattice.lat g := by

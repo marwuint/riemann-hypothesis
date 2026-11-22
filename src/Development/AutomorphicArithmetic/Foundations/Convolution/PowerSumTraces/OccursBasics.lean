@@ -4,5 +4,4 @@ open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic 
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 
 theorem UpperTheory.ConvolutionTheory.C.occursBasics :
-    UpperTheory.ConvolutionTheory.C.OccursBasics := by
-  exact PositivityTheory.TfC.OccursBasics_holds
+    UpperTheory.ConvolutionTheory.C.OccursBasics := PositivityTheory.TfC.OccursBasics_holds

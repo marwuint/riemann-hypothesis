@@ -17,5 +17,4 @@ theorem _root_.GlobalTheory.T.lubin_tate_unramified_degree_one : ∀ {F : Type} 
     (∀ n, ∀ x ∈ lubinTateTorsion Ωv (hπ := hπ) hf n,
       lubinTateGalPointMap (hπ := hπ) hf τ x = (u : 𝒪[F]) • x) →
     ∀ (y : Ωv) (hy : y ∈ maximalAbelianExtension F Ωv),
-    ((localArtinMap F Ωv (unitsIncl F u⁻¹) ⟨y, hy⟩ : maximalAbelianExtension F Ωv) : Ωv) = τ y := by
-  first | exact @GlobalTheory.CompanionTheory.LTLink.lt_local_artin_inertia | exact GlobalTheory.CompanionTheory.LTLink.lt_local_artin_inertia | (intros; apply GlobalTheory.CompanionTheory.LTLink.lt_local_artin_inertia <;> assumption)
+    ((localArtinMap F Ωv (unitsIncl F u⁻¹) ⟨y, hy⟩ : maximalAbelianExtension F Ωv) : Ωv) = τ y := GlobalTheory.CompanionTheory.LTLink.lt_local_artin_inertia

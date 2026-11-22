@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.heisenbergRho_split_archimedean_finite : ∀ (F E 
       ∀ g : UG (cA σ) JB, At (evI F) ((g.1 : Matrix β β (AE F E)) - 1) →
         ∀ (f f₁ : SInf F κ) (h : (κ → Af F) → ℂ),
           (∀ h' : (κ → Af F) → ℂ, d.rho ψ (actB (cA σ) g u) (pureA F f h') = pureA F f₁ h') →
-            d.rho ψ (actB (cA σ) g w) (pureA F f h) = pureA F f₁ (H h) := by
-  first | exact @GlobalTheory.HeisSplit.rho_split | exact GlobalTheory.HeisSplit.rho_split | (intros; apply GlobalTheory.HeisSplit.rho_split <;> assumption)
+            d.rho ψ (actB (cA σ) g w) (pureA F f h) = pureA F f₁ (H h) := GlobalTheory.HeisSplit.rho_split

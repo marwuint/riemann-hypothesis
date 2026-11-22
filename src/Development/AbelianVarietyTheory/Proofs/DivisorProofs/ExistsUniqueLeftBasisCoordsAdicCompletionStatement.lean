@@ -9,5 +9,4 @@ theorem _root_.GlobalTheory.T.existsUnique_left_basis_coords_adicCompletion : �
     ∀ (v : HeightOneSpectrum ℤ) (y : v.adicCompletion ℚ ⊗[ℚ] C),
     ∃! β : Fin r → v.adicCompletion ℚ ⊗[ℚ] L,
       y = ∑ i, Algebra.TensorProduct.map (AlgHom.id ℚ (v.adicCompletion ℚ)) ι (β i) *
-        ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] e i) := by
-  first | (exact @GlobalTheory.LeftBasisBC.existsUnique_coords_adicCompletion) | (exact GlobalTheory.LeftBasisBC.existsUnique_coords_adicCompletion) | (intros; apply GlobalTheory.LeftBasisBC.existsUnique_coords_adicCompletion  <;> assumption)
+        ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] e i) := GlobalTheory.LeftBasisBC.existsUnique_coords_adicCompletion

@@ -10,12 +10,7 @@ noncomputable section
 
 namespace GlobalTheory.EZ.HTot
 
-theorem idc_self (n : ℕ) : idc n n = 𝟙 _ := by
-  ext j
-  simp only [idc, clampHom, SimplexCategory.mkHom, SimplexCategory.Hom.toOrderHom_mk]
-  change min n (j : ℕ) = (j : ℕ)
-  have : (j : ℕ) < n + 1 := j.isLt
-  omega
+theorem idc_self (n : ℕ) : idc n n = 𝟙 _ := GlobalTheory.EZ.Acyc.idc_self' n
 
 theorem backc_zero : backc 0 0 0 = 𝟙 _ := by
   ext j

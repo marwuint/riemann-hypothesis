@@ -48,6 +48,5 @@ set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.theta_integral_stage_convergent : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →
     NumbersIn D.what₂.embLL S μ₀ → ∀ (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D) (X : Tri T A A' WW), GlobalTheory.SqTower.IsStageC W i j p q X →
-      ∀ t P h, MeasureTheory.IntegrableOn (X.ker W.ψ W.θ t P h) X.fd X.m := by
-  first | exact @_root_.GlobalTheory.StageConv.theta_stage_converges | exact _root_.GlobalTheory.StageConv.theta_stage_converges | (intros; apply _root_.GlobalTheory.StageConv.theta_stage_converges <;> assumption)
+      ∀ t P h, MeasureTheory.IntegrableOn (X.ker W.ψ W.θ t P h) X.fd X.m := GlobalTheory.StageConv.theta_stage_converges
 end

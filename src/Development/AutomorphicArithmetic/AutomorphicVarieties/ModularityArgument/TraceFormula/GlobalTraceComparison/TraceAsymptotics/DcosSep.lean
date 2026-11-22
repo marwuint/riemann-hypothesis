@@ -17,5 +17,4 @@ end UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
 open UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm in
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.dcosSep :
-    UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.DcosSep :=
-  _root_.UpperTheory.Reformulated.B.DoubleCosetSeparation.dcosSep
+    UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.DcosSep := UpperTheory.Reformulated.B.DoubleCosetSeparation.dcosSep

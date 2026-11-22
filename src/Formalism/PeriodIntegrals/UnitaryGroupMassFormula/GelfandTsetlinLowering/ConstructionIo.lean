@@ -7,7 +7,6 @@ namespace PI.WGL
 
 open Formalism.BasicNotions MvPolynomial
 
-theorem ioExists_of (h3 : PI.HwIrred) (h4 : PI.GTBranch) (hx : XiFacts) : IoExists :=
-  ioExists_of' h3 h4 hx
+theorem ioExists_of (h3 : PI.HwIrred) (h4 : PI.GTBranch) (hx : XiFacts) : IoExists := PI.WGL.ioExists_of' h3 h4 hx
 
 end PI.WGL

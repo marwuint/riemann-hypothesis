@@ -10,10 +10,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace GlobalTheory.EtC.HtpyLine
 
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  simp only [spMap]
-  rw [← Functor.map_comp, ← Spec.map_comp]
-  rfl
+    spMap (g.comp f) = spMap g ≫ spMap f := GlobalTheory.EtC.AicAcyc.spMap_comp f g
 
 theorem spMap_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
   simp only [spMap]

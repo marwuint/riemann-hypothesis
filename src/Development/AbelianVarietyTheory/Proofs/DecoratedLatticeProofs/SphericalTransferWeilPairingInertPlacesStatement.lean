@@ -10,5 +10,4 @@ open Formalism.UG (IsUnifV qV IsUnramInv GU KU IsInertAt Hecke IsCommensurated T
 open Formalism.MainNotions.SchurIrreducible (IsSplit)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.sphericalTransfer_weilPairing_inertPlaces : GlobalTheory.Hk3.HoweUnram → ∀ D : D7, TransferOn D fun v => ¬ IsSplit (E := D.host.E) v := by
-  first | exact @GlobalTheory.ChainOnto.transferOn_inert | exact GlobalTheory.ChainOnto.transferOn_inert | (intros; apply GlobalTheory.ChainOnto.transferOn_inert <;> assumption)
+theorem _root_.GlobalTheory.T.sphericalTransfer_weilPairing_inertPlaces : GlobalTheory.Hk3.HoweUnram → ∀ D : D7, TransferOn D fun v => ¬ IsSplit (E := D.host.E) v := GlobalTheory.ChainOnto.transferOn_inert

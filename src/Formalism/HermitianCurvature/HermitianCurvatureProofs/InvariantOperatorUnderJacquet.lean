@@ -39,9 +39,7 @@ theorem jacquet_smooth_coordinates : Formalism.FourierDecayAlt.JF.JqSmooth :=
 theorem casimir_under_jacquet_integral : Formalism.FourierDecayAlt.JF.CVUnderInt :=
   capelli_under_integral_of_parts jacquet_derivative_formula capelli_word_sum rewrite_rho_action
 
-theorem right_transfer_upper_levels : Formalism.FourierDecayAlt.Q.RTTUpper :=
-  rtt_upper_relations_from_descent chain_descent_relation resSurj_statement capelli_commutation operator_preserves_fusion_forms
-    transfer_triples rtt_sandwich rtt_independence leading_term_alt transfer_linear_local
+theorem right_transfer_upper_levels : Formalism.FourierDecayAlt.Q.RTTUpper := Formalism.FourierDecayAlt.P.Qx7.upper_from_steps chain_descent_relation resSurj_statement capelli_commutation operator_preserves_fusion_forms transfer_triples rtt_sandwich rtt_independence leading_term_alt transfer_linear_local
 
 theorem right_transfer_all_levels : Formalism.FourierDecayAlt.Q.RTTLevel :=
   rtt_level_from_upper right_transfer_upper_levels level_transfer level_group_image flag_frame_transfer

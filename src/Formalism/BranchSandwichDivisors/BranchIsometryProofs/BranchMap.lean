@@ -1795,8 +1795,7 @@ theorem bmF_zmon_single (R : Type*) [CommRing R] (n : ℕ) (t : Fin n) :
     (fun h => absurd (Finset.mem_univ t) h)]
   simp
 
-theorem bmF_omg_single {n : ℕ} (t : Fin n) : omg (Pi.single t 1 : Fin n → ℤ) = ((t : ℕ) : ℤ) + 1 := by
-  simp [omg, Pi.single_apply]
+theorem bmF_omg_single {n : ℕ} (t : Fin n) : omg (Pi.single t 1 : Fin n → ℤ) = ((t : ℕ) : ℤ) + 1 := Formalism.BranchingDeterminantCap.bmD_omg_single t
 
 theorem bmF_neg_one_pow_WH {R σ B : Type*} [CommRing R] [AddCommMonoid B] (w : σ → B) (k : ℕ) :
     IsWeightedHomogeneous w ((-1 : MvPolynomial σ R) ^ k) 0 := by

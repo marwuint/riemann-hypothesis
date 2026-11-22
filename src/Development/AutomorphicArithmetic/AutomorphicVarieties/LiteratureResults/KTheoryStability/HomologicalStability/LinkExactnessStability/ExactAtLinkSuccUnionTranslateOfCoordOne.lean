@@ -62,9 +62,5 @@ end GlobalTheory.SeqCx
 
 section
 open GlobalTheory.SeqCx Matrix
-theorem _root_.GlobalTheory.T.exactAt_link_succ_union_translate_of_coord_one : ∀ (R : Type) [CommRing R] (s n : ℕ), LinkExactAff R s n → ∀ j : ℕ, n + 1 ≤ j → ∀ τ ∈ uniM R (ℕ →₀ R), ∀ v ∈ τ, v n = 1 → ∀ p : ℕ, p + s + τ.length ≤ n + 2 → ExactAt (linkIn (uniM R (ℕ →₀ R)) (low R (n + 1) ∪ aff R (n + 1) j) τ) p := by
-  first
-  | exact @GlobalTheory.SeqCx.linkIn_exactAt_of_coord_one
-  | exact @GlobalTheory.SeqCx.coord_vanish_low_aff
-  | exact @GlobalTheory.SeqCx.low_aff_subset_succ
+theorem _root_.GlobalTheory.T.exactAt_link_succ_union_translate_of_coord_one : ∀ (R : Type) [CommRing R] (s n : ℕ), LinkExactAff R s n → ∀ j : ℕ, n + 1 ≤ j → ∀ τ ∈ uniM R (ℕ →₀ R), ∀ v ∈ τ, v n = 1 → ∀ p : ℕ, p + s + τ.length ≤ n + 2 → ExactAt (linkIn (uniM R (ℕ →₀ R)) (low R (n + 1) ∪ aff R (n + 1) j) τ) p := GlobalTheory.SeqCx.linkIn_exactAt_of_coord_one
 end

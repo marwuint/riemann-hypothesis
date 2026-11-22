@@ -30,6 +30,5 @@ theorem _root_.GlobalTheory.T.fundamental_domain_haar_parseval : ∀ (F E : Type
       ∀ f₀, IsThetaFunOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ f₀ →
         GlobalTheory.LagrTheta.lagrInt ν 𝓕 ((diagCols (Fin nT) : Matrix (Fin nT ⊕ Fin nT) (Fin nT) (AF F ⊗[F] E)).submatrix finSumFinEquiv.symm id) f₀ ≠ 0 →
       ∀ e, IsSplitIdemF σ e → ∀ t : GL (Fin nT) (AF F ⊗[F] E),
-        (∀ i j, (e + cAF σ e) * (t.1 - 1) i j = (t.1 - 1) i j) → α t = χS (Matrix.GeneralLinearGroup.det t) := by
-  first | exact @_root_.PositivityTheory.ThKW.fundamental_domain_parseval_global | exact _root_.PositivityTheory.ThKW.fundamental_domain_parseval_global | (intros; apply _root_.PositivityTheory.ThKW.fundamental_domain_parseval_global <;> assumption)
+        (∀ i j, (e + cAF σ e) * (t.1 - 1) i j = (t.1 - 1) i j) → α t = χS (Matrix.GeneralLinearGroup.det t) := PositivityTheory.ThKW.fundamental_domain_parseval_global
 end

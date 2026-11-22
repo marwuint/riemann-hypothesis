@@ -20,5 +20,4 @@ theorem _root_.GlobalTheory.T.exists_liftForms_adelic_decoratedLattices : ∀ (X
       Nonempty (Bridge.HeckeTie (Bridge.ratF (Vc X.toD7 i)) (s t).pres ((famR X I hX U Xg tr).heckeLI i t)
         (fun k => Formalism.L2.Col.InertTypeOk (Vc X.toD7 i).rank k.2)
         (fun k => IsLabElt (Vc X.toD7 i) (k.1.1 : PlI X.B px).1 (labIn (Vc X.toD7 i).rank k.2))
-        fun k => IsLocElt (Vc X.toD7 i) (k.1.1 : PlI X.B px).1)) ∧ BrgStdV X I hX U Xg tr L i (cV i) (fun t φ => (s t).pres.extL φ) := by
-  first | exact @GlobalTheory.Mem.R3.LiftBrg.exists_liftSide | exact GlobalTheory.Mem.R3.LiftBrg.exists_liftSide | (intros; apply GlobalTheory.Mem.R3.LiftBrg.exists_liftSide <;> assumption)
+        fun k => IsLocElt (Vc X.toD7 i) (k.1.1 : PlI X.B px).1)) ∧ BrgStdV X I hX U Xg tr L i (cV i) (fun t φ => (s t).pres.extL φ) := GlobalTheory.Mem.R3.LiftBrg.exists_liftSide

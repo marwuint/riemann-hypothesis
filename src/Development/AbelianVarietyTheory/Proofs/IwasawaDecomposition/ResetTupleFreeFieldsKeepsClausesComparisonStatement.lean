@@ -32,5 +32,4 @@ theorem _root_.GlobalTheory.T.reset_tuple_free_fields_keeps_clauses_comparison :
         GoodSet (w'.st Z') (px := w'.px) (R₁.eG.trans cG₁) Xg ∧ MuOf (w'.st Z') w'.I T' {v | B'.places.resChar v ∈ T'.pl} R₁.mu R₁.twPl ∧
         IdemClass (D := (w'.st Z').toD7) (famR (w'.st Z') w'.I hX' (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}) Xg tr₀).A ∧ R₁.toRealDat.Pre0 (face0 (w'.st Z') w'.I hX' (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}) Xg tr₀).lv2 ∧ R₁.IsInert ∧ R₁.IsTup ∧
         R₁.AllPlaces ∧ Keep R₁.toRealDat (face0 (w'.st Z') w'.I hX' (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}) Xg tr₀).lv2 cG₁ ∧ BrgStd (w'.st Z') w'.I hX' (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}) Xg tr₀ R₁.toRealDat ∧
-        RSideW z {v | B'.places.resChar v ∈ T'.pl} R₁) := by
-  first | exact @GlobalTheory.Mem.R3.Rw.reset_stepW | exact GlobalTheory.Mem.R3.Rw.reset_stepW | (intros; apply GlobalTheory.Mem.R3.Rw.reset_stepW <;> assumption)
+        RSideW z {v | B'.places.resChar v ∈ T'.pl} R₁) := GlobalTheory.Mem.R3.Rw.reset_stepW

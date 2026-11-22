@@ -8,17 +8,7 @@ open Matrix GlobalTheory.KZ GlobalTheory.KZ.ES
 namespace GlobalTheory.KZ.ES.DescInv
 
 theorem gamma_anti {a b : ℕ} (h : a ∣ b) :
-    CongruenceSubgroup.Gamma b ≤ CongruenceSubgroup.Gamma a := by
-  intro γ hγ
-  rw [CongruenceSubgroup.Gamma_mem] at hγ ⊢
-  obtain ⟨h1, h2, h3, h4⟩ := hγ
-  have key : ∀ (x : ℤ) (c : ZMod b), (x : ZMod b) = c → (x : ZMod a) = ZMod.castHom h (ZMod a) c := by
-    intro x c hx; rw [← hx, map_intCast]
-  refine ⟨?_, ?_, ?_, ?_⟩
-  · rw [key _ _ h1, map_one]
-  · simpa using key _ _ h2
-  · simpa using key _ _ h3
-  · rw [key _ _ h4, map_one]
+    CongruenceSubgroup.Gamma b ≤ CongruenceSubgroup.Gamma a := GlobalTheory.KZ.ES.CoprimeDescent.gamma_mono h
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 

@@ -11,14 +11,7 @@ namespace GlobalTheory.Mem.BSpan
 
 theorem exists_smul_mem {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] {M : Submodule (𝓞 K) V} {x : V} (hx : x ∈ Submodule.span K (M : Set V)) :
-    ∃ d : 𝓞 K, d ≠ 0 ∧ d • x ∈ M := by
-  first
-  | exact @_root_.GlobalTheory.NonzeroSmulMem.exists_ne_zero_smul_mem
-  | exact _root_.GlobalTheory.NonzeroSmulMem.exists_ne_zero_smul_mem
-  | (apply _root_.GlobalTheory.NonzeroSmulMem.exists_ne_zero_smul_mem <;> assumption)
-  | (intros; apply _root_.GlobalTheory.NonzeroSmulMem.exists_ne_zero_smul_mem <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.NonzeroSmulMem.exists_ne_zero_smul_mem <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.NonzeroSmulMem.exists_ne_zero_smul_mem ..)
+    ∃ d : 𝓞 K, d ≠ 0 ∧ d • x ∈ M := GlobalTheory.NonzeroSmulMem.exists_ne_zero_smul_mem hx
 
 theorem smul_mem_of_dvd {A V : Type} [CommRing A] [AddCommGroup V] [Module A V] {M : Submodule A V} {a b : A} {x : V}
     (hab : a ∣ b) (hx : a • x ∈ M) : b • x ∈ M := by

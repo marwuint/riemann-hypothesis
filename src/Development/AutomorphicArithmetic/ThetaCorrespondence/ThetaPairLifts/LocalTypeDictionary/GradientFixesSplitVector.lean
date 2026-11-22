@@ -68,6 +68,5 @@ theorem _root_.GlobalTheory.T.nabla_preserves_split_fixed : _root_.GlobalTheory.
       IsUWeilSplit (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V'.J) (dbl (incM F G.W.J)) dd X.α (diagCols (Fin (a + a'))) omd →
     ∀ R : (Fin a' × Fin (a + a') → AF F) → ℂ, R 0 ≠ 0 → Rest (evFin F v) (G.M'.vac v) R →
     ∀ n ∈ GlobalTheory.InertDbl.NabD σ G.W v, omd n (GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R)) =
-      GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R) := by
-  first | exact @_root_.GlobalTheory.NabFixSplit.gradient_fixes_split_vector | exact _root_.GlobalTheory.NabFixSplit.gradient_fixes_split_vector | (intros; apply _root_.GlobalTheory.NabFixSplit.gradient_fixes_split_vector <;> assumption)
+      GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R) := GlobalTheory.NabFixSplit.gradient_fixes_split_vector
 end

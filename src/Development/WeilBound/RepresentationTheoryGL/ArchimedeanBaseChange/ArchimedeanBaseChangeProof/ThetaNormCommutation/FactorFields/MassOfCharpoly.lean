@@ -72,20 +72,7 @@ theorem mass_of_charpoly (m : ℕ) (δ₁ δ₂ : GL (Fin m) E)
 
 end
 
-theorem mass_kap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (δ : GL (Fin n) E), (δ * thE E n δ).val.charpoly ∈ Ell E n → mass (thF E n) (ratF E n).range (ratF E n δ) = kap (δ * thE E n δ).val.charpoly * 2 ^ nfac (δ * thE E n δ).val.charpoly := by
-  intro E _ _ _ _ n δ hP
-  have hd : (δ * thE E n δ).val.charpoly.natDegree = n := hP.2.1
-  have hs : (δ * thE E n δ).val.charpoly.Separable := hP.2.2.1
-  generalize hPdef : (δ * thE E n δ).val.charpoly = P at hd hs ⊢
-  have hcast : ∀ (k : ℕ) (_ : k = n), (∃ δ' : GL (Fin k) E, (δ' * thE E k δ').val.charpoly = P) ∧
-      ∀ δ' : GL (Fin k) E, (δ' * thE E k δ').val.charpoly = P →
-        mass (thF E k) (ratF E k).range (ratF E k δ') = mass (thF E n) (ratF E n).range (ratF E n δ) := by
-    intro k hk
-    subst hk
-    exact ⟨⟨δ, hPdef⟩, fun δ' h' => mass_of_charpoly E k δ δ' (h'.trans hPdef.symm) (hPdef ▸ hs)⟩
-  obtain ⟨hex, hm⟩ := hcast _ hd
-  unfold GlobalTheory.BCT.kap GlobalTheory.BCT.nfac
-  rw [dif_pos hex, hm _ hex.choose_spec, div_mul_cancel₀ _ (pow_ne_zero _ two_ne_zero)]
+theorem mass_kap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (δ : GL (Fin n) E), (δ * thE E n δ).val.charpoly ∈ Ell E n → mass (thF E n) (ratF E n).range (ratF E n δ) = kap (δ * thE E n δ).val.charpoly * 2 ^ nfac (δ * thE E n δ).val.charpoly := GlobalTheory.BCT.mass_eq_kap
 
 end PositivityTheory.Rg.BcB.G3.MassP
 

@@ -16,6 +16,5 @@ theorem PositivityTheory.ThKW.exists_finite_open_subgroup_split : ∀ (F E : Typ
       ∀ e, IsSplitIdemF σ e → ∀ U : AddSubgroup (WOF F E nS nT), IsOpen (U : Set (WOF F E nS nT)) →
         ∃ G : Finset (WOF F E nS nT), (∀ g ∈ G, ∀ i j, e * g i j = g i j) ∧
           ∀ y : WOF F E nS nT, (∀ i j, cAF σ e * y i j = y i j) →
-            (∀ g ∈ G, B.ψ (symplOHF σ JS JT ξ₀ g y - symplOHF σ JS JT ξ₀ y g) = 1) → y ∈ U :=
-  _root_.GlobalTheory.SplitLagrF.exists_finset_ann_le_k
+            (∀ g ∈ G, B.ψ (symplOHF σ JS JT ξ₀ g y - symplOHF σ JS JT ξ₀ y g) = 1) → y ∈ U := GlobalTheory.SplitLagrF.exists_finset_ann_le_k
 end

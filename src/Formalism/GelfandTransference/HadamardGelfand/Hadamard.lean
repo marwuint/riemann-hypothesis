@@ -9,8 +9,7 @@ noncomputable section
 
 namespace Formalism.HadamardInequality.P
 
-theorem hadamard_inequality_holds : Formalism.HadamardInequality.Hadamard := by
-  first | exact Bl.DetNormLeProdRows.goal1 .. | (apply Bl.DetNormLeProdRows.goal1 <;> assumption) | (intros; apply Bl.DetNormLeProdRows.goal1 <;> assumption)
+theorem hadamard_inequality_holds : Formalism.HadamardInequality.Hadamard := Bl.DetNormLeProdRows.goal1
 
 theorem hadamard_maximum_holds : Formalism.HadamardInequality.HadamardMax := by
   unfold Formalism.HadamardInequality.HadamardMax

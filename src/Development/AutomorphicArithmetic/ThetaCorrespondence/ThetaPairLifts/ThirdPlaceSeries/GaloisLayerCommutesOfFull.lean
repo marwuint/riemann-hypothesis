@@ -42,7 +42,6 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.commAll_fullAll_at_members_of_serN : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c =>
-    GlobalTheory.TwInputs.CommAll (w.D Z) ∧ GlobalTheory.TwInputs.FullAll (w.D Z) := by
-  first | exact @_root_.GlobalTheory.CommFullLayer.commAll_and_fullAll_at_members | exact _root_.GlobalTheory.CommFullLayer.commAll_and_fullAll_at_members | (intros; apply _root_.GlobalTheory.CommFullLayer.commAll_and_fullAll_at_members <;> assumption)
+    GlobalTheory.TwInputs.CommAll (w.D Z) ∧ GlobalTheory.TwInputs.FullAll (w.D Z) := GlobalTheory.CommFullLayer.commAll_and_fullAll_at_members
 end
 end

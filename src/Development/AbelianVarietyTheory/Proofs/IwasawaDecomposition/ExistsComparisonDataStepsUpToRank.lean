@@ -37,9 +37,7 @@ theorem fillTie_of {D : D7} (Gt : GatTies D) (u : D.what₂.Word) (v : D.what₂
   ring
 
 theorem reL_reL_symm {a b : ℕ} (h : a = b) {E : Type} [Field E] [NumberField E] (L : Submodule (𝓞 E) (Fin b → E)) :
-    reL h (reL h.symm L) = L := by
-  subst h
-  rw [reL_rfl, reL_rfl]
+    reL h (reL h.symm L) = L := GlobalTheory.Port.reL_symm h L
 
 theorem site_of {D : D7} (X0 : Formalism.L2.Herm.Herm0 D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (Gt : GatTies D) (c : LatCmp D)

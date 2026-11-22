@@ -59,17 +59,7 @@ theorem entry_le_gN {k r : ℕ} (g : B.Mat k r) (i j : Fin (2 * r + k + 1)) : �
       (fun i' _ => Finset.sum_nonneg fun j' _ => Complex.normSq_nonneg _) (Finset.mem_univ i)
   exact h1.trans h2
 
-theorem gN_ball_compact (k r : ℕ) (R : ℝ) : IsCompact {g : B.Mat k r | B.gN g ≤ R} := by
-  have hc : Continuous (fun g : B.Mat k r => B.gN g) := by
-    unfold B.gN
-    exact Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ =>
-      Complex.continuous_normSq.comp (continuous_id.matrix_elem i j))
-  refine Metric.isCompact_of_isClosed_isBounded (isClosed_le hc continuous_const) ?_
-  rw [isBounded_iff_forall_norm_le]
-  refine ⟨max R 0, fun g hg => ?_⟩
-  rw [Matrix.norm_le_iff (le_max_right _ _)]
-  intro i j
-  exact (entry_le_gN g i j).trans (le_trans hg (le_max_left _ _))
+theorem gN_ball_compact (k r : ℕ) (R : ℝ) : IsCompact {g : B.Mat k r | B.gN g ≤ R} := Formalism.FourierDecayAlt.P.PBE.isCompact_gN_le k r R
 
 theorem cptCoef_inCC {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq) {X : B.Mat k r → (Wq →L[ℂ] Wp)}

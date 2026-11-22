@@ -10,7 +10,6 @@ open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 
 namespace GlobalTheory.CompanionTheory.Ar.BT
 
-theorem section_eq_zero_of_val_generic : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (U : Γ.G.left.Opens) (s : Γ(Γ.G.left, U)), (∀ (t : T) (h : ⊤ ≤ (Γ.pt t).left ⁻¹ᵁ U), valAt (Γ.pt t).left U h s = 0) → s = 0 :=
-  PositivityTheory.HtPt.Unc.sec_inj
+theorem section_eq_zero_of_val_generic : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (U : Γ.G.left.Opens) (s : Γ(Γ.G.left, U)), (∀ (t : T) (h : ⊤ ≤ (Γ.pt t).left ⁻¹ᵁ U), valAt (Γ.pt t).left U h s = 0) → s = 0 := PositivityTheory.HtPt.Unc.sec_inj
 
 end GlobalTheory.CompanionTheory.Ar.BT

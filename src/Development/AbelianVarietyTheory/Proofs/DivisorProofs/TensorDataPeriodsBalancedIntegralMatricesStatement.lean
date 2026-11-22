@@ -17,5 +17,4 @@ theorem _root_.GlobalTheory.T.tensorData_periods_balanced_integralMatrices : ∀
         ∏ i, ∏ j, val (Q.tau (xe y i) (xe y j)) (𝟙 _) z J ^ W i j) →
     letI := PowLim.mod xe (symUnitOf W h)
     ∀ a : TensO (symUnitOf W h), D'.toPre.TauBal (PowLim.act pr hl (TensO.mat _ a)) (PowLim.act pr hl (TensO.mat _ (star a)))
-      (fun y => a • y) (fun y => star a • y) := by
-  first | exact @GlobalTheory.Mum.PolTens.tauBal_polTens | exact GlobalTheory.Mum.PolTens.tauBal_polTens | (intros; apply GlobalTheory.Mum.PolTens.tauBal_polTens <;> assumption)
+      (fun y => a • y) (fun y => star a • y) := GlobalTheory.Mum.PolTens.tauBal_polTens

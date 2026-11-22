@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.finite_definitePair_classes_fixed_minpoly_degree_o
     ∀ (K' : Subgroup (Gr G 1)) (f' : Gr G 1 → ℂ), IsTest (sigG G 1) (KHT p G.m G.n 1 G.Fw) K' f' →
       (∀ k ∈ K', ∀ k' ∈ K', ∀ g, f' (k * g * k') = f' g) →
       ∀ P0 : Polynomial G.F, {q : GlobalTheory.LKDef.DCls G | (Quot.out q).pol = P0 ∧ Irreducible (Quot.out q).pol ∧
-        (Quot.out q).term L.K.toSubgroup f 1 K' f' ≠ 0}.Finite := by
-  first | (exact @GlobalTheory.LKDefFin.finite_classes_of_pol) | (exact GlobalTheory.LKDefFin.finite_classes_of_pol) | (intros; apply GlobalTheory.LKDefFin.finite_classes_of_pol <;> assumption)
+        (Quot.out q).term L.K.toSubgroup f 1 K' f' ≠ 0}.Finite := GlobalTheory.LKDefFin.finite_classes_of_pol

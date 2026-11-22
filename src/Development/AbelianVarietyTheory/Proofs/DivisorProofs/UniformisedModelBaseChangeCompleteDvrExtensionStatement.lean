@@ -13,5 +13,4 @@ theorem _root_.GlobalTheory.T.uniformisedModel_baseChange_complete_dvr_extension
     (∀ χ r, u.PsiNorm (e χ) r → u'.PsiNorm χ r) ∧
     (∀ x, (T x).left ≫ u.φ = x.left ≫ u'.φ) ∧
     (∀ (m : ℕ) (pk' : QkPt u'.D.toPre (PadicAlgCl p) m) x', 1 ≤ m → QkToAkU u'.U.toUnifPre (PadicAlgCl p) m pk' x' → ∃ pk : QkPt u.D.toPre (PadicAlgCl p) m, pk.y = e pk'.y ∧ QkToAkU u.U.toUnifPre (PadicAlgCl p) m pk (T x')) ∧
-    (∀ (m : ℕ) (pk : QkPt u.D.toPre (PadicAlgCl p) m) x, 1 ≤ m → QkToAkU u.U.toUnifPre (PadicAlgCl p) m pk x → ∃ pk' : QkPt u'.D.toPre (PadicAlgCl p) m, e pk'.y = pk.y ∧ QkToAkU u'.U.toUnifPre (PadicAlgCl p) m pk' (T.symm x)) := by
-  first | exact @GlobalTheory.Poinc.UTestBaseChange.baseChange | exact GlobalTheory.Poinc.UTestBaseChange.baseChange | (intros; apply GlobalTheory.Poinc.UTestBaseChange.baseChange <;> assumption)
+    (∀ (m : ℕ) (pk : QkPt u.D.toPre (PadicAlgCl p) m) x, 1 ≤ m → QkToAkU u.U.toUnifPre (PadicAlgCl p) m pk x → ∃ pk' : QkPt u'.D.toPre (PadicAlgCl p) m, e pk'.y = pk.y ∧ QkToAkU u'.U.toUnifPre (PadicAlgCl p) m pk' (T.symm x)) := GlobalTheory.Poinc.UTestBaseChange.baseChange

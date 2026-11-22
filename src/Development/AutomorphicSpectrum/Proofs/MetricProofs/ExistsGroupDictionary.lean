@@ -41,13 +41,7 @@ theorem eqvBy_symm {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} 
   rw [this, LinearEquiv.symm_apply_apply]
 
 theorem zero_mem_ballDom {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (q : Ψ × Fin j × Fin j' ≃ Fin n) :
-    (0 : Fin n → ℂ) ∈ ballDom q := by
-  intro τ
-  have : ballMat q 0 τ = 0 := by
-    ext a b
-    simp [ballMat]
-  rw [this]
-  simpa using Matrix.PosDef.one
+    (0 : Fin n → ℂ) ∈ ballDom q := GlobalTheory.CompanionTheory.Ar.Cusp.Dict.LatEmbEx.zero_mem_ballDom q
 
 theorem star_mulVec_dot {m k : Type} [Fintype m] [Fintype k] (c : Matrix m k ℂ) (y : k → ℂ) :
     star (c *ᵥ y) ⬝ᵥ (c *ᵥ y) = star y ⬝ᵥ ((cᴴ * c) *ᵥ y) := by

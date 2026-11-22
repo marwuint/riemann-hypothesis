@@ -218,7 +218,6 @@ theorem stepGarding_main : StepGarding := by
 
 end Gard
 
-theorem garding_vectors_smooth : StepGarding := by
-  exact Gard.stepGarding_main
+theorem garding_vectors_smooth : StepGarding := PI.KFinSmoothW.Gard.stepGarding_main
 
 end PI.KFinSmoothW

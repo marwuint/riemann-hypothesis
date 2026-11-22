@@ -6,5 +6,4 @@ set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.laurent_cohomology_finite_killing : ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A] [IsNoetherianRing A], SH A → IsUnit (q : A) →
   ∀ (n i : ℤ), 2 ≤ n → ∀ x : Ht q (sp (LaurentPolynomial A)) n i,
   ∃ (A' : Type) (_ : CommRing A') (_ : Algebra A A'), Module.Finite A A' ∧ RingHom.ker (algebraMap A A') ≤ nilradical A ∧
-    pull _ (spMap (laurentMap (algebraMap A A'))) _ _ x = 0 := by
-  first | (exact @GlobalTheory.EtC.GmKill.main) | (exact GlobalTheory.EtC.GmKill.main) | (intros; apply GlobalTheory.EtC.GmKill.main  <;> assumption)
+    pull _ (spMap (laurentMap (algebraMap A A'))) _ _ x = 0 := GlobalTheory.EtC.GmKill.main

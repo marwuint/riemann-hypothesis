@@ -57,6 +57,5 @@ theorem _root_.GlobalTheory.T.real_weil_representation_schur_scalar : _root_.Glo
     (∀ (w : l ⊕ l → ℝ) (h h₁ : GlobalTheory.RealWeil.Sch l), ⇑h₁ = GlobalTheory.RealWeil.rhoFun w ⇑h →
       ⇑(U h₁) = GlobalTheory.RealWeil.rhoFun w ⇑(U h)) →
     (∀ h : GlobalTheory.RealWeil.Sch l, ∫⁻ x, ‖U h x‖ₑ ^ 2 = ∫⁻ x, ‖h x‖ₑ ^ 2) →
-    ∃ a : ℂ, ‖a‖ = 1 ∧ ∀ h, U h = a • h := by
-  first | exact @_root_.GlobalTheory.RealWeil.SchurSchwartz.weil_schwartz_schur_lemma | exact _root_.GlobalTheory.RealWeil.SchurSchwartz.weil_schwartz_schur_lemma | (intros; apply _root_.GlobalTheory.RealWeil.SchurSchwartz.weil_schwartz_schur_lemma <;> assumption)
+    ∃ a : ℂ, ‖a‖ = 1 ∧ ∀ h, U h = a • h := GlobalTheory.RealWeil.SchurSchwartz.weil_schwartz_schur_lemma
 end

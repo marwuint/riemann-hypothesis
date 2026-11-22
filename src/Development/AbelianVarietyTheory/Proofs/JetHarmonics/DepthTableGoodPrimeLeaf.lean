@@ -12,11 +12,7 @@ namespace GlobalTheory.GoodDepth
 open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds Formalism.UnitaryBoundIntegral Formalism.L2.DIV Formalism.L2.Pj Formalism.BasicNotions NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open Formalism.L2.Indef Formalism.L2.Indef.Tree Formalism.L2.Indef.Tree.DepthCond
 
-theorem thl_nonneg_leaf (k l : ℕ) : 0 ≤ thl k l := by
-  unfold thl
-  apply Real.sSup_nonneg
-  rintro t ⟨i, -, -, -, rfl⟩
-  positivity
+theorem thl_nonneg_leaf (k l : ℕ) : 0 ≤ thl k l := GlobalTheory.GoodDepth.ConjPkg.thl_nonneg k l
 
 theorem err_mono_leaf (Cc C k m f w Se Se' th l T X : ℝ) (hCc : 0 < Cc) (hC : Cc ≤ C) (hk : 1 ≤ k) (hm : 1 ≤ m) (hf : 8 ≤ f)
     (hw : 0 ≤ w) (hS : Se' ≤ Se) (hS0 : 0 ≤ Se) (hth : 0 ≤ th) (hl : 0 ≤ l) :

@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.localizedLattice_eq_of_adelic_matrices_agree_at_pl
     ∀ (i : ℕ) (hi : i ≤ D.R.m) (β : (St i hi).Ch) (x x₁ : UA D i hi) (p p₁ : ChPt (R := D.R) t.sel (t.tup μ) (t.word u) i),
     IsPtAd A a i hi β x p → IsPtAd A a i hi β x₁ p₁ → ∀ P : t.Pr.vT (t.word u),
     (∀ v : HeightOneSpectrum (𝓞 D.host.F), IsOver v (seamP t.seam P.1) → bc (prV (E := D.host.E) v) x₁.1 = bc (prV (E := D.host.E) v) x.1) →
-    p₁.deco.1.at P.1 = p.deco.1.at P.1 := by
-  first | exact @GlobalTheory.LatAway.decoAt_eq | exact GlobalTheory.LatAway.decoAt_eq | (intros; apply GlobalTheory.LatAway.decoAt_eq <;> assumption)
+    p₁.deco.1.at P.1 = p.deco.1.at P.1 := GlobalTheory.LatAway.decoAt_eq

@@ -231,8 +231,7 @@ theorem snd_hR (x y : Fin n → E ⊗[F] v.adicCompletion F) :
 omit [StarRing E] in
 include hdiag in
 theorem int_iff (t : E ⊗[F] v.adicCompletion F) : t ∈ intV E v ↔
-    p₁ sp t ∈ v.adicCompletionIntegers F ∧ p₂ sp t ∈ v.adicCompletionIntegers F :=
-  split_integral_local F E v sp hdiag t
+    p₁ sp t ∈ v.adicCompletionIntegers F ∧ p₂ sp t ∈ v.adicCompletionIntegers F := PI.SplitIntLoc.Proof.main F E v sp hdiag t
 
 omit [StarRing E] in
 include hdiag in

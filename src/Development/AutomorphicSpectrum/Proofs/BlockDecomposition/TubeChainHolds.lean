@@ -15,13 +15,7 @@ open MeasureTheory Filter Topology PositivityTheory.RgEis GlobalTheory.Companion
 noncomputable section
 namespace GlobalTheory.CompanionTheory.TubeFourier
 
-theorem continuous_pt (x : ℝ × ℝ) : Continuous fun y : ℝ × ℝ => pt x y := by
-  have h : (fun y : ℝ × ℝ => pt x y) =
-      fun y => ((x.1 : ℂ) + (y.1 : ℂ) * Complex.I, (x.2 : ℂ) + (y.2 : ℂ) * Complex.I) := by
-    funext y
-    simp [pt, Complex.ext_iff]
-  rw [h]
-  fun_prop
+theorem continuous_pt (x : ℝ × ℝ) : Continuous fun y : ℝ × ℝ => pt x y := GlobalTheory.CompanionTheory.TubeFourier.continuous_pt_shiftSnd x
 
 theorem pt_re_im (l : ℂ × ℂ) : pt (l.1.re, l.2.re) (l.1.im, l.2.im) = l := by
   exact Prod.ext (Complex.eta _) (Complex.eta _)

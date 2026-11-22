@@ -10,8 +10,7 @@ open GlobalTheory.Twist (resM)
 open scoped CategoryTheory.Obj RatFunc
 
 theorem GlobalTheory.Nef.RatRigidField.spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B)
-    (g : B →+* C) : spMap (g.comp f) = spMap g ≫ spMap f := by
-  rw [← Spec.map_comp]; rfl
+    (g : B →+* C) : spMap (g.comp f) = spMap g ≫ spMap f := ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp f g
 
 namespace GlobalTheory.Nef
 

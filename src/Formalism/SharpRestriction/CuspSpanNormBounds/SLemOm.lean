@@ -7,6 +7,6 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.StabBig
 
 namespace Formalism.MainNotions.S.Lem
 
-theorem orbRStabBig : Formalism.MainNotions.S.OrbRStabBig := stabilizer_large
+theorem orbRStabBig : Formalism.MainNotions.S.OrbRStabBig := PI.StabBigW.stabBig
 
 end Formalism.MainNotions.S.Lem

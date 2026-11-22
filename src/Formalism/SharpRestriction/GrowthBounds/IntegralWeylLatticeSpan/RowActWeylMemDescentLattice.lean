@@ -27,10 +27,7 @@ theorem lamAt_even {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (s : Fin
   unfold lamAt; rw [if_pos hs]
 
 theorem lamAt_anti {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd : IsDominant lam0) (s : Fin n') :
-    Antitone (lamAt lam0 s) := by
-  by_cases hs : Even s.val
-  · rw [lamAt_even lam0 s hs]; exact hd s
-  · rw [lamAt_odd lam0 s hs]; exact lamStar_anti _ (hd s)
+    Antitone (lamAt lam0 s) := Formalism.MainNotions.G.LatticeSystems.kp_lamAt_antitone lam0 hd s
 
 theorem rowAct_weyl_mem_span_integral {O Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf] (m : ℕ) (ν : Fin (m + 1) → ℕ)
     (g : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (a : Kf) (f : MvPolynomial (Fin (m + 1) × Fin (m + 1)) O)

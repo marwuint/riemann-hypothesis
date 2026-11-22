@@ -35,9 +35,4 @@ private theorem pow_exp_I_injective (a b : ℕ)
     exact irrational_pi ⟨_, hpi.symm⟩
 
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.eq_of_pow_eq_pow_of_eq_exp_I_or_inv : ∀ (a b : ℕ) (w : ℂ), (w = Complex.exp Complex.I ∨ w = (Complex.exp Complex.I)⁻¹) → w ^ a = w ^ b → a = b := by
-  intro a b w hw hab
-  rcases hw with rfl | rfl
-  · exact pow_exp_I_injective a b hab
-  · rw [inv_pow, inv_pow, _root_.inv_inj] at hab
-    exact pow_exp_I_injective a b hab
+theorem _root_.GlobalTheory.T.eq_of_pow_eq_pow_of_eq_exp_I_or_inv : ∀ (a b : ℕ) (w : ℂ), (w = Complex.exp Complex.I ∨ w = (Complex.exp Complex.I)⁻¹) → w ^ a = w ^ b → a = b := GlobalTheory.ExpPow.pow_exp_I_or_inv_injective

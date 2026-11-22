@@ -14,5 +14,4 @@ theorem _root_.GlobalTheory.T.exists_zmod_action_model_of_isColimit_filtered : �
       (actB : Multiplicative (ZMod q) →* (B ≃ₐ[F.obj k] B)),
       letI : Algebra (F.obj k) c.pt := (c.ι.app k).hom.toAlgebra;
       ∃ e : c.pt ⊗[F.obj k] B ≃ₐ[c.pt] D, ∀ (g : Multiplicative (ZMod q)) (x : c.pt ⊗[F.obj k] B),
-        e (GlobalTheory.TorsorColim.bcAct c.pt actB g x) = act g (e x) := by
-  first | (exact @GlobalTheory.TorsorColim.exists_action_model_of_isColimit) | (exact GlobalTheory.TorsorColim.exists_action_model_of_isColimit) | (intros; apply GlobalTheory.TorsorColim.exists_action_model_of_isColimit  <;> assumption)
+        e (GlobalTheory.TorsorColim.bcAct c.pt actB g x) = act g (e x) := GlobalTheory.TorsorColim.exists_action_model_of_isColimit

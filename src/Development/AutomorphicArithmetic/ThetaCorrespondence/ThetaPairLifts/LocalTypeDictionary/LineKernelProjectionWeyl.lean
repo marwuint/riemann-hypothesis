@@ -88,6 +88,5 @@ theorem _root_.GlobalTheory.T.line_kernel_projection_weyl : _root_.GlobalTheory.
     ∀ Pi rf rl p p', IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p' →
     ∀ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Lines D.sp.cm.sig Γ.W, ∀ ΦD ∈ algD Γ.M Bs.ψ Bs.emb, ∀ Φ₁D ∈ algD Γ.M Bs.ψ Bs.emb,
     (∀ x, HasDerivAt (fun t : ℝ => om (1, γ (Multiplicative.ofAdd t)) ΦD x) (Φ₁D x) 0) → ∀ Φ Φ₁,
-    IsDatum Γ.M ψ cA ΦD Φ → IsDatum Γ.M ψ cA Φ₁D Φ₁ → p Φ = 0 → p Φ₁ = 0 := by
-  first | exact @_root_.GlobalTheory.LineKerW.ker_projection_eq_line_weyl | exact _root_.GlobalTheory.LineKerW.ker_projection_eq_line_weyl | (intros; apply _root_.GlobalTheory.LineKerW.ker_projection_eq_line_weyl <;> assumption)
+    IsDatum Γ.M ψ cA ΦD Φ → IsDatum Γ.M ψ cA Φ₁D Φ₁ → p Φ = 0 → p Φ₁ = 0 := GlobalTheory.LineKerW.ker_projection_eq_line_weyl
 end

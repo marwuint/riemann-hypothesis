@@ -11,15 +11,7 @@ section blocks
 theorem ptEntry_append (h l : C.LPt) (a b : ℕ) :
     D.ptEntry (h ++ l) a b =
       if a < D.ptSize h ∧ b < D.ptSize h then D.ptEntry h a b
-      else if D.ptSize h ≤ a ∧ D.ptSize h ≤ b then D.ptEntry l (a - D.ptSize h) (b - D.ptSize h) else 0 := by
-  induction h generalizing a b with
-  | nil => simp [D.ptSize]
-  | cons x rest ih =>
-    obtain ⟨s, t⟩ := x
-    have hs : D.ptSize ((s, t) :: rest) = s + D.ptSize rest := by simp [D.ptSize]
-    rw [List.cons_append, hs]
-    simp only [D.ptEntry, ih, Nat.sub_sub]
-    split_ifs <;> first | rfl | (exfalso; omega) | omega | simp_all
+      else if D.ptSize h ≤ a ∧ D.ptSize h ≤ b then D.ptEntry l (a - D.ptSize h) (b - D.ptSize h) else 0 := Formalism.FourierDecayAlt.P.PBJ.Asm.ptEntry_append h l a b
 
 theorem ptMatN_append_one (h : C.LPt) (ζ : ℂ) (j : ℕ) (hj : D.ptSize h = j) :
     D.ptMatN (h ++ [(1, ζ)]) (j + 1) =

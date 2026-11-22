@@ -13,10 +13,7 @@ theorem isChar_one {G : Type} [Group G] : IsChar (fun _ : G => (1 : ℂ)) := by
   change LinearMap.trace ℂ ℂ ((Representation.trivial ℂ G ℂ) x) = 1
   simp [Representation.trivial, LinearMap.trace_id]
 
-theorem isClass_of_isChar {G : Type} [Group G] {χ : G → ℂ} (h : IsChar χ) : IsClass χ := by
-  obtain ⟨V, hV⟩ := h
-  intro x y
-  rw [← hV, ← hV, FDRep.char_conj]
+theorem isClass_of_isChar {G : Type} [Group G] {χ : G → ℂ} (h : IsChar χ) : IsClass χ := GlobalTheory.CharDec.isClass_of_isChar h
 
 variable {g : ℕ} [Fact g.Prime]
 

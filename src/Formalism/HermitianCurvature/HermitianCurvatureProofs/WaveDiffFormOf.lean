@@ -16,9 +16,7 @@ def OnOldBound : Prop :=
       (∀ e, B.CCle (A + 3 * ((m + 1 : ℕ) : ℝ)) m (x e) c) →
       ∀ e, B.CCle A m (KB.onOld (PBO.mDiff Bs σ w) ys x e) (K * ‖σ‖ ^ 3 * c)
 
-theorem plusW_length (ys : List ℝ) (w : List C.Letter) : (KB.plusW ys w).length = ys.length + w.length := by
-  rw [Formalism.FourierDecayAlt.P.PBD.plusW_eq]
-  simp
+theorem plusW_length (ys : List ℝ) (w : List C.Letter) : (KB.plusW ys w).length = ys.length + w.length := Formalism.FourierDecayAlt.P.PBF.len_plusW ys w
 
 theorem waveDiffForm_of (hO : OnOldBound) : PBO.WaveDiffForm := by
   intro _hP Cb

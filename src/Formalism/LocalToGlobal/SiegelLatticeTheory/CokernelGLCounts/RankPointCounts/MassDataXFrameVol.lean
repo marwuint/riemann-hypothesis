@@ -10,15 +10,7 @@ namespace Formalism.L2.SG.Pf.MassDataX
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-theorem three_dvd_cubic (r : ℕ) : 3 ∣ (r + 1) * (8 * r ^ 2 + 10 * r + 3) := by
-
-  obtain ⟨k, hk | hk | hk⟩ : ∃ k, r = 3 * k ∨ r = 3 * k + 1 ∨ r = 3 * k + 2 := ⟨r / 3, by omega⟩
-  · subst hk
-    exact ⟨(3 * k + 1) * (6 * k + 1) * (4 * k + 1), by ring⟩
-  · subst hk
-    exact ⟨(3 * k + 2) * (2 * k + 1) * (12 * k + 7), by ring⟩
-  · subst hk
-    exact ⟨(k + 1) * (8 * (3 * k + 2) ^ 2 + 10 * (3 * k + 2) + 3), by ring⟩
+theorem three_dvd_cubic (r : ℕ) : 3 ∣ (r + 1) * (8 * r ^ 2 + 10 * r + 3) := Formalism.L2.S.Pv.MSOrdP.three_dvd r
 
 variable {D : D7} (X : HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I) (Y : Full X) (u u' : D.what₂.Word)
   (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E) (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ) (sd C Th : ℝ)

@@ -12,20 +12,10 @@ open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.FGDepth
 
 theorem val_natCast_nonneg {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (n : ℕ) :
-    0 ≤ v (n : C) := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    push_cast
-    exact (le_min ih (le_of_eq (AddValuation.map_one v).symm)).trans (AddValuation.map_add v _ _)
+    0 ≤ v (n : C) := GlobalTheory.FGDepth.natCast_isInt v n
 
 theorem val_intCast_nonneg {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (n : ℤ) :
-    0 ≤ v (n : C) := by
-  obtain ⟨m, rfl | rfl⟩ := Int.eq_nat_or_neg n
-  · rw [Int.cast_natCast]
-    exact val_natCast_nonneg v m
-  · rw [Int.cast_neg, AddValuation.map_neg, Int.cast_natCast]
-    exact val_natCast_nonneg v m
+    0 ≤ v (n : C) := GlobalTheory.FGDepth.intCast_isInt v n
 
 theorem val_natCast_eq_zero {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (p : ℕ)
     (hp : p.Prime) (hv : v (p : C) = 1) (n : ℕ) (hn : ¬ p ∣ n) : v (n : C) = 0 := by

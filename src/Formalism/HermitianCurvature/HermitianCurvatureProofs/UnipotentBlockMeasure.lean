@@ -996,8 +996,7 @@ open Formalism.FourierDecayAlt
 
 theorem norm_of_lemmas : Formalism.FourierDecayAlt.PN.NormOfLemmas := HermitianFormNormLemmas.A.t_NormOfLemmas
 
-theorem pn_norm_bound : Formalism.FourierDecayAlt.PN.NormBound :=
-  norm_of_lemmas jacobian_natural_measure_constant local_ratio_product column_identity
+theorem pn_norm_bound : Formalism.FourierDecayAlt.PN.NormBound := Formalism.FourierDecayAlt.P.HermitianFormNormLemmas.A.t_NormOfLemmas jacobian_natural_measure_constant local_ratio_product column_identity
 
 theorem frame_passage : Formalism.FourierDecayAlt.PN.FramePassage := HermitianFormNormLemmas.A.t_FramePassage
 

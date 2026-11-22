@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.eventually_finite_baseChange_filtered_colimit : �
       Module.Finite c.pt (c.pt ⊗[F.obj j] A)) →
     ∃ (k₀ : J) (f₀ : j ⟶ k₀), ∀ (k : J) (f : k₀ ⟶ k),
       letI : Algebra (F.obj j) (F.obj k) := (F.map (f₀ ≫ f)).hom.toAlgebra;
-      Module.Finite (F.obj k) (F.obj k ⊗[F.obj j] A) := by
-  first | (exact @GlobalTheory.FiniteColim.eventually_finite_baseChange) | (exact GlobalTheory.FiniteColim.eventually_finite_baseChange) | (intros; apply GlobalTheory.FiniteColim.eventually_finite_baseChange  <;> assumption)
+      Module.Finite (F.obj k) (F.obj k ⊗[F.obj j] A) := GlobalTheory.FiniteColim.eventually_finite_baseChange

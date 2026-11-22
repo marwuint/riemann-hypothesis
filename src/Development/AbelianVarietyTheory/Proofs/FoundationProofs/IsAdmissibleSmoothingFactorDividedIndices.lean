@@ -24,16 +24,7 @@ lemma isAdmissibleSmoothingFactor_divided_indices (c m : ℕ) (x : Fin 2 → ℚ
 
 lemma isOpen_Hs' : IsOpen Hs := isOpen_lt continuous_const Complex.continuous_im
 
-lemma codiscreteWithin_Hs_neBot : (Filter.codiscreteWithin Hs).NeBot := by
-  rw [← Filter.forall_mem_nonempty_iff_neBot]
-  intro s hs
-  have hI : Complex.I ∈ Hs := by simp [Hs]
-  have h1 := (mem_codiscreteWithin_iff_forall_mem_nhdsNE.1 hs) _ hI
-  have h2 : Hs ∈ nhdsWithin Complex.I {Complex.I}ᶜ := mem_nhdsWithin_of_mem_nhds (isOpen_Hs'.mem_nhds hI)
-  obtain ⟨z, hz1, hz2⟩ := Filter.nonempty_of_mem (Filter.inter_mem h1 h2)
-  rcases hz1 with h | h
-  · exact ⟨z, h⟩
-  · exact absurd hz2 h
+lemma codiscreteWithin_Hs_neBot : (Filter.codiscreteWithin Hs).NeBot := GlobalTheory.KZ.SiegelModel.neBot_Hs
 
 theorem siegel_distribution : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (T : Tower Ω ε)
     (c : ℕ) (m : ℕ) (x : Fin 2 → ℚ), admitted c x → 0 < m → Nat.Coprime c m →

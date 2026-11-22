@@ -20,9 +20,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.Conj
 open GroundTheory.Heights₂.Heights.Regular GlobalTheory.CompanionTheory.Ar.Flat.Link
 
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  show Spec.map (CommRingCat.ofHom (g.comp f)) = Spec.map (CommRingCat.ofHom g) ≫ Spec.map (CommRingCat.ofHom f)
-  rw [CommRingCat.ofHom_comp, Spec.map_comp]
+    spMap (g.comp f) = spMap g ≫ spMap f := ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp f g
 
 theorem dualMap_conj_over :
     spMap (dualMap (starRingEnd ℂ)) ≫ spMap (algebraMap ℂ (DualNumber ℂ)) =

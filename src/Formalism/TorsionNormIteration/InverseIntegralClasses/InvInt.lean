@@ -247,9 +247,6 @@ theorem Formalism.LT.InvIntP.IntegralSubst_proof : Formalism.LT.IntegralSubst.{u
   intro K _ _ ι f P hf hP0 hP
   exact Formalism.LT.InvIntP.integralSubst f P hf hP0 hP
 
-theorem Formalism.LT.InvIntegralOfClass_proof : Formalism.LT.InvIntegralOfClass.{u, v} := by
-  exact Formalism.LT.InvIntP.InvIntegralOfClass_proof
-theorem Formalism.LT.FunEqLowCoeff_proof : Formalism.LT.FunEqLowCoeff.{u, v} := by
-  exact Formalism.LT.InvIntP.FunEqLowCoeff_proof
-theorem Formalism.LT.IntegralSubst_proof : Formalism.LT.IntegralSubst.{u, v} := by
-  exact Formalism.LT.InvIntP.IntegralSubst_proof
+theorem Formalism.LT.InvIntegralOfClass_proof : Formalism.LT.InvIntegralOfClass.{u, v} := Formalism.LT.InvIntP.InvIntegralOfClass_proof
+theorem Formalism.LT.FunEqLowCoeff_proof : Formalism.LT.FunEqLowCoeff.{u, v} := Formalism.LT.InvIntP.FunEqLowCoeff_proof
+theorem Formalism.LT.IntegralSubst_proof : Formalism.LT.IntegralSubst.{u, v} := Formalism.LT.InvIntP.IntegralSubst_proof

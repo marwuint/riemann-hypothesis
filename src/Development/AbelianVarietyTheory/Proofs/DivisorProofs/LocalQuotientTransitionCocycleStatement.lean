@@ -16,5 +16,4 @@ theorem _root_.GlobalTheory.T.local_quotient_transition_cocycle : ∀ (S : Schem
         w ≫ pullback.fst _ _ = y ≫ (q j).left → w ≫ pullback.snd _ _ = z ≫ pullback.snd _ _ → w ≫ b j k = z ≫ (q k).left) →
     ∀ (j k l : 𝒰.I₀) (T : Scheme.{0}) (x : T ⟶ pullback ((B j).hom ≫ 𝒰.f j) (𝒰.f k))
       (y : T ⟶ pullback ((B k).hom ≫ 𝒰.f k) (𝒰.f l)) (z : T ⟶ pullback ((B j).hom ≫ 𝒰.f j) (𝒰.f l)),
-      x ≫ b j k = y ≫ pullback.fst _ _ → x ≫ pullback.fst _ _ = z ≫ pullback.fst _ _ → y ≫ b k l = z ≫ b j l := by
-  first | (exact @GlobalTheory.cocycle_local_quotient_transition) | (exact GlobalTheory.cocycle_local_quotient_transition) | (intros; apply GlobalTheory.cocycle_local_quotient_transition  <;> assumption)
+      x ≫ b j k = y ≫ pullback.fst _ _ → x ≫ pullback.fst _ _ = z ≫ pullback.fst _ _ → y ≫ b k l = z ≫ b j l := GlobalTheory.cocycle_local_quotient_transition

@@ -20,10 +20,7 @@ theorem volU_pos (i : ℕ) : 0 < volU i := by
   unfold volU
   positivity
 
-theorem vInv_pos (E : Type) [Field E] [NumberField E] : 0 < Formalism.HermitianLatticesTheory.vInv E := by
-  unfold Formalism.HermitianLatticesTheory.vInv
-  have : (0 : ℝ) < |(discr E : ℝ)| := abs_pos.2 (by exact_mod_cast discr_ne_zero E)
-  positivity
+theorem vInv_pos (E : Type) [Field E] [NumberField E] : 0 < Formalism.HermitianLatticesTheory.vInv E := GlobalTheory.FlagMeas.vInv_pos_of_numberField E
 
 theorem rankFac_mul_meanConst (E : Type) [Field E] [NumberField E] [StarRing E] (M : ℕ)
     (hL : 0 < Formalism.HermitianLatticesTheory.lValEta E M) :

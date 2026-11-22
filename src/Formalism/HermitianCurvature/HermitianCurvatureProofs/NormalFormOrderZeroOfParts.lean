@@ -1821,7 +1821,7 @@ theorem xC_root (ρ : M.Ty P) {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) : M.xC P ρ
   Finset.prod_eq_zero hl (by ring)
 
 theorem rho_up {l : ℕ} {τ ρ : M.Ty P} (h : M.Up P l τ ρ) {i : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) :
-    M.rho P ρ i = M.rho P τ i + if i = l then 1 else 0 := Formalism.FourierDecayAlt.P.rho_raise P l τ ρ h i hi
+    M.rho P ρ i = M.rho P τ i + if i = l then 1 else 0 := Formalism.FourierDecayAlt.P.Mx3.rhoUp P l τ ρ h i hi
 
 theorem xEx_below {l : ℕ} {τ ρ : M.Ty P} (h : M.Up P l τ ρ) (Y : ℂ) :
     M.xEx P {l} τ Y = ∏ i ∈ (Icc 1 (P.k - 1)).erase l, (Y + (M.rho P ρ i : ℂ)) := by
@@ -2876,7 +2876,6 @@ end
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem normal_form_order_zero : Formalism.FourierDecayAlt.NF.NFOrder0 :=
-  normal_form_order_zero_of_parts multiplication_zeta_exists actual_zeta_smooth_alt
+theorem normal_form_order_zero : Formalism.FourierDecayAlt.NF.NFOrder0 := Formalism.FourierDecayAlt.P.NFx4.NO.nFOrder0OfParts multiplication_zeta_exists actual_zeta_smooth_alt
 
 end Formalism.FourierDecayAlt.P

@@ -12,5 +12,4 @@ theorem _root_.GlobalTheory.T.exists_torsionMap_uniformisation_generic : ∀ (E 
       (∀ p p' p'', QkAdd p p' p'' → f p'' = f p * f p') ∧
       (∀ p p' τ, p.y = 0 → GlobalTheory.UT.IsTor τ p.g →
         GlobalTheory.UU.CubWeil t.cub k (f p) (f p') (unitOn (τ (Multiplicative.ofAdd p'.y)))) ∧
-      ∀ (σ : F →ₐ[FractionRing R] F) p p', QkExt σ.toRingHom p p' → (f p').left = spMap σ.toRingHom ≫ (f p).left := by
-  first | exact @GlobalTheory.GenTors.exists_torsMap_generic | exact GlobalTheory.GenTors.exists_torsMap_generic | (intros; apply GlobalTheory.GenTors.exists_torsMap_generic <;> assumption)
+      ∀ (σ : F →ₐ[FractionRing R] F) p p', QkExt σ.toRingHom p p' → (f p').left = spMap σ.toRingHom ≫ (f p).left := GlobalTheory.GenTors.exists_torsMap_generic

@@ -13,14 +13,7 @@ noncomputable section
 namespace GlobalTheory.OrbFinAf.MatrixUnits₂
 
 theorem exists_order (C : Type) [Ring C] [Algebra ℚ C] [FiniteDimensional ℚ C] :
-    ∃ OB : Subring C, Module.Finite ℤ OB ∧ ∀ b : C, ∃ m : ℕ, 0 < m ∧ (m : C) * b ∈ OB := by
-  first
-  | exact @_root_.GlobalTheory.MultiplierOrders.exists_order
-  | exact _root_.GlobalTheory.MultiplierOrders.exists_order
-  | (apply _root_.GlobalTheory.MultiplierOrders.exists_order <;> assumption)
-  | (intros; apply _root_.GlobalTheory.MultiplierOrders.exists_order <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.MultiplierOrders.exists_order <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.MultiplierOrders.exists_order ..)
+    ∃ OB : Subring C, Module.Finite ℤ OB ∧ ∀ b : C, ∃ m : ℕ, 0 < m ∧ (m : C) * b ∈ OB := GlobalTheory.MultiplierOrders.exists_order C
 
 theorem isIntV_order_eventually (p : ℕ) [Fact p.Prime] (G : HTGroup p) (OB : Subring G.C)
     (hfin : Module.Finite ℤ OB) :

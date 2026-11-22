@@ -248,11 +248,7 @@ def logBoundConstant (r : ℕ) (h : ℝ) : ℝ := ((h + 3) / (10 : ℝ) ^ (-((6 
 
 theorem logBoundConstant_pos (r : ℕ) (h : ℝ) (hh : 0 ≤ h) : 0 < logBoundConstant r h := by unfold logBoundConstant; positivity
 
-theorem bc_goodU_pos {de : ℝ} (h : 0 < de) : 1 ≤ goodU de := by
-  unfold goodU
-  exact Nat.one_le_iff_ne_zero.mpr (by
-    have : 0 < 1 / de := by positivity
-    exact (Nat.ceil_pos.mpr this).ne')
+theorem bc_goodU_pos {de : ℝ} (h : 0 < de) : 1 ≤ goodU de := Formalism.MainNotions.G.WittFrameLocaliserOrders.bd_goodU_pos h
 
 theorem one_le_log_of_three_le_bis {x : ℝ} (hx : 3 ≤ x) : 1 ≤ Real.log x := by
   rw [Real.le_log_iff_exp_le (by linarith)]

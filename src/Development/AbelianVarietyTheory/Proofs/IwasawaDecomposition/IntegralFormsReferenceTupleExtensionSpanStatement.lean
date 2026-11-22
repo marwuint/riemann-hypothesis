@@ -66,5 +66,4 @@ theorem _root_.GlobalTheory.T.integralForms_referenceTuple_extension_span : Glob
             (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).fam3.F.L j (famR (w.st Z) w.I hX (usedOf
             w.I T Wt) z.Xg z.tr).A.μ0).S.V) c ∈ ((famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg
             z.tr).fam3.F.L j (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg
-            z.tr).A.μ0).S.Nab c})) := by
-  first | exact @GlobalTheory.Mem.R3.DefLatBC.nab_ext | exact GlobalTheory.Mem.R3.DefLatBC.nab_ext | (intros; apply GlobalTheory.Mem.R3.DefLatBC.nab_ext <;> assumption)
+            z.tr).A.μ0).S.Nab c})) := GlobalTheory.Mem.R3.DefLatBC.nab_ext

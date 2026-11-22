@@ -40,10 +40,7 @@ theorem one_lt_of_win {eps : ℝ} (Fm : FamP eps) {x Y : ℝ} (hx : 1 < x) (h : 
   have hp : 0 < 1 / Fm.J := one_div_pos.mpr (by linarith)
   exact lt_of_lt_of_le (Real.one_lt_rpow hx hp) h
 
-theorem eps_pos_of_fam {eps : ℝ} (Fm : FamP eps) : 0 < eps := by
-  obtain ⟨i⟩ := Fm.Ix_zero
-  have h0 := (Fm.L 0 i).sc.eps_pos
-  rwa [Fm.L_eps 0 i] at h0
+theorem eps_pos_of_fam {eps : ℝ} (Fm : FamP eps) : 0 < eps := Formalism.MainNotions.Lnk.fam_eps_pos Fm
 
 theorem pair_and_box_hypothesis_of_congruence_data_and_boxes {eps : ℝ} (Fm : FamP eps) (hR : QDRowsF Fm) (hB : BoxesF Fm) :
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x,

@@ -15,5 +15,4 @@ theorem _root_.GlobalTheory.T.exists_levelIsometry_genericFibre_boundaryChart : 
     [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (C : GlobalTheory.UChart.Fam Xo c R) (tK : SAB H (Sp (FractionRing R)))
     (m1 : SABMap tK C.t (jK R)) (m2 : SABMap tK Xo.univ.t (C.y ≫ pullback.fst _ _))
     (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F],
-    ∃ I : (letI := H.starRing; TateIsoQ Dw C.P.D.toPre C.P.oD F), GlobalTheory.LowDat.XFLevel C tK m1 m2 F I := by
-  first | exact @GlobalTheory.LowDat.exists_xfLevel | exact GlobalTheory.LowDat.exists_xfLevel | (intros; apply GlobalTheory.LowDat.exists_xfLevel <;> assumption)
+    ∃ I : (letI := H.starRing; TateIsoQ Dw C.P.D.toPre C.P.oD F), GlobalTheory.LowDat.XFLevel C tK m1 m2 F I := GlobalTheory.LowDat.exists_xfLevel

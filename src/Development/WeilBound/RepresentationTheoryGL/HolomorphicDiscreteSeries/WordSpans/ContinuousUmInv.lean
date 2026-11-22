@@ -22,8 +22,7 @@ theorem norm_entry_le {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (i j : Fin m) :
     (Finset.single_le_sum (f := fun i => ∑ j, ‖M i j‖ ^ 2) (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity)
       (Finset.mem_univ i))
 
-theorem hs_nonneg' {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) : 0 ≤ hs M :=
-  Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity
+theorem hs_nonneg' {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) : 0 ≤ hs M := Formalism.REAL.frobenius_nonneg_matrix M
 
 theorem um_inv_eq {m : ℕ} {ε : Fin m → Bool} (g : UJ ε) : um g⁻¹ = Jm ε * (um g)ᴴ * Jm ε := by
   have hg : (um g)ᴴ * Jm ε * um g = Jm ε := g.2

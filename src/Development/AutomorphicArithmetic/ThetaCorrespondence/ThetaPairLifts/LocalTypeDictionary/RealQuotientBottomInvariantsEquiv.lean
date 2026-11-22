@@ -189,6 +189,5 @@ theorem _root_.GlobalTheory.T.real_quotient_bottom_invariants_equiv : GlobalTheo
         σ (fun τ => (κ τ : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) (q P)) ∧
     (∀ (κ : D.what₂.Tau → Matrix.unitaryGroup (Fin WW.rank) ℂ), ∀ P ∈ GlobalTheory.MinorFrame.inv (ι := D.what₂.Tau) A'.rank WW.rank n₀,
       q' (GlobalTheory.MinorFrame.rowSub (fun τ => (κ τ : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) P) =
-        GlobalTheory.MinorFrame.detChar n₀ (fun τ => (κ τ : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) • σ (fun τ => (κ τ : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) (q' P)) := by
-  first | exact @_root_.GlobalTheory.RealQuotBot.real_quotient_invariants_equiv | exact _root_.GlobalTheory.RealQuotBot.real_quotient_invariants_equiv | (intros; apply _root_.GlobalTheory.RealQuotBot.real_quotient_invariants_equiv <;> assumption)
+        GlobalTheory.MinorFrame.detChar n₀ (fun τ => (κ τ : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) • σ (fun τ => (κ τ : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) (q' P)) := GlobalTheory.RealQuotBot.real_quotient_invariants_equiv
 end

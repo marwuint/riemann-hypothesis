@@ -65,9 +65,7 @@ theorem ip_ne_zero_of_common {G : Type} [Group G] [Fintype G] (χ α β : G → 
   rw [hm]
   exact_mod_cast hmm χ hχA hχB
 
-theorem isChar_of_isIrr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsChar χ := by
-  obtain ⟨V, -, hV⟩ := h
-  exact ⟨V, hV⟩
+theorem isChar_of_isIrr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsChar χ := GlobalTheory.CharDec.isChar_of_isIrr h
 
 variable {g : ℕ} [Fact g.Prime]
 

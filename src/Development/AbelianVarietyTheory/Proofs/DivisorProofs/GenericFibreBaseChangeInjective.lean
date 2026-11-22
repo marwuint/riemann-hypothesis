@@ -20,5 +20,4 @@ theorem _root_.GlobalTheory.T.generic_fibre_base_change_injective : ∀ (A R : T
     IsDiscreteValuationRing (Localization.AtPrime (P₁.comap φ)) →
     ∀ π : A, Irreducible (algebraMap A (Localization.AtPrime (P₁.comap φ)) π) →
     ∀ y : R₁, y ^ q = φ (algebraMap A R π) →
-    GlobalTheory.KeyOriginEnlarge.ClosureEtaleAt A₁ R₁ (GlobalTheory.KeyOriginBC.BC β DA) P₁ := by
-  first | (exact @GlobalTheory.AbhHeightOne.closureEtaleAt_of_root_of_uniformiser) | (exact GlobalTheory.AbhHeightOne.closureEtaleAt_of_root_of_uniformiser) | (intros; apply GlobalTheory.AbhHeightOne.closureEtaleAt_of_root_of_uniformiser  <;> assumption)
+    GlobalTheory.KeyOriginEnlarge.ClosureEtaleAt A₁ R₁ (GlobalTheory.KeyOriginBC.BC β DA) P₁ := GlobalTheory.AbhHeightOne.closureEtaleAt_of_root_of_uniformiser

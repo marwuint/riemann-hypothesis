@@ -37,8 +37,7 @@ theorem val_tau_zero_zero {V : Type} [CommRing V] [IsDomain V] (D : DegPre V) (h
   rw [f, _root_.mul_one] at h
   exact mul_eq_left.1 h.symm
 
-theorem tautBase_c₀_zero {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W) : T.c₀ 0 = 1 :=
-  mul_eq_left.1 ((T.c₀_add 0 0).symm.trans (by rw [add_zero]))
+theorem tautBase_c₀_zero {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W) : T.c₀ 0 = 1 := GlobalTheory.PolDeg.TautBase.c₀_zero T
 
 theorem val_τ₀_zero_zero {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W)
     (z : (𝟙_ (Over (Sp W))).left) (J) (hJ : Good T.M.L z J) : val (T.τ₀ 0 0) (𝟙 _) z J = 1 := by

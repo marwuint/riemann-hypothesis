@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.howeSplitting_acts_fockAction_plus_traceMultiples 
     (C : ∀ w : InfinitePlace F, Matrix β (Ix (R w) (S w)) ℂ) (Φ : TensD F P Q R S →ₗ[ℂ] SInf F κ)
     (om : UG (cA σ) JB →* Module.End ℂ ((κ → AF F) → ℂ)), IsCMExt F E σ → IsStd ψ →
     FramedD τ JA JB a b A C → IsFockMapD ψ τ d A C Φ → IsUSplitting (adeleClass F) ψ d (actB (cA σ)) om →
-    ∃ c, ActsByD τ C om Φ (fun w => fockAct2 (P w) (Q w) (R w) (S w)) c := by
-  first | exact @GlobalTheory.HoweD.lieScalarD | exact GlobalTheory.HoweD.lieScalarD | (intros; apply GlobalTheory.HoweD.lieScalarD <;> assumption)
+    ∃ c, ActsByD τ C om Φ (fun w => fockAct2 (P w) (Q w) (R w) (S w)) c := GlobalTheory.HoweD.lieScalarD

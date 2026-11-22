@@ -119,6 +119,5 @@ theorem _root_.GlobalTheory.T.twist_boundary_real_action : ∀ {D : D7} {T : Typ
       ∀ (t : T), ∀ x ∈ GfC A', ∀ h ∈ GfC WW, ∀ (g : GinfC A') (P : MvPolynomial (FVar D WW.rank A'.rank) ℂ),
         X.ker' W.ψ W.θ t P h (x * (g : GA D A')) =
           (∏ τ, (ρ g τ : Matrix (Fin A'.rank) (Fin A'.rank) ℂ).det ^ (m τ)) *
-            X.ker' W.ψ W.θ t (GlobalTheory.MinorFrame.colSub (fun τ => (ρ g τ : Matrix (Fin A'.rank) (Fin A'.rank) ℂ)) P) h x := by
-  first | exact @_root_.GlobalTheory.BottomRealAct.boundary_real_group_action | exact _root_.GlobalTheory.BottomRealAct.boundary_real_group_action | (intros; apply _root_.GlobalTheory.BottomRealAct.boundary_real_group_action <;> assumption)
+            X.ker' W.ψ W.θ t (GlobalTheory.MinorFrame.colSub (fun τ => (ρ g τ : Matrix (Fin A'.rank) (Fin A'.rank) ℂ)) P) h x := GlobalTheory.BottomRealAct.boundary_real_group_action
 end

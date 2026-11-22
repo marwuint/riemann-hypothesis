@@ -78,7 +78,6 @@ theorem _root_.GlobalTheory.T.exists_isInternal_free_permuted_thirdPlace : _root
     GlobalTheory.DefPt.FreePt (p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c (fun h => (p.O i).lev2 (φ h)) →
     ∃ (X : Type) (_ : Fintype X) (_ : DecidableEq X) (_ : MulAction Hg X) (A : X → Submodule ℂ (GlobalTheory.DefRead.VC (GlobalTheory.DefHalf.sigC p) (GlobalTheory.DefHalf.CF p i))),
       (∀ (h : Hg) (y : X), h • y = y → h = 1) ∧ DirectSum.IsInternal A ∧
-      ∀ (h : Hg) (y : X), ∀ v ∈ A y, GlobalTheory.DefRead.bcLin (GlobalTheory.DefHalf.sigC p) (_root_.GlobalTheory.DefHalf.groupActionOnCoefficients p i hp.1 (φ h)) v ∈ A (h • y) := by
-  first | exact @_root_.GlobalTheory.DefSplit.exists_free_action_permuting_summands_thirdPlace | exact _root_.GlobalTheory.DefSplit.exists_free_action_permuting_summands_thirdPlace | (intros; apply _root_.GlobalTheory.DefSplit.exists_free_action_permuting_summands_thirdPlace <;> assumption)
+      ∀ (h : Hg) (y : X), ∀ v ∈ A y, GlobalTheory.DefRead.bcLin (GlobalTheory.DefHalf.sigC p) (_root_.GlobalTheory.DefHalf.groupActionOnCoefficients p i hp.1 (φ h)) v ∈ A (h • y) := GlobalTheory.DefSplit.exists_free_action_permuting_summands_thirdPlace
 end
 end

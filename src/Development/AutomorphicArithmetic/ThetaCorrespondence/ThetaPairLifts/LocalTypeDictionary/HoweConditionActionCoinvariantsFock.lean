@@ -76,6 +76,5 @@ theorem _root_.GlobalTheory.T.howe_condition_of_fock_coinvariants : GlobalTheory
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X) (χS χT : (AE D)ˣ →* Circle) (ω : WRep M X) (eS eT : D.what₂.Tau → ℚ),
   IsWeil ψ ε M X χS χT ω → (∀ τ, HasInfExp D χS τ (eS τ) ∧ HasInfExp D χT τ (eT τ)) →
-  GlobalTheory.RealQuot.HoweCond (fun i : GlobalTheory.RealQuot.LieIx X => GlobalTheory.RealQuot.actT ε A B eS i.1.1 i.1.2) (GlobalTheory.RealQuot.coinv ε A B eT) := by
-  first | exact @_root_.GlobalTheory.HoweFockReal.howe_condition_action_coinvariants_fock | exact _root_.GlobalTheory.HoweFockReal.howe_condition_action_coinvariants_fock | (intros; apply _root_.GlobalTheory.HoweFockReal.howe_condition_action_coinvariants_fock <;> assumption)
+  GlobalTheory.RealQuot.HoweCond (fun i : GlobalTheory.RealQuot.LieIx X => GlobalTheory.RealQuot.actT ε A B eS i.1.1 i.1.2) (GlobalTheory.RealQuot.coinv ε A B eT) := GlobalTheory.HoweFockReal.howe_condition_action_coinvariants_fock
 end

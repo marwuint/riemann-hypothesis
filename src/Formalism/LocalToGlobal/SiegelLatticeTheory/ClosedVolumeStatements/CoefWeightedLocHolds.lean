@@ -106,20 +106,11 @@ namespace ChkScRef
 
 theorem hform_crdA {D : D7} (A : UnitaryGroupInstance D) (v w : (VS D).V) :
     A.ιE (Formalism.UG.hform (starRingEnd A.I.E) A.I.J (crdOf A.I A.ιE A.bas v) (crdOf A.I A.ιE A.bas w)) =
-      (VS D).hT v w := by
-  conv_rhs => rw [← A.bas.sum_repr v, ← A.bas.sum_repr w]
-  simp only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul,
-    Formalism.UG.hform, map_mul, crdOf, starRingEnd_apply, A.ιE_conj, RingEquiv.apply_symm_apply,
-    A.J_eq, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-  simp only [← Formalism.BasicNotions.bridge_star_holds D.R D.host, RingHom.id_apply]
-  ring
+      (VS D).hT v w := Formalism.L2.SG.Closed.ScMu.ChkScMu.hform_crdA A v w
 
 theorem hform_eq {D : D7} (A : UnitaryGroupInstance D) (v w : (VS D).V) :
     Formalism.UG.hform (starRingEnd A.I.E) A.I.J (crdOf A.I A.ιE A.bas v) (crdOf A.I A.ιE A.bas w) =
-      A.ιE.symm ((VS D).hT v w) := by
-  rw [← hform_crdA, RingEquiv.symm_apply_apply]
+      A.ιE.symm ((VS D).hT v w) := Formalism.L2.SG.Closed.ScMu.ChkScMu.hform_eq A v w
 
 def SplitAtG (D : D7) : Prop :=
   ∀ (A : UnitaryGroupInstance D) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 A.I.F)), ((gD D : ℕ) : 𝓞 A.I.F) ∈ v.asIdeal →
@@ -179,20 +170,11 @@ namespace ChkScXu
 
 theorem hform_crdA {D : D7} (A : UnitaryGroupInstance D) (v w : (VS D).V) :
     A.ιE (Formalism.UG.hform (starRingEnd A.I.E) A.I.J (crdOf A.I A.ιE A.bas v) (crdOf A.I A.ιE A.bas w)) =
-      (VS D).hT v w := by
-  conv_rhs => rw [← A.bas.sum_repr v, ← A.bas.sum_repr w]
-  simp only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul,
-    Formalism.UG.hform, map_mul, crdOf, starRingEnd_apply, A.ιE_conj, RingEquiv.apply_symm_apply,
-    A.J_eq, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-  simp only [← Formalism.BasicNotions.bridge_star_holds D.R D.host, RingHom.id_apply]
-  ring
+      (VS D).hT v w := Formalism.L2.SG.Closed.ScMu.ChkScMu.hform_crdA A v w
 
 theorem hform_eq {D : D7} (A : UnitaryGroupInstance D) (v w : (VS D).V) :
     Formalism.UG.hform (starRingEnd A.I.E) A.I.J (crdOf A.I A.ιE A.bas v) (crdOf A.I A.ιE A.bas w) =
-      A.ιE.symm ((VS D).hT v w) := by
-  rw [← hform_crdA, RingEquiv.symm_apply_apply]
+      A.ιE.symm ((VS D).hT v w) := Formalism.L2.SG.Closed.ScMu.ChkScMu.hform_eq A v w
 
 def SplitAtG (D : D7) : Prop :=
   ∀ (A : UnitaryGroupInstance D) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 A.I.F)), ((gD D : ℕ) : 𝓞 A.I.F) ∈ v.asIdeal →
@@ -269,20 +251,11 @@ namespace ChkScPi
 
 theorem hform_crdA {D : D7} (A : UnitaryGroupInstance D) (v w : (VS D).V) :
     A.ιE (Formalism.UG.hform (starRingEnd A.I.E) A.I.J (crdOf A.I A.ιE A.bas v) (crdOf A.I A.ιE A.bas w)) =
-      (VS D).hT v w := by
-  conv_rhs => rw [← A.bas.sum_repr v, ← A.bas.sum_repr w]
-  simp only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul,
-    Formalism.UG.hform, map_mul, crdOf, starRingEnd_apply, A.ιE_conj, RingEquiv.apply_symm_apply,
-    A.J_eq, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-  simp only [← Formalism.BasicNotions.bridge_star_holds D.R D.host, RingHom.id_apply]
-  ring
+      (VS D).hT v w := Formalism.L2.SG.Closed.ScMu.ChkScMu.hform_crdA A v w
 
 theorem hform_eq {D : D7} (A : UnitaryGroupInstance D) (v w : (VS D).V) :
     Formalism.UG.hform (starRingEnd A.I.E) A.I.J (crdOf A.I A.ιE A.bas v) (crdOf A.I A.ιE A.bas w) =
-      A.ιE.symm ((VS D).hT v w) := by
-  rw [← hform_crdA, RingEquiv.symm_apply_apply]
+      A.ιE.symm ((VS D).hT v w) := Formalism.L2.SG.Closed.ScMu.ChkScMu.hform_eq A v w
 
 theorem isFrame {D : D7} (A : UnitaryGroupInstance D) (L : UnitaryLatticeData D) (u : D.what₂.Word) :
     PI.ScPiExists.IsFrame A.I (eC A L) (fC A L) (zC A L u) := by

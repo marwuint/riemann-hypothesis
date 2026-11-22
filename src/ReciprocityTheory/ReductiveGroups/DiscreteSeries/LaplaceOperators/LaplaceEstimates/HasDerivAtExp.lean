@@ -15,19 +15,12 @@ attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebr
   Matrix.linftyOpNormedSpace
 
 theorem hasDerivAt_exp {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
-    HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) X 0 := by
-  have h := (hasDerivAt_exp_smul_const (𝕂 := ℂ) X ((0 : ℝ) : ℂ))
-  have h2 := h.scomp (x := (0:ℝ)) Complex.ofRealCLM.hasDerivAt
-  exact h2.congr_deriv (by simp)
+    HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) X 0 := Formalism.REAL.hasDerivAt_matrix_exp_smul_at_zero X
 
 end Linfty
 
 theorem slope_exp {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
-    Tendsto (slope (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) 0) (𝓝[≠] 0) (𝓝 X) := by
-  let _ := Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)
-  let _ := Matrix.linftyOpNormedAlgebra (R := ℂ) (n := Fin n) (α := ℂ)
-  let _ := Matrix.linftyOpNormedSpace (R := ℝ) (m := Fin n) (n := Fin n) (α := ℂ)
-  exact (hasDerivAt_exp X).tendsto_slope
+    Tendsto (slope (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) 0) (𝓝[≠] 0) (𝓝 X) := Formalism.REAL.tendsto_slope_exp_smul X
 
 theorem rdv_of_linear {n : ℕ} (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (g X Y : Matrix (Fin n) (Fin n) ℂ)
     (Lf : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] ℂ)

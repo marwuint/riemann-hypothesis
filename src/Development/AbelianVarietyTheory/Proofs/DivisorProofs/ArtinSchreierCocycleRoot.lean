@@ -234,8 +234,7 @@ theorem psiG_zero {F : Type} [Field F] (S : F[X] → ℂ) (x : GL (Fin 0) F) : p
     rw [Subsingleton.elim v 0]; exact W.1.zero_mem
   rw [hc, finsum_of_isEmpty, sub_zero]
 
-theorem gal_id {F : Type} [Field F] (n : ℕ) (y : GL (Fin n) F) : gal (RingHom.id F) n y = y := by
-  ext i j; simp [gal]
+theorem gal_id {F : Type} [Field F] (n : ℕ) (y : GL (Fin n) F) : gal (RingHom.id F) n y = y := GlobalTheory.Shin.gal_id_eq n y
 
 theorem sum_hc_cusp {F : Type} [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ) (S : F[X] → ℂ)
     (hS : S 1 = 0) (n k a : ℕ) (ha : a < n) :

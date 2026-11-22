@@ -9,5 +9,4 @@ theorem _root_.GlobalTheory.T.exists_frob_of_eisenstein_root : GlobalTheory.Publ
     ∀ ϖ : 𝓞 E, ϖ ∈ v.asIdeal → ϖ ∉ v.asIdeal ^ 2 → ∀ π : Ω, π ^ (normV v - 1) = algebraMap E Ω (ϖ : E) →
     ∃ τ : G E Ω, IsFrob (F := E) A (normV v) τ ∧ τ π = π ∧
       ∀ c : (v.adicCompletion E)ˣ, (c : v.adicCompletion E) = (-1) ^ normV v * algebraMap E (v.adicCompletion E) (ϖ : E) →
-        toAb E Ω τ⁻¹ = art (localIdele E v c) := by
-  first | exact @GlobalTheory.TameRecip.exists_frob_fix_of_eisenstein | exact GlobalTheory.TameRecip.exists_frob_fix_of_eisenstein | (intros; apply GlobalTheory.TameRecip.exists_frob_fix_of_eisenstein <;> assumption)
+        toAb E Ω τ⁻¹ = art (localIdele E v c) := GlobalTheory.TameRecip.exists_frob_fix_of_eisenstein

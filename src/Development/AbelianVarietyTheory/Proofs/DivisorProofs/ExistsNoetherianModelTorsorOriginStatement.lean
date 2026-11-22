@@ -35,5 +35,4 @@ theorem _root_.GlobalTheory.T.exists_noetherian_model_torsor_origin : ∀ (T O :
         GlobalTheory.KeyOriginCut.IsZTorsor (GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)) DA q actA ∧
         ∀ σ : DA →+* GlobalTheory.LocAcyc.GenFib T O,
           σ.comp (algebraMap (GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)) DA) = ψA →
-          ∃ σ₁ : D₁ →+* GlobalTheory.LocAcyc.GenFib T O, σ₁.comp (algebraMap (GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q)) D₁) = ψ := by
-  first | (exact @GlobalTheory.KeyOriginNoeth.exists_noetherian_model) | (exact GlobalTheory.KeyOriginNoeth.exists_noetherian_model) | (intros; apply GlobalTheory.KeyOriginNoeth.exists_noetherian_model  <;> assumption)
+          ∃ σ₁ : D₁ →+* GlobalTheory.LocAcyc.GenFib T O, σ₁.comp (algebraMap (GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q)) D₁) = ψ := GlobalTheory.KeyOriginNoeth.exists_noetherian_model

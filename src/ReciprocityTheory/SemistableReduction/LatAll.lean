@@ -14,8 +14,7 @@ open ReciprocityTheory.MultiplicativeHeights
 theorem approx : ApproxStatement := by
   exact ReciprocityTheory.MultiplicativeHeights.approxBasis_holds ReciprocityTheory.MultiplicativeHeights.approxGraph_holds
 
-theorem degAdd : DegAddStatement := by
-  exact ReciprocityTheory.MultiplicativeHeights.degAdd_holds
+theorem degAdd : DegAddStatement := ReciprocityTheory.MultiplicativeHeights.degAdd_holds
 
 theorem bwPoly : BWPolyStatement := by
   exact ReciprocityTheory.MultiplicativeHeights.bwPoly_holds ReciprocityTheory.MultiplicativeHeights.lemmaH_holds ReciprocityTheory.L2DbarEstimates.ext

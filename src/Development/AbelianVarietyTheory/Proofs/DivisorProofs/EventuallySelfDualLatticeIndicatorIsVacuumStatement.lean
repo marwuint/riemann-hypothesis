@@ -16,5 +16,4 @@ theorem _root_.GlobalTheory.T.eventually_selfDualLattice_indicator_is_vacuum : �
     (B : Base F E), B.IsGood σ → ∀ {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (r s r' s' : ℕ),
     X.IsHerm σ B r s → Y.IsSkew σ B r' s' → ∀ (co : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp (R := AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (-1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Y.J)) (Fin n × Fin d)), (∀ x : Matrix (Fin n) (Fin d) E, ∃ y z : Fin n × Fin d → F, co.e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F x) = (fun k => algebraMap F (AF F) (y k), fun k => algebraMap F (AF F) (z k))) →
     ∀ᶠ v in Filter.cofinite, Model.IsVac (Model.mk (σ := σ) (X := X) (W := Y) co (fun _ => 0) 0 ∅) B.ψ v
-      (Set.indicator {x | ∀ k, x k ∈ v.adicCompletionIntegers F} 1) := by
-  first | exact @GlobalTheory.VacIndic.eventually_isVac_indicator | exact GlobalTheory.VacIndic.eventually_isVac_indicator | (intros; apply GlobalTheory.VacIndic.eventually_isVac_indicator <;> assumption)
+      (Set.indicator {x | ∀ k, x k ∈ v.adicCompletionIntegers F} 1) := GlobalTheory.VacIndic.eventually_isVac_indicator

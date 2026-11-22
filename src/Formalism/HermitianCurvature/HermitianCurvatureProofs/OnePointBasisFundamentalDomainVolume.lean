@@ -100,10 +100,7 @@ theorem plusW_eq (ys : List ℝ) (w : List C.Letter) :
   | cons y ys ih => simp [KB.plusW, ih]
 
 theorem minusW_eq (ys : List ℝ) (w : List C.Letter) :
-    KB.minusW ys w = ys.map (fun y => ((false, y + 1) : C.Letter)) ++ w := by
-  induction ys with
-  | nil => rfl
-  | cons y ys ih => simp [KB.minusW, ih]
+    KB.minusW ys w = ys.map (fun y => ((false, y + 1) : C.Letter)) ++ w := Formalism.FourierDecayAlt.P.PBD.minusW_eq ys w
 
 theorem normC_plusW (nn : ℝ → ℝ) (ys : List ℝ) (w : List C.Letter) :
     TBB.normC nn (KB.plusW ys w) = (ys.map nn).prod * TBB.normC nn w := by

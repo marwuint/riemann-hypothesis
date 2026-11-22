@@ -15,5 +15,4 @@ theorem _root_.GlobalTheory.T.exists_forms_vanishing_complexPoints_fullJets : �
         (hy : y ∈ CxPts.ptsIn p (RingHom.id ℂ) (GlobalTheory.EtProj.fOpen ι f₀)),
         GlobalTheory.EtProj.fRatio ι h f₀ hh hf₀ ∈ RingHom.ker (CxPts.evHom hy) ^ 2 ∧
         RingHom.ker (CxPts.evHom hy) ≤ Ideal.span (Set.range fun j => GlobalTheory.EtProj.fRatio ι (g j) f₀ (hg j) hf₀) ⊔
-          RingHom.ker (CxPts.evHom hy) ^ 2 := by
-  first | (exact @GlobalTheory.EtProj.Jets.exists_jet_forms) | (exact GlobalTheory.EtProj.Jets.exists_jet_forms) | (intros; apply GlobalTheory.EtProj.Jets.exists_jet_forms  <;> assumption)
+          RingHom.ker (CxPts.evHom hy) ^ 2 := GlobalTheory.EtProj.Jets.exists_jet_forms

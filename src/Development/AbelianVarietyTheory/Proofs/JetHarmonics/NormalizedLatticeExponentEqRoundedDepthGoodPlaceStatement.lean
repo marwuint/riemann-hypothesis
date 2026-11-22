@@ -8,5 +8,4 @@ theorem _root_.GlobalTheory.T.onObj_exponent_eq_rounded_depth : ∀ (E : Type) [
   (O.g1 = Dd.Q.g1 ∧ O.g2 = Dd.Q.g2 ∧ O.q1 = Dd.Q.q1 ∧ O.dd = Dd.Q.dd ∧ O.sm = Dd.Q.sm) → PiSplit (H := H) Dd → LeafPage O →
   ∀ (v : HeightOneSpectrum (𝓞 K)) (j : Bs.J), ¬ (plc v ∈ O.sm ∨ plc v = O.q1 ∨ plc v = O.dd ∨ plc v = O.g1 ∨ plc v = O.g2) →
     O.e0 v j ≤ (Dd.Q.T : ℝ) * ((nuWAt (Xo := Xo (ι j)) Dd (placeBelow (K := c.F) v) (ι j)).toReal / (ramOverZ (placeBelow (K := c.F) v) : ℝ)) + 1 ∧
-    (nuWAt (Xo := Xo (ι j)) Dd (placeBelow (K := c.F) v) (ι j) = 0 → O.e0 v j = 0) := by
-  first | exact @GlobalTheory.GoodDepth.normalizedLattice_exponent_eq_roundedDepth_goodPlace | exact GlobalTheory.GoodDepth.normalizedLattice_exponent_eq_roundedDepth_goodPlace | (intros; apply GlobalTheory.GoodDepth.normalizedLattice_exponent_eq_roundedDepth_goodPlace <;> assumption)
+    (nuWAt (Xo := Xo (ι j)) Dd (placeBelow (K := c.F) v) (ι j) = 0 → O.e0 v j = 0) := GlobalTheory.GoodDepth.normalizedLattice_exponent_eq_roundedDepth_goodPlace

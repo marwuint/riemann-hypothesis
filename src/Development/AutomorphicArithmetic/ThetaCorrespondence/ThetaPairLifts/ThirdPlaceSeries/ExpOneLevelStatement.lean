@@ -25,6 +25,5 @@ theorem _root_.GlobalTheory.T.real_datum_normalized_rational_base_alt : GlobalTh
         ∃ (n : ℕ) (b : Fin n → ℂ) (g : Fin n → NX.FmK p.Sx ((j : ℕ) + 1)),
           ν • ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P = ∑ k, b k • evW p.nexp p.v₀ j (g k).val ∧
           ∑ k, τ (b k) • evW p.nexp p.v₀ j (g k).val =
-            c • (ν • ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P) := by
-  first | exact @_root_.GlobalTheory.BigOn.Exp.expOne_level_alt | exact _root_.GlobalTheory.BigOn.Exp.expOne_level_alt | (intros; apply _root_.GlobalTheory.BigOn.Exp.expOne_level_alt <;> assumption)
+            c • (ν • ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P) := GlobalTheory.SerSmall.one_expansion_alt
 end

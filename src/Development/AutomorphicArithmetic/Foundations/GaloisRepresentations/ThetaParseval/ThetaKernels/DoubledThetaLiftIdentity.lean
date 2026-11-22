@@ -24,6 +24,5 @@ theorem _root_.GlobalTheory.T.doubled_theta_lift_identity : ∀ (F E : Type) [Fi
           ∀ (γ : Matrix (Fin nT) (Fin nS) E) (w : Formalism.IndefR.DatumF.WOF F E nS nT),
             GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ φ (Formalism.IndefR.DatumF.ratWF γ + w) =
               B.ψ (-(Formalism.IndefR.DatumF.symplOHF σ JS JT ξ₀ (Formalism.IndefR.DatumF.ratWF γ) w)) *
-                GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ φ w := by
-  first | exact @_root_.GlobalTheory.ThetaQuasiRatCM.thetaTr_ratWF_add_quasi_k | exact _root_.GlobalTheory.ThetaQuasiRatCM.thetaTr_ratWF_add_quasi_k | (intros; apply _root_.GlobalTheory.ThetaQuasiRatCM.thetaTr_ratWF_add_quasi_k <;> assumption)
+                GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ φ w := GlobalTheory.ThetaQuasiRatCM.thetaTr_ratWF_add_quasi_k
 end

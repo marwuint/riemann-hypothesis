@@ -87,9 +87,7 @@ lemma herm_smul_left {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (v w :
     herm H (c • v) w = c * herm H v w := by
   simp [herm, Matrix.mulVec_smul]
 
-lemma eucl_eq {n : ℕ} (v : Fin n → ℂ) : eucl v = ‖(WithLp.toLp 2 v : EuclideanSpace ℂ (Fin n))‖ := by
-  rw [EuclideanSpace.norm_eq]; unfold eucl
-  simp [Complex.normSq_eq_norm_sq]
+lemma eucl_eq {n : ℕ} (v : Fin n → ℂ) : eucl v = ‖(WithLp.toLp 2 v : EuclideanSpace ℂ (Fin n))‖ := GlobalTheory.Amp.GramFlag.eucl_eq v
 
 lemma inner_toLp {n : ℕ} (v w : Fin n → ℂ) :
     ⟪(WithLp.toLp 2 v : EuclideanSpace ℂ (Fin n)), WithLp.toLp 2 w⟫_ℂ = star v ⬝ᵥ w := by

@@ -35,29 +35,23 @@ import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstima
 
 namespace PositivityTheory.jumpWindows
 
-theorem compositionalInverseSymm : S1 :=
-  lie_algebra_action_exists
+theorem compositionalInverseSymm : S1 := PositivityTheory.jumpWindows.lie_algebra_action_exists
 
-theorem orthogonalSplitPolarizationVanishes : S2 :=
-  smooth_vectors_stable_intertwiner
+theorem orthogonalSplitPolarizationVanishes : S2 := PositivityTheory.jumpWindows.smooth_vectors_stable_intertwiner
 
 theorem addPreservesExpCongruence : S3 :=
   unit_chart_operator_bound compositionalInverseSymm
 
-theorem expCongruenceExtendsToSum : S4 :=
-  valuation_bound_of_three
+theorem expCongruenceExtendsToSum : S4 := PositivityTheory.jumpWindows.valuation_bound_of_three
 
-theorem hit_valuation_bound : S5 :=
-  haar_measure_pairing
+theorem hit_valuation_bound : S5 := PositivityTheory.jumpWindows.haar_measure_pairing
 
 theorem smooth_vectors_conjugation_holds : S6 :=
   conjugation_units_open orthogonalSplitPolarizationVanishes expCongruenceExtendsToSum
 
-theorem exists_logarithm_linear_holds : S8 :=
-  exists_logarithm_linear
+theorem exists_logarithm_linear_holds : S8 := PositivityTheory.jumpWindows.exists_logarithm_linear
 
-theorem positive_matrix_block_product_holds : MirabolicColumnBlock :=
-  positive_matrix_block_product
+theorem positive_matrix_block_product_holds : MirabolicColumnBlock := PositivityTheory.jumpWindows.positive_matrix_block_product
 
 theorem mirabolic_induction_step_holds : S7 :=
   mirabolic_induction_step_exists orthogonalSplitPolarizationVanishes addPreservesExpCongruence hit_valuation_bound smooth_vectors_conjugation_holds exists_logarithm_linear_holds positive_matrix_block_product_holds
@@ -71,8 +65,7 @@ theorem automorphic_basic_setup_holds : G0 :=
 theorem multiplicity_one_holds : G1 :=
   firstGeometricCondition_of_properties compositionalInverseSymm
 
-theorem almost_everywhere_spherical : AlmostEverywhereSpherical :=
-  almost_everywhere_spherical_of_G1 multiplicity_one_holds
+theorem almost_everywhere_spherical : AlmostEverywhereSpherical := GlobalTheory.CompanionTheory.StrongMultOne.spherical_almost_everywhere_of_bounded multiplicity_one_holds
 
 theorem averaging_projection_linear_holds : G2a :=
   averaging_projection_linear
@@ -80,14 +73,12 @@ theorem averaging_projection_linear_holds : G2a :=
 theorem bounded_invariant_L2_holds : G2b :=
   bounded_invariant_functions_in_L2
 
-theorem hecke_operator_automorphic_holds : G2c :=
-  hecke_operator_of_automorphic automorphic_basic_setup_holds
+theorem hecke_operator_automorphic_holds : G2c := GlobalTheory.CompanionTheory.HeckeEigenspaces.hecke_eigenfunctions_closed automorphic_basic_setup_holds
 
 theorem whittaker_functional_exists_holds : G5 :=
   local_group_averaging_tensor
 
-theorem smooth_vectors_regular_holds : G5b :=
-  smooth_vectors_regular_representation orthogonalSplitPolarizationVanishes automorphic_basic_setup_holds
+theorem smooth_vectors_regular_holds : G5b := GlobalTheory.CompanionTheory.SmoReg.g5b orthogonalSplitPolarizationVanishes automorphic_basic_setup_holds
 
 theorem whittaker_nondegenerate_holds : G6 :=
   whittaker_nondegenerate_character mirabolic_induction_step_holds positive_matrix_block_product_holds automorphic_basic_setup_holds whittaker_functional_exists_holds

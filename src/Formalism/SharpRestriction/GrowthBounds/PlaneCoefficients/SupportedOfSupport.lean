@@ -45,9 +45,7 @@ theorem supported_of_support {τ R : Type*} [CommSemiring R] {s : Set τ} {P Q :
   exact hQ (Finset.mem_coe.2 ((mem_vars_iff_mem_support v).2 ⟨d, h hd, hvd⟩))
 
 theorem multideg_add {ι : Type} {s : ℕ} (a b : ι × Fin s →₀ ℕ) (x : ι) :
-    multideg (a + b) x = multideg a x + multideg b x := by
-  unfold multideg
-  simp only [Finsupp.add_apply, Finset.sum_add_distrib]
+    multideg (a + b) x = multideg a x + multideg b x := Formalism.MainNotions.G.Joints.StandardMonomialSpace.hom_multideg_add a b x
 
 theorem geZ_sum {Kf : Type} [Field Kf] {ι κ : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι) (T : Finset κ)
     (f : κ → MvPolynomial (ι × Fin n) Kf) (t : ℝ) (h : ∀ i ∈ T, geZ (valS LL S (f i)) t) :

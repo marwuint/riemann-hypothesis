@@ -47,9 +47,7 @@ theorem cauchyProduct_fourfold_finsetSum {K : Type} [Field K] {α : Type} (s₁ 
   rw [Finset.mul_sum]
 
 theorem dvd_castHom_val_iff {p : ℕ} [Fact p.Prime] {n : ℕ} (hn : 1 ≤ n) (x : ZMod (p ^ (n + 1))) :
-    p ∣ (ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n)) x).val ↔ p ∣ x.val := by
-  rw [ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.val_natCast,
-    Nat.dvd_mod_iff (dvd_pow_self p (by omega))]
+    p ∣ (ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n)) x).val ↔ p ∣ x.val := GlobalTheory.KummerEisensteinGalois.glFibre_dvd_map_iff hn x
 
 theorem sum_preimage_fibre (p : ℕ) [Fact p.Prime] (n : ℕ) (hn : 1 ≤ n) (K : Type) [CommRing K]
     (X : Finset (GL (Fin 2) (ZMod (p ^ n))))

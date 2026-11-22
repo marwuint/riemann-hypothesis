@@ -29,9 +29,7 @@ theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   show D.host.φ₀ (IsCMField.complexConj D.host.E x) = _
   rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]
 
-theorem conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x :=
-  D.host.φ₀.injective (by
-    rw [Formalism.HC.HostAx.conjE_apply, Formalism.HC.HostAx.conjE_apply, Complex.conj_conj])
+theorem conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := Formalism.L2.Pj.conj_conj D x
 
 theorem coe_smul {L : Type} [Field L] [NumberField L] (σ : Gal(L/ℚ)) (X : 𝓞 L) :
     ((σ • X : 𝓞 L) : L) = σ (X : L) := rfl

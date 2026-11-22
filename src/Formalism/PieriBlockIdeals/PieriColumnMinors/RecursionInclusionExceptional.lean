@@ -146,9 +146,7 @@ theorem thin_exceptional : ThinAE := by
 
 theorem one_le_k_of_hyp (P : Par) (hH : P.Hyp) : 1 ≤ P.k := hH.m_pos.trans hH.m_le
 
-theorem kc_cast_le_k (P : Par) : (kc P : ℝ) ≤ (P.k : ℝ) := by
-  unfold kc
-  exact_mod_cast Nat.sub_le P.k 1
+theorem kc_cast_le_k (P : Par) : (kc P : ℝ) ≤ (P.k : ℝ) := Formalism.CohomologicalDescent.ShortWeightBounds.kc_cast_le_k P
 
 theorem thick_exceptional : ThickAE := by
   intro hI hC P hH hL ι W hW J τ hτ l hl

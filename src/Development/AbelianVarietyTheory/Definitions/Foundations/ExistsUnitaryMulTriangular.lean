@@ -253,7 +253,7 @@ section Ring
 
 variable {R S : Type} [CommRing R] [CommRing S] {la : Fin N → ℕ}
 
-theorem extremal_mem (hla : Antitone la) : extremal la R ∈ nabla la R := Formalism.GradedWeylDivisibility.hwMem R N N le_rfl la hla
+theorem extremal_mem (hla : Antitone la) : extremal la R ∈ nabla la R := Formalism.GradedWeylDivisibility.highestWeightVectorMem R N N le_rfl la hla
 
 theorem evalAt_one_extremal : evalAt 1 (extremal la R) = 1 := by
   unfold extremal hw

@@ -46,6 +46,5 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (sZero)
 open GlobalTheory.Mem.Th (CptF)
 open GlobalTheory.Core.Rk.IP (Pair Unram SphFun openOff integrand wcoef rcoef up)
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.rallis_bottom_hecke_form_anisotropic : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ D : D7, GlobalTheory.RallisBottom.HeckeFormAniso D := by
-  first | exact @_root_.GlobalTheory.RallisBottom.hecke_form_anisotropic_of_rallis_bottom | exact _root_.GlobalTheory.RallisBottom.hecke_form_anisotropic_of_rallis_bottom | (intros; apply _root_.GlobalTheory.RallisBottom.hecke_form_anisotropic_of_rallis_bottom <;> assumption)
+theorem _root_.GlobalTheory.T.rallis_bottom_hecke_form_anisotropic : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ D : D7, GlobalTheory.RallisBottom.HeckeFormAniso D := GlobalTheory.RallisBottom.hecke_form_anisotropic_of_rallis_bottom
 end

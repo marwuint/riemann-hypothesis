@@ -205,17 +205,7 @@ theorem exists_pic_patch : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : Z �
   exact ⟨cls L hL, (cls_eq_iff (pull_isLB hL p) hL').2 hiso⟩
 
 theorem isPullback_whisker {S : Scheme.{0}} (A : Over S) {T T' : Over S} (f : T' ⟶ T) :
-    IsPullback (A ◁ f).left (snd A T').left (snd A T).left f.left := by
-  have : IsPullback (A ◁ f) (snd A T') (snd A T) f := by
-    refine ⟨⟨by simp⟩, ⟨PullbackCone.IsLimit.mk _ (fun s ↦ lift (s.fst ≫ fst A T) s.snd) (fun s ↦ ?_)
-      (fun s ↦ by simp) (fun s m h₁ h₂ ↦ ?_)⟩⟩
-    · ext
-      · simp
-      · simp [s.condition]
-    · ext
-      · simp [← h₁]
-      · simp [← h₂]
-  exact this.map (Over.forget S)
+    IsPullback (A ◁ f).left (snd A T').left (snd A T).left f.left := GlobalTheory.DualOpen.isPullback_whiskerLeft_left A f
 
 theorem hasRep_pinched : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (R' : Type) [CommRing R'] [Algebra R R'] [Module.Finite R R'], Function.Injective (algebraMap R R') → ∀ c : Ideal R, (∀ x ∈ c, ∀ r : R', ∃ y ∈ c, algebraMap R R' y = algebraMap R R' x * r) → HasRepAF A g (Over.mk (spMap (algebraMap R R'))) → HasRep A g (Over.mk (spMap (Ideal.Quotient.mk c))) → HasRep A g (𝟙_ _) := by
   intro R _ _ A _ g hA hg R' _ _ _ hinj c hc ⟨B', b', P', hP', hG', hF⟩ ⟨C, e, Q, hQ, hG⟩

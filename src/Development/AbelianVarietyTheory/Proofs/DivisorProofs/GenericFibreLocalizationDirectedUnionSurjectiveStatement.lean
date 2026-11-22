@@ -18,5 +18,4 @@ theorem _root_.GlobalTheory.T.genericFibreLocalization_directedUnion_surjective 
           (algebraMap (Ek k) (Localization.AtPrime (Q.comap (e k))) y)) =
         algebraMap (Localization.AtPrime Q) (GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q))
           (algebraMap E (Localization.AtPrime Q) (e k y))) →
-    ∀ b : GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q), ∃ k x, g k x = b := by
-  first | (exact @GlobalTheory.genFib_colim_surj) | (exact GlobalTheory.genFib_colim_surj) | (intros; apply GlobalTheory.genFib_colim_surj  <;> assumption)
+    ∀ b : GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q), ∃ k x, g k x = b := GlobalTheory.genFib_colim_surj

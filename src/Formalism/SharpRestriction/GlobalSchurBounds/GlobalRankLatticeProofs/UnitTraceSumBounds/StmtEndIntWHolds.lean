@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.InertPrime
 
 namespace Formalism.MainNotions.Ext
 
-theorem okpInertG_holds : OkpInertG := integers_inert_prime
+theorem okpInertG_holds : OkpInertG := PI.OkpW.okpInert_main
 
 theorem inertPrime_holds : InertPrime := isPrime_span_of_jacobi_neg_one
 

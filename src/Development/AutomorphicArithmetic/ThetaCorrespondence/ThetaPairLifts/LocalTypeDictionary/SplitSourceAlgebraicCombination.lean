@@ -49,6 +49,5 @@ theorem _root_.GlobalTheory.T.split_source_vector_algebraic : ∀ {D : D7} {T : 
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X → ∀ (t : T) (N : ℕ) (e : AE D) (P : Pl D.host.E), Formalism.L2.NTheta.IsIdemAt e P → ((N : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal →
     ∀ g ∈ GfC A, Formalism.L2.Theta.SuppAt e A g →
-      GlobalTheory.MovedAlg.IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (g, 1) X.vac) := by
-  first | exact @_root_.GlobalTheory.SplitSourceAlg.split_source_algebraic_combination | exact _root_.GlobalTheory.SplitSourceAlg.split_source_algebraic_combination | (intros; apply _root_.GlobalTheory.SplitSourceAlg.split_source_algebraic_combination <;> assumption)
+      GlobalTheory.MovedAlg.IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (g, 1) X.vac) := GlobalTheory.SplitSourceAlg.split_source_algebraic_combination
 end

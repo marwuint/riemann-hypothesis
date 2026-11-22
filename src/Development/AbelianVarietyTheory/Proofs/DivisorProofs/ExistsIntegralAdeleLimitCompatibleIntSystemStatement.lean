@@ -7,5 +7,4 @@ open ReciprocityTheory.DiscreteGroups.LocalClassField
 open scoped TensorProduct
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.exists_integralAdeleLimit_compatibleIntSystem : ∀ (p : ℕ) [Fact p.Prime] (a : ℕ → ℤ), (∀ n m : ℕ, 0 < n → 0 < m → (n * m).Coprime p → (n : ℤ) ∣ a (n * m) - a n) → ∃ α : AfP p, IsIntAf α ∧ ∀ n : ℕ, 0 < n → n.Coprime p → ∃ β : AfP p, IsIntAf β ∧ α = (a n : AfP p) + n • β := by
-  first | (exact @GlobalTheory.CompatLim.exists_lim) | (exact GlobalTheory.CompatLim.exists_lim) | (intros; apply GlobalTheory.CompatLim.exists_lim  <;> assumption)
+theorem _root_.GlobalTheory.T.exists_integralAdeleLimit_compatibleIntSystem : ∀ (p : ℕ) [Fact p.Prime] (a : ℕ → ℤ), (∀ n m : ℕ, 0 < n → 0 < m → (n * m).Coprime p → (n : ℤ) ∣ a (n * m) - a n) → ∃ α : AfP p, IsIntAf α ∧ ∀ n : ℕ, 0 < n → n.Coprime p → ∃ β : AfP p, IsIntAf β ∧ α = (a n : AfP p) + n • β := GlobalTheory.CompatLim.exists_lim

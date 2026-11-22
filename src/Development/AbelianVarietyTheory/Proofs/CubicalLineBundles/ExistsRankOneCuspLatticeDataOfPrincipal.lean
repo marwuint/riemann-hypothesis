@@ -20,9 +20,7 @@ theorem cc_eq_conj (D : D7) (x : D.host.E) : ReciprocityTheory.ChartRestriction.
 theorem flagDomainConj_hostXi_eq_neg (D : D7) : ReciprocityTheory.ChartRestriction.G.FD.cc D.host.xi0 = -D.host.xi0 :=
   conj_xi0_alt D
 
-theorem halfDifferent_ne_bot (D : D7) : D.host.𝔟 ≠ ⊥ := by
-  intro h
-  exact (bB_ne D).1 (by rw [h]; simp)
+theorem halfDifferent_ne_bot (D : D7) : D.host.𝔟 ≠ ⊥ := Formalism.L2.Pj.b_ne_bot D
 
 theorem absNorm_halfDifferent_le (D : D7) :
     (Ideal.absNorm D.host.𝔟 : ℝ) ≤ |(NumberField.discr D.host.E : ℝ)| := by

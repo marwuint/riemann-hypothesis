@@ -31,5 +31,4 @@ theorem _root_.GlobalTheory.T.exists_baseChange_retract_alt : ∀ (T O : Type) [
       ρ' (algebraMap (Polynomial A₁) EA₁ Polynomial.X) = 0 ∧
       (∀ x : EA₁, algebraMap T O (i₁ (ρ' x)) - jA₁ (algebraMap EA₁ (Localization.AtPrime QA₁) x) ∈
         Ideal.span {algebraMap (Polynomial T) O Polynomial.X}) ∧
-      (∀ x : EA₁, ρ' x = 0 → ∃ s ∉ QA₁, s * x ∈ Ideal.span {algebraMap (Polynomial A₁) EA₁ Polynomial.X}) := by
-  first | (exact @GlobalTheory.KeyOriginBaseChangeCons.exists_baseChange_retract) | (exact GlobalTheory.KeyOriginBaseChangeCons.exists_baseChange_retract) | (intros; apply GlobalTheory.KeyOriginBaseChangeCons.exists_baseChange_retract <;> assumption)
+      (∀ x : EA₁, ρ' x = 0 → ∃ s ∉ QA₁, s * x ∈ Ideal.span {algebraMap (Polynomial A₁) EA₁ Polynomial.X}) := GlobalTheory.KeyOriginBaseChangeCons.exists_baseChange_retract

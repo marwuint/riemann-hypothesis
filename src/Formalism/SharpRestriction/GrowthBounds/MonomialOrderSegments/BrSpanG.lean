@@ -16,9 +16,7 @@ open Formalism.MainNotions.G Formalism.MainNotions.G.Joints
 theorem card_val_lt {n h : ℕ} (hh : h ≤ n) : (univ.filter fun m : Fin n => m.val < h).card = h := by
   first | exact GlobalTheory.CardFilterLt.card_filter_val_lt .. | (apply GlobalTheory.CardFilterLt.card_filter_val_lt <;> assumption) | (intros; apply GlobalTheory.CardFilterLt.card_filter_val_lt <;> assumption) | (apply @GlobalTheory.CardFilterLt.card_filter_val_lt <;> assumption) | (intros; apply @GlobalTheory.CardFilterLt.card_filter_val_lt <;> assumption) | (apply @GlobalTheory.CardFilterLt.card_filter_val_lt <;> first | assumption | infer_instance) | exact @GlobalTheory.CardFilterLt.card_filter_val_lt n h hh | exact @GlobalTheory.CardFilterLt.card_filter_val_lt n h | exact @GlobalTheory.CardFilterLt.card_filter_val_lt n
 
-theorem colH_le {n : ℕ} (mu : Fin n → ℤ) (c : ℤ) : colH mu c ≤ n := by
-  unfold colH
-  exact (Finset.card_filter_le _ _).trans (by simp)
+theorem colH_le {n : ℕ} (mu : Fin n → ℤ) (c : ℤ) : colH mu c ≤ n := Formalism.MainNotions.CovariantDegrees.colH_le mu c
 
 theorem colH_zero {n : ℕ} (c : ℤ) : colH (0 : Fin n → ℤ) c = if c ≤ 0 then n else 0 := by
   unfold colH

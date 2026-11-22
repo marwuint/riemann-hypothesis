@@ -30,9 +30,7 @@ theorem cyclic_conj {F : Type} [Field F] {V V' : Type} [AddCommGroup V] [Module 
     have : e y ∈ U.comap (e.symm : V' →ₗ[F] V) := h1 ▸ Submodule.mem_top
     simpa using this
 
-theorem glCard_ne_zero_of_finite (F : Type) [Field F] [Finite F] (n : ℕ) : glCard F n ≠ 0 := by
-  unfold glCard
-  exact_mod_cast (Nat.card_pos (α := GL (Fin n) F)).ne'
+theorem glCard_ne_zero_of_finite (F : Type) [Field F] [Finite F] (n : ℕ) : glCard F n ≠ 0 := GlobalTheory.CuspGL.MassMult.glCard_ne_zero F n
 
 theorem mass_const {F : Type} [Field F] [Finite F] {V : Type} [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (c : ℂ) (P : F[X]) :

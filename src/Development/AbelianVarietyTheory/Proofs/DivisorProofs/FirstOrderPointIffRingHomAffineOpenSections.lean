@@ -9,8 +9,7 @@ noncomputable section
 namespace GlobalTheory.SchRing
 
 theorem spMap_comp' {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
+    spMap (g.comp f) = spMap g ≫ spMap f := ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp f g
 
 theorem spMap_inj {R S : Type} [CommRing R] [CommRing S] {a b : R →+* S} (h : spMap a = spMap b) : a = b := by
   have := Spec.map_injective h

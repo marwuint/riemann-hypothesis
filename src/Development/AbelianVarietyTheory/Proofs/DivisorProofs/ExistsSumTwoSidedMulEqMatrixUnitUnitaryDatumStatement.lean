@@ -9,5 +9,4 @@ theorem _root_.GlobalTheory.T.exists_sum_two_sided_mul_eq_matrixUnit_unitaryDatu
     (∀ z : G.C, z * γ = γ * z ↔ ∃ w, ι w = z) → ∀ (r : ℕ) (e : Fin r → G.C),
     (∀ x : G.C, ∃! c : Fin r → L, x = ∑ i, ι (c i) * e i) → ∀ i i' : Fin r,
     ∃ (N : ℕ) (l : Fin N → L) (c : Fin N → G.C), ∀ β : Fin r → L,
-      ∑ k, ι (l k) * (∑ i'', ι (β i'') * e i'') * c k = ι (β i') * e i := by
-  first | (exact @GlobalTheory.exists_sum_mul_mul_eq_matrixUnit_htGroup) | (exact GlobalTheory.exists_sum_mul_mul_eq_matrixUnit_htGroup) | (intros; apply GlobalTheory.exists_sum_mul_mul_eq_matrixUnit_htGroup  <;> assumption)
+      ∑ k, ι (l k) * (∑ i'', ι (β i'') * e i'') * c k = ι (β i') * e i := GlobalTheory.exists_sum_mul_mul_eq_matrixUnit_htGroup

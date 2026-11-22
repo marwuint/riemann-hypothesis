@@ -33,7 +33,6 @@ theorem pfCoord_of_system :
   rw [e1, e2]
   exact hPF K ι K' ι' κ v Ω y d L L' hv hP' hP hL hL'
 
-theorem pfCoord : ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → PFCoordStatement :=
-  pfCoord_of_system
+theorem pfCoord : ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → PFCoordStatement := PositivityTheory.HtPt.Aig.pfCoord_of_system
 
 end PositivityTheory.HtPt.Aig

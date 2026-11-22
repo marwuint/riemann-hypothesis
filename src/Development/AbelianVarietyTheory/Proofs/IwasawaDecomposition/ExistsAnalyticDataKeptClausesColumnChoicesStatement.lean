@@ -23,5 +23,4 @@ theorem _root_.GlobalTheory.T.exists_analyticData_kept_clauses_columnChoices : �
       LevOf X I (usedOf I T Wt) R₀.toRealDat.toLevCh ∧ IsPlacewiseIdentity X (px := px) R₀.eG ∧ GoodSet X (px := px) (R₀.eG.trans cG) Xg ∧
       MuOf X I T Wt R₀.mu R₀.twPl ∧ IdemClass (D := X.toD7) (famR X I hX (usedOf I T Wt) Xg tr₀).A ∧
       R₀.toRealDat.Pre0 (face0 X I hX (usedOf I T Wt) Xg tr₀).lv2 ∧ R₀.IsInert ∧ R₀.IsTup ∧ R₀.AllPlaces ∧
-      Keep R₀.toRealDat (face0 X I hX (usedOf I T Wt) Xg tr₀).lv2 cG ∧ BrgStd X I hX (usedOf I T Wt) Xg tr₀ R₀.toRealDat  := by
-  first | exact @GlobalTheory.Mem.R3.FrameCaseLifts.exists_realDat_keep | exact GlobalTheory.Mem.R3.FrameCaseLifts.exists_realDat_keep | (intros; apply GlobalTheory.Mem.R3.FrameCaseLifts.exists_realDat_keep <;> assumption)
+      Keep R₀.toRealDat (face0 X I hX (usedOf I T Wt) Xg tr₀).lv2 cG ∧ BrgStd X I hX (usedOf I T Wt) Xg tr₀ R₀.toRealDat := GlobalTheory.Mem.R3.FrameCaseLifts.exists_realDat_keep

@@ -134,5 +134,4 @@ theorem cell_convergence : Formalism.MainNotions.S.Pv.AmpDD.CellConv := by
 
 end Formalism.MainNotions.S.Pv.AmpDDPf.CC
 
-theorem Formalism.MainNotions.S.Pv.AmpDDPf.cell_convergence : Formalism.MainNotions.S.Pv.AmpDD.CellConv :=
-  Formalism.MainNotions.S.Pv.AmpDDPf.CC.cell_convergence
+theorem Formalism.MainNotions.S.Pv.AmpDDPf.cell_convergence : Formalism.MainNotions.S.Pv.AmpDD.CellConv := Formalism.MainNotions.S.Pv.AmpDDPf.CC.cell_convergence

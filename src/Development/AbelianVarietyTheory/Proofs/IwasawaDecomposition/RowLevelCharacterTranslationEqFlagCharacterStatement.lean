@@ -16,5 +16,4 @@ theorem _root_.GlobalTheory.T.rowLevelCharacter_translation_eq_flagCharacter : �
         Formalism.L2.Col.unipotentGroupBlockEmbedding (X.B.primes px) I.sel t.1 (Formalism.L2.Col.r_le_X' X.B.R)
           (eG.symm (rTup L.βX (L.datXt t) (Formalism.UG.bc (swapAE X.toD7) ((q : Bridge.Gf X.toD7.sp.X') : GL _ _))))) ∈ ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp),
       X.toD7.what₂.embLL (((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv.chr ⟨_, hu⟩ : X.B.fields.Kˣ) : X.B.fields.K) =
-        (((levEnv X.toD7.sp.X' L.βX (L.datXt t)).ch q : ℂˣ) : ℂ) := by
-  first | exact @GlobalTheory.Mem.R3.RowChr.chr_eq_ch | exact GlobalTheory.Mem.R3.RowChr.chr_eq_ch | (intros; apply GlobalTheory.Mem.R3.RowChr.chr_eq_ch <;> assumption)
+        (((levEnv X.toD7.sp.X' L.βX (L.datXt t)).ch q : ℂˣ) : ℂ) := GlobalTheory.Mem.R3.RowChr.chr_eq_ch

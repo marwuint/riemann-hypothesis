@@ -25,6 +25,5 @@ theorem _root_.GlobalTheory.T.lagrangian_darboux_schrodinger_action : ∀ (F E :
       ∀ l ∈ (adeleClass F).adm κ,
         (∀ z : Matrix (Fin nS) (Fin nT) (AF F ⊗[F] E), ∀ φ ∈ schA F κ,
           l ((GlobalTheory.WeilSchrodinger.transD (cA σ) co).rho B.ψ (z * ((diagCols (Fin nT) : Matrix (Fin nT ⊕ Fin nT) (Fin nT) (AF F ⊗[F] E)).submatrix finSumFinEquiv.symm id)ᵀ) φ) = l φ) →
-        ∃ c : ℂ, ∀ Φ ∈ schA F κ, l Φ = c * GlobalTheory.LagrTheta.lagrInt ν 𝓕 ((diagCols (Fin nT) : Matrix (Fin nT ⊕ Fin nT) (Fin nT) (AF F ⊗[F] E)).submatrix finSumFinEquiv.symm id) (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ) := by
-  first | exact @_root_.GlobalTheory.LagrUniq.lagr_invariant_unique_k | exact _root_.GlobalTheory.LagrUniq.lagr_invariant_unique_k | (intros; apply _root_.GlobalTheory.LagrUniq.lagr_invariant_unique_k <;> assumption)
+        ∃ c : ℂ, ∀ Φ ∈ schA F κ, l Φ = c * GlobalTheory.LagrTheta.lagrInt ν 𝓕 ((diagCols (Fin nT) : Matrix (Fin nT ⊕ Fin nT) (Fin nT) (AF F ⊗[F] E)).submatrix finSumFinEquiv.symm id) (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ) := GlobalTheory.LagrUniq.lagr_invariant_unique_k
 end

@@ -224,6 +224,5 @@ theorem _root_.GlobalTheory.T.regConst_eq_away_unit_mul_factor : _root_.GlobalTh
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) → NumbersIn D.what₂.embLL S μ₀ → ∀ (ρ : RealMatch W), ρ.Tied → ∀ (i j : Fin D.R.m) (X : TriG G i j) (lam : T → ℂ),
     TopGrid W i j X → IsStageC W i j (pp D j) (qq D j) X → Factor X W.ψ W.θ lam →
     ∃ κ : T → ℂ, (∀ t, κ t ≠ 0 ∧ ∃ ζ : D.what₂.LL, GlobalTheory.Square.IsAwayUnit (Qn G t) ζ ∧ κ t = D.what₂.embLL ζ * κ μ₀) ∧
-      ∀ (t : T) (c₀ : ℂ), RegConst W S.B ρ t i j c₀ → c₀ = κ t * lam t := by
-  first | exact @_root_.GlobalTheory.ThetaRegularizationComparison.regulator_constant_eq | exact _root_.GlobalTheory.ThetaRegularizationComparison.regulator_constant_eq | (intros; apply _root_.GlobalTheory.ThetaRegularizationComparison.regulator_constant_eq <;> assumption)
+      ∀ (t : T) (c₀ : ℂ), RegConst W S.B ρ t i j c₀ → c₀ = κ t * lam t := GlobalTheory.ThetaRegularizationComparison.regulator_constant_eq
 end

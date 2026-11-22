@@ -113,14 +113,5 @@ end
 
 section
 open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
-theorem _root_.GlobalTheory.T.exists_GL_moving_unimodular_pair_to_last_basis : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ (n : ℕ), s ≤ n → ∀ v f : Fin (n + 1) → R, f ⬝ᵥ v = 1 → ∃ g : GL (Fin (n + 1)) R, (g : Matrix (Fin (n + 1)) (Fin (n + 1)) R) *ᵥ v = Pi.single (Fin.last n) 1 ∧ f ᵥ* ((g⁻¹ : GL (Fin (n + 1)) R) : Matrix (Fin (n + 1)) (Fin (n + 1)) R) = Pi.single (Fin.last n) 1 := by
-  first
-  | exact @GlobalTheory.UnimodTransvect.main
-  | exact @GlobalTheory.UnimodTransvect.reach_first_unimod
-  | exact @GlobalTheory.UnimodTransvect.reach_last_one
-  | exact @GlobalTheory.UnimodTransvect.reach_of_last_one
-  | exact @GlobalTheory.UnimodTransvect.reach_trans
-  | exact @GlobalTheory.UnimodTransvect.vecMul_tv_inv
-  | exact @GlobalTheory.UnimodTransvect.tv_mulVec
-  | exact @GlobalTheory.UnimodTransvect.vecMulVec_zero'
+theorem _root_.GlobalTheory.T.exists_GL_moving_unimodular_pair_to_last_basis : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ (n : ℕ), s ≤ n → ∀ v f : Fin (n + 1) → R, f ⬝ᵥ v = 1 → ∃ g : GL (Fin (n + 1)) R, (g : Matrix (Fin (n + 1)) (Fin (n + 1)) R) *ᵥ v = Pi.single (Fin.last n) 1 ∧ f ᵥ* ((g⁻¹ : GL (Fin (n + 1)) R) : Matrix (Fin (n + 1)) (Fin (n + 1)) R) = Pi.single (Fin.last n) 1 := GlobalTheory.UnimodTransvect.main
 end

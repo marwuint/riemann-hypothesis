@@ -105,9 +105,7 @@ theorem frSet_congr (D : D7) (Λ : LatV D) {T : D.host.E} (F : Fg D T) (T' : D.h
   · rintro ⟨h1, h2, h3⟩
     exact ⟨h1, zequiv_trans h2 (zequiv_symm h), h3⟩
 
-theorem one_le_b (s : Scale) : 1 ≤ s.b := by
-  show 1 ≤ Real.exp (s.x ^ s.eps)
-  exact Real.one_le_exp (Real.rpow_nonneg (le_of_lt (lt_trans zero_lt_one s.one_lt_alt)) _)
+theorem one_le_b (s : Scale) : 1 ≤ s.b := Formalism.MainNotions.Lnk.one_le_b s
 
 theorem one_le_sizeZ (D : D7) (b C : ℝ) (Z : GramM D) : 1 ≤ sizeZ D b C Z := by
   unfold sizeZ

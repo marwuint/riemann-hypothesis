@@ -96,14 +96,7 @@ theorem hasDeriv_curve_at {n : ℕ} {ε : Fin n → Bool} {f : Matrix (Fin n) (F
   rw [Matrix.mul_assoc, ← exp_shift X t u]
 
 theorem curve_cont {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
-    Continuous (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) := by
-  refine continuous_iff_continuousAt.2 fun t => ?_
-  have h1 : HasDerivAt (fun u : ℝ => NormedSpace.exp ((t : ℂ) • X) * NormedSpace.exp ((u : ℂ) • X))
-      (NormedSpace.exp ((t : ℂ) • X) * X) (t - t) := by
-    rw [sub_self]; exact Formalism.REAL.hasDerivAt_mul_exp_smul_zero _ X
-  refine ((h1.comp_sub_const t t).continuousAt).congr (Eventually.of_forall fun u => ?_)
-  simp only
-  rw [← exp_shift X t u]
+    Continuous (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) := Formalism.REAL.continuous_exp_real_smul X
 
 theorem rd_smul {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (g : Matrix (Fin n) (Fin n) ℂ)
     (s : ℝ) : Formalism.REAL.Rd ((s : ℂ) • X) f g = (s : ℂ) * Formalism.REAL.Rd X f g := by

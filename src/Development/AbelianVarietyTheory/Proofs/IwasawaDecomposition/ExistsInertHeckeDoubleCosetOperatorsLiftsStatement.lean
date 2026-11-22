@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.exists_inertHecke_doubleCosetOperators_lifts : ∀
     Nonempty (Bridge.HeckeTie (Bridge.ratF (Vc X.toD7 i)) P ((famR X I hX U Xg tr).heckeLI i t)
       (fun k => Formalism.L2.Col.InertTypeOk (Vc X.toD7 i).rank k.2)
       (fun k => IsLabElt (Vc X.toD7 i) (k.1.1 : PlI X.B px).1 (labIn (Vc X.toD7 i).rank k.2))
-      fun k => IsLocElt (Vc X.toD7 i) (k.1.1 : PlI X.B px).1) := by
-  first | exact @GlobalTheory.Mem.R3.LiftBrg.InertTie.exists_inertTie | exact GlobalTheory.Mem.R3.LiftBrg.InertTie.exists_inertTie | (intros; apply GlobalTheory.Mem.R3.LiftBrg.InertTie.exists_inertTie <;> assumption)
+      fun k => IsLocElt (Vc X.toD7 i) (k.1.1 : PlI X.B px).1) := GlobalTheory.Mem.R3.LiftBrg.InertTie.exists_inertTie

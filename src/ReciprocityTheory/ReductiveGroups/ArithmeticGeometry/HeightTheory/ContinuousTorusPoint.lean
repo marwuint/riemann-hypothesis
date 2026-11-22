@@ -22,10 +22,7 @@ theorem logHeight_le_torusHeight {K : Type} [Field K] [NumberField K] {B n : ℕ
   refine add_le_add le_rfl (Finset.sum_le_sum fun σ _ => ?_)
   exact sphereLeTorus B n a _ hn (map_ne_zero_of_ne_zero hf σ) (isMultiHomogeneous_map_ring a f ha σ)
 
-theorem continuous_torusPoint' {κ : Type} : Continuous (fun θ : κ → ℝ => torusPoint θ) := by
-  unfold torusPoint
-  exact continuous_pi fun i => Complex.continuous_exp.comp
-    (continuous_const.mul (Complex.continuous_ofReal.comp (continuous_apply i)))
+theorem continuous_torusPoint' {κ : Type} : Continuous (fun θ : κ → ℝ => torusPoint θ) := ReciprocityTheory.MultiplicativeHeights.TorusLexOrder.continuous_torusPoint
 
 theorem measurable_log_eval_torus {κ : Type} [Fintype κ] (f : MvPolynomial κ ℂ) :
     Measurable (fun θ : κ → ℝ => Real.log ‖MvPolynomial.eval (torusPoint θ) f‖) := (Real.measurable_log.comp (continuous_norm.comp ((MvPolynomial.continuous_eval f).comp continuous_torusPoint')).measurable)

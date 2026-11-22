@@ -47,8 +47,5 @@ end
 
 section
 open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
-theorem _root_.GlobalTheory.T.projective_perm_tensor_free : ∀ (k G : Type) [CommRing k] [Group G] (X ι : Type) [MulAction G X], Projective (permT X (Rep.free k G ι)) := by
-  first
-  | exact @GlobalTheory.HomStab.main
-  | exact @GlobalTheory.HomStab.freeLEquiv_single
+theorem _root_.GlobalTheory.T.projective_perm_tensor_free : ∀ (k G : Type) [CommRing k] [Group G] (X ι : Type) [MulAction G X], Projective (permT X (Rep.free k G ι)) := GlobalTheory.HomStab.main
 end

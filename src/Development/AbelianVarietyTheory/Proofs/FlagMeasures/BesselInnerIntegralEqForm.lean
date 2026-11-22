@@ -11,8 +11,7 @@ noncomputable section
 
 namespace GlobalTheory.SgInf.InnerInt
 
-theorem hpk_det_isUnit (k r : ℕ) : IsUnit (Hpk k r).det :=
-  Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1
+theorem hpk_det_isUnit (k r : ℕ) : IsUnit (Hpk k r).det := Formalism.FourierDecayAlt.P.B2x5.isUnit_det_Hpk k r
 
 theorem gg_mul {k r : ℕ} {a b : Mat k r} (ha : a ∈ GG k r) (hb : b ∈ GG k r) : a * b ∈ GG k r :=
   (uHGroup _ (Hpk k r) (hpk_det_isUnit k r)).2.1 a ha b hb

@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.closure_prime_regular_height : ∀ (A R D : Type) 
     letI := GlobalTheory.KeyOriginNoeth.closureAlg A R D
     ∀ (Q : Ideal (GlobalTheory.KeyOriginNoeth.closure A R D)) [Q.IsPrime],
       (∀ a : A, a ≠ 0 → algebraMap R (GlobalTheory.KeyOriginNoeth.closure A R D) (algebraMap A R a) ∉ Q) →
-      Algebra.IsEtaleAt R Q := by
-  first | (exact @GlobalTheory.KeyOriginNoeth.isEtaleAt_closure_of_disjoint) | (exact GlobalTheory.KeyOriginNoeth.isEtaleAt_closure_of_disjoint) | (intros; apply GlobalTheory.KeyOriginNoeth.isEtaleAt_closure_of_disjoint <;> assumption)
+      Algebra.IsEtaleAt R Q := GlobalTheory.KeyOriginNoeth.isEtaleAt_closure_of_disjoint

@@ -21,6 +21,5 @@ theorem _root_.GlobalTheory.T.doubled_theta_lift_automorphy : ∀ (F E : Type) [
           (∀ x : Matrix (Fin nT) (Fin nS) E, ∃ y z : κ → F,
             co.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))) →
           ∀ φ ∈ schA F κ,
-          Continuous (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ φ) := by
-  first | exact @_root_.GlobalTheory.ThetaTrContCM.continuous_thetaTr_cm_k | exact _root_.GlobalTheory.ThetaTrContCM.continuous_thetaTr_cm_k | (intros; apply _root_.GlobalTheory.ThetaTrContCM.continuous_thetaTr_cm_k <;> assumption)
+          Continuous (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ φ) := GlobalTheory.ThetaTrContCM.continuous_thetaTr_cm_k
 end

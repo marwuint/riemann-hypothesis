@@ -8,7 +8,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ArchRec
 
 theorem itLine_of_hypotheses :
-    GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ D : D7, GlobalTheory.Chain.ItLine D :=
-  _root_.GlobalTheory.Chain.RealLine.itLine_of_discreteSeries
+    GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ D : D7, GlobalTheory.Chain.ItLine D := GlobalTheory.Chain.RealLine.itLine_of_discreteSeries
 
 end GlobalTheory.ArchRec

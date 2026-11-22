@@ -8,5 +8,4 @@ theorem _root_.GlobalTheory.T.penultimateStepPsi_rationalRep_eq_columnsDatum : �
   ∀ (e' : XIx (Fin R.k) (Fin R.t) s ≃ Fin (R.N s)) (e : XIx (Fin R.k) (Fin R.t) (s + 1) ≃ Fin (R.N (s + 1))),
     IsOrd xPos e' → IsOrd xPos e → ∀ (x₀ : HomE X.E (R.N s) (R.N (s + 1))) (y' : Sp X.E (R.N (s + 1))),
       (W.T s R).Psi g (toLoc ι e e' x₀) (fun a => ι (y' (e a))) =
-        sgn sel mu P W γ (R.N (s + 1) + cOf R (s + 1)) * σ₀ (PsiAt Ch sel mu cst s P γ x₀ y') := by
-  first | exact @GlobalTheory.TwBridge.psi_rat_agree | exact GlobalTheory.TwBridge.psi_rat_agree | (intros; apply GlobalTheory.TwBridge.psi_rat_agree <;> assumption)
+        sgn sel mu P W γ (R.N (s + 1) + cOf R (s + 1)) * σ₀ (PsiAt Ch sel mu cst s P γ x₀ y') := GlobalTheory.TwBridge.psi_rat_agree

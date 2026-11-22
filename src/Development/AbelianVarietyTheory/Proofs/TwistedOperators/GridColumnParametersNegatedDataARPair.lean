@@ -152,11 +152,7 @@ theorem cloudHalf_lt (D : D7) (τ : D.what₂.Tau) {y : ℚ} (hy : y ∈ (Global
   change _ ≤ _ + ((GlobalTheory.Grid.gap D : ℕ) : ℚ) + _
   linarith
 
-theorem mem_blockTP {c y : ℚ} {len : ℕ} (h : y ∈ TPar.block c len) : |y - c| ≤ ((len : ℚ) - 1) / 2 := by
-  obtain ⟨a', ha', rfl⟩ := Finset.mem_image.1 h
-  have : (a' : ℚ) + 1 ≤ len := by exact_mod_cast (Finset.mem_range.1 ha')
-  have h0 : (0 : ℚ) ≤ a' := Nat.cast_nonneg a'
-  rw [abs_le]; constructor <;> linarith
+theorem mem_blockTP {c y : ℚ} {len : ℕ} (h : y ∈ TPar.block c len) : |y - c| ≤ ((len : ℚ) - 1) / 2 := GlobalTheory.SignedHC.abs_sub_le_of_mem_block h
 
 theorem block_sym {c x : ℚ} {len : ℕ} : c - x ∈ block len ↔ x ∈ TPar.block c len := by
   unfold block TPar.block

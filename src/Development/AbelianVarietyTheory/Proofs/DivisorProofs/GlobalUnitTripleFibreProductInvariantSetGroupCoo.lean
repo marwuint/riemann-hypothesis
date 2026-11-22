@@ -28,8 +28,7 @@ theorem triple_ext {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g h : Z ⟶ Triple f)
     · simpa only [Category.assoc] using h3
 
 theorem appTop_comp {X Y Z : Scheme.{0}} (g : X ⟶ Y) (h : Y ⟶ Z) (x : Γ(Z, ⊤)) :
-    (g ≫ h).appTop.hom x = g.appTop.hom (h.appTop.hom x) := by
-  rw [Scheme.Hom.comp_appTop]; rfl
+    (g ≫ h).appTop.hom x = g.appTop.hom (h.appTop.hom x) := GlobalTheory.FunDescent.comp_appTop_apply g h x
 
 section
 variable {K : Type} [Field K] {A A' B : Over (Sp K)} [GrpObj B] (q : A ⟶ A')

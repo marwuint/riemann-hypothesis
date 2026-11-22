@@ -1587,10 +1587,7 @@ theorem sat_words_top (O : Type) [CommRing O] (N r K : ℕ) (LL : Letters (Fin N
   rintro G ⟨a, b, rfl⟩
   exact h2 a b
 
-theorem sat_segE_injective {n' r : ℕ} [NeZero n'] (F : Frames n' r) (j : ℤ) : Function.Injective (segE F j) := by
-  intro a b h
-  unfold segE at h
-  exact ((F.letters j).orderIsoOfFin rfl).injective (Subtype.ext h)
+theorem sat_segE_injective {n' r : ℕ} [NeZero n'] (F : Frames n' r) (j : ℤ) : Function.Injective (segE F j) := Formalism.MainNotions.G.Joints.StandardMonomialSpace.li_segE_injective F j
 
 theorem space_statement_saturated (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (hA2 : ∀ (N n : ℕ) [NeZero n] (LL : Letters (Fin N)) (B : Fin N → ℕ),

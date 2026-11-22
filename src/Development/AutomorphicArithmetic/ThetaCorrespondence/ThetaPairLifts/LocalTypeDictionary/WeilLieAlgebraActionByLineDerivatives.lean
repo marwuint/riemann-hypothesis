@@ -174,6 +174,5 @@ theorem _root_.GlobalTheory.T.weil_lie_algebra_action_by_line_derivatives : _roo
     ∀ Pi rf rl p p', IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p' →
     ∀ N, GlobalTheory.CoinvKer.IsStabW om Bs.emb (algD Γ.M Bs.ψ Bs.emb) N → ∀ τ, ∀ Y ∈ lieAt X τ, ∀ ΦD ∈ N, ∀ Φ,
     IsDatum Γ.M ψ cA ΦD Φ → ∃ Φ₁D ∈ N, ∃ Φ₁ ∈ algF ψ θ true A B, IsDatum Γ.M ψ cA Φ₁D Φ₁ ∧
-      IsDer θ X (fun h => ωA (1, h)) τ Y Φ Φ₁ := by
-  first | exact @_root_.GlobalTheory.SquareAgree.MaxLie.maximal_lie_subalgebra_acts | exact _root_.GlobalTheory.SquareAgree.MaxLie.maximal_lie_subalgebra_acts | (intros; apply _root_.GlobalTheory.SquareAgree.MaxLie.maximal_lie_subalgebra_acts <;> assumption)
+      IsDer θ X (fun h => ωA (1, h)) τ Y Φ Φ₁ := GlobalTheory.SquareAgree.MaxLie.maximal_lie_subalgebra_acts
 end

@@ -88,8 +88,7 @@ lemma deriv_sum_exp {ι : Type} [Fintype ι] (w y : ι → ℝ) :
   have := (((hasDerivAt_id t).mul_const (y J)).exp).const_mul (w J)
   exact this.congr_deriv (by simp only [id]; ring)
 
-lemma hs_nonneg {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ hs X := by
-  unfold hs; positivity
+lemma hs_nonneg {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ hs X := Formalism.REAL.frobenius_nonneg_matrix X
 
 lemma minor_bound {n : ℕ} {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (h : inP ε Y)
     (R : ℝ) (hR : R = Real.sqrt (2 * ((min (univ.filter fun a => ε a = true).card

@@ -11,6 +11,5 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 open Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_residue_ne_zero_ne_one_at_member : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t _ _ c =>
-  ∀ PP ∈ t.r.z.R.Pg, ∃ x : Formalism.L2.DIV.kP PP, x ≠ 0 ∧ x ≠ 1 := by
-  first | exact @_root_.GlobalTheory.ResThree.main_alt_alt | exact _root_.GlobalTheory.ResThree.main_alt_alt | (intros; apply _root_.GlobalTheory.ResThree.main_alt_alt <;> assumption)
+  ∀ PP ∈ t.r.z.R.Pg, ∃ x : Formalism.L2.DIV.kP PP, x ≠ 0 ∧ x ≠ 1 := GlobalTheory.ResThree.main_alt_alt
 end

@@ -119,6 +119,5 @@ theorem _root_.GlobalTheory.T.exists_darboux_basis_of_symplectic_pair : _root_.G
     (Mo : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model D.sp.cm.sig Xs Ws) (ψ' : AddChar (AF D.host.F) ℂ)
     (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr D.host.F D.host.E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Xs Ws)
     (τ : ∀ w : InfinitePlace D.host.F, GlobalTheory.AdelicU.EmbOver D.host.E w),
-    GlobalTheory.RealDict.PublishedHyps D Xs Ws Mo ψ' χX χW om τ ∧ GlobalTheory.RealDict.IsPairReading ψ ε A B ω Xs Ws Mo ψ' om τ := by
-  first | exact @_root_.GlobalTheory.PairDarboux.exists_darboux_pair | exact _root_.GlobalTheory.PairDarboux.exists_darboux_pair | (intros; apply _root_.GlobalTheory.PairDarboux.exists_darboux_pair <;> assumption)
+    GlobalTheory.RealDict.PublishedHyps D Xs Ws Mo ψ' χX χW om τ ∧ GlobalTheory.RealDict.IsPairReading ψ ε A B ω Xs Ws Mo ψ' om τ := GlobalTheory.PairDarboux.exists_darboux_pair
 end

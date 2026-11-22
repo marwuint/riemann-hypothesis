@@ -6,8 +6,7 @@ import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.GreenCuspLab
 
 namespace PositivityTheory.Stage1.PM
 
-theorem harishChandraModules : GlobalTheory.Published.HarishChandraModules :=
-  CompanionTheory.D.gk.HC.print_harishChandraModules
+theorem harishChandraModules : GlobalTheory.Published.HarishChandraModules := CompanionTheory.D.gk.HC.print_harishChandraModules
 
 theorem greenCuspidal : GlobalTheory.Published.GreenCuspidal :=
   PositivityTheory.GreenCharacters.greenCuspidal

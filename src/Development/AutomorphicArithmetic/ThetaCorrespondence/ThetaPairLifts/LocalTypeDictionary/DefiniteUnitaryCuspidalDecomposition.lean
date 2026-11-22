@@ -168,6 +168,5 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.definite_unitary_cuspidal_decomposition : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {D : D7} (θ : InfFam D) (N : GlobalTheory.Grid.Node D), IsInfFam θ → N.V.SigOK → N.V.IsDefinite →
     ∀ φ, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType θ N φ →
-      ∃ (n : ℕ) (F : Fin n → N.Cusp θ) (w : Fin n → SmT N.M), φ = ∑ i, (F i).1 (w i) := by
-  first | exact @_root_.GlobalTheory.DefiniteDecomp.cusp_forms_decompose_definite_unitary | exact _root_.GlobalTheory.DefiniteDecomp.cusp_forms_decompose_definite_unitary | (intros; apply _root_.GlobalTheory.DefiniteDecomp.cusp_forms_decompose_definite_unitary <;> assumption)
+      ∃ (n : ℕ) (F : Fin n → N.Cusp θ) (w : Fin n → SmT N.M), φ = ∑ i, (F i).1 (w i) := GlobalTheory.DefiniteDecomp.cusp_forms_decompose_definite_unitary
 end

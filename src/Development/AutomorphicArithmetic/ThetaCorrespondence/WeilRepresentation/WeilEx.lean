@@ -2,6 +2,6 @@ import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairExistence.W
 
 namespace UpperTheory.Lit
 
-theorem weilRepresentationExists_pair : GlobalTheory.Published.WeilRepresentationExists := PositivityTheory.ThKW.S.weilEx
+theorem weilRepresentationExists_pair : GlobalTheory.Published.WeilRepresentationExists := PositivityTheory.ThKW.S.exists_isWeil
 
 end UpperTheory.Lit

@@ -74,6 +74,5 @@ theorem _root_.GlobalTheory.T.splitting_of_moved_kappa_twist : _root_.GlobalTheo
     ∀ (e : Formalism.L2.Theta.AE D), IsSplitIdem D e → ∀ (s : FinPt ch.G p.small) (s' : FinPt ch.G p.big),
     SuppAt e _ (s : GA D (ch.G.V p.small)) → SuppAt e _ (s' : GA D (ch.G.V p.big)) →
     ∃ c : ℂ, Mod1All c ∧ (∀ (q : ℕ) [Fact q.Prime], GlobalTheory.MovedKappaEx.OffPrime e q → GlobalTheory.MovedKappaEx.UnitAt q c) ∧
-      GlobalTheory.MovedKappaEx.JetKap ch p (s * x) (s' * y) (c * κ) := by
-  first | exact @_root_.GlobalTheory.SplitMoveKappa.movedKappa_split | exact _root_.GlobalTheory.SplitMoveKappa.movedKappa_split | (intros; apply _root_.GlobalTheory.SplitMoveKappa.movedKappa_split <;> assumption)
+      GlobalTheory.MovedKappaEx.JetKap ch p (s * x) (s' * y) (c * κ) := GlobalTheory.SplitMoveKappa.movedKappa_split
 end

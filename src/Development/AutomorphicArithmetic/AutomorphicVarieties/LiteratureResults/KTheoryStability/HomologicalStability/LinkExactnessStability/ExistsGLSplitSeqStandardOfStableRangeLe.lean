@@ -166,17 +166,5 @@ theorem GlobalTheory.splitSeq_to_standard : ∀ (R : Type) [CommRing R] (s : ℕ
 
 section
 open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
-theorem _root_.GlobalTheory.T.exists_GL_splitSeq_standard_of_stableRangeLe : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ (n : ℕ) (l : List ((Fin n → R) × (Fin n → R))), l ∈ splitSeq R n → l.length + s ≤ n → ∀ ι : Fin l.length → Fin n, Function.Injective ι → ∃ g : GL (Fin n) R, ∀ j : Fin l.length, (g : Matrix (Fin n) (Fin n) R) *ᵥ (l.get j).1 = Pi.single (ι j) 1 ∧ (l.get j).2 ᵥ* ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = Pi.single (ι j) 1 := by
-  first
-  | exact @GlobalTheory.splitSeq_to_standard
-  | exact @GlobalTheory.SplitStd.exists_perm
-  | exact @GlobalTheory.SplitStd.vecMul_pGL_inv
-  | exact @GlobalTheory.SplitStd.pGL_mulVec
-  | exact @GlobalTheory.SplitStd.pmat_mul_symm
-  | exact @GlobalTheory.SplitStd.core
-  | exact @GlobalTheory.SplitStd.dot_conj
-  | exact @GlobalTheory.SplitStd.vecMul_extLast
-  | exact @GlobalTheory.SplitStd.extLast_mulVec
-  | exact @GlobalTheory.SplitStd.single_last_vecMul_extLast
-  | exact @GlobalTheory.SplitStd.extLast_mulVec_single_last
+theorem _root_.GlobalTheory.T.exists_GL_splitSeq_standard_of_stableRangeLe : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ (n : ℕ) (l : List ((Fin n → R) × (Fin n → R))), l ∈ splitSeq R n → l.length + s ≤ n → ∀ ι : Fin l.length → Fin n, Function.Injective ι → ∃ g : GL (Fin n) R, ∀ j : Fin l.length, (g : Matrix (Fin n) (Fin n) R) *ᵥ (l.get j).1 = Pi.single (ι j) 1 ∧ (l.get j).2 ᵥ* ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = Pi.single (ι j) 1 := GlobalTheory.splitSeq_to_standard
 end

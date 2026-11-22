@@ -59,6 +59,5 @@ theorem _root_.GlobalTheory.T.bottom_thetaIntegral_classSum_formula : _root_.Glo
           (∀ x, GlobalTheory.BotFormula.IsFinPt A (pt x) x) → ∀ T : Tup D P.a P.d P.n,
             X.I W.ψ W.θ s (GlobalTheory.BotFormula.minorF ea ed T) g =
               v * ∑ᶠ x : GlobalTheory.NormSum.Cls D P.a (GlobalTheory.NormSum.intG D P.a),
-                ((GlobalTheory.NormSum.gam D (GlobalTheory.NormSum.intG D P.a) x.out : ℂ))⁻¹ * X.ker W.ψ W.θ s (GlobalTheory.BotFormula.minorF ea ed T) g (pt x.out) := by
-  first | exact @_root_.GlobalTheory.BotFormula.bottom_thetaIntegral_eq_classSum | exact _root_.GlobalTheory.BotFormula.bottom_thetaIntegral_eq_classSum | (intros; apply _root_.GlobalTheory.BotFormula.bottom_thetaIntegral_eq_classSum <;> assumption)
+                ((GlobalTheory.NormSum.gam D (GlobalTheory.NormSum.intG D P.a) x.out : ℂ))⁻¹ * X.ker W.ψ W.θ s (GlobalTheory.BotFormula.minorF ea ed T) g (pt x.out) := GlobalTheory.BotFormula.bottom_thetaIntegral_eq_classSum
 end

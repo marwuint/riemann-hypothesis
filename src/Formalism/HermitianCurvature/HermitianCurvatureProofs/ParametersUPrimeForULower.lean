@@ -1075,7 +1075,6 @@ theorem vecw_main : Formalism.FourierDecayAlt.Top.VecVTypes := by
 
 end Formalism.FourierDecayAlt.P.Topx1
 
-theorem Formalism.FourierDecayAlt.P.vector_valued_types : Formalism.FourierDecayAlt.Top.VecVTypes := by
-  exact Formalism.FourierDecayAlt.P.Topx1.vecw_main
+theorem Formalism.FourierDecayAlt.P.vector_valued_types : Formalism.FourierDecayAlt.Top.VecVTypes := Formalism.FourierDecayAlt.P.Topx1.vecw_main
 
 end PartVec

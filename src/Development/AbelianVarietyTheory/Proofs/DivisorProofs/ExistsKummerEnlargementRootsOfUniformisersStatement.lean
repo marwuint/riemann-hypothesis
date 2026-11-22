@@ -14,5 +14,4 @@ theorem _root_.GlobalTheory.T.exists_kummerEnlargement_rootsOfUniformisers : ∀
       ∀ (p₁ : Ideal A₁) [p₁.IsPrime], p₁.height = 1 → f a ∈ p₁ →
         (p₁.comap f).height = 1 ∧
         ∃ π : A, Irreducible (algebraMap A (Localization.AtPrime (p₁.comap f)) π) ∧
-          ∃ y : A₁, y ^ q = f π := by
-  first | (exact @GlobalTheory.KummerEnlarge.exists_kummer_enlargement) | (exact GlobalTheory.KummerEnlarge.exists_kummer_enlargement) | (intros; apply GlobalTheory.KummerEnlarge.exists_kummer_enlargement  <;> assumption)
+          ∃ y : A₁, y ^ q = f π := GlobalTheory.KummerEnlarge.exists_kummer_enlargement

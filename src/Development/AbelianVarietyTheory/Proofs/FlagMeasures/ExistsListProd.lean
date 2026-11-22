@@ -8,9 +8,7 @@ open scoped Classical
 
 namespace GlobalTheory.GLm.ProdChar
 
-theorem isChar_of_irr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsChar χ := by
-  obtain ⟨V, -, hV⟩ := h
-  exact ⟨V, hV⟩
+theorem isChar_of_irr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsChar χ := GlobalTheory.CharDec.isChar_of_isIrr h
 
 theorem eq_zero_of_ip {G : Type} [Group G] [Fintype G] {f : G → ℂ} (hf : IsClass f)
     (h : ∀ ρ, IsIrr ρ → ip f ρ = 0) : f = 0 := by

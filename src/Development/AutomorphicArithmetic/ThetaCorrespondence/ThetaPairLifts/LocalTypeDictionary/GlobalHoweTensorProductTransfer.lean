@@ -154,6 +154,5 @@ theorem _root_.GlobalTheory.T.global_howe_tensor_product_transfer : _root_.Globa
       (∀ g ∈ GlobalTheory.HoweGlobal.opInf Bs G om, ∀ t, L t ∈ N → L (TensorProduct.map g LinearMap.id t) ∈ N) ∧
       (∀ v : T, ∀ g ∈ GlobalTheory.HoweGlobal.opFin G om v.1, ∀ t, L t ∈ N →
         L (TensorProduct.map LinearMap.id (PiTensorProduct.map (Function.update
-          (fun w : T => (LinearMap.id : ↥(GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F w.1)) →ₗ[ℂ] _)) v g)) t) ∈ N) := by
-  first | exact @_root_.GlobalTheory.HoweGlobal.howe_tensor_transfer | exact _root_.GlobalTheory.HoweGlobal.howe_tensor_transfer | (intros; apply _root_.GlobalTheory.HoweGlobal.howe_tensor_transfer <;> assumption)
+          (fun w : T => (LinearMap.id : ↥(GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F w.1)) →ₗ[ℂ] _)) v g)) t) ∈ N) := GlobalTheory.HoweGlobal.howe_tensor_transfer
 end

@@ -23,5 +23,4 @@ theorem _root_.GlobalTheory.T.characterValue_mem_localUnits_mul_subfield : ∀ (
         ∏ i ∈ Finset.range N₁, cubV D.cub z J (toUnit T ≫ D.c a) (toUnit T ≫ b ^ i) (toUnit T ≫ b) = val χ T.hom z J ^ N₁) →
     ∃ c ∈ k₀, (val χ (spMap ev) z J).val =
       (GlobalTheory.USep.EvG.gwx w z J J₀ (spMap ev ≫ (D.c a * b).left) * (GlobalTheory.USep.EvG.gwx w z J J₀ (spMap ev ≫ (D.c a).left))⁻¹ * (GlobalTheory.USep.EvG.gwx w z J J₀ (spMap ev ≫ b.left))⁻¹ *
-        GlobalTheory.USep.EvG.gwx w z J J₀ (spMap ev ≫ (η[D.P.A]).left)).val * toStk z c := by
-  first | exact @GlobalTheory.USep.EvG.chi_mem | exact GlobalTheory.USep.EvG.chi_mem | (intros; apply GlobalTheory.USep.EvG.chi_mem <;> assumption)
+        GlobalTheory.USep.EvG.gwx w z J J₀ (spMap ev ≫ (η[D.P.A]).left)).val * toStk z c := GlobalTheory.USep.EvG.chi_mem

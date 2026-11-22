@@ -13,8 +13,7 @@ section Linfty
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 lemma exp_flow_cont {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
-    Continuous (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) := by
-  fun_prop
+    Continuous (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) := Formalism.REAL.continuous_exp_real_smul X
 
 end Linfty
 

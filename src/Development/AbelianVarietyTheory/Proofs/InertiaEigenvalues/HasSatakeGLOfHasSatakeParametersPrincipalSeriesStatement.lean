@@ -8,5 +8,4 @@ theorem _root_.GlobalTheory.T.hasSatakeGL_of_hasSatakeParameters_principalSeries
     (α : Fin n → ℂˣ),
     letI := GlobalTheory.LocalData.complRel w
     haveI := GlobalTheory.LocalData.isLocalField w
-    HasSatake π α → GlobalTheory.LFun.HasSatGL w π (Finset.univ.val.map α) := by
-  first | exact @GlobalTheory.LFun.SatBridge.hasSatGL_of_hasSatake | exact GlobalTheory.LFun.SatBridge.hasSatGL_of_hasSatake | (intros; apply GlobalTheory.LFun.SatBridge.hasSatGL_of_hasSatake <;> assumption)
+    HasSatake π α → GlobalTheory.LFun.HasSatGL w π (Finset.univ.val.map α) := GlobalTheory.LFun.SatBridge.hasSatGL_of_hasSatake

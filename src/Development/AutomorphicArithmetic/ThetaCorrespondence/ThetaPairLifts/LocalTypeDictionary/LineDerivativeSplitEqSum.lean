@@ -96,6 +96,5 @@ theorem _root_.GlobalTheory.T.line_derivative_splits : _root_.GlobalTheory.FunPr
     (∀ x, HasDerivAt (fun t : ℝ => om (γ (Multiplicative.ofAdd t), 1) ΦD x) (Φ₁D x) 0) →
     ∃ Ψ : ι → ((Fin n × Fin d → AF F) → ℂ), (∀ i, Ψ i ∈ GlobalTheory.SquareAgree.algD M B.ψ B.emb) ∧
       (∀ i, ∀ u, HasDerivAt (fun t : ℝ => GlobalTheory.WeilM.thetaSum F (M.co.rho B.ψ u (om (γs i (Multiplicative.ofAdd t), 1) ΦD)))
-        (GlobalTheory.WeilM.thetaSum F (M.co.rho B.ψ u (Ψ i))) 0) ∧ Φ₁D = (l.map Ψ).sum := by
-  first | exact @_root_.GlobalTheory.LineDerivSplit.line_derivative_split_eq_sum | exact _root_.GlobalTheory.LineDerivSplit.line_derivative_split_eq_sum | (intros; apply _root_.GlobalTheory.LineDerivSplit.line_derivative_split_eq_sum <;> assumption)
+        (GlobalTheory.WeilM.thetaSum F (M.co.rho B.ψ u (Ψ i))) 0) ∧ Φ₁D = (l.map Ψ).sum := GlobalTheory.LineDerivSplit.line_derivative_split_eq_sum
 end

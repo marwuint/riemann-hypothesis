@@ -119,8 +119,7 @@ theorem tendsto_slope_exp {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (s : ℝ) :
   exact h3.tendsto_slope
 
 theorem continuous_exp_curve {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
-    Continuous (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) :=
-  NormedSpace.exp_continuous.comp (Complex.continuous_ofReal.smul continuous_const)
+    Continuous (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) := Formalism.REAL.continuous_exp_real_smul X
 
 end
 

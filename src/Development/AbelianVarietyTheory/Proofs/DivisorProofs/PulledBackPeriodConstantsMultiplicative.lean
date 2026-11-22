@@ -18,18 +18,7 @@ theorem exists_ratio {X Y S₀ : Scheme.{0}} {M : LB X} (hM : M.IsLB) {K : Type}
     (p : Y ⟶ S₀) (hp : Function.Surjective p.appTop.hom)
     {u u' : LB.Gen (LB.LinComb M φ ε)} (hu : u.IsGen) (hu' : u'.IsGen) :
     ∃ a : Γ(S₀, ⊤), ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J), Good M z J →
-      (val u r z J * (val u' r z J)⁻¹).val = gs (r ≫ p) z ⊤ a := by
-  obtain ⟨t, -, hv⟩ := exists_gen hM (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => by
-      refine (Fintype.prod_sum_type _).trans (Eq.trans ?_ (Fintype.prod_empty _).symm)
-      simp only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel])
-    (LB.mulGen M _ _ _ _ u (LB.invGen M _ _ u')) (DVR.mulGen_isGen _ _ _ _ _ _ _ hu (DVR.invGen_isGen _ _ _ _ hu'))
-  have le : (⊤ : Y.Opens) ≤ LB.wchart M (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim := fun _ _ =>
-    Set.mem_iInter.2 fun k => k.elim
-  obtain ⟨a, ha⟩ := hp (res le (t.s PEmpty.elim)).val
-  refine ⟨a, fun Z r z J hJ => ?_⟩
-  rw [← val_inv, ← val_mul hJ, ← hv Z r z J hJ, val_of t r z J PEmpty.elim (fun k => k.elim)]
-  exact (congrArg Units.val (gm_res r z le trivial _)).symm.trans ((gs_unit r z ⊤ trivial _).symm.trans
-    ((congrArg (gs r z ⊤) ha.symm).trans (gs_pull r p z ⊤ trivial a)))
+      (val u r z J * (val u' r z J)⁻¹).val = gs (r ≫ p) z ⊤ a := GlobalTheory.WeilMul.exists_ratio hM p hp hu hu'
 
 theorem exists_pull {X X' Y : Scheme.{0}} {L : LB X} (F : X' ⟶ X) {K : Type} [Fintype K] (φ' : K → (Y ⟶ X')) (ε : K → ℤ)
     {a : LB.Gen (LB.LinComb L (fun k => φ' k ≫ F) ε)} (ha : a.IsGen) :

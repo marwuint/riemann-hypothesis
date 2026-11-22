@@ -18,7 +18,6 @@ end
 section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.valLL0_cfOf_at_states : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → AllSt fun _ _ _ _ _ _ x => ValLL0 (Dof x) (cfOf x) := by
-  first | exact @_root_.GlobalTheory.HeightCounting.Up.lowerLeftValuation_eq_zero_all_stages_alt | exact _root_.GlobalTheory.HeightCounting.Up.lowerLeftValuation_eq_zero_all_stages_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.lowerLeftValuation_eq_zero_all_stages_alt <;> assumption)
+theorem _root_.GlobalTheory.T.valLL0_cfOf_at_states : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → AllSt fun _ _ _ _ _ _ x => ValLL0 (Dof x) (cfOf x) := GlobalTheory.HeightCounting.Up.lowerLeftValuation_eq_zero_all_stages_alt
 end
 end

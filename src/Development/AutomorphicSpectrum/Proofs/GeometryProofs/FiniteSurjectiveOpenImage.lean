@@ -6,7 +6,6 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.CompanionTheory.Ar.Strat
 
-theorem preimage_le_of_finite_surjective : ∀ (Z Z' : Scheme.{0}) [IsIntegral Z] [IsIntegral Z'] (π : Z' ⟶ Z), IsFinite π → Surjective π → ∀ V : Z'.Opens, (V : Set Z').Nonempty → ∃ U : Z.Opens, (U : Set Z).Nonempty ∧ π ⁻¹ᵁ U ≤ V :=
-  PositivityTheory.Xgn.finite_surjective_image_open
+theorem preimage_le_of_finite_surjective : ∀ (Z Z' : Scheme.{0}) [IsIntegral Z] [IsIntegral Z'] (π : Z' ⟶ Z), IsFinite π → Surjective π → ∀ V : Z'.Opens, (V : Set Z').Nonempty → ∃ U : Z.Opens, (U : Set Z).Nonempty ∧ π ⁻¹ᵁ U ≤ V := PositivityTheory.Xgn.finite_surjective_image_open
 
 end GlobalTheory.CompanionTheory.Ar.Strat

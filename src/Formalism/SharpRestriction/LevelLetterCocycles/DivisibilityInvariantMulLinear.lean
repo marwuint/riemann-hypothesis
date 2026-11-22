@@ -259,7 +259,7 @@ theorem content_divisibility_clause (D : Formalism.BasicNotions.D7) : adm9 D := 
 
 theorem killerVal_holds : Formalism.WindowSums.KillerVal := Formalism.WindowSums.arc_KillerVal
 
-theorem killerKills_holds : Formalism.WindowSums.KillerKills := Formalism.WindowSums.arc_KillerKills
+theorem killerKills_holds : Formalism.WindowSums.KillerKills := Formalism.WindowSums.annihilatorPoly_kills
 
 theorem killerKap_of_le {C : ℝ} (hC : 8 ≤ C) : KillerKap C := by
   intro l hl hl5 G S h ell ro a hGh hh ha

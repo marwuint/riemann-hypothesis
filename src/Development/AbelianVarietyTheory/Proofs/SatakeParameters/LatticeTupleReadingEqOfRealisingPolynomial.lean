@@ -22,8 +22,7 @@ theorem castSt_K_U {D : D7} {u : D.what₂.Word} {C C' : ColumnChain D.R D.what�
 
 theorem castSt_y {D : D7} {u : D.what₂.Word} {C C' : ColumnChain D.R D.what₂.Tau (D.hcW u)} (e : C = C') {i : ℕ} {hi : i ≤ D.R.m}
     (S : GlobalTheory.TwU.StepCharts C i hi) (c : C.cls i) :
-    (castSt e S).y (castCls e i c) = S.y c := by
-  subst e; rfl
+    (castSt e S).y (castCls e i c) = S.y c := GlobalTheory.TwV.castSt_y_castCls e S c
 
 set_option maxHeartbeats 2000000 in
 

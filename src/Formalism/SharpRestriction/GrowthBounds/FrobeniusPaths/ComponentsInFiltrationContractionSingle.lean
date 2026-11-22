@@ -133,16 +133,7 @@ theorem twist_substitution_map {R R' : Type*} [CommRing R] [CommRing R'] (φ : R
 
 theorem mem_support_degrees_iff {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     (G : MvPolynomial (ι × Fin n) R) (k : ℤ) :
-    k ∈ sDegs LL S j G ↔ ∃ m, ((twistSub LL S j G).coeff m).coeff k ≠ 0 := by
-  unfold sDegs
-  simp only [Finset.mem_biUnion, Finsupp.mem_support_iff, MvPolynomial.mem_support_iff]
-  constructor
-  · rintro ⟨m, _, h⟩; exact ⟨m, h⟩
-  · rintro ⟨m, h⟩
-    refine ⟨m, ?_, h⟩
-    intro h0
-    apply h
-    rw [h0]; simp
+    k ∈ sDegs LL S j G ↔ ∃ m, ((twistSub LL S j G).coeff m).coeff k ≠ 0 := Formalism.MainNotions.G.GLWeightTheory.flt_mem_sDegs LL S j G k
 
 theorem support_degrees_map_subset {R R' : Type*} [CommRing R] [CommRing R'] (φ : R →+* R') {ι : Type*} {n : ℕ}
     (LL : Letters ι) (S : Set ι) (j : Fin n) (G : MvPolynomial (ι × Fin n) R) :

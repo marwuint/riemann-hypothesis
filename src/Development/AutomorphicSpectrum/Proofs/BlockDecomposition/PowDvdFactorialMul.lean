@@ -13,13 +13,7 @@ open CategoryTheory AlgebraicGeometry Polynomial DividedPowers GlobalTheory.LogC
 
 namespace GlobalTheory.CompanionTheory.ThickLine
 
-theorem pow_dvd_factorial_mul {p : ℕ} (hp : p.Prime) (N : ℕ) : p ^ N ∣ (p * N).factorial := by
-  induction N with
-  | zero => simp
-  | succ N ih =>
-    rw [Nat.mul_succ, pow_succ]
-    exact (mul_dvd_mul ih (Nat.dvd_factorial hp.pos le_rfl)).trans
-      (Nat.factorial_mul_factorial_dvd_factorial_add _ _)
+theorem pow_dvd_factorial_mul {p : ℕ} (hp : p.Prime) (N : ℕ) : p ^ N ∣ (p * N).factorial := GlobalTheory.CompanionTheory.QPd.pow_dvd_factorial hp N
 
 theorem isNilpotent_of_mem {A : Type} [CommRing A] {J : Ideal A} (δ : DividedPowers J) {p : ℕ} (hp : p.Prime)
     (hn : IsNilpotent (p : A)) {x : A} (hx : x ∈ J) : IsNilpotent x := by

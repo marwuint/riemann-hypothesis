@@ -9,5 +9,4 @@ theorem _root_.GlobalTheory.T.adjoinLocalOrderTensorPadic_matrix_almost_all : �
     Module.finrank F B = n ^ 2 → ∀ (OB : Subring B), Module.Finite ℤ OB →
     (∀ b : B, ∃ m : ℕ, 0 < m ∧ (m : B) * b ∈ OB) →
     ∃ N : ℕ, 0 < N ∧ ∀ (ℓ : ℕ) [Fact ℓ.Prime], ¬ ℓ ∣ N →
-      ∃ ψ : locOrder ℓ OB ≃ₐ[ℤ_[ℓ]] Matrix (Fin n) (Fin n) (cenOrder ℓ F), CentreCompat ℓ OB ψ := by
-  first | (exact @GlobalTheory.LocMatrix.locOrder_matrix) | (exact GlobalTheory.LocMatrix.locOrder_matrix) | (intros; apply GlobalTheory.LocMatrix.locOrder_matrix  <;> assumption)
+      ∃ ψ : locOrder ℓ OB ≃ₐ[ℤ_[ℓ]] Matrix (Fin n) (Fin n) (cenOrder ℓ F), CentreCompat ℓ OB ψ := GlobalTheory.LocMatrix.locOrder_matrix

@@ -76,6 +76,5 @@ theorem _root_.GlobalTheory.T.theta_stage_nonzero_at_finite_places : _root_.Glob
       Function.Surjective q → Function.Surjective q' →
       (∀ f, GlobalTheory.SquareComm.IsFinF W.ψ W.θ true FA FW f → ∀ P, p (GlobalTheory.SquareComm.fockF W.ψ W.θ true FA FW f P) = e (q P ⊗ₜ r f)) →
       (∀ f, GlobalTheory.SquareComm.IsFinF W.ψ W.θ false FA' FW f → ∀ P, p' (GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW f P) = e (q' P ⊗ₜ r' f)) →
-      r' (X.f' t) ≠ 0 := by
-  first | exact @_root_.GlobalTheory.StageFinNonzero.theta_stage_finite_part_ne_zero | exact _root_.GlobalTheory.StageFinNonzero.theta_stage_finite_part_ne_zero | (intros; apply _root_.GlobalTheory.StageFinNonzero.theta_stage_finite_part_ne_zero <;> assumption)
+      r' (X.f' t) ≠ 0 := GlobalTheory.StageFinNonzero.theta_stage_finite_part_ne_zero
 end

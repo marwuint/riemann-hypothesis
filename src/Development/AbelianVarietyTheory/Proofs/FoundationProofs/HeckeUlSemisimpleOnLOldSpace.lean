@@ -16,12 +16,7 @@ theorem toGL_mat (γ : SL(2, ℤ)) : toGL (mat γ) = Matrix.SpecialLinearGroup.m
   simp [mat, Matrix.SpecialLinearGroup.mapGL]
 
 theorem toGL_mul (A B : Matrix (Fin 2) (Fin 2) ℤ) (hA : A.det ≠ 0) (hB : B.det ≠ 0) :
-    toGL (A * B) = toGL A * toGL B := by
-  have hAB : (A * B).det ≠ 0 := by rw [Matrix.det_mul]; exact mul_ne_zero hA hB
-  unfold toGL
-  rw [dif_neg hA, dif_neg hB, dif_neg hAB]
-  ext i j
-  simp [Matrix.mul_apply]
+    toGL (A * B) = toGL A * toGL B := GlobalTheory.SlashUpperTriangularMatrices.toGL_mul A B hA hB
 
 theorem det_toGL (A : Matrix (Fin 2) (Fin 2) ℤ) (hA : A.det ≠ 0) :
     ((toGL A).det : ℝ) = (A.det : ℝ) := by
@@ -285,11 +280,7 @@ end GlobalTheory.OldSpace
 
 namespace GlobalTheory.OldSpace
 
-theorem lev_one (N : ℕ) : GlobalTheory.Hk.lev N 1 = CongruenceSubgroup.Gamma1 N := by
-  unfold GlobalTheory.Hk.lev
-  refine inf_eq_left.2 fun γ _ => ?_
-  rw [CongruenceSubgroup.Gamma0_mem]
-  exact Subsingleton.elim _ _
+theorem lev_one (N : ℕ) : GlobalTheory.Hk.lev N 1 = CongruenceSubgroup.Gamma1 N := GlobalTheory.HeckeFamilyMatrices.SemisimpleLevelOne.lev_one N
 
 theorem hecke_stab : ∀ (N l k : ℕ) (s : SL(2, ℤ)), 5 ≤ N → l.Prime → ¬ l ∣ N → 3 ≤ k → IsDiam N 1 (l : ZMod N) s →
   ∀ (χ : DirichletCharacter ℂ N) (f : CuspForm (CongruenceSubgroup.Gamma1 N) (k : ℤ)),

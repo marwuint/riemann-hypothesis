@@ -9,5 +9,4 @@ theorem _root_.GlobalTheory.T.exists_fockMap_signatures_depend_on_place : ∀ (F
     (τ : ∀ w : InfinitePlace F, EmbOver E w) (JA : Matrix α α (AE F E)) (JB : Matrix β β (AE F E))
     (d : Darboux (symp (R := AF F) (cA σ) (-1) JA JB) κ) (a b : ℂ) (A : ∀ w : InfinitePlace F, Matrix α (Ix (P w) (Q w)) ℂ)
     (C : ∀ w : InfinitePlace F, Matrix β (Ix (R w) (S w)) ℂ), IsCMExt F E σ → IsStd ψ → FramedD τ JA JB a b A C →
-    ∃ Φ, IsFockMapD ψ τ d A C Φ := by
-  first | exact @GlobalTheory.HoweD.exists_isFockMapD | exact GlobalTheory.HoweD.exists_isFockMapD | (intros; apply GlobalTheory.HoweD.exists_isFockMapD <;> assumption)
+    ∃ Φ, IsFockMapD ψ τ d A C Φ := GlobalTheory.HoweD.exists_isFockMapD

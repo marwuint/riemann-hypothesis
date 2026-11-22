@@ -38,10 +38,7 @@ end General
 
 section Arith
 
-theorem conj_omega (d : ℕ) : conj (omegaK d) = 1 - omegaK d := by
-  rw [Formalism.L2.Th1.GD.GramFrameCompositionTwoFacts.conj_omegaK]
-  unfold omegaK
-  ring
+theorem conj_omega (d : ℕ) : conj (omegaK d) = 1 - omegaK d := Formalism.L2.Th1.GD.GramFrameLatticeLemmas.conj_omega d
 
 theorem sqrt_sq (d : ℕ) : ((Real.sqrt d : ℝ) : ℂ) ^ 2 = d := by
   rw [← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]

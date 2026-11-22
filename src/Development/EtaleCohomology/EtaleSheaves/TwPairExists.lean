@@ -58,8 +58,8 @@ theorem univ_exdeg : twpair_tens_univ_exdeg := twpair_tens_univ_exdeg_of
 theorem tens_univ : twpair_tens_univ := twpair_tens_univ_of univ_exdeg
 theorem tens_ge : tt_tens_ge := tt_tens_ge_of (by intro R _ I J K τ hτ; exact (tens_univ R τ hτ).2.1)
 theorem res_side : tt_res_side := tt_res_side_of tens_univ LateralTheory.Fin.EtaleTensorPairQuasiIsoOfFlatQuasiIso.intersectionNumber_baseChange
-theorem twres_ext : EtaleTwistResolutionUniversalExtension := LateralTheory.Fin.EtaleTwistResolutionUniversalExtension.intersectionNumber_baseChange
-theorem cup_compat : EtaleCupProductNaturalInCoefficients := LateralTheory.Fin.EtaleCupProductNaturalInCoefficients.intersectionNumber_baseChange
+theorem twres_ext : EtaleTwistResolutionUniversalExtension := LateralTheory.Fin.EtaleTwistResolutionUniversalExtension.etale_twisted_resolution_exists_of_flat_sections
+theorem cup_compat : EtaleCupProductNaturalInCoefficients := LateralTheory.Fin.EtaleCupProductNaturalInCoefficients.etale_cup_product_compatible_with_cochains_of_components
 
 theorem holds_of (hts : EtaleTateTwistSectionsLocallyGenerated) :
     EtaleTwistedCupProductAssociative ∧ EtaleTwistResolutionPairingCupUnique := by

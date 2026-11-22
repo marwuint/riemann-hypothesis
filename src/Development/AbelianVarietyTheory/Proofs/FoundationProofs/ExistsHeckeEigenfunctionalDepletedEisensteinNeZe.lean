@@ -18,12 +18,7 @@ noncomputable section
 
 namespace GlobalTheory.EisM
 
-theorem zv_unit_of_isCoprime {L : ℕ} {d : ℤ} (h : IsCoprime d (L : ℤ)) : IsUnit (d : ZMod L) := by
-  obtain ⟨u, v, huv⟩ := h
-  have h1 := congrArg (Int.cast : ℤ → ZMod L) huv
-  push_cast at h1
-  rw [ZMod.natCast_self, mul_zero, add_zero] at h1
-  exact isUnit_iff_exists_inv.mpr ⟨_, (mul_comm _ _).trans h1⟩
+theorem zv_unit_of_isCoprime {L : ℕ} {d : ℤ} (h : IsCoprime d (L : ℤ)) : IsUnit (d : ZMod L) := GlobalTheory.EisM.ZEdge.isUnit_of_isCoprime h
 
 theorem zv_apply_ne_zero {L : ℕ} (χ : DirichletCharacter ℂ L) {x : ZMod L} (hx : IsUnit x) : χ x ≠ 0 := by
   obtain ⟨u, rfl⟩ := hx

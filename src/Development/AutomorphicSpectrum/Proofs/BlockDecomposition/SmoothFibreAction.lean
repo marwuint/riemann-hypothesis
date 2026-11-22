@@ -23,15 +23,7 @@ namespace GlobalTheory.CompanionTheory.BZPsiPG.FibKer.SmFib
 open Topology
 
 theorem range_finite {X W : Type} [TopologicalSpace X] [AddCommGroup W] {φ : X → W}
-    (hl : IsLocallyConstant φ) (hc : HasCompactSupport φ) : (Set.range φ).Finite := by
-  have : CompactSpace (tsupport φ) := isCompact_iff_compactSpace.mp hc
-  have h1 : (Set.range (φ ∘ ((↑) : tsupport φ → X))).Finite :=
-    (hl.comp_continuous continuous_subtype_val).range_finite
-  refine (h1.insert 0).subset ?_
-  rintro _ ⟨x, rfl⟩
-  by_cases hx : x ∈ tsupport φ
-  · exact Or.inr ⟨⟨x, hx⟩, rfl⟩
-  · exact Or.inl (image_eq_zero_of_notMem_tsupport hx)
+    (hl : IsLocallyConstant φ) (hc : HasCompactSupport φ) : (Set.range φ).Finite := GlobalTheory.CompanionTheory.Rodier.SmIntEl.finite_range hl hc
 
 theorem exists_nhds_translation_invariant {A Z : Type} [AddCommGroup A] [TopologicalSpace A]
     [IsTopologicalAddGroup A] [AddCommGroup Z] {φ : A → Z} (hl : IsLocallyConstant φ)

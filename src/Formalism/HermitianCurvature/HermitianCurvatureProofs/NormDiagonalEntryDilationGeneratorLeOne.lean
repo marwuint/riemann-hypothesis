@@ -2888,8 +2888,7 @@ section avg2pre
 theorem norm_exp_I_mul_ofReal_eq_one (x : ℝ) : ‖Complex.exp (Complex.I * (x : ℂ))‖ = 1 := by
   rw [mul_comm]; exact Complex.norm_exp_ofReal_mul_I x
 
-theorem test_function_integrable {w : ℝ → ℝ} (hw : IsTest w) : Integrable w :=
-  hw.1.continuous.integrable_of_hasCompactSupport hw.2.1
+theorem test_function_integrable {w : ℝ → ℝ} (hw : IsTest w) : Integrable w := Formalism.FourierDecayAlt.P.B6.integrable_of_isTest' hw
 
 theorem test_function_fourier_continuous {w : ℝ → ℝ} (hw : IsTest w) : Continuous (om w) := by
   unfold om

@@ -61,11 +61,7 @@ theorem csd_zero_or {K : Type} [Field K] [NumberField K] [StarRing K] {E : Type}
     simp only [heckeCSDI, Col.heckeFamI]
     rw [hyeq]
 
-theorem rank_rows (R : Ranks) : R.N R.m - 1 = R.r + R.m * R.t := by
-  have hm := R.two_le_m
-  simp only [Ranks.N, Ranks.r, Nat.mul_succ]
-  generalize R.m * R.t = x
-  omega
+theorem rank_rows (R : Ranks) : R.N R.m - 1 = R.r + R.m * R.t := Formalism.L2.Col.rank_X'_eq R
 
 theorem inertJunk_col {X : Col.Fields} {Pr : Col.Primes X} {R : Ranks} (W : Col.Wts X Pr.Word R) (Ch : Col.Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (hX : X.Ok)

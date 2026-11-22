@@ -23,5 +23,4 @@ theorem _root_.GlobalTheory.T.realPlace_splittingConstant_eq_doubledSpace : ∀ 
     (∃ z : ℂ, z ≠ 0 ∧ ∀ x : κ ⊕ κ → mixedEmbedding.mixedSpace F,
       Φd (PiTensorProduct.tprod ℂ fun _ => 1) x = z * Φ (PiTensorProduct.tprod ℂ fun _ => 1) (x ∘ Sum.inl) *
         star (Φ (PiTensorProduct.tprod ℂ fun _ => 1) (x ∘ Sum.inr))) →
-    0 < R + S → ∀ w, c w = cd w := by
-  first | exact @GlobalTheory.RealLift.Compare.constant_eq_dbl | exact GlobalTheory.RealLift.Compare.constant_eq_dbl | (intros; apply GlobalTheory.RealLift.Compare.constant_eq_dbl <;> assumption)
+    0 < R + S → ∀ w, c w = cd w := GlobalTheory.RealLift.Compare.constant_eq_dbl

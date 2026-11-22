@@ -17,8 +17,7 @@ noncomputable section
 namespace GlobalTheory.JSW.NzSph
 
 theorem finite_bad (E : Type) [Field E] [NumberField E] (a : ℕ) (k : GL (Fin a) (Af E)) :
-    {w : HeightOneSpectrum (𝓞 E) | GeneralLinearGroup.map (pLoc E w) k ∉ KGL w a}.Finite :=
-  _root_.GlobalTheory.GLFinPlaces.gl_mem_int_cofinite E a k
+    {w : HeightOneSpectrum (𝓞 E) | GeneralLinearGroup.map (pLoc E w) k ∉ KGL w a}.Finite := GlobalTheory.GLFinPlaces.gl_mem_int_cofinite E a k
 
 theorem exists_outside (E : Type) [Field E] [NumberField E] (a : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E)))
     (k : GL (Fin a) (Af E)) : ∃ k' : GL (Fin a) (Af E),

@@ -39,9 +39,7 @@ theorem UpperTheory.Reformulated.B.P9.aux6 :
   exact ⟨Λ.add_mem ha.1 hb.1, by rw [map_add, ha.2, hb.2, add_zero]⟩
 
 theorem UpperTheory.Reformulated.B.P9.aux7 :
-    ∀ {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V), (0 : V) ∈ Λ ∧ (p : V → V) (0 : V) = (0 : V) := by
-  intro V _ p Λ
-  exact ⟨Λ.zero_mem, map_zero p⟩
+    ∀ {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V), (0 : V) ∈ Λ ∧ (p : V → V) (0 : V) = (0 : V) := UpperTheory.Reformulated.B.P9.aux3
 
 theorem UpperTheory.Reformulated.B.P9.aux8 :
     ∀ {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) {a : V},

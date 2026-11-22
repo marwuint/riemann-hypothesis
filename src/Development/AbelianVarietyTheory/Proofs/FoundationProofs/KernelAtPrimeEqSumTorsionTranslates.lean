@@ -155,8 +155,7 @@ theorem Hf_add_left (D : D7) (T : Tor D) {N N' : ℕ} (x y z : VC D N N') :
   simp only [Hf, Pi.add_apply, add_mul, Finset.sum_add_distrib, add_div]
 
 theorem Hf_add_right (D : D7) (T : Tor D) {N N' : ℕ} (x y z : VC D N N') :
-    Hf D T x (y + z) = Hf D T x y + Hf D T x z := by
-  simp only [Hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib, add_div]
+    Hf D T x (y + z) = Hf D T x y + Hf D T x z := GlobalTheory.NormSum.VacMove.hf_add_right D T x y z
 
 theorem Hf_conj (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') :
     Hf D T y x = (starRingEnd ℂ) (Hf D T x y) := by

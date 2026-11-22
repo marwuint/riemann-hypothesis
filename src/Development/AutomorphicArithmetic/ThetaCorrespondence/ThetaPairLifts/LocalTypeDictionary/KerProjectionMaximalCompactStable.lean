@@ -117,6 +117,5 @@ theorem _root_.GlobalTheory.T.square_agree_kernel_compact_stable : _root_.Global
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ Xc om om' →
     ∀ Pi rf rl p p', IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p' →
     ∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf D.sp.cm.sig Γ.W Bs.emb, ∀ ΦD ∈ algD Γ.M Bs.ψ Bs.emb, ∀ Φ Φ₁,
-    IsDatum Γ.M ψ cA ΦD Φ → IsDatum Γ.M ψ cA (om (1, k) ΦD) Φ₁ → p Φ = 0 → p Φ₁ = 0 := by
-  first | exact @_root_.GlobalTheory.SquareAgree.KerCptW.ker_projection_maximalCompact_stable | exact _root_.GlobalTheory.SquareAgree.KerCptW.ker_projection_maximalCompact_stable | (intros; apply _root_.GlobalTheory.SquareAgree.KerCptW.ker_projection_maximalCompact_stable <;> assumption)
+    IsDatum Γ.M ψ cA ΦD Φ → IsDatum Γ.M ψ cA (om (1, k) ΦD) Φ₁ → p Φ = 0 → p Φ₁ = 0 := GlobalTheory.SquareAgree.KerCptW.ker_projection_maximalCompact_stable
 end

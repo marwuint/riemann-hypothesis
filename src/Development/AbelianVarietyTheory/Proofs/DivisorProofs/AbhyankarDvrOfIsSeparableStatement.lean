@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.abhyankar_dvr_of_isSeparable_alt : ∀ (S K L : Ty
     (∀ P : Ideal (integralClosure S L), P.IsMaximal → P.ramificationIdx S ∣ e) →
     (∀ P : Ideal (integralClosure S L), P.IsMaximal → ∀ [P.LiesOver (maximalIdeal S)],
       Algebra.IsSeparable (S ⧸ maximalIdeal S) (integralClosure S L ⧸ P)) →
-    Algebra.Etale D (integralClosure D (TensorProduct S D L)) := by
-  first | (exact @GlobalTheory.abhyankar_dvr_of_isSeparable) | (exact GlobalTheory.abhyankar_dvr_of_isSeparable) | (intros; apply GlobalTheory.abhyankar_dvr_of_isSeparable  <;> assumption)
+    Algebra.Etale D (integralClosure D (TensorProduct S D L)) := GlobalTheory.abhyankar_dvr_of_isSeparable

@@ -15,12 +15,10 @@ import Development.EtaleCohomology.KummerTheory.LimOfIso
 namespace LateralTheory.Fin.Cont
 theorem etale_continuity_by_five_lemma_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.Five := by
   apply LateralTheory.KummerTheory.FivePf.Five_of
-theorem etale_continuity_by_induction_on_cover_size_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.Ind := by
-  apply LateralTheory.KummerTheory.IndPf.Ind_of
+theorem etale_continuity_by_induction_on_cover_size_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.Ind := LateralTheory.KummerTheory.IndPf.Ind_of
 theorem etale_continuity_commutes_with_base_change_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.BC := by
   apply LateralTheory.KummerTheory.BCPf.BC_of
-theorem etale_continuity_glues_along_open_covers_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.Glue := by
-  apply LateralTheory.KummerTheory.GluePf.Glue_of
+theorem etale_continuity_glues_along_open_covers_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.Glue := LateralTheory.KummerTheory.GluePf.Glue_of
 theorem etale_flasque_sheaf_colimit_acyclic_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.Flasque := by
   apply LateralTheory.KummerTheory.FlasquePf.Flasque_of
 theorem etale_kunneth_normalized_dictionary_exists_in_continuity_assembly : LateralTheory.KummerTheory.DictExist := by
@@ -29,8 +27,7 @@ theorem etale_kunneth_normalization_construction_valid_in_continuity_assembly : 
   apply LateralTheory.KummerTheory.NrmMk_of
 theorem etale_kunneth_dictionary_normalized_in_continuity_assembly : LateralTheory.KummerTheory.DictNormal := by
   apply LateralTheory.KummerTheory.DictNormal_of' <;> first | exact etale_kunneth_normalization_construction_valid_in_continuity_assembly
-theorem etale_kunneth_dictionary_vanishes_on_zero_in_continuity_assembly : LateralTheory.KummerTheory.DictZero := by
-  apply LateralTheory.KummerTheory.DictZero_of
+theorem etale_kunneth_dictionary_vanishes_on_zero_in_continuity_assembly : LateralTheory.KummerTheory.DictZero := LateralTheory.KummerTheory.DictZero_of
 theorem etale_kunneth_dictionary_exists_for_sheaves_in_continuity_assembly : LateralTheory.KummerTheory.Dict := by
   apply LateralTheory.KummerTheory.Dict_of' <;> first | exact etale_kunneth_normalized_dictionary_exists_in_continuity_assembly | exact etale_kunneth_dictionary_normalized_in_continuity_assembly | exact etale_kunneth_dictionary_vanishes_on_zero_in_continuity_assembly
 theorem etale_mayer_vietoris_connecting_map_compatible_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.Delta := by

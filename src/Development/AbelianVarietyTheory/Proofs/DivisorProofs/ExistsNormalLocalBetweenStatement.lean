@@ -13,5 +13,4 @@ theorem _root_.GlobalTheory.T.exists_normal_local_between_alt : ∀ (T : Type) [
       Function.Injective j ∧ Function.Injective i₁ ∧ IsLocalHom i₁ ∧ i₁.comp j = i ∧
       ∃ κ : L →+* FractionRing A₁,
         κ.comp ((algebraMap (FractionRing A) L).comp (algebraMap A (FractionRing A))) =
-          (algebraMap A₁ (FractionRing A₁)).comp j := by
-  first | (exact @GlobalTheory.LocAcycEmbed.exists_normal_local_between) | (exact GlobalTheory.LocAcycEmbed.exists_normal_local_between) | (intros; apply GlobalTheory.LocAcycEmbed.exists_normal_local_between  <;> assumption)
+          (algebraMap A₁ (FractionRing A₁)).comp j := GlobalTheory.LocAcycEmbed.exists_normal_local_between

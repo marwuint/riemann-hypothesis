@@ -9,9 +9,7 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 section PhiBC
 
 theorem phib_smodeq {M : Type} [CommRing M] (c x y : M) (k : ℕ) :
-    x ≡ y [SMOD ((Ideal.span {c}) ^ k • ⊤ : Submodule M M)] ↔ c ^ k ∣ x - y := by
-  rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow,
-    Ideal.mem_span_singleton]
+    x ≡ y [SMOD ((Ideal.span {c}) ^ k • ⊤ : Submodule M M)] ↔ c ^ k ∣ x - y := Formalism.MainNotions.LiftingTheory.phib_smodeq c x y k
 
 theorem phib_complete {R M : Type} [CommRing R] [CommRing M] [Algebra R M] (ϖ : R)
     [IsAdicComplete (Ideal.span {ϖ}) R] {ι : Type} [Fintype ι] (b : Module.Basis ι R M) :
@@ -62,19 +60,7 @@ theorem phib_complete {R M : Type} [CommRing R] [CommRing M] [Algebra R M] (ϖ :
     exact (phib_smodeq _ _ _ _).1 (hL j k)
 
 theorem phib_OL_complete {l : ℕ} [Fact l.Prime] (LL : FinExt l) :
-    IsAdicComplete (Ideal.span {((l : ℕ) : ↥(OL LL))}) ↥(OL LL) := by
-  have h1 : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
-  have h2 : IsIntegralClosure ↥(OL LL) ℤ_[l] ↥LL.1 :=
-    inferInstanceAs (IsIntegralClosure ↥(integralClosure ℤ_[l] ↥LL.1) ℤ_[l] ↥LL.1)
-  have h3 : Module.Finite ℤ_[l] ↥(OL LL) := IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(OL LL)
-  have h4 : Module.IsTorsionFree ℤ_[l] ↥(OL LL) :=
-    Module.isTorsionFree_iff_algebraMap_injective.2 (zl_inj_O LL)
-  have h5 : Module.Free ℤ_[l] ↥(OL LL) := Module.free_of_finite_type_torsion_free'
-  have h6 : IsAdicComplete (Ideal.span {((l : ℕ) : ℤ_[l])}) ℤ_[l] := by
-    rw [← PadicInt.maximalIdeal_eq_span_p]
-    infer_instance
-  have h7 := phib_complete ((l : ℕ) : ℤ_[l]) (Module.finBasis ℤ_[l] ↥(OL LL))
-  rwa [map_natCast] at h7
+    IsAdicComplete (Ideal.span {((l : ℕ) : ↥(OL LL))}) ↥(OL LL) := Formalism.MainNotions.LiftingTheory.phib_OL_complete LL
 
 end PhiBC
 

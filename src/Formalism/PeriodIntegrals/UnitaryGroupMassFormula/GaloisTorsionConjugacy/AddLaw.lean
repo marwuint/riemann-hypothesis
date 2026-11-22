@@ -12,9 +12,7 @@ open Filter Topology
 namespace OriginCoordinatesAdd
 
 lemma hasDerivAt_wp (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) :
-    HasDerivAt L.weierstrassP (L.derivWeierstrassP z) z := by
-  have h := ((L.analyticOnNhd_weierstrassP z hz).differentiableAt).hasDerivAt
-  rwa [PeriodPair.deriv_weierstrassP] at h
+    HasDerivAt L.weierstrassP (L.derivWeierstrassP z) z := Formalism.L2.Th1.F.HalfPeriodDerivative.hasDerivAt_P L hz
 
 lemma ev_notMem (L : PeriodPair) {f : ℂ → ℂ} {z : ℂ} (hf : ContinuousAt f z)
     (h : f z ∉ L.lattice) : ∀ᶠ z' in 𝓝 z, f z' ∉ L.lattice :=

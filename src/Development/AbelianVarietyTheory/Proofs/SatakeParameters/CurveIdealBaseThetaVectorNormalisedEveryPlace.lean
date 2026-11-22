@@ -18,12 +18,7 @@ open Formalism.DworkPowerSeriesWeights (JetsIntegral)
 
 namespace GlobalTheory.ThLoc.LocMM
 
-theorem cmTheta_odd (b : ℤ) (hb : Odd b) (d : ℕ) : ∃ k : ℤ, cmTheta b d = cmTheta 1 d + (k : ℂ) := by
-  obtain ⟨k, rfl⟩ := hb
-  refine ⟨k, ?_⟩
-  simp only [cmTheta]
-  push_cast
-  ring
+theorem cmTheta_odd (b : ℤ) (hb : Odd b) (d : ℕ) : ∃ k : ℤ, cmTheta b d = cmTheta 1 d + (k : ℂ) := GlobalTheory.ThLoc.KapNonSplit.cmTheta_odd b hb d
 
 theorem stable_of_one {V : Type*} [AddCommGroup V] [Module ℂ V] (Λ : AddSubgroup V) (d : ℕ)
     (h : ∀ x ∈ Λ, cmTheta 1 d • x ∈ Λ) (b : ℤ) (hb : Odd b) : ∀ x ∈ Λ, cmTheta b d • x ∈ Λ := by
@@ -34,17 +29,7 @@ theorem stable_of_one {V : Type*} [AddCommGroup V] [Module ℂ V] (Λ : AddSubgr
   rw [Int.cast_smul_eq_zsmul]
   exact Λ.zsmul_mem hx k
 
-theorem odd_of_cmOK {a : ℕ} {b c : ℤ} {d : ℕ} (h : CmOK a b c d) : Odd b := by
-  by_contra hb
-  obtain ⟨k, rfl⟩ := Int.not_odd_iff_even.1 hb
-  have h1 := h.1
-  have h8 := h.2.2.1
-  have h2 : (d : ℤ) = 4 * ((a : ℤ) * c - k * k) := by
-    have : (k + k) ^ 2 = 4 * (k * k) := by ring
-    rw [this] at h1
-    linarith
-  generalize (a : ℤ) * c - k * k = t at h2
-  omega
+theorem odd_of_cmOK {a : ℕ} {b c : ℤ} {d : ℕ} (h : CmOK a b c d) : Odd b := GlobalTheory.ThLoc.KapNonSplit.odd_of_cmOK h
 
 theorem hermitianSelfDual_of_fourfoldBlock {n : Type} [Fintype n] (h : Matrix n n ℂ) (Λ : AddSubgroup (n → ℂ))
     (hsd : IsSelfDual (matH (blk4 h)) (pow4 Λ)) : IsSelfDual (matH h) Λ := by

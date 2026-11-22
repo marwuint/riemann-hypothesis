@@ -8,5 +8,4 @@ theorem _root_.GlobalTheory.T.genericGerm_differentialForm_restrict_affineOpen :
     ∀ [inst : Algebra ℂ Z.functionField] (hinst : inst = ffAlg p) (j : ℕ) (V V' : Z.Opens)
       (hV : IsAffineOpen V) (hV' : IsAffineOpen V') (hη : genericPoint Z ∈ V) (hη' : genericPoint Z ∈ V')
       (h : V' ≤ V) (y : sectionsOn (Omega p j) V),
-      formGermI p j hV' hη' hinst (sectionsOn.res ℂ (Omega p j) h y) = formGermI p j hV hη hinst y := by
-  first | (exact @GlobalTheory.HodgeCoh.formGermI_res) | (exact GlobalTheory.HodgeCoh.formGermI_res) | (intros; apply GlobalTheory.HodgeCoh.formGermI_res  <;> assumption)
+      formGermI p j hV' hη' hinst (sectionsOn.res ℂ (Omega p j) h y) = formGermI p j hV hη hinst y := GlobalTheory.HodgeCoh.formGermI_res

@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IwahoriEigenvalu
 
 namespace GlobalTheory.IwahoriEigenObj
 
-theorem iwahoriEigenvalues : GlobalTheory.IndefiniteRowSideFullHecke.IwahoriSubgroup.IwahoriEigenvalues :=
-  GlobalTheory.IwahoriEigen.iwahoriEigenvalues
+theorem iwahoriEigenvalues : GlobalTheory.IndefiniteRowSideFullHecke.IwahoriSubgroup.IwahoriEigenvalues := GlobalTheory.IwahoriEigen.iwahoriEigenvalues
 
 end GlobalTheory.IwahoriEigenObj

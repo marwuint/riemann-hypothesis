@@ -26,6 +26,5 @@ theorem _root_.GlobalTheory.T.exists_signature_data_span_alt : ∀ (D : D7) (cf 
         algebraMap (T.O i) (FractionRing (T.O i)) (sd.hEig i s k P) =
           algebraMap (T.O i) (FractionRing (T.O i)) (cHkT D T i (sd.side i s) P : T.O i) ^ k *
             readT D T i (sd.side i s) (In.eig (sd.jS i s) (sd.rowS i s) k P)) ∧
-      ∀ i s P, sd.hEig i s 0 P = 1 := by
-  first | exact @_root_.GlobalTheory.HeightCounting.FormsStep.sigData_exists_alt | exact _root_.GlobalTheory.HeightCounting.FormsStep.sigData_exists_alt | (intros; apply _root_.GlobalTheory.HeightCounting.FormsStep.sigData_exists_alt <;> assumption)
+      ∀ i s P, sd.hEig i s 0 P = 1 := GlobalTheory.HeightCounting.FormsStep.sigData_exists_alt
 end

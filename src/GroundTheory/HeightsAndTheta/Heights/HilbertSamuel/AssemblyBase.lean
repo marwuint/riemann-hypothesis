@@ -627,8 +627,7 @@ theorem Closed.SegreChartDim : GroundTheory.Heights₂.Heights.SegreChartDim.Sta
 theorem Closed.SegreCoordGoodProj : GroundTheory.Heights₂.Heights.SegreCoordGoodProj.Statement :=
   GroundTheory.Heights₂.Heights.SegreCoordGoodProj.proof
 
-theorem Closed.ComplexSets.DiscriminantCover : GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.Statement :=
-  GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full
+theorem Closed.ComplexSets.DiscriminantCover : GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.Statement := GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full
 
 theorem Closed.TubeCollarCompare : GroundTheory.Heights₂.Heights.TubeCollarCompare.Statement :=
   GroundTheory.Heights₂.Heights.TubeCollarCompare.proof
@@ -639,8 +638,7 @@ theorem Closed.SheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAre
 theorem Closed.ChartMassCompare : GroundTheory.Heights₂.Heights.ChartMassCompare.Statement :=
   GroundTheory.Heights₂.Heights.ChartMassCompare.of_open Closed.SheetImageAreaSet
 
-theorem Closed.MassFinite : GroundTheory.Heights₂.Heights.MassFinite.Statement :=
-  GroundTheory.Heights₂.Heights.MassFinite.full
+theorem Closed.MassFinite : GroundTheory.Heights₂.Heights.MassFinite.Statement := GroundTheory.Heights₂.Heights.MassFinite.full
 
 theorem Closed.TubeCollarMass : GroundTheory.Heights₂.Heights.TubeCollarMass.Statement :=
   GroundTheory.Heights₂.Heights.TubeCollarMass.proof Closed.TubeCollarCompare Closed.ChartMassCompare Closed.MassFinite

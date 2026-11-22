@@ -22,5 +22,4 @@ set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_pow_integral_completedHomLattice : ∀ {D : D7} (S T : HSp D) (r : D.host.E) (LB : Lat T), r ≠ 0 →
   (∀ z : Matrix (Fin T.rank) (Fin S.rank) D.host.E, finPt (S := S) (T := T) rfl rfl r z ∈ (latO S T (stdLat S) LB fun _ => True) →
     z ∈ Formalism.MainNotions.TaylorLogMetric.YYl D (Formalism.MainNotions.StandardLatticesGL3.stdL D S.rank) (Formalism.MainNotions.StandardLatticesGL3.stdL D T.rank)) →
-  ∃ k : ℕ, ∀ u ∈ (latO S T (stdLat S) LB fun _ => True), HatPt ((((D.host.QS * D.host.q) ^ k : ℕ) : D.host.E) * r) 1 u := by
-  first | exact @GlobalTheory.CosetOrth.LatInt.exists_hatPt_of_mem_latO | exact GlobalTheory.CosetOrth.LatInt.exists_hatPt_of_mem_latO | (intros; apply GlobalTheory.CosetOrth.LatInt.exists_hatPt_of_mem_latO <;> assumption)
+  ∃ k : ℕ, ∀ u ∈ (latO S T (stdLat S) LB fun _ => True), HatPt ((((D.host.QS * D.host.q) ^ k : ℕ) : D.host.E) * r) 1 u := GlobalTheory.CosetOrth.LatInt.exists_hatPt_of_mem_latO

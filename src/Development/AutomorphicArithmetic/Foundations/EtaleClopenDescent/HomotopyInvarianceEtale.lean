@@ -3,5 +3,4 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomotopyInvarianceE
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 theorem UpperTheory.Cb.homotopy_invariance_etale_alt :
-    GlobalTheory.EtC.C4 :=
-  GlobalTheory.T.homotopy_invariance_etale_alt
+    GlobalTheory.EtC.C4 := GlobalTheory.EtC.HomotopyInv.homotopy_invariance_etale

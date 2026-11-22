@@ -31,8 +31,7 @@ theorem projective_coordinates_generate_inside_chart : LateralTheory.EtaleTrace.
   apply LateralTheory.EtaleTrace.Cov.GenIn_of <;> first | exact homogeneous_localization_away_generator_evaluation | exact homogeneous_localization_away_generated_by_coordinates
 theorem projective_chart_ring_hom_over_field : LateralTheory.EtaleTrace.Cov.ChartOverK := by
   apply LateralTheory.EtaleTrace.Cov.ChartOverK_of
-theorem projective_chart_generic_section_values_agree : LateralTheory.EtaleTrace.Cov.ChartGenVal := by
-  apply SchemeAppLEComposition.Cb.etale_projective_chart_generic_valuation_identity
+theorem projective_chart_generic_section_values_agree : LateralTheory.EtaleTrace.Cov.ChartGenVal := SchemeAppLEComposition.Cb.etale_projective_chart_generic_valuation_identity
 theorem projective_chart_generic_section_on_open : LateralTheory.EtaleTrace.Cov.ChartGenOn := by
   apply LateralTheory.EtaleTrace.Cov.ChartGenOn_of_val <;> first | exact projective_chart_generic_section_values_agree
 theorem projective_coordinate_sections_generate_on_chart : LateralTheory.EtaleTrace.Cov.GenOutChart := by
@@ -47,8 +46,7 @@ theorem function_field_generators_pull_back_to_chart : LateralTheory.EtaleTrace.
   apply LateralTheory.EtaleTrace.Cov.GenUseBack_of
 theorem projective_coordinates_generate_function_field : LateralTheory.EtaleTrace.Cov.GenUse := by
   apply LateralTheory.EtaleTrace.Cov.GenUse_of <;> first | exact function_field_generators_pull_back_to_chart
-theorem coordinate_differentials_span_function_field_kaehler : LateralTheory.EtaleTrace.Cov.JetSpan := by
-  apply LateralTheory.EtaleTrace.Cov.JetSpan_of
+theorem coordinate_differentials_span_function_field_kaehler : LateralTheory.EtaleTrace.Cov.JetSpan := LateralTheory.EtaleTrace.Cov.JetSpan_of
 theorem function_field_transcendence_degree_le_dim : LateralTheory.EtaleTrace.Cov.TrdegLe := by
   apply LateralTheory.EtaleTrace.Cov.TrdegLe_of
 theorem homogeneous_relation_coordinate_integral_dependence : LateralTheory.EtaleTrace.Cov.HomRel := by

@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.etale_atPrime_baseChange_of_integralClosureEtale :
     letI := closureAlg A R DA
     letI : Algebra R (Localization.AtPrime P₁) :=
       ((algebraMap R₁ (Localization.AtPrime P₁)).comp κ).toAlgebra
-    Algebra.Etale (Localization.AtPrime P₁) (Localization.AtPrime P₁ ⊗[R] closure A R DA) := by
-  first | (exact @GlobalTheory.KeyOriginEnlarge.closureEtaleAt_comap_baseChange_atPrime) | (exact GlobalTheory.KeyOriginEnlarge.closureEtaleAt_comap_baseChange_atPrime) | (intros; apply GlobalTheory.KeyOriginEnlarge.closureEtaleAt_comap_baseChange_atPrime <;> assumption)
+    Algebra.Etale (Localization.AtPrime P₁) (Localization.AtPrime P₁ ⊗[R] closure A R DA) := GlobalTheory.KeyOriginEnlarge.closureEtaleAt_comap_baseChange_atPrime

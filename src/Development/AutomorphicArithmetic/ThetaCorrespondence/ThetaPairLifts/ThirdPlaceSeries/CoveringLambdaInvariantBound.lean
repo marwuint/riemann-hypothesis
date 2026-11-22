@@ -40,7 +40,6 @@ end
 section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.liftLambdaBound_of_gram_meas : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.GramCondition → _root_.GlobalTheory.CovTop.MeasureCondition → _root_.GlobalTheory.CovTop.LiftLambdaBound := by
-  first | exact @_root_.GlobalTheory.CovTop.LamAll.covering_lambda_all_places_alt | exact _root_.GlobalTheory.CovTop.LamAll.covering_lambda_all_places_alt | (intros; apply _root_.GlobalTheory.CovTop.LamAll.covering_lambda_all_places_alt <;> assumption)
+theorem _root_.GlobalTheory.T.liftLambdaBound_of_gram_meas : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.GramCondition → _root_.GlobalTheory.CovTop.MeasureCondition → _root_.GlobalTheory.CovTop.LiftLambdaBound := GlobalTheory.CovTop.LamAll.covering_lambda_all_places_alt
 end
 end

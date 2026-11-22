@@ -18,8 +18,7 @@ theorem fsv_add (s s' t : ℂ) : fsv s t * fsv s' t = fsv (s + s') t := by
   simp only [map_add]
   ring
 
-theorem fsv_zero (t : ℂ) : fsv 0 t = 1 := by
-  simp [fsv]
+theorem fsv_zero (t : ℂ) : fsv 0 t = 1 := Formalism.FourierDecayAlt.P.PBFV.fsv_zero t
 
 section WaveJ
 

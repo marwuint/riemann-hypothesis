@@ -20,10 +20,7 @@ theorem cast_nsmul {q : ℕ} {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i =
     (k • x).cast hn hi = k • x.cast hn hi := by
   subst hn; subst hi; rfl
 
-theorem inv_sp (q : ℕ) (A : Type) [CommRing A] (hq : IsUnit (q : A)) : Inv q (sp A) := fun U ⟨x⟩ => by
-  have h := (hq.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom).map
-    (show U ⟶ Spec (CommRingCat.of A) from x).appTop.hom
-  simpa only [map_natCast] using h
+theorem inv_sp (q : ℕ) (A : Type) [CommRing A] (hq : IsUnit (q : A)) : Inv q (sp A) := GlobalTheory.EtC.KumSurj.inv_sp q A hq
 
 theorem dvd_of_T_eq_pow {T : Type} [CommRing T] [IsDomain T] (q n : ℕ) (w : LaurentPolynomial T)
     (hw : (LaurentPolynomial.T (n : ℤ) : LaurentPolynomial T) = w ^ q) : q ∣ n := by
@@ -122,5 +119,4 @@ theorem main : ∀ (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T] [Is
 end GlobalTheory.EtC.GmAicDeg1
 
 theorem GlobalTheory.EtC.gmPhi_bijective_of_aic : ∀ (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T],
-    AIC T → IsUnit (q : T) → ∀ i : ℤ, Function.Bijective (gmPhi q T i) :=
-  GlobalTheory.EtC.GmAicDeg1.main
+    AIC T → IsUnit (q : T) → ∀ i : ℤ, Function.Bijective (gmPhi q T i) := GlobalTheory.EtC.GmAicDeg1.main

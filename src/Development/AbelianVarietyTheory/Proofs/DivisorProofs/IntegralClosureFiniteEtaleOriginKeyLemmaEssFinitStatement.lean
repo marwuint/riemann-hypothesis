@@ -16,5 +16,4 @@ theorem _root_.GlobalTheory.T.integralClosure_finiteEtale_originKeyLemma_essFini
       (actA : Multiplicative (ZMod q) →* (DA ≃ₐ[GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)] DA)),
       GlobalTheory.KeyOriginCut.IsZTorsor (GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)) DA q actA →
       GlobalTheory.KeyOriginNoeth.Good A (Localization.AtPrime QA) DA ρ →
-      GlobalTheory.KeyOriginNoeth.ClosureFiniteEtale A (Localization.AtPrime QA) DA := by
-  first | (exact @GlobalTheory.GoodEtale.closure_finiteEtale) | (exact GlobalTheory.GoodEtale.closure_finiteEtale) | (intros; apply GlobalTheory.GoodEtale.closure_finiteEtale  <;> assumption)
+      GlobalTheory.KeyOriginNoeth.ClosureFiniteEtale A (Localization.AtPrime QA) DA := GlobalTheory.GoodEtale.closure_finiteEtale

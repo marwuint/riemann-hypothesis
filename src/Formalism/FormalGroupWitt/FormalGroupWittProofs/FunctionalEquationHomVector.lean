@@ -60,8 +60,7 @@ namespace Formalism.FG
 
 theorem FunEqHomV_of (hSol : Formalism.FG.SolveExistsV.{u, v, w}) (hInv : Formalism.FG.InvIntegralV.{u, v, w})
     (hLow : Formalism.FG.LowCoeffV.{u, v, w}) (hKey : Formalism.FG.FunEqSubstV.{u, v, w}) :
-    Formalism.FG.FunEqHomV.{u, v, w} :=
-  FunctionalEquationHom.main hSol hInv hLow hKey
+    Formalism.FG.FunEqHomV.{u, v, w} := Formalism.FG.FunctionalEquationHom.main hSol hInv hLow hKey
 
 theorem functional_equation_hom_vector : Formalism.FG.FunEqHomV.{u, v, w} :=
   FunEqHomV_of solve_exists_vector inverse_integral_vector low_coeff_vector functional_equation_subst_vector

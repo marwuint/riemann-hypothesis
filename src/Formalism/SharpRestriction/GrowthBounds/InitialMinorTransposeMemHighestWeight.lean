@@ -696,11 +696,7 @@ namespace Formalism.MainNotions.G.Joints.F5
 
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees Formalism.MainNotions.G.GLWeightTheory Formalism.MainNotions.tableLineDegreeFive
 
-theorem mahlerCoef_eq_mah (f : ℕ → ℚ) (j : ℕ) : mahlerCoef f j = mah f j := by
-  unfold mahlerCoef mah
-  rw [fwdDiff_iter_eq_sum_shift]
-  refine sum_congr rfl fun i _ => ?_
-  simp [zsmul_eq_mul]
+theorem mahlerCoef_eq_mah (f : ℕ → ℚ) (j : ℕ) : mahlerCoef f j = mah f j := Formalism.MainNotions.G.Joints.F4.mahlerCoef_eq_mah f j
 
 theorem dec_of_binomDecay {p : ℕ} {f : ℕ → ℚ} (h : BinomDecay p f) : Dec p (1 / 4) 0 f := by
   intro j

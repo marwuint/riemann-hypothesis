@@ -62,8 +62,7 @@ theorem res_comp {R : Type} [CommRing R] {F : Shv R} {U V W : Scheme.{0}} (a : W
     Sec.res (a ≫ b) t = Sec.res a (Sec.res b t) := by
   simp [Sec.res]
 
-theorem res_id {R : Type} [CommRing R] {F : Shv R} {U : Scheme.{0}} (t : Sec F U) : Sec.res (𝟙 U) t = t := by
-  simp [Sec.res]
+theorem res_id {R : Type} [CommRing R] {F : Shv R} {U : Scheme.{0}} (t : Sec F U) : Sec.res (𝟙 U) t = t := GlobalTheory.EtC.sec_res_id' t
 
 end GlobalTheory.EtC.GalSec
 

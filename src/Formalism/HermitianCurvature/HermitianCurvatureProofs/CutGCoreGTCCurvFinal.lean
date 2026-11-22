@@ -9,7 +9,7 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
-theorem curvature_polynomial_holds : GTCCurvPoly := curvature_polynomial_of_scalar curvature_scalar_holds
+theorem curvature_polynomial_holds : GTCCurvPoly := Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.CurvPoly.curvature_polynomial_of_scalar curvature_scalar_holds
 
 theorem curvature_identity_holds : GTCCurvId :=
   gTCCurvId_of_cut curvature_polynomial_holds curvature_radial_torus_holds curvature_block_form_holds

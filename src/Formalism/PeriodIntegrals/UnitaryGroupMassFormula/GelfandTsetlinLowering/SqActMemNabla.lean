@@ -93,7 +93,6 @@ theorem natW_anti {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
 theorem extremal_mem {N : ℕ} (lam : DomWeight N) : extremal ℂ N lam ∈ nablaSq ℂ N lam :=
   Formalism.GradedWeylDivisibility.hwMem ℂ N N le_rfl lam.natW (natW_anti lam)
 
-theorem extremal_ne {N : ℕ} (lam : DomWeight N) : extremal ℂ N lam ≠ 0 :=
-  Formalism.GradedWeylDivisibility.hwNe ℂ N N le_rfl lam.natW
+theorem extremal_ne {N : ℕ} (lam : DomWeight N) : extremal ℂ N lam ≠ 0 := Formalism.GradedWeylDivisibility.highestWeightVectorNeZero ℂ N N le_rfl lam.natW
 
 end PI.WGL.Adj

@@ -33,5 +33,4 @@ theorem _root_.GlobalTheory.T.projective_chart_affine_coords : KH.LocGr → KH.P
       (Ring.inverse (∏ k, rs (hV Finset.univ) (g k)) * (Matrix.of fun k l => D k (rs (hV Finset.univ) (g l))).det =
           ∑ j, x j + ∑ k : Fin (n + 1), (-1 : Γ(X, V)) ^ (k : ℕ) * D k (η k) ∨
         -(Ring.inverse (∏ k, rs (hV Finset.univ) (g k)) * (Matrix.of fun k l => D k (rs (hV Finset.univ) (g l))).det) =
-          ∑ j, x j + ∑ k : Fin (n + 1), (-1 : Γ(X, V)) ^ (k : ℕ) * D k (η k)) := by
-  first | exact @GlobalTheory.CompanionTheory.ConeTransfer.main | exact GlobalTheory.CompanionTheory.ConeTransfer.main | (intros; apply GlobalTheory.CompanionTheory.ConeTransfer.main <;> assumption)
+          ∑ j, x j + ∑ k : Fin (n + 1), (-1 : Γ(X, V)) ^ (k : ℕ) * D k (η k)) := GlobalTheory.CompanionTheory.ConeTransfer.main

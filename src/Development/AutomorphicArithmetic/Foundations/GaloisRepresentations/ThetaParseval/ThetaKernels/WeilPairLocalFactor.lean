@@ -24,6 +24,5 @@ theorem _root_.GlobalTheory.T.weil_pair_local_factor : ∀ (F E : Type) [Field F
             (∀ x : Matrix (Fin nT) (Fin nS) E, ∃ y z : κ → F,
               co.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))) →
             ∀ om : UG (cA σ) (incM F JA) × UG (cA σ) (incM F JB) →* Module.End ℂ ((κ → AF F) → ℂ),
-              GlobalTheory.WeilSchrodinger.IsTransportF σ B.ψ co ω om → IsUnitaryOn (adeleClass F) om := by
-  first | exact @_root_.GlobalTheory.WeilAdmCMUnit.isUnitaryOn_transport_k | exact _root_.GlobalTheory.WeilAdmCMUnit.isUnitaryOn_transport_k | (intros; apply _root_.GlobalTheory.WeilAdmCMUnit.isUnitaryOn_transport_k <;> assumption)
+              GlobalTheory.WeilSchrodinger.IsTransportF σ B.ψ co ω om → IsUnitaryOn (adeleClass F) om := GlobalTheory.WeilUnitaryTransportF.isUnitaryOn_transportF_k
 end

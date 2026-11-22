@@ -7,7 +7,6 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SemiAbelianHomExtensi
 
 namespace GlobalTheory
 
-theorem semiAbelianHomExtension_holds : GlobalTheory.Published.SemiAbelianHomExtension :=
-  GlobalTheory.CompanionTheory.SAH.semiAbelianHomExtension
+theorem semiAbelianHomExtension_holds : GlobalTheory.Published.SemiAbelianHomExtension := GlobalTheory.CompanionTheory.SAH.semiAbelianHomExtension
 
 end GlobalTheory

@@ -42,6 +42,5 @@ theorem _root_.GlobalTheory.T.twist_kernel_div_period_isAlgebraic : ∀ {D : D7}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →
     ∀ n : D.what₂.Tau → ℕ, ∃ Ω : ℂ, Ω ≠ 0 ∧ ∀ (t : T), ∀ x ∈ GfC A', ∀ h ∈ GfC WW, ∀ U : GlobalTheory.NormSum.Tup D A'.rank WW.rank n,
-      IsAlgebraic ℚ (X.ker' W.ψ W.θ t (GlobalTheory.NormSum.minorPol D U) h x / Ω) := by
-  first | exact @_root_.GlobalTheory.BotDictAlg.kernel_div_period_isAlgebraic_alt | exact _root_.GlobalTheory.BotDictAlg.kernel_div_period_isAlgebraic_alt | (intros; apply _root_.GlobalTheory.BotDictAlg.kernel_div_period_isAlgebraic_alt <;> assumption)
+      IsAlgebraic ℚ (X.ker' W.ψ W.θ t (GlobalTheory.NormSum.minorPol D U) h x / Ω) := GlobalTheory.BotDictAlg.kernel_div_period_isAlgebraic_alt
 end

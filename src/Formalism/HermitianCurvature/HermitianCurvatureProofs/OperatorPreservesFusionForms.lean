@@ -34,8 +34,7 @@ theorem Formalism.FourierDecayAlt.P.level_group_image : Formalism.FourierDecayAl
 theorem Formalism.FourierDecayAlt.P.level_transfer : Formalism.FourierDecayAlt.Q.LevelTransfer := by
   exact level_transfer_of_levHom level_basics.1
 
-theorem Formalism.FourierDecayAlt.P.left_action_rule : Formalism.FourierDecayAlt.Q.RuleLeft := by
-  exact qnRuleLeft
+theorem Formalism.FourierDecayAlt.P.left_action_rule : Formalism.FourierDecayAlt.Q.RuleLeft := by exact Formalism.FourierDecayAlt.Q.LeftMultiplicationRule.left_multiplication_rule
 
 theorem Formalism.FourierDecayAlt.P.torus_action_rule : Formalism.FourierDecayAlt.Q.RuleTorus := by
   exact qnRuleTorus

@@ -15,9 +15,7 @@ noncomputable section
 
 namespace GlobalTheory.TwV.Xc.TwoUnits
 
-theorem embLL_mem (D : D7) (z : D.what₂.LL) : D.what₂.embLL z ∈ algebraicClosure ℚ ℂ := by
-  rw [mem_algebraicClosure_iff']
-  exact (Algebra.IsIntegral.isIntegral z).map D.what₂.embLL.toRatAlgHom
+theorem embLL_mem (D : D7) (z : D.what₂.LL) : D.what₂.embLL z ∈ algebraicClosure ℚ ℂ := Formalism.L2.G.embLL_mem_alg D z
 
 theorem lamC_zpow {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) {x : ℂ} (hx : x ∈ TaylorLogMetric.Qbar) (n : ℤ) :
     TaylorLogMetric.lamC lam (x ^ n) = TaylorLogMetric.lamC lam x ^ n := by

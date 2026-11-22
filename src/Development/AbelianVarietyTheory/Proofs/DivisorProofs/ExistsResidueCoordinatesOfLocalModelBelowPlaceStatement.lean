@@ -20,5 +20,4 @@ theorem _root_.GlobalTheory.T.exists_residue_coordinates_of_localModel_below_pla
     ∃ (j : ℕ) (s : Fin j → Q), r + j + 1 = N ∧
       ∀ P : MvPolynomial (Fin (r + j)) ℂ, P ≠ 0 →
         IsUnit (MvPolynomial.eval₂ V.const
-          (Fin.append u fun i => (⟨s i, hC _ (s i).2⟩ : V.ring)) P) := by
-  first | exact @GlobalTheory.FieldPair.exists_residue_coords_of_locModel | exact GlobalTheory.FieldPair.exists_residue_coords_of_locModel | (intros; apply GlobalTheory.FieldPair.exists_residue_coords_of_locModel <;> assumption)
+          (Fin.append u fun i => (⟨s i, hC _ (s i).2⟩ : V.ring)) P) := GlobalTheory.FieldPair.exists_residue_coords_of_locModel

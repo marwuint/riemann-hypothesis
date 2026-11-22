@@ -90,6 +90,5 @@ theorem _root_.GlobalTheory.T.twisted_moved_translate_algebraic : ∀ {D : D7} {
     ∀ (t : T), ∀ x ∈ GfC A, ∀ h ∈ GfC WW, ∀ u : WO (GlobalTheory.Grid.neg A) WW, u.map (infPart D) = 0 →
       ∃ (n : ℕ) (c : Fin n → ℂ) (w : Fin n → WO (GlobalTheory.Grid.neg A) WW), (∀ p, IsAlgebraic ℚ (c p)) ∧
         (∀ p, (w p).map (infPart D) = 0) ∧
-        X.ω t (x, h) (heisO W.ψ (GlobalTheory.Grid.neg A) WW u X.vac) = ∑ p, c p • heisO W.ψ (GlobalTheory.Grid.neg A) WW (w p) X.vac := by
-  first | exact @_root_.GlobalTheory.MovedAlg.moved_translate_eq_algebraic_combination | exact _root_.GlobalTheory.MovedAlg.moved_translate_eq_algebraic_combination | (intros; apply _root_.GlobalTheory.MovedAlg.moved_translate_eq_algebraic_combination <;> assumption)
+        X.ω t (x, h) (heisO W.ψ (GlobalTheory.Grid.neg A) WW u X.vac) = ∑ p, c p • heisO W.ψ (GlobalTheory.Grid.neg A) WW (w p) X.vac := GlobalTheory.MovedAlg.moved_translate_eq_algebraic_combination
 end

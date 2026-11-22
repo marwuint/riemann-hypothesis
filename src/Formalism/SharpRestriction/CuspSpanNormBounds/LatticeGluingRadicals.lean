@@ -2880,11 +2880,7 @@ open Formalism.BasicNotions Formalism.MainNotions.S.Lat NumberField Module IsDed
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-theorem d_starConj (D : D7) : StarConj D.host.E := by
-  intro τ x
-  have := D.host.isCMField_hostE
-  change τ (NumberField.IsCMField.complexConj D.host.E x) = _
-  rw [NumberField.IsCMField.complexEmbedding_complexConj]
+theorem d_starConj (D : D7) : StarConj D.host.E := Formalism.MainNotions.LatticeGluingRadicals.p_starConj D
 
 theorem d_isComplex (D : D7) (w : InfinitePlace D.host.E) : w.IsComplex := by
   have := D.host.isCMField_hostE
@@ -5931,8 +5927,7 @@ theorem g_detIndex (D : D7) : g_DetIndex D := g_detIndexG g_starInt
 theorem g_glueDet (D : D7) : g_GlueDet D :=
   fun Λ hΛ hu U hU => (i_gluing Λ hΛ hu U hU).2.2.2
 
-theorem g_gS_pos (D : D7) : 0 < gS D :=
-  Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos
+theorem g_gS_pos (D : D7) : 0 < gS D := Formalism.MainNotions.LatticeGluingRadicals.e_gS_pos D
 
 theorem lemma_one_det_eq_index_quotient (D : D7) (Λ : Submodule (𝓞 D.host.E) (hS D).V) {T T' : ℕ}
     (F : LFlag (hS D) D.R.rS ((T : ℕ) : D.host.E)) (F' : LFlag (hS D) D.R.rS ((T' : ℕ) : D.host.E))
@@ -6640,8 +6635,7 @@ def Lem1Det (D : D7) : Prop :=
       latDet (hS D) (La Λ (gS D) F F') =
         NG Λ F F' / ((Nat.card (BQ Λ F F') : ℝ) * (iIdx Λ (gS D) F F' : ℝ))
 
-theorem z_gS_pos (D : D7) : 0 < gS D :=
-  Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos
+theorem z_gS_pos (D : D7) : 0 < gS D := Formalism.MainNotions.LatticeGluingRadicals.e_gS_pos D
 
 theorem lemma_one_of_determinant (D : D7) (h : Lem1Det D) : VanishingOnXAndXPlusGluing.Conclusion1 D := by
   intro u T' Λ F F' hF hPr hT
@@ -9099,8 +9093,7 @@ theorem k_sqrt_prod (D : D7) (T : ℕ) :
   rw [Finset.prod_const, Finset.card_univ, NumberField.Embeddings.card, j_finrank, pow_mul', ]
   exact Real.sqrt_sq (by positivity)
 
-theorem k_A2Det (D : D7) : RadicalDeterminantIdentity D :=
-  fun u T' Λ F F' F'' β hF hPr hT' hT'' hP _ W hW => h_a2det D u T' Λ F F' F'' β hF hPr hT' hT'' hP W hW
+theorem k_A2Det (D : D7) : RadicalDeterminantIdentity D := Formalism.MainNotions.LatticeGluingRadicals.z_A2Det D
 
 theorem radical_setting_second (D : D7) : VanishingOnXAndXPlusGluing.HyperplaneRank D := radical_second_of_determinant D (k_A2Det D)
 

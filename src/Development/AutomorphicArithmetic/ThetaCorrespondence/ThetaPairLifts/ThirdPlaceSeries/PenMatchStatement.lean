@@ -22,6 +22,5 @@ theorem _root_.GlobalTheory.T.true_geometry_line_family_value : ∀ {B : GlobalT
         (Formalism.L2.Col.inFr (Formalism.L2.Col.frsF I.sel (I.tup (W.P.I.tup t)) (J.A.p0 (a.G n).s (J.ι _ α)).1.1 P)
           (Formalism.L2.Col.frsF I.sel (I.tup (W.P.I.tup t)) (J.A.p0 ((a.G n).s + 1) (J.ι _ γ)).1.1 P) (GlobalTheory.QTw.homOf I l Z (a.G n).s hj z))
         ((Formalism.L2.Col.frsF I.sel (I.tup (W.P.I.tup t)) (J.A.p0 ((a.G n).s + 1) (J.ι _ γ)).1.1 P).symm
-          (Formalism.L2.Col.repY (J.A.p0 ((a.G n).s + 1) (J.ι _ γ)).1.2))) = c * _root_.GlobalTheory.Fam.PenLoc.penXi_alt a n z := by
-  first | exact @_root_.GlobalTheory.Fam.PenLoc.pen_match_alt | exact _root_.GlobalTheory.Fam.PenLoc.pen_match_alt | (intros; apply _root_.GlobalTheory.Fam.PenLoc.pen_match_alt <;> assumption)
+          (Formalism.L2.Col.repY (J.A.p0 ((a.G n).s + 1) (J.ι _ γ)).1.2))) = c * _root_.GlobalTheory.Fam.PenLoc.penXi_alt a n z := GlobalTheory.Fam.PenLoc.pen_match_alt
 end

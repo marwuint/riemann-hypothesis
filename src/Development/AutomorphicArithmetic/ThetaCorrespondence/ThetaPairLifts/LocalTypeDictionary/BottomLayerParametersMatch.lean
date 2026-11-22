@@ -61,6 +61,5 @@ theorem _root_.GlobalTheory.T.theta_parameters_match : _root_.GlobalTheory.FunPr
           ∀ (ea : P.a = A.rank) (ed : P.d = WW.rank) (h : GA D P.d) (g : GA D WW) (x : GA D P.a) (y : GA D A),
             GlobalTheory.BotFormula.IsFinPt WW g h → GlobalTheory.BotFormula.IsFinPt A y x →
             GlobalTheory.AdForm.xiN W.θ A WW ea.symm ed.symm r rc (fun w => starRingEnd ℂ (X.ω s (y, g) (X.f s) w)) =
-              (κ * starRingEnd ℂ u) • P.W.Om x h P.F := by
-  first | exact @_root_.GlobalTheory.ReadMatch.bottom_layer_parameters_match | exact _root_.GlobalTheory.ReadMatch.bottom_layer_parameters_match | (intros; apply _root_.GlobalTheory.ReadMatch.bottom_layer_parameters_match <;> assumption)
+              (κ * starRingEnd ℂ u) • P.W.Om x h P.F := GlobalTheory.ReadMatch.bottom_layer_parameters_match
 end

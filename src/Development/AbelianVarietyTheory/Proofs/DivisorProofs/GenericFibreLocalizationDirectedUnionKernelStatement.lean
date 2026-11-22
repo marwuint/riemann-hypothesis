@@ -30,5 +30,4 @@ theorem _root_.GlobalTheory.T.genericFibreLocalization_directedUnion_kernel : �
           (GlobalTheory.LocAcyc.GenFib (𝒜 l) (Localization.AtPrime (Q.comap (e l))))
           (algebraMap (Ek l) (Localization.AtPrime (Q.comap (e l))) (h k l hkl y))) →
     ∀ k (x : GlobalTheory.LocAcyc.GenFib (𝒜 k) (Localization.AtPrime (Q.comap (e k)))), g k x = 0 →
-      ∃ l, ∃ hkl : k ≤ l, f k l hkl x = 0 := by
-  first | (exact @GlobalTheory.genFib_colim_ker) | (exact GlobalTheory.genFib_colim_ker) | (intros; apply GlobalTheory.genFib_colim_ker  <;> assumption)
+      ∃ l, ∃ hkl : k ≤ l, f k l hkl x = 0 := GlobalTheory.genFib_colim_ker

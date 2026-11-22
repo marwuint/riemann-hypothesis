@@ -11,5 +11,4 @@ theorem PositivityTheory.ThKW.exists_finite_lattice_cover_open : ∀ (F E : Type
       ∀ e, IsSplitIdemF σ e → ∀ U : AddSubgroup (WOF F E nS nT), IsOpen (U : Set (WOF F E nS nT)) →
         ∃ G : Finset (WOF F E nS nT), (∀ g ∈ G, ∀ i j, e * g i j = g i j) ∧
           ∀ y : WOF F E nS nT, (∀ i j, cAF σ e * y i j = y i j) →
-            (∀ g ∈ G, B.ψ (symplOHF σ JS JT ξ₀ g y - symplOHF σ JS JT ξ₀ y g) = 1) → y ∈ U :=
-  GlobalTheory.SplitLagrF.exists_finset_ann_le
+            (∀ g ∈ G, B.ψ (symplOHF σ JS JT ξ₀ g y - symplOHF σ JS JT ξ₀ y g) = 1) → y ∈ U := GlobalTheory.SplitLagrF.exists_finset_ann_le

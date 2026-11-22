@@ -16,5 +16,4 @@ theorem _root_.GlobalTheory.T.mirabolicAverage_eq_coeff_singlePlaceElement : ∀
     GlobalTheory.DownLift.mirC R i (plg kv0) a b ε y = (open Classical in if ∀ kv, kv ≠ kv0 → eR y kv = 1 then
       (GlobalTheory.MirAvg.mirEl ((zpowGroupHom ε).comp ((R.chi ((i : ℕ) + 1) (plg kv0).1).comp
         (Units.map (iso kv0 : ZMod (D.host.g kv0.1) →* kP (plg kv0).1))))
-        (fun j => (iso kv0).symm (a j)) b).coeff (eR y kv0) else 0) := by
-  first | exact @GlobalTheory.MirAvg.mirC_eq_coeff_mirEl | exact GlobalTheory.MirAvg.mirC_eq_coeff_mirEl | (intros; apply GlobalTheory.MirAvg.mirC_eq_coeff_mirEl <;> assumption)
+        (fun j => (iso kv0).symm (a j)) b).coeff (eR y kv0) else 0) := GlobalTheory.MirAvg.mirC_eq_coeff_mirEl

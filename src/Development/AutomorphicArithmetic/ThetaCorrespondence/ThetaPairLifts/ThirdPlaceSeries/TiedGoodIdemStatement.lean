@@ -14,6 +14,5 @@ theorem _root_.GlobalTheory.T.group_idempotent_coefficients_alt : ∀ {D : D7} {
     (∀ k : p.P.Gp, ∑ g, (idemOf p.P.A3.A.X).coeff g * (idemOf p.P.A3.A.X).coeff (g⁻¹ * k) = (idemOf p.P.A3.A.X).coeff k) ∧
     (∀ g h : p.P.Gp, (idemOf p.P.A3.A.X).coeff (h * g * h⁻¹) = (idemOf p.P.A3.A.X).coeff g) ∧
     (∀ g : p.P.Gp, IsIntegral ℤ ((Fintype.card p.P.Gp : D.what₂.LL) * (idemOf p.P.A3.A.X).coeff g)) ∧
-    ∀ (σ : D.what₂.LL →+* ℂ) (g : p.P.Gp), σ ((idemOf p.P.A3.A.X).coeff g⁻¹) = starRingEnd ℂ (σ ((idemOf p.P.A3.A.X).coeff g)) := by
-  first | exact @_root_.GlobalTheory.TieIdem.tied_good_idem_alt | exact _root_.GlobalTheory.TieIdem.tied_good_idem_alt | (intros; apply _root_.GlobalTheory.TieIdem.tied_good_idem_alt <;> assumption)
+    ∀ (σ : D.what₂.LL →+* ℂ) (g : p.P.Gp), σ ((idemOf p.P.A3.A.X).coeff g⁻¹) = starRingEnd ℂ (σ ((idemOf p.P.A3.A.X).coeff g)) := GlobalTheory.TieIdem.tied_good_idem_alt
 end

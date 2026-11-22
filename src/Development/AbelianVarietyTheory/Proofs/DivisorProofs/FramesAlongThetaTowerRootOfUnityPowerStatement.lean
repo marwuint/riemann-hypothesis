@@ -33,5 +33,4 @@ theorem _root_.GlobalTheory.T.frames_along_theta_tower_root_of_unity_power : ∀
         Geo.Tor.gw 𝔪₂.wl (x₂ a).left z (J ((x₂ a).left ≫ 𝔪₂.φ)) (J' (x₂ a).left) * val (fr₂ a) (𝟙 _) z J' =
           val (𝔗.X₂.ρ.fr a) (show (TFK (R := V') (FractionRing V')).left ⟶ (baseOver (Sp 𝔗.X₂.S.R)).left from spMap 𝔪₂.yK) z J) →
     ∃ c : (FractionRing V')ˣ, ∀ b, FrPull w f (x₂ (𝔗.lam b)) (fr₂ (𝔗.lam b)) (x b) (fr b)
-      ((c : FractionRing V') * 𝔪₂.yK ⟨algebraMap 𝔗.X₂.o₁ 𝔗.X₂.Ω₁ 𝔗.X₂.S.ζ, 𝔗.X₂.S.R.algebraMap_mem _⟩ ^ k b) := by
-  first | exact @GlobalTheory.Poinc.Sep.BaseTerms.frames_along_tower | exact GlobalTheory.Poinc.Sep.BaseTerms.frames_along_tower | (intros; apply GlobalTheory.Poinc.Sep.BaseTerms.frames_along_tower <;> assumption)
+      ((c : FractionRing V') * 𝔪₂.yK ⟨algebraMap 𝔗.X₂.o₁ 𝔗.X₂.Ω₁ 𝔗.X₂.S.ζ, 𝔗.X₂.S.R.algebraMap_mem _⟩ ^ k b) := GlobalTheory.Poinc.Sep.BaseTerms.frames_along_tower

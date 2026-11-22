@@ -202,9 +202,7 @@ theorem odd_mul_sub_mem (L : PeriodPair) {k : ℕ} (hk : Odd k) {s P : ℂ} (hs 
   rw [this]
   exact add_mem (Submodule.smul_mem _ _ hs) hP
 
-theorem wp_congr (L : PeriodPair) {z w : ℂ} (h : z - w ∈ L.lattice) : L.weierstrassP z = L.weierstrassP w := by
-  have := L.weierstrassP_add_coe w ⟨z - w, h⟩
-  simpa using this
+theorem wp_congr (L : PeriodPair) {z w : ℂ} (h : z - w ∈ L.lattice) : L.weierstrassP z = L.weierstrassP w := Formalism.L2.Th1.F.EndoZ.wp_congr L h
 
 theorem nat_mul_mem (L : PeriodPair) (k : ℕ) {z : ℂ} (h : z ∈ L.lattice) : (k : ℂ) * z ∈ L.lattice := by
   simpa [zsmul_eq_mul] using L.lattice.smul_mem (k : ℤ) h

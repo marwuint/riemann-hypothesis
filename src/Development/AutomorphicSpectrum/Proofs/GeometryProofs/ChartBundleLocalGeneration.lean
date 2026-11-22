@@ -15,7 +15,6 @@ theorem chartBundle_dotDual_localFrame : ∀ (O : Type) [CommRing O] (Ω : Type)
       ∑ l, c l * f l = 1 ∧ ∀ l, ∃ b : Fin r → Fin r → Ω, LinearIndependent Ω b ∧
         Submodule.span Ω (Set.range b) = ⊤ ∧ ∀ e : Fin r → Ω,
           ((∃ n : ℕ, f l ^ n • e ∈ dotDual (chartRing O x i) (B.lat i)) ↔
-            ∃ a : Fin r → Ω, (∀ q, ∃ n : ℕ, f l ^ n * a q ∈ chartRing O x i) ∧ e = ∑ q, a q • b q) :=
-  PositivityTheory.Xgn.hodge_dual_frame_exists
+            ∃ a : Fin r → Ω, (∀ q, ∃ n : ℕ, f l ^ n * a q ∈ chartRing O x i) ∧ e = ∑ q, a q • b q) := PositivityTheory.Xgn.hodge_dual_frame_exists
 
 end GlobalTheory.CompanionTheory.Ar.Num

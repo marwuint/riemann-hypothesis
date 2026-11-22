@@ -25,5 +25,4 @@ theorem _root_.GlobalTheory.T.exists_torsor_descent_directedUnion_subring : ∀ 
         GlobalTheory.KeyOriginCut.IsZTorsor (GlobalTheory.LocAcyc.GenFib (𝒜 i) (Localization.AtPrime (Q.comap e))) D q actA ∧
         ∀ (C : Type) [CommRing C] (ψ : GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q) →+* C) (σ : D →+* C),
           σ.comp (algebraMap (GlobalTheory.LocAcyc.GenFib (𝒜 i) (Localization.AtPrime (Q.comap e))) D) = ψ.comp β →
-          ∃ σ₁ : D₁ →+* C, σ₁.comp (algebraMap (GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q)) D₁) = ψ := by
-  first | (exact @GlobalTheory.TorsorUnionDescent.exists_stage_torsor) | (exact GlobalTheory.TorsorUnionDescent.exists_stage_torsor) | (intros; apply GlobalTheory.TorsorUnionDescent.exists_stage_torsor  <;> assumption)
+          ∃ σ₁ : D₁ →+* C, σ₁.comp (algebraMap (GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q)) D₁) = ψ := GlobalTheory.TorsorUnionDescent.exists_stage_torsor

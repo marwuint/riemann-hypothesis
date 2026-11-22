@@ -8,19 +8,10 @@ open scoped Classical
 
 namespace GlobalTheory.CompanionTheory.SplitCpt
 
-theorem cptPart_le_self' {G : Type} [Group G] [TopologicalSpace G] (T : Subgroup G) : cptPart T ≤ T := by
-  rw [cptPart, Subgroup.closure_le]
-  rintro t ⟨ht, -⟩
-  exact ht
+theorem cptPart_le_self' {G : Type} [Group G] [TopologicalSpace G] (T : Subgroup G) : cptPart T ≤ T := GlobalTheory.EulerAbs.cptPart_le_self_term T
 
 theorem mem_map_conj {G : Type} [Group G] (K : Subgroup G) (x c : G) :
-    c ∈ K.map (MulAut.conj x).toMonoidHom ↔ x⁻¹ * c * x ∈ K := by
-  constructor
-  · rintro ⟨k, hk, rfl⟩
-    simpa [mul_assoc] using hk
-  · intro h
-    refine ⟨_, h, ?_⟩
-    simp [mul_assoc]
+    c ∈ K.map (MulAut.conj x).toMonoidHom ↔ x⁻¹ * c * x ∈ K := GlobalTheory.EulerAbs.mem_map_conj_iff_term K x c
 
 theorem split_cpt : ∀ {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [T2Space H] (σ : H →* H) (K : Subgroup H) (d d' : H),
   Continuous σ → (∀ g, σ (σ g) = g) → IsOpen (K : Set H) → IsCompact (K : Set H) → (∀ k ∈ K, σ k ∈ K) →

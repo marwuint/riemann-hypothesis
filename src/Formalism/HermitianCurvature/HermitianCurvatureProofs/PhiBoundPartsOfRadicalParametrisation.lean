@@ -16,22 +16,12 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.U Formalism.REAL Formal
 namespace Formalism.FourierDecayAlt.P.Ux10
 
 theorem block2_det_lower_triangular {p s : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (C : Matrix (Fin s) (Fin p) ℂ)
-    (D : Matrix (Fin s) (Fin s) ℂ) : (blk2 A 0 C D).det = A.det * D.det := by
-  unfold blk2
-  rw [Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₁₂]
+    (D : Matrix (Fin s) (Fin s) ℂ) : (blk2 A 0 C D).det = A.det * D.det := Formalism.FourierDecayAlt.P.Ux6.block2_det_lower_triangular A C D
 
 theorem block2_det_upper_triangular {p s : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (B : Matrix (Fin p) (Fin s) ℂ)
-    (D : Matrix (Fin s) (Fin s) ℂ) : (blk2 A B 0 D).det = A.det * D.det := by
-  unfold blk2
-  rw [Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]
+    (D : Matrix (Fin s) (Fin s) ℂ) : (blk2 A B 0 D).det = A.det * D.det := Formalism.FourierDecayAlt.P.Ux4.block2_det_upper_triangular A B D
 
-theorem det_upper {p : ℕ} (u : G.UT p → ℂ) : (G.upper u).det = 1 := by
-  have h : (G.upper u).BlockTriangular id := by
-    intro i j hij
-    simp only [id] at hij
-    simp [G.upper, G.strictUpper, ne_of_gt hij, not_lt.mpr (le_of_lt hij)]
-  rw [Matrix.det_of_isUpperTriangular h]
-  simp [G.upper, G.strictUpper]
+theorem det_upper {p : ℕ} (u : G.UT p → ℂ) : (G.upper u).det = 1 := Formalism.FourierDecayAlt.P.Ux5.det_upper' u
 
 theorem det_lowW {p : ℕ} (σ : Equiv.Perm (Fin p)) (v : LW σ → ℂ) : (lowW σ v).det = 1 := by
   have h : (lowW σ v).BlockTriangular OrderDual.toDual := by

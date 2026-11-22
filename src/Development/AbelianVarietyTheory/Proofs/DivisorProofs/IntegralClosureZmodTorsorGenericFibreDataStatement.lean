@@ -20,5 +20,4 @@ theorem _root_.GlobalTheory.T.integralClosure_zmodTorsor_genericFibre_data : ∀
       GlobalTheory.GoodEtale.TorsionFreeOver A R (GlobalTheory.KeyOriginNoeth.closure A R D) ∧
       GlobalTheory.GoodEtale.Hart A R (GlobalTheory.KeyOriginNoeth.closure A R D) ∧
       Algebra.IsIntegral R (GlobalTheory.KeyOriginNoeth.closure A R D) ∧
-      Nontrivial (GlobalTheory.KeyOriginNoeth.closure A R D) := by
-  first | (exact @GlobalTheory.ClosureData.closureData) | (exact GlobalTheory.ClosureData.closureData) | (intros; apply GlobalTheory.ClosureData.closureData  <;> assumption)
+      Nontrivial (GlobalTheory.KeyOriginNoeth.closure A R D) := GlobalTheory.ClosureData.closureData

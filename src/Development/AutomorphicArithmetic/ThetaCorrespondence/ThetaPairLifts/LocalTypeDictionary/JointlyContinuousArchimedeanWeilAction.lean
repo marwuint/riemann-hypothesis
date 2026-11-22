@@ -143,6 +143,5 @@ theorem _root_.GlobalTheory.T.jointly_continuous_archimedean_weil_action : _root
     ∀ (h k : ℝ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d)) (h₀ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d)),
     (∀ t : ℝ, om (γ (Multiplicative.ofAdd t), 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (h t) r) =
       GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (k t) r) →
-    Filter.Tendsto h (nhds 0) (nhds h₀) → Filter.Tendsto k (nhds 0) (nhds h₀) := by
-  first | exact @_root_.GlobalTheory.ArchJointCont.tendsto_schrodinger_action_along_line | exact _root_.GlobalTheory.ArchJointCont.tendsto_schrodinger_action_along_line | (intros; apply _root_.GlobalTheory.ArchJointCont.tendsto_schrodinger_action_along_line <;> assumption)
+    Filter.Tendsto h (nhds 0) (nhds h₀) → Filter.Tendsto k (nhds 0) (nhds h₀) := GlobalTheory.ArchJointCont.tendsto_schrodinger_action_along_line
 end

@@ -15,5 +15,4 @@ theorem _root_.GlobalTheory.T.exists_unimodular_gram_inverse_inertPlace : ∀ (F
         (fun i => ι (((P : Matrix (Fin n) (Fin n) L) *ᵥ x) i)) ∈ GlobalTheory.InertSph.latAt X v) →
       ∃ JS : GL (Fin n) L, JS ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L) ∧
         ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = GlobalTheory.InertLocFrame.gram σL ι P X.J ∧
-        ∀ i j, σL ((JS : Matrix (Fin n) (Fin n) L) i j) = (JS : Matrix (Fin n) (Fin n) L) j i := by
-  first | exact @GlobalTheory.InertGram.exists_gram_inv | exact GlobalTheory.InertGram.exists_gram_inv | (intros; apply GlobalTheory.InertGram.exists_gram_inv <;> assumption)
+        ∀ i j, σL ((JS : Matrix (Fin n) (Fin n) L) i j) = (JS : Matrix (Fin n) (Fin n) L) j i := GlobalTheory.InertGram.exists_gram_inv

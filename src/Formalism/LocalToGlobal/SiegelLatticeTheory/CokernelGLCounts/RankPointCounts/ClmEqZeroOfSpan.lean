@@ -76,9 +76,7 @@ theorem clm_eq_zero_of_span {W W' : Type} [NormedAddCommGroup W] [InnerProductSp
     LinearMap.ext_on hS (fun v hv => by simp [h v hv])
   exact LinearMap.congr_fun h1 w
 
-theorem jm_allPos' (k : ℕ) : Formalism.REAL.Jm (allPos k) = 1 := by
-  unfold Formalism.REAL.Jm allPos
-  simp
+theorem jm_allPos' (k : ℕ) : Formalism.REAL.Jm (allPos k) = 1 := Formalism.MainNotions.BridgeLemma.Jm_allPos k
 
 theorem memU_iff {k : ℕ} (g : Matrix (Fin k) (Fin k) ℂ) : g ∈ UJset (allPos k) ↔ gᴴ * g = 1 := by
   simp only [UJset, Set.mem_setOf_eq, Formalism.REAL.inUJ, jm_allPos', Matrix.mul_one]

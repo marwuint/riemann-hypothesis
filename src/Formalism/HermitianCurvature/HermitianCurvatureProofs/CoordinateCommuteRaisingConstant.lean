@@ -3337,7 +3337,7 @@ theorem qQRTTEntries : QQRTTEntries := ModelAlgebraRelations.entries_of sSNorm s
 
 theorem qQRTTOfEntries : QQRTTOfEntries := ModelAlgebraRelations.PC.ofEntries
 
-theorem qQRTT : QQRTT := qQRTTOfEntries qQRTTEntries
+theorem qQRTT : QQRTT := Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations.PC.ofEntries qQRTTEntries
 
 end Formalism.FourierDecayAlt.P.MAx1
 
@@ -5052,9 +5052,7 @@ theorem kap_comm_diag (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P �
 theorem kap_comm_sc (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P → ℂ) (w : D.Pr) : Commute (kap P D f) (sc P D w) :=
   kap_comm_diag P D f _
 
-theorem kap_comm_kap (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f g : Ty P → ℂ) : Commute (kap P D f) (kap P D g) := by
-  show _ * _ = _ * _
-  rw [← map_mul, ← map_mul, mul_comm]
+theorem kap_comm_kap (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f g : Ty P → ℂ) : Commute (kap P D f) (kap P D g) := Formalism.FourierDecayAlt.P.MAx1.D7.kap_comm_kap P D f g
 
 theorem star_kap (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P → ℂ) : star (kap P D f) = kap P D (star f) := by
   rw [kap_eq, kap_eq, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]
@@ -5666,7 +5664,7 @@ open Formalism.FourierDecayAlt.MA
 
 theorem startIsStart : StartIsStart := startIsStartAssemble qQHerm qQRTT qQDet
 
-theorem startOK : StartOK := startAssemble startIsStart lower_left_commute sSScalar sSShift rho_raise
+theorem startOK : StartOK := Formalism.FourierDecayAlt.P.MAx1.WeylSymmetry.startOK_of startIsStart lower_left_commute sSScalar sSShift rho_raise
 
 end Formalism.FourierDecayAlt.P.MAx1
 

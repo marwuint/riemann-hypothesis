@@ -22,6 +22,5 @@ theorem _root_.GlobalTheory.T.exists_galois_rep_family_bounded_alt : GlobalTheor
             algebraMap ℚ_[T.l i] (Qbar (T.l i)) (z : ℚ_[T.l i])) →
           (∀ x : ↥D.LL0, ι (φ ((if b then T.emb0 i else T.emb0b i) x)) = embLL0 D x) →
           IsRepOf D (T.l i) ι (D.naut.tw π D.naut.etaTinv) ((1 - (D.R.nV : ℝ)) / 2)
-            (mapRep (φ.comp (algebraMap (T.O0 i) (FractionRing (T.O0 i)))) (rho i σ b)) := by
-  first | exact @_root_.GlobalTheory.HeightCounting.RowRhoInt.rho_rows_alt | exact _root_.GlobalTheory.HeightCounting.RowRhoInt.rho_rows_alt | (intros; apply _root_.GlobalTheory.HeightCounting.RowRhoInt.rho_rows_alt <;> assumption)
+            (mapRep (φ.comp (algebraMap (T.O0 i) (FractionRing (T.O0 i)))) (rho i σ b)) := GlobalTheory.HeightCounting.RowRhoInt.rho_rows_alt
 end

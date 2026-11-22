@@ -17,5 +17,4 @@ theorem _root_.GlobalTheory.T.exists_isotropic_saturated_weight_filtration : ∀
     ∃ (tK : SAB H (Sp (FractionRing R))) (m1 : SABMap tK C.t (jK R)) (m2 : SABMap tK Xo.univ.t (C.y ≫ pullback.fst _ _)),
       ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F],
         ∃ I : (letI := H.starRing; TateIsoQ Dw C.P.D.toPre C.P.oD F),
-          GlobalTheory.LowDat.XFLevel C tK m1 m2 F I ∧ GlobalTheory.LowDat.FiltGraded C Z F I := by
-  first | exact @GlobalTheory.LowFilt.exists_filt | exact GlobalTheory.LowFilt.exists_filt | (intros; apply GlobalTheory.LowFilt.exists_filt <;> assumption)
+          GlobalTheory.LowDat.XFLevel C tK m1 m2 F I ∧ GlobalTheory.LowDat.FiltGraded C Z F I := GlobalTheory.LowFilt.exists_filt

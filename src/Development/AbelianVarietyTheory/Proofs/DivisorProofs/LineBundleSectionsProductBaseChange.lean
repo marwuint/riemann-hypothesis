@@ -49,8 +49,7 @@ namespace GlobalTheory.HomFixMatEx
 
 theorem res_appLE {X Y : Scheme.{0}} (f : X ⟶ Y) {U : Y.Opens} {V V' : X.Opens} (e : V ≤ f ⁻¹ᵁ U) (h : V' ≤ V)
     (x : Γ(Y, U)) :
-    (X.presheaf.map (homOfLE h).op).hom ((f.appLE U V e).hom x) = (f.appLE U V' (h.trans e)).hom x := by
-  rw [← CommRingCat.comp_apply, Scheme.Hom.appLE_map]
+    (X.presheaf.map (homOfLE h).op).hom ((f.appLE U V e).hom x) = (f.appLE U V' (h.trans e)).hom x := GlobalTheory.RigNorm.res_appLE f e h x
 
 end GlobalTheory.HomFixMatEx
 

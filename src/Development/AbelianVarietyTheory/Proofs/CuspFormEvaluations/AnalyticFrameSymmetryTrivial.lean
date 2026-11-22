@@ -17,33 +17,10 @@ open scoped ContDiff
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem tay_coord {g : ℕ} (k : Fin g) :
-    tay (fun v : Fin g → ℂ => v k) 0 = MvPowerSeries.X ((0 : Fin 1), k) := by
-  have hc : ContDiffAt ℂ ω (fun v : Fin g → ℂ => v k) 0 := (contDiff_apply ℂ ℂ k).contDiffAt
-  refine TCPf.eq_of_cc _ _ fun l => ?_
-  rcases List.eq_nil_or_concat l with rfl | ⟨l', q, rfl⟩
-  · simp only [List.foldr_nil, constantCoeff_tay, MvPowerSeries.constantCoeff_X]
-    show lD _ 0 (Multiset.toList 0) = 0
-    rw [Multiset.toList_zero]
-    exact iteratedFDeriv_zero_apply _
-  · rw [List.concat_eq_append, List.foldr_append, List.foldr_append]
-    congr 2
-    obtain ⟨a, j⟩ := q
-    obtain rfl : a = 0 := Subsingleton.elim _ _
-    simp only [List.foldr_cons, List.foldr_nil]
-    rw [TM.pderiv_tay hc]
-    have : (fun y : Fin g → ℂ => fderiv ℂ (fun v : Fin g → ℂ => v k) y (Pi.single j 1)) =
-        fun _ => (Pi.single j (1 : ℂ) : Fin g → ℂ) k := by
-      funext y
-      rw [(hasFDerivAt_apply (𝕜 := ℂ) k y).fderiv]
-      rfl
-    rw [this, TM.tay_const, MvPowerSeries.pderiv_X]
-    by_cases h : k = j
-    · subst h; simp
-    · simp [h, Pi.single_apply]
+    tay (fun v : Fin g → ℂ => v k) 0 = MvPowerSeries.X ((0 : Fin 1), k) := GlobalTheory.JetLinSub.tay_coord k
 
 theorem psJet_X {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (s : κ) :
-    psJet m (MvPowerSeries.X s : MvPowerSeries κ ℂ) = Ideal.Quotient.mk _ (MvPolynomial.X s) := by
-  rw [← MvPolynomial.coe_X, psJet, FBIdJet.psTrunc_eq, FBIdJet.mk_trunc_coe]
+    psJet m (MvPowerSeries.X s : MvPowerSeries κ ℂ) = Ideal.Quotient.mk _ (MvPolynomial.X s) := GlobalTheory.JetLinSub.psJet_X m s
 
 theorem jetN_coord {n g : ℕ} (m : ℕ) (i : Fin n) (j : Fin g) :
     jetN m (fun w : Fin n → Fin g → ℂ => w i j) = Ideal.Quotient.mk _ (MvPolynomial.X (i, j)) := by

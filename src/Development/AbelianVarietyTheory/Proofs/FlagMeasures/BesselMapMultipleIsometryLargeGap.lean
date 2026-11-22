@@ -20,45 +20,7 @@ theorem schur_fdeg_gap : HypsG → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) →
     ∀ v w v' w' : R.H, Integrable (fun x : Formalism.QuantumDeterminants.Mt k r =>
       ⟪w, R.σ (Matrix.of x) v⟫_ℂ * star ⟪w', R.σ (Matrix.of x) v'⟫_ℂ) μG ∧
       ∫ x, ⟪w, R.σ (Matrix.of x) v⟫_ℂ * star ⟪w', R.σ (Matrix.of x) v'⟫_ℂ ∂μG =
-        ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / ((c * Formalism.QuantumDeterminants.fdegHC mu : ℝ) : ℂ) := by
-  intro hy k r ε μG hμ
-  have hHC : HCFdegG := hy.2.2.2.2.2.2
-  by_cases hQ : ∃ Q, PI.UpqRep.IsCayleyU k r ε Q
-  swap
-  · refine ⟨1, one_pos, fun mu R hR => absurd ?_ hQ⟩
-    obtain ⟨Q, hQ, -⟩ := hR.2
-    exact ⟨Q, hQ⟩
-  obtain ⟨c, hc, hF⟩ := hHC k r ε hQ
-  obtain ⟨Q, hQ⟩ := hQ
-  have hP : IsUnit Q.det := (Matrix.isUnit_iff_isUnit_det Q).1 hQ.1.1
-  have hH : Qᴴ * Formalism.REAL.Jm ε * Q = Formalism.QuantumDeterminants.Hpk k r := hQ.1.2
-  obtain ⟨a, ha0, hat, ha⟩ := GlobalTheory.BesselDegree.haar_eq_smul hP hH μG hμ
-  have hapos : 0 < a.toReal := ENNReal.toReal_pos ha0 hat
-  have hme : MeasurableEmbedding (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi ε Q) :=
-    (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi_closedEmbedding (ε := ε) Formalism.REAL.isClosedEmbeddingMatrix hP).measurableEmbedding
-  refine ⟨c / a.toReal, div_pos hc hapos, fun mu R hR => ?_⟩
-  have hDS := (GlobalTheory.CayleyChoice.cayley_exists_and_any k r).2 ε mu R (GlobalTheory.isDS_of_isDG hR) Q hQ
-  obtain ⟨hd, hS⟩ := hF mu R.H _ hR.gap hR.hc hDS
-  have hd' : 0 < c / a.toReal * Formalism.QuantumDeterminants.fdegHC mu := by
-    rw [div_mul_eq_mul_div]; exact div_pos hd hapos
-  have key : ∀ v w v' w' : R.H, Integrable (fun x : Formalism.QuantumDeterminants.Mt k r =>
-      ⟪w, R.σ (Matrix.of x) v⟫_ℂ * star ⟪w', R.σ (Matrix.of x) v'⟫_ℂ) μG ∧
-      ∫ x, ⟪w, R.σ (Matrix.of x) v⟫_ℂ * star ⟪w', R.σ (Matrix.of x) v'⟫_ℂ ∂μG =
-        ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / ((c / a.toReal * Formalism.QuantumDeterminants.fdegHC mu : ℝ) : ℂ) := by
-    intro v w v' w'
-    obtain ⟨h1, h2⟩ := hS v w v' w'
-    rw [ha]
-    constructor
-    · refine Integrable.smul_measure ?_ hat
-      rw [hme.integrable_map_iff]
-      exact h1
-    · rw [integral_smul_measure, hme.integral_map]
-      have h3 : ∫ g, ⟪w, R.σ (Matrix.of (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi ε Q g)) v⟫_ℂ *
-          star ⟪w', R.σ (Matrix.of (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi ε Q g)) v'⟫_ℂ
-          ∂(Formalism.REAL.muG ε) = ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / ((c * Formalism.QuantumDeterminants.fdegHC mu : ℝ) : ℂ) := h2
-      rw [h3, div_mul_eq_mul_div, Complex.ofReal_div, div_div_eq_mul_div, Complex.real_smul]
-      ring
-  exact ⟨fun w hw => Formalism.FourierDecayAlt.P.DDSmoothness.fdeg_eq hd' key hw, key⟩
+        ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / ((c * Formalism.QuantumDeterminants.fdegHC mu : ℝ) : ℂ) := Gp91.GlobalTheory.BesselDegree.schur_fdeg
 
 theorem exists_mass_eq (hH : GlobalTheory.GapIn.Hyp) {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
     {mu : Fin (2 * r + k + 1) → ℝ} {h : ℝ}

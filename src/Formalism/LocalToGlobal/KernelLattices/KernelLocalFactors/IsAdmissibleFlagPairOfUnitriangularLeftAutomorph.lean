@@ -18,13 +18,10 @@ open Formalism.L2.Th1.H
 open Formalism.MainNotions
 open Formalism.MainNotions.GlobalTheoryTheory.Inhab (mem_stdL single_mem_stdL)
 
-theorem kInterInv : InterInv :=
-  InterInv_of heisenbergComm (InterReps_of semicharacterHom) (InterFixed_of semicharacterHom) cosetRepsExist
+theorem kInterInv : InterInv := Formalism.L2.Th1.H.interInv
 theorem kInterTh : InterTh := InterTh_of semicharacterHom heisenbergAnalytic
 theorem kLineTransport : LineTransport := LineTransport_of kInterInv kInterTh
-theorem kThetaVector : ThetaVector :=
-  ThetaVector_of kLineTransport ThStd_proof product_theta_mem StdSelfDual_proof StdSemiChar_proof (ThIsom_of heisenbergIsometry)
-    fourth_root
+theorem kThetaVector : ThetaVector := Formalism.L2.Th1.H.thetaVector
 
 theorem formV_apply (A : ℝ) (n : Type) [Fintype n] (N N' : ℕ) (z w : n → Fin N' → Fin N → ℂ) :
     formV A n N N' z w = (∑ τ, ∑ i, ∑ j, z τ i j * conj (w τ i j)) / (A : ℂ) := rfl

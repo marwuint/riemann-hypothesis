@@ -70,6 +70,5 @@ theorem _root_.GlobalTheory.T.cuspForm_gelfandKirillov_finite_decomposition : _r
           (w : M.H τ) = M.rep τ g (u τ) → F l (Function.update u τ w) = rTr V (atTau θ V τ g) (F l u)) ∧
       (∀ τ, ∀ X ∈ lieAt V τ, ∀ (u : ∀ τ, GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin (M.ε τ) (M.σ τ)) (w : GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin (M.ε τ) (M.σ τ)),
           HasDerivAt (fun t : ℝ => M.rep τ (NormedSpace.exp (t • X)) (u τ : M.H τ)) (w : M.H τ) 0 →
-          F l (Function.update u τ w) = Rder θ V τ X (F l u))) ∧ ∀ g, ψ g = ∑ l, F l (u l) g := by
-  first | exact @_root_.GlobalTheory.CuspGK.exists_finite_sum_gelfandKirillov_multiplicity | exact _root_.GlobalTheory.CuspGK.exists_finite_sum_gelfandKirillov_multiplicity | (intros; apply _root_.GlobalTheory.CuspGK.exists_finite_sum_gelfandKirillov_multiplicity <;> assumption)
+          F l (Function.update u τ w) = Rder θ V τ X (F l u))) ∧ ∀ g, ψ g = ∑ l, F l (u l) g := GlobalTheory.CuspGK.exists_finite_sum_gelfandKirillov_multiplicity
 end

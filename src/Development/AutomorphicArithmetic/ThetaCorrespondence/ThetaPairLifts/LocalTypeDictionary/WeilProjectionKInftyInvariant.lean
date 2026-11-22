@@ -94,6 +94,5 @@ theorem _root_.GlobalTheory.T.weil_projection_kInfty_invariant : _root_.GlobalTh
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ Xc om om' →
     ∀ Pi rf rl p p', IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p' →
     ∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf D.sp.cm.sig Γ.V Bs.emb, ∀ ΦD ∈ algD Γ.M Bs.ψ Bs.emb, ∀ Φ Φ₁,
-    IsDatum Γ.M ψ cA ΦD Φ → IsDatum Γ.M ψ cA (om (k, 1) ΦD) Φ₁ → p Φ₁ = p Φ := by
-  first | exact @_root_.GlobalTheory.KInvData.projection_kInfty_invariant | exact _root_.GlobalTheory.KInvData.projection_kInfty_invariant | (intros; apply _root_.GlobalTheory.KInvData.projection_kInfty_invariant <;> assumption)
+    IsDatum Γ.M ψ cA ΦD Φ → IsDatum Γ.M ψ cA (om (k, 1) ΦD) Φ₁ → p Φ₁ = p Φ := GlobalTheory.KInvData.projection_kInfty_invariant
 end

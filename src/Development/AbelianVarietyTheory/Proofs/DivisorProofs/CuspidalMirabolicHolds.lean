@@ -4,7 +4,6 @@ import CompanionTheory.AutomorphicTheory.MirabolicRestriction.MirabolicInduction
 
 namespace GlobalTheory
 
-theorem cuspidalMirabolic_holds : GlobalTheory.Published.CuspidalMirabolic :=
-  CompanionTheory.Mirab.cuspidalMirabolic
+theorem cuspidalMirabolic_holds : GlobalTheory.Published.CuspidalMirabolic := CompanionTheory.Mirab.cuspidalMirabolic
 
 end GlobalTheory

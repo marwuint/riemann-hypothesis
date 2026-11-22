@@ -17,11 +17,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.ChangeOfVariablesXy
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem coordinate_sizes_in_norm : Formalism.FourierDecayAlt.U.SliceCoordinateSizes :=
-  coordinate_sizes_of_parts slice_membership block3_apply_embedding aux_statement_17 hat_z_on_slice level_determinant_z
+theorem coordinate_sizes_in_norm : Formalism.FourierDecayAlt.U.SliceCoordinateSizes := Formalism.FourierDecayAlt.P.Ux6.coordinate_sizes_of_parts_holds slice_membership block3_apply_embedding aux_statement_17 hat_z_on_slice level_determinant_z
 
-theorem norm_decay_in_coordinates : Formalism.FourierDecayAlt.U.CoordinateDecay :=
-  norm_decay_of_coordinate_sizes coordinate_sizes_in_norm
+theorem norm_decay_in_coordinates : Formalism.FourierDecayAlt.U.CoordinateDecay := Formalism.FourierDecayAlt.P.Ux6.norm_decay_of_coordinate_sizes_holds coordinate_sizes_in_norm
 
 theorem phi_pointwise_bound : Formalism.FourierDecayAlt.U.PointwiseIntegralBound :=
   phi_bound_of_parts slice_membership derivative_cost_bound norm_decay_in_coordinates weight_integrability
@@ -29,18 +27,12 @@ theorem phi_pointwise_bound : Formalism.FourierDecayAlt.U.PointwiseIntegralBound
 theorem theorem_u : Formalism.FourierDecayAlt.U.TheoremU :=
   theorem_u_of_parts phi_pointwise_bound phi_support_determinant weak_to_strong_smoothness
 
-theorem phi_support_level_function : Formalism.FourierDecayAlt.U.PhiSuppG :=
-  phi_support_level_of_parts level_function_slice level_determinant_z hat_z_on_slice
+theorem phi_support_level_function : Formalism.FourierDecayAlt.U.PhiSuppG := Formalism.FourierDecayAlt.P.Ux8.phiSuppGOfParts level_function_slice level_determinant_z hat_z_on_slice
 
-theorem corollary_u2_germ_hypothesis : Formalism.FourierDecayAlt.U.GermExpansionHypothesis :=
-  corollary_u2_of_parts theorem_u corollary_u1_truncated_alt star_projection budget_second_corollary
-    thresholds_second_corollary phi_support_level_function
+theorem corollary_u2_germ_hypothesis : Formalism.FourierDecayAlt.U.GermExpansionHypothesis := Formalism.FourierDecayAlt.P.Ux8.corollary_u2_of_parts_holds theorem_u corollary_u1_truncated_alt star_projection budget_second_corollary thresholds_second_corollary phi_support_level_function
 
-theorem germ_expansion_applies : Formalism.FourierDecayAlt.U.UseGerm :=
-  germ_expansion_of_parts germ_rate det_weyl_matrix corollary_u2_germ_hypothesis derivative_bound_of_decay
-    power_matching scale_matching
+theorem germ_expansion_applies : Formalism.FourierDecayAlt.U.UseGerm := Formalism.FourierDecayAlt.P.Ux8.useGermOfParts germ_rate det_weyl_matrix corollary_u2_germ_hypothesis derivative_bound_of_decay power_matching scale_matching
 
-theorem germ_expansion_top_level : Formalism.FourierDecayAlt.U.UseGermTop :=
-  germ_top_level_of_parts germ_rate det_weyl_matrix top_cells derivative_bound_of_decay
+theorem germ_expansion_top_level : Formalism.FourierDecayAlt.U.UseGermTop := Formalism.FourierDecayAlt.P.Ux8.useGermTopOfParts germ_rate det_weyl_matrix top_cells derivative_bound_of_decay
 
 end Formalism.FourierDecayAlt.P

@@ -78,8 +78,7 @@ theorem coprime_rep (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (h𝔪 : 𝔪 ≠ �
           _ = p * D.host.conj • p * (n * D.host.conj • x) := by rw [hxn]
           _ = p * n * (D.host.conj • p * D.host.conj • x) := by ring
 
-theorem zeroAt_zero' (D : D7) (q : ℕ) : ZeroAt D q 0 :=
-  fun _ => ⟨1, one_pos, Nat.coprime_one_left q, 0, zero_mem _, by simp⟩
+theorem zeroAt_zero' (D : D7) (q : ℕ) : ZeroAt D q 0 := GlobalTheory.NormSum.VacInt.zeroAt_zero D q
 
 theorem suppSplit_one' (D : D7) (N : ℕ) : SuppSplit D ((1 : GA D N) : GL (Fin N) (AE D)) :=
   fun q _ _ i j => by rw [OneMemClass.coe_one, Units.val_one, sub_self]; exact zeroAt_zero' D q

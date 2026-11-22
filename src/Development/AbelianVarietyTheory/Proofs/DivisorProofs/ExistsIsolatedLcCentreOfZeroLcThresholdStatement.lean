@@ -25,5 +25,4 @@ theorem _root_.GlobalTheory.T.exists_isolated_lcCentre_of_zero_lcThreshold : Glo
         (∀ C : Closeds X, IsCompleteCurve ℂ C →
           (interNumRed ℂ C ![toLB D₀] : ℚ) / m = interNumRed ℂ C ![N₀] / r) ∧
         x ∈ U ∧ (∀ y ∈ U, LcAt p n (Δ + qWeil D₀ m) y) ∧
-        (∀ y ∈ U, y ≠ x → KltAt p n (Δ + qWeil D₀ m) y) ∧ ¬ KltAt p n (Δ + qWeil D₀ m) x := by
-  first | exact @GlobalTheory.PairStep.exists_isolated_of_lcCut_zero | exact GlobalTheory.PairStep.exists_isolated_of_lcCut_zero | (intros; apply GlobalTheory.PairStep.exists_isolated_of_lcCut_zero <;> assumption)
+        (∀ y ∈ U, y ≠ x → KltAt p n (Δ + qWeil D₀ m) y) ∧ ¬ KltAt p n (Δ + qWeil D₀ m) x := GlobalTheory.PairStep.exists_isolated_of_lcCut_zero

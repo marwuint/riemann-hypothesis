@@ -44,6 +44,5 @@ theorem _root_.GlobalTheory.T.cusp_transition_rightward : (∀ D : D7, GlobalThe
   ∀ (t : T) (M : Vol ch.G), M.Is t → ∀ a : Arrow T, IsGridArrow D.R.m t a → (∃ i j, a = Arrow.right i j) →
     ∀ e, IsIdemSum e (locPl ch.G t) → ∀ φ f, IsLocVec ch.W a.pair e (vacOf ch.rm a) φ f →
     ∀ (Q : PolF D (ch.G.pT a.pair).rank (ch.G.pS a.pair).rank) (F : Fn ch.G a.src), IsCuspListed ch.W.θ a.src F →
-      LiftConv ch.W M a (ch.W.fock a.pair f Q) F ∧ IsCuspListed ch.W.θ a.tgt (liftA ch.W M a (ch.W.fock a.pair f Q) F) := by
-  first | exact @_root_.GlobalTheory.RightArrowCusp.cuspStep_rightward | exact _root_.GlobalTheory.RightArrowCusp.cuspStep_rightward | (intros; apply _root_.GlobalTheory.RightArrowCusp.cuspStep_rightward <;> assumption)
+      LiftConv ch.W M a (ch.W.fock a.pair f Q) F ∧ IsCuspListed ch.W.θ a.tgt (liftA ch.W M a (ch.W.fock a.pair f Q) F) := GlobalTheory.RightArrowCusp.cuspStep_rightward
 end

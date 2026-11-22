@@ -16,10 +16,7 @@ theorem lminor_neg' {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (k : Fin (m + 1))
   unfold lminor
   rw [submatrix_neg, Pi.neg_apply, Pi.neg_apply, det_neg, Fintype.card_fin]
 
-theorem psgn_of_le' {q i : ℕ} (h : i ≤ q) : psgn q i = 1 :=
-  Finset.prod_eq_one fun a ha => by
-    have := Finset.mem_range.1 ha
-    simp [sgn, show a < q by omega]
+theorem psgn_of_le' {q i : ℕ} (h : i ≤ q) : psgn q i = 1 := ReciprocityTheory.ChartRestriction.G.FD.psgn_eq_one h
 
 theorem psgn_add' (q k : ℕ) : psgn q (q + k) = (-1) ^ k := by
   induction k with

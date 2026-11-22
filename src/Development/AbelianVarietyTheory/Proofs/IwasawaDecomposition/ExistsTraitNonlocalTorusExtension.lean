@@ -38,8 +38,7 @@ theorem torusExtension_compose {K : Type} [Field K] {S S₁ : Scheme.{0}} (a : S
   exact ⟨torusExtOfIso (pullCompIso b a G).symm T⟩
 
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (h : B →+* C) :
-    spMap (h.comp f) = spMap h ≫ spMap f := by
-  rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
+    spMap (h.comp f) = spMap h ≫ spMap f := ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp f h
 
 end GlobalTheory.NonlocalTrait
 

@@ -21,5 +21,4 @@ theorem _root_.GlobalTheory.T.cmPoint_eigenbasis_change_det_integral_almost_all_
         (g : ∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) T.Fr) (a : T.Fr),
         φ.toRingHom = iK → FrMap φ z.y yT → GlobalTheory.Frames.FrChg g a yT y' → (∀ b, IsUnit (g b).det) →
         GlobalTheory.LamT.LieInt T (iK.comp (algebraMap c.F z.K)) M.m1 M.m2 y'.u →
-        (∏ b, (g b).det) ∈ Set.range (algebraMap T.V T.Fr) := by
-  first | exact @GlobalTheory.DetInt.det_integral | exact GlobalTheory.DetInt.det_integral | (intros; apply GlobalTheory.DetInt.det_integral <;> assumption)
+        (∏ b, (g b).det) ∈ Set.range (algebraMap T.V T.Fr) := GlobalTheory.DetInt.det_integral

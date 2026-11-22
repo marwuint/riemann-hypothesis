@@ -189,11 +189,7 @@ theorem norm_aL_le {B' : ℝ} (hB : ∀ x : ℂ, x ≠ 0 →
 
 end vec
 
-theorem enn_nnnorm (z : ℂ) : (‖z‖₊ : ℝ≥0∞) = ENNReal.ofReal ‖z‖ := by
-  rw [ENNReal.ofReal]
-  congr 1
-  ext
-  simp
+theorem enn_nnnorm (z : ℂ) : (‖z‖₊ : ℝ≥0∞) = ENNReal.ofReal ‖z‖ := ReciprocityTheory.ChartRestriction.DS.Xi.Base0.enn_nnnorm z
 
 theorem limsup_link {α : Type} {F : Filter α} (g : α → ℂ) (m : α → ℂ) (Nk : ℂ → ℂ → ℂ) (σ : ℂ) (κ₁ : ℝ)
     (hκ₁ : 0 ≤ κ₁) (hm : Tendsto m F (𝓝[≠] 0))

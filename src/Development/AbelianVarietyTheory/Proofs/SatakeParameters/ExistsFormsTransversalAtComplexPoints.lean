@@ -47,17 +47,7 @@ theorem evHom_fRatio_eq_zero_iff {X : Scheme.{0}} {p : X ⟶ Sp ℂ} {N n : ℕ}
 theorem frac_smul_deg {N n : ℕ} (V : (PSpace ℂ N).Opens) (f g : MvPolynomial (Fin (N + 1)) ℂ)
     (hf : f ∈ grading ℂ N n) (hg : g ∈ grading ℂ N n) (hV : V ≤ Proj.basicOpen (grading ℂ N) g) (c : ℂ)
     (hcf : c • f ∈ grading ℂ N n) :
-    frac (grading ℂ N) V (c • f) g hcf hg hV = algebraMap ℂ Γ(PSpace ℂ N, V) c * frac (grading ℂ N) V f g hf hg hV := by
-  refine ext fun x hx => ?_
-  obtain ⟨i, hi⟩ := exists_mem_chart ℂ N x
-  have hW : V ⊓ chart ℂ N i ≤ V := inf_le_left
-  have hxW : x ∈ V ⊓ chart ℂ N i := ⟨hx, hi⟩
-  rw [← ev_resG hW x hxW, ← ev_resG hW x hxW, map_mul, resG_algebraMap, resG_frac, resG_frac,
-    ← formOn_C (hi := (inf_le_right : V ⊓ chart ℂ N i ≤ chart ℂ N i)), formOn]
-  congr 1
-  refine (frac_mul_eq ?_).symm
-  rw [MvPolynomial.smul_eq_C_mul]
-  ring
+    frac (grading ℂ N) V (c • f) g hcf hg hV = algebraMap ℂ Γ(PSpace ℂ N, V) c * frac (grading ℂ N) V f g hf hg hV := GlobalTheory.EtProj.Jets.frac_smul_n V f g hf hg hV c hcf
 
 theorem fRatio_add_smul {X : Scheme.{0}} (p : X ⟶ Sp ℂ) {N n : ℕ} (ι : X ⟶ PSpace ℂ N)
     (hp : ι ≫ PSpace.str ℂ N = p) {g h f₀ : MvPolynomial (Fin (N + 1)) ℂ} (hg : g ∈ grading ℂ N n)

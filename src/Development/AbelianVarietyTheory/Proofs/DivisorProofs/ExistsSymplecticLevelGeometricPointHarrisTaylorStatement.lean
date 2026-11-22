@@ -9,5 +9,4 @@ theorem _root_.GlobalTheory.T.exists_symplectic_level_geometric_point_harrisTayl
   ∀ (S : Scheme.{0}) (t : S ⟶ Sp R) (o : Obj b N t) (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ S),
     ∃ (t₁ : Sp K ⟶ Sp (cycAway M))
       (lv : (Fin (Module.finrank ℤ D.La / 2) ⊕ Fin (Module.finrank ℤ D.La / 2) → ℤ) → (Over.mk x ⟶ o.A)),
-      SympCond o (Module.finrank ℤ D.La / 2) M (Over.mk x) t₁ lv := by
-  first | (exact @GlobalTheory.HTSympCover.exists_sympCond_geom) | (exact GlobalTheory.HTSympCover.exists_sympCond_geom) | (intros; apply GlobalTheory.HTSympCover.exists_sympCond_geom  <;> assumption)
+      SympCond o (Module.finrank ℤ D.La / 2) M (Over.mk x) t₁ lv := GlobalTheory.HTSympCover.exists_sympCond_geom

@@ -23,8 +23,7 @@ theorem unitOn_surj {R : Type} [CommRing R] (c : (Γ(Sp R, ⊤))ˣ) : ∃ z : R�
   ext
   simp [unitOn]
 
-theorem unitOn_mul {R : Type} [CommRing R] (a b : Rˣ) : unitOn (a * b) = unitOn a * unitOn b :=
-  map_mul _ a b
+theorem unitOn_mul {R : Type} [CommRing R] (a b : Rˣ) : unitOn (a * b) = unitOn a * unitOn b := GlobalTheory.ChTor.unitOn_mul' a b
 
 theorem theta_lbPow {S : Scheme.{0}} {B : Over S} [GrpObj B] {L : LB B.left} (hL : L.IsLB) (k : ℕ)
     {T : Over S} (θ : Out.ThetaGrp B L (k : ℤ) T) :

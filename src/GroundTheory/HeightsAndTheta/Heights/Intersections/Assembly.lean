@@ -129,8 +129,7 @@ theorem RegularityFunctionFieldNumber.full : GroundTheory.Heights₂.Heights.Int
 theorem RegularityDivisorSupportClosed.full : GroundTheory.Heights₂.Heights.Inter.RegularityDivisorSupportClosed.Statement :=
   GroundTheory.Heights₂.Heights.Inter.RegularityDivisorSupportClosed.proof
 
-theorem LocRingPow.full : GroundTheory.Heights₂.Heights.Inter.LocRingPow.Statement :=
-  GroundTheory.Heights₂.Heights.Inter.LocRingPow.proof
+theorem LocRingPow.full : GroundTheory.Heights₂.Heights.Inter.LocRingPow.Statement := GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.LocRingPow
 
 theorem RegularityDenominator.full : GroundTheory.Heights₂.Heights.Inter.RegularityDenominator.Statement :=
   GroundTheory.Heights₂.Heights.Inter.RegularityDenominator.proof GroundTheory.Heights₂.Heights.Inter.RegularityDivisorSupportClosed.full GroundTheory.Heights₂.Heights.Inter.LocRingPow.full
@@ -153,14 +152,12 @@ theorem RegularityLocalPrime.full : GroundTheory.Heights₂.Heights.Inter.Regula
 theorem RegularityLocalize.full : GroundTheory.Heights₂.Heights.Inter.RegularityLocalize.Statement :=
   GroundTheory.Heights₂.Heights.Inter.RegularityLocalize.proof GroundTheory.Heights₂.Heights.Inter.RegularityLocalPrime.full
 
-theorem regularityLocalDimension_holds.full : GroundTheory.Heights₂.Heights.Inter.regularityLocalDimension_holds.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.regularityLocalDimension_holds
+theorem regularityLocalDimension_holds.full : GroundTheory.Heights₂.Heights.Inter.regularityLocalDimension_holds.Statement := GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.regularityLocalDimension_holds
 
 theorem RegularityLocalFinite.full : GroundTheory.Heights₂.Heights.Inter.RegularityLocalFinite.Statement :=
   GroundTheory.Heights₂.Heights.Inter.RegularityLocalFinite.proof GroundTheory.Heights₂.Heights.Inter.regularityLocalDimension_holds.full
 
-theorem LocRingNoeth.full : GroundTheory.Heights₂.Heights.Inter.LocRingNoeth.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.LocRingNoeth
+theorem LocRingNoeth.full : GroundTheory.Heights₂.Heights.Inter.LocRingNoeth.Statement := GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.LocRingNoeth
 
 theorem pointForm_holds.full : GroundTheory.Heights₂.Heights.Inter.pointForm_holds.Statement :=
   GroundTheory.Heights₂.Heights.Targets.Contract.pulledBackForms_topDensity_vanish
@@ -198,8 +195,7 @@ theorem FibreTranscendenceDegreeAlt.full : GroundTheory.Heights₂.Heights.Inter
 theorem FibreDimensionZero.full : GroundTheory.Heights₂.Heights.Inter.FibreDimensionZero.Statement :=
   GroundTheory.Heights₂.Heights.Inter.FibreDimensionZero.proof GroundTheory.Heights₂.Heights.Inter.ArithmeticIntersectionFibreMultiHomogeneous.full GroundTheory.Heights₂.Heights.Inter.EvalKerKrullDim.full GroundTheory.Heights₂.Heights.Inter.FibreTranscendenceDegreeAlt.full
 
-theorem ChartRankAdjoin.full : GroundTheory.Heights₂.Heights.Inter.ChartRankAdjoin.Statement :=
-  GroundTheory.Heights₂.Heights.Inter.ChartRankAdjoin.proof
+theorem ChartRankAdjoin.full : GroundTheory.Heights₂.Heights.Inter.ChartRankAdjoin.Statement := GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.ChartRankAdjoin
 
 theorem FnDegAdjoin.full : GroundTheory.Heights₂.Heights.Inter.FnDegAdjoin.Statement :=
   GroundTheory.Heights₂.Heights.Inter.FnDegAdjoin.proof
@@ -240,11 +236,9 @@ theorem IntClosureLocFinite.full : GroundTheory.Heights₂.Heights.Inter.IntClos
 theorem LocRingIntClosureFinite.full : GroundTheory.Heights₂.Heights.Inter.LocRingIntClosureFinite.Statement :=
   GroundTheory.Heights₂.Heights.Inter.LocRingIntClosureFinite.proof GroundTheory.Heights₂.Heights.Inter.LocRingChartLoc.full GroundTheory.Heights₂.Heights.Inter.IntClosureLocFinite.full
 
-theorem LocRingFrac.full : GroundTheory.Heights₂.Heights.Inter.LocRingFrac.Statement :=
-  GroundTheory.Heights₂.Heights.Inter.LocRingFrac.proof
+theorem LocRingFrac.full : GroundTheory.Heights₂.Heights.Inter.LocRingFrac.Statement := GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.LocRingFrac
 
-theorem LocRingLocal.full : GroundTheory.Heights₂.Heights.Inter.LocRingLocal.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.LocRingLocal
+theorem LocRingLocal.full : GroundTheory.Heights₂.Heights.Inter.LocRingLocal.Statement := GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.LocRingLocal
 
 theorem LocRingDimOne.full : GroundTheory.Heights₂.Heights.Inter.LocRingDimOne.Statement :=
   GroundTheory.Heights₂.Heights.Inter.LocRingDimOne.proof GroundTheory.Heights₂.Heights.Inter.LocRingFrac.full GroundTheory.Heights₂.Heights.Inter.LocRingNoeth.full GroundTheory.Heights₂.Heights.Inter.LocRingLocal.full GroundTheory.Heights₂.Heights.Inter.LocRingPow.full
@@ -255,8 +249,7 @@ theorem SemilocFinite.full : GroundTheory.Heights₂.Heights.Inter.SemilocFinite
 theorem LocRingInj.full : GroundTheory.Heights₂.Heights.Inter.LocRingInj.Statement :=
   GroundTheory.Heights₂.Heights.Inter.LocRingInj.proof
 
-theorem regularityDehomogenization_holds.full : GroundTheory.Heights₂.Heights.Inter.regularityDehomogenization_holds.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.regularityDehomogenization_holds
+theorem regularityDehomogenization_holds.full : GroundTheory.Heights₂.Heights.Inter.regularityDehomogenization_holds.Statement := GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.regularityDehomogenization_holds
 
 theorem GenericPointExists.full : GroundTheory.Heights₂.Heights.Inter.GenericPointExists.Statement :=
   GroundTheory.Heights₂.Heights.Inter.GenericPointExists.proof
@@ -270,14 +263,11 @@ theorem ArithmeticIntersectionChartFinite.full : GroundTheory.Heights₂.Heights
 theorem pullbackBadImage_holds.full : GroundTheory.Heights₂.Heights.Inter.pullbackBadImage_holds.Statement :=
   GroundTheory.Heights₂.Heights.Inter.pullbackBadImage_holds.proof
 
-theorem regularityLocalCardinality_holds.full : GroundTheory.Heights₂.Heights.Inter.regularityLocalCardinality_holds.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.regularityLocalCardinality_holds
+theorem regularityLocalCardinality_holds.full : GroundTheory.Heights₂.Heights.Inter.regularityLocalCardinality_holds.Statement := GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.regularityLocalCardinality_holds
 
-theorem pullbackPushforward_holds.full : GroundTheory.Heights₂.Heights.Inter.pullbackPushforward_holds.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.pullbackPushforward_holds
+theorem pullbackPushforward_holds.full : GroundTheory.Heights₂.Heights.Inter.pullbackPushforward_holds.Statement := GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.pullbackPushforward_holds
 
-theorem SemiPosTwist.full : GroundTheory.Heights₂.Heights.Inter.SemiPosTwist.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.SemiPosTwist
+theorem SemiPosTwist.full : GroundTheory.Heights₂.Heights.Inter.SemiPosTwist.Statement := GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.SemiPosTwist
 
 theorem RankFracDegree.full : GroundTheory.Heights₂.Heights.Inter.RankFracDegree.Statement :=
   GroundTheory.Heights₂.Heights.Inter.RankFracDegree.proof
@@ -291,8 +281,7 @@ theorem HorizNotMem.full : GroundTheory.Heights₂.Heights.Inter.HorizNotMem.Sta
 theorem SheetHessPSD.full : GroundTheory.Heights₂.Heights.Inter.SheetHessPSD.Statement :=
   GroundTheory.Heights₂.Heights.Inter.SheetHessPSD.proof
 
-theorem RegCurvBound.full : GroundTheory.Heights₂.Heights.Inter.RegCurvBound.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.RegCurvBound
+theorem RegCurvBound.full : GroundTheory.Heights₂.Heights.Inter.RegCurvBound.Statement := GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.Inter.RegCurvBound
 
 theorem OrbitCompNonvanish.full : GroundTheory.Heights₂.Heights.Inter.OrbitCompNonvanish.Statement :=
   GroundTheory.Heights₂.Heights.Inter.OrbitCompNonvanish.proof

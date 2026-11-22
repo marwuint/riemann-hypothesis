@@ -57,6 +57,5 @@ theorem _root_.GlobalTheory.T.exists_rat_real_algebraic_combination_twist : ∀ 
       γ * a ∈ GfC A → γ' * a' ∈ GfC WW →
       ∃ (n : ℕ) (c : Fin n → ℂ) (w : Fin n → WO (GlobalTheory.Grid.neg A) WW), (∀ p, IsAlgebraic ℚ (c p)) ∧
         (∀ p, (w p).map (infPart D) = 0) ∧
-        X.ω t (γ * a, γ' * a') X.vac = ∑ p, c p • heisO W.ψ (GlobalTheory.Grid.neg A) WW (w p) X.vac := by
-  first | exact @_root_.GlobalTheory.MovedAlgRat.rat_real_algebraic_combination_of_moved | exact _root_.GlobalTheory.MovedAlgRat.rat_real_algebraic_combination_of_moved | (intros; apply _root_.GlobalTheory.MovedAlgRat.rat_real_algebraic_combination_of_moved <;> assumption)
+        X.ω t (γ * a, γ' * a') X.vac = ∑ p, c p • heisO W.ψ (GlobalTheory.Grid.neg A) WW (w p) X.vac := GlobalTheory.MovedAlgRat.rat_real_algebraic_combination_of_moved
 end

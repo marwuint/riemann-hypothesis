@@ -15,7 +15,7 @@ namespace CrystallineSemistableComparison.Pb
 
 theorem locGr_h : KH.LocGr := loc_gr
 theorem locVan_h : KH.LocVan := loc_van
-theorem polyTf_h : KH.PolyTf := poly_tf
+theorem polyTf_h : KH.PolyTf := CrystallineSemistableComparison.Pb.Site.poly_tf'
 theorem globSerreSt_h : KH.GlobSerreSt := glob_serre_st
 theorem globVanSt_h : KH.GlobVanSt := glob_van_st
 

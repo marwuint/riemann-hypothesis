@@ -18,5 +18,4 @@ theorem _root_.GlobalTheory.T.exists_common_coefficientMap_liftPresentation : �
         (∀ v, P.coef v = c v) ∧ Bridge.CoefTie (X.toD7.sp.V ((i : ℕ) + 1)) (cV i).coef P (fun τ => Bridge.lamLdef (Vc X.toD7 i).rank ((i : ℕ) + 1) τ) c0L
         (pairVr (labLL X.toD7) _
           (if X.toD7.sp.Vneg ((i : ℕ) + 1) then -(X.toD7.sp.V ((i : ℕ) + 1)).gram else (X.toD7.sp.V ((i : ℕ) + 1)).gram))
-        (nabAtr (labLL X.toD7) _) (delAtr (labLL X.toD7) _) := by
-  first | exact @GlobalTheory.Mem.R3.LiftPresStd.exists_oneCoef_presStd | exact GlobalTheory.Mem.R3.LiftPresStd.exists_oneCoef_presStd | (intros; apply GlobalTheory.Mem.R3.LiftPresStd.exists_oneCoef_presStd <;> assumption)
+        (nabAtr (labLL X.toD7) _) (delAtr (labLL X.toD7) _) := GlobalTheory.Mem.R3.LiftPresStd.exists_oneCoef_presStd

@@ -56,8 +56,7 @@ theorem gC_pos_of_ne_zero : ∀ (l : ℕ) [Fact l.Prime] (x : Formalism.Per.Acri
   linarith
 
 theorem gC_pos_target : ∀ (l : ℕ) [Fact l.Prime] (x : Formalism.Per.Acris l), x ≠ 0 → ∀ ρ : ℝ, (l : ℝ)⁻¹ ≤ ρ → ρ < 1 →
-    0 < gC l ρ x :=
-  gC_pos_of_ne_zero
+    0 < gC l ρ x := GlobalTheory.PMon.Gauss.gC_pos_of_ne_zero
 
 end GlobalTheory.PMon.Gauss
 

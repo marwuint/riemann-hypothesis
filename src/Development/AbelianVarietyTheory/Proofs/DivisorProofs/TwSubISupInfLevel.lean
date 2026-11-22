@@ -21,8 +21,7 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 
 namespace GlobalTheory.DimPartsFull
 
-theorem dualLab_dualLab' (d : List ℤ) : dualLab (dualLab d) = d := by
-  simp [dualLab, List.map_reverse, List.map_map]
+theorem dualLab_dualLab' (d : List ℤ) : dualLab (dualLab d) = d := GlobalTheory.DimFull.dualLab_twice d
 
 section Tw
 variable {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (s : Bool)

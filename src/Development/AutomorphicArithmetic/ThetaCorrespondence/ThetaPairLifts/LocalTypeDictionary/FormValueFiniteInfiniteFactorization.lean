@@ -18,6 +18,5 @@ end
 section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.form_value_finite_infinite_factorization : _root_.GlobalTheory.FunPr.ThetaLocalInputs → FinFormK ∧ InfFormK := by
-  first | exact @_root_.GlobalTheory.FormVal.form_value_eq_finite_mul_infinite | exact _root_.GlobalTheory.FormVal.form_value_eq_finite_mul_infinite | (intros; apply _root_.GlobalTheory.FormVal.form_value_eq_finite_mul_infinite <;> assumption)
+theorem _root_.GlobalTheory.T.form_value_finite_infinite_factorization : _root_.GlobalTheory.FunPr.ThetaLocalInputs → FinFormK ∧ InfFormK := GlobalTheory.FormVal.form_value_eq_finite_mul_infinite
 end

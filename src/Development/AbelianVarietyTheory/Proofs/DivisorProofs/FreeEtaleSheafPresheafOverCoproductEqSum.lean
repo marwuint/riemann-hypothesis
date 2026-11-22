@@ -49,13 +49,7 @@ theorem pullback_isColimit {U : Scheme.{0}} {ι : Type} {V : ι → Scheme.{0}} 
     rw [hp, hq]
 
 theorem sec_subsingleton_of_isEmpty {R : Type} [CommRing R] (G : Shv R) (W : Scheme.{0}) [IsEmpty W] :
-    Subsingleton (Sec G W) := by
-  haveI : ∀ e : PEmpty.{1}, IsOpenImmersion (PEmpty.elim e : (PEmpty.elim e : Scheme.{0}) ⟶ W) :=
-    fun e => e.elim
-  obtain ⟨hc⟩ := nonempty_isColimit_cofanMk_of (X := fun e : PEmpty.{1} => (PEmpty.elim e : Scheme.{0})) (S := W)
-    (fun e => PEmpty.elim e) (by rw [eq_top_iff]; rintro z -; exact isEmptyElim z) (fun e => PEmpty.elim e)
-  have hb := GlobalTheory.T.etaleModuleSheaf_sections_coprod_bijective R G W PEmpty.{1} _ _ hc
-  exact ⟨fun x y => hb.1 (funext fun e => PEmpty.elim e)⟩
+    Subsingleton (Sec G W) := GlobalTheory.EtC.sec_subsingleton_of_isEmpty G W
 
 end GlobalTheory.EtC.FreeCofan
 

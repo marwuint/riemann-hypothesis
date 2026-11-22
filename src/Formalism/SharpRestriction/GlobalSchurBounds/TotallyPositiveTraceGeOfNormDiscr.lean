@@ -668,9 +668,7 @@ open Module NumberField Formalism.BasicNotions
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-theorem finrank_cmField_eq_two_mul (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
-  rw [D.host.finrank_cmField, Ranks.f, Ranks.n]
-  ring
+theorem finrank_cmField_eq_two_mul (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := Formalism.MainNotions.flipTwoThree.b_finrank_host D
 
 theorem shortDual_holds (D : D7) : ShortDual D := by
   intro u c hLat

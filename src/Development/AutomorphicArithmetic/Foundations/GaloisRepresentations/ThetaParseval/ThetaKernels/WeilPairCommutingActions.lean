@@ -29,6 +29,5 @@ theorem _root_.GlobalTheory.T.weil_pair_commuting_actions : ∀ (F E : Type) [Fi
       (y : Fin m → κ → FiniteAdeleRing (𝓞 F) F),
       (∀ i, g i ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) ∧ (∀ i j, g i (y j) = if i = j then 1 else 0) ∧
       ∀ p ∈ N, ∃ f : Fin m → SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ,
-        om p Φ = ∑ i, pureA F (f i) (g i) := by
-  first | exact @_root_.GlobalTheory.WeilContF.exists_local_finite_parts_F_k | exact _root_.GlobalTheory.WeilContF.exists_local_finite_parts_F_k | (intros; apply _root_.GlobalTheory.WeilContF.exists_local_finite_parts_F_k <;> assumption)
+        om p Φ = ∑ i, pureA F (f i) (g i) := GlobalTheory.WeilContF.exists_local_finite_parts_F_k
 end

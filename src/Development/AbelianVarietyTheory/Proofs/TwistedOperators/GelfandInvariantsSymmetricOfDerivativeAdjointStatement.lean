@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.gelfandInvariants_symmetric_of_derivativeAdjoint :
     ∀ (τ : D.what₂.Tau) (A : Submodule ℂ (GA D V → ℂ)), A ≤ GlobalTheory.Mem.AutSpace.SmFun θ V →
     (∀ Z, ∀ f ∈ A, RderC θ V τ Z f ∈ A) → ∀ b : (GA D V → ℂ) →ₗ⋆[ℂ] (GA D V → ℂ) →ₗ[ℂ] ℂ,
     (∀ Z, ∀ x ∈ A, ∀ y ∈ A, b x (RderC θ V τ Z y) = b (RderC θ V τ ((gramAt D V τ)⁻¹ * Matrix.conjTranspose Z * gramAt D V τ) x) y) →
-    ∀ k, ∀ x ∈ A, ∀ y ∈ A, b x (gelf θ V τ k y) = b (gelf θ V τ k x) y := by
-  first | exact @GlobalTheory.GelfSymm.gelf_symm | exact GlobalTheory.GelfSymm.gelf_symm | (intros; apply GlobalTheory.GelfSymm.gelf_symm <;> assumption)
+    ∀ k, ∀ x ∈ A, ∀ y ∈ A, b x (gelf θ V τ k y) = b (gelf θ V τ k x) y := GlobalTheory.GelfSymm.gelf_symm

@@ -120,8 +120,7 @@ def glueU (D : D7) {e : AE D} (he : e * e = e) (a : D.host.E) (ha : a ≠ 0) : (
   ⟨glue D e a, glue D e a⁻¹, by rw [glue_mul D he, mul_inv_cancel₀ ha, glue_one],
     by rw [glue_mul D he, inv_mul_cancel₀ ha, glue_one]⟩
 
-theorem conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
-  rw [← AlgEquiv.mul_apply, VacInt.conj_mul_self]; rfl
+theorem conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := Formalism.L2.Pj.conj_conj D x
 
 end GlobalTheory.SkewCentral
 

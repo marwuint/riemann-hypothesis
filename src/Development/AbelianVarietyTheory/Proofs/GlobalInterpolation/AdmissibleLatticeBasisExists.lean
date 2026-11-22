@@ -13,14 +13,7 @@ open GlobalTheory.PlaceInt.LocBasis Module
 theorem exists_basis_primeTo {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] (m : ℕ) (hm : 0 < m) (L : Submodule (𝓞 K) V) (hfg : L.FG) :
     ∃ (r : ℕ) (b : Fin r → V), LinearIndependent K b ∧ (∀ i, b i ∈ L) ∧
-      ∀ w ∈ L, ∃ k : ℕ, Nat.Coprime k m ∧ k • w ∈ Submodule.span (𝓞 K) (Set.range b) := by
-  first
-  | exact @_root_.GlobalTheory.CoprimeBasisExistence.exists_basis_coprime
-  | exact _root_.GlobalTheory.CoprimeBasisExistence.exists_basis_coprime
-  | (apply _root_.GlobalTheory.CoprimeBasisExistence.exists_basis_coprime <;> assumption)
-  | (intros; apply _root_.GlobalTheory.CoprimeBasisExistence.exists_basis_coprime <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.CoprimeBasisExistence.exists_basis_coprime <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.CoprimeBasisExistence.exists_basis_coprime ..)
+      ∀ w ∈ L, ∃ k : ℕ, Nat.Coprime k m ∧ k • w ∈ Submodule.span (𝓞 K) (Set.range b) := GlobalTheory.CoprimeBasisExistence.exists_basis_coprime m hm L hfg
 
 open Formalism.MainNotions.TaylorLogMetric in
 

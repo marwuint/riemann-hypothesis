@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.exists_zmodTorsor_model_of_filtered_colimit : ∀ 
     ∃ (Dj : Type) (_ : CommRing Dj) (_ : Algebra (F.obj j) Dj)
       (actj : Multiplicative (ZMod q) →* (Dj ≃ₐ[F.obj j] Dj)),
       GlobalTheory.LocAcyc.IsZModTorsor (F.obj j) Dj q actj ∧
-      Nonempty (TensorProduct (F.obj j) c.pt Dj ≃ₐ[c.pt] D) := by
-  first | (exact @GlobalTheory.TorsorColim.exists_torsor_model_of_isColimit) | (exact GlobalTheory.TorsorColim.exists_torsor_model_of_isColimit) | (intros; apply GlobalTheory.TorsorColim.exists_torsor_model_of_isColimit  <;> assumption)
+      Nonempty (TensorProduct (F.obj j) c.pt Dj ≃ₐ[c.pt] D) := GlobalTheory.TorsorColim.exists_torsor_model_of_isColimit

@@ -21,6 +21,5 @@ theorem _root_.GlobalTheory.T.theta_subspace_haar_integral : ∀ (F E : Type) [F
         ∃ Bf : M →ₗ[ℂ] M →ₗ⋆[ℂ] ℂ, (∀ (u : WOF F E nS nT) (f g f' g' : M),
           (f' : WOF F E nS nT → ℂ) = heisOF σ JS JT ξ₀ B.ψ u f → (g' : WOF F E nS nT → ℂ) = heisOF σ JS JT ξ₀ B.ψ u g →
             Bf f' g' = Bf f g) ∧
-          ∀ f : M, ∫⁻ w in 𝓕, ‖(f : WOF F E nS nT → ℂ) w‖ₑ ^ 2 ∂μ = ENNReal.ofReal (Bf f f).re := by
-  first | exact @_root_.GlobalTheory.ThetaMeanSquareF.exists_invariant_form_k | exact _root_.GlobalTheory.ThetaMeanSquareF.exists_invariant_form_k | (intros; apply _root_.GlobalTheory.ThetaMeanSquareF.exists_invariant_form_k <;> assumption)
+          ∀ f : M, ∫⁻ w in 𝓕, ‖(f : WOF F E nS nT → ℂ) w‖ₑ ^ 2 ∂μ = ENNReal.ofReal (Bf f f).re := GlobalTheory.ThetaMeanSquareF.exists_invariant_form_k
 end

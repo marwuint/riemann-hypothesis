@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.local_character_induced_tied_six : ∀ {E Ω : Typ
       GlobalTheory.Pst.Induces Bw →
     ∀ (LL' : FinExt l), Bw.LL.1 ≤ LL'.1 → ∀ (ψ : ↥(Dec (F := E) A) →* (↥LL'.1)ˣ)
       (J : (↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥LL'.1) → ℤ),
-      PositivityTheory.HodgeLocalCharacter.HLC.IsdRJ Bw P LL' ψ J → PositivityTheory.HodgeLocalCharacter.HLC.IsdRJ Bw P LL' ψ⁻¹ (-J) := by
-  first | exact @GlobalTheory.CompanionTheory.DeRhamChar.isdRJ_inv | exact GlobalTheory.CompanionTheory.DeRhamChar.isdRJ_inv | (intros; apply GlobalTheory.CompanionTheory.DeRhamChar.isdRJ_inv <;> assumption)
+      PositivityTheory.HodgeLocalCharacter.HLC.IsdRJ Bw P LL' ψ J → PositivityTheory.HodgeLocalCharacter.HLC.IsdRJ Bw P LL' ψ⁻¹ (-J) := GlobalTheory.CompanionTheory.DeRhamChar.isdRJ_inv

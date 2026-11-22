@@ -257,10 +257,7 @@ theorem hw_prim [IsLocalRing O] (hinj : Function.Injective (algebraMap O K)) (w 
 
 end Gen
 
-theorem caLast_ne_zero (m : ℕ) : Fin.last (m + 1) ≠ 0 := by
-  intro h
-  have := congrArg Fin.val h
-  simp at this
+theorem caLast_ne_zero (m : ℕ) : Fin.last (m + 1) ≠ 0 := Formalism.MainNotions.flipOneThree.Pf.last_ne_zero' m
 
 theorem wtPQ_zero (m a b : ℕ) : wtPQ m a b 0 = a := by simp [wtPQ]
 

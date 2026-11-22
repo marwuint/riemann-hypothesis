@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.exists_conj_finiteUnipotent_mem_openSubgroup : ∀
       ∀ z : BlockIx a r → Ad E, (∀ p, (z p).1 = 0) →
       (∀ p, ∃ c ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 E) E, (z p).2 = (M : Af E) * c) →
       ∃ l ∈ L, (b * GroundTheory.Automorphic.Reduction.diagUnits a (fun i => GroundTheory.Automorphic.Reduction.posIdele (K := E) (ρ i) (hρ i)) * k)⁻¹ * unip z *
-        (b * GroundTheory.Automorphic.Reduction.diagUnits a (fun i => GroundTheory.Automorphic.Reduction.posIdele (K := E) (ρ i) (hρ i)) * k) = finGL E a l := by
-  first | exact @GlobalTheory.FinConj.exists_conj_unip_mem | exact GlobalTheory.FinConj.exists_conj_unip_mem | (intros; apply GlobalTheory.FinConj.exists_conj_unip_mem <;> assumption)
+        (b * GroundTheory.Automorphic.Reduction.diagUnits a (fun i => GroundTheory.Automorphic.Reduction.posIdele (K := E) (ρ i) (hρ i)) * k) = finGL E a l := GlobalTheory.FinConj.exists_conj_unip_mem

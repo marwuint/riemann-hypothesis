@@ -25,5 +25,4 @@ theorem _root_.GlobalTheory.T.exists_chart_lift_of_finite_cover : ∀ (d a : ℕ
         u p (Submodule.Quotient.mk ⟨b, hb⟩) = Submodule.Quotient.mk ⟨_, h⟩) →
   (∀ p : ℕ, FiniteDimensional ℂ ((cech fun I => omB ℂ K (rB ℂ K x I) a).H p)) →
   ∑ p ∈ Finset.range (d + 1), (-1 : ℂ) ^ p * LinearMap.trace ℂ _ (u p) =
-    ∑ e ∈ Fx, (Matrix.det (1 + (Polynomial.X : Polynomial ℂ) • (A e).map Polynomial.C)).coeff a / (1 - A e).det := by
-  first | exact @UpperTheory.Cb.exists_chart_lift_of_finite_cover | exact UpperTheory.Cb.exists_chart_lift_of_finite_cover
+    ∑ e ∈ Fx, (Matrix.det (1 + (Polynomial.X : Polynomial ℂ) • (A e).map Polynomial.C)).coeff a / (1 - A e).det := UpperTheory.Cb.exists_chart_lift_of_finite_cover

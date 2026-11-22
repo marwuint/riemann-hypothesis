@@ -22,9 +22,9 @@ theorem kh2 : KH.GlobSerreSt := @glob_serre_st
 set_option maxHeartbeats 4000000 in
 theorem finO' : True ∧ FinO := ⟨trivial, fin_o kh1 @poly_tf kh2 kh3.2⟩
 
-theorem afgA : AfgA := afg_a bcOn_false finO'.2
+theorem afgA : AfgA := GlobalTheory.CompanionTheory.LatticeFinite.afgA_of_bcOn_finO bcOn_false finO'.2
 
-theorem liftA : LiftA := lift_a afgA
+theorem liftA : LiftA := GlobalTheory.CompanionTheory.LiftLat.liftA_of_afgA afgA
 
 theorem basisB : BasisB := basis_b bcOn_false @k_iso
 

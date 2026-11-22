@@ -93,10 +93,7 @@ theorem qn_divideN (n : ℕ) [NeZero n] (ν0 : Fin n → ℕ) {ι : Type} (Q : �
 def qn_nu {n : ℕ} [NeZero n] (mu : Fin n → ℤ) : Fin n → ℕ :=
   fun t => (mu t + ((-(mu (lastIdx n))).toNat : ℤ)).toNat
 
-theorem qn_le_last {n : ℕ} [NeZero n] (a : Fin n) : a ≤ lastIdx n := by
-  have h2 : (lastIdx n).val = n - 1 := rfl
-  have := a.isLt
-  exact Fin.le_def.mpr (by omega)
+theorem qn_le_last {n : ℕ} [NeZero n] (a : Fin n) : a ≤ lastIdx n := Formalism.InvariantFactorPaths.ColumnFamilies.qa_last_le a
 
 theorem qn_nu_eq {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) :
     qn_nu mu = fun t => qa_nu mu t + (mu (lastIdx n)).toNat := by

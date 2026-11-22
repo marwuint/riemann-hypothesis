@@ -22,9 +22,7 @@ noncomputable section
 namespace GlobalTheory.LogKSChart
 
 theorem exists_derivation_intAlgebra {A : Type} [CommRing A] (inst : Algebra ℤ A) (D : @Derivation ℤ A A _ _ _ inst _ _) :
-    ∃ D' : @Derivation ℤ A A _ _ _ (Ring.toIntAlgebra A) _ _, ⇑D' = ⇑D := by
-  obtain rfl : inst = Ring.toIntAlgebra A := Subsingleton.elim _ _
-  exact ⟨D, rfl⟩
+    ∃ D' : @Derivation ℤ A A _ _ _ (Ring.toIntAlgebra A) _ _, ⇑D' = ⇑D := GlobalTheory.ChartKSBracket.exists_derivation_intAlgebra' inst D
 
 set_option maxHeartbeats 800000 in
 

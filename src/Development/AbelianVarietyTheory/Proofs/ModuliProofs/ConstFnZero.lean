@@ -26,13 +26,7 @@ theorem rsT_sub {Y : Scheme.{0}} {O₀ O : Y.Opens} (h : O ≤ O₀) (s t : Γ(Y
     rsT (s - t) O = rsT s O - rsT t O := by
   simp only [rsT_of_le h, map_sub]
 
-theorem pbT_id {Y : Scheme.{0}} {O : Y.Opens} (s : Γ(Y, O)) : pbT (𝟙 Y) s O = s := by
-  unfold pbT
-  rw [dif_pos (show O ≤ (𝟙 Y) ⁻¹ᵁ O from le_rfl)]
-  have : (𝟙 Y : Y ⟶ Y).appLE O O (show O ≤ (𝟙 Y) ⁻¹ᵁ O from le_rfl) = 𝟙 _ := by
-    change 𝟙 _ ≫ Y.presheaf.map (𝟙 (Opposite.op O)) = _
-    simp
-  rw [this]; rfl
+theorem pbT_id {Y : Scheme.{0}} {O : Y.Opens} (s : Γ(Y, O)) : pbT (𝟙 Y) s O = s := GlobalTheory.KS.InvField.pbT_id s
 
 theorem constFn_zero' {K : Type} [Field K] {Y : Scheme.{0}} (q : Y ⟶ Sp K) (O : Y.Opens) :
     constFn q O (0 : K) = 0 := by

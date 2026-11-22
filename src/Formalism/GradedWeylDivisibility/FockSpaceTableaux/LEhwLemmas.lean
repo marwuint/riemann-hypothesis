@@ -182,15 +182,7 @@ theorem lehw_weight_P {r n : ℕ} (a : Fin r) (m : Fin r × Fin n →₀ ℕ) :
   · simp [h, show ¬ a'.val < a.val + 1 by omega]
 
 theorem lehw_weight_rowW {r n : ℕ} (m : Fin r × Fin n →₀ ℕ) (a : Fin r) :
-    Finsupp.weight (rowW r n) m a = rowDeg m a := by
-  rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply,
-    Fintype.sum_prod_type]
-  simp only [rowW, Pi.smul_apply, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]
-  rw [Finset.sum_eq_single a]
-  · simp [rowDeg]
-  · intro b _ hb
-    simp [hb, Ne.symm hb]
-  · simp
+    Finsupp.weight (rowW r n) m a = rowDeg m a := Formalism.GradedWeylDivisibility.ldrow_weight_rowW m a
 
 theorem lehw_kill {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (hν : Antitone ν)
     (G : MvPolynomial (Fin r × Fin n) ℚ) (hG : G ∈ dualWeyl ℚ r n ν)

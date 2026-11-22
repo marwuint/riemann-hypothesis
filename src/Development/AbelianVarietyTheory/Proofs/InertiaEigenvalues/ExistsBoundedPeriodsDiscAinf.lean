@@ -15,8 +15,7 @@ theorem frobenius_ev_X_eq {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K) :
     WittVector.frobenius (bk.ev X) = bk.ev X ^ l := by
   rw [← bk.ev_frob, frobS_X, map_pow]
 
-theorem BK.ρ₀_pos' {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} (bk : BK K) : 0 < bk.ρ₀ :=
-  NNReal.rpow_pos (Nat.cast_pos.2 hl.out.pos)
+theorem BK.ρ₀_pos' {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} (bk : BK K) : 0 < bk.ρ₀ := GlobalTheory.BSP.BK.rho_zero_pos bk
 
 theorem BK.ρ₀_lt_one' {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} (bk : BK K) : bk.ρ₀ < 1 :=
   NNReal.rpow_lt_one_of_one_lt_of_neg (Nat.one_lt_cast.2 hl.out.one_lt)

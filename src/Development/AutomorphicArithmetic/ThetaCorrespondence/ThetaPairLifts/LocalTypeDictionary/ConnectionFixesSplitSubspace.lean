@@ -72,6 +72,5 @@ theorem _root_.GlobalTheory.T.nabla_fixed_split_subspace : _root_.GlobalTheory.F
       IsUWeilSplit (cA σ) (adeleClass F) B.ψ (-1) (incM F G.W.J) (dbl (incM F G.V'.J)) dd (X.α / X.β) (diagCols (Fin a')) omd →
     ∀ R : (Fin a' × Fin (a + a') → AF F) → ℂ, R 0 ≠ 0 → Rest (evFin F v) (G.M'.vac v) R →
     ∀ n ∈ GlobalTheory.InertDbl.NabD σ G.V' v, omd n (GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R)) =
-      GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R) := by
-  first | exact @_root_.GlobalTheory.NabFixSplitV.connection_fixes_split_subspace | exact _root_.GlobalTheory.NabFixSplitV.connection_fixes_split_subspace | (intros; apply _root_.GlobalTheory.NabFixSplitV.connection_fixes_split_subspace <;> assumption)
+      GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R) := GlobalTheory.NabFixSplitV.connection_fixes_split_subspace
 end

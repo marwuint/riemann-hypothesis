@@ -92,6 +92,5 @@ theorem _root_.GlobalTheory.T.smallStage_thetaIntegral_nonzero_case : _root_.Glo
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →
     NumbersIn D.what₂.embLL S μ₀ → ∀ (i j : Fin D.R.m) (p : ℕ) (A A' WW : HSp D) (X : Tri T A A' WW), GlobalTheory.SqTower.IsStageC W i j p 0 X →
       (∀ t P' h, MeasureTheory.IntegrableOn (X.ker' W.ψ W.θ t P' h) X.fd' X.m') →
-      ∃ P' : PolF D WW.rank A'.rank, ∀ t, X.I' W.ψ W.θ t P' ≠ 0 := by
-  first | exact @_root_.GlobalTheory.StageSmallNz.smallStage_thetaIntegral_of_ne_zero | exact _root_.GlobalTheory.StageSmallNz.smallStage_thetaIntegral_of_ne_zero | (intros; apply _root_.GlobalTheory.StageSmallNz.smallStage_thetaIntegral_of_ne_zero <;> assumption)
+      ∃ P' : PolF D WW.rank A'.rank, ∀ t, X.I' W.ψ W.θ t P' ≠ 0 := GlobalTheory.StageSmallNz.smallStage_thetaIntegral_of_ne_zero
 end

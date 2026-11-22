@@ -20,5 +20,4 @@ theorem _root_.GlobalTheory.T.thetaFun_families_same_heisenberg_inner_eq_smul : 
     ∀ (μ : MeasureTheory.Measure (Formalism.IndefR.Datum.WO S T)) (𝓕 : Set (Formalism.IndefR.Datum.WO S T)), μ.IsAddHaarMeasure →
       MeasureTheory.IsAddFundamentalDomain (Formalism.L2.Theta.ratL T S) 𝓕 μ →
       (∀ i j, ∫ x in 𝓕, X i x * star (X j x) ∂μ = ∫ x in 𝓕, Y i x * star (Y j x) ∂μ) →
-      ∃ c : ℂ, ∀ i, X i = c • Y i := by
-  first | exact @GlobalTheory.ThetaSchurFam.two_families_scalar | exact GlobalTheory.ThetaSchurFam.two_families_scalar | (intros; apply GlobalTheory.ThetaSchurFam.two_families_scalar <;> assumption)
+      ∃ c : ℂ, ∀ i, X i = c • Y i := GlobalTheory.ThetaSchurFam.two_families_scalar

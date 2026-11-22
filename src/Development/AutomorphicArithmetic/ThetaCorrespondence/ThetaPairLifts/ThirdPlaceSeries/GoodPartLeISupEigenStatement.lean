@@ -18,6 +18,5 @@ theorem _root_.GlobalTheory.T.lattice_in_isotypic_sup_alt : ∀ (D : D7) (cf : C
           V0T D T S In.rho In.chi In.θ i j b ⊓
             ⨅ (k : ℕ) (P : PlE D.host) (_ : 1 ≤ k ∧ k ≤ D.R.r ∧ IsSplitPl D.host P ∧ P ∉ T.S0 i),
               Module.End.eigenspace (hkT D T S In i j b k P)
-                (algebraMap (T.O i) (FractionRing (T.O i)) (cHkT D T i b P : T.O i) ^ k * readT D T i b (In.eig j σ k P)) := by
-  first | exact @_root_.GlobalTheory.HeightCounting.FormsStep.goodPart_le_iSup_eigen_alt | exact _root_.GlobalTheory.HeightCounting.FormsStep.goodPart_le_iSup_eigen_alt | (intros; apply _root_.GlobalTheory.HeightCounting.FormsStep.goodPart_le_iSup_eigen_alt <;> assumption)
+                (algebraMap (T.O i) (FractionRing (T.O i)) (cHkT D T i b P : T.O i) ^ k * readT D T i b (In.eig j σ k P)) := GlobalTheory.HeightCounting.FormsStep.goodPart_le_iSup_eigen_alt
 end

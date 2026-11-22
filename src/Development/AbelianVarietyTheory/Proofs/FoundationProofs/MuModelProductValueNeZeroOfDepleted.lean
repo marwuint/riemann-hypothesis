@@ -33,12 +33,7 @@ lemma ch_zero_of_dvd {l : ℕ} (φ : DirichletCharacter ℂ l) (hl : l.Prime) (x
   have : ((x : ZMod l)) = 0 := (ZMod.intCast_zmod_eq_zero_iff_dvd x l).2 hx
   simp only [ch]; rw [this]; exact MulChar.map_zero φ
 
-lemma isUnit_of_coprime {M : ℕ} (d : ℤ) (h : IsCoprime d M) : IsUnit (d : ZMod M) := by
-  obtain ⟨u, v, huv⟩ := h
-  refine isUnit_iff_exists_inv.2 ⟨(u : ZMod M), ?_⟩
-  have := congrArg (fun z : ℤ => (z : ZMod M)) huv
-  simp only [Int.cast_add, Int.cast_mul, Int.cast_natCast, ZMod.natCast_self, mul_zero, add_zero, Int.cast_one] at this
-  rw [mul_comm]; exact this
+lemma isUnit_of_coprime {M : ℕ} (d : ℤ) (h : IsCoprime d M) : IsUnit (d : ZMod M) := GlobalTheory.EisM.isUnit_of_isCoprime d h
 
 lemma ch_mul_inv {M : ℕ} (φ : DirichletCharacter ℂ M) (d : ℤ) (h : IsCoprime d M) : ch φ d * ch φ⁻¹ d = 1 := by
   have hu := isUnit_of_coprime d h

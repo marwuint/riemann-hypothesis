@@ -33,5 +33,4 @@ theorem _root_.GlobalTheory.T.exists_characterisedData_weil_enlargedBase : Globa
         Pins R' (face0 (w'.st Z') w'.I hX' (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}) Xg tr) cG' ∧
         LevOf (w'.st Z') w'.I (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}) R'.toLevCh ∧ IsPlacewiseIdentity (w'.st Z') (px := w'.px) R'.eG ∧
         GoodSet (w'.st Z') (px := w'.px) (R'.eG.trans cG') Xg ∧ MuOf (w'.st Z') w'.I T' {v | B'.places.resChar v ∈ T'.pl} R'.mu R'.twPl ∧
-        BrgStd (w'.st Z') w'.I hX' (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}) Xg tr R'.toRealDat ∧ R'.toRealDat.ExAt ∧ RSide z {v | B'.places.resChar v ∈ T'.pl} R') := by
-  first | exact @GlobalTheory.Mem.R3.Rw.WeilExt.exists_pins_rSide | exact GlobalTheory.Mem.R3.Rw.WeilExt.exists_pins_rSide | (intros; apply GlobalTheory.Mem.R3.Rw.WeilExt.exists_pins_rSide <;> assumption)
+        BrgStd (w'.st Z') w'.I hX' (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}) Xg tr R'.toRealDat ∧ R'.toRealDat.ExAt ∧ RSide z {v | B'.places.resChar v ∈ T'.pl} R') := GlobalTheory.Mem.R3.Rw.WeilExt.exists_pins_rSide

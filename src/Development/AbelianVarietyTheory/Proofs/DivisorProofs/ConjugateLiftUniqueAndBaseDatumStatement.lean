@@ -62,5 +62,4 @@ theorem _root_.GlobalTheory.T.conjugateLift_unique_and_baseDatum : (∀ {D : D7}
     : ℕ) (a : Fin n → D.what₂.LL) (f : Fin n → Cu T κw i), IsClassSum (O
     i) κw h x₀ a f ∧ ∀ f₁ : Fin n → Cu T κw i, (∀ k, (f₁ k : T.R ((i : ℕ) + 1)) = actG (O i) z (f k
     : T.R ((i : ℕ) + 1))) → ph • R.thG i A.μ0 (R.jV i A.μ0 x₀) = ∑ g, RealDat.eC (A := A) (sg0 D
-    A) g • R.gW i (sg0 D A) g (∑ k, D.what₂.embLL (ze * a k) • fw.jK i (sg0 D A) (f₁ k))) := by
-  first | exact @GlobalTheory.GalLift.lift_and_base_five | exact GlobalTheory.GalLift.lift_and_base_five | (intros; apply GlobalTheory.GalLift.lift_and_base_five <;> assumption)
+    A) g • R.gW i (sg0 D A) g (∑ k, D.what₂.embLL (ze * a k) • fw.jK i (sg0 D A) (f₁ k))) := GlobalTheory.GalLift.lift_and_base_five

@@ -5,5 +5,4 @@ open GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.FunObj.SqNum GlobalTh
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.square_ratio_valuation_without_norm_formula : (∀ D, GlobalTheory.NormSum.Inp D) → LNe → TorEx → BotSmall → BotExT → NormBig → BotNe → TriEx → Tower → BotConst → Refl → RhoLow → OneSqSt := by
-  first | exact @GlobalTheory.SqTop.OneSqNoSmall.oneSqSt_of_claims' | exact GlobalTheory.SqTop.OneSqNoSmall.oneSqSt_of_claims' | (intros; apply GlobalTheory.SqTop.OneSqNoSmall.oneSqSt_of_claims' <;> assumption)
+theorem _root_.GlobalTheory.T.square_ratio_valuation_without_norm_formula : (∀ D, GlobalTheory.NormSum.Inp D) → LNe → TorEx → BotSmall → BotExT → NormBig → BotNe → TriEx → Tower → BotConst → Refl → RhoLow → OneSqSt := GlobalTheory.SqTop.OneSqNoSmall.oneSqSt_of_claims'

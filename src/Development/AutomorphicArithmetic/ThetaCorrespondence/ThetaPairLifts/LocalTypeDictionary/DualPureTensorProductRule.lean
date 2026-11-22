@@ -140,6 +140,5 @@ theorem _root_.GlobalTheory.T.dual_pure_tensor_product_rule : _root_.GlobalTheor
     ∀ Ψ : Fin l.length → (Fin a' × Fin (a + a') → AF D.host.F) → ℂ,
     (∀ i, Ψ i ∈ algD Γ.M' Bs.ψ Bs.emb ∧
         ∀ x, HasDerivAt (fun t : ℝ => om' (1, kapX X e hJ (oneP θ X (l.get i).1 (l.get i).2 t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) x) (Ψ i x) 0) →
-    ∀ x, HasDerivAt (fun t : ℝ => om' (1, kapX X e hJ ((l.map fun q => oneP θ X q.1 q.2 t).prod)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) x) (∑ i, Ψ i x) 0 := by
-  first | exact @_root_.GlobalTheory.PureProdRuleDual.lift_splits_locally | exact _root_.GlobalTheory.PureProdRuleDual.lift_splits_locally | (intros; apply _root_.GlobalTheory.PureProdRuleDual.lift_splits_locally <;> assumption)
+    ∀ x, HasDerivAt (fun t : ℝ => om' (1, kapX X e hJ ((l.map fun q => oneP θ X q.1 q.2 t).prod)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) x) (∑ i, Ψ i x) 0 := GlobalTheory.PureProdRuleDual.lift_splits_locally
 end

@@ -24,5 +24,4 @@ theorem _root_.GlobalTheory.T.realQuotient_minor_eq_const_smul_complementMinor :
       q' (GlobalTheory.MinorFrame.rowSub (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ)) P) =
         GlobalTheory.MinorFrame.detChar n₀ (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ)) • σ (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ)) (q' P)) →
     ∃ ρ : ℂ, ρ ≠ 0 ∧ ∀ (n : D.what₂.Tau → ℕ) (T : Tup D a d n), ∃ ε : ℤˣ,
-      q (GlobalTheory.BotFormula.minorF rfl rfl T) = (ρ * ((ε : ℤ) : ℂ)) • q' (GlobalTheory.BotFormula.minorF rfl rfl (GlobalTheory.BotMatch.complTup D had T)) := by
-  first | exact @GlobalTheory.SchurQuot.quot_minor_eq_const_smul_compl | exact GlobalTheory.SchurQuot.quot_minor_eq_const_smul_compl | (intros; apply GlobalTheory.SchurQuot.quot_minor_eq_const_smul_compl <;> assumption)
+      q (GlobalTheory.BotFormula.minorF rfl rfl T) = (ρ * ((ε : ℤ) : ℂ)) • q' (GlobalTheory.BotFormula.minorF rfl rfl (GlobalTheory.BotMatch.complTup D had T)) := GlobalTheory.SchurQuot.quot_minor_eq_const_smul_compl

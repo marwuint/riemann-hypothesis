@@ -79,6 +79,5 @@ theorem _root_.GlobalTheory.T.bottom_degree_match_real_quotient : GlobalTheory.P
           ∀ f, GlobalTheory.SquareComm.IsFinF ψ θ false FA' FW f → ∀ P,
             p' (GlobalTheory.SquareComm.fockF ψ θ false FA' FW f P) = e (q' P ⊗ₜ r' f)) →
     ∃ ρ : ℂ, ρ ≠ 0 ∧ ∀ (n : D.what₂.Tau → ℕ) (T : Tup D A.rank WW.rank n), ∃ ε : ℤˣ,
-      q (GlobalTheory.BotFormula.minorF rfl rfl T) = (ρ * ((ε : ℤ) : ℂ)) • q' (GlobalTheory.BotFormula.minorF rfl rfl (GlobalTheory.BotMatch.complTup D had T)) := by
-  first | exact @_root_.GlobalTheory.BotMatch.real_quotient_complement_minor | exact _root_.GlobalTheory.BotMatch.real_quotient_complement_minor | (intros; apply _root_.GlobalTheory.BotMatch.real_quotient_complement_minor <;> assumption)
+      q (GlobalTheory.BotFormula.minorF rfl rfl T) = (ρ * ((ε : ℤ) : ℂ)) • q' (GlobalTheory.BotFormula.minorF rfl rfl (GlobalTheory.BotMatch.complTup D had T)) := GlobalTheory.BotMatch.real_quotient_complement_minor
 end

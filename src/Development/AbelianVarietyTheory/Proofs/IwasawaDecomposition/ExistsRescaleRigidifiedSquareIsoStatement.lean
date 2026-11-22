@@ -15,5 +15,4 @@ theorem _root_.GlobalTheory.T.exists_rescale_rigidified_square_iso : ∀ (S : Sc
     ∀ (Z : Scheme.{0}) (r : Z ⟶ (𝟙_ (Over S)).left) (z : Z) (jL : L.L.ι) (jL' : L'.L.ι),
       eSec G (r z) ∈ L.L.U jL → eSec G (r z) ∈ L'.L.U jL' →
       gm r z _ (L.rig.s (fun _ => jL)) ^ 2 =
-        gv w' (r ≫ eSec G) z (fun _ => jL) (fun _ => jL') * gm r z _ (L'.rig.s (fun _ => jL')) ^ 2 := by
-  first | exact @GlobalTheory.RigSq.exists_rescale | exact GlobalTheory.RigSq.exists_rescale | (intros; apply GlobalTheory.RigSq.exists_rescale <;> assumption)
+        gv w' (r ≫ eSec G) z (fun _ => jL) (fun _ => jL') * gm r z _ (L'.rig.s (fun _ => jL')) ^ 2 := GlobalTheory.RigSq.exists_rescale

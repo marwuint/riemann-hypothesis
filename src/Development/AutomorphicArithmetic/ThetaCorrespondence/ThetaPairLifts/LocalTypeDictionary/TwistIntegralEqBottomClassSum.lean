@@ -119,6 +119,5 @@ theorem _root_.GlobalTheory.T.twist_integral_eq_bottom_classSum : ∀ {D : D7} {
     ∃ (v : ℝ) (N : ℕ) (z : Fin N → GA D A') (w : Fin N → ℕ) (κ : Measure (GinfC A')), 0 < v ∧ (∀ l, z l ∈ GfC A') ∧
       (∀ l, 0 < w l) ∧ κ.IsMulLeftInvariant ∧ IsProbabilityMeasure κ ∧
       ∀ (t : T) (P : PolF D WW.rank A'.rank), ∀ h ∈ GfC WW,
-        X.I' W.ψ W.θ t P h = (v : ℂ) * ∑ l, ((w l : ℂ))⁻¹ * ∫ g, X.ker' W.ψ W.θ t P h (z l * (g : GA D A')) ∂κ := by
-  first | exact @_root_.GlobalTheory.RowTest.BottomClassSum.integral_eq_bottom_classSum | exact _root_.GlobalTheory.RowTest.BottomClassSum.integral_eq_bottom_classSum | (intros; apply _root_.GlobalTheory.RowTest.BottomClassSum.integral_eq_bottom_classSum <;> assumption)
+        X.I' W.ψ W.θ t P h = (v : ℂ) * ∑ l, ((w l : ℂ))⁻¹ * ∫ g, X.ker' W.ψ W.θ t P h (z l * (g : GA D A')) ∂κ := GlobalTheory.RowTest.BottomClassSum.integral_eq_bottom_classSum
 end

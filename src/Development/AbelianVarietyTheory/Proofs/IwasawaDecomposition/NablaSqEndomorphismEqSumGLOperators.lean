@@ -173,8 +173,7 @@ theorem spanAlg_toSubmodule :
 theorem extremal_mem : extremal k N lam ∈ nablaSq k N lam :=
   Formalism.GradedWeylDivisibility.hwMem k N N le_rfl lam.natW (PI.WGB.natW_anti_A lam)
 
-theorem extremal_ne : extremal k N lam ≠ 0 :=
-  Formalism.GradedWeylDivisibility.hwNe k N N le_rfl lam.natW
+theorem extremal_ne : extremal k N lam ≠ 0 := Formalism.GradedWeylDivisibility.highestWeightVectorNeZero k N N le_rfl lam.natW
 
 theorem nontrivial : Nontrivial (nablaSq k N lam) :=
   ⟨⟨⟨extremal k N lam, extremal_mem k N lam⟩, 0, fun h => extremal_ne k N lam (congrArg Subtype.val h)⟩⟩

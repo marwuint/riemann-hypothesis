@@ -62,14 +62,7 @@ theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp]; rfl
 
-theorem epi_spMap {K k : Type} [Field K] [Field k] (f : K →+* k) : Epi (spMap f) := by
-  have h1 : Flat (spMap f) := by
-    let _ := f.toAlgebra
-    exact HasRingHomProperty.Spec_iff.2 (show (algebraMap K k).Flat from
-      RingHom.flat_algebraMap_iff.2 inferInstance)
-  have h2 : Surjective (spMap f) :=
-    ⟨fun x => ⟨IsLocalRing.closedPoint k, Subsingleton.elim (α := PrimeSpectrum K) _ _⟩⟩
-  exact Flat.epi_of_flat_of_surjective _
+theorem epi_spMap {K k : Type} [Field K] [Field k] (f : K →+* k) : Epi (spMap f) := PositivityTheory.HtPt.Mg.epi_spMap f
 
 theorem exists_reps (M : Type) [AddCommGroup M] [Module.Finite ℤ M] (N : ℕ) (hN : 0 < N) :
     ∃ (T : Type) (_ : Finite T) (r : M → T) (u : T → M), ∀ a, ∃ b, a = u (r a) + N • b := by

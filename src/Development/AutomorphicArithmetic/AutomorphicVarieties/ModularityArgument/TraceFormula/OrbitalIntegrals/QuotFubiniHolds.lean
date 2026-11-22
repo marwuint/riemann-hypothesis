@@ -5,23 +5,23 @@ namespace UpperTheory.V.Z.Tf.Orb
 
 theorem orbProper_holds : OrbProper := UpperTheory.ConvolutionTheory.Loc.orbProper
 
-theorem gLTop_holds : GLTop := gLTop_of
+theorem gLTop_holds : GLTop := UpperTheory.V.Z.Tf.Orb.gLTop
 
-theorem extCont_holds : ExtCont := extCont_of
+theorem extCont_holds : ExtCont := UpperTheory.V.Z.Tf.Orb.extCont
 
-theorem centComm_holds : CentComm := centComm_of
+theorem centComm_holds : CentComm := UpperTheory.V.Z.Tf.Orb.centComm
 
 theorem twCent_holds : TwCent := twCent_of
 
-theorem haarComm_holds : HaarComm := haarComm_of
+theorem haarComm_holds : HaarComm := UpperTheory.V.Z.Tf.Orb.haarComm
 
-theorem quotIndep_holds : QuotIndep := quotIndep_of
+theorem quotIndep_holds : QuotIndep := UpperTheory.V.Z.Tf.Orb.quotIndep
 
-theorem normEx_holds : NormEx := normEx_of
+theorem normEx_holds : NormEx := UpperTheory.V.Z.Tf.Orb.normEx
 
 theorem quotInt_holds : QuotInt := quotInt_of
 
-theorem untwist_holds : Untwist := untwist_of
+theorem untwist_holds : Untwist := UpperTheory.V.Z.Tf.Orb.untwist
 
 theorem twOrbLin_holds : TwOrbLin := twOrbLin_of orbProper_holds
 

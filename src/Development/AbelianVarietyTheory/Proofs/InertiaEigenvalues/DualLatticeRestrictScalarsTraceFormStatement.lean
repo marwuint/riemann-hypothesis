@@ -20,5 +20,4 @@ theorem _root_.GlobalTheory.T.dualLattice_restrictScalars_traceForm : ∀ (l : �
     (∀ v, v ∈ LZ.T ↔ v ∈ L.T) → (∀ v, v ∈ LZ'.T ↔ v ∈ L'.T) →
     ∀ (Pr : V →ₗ[LL] V' →ₗ[LL] LL) (PQ : V →ₗ[ℚ_[l]] V' →ₗ[ℚ_[l]] ℚ_[l]),
     (∀ x y, PQ x y = lam (Pr x y)) → IsDualLat1 (P.PD K) L L' Pr →
-    IsDualLat1 (P.PD K) LZ LZ' PQ := by
-  first | exact @GlobalTheory.DualLatDescent.dualLat_resQ | exact GlobalTheory.DualLatDescent.dualLat_resQ | (intros; apply GlobalTheory.DualLatDescent.dualLat_resQ <;> assumption)
+    IsDualLat1 (P.PD K) LZ LZ' PQ := GlobalTheory.DualLatDescent.dualLat_resQ

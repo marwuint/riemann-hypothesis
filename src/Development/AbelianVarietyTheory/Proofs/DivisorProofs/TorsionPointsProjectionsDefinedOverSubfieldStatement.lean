@@ -18,5 +18,4 @@ theorem _root_.GlobalTheory.T.torsionPoints_projections_defined_over_subfield : 
     ∀ (K : Type) [Field K] [IsAlgClosed K] (ev : V₁ →+* K) (k₀ : Subfield K), IsAlgClosed k₀ → (∀ a, ev (ib a) ∈ k₀) →
     ∀ (N : ℕ), 1 ≤ N → ∀ (b : 𝟙_ (Over (Sp V₁)) ⟶ D.P.A), b ^ N = 1 → ∀ a : D.X,
       DefOver k₀ (spMap ev ≫ b.left ≫ β) ∧ DefOver k₀ (spMap ev ≫ (D.c a).left ≫ β) ∧
-        DefOver k₀ (spMap ev ≫ (b * D.c a).left ≫ β) ∧ DefOver k₀ (spMap ev ≫ (D.c a * b).left ≫ β) := by
-  first | exact @GlobalTheory.USep.EvG.points_defOver | exact GlobalTheory.USep.EvG.points_defOver | (intros; apply GlobalTheory.USep.EvG.points_defOver <;> assumption)
+        DefOver k₀ (spMap ev ≫ (b * D.c a).left ≫ β) ∧ DefOver k₀ (spMap ev ≫ (D.c a * b).left ≫ β) := GlobalTheory.USep.EvG.points_defOver

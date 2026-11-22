@@ -16,5 +16,4 @@ theorem _root_.GlobalTheory.T.exists_divisor_nonKlt_points_numerically_multiple 
       (P.card : ℚ) * (k : ℚ) ^ k < h ^ k * (interNumRed ℂ (Closeds.closure ({z} : Set X)) fun _ : Fin k => toLB A : ℤ) →
       ∃ (B : X → ℚ) (δ₀ : ℚ), 0 < δ₀ ∧ δ₀ ≤ 1 ∧ QNum p (toLB A) h B ∧ Off B z ∧
         (∀ δ : ℚ, 0 ≤ δ → δ ≤ δ₀ → ∀ x ∈ P, ¬ KltAt p n (Δ + (1 - δ) • D + B) x) ∧
-        (∀ y, ¬ z ⤳ y → ∀ a : ℚ, 0 ≤ a → KltAt p n (Δ + a • D) y → KltAt p n (Δ + a • D + B) y) := by
-  first | exact @GlobalTheory.AmpleStep.exists_divisor | exact GlobalTheory.AmpleStep.exists_divisor | (intros; apply GlobalTheory.AmpleStep.exists_divisor <;> assumption)
+        (∀ y, ¬ z ⤳ y → ∀ a : ℚ, 0 ≤ a → KltAt p n (Δ + a • D) y → KltAt p n (Δ + a • D + B) y) := GlobalTheory.AmpleStep.exists_divisor

@@ -5,5 +5,4 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Un
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.seeSawTwistPlaceLaws_of_rootOfUnityRescaling : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t), c.Is → t.Is → v.Is → WeilOK (t := t) v → QPinU v w → QLaw v w ∧ QLast v w ∧ QFin v w := by
-  first | exact @GlobalTheory.QTw.laws_of_pin_resc | exact GlobalTheory.QTw.laws_of_pin_resc | (intros; apply GlobalTheory.QTw.laws_of_pin_resc <;> assumption)
+theorem _root_.GlobalTheory.T.seeSawTwistPlaceLaws_of_rootOfUnityRescaling : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t), c.Is → t.Is → v.Is → WeilOK (t := t) v → QPinU v w → QLaw v w ∧ QLast v w ∧ QFin v w := GlobalTheory.QTw.laws_of_pin_resc

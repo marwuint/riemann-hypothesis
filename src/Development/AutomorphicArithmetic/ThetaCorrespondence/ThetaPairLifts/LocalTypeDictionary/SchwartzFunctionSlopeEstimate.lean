@@ -177,6 +177,5 @@ theorem _root_.GlobalTheory.T.schwartz_function_slope_estimate : _root_.GlobalTh
     (∀ s t (f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d)), T (s + t) f = T s (T t f)) →
     (∀ f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d), T 0 f = f) →
     ∀ f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d), ∃ g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d),
-      Filter.Tendsto (fun t : ℝ => t⁻¹ • (T t f - f)) (nhdsWithin 0 {0}ᶜ) (nhds g) := by
-  first | exact @_root_.GlobalTheory.SchwartzSlope.lift_splits_locally | exact _root_.GlobalTheory.SchwartzSlope.lift_splits_locally | (intros; apply _root_.GlobalTheory.SchwartzSlope.lift_splits_locally <;> assumption)
+      Filter.Tendsto (fun t : ℝ => t⁻¹ • (T t f - f)) (nhdsWithin 0 {0}ᶜ) (nhds g) := GlobalTheory.SchwartzSlope.lift_splits_locally
 end

@@ -27,6 +27,5 @@ theorem _root_.GlobalTheory.T.weil_pair_global_character : ∀ (F E : Type) [Fie
           Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks (Formalism.IndefR.DatumF.mtF σ JT h) 0 0 1) →
       ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ f₁ f₂ : Formalism.IndefR.DatumF.WOF F E nS nT → ℂ,
         Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ f₁ → Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ f₂ →
-        ωd (1, hd) (GlobalTheory.DblTargetDelta.deltaT f₁ f₂) = c • GlobalTheory.DblTargetDelta.deltaT (ω (1, h) f₁) f₂ := by
-  first | exact @_root_.PositivityTheory.ThKW.weil_pair_global_character_lift | exact _root_.PositivityTheory.ThKW.weil_pair_global_character_lift | (intros; apply _root_.PositivityTheory.ThKW.weil_pair_global_character_lift <;> assumption)
+        ωd (1, hd) (GlobalTheory.DblTargetDelta.deltaT f₁ f₂) = c • GlobalTheory.DblTargetDelta.deltaT (ω (1, h) f₁) f₂ := PositivityTheory.ThKW.weil_pair_global_character_lift
 end

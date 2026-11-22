@@ -73,6 +73,5 @@ theorem _root_.GlobalTheory.T.rational_vacuum_algebraic_combination : ∀ {D : D
     IsBottomTri W i j X → ∀ (t : T), ∀ γ ∈ Formalism.L2.Theta.GQ A, ∀ a ∈ GinfC A, ∀ γ' ∈ Formalism.L2.Theta.GQ WW, ∀ a' ∈ GinfC WW,
       γ * a ∈ GfC A → γ' * a' ∈ GfC WW →
       ∃ (κ : ℂ) (F : WO (GlobalTheory.Grid.neg A) WW → ℂ), GlobalTheory.MovedAlg.IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac F ∧
-        X.ω t (γ, γ') X.vac = κ • F := by
-  first | exact @_root_.GlobalTheory.RatVacAlg.rational_vacuum_eq_smul_algebraic_combination | exact _root_.GlobalTheory.RatVacAlg.rational_vacuum_eq_smul_algebraic_combination | (intros; apply _root_.GlobalTheory.RatVacAlg.rational_vacuum_eq_smul_algebraic_combination <;> assumption)
+        X.ω t (γ, γ') X.vac = κ • F := GlobalTheory.RatVacAlg.rational_vacuum_eq_smul_algebraic_combination
 end

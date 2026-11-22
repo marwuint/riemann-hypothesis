@@ -18,5 +18,4 @@ theorem _root_.GlobalTheory.T.decoratedRowLattices_flagLevel_rightTranslation : 
               (eG.symm (rTup L.βX (L.datXt t) (Formalism.UG.bc (swapAE X.toD7) ((q : Bridge.Gf X.toD7.sp.X') : GL _ _)))))⁻¹) •
           RowAd.decoAd X I t h) ∧
       X.toD7.what₂.embLL (((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv.chr u : X.B.fields.Kˣ) : X.B.fields.K) =
-        (((levEnv X.toD7.sp.X' L.βX (L.datXt t)).ch q : ℂˣ) : ℂ) := by
-  first | exact @GlobalTheory.Mem.R3.RowDeco.deco_tie | exact GlobalTheory.Mem.R3.RowDeco.deco_tie | (intros; apply GlobalTheory.Mem.R3.RowDeco.deco_tie <;> assumption)
+        (((levEnv X.toD7.sp.X' L.βX (L.datXt t)).ch q : ℂˣ) : ℂ) := GlobalTheory.Mem.R3.RowDeco.deco_tie

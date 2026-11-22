@@ -13,10 +13,7 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.Amp.AbsRange
 
-theorem one_le_foldr_max (L : List ℝ) : 1 ≤ L.foldr max 1 := by
-  induction L with
-  | nil => simp
-  | cons a L ih => exact le_trans ih (le_max_right _ _)
+theorem one_le_foldr_max (L : List ℝ) : 1 ≤ L.foldr max 1 := GlobalTheory.Amp.PtMinor.one_le_foldr L
 
 theorem le_foldr_max (L : List ℝ) (x : ℝ) (hx : x ∈ L) : x ≤ L.foldr max 1 := by
   induction L with

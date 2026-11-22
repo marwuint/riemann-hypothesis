@@ -15,5 +15,4 @@ theorem _root_.GlobalTheory.T.keyOrigin_retraction_localises : ∀ (T O A₁ EA�
     (∀ x : EA₁, ρ' x = 0 → ∃ s ∉ QA₁, s * x ∈ Ideal.span {algebraMap (Polynomial A₁) EA₁ Polynomial.X}) →
     ∃ ρ₁ : Localization.AtPrime QA₁ →+* A₁,
       GlobalTheory.KeyOriginEnlarge.Retracts T O A₁ i₁ EA₁ QA₁ jA₁ ρ₁ ∧
-      ρ₁.comp (algebraMap EA₁ (Localization.AtPrime QA₁)) = ρ' := by
-  first | (exact @GlobalTheory.KeyOriginEnlargeLoc.retract_localises) | (exact GlobalTheory.KeyOriginEnlargeLoc.retract_localises) | (intros; apply GlobalTheory.KeyOriginEnlargeLoc.retract_localises  <;> assumption)
+      ρ₁.comp (algebraMap EA₁ (Localization.AtPrime QA₁)) = ρ' := GlobalTheory.KeyOriginEnlargeLoc.retract_localises

@@ -161,7 +161,5 @@ end GlobalTheory.SeqCx
 
 section
 open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
-theorem _root_.GlobalTheory.T.exactAt_linkIn_splitSeq_of_exactAt_splitSeq : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ (N m p : ℕ) (ρ : List ((Fin N → R) × (Fin N → R))), ρ ∈ splitSeq R N → ρ.length + m = N → s ≤ m → ExactAt (splitSeq R m) p → ExactAt (linkIn (splitSeq R N) Set.univ ρ) p := by
-  first
-  | exact @GlobalTheory.SeqCx.exactAt_link_splitSeq
+theorem _root_.GlobalTheory.T.exactAt_linkIn_splitSeq_of_exactAt_splitSeq : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ (N m p : ℕ) (ρ : List ((Fin N → R) × (Fin N → R))), ρ ∈ splitSeq R N → ρ.length + m = N → s ≤ m → ExactAt (splitSeq R m) p → ExactAt (linkIn (splitSeq R N) Set.univ ρ) p := GlobalTheory.SeqCx.exactAt_link_splitSeq
 end

@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.trueColumnChoice_exists_chainData_with_basePoints 
       (fun c s => ((W.ch u a ha B.R.m h1 le_rfl (T.chOf u a B.R.m c)).stabI ⟨c, rfl⟩ s).1) k ∧
       ∀ β (d : XPt (B.primes X) B.R I.sel (I.tup a)) (g' : GA B (B.R.N B.R.m - 1)) (g : GA B (B.R.N B.R.m)), PtOf g' d →
         IsExt (I.rec7 l Z) (z0 X u) (inclE (F := (I.rec7 l Z).host.F) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)) g'.1 g.1 →
-        PtOf (g * k β) (tilF I.sel (I.tup a) u d)) := by
-  first | exact @GlobalTheory.Mem.Col2.TC.tw_ties_with_points | exact GlobalTheory.Mem.Col2.TC.tw_ties_with_points | (intros; apply GlobalTheory.Mem.Col2.TC.tw_ties_with_points <;> assumption)
+        PtOf (g * k β) (tilF I.sel (I.tup a) u d)) := GlobalTheory.Mem.Col2.TC.tw_ties_with_points

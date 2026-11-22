@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.exists_maximal_over_closedPoint_closedFibre : ∀ 
       y.comap (algebraMap (Polynomial T) E) ≠
         (IsLocalRing.maximalIdeal T).map (Polynomial.C : T →+* Polynomial T) ∧
       (y.comap (algebraMap (Polynomial T) E)).comap (Polynomial.C : T →+* Polynomial T) =
-        IsLocalRing.maximalIdeal T := by
-  first | (exact @GlobalTheory.exists_maximal_over_closedPt) | (exact GlobalTheory.exists_maximal_over_closedPt) | (intros; apply GlobalTheory.exists_maximal_over_closedPt  <;> assumption)
+        IsLocalRing.maximalIdeal T := GlobalTheory.exists_maximal_over_closedPt

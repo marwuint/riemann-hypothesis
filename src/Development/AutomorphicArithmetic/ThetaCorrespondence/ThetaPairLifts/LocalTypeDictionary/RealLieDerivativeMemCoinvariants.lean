@@ -157,6 +157,5 @@ theorem _root_.GlobalTheory.T.real_lie_derivative_mem_coinvariants : _root_.Glob
     Function.Injective Φ → LinearMap.range Φ = Mo.Pol ψ' τ → GlobalTheory.RealDict.IsFockMap ψ θ ε A B Mo Φ →
       ∀ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Lines D.sp.cm.sig Xs, ∀ f ∈ Mo.Pol ψ' τ, ∀ f₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin M.rank × Fin X.rank),
           GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ActsD (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (fun t => om (γ (Multiplicative.ofAdd t), 1)) f f₁ →
-          f₁ ∈ (GlobalTheory.RealQuot.coinv ε A B eT).map Φ := by
-  first | exact @_root_.GlobalTheory.RealDict.lie_derivative_mem_coinvariants | exact _root_.GlobalTheory.RealDict.lie_derivative_mem_coinvariants | (intros; apply _root_.GlobalTheory.RealDict.lie_derivative_mem_coinvariants <;> assumption)
+          f₁ ∈ (GlobalTheory.RealQuot.coinv ε A B eT).map Φ := GlobalTheory.RealDict.lie_derivative_mem_coinvariants
 end

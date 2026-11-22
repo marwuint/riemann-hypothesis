@@ -17,5 +17,4 @@ theorem _root_.GlobalTheory.T.cubicalProduct_identity_of_genericPoint : ∀ (V :
         (toUnit (TF (R := V) (FractionRing V)) ≫ b ^ i) (toUnit (TF (R := V) (FractionRing V)) ≫ b) =
       val χt (toUnit (TF (R := V) (FractionRing V))).left z J ^ N) →
     ∀ (T : Over (Sp V)) (z : T.left) J, Good D.P.L z J →
-      ∏ i ∈ Finset.range N, cubV D.cub z J (toUnit T ≫ cχ) (toUnit T ≫ b ^ i) (toUnit T ≫ b) = val χt T.hom z J ^ N := by
-  first | exact @GlobalTheory.Poinc.Sep.CubInt.cubProd_of_generic | exact GlobalTheory.Poinc.Sep.CubInt.cubProd_of_generic | (intros; apply GlobalTheory.Poinc.Sep.CubInt.cubProd_of_generic <;> assumption)
+      ∏ i ∈ Finset.range N, cubV D.cub z J (toUnit T ≫ cχ) (toUnit T ≫ b ^ i) (toUnit T ≫ b) = val χt T.hom z J ^ N := GlobalTheory.Poinc.Sep.CubInt.cubProd_of_generic

@@ -110,8 +110,7 @@ open Formalism.FrobeniusOrbits Formalism.TwoAdicCyclotomicDecomposition
 theorem orderOf_unit_class_eq_two_pow (e : ℕ) : orderOf (hcl e (u5 (e + 2))) = 2 ^ e :=
   (Formalism.FrobeniusOrbits.Final.host_field.2.1 e).2.2.2.2.2.2.2.1
 
-theorem card_HGrp (e : ℕ) : Nat.card (HGrp e) = 2 ^ e :=
-  (Formalism.FrobeniusOrbits.Final.host_field.2.1 e).2.2.2.2.2.2.1
+theorem card_HGrp (e : ℕ) : Nat.card (HGrp e) = 2 ^ e := Formalism.FrobeniusOrbits.Group.card_H e
 
 theorem iotaH_add (e : ℕ) (i j : ZMod (2 ^ e)) : iotaH e (i + j) = iotaH e i * iotaH e j := by
   simp only [iotaH]

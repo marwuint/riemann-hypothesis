@@ -17,5 +17,4 @@ theorem _root_.GlobalTheory.T.exists_gaussianVacuum_frames_placeSignatures : ∀
       At (evI F) u → At (evI F) u' →
       (∀ w', u.map (piInf (τ w')) = A w' * (Pi.single w (Matrix.single a b 1) : ∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) w' * (C w')ᵀ) →
       (∀ w', u'.map (piInf (τ w')) = A w' * (Pi.single w (Matrix.single a b Complex.I) : ∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) w' * (C w')ᵀ) →
-      D u f₀ + (lineSign a b * Complex.I) • D u' f₀ = 0 := by
-  first | exact @GlobalTheory.HoweD.exists_vacuumD | exact GlobalTheory.HoweD.exists_vacuumD | (intros; apply GlobalTheory.HoweD.exists_vacuumD <;> assumption)
+      D u f₀ + (lineSign a b * Complex.I) • D u' f₀ = 0 := GlobalTheory.HoweD.exists_vacuumD

@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.idempotentCut_mem_latticeStabilizer_of_productLeve
     {n' : P → ℕ} (h : ∀ w, n' w = n) (K : ∀ w : P, Subgroup (GL (Fin (n' w)) (Kw w.1))) (x : GL (Fin n) (Lev.EAf D)),
     x ∈ prodLev β P h K → ∀ (b : Lev.EAf D) (hb : b * b = b),
     (∀ w : Pl D.host.E, (∃ PP ∈ P, w.under (𝓞 D.host.F) = PP.under (𝓞 D.host.F)) → GlobalTheory.StdFrames.cpt (D := D) w b = 0) →
-    GlobalTheory.UnitaryIdemCut.cutGL b hb x ∈ St β := by
-  first | exact @GlobalTheory.CutProdLev.cutGL_mem_St_of_mem_prodLev | exact GlobalTheory.CutProdLev.cutGL_mem_St_of_mem_prodLev | (intros; apply GlobalTheory.CutProdLev.cutGL_mem_St_of_mem_prodLev <;> assumption)
+    GlobalTheory.UnitaryIdemCut.cutGL b hb x ∈ St β := GlobalTheory.CutProdLev.cutGL_mem_St_of_mem_prodLev

@@ -12,5 +12,4 @@ theorem _root_.GlobalTheory.T.abhyankar_residueField_isSeparable_alt : ∀ (S K 
       Algebra.IsSeparable (S ⧸ maximalIdeal S) (integralClosure S L ⧸ P)) →
     ∀ [IsDomain D] [IsDiscreteValuationRing D] (Q : Ideal (integralClosure D (TensorProduct S D L))) [Q.IsMaximal],
     ∀ [Q.LiesOver (maximalIdeal D)],
-    Algebra.IsSeparable (D ⧸ maximalIdeal D) (integralClosure D (TensorProduct S D L) ⧸ Q) := by
-  first | (exact @GlobalTheory.abhyankar_residueField_isSeparable) | (exact GlobalTheory.abhyankar_residueField_isSeparable) | (intros; apply GlobalTheory.abhyankar_residueField_isSeparable  <;> assumption)
+    Algebra.IsSeparable (D ⧸ maximalIdeal D) (integralClosure D (TensorProduct S D L) ⧸ Q) := GlobalTheory.abhyankar_residueField_isSeparable

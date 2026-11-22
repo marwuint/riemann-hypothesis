@@ -12,5 +12,4 @@ theorem _root_.GlobalTheory.T.twistedAction_eq_twistedCoefficients_cocycle_iff :
     {ρ : Representation LL G V} (L : Lattice (O := O) ρ) (X : Type) [AddCommGroup X] [Module O X]
     (χ : G →* Oˣ),
     (∀ g m, tableLineDegreeTwo.actTw L X χ g m = twCoef (latRep L) χ X g m) ∧
-    ∀ z : G → ↥L.T ⊗[O] X, tableLineDegreeTwo.IsCoc L X χ z ↔ z ∈ Z1 (twCoef (latRep L) χ X) ⊤ := by
-  first | exact @GlobalTheory.actTw_eq_twCoef_and_isCoc_iff | exact GlobalTheory.actTw_eq_twCoef_and_isCoc_iff | (intros; apply GlobalTheory.actTw_eq_twCoef_and_isCoc_iff <;> assumption)
+    ∀ z : G → ↥L.T ⊗[O] X, tableLineDegreeTwo.IsCoc L X χ z ↔ z ∈ Z1 (twCoef (latRep L) χ X) ⊤ := GlobalTheory.actTw_eq_twCoef_and_isCoc_iff

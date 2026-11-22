@@ -36,8 +36,7 @@ theorem ckR_two_of_smoothR {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M →
     (h : SmoothR n z f) : CkR n z 2 f := fun e he => (h e he).of_le (by exact_mod_cast lse_two_le_infty)
 
 theorem smoothR_const {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (c : ℝ) :
-    SmoothR n z (fun _ => c) := fun e _ => by
-  simpa [Function.comp_def] using (contDiffOn_const : ContDiffOn ℝ ∞ (fun _ : V n => (c : ℂ)) e.target)
+    SmoothR n z (fun _ => c) := ReciprocityTheory.L2DbarEstimates.smoothR_const n z c
 
 theorem levi_add_const {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℝ) (c : ℝ)
     (hf : SmoothR n z f) (x : M) (ξ : Fin n → ℂ) :

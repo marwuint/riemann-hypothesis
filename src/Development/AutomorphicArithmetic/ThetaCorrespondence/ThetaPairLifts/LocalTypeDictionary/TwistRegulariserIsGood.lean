@@ -69,6 +69,5 @@ theorem _root_.GlobalTheory.T.twist_regulariser_isGood : _root_.GlobalTheory.Fun
     ∃ z : GA D W₁ →₀ ℂ, (∀ k ∈ z.support, k ∈ GfC W₁) ∧ GlobalTheory.FunObj.zdeg z ≠ 0 ∧
       ∀ i, ModInt θ ωB ν₁ 𝓕₁ ((z.sum fun k c => c • ωB (k, 1)) (Ψ i)) ∧
         ∃ u' ∈ GfC W₁, (z.sum fun k c => c • ωB (k, 1)) (ωB (u i, 1) (Ψ i)) =
-          ωB (u', 1) ((z.sum fun k c => c • ωB (k, 1)) (Ψ i)) := by
-  first | exact @_root_.GlobalTheory.RegGood.regulariser_isGood | exact _root_.GlobalTheory.RegGood.regulariser_isGood | (intros; apply _root_.GlobalTheory.RegGood.regulariser_isGood <;> assumption)
+          ωB (u', 1) ((z.sum fun k c => c • ωB (k, 1)) (Ψ i)) := GlobalTheory.RegGood.regulariser_isGood
 end

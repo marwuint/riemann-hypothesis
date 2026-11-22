@@ -21,6 +21,5 @@ theorem _root_.GlobalTheory.T.exists_eigenvector_split_idempotent : ∀ (F E : T
           ∀ y : WOF F E nS nT, (∀ i j, cAF σ e * y i j = y i j) →
             heisOF σ JS JT ξ₀ B.ψ y φ = φ ∨
             ∃ u : WOF F E nS nT, heisOF σ JS JT ξ₀ B.ψ u φ = φ ∧
-              B.ψ (symplOHF σ JS JT ξ₀ u y - symplOHF σ JS JT ξ₀ y u) ≠ 1 := by
-  exact @_root_.PositivityTheory.ThKW.SplitVacuumEigenvectors.exists_vac_split_k
+              B.ψ (symplOHF σ JS JT ξ₀ u y - symplOHF σ JS JT ξ₀ y u) ≠ 1 := PositivityTheory.ThKW.SplitVacuumEigenvectors.exists_vac_split_k
 end

@@ -23,7 +23,6 @@ theorem UniformIntegrability.full : UniformIntegrability.Statement :=
   UniformIntegrability.of_greenMass GreenMassStep.full GreenMassReplace.full GreenMassError.full
 
 theorem ListTailLog.of_lemmaE (hE : LemmaETailLog.Statement) (hM : ListMono.Statement)
-    (hC : RegSection.Statement) (hS : TailShift.Statement) : ListTailLog.Statement :=
-  ListTailLog.proof hE hM hC hS
+    (hC : RegSection.Statement) (hS : TailShift.Statement) : ListTailLog.Statement := GroundTheory.Heights₂.Heights.AnalyticLimit.ListTailLog.proof hE hM hC hS
 
 end GroundTheory.Heights₂.Heights.AnalyticLimit

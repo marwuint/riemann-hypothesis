@@ -8,7 +8,6 @@ open scoped ComplexOrder Classical
 namespace GlobalTheory.CompanionTheory.Ar.PB
 
 theorem pFl_isArithVar : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] [Nonempty Ψ] (N : ℕ), 2 ≤ N →
-    IsArithVar (PFl Ψ N) (antisymDegree Ψ N + 1) :=
-  @PositivityTheory.Xgp.t_c_fl_arith
+    IsArithVar (PFl Ψ N) (antisymDegree Ψ N + 1) := PositivityTheory.Xgp.t_c_fl_arith
 
 end GlobalTheory.CompanionTheory.Ar.PB

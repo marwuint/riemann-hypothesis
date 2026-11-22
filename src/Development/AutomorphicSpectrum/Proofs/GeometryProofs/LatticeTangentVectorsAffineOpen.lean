@@ -89,9 +89,7 @@ theorem exists_frame {X : Scheme.{0}} {G : Over X} [GrpObj G] {U : X.Opens} (hU 
   rw [this]
 
 theorem fromSpec_ringHom_ext {X : Scheme.{0}} {W : X.Opens} (hW : IsAffineOpen W) {R : Type} [CommRing R]
-    {a a' : Γ(X, W) →+* R} (h : spMap a ≫ hW.fromSpec = spMap a' ≫ hW.fromSpec) : a = a' := by
-  have h1 := Spec.map_injective ((cancel_mono hW.fromSpec).1 h)
-  exact congrArg CommRingCat.Hom.hom h1
+    {a a' : Γ(X, W) →+* R} (h : spMap a ≫ hW.fromSpec = spMap a' ≫ hW.fromSpec) : a = a' := GlobalTheory.CompanionTheory.Ar.TanChart.ringHom_eq_of_fromSpec hW h
 
 theorem spec_dual_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (φ : R →+* R') (φ' : R' →+* R'') :
     Spec.map (CommRingCat.ofHom (dualMap φ')) ≫ Spec.map (CommRingCat.ofHom (dualMap φ)) =

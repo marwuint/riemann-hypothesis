@@ -352,8 +352,7 @@ theorem place_alt_alt {Wp Wq : Type*} [NormedAddCommGroup Wp] [NormedSpace ℂ W
 section Geo
 
 theorem herm_bvec_right {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (v : Fin m → ℂ) (p : Fin m) :
-    herm H v (bvec p) = (H *ᵥ v) p := by
-  simp [herm, bvec, dotProduct, Pi.single_apply]
+    herm H v (bvec p) = (H *ᵥ v) p := Formalism.QuantumDeterminants.gn_herm_bvec_right H v p
 
 theorem Hpk_mulVec (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) (p : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ v) p = GBasic.sgn k r p * v (GBasic.sig k r p) := by

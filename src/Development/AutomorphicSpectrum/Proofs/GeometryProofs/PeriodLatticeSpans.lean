@@ -131,14 +131,7 @@ theorem ofFibre_one {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] (x : Sp
 
 theorem isHolTo_slice_at {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup V'] [NormedSpace ℂ V']
     {X : Scheme.{0}} {B : Set V} {b : V} (hb : b ∈ B) {c : V × V' → (Sp ℂ ⟶ X)}
-    (h : IsHolTo (B ×ˢ Set.univ) c) : IsHolTo Set.univ (fun z => c (b, z)) := by
-  intro U f
-  obtain ⟨h1, h2⟩ := h U f
-  have hj : Differentiable ℂ (fun z : V' => (b, z)) := (differentiable_const _).prodMk differentiable_id
-  refine ⟨?_, ?_⟩
-  · have h3 := h1.preimage hj.continuous
-    simpa only [Set.preimage_setOf_eq, Set.mem_prod, Set.mem_univ, and_true, hb, true_and] using h3
-  · exact h2.comp hj.differentiableOn fun z hz => ⟨⟨hb, trivial⟩, hz.2⟩
+    (h : IsHolTo (B ×ˢ Set.univ) c) : IsHolTo Set.univ (fun z => c (b, z)) := GlobalTheory.CompanionTheory.Ar.Flat.ExpOnto.isHolTo_slice hb h
 
 theorem isHolTo_ex_slice {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {g n : ℕ}
     {M : LieModel G (𝟙 (Sp R)) (Fin g → R)} {B : Set (Fin n → ℂ)} {ψ : (Fin n → ℂ) → (R →+* ℂ)}
@@ -149,13 +142,7 @@ theorem isHolTo_ex_slice {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {g
 
 theorem isHolTo_snd {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup V'] [NormedSpace ℂ V']
     {X : Scheme.{0}} {c : V' → (Sp ℂ ⟶ X)} (h : IsHolTo Set.univ c) :
-    IsHolTo (Set.univ ×ˢ Set.univ) (fun p : V × V' => c p.2) := by
-  intro U f
-  obtain ⟨h1, h2⟩ := h U f
-  refine ⟨?_, ?_⟩
-  · have h3 := h1.preimage (continuous_snd (X := V) (Y := V'))
-    simpa only [Set.preimage_setOf_eq, Set.mem_prod, Set.mem_univ, and_self, true_and] using h3
-  · exact h2.comp differentiable_snd.differentiableOn fun z hz => ⟨trivial, hz.2⟩
+    IsHolTo (Set.univ ×ˢ Set.univ) (fun p : V × V' => c p.2) := GlobalTheory.CompanionTheory.Ar.Flat.ExpOnto.isHolTo_const_param h
 
 def famExpAtPoint {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {g n : ℕ}
     {M : LieModel G (𝟙 (Sp R)) (Fin g → R)} {B : Set (Fin n → ℂ)} {ψ : (Fin n → ℂ) → (R →+* ℂ)}

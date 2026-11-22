@@ -21,5 +21,4 @@ theorem _root_.GlobalTheory.T.zmodTorsor_baseChange_transport_point : ∀ (A A�
           (algebraMap A₁ (FractionRing A₁)).comp (j.comp ρ) →
         ∃ σ₁ : DA₁ →+* FractionRing A₁,
           (σ₁.comp (algebraMap (GlobalTheory.LocAcyc.GenFib A₁ R₁) DA₁)).comp (algebraMap R₁ (GlobalTheory.LocAcyc.GenFib A₁ R₁)) =
-            (algebraMap A₁ (FractionRing A₁)).comp ρ₁ := by
-  first | (exact @GlobalTheory.KeyOriginCut.torsor_baseChange_point) | (exact GlobalTheory.KeyOriginCut.torsor_baseChange_point) | (intros; apply GlobalTheory.KeyOriginCut.torsor_baseChange_point  <;> assumption)
+            (algebraMap A₁ (FractionRing A₁)).comp ρ₁ := GlobalTheory.KeyOriginCut.torsor_baseChange_point

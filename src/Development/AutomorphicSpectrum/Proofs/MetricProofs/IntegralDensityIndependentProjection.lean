@@ -26,8 +26,7 @@ theorem cx_simple_null : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fi
     (Q : Ideal (MRingOver ℂ ι)) (e : ℕ) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)),
     IsCxVar Q e → IsSetGoodProj (conePts Q) Ψ →
     volume {y : Fin e → ℂ | ∃ w ∈ setFibre (conePts Q) Ψ y, (∃ γ, IsSetSheet (conePts Q) Ψ y w γ) ∧
-      ¬ cxSimple (conePts Q) Ψ w} = 0 := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.Pub.CxChart.cxSheetSimpleNull | exact GlobalTheory.CompanionTheory.Ar.Pub.CxChart.cxSheetSimpleNull | (intros; apply GlobalTheory.CompanionTheory.Ar.Pub.CxChart.cxSheetSimpleNull <;> assumption)
+      ¬ cxSimple (conePts Q) Ψ w} = 0 := GlobalTheory.CompanionTheory.Ar.Pub.CxChart.cxSheetSimpleNull
 
 theorem cxPosDens_split {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {e : ℕ}
     {Q : Ideal (MRingOver ℂ ι)} {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)}

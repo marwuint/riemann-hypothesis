@@ -250,6 +250,5 @@ theorem _root_.GlobalTheory.T.twisted_square_identity : GlobalTheory.Published.H
     PolRoute G (.grid i (j + 1)) (.grid i j) (.grid (i + 1) j)), (∀ a, ∃ b, (a, b) ∈ r) ∧ (∀ b, ∃ a, (a, b) ∈ r) ∧ r ≠ ⊤ ∧
   ∀ ρ' : RealMatch W, ρ'.vX = ρ.vX → ρ'.vT = ρ.vT → ρ'.rel i j = r → ∀ t : T, ∃ c : ℂ, ∀ M : Vol G, M.Is t → ∀ Θ Θ',
     IsMatched B t ρ' i j Θ Θ' → ∀ g g₁, ∃ z, zdeg z ≠ 0 ∧ SquareConv W M Θ Θ' z g g₁ ∧
-      zdeg z * ∫ u in M.fd _, kerBig W Θ g g₁ u ∂M.ν _ = c * ∫ u in M.fd _, translates z (kerSmall W Θ' g g₁) u ∂M.ν _ := by
-  first | exact @_root_.GlobalTheory.SquareIdent.square_identity_of_matching | exact _root_.GlobalTheory.SquareIdent.square_identity_of_matching | (intros; apply _root_.GlobalTheory.SquareIdent.square_identity_of_matching <;> assumption)
+      zdeg z * ∫ u in M.fd _, kerBig W Θ g g₁ u ∂M.ν _ = c * ∫ u in M.fd _, translates z (kerSmall W Θ' g g₁) u ∂M.ν _ := GlobalTheory.SquareIdent.square_identity_of_matching
 end

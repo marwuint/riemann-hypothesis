@@ -26,5 +26,4 @@ theorem _root_.GlobalTheory.T.exists_adelic_skewHermitian_correction_of_local_so
       ∀ z ∈ GlobalTheory.InertSph.latAt X v,
         ((GlobalTheory.DblVac.antiCols (F := F) (E := E) n)ᵀ * M * GlobalTheory.DblVac.antiCols n +
           (GlobalTheory.DblVac.antiCols (F := F) (E := E) n)ᵀ * M * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) * Z)⁻¹ *ᵥ z ∈
-          GlobalTheory.InertSph.latAt X v := by
-  first | exact @GlobalTheory.TransportBack.transport_back | exact GlobalTheory.TransportBack.transport_back | (intros; apply GlobalTheory.TransportBack.transport_back <;> assumption)
+          GlobalTheory.InertSph.latAt X v := GlobalTheory.TransportBack.transport_back

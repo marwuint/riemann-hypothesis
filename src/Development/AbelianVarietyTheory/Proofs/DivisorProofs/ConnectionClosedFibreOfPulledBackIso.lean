@@ -32,8 +32,7 @@ theorem constFn_one_c {R : Type} [CommRing R] {Y : Scheme.{0}} (q : Y ⟶ Sp R) 
   simp only [constFn, map_one]
 
 theorem constFn_zero_c {R : Type} [CommRing R] {Y : Scheme.{0}} (q : Y ⟶ Sp R) (W : Y.Opens) :
-    constFn q W 0 = 0 := by
-  simp only [constFn, map_zero]
+    constFn q W 0 = 0 := GlobalTheory.ThetaOnto.constFn_zero q W
 
 theorem constFn_comp_spMap_c {R S : Type} [CommRing R] [CommRing S] {Y : Scheme.{0}} (q : Y ⟶ Sp S) (x : R →+* S)
     (W : Y.Opens) (t : R) : constFn (q ≫ spMap x) W t = constFn q W (x t) := by

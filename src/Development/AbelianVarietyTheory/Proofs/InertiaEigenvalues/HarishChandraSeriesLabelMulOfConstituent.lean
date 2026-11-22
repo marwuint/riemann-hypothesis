@@ -16,9 +16,7 @@ theorem ip_add_right {G : Type} [Group G] [Fintype G] (χ φ ψ : G → ℂ) :
     ip χ (φ + ψ) = ip χ φ + ip χ ψ := by
   simp only [ip, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
-theorem isChar_of_isIrr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsChar χ := by
-  obtain ⟨V, -, hV⟩ := h
-  exact ⟨V, hV⟩
+theorem isChar_of_isIrr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsChar χ := GlobalTheory.CharDec.isChar_of_isIrr h
 
 theorem ip_sum_eq_count {G : Type} [Group G] [Fintype G] {χ : G → ℂ} (hχ : IsIrr χ) (L : List (G → ℂ))
     (hL : ∀ ρ ∈ L, IsIrr ρ) : ip χ L.sum = (L.count χ : ℕ) := by

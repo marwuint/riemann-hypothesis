@@ -140,5 +140,4 @@ theorem main : UpperTheory.Esk.LinTr := by
 
 end UpperTheory.Esk.LinearTraceLemmas
 
-theorem UpperTheory.Esk.pf_LinTr : UpperTheory.Esk.LinTr := by
-  exact UpperTheory.Esk.LinearTraceLemmas.main
+theorem UpperTheory.Esk.pf_LinTr : UpperTheory.Esk.LinTr := UpperTheory.Esk.LinearTraceLemmas.main

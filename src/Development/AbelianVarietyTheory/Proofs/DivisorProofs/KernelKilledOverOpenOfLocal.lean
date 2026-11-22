@@ -9,10 +9,7 @@ namespace GlobalTheory.KerKilledLocal
 open ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison
 
 theorem pullU_comp' {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (U : X.Opens) (x : Γ(X, U)ˣ) :
-    pullU (f ≫ g) U x = pullU f (g ⁻¹ᵁ U) (pullU g U x) := by
-  apply Units.ext
-  simp only [pullU, Scheme.Hom.comp_app, Units.coe_map]
-  rfl
+    pullU (f ≫ g) U x = pullU f (g ⁻¹ᵁ U) (pullU g U x) := ReciprocityTheory.ChartRestriction.G.DVR.pullU_comp f g U x
 
 theorem gen_pull3 {X Y Z Z' Y' : Scheme.{0}} (L : LB X) (a : Y ⟶ X) (b : Z ⟶ Y) (h : Z' ⟶ Z)
     (c : Y' ⟶ X) (e : Z' ⟶ Y') (heq : h ≫ b ≫ a = e ≫ c)

@@ -14,5 +14,4 @@ open GlobalTheory.LiftRows
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.finiteAdelicUnitaryPoint_ext_localComponents : ∀ {D : D7} (V : HSp D) (x y : GfC V), (∀ u : HeightOneSpectrum (𝓞 D.host.F), (Formalism.IndefR.Lev.finE V (x : GA D V)).val.map (Formalism.UG.prV (E := D.host.E) u) = (Formalism.IndefR.Lev.finE V (y : GA D V)).val.map (Formalism.UG.prV (E := D.host.E) u)) → x = y := by
-  first | exact @GlobalTheory.TrFinExt.gfc_ext | exact GlobalTheory.TrFinExt.gfc_ext | (intros; apply GlobalTheory.TrFinExt.gfc_ext <;> assumption)
+theorem _root_.GlobalTheory.T.finiteAdelicUnitaryPoint_ext_localComponents : ∀ {D : D7} (V : HSp D) (x y : GfC V), (∀ u : HeightOneSpectrum (𝓞 D.host.F), (Formalism.IndefR.Lev.finE V (x : GA D V)).val.map (Formalism.UG.prV (E := D.host.E) u) = (Formalism.IndefR.Lev.finE V (y : GA D V)).val.map (Formalism.UG.prV (E := D.host.E) u)) → x = y := GlobalTheory.TrFinExt.gfc_ext

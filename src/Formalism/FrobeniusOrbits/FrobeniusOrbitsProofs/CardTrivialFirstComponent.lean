@@ -15,8 +15,7 @@ open Formalism.TwoAdicCyclotomicDecomposition
 
 namespace EFG
 
-theorem two_isPrime : (span {(2 : ℤ)}).IsPrime := by
-  exact (Ideal.span_singleton_prime (by norm_num)).mpr Int.prime_two
+theorem two_isPrime : (span {(2 : ℤ)}).IsPrime := Formalism.TwoAdicCyclotomicDecomposition.two_isPrime
 
 theorem card_trivial_first_component (e : ℕ) : Nat.card {g : GG e // g.1 = 1} = 2 ^ e := by
   rw [← Group.card_H e]

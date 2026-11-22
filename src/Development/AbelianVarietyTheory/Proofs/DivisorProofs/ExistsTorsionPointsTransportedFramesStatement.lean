@@ -17,5 +17,4 @@ theorem _root_.GlobalTheory.T.exists_torsionPoints_transported_frames : ∀ {I :
     (∀ a, (x a).left ≫ 𝔪.φ = spMap 𝔪.yK ≫ (X₁.ρ.pt a).left) ∧
       (∀ a, (fr a).IsGen ∧ ∀ z J J', Good X₁.ρ.P.L z J → Good 𝔪.A.L z J' →
         Geo.Tor.gw 𝔪.wl (x a).left z (J ((x a).left ≫ 𝔪.φ)) (J' (x a).left) * val (fr a) (𝟙 _) z J' =
-          val (X₁.ρ.fr a) (show (TFK (R := V) (FractionRing V)).left ⟶ (baseOver (Sp X₁.S.R)).left from spMap 𝔪.yK) z J) := by
-  first | exact @GlobalTheory.GSep.exists_points_frames | exact GlobalTheory.GSep.exists_points_frames | (intros; apply GlobalTheory.GSep.exists_points_frames <;> assumption)
+          val (X₁.ρ.fr a) (show (TFK (R := V) (FractionRing V)).left ⟶ (baseOver (Sp X₁.S.R)).left from spMap 𝔪.yK) z J) := GlobalTheory.GSep.exists_points_frames

@@ -64,6 +64,5 @@ theorem _root_.GlobalTheory.T.twisted_smoothLine_pure_weight : _root_.GlobalTheo
     (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = M.vac v) →
     ∃ (c : ℝ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d)) (g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d)),
       (∀ t : ℝ, om (1, γ (Multiplicative.ofAdd t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c t) φ) ∧
-      Tendsto (fun t : ℝ => t⁻¹ • (c t - c 0)) (𝓝[≠] 0) (𝓝 g) := by
-  first | exact @_root_.GlobalTheory.Twist.twist_smoothLine_isPure | exact _root_.GlobalTheory.Twist.twist_smoothLine_isPure | (intros; apply _root_.GlobalTheory.Twist.twist_smoothLine_isPure <;> assumption)
+      Tendsto (fun t : ℝ => t⁻¹ • (c t - c 0)) (𝓝[≠] 0) (𝓝 g) := GlobalTheory.Twist.twist_smoothLine_isPure
 end

@@ -8,5 +8,4 @@ theorem _root_.GlobalTheory.T.hilbertSubgroup_le_ker_of_kills_inertia : ∀ (E �
     ∀ (M : Type) [AddCommGroup M] (z : G E Ω → M), (∀ g h, z (g * h) = z g + z h) →
     IsLocallyConstant z → (∀ v, ∀ σ ∈ Ine (F := E) (Av v), z σ = 0) →
     (∀ c : Ω ≃ₐ[E] Ω, IsComplexConjugation c → z c = 0) →
-    ∀ σ ∈ hilbertSubgroup E Ω, z σ = 0 := by
-  first | exact @GlobalTheory.HilbertKill.hilbertSubgroup_le_ker | exact GlobalTheory.HilbertKill.hilbertSubgroup_le_ker | (intros; apply GlobalTheory.HilbertKill.hilbertSubgroup_le_ker <;> assumption)
+    ∀ σ ∈ hilbertSubgroup E Ω, z σ = 0 := GlobalTheory.HilbertKill.hilbertSubgroup_le_ker

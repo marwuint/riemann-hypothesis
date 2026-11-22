@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.eq_unit_mul_zpow_regularLocalModel_dimTwo : ∀ {L
   Ideal.span {t, u} = (letI := hQ.isLocalRing; IsLocalRing.maximalIdeal Q) → ringKrullDim Q = 2 →
   ∀ E : Place cL, E.IsPrimeOf Q → E.ord (u : L) = 1 →
   ∀ G : L, G ≠ 0 → (∀ P : Place cL, P.IsPrimeOf Q → P.ring ≠ E.ring → P.ord G = 0) →
-  ∃ q : Q, IsUnit q ∧ G = (q : L) * (u : L) ^ E.ord G := by
-  first | exact @GlobalTheory.FieldPair.AdjUnit.eq_unit_mul_zpow | exact GlobalTheory.FieldPair.AdjUnit.eq_unit_mul_zpow | (intros; apply GlobalTheory.FieldPair.AdjUnit.eq_unit_mul_zpow <;> assumption)
+  ∃ q : Q, IsUnit q ∧ G = (q : L) * (u : L) ^ E.ord G := GlobalTheory.FieldPair.AdjUnit.eq_unit_mul_zpow

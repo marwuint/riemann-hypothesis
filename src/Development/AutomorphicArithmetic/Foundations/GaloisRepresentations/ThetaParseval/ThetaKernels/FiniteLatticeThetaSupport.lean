@@ -21,6 +21,5 @@ theorem _root_.GlobalTheory.T.finite_lattice_theta_support : ∀ (F E : Type) [F
         ∀ g ∈ GlobalTheory.WeilPartsF.GfCF σ JS, ∀ h ∈ GlobalTheory.WeilPartsF.GfCF σ JT, ∀ (w₀ : WOF F E nS nT)
           (f f' : GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ B.ψ),
           (f' : WOF F E nS nT → ℂ) = heisOF σ JS JT ξ₀ B.ψ w₀ f →
-          (Om (g, h) f' : WOF F E nS nT → ℂ) = heisOF σ JS JT ξ₀ B.ψ (actOF σ JS JT g h w₀) (Om (g, h) f) := by
-  first | exact @_root_.GlobalTheory.FinLatHeis.isLatRepF_heis_k | exact _root_.GlobalTheory.FinLatHeis.isLatRepF_heis_k | (intros; apply _root_.GlobalTheory.FinLatHeis.isLatRepF_heis_k <;> assumption)
+          (Om (g, h) f' : WOF F E nS nT → ℂ) = heisOF σ JS JT ξ₀ B.ψ (actOF σ JS JT g h w₀) (Om (g, h) f) := GlobalTheory.FinLatHeis.isLatRepF_heis_k
 end

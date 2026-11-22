@@ -15,14 +15,7 @@ open MvPolynomial (X)
 
 namespace GlobalTheory
 
-theorem shortSum_toΓ_injective (S : Type) [CommRing S] : Function.Injective (toΓ S) := by
-  intro a b h
-  have hinv : ∀ x : S, (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom (toΓ S x) = x := by
-    intro x
-    unfold toΓ
-    rw [← CommRingCat.comp_apply, Iso.inv_hom_id]
-    rfl
-  rw [← hinv a, ← hinv b, h]
+theorem shortSum_toΓ_injective (S : Type) [CommRing S] : Function.Injective (toΓ S) := Formalism.MainNotions.ModuliIntegralCharts.H1.GermFun.toΓ_injective S
 
 private theorem eq_one_of_sq_eq_one_of_pow_odd_sq_eq_one {M : Type*} [CommMonoid M] (x : M) (N : ℕ) (hN : Odd N)
     (h2 : x ^ 2 = 1) (hN2 : x ^ (N ^ 2) = 1) : x = 1 := by

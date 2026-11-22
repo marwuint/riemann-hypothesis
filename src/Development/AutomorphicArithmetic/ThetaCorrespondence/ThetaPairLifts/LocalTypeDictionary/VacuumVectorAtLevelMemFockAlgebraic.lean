@@ -42,6 +42,5 @@ set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.vacuum_vector_at_level_mem_fockAlgebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X → ∀ (t : T), ∃ N : ℕ, 0 < N ∧ ∀ k ∈ GfC A, ∀ k' ∈ GfC WW, GlobalTheory.Member.FinCong A N k →
-      GlobalTheory.Member.FinCong WW N k' → ∃ ζ : ℂ, IsAlgebraic ℚ ζ ∧ X.ω t (k, k') X.vac = ζ • X.vac := by
-  first | exact @_root_.GlobalTheory.LevelVac.level_vacuum_vector_algebraic | exact _root_.GlobalTheory.LevelVac.level_vacuum_vector_algebraic | (intros; apply _root_.GlobalTheory.LevelVac.level_vacuum_vector_algebraic <;> assumption)
+      GlobalTheory.Member.FinCong WW N k' → ∃ ζ : ℂ, IsAlgebraic ℚ ζ ∧ X.ω t (k, k') X.vac = ζ • X.vac := GlobalTheory.LevelVac.level_vacuum_vector_algebraic
 end

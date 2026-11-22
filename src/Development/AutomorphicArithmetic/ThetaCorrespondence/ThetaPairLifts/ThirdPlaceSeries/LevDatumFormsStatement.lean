@@ -25,6 +25,5 @@ theorem _root_.GlobalTheory.T.places_over_real_subfield_split_alt : GlobalTheory
       (∀ P, P ∉ Q → ∀ A : ValuationSubring D.nd.Om, IsPlaceOver A P → ∀ σ ∈ Ine (F := D.host.E) A, ψ σ = 1) →
       ∃ L : LevT D T i k, LevLawsT D T Pq In.θ i j b k Q ψ L ∧
         FiniteDimensional (FractionRing (T.Ok i k))
-          ↥(NX.TypeSpF D.host.E D.R.nV (FractionRing (T.Ok i k)) (rhoKT D T wt i j b k) L.J L.χ) := by
-  first | exact @_root_.GlobalTheory.LevForms.levDatum_forms_alt | exact _root_.GlobalTheory.LevForms.levDatum_forms_alt | (intros; apply _root_.GlobalTheory.LevForms.levDatum_forms_alt <;> assumption)
+          ↥(NX.TypeSpF D.host.E D.R.nV (FractionRing (T.Ok i k)) (rhoKT D T wt i j b k) L.J L.χ) := GlobalTheory.LevForms.levDatum_forms_alt
 end

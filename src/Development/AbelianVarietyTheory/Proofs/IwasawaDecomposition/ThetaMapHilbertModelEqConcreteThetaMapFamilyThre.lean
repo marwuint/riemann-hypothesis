@@ -13,11 +13,7 @@ namespace GlobalTheory.Mem.ThetaRead3
 
 theorem lift_postOn {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
     (L : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)) (X : MMap M) :
-    PiTensorProduct.lift (postOn M L X) = L ∘ₗ PiTensorProduct.lift X := by
-  apply PiTensorProduct.ext
-  apply MultilinearMap.ext
-  intro v
-  simp [postOn]
+    PiTensorProduct.lift (postOn M L X) = L ∘ₗ PiTensorProduct.lift X := GlobalTheory.ThetaFireLift.lift_postOn M L X
 
 theorem thF_congr {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)

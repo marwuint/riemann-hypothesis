@@ -141,9 +141,7 @@ theorem log_absNorm_denIdeal {K : Type} [Field K] [NumberField K] (T : Finset (P
     have := absNorm_pl_ne_zero w
     exact_mod_cast this
 
-theorem lw_nonneg' {K : Type} [Field K] [NumberField K] (w : Pl K) : 0 ≤ lw w := by
-  unfold Formalism.DivisionValues.lw
-  exact div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)
+theorem lw_nonneg' {K : Type} [Field K] [NumberField K] (w : Pl K) : 0 ≤ lw w := Formalism.PairingDivisionLocalBalance.lw_nonneg w
 
 theorem grid_lemma_A : SlopeInequalityDenominators := by
   intro K V ι W κ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ b X b' X' hX hX' φ A B T a hA hA0 hB hB0 hφ hincl

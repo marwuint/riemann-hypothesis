@@ -9,5 +9,4 @@ theorem _root_.GlobalTheory.T.tensorLattice_inertPlace_selfDual : ∀ (F E : Typ
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w →
     (∀ z : Matrix (Fin a) (Fin (a + a')) (AE F E), At (evFin F v) z →
       (z ∈ latAtV G.V G.W v ↔ ∀ γ ∈ latAtV G.V G.W v,
-        B.ψ (symp (R := AF F) (cA σ) (-1) (incM F G.V.J) (incM F G.W.J) z γ) = 1)) := by
-  first | exact @GlobalTheory.InertSelfDual.latAtV_selfDual | exact GlobalTheory.InertSelfDual.latAtV_selfDual | (intros; apply GlobalTheory.InertSelfDual.latAtV_selfDual <;> assumption)
+        B.ψ (symp (R := AF F) (cA σ) (-1) (incM F G.V.J) (incM F G.W.J) z γ) = 1)) := GlobalTheory.InertSelfDual.latAtV_selfDual

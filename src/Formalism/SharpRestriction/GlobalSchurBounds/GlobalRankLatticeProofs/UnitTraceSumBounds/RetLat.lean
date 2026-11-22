@@ -7,8 +7,8 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.SigmaStarEx
 
 namespace Formalism.MainNotions.Ext
 
-theorem discrNe_holds : DiscrNe := discrNe'
+theorem discrNe_holds : DiscrNe := DiscrNeWork.discrNe_all
 
-theorem sigmaStarEx_holds : SigmaStarEx := sigma_star_exists
+theorem sigmaStarEx_holds : SigmaStarEx := PI.SSE.sigmaStarEx
 
 end Formalism.MainNotions.Ext

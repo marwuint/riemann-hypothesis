@@ -398,7 +398,6 @@ theorem twisted_bundles_match_models : ∀ (E : Type) [Field E] [NumberField E] 
         ∀ N, (M₁.htOm t.PP.L N q : Set (Module.Dual Ω A.Li)) = A.M.htOm A.t.PP.L N ⟨e.hom q.1, h⟩) →
       (∀ a v, φ (A.ρ (g.s a) v) = A'.ρ a (φ v)) →
       ∀ s s', A'.emb s' = (A.emb s).comp g.s.toRingHom → ∀ (q : Cpt A'.ξ) (h : genPt A.ξ ⤳ e.hom q.1) (v : A.Li),
-        v ∈ A.V s ⟨e.hom q.1, h⟩ ↔ φ v ∈ A'.V s' q :=
-  @GlobalTheory.CompanionTheory.Ar.CmpBundK.bund
+        v ∈ A.V s ⟨e.hom q.1, h⟩ ↔ φ v ∈ A'.V s' q := GlobalTheory.CompanionTheory.Ar.CmpBundK.bund
 
 end PositivityTheory.UnitarySelfGeneration

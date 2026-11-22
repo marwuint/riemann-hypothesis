@@ -20,5 +20,4 @@ theorem _root_.GlobalTheory.T.latticeOf_stabiliser_mul_inv_eq_standardLattice : 
     (S : GridChoice W Set.univ) (X : Node), DefNode D.R.m X → ∀ k : FinPt G X,
     (∀ v, v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat (S.N.fr X)) ↔
         Matrix.mulVec (Formalism.IndefR.Lev.finE (G.V X) k.1).1 v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat (S.N.fr X))) →
-    GlobalTheory.SumSize.latAt S X (k * (S.N.u X)⁻¹) = stdL D _ := by
-  first | exact @GlobalTheory.LatStdStab.latAt_mul_inv_eq_stdL | exact GlobalTheory.LatStdStab.latAt_mul_inv_eq_stdL | (intros; apply GlobalTheory.LatStdStab.latAt_mul_inv_eq_stdL <;> assumption)
+    GlobalTheory.SumSize.latAt S X (k * (S.N.u X)⁻¹) = stdL D _ := GlobalTheory.LatStdStab.latAt_mul_inv_eq_stdL

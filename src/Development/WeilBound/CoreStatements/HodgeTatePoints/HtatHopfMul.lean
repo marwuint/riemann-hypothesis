@@ -284,5 +284,4 @@ theorem PositivityTheory.HtPt.Htat.SeparatedTensorPullback.charValues_mul : ∀ 
     exact h
   · rw [Hom.one_def, ← pull, one_univ Γ χ s hs, map_one]
 
-theorem PositivityTheory.HtPt.Htat.ht_char_mul : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (χ : T →* Rˣ) (s : Γ(Γ.G.left, ⊤)), Γ.HasValues s (fun t => ((χ t : Rˣ) : R)) → ∀ (Y : Over (Spec (CommRingCat.of R))), (∀ y z : Y ⟶ Γ.G, (y * z).left.appTop s = y.left.appTop s * z.left.appTop s) ∧ (1 : Y ⟶ Γ.G).left.appTop s = 1 :=
-  @PositivityTheory.HtPt.Htat.SeparatedTensorPullback.charValues_mul
+theorem PositivityTheory.HtPt.Htat.ht_char_mul : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (χ : T →* Rˣ) (s : Γ(Γ.G.left, ⊤)), Γ.HasValues s (fun t => ((χ t : Rˣ) : R)) → ∀ (Y : Over (Spec (CommRingCat.of R))), (∀ y z : Y ⟶ Γ.G, (y * z).left.appTop s = y.left.appTop s * z.left.appTop s) ∧ (1 : Y ⟶ Γ.G).left.appTop s = 1 := PositivityTheory.HtPt.Htat.SeparatedTensorPullback.charValues_mul

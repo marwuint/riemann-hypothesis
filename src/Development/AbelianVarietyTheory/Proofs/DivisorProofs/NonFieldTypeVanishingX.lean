@@ -133,7 +133,6 @@ open GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots GlobalTheory.Tr
 open GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups (mapH diagH)
 open scoped TensorProduct ComplexConjugate Matrix
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.PsCo.Plug.ellipticT : GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.EllipticPartX := by
-  first | exact @GlobalTheory.TrEllSum.ellipticPartX | exact GlobalTheory.TrEllSum.ellipticPartX | (intros; apply GlobalTheory.TrEllSum.ellipticPartX <;> assumption)
+theorem _root_.GlobalTheory.PsCo.Plug.ellipticT : GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.EllipticPartX := GlobalTheory.TrEllSum.ellipticPartX
 end
 

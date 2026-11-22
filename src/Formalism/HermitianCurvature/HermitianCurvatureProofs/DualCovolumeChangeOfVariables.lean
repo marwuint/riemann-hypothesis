@@ -9,8 +9,7 @@ namespace Formalism.FourierDecayAlt.P.Jx3
 open InfinitePlace in
 
 theorem trace_places (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (x : E) :
-    ((Algebra.trace ℚ E x : ℚ) : ℝ) = ∑ w : InfinitePlace E, 2 * (w.embedding x).re := by
-  first | exact Bl.FiberEquations.goal1 .. | (apply Bl.FiberEquations.goal1 <;> assumption) | (intros; apply Bl.FiberEquations.goal1 <;> assumption)
+    ((Algebra.trace ℚ E x : ℚ) : ℝ) = ∑ w : InfinitePlace E, 2 * (w.embedding x).re := Bl.FiberEquations.goal1 E x
 
 theorem t_TracePairing : TracePairing := by
   intro E _ _ _ g c l t hg hc

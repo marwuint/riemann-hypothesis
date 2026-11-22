@@ -90,14 +90,7 @@ end Local
 section Record
 
 theorem u3downPf_sK_pos {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l) (hG : Good K 1 LL) :
-    1 ≤ sK l K := by
-  have hd := Formalism.MainNotions.N.Ln34.DvdPf.dvdCondition l hl K LL hG
-  have hl1 : 0 < l - 1 := by have := (Fact.out : l.Prime).two_le; omega
-  have he : 0 < eK K := by
-    rcases Nat.eq_zero_or_pos (eK K) with h | h
-    · rw [h, zero_dvd_iff] at hd; omega
-    · exact h
-  exact Nat.div_pos (Nat.le_of_dvd hl1 hd) he
+    1 ≤ sK l K := Formalism.MainNotions.N.Ln34.frobpin_sK_pos hl K LL hG
 
 theorem u3downPf_modelK_of_wKill (D : D7) (HW : HWOf D.loc) (hW : wKillR D HW) : modelKR D HW := by
   intro l _ hl K LL hG π' E hp T₁ T₂ F h' _ hc1 hc2 hon hj1 c y hy

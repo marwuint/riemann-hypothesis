@@ -176,8 +176,7 @@ theorem lamCol_stepB (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (i : ℕ
 theorem mem_tops (D : D7) (τ : D.what₂.Tau) : τ ∈ tops D ↔ IsTop D τ := by
   exact b_mem_tops D τ
 
-theorem tops_card (D : D7) : (tops D).card = D.host.TT.card := by
-  exact b_card_tops D
+theorem tops_card (D : D7) : (tops D).card = D.host.TT.card := Formalism.MainNotions.flipTwoThree.b_card_tops D
 
 theorem col_setup (D : D7) (u : D.what₂.Word) (Cn x b L b' Sc eta K : ℝ) (hK1 : 1 ≤ K) (hKC : Cn ≤ K)
     (hN : Nums D (Tu D u) (D.host.g 0) (D.host.g 1) Cn x b L b' Sc eta) (hW : Wts D u Cn x b b' Sc eta) :

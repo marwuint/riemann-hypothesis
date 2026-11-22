@@ -29,5 +29,4 @@ theorem _root_.GlobalTheory.T.exists_orthonormal_step_basis_base_lattice_charts 
           ∀ a, (((GlobalTheory.Mem.Top.KerTwLv.frOf t.g.herm u v hg B w' h)⁻¹ :
             GL (Fin ((w.D Z).sp.X (j + 1)).rank) (w'.adicCompletion (w.D Z).host.F)) :
               Matrix (Fin ((w.D Z).sp.X (j + 1)).rank) (Fin ((w.D Z).sp.X (j + 1)).rank) (w'.adicCompletion (w.D Z).host.F)).mulVec x a ∈
-            w'.adicCompletionIntegers (w.D Z).host.F := by
-  first | exact @GlobalTheory.Mem.Top.KerTwLv.stepBasis_std | exact GlobalTheory.Mem.Top.KerTwLv.stepBasis_std | (intros; apply GlobalTheory.Mem.Top.KerTwLv.stepBasis_std <;> assumption)
+            w'.adicCompletionIntegers (w.D Z).host.F := GlobalTheory.Mem.Top.KerTwLv.stepBasis_std

@@ -135,8 +135,7 @@ theorem exp_neg_mul {n : Type} [Fintype n] [DecidableEq n] (Y : Matrix n n ℂ) 
   rw [← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl Y)), neg_add_cancel,
     NormedSpace.exp_zero]
 
-theorem Jpq_mul_self (P Q : ℕ) : Formalism.UG.Jpq P Q * Formalism.UG.Jpq P Q = 1 := by
-  simp [Formalism.UG.Jpq, Matrix.fromBlocks_multiply]
+theorem Jpq_mul_self (P Q : ℕ) : Formalism.UG.Jpq P Q * Formalism.UG.Jpq P Q = 1 := GlobalTheory.CompactDualOmega.Jpq_mul_self P Q
 
 theorem exp_mem {P Q : ℕ} (X : lieU P Q) :
     (NormedSpace.exp X.1).conjTranspose * Formalism.UG.Jpq P Q * NormedSpace.exp X.1 =

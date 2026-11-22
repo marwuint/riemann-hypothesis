@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.exists_twistedCharacter_cocycle_of_torsion_localCo
     f ∈ divisibleCocycles (latC C (locOC C (chiRatO D.nd i c))) → (∀ g, lam ^ a • f g = 0) →
     ∃ z' : Br.G D.nbr i w hw → ↥(latOne (LL := ↥C.LL.1) Subtype.val_injective (chiT C θ c)).T ⊗[↥(OL C.LL)] ↥(Xq ↥C.LL.1 lam a),
       tableLineDegreeTwo.IsCoc (latOne (LL := ↥C.LL.1) Subtype.val_injective (chiT C θ c)) ↥(Xq ↥C.LL.1 lam a) (chiT C θ 1) z' ∧
-      ∀ g, iotaC ↥C.LL.1 lam a (z' g) = f g := by
-  first | exact @GlobalTheory.UseLoc.Cases.liftC_main | exact GlobalTheory.UseLoc.Cases.liftC_main | (intros; apply GlobalTheory.UseLoc.Cases.liftC_main <;> assumption)
+      ∀ g, iotaC ↥C.LL.1 lam a (z' g) = f g := GlobalTheory.UseLoc.Cases.liftC_main

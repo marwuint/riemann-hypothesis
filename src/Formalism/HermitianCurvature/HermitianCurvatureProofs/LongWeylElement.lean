@@ -35,10 +35,7 @@ theorem mid_iff (k r' : ℕ) (p : Fin (2 * (1 + r') + k + 1)) : mid k r' p ↔ p
   · rintro ⟨s, rfl⟩
     exact mid_levPos k r' s
 
-theorem levPos_inj (k r' : ℕ) : Function.Injective (levPos k 1 r') := by
-  intro a b h
-  have h' : a.val + 1 = b.val + 1 := congrArg Fin.val h
-  exact Fin.ext (by omega)
+theorem levPos_inj (k r' : ℕ) : Function.Injective (levPos k 1 r') := Formalism.FourierDecayAlt.P.B2x2.levPos_inj k r'
 
 theorem lev_mm (k r' : ℕ) (g : Mat k r') (s t : Fin (2 * r' + k + 1)) :
     ιLev k 1 r' g (levPos k 1 r' s) (levPos k 1 r' t) = g s t := by
@@ -71,14 +68,7 @@ theorem lev_mul (k r' : ℕ) (g h : Mat k r') : ιLev k 1 r' (g * h) = ιLev k 1
 
 def blk (k r' : ℕ) (x : Mt k (1 + r')) : Mt k r' := fun s t => x (levPos k 1 r' s) (levPos k 1 r' t)
 
-theorem levM_cont (k r' : ℕ) : Continuous (levM k r') := by
-  refine continuous_pi fun p => continuous_pi fun q => ?_
-  show Continuous fun x : Mt k r' => ιLev k 1 r' (Matrix.of x) p q
-  simp only [ιLev]
-  split_ifs <;> first
-    | exact continuous_const
-    | fun_prop
-    | exact (continuous_apply _).comp (continuous_apply _)
+theorem levM_cont (k r' : ℕ) : Continuous (levM k r') := Formalism.FourierDecayAlt.P.B2x2.levM_cont k r'
 
 end PartL
 

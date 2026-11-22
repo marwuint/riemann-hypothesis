@@ -12,11 +12,7 @@ noncomputable section
 
 namespace GlobalTheory.FinPl.LocGen
 
-theorem half_diff_ne_bot (D : D7) : D.host.𝔟 ≠ ⊥ := by
-  intro h
-  have h1 := D.host.𝔟_spec.1
-  rw [h, Ideal.bot_mul] at h1
-  exact differentIdeal_ne_bot h1
+theorem half_diff_ne_bot (D : D7) : D.host.𝔟 ≠ ⊥ := Formalism.L2.Pj.b_ne_bot D
 
 theorem AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
   have hb0 : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0 :=

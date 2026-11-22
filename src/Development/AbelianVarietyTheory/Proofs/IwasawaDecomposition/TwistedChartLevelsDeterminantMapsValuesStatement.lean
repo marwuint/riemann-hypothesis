@@ -23,5 +23,4 @@ theorem _root_.GlobalTheory.T.twisted_chart_levels_determinant_maps_values : ∀
         Formalism.MainNotions.G.CmpJ.DetTie (tt.forms.ch u ((w.D Z).what₂.muAt v) hμ (j + 1) (Formalism.MainNotions.G.CmpJ.AgreeLv.one_le j) hj β).lev,
       ∀ j (hj : j + 1 ≤ (w.D Z).R.m) β cl, ∃ r : (w.D Z).what₂.LL, (w.D Z).what₂.embLL r =
         (((Formalism.MainNotions.G.CmpJ.AgreeLv.formsInTw tt.forms u ((w.D Z).what₂.muAt v) hμ j hj (dt j hj)).tw β).ch
-          (((Formalism.MainNotions.G.CmpJ.AgreeLv.formsInTw tt.forms u ((w.D Z).what₂.muAt v) hμ j hj (dt j hj)).K β).y cl) : ℂ) := by
-  first | exact @GlobalTheory.Mem.Top.KerTwDet.detTie_vals | exact GlobalTheory.Mem.Top.KerTwDet.detTie_vals | (intros; apply GlobalTheory.Mem.Top.KerTwDet.detTie_vals <;> assumption)
+          (((Formalism.MainNotions.G.CmpJ.AgreeLv.formsInTw tt.forms u ((w.D Z).what₂.muAt v) hμ j hj (dt j hj)).K β).y cl) : ℂ) := GlobalTheory.Mem.Top.KerTwDet.detTie_vals

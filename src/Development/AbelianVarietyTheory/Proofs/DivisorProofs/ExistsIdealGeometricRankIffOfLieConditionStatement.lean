@@ -9,5 +9,4 @@ theorem _root_.GlobalTheory.T.exists_ideal_geometric_rank_iff_of_lie_condition :
     ∃ K₂ : Ideal B, ∀ (T : Type) [CommRing T] (f : B →+* T), lieIdeal b βB M ≤ RingHom.ker f →
       ((∀ (k : Type) [Field k] [IsAlgClosed k] (h : T →+* k) (i : Fin D.a),
           Module.finrank k (eigSub (matAct M (h.comp f)) ((h.comp (f.comp βB)).comp (b.t i))) = D.m) ↔
-        K₂ ≤ RingHom.ker f) := by
-  first | (exact @GlobalTheory.UPel.HT.LieLin.RankIdeal.exists_ideal_rank_iff) | (exact GlobalTheory.UPel.HT.LieLin.RankIdeal.exists_ideal_rank_iff) | (intros; apply GlobalTheory.UPel.HT.LieLin.RankIdeal.exists_ideal_rank_iff  <;> assumption)
+        K₂ ≤ RingHom.ker f) := GlobalTheory.UPel.HT.LieLin.RankIdeal.exists_ideal_rank_iff

@@ -28,8 +28,7 @@ theorem hatId_mul {D : D7} {I : Ideal (𝓞 D.host.E)} {s y : AE D} (hs : s ∈ 
   | add x y _ _ hx hy => rw [mul_add]; exact add_mem hx hy
   | neg x _ hx => rw [mul_neg]; exact neg_mem hx
 
-theorem zeroAt_zero (D : D7) (q : ℕ) : ZeroAt D q 0 :=
-  fun _ => ⟨1, one_pos, Nat.coprime_one_left q, 0, zero_mem _, by simp⟩
+theorem zeroAt_zero (D : D7) (q : ℕ) : ZeroAt D q 0 := GlobalTheory.NormSum.VacInt.zeroAt_zero D q
 
 theorem suppSplit_one (D : D7) (N : ℕ) : SuppSplit D ((1 : GA D N) : GL (Fin N) (AE D)) :=
   fun q _ _ i j => by rw [OneMemClass.coe_one, Units.val_one, sub_self]; exact zeroAt_zero D q

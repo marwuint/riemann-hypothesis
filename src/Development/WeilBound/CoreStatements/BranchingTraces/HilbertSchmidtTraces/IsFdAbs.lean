@@ -6,8 +6,7 @@ open scoped InnerProductSpace
 
 namespace PositivityTheory.UnitaryDecomposition.X4
 
-theorem hs_nonneg' {m : ℕ} (a : Matrix (Fin m) (Fin m) ℂ) : 0 ≤ hs a :=
-  Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity
+theorem hs_nonneg' {m : ℕ} (a : Matrix (Fin m) (Fin m) ℂ) : 0 ≤ hs a := Formalism.REAL.frobenius_nonneg_matrix a
 
 theorem hs_mul_le' {m : ℕ} (a b : Matrix (Fin m) (Fin m) ℂ) : hs (a * b) ≤ hs a * hs b := by
   unfold hs

@@ -38,5 +38,4 @@ theorem _root_.GlobalTheory.T.square_comparison_torus_invariant : GlobalFnsSt �
     ∀ (Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (τ : Z ⟶ splitTorus _ D.toPre.X) (y : Z ⟶ thickObj R I e G)
       (z : Z.left) (jM : D.toPre.P.L.ι) (jM' : D'.toPre.P.L.ι),
       (U.gt e).pG.left (y.left z) ∈ D.toPre.P.L.U jM → (U'.gt e).pG.left (y.left z) ∈ D'.toPre.P.L.U jM' →
-      gw u ((τ ≫ (U.gt e).i) * y).left z (fun _ => jM) (fun _ _ => jM') = gw u y.left z (fun _ => jM) (fun _ _ => jM') := by
-  first | exact @GlobalTheory.comparison_sq_torus_invariant | exact GlobalTheory.comparison_sq_torus_invariant | (intros; apply GlobalTheory.comparison_sq_torus_invariant <;> assumption)
+      gw u ((τ ≫ (U.gt e).i) * y).left z (fun _ => jM) (fun _ _ => jM') = gw u y.left z (fun _ => jM) (fun _ _ => jM') := GlobalTheory.comparison_sq_torus_invariant

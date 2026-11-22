@@ -77,5 +77,4 @@ theorem _root_.GlobalTheory.T.formsLift_extendedData_determined_by_values : Glob
             := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T
             Wt))).1 ((j : ℕ) + 1)) (Formalism.L2.Col.mtKOk (Pr := B.primes w.px) B.wts w.I.Ch
             w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 hX ((j : ℕ) + 1))).symm
-            f)) := by
-  first | exact @GlobalTheory.DatExtForms.forms_lift_eq_of_values | exact GlobalTheory.DatExtForms.forms_lift_eq_of_values | (intros; apply GlobalTheory.DatExtForms.forms_lift_eq_of_values <;> assumption)
+            f)) := GlobalTheory.DatExtForms.forms_lift_eq_of_values

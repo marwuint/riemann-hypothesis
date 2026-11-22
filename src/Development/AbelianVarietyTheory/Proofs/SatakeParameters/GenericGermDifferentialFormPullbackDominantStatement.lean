@@ -16,5 +16,4 @@ theorem _root_.GlobalTheory.T.genericGerm_differentialForm_pullback_dominant : �
         (y : sectionsOn (Omega p j) V),
         formGermI p' j hV' hη' hinst' (sectionsOn.res ℂ (Omega p' j) h
           (sectionsOn.mapOver (appTop_algebraMap hf) (omegaPull hf j) V y)) =
-          φ (formGermI p j hV hη hinst y) := by
-  first | (exact @GlobalTheory.HodgeCoh.formGermI_res_mapOver) | (exact GlobalTheory.HodgeCoh.formGermI_res_mapOver) | (intros; apply GlobalTheory.HodgeCoh.formGermI_res_mapOver  <;> assumption)
+          φ (formGermI p j hV hη hinst y) := GlobalTheory.HodgeCoh.formGermI_res_mapOver

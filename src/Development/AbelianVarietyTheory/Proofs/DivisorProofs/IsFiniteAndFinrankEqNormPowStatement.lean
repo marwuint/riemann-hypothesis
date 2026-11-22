@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.isFinite_and_finrank_act_eq_norm_pow : ∀ (k : Ty
     Nat.card {x : 𝟙_ (Over (Sp k)) ⟶ A // x ^ l = 1} = l ^ (d * Module.finrank ℚ F) →
     ∀ c : 𝓞 F, c ≠ 0 → IsFinite (ρ.act c).left ∧
       (ρ.act c).left.finrank ((1 : Over.mk (𝟙 (Sp k)) ⟶ A).left (IsLocalRing.closedPoint k)) =
-        (Algebra.norm ℤ c).natAbs ^ d := by
-  first | (exact @GlobalTheory.AV.OActDeg.isFinite_and_finrank_eq_norm_pow) | (exact GlobalTheory.AV.OActDeg.isFinite_and_finrank_eq_norm_pow) | (intros; apply GlobalTheory.AV.OActDeg.isFinite_and_finrank_eq_norm_pow  <;> assumption)
+        (Algebra.norm ℤ c).natAbs ^ d := GlobalTheory.AV.OActDeg.isFinite_and_finrank_eq_norm_pow

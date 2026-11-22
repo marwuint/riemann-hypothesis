@@ -23,9 +23,7 @@ theorem psi_eq_psiGen (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) :
   funext g
   simp only [Formalism.QuantumDeterminants.psi, psiGen, Formalism.QuantumDeterminants.ell, ellA, Finset.mul_sum]
 
-theorem volUn_pos (j : ℕ) : 0 < volUn j := by
-  unfold volUn
-  exact Finset.prod_pos fun i _ => div_pos (pow_pos (by positivity) _) (by exact_mod_cast Nat.factorial_pos i)
+theorem volUn_pos (j : ℕ) : 0 < volUn j := GlobalTheory.FdegDens.volUn_pos j
 
 theorem bcWeight_nonneg (k r : ℕ) (T T' : ℝ) (q : (Fin r → ℂ) × ℂ) : 0 ≤ bcWeight k r T T' q := by
   unfold bcWeight

@@ -336,7 +336,5 @@ end GlobalTheory.HomStab
 
 section
 open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab GlobalTheory.SeqCx UpperTheory.V.KL
-theorem _root_.GlobalTheory.T.GL_transitive_splitSet_of_stableRangeLe : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ (n p : ℕ) (h : p ≤ n), p + s ≤ n → ∀ y : SplitSet R n p, ∃ g : GL (Fin n) R, g • stdSeq R n p h = y := by
-  first
-  | exact @GlobalTheory.HomStab.splitSet_transitive
+theorem _root_.GlobalTheory.T.GL_transitive_splitSet_of_stableRangeLe : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ (n p : ℕ) (h : p ≤ n), p + s ≤ n → ∀ y : SplitSet R n p, ∃ g : GL (Fin n) R, g • stdSeq R n p h = y := GlobalTheory.HomStab.splitSet_transitive
 end

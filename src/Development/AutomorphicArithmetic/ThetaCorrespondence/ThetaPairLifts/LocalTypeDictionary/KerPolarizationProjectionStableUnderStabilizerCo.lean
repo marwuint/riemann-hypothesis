@@ -61,6 +61,5 @@ theorem _root_.GlobalTheory.T.ker_polarizationProjection_stable_under_stabilizer
     IsInfFam θ → IsTriple W W₁ X α β → IsOver ψ θ A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB →
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ Xc om om' →
     ∀ Pi rf rl p p', IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p' →
-    ∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf D.sp.cm.sig Γ.W Bs.emb, ∀ Φ ∈ kerPD ψ θ A₁ B Bs Γ cB p', om' (1, k) Φ ∈ kerPD ψ θ A₁ B Bs Γ cB p' := by
-  first | exact @_root_.GlobalTheory.SquareAgree.KerStabCpt.stabilizer_compact_mem_ker_polarizationProjection | exact _root_.GlobalTheory.SquareAgree.KerStabCpt.stabilizer_compact_mem_ker_polarizationProjection | (intros; apply _root_.GlobalTheory.SquareAgree.KerStabCpt.stabilizer_compact_mem_ker_polarizationProjection <;> assumption)
+    ∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf D.sp.cm.sig Γ.W Bs.emb, ∀ Φ ∈ kerPD ψ θ A₁ B Bs Γ cB p', om' (1, k) Φ ∈ kerPD ψ θ A₁ B Bs Γ cB p' := GlobalTheory.SquareAgree.KerStabCpt.stabilizer_compact_mem_ker_polarizationProjection
 end

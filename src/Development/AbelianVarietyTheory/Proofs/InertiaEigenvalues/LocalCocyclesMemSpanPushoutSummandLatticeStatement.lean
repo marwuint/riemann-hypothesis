@@ -14,5 +14,4 @@ theorem _root_.GlobalTheory.T.localCocycles_mem_span_pushout_summandLattice : �
       ∃ X : GRep (Br.G D.nbr i w hw) ℚ_[D.nd.l i] (Br.LL D.nbr i w hw) (Br.OLL D.nbr i w hw),
         IsSummandTw i w hw r Xs X ∧
         Submodule.span (Br.OLL D.nbr i w hw) (F : Set (Br.G D.nbr i w hw → (Fin k → Br.LL D.nbr i w hw) ⧸ (Br.locLat D.nbr i w hw M).T)) ≤
-          BlochKatoDuality.spanPush (Br.PD D.loc D.nbr i w hw) X (locU i w hw M hSub.1) (Br.locLat D.nbr i w hw M) := by
-  first | exact @GlobalTheory.Pass.LocDual.OneX.main | exact GlobalTheory.Pass.LocDual.OneX.main | (intros; apply GlobalTheory.Pass.LocDual.OneX.main <;> assumption)
+          BlochKatoDuality.spanPush (Br.PD D.loc D.nbr i w hw) X (locU i w hw M hSub.1) (Br.locLat D.nbr i w hw M) := GlobalTheory.Pass.LocDual.OneX.main

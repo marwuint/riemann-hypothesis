@@ -13,7 +13,7 @@ namespace Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL
 
 open Formalism.L2.SG.RealObj Formalism.L2.SG.HidaSetting
 
-theorem bigMem_holds : BigMem := Formalism.QuantumDeterminants.bigCellMem
+theorem bigMem_holds : BigMem := Formalism.QuantumDeterminants.big_cell_mem_holds
 
 theorem hJ_P {n : ℕ} {ε : Fin n → Bool} {P H : Matrix (Fin n) (Fin n) ℂ} (hPJ : Pᴴ * Formalism.REAL.Jm ε * P = H)
     (x y : Fin n → ℂ) : hJ ε (P *ᵥ x) (P *ᵥ y) = Formalism.QuantumDeterminants.herm H y x := by

@@ -19,7 +19,6 @@ theorem gramAt_continuous_anTop : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (K
     (∀ (zc : Sp ℂ ⟶ Z') (Mz : LieModel (splitTorus Z' Xc) zc (Xc →+ ℂ)), IsCocharLie Mz →
       ∀ v : Fin r → (epsAt (zc ≫ ρ) ⟶ G), (∀ a, (v a).left = (Mz.pt ((Int.castAddHom ℂ).comp (β a)) ≫ u).left ≫ Φ) →
         H zc = RootHt.gramAt h (zc ≫ ρ) v) →
-    @Continuous _ _ (anTop Z') _ H :=
-  @PositivityTheory.Xgn.torus_uniformization_continuous
+    @Continuous _ _ (anTop Z') _ H := PositivityTheory.Xgn.torus_uniformization_continuous
 
 end GlobalTheory.CompanionTheory.Ar.TorusUnif

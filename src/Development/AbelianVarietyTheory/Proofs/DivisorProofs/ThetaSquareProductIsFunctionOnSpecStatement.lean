@@ -22,5 +22,4 @@ theorem _root_.GlobalTheory.T.thetaSquare_product_isFunction_on_spec : ∀ (V : 
       gs r z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom G) =
         sval (θ : LB.Sec (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))) (r ≫ (b * D.c χ).left) z J ^ 2 *
           (val t r z J ^ 2 * val χt r z J ^ 2 * val D.sym (r ≫ (D.c χ).left) z J *
-            (val τ r z J)⁻¹ * (rigV D r z J ^ 2)⁻¹).val := by
-  first | exact @GlobalTheory.IntPointFnSq.fn_of_theta_sq | exact GlobalTheory.IntPointFnSq.fn_of_theta_sq | (intros; apply GlobalTheory.IntPointFnSq.fn_of_theta_sq <;> assumption)
+            (val τ r z J)⁻¹ * (rigV D r z J ^ 2)⁻¹).val := GlobalTheory.IntPointFnSq.fn_of_theta_sq

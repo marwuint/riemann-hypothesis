@@ -19,8 +19,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TorsionUnram
 
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B)
-    (g : B →+* C) : spMap (g.comp f) = spMap g ≫ spMap f := by
-  rw [← Spec.map_comp]; rfl
+    (g : B →+* C) : spMap (g.comp f) = spMap g ≫ spMap f := ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp f g
 
 theorem exists_local_of_etale {T W Ω F : Type} [CommRing T] [IsDomain T] [IsDiscreteValuationRing T]
     [CommRing W] [Algebra T W] [Algebra.Etale T W] [Field Ω] [Field F] [IsAlgClosed F]

@@ -24,11 +24,7 @@ theorem mem_Ow_iff_valO (D : D7) (w : D.what₂.places.Pl) (x : D.what₂.LL) : 
   D.val_nonneg_iff w x
 
 theorem resChar_mem_plEq (D : D7) (w : D.what₂.places.Pl) :
-    ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal := by
-  rw [← (D.plEq w).valuation_lt_one_iff_mem (K := D.what₂.LL), D.val_resChar', ← WithZero.exp_zero,
-    WithZero.exp_lt_exp]
-  have := D.what₂.places.ramIdx_pos w
-  omega
+    ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal := Formalism.BasicNotions.resChar_mem D w
 
 theorem resChar_eq_of_mem_plEq (D : D7) (w : D.what₂.places.Pl) {T : ℕ} (hT : T.Prime)
     (h : (T : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal) : D.what₂.places.resChar w = T := by

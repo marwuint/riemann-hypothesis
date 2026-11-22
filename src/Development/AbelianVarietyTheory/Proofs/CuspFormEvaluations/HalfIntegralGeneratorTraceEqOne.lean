@@ -51,11 +51,7 @@ theorem halfIntegralGenerator_trace_eq_one {E : Type} [Field E] [NumberField E] 
 theorem univ_finset_fin_two : (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} := by decide
 
 theorem chi_sum_two {M : Type} [AddCommMonoid M] (f : ULift.{0} (Finset (Fin 2)) → M) :
-    ∑ I, f I = f ⟨∅⟩ + f ⟨{0}⟩ + f ⟨{1}⟩ + f ⟨{0, 1}⟩ := by
-  rw [← (Equiv.ulift (α := Finset (Fin 2))).symm.sum_comp, univ_finset_fin_two,
-    Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide),
-    Finset.sum_singleton]
-  simp only [Equiv.ulift_symm_apply, add_assoc]
+    ∑ I, f I = f ⟨∅⟩ + f ⟨{0}⟩ + f ⟨{1}⟩ + f ⟨{0, 1}⟩ := GlobalTheory.AnVal.PrimRd.sum_ulift_finset_fin_two_expand f
 
 theorem chi_prod_two {M : Type} [CommMonoid M] (f : ULift.{0} (Finset (Fin 2)) → M) :
     ∏ I, f I = f ⟨∅⟩ * f ⟨{0}⟩ * f ⟨{1}⟩ * f ⟨{0, 1}⟩ := by

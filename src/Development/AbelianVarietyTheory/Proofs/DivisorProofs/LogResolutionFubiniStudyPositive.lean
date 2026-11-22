@@ -17,15 +17,13 @@ namespace GlobalTheory.ArchBound
 theorem entries_bound : ∀ {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ), P.IsHermitian →
     (∀ x : Fin n → ℂ, x ≠ 0 → 0 < (star x ⬝ᵥ P *ᵥ x).re) →
     ∃ K : ℝ, ∀ (Y : Matrix (Fin n) (Fin n) ℂ) (s : ℝ), 0 < s → Yᴴ * P * Y = (s : ℂ) • P →
-      ∀ i j, ‖Y i j‖ ^ 2 ≤ K * s :=
-  GlobalTheory.T.hermitian_similitude_entry_sq_bound
+      ∀ i j, ‖Y i j‖ ^ 2 ≤ K * s := GlobalTheory.herm_scale_entry_bound
 
 theorem majorant : ∀ {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.IsHermitian), H.det ≠ 0 → sigPosH hH = 1 →
     ∀ z : Fin n → ℂ, 0 < (star z ⬝ᵥ H *ᵥ z).re →
     ∃ P : Matrix (Fin n) (Fin n) ℂ, P.IsHermitian ∧ (∀ x : Fin n → ℂ, x ≠ 0 → 0 < (star x ⬝ᵥ P *ᵥ x).re) ∧
       ∀ (Y : Matrix (Fin n) (Fin n) ℂ) (s : ℝ) (c : ℂ), 0 < s → Yᴴ * H * Y = (s : ℂ) • H →
-        Y *ᵥ z = c • z → Yᴴ * P * Y = (s : ℂ) • P :=
-  GlobalTheory.T.exists_posDef_majorant_of_positiveIndex_one
+        Y *ᵥ z = c • z → Yᴴ * P * Y = (s : ℂ) • P := GlobalTheory.exists_posDef_majorant_of_sigPosH_eq_one
 
 variable {p : ℕ} [Fact p.Prime]
 

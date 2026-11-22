@@ -23,12 +23,7 @@ theorem petInt_emb (γ : SL(2, ℤ)) : MeasurableEmbedding (fun z : ℍ => γ �
   ext z
   simp
 
-theorem petInt_fd_meas : MeasurableSet ModularGroup.fd := by
-  unfold ModularGroup.fd
-  apply IsClosed.measurableSet
-  apply IsClosed.inter
-  · exact isClosed_le continuous_const (Complex.continuous_normSq.comp UpperHalfPlane.continuous_coe)
-  · exact isClosed_le (continuous_abs.comp (Complex.continuous_re.comp UpperHalfPlane.continuous_coe)) continuous_const
+theorem petInt_fd_meas : MeasurableSet ModularGroup.fd := GlobalTheory.EisM.fd_measurableSet
 
 theorem petInt_im_bd (γ : SL(2, ℤ)) (σ : ℍ) (hσ : σ ∈ ModularGroup.fd) :
     (γ • σ).im ≤ 2 * σ.im ∧

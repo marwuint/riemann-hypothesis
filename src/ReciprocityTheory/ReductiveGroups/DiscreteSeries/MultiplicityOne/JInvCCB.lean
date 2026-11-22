@@ -224,26 +224,15 @@ section Linfty
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra Matrix.linftyOpNormedSpace
 
 lemma hasDerivAt_exp_linfty {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
-    HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) X 0 := by
-  have h := (hasDerivAt_exp_smul_const (𝕂 := ℂ) X ((0 : ℝ) : ℂ))
-  have h2 := h.scomp (x := (0:ℝ)) Complex.ofRealCLM.hasDerivAt
-  exact h2.congr_deriv (by simp)
+    HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) X 0 := Formalism.REAL.hasDerivAt_matrix_exp_smul_at_zero X
 
 end Linfty
 
 lemma slope_exp {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
-    Tendsto (slope (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) 0) (𝓝[≠] 0) (𝓝 X) := by
-  let _ := Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)
-  let _ := Matrix.linftyOpNormedAlgebra (R := ℂ) (n := Fin n) (α := ℂ)
-  let _ := Matrix.linftyOpNormedSpace (R := ℝ) (m := Fin n) (n := Fin n) (α := ℂ)
-  exact (hasDerivAt_exp_linfty X).tendsto_slope
+    Tendsto (slope (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) 0) (𝓝[≠] 0) (𝓝 X) := Formalism.REAL.tendsto_slope_exp_smul X
 
 lemma slope_curveR {n : ℕ} (g X : Matrix (Fin n) (Fin n) ℂ) :
-    Tendsto (slope (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) 0) (𝓝[≠] 0) (𝓝 (g * X)) := by
-  have hm : Continuous (fun M : Matrix (Fin n) (Fin n) ℂ => g * M) := continuous_const.mul continuous_id
-  refine ((hm.tendsto X).comp (slope_exp X)).congr' ?_
-  filter_upwards with t
-  simp only [Function.comp_apply, slope_def_module, Matrix.mul_sub, Matrix.mul_smul]
+    Tendsto (slope (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) 0) (𝓝[≠] 0) (𝓝 (g * X)) := Formalism.REAL.tendsto_slope_mul_exp_smul g X
 
 lemma slope_curveL {n : ℕ} (g X : Matrix (Fin n) (Fin n) ℂ) :
     Tendsto (slope (fun t : ℝ => NormedSpace.exp (-((t : ℂ) • X)) * g) 0) (𝓝[≠] 0) (𝓝 (-(X * g))) := by

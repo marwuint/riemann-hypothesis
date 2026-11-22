@@ -138,6 +138,5 @@ theorem _root_.GlobalTheory.T.archimedean_line_spanned_by_weil_vector : _root_.G
       (∀ (t : ℝ) (h : GlobalTheory.RealWeil.Sch l), ∫⁻ x, ‖T t h x‖ₑ ^ 2 = ∫⁻ x, ‖h x‖ₑ ^ 2) ∧
       (∀ (h : GlobalTheory.RealWeil.Sch l) (x : EuclideanSpace ℝ l), Continuous fun t => T t h x) ∧
       ∀ (t : ℝ) (f : SInf F (Fin n × Fin d)),
-        Acts (evI F) (om (1, γ (Multiplicative.ofAdd t))) ⇑f ⇑(Φ.symm (T t (Φ f))) := by
-  first | exact @_root_.GlobalTheory.ArchLine.archimedean_real_line_invariance | exact _root_.GlobalTheory.ArchLine.archimedean_real_line_invariance | (intros; apply _root_.GlobalTheory.ArchLine.archimedean_real_line_invariance <;> assumption)
+        Acts (evI F) (om (1, γ (Multiplicative.ofAdd t))) ⇑f ⇑(Φ.symm (T t (Φ f))) := GlobalTheory.ArchLine.archimedean_real_line_invariance
 end

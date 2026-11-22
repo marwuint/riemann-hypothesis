@@ -13,5 +13,4 @@ theorem _root_.GlobalTheory.T.frames_of_right_translate_point_principal_congruen
     ∀ (P : SB t μ) (g : GLint t.X.E (D.R.N j) P.1), InFrame t.seam (A.fb j hj β) (t.cst μ).D P κ g.1 →
     ∃ C : GLint t.X.E (D.R.N j) P.1, C ∈ GlobalTheory.TopStep.prinCong (D.R.N j) P.1 ((t.cst μ).D P) ∧
       CongAt (F := D.host.F) (seamP t.seam P.1) ((t.cst μ).D P) (ratA D.host.F (seamGL t.seam C.1)) ∧
-      frsF t.sel (t.tup μ) p₁ P = frsF t.sel (t.tup μ) p P * (g * C).1 := by
-  first | exact @GlobalTheory.LevFrames.frames_lev | exact GlobalTheory.LevFrames.frames_lev | (intros; apply GlobalTheory.LevFrames.frames_lev <;> assumption)
+      frsF t.sel (t.tup μ) p₁ P = frsF t.sel (t.tup μ) p P * (g * C).1 := GlobalTheory.LevFrames.frames_lev

@@ -79,6 +79,5 @@ theorem _root_.GlobalTheory.T.smallStage_bottomKernel_eq_term : _root_.GlobalThe
         ∃ u : ℂ, u ≠ 0 ∧ u ∈ Qbar ∧ (∀ (p : ℕ) [Fact p.Prime], ¬ p ∣ GlobalTheory.SqTop.Qn G s → ∀ lam : Qbar →+* ℂ_[p], ‖lamC lam u‖ = 1) ∧
           ∀ (ea : P'.a = A'.rank) (ed : P'.d = WW.rank) (h : GA D P'.d) (g : GA D WW), GlobalTheory.BotFormula.IsFinPt WW g h →
             ∀ (x : GA D P'.a) (g' : GA D A'), GlobalTheory.BotFormula.IsFinPt A' g' x → ∀ T' : Tup D P'.a P'.d P'.n,
-              X.ker' W.ψ W.θ s (GlobalTheory.BotFormula.minorF ea ed T') g g' = Ω₂ * u * P'.term x h T' := by
-  first | exact @_root_.GlobalTheory.BotSmallDict.bottomKernel_eq_classSum_term | exact _root_.GlobalTheory.BotSmallDict.bottomKernel_eq_classSum_term | (intros; apply _root_.GlobalTheory.BotSmallDict.bottomKernel_eq_classSum_term <;> assumption)
+              X.ker' W.ψ W.θ s (GlobalTheory.BotFormula.minorF ea ed T') g g' = Ω₂ * u * P'.term x h T' := GlobalTheory.BotSmallDict.bottomKernel_eq_classSum_term
 end

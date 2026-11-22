@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.primeLocalization_companionLattice_eq_of_localizat
     Formalism.HermitianLatticesTheory.localization₂ q Λ = Formalism.HermitianLatticesTheory.localization₂ q Λ' →
     Formalism.HermitianLatticesTheory.localization₂ (q.comap (RingOfIntegers.mapRingHom (sp.cm.sig : E →+* E))) Λ =
       Formalism.HermitianLatticesTheory.localization₂ (q.comap (RingOfIntegers.mapRingHom (sp.cm.sig : E →+* E))) Λ' →
-    Formalism.HermitianLatticesTheory.localization₂ q (compan (sp := sp) J a Λ) = Formalism.HermitianLatticesTheory.localization₂ q (compan (sp := sp) J a Λ') := by
-  first | exact @GlobalTheory.CompanLocP.locP_companion_eq | exact GlobalTheory.CompanLocP.locP_companion_eq | (intros; apply GlobalTheory.CompanLocP.locP_companion_eq <;> assumption)
+    Formalism.HermitianLatticesTheory.localization₂ q (compan (sp := sp) J a Λ) = Formalism.HermitianLatticesTheory.localization₂ q (compan (sp := sp) J a Λ') := GlobalTheory.CompanLocP.locP_companion_eq

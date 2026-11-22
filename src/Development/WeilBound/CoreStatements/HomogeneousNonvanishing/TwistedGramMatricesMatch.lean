@@ -189,7 +189,6 @@ theorem twisted_gram_matrices_match : ∀ (E : Type) [Field E] [NumberField E] [
         (M₁.lat q : Set A.Li) = A.M.lat ⟨e.hom q.1, h⟩ ∧
         ∀ N, (M₁.htOm t.PP.L N q : Set (Module.Dual Ω A.Li)) = A.M.htOm A.t.PP.L N ⟨e.hom q.1, h⟩) →
       ∀ z : Sp ℂ ⟶ A'.X, A'.Interior z → ∀ (r : ℕ) (b : Fin r → A.Li) (Γ : Matrix (Fin r) (Fin r) ℂ),
-        M₁.GramAt t.PP.L z b Γ ↔ A'.M.GramAt A'.t.PP.L z (fun i => φ (b i)) Γ :=
-  @GlobalTheory.CompanionTheory.Ar.SpecStalkMap.gramAt_iff_of_tied
+        M₁.GramAt t.PP.L z b Γ ↔ A'.M.GramAt A'.t.PP.L z (fun i => φ (b i)) Γ := GlobalTheory.CompanionTheory.Ar.SpecStalkMap.gramAt_iff_of_tied
 
 end PositivityTheory.UnitarySelfGeneration

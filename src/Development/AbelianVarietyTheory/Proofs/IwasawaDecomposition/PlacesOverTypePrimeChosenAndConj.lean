@@ -22,10 +22,7 @@ theorem conjPrime_conjPrime₂ {D : D7} (P : HeightOneSpectrum (𝓞 D.host.E)) 
   ext x
   rw [GlobalTheory.IdemSupport.mem_cP, GlobalTheory.IdemSupport.mem_cP, GlobalTheory.IdemSupport.cO_cO]
 
-theorem finrank_E' (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
-  have h1 : Module.finrank ℚ D.host.E = 4 * D.R.ord := D.host.finrank_cmField
-  have h5 : D.R.f = 2 * D.R.ord := rfl
-  rw [h1, h5]; ring
+theorem finrank_E' (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := Formalism.MainNotions.StandardLattice.finrank_host D
 
 theorem places_over_g_k : ∀ (D : D7) (k : Fin 2), Function.Injective (Sum.elim (D.naut.plGw k) (fun v => GlobalTheory.IdemSupport.cP (D := D) (D.naut.plGw k v))) ∧ (∀ W : HeightOneSpectrum (𝓞 D.host.E), ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ W.asIdeal ↔ ∃ i, Sum.elim (D.naut.plGw k) (fun v => GlobalTheory.IdemSupport.cP (D := D) (D.naut.plGw k v)) i = W) ∧ Fintype.card (D.nd.PlG k ⊕ D.nd.PlG k) = Module.finrank ℚ D.host.E := by
   intro D k

@@ -59,8 +59,7 @@ theorem place_dimension_upper_bound (D : D7) (sc : Scale) (C0 Δ : ℝ) (w : ℕ
   rw [eL]
   linarith
 
-theorem facProd_pos' (N : ℕ) : 0 < facProd N :=
-  Finset.prod_pos fun i _ => by exact_mod_cast Nat.factorial_pos i
+theorem facProd_pos' (N : ℕ) : 0 < facProd N := Formalism.MainNotions.StandardLattice.factorial_product_pos N
 
 theorem log_factorial_product_difference (k r : ℕ) (hk : 1 ≤ k) (hkr : k ≤ r) :
     Real.log (facProd r) - Real.log (facProd k) ≤ ((r - k : ℕ) : ℝ) * ((r : ℝ) * Real.log r) := by

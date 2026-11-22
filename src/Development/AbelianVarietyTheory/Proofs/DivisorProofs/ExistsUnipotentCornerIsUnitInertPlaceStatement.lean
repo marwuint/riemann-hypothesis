@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.exists_unipotent_corner_isUnit_inertPlace : ∀ (F
       IsUnit ((GlobalTheory.DblVac.antiCols (F := F) (E := E) n)ᵀ * GlobalTheory.DblVac.matD (g * u) * GlobalTheory.DblVac.antiCols n).det ∧
       ∀ z ∈ GlobalTheory.InertSph.latAt X v,
         ((GlobalTheory.DblVac.antiCols (F := F) (E := E) n)ᵀ * GlobalTheory.DblVac.matD (g * u) * GlobalTheory.DblVac.antiCols n)⁻¹ *ᵥ z ∈
-          GlobalTheory.InertSph.latAt X v := by
-  first | exact @GlobalTheory.InertTransv.exists_unip_corner_isUnit | exact GlobalTheory.InertTransv.exists_unip_corner_isUnit | (intros; apply GlobalTheory.InertTransv.exists_unip_corner_isUnit <;> assumption)
+          GlobalTheory.InertSph.latAt X v := GlobalTheory.InertTransv.exists_unip_corner_isUnit

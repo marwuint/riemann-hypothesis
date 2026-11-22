@@ -153,13 +153,7 @@ theorem subG_normal_of_le {K' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K
 theorem resGK_injective (h : K ≤ L) : Injective (resGK h) :=
   fun _ _ hστ => AlgEquiv.ext fun x => DFunLike.congr_fun hστ x
 
-theorem range_resGK (h : K ≤ L) : (resGK h).range = subG p K L := by
-  ext σ
-  constructor
-  · rintro ⟨τ, rfl⟩ x hx
-    exact τ.commutes ⟨x, hx⟩
-  · intro hσ
-    exact ⟨{ σ.toRingEquiv with commutes' := fun x => hσ x.1 x.2 }, AlgEquiv.ext fun _ => rfl⟩
+theorem range_resGK (h : K ≤ L) : (resGK h).range = subG p K L := ReciprocityTheory.DiscreteGroups.LocalClassField.range_galois_restriction h
 
 theorem isClosedEmbedding_resGK (h : K ≤ L) : Topology.IsClosedEmbedding (resGK h) :=
   (resGK_continuous h).isClosedEmbedding (resGK_injective h)

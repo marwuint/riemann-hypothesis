@@ -123,6 +123,5 @@ theorem _root_.GlobalTheory.T.kType_projection_of_kFinite : _root_.GlobalTheory.
       (∀ A : Submodule ℂ (GA D V → ℂ), A ≤ GlobalTheory.CuspGK.gkGen θ M ψ → GlobalTheory.CuspGK.IsGKSub θ M A → ∀ x ∈ A, e x ∈ A) ∧
       (∀ x ∈ GlobalTheory.CuspGK.gkGen θ M ψ, e (e x) = e x) ∧
       (∀ x ∈ GlobalTheory.CuspGK.gkGen θ M ψ, ∀ y ∈ GlobalTheory.CuspGK.gkGen θ M ψ, b (e x) y = b x (e y)) ∧
-      FiniteDimensional ℂ ((GlobalTheory.CuspGK.gkGen θ M ψ).map e) := by
-  first | exact @_root_.GlobalTheory.KTypeProj.kType_projection_mem | exact _root_.GlobalTheory.KTypeProj.kType_projection_mem | (intros; apply _root_.GlobalTheory.KTypeProj.kType_projection_mem <;> assumption)
+      FiniteDimensional ℂ ((GlobalTheory.CuspGK.gkGen θ M ψ).map e) := GlobalTheory.KTypeProj.kType_projection_mem
 end

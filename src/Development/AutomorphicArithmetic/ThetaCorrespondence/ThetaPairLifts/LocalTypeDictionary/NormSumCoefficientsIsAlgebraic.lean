@@ -44,6 +44,5 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.normSum_coefficients_isAlgebraic : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ (D : D7) (δ t0 : ℂ) (Q : ℕ) (P : GlobalTheory.NormSum.Pair D ⊤ δ t0 Q)
-    (h : Formalism.MainNotions.StandardLatticesGL3.GA D P.d) (U : GlobalTheory.NormSum.Tup D P.a P.d P.n), IsAlgebraic ℚ (P.coord h U) := by
-  first | exact @_root_.GlobalTheory.NormSum.CoordAlg.normSum_coordinate_isAlgebraic | exact _root_.GlobalTheory.NormSum.CoordAlg.normSum_coordinate_isAlgebraic | (intros; apply _root_.GlobalTheory.NormSum.CoordAlg.normSum_coordinate_isAlgebraic <;> assumption)
+    (h : Formalism.MainNotions.StandardLatticesGL3.GA D P.d) (U : GlobalTheory.NormSum.Tup D P.a P.d P.n), IsAlgebraic ℚ (P.coord h U) := GlobalTheory.NormSum.CoordAlg.normSum_coordinate_isAlgebraic
 end

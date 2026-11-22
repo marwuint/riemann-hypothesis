@@ -58,6 +58,5 @@ theorem _root_.GlobalTheory.T.kInfinity_action_prod_lines : _root_.GlobalTheory.
     ∃ l : List (D.what₂.Tau × Matrix (Fin W.rank) (Fin W.rank) ℂ),
       (∀ q ∈ l, q.2 ∈ lieAt W q.1 ∧ ∀ t : ℝ,
         GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 hJ (oneP θ W q.1 q.2 t) ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf D.sp.cm.sig V Bs.emb) ∧
-      k = (l.map fun q => GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 hJ (oneP θ W q.1 q.2 1)).prod := by
-  first | exact @_root_.GlobalTheory.KInfLines.kInfinity_prod_lines | exact _root_.GlobalTheory.KInfLines.kInfinity_prod_lines | (intros; apply _root_.GlobalTheory.KInfLines.kInfinity_prod_lines <;> assumption)
+      k = (l.map fun q => GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 hJ (oneP θ W q.1 q.2 1)).prod := GlobalTheory.KInfLines.kInfinity_prod_lines
 end

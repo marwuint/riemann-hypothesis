@@ -13,18 +13,7 @@ namespace GlobalTheory.HCA
 
 theorem integrable_mul_of_continuousOn_of_tsupport {d : ℕ} {U : Set (E d)} (hU : IsOpen U)
     {f g : E d → ℂ} (hf : ContinuousOn f U) (hg : Continuous g) (hgc : HasCompactSupport g)
-    (hgU : tsupport g ⊆ U) : Integrable (fun x => f x * g x) := by
-  have hcont : Continuous (fun x => f x * g x) := by
-    rw [continuous_iff_continuousAt]
-    intro x
-    by_cases hx : x ∈ U
-    · exact (hf.continuousAt (hU.mem_nhds hx)).mul hg.continuousAt
-    · have hx' : x ∉ tsupport g := fun h => hx (hgU h)
-      have h0 : (fun x => f x * g x) =ᶠ[𝓝 x] fun _ => (0 : ℂ) := by
-        filter_upwards [notMem_tsupport_iff_eventuallyEq.1 hx'] with y hy
-        simp [hy]
-      exact continuousAt_const.congr h0.symm
-  exact hcont.integrable_of_hasCompactSupport (hgc.mul_left)
+    (hgU : tsupport g ⊆ U) : Integrable (fun x => f x * g x) := GlobalTheory.HCA.integrable_mul_of_tsupport_subset hU hf hg hgc hgU
 
 theorem dw_hasCompactSupport_tsupport {d : ℕ} (w : List (Fin d)) {f : E d → ℂ}
     (hf : HasCompactSupport f) : HasCompactSupport (dw w f) ∧ tsupport (dw w f) ⊆ tsupport f := by

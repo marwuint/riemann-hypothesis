@@ -202,6 +202,5 @@ theorem _root_.GlobalTheory.T.twisted_quotient_real : GlobalTheory.Published.How
           (∀ f, IsFinF ψ θ true A B f → ∃ φ : Pr →ₗ[ℂ] Pi, (∀ τ, ∀ Y ∈ lieAt X τ, φ ∘ₗ ρ τ Y = rl τ Y ∘ₗ φ) ∧
             ∀ P, p (fockF ψ θ true A B f P) = φ (q P)) ∧
           ∀ f, IsFinF ψ θ false A₁ B f → ∃ φ : Pr →ₗ[ℂ] Pi, (∀ τ, ∀ Y ∈ lieAt X τ, φ ∘ₗ ρ τ Y = rl τ Y ∘ₗ φ) ∧
-            ∀ P, p' (fockF ψ θ false A₁ B f P) = φ (q' P) := by
-  first | exact @_root_.GlobalTheory.RealQuot.twist_quotient_isReal | exact _root_.GlobalTheory.RealQuot.twist_quotient_isReal | (intros; apply _root_.GlobalTheory.RealQuot.twist_quotient_isReal <;> assumption)
+            ∀ P, p' (fockF ψ θ false A₁ B f P) = φ (q' P) := GlobalTheory.RealQuot.twist_quotient_isReal
 end

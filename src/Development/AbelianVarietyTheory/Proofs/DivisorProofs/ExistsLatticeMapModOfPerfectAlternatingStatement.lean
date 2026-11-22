@@ -7,5 +7,4 @@ theorem _root_.GlobalTheory.T.exists_lattice_map_mod_of_perfect_alternating : �
   (∀ x, EF x x = 0) → Function.Injective EF → ∀ (e M : ℕ), (∀ f : La →ₗ[ℤ] ℤ, ∃ x, EF x = e • f) → M.Coprime e →
   ∃ L : (Fin (Module.finrank ℤ La / 2) ⊕ Fin (Module.finrank ℤ La / 2) → ℤ) →+ La,
     (∀ a, (∃ y, L a = M • y) ↔ ∃ c, a = M • c) ∧ (∀ x, ∃ a y, x = L a + M • y) ∧
-    ∀ a c, ∃ k : ℤ, EF (L a) (L c) = omegaStd a c + M * k := by
-  first | (exact @GlobalTheory.exists_lattice_map_mod_of_perfect) | (exact GlobalTheory.exists_lattice_map_mod_of_perfect) | (intros; apply GlobalTheory.exists_lattice_map_mod_of_perfect  <;> assumption)
+    ∀ a c, ∃ k : ℤ, EF (L a) (L c) = omegaStd a c + M * k := GlobalTheory.exists_lattice_map_mod_of_perfect

@@ -38,9 +38,7 @@ theorem short_bound_le_coarse_holds : Short6LeCoarse := by
   have : (0 : ℝ) ≤ 6 * ((q : ℝ) + 2 * (j : ℝ)) := by positivity
   linarith
 
-theorem indexIntegral_nonneg_of_params (l : ℕ) (xm xp mB : ℤ) : 0 ≤ IlInd l xm xp mB := by
-  unfold IlInd
-  split_ifs <;> norm_num
+theorem indexIntegral_nonneg_of_params (l : ℕ) (xm xp mB : ℤ) : 0 ≤ IlInd l xm xp mB := Formalism.CohomologicalDescent.UnitNormBounds.indexIntegral_nonneg l xm xp mB
 
 theorem gated_min_nonneg_of_nonneg (l k t : ℕ) (D : ℤ) (I : ℝ) (hI : 0 ≤ I) :
     0 ≤ (if ((d0 l D : ℕ) : ℤ) < D then min (min (k : ℝ) (t : ℝ)) (I / (d0 l D : ℝ)) else 0) := by

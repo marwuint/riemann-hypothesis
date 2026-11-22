@@ -27,8 +27,7 @@ theorem inPar_gal {F : Type} [Field F] (t : F →+* F) (a n : ℕ) (x : GL (Fin 
     InPar a (gal t n x) := by
   intro i j hj hi; simp [gal, hx i j hj hi]
 
-theorem gal_id {F : Type} [Field F] (n : ℕ) (x : GL (Fin n) F) : gal (RingHom.id F) n x = x := by
-  ext i j; simp [gal]
+theorem gal_id {F : Type} [Field F] (n : ℕ) (x : GL (Fin n) F) : gal (RingHom.id F) n x = x := GlobalTheory.Shin.gal_id_eq n x
 
 theorem nrm_conj_incl {F F' : Type} [Field F] [Field F'] [Algebra F F'] (s : F' ≃ₐ[F] F') {n : ℕ}
     (δ : GL (Fin n) F') (y₀ : GL (Fin n) F) :

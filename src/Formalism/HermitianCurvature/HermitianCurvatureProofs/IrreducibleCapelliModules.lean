@@ -18,9 +18,9 @@ theorem top_weight_singular : Qr.TopWeightSing := qr_topWeightSing_of exists_sin
 
 theorem vector_descent : Qr.VecDown := qr_vecDown_of quantum_minor_polynomial polynomial_vanishing
 
-theorem raising_nonzero : Qr.RaiseNZ := qr_raiseNZ_of covariant_raising
+theorem raising_nonzero : Qr.RaiseNZ := Formalism.FourierDecayAlt.P.BorderedDeterminants.raiseNZ_of covariant_raising
 
-theorem lowering_nonzero : Qr.LowerNZ := qr_lowerNZ_of vector_descent
+theorem lowering_nonzero : Qr.LowerNZ := Formalism.FourierDecayAlt.P.BorderedDeterminants.lowerNZ_of vector_descent
 
 theorem branching_decomposition : Qr.Decomp :=
   qr_decomp_of exists_singular_maximal_vector capelli_singular capelli_stabilizer submodule_relations covariant_raising vector_descent

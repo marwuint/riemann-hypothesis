@@ -184,8 +184,7 @@ theorem main (hC : Formalism.FG.CoeffBoundV.{u, v, v}) : Formalism.FG.FunEqSubst
 end Formalism.FG.KeyVAux
 
 theorem Formalism.FG.FunEqSubstV_of (hC : Formalism.FG.CoeffBoundV.{u, v, v}) :
-    Formalism.FG.FunEqSubstV.{u, v, w} :=
-  Formalism.FG.KeyVAux.main hC
+    Formalism.FG.FunEqSubstV.{u, v, w} := Formalism.FG.KeyVAux.main hC
 
 theorem Formalism.FG.functional_equation_subst_vector : Formalism.FG.FunEqSubstV.{u, v, w} :=
   Formalism.FG.FunEqSubstV_of Formalism.FG.coeff_bound_vector.{u, v, v}

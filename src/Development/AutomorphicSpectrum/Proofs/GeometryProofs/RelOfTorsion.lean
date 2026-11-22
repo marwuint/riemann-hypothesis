@@ -75,8 +75,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.BT.Tan
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.LieEx
 
-theorem one_left_eq {B : Scheme.{0}} {X M : Over B} [GrpObj M] : (1 : X ⟶ M).left = X.hom ≫ η[M].left := by
-  rw [Hom.one_def, Over.comp_left, Over.toUnit_left]
+theorem one_left_eq {B : Scheme.{0}} {X M : Over B} [GrpObj M] : (1 : X ⟶ M).left = X.hom ≫ η[M].left := GlobalTheory.CompanionTheory.Ar.ChartDer.one_left
 
 section Rel
 variable {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] (Γ : QFGroup R T)

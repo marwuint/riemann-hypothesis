@@ -176,10 +176,7 @@ section Record
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-theorem finrank_rat_E_eq_two_f (D : D7) : finrank ℚ D.host.E = 2 * D.R.f := by
-  rw [D.host.der.finrank_E]
-  show 4 * D.R.toFrame.ord = 2 * (2 * D.R.toFrame.ord)
-  ring
+theorem finrank_rat_E_eq_two_f (D : D7) : finrank ℚ D.host.E = 2 * D.R.f := Formalism.MainNotions.LatticeGluingRadicals.j_finrank D
 
 theorem latDet_of_cyclic_dual_quotient (D : D7) (M : Submodule (𝓞 D.host.E) (D.sp.X 0).V) (hl : Submodule.IsLattice D.host.E M)
     (hint : M ≤ Formalism.HermitianLatticesTheory.dual (D.sp.X 0).hT M) {T : ℕ} (hT : T.Prime) (hs : SplitsCompl D.host.E T)

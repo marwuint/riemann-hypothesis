@@ -101,6 +101,5 @@ theorem _root_.GlobalTheory.T.bottom_translate_jets_algebraic : ∀ {D : D7} {T 
     ∀ dg : D.what₂.Tau →₀ ℕ, ∃ Ω : ℂ, Ω ≠ 0 ∧ ∀ u : WO (GlobalTheory.Grid.neg A) WW, u.map (infPart D) = 0 →
       ∀ k : FVar D WW.rank A.rank →₀ ℕ, Finsupp.mapDomain Prod.fst k = dg →
         IsAlgebraic ℚ (pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B
-          (heisO W.ψ (GlobalTheory.Grid.neg A) WW u X.vac) (MvPolynomial.monomial k 1) 0 / Ω) := by
-  first | exact @_root_.GlobalTheory.BotTransJet.isAlgebraic_pureTensorO_div_period | exact _root_.GlobalTheory.BotTransJet.isAlgebraic_pureTensorO_div_period | (intros; apply _root_.GlobalTheory.BotTransJet.isAlgebraic_pureTensorO_div_period <;> assumption)
+          (heisO W.ψ (GlobalTheory.Grid.neg A) WW u X.vac) (MvPolynomial.monomial k 1) 0 / Ω) := GlobalTheory.BotTransJet.isAlgebraic_pureTensorO_div_period
 end

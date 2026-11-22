@@ -22,8 +22,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Formalism.MainNotions.ModuliIntegralCharts.H1.GermD Formalism.MainNotions.ModuliIntegralCharts.H1.JetTr
 
 theorem spMap_cp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap g ≫ spMap f = spMap (g.comp f) := by
-  simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
+    spMap g ≫ spMap f = spMap (g.comp f) := GlobalTheory.FrameTangent.spMap_comp' f g
 
 theorem comp_listProd {X0 : Scheme.{0}} {G T T' : Over X0} [GrpObj G] (ρ : T' ⟶ T) (l : List (T ⟶ G)) :
     ρ ≫ l.prod = (l.map (ρ ≫ ·)).prod := by

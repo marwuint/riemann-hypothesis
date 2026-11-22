@@ -10,16 +10,7 @@ noncomputable section
 namespace GlobalTheory.Alc.HighestVec
 
 theorem weight_rowW_apply {r n : ℕ} (m : Fin r × Fin n →₀ ℕ) (a : Fin r) :
-    Finsupp.weight (rowW r n) m a = rowDeg m a := by
-  rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply,
-    Fintype.sum_prod_type, rowDeg]
-  rw [Finset.sum_eq_single a]
-  · refine Finset.sum_congr rfl fun s _ => ?_
-    simp [rowW]
-  · intro b _ hb
-    refine Finset.sum_eq_zero fun s _ => ?_
-    simp [rowW, Ne.symm hb]
-  · simp
+    Finsupp.weight (rowW r n) m a = rowDeg m a := Formalism.GradedWeylDivisibility.ldrow_weight_rowW m a
 
 def height (N : ℕ) (μ : Fin N → ℕ) : ℕ := ∑ a : Fin N, (N - a.val) * μ a
 

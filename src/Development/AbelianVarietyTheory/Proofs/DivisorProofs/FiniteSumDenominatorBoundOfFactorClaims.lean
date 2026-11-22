@@ -580,7 +580,6 @@ end
 end DenominatorLossAdditivity
 section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
-theorem _root_.GlobalTheory.Adopt.finiteSumDenominatorBound_of_factor_claims : SumOKK → DepthK → FinScalK → FinCoefK → FinDatK → FinGamK → FinTopK → FinRowK → FinPairK → FinPsiK → FinFormK → FinK := by
-  first | exact @DenominatorLossAdditivity.GlobalTheory.CompanionTheory.FinDen.fin_of_factors | exact DenominatorLossAdditivity.GlobalTheory.CompanionTheory.FinDen.fin_of_factors | (intros; apply DenominatorLossAdditivity.GlobalTheory.CompanionTheory.FinDen.fin_of_factors <;> assumption)
+theorem _root_.GlobalTheory.Adopt.finiteSumDenominatorBound_of_factor_claims : SumOKK → DepthK → FinScalK → FinCoefK → FinDatK → FinGamK → FinTopK → FinRowK → FinPairK → FinPsiK → FinFormK → FinK := DenominatorLossAdditivity.GlobalTheory.CompanionTheory.FinDen.fin_of_factors
 
 end

@@ -65,6 +65,5 @@ theorem _root_.GlobalTheory.T.exists_strip_combination_trivial_outside_set : _ro
   (ρ : RealMatch W), ρ.Over R → ∀ (t : T) (i j : Fin D.R.m) Θ Θ', IsMatched B t ρ i j Θ Θ' → ∀ g g₁ (z : GA D (G.V (.grid i j)) →₀ ℂ),
   ∃ (z' : GA D (G.V (.grid i j)) →₀ ℂ) (P : Finset (HeightOneSpectrum (𝓞 D.host.F))),
     translates z' (kerSmall W Θ' g g₁) = translates z (kerSmall W Θ' g g₁) ∧ zdeg z' = zdeg z ∧
-    ∀ b ∈ z'.support, ∀ v ∉ P, GlobalTheory.AdelicU.proj D.sp.cm.sig (G.V (.grid i j)).gram v b = 1 := by
-  first | exact @_root_.GlobalTheory.StripPlaces.exists_combination_trivial_off_places | exact _root_.GlobalTheory.StripPlaces.exists_combination_trivial_off_places | (intros; apply _root_.GlobalTheory.StripPlaces.exists_combination_trivial_off_places <;> assumption)
+    ∀ b ∈ z'.support, ∀ v ∉ P, GlobalTheory.AdelicU.proj D.sp.cm.sig (G.V (.grid i j)).gram v b = 1 := GlobalTheory.StripPlaces.exists_combination_trivial_off_places
 end

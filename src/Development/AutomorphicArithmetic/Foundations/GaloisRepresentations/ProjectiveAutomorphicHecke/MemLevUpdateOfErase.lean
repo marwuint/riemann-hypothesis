@@ -12,5 +12,4 @@ namespace UpperTheory.Gal.CertificateRingHomMap
 end UpperTheory.Gal.CertificateRingHomMap
 
 theorem UpperTheory.Gal.CertificateRingHomMap.pVecU_of :
-    UpperTheory.Gal.CertificateRingHomMap.NbhdU → UpperTheory.Gal.CertificateRingHomMap.StepAt → UpperTheory.Gal.CertificateRingHomMap.SphType → UpperTheory.Gal.CertificateRingHomMap.LocComm → UpperTheory.Gal.CertificateRingHomMap.VecU :=
-  _root_.UpperTheory.Reformulated.B.Grk2.pVecU_of
+    UpperTheory.Gal.CertificateRingHomMap.NbhdU → UpperTheory.Gal.CertificateRingHomMap.StepAt → UpperTheory.Gal.CertificateRingHomMap.SphType → UpperTheory.Gal.CertificateRingHomMap.LocComm → UpperTheory.Gal.CertificateRingHomMap.VecU := UpperTheory.Reformulated.B.Grk2.pVecU_of

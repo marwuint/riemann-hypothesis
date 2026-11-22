@@ -12,5 +12,4 @@ theorem _root_.GlobalTheory.T.principal_congruence_subgroup_mem_level_twist_prim
     ∀ C : GLint X.E (R.N j) P.1, C ∈ GlobalTheory.TopStep.prinCong (R.N j) P.1 (cst.D P) →
     ∃ r ∈ Loc.Cbe (Jat (Pr := Pr) cst.sharp j P.1) (L.h j b P),
       (∀ x, r (Loc.inX X.E (R.N j) (cOf R j) x) = Loc.inX X.E (R.N j) (cOf R j) (C.1 x)) ∧
-        chiInv Ch sel mu cst j P (L.h j b P) r = 1 := by
-  first | exact @GlobalTheory.TwistCong.cong_mem_prCat_twist | exact GlobalTheory.TwistCong.cong_mem_prCat_twist | (intros; apply GlobalTheory.TwistCong.cong_mem_prCat_twist <;> assumption)
+        chiInv Ch sel mu cst j P (L.h j b P) r = 1 := GlobalTheory.TwistCong.cong_mem_prCat_twist

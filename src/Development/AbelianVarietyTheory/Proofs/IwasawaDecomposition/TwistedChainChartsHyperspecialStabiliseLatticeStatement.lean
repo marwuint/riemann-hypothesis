@@ -24,5 +24,4 @@ theorem _root_.GlobalTheory.T.twisted_chain_charts_hyperspecial_stabilise_lattic
         ¬ (w.D Z).what₂.places.resChar v ∣ ((w.D Z).mem u).A.T) →
       ∀ (Cd : GlobalTheory.Mem.Top.KerTwLv.ChData tt.ch t.g.herm u ((w.D Z).what₂.muAt v) v hg) j (hj : j + 1 ≤ (w.D Z).R.m) (β : tt.ch.Ch u ((w.D Z).what₂.muAt v) (j + 1)),
         Formalism.MainNotions.G.CmpJ.HypTJ ((Cd.Lc t.Gt (Fl u v hg) (hfl u v hg).1 j hj).t β) ∧
-        Formalism.MainNotions.G.CmpJ.PStabEq.HypTJC ((Cd.Lc t.Gt (Fl u v hg) (hfl u v hg).1 j hj).t β) := by
-  first | exact @GlobalTheory.Mem.Top.KerTwLv.hyp_charts_tw | exact GlobalTheory.Mem.Top.KerTwLv.hyp_charts_tw | (intros; apply GlobalTheory.Mem.Top.KerTwLv.hyp_charts_tw <;> assumption)
+        Formalism.MainNotions.G.CmpJ.PStabEq.HypTJC ((Cd.Lc t.Gt (Fl u v hg) (hfl u v hg).1 j hj).t β) := GlobalTheory.Mem.Top.KerTwLv.hyp_charts_tw

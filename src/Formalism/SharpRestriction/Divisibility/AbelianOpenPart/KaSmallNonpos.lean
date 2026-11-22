@@ -260,13 +260,9 @@ theorem even_nV {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : Par
   rw [h1, h2, hc]
   ring
 
-theorem even_nW {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) : Even T.nWn := by
-  obtain ⟨c, hc⟩ := T.nW_dvd
-  exact ⟨4 * c, by omega⟩
+theorem even_nW {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) : Even T.nWn := Formalism.BasicNotions.ParamsT.nW_even T
 
-theorem even_nP {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) : Even T.nP := by
-  rw [T.nP_eq]
-  exact ⟨4 * D.R.f * D.R.r + 2, by ring⟩
+theorem even_nP {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) : Even T.nP := Formalism.BasicNotions.ParamsT.even_nP₂ T
 
 def kaWt (D : D7) (hK : DV.KapDef D) (hn : Even D.R.nV) (j : ℕ) : WeightFamilies.Wt D j :=
   if h : 1 ≤ j ∧ j ≤ D.R.m then

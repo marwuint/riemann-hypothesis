@@ -4,7 +4,6 @@ import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.GenericUnit
 
 namespace GlobalTheory
 
-theorem genericUnlinkedGL_outright : GlobalTheory.Published.GenericUnlinkedGL :=
-  GlobalTheory.RgGu.Holds.genericUnlinkedGL_holds
+theorem genericUnlinkedGL_outright : GlobalTheory.Published.GenericUnlinkedGL := GlobalTheory.RgGu.Holds.genericUnlinkedGL_holds
 
 end GlobalTheory

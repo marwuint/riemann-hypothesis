@@ -33,9 +33,7 @@ theorem mono_of_geom_points {X Y : Scheme.{0}} (f : X ⟶ Y) [LocallyOfFiniteTyp
   exact (pullback.isIso_diagonal_iff f).1 this
 
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (h : B →+* C) :
-    spMap h ≫ spMap f = spMap (h.comp f) := by
-  unfold spMap
-  rw [← Spec.map_comp]; rfl
+    spMap h ≫ spMap f = spMap (h.comp f) := GlobalTheory.ZM.ClosedCoord.spMap_comp_eq f h
 
 theorem sp_id {A : Type} [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := Spec.map_id _
 

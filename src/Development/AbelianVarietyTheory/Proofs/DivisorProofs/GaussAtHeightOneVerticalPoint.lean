@@ -109,8 +109,7 @@ theorem gauss_of_key {O T F F₁ Ω : Type} [CommRing O] [IsLocalRing O] [CommRi
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
 
-theorem sp_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g :=
-  congrArg CommRingCat.Hom.hom (Spec.map_injective h)
+theorem sp_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g := GlobalTheory.Desc.CommonChart.spinj h
 
 theorem flat_ne_zero {R S : Type} [CommRing R] [IsDomain R] [CommRing S] [Nontrivial S] (a : R →+* S) (ha : a.Flat)
     {r : R} (hr : r ≠ 0) : a r ≠ 0 := by

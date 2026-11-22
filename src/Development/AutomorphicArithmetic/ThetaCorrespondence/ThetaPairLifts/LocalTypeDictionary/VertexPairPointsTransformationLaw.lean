@@ -149,6 +149,5 @@ theorem _root_.GlobalTheory.T.vertex_pair_points_transformation_law : _root_.Glo
       (v : VV ℂ (wt ch.G (.top 0))) (w : VV ℂ (listedWt ch.G (.grid 0 D.R.m))),
       GlobalTheory.ExpansionInvariance.pairPts ch.S.toGridChoice τ x (Function.update y 0 (y 0 * k)) v
         ((((levEnv D.sp.X' R.βX (R.datXt t)).χ ⟨toXf k, hk⟩ : ℂˣ) : ℂ) • w) =
-      GlobalTheory.ExpansionInvariance.pairPts ch.S.toGridChoice τ x y v w := by
-  first | exact @_root_.GlobalTheory.FirstRowVertex.pair_points_first_vertex_law | exact _root_.GlobalTheory.FirstRowVertex.pair_points_first_vertex_law | (intros; apply _root_.GlobalTheory.FirstRowVertex.pair_points_first_vertex_law <;> assumption)
+      GlobalTheory.ExpansionInvariance.pairPts ch.S.toGridChoice τ x y v w := GlobalTheory.FirstRowVertex.pair_points_first_vertex_law
 end

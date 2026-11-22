@@ -89,6 +89,5 @@ theorem _root_.GlobalTheory.T.exists_bottom_stratum_intertwiner : _root_.GlobalT
           ∀ (h : GA D P.d) (g : GA D WW) (x : GA D P.a) (y : GA D A),
             GlobalTheory.BotFormula.IsFinPt WW g h → GlobalTheory.BotFormula.IsFinPt A y x →
             GlobalTheory.AdForm.xiN W.θ A WW ea.symm ed.symm r rc (fun w => starRingEnd ℂ (X.ω s (y, g) (X.f s) w)) =
-              P.W.Om x h (GlobalTheory.AdForm.xiN W.θ A WW ea.symm ed.symm r rc (fun w => starRingEnd ℂ (X.f s w))) := by
-  first | exact @_root_.GlobalTheory.BotIntertw.bottom_stratum_intertwining | exact _root_.GlobalTheory.BotIntertw.bottom_stratum_intertwining | (intros; apply _root_.GlobalTheory.BotIntertw.bottom_stratum_intertwining <;> assumption)
+              P.W.Om x h (GlobalTheory.AdForm.xiN W.θ A WW ea.symm ed.symm r rc (fun w => starRingEnd ℂ (X.f s w))) := GlobalTheory.BotIntertw.bottom_stratum_intertwining
 end

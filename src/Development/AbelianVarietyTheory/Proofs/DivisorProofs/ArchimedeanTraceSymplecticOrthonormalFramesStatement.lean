@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.archimedean_trace_symplectic_orthonormal_frames : 
     ∀ (u u' : Matrix α β (AE F E)) (c c' : ∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ), At (evI F) u → At (evI F) u' →
     (∀ w, u.map (piInf (τ w)) = A w * c w * (C w)ᵀ) → (∀ w, u'.map (piInf (τ w)) = A w * c' w * (C w)ᵀ) →
     Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (symp (R := AF F) (cA σ) (-1) JA JB u u')) =
-      -2 * (∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star (c' w a b)).im := by
-  first | exact @GlobalTheory.SympFramesD.symp_framesD | exact GlobalTheory.SympFramesD.symp_framesD | (intros; apply GlobalTheory.SympFramesD.symp_framesD <;> assumption)
+      -2 * (∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star (c' w a b)).im := GlobalTheory.SympFramesD.symp_framesD

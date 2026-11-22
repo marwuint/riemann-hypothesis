@@ -18,9 +18,7 @@ theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) 
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]; rfl
 
 theorem res_const {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {U V : X.Opens}
-    (h : V ≤ U) (a : R) : resG X h (constFn p U a) = constFn p V a :=
-  congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a))
-    (Scheme.Hom.appLE_map p (U := ⊤) (V := U) (fun _ _ => trivial) (homOfLE h).op)
+    (h : V ≤ U) (a : R) : resG X h (constFn p U a) = constFn p V a := GlobalTheory.LocDerExt.res_const p h a
 
 theorem const_zero {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) (U : X.Opens) :
     constFn p U 0 = 0 := by

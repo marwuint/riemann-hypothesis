@@ -71,11 +71,7 @@ end GlobalTheory.USep.Alg
 namespace GlobalTheory.USep.Alg
 
 theorem zpow_sum_units {G ι : Type} [CommGroup G] (a : G) (s : Finset ι) (f : ι → ℤ) :
-    a ^ (∑ i ∈ s, f i) = ∏ i ∈ s, a ^ f i := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp
-  | insert x s hx ih => rw [Finset.sum_insert hx, Finset.prod_insert hx, zpow_add, ih]
+    a ^ (∑ i ∈ s, f i) = ∏ i ∈ s, a ^ f i := GlobalTheory.SharpFamRel.zpow_finsetSum a s f
 
 end GlobalTheory.USep.Alg
 

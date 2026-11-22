@@ -81,6 +81,5 @@ end
 section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.sum_size_finite_top_term_integral : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → FinTopK := by
-  first | exact @_root_.GlobalTheory.SumSize.TopInt.finite_top_term_integral_bound | exact _root_.GlobalTheory.SumSize.TopInt.finite_top_term_integral_bound | (intros; apply _root_.GlobalTheory.SumSize.TopInt.finite_top_term_integral_bound <;> assumption)
+theorem _root_.GlobalTheory.T.sum_size_finite_top_term_integral : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → FinTopK := GlobalTheory.SumSize.TopInt.finite_top_term_integral_bound
 end

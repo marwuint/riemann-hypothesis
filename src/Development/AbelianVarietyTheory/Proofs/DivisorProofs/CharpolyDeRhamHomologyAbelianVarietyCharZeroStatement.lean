@@ -6,5 +6,4 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.charpoly_deRhamHomology_abelianVariety_charZero : ∀ (k : Type) [Field k] [CharZero k] [IsAlgClosed k]
     (B : GlobalTheory.AV.AbVar k) (f : B ⟶ B) [Module.Finite k (HdR B.X)],
-    LinearMap.charpoly (push (dp0 k) (𝟙 _) f.hom) = (GlobalTheory.AV.AbVar.charpoly f).map (Int.castRingHom k) := by
-  first | (exact @GlobalTheory.DeRhamCharpolyZero.charpoly_push) | (exact GlobalTheory.DeRhamCharpolyZero.charpoly_push) | (intros; apply GlobalTheory.DeRhamCharpolyZero.charpoly_push  <;> assumption)
+    LinearMap.charpoly (push (dp0 k) (𝟙 _) f.hom) = (GlobalTheory.AV.AbVar.charpoly f).map (Int.castRingHom k) := GlobalTheory.DeRhamCharpolyZero.charpoly_push

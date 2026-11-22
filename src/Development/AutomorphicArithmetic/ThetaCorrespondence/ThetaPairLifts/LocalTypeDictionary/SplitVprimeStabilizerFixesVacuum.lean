@@ -72,6 +72,5 @@ theorem _root_.GlobalTheory.T.split_vprime_stabilizer_fixes_vacuum : _root_.Glob
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' →
     ∃ S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F), ∀ v ∉ S, Nonempty (E →ₐ[F] Fv F v) →
       ∀ k ∈ GlobalTheory.InertSph.KAt σ G.V' v,
-        GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (GlobalTheory.AdelicU.evFin F v) (om' (k, 1)) (G.M'.vac v) (G.M'.vac v) := by
-  first | exact @_root_.GlobalTheory.SplitSphVPrimeStab.vacuum_fixed_by_split_spherical_left | exact _root_.GlobalTheory.SplitSphVPrimeStab.vacuum_fixed_by_split_spherical_left | (intros; apply _root_.GlobalTheory.SplitSphVPrimeStab.vacuum_fixed_by_split_spherical_left <;> assumption)
+        GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (GlobalTheory.AdelicU.evFin F v) (om' (k, 1)) (G.M'.vac v) (G.M'.vac v) := GlobalTheory.SplitSphVPrimeStab.vacuum_fixed_by_split_spherical_left
 end

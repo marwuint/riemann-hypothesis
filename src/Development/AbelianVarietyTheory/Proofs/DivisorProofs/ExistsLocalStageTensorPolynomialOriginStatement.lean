@@ -22,5 +22,4 @@ theorem _root_.GlobalTheory.T.exists_localStage_tensor_polynomial_origin : ∀ (
           β.comp ((algebraMap (Polynomial A) (Localization.AtPrime QA)).comp Polynomial.C) ∧
         γ.comp β = jA ∧
         γ.comp ((algebraMap (Polynomial A') (Localization.AtPrime Q')).comp Polynomial.C) =
-          (algebraMap T O).comp α := by
-  first | (exact @GlobalTheory.LocalStage.localStage) | (exact GlobalTheory.LocalStage.localStage) | (intros; apply GlobalTheory.LocalStage.localStage  <;> assumption)
+          (algebraMap T O).comp α := GlobalTheory.LocalStage.localStage

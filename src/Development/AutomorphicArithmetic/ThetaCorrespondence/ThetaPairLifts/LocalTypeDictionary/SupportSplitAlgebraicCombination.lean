@@ -78,6 +78,5 @@ theorem _root_.GlobalTheory.T.moved_support_theta_algebraic : ∀ {D : D7} {T : 
       GlobalTheory.UnRep.SuppSplit (GlobalTheory.Member.cF D) N ((finHom WW) g' : Matrix (Fin WW.rank) (Fin WW.rank) _) →
       ∃ (n : ℕ) (c : Fin n → ℂ) (w : Fin n → WO (GlobalTheory.Grid.neg A) WW), (∀ p, IsAlgebraic ℚ (c p)) ∧
         (∀ p, (w p).map (infPart D) = 0) ∧
-        X.ω t (g, g') X.vac = ∑ p, c p • heisO W.ψ (GlobalTheory.Grid.neg A) WW (w p) X.vac := by
-  first | exact @_root_.GlobalTheory.MovedAlg.support_split_algebraic_combination | exact _root_.GlobalTheory.MovedAlg.support_split_algebraic_combination | (intros; apply _root_.GlobalTheory.MovedAlg.support_split_algebraic_combination <;> assumption)
+        X.ω t (g, g') X.vac = ∑ p, c p • heisO W.ψ (GlobalTheory.Grid.neg A) WW (w p) X.vac := GlobalTheory.MovedAlg.support_split_algebraic_combination
 end

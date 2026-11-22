@@ -22,5 +22,4 @@ theorem _root_.GlobalTheory.T.torus_mixedCoordinate_sum_le_sobolev_seminorm : �
       ∀ t ∈ GlobalTheory.SiegelSet.cone r c, ∀ α : Mx D r r, α.map (finPart D) = 1 →
         (∀ τ, compAt θ τ α = diagonal (fun i => (t i : ℂ))) →
         ∑' ξ : Matrix (Fin X.rank) (Fin r) D.host.E, ‖d.mixS X ψ μ' 𝓕' Ψ (HMul.hMul (ξ.map (incA D) : Mx D X.rank r) α) 0‖ₑ ≤
-          ENNReal.ofReal (C * (n : ℝ) ^ A * (GlobalTheory.Size.sobO (V := V) (W := X) ψ θ μ 𝓕 k Ψ).toReal) := by
-  first | exact @GlobalTheory.TorusMixedSum.sum_mixS_le | exact GlobalTheory.TorusMixedSum.sum_mixS_le | (intros; apply GlobalTheory.TorusMixedSum.sum_mixS_le <;> assumption)
+          ENNReal.ofReal (C * (n : ℝ) ^ A * (GlobalTheory.Size.sobO (V := V) (W := X) ψ θ μ 𝓕 k Ψ).toReal) := GlobalTheory.TorusMixedSum.sum_mixS_le

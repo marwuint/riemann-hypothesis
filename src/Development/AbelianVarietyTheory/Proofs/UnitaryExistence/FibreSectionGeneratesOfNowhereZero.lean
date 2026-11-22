@@ -15,8 +15,7 @@ noncomputable section
 namespace GlobalTheory.Frames.NonzeroGenerates
 
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  rw [spMap, spMap, spMap, ← Spec.map_comp]; rfl
+    spMap (g.comp f) = spMap g ≫ spMap f := ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp f g
 
 theorem spMap_id' {A : Type} [CommRing A] : spMap (RingHom.id A) = 𝟙 (Sp A) :=
   Spec.map_id (CommRingCat.of A)

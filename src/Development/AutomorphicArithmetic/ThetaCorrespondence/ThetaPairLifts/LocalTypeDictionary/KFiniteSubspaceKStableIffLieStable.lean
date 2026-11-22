@@ -100,6 +100,5 @@ theorem _root_.GlobalTheory.T.kFinite_subspace_kStable_iff_lie_stable : _root_.G
         GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ActsD (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) f f₁ →
         R.p f ∈ N → R.p f₁ ∈ N) →
       ∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf σ Γ.W Bs.emb, ∀ f ∈ Γ.M.Pol Bs.ψ Bs.emb, ∀ f₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin a × Fin (a + a')),
-        GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (om (1, k)) f f₁ → R.p f ∈ N → R.p f₁ ∈ N := by
-  first | exact @_root_.GlobalTheory.KStableLie.lie_stable_subspace_kStable | exact _root_.GlobalTheory.KStableLie.lie_stable_subspace_kStable | (intros; apply _root_.GlobalTheory.KStableLie.lie_stable_subspace_kStable <;> assumption)
+        GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (om (1, k)) f f₁ → R.p f ∈ N → R.p f₁ ∈ N := GlobalTheory.KStableLie.lie_stable_subspace_kStable
 end

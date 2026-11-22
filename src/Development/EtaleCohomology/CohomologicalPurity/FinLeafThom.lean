@@ -37,8 +37,7 @@ import Development.EtaleCohomology.KummerExtensions.EtaleWeightedBlowupException
 namespace LateralTheory.Fin.LeafThom
 theorem etale_boundary_monomorphism_of_thom_isomorphism : LateralTheory.CohomologicalPurity.Bd.LeafMono := by
   apply LateralTheory.CohomologicalPurity.Bd.LeafMono_of
-theorem etale_relative_boundary_pushout_property_holds : LateralTheory.CohomologicalPurity.Bd.LeafPush := by
-  apply LateralTheory.CohomologicalPurity.Bd.LeafPush_of
+theorem etale_relative_boundary_pushout_property_holds : LateralTheory.CohomologicalPurity.Bd.LeafPush := LateralTheory.CohomologicalPurity.Bd.LeafPush_of
 theorem etale_boundary_good_pair_of_thom_isomorphism : LateralTheory.CohomologicalPurity.Bd.LeafGood := by
   apply LateralTheory.CohomologicalPurity.Bd.LeafGood_of
 theorem etale_boundary_connecting_of_thom_isomorphism : LateralTheory.CohomologicalPurity.Bd.LeafDelta := by

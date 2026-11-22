@@ -25,6 +25,5 @@ theorem _root_.GlobalTheory.T.weil_representation_pair_smooth : ∀ (F E : Type)
               co.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))) →
             ∀ om : UG (cA σ) (incM F JA) × UG (cA σ) (incM F JB) →* Module.End ℂ ((κ → AF F) → ℂ),
               GlobalTheory.WeilSchrodinger.IsTransportF σ B.ψ co ω om →
-              ∀ p, ∀ l ∈ (adeleClass F).adm κ, l ∘ₗ om p ∈ (adeleClass F).adm κ := by
-  first | exact @_root_.GlobalTheory.WeilAdmCM.transport_admissible_weil_datum | exact _root_.GlobalTheory.WeilAdmCM.transport_admissible_weil_datum | (intros; apply _root_.GlobalTheory.WeilAdmCM.transport_admissible_weil_datum <;> assumption)
+              ∀ p, ∀ l ∈ (adeleClass F).adm κ, l ∘ₗ om p ∈ (adeleClass F).adm κ := GlobalTheory.WeilAdmCM.transport_admissible_weil_datum
 end

@@ -84,6 +84,5 @@ theorem _root_.GlobalTheory.T.split_vacuum_hecke_eigenvalue_eq_one : _root_.Glob
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → v ∉ X.T → PsiUnr B.ψ v → (2 : 𝓞 F) ∉ v.asIdeal →
     G.M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 →
-    ∀ k ∈ GlobalTheory.InertSph.KAt σ G.V v, ∀ c : ℂ, Acts (evFin F v) (om (k, 1)) (G.M.vac v) (c • G.M.vac v) → c = 1 := by
-  first | exact @_root_.GlobalTheory.SplitVacV.split_vacuum_eigenvalue_eq_one | exact _root_.GlobalTheory.SplitVacV.split_vacuum_eigenvalue_eq_one | (intros; apply _root_.GlobalTheory.SplitVacV.split_vacuum_eigenvalue_eq_one <;> assumption)
+    ∀ k ∈ GlobalTheory.InertSph.KAt σ G.V v, ∀ c : ℂ, Acts (evFin F v) (om (k, 1)) (G.M.vac v) (c • G.M.vac v) → c = 1 := GlobalTheory.SplitVacV.split_vacuum_eigenvalue_eq_one
 end

@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.lenUnit_invariants_twistedLattice_le_of_killingExp
     let S := LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i u hu).Kw s (D.nbr i u hu).LL hs;
     ∀ T : LocLat S.G S.Qp S.LL S.O, T = GlobalTheory.HubX.wLat D i ρ π u hu hc →
     (∀ x : T.V ⧸ T.L.T, (∀ g, actD T.L g x = x) → ((LocalSituation.ell S : S.O) ^ c) • x = 0) →
-    (Br.h0W i u ρ π : ℝ) ≤ (D.R.r : ℝ) * c := by
-  first | exact @GlobalTheory.LengthH0Bound.main | exact GlobalTheory.LengthH0Bound.main | (intros; apply GlobalTheory.LengthH0Bound.main <;> assumption)
+    (Br.h0W i u ρ π : ℝ) ≤ (D.R.r : ℝ) * c := GlobalTheory.LengthH0Bound.main

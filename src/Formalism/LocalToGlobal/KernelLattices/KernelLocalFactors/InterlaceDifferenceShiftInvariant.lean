@@ -3593,7 +3593,7 @@ theorem nm_zero_of {k : ℕ} (l : DomWeight k) (x : MvPolynomial (Fin k × Fin k
 variable {N n : ℕ} (hN : N = n + 1) (l : DomWeight N) (s : DomWeight n)
 
 theorem nm_row_mem {k : ℕ} (l : DomWeight k) (g : Matrix (Fin k) (Fin k) ℂ) (f : MvPolynomial (Fin k × Fin k) ℂ)
-    (hf : f ∈ nablaSq ℂ k l) : rowAct ℂ g f ∈ nablaSq ℂ k l := dualWeylRowStable ℂ k k l.natW g f hf
+    (hf : f ∈ nablaSq ℂ k l) : rowAct ℂ g f ∈ nablaSq ℂ k l := Formalism.GradedWeylDivisibility.dualWeylModuleRowActionStable ℂ k k l.natW g f hf
 
 theorem nmJ_rowAct (c : Fin n → ℕ) (g : Matrix (Fin n) (Fin n) ℂ) (p : MvPolynomial (Fin n × Fin n) ℂ) :
     nmJ hN l c (rowAct ℂ g p) = rowAct ℂ (nmExt hN g) (nmJ hN l c p) := by

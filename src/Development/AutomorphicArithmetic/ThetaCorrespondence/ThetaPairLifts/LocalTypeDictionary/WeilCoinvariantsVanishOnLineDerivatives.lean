@@ -80,6 +80,5 @@ theorem _root_.GlobalTheory.T.weil_coinvariants_vanish_on_line_derivatives : _ro
     ∀ (Vs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E W₁.rank) (hJ : Vs.J = (-1 : D.host.E) • W₁.gram),
     ∀ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Lines D.sp.cm.sig Vs, ∀ Ψ ∈ algF ψ θ false A₁ B, ∀ Ψ₁ ∈ algF ψ θ false A₁ B,
     (∀ z, HasDerivAt (fun t : ℝ => ωB (GlobalTheory.ConjUTransport.conjUInv W₁ (-1) (neg_ne_zero.2 one_ne_zero) hJ
-      (γ (Multiplicative.ofAdd t)), 1) Ψ z) (Ψ₁ z) 0) → p' Ψ₁ = 0 := by
-  first | exact @_root_.GlobalTheory.CoinvLine.coinvariants_kill_line_derivative | exact _root_.GlobalTheory.CoinvLine.coinvariants_kill_line_derivative | (intros; apply _root_.GlobalTheory.CoinvLine.coinvariants_kill_line_derivative <;> assumption)
+      (γ (Multiplicative.ofAdd t)), 1) Ψ z) (Ψ₁ z) 0) → p' Ψ₁ = 0 := GlobalTheory.CoinvLine.coinvariants_kill_line_derivative
 end

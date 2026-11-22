@@ -19,5 +19,4 @@ theorem _root_.GlobalTheory.T.det_frameChange_balancedTensors_cmType : ∀ (E : 
     (∀ j, _root_.Matrix.transpose (GlobalTheory.LogKSDiv.flatFrame A e e') * GlobalTheory.LogKSDiv.symPair (R := K) e (ε j) * GlobalTheory.LogKSDiv.flatFrame A e e' =
       ∑ k, L k j • GlobalTheory.LogKSDiv.symPair (R := K) e' (ε' k)) →
     ∃ u : K, (u = 1 ∨ u = -1) ∧
-      L.det = u * ∏ τ : E →+* ℂ, (A τ).det ^ (if τ (H.rt : E) = H.rt0 then Dw.q else Dw.p) := by
-  first | exact @GlobalTheory.LogKSDiv.det_frameChange_balanced | exact GlobalTheory.LogKSDiv.det_frameChange_balanced | (intros; apply GlobalTheory.LogKSDiv.det_frameChange_balanced <;> assumption)
+      L.det = u * ∏ τ : E →+* ℂ, (A τ).det ^ (if τ (H.rt : E) = H.rt0 then Dw.q else Dw.p) := GlobalTheory.LogKSDiv.det_frameChange_balanced

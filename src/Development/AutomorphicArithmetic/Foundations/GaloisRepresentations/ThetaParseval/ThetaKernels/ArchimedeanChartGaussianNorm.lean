@@ -17,6 +17,5 @@ theorem _root_.GlobalTheory.T.archimedean_chart_gaussian_norm : ∀ (F E : Type)
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ → ∀ θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ),
       IsInfFamF (fun w : InfinitePlace F => (B.emb w).1) θ → ∀ ι : (InfinitePlace F → ℂ) →+ AEF F E, IsChartF θ ι →
       ∀ (hψ : IsCharAF F B.ψ) (f : BBF σ JS JT ξ₀ B.ψ), IsThetaFunOF σ JS JT ξ₀ B.ψ f.1 →
-        Sm (rhoVF σ JS JT ξ₀ B.ψ hψ ι) f := by
-  first | exact @_root_.GlobalTheory.ThetaSmoothF.sm_of_thetaF_k | exact _root_.GlobalTheory.ThetaSmoothF.sm_of_thetaF_k | (intros; apply _root_.GlobalTheory.ThetaSmoothF.sm_of_thetaF_k <;> assumption)
+        Sm (rhoVF σ JS JT ξ₀ B.ψ hψ ι) f := GlobalTheory.ThetaSmoothF.sm_of_thetaF_k
 end

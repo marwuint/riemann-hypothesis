@@ -66,6 +66,5 @@ end
 section
 open GlobalTheory.SqTop
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.botConst_of_theta_matching : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → (∀ D, GlobalTheory.NormSum.Inp D) → BotSmall → LNe → BotConst := by
-  first | exact @_root_.GlobalTheory.SqTop.botConst_of_inputs_alt | exact _root_.GlobalTheory.SqTop.botConst_of_inputs_alt | (intros; apply _root_.GlobalTheory.SqTop.botConst_of_inputs_alt <;> assumption)
+theorem _root_.GlobalTheory.T.botConst_of_theta_matching : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → (∀ D, GlobalTheory.NormSum.Inp D) → BotSmall → LNe → BotConst := GlobalTheory.SqTop.botConst_of_inputs_alt
 end

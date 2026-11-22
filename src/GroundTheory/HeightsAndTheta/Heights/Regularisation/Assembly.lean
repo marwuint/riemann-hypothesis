@@ -21,8 +21,7 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Regular
 
-theorem GlueRegularised.full : GlueRegularised.Statement :=
-  GlueRegularised.proof
+theorem GlueRegularised.full : GlueRegularised.Statement := GroundTheory.Heights₂.Heights.Regular.GlueRegularised.proof
 
 theorem KernelPositive.full : KernelPositive.Statement :=
   kernelPositive_statement

@@ -67,6 +67,5 @@ theorem _root_.GlobalTheory.T.fockSpace_contained_darbouxAlgebra_theta_image : G
       GlobalTheory.TripleRead.IsTransp ψ false Γ.M' om' ωB e (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) h.JW₁) (GlobalTheory.TripleRead.toUX X e h.JX) →
       ∀ R Rf, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched Bs Γ Xc om om' R Rf →
         ∀ (g : WO W₁ X → ℂ) (P : PolF D X.rank W₁.rank), IsFinF ψ θ false A₁ B g →
-          ∃ Φ ∈ GlobalTheory.TripleAssembly.darbAlg Γ.M' Bs.ψ Bs.emb, GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e Φ = fockF ψ θ false A₁ B g P := by
-  first | exact @_root_.GlobalTheory.DarbImageRevB.exists_darbouxAlgebra_theta_eq_fockFunction | exact _root_.GlobalTheory.DarbImageRevB.exists_darbouxAlgebra_theta_eq_fockFunction | (intros; apply _root_.GlobalTheory.DarbImageRevB.exists_darbouxAlgebra_theta_eq_fockFunction <;> assumption)
+          ∃ Φ ∈ GlobalTheory.TripleAssembly.darbAlg Γ.M' Bs.ψ Bs.emb, GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e Φ = fockF ψ θ false A₁ B g P := GlobalTheory.DarbImageRevB.exists_darbouxAlgebra_theta_eq_fockFunction
 end

@@ -47,6 +47,5 @@ theorem _root_.GlobalTheory.T.spherical_vector_fixed_at_almost_all_places : _roo
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' →
     ∃ S₀ : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F), ∀ v, v ∉ S₀ → ∀ k ∈ GlobalTheory.InertSph.KAt σ G.W v,
-      GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (GlobalTheory.AdelicU.evFin F v) (om (1, k)) (G.M.vac v) (G.M.vac v) := by
-  first | exact @_root_.GlobalTheory.LocVacFix.vacuum_fixed_at_cofinitely_many_places | exact _root_.GlobalTheory.LocVacFix.vacuum_fixed_at_cofinitely_many_places | (intros; apply _root_.GlobalTheory.LocVacFix.vacuum_fixed_at_cofinitely_many_places <;> assumption)
+      GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (GlobalTheory.AdelicU.evFin F v) (om (1, k)) (G.M.vac v) (G.M.vac v) := GlobalTheory.LocVacFix.vacuum_fixed_at_cofinitely_many_places
 end

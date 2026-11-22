@@ -9,5 +9,4 @@ theorem _root_.GlobalTheory.T.primitive_derivation_pairing : ∀ (k : Type) [Fie
     (∀ f ∈ P, Coalgebra.comul (R := k) f = f ⊗ₜ[k] (1 : A) + (1 : A) ⊗ₜ[k] f) →
     (∀ v ∈ W, ∀ f g : A, v (f * g) = v f * Coalgebra.counit (R := k) g + Coalgebra.counit (R := k) f * v g) →
     (∀ v ∈ W, ∀ f ∈ P, v f = 0) →
-    p ^ (Module.finrank k P + Module.finrank k W) ∣ Module.finrank k A := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.HopfCount.primitive_tangent_dvd_finrank | exact GlobalTheory.CompanionTheory.Ar.HopfCount.primitive_tangent_dvd_finrank | (intros; apply GlobalTheory.CompanionTheory.Ar.HopfCount.primitive_tangent_dvd_finrank <;> assumption)
+    p ^ (Module.finrank k P + Module.finrank k W) ∣ Module.finrank k A := GlobalTheory.CompanionTheory.Ar.HopfCount.primitive_tangent_dvd_finrank

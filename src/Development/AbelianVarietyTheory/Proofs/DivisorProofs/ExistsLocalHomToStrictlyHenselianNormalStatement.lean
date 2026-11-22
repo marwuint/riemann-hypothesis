@@ -8,5 +8,4 @@ theorem _root_.GlobalTheory.T.exists_local_hom_to_strictly_henselian_normal : �
       (i : A →+* T), IsLocalHom i →
     ∃ (A' : Type) (_ : CommRing A') (_ : IsDomain A') (_ : HenselianLocalRing A')
       (_ : IsSepClosed (ResidueField A')) (_ : IsNoetherianRing A') (_ : IsIntegrallyClosed A')
-      (ι : A →+* A') (α : A' →+* T), α.comp ι = i ∧ IsLocalHom α := by
-  first | (exact @GlobalTheory.exists_strictlyHenselian_normal_between) | (exact GlobalTheory.exists_strictlyHenselian_normal_between) | (intros; apply GlobalTheory.exists_strictlyHenselian_normal_between  <;> assumption)
+      (ι : A →+* A') (α : A' →+* T), α.comp ι = i ∧ IsLocalHom α := GlobalTheory.exists_strictlyHenselian_normal_between

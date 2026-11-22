@@ -12,10 +12,7 @@ open ReciprocityTheory.ChartRestriction.DS
 
 namespace DiscreteSeriesData
 
-theorem card_le {n : ℕ} (p : Fin n → Prop) [DecidablePred p] : ((univ.filter p).card : ℝ) ≤ n := by
-  have h := Finset.card_filter_le (Finset.univ : Finset (Fin n)) p
-  rw [Finset.card_univ, Fintype.card_fin] at h
-  exact_mod_cast h
+theorem card_le {n : ℕ} (p : Fin n → Prop) [DecidablePred p] : ((univ.filter p).card : ℝ) ≤ n := Formalism.REAL.rho_card_le p
 
 theorem npq_le {n : ℕ} (ε : Fin n → Bool) : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) ≤ (n : ℝ) ^ 3 := by
   have h1 : (pOf ε : ℝ) ≤ n := card_le _

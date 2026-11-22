@@ -14,8 +14,7 @@ theorem natW_anti_D {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
 theorem extremal_mem_D (n : ℕ) (mu : DomWeight n) : extremal ℂ n mu ∈ nablaSq ℂ n mu :=
   Formalism.GradedWeylDivisibility.hwMem ℂ n n le_rfl mu.natW (natW_anti_D mu)
 
-theorem extremal_ne_D (n : ℕ) (mu : DomWeight n) : extremal ℂ n mu ≠ 0 :=
-  Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl mu.natW
+theorem extremal_ne_D (n : ℕ) (mu : DomWeight n) : extremal ℂ n mu ≠ 0 := Formalism.GradedWeylDivisibility.highestWeightVectorNeZero ℂ n n le_rfl mu.natW
 
 def sqLinD (N : ℕ) (lam : DomWeight N) (g : GL (Fin N) ℂ) :
     MvPolynomial (Fin N × Fin N) ℂ →ₗ[ℂ] MvPolynomial (Fin N × Fin N) ℂ where

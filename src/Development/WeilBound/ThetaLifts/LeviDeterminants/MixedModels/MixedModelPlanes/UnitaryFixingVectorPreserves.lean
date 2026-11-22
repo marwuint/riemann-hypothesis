@@ -15,5 +15,4 @@ theorem _root_.PositivityTheory.Mix.T.unitary_fixing_vector_preserves : ∀ (F E
       (∀ z : Fin n₁ → AE F E, mat m *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ z) →
       mat m' *ᵥ incV F H.x = (t : AE F E) • incV F H.x → (t : AE F E) • (mat m' *ᵥ incV F H.y) = incV F H.y →
       (∀ z : Fin n₁ → AE F E, mat m' *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ z) →
-      m' * (u⁻¹ * u⁻¹ * (m * u * m⁻¹)) * m'⁻¹ = (u⁻¹ * u⁻¹ * (m * u * m⁻¹)) ^ (t ^ 2) := by
-  first | exact @PositivityTheory.Mix.unitary_fixing_isotropic_complement | exact fun _ => @PositivityTheory.Mix.unitary_fixing_isotropic_complement | exact PositivityTheory.Mix.unitary_fixing_isotropic_complement | exact @PositivityTheory.Mix.unitary_fixing_isotropic_complement trivial
+      m' * (u⁻¹ * u⁻¹ * (m * u * m⁻¹)) * m'⁻¹ = (u⁻¹ * u⁻¹ * (m * u * m⁻¹)) ^ (t ^ 2) := PositivityTheory.Mix.unitary_fixing_isotropic_complement

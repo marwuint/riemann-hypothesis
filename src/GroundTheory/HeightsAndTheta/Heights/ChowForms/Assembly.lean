@@ -19,8 +19,7 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights
 
-theorem FGNullstellensatz.full : FGNullstellensatz.Statement :=
-  FGNullstellensatz.proof
+theorem FGNullstellensatz.full : FGNullstellensatz.Statement := GroundTheory.Heights₂.Heights.FGNullstellensatz.proof
 
 theorem ProjNullstellensatz.full : ProjNullstellensatz.Statement :=
   ProjNullstellensatz.proof FGNullstellensatz.full
@@ -31,11 +30,9 @@ theorem IncidenceGeneric.full : IncidenceGeneric.Statement :=
 theorem IncIdealPrime.full : IncIdealPrime.Statement :=
   IncIdealPrime.proof IncidenceGeneric.full
 
-theorem ChowFormMultiHomog.full : ChowFormMultiHomog.Statement :=
-  ChowFormMultiHomog.proof ProjNullstellensatz.full
+theorem ChowFormMultiHomog.full : ChowFormMultiHomog.Statement := GroundTheory.Heights₂.Heights.chowFormMultiHomog
 
-theorem GenericLinearTrdeg.full : GenericLinearTrdeg.Statement :=
-  GenericLinearTrdeg.proof
+theorem GenericLinearTrdeg.full : GenericLinearTrdeg.Statement := GroundTheory.Heights₂.Heights.GenericLinearTrdeg.proof
 
 theorem MinimalPrimeHomog.full : MinimalPrimeHomog.Statement :=
   MinimalPrimeHomog.proof

@@ -15,11 +15,7 @@ noncomputable section
 namespace GlobalTheory.MBLow.AbKey
 
 theorem res_res' {X : Scheme.{0}} {U V W : X.Opens} (h : W ≤ V) (h' : V ≤ U) (u : Γ(X, U)ˣ) :
-    res h (res h' u) = res (h.trans h') u := by
-  ext
-  simp only [res, Units.coe_map, MonoidHom.coe_coe]
-  rw [← CommRingCat.comp_apply, ← Functor.map_comp]
-  rfl
+    res h (res h' u) = res (h.trans h') u := ReciprocityTheory.ChartRestriction.G.Out.InhTate.res_res h h' u
 
 theorem exists_unit_sec {X : Scheme.{0}} (L : LB X) (F : X ⟶ X) (hF : F = 𝟙 X) (t : LB.Gen (L.pull F)) (ht : t.IsGen) :
     ∃ s : H0 L 1, ∀ j, IsUnit (s.f j) := by

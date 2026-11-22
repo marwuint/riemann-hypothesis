@@ -66,6 +66,5 @@ theorem _root_.GlobalTheory.T.spherical_vector_fixes_vacua : _root_.GlobalTheory
       om (1, k) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) ∧
     (∀ (f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin a' × Fin (a + a'))) (φ : ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (Fin a' × Fin (a + a') → Fv F w) → ℂ),
       (∀ w, φ w ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F w)) → (∀ w ∉ S, φ w = G.M'.vac w) →
-      om' (1, k) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) := by
-  first | exact @_root_.GlobalTheory.SphFix.spherical_fixes_pure_vacuum_vectors | exact _root_.GlobalTheory.SphFix.spherical_fixes_pure_vacuum_vectors | (intros; apply _root_.GlobalTheory.SphFix.spherical_fixes_pure_vacuum_vectors <;> assumption)
+      om' (1, k) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) := GlobalTheory.SphFix.spherical_fixes_pure_vacuum_vectors
 end

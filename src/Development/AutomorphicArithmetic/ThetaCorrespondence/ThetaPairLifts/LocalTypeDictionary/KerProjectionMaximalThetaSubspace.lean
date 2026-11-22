@@ -105,6 +105,5 @@ theorem _root_.GlobalTheory.T.thetaKernel_projection_isMax : _root_.GlobalTheory
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ Xc om om' →
     ∀ Pi rf rl p p', IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p' →
     ∀ N N' : Submodule ℂ ((Fin W₁.rank × Fin (W.rank + W₁.rank) → AF D.host.F) → ℂ), (∀ Φ₀D, Φ₀D ∈ N ↔ Φ₀D ∈ algD Γ.M' Bs.ψ Bs.emb ∧ ∃ Φ₀ ∈ algF ψ θ false A₁ B, IsDatum Γ.M' ψ cB Φ₀D Φ₀ ∧ p' Φ₀ = 0) →
-      IsThetaSubG Γ.M' Bs.ψ Bs.emb om' N' → N ≤ N' → N' = N ∨ N' = algD Γ.M' Bs.ψ Bs.emb := by
-  first | exact @_root_.GlobalTheory.SquareAgree.KerPMax.ker_projection_maximal_thetaSubspace | exact _root_.GlobalTheory.SquareAgree.KerPMax.ker_projection_maximal_thetaSubspace | (intros; apply _root_.GlobalTheory.SquareAgree.KerPMax.ker_projection_maximal_thetaSubspace <;> assumption)
+      IsThetaSubG Γ.M' Bs.ψ Bs.emb om' N' → N ≤ N' → N' = N ∨ N' = algD Γ.M' Bs.ψ Bs.emb := GlobalTheory.SquareAgree.KerPMax.ker_projection_maximal_thetaSubspace
 end

@@ -20,9 +20,7 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 theorem conjU_mul {D : D7} (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.host.E)
     (h : J = c • V.gram) (g k : GA D V) :
-    GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU V c h (g * k) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU V c h g * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU V c h k := by
-  apply Subtype.ext
-  simp [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU, map_mul]
+    GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU V c h (g * k) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU V c h g * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU V c h k := GlobalTheory.LocWeilAct.conjU_mul' V c h g k
 
 theorem thetaSum_finset_sum {F : Type} [Field F] [NumberField F] {κ ι : Type} [Fintype κ] (s : Finset ι)
     (f : ι → (κ → AdeleRing (𝓞 F) F) → ℂ) (hf : ∀ k ∈ s, f k ∈ schA F κ) :

@@ -13,8 +13,7 @@ theorem goal1 (l : ℕ) [Fact l.Prime] (a : ℤ_[l]) (q : ℚ_[l]) : ‖a • q�
 
 end AbsoluteContinuitySecondLemma
 
-theorem norm_smul_le (l : ℕ) [Fact l.Prime] (a : ℤ_[l]) (q : ℚ_[l]) : ‖a • q‖ = ‖a‖ * ‖q‖ :=
-  AbsoluteContinuitySecondLemma.goal1 l a q
+theorem norm_smul_le (l : ℕ) [Fact l.Prime] (a : ℤ_[l]) (q : ℚ_[l]) : ‖a • q‖ = ‖a‖ * ‖q‖ := LateralTheory.EWeil.AbsContPf.AbsoluteContinuitySecondLemma.goal1 l a q
 
 namespace AbsoluteContinuityFirstLemma
 

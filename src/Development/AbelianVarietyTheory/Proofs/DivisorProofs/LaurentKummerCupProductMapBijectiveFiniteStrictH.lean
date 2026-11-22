@@ -17,8 +17,7 @@ theorem laurentMap_coeff {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) 
 theorem laurentMap_id (A : Type) [CommRing A] : laurentMap (RingHom.id A) = RingHom.id _ :=
   AddMonoidAlgebra.mapRingHom_id
 
-theorem spMap_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 (sp A) := by
-  simp [spMap]
+theorem spMap_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 (sp A) := GlobalTheory.EtAlgCD.spMap_id A
 
 theorem pull_bijective_of_inverse (q : ℕ) {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (g : B →+* A)
     (hgf : g.comp f = RingHom.id A) (hfg : f.comp g = RingHom.id B) (n i : ℤ) :
@@ -28,16 +27,7 @@ theorem pull_bijective_of_inverse (q : ℕ) {A B : Type} [CommRing A] [CommRing 
   · rw [← GmPhiNat.pull_spMap_comp, hfg, spMap_id, pull_id]
 
 theorem ht_subsingleton (q : ℕ) (T : Type) [CommRing T] [Subsingleton T] (n i : ℤ) :
-    Subsingleton (Ht q (sp T) n i) := by
-  have hb := GlobalTheory.T.etaleCohomology_prod_ring_projections_bijective q T T n i
-  have hfs : RingHom.fst T T = RingHom.snd T T := RingHom.ext fun _ => Subsingleton.elim _ _
-  refine ⟨fun a b => ?_⟩
-  obtain ⟨x, hx⟩ := hb.2 (a, b)
-  have h1 := congrArg Prod.fst hx
-  have h2 := congrArg Prod.snd hx
-  simp only at h1 h2
-  rw [hfs] at h1
-  exact h1.symm.trans h2
+    Subsingleton (Ht q (sp T) n i) := GlobalTheory.EtC.CurveNbhdExcision.ht_subsingleton_of_subsingleton q T n i
 
 theorem laurent_subsingleton (T : Type) [CommRing T] [Subsingleton T] : Subsingleton (LaurentPolynomial T) := by
   refine subsingleton_of_zero_eq_one ?_

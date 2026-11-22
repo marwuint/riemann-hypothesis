@@ -308,8 +308,7 @@ end Formalism.L2.KerInert.IntegralUnitSubstitution
 namespace Formalism.L2.KerInert
 
 theorem unitSubstLoc_of (hC : CcPrime) (hE : EndIntInertAll) (hN : PhNormOKInertAll) (hB : BiaddInertAll) :
-    UnitSubstLoc :=
-  IntegralUnitSubstitution.unitSubstLoc_of hC hE hN hB
+    UnitSubstLoc := Formalism.L2.KerInert.IntegralUnitSubstitution.unitSubstLoc_of hC hE hN hB
 
 theorem unitSubstLoc_of_model (hE : EndIntInertAll) (hN : PhNormOKInertAll) (hB : BiaddInertAll) : UnitSubstLoc :=
   unitSubstLoc_of curve_ideal_prime hE hN hB

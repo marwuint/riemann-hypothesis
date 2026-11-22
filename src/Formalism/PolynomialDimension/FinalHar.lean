@@ -9,8 +9,8 @@ theorem slTwo : Formalism.CountingSumsFrames.SlTwo := Formalism.CountingSumsFram
 theorem harProj : Formalism.CountingSumsFrames.HarProj := Formalism.CountingSumsFrames.harmonicProjection_holds
 theorem levelProj : Formalism.CountingSumsFrames.LevelProj := Formalism.CountingSumsFrames.isotypicProjection_holds
 theorem gaussProj : Formalism.CountingSumsFrames.GaussProj := Formalism.CountingSumsFrames.gaussLatticeProjection_holds
-theorem gaussLemmaH : Formalism.CountingSumsFrames.GaussLemmaH := Formalism.CountingSumsFrames.gaussLemmaPairing_holds
-theorem levelLattice : Formalism.CountingSumsFrames.LevelLattice := Formalism.CountingSumsFrames.isotypicLattice_holds
+theorem gaussLemmaH : Formalism.CountingSumsFrames.GaussLemmaH := Formalism.CountingSumsFrames.Har4.gaussLemmaPairing_holds
+theorem levelLattice : Formalism.CountingSumsFrames.LevelLattice := Formalism.CountingSumsFrames.Har4.isotypicLattice_holds
 theorem harQuot : Formalism.CountingSumsFrames.HarQuot := Formalism.CountingSumsFrames.harmonicQuotient_holds
 
 end Formalism.CountingSumsFrames.Top

@@ -78,6 +78,5 @@ theorem _root_.GlobalTheory.T.bottomClassSum_eq_formula : ∀ {D : D7} {T : Type
     ∃ Ω : ℂ, Ω ≠ 0 ∧ ∀ t, ∀ h ∈ GfC WW, ∀ k, ∃ (n : ℕ) (c z : Fin n → ℂ), (∀ l, IsAlgebraic ℚ (c l)) ∧
       (∀ l, ∃ (δ t0 : ℂ) (Q : ℕ) (P : GlobalTheory.NormSum.Pair D ⊤ δ t0 Q) (h' : Formalism.MainNotions.StandardLatticesGL3.GA D P.d) (U : GlobalTheory.NormSum.Tup D P.a P.d P.n),
         z l = P.coord h' U) ∧
-      X.I' W.ψ W.θ t (MvPolynomial.monomial k 1) h = Ω * ∑ l, c l * z l := by
-  first | exact @_root_.GlobalTheory.BotFormulaI'.bottomClassSum_formula | exact _root_.GlobalTheory.BotFormulaI'.bottomClassSum_formula | (intros; apply _root_.GlobalTheory.BotFormulaI'.bottomClassSum_formula <;> assumption)
+      X.I' W.ψ W.θ t (MvPolynomial.monomial k 1) h = Ω * ∑ l, c l * z l := GlobalTheory.BotFormulaI'.bottomClassSum_formula
 end

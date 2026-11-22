@@ -152,9 +152,7 @@ theorem symIndex_injective {k₀ rS p p' : ℕ} (h : symIdx k₀ rS p = symIdx k
   have := congrArg (symIdxInv k₀ rS) h
   rwa [symIdxInv_symIdx, symIdxInv_symIdx] at this
 
-theorem symIndexInv_lt {k₀ rS r s : ℕ} (hr : k₀ + rS ≤ r) (hs : s < r) : symIdxInv k₀ rS s < r := by
-  unfold symIdxInv
-  split_ifs <;> omega
+theorem symIndexInv_lt {k₀ rS r s : ℕ} (hr : k₀ + rS ≤ r) (hs : s < r) : symIdxInv k₀ rS s < r := Formalism.L2.Col.symIdxInv_lt hr hs
 
 theorem ob2Beta_lt_of_sym {k₀ rS r t p0 p : ℕ} (hr : k₀ + rS ≤ r) (hp0 : p0 < r) (h : symIdx k₀ rS p0 < symIdx k₀ rS p) :
     betaExponentOfRanks k₀ rS r t p0 < betaExponentOfRanks k₀ rS r t p := by

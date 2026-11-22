@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.mappingCone_shortExact_augmentation_class_eq : ∀
     CohomologyClass.mk (Cocycle.ofHom
         (mappingCone.descShortComplex (S.map (CochainComplex.singleFunctor (Shv R) 0)) ≫ resAug S.X₃)) =
       CohomologyClass.mk (Cocycle.ofHom
-        (mappingCone.map _ (resMap R S.f) (resAug S.X₁) (resAug S.X₂) hc ≫ e.hom)) := by
-  first | (exact @GlobalTheory.EtC.ConeClass.cone_class_eq) | (exact GlobalTheory.EtC.ConeClass.cone_class_eq) | (intros; apply GlobalTheory.EtC.ConeClass.cone_class_eq  <;> assumption)
+        (mappingCone.map _ (resMap R S.f) (resAug S.X₁) (resAug S.X₂) hc ≫ e.hom)) := GlobalTheory.EtC.ConeClass.cone_class_eq

@@ -78,7 +78,7 @@ theorem LatCount_holds (I : AutInst) : Formalism.L2.SG.Count.LatCount I := by
   rw [lattice_tau_eq_size_tau] at h
   exact h
 
-theorem DistTri_holds : Formalism.MainNotions.LeviCoordinates.DistTri := symDist_of exp_triangle_inequality
+theorem DistTri_holds : Formalism.MainNotions.LeviCoordinates.DistTri := PI.SymDistWork.symDist_of exp_triangle_inequality
 
 end Count
 

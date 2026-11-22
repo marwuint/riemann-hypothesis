@@ -100,6 +100,5 @@ end
 
 section
 open GlobalTheory.SqTop
-theorem _root_.GlobalTheory.T.tower_of_theta_matching_lNe : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → LNe → Tower := by
-  first | exact @_root_.GlobalTheory.SqTower.tower_alt_bis | exact _root_.GlobalTheory.SqTower.tower_alt_bis | (intros; apply _root_.GlobalTheory.SqTower.tower_alt_bis <;> assumption)
+theorem _root_.GlobalTheory.T.tower_of_theta_matching_lNe : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → LNe → Tower := GlobalTheory.SqTower.tower_alt_bis
 end

@@ -175,9 +175,7 @@ theorem shapeC_lo' : shapeC (2 * ccl) (fun j => nuOf (dualWt (lam - wtPQ (mm + 1
 
 end Data
 
-theorem qsDualWt_anti {m : ℕ} (mu : Fin (m + 1) → ℤ) (h : Antitone mu) : Antitone (dualWt mu) := by
-  intro i j hij
-  exact neg_le_neg (h (Fin.rev_le_rev.mpr hij))
+theorem qsDualWt_anti {m : ℕ} (mu : Fin (m + 1) → ℤ) (h : Antitone mu) : Antitone (dualWt mu) := Formalism.MainNotions.flipOneThree.Pf.cc_dualWt_anti mu h
 
 theorem rowDeg_add {k n : ℕ} (u v : Fin k × Fin n →₀ ℕ) (a : Fin k) : rowDeg (u + v) a = rowDeg u a + rowDeg v a := by
   simp only [rowDeg, Finsupp.add_apply, Finset.sum_add_distrib]

@@ -45,6 +45,5 @@ theorem _root_.GlobalTheory.T.vDouble_eigenspace_split_of_line : _root_.GlobalTh
     ∀ r : (Fin a × Fin (a + a') → AF F) → ℂ, Rest (evFin F v) (G.M.vac v) r →
     ∀ g ∈ GlobalTheory.DblVac.KD σ G.V v, ∃ μ : ℂ,
       omd g (boxFun (tens (evFin F v) (G.M.vac v) r) (fun x => star (tens (evFin F v) (G.M.vac v) r x))) =
-        μ • boxFun (tens (evFin F v) (G.M.vac v) r) (fun x => star (tens (evFin F v) (G.M.vac v) r x)) := by
-  first | exact @_root_.GlobalTheory.VDblEigSplit.vDouble_eigenfunction_split | exact _root_.GlobalTheory.VDblEigSplit.vDouble_eigenfunction_split | (intros; apply _root_.GlobalTheory.VDblEigSplit.vDouble_eigenfunction_split <;> assumption)
+        μ • boxFun (tens (evFin F v) (G.M.vac v) r) (fun x => star (tens (evFin F v) (G.M.vac v) r x)) := GlobalTheory.VDblEigSplit.vDouble_eigenfunction_split
 end

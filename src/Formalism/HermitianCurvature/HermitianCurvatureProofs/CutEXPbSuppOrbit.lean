@@ -96,8 +96,7 @@ theorem gf_castM {k a b : ℕ} (e : a = b) (z z' : Fin (2 * b + k + 1) → ℂ) 
   rw [Formalism.FourierDecayAlt.P.JCTx5.castM_rfl, Formalism.FourierDecayAlt.P.JCTx5.castV_rfl, Formalism.FourierDecayAlt.P.JCTx5.castV_rfl]
 
 theorem castV_castV' {k a b c : ℕ} (h1 : a = b) (h2 : b = c) (v : Fin (2 * a + k + 1) → ℂ) :
-    D.castV h2 (D.castV h1 v) = D.castV (h1.trans h2) v := by
-  subst h1 h2; rfl
+    D.castV h2 (D.castV h1 v) = D.castV (h1.trans h2) v := Formalism.FourierDecayAlt.P.Dx2.SL.castV_castV h1 h2 v
 
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]

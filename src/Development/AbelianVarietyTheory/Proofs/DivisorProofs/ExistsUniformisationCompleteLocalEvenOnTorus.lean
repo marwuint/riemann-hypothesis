@@ -16,10 +16,7 @@ namespace GlobalTheory.Mum.UnifEven
 
 open GlobalTheory.UU GlobalTheory.LN
 
-theorem isAdmissible_maximalIdeal_of_completeNormalCharZero {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (hB : Base R) : admitted R (maximalIdeal R) := by
-  refine ⟨hB.1, hB.1.2.2.2, hB.2, (maximalIdeal.isMaximal R).isPrime, ?_⟩
-  letI := Ideal.Quotient.field (maximalIdeal R)
-  infer_instance
+theorem isAdmissible_maximalIdeal_of_completeNormalCharZero {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (hB : Base R) : admitted R (maximalIdeal R) := GlobalTheory.Mum.PreUnifEven.isAdmissibleCompleteLocalDomainPrime_of_completeNormal hB
 
 set_option maxHeartbeats 1600000 in
 

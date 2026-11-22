@@ -7,5 +7,4 @@ theorem _root_.GlobalTheory.T.kottwitzLieCondition_locally_cut_out_by_ideal : �
   (s : S ⟶ Sp R) (A : Over S) [GrpObj A] [IsCommMonObj A], Smooth A.hom → ∀ (act : OActN D.O A) (z : S),
   ∃ (U : S.Opens) (hU : IsAffineOpen U), z ∈ U ∧ ∃ K : Ideal Γ(S, U),
     ∀ (R' : Type) [CommRing R'] (f : Γ(S, U) →+* R') (β : R →+* R'), spMap f ≫ hU.fromSpec ≫ s = spMap β →
-      (LieHer b act β (spMap f ≫ hU.fromSpec) ↔ K ≤ RingHom.ker f) := by
-  first | (exact @GlobalTheory.UPel.HT.LieLin.lieHer_ideal) | (exact GlobalTheory.UPel.HT.LieLin.lieHer_ideal) | (intros; apply GlobalTheory.UPel.HT.LieLin.lieHer_ideal  <;> assumption)
+      (LieHer b act β (spMap f ≫ hU.fromSpec) ↔ K ≤ RingHom.ker f) := GlobalTheory.UPel.HT.LieLin.lieHer_ideal

@@ -22,5 +22,4 @@ theorem _root_.GlobalTheory.T.exists_closureBaseChange_maps_and_retraction : ∀
       (∀ m ∈ (nonZeroDivisors A₁).map ((algebraMap R₁ S).comp (algebraMap A₁ R₁)),
         IsUnit (algebraMap S (S ⊗[R₁] BC β DA) m)) ∧
       ∀ x : S ⊗[R₁] BC β DA, ∃ m ∈ (nonZeroDivisors A₁).map ((algebraMap R₁ S).comp (algebraMap A₁ R₁)),
-        x * algebraMap S _ m ∈ φ.range := by
-  first | (exact @GlobalTheory.KeyOriginBCMaps.exists_bc_closure_maps) | (exact GlobalTheory.KeyOriginBCMaps.exists_bc_closure_maps) | (intros; apply GlobalTheory.KeyOriginBCMaps.exists_bc_closure_maps  <;> assumption)
+        x * algebraMap S _ m ∈ φ.range := GlobalTheory.KeyOriginBCMaps.exists_bc_closure_maps

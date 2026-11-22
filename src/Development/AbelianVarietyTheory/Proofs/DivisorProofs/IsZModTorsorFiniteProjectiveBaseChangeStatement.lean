@@ -8,5 +8,4 @@ theorem _root_.GlobalTheory.T.isZModTorsorFiniteProjective_baseChange : ∀ (B B
     GlobalTheory.LocAcyc.IsZModTorsor B D q act →
     ∃ act' : Multiplicative (ZMod q) →* ((B' ⊗[B] D) ≃ₐ[B'] (B' ⊗[B] D)),
       (∀ (g : Multiplicative (ZMod q)) (b : B') (x : D), act' g (b ⊗ₜ[B] x) = b ⊗ₜ[B] act g x) ∧
-      GlobalTheory.LocAcyc.IsZModTorsor B' (B' ⊗[B] D) q act' := by
-  first | (exact @GlobalTheory.LocAcyc.isZModTorsor_baseChange) | (exact GlobalTheory.LocAcyc.isZModTorsor_baseChange) | (intros; apply GlobalTheory.LocAcyc.isZModTorsor_baseChange  <;> assumption)
+      GlobalTheory.LocAcyc.IsZModTorsor B' (B' ⊗[B] D) q act' := GlobalTheory.LocAcyc.isZModTorsor_baseChange

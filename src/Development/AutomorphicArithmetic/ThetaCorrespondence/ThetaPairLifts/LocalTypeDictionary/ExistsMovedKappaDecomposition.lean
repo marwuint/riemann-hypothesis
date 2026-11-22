@@ -67,6 +67,5 @@ theorem _root_.GlobalTheory.T.movedKappa_decomposition_exists : _root_.GlobalThe
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (ch : Choice R), ch.Is → ∀ (X : Node), DefNode D.R.m X → ∀ (Q : Finset ℕ), (∀ q ∈ Q, q.Prime) → ∀ x : FinPt ch.G X,
     ∃ r s x₀ : FinPt ch.G X, GlobalTheory.MovedKappaEx.RatFin _ r ∧ s ∈ GlobalTheory.MovedKappaEx.splitOff _ Q ∧
-      GlobalTheory.SumSize.latAt ch.S.toGridChoice X x₀ = stdL D _ ∧ (∀ q ∈ Q, EqAt D q (GlobalTheory.SumSize.latAt ch.S.toGridChoice X (s * x₀)) (stdL D _)) ∧ x = r * s * x₀ := by
-  first | exact @_root_.GlobalTheory.MovedKappaDec.exists_movedKappa_decomposition | exact _root_.GlobalTheory.MovedKappaDec.exists_movedKappa_decomposition | (intros; apply _root_.GlobalTheory.MovedKappaDec.exists_movedKappa_decomposition <;> assumption)
+      GlobalTheory.SumSize.latAt ch.S.toGridChoice X x₀ = stdL D _ ∧ (∀ q ∈ Q, EqAt D q (GlobalTheory.SumSize.latAt ch.S.toGridChoice X (s * x₀)) (stdL D _)) ∧ x = r * s * x₀ := GlobalTheory.MovedKappaDec.exists_movedKappa_decomposition
 end

@@ -75,7 +75,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1600000
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.ratRow_of_levelB2_nonzero_index : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ _ _ _ _ _ x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.ThirdIntermediateLevel hL x) (i : (Dof x).ntw.Tw), (Dof x).ntw.NonzeroIndexPlace i → ∀ j b, GlobalTheory.SeriesTie.RatRow l.b.YS x.m.z.geo.v₀ l.b.ser.ex.good i j b := by
-  first | exact @_root_.GlobalTheory.PlaceRead.SeriesAtState.rational_series_coeff_at_state_alt | exact _root_.GlobalTheory.PlaceRead.SeriesAtState.rational_series_coeff_at_state_alt | (intros; apply _root_.GlobalTheory.PlaceRead.SeriesAtState.rational_series_coeff_at_state_alt <;> assumption)
+theorem _root_.GlobalTheory.T.ratRow_of_levelB2_nonzero_index : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ _ _ _ _ _ x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.ThirdIntermediateLevel hL x) (i : (Dof x).ntw.Tw), (Dof x).ntw.NonzeroIndexPlace i → ∀ j b, GlobalTheory.SeriesTie.RatRow l.b.YS x.m.z.geo.v₀ l.b.ser.ex.good i j b := GlobalTheory.PlaceRead.SeriesAtState.rational_series_coeff_at_state_alt
 end
 end

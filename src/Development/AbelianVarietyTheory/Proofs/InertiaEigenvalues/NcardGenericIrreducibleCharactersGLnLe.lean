@@ -13,9 +13,7 @@ open scoped Classical
 
 namespace GlobalTheory.GLq.GenericCount
 
-theorem isChar_of_isIrr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsChar χ := by
-  obtain ⟨V, -, hV⟩ := h
-  exact ⟨V, hV⟩
+theorem isChar_of_isIrr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsChar χ := GlobalTheory.CharDec.isChar_of_isIrr h
 
 theorem ip_comm {G : Type} [Group G] [Fintype G] (α β : G → ℂ) : ip α β = ip β α := by
   unfold ip

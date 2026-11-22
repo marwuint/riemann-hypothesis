@@ -15,5 +15,4 @@ theorem _root_.GlobalTheory.T.doubledFockVacuum_eq_smul_vacuum_mul_conj : DerEx 
     IsFockMap ψ τ dd A (fun w => dblM (C w)) Φd →
     ∃ z : ℂ, z ≠ 0 ∧ ∀ x : κ ⊕ κ → mixedEmbedding.mixedSpace F,
       Φd (PiTensorProduct.tprod ℂ fun _ => 1) x = z * Φ (PiTensorProduct.tprod ℂ fun _ => 1) (x ∘ Sum.inl) *
-        star (Φ (PiTensorProduct.tprod ℂ fun _ => 1) (x ∘ Sum.inr)) := by
-  first | exact @GlobalTheory.RealLift.VacBox.vac_box | exact GlobalTheory.RealLift.VacBox.vac_box | (intros; apply GlobalTheory.RealLift.VacBox.vac_box <;> assumption)
+        star (Φ (PiTensorProduct.tprod ℂ fun _ => 1) (x ∘ Sum.inr)) := GlobalTheory.RealLift.VacBox.vac_box

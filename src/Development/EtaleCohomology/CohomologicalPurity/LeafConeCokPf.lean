@@ -29,20 +29,6 @@ theorem shortExact_cok {R : Type} [CommRing R] {K L : Cx R} (f : K ⟶ L) (hf : 
   have : Mono f := HomologicalComplex.mono_of_mono_f _ hf
   exact ShortComplex.ShortExact.mk' (ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel f)) inferInstance inferInstance
 
-theorem leafConeCok_of : LeafConeCok := by
-  intro R _ K L K' L' f f' a b comm hf hf' hc
-  let S1 := ShortComplex.mk f (cokernel.π f) (cokernel.condition f)
-  let S2 := ShortComplex.mk f' (cokernel.π f') (cokernel.condition f')
-  let φ : S1 ⟶ S2 := ⟨a, b, cokernel.map f f' a b comm, comm.symm, by simp [S1, S2]⟩
-  have q1 := mappingCone.quasiIso_descShortComplex (shortExact_cok f hf)
-  have q2 := mappingCone.quasiIso_descShortComplex (shortExact_cok f' hf')
-  have hcomp : ∀ n, IsIso (φ.τ₃.f n) := fun n => isIso_cokMap_f f f' a b comm n (hc n)
-  have : IsIso φ.τ₃ := HomologicalComplex.Hom.isIso_of_components _
-  have hm := mappingCone.map_descShortComplex S1 S2 φ
-  have : QuasiIso (mappingCone.descShortComplex S1 ≫ φ.τ₃) := inferInstance
-  have : QuasiIso (mappingCone.map f f' a b comm ≫ mappingCone.descShortComplex S2) := by
-    change QuasiIso (mappingCone.map S1.f S2.f φ.τ₁ φ.τ₂ φ.comm₁₂.symm ≫ mappingCone.descShortComplex S2)
-    rw [hm]; infer_instance
-  exact (quasiIso_iff_comp_right _ (mappingCone.descShortComplex S2)).1 this
+theorem leafConeCok_of : LeafConeCok := LateralTheory.CohomologicalPurity.Thom.ExcSp.leafConeCok
 
 end LateralTheory.CohomologicalPurity.Thom.ExcSp

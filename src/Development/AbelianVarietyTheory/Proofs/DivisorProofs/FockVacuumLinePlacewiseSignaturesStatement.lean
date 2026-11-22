@@ -15,5 +15,4 @@ theorem _root_.GlobalTheory.T.fock_vacuum_line_placewise_signatures : ∀ (F E :
       (∀ w, u'.map (piInf (τ w)) = A w * ((((ε w : ℤ) : ℂ) * Complex.I) • (Jm (P w) (Q w) * c w * Jm (R w) (S w))) * (C w)ᵀ) →
       ∀ f f' : SInf F κ, SD (fun t => d.rho ψ (realAd F t • u)) f₀ f → SD (fun t => d.rho ψ (realAd F t • u')) f₀ f' →
         f' = Complex.I • f) →
-    ∃ z : ℂ, f₀ = z • Φ (PiTensorProduct.tprod ℂ fun _ => 1) := by
-  first | exact @GlobalTheory.HoweD.vacLineD | exact GlobalTheory.HoweD.vacLineD | (intros; apply GlobalTheory.HoweD.vacLineD <;> assumption)
+    ∃ z : ℂ, f₀ = z • Φ (PiTensorProduct.tprod ℂ fun _ => 1) := GlobalTheory.HoweD.vacLineD

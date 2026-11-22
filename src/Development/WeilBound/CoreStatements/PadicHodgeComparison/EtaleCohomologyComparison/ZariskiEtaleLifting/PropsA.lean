@@ -32,8 +32,7 @@ open CategoryTheory AlgebraicGeometry Polynomial DividedPowers GlobalTheory.LogC
 theorem CrystallineSemistableComparison.B.P.elift : ∀ {O R Λ : Type} [CommRing O] [CommRing R] [CommRing Λ] (a : O →+* R) {d : ℕ} (T : Fin d → R) (I : Ideal Λ) (κ : O →+* Λ ⧸ I), (MvPolynomial.eval₂Hom a T).Etale → Nonempty (Lift a T Λ I κ) :=
   @GlobalTheory.CompanionTheory.EtaleLift.nonempty_lift
 
-theorem CrystallineSemistableComparison.B.P.lift_flat : ∀ {Λ D : Type} [CommRing Λ] [CommRing D] (i : Λ →+* D) {d : ℕ} (t : Fin d → D), (MvPolynomial.eval₂Hom i t).Etale → i.Flat ∧ ∀ (J : Ideal D) (μ : D) (g : D →+* D), (∀ x ∈ J, IsNilpotent x) → g.comp i = i → (∀ k, g (t k) - t k ∈ Ideal.span {μ}) → (∀ z, g z - z ∈ J) → ∀ z, g z - z ∈ Ideal.span {μ} :=
-  @GlobalTheory.CompanionTheory.LiftFlat.lift_flat
+theorem CrystallineSemistableComparison.B.P.lift_flat : ∀ {Λ D : Type} [CommRing Λ] [CommRing D] (i : Λ →+* D) {d : ℕ} (t : Fin d → D), (MvPolynomial.eval₂Hom i t).Etale → i.Flat ∧ ∀ (J : Ideal D) (μ : D) (g : D →+* D), (∀ x ∈ J, IsNilpotent x) → g.comp i = i → (∀ k, g (t k) - t k ∈ Ideal.span {μ}) → (∀ z, g z - z ∈ J) → ∀ z, g z - z ∈ Ideal.span {μ} := GlobalTheory.CompanionTheory.LiftFlat.lift_flat
 
 theorem CrystallineSemistableComparison.B.P.thick_onto : ∀ {O : Type} [CommRing O] {F : Fn O} (V : F.Sub) (b : Base) (ht : b.t = 1) (κ : O →+* b.R ⧸ b.I), Onto (subThick V b ht κ) fun T => V.In T.y.1.2 :=
   @GlobalTheory.CompanionTheory.ThickSub.subThick_onto

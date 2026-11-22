@@ -14,5 +14,4 @@ open GlobalTheory.OrbitSep
 open GlobalTheory.QCoh
 
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.topologicalKrullDim_closure_eq_of_isAlgebraic_residue : ∀ (F : Type) [Field F] (Y X : Scheme.{0}) (π : Y ⟶ X) (sX : X ⟶ Sp F) [LocallyOfFiniteType sX] [LocallyOfFiniteType (π ≫ sX)] (y : Y), (letI := (π.residueFieldMap y).hom.toAlgebra; Algebra.IsAlgebraic (X.residueField (π y)) (Y.residueField y)) → topologicalKrullDim (closure {y} : Set Y) = topologicalKrullDim (closure {π y} : Set X) := by
-  first | exact @GlobalTheory.ClosureDim.dim_closure_eq_of_isAlgebraic | exact GlobalTheory.ClosureDim.dim_closure_eq_of_isAlgebraic | (intros; apply GlobalTheory.ClosureDim.dim_closure_eq_of_isAlgebraic <;> assumption)
+theorem _root_.GlobalTheory.T.topologicalKrullDim_closure_eq_of_isAlgebraic_residue : ∀ (F : Type) [Field F] (Y X : Scheme.{0}) (π : Y ⟶ X) (sX : X ⟶ Sp F) [LocallyOfFiniteType sX] [LocallyOfFiniteType (π ≫ sX)] (y : Y), (letI := (π.residueFieldMap y).hom.toAlgebra; Algebra.IsAlgebraic (X.residueField (π y)) (Y.residueField y)) → topologicalKrullDim (closure {y} : Set Y) = topologicalKrullDim (closure {π y} : Set X) := GlobalTheory.ClosureDim.dim_closure_eq_of_isAlgebraic

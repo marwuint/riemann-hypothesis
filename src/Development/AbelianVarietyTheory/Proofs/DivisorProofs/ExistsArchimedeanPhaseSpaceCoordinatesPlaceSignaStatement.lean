@@ -17,5 +17,4 @@ theorem _root_.GlobalTheory.T.exists_archimedean_phaseSpace_coordinates_placeSig
       (∀ c c', GlobalTheory.RealWeil.sympl (φ c) (φ c') = 2 * (∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star (c' w a b)).im) ∧
       ∀ (u : Matrix α β (AE F E)) (c : ∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ), At (evI F) u →
         (∀ w, u.map (piInf (τ w)) = A w * c w * (C w)ᵀ) →
-          φ c = φ₀ (GlobalTheory.ArchUniq.locV (d.e u).1, GlobalTheory.ArchUniq.locV (d.e u).2) := by
-  first | exact @GlobalTheory.ArchCoordsD.exists_coords | exact GlobalTheory.ArchCoordsD.exists_coords | (intros; apply GlobalTheory.ArchCoordsD.exists_coords <;> assumption)
+          φ c = φ₀ (GlobalTheory.ArchUniq.locV (d.e u).1, GlobalTheory.ArchUniq.locV (d.e u).2) := GlobalTheory.ArchCoordsD.exists_coords

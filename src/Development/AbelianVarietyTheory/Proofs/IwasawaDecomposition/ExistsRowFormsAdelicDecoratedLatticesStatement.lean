@@ -18,5 +18,4 @@ theorem _root_.GlobalTheory.T.exists_rowForms_adelic_decoratedLattices : ∀ (X 
       Nonempty (Bridge.HeckeTie (Bridge.ratF X.toD7.sp.X') (s t).pres ((famR X I hX U Xg tr).heckeRI t)
         (fun i => Formalism.L2.Col.InertTypeOk X.toD7.sp.X'.rank i.2)
         (fun i => IsLabElt X.toD7.sp.X' (i.1.1 : PlI X.B px).1 (labIn X.toD7.sp.X'.rank i.2))
-        fun i => IsLocElt X.toD7.sp.X' (i.1.1 : PlI X.B px).1)) ∧ BrgStdR X I hX U Xg tr L cX (fun t φ => (s t).pres.extL φ)  := by
-  first | exact @GlobalTheory.Mem.R3.RowsRead.exists_rowSide | exact GlobalTheory.Mem.R3.RowsRead.exists_rowSide | (intros; apply GlobalTheory.Mem.R3.RowsRead.exists_rowSide <;> assumption)
+        fun i => IsLocElt X.toD7.sp.X' (i.1.1 : PlI X.B px).1)) ∧ BrgStdR X I hX U Xg tr L cX (fun t φ => (s t).pres.extL φ) := GlobalTheory.Mem.R3.RowsRead.exists_rowSide

@@ -10,19 +10,7 @@ open WittVector CategoryTheory Opposite Matrix GlobalTheory GlobalTheory.PDivGro
 namespace GlobalTheory.ConstDatum
 
 theorem isLocalRing_of_integers {C : Type} [Field C] {v : Valuation C NNReal} {O : Type}
-    [CommRing O] [Algebra O C] (hv : v.Integers O) : IsLocalRing O := by
-  haveI : Nontrivial O := (algebraMap O C).domain_nontrivial
-  refine IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_
-  by_contra h
-  push_neg at h
-  have h1 : v (algebraMap O C a) < 1 :=
-    lt_of_le_of_ne (hv.map_le_one a) (fun e => h.1 (hv.isUnit_of_one' e))
-  have h2 : v (algebraMap O C (1 - a)) < 1 :=
-    lt_of_le_of_ne (hv.map_le_one _) (fun e => h.2 (hv.isUnit_of_one' e))
-  have h3 := v.map_add (algebraMap O C a) (algebraMap O C (1 - a))
-  have h4 : algebraMap O C a + algebraMap O C (1 - a) = 1 := by rw [← map_add]; simp
-  rw [h4, v.map_one] at h3
-  exact lt_irrefl _ (lt_of_le_of_lt h3 (max_lt h1 h2))
+    [CommRing O] [Algebra O C] (hv : v.Integers O) : IsLocalRing O := ReciprocityTheory.PGsh.Up.isLocal_of_integers hv
 
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
   [IsAdicComplete (Ideal.span {(p : O)}) O]

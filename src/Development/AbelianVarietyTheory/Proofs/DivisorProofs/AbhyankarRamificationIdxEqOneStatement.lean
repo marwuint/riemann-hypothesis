@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.abhyankar_ramificationIdx_eq_one_alt : ∀ (S K L 
     (∀ P : Ideal (integralClosure S L), P.IsMaximal → ∀ [P.LiesOver (maximalIdeal S)],
       Algebra.IsSeparable (S ⧸ maximalIdeal S) (integralClosure S L ⧸ P)) →
     ∀ [IsDomain D] [IsDiscreteValuationRing D] (Q : Ideal (integralClosure D (TensorProduct S D L))) [Q.IsMaximal],
-    Q.ramificationIdx D = 1 := by
-  first | (exact @GlobalTheory.abhyankar_ramificationIdx_eq_one) | (exact GlobalTheory.abhyankar_ramificationIdx_eq_one) | (intros; apply GlobalTheory.abhyankar_ramificationIdx_eq_one  <;> assumption)
+    Q.ramificationIdx D = 1 := GlobalTheory.abhyankar_ramificationIdx_eq_one

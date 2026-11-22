@@ -18,5 +18,4 @@ theorem _root_.GlobalTheory.T.thetaMember_torsion_frame_unique : ∀ (I : Type) 
   (∃ o, GtPtF.IsNsmul (X₁.S.r * X₁.S.N) g o ∧ o.IsZero) → w.IsGen → 𝔪.Over' w₀ g w x fr →
   (∃ o, GtPtF.IsNsmul (X₁.S.r * X₁.S.N) g₂ o ∧ o.IsZero) → w₂.IsGen → 𝔪.Over' w₀ g₂ w₂ x fr →
   g₂.b = g.b → (∀ χ z J, Good 𝔪.D.toPre.P.L z J → val (g₂.s χ) (𝟙 _) z J = val (g.s χ) (𝟙 _) z J) →
-  ∀ z J, Good 𝔪.D.toPre.P.L z J → val w₂ (𝟙 _) z J = val w (𝟙 _) z J := by
-  first | exact @GlobalTheory.GSep.FrameUniq.frame_val_eq | exact GlobalTheory.GSep.FrameUniq.frame_val_eq | (intros; apply GlobalTheory.GSep.FrameUniq.frame_val_eq <;> assumption)
+  ∀ z J, Good 𝔪.D.toPre.P.L z J → val w₂ (𝟙 _) z J = val w (𝟙 _) z J := GlobalTheory.GSep.FrameUniq.frame_val_eq

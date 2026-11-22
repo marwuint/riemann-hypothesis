@@ -172,6 +172,5 @@ theorem _root_.GlobalTheory.T.theta_triple_lift_lie_invariant : GlobalTheory.Pub
       GlobalTheory.TripleRead.IsTransp ψ false Γ.M' om' ωB e (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) h.JW₁) (GlobalTheory.TripleRead.toUX X e h.JX) →
       ∀ R Rf, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched Bs Γ Xc om om' R Rf →
         (∀ τ, ∀ Y ∈ lieAt W τ, ∀ Φ ∈ algF ψ θ true A B, ∀ Φ' ∈ algF ψ θ true A B, IsDer θ W (fun g => ωA (g, 1)) τ Y Φ Φ' → GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf Φ' = 0) ∧
-          ∀ τ, ∀ Y ∈ lieAt W₁ τ, ∀ Φ ∈ algF ψ θ false A₁ B, ∀ Φ' ∈ algF ψ θ false A₁ B, IsDer θ W₁ (fun g => ωB (g, 1)) τ Y Φ Φ' → GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf Φ' = 0 := by
-  first | exact @_root_.GlobalTheory.TripleAssembly.LieInv.theta_triple_maps_lie_action_eq_zero | exact _root_.GlobalTheory.TripleAssembly.LieInv.theta_triple_maps_lie_action_eq_zero | (intros; apply _root_.GlobalTheory.TripleAssembly.LieInv.theta_triple_maps_lie_action_eq_zero <;> assumption)
+          ∀ τ, ∀ Y ∈ lieAt W₁ τ, ∀ Φ ∈ algF ψ θ false A₁ B, ∀ Φ' ∈ algF ψ θ false A₁ B, IsDer θ W₁ (fun g => ωB (g, 1)) τ Y Φ Φ' → GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf Φ' = 0 := GlobalTheory.TripleAssembly.LieInv.theta_triple_maps_lie_action_eq_zero
 end

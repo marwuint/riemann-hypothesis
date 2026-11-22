@@ -4,7 +4,6 @@ import CompanionTheory.HarishChandraModules.LowKTypeMultiplicity.DiscreteSeriesC
 
 namespace GlobalTheory
 
-theorem capelliDiscreteSeriesInfChar : PI.DSInfCharCap.DSInfCharCap :=
-  CompanionTheory.D.DSIC.discrete_series_infinitesimal_character
+theorem capelliDiscreteSeriesInfChar : PI.DSInfCharCap.DSInfCharCap := CompanionTheory.D.DSIC.discrete_series_infinitesimal_character
 
 end GlobalTheory

@@ -185,6 +185,5 @@ theorem _root_.GlobalTheory.T.lineSum_derivation_formula : _root_.GlobalTheory.F
     ∃ Ψ : Fin l.length → (Fin a' × Fin (a + a') → AF D.host.F) → ℂ,
       (∀ i, Ψ i ∈ algD Γ.M' Bs.ψ Bs.emb ∧
         ∀ x, HasDerivAt (fun t : ℝ => om' (1, kapX X e hJ (oneP θ X (l.get i).1 (l.get i).2 t)) ΦD x) (Ψ i x) 0) ∧
-      Φ₁D = ∑ i, Ψ i := by
-  first | exact @_root_.GlobalTheory.LineSumV'.lineSum_derivative_sum | exact _root_.GlobalTheory.LineSumV'.lineSum_derivative_sum | (intros; apply _root_.GlobalTheory.LineSumV'.lineSum_derivative_sum <;> assumption)
+      Φ₁D = ∑ i, Ψ i := GlobalTheory.LineSumV'.lineSum_derivative_sum
 end

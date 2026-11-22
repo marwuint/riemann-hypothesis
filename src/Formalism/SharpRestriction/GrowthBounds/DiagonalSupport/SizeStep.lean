@@ -23,7 +23,6 @@ theorem sizeStep : ∃ CDn C₁ : ℝ, 0 < CDn ∧ 0 < C₁ ∧ ∀ C : ℝ, C�
       (∀ (j : ZMod F.J) (u : ℕ), u < (fun j : ZMod F.J => (F.LLset (segZ j)).card) j + r →
         3 / 8 * slU F p (flatDeg lam0) Y (r + K) (fun j : ZMod F.J => (F.LLset (segZ j)).card) j u <
           Bo p F (flatDeg lam0) (segZ j) (posU F ((fun j : ZMod F.J => (F.LLset (segZ j)).card) j) (segZ j) u) / 2) ∧
-      1 ≤ cPrime n' r TT.card c0 cpp cStar ∧ 1 ≤ F.J :=
-  sizeStep'
+      1 ≤ cPrime n' r TT.card c0 cpp cStar ∧ 1 ≤ F.J := Formalism.MainNotions.Proposition5Numerics.sizeStep'
 
 end Formalism.MainNotions.Proposition5Numerics

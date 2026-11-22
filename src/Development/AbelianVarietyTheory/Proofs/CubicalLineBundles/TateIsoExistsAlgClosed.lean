@@ -16,8 +16,7 @@ theorem exists_algClosure_lift {K k : Type} [Field K] [Field k] [IsAlgClosed k] 
   exact ⟨f.toRingHom, RingHom.ext fun z => f.commutes z⟩
 
 theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  rw [← Spec.map_comp]; rfl
+    spMap (g.comp f) = spMap g ≫ spMap f := ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp f g
 
 section Abstract
 

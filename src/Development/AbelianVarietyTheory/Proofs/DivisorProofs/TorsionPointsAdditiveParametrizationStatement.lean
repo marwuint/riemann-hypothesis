@@ -9,5 +9,4 @@ theorem _root_.GlobalTheory.T.torsion_points_additive_parametrization : ∀ (p :
   ∃ f : (Fin (D.m * D.n) → 𝓞 D.F ⧸ w0 ^ r) → (Over.mk x ⟶ o.A), (∀ a a', f (a + a') = f a * f a') ∧
     (∀ (c : 𝓞 D.F) a, f (Ideal.Quotient.mk (w0 ^ r) c • a) = f a ≫ o.act.act (algebraMap (𝓞 D.F) D.O c)) ∧
     Function.Injective f ∧
-    ∀ g : Over.mk x ⟶ o.A, (∀ c ∈ w0 ^ r, g ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1) → ∃ a, f a = g := by
-  first | (exact @GlobalTheory.UPel.HT.EtLev.TorFree.free_torsion_geomPt) | (exact GlobalTheory.UPel.HT.EtLev.TorFree.free_torsion_geomPt) | (intros; apply GlobalTheory.UPel.HT.EtLev.TorFree.free_torsion_geomPt  <;> assumption)
+    ∀ g : Over.mk x ⟶ o.A, (∀ c ∈ w0 ^ r, g ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1) → ∃ a, f a = g := GlobalTheory.UPel.HT.EtLev.TorFree.free_torsion_geomPt

@@ -20,5 +20,4 @@ theorem _root_.GlobalTheory.T.exists_weightedMonomialPlace_of_isLocModel : ∀ {
       ∀ f : V.ring, ∃ P R : MvPolynomial (Fin r) Q,
         IsUnit (MvPolynomial.eval₂ (Q.subtype.codRestrict V.ring fun q => hC _ q.2) u R) ∧
         f * MvPolynomial.eval₂ (Q.subtype.codRestrict V.ring fun q => hC _ q.2) u R =
-          MvPolynomial.eval₂ (Q.subtype.codRestrict V.ring fun q => hC _ q.2) u P := by
-  first | exact @GlobalTheory.exists_weightedMonomialPlace | exact GlobalTheory.exists_weightedMonomialPlace | (intros; apply GlobalTheory.exists_weightedMonomialPlace <;> assumption)
+          MvPolynomial.eval₂ (Q.subtype.codRestrict V.ring fun q => hC _ q.2) u P := GlobalTheory.exists_weightedMonomialPlace

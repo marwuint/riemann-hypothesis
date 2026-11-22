@@ -7,5 +7,4 @@ theorem _root_.GlobalTheory.T.morita_nonempty_equiv_of_local_quotient_matrix : �
     (∀ b, φ b = 0 → b ∈ I • (⊤ : Submodule R O)) →
     ∀ (M N : Type) [AddCommGroup M] [Module O M] [Module R M] [IsScalarTower R O M]
       [AddCommGroup N] [Module O N] [Module R N] [IsScalarTower R O N],
-    (M ≃ₗ[R] (Fin (m * k) → R ⧸ I)) → (N ≃ₗ[R] (Fin (m * k) → R ⧸ I)) → Nonempty (M ≃ₗ[O] N) := by
-  first | (exact @GlobalTheory.MoritaLocal.morita_local) | (exact GlobalTheory.MoritaLocal.morita_local) | (intros; apply GlobalTheory.MoritaLocal.morita_local  <;> assumption)
+    (M ≃ₗ[R] (Fin (m * k) → R ⧸ I)) → (N ≃ₗ[R] (Fin (m * k) → R ⧸ I)) → Nonempty (M ≃ₗ[O] N) := GlobalTheory.MoritaLocal.morita_local

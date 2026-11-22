@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.inertia_surjective_of_admQ : GlobalTheory.Publishe
         Function.Surjective fun σ : Ine (F := D.host.E) A =>
           Multiplicative.toAdd (GlobalTheory.GalChar.delU D.host T.cc (T.l i) Q M σ) ⟨P, hP⟩) ∧
       ∀ P' ∈ Q, P' ≠ P → ¬ IsConjPl D.host P P' → ∀ A : ValuationSubring D.nd.Om, IsPlaceOver A P' →
-        ∀ σ ∈ Ine (F := D.host.E) A, Multiplicative.toAdd (GlobalTheory.GalChar.delU D.host T.cc (T.l i) Q M σ) ⟨P, hP⟩ = 0 := by
-  first | exact @GlobalTheory.HeightCounting.FormsStep.universalCharacter_admissibleConductor_inertia_surjective | exact GlobalTheory.HeightCounting.FormsStep.universalCharacter_admissibleConductor_inertia_surjective | (intros; apply GlobalTheory.HeightCounting.FormsStep.universalCharacter_admissibleConductor_inertia_surjective <;> assumption)
+        ∀ σ ∈ Ine (F := D.host.E) A, Multiplicative.toAdd (GlobalTheory.GalChar.delU D.host T.cc (T.l i) Q M σ) ⟨P, hP⟩ = 0 := GlobalTheory.HeightCounting.FormsStep.universalCharacter_admissibleConductor_inertia_surjective

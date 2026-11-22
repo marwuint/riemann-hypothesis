@@ -116,6 +116,5 @@ theorem _root_.GlobalTheory.T.thetaIntegrals_agree_of_convergence : _root_.Globa
     ∀ ωA ωB Pi rf rl p p', GlobalTheory.SquareComm.IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p' →
     ∃ c : ℂ, c ≠ 0 ∧ ∀ Φ ∈ GlobalTheory.SquareComm.algF ψ θ true A B, ∀ Φ' ∈ GlobalTheory.SquareComm.algF ψ θ false A₁ B,
       (∀ h, MeasureTheory.IntegrableOn (fun g => thetaKO ωB g h Φ') 𝓕₁ ν₁) → p Φ = p' Φ' →
-      GlobalTheory.SquareComm.thetaInt ωA ν 𝓕 Φ = c • GlobalTheory.SquareComm.thetaInt ωB ν₁ 𝓕₁ Φ' := by
-  first | exact @_root_.GlobalTheory.ThetaAgreeConv.thetaIntegrals_agree_of_integrable_kernel | exact _root_.GlobalTheory.ThetaAgreeConv.thetaIntegrals_agree_of_integrable_kernel | (intros; apply _root_.GlobalTheory.ThetaAgreeConv.thetaIntegrals_agree_of_integrable_kernel <;> assumption)
+      GlobalTheory.SquareComm.thetaInt ωA ν 𝓕 Φ = c • GlobalTheory.SquareComm.thetaInt ωB ν₁ 𝓕₁ Φ' := GlobalTheory.ThetaAgreeConv.thetaIntegrals_agree_of_integrable_kernel
 end

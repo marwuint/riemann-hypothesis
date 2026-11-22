@@ -5,6 +5,6 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 
 namespace PositivityTheory.Rg.Sw.HSt
 
-theorem locTau : LocTau := asmLT lt1 lt2 lt3 crux
+theorem locTau : LocTau := PositivityTheory.Rg.Sw.HSt.LoweringDerivative.asmLT lt1 lt2 lt3 crux
 
 end PositivityTheory.Rg.Sw.HSt

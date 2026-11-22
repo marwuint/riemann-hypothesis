@@ -195,10 +195,7 @@ theorem tendsto_slash_valueAtInfty (N l : ℕ) (k : ℤ) (hN : 0 < N) (hl : 0 < 
   simpa [ModularForm.SL_slash] using h2
 
 theorem toGL_mul (A B : Matrix (Fin 2) (Fin 2) ℤ) (hA : A.det ≠ 0) (hB : B.det ≠ 0) :
-    toGL (A * B) = toGL A * toGL B := by
-  have hAB : (A * B).det ≠ 0 := by rw [Matrix.det_mul]; exact mul_ne_zero hA hB
-  ext i j
-  simp [toGL, hA, hB, hAB, Matrix.mul_apply, Fin.sum_univ_two]
+    toGL (A * B) = toGL A * toGL B := GlobalTheory.SlashUpperTriangularMatrices.toGL_mul A B hA hB
 
 theorem toGL_mat (γ : SL(2, ℤ)) : toGL (mat γ) = (γ : GL (Fin 2) ℝ) := by
   have h : (mat γ).det ≠ 0 := by simp [mat]

@@ -9,7 +9,6 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.BernsteinZelevinskyFi
 
 namespace GlobalTheory
 
-theorem bernsteinZelevinskyFiniteness_holds : GlobalTheory.Published.BernsteinZelevinskyFiniteness :=
-  GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness
+theorem bernsteinZelevinskyFiniteness_holds : GlobalTheory.Published.BernsteinZelevinskyFiniteness := GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness
 
 end GlobalTheory

@@ -5,7 +5,6 @@ import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamili
 
 namespace GlobalTheory.CompanionTheory.Ar.Num.PairNumberPullback
 
-theorem main : GroundTheory.Heights₂.Heights.NumbersDVR.PairNumberPullback.Statement :=
-  PositivityTheory.Xgn.t_s_pullback
+theorem main : GroundTheory.Heights₂.Heights.NumbersDVR.PairNumberPullback.Statement := PositivityTheory.Xgn.t_s_pullback
 
 end GlobalTheory.CompanionTheory.Ar.Num.PairNumberPullback

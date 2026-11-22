@@ -30,8 +30,7 @@ theorem expOne_level_alt : GlobalTheory.Published.CuspRapidDecay → GlobalTheor
         ∃ (n : ℕ) (b : Fin n → ℂ) (g : Fin n → NX.FmK p.Sx ((j : ℕ) + 1)),
           ν • ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P = ∑ k, b k • evW p.nexp p.v₀ j (g k).val ∧
           ∑ k, τ (b k) • evW p.nexp p.v₀ j (g k).val =
-            c • (ν • ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P) :=
-  _root_.GlobalTheory.SerSmall.one_expansion_alt
+            c • (ν • ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P) := GlobalTheory.SerSmall.one_expansion_alt
 end GlobalTheory.BigOn.Exp
 end
 end

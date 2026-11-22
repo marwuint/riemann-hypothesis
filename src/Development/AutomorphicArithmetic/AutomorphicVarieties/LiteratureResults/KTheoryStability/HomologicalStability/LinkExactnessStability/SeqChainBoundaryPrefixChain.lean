@@ -45,8 +45,5 @@ end GlobalTheory.SeqCx
 
 section
 open GlobalTheory.SeqCx Matrix
-theorem _root_.GlobalTheory.T.seqChain_boundary_prefix_chain : ∀ (V : Type) (τ : List V) (c : List V →₀ ℤ), bd V (Finsupp.mapDomain (fun w => τ ++ w) c) = (c.sum fun w a => a • Finsupp.mapDomain (fun σ => σ ++ w) (bd V (Finsupp.single τ 1))) + (-1 : ℤ) ^ τ.length • Finsupp.mapDomain (fun w => τ ++ w) (bd V c) := by
-  first
-  | exact @GlobalTheory.SeqCx.bd_mapDomain_prepend
-  | exact @GlobalTheory.SeqCx.bd_single_append
+theorem _root_.GlobalTheory.T.seqChain_boundary_prefix_chain : ∀ (V : Type) (τ : List V) (c : List V →₀ ℤ), bd V (Finsupp.mapDomain (fun w => τ ++ w) c) = (c.sum fun w a => a • Finsupp.mapDomain (fun σ => σ ++ w) (bd V (Finsupp.single τ 1))) + (-1 : ℤ) ^ τ.length • Finsupp.mapDomain (fun w => τ ++ w) (bd V c) := GlobalTheory.SeqCx.bd_mapDomain_prepend
 end

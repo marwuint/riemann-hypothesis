@@ -340,12 +340,7 @@ lemma heisG_zero (k r' : ℕ) : heisG k r' (liftVec k 1 r' 0) 0 = 1 := by
   rw [heis_act', lift_zero, herm_zero_right]
   simp
 
-lemma Hherm (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
-  ext i j
-  have hi := i.isLt
-  have hj := j.isLt
-  simp only [conjTranspose_apply, Hpk, Fin.ext_iff]
-  split_ifs <;> first | omega | simp
+lemma Hherm (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := Formalism.QuantumDeterminants.GBasic.Hpk_herm k r
 
 lemma herm_self_im (k r : ℕ) (y : Fin (2 * r + k + 1) → ℂ) : (herm (Hpk k r) y y).im = 0 := by
   exact Complex.conj_eq_iff_im.mp (herm_conj _ (Hherm k r) y y)

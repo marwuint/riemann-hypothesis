@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.isIntegrallyClosedIn_etale_genFib_of_injective : â
     letI := GlobalTheory.KeyOriginNoeth.closureAlg A R D
     IsIntegrallyClosedIn (GlobalTheory.KeyOriginNoeth.closure A R D)
       (Localization (Algebra.algebraMapSubmonoid (GlobalTheory.KeyOriginNoeth.closure A R D)
-        (nonZeroDivisors R))) := by
-  first | (exact @GlobalTheory.KeyOriginNoeth.isIntegrallyClosedIn_closure_localization) | (exact GlobalTheory.KeyOriginNoeth.isIntegrallyClosedIn_closure_localization) | (intros; apply GlobalTheory.KeyOriginNoeth.isIntegrallyClosedIn_closure_localization  <;> assumption)
+        (nonZeroDivisors R))) := GlobalTheory.KeyOriginNoeth.isIntegrallyClosedIn_closure_localization

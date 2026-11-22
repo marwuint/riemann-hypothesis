@@ -12,5 +12,4 @@ theorem _root_.GlobalTheory.T.companionLatticeVector_local_mem_dualBaseCompletio
     (∀ y ∈ Lb, y ∈ dualSet (sp.cm.sig : E →+* E) J Lb) →
     ∀ (v : HeightOneSpectrum (𝓞 F)) (u : Fin N → E), u ∈ latCo sp J crd a x Lb →
     ∃ z : latS (F := F) (v.adicCompletion F) (intV E v) (Submodule.span (𝓞 E) (dualSet (sp.cm.sig : E →+* E) J Lb)),
-      z.1 = fun l => prV (E := E) v (pullV (F := F) (ratA F crd * x) u l) := by
-  first | exact @GlobalTheory.CompanLocal.mem_latS_dual_of_mem_latCo | exact GlobalTheory.CompanLocal.mem_latS_dual_of_mem_latCo | (intros; apply GlobalTheory.CompanLocal.mem_latS_dual_of_mem_latCo <;> assumption)
+      z.1 = fun l => prV (E := E) v (pullV (F := F) (ratA F crd * x) u l) := GlobalTheory.CompanLocal.mem_latS_dual_of_mem_latCo

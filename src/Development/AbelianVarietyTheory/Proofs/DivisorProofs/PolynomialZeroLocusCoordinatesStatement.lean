@@ -16,5 +16,4 @@ theorem _root_.GlobalTheory.T.exists_polynomialLocus_similitudeCentralizerTorus 
         Units.map f.toRingHom.toMonoidHom (φ R g).2)) ∧
     (∀ (R : Type) [CommRing R] [Algebra ℚ R] [TopologicalSpace R] [IsTopologicalRing R],
       letI : TopologicalSpace (R ⊗[ℚ] D) := moduleTopology R (R ⊗[ℚ] D)
-      Continuous (φ R)) := by
-  first | (exact @GlobalTheory.TorLoc.exists_locus) | (exact GlobalTheory.TorLoc.exists_locus) | (intros; apply GlobalTheory.TorLoc.exists_locus  <;> assumption)
+      Continuous (φ R)) := GlobalTheory.TorLoc.exists_locus

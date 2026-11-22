@@ -17,17 +17,7 @@ open scoped Matrix
 
 theorem span_smul_top {D : D7} {n : ℕ} (P : Formalism.L2.DIV.Pl D.host.E) (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     (hL : Submodule.span D.host.E (L : Set (Fin n → D.host.E)) = ⊤) :
-    Submodule.span D.host.E ((P.asIdeal • L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) : Set (Fin n → D.host.E)) = ⊤ := by
-  obtain ⟨x, hx, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot
-  have hx0' : ((x : D.host.E)) ≠ 0 := fun h => hx0 (RingOfIntegers.ext h)
-  rw [eq_top_iff, ← hL, Submodule.span_le]
-  intro w hw
-  have hm : x • w ∈ (P.asIdeal • L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) := Submodule.smul_mem_smul hx hw
-  have : w = (x : D.host.E)⁻¹ • (x • w) := by
-    rw [← algebraMap_smul D.host.E x w]
-    rw [smul_smul, inv_mul_cancel₀ (by simpa using hx0'), one_smul]
-  rw [this]
-  exact Submodule.smul_mem _ _ (Submodule.subset_span hm)
+    Submodule.span D.host.E ((P.asIdeal • L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) : Set (Fin n → D.host.E)) = ⊤ := GlobalTheory.HeckeLocMatrix.span_smul_top P L hL
 
 theorem exists_hecke_ePart : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D.host.E) (e : AE D) (ϖ : 𝓞 D.host.E) (k : ℕ) (g : GA D V)
     (M : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)),

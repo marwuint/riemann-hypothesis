@@ -69,8 +69,7 @@ theorem hasQ_expo (c M a b : ℕ) (hM : 0 < M) (ha : a < M) (hadm : admitted c !
   · rw [tc_zero]
     exact unitPart_zero_ne hc hM ha (pow_ne_zero _ hζ0) hne
 
-theorem ee_add (x y : ℂ) : ee (x + y) = ee x * ee y := by
-  rw [ee, ee, ee, ← Complex.exp_add]; ring_nf
+theorem ee_add (x y : ℂ) : ee (x + y) = ee x * ee y := GlobalTheory.Sieg.Model.ee_add x y
 
 theorem hasQ_shift {M : ℕ} {f : ℍ → ℂ} {α : ℕ → ℂ} (h : HasQ M f α) (d : ℕ) :
     HasQ M (fun τ => f τ * ee (((d : ℂ) / M) * (τ : ℂ))) (fun n => if d ≤ n then α (n - d) else 0) := by

@@ -23,7 +23,6 @@ theorem isUnitaryOn_transport_k : ∀ (F E : Type) [Field F] [NumberField F] [Fi
             (∀ x : Matrix (Fin nT) (Fin nS) E, ∃ y z : κ → F,
               co.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))) →
             ∀ om : UG (cA σ) (incM F JA) × UG (cA σ) (incM F JB) →* Module.End ℂ ((κ → AF F) → ℂ),
-              GlobalTheory.WeilSchrodinger.IsTransportF σ B.ψ co ω om → IsUnitaryOn (adeleClass F) om :=
-  _root_.GlobalTheory.T.weil_representation_pair_unitary
+              GlobalTheory.WeilSchrodinger.IsTransportF σ B.ψ co ω om → IsUnitaryOn (adeleClass F) om := GlobalTheory.WeilUnitaryTransportF.isUnitaryOn_transportF_k
 end GlobalTheory.WeilAdmCMUnit
 end

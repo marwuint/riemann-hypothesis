@@ -44,6 +44,5 @@ set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.isAlgebraic_splitCharacter_twist : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X → ∀ e : AE D, IsSplitIdem D e → ∀ x : (AE D)ˣ, (x : AE D) = e * x + (1 - e) →
-      IsAlgebraic ℚ (((G.ch.chi (D.R.m - i) * L.eta ^ (rankV D i j % 2)) x : Circle) : ℂ) := by
-  first | exact @_root_.GlobalTheory.SplitCharAlg.splitCharacter_value_isAlgebraic | exact _root_.GlobalTheory.SplitCharAlg.splitCharacter_value_isAlgebraic | (intros; apply _root_.GlobalTheory.SplitCharAlg.splitCharacter_value_isAlgebraic <;> assumption)
+      IsAlgebraic ℚ (((G.ch.chi (D.R.m - i) * L.eta ^ (rankV D i j % 2)) x : Circle) : ℂ) := GlobalTheory.SplitCharAlg.splitCharacter_value_isAlgebraic
 end

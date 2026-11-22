@@ -20,8 +20,7 @@ theorem mem_iff {k : ℕ} (g : Matrix (Fin k) (Fin k) ℂ) : g ∈ UJset (allPos
   show gᴴ * Formalism.REAL.Jm (allPos k) * g = Formalism.REAL.Jm (allPos k) ↔ _
   rw [h, Matrix.mul_one]
 
-theorem map_star_map_star {k : ℕ} (g : Matrix (Fin k) (Fin k) ℂ) : (g.map star).map star = g := by
-  ext i j; simp
+theorem map_star_map_star {k : ℕ} (g : Matrix (Fin k) (Fin k) ℂ) : (g.map star).map star = g := GlobalTheory.ConjugateType.map_star_star g
 
 theorem map_star_mem {k : ℕ} {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ UJset (allPos k)) :
     g.map star ∈ UJset (allPos k) := by

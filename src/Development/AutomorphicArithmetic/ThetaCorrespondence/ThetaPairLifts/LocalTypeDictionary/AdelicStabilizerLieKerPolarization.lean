@@ -94,6 +94,5 @@ theorem _root_.GlobalTheory.T.adelic_stabilizer_lie_ker_polarization : _root_.Gl
     ∀ Pi rf rl p p', IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p' →
     ∀ N' : Submodule ℂ ((Fin W₁.rank × Fin (W.rank + W₁.rank) → AF D.host.F) → ℂ), IsThetaSubG Γ.M' Bs.ψ Bs.emb om' N' →
     ∀ τ, ∀ Y ∈ lieAt X τ, ∀ ΦD ∈ N', ∀ Φ₀, IsDatum Γ.M' ψ cB ΦD Φ₀ →
-    ∃ ΨD ∈ N', ∃ Φ₁ ∈ algF ψ θ false A₁ B, IsDatum Γ.M' ψ cB ΨD Φ₁ ∧ IsDer θ X (fun h => ωB (1, h)) τ Y Φ₀ Φ₁ := by
-  first | exact @_root_.GlobalTheory.SquareAgree.StabLieAdelic.stabilizer_lie_adelic | exact _root_.GlobalTheory.SquareAgree.StabLieAdelic.stabilizer_lie_adelic | (intros; apply _root_.GlobalTheory.SquareAgree.StabLieAdelic.stabilizer_lie_adelic <;> assumption)
+    ∃ ΨD ∈ N', ∃ Φ₁ ∈ algF ψ θ false A₁ B, IsDatum Γ.M' ψ cB ΨD Φ₁ ∧ IsDer θ X (fun h => ωB (1, h)) τ Y Φ₀ Φ₁ := GlobalTheory.SquareAgree.StabLieAdelic.stabilizer_lie_adelic
 end

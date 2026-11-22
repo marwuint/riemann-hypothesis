@@ -23,8 +23,7 @@ theorem loc_empty {U : Scheme.{0}} [IsEmpty U] {P : ∀ V : Scheme.{0}, (V ⟶ U
   ⟨⊥, Scheme.bot_mem_grothendieckTopology (P := @Etale) U, fun _ _ hg => hg.elim⟩
 
 theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
-    Sec.res (k ≫ g) x = Sec.res k (Sec.res g x) := by
-  simp [Sec.res, op_comp, Functor.map_comp]
+    Sec.res (k ≫ g) x = Sec.res k (Sec.res g x) := GlobalTheory.TwSec.res_comp k g x
 
 theorem map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) :=
@@ -48,8 +47,7 @@ theorem res_zero {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V �
   map_zero _
 
 theorem res_nsmul {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (c : ℕ) (x : Sec F U) :
-    Sec.res g (c • x) = c • Sec.res g x :=
-  map_nsmul _ _ _
+    Sec.res g (c • x) = c • Sec.res g x := GlobalTheory.TwSec.res_nsmul g c x
 
 theorem map_nsmul' {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (c : ℕ) (x : Sec F U) :
     Sec.map φ (c • x) = c • Sec.map φ x :=

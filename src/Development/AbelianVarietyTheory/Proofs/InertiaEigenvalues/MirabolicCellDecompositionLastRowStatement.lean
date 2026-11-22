@@ -13,5 +13,4 @@ theorem _root_.GlobalTheory.T.mirabolicCell_decomposition_lastRow : ∀ (E : Typ
     ∀ g ∈ GlobalTheory.CellDec.C0 E (m + 1) S, Φ (fun i => pInf E (GlobalTheory.ZEul.lastRow g i)) ≠ 0 →
     GlobalTheory.RSJ.indN N (fun i => GlobalTheory.RSJ.pFin E (GlobalTheory.ZEul.lastRow g i)) ≠ 0 →
     ∃ u ∈ GlobalTheory.JSW.NA E (m + 1), ∃ p ∈ GlobalTheory.JSW.mirS E S m, ∃ κ ∈ GlobalTheory.RSLocalPart.levelAt (m + 1) S J,
-      g * infGL E (m + 1) (GlobalTheory.RSJ.secInv fun i => pInf E (GlobalTheory.ZEul.lastRow g i)) = u * p * finGL E (m + 1) κ := by
-  first | (exact @GlobalTheory.ZEul.decomp_lastRow) | (exact GlobalTheory.ZEul.decomp_lastRow) | (intros; apply GlobalTheory.ZEul.decomp_lastRow  <;> assumption)
+      g * infGL E (m + 1) (GlobalTheory.RSJ.secInv fun i => pInf E (GlobalTheory.ZEul.lastRow g i)) = u * p * finGL E (m + 1) κ := GlobalTheory.ZEul.decomp_lastRow

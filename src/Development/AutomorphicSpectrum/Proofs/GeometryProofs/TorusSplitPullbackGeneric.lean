@@ -19,7 +19,6 @@ theorem torus_stratum_cocharacters_compare : ∀ (X Z' : Scheme.{0}) (G : Over X
     letI := τ.addCommGroup
     ∃ e : τ.X ≃+ Xc, ∀ (A : Type) [CommRing A] (g : k →+* A) (b : Sp A ⟶ Z') (_ : spMap g ≫ x = b) (b' : Sp A ⟶ Sp L)
       (_ : spMap (g.comp (algebraMap L k)) = b') (t : Over.mk b ⟶ splitTorus Z' Xc) (t' : Over.mk b' ⟶ splitTorus (Sp L) τ.X),
-      (∀ χ, charVal t' χ = charVal t (e χ)) → (t ≫ u).left ≫ Φ = (t' ≫ τ.i).left ≫ φ := by
-  exact @PositivityTheory.Xgn.torus_uniformization_compare
+      (∀ χ, charVal t' χ = charVal t (e χ)) → (t ≫ u).left ≫ Φ = (t' ≫ τ.i).left ≫ φ := PositivityTheory.Xgn.torus_uniformization_compare
 
 end GlobalTheory.CompanionTheory.Ar.TorusUnif

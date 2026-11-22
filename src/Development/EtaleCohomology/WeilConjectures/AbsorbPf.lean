@@ -19,10 +19,7 @@ def Coeq : Prop := ∀ (A B C : CommRingCat.{0}) (Ω : Type) [Field Ω] (ι : A 
   ∃ (E : CommRingCat.{0}) (gE : A ⟶ E) (φE : E →+* Ω) (w : C ⟶ E), Et gE ∧ φE.comp gE.hom = ι ∧
     gC ≫ w = gE ∧ φE.comp w.hom = φC ∧ u ≫ w = v ≫ w
 
-theorem et_comp {A B C : CommRingCat.{0}} {f : A ⟶ B} {g : B ⟶ C} (hf : Et f) (hg : Et g) : Et (f ≫ g) := by
-  change (f ≫ g).hom.Etale
-  rw [CommRingCat.hom_comp]
-  exact RingHom.Etale.stableUnderComposition _ _ hf hg
+theorem et_comp {A B C : CommRingCat.{0}} {f : A ⟶ B} {g : B ⟶ C} (hf : Et f) (hg : Et g) : Et (f ≫ g) := LateralTheory.E.ColimPf.et_comp hf hg
 
 theorem et_id (A : CommRingCat.{0}) : Et (𝟙 A) := by
   change (𝟙 A : A ⟶ A).hom.Etale

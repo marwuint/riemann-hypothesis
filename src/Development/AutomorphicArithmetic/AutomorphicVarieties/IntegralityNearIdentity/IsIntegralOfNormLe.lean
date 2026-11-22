@@ -10,7 +10,6 @@ theorem single_mem {k : Type} [Field k] {n : ℕ} (W : Submodule k (Fin n → k)
     (Pi.single i 1 : Fin n → k) ∈ W :=
   _root_.UpperTheory.Reformulated.B.S3.single_mem W d hd hW v hv i hi
 
-theorem isIntegral_of_norm_le {l : ℕ} [Fact l.Prime] {z : PadicAlgCl l} (hz : ‖z‖ ≤ 1) : IsIntegral ℤ_[l] z :=
-  _root_.UpperTheory.Reformulated.B.S4.isIntegral_of_norm_le hz
+theorem isIntegral_of_norm_le {l : ℕ} [Fact l.Prime] {z : PadicAlgCl l} (hz : ‖z‖ ≤ 1) : IsIntegral ℤ_[l] z := UpperTheory.Reformulated.B.S4.isIntegral_of_norm_le hz
 
 end UpperTheory.V.Lib.Small

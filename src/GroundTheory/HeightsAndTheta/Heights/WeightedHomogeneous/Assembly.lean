@@ -32,8 +32,7 @@ theorem IntDomainDim.full : IntDomainDim.Statement :=
 theorem ConeTrdeg.full : ConeTrdeg.Statement :=
   ConeTrdeg.proof
 
-theorem FibreCompDimZ.full : FibreCompDimZ.Statement :=
-  FibreCompDimZ.proof
+theorem FibreCompDimZ.full : FibreCompDimZ.Statement := GroundTheory.Heights₂.Heights.FibreCompDimZ.proof
 
 end GroundTheory.Heights₂.Heights
 

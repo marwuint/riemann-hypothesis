@@ -231,5 +231,4 @@ theorem main : LateralTheory.E.LeafVanBStalkPf.LeafSHCont := by
 end UpperTheory.Cb.etale_stalk_cohomology_strictHenselian_continuity.SlopeTestRemainingChoices
 
 theorem UpperTheory.Cb.etale_stalk_cohomology_strictHenselian_continuity :
-    LateralTheory.E.LeafVanBStalkPf.LeafSHCont :=
-  UpperTheory.Cb.etale_stalk_cohomology_strictHenselian_continuity.SlopeTestRemainingChoices.main
+    LateralTheory.E.LeafVanBStalkPf.LeafSHCont := UpperTheory.Cb.etale_stalk_cohomology_strictHenselian_continuity.SlopeTestRemainingChoices.main

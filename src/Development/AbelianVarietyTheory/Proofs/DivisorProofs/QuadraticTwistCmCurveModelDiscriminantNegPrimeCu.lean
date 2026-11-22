@@ -16,9 +16,7 @@ theorem modelAt_of_val {V : ValuationSubring ℂ} {F : IntermediateField ℚ ℂ
   obtain ⟨C, h1, h2, h3, h4, h5, h6⟩ := h
   exact ⟨C, h1, h2, h3, h4, h5, h6.trans hv⟩
 
-theorem mem_of_isIntegral (V : ValuationSubring ℂ) {y : ℂ} (hy : IsIntegral ℤ y) : y ∈ V := by
-  obtain ⟨z, hz⟩ := IsIntegrallyClosed.algebraMap_eq_of_integral (R := V) (K := ℂ) (hy.tower_top (A := V))
-  exact hz ▸ z.2
+theorem mem_of_isIntegral (V : ValuationSubring ℂ) {y : ℂ} (hy : IsIntegral ℤ y) : y ∈ V := GlobalTheory.CMModel.TorsMemVal.mem_of_isIntegral V hy
 
 theorem short_Δ (d a b : ℂ) : (⟨0, 0, 0, d ^ 2 * a, d ^ 3 * b⟩ : WeierstrassCurve ℂ).Δ =
     d ^ 6 * (⟨0, 0, 0, a, b⟩ : WeierstrassCurve ℂ).Δ := by

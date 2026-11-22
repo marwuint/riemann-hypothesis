@@ -13,5 +13,4 @@ theorem _root_.GlobalTheory.T.exists_localCoefficientField_embedding_kernelPlace
       haveI : Fact ((w.D Z).what₂.places.resChar v).Prime := ⟨(w.D Z).what₂.places.resChar_prime v⟩
       ∃ iK : ((w.D Z).gat u v hg).Kf →+* ℂ_[(w.D Z).what₂.places.resChar v],
         ∀ (x : (w.D Z).what₂.LL) (hx : (w.D Z).what₂.embLL x ∈ algebraicClosure ℚ ℂ),
-          iK (t.cmp.embW u v hg x) = E.lam v ⟨(w.D Z).what₂.embLL x, hx⟩ := by
-  first | exact @GlobalTheory.KerIK.exists_iK | exact GlobalTheory.KerIK.exists_iK | (intros; apply GlobalTheory.KerIK.exists_iK <;> assumption)
+          iK (t.cmp.embW u v hg x) = E.lam v ⟨(w.D Z).what₂.embLL x, hx⟩ := GlobalTheory.KerIK.exists_iK

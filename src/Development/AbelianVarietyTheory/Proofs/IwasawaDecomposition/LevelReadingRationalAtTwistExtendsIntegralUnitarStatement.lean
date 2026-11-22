@@ -13,5 +13,4 @@ theorem _root_.GlobalTheory.T.levelReading_rationalAtTwist_extends_integralUnita
     (letI := tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F);
       ∀ᶠ (u : GL (Fin n) (TensorProduct F E (FiniteAdeleRing (𝓞 F) F))) in nhds 1, ∀ κ : S.U, κ.1 = u → S.chi κ = 1) →
     RdLevOn hc (RatAt Q) S.U S.chi Λ emb Q HQ lamQ →
-    RdLevOn hc Set.univ S.U S.chi Λ emb Q HQ lamQ := by
-  first | exact @GlobalTheory.SeeSaw.TwLev.Approx.rd_all | exact GlobalTheory.SeeSaw.TwLev.Approx.rd_all | (intros; apply GlobalTheory.SeeSaw.TwLev.Approx.rd_all <;> assumption)
+    RdLevOn hc Set.univ S.U S.chi Λ emb Q HQ lamQ := GlobalTheory.SeeSaw.TwLev.Approx.rd_all

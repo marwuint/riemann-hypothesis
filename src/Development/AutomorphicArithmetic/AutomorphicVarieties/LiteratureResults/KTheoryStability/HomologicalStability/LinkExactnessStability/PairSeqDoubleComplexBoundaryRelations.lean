@@ -91,15 +91,5 @@ end GlobalTheory.SeqCx
 
 section
 open GlobalTheory.SeqCx
-theorem _root_.GlobalTheory.T.pairSeqDoubleComplex_boundary_relations : ∀ (V W : Type), (∀ x, hbd V W (hbd V W x) = 0) ∧ (∀ x, vbd V W (vbd V W x) = 0) ∧ (∀ x, hbd V W (vbd V W x) = vbd V W (hbd V W x)) := by
-  first
-  | exact @GlobalTheory.SeqCx.dbl_bd
-  | exact @GlobalTheory.SeqCx.DblBd.hbd_vbd
-  | exact @GlobalTheory.SeqCx.DblBd.vbd_vbd
-  | exact @GlobalTheory.SeqCx.DblBd.hbd_hbd
-  | exact @GlobalTheory.SeqCx.DblBd.vbd_mapDomain
-  | exact @GlobalTheory.SeqCx.DblBd.hbd_mapDomain
-  | exact @GlobalTheory.SeqCx.DblBd.vbd_single
-  | exact @GlobalTheory.SeqCx.DblBd.hbd_single
-  | exact @GlobalTheory.SeqCx.DblBd.single_eq_smul
+theorem _root_.GlobalTheory.T.pairSeqDoubleComplex_boundary_relations : ∀ (V W : Type), (∀ x, hbd V W (hbd V W x) = 0) ∧ (∀ x, vbd V W (vbd V W x) = 0) ∧ (∀ x, hbd V W (vbd V W x) = vbd V W (hbd V W x)) := GlobalTheory.SeqCx.dbl_bd
 end

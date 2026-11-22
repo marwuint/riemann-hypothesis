@@ -21,8 +21,7 @@ namespace GlobalTheory.Mum.ClosureDescent
 open GlobalTheory.ThetaDescent
 
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f :=
-  Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)
+    spMap (g.comp f) = spMap g ≫ spMap f := ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp f g
 
 def Fib {K K' : Type} [CommRing K] [CommRing K'] (A' : PolAV (Sp K')) (A : PolAV (Sp K)) (f : K →+* K')
     (a : A'.A.left ⟶ A.A.left) : Prop :=

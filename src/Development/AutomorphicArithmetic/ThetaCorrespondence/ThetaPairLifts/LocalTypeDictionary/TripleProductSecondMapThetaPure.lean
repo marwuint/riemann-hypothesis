@@ -92,6 +92,5 @@ theorem _root_.GlobalTheory.T.tripleProduct_secondMap_theta_pure : GlobalTheory.
         (∀ i, (∀ v, φ i v ∈ GlobalTheory.WeilM.SB _) ∧ ∀ᶠ v in Filter.cofinite, φ i v = Γ.M'.vac v) →
         (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)) ∈ GlobalTheory.TripleAssembly.darbAlg Γ.M' Bs.ψ Bs.emb →
         GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf (GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i))) =
-          ∑ i, R.p' (f i) ⊗ₜ[ℂ] GlobalTheory.SmallThetaModules.pureT (GlobalTheory.TripleAssembly.vacIm Γ Rf) (fun v => Rf.p' v (φ i v)) := by
-  first | exact @_root_.GlobalTheory.TripleAssembly.secondFactorMap_theta_pure_tensor | exact _root_.GlobalTheory.TripleAssembly.secondFactorMap_theta_pure_tensor | (intros; apply _root_.GlobalTheory.TripleAssembly.secondFactorMap_theta_pure_tensor <;> assumption)
+          ∑ i, R.p' (f i) ⊗ₜ[ℂ] GlobalTheory.SmallThetaModules.pureT (GlobalTheory.TripleAssembly.vacIm Γ Rf) (fun v => Rf.p' v (φ i v)) := GlobalTheory.TripleAssembly.secondFactorMap_theta_pure_tensor
 end

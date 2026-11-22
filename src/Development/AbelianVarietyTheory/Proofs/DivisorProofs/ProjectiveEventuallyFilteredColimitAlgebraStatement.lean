@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.projective_eventually_filteredColimit_algebra : �
       Module.Finite c.pt (c.pt ⊗[F.obj j] A) ∧ Module.Projective c.pt (c.pt ⊗[F.obj j] A)) →
     ∃ (k₀ : J) (f₀ : j ⟶ k₀), ∀ (k : J) (f : k₀ ⟶ k),
       letI : Algebra (F.obj j) (F.obj k) := (F.map (f₀ ≫ f)).hom.toAlgebra;
-      Module.Projective (F.obj k) (F.obj k ⊗[F.obj j] A) := by
-  first | (exact @GlobalTheory.ProjColim.projective_eventually) | (exact GlobalTheory.ProjColim.projective_eventually) | (intros; apply GlobalTheory.ProjColim.projective_eventually  <;> assumption)
+      Module.Projective (F.obj k) (F.obj k ⊗[F.obj j] A) := GlobalTheory.ProjColim.projective_eventually

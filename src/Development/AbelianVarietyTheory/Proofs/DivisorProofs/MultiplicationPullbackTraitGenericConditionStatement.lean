@@ -19,5 +19,4 @@ theorem _root_.GlobalTheory.T.multiplicationPullback_trait_genericCondition : �
     (∀ (Z : Scheme.{0}) (r : Z ⟶ T.G.left) (z : Z) (J : (Z ⟶ C.G.left) → C.P.L.L.ι), Good C.P.L.L z J →
       sval σ₂ r z J = (val u (r ≫ T.β) z J).val * sval σ (r ≫ (mulA T.G m).left) z J) →
     ∀ (Z : Scheme.{0}) (p : Z ⟶ T.G.left) (p' : Z ⟶ C.A.A.left), p ≫ T.β = p' ≫ C.α → ∀ z J, Good C.P.L.L z J →
-      sval σ₂ p z J = gs p z ⊤ (scal T.G.hom a) * sval S p' z J := by
-  first | exact @GlobalTheory.Mum.pullMul_trait_generic | exact GlobalTheory.Mum.pullMul_trait_generic | (intros; apply GlobalTheory.Mum.pullMul_trait_generic <;> assumption)
+      sval σ₂ p z J = gs p z ⊤ (scal T.G.hom a) * sval S p' z J := GlobalTheory.Mum.pullMul_trait_generic

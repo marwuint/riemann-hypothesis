@@ -113,12 +113,5 @@ end
 
 section
 open GlobalTheory.SeqCx
-theorem _root_.GlobalTheory.T.pairSeqHorizontalCycle_is_boundary_of_slices_exact : ∀ (V W : Type) (D : Set (List V × List W)) (a b : ℕ), (∀ w : List W, w.length = b → (∃ l, (l, w) ∈ D) → ExactAt {l | (l, w) ∈ D} a) → ∀ x ∈ chains2 D a b, hbd V W x = 0 → ∃ y ∈ chains2 D (a + 1) b, hbd V W y = x := by
-  first
-  | exact @GlobalTheory.SeqCx.dblRow_exact
-  | exact @GlobalTheory.SeqCx.DblRow.decomp
-  | exact @GlobalTheory.SeqCx.DblRow.hbd_incl
-  | exact @GlobalTheory.SeqCx.DblRow.incl_apply
-  | exact @GlobalTheory.SeqCx.DblRow.proj_apply
-  | exact @GlobalTheory.SeqCx.DblRow.pair_injective
+theorem _root_.GlobalTheory.T.pairSeqHorizontalCycle_is_boundary_of_slices_exact : ∀ (V W : Type) (D : Set (List V × List W)) (a b : ℕ), (∀ w : List W, w.length = b → (∃ l, (l, w) ∈ D) → ExactAt {l | (l, w) ∈ D} a) → ∀ x ∈ chains2 D a b, hbd V W x = 0 → ∃ y ∈ chains2 D (a + 1) b, hbd V W y = x := GlobalTheory.SeqCx.dblRow_exact
 end

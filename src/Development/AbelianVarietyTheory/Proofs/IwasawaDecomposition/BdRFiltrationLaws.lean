@@ -27,20 +27,7 @@ theorem toNat_iff_zpow {R K : Type} [CommRing R] [CommRing K] (ι : R →+* K) (
   rw [← h', mul_right_comm]
   exact (u.isUnit.pow _).mul_left_inj
 
-theorem exists_isEps (l : ℕ) [Fact l.Prime] : ∃ e : Per.Fl l, IsEps e := by
-  obtain ⟨ζ, ε, h0, -, h1, hr⟩ := GlobalTheory.T.exists_compatible_rootsOfUnity_and_tilt_padic l
-  refine ⟨ε, ?_, ?_⟩
-  · have := hr 0
-    rw [h0, map_one] at this
-    exact Subtype.ext this
-  · intro h
-    have := hr 1
-    have e : rootT ε 1 = 1 := h
-    rw [e] at this
-    apply h1
-    apply (algebraMap (Om l) ℂ_[l]).injective
-    rw [← this, map_one]
-    rfl
+theorem exists_isEps (l : ℕ) [Fact l.Prime] : ∃ e : Per.Fl l, IsEps e := GlobalTheory.MemLoc.BdRField.exists_isEps l
 
 variable {l : ℕ} [Fact l.Prime]
 

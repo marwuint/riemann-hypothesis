@@ -19,8 +19,4 @@ theorem _root_.GlobalTheory.T.exists_shifted_vector_shintani_formula_ramified : 
       ∀ p ∈ GlobalTheory.JSW.mirS E T m, ∀ l : GlobalTheory.CellDec.abelian₂ E (m + 1) T, (∀ w, 0 ≤ l.1 w (Fin.last m)) →
         GlobalTheory.JSW.whit F (p * GlobalTheory.CellDec.tl (m + 1) ϖ (l₀.1 + l.1)) = GlobalTheory.JSW.whit F (p * GlobalTheory.CellDec.tl (m + 1) ϖ l₀.1) *
           ∏ w ∈ l.1.support, (if h : w ∈ T then 1 else
-            GlobalTheory.RSCell.sphZ (Ideal.absNorm w.asIdeal) (fun i => ((α ⟨w, h⟩ i : ℂˣ) : ℂ)) (l.1 w)) := by
-  first
-  | exact @GlobalTheory.RamShift.exists_shifted_bump_shintani
-  | exact GlobalTheory.RamShift.exists_shifted_bump_shintani
-  | (intros; apply GlobalTheory.RamShift.exists_shifted_bump_shintani <;> assumption)
+            GlobalTheory.RSCell.sphZ (Ideal.absNorm w.asIdeal) (fun i => ((α ⟨w, h⟩ i : ℂˣ) : ℂ)) (l.1 w)) := GlobalTheory.RamShift.exists_shifted_bump_shintani

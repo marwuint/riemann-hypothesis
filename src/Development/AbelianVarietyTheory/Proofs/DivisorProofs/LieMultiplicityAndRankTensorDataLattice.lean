@@ -21,8 +21,7 @@ theorem finrank_int_eq (E : Type) [Field E] [NumberField E] (N : Type) [AddCommG
   _root_.GlobalTheory.finrank_int_eq_finrank_ringOfIntegers_mul E N
 
 theorem isTorsionFree_of_int (E : Type) [Field E] [NumberField E] (N : Type) [AddCommGroup N]
-    [Module (𝓞 E) N] [Module.IsTorsionFree ℤ N] : Module.IsTorsionFree (𝓞 E) N :=
-  _root_.GlobalTheory.isTorsionFree_ringOfIntegers_of_isTorsionFree_int E N
+    [Module (𝓞 E) N] [Module.IsTorsionFree ℤ N] : Module.IsTorsionFree (𝓞 E) N := GlobalTheory.isTorsionFree_ringOfIntegers_of_isTorsionFree_int E N
 
 variable {E : Type} [Field E] [NumberField E] {r : ℕ}
 

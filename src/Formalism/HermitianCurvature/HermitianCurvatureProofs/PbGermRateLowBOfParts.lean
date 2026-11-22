@@ -84,8 +84,7 @@ theorem psi_conj (β w : ℂ) : conj (G.psi β w) = G.psi β (-w) := by
   simp only [map_mul, Complex.conj_I, Complex.conj_ofReal, mul_neg, Complex.neg_re, Complex.ofReal_neg]
   ring
 
-theorem mem_rootSet4 {s : ℕ} (hs : s ≠ 0) {a z : ℂ} : z ∈ G.rootSet s a ↔ z ^ s = a := by
-  simp [G.rootSet, Polynomial.mem_nthRoots (Nat.pos_of_ne_zero hs)]
+theorem mem_rootSet4 {s : ℕ} (hs : s ≠ 0) {a z : ℂ} : z ∈ G.rootSet s a ↔ z ^ s = a := Formalism.FourierDecayAlt.P.PBK.mem_rootSet' hs
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePlace E → Type}
   [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)]
@@ -339,8 +338,7 @@ section main
 theorem slv_congr {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (T : D.LevTower k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp))
     (i : ℕ) (hi : i ≤ r) (w : List C.Letter) {P P' : C.LPt} (e : P = P') (hp : D.ptSize P = i)
-    (hp' : D.ptSize P' = i) : KB.slv T F i hi w P hp = KB.slv T F i hi w P' hp' := by
-  subst e; rfl
+    (hp' : D.ptSize P' = i) : KB.slv T F i hi w P hp = KB.slv T F i hi w P' hp' := Formalism.FourierDecayAlt.P.LiftDegreeLemmas.slv_congr T F i hi w e hp hp'
 
 theorem isLocPt_PPt (s : ℕ) (hs : 2 ≤ s) (b : ℕ) (hb : 1 ≤ b) (h : C.LPt) (hh : D.ptSize h = b - 1)
     (hloc : ∀ y ∈ h, 1 ≤ y.1 ∧ y.2 ≠ 0) (x Dc : ℂ) (hx : x ≠ 0) (hD : Dc ≠ 0) (j : Option ℂ)

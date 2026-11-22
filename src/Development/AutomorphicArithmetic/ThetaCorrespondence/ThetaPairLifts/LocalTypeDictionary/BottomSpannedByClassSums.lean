@@ -94,6 +94,5 @@ theorem _root_.GlobalTheory.T.bottom_spanned_by_classSums : ∀ {D : D7} {T : Ty
     ∃ (H : Finset (GA D WW)) (K : Finset (FVar D WW.rank A.rank →₀ ℕ)) (M₀ : IntermediateField ℚ ℂ), FiniteDimensional ℚ M₀ ∧
       (∀ h ∈ H, h ∈ GfC WW) ∧ ∀ t, ∀ h ∈ GfC WW, ∀ k, ∃ c : GA D WW → (FVar D WW.rank A.rank →₀ ℕ) → ℂ, (∀ a b, c a b ∈ M₀) ∧
         X.I W.ψ W.θ t (MvPolynomial.monomial k 1) h =
-          ∑ h' ∈ H, ∑ k' ∈ K, c h' k' * X.I W.ψ W.θ t (MvPolynomial.monomial k' 1) h' := by
-  first | exact @_root_.GlobalTheory.BotSpan.classSums_span_bottom | exact _root_.GlobalTheory.BotSpan.classSums_span_bottom | (intros; apply _root_.GlobalTheory.BotSpan.classSums_span_bottom <;> assumption)
+          ∑ h' ∈ H, ∑ k' ∈ K, c h' k' * X.I W.ψ W.θ t (MvPolynomial.monomial k' 1) h' := GlobalTheory.BotSpan.classSums_span_bottom
 end

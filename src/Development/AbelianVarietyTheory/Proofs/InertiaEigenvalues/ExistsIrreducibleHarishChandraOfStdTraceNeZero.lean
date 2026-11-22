@@ -148,11 +148,7 @@ theorem list_sum_nat (l : List ℂ) (h : ∀ z ∈ l, ∃ n : ℕ, z = n) :
     · obtain ⟨k', hk'⟩ := H w hw hw0
       exact ⟨m + k', by rw [List.sum_cons, hk', hm]; push_cast; ring⟩
 
-theorem isClass_of_isChar {G : Type} [Group G] {χ : G → ℂ} (h : IsChar χ) : IsClass χ := by
-  obtain ⟨V, hV⟩ := h
-  intro x y
-  rw [← hV, ← hV]
-  exact FDRep.char_conj V x y
+theorem isClass_of_isChar {G : Type} [Group G] {χ : G → ℂ} (h : IsChar χ) : IsClass χ := GlobalTheory.CharDec.isClass_of_isChar h
 
 theorem ip_nat {G : Type} [Group G] [Fintype G] {α β : G → ℂ} (hα : IsChar α) (hβ : IsChar β) :
     ∃ n : ℕ, ip α β = n := by
@@ -174,9 +170,7 @@ theorem ip_self {G : Type} [Group G] [Fintype G] {α : G → ℂ} (hα : IsIrr �
   rw [Fintype.card_eq_nat_card]
   simpa [hV] using this
 
-theorem isChar_of_isIrr {G : Type} [Group G] {α : G → ℂ} (h : IsIrr α) : IsChar α := by
-  obtain ⟨V, -, hV⟩ := h
-  exact ⟨V, hV⟩
+theorem isChar_of_isIrr {G : Type} [Group G] {α : G → ℂ} (h : IsIrr α) : IsChar α := GlobalTheory.CharDec.isChar_of_isIrr h
 
 end GlobalTheory.GLq.StdRes
 

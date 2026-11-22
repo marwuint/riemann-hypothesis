@@ -390,10 +390,7 @@ theorem gap_cast {n m : ℕ} (h : n = m) {ε : Fin m → Bool} {lam : Fin m → 
   subst h
   exact hg
 
-theorem two_rS_add_two (D : D7) : 2 * D.R.rS + 2 = D.R.m := by
-  obtain ⟨t, ht⟩ := D.R.m_even
-  have := D.R.two_le_m
-  simp only [Ranks.rS]; omega
+theorem two_rS_add_two (D : D7) : 2 * D.R.rS + 2 = D.R.m := Formalism.MainNotions.two_rS_add_two D
 
 def v48 (D : D7) (τ : D.what₂.Tau) : Fin (D.R.k - 1) → ℝ := fun i => ((D.hc τ).v i : ℝ)
 

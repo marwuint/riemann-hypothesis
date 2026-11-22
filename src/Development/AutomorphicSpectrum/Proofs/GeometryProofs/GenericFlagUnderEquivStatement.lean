@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.generic_flag_under_equiv : ∀ (Ω₀ Ω : Type) [
     (V : S → Submodule Ω₀ E) (V₀ : S → Submodule Ω₀ E₀) (b : ∀ s, Fin (r s) → F) (d : ℕ),
     (∀ s e, e ∈ V₀ s ↔ a e ∈ V s) → IsGenericFlag (Ω' := Ω) j V b d →
     IsGenericFlag (Ω' := Ω) ((Φ.toLinearMap.toAddMonoidHom.comp j).comp a.toLinearMap.toAddMonoidHom) V₀
-      (fun s k => Φ (b s k)) d := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.FlagStep.Transport.isGenericFlag_transport | exact GlobalTheory.CompanionTheory.Ar.FlagStep.Transport.isGenericFlag_transport | (intros; apply GlobalTheory.CompanionTheory.Ar.FlagStep.Transport.isGenericFlag_transport <;> assumption)
+      (fun s k => Φ (b s k)) d := GlobalTheory.CompanionTheory.Ar.FlagStep.Transport.isGenericFlag_transport

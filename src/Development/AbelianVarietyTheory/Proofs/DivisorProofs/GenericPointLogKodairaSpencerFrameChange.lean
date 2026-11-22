@@ -32,8 +32,7 @@ theorem dualMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f :
   ext x <;> simp [dualMap]
 
 theorem chart_res {X : Scheme.{0}} (U W : X.affineOpens) (h : W.1 ≤ U.1) :
-    spMap (X.presheaf.map (homOfLE h).op).hom ≫ GlobalTheory.LogKS.chart U = GlobalTheory.LogKS.chart W := by
-  simpa [spMap, GlobalTheory.LogKS.chart] using U.2.map_fromSpec W.2 (homOfLE h).op
+    spMap (X.presheaf.map (homOfLE h).op).hom ≫ GlobalTheory.LogKS.chart U = GlobalTheory.LogKS.chart W := GlobalTheory.LogKSDiv.spMap_res_chart U W h
 
 theorem common_basic {X : Scheme.{0}} (U U' : X.affineOpens) (x : X) (hx : x ∈ U.1) (hx' : x ∈ U'.1) :
     ∃ (W : X.affineOpens) (hW : W.1 ≤ U.1) (hW' : W.1 ≤ U'.1) (f : Γ(X, U.1)) (f' : Γ(X, U'.1)),

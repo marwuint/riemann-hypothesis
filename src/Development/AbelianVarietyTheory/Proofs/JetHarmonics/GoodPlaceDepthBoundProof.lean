@@ -25,11 +25,7 @@ theorem le_DF_of_mult_pos {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
     _ ≤ _ := Finset.single_le_sum (f := fun τ => ∑ i : Fin (Dw.mult τ), a (τ, i)) (fun _ _ => Nat.zero_le _)
         (Finset.mem_univ τ)
 
-theorem thl_nonneg' (k l : ℕ) : 0 ≤ thl k l := by
-  unfold thl
-  apply Real.sSup_nonneg
-  rintro t ⟨i, -, -, -, rfl⟩
-  positivity
+theorem thl_nonneg' (k l : ℕ) : 0 ≤ thl k l := GlobalTheory.GoodDepth.ConjPkg.thl_nonneg k l
 
 theorem one_le_log_of_five_le {k : ℕ} (hk : 5 ≤ k) : 1 ≤ Real.log k := by
   have h5 : (5 : ℝ) ≤ k := by exact_mod_cast hk

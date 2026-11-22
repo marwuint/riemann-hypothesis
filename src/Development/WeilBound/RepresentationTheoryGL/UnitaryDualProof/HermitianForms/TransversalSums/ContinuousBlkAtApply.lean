@@ -417,41 +417,31 @@ end Glue
 open Glue
 
 theorem colEl_add {m N : ℕ} (h : m + 2 ≤ N) (x y : Fin (m + 1) → k) :
-    colEl k m N h (x + y) = colEl k m N h x * colEl k m N h y := by
-  exact Glue.colEl_add' h x y
+    colEl k m N h (x + y) = colEl k m N h x * colEl k m N h y := PositivityTheory.RgUd.Form.ColumnElementGluing.Glue.colEl_add' h x y
 
-theorem colEl_zero {m N : ℕ} (h : m + 2 ≤ N) : colEl k m N h 0 = 1 := by
-  exact Glue.colEl_zero' h
+theorem colEl_zero {m N : ℕ} (h : m + 2 ≤ N) : colEl k m N h 0 = 1 := PositivityTheory.RgUd.Form.ColumnElementGluing.Glue.colEl_zero' h
 
-theorem continuous_colEl {m N : ℕ} (h : m + 2 ≤ N) : Continuous (colEl k m N h) := by
-  exact Glue.continuous_colEl' h
+theorem continuous_colEl {m N : ℕ} (h : m + 2 ≤ N) : Continuous (colEl k m N h) := PositivityTheory.RgUd.Form.ColumnElementGluing.Glue.continuous_colEl' h
 
-theorem continuous_blkAt (n N : ℕ) (h : n ≤ N) : Continuous (blkAt k n N h) := by
-  exact Glue.continuous_blkAt' n N h
+theorem continuous_blkAt (n N : ℕ) (h : n ≤ N) : Continuous (blkAt k n N h) := PositivityTheory.RgUd.Form.ColumnElementGluing.Glue.continuous_blkAt' n N h
 
 theorem blkAt_glEmb {m N : ℕ} (h : m + 2 ≤ N) (g : GL (Fin (m + 1)) k) :
-    blkAt k (m + 2) N h (glEmb k (m + 1) g) = blkAt k (m + 1) N (by omega) g := by
-  exact Glue.blkAt_glEmb' h g
+    blkAt k (m + 2) N h (glEmb k (m + 1) g) = blkAt k (m + 1) N (by omega) g := PositivityTheory.RgUd.Form.ColumnElementGluing.Glue.blkAt_glEmb' h g
 
 theorem det_glEmb (n : ℕ) (g : GL (Fin n) k) :
-    Matrix.GeneralLinearGroup.det (glEmb k n g) = Matrix.GeneralLinearGroup.det g := by
-  exact Glue.det_glEmb' n g
+    Matrix.GeneralLinearGroup.det (glEmb k n g) = Matrix.GeneralLinearGroup.det g := PositivityTheory.RgUd.Form.ColumnElementGluing.Glue.det_glEmb' n g
 
-theorem det_unip (n : ℕ) (x : Multiplicative (Fin n → k)) : Matrix.GeneralLinearGroup.det (unip k n x) = 1 := by
-  exact Glue.det_unip' n x
+theorem det_unip (n : ℕ) (x : Multiplicative (Fin n → k)) : Matrix.GeneralLinearGroup.det (unip k n x) = 1 := PositivityTheory.RgUd.Form.ColumnElementGluing.Glue.det_unip' n x
 
 theorem blkAt_conj_colEl {m N : ℕ} (h : m + 2 ≤ N) (g : GL (Fin (m + 1)) k) (x : Fin (m + 1) → k) :
     blkAt k (m + 1) N (by omega) g * colEl k m N h x * (blkAt k (m + 1) N (by omega) g)⁻¹ =
-      colEl k m N h ((g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ x) := by
-  exact Glue.blkAt_conj_colEl' h g x
+      colEl k m N h ((g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ x) := PositivityTheory.RgUd.Form.ColumnElementGluing.Glue.blkAt_conj_colEl' h g x
 
 theorem scalAt_conj_colEl {m N : ℕ} (h : m + 2 ≤ N) (z : kˣ) (x : Fin (m + 1) → k) :
     scalAt k (m + 1) N (by omega) z * colEl k m N h x * (scalAt k (m + 1) N (by omega) z)⁻¹ =
-      colEl k m N h ((z : k) • x) := by
-  exact Glue.scalAt_conj_colEl' h z x
+      colEl k m N h ((z : k) • x) := PositivityTheory.RgUd.Form.ColumnElementGluing.Glue.scalAt_conj_colEl' h z x
 
-theorem colEl_mem_derUnip {m N : ℕ} (h : m + 2 ≤ N) (x : Fin (m + 1) → k) : colEl k m N h x ∈ derUnip k N (m + 1) := by
-  exact Glue.colEl_mem_derUnip' h x
+theorem colEl_mem_derUnip {m N : ℕ} (h : m + 2 ≤ N) (x : Fin (m + 1) → k) : colEl k m N h x ∈ derUnip k N (m + 1) := PositivityTheory.RgUd.Form.ColumnElementGluing.Glue.colEl_mem_derUnip' h x
 
 theorem lvlChar_colEl (ψ : AddChar k Circle) {m N : ℕ} (h : m + 2 ≤ N) (x : Fin (m + 1) → k) :
     lvlChar k ψ N (m + 1) ⟨colEl k m N h x, colEl_mem_derUnip h x⟩ = Circle.toUnits (ψ (xi0 k m ⬝ᵥ x)) := by
@@ -469,7 +459,6 @@ theorem colEl_conj_derUnip (ψ : AddChar k Circle) {m N : ℕ} (h : m + 2 ≤ N)
   exact Glue.colEl_conj_derUnip' ψ h x u'
 
 theorem scalAt_comm_blkAt {m N : ℕ} (h : m + 1 ≤ N) (z : kˣ) (g : GL (Fin (m + 1)) k) :
-    scalAt k (m + 1) N h z * blkAt k (m + 1) N h g = blkAt k (m + 1) N h g * scalAt k (m + 1) N h z := by
-  exact Glue.scalAt_comm_blkAt' h z g
+    scalAt k (m + 1) N h z * blkAt k (m + 1) N h g = blkAt k (m + 1) N h g * scalAt k (m + 1) N h z := PositivityTheory.RgUd.Form.ColumnElementGluing.Glue.scalAt_comm_blkAt' h z g
 
 end PositivityTheory.RgUd.Form.ColumnElementGluing

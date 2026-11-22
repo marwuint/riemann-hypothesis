@@ -9,9 +9,7 @@ namespace PI.BICNZ
 
 open Formalism.FourierDecayAlt.B Formalism.QuantumDeterminants Formalism.MainNotions.S.Pv.BetaCut
 
-theorem sf_of_haar {k r : ℕ} {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) : SigmaFinite μ := by
-  haveI : IsFiniteMeasureOnCompacts μ := ⟨fun K hK => h.finite_compact K hK⟩
-  infer_instance
+theorem sf_of_haar {k r : ℕ} {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) : SigmaFinite μ := Formalism.FourierDecayAlt.P.B2x2.sfin h
 
 theorem itD_const_mul (a : ℂ) (f : ℝ → ℂ) (n : ℕ) :
     iteratedDeriv n (fun y => a * f y) = fun y => a * iteratedDeriv n f y := by

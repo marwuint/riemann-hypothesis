@@ -13,9 +13,7 @@ theorem ringHom_mem_qbar {A : Type} [Field A] [NumberField A] (f : A →+* ℂ) 
   exact (Algebra.IsIntegral.isIntegral (R := ℚ) x).map f.toRatAlgHom
 
 theorem lamC_eq_of_mem {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) {s : ℂ} (hs : s ∈ TaylorLogMetric.Qbar) :
-    TaylorLogMetric.lamC lam s = lam ⟨s, hs⟩ := by
-  unfold TaylorLogMetric.lamC
-  rw [dif_pos hs]
+    TaylorLogMetric.lamC lam s = lam ⟨s, hs⟩ := GlobalTheory.NormUnitInert.lamC_of_mem lam hs
 
 theorem chi_alg_unit_inert : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (χ : TaylorLogMetric.IdE D → ℂ),
     TaylorLogMetric.IsChi D χ → p ≠ 2 → GL3Theta.InertK D p → ∀ 𝔞 : TaylorLogMetric.IdE D, TaylorLogMetric.N1 D 𝔞 →

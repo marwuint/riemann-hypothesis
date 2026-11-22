@@ -19,8 +19,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation Global
 namespace GlobalTheory.CrysInertDescent
 
 theorem L_inert : ∀ (l : ℕ) [Fact l.Prime] (g : ↥(GK (Formalism.MainNotions.ElementDenominator.qlExt l))), g ∈ IK (Formalism.MainNotions.ElementDenominator.qlExt l) →
-    ∀ x ∈ MaximalUnramifiedExtension l, (g : GQ l) x = x :=
-  _root_.GlobalTheory.InertQlUnr.IK_qlExt_fixes_Kur
+    ∀ x ∈ MaximalUnramifiedExtension l, (g : GQ l) x = x := GlobalTheory.InertQlUnr.IK_qlExt_fixes_Kur
 
 theorem L_span : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), IsStd P AI →
     ∀ (LL : FinExt l) (T : QLat LL) (K K'' : FinExt l), K.1 ≤ K''.1 → IsCrys (P.PD K) (T.ρ.comp (inclG K)) →

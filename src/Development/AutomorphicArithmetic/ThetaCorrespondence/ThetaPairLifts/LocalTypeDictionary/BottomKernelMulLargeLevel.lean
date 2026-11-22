@@ -47,6 +47,5 @@ theorem _root_.GlobalTheory.T.bottom_large_level_kernel : _root_.GlobalTheory.Fu
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)
       (X : Tri T A A' WW), IsBottomTri W i j X → ∀ (t : T) (Pf : PolF D WW.rank A.rank) (g : Formalism.L2.Theta.GA D WW) (n : ℕ) (x : Formalism.MainNotions.StandardLatticesGL3.GA D n)
         (k : Formalism.L2.Theta.GA D A), x ∈ GlobalTheory.NormSum.intG D n → GlobalTheory.BotFormula.IsFinPt A k x →
-        ∀ y, X.ker W.ψ W.θ t Pf g (y * k) = X.ker W.ψ W.θ t Pf g y := by
-  first | exact @_root_.GlobalTheory.BotBigLevel.bottom_kernel_mul_large_level | exact _root_.GlobalTheory.BotBigLevel.bottom_kernel_mul_large_level | (intros; apply _root_.GlobalTheory.BotBigLevel.bottom_kernel_mul_large_level <;> assumption)
+        ∀ y, X.ker W.ψ W.θ t Pf g (y * k) = X.ker W.ψ W.θ t Pf g y := GlobalTheory.BotBigLevel.bottom_kernel_mul_large_level
 end

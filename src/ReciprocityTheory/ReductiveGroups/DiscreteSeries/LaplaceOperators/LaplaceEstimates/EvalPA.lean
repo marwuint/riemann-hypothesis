@@ -92,13 +92,7 @@ section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 theorem cont_of_smoothOnG {n : ℕ} {ε : Fin n → Bool} {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
-    (hf : Formalism.REAL.SmoothOnG ε f) : ContinuousOn f (UJset ε) := by
-  intro g₀ hg₀
-  obtain ⟨U, F, hU, hgU, hF, hfF⟩ := hf g₀ hg₀
-  have hFc : ContinuousAt F g₀ := (hF.continuousOn).continuousAt (hU.mem_nhds hgU)
-  refine (hFc.continuousWithinAt (s := UJset ε)).congr_of_eventuallyEq ?_ (hfF g₀ hgU hg₀)
-  filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (hU.mem_nhds hgU)] with g hg hgU'
-  exact hfF g hgU' hg
+    (hf : Formalism.REAL.SmoothOnG ε f) : ContinuousOn f (UJset ε) := ReciprocityTheory.ChartRestriction.DS.Lap.CurveContinuity.smooth_contOn hf
 
 end
 

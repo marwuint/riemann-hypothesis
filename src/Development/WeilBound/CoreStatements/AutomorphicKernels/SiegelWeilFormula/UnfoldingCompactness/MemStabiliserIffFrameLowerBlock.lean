@@ -287,13 +287,11 @@ theorem cells' (B : Base F E) (hB : B.IsGood σ) (hb : IsFrame2 σ Y b) {ε : �
         rw [this, hvw0, map_zero, mul_zero]
       rw [ht1, Matrix.det_mul, Matrix.det_mul, h11, hdet, mul_one, ← Matrix.det_mul, incM_GL_mul_inv, Matrix.det_one]
 
-theorem mem_stabiliser_iff_lower_block_zero (hb : IsFrame2 σ Y b) (p : G2 σ Y) : p ∈ par2 σ Y ↔ (inFrame b p).toBlocks₂₁ = 0 :=
-  mem_stabiliser_iff_frame_lower_block hb p
+theorem mem_stabiliser_iff_lower_block_zero (hb : IsFrame2 σ Y b) (p : G2 σ Y) : p ∈ par2 σ Y ↔ (inFrame b p).toBlocks₂₁ = 0 := PositivityTheory.SiegelWeilFormula.kunf.mem_stabiliser_iff_frame_lower_block hb p
 
 theorem big_inj (hb : IsFrame2 σ Y b) {ε : ℤˣ} {w : G2 σ Y}
     (hw : inFrame b w = Matrix.fromBlocks 0 1 (((ε : ℤ) : AE F E) • 1) 0) (hnb : IsNMap b nb) {ν ν' : nA σ Y b}
-    (h : (w * nb ν) * (w * nb ν')⁻¹ ∈ par2 σ Y) : ν = ν' :=
-  big_inj' hb hw hnb h
+    (h : (w * nb ν) * (w * nb ν')⁻¹ ∈ par2 σ Y) : ν = ν' := PositivityTheory.SiegelWeilFormula.kunf.big_inj' hb hw hnb h
 
 theorem cells (B : Base F E) (hB : B.IsGood σ) (hb : IsFrame2 σ Y b) {ε : ℤˣ} {w : G2 σ Y}
     (hw : inFrame b w = Matrix.fromBlocks 0 1 (((ε : ℤ) : AE F E) • 1) 0) (hnb : IsNMap b nb) (T : nF σ Y b)

@@ -6,14 +6,7 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 open NumberField
 
 theorem ratio_eq_of_eq_smul {Ω V : Type*} [Field Ω] [AddCommGroup V] [Module Ω V] {f g : V} {a : Ω}
-    (hg : g ≠ 0) (h : f = a • g) : ratio f g = a := by
-  unfold ratio
-  have hex : ∃ a' : Ω, f = a' • g := ⟨a, h⟩
-  rw [dif_pos hex]
-  have hs : a • g = hex.choose • g := by
-    rw [← h]
-    exact hex.choose_spec
-  exact (smul_left_injective Ω hg hs).symm
+    (hg : g ≠ 0) (h : f = a • g) : ratio f g = a := ReciprocityTheory.ChartRestriction.G.T0.ValuationResidueLemmas.ratio_eq hg h
 
 theorem ratio_self_height {Ω V : Type*} [Field Ω] [AddCommGroup V] [Module Ω V] {f : V}
     (hf : f ≠ 0) : ratio (Ω := Ω) f f = 1 := ratio_eq_of_eq_smul hf (one_smul Ω f).symm

@@ -28,6 +28,5 @@ theorem _root_.GlobalTheory.T.real_datum_rational_normalization_alt : GlobalTheo
       ∀ τ : ℂ ≃+* ℂ, (∀ y, τ (Formalism.L2.Host.embLL0 (Fm.D x i) y) = Formalism.L2.Host.embLL0 (Fm.D x i) y) →
         ∃ c : ℂ, (∃ m : ℕ, m ≠ 0 ∧ c ^ m = 1) ∧
           ∑ k, τ (ρ.e ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w) (a k)) • evW p.nexp p.v₀ j (g k).val =
-            c • ∑ k, ρ.e ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w) (a k) • evW p.nexp p.v₀ j (g k).val := by
-  first | exact @_root_.GlobalTheory.BigOn.Exp.expConj_alt | exact _root_.GlobalTheory.BigOn.Exp.expConj_alt | (intros; apply _root_.GlobalTheory.BigOn.Exp.expConj_alt <;> assumption)
+            c • ∑ k, ρ.e ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w) (a k) • evW p.nexp p.v₀ j (g k).val := GlobalTheory.BigOn.Exp.expConj_alt
 end

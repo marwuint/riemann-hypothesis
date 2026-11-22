@@ -20,6 +20,5 @@ theorem _root_.GlobalTheory.T.schrodinger_model_intertwining : ∀ (F E : Type) 
         (∀ x : Matrix (Fin nT) (Fin nS) E, ∃ y z : Fin N → F,
           e (Formalism.IndefR.DatumF.ratWF x) = (GlobalTheory.SWQ.rat y, GlobalTheory.SWQ.rat z)) →
         ∀ f : Formalism.IndefR.DatumF.WOF F E nS nT → ℂ, Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ f →
-          ∃ Φ ∈ GlobalTheory.WeilM.schA F (Fin N), GlobalTheory.ThetaTransform.thV B.ψ Φ ∘ e = f := by
-  first | exact @_root_.GlobalTheory.ThetaOntoF.exists_thV_eqF_k | exact _root_.GlobalTheory.ThetaOntoF.exists_thV_eqF_k | (intros; apply _root_.GlobalTheory.ThetaOntoF.exists_thV_eqF_k <;> assumption)
+          ∃ Φ ∈ GlobalTheory.WeilM.schA F (Fin N), GlobalTheory.ThetaTransform.thV B.ψ Φ ∘ e = f := GlobalTheory.ThetaOntoF.exists_thV_eqF_k
 end

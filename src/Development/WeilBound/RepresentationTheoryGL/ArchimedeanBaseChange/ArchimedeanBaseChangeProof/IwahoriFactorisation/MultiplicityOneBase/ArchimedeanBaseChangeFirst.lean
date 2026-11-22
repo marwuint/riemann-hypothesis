@@ -40,5 +40,4 @@ theorem PositivityTheory.Rg.Bc.ArchbcB.B.archimedean_base_change_first : Positiv
   push_cast
   rw [neg_eq_neg_one_mul, mul_zpow, ← _root_.inv_zpow', inv_neg_one]
 
-theorem PositivityTheory.Rg.Bc.ArchbcB.B.m1 : PositivityTheory.Rg.Bc.ArchbcB.B.M1 :=
-  PositivityTheory.Rg.Bc.ArchbcB.B.archimedean_base_change_first
+theorem PositivityTheory.Rg.Bc.ArchbcB.B.m1 : PositivityTheory.Rg.Bc.ArchbcB.B.M1 := PositivityTheory.Rg.Bc.ArchbcB.B.archimedean_base_change_first

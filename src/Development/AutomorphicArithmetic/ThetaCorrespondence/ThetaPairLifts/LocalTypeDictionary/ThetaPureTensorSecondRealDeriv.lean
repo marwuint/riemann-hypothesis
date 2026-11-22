@@ -79,6 +79,5 @@ theorem _root_.GlobalTheory.T.theta_pure_tensor_hasDerivAt_second : GlobalTheory
           (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = Γ.M'.vac v) →
           ∃ L : ℝ →+ WO (sgn false W₁) X, Continuous L ∧ (∀ t, (L t).map (finPart D) = 0) ∧
             GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₁ φ) =
-              fun x => deriv (fun t : ℝ => heisO ψ (sgn false W₁) X (L t) (GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ)) x) 0 := by
-  first | exact @_root_.GlobalTheory.ThetaRealDeriv.theta_pure_tensor_second_real_deriv | exact _root_.GlobalTheory.ThetaRealDeriv.theta_pure_tensor_second_real_deriv | (intros; apply _root_.GlobalTheory.ThetaRealDeriv.theta_pure_tensor_second_real_deriv <;> assumption)
+              fun x => deriv (fun t : ℝ => heisO ψ (sgn false W₁) X (L t) (GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ)) x) 0 := GlobalTheory.ThetaRealDeriv.theta_pure_tensor_second_real_deriv
 end

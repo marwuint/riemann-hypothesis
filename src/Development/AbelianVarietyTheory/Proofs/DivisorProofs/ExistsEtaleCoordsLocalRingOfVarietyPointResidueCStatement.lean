@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.exists_etaleCoords_localRingOfVarietyPoint_residue
     RatRes (algebraMap ℂ κ') B → ((algebraMap ℂ κ').codRestrict B hB.const_mem).FormallySmooth →
     ∃ (r : ℕ) (τ : Fin r → B), (letI := hB.isLocalRing; IsLocalRing.maximalIdeal B = Ideal.span (Set.range τ)) ∧
       (MvPolynomial.eval₂Hom ((algebraMap ℂ κ').codRestrict B hB.const_mem) τ).FormallyEtale ∧
-      TrBasis (algebraMap ℂ κ') (fun i => (τ i : κ')) := by
-  first | exact @GlobalTheory.EtaleCoordLocal.exists_etaleCoords | exact GlobalTheory.EtaleCoordLocal.exists_etaleCoords | (intros; apply GlobalTheory.EtaleCoordLocal.exists_etaleCoords <;> assumption)
+      TrBasis (algebraMap ℂ κ') (fun i => (τ i : κ')) := GlobalTheory.EtaleCoordLocal.exists_etaleCoords

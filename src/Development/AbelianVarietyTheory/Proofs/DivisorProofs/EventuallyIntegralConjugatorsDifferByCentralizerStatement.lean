@@ -12,5 +12,4 @@ theorem _root_.GlobalTheory.T.eventually_integral_conjugators_differ_by_centrali
       IsIntB v b (↑X' * ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] (γ : G.C)) * ↑X'⁻¹) →
       ∃ m : (v.adicCompletion ℚ ⊗[ℚ] L)ˣ,
         IsIntB v b (↑X * Algebra.TensorProduct.map (AlgHom.id ℚ (v.adicCompletion ℚ)) ι ↑m * ↑X'⁻¹) ∧
-        IsIntB v b (↑X' * Algebra.TensorProduct.map (AlgHom.id ℚ (v.adicCompletion ℚ)) ι ↑m⁻¹ * ↑X⁻¹) := by
-  first | (exact @GlobalTheory.LatStep.lattice_step) | (exact GlobalTheory.LatStep.lattice_step) | (intros; apply GlobalTheory.LatStep.lattice_step  <;> assumption)
+        IsIntB v b (↑X' * Algebra.TensorProduct.map (AlgHom.id ℚ (v.adicCompletion ℚ)) ι ↑m⁻¹ * ↑X⁻¹) := GlobalTheory.LatStep.lattice_step

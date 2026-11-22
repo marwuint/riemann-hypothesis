@@ -8,5 +8,4 @@ theorem _root_.GlobalTheory.T.isLocalRing_tensor_of_unique_prime_over : ∀ (P T
     𝔐.comap (algebraMap P T) = (maximalIdeal L).comap (algebraMap P L) →
     (∀ 𝔔 : Ideal T, 𝔔.IsPrime → 𝔔.comap (algebraMap P T) = (maximalIdeal L).comap (algebraMap P L) → 𝔔 = 𝔐) →
     (∀ y : L, ∃ a : P, y - algebraMap P L a ∈ maximalIdeal L) →
-    IsLocalRing (TensorProduct P T L) := by
-  first | (exact @GlobalTheory.tensor_isLocalRing_of_unique_prime_over) | (exact GlobalTheory.tensor_isLocalRing_of_unique_prime_over) | (intros; apply GlobalTheory.tensor_isLocalRing_of_unique_prime_over  <;> assumption)
+    IsLocalRing (TensorProduct P T L) := GlobalTheory.tensor_isLocalRing_of_unique_prime_over

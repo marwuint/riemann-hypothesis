@@ -140,6 +140,5 @@ theorem _root_.GlobalTheory.T.twist_first_coefficient_law : _root_.GlobalTheory.
         (τ.sum fun d c => c * (∏ j, ch.S.Z.vec (d.1 j) (xs j)) *
           ∏ i, Function.update (fun i => ch.S.Z.vec (d.2 i)) (GlobalTheory.FirstRowVertex.firstIx D)
             (GlobalTheory.FirstRowVertex.rowShift0 ch.S.toGridChoice k (ch.S.Z.vec (d.2 (GlobalTheory.FirstRowVertex.firstIx D)))) i (ys i)) =
-      τ.sum fun d c => c * (∏ j, ch.S.Z.vec (d.1 j) (xs j)) * ∏ i, ch.S.Z.vec (d.2 i) (ys i) := by
-  first | exact @_root_.GlobalTheory.FirstRowDatum.first_coefficient_datum_law | exact _root_.GlobalTheory.FirstRowDatum.first_coefficient_datum_law | (intros; apply _root_.GlobalTheory.FirstRowDatum.first_coefficient_datum_law <;> assumption)
+      τ.sum fun d c => c * (∏ j, ch.S.Z.vec (d.1 j) (xs j)) * ∏ i, ch.S.Z.vec (d.2 i) (ys i) := GlobalTheory.FirstRowDatum.first_coefficient_datum_law
 end

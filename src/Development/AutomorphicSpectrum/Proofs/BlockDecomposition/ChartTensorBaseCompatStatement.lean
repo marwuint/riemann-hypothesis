@@ -12,5 +12,4 @@ theorem _root_.GlobalTheory.T.chart_tensor_base_compat : ∀ {O A : Type} [CommR
       (∀ r, eO (r ⊗ₜ 1) = cO.D.i r) → (∀ r, eA (r ⊗ₜ 1) = cA.D.i r) →
       (∀ f, ev cO.D cO.inV f = Ideal.Quotient.mk _ (eO (1 ⊗ₜ f))) →
       (∀ f, ev cA.D cA.inV f = Ideal.Quotient.mk _ (eA (1 ⊗ₜ f))) →
-      ∃ e₀ : cO.D ⟶ ((nmO γ q).mor 0).obj cA.D, ∀ f, e₀.φ (eO (1 ⊗ₜ f)) = eA (1 ⊗ₜ f) := by
-  first | exact @GlobalTheory.CompanionTheory.BcMor.chart_mor | exact GlobalTheory.CompanionTheory.BcMor.chart_mor | (intros; apply GlobalTheory.CompanionTheory.BcMor.chart_mor <;> assumption)
+      ∃ e₀ : cO.D ⟶ ((nmO γ q).mor 0).obj cA.D, ∀ f, e₀.φ (eO (1 ⊗ₜ f)) = eA (1 ⊗ₜ f) := GlobalTheory.CompanionTheory.BcMor.chart_mor

@@ -1114,10 +1114,7 @@ namespace Formalism.MainNotions.BridgeLemma
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.QuantumDeterminants Formalism.HermitianLatticeCounting.LatticeSumBounds
 open scoped InnerProductSpace
 
-theorem one_le_max_self_inv_pos {a : ℝ} (ha : 0 < a) : 1 ≤ max a a⁻¹ := by
-  rcases le_total 1 a with h | h
-  · exact le_max_of_le_left h
-  · exact le_max_of_le_right ((one_le_inv₀ ha).2 h)
+theorem one_le_max_self_inv_pos {a : ℝ} (ha : 0 < a) : 1 ≤ max a a⁻¹ := Formalism.MainNotions.BridgeLemma.one_le_max_self_inv ha
 
 theorem max_self_inv_nonneg {a : ℝ} (ha : 0 ≤ a) : 0 ≤ max a a⁻¹ := le_max_of_le_left ha
 
@@ -1391,11 +1388,7 @@ theorem numericVolume_bound_ii (k r : ℕ) (C A G T T' g v t la lc pa pc hs dim 
   have hC0 : 0 ≤ C := hA0.le.trans hA
   exact product_le_enlarged_losses la lc pa pc _ hla hlac hpa hpac (by positivity)
 
-theorem rank_eq_two_mul_add_two (D : D7) : D.R.m = 2 * D.R.rS + 2 := by
-  obtain ⟨t, ht⟩ := D.R.m_even
-  have h2 := D.R.two_le_m
-  simp only [Ranks.rS]
-  omega
+theorem rank_eq_two_mul_add_two (D : D7) : D.R.m = 2 * D.R.rS + 2 := Formalism.MainNotions.BridgeLemma.m_eq D
 
 theorem rank_lower_bound (D : D7) : 2 * D.R.rS + 6 ≤ D.R.k := by
   obtain ⟨t, ht⟩ := D.R.m_even
@@ -1405,9 +1398,7 @@ theorem rank_lower_bound (D : D7) : 2 * D.R.rS + 6 ≤ D.R.k := by
   simp only [Ranks.rS]
   omega
 
-theorem one_le_scale_base_local {D : D7} (large₂ : SizeData₂ D) : 1 ≤ large₂.sc.b := by
-  unfold Scale.b Scale.L
-  exact Real.one_le_exp (Real.rpow_nonneg (le_trans zero_le_one large₂.sc.one_lt_alt.le) _)
+theorem one_le_scale_base_local {D : D7} (large₂ : SizeData₂ D) : 1 ≤ large₂.sc.b := Formalism.MainNotions.BridgeLemma.one_le_scale_base large₂
 
 theorem level_rpow_neg_rank_eq (D : D7) (hg : 0 < gg D) : gg D ^ (-(D.R.m : ℝ)) = (gg D)⁻¹ ^ (2 * D.R.rS + 2) := by
   rw [Real.rpow_neg hg.le, Real.rpow_natCast, rank_eq_two_mul_add_two D, inv_pow]

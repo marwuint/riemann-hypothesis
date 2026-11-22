@@ -221,8 +221,7 @@ end PositivityTheory.Rg.BcB.G3.ParamP
 namespace PositivityTheory.Rg.BcB.G3
 
 theorem param_pf (h1 : SkewEx) (h2 : Struct) (h3 : QuadField) (h4 : LocDict) (h5 : ClsNorm) (h6 : ClsOnto)
-    (h7 : ClsEq) (h8 : LocGood) : Param :=
-  ParamP.param_main h1 h2 h3 h4 h5 h6 h7 h8
+    (h7 : ClsEq) (h8 : LocGood) : Param := PositivityTheory.Rg.BcB.G3.ParamP.param_main h1 h2 h3 h4 h5 h6 h7 h8
 
 end PositivityTheory.Rg.BcB.G3
 

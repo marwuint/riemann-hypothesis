@@ -128,12 +128,7 @@ theorem contAction_sub (hc : ContAction ρ) (U : Subgroup Γ) : ContAction (ρ.c
 end Abstract
 
 theorem tors_of_finite (A : Type) [CommRing A] [IsLocalRing A] [Finite A] (B : Type) [AddCommGroup B] [Module A B] :
-    Tors A B := by
-  obtain ⟨n, hn⟩ := IsArtinianRing.isNilpotent_jacobson_bot (R := A)
-  rw [IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top] at hn
-  refine fun b => ⟨n, fun x hx => ?_⟩
-  rw [hn, Ideal.zero_eq_bot, Ideal.mem_bot] at hx
-  rw [hx, zero_smul]
+    Tors A B := GlobalTheory.NewPrime.tors_of_finite_local A B
 
 theorem finite_places (F : Type) [Field F] [NumberField F] (l : ℕ) (hl : l ≠ 0) : (placesOver F l).Finite := by
   have h : Ideal.span {((l : ℕ) : 𝓞 F)} ≠ 0 := by

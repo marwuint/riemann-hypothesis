@@ -37,9 +37,7 @@ theorem nonempty_ringHom_complex (K : Type) [Field K] [CharZero K] [Countable K]
   exact ⟨e.toRingHom.comp j⟩
 
 theorem g_eq_of_keyPB {R R' : Type} [CommRing R] [CommRing R'] {x' : KeyIn R'} {x : KeyIn R} {f : R →+* R'}
-    (h : KeyPB x' x f) : x'.P.g = x.P.g := by
-  obtain ⟨_, _, _, hg, _⟩ := h
-  exact hg
+    (h : KeyPB x' x f) : x'.P.g = x.P.g := GlobalTheory.KeyNormRule.dim_of_keyPB h
 
 def NormalValue (g n : ℕ) (κ : ∀ (K : Type) [Field K] [CharZero K], KeyIn K → Kˣ) : Prop :=
   ∀ (x : KeyIn ℂ) (τ Mx : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ) (c₀ : ℂ), x.P.g = g →

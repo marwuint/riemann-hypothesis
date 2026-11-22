@@ -29,12 +29,7 @@ theorem cupB_sub_cob {Γ A M M' : Type} [Group Γ] [TopologicalSpace Γ] [CommRi
   linear_combination h1 + h2
 
 theorem tors_all (A : Type) [CommRing A] [IsLocalRing A] [Finite A] (B : Type) [AddCommGroup B] [Module A B] :
-    Tors A B := by
-  obtain ⟨n, hn⟩ := IsArtinianRing.isNilpotent_jacobson_bot (R := A)
-  rw [IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top] at hn
-  refine fun b => ⟨n, fun x hx => ?_⟩
-  rw [hn, Ideal.zero_eq_bot, Ideal.mem_bot] at hx
-  rw [hx, zero_smul]
+    Tors A B := GlobalTheory.NewPrime.tors_of_finite_local A B
 
 section General
 

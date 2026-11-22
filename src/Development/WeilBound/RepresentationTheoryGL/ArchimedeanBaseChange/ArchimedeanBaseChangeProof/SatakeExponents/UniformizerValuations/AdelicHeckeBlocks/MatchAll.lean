@@ -13,9 +13,9 @@ open PositivityTheory.Rg.Bc.ArchbcB.B PositivityTheory.Rg.BcN.F2.LocOpPf
 
 theorem ctMul : MT.CtMul := _root_.GlobalTheory.CompanionTheory.CtMulSplit.ctMul
 
-theorem hM4 : M4 := archimedean_base_change_fourth
+theorem hM4 : M4 := PositivityTheory.Rg.Bc.ArchbcB.B.M4.m4
 
-theorem hM1 : M1 := m1
+theorem hM1 : M1 := PositivityTheory.Rg.Bc.ArchbcB.B.archimedean_base_change_first
 
 theorem matchT_of (h4 : M4) : MT.MatchT := TorusMatching.match_torus_of_twisted_matching h4
 

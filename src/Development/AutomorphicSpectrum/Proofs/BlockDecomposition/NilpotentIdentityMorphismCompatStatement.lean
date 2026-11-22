@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.nilpotent_identity_morphism_compat : ∀ {O R R' :
     (hQ : Q = St ⊤ {⊤}) (hQ' : Q' = St ⊤ {⊤}) (h : ∀ T, Q' T → Q ((m.mor p).functor.obj T))
     (ha : ∀ a : R', (m.smor Q Q' h).LeC a (oT Q) (oT Q')) (hb : ∀ a : R', (m.smor Q Q' h).LeC a (oB Q) (oB Q')) (j : ℕ),
     Tens R (N := fun _ : Unit => R') (M := fun _ => CH.H (sq (oT Q) (oB Q)) j) (M' := CH.H (sq (oT Q') (oB Q')) j)
-      fun _ a x => ((m.smor Q Q' h).sqC a (ha a) (hb a)).pull j x := by
-  first | exact @GlobalTheory.CompanionTheory.BcCov.bc_cover | exact GlobalTheory.CompanionTheory.BcCov.bc_cover | (intros; apply GlobalTheory.CompanionTheory.BcCov.bc_cover <;> assumption)
+      fun _ a x => ((m.smor Q Q' h).sqC a (ha a) (hb a)).pull j x := GlobalTheory.CompanionTheory.BcCov.bc_cover

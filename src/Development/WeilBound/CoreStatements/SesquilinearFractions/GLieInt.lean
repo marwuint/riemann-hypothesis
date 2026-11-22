@@ -18,8 +18,7 @@ theorem tan_comp {S : Scheme.{0}} {R : Type} [CommRing R] {A B : Over S} [GrpObj
   unfold IsTanAt at ht ⊢
   rw [Over.comp_left, ← Category.assoc, ht, ← Over.comp_left, MonObj.one_comp]
 
-theorem one_left {S : Scheme.{0}} {X A : Over S} [GrpObj A] : (1 : X ⟶ A).left = X.hom ≫ η[A].left := by
-  rw [Hom.one_def]; simp
+theorem one_left {S : Scheme.{0}} {X A : Over S} [GrpObj A] : (1 : X ⟶ A).left = X.hom ≫ η[A].left := GlobalTheory.CompanionTheory.Ar.ChartDer.one_left
 
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
     spMap b ≫ spMap a = spMap (b.comp a) := by

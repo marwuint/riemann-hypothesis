@@ -901,5 +901,4 @@ end Main
 
 end Formalism.FourierDecayAlt.P.HenselRootsBounded
 
-theorem Formalism.FourierDecayAlt.P.crossTermsVanish : Formalism.FourierDecayAlt.A6.CrossVanish :=
-  Formalism.FourierDecayAlt.P.HenselRootsBounded.crossVanish
+theorem Formalism.FourierDecayAlt.P.crossTermsVanish : Formalism.FourierDecayAlt.A6.CrossVanish := Formalism.FourierDecayAlt.P.HenselRootsBounded.crossVanish

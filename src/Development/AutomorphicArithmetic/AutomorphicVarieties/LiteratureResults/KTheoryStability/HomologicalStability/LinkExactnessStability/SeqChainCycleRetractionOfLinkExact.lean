@@ -280,12 +280,5 @@ end
 
 section
 open GlobalTheory.SeqCx Matrix
-theorem _root_.GlobalTheory.T.seqChain_cycle_retraction_of_link_exact : ∀ (V : Type) (F : Set (List V)) (S : Set V), SubClosed F → ∀ (p k : ℕ), (∀ τ ∈ F, ∀ x, τ.getLast? = some x → x ∉ S → τ.length = k + 1 → τ.length ≤ p → ExactAt (linkIn F S τ) (p - τ.length)) → ∀ c ∈ chains {l ∈ F | ∀ y ∈ l.drop (k + 1), y ∈ S} p, bd V c = 0 → ∃ b ∈ chains F (p + 1), c - bd V b ∈ chains {l ∈ F | ∀ y ∈ l.drop k, y ∈ S} p := by
-  first
-  | exact @GlobalTheory.SeqCx.retract_step
-  | exact @GlobalTheory.SeqCx.drop_eraseIdx_sublist_drop
-  | exact @GlobalTheory.SeqCx.prepend_part_mem_supported
-  | exact @GlobalTheory.SeqCx.mapDomain_mem_supported_of_maps
-  | exact @GlobalTheory.SeqCx.bd_mem_supported_of_eraseIdx
-  | exact @GlobalTheory.SeqCx.mapDomain_prepend_apply'
+theorem _root_.GlobalTheory.T.seqChain_cycle_retraction_of_link_exact : ∀ (V : Type) (F : Set (List V)) (S : Set V), SubClosed F → ∀ (p k : ℕ), (∀ τ ∈ F, ∀ x, τ.getLast? = some x → x ∉ S → τ.length = k + 1 → τ.length ≤ p → ExactAt (linkIn F S τ) (p - τ.length)) → ∀ c ∈ chains {l ∈ F | ∀ y ∈ l.drop (k + 1), y ∈ S} p, bd V c = 0 → ∃ b ∈ chains F (p + 1), c - bd V b ∈ chains {l ∈ F | ∀ y ∈ l.drop k, y ∈ S} p := GlobalTheory.SeqCx.retract_step
 end

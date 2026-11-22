@@ -35,14 +35,7 @@ theorem coarse_eq_blkOf' {a r t m : ℕ} (hn : a = r + m * t) (i : Fin a) :
     rw [Formalism.L2.Col.blkIdx_replicate ht m _ (by omega)]
 
 theorem coarseBlockIndex_single_eq_twoBlock {a r b : ℕ} (hn : a = r + b) (i : Fin a) :
-    Formalism.L2.Col.coarse r [b] i.val = Formalism.L2.DIV.blk2 r i := by
-  unfold Formalism.L2.DIV.blk2
-  split_ifs with hi
-  · exact Formalism.L2.Col.coarse_of_lt hi
-  · rw [Formalism.L2.Col.coarse_of_le (Nat.not_lt.mp hi)]
-    have hi2 := i.2
-    have : i.val - r < b := by omega
-    simp [Formalism.L2.Col.blkIdx, this]
+    Formalism.L2.Col.coarse r [b] i.val = Formalism.L2.DIV.blk2 r i := GlobalTheory.Mem.R3.LiftBrg.LamQInv.coarseBlockIndex_single_eq_twoBlock hn i
 
 theorem castGL_inv_mul_diag_mem_HKV {κ : Type} [CommRing κ] {a n r t : ℕ} (h : a = n) (hn : n = r + t) (hra : r ≤ a)
     (hrn : r ≤ n) (y : GL (Fin a) κ) (hy : y ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf r t)) :

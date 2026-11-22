@@ -22,6 +22,5 @@ theorem _root_.GlobalTheory.T.toric_ratio_field_data_abelian_alt : ∀ {D : D7} 
             jk.comp (BlochKatoReduction.Gen.kMap D.ntw (ex.nch.twI w) (ex.nch.k' w)) = algebraMap (FractionRing (D.ntw.O (ex.nch.twI w))) (GlobalTheory.ToricDenom.Kbar D.ntw (ex.nch.twI w)) ∧
             ∀ a : ℤ, jk (BlochKatoReduction.Gen.thEval D.ntw (ex.nch.twI w) (ex.nch.Q w) lam (ex.nch.k' w) (BlochKatoReduction.Gen.psiAt (D.ntw.sideL (ex.nch.twI w) lam) (ex.nch.psi' w ^ a))) *
                 GlobalTheory.ToricDenom.atSide D.ntw b ι T₀ =
-              jk (BlochKatoReduction.Gen.kMap D.ntw (ex.nch.twI w) (ex.nch.k' w) (∑ δ, D.ntw.th (ex.nch.twI w) ∅ lam δ)) * GlobalTheory.ToricDenom.atSide D.ntw b ι (T (ψc ^ (c * a)))) := by
-  first | exact @_root_.GlobalTheory.ThmAUpper.read_twisted_alt | exact _root_.GlobalTheory.ThmAUpper.read_twisted_alt | (intros; apply _root_.GlobalTheory.ThmAUpper.read_twisted_alt <;> assumption)
+              jk (BlochKatoReduction.Gen.kMap D.ntw (ex.nch.twI w) (ex.nch.k' w) (∑ δ, D.ntw.th (ex.nch.twI w) ∅ lam δ)) * GlobalTheory.ToricDenom.atSide D.ntw b ι (T (ψc ^ (c * a)))) := GlobalTheory.ThmAUpper.read_twisted_alt
 end

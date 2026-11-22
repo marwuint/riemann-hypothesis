@@ -166,8 +166,7 @@ theorem lat_exists_m : ∃ m : ℕ, 1 ≤ m ∧ (∀ i, (Pi.single i (m : I.E) :
     exact mul_mem ⟨((∏ j, dd j : ℕ) : 𝓞 I.E), by simp⟩ (hB l hl i)
 
 theorem exists_m : ∃ m : ℕ, 1 ≤ m ∧ (∀ i, (Pi.single i (m : I.E) : Fin I.n → I.E) ∈ I.L) ∧
-    ∀ l ∈ I.L, ∀ i, (m : I.E) * l i ∈ Formalism.UG.intOE I.E := by
-  exact lat_exists_m I
+    ∀ l ∈ I.L, ∀ i, (m : I.E) * l i ∈ Formalism.UG.intOE I.E := Formalism.L2.SG.Pf.lat_exists_m
 
 def mm : ℕ := (exists_m I).choose
 

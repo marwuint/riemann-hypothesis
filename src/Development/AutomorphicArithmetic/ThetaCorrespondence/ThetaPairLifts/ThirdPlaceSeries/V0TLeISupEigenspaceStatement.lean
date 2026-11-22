@@ -20,6 +20,5 @@ theorem _root_.GlobalTheory.T.fixed_space_le_iSup_eigenspace_of_goodness : ∀ (
       V0T D T S In.rho In.chi In.θ i j b ≤
         ⨆ σ ∈ {σ : D.what₂.FT | D.what₂.isot j σ ≠ ⊥ ∧ D.nd.goodRow σ},
           Module.End.eigenspace (hkT D T S In i j b k P)
-            (algebraMap (T.O i) (FractionRing (T.O i)) (cHkT D T i b P : T.O i) ^ k * readT D T i b (In.eig j σ k P)) := by
-  first | exact @_root_.GlobalTheory.HeightCounting.FormsStep.v0t_le_supr_eigenspace | exact _root_.GlobalTheory.HeightCounting.FormsStep.v0t_le_supr_eigenspace | (intros; apply _root_.GlobalTheory.HeightCounting.FormsStep.v0t_le_supr_eigenspace <;> assumption)
+            (algebraMap (T.O i) (FractionRing (T.O i)) (cHkT D T i b P : T.O i) ^ k * readT D T i b (In.eig j σ k P)) := GlobalTheory.HeightCounting.FormsStep.v0t_le_supr_eigenspace
 end

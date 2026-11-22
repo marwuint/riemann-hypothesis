@@ -9,5 +9,4 @@ theorem _root_.GlobalTheory.T.galoisComparisonMap_injective_of_flat : ∀ (A R C
     (∀ c, algebraMap R C (T c) = ∑ g, act g c) →
     ∀ (a : A), a ≠ 0 → ∀ (n : ℕ) (x y : Fin n → C),
       (∀ g, ∑ i, x i * act g (y i) = if g = 1 then algebraMap R C (algebraMap A R a) else 0) →
-    GlobalTheory.GoodEtale.TorsionFreeOver A R C → ∀ σ : C →ₐ[R] O, Function.Injective (GlobalTheory.GoodEtale.galMap act σ) := by
-  first | (exact @GlobalTheory.GoodEtale.galMap_injective_of_flat) | (exact GlobalTheory.GoodEtale.galMap_injective_of_flat) | (intros; apply GlobalTheory.GoodEtale.galMap_injective_of_flat  <;> assumption)
+    GlobalTheory.GoodEtale.TorsionFreeOver A R C → ∀ σ : C →ₐ[R] O, Function.Injective (GlobalTheory.GoodEtale.galMap act σ) := GlobalTheory.GoodEtale.galMap_injective_of_flat

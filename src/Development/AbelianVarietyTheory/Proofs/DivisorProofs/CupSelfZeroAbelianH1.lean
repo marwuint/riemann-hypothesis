@@ -19,13 +19,9 @@ theorem pO1_comp {R : Type} [CommRing R] {Z Y A : Over (Sp R)} (i : Z ⟶ Y) (f 
   ((_root_.GlobalTheory.AbCoh.pull_comp_cup_id).1 _ _ _ _ _ _ _ _ (ovw f) _ _ _ _ _ (ovw i) _ _ (ovw (i ≫ f)) (Over.comp_left _ _ _ _ _)
     (fun _ ↦ rfl)).1 x
 
-theorem pO1_id {R : Type} [CommRing R] {A : Over (Sp R)} (x : HO1 A.hom) : pO1 (𝟙 A) x = x :=
-  ((_root_.GlobalTheory.AbCoh.pull_comp_cup_id).2.2 R A).1 x
+theorem pO1_id {R : Type} [CommRing R] {A : Over (Sp R)} (x : HO1 A.hom) : pO1 (𝟙 A) x = x := GlobalTheory.AbCoh.PrimLift.pO1_id x
 
-theorem pO1_unit_eq_zero {R : Type} [CommRing R] (x : HO1 (𝟙_ (Over (Sp R))).hom) : x = 0 := by
-  have : IsAffine (𝟙_ (Over (Sp R))).left := by
-    change IsAffine (Sp R); infer_instance
-  exact (GlobalTheory.Obs.sq_abelian_and_affine_H1 R).2 _ _ x
+theorem pO1_unit_eq_zero {R : Type} [CommRing R] (x : HO1 (𝟙_ (Over (Sp R))).hom) : x = 0 := GlobalTheory.AbCoh.PrimLift.pO1_unit_eq_zero x
 
 theorem pO1_toUnit_comp {R : Type} [CommRing R] {Y A : Over (Sp R)} (f : 𝟙_ (Over (Sp R)) ⟶ A) (x : HO1 A.hom) :
     pO1 (toUnit Y ≫ f) x = 0 := by

@@ -8,7 +8,6 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 
 namespace GlobalTheory.PlaneSkew.CartanInv
 
-theorem exists_isCartan : ∀ (n : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (r s : ℕ), HasSig M r s → ∃ θ, IsCartan M θ :=
-  GlobalTheory.CartanEx.exists_isCartan
+theorem exists_isCartan : ∀ (n : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (r s : ℕ), HasSig M r s → ∃ θ, IsCartan M θ := GlobalTheory.CartanEx.exists_isCartan
 
 end GlobalTheory.PlaneSkew.CartanInv

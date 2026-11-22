@@ -18,8 +18,7 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.AmpNormal
 
-theorem det_hpk (k r : ℕ) : IsUnit (Hpk k r).det :=
-  Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1
+theorem det_hpk (k r : ℕ) : IsUnit (Hpk k r).det := Formalism.FourierDecayAlt.P.B2x5.isUnit_det_Hpk k r
 
 noncomputable def lmulEquiv {k r : ℕ} (t : MatKR k r) (ht : IsUnit t.det) : Mt k r ≃ᵐ Mt k r where
   toFun x := fun i j => (t⁻¹ * Matrix.of x) i j

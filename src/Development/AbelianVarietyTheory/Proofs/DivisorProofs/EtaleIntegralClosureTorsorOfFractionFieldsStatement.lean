@@ -32,5 +32,4 @@ theorem _root_.GlobalTheory.T.etale_integralClosure_torsor_of_fraction_fields : 
     ∀ y : R₁, y ^ q = φ (algebraMap A R π) →
     (letI := (GlobalTheory.KeyOriginNoeth.baseHom A₁ R₁ (GlobalTheory.KeyOriginBC.BC β DA)).toAlgebra;
       Algebra.Etale (Localization.AtPrime P₁)
-        (integralClosure (Localization.AtPrime P₁) (Localization.AtPrime P₁ ⊗[R₁] GlobalTheory.KeyOriginBC.BC β DA))) := by
-  first | (exact @GlobalTheory.KeyOriginTransport.etale_closure_of_field) | (exact GlobalTheory.KeyOriginTransport.etale_closure_of_field) | (intros; apply GlobalTheory.KeyOriginTransport.etale_closure_of_field  <;> assumption)
+        (integralClosure (Localization.AtPrime P₁) (Localization.AtPrime P₁ ⊗[R₁] GlobalTheory.KeyOriginBC.BC β DA))) := GlobalTheory.KeyOriginTransport.etale_closure_of_field

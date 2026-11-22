@@ -17,5 +17,4 @@ theorem _root_.GlobalTheory.T.exists_exactLocalConditionData_at_place : ∀ (D :
         (h w' η : ZMod (finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw)) → ℕ)
         (typ : ZMod (finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw)) → Bool)
         (U : ZMod (finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw)) → Multiset ℤ),
-        SetC HW r ρ π C hA lam θ h w' η typ U := by
-  first | exact @GlobalTheory.UseLocInst.exists_setC | exact GlobalTheory.UseLocInst.exists_setC | (intros; apply GlobalTheory.UseLocInst.exists_setC <;> assumption)
+        SetC HW r ρ π C hA lam θ h w' η typ U := GlobalTheory.UseLocInst.exists_setC

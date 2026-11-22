@@ -14,8 +14,7 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 namespace GlobalTheory.Mum.CanonPull
 
 theorem lam_isLB {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] {L : LB G.left} (hL : L.IsLB) :
-    (abelian₂ G L).IsLB :=
-  ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB L hL _ _
+    (abelian₂ G L).IsLB := GlobalTheory.Mum.UExt.lam_isLB G hL
 
 end GlobalTheory.Mum.CanonPull
 

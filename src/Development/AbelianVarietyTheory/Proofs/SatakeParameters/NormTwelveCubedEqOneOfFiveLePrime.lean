@@ -42,9 +42,7 @@ theorem lamOf_eq_map (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
   · rintro ⟨_, ⟨c, hc, rfl⟩, rfl⟩
     exact ⟨c, hc, rfl⟩
 
-theorem omega1_ne_zero (L : PeriodPair) : L.ω₁ ≠ 0 := by
-  have := L.indep.ne_zero 0
-  simpa using this
+theorem omega1_ne_zero (L : PeriodPair) : L.ω₁ ≠ 0 := Formalism.L2.Th1.F.PeriodAreaSignLemmas.ω₁_ne_zero L
 
 theorem intCurve_of_disc_one (hIn : GlobalTheory.ThLoc.Inputs) (d : ℕ) (L : PeriodPair) (hsq : Squarefree d) (hd4 : d % 4 = 3)
     (hcm : Formalism.L2.Th1.CM.HasCMBy d L) (hΔ : L.g₂ ^ 3 - 27 * L.g₃ ^ 2 = 1) (p : ℕ) [Fact p.Prime] (h5 : 5 ≤ p)

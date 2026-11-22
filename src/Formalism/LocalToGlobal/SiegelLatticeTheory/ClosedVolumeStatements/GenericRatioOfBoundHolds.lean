@@ -54,14 +54,13 @@ theorem ScalarDr_holds : Formalism.L2.SG.Corank.ScalarDr D u u' := by
 
 end Terms
 
-theorem CorankPosG_holds : Formalism.L2.SG.Corank.CorankPosG := pair_corank_pos
-theorem ScalarEquivG_holds : Formalism.L2.SG.Corank.ScalarEquivG := scalar_equiv_general
+theorem CorankPosG_holds : Formalism.L2.SG.Corank.CorankPosG := PI.PairCorankPos.W.corankPosG
+theorem ScalarEquivG_holds : Formalism.L2.SG.Corank.ScalarEquivG := PI.UnitaryGroupMassFormula.ScalEquivGen.scalarEquivG_holds
 
-theorem GelfandGraevMultOne_holds : Formalism.L2.SG.GGMirabolic.GelfandGraevMultOne := whittaker_functional_dual Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.gelfand_graev_multiplicity_one
-theorem MirabolicBound_holds : Formalism.L2.SG.GGMirabolic.MirabolicBound := mirabolic_bound
+theorem GelfandGraevMultOne_holds : Formalism.L2.SG.GGMirabolic.GelfandGraevMultOne := PI.WhitFunctDualWork.whitFunctDual_main Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.gelfand_graev_multiplicity_one
+theorem MirabolicBound_holds : Formalism.L2.SG.GGMirabolic.MirabolicBound := PI.GGMirBoundW.mirabolicBound
 theorem GGMatrixBoundOfLit_holds : Formalism.L2.SG.GGMirabolic.GGMatrixBoundOfLit := gg_matrix_bound
-theorem GGMatrixBound_holds : Formalism.L2.SG.GGMirabolic.GGMatrixBound :=
-  GGMatrixBoundOfLit_holds GelfandGraevMultOne_holds MirabolicBound_holds
+theorem GGMatrixBound_holds : Formalism.L2.SG.GGMirabolic.GGMatrixBound := gg_matrix_bound GelfandGraevMultOne_holds MirabolicBound_holds
 theorem TermsGGBound_holds : Formalism.L2.SG.GGMirabolic.TermsGGBound :=
   Formalism.L2.SG.GGMirabolic.termsGGBound_of_matrix GGMatrixBound_holds
 

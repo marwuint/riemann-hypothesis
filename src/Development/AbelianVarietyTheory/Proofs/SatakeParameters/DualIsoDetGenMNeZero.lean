@@ -12,16 +12,7 @@ namespace GlobalTheory.ValCmp
 
 open MvPolynomial Formalism.GradedWeylDivisibility Formalism.MainNotions.G
 
-theorem dualIso_det_genM_ne_zero (R : Type) [CommRing R] [Nontrivial R] (n : ℕ) : (genM R n).det ≠ 0 := by
-  intro h
-  have h1 := congrArg (MvPolynomial.eval fun v : Fin n × Fin n => (1 : Matrix (Fin n) (Fin n) R) v.1 v.2) h
-  rw [RingHom.map_det, map_zero] at h1
-  have h2 : (MvPolynomial.eval fun v : Fin n × Fin n => (1 : Matrix (Fin n) (Fin n) R) v.1 v.2).mapMatrix
-      (genM R n) = 1 := by
-    ext a b
-    simp [genM]
-  rw [h2, Matrix.det_one] at h1
-  exact one_ne_zero h1
+theorem dualIso_det_genM_ne_zero (R : Type) [CommRing R] [Nontrivial R] (n : ℕ) : (genM R n).det ≠ 0 := GlobalTheory.ValCmp.genM_det_ne_zero_of_nontrivial R n
 
 theorem dualIso_cofRel_unique {R : Type} [CommRing R] [IsDomain R] {m : ℕ} {ν : Fin (m + 1) → ℕ}
     {f g g' : MP R (m + 1)} (h : CofRel R m ν f g) (h' : CofRel R m ν f g') : g = g' :=

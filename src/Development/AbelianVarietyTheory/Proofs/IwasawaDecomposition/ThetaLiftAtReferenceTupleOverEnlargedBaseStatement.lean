@@ -12,5 +12,4 @@ theorem _root_.GlobalTheory.T.thetaLift_at_reference_tuple_over_enlarged_base : 
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks (w'.st Z').toD7.what₂.LL] {Xg : Finset (Gc B' w'.px → B'.LL)} {tr : TrI B' w'.px}
   (z : Dat (w.st Z) w.I hX T Wt) (Wt' : Set B'.places.Pl)
-  (R' : RealDat3 (w'.st Z').toD7 (famR (w'.st Z') w'.I hX' (usedOf w'.I T' Wt') Xg tr) Ks), Enl0 B B' → HEq w'.px w.px → z.R.toRealDat.ExAt → RSide z Wt' R' → IdemSame z Xg → LiftAt R'.toRealDat (mu0F (X := B'.fields) (tuOf w'.I (usedOf w'.I T' Wt'))) := by
-  first | exact @GlobalTheory.Mem.R3.Rw.LiftExt.liftAt_of_rSide | exact GlobalTheory.Mem.R3.Rw.LiftExt.liftAt_of_rSide | (intros; apply GlobalTheory.Mem.R3.Rw.LiftExt.liftAt_of_rSide <;> assumption)
+  (R' : RealDat3 (w'.st Z').toD7 (famR (w'.st Z') w'.I hX' (usedOf w'.I T' Wt') Xg tr) Ks), Enl0 B B' → HEq w'.px w.px → z.R.toRealDat.ExAt → RSide z Wt' R' → IdemSame z Xg → LiftAt R'.toRealDat (mu0F (X := B'.fields) (tuOf w'.I (usedOf w'.I T' Wt'))) := GlobalTheory.Mem.R3.Rw.LiftExt.liftAt_of_rSide

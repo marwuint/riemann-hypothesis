@@ -19,5 +19,4 @@ theorem _root_.GlobalTheory.T.doubledSpace_boxProduct_inner_factorizes : ∀ (D 
       ∀ a a' b b' : Formalism.IndefR.Datum.WO S T → ℂ, Formalism.IndefR.Datum.IsThetaFunO ψ S T a → Formalism.IndefR.Datum.IsThetaFunO ψ S T a' →
         Formalism.IndefR.Datum.IsThetaFunO ψ S T b → Formalism.IndefR.Datum.IsThetaFunO ψ S T b' →
         ∫ w in 𝓕, GlobalTheory.DblBox.box a b w * star (GlobalTheory.DblBox.box a' b' w) ∂μ =
-          (∫ u in 𝓕₁, a u * star (a' u) ∂μ₁) * star (∫ u in 𝓕₁, b u * star (b' u) ∂μ₁) := by
-  first | exact @GlobalTheory.DblBoxHaar.box_integral | exact GlobalTheory.DblBoxHaar.box_integral | (intros; apply GlobalTheory.DblBoxHaar.box_integral <;> assumption)
+          (∫ u in 𝓕₁, a u * star (a' u) ∂μ₁) * star (∫ u in 𝓕₁, b u * star (b' u) ∂μ₁) := GlobalTheory.DblBoxHaar.box_integral

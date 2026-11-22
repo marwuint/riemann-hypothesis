@@ -8,5 +8,4 @@ open GlobalTheory.AV GlobalTheory.AV.AbVar
 open scoped CategoryTheory.Obj CategoryTheory.MonObj
 
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.formally_unramified_of_dual_numbers : ∀ (K : Type) [Field K] [IsAlgClosed K] (R : Type) [CommRing R] [Algebra K R] [Module.Finite K R], (∀ (φ : R →ₐ[K] DualNumber K) (r : R), (φ r).snd = 0) → Algebra.FormallyUnramified K R := by
-  first | (exact @GlobalTheory.FinUnram.formallyUnramified_of_dual_const) | (exact GlobalTheory.FinUnram.formallyUnramified_of_dual_const) | (intros; apply GlobalTheory.FinUnram.formallyUnramified_of_dual_const  <;> assumption)
+theorem _root_.GlobalTheory.T.formally_unramified_of_dual_numbers : ∀ (K : Type) [Field K] [IsAlgClosed K] (R : Type) [CommRing R] [Algebra K R] [Module.Finite K R], (∀ (φ : R →ₐ[K] DualNumber K) (r : R), (φ r).snd = 0) → Algebra.FormallyUnramified K R := GlobalTheory.FinUnram.formallyUnramified_of_dual_const

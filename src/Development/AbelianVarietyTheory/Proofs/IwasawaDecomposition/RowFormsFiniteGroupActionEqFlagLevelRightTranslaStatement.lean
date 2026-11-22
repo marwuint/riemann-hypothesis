@@ -15,5 +15,4 @@ theorem _root_.GlobalTheory.T.rowFormsFiniteGroupAction_eq_flagLevelRightTransla
     ∀ t, ∀ P : Bridge.ClassPres (Bridge.ratF X.toD7.sp.X') ((famR X I hX U Xg tr).A.MtildeCSD t) X.toD7.what₂.embLL cX.coef.ρ (levEnv X.toD7.sp.X' L.βX (L.datXt t)).J (levEnv X.toD7.sp.X' L.βX (L.datXt t)).χ, GlobalTheory.Mem.R3.RowAd.ReadsDeco X I hX Xg tr cX t P →
       ∃ a : Bridge.ActTie (Bridge.ratF X.toD7.sp.X') P (levEnv X.toD7.sp.X' L.βX (L.datXt t)).Q (levEnv X.toD7.sp.X' L.βX (L.datXt t)).ch ((famR X I hX U Xg tr).A.leftGroupActionRight t),
         ∀ q : (levEnv X.toD7.sp.X' L.βX (L.datXt t)).Q,
-          eG (a.red q) = rTup L.βX (L.datXt t) (Formalism.UG.bc (swapAE X.toD7) ((q : Bridge.Gf X.toD7.sp.X') : GL _ _)) := by
-  first | exact @GlobalTheory.Mem.R3.RowAct.act_tie | exact GlobalTheory.Mem.R3.RowAct.act_tie | (intros; apply GlobalTheory.Mem.R3.RowAct.act_tie <;> assumption)
+          eG (a.red q) = rTup L.βX (L.datXt t) (Formalism.UG.bc (swapAE X.toD7) ((q : Bridge.Gf X.toD7.sp.X') : GL _ _)) := GlobalTheory.Mem.R3.RowAct.act_tie

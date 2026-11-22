@@ -21,5 +21,4 @@ theorem _root_.GlobalTheory.T.served_place_no_chain_place_or_type_prime_over : �
       ∀ (tt : Formalism.L2.Forms.SymmetricTwistedColumnsAtPrimes n.tp t.C (w.tw Z)), TC.StdTw w.I w.l Z w.l0 tt →
       Formalism.L2.Forms.okQ (w.D Z) (tt.ch.Q ((w.D Z).what₂.muAt v)) v ∧
         (∀ w' ∈ Formalism.L2.Forms.badQ (w.D Z) (tt.ch.Q ((w.D Z).what₂.muAt v)), (((w.D Z).what₂.places.resChar v : ℕ) : 𝓞 (w.D Z).host.F) ∉ w'.asIdeal) ∧
-        ¬ (w.D Z).what₂.places.resChar v ∣ ((w.D Z).mem u).A.T := by
-  first | exact @GlobalTheory.ServedPlace.places_prime | exact GlobalTheory.ServedPlace.places_prime | (intros; apply GlobalTheory.ServedPlace.places_prime <;> assumption)
+        ¬ (w.D Z).what₂.places.resChar v ∣ ((w.D Z).mem u).A.T := GlobalTheory.ServedPlace.places_prime

@@ -8,7 +8,7 @@ set_option linter.all false
 
 namespace Formalism.HermitianLatticeCounting.P
 
-theorem card_range_nsmul_mul_card_le : Formalism.HermitianLatticeCounting.LocalIntegralStructure.TorsionIndex := Formalism.SLP.Final.torsionIndex
+theorem card_range_nsmul_mul_card_le : Formalism.HermitianLatticeCounting.LocalIntegralStructure.TorsionIndex := Formalism.SLP.P.card_range_nsmul_mul_card_le
 theorem orthogonal_complement_formula : PerpCompl := by
   intro K U _ _ _ _ σ hσ B hR hL r A A' hU hA hA' hsup
   have mem : ∀ (S : Submodule K U) (x : U), x ∈ perpR B S ↔ ∀ a ∈ S, B a x = 0 := by

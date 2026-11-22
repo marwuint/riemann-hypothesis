@@ -95,6 +95,5 @@ theorem _root_.GlobalTheory.T.kernel_conjugate_transport : _root_.GlobalTheory.F
             (fun m => GL3Theta.applyAt0 D (MvPolynomial.monomial m 1) (fnConj D Qbar ρ' fun z => κ * ∑ i, (r i : ℂ) *
               U D (tor0 D D.host.ccK ch.S.Z.δ) (s i) (Iop D (tor0 D D.host.ccK ch.S.Z.δ)
                 (La0 D (tor0 D D.host.ccK ch.S.Z.δ) _ _) (La D (tor0 D D.host.ccK ch.S.Z.δ) Ls Lt) e0) z))
-            (nuEnd ch.G (.top A.μ0 j)) (GlobalTheory.CoefModel.mapVV σ _ u) := by
-  first | exact @_root_.GlobalTheory.KerConjTransport.kernel_conjugate_transport_top_degree | exact _root_.GlobalTheory.KerConjTransport.kernel_conjugate_transport_top_degree | (intros; apply _root_.GlobalTheory.KerConjTransport.kernel_conjugate_transport_top_degree <;> assumption)
+            (nuEnd ch.G (.top A.μ0 j)) (GlobalTheory.CoefModel.mapVV σ _ u) := GlobalTheory.KerConjTransport.kernel_conjugate_transport_top_degree
 end

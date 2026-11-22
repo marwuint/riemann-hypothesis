@@ -18,5 +18,4 @@ theorem _root_.GlobalTheory.T.cover_cup_action_basis : ∀ {O : Type} [CommRing 
       (resU F (U := capT U' (i ∘ j.succAbove)) (V := capT U' i) (fun _ h _ => h _)).pull m (b (i ∘ j.succAbove) a k) = b i (j.succAbove a) k)
     (hg : ∀ (n : ℕ) (i : Fin (n + 1) → ι) (a a' : Fin (n + 1)) (k' : κ (i a')),
       b i a' k' = ∑ k, act i (rs (le_inf (capO_le U i a) (capO_le U i a')) (g (i a) (i a') k k')) (b i a k)),
-    Nonempty (VB str U (CrystallineSemistableComparison.Pb.cechH F U' m)) := by
-  first | exact @GlobalTheory.CompanionTheory.CechVB.vb_basis | exact GlobalTheory.CompanionTheory.CechVB.vb_basis | (intros; apply GlobalTheory.CompanionTheory.CechVB.vb_basis <;> assumption)
+    Nonempty (VB str U (CrystallineSemistableComparison.Pb.cechH F U' m)) := GlobalTheory.CompanionTheory.CechVB.vb_basis

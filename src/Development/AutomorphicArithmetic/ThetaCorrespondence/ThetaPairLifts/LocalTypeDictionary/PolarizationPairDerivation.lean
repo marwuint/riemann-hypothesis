@@ -77,6 +77,5 @@ theorem _root_.GlobalTheory.T.twist_lie_derivative_model : _root_.GlobalTheory.F
     {a a' : ℕ} (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ γ ∈ Lines σ G.W,
     ∃ δ : SInf F (Fin a' × Fin (a + a')) →ₗ[ℂ] SInf F (Fin a' × Fin (a + a')), ∀ f ∈ G.M'.Pol B.ψ B.emb,
-      δ f ∈ G.M'.Pol B.ψ B.emb ∧ ActsD (evI F) (fun t => om' (1, γ (Multiplicative.ofAdd t))) f (δ f) := by
-  first | exact @_root_.GlobalTheory.DerPol.exists_lie_derivative_model | exact _root_.GlobalTheory.DerPol.exists_lie_derivative_model | (intros; apply _root_.GlobalTheory.DerPol.exists_lie_derivative_model <;> assumption)
+      δ f ∈ G.M'.Pol B.ψ B.emb ∧ ActsD (evI F) (fun t => om' (1, γ (Multiplicative.ofAdd t))) f (δ f) := GlobalTheory.DerPol.exists_lie_derivative_model
 end

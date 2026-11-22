@@ -7,5 +7,4 @@ theorem _root_.GlobalTheory.T.laurentCechNerve_level_cohomology_subsingleton : �
   ∀ m i : ℤ, 2 ≤ m → m < n → Subsingleton (Ht q (sp (LaurentPolynomial A)) m i)) →
   ∀ (A : Type) [CommRing A] [IsNoetherianRing A], SH A → IsUnit (q : A) → ∀ (A' : Type) [CommRing A'] [Algebra A A'],
   Module.Finite A A' → ∀ (k : ℕ) (s i : ℤ), 2 ≤ s → s < n →
-  Subsingleton (Ht q (disc.obj ((cech (laurentHom A A')).obj (op ⦋k⦌))) s i) := by
-  first | (exact @GlobalTheory.EtC.GmStep.level_vanish) | (exact GlobalTheory.EtC.GmStep.level_vanish) | (intros; apply GlobalTheory.EtC.GmStep.level_vanish  <;> assumption)
+  Subsingleton (Ht q (disc.obj ((cech (laurentHom A A')).obj (op ⦋k⦌))) s i) := GlobalTheory.EtC.GmStep.level_vanish

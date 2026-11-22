@@ -10,5 +10,4 @@ end UpperTheory.V.Sd
 
 open UpperTheory.V UpperTheory.V.Sd in
 theorem UpperTheory.V.Sd.holLin :
-    UpperTheory.V.Sd.HolLin :=
-  _root_.UpperTheory.Reformulated.B.Gr32.holLin
+    UpperTheory.V.Sd.HolLin := UpperTheory.Reformulated.B.Gr32.holLin

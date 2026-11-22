@@ -78,6 +78,5 @@ theorem _root_.GlobalTheory.T.theta_finiteData_match_each_stage : _root_.GlobalT
       Function.Surjective q → Function.Surjective q' →
       (∀ f, GlobalTheory.SquareComm.IsFinF W.ψ W.θ true FA FW f → ∀ P, p (GlobalTheory.SquareComm.fockF W.ψ W.θ true FA FW f P) = e (q P ⊗ₜ r f)) →
       (∀ f, GlobalTheory.SquareComm.IsFinF W.ψ W.θ false FA' FW f → ∀ P, p' (GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW f P) = e (q' P ⊗ₜ r' f)) →
-      ∃ κ : ℂ, κ ≠ 0 ∧ r (X.f t) = κ • r' (X.f' t) := by
-  first | exact @_root_.GlobalTheory.StageFinMatch.theta_bottom_finite_match | exact _root_.GlobalTheory.StageFinMatch.theta_bottom_finite_match | (intros; apply _root_.GlobalTheory.StageFinMatch.theta_bottom_finite_match <;> assumption)
+      ∃ κ : ℂ, κ ≠ 0 ∧ r (X.f t) = κ • r' (X.f' t) := GlobalTheory.StageFinMatch.theta_bottom_finite_match
 end

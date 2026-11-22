@@ -107,6 +107,5 @@ theorem _root_.GlobalTheory.T.theta_subspace_stable_maximal_compact : _root_.Glo
       ∀ N : Submodule ℂ (PolF D X.rank M.rank),
         GlobalTheory.RealQuot.IsStab (fun i : GlobalTheory.RealQuot.LieIx X => GlobalTheory.RealQuot.actT ε A B eS i.1.1 i.1.2) N →
         ∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf D.sp.cm.sig Ws τ, ∀ f ∈ N.map Φ, ∀ f₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin M.rank × Fin X.rank),
-          GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (om (1, k)) f f₁ → f₁ ∈ N.map Φ := by
-  first | exact @_root_.GlobalTheory.CompactStable.maximal_compact_stable_theta_subspace | exact _root_.GlobalTheory.CompactStable.maximal_compact_stable_theta_subspace | (intros; apply _root_.GlobalTheory.CompactStable.maximal_compact_stable_theta_subspace <;> assumption)
+          GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (om (1, k)) f f₁ → f₁ ∈ N.map Φ := GlobalTheory.CompactStable.maximal_compact_stable_theta_subspace
 end

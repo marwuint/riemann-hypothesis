@@ -3,7 +3,6 @@ import CompanionTheory.RealGroups.GeneralUnitaryRepresentations.ArchimedeanJacqu
 
 namespace GlobalTheory
 
-theorem segmentRepresentation' : GlobalTheory.Published.SegmentRepresentation :=
-  CompanionTheory.RgGu.segmentRepresentation
+theorem segmentRepresentation' : GlobalTheory.Published.SegmentRepresentation := CompanionTheory.RgGu.segmentRepresentation
 
 end GlobalTheory

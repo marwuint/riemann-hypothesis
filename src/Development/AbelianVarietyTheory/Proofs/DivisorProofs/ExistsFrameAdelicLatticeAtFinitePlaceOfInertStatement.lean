@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.exists_frame_adelicLatticeAtFinitePlace_of_inert :
       (∀ x, x ∈ Formalism.UG.intL L ↔ ι x ∈ AddSubgroup.closure {z : AE F E | ∃ a : AF F, At (evFin F v) a ∧
         evFin F v a ∈ v.adicCompletionIntegers F ∧ ∃ o : 𝓞 E, z = a • inclR (F := F) (AF F) (o : E)}) →
       ∃ P : GL (Fin n) L, (∀ x : Fin n → L, (∀ i, x i ∈ Formalism.UG.intL L) ↔
-        (fun i => ι (((P : Matrix (Fin n) (Fin n) L) *ᵥ x) i)) ∈ GlobalTheory.InertSph.latAt X v) := by
-  first | exact @GlobalTheory.InertLocBasis.exists_basis_at_inert | exact GlobalTheory.InertLocBasis.exists_basis_at_inert | (intros; apply GlobalTheory.InertLocBasis.exists_basis_at_inert <;> assumption)
+        (fun i => ι (((P : Matrix (Fin n) (Fin n) L) *ᵥ x) i)) ∈ GlobalTheory.InertSph.latAt X v) := GlobalTheory.InertLocBasis.exists_basis_at_inert

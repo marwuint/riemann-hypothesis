@@ -128,6 +128,5 @@ theorem _root_.GlobalTheory.T.twisted_real_average_kernel_isAlgebraic : ∀ {D :
         ∃ (m : ℕ) (r : Fin m → ℂ) (kk : Fin m → (FVar D WW.rank A.rank →₀ ℕ)), (∀ p, IsAlgebraic ℚ (r p)) ∧
           (∀ p, Finsupp.mapDomain Prod.fst (kk p) = dg) ∧
           ∫ g, X.ker W.ψ W.θ t (MvPolynomial.monomial k 1) h (x * (g : GA D A)) ∂κ =
-            ∑ p, r p * X.ker W.ψ W.θ t (MvPolynomial.monomial (kk p) 1) h x := by
-  first | exact @_root_.GlobalTheory.RealAvg.real_average_kernel_isAlgebraic | exact _root_.GlobalTheory.RealAvg.real_average_kernel_isAlgebraic | (intros; apply _root_.GlobalTheory.RealAvg.real_average_kernel_isAlgebraic <;> assumption)
+            ∑ p, r p * X.ker W.ψ W.θ t (MvPolynomial.monomial (kk p) 1) h x := GlobalTheory.RealAvg.real_average_kernel_isAlgebraic
 end

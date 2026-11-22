@@ -10,5 +10,4 @@ namespace UpperTheory.V.Z.Sym.Glob
 end UpperTheory.V.Z.Sym.Glob
 
 theorem UpperTheory.V.Z.Sym.Glob.tauEx :
-    UpperTheory.V.Z.Sym.Glob.TauEx :=
-  _root_.UpperTheory.Reformulated.B.CubicCharpolyDiscriminant.tauEx
+    UpperTheory.V.Z.Sym.Glob.TauEx := UpperTheory.Reformulated.B.CubicCharpolyDiscriminant.tauEx

@@ -7,5 +7,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.KeyPow GlobalTheory.KeyKa
 open GlobalTheory.KeyEq
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.keyNormalFormDetRatio_twoTorsion_translate : Out.Laws → ThetaUnifAV → ∀ (x x' : KeyIn ℂ) (p : 𝟙_ (Over (Sp ℂ)) ⟶ x.P.A) (ν : ℂˣ) (t : ℂ), IsTrl x' x p ν → Val x t → Val x' (t * (ν : ℂ) ^ 2) := by
-  first | exact @GlobalTheory.KeyEq.val_of_isTrl | exact GlobalTheory.KeyEq.val_of_isTrl | (intros; apply GlobalTheory.KeyEq.val_of_isTrl <;> assumption)
+theorem _root_.GlobalTheory.T.keyNormalFormDetRatio_twoTorsion_translate : Out.Laws → ThetaUnifAV → ∀ (x x' : KeyIn ℂ) (p : 𝟙_ (Over (Sp ℂ)) ⟶ x.P.A) (ν : ℂˣ) (t : ℂ), IsTrl x' x p ν → Val x t → Val x' (t * (ν : ℂ) ^ 2) := GlobalTheory.KeyEq.val_of_isTrl

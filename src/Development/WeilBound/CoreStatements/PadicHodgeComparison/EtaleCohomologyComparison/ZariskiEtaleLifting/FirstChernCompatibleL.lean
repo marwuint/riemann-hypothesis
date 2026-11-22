@@ -14,6 +14,6 @@ theorem compat : Compat l :=
 
 theorem compatH : CompatH l := ⟨P.ch_gal, P.ch_phi, P.ch_pull, P.ch_cup, P.ch_one, P.ch_cmp⟩
 
-theorem firstChern_compatible_l : FirstChernCompatible l := P.firstChern_compatible l
+theorem firstChern_compatible_l : FirstChernCompatible l := GlobalTheory.CompanionTheory.FirstChernComparison.main l
 
 end CrystallineSemistableComparison.B

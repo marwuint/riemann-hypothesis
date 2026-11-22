@@ -10,5 +10,4 @@ theorem _root_.GlobalTheory.T.cartanDoubleCoset_finite_disjoint_leftCosets : ∀
     (ϖ : kˣ) (a : ℕ) (n : Fin a → ℤ), ∃ t : Finset (GL (Fin a) k), (∀ x ∈ t, x ∈ KO k (Fin a)) ∧
       shellSet ϖ n = ⋃ x ∈ t, {g : GL (Fin a) k | (x * diagGL (fun i => ϖ ^ n i))⁻¹ * g ∈ KO k (Fin a)} ∧
       (t : Set (GL (Fin a) k)).PairwiseDisjoint
-        (fun x => {g : GL (Fin a) k | (x * diagGL (fun i => ϖ ^ n i))⁻¹ * g ∈ KO k (Fin a)}) := by
-  first | exact @GlobalTheory.ShellCosets.shell_cosets | exact GlobalTheory.ShellCosets.shell_cosets | (intros; apply GlobalTheory.ShellCosets.shell_cosets <;> assumption)
+        (fun x => {g : GL (Fin a) k | (x * diagGL (fun i => ϖ ^ n i))⁻¹ * g ∈ KO k (Fin a)}) := GlobalTheory.ShellCosets.shell_cosets

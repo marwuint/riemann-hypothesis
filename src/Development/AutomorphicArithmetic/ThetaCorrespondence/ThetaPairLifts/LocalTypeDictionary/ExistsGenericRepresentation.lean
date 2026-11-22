@@ -97,6 +97,5 @@ theorem _root_.GlobalTheory.T.isGeneric_localComponent : _root_.GlobalTheory.Fun
           ∀ φ ∈ schA F κ, ∫⁻ x, ‖ω₀ g φ x‖ₑ ^ 2 ∂μ = ∫⁻ x, ‖φ x‖ₑ ^ 2 ∂μ) ∧
       (∀ l ∈ (adeleClass F).adm κ, ∀ φ ∈ schA F κ,
         ContinuousOn (fun g => l (ω₀ g φ)) {g : UG (cA σ) JB | At (evI F) ((g.1 : Matrix β β (AE F E)) - 1)}) ∧
-      ActsBy τ C ω₀ Φ (fockAct2 P Q R S) c₀ := by
-  first | exact @_root_.GlobalTheory.GenRep.exists_generic_representation | exact _root_.GlobalTheory.GenRep.exists_generic_representation | (intros; apply _root_.GlobalTheory.GenRep.exists_generic_representation <;> assumption)
+      ActsBy τ C ω₀ Φ (fockAct2 P Q R S) c₀ := GlobalTheory.GenRep.exists_generic_representation
 end

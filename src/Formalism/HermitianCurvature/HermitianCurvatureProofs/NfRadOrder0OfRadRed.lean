@@ -292,7 +292,6 @@ namespace Formalism.FourierDecayAlt.P
 theorem nf_radOrder0_of_radRed : Formalism.FourierDecayAlt.NF.RadRedMem → Formalism.FourierDecayAlt.NF.RadRedInj → Formalism.FourierDecayAlt.NF.RadOrder0 :=
   NFRO.radOrder0_of
 
-theorem radical_order_zero : Formalism.FourierDecayAlt.NF.RadOrder0 :=
-  nf_radOrder0_of_radRed radical_reduction_mem radical_reduction_injective
+theorem radical_order_zero : Formalism.FourierDecayAlt.NF.RadOrder0 := Formalism.FourierDecayAlt.P.NFRO.radOrder0_of radical_reduction_mem radical_reduction_injective
 
 end Formalism.FourierDecayAlt.P

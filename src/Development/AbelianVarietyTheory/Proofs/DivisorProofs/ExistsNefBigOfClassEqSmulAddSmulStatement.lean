@@ -11,5 +11,4 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 open GlobalTheory.Cartier GlobalTheory.Discrepancy GlobalTheory.QCoh
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.exists_nef_big_of_class_eq_smul_add_smul : GlobalTheory.Published.NefNumerics → ∀ (k : Type) [Field k] (X : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp k), IsProjOver q → letI := algebraΓOfHom q; ∀ (N N' : LB X) (hN : N.IsLB) (hN' : N'.IsLB) (a b : ℕ), IsNef k N → IsBig k N → IsNef k N' → 0 < a → ∃ (N₀ : LB X) (h₀ : N₀.IsLB), cls N₀ h₀ = a • cls N hN + b • cls N' hN' ∧ IsNef k N₀ ∧ IsBig k N₀ := by
-  first | exact @GlobalTheory.nef_big_of_cls_eq_smul_add_smul | exact GlobalTheory.nef_big_of_cls_eq_smul_add_smul | (intros; apply GlobalTheory.nef_big_of_cls_eq_smul_add_smul <;> assumption)
+theorem _root_.GlobalTheory.T.exists_nef_big_of_class_eq_smul_add_smul : GlobalTheory.Published.NefNumerics → ∀ (k : Type) [Field k] (X : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp k), IsProjOver q → letI := algebraΓOfHom q; ∀ (N N' : LB X) (hN : N.IsLB) (hN' : N'.IsLB) (a b : ℕ), IsNef k N → IsBig k N → IsNef k N' → 0 < a → ∃ (N₀ : LB X) (h₀ : N₀.IsLB), cls N₀ h₀ = a • cls N hN + b • cls N' hN' ∧ IsNef k N₀ ∧ IsBig k N₀ := GlobalTheory.nef_big_of_cls_eq_smul_add_smul

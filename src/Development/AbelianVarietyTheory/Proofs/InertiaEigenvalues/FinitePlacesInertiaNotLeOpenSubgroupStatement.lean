@@ -6,5 +6,4 @@ open GroundTheory.Automorphic.GodementSection (localChar)
 open scoped Pointwise
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.finite_places_inertia_not_le_openSubgroup : ∀ (Ω : Type) [Field Ω] (k : Type) [Field k] [NumberField k] [Algebra k Ω] [IsAlgClosure k Ω] (N : Subgroup (G k Ω)), IsOpen (N : Set (G k Ω)) → {w : HeightOneSpectrum (𝓞 k) | ∃ A : ValuationSubring Ω, IsPlaceOver A w ∧ ¬ Ine (F := k) A ≤ N}.Finite := by
-  first | exact @GlobalTheory.DelGlob.finite_not_ine_le_of_isOpen | exact GlobalTheory.DelGlob.finite_not_ine_le_of_isOpen | (intros; apply GlobalTheory.DelGlob.finite_not_ine_le_of_isOpen <;> assumption)
+theorem _root_.GlobalTheory.T.finite_places_inertia_not_le_openSubgroup : ∀ (Ω : Type) [Field Ω] (k : Type) [Field k] [NumberField k] [Algebra k Ω] [IsAlgClosure k Ω] (N : Subgroup (G k Ω)), IsOpen (N : Set (G k Ω)) → {w : HeightOneSpectrum (𝓞 k) | ∃ A : ValuationSubring Ω, IsPlaceOver A w ∧ ¬ Ine (F := k) A ≤ N}.Finite := GlobalTheory.DelGlob.finite_not_ine_le_of_isOpen

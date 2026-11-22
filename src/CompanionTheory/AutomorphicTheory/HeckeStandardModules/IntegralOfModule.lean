@@ -68,7 +68,7 @@ theorem heckeD_eq (hJ : NG.HypOutside J χ B) (hs : s.v ∉ B) {f : Formalism.AU
     NG.heckeD J D f = op (emb s n) (KL s n) (dosetInd ℂ (KL s n) d) f :=
   funext fun g => coset_sum_eq (emb s n) (KL s n) J (emb_mem_J hJ hs) d hf g hD
 
-theorem comm_KL (s : SplitPlace L) : IsCommensurated (KL s n) := Final.GLintComm L⁺ s.v n
+theorem comm_KL (s : SplitPlace L) : IsCommensurated (KL s n) := Formalism.UG.P.GL_integral_hecke_commute L⁺ s.v n
 
 theorem dosetInd_mem (s : SplitPlace L) (d : GL (Fin n) (s.v.adicCompletion L⁺)) : dosetInd ℂ (KL s n) d ∈ Hecke ℂ (KL s n) :=
   Final.DosetIndMem _ _ ℂ d

@@ -13,5 +13,4 @@ theorem _root_.GlobalTheory.T.doubledVacuum_twistedVacuumCondition_doubledLattic
     (∀ w₁ ∈ latAtV G.V' G.W v, ∀ w₂ ∈ latAtV G.V' G.W v,
       Acts (evFin F v) (dd.rho B.ψ (Matrix.fromCols w₁ w₂)) (boxFun (G.M'.vac v) (fun x => star (G.M'.vac v x)))
         (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (dbl (incM F G.W.J))
-          (Matrix.fromCols w₁ w₂) (Matrix.fromCols w₁ w₂)) • (boxFun (G.M'.vac v) (fun x => star (G.M'.vac v x))))) := by
-  first | exact @GlobalTheory.DblVacLine.dbl_vac_acts | exact GlobalTheory.DblVacLine.dbl_vac_acts | (intros; apply GlobalTheory.DblVacLine.dbl_vac_acts <;> assumption)
+          (Matrix.fromCols w₁ w₂) (Matrix.fromCols w₁ w₂)) • (boxFun (G.M'.vac v) (fun x => star (G.M'.vac v x))))) := GlobalTheory.DblVacLine.dbl_vac_acts

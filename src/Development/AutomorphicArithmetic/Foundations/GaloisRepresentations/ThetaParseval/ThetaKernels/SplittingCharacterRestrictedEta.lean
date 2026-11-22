@@ -29,6 +29,5 @@ theorem _root_.GlobalTheory.T.splitting_character_restricted_eta : ∀ (F E : Ty
           SiegelRule (cA σ) (adeleClass F) B.ψ ξ (incM F JB) (incM F (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT)ᵀ)
             (GlobalTheory.WeilSchrodinger.transD (cA σ) co) χS
             ((diagCols (Fin nT) : Matrix (Fin nT ⊕ Fin nT) (Fin nT) (AF F ⊗[F] E)).submatrix finSumFinEquiv.symm id)
-            (omp.comp (MonoidHom.inl _ _)) := by
-  first | exact @_root_.GlobalTheory.WeilSchrodinger.DblTargetF.siegelRule_dblTarget_k | exact _root_.GlobalTheory.WeilSchrodinger.DblTargetF.siegelRule_dblTarget_k | (intros; apply _root_.GlobalTheory.WeilSchrodinger.DblTargetF.siegelRule_dblTarget_k <;> assumption)
+            (omp.comp (MonoidHom.inl _ _)) := GlobalTheory.WeilSchrodinger.DblTargetF.siegelRule_dblTarget_k
 end

@@ -16,11 +16,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.StationaryPhaseMode
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem orbit_tail_estimate : Formalism.FourierDecayAlt.G.TailStep :=
-  tail_estimate_of_bound tailBound_statement matrix_cutoff_spec cutoff_phase_bound
+theorem orbit_tail_estimate : Formalism.FourierDecayAlt.G.TailStep := Formalism.FourierDecayAlt.P.OrbitTailEstimates.tailStepOfBound tailBound_statement matrix_cutoff_spec cutoff_phase_bound
 
-theorem change_of_variables_xy : Formalism.FourierDecayAlt.G.InnerXY :=
-  inner_xy_of_reduced orbital_integral_reduced reduced_integrand_integrable split_xy_coordinates amplitude_eq
+theorem change_of_variables_xy : Formalism.FourierDecayAlt.G.InnerXY := Formalism.FourierDecayAlt.P.CuspidalIrreducibleSubrep.innerXYOfReduced orbital_integral_reduced reduced_integrand_integrable split_xy_coordinates amplitude_eq
 
 theorem nonstationary_estimate : Formalism.FourierDecayAlt.G.NonStatStep :=
   nonstationary_estimate_of_parts nonstationary_phase gradient_lower_bound phase_function_deriv phase_relative_deriv

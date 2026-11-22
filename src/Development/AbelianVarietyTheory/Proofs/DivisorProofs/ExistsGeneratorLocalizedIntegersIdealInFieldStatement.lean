@@ -8,5 +8,4 @@ theorem _root_.GlobalTheory.T.exists_generator_localized_integers_ideal_in_field
     (∀ a ∈ K, ∀ b ∈ K, a + b ∈ K) →
     (∀ c : L, (∃ s : ℤ, s ∉ v.asIdeal ∧ IsIntegral ℤ ((s : L) * c)) → ∀ a ∈ K, c * a ∈ K) →
     (∀ a ∈ K, ∃ s : ℤ, s ∉ v.asIdeal ∧ IsIntegral ℤ ((s : L) * a)) →
-    ∃ g ∈ K, ∀ a ∈ K, ∃ c : L, (∃ s : ℤ, s ∉ v.asIdeal ∧ IsIntegral ℤ ((s : L) * c)) ∧ a = c * g := by
-  first | (exact @GlobalTheory.LocIntPrincipal.exists_generator) | (exact GlobalTheory.LocIntPrincipal.exists_generator) | (intros; apply GlobalTheory.LocIntPrincipal.exists_generator <;> assumption)
+    ∃ g ∈ K, ∀ a ∈ K, ∃ c : L, (∃ s : ℤ, s ∉ v.asIdeal ∧ IsIntegral ℤ ((s : L) * c)) ∧ a = c * g := GlobalTheory.LocIntPrincipal.exists_generator

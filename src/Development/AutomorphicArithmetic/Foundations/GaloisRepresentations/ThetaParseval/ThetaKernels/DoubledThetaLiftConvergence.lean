@@ -24,6 +24,5 @@ theorem _root_.GlobalTheory.T.doubled_theta_lift_convergence : ∀ (F E : Type) 
           ∃ U : AddSubgroup (Formalism.IndefR.DatumF.WOF F E nS nT), IsOpen (U : Set (Formalism.IndefR.DatumF.WOF F E nS nT)) ∧
             ∀ u ∈ U, u.map (Formalism.IndefR.DatumF.infPartF F E) = 0 →
               Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ u (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ φ) =
-                GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ φ := by
-  first | exact @_root_.GlobalTheory.ThetaLevelCM.thetaTr_level_k | exact _root_.GlobalTheory.ThetaLevelCM.thetaTr_level_k | (intros; apply _root_.GlobalTheory.ThetaLevelCM.thetaTr_level_k <;> assumption)
+                GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ φ := GlobalTheory.ThetaLevelCM.thetaTr_level_k
 end

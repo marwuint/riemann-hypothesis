@@ -83,7 +83,6 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.IndefR.NX ReciprocityTheory.Aut Formalism.AUTREP NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.adm8_and_lamUsed_of_geometric_galois_compat : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → _root_.GlobalTheory.NRows.GeometricGaloisRepCompatibility → AllSt fun _ _ _ _ _ _ x => SumRepresentations.adm8 (Dof x) ∧ GlobalTheory.NRows.LamUsed (Dof x) := by
-  first | exact @_root_.GlobalTheory.HeightCounting.Up.RowsAtStates.adm8_and_lamUsed_all_states_of_published_inputs | exact _root_.GlobalTheory.HeightCounting.Up.RowsAtStates.adm8_and_lamUsed_all_states_of_published_inputs | (intros; apply _root_.GlobalTheory.HeightCounting.Up.RowsAtStates.adm8_and_lamUsed_all_states_of_published_inputs <;> assumption)
+theorem _root_.GlobalTheory.T.adm8_and_lamUsed_of_geometric_galois_compat : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → _root_.GlobalTheory.NRows.GeometricGaloisRepCompatibility → AllSt fun _ _ _ _ _ _ x => SumRepresentations.adm8 (Dof x) ∧ GlobalTheory.NRows.LamUsed (Dof x) := GlobalTheory.HeightCounting.Up.RowsAtStates.adm8_and_lamUsed_all_states_of_published_inputs
 end
 end

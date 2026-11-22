@@ -70,6 +70,5 @@ theorem _root_.GlobalTheory.T.weil_algebraic_subspace_kInfty_stable : _root_.Glo
     IsInfFam θ → IsTriple W W₁ X α β → ∀ (hO : IsOver ψ θ A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB),
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ Xc om om' →
     ∀ Pi rf rl p p', IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p' →
-    ∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf D.sp.cm.sig Γ.V Bs.emb, ∀ ΦD ∈ algD Γ.M Bs.ψ Bs.emb, om (k, 1) ΦD ∈ algD Γ.M Bs.ψ Bs.emb := by
-  first | exact @_root_.GlobalTheory.SquareAgree.CompactStableD.algebraic_vectors_kInfty_stable | exact _root_.GlobalTheory.SquareAgree.CompactStableD.algebraic_vectors_kInfty_stable | (intros; apply _root_.GlobalTheory.SquareAgree.CompactStableD.algebraic_vectors_kInfty_stable <;> assumption)
+    ∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf D.sp.cm.sig Γ.V Bs.emb, ∀ ΦD ∈ algD Γ.M Bs.ψ Bs.emb, om (k, 1) ΦD ∈ algD Γ.M Bs.ψ Bs.emb := GlobalTheory.SquareAgree.CompactStableD.algebraic_vectors_kInfty_stable
 end

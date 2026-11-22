@@ -64,8 +64,7 @@ theorem exists_finite_subfield {R F k : Type} [CommRing R] [Field F] [Field k] [
   rfl
 
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap g ≫ spMap f = spMap (g.comp f) := by
-  simp only [spMap, ← Spec.map_comp]; rfl
+    spMap g ≫ spMap f = spMap (g.comp f) := GlobalTheory.FrameTangent.spMap_comp' f g
 
 theorem epi_spMap {K k : Type} [Field K] [Field k] (f : K →+* k) : Epi (spMap f) := by
   have h1 : Flat (spMap f) := by

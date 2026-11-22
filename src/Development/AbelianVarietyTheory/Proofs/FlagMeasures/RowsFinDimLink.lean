@@ -4,7 +4,6 @@ import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.FundamentalDo
 
 namespace GlobalTheory
 
-theorem rowsFinDim_link : Formalism.L2.SG.RowsDef.RowsFinDim :=
-  CompanionTheory.D.gk.RF.automorphic_forms_finite_dimensional
+theorem rowsFinDim_link : Formalism.L2.SG.RowsDef.RowsFinDim := CompanionTheory.D.gk.RF.automorphic_forms_finite_dimensional
 
 end GlobalTheory

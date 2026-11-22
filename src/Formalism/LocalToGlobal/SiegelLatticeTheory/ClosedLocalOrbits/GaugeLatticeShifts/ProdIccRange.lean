@@ -31,9 +31,7 @@ theorem coordSc_last {r : ℕ} (sc : ℝ) (q : (Fin r → ℂ) × ℂ) : coordSc
   simp [coordSc]
 
 theorem dl_diag {r : ℕ} (c : Fin (r + 1) → ℂ) (l : ℕ) (hl : l ≤ r + 1) :
-    Dl (Matrix.diagonal c) l = ∏ i : Fin l, c (Fin.castLE hl i) := by
-  rw [Dl, dif_pos hl, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective hl), Matrix.det_diagonal]
-  rfl
+    Dl (Matrix.diagonal c) l = ∏ i : Fin l, c (Fin.castLE hl i) := Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.dl_diagonal c l hl
 
 theorem gv_cs {r : ℕ} (T T' sc : ℝ) (q : (Fin r → ℂ) × ℂ) :
     Gv T T' (Matrix.diagonal (coordSc r sc q)) =

@@ -96,6 +96,5 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.twist_norm_kappa_moved_place : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
-    (ch : Choice R), ch.Is → ∀ (p : Pair T), DefPair D.R.m p → ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big) (κ : ℂ), GlobalTheory.MovedKappaEx.JetKap ch p x y κ → ‖κ‖ = 1 := by
-  first | exact @_root_.GlobalTheory.MovedKappaNorm.norm_kappa_of_moved_place | exact _root_.GlobalTheory.MovedKappaNorm.norm_kappa_of_moved_place | (intros; apply _root_.GlobalTheory.MovedKappaNorm.norm_kappa_of_moved_place <;> assumption)
+    (ch : Choice R), ch.Is → ∀ (p : Pair T), DefPair D.R.m p → ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big) (κ : ℂ), GlobalTheory.MovedKappaEx.JetKap ch p x y κ → ‖κ‖ = 1 := GlobalTheory.MovedKappaNorm.norm_kappa_of_moved_place
 end

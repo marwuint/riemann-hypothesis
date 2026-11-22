@@ -13,14 +13,11 @@ local notation "HF" => ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm
 
 theorem hf_sum_left {g : ℕ} {κ : Type*} [Fintype κ] (Hm : Matrix (Fin g) (Fin g) ℂ)
     (c : κ → ℂ) (V : κ → Fin g → ℂ) (w : Fin g → ℂ) :
-    HF Hm (∑ i, c i • V i) w = ∑ i, c i * HF Hm (V i) w := by
-  simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm, sum_dotProduct, smul_dotProduct]
+    HF Hm (∑ i, c i • V i) w = ∑ i, c i * HF Hm (V i) w := GlobalTheory.CompanionTheory.Ar.LinFlat.hermForm_sum_left Hm c V w
 
 theorem hf_sum_right {g : ℕ} {κ : Type*} [Fintype κ] (Hm : Matrix (Fin g) (Fin g) ℂ)
     (c : κ → ℂ) (V : κ → Fin g → ℂ) (z : Fin g → ℂ) :
-    HF Hm z (∑ i, c i • V i) = ∑ i, star (c i) * HF Hm z (V i) := by
-  simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm, star_sum, Matrix.mulVec_sum, dotProduct_sum,
-    Matrix.mulVec_smul, dotProduct_smul]
+    HF Hm z (∑ i, c i • V i) = ∑ i, star (c i) * HF Hm z (V i) := GlobalTheory.CompanionTheory.Ar.LinFlat.hermForm_sum_right Hm c V z
 
 theorem exists_row {R M I : Type} [CommRing R] [IsDomain R] [AddCommGroup M] [Module R M] [Module.Finite R M] [Fintype I]
     (e : I → M) (he : LinearIndependent R e) (hc : Fintype.card I = Module.finrank R M) (x : M) :

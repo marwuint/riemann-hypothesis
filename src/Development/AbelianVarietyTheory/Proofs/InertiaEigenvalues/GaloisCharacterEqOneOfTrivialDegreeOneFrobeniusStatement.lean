@@ -12,5 +12,4 @@ theorem _root_.GlobalTheory.T.galoisCharacter_eq_one_of_trivial_degreeOne_froben
     (φ : G E Ω →* (Qbar l)ˣ), Continuous φ →
     (∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, w.asIdeal.inertiaDeg ℤ = 1 → w.asIdeal.ramificationIdx ℤ = 1 →
       ∀ (A : ValuationSubring Ω) (σ : G E Ω), IsPlaceOver (F := E) A w → IsFrob (F := E) A (normV w) σ → φ σ = 1) →
-    φ = 1 := by
-  first | exact @GlobalTheory.FrobTrivChar.eq_one_of_frob_trivial | exact GlobalTheory.FrobTrivChar.eq_one_of_frob_trivial | (intros; apply GlobalTheory.FrobTrivChar.eq_one_of_frob_trivial <;> assumption)
+    φ = 1 := GlobalTheory.FrobTrivChar.eq_one_of_frob_trivial

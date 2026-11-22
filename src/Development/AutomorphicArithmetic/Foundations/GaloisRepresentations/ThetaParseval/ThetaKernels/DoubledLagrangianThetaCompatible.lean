@@ -27,6 +27,5 @@ theorem _root_.GlobalTheory.T.doubled_lagrangian_theta_compatible : ∀ (F E : T
               @Measure.IsAddHaarMeasure _ _ _ (borel _) ν' ∧
               @IsAddFundamentalDomain (GlobalTheory.WeilUnitaryTransport.ratPair F κ) _ _ _ (borel _) 𝓕' ν' ∧
               ∀ f : (κ → AF F) × (κ → AF F) → ℂ,
-                ∫⁻ w in 𝓕, ‖f (co.e w)‖ₑ ^ 2 ∂ν = ∫⁻ w in 𝓕', ‖f w‖ₑ ^ 2 ∂ν' := by
-  first | exact @_root_.GlobalTheory.RatDarbouxTransferF.haar_fundDomain_transfer_k | exact _root_.GlobalTheory.RatDarbouxTransferF.haar_fundDomain_transfer_k | (intros; apply _root_.GlobalTheory.RatDarbouxTransferF.haar_fundDomain_transfer_k <;> assumption)
+                ∫⁻ w in 𝓕, ‖f (co.e w)‖ₑ ^ 2 ∂ν = ∫⁻ w in 𝓕', ‖f w‖ₑ ^ 2 ∂ν' := GlobalTheory.RatDarbouxTransferF.haar_fundDomain_transfer_k
 end

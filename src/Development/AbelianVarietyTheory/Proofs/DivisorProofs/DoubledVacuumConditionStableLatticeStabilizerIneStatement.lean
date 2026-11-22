@@ -17,5 +17,4 @@ theorem _root_.GlobalTheory.T.doubledVacuumCondition_stable_latticeStabilizer_in
     (∀ w₁ ∈ latAtV G.V' G.W v, ∀ w₂ ∈ latAtV G.V' G.W v,
       Acts (evFin F v) (dd.rho B.ψ (Matrix.fromCols w₁ w₂)) (φ₁)
         (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (dbl (incM F G.W.J))
-          (Matrix.fromCols w₁ w₂) (Matrix.fromCols w₁ w₂)) • (φ₁))) := by
-  first | exact @GlobalTheory.DblVacTransport.acts_dblVacCond_of_mem_KAtD | exact GlobalTheory.DblVacTransport.acts_dblVacCond_of_mem_KAtD | (intros; apply GlobalTheory.DblVacTransport.acts_dblVacCond_of_mem_KAtD <;> assumption)
+          (Matrix.fromCols w₁ w₂) (Matrix.fromCols w₁ w₂)) • (φ₁))) := GlobalTheory.DblVacTransport.acts_dblVacCond_of_mem_KAtD

@@ -26,7 +26,5 @@ end GlobalTheory.SeqCx
 
 section
 open GlobalTheory.SeqCx
-theorem _root_.GlobalTheory.T.subClosed2_splitPairs : ∀ (R : Type) [CommRing R] (n : ℕ), SubClosed2 (splitPairs R n) := by
-  first
-  | exact @GlobalTheory.SeqCx.splitPairs_subClosed2
+theorem _root_.GlobalTheory.T.subClosed2_splitPairs : ∀ (R : Type) [CommRing R] (n : ℕ), SubClosed2 (splitPairs R n) := GlobalTheory.SeqCx.splitPairs_subClosed2
 end

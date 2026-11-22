@@ -30,8 +30,7 @@ theorem herm_UH {ι : Type*} [Fintype ι] [DecidableEq ι] {H g : Matrix ι ι �
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg']
 
 theorem herm_bvec_right {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (v : Fin m → ℂ) (p : Fin m) :
-    herm H v (bvec p) = (H *ᵥ v) p := by
-  simp [herm, bvec, dotProduct, Pi.single_apply]
+    herm H v (bvec p) = (H *ᵥ v) p := Formalism.QuantumDeterminants.gn_herm_bvec_right H v p
 
 theorem Hpk_mulVec (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) (p : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ v) p = GBasic.sgn k r p * v (GBasic.sig k r p) := by

@@ -1544,11 +1544,7 @@ theorem mramSpan (D : D7) : MramSpan D := by
   rw [e]
   exact Submodule.smul_mem _ _ (Submodule.subset_span hmem)
 
-theorem Iu_ne_zero (D : D7) (L : SizeData₂ D) (u : D.what₂.Word) : DV.Iu D L u ≠ 0 := by
-  unfold DV.Iu
-  rw [Finset.prod_ne_zero_iff]
-  intro w _
-  exact zpow_ne_zero _ (FractionalIdeal.coeIdeal_ne_zero.mpr (D.plEq w).ne_bot)
+theorem Iu_ne_zero (D : D7) (L : SizeData₂ D) (u : D.what₂.Word) : DV.Iu D L u ≠ 0 := Formalism.MainNotions.J.Iu_ne_zero D L u
 
 theorem nuFull_of {D : D7} {L : SizeData₂ D} (hN' : DV.NprimeDef D L) (hc : NuCommens D L) : D.NuFull := by
   intro u

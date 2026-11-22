@@ -170,8 +170,7 @@ end Formalism.FourierDecayAlt.P.BigCellDiagonalMap
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem big_cell_decomposition : BigCellDecomposition.CellDecomp := by
-  exact BigCellDiagonalMap.cellDecomp
+theorem big_cell_decomposition : BigCellDecomposition.CellDecomp := Formalism.FourierDecayAlt.P.BigCellDiagonalMap.cellDecomp
 
 theorem psiOnto_true : Formalism.FourierDecayAlt.JF.PsiOnto := jf_psiOnto_of_cellDecomp BigCellDiagonalMap.cellDecomp
 

@@ -27,22 +27,17 @@ import Development.EtaleCohomology.KummerTheory.AdicLimPfGlue
 import Development.EtaleCohomology.EtaleDuality.PointClasses
 
 namespace LateralTheory.Fin.AdicFin
-theorem etale_torsion_cohomology_residue_basic : LateralTheory.EtaleFoundations.EtaleInjectiveResolutionBasicProperties := by
-  apply LateralTheory.EtaleFoundations.etaleSheaf_injectiveResolution_properties_of_mathlib
+theorem etale_torsion_cohomology_residue_basic : LateralTheory.EtaleFoundations.EtaleInjectiveResolutionBasicProperties := LateralTheory.EtaleFoundations.etaleSheaf_injectiveResolution_properties_of_mathlib
 theorem etale_bockstein_derived_category_dictionary : LateralTheory.KummerTheory.BockCut.DerDict := by
   apply LateralTheory.KummerTheory.DerDictPf.DerDict_of <;> first | exact etale_torsion_cohomology_residue_basic
 theorem etale_bockstein_long_exact_sequence_natural : LateralTheory.KummerTheory.BockCut.NatLES := by
   apply LateralTheory.KummerTheory.NatLESPf.NatLES_of <;> first | exact etale_bockstein_derived_category_dictionary
-theorem etale_bockstein_integer_hom_compat : LateralTheory.KummerTheory.BockCut.ZHom := by
-  apply LateralTheory.KummerTheory.ZHomPf.ZHom_of
-theorem etale_torsion_cohomology_twist_section : LateralTheory.EtaleFoundations.EtaleTateTwistSectionsLocallyGenerated := by
-  apply LateralTheory.Ext.etale_tate_twist_sections_locally_generated
-theorem etale_torsion_cohomology_primary_part_basic : LateralTheory.EtaleFoundations.PrimitiveRootsOfUnityBasicIdentities := by
-  apply LateralTheory.EtaleFoundations.PrimPf.cyclotomic_primitive_root_product_identities_of_adjoin_root
+theorem etale_bockstein_integer_hom_compat : LateralTheory.KummerTheory.BockCut.ZHom := LateralTheory.KummerTheory.ZHomPf.ZHom_of
+theorem etale_torsion_cohomology_twist_section : LateralTheory.EtaleFoundations.EtaleTateTwistSectionsLocallyGenerated := LateralTheory.Ext.etale_tate_twist_sections_locally_generated
+theorem etale_torsion_cohomology_primary_part_basic : LateralTheory.EtaleFoundations.PrimitiveRootsOfUnityBasicIdentities := LateralTheory.EtaleFoundations.PrimPf.cyclotomic_primitive_root_product_identities_of_adjoin_root
 theorem etale_bockstein_reduction_exact : LateralTheory.KummerTheory.BockCut.RedEx := by
   apply LateralTheory.KummerTheory.RedExPf.RedEx_of <;> first | exact etale_bockstein_integer_hom_compat | exact etale_torsion_cohomology_twist_section | exact etale_torsion_cohomology_primary_part_basic
-theorem etale_torsion_cohomology_mono_epi_of_exact : LateralTheory.EtaleFoundations.EtaleSheafMonoEpiSectionCriteria := by
-  apply LateralTheory.EtaleFoundations.etale_sheaf_mono_epi_iff_sections_of_separation
+theorem etale_torsion_cohomology_mono_epi_of_exact : LateralTheory.EtaleFoundations.EtaleSheafMonoEpiSectionCriteria := LateralTheory.EtaleFoundations.etale_sheaf_mono_epi_iff_sections_of_separation
 theorem etale_bockstein_twisted_extension : LateralTheory.KummerTheory.BockCut.TwExt := by
   apply LateralTheory.KummerTheory.TwExtPf.TwExt_of <;> first | exact etale_torsion_cohomology_twist_section | exact etale_torsion_cohomology_mono_epi_of_exact
 theorem etale_locally_exists_primitive_root_of_unity : LateralTheory.EtaleFoundations.EtaleLocallyExistsPrimitiveRootOfUnityOfInvertibleOrder := by

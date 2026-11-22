@@ -10,13 +10,9 @@ open scoped TensorProduct
 namespace GlobalTheory.EtC.ClosedCover
 
 theorem spMap_comp {A B D : Type} [CommRing A] [CommRing B] [CommRing D] (f : A →+* B) (g : B →+* D) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp]
+    spMap (g.comp f) = spMap g ≫ spMap f := GlobalTheory.EtC.HInvIso.spMap_comp' f g
 
-theorem spMap_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
-  simp only [spMap]
-  rw [show CommRingCat.ofHom (RingHom.id A) = 𝟙 (CommRingCat.of A) from rfl, Spec.map_id]
-  exact sch.map_id _
+theorem spMap_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := GlobalTheory.EtC.HInvIso.spMap_id' A
 
 theorem pull_spMap_bij {q : ℕ} {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B) (n i : ℤ) :
     Function.Bijective (pull (ZMod q) (spMap (e : A →+* B)) (tw q i) n) := by

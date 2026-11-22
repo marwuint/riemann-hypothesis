@@ -25,5 +25,4 @@ theorem _root_.GlobalTheory.T.served_place_levels_classes_comparison_maps : ∀ 
         (∀ j, j + 1 ≤ (w.D Z).R.m → ∀ x, ∃ a L, ((Fl u v hg).Pj (j + 1)).IsLatTup L ∧ clsS j a L = x) ∧
         (∀ j, j + 1 ≤ (w.D Z).R.m → Submodule.span ((w.D Z).gat u v hg).O
           (up.cmpS j '' ((((w.tw Z).fm u ((w.D Z).what₂.muAt v)).lat (j + 1)).L :
-            Set (((w.tw Z).fm u ((w.D Z).what₂.muAt v)).lat (j + 1)).V)) = Lv.Int (j + 1)) := by
-  first | exact @GlobalTheory.Mem.Top.KerOne.levels_cls_cmp_at_served | exact GlobalTheory.Mem.Top.KerOne.levels_cls_cmp_at_served | (intros; apply GlobalTheory.Mem.Top.KerOne.levels_cls_cmp_at_served <;> assumption)
+            Set (((w.tw Z).fm u ((w.D Z).what₂.muAt v)).lat (j + 1)).V)) = Lv.Int (j + 1)) := GlobalTheory.Mem.Top.KerOne.levels_cls_cmp_at_served

@@ -225,6 +225,5 @@ theorem _root_.GlobalTheory.T.rallis_bottom_minor_matching : _root_.GlobalTheory
         ∃ (M : Tup D P.a P.d P.n → Tup D P'.a P'.d P'.n → ℤ) (M' : Tup D P'.a P'.d P'.n → Tup D P.a P.d P.n → ℤ),
           (∀ T₁ T₂, ∑ T, M' T₁ T * M T T₂ = if T₁ = T₂ then 1 else 0) ∧
           ∀ (g : GA D WW) T, X.I W.ψ W.θ s (GlobalTheory.BotFormula.minorF ea ed T) g =
-            κ₀ * c0 s * ∑ T', (M T T' : ℂ) * X.I' W.ψ W.θ s (GlobalTheory.BotFormula.minorF ea' ed' T') g := by
-  first | exact @_root_.GlobalTheory.BotMatch.theta_bottom_minor_match | exact _root_.GlobalTheory.BotMatch.theta_bottom_minor_match | (intros; apply _root_.GlobalTheory.BotMatch.theta_bottom_minor_match <;> assumption)
+            κ₀ * c0 s * ∑ T', (M T T' : ℂ) * X.I' W.ψ W.θ s (GlobalTheory.BotFormula.minorF ea' ed' T') g := GlobalTheory.BotMatch.theta_bottom_minor_match
 end

@@ -15,13 +15,9 @@ open scoped BigOperators
 
 namespace GlobalTheory.FinWeil.Model
 
-theorem conjE_conjE (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
-  apply D.host.φ₀.injective
-  rw [Formalism.HC.HostAx.conjE_apply, Formalism.HC.HostAx.conjE_apply]
-  simp
+theorem conjE_conjE (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := GlobalTheory.FinWeil.GamAlg.conj_conj D x
 
-theorem sgA_incE (D : D7) (x : D.host.E) : sgA D (inc D x) = inc D (D.host.conj x) := by
-  simp [sgA, inc, Formalism.UG.sigR, Formalism.UG.inclE]
+theorem sgA_incE (D : D7) (x : D.host.E) : sgA D (inc D x) = inc D (D.host.conj x) := GlobalTheory.NormSum.PtsMem.sgA_inc D x
 
 theorem wd_at_zero (D : D7) (T : Tor D) {a d : ℕ} (G : VC D a d → ℂ) : Wd D T 0 G = G := by
   funext z

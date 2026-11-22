@@ -36,5 +36,4 @@ theorem _root_.GlobalTheory.T.heisenbergStableRelation_of_vacua : ∀ {F E : Typ
     (Set.indicator (H : Set _) fun u => ∏ w ∈ P, I w (M.vac (pl w)) (co w u), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f M.vac) ∈ R →
     ∀ φ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n × Fin d → Fv F v) → ℂ, (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) →
       (∀ v, (∀ w ∈ P, pl w ≠ v) → φ v = M.vac v) →
-      (Set.indicator (H : Set _) fun u => ∏ w ∈ P, I w (φ (pl w)) (co w u), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) ∈ R := by
-  first | exact @GlobalTheory.InductLagr.rel_of_vac | exact GlobalTheory.InductLagr.rel_of_vac | (intros; apply GlobalTheory.InductLagr.rel_of_vac <;> assumption)
+      (Set.indicator (H : Set _) fun u => ∏ w ∈ P, I w (φ (pl w)) (co w u), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) ∈ R := GlobalTheory.InductLagr.rel_of_vac

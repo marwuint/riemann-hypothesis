@@ -21,9 +21,7 @@ namespace GlobalTheory.VacUnit
 open Formalism.MainNotions.TaylorLogMetric (hYY LocBasis YYl)
 open Formalism.MainNotions.StandardLatticesGL3 (OnB LaB pullB KLat)
 
-theorem mem_Qbar_of_pow {x : ℂ} {n : ℕ} (hn : 0 < n) (h : x ^ n ∈ Qbar) : x ∈ Qbar := by
-  rw [mem_algebraicClosure_iff] at h ⊢
-  exact h.of_pow hn
+theorem mem_Qbar_of_pow {x : ℂ} {n : ℕ} (hn : 0 < n) (h : x ^ n ∈ Qbar) : x ∈ Qbar := GlobalTheory.NormSum.VacMove.mem_of_pow hn h
 
 theorem norm_int_le {K : Type} [Field K] [NumberField K] {p : ℕ} [Fact p.Prime] (f : K →+* ℂ_[p]) (c : 𝓞 K) :
     ‖f (c : K)‖ ≤ 1 := by

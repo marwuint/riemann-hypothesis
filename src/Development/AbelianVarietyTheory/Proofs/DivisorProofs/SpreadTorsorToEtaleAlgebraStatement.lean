@@ -20,5 +20,4 @@ theorem _root_.GlobalTheory.T.spread_torsor_to_etale_algebra : ∀ (T O : Type) 
       ∀ s : DE →+* GlobalTheory.LocAcyc.GenFib T O,
         (∀ e : E, s (algebraMap (GlobalTheory.LocAcyc.GenFib T E) DE (algebraMap E _ e)) =
           algebraMap O (GlobalTheory.LocAcyc.GenFib T O) (ψ e)) →
-        Nonempty (D →ₐ[GlobalTheory.LocAcyc.GenFib T O] GlobalTheory.LocAcyc.GenFib T O) := by
-  first | (exact @GlobalTheory.LocAcyc.spread_torsor_to_etale) | (exact GlobalTheory.LocAcyc.spread_torsor_to_etale) | (intros; apply GlobalTheory.LocAcyc.spread_torsor_to_etale  <;> assumption)
+        Nonempty (D →ₐ[GlobalTheory.LocAcyc.GenFib T O] GlobalTheory.LocAcyc.GenFib T O) := GlobalTheory.LocAcyc.spread_torsor_to_etale

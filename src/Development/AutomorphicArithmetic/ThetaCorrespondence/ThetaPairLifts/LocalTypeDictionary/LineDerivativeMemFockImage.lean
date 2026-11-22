@@ -104,6 +104,5 @@ theorem _root_.GlobalTheory.T.fock_image_line_stable : _root_.GlobalTheory.FunPr
         GlobalTheory.RealQuot.IsStab (fun i : GlobalTheory.RealQuot.LieIx X => GlobalTheory.RealQuot.actT ε A B eS i.1.1 i.1.2) N →
         ∀ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Lines D.sp.cm.sig Ws, ∀ f ∈ N.map Φ, ∀ f₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin M.rank × Fin X.rank),
           GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ActsD (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (fun t => om (1, γ (Multiplicative.ofAdd t))) f f₁ →
-          f₁ ∈ N.map Φ := by
-  first | exact @_root_.GlobalTheory.RealDict.LineStab.line_derivative_mem_fock_image | exact _root_.GlobalTheory.RealDict.LineStab.line_derivative_mem_fock_image | (intros; apply _root_.GlobalTheory.RealDict.LineStab.line_derivative_mem_fock_image <;> assumption)
+          f₁ ∈ N.map Φ := GlobalTheory.RealDict.LineStab.line_derivative_mem_fock_image
 end

@@ -148,6 +148,5 @@ theorem _root_.GlobalTheory.T.gelfandKirillov_globalization : _root_.GlobalTheor
           HasDerivAt (fun t : ℝ => M.rep τ (NormedSpace.exp (t • X)) (u τ : M.H τ)) (w : M.H τ) 0 →
           F (Function.update u τ w) = Rder θ V τ X (F u)) →
       ∃ T : Formalism.IndefR.Mult.MMap M, Formalism.IndefR.Mult.IsMultMap θ M ∅ 1 T ∧
-        ∀ u : ∀ τ, GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin (M.ε τ) (M.σ τ), ∃ v : M.Vec, (∀ τ, (v τ : M.H τ) = u τ) ∧ T v = F u := by
-  first | exact @_root_.GlobalTheory.GKGlobalise.gelfandKirillov_local_to_global | exact _root_.GlobalTheory.GKGlobalise.gelfandKirillov_local_to_global | (intros; apply _root_.GlobalTheory.GKGlobalise.gelfandKirillov_local_to_global <;> assumption)
+        ∀ u : ∀ τ, GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin (M.ε τ) (M.σ τ), ∃ v : M.Vec, (∀ τ, (v τ : M.H τ) = u τ) ∧ T v = F u := GlobalTheory.GKGlobalise.gelfandKirillov_local_to_global
 end

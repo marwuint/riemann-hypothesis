@@ -9,5 +9,4 @@ theorem _root_.GlobalTheory.T.harrisTaylor_moduliMap_descends_galoisCover : ∀ 
   (S S₁ Y : Scheme.{0}) (t : S ⟶ Sp R) (sY : Y ⟶ Sp R) (π₁ : S₁ ⟶ S) (Ga : Type) [Group Ga]
   (ρ₁ : Ga → (S₁ ⟶ S₁)) (f : S ⟶ Y) (o : Obj b N t) (o' : Obj b N (π₁ ≫ t)) (u : Obj b N sY),
   3 ≤ N → N.Coprime p → GlobalTheory.ZM.IsGaloisCover Ga ρ₁ π₁ → ObjMap o' o π₁ → ObjMap o' u (π₁ ≫ f) →
-  Nonempty (ObjMap o u f) := by
-  first | (exact @GlobalTheory.UPel.HT.MapDesc.nonempty_objMap_of_galoisCover) | (exact GlobalTheory.UPel.HT.MapDesc.nonempty_objMap_of_galoisCover) | (intros; apply GlobalTheory.UPel.HT.MapDesc.nonempty_objMap_of_galoisCover  <;> assumption)
+  Nonempty (ObjMap o u f) := GlobalTheory.UPel.HT.MapDesc.nonempty_objMap_of_galoisCover

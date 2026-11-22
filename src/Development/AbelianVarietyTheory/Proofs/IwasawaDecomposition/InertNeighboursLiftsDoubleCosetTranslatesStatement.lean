@@ -15,5 +15,4 @@ theorem _root_.GlobalTheory.T.inertNeighbours_lifts_doubleCoset_translates : ∀
       ∀ (M : Type) [AddCommMonoid M] (ψ : Formalism.L2.Col.DecoSet X.toD7.host.E X.B.R.nV ∅ (LiftBrg.sgL X I U t) → M)
         (g : Bridge.Gf (Vc X.toD7 i)),
         ∑ a ∈ R, ψ (LiftBrg.ptL X I U i t A k (g * a)) =
-          ∑ e ∈ (LiftBrg.ptL X I U i t A k g).inertNb ((q.1.1 : PlI X.B px).1).asIdeal q.2, ψ e := by
-  first | exact @GlobalTheory.InertNbr.inert_neighbours | exact GlobalTheory.InertNbr.inert_neighbours | (intros; apply GlobalTheory.InertNbr.inert_neighbours <;> assumption)
+          ∑ e ∈ (LiftBrg.ptL X I U i t A k g).inertNb ((q.1.1 : PlI X.B px).1).asIdeal q.2, ψ e := GlobalTheory.InertNbr.inert_neighbours

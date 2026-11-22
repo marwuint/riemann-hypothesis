@@ -3798,16 +3798,7 @@ theorem wordS_plus : ∀ v : List (Bool × ℝ), (wordS v).map Letter.plus = v.m
     rw [← wordS_plus v]
     rfl
 
-theorem plusWord_letters_plus (w : List ℝ) : ∀ a ∈ wordP w, a.plus = true := by
-  intro a ha
-  have h1 : a.plus ∈ (wordP w).map Letter.plus := List.mem_map_of_mem ha
-  have h2 : (wordP w).map Letter.plus = (LE.plus w).map Prod.fst := by
-    unfold wordP
-    rw [List.map_map, ← wordS_plus]
-    rfl
-  rw [h2, LE.plus, List.map_map, List.mem_map] at h1
-  obtain ⟨_, _, h⟩ := h1
-  exact h.symm
+theorem plusWord_letters_plus (w : List ℝ) : ∀ a ∈ wordP w, a.plus = true := Formalism.FourierDecayAlt.P.MAx3.F.plusWord_letters_plus w
 
 theorem tl_pts (w : List ℝ) : (tl w).map Letter.pt = w.map fun Y : ℝ => (Y : ℂ) := by
   have h := MAx2.plusWord_points (0 :: w)
@@ -5337,14 +5328,7 @@ theorem wordS_nodup : ∀ v : List (Bool × ℝ), ((wordS v).map Letter.intersec
       rw [List.map_map] at this
       exact this
 
-theorem plusWord_slots_nodup (w : List ℝ) : ((wordP w).map Letter.intersection_update_fsHerm_neg_one).Nodup := by
-  unfold wordP
-  rw [List.map_map]
-  have h : ((wordS (LE.plus w)).map Letter.intersection_update_fsHerm_neg_one).map (Fin.cast (by simp [LE.plus])) =
-      (wordS (LE.plus w)).map (Letter.intersection_update_fsHerm_neg_one ∘ fun lt => (⟨lt.plus, Fin.cast (by simp [LE.plus]) lt.intersection_update_fsHerm_neg_one, lt.pt⟩ :
-        Letter ℂ (Fin w.length))) := by rw [List.map_map]; rfl
-  rw [← h]
-  exact (wordS_nodup _).map (Fin.cast_injective _)
+theorem plusWord_slots_nodup (w : List ℝ) : ((wordP w).map Letter.intersection_update_fsHerm_neg_one).Nodup := Formalism.FourierDecayAlt.P.MAx3.F.plusWord_slots_nodup w
 
 end
 

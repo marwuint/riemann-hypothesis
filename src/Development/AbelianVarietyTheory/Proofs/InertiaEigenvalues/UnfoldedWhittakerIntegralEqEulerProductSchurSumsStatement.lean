@@ -17,8 +17,4 @@ theorem _root_.GlobalTheory.T.unfoldedWhittakerIntegral_eq_eulerProduct_schurSum
         ∃ H : ℝ → ℝ, ContinuousWithinAt H (Set.Ioi 1) 1 ∧ 0 < H 1 ∧ ∀ x : ℝ, 1 < x → 0 < H x ∧
           ∫⁻ g in 𝓕₀, ‖GlobalTheory.RSTheta.rsPsi ℓ (GlobalTheory.JSW.whit φ.1) (GlobalTheory.JSW.whit φ.1) Φ J η g (g.val ℓ)‖ₑ * ENNReal.ofReal ((ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ x) ∂μ =
             ENNReal.ofReal (H x) * GlobalTheory.RSPole.eulD (fun w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} => Ideal.absNorm w.1.asIdeal)
-              (fun w i => ((α w i : ℂˣ) : ℂ)) x := by
-  first
-  | exact @GlobalTheory.RSCell.lintegral_unfolded_eq
-  | exact GlobalTheory.RSCell.lintegral_unfolded_eq
-  | (intros; apply GlobalTheory.RSCell.lintegral_unfolded_eq <;> assumption)
+              (fun w i => ((α w i : ℂˣ) : ℂ)) x := GlobalTheory.RSCell.lintegral_unfolded_eq

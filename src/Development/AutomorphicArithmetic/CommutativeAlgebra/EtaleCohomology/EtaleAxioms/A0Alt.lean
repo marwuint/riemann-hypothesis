@@ -3,7 +3,7 @@ import Development.EtaleCohomology.EtaleSheaves.EtaleCohomologyThirdStatementHol
 
 namespace UpperTheory.Et.D3
 
-theorem a0 : LateralTheory.E.EtaleChapterDThree := LateralTheory.Fin.EtaleChapterDThree.intersectionNumber_baseChange
+theorem a0 : LateralTheory.E.EtaleChapterDThree := LateralTheory.Fin.EtaleChapterDThree.etale_cohomology_third_statement_holds_alt
 
 theorem intersectionNumber_baseChange : LateralTheory.E.EtaleChapterDThree := a0
 

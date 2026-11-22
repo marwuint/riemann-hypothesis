@@ -14,5 +14,4 @@ theorem _root_.GlobalTheory.T.graded_split_range_iso_of_interval : ∀ {O A G : 
     (∀ x, π x = 0 ↔ x.1 ∈ (pdP γ v).map (Algebra.TensorProduct.includeLeftRingHom (R := O) (A := A) (B := G))) →
     ∀ f : ∀ i, S.N i → M i → M', (∀ i n, f i n 0 = 0) →
     (∀ (i : Fin m) n x (hu : u ≤ (i : ℕ)) (hv : (i : ℕ) < v) hx, f i n (θ i hu hv x) = π ⟨S.ν i n ⊗ₜ x, hx⟩) →
-    Tens O f := by
-  first | exact @GlobalTheory.CompanionTheory.GrPiece.main | exact GlobalTheory.CompanionTheory.GrPiece.main | (intros; apply GlobalTheory.CompanionTheory.GrPiece.main <;> assumption)
+    Tens O f := GlobalTheory.CompanionTheory.GrPiece.main

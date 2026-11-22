@@ -14,5 +14,4 @@ theorem _root_.GlobalTheory.T.abhyankar_etale_integralClosure_root_uniformizer :
     (∀ P : Ideal (integralClosure S L), P.IsMaximal → P.ramificationIdx S ∣ q) →
     (∀ P : Ideal (integralClosure S L), P.IsMaximal → ∀ [P.LiesOver (maximalIdeal S)],
       Algebra.IsSeparable (S ⧸ maximalIdeal S) (integralClosure S L ⧸ P)) →
-    Algebra.Etale S₁ (integralClosure S₁ (K₁ ⊗[K] L)) := by
-  first | (exact @GlobalTheory.AbhyankarBC.etale_integralClosure_of_root_uniformizer) | (exact GlobalTheory.AbhyankarBC.etale_integralClosure_of_root_uniformizer) | (intros; apply GlobalTheory.AbhyankarBC.etale_integralClosure_of_root_uniformizer  <;> assumption)
+    Algebra.Etale S₁ (integralClosure S₁ (K₁ ⊗[K] L)) := GlobalTheory.AbhyankarBC.etale_integralClosure_of_root_uniformizer

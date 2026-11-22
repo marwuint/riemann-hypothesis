@@ -9,10 +9,6 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.BernsteinZelevinskyFi
 
 namespace GlobalTheory.Laid
 
-theorem bzfin_holds : GlobalTheory.Published.BernsteinZelevinskyFiniteness := by
-  intro k _ _ _ _
-
-  exact ⟨CompanionTheory.SmGLBridge.irreducibleAdmissible k, CompanionTheory.JacquetBridge.jacquetFiniteLength k,
-    CompanionTheory.BZInd.inductionFiniteLength k, SmGL.IndDual.inductionContragredient k⟩
+theorem bzfin_holds : GlobalTheory.Published.BernsteinZelevinskyFiniteness := GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness
 
 end GlobalTheory.Laid

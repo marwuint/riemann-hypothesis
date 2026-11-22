@@ -1319,8 +1319,7 @@ namespace Formalism.FourierDecayAlt.P.Dx1.Rel
 noncomputable section
 open Classical
 
-theorem ptSize_cons (s : ℕ) (t : ℂ) (rest : C.LPt) : ptSize ((s, t) :: rest) = s + ptSize rest := by
-  simp only [ptSize, List.map_cons, List.sum_cons]
+theorem ptSize_cons (s : ℕ) (t : ℂ) (rest : C.LPt) : ptSize ((s, t) :: rest) = s + ptSize rest := Formalism.FourierDecayAlt.P.Dx1.ptSize_cons s t rest
 
 theorem partner_spec : ∀ (p : C.LPt) (a : ℕ), a < ptSize p →
     ptPartner p a < ptSize p ∧ ptPartner p (ptPartner p a) = a ∧

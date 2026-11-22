@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.mappingCone_connecting_cocycle_shortComplex_degree
     CohomologyClass.mk (zcomp (Cocycle.ofHom (mappingCone.map _ (resMap R S.f) (resAug S.X₁) (resAug S.X₂) hc))
         (mappingCone.fst (resMap R S.f)) (zero_add 1)) =
       CohomologyClass.mk (zcomp (Cocycle.ofHom
-        (mappingCone.descShortComplex (S.map (CochainComplex.singleFunctor (Shv R) 0)))) w (zero_add 1)) := by
-  first | (exact @GlobalTheory.EtC.ConeConn.cone_connecting_class) | (exact GlobalTheory.EtC.ConeConn.cone_connecting_class) | (intros; apply GlobalTheory.EtC.ConeConn.cone_connecting_class  <;> assumption)
+        (mappingCone.descShortComplex (S.map (CochainComplex.singleFunctor (Shv R) 0)))) w (zero_add 1)) := GlobalTheory.EtC.ConeConn.cone_connecting_class

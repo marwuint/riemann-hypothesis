@@ -12,5 +12,4 @@ theorem _root_.GlobalTheory.T.l_power_torsion_endomorphism_evaluation : ∀ (k :
     (∀ j x, ev j (φ x) = ev j x ≫ f.hom) →
     (∀ j x, ev j x = 1 ↔ ∃ y, x = l ^ j • y) →
     (∀ j (q : Over.mk (𝟙 (Sp k)) ⟶ B.X), q ^ (l ^ j) = 1 ↔ ∃ x, ev j x = q) →
-    LinearMap.charpoly φ = GlobalTheory.AV.AbVar.charpoly f := by
-  first | (exact @GlobalTheory.AV.AbVar.charpoly_eq_lattice_model) | (exact GlobalTheory.AV.AbVar.charpoly_eq_lattice_model) | (intros; apply GlobalTheory.AV.AbVar.charpoly_eq_lattice_model  <;> assumption)
+    LinearMap.charpoly φ = GlobalTheory.AV.AbVar.charpoly f := GlobalTheory.AV.AbVar.charpoly_eq_lattice_model

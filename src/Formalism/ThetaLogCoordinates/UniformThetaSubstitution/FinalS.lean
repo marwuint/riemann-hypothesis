@@ -28,9 +28,9 @@ theorem rescaleExact : RescaleExact := RescaleExact_of valTable expIntegral
 theorem rescaleCore : RescaleCore := RescaleCore_of rescaleExact classExp classMul
 
 theorem dworkMv : DworkMv := dwork_multivariable
-theorem simeqRules : SimeqRules := equivalence_rules
-theorem logRescale : LogRescale := log_rescale_alt
-theorem logRescaleUnique : LogRescaleUnique := log_rescale_unique
+theorem simeqRules : SimeqRules := Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.simeqRules
+theorem logRescale : LogRescale := Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.logRescale
+theorem logRescaleUnique : LogRescaleUnique := Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.logRescaleUnique
 theorem twoSums : TwoSums := two_sums
 theorem thmSCore : ThmSCore :=
   ThmSCore_of rescaleCore classSubst classChange classMul twoSums logRescale logRescaleUnique

@@ -173,18 +173,5 @@ end
 
 section
 open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab GlobalTheory.SeqCx UpperTheory.V.KL
-theorem _root_.GlobalTheory.T.face_stdSeq_GL_conjugate_commuting_stab : ∀ (R : Type) [CommRing R] (n p : ℕ) (h : p + 1 ≤ n) (i : Fin (p + 1)), ∃ g : GL (Fin n) R, g • face R n p i (stdSeq R n (p + 1) h) = stdSeq R n p (by omega) ∧ ∀ x : GL (Fin (n - (p + 1))) R, g * stab R (n - (p + 1)) n (Nat.sub_le _ _) x = stab R (n - (p + 1)) n (Nat.sub_le _ _) x * g := by
-  first
-  | exact @GlobalTheory.HomStab.exists_perm_face_stdSeq
-  | exact @GlobalTheory.HomStab.FacePerm.pairAct_pmU
-  | exact @GlobalTheory.HomStab.FacePerm.cycInv_cyc
-  | exact @GlobalTheory.HomStab.FacePerm.cyc_cycInv
-  | exact @GlobalTheory.HomStab.FacePerm.cycInv_val
-  | exact @GlobalTheory.HomStab.FacePerm.cyc_val
-  | exact @GlobalTheory.HomStab.FacePerm.mul_pm_apply
-  | exact @GlobalTheory.HomStab.FacePerm.pm_mul_apply
-  | exact @GlobalTheory.HomStab.FacePerm.vecMul_pm
-  | exact @GlobalTheory.HomStab.FacePerm.pm_mulVec
-  | exact @GlobalTheory.HomStab.FacePerm.pm_id
-  | exact @GlobalTheory.HomStab.FacePerm.pm_mul
+theorem _root_.GlobalTheory.T.face_stdSeq_GL_conjugate_commuting_stab : ∀ (R : Type) [CommRing R] (n p : ℕ) (h : p + 1 ≤ n) (i : Fin (p + 1)), ∃ g : GL (Fin n) R, g • face R n p i (stdSeq R n (p + 1) h) = stdSeq R n p (by omega) ∧ ∀ x : GL (Fin (n - (p + 1))) R, g * stab R (n - (p + 1)) n (Nat.sub_le _ _) x = stab R (n - (p + 1)) n (Nat.sub_le _ _) x * g := GlobalTheory.HomStab.exists_perm_face_stdSeq
 end

@@ -13,8 +13,7 @@ open Formalism.MainNotions.DIV.Cons (intO)
 namespace GlobalTheory.FlagEmb.Valu
 
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap g ≫ spMap f = spMap (g.comp f) :=
-  (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
+    spMap g ≫ spMap f = spMap (g.comp f) := Formalism.L2.Pj.spMap_comp' f g
 
 theorem sp_surj {k B : Type} [CommRing k] [CommRing B] (x : Sp k ⟶ Sp B) : ∃ β : B →+* k, x = spMap β :=
   ⟨(Spec.preimage x).hom, (Spec.map_preimage x).symm⟩

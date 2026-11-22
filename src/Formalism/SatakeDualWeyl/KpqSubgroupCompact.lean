@@ -59,21 +59,8 @@ theorem HeckeActMul : Formalism.UG.HeckeActMul := Formalism.UG.P.hecke_act_mul
 theorem AdelicStabFinite : Formalism.UG.AdelicStabFinite := Formalism.UG.P.adelic_stabilizer_finite_holds
 theorem AdelicStabFiniteL : Formalism.UG.AdelicStabFiniteL := Formalism.UG.P.adelic_stabilizer_finite_lattice_holds
 theorem HeckeAssoc : Formalism.UG.HeckeAssoc := Formalism.UG.P.hecke_assoc
-theorem BCMem : Formalism.UG.BCMem := by
-  intro A B _ _ n _ _ σ σ' φ hφ J g hg
-  have hg' : cT σ (g : Matrix n n A) * J * (g : Matrix n n A) = J := hg
-  show cT σ' ((bc φ g : GL n B) : Matrix n n B) * J.map φ * ((bc φ g : GL n B) : Matrix n n B) = J.map φ
-  have hb : ((bc φ g : GL n B) : Matrix n n B) = (g : Matrix n n A).map φ := rfl
-  have hc : cT σ' ((g : Matrix n n A).map φ) = (cT σ (g : Matrix n n A)).map φ := by
-    ext i j
-    simp only [cT, Matrix.transpose_apply, Matrix.map_apply]
-    exact (RingHom.congr_fun hφ _).symm
-  rw [hb, hc, ← Matrix.map_mul, ← Matrix.map_mul, hg']
-theorem RatPtsLe : Formalism.UG.RatPtsLe := by
-  intro F E _ _ _ n _ _ σ J R _ _ x hx
-  obtain ⟨g, hg, rfl⟩ := Subgroup.mem_map.mp hx
-  exact Formalism.UG.Final.BCMem E _ n (σ : E →+* E) (sigR σ R) (inclE (F := F) R)
-    (RingHom.ext fun e => by simp [inclE, sigR]) J g hg
+theorem BCMem : Formalism.UG.BCMem := Formalism.UG.P.base_change_mem_holds
+theorem RatPtsLe : Formalism.UG.RatPtsLe := Formalism.UG.P.rational_points_le_holds
 theorem GlEquivApply : Formalism.UG.GlEquivApply := by
   intro K _ n _ _ g x
   first
@@ -147,33 +134,7 @@ theorem SatakeInert : Formalism.UG.SatakeInert := Formalism.UG.P.satake_inert
 theorem SatMul : Formalism.UG.SatMul := Formalism.UG.P.satake_mul
 theorem SphericalExistsU : Formalism.UG.SphericalExistsU := Formalism.UG.P.exists_spherical_function_unitary
 theorem GLintComm : Formalism.UG.GLintComm := Formalism.UG.P.GL_integral_hecke_commute
-theorem DosetIndMem : Formalism.UG.DosetIndMem := by
-  intro G _ K k _ g
-  show (∀ a b : K, ∀ x : G, dosetInd k K g ((a : G) * x * b) = dosetInd k K g x) ∧
-    ∃ S : Finset G, ∀ x : G, dosetInd k K g x ≠ 0 → ∃ s ∈ S, ∃ a b : K, x = (a : G) * s * b
-  refine ⟨fun a b x => ?_, ⟨{g}, fun x hx => ?_⟩⟩
-  · by_cases hx : x ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)
-    · have hm : (a : G) * x * b ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G) := by
-        obtain ⟨h, hh, c, hc, rfl⟩ := DoubleCoset.mem_doubleCoset.mp hx
-        exact DoubleCoset.mem_doubleCoset.mpr
-          ⟨(a : G) * h, K.mul_mem a.2 hh, c * b, K.mul_mem hc b.2, by simp only [mul_assoc]⟩
-      simp [dosetInd, Set.indicator_apply, hx, hm]
-    · have hm : (a : G) * x * b ∉ DoubleCoset.doubleCoset g (K : Set G) (K : Set G) := by
-        intro hm
-        apply hx
-        obtain ⟨h, hh, c, hc, he⟩ := DoubleCoset.mem_doubleCoset.mp hm
-        refine DoubleCoset.mem_doubleCoset.mpr
-          ⟨(a : G)⁻¹ * h, K.mul_mem (K.inv_mem a.2) hh, c * (b : G)⁻¹, K.mul_mem hc (K.inv_mem b.2), ?_⟩
-        have hx' : x = (a : G)⁻¹ * ((a : G) * x * b) * (b : G)⁻¹ := by group
-        rw [hx', he]
-        simp only [mul_assoc]
-      simp [dosetInd, Set.indicator_apply, hx, hm]
-  · have hm : x ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G) := by
-      by_contra h
-      apply hx
-      simp [dosetInd, Set.indicator_apply, h]
-    obtain ⟨h, hh, c, hc, rfl⟩ := DoubleCoset.mem_doubleCoset.mp hm
-    exact ⟨g, Finset.mem_singleton_self g, ⟨h, hh⟩, ⟨c, hc⟩, rfl⟩
+theorem DosetIndMem : Formalism.UG.DosetIndMem := Formalism.UG.P.double_coset_indicator_mem
 theorem HeckeUnit : Formalism.UG.HeckeUnit := by
   intro G _ K k _ f hf
   obtain ⟨hbi, -⟩ := hf
@@ -482,7 +443,7 @@ theorem DwActMul : Formalism.UG.DwActMul := by
   · apply MvPolynomial.algHom_ext
     intro i
     simp [dwAct, Formalism.GradedWeylDivisibility.rowAct, Matrix.one_apply, apply_ite MvPolynomial.C, ite_mul]
-theorem WeylGLStableLocal : Formalism.UG.WeylGLStableLocal := Formalism.UG.P.weyl_module_GL_stable_local
-theorem WeylGLStable : Formalism.UG.WeylGLStable := Formalism.UG.P.weyl_module_GL_stable
+theorem WeylGLStableLocal : Formalism.UG.WeylGLStableLocal := Formalism.UG.P.wlocal_local
+theorem WeylGLStable : Formalism.UG.WeylGLStable := Formalism.UG.P.wlocal_global
 
 end Formalism.UG.Final

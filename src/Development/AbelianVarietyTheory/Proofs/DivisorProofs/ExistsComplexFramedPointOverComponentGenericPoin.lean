@@ -57,9 +57,7 @@ end GlobalTheory.GenCxPt
 namespace GlobalTheory.GenCxPt
 
 theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : A →+* B) (f : B →+* C) :
-    spMap f ≫ spMap g = spMap (f.comp g) := by
-  simp only [spMap, ← Spec.map_comp]
-  rfl
+    spMap f ≫ spMap g = spMap (f.comp g) := GlobalTheory.FrameTangent.spMap_comp' g f
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}

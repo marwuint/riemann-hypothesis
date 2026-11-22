@@ -1118,8 +1118,7 @@ theorem main (hS : TriangularShearMeasurePreserving) (hM : CoordinateMergeMeasur
 
 end Dec
 
-theorem dec (hS : TriangularShearMeasurePreserving) (hM : CoordinateMergeMeasurable) : OrbitParametrisationsAgree := by
-  exact Dec.main hS hM
+theorem dec (hS : TriangularShearMeasurePreserving) (hM : CoordinateMergeMeasurable) : OrbitParametrisationsAgree := Formalism.MainNotions.LocalOrbitGerms.Dec.main hS hM
 
 end Formalism.MainNotions.LocalOrbitGerms
 

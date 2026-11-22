@@ -25,5 +25,4 @@ theorem _root_.GlobalTheory.T.borel_finite_classNumber_centraliserTorus : (∀ (
       ∃ S : Finset (((AfP p ⊗[ℚ] D)ˣ × (AfP p)ˣ) × ((ℚ_[p] ⊗[ℚ] D)ˣ × ℚ_[p]ˣ)),
         ∀ z, GlobalTheory.TorCls.TC D σ β y (AfP p) z.1 → GlobalTheory.TorCls.TC D σ β y ℚ_[p] z.2 →
           ∃ γ : Dˣ × ℚˣ, (γ.1 : D) * β * (σ γ.1).unop = algebraMap ℚ D γ.2 * β ∧ Commute (γ.1 : D) y ∧
-            ∃ s ∈ S, ∃ u ∈ U, z = GlobalTheory.TorCls.dg D p γ * s * u := by
-  first | (exact @GlobalTheory.TorCls.Borel.classes_finite) | (exact GlobalTheory.TorCls.Borel.classes_finite) | (intros; apply GlobalTheory.TorCls.Borel.classes_finite  <;> assumption)
+            ∃ s ∈ S, ∃ u ∈ U, z = GlobalTheory.TorCls.dg D p γ * s * u := GlobalTheory.TorCls.Borel.classes_finite

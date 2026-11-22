@@ -98,7 +98,7 @@ lemma norm_inv_apply {y : Mat k r} (hy : y ∈ GV k r) (i j : Fin (2 * r + k + 1
     ‖y⁻¹ i j‖ = ‖y (sg k r j) (sg k r i)‖ := by
   rw [inv_apply hy, norm_mul, norm_mul, norm_ep, norm_ep, norm_star]; ring
 
-lemma closedN : Formalism.FourierDecayAlt.B2.IsClosedSubgroup (Nset k r) := Formalism.FourierDecayAlt.P.unipotent_radical_closed k r
+lemma closedN : Formalism.FourierDecayAlt.B2.IsClosedSubgroup (Nset k r) := Formalism.FourierDecayAlt.P.B2x2.closedN k r
 
 lemma n_mem_G {n : Mat k r} (hn : n ∈ Nset k r) : n ∈ GV k r := hn.1
 
@@ -1245,9 +1245,7 @@ end pointwise
 section main
 
 lemma sigmaFinite_haar {k r : ℕ} {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) :
-    SigmaFinite μ := by
-  have : IsFiniteMeasureOnCompacts μ := ⟨fun K hK => h.finite_compact K hK⟩
-  infer_instance
+    SigmaFinite μ := Formalism.FourierDecayAlt.P.B2x2.sfin h
 
 lemma gN_cont (k r : ℕ) : Continuous (fun x : Mt k r => gN (Matrix.of x : Mat k r)) := by
   unfold gN

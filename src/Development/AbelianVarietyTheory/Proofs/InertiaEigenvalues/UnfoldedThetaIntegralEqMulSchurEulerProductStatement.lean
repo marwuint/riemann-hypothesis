@@ -18,5 +18,4 @@ theorem _root_.GlobalTheory.T.unfolded_theta_integral_eq_mul_schur_euler_product
                        (fun w i => ((α w i : ℂˣ) : ℂ)) x ≠ ⊤ ∧
           GlobalTheory.RSPole.thetaZ μ 𝓕 ℓ φ.1 φ.1 Φ J η x =
             ((H x * (GlobalTheory.RSPole.eulD (fun w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} => Ideal.absNorm w.1.asIdeal)
-              (fun w i => ((α w i : ℂˣ) : ℂ)) x).toReal : ℝ) : ℂ) := by
-  first | (exact @GlobalTheory.RSEulerId.thetaZ_eq_mul_eulD) | (exact GlobalTheory.RSEulerId.thetaZ_eq_mul_eulD) | (intros; apply GlobalTheory.RSEulerId.thetaZ_eq_mul_eulD  <;> assumption)
+              (fun w i => ((α w i : ℂˣ) : ℂ)) x).toReal : ℝ) : ℂ) := GlobalTheory.RSEulerId.thetaZ_eq_mul_eulD

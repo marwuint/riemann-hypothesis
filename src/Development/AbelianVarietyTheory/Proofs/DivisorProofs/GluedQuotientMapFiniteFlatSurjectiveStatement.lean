@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.gluedQuotientMap_finite_flat_surjective : ∀ (S :
     (B : ∀ j, Over (𝒰.X j)) (ψ : ∀ j, (B j).left ⟶ G.left) (q : ∀ j, (Over.pullback (𝒰.f j)).obj A ⟶ B j),
     (∀ j, IsPullback (ψ j) (B j).hom G.hom (𝒰.f j)) → (∀ j, (q j).left ≫ ψ j = pullback.fst A.hom (𝒰.f j) ≫ Q.left) →
     (∀ j, IsFinite (q j).left) → (∀ j, Flat (q j).left) → (∀ j, Surjective (q j).left) →
-    IsFinite Q.left ∧ Flat Q.left ∧ Surjective Q.left := by
-  first | (exact @GlobalTheory.QuotGlue.finite_flat_surjective) | (exact GlobalTheory.QuotGlue.finite_flat_surjective) | (intros; apply GlobalTheory.QuotGlue.finite_flat_surjective  <;> assumption)
+    IsFinite Q.left ∧ Flat Q.left ∧ Surjective Q.left := GlobalTheory.QuotGlue.finite_flat_surjective

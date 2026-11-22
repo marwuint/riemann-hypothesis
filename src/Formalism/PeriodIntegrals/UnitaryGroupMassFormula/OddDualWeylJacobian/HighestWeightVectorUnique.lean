@@ -10,8 +10,7 @@ namespace PI.OddDualWeyl.Uniq
 
 theorem aeval_smul_hom {K S : Type*} [CommRing K] [CommRing S] [Algebra K S] {ι : Type*} [Fintype ι]
     {G : MvPolynomial ι K} {d : ℕ} (hG : IsHomogeneous G d) (c : S) (f : ι → S) :
-    aeval (fun v => c * f v) G = c ^ d * aeval f G := by
-  first | exact Bl.general_b_fact_right_alt.goal1 .. | (apply Bl.general_b_fact_right_alt.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right_alt.goal1 <;> assumption)
+    aeval (fun v => c * f v) G = c ^ d * aeval f G := Bl.general_b_fact_right_alt.goal1 hG c f
 
 def P (Rg : Type*) [CommRing Rg] (k : ℕ) : Matrix (Fin k) (Fin k) Rg :=
   Matrix.of fun i j => if i = Fin.rev j then 1 else 0

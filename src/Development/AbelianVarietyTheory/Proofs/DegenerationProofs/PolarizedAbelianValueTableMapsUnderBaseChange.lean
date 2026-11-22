@@ -16,9 +16,7 @@ namespace GlobalTheory.OneBasis.TabMap
 open GlobalTheory.FrameGen GlobalTheory.ConstFam GlobalTheory.FrameMove GlobalTheory.OneBasis.Calc
 
 theorem gs_comp {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (q : Y ⟶ X) (z : Z) (U : X.Opens) (h : q (r z) ∈ U) (a : Γ(X, U)) :
-    gs (r ≫ q) z U a = (r.stalkMap z).hom (gs q (r z) U a) := by
-  rw [← gs_pull r q z U h a, gs_eq r z _ h, gs_eq q (r z) U h]
-  exact (Scheme.Hom.germ_stalkMap_apply r _ z h _).symm
+    gs (r ≫ q) z U a = (r.stalkMap z).hom (gs q (r z) U a) := GlobalTheory.OneBasis.ThMove.gs_comp r q z U h a
 
 section
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A']

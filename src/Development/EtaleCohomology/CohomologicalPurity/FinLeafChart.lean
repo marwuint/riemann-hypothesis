@@ -18,14 +18,12 @@ theorem etale_chart_conormal_rank_property_holds : LateralTheory.CohomologicalPu
   apply LateralTheory.CohomologicalPurity.ChartCut.LeafRank_of
 theorem etale_chart_generator_choice_property_holds : LateralTheory.CohomologicalPurity.ChartCut.LeafPick := by
   apply LateralTheory.CohomologicalPurity.ChartCut.LeafPick_of
-theorem etale_chart_ideal_span_property_holds : LateralTheory.CohomologicalPurity.ChartCut.LeafSpan := by
-  apply LateralTheory.CohomologicalPurity.LeafSpanPf.LeafSpan_of
+theorem etale_chart_ideal_span_property_holds : LateralTheory.CohomologicalPurity.ChartCut.LeafSpan := LateralTheory.CohomologicalPurity.LeafSpanPf.LeafSpan_of
 theorem etale_chart_etaleness_property_holds : LateralTheory.CohomologicalPurity.ChartCut.LeafEt := by
   apply LateralTheory.CohomologicalPurity.LeafEtPf.LeafEt_of
 theorem etale_chart_coordinate_functions_property_holds : LateralTheory.CohomologicalPurity.ChartCut.LeafCoord := by
   apply LateralTheory.CohomologicalPurity.ChartCut.LeafCoord_of <;> first | exact etale_chart_conormal_rank_property_holds | exact etale_chart_generator_choice_property_holds | exact etale_chart_ideal_span_property_holds | exact etale_chart_etaleness_property_holds
-theorem etale_chart_section_property_holds : LateralTheory.CohomologicalPurity.ChartCut.LeafSec := by
-  apply LateralTheory.CohomologicalPurity.LeafSecPf.LeafSec_of
+theorem etale_chart_section_property_holds : LateralTheory.CohomologicalPurity.ChartCut.LeafSec := LateralTheory.CohomologicalPurity.LeafSecPf.LeafSec_of
 theorem etale_chart_polynomial_algebra_property_holds : LateralTheory.CohomologicalPurity.ChartCut.LeafPoly := by
   apply LateralTheory.CohomologicalPurity.LeafPolyPf.LeafPoly_of
 theorem etale_chart_neighborhood_property_holds : LateralTheory.CohomologicalPurity.ChartCut.LeafNbhd := by

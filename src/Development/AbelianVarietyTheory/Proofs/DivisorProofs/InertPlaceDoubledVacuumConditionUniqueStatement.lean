@@ -14,5 +14,4 @@ theorem _root_.GlobalTheory.T.inertPlace_doubledVacuumCondition_unique : ∀ (F 
     ∀ φ ∈ SB ((Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a')) → Fv F v), (∀ w₁ ∈ latAtV G.V' G.W v, ∀ w₂ ∈ latAtV G.V' G.W v,
       Acts (evFin F v) (dd.rho B.ψ (Matrix.fromCols w₁ w₂)) (φ)
         (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (dbl (incM F G.W.J))
-          (Matrix.fromCols w₁ w₂) (Matrix.fromCols w₁ w₂)) • (φ))) → ∃ c : ℂ, φ = c • (boxFun (G.M'.vac v) (fun x => star (G.M'.vac v x))) := by
-  first | exact @GlobalTheory.DblVacUniq.dbl_vac_unique | exact GlobalTheory.DblVacUniq.dbl_vac_unique | (intros; apply GlobalTheory.DblVacUniq.dbl_vac_unique <;> assumption)
+          (Matrix.fromCols w₁ w₂) (Matrix.fromCols w₁ w₂)) • (φ))) → ∃ c : ℂ, φ = c • (boxFun (G.M'.vac v) (fun x => star (G.M'.vac v x))) := GlobalTheory.DblVacUniq.dbl_vac_unique

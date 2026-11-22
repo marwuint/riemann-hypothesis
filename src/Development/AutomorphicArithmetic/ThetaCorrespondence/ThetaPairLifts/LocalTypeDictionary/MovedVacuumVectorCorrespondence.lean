@@ -91,6 +91,5 @@ theorem _root_.GlobalTheory.T.twist_moved_vacuum_correspondence : _root_.GlobalT
         (MvPolynomial.monomial k 1) 0 = ch.S.Z.c0 p * opp p ((k.prod fun v e => period ch.S.Z.δ v.1 ^ e) *
           Formalism.MainNotions.GL3Theta.applyAt0 D (MvPolynomial.monomial k 1) fun z => κ *
             Iop D (tor0 D D.host.ccK ch.S.Z.δ) (La0 D (tor0 D D.host.ccK ch.S.Z.δ) _ _)
-              (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK ch.S.Z.δ) Ls Lt) (ch.S.Z.e0 p) z) := by
-  first | exact @_root_.GlobalTheory.MovedDict.moved_vacuum_vector_correspondence | exact _root_.GlobalTheory.MovedDict.moved_vacuum_vector_correspondence | (intros; apply _root_.GlobalTheory.MovedDict.moved_vacuum_vector_correspondence <;> assumption)
+              (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK ch.S.Z.δ) Ls Lt) (ch.S.Z.e0 p) z) := GlobalTheory.MovedDict.moved_vacuum_vector_correspondence
 end

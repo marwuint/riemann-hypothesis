@@ -28,12 +28,7 @@ theorem exists_top_extension (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ]
   rw [dif_pos IntermediateField.mem_top, dif_pos hxM]
   exact h
 
-theorem ee_add (s t : ℝ) : ee (s + t) = ee s * ee t := by
-  unfold ee
-  rw [← Complex.exp_add]
-  congr 1
-  push_cast
-  ring
+theorem ee_add (s t : ℝ) : ee (s + t) = ee s * ee t := GlobalTheory.WeilPairingGalois.ee_add s t
 
 theorem ee_zero : ee 0 = 1 := by simp [ee]
 

@@ -15,5 +15,4 @@ theorem _root_.GlobalTheory.T.pulledLatticeVector_mem_dualBaseLatticeCompletion 
     (∀ y ∈ Lb, y ∈ dualSet (sp.cm.sig : E →+* E) J Lb) → ∀ (v : HeightOneSpectrum (𝓞 F)) (y : Fin N → E),
     y ∈ latCo sp J c a x Lb →
     (fun l => prV (E := E) v (pullV (F := F) (ratA F c * x) y l)) ∈
-      latS (F := F) (v.adicCompletion F) (intV E v) (Submodule.span (𝓞 E) (dualSet (sp.cm.sig : E →+* E) J Lb)) := by
-  first | exact @GlobalTheory.MemDual.mem_latS_dual_of_latCo | exact GlobalTheory.MemDual.mem_latS_dual_of_latCo | (intros; apply GlobalTheory.MemDual.mem_latS_dual_of_latCo <;> assumption)
+      latS (F := F) (v.adicCompletion F) (intV E v) (Submodule.span (𝓞 E) (dualSet (sp.cm.sig : E →+* E) J Lb)) := GlobalTheory.MemDual.mem_latS_dual_of_latCo

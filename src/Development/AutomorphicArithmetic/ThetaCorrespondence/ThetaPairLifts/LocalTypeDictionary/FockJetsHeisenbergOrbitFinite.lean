@@ -82,6 +82,5 @@ theorem _root_.GlobalTheory.T.finite_translate_jets_fock : _root_.GlobalTheory.F
       ∀ k : FVar D T.rank S.rank →₀ ℕ, pureTensorO ψ θ S T sS sT (fun τ => frS.1.map (tauE D τ)) (fun τ => frT.1.map (tauE D τ))
         (heisO ψ S T u f) (MvPolynomial.monomial k 1) 0 =
         c * ((k.prod fun v n => GlobalTheory.FunObj.period δ v.1 ^ n) * GL3Theta.applyAt0 D (MvPolynomial.monomial k 1)
-          (StandardLatticesGL3.comb D (TaylorLogMetric.tor0 D D.host.ccK δ) a s e0)) := by
-  first | exact @_root_.GlobalTheory.FinTransJet.fock_jets_heisenberg_orbit_finite | exact _root_.GlobalTheory.FinTransJet.fock_jets_heisenberg_orbit_finite | (intros; apply _root_.GlobalTheory.FinTransJet.fock_jets_heisenberg_orbit_finite <;> assumption)
+          (StandardLatticesGL3.comb D (TaylorLogMetric.tor0 D D.host.ccK δ) a s e0)) := GlobalTheory.FinTransJet.fock_jets_heisenberg_orbit_finite
 end

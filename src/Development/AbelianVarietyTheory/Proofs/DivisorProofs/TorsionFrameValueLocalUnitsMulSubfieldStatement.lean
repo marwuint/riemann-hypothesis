@@ -23,5 +23,4 @@ theorem _root_.GlobalTheory.T.torsionFrame_value_localUnits_mul_subfield : ∀ (
         ∀ (Z : Scheme.{0}) (r : Z ⟶ Sp V₁) (z : Z) J, Good D.P.L z J →
           val t r z J ^ (N₁ ^ 2) * val κ (r ≫ b.left) z J = 1) →
     ∃ c ∈ k₀, (val t (spMap ev) z J).val =
-      ((GlobalTheory.USep.EvG.gwx w z J J₀ (spMap ev ≫ (η[D.P.A]).left))⁻¹ * GlobalTheory.USep.EvG.gwx w z J J₀ (spMap ev ≫ b.left)).val * toStk z c := by
-  first | exact @GlobalTheory.USep.EvG.frame_ev | exact GlobalTheory.USep.EvG.frame_ev | (intros; apply GlobalTheory.USep.EvG.frame_ev <;> assumption)
+      ((GlobalTheory.USep.EvG.gwx w z J J₀ (spMap ev ≫ (η[D.P.A]).left))⁻¹ * GlobalTheory.USep.EvG.gwx w z J J₀ (spMap ev ≫ b.left)).val * toStk z c := GlobalTheory.USep.EvG.frame_ev

@@ -21,7 +21,6 @@ theorem _root_.GlobalTheory.T.conjTwist_function_eq_sum_evaluations_alt : Global
   (∀ y, τ (Formalism.L2.Host.embLL0 (Fm.D x i) y) = Formalism.L2.Host.embLL0 (Fm.D x i) y) →
   ∀ Φ Φ' : GA (Fm.D x i) (Wc (Fm.D x i) j) → ℂ, GlobalTheory.ConjTwist.ConjFun (p.O j) (p.κ j) τ 1 Φ Φ' →
     ∃ (n : ℕ) (b : Fin n → ℂ) (g : Fin n → NX.FmK p.Sx ((j : ℕ) + 1)),
-      Φ = ∑ k, b k • evW p.nexp p.v₀ j (g k).val ∧ ∑ k, τ (b k) • evW p.nexp p.v₀ j (g k).val = Φ' := by
-  first | exact @_root_.GlobalTheory.ConjExpandRational.exists_evW_expansion_of_conjFun | exact _root_.GlobalTheory.ConjExpandRational.exists_evW_expansion_of_conjFun | (intros; apply _root_.GlobalTheory.ConjExpandRational.exists_evW_expansion_of_conjFun <;> assumption)
+      Φ = ∑ k, b k • evW p.nexp p.v₀ j (g k).val ∧ ∑ k, τ (b k) • evW p.nexp p.v₀ j (g k).val = Φ' := GlobalTheory.ConjExpandRational.exists_evW_expansion_of_conjFun
 end
 end

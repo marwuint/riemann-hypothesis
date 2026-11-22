@@ -67,6 +67,5 @@ theorem _root_.GlobalTheory.T.twist_pairing_rational_pullback_eq : _root_.Global
       ∀ z, Iop D (tor0 D D.host.ccK δ) (La0 D (tor0 D D.host.ccK δ) N N') (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK δ) M M') e0
           (Formalism.L2.KerInert.tPull D (tor0 D D.host.ccK δ) U.1 U'.1 z) =
         ε * Iop D (tor0 D D.host.ccK δ) (La0 D (tor0 D D.host.ccK δ) N N')
-          (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK δ) (SDLat.smulLat U.1 M) (SDLat.smulLat U'.1 M')) e0 z := by
-  first | exact @_root_.GlobalTheory.RatMoveIop.twist_pairing_pullback_of_rational | exact _root_.GlobalTheory.RatMoveIop.twist_pairing_pullback_of_rational | (intros; apply _root_.GlobalTheory.RatMoveIop.twist_pairing_pullback_of_rational <;> assumption)
+          (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK δ) (SDLat.smulLat U.1 M) (SDLat.smulLat U'.1 M')) e0 z := GlobalTheory.RatMoveIop.twist_pairing_pullback_of_rational
 end

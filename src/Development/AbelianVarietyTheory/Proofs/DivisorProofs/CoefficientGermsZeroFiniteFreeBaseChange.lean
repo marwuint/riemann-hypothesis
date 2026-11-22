@@ -27,8 +27,7 @@ theorem eq_zero_of_germOf_max {B : CommRingCat.{0}} (a : B)
   exact (one_smul B _).symm.trans ((Submodule.mem_annihilator_span_singleton _ _).1 h1)
 
 theorem gs_comp' {Z Y X : Scheme.{0}} (r : Z ⟶ Y) (F : Y ⟶ X) (z : Z) (U : X.Opens) (h : F (r z) ∈ U) (f : Γ(X, U)) :
-    gs (r ≫ F) z U f = (r.stalkMap z).hom (gs F (r z) U f) := by
-  rw [← gs_pull r F z U h, gs_stalkMap r z _ h, gs_pull (𝟙 _) F (r z) U h, Category.id_comp]
+    gs (r ≫ F) z U f = (r.stalkMap z).hom (gs F (r z) U f) := ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs_comp r F z U h f
 
 theorem germ_eq_zero : ∀ (R R₁ : Type) [CommRing R] [CommRing R₁] (ρ₁ : R →+* R₁) (d : ℕ) (b : Fin d → R₁), (∀ r : R₁, ∃! c : Fin d → R, r = ∑ l, ρ₁ (c l) * b l) → ∀ (X : Scheme.{0}) (f : X ⟶ Sp R) (U : X.Opens) (a : Fin d → Γ(X, U)) (x : X), x ∈ U → (∀ z : (pullback f (spMap ρ₁) : Scheme.{0}), (pullback.fst f (spMap ρ₁)) z = x → ∑ l, gs (pullback.snd f (spMap ρ₁)) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom (b l)) * gs (pullback.fst f (spMap ρ₁)) z U (a l) = 0) → ∀ l, gs (𝟙 X) x U (a l) = 0 := by
   intro R R₁ _ _ ρ₁ d b hb X f U a x hx h

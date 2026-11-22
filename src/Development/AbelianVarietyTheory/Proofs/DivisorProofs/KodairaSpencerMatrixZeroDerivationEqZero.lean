@@ -30,8 +30,7 @@ theorem pbT_id_le {X : Scheme.{0}} {O₀ O : X.Opens} (h : O ≤ O₀) (s : Γ(X
   rfl
 
 theorem constFn_zero_fn {R : Type} [CommRing R] {X : Scheme.{0}} (q : X ⟶ Sp R) (O : X.Opens) :
-    constFn q O 0 = 0 := by
-  rw [constFn, map_zero, map_zero]
+    constFn q O 0 = 0 := GlobalTheory.KS.InvField.constFn_zero q O
 
 theorem id_app_apply {X : Scheme.{0}} (O : X.Opens) (s : Γ(X, O)) : ((𝟙 X : X ⟶ X).app O).hom s = s := by
   simp only [Scheme.Hom.id_app]

@@ -19,7 +19,6 @@ theorem heisenberg_rankOne_decomposition (hB2 : InductiveHeisenbergInputs) (hIW 
       (heis0 k r' x)⁻¹ * w0 k r' c =
         κ * w0 k r' (c * (Real.sqrt (Ga k (1 + r') 0 (Yx k r' x)) : ℂ)) * ιLev k 1 r' m * heis0 k r' z ∧
       ∀ l : Fin (r' + 1), Ga k r' l (fun a => m *ᵥ phiV' k r' a) * Ga k (1 + r') 0 (Yx k r' x) =
-        Ga k (1 + r') (sc r' l) (Yx k r' x) := by
-  exact heisenberg_rankOne_decomposition_levi hB2 hIW k r' hk x c hc
+        Ga k (1 + r') (sc r' l) (Yx k r' x) := ReciprocityTheory.ChartRestriction.DS.Xi.StepA.heisenberg_rankOne_decomposition_levi hB2 hIW k r' hk x c hc
 
 end ReciprocityTheory.ChartRestriction.DS.Xi.StepA

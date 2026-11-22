@@ -146,7 +146,6 @@ namespace ReciprocityTheory.ChartRestriction.G.AR.Up
 open NumberField
 
 theorem OmFConnStatement_holds {E : Type} [Field E] [NumberField E] [IsCMField E] :
-    OmFConnStatement (E := E) :=
-  OFC.omFConn_of_cm
+    OmFConnStatement (E := E) := ReciprocityTheory.ChartRestriction.G.AR.Up.OFC.omFConn_of_cm
 
 end ReciprocityTheory.ChartRestriction.G.AR.Up

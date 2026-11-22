@@ -67,6 +67,5 @@ end
 
 section
 set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.thetaLift_row_properties : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → GlobalTheory.RowClaim.SumOKK ∧ GlobalTheory.RowClaim.ConstK ∧ GlobalTheory.RowClaim.LinK ∧ GlobalTheory.RowClaim.Formula2K ∧ GlobalTheory.RowClaim.SumRatK := by
-  first | exact @_root_.GlobalTheory.RowClaim.Join.thetaLift_row_properties_conj | exact _root_.GlobalTheory.RowClaim.Join.thetaLift_row_properties_conj | (intros; apply _root_.GlobalTheory.RowClaim.Join.thetaLift_row_properties_conj <;> assumption)
+theorem _root_.GlobalTheory.T.thetaLift_row_properties : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → GlobalTheory.RowClaim.SumOKK ∧ GlobalTheory.RowClaim.ConstK ∧ GlobalTheory.RowClaim.LinK ∧ GlobalTheory.RowClaim.Formula2K ∧ GlobalTheory.RowClaim.SumRatK := GlobalTheory.RowClaim.Join.thetaLift_row_properties_conj
 end

@@ -12,18 +12,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.ModelS.L2InnerProduct
 
 theorem isCompact_unitary_set (n : ℕ) :
-    IsCompact ((Matrix.unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ))) := by
-  have hK : IsCompact (Set.pi Set.univ
-      (fun _ : Fin n => Set.pi Set.univ (fun _ : Fin n => Metric.closedBall (0 : ℂ) 1)) :
-        Set (Matrix (Fin n) (Fin n) ℂ)) :=
-    isCompact_univ_pi (fun _ => isCompact_univ_pi (fun _ => isCompact_closedBall _ _))
-  have hC : IsClosed ((Matrix.unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ))) :=
-    isClosed_unitary (R := Matrix (Fin n) (Fin n) ℂ)
-  refine hK.of_isClosed_subset hC ?_
-  intro x hx
-  simp only [Set.mem_pi, Set.mem_univ, true_implies, Metric.mem_closedBall, dist_zero_right]
-  intro i j
-  exact entry_norm_bound_of_unitary hx i j
+    IsCompact ((Matrix.unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ))) := PI.UnitaryGroupMassFormula.PolyCoef.isCompact_UG n
 
 theorem compactSpace_unitary (n : ℕ) : CompactSpace (Matrix.unitaryGroup (Fin n) ℂ) :=
   isCompact_iff_compactSpace.mp (isCompact_unitary_set n)

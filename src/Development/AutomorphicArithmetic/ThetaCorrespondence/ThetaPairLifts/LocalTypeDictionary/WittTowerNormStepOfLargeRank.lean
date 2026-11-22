@@ -221,6 +221,5 @@ theorem _root_.GlobalTheory.T.witt_tower_norm_step_of_large_rank : _root_.Global
       GlobalTheory.SqTower.IsStageC W i j (p + 1) 0 X → Factor X W.ψ W.θ lam → A.rank = A'.rank + 2 * e →
       (∀ t, IsHeckeL (nuH G t i j) (Lf t)) → ∃ (B B' WW₁ : HSp D) (Y : Tri T B B' WW₁) (c y : T → ℂ),
         GlobalTheory.SqTower.IsStageC W i j p 0 Y ∧ Y.IsConst W.ψ W.θ c ∧
-        (∀ t, y t ≠ 0 ∧ lam t = y t * Lf t (e : ℂ) * c t) ∧ ∀ t, GlobalTheory.Square.StepRatio D.what₂.embLL (Qn G t) G.pl.S0 (condExp G.pl) (fun v => Ideal.absNorm v.asIdeal) (y t) (y μ₀) := by
-  first | exact @_root_.GlobalTheory.SqStepBig.theta_tower_norm_step_large_rank | exact _root_.GlobalTheory.SqStepBig.theta_tower_norm_step_large_rank | (intros; apply _root_.GlobalTheory.SqStepBig.theta_tower_norm_step_large_rank <;> assumption)
+        (∀ t, y t ≠ 0 ∧ lam t = y t * Lf t (e : ℂ) * c t) ∧ ∀ t, GlobalTheory.Square.StepRatio D.what₂.embLL (Qn G t) G.pl.S0 (condExp G.pl) (fun v => Ideal.absNorm v.asIdeal) (y t) (y μ₀) := GlobalTheory.SqStepBig.theta_tower_norm_step_large_rank
 end

@@ -9,7 +9,6 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.ExpTie
 
 theorem not_dvd_discr_host (D : D7) {l : ℕ} (hl : l.Prime) (hS : l ∉ Formalism.MainNotions.JumpSetsAlt.excSet D) :
-    ¬ ((l : ℕ) : ℤ) ∣ NumberField.discr D.host.E :=
-  UpperTheory.ExcSet.not_dvd_discr D hl hS
+    ¬ ((l : ℕ) : ℤ) ∣ NumberField.discr D.host.E := UpperTheory.ExcSet.not_dvd_discr D hl hS
 
 end GlobalTheory.ExpTie

@@ -16,5 +16,4 @@ theorem _root_.PositivityTheory.Mix.T.darboux_coordinates_good_model : ∀ (F E 
         (∀ v, (SB _).map (ev v) = SB _) ∧
         (∀ v, (⟨co, fun _ => 0, 0, ∅⟩ : Model σ X W).IsVac B.ψ v (ev v (M.vac v))) ∧
         (∀ᶠ v in cofinite, ev v (M.vac v) = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) ∧
-        ∀ f φ, (∀ v, φ v ∈ SB _) → (∀ᶠ v in cofinite, φ v = M.vac v) → e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei f) fun v => ev v (φ v) := by
-  first | exact @PositivityTheory.Mix.darboux_model_rational_lattice | exact fun _ => @PositivityTheory.Mix.darboux_model_rational_lattice | exact PositivityTheory.Mix.darboux_model_rational_lattice | exact @PositivityTheory.Mix.darboux_model_rational_lattice trivial
+        ∀ f φ, (∀ v, φ v ∈ SB _) → (∀ᶠ v in cofinite, φ v = M.vac v) → e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei f) fun v => ev v (φ v) := PositivityTheory.Mix.darboux_model_rational_lattice

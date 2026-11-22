@@ -11,8 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Unfold.AdmGlued
 
-theorem gS_pos (D : D7) : 0 < gS D :=
-  Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos
+theorem gS_pos (D : D7) : 0 < gS D := Formalism.MainNotions.LatticeGluingRadicals.e_gS_pos D
 
 theorem mem_localization_of_mem' {D : D7} (P : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) {L : LV D} {x : (VS D).V}
     (hx : x ∈ L) : x ∈ (haveI := P.isPrime; Formalism.HermitianLatticesTheory.localization₂ P.asIdeal L) :=

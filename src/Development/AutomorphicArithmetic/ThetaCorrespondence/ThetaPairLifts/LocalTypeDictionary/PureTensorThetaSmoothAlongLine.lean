@@ -86,6 +86,5 @@ theorem _root_.GlobalTheory.T.pure_tensor_theta_smooth_along_line : _root_.Globa
     (∃ y : Fin n × Fin d → AF F, ∏ᶠ v, φ v (fun i => evFin F v (y i)) ≠ 0) →
     ∀ c : ℝ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d),
       (∀ t : ℝ, om (1, γ (Multiplicative.ofAdd t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c t) φ) →
-      ∃ g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d), Tendsto (fun t : ℝ => t⁻¹ • (c t - c 0)) (𝓝[≠] 0) (𝓝 g) := by
-  first | exact @_root_.GlobalTheory.Twist.SmoothLine.smooth_line_of_pure_tensor_theta | exact _root_.GlobalTheory.Twist.SmoothLine.smooth_line_of_pure_tensor_theta | (intros; apply _root_.GlobalTheory.Twist.SmoothLine.smooth_line_of_pure_tensor_theta <;> assumption)
+      ∃ g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d), Tendsto (fun t : ℝ => t⁻¹ • (c t - c 0)) (𝓝[≠] 0) (𝓝 g) := GlobalTheory.Twist.SmoothLine.smooth_line_of_pure_tensor_theta
 end

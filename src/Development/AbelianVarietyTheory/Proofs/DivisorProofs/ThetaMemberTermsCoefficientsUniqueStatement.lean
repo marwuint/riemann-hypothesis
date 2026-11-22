@@ -30,5 +30,4 @@ theorem _root_.GlobalTheory.T.thetaMember_terms_coefficients_unique : ∀ (I : T
   (∀ a, ValAt th₂ (x₂ a) (fr₂ a) (𝔪.yK ⟨X₁.S.th a, X₁.S.th_mem a⟩)) → w₀₂.IsGen →
   𝔪.U.ExpandsF (FractionRing V) 1 w₀₂ th₂ s₂ →
   (∃ o, GtPtF.IsNsmul (X₁.S.r * X₁.S.N) g₂ o ∧ o.IsZero) → w₂.IsGen → 𝔪.Over' w₀₂ g₂ w₂ (x₂ b) (fr₂ b) →
-  ∀ χ, coef s g' w χ = coef s₂ g₂ w₂ χ := by
-  first | exact @GlobalTheory.GSep.TermsUniq.coef_eq | exact GlobalTheory.GSep.TermsUniq.coef_eq | (intros; apply GlobalTheory.GSep.TermsUniq.coef_eq <;> assumption)
+  ∀ χ, coef s g' w χ = coef s₂ g₂ w₂ χ := GlobalTheory.GSep.TermsUniq.coef_eq

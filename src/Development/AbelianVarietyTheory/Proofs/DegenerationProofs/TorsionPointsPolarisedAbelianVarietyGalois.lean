@@ -42,8 +42,7 @@ theorem pow_fix {M : Type} [CommGroup M] (l : ℕ) (f : Monoid.End M) (h : ∀ x
     rw [pow_succ, pow_mul, ← hg, hk, hd, _root_.mul_one]
 
 theorem spMap_comp' {R S U : Type} [CommRing R] [CommRing S] [CommRing U] (f : R →+* S) (g : S →+* U) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  rw [← Spec.map_comp]; rfl
+    spMap (g.comp f) = spMap g ≫ spMap f := ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp f g
 
 variable {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω]
 

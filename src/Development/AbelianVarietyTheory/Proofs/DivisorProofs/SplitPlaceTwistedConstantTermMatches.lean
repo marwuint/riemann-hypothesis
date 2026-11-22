@@ -273,8 +273,7 @@ end GlobalTheory.BCT.SplitCtMatch
 namespace GlobalTheory.BCT.SplitCtMatch
 
 theorem charpoly_conj' {k : Type} [Field k] {a : ℕ} (g x : GL (Fin a) k) :
-    (g⁻¹ * x * g).val.charpoly = x.val.charpoly := by
-  rw [Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj']
+    (g⁻¹ * x * g).val.charpoly = x.val.charpoly := GlobalTheory.LeviDesc.conjP_charpoly g x
 
 theorem toSub_val {G : Type} [Group G] {H : Subgroup G} {g : G} (h : g ∈ H) : (toSub H g : G) = g := by
   rw [toSub, dif_pos h]

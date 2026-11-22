@@ -11,5 +11,4 @@ theorem _root_.GlobalTheory.T.segmentSum_no_monodromy_length_one : ∀ {E Ω : T
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
     (rc : IrrGL (w.adicCompletion E) → WD h), UpperTheory.Zero.LLC.IsRecT h rc →
     ∀ (l : List (Segment (w.adicCompletion E))), (segSum rc l).mono0 →
-      (∀ Δ ∈ l, Δ.len = 1) ∧ segSum rc l = sumList (l.map fun Δ => rc Δ.first) := by
-  first | (exact @GlobalTheory.SegSumOne.segSum_of_mono0) | (exact GlobalTheory.SegSumOne.segSum_of_mono0) | (intros; apply GlobalTheory.SegSumOne.segSum_of_mono0  <;> assumption)
+      (∀ Δ ∈ l, Δ.len = 1) ∧ segSum rc l = sumList (l.map fun Δ => rc Δ.first) := GlobalTheory.SegSumOne.segSum_of_mono0

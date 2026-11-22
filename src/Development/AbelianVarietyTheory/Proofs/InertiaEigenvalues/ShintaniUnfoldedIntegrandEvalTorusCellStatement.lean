@@ -30,8 +30,4 @@ theorem _root_.GlobalTheory.T.shintani_unfoldedIntegrand_eval_torusCell : ∀ (E
       ∀ l : GlobalTheory.CellDec.abelian₂ E (m + 1) S,
         (GlobalTheory.CellDec.dinv (m + 1) l.1 : ℂ) * GlobalTheory.ZEul.uInt φ φ' Φ N x (GlobalTheory.CellDec.tl (m + 1) ϖ l.1 * g) =
           (l.1.prod fun w v => GlobalTheory.ZEul.rsTerm (Ideal.absNorm w.asIdeal) (fun i => (α w i : ℂ)) (fun i => (α' w i : ℂ)) x v) *
-            GlobalTheory.ZEul.uInt φ φ Φ N 0 g * (GlobalTheory.RSJ.detPow E (m + 1) x g : ℂ) := by
-  first
-  | exact @GlobalTheory.ZEul.uInt_cell_eval
-  | exact GlobalTheory.ZEul.uInt_cell_eval
-  | (intros; apply GlobalTheory.ZEul.uInt_cell_eval <;> assumption)
+            GlobalTheory.ZEul.uInt φ φ Φ N 0 g * (GlobalTheory.RSJ.detPow E (m + 1) x g : ℂ) := GlobalTheory.ZEul.uInt_cell_eval

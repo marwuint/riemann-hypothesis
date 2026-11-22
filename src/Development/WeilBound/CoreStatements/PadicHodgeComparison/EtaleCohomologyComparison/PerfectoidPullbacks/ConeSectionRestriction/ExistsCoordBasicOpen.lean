@@ -17,15 +17,13 @@ namespace CrystallineSemistableComparison.Pb
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 theorem isIntegral_of_smooth {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
-    [ConnectedSpace X] (n : ℕ) [SmoothOfRelativeDimension n q] : IsIntegral X :=
-  isIntegral_of_smooth_pf q n
+    [ConnectedSpace X] (n : ℕ) [SmoothOfRelativeDimension n q] : IsIntegral X := CrystallineSemistableComparison.Pb.isIntegral_of_smooth_pf q n
 
 theorem exists_etale_away {K A : Type} [Field K] [CharZero K] [CommRing A] [IsDomain A] [Algebra K A]
     [Algebra.FiniteType K A] {d : ℕ} (s : Fin d → A) (hs : AlgebraicIndependent K s)
     (halg : Algebra.IsAlgebraic (Algebra.adjoin K (Set.range s)) A) :
     ∃ g : A, g ≠ 0 ∧ (MvPolynomial.eval₂Hom (algebraMap K (Localization.Away g))
-      (fun k => algebraMap A (Localization.Away g) (s k)) : MvPolynomial (Fin d) K →+* Localization.Away g).Etale :=
-  exists_etale_away_pf s hs halg
+      (fun k => algebraMap A (Localization.Away g) (s k)) : MvPolynomial (Fin d) K →+* Localization.Away g).Etale := CrystallineSemistableComparison.Pb.exists_etale_away_pf s hs halg
 
 theorem exists_coord_basicOpen {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     {W : X.Opens} (hW : IsAffineOpen W) (g : Γ(X, W)) {d : ℕ} (s : Fin d → Γ(X, W)) :

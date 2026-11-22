@@ -70,6 +70,5 @@ theorem _root_.GlobalTheory.T.quadratic_tower_exists : _root_.GlobalTheory.FunPr
     (ΛW : Submodule (𝓞 D.host.E) (Fin WW.rank → D.host.E)), IsSelfDualC A ΛA → IsSelfDualC A' ΛA' → IsSelfDualC WW ΛW →
     p ≤ pp D j → q ≤ qq D j → A.rank + 2 * pp D j = rankV D (i + 1) (j + 1) + 2 * p →
     A'.rank + 2 * qq D j = rankV D i j + 2 * q → NegIdx A p → NegIdx A' q → NegIdx WW (p + q) → A.rank + A'.rank = WW.rank →
-      ∃ X : Tri T A A' WW, GlobalTheory.SqTower.IsStageC W i j p q X ∧ X.rA.Λ = ΛA ∧ X.rA'.Λ = ΛA' ∧ X.rW.Λ = ΛW := by
-  first | exact @_root_.GlobalTheory.SqTower.StageExists.exists_quadratic_tower_stage | exact _root_.GlobalTheory.SqTower.StageExists.exists_quadratic_tower_stage | (intros; apply _root_.GlobalTheory.SqTower.StageExists.exists_quadratic_tower_stage <;> assumption)
+      ∃ X : Tri T A A' WW, GlobalTheory.SqTower.IsStageC W i j p q X ∧ X.rA.Λ = ΛA ∧ X.rA'.Λ = ΛA' ∧ X.rW.Λ = ΛW := GlobalTheory.SqTower.StageExists.exists_quadratic_tower_stage
 end

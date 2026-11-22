@@ -19,5 +19,4 @@ theorem _root_.GlobalTheory.T.thetaValue_siegelTorusElement_le_sobolevSeminorm :
       (∀ u ∈ K₀, u.map (infPart D) = 0 → heisO ψ (sgn ε M) X (n • u) Ψ = Ψ) →
       ∀ t ∈ GlobalTheory.SiegelSet.cone r c, ∀ a, GlobalTheory.SiegelSet.IsTorusElt D.sp.cm.sig M.gram Xf Yf t a →
         ‖ω (a, 1) Ψ 0‖ ≤ C * (n : ℝ) ^ A * (GlobalTheory.Size.sobO (V := sgn ε M) (W := X) ψ θ μ 𝓕 k Ψ).toReal *
-          ∏ i, t i ^ (Module.finrank ℚ D.host.F * X.rank) := by
-  first | exact @GlobalTheory.SiegelTorusTheta.torus_bound | exact GlobalTheory.SiegelTorusTheta.torus_bound | (intros; apply GlobalTheory.SiegelTorusTheta.torus_bound <;> assumption)
+          ∏ i, t i ^ (Module.finrank ℚ D.host.F * X.rank) := GlobalTheory.SiegelTorusTheta.torus_bound

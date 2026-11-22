@@ -18,12 +18,7 @@ theorem toGL_det (g : Matrix (Fin 2) (Fin 2) ℤ) (hg : g.det ≠ 0) :
   simp [Matrix.det_fin_two]
 
 theorem slash_smul_pos (k : ℤ) (g : Matrix (Fin 2) (Fin 2) ℤ) (hg : 0 < g.det) (c : ℂ) (f : ℍ → ℂ) :
-    (c • f) ∣[k] toGL g = c • (f ∣[k] toGL g) := by
-  rw [ModularForm.smul_slash]
-  congr 1
-  simp only [UpperHalfPlane.σ]
-  rw [if_pos (by rw [Matrix.GeneralLinearGroup.val_det_apply, toGL_det g hg.ne']; exact_mod_cast hg)]
-  rfl
+    (c • f) ∣[k] toGL g = c • (f ∣[k] toGL g) := GlobalTheory.OldSpace.slash_smul_toGL k g hg c f
 
 def ulLin (k : ℤ) (l : ℕ) (hl : 0 < l) : Module.End ℂ (ℍ → ℂ) where
   toFun := UlF k l

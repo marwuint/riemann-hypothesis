@@ -7,7 +7,6 @@ set_option autoImplicit false
 
 namespace GlobalTheory.HeckePointLaw
 
-theorem heckePointLaws : GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.HeckePointLaws :=
-  heckePointLaws_of_transport _root_.GlobalTheory.ThetaTransport.thetaTransportLaw
+theorem heckePointLaws : GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.HeckePointLaws := GlobalTheory.ThetaTransport.heckePointLaws
 
 end GlobalTheory.HeckePointLaw

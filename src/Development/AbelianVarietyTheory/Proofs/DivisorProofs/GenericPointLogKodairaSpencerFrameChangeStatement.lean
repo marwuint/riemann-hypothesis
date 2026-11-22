@@ -17,5 +17,4 @@ theorem _root_.GlobalTheory.T.genericPoint_logKodairaSpencer_frame_change : ∀ 
       (ε ε' : Fin Dw.dim ≃ GlobalTheory.LogKSDiv.PairIx H Dw) (L : Matrix (Fin Dw.dim) (Fin Dw.dim) (X₀ TF.Y Z).functionField),
       (∀ j, _root_.Matrix.transpose (GlobalTheory.LogKSDiv.flatFrame A e e') * GlobalTheory.LogKSDiv.symPair (R := (X₀ TF.Y Z).functionField) e (ε j) * GlobalTheory.LogKSDiv.flatFrame A e e' =
         ∑ k, L k j • GlobalTheory.LogKSDiv.symPair (R := (X₀ TF.Y Z).functionField) e' (ε' k)) ∧
-      (letI := (GlobalTheory.Cartier.constFn (s₀ TF.Y Z)).toAlgebra; ∀ j, D j = ∑ k, L k j • D' k) := by
-  first | exact @GlobalTheory.LogKSDiv.GenChange.genKS_change | exact GlobalTheory.LogKSDiv.GenChange.genKS_change | (intros; apply GlobalTheory.LogKSDiv.GenChange.genKS_change <;> assumption)
+      (letI := (GlobalTheory.Cartier.constFn (s₀ TF.Y Z)).toAlgebra; ∀ j, D j = ∑ k, L k j • D' k) := GlobalTheory.LogKSDiv.GenChange.genKS_change

@@ -17,5 +17,4 @@ theorem _root_.GlobalTheory.T.expansion_multiplicationPullback_trait_degreeOne :
       (σ'' : H0 T.U.LG.L (m ^ 2)), uG.IsGen ∧
       (∀ (Z : Scheme.{0}) (r : Z ⟶ T.G.left) (z : Z) (J : (Z ⟶ T.G.left) → T.U.LG.L.ι), Good T.U.LG.L z J →
         sval σ'' r z J = (val uG (r ≫ 𝟙 _) z J).val * sval σ' (r ≫ (mulA T.G m).left) z J) ∧
-      ∀ e, T.U.ExpandsAt e (m ^ 2) σ'' f'' := by
-  first | exact @GlobalTheory.Mum.MulExpand.expand | exact GlobalTheory.Mum.MulExpand.expand | (intros; apply GlobalTheory.Mum.MulExpand.expand <;> assumption)
+      ∀ e, T.U.ExpandsAt e (m ^ 2) σ'' f'' := GlobalTheory.Mum.MulExpand.expand

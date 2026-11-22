@@ -52,6 +52,5 @@ theorem _root_.GlobalTheory.T.witt_tower_top_stage_theta_norm_formula : _root_.G
     NumbersIn D.what₂.embLL S μ₀ → ∀ (ρ : RealMatch W) (i j : Fin D.R.m), ∃ (A A' WW : HSp D) (X : Tri T A A' WW) (c κ : T → ℂ),
       GlobalTheory.SqTower.IsStageC W i j (pp D j) (qq D j) X ∧ X.IsConst W.ψ W.θ c ∧
       (∀ t, κ t ≠ 0 ∧ ∃ ζ : D.what₂.LL, GlobalTheory.Square.IsAwayUnit (Qn G t) ζ ∧ κ t = D.what₂.embLL ζ * κ μ₀) ∧
-      ∀ (t : T) (c' : ℂ), SquareNonzero W S.B ρ t i j → IsSquareConst W S.B ρ t i j c' → c' = κ t * c t := by
-  first | exact @_root_.GlobalTheory.SqTower.theta_tower_top_stage_norm_eq | exact _root_.GlobalTheory.SqTower.theta_tower_top_stage_norm_eq | (intros; apply _root_.GlobalTheory.SqTower.theta_tower_top_stage_norm_eq <;> assumption)
+      ∀ (t : T) (c' : ℂ), SquareNonzero W S.B ρ t i j → IsSquareConst W S.B ρ t i j c' → c' = κ t * c t := GlobalTheory.SqTower.theta_tower_top_stage_norm_eq
 end

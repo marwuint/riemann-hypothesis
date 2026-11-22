@@ -15,11 +15,7 @@ namespace GlobalTheory.KapVal
 open IsDedekindDomain
 
 theorem norm_le_one_of_isIntegral {q : ℕ} [Fact q.Prime] {x : ℂ_[q]} (hx : IsIntegral ℤ x) :
-    ‖x‖ ≤ 1 := by
-  have h1 : IsIntegral (NormedField.valuation (K := ℂ_[q])).integer x := hx.tower_top
-  have h2 := (Valuation.integer.integers (NormedField.valuation (K := ℂ_[q]))).mem_of_integral h1
-  have h3 : ‖x‖₊ ≤ 1 := h2
-  exact_mod_cast h3
+    ‖x‖ ≤ 1 := GlobalTheory.ConjPlace.norm_le_one_of_isIntegral hx
 
 theorem norm_le_one_of_int {q : ℕ} [Fact q.Prime] {K : Type} [Field K] [NumberField K] (j : K →+* ℂ_[q])
     (y : 𝓞 K) : ‖j (y : K)‖ ≤ 1 :=
