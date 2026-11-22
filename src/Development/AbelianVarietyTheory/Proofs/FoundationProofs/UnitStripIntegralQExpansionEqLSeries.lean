@@ -28,7 +28,7 @@ theorem strip_eq_LSeries : ∀ (h b : ℕ → ℂ) (w : ℝ), 0 < w → PolyB h 
   have h4 : (0 : ℝ) < 4 * π := by positivity
   have ha0 : a 0 = 0 := by simp [ha, h0]
   have h1 : (∫ τ in strip, conj (qs h τ) * qs b τ * ((τ.im ^ (w + 1) : ℝ) : ℂ)) = mellin P (w : ℂ) := by
-    rw [GlobalTheory.T.unitStrip_integral_eq_iterated.2 _ hint]
+    rw [_root_.GlobalTheory.EisM.strip_iterated.2 _ hint]
     unfold mellin
     refine setIntegral_congr_fun measurableSet_Ioi (fun y hy => ?_)
     have hy : 0 < y := hy

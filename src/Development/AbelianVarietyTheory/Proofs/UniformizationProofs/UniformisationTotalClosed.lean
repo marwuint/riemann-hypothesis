@@ -26,7 +26,7 @@ open GlobalTheory.LN
 namespace GlobalTheory
 
 theorem uniformisation_total_closed : USt :=
-  _root_.GlobalTheory.LN.uniformisation_dvr GlobalTheory.T.all_six_abelian_scheme_laws_hold.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.2.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.2.2.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.2.2.2.1
-    GlobalTheory.T.all_six_abelian_scheme_laws_hold.2.2.2.2.1
+  _root_.GlobalTheory.LN.uniformisation_dvr _root_.GlobalTheory.allSixLaws.1 _root_.GlobalTheory.allSixLaws.2.1 _root_.GlobalTheory.allSixLaws.2.2.1 _root_.GlobalTheory.allSixLaws.2.2.2.1
+    _root_.GlobalTheory.allSixLaws.2.2.2.2.1
 
 end GlobalTheory

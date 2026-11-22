@@ -96,7 +96,7 @@ theorem GlobalTheory.KZ.H3.kum_family : ∀ (Ω : Type) [Field Ω] [Algebra ℚ 
       refine (_root_.GlobalTheory.KZ.H3.KumAdd.kum_add_zero_near Ω ε X l n).2.2 _ _ _ hs ⟨1, one_pos, fun δ _ => ?_⟩
       rw [Finset.sum_apply]
       refine Finset.sum_congr rfl fun k _ => ?_
-      rw [GlobalTheory.T.integralConjugateSL2Int_laws.2.1, map_intCast]
+      rw [_root_.GlobalTheory.KZ.cj_laws.2.1, map_intCast]
     obtain ⟨M, hM, hQ⟩ := near_fin _ _ fun i => _root_.GlobalTheory.KZ.H3.kum_near Ω ε X l n (c i) _ _ (hK i) (hχ n i)
     refine ⟨M, hM, fun δ hδ => ?_⟩
     simp only [map_sum, map_mul, MvPolynomial.algHom_C, (mon_expand (ZMod (l ^ n)) w).1, Finset.mul_sum]

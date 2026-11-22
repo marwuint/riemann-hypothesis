@@ -93,7 +93,7 @@ theorem exists_infNorm_of_rt (hR : Geo.ResK.ResKStatement) (hG : GagaSections) {
       Subtype.ext (show H.rt0 = τ (H.rt : E) from hτ.symm)
     show σ ((IntermediateField.inclusion c.le) (baseKA l).ρ) = H.rt0
     rw [e, hσ]
-  obtain ⟨FU⟩ := GlobalTheory.familyUnif_of_laws GlobalTheory.T.abelianScheme_laws_unconditional.1 E H D l Xo _ g ty hr hK hty
+  obtain ⟨FU⟩ := GlobalTheory.familyUnif_of_laws _root_.GlobalTheory.abelianSchemeLaws_all.1 E H D l Xo _ g ty hr hK hty
   obtain ⟨Φ, hΦ, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.anUnit E H D l Xo c τ (σ.comp (τ.codRestrict c.F.toSubfield (c.conj τ))) σ g ty FU
     hty hσ (fun a => rfl)
   obtain ⟨κ, hκ0, hκ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.flat_eq_const_mul_unitAn hR hG E H D l Xo c O β Y U Z τ σ Φ φ hβ hr hτ hσ hZ hΦ hl hm

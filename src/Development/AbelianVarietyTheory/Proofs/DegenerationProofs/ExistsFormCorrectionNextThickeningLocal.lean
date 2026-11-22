@@ -36,7 +36,7 @@ theorem nilpotent_ker {R : Type} [CommRing R] (I : Ideal R) {n : ℕ} (h : I ^ n
 theorem exists_h1Zero_pw (R : Type) [CommRing R] [IsNoetherianRing R] (X : Scheme.{0})
     (f : X ⟶ Spec (CommRingCat.of R)) (H : LB X) (m : ℕ) (s : Fin (m + 1) → LB.Sec H) (hH : H.IsLB)
     (hs : VeryAmpleBy f H s) : ∃ t₀ : ℕ, ∀ t : ℕ, t₀ ≤ t → FirstCohomologyVanishes (GlobalTheory.AbLaw.pw H t) := by
-  obtain ⟨t₀, ht₀⟩ := GlobalTheory.T.serre_vanishing_very_ample.1 R X f H m s hH hs H hH
+  obtain ⟨t₀, ht₀⟩ := _root_.GlobalTheory.AbLaw.serre_h1Zero_and_sections_polynomial.1 R X f H m s hH hs H hH
   refine ⟨t₀.toNat + 1, fun t ht => ?_⟩
   obtain ⟨w, hw⟩ := GlobalTheory.Algebraise.lbIso_tw hH ((t : ℤ) - 1)
   have h := H1Iso.firstCohomologyVanishes_of_iso_of_isGen (isLB_tw hH hH _).cover (isLB_pw hH _) w hw (ht₀ _ (by omega))
@@ -106,7 +106,7 @@ theorem GlobalTheory.Degen.exists_form_correction_local : ∀ (R : Type) [CommRi
     rw [this]
     infer_instance
   obtain ⟨t₁, ht₁⟩ := exists_h1Zero_pw _ _ f₀ _ n s₀ hL hva₀
-  obtain ⟨t₂, ht₂⟩ := GlobalTheory.T.serre_vanishing_very_ample.2 _ _ f₀ _ n s₀ hL hva₀
+  obtain ⟨t₂, ht₂⟩ := _root_.GlobalTheory.AbLaw.serre_h1Zero_and_sections_polynomial.2 _ _ f₀ _ n s₀ hL hva₀
   refine ⟨max t₁ t₂, fun t ht e F hF hF0 => ?_⟩
   obtain ⟨j₀, hj, w, hw', hr⟩ := exists_pull_tower _ Y β hβ H (fun e => (hH e).1) s
     (fun e => ⟨v e, (hH e).2, hs e⟩) e

@@ -60,10 +60,10 @@ theorem germ_mul_ne_zero {b b' : ℂ → ℂ} (hb : DifferentiableOn ℂ b Hs) (
     (h : (b : Mero) ≠ 0) (h' : (b' : Mero) ≠ 0) : ((b * b' : ℂ → ℂ) : Mero) ≠ 0 := by
   intro H
   have h0 : DifferentiableOn ℂ (fun _ => (0 : ℂ)) Hs := differentiableOn_const 0
-  have e := (GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties.1 (b * b') (fun _ => 0) (hb.mul hb') h0).1 (by rw [H]; rfl)
-  rcases GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties.2.1 b b' hb hb' (fun z hz => by simpa using e z hz) with h1 | h1
-  · exact h (by rw [(GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties.1 b (fun _ => 0) hb h0).2 h1]; rfl)
-  · exact h' (by rw [(GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties.1 b' (fun _ => 0) hb' h0).2 h1]; rfl)
+  have e := (_root_.GlobalTheory.KZ.Germ.main.1 (b * b') (fun _ => 0) (hb.mul hb') h0).1 (by rw [H]; rfl)
+  rcases _root_.GlobalTheory.KZ.Germ.main.2.1 b b' hb hb' (fun z hz => by simpa using e z hz) with h1 | h1
+  · exact h (by rw [(_root_.GlobalTheory.KZ.Germ.main.1 b (fun _ => 0) hb h0).2 h1]; rfl)
+  · exact h' (by rw [(_root_.GlobalTheory.KZ.Germ.main.1 b' (fun _ => 0) hb' h0).2 h1]; rfl)
 
 theorem kum_add_zero_near : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime],
     ∀ n : ℕ, (∀ (x x' : X.Khat l) (χ χ' : SL(2, ℤ) → ZMod (l ^ n)), Kum X l n x χ → Kum X l n x' χ' →
@@ -89,7 +89,7 @@ theorem kum_add_zero_near : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω
   · refine ⟨1, fun _ => 1, fun _ => 1, 1, one_pos, ?_, isRoot_one X _ ?_, ?_⟩
     · rw [map_zero, C.2.2.2.1]
     · intro H
-      have := (GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties.1 (fun _ => (1 : ℂ)) (fun _ => 0) (differentiableOn_const 1)
+      have := (_root_.GlobalTheory.KZ.Germ.main.1 (fun _ => (1 : ℂ)) (fun _ => 0) (differentiableOn_const 1)
         (differentiableOn_const 0)).1 (by rw [H]; rfl) Complex.I (by simp [Hs])
       simp at this
     · intro δ _ z _

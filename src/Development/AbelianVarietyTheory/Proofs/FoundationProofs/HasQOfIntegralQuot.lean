@@ -29,7 +29,7 @@ theorem hasQ_periodic {N : ℕ} {f : ℍ → ℂ} {a : ℕ → ℂ} (hN : 0 < N)
       push_cast; field_simp
     rw [this, Complex.exp_nat_mul_two_pi_mul_I, mul_one]
   rw [hc] at h1
-  exact congrFun (GlobalTheory.T.hasQExpansionOfLevel_coeff_and_function_unique.2 N _ _ a h1 h) τ
+  exact congrFun (_root_.GlobalTheory.QFam.hasQ_unique_both.2 N _ _ a h1 h) τ
 
 theorem hasQ_of_integral_quot : ∀ (N n : ℕ) (A D : ℍ → ℂ) (s : Fin n → ℍ → ℂ), 0 < N →
     (∃ a, HasQ N A a) → (∃ d, HasQ N D d) → (∀ j, ∃ c, HasQ N (s j) c) → D ≠ 0 →

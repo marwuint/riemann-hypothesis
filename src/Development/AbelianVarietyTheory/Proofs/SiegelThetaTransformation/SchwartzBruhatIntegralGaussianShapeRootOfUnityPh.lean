@@ -110,7 +110,7 @@ theorem ph_haar_of_shape : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [Decidab
   refine Ph.mul ?_ (ph_finsum_quotient (perSub ℚ κ ι hsb.choose) S φ f c a
     (GlobalTheory.SW.HaarLevel.periodic hR.2) (GlobalTheory.SW.HaarLevel.finite_support hR.1 hR.2) hc hf hφx)
 
-  have h := GlobalTheory.T.complex_phase_calculus_rootOfUnity.2.2.1
+  have h := _root_.GlobalTheory.Phase.Calc.calculus.2.2.1
     (((hsb.choose : ℝ) ^ (Module.finrank ℚ ℚ * (Fintype.card κ * Fintype.card ι)))⁻¹)
   convert h using 1
   push_cast

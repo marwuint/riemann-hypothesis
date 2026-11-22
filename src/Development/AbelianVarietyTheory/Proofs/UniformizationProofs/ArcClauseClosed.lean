@@ -11,6 +11,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 namespace GlobalTheory
 
 theorem arcClause_closed : ReciprocityTheory.ChartRestriction.G.Geo.Tor.ToroidalArchimedeanCondition :=
-  _root_.GlobalTheory.HolomorphicArc.main GlobalTheory.T.abelianScheme_laws_unconditional.1 GlobalTheory.T.abelianScheme_laws_unconditional.2 _root_.GlobalTheory.thetaUnifAV_all
+  _root_.GlobalTheory.HolomorphicArc.main _root_.GlobalTheory.abelianSchemeLaws_all.1 _root_.GlobalTheory.abelianSchemeLaws_all.2 _root_.GlobalTheory.thetaUnifAV_all
 
 end GlobalTheory

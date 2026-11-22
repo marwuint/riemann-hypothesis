@@ -160,7 +160,7 @@ lemma good_ne (e N l : ℕ) (χ θ : DirichletCharacter ℂ N) (ψ : DirichletCh
     · rw [Pi.smul_apply, hEn (c₁ / κ) n hn, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hκ0, one_mul]
   · rw [hEE]
     have h1 := ((_root_.GlobalTheory.EisM.mf_linear (e + 1) (N * l) _).2.2.1 κ⁻¹ _ hE).1
-    have h2 := GlobalTheory.T.modularFormCoeffSeq_mul_and_qExpansion.2 _ _ _ _ _ _ _ hF h1
+    have h2 := _root_.GlobalTheory.EisM.mul_main.2 _ _ _ _ _ _ _ hF h1
     have hw : e + (e + 1) = 2 * e + 1 := by ring
     rw [hw] at h2
     exact (_root_.GlobalTheory.EisM.mf_linear (2 * e + 1) (N * l) _).2.2.2.1 _ _ (fun d hd => char_eq χ θ ψ φ hφ d hd) h2
@@ -234,7 +234,7 @@ lemma good_one (e N l : ℕ) (χ θ : DirichletCharacter ℂ N) (φ : DirichletC
 
   have hprod : ∀ G, MF (e + 1) (N * l) (fun d => ch θ'⁻¹ d * 1) G → MF (2 * e + 1) (N * l) (ch χ⁻¹) (mul FF G) := by
     intro G hG
-    have h2 := GlobalTheory.T.modularFormCoeffSeq_mul_and_qExpansion.2 _ _ _ _ _ _ _ hF hG
+    have h2 := _root_.GlobalTheory.EisM.mul_main.2 _ _ _ _ _ _ _ hF hG
     have hw : e + (e + 1) = 2 * e + 1 := by ring
     rw [hw] at h2
     refine (_root_.GlobalTheory.EisM.mf_linear (2 * e + 1) (N * l) _).2.2.2.1 _ _ (fun d hd => ?_) h2

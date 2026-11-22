@@ -122,20 +122,20 @@ theorem GlobalTheory.CxCoh.collapse_resMap_bij : ∀ (C : Type 1) [Category.{0} 
       fun _ x ↦ (K.M2.map_comp _ _ x).symm⟩
   have qU : U.QAll := hu
   have qE : E.QAll := hε
-  have a0U := GlobalTheory.T.vertical_h0_bijective_h1_injective_universes.1 U qU
-  have a1U := GlobalTheory.T.vertical_h1_surjective_universes.1 U qU
-  have a2U := GlobalTheory.T.vertical_h2_injective_three_universe_pairs.1 U qU
+  have a0U := _root_.GlobalTheory.CxCoh.vertical_bijective_h0_injective_h1.1 U qU
+  have a1U := _root_.GlobalTheory.CxCoh.VertSurj.instances.1 U qU
+  have a2U := _root_.GlobalTheory.CxCoh.vertical_h2_injective_universes.1 U qU
   have a3U := GlobalTheory.T.vertical_h2_surjective_universes.1 U qU
-  have a0E := GlobalTheory.T.vertical_h0_bijective_h1_injective_universes.2.2 E qE
-  have a1E := GlobalTheory.T.vertical_h1_surjective_universes.2.2 E qE
-  have a2E := GlobalTheory.T.vertical_h2_injective_three_universe_pairs.2.2 E qE
+  have a0E := _root_.GlobalTheory.CxCoh.vertical_bijective_h0_injective_h1.2.2 E qE
+  have a1E := _root_.GlobalTheory.CxCoh.VertSurj.instances.2.2 E qE
+  have a2E := _root_.GlobalTheory.CxCoh.vertical_h2_injective_universes.2.2 E qE
   have a3E := GlobalTheory.T.vertical_h2_surjective_universes.2.2 E qE
   have oU := GlobalTheory.T.joinedMapsAgreeCohomologyZeroOne_instances.1 _ _ _ jU
   have oW := GlobalTheory.T.joinedMapsAgreeCohomologyZeroOne_instances.1 _ _ _ jW
   have oE := GlobalTheory.T.joinedMapsAgreeCohomologyZeroOne_instances.2.2 _ _ _ jE
-  have tU := GlobalTheory.T.joinedMapsAgreeCohomologyTwo_instances.1 _ _ _ jU
-  have tW := GlobalTheory.T.joinedMapsAgreeCohomologyTwo_instances.1 _ _ _ jW
-  have tE := GlobalTheory.T.joinedMapsAgreeCohomologyTwo_instances.2.2 _ _ _ jE
+  have tU := _root_.GlobalTheory.CxCoh.JoinedTwoProof.joinedTwo_inst.1 _ _ _ jU
+  have tW := _root_.GlobalTheory.CxCoh.JoinedTwoProof.joinedTwo_inst.1 _ _ _ jW
+  have tE := _root_.GlobalTheory.CxCoh.JoinedTwoProof.joinedTwo_inst.2.2 _ _ _ jE
   refine ⟨bij_of_two _ W.h0 ((K.res S).resMap ℓ).h0 U.h0 E.h0 (fun x ↦ ?_) (fun y ↦ ?_) a0U.1 a0E.1,
     bij_of_two _ W.h1 ((K.res S).resMap ℓ).h1 U.h1 E.h1 (fun x ↦ ?_) (fun y ↦ ?_) ⟨a0U.2, a1U⟩ ⟨a0E.2, a1E⟩,
     bij_of_two _ W.h2 ((K.res S).resMap ℓ).h2 U.h2 E.h2 (fun x ↦ ?_) (fun y ↦ ?_) ⟨a2U, a3U⟩ ⟨a2E, a3E⟩⟩

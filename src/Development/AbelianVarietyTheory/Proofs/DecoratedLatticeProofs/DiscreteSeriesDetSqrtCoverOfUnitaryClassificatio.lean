@@ -30,7 +30,7 @@ theorem discreteSeriesCover_of_classification :
     GlobalTheory.ClassificationConsequences.consequences_of_dsClass (GlobalTheory.Published.discreteSeriesClassification_iff.1 hcl)
   have hC : GlobalTheory.Published.DiscreteSeriesCoverExists :=
     GlobalTheory.Published.CoverSeries.of_upq (GlobalTheory.Published.discreteSeriesUpqExists_iff_dsExists.2 hE)
-      (fun p q h T U hU => ((GlobalTheory.T.harishChandraModules_indefiniteUnitaryGroup.1 p q h T).1 U hU).2.1)
+      (fun p q h T U hU => ((_root_.GlobalTheory.HcPort.print_harishChandraModules.1 p q h T).1 U hU).2.1)
   intro p q hn T
   choose D hD using fun lam : {lam : Ix p q → ℚ // IsParam lam} => hC p q T lam.1 lam.2
   refine ⟨D, fun lam => _root_.GlobalTheory.CoverDS.hasTypes_of_hasParam_of_group hM hK hI p q hn T (D lam) lam.1 lam.2 (hD lam), fun R => ?_⟩

@@ -23,7 +23,7 @@ theorem norm_evalAt_intVec_le {n : ℕ} (la : Fin n → ℕ) (j : Idx la) (g : U
     ext p q
     simp
   rw [h]
-  exact GlobalTheory.T.unitary_minor_le_one_and_hadamard_columns.1 n (sz k) g (I k) (Fin.castLE (hsz k))
+  exact _root_.GlobalTheory.UnitaryMinor.unitary_minor_and_hadamard.1 n (sz k) g (I k) (Fin.castLE (hsz k))
 
 theorem normSq_basis_le {n : ℕ} (la : Fin n → ℕ) (j : Idx la) :
     normSq la (basis la ℂ j).1 ≤ dim la := by
@@ -51,7 +51,7 @@ namespace GlobalTheory.OnMatGram
 theorem norm_det_onMat_sq_le : ∀ (n : ℕ) (la : Fin n → ℕ), Antitone la → (onMat la).det ≠ 0 ∧ ‖(onMat la).det‖ ^ 2 ≤ (dim la : ℝ) ^ dim la := by
   intro n la _
   refine ⟨det_onMat_ne_zero la, ?_⟩
-  refine (GlobalTheory.T.unitary_minor_le_one_and_hadamard_columns.2 (Idx la) (onMat la)).trans ?_
+  refine (_root_.GlobalTheory.UnitaryMinor.unitary_minor_and_hadamard.2 (Idx la) (onMat la)).trans ?_
   calc ∏ j, ∑ i, ‖onMat la i j‖ ^ 2 ≤ ∏ _j : Idx la, (dim la : ℝ) :=
         Finset.prod_le_prod (fun j _ => Finset.sum_nonneg fun _ _ => by positivity)
           fun j _ => (sum_norm_sq_onMat la j).trans_le (normSq_basis_le la j)

@@ -107,7 +107,7 @@ theorem integrableOn_sq_qs_low : ∀ (e : ℕ) (b : ℕ → ℂ) (s : ℝ), 1 �
     refine lintegral_congr fun τ => ?_
     have := τ.im_pos
     exact Real.enorm_of_nonneg (by positivity)
-  rw [hasFiniteIntegral_iff_enorm, e1, GlobalTheory.T.unitStrip_integral_eq_iterated.1 _ (hGm.indicator hmeas)]
+  rw [hasFiniteIntegral_iff_enorm, e1, _root_.GlobalTheory.EisM.strip_iterated.1 _ (hGm.indicator hmeas)]
   set T : ℕ → ℝ → ENNReal := fun n y =>
     ENNReal.ofReal (‖b n‖ ^ 2) * ENNReal.ofReal (y ^ (a - 1) * Real.exp (-(4 * π * n * y))) with hT
   have hTm : ∀ n : ℕ, Measurable fun y : ℝ => ENNReal.ofReal (y ^ (a - 1) * Real.exp (-(4 * π * n * y))) := fun n => by

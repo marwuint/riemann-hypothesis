@@ -55,9 +55,9 @@ theorem isKummerPotentialIncrement_linear_laws : ∀ (Ω : Type) [Field Ω] [Alg
     refine ⟨fun δ => χ (cj m δ), _root_.GlobalTheory.KZ.H3.kum_kmap_sl Ω ε X l n m x χ hm hK, M * m.det.natAbs,
       Nat.mul_pos hM (Int.natAbs_pos.mpr hm.ne'), ?_⟩
     intro δ hδ z hz
-    obtain ⟨hc1, hc2⟩ := GlobalTheory.T.integralConjugateSL2Int_laws.1 m M hm δ hδ
-    have hmz : mob (toGQ m) z ∈ Hs := GlobalTheory.T.glTwoPosRatMobius_basic_laws.1 (toGQ m) z hz
-    have hcomm := GlobalTheory.T.integralConjugateSL2Int_laws.2.2 m δ (cj m δ) hm hc1 z hz
+    obtain ⟨hc1, hc2⟩ := _root_.GlobalTheory.KZ.cj_laws.1 m M hm δ hδ
+    have hmz : mob (toGQ m) z ∈ Hs := _root_.GlobalTheory.KZ.mob_laws.1 (toGQ m) z hz
+    have hcomm := _root_.GlobalTheory.KZ.cj_laws.2.2 m δ (cj m δ) hm hc1 z hz
     show PadicInt.toZModPow n (h (mob (toGQ m) (mob (ofSL δ) z)) - h (mob (toGQ m) z)) = χ (cj m δ)
     rw [hcomm]
     exact hI (cj m δ) hc2 (mob (toGQ m) z) hmz

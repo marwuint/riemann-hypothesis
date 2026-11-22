@@ -35,25 +35,25 @@ theorem germ_eq_of_eqOn {φ ψ : ℂ → ℂ} (h : ∀ z ∈ Hs, φ z = ψ z) : 
   rw [Filter.Germ.coe_eq]
   exact Filter.mem_of_superset (Filter.self_mem_codiscreteWithin Hs) h
 
-theorem mob_mem (γ : SL(2, ℤ)) {z : ℂ} (hz : z ∈ Hs) : mob (ofSL γ) z ∈ Hs := GlobalTheory.T.glTwoPosRatMobius_upperHalfPlane_properties.1 _ _ hz
+theorem mob_mem (γ : SL(2, ℤ)) {z : ℂ} (hz : z ∈ Hs) : mob (ofSL γ) z ∈ Hs := _root_.GlobalTheory.FN.mob_props.1 _ _ hz
 
 theorem mob_mul (γ δ : SL(2, ℤ)) {z : ℂ} (hz : z ∈ Hs) :
     mob (ofSL (γ * δ)) z = mob (ofSL γ) (mob (ofSL δ) z) := by
-  rw [map_mul]; exact GlobalTheory.T.glTwoPosRatMobius_upperHalfPlane_properties.2.1 _ _ _ hz
+  rw [map_mul]; exact _root_.GlobalTheory.FN.mob_props.2.1 _ _ _ hz
 
 theorem mob_ofSL_one (z : ℂ) : mob (ofSL 1) z = z := by
-  rw [map_one]; exact GlobalTheory.T.glTwoPosRatMobius_upperHalfPlane_properties.2.2.1 z
+  rw [map_one]; exact _root_.GlobalTheory.FN.mob_props.2.2.1 z
 
 theorem mob_mob_inv (γ : SL(2, ℤ)) {z : ℂ} (hz : z ∈ Hs) : mob (ofSL γ) (mob (ofSL γ⁻¹) z) = z := by
   rw [← mob_mul _ _ hz, mul_inv_cancel, mob_ofSL_one]
 
 theorem diff_comp {a : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) (γ : SL(2, ℤ)) :
     DifferentiableOn ℂ (fun z => a (mob (ofSL γ) z)) Hs :=
-  ha.comp (GlobalTheory.T.glTwoPosRatMobius_upperHalfPlane_properties.2.2.2.2.1 _) (fun _ hz => mob_mem γ hz)
+  ha.comp (_root_.GlobalTheory.FN.mob_props.2.2.2.2.1 _) (fun _ hz => mob_mem γ hz)
 
 theorem eqOn_of_germ {a b : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) (hb : DifferentiableOn ℂ b Hs)
     (h : (a : Mero) = (b : Mero)) : ∀ z ∈ Hs, a z = b z :=
-  GlobalTheory.T.upperHalfPlaneCodiscreteGerm_identity_and_units.2.1 a b ha hb h
+  _root_.GlobalTheory.FN.germ_main.2.1 a b ha hb h
 
 theorem eqOn_of_eventually {a b : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) (hb : DifferentiableOn ℂ b Hs)
     (h : ∀ᶠ z in codiscreteWithin Hs, a z = b z) : ∀ z ∈ Hs, a z = b z :=
@@ -71,7 +71,7 @@ theorem exists_ne_zero {a : ℂ → ℂ} (h : (a : Mero) ≠ 0) : ∃ z ∈ Hs, 
 
 theorem eventually_ne_zero {a : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) {z₀ : ℂ} (hz₀ : z₀ ∈ Hs) (h : a z₀ ≠ 0) :
     ∀ᶠ z in codiscreteWithin Hs, a z ≠ 0 :=
-  (GlobalTheory.T.upperHalfPlaneCodiscreteGerm_identity_and_units.2.2 a ha (germ_ne_zero ha hz₀ h)).1
+  (_root_.GlobalTheory.FN.germ_main.2.2 a ha (germ_ne_zero ha hz₀ h)).1
 
 theorem comp_ne_zero {a : ℂ → ℂ} {z₀ : ℂ} (hz₀ : z₀ ∈ Hs) (h : a z₀ ≠ 0) (γ : SL(2, ℤ)) :
     ∃ z ∈ Hs, a (mob (ofSL γ) z) ≠ 0 :=
@@ -235,7 +235,7 @@ theorem quot_pow {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X 
     rw [hψ, ← Filter.Germ.coe_mul, Filter.Germ.coe_eq] at hg₀
     filter_upwards [hg₀] with z hz
     simpa only [Pi.mul_apply] using hz
-  haveI : Nontrivial Mero := GlobalTheory.T.upperHalfPlaneCodiscreteGerm_identity_and_units.1
+  haveI : Nontrivial Mero := _root_.GlobalTheory.FN.germ_main.1
   have hinj : Function.Injective X.an := X.an.injective
   have hpowg : g₀ ^ m = ((f * r⁻¹ : X.Kˣ) : X.K) := by
     apply hinj
@@ -275,7 +275,7 @@ theorem finite_mod_powers : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgCl
   intro Ω _ _ _ ε X hε hj M m hM hm
   classical
   haveI : NeZero M := ⟨hM.ne'⟩
-  haveI : Nontrivial Mero := GlobalTheory.T.upperHalfPlaneCodiscreteGerm_identity_and_units.1
+  haveI : Nontrivial Mero := _root_.GlobalTheory.FN.germ_main.1
   haveI : Group.FG SL(2, ℤ) :=
     ⟨⟨{ModularGroup.S, ModularGroup.T}, by simpa using SpecialLinearGroup.SL2Z_generators⟩⟩
   obtain ⟨S, hS⟩ := (Group.fg_iff_subgroup_fg (CongruenceSubgroup.Gamma M)).1 (Subgroup.fg_of_index_ne_zero _)
@@ -290,7 +290,7 @@ theorem finite_mod_powers : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgCl
     apply exists_ne_zero
     intro h0
     have hu : IsUnit (X.an (f.1 : X.K) * (B f : Mero) ^ m) :=
-      ((f.1.isUnit).map X.an).mul ((GlobalTheory.T.upperHalfPlaneCodiscreteGerm_identity_and_units.2.2 (B f) (hB f) (hB0 f)).2.pow m)
+      ((f.1.isUnit).map X.an).mul ((_root_.GlobalTheory.FN.germ_main.2.2 (B f) (hB f) (hB0 f)).2.pow m)
     rw [hAB f, h0, zero_pow hm.ne'] at hu
     exact not_isUnit_zero hu
   have hBnz : ∀ f : Sset, ∃ z ∈ Hs, B f z ≠ 0 := fun f => exists_ne_zero (hB0 f)

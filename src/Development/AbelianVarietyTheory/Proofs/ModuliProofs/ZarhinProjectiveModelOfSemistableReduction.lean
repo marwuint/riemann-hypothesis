@@ -29,6 +29,6 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 theorem zh_of_semistableReduction : GlobalTheory.Published.SemistableReductionSt → GlobalTheory.ZH.ZHSt :=
-  fun S => _root_.GlobalTheory.ZH.exists_model_semiAbelian_of_geo S GlobalTheory.T.uniformisationExistence_and_torsion_statements.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.2.1 GlobalTheory.T.uniformisationExistence_and_torsion_statements.2 (_root_.GlobalTheory.zhGeo_of_semistableReduction S)
+  fun S => _root_.GlobalTheory.ZH.exists_model_semiAbelian_of_geo S _root_.GlobalTheory.ZH.thmU_and_uTors.1 _root_.GlobalTheory.allSixLaws.1 _root_.GlobalTheory.allSixLaws.2.1 _root_.GlobalTheory.ZH.thmU_and_uTors.2 (_root_.GlobalTheory.zhGeo_of_semistableReduction S)
 
 end GlobalTheory

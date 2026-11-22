@@ -10,18 +10,18 @@ namespace GlobalTheory.KZ.H3.KumHom
 
 theorem germ_zero_of_vanish {b : ℂ → ℂ} (hb : DifferentiableOn ℂ b Hs) (h : ∀ z ∈ Hs, b z = 0) :
     (b : Mero) = 0 :=
-  (GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties.1 b (fun _ => 0) hb (differentiableOn_const 0)).2 h
+  (_root_.GlobalTheory.KZ.Germ.main.1 b (fun _ => 0) hb (differentiableOn_const 0)).2 h
 
 theorem vanish_of_comp {b : ℂ → ℂ} (g : GQ) (h : ∀ z ∈ Hs, b (mob g z) = 0) : ∀ z ∈ Hs, b z = 0 := by
   intro w hw
-  have h1 := GlobalTheory.T.glTwoPosRatMobius_basic_laws.2.1 g g⁻¹ w hw
-  rw [mul_inv_cancel, GlobalTheory.T.glTwoPosRatMobius_basic_laws.2.2.1] at h1
+  have h1 := _root_.GlobalTheory.KZ.mob_laws.2.1 g g⁻¹ w hw
+  rw [mul_inv_cancel, _root_.GlobalTheory.KZ.mob_laws.2.2.1] at h1
   rw [h1]
-  exact h _ (GlobalTheory.T.glTwoPosRatMobius_basic_laws.1 _ w hw)
+  exact h _ (_root_.GlobalTheory.KZ.mob_laws.1 _ w hw)
 
 theorem diff_comp {b : ℂ → ℂ} (hb : DifferentiableOn ℂ b Hs) (g : GQ) :
     DifferentiableOn ℂ (fun z => b (mob g z)) Hs :=
-  hb.comp (GlobalTheory.T.glTwoPosRatMobius_basic_laws.2.2.2.1 g) (fun z hz => GlobalTheory.T.glTwoPosRatMobius_basic_laws.1 g z hz)
+  hb.comp (_root_.GlobalTheory.KZ.mob_laws.2.2.2.1 g) (fun z hz => _root_.GlobalTheory.KZ.mob_laws.1 g z hz)
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
@@ -36,7 +36,7 @@ theorem num_not_vanish {X : Tower Ω ε} {m : ℕ} (hm : 0 < m) {f : X.Kˣ} {a b
     exact this
   have hdbm : DifferentiableOn ℂ (fun z => b z ^ m) Hs := hdb.pow m
   have h0 : ((fun z => b z ^ m : ℂ → ℂ) : Mero) = ((fun _ => 0 : ℂ → ℂ) : Mero) := hbm
-  have hz := (GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties.1 _ (fun _ => 0) hdbm (differentiableOn_const 0)).1 h0
+  have hz := (_root_.GlobalTheory.KZ.Germ.main.1 _ (fun _ => 0) hdbm (differentiableOn_const 0)).1 h0
   exact hb0 (germ_zero_of_vanish hdb fun z hz' => (pow_eq_zero_iff hm.ne').1 (hz z hz'))
 
 end GlobalTheory.KZ.H3.KumHom
@@ -76,8 +76,8 @@ theorem kum_hom : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ
   have key : ∀ z ∈ Hs, ((E (χ (δ * δ')) - E (χ δ) * E (χ δ')) * a z) * (b (mob g (mob g' z)) * b (mob g' z)) = 0 := by
     intro z hz
     have h1 := hrel (δ * δ') (Subgroup.mul_mem _ hδ hδ') z hz
-    rw [map_mul, GlobalTheory.T.glTwoPosRatMobius_basic_laws.2.1 _ _ z hz] at h1
-    have h2 := hrel δ hδ (mob g' z) (GlobalTheory.T.glTwoPosRatMobius_basic_laws.1 _ z hz)
+    rw [map_mul, _root_.GlobalTheory.KZ.mob_laws.2.1 _ _ z hz] at h1
+    have h2 := hrel δ hδ (mob g' z) (_root_.GlobalTheory.KZ.mob_laws.1 _ z hz)
     have h3 := hrel δ' hδ' z hz
     simp only [hE]
     linear_combination (-b (mob g' z)) * h1 + b z * h2 +
@@ -88,13 +88,13 @@ theorem kum_hom : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ
     refine DifferentiableOn.mul ?_ (diff_comp hdb g')
     have := diff_comp hdb (g * g')
     refine this.congr fun z hz => ?_
-    simp only [GlobalTheory.T.glTwoPosRatMobius_basic_laws.2.1 g g' z hz]
+    simp only [_root_.GlobalTheory.KZ.mob_laws.2.1 g g' z hz]
   have hc : E (χ (δ * δ')) - E (χ δ) * E (χ δ') = 0 := by
-    rcases GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties.2.1 _ _ hA hB key with h | h
+    rcases _root_.GlobalTheory.KZ.Germ.main.2.1 _ _ hA hB key with h | h
     · by_contra hne
       exact num_not_vanish hpos hr fun z hz => (mul_eq_zero.1 (h z hz)).resolve_left hne
     · exfalso
-      rcases GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties.2.1 _ _ (diff_comp (diff_comp hdb g) g') (diff_comp hdb g') h with h' | h'
+      rcases _root_.GlobalTheory.KZ.Germ.main.2.1 _ _ (diff_comp (diff_comp hdb g) g') (diff_comp hdb g') h with h' | h'
       · exact hb0 (germ_zero_of_vanish hdb (vanish_of_comp g (vanish_of_comp g' h')))
       · exact hb0 (germ_zero_of_vanish hdb (vanish_of_comp g' h'))
   have := sub_eq_zero.1 hc

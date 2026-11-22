@@ -206,7 +206,7 @@ theorem val_le_plan : ∀ (P : RF.Par) (l : ℕ) (C1 : ℝ), ParOK P → 5 ≤ l
   intro p hlev hatt
   have hk := hP.mk_le
   have hi0 : 1 ≤ i0 P.k V.l := by
-    have := (GlobalTheory.T.levelsUsed_balancedValue_orbitSums.1 P.k V.l (by omega) (by omega)).2.1
+    have := (_root_.GlobalTheory.LevelsOrbits.main.1 P.k V.l (by omega) (by omega)).2.1
     omega
   have key := val (fun z => blocks (X z) (p z) (ga z) P.r) ?_ ?_ ?_
   · refine key.trans ?_

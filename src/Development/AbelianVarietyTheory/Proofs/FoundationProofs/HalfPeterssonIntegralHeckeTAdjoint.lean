@@ -51,7 +51,7 @@ theorem GlobalTheory.EisM.pet_To_adjoint : ∀ (k L N q : ℕ) (ε : DirichletCh
   have hint : ∀ i, Integrable (fun τ : ℍ => (ρ τ : ℂ) * (conj (qs h τ) * slz k (repT q i) (qs a) τ * (τ.im : ℂ) ^ k)) :=
     fun i => _root_.GlobalTheory.EisM.integrable_pet_integrand k L L N ε h ρ (slz k (repT q i) (qs a)) hk hL hNL hρ hh
       ((hslz.2.2.2.1 _ (hdetpos i) hcont_a).aestronglyMeasurable)
-      (GlobalTheory.T.hasModerateGrowth_algebra_slash_stable.2.2 _ k _ (hdetpos i) (hlow i) (_root_.GlobalTheory.EisM.mod_qs_of_polyB a ha.1))
+      (_root_.GlobalTheory.EisM.mod_algebra.2.2 _ k _ (hdetpos i) (hlow i) (_root_.GlobalTheory.EisM.mod_qs_of_polyB a ha.1))
   have hadj := _root_.GlobalTheory.EisM.pet_hsum_adjoint k L N q ε ρ (DT L q) (Option (Fin q)) (Option (Fin q)) (repT q)
     (fun i => (repT q i).adjugate) (qs h) (qs a) hk hN hNL hq0 hcop hρ
     (fun δ hδ => ⟨hδ.1, (Int.natCast_dvd_natCast.2 hNL).trans hδ.2⟩)

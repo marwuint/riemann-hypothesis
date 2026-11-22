@@ -84,7 +84,7 @@ section Isogeny
 theorem isFinFlatSurj_of_onto (σ : K →+* ℂ) (P P' : Out.PolAV (Sp (𝓞 K))) (Φ : P.A ⟶ P'.A) (hg : P.g = P'.g)
     [hΦ : IsMonHom Φ] (h : ∀ y : Over.mk (spMap (σ.comp (algebraMap (𝓞 K) K))) ⟶ P'.A,
       ∃ x : Over.mk (spMap (σ.comp (algebraMap (𝓞 K) K))) ⟶ P.A, y = x ≫ Φ) : EigenLatticeFibres.IsFinFlatSurj Φ := by
-  have hL := GlobalTheory.T.abelianScheme_laws_unconditional.1
+  have hL := _root_.GlobalTheory.abelianSchemeLaws_all.1
   have hs := (OntoSurj.surjective_of_onto_complex_points _ _ (injective_of_charZero _) _ _ Φ P'.isAb P.isAb h).1
   obtain ⟨N, ψ, hN, -, h₁, -⟩ := LamF.exists_inverse_isogeny_ringOfIntegers thetaUnifAV_all hL
     homExtension_semiAbelian_dvr_unconditional K σ P P' Φ hg hΦ h
@@ -128,7 +128,7 @@ theorem isFinFlatSurj_sumMap_iff (σ : K →+* ℂ) (A A' B : Out.PolAV (Sp (�
   · intro hs
     obtain ⟨P, pP, hP⟩ := _root_.GlobalTheory.CM.exists_polAV_isPowGrp (𝓞 K) A p
     obtain ⟨P', pP', hP'⟩ := _root_.GlobalTheory.CM.exists_polAV_isPowGrp (𝓞 K) A' q
-    obtain ⟨Q, u, v, hu, hv, huv, hQ⟩ := _root_.GlobalTheory.PolProd.exists_prod_polAV GlobalTheory.T.abelianScheme_laws_unconditional.1 (𝓞 K) P P'
+    obtain ⟨Q, u, v, hu, hv, huv, hQ⟩ := _root_.GlobalTheory.PolProd.exists_prod_polAV _root_.GlobalTheory.abelianSchemeLaws_all.1 (𝓞 K) P P'
     have := pP.hom
     have := pP'.hom
     have := Q.isAb.comm
@@ -169,7 +169,7 @@ section Object
 theorem polId_iff (σ : K →+* ℂ) (A B : PAT H (Sp (𝓞 K))) (f : A.t.G ⟶ B.t.G) (hf : IsMonHom f) (h : 𝓞 E) :
     EigenLatticeFibres.PolId f h ↔ WeilEq B.t.PP.L f f A.t.PP.L (A.t.act.act h) (𝟙 _) (spMap (σ.comp (algebraMap (𝓞 K) K))) := by
   refine ⟨fun w n x y c hn hx hy => w n hn _ x y hx hy (unitOn c), fun w k hk Z x y hx hy c => ?_⟩
-  have hL := GlobalTheory.T.abelianScheme_laws_unconditional.1
+  have hL := _root_.GlobalTheory.abelianSchemeLaws_all.1
   have h₁ : IsMonHom (𝟙 A.pol.A) := inferInstance
   exact PairingScheme.weilIs_iff_of_lamEq hL (𝓞 K) A.pol A.pol B.pol A.pol _ _ _ _ hf hf (A.t.act.hom h) h₁
     ((PairingFibre.lamEq_weilEq_over_ring hL (𝓞 K) A.pol A.pol B.pol A.pol _ _ _ _ hf hf (A.t.act.hom h) h₁ ℂ
