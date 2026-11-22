@@ -475,13 +475,7 @@ def RootsIn : Prop :=
 
 def KummerIn : Prop := ∀ j, 1 ≤ j → j ≤ B.R.m → D.KPsi j ≤ B.KsC
 
-def KsLeOm : Prop := B.KsC ≤ D.Om
-
 def KsExact : Prop := B.KsC = listField D C
-
-def LowerOK : Prop := B.RayIn D ∧ B.CurveIn D ∧ B.ValIn C ∧ B.RootsIn c M ∧ B.KummerIn D
-
-def FieldsOK : Prop := B.LowerOK D C c M ∧ B.KsLeOm D
 
 variable {B D C c M}
 

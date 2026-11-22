@@ -156,9 +156,6 @@ theorem hT_eq_sum (V : HSpace E) (x y : V.V) :
   simp only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul,
     RingHom.id_apply, HSpace.gram, starRingEnd_apply, mul_comm]
 
-def spFrame (S : Spaces R F E) (c : E) : Matrix (Fin (S.Y 0).rank) (Fin (R.rS + 1)) E :=
-  coMat (S.Y 0) (Fin.snoc (α := fun _ => (S.Y 0).V) S.hypE (c • S.zm))
-
 end Spaces
 
 section Record
@@ -168,13 +165,6 @@ open Formalism.BasicNotions
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable (D : D7)
-
-def recFrame (u : D.what₂.Word) : Matrix (Fin (D.sp.Y 0).rank) (Fin (D.R.rS + 1)) D.host.E :=
-  spFrame D.sp (D.cOf u)⁻¹
-
-abbrev RecTerm (u u' : D.what₂.Word) : Type :=
-  Term (starRingEnd D.host.E) (D.sp.Y 0).gram (((D.mem u').A.T : ℕ) : D.host.E) (D.host.g 0 * D.host.g 1)
-    (recFrame D u)
 
 variable {D} {u u' : D.what₂.Word}
 
