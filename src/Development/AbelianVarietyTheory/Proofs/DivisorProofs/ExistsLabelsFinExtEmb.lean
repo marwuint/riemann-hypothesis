@@ -1,7 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProjOverWeierstrass
 import Mathlib
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
-import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniTrait
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLabelsFinExt
 

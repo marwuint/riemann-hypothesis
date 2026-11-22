@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
-import Formalism.LocalRingCardinality.DataExtra
-import Formalism.LocalRingCardinality.DataTies
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCmAdeleUnitCharacterReadingHeckeChar
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsResOfTameAt
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSelfDualAdelicFrameLevelOne

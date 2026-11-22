@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ValRSpMapFromSpecStalk
-import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 
 set_option autoImplicit false
 

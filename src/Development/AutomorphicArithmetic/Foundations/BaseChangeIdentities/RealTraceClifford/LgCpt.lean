@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.RealTraceClifford.RealTrOfAll
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionFactsHold
-import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.WaveSt
 
 noncomputable section
 

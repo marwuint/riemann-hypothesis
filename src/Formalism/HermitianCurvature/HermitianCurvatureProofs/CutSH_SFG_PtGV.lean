@@ -1,7 +1,5 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutSHSFG
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.LowVLift
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.CoordinateSizesOfHypotheses
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.OpApplyZeroNear
 
 noncomputable section
 

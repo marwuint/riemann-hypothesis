@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsQuasiFam
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WeilRepresentationContinuous
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.WittSmallGroupEmbeddingMemPointwiseStabilizerIso
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.SqNormIntegralFundamentalDomainEqL2NormSq
 
 noncomputable section

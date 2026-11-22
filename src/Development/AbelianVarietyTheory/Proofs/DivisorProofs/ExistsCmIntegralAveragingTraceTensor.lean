@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
-import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.ExistsStarNormLEOfIsCMField
 
 set_option autoImplicit false
 

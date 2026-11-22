@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsFlagBundleRankOne
-import Development.AbelianVarietyTheory.Definitions.Divisors.NormSqColGrLineOfOrthogonal
 
 noncomputable section
 

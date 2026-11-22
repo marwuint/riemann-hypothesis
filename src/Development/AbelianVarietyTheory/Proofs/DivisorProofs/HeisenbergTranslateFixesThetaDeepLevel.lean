@@ -4,8 +4,6 @@ import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.CharLem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardLatticeDoubleCosetClassesStabilisers
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.LatLevel
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.LatSDa
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSelfDualCLatFrame
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotents
 
 open NumberField MeasureTheory
 open scoped Classical

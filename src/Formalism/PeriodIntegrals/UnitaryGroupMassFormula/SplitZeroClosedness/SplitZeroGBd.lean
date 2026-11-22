@@ -1,6 +1,5 @@
 import Formalism.PeriodIntegrals.SplitZeroG
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.DiagonalPadicSubstitution.CoeffPowMulPowEqZeroOfLt
-import Formalism.PeriodIntegrals.BeDiagZp
 
 noncomputable section
 

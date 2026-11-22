@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.RealTraceClifford.RealTrOfAll
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.RealDescent.RealLeviDescent.ExpansionTerms
-import Formalism.RealPlaceAnalysis.QuotientSettingHolds
 
 noncomputable section
 

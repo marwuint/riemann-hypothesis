@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RelIndexNeZero
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClassSumSmallerLevel
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteIndexConj
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteRationalConjMemBoundedCompact
-import Formalism.LocalToGlobal.IndefiniteReal.Bridge
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 NumberField IsDedekindDomain GlobalTheory.CoefDuty GlobalTheory.ClassPet
 
 noncomputable section

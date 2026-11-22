@@ -3,7 +3,6 @@ import GroundTheory.GlobalFields.IdeleGroups.LocalNorms
 import GroundTheory.GlobalFields.KummerTheory.Splitting
 import GroundTheory.LocalFields.ExistsUnitFiltrationUnitsLeRangeNormUnits
 import GroundTheory.LocalFields.UnramifiedNorms
-import GroundTheory.GlobalFields.CompletionAtPlace.Integers
 
 namespace GroundTheory.Global
 

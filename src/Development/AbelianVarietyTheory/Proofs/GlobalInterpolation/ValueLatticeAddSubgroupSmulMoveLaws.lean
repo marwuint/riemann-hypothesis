@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.FormsStable
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Wlocal
 
 noncomputable section
 

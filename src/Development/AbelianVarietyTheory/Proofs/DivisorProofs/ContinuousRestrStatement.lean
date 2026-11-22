@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousRestr
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsCyclotomicExtensionQI
 
 open IsDedekindDomain
 set_option maxHeartbeats 1000000 in

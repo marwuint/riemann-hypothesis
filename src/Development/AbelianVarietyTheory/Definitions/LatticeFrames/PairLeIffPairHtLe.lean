@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ColHeightWith
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HtPsiLeIffExists
-import Formalism.LocalRingCardinality.DataArith
 
 noncomputable section
 

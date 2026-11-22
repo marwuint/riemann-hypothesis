@@ -3,7 +3,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AnnihilatorModels.BrauerTraceSplitting.AwayEq
 import Development.AutomorphicArithmetic.ThetaCorrespondence.LocalComparison.LocTied6
 import Development.WeilBound.CoreStatements.CrystallinePeriodRings.TiedAInvOfTheta
-import GroundTheory.PAdicHodge.ACrisPhi
 
 noncomputable section
 

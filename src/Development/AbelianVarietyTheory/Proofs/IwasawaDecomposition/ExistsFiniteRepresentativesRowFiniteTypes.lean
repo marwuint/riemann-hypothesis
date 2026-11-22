@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RowsRestWordColumnUnitBaseTupleAlt
-import Formalism.LocalToGlobal.IndefiniteReal.LinksStage
 import Formalism.LocalToGlobal.IndefiniteReal.LinIndepOfOrth
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RowFiniteTypesIsotypicPartsSpanOrthogonal
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsHermPosChainRealEndSpaceTuple

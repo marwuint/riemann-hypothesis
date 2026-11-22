@@ -1,11 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MovedReadingSameMapsBaseReadingAgrees
-import Formalism.LocalToGlobal.Divisibility.FramesLemmas
 import Formalism.LocalToGlobal.Divisibility.ColumnFamilyPlaceCharacterComap
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FrmOfPosDef
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PosDefMapEmbeddingOfPositiveAtPlaceStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FgSpanTopOfLatticeCompatibleSemilinear
-import Formalism.LocalToGlobal.HilbertRowConditions.CenterIdempotentAction
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormAtStandardFrameEqNormComplexForm
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl

@@ -1,6 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SmoothDefs
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.VectorComplexifiedDerivativeCommutator
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.LieOperatorConjHolds
 
 noncomputable section
 

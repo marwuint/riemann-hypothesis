@@ -1,7 +1,5 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.InductionEstimates.SpectralOperatorNorms.KillExempt
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.InductionEstimates.UnipotentBlockMatrices.ClosedKernelMinors.HpSpec
-import GroundTheory.AutomorphicForms.UnitaryAdmissible.CuspCentral
-import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.Uniform
 
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial Filter Topology
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace

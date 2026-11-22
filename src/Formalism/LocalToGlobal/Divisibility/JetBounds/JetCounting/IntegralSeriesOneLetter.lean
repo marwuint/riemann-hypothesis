@@ -1,11 +1,6 @@
 import Formalism.LocalToGlobal.Divisibility.Numbers
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.TwoPlaces
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.SecondLevelOfNorm
-import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KurComplete
-import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.StatementB
-import Formalism.GaussJetBounds.StatementW
-import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.BiextensionOfExpSpec
-import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.BiextensionPointsOfExpSpec
 import Formalism.LocalToGlobal.Divisibility.JetBounds.JetCounting.JetCountingProofs.IntegralCombinationHolds
 
 namespace Formalism.L2.DIV.C

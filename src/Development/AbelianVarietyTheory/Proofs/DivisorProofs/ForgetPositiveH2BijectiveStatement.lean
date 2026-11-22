@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ForgetPositiveH2Bijective
-import Development.AbelianVarietyTheory.Definitions.Divisors.PullbackBijectiveDegreesOneTwo
 
 open CategoryTheory GlobalTheory.CxCoh
 set_option maxHeartbeats 1000000 in

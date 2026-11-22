@@ -13,7 +13,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GlobalTheta.HcFormalDe
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HsOpIntegralRankOne
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CKContinuous
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.PsiFor
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.FormalDegreeCompactDualIff
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HarishChandraFormalDegreeCompactDualLargeGaps
 

@@ -3,7 +3,6 @@ import Formalism.FrobeniusContraction.HighestWeightResidueAvoids
 import Formalism.WindowSums.PowerSeriesRelationList
 import Formalism.FrobeniusContraction.FrobeniusContractionProofs.ContractBij
 import Formalism.FrobeniusContraction.FrobeniusContractionProofs.FiniteCocyclesLeCocycles
-import Formalism.FrobeniusContraction.StatementTop
 
 namespace Formalism.ZetaNonvanishing.ARCV
 

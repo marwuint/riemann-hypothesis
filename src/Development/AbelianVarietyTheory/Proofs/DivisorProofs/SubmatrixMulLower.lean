@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ChernDegre
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramLowerTriangularFactorLowerTriangularConj
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramLowerTriangularFactorPosDefProperties
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.AntisymmFibrePointTwo
 
 set_option autoImplicit false
 

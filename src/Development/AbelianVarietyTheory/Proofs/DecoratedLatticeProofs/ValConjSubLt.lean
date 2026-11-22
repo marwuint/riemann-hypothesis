@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.No
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelTwistPrimesStepZeroCharacterEqOne
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.LatNotSelfDual
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotents
 
 noncomputable section
 

@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NotFullBot
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MapMulLeft
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachInclusionXQFrobenius
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemRangeOfIsIntegral
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeAlgebraMapOC
 

@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.FrameExists2
-import Formalism.HermitianCurvature.StatementQ
 
 open Matrix Finset
 

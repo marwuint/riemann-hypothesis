@@ -1,12 +1,7 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PStokesLimitTTop
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogRatio
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightTendstoC2
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FlagIndices
-import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
-import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularChartDataProperties
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar.Giv.Mix
 

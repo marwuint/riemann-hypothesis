@@ -8,7 +8,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountNonIntegrality.T2S
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountNonIntegrality.DApprox
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.LocLatSat
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.LocLatEq
-import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedVolumeStatements.DensInertDisplayHolds
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.TrDualLoc
 

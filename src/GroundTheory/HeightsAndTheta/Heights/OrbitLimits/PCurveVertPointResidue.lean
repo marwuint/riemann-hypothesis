@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.StatementsCurveVertIndexSteps
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.StatementsCurveClosedPointChart
 import GroundTheory.HeightsAndTheta.Heights.Intersections.NotIsUnitOfNumMem
-import GroundTheory.HeightsAndTheta.Heights.Intersections.AvoidRing
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.CoordinateIdeals.MemMCoordIdealOfAevalEqZero
 import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.PCurveDivVertical
 set_option maxSynthPendingDepth 1

@@ -1,7 +1,6 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.UnitarySchrodingerLemmas.SchrodingerMatching.PsiPlaces
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VacOfMemSchwartzA
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmTypeFromConjugateComplement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RealAdelesCmFieldEquivComplexCmType
 
 noncomputable section
 

@@ -1,5 +1,4 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MassComputations.MeasurePrjFPreimage
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MassComputations.IsHermNDOfSetting
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MassComputations.SplitG
 
 noncomputable section

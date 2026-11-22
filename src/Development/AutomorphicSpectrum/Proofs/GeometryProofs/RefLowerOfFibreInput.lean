@@ -3,10 +3,8 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBetween
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineHeightBoundedUnit
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AmpleHeightBounds
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.WeightedFlagDegreeLowerBound
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsOrthFull
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.OrthogonalFlagDegreeComparison
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalNormOutsideFiniteSet
-import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.FieldChange
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top GlobalTheory.CompanionTheory.Ar.Small GlobalTheory.CompanionTheory.Ar.Cmp GlobalTheory.CompanionTheory.Ar.Ht
 open GroundTheory.Heights₂.Heights

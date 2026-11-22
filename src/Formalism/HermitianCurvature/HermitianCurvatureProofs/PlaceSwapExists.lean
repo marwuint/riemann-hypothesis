@@ -1,7 +1,5 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ShiftAtRExistsEq
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ExistsPlaceWithVectors
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.InvariantOperatorUnderJacquet
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.QNFAsm
 
 namespace Formalism.FourierDecayAlt.P.CutBPEq
 

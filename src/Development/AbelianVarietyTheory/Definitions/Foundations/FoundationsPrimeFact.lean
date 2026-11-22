@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.RootOfUnityEightQMemCoeffGaloisSubfield
 import Development.AbelianVarietyTheory.Definitions.Foundations.AuxiliaryFrameNormalizedSpaces
 import Formalism.LocalRingCardinality.ConjSqrtMinusD
-import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.NonemptyFieldAxiomsCyclicPow
-import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostFacts
 
 noncomputable section
 

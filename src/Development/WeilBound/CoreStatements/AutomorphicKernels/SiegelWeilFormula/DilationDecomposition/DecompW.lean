@@ -4,7 +4,6 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.DilationDecomposition.ContinuousMhUInv
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.ThetaSplitting.SplitW
 import Mathlib
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsSmoothModerateOfIsAutFunSm
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SiegelSetUnitary
 
 noncomputable section

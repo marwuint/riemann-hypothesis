@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FiniteResidueFieldPadicInt
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NcardSublatticesOfIndexPrimePowerLe
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeOperatorAlternatingSeriesIdentity
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormLeOfRecurrenceGrowth
 
 noncomputable section

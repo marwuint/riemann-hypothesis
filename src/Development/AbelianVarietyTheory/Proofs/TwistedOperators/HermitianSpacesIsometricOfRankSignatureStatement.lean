@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HermitianSpacesIsometricOfRankSignature
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FlatSpaceComponents
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH NumberField IsDedekindDomain
 open scoped nonZeroDivisors

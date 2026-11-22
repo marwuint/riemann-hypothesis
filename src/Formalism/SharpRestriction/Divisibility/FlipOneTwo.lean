@@ -4,14 +4,8 @@ import Formalism.LocalRingCardinality.DataDIV
 import Formalism.LocalRingCardinality.DataDIVDefs
 import Formalism.SharpRestriction.Divisibility.HeightShare
 import Formalism.SharpRestriction.Divisibility.WeightThresholdDefs
-import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
-import Formalism.DegreeFormula.FlagDegFormula
-import Formalism.SharpRestriction.Divisibility.LatticeTransfer
-import Formalism.SharpRestriction.Divisibility.PrinLevClass
-import Formalism.SharpRestriction.ParamsHeightRankConstant
 import Formalism.SharpRestriction.Divisibility.PlaceRankTwoOne
 import Formalism.SharpRestriction.Divisibility.WeightFamilies
-import Formalism.SharpRestriction.Divisibility.ModuliIntegralCharts
 import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 
 noncomputable section

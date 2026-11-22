@@ -3,7 +3,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Regul
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.FrobeniusLocalPairs.NormDiag
 import Development.AutomorphicArithmetic.Foundations.Convolution.TwistedLocalOrbits.ConjDesc
 import Development.AutomorphicArithmetic.Foundations.Convolution.TwistedLocalOrbits.StrictNormal
-import Development.AutomorphicArithmetic.Foundations.Convolution.TwistedLocalOrbits.Bridge
 
 open MeasureTheory ValuativeRel GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets PositivityTheory.Rg.Tf.Loc UpperTheory.ConvolutionTheory.Loc
 open GlobalTheory.SmGL hiding iwahori

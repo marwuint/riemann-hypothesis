@@ -10,7 +10,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelStructures.EvalVOp
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelStructures.UnipotentIntegralInLevel
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelStructures.PsiVMulVec
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.LevelKSplit
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.Volumes
 
 noncomputable section
 

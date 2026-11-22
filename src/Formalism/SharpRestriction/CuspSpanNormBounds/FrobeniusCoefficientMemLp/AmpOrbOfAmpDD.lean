@@ -1,6 +1,5 @@
 import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.LemmaJ
 import Formalism.SharpRestriction.CuspSpanNormBounds.FamilyDoubleCosetBesselBoundOfGap
-import Formalism.HermitianCurvature.FiniteOrderIntersectionInSmooth
 
 set_option linter.dupNamespace false
 

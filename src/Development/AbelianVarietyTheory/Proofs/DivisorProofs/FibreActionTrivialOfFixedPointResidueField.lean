@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpObjPullG
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmallTorsionSetForEndomorphism
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GapGeSubKapBase
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteCardTorsionQuotSmulTopLePowFinrank
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowMapsTorsionIntoSmulTop
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField

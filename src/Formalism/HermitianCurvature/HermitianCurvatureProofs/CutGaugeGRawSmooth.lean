@@ -1,6 +1,5 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGaugeCut
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEnTrSmooth
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.NFRadRedA
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 open scoped ContDiff

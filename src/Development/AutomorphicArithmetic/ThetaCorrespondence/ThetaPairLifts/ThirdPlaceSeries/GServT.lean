@@ -1,8 +1,6 @@
 import Formalism.LocalToGlobal.GroupLattices.ServiceOfTiedSelection
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TSelF
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LayerTwoFamilyClass
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LinkedFamiliesKernelFrame
 
 set_option synthInstance.maxHeartbeats 200000
 

@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.LiftingTheoremOfExplicit
-import Formalism.PadicSubsetSums.StableGradedCounts.LiftingTheExponent
 
 noncomputable section
 

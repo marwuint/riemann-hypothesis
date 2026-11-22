@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ColMatchAll
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClassFam
-import Formalism.LocalRingCardinality.KernelPlaceMeanBound
 
 noncomputable section
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.RefLinked
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsC2AtOfIsPotential
 
 noncomputable section

@@ -5,7 +5,6 @@ import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ChartPrimTrPfA
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.IntChartPf
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ExistsTruncatedIntegralChart
 import Formalism.LocalToGlobal.ProjectiveLattices.PlaceBelow
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ChartJetTrD
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField

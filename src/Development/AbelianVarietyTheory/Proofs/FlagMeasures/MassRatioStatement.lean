@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.CongruenceAtSplitFrobeniusHolds
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SiegelMassRatioUnimodularDefinite
-import Formalism.HermitianLattices.StatementMass
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
 
 namespace GlobalTheory.MassAtRecord

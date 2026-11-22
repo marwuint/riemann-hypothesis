@@ -2,9 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LtSeries
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqZeroOfInAMul
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsKerPowDvd
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-import Development.AbelianVarietyTheory.CrystallinePeriods.AdicMaps
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 
 noncomputable section
 

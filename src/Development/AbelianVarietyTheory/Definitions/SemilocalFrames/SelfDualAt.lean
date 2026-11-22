@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.HermitianForms.PsiZeroNontrivialCharacter
-import Formalism.SharpRestriction.LevelLetterCocycles.DataN
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AfsplitB
 
 noncomputable section

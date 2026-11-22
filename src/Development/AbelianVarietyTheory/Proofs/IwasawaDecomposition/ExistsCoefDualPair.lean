@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
-import Formalism.LocalRingCardinality.DataExtra
-import Formalism.LocalRingCardinality.DataTies
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPointsStructureRealPlaces
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryActionAtRealPlace
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.AtPlaceIffEqAtTau

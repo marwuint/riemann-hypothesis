@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOneP
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SchurLemmaThetaFunctionsFromMatrixCoefficients
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralEqOfNorms
 
 noncomputable section
 

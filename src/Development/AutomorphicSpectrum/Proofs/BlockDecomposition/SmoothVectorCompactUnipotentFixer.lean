@@ -6,7 +6,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellUnipote
 import GroundTheory.AutomorphicForms.IwahoriFactorization
 import GroundTheory.AutomorphicForms.GeometricLemmaCellSurjective
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIrreducibleSecondFactorOfIrreducibleProduct
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsGenericIffIsGenericFor
 
 noncomputable section
 

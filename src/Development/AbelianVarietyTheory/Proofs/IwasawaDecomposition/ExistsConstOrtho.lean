@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.EmbeddingsDif
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.SupAtUnit
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.InputExistsOfMemberExists
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsLevelTranslateJetNeZero
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsCoprimeZpow
 
 namespace GlobalTheory.OneMapRef.Kappa
 

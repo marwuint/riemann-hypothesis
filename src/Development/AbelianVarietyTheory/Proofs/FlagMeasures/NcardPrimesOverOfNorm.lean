@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTranslate
-import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LevelPrimeSplitsCompletelyInCmField
 
 namespace GlobalTheory.RankSplit

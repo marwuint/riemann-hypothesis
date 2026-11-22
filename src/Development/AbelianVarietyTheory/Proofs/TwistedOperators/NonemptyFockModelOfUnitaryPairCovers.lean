@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyFockModelUnitaryDualPair
-import Formalism.LocalToGlobal.BesselHermitianTheta.AllTied
 
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible
 

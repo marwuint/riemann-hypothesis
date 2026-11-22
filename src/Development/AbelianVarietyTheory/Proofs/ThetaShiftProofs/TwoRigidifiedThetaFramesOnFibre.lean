@@ -3,7 +3,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IdealPart
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsValuesLineFibre
-import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TopLePreimageOfValAtNeZero
 
 noncomputable section
 

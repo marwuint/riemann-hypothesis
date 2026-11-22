@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.MassLandSt
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BinaryHermitianFormRepresentsTotallyPositive
-import Formalism.HermitianLattices.StatementMass
 
 namespace GlobalTheory
 

@@ -1,8 +1,6 @@
 import Mathlib
 import GroundTheory.ProfiniteCohomology.PoitouTate.RealOdd
 import GroundTheory.ProfiniteCohomology.RealPlaces.VanishingUnitsDiv
-import GroundTheory.ProfiniteCohomology.CupProducts.Projection
-import GroundTheory.ProfiniteCohomology.GlobalClassFormation.RealPlaces
 set_option maxSynthPendingDepth 1
 
 noncomputable section

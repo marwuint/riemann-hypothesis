@@ -3,7 +3,6 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.StSheetHessPSD
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PSemiPosTwist
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterOsgood
 import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCIsHermitian
-import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 set_option maxSynthPendingDepth 1
 
 noncomputable section

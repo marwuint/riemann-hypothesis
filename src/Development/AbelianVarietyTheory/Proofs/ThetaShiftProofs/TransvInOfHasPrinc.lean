@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.ModelsAt
-import Development.AbelianVarietyTheory.Definitions.RegularCharts.BaseNorm
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SmulMemOfIsIntegral
 
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain

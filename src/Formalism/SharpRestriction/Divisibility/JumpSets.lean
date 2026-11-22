@@ -4,7 +4,6 @@ import Formalism.LocalRingCardinality.DataParams₂
 import Formalism.LocalRingCardinality.DataDIV
 import Formalism.SharpRestriction.ParConsts
 import Formalism.SharpRestriction.ParamsHeightRankConstant
-import Formalism.SatakeDualWeyl.Statement
 import Formalism.SharpRestriction.LevelLetterCocycles.DeltaInvariantLattices
 
 noncomputable section

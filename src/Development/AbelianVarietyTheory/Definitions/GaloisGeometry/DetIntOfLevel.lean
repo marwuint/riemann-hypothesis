@@ -3,14 +3,9 @@ import Formalism.SharpRestriction.GrowthBounds.ChartRank.HypTwA
 import Formalism.SharpRestriction.GrowthBounds.ChartComparison.NrmAMemAdForms
 import Formalism.LocalToGlobal.HermitianColumns.FullSym
 import Formalism.LocalToGlobal.Columns.RecLevelLoc
-import Formalism.LocalRingCardinality.SpanPowerMembership.Places
-import Formalism.LocalToGlobal.GlobalTheory.GL6.PBwLocGen
-import Formalism.LocalToGlobal.GlobalTheory.GL6.PBwLocBases
-import Formalism.SharpRestriction.GrowthBounds.IntegralWeylLatticeSpan.LatSOfLocBasis
 import Formalism.SharpRestriction.GrowthBounds.BaseLevels.LevelsGEmpty
 import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.TiedCls
 import Formalism.SharpRestriction.GrowthBounds.ChartComparison.OneChartLev
-import Formalism.SharpRestriction.GrowthBounds.ChartComparison.BadQNotOver
 import Formalism.SharpRestriction.GrowthBounds.TwistedLevelAgreement.StepInTwK
 
 noncomputable section

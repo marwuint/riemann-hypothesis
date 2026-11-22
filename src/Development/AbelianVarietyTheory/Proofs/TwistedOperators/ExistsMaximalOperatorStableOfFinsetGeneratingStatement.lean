@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsMaximalOperatorStableOfFinsetGenerating
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SimpleOver
 
 open scoped TensorProduct
 

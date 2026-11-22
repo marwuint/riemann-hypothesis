@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousKapSymm
-import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.EmbRelExistsUnique
 
 noncomputable section
 

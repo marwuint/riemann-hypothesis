@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockSub
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueDualWeylWeightProjector
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ApplyCoefEqZeroOfCol
 
 set_option autoImplicit false

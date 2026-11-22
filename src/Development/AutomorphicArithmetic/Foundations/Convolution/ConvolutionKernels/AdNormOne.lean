@@ -1,5 +1,4 @@
 import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.Height
-import GroundTheory.AutomorphicForms.ReductionMahler
 import Formalism.LocalToGlobal.UnitaryNorms.CharTransport
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.AdBasic
 

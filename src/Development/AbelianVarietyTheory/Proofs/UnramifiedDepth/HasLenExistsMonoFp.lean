@@ -11,8 +11,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsSeparatedOfIsQProjOver
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.IsEigBasisIff
 import ReciprocityTheory.DualLattices.HasLenLeOfSurj
-import ReciprocityTheory.DualLattices.UpSmith
-import ReciprocityTheory.DualLattices.HasLenCokerDet
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry TensorProduct Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs

@@ -9,7 +9,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.N
 import Formalism.LocalToGlobal.ProjectiveLattices.ThetaFramePf
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.SecTieBaseChange
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.MemNonzeroLocusOfUnit
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MemNonzeroLocusOfPull
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.LawsFieldsSeparately
 
 set_option synthInstance.maxHeartbeats 400000

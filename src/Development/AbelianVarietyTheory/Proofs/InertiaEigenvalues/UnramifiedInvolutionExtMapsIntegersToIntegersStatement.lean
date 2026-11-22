@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedInvolutionExtMapsIntegersToIntegers
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OverExtAlgebraMap
 
 open GlobalTheory.UnitLemma GlobalTheory.UnitLemma.Unr Polynomial
 set_option maxHeartbeats 1000000 in

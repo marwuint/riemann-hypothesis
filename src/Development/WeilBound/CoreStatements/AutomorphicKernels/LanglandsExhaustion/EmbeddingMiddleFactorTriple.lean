@@ -1,6 +1,5 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.LanglandsExhaustion.CuspEmbP
 import Development.WeilBound.CoreStatements.AutomorphicKernels.LanglandsExhaustion.MidGen
-import Development.WeilBound.CoreStatements.AutomorphicKernels.LanglandsExhaustion.MidExact
 import Development.WeilBound.CoreStatements.AutomorphicKernels.LanglandsExhaustion.EquivTripleProductOfIso
 
 noncomputable section

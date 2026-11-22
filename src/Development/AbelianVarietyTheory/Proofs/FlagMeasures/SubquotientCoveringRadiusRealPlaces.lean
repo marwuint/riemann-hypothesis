@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.CenteredPerp
 import Formalism.HarderNarasimhan.ShiftInvariance
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointMajorantFramesGiveMajorants
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoveringRadiusHomSubquotientSublattice
-import Formalism.RealPlaceAnalysis.Complexify
 
 open GlobalTheory.Count GlobalTheory.IndefiniteRowSideFullHecke.CenteredPerpendicularSets Formalism.MainNotions.S Formalism.HN Formalism.REAL Matrix NumberField Finset
 

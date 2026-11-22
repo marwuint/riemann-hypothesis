@@ -2,11 +2,6 @@ import Mathlib
 import Formalism.QuotientMetricDivisors.RatHermLcvTwist
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.DivIntoDual
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.BoundsChain
-import Formalism.QuotientMetricDivisors.ProdFormula
-import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ValBasic
-import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.RatHerm
-import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.LocBasis
-import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.IdxChange
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.DualMu
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.TheoremDivIneq
 

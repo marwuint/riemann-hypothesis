@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.GroupLattices.JointServices
-import Formalism.LocalToGlobal.Divisibility.Inputs
 import Formalism.SizeWindowBrackets.JointCSlopeExists
 import Mathlib
 import Formalism.SizeWindowBrackets.ChainSlopeWindows.ExistsNsmulMem

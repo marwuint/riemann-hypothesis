@@ -4,7 +4,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTupl
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ExistsPrimitiveRootPow
 import Formalism.GaloisCohomology.LocalTateDualityK
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.ExistsAb
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.LocalRingsCompletion.DvrIntClosure
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Odd UpperTheory.V.ML UpperTheory.V.X
 open TensorProduct nonZeroDivisors

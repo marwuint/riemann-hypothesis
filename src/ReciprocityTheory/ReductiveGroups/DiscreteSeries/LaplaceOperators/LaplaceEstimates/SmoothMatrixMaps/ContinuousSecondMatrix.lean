@@ -3,7 +3,6 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.Spectra
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.ReproducingKernels.IntSOfSIntFin
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.InHolds
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.HermitianMeasures.JSIntFin
-import Formalism.RealPlaceAnalysis.FinalF
 
 noncomputable section
 

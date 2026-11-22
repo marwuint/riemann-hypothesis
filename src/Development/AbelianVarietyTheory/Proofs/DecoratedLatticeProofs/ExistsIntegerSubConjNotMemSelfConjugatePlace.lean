@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsTransportAdelicCorrection
-import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.DIV Formalism.IndefR.Lev
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 

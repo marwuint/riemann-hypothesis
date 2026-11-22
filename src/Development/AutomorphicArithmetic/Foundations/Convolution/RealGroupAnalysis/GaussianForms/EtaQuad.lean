@@ -1,6 +1,5 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.GaussianForms.NApply
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamificationIdxEqOneOfIsSquare
-import GroundTheory.GlobalFields.SemilocalAlgebras.Finite
 import GroundTheory.GlobalFields.TateThesis.ChebotarevAbelian
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology Filter

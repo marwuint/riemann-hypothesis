@@ -1,7 +1,5 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutER
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEnFoldRev
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.OperatorPreservesFusionForms
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbitalIntegralIdentities
 
 open Formalism.FourierDecayAlt
 open Formalism.REAL Formalism.QuantumDeterminants

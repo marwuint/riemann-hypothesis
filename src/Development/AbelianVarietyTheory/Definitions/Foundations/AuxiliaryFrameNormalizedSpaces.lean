@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.RootOfUnityEight
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFinsetTypeNormPrincipal
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HostCmData
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DiagSingleSingle
-import Formalism.LocalRingCardinality.SpanPowerMembership.Spaces
-import Formalism.SharpRestriction.InertJacobiLevels.HostFam
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NcardPrimesOverOfStabilizer
 
 noncomputable section

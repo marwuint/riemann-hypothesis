@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaA
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TransvectionAction
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBoundedUnitary
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DefiniteUnitaryCocompact
 
 noncomputable section
 

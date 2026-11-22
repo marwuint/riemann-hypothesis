@@ -1,8 +1,5 @@
 import Formalism.LocalRingCardinality.DataParams₂
 import Formalism.SharpRestriction.ParConsts
-import Formalism.SharpRestriction.ElevenLe
-import Formalism.SharpRestriction.GrowthBounds.UnramifiedQuadraticSetting
-import Formalism.SharpRestriction.GrowthBounds.IsResidueClassZero
 import Formalism.SharpRestriction.GrowthBounds.SegRing
 import Formalism.SharpRestriction.GrowthBounds.SelectionLemmas
 import Formalism.SharpRestriction.GrowthBounds.FormalGroupSystem

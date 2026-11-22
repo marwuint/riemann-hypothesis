@@ -1,10 +1,7 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.SymmetricPowerSymbols.SymExOf
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedThetaQProductDistributionRelation
-import Development.AbelianVarietyTheory.Definitions.Foundations.Imports
-import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerAnEqSiegelUnitOnComplex
-import Development.AbelianVarietyTheory.Definitions.Foundations.SgC
 
 open scoped MatrixGroups Matrix UpperHalfPlane
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym

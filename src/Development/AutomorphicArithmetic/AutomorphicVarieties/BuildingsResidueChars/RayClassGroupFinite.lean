@@ -1,6 +1,5 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.PerDeriv
 import GroundTheory.AutomorphicForms.ReductionDirichlet
-import GroundTheory.AutomorphicForms.ReductionIdele
 open UpperTheory.V.Sd.Eis
 open NumberField IsDedekindDomain Topology Neutral.B1 Formalism.L2.Host GlobalTheory.CuspRep UpperTheory.V
 

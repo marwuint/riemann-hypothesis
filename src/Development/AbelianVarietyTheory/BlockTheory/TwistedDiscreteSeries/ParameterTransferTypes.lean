@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
-import Formalism.LocalRingCardinality.DataParams
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
 
 noncomputable section

@@ -1,6 +1,4 @@
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousFrameEquivSymm
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinSeriesConvergent
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousDerivFamily
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteKTypeDecomposition
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardCompactFrameEquivStatement

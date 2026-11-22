@@ -5,10 +5,7 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaS
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.TameAtOne
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HalfLinearCocycle
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TrivialParameterBound
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.LabelSettingScalars
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
-import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsSplitOfIsInertAt
 
 noncomputable section
 

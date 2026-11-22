@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ToOneSucc
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExchangeEqFiniteTranslateCombOfLevel
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExDownExUpAndExUpExDown
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegrableOfMemSB
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.PosOne
 open GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage (app HasTensorVal fl opEFJ IsQuotIntFJ IsFJ Represents)
 open GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum (IsCO rescale)

@@ -1,6 +1,5 @@
 import Formalism.LocalRingCardinality.DataGatTies
 import Formalism.LocalRingCardinality.DataLatDefs
-import Formalism.SharpRestriction.GrowthBounds.DataGChain
 
 open Formalism.MainNotions.G NumberField
 

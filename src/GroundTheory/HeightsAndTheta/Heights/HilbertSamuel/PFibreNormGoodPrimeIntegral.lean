@@ -9,7 +9,6 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPullRatiosAlgebraic
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPullConeNull
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPullConeDegree
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPullGradedAlgebraic
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PCoordArithOfFnField
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel

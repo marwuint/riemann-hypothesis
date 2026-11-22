@@ -1,10 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.HilbertRowConditions.RowPin
-import Formalism.LocalToGlobal.KernelLattices.InterlaceAll
-import Formalism.SharpRestriction.GlobalSchurBounds.ProductFirstZerothParts
-import Formalism.SharpRestriction.GlobalSchurBounds.FiniteModelOfAdmissibleTransports
 import Formalism.LocalToGlobal.GlobalTheory.BlockActions.NfAllSmulReB
-import Formalism.LocalToGlobal.GlobalTheory.BlockActions.ExistsOnOfPosDef
 import Formalism.LocalToGlobal.GlobalTheory.BlockActions.MulLatMulLat
 import Formalism.LocalToGlobal.Columns.TiedValBwG
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FnOfMapInjective

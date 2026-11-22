@@ -5,8 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NatCastMemOfP
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.RepComb
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.IntPull
 import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.FinalEq
-import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.AlternatingFormStandardHermitian
-import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThDistC
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ImportsLast
 
 noncomputable section

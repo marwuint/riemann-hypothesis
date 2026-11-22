@@ -1,9 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
-import Formalism.LocalRingCardinality.DataExtra
-import Formalism.LocalRingCardinality.DataTies
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Formalism.LocalToGlobal.UnitaryNorms.CharUniq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLiftModelsOn
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompletelySplitPrimeHostPlaceProperties
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCentralIdempotentOfGoodSeriesIdempotent
@@ -12,10 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConvIdempotentAc
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BlockDetSingleBlockSecondEqOneOfLe
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteGroupActionPreservesPrincipalFlagMultiplic
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParahoricLevelLiftsExist
-import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
-import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
-import Formalism.LocalToGlobal.IndefiniteReal.OrthogonalComplementCharacterisation
-import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
 
 noncomputable section
 

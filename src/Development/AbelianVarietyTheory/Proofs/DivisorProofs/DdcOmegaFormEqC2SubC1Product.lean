@@ -10,7 +10,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernAtTwoEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OfValuesMulOfValues
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstChernIsometricEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankTwoFlagRationalSections
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetMetricShortExactIsoIsometric
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernOneEqNegDdcLogDet
 
 set_option autoImplicit false

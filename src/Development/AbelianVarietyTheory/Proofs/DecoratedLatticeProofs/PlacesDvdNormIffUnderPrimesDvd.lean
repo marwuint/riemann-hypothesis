@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TwTransAlt
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotents
-import Formalism.LocalToGlobal.Columns.BaseLemmas
 open NumberField IsDedekindDomain Formalism.BasicNotions
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 

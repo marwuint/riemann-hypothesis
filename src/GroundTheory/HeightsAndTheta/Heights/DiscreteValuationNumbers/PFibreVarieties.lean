@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsFibreVar
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.IsMultiHomogIdealSpanSingleton
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsCN
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsComponentDim
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsGenericDimGe
 set_option maxSynthPendingDepth 1

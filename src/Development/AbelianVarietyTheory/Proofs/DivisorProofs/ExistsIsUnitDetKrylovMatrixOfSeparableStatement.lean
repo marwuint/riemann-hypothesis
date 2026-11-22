@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsUnitDetKrylovMatrixOfSeparable
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KrylovApply
 
 open Matrix Polynomial
 set_option maxHeartbeats 1000000 in

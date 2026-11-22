@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProdUnif
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationProductOfUniformisedGroups
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CubeClsPullHom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GAdjSndOfIsProdUnif
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOneOfTorusHomOfZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinHomLiftOneId
 
 noncomputable section

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.BlockTriangularOfSubOne
-import Formalism.MirabolicMackeyTheory.MirabolicIsMackey
 import CompanionTheory.AutomorphicTheory.MirabolicRestriction.MirabolicInduction.IndIrr
 import CompanionTheory.AutomorphicTheory.MirabolicRestriction.MirabolicInduction.IndDim
 

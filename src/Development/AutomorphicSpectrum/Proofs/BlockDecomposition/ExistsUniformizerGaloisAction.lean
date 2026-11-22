@@ -4,7 +4,6 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.DeRhamJ
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HasPeriods
 import Development.WeilBound.CoreStatements.PlaceConnectedComponents.IsOpenQuotientMapArt0
 import GroundTheory.LocalFields.ConductorReciprocity
-import GroundTheory.LocalFields.KroneckerWeber
 import GroundTheory.PAdicHodge.FieldOfNormsCyclBase
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DenseRangeUnits
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GlobalArtinLocalIdeleInjective

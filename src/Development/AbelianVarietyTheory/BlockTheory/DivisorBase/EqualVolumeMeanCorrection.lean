@@ -3,8 +3,6 @@ import Formalism.LocalRingCardinality.DataDIV
 import Formalism.LocalRingCardinality.DataParams₂
 import Formalism.SharpRestriction.Divisibility.PrinLevClass
 import Formalism.SharpRestriction.Divisibility.WeightThresholdDefs
-import Formalism.SharpRestriction.ParamsHeightRankConstant
-import Formalism.DegreeFormula.FlagDegFormula
 import Development.AbelianVarietyTheory.Definitions.Foundations.CurveCl
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsLimDeg
 

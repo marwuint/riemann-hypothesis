@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermi
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilActionUnitaryCompact
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPairingStdP
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulRealAdEqZero
-import GroundTheory.GlobalFields.Adele.Compact
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 open GlobalTheory.ArchUniq MeasureTheory

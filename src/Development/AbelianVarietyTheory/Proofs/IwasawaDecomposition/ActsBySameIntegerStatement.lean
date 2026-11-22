@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ActsBySameInteger
-import Formalism.LocalRingCardinality.DataLevel
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Afsplit
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.UG Matrix
 set_option maxHeartbeats 1000000 in

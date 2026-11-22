@@ -6,7 +6,6 @@ import ReciprocityTheory.GroupCohomology.ConnNatHolds
 import ReciprocityTheory.GroupCohomology.KilledHolds
 import ReciprocityTheory.GroupCohomology.FiniteLevel
 import ReciprocityTheory.GroupCohomology.FiberFirstH0Injective
-import ReciprocityTheory.GroupCohomology.CupConnRightStatement
 import Mathlib
 import ReciprocityTheory.GroupCohomology.MemCoboundariesOfCocycleProcyclic
 

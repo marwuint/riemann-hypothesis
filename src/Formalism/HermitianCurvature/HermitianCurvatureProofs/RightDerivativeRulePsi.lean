@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ChainFirstIdentity
-import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds
 
 open Matrix Finset
 

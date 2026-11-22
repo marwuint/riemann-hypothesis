@@ -3,7 +3,6 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBetween
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootHeightDifferenceBoundStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineHeightInvariantScaling
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HeightOfZeroDimVariety
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinModelPointsProject
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DominantWeightGapShift
 
 noncomputable section

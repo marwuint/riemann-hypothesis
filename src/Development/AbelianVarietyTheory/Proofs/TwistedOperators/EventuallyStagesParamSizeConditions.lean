@@ -6,8 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CopyLIntegra
 import Development.AbelianVarietyTheory.Definitions.Divisors.Hypotheses2
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NonzeroPlacesOverPrimesLifts
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SetAtOfSizeAt
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowNumAt
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.SetUnipotentTranslate
 
 noncomputable section
 

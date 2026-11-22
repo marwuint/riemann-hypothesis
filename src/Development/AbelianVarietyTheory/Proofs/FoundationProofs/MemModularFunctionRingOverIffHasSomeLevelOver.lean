@@ -1,10 +1,8 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaActRefl
 import Development.AbelianVarietyTheory.Definitions.Foundations.MemRingOfInR
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModQPrin
-import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModJTau
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GammaLeOfDvd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QExpansionCoeffsInSubringRingClosed
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators
 open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)

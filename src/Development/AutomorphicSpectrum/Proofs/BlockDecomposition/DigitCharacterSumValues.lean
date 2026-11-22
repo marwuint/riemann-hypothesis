@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FintypeResidue
-import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.GaugeTopology.SSmoothW
-import GroundTheory.AutomorphicForms.GL2.GJZetaDefs
-import GroundTheory.AutomorphicForms.MacdonaldWhittaker
 
 noncomputable section
 

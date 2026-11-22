@@ -3,7 +3,6 @@ import Formalism.LocalToGlobal.Divisibility.HeckeCSDICommTrRep
 import Development.AbelianVarietyTheory.Definitions.Divisors.FactorBounds
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsClassSumPairingFormsLat
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsFormsOfToH
-import Formalism.LocalToGlobal.Columns.RowFormsRat
 open Module NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Col Matrix
 open scoped ComplexOrder
 open Formalism.DivisionValues GlobalTheory.IndefiniteRowSideFullHecke

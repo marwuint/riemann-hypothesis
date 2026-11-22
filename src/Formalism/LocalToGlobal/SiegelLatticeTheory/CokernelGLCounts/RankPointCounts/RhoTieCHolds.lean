@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.MemLatGmap
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.MassDataConc
-import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.PoincareConstantEq
 
 noncomputable section
 

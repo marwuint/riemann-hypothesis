@@ -5,9 +5,6 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.RealBands.ConvCoef
 import Development.AutomorphicArithmetic.ThetaCorrespondence.RealBands.ContinuousAverage
 import Development.AutomorphicArithmetic.ThetaCorrespondence.RealBands.InvMemFlagN
 import Development.AutomorphicArithmetic.ThetaCorrespondence.RealBands.FlagNW
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.SchurOrthogonalityIndefiniteUnitaryGroup
-import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ModularCharacterEqOneOnExpHermitian
 
 open MeasureTheory Filter Matrix Formalism.REAL Formalism.MainNotions.S GlobalTheory.FlagMeas GlobalTheory.RealInd UpperTheory.Lit.Cusp
 open GlobalTheory.Dec (IsHaarSub IsIsoC NW IsSqIntIrr)

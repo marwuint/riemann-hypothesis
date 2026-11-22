@@ -7,7 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCmAdel
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCharOfTrace
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnSpacesStandardInFrameCoords
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftFrLifts
-import Formalism.LocalToGlobal.Columns.LevGSym
 
 set_option genSizeOfSpec false
 set_option genInjectivity false

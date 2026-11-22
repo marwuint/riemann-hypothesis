@@ -8,9 +8,6 @@ import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.FderivAffCoo
 import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SingularWeightMonotoneRegularization
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsTwiceDifferentiableAt
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.CompRightEqZero
-import GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.Cmp GlobalTheory.CompanionTheory.Ar.PB Filter Topology
 open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
 

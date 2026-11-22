@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaEV0EqICPqRows
-import Development.AbelianVarietyTheory.Definitions.Divisors.TieTest
-import Formalism.LocalToGlobal.IndefiniteReal.CxLemmas
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ThetaEV0EqICPq
 

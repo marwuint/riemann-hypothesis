@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaussSumFiltrations.EvenPos
-import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsEqTransposeMulDiagonalMul
 
 open Matrix Complex
 open scoped Real

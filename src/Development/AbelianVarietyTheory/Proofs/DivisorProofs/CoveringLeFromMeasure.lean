@@ -3,11 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SlopeSqSubLeSlopeSqSpan
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemilinearEmbSupLatticeOntoRealisation
-import Development.AbelianVarietyTheory.Definitions.Divisors.QuoIff
-import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
-import Development.AbelianVarietyTheory.Definitions.Divisors.UnifOfSpaceEq
-import Development.AbelianVarietyTheory.Definitions.Divisors.MulSmulIdemMem
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ComponentMassSum
 
 set_option synthInstance.maxHeartbeats 400000
 

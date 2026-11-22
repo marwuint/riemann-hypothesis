@@ -3,8 +3,6 @@ import Development.AutomorphicArithmetic.LocalEmbeddings.ArchSz
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraicHeckeCharValuesInNumberField
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryHeckeCharacterValues
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeCharLocPowEqOneOnLocalUnits
-import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharacterUnramifiedAeAndExistsLevel
 
 open NumberField IsDedekindDomain Formalism.L2.Host GlobalTheory.ConjSize
 

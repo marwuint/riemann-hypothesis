@@ -1,10 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
-import Formalism.SharpRestriction.Divisibility.SchurIrreducible
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumLineMatrixKroneckerRightFactor
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueJointTop
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ProdFactorialSupportSubSingle
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockOperatorsLieRepresentationCommute
 
 open MvPolynomial Formalism.BasicNotions.TH

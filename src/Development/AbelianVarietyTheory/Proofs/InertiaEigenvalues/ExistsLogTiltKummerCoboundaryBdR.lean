@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LMulBeta
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KerPEqSpanBeta
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsLogOnePlusKerThetaDeRhamPlus
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GaloisLogTeichmullerRatioEqAddKummer
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 
 noncomputable section
 

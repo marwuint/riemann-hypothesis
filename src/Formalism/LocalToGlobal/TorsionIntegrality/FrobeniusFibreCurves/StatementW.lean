@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.StatementJ
-import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.CurveHyp
 
 noncomputable section
 

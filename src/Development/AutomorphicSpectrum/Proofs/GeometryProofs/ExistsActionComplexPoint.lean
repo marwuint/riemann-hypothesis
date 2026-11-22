@@ -2,7 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeConstantRank
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelEigenvectorsAction
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
 

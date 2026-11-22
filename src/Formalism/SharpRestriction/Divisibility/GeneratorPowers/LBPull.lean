@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.FBIdLB
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ThetaPt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ValCalc
 
 set_option autoImplicit false

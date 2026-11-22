@@ -4,9 +4,7 @@ import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentral
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.WDBasic
 import Development.WeilBound.RepresentationTheoryGL.UnitaryDualProof.GenericIrreducibility.NormEqOneOfIsUnitarisableU
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsRealisesNeOne
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Langlands
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EpsilonFactorsAtOneHalf
-import GroundTheory.LocalFields.LocalZetaChar
 
 noncomputable section
 

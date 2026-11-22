@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsHilbert
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.ColonSpanSingletonEqOfNotMem
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PHilbExactDivide
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel

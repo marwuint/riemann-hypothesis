@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MassComputations.UnfAbs
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MassComputations.IsHermNDOfSetting
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.PosNear
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension
 
 noncomputable section
 

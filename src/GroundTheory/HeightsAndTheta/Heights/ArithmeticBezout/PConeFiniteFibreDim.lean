@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsConeFiniteFibreDim
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeFibreDegree
-import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeMassOfFibre
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFiniteProjectionsContainOpen
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PConeAvoidsFinite
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFiniteProjHomInjective

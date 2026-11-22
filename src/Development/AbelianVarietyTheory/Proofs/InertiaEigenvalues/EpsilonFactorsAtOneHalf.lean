@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsRealisesNeOne
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Langlands
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsLocExtFinrankEq
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GaussSumNeZeroOfRamified
-import GroundTheory.LocalFields.LocalZetaGauss
 
 open NumberField IsDedekindDomain ValuativeRel Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.DelEps GlobalTheory.DelGlob
 open GroundTheory.Global (HeckeCharacter localAdelicChar)

@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PStokesLimitTTop
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogRatio
 import ReciprocityTheory.AnalyticForms.LeviForms.TailBoundA
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar.Giv.Mix

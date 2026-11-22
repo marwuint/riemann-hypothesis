@@ -3,9 +3,6 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SqMap
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientLineBundleGauge
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AdjointRelationGeneratorCorr
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermJetLift
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermFunPf
 
 noncomputable section
 

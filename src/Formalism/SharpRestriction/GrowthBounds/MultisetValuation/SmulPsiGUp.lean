@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.SmulMemLatOf
-import Formalism.SubspaceCounting.SubspaceCountingProofs.TypeIIDown
 
 noncomputable section
 

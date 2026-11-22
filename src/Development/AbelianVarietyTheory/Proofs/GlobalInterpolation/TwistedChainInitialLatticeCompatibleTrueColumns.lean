@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MoveStep
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EFirstGeOfULastNonpos
-import Formalism.SharpRestriction.GrowthBounds.WeilJacquetShalikaLaw
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsForgetsFrames
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepZeroClassesBijectiveSameDeco
 

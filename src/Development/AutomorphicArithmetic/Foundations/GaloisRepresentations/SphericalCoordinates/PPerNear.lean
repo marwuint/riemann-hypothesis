@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Spher
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RiemannRelationConverseConjAffineStatement
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyPosDefHermFormNearZeroMatrix
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsHolPeriods
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPeriodMapCompInjectiveRealLinearStatement
 
 noncomputable section

@@ -1,11 +1,6 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.GuDefs
-import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.FiniteCohomology
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimensionalFilDR
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SumRepDeRhamIffAndMultiplicityAdd
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DeRhamPotSemistable
-import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
 open UpperTheory.V.Af UpperTheory.V.Af.Gu
 
 section

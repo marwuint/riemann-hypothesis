@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsINeZeroKind
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CartanAntitone
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Cartan
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MirabolicSchwartzFunctionLeftGLEquivariance
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGLMulIsPrimitiveFrameDiagonalLattice
 

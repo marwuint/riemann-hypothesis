@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
 import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerUnitClassModPrimePowProperties
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperHalfPlaneHolomorphicGermProperties
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatMobiusBasicLaws
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups TensorProduct
 

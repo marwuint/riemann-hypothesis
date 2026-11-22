@@ -5,7 +5,6 @@ import GroundTheory.PAdicHodge.FiniteFlat
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BaseChangePointsCompat
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemBtOrderIffBtSet
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularFunctionIffSection
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExtensionOrderEqSpan
 
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct

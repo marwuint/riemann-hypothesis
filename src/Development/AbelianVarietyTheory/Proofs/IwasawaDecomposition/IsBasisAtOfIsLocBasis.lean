@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LatAtLattice
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnSpacesStandardInFrameCoords
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsDefiniteLaws
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MemClosureIff
-import Formalism.LocalToGlobal.Columns.PolyFnLemmas
 import Formalism.LocalToGlobal.GlobalTheory.GL6.PBwLocGen
 
 noncomputable section

@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IntFormsSub
 import Development.AbelianVarietyTheory.Definitions.HeightFunctions.XiValIffXiAt
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RayFieldTheta
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RealPoints
-import Formalism.LocalToGlobal.IndefiniteReal.FWExist
-import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
 
 set_option autoImplicit false
 

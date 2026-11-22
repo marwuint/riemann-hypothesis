@@ -4,7 +4,6 @@ import Formalism.LocalToGlobal.IndefiniteReal.EqZeroOfVec
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.DensLow
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.ContinuousSplitInv
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.GEqBase
-import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.InfFam
 
 noncomputable section
 

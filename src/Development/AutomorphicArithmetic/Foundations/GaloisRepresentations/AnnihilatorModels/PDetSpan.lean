@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AnnihilatorModels.CommonModel
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemistableDieudonneModuleSpansTensorPeriodRing
-import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsPstAtOfIsSstAt
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations
 open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp TensorProduct Module

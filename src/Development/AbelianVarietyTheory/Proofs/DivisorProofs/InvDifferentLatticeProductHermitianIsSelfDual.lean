@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLsB
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealExtendConjMulEqAbsNorm
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HESmulRight
 
 noncomputable section
 

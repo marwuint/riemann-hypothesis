@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemConeOfMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormsOfInduces
-import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.FiniteCohPushforwardIffOfIsClosedImmersion
 
 set_option autoImplicit false
 

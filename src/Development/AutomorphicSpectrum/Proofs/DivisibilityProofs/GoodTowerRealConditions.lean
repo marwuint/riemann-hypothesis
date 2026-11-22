@@ -7,8 +7,6 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntege
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeComparisonCompatibility
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
-import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import Development.WeilBound.CoreStatements.FlagImmersions.GlobalModelTowerBounds
 
 open AlgebraicGeometry CategoryTheory NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top

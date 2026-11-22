@@ -3,11 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LamV
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCompletionEquiv
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FrobOrderSpec
 import Formalism.LocalRingCardinality.ConjSqrtMinusD
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.LocalToGlobal.GroupLattices.PerfectRings.ICIntCp
 import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.WittFractionToCpAlgebraMap
-import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts
-import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostFacts
 
 open NumberField IsDedekindDomain IsLocalRing Formalism.UG Formalism.BasicNotions Formalism.FrobeniusOrbits Formalism.L2.G GlobalTheory.GO.PlWitt
 open scoped TensorProduct

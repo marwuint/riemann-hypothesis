@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.GlobalFields.IdeleGroups.IdeleNorms.BaseChange
-import GroundTheory.GlobalFields.CompletionAtPlace
 
 namespace GroundTheory.Global
 

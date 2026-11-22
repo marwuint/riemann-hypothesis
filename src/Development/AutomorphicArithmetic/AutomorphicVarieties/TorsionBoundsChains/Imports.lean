@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChains.QuotientsEquivOfKerEq
 import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChains.L1MapDomainLeAndL1FaceDSingleLe
 import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChains.CokerTors
-import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChains.Transport
 
 open CategoryTheory UpperTheory.V.KH
 

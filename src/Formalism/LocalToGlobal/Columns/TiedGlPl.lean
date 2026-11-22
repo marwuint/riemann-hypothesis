@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.Columns.TiedGlCore
-import Formalism.LocalToGlobal.Columns.RecLevelHost
 
 open NumberField IsDedekindDomain Matrix
 open scoped TensorProduct

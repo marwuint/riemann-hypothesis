@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ValuationDetOfMemKO
 
 namespace GlobalTheory.ExistsEigenvector
 

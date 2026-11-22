@@ -5,8 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIndepend
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SeparatedRootsAdditivePoly
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OntoOCAdditivePoly
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusLaurentSeriesEqPolynomialModPrime
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TiltUntiltToComplexPAdicBasicLaws
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 open Formalism.Per GlobalTheory.PSer
 open scoped Formalism.Per
 

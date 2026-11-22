@@ -1,5 +1,4 @@
 import Formalism.FormalDegreeBessel.StatementIO
-import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 import Formalism.RealPlaceAnalysis.FinalF
 
 open Matrix

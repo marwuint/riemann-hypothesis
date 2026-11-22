@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftEquivarianceWei
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelsEvaluateFirst
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelsEvaluateSecond
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaValuesCoefficientExists
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLiftUniqueUpToUnit
 
 noncomputable section
 

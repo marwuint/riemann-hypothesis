@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GlESymmApply
-import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice
 import Formalism.LocalToGlobal.GlobalTheory.GL6.PBwLocGlob
 
 open Formalism.BasicNotions Formalism.L2.Forms Formalism.UG Formalism.L2.GlobalTheoryTheory.LocalLatticeBases NumberField IsDedekindDomain Matrix GlobalTheory.LevelHecke

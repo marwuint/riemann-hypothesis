@@ -5,7 +5,6 @@ import Formalism.SharpRestriction.GlobalSchurBounds.MainIn
 import Formalism.QuotientMetricDivisors.FinalW
 import Formalism.QuotientMetricDivisors.SixthReductionExplicit
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts
 import Development.AutomorphicArithmetic.OrbitLabellings.TwoPowDvdSubOrAddOneOfOddAddOrderOfHP
 import Development.AutomorphicArithmetic.OrbitLabellings.SumLogDivCubeLeOfTwoPowDvd
 

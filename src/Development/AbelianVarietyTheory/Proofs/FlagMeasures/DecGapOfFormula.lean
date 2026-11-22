@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.EigenfunctionFiniteCoefficients
 import Formalism.RealPlaceAnalysis.FinalF
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CompactHaarRightInvariantInst
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ProdLeadMinorDecay
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormPosOfIsUnit
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemUJsetOfKset

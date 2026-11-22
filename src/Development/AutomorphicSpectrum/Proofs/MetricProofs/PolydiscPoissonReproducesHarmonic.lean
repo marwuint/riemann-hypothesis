@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PoissonIntegralPuncturedDisc
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntegralAngMeas
 
 open MeasureTheory Filter Topology GlobalTheory.CompanionTheory.Ar.PB.Flat
 open scoped ContDiff

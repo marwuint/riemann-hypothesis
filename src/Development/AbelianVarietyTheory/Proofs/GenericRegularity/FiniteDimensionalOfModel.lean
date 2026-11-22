@@ -7,7 +7,6 @@ import Formalism.LocalToGlobal.ProjectiveLattices.RealPtPf
 import Formalism.LocalToGlobal.ProjectiveLattices.CurveSec
 import Formalism.LocalToGlobal.ProjectiveLattices.LiftSec
 import Formalism.LocalToGlobal.ProjectiveLattices.LiftModelHolds
-import Formalism.LocalToGlobal.ProjectiveLattices.SecPtRed
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.CurveModelExistsAllPrimesAllPoints
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.CurveSectionStatement
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.LocStructStRecord

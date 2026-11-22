@@ -4,8 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ColsSharpDictionary
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdFormFromEquivariant
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TransportRepresentsClassesWeightOne
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TransportCoeffMapBijectiveOntoValues
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TransportRationalPointsStabiliserFrameStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameActionMulEquivFiniteAdelicUnitary
 open MeasureTheory NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.ColDict GlobalTheory.St
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar

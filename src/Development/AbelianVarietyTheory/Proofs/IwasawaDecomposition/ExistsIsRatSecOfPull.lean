@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.JGenSpecializes
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ClosedPointGeometricFibresFinite
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsValuationSubringLiftOfSpecialFibre
-import ReciprocityTheory.GaloisValuations.GlobalB
 
 set_option autoImplicit false
 

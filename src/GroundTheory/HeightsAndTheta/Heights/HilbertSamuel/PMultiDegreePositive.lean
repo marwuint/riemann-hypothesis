@@ -4,7 +4,6 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsSegrePrime
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsSegreHilb
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsSegreDimGe
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PDegreePositive
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Assembly
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel

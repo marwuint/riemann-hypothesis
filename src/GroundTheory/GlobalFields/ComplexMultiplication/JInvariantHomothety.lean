@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.GlobalFields.ComplexMultiplication.JInvariant
-import GroundTheory.GlobalFields.ComplexMultiplication.UniformizationEisenstein
 
 open Complex Filter Topology Set
 open scoped PeriodPair

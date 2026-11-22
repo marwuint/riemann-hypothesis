@@ -4,7 +4,6 @@ import GroundTheory.GlobalFields.ComplexMultiplication.DegreeOneAutomorphismPoin
 import GroundTheory.GlobalFields.ComplexMultiplication.DegreeOneAutomorphismLift
 import GroundTheory.GlobalFields.ComplexMultiplication.MainTheoremPointHom
 import GroundTheory.GlobalFields.ComplexMultiplication.MainTheoremReduction
-import GroundTheory.GlobalFields.ComplexMultiplication.TorsionReduction
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Global

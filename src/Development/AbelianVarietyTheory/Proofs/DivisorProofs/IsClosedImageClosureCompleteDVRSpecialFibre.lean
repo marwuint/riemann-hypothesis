@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecialFibreConnectedOfProper
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalAlgebraisationMorphisms
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.FormalAlgebraisation
 
 set_option autoImplicit false
 

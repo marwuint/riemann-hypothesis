@@ -1,7 +1,6 @@
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalLanglandsSpehProductStatement
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RecSpehQuot
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
 set_option synthInstance.maxHeartbeats 200000
 

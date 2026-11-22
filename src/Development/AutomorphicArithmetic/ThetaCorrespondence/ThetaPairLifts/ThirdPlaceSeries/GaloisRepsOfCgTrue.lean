@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeC
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.WeightsConj
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.UnrRecOfHasSat
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CGTrueT
 
 set_option synthInstance.maxHeartbeats 200000

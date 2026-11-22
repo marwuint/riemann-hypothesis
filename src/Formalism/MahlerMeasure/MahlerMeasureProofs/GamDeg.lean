@@ -1,6 +1,5 @@
 import Formalism.MahlerMeasure.HasOrder
 import Formalism.MahlerMeasure.FinalM
-import Formalism.MahlerMeasure.MahlerMeasureProofs.FreezeInto
 
 namespace Formalism.GM.GammaExpansion
 

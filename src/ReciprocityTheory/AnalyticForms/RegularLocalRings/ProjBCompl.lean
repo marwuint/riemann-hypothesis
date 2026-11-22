@@ -1,5 +1,4 @@
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.ProjHyp
-import ReciprocityTheory.AnalyticForms.RegularLocalRings.StalkLoc
 
 namespace ReciprocityTheory.AnForm.R
 

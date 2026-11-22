@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.OffRange
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GaloisSideTwistedSelmerAuxiliaryPrimes
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanInfOfSpanTop
 
 noncomputable section

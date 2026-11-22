@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.DualLowestKTypeOfStandard
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.K2V
 
 namespace ReciprocityTheory.ChartRestriction.DS.Lap.LemK
 

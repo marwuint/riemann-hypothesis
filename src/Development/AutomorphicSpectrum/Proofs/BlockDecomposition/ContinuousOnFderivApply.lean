@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DifferentiableAtOfSmooth
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionFactsHold
-import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.WaveSt
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GeneralLinearGroupUnimodular
 
 noncomputable section

@@ -2,10 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.HasPartAnd
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.JetSplitAmb
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PeriodRelationsTrueColumnsAtTuple
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.JetOpIntegral
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JetsInIffStepField
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ValidForConstructedPointClassesEventuallyWorking
-import Formalism.SharpRestriction.ElevenLe
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KerTie
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RowPinSetDivZ
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Ker Formalism.L2.Forms GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.Svd NumberField IsDedekindDomain

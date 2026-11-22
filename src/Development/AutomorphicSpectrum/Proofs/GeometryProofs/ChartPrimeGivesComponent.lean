@@ -4,7 +4,6 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EmbedsGeneric
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UnitAtOfMulRight
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePoint
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
 
 noncomputable section

@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AdmQAdmissibleConjugatePairPlaces
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SurjConj
 import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.RatDatOfReal
-import Formalism.LocalToGlobal.IndefiniteReal.ThPinsR
 
 noncomputable section
 

@@ -4,7 +4,6 @@ import Formalism.LocalToGlobal.KernelLattices.AdaptedEnt
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsRBasisOfLocBasis
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormTauEmbPosPlConjEq
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PartnerPlaceInvolutiveNormConjEq
-import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.TaylorLogMetric GlobalTheory.KerStd Classical
 
 noncomputable section

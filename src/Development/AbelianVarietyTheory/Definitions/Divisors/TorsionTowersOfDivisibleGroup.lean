@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToBaseChangePtsBijective
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsKSValueOneOfRetraction
-import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.LeftEqIffLieVecSmul
 
 set_option autoImplicit false
 

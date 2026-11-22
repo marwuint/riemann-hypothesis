@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.CrystallinePeriods.CrystallineLogarithm.
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
-import Development.AutomorphicArithmetic.IntegralCasts.CrystallinePeriods.Comparison
 
 namespace GlobalTheory.CrisIncl
 open Formalism

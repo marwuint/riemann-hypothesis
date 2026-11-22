@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TripleAtt
 import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.TameGeneratorProjectors
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FiniteDimensionalWdSpace
-import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 
 noncomputable section
 

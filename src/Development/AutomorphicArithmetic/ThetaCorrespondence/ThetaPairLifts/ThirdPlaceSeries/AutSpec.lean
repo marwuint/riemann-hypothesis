@@ -3,7 +3,6 @@ import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SideAAlt
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.NdSpec
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
 set_option synthInstance.maxHeartbeats 200000
 

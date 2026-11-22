@@ -8,8 +8,6 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusExtensionTange
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusExtensionModuleStructureStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenspaceBasisExistsStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenDecompositionExactSequence
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CmTypeEigenMultiplicityOfDensePrimes
 
 noncomputable section
 

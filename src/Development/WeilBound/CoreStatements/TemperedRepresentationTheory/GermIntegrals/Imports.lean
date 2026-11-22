@@ -1,5 +1,4 @@
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.GermIntegrals.StepSt
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LinearChangeOfVariablesLocalFieldMatrix
 
 open MeasureTheory GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.ThetaGL ValuativeRel PositivityTheory.Tls2.Ming3
 

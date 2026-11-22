@@ -3,7 +3,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.Places
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.MatchOne
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.MatchProd
-import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.SplitLoc
 import Development.AutomorphicArithmetic.Foundations.Convolution.TwistedLocalOrbits.PlaceUp
 
 noncomputable section

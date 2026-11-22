@@ -1,7 +1,6 @@
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingSpecNormalisedCharacterEq
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CGTrueT
 
 set_option synthInstance.maxHeartbeats 200000
 

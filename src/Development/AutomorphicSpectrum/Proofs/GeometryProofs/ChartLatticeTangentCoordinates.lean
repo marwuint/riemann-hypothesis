@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductMapIff
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsRigTransport
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.PrecompleteBases.PsbLb
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped Matrix ComplexOrder

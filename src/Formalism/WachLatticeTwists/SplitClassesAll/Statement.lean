@@ -1,8 +1,6 @@
 import Formalism.WachLatticeTwists.CoprimeLiftBounds.WachTwistTheoremDeltaClause
 import Formalism.WachLatticeTwists.SplitLocalLifts.Cocycles1MapOfEquivariant
 import Formalism.WachLatticeTwists.CharacterSplitJumps.WachTwistTheoremFromTorsionBound
-import Formalism.WachLatticeTwists.CoprimeLiftBounds.StatBridgeChiOne
-import Formalism.WachLatticeTwists.Statement
 
 open Finset Classical
 

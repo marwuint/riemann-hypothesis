@@ -1,5 +1,4 @@
 import Development.EtaleCohomology.EtaleSheaves.QuotientFieldNonconstantLift
-import Development.EtaleCohomology.EtaleSheaves.LeafDescendVCut
 import Development.EtaleCohomology.EtaleSheaves.CurveKrullDimTopology
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.DimSplitPf
 

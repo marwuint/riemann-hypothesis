@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntExponentCongrCyclotomicCharacter
-import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
 open scoped MatrixGroups TensorProduct
 open Matrix GlobalTheory.KZ
 set_option maxHeartbeats 1000000 in

@@ -1,6 +1,5 @@
 import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharacteristic.GaloisCohomologyRatios.NormalOfGsOpenSubgroupNormal
 import GroundTheory.ProfiniteCohomology.GlobalEulerCharacteristic.RealHerbrand
-import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Coprime
 
 open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh GroundTheory.Global
 

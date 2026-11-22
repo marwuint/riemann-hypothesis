@@ -1,5 +1,4 @@
 import Formalism.WindowSums.AnnihilatorPolynomials.DistinctTerms
-import Formalism.WindowSums.Statement
 import Formalism.WindowSums.AnnihilatorPolynomials.EvalOneSmulDecomposition
 import Formalism.WindowSums.AnnihilatorPolynomials.ZpowVal
 import Formalism.WindowSums.AnnihilatorPolynomials.ValProd

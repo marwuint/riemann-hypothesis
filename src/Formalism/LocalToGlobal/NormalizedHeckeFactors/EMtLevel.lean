@@ -7,9 +7,7 @@ import Formalism.LocalToGlobal.NormalizedHeckeFactors.GlobalDatumRegularityOfTyp
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.WittCoreInclusionMulVecMemLatticeCompletionAtPla
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.RingHomOfBaseOrderToFraction
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.Choice
-import Formalism.LocalToGlobal.GaloisLevelStructure.NGalTied
 import Formalism.LocalToGlobal.LocalInduction.BridgeInd
-import Formalism.LocalRingCardinality.DataNChTie
 import Formalism.LocalToGlobal.GaloisLevelStructure.LinkChar
 
 noncomputable section

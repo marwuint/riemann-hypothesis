@@ -1,10 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransportF
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffThetaTransformArchimedeanCm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemRatPairIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLintegralSqEqMulSetLIntegralThetaTransform
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingInl
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ImportsBis
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels

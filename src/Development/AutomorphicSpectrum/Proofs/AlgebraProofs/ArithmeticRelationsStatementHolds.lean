@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.RelationsStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.UniformizerModelPermModuleLattice
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsLatticeFamily
-import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.BundleChernComparison
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DescentRelationsFromModels
 
 namespace GlobalTheory.CompanionTheory.Ar.Num.TopRel

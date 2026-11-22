@@ -8,8 +8,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBoun
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBounds.PlacesQ
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PrimitiveFrobeniusFixed.PlaceBasic
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.CompIne
-import Development.AutomorphicArithmetic.AutomorphicVarieties.PartsConj
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.Places
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 

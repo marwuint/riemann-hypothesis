@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TotalEqOfNonneg
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BcDensEqOfGram
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetMetricIsometricOfIsometry
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology MeasureTheory

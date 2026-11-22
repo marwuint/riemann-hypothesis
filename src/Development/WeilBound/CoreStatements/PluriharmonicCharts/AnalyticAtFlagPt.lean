@@ -2,14 +2,9 @@ import Mathlib
 import Development.WeilBound.CoreStatements.PluriharmonicCharts.ExistsHoloOnOfGerm
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameLUMinorValue
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockLUFactorization
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameMinorValueFormula
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsBaseChart
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogPeriodStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BaseChartHolomorphicComposition
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsFlagPointInOrbit
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BasePartFlagPt
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagPointTriangularChangeOrbit
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BaseVectorProperties
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreChartFirst
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical

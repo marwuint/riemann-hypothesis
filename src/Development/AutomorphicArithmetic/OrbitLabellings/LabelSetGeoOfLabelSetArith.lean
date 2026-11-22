@@ -2,10 +2,7 @@ import Mathlib
 import Development.AutomorphicArithmetic.OrbitLabellings.RowDefs
 import Formalism.LocalToGlobal.CharacterGerms.RowTieMemCHarm
 import Formalism.LocalToGlobal.CharacterGerms.RowTieFlagS
-import Formalism.LocalToGlobal.CharacterGerms.RowTieSelfCuts
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SeparatedEmbeddingsDirectionsTypedBasis
-import Development.AbelianVarietyTheory.Definitions.Jets.IsSelfOf
-import Development.AbelianVarietyTheory.Definitions.Jets.TwoPlaces
 
 open scoped BigOperators
 open Classical

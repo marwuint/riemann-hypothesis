@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThickSetDensityLeInvFourLw
-import Formalism.LocalRingCardinality.DataParams₂
 
 open Formalism.BasicNotions
 set_option maxHeartbeats 1000000 in

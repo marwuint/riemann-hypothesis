@@ -1,9 +1,4 @@
 import Formalism.LocalToGlobal.IndefiniteReal.SobolevIteration.ArvOSobPfSt
-import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
-import Formalism.LocalToGlobal.IndefiniteReal.RealSeparation.ParabSt
-import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.FuncSt
-import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.BaseSt
-import Formalism.LocalToGlobal.IndefiniteReal.OrthogonalComplementCharacterisation
 import Formalism.LocalToGlobal.IndefiniteReal.SobolevIteration.MemSpanSmoothVec
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ChainRuleSmooth.ExpIntertwine
 

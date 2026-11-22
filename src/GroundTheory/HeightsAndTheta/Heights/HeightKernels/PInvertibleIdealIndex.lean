@@ -3,7 +3,6 @@ import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsInvertibleId
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsOrderIdealIndexExtension
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsLocallyPrincipalCoprime
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.ExistsSmulMemOfSpanEqTop
-import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesLineDegree
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights

@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicDifferentialOneFormCompHolomorphic
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosedFormsMulClosed
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DelAtEqSumDOne
 
 open Set Matrix MeasureTheory Filter Topology
 open GlobalTheory.HermFrame

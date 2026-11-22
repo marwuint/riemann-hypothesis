@@ -1,6 +1,5 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.DatDatum
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.LocEmb
-import GroundTheory.GlobalFields.LocalFieldAtPlace
 
 open MeasureTheory NumberField IsDedekindDomain
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace

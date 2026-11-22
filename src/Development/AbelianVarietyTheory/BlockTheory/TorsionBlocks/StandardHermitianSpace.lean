@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 
 noncomputable section
 

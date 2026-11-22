@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemisimpleOfIn
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverStd
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClassSumEqConstMulPetersson
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TypeOrthOfAvTied
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteDimensionalForms
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 NumberField IsDedekindDomain Polynomial GlobalTheory.EtaJoin GlobalTheory.CoefDuty
 

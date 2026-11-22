@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.WhiskerLeftEqLift
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GlueLineBundles
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 
 set_option autoImplicit false
 noncomputable section

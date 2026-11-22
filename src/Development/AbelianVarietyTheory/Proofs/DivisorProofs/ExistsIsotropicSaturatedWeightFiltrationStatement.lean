@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsotropicSaturatedWeightFiltration
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiltGraded
 
 noncomputable section
 

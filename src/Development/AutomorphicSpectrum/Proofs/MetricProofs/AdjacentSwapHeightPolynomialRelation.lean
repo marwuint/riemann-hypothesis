@@ -6,7 +6,6 @@ import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffG
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HeightPolynomialReflectionSum
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.KillNoneFormPoly
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.EtaleAwayOfIsEtaleAtOffSubmonoid
-import GroundTheory.HeightsAndTheta.Heights.Intersections.PFibreLocal
 
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 

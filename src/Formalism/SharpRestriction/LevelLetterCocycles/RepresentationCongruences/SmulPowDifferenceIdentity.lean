@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.ArcGamLiftCore
 import Formalism.SharpRestriction.LevelLetterCocycles.ArcCoordinatesOfMembership
-import Formalism.SharpRestriction.LevelLetterCocycles.RelayGeneralCaseOfAdmissible
 
 noncomputable section
 

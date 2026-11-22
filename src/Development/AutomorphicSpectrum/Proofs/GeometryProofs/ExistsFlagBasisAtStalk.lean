@@ -4,7 +4,6 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FinrankFiniteFlatTorsionSubschemeEqCardPoints
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsConstStalk
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenspaceDecompositionInternal
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 

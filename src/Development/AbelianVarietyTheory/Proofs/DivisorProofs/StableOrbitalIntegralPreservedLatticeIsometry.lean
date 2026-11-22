@@ -1,7 +1,6 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasTypeVec
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryTorusEllipticElementsOfLocalLatticeIsomet
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsHasCls
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryTorusEquivCentralizerWithMeasure
 open MeasureTheory Set Filter NumberField IsDedekindDomain
 open GlobalTheory.AdelicU GlobalTheory.OpTrace GlobalTheory.Orb GlobalTheory.AutomorphicL2Unitary GlobalTheory.AutMult Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes

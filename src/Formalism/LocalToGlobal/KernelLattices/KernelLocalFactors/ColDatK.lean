@@ -1,20 +1,12 @@
 import Mathlib
 import Formalism.LocalToGlobal.KernelLattices.ColumnData
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.BaseLinkOfNonzeroDelta
-import Formalism.LocalToGlobal.KernelLattices.ColumnData.BaseExP
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.Smooth
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.AmbOfENeSd
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CardTrivialFirstComponent
-import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts
-import Development.AutomorphicArithmetic.WeightCongruences.IsRootOfIntegral
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.MuCardLeTwo
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.SplitPairOfGen
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.DiagramFitsSourceRank
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.GlobTied
-import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ColInst
 import Formalism.LocalToGlobal.Columns.ChainOneP
-import Formalism.LocalToGlobal.Columns.RefXi1Above
-import Formalism.LocalToGlobal.Columns.ReferenceKernelEquivOfLastComponent
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.KerEquivConcrete
 
 noncomputable section

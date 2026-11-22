@@ -15,7 +15,6 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryIwasawaCe
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryDoubleCosetOfGLintDoubleCoset
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsSymmetricElementaryDivisorsUnitary
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMultisetSatakeEigenvalueEq
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
 
 noncomputable section
 

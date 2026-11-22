@@ -1,5 +1,4 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuantumDeterminantCommute.Development
-import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q
 

@@ -1,10 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InjectiveWedgeHighestCoefficient
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CenterEnvelopingAlgebraDirectSum
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.PolarConjTranspose
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConstantTermParabolicFiniteType
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.StandardBlocksLevelSum
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.Bdy
 open GlobalTheory.CompanionTheory.PairMult
 
 noncomputable section

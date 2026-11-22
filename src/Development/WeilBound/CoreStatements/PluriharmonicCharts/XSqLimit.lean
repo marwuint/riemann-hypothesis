@@ -5,7 +5,6 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsFibreLocal
 import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
 import Development.WeilBound.CoreStatements.PluriharmonicCharts.ContinuousOnLogNormSec
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.AnalyticSystemRegularityProperties
-import ReciprocityTheory.AnalyticForms.PotentialTheory.PotentialContDiffAt
 
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 

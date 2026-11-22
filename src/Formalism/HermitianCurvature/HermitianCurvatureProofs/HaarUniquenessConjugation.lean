@@ -1,7 +1,6 @@
 import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.BetaSesquilinearity
 import Formalism.RealPlaceAnalysis.FinalF
-import Formalism.FormalDegreeBessel.FinalG
 import Mathlib
 
 open Matrix MeasureTheory Filter Topology

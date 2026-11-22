@@ -9,14 +9,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PiCongrLeftUpdat
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountedVectorIsCuspForm
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCuspHomOfCuspLowest
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniqueMultMap
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExtAeEqContRep
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicTransportMeasureFirst
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ConsequencesOfDsClass
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalConvolutionOrthogonalProjectorProof
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DiscreteSeriesTestDataLargeGapsIntegrableStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemUnipotentRadicalIffIotaMemAdelicRadical
-import Formalism.LocalToGlobal.BesselHermitianTheta.IsAutFunDef
-import Formalism.LocalToGlobal.SiegelLatticeTheory.FundamentalEquivalence.AdBridge
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.AutomorphicEvaluation Formalism.L2.SG.RowDict Formalism.L2.SG.RowsJoinPinned Formalism.L2.SG.RowLevelMatch Formalism.L2.SG.PoincareInHH.PoincareSetting MeasureTheory NumberField IsDedekindDomain
 open scoped InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar

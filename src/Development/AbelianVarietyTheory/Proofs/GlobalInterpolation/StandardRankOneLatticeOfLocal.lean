@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.Columns.ScaledRamifiedLattice
-import Formalism.LocalToGlobal.Columns.BaseLemmas
 import Formalism.LocalToGlobal.KernelLattices.ThDistC
 import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
 import Development.AbelianVarietyTheory.Counterexamples.PlaceInjectivity.StandardDeterminantUnits

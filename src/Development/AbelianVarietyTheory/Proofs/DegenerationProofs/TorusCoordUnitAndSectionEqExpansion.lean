@@ -5,8 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.CompanionTheor
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.UTorsSt
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsLevelPoint
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsToStkAUnit
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsFrameRatio
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExpandsGTransport
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor

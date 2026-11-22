@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.NumberFieldFamilies.ThetaCW
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 
 noncomputable section
 

@@ -1,11 +1,8 @@
 import Mathlib
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostFacts
 import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.TypePrimesOfLevel
-import Formalism.LocalRingCardinality.DataKerI
 import Formalism.LocalRingCardinality.DataErr
-import Formalism.SharpRestriction.ElevenLe
 import Formalism.SharpRestriction.GlobalSchurBounds.StandardLattice
-import Formalism.LocalToGlobal.Columns.DecorationStabilizerTrivialUnipotent
 
 noncomputable section
 

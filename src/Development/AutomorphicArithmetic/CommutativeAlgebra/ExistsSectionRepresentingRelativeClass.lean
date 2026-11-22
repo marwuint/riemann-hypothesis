@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.FaceRes
 import Development.AutomorphicArithmetic.CommutativeAlgebra.RelativeCohomologyIsTotalModelOfImage
-import Development.AutomorphicArithmetic.CommutativeAlgebra.DoubleMappingCylinderCochainExtension
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC LateralTheory.CohomologicalPurity LateralTheory.CohomologicalPurity.TubeCut UpperTheory.Et.Prd
 

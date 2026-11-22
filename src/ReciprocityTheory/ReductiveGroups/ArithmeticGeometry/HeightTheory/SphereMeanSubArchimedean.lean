@@ -1,7 +1,5 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.LogHeightDivMultihomogeneous
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.HHINDB
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.GoodPrimesProperties
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.NormFactorizationClause
 
 namespace ReciprocityTheory.ChartRestriction.G.T0
 

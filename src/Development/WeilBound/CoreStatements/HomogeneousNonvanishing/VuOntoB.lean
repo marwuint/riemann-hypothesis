@@ -1,9 +1,7 @@
 import Development.WeilBound.CoreStatements.ProjectiveValuations.FrequentlyNeZero
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenframeSpecializationUniformBound
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonoSpMapRingOfIntegersAlt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormFactorInvLePowHolomorphicOrbitPeriodBound
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodFrameLimitsOfOrbit
 
 open CategoryTheory AlgebraicGeometry NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj GlobalTheory.CompanionTheory.Ar.OntoDef GlobalTheory.CompHS
 open GlobalTheory.CompanionTheory.Ar.HolExt DifferentiableLines

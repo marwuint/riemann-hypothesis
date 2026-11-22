@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoTowerQ
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory.LocalField GlobalTheory.PMon.Ram
 
 namespace GlobalTheory.PMon.Ram

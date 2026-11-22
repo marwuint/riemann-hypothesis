@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.RepresentationBounds
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinPowKillsLatticeCokernel
-import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ImageStableDegreeBounds
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.KillsCokerAllOfKillsCokerPhiModuleLattice
 open PowerSeries GlobalTheory.BK
 

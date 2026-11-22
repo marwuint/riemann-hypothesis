@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.B
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalWhittaker
 import Development.AutomorphicSpectrum.Proofs.SemilocalMultiplicity.GelfandGraevMultOneHolds
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankMirabolicWhittakerEigenspace
-import Formalism.MirabolicMackeyTheory.MirabolicIsMackey
 
 noncomputable section
 

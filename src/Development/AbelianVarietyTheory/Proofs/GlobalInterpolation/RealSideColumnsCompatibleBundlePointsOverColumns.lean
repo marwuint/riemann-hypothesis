@@ -2,10 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.AndLeft
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ReferenceChainEvaluationAtBundlePoints
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsSymmetricColumnFormsStepZeroFiniteCharacte
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StdLvPr
-import Formalism.SharpRestriction.GlobalSchurBounds.LinkTied
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PropertyAtConstructedPointsOfTrueColumnsView
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EFirstGeOfULastNonpos
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.Fc.Cv NumberField
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 

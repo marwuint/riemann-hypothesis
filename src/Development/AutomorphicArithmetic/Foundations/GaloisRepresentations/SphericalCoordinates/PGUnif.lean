@@ -1,8 +1,6 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.LevelChange
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiCompactOfQProj
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexUniformisationOfMarkedPeriodsFamily
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsHolPeriods
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsGHeckeMapForget
 
 noncomputable section

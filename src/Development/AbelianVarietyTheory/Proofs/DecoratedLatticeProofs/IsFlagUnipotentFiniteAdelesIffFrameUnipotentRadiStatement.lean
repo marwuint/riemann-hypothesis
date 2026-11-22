@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsFlagUnipotentFiniteAdelesIffFrameUnipotentRadi
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BesselCharacterGenericCharacterLaws
-import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.HidaSetting
-import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeUnipRad
 
 open Matrix NumberField
 open scoped TensorProduct

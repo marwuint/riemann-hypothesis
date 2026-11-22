@@ -1,12 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.HeightFunctions.XiValIffXiAt
-import Formalism.LocalToGlobal.ProjectiveLattices.ExistsParameterConditions
-import Formalism.LocalToGlobal.ProjectiveLattices.RecCond
-import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
-import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.PermutesRefl
 import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.ExistsXiOKEvenRamified
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsOpenCongruenceIdelesAndRealFiniteParts
-import Formalism.LocalRingCardinality.HostCls
 
 noncomputable section
 

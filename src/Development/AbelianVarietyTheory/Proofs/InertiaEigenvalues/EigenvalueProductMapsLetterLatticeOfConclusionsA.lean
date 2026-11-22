@@ -4,7 +4,6 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LetterConditionGlobal
 import Formalism.SharpRestriction.LevelLetterCocycles.CrystallineLiftingInputs
 import Formalism.SharpRestriction.LevelLetterCocycles.RingHypothesesOfCrystalline
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachOperatorProductShiftMemLattice
-import Formalism.SharpRestriction.LevelLetterCocycles.ExpRules
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 
 noncomputable section

@@ -1,7 +1,6 @@
 import Mathlib
 import ReciprocityTheory.GaloisValuations.Global
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.RingHomOfBaseOrderToFraction
-import Formalism.SharpRestriction.LevelLetterCocycles.DataN
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RootEqOfClose
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemZpowersOfTameGen
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalGlobalCompatibilityAtTypes

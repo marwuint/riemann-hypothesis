@@ -1,7 +1,6 @@
 import GroundTheory.HeightsAndTheta.Heights.LocalFiniteness.FieldNumbersLocalIntegralClosureFinite
 import GroundTheory.HeightsAndTheta.Heights.LocalFiniteness.HilbertSamuelIrreducibleBasicOpenConnected
 import GroundTheory.HeightsAndTheta.Heights.LocalFiniteness.FieldNumbersSemilocalLength
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDivCycleMinimal
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDivPushForwardLocal
 set_option maxSynthPendingDepth 1
 

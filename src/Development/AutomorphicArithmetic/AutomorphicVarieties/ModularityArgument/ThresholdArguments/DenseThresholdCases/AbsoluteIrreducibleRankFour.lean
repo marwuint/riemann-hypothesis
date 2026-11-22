@@ -2,7 +2,6 @@ import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.NeTeichEx
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.AfDesc
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.UnitaryHeckeData
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
 set_option maxHeartbeats 800000
 set_option synthInstance.maxHeartbeats 200000

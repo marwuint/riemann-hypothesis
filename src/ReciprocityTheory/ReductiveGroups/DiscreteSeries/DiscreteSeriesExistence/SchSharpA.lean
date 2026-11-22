@@ -1,6 +1,5 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.CFPrimeB
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.LowFock
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.CARUnit
 
 noncomputable section
 

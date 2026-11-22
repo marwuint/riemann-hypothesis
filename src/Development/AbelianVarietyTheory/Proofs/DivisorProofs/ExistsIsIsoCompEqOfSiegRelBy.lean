@@ -10,7 +10,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Si
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KilledOnGeometricTorsion
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatSurjectiveQcPow
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsMonHomFactorOfFlatSurjective
-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.MulAFiniteFlatSurjectiveEtale
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT

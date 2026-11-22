@@ -8,8 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CPAsIdeal
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemDeeperLevelIffReductionsSymmetricUnipotentStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairTable
 import Formalism.LocalToGlobal.Divisibility.TiedLemmas
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemHatIffOfSelfDual
-import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.EvalTIota
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.AutomorphicEvaluation Formalism.L2.SG.RowDict Formalism.L2.SG.RowsJoinPinned Formalism.L2.SG.RowLevelMatch Formalism.L2.SG.PoincareInHH.PoincareSetting MeasureTheory NumberField IsDedekindDomain
 open scoped InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar

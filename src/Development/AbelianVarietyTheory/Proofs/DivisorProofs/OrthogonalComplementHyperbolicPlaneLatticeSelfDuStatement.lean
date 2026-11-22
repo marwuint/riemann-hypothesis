@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrthogonalComplementHyperbolicPlaneLatticeSelfDu
-import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLowLat
 
 open scoped TensorProduct Matrix nonZeroDivisors
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes

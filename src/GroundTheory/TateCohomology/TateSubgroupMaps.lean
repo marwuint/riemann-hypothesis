@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.TateCohomology.CohTrivialBasic
-import GroundTheory.TateCohomology.DimensionShift
 import GroundTheory.TateCohomology.TateTransport
 import GroundTheory.TateCohomology.ResCoresZero
 

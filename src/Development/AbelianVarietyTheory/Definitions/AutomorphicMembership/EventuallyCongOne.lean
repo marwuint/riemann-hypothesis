@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ComplexForms
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelPrimeDiamondPreservesComplexForms
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCompactAdele
 import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
-import Formalism.LocalToGlobal.Columns.CoefColLemmas
 
 noncomputable section
 

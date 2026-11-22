@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.PeriodIntegrals.DivisionRowsRationalLattice
 import Formalism.HarderNarasimhan.ShiftInvariance
-import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PolygonSlopeSum
-import Formalism.HarderNarasimhan.Statement
 
 noncomputable section
 

@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InstAddCommGroupTwo
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BorelCasselmanHolds
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IwahoriProjSurjective
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JhMultSubAddQuot
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsCharacterEigenvectorOfCommutingRepresentat
 
 open GlobalTheory GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SmGL.Exponents ValuativeRel

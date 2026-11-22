@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsGaugeAll
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ExistsIsSatFlagOne
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthogonalCanonicalFiltrationStepsAutPoint
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointMajorantFramesGiveMajorants
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas
 

@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.IsAffineSplitT
 import Development.AbelianVarietyTheory.Definitions.Degenerations.CompanionTheory
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.UTorsSt
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsShiftedLtClassMin
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBimultiplicativeOfSecondQuotConst
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor

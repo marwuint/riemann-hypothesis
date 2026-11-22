@@ -1,5 +1,4 @@
 import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.SliceTensors.PStringStepB
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
 import GroundTheory.PAdicHodge.AInfGalois
 
 noncomputable section

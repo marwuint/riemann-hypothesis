@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelStabilizerAction
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ToKnownTheoremsOf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpObjPullG
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComponentStabilizerActsByLevelChange
 
 section
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField

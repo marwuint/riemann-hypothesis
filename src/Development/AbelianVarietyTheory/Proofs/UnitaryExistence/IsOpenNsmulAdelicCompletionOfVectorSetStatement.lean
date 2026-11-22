@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsOpenNsmulAdelicCompletionOfVectorSet
-import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
 open NumberField IsDedekindDomain GlobalTheory.AdLat
 open scoped TensorProduct Topology Matrix
 set_option maxHeartbeats 1000000 in

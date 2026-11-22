@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusEmbeddingLieInjective
-import Development.AbelianVarietyTheory.Definitions.Divisors.GalMapMul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocIndEtaleIsDomainIsIntegrallyClosed
 
 open GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in

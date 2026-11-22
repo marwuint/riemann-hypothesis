@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowSmulEqOfLogDerivationExtendEq
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtLAlgebraMap
 
 open GlobalTheory.LogDerProj
 set_option maxHeartbeats 1000000 in

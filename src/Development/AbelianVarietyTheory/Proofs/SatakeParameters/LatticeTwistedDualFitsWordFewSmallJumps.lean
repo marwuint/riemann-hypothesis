@@ -4,9 +4,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CrystallineHodgeTateMultiplicityNeZeroOfJump
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsUniqueEmbeddingRestrictsToWachLetterUnrami
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedDualJumpsMemWindowBox
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Formalism.FrobeniusOrbits.HostCorollaries
-import Formalism.SharpRestriction.ParConsts
 open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.FrobeniusOrbits
 
 namespace GlobalTheory.HTW.Rec

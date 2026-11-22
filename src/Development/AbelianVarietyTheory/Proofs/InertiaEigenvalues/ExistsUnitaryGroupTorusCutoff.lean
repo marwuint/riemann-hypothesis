@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MulMatMemUnitaryGroup
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLocallyConstantCutoffClosedEmbedding
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjugatesSeparableMatrixCompactModCentralizer
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
 
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 

@@ -1,8 +1,6 @@
 import Development.AutomorphicArithmetic.CommutativeAlgebra.BconeDefs
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafProperties
-import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
-import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Bc
 
 set_option backward.isDefEq.respectTransparency false in

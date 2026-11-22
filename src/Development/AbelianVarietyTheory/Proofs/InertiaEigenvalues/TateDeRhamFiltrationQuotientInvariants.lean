@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
-import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
-import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamDieudonneSpansTensorDeRhamPeriods
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamComparisonIsFiltered
 

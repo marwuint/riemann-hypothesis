@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CodimOneIntegralSub
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisationMixedTermOfPowers
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearFunctionalOfSymmetricMultiadditive
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsArithHeightEqMixedHeightDiagonal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MixedArchIntegralAdditiveAndDiagonal
 
 set_option autoImplicit false
 

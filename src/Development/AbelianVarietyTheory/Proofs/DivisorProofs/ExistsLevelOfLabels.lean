@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ImHermFormPer
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsAbelianFibreIsoOfMatchedTorsionTheta
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NonemptyLevelOfIsAlgClosed
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsPolAVSectionInverseImage
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToricPeriodBlockIsSymm

@@ -3,8 +3,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoCaten
 import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacters.ExistsAlgebraicPointOfGroupDeterminant
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaMvpsCot
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.DvrFacts
-import ReciprocityTheory.CommutativeAlgebra.SaturatedChains.Integral
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 

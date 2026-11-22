@@ -1,5 +1,4 @@
 import CompanionTheory.AutomorphicTheory.ZuckermanCommutation.ZuckermanFunctors.ZuckermanGapSmall
-import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.HaarBumpFunctions.PoulsenSmoothVectorsDense
 
 open Matrix Finset
 open scoped InnerProductSpace Classical

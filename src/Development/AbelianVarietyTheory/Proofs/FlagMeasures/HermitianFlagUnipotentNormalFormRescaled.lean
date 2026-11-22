@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemFlagUnipotentIffOrderedEichlerProduct
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EichlerIsometry
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
 open scoped Pointwise ENNReal Classical
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFullSymplecticLevelStructureUniqueOfLevels
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSympLevel
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor NumberField GlobalTheory.FullLevel
 set_option maxHeartbeats 1000000 in

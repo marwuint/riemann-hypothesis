@@ -1,5 +1,4 @@
 import Formalism.YangianSpanCharacter.StatementF
-import Formalism.YangianSpanCharacter.StatementY
 import Formalism.HermitianCurvature.StatementR
 import Formalism.HermitianCurvature.StatementI
 import Formalism.HermitianCurvature.StatementWd

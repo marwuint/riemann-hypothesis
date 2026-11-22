@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.Divisibility.WeightDegreeSizes
-import Formalism.SharpRestriction.GrowthBounds.WeilJacquetShalikaLaw
 
 noncomputable section
 

@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
-import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsSplitChartSplitChart
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamificationIdxEqOneOfIsSquare
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GSEqZeroOfLt
 
 namespace GlobalTheory.StepFacNe

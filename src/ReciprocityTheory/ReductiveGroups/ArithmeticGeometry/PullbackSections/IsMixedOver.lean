@@ -1,9 +1,7 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.PlaceBoundSplitOfIntegral
-import Formalism.LocalToGlobal.ProjectiveLattices.RecPJThAllNeBot
 import Formalism.LocalToGlobal.ProjectiveLattices.ChartDirectionsIntegral
 import Formalism.LocalToGlobal.ProjectiveLattices.PlaceBelow
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermCut
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 
 set_option autoImplicit false
 

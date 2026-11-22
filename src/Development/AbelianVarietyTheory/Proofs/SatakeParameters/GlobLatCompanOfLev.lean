@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.UnderTie
 import Formalism.LocalToGlobal.GlobalTheory.BlockActions.ClsCrdEqGlob
 import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.PNeatB
-import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.ToLEInvApply
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsSDLatLatK
 open NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.UG Formalism.L2.Col Formalism.L2.PairingIndexBounds.F Formalism.MainNotions.G.KAat Formalism.L2.Forms Formalism.L2.Ker Formalism.MainNotions Formalism.L2.DIV Formalism.MainNotions.G GlobalTheory.TwU GlobalTheory.TwV
 open scoped TensorProduct

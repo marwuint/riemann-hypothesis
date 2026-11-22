@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GeometricallyConnectedOfSurjective
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoFibreOfPullback
 set_option autoImplicit false
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj

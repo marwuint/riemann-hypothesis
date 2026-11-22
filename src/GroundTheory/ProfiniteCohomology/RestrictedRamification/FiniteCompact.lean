@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.Finite
-import GroundTheory.ProfiniteCohomology.RestrictedRamification.BaseChangeMackey
 import GroundTheory.ProfiniteCohomology.CompactSupportCohomology
 import GroundTheory.ProfiniteCohomology.LocalTateDuality.TensorHomDualRepRootsOfUnityIsoCartierPairing
 set_option maxSynthPendingDepth 1

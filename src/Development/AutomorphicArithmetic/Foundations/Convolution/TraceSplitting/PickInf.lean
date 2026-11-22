@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.SplitStable
-import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.TensSmooth
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.InfSplit
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.ArchBasic
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.BumpEx

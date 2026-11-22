@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OfSwap2
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TotalEqOfNonneg
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictChernPart
-import Development.AbelianVarietyTheory.Definitions.Divisors.GenericPointAsIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolyIntEqZeroOfIsHomogeneous
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernPartOverProperClosedEqZero
 

@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnipVal
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompactOpenNormClosedBallQuadratic
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuadExtTopology
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocallyConstantAddChar
 
 noncomputable section
 

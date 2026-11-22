@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousConjFin
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnderEqIffConjPl
 
 open NumberField IsDedekindDomain
 

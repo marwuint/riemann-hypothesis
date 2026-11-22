@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsThetaCompact
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsMinAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.MinSt5OfMinSt4
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarizationVectorBundleAbelianPullback
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClsDivPullEqVPull
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenSmoothOfRelativeDimensionOfGeneri
 
 set_option autoImplicit false

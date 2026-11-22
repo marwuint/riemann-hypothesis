@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.TraceFormula.GlobalTraceComparison.BindPow
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.DualIsConjByOne
 
 noncomputable section
 

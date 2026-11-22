@@ -2,9 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSectionOfChg
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigFrameMatch
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAffineStableLieEigenspaceFrame
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TriIff
-import Formalism.LocalToGlobal.ProjectiveLattices.MulCMemSec
-import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
 
 set_option autoImplicit false
 

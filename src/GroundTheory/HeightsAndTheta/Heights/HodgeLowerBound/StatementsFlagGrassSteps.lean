@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsFlagGrassPush
-import GroundTheory.HeightsAndTheta.Heights.Intersections.Statements
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MixedFieldContraction.ContractMixedFieldStatement
 set_option maxSynthPendingDepth 1
 

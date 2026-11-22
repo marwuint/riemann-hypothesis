@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GalMap
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ValTorusPointAndTranslate
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ValCalc
 
 noncomputable section
 

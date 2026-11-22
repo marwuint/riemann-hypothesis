@@ -5,7 +5,6 @@ import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProjectiveCohomology.Imm
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProjectiveCohomology.ImmersionPush
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProjectiveCohomology.ImmersionProj
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProjectiveCohomology.ImmersionCech
-import GroundTheory.ArithmeticGeometry.SchemeCohomology.CechNaturality.NaturalLeray
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Arith.SchemeCoh

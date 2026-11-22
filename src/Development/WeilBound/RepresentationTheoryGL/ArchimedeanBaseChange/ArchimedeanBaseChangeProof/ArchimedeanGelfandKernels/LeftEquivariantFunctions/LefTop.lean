@@ -6,8 +6,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandOperator
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlagFieldHolds
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContDiffMulRight
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ImportsBisMore
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PositiveConeStructure
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PositiveConeHomotopy
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceMulConjTranspose
 
 namespace PositivityTheory.RgBcC

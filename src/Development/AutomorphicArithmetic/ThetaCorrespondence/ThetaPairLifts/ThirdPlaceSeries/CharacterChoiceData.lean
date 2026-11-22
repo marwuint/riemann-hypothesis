@@ -1,9 +1,6 @@
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CGTrueT
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsRecTLocRecT
 
 set_option synthInstance.maxHeartbeats 200000
 

@@ -1,15 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.NonemptyEquivOfCardHom
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RelOfTorsion
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderValueEval
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueBtOrderEmbedding
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
-import GroundTheory.PAdicHodge.FiniteFlat
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
-import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.BtHopf
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HopfOrderContainsCharacters
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueTangentDualNumber
 
 namespace GlobalTheory.CompanionTheory.Ar.BT
 

@@ -2,11 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.Tpr
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.PosPartUnitaryMul
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CapelliOfGelfand
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QminorPolyMap
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QdetAddOneSubEqSumQminor
-import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TracedQminorComatrixTruncatedInverse
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ScalarCapelliTruncatedPerelomovPopov
 
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh GlobalTheory.WignerGL GlobalTheory.WigAlg Formalism.REAL
 open scoped TensorProduct

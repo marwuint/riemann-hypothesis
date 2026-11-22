@@ -1,13 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealMapsRelevantSpace
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationUnitaryEquiv
-import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
-import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchActionReadingsCompatible
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilModelLineActionExists
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKernelReal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingInl
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilLineGoodModelAction
 
 open scoped TensorProduct

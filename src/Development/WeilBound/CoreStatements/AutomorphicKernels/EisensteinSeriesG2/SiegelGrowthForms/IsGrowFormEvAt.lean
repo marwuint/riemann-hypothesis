@@ -1,7 +1,5 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.SiegelGrowthForms.SiegelMult
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinHalfHolds
-import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.EisensteinGrowthForms.GrowForms
-import Development.WeilBound.ThetaLifts.LatticeBasics.UnfoldC
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFactorisationHolomorphic
 

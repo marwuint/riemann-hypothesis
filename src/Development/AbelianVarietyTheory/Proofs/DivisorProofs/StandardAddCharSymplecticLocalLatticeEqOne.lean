@@ -1,11 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsNotRelZero
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareTriple
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStanding
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStable
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.AddCharTrivialIntegralFiniteAdeleMul
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ProductFormulaHaar.TrSumOf
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links

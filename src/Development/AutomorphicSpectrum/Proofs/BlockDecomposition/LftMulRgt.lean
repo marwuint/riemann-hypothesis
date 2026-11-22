@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCliff
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CasKHW
 
 noncomputable section
 

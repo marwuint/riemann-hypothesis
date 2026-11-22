@@ -1,10 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.ThNSpec
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeLetterPreservesBasisSet
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFunctionTowerIntegrality
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCuspFunctionalOddWeightOddPrime
-import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsRootOfIsAlgClosed
-import Development.AbelianVarietyTheory.Definitions.Foundations.EeProd
 
 open scoped MatrixGroups
 open Matrix GlobalTheory.KZ GlobalTheory.CyclotomicQExpansion GlobalTheory.Glue

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualOne
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependent
 import ReciprocityTheory.DualLattices.BlockOneMulMulBlockOne
 open Matrix
 

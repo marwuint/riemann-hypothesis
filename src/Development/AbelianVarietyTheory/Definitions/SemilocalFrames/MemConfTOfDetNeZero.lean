@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.GlobalSchurBounds.StandardLattice
-import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
-import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.FrameLats
 
 noncomputable section

@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
-import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.GeometricallyConnectedSplitTorusAff
-import Development.AbelianVarietyTheory.Definitions.CMLattices.IsDiffOf
-import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverMorphismRestrictOfRelAmple
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSiegPull
 
 set_option autoImplicit false

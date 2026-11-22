@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutSH2
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.JfBetaAdjCOfLemmaBNorm
 
 open scoped ContDiff
 

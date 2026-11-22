@@ -1,6 +1,5 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.FrobeniusSplitPrimeDatum
 import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.ScNorm
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.DvrFacts
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.HcCycKFacts
 import Mathlib.RingTheory.Teichmuller
 

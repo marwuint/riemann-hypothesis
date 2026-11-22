@@ -3,10 +3,7 @@ import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.MainGalois
 import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.MainCount
 import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.MainCoind
 import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Coprime
-import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Vanishing
 import GroundTheory.ProfiniteCohomology.LocalClassFormation.FiniteVanishing
-import GroundTheory.ProfiniteCohomology.LocalClassFormationAlt
-import GroundTheory.ProfiniteCohomology.PoincareDuality
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.ProfCoh

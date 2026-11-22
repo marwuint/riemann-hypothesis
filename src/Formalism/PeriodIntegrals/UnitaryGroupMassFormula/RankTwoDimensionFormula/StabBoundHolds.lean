@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RankTwoDimensionFormula.DimFormCOfThree
-import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.InclusionInjective
 
 noncomputable section
 

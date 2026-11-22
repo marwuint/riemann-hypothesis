@@ -7,9 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.EtSetOfLists
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHeckeKernelListsModuloPermutations
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeSetDescends
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGeomPtRangeEq
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjPull
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabCancel
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjIsAbelianSchemeDimRigidifiedSym
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj

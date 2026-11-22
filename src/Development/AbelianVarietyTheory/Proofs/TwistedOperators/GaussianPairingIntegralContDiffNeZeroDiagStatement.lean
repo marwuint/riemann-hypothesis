@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GaussianPairingIntegralContDiffNeZeroDiag
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairInfApply
 
 open MeasureTheory
 set_option maxHeartbeats 1000000 in

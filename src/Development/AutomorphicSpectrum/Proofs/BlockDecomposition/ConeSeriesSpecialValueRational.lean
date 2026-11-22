@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelKlingenDeligneRibet
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsAvoidOne
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialSum
 
 set_option autoImplicit false
 

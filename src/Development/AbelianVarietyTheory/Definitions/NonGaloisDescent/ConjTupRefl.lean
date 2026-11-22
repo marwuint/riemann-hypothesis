@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.PermutesRefl
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.TupPrimeEmpty
-import Formalism.LocalToGlobal.IndefiniteReal.OneMapT
 
 set_option autoImplicit false
 

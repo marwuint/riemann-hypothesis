@@ -4,7 +4,6 @@ import Development.DiscreteGroups.GlobalIrreducibility.DzMatchCut
 import Development.DiscreteGroups.GlobalIrreducibility.DzBigDef
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SglobDzMatchCut
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SglobDzBigDef
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 import Development.AutomorphicArithmetic.Foundations.UnitarySphericalFixing.SatakeParameters.GoodLem
 
 set_option synthInstance.maxHeartbeats 200000

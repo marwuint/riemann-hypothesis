@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArtinReesSubobject
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PowSubSuccLe
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.SchemeCoh GlobalTheory.CompanionTheory.GE
 set_option maxHeartbeats 1000000 in

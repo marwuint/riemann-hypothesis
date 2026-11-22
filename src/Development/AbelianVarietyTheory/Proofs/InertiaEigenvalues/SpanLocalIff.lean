@@ -1,7 +1,6 @@
 import Formalism.LocalToGlobal.Divisibility.CoefModLemmas
 import Formalism.LocalToGlobal.Columns.PolyFnLemmas
 import Formalism.LocalToGlobal.Columns.LocWLemmas
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 
 open IsDedekindDomain NumberField
 

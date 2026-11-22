@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZ
 import Formalism.PairingDivisors.StatementH
 import Formalism.SharpRestriction.Divisibility.WeightFamilies
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TorsionTranslateThetaJetsDenominatorBound
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaFunctionExistenceUniqueness
 
 noncomputable section
 

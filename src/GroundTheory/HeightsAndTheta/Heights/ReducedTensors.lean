@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HermitianLattice
 import GroundTheory.HeightsAndTheta.Heights.ComplexMetrics.Statements
-import GroundTheory.HeightsAndTheta.Heights.ComplexPointsBase
 import GroundTheory.HeightsAndTheta.Heights.FubiniStudy
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProjectiveCohomology.PSpaceFinite
 set_option maxSynthPendingDepth 1

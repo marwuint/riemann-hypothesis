@@ -1,10 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PencilLinePolynomialNatDegreeLeAndCoeff
-import Development.AbelianVarietyTheory.Definitions.Divisors.JoinCastSucc
-import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
-import ReciprocityTheory.SemistableReduction.SphereLogIntegrableStatement
-import Development.AbelianVarietyTheory.Definitions.Divisors.PointHeight
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapLine
 
 open MvPolynomial ReciprocityTheory.MultiplicativeHeights GlobalTheory.HSChoice GlobalTheory.PencilDisc
 set_option maxHeartbeats 1000000 in

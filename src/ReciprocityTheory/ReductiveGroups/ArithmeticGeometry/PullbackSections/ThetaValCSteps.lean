@@ -1,6 +1,5 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.NonemptyUnitAt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.TorusPin
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.TorusAtData
 import Formalism.LocalToGlobal.ProjectiveLattices.RecPJThAllNeBot
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndBC
 

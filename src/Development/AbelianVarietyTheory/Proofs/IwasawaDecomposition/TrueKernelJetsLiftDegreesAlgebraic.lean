@@ -10,16 +10,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DominantWeightPolynomialFunctionalMinors
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TrueColumnPeriodLatticeVacuumSmooth
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.KmapOfOkOfVecP
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntAtOfLocTop
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaSupportInDivLattice
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteDivLatticeQuotient
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.RkThind
-import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThDistC
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ValPowClassNumber
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DetIdStdBot
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NuRowSuccEqWt
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsEntC
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ColNorm
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC Matrix Formalism.MainNotions.G Formalism.MainNotions.TaylorLogMetric
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 

@@ -1,7 +1,5 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.AAcrossOf
 import Development.AutomorphicArithmetic.AutomorphicVarieties.QuadraticExtensions.IneConj
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.AdTransfer
-import ReciprocityTheory.GaloisValuations.Global
 
 noncomputable section
 

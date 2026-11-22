@@ -1,15 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.VolPairExAndFinVol
-import Development.AbelianVarietyTheory.Definitions.HeightFunctions.NormComparisonConstants
-import Formalism.LocalToGlobal.ProjectiveLattices.DepthTie
-import Development.AbelianVarietyTheory.Definitions.Jets.EmbShortThLeThetaPlain
-import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.CoeSelfDualLatticeInFrameCoordinatesEq
-import Formalism.LocalToGlobal.ProjectiveLattices.ParCanon
-import Formalism.LocalToGlobal.ProjectiveLattices.ExistsParameterConditions
-import Formalism.LocalToGlobal.ProjectiveLattices.ValSetAlgSubset
-import Formalism.LocalToGlobal.ProjectiveLattices.IntAll
-import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
-import Formalism.LocalToGlobal.ProjectiveLattices.VolProofs
 import Formalism.LocalToGlobal.ProjectiveLattices.ReadQuot
 
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Pj GlobalTheory.RunJoin GlobalTheory.FinalJoin GlobalTheory.FinalJoin2 GlobalTheory.CompRat GlobalTheory.Member

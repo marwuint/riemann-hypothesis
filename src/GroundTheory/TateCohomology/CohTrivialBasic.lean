@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.TateCohomology.DimensionShift
-import GroundTheory.TateCohomology.InducedNorm
 import GroundTheory.TateCohomology.CoindOne
 import GroundTheory.TateCohomology.UniquelyDivisible
 set_option maxSynthPendingDepth 1

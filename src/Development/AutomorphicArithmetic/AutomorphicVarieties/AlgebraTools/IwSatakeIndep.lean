@@ -3,7 +3,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHkA
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHkTrace
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwBruhatKO
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwFactTorus
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwMemIwC
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHeckePairIwC
 
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools

@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechDeRhamCompariso
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullOverOneEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianDeRhamFreeOfCrystallineComparison
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafComparisonInjective
-import Development.AbelianVarietyTheory.Definitions.Divisors.ComparisonMemCechHodgeFiltration
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham
 attribute [local instance] Over.cartesianMonoidalCategory
 

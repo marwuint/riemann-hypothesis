@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.LinksW
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteLastStepRealIntertwiner
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRealIntertwinerOfCompactGroupIntertwiner
 
 noncomputable section
 

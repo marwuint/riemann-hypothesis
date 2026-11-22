@@ -1,10 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResV
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHeatOperatorGluedPullbackBundlePower
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGluedLineBundleSectionCover
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleSectionExtendBasicOpen
-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsSectionsSpanAffine
 
 set_option autoImplicit false
 

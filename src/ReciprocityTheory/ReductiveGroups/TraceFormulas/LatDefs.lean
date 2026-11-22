@@ -1,9 +1,7 @@
 import Mathlib
 import Formalism.WachLatticeTwists.LatticeDualFibres.FibreDualStable
 import Formalism.WachLatticeTwists.CharacterSplitJumps.Statement
-import Formalism.WachLatticeTwists.CoprimeLiftBounds.Statement
 import Formalism.GaloisCohomology.LocalTateDualityK
-import ReciprocityTheory.Hypotheses.GalCohDefs
 import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 
 noncomputable section

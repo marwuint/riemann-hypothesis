@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PredMemGamRanks
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.FormsStable
-import Formalism.LocalRingCardinality.SpanPowerMembership.FmZeroHLatEmpty
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.StatementWithTransposeOfBranching
-import Formalism.LocalToGlobal.Columns.PolyFnLemmas
 
 noncomputable section
 

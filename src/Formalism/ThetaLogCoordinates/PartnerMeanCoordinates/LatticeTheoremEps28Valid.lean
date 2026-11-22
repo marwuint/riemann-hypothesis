@@ -9,7 +9,6 @@ import Formalism.ThetaLogCoordinates.FockResolutionOnto.FockMonomialProofs.Highe
 import Formalism.ThetaLogCoordinates.FockResolutionOnto.FockMonomialProofs.GramBoundPosOfProjSat
 import Formalism.ThetaLogCoordinates.BihomogeneousPairs.FinalLL
 import Formalism.ThetaLogCoordinates.PartnerMeanCoordinates.PartnerMeanProofs.GramHypothesisOfLogBound
-import Formalism.PolynomialDimension.ChainOrderLetters
 
 namespace Formalism.InvariantFactorPaths.MC.Top
 

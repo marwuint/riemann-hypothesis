@@ -3,7 +3,6 @@ import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.StVarIntGraphInt
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PVarIntAdd
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCutOffDominated
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLinearNoetherNormalization
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.CovLog
 set_option maxSynthPendingDepth 1
 
 noncomputable section

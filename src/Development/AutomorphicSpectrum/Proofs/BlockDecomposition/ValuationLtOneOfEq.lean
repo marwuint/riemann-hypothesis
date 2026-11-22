@@ -4,7 +4,6 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.DeRhamJ
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HasPeriods
 import GroundTheory.PAdicHodge.LocalBridge
 import GroundTheory.PAdicHodge.FieldOfNormsCyclBase
-import GroundTheory.LocalFields.LubinTateLimitGalois
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemFiniteExtPadicRingOfIntegersIffNormLeOne
 
 noncomputable section

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.OrbitLabellings.RowDefs
 import Formalism.DropLevelBounds.ThBounds
-import Formalism.IncomingBounds.IncomingBound
 
 open scoped BigOperators
 open Classical

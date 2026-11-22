@@ -1,11 +1,7 @@
 import Mathlib
 import Formalism.LocalToGlobal.UnitaryNorms.CharExCol
-import Formalism.LocalToGlobal.UnitaryNorms.CharExHost
-import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
-import Formalism.LocalToGlobal.UnitaryNorms.CharExGen
 import Formalism.PeriodIntegrals.EtaHostFacts
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HostPrimeSplitting.FinrankOE
-import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts
 import Formalism.LocalToGlobal.UnitaryNorms.CharTied
 import Formalism.LocalToGlobal.UnitaryNorms.RealPl
 

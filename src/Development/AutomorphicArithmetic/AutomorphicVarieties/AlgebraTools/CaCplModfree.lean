@@ -3,7 +3,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IsCpl
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosure
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCplMap
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCplQuot
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCplFlat
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FlatnessPrecompleteProducts
 
 open IsLocalRing UpperTheory.V.AlgebraTools

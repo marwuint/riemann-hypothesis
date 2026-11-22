@@ -2,8 +2,6 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieSecondOfPrints
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
-import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 
 section
 noncomputable section

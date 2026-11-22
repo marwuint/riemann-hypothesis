@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.Unrami
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HeckePrimeDetection
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SqrtDivMulEqSqrtMul
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTraceRead
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseFrameOfRealizationModels
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.EtaComparisonIffForall
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.FWT Formalism.L2.Pj

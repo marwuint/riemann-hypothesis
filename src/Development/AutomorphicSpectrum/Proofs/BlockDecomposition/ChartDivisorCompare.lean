@@ -4,8 +4,6 @@ import GroundTheory.HeightsAndTheta.Heights.LocalFiniteness.TargetsProjFullRankM
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PChartDivisorCompare
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PSegreChartIntegralPoints
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SegreChartIntegralHolds
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.StSegreChartIntegral
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.StChartDivisor
 set_option maxSynthPendingDepth 1
 
 namespace GlobalTheory.CompanionTheory.Ar

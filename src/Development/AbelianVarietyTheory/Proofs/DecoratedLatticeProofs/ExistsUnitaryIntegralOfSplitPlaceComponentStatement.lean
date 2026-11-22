@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsUnitaryIntegralOfSplitPlaceComponent
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSingle
 
 open Matrix Formalism.UG Formalism.L2.DIV GlobalTheory.LevNorm
 set_option maxHeartbeats 1000000 in

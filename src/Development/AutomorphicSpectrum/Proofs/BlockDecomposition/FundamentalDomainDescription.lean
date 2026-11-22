@@ -1,6 +1,5 @@
 import Mathlib
 import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.VerticalStrips.UnramifiedEulerProductIntegral
-import GroundTheory.GlobalFields.TateThesis.IdeleMeasureQuotient
 
 open NumberField MeasureTheory GroundTheory.Global GroundTheory.Global.IdeleGroup
 open scoped ENNReal

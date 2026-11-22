@@ -1,6 +1,5 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.JumpsLetOfWin
 import Formalism.SharpRestriction.LevelLetterCocycles.SaturationUnramifiedOfRingCondition
-import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup
 
 noncomputable section
 

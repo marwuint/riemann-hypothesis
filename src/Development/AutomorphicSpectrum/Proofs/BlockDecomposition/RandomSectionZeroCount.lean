@@ -6,7 +6,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexHessianL
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasurableZeroCount
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChangeVariablesZeroCountStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LintegralSplitColumn
-import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PAreaMultiplicityWeight
 open MeasureTheory ReciprocityTheory.L2DbarEstimates GlobalTheory.CompanionTheory.FSCrofton
 open scoped ENNReal ComplexConjugate
 

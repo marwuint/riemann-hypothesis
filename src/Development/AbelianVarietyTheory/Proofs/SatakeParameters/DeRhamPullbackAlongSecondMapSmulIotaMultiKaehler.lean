@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Edge1
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.TcoMem
 
 set_option autoImplicit false
 

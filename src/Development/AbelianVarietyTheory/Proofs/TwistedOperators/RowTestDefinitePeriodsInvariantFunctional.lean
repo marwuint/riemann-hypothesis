@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DefPerEqGenPer
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqZeroOfFockSSelf
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CastRealAll
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairwiseFlatMapBand
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OmLiftOfMultilinearTprod
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LeftCast
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GenPerMultilinear

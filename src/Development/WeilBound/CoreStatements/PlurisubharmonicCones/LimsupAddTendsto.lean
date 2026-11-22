@@ -3,7 +3,6 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.GlueCharts
 import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.PhiISemipositive
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PlurisubharmonicLocal
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
 
 open Filter Topology Metric Set
 open ReciprocityTheory.AnForm.A (IsPsh coordDiv limsupExt molli shrink polyMax)

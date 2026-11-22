@@ -1,7 +1,6 @@
 import Development.AutomorphicArithmetic.CharacterBoxes.Supply
 import Development.AutomorphicArithmetic.CharacterBoxes.Imports
 import Development.AutomorphicArithmetic.CharacterBoxes.HostOfField
-import Development.AutomorphicArithmetic.CoprimeRanks.AdmChi
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.HC GlobalTheory.EX UpperTheory.Top
 

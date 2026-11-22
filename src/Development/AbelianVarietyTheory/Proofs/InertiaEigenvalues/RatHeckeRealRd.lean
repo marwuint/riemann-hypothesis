@@ -1,6 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsIsScalar
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.HeckePin
-import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeCharacterValueAtSplitPlaceDeterminant
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitOffOutsideS0

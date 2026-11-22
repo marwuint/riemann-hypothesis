@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilZetaUnramified
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRtensOp
 
 section
 noncomputable section

@@ -6,7 +6,6 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PResolutionMixedBridge
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PResolutionMixedIntegral
 import GroundTheory.HeightsAndTheta.Heights.Intersections.ExistsSheetPullW
 import GroundTheory.HeightsAndTheta.Heights.Intersections.ImportsExtra
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridge
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel

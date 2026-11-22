@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.PrimitivePackageFullHecke
-import Formalism.LocalToGlobal.IndefiniteReal.BaseLiftsPackageOfPrimitiveLinks
-import Formalism.LocalToGlobal.IndefiniteReal.LinksLemmas
 import Formalism.LocalToGlobal.IndefiniteReal.RealSeparation.SignsG
 import Formalism.LocalToGlobal.IndefiniteReal.RealSeparation.FramesOKg2
 import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.RatDatOfReal
@@ -14,11 +12,8 @@ import Formalism.LocalToGlobal.IndefiniteReal.IsFDiagIffDiagonal
 import Formalism.LocalToGlobal.Divisibility.DivisionCompatibleToSub2Indef2
 import Formalism.LocalToGlobal.Divisibility.PsiWeilOfAbsNorm
 import Formalism.LocalToGlobal.Divisibility.NumericScaleExponentEqExtended
-import Formalism.LocalToGlobal.Divisibility.NumbersLemmas
 import Formalism.LocalToGlobal.HilbertRowConditions.CenterIdempotentAction
-import Formalism.LocalToGlobal.UnitaryNorms.CharTied
 import Formalism.SharpRestriction.GlobalTheoremInputs
-import Formalism.SharpRestriction.ParamsHeightRankConstant
 import Formalism.SharpRestriction.PageFix
 import Formalism.LocalRingCardinality.MinkMEqMinkowskiNumber
 import Formalism.SharpRestriction.SmoothDesignExistence.DGamSmooth
@@ -27,7 +22,6 @@ import Formalism.SharpRestriction.LevelLetterCocycles.AlignN
 import Formalism.SharpRestriction.LevelLetterCocycles.TwGood
 import Formalism.SharpRestriction.GlobalSchurBounds.MainIn
 import Formalism.SharpRestriction.GlobalSchurBounds.WeightVectorSmallSharesEight
-import Formalism.LocalRingCardinality.DataTies
 import Formalism.LocalToGlobal.IndefiniteReal.RealTB
 import Formalism.LocalToGlobal.IndefiniteReal.RealRecPins
 import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.NMjT
@@ -36,15 +30,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.BasePlaceNotMemChiG
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NotTeichTrivOfIsDelta
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsIsScalar
-import Formalism.LocalToGlobal.HermitianColumns.SymAll
-import Formalism.LocalToGlobal.KernelLattices.LateralTheory
-import Formalism.LocalToGlobal.BesselHermitianTheta.AllTied
-import Formalism.LocalToGlobal.GlobalTheory.GL5.Statement
-import Formalism.SharpRestriction.GlobalSchurBounds.TaylorLogMetric
-import Formalism.SharpRestriction.GlobalSchurBounds.ProductFirstZerothParts
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DisjointExceptional
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ThinScalesIffHostBound
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsRationalUnitaryDeterminantMapRationalUnitaryTo
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.GoodPairSystems
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.FamilyClassSevenDutiesAndStableLattices
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.RationalRayLevels

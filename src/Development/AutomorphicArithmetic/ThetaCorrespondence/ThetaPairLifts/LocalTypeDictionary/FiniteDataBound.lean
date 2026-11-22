@@ -2,10 +2,6 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDataBound
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Mathlib
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.InfClassAt
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.DictAt
-import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
-import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 
 section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV

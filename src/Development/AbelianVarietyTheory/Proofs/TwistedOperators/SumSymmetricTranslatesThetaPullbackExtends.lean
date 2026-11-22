@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsTranslSum
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.VtMoveSt
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.RegTie
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.RegTieAsm
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.NuChainPf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.ThetaNuPf

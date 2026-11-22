@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SimpleOverStableSubmoduleTensorPureKernelSpan
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SimpleTensorProductOperatorStableCountable
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OperatorStablePiTensorPureKernelSpanStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SimpleOver
 
 open scoped TensorProduct
 

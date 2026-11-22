@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPo
 import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.Decomp
 import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.PartBOfDecomposition
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.SymmetricAdjointFrobenius.QuadOf
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GlobalArtinReciprocityHolds
 
 noncomputable section
 

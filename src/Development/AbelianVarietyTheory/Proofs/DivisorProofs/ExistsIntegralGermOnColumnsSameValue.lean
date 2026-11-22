@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralUnitM
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsFormalBiextensionIntegralChartValuedExtens
 import Development.AbelianVarietyTheory.Definitions.Divisors.PolyBetween
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LocalValuationColumns
-import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 
 set_option autoImplicit false

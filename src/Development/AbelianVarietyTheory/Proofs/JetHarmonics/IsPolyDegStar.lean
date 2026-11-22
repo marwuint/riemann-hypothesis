@@ -1,8 +1,5 @@
 import Mathlib
 import Formalism.HermitianCurvature.StatementD
-import Formalism.HermitianCurvature.StatementQ
-import Formalism.HermitianCurvature.BigCellVanishingOfCommute
-import Formalism.HermitianCurvature.StatementU
 import Development.AbelianVarietyTheory.Definitions.Jets.WigMap
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsPolyDegPrW
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.OmgMulLeft

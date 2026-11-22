@@ -1,7 +1,5 @@
 import Formalism.RealPlaceAnalysis.SmoothVectorGrowthBound
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.MemUnitaryGroupIffMulConjTranspose
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.KoszulLowersPower
-import Formalism.RealPlaceAnalysis.StatementA
 
 open Matrix MeasureTheory
 open scoped ContDiff InnerProductSpace

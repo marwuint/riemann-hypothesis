@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PlaceCharacterEqReferenceIff
 import Formalism.LocalToGlobal.IndefiniteReal.FWExist
 import Formalism.LocalToGlobal.IndefiniteReal.OneMapT
-import Formalism.LocalToGlobal.UnitaryNorms.CharTied
 import Formalism.LocalRingCardinality.DataRRMetric
 
 noncomputable section

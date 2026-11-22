@@ -2,9 +2,6 @@ import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqZeroOfInAMul
 import GroundTheory.LocalFields.FormalGroups.LubinTateGroup
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-import Development.AbelianVarietyTheory.CrystallinePeriods.AdicMaps
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 
 noncomputable section
 

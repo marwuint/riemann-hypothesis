@@ -6,10 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamDieudonn
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSumOfIsCrys
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PeriodRingsRegularPhiSurjectiveFil
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.OneSubPhiOntoOfFilZero
-import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
-import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal TensorProduct Module UpperTheory.V.Loc Topology
 

@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.GoodIdempoten
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroInertia
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnrAtOfMulLeft
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CharacterChoiceData
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
 set_option synthInstance.maxHeartbeats 200000
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsMulCommutativeCentRealUJ
-import Formalism.RealPlaceAnalysis.SmoothOnGVIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolyEntriesConjLeftRightMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OffDiagBlockNormContInv
 open MeasureTheory Matrix GlobalTheory.Orb

@@ -1,8 +1,6 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.NormBound
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.AevalCyclotomic
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalFractionField
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp

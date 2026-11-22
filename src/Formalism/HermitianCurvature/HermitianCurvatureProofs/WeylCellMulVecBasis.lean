@@ -1,8 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.MinorCellOfParts
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.LemmaDDeterminantIdentity
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.OperatorPreservesFusionForms
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.ChainRecursionFromSingleDescent
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.RightDerivativeRulePsi
 
 open Matrix
 open scoped ContDiff

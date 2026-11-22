@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.AlgebraMapMemInvariants
 import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.PpLeHLD
 import Formalism.SharpRestriction.LevelLetterCocycles.RelayGeneralCaseOfAdmissible
-import Formalism.SharpRestriction.LevelLetterCocycles.JumpsLetOfWin
 
 noncomputable section
 

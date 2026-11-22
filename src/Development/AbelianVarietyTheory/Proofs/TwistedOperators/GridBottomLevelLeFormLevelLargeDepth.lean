@@ -3,9 +3,6 @@ import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.StepUnfol
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairPtsClasses
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridRowLevelZeroInfUnitaryEqDatumLevel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocCO
-import Development.AbelianVarietyTheory.Definitions.Divisors.BplusOfEquivariant
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LevelHyperspecialTrivialCharacterSplitsOffPlaces
 
 noncomputable section
 

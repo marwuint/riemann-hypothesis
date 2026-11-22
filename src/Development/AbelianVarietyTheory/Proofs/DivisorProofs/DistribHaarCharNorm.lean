@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Lbc
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsTemperedCoeff
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSmoothCharCompNorm
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DistribHaarCharTransport
 import GroundTheory.AutomorphicForms.MeasuresModulus
 
 open NumberField IsDedekindDomain ValuativeRel GlobalTheory.FunExt GlobalTheory.LocGL

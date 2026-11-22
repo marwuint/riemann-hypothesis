@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsNotRelZero
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatchedThetaIntegralValue
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaPureTensorO
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues

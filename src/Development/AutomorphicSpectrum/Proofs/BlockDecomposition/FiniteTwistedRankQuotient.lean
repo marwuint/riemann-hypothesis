@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibRepApply
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LocallyConstantExtensionByZero
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences GlobalTheory.RankStrataProof GlobalTheory.CompanionTheory.ThetaGLLen Matrix Topology
 noncomputable section
 namespace GlobalTheory.CompanionTheory.ThetaGLLen.FullRank

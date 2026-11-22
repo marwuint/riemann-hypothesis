@@ -2,11 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsExpLieAlgebraComplexUnits
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstFunctionalIntegralSmoothCompact
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LaplacePolynomialKernelDerivativeWordsFamily
-import GroundTheory.AutomorphicForms.GKModules.Casimir
-import GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpHaar
-import GroundTheory.AutomorphicForms.HarishChandraInvariance.Compact
-import GroundTheory.AutomorphicForms.DixmierMalliavin
-import GroundTheory.AutomorphicForms.GKModules.ParametricIntegral
 import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.LeftTranslate
 open MeasureTheory GroundTheory.Automorphic
 open scoped ContDiff

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.RayPrincipalIdeals
 import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.NonemptyAlgHomOfIsRayOfDvd
-import Development.AbelianVarietyTheory.Definitions.HeightFunctions.FiniteDimensionalOfSz
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RayClassNumberBounds
 
 set_option autoImplicit false

@@ -1,7 +1,4 @@
 import Development.WeilBound.CoreStatements.HodgeTatePoints.ReProd
-import ReciprocityTheory.DualLattices.CotangentSurjective
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsTight
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.StepOrderRes
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.NonzeroLocus
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsFinFlatSub
 import Development.AutomorphicSpectrum.PublishedTheorems.Algebra₂.QuotientByFiniteFlatStatement

@@ -1,6 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidChart
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothRayQuotient
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteBasisTangentModuleSmoothCommGroupSch

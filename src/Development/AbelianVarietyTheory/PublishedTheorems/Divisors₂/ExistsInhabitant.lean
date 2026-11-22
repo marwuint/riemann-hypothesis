@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.LeviCentreFiniteUnitary
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsSquareIntegrableIffMemL2
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NonarchimedeanGroupOfIsCompactIsOpen
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnipParLeUnipFlag
-import Development.AbelianVarietyTheory.Definitions.Foundations.ConstTermOnMulLeftOfNormalizer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsLevi
 
 noncomputable section

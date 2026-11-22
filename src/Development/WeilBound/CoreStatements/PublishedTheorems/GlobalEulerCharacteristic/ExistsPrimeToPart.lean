@@ -1,6 +1,4 @@
 import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharacteristic.WorkKilledA
-import GroundTheory.ProfiniteCohomology.RestrictedRamification.FiniteOpen
-import GroundTheory.ProfiniteCohomology.GlobalEulerCharacteristic.ShapiroReal
 
 open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh GroundTheory.Global
 

@@ -1,12 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.RowSideOfCompatibleThetaPair
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ClassSumPin
-import Formalism.LocalRingCardinality.DataNChTie
-import Formalism.LocalToGlobal.IndefiniteReal.RealTB
-import Formalism.LocalToGlobal.IndefiniteReal.RealPins
-import Formalism.LocalToGlobal.IndefiniteReal.RealRec
-import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.NMjT
-import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.NHkRow
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeFamilyAdoptionFirst
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeFamilyAdoptionSecond
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeFamilyAdoptionThird

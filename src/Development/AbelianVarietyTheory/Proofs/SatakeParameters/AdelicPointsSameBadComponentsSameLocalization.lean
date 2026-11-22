@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FirstCoupledK
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalizationUnimodularCompanionEqStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HermitianLocalisationAdelicPointLatticeEqStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AdelicPointLatticeFgOfFull
-import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.IsOrthCo
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.Ker Formalism.L2.DIV GlobalTheory.TwU GlobalTheory.TwV Formalism.UG
 open Formalism.L2.PairingIndexBounds.F Formalism.MainNotions.G.KAat
 open scoped TensorProduct

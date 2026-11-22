@@ -3,7 +3,6 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.PBGHeadV
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.DerivativeKeepsCharacter
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.AdjointCornerScaledSingleComm
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RdVOfEq
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentCoordinatesMeasurePreserving
 
 open Matrix Filter Topology
 open scoped ComplexConjugate

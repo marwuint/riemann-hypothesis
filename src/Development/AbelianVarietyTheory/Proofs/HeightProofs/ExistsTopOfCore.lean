@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.HeightFunctions.XiValIffXiAt
 import Formalism.LocalToGlobal.ProjectiveLattices.DepthTie
 import Development.AbelianVarietyTheory.Definitions.Jets.EmbShortThLeThetaPlain
-import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsCompletionOfCoreSatisfyingLaws
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MemPerGrpOfIntegral
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.HarmonicGermValueChartIndependent

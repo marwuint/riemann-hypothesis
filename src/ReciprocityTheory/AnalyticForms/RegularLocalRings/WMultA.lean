@@ -1,5 +1,4 @@
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.ExistsBasicOpenCover
-import ReciprocityTheory.AnalyticForms.RegularLocalRings.Monomial
 
 namespace ReciprocityTheory.AnForm.R.WMult
 

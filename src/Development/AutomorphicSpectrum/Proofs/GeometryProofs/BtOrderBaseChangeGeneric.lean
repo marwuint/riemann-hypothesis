@@ -6,8 +6,6 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderEqOfHopfEmbedding
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueBtOrderEmbedding
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderEmbeddingOpenImmersion
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HopfOrderScalarExtension
-import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.BtHopf
 
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge

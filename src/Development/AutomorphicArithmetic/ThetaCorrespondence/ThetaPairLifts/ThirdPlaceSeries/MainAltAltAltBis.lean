@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RankOneUnitar
 import Development.AutomorphicArithmetic.ThetaCorrespondence.CuspidalSupport.GaloisStatementWeakOfFull
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspidalGaloisUnramified
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.AutomorphicGaloisAdmissible
 
 set_option synthInstance.maxHeartbeats 200000
 

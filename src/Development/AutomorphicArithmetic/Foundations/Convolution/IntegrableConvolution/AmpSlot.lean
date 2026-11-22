@@ -4,8 +4,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvo
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.TensOp
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.IntPow
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.LactCv
-import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.ArchBasic
-import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.CvBasic
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.CommInt
 
 noncomputable section

@@ -1,6 +1,5 @@
 import Formalism.SharpRestriction.GrowthBounds.WeilJacquetShalikaLaw
 import Formalism.SharpRestriction.Divisibility.ProductZerothFirstParts
-import Formalism.LocalRingCardinality.DataKerI
 import Development.AutomorphicArithmetic.OrbitLabellings.ColDefs
 
 noncomputable section

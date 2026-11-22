@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermi
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolActs
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolynomialDatumActionOfPair
-import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenIntertwinerSkewPlaneUniqueDual
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToGAdMat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DOpMemDStep

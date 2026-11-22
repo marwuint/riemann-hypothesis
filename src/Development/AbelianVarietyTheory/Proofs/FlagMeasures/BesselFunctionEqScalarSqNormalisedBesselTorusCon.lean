@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.Admissible
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselTorusElementProperties
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LebesgueRootCoordinatesMapBesselTorusConj
-import Formalism.FormalDegreeBessel.FormalDegreeRatio.BesselUnitaryEquivHolds
 
 open Formalism.FourierDecayAlt GlobalTheory.ThA MeasureTheory Formalism.QuantumDeterminants Matrix
 open scoped InnerProductSpace ENNReal

@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CarrierSizes
-import Formalism.HermitianCurvature.StatementJCT
 
 noncomputable section
 

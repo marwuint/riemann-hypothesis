@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.HarishChandraRegularity
-import GroundTheory.AutomorphicForms.DixmierMalliavinBasic
 
 namespace GroundTheory.Automorphic
 

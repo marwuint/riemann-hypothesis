@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowShiftTheta
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompAtMtOfMemGfC
 
 noncomputable section
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProperBirationalPrimeExists
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PowIdeal
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.SchemeCoh GlobalTheory.CompanionTheory.GE TensorProduct
 set_option maxHeartbeats 1000000 in

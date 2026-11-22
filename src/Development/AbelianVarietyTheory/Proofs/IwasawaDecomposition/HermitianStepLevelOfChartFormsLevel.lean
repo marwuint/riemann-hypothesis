@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StdLvPr
-import Formalism.LocalToGlobal.HermitianForms.TiedTwJSym
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnSpacesStandardInFrameCoords
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelPrimeUnramifiedUniformizer
 import Formalism.LocalToGlobal.Columns.RecLevelLocT
@@ -9,7 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UlocOfTrivDi
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ULocDualHformOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelActsTriviallyOnDiscriminantGroupStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryScalarEqOneModOfFixesSimpleModule
-import Formalism.LocalToGlobal.HermitianForms.DefsGH
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelPrimeDvdOfAdicValuationLtOne
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC Matrix
 open scoped TensorProduct

@@ -1,7 +1,6 @@
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTypeLocus
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LocalGlobalCompatibility
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspidalGaloisUnramified
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.BcPerm
 
 set_option synthInstance.maxHeartbeats 200000

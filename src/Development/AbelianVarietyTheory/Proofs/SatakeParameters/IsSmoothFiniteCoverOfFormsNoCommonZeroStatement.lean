@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsSmoothFiniteCoverOfFormsNoCommonZero
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FRatioSelf
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsAffCoverSpec
 
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.CechDR GlobalTheory.PD
 set_option maxHeartbeats 1000000 in

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetRefinement
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TopPlaceLogTheta
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThDistC
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ColInst
 

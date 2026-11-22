@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.GlobalTheory.UnramifiedTrace.ProjectionKernelEqFunctional
-import Formalism.LocalToGlobal.GlobalTheory.UnramifiedTrace.TNotinSq
 
 noncomputable section
 

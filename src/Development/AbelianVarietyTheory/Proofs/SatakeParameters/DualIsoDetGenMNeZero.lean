@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.GlobSpecOfExists
-import Formalism.GradedWeylDivisibility.FinalD
-import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
-import Formalism.LocalToGlobal.Divisibility.CoefModLemmas
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PosOkId
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsCofactorTwistDualWeyl
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.WeylLatticeExistsCofactorTwistDual

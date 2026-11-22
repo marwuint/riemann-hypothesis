@@ -7,9 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsCompleteDense
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepMemSm
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HcFiniteAndSchurMult
 import Formalism.LocalToGlobal.IndefiniteReal.SchurOrthogonality
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinRepApply
-import Development.AbelianVarietyTheory.Definitions.Foundations.MemL2OfBoundedContinuousInvariant
-import Development.AbelianVarietyTheory.Definitions.Foundations.ForallEventuallyFinLocIff
 
 open MeasureTheory Set Filter NumberField IsDedekindDomain
 open GlobalTheory.AdelicU GlobalTheory.OpTrace GlobalTheory.Orb GlobalTheory.AutomorphicL2Unitary GlobalTheory.AutMult Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes

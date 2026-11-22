@@ -1,9 +1,6 @@
 import Formalism.LocalRingCardinality.SpanPowerMembership.NZLevD
-import Formalism.SharpRestriction.GrowthBounds.UnramifiedQuadraticSetting
-import Formalism.SharpRestriction.GrowthBounds.LatticeSystems
 import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.ClsLat
 import Formalism.LocalToGlobal.GroupLattices.FockModels.OperatorsPreserveLattices
-import Formalism.SharpRestriction.GrowthBounds.DataGChain
 import Formalism.LocalRingCardinality.SpanPowerMembership.GatSetting
 
 open MvPolynomial

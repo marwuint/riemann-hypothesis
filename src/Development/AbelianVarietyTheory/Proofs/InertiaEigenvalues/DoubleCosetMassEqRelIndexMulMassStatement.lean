@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DoubleCosetMassEqRelIndexMulMass
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteDcOfCover
 
 open GlobalTheory.UnimodMass
 set_option maxHeartbeats 1000000 in

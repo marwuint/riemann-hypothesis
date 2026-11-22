@@ -1,5 +1,4 @@
 import Formalism.HermitianLattices.StatementMass
-import Formalism.HermitianLattices.StatementLat
 import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.DifferentIdealMapNeBot
 import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.RowsCnt
 

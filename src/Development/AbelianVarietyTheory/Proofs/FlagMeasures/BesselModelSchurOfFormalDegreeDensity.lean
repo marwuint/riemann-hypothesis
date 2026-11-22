@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.BlockAnti
 import Formalism.PeriodIntegrals.QuotInv
 import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
-import Formalism.LocalRingCardinality.DataCD
 import Formalism.FormalDegreeBessel.FinalG
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsHaarOnIffGroupsUnitaryUnipotent
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarDensityConjUnitaryHermitianGroups

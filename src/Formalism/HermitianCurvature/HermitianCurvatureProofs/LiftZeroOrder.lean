@@ -1,8 +1,6 @@
 import Formalism.HermitianCurvature.StatementTL
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.BigCellValues
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.LiftClosedUnderOperations
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.ComposeDifferentialOperators
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbitalIntegralIdentities
 
 namespace Formalism.FourierDecayAlt.P
 

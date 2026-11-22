@@ -1,7 +1,5 @@
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianLatticeMemIffEntries
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GramNear
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnitHermOfDet
 
 open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory

@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LatticeNormTrans
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricSumEqHeckeLValueMulAuxiliaryFactors
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsValCharTwist
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HeckeTateFunctionalEquationCM
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum
 open GlobalTheory.SqTop
 
 noncomputable section

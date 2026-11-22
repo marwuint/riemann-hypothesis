@@ -1,7 +1,5 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.HolomorphicDiscreteSeries.WordSpans.WordSpan
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmColExp
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmRowExp
 
 open Finset
 

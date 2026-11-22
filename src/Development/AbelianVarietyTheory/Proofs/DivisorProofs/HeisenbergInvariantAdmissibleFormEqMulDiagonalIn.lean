@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDblCoordDblD
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaDiagInt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledDarbouxCoordsCompat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicStoneVonNeumannLagrangianUniqueness
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes

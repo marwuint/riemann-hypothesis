@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuoIff
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WeightExponentsEmbeddingsDegree
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ComponentModelWeightDimensionDictionary
 import Formalism.LocalToGlobal.LatticeGeometry.RealizationNorms.MkTauEmbInjective
-import Formalism.SharpRestriction.GlobalSchurBounds.QuadraticLogDerivCongr
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnifOfSpaceEq

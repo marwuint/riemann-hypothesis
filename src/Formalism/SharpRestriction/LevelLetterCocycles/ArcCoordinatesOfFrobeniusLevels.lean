@@ -1,7 +1,6 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.ExistsPrimOfGood
 import Formalism.SharpRestriction.LevelLetterCocycles.SplitShapeLRec
 import Formalism.SharpRestriction.LevelLetterCocycles.SplittingOfLiteratureExactness
-import Formalism.SharpRestriction.LevelLetterCocycles.PolarToPoleOfCtx
 
 noncomputable section
 

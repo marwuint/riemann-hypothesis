@@ -1,8 +1,5 @@
 import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.BasesAt
 import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.GramLevelZeroEqReindex
-import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.FdOfCharts
-import Formalism.LocalToGlobal.InertKernelTheory.SecondKernelEntrywiseLastLevel
-import Formalism.SharpRestriction.GrowthBounds.ChartComparison
 import Formalism.LocalToGlobal.GlobalTheory.GL3.PHfTrace
 
 noncomputable section

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.GaloisCohomologyLength.LevelInertiaLeLevelDec
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QzTorsionZmodEmbedding
-import Formalism.GaloisCohomology.LocalTateDualityK
 
 open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfDual Formalism.GaloisCohomology UpperTheory.V.LDataCardLeFinrank
 

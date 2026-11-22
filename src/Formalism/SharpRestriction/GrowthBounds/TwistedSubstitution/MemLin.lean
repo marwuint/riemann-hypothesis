@@ -1,7 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.TwistedSubstitution.Proposition5Gram
-import Formalism.SharpRestriction.GrowthBounds.RootWeights.ValuationBoundDetPowerFactor
-import Formalism.SharpRestriction.GrowthBounds.RootWeights.MulLaurentSup
-import Formalism.SharpRestriction.GrowthBounds.RootWeights.DerivativeValuationBounds
 
 noncomputable section
 

@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.LieDecompositionLocal
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ShiftedGeneratorEqIteSmulAdd
 
 open Matrix MeasureTheory Filter Topology
 open scoped ContDiff

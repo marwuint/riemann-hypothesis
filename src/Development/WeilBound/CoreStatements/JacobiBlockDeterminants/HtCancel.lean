@@ -2,7 +2,6 @@ import Development.WeilBound.CoreStatements.MultihomogeneousSquares.Antisymmetry
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.HodgeCompactPullback
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.HodgeComponentFactorPoint
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.RootOnFund
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.HcptPullK

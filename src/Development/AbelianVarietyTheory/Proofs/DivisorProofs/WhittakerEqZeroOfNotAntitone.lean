@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAddHaarMeasureVolumeLie
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
 open NumberField IsDedekindDomain Formalism.UG GlobalTheory.PRep GlobalTheory.LFun
 open scoped Classical
 

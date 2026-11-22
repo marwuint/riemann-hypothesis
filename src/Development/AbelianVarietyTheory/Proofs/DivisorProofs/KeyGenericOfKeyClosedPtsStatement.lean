@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KeyGenericOfKeyClosedPts
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsorsTrivial
 
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in

@@ -3,7 +3,6 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SumRhoE
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompactSubgroupAndLevel
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SbEqSumCosetIndicators
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopology
-import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.CompanionTheory.SW.Core GlobalTheory.CompanionTheory.SW.ThW
 open scoped ENNReal NNReal MatrixGroups Kronecker
 

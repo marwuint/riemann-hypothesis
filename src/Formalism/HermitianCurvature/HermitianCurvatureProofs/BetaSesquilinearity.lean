@@ -1,7 +1,5 @@
 import Formalism.HermitianCurvature.StatementB
 import Formalism.FormalDegreeBessel.FinalG
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTransposeMul
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ComplexifiedDerivativeCommutator
 
 open Matrix MeasureTheory Filter Topology
 open scoped ComplexConjugate ENNReal

@@ -1,6 +1,5 @@
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ThetaNormCommutation.LocalComparisonSplitting.GlobalCharacterOfInputs
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceDualWeylModuleInvRationalPointEqConjCharAt
-import ReciprocityTheory.ReductiveGroups.SymplecticTraces.WeylCharacters.Branch
 
 noncomputable section
 

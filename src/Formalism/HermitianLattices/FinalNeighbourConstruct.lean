@@ -5,7 +5,6 @@ import Formalism.HermitianLattices.HermitianLatticesProofs.LocBasic
 import Formalism.HermitianLattices.HermitianLatticesProofs.ThetaBasic
 import Formalism.LatticeTheta.ThetaShiftInversion
 import Formalism.HermitianLattices.HermitianLatticesProofs.ThetaSummable
-import Formalism.HermitianLattices.StatementLat
 import Formalism.HermitianLattices.HermitianLatticesProofs.LocDual
 import Formalism.HermitianLattices.HermitianLatticesProofs.GenusBasic
 import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice
@@ -21,7 +20,6 @@ import Formalism.HermitianLattices.HermitianLatticesProofs.ClassSetAssembly
 import Formalism.HermitianLattices.HermitianLatticesProofs.MajLattice
 import Formalism.HermitianLattices.HermitianLatticesProofs.AutFinite
 import Formalism.HermitianLattices.HermitianLatticesProofs.MajDual
-import Formalism.HermitianLattices.StatementMaj
 import Formalism.HermitianLattices.HermitianLatticesProofs.MajBasic
 import Formalism.HermitianLattices.HermitianLatticesProofs.GenusCovol
 import Formalism.HermitianLattices.HermitianLatticesProofs.NeighbourConstruct

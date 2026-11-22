@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExponents
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConstantCoeffTaylor
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicIntRingHomExtOfIsHausdorff
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 
 noncomputable section
 

@@ -3,7 +3,6 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Zelevin
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GeometricLemma
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.BernsteinZelevinskyFiniteness
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsSubquotientCompMulSingle
 import BuildAid.D3
 

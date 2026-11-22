@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SerreHolomorphicSectionsHolds
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompactSpacePts
 import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.DimSplitPf
 open CategoryTheory AlgebraicGeometry TopologicalSpace Set
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.CxPts

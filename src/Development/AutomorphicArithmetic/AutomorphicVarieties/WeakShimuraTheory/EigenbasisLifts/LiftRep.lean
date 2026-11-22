@@ -5,7 +5,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.EigenbasisLifts.EbSMul
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.CopNormLt
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.DeterminantRepresentations.MapApi
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.DeterminantRepresentations.RepApi
 import Mathlib.RingTheory.DualNumber
 import Mathlib.RingTheory.AdicCompletion.Noetherian
 import Mathlib.Topology.Instances.TrivSqZeroExt

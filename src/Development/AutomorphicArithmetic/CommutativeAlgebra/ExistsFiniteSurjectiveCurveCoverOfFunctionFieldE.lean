@@ -6,7 +6,6 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.ModuleFiniteIntegral
 import Development.AutomorphicArithmetic.CommutativeAlgebra.SmoothOfNormalCurvePerfectField
 import GroundTheory.HeightsAndTheta.Heights.IntegralModels.FiniteTypeSectionsOfIsFiniteTypeOverZ
 import GroundTheory.ArithmeticGeometry.ToricVarieties.Dimension
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.RingKrullDimQuotientEqOfMemMinimalPrimes
 
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTheory.E.E4
 open GroundTheory.Heights₂.Heights.Model (genericSpecMap)

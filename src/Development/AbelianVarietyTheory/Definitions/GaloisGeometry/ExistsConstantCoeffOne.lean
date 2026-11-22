@@ -4,7 +4,6 @@ import Formalism.LocalToGlobal.KernelLattices.LateralTheory
 import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.IsHypPair
 import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.OrthogonalGaussModels.RenameBlockSingleVariableSeries
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.SingleLetterBiextensionRelation
-import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.EisensteinRecursion
 
 noncomputable section
 

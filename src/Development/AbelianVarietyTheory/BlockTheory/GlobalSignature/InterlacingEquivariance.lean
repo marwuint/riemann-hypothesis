@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
-import Formalism.LocalToGlobal.Columns.CoefColLemmas
 import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
 
 open MvPolynomial NumberField

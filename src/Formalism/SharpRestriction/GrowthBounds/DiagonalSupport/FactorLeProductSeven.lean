@@ -1,6 +1,5 @@
 import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.PickVal
 import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.DigAbs
-import Formalism.SharpRestriction.GrowthBounds.ProjectionOfIsotypicDecomposition
 
 noncomputable section
 

@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.SpectralTiesReal
-import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.ColDict
-import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RowDict
 import Formalism.LocalToGlobal.IndefiniteReal.RationalEmbedding
 import Formalism.LocalToGlobal.GroupLattices.Joint0
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LatAtLattice

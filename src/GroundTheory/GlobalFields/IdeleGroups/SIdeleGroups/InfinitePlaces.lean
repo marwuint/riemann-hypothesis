@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.GlobalFields.IdeleGroups.SIdeleGroups.Places
-import GroundTheory.GlobalFields.SemilocalAlgebras.Infinite
 
 namespace GroundTheory.Global
 

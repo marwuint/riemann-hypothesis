@@ -1,7 +1,6 @@
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.StandardFunctorsFiniteLength
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.JacquetModuleFiniteLength
-import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ParabolicInductionFiniteLengthStatement
 
 namespace PositivityTheory.Tls2.BZGL

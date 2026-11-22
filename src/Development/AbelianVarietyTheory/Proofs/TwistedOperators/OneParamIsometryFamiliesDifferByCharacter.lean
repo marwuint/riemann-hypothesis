@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.RealMetaplecticRepresentation
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsScalarOfCommuteSchrodingerOperators
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MultiplicativeHasDerivAtZero
-import GroundTheory.GlobalFields.TateThesis.GaussianSchwartz
 open GlobalTheory.RealWeil MeasureTheory
 open scoped SchwartzMap Matrix
 

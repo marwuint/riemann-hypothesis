@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.BaseLatticeLe
-import Formalism.SharpRestriction.CuspSpanNormBounds.LatticeGluingRadicals
 
 noncomputable section
 

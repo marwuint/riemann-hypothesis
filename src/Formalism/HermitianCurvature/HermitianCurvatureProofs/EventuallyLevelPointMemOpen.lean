@@ -1,7 +1,6 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.LeftRuleLevelPoint
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RdVOfEq
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RootVectorActionCutoff
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.PBGHead
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.AestronglyMeasurableGermIntegrand
 
 open Matrix Filter Topology

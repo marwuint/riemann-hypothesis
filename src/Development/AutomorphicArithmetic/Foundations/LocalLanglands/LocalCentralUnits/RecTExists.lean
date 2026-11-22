@@ -10,7 +10,6 @@ import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentral
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.ExtInj
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.ExtDepth
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.TypeIff
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.ClBasic
 
 open NumberField IsDedekindDomain ValuativeRel Matrix Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.WeilDeligne GlobalTheory.LocGL GlobalTheory.LocLanglands GlobalTheory.GLq
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil

@@ -2,8 +2,6 @@ import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.BiextensionPoin
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.SubstFirstCoboundaryThree
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.IpNormPowSubPowLe
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.EqZeroOfPowEqOne
-import Formalism.FormalGroupWitt.WeightInvariance
-import Formalism.FormalGroupWitt.FormalGroupWittProofs.EqSingleOfDegreeEqOne
 
 noncomputable section
 open scoped BigOperators

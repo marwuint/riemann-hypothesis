@@ -2,12 +2,6 @@ import Development.WeilBound.CoreStatements.MultihomogeneousSquares.Antisymmetry
 import Development.WeilBound.CoreStatements.FlagImmersions.SumFundOnRoot
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerOriginVectorBundle
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootModelOriginCompatibility
-import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpPair
-import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
-import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntegersHenselianFiniteResidue
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SplitComps
-import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
 
 noncomputable section
 

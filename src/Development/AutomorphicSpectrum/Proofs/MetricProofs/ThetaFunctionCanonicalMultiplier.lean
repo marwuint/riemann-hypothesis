@@ -10,7 +10,6 @@ import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.HasSumPolyDer
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFundamentalDomainMeanNormSqThetaChar
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.IsUnitOfLagrangian
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.CoordSiegel
-import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.EqZeroOfSemicharacterMultiplier
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights TensorProduct

@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsLocExtFinrankEq
 import GroundTheory.GlobalFields.TateThesis.RootNumberLocalFinite
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RecTransportFieldIso
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalArtinExistsHolds
 
 noncomputable section
 

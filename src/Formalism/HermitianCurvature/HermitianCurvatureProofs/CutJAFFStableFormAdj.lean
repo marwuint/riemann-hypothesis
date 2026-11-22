@@ -1,7 +1,5 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAFFStableAdjIntCut
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAFFStableAdjCont
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.TriangleInequalityAtPlace
-import Formalism.FormalDegreeBessel.FinalG
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt MeasureTheory Filter Topology
 

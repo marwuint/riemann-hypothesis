@@ -4,7 +4,6 @@ import GroundTheory.ProfiniteCohomology.PoitouTate.RealEvenLevel
 import GroundTheory.ProfiniteCohomology.PoitouTate.RealTraceMap
 import GroundTheory.ProfiniteCohomology.RealPlaces.Vanishing
 import GroundTheory.ProfiniteCohomology.RealPlaces.Devissage
-import GroundTheory.ProfiniteCohomology.RestrictedRamification.BaseMain
 set_option maxSynthPendingDepth 1
 
 noncomputable section

@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SettingsFormsExistList
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StrictHenselianAcyclic
-import Development.AbelianVarietyTheory.Definitions.Divisors.TwistedPlaceChoiceLiesOverPair
-import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyGridDataIff
 
 noncomputable section
 

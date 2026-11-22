@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Hecke
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HkDefs
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwUnitHk
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwSatakeIndep
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwDomMul
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools
 
 namespace UpperTheory.V.AlgebraTools

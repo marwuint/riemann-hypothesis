@@ -1,7 +1,6 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.HeckeFinAlt
 import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.StepFin
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.UiwPow
-import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.HopBasic
 
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial Filter
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace

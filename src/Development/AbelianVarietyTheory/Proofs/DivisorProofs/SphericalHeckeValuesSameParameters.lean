@@ -1,10 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisOfPolarized
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ElementaryDivisorsMulMinusculeTopTerm
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
-import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 
 noncomputable section
 

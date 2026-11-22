@@ -1,9 +1,6 @@
 import Mathlib
 import GroundTheory.PAdicHodge.WAEval
-import GroundTheory.PAdicHodge.WACommon
 import GroundTheory.PAdicHodge.UnramifiedFrob
-import GroundTheory.PAdicHodge.BdRTGalois
-import GroundTheory.PAdicHodge.BCrisPlusInvariants
 
 set_option maxSynthPendingDepth 1
 

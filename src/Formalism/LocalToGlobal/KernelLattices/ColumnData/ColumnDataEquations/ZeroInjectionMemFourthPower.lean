@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.JNoEig
-import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.CayleyGaussianIntegrals.FinitelyGeneratedModPow
 
 noncomputable section
 open NumberField Formalism.BasicNotions Classical

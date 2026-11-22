@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SubsetSpanBy
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MemRangeOfForallHeightEqOneOfIsReflexive
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MapSpanBaseChangeEquivSubmoduleOf
 open GlobalTheory.Desc
 
 open TensorProduct

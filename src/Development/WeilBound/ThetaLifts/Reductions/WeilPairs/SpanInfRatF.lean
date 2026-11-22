@@ -3,10 +3,8 @@ import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.ContinuousTheta
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StdCharHalfSymplecticFormRealCoordinates
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicHomActionRealCoordinatesEq
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTopologicalRingAE
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HalvedSymplecticFormFiniteRealOrthogonal
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.LatRepC
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardTraceAddCharIsStandardCharOfAdmissibleCM
 
 noncomputable section
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecompositionGroupActsResiduesFrobeniusPower
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsNotCongPow
 
 open NumberField IsDedekindDomain Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.WeilDeligne
 set_option maxHeartbeats 1000000 in

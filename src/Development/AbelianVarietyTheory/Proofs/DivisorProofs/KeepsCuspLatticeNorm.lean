@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.CanonicalExponen
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KeepsCuspOfIsUnifAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelMoveStabiliserCharacterDet
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryPart
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IntegralFramedPointOfLevelMove
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.OnlySecondOfFormLaws
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.VolPairExAndFinVol
 

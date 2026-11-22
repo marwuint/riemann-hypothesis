@@ -1,7 +1,5 @@
 import Mathlib
 import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.EtaleChartExistence
-import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.StrictNormalCrossings
-import Development.ResolutionOfSingularities.Foundations.Schemes.AffineOpens
 import Development.ResolutionOfSingularities.EmbeddedResolution.AlgebraicPreliminaries.RegularLocalRing
 universe u
 

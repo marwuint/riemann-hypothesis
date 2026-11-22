@@ -2,7 +2,6 @@ import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.TripleSumIn
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.RightMoveTrianglesOfUnit
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.JArith
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.SecondConstantHolds
-import Formalism.LocalToGlobal.KernelLattices.ColumnData.IsAdmissibleFlagPairOfUnitriangularLeftAutomorph
 
 noncomputable section
 open scoped BigOperators ComplexConjugate

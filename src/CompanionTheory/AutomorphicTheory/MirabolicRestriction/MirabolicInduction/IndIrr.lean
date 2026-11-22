@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.BlockTriangularOfSubOne
-import Formalism.MirabolicMackeyTheory.MirabolicIsMackey
 
 noncomputable section
 

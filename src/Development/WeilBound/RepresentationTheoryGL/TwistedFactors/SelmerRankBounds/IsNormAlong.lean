@@ -2,8 +2,6 @@ import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.CuspDecayHeig
 import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.IntegralUnitBaseChange.InvTransposeGLInvTransposeGL
 import GroundTheory.GlobalFields.Adele.BaseChange
 import GroundTheory.GlobalFields.SemilocalAlgebras.Galois
-import GroundTheory.AutomorphicForms.AffineBruhat
-import GroundTheory.AutomorphicForms.Cartan
 
 noncomputable section
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CokernelSequenceOperatorSequence
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KerOpsComm
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 set_option maxHeartbeats 1000000 in

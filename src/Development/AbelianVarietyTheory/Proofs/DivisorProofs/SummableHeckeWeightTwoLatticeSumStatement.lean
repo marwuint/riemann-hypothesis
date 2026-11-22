@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SummableHeckeWeightTwoLatticeSum
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.OmegaFactorization
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KFacDifferentiable
 
 open NumberField Complex
 open scoped nonZeroDivisors

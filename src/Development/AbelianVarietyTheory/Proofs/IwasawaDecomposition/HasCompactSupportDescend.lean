@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasExponentZeroIff
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QuotientInvariantMeasureExistsUniqueUnimodular
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HaarIsMulRightInvariant
-import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
 
 noncomputable section
 

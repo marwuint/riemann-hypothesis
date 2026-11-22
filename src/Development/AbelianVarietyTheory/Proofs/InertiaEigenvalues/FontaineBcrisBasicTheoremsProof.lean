@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BcrisFrobeni
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FundamentalMapSurjective
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BcrisRegularOfTensorInj
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlgClosureTensorBcrisToBdRInjective
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AcrisTorsionFreeComplete
 
 noncomputable section
 

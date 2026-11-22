@@ -4,7 +4,6 @@ import Development.WeilBound.ThetaLifts.LeviDeterminants.CharacterAdmissibility.
 import Development.WeilBound.ThetaLifts.LeviDeterminants.CharacterAdmissibility.AdelInt
 import Development.WeilBound.ThetaLifts.LeviDeterminants.LagrangianUniqueness.LagLine
 import Development.WeilBound.ThetaLifts.LeviDeterminants.DoubledUnitaryCharacterTrivialOfSiegel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitDetGramOfHermitianSelfDualLatticeSpace
 
 noncomputable section
 

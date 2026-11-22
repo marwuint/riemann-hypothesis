@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsotropicIndexSums
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.HermitianPairingAlgebra
 
 namespace ReciprocityTheory.ChartRestriction.G.FD.IsotropicCombinations
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModDepthGETwoQuotientPowFreeOverRegularLocalRing
-import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.ModDepthGE
 
 open IsLocalRing
 set_option maxHeartbeats 1000000 in

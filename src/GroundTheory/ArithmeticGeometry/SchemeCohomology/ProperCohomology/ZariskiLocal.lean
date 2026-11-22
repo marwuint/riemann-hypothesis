@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.FormalIdeal
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.FormalLimit
-import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.SupportMore
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.HasExtInstances
 set_option maxSynthPendingDepth 1
 

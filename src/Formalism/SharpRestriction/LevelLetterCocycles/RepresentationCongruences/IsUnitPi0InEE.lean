@@ -1,7 +1,5 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.Pi0MemADelta
-import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup
 import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.SaturationFractionModule
-import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.GammaPi0EqPi0MulUnit
 
 noncomputable section
 

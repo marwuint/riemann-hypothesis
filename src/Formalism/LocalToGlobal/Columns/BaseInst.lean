@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.Columns.BaseLemmas
 import Formalism.LocalToGlobal.Divisibility.CoeffLemmas
-import Formalism.LocalToGlobal.UnitaryNorms.Lemmas
 import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleWeightMiddleEntries
 
 open NumberField IsDedekindDomain IntermediateField

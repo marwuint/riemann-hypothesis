@@ -1,5 +1,4 @@
 import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.SliceTensors.PIndMapC
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEvalSum
 import GroundTheory.PAdicHodge.ACrisBdR
 
 noncomputable section

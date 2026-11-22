@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
-import Formalism.SatakeDualWeyl.StatementG
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FiniteResidueFieldAdicCompletionIntegers
 open IsDedekindDomain NumberField Formalism.UG GlobalTheory.SelfDualGenus
 open scoped TensorProduct Matrix

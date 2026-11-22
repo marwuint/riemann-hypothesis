@@ -1,10 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockOfApply
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LinearIndependentComplexOfSubfieldCoeffLattice
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockHarmonicLatticeFgAndSpansValueSpace
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsIsClassSystem
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlob
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 
 noncomputable section
 

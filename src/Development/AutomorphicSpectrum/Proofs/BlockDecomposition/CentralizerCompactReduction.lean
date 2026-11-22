@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MulEqOfRangeLe
 import GroundTheory.AutomorphicForms.AnisotropicHeight
-import GroundTheory.AutomorphicForms.AnisotropicOrbit
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasurableSdot
 
 noncomputable section

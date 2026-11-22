@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.SortSign
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FlatHermRootLineDegree
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechModulesFunctorShortExactOfIsAffineOpen
 
 open CategoryTheory AlgebraicGeometry Limits TopologicalSpace Opposite
 

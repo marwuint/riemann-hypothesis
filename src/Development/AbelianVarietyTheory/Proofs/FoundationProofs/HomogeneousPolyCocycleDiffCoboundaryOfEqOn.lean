@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CocycleIsCoboundaryOfNegCentralElement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsScalarGamma1CapGamma0ModLevel
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TwoVarPolySubstMatrixBasicLaws
-import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups
 

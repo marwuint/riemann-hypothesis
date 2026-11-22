@@ -5,7 +5,6 @@ import Formalism.LocalToGlobal.Columns.CoefficientsModP.FkPderivBlockEmbNe
 import Formalism.GradedWeylDivisibility.StatementE
 import Formalism.HarderNarasimhan.ShiftInvariance
 import Formalism.QuotientMetricDivisors.ReductionLemmaZero
-import Formalism.QuotientMetricDivisors.ProdFormula
 import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.RealCubicMeans.LeafBounds.MeanMaxLeaf.LeafMMFree
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeHasBasisAtEveryFinitePlace
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NabIndepAndDelIndepLocalConditions

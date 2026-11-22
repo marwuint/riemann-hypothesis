@@ -1,7 +1,6 @@
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaSumTensorProduct
-import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
 import Development.WeilBound.ThetaLifts.LeviDeterminants.EqZeroOfTheta
 
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels

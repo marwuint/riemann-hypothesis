@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.HTLawAt
-import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ZetaUr
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsLocallyConstantCycMod
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnramifiedCocycleKillsRoots
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EulerSystemTameClassScaleEnlargeCoefficients
 

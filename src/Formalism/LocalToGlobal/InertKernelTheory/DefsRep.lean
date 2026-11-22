@@ -1,7 +1,5 @@
 import Formalism.LocalToGlobal.InertKernelTheory.FirstKernelGeneratorOfOrthogonal
-import Formalism.SharpRestriction.GrowthBounds.FormalGroupSystem
 import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.CoeffOneLNe
-import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.UniformGaussModelCondition
 import Formalism.LocalToGlobal.InertKernelTheory.StatementInt
 import Formalism.LocalToGlobal.PairingIndexBounds.PendingAdmissibility.LocalFDerivAdmissibility.RepRed
 

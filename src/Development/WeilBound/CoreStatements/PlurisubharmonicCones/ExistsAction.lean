@@ -1,9 +1,6 @@
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ExistsSmulMemOfEig
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValuesOfFrame
 import Mathlib
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocRatio
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsValues
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianHomLieExtends
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueAct
 

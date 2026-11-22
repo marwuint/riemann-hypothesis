@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankFockJointHar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JointShapeUniqueAndDegWEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockActionHomogeneousEigenvector
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinFirst
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AbsSubOfDisjoint
 
 noncomputable section
 open scoped TensorProduct

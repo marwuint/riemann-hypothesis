@@ -5,7 +5,6 @@ import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChan
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.TwistedConjugationNorms.OneCoset
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsValueSubset
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IwahoriGlCasselmanDatum
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IwahoriProjSurjective
 
 noncomputable section
 

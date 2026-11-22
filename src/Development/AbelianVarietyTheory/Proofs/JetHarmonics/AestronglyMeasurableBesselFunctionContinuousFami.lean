@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.HermitianCurvature.StatementTBB
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.OpApplyContinuousOn
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.AdjointnessPolynomiallyBounded
 
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Filter Topology MeasureTheory
 

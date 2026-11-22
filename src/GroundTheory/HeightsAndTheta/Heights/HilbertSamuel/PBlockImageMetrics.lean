@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsBlockImageMetrics
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.ArithModel
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel

@@ -1,7 +1,6 @@
 import Formalism.LocalToGlobal.InertKernelTheory.SecondKernelEntrywiseLastLevel
 import Formalism.LocalToGlobal.GroupLattices.ClassLocalOfEq
 import Formalism.LocalToGlobal.GroupLattices.StabilizerCount.StabiliserTrivialOfTiedChain
-import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.WeightUpdateAtPlace
 
 noncomputable section
 

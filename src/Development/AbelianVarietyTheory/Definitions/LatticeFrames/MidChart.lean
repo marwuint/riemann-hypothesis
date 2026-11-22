@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.HermitianForms.BothSym
-import Formalism.LocalToGlobal.HermitianForms.FramesLemmas
 import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
 
 noncomputable section

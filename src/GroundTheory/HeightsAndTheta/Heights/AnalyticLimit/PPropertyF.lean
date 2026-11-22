@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.RegularizedMaxC2ExampleRealLine
-import GroundTheory.HeightsAndTheta.Heights.Regularisation.IsOpenKappaOpenNeighbourhood
 
 set_option maxSynthPendingDepth 1
 

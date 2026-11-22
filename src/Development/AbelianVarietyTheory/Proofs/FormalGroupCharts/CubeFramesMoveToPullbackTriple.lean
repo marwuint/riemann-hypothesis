@@ -5,8 +5,6 @@ import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ChartPrimTrPfA
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.IntChartPf
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ExistsTruncatedIntegralChart
 import Formalism.LocalToGlobal.ProjectiveLattices.PlaceBelow
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsMonHomOfMul
 
 noncomputable section
 

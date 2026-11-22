@@ -1,6 +1,5 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.ModelFun
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.KFacts
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.InhabA
 
 noncomputable section
 

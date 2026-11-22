@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridSizesLogBound
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.AuxiliaryPrimeNeTypePrime
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsValCharTwist
 
 open NumberField GlobalTheory.SqTop GlobalTheory.FunObj.SqNum Formalism.BasicNotions GlobalTheory.ChiGrid
 set_option maxHeartbeats 1000000 in

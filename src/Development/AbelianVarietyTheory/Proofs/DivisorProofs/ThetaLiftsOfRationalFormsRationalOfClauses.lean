@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Formalism.LocalToGlobal.IndefiniteReal.OneMapT
 import Formalism.LocalToGlobal.IndefiniteReal.OneMapEq
-import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
 import Formalism.LocalToGlobal.IndefiniteReal.FWExist
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.TupPrimeEmpty
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PbEqOfPins
@@ -10,7 +9,6 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EvaluatesOfUnif
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RatOfOneMapOverL
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalisedTupleDataOverRowFieldConditions
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReferenceTupleLiftsSpanAllTuples
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftsSpanOfOnto
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneFormMapAllTuplesCoeffFieldOfClausesStatement
 
 noncomputable section

@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceInnerMul
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsWeilDatumDoubledOfSchrodingerFormulas
-import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.AdelicConjTransposeBlockMatrixTwoByTwoFin
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsWeilDatumOOneOfRankZero
 
 noncomputable section
 

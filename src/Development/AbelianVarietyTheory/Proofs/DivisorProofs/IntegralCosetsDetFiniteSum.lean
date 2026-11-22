@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IwasawaExponentHnfGL
-import GroundTheory.AutomorphicForms.SphericalIntegral
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HermiteReductionUnipotent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardHermiteDataPowerQ
 import Formalism.ArtinHasse.ArtinHasseProofs.SymmSeries

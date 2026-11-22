@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnifConst
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedValuationParitySignCharacterKernelNorm
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatch
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleHermitianPairStructureFacts
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 

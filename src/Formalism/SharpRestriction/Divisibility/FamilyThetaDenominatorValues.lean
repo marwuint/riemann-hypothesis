@@ -3,10 +3,8 @@ import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.SharpRestriction.LevelLetterCocycles.ExistsIdealDenominator
 import Formalism.SharpRestriction.LevelLetterCocycles.TwGood
 import Formalism.SharpRestriction.LevelLetterCocycles.LocsCoverTw
-import Formalism.LocalRingCardinality.DataForced
 import Formalism.SharpRestriction.Divisibility.CartierLocalBounds
 import Formalism.SharpRestriction.Divisibility.LiftErrorLocal
-import Formalism.LocalRingCardinality.DataParamsT
 
 noncomputable section
 

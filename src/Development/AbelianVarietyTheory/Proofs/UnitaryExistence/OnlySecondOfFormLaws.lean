@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ContinuousIffCrd
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLatticeFullAndCompletion
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LcscAdelicUnitaryGroup
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.InvariantProbabilityLatticeQuotientUnique
-import Formalism.LocalToGlobal.GlobalTheory.GL5.FamilyMassVolumeIdentityOfClassDecomp
-import Formalism.SatakeDualWeyl.Statement
 
 noncomputable section
 

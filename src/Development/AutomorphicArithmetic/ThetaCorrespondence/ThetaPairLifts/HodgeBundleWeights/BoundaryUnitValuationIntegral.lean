@@ -1,10 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RuleSectionNowhereVanishingReal
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ToKnownTheoremsOf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReadsZero
-import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsHorizontalGeneratorOfCharts
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactification
 
 section
 set_option autoImplicit false

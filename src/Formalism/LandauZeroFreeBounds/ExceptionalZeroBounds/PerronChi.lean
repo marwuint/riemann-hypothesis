@@ -1,6 +1,5 @@
 import Formalism.LandauZeroFreeBounds.LogDerivRegionChiOf
 import Formalism.ZeroFreeRegion.ZetaLogDerivativeBounds.Perron
-import Formalism.ZetaNonvanishing.MellinSgen
 
 open Complex MeasureTheory Set Filter Topology ArithmeticFunction
 open scoped LSeries.notation

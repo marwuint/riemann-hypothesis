@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitLocalizationEtaleNbhdEqUnitMulPow
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsExcisionNbhdSelf
 
 open GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in

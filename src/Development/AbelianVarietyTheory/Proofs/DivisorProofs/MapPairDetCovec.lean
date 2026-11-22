@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.SpecialFibreUnits
-import Development.AbelianVarietyTheory.Definitions.Divisors.HodgeTateLatticePointFinrankTateModule
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFlagFrame
 
 set_option autoImplicit false

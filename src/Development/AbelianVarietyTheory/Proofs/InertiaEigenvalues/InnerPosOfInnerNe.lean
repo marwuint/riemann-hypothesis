@@ -21,7 +21,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InnerNeSpheric
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsFinIdem
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RawLiftOntoOfUpInj
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RatSpanOfLaws
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdjointInjectiveSurjectiveAndPositiveScalar
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef

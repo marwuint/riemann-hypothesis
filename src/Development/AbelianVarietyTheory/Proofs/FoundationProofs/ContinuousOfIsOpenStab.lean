@@ -1,7 +1,6 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.CuspSemisimpleReal
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Hypotheses2
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.RTwist
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DiscreteTopologyRatN
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.NormNatCastLtOne
 import GroundTheory.AutomorphicForms.StrongApproximationSLDense

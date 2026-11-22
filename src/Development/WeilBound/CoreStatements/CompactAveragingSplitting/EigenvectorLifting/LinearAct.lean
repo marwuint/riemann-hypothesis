@@ -3,8 +3,6 @@ import Development.WeilBound.CoreStatements.CompactAveragingSplitting.Eigenvecto
 import Development.WeilBound.CoreStatements.CompactAveragingSplitting.EigenvectorLifting.LinearActAlg
 import Development.AutomorphicSpectrum.Proofs.MembershipProofs.DblCoordUnique
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.MembershipProofs.SplitQuadraticAlgebraOrder
-import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
 
 noncomputable section
 

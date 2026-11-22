@@ -1,4 +1,0 @@
-import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaModelChange
-import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
-import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone

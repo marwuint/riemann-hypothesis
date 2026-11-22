@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.GlobalFields.ComplexMultiplication.AlgebraicityHom
-import GroundTheory.GlobalFields.ComplexMultiplication.AutCFixed
 
 open NumberField Module WeierstrassCurve GroundTheory.Arith.Abelian IntermediateField
 open scoped nonZeroDivisors

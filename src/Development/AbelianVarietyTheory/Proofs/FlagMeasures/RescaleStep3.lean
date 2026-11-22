@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.UnipotentAdelicQuotients.SiegelWeilUnitaryConvergent
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LevelMatchIff
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.LocVol
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.Volumes
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.SiegelWeilNarrowOfWide
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.StdChar
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FourMulAddFiveLeRank
@@ -13,7 +11,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SiegelWeilVolumes
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsAdelicTorusMeasureStabiliserHaar
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFrameStabilizerHaarNormalisedFibreMeasure
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsHaarMeasureUnipotentRadicalCovolumeOne
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.Measures
 
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.Measures
 open scoped TensorProduct ENNReal

@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
 import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaSumAdmissibility
 import Development.AutomorphicSpectrum.Proofs.MembershipProofs.HeisenbergCommutingOperatorScalar
-import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionNonzeroAdmissible
 import Development.AutomorphicSpectrum.Proofs.MembershipProofs.AdelicCharacterRationalDual
 
 open Matrix NumberField IsDedekindDomain GlobalTheory.WeilM MeasureTheory

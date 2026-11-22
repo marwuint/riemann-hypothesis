@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Mu
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TriIff
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.HodgeGramEqRiemann
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothOfAlgClosedUnif
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLieEigenpartsFrameFamilyOverVariety
 
 set_option autoImplicit false
 

@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.NumberFieldFamilies.NPartCNd
-import Formalism.SharpRestriction.LevelLetterCocycles.DataN
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.TypesDefs
 
 noncomputable section

@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.OneAddMaximalMatrixIntegralInverse
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualOne
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependent
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.Gam0
 
 open Matrix
 set_option maxHeartbeats 1000000 in

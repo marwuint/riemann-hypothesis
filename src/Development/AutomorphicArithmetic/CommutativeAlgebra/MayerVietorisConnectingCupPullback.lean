@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCochainEvalOnS
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAWExistsUniqueBiadditiveEtaleStatement
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlexanderWhitneyCupLeibnizEtale
-import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
-import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CupEqClassOfIsAWStatement
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Pbf
 

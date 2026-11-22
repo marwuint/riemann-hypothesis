@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrderSurjectsMatrixAlgebraModPrimePower
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsEtPlace
 
 open NumberField GlobalTheory.UPel.HT GlobalTheory.UPel.HT.EtLev
 set_option maxHeartbeats 1000000 in

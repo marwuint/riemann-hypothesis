@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMemBand
 import GroundTheory.AutomorphicForms.ReductionSiegel
-import GroundTheory.AutomorphicForms.ReductionIwasawa
-import GroundTheory.AutomorphicForms.ReductionDirichlet
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOfIsOpenStab
 open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.HCF Topology GroundTheory.Automorphic.Reduction
 open scoped ContDiff

@@ -4,7 +4,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartPropertyPr
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartUnionLeSite
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartRestrictPullBijective
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThickeningFiltrationIsFil
-import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ConeSectionRestriction.ConeSite
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false

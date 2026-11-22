@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsLocSec
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJMap
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsValueAtOfTorus
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentFrameComparison
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentOrbitComparison
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree

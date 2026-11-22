@@ -1,13 +1,10 @@
 import Formalism.LocalToGlobal.GroupLattices.Joint0
-import Formalism.LocalToGlobal.HermitianForms.FormsTied
 import Formalism.LocalToGlobal.Columns.PolyFnLemmas
 import Formalism.LocalToGlobal.Columns.CoefficientsModP.PairingNondegenerateHolds
 import Formalism.LocalToGlobal.Columns.InputsWeyl
-import Formalism.LocalToGlobal.Columns.CmUnramifiedOfFieldConditions
 import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTranslate
 import Formalism.SharpRestriction.GlobalSchurBounds.TheoremThreeFamilyOfFormalDegreeInput
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.LwRankTies
-import Formalism.SharpRestriction.GlobalSchurBounds.AdmittedWeylDimension
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.WeylBridge
 import Formalism.SharpRestriction.GlobalSchurBounds.LinkTied
 

@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EigenvectorSmallSubFiniteEigenApproxInequality
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.PolyApproxZeroPadic
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousMapPFin
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
 
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.PRep GlobalTheory.UnitaryBC GlobalTheory.DefU Formalism.BasicNotions Formalism.ConjugateSelfDual GlobalTheory.Cong
 set_option maxHeartbeats 1000000 in

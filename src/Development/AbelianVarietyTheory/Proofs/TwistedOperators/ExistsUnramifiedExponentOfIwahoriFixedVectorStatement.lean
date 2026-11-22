@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsUnramifiedExponentOfIwahoriFixedVector
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InstAddCommGroupTwo
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BorelCasselmanHolds
 
 open GlobalTheory GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SmGL.Exponents ValuativeRel
 set_option maxHeartbeats 1000000 in

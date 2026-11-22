@@ -7,8 +7,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKern
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.TwAdj
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.QhtBasic
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.NormLeOfSq
-import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.QmapPres
-import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.GalTwistEx
 
 open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic.CuspidalSpectrum GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.CuspidalProjection PositivityTheory.Rg.Tf.Core UpperTheory.ConvolutionTheory.K

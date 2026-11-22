@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveOfTraceOfSmulMemRange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscrIsUnit
 
 open IsLocalRing TensorProduct
 set_option maxHeartbeats 1000000 in

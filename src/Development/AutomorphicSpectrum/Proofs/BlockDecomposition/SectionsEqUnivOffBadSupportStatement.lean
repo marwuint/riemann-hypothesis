@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SectionsEqUnivOffBadSupport
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformVanishing
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubsetOfClosedFibre
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArtinReesClosedSystem
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.SchemeCoh GlobalTheory.CompanionTheory.GE
 set_option maxHeartbeats 1000000 in

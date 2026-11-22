@@ -1,7 +1,6 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.LeibnizOrders.PhiPG0
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPsiMinusExact
-import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.TwistedKernels.ExPhiPlusOnto
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPhiMinusExact
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothPhiMinus
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothPsiMinusStatement

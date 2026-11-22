@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.Decomp
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Unitary
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.TraceFormulaA
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.TraceFormulaM
 

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
-import Formalism.LocalToGlobal.Columns.CoefficientsModP.FkPderivBlockEmbNe
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TensorMapDescent
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsReframeVStdOfPosDef
 

@@ -2,7 +2,6 @@ import Mathlib
 import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.HeckeCharacterChoice.TendstoUnderCofinite
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ContinuousMapGL
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsSplitChartOfBasis
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
 
 noncomputable section
 

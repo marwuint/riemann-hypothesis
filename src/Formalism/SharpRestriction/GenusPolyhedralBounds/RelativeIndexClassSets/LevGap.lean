@@ -3,17 +3,9 @@ import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.L
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LevGapSplit
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LevGapLoc
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LevGapStab
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.ClassSet
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Afsplit
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Stdform
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Levelaf
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LevGapTop
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsSpan
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlob
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsApprox
 import Formalism.SharpRestriction.InertJacobiLevels.ExtraRec
 import Formalism.LocalRingCardinality.SpanPowerMembership.TwistRecordRowDimensionZero
-import Formalism.LocalRingCardinality.DataMink
 
 noncomputable section
 

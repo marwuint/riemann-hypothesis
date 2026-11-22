@@ -1,6 +1,5 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs
-import Formalism.GaloisCohomology.LocalTateDualityK
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFrobeniusAndExponentModEq
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RingHomApplyEqPowOfPowPowEqSelf
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPadicIntOfCompatibleZmodPow

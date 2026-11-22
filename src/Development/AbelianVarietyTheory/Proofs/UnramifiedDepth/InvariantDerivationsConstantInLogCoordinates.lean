@@ -7,7 +7,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChar
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.HasTeich
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.IntSOfMulEqOne
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.IsIntegralGaugedFormalGroupLawSelfConjugateSquar
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.LogChain
 
 noncomputable section
 

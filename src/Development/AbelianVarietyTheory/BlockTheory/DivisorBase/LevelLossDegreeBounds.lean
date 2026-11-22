@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalRingCardinality.DataErr
-import Formalism.LocalRingCardinality.DataForced
 import Formalism.SharpRestriction.ParamsHeightRankConstant
 
 noncomputable section

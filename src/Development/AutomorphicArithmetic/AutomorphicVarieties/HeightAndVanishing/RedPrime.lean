@@ -3,8 +3,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBoun
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBounds.SignLe
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBounds.EigV
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBounds.VLe
-import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBounds.ClsFacts
-import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBounds.ClsOnto
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 

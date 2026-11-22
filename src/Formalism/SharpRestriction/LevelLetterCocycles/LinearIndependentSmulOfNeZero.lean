@@ -1,14 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.LatticeVariant
-import Formalism.SharpRestriction.LevelLetterCocycles.BlochKatoPhases
 import Formalism.SharpRestriction.LevelLetterCocycles.CommutingEndomorphismPreservesInvariants
-import Formalism.PadicSubsetSums.CentralIdempotents.CentralIdempotentIntegral
-import Formalism.ResultantValuation.ResultantAdjugateProofs.Window
-import Formalism.ResultantValuation.ResultantAdjugateProofs.Parabolic
-import Formalism.ResultantValuation.ResultantAdjugateProofs.Laplace
-import Formalism.CyclotomicNorms.StatementI
-import Formalism.CyclotomicNorms.IrreducibilityOfGoodTuple
-import Formalism.CyclotomicNorms.NonsquarefreeBounds.ResModule
 
 noncomputable section
 

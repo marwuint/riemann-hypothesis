@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.AutomorphicForms.CuspidalDiscreteness
 import GroundTheory.AutomorphicForms.SupercuspidalCoefficients
 import GroundTheory.AutomorphicForms.CuspidalProjection.ContinuousFiniteAdeleSingleAdd
-import GroundTheory.AutomorphicForms.RealIwasawaIntegration
 
 open MeasureTheory Set Filter Topology Function
 open NumberField IsDedekindDomain

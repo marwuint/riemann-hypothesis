@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.FrameTopAlt
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HzUnit
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CosInj
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.UnitRatio
 
 set_option genSizeOfSpec false
 noncomputable section

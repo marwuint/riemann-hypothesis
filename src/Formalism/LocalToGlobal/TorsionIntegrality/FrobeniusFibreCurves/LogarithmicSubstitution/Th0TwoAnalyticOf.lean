@@ -1,6 +1,4 @@
 import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.Th0FromPhPrime
-import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.GoodModelLattice
-import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.BridgeTwoMore
 import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.FinalI
 import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.StatementJ
 

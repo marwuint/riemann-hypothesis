@@ -1,10 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKSIffKsRel
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvRFrMapOfIsReduced
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeSpectrumDualNumberEq
-import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUniqueIsTanFrameOfIsEmpty
-import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TangentBijectionOfValues
 
 set_option autoImplicit false
 set_option synthInstance.maxHeartbeats 400000

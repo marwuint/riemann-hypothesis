@@ -1,10 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.RealBands.BranchDefs
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealInputOfBranching
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryStabiliserEmbeddingNormLaws
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.OneMemNbh
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ProjExists
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProjectionSmooth
 
 open MeasureTheory Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Ell GlobalTheory.SepReal UpperTheory.Lit.Branch
 open scoped InnerProductSpace

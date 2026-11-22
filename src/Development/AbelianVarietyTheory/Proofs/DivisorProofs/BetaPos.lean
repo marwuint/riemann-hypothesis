@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TorMatch
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsThetaCompact
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
 
 noncomputable section
 

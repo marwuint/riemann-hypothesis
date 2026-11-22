@@ -12,7 +12,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.M
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.KapFgTrdeg
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.DivFinOfTrdeg
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsContinuousOnEmbeddings
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsLinearIndependentDIffTrdegAdjoinEq
 
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.FrameNorm GlobalTheory.Reg
 

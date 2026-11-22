@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.CharacterGerms.LatticeInclusionFormsInjective
 import Formalism.FrobeniusBaseCase.FrobeniusBaseCaseProofs.SecondWayHolds
-import Formalism.FrobeniusBaseCase.Statement
 
 noncomputable section
 

@@ -3,10 +3,6 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StRegDensNonneg
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFormIntPos
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PGradDensSheetBound
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PTorusInvLevi
-import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCIsHermitian
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.MdiscSt
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LintegralImageEqLintegralNormSqDetMul
-import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights

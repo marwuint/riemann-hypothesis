@@ -1,17 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
-import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
-import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeries₂.Poulsen
-import Formalism.PeriodIntegrals.DSInfCharCap
-import Formalism.PeriodIntegrals.LowCyc
-import Formalism.PeriodIntegrals.UpqRep
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
 import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.SumNonneg
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsHaarOnIffGroupsUnitaryUnipotent
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselGrowthStabilizerUnipotent
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ReproducingFormulaReduction
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialProperness.ZhatNormLinearBound
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG
 
 namespace GlobalTheory
 end GlobalTheory

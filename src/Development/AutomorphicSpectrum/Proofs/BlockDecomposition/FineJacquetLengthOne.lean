@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Irreducibl
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SubsingletonJacquetOfPerm
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsInSupportOfMultiProd
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JhMultSubAddQuot
 
 noncomputable section
 

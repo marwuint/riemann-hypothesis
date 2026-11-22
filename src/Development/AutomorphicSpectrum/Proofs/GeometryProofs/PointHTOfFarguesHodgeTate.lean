@@ -8,7 +8,6 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianAdicTors
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianAdicTorsionFour
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianAdicTorsionFive
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFreeOverLocalRing
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
 open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct NumberField GlobalTheory GlobalTheory.PDivGroup GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT GlobalTheory.CompanionTheory.Ar.HT ReciprocityTheory.ChartRestriction.G.Semi
 
 noncomputable section

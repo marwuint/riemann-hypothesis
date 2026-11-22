@@ -1,9 +1,6 @@
 import Formalism.LocalToGlobal.CharacterGerms.RowTiePAllSet
 import Formalism.LocalToGlobal.CharacterGerms.RowTiePOActLog
-import Formalism.LocalToGlobal.CharacterGerms.RowTieFB
 import Formalism.LocalToGlobal.CharacterGerms.CoeffSubstEqSum
-import Formalism.LocalToGlobal.CharacterGerms.RowTieCartFB
-import Formalism.LocalToGlobal.CharacterGerms.RowTieCartAdd
 
 noncomputable section
 

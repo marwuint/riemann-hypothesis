@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.ParametersTermRelations
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RowDict
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.ColDict
-import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.WuDecay
 import Formalism.SharpRestriction.Divisibility.LocalQuadraticParts
 
 noncomputable section

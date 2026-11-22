@@ -3,8 +3,6 @@ import Formalism.GaloisCohomology.LocalTateDualityK
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.RationalDualityOfAllCoefficients
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachLatticeLaterClausesHold
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NotFullBot
-import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N
 
 namespace GlobalTheory.NL

@@ -1,10 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.UniqGapOfUniq
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.OnePlaceKF
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
-import Formalism.SharpRestriction.CuspSpanNormBounds.LeadMinorK
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DegVand
-import Formalism.LocalRingCardinality.DataTies
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.KStableFiniteDimSmoothCompactRootStable
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsFdegSmulOfIsDS
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselMapPairingBound

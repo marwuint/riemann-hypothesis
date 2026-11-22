@@ -6,7 +6,6 @@ import Development.EtaleCohomology.EtaleSheaves.FirstChernNaturality
 import Development.EtaleCohomology.EtaleSheaves.LeafOneSpecPf
 import Development.EtaleCohomology.EtaleSheaves.UnitExistence.CocycleOfSec
 import Development.EtaleCohomology.EtaleSheaves.UnitSections
-import Development.EtaleCohomology.EtaleSheaves.LeafPrimCoverPf
 import Development.EtaleCohomology.EtaleSheaves.ChernClassRootLocalization
 import Development.EtaleCohomology.EtaleSheaves.ChernClassEvaluation
 import Development.EtaleCohomology.EtaleSheaves.LeafEvMkPf

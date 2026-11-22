@@ -1,7 +1,5 @@
 import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.SSmooth
 import GroundTheory.GlobalFields.TateThesis.TateThetaDecay
-import GroundTheory.GlobalFields.TateThesis.AdelePoissonUniform
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsOpenIdeleSubgroupContainsCongruenceUnits
 
 noncomputable section

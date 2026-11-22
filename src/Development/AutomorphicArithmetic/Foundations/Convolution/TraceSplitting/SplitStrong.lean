@@ -2,7 +2,6 @@ import Mathlib
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.NormCharSplit
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.Places
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.NormCharSplitAlt
-import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.NormCharPowHolds
 import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.IsoEq
 
 theorem UpperTheory.ConvolutionTheory.T.splitStrong :

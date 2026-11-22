@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EightDvdNCol
-import Development.AbelianVarietyTheory.Definitions.Jets.ExistsSecTieFOfTies
 
 set_option autoImplicit false
 

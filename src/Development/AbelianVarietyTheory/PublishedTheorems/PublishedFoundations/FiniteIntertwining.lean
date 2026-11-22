@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Formalism.GradedWeylDivisibility.FinalD
 import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
 
 open MvPolynomial Formalism.BasicNotions

@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.BesselHermitianTheta.AllTied
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
-import Formalism.LocalToGlobal.UnitaryNorms.CharTied
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AdelicDataRowMeasureScaleTrivialTuple
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SplitFacTwistRight
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCmAdeleUnitCharacterReadingHeckeChar
@@ -16,7 +15,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyBess
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilRepresentationVacuumCosetVectorsGrid
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsEtaConj
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasInfExpOfOrder
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TendstoInfMulProd
 
 noncomputable section
 

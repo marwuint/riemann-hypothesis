@@ -1,6 +1,5 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.HermitianTraceFormVanishing
-import ReciprocityTheory.SemistableReduction.TorsionNonvanishStatement
 
 namespace GlobalTheory
 

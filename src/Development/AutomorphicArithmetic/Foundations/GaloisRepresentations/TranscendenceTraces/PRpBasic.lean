@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TranscendenceTraces.IsolateSpec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSec
-import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
-import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCochainEvalOnSimplexBasicPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImageCochainExists
 

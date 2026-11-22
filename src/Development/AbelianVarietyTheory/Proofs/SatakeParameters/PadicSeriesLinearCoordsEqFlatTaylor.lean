@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.KernelLattices.KerStd
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaZJetsThree
-import Formalism.LocalToGlobal.InertKernelTheory.StatementIota
 import Formalism.LocalToGlobal.AlgebraicTheory.AlgebraicTheoryProofs.KerJet
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FieldIsoLatticesFormTaylorCorrespond
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.Col Classical

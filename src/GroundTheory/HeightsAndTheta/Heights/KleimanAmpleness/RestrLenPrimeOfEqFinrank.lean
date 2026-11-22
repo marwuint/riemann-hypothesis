@@ -3,7 +3,6 @@ import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.IsGraphGenTwistBund
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.RestrLenRestrictSt
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.AssemblyBase
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.TwistAlg
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Assembly
 
 set_option maxSynthPendingDepth 1
 

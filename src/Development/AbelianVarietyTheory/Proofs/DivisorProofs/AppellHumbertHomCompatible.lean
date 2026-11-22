@@ -4,8 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAHOfIsFactorAH
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaNonvanishingBundleGenerated
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductAbelianUniformization
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.DifferentiableOnProdOfForall
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LbIsoOfSameFactor
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbelianSchemeGerms
 
 set_option autoImplicit false
 

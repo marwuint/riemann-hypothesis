@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHeightIffOfDegreeEq
-import Development.AbelianVarietyTheory.Definitions.Divisors.IrreducibleOfIrreducibleMap
-import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
 
 set_option autoImplicit false
 

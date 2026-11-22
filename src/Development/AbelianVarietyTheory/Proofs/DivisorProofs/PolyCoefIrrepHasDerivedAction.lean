@@ -1,6 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.DatumEquiv
 import Development.AbelianVarietyTheory.Definitions.Divisors.VdmSplit
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.ContinuousRepresentations.URepCompRed
 
 section
 open GlobalTheory.PsCo.PcEG

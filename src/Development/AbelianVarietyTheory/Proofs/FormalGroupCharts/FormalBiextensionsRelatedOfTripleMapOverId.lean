@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.SecondPartialLa
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FamSyPush
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.PushChart
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsPushFr
-import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsGroupIsoCubicalIsoOfTripleMapId
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ChartsWithFramesRelatedAllOrders
 
 set_option autoImplicit false

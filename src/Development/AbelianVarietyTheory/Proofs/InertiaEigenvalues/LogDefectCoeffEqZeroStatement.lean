@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LogDefectCoeffEqZero
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AevalLogDefect
 
 open GlobalTheory.LogU
 set_option maxHeartbeats 1000000 in

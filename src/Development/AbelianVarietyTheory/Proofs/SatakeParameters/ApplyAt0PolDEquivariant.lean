@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
-import Formalism.LocalRingCardinality.DataKerI
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Cobdry
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.DualOm
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ApplyAtOriginMinorProductLinear

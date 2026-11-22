@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFramedPointChangedByLetters
 import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import Formalism.LocalToGlobal.ProjectiveLattices.ArcPtX
 import Development.AbelianVarietyTheory.Counterexamples.ModuliSurvey.MemOfEqMulInvPow
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeExistsUniqueInvertible

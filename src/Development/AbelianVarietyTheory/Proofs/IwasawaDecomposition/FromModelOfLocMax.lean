@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsModelR
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RegularOfValuationBoundedAtPointsStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ModelFunctionFieldCompatibility
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingKrullDimLeOfIsAlgebraic
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ValAtAlgebraMap
 
 set_option autoImplicit false
 

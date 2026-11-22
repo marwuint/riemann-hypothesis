@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteIsometryClassesDefiniteHermitianBoundedSca
-import Formalism.HermitianLattices.FinalNeighbourConstruct
-import Formalism.HermitianLattices.HermitianLatticesProofs.ClassSetAssembly
-import Formalism.HermitianLattices.HermitianLatticesProofs.GenusCovolBound
 
 open NumberField
 set_option maxHeartbeats 1000000 in

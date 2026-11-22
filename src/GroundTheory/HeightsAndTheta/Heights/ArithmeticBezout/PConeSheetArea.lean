@@ -5,7 +5,6 @@ import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.GaussNormEqCoeffGau
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterGood
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsChartGram
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeIntegralMass
-import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsConeFibre
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeChartArea
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterFib
 

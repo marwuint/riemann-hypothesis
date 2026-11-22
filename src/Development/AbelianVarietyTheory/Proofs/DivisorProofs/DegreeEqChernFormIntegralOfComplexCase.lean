@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ResidueDeg
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ChernDegreeComplex
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AnalyticWeightLinearComb
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCoordsBaseChange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyHomologyEquiv
 
 set_option autoImplicit false
 

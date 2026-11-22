@@ -1,6 +1,5 @@
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ConjugateHermitianLineIsometries
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.ThmISt
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexConjugationHermCompat
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.CPtsat

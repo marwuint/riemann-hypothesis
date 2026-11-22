@@ -3,10 +3,7 @@ import Development.WeilBound.CoreStatements.CentralCharts.ContDiffAtLogNorm
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodGramSmoothPunctured
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodGramComparisonBound
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.GramMatrixSubScalarPosSemidef
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.HasStepCharts
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SelM
 
 noncomputable section
 

@@ -1,7 +1,6 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.IsOrth
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.ArakelovInstances.QuotientIsHausdorff
-import ReciprocityTheory.L2DbarEstimates.JacobianInterpolationStatement
 
 namespace GlobalTheory.IndefiniteRowSideFullHecke.FundamentalSetFrames
 

@@ -3,7 +3,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.Valuati
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.AlgebraMapOLInjective
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.NormOrderStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.SacSuccAbove
-import ReciprocityTheory.SemistableReduction.AlgAll
 
 open NumberField ReciprocityTheory.ChartRestriction.G.T0
 open scoped TensorProduct

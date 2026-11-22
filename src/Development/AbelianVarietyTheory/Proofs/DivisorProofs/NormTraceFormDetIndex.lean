@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TamagawaSpecialUnitary
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.WeightFunctionOnFrames
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieBasisSpansUnitaryLie
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceProductSkewHermitianReal

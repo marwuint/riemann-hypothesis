@@ -2,9 +2,6 @@ import Formalism.LocalToGlobal.GlobalTheory.AnalyticConclusionOfProp25
 import Mathlib
 import Formalism.GL3MeanSquares.BoxCountAll
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.CountZAll
-import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.CountSt
-import Formalism.GL3MeanSquares.SecondEstimateOfIntervalHypothesis
-import Formalism.GL3MeanSquares.HookFormulaTorsion.TwistIsPrimitiveCharacter
 import Formalism.GL3MeanSquares.HookFormulaTorsion.MeanSquareOfPrimeNumberTheorem
 
 noncomputable section

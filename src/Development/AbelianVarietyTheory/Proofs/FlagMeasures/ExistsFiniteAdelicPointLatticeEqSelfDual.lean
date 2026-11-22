@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsGaugeAll
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryMassLatticeEqGenusMass
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsometryOfUnimodularLatticesAtPlace
-import Formalism.HermitianLattices.HermitianLatticesProofs.LocDual
-import Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas
 

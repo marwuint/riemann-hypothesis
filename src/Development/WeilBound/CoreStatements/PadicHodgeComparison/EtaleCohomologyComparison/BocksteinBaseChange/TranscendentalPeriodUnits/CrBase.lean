@@ -1,10 +1,6 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.BocksteinBaseChange.BcrisRegularPeriodRing
 import Development.AutomorphicArithmetic.ThetaCorrespondence.FockModels.TiltedDrinfeld.Base
-import GroundTheory.PAdicHodge.BCrisNewton
-import GroundTheory.PAdicHodge.BCrisRegularFinal
-import GroundTheory.PAdicHodge.BCrisEigenMaps
-import GroundTheory.PAdicHodge.FontaineLemmaInvariants
 
 set_option backward.isDefEq.respectTransparency false
 

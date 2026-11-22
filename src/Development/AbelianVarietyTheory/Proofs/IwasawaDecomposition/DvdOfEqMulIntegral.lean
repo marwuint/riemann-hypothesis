@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Nonemp
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InfinitelyManyPrimesInRayClass
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RayDataNonempty
 import Formalism.LocalRingCardinality.ConjSqrtMinusD
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.SplitK
 
 open Formalism.BasicNotions NumberField IsDedekindDomain GlobalTheory.Mem
 

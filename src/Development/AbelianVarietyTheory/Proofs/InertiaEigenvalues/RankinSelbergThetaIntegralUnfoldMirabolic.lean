@@ -5,9 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousOfMe
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPsiLocNeOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LintegralThetaSeriesUnfoldMirabolic
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NegOneNotMemNatLat
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecaysOfMemSmoothSpan
-import GroundTheory.GlobalFields.Adele.Compact
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantTermAutomorphicFormIntegral
 
 noncomputable section
 

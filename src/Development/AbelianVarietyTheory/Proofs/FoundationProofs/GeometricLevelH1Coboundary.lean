@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.ApplyEqOfMemAdjoin
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExists
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCocycleTwistedCoboundary
-import Development.AbelianVarietyTheory.Definitions.Foundations.IntegralLocallyConstCochainModPow
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsReparametrizationByTowerParameter
 
 noncomputable section

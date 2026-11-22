@@ -4,9 +4,6 @@ import GroundTheory.Brauer.CrossedProductSimple
 import GroundTheory.Brauer.CrossedProductMaps
 import GroundTheory.Brauer.CrossedProductInj
 import GroundTheory.Brauer.CrossedProductTensor
-import GroundTheory.Brauer.IsBrauerEquivalentIffNonemptyAlgEquiv
-import GroundTheory.Brauer.BaseChange
-import GroundTheory.Brauer.MulDistribMulActionQuotientFixedPoints
 set_option maxSynthPendingDepth 1
 
 noncomputable section

@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ThetaKeyFormula.ZeroSetFinite
-import GroundTheory.HeightsAndTheta.Heights.ThetaKeyFormula.RigSymFormTauINontrivial
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.CoordIdealIsMultiProjPrime
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.AssemblyBase
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsBisAltMore

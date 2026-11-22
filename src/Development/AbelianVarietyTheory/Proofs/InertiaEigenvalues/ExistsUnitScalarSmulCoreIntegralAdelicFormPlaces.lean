@@ -5,8 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CuspidalSectio
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.BddGoodOfBddAll
 import Formalism.LocalToGlobal.ProjectiveLattices.ModelAt
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemCuspFormsAllEmbeddingsOfInclusionReading
-import Development.AbelianVarietyTheory.Definitions.ThetaValues.LeCovCoeff
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.BddGood
 open NumberField IsDedekindDomain
 open scoped TensorProduct
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Datum Formalism.IndefR.FWT Formalism.L2.Pj GlobalTheory.CoverRead

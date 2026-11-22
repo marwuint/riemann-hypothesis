@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Tjcosets
 open NumberField IsDedekindDomain
 
 namespace GlobalTheory.LFun

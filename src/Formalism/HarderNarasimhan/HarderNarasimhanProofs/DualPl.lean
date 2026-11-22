@@ -4,9 +4,6 @@ import Formalism.HarderNarasimhan.HarderNarasimhanProofs.DiscreteSpanOfLinIndep
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.SizeMu
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PlaceSplit
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.Duality
-import Formalism.HarderNarasimhan.HarderNarasimhanProofs.MuChar
-import Formalism.HarderNarasimhan.HarderNarasimhanProofs.SatBasic
-import Formalism.HarderNarasimhan.HarderNarasimhanProofs.ExistsSmulMemOfFinrankEq
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.ShiftInvariance
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.DegSupermodZ
 

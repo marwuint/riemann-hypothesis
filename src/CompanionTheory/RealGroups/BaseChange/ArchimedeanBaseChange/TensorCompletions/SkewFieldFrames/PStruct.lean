@@ -2,7 +2,6 @@ import Mathlib
 import CompanionTheory.RealGroups.BaseChange.ArchimedeanBaseChange.TensorCompletions.SkewFieldFrames.Imports
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteTwistedClassesCharpoly
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KappaConstantMulOfCoprimeEllipticPolynomials
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LeftMulMatrixTransfer
 
 noncomputable section
 

@@ -2,8 +2,6 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula
 import Development.WeilBound.ThetaLifts.LatticeBasics.FrameA
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNeZeroConjNegOfCmExtension
-import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
-import Formalism.LocalToGlobal.IndefiniteReal.DatumF
 
 noncomputable section
 

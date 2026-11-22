@@ -1,11 +1,5 @@
 import Mathlib
 import GroundTheory.PAdicHodge.WAPeriodT
-import GroundTheory.PAdicHodge.WAEval
-import GroundTheory.PAdicHodge.ACrisBdRGalois
-import GroundTheory.PAdicHodge.InstMulSemiringActionGalPlus
-import GroundTheory.PAdicHodge.BCrisNewtonApprox
-import GroundTheory.PAdicHodge.CauchySeqOfIncrements
-import GroundTheory.PAdicHodge.ExtRobbaTrivialV
 
 set_option maxSynthPendingDepth 1
 

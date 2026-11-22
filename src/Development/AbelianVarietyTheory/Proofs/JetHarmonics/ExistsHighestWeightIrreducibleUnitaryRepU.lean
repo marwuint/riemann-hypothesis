@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsDerivedActionFiniteDimUnitaryRep
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WeightCompactDominanceOfMemHighestWeightSpan
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.IsCompactInvariantCompactSpan
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CompactExponentialSurjective
 
 open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal

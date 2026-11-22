@@ -1,10 +1,5 @@
 import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.UniformGaussModelConditionEquivalent
-import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.ThetaInZIsThetaLog
-import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.StatementG
 import Formalism.GaussJetBounds.OneLetterGaussJets.OddLevelGainSum
-import Formalism.GaussJetBounds.StatementS
-import Formalism.GaussJetBounds.StatementU
-import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.UniformGaussModelCondition
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.HasCMByStable
 
 namespace Formalism.L2.Th1.Top

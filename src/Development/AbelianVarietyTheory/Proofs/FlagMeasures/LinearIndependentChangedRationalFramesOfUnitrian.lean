@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.NGAnalytic
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.DataInst
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.InVolumesAtOfSWS
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GlobSet
 

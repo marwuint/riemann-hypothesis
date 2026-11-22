@@ -5,8 +5,6 @@ import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.IsFieldSubalgebraSe
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsKodairaGeneric
 import Development.WeilBound.CoreStatements.HodgeTatePoints.KTwins
 import Development.WeilBound.CoreStatements.HodgeTatePoints.KleimanInputUniverseZero
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.AmpleSt
-import Development.WeilBound.CoreStatements.HodgeTatePoints.A12
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PAmpleOfGenTwist
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGenTwistVanish
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGenKoszulStep
@@ -15,12 +13,6 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PKoszulCechExact
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.AssemblyBase
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PKleimanScheme
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PGeneratedCechTieX
-import GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.KleimanNefF
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PSegreBase
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.RelDimMIdealOverEqTrdeg
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.IsMultiProjPrimeSegreLift
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ExistsNeZeroOfWeight
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ZpowMemSubalgebraOfInvMem
 
 namespace PositivityTheory.KAmp
 

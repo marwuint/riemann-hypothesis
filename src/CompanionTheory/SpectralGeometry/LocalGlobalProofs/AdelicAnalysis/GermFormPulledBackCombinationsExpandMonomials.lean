@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.UnipotentAdelicQuotients.SWXSDefs
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.DisintegrationDensityUnique
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.DisintegrationDensityContinuous
 open MeasureTheory Topology Matrix
 open scoped ENNReal NNReal
 

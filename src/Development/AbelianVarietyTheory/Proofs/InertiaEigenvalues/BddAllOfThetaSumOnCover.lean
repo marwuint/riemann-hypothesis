@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.BddGood
 import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
-import Formalism.LocalToGlobal.ProjectiveLattices.MulCMemSec
 import Formalism.LocalToGlobal.ProjectiveLattices.ThClassPins
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.FFVMap
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp

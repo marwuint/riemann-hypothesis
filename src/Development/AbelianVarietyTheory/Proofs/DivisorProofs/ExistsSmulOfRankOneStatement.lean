@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmulOfRankOne
-import Development.AbelianVarietyTheory.Definitions.Divisors.PointShiftSt
-import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
 
 open AlgebraicGeometry CategoryTheory NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory GlobalTheory.CM GlobalTheory.FlatCM
 set_option maxHeartbeats 1000000 in

@@ -3,9 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GaugeUnfold
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LamXEquivariant
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFrameOfHasSignature
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianSpacesSameSignatureIsometric
-import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.SameKindIsometric
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFiniteAdelicPointLatticeEqSelfDual
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsGaugeAll
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas GlobalTheory.GaussMean GlobalTheory.AutInhab
 

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ToroidalBoundaryMetricData
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousAndExistsConjChart
-import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.DifferentiableAtChart
 
 set_option autoImplicit false
 

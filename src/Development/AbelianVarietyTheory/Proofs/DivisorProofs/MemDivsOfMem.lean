@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.Columns.HeckeSp
-import Formalism.LocalToGlobal.Columns.AbelianHostFieldConditions
 import Formalism.LocalToGlobal.UnitaryNorms.CharUniq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnderEqIffConjPl
 

@@ -4,9 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoundUnitary
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermInf
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermOf
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
-import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopology
-import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
 
 noncomputable section
 

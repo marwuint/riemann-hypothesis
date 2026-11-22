@@ -3,7 +3,6 @@ import GroundTheory.AutomorphicForms.GKModules.GKModule
 import GroundTheory.AutomorphicForms.GKModules.Garding
 import GroundTheory.AutomorphicForms.GKModules.Casimir
 import GroundTheory.AutomorphicForms.Reduction
-import GroundTheory.GlobalFields.Adele.IntegersLattice
 
 open NumberField NumberField.mixedEmbedding IsDedekindDomain Topology Filter Set
 open scoped NumberField.AdeleRing

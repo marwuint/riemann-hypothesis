@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsIsoFromNormalization
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.RestrictPullbackIsoHomAppPullbackSections
-import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.IsLocalizedModuleGermLinearPointOfPrime
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits Opposite TensorProduct
 

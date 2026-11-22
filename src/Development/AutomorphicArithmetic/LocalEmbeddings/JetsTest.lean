@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsR
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRealModelSq
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspidalListedTopForms
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BesselPeriodCorankConvergesColumn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueIsFunForm
 
 noncomputable section
 

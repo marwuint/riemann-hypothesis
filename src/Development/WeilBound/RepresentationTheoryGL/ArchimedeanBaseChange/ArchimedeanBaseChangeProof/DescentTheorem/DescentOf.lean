@@ -1,6 +1,5 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.GalStepOfHyp
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.DualIsConjByOne
 
 noncomputable section
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.ShortVectorEveryPlace
-import Formalism.ThetaLiftIndependence.Statement
 import Formalism.FlagUnipotentLattices.CardSubgroupsOfIndexLe
 
 noncomputable section

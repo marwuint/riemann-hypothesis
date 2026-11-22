@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatchedMapsArchi
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.WeilLieAlgebraScalarAction
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRtensOp
-import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 
 section
 noncomputable section

@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.BaseTransport
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.BaseChange
-import GroundTheory.ProfiniteCohomology.PoincarePairs.IsDiscreteRepResHomCoindRes
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.ProfCoh

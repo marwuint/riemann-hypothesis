@@ -7,7 +7,6 @@ import Formalism.LocalToGlobal.Columns.ScaledRamifiedLattice
 import Formalism.LocalToGlobal.Columns.RowForms
 import Formalism.LocalToGlobal.Columns.RowFormsLemmas
 import Formalism.LocalToGlobal.Divisibility.Frames
-import Formalism.LocalToGlobal.Divisibility.GoodPartHermitianSpec
 import Formalism.LocalToGlobal.GlobalTheory.HLatOps
 
 open NumberField IsDedekindDomain Module

@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.SliceShift
-import GroundTheory.AutomorphicForms.CuspidalDiscreteness.CuspFormsDiff
 
 noncomputable section
 

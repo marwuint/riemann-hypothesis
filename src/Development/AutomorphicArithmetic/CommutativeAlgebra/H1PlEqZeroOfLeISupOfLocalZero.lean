@@ -6,9 +6,6 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.TwistedSectionEqNsmu
 import Development.EtaleCohomology.EtaleTrace.LocalSplitting.Cover2
 import Development.EtaleCohomology.EtaleSheaves.LeafAffCoverVanishPfEmpty
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCohomologyNegativeVanishingDegreeZero
-import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
-import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistSectionsLocallyGeneratedStatement
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC GroundTheory.FunctionField UpperTheory.Et.Sel LateralTheory.E.E4
 open scoped TensorProduct
 

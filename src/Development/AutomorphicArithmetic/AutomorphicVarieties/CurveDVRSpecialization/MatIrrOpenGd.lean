@@ -1,7 +1,5 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.RatTorsionFree
-import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.FiniteCohomology
 import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.DatFacts
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicCharInertiaSurjective
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SingleMemSubmodule
 
 attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing

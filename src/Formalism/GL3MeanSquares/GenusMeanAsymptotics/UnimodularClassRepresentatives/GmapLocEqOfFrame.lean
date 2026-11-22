@@ -1,8 +1,6 @@
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.ExistsIsomFrame
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.IsHermSemilocalLocRing
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.UnimodularOfMemGenusOrtho
-import Formalism.HermitianLattices.HermitianLatticesProofs.TraceReal
-import Formalism.HermitianLattices.HermitianLatticesProofs.IsomAct
 
 open NumberField Module
 

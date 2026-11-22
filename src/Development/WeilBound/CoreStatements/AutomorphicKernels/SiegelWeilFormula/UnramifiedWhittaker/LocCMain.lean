@@ -1,7 +1,6 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.UnramifiedWhittaker.LocCAsm
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuotientCard
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResAlgSplitTwo
 
 noncomputable section
 

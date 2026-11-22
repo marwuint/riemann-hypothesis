@@ -1,7 +1,6 @@
 import Formalism.LocalToGlobal.SelSide
 import Formalism.LocalToGlobal.IndefiniteReal.TrISepWith
 import Formalism.LocalToGlobal.IndefiniteReal.RealRec
-import Formalism.LocalToGlobal.UnitaryNorms.DatumS
 
 noncomputable section
 

@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.ChartComparison.StepIn
-import Formalism.LocalRingCardinality.DataGatTies
 
 noncomputable section
 

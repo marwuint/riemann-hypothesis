@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Mono0OfLpDim
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonodromyFreeSumIrreducibles
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilGroupIsSemisimpleOfSemisimpleFrob
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LinearIndependentTrace
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilDeligneSemisimple
 
 noncomputable section
 

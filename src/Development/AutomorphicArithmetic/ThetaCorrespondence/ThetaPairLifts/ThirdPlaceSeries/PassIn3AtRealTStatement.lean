@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.RealTB
-import Formalism.LocalToGlobal.IndefiniteReal.BaseLiftsPackageOfPrimitiveLinks
 import Formalism.LocalToGlobal.Divisibility.NumericScaleExponentEqExtended
-import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PassIn3OfRows
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LayerTwoFamilyClass
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.STiesR

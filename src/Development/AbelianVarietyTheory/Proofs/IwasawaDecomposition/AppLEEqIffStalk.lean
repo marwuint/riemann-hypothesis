@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PushInvertibleModelOfIso
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.DualNumberRingHomExt
 
 noncomputable section
 

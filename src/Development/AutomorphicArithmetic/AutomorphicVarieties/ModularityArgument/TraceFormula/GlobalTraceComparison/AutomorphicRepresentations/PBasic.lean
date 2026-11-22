@@ -3,9 +3,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.PiInvTop
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.PiVecExHolds
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.PiSeenA
-import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.SplitCentreMulTor
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.IntegrableShift
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DegreePairingIdentity
 
 noncomputable section
 

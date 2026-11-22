@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.GlobalTheory.MemCompanion
 import Formalism.SharpRestriction.GlobalSchurBounds.JointsL
-import Formalism.LocalRingCardinality.DataErr
 import Formalism.LocalToGlobal.HermitianColumns.ClsNonempty
 import Formalism.LocalToGlobal.HermitianColumns.ColsHerm
 import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTranslate

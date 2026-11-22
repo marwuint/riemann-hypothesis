@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.LowKAllPos
-import Formalism.HermitianCurvature.CapelliDeterminantAndBranching
 
 open Finset
 

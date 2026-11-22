@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
-import Formalism.LocalToGlobal.Columns.DecoFin
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsSplitAt
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvalVAlgebraMapMem
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S IsDedekindDomain NumberField Formalism.L2.Theta Formalism.L2.NTheta Formalism.IndefR.Mult

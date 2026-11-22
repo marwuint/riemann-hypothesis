@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RankTwoDimensionFormula.DimFormCOfSteps
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.InclusionInjective
 
 noncomputable section
 

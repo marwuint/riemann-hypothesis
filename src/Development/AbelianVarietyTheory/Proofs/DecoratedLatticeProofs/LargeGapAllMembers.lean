@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PtRows
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.BrgStdR
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsScaleWithBoundedGamma
 
 noncomputable section

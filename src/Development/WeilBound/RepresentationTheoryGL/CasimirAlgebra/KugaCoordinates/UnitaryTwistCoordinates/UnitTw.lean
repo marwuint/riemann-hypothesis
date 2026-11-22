@@ -7,8 +7,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsRightHaar
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspRapidDecaySiegelGL
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaloisRepresentationAdmitted
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.NotIsTemperedGLDetRepTwo
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SubsingletonRankZero
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrreducibleFixed
 
 noncomputable section
 

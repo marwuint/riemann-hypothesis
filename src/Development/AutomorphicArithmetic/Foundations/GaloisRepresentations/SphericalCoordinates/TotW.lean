@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.LevelChange
-import Development.AbelianVarietyTheory.Definitions.Divisors.HxiTZeroComb
 
 noncomputable section
 

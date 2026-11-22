@@ -3,9 +3,6 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutLimE
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormSqLeShifted
 import Development.AbelianVarietyTheory.PublishedTheorems.BesselIntegrals.BesselXiIntegrable
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.EnergyBoundPolynomialWeightPowCapelliEigen
-import Formalism.HermitianCurvature.StatementTBB
-import Formalism.HermitianCurvature.StatementU
-import Formalism.HermitianCurvature.LetterProductDoubleDegreeCount
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Finset
 
 namespace GlobalTheory

@@ -1,10 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TwistAtEach
-import Development.AbelianVarietyTheory.Definitions.Divisors.HasTraitsOnOfHasTraitsP
-import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumFCompEquiv
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStalkZeta
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumFConstMul
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TxFrameTranslate
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsFrameTwoLevels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRigTorsFrame

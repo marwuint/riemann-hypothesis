@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InverseUnipotentVolumeConjDiagonalUnitsGLMul
-import Development.AbelianVarietyTheory.Definitions.Divisors.FlatTensorVacuum
 
 open GlobalTheory.FunObj GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.RootEx
 set_option maxHeartbeats 1000000 in

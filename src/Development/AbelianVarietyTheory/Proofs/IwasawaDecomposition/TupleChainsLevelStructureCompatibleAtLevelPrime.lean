@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StdLvPr
-import Formalism.LocalToGlobal.HermitianForms.TiedTwJSym
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ReductionModPrimeLevelPrimeSmulEq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartTiedLevelChain
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InvSmulMem

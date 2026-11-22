@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HermSysHypOneLeLambdaZero
-import Development.AbelianVarietyTheory.Definitions.Divisors.IntegralBound
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsCoordAtPoints
 
 set_option autoImplicit false

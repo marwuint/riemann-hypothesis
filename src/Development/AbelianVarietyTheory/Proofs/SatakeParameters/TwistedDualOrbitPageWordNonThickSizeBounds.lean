@@ -1,10 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Alternates
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Formalism.FrobeniusOrbits.HostCorollaries
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedDualOrbitPageWordThickIffThickEmbedding
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FloorSizeBoundsNotThickEmbedding
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MaxSizeAtNonThickPlaceLeAndBound
 open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 
 namespace GlobalTheory.HTW

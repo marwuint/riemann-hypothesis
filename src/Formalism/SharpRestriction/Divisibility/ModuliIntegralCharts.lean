@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.LocalRingCardinality.DataDIV
 import Formalism.SharpRestriction.ParConsts
-import Formalism.GelfandTransference.EnergyIdentity
 
 noncomputable section
 

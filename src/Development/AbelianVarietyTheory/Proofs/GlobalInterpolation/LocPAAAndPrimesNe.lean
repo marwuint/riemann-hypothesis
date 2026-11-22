@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TranslateMomentsAll
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AbsNormSpanInvol
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.Principal
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.ConjReal
 import Formalism.LocalToGlobal.ProjectiveLattices.HostRank
 import Development.AutomorphicArithmetic.CyclotomicBounds.ZmodTwoQuadraticNeZero
 import Development.AutomorphicArithmetic.CyclotomicBounds.RamifiedDiscriminants.NotSmallIso

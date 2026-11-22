@@ -1,7 +1,5 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.BasePointMemDomain
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.HeadJ
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.MemLevelZeroOfMemGroup
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.WCellMemOmPlus
 
 open Matrix MeasureTheory
 open scoped ComplexConjugate

@@ -1,7 +1,6 @@
 import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
 import Formalism.SharpRestriction.GlobalSchurBounds.Joints
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.CMFieldLemmas
-import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.EqOfLeOfAbsNormEq
 
 namespace Formalism.MainNotions.GL3Theta
 

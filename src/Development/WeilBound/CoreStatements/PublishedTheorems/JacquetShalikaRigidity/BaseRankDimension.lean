@@ -1,7 +1,4 @@
 import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaRigidity.ColumnConjugationMeasure
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.T2SpaceAdelicGeneralLinearGroupNumberField
-import GroundTheory.GlobalFields.IdeleGroups.IdeleNorms
-import GroundTheory.GlobalFields.LocalFieldAtPlace
 import GroundTheory.IdeleRoots.TorusPowers.SatakeBoundAdic
 
 noncomputable section

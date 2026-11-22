@@ -1,7 +1,6 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeSmallGeneration
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LatticeHasSmallGenerators
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Links2OfRowsStatement
 
 set_option synthInstance.maxHeartbeats 200000

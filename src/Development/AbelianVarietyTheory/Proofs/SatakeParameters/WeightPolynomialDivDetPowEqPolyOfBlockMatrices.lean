@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SgRevNeZero
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.OddTwistedFrameDetFunctionMulUpperTriangular
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.OddTwistedFrameDetFunctionMulDetPowPolynomial
-import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.SharpPoly
 
 noncomputable section
 

@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FirstDeriv
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.TopsChoicePartA
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.LocalComponentGL
-import Formalism.GaussJetBounds.GaussJetProofs.NormNatCastEqPowPadicValNat
 
 noncomputable section
 

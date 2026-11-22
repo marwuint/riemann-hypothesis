@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.MoebiusJetDuality.StatementU
-import Formalism.SatakeDualWeyl.Statement
 
 noncomputable section
 

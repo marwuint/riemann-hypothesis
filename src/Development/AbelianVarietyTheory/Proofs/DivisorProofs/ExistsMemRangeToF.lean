@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneVectorOfMultiplicityOne
-import Formalism.LocalToGlobal.IndefiniteReal.CxToPkgFamIn
-import Formalism.LocalToGlobal.Divisibility.RowLat
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RationalRowTestKernel
 
 noncomputable section

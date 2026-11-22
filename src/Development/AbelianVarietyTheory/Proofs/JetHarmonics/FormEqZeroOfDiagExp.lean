@@ -3,10 +3,7 @@ import Formalism.LocalToGlobal.ProjectiveLattices.RecPJThAllNeBot
 import Formalism.LocalToGlobal.ProjectiveLattices.PlaceBelow
 import Formalism.SharpRestriction.Divisibility.AbelianOpenPart.OEOsInjective
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.LemmaBStatement
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermCut
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.OneCSt
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.FrRatio
-import Formalism.LocalToGlobal.ProjectiveLattices.ThProps
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PsJetTwistedSeriesOfLeOne
 
 set_option autoImplicit false

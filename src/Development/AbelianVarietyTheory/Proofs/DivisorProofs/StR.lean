@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.RangeShape
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OffDiagBlockNormContInv
-import Formalism.RealPlaceAnalysis.SmoothOnGVIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PseudoUnitaryOffDiagNormSqZeroIffMemMaxCompact
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCompactPseudoUnitaryOffDiagNormSublevel
 

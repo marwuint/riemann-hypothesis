@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.MeasLev
-import Formalism.LocalRingCardinality.DataTies
 
 noncomputable section
 

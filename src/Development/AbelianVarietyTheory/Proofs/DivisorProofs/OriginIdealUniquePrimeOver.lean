@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartBundleIntersectionSymmetry
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OriginIdeal
 
 open IsLocalRing Polynomial
 open scoped TensorProduct

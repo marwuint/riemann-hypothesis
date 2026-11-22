@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.TauZero
-import Formalism.HermitianCurvature.StatementTBB
 
 open Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal

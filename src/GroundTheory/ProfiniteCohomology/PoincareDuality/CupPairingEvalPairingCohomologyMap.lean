@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.ProfiniteCohomology.PoincareDuality.NsmulEqZeroOfNonemptyAddEquiv
 import GroundTheory.ProfiniteCohomology.CohomologicalDimension.SubsingletonCohomologyOfPrimaryOfFinite
-import GroundTheory.ProfiniteCohomology.ShapiroDefs
 import GroundTheory.ProfiniteCohomology.PoincareDuality.Torsion
 set_option maxSynthPendingDepth 1
 

@@ -8,9 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvdOfMemBadPrimes
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LengthUnitSizeBounds
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReferenceExponentPrimeBound
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuotientWeightGapBounds
-import Development.AbelianVarietyTheory.Definitions.Divisors.PolyBetween
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LocalValuationColumns
-import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd
 
 set_option autoImplicit false
 set_option synthInstance.maxHeartbeats 400000

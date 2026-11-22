@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPeriodSq
 import Formalism.DoubleCosetMeasures.LowerUnipotentOrbits.RelIndexMulMeasure
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MeasureToRealEqMass
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryTopology
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryEqRealMulFiniteSplit
 
 open NumberField MeasureTheory
 open scoped Classical

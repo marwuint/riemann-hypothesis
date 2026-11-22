@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistOneToRootsOfUnitySectionsSurjective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MuValInjective
-import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC GlobalTheory.EtC.MuTw
 

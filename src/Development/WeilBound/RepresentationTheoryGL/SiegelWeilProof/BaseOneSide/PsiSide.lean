@@ -1,6 +1,5 @@
 import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.BinaryMassMeans.MeanVal
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.SiegelDensities.Pieces
-import GroundTheory.GlobalFields.TateThesis.IdeleMeasureQuotient
 
 noncomputable section
 

@@ -1,9 +1,5 @@
 import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.UniformGaussModelConditionEquivalent
-import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.ThetaInZIsThetaLog
-import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.StatementG
 import Formalism.GaussJetBounds.OneLetterGaussJets.OddLevelGainSum
-import Formalism.GaussJetBounds.StatementS
-import Formalism.GaussJetBounds.StatementU
 
 noncomputable section
 open scoped BigOperators

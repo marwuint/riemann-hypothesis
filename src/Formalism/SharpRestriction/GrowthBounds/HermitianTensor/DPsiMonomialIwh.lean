@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.HermitianTensor.SubYDPsiMonomial
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LDbasisLemmas
 
 noncomputable section
 

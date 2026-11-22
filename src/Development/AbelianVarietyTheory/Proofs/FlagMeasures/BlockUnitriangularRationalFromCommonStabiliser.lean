@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianStabiliserRationalUnitriangularPairs
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalExtend
 
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
 open scoped Pointwise ENNReal Classical

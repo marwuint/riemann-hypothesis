@@ -1,10 +1,8 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.GalEquiv
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.GalCusp
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.TwOpEx
-import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.PresOfOrder
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.AdHeight
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.CommProj
-import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.GalTwistEx
 
 open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic.CuspidalSpectrum GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.CuspidalProjection PositivityTheory.Rg.Tf.Core UpperTheory.ConvolutionTheory.K

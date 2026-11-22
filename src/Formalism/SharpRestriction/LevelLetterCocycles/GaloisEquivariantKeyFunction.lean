@@ -4,7 +4,6 @@ import Formalism.PadicSubsetSums.CentralIdempotents.CentralIdempotentIntegral
 import Formalism.ResultantValuation.ResultantAdjugateProofs.Window
 import Formalism.ResultantValuation.ResultantAdjugateProofs.Parabolic
 import Formalism.ResultantValuation.ResultantAdjugateProofs.Laplace
-import Formalism.CyclotomicNorms.StatementI
 import Formalism.CyclotomicNorms.IrreducibilityOfGoodTuple
 import Formalism.CyclotomicNorms.NonsquarefreeBounds.ResModule
 

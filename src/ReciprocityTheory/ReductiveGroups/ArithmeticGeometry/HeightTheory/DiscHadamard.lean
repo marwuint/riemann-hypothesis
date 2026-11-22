@@ -2,7 +2,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.HDiscBD
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.DiscPointwise
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.EvTEqBlockPointOfMh
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.IntNsg
-import ReciprocityTheory.SemistableReduction.RestBlockSubstIsMultiHomogeneous
 
 namespace ReciprocityTheory.ChartRestriction.G.T0
 

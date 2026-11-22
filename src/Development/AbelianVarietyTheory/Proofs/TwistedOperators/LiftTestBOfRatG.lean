@@ -1,7 +1,5 @@
 import Formalism.LocalToGlobal.IndefiniteReal.BaseLiftsPackageOfPrimitiveLinks
-import Formalism.LocalToGlobal.IndefiniteReal.LinksLemmas
 import Formalism.LocalToGlobal.IndefiniteReal.LinksExistW
-import Formalism.LocalToGlobal.IndefiniteReal.RationalAdjoints.RatZOfTests
 import Formalism.LocalToGlobal.IndefiniteReal.OneMapEq
 import Formalism.LocalToGlobal.IndefiniteReal.FWExist
 import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.NHkRow

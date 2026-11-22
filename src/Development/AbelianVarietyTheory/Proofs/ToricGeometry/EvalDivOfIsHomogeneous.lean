@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TopLePreimageOfValAtNeZero
 import ReciprocityTheory.ThetaQuasiPeriods.ThetaQuasiPeriodStatement
 import ReciprocityTheory.ThetaQuasiPeriods.Transl
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 
 noncomputable section
 

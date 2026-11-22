@@ -3,11 +3,6 @@ import Formalism.LocalToGlobal.IndefiniteReal.FWExist
 import Formalism.LocalToGlobal.IndefiniteReal.OneMapEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ActLevMemCuspA
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEquivariantUnitConstantsGoodEmbedding
-import Formalism.LocalToGlobal.IndefiniteReal.RhoGeo
-import Formalism.LocalToGlobal.ProjectiveLattices.CuspFormsFiniteDimensionalOf
-import Formalism.LocalToGlobal.ProjectiveLattices.ThProps
-import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsHalfOfBasePins
 
 open NumberField IsDedekindDomain MeasureTheory Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.L2.Pj Formalism.IndefR.FWT Formalism.IndefR
 open scoped TensorProduct InnerProductSpace

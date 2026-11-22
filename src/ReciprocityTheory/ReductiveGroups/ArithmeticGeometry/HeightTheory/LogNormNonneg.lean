@@ -3,7 +3,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.Uniform
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.GoodPrimesProperties
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.NormByPlaces
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.HPlaces
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.ValuationResidueLemmas
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.FsumEqSum
 
 namespace ReciprocityTheory.ChartRestriction.G.T0

@@ -2,7 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JoinCol
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PAreaMultiplicityWeight
 import ReciprocityTheory.L2DbarEstimates.SkodaWeights.LeviVA
-import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.HoloSmooth
 
 noncomputable section
 

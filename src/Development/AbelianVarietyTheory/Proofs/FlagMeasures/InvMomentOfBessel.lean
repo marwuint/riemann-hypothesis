@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpec
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DegVand
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsNormalFormStabilizerMeasure
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MomAllP
-import Formalism.LocalRingCardinality.DataTies
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AbsOfRange
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LintegralTranslate
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassLowTypesSecond

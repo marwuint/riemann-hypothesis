@@ -1,6 +1,5 @@
 import GroundTheory.LocalFields.LocalZeta
 import GroundTheory.LocalFields.ExistsUnitFiltrationUnitsLeRangeNormUnits
-import GroundTheory.LocalFields.LocalFourierHaar
 
 noncomputable section
 

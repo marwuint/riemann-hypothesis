@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
-import Formalism.GaloisCohomology.LocalTateDualityK
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistedModelAdmissibleCocycles
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.OnePlusPowerAssembly
@@ -8,7 +7,6 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.CrystallineEx
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.InvariantsVanishing
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.AdmissibleCharacterHyp
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.AdmissibleCharUnramified
-import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 
 noncomputable section
 namespace GlobalTheory.TopSteps

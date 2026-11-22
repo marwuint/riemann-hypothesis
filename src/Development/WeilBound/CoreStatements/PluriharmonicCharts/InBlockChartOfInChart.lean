@@ -1,10 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.OmHeightslockG
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtIffValueAt
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
-import GroundTheory.HeightsAndTheta.Heights.Intersections.AvoidRing
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB
 open GroundTheory.Heights₂.Heights.LowerBoundFree
 

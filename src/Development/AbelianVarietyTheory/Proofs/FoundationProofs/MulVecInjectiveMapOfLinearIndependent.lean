@@ -5,7 +5,6 @@ import Formalism.LocalToGlobal.Columns.CoefficientsModP.FkPderivBlockEmbNe
 import Formalism.GradedWeylDivisibility.StatementE
 import Formalism.HarderNarasimhan.ShiftInvariance
 import Formalism.QuotientMetricDivisors.ReductionLemmaZero
-import Formalism.QuotientMetricDivisors.ProdFormula
 import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.RealCubicMeans.LeafBounds.MeanMaxLeaf.LeafMMFree
 
 open NumberField IsDedekindDomain MvPolynomial Formalism.BasicNotions Formalism.L2.DIV Formalism.DivisionValues GlobalTheory.TestLat Formalism.L2.Indef.Tree.ArchimedeanLeafBounds.Cuts

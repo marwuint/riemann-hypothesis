@@ -3,9 +3,6 @@ import Formalism.SharpRestriction.GlobalSchurBounds.IntegralityOfRationalityLoca
 import Formalism.LocalToGlobal.GlobalTheory.GL6.ValuationClassTranslateMem
 import Formalism.LocalToGlobal.GlobalTheory.GL6.CoordMapInjective
 import Formalism.LocalToGlobal.GlobalTheory.GL6.RamifiedLatticePropsOfModel
-import Formalism.LocalToGlobal.GlobalTheory.GL6.DiamondPreservesRationalFormZero
-import Formalism.LocalToGlobal.GlobalTheory.GL6.AdelicFunctionRightTranslateDiamond
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AfsplitB
 import Formalism.LocalToGlobal.GlobalTheory.GL6.AdmissibleOfSplitAndRoundTrips
 import Formalism.LocalToGlobal.GlobalTheory.GL6.SecondBranchInclLengthOfLengths
 

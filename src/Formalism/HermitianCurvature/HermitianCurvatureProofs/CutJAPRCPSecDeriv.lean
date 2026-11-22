@@ -1,8 +1,6 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRCoreCut
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.NFRadRedA
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.ActualAdjointnessFromHermitian
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.FrameEntries
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.TheSection
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q
 open Matrix Filter Topology

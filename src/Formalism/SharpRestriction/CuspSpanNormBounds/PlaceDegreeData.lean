@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
-import Formalism.HermitianLattices.StatementMass
 import Formalism.FormalDegreeBessel.StatementDS
 import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut

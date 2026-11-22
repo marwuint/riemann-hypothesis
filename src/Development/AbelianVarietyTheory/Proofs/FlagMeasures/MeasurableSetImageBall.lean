@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.NCoords
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.BlockAnti
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MatGroupHaarUniqueFiniteCompactOpenPos
-import Formalism.PeriodIntegrals.QuotInv
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ChainRuleSmooth.ExpIntertwine
 
 noncomputable section

@@ -6,9 +6,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalIdeles
 import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalIdeles.WeakStableAlt
 import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalIdeles.NormRam
 import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalIdeles.Unlinked
-import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalIdeles.SmoEq
-import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.Places
-import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.NormCharSplit
 
 noncomputable section
 

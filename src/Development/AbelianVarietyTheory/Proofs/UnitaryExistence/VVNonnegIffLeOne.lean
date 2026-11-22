@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.IntAllFree
-import Formalism.LocalToGlobal.ProjectiveLattices.VAtVNeBot
-import Formalism.LocalToGlobal.ProjectiveLattices.PtFree
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosure
 
 set_option autoImplicit false

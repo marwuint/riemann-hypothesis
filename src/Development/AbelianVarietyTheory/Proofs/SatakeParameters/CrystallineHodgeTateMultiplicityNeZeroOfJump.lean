@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NotDvdCondN
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Formalism.FrobeniusOrbits.HostCorollaries
 import Formalism.SharpRestriction.ParConsts
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GoodCoefficientRingIntegersPadicFiniteExtensionStatement
 

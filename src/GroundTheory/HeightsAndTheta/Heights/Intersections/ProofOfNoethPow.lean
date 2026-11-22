@@ -5,8 +5,6 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.NotIsUnitOfNumMem
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PLocRingFrac
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PLocRingLocal
 import GroundTheory.HeightsAndTheta.Heights.Intersections.SpanSingletonEqRangeLsmul
-import GroundTheory.HeightsAndTheta.Heights.Intersections.CardLength
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.KrullDimQuotientEqOneIffEqBot
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Inter

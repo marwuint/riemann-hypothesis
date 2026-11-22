@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeJ
-import ReciprocityTheory.AnalyticForms.AnalyticCharts.NullZero
 
 noncomputable section
 

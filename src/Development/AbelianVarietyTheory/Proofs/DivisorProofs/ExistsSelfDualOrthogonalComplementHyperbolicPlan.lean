@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegIdxOfIsStd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseFits
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaneSplit
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinrankOrth
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsLatticeComapSubspaceRingOfIntegers
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLatticeOfEqSpanFracSmul
 

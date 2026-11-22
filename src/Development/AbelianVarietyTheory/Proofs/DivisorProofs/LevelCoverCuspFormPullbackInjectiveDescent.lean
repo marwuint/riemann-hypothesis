@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CongModRefl
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.WeightFunctionOnFrames
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinearIndependentRulBC
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionPullbackExistsUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NvalNonnegIff
@@ -11,8 +10,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModuliLawsCoefficie
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralRuleRuleBaseChangeCoeffFieldIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntValuationPrimeBack
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisStableLatticeRationalSpanInclusions
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferentIdealSmulMemSpanRational
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ValuesAlgIffValuesUnitOfNe
 open NumberField MeasureTheory Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.L2.Theta Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.AllWt GlobalTheory.LevGeo GlobalTheory.LevPull GlobalTheory.FieldBC
 open scoped ENNReal
 

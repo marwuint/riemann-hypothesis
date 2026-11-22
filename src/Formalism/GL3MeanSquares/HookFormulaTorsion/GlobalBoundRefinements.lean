@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.GL3MeanSquares.InvNormSqConjRatioPowIdentities
 import Formalism.GL3MeanSquares.HookFormulaTorsion.PrimesInProgressionCountLowerBound
-import Formalism.GL3MeanSquares.ConcavityEquidistribution
 import Formalism.GL3MeanSquares.HookFormulaTorsion.SumWeightsOverPrimeLeHalfDegree
 import Formalism.GL3MeanSquares.HookFormulaTorsion.ConditionIffDualEqFunctional
 import Formalism.GL3MeanSquares.HookFormulaTorsion.LengthQuotientBoundGeneral

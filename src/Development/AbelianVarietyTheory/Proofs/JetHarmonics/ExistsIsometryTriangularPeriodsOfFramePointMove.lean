@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointMoveC
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsUnitGramFrameBorelChange
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.CabsDiagEqOne
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.UnitFramesGeneratorRatioModulusOne
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsDerivAt0OfIsPullback
 
 open NumberField AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj GlobalTheory.LevelCusp
 open GlobalTheory.Dict (castFr)

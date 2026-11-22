@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.SettingExistsMeasured
-import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.ColDict
-import Formalism.SatakeDualWeyl.StatementC
 
 noncomputable section
 

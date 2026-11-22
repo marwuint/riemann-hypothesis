@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.SInvariantToInvariantsEqZeroIff
 import GroundTheory.ProfiniteCohomology.GlobalClassFormation.EqZeroOfBrauerLocalApplyEqZero
-import GroundTheory.ProfiniteCohomology.LocalClassFormation.CupSymbolBridge
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.ProfCoh

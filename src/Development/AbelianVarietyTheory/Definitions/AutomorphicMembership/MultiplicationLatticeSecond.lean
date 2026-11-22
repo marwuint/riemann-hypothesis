@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsNatDiagIffIsDiag
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsTorsionFreeOfForallExists
-import Formalism.SharpRestriction.Divisibility.BoundaryLocalData
 
 set_option maxHeartbeats 800000
 

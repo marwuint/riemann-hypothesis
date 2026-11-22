@@ -1,6 +1,4 @@
 import Formalism.LocalToGlobal.Columns.UnfoldingPhiCompLeftUnipotentSource
-import Formalism.LocalToGlobal.Columns.ReductionExistsInLatticeStabilizerHolds
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnfoldingEquivalence.CompSymmComp
 import Formalism.LocalToGlobal.Columns.CqCard
 
 open NumberField IsDedekindDomain Module

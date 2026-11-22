@@ -2,13 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LowerTieTwAt
 import Formalism.LocalToGlobal.HermitianForms.TiedBrRep
 import Formalism.LocalToGlobal.HilbertRowConditions.RowPin
-import Formalism.SharpRestriction.Divisibility.StatementFT.PeriodPointConditions
-import Formalism.LocalRingCardinality.PosOfIsomEmb
-import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.SharpRestriction.LevelLetterCocycles.TwGuard
 import Formalism.SharpRestriction.Divisibility.ThetaNormsAndLinks
-import Formalism.SharpRestriction.Divisibility.WeightDegreeSizes
 
 noncomputable section
 

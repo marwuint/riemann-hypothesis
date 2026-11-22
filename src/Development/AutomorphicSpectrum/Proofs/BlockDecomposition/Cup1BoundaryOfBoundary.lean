@@ -5,7 +5,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoboundaryCup0
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ValSuccAbove
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFactorOfExactIsField
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsDualFunctionalsOfLinearIndependent
-import Development.WeilBound.CoreStatements.AutomorphicKernels.AbelianDeRham.AbelianHodgeDeRham.H1DimGeAbelianDim
 
 set_option autoImplicit false
 

@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutDec
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.TriangleInequalityAtPlace
 
 namespace Formalism.FourierDecayAlt.P.CutBP2
 

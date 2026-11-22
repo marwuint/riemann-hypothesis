@@ -1,7 +1,6 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopDlNonneg
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivationDenominatorsAndHostFieldSizes
 import Development.AutomorphicArithmetic.CyclotomicBounds.WildJets.ImportsAlt
 import Development.AutomorphicArithmetic.CyclotomicBounds.WildJets.LossOne
 import Development.AutomorphicArithmetic.CyclotomicBounds.WildJets.ExpLoss

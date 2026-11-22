@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdMinorsMemInv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColumnInclusionRenaming
 import ReciprocityTheory.DualLattices.FischerSelfNeZero
-import ReciprocityTheory.DualLattices.ConstantCoeffRowSubst
 open Classical
 
 noncomputable section

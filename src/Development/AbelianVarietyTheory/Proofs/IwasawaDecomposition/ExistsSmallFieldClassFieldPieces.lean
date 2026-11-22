@@ -1,8 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.HilbertRowConditions.IsHilbertCF
-import Formalism.FrobeniusOrbits.HostCorollaries
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.DiscrB
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.DiscriminantRealSubfield
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.HostPins
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.PublishedTheorems.WeberRayClassFields.WeberRayFieldSt
@@ -14,7 +11,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DvdDiscrTors
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DiscFieldEqTorsionField
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CardFilterLeLogClassNumber
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PrimeDvdOfMemDifferent
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemConnectedComponentOfOneOfPos
 
 noncomputable section
 

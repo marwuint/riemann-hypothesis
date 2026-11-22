@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.IntegralModels.Statements
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.Bundle
 import GroundTheory.HeightsAndTheta.Heights.IntegralModels.ChartGlueSat
 
 set_option maxSynthPendingDepth 1

@@ -3,9 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.LocSpBot
 import Formalism.LocalToGlobal.GroupLattices.LevelCharts.SplitIntPI
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.TiePtOne
 import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.ToLEInvApply
-import Formalism.LocalToGlobal.HermitianForms.RankEqFirstLevel
-import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.PtStep0
-import Formalism.LocalToGlobal.HermitianColumns.InLocalDiscriminantKernel
 
 noncomputable section
 

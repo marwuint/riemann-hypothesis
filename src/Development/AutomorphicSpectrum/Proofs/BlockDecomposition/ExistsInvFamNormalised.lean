@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.PoitouTateNormalised
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormalisedLocalInvariantExists
-import ReciprocityTheory.GaloisValuations.Global
 
 noncomputable section
 

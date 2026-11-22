@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLPowIHat
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DvdOfForallNearOD
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdealPowerMembershipDivisible
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLastMaxOfMem
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FrobeniusPeriodRingInjective
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 

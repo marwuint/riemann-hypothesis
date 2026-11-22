@@ -7,7 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsCEmbCLam
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsFinsetRepsOfCls
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FinStabSite
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsAdelicDatumWithLawsAtJoint
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.LocSpBot
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.MainNotions.G.KAat Formalism.MainNotions.G.CmpJ Formalism.L2.Ker Formalism.L2.G.Pend Formalism.L2.KerInert GlobalTheory.TwV
 
 namespace GlobalTheory.TwV

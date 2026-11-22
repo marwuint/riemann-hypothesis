@@ -2,8 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
 import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.DepthCond
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TwistChoiceExample
-import Formalism.LocalToGlobal.IndefiniteReal.CxLemmas
-import Formalism.HermitianLattices.HermitianLatticesProofs.LocDual
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RationalZeroIffRationalSubspace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LMLatOfLIntegral
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EOpEqAsAlgebraHom

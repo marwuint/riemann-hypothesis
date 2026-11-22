@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.JSmul
-import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GammaActionReduction
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachDeltaInvariantsReductionIsLattice
 

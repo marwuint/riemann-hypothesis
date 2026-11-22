@@ -2,7 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsLocSec
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedMeasure
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedChartHolomorphic
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJMap
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsSectionDiagSec
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedChartCoordinatesRegular
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedChartContinuousProjection

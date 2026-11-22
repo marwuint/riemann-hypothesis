@@ -1,6 +1,5 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.IsCoordA
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ConjMemOfMemHeckeLevel
-import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsGPull
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHeckeMap
 

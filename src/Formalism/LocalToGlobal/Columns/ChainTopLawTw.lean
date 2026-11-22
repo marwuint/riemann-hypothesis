@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.TopLawQ
 import Formalism.LocalToGlobal.Columns.KOneCharacterTrivialNearOne
-import Formalism.LocalToGlobal.Columns.BlockTriangularMulVecMemPartialFlag
 
 open NumberField IsDedekindDomain Module Matrix
 

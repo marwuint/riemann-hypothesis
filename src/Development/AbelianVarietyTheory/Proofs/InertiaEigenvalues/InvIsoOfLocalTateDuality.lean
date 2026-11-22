@@ -1,6 +1,5 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs
-import Formalism.GaloisCohomology.LocalTateDualityK
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NatInvIsoOfLocalTateDualityCyclotomicTwistStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.H2TwistFromOpenUnion
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MapH2SubtypeInjective

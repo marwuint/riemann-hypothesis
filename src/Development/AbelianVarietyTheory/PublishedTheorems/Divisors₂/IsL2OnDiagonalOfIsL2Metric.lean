@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsFlagModelHermSum
-import Development.AbelianVarietyTheory.Definitions.Divisors.NefFibOfIsNef
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTorsionFormWithPoint
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CharChPartZero
 

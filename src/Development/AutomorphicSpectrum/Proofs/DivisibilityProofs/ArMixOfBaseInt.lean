@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NontrivialIsomClass
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ArFormExists
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CodimOneIntegralSubschemeDim
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagBundleProductOfEach
-import Development.AbelianVarietyTheory.Definitions.Divisors.GenericPointAsIdeal
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.SheetUnsheet
 import Development.AutomorphicSpectrum.PublishedTheorems.Divisibility₂.PairingExists
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsArithVarInt
@@ -11,7 +10,6 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArchIntToZEq
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.WZIsCInf
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ToZPowCombIsometric
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ToZIsArFunIff
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ToZIsArithHeightIff
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry TopologicalSpace Filter Topology MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)

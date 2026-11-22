@@ -4,7 +4,6 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitForm
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HopfOrderContainsCharacters
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopf
-import Development.WeilBound.CoreStatements.HodgeTatePoints.TwhopfSec
 
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT

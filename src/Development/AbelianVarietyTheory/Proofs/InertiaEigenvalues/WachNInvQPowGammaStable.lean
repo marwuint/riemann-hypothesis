@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.UsedLocalConclusion
-import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NotFullBot
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MemEurOfTeichmullerSeries
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachExpansionBasisDivisibility

@@ -1,6 +1,4 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.TermsFiniteAtPoint.FrameTop
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.SplitRow
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IdentityCellTrace.TraceOneHolds
 import Formalism.SharpRestriction.CuspSpanNormBounds.CntPartners
 
 noncomputable section

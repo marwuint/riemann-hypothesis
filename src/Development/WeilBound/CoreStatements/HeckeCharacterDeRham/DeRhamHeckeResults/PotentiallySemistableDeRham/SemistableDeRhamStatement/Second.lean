@@ -1,7 +1,6 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.CrystallinePeriodRings.InstCommRingBcris
 import GroundTheory.PAdicHodge.BStPeriod
-import GroundTheory.PAdicHodge.BdRAlg
 
 noncomputable section
 

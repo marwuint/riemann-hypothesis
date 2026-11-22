@@ -5,8 +5,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.C
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.MeasurablePhi
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.NormLeOfDet
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.FinMuUnconditional
-import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.MeasureStatements
-import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.NormBcharMulNfacRmul
 
 open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.L2DbarEstimates MeasureTheory Topology GlobalTheory.Shares
 open scoped ContDiff ENNReal Matrix

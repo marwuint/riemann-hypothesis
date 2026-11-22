@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnitaryOnTheta
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsFinWeil
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisThetaLaws
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchurLemmaThetaFunctionsOrientedPair
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryEqRealMulFiniteSplit
 
 noncomputable section
 

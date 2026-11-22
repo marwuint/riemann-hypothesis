@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
-import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Definitions.Divisors.EvenDefect
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SecCmp
 
 noncomputable section
 

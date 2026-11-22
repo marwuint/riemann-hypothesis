@@ -4,8 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Acris0Torsio
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorGaussNormUltrametric
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorGaussNormMul
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltNormUltrametricEqZero
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 
 noncomputable section
 namespace GlobalTheory.GaussExt

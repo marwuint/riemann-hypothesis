@@ -4,9 +4,6 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.LieSecondOrderOfRealLift
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.WeilLieAlgebraScalarAction
 import Mathlib
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
-import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 
 section
 noncomputable section

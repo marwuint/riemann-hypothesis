@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsEigFrames
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
 
 namespace GlobalTheory.CompanionTheory.Ar.Exchange
 

@@ -4,8 +4,6 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.PiInvTop
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.PiVecExHolds
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.TwtrContOfMem
-import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.LogAbsEqLogIdeleNorm
-import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.SplitCentreMulTor
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductOfLocalLevelsUnitaryIsOpenIsCompactIsLeve
 
 open UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi UpperTheory.Zero.ConvolutionTheory.EB

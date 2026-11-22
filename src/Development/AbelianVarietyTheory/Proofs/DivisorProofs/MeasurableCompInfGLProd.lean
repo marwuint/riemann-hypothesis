@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.MeasurableCompInfGL
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PetEqZeroOfOrthogonal
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivariantProj
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantTermAutomorphicFormIntegral
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfMemWeakIn
 
 noncomputable section
 

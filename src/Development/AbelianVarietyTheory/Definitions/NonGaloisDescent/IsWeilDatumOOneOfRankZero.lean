@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LengthPosOfPosDef
 import Formalism.LocalToGlobal.IndefiniteReal.AutomorphicFormsHyp
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.LiftsCart
-import Formalism.LocalRingCardinality.SpanPowerMembership.Spaces
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.CocompactTensor
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.MeanSquareAddFundamentalDomainOfCocompact
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocallyCompactSecondCountableT2

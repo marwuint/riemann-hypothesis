@@ -2,8 +2,6 @@ import Mathlib
 import ReciprocityTheory.AnalyticForms.LeviForms.Energy
 import ReciprocityTheory.AnalyticForms.PotentialTheory.ProdProofB
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
-import ReciprocityTheory.AnalyticForms.PotentialTheory.LocDens
-import ReciprocityTheory.AnalyticForms.PotentialTheory.Partition
 import Development.AbelianVarietyTheory.Definitions.Divisors.FirstChernLeviEqConstant
 
 open Formalism.DegreeFormula Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Formalism.MainNotions.WeightThresholdDefs Filter Topology Classical MeasureTheory

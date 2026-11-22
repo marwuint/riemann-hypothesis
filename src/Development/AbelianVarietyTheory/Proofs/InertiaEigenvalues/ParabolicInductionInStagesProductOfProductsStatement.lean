@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StandardCosocleGL
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivProdIrrTw
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsSubquotientParIndProductsFlattened
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ParabolicInductionProductBlockRenamingEquiv
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MultiProdCompCongr
 import BuildAid.D3
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL

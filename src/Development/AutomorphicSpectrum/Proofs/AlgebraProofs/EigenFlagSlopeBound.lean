@@ -6,7 +6,6 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.LmuNumNonneg
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ConjugateEigenSubDegreeEq
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LieSubDegreeBoundByDual
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DegreeSumEigenSubDegrees
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubDegreeBotAndMaxExists
 
 open GlobalTheory.CompanionTheory.Ar.Crv
 

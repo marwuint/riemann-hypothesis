@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.EigenvectorLieDegree
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.AdelicDegreeTameRamification
-import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsCoprimeTwoSubRtTwoAddRt
 
 set_option autoImplicit false
 

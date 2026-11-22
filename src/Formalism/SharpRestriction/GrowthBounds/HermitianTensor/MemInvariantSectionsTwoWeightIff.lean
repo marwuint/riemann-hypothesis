@@ -1,7 +1,6 @@
 import Formalism.SharpRestriction.GrowthBounds.HermitianTensor.TieDefs
 import Formalism.SharpRestriction.GrowthBounds.ColumnSpanDensity.FinrankLetter
 import Formalism.SharpRestriction.GrowthBounds.ColumnSpanDensity.OneMemDualWeyl
-import Formalism.PolynomialDimension.FinalHar
 
 noncomputable section
 

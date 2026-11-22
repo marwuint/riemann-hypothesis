@@ -1,14 +1,8 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
-import Formalism.LocalToGlobal.IndefiniteReal.CutTuples2
-import Formalism.LocalToGlobal.Divisibility.LiftLatLemmas
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinRepApply
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffDerivSnoc
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ComplexConjugationMapsMultiplicitySpace
-import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
-import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
-import Formalism.LocalToGlobal.IndefiniteReal.OrthogonalComplementCharacterisation
-import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
 
 noncomputable section
 

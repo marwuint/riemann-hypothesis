@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEqColGen
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousOfMemSmoothSpan
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPsiLocNeOne
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NegOneNotMemNatLat
-import GroundTheory.GlobalFields.Adele.Compact
 open NumberField IsDedekindDomain MeasureTheory GlobalTheory.CuspRep GlobalTheory.RSJ GlobalTheory.MirTower GlobalTheory.CuspGeneric Formalism.L2.Host
 open scoped ENNReal NNReal ComplexConjugate
 

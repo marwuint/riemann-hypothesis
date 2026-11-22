@@ -2,7 +2,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaFunctionCon
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CharacterChoiceData
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.MapMemISupIsLinAt
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.EtaPiece
 
 set_option synthInstance.maxHeartbeats 200000

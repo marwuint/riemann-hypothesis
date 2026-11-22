@@ -3,7 +3,6 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosur
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DominantSmoothMapCoords
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FunctionFieldRatioGenerators
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtFractionNoetherianClosed
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
 
 noncomputable section
 

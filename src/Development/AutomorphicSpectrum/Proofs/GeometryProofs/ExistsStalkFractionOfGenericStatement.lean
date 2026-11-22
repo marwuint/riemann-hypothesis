@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsStalkFractionOfGeneric
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCptGen
 
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in

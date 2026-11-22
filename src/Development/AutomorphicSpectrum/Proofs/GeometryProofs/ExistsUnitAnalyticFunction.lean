@@ -8,9 +8,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.B
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformisedEigenFramesAll
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformisedEigenFramesTwo
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformisedEigenFrameTwo
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformisedEigenFrameOne
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodEigenFrame
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsCombAtIffIsDerivAt0
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
 

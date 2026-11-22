@@ -1,7 +1,6 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.TorDefs
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.TchOfIntegral
-import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.NormEqOfNormSubLt
 
 noncomputable section
 open scoped Classical

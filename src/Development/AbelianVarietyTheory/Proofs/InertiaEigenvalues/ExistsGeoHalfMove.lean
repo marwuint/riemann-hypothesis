@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGeomet
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GeometricHalfCoreFormsUniformisationIntegral
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GeoHalfUpd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PbEqOfPins
-import Formalism.LocalToGlobal.IndefiniteReal.WeakCharacterisationWithError
 
 set_option autoImplicit false
 

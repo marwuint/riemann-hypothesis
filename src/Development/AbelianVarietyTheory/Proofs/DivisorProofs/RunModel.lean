@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsArchOne
-import Development.AbelianVarietyTheory.Definitions.Jets.EmbShortThLeThetaPlain
-import Formalism.LocalToGlobal.ProjectiveLattices.PetersonNormSubspace
 
 set_option autoImplicit false
 

@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsDatumSumAn
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsLevelGoodAtAllPrimesAndIdx
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUnfFamily
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsVanBdOfMemExtVanZ
-import Development.AbelianVarietyTheory.Definitions.Divisors.SecondCountableTopologyOfIsProjOver
 
 noncomputable section
 

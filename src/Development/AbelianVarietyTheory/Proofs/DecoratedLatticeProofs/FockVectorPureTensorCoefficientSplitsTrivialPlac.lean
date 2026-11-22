@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedTensor
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntOv
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVectorsPureTensors
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilRepActsOnPureTensorsPlacewise
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PureTensorInnerProductEqFinprodLocalInnerProduct
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaInnerProductHermitian
 
 noncomputable section
 

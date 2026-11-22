@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.LocalFields.ConductorTransport
-import GroundTheory.LocalFields.SeparableClosure
 set_option maxSynthPendingDepth 1
 
 noncomputable section

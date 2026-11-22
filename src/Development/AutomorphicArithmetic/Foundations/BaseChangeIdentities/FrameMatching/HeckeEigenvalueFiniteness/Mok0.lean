@@ -1,5 +1,4 @@
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameBoundSpaces.KBsLev
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBallSubset
 
 noncomputable section
 

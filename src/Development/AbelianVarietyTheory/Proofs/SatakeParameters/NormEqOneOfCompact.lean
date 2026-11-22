@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsobaricDiscr
 import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
 import Formalism.LocalToGlobal.UnitaryNorms.CharTied
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.BlockCharIntegral
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPowLeSpan
 
 noncomputable section
 

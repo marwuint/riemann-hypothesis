@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.CharacterGerms.FirstStepSecondHalfCondition
-import Formalism.LocalToGlobal.CharacterGerms.RowTieFB
 
 set_option autoImplicit false
 

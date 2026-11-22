@@ -1,7 +1,6 @@
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WHyp
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelfDualMeasureExistsUniqueFourierInversion
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleHermitianPairStructureFacts
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 

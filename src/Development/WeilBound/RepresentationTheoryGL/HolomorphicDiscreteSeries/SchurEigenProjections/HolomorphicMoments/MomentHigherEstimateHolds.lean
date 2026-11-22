@@ -1,7 +1,6 @@
 import Development.WeilBound.CoreStatements.BranchingTraces.FormTSingle
 import Development.WeilBound.CoreStatements.BranchingTraces.BranchingComatrices.ComatrixWordBound
 import Development.WeilBound.CoreStatements.BranchingTraces.CasimirDecomposition.UnitaryDecompositionExists
-import Development.WeilBound.CoreStatements.OrbitDecayEstimates.CurveDerivativeDecay.KFiniteWordBoundIndefUnitary
 import Development.WeilBound.RepresentationTheoryGL.HolomorphicDiscreteSeries.SchurEigenProjections.BigProjP
 
 noncomputable section

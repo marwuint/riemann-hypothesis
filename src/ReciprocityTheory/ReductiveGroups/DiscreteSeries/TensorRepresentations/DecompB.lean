@@ -1,6 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.Unitarize
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.CasimirGapAtNoncompactWeight
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Unitary
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.DecompA
 
 noncomputable section

@@ -1,7 +1,6 @@
 import Development.WeilBound.CoreStatements.FlagImmersions.Transport
 import Development.WeilBound.CoreStatements.VolumeEquality.BaseUnif
 import Development.WeilBound.CoreStatements.VolumeEquality.Pieces
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugateUniversalFamily
 
 noncomputable section
 

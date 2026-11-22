@@ -13,7 +13,6 @@ import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.RankOnDigitsCast
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.CardEqChainSum
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.StWeyl
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.FactorsOfPerturb
-import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.ChainDim
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.UpperCountOfTopRows
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.CountLow
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.BlockInj
@@ -32,10 +31,8 @@ import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.CoarseDegreesLargeO
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.CoarseThresholdRatioConsecutive
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.SymInt
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.WittPNe
-import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.FinalTheorems
 import Formalism.LocalToGlobal.GroupLattices.FockModels.TestSideEdge
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.DualLat
-import Formalism.LocalToGlobal.GroupLattices.FockModels.TestSidePos
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.SettingCharZeroAt
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.SettingCZ
 

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptFiniteExtension
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptIsoCompare
-import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Birational
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.GenOfUnit
 
 open AlgebraicGeometry CategoryTheory Limits NumberField Matrix

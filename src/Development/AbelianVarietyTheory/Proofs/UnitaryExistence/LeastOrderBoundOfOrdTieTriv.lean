@@ -1,11 +1,8 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.HeightF1OfData
-import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
-import Formalism.LocalToGlobal.ProjectiveLattices.RegularityR2Quotient
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIdempotentSectionFamily
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FnFGFnTrdeg
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.FiniteSupportAdmissible
-import ReciprocityTheory.SemistableReduction.AlgAll
 
 noncomputable section
 

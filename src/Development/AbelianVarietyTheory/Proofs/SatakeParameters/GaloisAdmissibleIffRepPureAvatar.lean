@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
-import Formalism.SharpRestriction.LevelLetterCocycles.DataN
 
 noncomputable section
 

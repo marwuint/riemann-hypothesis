@@ -1,6 +1,5 @@
 import Formalism.ThetaLogCoordinates.ProductIdealMonotone.ElementarySymmetricExpBound
 import Formalism.SubspaceCounting.SubspaceCountingProofs.ManyOrbits
-import Formalism.ThetaLogCoordinates.ProductIdealMonotone.ParamDefs
 
 noncomputable section
 

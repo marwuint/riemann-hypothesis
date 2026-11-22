@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsLocSec
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJMap
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsValueAtOfTorus
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedAtlasCompatibility
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedMetricLogFormula
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicFrameMetricNearPoint

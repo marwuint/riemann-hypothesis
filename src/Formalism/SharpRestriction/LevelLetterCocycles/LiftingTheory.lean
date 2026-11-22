@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.GammaSemisimpleLocalOfConsequences
-import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.LagrangeIdealLifts.Statement
-import Formalism.SharpRestriction.LevelLetterCocycles.DeltaInvariantLattices
 
 noncomputable section
 

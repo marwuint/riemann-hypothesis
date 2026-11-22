@@ -2,8 +2,6 @@ import Mathlib
 import GroundTheory.PAdicHodge.ConvergesAtOfNormLeSeq
 import GroundTheory.PAdicHodge.BoundOfEventuallyAntitone
 import GroundTheory.PAdicHodge.ExtRobbaLift
-import GroundTheory.PAdicHodge.ExtRobbaUnits
-import GroundTheory.PAdicHodge.ExtRobbaNewton
 
 set_option maxSynthPendingDepth 1
 

@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.LatMod
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.VacExApp
-import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemElt
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.VacExA
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.FactPrincipalDatum
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceDualB

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeakApproximationIntegral
-import GroundTheory.GlobalFields.TateThesis.AdelicCharDual
 
 open scoped Pointwise Topology
 open IsDedekindDomain NumberField

@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ir
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GenericDetPowMulHw
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NonemptyDirectSumEquivOfFinrankLe
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSemisimpleRepresentationTprodOfIsIrreducibleAl
-import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
-import Formalism.GradedWeylDivisibility.FinalB
 
 open MvPolynomial Formalism.BasicNotions Formalism.GradedWeylDivisibility GlobalTheory.Branching GlobalTheory.GLDuality
 open Formalism.REAL (fockF)

@@ -1,7 +1,5 @@
 import Mathlib
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.IsDiscreteRepResIntRepTrivGs
-import GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerOrd
-import GroundTheory.ProfiniteCohomology.RestrictedRamification.SInvariantToInvariantsEqZeroIff
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.ProfCoh

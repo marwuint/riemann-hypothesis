@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TrivIsCr
 import Development.AbelianVarietyTheory.Statements.EllipticCurveLevels.ClosedAtLConclusionOfMem
-import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AcrisTorsionFreeComplete
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DeRhamPotSemistable
 
 noncomputable section

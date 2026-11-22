@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAlgClosedFractionRingAtPrimeOfEtale
-import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
 
 open GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in

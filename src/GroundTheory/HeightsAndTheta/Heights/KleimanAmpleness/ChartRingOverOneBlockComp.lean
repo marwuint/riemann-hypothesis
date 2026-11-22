@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsLastExtra
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsLastRest
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.OneMemSecOverZero
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ExistsSumEqOneOfMulEqOne
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.AssemblyBase
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PGraphClosed
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ChartRingOverOneBlockEqAlt

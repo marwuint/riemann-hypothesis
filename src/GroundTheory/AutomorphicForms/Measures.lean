@@ -3,7 +3,6 @@ import GroundTheory.AutomorphicForms.MeasuresModulus
 import GroundTheory.AutomorphicForms.MeasuresChart
 import GroundTheory.AutomorphicForms.MeasuresGL
 import GroundTheory.AutomorphicForms.MeasuresParabolic
-import GroundTheory.AutomorphicForms.Iwasawa
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Automorphic

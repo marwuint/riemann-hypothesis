@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IntegralBound
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsCoordAtPoints
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalizedPointHeightLatticeSmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerConstantCoeffEqSpan
-import Formalism.HarderNarasimhan.StatementPl
 
 open CategoryTheory AlgebraicGeometry NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory

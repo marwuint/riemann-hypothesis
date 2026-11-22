@@ -3,7 +3,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.G
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.BcDefs
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsUnitarisableTrivChar
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolarizedTwistAbsPow
-import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
 
 noncomputable section
 

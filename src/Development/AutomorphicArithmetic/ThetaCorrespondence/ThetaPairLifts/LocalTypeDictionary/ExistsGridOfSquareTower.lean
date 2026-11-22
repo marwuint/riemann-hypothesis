@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilTopGridStageExists
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.RegConst
 
 section
 noncomputable section

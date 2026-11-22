@@ -7,8 +7,6 @@ import Formalism.RealPlaceAnalysis.FinalF
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormPosOfIsUnit
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalBasis
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryRepMatrixCoefficientBound
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarSubgroupBiInvariant
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentRadicalVolumeGrowth
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec GlobalTheory.DSId
 open scoped InnerProductSpace ComplexOrder ContDiff

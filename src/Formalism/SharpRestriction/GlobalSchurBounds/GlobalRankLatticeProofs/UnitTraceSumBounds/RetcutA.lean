@@ -4,7 +4,6 @@ import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.Unit
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CubeFormalIdentities.CoeffPowMulPowEqZero
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.DiagonalPadicSubstitution.CoeffPowMulPowEqZeroOfLt
-import Formalism.PeriodIntegrals.BeDiagZp
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.PhNormUnits
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.PhNormLimit
 

@@ -1,5 +1,4 @@
 import CompanionTheory.RealGroups.FormalDegrees.ArchimedeanFormalDegrees.HlamStable
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.Exists
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.Unique
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.KSchur
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.RhoNSubNab

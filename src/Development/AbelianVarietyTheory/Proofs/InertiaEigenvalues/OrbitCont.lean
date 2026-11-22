@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FiltrationZeroMembership
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 
 noncomputable section
 

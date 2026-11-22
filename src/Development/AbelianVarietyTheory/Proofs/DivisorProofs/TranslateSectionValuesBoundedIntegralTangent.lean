@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TanRel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TrVal
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsPolAVSectionInverseImage
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbsoluteSiegel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffTopMonEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FamilySectionSpanPullbacksUnitBall

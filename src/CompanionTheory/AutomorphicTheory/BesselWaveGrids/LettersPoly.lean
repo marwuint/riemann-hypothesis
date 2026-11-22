@@ -1,5 +1,4 @@
 import CompanionTheory.AutomorphicTheory.SchurLimitBounds.ZuckermanDuality.ZuckDualTOfZuckDual
-import Formalism.HermitianCurvature.StatementU
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ConjugationInvarianceEverySetting
 
 noncomputable section

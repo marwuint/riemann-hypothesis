@@ -1,15 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitKOfIsAlgClosed
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFiniteExtensionSplittingTorsion
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFlagFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoverFunctionFieldEmbedding
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HessRelFnB
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommonRefinementCovers
-import Development.AbelianVarietyTheory.Definitions.Divisors.SemiposAtOfPositive
-import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemConeOfMem
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormsOfInduces
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.JGenSpecializes
 
 set_option autoImplicit false
 

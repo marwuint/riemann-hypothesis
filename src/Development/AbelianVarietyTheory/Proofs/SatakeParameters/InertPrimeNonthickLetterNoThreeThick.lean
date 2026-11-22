@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Alternates
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Formalism.FrobeniusOrbits.HostCorollaries
 import Development.AutomorphicArithmetic.CyclotomicBounds.PlaceOfLetterInjective
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ComplexConjugationOrbitOneRealPlace
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AtMostTwoThickInWindowLongOrbit

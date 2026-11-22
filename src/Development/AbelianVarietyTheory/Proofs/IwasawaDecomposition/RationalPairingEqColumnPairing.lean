@@ -9,9 +9,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RowSideDefin
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpanRangeInfKerLeOfBasis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RangeOpEqSpanOfFormsTie
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RangeGoodProjectorEqRangeGoodCoordinates
-import Formalism.LocalToGlobal.IndefiniteReal.CutPassage
-import Formalism.LocalToGlobal.IndefiniteReal.CxLemmas
-import Formalism.LocalRingCardinality.DataBu
 import Formalism.LocalRingCardinality.SpanPowerMembership.NZRowF
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx
 open scoped TensorProduct InnerProductSpace

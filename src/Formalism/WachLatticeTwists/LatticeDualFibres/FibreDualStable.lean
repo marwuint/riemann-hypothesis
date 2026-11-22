@@ -1,5 +1,4 @@
 import Formalism.WachLatticeTwists.LatticeDualFibres.StatDualFibreLattice
-import Formalism.WachLatticeTwists.LatticeDualFibres.Statement
 import ReciprocityTheory.GaloisValuations.ContinuousConstSMulQuotient
 
 universe u

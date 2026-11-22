@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsCurrent
-import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.LineInhabitant
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.MeasurableOfContinuousOnNeZero
 
 set_option maxSynthPendingDepth 1

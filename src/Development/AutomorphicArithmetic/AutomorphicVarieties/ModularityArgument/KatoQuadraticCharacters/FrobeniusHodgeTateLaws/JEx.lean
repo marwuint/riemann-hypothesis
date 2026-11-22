@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.FrobeniusHodgeTateLaws.RhoFrob
-import Formalism.LocalRingCardinality.SpanPowerMembership.NDLocA
 
 open UpperTheory.V.Z.Kato.Joint
 

@@ -4,7 +4,6 @@ import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Met
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsArithVarOfBlockAlgebraic
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar

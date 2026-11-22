@@ -1,6 +1,5 @@
 import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.SliceTensors.TwistedSlicesSquareIntegrable
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasCompactSupportSum
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AutomorphicFormDerivativeModerateGrowth
 
 noncomputable section
 

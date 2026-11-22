@@ -8,8 +8,6 @@ import Formalism.LocalRingCardinality.DataTheta
 import Formalism.LocalRingCardinality.PrincipalHermitianLattice
 import Formalism.LocalRingCardinality.DataKap
 import Formalism.LocalRingCardinality.DataAmbForm
-import Formalism.HarderNarasimhan.StatementPl
-import Formalism.HermitianLattices.StatementMaj
 import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 import Formalism.SharpRestriction.ParConsts
 import Formalism.SharpRestriction.ParamsHeightRankConstant

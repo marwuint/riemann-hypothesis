@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.TieTest
-import Formalism.LocalToGlobal.IndefiniteReal.CxLemmas
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 

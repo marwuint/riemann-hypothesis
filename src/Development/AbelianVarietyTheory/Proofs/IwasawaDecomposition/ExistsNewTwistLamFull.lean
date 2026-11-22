@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenUsedOfCenReal
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SettingsFormsExistList
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PlaceModelImp
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RealIoX
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.OmPinsTr
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DofOTw
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SideTw

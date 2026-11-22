@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.GlobalTheory.GL4.PColSlopeEq
-import Formalism.LocalToGlobal.Columns.PolyFnLemmas
 
 noncomputable section
 

@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.RegConst
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegIdxOfOrth
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SelfDualLatticeHasRigidification
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RouteDatumMemAlgebraicVectorsGridFrames
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompactSubgroupsActOnFockVectorsAllSignatures
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PureTensorOPerm
 
 noncomputable section

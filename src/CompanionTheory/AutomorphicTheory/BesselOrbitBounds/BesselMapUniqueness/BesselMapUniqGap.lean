@@ -1,5 +1,4 @@
 import CompanionTheory.HarishChandraModules.BesselParameterIntegrals.ParametricIntegralSmoothness.IntCommute
-import Formalism.PeriodIntegrals.BesselMapUniq
 
 open Matrix MeasureTheory Formalism.QuantumDeterminants CompanionTheory.D.Upq.Sm
 open scoped ContDiff InnerProductSpace ComplexConjugate

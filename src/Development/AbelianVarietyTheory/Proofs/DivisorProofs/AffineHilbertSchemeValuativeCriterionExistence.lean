@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComapBcComp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealSheafDataComapIdealTopOfIsAffine
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatSubschemeOfQuotientFlatAffineStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFlatIdealValuationRingPullback
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsAlt
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits Opposite
 
 namespace GlobalTheory.HilbAff

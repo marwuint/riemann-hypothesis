@@ -1,6 +1,5 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChange.StrictDominanceCasselman.IsStrictlyDominant
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormalizedAbsCharacterization
 
 noncomputable section
 

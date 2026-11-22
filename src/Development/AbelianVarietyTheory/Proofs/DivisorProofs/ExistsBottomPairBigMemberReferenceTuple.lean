@@ -14,7 +14,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardThetaDatumP
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsNormEqUnderOfIdemAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjSmulNeOfIsIdemAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeUNuInvEqOneOfCong
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ActAApply
 
 noncomputable section
 

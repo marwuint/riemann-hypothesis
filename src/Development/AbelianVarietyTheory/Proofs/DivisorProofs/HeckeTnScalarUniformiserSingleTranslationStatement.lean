@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeTnScalarUniformiserSingleTranslation
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Tjcosets
 
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in

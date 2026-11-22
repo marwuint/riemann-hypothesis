@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IdealPadicGeneratorLogNorm
-import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsCoordinate
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField

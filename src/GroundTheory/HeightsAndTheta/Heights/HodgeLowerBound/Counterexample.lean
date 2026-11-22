@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.Counterexample.Objects
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.PPtsIntegralPoints
-import GroundTheory.HeightsAndTheta.Heights.HeightComparison.POrbitDegree
 import GroundTheory.HeightsAndTheta.Heights.Intersections.ConservationDegreeFormOfExistence
 
 set_option maxSynthPendingDepth 1

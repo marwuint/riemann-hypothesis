@@ -6,14 +6,12 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.WellChosen
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IntegralBound
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsCoordAtPoints
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalizedPointHeightLatticeSmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerConstantCoeffEqSpan
 import Development.AbelianVarietyTheory.Definitions.Divisors.WedgeNrmLeOfWedgeNormLe
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomWeightHomWeight
 import Development.AbelianVarietyTheory.Definitions.Divisors.MemLevEigenIffTransl
 import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.RealCubicMeans.LogMeanShares.LogMeanStatements.HSClaim
 import Development.AbelianVarietyTheory.Definitions.Divisors.GenRatios
-import Development.AbelianVarietyTheory.Definitions.Divisors.BadElt
 
 open CategoryTheory AlgebraicGeometry NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Theta

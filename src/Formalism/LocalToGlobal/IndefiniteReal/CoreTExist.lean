@@ -4,8 +4,6 @@ import Formalism.LocalToGlobal.ProjectiveLattices.CoreAt
 import Formalism.LocalToGlobal.ProjectiveLattices.CuspFormsFiniteDimensionalOf
 import Formalism.LocalToGlobal.ProjectiveLattices.SpMapAlgHomId
 import Formalism.LocalToGlobal.ProjectiveLattices.ParCanon
-import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlob
 
 noncomputable section
 

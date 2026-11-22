@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.GlobalFields.GlobalReciprocity.General
-import GroundTheory.GlobalFields.IdeleGroups.IdeleNorms.InfiniteAdeleRingMapInfiniteAdeleRingMap
 
 namespace GroundTheory.Global
 

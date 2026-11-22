@@ -35,7 +35,6 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PSpecialCyc
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PSpecialDimBound
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PConservationOfNumber
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PIntNumVanish
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Statements
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.NumbersDVR

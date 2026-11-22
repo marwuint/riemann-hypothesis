@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HaarMapMulRightEqOfFiniteFundamentalDomain
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NullMeasurableSetShearImage
 
 open MeasureTheory Function
 open scoped Pointwise

@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PtEqOfPtOfFr
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.CabsDiagEqOne
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyUnifWitnessDataOfIsUnf
 import Formalism.LocalToGlobal.ProjectiveLattices.RecConj
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.OrthoStatementPf
 
 set_option autoImplicit false
 

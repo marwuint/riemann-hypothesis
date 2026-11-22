@@ -1,7 +1,5 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsVeroneseChiParts
-import ReciprocityTheory.GeometryOfNumbers.SphericalMonomials.ChiPSt
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.ABridgeSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.CSandwichStD
 set_option maxSynthPendingDepth 1
 

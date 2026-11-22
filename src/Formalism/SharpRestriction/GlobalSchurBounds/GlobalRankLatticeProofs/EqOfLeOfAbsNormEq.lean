@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalRingCardinality.DataHost
 import Formalism.FrobeniusOrbits.HostCorollaries
-import Formalism.DirichletDensity.HostDensityArith
 
 noncomputable section
 

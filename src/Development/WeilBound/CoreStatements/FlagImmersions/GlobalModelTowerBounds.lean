@@ -7,12 +7,7 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntege
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeComparisonCompatibility
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
-import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootOriginWeightIdentity
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.VolumeInputs
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.TowerOrigin
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SumFundCoMulSumIic
 
 open AlgebraicGeometry CategoryTheory NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top
 open GroundTheory.Heights₂.Heights.LowerBoundFree (ComponentData ComponentSetting degMu ArLimExists slX)

@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.SecondPropositionRingAll
 import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.BlockProductRing
-import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.DvdOfCoeffSubstXPowNeZero
 import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.GradNPfB
 
 noncomputable section

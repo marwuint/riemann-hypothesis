@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCMFrame
 import Development.WeilBound.CoreStatements.SesquilinearFractions.LieNormSquareOfFamily
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 import Development.WeilBound.CoreStatements.SesquilinearFractions.GGramComb
 import Development.WeilBound.CoreStatements.SesquilinearFractions.GGramPush
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DualBasisHermitianSum

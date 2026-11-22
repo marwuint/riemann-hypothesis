@@ -5,7 +5,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.HcOmDir
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.HcDirData
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.HcDirVal
-import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.Th1Facts
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.X
 

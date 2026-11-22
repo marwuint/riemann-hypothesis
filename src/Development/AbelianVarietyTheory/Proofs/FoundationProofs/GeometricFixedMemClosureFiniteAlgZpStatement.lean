@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeometricFixedMemClosureFiniteAlgZp
-import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
 
 open GlobalTheory.K5
 set_option maxHeartbeats 1000000 in

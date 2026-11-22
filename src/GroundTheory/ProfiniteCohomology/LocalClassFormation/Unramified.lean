@@ -3,7 +3,6 @@ import GroundTheory.ProfiniteCohomology.LocalClassFormation.IntegerUnitsToUnitsH
 import GroundTheory.LocalFields.UnramifiedNorms
 import GroundTheory.LocalFields.UnramifiedGalois
 import GroundTheory.TateCohomology.Herbrand
-import GroundTheory.TateCohomology.TateLow
 import GroundTheory.ProfiniteCohomology.ClassFormations.IsIsoCohomologyMapAlongResSubgroupOfHom
 set_option maxSynthPendingDepth 1
 

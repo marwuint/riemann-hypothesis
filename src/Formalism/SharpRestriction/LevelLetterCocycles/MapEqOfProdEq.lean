@@ -1,5 +1,4 @@
 import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.CompositeOfChainHolds
-import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.SplitExt
 
 noncomputable section
 

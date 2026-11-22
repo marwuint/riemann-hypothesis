@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsTjCorrDiagMod
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BirigidifiedPullbackMulPairIsoTensorPowSq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PicEqZeroOfFpqc
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EpiPowOfIsAbelianScheme
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp
 
 noncomputable section
 

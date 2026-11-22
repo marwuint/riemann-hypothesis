@@ -1,11 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.AgreementPos
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.RefLinked
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.KillNoneFormPoly
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerArithAgreement
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PolarizationPolynomialCoeffBound
-import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.CompactGapsGE
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top
 

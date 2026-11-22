@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Nonzer
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingSpecNormalisedCharacterEq
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NonemptyAllIff
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.SplitRep
-import Formalism.LocalToGlobal.NormalizedHeckeFactors.EMtLevel
 import Formalism.LocalToGlobal.IndefiniteReal.TensCastR
 import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.RatDatOfReal
 

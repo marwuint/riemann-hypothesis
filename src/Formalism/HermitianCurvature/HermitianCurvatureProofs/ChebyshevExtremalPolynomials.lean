@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.LevelRecursionCondNeeded
-import Formalism.LatticeRigidity.StatementC
 import Mathlib
 
 namespace Formalism.FourierDecayAlt.P.ChebyshevExtremalPolynomials

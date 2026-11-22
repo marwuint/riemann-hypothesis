@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LeISupInfPreimage
 
 set_option autoImplicit false
 

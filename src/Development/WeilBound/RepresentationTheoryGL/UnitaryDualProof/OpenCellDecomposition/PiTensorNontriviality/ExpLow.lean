@@ -1,10 +1,7 @@
 import Development.WeilBound.RepresentationTheoryGL.UnitaryDualProof.BernsteinExponentBounds.IsInvForm
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerHeredity
-import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.LeibnizDerivatives.GenericProdIff
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NontrivialTwJacquetOfSurjective
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivProdIrrTw
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CentralExponentBoundOver
 
 noncomputable section
 

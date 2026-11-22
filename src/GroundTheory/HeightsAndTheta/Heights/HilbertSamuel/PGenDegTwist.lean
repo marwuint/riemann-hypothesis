@@ -1,11 +1,9 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsPerturb
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsGenericFibreVar
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsArith
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsHilbert
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.IsMultiHomogIdealIff
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Assembly
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDivPrincipalDegree
 
 set_option maxSynthPendingDepth 1
 

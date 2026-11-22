@@ -12,7 +12,6 @@ import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PSecBTorsionFree
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PGaussDVR
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PVertSpec
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PResidueAlgIndep
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PSecAlgField
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PCodimOnePrimeAvoid
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PFibreCut
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PGenericFibreDrop
@@ -21,27 +20,8 @@ import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PSpecCompDim
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PSecIdealOfPrime
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PSpecFirstNeField
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PSpecLength
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PChowNormFormGeneric
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PChowNormForm
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PChowSecDegree
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PSecLinNZD
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PSecBLinInj
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PSpecMax
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PSpecResidue
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PNormIdentity
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.POrdEq
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PGaussEq
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.IsChowFormCMul
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.StatementsGenSecKer
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.StatementsChart
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.StatementsOrd
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.StatementsFibreCut
-import GroundTheory.HeightsAndTheta.Heights.ChowForms.Assembly
 import GroundTheory.HeightsAndTheta.Heights.ChowForms.PIncIdealBelow
 import GroundTheory.HeightsAndTheta.Heights.ChowForms.PAffineChartTrdeg
-import GroundTheory.HeightsAndTheta.Heights.ChowForms.PIncIdealDim
-import GroundTheory.HeightsAndTheta.Heights.ChowForms.PConeDimOfChowForm
-import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChowFormExists
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PIncidenceZeroLocus
 set_option maxSynthPendingDepth 1
 

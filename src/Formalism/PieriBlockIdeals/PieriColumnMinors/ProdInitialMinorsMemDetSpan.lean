@@ -2,8 +2,6 @@ import Formalism.PieriBlockIdeals.StatementLA
 import Formalism.GradedWeylDivisibility.FinalC
 import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LDlatLemmas
 import Mathlib
-import Formalism.PieriBlockIdeals.Statement
-import Formalism.PieriBlockIdeals.StatementJ
 import Formalism.RankGapBounds.RankGapProofs.CardLargePrimeFactorsLeOneHolds
 import Formalism.PieriBlockIdeals.PieriColumnMinors.MaxValEqZeroOfLt
 import Formalism.PieriBlockIdeals.PieriColumnMinors.LocalComponentGL

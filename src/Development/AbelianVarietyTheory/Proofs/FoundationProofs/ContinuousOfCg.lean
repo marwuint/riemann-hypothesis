@@ -10,7 +10,6 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsHtPresNu7
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HtPresNu7MonoLoss
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemIntegersOfNormLeOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UntwistedRepresentationOrdinaryTriangularShape
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicCharInertiaSurjective
 
 noncomputable section
 

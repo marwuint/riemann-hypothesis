@@ -6,8 +6,6 @@ import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.ExistsNotIn
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ShortSpanUnitOfExactValues
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsDeltaDatumHigherLevel
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ValuesAlgIffValuesUnitOfNe
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapFiniteEtaleSurjectiveOfLaws
-import Development.AbelianVarietyTheory.Proofs.ToricGeometry.ExistsEquivOfSumEq
 
 set_option autoImplicit false
 

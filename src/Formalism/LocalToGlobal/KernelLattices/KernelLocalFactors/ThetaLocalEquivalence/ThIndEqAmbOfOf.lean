@@ -2,12 +2,9 @@ import Mathlib
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThetaLocalEquivalence.ThEquivPStepCIff
 import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.CharacterFactorUnitaryAction
 import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.NormOneUnitIdeal
-import Formalism.LocalToGlobal.GlobalTheory.GL3.PLinkThIndep
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.VacEntire
-import Formalism.PeriodIntegrals.VacEntire
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.FourthTensorThetaEqKernel
 import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.Outright
-import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.GMConjTranspose
 
 open NumberField IsDedekindDomain
 

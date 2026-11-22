@@ -5,7 +5,6 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 import Formalism.SharpRestriction.CuspSpanNormBounds.StandingNumericalData
 import Formalism.SharpRestriction.CuspSpanNormBounds.IsPrimitiveSub
 import Formalism.SharpRestriction.CuspSpanNormBounds.FlagEEqHyperbolic
-import Formalism.HermitianLattices.StatementMass
 
 noncomputable section
 

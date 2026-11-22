@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CoeffRingsHaveRootsOfUnity
-import Formalism.SharpRestriction.LevelLetterCocycles.EndomorphismIndexBound
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ComparisonMapIntertwinesGroupAlgebraAction
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemHeckeEigOfImageMovedByCentre

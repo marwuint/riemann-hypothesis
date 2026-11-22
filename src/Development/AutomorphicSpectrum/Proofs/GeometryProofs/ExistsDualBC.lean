@@ -1,10 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StalkLoc
-import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatLie
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueSemilinear
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 
 noncomputable section
 

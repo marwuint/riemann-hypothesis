@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.CxPassSk
-import Formalism.LocalToGlobal.IndefiniteReal.TraceOfDiag
 import Formalism.LocalToGlobal.GlobalTheory.DivPassageP
 import Formalism.LocalToGlobal.GlobalTheory.PassageBaseSymmetricLevels
 

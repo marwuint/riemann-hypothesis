@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdeleLogAbsoluteValueEqLogIdeleModule
-import Development.AbelianVarietyTheory.Definitions.Foundations.AbsCharNotUnitary
-import GroundTheory.GlobalFields.IdeleGroups.IdeleNorms
-import GroundTheory.GlobalFields.TateThesis.GlobalZetaFinite
 
 open NumberField IsDedekindDomain
 open scoped nonZeroDivisors

@@ -8,7 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LintegralNeTop
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TermInv
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.KerAbsOfCuspRapidDecay
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CuspKillHolds
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OmRatInvApply
 
 open Formalism.BasicNotions
 

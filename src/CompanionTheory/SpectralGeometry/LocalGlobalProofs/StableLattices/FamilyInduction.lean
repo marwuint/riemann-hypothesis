@@ -1,6 +1,5 @@
 import Mathlib
 import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.MatrixCoefficientDecay.InfinitesimalCharacterPaths.TensDecomp
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.MemUnitaryGroupIffMulConjTranspose
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ChainRuleSmooth.Curves
 
 noncomputable section

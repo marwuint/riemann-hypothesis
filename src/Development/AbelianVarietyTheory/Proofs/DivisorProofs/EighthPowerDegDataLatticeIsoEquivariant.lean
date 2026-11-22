@@ -1,6 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDiagEnd
 import Development.AbelianVarietyTheory.Definitions.Divisors.TorMatch
-import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharactersEightfoldProductEqEighthPower
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationEndomorphismClosedFibreTorusCharac

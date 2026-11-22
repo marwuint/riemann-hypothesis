@@ -1,8 +1,5 @@
 import Mathlib
 import Formalism.HermitianCurvature.StatementD
-import Formalism.HermitianCurvature.StatementQ
-import Formalism.HermitianCurvature.BigCellVanishingOfCommute
-import Formalism.HermitianCurvature.StatementU
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds
 import Development.AbelianVarietyTheory.Definitions.Jets.WigMap
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LeadingMinorInvariant

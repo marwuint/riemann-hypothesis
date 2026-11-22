@@ -1,10 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsStrictlySemistableAlt
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsUniqueIsTransfer
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RedCompatOfFiniteEtale
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FreeHomExtOfCovering
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitByBaseChange
 
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC

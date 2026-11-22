@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCMFrame
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FamilyPurePeriodsSpan
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodsSpanPureDecomposition
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsGoodReductionModelCmPeriodFibre
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CmExistsClosed

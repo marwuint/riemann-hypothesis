@@ -1,6 +1,5 @@
 import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.AdelicGaussians.UpperRightUnipotentInvariance
 import Mathlib
-import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.Height
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Filter Topology
 open GroundTheory.Global GroundTheory.LocalField GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm

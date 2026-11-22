@@ -1,6 +1,5 @@
 import Mathlib
 import ReciprocityTheory.AnalyticForms.LeviForms.UnifInt
-import ReciprocityTheory.AnalyticForms.LeviForms.TailBound
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.UIObjects
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.PGreenMassZero
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FixedMemberBase

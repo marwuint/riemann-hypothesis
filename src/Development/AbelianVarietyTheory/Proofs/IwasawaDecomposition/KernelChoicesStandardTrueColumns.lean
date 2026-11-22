@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsTwIf
 import Formalism.LocalToGlobal.KernelLattices.TopPin
 import Formalism.LocalToGlobal.KernelLattices.InterlaceAll
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompanionCrd
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnSpacesStandardInFrameCoords
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JetsInIffStepField
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevOkTwists
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DetIdStdBot
 

@@ -5,8 +5,6 @@ import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.IsFieldSubalgebraSe
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsKodairaGeneric
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PLiftBirationalNef
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PNefPlusAmpleDegree
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.ExistsLinearIndependentOfGenerates
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PCutRegular
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2
 

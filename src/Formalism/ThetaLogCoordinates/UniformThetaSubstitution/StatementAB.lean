@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.GrowthSums.StatementA
 import Formalism.GaussJetBounds.StatementI
-import Formalism.GaussJetBounds.StatementH
 
 noncomputable section
 

@@ -1,7 +1,6 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SumRhoEqTrace
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopology
-import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
 
 noncomputable section
 

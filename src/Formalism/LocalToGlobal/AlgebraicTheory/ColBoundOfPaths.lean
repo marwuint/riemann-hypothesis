@@ -8,17 +8,8 @@ import Formalism.LocalToGlobal.AlgebraicTheory.AlgebraicTheoryProofs.TensorFourt
 import Formalism.LocalToGlobal.AlgebraicTheory.AlgebraicTheoryProofs.ScalarConst
 import Formalism.LocalToGlobal.AlgebraicTheory.AlgebraicTheoryProofs.DvdOfNormIntCastLt
 import Formalism.LocalToGlobal.AlgebraicTheory.StatementStep
-import Formalism.LocalToGlobal.Divisibility.JetBounds.Statement
-import Formalism.LocalToGlobal.Divisibility.JetBounds.MinorProductsLattice
-import Formalism.GaussJetBounds.FinalB
 import Formalism.LocalToGlobal.Divisibility.JetBounds.JetBoundsProofs.NormEqOneOfNotMem
 import Mathlib
-import Formalism.LocalToGlobal.ExponentGrids.IntegerShiftClosedExponent
-import Formalism.QuotientMetricDivisors.Complement2Normaliser
-import Formalism.TranslateCocycles.StatementHC
-import Formalism.SizeWindowBrackets.SlopesFromSizeAndCount
-import Formalism.LocalRingCardinality.DataErr
-import Formalism.LocalToGlobal.GlobalTheory.IsResidueClassZero
 import Formalism.LocalToGlobal.ExponentGrids.ExponentGridsProofs.NormaliserValuationBound
 import Formalism.SizeWindowBrackets.ChainSlopeWindows.PBrDiv
 import Formalism.LocalToGlobal.Divisibility.NumbersLemmas

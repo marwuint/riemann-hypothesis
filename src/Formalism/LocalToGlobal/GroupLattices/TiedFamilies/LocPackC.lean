@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.GroupLattices.StdSubAtOfRing
 import Formalism.LocalToGlobal.GroupLattices.CloudFilling.FillInstRecEqWj
-import Formalism.LocalRingCardinality.SpanPowerMembership.GatTies
 
 noncomputable section
 

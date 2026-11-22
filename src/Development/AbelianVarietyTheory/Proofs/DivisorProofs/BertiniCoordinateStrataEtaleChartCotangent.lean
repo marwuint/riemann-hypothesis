@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothCoordinateStratumEtaleChart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearIndependentCotangentOfIsTopFormFrameOfVani
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericResidueLinearIndependence
-import Development.AbelianVarietyTheory.Definitions.Divisors.CentreAtOfIsAt
-import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)

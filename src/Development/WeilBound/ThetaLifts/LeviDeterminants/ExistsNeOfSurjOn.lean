@@ -4,7 +4,6 @@ import Development.WeilBound.ThetaLifts.LeviDeterminants.MixedModels.RealSt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfComponentTensorAdelicFunctionEq
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicSchwartzNeZeroAtOrigin
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 
 open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes

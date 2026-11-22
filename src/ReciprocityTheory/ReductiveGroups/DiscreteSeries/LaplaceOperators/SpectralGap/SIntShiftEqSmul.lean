@@ -2,8 +2,6 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.Spectra
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.SpectralGap.ContinuousBlkWConj
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.SpectralGap.Groups
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.ReproducingKernels.ProductBoundOfFactorBounds
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.ReproducingKernels.ReproCoreStatement
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.UHMulInv
 
 noncomputable section
 

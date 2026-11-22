@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.WeaklyAdmissibleFiltrations.Statement
-import Formalism.CoboundaryTransfers.Statement
 import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.UnitDualParts
 

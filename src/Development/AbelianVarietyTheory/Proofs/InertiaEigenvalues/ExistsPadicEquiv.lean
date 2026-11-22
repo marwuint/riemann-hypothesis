@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingSp
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsContractNeZero
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSupportOfIsSubquotientProdIrr
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ToralAndGoodOfIsSpherical
-import Formalism.LocalToGlobal.GaloisLevelStructure.TiedLevel
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyTypePlaceCompletionIdent
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host NumberField IsDedekindDomain

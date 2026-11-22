@@ -1,8 +1,6 @@
 import Formalism.LocalToGlobal.InertKernelTheory.StatementJets
 import Formalism.LocalToGlobal.GlobalTheory.GL3.NormNatCoprime
 import Formalism.LocalToGlobal.GlobalTheory.GL3.ThirdClauseIntegralCombination
-import Formalism.LocalToGlobal.GlobalTheory.GL3.PLinkThU
-import Formalism.FormalGroupLog.FormalGroupLogProofs.ChainRule
 
 noncomputable section
 

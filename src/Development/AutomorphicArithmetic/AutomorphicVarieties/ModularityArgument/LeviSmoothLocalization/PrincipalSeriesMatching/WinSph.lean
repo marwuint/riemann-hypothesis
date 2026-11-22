@@ -4,8 +4,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.GammaLaurentFactors.LocalEmbeddingNorms.SuppFacts
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalSeriesSatakeParameters
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PlainTorExistsChars
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolarizedTwistAbsPow
-import GroundTheory.GlobalFields.TateThesis.RootNumberLocalPlace
 
 noncomputable section
 

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginFrameLocalBound
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagEqualChangeLowerTriangular
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsFrameVec
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginFrameSectionBound
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptFlagXdeg
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecializesOfUnits

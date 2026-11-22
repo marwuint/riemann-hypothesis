@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.IndefiniteReal.BridgeLemmas
-import Formalism.LocalToGlobal.Columns.RhoEqOfSmulEq
 
 open NumberField
 

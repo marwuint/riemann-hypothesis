@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
-import Formalism.LogFactorialIndices.StatementSize
 
 noncomputable section
 

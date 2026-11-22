@@ -3,9 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.MulSmulIdemMem
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ComponentMassSum
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCuspOnRestrict
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.EvaluationLawsGenericFramesAtlasHold
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CompConstMulMemHolSub
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.GGConn
 
 set_option synthInstance.maxHeartbeats 400000
 

@@ -2,7 +2,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaSumInvaria
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaSumInvariantUnipotentTranslate
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalGroupLeOfGeneratorsMem
-import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.WeilSiegelTheta.EisCellsDefs
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubstMemAndComm
 
 noncomputable section

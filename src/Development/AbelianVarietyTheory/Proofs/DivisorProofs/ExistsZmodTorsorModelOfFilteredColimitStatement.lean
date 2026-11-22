@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsZmodTorsorModelOfFilteredColimit
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenFibMapAlgebraMap
 
 open CategoryTheory Limits
 set_option maxHeartbeats 1000000 in

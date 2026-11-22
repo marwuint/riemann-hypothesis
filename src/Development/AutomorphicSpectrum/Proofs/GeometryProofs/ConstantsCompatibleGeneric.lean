@@ -8,7 +8,6 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqu
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SabMapId
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeConstantRank
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelDominantHodge
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 

@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.CharZeroOfIsPrimitiveRoot
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistTxEvEqMapArc
-import Development.AbelianVarietyTheory.Definitions.Degenerations.NotAllMatchRankZero
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HomTransport
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.Ex
 open scoped BigOperators

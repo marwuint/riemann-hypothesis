@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExcisionConeMapQuasiIso
-import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsExcisionNbhdSelf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AwayMapCompAlgebraMap
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in

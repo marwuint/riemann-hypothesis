@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.ResEmbCompat
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.RecTTransport
 import Development.WeilBound.RepresentationTheoryGL.GaloisPermutationReps.SubquotientEquivalence.ConjTorusSubApply
 import Development.WeilBound.RepresentationTheoryGL.GaloisPermutationReps.SubquotientEquivalence.FiniteCuspidalOfIsCuspidal
 import Development.DiscreteGroups.GlobalIrreducibility.DzIsoKO
@@ -9,7 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DepthZeroSuper
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RegularLocalOfDepthZero
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralCharacterSubquotientProductIrreducibles
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsCuspSpaceBot
 import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.GreenCuspLabels.GreenCuspidal
 
 open NumberField IsDedekindDomain ValuativeRel Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.L2.Host

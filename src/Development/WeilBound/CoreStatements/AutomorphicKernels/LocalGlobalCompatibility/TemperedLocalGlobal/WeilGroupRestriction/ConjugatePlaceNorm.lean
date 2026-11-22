@@ -1,10 +1,8 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.LocalGlobalCompatibility.TemperedLocalGlobal.WeilGroupRestriction.IwahoriCompatibilityOfChains
 import Development.WeilBound.CoreStatements.SatakeConjugation.CsdIff
-import Development.WeilBound.CoreStatements.SatakeConjugation.CsdDefs
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsNormalisedThetaSub
 import Formalism.LocalToGlobal.PlaceMapInjectivity.MapPlInjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasSatGLOfInvT
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrreducibleFixed
 
 noncomputable section
 

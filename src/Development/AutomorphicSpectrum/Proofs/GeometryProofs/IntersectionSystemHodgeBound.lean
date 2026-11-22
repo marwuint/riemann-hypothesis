@@ -8,8 +8,6 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentDataHodgeF
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BlockMatrixGramNormal
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramMatrixTwoFramesStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramMatrixChangeFrame
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.InteriorPointPolarised
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp

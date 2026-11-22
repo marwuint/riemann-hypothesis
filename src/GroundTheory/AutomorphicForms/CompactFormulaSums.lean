@@ -1,13 +1,9 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.QuotientKernel
-import GroundTheory.AutomorphicForms.DiscreteSpectrumAbstract
 import GroundTheory.AutomorphicForms.TraceClass
-import GroundTheory.AutomorphicForms.UnitaryRepresentations
-import GroundTheory.AutomorphicForms.UnitaryRepresentations.IsInvariantIffCommuteStarProjection
 import GroundTheory.AutomorphicForms.TraceFormulaGeometric
 import GroundTheory.AutomorphicForms.TraceFormulaCentralizer
 import GroundTheory.AutomorphicForms.TraceFormulaWeil
-import GroundTheory.AutomorphicForms.TraceFormulaConvolution
 
 open MeasureTheory Topology Filter Set Function
 open scoped ENNReal Pointwise

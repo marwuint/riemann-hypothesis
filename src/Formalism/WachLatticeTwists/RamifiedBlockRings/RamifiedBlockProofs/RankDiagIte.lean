@@ -1,7 +1,6 @@
 import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.CMemPolyT
 import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.Normal
 import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.BurnsideMat
-import Formalism.CharacterColumnKernels.StatOntoLattice
 
 open Finset Classical
 

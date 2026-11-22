@@ -1,6 +1,5 @@
 import Formalism.RealPlaceAnalysis.InstMeasurableSpaceUJ
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ComplexificationHolds
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.KoszulLowersPower
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.PlaceRankTwoOne
 
 open MeasureTheory Matrix Topology Metric Kronecker

@@ -1,10 +1,7 @@
 import Mathlib
 import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.HeckeAlgebraActions.BackStable
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantTensor
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HeckeRankOne
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.OmegaMinor
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.PrincipalSum
-import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 
 noncomputable section
 

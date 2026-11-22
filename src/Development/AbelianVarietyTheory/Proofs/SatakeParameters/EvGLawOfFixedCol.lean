@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
 import Formalism.LocalToGlobal.Columns.ChainTw
 import Formalism.LocalToGlobal.Columns.KOneCharacterTrivialNearOne
-import Formalism.LocalToGlobal.KernelLattices.FirstKernelLawReading
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FormsPin
 
 noncomputable section

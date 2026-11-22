@@ -12,8 +12,6 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.FdegOfSchur
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.AeSS
 import Formalism.LocalToGlobal.SiegelLatticeTheory.BesselDiscreteSeries.DecLowPf
 import Formalism.LocalToGlobal.SiegelLatticeTheory.BesselDiscreteSeries.DecInfPf
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CasimirReductionTheory.OneParameterDerivatives.Admissible
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CasimirReductionTheory.GgExistsAddCharNeOne
 
 open MeasureTheory Matrix
 open scoped InnerProductSpace ENNReal ComplexConjugate

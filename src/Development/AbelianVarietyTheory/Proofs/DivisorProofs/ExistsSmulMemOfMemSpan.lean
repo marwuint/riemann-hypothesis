@@ -4,8 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.WellChosen
 import Development.AbelianVarietyTheory.Definitions.Divisors.P22
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsLogCanonicalMultipleCanonical
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInterior
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNeZeroSmulMem
 
 set_option autoImplicit false

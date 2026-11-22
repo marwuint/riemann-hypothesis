@@ -4,7 +4,6 @@ import Formalism.LocalToGlobal.HermitianForms.TiedTwSymAll
 import Formalism.LocalToGlobal.HermitianForms.ExtraSym
 import Formalism.LocalToGlobal.KernelLattices.AdaptedEnt
 import Formalism.LocalToGlobal.KernelLattices.KerMtPin
-import Formalism.LocalToGlobal.KernelLattices.KerMemPin
 
 noncomputable section
 

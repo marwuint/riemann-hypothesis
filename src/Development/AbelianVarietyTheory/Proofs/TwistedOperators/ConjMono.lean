@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.PartFixed
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsVacFOfIsVacVec
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsInverseChart
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsTopologicalRingAE
-import Formalism.LocalToGlobal.KernelLattices.ThDistC
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaSquareIntegrable
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaPureTensorO
 

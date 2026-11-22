@@ -6,7 +6,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.WeilBound.CoreStatements.HodgeTatePoints.MbLCentre
 import Development.WeilBound.CoreStatements.HodgeTatePoints.McCramer
 import Development.WeilBound.CoreStatements.HodgeTatePoints.MbLPulllocCentre
-import Development.WeilBound.CoreStatements.HodgeTatePoints.MaBase
 import Development.WeilBound.CoreStatements.HodgeTatePoints.MaSerre
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 

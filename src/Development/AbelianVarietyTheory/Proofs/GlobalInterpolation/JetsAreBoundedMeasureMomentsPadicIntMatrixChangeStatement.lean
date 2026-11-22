@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.JetsAreBoundedMeasureMomentsPadicIntMatrixChange
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LatIntZero
 open GlobalTheory.MomOne GlobalTheory.MomN PowerSeries
 open scoped ComplexConjugate
 set_option maxHeartbeats 1000000 in

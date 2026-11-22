@@ -1,8 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.JoinCastSucc
-import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
 import Mathlib
-import ReciprocityTheory.SemistableReduction.SphereLogIntegrableStatement
-import Development.AbelianVarietyTheory.Definitions.Divisors.PointHeight
 
 open NumberField MvPolynomial ReciprocityTheory.MultiplicativeHeights GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HSCore GlobalTheory.HSChoice
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor

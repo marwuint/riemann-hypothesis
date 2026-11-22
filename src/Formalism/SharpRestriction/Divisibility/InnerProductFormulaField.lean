@@ -6,9 +6,7 @@ import Formalism.LocalRingCardinality.DataTheta
 import Formalism.LocalRingCardinality.DataKap
 import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 import Formalism.SharpRestriction.Divisibility.ZetaProductPairs
-import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
 import Formalism.SharpRestriction.CuspSpanNormBounds.CayleySignature
-import Formalism.SharpRestriction.ParamsHeightRankConstant
 
 noncomputable section
 

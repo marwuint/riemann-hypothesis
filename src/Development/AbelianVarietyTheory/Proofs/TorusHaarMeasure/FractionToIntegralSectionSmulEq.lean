@@ -9,7 +9,6 @@ import Formalism.LocalToGlobal.ProjectiveLattices.CurveLocInst
 import Formalism.LocalToGlobal.ProjectiveLattices.CompFin
 import Development.AbelianVarietyTheory.Definitions.UpperBounds.PhRec
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.BirationalOfFormRatiosFullTrdeg
-import Formalism.LocalToGlobal.ProjectiveLattices.IsAlgebraicOfTrdegEq
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.CompSplitRecord
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.CuspEqZeroOfGenericValues
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.CurveLocOfCountQAt

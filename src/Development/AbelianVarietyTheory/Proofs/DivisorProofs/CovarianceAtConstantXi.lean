@@ -1,14 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Formalism.LocalToGlobal.IndefiniteReal.FWTie
-import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftsSpanOfOnto
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCcIsEquivAtSerOfOneMapRowOfCore
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLevelOfLinearMap
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ClsAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelValuesFifth
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DictionaryComponentFrameMarkingUniformisation
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelFormCompatBaseEmbedding
 
 open NumberField Matrix Complex MeasureTheory IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTheory.ClsVal

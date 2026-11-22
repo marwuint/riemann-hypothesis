@@ -23,7 +23,6 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallMobiusMul
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallMobiusZeroEqIffUnitary
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallMobiusTransitive
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallMobiusZeroContinuousStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallAutomorphismInverseExists
 
 noncomputable section
 

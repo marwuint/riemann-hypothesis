@@ -1,9 +1,6 @@
 import Formalism.HermitianCurvature.RealInputsClosedAdmissibleSettings
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.PBFVnice
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.PBFVstep
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.WCellMemOmPlus
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.BigCellZetaMinors
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.ChainRecursionFromSingleDescent
 
 open Matrix MeasureTheory
 open scoped ComplexConjugate

@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacters.UniversalOrdinaryDeterminantRing
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.UnivLift
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.UnivCond
-import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoRes
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.LocallyConstantOfKernel
 
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA

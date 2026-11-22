@@ -1,8 +1,6 @@
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.AffineGLForms.TopEig
 import Development.WeilBound.CoreStatements.PublishedTheorems.FiniteGLInvariants.AffineLieInvariants.InvariantOfLieOneLEqZero
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GenericFiniteByInduction
-import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.AffineGLForms.GenSpace
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermFiniteOfSmaller
 
 theorem CuspFormAutomorphicBounds.automorphicFormsFiniteGL : GlobalTheory.Published.AutomorphicFormsFiniteGL :=

@@ -2,7 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsLatticeFamily
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.BundleChernComparison
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeBaseChangeLargerRingHolds
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LieLatticeData
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeSecondGoodness
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XFamPull
 open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.Heights.NumbersDVR

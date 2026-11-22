@@ -4,8 +4,6 @@ import Formalism.SharpRestriction.GlobalSchurBounds.MassRatioUnfoldedOfTheoremTw
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.VolumeRatio
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OneVectorCcOfSiegelWeil
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SiegelOneVectorMeasurableOfCompactSupport
-import Formalism.SharpRestriction.GlobalSchurBounds.StandardLattice
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.SiegelMeanCc
 
 namespace GlobalTheory.VolRatioFromSiegelWeil
 

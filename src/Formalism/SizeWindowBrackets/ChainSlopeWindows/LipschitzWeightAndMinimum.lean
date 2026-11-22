@@ -1,10 +1,7 @@
 import Formalism.SizeWindowBrackets.GrowthBoundGivesRiemannHypothesis
-import Formalism.StatementOC
 import Mathlib.NumberTheory.LSeries.RiemannZeta
 import Formalism.ZetaNonvanishing.ZetaLandau
-import Formalism.ZetaRealNonvanish
 import Formalism.SizeWindowBrackets.ChainSlopeWindows.StronglyIrreducible
-import Formalism.ThickAverageLoss.ThickAverageProofs.Balance
 import Formalism.ThickAverageLoss.ThickAverageProofs.ThickAverage
 import Formalism.ZetaNonvanishing.GzLipschitz
 import Mathlib.NumberTheory.Chebyshev

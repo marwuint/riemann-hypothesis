@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.CuspRapidDecaySiegelGL
 import GroundTheory.AutomorphicForms.CuspidalDiscreteness.CuspFormsHeight
 import GroundTheory.AutomorphicForms.CuspidalDiscreteness.DecayUniform
-import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.GKStable
 
 noncomputable section
 

@@ -6,10 +6,6 @@ import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffG
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereSingularTotalMassDegree
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.AnalyticSystemRegularityProperties
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.UniformisedPotentialIntegralFormula
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsTwiceDifferentiableAt
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.CompRightEqZero
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.KappaSt
-import GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements
 
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 

@@ -4,7 +4,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.An
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.AnnihilatorBaseChange.PmDimQuot
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.AnnihilatorBaseChange.PmMove
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.AnnihilatorBaseChange.OutOfNil
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCplEx
 
 open IsLocalRing Filter UpperTheory.V.AlgebraTools UpperTheory.V.Pa.Core
 open scoped TensorProduct

@@ -13,7 +13,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedChara
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusHalfBlockValue
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeVectorLinearCombination
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SatakeEigenvaluePairDecomposition
-import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.ReadMod
 
 open NumberField IsDedekindDomain Matrix
 open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC GlobalTheory.BCT GlobalTheory.LFun Formalism.L2.Host

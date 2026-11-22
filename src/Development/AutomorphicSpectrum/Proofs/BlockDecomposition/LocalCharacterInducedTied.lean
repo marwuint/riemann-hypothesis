@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.He
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.DeRhamJacobian.IsdRJ
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LineOfSingleJump
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamComponentsCrystallineLettersFinrank
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinrankDdRFinsum
 
 noncomputable section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations

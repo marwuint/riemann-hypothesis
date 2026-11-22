@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MvPolynomialEvalZeroOfVanishingRationalSkewHermi
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolyRep
 
 open Matrix Formalism.L2.NG ReciprocityTheory.Aut Formalism.AUTREP NumberField GlobalTheory.AlgWtHW
 set_option maxHeartbeats 1000000 in

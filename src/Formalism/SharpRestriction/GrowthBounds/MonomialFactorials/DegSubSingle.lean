@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.MonomialFactorials.BlockValuationZpOfLatticeInclusion
-import Formalism.PolynomialDimension.MultinomialDepth.PartnerM
 
 noncomputable section
 

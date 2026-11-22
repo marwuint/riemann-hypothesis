@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.AuxiliaryPrimeNeTypePrime
-import Development.AbelianVarietyTheory.Definitions.Foundations.TupleConstantsNeZero
 
 noncomputable section
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.LocVol
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.Volumes
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.SiegelWeilNarrowOfWide
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.Assembly
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsTupleGramDetNeZero

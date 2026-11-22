@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.ArithmeticGeometry.AbelianVarieties.IsogenyRamification
-import GroundTheory.ArithmeticGeometry.AbelianVarieties.WeilPairing
 
 namespace GroundTheory.Arith.Abelian
 

@@ -2,15 +2,7 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsLatticeFamily
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.BundleChernComparison
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LineBundleModelDegree
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TrivFlagMod
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.FlagMinor
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsBundles
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.SameGenericSymm
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MonomialRatioIntegralModel
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.PluckerCoord
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ClassListMapDomainPerm
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PPairCocycle
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.OfSteps
 open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.Heights.NumbersDVR
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg mcIdeal chartMon joinCoord bcCoord pullDeg restrictChart fnField ck rootNum SameGeneric LatLE IsPull IsPullBC)

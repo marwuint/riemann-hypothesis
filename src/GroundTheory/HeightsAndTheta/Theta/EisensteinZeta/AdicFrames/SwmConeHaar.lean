@@ -4,7 +4,6 @@ import GroundTheory.HeightsAndTheta.Theta.EisensteinZeta.AdicFrames.InstSecondCo
 import GroundTheory.HeightsAndTheta.Theta.EisensteinZeta.AdicFrames.FramePairAddRight
 import GroundTheory.HeightsAndTheta.Theta.EisensteinZeta.AdicFrames.ContinuousFramePairLeft
 import GroundTheory.HeightsAndTheta.Theta.SchroedingerTranslates.WmSysEquivDet
-import GroundTheory.HeightsAndTheta.Theta.LocallyCompactField.Countability
 
 set_option linter.unusedSectionVars false
 

@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.Ration
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HeckeTransferRankOne
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RayFieldTheta
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaTranslateRangeGap
-import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.VectorLevelCharacters
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsDCOfMemDoubleCoset
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ClassPresBasic
@@ -11,7 +10,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgrou
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LevelHyperspecialTrivialCharacterSplitsOffPlaces
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffDerivSnoc
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMemNotMem
-import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
 
 set_option autoImplicit false
 

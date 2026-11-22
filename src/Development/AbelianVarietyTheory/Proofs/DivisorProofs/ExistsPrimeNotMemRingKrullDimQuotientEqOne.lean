@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnifAlong
-import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
-import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsValuationSubringLiftOfSpecialFibre
 
 namespace GlobalTheory
 

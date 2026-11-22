@@ -1,5 +1,4 @@
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.PNTDHSt
-import Formalism.ZeroFreeRegion.ZetaLogDerivativeBounds.ZetaGrowth
 
 open Finset Complex Classical
 

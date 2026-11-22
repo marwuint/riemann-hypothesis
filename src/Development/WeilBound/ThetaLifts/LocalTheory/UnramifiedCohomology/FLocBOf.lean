@@ -1,6 +1,5 @@
 import Development.WeilBound.ThetaLifts.LocalTheory.UnramifiedCohomology.SpanSoLoc
 import Development.WeilBound.ThetaLifts.LocalTheory.UnramifiedCohomology.KAtCompact
-import Development.WeilBound.ThetaLifts.FrameEstimates.SquareIntegrableWeilRange
 
 noncomputable section
 

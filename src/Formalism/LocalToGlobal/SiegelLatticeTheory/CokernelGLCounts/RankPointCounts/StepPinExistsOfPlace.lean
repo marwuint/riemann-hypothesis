@@ -4,7 +4,6 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.NinfGClosed
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CasimirReductionTheory.OneParameterDerivatives.WeilIndicatorMeasures.MeasurableUnitMulIndicator
 import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
-import Formalism.SharpRestriction.CuspSpanNormBounds.RootMeasBig
 
 noncomputable section
 

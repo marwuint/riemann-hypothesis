@@ -1,7 +1,5 @@
 import Mathlib
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.RowsStackRight
-import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
-import Formalism.LocalToGlobal.IndefiniteReal.DatumF
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNeZeroConjNegOfCmExtension
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitDetGramOfHermitianSelfDualLatticeSpace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitDetGramSkewHermitianSignature

@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.StatementsCurveVertPointNagata
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.CurveCountObjects
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PVertPointMultChart
 set_option maxSynthPendingDepth 1
 

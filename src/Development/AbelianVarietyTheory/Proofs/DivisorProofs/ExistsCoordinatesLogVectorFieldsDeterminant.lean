@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBaseFrame
-import Development.AbelianVarietyTheory.Definitions.Divisors.P22
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SncStalkRegularParametersFromAffineOpen
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothAffineOpenFinitePresentationStalkKaehlerFrStatement

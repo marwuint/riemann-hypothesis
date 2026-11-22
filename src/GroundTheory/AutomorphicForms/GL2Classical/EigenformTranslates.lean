@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.GL2Classical.TranslateSpanLeCuspForms
-import GroundTheory.AutomorphicForms.GL2Classical.Automorphic
 import GroundTheory.AutomorphicForms.GL2Classical.EigenQExpansion
 import GroundTheory.AutomorphicForms.GL2Classical.CuspFormsFiniteDim
 import GroundTheory.AutomorphicForms.GL2Classical.UnitaryEigenSpan

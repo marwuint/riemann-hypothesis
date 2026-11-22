@@ -1,8 +1,5 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.PtrScalar
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.PsiExistsStatement
-import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.UnitarizeD
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Closure
 
 noncomputable section
 

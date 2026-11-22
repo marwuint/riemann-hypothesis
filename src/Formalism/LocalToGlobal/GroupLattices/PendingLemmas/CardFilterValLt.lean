@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.DetYtMatNeZero
-import Formalism.GradedWeylDivisibility.FinalC
 
 open Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Finset
 

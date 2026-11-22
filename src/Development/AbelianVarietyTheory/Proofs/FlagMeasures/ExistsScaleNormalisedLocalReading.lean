@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.NGData
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.VolPin
-import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.Vanish
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AtBase
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.PlacesOf
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PtMatInjective

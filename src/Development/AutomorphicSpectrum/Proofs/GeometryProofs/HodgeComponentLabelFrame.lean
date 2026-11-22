@@ -4,8 +4,6 @@ import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyInt
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.NineGeoU
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptAwayFromPrimes
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 
 set_option backward.isDefEq.respectTransparency false
 

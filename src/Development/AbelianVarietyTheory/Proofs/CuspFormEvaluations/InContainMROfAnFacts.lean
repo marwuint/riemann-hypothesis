@@ -5,7 +5,6 @@ import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.C
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.Rationality.DescSt
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.GenericSectionsPolynomialDictionary
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.InBasisIffPointValuesLinearIndependentSpan
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.IndepSpanRankTransferLargeFieldComplex
 
 noncomputable section
 

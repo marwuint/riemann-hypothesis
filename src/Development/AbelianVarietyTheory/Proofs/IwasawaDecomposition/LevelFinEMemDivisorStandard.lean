@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenLocOfCenReal
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RatInEig
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CGTrue
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoFormsOff
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsComp
@@ -11,15 +9,12 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.De
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalGlobalAboveL
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsXdAllIff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.JumpsCardOfBuilt
-import Formalism.LocalToGlobal.Divisibility.ProjLemmas
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CenterEqSum
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsCompOfOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBlockDiagonalWithIdentity
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSplitReductionStandardFrameConj
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFrameUnitaryDivisorSplit
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DatumLevelHyperspecialOffFinitePlaces
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsSplitPlaceEq
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TypePlacesNotPairwiseConjugate
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG

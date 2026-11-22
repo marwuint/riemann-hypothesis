@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NormalizedLatticeExp
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ForcedContentBoundsProgrammeValueGoodPrime
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.GoodPlaceDepthBoundProof
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumLevelTailMulLogPrimesLe
-import Formalism.LocalToGlobal.CharacterGerms.ValuationChoiceHypothesis
 
 set_option autoImplicit false
 

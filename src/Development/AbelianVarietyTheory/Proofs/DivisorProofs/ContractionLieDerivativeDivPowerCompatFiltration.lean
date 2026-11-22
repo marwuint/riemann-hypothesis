@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivPowerCompatTwoFormDerivativeCompOneForm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivationDividedPowerFiltrationSuccLe
-import Development.AbelianVarietyTheory.Definitions.Divisors.RatBasisLinearIndependentInt
 
 set_option autoImplicit false
 

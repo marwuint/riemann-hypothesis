@@ -13,7 +13,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeWordLocalConst
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LastMapNorm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrthNormLogBound
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodBoundLastLog
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NonnegSubOfLt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LastSideLogBound
 
 open Module NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Col Formalism.L2.Ker GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds GlobalTheory.ColRows

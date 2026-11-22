@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TorsTransport
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticePrincMulUnit
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomothetyLatSum
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModFMulPosPrincipal
 open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.LatVal
 
 namespace GlobalTheory.ClassInvAny

@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.GlobalTheory.BlockActions.MapBrTenL
-import Formalism.LocalToGlobal.GlobalTheory.BlockActions.NormBoundOfClasses
 
 noncomputable section
 

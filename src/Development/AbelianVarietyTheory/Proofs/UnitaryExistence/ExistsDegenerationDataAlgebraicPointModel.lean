@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.HasDataCondition
-import Formalism.LocalToGlobal.ProjectiveLattices.LatPAddRight
 import Formalism.LocalToGlobal.ProjectiveLattices.FamilyUniformisationBasePointOrthogonalBis
 import Formalism.LocalToGlobal.ProjectiveLattices.ParCanon
 import Formalism.LocalToGlobal.ProjectiveLattices.ExistsParameterConditions
@@ -9,7 +8,6 @@ import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChart
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OneArc
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsOpenOfRangeGenericSubset
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.FiniteExtensionRamificationEmbedding
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsCompleteDvrFiniteSubalgebra
 
 open AlgebraicGeometry CategoryTheory Limits NumberField IsDedekindDomain IsLocalRing ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Pj Formalism.MainNotions.DIV.Cons
 open scoped TensorProduct

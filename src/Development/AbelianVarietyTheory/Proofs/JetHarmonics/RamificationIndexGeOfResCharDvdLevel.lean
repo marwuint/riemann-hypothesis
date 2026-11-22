@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.CmQuadraticFormEqAlternatingForm
 import Development.AbelianVarietyTheory.Definitions.Jets.TwoPlaces
-import Formalism.LocalToGlobal.ProjectiveLattices.DepthPins
-import Formalism.LocalToGlobal.ProjectiveLattices.CrudeVal
 
 set_option autoImplicit false
 

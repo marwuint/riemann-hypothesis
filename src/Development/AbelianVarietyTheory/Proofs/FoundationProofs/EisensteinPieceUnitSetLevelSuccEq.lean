@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.PieceEqPieceT
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EePosFalseDvd
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedEisensteinFxSumRowLiftsDistribution
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumGl2FirstColumnUnitSetSuccFibre
-import Development.AbelianVarietyTheory.Definitions.Foundations.Integral
 
 noncomputable section
 open Finset

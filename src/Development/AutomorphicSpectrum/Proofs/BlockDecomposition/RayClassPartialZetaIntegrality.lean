@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelKlingenDeligneRibet
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsAvoidOne
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialSum
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuationAlt
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialZetaTwistedEntireDifference
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeZetaSpecialValueDenominatorBoundStatement
 
 set_option autoImplicit false

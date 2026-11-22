@@ -1,6 +1,5 @@
 import Development.WeilBound.RepresentationTheoryGL.UnitaryDualProof.TwistedPieces.IntegralParts.TranslInv
 import Development.WeilBound.RepresentationTheoryGL.UnitaryDualProof.CompactOrbits.NilpotentOrbits.BaseOrbits.MainE
-import GroundTheory.AutomorphicForms.WhittakerDistribution
 
 noncomputable section
 

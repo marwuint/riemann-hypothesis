@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsSplittingCharacterSelf
-import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
 import Formalism.LocalToGlobal.IndefiniteReal.IsMultMapUnivZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsHermPosChainRealEndSpaceTuple
 import BuildAid.D3

@@ -1,11 +1,6 @@
 import Mathlib
 import GroundTheory.PAdicHodge.ExistsNormLeOfNormLtOneFinite
 import GroundTheory.PAdicHodge.FundamentalSeq
-import GroundTheory.PAdicHodge.SenTateCharClosure
-import GroundTheory.PAdicHodge.BCrisEigenFrob
-import GroundTheory.PAdicHodge.BCrisRegularSenTate
-import GroundTheory.PAdicHodge.BCrisGalois
-import GroundTheory.PAdicHodge.WAKummerEps
 
 noncomputable section
 

@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.IntegralFormsEqSpan
-import Formalism.LogFactorialIndices.SignedSubspaceIndex.IdxBase
 
 noncomputable section
 

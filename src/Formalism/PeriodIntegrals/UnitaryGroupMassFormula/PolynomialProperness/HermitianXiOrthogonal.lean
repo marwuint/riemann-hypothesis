@@ -2,8 +2,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialProperness.Ta
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianFormFlagVector
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ConjugationInvarianceEverySetting
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.TwoByOneBlock
-import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds
-import Formalism.FormalDegreeBessel.FormalDegreeRatio.GNonneg
 
 open Matrix Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.C2
 

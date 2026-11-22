@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsTwIffCanonEq
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JetsInIffStepField
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CevInjective
-import Formalism.LocalToGlobal.Columns.ToHLat
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HtPsiLeIffExists
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsTrueColsRowInt
 

@@ -11,7 +11,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShiftUnipotentL
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoefficientUnipotentLeviInvariance
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentreCharacterQuadraticTrace
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicUnipotentLeviFactor
-import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.ThetaIdempotents.HeckeEta
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralMulRight
 open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct Topology
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory Filter

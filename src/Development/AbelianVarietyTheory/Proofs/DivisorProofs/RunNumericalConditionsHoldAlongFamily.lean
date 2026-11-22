@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SingleIn
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OnWithOfIsEmpty
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndexBoundParameterRequirementsEventuallyFamily
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.RowsOfPageFix
-import Formalism.LocalRingCardinality.NFLeTwoMulTSq
 
 set_option autoImplicit false
 

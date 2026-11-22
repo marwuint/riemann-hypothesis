@@ -1,6 +1,5 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.StrongApproximation.SUEqClosure
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.StrongApproximation.SAOpenStatement
 
 namespace ReciprocityTheory.ChartRestriction.G.SA
 

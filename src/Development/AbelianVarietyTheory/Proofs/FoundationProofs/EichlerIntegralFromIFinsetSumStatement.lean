@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerIntegralFromIFinsetSum
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsDCReps
 open GlobalTheory.HeckeFamilyMatrices Polynomial UpperHalfPlane
 open scoped MatrixGroups ModularForm
 open scoped Manifold

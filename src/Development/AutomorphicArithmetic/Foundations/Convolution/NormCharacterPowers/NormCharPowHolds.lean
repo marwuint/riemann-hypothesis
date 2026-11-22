@@ -3,7 +3,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPo
 import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.AbsCount2
 import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.LogAsym
 import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.ClassChar2
-import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.Decomp
 import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.SysEx
 import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.CoverEx
 import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.UnitOfPow
@@ -13,8 +12,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPo
 import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.TwoParts
 import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.LiftSum
 import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.LiftPow
-import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.PartBOfDecomposition
-import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaRigidity.JacquetShalikaRigidity
 
 open PositivityTheory.Rg.Tf.ChR
 

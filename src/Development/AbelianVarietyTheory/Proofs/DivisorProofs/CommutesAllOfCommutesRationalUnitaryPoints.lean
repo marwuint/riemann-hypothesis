@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.CmTypeRestrictRealSu
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RelIndexLevelSelfDualStabilizerEqProdLocal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPolynomialEqZeroOfVanishSkewHermitianStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CayleyTransformSkewMemUnitaryGroup
-import Formalism.SatakeDualWeyl.Statement
 set_option autoImplicit false
 noncomputable section
 open NumberField Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Theta Formalism.IndefR

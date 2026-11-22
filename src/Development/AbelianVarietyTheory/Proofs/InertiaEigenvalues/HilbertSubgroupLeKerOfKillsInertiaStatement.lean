@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HilbertSubgroupLeKerOfKillsInertia
-import ReciprocityTheory.GaloisValuations.Global
-import ReciprocityTheory.NeutralLocalFields.HilbertClassField
-import ReciprocityTheory.NeutralLocalFields.LocalFieldComparison.HilbertClassFieldA
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Neutral.HilbertClassField
 set_option maxHeartbeats 1000000 in

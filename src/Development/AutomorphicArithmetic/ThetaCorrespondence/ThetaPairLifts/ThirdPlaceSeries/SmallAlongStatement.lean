@@ -1,11 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.BaseRankDimension
-import Formalism.LocalToGlobal.IndefiniteReal.RealTB
-import Formalism.LocalToGlobal.IndefiniteReal.BaseLiftsPackageOfPrimitiveLinks
-import Formalism.LocalToGlobal.Divisibility.NumericScaleExponentEqExtended
-import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PassIn3OfRows
-import Formalism.LocalToGlobal.IndefiniteReal.RealPins
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqZeroOfSEEofTT
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourFRLeMinGOfSizeG
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SummandFunctionalBound

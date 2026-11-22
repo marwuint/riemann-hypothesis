@@ -5,7 +5,6 @@ import Development.WeilBound.RepresentationTheoryGL.JacquetShalikaBounds.Absolut
 import CompanionTheory.AutomorphicTheory.UnitriangularMeasure.AdeleCoordinateMeasure.EllipticTorusNorm
 import GroundTheory.GlobalFields.NormResidueSymbol.FunctorialFinite
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.AdUnique
-import Formalism.LocalToGlobal.UnitaryNorms.CharTransport
 
 noncomputable section
 open MeasureTheory NumberField IsDedekindDomain Filter

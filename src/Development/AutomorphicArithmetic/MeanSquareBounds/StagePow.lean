@@ -5,9 +5,6 @@ import Development.AutomorphicArithmetic.MeanSquareBounds.BoxOfS
 import Development.AutomorphicArithmetic.MeanSquareBounds.TwistPrim
 import Development.AutomorphicArithmetic.MeanSquareBounds.IndUnique
 import Development.AutomorphicArithmetic.MeanSquareBounds.CountBad
-import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.MSqCount
-import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.PNTFinal
-import Formalism.LandauZeroFreeBounds.SiegelWalfiszAPOfSiegelLower
 
 open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds
 

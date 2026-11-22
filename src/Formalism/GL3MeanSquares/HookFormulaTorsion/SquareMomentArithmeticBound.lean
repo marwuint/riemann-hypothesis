@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.GL3MeanSquares.ConcavityEquidistribution
-import Formalism.LogVandermondeBounds.MultinomialPowerBound
 
 namespace Formalism.HermitianLattices.TraceIntegrality
 

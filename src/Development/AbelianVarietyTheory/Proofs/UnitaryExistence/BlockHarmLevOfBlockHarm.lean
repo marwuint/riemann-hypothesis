@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.BlockPolyLevelMove
 import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.BlockProductLattices
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIndexIdeal
-import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
 import Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.ZeroNotAdmissibleOfRankPos
 import Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.BaseClassMove
 

@@ -1,7 +1,6 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import GroundTheory.HeightsAndTheta.Heights.ArithDegree
 import GroundTheory.HeightsAndTheta.Heights.Intersections.Statements
 set_option maxSynthPendingDepth 1

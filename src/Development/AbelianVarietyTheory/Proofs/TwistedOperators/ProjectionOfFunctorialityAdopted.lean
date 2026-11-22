@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.Ration
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LiftSchurMultiplierCompatibility
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ActEqTranslate
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HcFiniteAndSchurMult
-import Formalism.LocalToGlobal.Divisibility.ProjLemmas
 
 namespace ThetaProjectionIdempotent
 section

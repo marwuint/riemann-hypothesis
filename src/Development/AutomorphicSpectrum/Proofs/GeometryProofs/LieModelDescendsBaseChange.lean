@@ -1,10 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecStalkSpecializesComp
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelIsBaseChange
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 
 noncomputable section
 

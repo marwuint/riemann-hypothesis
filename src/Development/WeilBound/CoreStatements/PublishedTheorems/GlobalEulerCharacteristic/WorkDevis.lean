@@ -1,6 +1,4 @@
 import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharacteristic.Reduce
-import GroundTheory.ProfiniteCohomology.GlobalEulerCharacteristic.DefsForms
-import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.MainCoind
 
 open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh GroundTheory.Global
 

@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.ProjectiveLattices.CurveComp
-import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.PublishedIntClosHolds
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.SpanSteps
 
 noncomputable section

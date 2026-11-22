@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SubsetSpanBy
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpLawAndUnitAgreeOfOpenInDescentModel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFieldPt
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsSemiAbelianOfCharts
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NonemptyLawAbelianSchemeProperClosure
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsCommMonObjOfDominant
 
 noncomputable section

@@ -1,7 +1,6 @@
 import Formalism.SharpRestriction.GlobalSchurBounds.LinkMin
 import Formalism.LocalToGlobal.GlobalTheory.GL6.DiamondPreservesRationalFormZero
 import Formalism.LocalToGlobal.GlobalTheory.GL6.AdelicFunctionRightTranslateDiamond
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AfsplitB
 import Formalism.LocalToGlobal.HermitianForms.TiedSym
 
 noncomputable section

@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.UniformGaussModelConditionEquivalent
 import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.GoodModelAll
-import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.QuadraticSemicharactersFactAltForm
 
 noncomputable section
 open scoped BigOperators

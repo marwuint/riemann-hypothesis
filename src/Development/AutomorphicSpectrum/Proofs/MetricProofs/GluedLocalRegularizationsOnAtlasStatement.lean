@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.GluedLocalRegularizationsOnAtlas
-import ReciprocityTheory.AnalyticForms.LeviForms.RegGlue
-import ReciprocityTheory.AnalyticForms.LeviForms.RegChartC
-import ReciprocityTheory.AnalyticForms.LeviForms.TailCut
 
 open MeasureTheory Metric Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.AnForm.M.FinHolAtlas
 open scoped ContDiff

@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.RestPt
 import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypeJumps
 import Development.AutomorphicArithmetic.ResidueCharacters.TwistedPlaces
-import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.SplitRep
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.OneSubPhiOntoOfFilZero

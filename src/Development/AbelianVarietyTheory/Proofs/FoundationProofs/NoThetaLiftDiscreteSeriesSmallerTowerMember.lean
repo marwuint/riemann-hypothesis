@@ -1,10 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NoThetaTensorIntertwinerLowerTowerMembers
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowestKTypesJointShapeBlockUnitary
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowestKTypesJointShapeBlockInUnitaryS
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowestTypeNotJointShapeSmallerPairs
 
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible
 

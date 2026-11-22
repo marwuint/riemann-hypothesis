@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ScalarCommutation.TypeSlice
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.HeckeActMem
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.HeckeConvolutionMemHolds
 
 set_option autoImplicit false
 

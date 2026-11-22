@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsTrSelf
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.TranslateProduct
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModDefs
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraicValuationAtLeastBasicProperties
-import Development.AbelianVarietyTheory.Definitions.Divisors.TorsTransport
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate
 open NumberField GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.LatVal ReciprocityTheory.ChartRestriction.L1 Formalism.L2.Th1.F
 open GlobalTheory.CMVal GlobalTheory.HeckeGal

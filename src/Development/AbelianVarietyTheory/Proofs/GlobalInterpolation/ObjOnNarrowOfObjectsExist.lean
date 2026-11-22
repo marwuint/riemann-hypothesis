@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ThinScalesIff
 import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.FewBadPrimes
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NcardPrimesOverOfStabilizer
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.KitExOfHostWeightObj
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SamePointOfSameScale
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsRefill
 
 noncomputable section

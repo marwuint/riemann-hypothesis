@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocalizationOfDat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitMpOmjExtIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CovBy
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneCocycleCoboundaryCommaLocalBasis
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlueCommaOfBasis
 
 set_option autoImplicit false
 

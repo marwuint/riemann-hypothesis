@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.QhtBasic
-import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.GalTwistEx
 
 open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic.CuspidalSpectrum GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.CuspidalProjection PositivityTheory.Rg.Tf.Core UpperTheory.ConvolutionTheory.K

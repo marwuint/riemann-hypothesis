@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
-import Formalism.SatakeDualWeyl.StatementF
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ImportsTail
 
 open Formalism.UG Matrix

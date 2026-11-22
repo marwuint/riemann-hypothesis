@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMaximalIntegra
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MaximalHermitianLatticeBadPrimesIffGramDetStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemHcompl
 import Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.ExistsOrthogonalBasisDotProductApplyEq
-import Formalism.HermitianLattices.HermitianLatticesProofs.LocDual
 
 open NumberField Matrix GlobalTheory.Mass Formalism.HermitianLatticesTheory
 open scoped ENNReal Classical

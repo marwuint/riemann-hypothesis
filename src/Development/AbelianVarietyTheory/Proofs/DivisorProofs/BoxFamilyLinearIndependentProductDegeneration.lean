@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBoxGenOfSection
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.BoxFamLinearIndependent
 
 noncomputable section
 

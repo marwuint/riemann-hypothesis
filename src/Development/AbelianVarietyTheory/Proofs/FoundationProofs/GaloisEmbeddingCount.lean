@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.BlochKatoPhases
-import Formalism.FrobeniusOrbits.RealSubfieldLeCompositum
 import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.SelmerRankVanishing
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.BlochKatoReduction GlobalTheory.IndefiniteRowSideFullHecke.LengthValuationTwists

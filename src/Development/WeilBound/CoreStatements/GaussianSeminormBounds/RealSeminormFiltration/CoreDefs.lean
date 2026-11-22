@@ -3,7 +3,6 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.FockHarmSplit
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.FockJointMult
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.FockOneDeg
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.FockWtDeg
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.FockRaiseLow
 
 noncomputable section
 

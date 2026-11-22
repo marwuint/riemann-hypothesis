@@ -1,11 +1,9 @@
 import Mathlib
 import Formalism.PadicSubsetSums.CentralIdempotents.EigenbasisOfDistinctRoots
-import Formalism.PadicSubsetSums.CentralIdempotents.GaloisIrreducibility
 import Formalism.GaloisIrreducibility.NoSolvableTransitive
 import Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleProbSum
 import Formalism.PadicSubsetSums.StableGradedCounts.IRRPrimeRecipSum
 import Formalism.PadicSubsetSums.StableGradedCounts.IRRPrimeToPartEqIff
-import Formalism.PadicSubsetSums.StableGradedCounts.IRRPrimeToPartSpec
 import Formalism.PadicSubsetSums.StableGradedCounts.IRRLemmaP
 import Formalism.PadicSubsetSums.StableGradedCounts.IRRIrredCountUpper
 import Formalism.PadicSubsetSums.StableGradedCounts.IRRSquarefreeCount

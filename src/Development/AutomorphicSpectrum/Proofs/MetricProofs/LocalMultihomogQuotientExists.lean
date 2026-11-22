@@ -4,7 +4,6 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.TowerOrigin
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SumFundCoMulSumIic
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MetricQuotientOfMultihomogPair
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MultihomogeneousValueWellDefined
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.HasMultiplier
 open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top GlobalTheory.CompanionTheory.Ar.Small
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.Small.Fund
 

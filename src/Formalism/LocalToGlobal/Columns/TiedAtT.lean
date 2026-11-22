@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.Columns.TiedCls
-import Formalism.LocalToGlobal.Columns.AtTOwedS
 import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
 
 open NumberField IsDedekindDomain Module Matrix

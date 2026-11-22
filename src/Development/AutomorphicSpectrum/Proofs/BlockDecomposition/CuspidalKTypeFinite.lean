@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Cu
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.NotIsFinitePartOfBot
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryKTypeFinite
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalConvolutionCompactStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIsOpenIsCompact
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsNonnegBump
 
 noncomputable section

@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.MeanSquareBounds.PrimeSetTwoBounds
-import Formalism.GL3MeanSquares.SecondEstimateOfIntervalHypothesis
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.TailContour
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.TailDiff
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.TailMertens

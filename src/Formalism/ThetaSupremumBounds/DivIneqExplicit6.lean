@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.QuotientMetricDivisors.StatementK
-import Formalism.LogFactorialIndices.StatementSize
 import Formalism.ThetaSupremumBounds.StatementE
 
 open Finset

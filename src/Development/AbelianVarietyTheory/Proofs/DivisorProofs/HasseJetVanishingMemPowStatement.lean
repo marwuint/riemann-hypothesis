@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasseJetVanishingMemPow
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraMapQuotBijective
 
 open Polynomial
 set_option maxHeartbeats 1000000 in

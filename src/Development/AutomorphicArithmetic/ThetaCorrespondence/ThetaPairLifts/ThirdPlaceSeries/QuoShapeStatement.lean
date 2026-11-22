@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuotientWeightGapBounds
-import Development.AbelianVarietyTheory.Definitions.Divisors.PolyBetween
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LocalValuationColumns
-import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd
-import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LiftLambdaBound
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.QuoShape
 

@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.MirabolicMackeyTheory.StatementT
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ValBasic
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.BoundsChain
-import Formalism.LogFactorialIndices.SignedSubspaceIndex.LogProductFormula
 
 open Module NumberField IsDedekindDomain
 

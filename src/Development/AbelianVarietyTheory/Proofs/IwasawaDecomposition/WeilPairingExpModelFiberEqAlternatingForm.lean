@@ -1,10 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PushExLeft
-import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CubicalBundlePairingCompatiblePullback
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjIsAbelianSchemeDimRigidifiedSym
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsTorusAndQuotientHom
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ClosedPointMemRange
 
 set_option autoImplicit false
 

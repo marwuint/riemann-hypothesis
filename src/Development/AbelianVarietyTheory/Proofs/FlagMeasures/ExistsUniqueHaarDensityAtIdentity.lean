@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.BlockAnti
 import Formalism.PeriodIntegrals.QuotInv
 import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
-import Formalism.LocalRingCardinality.DataCD
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MatGroupHaarUniqueFiniteCompactOpenPos
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsDensityOriginOfAlmostHomogeneous
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpqExpLocalChart

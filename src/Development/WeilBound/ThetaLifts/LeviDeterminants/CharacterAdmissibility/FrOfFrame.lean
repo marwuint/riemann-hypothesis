@@ -3,7 +3,6 @@ import Development.WeilBound.ThetaLifts.LeviDeterminants.CharacterAdmissibility.
 import Development.WeilBound.ThetaLifts.LeviDeterminants.CharacterAdmissibility.SchrodingerApplyZeroOfFst
 import Development.WeilBound.ThetaLifts.LeviDeterminants.EvFrame
 import Development.WeilBound.ThetaLifts.LeviDeterminants.MixedModels.PlaneC
-import Development.WeilBound.ThetaLifts.LeviDeterminants.MCSpan
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenIntertwinerTransitive
 
 noncomputable section

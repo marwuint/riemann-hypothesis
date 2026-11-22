@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.KernelLattices.ColumnData
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.HfTrace
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.SplitK
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntegralClosureCriterion
 
 noncomputable section

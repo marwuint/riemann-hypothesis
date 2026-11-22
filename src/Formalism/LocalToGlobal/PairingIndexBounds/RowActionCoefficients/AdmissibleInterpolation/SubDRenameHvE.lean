@@ -1,6 +1,4 @@
 import Formalism.LocalToGlobal.PairingIndexBounds.RowActionCoefficients.AdmissibleInterpolation.TransposedFrameImageBlockwiseHolds
-import Formalism.GradedWeylDivisibility.FinalC
-import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 
 open MvPolynomial
 

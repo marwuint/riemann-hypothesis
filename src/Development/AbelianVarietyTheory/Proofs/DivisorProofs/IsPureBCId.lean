@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CanonicalOfAbelianDeRham
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 
 set_option autoImplicit false
 

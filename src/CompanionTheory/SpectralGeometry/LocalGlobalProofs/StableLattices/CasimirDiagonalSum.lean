@@ -2,15 +2,6 @@ import Mathlib
 import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.AdmissibleSmoothVectors.AdmissibleOfIwasawa
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QuantumDeterminantEigenvalue
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CasimirScalarOfCapelliDeterminantEigenvalue
-import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
-import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
-import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeries₂.Poulsen
-import Formalism.PeriodIntegrals.DSInfCharCap
-import Formalism.PeriodIntegrals.LowCyc
-import Formalism.PeriodIntegrals.UpqRep
-import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
-import Formalism.RealPlaceAnalysis.StatementE
-import Formalism.RealPlaceAnalysis.StatementKT
 import CompanionTheory.AutomorphicTheory.ZuckermanCommutation.ZuckermanFunctors.IsSimpleFam
 
 open CompanionTheory.Zuck BranchingSupport Matrix Finset

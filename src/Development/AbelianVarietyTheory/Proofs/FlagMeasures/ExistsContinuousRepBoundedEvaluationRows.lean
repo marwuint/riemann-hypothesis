@@ -5,8 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsClosedEmbeddingEnt
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightRegularRepUnitaryStronglyContinuous
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AbsOpIntIntegrable
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ConvolutionSmoothL2
-import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpectrumKFiniteDecomposition
-import Formalism.HarderNarasimhan.ShiftInvariance
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis
 open scoped InnerProductSpace ContDiff

@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.PrimesEffectiveChebotarev
-import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Formalism.SharpRestriction.CuspSpanNormBounds.PlaceDegreeData
-import Formalism.SharpRestriction.ParConsts
 import Formalism.PadicSubsetSums.StableGradedCounts.FixedByAutomorphismInField
 import Formalism.PadicSubsetSums.StableGradedCounts.IRRGoodDualStable
 

@@ -3,7 +3,6 @@ import Formalism.LocalToGlobal.InertKernelTheory.DefsIntTens
 import Formalism.LocalToGlobal.GlobalTheory.GL3.ThirdClauseIntegralCombination
 import Formalism.LocalToGlobal.AlgebraicTheory.AlgebraicTheoryProofs.KerJet
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThDistC
-import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.QuadraticSemicharacterIdentityReformulated2
 
 noncomputable section
 

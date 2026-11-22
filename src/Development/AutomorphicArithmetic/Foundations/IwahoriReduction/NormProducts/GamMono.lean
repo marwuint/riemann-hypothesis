@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.NormProducts.LUnH
-import Development.AbelianVarietyTheory.Definitions.Foundations.HahnPowOrderLeadingCoeff
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SpecialLinearGroupIntMapZmodSurjective
 
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.Kd.K4 Polynomial

@@ -1,6 +1,5 @@
 import Formalism.SharpRestriction.GrowthBounds.StandardPolynomials.ColsDef
 import Formalism.SharpRestriction.GrowthBounds.StandardPolynomials.SgKSPowP
-import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.OtherStart
 
 noncomputable section
 

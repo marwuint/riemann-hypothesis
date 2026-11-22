@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NeZeroTop
-import Formalism.LocalToGlobal.Columns.RecLevelTop
 
 noncomputable section
 

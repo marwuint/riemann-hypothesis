@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NonzeroPlacesOverPrimesLifts
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.BrgStdR
 
 noncomputable section
 

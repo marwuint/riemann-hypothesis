@@ -1,5 +1,4 @@
 import Formalism.FrobeniusBaseCase.FrobeniusBaseCaseProofs.ChainI
-import Formalism.FrobeniusBaseCase.Statement
 
 open MvPowerSeries
 

@@ -2,7 +2,6 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.DeRhamPotentially
 import Mathlib
 import GroundTheory.PAdicHodge.ExistsNormLeOfNormLtOneFinite
 import GroundTheory.PAdicHodge.FundamentalSeq
-import GroundTheory.PAdicHodge.SenTateCharClosure
 
 noncomputable section
 

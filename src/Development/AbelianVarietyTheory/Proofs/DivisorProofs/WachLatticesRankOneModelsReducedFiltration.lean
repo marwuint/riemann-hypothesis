@@ -2,9 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralBlock
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSlotsGlobal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMulVecEqPow
-import Formalism.PieriBlockIdeals.PieriColumnMinors.HeckeLFunctionIdealEulerProduct
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitRootCyclotomicExpExpansions
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankOfMulEqOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StableLatticeChainWithLinesMatrixForm
 
 set_option autoImplicit false

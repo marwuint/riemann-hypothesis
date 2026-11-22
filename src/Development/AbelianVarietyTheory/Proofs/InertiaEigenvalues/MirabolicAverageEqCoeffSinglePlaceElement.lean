@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TraceMirabolicDetCharacterAverageVectorIndep
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LengthPosOfPosDef
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SeriesKillsAvg
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AdjFormula
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ParamsEx
 import Formalism.LocalToGlobal.IndefiniteReal.LinksStage

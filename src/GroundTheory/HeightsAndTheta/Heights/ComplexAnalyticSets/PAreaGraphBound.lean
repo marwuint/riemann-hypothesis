@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StAreaGraphBound
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StAreaGraphPiece
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StAreaGraphPartition
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StGraphJacContinuous
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights

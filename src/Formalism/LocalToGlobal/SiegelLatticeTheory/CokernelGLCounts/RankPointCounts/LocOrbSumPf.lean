@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LsDatumBCut
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LocModel
-import Formalism.SharpRestriction.CuspSpanNormBounds.LocalOrbitGerms
 
 noncomputable section
 

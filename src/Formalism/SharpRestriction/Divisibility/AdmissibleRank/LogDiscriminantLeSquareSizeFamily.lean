@@ -1,20 +1,15 @@
 import Mathlib
 import Formalism.SharpRestriction.Divisibility.FlipOneTwo
 import Formalism.DegreeFormula.PointDegree.FlagDeg
-import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Formalism.SharpRestriction.CuspSpanNormBounds.PlaceDegreeData
-import Formalism.SharpRestriction.ParConsts
-import Formalism.SharpRestriction.Divisibility.ModuliIntegralCharts
 import Formalism.SharpRestriction.Divisibility.IntegralModelsLocalData
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.SharpRestriction.Divisibility.BoundaryLocalData
-import Formalism.GelfandTransference.EnergyIdentity
 import Formalism.NormUnitaryBounds.Statement
 import Formalism.NormUnitaryBounds.DetPolynomialWeights.ShearCoefficients
 import Formalism.NormUnitaryBounds.DetPolynomialWeights.LtSuccOfMemWeightCompositions
 import Formalism.NormUnitaryBounds.DetPolynomialWeights.NormUnitary
 import Formalism.NormUnitaryBounds.DetPolynomialWeights.ShortIndependentVectorsOfDualMinimum
-import Formalism.LatticeTheta.ThetaShiftInversion
 
 noncomputable section
 

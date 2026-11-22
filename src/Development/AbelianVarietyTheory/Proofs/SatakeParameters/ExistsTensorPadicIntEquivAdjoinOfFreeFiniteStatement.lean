@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsTensorPadicIntEquivAdjoinOfFreeFinite
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentreCompat
 
 open NumberField GlobalTheory.LKInvGood
 open scoped TensorProduct

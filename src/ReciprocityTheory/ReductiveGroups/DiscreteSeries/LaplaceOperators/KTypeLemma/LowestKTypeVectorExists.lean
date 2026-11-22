@@ -4,7 +4,6 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLe
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.Transfer
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.PropsEquivB
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.OpEqExp
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.ToMKMulInv
 
 noncomputable section
 

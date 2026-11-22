@@ -1,7 +1,6 @@
 import CompanionTheory.AutomorphicTheory.LocalBesselUniqueness.BesselModels.AtFormAdmOneOfSteps
 import Mathlib
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ZeroOfAe
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.L2NormScaling
 
 open MeasureTheory Matrix
 open scoped InnerProductSpace ENNReal

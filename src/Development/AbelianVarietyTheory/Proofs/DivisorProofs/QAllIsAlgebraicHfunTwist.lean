@@ -7,9 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertEisensteinJe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertLatticeTwistHasLevel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModularGroupRowVecAndConjRightActions
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QExpansionIsAlgebraicWeierstrassTorsion
-import Development.AbelianVarietyTheory.Definitions.Divisors.TorsTransport
-import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.TranslateProduct
-import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModDefs
 
 open NumberField UpperHalfPlane GlobalTheory.HilbFam GlobalTheory.QFam
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization (Emb Frac latM qPow upperHalf cK omegaFactor IsPartialZeta HasExpansion)

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowShiftEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevRowSuccInfUA
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MemLatOIffExistsActO
 
 noncomputable section
 

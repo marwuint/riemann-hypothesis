@@ -3,7 +3,6 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCEqZeroOfEventuallyEq
 import ReciprocityTheory.AnalyticForms.PotentialTheory.MaMeasureB
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PotentialContDiffAt
 import ReciprocityTheory.AnalyticForms.PotentialTheory.Stokes
-import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
 set_option maxSynthPendingDepth 1
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.OnePlaceKF
-import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CellDataSupport
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HaarEqSmul
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DiscreteSeriesUnitarySmoothBasic

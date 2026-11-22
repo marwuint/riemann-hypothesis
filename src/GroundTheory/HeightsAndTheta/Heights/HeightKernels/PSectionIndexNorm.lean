@@ -3,7 +3,6 @@ import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsPointVertRSt
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsInvertibleIdealIndex
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PDualLineIndex
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesLineDegree
-import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.FieldChange
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSectionBounded
 set_option maxSynthPendingDepth 1
 

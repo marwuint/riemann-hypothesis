@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolynomials.NormOfDvd
-import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolynomials.FrobEx
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolynomials.DvdOfNormLe
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolynomials.ToBasis
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolynomials.ContOf
@@ -12,11 +11,9 @@ import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolyno
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolynomials.IsUnitNat
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolynomials.RepFrob
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolynomials.Period
-import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolynomials.PConj
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolynomials.DivEqZeroOfCg
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolynomials.HtvExpand
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolynomials.NormSubLeOne
-import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsEqSubOfMemCob
 
 noncomputable section
 

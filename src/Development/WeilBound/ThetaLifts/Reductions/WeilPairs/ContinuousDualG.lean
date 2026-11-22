@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransportF
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaDistributionAutomorphySourceGroup
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.LatH
 
 open scoped TensorProduct Matrix

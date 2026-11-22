@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsHsymmShift
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PNumericalSegre
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.RingKrullDimQuotComapRename
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Assembly
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.NumbersDVR

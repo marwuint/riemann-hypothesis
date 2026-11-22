@@ -1,6 +1,5 @@
 import Formalism.HermitianCurvature.StatementTL
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.PBFVpic
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.HomogeneityNaturalDegree
 
 namespace Formalism.FourierDecayAlt.P
 

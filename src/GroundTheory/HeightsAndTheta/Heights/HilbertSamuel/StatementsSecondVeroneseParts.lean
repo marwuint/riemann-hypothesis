@@ -1,7 +1,5 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsArith
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.ArithRes
-import GroundTheory.HeightsAndTheta.Heights.FubiniStudy
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel

@@ -3,7 +3,6 @@ import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.RkThind
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.HermitianHalfLattice.MemHalfBOEquiv
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.HermitianHalfLattice.MLConjTranspose
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.SelfDualLatticeNorms.SelfDualFourfoldCurveIdealLattice
-import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.CayleyGaussianIntegrals.TripleEighthProof
 
 open NumberField IsDedekindDomain
 

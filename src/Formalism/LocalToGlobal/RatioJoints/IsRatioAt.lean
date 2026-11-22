@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.ThetaChr
-import Formalism.LocalToGlobal.JointCharacters.LocEMulLocE
 
 noncomputable section
 

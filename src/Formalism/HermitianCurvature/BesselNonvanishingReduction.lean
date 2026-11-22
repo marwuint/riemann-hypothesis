@@ -5,8 +5,6 @@ import Formalism.PeriodIntegrals.LowCyc
 import Formalism.PeriodIntegrals.KFinSmooth
 import Formalism.PeriodIntegrals.BesselPeriodGGP
 import Formalism.PeriodIntegrals.BesselMapUniq
-import Formalism.FormalDegreeBessel.StatementG
-import Formalism.FormalDegreeBessel.StatementDS
 import Formalism.HermitianCurvature.StatementB
 import Formalism.HermitianCurvature.StatementJF
 

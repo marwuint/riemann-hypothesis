@@ -4,8 +4,6 @@ import Formalism.LocalToGlobal.NormalizedHeckeFactors.TypesDefs
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoeffZeroNeOfMonicIrr
 import Formalism.LocalToGlobal.GaloisLevelStructure.DefsGal
 import Formalism.LocalToGlobal.GaloisLevelStructure.DefsLab
-import ReciprocityTheory.GaloisValuations.GlobalA
-import ReciprocityTheory.GaloisValuations.Global
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.SplitK
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.DiscrB
 

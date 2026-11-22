@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.HermitianColumns.InLocalDiscriminantKernel
 import Formalism.SatakeDualWeyl.DefsCS
-import Formalism.HermitianLattices.StatementMaj
 
 noncomputable section
 

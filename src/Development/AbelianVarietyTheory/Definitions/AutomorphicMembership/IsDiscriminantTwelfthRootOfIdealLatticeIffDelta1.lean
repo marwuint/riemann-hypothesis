@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.KernelLattices.ThDistC
-import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GapAtLeast
 
 noncomputable section
 

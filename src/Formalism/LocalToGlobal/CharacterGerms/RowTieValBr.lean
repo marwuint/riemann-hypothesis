@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.CharacterGerms.ValueEquationOfProjectors
-import Formalism.LocalToGlobal.CharacterGerms.RowTieFB
 
 noncomputable section
 

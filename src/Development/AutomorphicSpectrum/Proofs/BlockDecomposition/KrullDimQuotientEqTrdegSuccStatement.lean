@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KrullDimQuotientEqTrdegSucc
-import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PIntDomainDim
 
 open CategoryTheory AlgebraicGeometry
 set_option maxHeartbeats 1000000 in

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TracePairingFrobeniusCompat
-import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.FrobeniusWittActions.PsiApply
 
 open TensorProduct CrystallineSemistableComparison.Pb.Psi
 set_option maxHeartbeats 1000000 in

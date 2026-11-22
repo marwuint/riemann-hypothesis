@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.FockOperators.XApply
-import GroundTheory.GlobalFields.TateThesis.SchwartzBruhatDual
 import GroundTheory.GlobalFields.TateThesis.GlobalZetaFinite
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology Filter

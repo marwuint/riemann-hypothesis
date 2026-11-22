@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixRowSubstitutionPolyTransvectionEqSum
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowSubst
 
 open MvPolynomial Formalism.GradedWeylDivisibility GlobalTheory.GenCoef
 set_option maxHeartbeats 1000000 in

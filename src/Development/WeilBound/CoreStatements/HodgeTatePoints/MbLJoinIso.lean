@@ -5,7 +5,6 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrL
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 import Development.WeilBound.CoreStatements.HodgeTatePoints.MbLCentre
 import Development.WeilBound.CoreStatements.HodgeTatePoints.GenfibMap
-import Development.WeilBound.CoreStatements.HodgeTatePoints.MaBase
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 
 namespace PositivityTheory.HtPt.Mb.LJoinIso.JoinIso

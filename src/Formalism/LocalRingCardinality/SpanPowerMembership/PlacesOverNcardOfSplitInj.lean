@@ -2,7 +2,6 @@ import Formalism.SharpRestriction.LevelLetterCocycles.DataN
 import Formalism.GaloisCohomology.GaloisCohomologyProofs.LdataNonempty
 import Formalism.FrobeniusOrbits.HostCorollaries
 import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
-import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostFacts
 
 noncomputable section

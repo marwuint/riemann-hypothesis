@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.GenRatios
 import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
 import Development.AbelianVarietyTheory.Definitions.Divisors.P22
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalOfGrowthOn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankGrowthLimsupShiftLe
 
 set_option autoImplicit false
 

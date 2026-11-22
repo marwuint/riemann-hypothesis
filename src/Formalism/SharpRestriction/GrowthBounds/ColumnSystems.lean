@@ -4,7 +4,6 @@ import Formalism.SharpRestriction.GrowthBounds.ObjSeg
 import Formalism.SharpRestriction.GrowthBounds.ObjBridge
 import Formalism.SharpRestriction.GrowthBounds.CovariantDegrees
 import Formalism.SharpRestriction.GrowthBounds.StatementOfDegreeAndBound
-import Formalism.SharpRestriction.GrowthBounds.ConclusionA2
 
 noncomputable section
 

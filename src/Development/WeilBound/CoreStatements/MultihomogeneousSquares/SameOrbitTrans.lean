@@ -3,9 +3,6 @@ import Development.WeilBound.CoreStatements.FlagImmersions.SumFundOnRoot
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemAbLocusIff
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentres
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 
 noncomputable section
 

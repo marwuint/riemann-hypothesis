@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.EigLatLe
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuoIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FreeActionFramedPointsOfUnipotentModTwoPrimes
-import Formalism.LocalToGlobal.ProjectiveLattices.LiftLaSpec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinalRowWeightGramAlgebraic
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinalRowGramAlgebraicSection
 

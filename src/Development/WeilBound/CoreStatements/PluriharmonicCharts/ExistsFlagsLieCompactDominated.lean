@@ -6,7 +6,6 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqu
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackActionRing
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenspaceFieldExtension
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.HodgeComponentFactorPoint
-import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatLieBc
 
 open AlgebraicGeometry CategoryTheory NumberField Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor

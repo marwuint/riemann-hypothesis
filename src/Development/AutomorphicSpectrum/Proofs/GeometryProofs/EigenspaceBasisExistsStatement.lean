@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenspaceBasisExists
-import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.LeftEqIffLieVecSmul
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SumEmbeddingDualInt
 
 open NumberField
 set_option maxHeartbeats 1000000 in

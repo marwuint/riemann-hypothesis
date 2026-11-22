@@ -2,7 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RatVInjective
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProjArchOfInfEmbArchPi
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryAdelicIwasawaCompact
-import Development.WeilBound.ThetaLifts.Reductions.SiegelCore
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCompactIwasawa
 
 open NumberField MeasureTheory Matrix Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet PositivityTheory.ThKR GlobalTheory.CompanionTheory.RedCov

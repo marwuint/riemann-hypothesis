@@ -9,7 +9,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentFixLine
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalRingFiniteIdealsOfMaximalIdealPrincipalNilp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraMapMemMaximalIdealIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsogenyOfDegreeIntActionHarrisTaylor
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTangentCoordsBaseChangeSmoothCommGroup
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Hecke GlobalTheory.UPel.HT.ES GlobalTheory.IwLevel
 open ReciprocityTheory.ChartRestriction.G.Out (RingAct)

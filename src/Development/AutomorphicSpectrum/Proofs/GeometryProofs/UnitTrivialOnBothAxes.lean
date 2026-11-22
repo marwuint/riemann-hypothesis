@@ -2,8 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SqMap
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProperHasPowerFns
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsNormalisedGen
-import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsAppTopEqOfEffectiveEpi
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SABBaseChangeSt
 
 noncomputable section
 

@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.Subsingleton
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsStrictlySemistableAlt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDatumAOne
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GaloisRepOfPolarizedCuspidal
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 
 noncomputable section
 open CategoryTheory AlgebraicGeometry

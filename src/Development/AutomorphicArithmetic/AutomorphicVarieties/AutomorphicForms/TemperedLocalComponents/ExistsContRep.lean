@@ -1,7 +1,6 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.CuspSemisimpleReal
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.RepNewform
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.PCuspFin
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.CapCentral
 open NumberField GlobalTheory.CuspRep UpperTheory.V
 
 open Matrix in

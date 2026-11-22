@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdaptedFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanPolynomialTensorWeight
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MaximalCompactOneParameterLinesOfLieLines
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorIrreducibleModules
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
 
 noncomputable section
 

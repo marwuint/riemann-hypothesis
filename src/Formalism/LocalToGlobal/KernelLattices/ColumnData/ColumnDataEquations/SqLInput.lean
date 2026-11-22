@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.SqFinal
-import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.MemSmulLat
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.BaseLinkOfNonzeroDelta
 
 noncomputable section

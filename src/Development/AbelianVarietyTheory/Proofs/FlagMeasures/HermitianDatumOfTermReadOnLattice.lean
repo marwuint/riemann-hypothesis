@@ -7,7 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCoset
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NotField
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SpanToZero
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameCoordinatesTransportInnerLattices
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinatesTransportInnerLattices
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermOverFrameCoordinates
 
 open ValuativeRel Formalism.MainNotions.S Formalism.MainNotions.S.Loc Formalism.MainNotions.S.LocNG GlobalTheory.LocOver

@@ -1,11 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointFrameMulEqIntegralGenerators
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStalkZeta
-import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumFConstMul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoefTwistPull
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HRedFst
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor

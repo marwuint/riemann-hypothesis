@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagModelExistsOfGiven
-import Development.AbelianVarietyTheory.Definitions.Divisors.DlogRatioVolumeFormNeZero
 
 open GlobalTheory.PD GlobalTheory.CechDR KaehlerDifferential
 set_option maxHeartbeats 1000000 in

@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianModelsConjUnitaryOfNormClass
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceKappaOrbitalUnitEqSignedLatticeSumImpo
 
 open GlobalTheory.UnitLemma Polynomial Matrix
 set_option maxHeartbeats 1000000 in

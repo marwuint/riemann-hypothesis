@@ -1,7 +1,6 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PositiveDegreeClassesDieOnEtaleCover
-import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.BijectiveRestrictPointsOfEtaleOfHenselian
 
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC

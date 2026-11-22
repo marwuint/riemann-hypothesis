@@ -1,8 +1,6 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExpansionOfNumericsModel
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ModelStatement
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ExportSt
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 
 set_option synthInstance.maxHeartbeats 200000
 

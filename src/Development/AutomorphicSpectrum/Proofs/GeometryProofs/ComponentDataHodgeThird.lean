@@ -3,9 +3,7 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.NineGeoU
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsPeriodAtRestrict
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.InteriorPointPolarised
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PairSumFrameAtPoint
 
 namespace GlobalTheory.CompanionTheory.Ar

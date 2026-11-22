@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ParRowZ
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDiscreteSeriesModelOfOrthonormalBasisCarta
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPermOfCardFalse
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridParamRegularCardMinusCount
 
 noncomputable section
 

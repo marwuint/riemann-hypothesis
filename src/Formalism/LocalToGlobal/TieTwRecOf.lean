@@ -3,12 +3,9 @@ import Formalism.LocalToGlobal.FiniteTOf
 import Formalism.LocalToGlobal.BaseRankEqOfRealisation
 import Formalism.LocalToGlobal.IndefiniteReal.RealTB
 import Formalism.LocalToGlobal.IndefiniteReal.RealPins
-import Formalism.LocalToGlobal.IndefiniteReal.RealRec
 import Formalism.LocalToGlobal.IndefiniteReal.RealRecPins
 import Formalism.LocalToGlobal.Divisibility.PsiWeilOfAbsNorm
-import Formalism.LocalToGlobal.IndefiniteReal.ThetaFireRow
 import Formalism.LocalToGlobal.CarriedPlMap
-import Formalism.LocalToGlobal.Divisibility.ColPins
 import Formalism.LocalToGlobal.Divisibility.QLocTied
 import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.NHkRow
 

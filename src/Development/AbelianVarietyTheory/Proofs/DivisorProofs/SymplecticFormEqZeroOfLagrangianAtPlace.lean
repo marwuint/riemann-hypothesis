@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMemKAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLagrAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinPartIdemMulMemIff
 
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped TensorProduct Matrix GlobalTheory.VacAny

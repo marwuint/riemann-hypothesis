@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Gl2LocalToAdelicEmbedding
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsConstAlongSingleton
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DenseRangeUnits
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharacterOfIdeleClass
 import GroundTheory.GlobalFields.SemilocalAlgebras.InfiniteAdeleTopology
 

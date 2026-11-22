@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.OneMapEq
 import Formalism.LocalToGlobal.IndefiniteReal.FWExist
-import Formalism.LocalToGlobal.ProjectiveLattices.ThClassPins
 
 set_option autoImplicit false
 

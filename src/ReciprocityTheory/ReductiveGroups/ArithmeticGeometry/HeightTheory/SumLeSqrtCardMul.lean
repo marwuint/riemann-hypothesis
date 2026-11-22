@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.IrreducibleFactorHeightBound
-import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
 
 namespace ReciprocityTheory.ChartRestriction.G.T0
 

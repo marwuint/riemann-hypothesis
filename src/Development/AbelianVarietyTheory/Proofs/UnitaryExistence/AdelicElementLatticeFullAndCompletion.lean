@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CompletedLattice
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionRationalPointsAndApproximation
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsLatticeRationalVectorsInAdelicTranslate
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ZeroMemLatOf
-import Formalism.LocalToGlobal.ProjectiveLattices.HostInt
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.FactPrincipalDatum
 
 noncomputable section

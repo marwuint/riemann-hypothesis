@@ -1,6 +1,5 @@
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermBPf
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.SpanXLeKerAevalZero
 
 set_option autoImplicit false

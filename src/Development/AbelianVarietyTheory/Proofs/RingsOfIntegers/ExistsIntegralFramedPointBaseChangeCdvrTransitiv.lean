@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ThreeTer
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CommonEigenvectorsFlatBaseChange
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.IntegralThetaSectionExistsAndBaseChange
 import Formalism.LocalToGlobal.ProjectiveLattices.LieFreePf
-import Formalism.LocalToGlobal.ProjectiveLattices.ThetaFramePf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.GenBridgeA
 
 set_option autoImplicit false

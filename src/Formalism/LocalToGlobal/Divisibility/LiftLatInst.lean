@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.Divisibility.LiftLat
 import Formalism.LocalToGlobal.Columns.RowForms
 import Formalism.LocalToGlobal.Columns.RowFormsLemmas
-import Formalism.LocalToGlobal.Columns.HeckeSp
 
 open Module NumberField IsDedekindDomain
 open scoped Matrix ComplexOrder

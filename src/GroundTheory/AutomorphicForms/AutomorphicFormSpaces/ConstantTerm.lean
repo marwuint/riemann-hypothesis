@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.Uniform
-import GroundTheory.GlobalFields.TateThesis.AdeleMeasure
 
 open NumberField IsDedekindDomain Topology Filter Set MeasureTheory
 open scoped NumberField.AdeleRing

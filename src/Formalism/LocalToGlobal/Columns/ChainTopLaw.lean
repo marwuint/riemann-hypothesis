@@ -2,8 +2,6 @@ import Formalism.LocalToGlobal.Columns.LastRowColLevSym
 import Formalism.LocalToGlobal.Columns.ReductionExistsInLatticeStabilizerHolds
 import Formalism.LocalToGlobal.Columns.StdBasisFlagSubmoduleOfBlockTriangular
 import Formalism.LocalToGlobal.Columns.ColumnsProofs.SymLevEnt
-import Formalism.LocalToGlobal.Columns.RecLevelSymF
-import Formalism.LocalToGlobal.Columns.TiedGlMat
 
 open NumberField IsDedekindDomain Module Matrix
 

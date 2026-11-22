@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCrysLatOfTri
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InclWFrobIter
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OneAddXMulDerivativeBinomial
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TeichPow
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicPowerSeriesAlgHomActionLaws
 
 noncomputable section
 

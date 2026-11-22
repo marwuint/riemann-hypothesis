@@ -1,9 +1,6 @@
 import Development.DiscreteGroups.GlobalIrreducibility.ExistsColChar
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnipRadStdBlocksTwoNeBot
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasNormGroups
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ChevalleyUnits
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StandardCosocleGL
 
 noncomputable section
 

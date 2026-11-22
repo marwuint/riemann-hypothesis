@@ -6,7 +6,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.GeA
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.EiiUnit
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.XvanExt
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.LocVanP
-import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.LMemMax
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.NormO
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws

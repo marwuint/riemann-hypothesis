@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAdmissibleIntegralBasisChangeOne
-import Formalism.LocalToGlobal.Columns.LevGCount
 
 noncomputable section
 

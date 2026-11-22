@@ -4,7 +4,6 @@ import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsThroughPo
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsChartZeroTrdeg
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsThroughTwoPointsTrdeg
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsTrdegBaseAlgebraic
-import GroundTheory.HeightsAndTheta.Heights.ChowForms.PComponentOfIncIdeal
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights

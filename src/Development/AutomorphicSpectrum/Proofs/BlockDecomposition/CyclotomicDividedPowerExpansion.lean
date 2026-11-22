@@ -1,7 +1,6 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.ZariskiEtaleLifting.SubThickRees
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.WittExactSequences.IsCompl
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedPowerFiltration
 
 set_option backward.isDefEq.respectTransparency false
 set_option autoImplicit false

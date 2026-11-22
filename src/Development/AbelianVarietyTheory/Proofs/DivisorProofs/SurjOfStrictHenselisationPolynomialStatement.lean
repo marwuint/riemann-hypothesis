@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjOfStrictHenselisationPolynomial
-import Development.AbelianVarietyTheory.Definitions.Divisors.GalMapMul
 
 open GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in

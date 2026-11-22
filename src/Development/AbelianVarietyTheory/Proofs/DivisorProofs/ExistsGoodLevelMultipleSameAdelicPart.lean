@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeySectionValuationBoundsDifferent
-import Formalism.LocalToGlobal.ProjectiveLattices.IntAllProofFree
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsLevelGoodAtAllPrimesAndIdx
 import Development.AbelianVarietyTheory.Counterexamples.ModuliSurvey.ExistsGoodLevel
 
 noncomputable section

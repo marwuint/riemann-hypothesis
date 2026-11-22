@@ -1,6 +1,5 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.UnipApplyCastSuccLast
-import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurableSpace
 
 noncomputable section
 

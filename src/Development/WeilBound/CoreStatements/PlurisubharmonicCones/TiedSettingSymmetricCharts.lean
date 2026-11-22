@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
-import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
-import GroundTheory.HeightsAndTheta.Heights.Regularisation.RegMaxReindex
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.VerticalFactorSmoothLine
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightDominatesEventually
 

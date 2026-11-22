@@ -1,6 +1,5 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.BlockKWaveC
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ModuleFormPosCompactSupport
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.SizeStandardCompact
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.VectorIsomorphismCompactSupport
 
 namespace Formalism.FourierDecayAlt.P.PBL

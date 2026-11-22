@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StdLvPr
-import Formalism.LocalToGlobal.HermitianForms.TiedTwJSym
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ColumnLevelOfStepZeroFormsLevelTrueColumns
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermitianStepLevelOfChartFormsLevel

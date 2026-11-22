@@ -1,11 +1,8 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.GL2Classical.HeckeOperator
 import GroundTheory.AutomorphicForms.CuspidalDiscreteness.Unimodular
-import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.Uniform
 import GroundTheory.AutomorphicForms.Satake
 import GroundTheory.AutomorphicForms.MacdonaldWhittakerHecke
-import GroundTheory.AutomorphicForms.StrongApproximationSLDense
-import GroundTheory.GlobalFields.LocalAtPlace
 
 open NumberField IsDedekindDomain Matrix MeasureTheory CongruenceSubgroup
 open UpperHalfPlane hiding I I_re I_im

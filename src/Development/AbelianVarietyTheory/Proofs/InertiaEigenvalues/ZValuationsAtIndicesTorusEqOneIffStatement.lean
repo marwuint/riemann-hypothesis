@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ZValuationsAtIndicesTorusEqOneIff
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValsAtApply
 
 open GlobalTheory.UnitLemma
 set_option maxHeartbeats 1000000 in

@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.CharacterGerms.CoeffSubstEqSum
-import Formalism.LocalToGlobal.CharacterGerms.RowTieFB
 
 noncomputable section
 

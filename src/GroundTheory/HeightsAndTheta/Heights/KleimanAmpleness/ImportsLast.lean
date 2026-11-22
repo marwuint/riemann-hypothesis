@@ -1,8 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.Fintype
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsFurtherBis
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsExtraTail
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ExistsSumEqOneOfMulEqOne
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.AssemblyBase
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PGraphClosed
 set_option maxSynthPendingDepth 1

@@ -2,10 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffEqZeroOfStable
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisLinearDisjoint
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemMaxUnramifiedOfCrystallineRatio
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInvFilD
-import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
-import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct
 
 namespace GlobalTheory.LocTensorK

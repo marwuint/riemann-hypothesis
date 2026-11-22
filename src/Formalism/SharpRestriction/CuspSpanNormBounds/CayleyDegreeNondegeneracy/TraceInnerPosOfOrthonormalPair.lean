@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.ShortVectorEveryPlace
 import Formalism.HermitianLattices.FinalMass
-import Formalism.FockGram.FockGramProofs.CovolGram
 
 noncomputable section
 

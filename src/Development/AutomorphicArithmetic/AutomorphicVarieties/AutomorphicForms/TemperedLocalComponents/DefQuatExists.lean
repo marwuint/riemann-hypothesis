@@ -1,6 +1,5 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.CuspSemisimpleReal
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.RepNewform
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemNormGroupIffEverywhereNorm
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NegOneNotSqSqrtTwo
 open NumberField GlobalTheory.CuspRep UpperTheory.V
 open scoped TensorProduct Quaternion

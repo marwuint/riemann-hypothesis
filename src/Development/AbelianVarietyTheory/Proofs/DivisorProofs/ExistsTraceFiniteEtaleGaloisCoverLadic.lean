@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsStrictlySemistableAlt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraceOfFiniteEtaleDegree
 
 noncomputable section

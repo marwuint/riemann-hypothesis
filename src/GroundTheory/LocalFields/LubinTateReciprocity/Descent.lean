@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.LocalFields.LubinTateReciprocity.TwistedPoint
 import GroundTheory.LocalFields.CompletedUnramified
 import GroundTheory.LocalFields.LubinTateTower
-import GroundTheory.LocalFields.UnramifiedExistence
 import GroundTheory.PowerSubgroups.CountableNeighbourhoods.DescentPowerSubgroups
 
 noncomputable section

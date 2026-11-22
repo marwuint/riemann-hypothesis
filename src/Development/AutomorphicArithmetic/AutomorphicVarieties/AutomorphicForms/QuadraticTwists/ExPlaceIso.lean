@@ -1,6 +1,5 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Hypotheses2
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LocIsotypic
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Langlands
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalTraceCompletion
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompletionBaseChangePlaces
 import GroundTheory.GlobalFields.LocalAtPlace

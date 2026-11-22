@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OntoFormLaws
-import Development.WeilBound.CoreStatements.PadicHodgeComparison.HodgeSurjectivity.FormLaws
 
 open CrystallineSemistableComparison.Onto
 set_option maxHeartbeats 1000000 in

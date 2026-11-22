@@ -3,7 +3,6 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WtRInjective
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SumMemOfStable
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryEuclideanModel
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCliff
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InvariantIntertwinesDual
 
 noncomputable section

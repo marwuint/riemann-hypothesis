@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SectionPowerCa
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MemMaximalIdeal
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NormsOfAdapted
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExpBijFAndExpandsFLin
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFramesOnUniformisedModelFibre
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj BigOperators

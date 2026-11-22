@@ -1,11 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.Columns.InvariantSubspaceCoordsX
-import Formalism.LocalToGlobal.Columns.RowFormsLemmas
 import Formalism.LocalToGlobal.Columns.RowFormsNZs
-import Formalism.LocalToGlobal.Divisibility.CoefMod
-import Formalism.LocalToGlobal.Divisibility.CoefModLemmas
-import Formalism.LocalToGlobal.Columns.CoefColLemmas
-import Formalism.LocalToGlobal.Columns.RowFormsNZp
 import Formalism.LocalToGlobal.Columns.RowFormsNZw
 import Formalism.LocalToGlobal.GlobalTheory.GL4.PDetAll
 

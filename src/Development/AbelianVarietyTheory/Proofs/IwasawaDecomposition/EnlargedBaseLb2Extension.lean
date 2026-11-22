@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnlocalizedSaturatedState
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DsExistsOfDiscreteSeriesExists
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DofOTw
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaPsi
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NonemptyGrid

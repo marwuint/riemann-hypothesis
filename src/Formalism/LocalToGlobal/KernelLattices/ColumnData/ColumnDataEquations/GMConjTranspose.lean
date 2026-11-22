@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.NormOneUnitIdeal
-import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.SemiCharImg
 
 noncomputable section
 open NumberField Formalism.BasicNotions Classical Matrix

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.OrbitLabellings.RowDefs
 import Formalism.DropLevelBounds.ThBounds
-import Formalism.IncomingBounds.IncomingBound
 import Development.AutomorphicArithmetic.OrbitLabellings.AttainsBlockListOfWeightsAlongOrbits
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DropLevelsBasic
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.MulFlowValLe

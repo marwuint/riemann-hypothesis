@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.CuspidalDiscreteness.CuspFormsHeight
 import GroundTheory.AutomorphicForms.CuspidalDiscreteness.DecayUniform
-import GroundTheory.AutomorphicForms.CuspidalDiscreteness.TorusReduction
 
 open NumberField IsDedekindDomain Topology Filter Set MeasureTheory
 open scoped NumberField.AdeleRing Pointwise

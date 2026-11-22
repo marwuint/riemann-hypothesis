@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.LocalFields.LubinTatePoints
 import GroundTheory.LocalFields.LubinTateTorsion
-import GroundTheory.LocalFields.Eisenstein
 import GroundTheory.LocalFields.UnitsBasic
 
 noncomputable section

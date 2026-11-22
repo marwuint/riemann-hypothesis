@@ -4,8 +4,6 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Thir
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.AHodgeDgalHodgeOfCgTrueG
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SepConjG
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TmRankOne
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CGTrueT
 
 set_option synthInstance.maxHeartbeats 200000
 

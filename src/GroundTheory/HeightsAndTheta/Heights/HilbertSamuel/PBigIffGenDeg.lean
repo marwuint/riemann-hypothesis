@@ -1,12 +1,9 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsArith
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.FirstPointNeSecondPoint
-import GroundTheory.HeightsAndTheta.Heights.FubiniStudy
 import GroundTheory.HeightsAndTheta.Heights.FubiniStudyInvariance.Statements
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.ProjectiveLine
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.ExistsNatMulMemConeRingIntFin
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsChartLatRank
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsKodairaGeneric
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PKodairaSection
 
 set_option maxSynthPendingDepth 1

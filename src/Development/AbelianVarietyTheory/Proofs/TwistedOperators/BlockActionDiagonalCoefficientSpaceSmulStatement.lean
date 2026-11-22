@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BlockActionDiagonalCoefficientSpaceSmul
-import Formalism.LocalToGlobal.KernelLattices.ThDistC
 
 open Formalism.L2.Ker MvPolynomial
 set_option maxHeartbeats 1000000 in

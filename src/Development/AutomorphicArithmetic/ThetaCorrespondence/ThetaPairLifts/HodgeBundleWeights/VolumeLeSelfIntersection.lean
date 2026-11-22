@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SemiposAtOfPositive
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsImageHeightUnique
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProjectiveClosureIsProjOver
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.VuSelfKnownTheorem
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.VuSelfA
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.VuSelfB

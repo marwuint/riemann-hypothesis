@@ -1,6 +1,5 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs
-import Formalism.GaloisCohomology.LocalTateDualityK
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanOfLocalCohomologyShape
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DualLatFiniteFree
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinIsoDualLatticeOfLocalTateDualityStatement

@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.LocalFiniteness.FieldNumbersSemilocalMaxIdeals
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PRegMassNearSmall
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PRegBallMass
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PRegFormCompare
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PRegLelongMono
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PRegLelongAnnulus
@@ -18,7 +17,6 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PVarietyTangentG
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PVarietyLelongMono
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PVarWirtinger
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PVarLelongMono
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLinearNoetherNormalization
 set_option maxSynthPendingDepth 1
 
 namespace GlobalTheory.CompanionTheory.VarLelong

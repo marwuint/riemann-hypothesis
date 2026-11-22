@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergVacuumUniqueOfSelfDual
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPairingSingleNe
 
 open Matrix Formalism.UG GlobalTheory.Hk3 GlobalTheory.FinWeil GlobalTheory.SphTheta ValuativeRel Classical
 open GlobalTheory.LFun (HasSatU IsSatVecU heckeVec)

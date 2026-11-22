@@ -3,8 +3,6 @@ import Formalism.SharpRestriction.GrowthBounds.HermitianTensor.CloudIso
 import Formalism.SharpRestriction.GrowthBounds.HermitianTensor.MemInvariantSectionsTwoWeightIff
 import Formalism.SharpRestriction.GrowthBounds.HermitianTensor.CcDualWtAnti
 import Formalism.SharpRestriction.GrowthBounds.ColumnSpanDensity.Tensor
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LDrowLemmas
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LClosedeqLemmas
 
 noncomputable section
 

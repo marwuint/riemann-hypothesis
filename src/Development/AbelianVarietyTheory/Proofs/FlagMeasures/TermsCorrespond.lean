@@ -8,7 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCoset
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermInvariantsIndependentOfWitnesses
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SpanToZero
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameCoordinatesTransportInnerLattices
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinatesTransportInnerLattices
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermOverFrameCoordinates
 open ValuativeRel Formalism.MainNotions.S Formalism.MainNotions.S.Loc GlobalTheory.HL
 open scoped Pointwise ENNReal Classical

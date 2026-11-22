@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IntegralBound
-import Formalism.HarderNarasimhan.StatementPl
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HyperplaneSectionVanishingShift
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZeroDimSupportEulerChar
 open CategoryTheory AlgebraicGeometry NumberField

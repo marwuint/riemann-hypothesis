@@ -1,7 +1,5 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SmallOperatorExistence
-import ReciprocityTheory.SemistableReduction.LatAll
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.QuadraticCoefficientForms
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowMajorantFlags
 
 namespace ReciprocityTheory.ChartRestriction.G.FD
 

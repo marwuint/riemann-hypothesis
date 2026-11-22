@@ -1,7 +1,6 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TraceLimits.ExistsTraceLimit
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TraceLimits.SlopeTestRemainingChoices
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LimWUOfSeeds
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AutomorphicLevelAwayNonsplit
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalOperatorsExist
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ClosedAtL
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardLTorsionEqPowOfTateSimilitude
-import Development.AbelianVarietyTheory.Definitions.Divisors.NotCompactOfMEqOne
 
 open scoped NumberField
 set_option maxHeartbeats 1000000 in

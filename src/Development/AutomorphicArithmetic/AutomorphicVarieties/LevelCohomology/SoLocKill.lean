@@ -5,7 +5,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.So
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.SoScal
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.SoDualEmb
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.SoDecNe
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.QoFacts
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.X
 

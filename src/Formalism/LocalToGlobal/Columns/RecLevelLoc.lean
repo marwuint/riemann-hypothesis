@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.Columns.RecLevel
-import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 
 open NumberField IsDedekindDomain Matrix
 open scoped TensorProduct

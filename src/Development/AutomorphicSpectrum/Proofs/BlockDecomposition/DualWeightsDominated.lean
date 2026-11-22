@@ -6,7 +6,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DualWeightSpace
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TorCharInjective
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeightPolynomialTraceIdentityStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DominanceOfWeylCharacterCoeff
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCliff
 
 noncomputable section
 open Matrix Finset

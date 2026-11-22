@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.PAdicHodge.LocalBridge
 import GroundTheory.PAdicHodge.ACrisGalois
-import GroundTheory.LocalFields.Unramified
 import GroundTheory.LocalFields.PrincipalUnitsRank
 set_option maxSynthPendingDepth 1
 

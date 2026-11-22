@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilActionUnitar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPairingStdP
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulRealAdEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedAdelicLatticeClosure
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExtensionEmbeddingMixedSymmOfIsComplex
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 open GlobalTheory.ArchUniq MeasureTheory

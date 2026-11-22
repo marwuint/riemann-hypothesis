@@ -2,8 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RowsPos
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HypOfUniqGap
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselMultiplicityOneLargeGapAndWhittakerBessel
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.UniqGapOfUniq
-import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.BesselOfWPf
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TypePOfLargeGapDiscreteSeriesBessel
 
 namespace GlobalTheory

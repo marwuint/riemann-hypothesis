@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegra
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceIsDVRAndResidueEqGround
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldFiniteSupportSumOrderEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsManyBoundedByPow
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldZerosFiniteSumOrderEqFinrank
 
 open scoped IntermediateField Polynomial RatFunc
 

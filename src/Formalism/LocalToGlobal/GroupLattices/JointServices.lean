@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.WeilJacquetShalikaLaw
-import Formalism.SharpRestriction.Divisibility.LocalQuadraticParts
 import Formalism.LocalToGlobal.Divisibility.TiedLemmas
 import Formalism.LocalToGlobal.Divisibility.JetBounds.Statement
 

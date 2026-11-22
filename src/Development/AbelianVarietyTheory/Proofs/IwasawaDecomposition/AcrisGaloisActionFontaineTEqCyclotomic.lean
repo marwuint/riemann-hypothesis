@@ -7,7 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneAddMulDer
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjective
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLogTeichmullerAcrisEqMuMulUnit
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisLogTeichmullerUniqueGaloisFrobeniusBdR
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 
 noncomputable section
 namespace GlobalTheory.MemLoc.TAct

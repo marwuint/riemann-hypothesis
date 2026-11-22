@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
-import Formalism.SharpRestriction.LevelLetterCocycles.LargeLevelLemmas
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Formalism.GaloisCohomology.LocalTateDualityK
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.RationalDualityOfAllCoefficients

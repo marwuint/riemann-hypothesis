@@ -2,9 +2,6 @@ import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.CongruenceAtSplitFrobeniusHolds
 import Formalism.SharpRestriction.CuspSpanNormBounds.AbsoluteAmplitudeSecondOfSource
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Stdform
-import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice
-import Formalism.HermitianLattices.HermitianLatticesProofs.GenusCovol
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ChartGen
 import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.MaxMass
 

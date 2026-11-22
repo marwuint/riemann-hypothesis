@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRtensOp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatchedTripleGlobalProductFormula
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchActionReadingsCompatible
 
 noncomputable section
 

@@ -8,7 +8,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.Sup
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.ThetaWeightBounds
 import Formalism.LocalToGlobal.ProjectiveLattices.SupNDataOfNonneg
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 
 set_option autoImplicit false
 

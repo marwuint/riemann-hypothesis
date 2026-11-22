@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.UniformizerMemDeltaInvariants
-import Formalism.JumpKernelCokernel.LengthTheoremsWithEarlier
 
 noncomputable section
 

@@ -2,12 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CoP
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalBasisRepLatticeIntegralCoordsSpec
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MemLocWDelAtrIff
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PredMemGamRanks
-import Formalism.LocalToGlobal.Columns.TiedValLatG
-import Formalism.LocalToGlobal.Columns.CoefModB
-import Formalism.LocalToGlobal.KernelLattices.InterlaceAll
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.InvTrKEmbGLApply
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SpanMapNabKDelK
 
 noncomputable section
 

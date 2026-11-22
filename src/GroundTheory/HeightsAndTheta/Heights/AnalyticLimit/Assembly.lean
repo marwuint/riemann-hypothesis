@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.RegularizedMaxC2ExampleRealLine
 import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCEqZeroOfEventuallyEqZero
-import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.ConvergenceRate
 import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCIsHermitian
 import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
@@ -13,21 +12,13 @@ import GroundTheory.HeightsAndTheta.Heights.Regularisation.PTruncPsh
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.PTruncTransfer
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.PBoundingKaehler
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.TendstoLocallyUniformlyOnOfNhds
-import GroundTheory.HeightsAndTheta.Heights.Regularisation.IsOpenKappaOpenNeighbourhood
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.PGreenMassZero
-import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.PKaehlerBound
-import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
-import ReciprocityTheory.AnalyticForms.PotentialTheory.DegreeInt
-import ReciprocityTheory.AnalyticForms.PotentialTheory.Pullback
-import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.StatementsPullback
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.SystemIndependence
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.StListTailLog
-import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.StBoundingKaehler
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.TailDimZero
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.UniformIntegrability
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPushDown
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FlagIndices
-import GroundTheory.HeightsAndTheta.Heights.Regularisation.PGlueRegularised
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PPushDown
 
 set_option maxSynthPendingDepth 1

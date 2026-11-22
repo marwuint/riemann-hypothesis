@@ -1,10 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CoefficientExtensionDecomposition
-import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
-import Formalism.SharpRestriction.LevelLetterCocycles.DecompositionData
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.OneSubPhiOntoOfFilZero
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.MainAltAlt
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.TrivialLocalCondition
 
 set_option synthInstance.maxHeartbeats 200000
 

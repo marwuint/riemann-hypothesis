@@ -1,6 +1,5 @@
 import Development.WeilBound.ThetaLifts.CartanFactorisation.Factor
 import Development.WeilBound.ThetaLifts.FrameEstimates.TowerRallisLemma
-import Development.WeilBound.ThetaLifts.FrameEstimates.HodgeTateFromSandwich
 
 namespace PositivityTheory.ThKClose
 

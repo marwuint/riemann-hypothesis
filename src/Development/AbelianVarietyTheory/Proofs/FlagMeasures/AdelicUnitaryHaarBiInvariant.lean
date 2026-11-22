@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
 import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ModularCharacterEqOneOnExpHermitian
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopology
 import Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.ExistsOrthogonalBasisDotProductApplyEq
 

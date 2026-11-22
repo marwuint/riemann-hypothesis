@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.FockZeroRight
-import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.FactorsOfPerturb
 
 noncomputable section
 

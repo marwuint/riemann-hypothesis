@@ -2,14 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SingleIndexPlacesAreTwisted
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecondLinkOfWeightRows
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedClassSumsRationalOfRayClassFields
-import Development.AbelianVarietyTheory.Definitions.Divisors.KerDatTuple
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMapOfOfExtends
-import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
-import Formalism.LocalToGlobal.IndefiniteReal.RhoGeo
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RayFieldTheta
-import Formalism.LocalToGlobal.IndefiniteReal.FWExist
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsDeltaDelAtOwnAt
 open NumberField IsDedekindDomain
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Indef.Tree Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Cx Formalism.IndefR.FWT
 open GlobalTheory.BigTop GlobalTheory.BigOn

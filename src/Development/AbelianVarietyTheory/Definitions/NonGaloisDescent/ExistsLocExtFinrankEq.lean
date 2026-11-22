@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Langlands
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLocalExtensionOfFiniteIndexWeilSubgroup
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RecTransportFieldIso
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalArtinExistsHolds
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GaussSumNeZeroOfRamified
 
 noncomputable section
 

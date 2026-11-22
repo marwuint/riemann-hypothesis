@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
-import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates
 import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
 import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
@@ -8,8 +7,6 @@ import Formalism.SharpRestriction.LevelLetterCocycles.InvariantsGenerators
 import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CrysOnCond
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CycZpowCrysDRJump
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineSumsTwistsCharactersExpectedJumps
-import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
-import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 
 namespace CrystallineMultiplicity
 section

@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ar
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingKrullDimIntegers
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BijectiveCompAlgebraMap
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GenericallySmoothModel
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AnalyticWeightLinearComb
 
 noncomputable section
 

@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PowIdeal
-import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.RelSerreSections
-import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.QcqsPushforward
 
 set_option autoImplicit false
 

@@ -1,6 +1,4 @@
 import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.CyclicCharacterEigen.PropEG
-import GroundTheory.GlobalFields.KummerTheory.LocalIndexAtPlace
-import GroundTheory.GlobalFields.TateThesis.NonvanishingPrimes
 
 noncomputable section
 

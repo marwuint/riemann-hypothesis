@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.EnergyIntTor
-import Formalism.HermitianCurvature.BesselNonvanishingReduction
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.JacobianCommutation.PRhoRw
 
 noncomputable section

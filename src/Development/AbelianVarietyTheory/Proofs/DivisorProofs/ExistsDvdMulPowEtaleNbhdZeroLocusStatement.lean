@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDvdMulPowEtaleNbhdZeroLocus
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AwayHomCompAlgebraMap
 
 open GlobalTheory.AffineCurveNbhd
 set_option maxHeartbeats 1000000 in

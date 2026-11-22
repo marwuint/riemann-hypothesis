@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.Columns.StandardDeltaIntegralCoeffs
-import Formalism.LocalToGlobal.Columns.CoefficientsModP
 import Formalism.LocalToGlobal.LatticeGeometry.OperatorNormFibers.PDescentCutA
 
 open NumberField IsDedekindDomain Module MvPolynomial

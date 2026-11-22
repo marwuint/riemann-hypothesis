@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompAtEqOneOfT
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.Multi
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
-import Development.AutomorphicArithmetic.Foundations.UnitarySphericalFixing.SatakeParameters.GoodAUIso
 
 set_option synthInstance.maxHeartbeats 200000
 

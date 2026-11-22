@@ -1,6 +1,5 @@
 import Development.WeilBound.CoreStatements.VolumeEquality.DegPushPFa
 import Development.WeilBound.CoreStatements.VolumeEquality.DegPushPFb
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Assembly
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ImageCoord
 
 noncomputable section

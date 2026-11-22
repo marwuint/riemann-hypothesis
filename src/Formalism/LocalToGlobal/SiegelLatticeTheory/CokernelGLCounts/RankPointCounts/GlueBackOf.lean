@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.GlueFwdOf
-import Formalism.SharpRestriction.CuspSpanNormBounds.LocalModelPeriodLattices
 
 noncomputable section
 

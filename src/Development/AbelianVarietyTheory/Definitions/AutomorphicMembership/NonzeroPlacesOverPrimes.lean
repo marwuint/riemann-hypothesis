@@ -2,9 +2,7 @@ import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.ParCanon
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.BrgStdR
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TiedColumnData
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FieldValuesMemFixedField
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LowerTieTwAt
-import Formalism.LocalToGlobal.Divisibility.DivisionCompatibleToSub2Indef2
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TypeIdempotentCoeffAcrossLayers
 
 noncomputable section

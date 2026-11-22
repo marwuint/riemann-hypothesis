@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.CharacterGerms.SelfConjugateRowData
 import Formalism.LocalToGlobal.CharacterGerms.RowTieLab
-import Formalism.LocalToGlobal.CharacterGerms.RowTieTop
 import Formalism.LocalToGlobal.CharacterGerms.NondegenerateCharts
 
 set_option autoImplicit false

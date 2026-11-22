@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.Jets.TwoPlaces
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NonemptyClosedValuedExtensionOfCDVR
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ChartLocalDepthLeOfValuedExtensionBound
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ProdDetMemHaO
-import Formalism.LocalToGlobal.ProjectiveLattices.PlaceBelow
 import Formalism.LocalToGlobal.ProjectiveLattices.SatLeaves
 import Formalism.LocalToGlobal.ProjectiveLattices.CompSplitPfB
 import Formalism.LocalToGlobal.ProjectiveLattices.TowerOfAt

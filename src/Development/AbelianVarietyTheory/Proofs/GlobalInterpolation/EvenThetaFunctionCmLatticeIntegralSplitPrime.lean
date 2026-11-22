@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LatIntZero
 import Formalism.LocalToGlobal.KernelLattices.LateralTheory
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.IsAdmissibleFlagPairOfUnitriangularLeftAutomorph
-import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.QuasiPeriodConstUnique
 import Formalism.LocalToGlobal.GlobalTheory.GL3.PStdChar
 import Formalism.LocalToGlobal.GlobalTheory.GL3.PStdOK
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CpSeriesBoundedThetaLevelValueOne

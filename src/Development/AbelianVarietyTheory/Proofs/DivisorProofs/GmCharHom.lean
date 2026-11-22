@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBoxGenOfSection
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.GmCharPow
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinHomIffLinEnd
 
 noncomputable section
 

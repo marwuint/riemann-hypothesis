@@ -1,6 +1,5 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PeriodRingComparison.CrystallinePeriodRings.AcrisNAlgebraMapAinf
-import Development.AutomorphicArithmetic.IntegralCasts.CrystallinePeriods.UniformContinuousConstSMulOfIsIsometricSMul
 import Development.WeilBound.CoreStatements.CrystallinePeriodRings.AinfMapSurjective
 
 noncomputable section

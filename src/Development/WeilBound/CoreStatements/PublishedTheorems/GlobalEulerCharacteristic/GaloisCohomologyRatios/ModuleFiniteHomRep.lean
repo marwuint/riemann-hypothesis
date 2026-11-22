@@ -2,7 +2,6 @@ import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharact
 import GroundTheory.ProfiniteCohomology.GlobalEulerCharacteristic.GEqAddOfExactOfFiniteCokernel
 import GroundTheory.ProfiniteCohomology.GlobalEulerCharacteristic.Stabilizers
 import GroundTheory.ProfiniteCohomology.GlobalEulerCharacteristic.ShaCount
-import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.AdditiveInvariants
 
 open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh GroundTheory.Global
 

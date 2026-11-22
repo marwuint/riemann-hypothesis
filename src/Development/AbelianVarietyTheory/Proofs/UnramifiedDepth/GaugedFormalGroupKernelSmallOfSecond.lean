@@ -3,7 +3,6 @@ import Formalism.LocalToGlobal.CharacterGerms.NondegenerateCharts
 import Formalism.LocalToGlobal.CharacterGerms.RowTieSelf
 import Formalism.LocalToGlobal.CharacterGerms.BlockAdmissibleChart
 import Formalism.LocalToGlobal.CharacterGerms.NegMem
-import Formalism.LocalToGlobal.CharacterGerms.CharacteristicFromRanks
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.HasTeich
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsSaturatedGoodVectorsSmallCorank

@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FerrandPushoutGoodBasicOpen
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsSchemeOfThickenings
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PreimageUpOpen
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite
 set_option maxHeartbeats 1000000 in

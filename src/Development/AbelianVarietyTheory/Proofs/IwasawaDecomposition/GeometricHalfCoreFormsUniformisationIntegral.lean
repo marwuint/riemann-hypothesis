@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JEvExists
-import Formalism.LocalToGlobal.UnitaryNorms.CharTied
-import Formalism.LocalRingCardinality.DataKap
 import Formalism.LocalToGlobal.ProjectiveLattices.HasDataCondition
 import Formalism.LocalToGlobal.ProjectiveLattices.RecCond
 import Formalism.LocalToGlobal.ProjectiveLattices.ParCanon
@@ -17,11 +15,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LUnifOfRhoGeoEquivA
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LMLatOfLIntegral
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelActionPreservesIntegralCuspForms
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEquivariantUnitConstantsGoodEmbedding
-import Formalism.LocalToGlobal.IndefiniteReal.FWExist
-import Formalism.LocalToGlobal.IndefiniteReal.RhoGeo
-import Formalism.LocalToGlobal.ProjectiveLattices.CuspFormsFiniteDimensionalOf
-import Formalism.LocalToGlobal.ProjectiveLattices.ThProps
-import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeoActOfTiesOfEquivAll
 
 open NumberField IsDedekindDomain MeasureTheory Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.L2.Pj Formalism.IndefR.FWT ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.RealGeo

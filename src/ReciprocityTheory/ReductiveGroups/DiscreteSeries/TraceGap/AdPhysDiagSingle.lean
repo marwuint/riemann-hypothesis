@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TraceGap.AdMatConjTranspose
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.LowFockB
 
 noncomputable section
 

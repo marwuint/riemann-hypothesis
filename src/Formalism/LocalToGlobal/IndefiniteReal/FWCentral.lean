@@ -1,11 +1,7 @@
 import Formalism.LocalToGlobal.IndefiniteReal.FWExist
 import Formalism.LocalToGlobal.IndefiniteReal.ConjLemmas
-import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
-import Formalism.LocalToGlobal.HeckeThetaElements.DefsWt
 import Formalism.LocalToGlobal.ProjectiveLattices.MuValFix
 import Formalism.LocalToGlobal.IndefiniteReal.ZeroPartEigenvalueConvention
-import Formalism.LocalToGlobal.IndefiniteReal.CxLemmas
-import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ImageLcv
 import Formalism.LocalToGlobal.IndefiniteReal.OneMapT
 
 noncomputable section

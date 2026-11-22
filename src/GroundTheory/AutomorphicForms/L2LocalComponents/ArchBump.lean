@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.L2LocalComponents.ArchPolar
 import GroundTheory.AutomorphicForms.L2LocalComponents.ArchHaar
-import GroundTheory.AutomorphicForms.HarishChandraRegularity.CartanBasis
 
 open NumberField NumberField.mixedEmbedding NumberField.InfinitePlace Matrix MeasureTheory Topology Filter
 open scoped NumberField.AdeleRing ContDiff Manifold

@@ -1,7 +1,6 @@
 import Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.CurveEndoUnitBall
 import Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.CurveSecondLogDerivative
 import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.FinalB
-import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.TwoTorsionU
 
 noncomputable section
 open scoped BigOperators

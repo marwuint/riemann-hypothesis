@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFiniteAdelicOr
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicLatticeSplitUnitVectorOrthComplement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointRationalEquivariance
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFiniteAdelicPointLatticeEqSelfDual
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsGaugeAll
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas GlobalTheory.GaussMean GlobalTheory.StabUnfold
 open scoped TensorProduct

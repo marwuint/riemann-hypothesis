@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.GroupLattices.FockModels.FlatModels.PolynomialThetaProduct
-import Formalism.SharpRestriction.GrowthBounds.ObjBridge
 
 open MvPolynomial
 

@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.IsGenFrGenFr
 import Formalism.LocalToGlobal.ProjectiveLattices.FamilyUniformisationBasePointOrthogonalBis
 import Formalism.LocalToGlobal.Divisibility.Frames
-import Formalism.HarderNarasimhan.StatementPl
 
 open Module NumberField IsDedekindDomain MeasureTheory
 open scoped Matrix

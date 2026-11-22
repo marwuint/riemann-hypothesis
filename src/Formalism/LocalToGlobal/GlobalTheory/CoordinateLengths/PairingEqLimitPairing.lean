@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.GlobalTheory.GL6.LocalBasisChangeDecompCompatible
-import Formalism.LocalToGlobal.GlobalTheory.GL6.PBwLocGlob
 import Formalism.LocalToGlobal.GlobalTheory.CoordinateLengths.PairingContinuityBound
 
 noncomputable section

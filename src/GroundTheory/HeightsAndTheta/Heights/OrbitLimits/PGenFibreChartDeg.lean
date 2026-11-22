@@ -3,7 +3,6 @@ import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.GenFibreChartDeg
 import GroundTheory.HeightsAndTheta.Heights.Intersections.StChartScalingIndep
 import GroundTheory.HeightsAndTheta.Heights.Intersections.StAdjoinIndepRelfinrank
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PFinrankAdjoinRange
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterGoodB
 set_option maxSynthPendingDepth 1
 
 noncomputable section

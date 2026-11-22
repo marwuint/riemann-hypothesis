@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ISupIndepOfPairw
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvariantFormBoundedCongruence
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CharacterChoiceData
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.MainOfAlt
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
 set_option synthInstance.maxHeartbeats 200000
 

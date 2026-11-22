@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdelicUnitrian
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUpperUnitriangularEntriesHomeomorph
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMapEntriesHaarUnitriangularEqSmulPi
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AddHaarMapMulFiniteIdeleOfUniformizerPowers
-import GroundTheory.AutomorphicForms.ReductionMeasure
-import GroundTheory.GlobalFields.Adele.Topology
 
 noncomputable section
 

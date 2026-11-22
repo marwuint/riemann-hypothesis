@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.UnitaryAtAllRows
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormGoodRowsFiniteGroupAction
-import Formalism.LocalToGlobal.IndefiniteReal.FWExist
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormLiftFormsFiniteGroupAction
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TranslateUnitaryLifts
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ReprMemOfBasisRational

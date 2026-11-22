@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeIsogenyLiftsToLatticeMapScalingForms
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIsCan
-import Formalism.LocalToGlobal.ProjectiveLattices.HeckeFr
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
 
 set_option autoImplicit false
 

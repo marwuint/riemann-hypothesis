@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemExpSolCons
-import Development.AbelianVarietyTheory.Definitions.Divisors.CentralNilGL
 open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.HCF Topology
 
 namespace GlobalTheory.HCF

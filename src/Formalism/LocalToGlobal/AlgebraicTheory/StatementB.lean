@@ -1,6 +1,4 @@
 import Formalism.LocalToGlobal.AlgebraicTheory.StatementA
-import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.StatementA
-import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.EisensteinS2LimitFormula
 
 noncomputable section
 open scoped BigOperators

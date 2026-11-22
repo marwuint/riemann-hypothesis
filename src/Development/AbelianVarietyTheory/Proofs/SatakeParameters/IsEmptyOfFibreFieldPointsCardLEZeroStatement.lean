@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsEmptyOfFibreFieldPointsCardLEZero
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FibrePointsLEId
 
 open CategoryTheory Limits AlgebraicGeometry
 set_option maxHeartbeats 1000000 in

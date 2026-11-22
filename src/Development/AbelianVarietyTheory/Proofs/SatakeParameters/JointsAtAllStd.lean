@@ -3,13 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.HasPartAnd
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.JointCmpEmbeddingY
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KerTie
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelRelationTrueColumnsJointsAllTuples
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ColNorm
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FixedVectorEqOfStandardData
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsTwIffCanonEq
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JetsInIffStepField
-import Formalism.LocalToGlobal.HermitianForms.ExtraSym
-import Formalism.LocalToGlobal.GroupLattices.Joint0
-import Formalism.LocalToGlobal.HermitianForms.TiedTwSymAll
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChiDValuesAndCcTop
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Ker Formalism.L2.Forms GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.Svd NumberField IsDedekindDomain
 

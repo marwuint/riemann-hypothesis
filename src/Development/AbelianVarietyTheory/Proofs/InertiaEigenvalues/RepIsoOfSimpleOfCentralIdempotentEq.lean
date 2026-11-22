@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoeffZeroNeOfMonicIrr
 import Formalism.PadicSubsetSums.CentralIdempotents.HCDisjointO
-import Formalism.PadicSubsetSums.CentralIdempotents.GaloisConjCentralIdempotent
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.DetCharacterMemPrincipalCongruenceFixedVectors
 
 open Formalism.IrreducibleCountingLemmas.TYPES Formalism.L2.NT

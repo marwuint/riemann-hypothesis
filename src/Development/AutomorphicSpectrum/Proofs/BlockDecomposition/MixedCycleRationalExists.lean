@@ -5,7 +5,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermRepMetricSm
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PointIdealMultiprojectivePrime
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingStalkGeneric
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianO1PullbackFubiniStudyMetric
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.ArithModel
 
 set_option autoImplicit false
 

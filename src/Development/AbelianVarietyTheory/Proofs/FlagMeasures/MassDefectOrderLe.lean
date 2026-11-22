@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabi
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBound
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesDefectOrderShareLeStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDataMassEqSumFrameClasses
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermLat
 
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical

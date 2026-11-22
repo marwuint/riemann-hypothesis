@@ -7,7 +7,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.Wt
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixVariablesDeterminantPowMonomialShape
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LegendreBoundsFactorialMultiIndexCapelli
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PeriodValuation
 
 open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Sh GlobalTheory.FGDepth
 

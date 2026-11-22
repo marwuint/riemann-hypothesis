@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaActRefl
 import Development.AbelianVarietyTheory.Definitions.Foundations.MemRingOfInR
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModQPrin
-import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModJTau
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QAllQConjOfDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QExpansionCoeffsInSubringRingClosed
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularDiscriminantDivQIntegerQExpansions

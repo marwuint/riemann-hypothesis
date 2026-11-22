@@ -2,7 +2,6 @@ import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.SliceTensor
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IteratedDerivSplitCentre
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.NotIsTemperedGLDetRepTwo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SatakeParametersOfTwist
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.T2SpaceAdelicGeneralLinearGroupNumberField
 
 noncomputable section
 

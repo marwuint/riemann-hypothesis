@@ -3,8 +3,6 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateM
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionEqZeroOfValues
-import GroundTheory.PAdicHodge.FiniteFlat
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT
 

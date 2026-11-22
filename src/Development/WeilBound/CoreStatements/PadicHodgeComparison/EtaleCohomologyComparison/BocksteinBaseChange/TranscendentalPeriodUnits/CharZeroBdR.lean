@@ -1,8 +1,6 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.BocksteinBaseChange.TranscendentalPeriodUnits.CrystallineSemistableComparison
 import GroundTheory.PAdicHodge.WAFracMain
-import GroundTheory.PAdicHodge.ExistsNormLeOfNormLtOneFinite
-import GroundTheory.PAdicHodge.BCrisNewton
 
 set_option backward.isDefEq.respectTransparency false
 

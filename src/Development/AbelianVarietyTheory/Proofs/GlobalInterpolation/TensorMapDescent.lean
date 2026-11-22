@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.InterlacingEquivariance
-import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
-import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
-import Formalism.LocalToGlobal.Columns.PolyFnLemmas
-import Formalism.LocalToGlobal.Columns.CoefficientsModP.FkMapInitMinor
 
 open MvPolynomial NumberField
 

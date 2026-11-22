@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineHilbertSchemeValuativeCriterionExistence
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComapBcComp
 
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits Opposite
 set_option maxHeartbeats 1000000 in

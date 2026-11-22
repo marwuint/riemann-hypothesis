@@ -27,7 +27,6 @@ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDegZeroLocFrac
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDegZeroLocLocalize
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDegZeroLocLocal
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDegZeroLocNoetherian
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDegZeroLocQuot
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDegZeroLocResidue
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDegZeroLocSeparate
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDegZeroLocUnits
@@ -45,7 +44,6 @@ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PMChartLocDim
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PMChartTrdeg
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PNoetherIntegralClosure
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PSemilocalFinite
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PSemilocalFiniteRank
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PSemilocalIntegral
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PSemilocalLength
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PSemilocalLengthSum

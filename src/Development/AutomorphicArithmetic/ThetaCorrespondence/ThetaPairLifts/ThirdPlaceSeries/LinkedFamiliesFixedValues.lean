@@ -1,7 +1,6 @@
 import Formalism.LocalToGlobal.ClassS
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RingSpecNormalisedCharacterEqAlt
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.NGalTied
 
 set_option synthInstance.maxHeartbeats 200000
 

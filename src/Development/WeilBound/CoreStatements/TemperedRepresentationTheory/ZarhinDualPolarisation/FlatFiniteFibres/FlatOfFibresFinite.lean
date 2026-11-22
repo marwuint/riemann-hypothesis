@@ -1,5 +1,4 @@
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.IsPolarisationOfRelAmple
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsFinFlatSub
 
 set_option autoImplicit false
 

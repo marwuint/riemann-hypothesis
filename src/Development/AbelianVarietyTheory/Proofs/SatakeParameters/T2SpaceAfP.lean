@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RealPointsToUnitaryGroupVal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.T2SpaceTensorRatFiniteAlgebraModuleTopology
 open NumberField GlobalTheory.LKTrip GlobalTheory.HTBetti GlobalTheory.Kg IsDedekindDomain
 open scoped TensorProduct Matrix.Norms.L2Operator RestrictedProduct
 

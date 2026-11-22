@@ -2,7 +2,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.DiscLoc
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.HDiscBDefs
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.HDiscAF
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.NormFactorizationClause
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.NormByPlaces
 
 set_option linter.style.haveILetI false
 

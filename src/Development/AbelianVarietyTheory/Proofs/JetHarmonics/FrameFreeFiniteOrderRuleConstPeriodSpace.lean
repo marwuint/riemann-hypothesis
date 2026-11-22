@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FormPlus
-import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.HomExtOfGeometric
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.ExistsContraction
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsHolToFibPtAndCompFibre

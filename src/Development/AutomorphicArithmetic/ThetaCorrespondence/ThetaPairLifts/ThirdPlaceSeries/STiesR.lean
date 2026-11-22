@@ -1,8 +1,6 @@
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.STiesR
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LayerTwoFamilyClass
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LinkedFamiliesFixedValues
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LinkedFamiliesKernelFrame
 
 set_option synthInstance.maxHeartbeats 200000
 

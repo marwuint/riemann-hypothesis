@@ -5,7 +5,6 @@ import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.PiInvTop
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.PiVecExHolds
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.TwtrContOfMem
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.IntegrableShift
-import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.SplitCentreMulTor
 
 noncomputable section
 

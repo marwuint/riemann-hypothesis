@@ -8,7 +8,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialProperness.Co
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialProperness.FvecCastSucc
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialProperness.HermitianXiOrthogonal
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.FrameInd
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianFormFlagVector
 
 namespace PI.PolynomialProperness
 

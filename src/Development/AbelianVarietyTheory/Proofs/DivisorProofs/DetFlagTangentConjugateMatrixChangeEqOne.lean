@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetBlockChangeOfBasisViaTwoFamiliesImplicit
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBaseFrame
-import Development.AbelianVarietyTheory.Definitions.Divisors.P22
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLieCombIffIsCombAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalRingPointDualNumberSndLinearDerivation
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField

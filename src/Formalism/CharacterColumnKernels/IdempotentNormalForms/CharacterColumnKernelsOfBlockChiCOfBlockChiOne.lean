@@ -1,8 +1,5 @@
 import Formalism.CharacterColumnKernels.CharacterColumnKernelEqualityForm
-import Formalism.CharacterColumnKernels.StatementGC
 import Formalism.CharacterColumnKernels.IdempotentNormalForms.GlobalModuleOf
-import Formalism.CharacterColumnKernels.IdempotentNormalForms.CupKillAdm
-import Formalism.CharacterColumnKernels.IdempotentNormalForms.GlobalConcreteOf
 import Formalism.CharacterColumnKernels.IdempotentNormalForms.BlockRhoFull
 import Formalism.CharacterColumnKernels.IdempotentNormalForms.BlockChiOneFullOf
 

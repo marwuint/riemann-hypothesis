@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.GlobalFields.IdeleGroups.SIdeleGroups.Galois
-import GroundTheory.GlobalFields.IdeleGroups.GaloisOnAdeles.Action
 import GroundTheory.ProfiniteCohomology.ColimitUnion
 set_option maxSynthPendingDepth 1
 

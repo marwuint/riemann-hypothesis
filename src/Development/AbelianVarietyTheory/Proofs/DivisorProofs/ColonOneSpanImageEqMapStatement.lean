@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColonOneSpanImageEqMap
-import Development.AbelianVarietyTheory.Definitions.Divisors.PointShiftSt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Dets
 
 open NumberField
 set_option maxHeartbeats 1000000 in

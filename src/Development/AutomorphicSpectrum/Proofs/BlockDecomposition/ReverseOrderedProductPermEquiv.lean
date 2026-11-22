@@ -2,7 +2,6 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Zelevin
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContragredientProductIrreducible
-import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.LSegJacquet
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductIrreducibleAppendEquiv
 
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult Zc Zc.Cos

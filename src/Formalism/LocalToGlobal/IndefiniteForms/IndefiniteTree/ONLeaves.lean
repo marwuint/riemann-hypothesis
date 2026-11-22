@@ -4,7 +4,6 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.CharIdem
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.IndexUBound
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.MirabIndex
 import Formalism.MirabolicMackeyTheory.MirabolicMackeyProofs.IsMackeyPiUpperUnipotentProdCharacter
-import Formalism.MirabolicMackeyTheory.MirabolicMackeyProofs.RamBasic
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.UnipVal
 
 open Module NumberField IsDedekindDomain CategoryTheory

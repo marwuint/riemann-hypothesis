@@ -1,6 +1,5 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.IsPairLevel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBallSubset
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockLevelsEqIntegralGLOfUnramified
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermLocallyConstant
 

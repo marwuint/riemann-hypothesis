@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.WedgeNrmLeOfWedgeNo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormsSupLatticeSplitOverComponents
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecZEqZeroOfGenVal
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.OneMemSecAndSecInfEqBot
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.HostGeneratorPowFourTraceNormModEight
 
 set_option autoImplicit false
 set_option synthInstance.maxHeartbeats 400000

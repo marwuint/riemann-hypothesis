@@ -3,10 +3,7 @@ import Development.WeilBound.ThetaLifts.TowerModels.LeviEx
 import Development.WeilBound.ThetaLifts.TowerModels.PlaneSkew
 import Development.WeilBound.ThetaLifts.TowerModels.StabEx
 import Development.WeilBound.ThetaLifts.TowerModels.ModelEx
-import Development.WeilBound.ThetaLifts.TowerModels.DetHerm
-import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.StandardTraceAdelicAddCharLocalComponentNeOne
 import Mathlib
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 
 noncomputable section
 

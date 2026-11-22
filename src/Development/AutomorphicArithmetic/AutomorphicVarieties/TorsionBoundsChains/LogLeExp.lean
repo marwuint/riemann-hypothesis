@@ -5,7 +5,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChains.ImageRep
 import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChains.PermCard
 import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChains.Imports
-import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChains.L1MapDomainLeAndL1FaceDSingleLe
 
 open CategoryTheory
 

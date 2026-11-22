@@ -1,11 +1,7 @@
 import Mathlib
 import Formalism.LocalRingCardinality.DataForms
 import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
-import Formalism.LocalToGlobal.Columns.PolyFn
-import Formalism.LocalToGlobal.Columns.PolyFnLemmas
-import Formalism.LocalToGlobal.Columns.BaseLemmas
 import Formalism.LocalToGlobal.KernelLattices.ThDistC
-import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
 
 noncomputable section
 

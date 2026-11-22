@@ -1,9 +1,6 @@
 import Formalism.SharpRestriction.GlobalSchurBounds.MassRatioUnfoldedOfTheoremTwo
 import Formalism.LocalToGlobal.GlobalTheory.GL5.PNamed
-import Formalism.SharpRestriction.GlobalSchurBounds.StandardLattice
 import Mathlib
-import Formalism.HermitianLattices.StatementMass
-import Formalism.SharpRestriction.GlobalSchurBounds.LocalCountingBounds
 
 noncomputable section
 

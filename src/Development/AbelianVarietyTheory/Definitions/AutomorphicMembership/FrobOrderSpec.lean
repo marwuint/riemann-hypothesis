@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.GroupLattices.CloudFilling.FillInstRecEqWj
 import Formalism.LocalToGlobal.GroupLattices.PerfectRings.ExtWRec
-import Formalism.LocalRingCardinality.SpanPowerMembership.GatTies
-import Formalism.LocalRingCardinality.HostCls
 
 noncomputable section
 

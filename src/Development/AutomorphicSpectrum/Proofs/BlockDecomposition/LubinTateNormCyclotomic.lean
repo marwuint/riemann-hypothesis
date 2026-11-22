@@ -4,8 +4,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ValuationLtOneO
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateUnramifiedDegreeOne
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUniformizerGaloisAction
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalBridgeLubinTateField
-import GroundTheory.LocalFields.LocalArtinBaseChange
-import GroundTheory.LocalFields.ExplicitQp
 noncomputable section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations
 open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal GlobalTheory.CompanionTheory.LTHodge GlobalTheory.CompanionTheory.LTPer

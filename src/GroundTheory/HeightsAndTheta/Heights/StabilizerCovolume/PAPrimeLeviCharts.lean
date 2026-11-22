@@ -3,7 +3,6 @@ import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.HtBoundary
 import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.BRegWeightLevi
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StNbarLeviChart
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StProjHoloLocal
-import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 
 set_option maxSynthPendingDepth 1
 

@@ -5,7 +5,6 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.LeadMinorK
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DegVand
 import Formalism.LocalRingCardinality.DataTies
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HaarEqSmul
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ModularCharacterEqOneOnExpHermitian
 
 open BranchingSupport GlobalTheory.CellAmp GlobalTheory.Amp Formalism.BasicNotions Formalism.MainNotions.S Formalism.QuantumDeterminants Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal

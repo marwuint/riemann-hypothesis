@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelActionCuspFormRepresentation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidualCharacterDetValuesMemCoeffField
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JEvExists
-import Formalism.LocalToGlobal.UnitaryNorms.CharTied
-import Formalism.LocalRingCardinality.DataKap
 import Formalism.LocalToGlobal.ProjectiveLattices.HasDataCondition
 import Formalism.LocalToGlobal.ProjectiveLattices.RecCond
 import Formalism.LocalToGlobal.ProjectiveLattices.ParCanon

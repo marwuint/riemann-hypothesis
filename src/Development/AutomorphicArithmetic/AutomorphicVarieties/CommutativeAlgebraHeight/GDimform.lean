@@ -2,7 +2,6 @@ import Mathlib
 import ReciprocityTheory.CommutativeAlgebra.SaturatedChains.IsSaturatedChain
 import ReciprocityTheory.CommutativeAlgebra.PolynomialHeights.PolyCM
 import ReciprocityTheory.CommutativeAlgebra.PolynomialHeights.HeightAddRingKrullDimQuotientMvPolynomialField
-import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.RingKrullDimQuotientOfMemAssociatedPrimes
 
 open IsLocalRing
 

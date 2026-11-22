@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.Foundations.LocalLanglands.RecTTranspor
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.Multi
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalLanglandsExtensionCharacterTwist
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.GoodSeg
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.ClBasic
 
 noncomputable section
 

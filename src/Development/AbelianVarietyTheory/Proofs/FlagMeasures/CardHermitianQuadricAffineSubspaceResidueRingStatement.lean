@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardHermitianQuadricAffineSubspaceResidueRing
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PrimOfIsUnitDet
 open GlobalTheory.GramCount
 open scoped Classical
 set_option maxHeartbeats 1000000 in

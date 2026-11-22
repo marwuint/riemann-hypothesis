@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.ProfiniteCohomology.RealPlaces.GSDefs
 import GroundTheory.ProfiniteCohomology.RealPlaces.VanishingCriterion
-import GroundTheory.ProfiniteCohomology.MackeyFormula.Cohomology
 import GroundTheory.ProfiniteCohomology.PoincareDuality.Induced
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.Dimension
 import GroundTheory.ProfiniteCohomology.RealPlaces.LocalDualityPlace

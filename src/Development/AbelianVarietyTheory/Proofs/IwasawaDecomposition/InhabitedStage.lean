@@ -2,9 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ResCharThetaJetPlaceDegOne
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsAllLifts
 import Development.AbelianVarietyTheory.Definitions.Foundations.CdScaleTieIff
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConstMapInjective
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NonemptyCompactDualHaar
-import Formalism.LocalToGlobal.BesselHermitianTheta.AllTied
 
 noncomputable section
 

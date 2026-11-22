@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.CxPass
-import Formalism.LocalToGlobal.Divisibility.GoodPartHermitianSpec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGoodSet
 
 noncomputable section

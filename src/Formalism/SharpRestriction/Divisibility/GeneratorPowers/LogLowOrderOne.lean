@@ -1,6 +1,5 @@
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndFrFix
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.FBIdJet
-import Formalism.FormalGroupWitt.FormalGroupWittProofs.SolveV
 
 set_option autoImplicit false
 

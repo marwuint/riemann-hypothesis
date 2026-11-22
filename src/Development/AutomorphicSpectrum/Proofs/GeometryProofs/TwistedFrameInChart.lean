@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProdUpdateDiv
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsChartBundle
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
 
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.FlagBun GlobalTheory.CompanionTheory.Ar.FlagBun.Sm
 

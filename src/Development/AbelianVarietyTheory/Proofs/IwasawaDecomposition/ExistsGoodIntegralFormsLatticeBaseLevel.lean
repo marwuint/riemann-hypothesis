@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RowsRestWordColumnUnitBaseTupleAlt
-import Formalism.LocalToGlobal.IndefiniteReal.LinksStage
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StableIffCarrierEq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftMatrixComputesLiftRational
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SpanGoodEqMj
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LMLatOfLIntegral

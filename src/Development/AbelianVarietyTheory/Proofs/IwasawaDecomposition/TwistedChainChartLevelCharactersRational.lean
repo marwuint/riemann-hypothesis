@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TiedColumnData
-import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTranslate
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FixedVectorEqOfStandardData
 import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.ComparisonZeroEmbedding
 import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.ClsChartedLabAt
 import Formalism.SharpRestriction.GrowthBounds.TwistedLevelAgreement.StepInTwK

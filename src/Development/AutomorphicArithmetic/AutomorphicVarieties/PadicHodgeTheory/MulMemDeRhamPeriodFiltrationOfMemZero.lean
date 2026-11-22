@@ -8,7 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamDieudonn
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamComparisonIsFiltered
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KummerNotFrac
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FinrankDpstUnramifiedLeDimRepresentation
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal TensorProduct Module UpperTheory.V.Loc Topology
 
 noncomputable section

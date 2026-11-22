@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBaseFrame
-import Development.AbelianVarietyTheory.Definitions.Divisors.P22
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransl
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeRhamPairingPullback
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechKodairaSpencerMatrixEqZeroOffConjBlocks

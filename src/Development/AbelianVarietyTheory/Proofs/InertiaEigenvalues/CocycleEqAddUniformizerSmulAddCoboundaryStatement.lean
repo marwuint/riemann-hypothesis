@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CocycleEqAddUniformizerSmulAddCoboundary
-import ReciprocityTheory.GaloisValuations.SeparatedDvrSecondCohomologyMem
 
 open ReciprocityTheory.Gal
 set_option maxHeartbeats 1000000 in

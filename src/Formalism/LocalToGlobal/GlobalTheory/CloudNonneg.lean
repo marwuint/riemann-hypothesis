@@ -1,9 +1,6 @@
 import Formalism.LocalToGlobal.Columns.ReferenceActionRationalLevels
 import Formalism.LocalToGlobal.Columns.InputsWeyl
 import Mathlib
-import Formalism.LocalToGlobal.Columns.SummandSlopeAtDecoratedLattice
-import Formalism.LocalToGlobal.Columns.BaseLemmas
-import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleWeightMiddleEntries
 import Formalism.GL3MeanSquares.UnitaryConjugateDiagonalMoments
 
 open NumberField IsDedekindDomain Module

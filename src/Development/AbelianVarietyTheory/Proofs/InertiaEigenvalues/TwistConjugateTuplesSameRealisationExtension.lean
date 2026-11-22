@@ -5,8 +5,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ha
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictToBase
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealisationExtendsByNewTuplesKeepingLaws
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwLevPow
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowEqOneOfChrEq
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharacterIdeleCharacterMatchUnique
 
 set_option autoImplicit false
 noncomputable section

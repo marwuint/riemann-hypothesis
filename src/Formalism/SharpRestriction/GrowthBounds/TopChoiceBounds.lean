@@ -5,7 +5,6 @@ import Formalism.SharpRestriction.ParamsHeightRankConstant
 import Formalism.SharpRestriction.GrowthBounds.WittFrameLocaliserOrders
 import Formalism.SharpRestriction.GrowthBounds.ProjectionLemmaBaseLevel
 import Formalism.SharpRestriction.GrowthBounds.TableLineDegreeFive
-import Formalism.SharpRestriction.GrowthBounds.ValuationLowestDegreeRename
 import Formalism.SharpRestriction.GrowthBounds.LatticeSystems
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 

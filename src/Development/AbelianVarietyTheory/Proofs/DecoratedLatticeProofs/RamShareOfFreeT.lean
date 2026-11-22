@@ -1,6 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.NotInhAbsOfGamLe
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ChainParSucc
-import Formalism.LocalRingCardinality.HeightBoundGeFourthPowerRank
 import Formalism.SharpRestriction.GlobalSchurBounds.FiniteModelOfAdmissibleTransports
 import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.SlopeLineRamifiedFormula
 open Formalism.BasicNotions Formalism.MainNotions.S GlobalTheory.Core.Rk

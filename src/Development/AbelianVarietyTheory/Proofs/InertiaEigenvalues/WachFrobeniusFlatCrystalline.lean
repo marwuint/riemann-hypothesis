@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NBasisLoc
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachInclusionXQFrobenius
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RingsCyclotomic
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PhiFree
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DvrComplete
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc TensorProduct GlobalTheory.NL Formalism.MainNotions.DeltaInvariantLattices
 

@@ -2,8 +2,6 @@ import Development.WeilBound.CoreStatements.CentralCharts.IsCoeffAtOfSmul
 import Development.WeilBound.CoreStatements.CentralCharts.ChartAnalytic
 import Development.WeilBound.CoreStatements.CentralCharts.OneLeDimFl
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptFlagXdeg
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 
 noncomputable section
 

@@ -1,6 +1,5 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.projection2.OneCosetSharpOfPatClosed
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.projection2.KappaZeroAlt
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.projection2.AllowColLt
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.projection2.EntryEmbedMatrix
 
 theorem support_oneCoset : PI.OneCosetSharp.OneCosetSharp :=

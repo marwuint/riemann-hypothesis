@@ -2,8 +2,6 @@ import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.LocalRingCardinality.DataDIV
 import Formalism.SharpRestriction.Divisibility.LatticeTransfer
-import Formalism.SharpRestriction.Divisibility.PrinLevClass
-import Formalism.SharpRestriction.ParamsHeightRankConstant
 
 noncomputable section
 

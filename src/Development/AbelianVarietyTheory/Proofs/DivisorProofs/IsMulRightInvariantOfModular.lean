@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecMapApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocallyConstantLinOm
-import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
 
 noncomputable section
 

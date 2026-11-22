@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart
 import Formalism.MeanHeightDescent.DivisionInequalityWithCovolume
-import Formalism.MeanHeightDescent.AverageDegreeBounds.GlobalBoundRefinements
-import Formalism.HarderNarasimhan.HarderNarasimhanProofs.DualPl
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SlopeSqSubLeSlopeSqSpan
 
 open NumberField GlobalTheory.AllWt Module TensorProduct Matrix GlobalTheory.SlopeExt

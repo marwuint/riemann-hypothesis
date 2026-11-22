@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.ZeroPartEigenvalueConvention
 import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.HeckeIntertwinersInert
 import Formalism.LocalToGlobal.ProjectiveLattices.UnramBridgeHolds
-import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DcOpCommOfCommute
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.LocSplitProdRight
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ForallExistsTransfer

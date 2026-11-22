@@ -1,6 +1,5 @@
 import Formalism.FlagUnipotentLattices.PairingOrthogonalComplement
 import Mathlib
-import Formalism.SobolevGaussianKernels.StatementEI
 import Formalism.CorankShare.StatementFR
 import Formalism.SobolevGaussianKernels.GaussianKernelBounds.HasDerivAtSphereChartLast
 

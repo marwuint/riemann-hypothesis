@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.ParConsts
-import Formalism.LocalRingCardinality.DataParamsS
 import Formalism.SharpRestriction.GlobalSchurBounds.Chosen
 import Formalism.SharpRestriction.GlobalSchurBounds.TieGlobal
 import Formalism.SharpRestriction.ParamsHeightRankConstant

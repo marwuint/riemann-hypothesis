@@ -1,6 +1,4 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.CrystallineComparison.Bridge
-import Development.AutomorphicArithmetic.ThetaCorrespondence.CrystallineComparison.IsCrisDRAToBdRPlusIff
-import Development.AutomorphicArithmetic.ThetaCorrespondence.CrystallineComparison.IsCrisDRAIff
 import Development.WeilBound.CoreStatements.PeriodRingComparison.CrystallinePeriodRings.Assembly
 
 noncomputable section

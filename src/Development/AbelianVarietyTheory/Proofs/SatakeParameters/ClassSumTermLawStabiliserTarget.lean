@@ -1,12 +1,9 @@
 import Mathlib
 import Formalism.LocalToGlobal.KernelLattices.TopPin
-import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.KerHypAll
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FormsPin
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.XiEntryStab
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.XiCpl1Stab
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PairKernelLawOfFiniteDatumLaw
-import Formalism.LocalToGlobal.KernelLattices.FirstKernelLawReading
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FormsAre
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LastStepDatumLawTopLevelStabilizerStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LastStepDatumInvariantCBHomTwistPrimesStatement
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.Forms Formalism.L2.Col Formalism.L2.DIV Formalism.HermitianLatticesTheory GlobalTheory.KerJ NumberField IsDedekindDomain Classical

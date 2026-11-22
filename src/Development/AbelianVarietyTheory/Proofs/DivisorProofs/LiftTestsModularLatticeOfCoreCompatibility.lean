@@ -3,16 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.Hypotheses2
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeChoiceClausesOfWeakCharacterisationAtFaceAl
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLiftsOfRationalFormsRationalOfClauses
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
-import Formalism.LocalToGlobal.IndefiniteReal.OneMapT
-import Formalism.LocalToGlobal.IndefiniteReal.OneMapEq
-import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
-import Formalism.LocalToGlobal.IndefiniteReal.FWExist
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.TupPrimeEmpty
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LiftTestBOfRatG
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EvInjOfIsModelsOfTie
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MLat3OfTie
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LiftsRationalIffRecord
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx Formalism.L2.Pj Formalism.IndefR.FWT
 open scoped TensorProduct InnerProductSpace Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar

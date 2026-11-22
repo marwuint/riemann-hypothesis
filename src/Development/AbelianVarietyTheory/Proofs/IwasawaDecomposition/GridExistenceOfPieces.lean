@@ -1,21 +1,13 @@
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.GKeyFin
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RowRatW
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.APerTw
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DivRows3GIff
 import Formalism.LocalToGlobal.FiniteTOf
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.IsLinked
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.AllRows
 import Development.AbelianVarietyTheory.Definitions.Divisors.MapBaseTiedSel
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ClassSumPin
 import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SingleIndexPlacesAreTwisted
-import Development.AbelianVarietyTheory.Definitions.Divisors.SlopeTestRemainingChoicesAlt
-import Development.AbelianVarietyTheory.Definitions.Divisors.RowSideOfCompatibleThetaPair
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.SerFixOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
-import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ExistsSmallSpherical
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PositionMv
 
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.RowEx GlobalTheory.Mem.LiteralAutomorphy
 attribute [local instance] Formalism.BasicNotions.Host.cmStar

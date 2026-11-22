@@ -18,10 +18,8 @@ import Mathlib
 import Formalism.FrobeniusOrbits.HostThickExists
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.OrdUnimod
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.NcardEqTwoIff
-import Formalism.FrobeniusOrbits.Statement
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.ThickExists
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.EqZeroOfNegEq
-import Formalism.FrobeniusOrbits.RealSubfieldLeCompositum
 
 namespace Formalism.FrobeniusOrbits.Final
 

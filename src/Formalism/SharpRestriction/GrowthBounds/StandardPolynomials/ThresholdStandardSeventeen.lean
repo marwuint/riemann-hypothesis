@@ -1,6 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.StandardPolynomials.RestRoom
-import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.ExtendedStatementOfParts
-import Formalism.SharpRestriction.GrowthBounds.CoarseMultiplicity.PolyUpperBoundDelta
 
 noncomputable section
 

@@ -2,12 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.IsSelfOf
 import Development.AbelianVarietyTheory.Definitions.Jets.TwoPlaces
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ValEqSelf
-import Formalism.LocalToGlobal.CharacterGerms.NondegenerateCharts
-import Formalism.LocalToGlobal.CharacterGerms.RowTieSelf
-import Formalism.LocalToGlobal.CharacterGerms.BlockAdmissibleChart
-import Formalism.LocalToGlobal.CharacterGerms.NegMem
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
-import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.HasTeich
 
 open scoped BigOperators TensorProduct
 open Classical NumberField IsDedekindDomain Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds Formalism.L2.Pj Formalism.L2.DIV Formalism.BasicNotions GlobalTheory.RowLaw GlobalTheory.RowAt GlobalTheory.GoodDepth

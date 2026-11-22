@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StdLvPr
-import Formalism.LocalToGlobal.HermitianForms.TiedTwJSym
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteChart
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ReadsOfLocMv
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnSpacesStandardInFrameCoords

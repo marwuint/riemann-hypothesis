@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinitePartQuadraticPhaseEqCmThetaExp
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPeriodSq
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLsB
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardLatticeDoubleCosetClassesStabilisers
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteWeilRepEqLatticeIntertwinerMulCharacter
 
 open NumberField MeasureTheory IsDedekindDomain
 open scoped Classical

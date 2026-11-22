@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.ChainOfKernelsUnique
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsSemiAbelianOfCharts
-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.QuotientIsAbelianSchemeOfQuotientScheme
 set_option autoImplicit false
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor

@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.Foundations.LocalLanglands.RecTTranspor
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.WDBasic
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.ClBasic
 import Development.DiscreteGroups.GlobalIrreducibility.DzIsoKO
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ApplyMemTwKerOfNormalizer
 
 noncomputable section
 

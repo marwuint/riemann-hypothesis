@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.GlobalSchurBounds.CMFieldLemmas
-import Formalism.FrobeniusOrbits.HostThickExists
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.Orbits
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostFacts
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.UnitaryKronecker

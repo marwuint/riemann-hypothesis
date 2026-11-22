@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InducedClassFunctionFromSubgroupTrans
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IndApplyOne
 
 open GlobalTheory.BI GlobalTheory.BrauerZero
 set_option maxHeartbeats 1000000 in

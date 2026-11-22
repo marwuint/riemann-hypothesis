@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.BernsteinUnitaryProductIrreducible
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweDualityGL
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaCorrespondenceLargeRank
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsParahoricVec
 
 noncomputable section
 

@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKern
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.HtProj
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.HtCompact
 import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.PolyBdAll
-import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.TensApply
 import GroundTheory.AutomorphicForms.DixmierMalliavin
 
 open MeasureTheory NumberField IsDedekindDomain

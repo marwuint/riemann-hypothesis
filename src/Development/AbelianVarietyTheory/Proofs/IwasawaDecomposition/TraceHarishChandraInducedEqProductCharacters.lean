@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GreenCuspidalIff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonListLength
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarishChandraInductionCuspidalParabolicProduct
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarishChandraInducedTypeCharEqProductList
 open CategoryTheory Polynomial
 
 noncomputable section

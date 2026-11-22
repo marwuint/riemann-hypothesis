@@ -11,16 +11,13 @@ import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesGenIndexDet
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesIsLattice
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesGenIndexTrans
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesIdealLatticeFG
-import GroundTheory.HeightsAndTheta.Heights.MatrixCharts.DetIneq
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesLineDegree
-import GroundTheory.HeightsAndTheta.Heights.HeightKernels.CoordFirst
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.CoordSiegel
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.CoordWeak
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.AltPush
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.AltFrob
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.Statements
 import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.Assembly
-import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PCoordConeArithVar
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PGrassArithVar
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PRootArithVar
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PDualArithVar

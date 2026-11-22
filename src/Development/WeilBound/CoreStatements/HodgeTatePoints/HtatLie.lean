@@ -2,9 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteProjectiveBis
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SmoothGroupTangentLift
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatLieA
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatLieB
 

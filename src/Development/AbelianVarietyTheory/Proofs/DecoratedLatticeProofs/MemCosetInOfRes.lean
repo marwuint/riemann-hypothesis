@@ -7,7 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FrsFBaseEq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CouplingCosetInFramesPreimageUnderLift
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMemberStepCharts
 import Formalism.LocalToGlobal.Columns.FixEColLevSym
-import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.KerEquivFr
 
 noncomputable section
 

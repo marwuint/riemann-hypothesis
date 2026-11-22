@@ -11,7 +11,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountHypPAtAddQAt
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HalfTruncatedLeastLatticeSizeLeUnipotentNeighbou
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StepBound
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DiscreteSeriesStepBoundOfCountingHypotheses
-import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.OrthonormalPlaceBasis
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec GlobalTheory.Deep GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis
 open scoped InnerProductSpace ContDiff

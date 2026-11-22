@@ -2,10 +2,6 @@ import Mathlib
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.ClassFieldGSDefs
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.IsUnramifiedOutsideIffLeMaxUnramifiedOutside
 import GroundTheory.GlobalFields.ClassFieldConsequences.Conductor
-import GroundTheory.GlobalFields.ClassFieldConsequences.RayClassField
-import GroundTheory.GlobalFields.KummerTheory.LocalIndexAtPlace
-import GroundTheory.GlobalFields.KummerTheory.Splitting
-import GroundTheory.GlobalFields.IdeleGroups.LocalConditionIndex
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.ProfCoh

@@ -1,11 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoeffRoots
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VectorValuedLiftFieldChange
-import Development.AbelianVarietyTheory.Definitions.ThetaValues.LeCovCoeff
-import Formalism.LocalToGlobal.ProjectiveLattices.ThClassPinsRec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnfoldingFrameDeltaChange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CXiValIff
-import Formalism.LocalToGlobal.ProjectiveLattices.SpMapAlgHomId
 
 set_option autoImplicit false
 set_option synthInstance.maxHeartbeats 200000

@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.GlobalFields.TateThesis.DedekindZetaContinuation
-import GroundTheory.GlobalFields.LocalFieldAtPlace
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Complex Topology Filter
 

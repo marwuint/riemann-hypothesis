@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.PolyApproxZer
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsPsCharOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteSemisimple
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousOfContinuousTrace
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.SemisimpleOfTraceFormNondegenerate
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.TraceNilpotentAscent
 open Formalism.MainNotions.N GlobalTheory.Cong GlobalTheory.PsChar
 
 namespace GlobalTheory.TrFormNd

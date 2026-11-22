@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
-import Formalism.RealPlaceAnalysis.StatementE
-import Formalism.RealPlaceAnalysis.StatementKT
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTransposeMul
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ChainRuleSmooth.ExpIntertwine
 
 open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset

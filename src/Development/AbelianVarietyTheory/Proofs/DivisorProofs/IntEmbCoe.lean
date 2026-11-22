@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsIsoQuotToImOmegaLieOfSplit
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsTorsionFreeOfForallExists
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.RosatiAdj
 import Formalism.LocalToGlobal.ProjectiveLattices.EmbKCoe
 
 set_option autoImplicit false

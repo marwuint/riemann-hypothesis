@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.NormProducts.LUnH
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUnitEvalEqKummerClass
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiagMod
 
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.Kd.K4 Polynomial
 open scoped Matrix MatrixGroups

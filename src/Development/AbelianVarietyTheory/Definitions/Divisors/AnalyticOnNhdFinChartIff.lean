@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecondCountableTopologyOfIsProjOver
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsConjFsBasisOfUnitary
-import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.DifferentiableOnOfTendstoLocallyUniformlyOn
 import ReciprocityTheory.AnalyticForms.PotentialTheory.AtlasIndep
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PotentialContDiffAt

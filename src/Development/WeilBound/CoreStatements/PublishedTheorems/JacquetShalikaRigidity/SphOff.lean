@@ -2,7 +2,6 @@ import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstima
 import Development.WeilBound.RepresentationTheoryGL.JacquetShalikaBounds.AbsoluteRigidity.CauchyLoc
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.CuspRapidDecaySiegelGL
 import GroundTheory.AutomorphicForms.FourierWhittaker.IsAddFundamentalDomainImageOfMapVecLattice
-import GroundTheory.AutomorphicForms.ReductionMeasure
 
 noncomputable section
 

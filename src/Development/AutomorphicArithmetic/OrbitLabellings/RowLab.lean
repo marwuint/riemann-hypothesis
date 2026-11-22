@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.CharacterGerms.SelfConjugateRowData
 import Formalism.LocalToGlobal.CharacterGerms.RowTieLab
-import Formalism.LocalToGlobal.CharacterGerms.CartesianBoundOnCurves
 import Formalism.LocalToGlobal.CharacterGerms.RestNonneg
 import Formalism.LocalToGlobal.Divisibility.Numbers
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsMulInvolutionAddOneMemPow

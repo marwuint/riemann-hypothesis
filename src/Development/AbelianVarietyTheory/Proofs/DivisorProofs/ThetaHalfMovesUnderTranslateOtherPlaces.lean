@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SuppAtMul
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PadOneMemSecondBlockTriangular
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GramMapMulInv
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaPairCharactersAtLevel
-import Development.AbelianVarietyTheory.Definitions.Divisors.KerDatTuple
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.ActsLinOfSplitLin
 set_option autoImplicit false
 noncomputable section

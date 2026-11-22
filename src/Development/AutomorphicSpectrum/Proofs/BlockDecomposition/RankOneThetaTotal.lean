@@ -3,7 +3,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FockTranslateSc
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasDerivAtAndIsTheta
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HypsSatisfiable
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ShiftedAdditiveCharacterArchimedeanParameters
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GaussianIsSchwartzFunction
 
 noncomputable section
 open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct Topology

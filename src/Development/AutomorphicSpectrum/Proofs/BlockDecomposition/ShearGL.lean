@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ge
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCompactSubgroupSmallAnnihilator
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicFourierExpansion
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitriangularMapInduction
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FourierTransformInversionLocalFieldPi
 
 noncomputable section
 

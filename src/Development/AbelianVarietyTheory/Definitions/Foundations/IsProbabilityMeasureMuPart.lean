@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.CuspidalL2Subspace
 import Formalism.LocalToGlobal.ProjectiveLattices.CompOrd
 import Formalism.HarderNarasimhan.ShiftInvariance
-import Formalism.HarderNarasimhan.HarderNarasimhanProofs.QuotRealize
 import Formalism.MeanHeightDescent.AverageDegreeBounds.GlobalBoundRefinements
 import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.SectionInputData
 

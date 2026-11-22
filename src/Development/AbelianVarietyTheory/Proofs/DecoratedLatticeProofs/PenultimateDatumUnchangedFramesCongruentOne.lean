@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemParahoricOfTr
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PhiMapsAndOmegaLaw
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RowCharacterIdAddQSmulLatticePreservingEqOne
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.XiAtCongInvariant
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLevelGroupModTypePrime
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col
 

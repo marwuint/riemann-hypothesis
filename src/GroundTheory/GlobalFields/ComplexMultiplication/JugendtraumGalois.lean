@@ -1,8 +1,6 @@
 import Mathlib
 import GroundTheory.GlobalFields.ComplexMultiplication.JugendtraumUniformization
-import GroundTheory.GlobalFields.ComplexMultiplication.MainTheoremIdeles
 import GroundTheory.GlobalFields.ComplexMultiplication.HilbertClassField
-import GroundTheory.GlobalFields.ComplexMultiplication.AutCFixed
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Global

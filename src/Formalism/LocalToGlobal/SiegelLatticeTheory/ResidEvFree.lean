@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.CuspSpanNormBounds.StandingHypothesesHoldFamily
-import Formalism.SharpRestriction.CuspSpanNormBounds.PlaceDegreeData
 import Formalism.SharpRestriction.SmoothDesignExistence.DGamSmooth
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.CMFieldLemmas
 import Formalism.SharpRestriction.AdmissibleParameterJoins.SfromGLu

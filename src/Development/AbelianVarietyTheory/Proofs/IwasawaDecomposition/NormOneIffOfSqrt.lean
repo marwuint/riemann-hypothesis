@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.GL3MeanSquares.PrimeCountAsymptoticInProgressions
 import Formalism.SharpRestriction.InertJacobiLevels.AsmIface
-import Formalism.CyclotomicNorms.StatementI
 import Development.AbelianVarietyTheory.Definitions.Foundations.RayPrimes
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRatAddMulOfMemAdjoin
 open Finset ArithmeticFunction NumberField IsDedekindDomain Filter Topology GlobalTheory.Mem.An Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab

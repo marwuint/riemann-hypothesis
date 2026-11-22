@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LogDivSqrtLeFourExp
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BadRowsShareBoundTwoPrimes
-import Development.AbelianVarietyTheory.Definitions.Foundations.StandardFiveNontrivial
 import Formalism.SharpRestriction.ElevenLe
 import Formalism.LocalRingCardinality.DataParams
 

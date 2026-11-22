@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Decompositi
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankLeOfSubsetClosureRange
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LenUnitInvariantsTwistedLatticeLeOfKillingExpone
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecompositionLocalAway
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ContinuousTwistedDualRhoO
 
 noncomputable section
 

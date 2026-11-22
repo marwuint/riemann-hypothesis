@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyUWit
-import Development.AbelianVarietyTheory.Statements.SemistableTorsion.ImmersedBy
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LabRange
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitIntCastStalkIff
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory IsLocalRing NumberField

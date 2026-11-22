@@ -1,10 +1,5 @@
 import Formalism.SharpRestriction.GlobalSchurBounds.LinkMin
 import Mathlib
-import Formalism.SharpRestriction.GlobalSchurBounds.FlipTwoThree
-import Formalism.LocalToGlobal.HermitianColumns.ColsHerm
-import Formalism.LocalToGlobal.HermitianForms.FormsTied
-import Formalism.GradedWeylDivisibility.StatementE
-import Formalism.SuccessiveMinima.StatementMink
 import Formalism.LocalToGlobal.GlobalTheory.GL4.PColStd
 import Formalism.LocalToGlobal.HermitianForms.BothSym
 

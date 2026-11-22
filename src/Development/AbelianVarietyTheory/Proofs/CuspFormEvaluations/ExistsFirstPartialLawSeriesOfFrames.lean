@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermCut
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermBGen
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermBPrim
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsSymmetrySeriesOfFrames
 
 set_option autoImplicit false

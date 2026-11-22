@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRapidInf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ShintaniFormula
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsAddHaarMeasureVolumeLie
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AutomorphicFormGLContinuous
 import GroundTheory.AutomorphicForms.MultiplicityOne.Functional
 

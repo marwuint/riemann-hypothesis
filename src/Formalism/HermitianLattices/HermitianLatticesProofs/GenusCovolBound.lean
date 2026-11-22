@@ -3,7 +3,6 @@ import Formalism.HermitianLattices.GenusCovolBound
 import Formalism.HermitianLattices.HermitianLatticesProofs.GenusScale
 import Formalism.HermitianLattices.HermitianLatticesProofs.LocDual
 import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice
-import Formalism.HermitianLattices.HermitianLatticesProofs.IsomAct
 import Formalism.FockGram.FockGramProofs.CovolGram
 
 open Module NumberField

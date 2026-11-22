@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SummandsBase
-import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SmoothingFinite
 
 open MeasureTheory Set Filter Topology Function
 open scoped InnerProductSpace ContDiff

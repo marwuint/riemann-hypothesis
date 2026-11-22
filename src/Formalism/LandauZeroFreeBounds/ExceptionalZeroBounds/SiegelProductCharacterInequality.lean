@@ -1,5 +1,4 @@
 import Formalism.LandauZeroFreeBounds.SameCharacterLFunctionOne
-import Formalism.LandauZeroFreeBounds.SiegelWalfiszAP
 
 open Complex
 

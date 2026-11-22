@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryUnipotentRadicalSplittingOfLeviPart
-import Formalism.SatakeDualWeyl.KpqSubgroupCompact
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AntiJMulApply
 
 open Formalism.UG GlobalTheory.SatakeWeyl
 set_option maxHeartbeats 1000000 in

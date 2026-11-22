@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.JSmul
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ResBound
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousCycOInvPow
 
 noncomputable section

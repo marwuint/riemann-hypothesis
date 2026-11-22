@@ -8,7 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlaggedBundleMetric
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VarietyComplexPointsMapIsHolomorphic
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackGramMatricesIndependentOfFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsHolomorphicUnitMatrixAtRationalMatrixValues
-import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.HoloSmooth
 
 set_option autoImplicit false
 

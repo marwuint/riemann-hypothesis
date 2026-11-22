@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.ParConsts
-import Formalism.LocalRingCardinality.DataKerI
 import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ScaleFamilySizeRelationsEventually
 

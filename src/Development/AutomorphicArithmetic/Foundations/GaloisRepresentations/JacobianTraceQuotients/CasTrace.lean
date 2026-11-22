@@ -7,7 +7,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Jacob
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.JacobianTraceQuotients.DcosVol
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.JacobianTraceQuotients.JacNorm
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.JacobianTraceQuotients.ImStab
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.JacobianTraceQuotients.TraceQuot
 
 open MeasureTheory NumberField IsDedekindDomain Filter ValuativeRel
 open GroundTheory.Global GroundTheory.Global.SemiLocal

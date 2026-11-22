@@ -2,7 +2,6 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermDJet
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatLieBc
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ChartJetTrD
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.FBMapPf
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.FBIdLB

@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceOfAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeSmallGeneration
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecondLinkOfWeightRows
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTraceLevelCompatibleProof
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NabBaseChange
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ReadComparisonAt
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TraceOfAtAltAlt
 

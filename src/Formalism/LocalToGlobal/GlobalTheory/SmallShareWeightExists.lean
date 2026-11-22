@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GlobalSchurBounds.LossesSmallShares
-import Formalism.LocalToGlobal.GlobalTheory.SuppSat
 import Formalism.SizeWindowBrackets.PrimeClassLossHypothesesSatisfiable
 
 noncomputable section

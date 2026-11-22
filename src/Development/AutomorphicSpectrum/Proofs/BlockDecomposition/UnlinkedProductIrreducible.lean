@@ -3,7 +3,6 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Mirabol
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.GeometricLemmaFiltration
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdjacentQuotientOfTwoSegment
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwoSegmentNongenericQuotient
-import CompanionTheory.AutomorphicTheory.HeckeStandardModules.EqZeroOfCompAt
 
 noncomputable section
 

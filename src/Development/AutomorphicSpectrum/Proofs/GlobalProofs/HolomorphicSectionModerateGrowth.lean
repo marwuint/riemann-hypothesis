@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SerreHolomorphicSectionsHolds
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompactSpacePts
 import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousSectionPolynomialGrowth
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CompactSpaceCxPtsOfIsProper
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RegularFunctionPolynomialGrowth
 

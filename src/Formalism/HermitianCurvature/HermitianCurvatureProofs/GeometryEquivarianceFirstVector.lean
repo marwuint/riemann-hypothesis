@@ -1,7 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJASSnGeomCut
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GramSchmidtFrames.HermBvecEI
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GramSchmidtFrames.AdjugateLastEntrySum
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GramSchmidtFrames.FixOfPos
 
 open Formalism.FourierDecayAlt
 

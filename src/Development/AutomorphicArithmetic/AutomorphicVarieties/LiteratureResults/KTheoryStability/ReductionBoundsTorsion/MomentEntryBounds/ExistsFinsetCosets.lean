@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 import GroundTheory.AutomorphicForms.ReductionSiegel
 import GroundTheory.AutomorphicForms.NormDetDiagUnitsPosRealToUnits
 import GroundTheory.AutomorphicForms.ReductionLocalVolume
-import GroundTheory.GlobalFields.Adele.Discrete
 
 noncomputable section
 

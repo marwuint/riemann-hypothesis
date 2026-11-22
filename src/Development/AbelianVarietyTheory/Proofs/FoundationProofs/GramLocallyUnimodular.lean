@@ -5,10 +5,7 @@ import Formalism.LocalToGlobal.Columns.CoefficientsModP.FkPderivBlockEmbNe
 import Formalism.GradedWeylDivisibility.StatementE
 import Formalism.HarderNarasimhan.ShiftInvariance
 import Formalism.QuotientMetricDivisors.ReductionLemmaZero
-import Formalism.QuotientMetricDivisors.ProdFormula
 import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.RealCubicMeans.LeafBounds.MeanMaxLeaf.LeafMMFree
-import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ValBasic
-import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.IdxChange
 open NumberField IsDedekindDomain MvPolynomial Formalism.BasicNotions Formalism.L2.DIV Formalism.DivisionValues GlobalTheory.TestLat Formalism.L2.Indef.Tree.ArchimedeanLeafBounds.Cuts
 open scoped Matrix ComplexOrder
 

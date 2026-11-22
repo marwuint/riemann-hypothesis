@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqSpMapEv
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvRFrMapOfIsReduced
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemSpanOfPluckerProportional
 
 noncomputable section

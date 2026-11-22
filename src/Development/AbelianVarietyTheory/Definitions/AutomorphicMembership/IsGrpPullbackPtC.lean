@@ -4,8 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Pullba
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RankOneBaseWeightEqCmTheta
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsGrpPullbackAbVarModel
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsEndPullEndPull
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CardTorsionPointsUnconditional
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
 
 set_option autoImplicit false
 

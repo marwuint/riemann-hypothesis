@@ -4,7 +4,6 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.BaseMetricVectorLogRe
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagPointInMultiprojectivePoints
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsFlagPointInOrbit
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BaseChartHolomorphicComposition
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BaseVectorProperties
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PlkFlagPt
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PluckerNonvanishingOrbitInvariant
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree

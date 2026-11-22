@@ -2,11 +2,6 @@ import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.IsPtRepTrDat
 import Formalism.SharpRestriction.CuspSpanNormBounds.AbsoluteAmplitudeSecondOfSource
 import Formalism.SharpRestriction.CuspSpanNormBounds.PExtra
-import Formalism.SharpRestriction.CuspSpanNormBounds.AmplitudeAndVolumeBounds
-import Formalism.SharpRestriction.CuspSpanNormBounds.BranchingAndRankConstants
-import Formalism.SharpRestriction.CuspSpanNormBounds.MassAndBranchingHypotheses
-import Formalism.SharpRestriction.CuspSpanNormBounds.SBridge
-import Formalism.LocalRingCardinality.DataTies
 import Development.AbelianVarietyTheory.Statements.DiscreteSeriesShifts.ThmBpDS
 import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.FormalDegreeCompactDualIff
@@ -14,7 +9,6 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.OnePlaceKF
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SumPlacesEqTrace
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.JEqOrbInt
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UniformBesselConstant
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.CellDataExists
 open MeasureTheory Matrix
 open scoped InnerProductSpace ENNReal
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S BranchingSupport GlobalTheory.CellAmp

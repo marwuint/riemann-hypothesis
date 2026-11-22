@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.HeightOrbitChartQuot
 import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.MemMCoordIdealIffOfIsWeightedHomogeneous
-import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.DenseChart
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights

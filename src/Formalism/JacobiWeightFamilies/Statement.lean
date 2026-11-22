@@ -1,5 +1,4 @@
 import Formalism.StatementU
-import Formalism.StatementOC
 import Formalism.ProductFormula.StatementOCCM
 
 open Finset ArithmeticFunction

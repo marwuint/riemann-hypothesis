@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.Intersections.ImportsMoreFurther
 import GroundTheory.HeightsAndTheta.Heights.Intersections.ImportsMoreAlt
 import GroundTheory.HeightsAndTheta.Heights.Intersections.IntCastMemRegMaxAt
-import GroundTheory.HeightsAndTheta.Heights.Intersections.LeOfHeightMapEqZero
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Inter

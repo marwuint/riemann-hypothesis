@@ -3,7 +3,6 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsGeneratedEff
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.OfSteps
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PVocabDivCycle
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.DivCycleEqZeroOfFormNotMem
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Cartier
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel

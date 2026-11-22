@@ -1,7 +1,5 @@
 import Formalism.LocalToGlobal.SiegelLatticeTheory.TraceIntegralEstimates.MomSchurG
 import Formalism.SharpRestriction.CuspSpanNormBounds.NearParameterGap
-import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyFormalDegreeLowerBound
-import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CfgTopFalseIff
 
 set_option linter.unusedVariables false
 

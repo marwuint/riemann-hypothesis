@@ -2,10 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.PerRowC
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsInvLower
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryHostFieldArithmeticConditionsProof
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowsMeanC
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.RelevantSetZeroGNotIdentity
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.KppOffCOfSteps
-import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellFin
 
 noncomputable section
 

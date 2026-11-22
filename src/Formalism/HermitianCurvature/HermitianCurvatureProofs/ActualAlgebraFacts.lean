@@ -1,8 +1,6 @@
 import Formalism.HermitianCurvature.StatementTL
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.PairOperatorCommute
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.InvMemOfKappa
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelFormSesquilinearFiniteClass
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.IsAdmissibleSplittingCharPairMulTwist
 
 namespace Formalism.FourierDecayAlt.P.TLB
 

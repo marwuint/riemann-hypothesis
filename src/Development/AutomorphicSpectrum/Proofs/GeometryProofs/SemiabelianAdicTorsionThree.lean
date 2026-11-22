@@ -1,14 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.IsPolLatticePlane
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RelOfTorsion
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderValueEval
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderEmbeddingOpenCover
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
-import GroundTheory.PAdicHodge.FiniteFlat
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianAdicTorsionOne
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueTangentDualNumber
 
 noncomputable section
 

@@ -1,5 +1,4 @@
 import ReciprocityTheory.SemistableReduction.LemmaH
-import ReciprocityTheory.SemistableReduction.TorsionNonvanishStatement
 import ReciprocityTheory.SemistableReduction.ApproxGraph
 import ReciprocityTheory.SemistableReduction.ApproxBasis
 import ReciprocityTheory.SemistableReduction.Unipotent

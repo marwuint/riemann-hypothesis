@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.SphericalDecomposition.SphOfWit
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.RTwist
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.PRepNew
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExpoEqZeroOfPow
 

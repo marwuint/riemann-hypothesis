@@ -1,9 +1,6 @@
 import Mathlib
 import Formalism.HermitianCurvature.StatementTBB
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutLemB
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelFormSesquilinearFiniteClass
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.BXiAsm
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.RegularityAtPlaceOfSubadditive
 import Development.AbelianVarietyTheory.PublishedTheorems.BesselIntegrals.BesselXiIntegrable
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.XiExistsOfBesselXiIntegrable
 

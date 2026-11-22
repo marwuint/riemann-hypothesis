@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMember
-import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 
 namespace GlobalTheory.DecompFixed
 

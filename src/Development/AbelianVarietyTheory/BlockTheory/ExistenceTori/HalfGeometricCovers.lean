@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.ThClassPinsRec
 import Formalism.LocalToGlobal.ProjectiveLattices.IsLevMove
 import Formalism.LocalToGlobal.ProjectiveLattices.FamilyUniformisationBasePointOrthogonalBis
-import Formalism.LocalRingCardinality.DataKap
 import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.ComplexResidueRing
 import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.UnitaryDeterminantRoot
 

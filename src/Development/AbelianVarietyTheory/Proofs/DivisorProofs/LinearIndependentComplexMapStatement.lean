@@ -1,4 +1,0 @@
-import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearIndependentComplexMap
-
-open Matrix

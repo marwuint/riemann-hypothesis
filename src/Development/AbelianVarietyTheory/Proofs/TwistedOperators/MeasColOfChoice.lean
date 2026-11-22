@@ -7,8 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsAutFunOfMemCus
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsAutFunTransportS
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemHatLConjIIffHform
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeReductionEqOneOfCompletionCongruence
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FinitePartMemFrameStabilizerIffLocalStabilizer
-import Formalism.LocalToGlobal.Divisibility.DefGroupLemmas
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.RowClaim MeasureTheory

@@ -1,5 +1,4 @@
 import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.Normal
-import Formalism.WachLatticeTwists.RamifiedBlockRings.RightIdealImageOfSurjective
 
 open Finset Classical
 

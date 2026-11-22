@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.GlobalFields.TateThesis.Nonvanishing
-import GroundTheory.GlobalFields.TateThesis.NonvanishingPrimes
 
 open NumberField IsDedekindDomain Complex Topology Filter Set
 

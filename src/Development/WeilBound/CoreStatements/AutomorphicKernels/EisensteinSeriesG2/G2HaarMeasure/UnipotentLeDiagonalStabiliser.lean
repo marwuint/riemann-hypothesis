@@ -1,6 +1,5 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.G2HaarMeasure.IsHaarMeasureDoubledGroup
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
 import GroundTheory.GlobalFields.Adele.Compact
 
 noncomputable section

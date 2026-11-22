@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicPointsSimilitudeGLProductBijective
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsCyclotomicExtensionQI
 
 open GlobalTheory.LKTrip
 set_option maxHeartbeats 1000000 in

@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlace
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsIntegralInvNegXi0
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.VecMulEntry
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitFrameLatticeFunctional
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIntegralBasisCompletion
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FunctionalEquationLocalLattice
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Unf GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.SepRows GlobalTheory.Asc

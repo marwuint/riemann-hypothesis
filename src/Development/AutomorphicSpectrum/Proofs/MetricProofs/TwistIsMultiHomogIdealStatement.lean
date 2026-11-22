@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistIsMultiHomogIdeal
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsHorizontalTwist
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo MeasureTheory GlobalTheory.CompanionTheory.Ar.Tw
 set_option maxHeartbeats 1000000 in

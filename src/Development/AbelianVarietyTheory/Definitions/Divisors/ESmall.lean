@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.FactorDepthInert
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.SplitQuadraticMinSums
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.BigBlockCharacters
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TypedPartSplitPrimes
-import Formalism.SharpRestriction.Divisibility.AbelianOpenPart.OEOsInjective
 
 set_option autoImplicit false
 set_option synthInstance.maxHeartbeats 400000

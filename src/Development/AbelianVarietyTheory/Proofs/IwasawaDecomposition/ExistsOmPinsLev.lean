@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsBaseEnlargementFixedCoefFieldOfCoeffEnlargemen
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CrdOver
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsReferenceTupleThetaComparisonNormalisedDat
-import Formalism.LocalToGlobal.IndefiniteReal.LinksW
 
 set_option autoImplicit false
 

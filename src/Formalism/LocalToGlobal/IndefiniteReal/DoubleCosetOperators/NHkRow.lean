@@ -1,7 +1,5 @@
 import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.RatDatOfReal
-import Formalism.SharpRestriction.LevelLetterCocycles.IntegralHeckeForms
 import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.GoodPartLeTypeSubspace
-import Formalism.LocalToGlobal.IndefiniteReal.BridgeTie
 
 noncomputable section
 

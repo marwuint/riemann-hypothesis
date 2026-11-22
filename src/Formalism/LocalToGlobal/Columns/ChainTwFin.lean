@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.Columns.ChainFrmOk
 import Formalism.LocalToGlobal.Columns.ThetaOpenTwLevQ
-import Formalism.LocalToGlobal.Columns.ChainTwMain
 import Formalism.LocalToGlobal.Columns.WithTopLevGTop
 
 open NumberField IsDedekindDomain Module Matrix

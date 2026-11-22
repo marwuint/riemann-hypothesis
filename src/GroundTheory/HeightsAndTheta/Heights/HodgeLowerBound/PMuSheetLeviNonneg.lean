@@ -1,10 +1,7 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsSheetChartHolo
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsRefAlongSheet
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PshBasic
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PshExt
 import ReciprocityTheory.AnalyticForms.AnalyticCharts.Osgood
-import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.LowerBoundFree

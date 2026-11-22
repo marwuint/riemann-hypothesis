@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeCongruenceSt
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoveringOHolds
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniquePlace
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CongruenceStabUFromIntegralUnipotentIsometry
-import Formalism.FlagUnipotentLattices.CardSubgroupsOfIndexLe
 open NumberField Module Matrix Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.Cnt GlobalTheory.LoopC
 open scoped ENNReal Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar

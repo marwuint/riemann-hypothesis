@@ -1,7 +1,5 @@
 import Formalism.ThetaLogCoordinates.DualWeylCoordinates.DualWeylProofs.TransposeVariables
 import Formalism.ThetaLogCoordinates.DualWeylCoordinates.DualWeylProofs.ABridge
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.BideterminantMem
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LHwrowLemmas
 
 open MvPolynomial
 

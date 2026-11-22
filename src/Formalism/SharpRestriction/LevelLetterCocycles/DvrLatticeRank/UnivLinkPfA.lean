@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.SecondPropositionFree
-import Formalism.SharpRestriction.LevelLetterCocycles.MapCompZero
 
 noncomputable section
 

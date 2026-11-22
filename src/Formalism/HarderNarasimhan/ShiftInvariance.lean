@@ -13,8 +13,6 @@ import Formalism.HarderNarasimhan.HarderNarasimhanProofs.ShiftInvariance
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.Duality
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.HNExtreme
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PiSumForallInsertOnly
-import Formalism.HarderNarasimhan.DegSupermodZ
-import Formalism.LatticeSlopes.ExistsSaturatedSlopeEqMuMax
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.DiscreteSpanOfLinIndep
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.SizeMu
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PlaceSplit

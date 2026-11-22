@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenUse
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HtCard
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroWild
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroSupport
-import ReciprocityTheory.Hypotheses.GalCoh
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.M2ModelEstablished
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComapMaximalIdealEqOrigin
 
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in

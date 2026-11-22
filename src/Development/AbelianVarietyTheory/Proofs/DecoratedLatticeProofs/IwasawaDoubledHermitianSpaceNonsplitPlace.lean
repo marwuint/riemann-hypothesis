@@ -1,10 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IntegrandSZero
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueIsConjAt
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDualFamilyOfIsLattice
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TendstoOneOfSummable
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOfValILeOne
-import Formalism.LocalRingCardinality.ConjSqrtMinusD
 
 noncomputable section
 

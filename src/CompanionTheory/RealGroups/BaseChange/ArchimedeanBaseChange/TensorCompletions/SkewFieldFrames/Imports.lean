@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
-import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.QuadraticClassFieldTheory
 
 noncomputable section
 

@@ -2,11 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsINeZeroKind
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetNeZeroOfNondeg
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsThetaFunctionThetaTransformRationalDarboux
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingInl
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ImportsBis
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryPairOfTransposedGramInverseGram
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramHspOf
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory Matrix

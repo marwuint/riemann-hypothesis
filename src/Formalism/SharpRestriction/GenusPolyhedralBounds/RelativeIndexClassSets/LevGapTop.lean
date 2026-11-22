@@ -1,11 +1,6 @@
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LevGapFacts
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LevGapLat
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LevGapLoc
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.GlintPrincRelIndexNeZero
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AfsplitB
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Stabfin
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Afsplit
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlob
 
 noncomputable section
 namespace Formalism.MainNotions.Gaps.LevGap

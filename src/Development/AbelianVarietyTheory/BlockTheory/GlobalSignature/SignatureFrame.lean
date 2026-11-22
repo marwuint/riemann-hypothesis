@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
-import Formalism.LocalRingCardinality.DataCD
 
 open MeasureTheory Matrix Finset
 

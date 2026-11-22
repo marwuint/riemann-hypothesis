@@ -12,9 +12,7 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvo
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.AmpSlot
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.PairPosition
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.BumpEx
-import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.IntPow
 import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ParEx
-import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.FixLev
 
 open MeasureTheory NumberField IsDedekindDomain Filter
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace GroundTheory.Automorphic.AutomorphicForm

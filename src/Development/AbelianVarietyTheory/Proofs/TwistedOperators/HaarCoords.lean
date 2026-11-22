@@ -4,8 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsMulRightInvari
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHomeomorphWittFlagCoordinates
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TranslNBPreserves
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TranslNC
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsClosedNFlag
-import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.GinfCSecondCountable
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix GlobalTheory.MixModel GlobalTheory.MixPer
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar

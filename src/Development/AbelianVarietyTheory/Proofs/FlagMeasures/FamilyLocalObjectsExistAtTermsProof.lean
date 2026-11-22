@@ -1,10 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.FamilyGroupSumFactorsWeightAmplitude
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsLocalObjectFamilyClassesDetermineRows
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AtBase
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.FamDefs
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NonGenericFamilyClassesDetermineRows
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.NGData
 
 noncomputable section
 

@@ -2,8 +2,6 @@ import Mathlib
 import Formalism.PeriodIntegrals.UpqRep
 import Formalism.PeriodIntegrals.IsLowUnitH
 import Formalism.PeriodIntegrals.BesselMapUniq
-import Formalism.FormalDegreeBessel.StatementG
-import Formalism.FormalDegreeBessel.StatementDS
 import Formalism.FormalDegreeBessel.StatementBF
 import Development.AbelianVarietyTheory.BlockTheory.JetGauges.DecreasingNodeGaps
 

@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.MarkSpec
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IntegralTmulOneMulMemAdelicCompletion
 import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
-import Formalism.LocalToGlobal.ProjectiveLattices.PetersonNormSubspace
-import Formalism.LocalToGlobal.ProjectiveLattices.PartitionExtendByZeroAntitone
 import Formalism.LocalToGlobal.ProjectiveLattices.NormLaws
 import Formalism.LocalToGlobal.ProjectiveLattices.VolProofs
 import Formalism.LocalToGlobal.ProjectiveLattices.DatProofs

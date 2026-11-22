@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProjOverWeierstrass
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsLinearHomPull
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ThetaArc
 import Development.AbelianVarietyTheory.Counterexamples.JetSurvey.NotIsThetaOfNonunit
 
 noncomputable section

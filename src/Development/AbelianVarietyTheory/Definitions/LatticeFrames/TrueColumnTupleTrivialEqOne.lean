@@ -6,15 +6,12 @@ import Formalism.LocalToGlobal.GroupLattices.StdSubAtOfRing
 import Formalism.LocalToGlobal.GroupLattices.Joint0
 import Formalism.LocalToGlobal.HilbertRowConditions.TiedEMt
 import Formalism.LocalToGlobal.KernelLattices.FirstKernelLawReading
-import Formalism.LocalToGlobal.KernelLattices.InterlaceAll
 import Formalism.LocalToGlobal.KernelLattices.KerChTie
 import Formalism.LocalToGlobal.KernelLattices.KerMemPin
 import Formalism.LocalToGlobal.KernelLattices.KerMtPin
 import Formalism.LocalToGlobal.KernelLattices.TopPin
 import Formalism.LocalToGlobal.KernelLattices.AdaptedEnt
-import Formalism.LocalToGlobal.UnitaryNorms.CharTied
 import Formalism.LocalToGlobal.UnitaryNorms.CharTransport
-import Formalism.LocalToGlobal.UnitaryNorms.MemFIffReal
 import Formalism.LocalToGlobal.BesselHermitianTheta.MinfDensity
 import Formalism.LocalToGlobal.BesselHermitianTheta.TiedWeil
 import Formalism.LocalToGlobal.GlobalTheory.LinkTiesOm

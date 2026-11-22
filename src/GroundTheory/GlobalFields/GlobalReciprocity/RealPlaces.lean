@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.GlobalFields.GlobalReciprocity.NormSquare
 import GroundTheory.GlobalFields.GlobalReciprocity.RealPlacesQuadratic
-import GroundTheory.GlobalFields.NormResidueSymbol.Functorial
 
 namespace GroundTheory.Global
 

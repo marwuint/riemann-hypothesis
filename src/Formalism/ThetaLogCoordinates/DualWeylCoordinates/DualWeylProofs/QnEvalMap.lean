@@ -2,7 +2,6 @@ import Formalism.ThetaLogCoordinates.DualWeylCoordinates.DualWeylProofs.QnFactRo
 import Formalism.ThetaLogCoordinates.DualWeylCoordinates.DualWeylProofs.QnPtEmpty
 import Formalism.ThetaLogCoordinates.DualWeylCoordinates.DualWeylProofs.CoeffTransposeVariables
 import Formalism.ThetaLogCoordinates.DualWeylCoordinates.DualWeylProofs.QnInterlacedLowerTri
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LClosedeqLemmas
 
 open MvPolynomial
 

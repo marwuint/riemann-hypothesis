@@ -2,10 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OfRingHom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonModification
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SemiabelianExtensionNormalModel
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GenericPartDenseProOpen
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteIntegralClosureOfEssFiniteTypeField
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsIsoQuotToImOmegaLieOfSplit
-import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
 
 set_option autoImplicit false
 

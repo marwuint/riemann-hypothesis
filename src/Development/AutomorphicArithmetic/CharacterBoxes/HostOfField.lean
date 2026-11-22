@@ -1,10 +1,6 @@
 import Development.AutomorphicArithmetic.ShortNorms.Primes
 import Development.AutomorphicArithmetic.ShortNorms.hostOfFieldOf
 import Development.AutomorphicArithmetic.ShortNorms.supplyOfAdmOf
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ThinScalesIffHostBound
-import Development.AutomorphicArithmetic.CharacterBoxes.Imports
-import Development.AutomorphicArithmetic.CharacterBoxes.PairHyp
-import Development.AutomorphicArithmetic.MeanSquareBounds.pairEx
 import Development.AutomorphicArithmetic.CoprimeRanks.AdmChi
 import Development.AutomorphicArithmetic.CoprimeRanks.FieldAny
 

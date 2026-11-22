@@ -5,7 +5,6 @@ import ReciprocityTheory.ClassFieldTheory.LocalClassField.RecUnr
 import ReciprocityTheory.ClassFieldTheory.LocalClassField.RecCyclic
 import ReciprocityTheory.ClassFieldTheory.LocalClassField.RecFunct
 import ReciprocityTheory.ClassFieldTheory.LocalClassField.GabLim
-import ReciprocityTheory.ClassFieldTheory.LocalClassField.NormOpen
 import ReciprocityTheory.ClassFieldTheory.LocalClassField.RecAbC
 import ReciprocityTheory.ClassFieldTheory.LocalClassField.RecAbA
 

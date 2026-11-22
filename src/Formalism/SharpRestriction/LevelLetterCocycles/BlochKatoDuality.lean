@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
-import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 
 noncomputable section
 

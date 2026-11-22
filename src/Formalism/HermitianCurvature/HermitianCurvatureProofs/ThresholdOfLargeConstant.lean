@@ -2,7 +2,6 @@ import Formalism.HermitianCurvature.BigCellVanishingOfCommute
 import Formalism.HermitianCurvature.FiniteOrderIntersectionInSmooth
 import Formalism.HermitianCurvature.StatementJF
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.LUFactorOrbitBounds
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.AdjointnessPolynomiallyBounded
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.BigCellVanishingOfCommute
 
 open Matrix MeasureTheory

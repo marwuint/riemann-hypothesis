@@ -5,7 +5,6 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVan
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.AevalNeZeroOfNotMem
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsValueAtOfTorus
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.FiniteEtaleSurjectiveOfPullback
-import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PCoordConeArithVar
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PChartNormPtsA
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Values
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorSumIdentityBaseChange

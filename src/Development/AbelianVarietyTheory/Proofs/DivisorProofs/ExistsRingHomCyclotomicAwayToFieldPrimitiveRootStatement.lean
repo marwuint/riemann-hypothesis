@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRingHomCyclotomicAwayToFieldPrimitiveRoot
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompleteDvrLift
 
 open GlobalTheory.SiegelTor
 set_option maxHeartbeats 1000000 in

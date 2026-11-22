@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.LocalFields.Uniqueness
-import GroundTheory.LocalFields.Interface
 
 open scoped IntermediateField Algebra TensorProduct Matrix Pointwise NumberField Topology ContDiff NNReal ENNReal Polynomial DirectSum BigOperators InnerProductSpace Manifold
 

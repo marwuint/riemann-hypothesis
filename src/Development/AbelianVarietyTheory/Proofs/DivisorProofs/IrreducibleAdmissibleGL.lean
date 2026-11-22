@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIrreducibleS
 import GroundTheory.AutomorphicForms.FiniteLength
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ParabolicInductionFiniteLength
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.BernsteinZelevinskyFiniteness
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsSideMore
 
 theorem GlobalTheory.FourClauses.irreducibleAdmissibleGL : GlobalTheory.Published.IrreducibleAdmissibleGL :=

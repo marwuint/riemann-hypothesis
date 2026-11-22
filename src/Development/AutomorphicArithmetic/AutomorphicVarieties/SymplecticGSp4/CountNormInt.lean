@@ -1,6 +1,4 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SemisimpleLevels.TeichNotLt
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicCases.SymplecticGSp4
-import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.LevBasis
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.IrrIff
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PrimitiveFrobeniusFixed.PlaceBasic
 

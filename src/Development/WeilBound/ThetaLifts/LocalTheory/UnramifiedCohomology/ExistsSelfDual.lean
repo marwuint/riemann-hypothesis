@@ -2,7 +2,6 @@ import Development.WeilBound.CoreStatements.CompactAveragingSplitting.Eigenvecto
 import Development.WeilBound.CoreStatements.LocalThetaKernels.IwasFrame
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDualFamilyOfIsLattice
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsSubConjNotMem
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DisjointSpanPerpLat
 
 noncomputable section
 

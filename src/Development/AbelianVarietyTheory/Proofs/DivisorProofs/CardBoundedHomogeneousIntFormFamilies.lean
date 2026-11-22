@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MonomialCountAndBinomialEstimates
 open Filter Topology MvPolynomial GlobalTheory.HSAmp
 
 namespace GlobalTheory.HSAmp.Count

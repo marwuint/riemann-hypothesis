@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.BesselDiscreteSeries.InfCharG
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CentralCharacters.QuasiDeterminantConjInv
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CentralCharacters.AdjointEquivalence
-import Formalism.FormalDegreeBessel.FinalIO
 
 noncomputable section
 

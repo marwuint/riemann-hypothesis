@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Multip
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsTrans
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFrameBaseChangeRingHom
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUniqueSubMemInitSpan
-import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverCompOfIsClosedImmersion
 
 set_option autoImplicit false
 

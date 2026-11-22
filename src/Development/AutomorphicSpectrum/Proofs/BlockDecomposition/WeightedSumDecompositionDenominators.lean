@@ -1,11 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelKlingenDeligneRibet
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsAvoidOne
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuation
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialSum
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PeriodicWeightBounded
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteDifferenceSummable
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConeSeriesDifferentiableLeftStrip
 
 set_option autoImplicit false
 

@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.ThPinsR
-import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
-import Formalism.LocalToGlobal.IndefiniteReal.Bridge
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNeZeroOfIsVacO
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyUnitaryPairKeepsCompletedLattice
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompletedHomLatticeFinitelyGenerated

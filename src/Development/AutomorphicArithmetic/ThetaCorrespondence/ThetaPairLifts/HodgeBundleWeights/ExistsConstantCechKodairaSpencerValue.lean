@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeRhamPairingPullback
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.Hypotheses2
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransl
 
 section
 set_option autoImplicit false

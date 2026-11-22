@@ -1,5 +1,4 @@
 import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaRigidity.ColumnConjugationMeasure
-import GroundTheory.AutomorphicForms.ReductionMahler
 import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaRigidity.SepSum
 
 noncomputable section

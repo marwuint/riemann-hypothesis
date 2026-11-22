@@ -1,6 +1,5 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEnTrSmooth
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.SquareIntegrableGammaZetabarInv
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbitalIntegralAeConvergenceContinuity
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.BetaCutoffLimit
 
 open Formalism.FourierDecayAlt MeasureTheory

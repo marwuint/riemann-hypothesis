@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.ClsSum
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Formalism.HarderNarasimhan.ShiftInvariance
 import Formalism.MeanHeightDescent.AverageDegreeBounds.TwistLower
 
 noncomputable section

@@ -3,8 +3,6 @@ import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.WeightsConj
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ReadsCusp
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspFam
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CGTrueT
 
 set_option synthInstance.maxHeartbeats 200000
 

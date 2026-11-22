@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodRingsG
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRFiltrationLaws
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BcrisFrobeniusFixedFilZeroEqQpStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRGaloisInvariantsEqFinExtStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalPeriodRingsDataUnramifiedLawsStatement
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.MemLoc Polynomial
 open scoped Formalism.Per

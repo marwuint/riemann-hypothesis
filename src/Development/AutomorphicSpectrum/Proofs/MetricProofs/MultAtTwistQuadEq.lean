@@ -2,7 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsHorizontalTwist
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PSpecialMultAt
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PBCMult
-import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.LengthLocalizedModuleQuotient
 
 noncomputable section
 

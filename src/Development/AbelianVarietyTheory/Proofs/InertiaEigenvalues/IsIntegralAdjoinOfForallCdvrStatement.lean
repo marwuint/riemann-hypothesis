@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIntegralAdjoinOfForallCdvr
-import Formalism.LocalToGlobal.ProjectiveLattices.OneLtAbsNormReal
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RangeAlgebraMapEqIInfDiscreteValuationSubring
 
 open Formalism.L2.Pj
 set_option maxHeartbeats 1000000 in

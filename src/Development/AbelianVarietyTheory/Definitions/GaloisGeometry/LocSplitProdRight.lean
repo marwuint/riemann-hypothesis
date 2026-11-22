@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.Bridge
-import Formalism.LocalToGlobal.Columns.HeckeSp
 
 namespace GlobalTheory.HkB
 

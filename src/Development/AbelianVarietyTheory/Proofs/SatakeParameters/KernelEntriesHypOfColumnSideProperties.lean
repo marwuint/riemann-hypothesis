@@ -5,10 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsConstan
 import Formalism.LocalToGlobal.InertKernelTheory.DefsRepDict
 import Formalism.LocalToGlobal.InertKernelTheory.GenusOneModelExistsLattice
 import Formalism.LocalToGlobal.InertKernelTheory.StatementJets
-import Formalism.LocalToGlobal.InertKernelTheory.StatementAlgT
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelEntriesHypOfHeckeCharacterConditions
-import Formalism.LocalToGlobal.KernelLattices.TopPin
-import Formalism.LocalToGlobal.KernelLattices.FirstKernelLawReading
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.Col Formalism.L2.DIV
 
 namespace GlobalTheory.KerJ.ColSideHyp

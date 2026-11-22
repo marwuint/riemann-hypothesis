@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.CapelliDeterminantAndBranching
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.QuantumDetHighestWeightHolds
 
 open Matrix Finset
 

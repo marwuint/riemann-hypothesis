@@ -10,7 +10,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolAtlasIsFormPullb
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DelDbarCommPullbackOfSmoothDelDbar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullbackPreservesFormType
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.BasSingleMulSelf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsConjFsBasisOfUnitary
 import Development.AbelianVarietyTheory.Definitions.Divisors.CupPair
 
 set_option autoImplicit false

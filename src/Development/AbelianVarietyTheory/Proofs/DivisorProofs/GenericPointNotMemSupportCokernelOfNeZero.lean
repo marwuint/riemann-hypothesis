@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsomet
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdjacentRefl
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BcDensEqOfGram
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidueDegreeOfIsOpenImmersion
-import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 open CategoryTheory AlgebraicGeometry TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB

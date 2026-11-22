@@ -6,8 +6,6 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSecti
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LieTermFlagBound
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagDegreeWeightFormula
-import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.CompactGapsGE
 import Development.WeilBound.CoreStatements.FlagImmersions.TwoMulThreePowLeFactorial
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology GlobalTheory.CompanionTheory.Ar.Top
 

@@ -1,8 +1,5 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PublishedTheorems.PoitouTateDuality.FinalGenDefs
-import ReciprocityTheory.GaloisValuations.GlobalA
-import GroundTheory.GlobalFields.CompletionAtPlace.Inertia
-import GroundTheory.LocalFields.UnramifiedGalois
 
 noncomputable section
 

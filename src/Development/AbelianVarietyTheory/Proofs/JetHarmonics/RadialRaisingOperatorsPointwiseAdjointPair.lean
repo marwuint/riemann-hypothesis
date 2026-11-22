@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DoubleCosetOfZetaEq
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ProjRaisingProjEqSmul
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.VanishAbstract
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ExistsFderivChiBound
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormalFormOrderZeroOfParts
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentLevelZeroEqOne
 
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.R Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.Fr Formalism.REAL Formalism.QuantumDeterminants MeasureTheory GlobalTheory.HatNF

@@ -1,10 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TorsionTowersOfDivisibleGroup
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ConstGen
 import Development.AbelianVarietyTheory.Statements.EllipticCurveLevels.BaseChangeMapRingAct
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeMulNFiniteFlatSurjective
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsMonHomFactorOfFlatSurjective
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsUnitNatCastSections
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp spMap IsGrpPullback)

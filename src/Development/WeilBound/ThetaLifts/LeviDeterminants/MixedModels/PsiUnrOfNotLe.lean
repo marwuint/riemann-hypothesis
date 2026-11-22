@@ -1,5 +1,4 @@
 import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.CompFinLiftE
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPrimeAdditiveCharacterUnramified
 
 noncomputable section
 

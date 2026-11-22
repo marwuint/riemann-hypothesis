@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TailRd
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.NotBadPrimeBase
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ValuationEqZeroOfRootOfSUnitRatio
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.FrameTopAlt
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ThetaIdentityOfMapsAll
 
 noncomputable section
 

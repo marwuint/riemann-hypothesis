@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.ThickFrames
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.MatchProd
-import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.SplitLoc
 
 noncomputable section
 

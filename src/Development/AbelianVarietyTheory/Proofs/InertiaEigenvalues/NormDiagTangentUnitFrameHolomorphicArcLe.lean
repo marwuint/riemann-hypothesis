@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsThetaL2NormSquared
 import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import Development.AbelianVarietyTheory.Definitions.RegularCharts.BaseNorm
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.CabsDiagEqOne
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.HolArcNilpotent

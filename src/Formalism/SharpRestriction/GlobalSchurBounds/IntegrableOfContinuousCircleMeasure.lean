@@ -3,8 +3,6 @@ import Formalism.LocalRingCardinality.Lemmas
 import Formalism.LogVandermondeBounds.HookGammaAmgmMultinomialBounds
 import Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentFromBound
 import Mathlib
-import Formalism.GL3MeanSquares.ConcavityEquidistribution
-import Formalism.LogVandermondeBounds.MultinomialPowerBound
 import Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentArithmeticBound
 
 noncomputable section

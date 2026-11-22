@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AlgebraicElementHomogRelation
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
 
 open ReciprocityTheory.ChartRestriction.G.Geo MvPolynomial
 set_option maxHeartbeats 1000000 in

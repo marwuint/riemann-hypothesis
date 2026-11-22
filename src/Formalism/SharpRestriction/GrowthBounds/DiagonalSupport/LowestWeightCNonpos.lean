@@ -1,6 +1,5 @@
 import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.MembDefs
 import Formalism.SharpRestriction.GrowthBounds.ValuationLowestDegreeMapFractionField
-import Formalism.SharpRestriction.GrowthBounds.GLWeightTheory
 
 noncomputable section
 

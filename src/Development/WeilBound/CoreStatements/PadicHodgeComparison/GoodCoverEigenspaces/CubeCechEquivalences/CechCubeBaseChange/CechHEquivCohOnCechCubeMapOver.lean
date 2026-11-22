@@ -1,7 +1,6 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.GoodCoverEigenspaces.CubeCechEquivalences.CechCubeBaseChange.BcSumSingle
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoverRestrictionBaseChange
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.SortSign
 
 set_option autoImplicit false
 

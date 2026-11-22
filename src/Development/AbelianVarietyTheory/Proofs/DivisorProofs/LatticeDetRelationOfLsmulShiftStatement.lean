@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeDetRelationOfLsmulShift
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.QuotientEigenDifference
 
 open scoped NNReal
 set_option maxHeartbeats 1000000 in

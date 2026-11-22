@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZphiPowPr
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsAdditiveOfUniversal
 
 noncomputable section
 

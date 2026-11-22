@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.QuadraticCharacters.FieldOf
-import Development.AutomorphicArithmetic.QuadraticCharacters.ExceptionalCharacterCondition
 
 open NumberField IntermediateField
 

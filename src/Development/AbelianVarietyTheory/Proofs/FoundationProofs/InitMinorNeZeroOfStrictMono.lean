@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.FiniteIntertwining
 import Formalism.BranchSandwichDivisors.DivFromPassageAndNorm
 import Formalism.LocalToGlobal.Columns.PolyFn
-import Formalism.GradedWeylDivisibility.FinalC
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GenericDetPowMulHw
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ColAddGenRenameCastSucc
 open MvPolynomial Formalism.BasicNotions Formalism.GradedWeylDivisibility GlobalTheory.Branching

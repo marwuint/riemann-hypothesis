@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.QuotientImageDivisibility.PhiExp
 import Formalism.SharpRestriction.LevelLetterCocycles.QuotientImageDivisibility.DvdOfDvdImage
-import Formalism.SharpRestriction.LevelLetterCocycles.QuotientImageDivisibility.FrobeniusUniformizerPowDvd
 
 noncomputable section
 open Classical

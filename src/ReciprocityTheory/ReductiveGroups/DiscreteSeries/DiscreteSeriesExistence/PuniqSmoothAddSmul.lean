@@ -1,7 +1,5 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.MeasurePreservingMulRight
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.WeylBridge
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.VectorComplexifiedDerivativeCommutator
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTransposeMul
 
 noncomputable section
 

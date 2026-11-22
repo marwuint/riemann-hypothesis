@@ -6,7 +6,6 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.IsobaricBaseChang
 import Development.WeilBound.CoreStatements.AutomorphicKernels.IsobaricBaseChange.SplitSph
 import Development.WeilBound.CoreStatements.AutomorphicKernels.IsobaricBaseChange.UnramB
 import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.SliceTensors.TwistedSlicesSquareIntegrable
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeIsobaric
 
 noncomputable section
 

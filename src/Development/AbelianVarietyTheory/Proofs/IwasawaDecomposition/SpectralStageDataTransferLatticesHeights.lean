@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.UpLReS
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsSameFOfDiv
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ReadsUnique
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SpectralComparisonTransportedDivisionLatticeChan
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RelabelledWeight
 
 noncomputable section
 

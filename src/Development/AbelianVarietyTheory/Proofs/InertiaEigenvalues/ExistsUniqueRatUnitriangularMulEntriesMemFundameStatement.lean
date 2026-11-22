@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUniqueRatUnitriangularMulEntriesMemFundame
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdelicUnitriangularMulMemUnipotentTimesIntegral
-import GroundTheory.GlobalFields.TateThesis.AdeleMeasure
-import GroundTheory.GlobalFields.Adele.Discrete
-import GroundTheory.GlobalFields.Adele.IntegersLattice
 
 open NumberField IsDedekindDomain Matrix Formalism.UG GlobalTheory.CuspRep MeasureTheory
 set_option maxHeartbeats 1000000 in

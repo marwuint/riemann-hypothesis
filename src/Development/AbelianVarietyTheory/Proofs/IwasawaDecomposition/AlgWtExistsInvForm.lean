@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsWildInertiaCyclotomicElement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInvariantHermitianWeightForm
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GaloisSideTwistedSelmerAuxiliaryPrimes
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemisimpleOfInjective
-import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverStd
 open NumberField
 
 namespace GlobalTheory

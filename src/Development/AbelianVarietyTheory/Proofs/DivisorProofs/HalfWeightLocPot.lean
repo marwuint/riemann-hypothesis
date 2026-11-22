@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsomet
 import Development.AbelianVarietyTheory.Definitions.Divisors.ChernOn
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictChernPart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstChernClassPotential
-import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
-import Development.AbelianVarietyTheory.Definitions.Divisors.FirstChernLeviEqConstant
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartDirectionalDerivativeRegularCoordinate
 
 noncomputable section

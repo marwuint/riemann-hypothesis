@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCoreGTKLineCut
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.IrreducibleCapelliModules
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 

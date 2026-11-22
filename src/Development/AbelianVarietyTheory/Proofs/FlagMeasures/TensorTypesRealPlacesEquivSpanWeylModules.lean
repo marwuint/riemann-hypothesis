@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 import Formalism.LocalToGlobal.HermitianForms.IsLocBasis
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsConjLinearIsometryCompactUnitaryTypeWeylMo
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormalizedFockFormPureTensorProperties
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsConjLinearOfGramEq
 
 open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.Forms Formalism.UG Matrix NumberField IsDedekindDomain

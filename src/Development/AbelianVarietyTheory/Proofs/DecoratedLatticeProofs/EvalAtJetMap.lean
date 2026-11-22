@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.EvalAtOneExtremalMul
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FrameValuesPolynomialDetStableHomogeneous
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.PeriodLatticeFinitelyGenerated
-import Formalism.LocalToGlobal.Columns.PolyFnLemmas
 open GlobalTheory.KJInf Formalism.L2.Forms Formalism.BasicNotions MvPolynomial
 
 noncomputable section

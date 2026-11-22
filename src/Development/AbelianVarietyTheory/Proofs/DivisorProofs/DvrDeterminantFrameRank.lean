@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsBasisOfBot
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.SandwichMaps
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AinfIsDomainMuNeZero
-import Development.AbelianVarietyTheory.Definitions.Divisors.IotaScalarOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SandwichDatumScalarAction
 
 noncomputable section

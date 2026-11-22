@@ -2,10 +2,6 @@ import Development.WeilBound.CoreStatements.FlagImmersions.FibSandwich
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombTangentIffLinearSum
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GermSys
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeAt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFrameIffEigenspaceBasis
 
 noncomputable section

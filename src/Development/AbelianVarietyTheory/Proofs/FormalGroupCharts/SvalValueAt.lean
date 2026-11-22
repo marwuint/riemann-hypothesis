@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FrameBiextDic
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.JetFramesDifferByUnitEachOrder
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FrameRatioFirstPartialLaw
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FrameRatioAdjointnessSeries
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.GenProd
 
 set_option autoImplicit false
 noncomputable section

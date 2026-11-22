@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.HalfIndexLattices.SplitStab
-import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.LatRepB_A
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferentCoprimeAtGoodPlaces
 
 noncomputable section

@@ -4,8 +4,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Regul
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.FrobeniusLocalPairs.NormAdic
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.FrobeniusLocalPairs.FrobFacts
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.FrobeniusLocalPairs.InflFacts
-import GroundTheory.LocalFields.Uniqueness
-import GroundTheory.LocalFields.UnitsPowers
 
 noncomputable section
 

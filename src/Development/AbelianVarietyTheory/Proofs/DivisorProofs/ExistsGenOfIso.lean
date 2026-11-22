@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalEnd
-import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal
 
 noncomputable section
 

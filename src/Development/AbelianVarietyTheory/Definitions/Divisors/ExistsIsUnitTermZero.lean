@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMemberP
-import Development.AbelianVarietyTheory.Definitions.Divisors.OrdGeOfForall
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ApproxOrbitSumsOfGaloisClassSums
 
 noncomputable section

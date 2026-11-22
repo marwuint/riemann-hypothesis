@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.ThetaInte
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
 
 noncomputable section
 

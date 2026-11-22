@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EqZeroOfLowExponentCasimir
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ActEqZeroOfMem
 
 open GroundTheory.Automorphic.HarishChandra GlobalTheory.CompanionTheory.PresRho
 set_option maxHeartbeats 1000000 in

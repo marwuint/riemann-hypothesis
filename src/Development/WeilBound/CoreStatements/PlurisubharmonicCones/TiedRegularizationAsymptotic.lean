@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
-import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
-import GroundTheory.HeightsAndTheta.Heights.Regularisation.PBoundedGlue
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ContDiffAtSmoothOnProj
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ContDiffAtLogH
 

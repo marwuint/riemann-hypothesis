@@ -1,5 +1,4 @@
 import ReciprocityTheory.Chebotarev.Ucoord
-import ReciprocityTheory.Chebotarev.NZIdeal
 import ReciprocityTheory.Chebotarev.EulerSum
 import ReciprocityTheory.Chebotarev.EulerLim
 

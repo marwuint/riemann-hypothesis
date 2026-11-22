@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.KerScheme
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsoQuotientsSameKernelReducedBase
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjRigidClosed
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabCancel
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor

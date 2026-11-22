@@ -3,11 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.TupleReadBaseTupleE
 import Development.AbelianVarietyTheory.Definitions.Divisors.ScalOf
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceLatticeLeThetaLatticeAtPlace
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LeafTW1OfAllConjugatesGood
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsIsScalar
-import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.RationalRayLevels
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DimPartsAtIffBadAndOff
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CoverFieldOfContainsRayField
-import Formalism.LocalToGlobal.UnitaryNorms.CharGal
 
 set_option autoImplicit false
 

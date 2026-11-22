@@ -1,6 +1,5 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.KloostDensOfParts
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentCoordinatesMeasurePreserving
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.Block3MulBlocks
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.TopCellsOfParts
 
 open Matrix MeasureTheory Formalism.QuantumDeterminants Formalism.FourierDecayAlt

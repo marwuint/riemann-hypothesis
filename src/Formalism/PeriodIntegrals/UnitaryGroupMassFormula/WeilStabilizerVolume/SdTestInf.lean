@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.PeriodIntegrals.VolFromSW
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilStabilizerVolume.TensTop
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilStabilizerVolume.DensGen
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.AdeleLC
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilStabilizerVolume.FibOfTens
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.RealCharacter
 

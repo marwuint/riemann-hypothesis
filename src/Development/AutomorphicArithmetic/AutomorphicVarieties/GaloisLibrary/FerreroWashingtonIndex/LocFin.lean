@@ -1,5 +1,4 @@
 import GroundTheory.GlobalFields.HasseNorm
-import GroundTheory.GlobalFields.IdeleGroups.LocalNormsEverywhere
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.FerreroWashingtonIndex.CycRepApply
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Stick UpperTheory.V.FW

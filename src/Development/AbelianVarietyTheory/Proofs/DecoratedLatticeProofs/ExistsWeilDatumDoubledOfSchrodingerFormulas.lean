@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HalfData
 import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelWeilUnitaryConvergent
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HypsSatisfiable
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SecondOnCommonRangeOfSecond
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasDerivAtAndIsTheta
 
 noncomputable section
 open scoped Matrix NNReal ComplexConjugate TensorProduct

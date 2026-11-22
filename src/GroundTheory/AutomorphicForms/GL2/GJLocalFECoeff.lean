@@ -1,7 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.GL2.GJFEDefs
-import GroundTheory.AutomorphicForms.MeasuresGL
-import GroundTheory.AutomorphicForms.MeasuresParabolic
 
 noncomputable section
 

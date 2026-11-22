@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLeIsRootOfSimpleRootPointedEtaleNbhd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InstPreorder
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BijectiveResidueCompEtaleHenselian
 
 open IsLocalRing GlobalTheory.Henselisation
 set_option maxHeartbeats 1000000 in

@@ -4,8 +4,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.PartOrd
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.CompAlg
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.CompOrd
-import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBounds.ClsFacts
-import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBounds.ClsOnto
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 

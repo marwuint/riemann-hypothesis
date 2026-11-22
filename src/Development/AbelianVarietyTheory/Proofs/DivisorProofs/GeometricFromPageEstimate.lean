@@ -7,7 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NumOfFjEqOfRecord
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeafDepthAllRecord
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecondLinkOfWeightRows
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RunNumericalConditionsHoldAlongFamily
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OnWithOfIsEmpty
 
 set_option autoImplicit false
 

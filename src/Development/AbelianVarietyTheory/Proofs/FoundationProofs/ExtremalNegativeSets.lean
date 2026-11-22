@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector
-import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
 
 noncomputable section
 

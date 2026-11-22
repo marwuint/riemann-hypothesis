@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DatVtEq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StdMaximalCompactReductionProperties
-import Formalism.LocalToGlobal.Divisibility.DefGroupLemmas
 
 noncomputable section
 

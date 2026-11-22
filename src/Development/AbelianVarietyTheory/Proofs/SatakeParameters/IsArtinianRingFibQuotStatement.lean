@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsArtinianRingFibQuot
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.TcoMem
 
 open GlobalTheory.PD
 set_option maxHeartbeats 1000000 in

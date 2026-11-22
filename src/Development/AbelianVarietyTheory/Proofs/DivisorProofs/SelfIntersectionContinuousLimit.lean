@@ -4,8 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HypothesesX
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.RegularAlteration
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsX
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NontrivialIsomClassInt
-import Development.AbelianVarietyTheory.Definitions.Divisors.GenericPointAsIdeal
 
 set_option autoImplicit false
 

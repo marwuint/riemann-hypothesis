@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.CoreDesc
-import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ParEx
 
 noncomputable section
 

@@ -1,10 +1,6 @@
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.ThetaFixOfOfMult
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.IsDiscreteOfNorm
 import Mathlib
-import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.RealDescent.ArchBaseChangeOfHyp
-import Development.WeilBound.RepresentationTheoryGL.JacquetShalikaBounds.AbsoluteRigidity.CauchyLoc
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHasCentChar
-import GroundTheory.GlobalFields.IdeleGroups.NormOneCompact
 import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.CuspidalMultiplicityOne
 
 namespace DiscreteGroups.T1.G

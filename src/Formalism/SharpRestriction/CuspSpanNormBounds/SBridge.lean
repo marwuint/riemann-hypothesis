@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.CuspSpanNormBounds.NormalizedLocalScale
-import Formalism.SharpRestriction.CuspSpanNormBounds.RootMeasBig
 import Formalism.SharpRestriction.CuspSpanNormBounds.CntPartners
 import Formalism.SharpRestriction.CuspSpanNormBounds.LeadMinorK
 

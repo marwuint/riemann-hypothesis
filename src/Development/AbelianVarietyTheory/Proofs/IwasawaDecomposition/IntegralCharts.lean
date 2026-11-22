@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SvalUpSec
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SecScalIffPullAb
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsTermBasis
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsGenT
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllSixAbelianSchemeLawsHold
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsGoodIntegral
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory NumberField IsLocalRing

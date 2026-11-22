@@ -1,6 +1,5 @@
 import Mathlib
 import ReciprocityTheory.SemistableReduction.SemiAll
-import ReciprocityTheory.SemistableReduction.SemiDegZ
 import ReciprocityTheory.SemistableReduction.LatTest
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CmApproximationTransference
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsThickPointHyperbolic

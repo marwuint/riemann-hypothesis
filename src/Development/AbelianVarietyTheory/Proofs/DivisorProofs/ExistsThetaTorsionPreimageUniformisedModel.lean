@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.LabRange
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UniformisedModelLabelledTorsionPoints
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UTorsClosed
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.MulEqOneOfComb
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory IsLocalRing

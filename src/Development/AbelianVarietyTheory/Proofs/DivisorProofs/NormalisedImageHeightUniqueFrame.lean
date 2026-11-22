@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IntegralBound
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyCuspFrame
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
 import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.RealCubicMeans.LogMeanShares.LogMeanStatements.HSClaim
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.TheoremA
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsImageHeightUnique
 
 set_option autoImplicit false

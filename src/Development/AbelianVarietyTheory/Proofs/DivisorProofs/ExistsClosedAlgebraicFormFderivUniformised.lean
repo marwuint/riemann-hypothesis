@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioCover
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationPreimageValueRules
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeRhamDerivativeEqZeroOfSymmetricFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KaehlerDifferentialsFreeCoordinateFormsAbelian
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfValEqZero
 
 set_option autoImplicit false
 

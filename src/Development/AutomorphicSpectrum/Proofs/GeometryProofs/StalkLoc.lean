@@ -1,13 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateWeilOpenChart
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapFromSpecStalk
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionExtendsFromStalkPullback
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionLiftIsClosedImmersion
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionEqZeroOfValues
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
-import GroundTheory.PAdicHodge.FiniteFlat
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 
 noncomputable section
 

@@ -13,8 +13,6 @@ import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LeafCoordinateWei
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ZetaSeriesLeafMainTermCurveSystem
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.WeightGaugeSubMainTermLeaf
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.GaugeSubMainTermIntegralLowBidegree
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.RowDataAdaptedChainData
-import Formalism.LocalToGlobal.CharacterGerms.ScaledSecondIntegral
 open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds GlobalTheory.MainTerm Classical
 
 open Formalism.BaseCaseIdentities (Data Kn s0)

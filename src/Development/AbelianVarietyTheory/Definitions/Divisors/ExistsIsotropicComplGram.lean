@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRangeOfSteps
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsWeilFormulas
 
 noncomputable section
 

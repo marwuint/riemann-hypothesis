@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceLatticeLeThetaLatticeAtPlace
-import Formalism.LocalToGlobal.IndefiniteReal.ThPinsR
 
 set_option autoImplicit false
 

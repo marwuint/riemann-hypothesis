@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteFlatRankClosedSubschemeOfOpenCover
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComapBcComp
 
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits Opposite
 universe u

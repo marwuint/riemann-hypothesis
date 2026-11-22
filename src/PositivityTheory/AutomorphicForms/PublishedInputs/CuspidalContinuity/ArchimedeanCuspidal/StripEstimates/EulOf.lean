@@ -4,7 +4,6 @@ import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.Arch
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussSumConjugation
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NeZeroOfRePos
 import Mathlib
-import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.StripEstimates.FaceMapCompSuccAboveCastSucc
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RepresentsTransferOneOne
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.B1
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SumRangeGaussLe
@@ -27,8 +26,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ImportsBisBis
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HolomorphyIntegralParam
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnfoldedIdentityOf
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OrdUniformizerEqOne
-import GroundTheory.GlobalFields.TateThesis.RootNumberLocalPlace
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HasProdMoebiusConvOfNormLe
 
 namespace Ad3.S
 

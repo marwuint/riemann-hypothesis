@@ -1,10 +1,6 @@
 import Development.WeilBound.CoreStatements.VolumeEquality.BaseUnifConjA
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugateUniversalFamily
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GroupDict
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSheetCover
-import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.StatementsProved
-import GroundTheory.HeightsAndTheta.Heights.CountingLowerBound.Assembly
 
 noncomputable section
 

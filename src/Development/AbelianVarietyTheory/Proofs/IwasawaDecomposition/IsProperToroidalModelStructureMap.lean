@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Multip
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GradedLineBundleExists
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyOfModToModIso
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonoSpMapRingOfIntegers
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CompNonemptyFiniteGenFrTrdeg
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 
 set_option autoImplicit false
 

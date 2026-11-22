@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeightedNormSqua
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.OrthogonalNormSquareSum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetRefinement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoefficientGramPosSemidefAndNormAtPlace
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsClassSumPairingFormsLat
 
 open Module NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Col Formalism.L2.Ker GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds GlobalTheory.ColRows
 open scoped ComplexOrder

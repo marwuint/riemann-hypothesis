@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.HeightFunctions.FiniteDimensionalOfSz
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LFunctionPositiveConductorFourEight
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.WeberSetSubsetRayField
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.PrincipalRayPrimesSplitCompletelyWeberValues
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.NcardEqIffStabilizer
 
 set_option autoImplicit false
 

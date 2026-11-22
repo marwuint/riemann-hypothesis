@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSheetImageAreaSet
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSheetImageAreaSetFrame
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PGraphAreaHolomorphic
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PAreaGraph
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PAreaGraphBound
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PAreaGraphPiece

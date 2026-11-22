@@ -3,9 +3,7 @@ import Formalism.LocalRingCardinality.DataAmbForm
 import Formalism.LocalRingCardinality.DataKerP
 import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.ColumnAvoidanceConditions
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MinkowskiBoundComapLattice
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeExtensionAlongFieldEmbeddingDuals
 import Formalism.LocalToGlobal.Columns.ToHLat
-import Formalism.LocalToGlobal.Columns.CoefModB
 import Formalism.LocalToGlobal.Divisibility.FramesLemmas
 
 noncomputable section

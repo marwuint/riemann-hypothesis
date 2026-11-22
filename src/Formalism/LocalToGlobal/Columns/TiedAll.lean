@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.Columns.TiedLv
 import Formalism.LocalToGlobal.Columns.TiedValAll
-import Formalism.LocalToGlobal.Columns.TiedCB
 
 open NumberField IsDedekindDomain Module Matrix
 open scoped TensorProduct

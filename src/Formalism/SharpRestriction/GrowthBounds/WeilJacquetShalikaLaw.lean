@@ -1,6 +1,5 @@
 import Formalism.LocalRingCardinality.DataExtra
 import Formalism.LocalRingCardinality.HostCls
-import Formalism.LocalRingCardinality.DataDIVDefs
 import Formalism.SharpRestriction.ParConsts
 import Formalism.SharpRestriction.ParamsHeightRankConstant
 import Formalism.SharpRestriction.GrowthBounds.SmallOrderPrimes

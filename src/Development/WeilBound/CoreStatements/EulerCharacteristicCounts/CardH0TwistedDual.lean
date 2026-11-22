@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
-import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates
 import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
 import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes

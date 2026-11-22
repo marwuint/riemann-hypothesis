@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecMapApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocallyConstantLinOm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LagrangianInvariantFormsProportionalFinitePlace
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 import GroundTheory.AutomorphicForms.MeasuresModulus
 
 noncomputable section

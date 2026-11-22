@@ -5,9 +5,6 @@ import GroundTheory.PAdicHodge.FiniteFlat
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfEx
-import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHens
-import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.BtExistsBc
-import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatBcPull
 
 namespace PositivityTheory.HtPt.Htat
 

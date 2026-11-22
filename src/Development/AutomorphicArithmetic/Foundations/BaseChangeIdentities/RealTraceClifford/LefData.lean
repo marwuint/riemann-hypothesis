@@ -9,7 +9,6 @@ import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.RealTr
 import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.RealTraceClifford.LefForm
 import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.RealTraceClifford.RhoStrict
 import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.RealTraceClifford.MultTrOnBot
-import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.RealTraceClifford.WspOrth
 
 noncomputable section
 

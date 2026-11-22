@@ -1,6 +1,4 @@
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyStatementOfItemsFourSeven
-import Formalism.FlagUnipotentLattices.AlgebraicIdentityHigherDegree
-import Formalism.FormalDegreeBessel.FinalDS
 
 noncomputable section
 

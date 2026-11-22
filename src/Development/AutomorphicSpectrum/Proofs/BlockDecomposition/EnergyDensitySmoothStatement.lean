@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EnergyDensitySmooth
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Rr
 open MeasureTheory Matrix Finset
 open scoped ContDiff ComplexConjugate InnerProductSpace
 open PositivityTheory.RgBcC GlobalTheory.CompanionTheory.WaveSpd

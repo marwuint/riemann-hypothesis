@@ -6,10 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.WeightedLeadi
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EquivariantMapEqSmul
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsBasisAtBlock
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NonnegSubOfLt
-import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.FiniteIntertwining
-import Formalism.LocalToGlobal.Columns.PolyFnLemmas
-import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LClosedeqLemmas
 
 open MvPolynomial NumberField IsDedekindDomain
 

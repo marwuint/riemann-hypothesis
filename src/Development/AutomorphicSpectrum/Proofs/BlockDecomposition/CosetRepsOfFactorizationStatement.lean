@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetRepsOfFactorization
-import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.UnitaryExtremality.SatPowNonvan
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsStrictDom
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsPermWOne
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemIwUIff
 
 open GlobalTheory.PRep Formalism.UG GlobalTheory.LFun PositivityTheory.SphericalProduct GlobalTheory.CompanionTheory.SatPow
 set_option maxHeartbeats 1000000 in

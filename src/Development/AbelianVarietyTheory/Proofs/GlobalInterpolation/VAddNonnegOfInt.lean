@@ -1,11 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LowerTieTwAt
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ClassPairingIntegralFormRowIsIntegral
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PredMemGamRanks
-import Formalism.LocalToGlobal.Columns.TiedValLatG
-import Formalism.LocalToGlobal.Columns.CoefModB
-import Formalism.LocalToGlobal.KernelLattices.InterlaceAll
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsClassSumPairingOfIsFormsOf
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC Matrix
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar

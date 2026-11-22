@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ex
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmRep
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmIndCoinvariants
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsOpenNormalisedSubgroupSubset
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LeviIntegralFacts
 
 noncomputable section
 

@@ -4,9 +4,6 @@ import Formalism.LocalToGlobal.Divisibility.ProjLemmas
 import Formalism.LocalToGlobal.Divisibility.FramesLemmas
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.SecondStepGluing
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.PlaceSumSquares
-import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.LocBasis
-import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ConjTransposeEqOfPosDef
-import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ReductionLemmaFirst
 
 open Module NumberField IsDedekindDomain Polynomial
 open scoped Matrix ComplexOrder

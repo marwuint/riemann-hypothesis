@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsStableGauss
 import GroundTheory.LocalFields.FiniteExtension
 import GroundTheory.AutomorphicForms.HermitianClassification
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NegOneMemNormOfValuationEq
-import GroundTheory.LocalFields.UnramifiedNormSurj
 
 open scoped TensorProduct
 

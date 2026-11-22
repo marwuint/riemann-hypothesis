@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSystemOf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStableComplBot
 open NumberField IsDedekindDomain TensorProduct
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR GlobalTheory.UnitaryBC GlobalTheory.FrameAut Formalism.CohomologicalDescent.DepthNonnegative
 attribute [local instance] Formalism.BasicNotions.Host.cmStar

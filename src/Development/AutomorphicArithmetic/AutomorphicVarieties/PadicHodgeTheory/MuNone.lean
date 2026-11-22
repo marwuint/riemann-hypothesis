@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.Idea
 import GroundTheory.LocalFields.KroneckerWeber
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.OpenField
 import GroundTheory.LocalFields.LocalArtinCompletion
-import GroundTheory.LocalFields.PrincipalUnitsRank
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixingSubgroupEquivBicontinuous
 
 open Formalism.BasicNotions Formalism.BasicNotions.Loc UpperTheory.V.Loc Topology

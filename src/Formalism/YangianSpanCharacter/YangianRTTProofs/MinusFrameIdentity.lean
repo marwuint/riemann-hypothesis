@@ -1,5 +1,4 @@
 import Formalism.YangianSpanCharacter.StatementF
-import Formalism.YangianSpanCharacter.StatementY
 import Formalism.YangianSpanCharacter.YangianRTTProofs.DiagonalEntryEqOfModularRelation
 
 namespace Formalism.YangianSpanCharacter.P

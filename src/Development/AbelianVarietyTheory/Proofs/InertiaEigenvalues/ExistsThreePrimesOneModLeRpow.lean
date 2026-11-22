@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.CyclotomicBounds.ZmodTwoQuadraticNeZero
 import Formalism.SharpRestriction.LevelLetterCocycles.TwGood
-import Formalism.FrobeniusOrbits.HostCorollaries
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.GoodPairSystems
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValuationComapLtOne
 

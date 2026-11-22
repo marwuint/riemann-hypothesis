@@ -3,7 +3,6 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HintEqOfLe
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeCosetSumCompact
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HintConstMulSum
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UNInjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModulusHalfLeviAbsDet
 
 open NumberField IsDedekindDomain Matrix Polynomial Filter

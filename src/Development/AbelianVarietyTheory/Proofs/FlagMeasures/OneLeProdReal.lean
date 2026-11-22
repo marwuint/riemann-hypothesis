@@ -3,7 +3,6 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.CongruenceAtSplitFrobeniusH
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsPartnerLift
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IdxNOneMulAbsNorm
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountTermsGramClassOverSublattice
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowMinor
 
 open NumberField Module IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat
 open scoped Classical

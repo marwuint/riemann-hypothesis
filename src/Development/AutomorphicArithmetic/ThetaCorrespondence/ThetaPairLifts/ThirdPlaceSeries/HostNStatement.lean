@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HostBoundHolds
-import Development.AbelianVarietyTheory.Definitions.Divisors.QuoIff
-import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
-import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
-import Development.AbelianVarietyTheory.Definitions.Divisors.UnifOfSpaceEq
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LiftWeightNumerator
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HostN
 

@@ -1,10 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsBundles
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XSFlagindep
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.VerticalDivisorsCommute
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PairNumberPullback
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsHeckeCorrespondenceOnIntegralShimuraModel
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsSegreFlagClosure
 
 namespace GlobalTheory.CompanionTheory.CommAlg.FlagIndependence
 

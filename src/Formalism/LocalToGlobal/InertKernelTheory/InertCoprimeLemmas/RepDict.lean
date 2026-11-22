@@ -1,7 +1,6 @@
 import Formalism.LocalToGlobal.InertKernelTheory.DefsRepDict
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.MMRead
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.FormalExponentialAgree
-import Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.BinomialSeriesCoefficients.CoeffPowEqZeroOfCc
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.ExistsWittSeriesInverseFormalGroupIso
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.JetsModel
 

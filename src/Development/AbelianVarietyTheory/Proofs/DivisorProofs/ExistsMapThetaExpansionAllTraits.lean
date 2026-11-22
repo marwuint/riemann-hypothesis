@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.LabExt
-import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
-import Development.AbelianVarietyTheory.Definitions.Uniformization.SeriesFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitInverseExpansionEquivariantLabelsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqvDown
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LabExtOfTrait

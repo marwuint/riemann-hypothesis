@@ -4,8 +4,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Dia
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.SpanZero
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.PtScale
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.PtLimit
-import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.GeAlgTop
-import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.PtInSmul
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 private theorem twoIrr_entry {K : Type} [Field K] (t : Kˣ × Kˣ) (X : M4 K) (i j : Fin 4) :

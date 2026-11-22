@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasLenOfLatLen
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AntiJMulApply
 
 noncomputable section
 

@@ -1,10 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.KerBF
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaAbsoluteSum
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TransvectionAction
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MixedModelCentralTermsViaGramMatrices
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsQuasiFam
 
 noncomputable section
 

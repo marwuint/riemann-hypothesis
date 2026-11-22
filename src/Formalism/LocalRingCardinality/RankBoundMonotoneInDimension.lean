@@ -1,5 +1,4 @@
 import Formalism.LocalRingCardinality.DataParams₂
-import Formalism.ThetaLiftIndependence.Statement
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Ipindep
 import Formalism.ThetaLiftIndependence.ThetaOrbitSums.LatLiftIndep
 import Formalism.ThetaLiftIndependence.ThetaOrbitSums.ClassRepsDefinite
@@ -8,8 +7,6 @@ import Formalism.FrobeniusOrbits.HostCorollaries
 import Formalism.LocalRingCardinality.HostCls
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameCyclicGenerator
 import Formalism.HarderNarasimhan.ShiftInvariance
-import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
-import Formalism.GradedWeylDivisibility.FinalB
 import Formalism.GradedWeylDivisibility.FinalD
 import Formalism.GradedWeylDivisibility.StatementE
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact

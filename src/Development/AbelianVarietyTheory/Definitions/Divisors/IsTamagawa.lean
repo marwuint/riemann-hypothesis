@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EmbGLMemRealSU
-import Development.AbelianVarietyTheory.Definitions.Foundations.CdScaleTieIff
 
 noncomputable section
 

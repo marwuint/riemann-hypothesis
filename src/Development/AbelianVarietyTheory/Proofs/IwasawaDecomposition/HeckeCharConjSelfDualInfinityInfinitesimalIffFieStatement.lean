@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharConjSelfDualInfinityInfinitesimalIffFie
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CGTrue
 
 open Formalism.BasicNotions Formalism.L2.Host GlobalTheory.CuspRep NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in

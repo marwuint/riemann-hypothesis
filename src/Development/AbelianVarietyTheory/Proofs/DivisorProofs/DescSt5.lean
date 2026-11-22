@@ -2,11 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SubsetSpanBy
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DescSt
 import Development.AbelianVarietyTheory.Definitions.Divisors.MinSt5OfMinSt4
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiAbelianDescentFromCompleteRegularCharts
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DescendedGroupAbelianLocusAndRelDim
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSharpGen
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteTypeCycAway
-import Development.AbelianVarietyTheory.Counterexamples.ModuliSurvey.IsQProjOverOfIsProjOver
 
 noncomputable section
 

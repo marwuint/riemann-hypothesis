@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.TendstoSmulCocompact
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.LastBlockDecay
 
 namespace Formalism.FourierDecayAlt.P.PBK
 

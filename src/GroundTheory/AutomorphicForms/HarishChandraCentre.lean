@@ -4,7 +4,6 @@ import GroundTheory.AutomorphicForms.HarishChandraCentre.Injective
 import GroundTheory.AutomorphicForms.HarishChandraCentre.VermaCoordEqZeroOfMemNPlusU
 import GroundTheory.AutomorphicForms.HarishChandraCentre.LeadingTerm
 import GroundTheory.AutomorphicForms.HarishChandraCentre.Symmetric
-import GroundTheory.AutomorphicForms.HarishChandraCentre.Capelli
 import GroundTheory.AutomorphicForms.HarishChandraCentre.Consequences
 
 namespace GroundTheory.Automorphic.HarishChandra

@@ -1,10 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DerAlong
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelTermDerivativeIsotropicDirection
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelTermLinearThetaFunctions
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DRhoSumAndSobOLe
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.StdCharFinitePartRationalEqExpTrace
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EqZeroOfLintegralEqZero
 
 noncomputable section
 

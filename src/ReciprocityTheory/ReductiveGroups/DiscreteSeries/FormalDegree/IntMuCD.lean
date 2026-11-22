@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.PolarBasic
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.KoszulLowersPower
 
 noncomputable section
 

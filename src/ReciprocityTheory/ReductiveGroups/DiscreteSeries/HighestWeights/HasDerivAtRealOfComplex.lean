@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.OpEqExp
-import Formalism.RealPlaceAnalysis.StatementKT
 
 noncomputable section
 

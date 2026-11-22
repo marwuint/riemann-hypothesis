@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalisationMulEqAevalRoot
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraMapIntegralClosureTensorEq
 
 open IsLocalRing
 set_option synthInstance.maxHeartbeats 400000

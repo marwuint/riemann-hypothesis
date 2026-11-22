@@ -2,7 +2,6 @@ import Formalism.SizeWindowBrackets.SlopeHypothesesRounded
 import Formalism.SizeWindowBrackets.ChainSlopeWindows.WeightedSlopeExcessDecomposition
 import Formalism.SizeWindowBrackets.ChainSlopeWindows.LevelOfCongruence
 import Formalism.SizeWindowBrackets.ChainSlopeWindows.JointDModelAppliesUnitLattice
-import Formalism.SizeWindowBrackets.ChainSlopeWindows.ExistsNsmulMem
 
 open Module NumberField Matrix
 open Formalism.CorankShareLayerCake.FR Formalism.HN

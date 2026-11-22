@@ -1,8 +1,6 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.InductionEstimates.IwahoriBlocks.SimpleIn
 import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.HeckeFinAlt
 import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.ExistsPowerSums
-import GroundTheory.AutomorphicForms.IwahoriFactorization
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsLocallyConstantOrbit
 
 open MeasureTheory NumberField IsDedekindDomain Filter Topology
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace

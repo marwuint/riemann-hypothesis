@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FlagComponentFramedPointFrame
 import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.PrimAn
-import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainPointBound
 
 noncomputable section
 

@@ -1,11 +1,7 @@
 import Mathlib
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormSqUnitNormalizationLe
-import Formalism.HermitianCurvature.BesselNonvanishingReduction
-import Formalism.PeriodIntegrals.UpqRep
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.UhMeasurableSet
 import Formalism.PeriodIntegrals.BesselL2FixAtZero
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalDegreeSquareIntegrable.Closed
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ModularCharacterEqOneOnExpHermitian
 
 noncomputable section
 

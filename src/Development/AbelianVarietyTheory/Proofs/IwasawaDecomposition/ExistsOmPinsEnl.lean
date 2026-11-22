@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBcStages
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCoefficientMapExtensionOverEnlargedBase
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOmPinsLev
 
 set_option autoImplicit false
 

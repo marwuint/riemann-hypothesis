@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
-import Development.AbelianVarietyTheory.Definitions.Foundations.SmoothPartStable
 
 noncomputable section
 

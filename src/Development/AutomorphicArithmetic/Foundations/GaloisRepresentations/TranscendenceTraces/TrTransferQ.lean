@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TranscendenceTraces.IsolateSpec
-import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 import Development.EtaleCohomology.EtaleTrace.LTransferCut
 
 noncomputable section

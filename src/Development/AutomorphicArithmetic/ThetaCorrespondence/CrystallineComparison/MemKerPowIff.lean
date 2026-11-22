@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.CrystallineComparison.CFDefs
-import Development.WeilBound.CoreStatements.PeriodRingComparison.RationalRingEquivalences.IsLogCore
 
 noncomputable section
 

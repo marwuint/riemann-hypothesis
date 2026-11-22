@@ -1,5 +1,4 @@
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.ProjHyp
-import ReciprocityTheory.CommutativeAlgebra.PolynomialHeights.HeightAddRingKrullDimQuotientMvPolynomialField
 
 namespace ReciprocityTheory.AnForm.R
 

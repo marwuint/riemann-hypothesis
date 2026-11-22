@@ -3,17 +3,13 @@ import GroundTheory.GlobalFields.SemilocalAlgebras.Galois
 import GroundTheory.GlobalFields.CompletionAtPlace.Inertia
 import GroundTheory.GlobalFields.Artin.MemInvariantsCompSubtypeIff
 import GroundTheory.GlobalFields.TateThesis.ChebotarevAbelian
-import GroundTheory.GlobalFields.TateThesis.ConductorIdeal
 import GroundTheory.LocalFields.DifferentGalois
 import GroundTheory.LocalFields.ConductorTransport
 import GroundTheory.LocalFields.BrauerInductionInduced
 import GroundTheory.LocalFields.ArtinConductorAbelian
 import GroundTheory.LocalFields.BrauerInductionPrime
-import GroundTheory.LocalFields.BrauerInductionCharacters
 import GroundTheory.LocalFields.BrauerInductionClifford
 import GroundTheory.GlobalFields.Artin.InflationTower
-import GroundTheory.LocalFields.LowerIndexQuotient
-import GroundTheory.LocalFields.IntermediateField
 
 noncomputable section
 

@@ -4,8 +4,6 @@ import Development.WeilBound.CoreStatements.HodgeTatePoints.CdUniv
 import Development.WeilBound.CoreStatements.HodgeTatePoints.ActGeneratorZero
 import Development.WeilBound.CoreStatements.HodgeTatePoints.CcInjAlg
 import Mathlib
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.WeilBound.CoreStatements.HodgeTatePoints.IsPullbackWhisker
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermDimensionUnique
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermsIsomorphic

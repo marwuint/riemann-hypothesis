@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KchMul
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.UnifMetricScalar
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.TangentVectorExistsUniqueUniformisingVector
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaKeyRulePowComplex
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.NormalFormOfParts
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExponentialDerivativeAtZeroIsTangent
 
 noncomputable section
 

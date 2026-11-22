@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.HalfSumRootsStandard
 
 open Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants
 

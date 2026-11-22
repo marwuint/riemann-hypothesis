@@ -3,7 +3,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Local
 import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalIdeles.UnlSph
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsRealisesNeOne
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Langlands
 
 noncomputable section
 

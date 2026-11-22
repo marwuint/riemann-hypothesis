@@ -1,9 +1,7 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.EulerFactorBounds.EsStmt
-import Development.AbelianVarietyTheory.Definitions.Foundations.OpLDOneSubMemTriv
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SlMulToRingEquiv
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisCommutesHeckeAction
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiagMod
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.KZ.ES
 open scoped Matrix MatrixGroups Pointwise

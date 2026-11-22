@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.HolJetF
-import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
 
 set_option autoImplicit false
 

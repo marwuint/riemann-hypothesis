@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.KawamataViehweg
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsLogCanonicalMultipleCanonical
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineOpenPreimageOfIsPullback
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyHomologyEquiv
 
 set_option autoImplicit false
 

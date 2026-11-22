@@ -2,10 +2,7 @@ import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
 import Development.AbelianVarietyTheory.Definitions.Jets.DepthNumbersThresholdEq
 import Development.AbelianVarietyTheory.Definitions.Jets.CmQuadraticFormEqAlternatingForm
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AllGoodPrimeDepthDataExistProof
-import Development.AbelianVarietyTheory.Definitions.Jets.IsSelfOf
-import Development.AbelianVarietyTheory.Definitions.Jets.TwoPlaces
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DepthLeafGoodPrimesOfPointData
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.DIV.Cons Formalism.L2.DIV Formalism.L2.Pj Formalism.L2.Indef Formalism.L2.Indef.Tree Formalism.L2.FormalSeriesBounds GlobalTheory.GoodDepth GlobalTheory.RunDepth
 

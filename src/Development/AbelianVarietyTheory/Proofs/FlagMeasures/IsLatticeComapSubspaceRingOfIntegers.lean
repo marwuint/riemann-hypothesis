@@ -1,8 +1,4 @@
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.NGData
-import Formalism.HermitianLattices.FinalNeighbourConstruct
-import Formalism.HermitianLattices.HermitianLatticesProofs.ClassSetAssembly
-import Formalism.HermitianLattices.HermitianLatticesProofs.GenusCovolBound
-import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermLoc
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocClosed
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsLatticeComapSubtype

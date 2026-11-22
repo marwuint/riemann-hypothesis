@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.Divisibility.LiftErrorLocal
-import Formalism.SharpRestriction.GrowthBounds.WeilJacquetShalikaLaw
 
 noncomputable section
 

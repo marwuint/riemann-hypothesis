@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.InvariantOpenChartPreimage
-import Development.AutomorphicSpectrum.PublishedTheorems.Algebra₂.RegularHypothesesAndConclusion
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HasAffineChartId
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HasAffineChartIff
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory AlgebraicGeometry Opposite
 open scoped CategoryTheory.MonObj

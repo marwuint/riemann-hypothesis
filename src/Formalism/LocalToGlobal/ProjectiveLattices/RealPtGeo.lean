@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.ProjectiveLattices.IntFrames
 import Formalism.LocalToGlobal.ProjectiveLattices.ExtPtUnique
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 
 set_option synthInstance.maxHeartbeats 400000
 

@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.EtaJUn
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PointPropertyEqSizeFree
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.FamilyClassSevenDutiesAndStableLattices
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AdmissibleIndexBoundAllPowers
-import Formalism.LocalToGlobal.BesselHermitianTheta.MinfDensity
 
 noncomputable section
 

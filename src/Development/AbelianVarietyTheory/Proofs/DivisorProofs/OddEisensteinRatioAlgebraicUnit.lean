@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsApprox
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPullbackConstantSqEqDet
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormMapRingOfIntegersLeOne
 
 open NumberField IsDedekindDomain

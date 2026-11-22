@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSymplecticBlockGeneratorsLagrangianNormalF
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealisedOne
 
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicSvN
 open scoped Matrix

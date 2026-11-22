@@ -3,7 +3,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsTjCorrDiagModel
 import Development.AbelianVarietyTheory.Definitions.Divisors.HxiTZeroComb
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.ChainOfKernelsUnique
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFrobGBaseChange
 
 noncomputable section
 

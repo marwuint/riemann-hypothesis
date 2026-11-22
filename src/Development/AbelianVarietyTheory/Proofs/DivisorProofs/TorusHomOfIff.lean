@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenOfIso
-import Development.AbelianVarietyTheory.Definitions.Uniformization.AllDV
 
 noncomputable section
 

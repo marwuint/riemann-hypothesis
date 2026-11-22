@@ -2,11 +2,6 @@ import Development.WeilBound.CoreStatements.VolumeEquality.BallVolDefs
 import Development.WeilBound.CoreStatements.EqualVolumeCompactOpens.Master
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallMobiusHolomorphicPotentialChange
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GroupDict
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSheetCover
-import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.StatementsProved
-import GroundTheory.HeightsAndTheta.Heights.CountingLowerBound.Assembly
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntEmbInjective
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallMobiusMul
 
 noncomputable section

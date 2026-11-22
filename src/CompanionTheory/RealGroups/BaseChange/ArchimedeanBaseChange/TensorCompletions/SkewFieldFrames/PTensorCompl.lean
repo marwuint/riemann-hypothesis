@@ -1,7 +1,6 @@
 import Mathlib
 import CompanionTheory.RealGroups.BaseChange.ArchimedeanBaseChange.TensorCompletions.SkewFieldFrames.Imports
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsSplitOfIsInertAt
-import Development.AbelianVarietyTheory.Definitions.Foundations.OfInfProjInfMulOfFinProjFin
 
 noncomputable section
 

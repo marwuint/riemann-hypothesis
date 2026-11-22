@@ -8,8 +8,6 @@ import Development.WeilBound.ThetaLifts.CartanFactorisation.Unimod
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdmittedFormEqAdelicThetaDistribution
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzMapBarrelledSpace
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsINeZeroKind
-import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
 
 noncomputable section
 

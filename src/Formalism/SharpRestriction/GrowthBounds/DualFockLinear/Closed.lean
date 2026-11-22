@@ -1,10 +1,6 @@
 import Formalism.SharpRestriction.GrowthBounds.DualFockLinear.TestSideExplicitIdentification
 import Formalism.SharpRestriction.GrowthBounds.DualFockLinear.OneSidedLemma4OfAdmittedTheoremII
-import Formalism.SharpRestriction.GrowthBounds.PathWeight
 import Formalism.SharpRestriction.GrowthBounds.MonomialOrderSegments
-import Formalism.SharpRestriction.GrowthBounds.Joints
-import Formalism.SharpRestriction.GrowthBounds.ProjectionOfIsotypicDecomposition
-import Formalism.SharpRestriction.GrowthBounds.GLWeightTheory
 
 noncomputable section
 

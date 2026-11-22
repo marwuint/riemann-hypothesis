@@ -1,5 +1,4 @@
 import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.ArchInt
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsProdInfMulFinPart
 
 noncomputable section
 

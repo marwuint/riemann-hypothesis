@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.FamilyPartFiveOfExplicitConstants
-import Formalism.SharpRestriction.GlobalSchurBounds.StandardLattice
 
 noncomputable section
 

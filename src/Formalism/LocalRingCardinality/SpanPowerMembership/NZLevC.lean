@@ -2,7 +2,6 @@ import Formalism.LocalRingCardinality.SpanPowerMembership.NZLevB
 import Formalism.LocalToGlobal.GroupLattices.FockModels.Cartan
 import Formalism.PeriodIntegrals.AdmissibleModel.WeylDim
 import Formalism.LocalToGlobal.GroupLattices.FockModels.SpanTopOf
-import Formalism.SharpRestriction.GrowthBounds.DataG
 
 open MvPolynomial
 

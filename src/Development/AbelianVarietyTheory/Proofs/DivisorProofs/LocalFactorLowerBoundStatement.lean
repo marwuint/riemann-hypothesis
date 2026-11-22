@@ -1,6 +1,0 @@
-import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalFactorLowerBound
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TamagawaSpecialUnitary
-import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.ExistsMulMulConjTransposeEqOne
-
-open NumberField IsDedekindDomain GlobalTheory.SUVol

@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.DistinguishedUnitIdeals.StatementE
-import Formalism.DistinguishedUnitIdeals.Statement
 
 noncomputable section
 

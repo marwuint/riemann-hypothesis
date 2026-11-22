@@ -2,9 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToRepFam
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorObjectMapsComposeCancel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniversalFirstOrderDeformationHarrisTaylorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarrisTaylorObjectPullbackAlong
-import Development.AbelianVarietyTheory.Definitions.Divisors.NotCompactOfMEqOne
-import Development.AbelianVarietyTheory.Definitions.Divisors.InfUniv
 
 noncomputable section
 

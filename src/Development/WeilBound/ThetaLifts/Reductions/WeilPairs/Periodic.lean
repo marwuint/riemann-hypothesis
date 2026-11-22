@@ -2,8 +2,6 @@ import Mathlib
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.Mfac
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.SetIntegralAddRight
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetIntegralCompAut
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalMatricesDiscreteCocompactAdelicMatrixSpa
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfPartFPlaceIdem
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes MeasureTheory
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels

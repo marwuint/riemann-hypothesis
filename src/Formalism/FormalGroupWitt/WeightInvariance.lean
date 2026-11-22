@@ -1,12 +1,10 @@
 import Formalism.FormalGroupWitt.Statement
 import Formalism.FormalGroupWitt.FormalGroupWittProofs.FunctionalEquationHomVector
 import Formalism.FormalGroupWitt.FormalGroupWittProofs.EqSingleOfDegreeEqOne
-import Formalism.FormalGroupLog.FormalGroupLogProofs.ChainRule
 import Formalism.FormalGroupLog.FormalGroupLogProofs.ConstantCoeffSubstOfZero
 import Formalism.FormalGroupWitt.FormalGroupWittProofs.CongrV
 import Formalism.FormalGroupWitt.FormalGroupWittProofs.FrobSqV
 import Formalism.FormalGroupWitt.FormalGroupWittProofs.WittTeichmullerRoot
-import Formalism.FormalGroupWitt.FormalGroupWittProofs.SolveV
 
 namespace Formalism.FG
 

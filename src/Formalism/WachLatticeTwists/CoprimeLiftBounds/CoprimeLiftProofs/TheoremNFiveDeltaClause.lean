@@ -1,9 +1,7 @@
 import Formalism.WachLatticeTwists.CoprimeLiftBounds.WachTwistTheoremDeltaClause
-import Formalism.WachLatticeTwists.CoprimeLiftBounds.StatBridgeChiOne
 import Formalism.WachLatticeTwists.CoprimeLiftBounds.CoprimeLiftProofs.Bridge
 import Formalism.CharacterColumnKernels.IdempotentNormalForms.CharacterColumnKernelsOfBlockChiCOfBlockChiOne
 import Formalism.WachLatticeTwists.CoprimeLiftBounds.CoprimeLiftProofs.SelmerInjColumnPlace
-import Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthKerOfDetEqZero
 
 open Finset
 

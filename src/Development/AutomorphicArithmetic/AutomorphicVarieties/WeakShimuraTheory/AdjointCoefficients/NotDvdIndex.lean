@@ -4,7 +4,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.EntryMem
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisCochains.GLinkQuot
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.GalEmbTop
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.Places
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.QuotProf
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws

@@ -2,7 +2,6 @@ import Mathlib
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.FgIsoU
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.FgGauss
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.FgMulN
-import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.NormNatCastClOfNotDvd
 
 noncomputable section
 

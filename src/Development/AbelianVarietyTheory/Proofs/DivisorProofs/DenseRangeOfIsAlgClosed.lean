@@ -1,6 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.TwoClassFrameHasLevelSetting
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.HasBlockOfOccurs
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ConclusionAbsPow
 
 set_option autoImplicit false

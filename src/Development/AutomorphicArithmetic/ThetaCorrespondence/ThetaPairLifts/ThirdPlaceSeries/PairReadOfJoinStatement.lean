@@ -1,10 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PairReadingOfJoin
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
-import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CharacterChoiceData
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.PairReadOfJoin
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
 set_option synthInstance.maxHeartbeats 200000
 

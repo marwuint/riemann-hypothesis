@@ -5,8 +5,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsInducedLocus
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PushEquivSymmLeft
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsGrpPullbackOfCommute
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PullCub
 
 noncomputable section
 

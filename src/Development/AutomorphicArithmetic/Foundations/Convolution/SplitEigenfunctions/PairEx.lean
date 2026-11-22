@@ -3,9 +3,7 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.SplitEigenfunct
 import Development.AutomorphicArithmetic.Foundations.Convolution.SplitEigenfunctions.DerCurve
 import Development.AutomorphicArithmetic.Foundations.Convolution.SplitEigenfunctions.CoefZero
 import Development.AutomorphicArithmetic.Foundations.Convolution.SplitEigenfunctions.MeanZero
-import Development.AutomorphicArithmetic.Foundations.Convolution.SplitEigenfunctions.UnitsCpt
 import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.WeilRepresentation.Stable
-import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.UnramifiedSplitting.SpanCont
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology Filter
 open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published GroundTheory.Global GroundTheory.Automorphic.GJMatrix

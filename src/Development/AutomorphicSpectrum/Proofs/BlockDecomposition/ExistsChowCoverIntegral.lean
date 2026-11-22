@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PowSubSuccLe
-import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.ExistsChow
 
 set_option autoImplicit false
 set_option maxSynthPendingDepth 1

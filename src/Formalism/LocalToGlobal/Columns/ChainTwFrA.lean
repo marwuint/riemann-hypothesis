@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.Columns.StabilizerMapTopIndexAlt
 import Formalism.LocalToGlobal.Columns.KOneCharacterTrivialNearOne
-import Formalism.LocalToGlobal.Columns.XiTopTilRefHolds
 
 open NumberField IsDedekindDomain Module
 

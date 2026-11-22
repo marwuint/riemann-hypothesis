@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StableIffCarrierEq
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AssembleLattice
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SemilinearBasisImageIndepOfBasis
-import Formalism.LocalRingCardinality.DataIdx
 
 noncomputable section
 

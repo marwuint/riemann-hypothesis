@@ -4,8 +4,6 @@ import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentatio
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.RealTransport.RealTransport
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LocIsotypic
 import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.ImportsFurther
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Brauer
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Langlands
 
 open NumberField IsDedekindDomain Filter
 open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published GroundTheory.Global

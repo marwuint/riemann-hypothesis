@@ -2,9 +2,6 @@ import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsIntCoordChange
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsIntCoordGeoNum
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsIntCoordArInt
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PSpecialMultAt
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.ThmISt
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterDivSupp
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights

@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Statements.ShortVectorBound.ScaledLattic
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ThetaGeneratorPlaceValuationBound
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.RamifiedPrimeLossLeValuationPrimePowerStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.WeightAssemblyClause
-import Formalism.LocalToGlobal.ProjectiveLattices.CrudeVal
 
 set_option autoImplicit false
 

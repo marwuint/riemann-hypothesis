@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowMapVUpdateLas
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsMultilinearColumnRowKernelPairing
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MultilinearSumEqOfFunctionProductSumsEq
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProductFunctionTotalTensorInvariantLastArrows
-import Development.AbelianVarietyTheory.Definitions.Divisors.FrameSignSimple
 
 noncomputable section
 

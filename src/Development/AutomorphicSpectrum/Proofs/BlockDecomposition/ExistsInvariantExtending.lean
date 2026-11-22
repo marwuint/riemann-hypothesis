@@ -4,7 +4,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WtRInjective
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryEuclideanModel
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCompactLieAction
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HighestWeightTensorDecomposition
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCliff
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivativeUnitaryAction
 
 noncomputable section

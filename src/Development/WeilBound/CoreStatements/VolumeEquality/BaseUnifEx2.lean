@@ -1,9 +1,6 @@
 import Development.WeilBound.CoreStatements.VolumeEquality.RootBranches
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.AgreementPos
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
-import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 import Development.AutomorphicSpectrum.Statements.TowerExistence.GoodTowerExistsX
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeLatticeFlagBound
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.TrivFlagOnHodge
@@ -12,7 +9,6 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntege
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeComparisonCompatibility
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
-import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
 
 noncomputable section
 

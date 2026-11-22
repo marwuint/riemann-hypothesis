@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.JointCmpEmbeddingY
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NatCastMemOfPlace
 import Formalism.LocalToGlobal.InertKernelTheory.SubBSplit
 
 noncomputable section

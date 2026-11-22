@@ -1,6 +1,5 @@
 import ReciprocityTheory.DualLattices.IsFibreSq
 import ReciprocityTheory.DualLattices.ToSigmaAddFstZeroFst
-import ReciprocityTheory.DualLattices.SeriesState
 
 noncomputable section
 

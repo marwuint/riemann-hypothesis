@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.GlobalTheory.BlockActions.RestrictionSymmetric
-import Formalism.LocalToGlobal.GlobalTheory.GL4.CTEqConjTranspose
 
 noncomputable section
 

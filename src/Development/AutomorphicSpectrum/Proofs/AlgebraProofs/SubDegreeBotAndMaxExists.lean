@@ -3,7 +3,6 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsSplitGau
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GapCondExample
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BundleDegreeEqSumValuations
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DegreeMonoLatticeLe
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubAndQuotientBundles
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubDegreeNonposTrivialLattice
 
 noncomputable section

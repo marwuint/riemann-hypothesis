@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.GlobalTheory.GL6.PBwLocInd
-import Formalism.LocalToGlobal.GlobalTheory.GL6.PBwLocGen
 import Formalism.LocalToGlobal.GlobalTheory.CoefficientMapSurjective
 
 noncomputable section

@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.UnitaryNorms.MemFIffReal
 import Formalism.LocalToGlobal.UnitaryNorms.CharTied
 import Formalism.LocalToGlobal.Divisibility.LiftLat
-import Formalism.LocalToGlobal.Divisibility.GoodPartHermitianSpec
 
 noncomputable section
 

@@ -3,7 +3,6 @@ import GroundTheory.LocalFields.Eisenstein
 import GroundTheory.LocalFields.UnitsPowers
 import GroundTheory.LocalFields.RamificationStructure
 import GroundTheory.LocalFields.UnramifiedDefs
-import GroundTheory.LocalFields.IntermediateField
 
 noncomputable section
 

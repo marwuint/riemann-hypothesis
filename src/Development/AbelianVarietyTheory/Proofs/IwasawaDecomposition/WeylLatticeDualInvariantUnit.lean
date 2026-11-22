@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.UnipotentAdelicQuotients.WeylLatDual
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolFunApply
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.WeylRowActionMemWeylLatticeSquare
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LClosedeqLemmas
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ClosedBallValuationSubringToSubring
 
 open MvPolynomial

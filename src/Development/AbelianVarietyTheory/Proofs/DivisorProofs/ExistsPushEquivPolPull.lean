@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEqOneComplex
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
 
 set_option autoImplicit false
 

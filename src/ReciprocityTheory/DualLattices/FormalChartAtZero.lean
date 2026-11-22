@@ -1,7 +1,5 @@
 import ReciprocityTheory.DualLattices.CotangentSurjective
 import ReciprocityTheory.DualLattices.HtLinStatement
-import ReciprocityTheory.DualLattices.NsetExpInjectiveSurjective
-import ReciprocityTheory.DualLattices.SmallLevelClassSet
 
 noncomputable section
 

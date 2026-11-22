@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.GroupStructure
 import GroundTheory.ProfiniteCohomology.GaloisModules.FixedField
 import GroundTheory.LocalFields.LubinTatePoints
-import GroundTheory.LocalFields.SeparableClosure
 import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Vanishing
 set_option maxSynthPendingDepth 1
 

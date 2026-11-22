@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.GL2.GJFELeviMulti
-import GroundTheory.AutomorphicForms.InductionParabolic
 
 noncomputable section
 

@@ -4,7 +4,6 @@ import ReciprocityTheory.L2DbarEstimates.NormFibrations.MvBlowup
 import ReciprocityTheory.L2DbarEstimates.NormFibrations.LseSmoothRIffReal
 import ReciprocityTheory.L2DbarEstimates.NormFibrations.ImportsAlt
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSignHolds
-import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FlatNullB
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.L2ExtensionLogCanonical
 import Development.AbelianVarietyTheory.Definitions.Divisors.EtaleEmpty
 

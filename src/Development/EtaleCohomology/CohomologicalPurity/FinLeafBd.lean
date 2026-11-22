@@ -6,7 +6,6 @@ import Development.EtaleCohomology.CohomologicalPurity.LeafExactPf
 import Development.EtaleCohomology.CohomologicalPurity.LeafGenPf
 import Development.EtaleCohomology.CohomologicalPurity.LeafImgHomPf
 import Development.EtaleCohomology.CohomologicalPurity.LeafImgPf
-import Development.EtaleCohomology.CohomologicalPurity.LeafBdCut
 import Development.EtaleCohomology.CohomologicalPurity.PresSheafify
 import Development.EtaleCohomology.CohomologicalPurity.FreePMapMk
 

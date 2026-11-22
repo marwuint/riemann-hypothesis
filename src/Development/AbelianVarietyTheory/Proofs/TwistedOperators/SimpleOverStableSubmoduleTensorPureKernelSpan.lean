@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SimpleTensorProductOperatorStableCountable
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SimpleOver
 
 open scoped TensorProduct
 

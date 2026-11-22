@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodModModT
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DescentDataStepLattice
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsIteratedQuotientIntegralFinsetSum
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSuppVecLocEq
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IntegrandSZero
 
 open NumberField MeasureTheory IsDedekindDomain UniqueFactorizationMonoid
 open scoped Classical Pointwise

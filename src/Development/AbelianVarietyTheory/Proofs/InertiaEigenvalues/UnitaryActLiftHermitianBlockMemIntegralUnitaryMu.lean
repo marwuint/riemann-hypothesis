@@ -1,7 +1,6 @@
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FullToGlIsSelfAdjoint
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralUnitaryGroupTransitiveNormOneVectors
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatch
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 noncomputable section

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.ChainOfKernelsUnique
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsMonHomOfMul
 
 set_option autoImplicit false
 

@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HeckeSupportLattices
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RealPoints
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffHeckePolyOfComplex
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvolutionSphericalHeckeAnti
 
 set_option autoImplicit false
 

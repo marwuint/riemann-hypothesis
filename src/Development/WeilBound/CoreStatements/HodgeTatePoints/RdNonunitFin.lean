@@ -3,8 +3,6 @@ import ReciprocityTheory.DualLattices.CotangentSurjective
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsTight
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.StepOrderRes
 import Development.WeilBound.CoreStatements.HodgeTatePoints.RdNonunit
-import Development.WeilBound.CoreStatements.HodgeTatePoints.RbProj
-import Development.WeilBound.CoreStatements.HodgeTatePoints.RcFlag
 
 open ReciprocityTheory.PGsh.L2 ReciprocityTheory.PGsh.Up GlobalTheory.CompanionTheory.Ar.GR
 open scoped Matrix

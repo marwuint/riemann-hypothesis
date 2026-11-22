@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryAdelicCharacterTrivialRatAndSplit
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsSplitAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHalfAbstract
 
 set_option linter.unusedSectionVars false

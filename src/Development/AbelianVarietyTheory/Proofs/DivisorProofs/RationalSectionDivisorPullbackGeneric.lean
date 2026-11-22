@@ -4,8 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsTorsionFreeOfFora
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolEqMultiDiff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.JGenSpecializes
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModpFramesPullback
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MemRangeOfForallHeightEqOneOfIsReflexive
-import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
 
 set_option autoImplicit false
 

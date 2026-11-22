@@ -1,7 +1,5 @@
 import Mathlib
 import GroundTheory.GlobalFields.GlobalReciprocity.InfKerDegreeLeOfLeSupZhatField
-import GroundTheory.LocalFields.AbstractLocalReciprocity.Functoriality
-import GroundTheory.GlobalFields.NormResidueSymbol.Functorial
 
 namespace GroundTheory.Global
 

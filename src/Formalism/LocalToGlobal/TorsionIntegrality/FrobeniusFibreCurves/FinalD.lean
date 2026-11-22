@@ -6,8 +6,6 @@ import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.Logarithm
 import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.LogarithmicSubstitution.ConstantCoeffLawWithInverseThree
 import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.LogarithmicSubstitution.FirstLevelOfThreeVarParallelogram
 import Mathlib
-import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.StatementW
-import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.LawDifferenceThree
 
 namespace Formalism.L2.Th1.B
 

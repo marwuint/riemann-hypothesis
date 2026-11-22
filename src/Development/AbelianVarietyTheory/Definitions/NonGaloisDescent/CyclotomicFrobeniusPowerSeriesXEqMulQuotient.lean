@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsLogAExtends
 import Development.AbelianVarietyTheory.Definitions.Foundations.HTBasis
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoeffEqMkRootT
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-import Development.AbelianVarietyTheory.CrystallinePeriods.AdicMaps
 
 noncomputable section
 

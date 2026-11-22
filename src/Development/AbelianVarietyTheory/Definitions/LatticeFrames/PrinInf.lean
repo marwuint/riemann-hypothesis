@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ei
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SimplePoleTwistedLift
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ConjugateAdjointDagger
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnitaryOnTheta
-import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
 
 noncomputable section
 

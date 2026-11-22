@@ -3,8 +3,6 @@ import Development.AutomorphicSpectrum.PublishedTheorems.Algebra₂.RegularHypot
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HasAffineChartId
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.FiniteFaithfullyFlatKer
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsQuotientSchemeOfFiniteFlatSubgroup
-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.CoequifiberedDiagramMap
-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.SpecHomCompCoaction
 
 noncomputable section
 

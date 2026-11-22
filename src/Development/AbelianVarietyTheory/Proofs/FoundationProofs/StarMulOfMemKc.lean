@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.Divisibility.SchurIrreducible
-import Formalism.LocalRingCardinality.DataCD
 import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.CartanCoshPower
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousExptPY
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PolarJacobianBlockDiagConjInvariant

@@ -3,7 +3,6 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsClosedPtFibr
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsGradedSubmodules
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsClosedPtSkyscraper
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLocIdealKer
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGenSESStep
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel

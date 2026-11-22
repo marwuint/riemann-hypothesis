@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.LieLiftsTangent
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ThickenedPointToTorusExtensionGenerator
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.PmapsOfGenRelR
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsAdicCompleteIdealEps
-import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsUniqueFactorCompletedStalkOfMap
 
 noncomputable section
 

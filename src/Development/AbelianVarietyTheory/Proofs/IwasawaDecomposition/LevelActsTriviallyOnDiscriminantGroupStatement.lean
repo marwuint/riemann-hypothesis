@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelActsTriviallyOnDiscriminantGroup
-import Formalism.LocalToGlobal.HermitianForms.DefsGH
-import Formalism.LocalToGlobal.Columns.RecLevelLocT
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formalism.UG Formalism.L2.Forms Matrix
 open scoped TensorProduct

@@ -1,6 +1,5 @@
 import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.SSmooth
 import GroundTheory.GlobalFields.TateThesis.TateThetaDecay
-import GroundTheory.GlobalFields.TateThesis.AdelePoissonUniform
 import GroundTheory.IdeleRoots.ClassicalIdeles.FinOrdValGenProof
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsOpenIdeleSubgroupContainsCongruenceUnits
 

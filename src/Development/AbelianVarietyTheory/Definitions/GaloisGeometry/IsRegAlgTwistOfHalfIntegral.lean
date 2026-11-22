@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.EllipticCurveLevels.X0OfStarCondition
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.MatchOfMatchOffTEmpty
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
 
 noncomputable section
 

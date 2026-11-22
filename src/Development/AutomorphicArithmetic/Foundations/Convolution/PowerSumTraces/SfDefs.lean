@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.CuspidalMultiplicityOneTotallyComplex
-import GroundTheory.AutomorphicForms.SmoothRep
 
 noncomputable section
 

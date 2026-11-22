@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.HerAnalyticFOfCls
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.InvariantOperatorUnderJacquet
 
 open Matrix MeasureTheory
 open scoped ComplexConjugate InnerProductSpace

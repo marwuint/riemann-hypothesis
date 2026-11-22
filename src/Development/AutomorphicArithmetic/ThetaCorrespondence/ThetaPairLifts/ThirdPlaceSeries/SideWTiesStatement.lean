@@ -2,12 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.HeightFunctions.OntoAlong
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.WPtFrame
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.CoreFrameCompatibleConstructedPoint
-import Development.AbelianVarietyTheory.Definitions.HeightFunctions.RunsAlong
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.TwDatPsiValuesInLL
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.SmallFrameAtColumn
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SideOf
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SideWTies
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
 set_option synthInstance.maxHeartbeats 200000
 

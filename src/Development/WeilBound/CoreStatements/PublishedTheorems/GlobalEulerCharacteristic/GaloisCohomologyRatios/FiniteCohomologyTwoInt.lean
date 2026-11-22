@@ -1,5 +1,4 @@
 import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharacteristic.GaloisCohomologyRatios.NatCardInvariantsEqOfAddEquiv
-import GroundTheory.ProfiniteCohomology.PoitouTate.PoitouTateNineTermGs
 
 open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh GroundTheory.Global
 

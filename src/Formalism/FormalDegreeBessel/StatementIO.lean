@@ -1,5 +1,4 @@
 import Formalism.RealPlaceAnalysis.QuotientSettingHolds
-import Formalism.RealPlaceAnalysis.StatementE
 
 open Matrix
 open scoped ContDiff

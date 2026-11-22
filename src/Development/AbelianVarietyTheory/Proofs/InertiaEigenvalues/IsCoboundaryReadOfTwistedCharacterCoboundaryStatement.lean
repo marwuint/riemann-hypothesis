@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCoboundaryReadOfTwistedCharacterCoboundary
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftQMk
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConstOneMem
 
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000

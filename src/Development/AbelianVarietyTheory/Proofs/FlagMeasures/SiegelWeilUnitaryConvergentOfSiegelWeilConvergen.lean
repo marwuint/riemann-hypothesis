@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.UnipotentAdelicQuotients.SiegelWeilUnitaryConvergent
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CasimirVolumeRatios.AdeleLC
-import Formalism.UnipotentAdelicQuotients.SWXSDefs
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNontrivialAdeleCharTrivialOnTotallyReal
 
 noncomputable section

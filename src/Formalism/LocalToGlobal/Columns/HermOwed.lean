@@ -1,7 +1,5 @@
 import Formalism.LocalToGlobal.Columns.ValuationPosIffMemSeen
 import Formalism.LocalToGlobal.Columns.LocalLevelIsKOneEverywhere
-import Formalism.LocalToGlobal.Columns.RecLevelLocK
-import Formalism.LocalToGlobal.Columns.RecLevelLocT
 
 open NumberField IsDedekindDomain Module Matrix
 open scoped TensorProduct

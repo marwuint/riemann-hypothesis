@@ -9,8 +9,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TruncatedLeastLattic
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExtAeEqContRep
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightConvolutionOperatorAeEqIntegralAdelic
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowsAutIdemElementary
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopology
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicUnitaryHaarBiInvariant
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec GlobalTheory.DSId
 open scoped InnerProductSpace ComplexOrder ContDiff

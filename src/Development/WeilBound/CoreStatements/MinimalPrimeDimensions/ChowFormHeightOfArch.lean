@@ -4,7 +4,6 @@ import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.SumNormSqUnit
 import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.FormHeightOneEq
 import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.StCharts
 import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.ChowDegreeSection
-import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.Assembly
 
 namespace ChowFormHeightComparison₂.CF
 

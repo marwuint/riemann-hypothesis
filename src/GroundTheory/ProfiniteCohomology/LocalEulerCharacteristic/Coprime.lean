@@ -5,7 +5,6 @@ import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CoprimeTwist
 import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.ModNEquivOfSurjectiveApplyModNRep
 import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.AdditiveInvariants
 import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Cohomology
-import GroundTheory.ProfiniteCohomology.LocalClassFormation.FiniteVanishing.KummerOpen
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.ProfCoh

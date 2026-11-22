@@ -1,7 +1,6 @@
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.BiextensionPointsIntegral
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.SubstFirstCoboundaryThree
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.EqZeroOfPowEqOne
-import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FinalS
 
 noncomputable section
 open scoped BigOperators

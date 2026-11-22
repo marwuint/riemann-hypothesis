@@ -1,14 +1,10 @@
 import Formalism.LocalToGlobal.BesselHermitianTheta.Lemmas
 import Formalism.LocalToGlobal.BesselHermitianTheta.Joints
 import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasWeil
-import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasChr
 import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasSign
 import Formalism.LocalToGlobal.BesselHermitianTheta.TiedDef
-import Formalism.LocalToGlobal.BesselHermitianTheta.TiedType
 import Formalism.LocalToGlobal.BesselHermitianTheta.TiedWeilUnr
 import Formalism.LocalToGlobal.BesselHermitianTheta.TiedKfin
-import Formalism.LocalToGlobal.BesselHermitianTheta.MinfDensity
-import Formalism.LocalRingCardinality.DataDIV
 import Formalism.LocalToGlobal.BesselHermitianTheta.TiedBessel
 import Formalism.LocalToGlobal.BesselHermitianTheta.TiedLocW
 

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.Mfac
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.CAFInvol
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFunctionHeisenbergInvariant
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes MeasureTheory
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.DualIsConjByOne
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ConjOpInvolutive
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.IsNormalisedOfIsDiscrete
 
 noncomputable section
 

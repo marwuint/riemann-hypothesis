@@ -4,7 +4,6 @@ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsNoetherInt
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsFunctionFieldFinite
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsDegZeroLocFrac
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PSemilocalFiniteRank
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPFDegree
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.LocalIntegralClosureChart
 set_option maxSynthPendingDepth 1
 

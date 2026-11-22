@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpanCoeffProdLinear
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAlgebraSplittingNormForm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftToCompleteDvrOfFinite
-import Formalism.LocalToGlobal.GroupLattices.PerfectRings.IsLocalRingOfComplete
 open AlgebraicGeometry CategoryTheory Limits IsLocalRing
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LocM
 

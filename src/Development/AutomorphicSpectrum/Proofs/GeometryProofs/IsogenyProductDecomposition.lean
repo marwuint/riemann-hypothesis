@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DimEqOfFiniteSurjective
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsInverseIsogenySumOfCmHoms
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ImHermFormEqCurveForm
 import Development.WeilBound.CoreStatements.SesquilinearFractions.ExistsFactorThroughMultiplication
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField

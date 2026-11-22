@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemLevelIffSymmetricPositionEntryPattern
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.OnesRepresent
 open ValuativeRel Matrix
 
 noncomputable section

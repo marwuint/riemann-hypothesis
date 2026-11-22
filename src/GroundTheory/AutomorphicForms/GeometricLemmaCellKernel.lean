@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.GeometricLemmaJacquetCell
-import GroundTheory.AutomorphicForms.InductionJacquet
 set_option maxSynthPendingDepth 1
 
 noncomputable section

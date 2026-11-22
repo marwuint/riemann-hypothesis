@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsZetaTW
 import Development.AbelianVarietyTheory.Definitions.Foundations.ThNSpec
-import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ZetaUr
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFixingMulFrobAt
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.KatoTwCont
 import ReciprocityTheory.NeutralLocalFields.LocalFieldComparison.LocalFieldAutomorphisms.ValuationIntCastLtOneIff

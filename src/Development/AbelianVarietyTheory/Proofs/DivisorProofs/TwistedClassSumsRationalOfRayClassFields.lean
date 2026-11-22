@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMapOfOfExtends
 import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
 import Formalism.LocalToGlobal.IndefiniteReal.RhoGeo
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RayFieldTheta
-import Formalism.LocalToGlobal.IndefiniteReal.FWExist
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsDeltaDelAtOwnAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedRationalOfOneMapOverL
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CoverFieldOfContainsRayField

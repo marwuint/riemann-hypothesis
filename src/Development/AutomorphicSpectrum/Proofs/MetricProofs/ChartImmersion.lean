@@ -5,9 +5,6 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.UpVApply
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalResolutionOpen
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalIntegrability
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalDegreeEstimate
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJLowerUniSwap
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PMatStepColsEntryStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentChartNinth
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical

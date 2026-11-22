@@ -11,7 +11,6 @@ import Formalism.LocalToGlobal.ProjectiveLattices.NrmContPf
 import Formalism.LocalToGlobal.ProjectiveLattices.KapTrdegPf
 import Formalism.LocalToGlobal.ProjectiveLattices.RosatiLatticeNorms.CmFrameOfEq
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SiegelSpaceAlgebraHolds
-import ReciprocityTheory.SemistableReduction.LatAll
 
 noncomputable section
 

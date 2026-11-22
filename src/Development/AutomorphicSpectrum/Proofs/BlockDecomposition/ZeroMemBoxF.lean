@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RatVInjective
-import GroundTheory.GlobalFields.Adele.Compact
 
 noncomputable section
 

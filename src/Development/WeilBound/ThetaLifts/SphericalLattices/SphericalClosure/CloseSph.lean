@@ -7,13 +7,6 @@ import Development.WeilBound.ThetaLifts.CartanFactorisation.PolCountFinal
 import Development.WeilBound.ThetaLifts.LatticeBasics.HgtInt
 import Development.WeilBound.ThetaLifts.WeilDomination.SwAnisoXOf
 import Development.WeilBound.ThetaLifts.LatticeBasics.BadFin
-import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.PfSurj
-import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.ExistsExtZ
-import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.ContinuousFinId
-import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.SoStatement
-import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.PfSplit
-import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.PfDict
-import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.FullOfSoLoc
 import Development.WeilBound.ThetaLifts.SmallCones.SplitInv
 import Development.WeilBound.ThetaLifts.LocalTheory.HypOf
 import Development.WeilBound.ThetaLifts.LocalTheory.UnramifiedCohomology.FLocBOf

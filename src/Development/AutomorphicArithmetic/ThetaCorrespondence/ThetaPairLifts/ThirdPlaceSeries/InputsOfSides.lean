@@ -2,7 +2,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdmT4OfRationa
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.GalSide
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.GaloisInputs
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.IsPotCrysAtOfMono0
 
 set_option synthInstance.maxHeartbeats 200000
 

@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualit
 import Development.AbelianVarietyTheory.Definitions.Divisors.AdelicAdmissibleSmul
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.KudlaSplittingSplitUnitary
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SumSquaresNeThreeThreeAdic
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilObjectsInhabited
 
 noncomputable section
 

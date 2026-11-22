@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CommutingEndomorphismCondition
-import Formalism.LocalRingCardinality.DataNChTie
 import Formalism.SharpRestriction.LevelLetterCocycles.VKEqOfFrac
 import Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthKerOfDetEqZero
 import Formalism.SharpRestriction.LevelLetterCocycles.EndomorphismIndexBound

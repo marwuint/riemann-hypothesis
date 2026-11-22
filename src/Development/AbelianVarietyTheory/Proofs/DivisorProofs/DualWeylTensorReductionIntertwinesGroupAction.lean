@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockSub
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueDualWeylWeightProjector
 import Formalism.PieriBlockIdeals.PieriColumnMinors.RealLocalDeltaNabla
 
 set_option autoImplicit false

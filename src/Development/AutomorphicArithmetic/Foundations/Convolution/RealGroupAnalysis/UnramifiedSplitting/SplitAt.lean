@@ -1,6 +1,5 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.Smooth
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SmoothRepresentationsGL.ExistsCombComb
-import GroundTheory.AutomorphicForms.StrongApproximationSLDense
 
 noncomputable section
 

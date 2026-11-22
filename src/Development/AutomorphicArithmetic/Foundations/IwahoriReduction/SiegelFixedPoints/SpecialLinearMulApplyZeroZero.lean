@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixe
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsLamOfLSmulIff
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SpecialLinearGroupIntMapZmodSurjective
-import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
 
 open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 GlobalTheory.Glue GlobalTheory.KummerEisensteinGalois UpperTheory.Kd.L

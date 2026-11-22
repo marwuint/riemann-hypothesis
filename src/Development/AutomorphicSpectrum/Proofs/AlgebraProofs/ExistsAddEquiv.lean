@@ -10,7 +10,6 @@ import Development.AutomorphicSpectrum.Statements.AlgebraStatements.HodgeTateDat
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.OrdinaryCurveStatement
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.PolarisedFlagStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PolarisedAugmentationTheorem
-import Development.AutomorphicSpectrum.Statements.AlgebraStatements.PolarisedAFStatement
 
 noncomputable section
 

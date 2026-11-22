@@ -1,10 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StalkStepMono
-import Development.AbelianVarietyTheory.Definitions.Divisors.NormSqColGrLineOfOrthogonal
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchubertCellOpenImmersion
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOfValILeOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockLuDecompositionExists
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.FlagZ GlobalTheory.FlagZ.Univ
 open GlobalTheory.QCoh (freeModule)

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RelativeHeightEntryLeAdelicHeightGL
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OneLeHtE
 
 open NumberField
 

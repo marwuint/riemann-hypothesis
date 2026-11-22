@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsBasOpens
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonAffineRefinementAlongMorphism
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictPairInjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleLiftObstructionPairPullback

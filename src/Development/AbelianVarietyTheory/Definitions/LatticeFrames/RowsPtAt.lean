@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.VanishingGramTermsBoundParams
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.LoopTieOf
 import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.RowsFinal
-import Formalism.SharpRestriction.CuspSpanNormBounds.AmplitudeAndVolumeBounds
 
 noncomputable section
 open scoped Classical

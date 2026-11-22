@@ -5,7 +5,6 @@ import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.TieIwLevTieOf
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.CmpHyp0P
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.SelfDualAtColLevel
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.GTiedFOfIsRecCEv
-import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.RecThm
 
 noncomputable section
 

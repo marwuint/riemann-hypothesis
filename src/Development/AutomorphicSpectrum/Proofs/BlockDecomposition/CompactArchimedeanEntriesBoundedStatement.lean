@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactArchimedeanEntriesBounded
-import Development.WeilBound.ThetaLifts.Reductions.SiegelCore
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StabUpTo
 
 open NumberField MeasureTheory Matrix Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.CompanionTheory.CFin
 open Formalism.UG (cT)

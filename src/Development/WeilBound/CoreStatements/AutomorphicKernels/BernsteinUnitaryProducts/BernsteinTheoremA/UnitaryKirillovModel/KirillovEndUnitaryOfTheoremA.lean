@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.SmoothRepSchur
 import GroundTheory.AutomorphicForms.LocallyConstantCompact
-import GroundTheory.AutomorphicForms.LocallyProfinite
 import GroundTheory.AutomorphicForms.GLnLocal
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.UnipApplyCastSuccLast
 

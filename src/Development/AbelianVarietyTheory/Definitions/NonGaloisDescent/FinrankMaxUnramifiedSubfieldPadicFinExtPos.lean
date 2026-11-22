@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 import Formalism.SharpRestriction.LevelLetterCocycles.QuotientHomNonvanishingBound
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Formalism.FrobeniusOrbits.HostCorollaries
 import Development.AutomorphicArithmetic.PrimeDiscriminants.CycImage
 
 noncomputable section

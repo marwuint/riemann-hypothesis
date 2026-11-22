@@ -2,8 +2,6 @@ import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.Con
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.SplitK
 import Mathlib
-import Formalism.FrobeniusOrbits.HostThickExists
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.Orbits
 
 open NumberField IntermediateField Ideal
 open scoped Pointwise

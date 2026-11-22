@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.ExistsCoprimePowEqOne
-import Formalism.SharpRestriction.GrowthBounds.FormalGroupSystem
 
 noncomputable section
 

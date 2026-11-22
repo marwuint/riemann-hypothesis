@@ -1,6 +1,5 @@
 import Formalism.HermitianCurvature.StatementU
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.BetaSesquilinearity
-import Formalism.FormalDegreeBessel.FinalG
 
 open Matrix MeasureTheory Formalism.FourierDecayAlt Formalism.FourierDecayAlt.U Formalism.QuantumDeterminants
 open scoped ComplexConjugate

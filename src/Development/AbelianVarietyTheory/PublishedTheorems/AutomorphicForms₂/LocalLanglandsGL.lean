@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasExponentZeroIff
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Tjcosets
 
 noncomputable section
 

@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedTensor
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntOv
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceMatrixCoordinateOnHalf
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FinTensMemLatO
 
 noncomputable section
 

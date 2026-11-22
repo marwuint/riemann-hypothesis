@@ -2,9 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.FWTie
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibExtMarked
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeIsometrySignSecond
-import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelPointSmulIntegralOfFourierCoeffNeZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinTensAlgebraMap
 import Development.AbelianVarietyTheory.Definitions.Divisors.ConstantUniqueOfEqProduct
 

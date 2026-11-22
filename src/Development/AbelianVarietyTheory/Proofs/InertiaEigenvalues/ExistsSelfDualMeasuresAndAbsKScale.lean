@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyMeasAndReps
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuadraticStarStructure
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DistribHaarCharTransport
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteNormedAlgebraEqModuleTopology
 
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 open scoped Pointwise NNReal ENNReal

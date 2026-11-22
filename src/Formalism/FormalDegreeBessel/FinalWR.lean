@@ -1,7 +1,6 @@
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.WRPres
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.WRWeyl
 import Mathlib
-import Formalism.FormalDegreeBessel.StatementWR
 import Formalism.YangianSpanCharacter.StatementT
 
 noncomputable section

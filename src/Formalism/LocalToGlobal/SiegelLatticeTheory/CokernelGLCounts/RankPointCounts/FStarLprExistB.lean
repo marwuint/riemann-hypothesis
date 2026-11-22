@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.FStarLprPfD
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.ScalRelRepFree
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.ScalEquivGen
 
 noncomputable section
 

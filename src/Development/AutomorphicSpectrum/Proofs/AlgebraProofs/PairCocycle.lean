@@ -3,7 +3,6 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsB
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PPairCocycle
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.OfSteps
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.VerticalDivisorsCommute
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Statements
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagIndependence
 
 namespace GlobalTheory.CompanionTheory.CommAlg.PairCocycleClosed

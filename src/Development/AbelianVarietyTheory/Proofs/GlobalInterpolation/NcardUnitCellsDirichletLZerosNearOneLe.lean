@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CardSpacedDetectedLe
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ZetaZeroDetect
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SumTruncConv
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology
 

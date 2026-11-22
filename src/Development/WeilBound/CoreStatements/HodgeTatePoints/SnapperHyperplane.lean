@@ -9,7 +9,6 @@ import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PRestrLenEuler
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PSubsetDiffConst
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PInterNumEventual
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PInterSumTopVanish
-import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PInterNumAdditive
 
 namespace PositivityTheory.HtPt.Kra
 

@@ -8,7 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ParabolicInducti
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PairingEquivContra
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormalisedInductionProductParabolicPiTensor
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContraAdmissibleTrace
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchurAdmissibleAlt
 
 noncomputable section
 

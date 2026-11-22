@@ -2,7 +2,6 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.RadDZCompLeft
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCoreGTConnGaugeA
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCRadSpSmooth
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCoreGenTransferFn
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.NFRadRedA
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 

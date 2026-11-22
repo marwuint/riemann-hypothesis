@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.JetChartLaws
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubicalPullBaseChangeSt
 
 set_option autoImplicit false
 

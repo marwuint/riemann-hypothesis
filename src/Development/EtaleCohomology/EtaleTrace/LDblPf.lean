@@ -1,5 +1,4 @@
 import Development.EtaleCohomology.EtaleTrace.LadicH0LocallyConstant
-import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 
 noncomputable section

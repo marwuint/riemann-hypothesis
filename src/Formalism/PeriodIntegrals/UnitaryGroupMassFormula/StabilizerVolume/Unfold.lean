@@ -4,7 +4,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.InvInv
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.MeasOrbSt
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.UnfoldAbsAlt
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.Unimod
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Bridge
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.InclusionInjective
 
 noncomputable section

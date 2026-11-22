@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConnectedDieudonneFunctorQuasiLogarithms
-import Development.AbelianVarietyTheory.Definitions.Divisors.RedSurjective
 
 open CategoryTheory GlobalTheory.PDiv GlobalTheory.PDivGroup
 set_option maxHeartbeats 1000000 in

@@ -1,6 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJASAPairLACCut
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.RankOneEmbeddings
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.RegularisedPairingViaPhase
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJASAPairLACProper
 
 open MeasureTheory Topology

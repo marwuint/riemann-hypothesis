@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepW
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinRepApply
 import Formalism.LocalToGlobal.IndefiniteReal.BaseLiftsPackageOfPrimitiveLinks
-import Formalism.LocalToGlobal.Divisibility.TrivialExtensionSideWellFormed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelTypeEigenfunctionOfLiftableElement
 
 noncomputable section

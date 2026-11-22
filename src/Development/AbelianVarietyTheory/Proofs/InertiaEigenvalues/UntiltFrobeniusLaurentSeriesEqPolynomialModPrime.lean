@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCoeffHas
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TiltUntiltToComplexPAdicBasicLaws
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UltrametricNormHasSumSubFinsetSumLe
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WindowAroundLastMaxNullSequence
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 open Formalism.Per GlobalTheory.PSer
 open scoped Formalism.Per
 

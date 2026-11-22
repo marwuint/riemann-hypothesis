@@ -1,12 +1,7 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.AssemblyBase
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsArith
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.IsConeAnalyticSubset
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsNonvanishingDense
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.EvalEqZeroOfAevalEqZero
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeB
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.CNormSt
-import ReciprocityTheory.AnalyticForms.PotentialTheory.DegreeIntB
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PBlockImageChi
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PMonomialDegree
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PProjFSMass
@@ -14,7 +9,6 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PProjectionBounds
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPullFSExtension
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PRealGramComparison
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PResChiBounds
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PResChiIndex
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PVeroneseMonoBasis
 
 set_option maxSynthPendingDepth 1

@@ -13,7 +13,6 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.InSRelevant
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.PairCorankPos
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.ScalEquivGen
 import Mathlib
-import Formalism.PeriodIntegrals.ScalPairs
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ScalarEquivalenceGenerators.ScalarEquivOfGen
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.BetaModX
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.ScalRelRepFree

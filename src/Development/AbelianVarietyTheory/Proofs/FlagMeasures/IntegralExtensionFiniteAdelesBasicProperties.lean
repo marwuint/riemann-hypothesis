@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.SelfDualAt
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IntegralFiniteAdeleCompactClosedMultiples
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Afsplit
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlob
 import Formalism.LocalToGlobal.HermitianForms.TiedStep
 
 open Formalism.BasicNotions Formalism.UG Formalism.L2.Forms NumberField IsDedekindDomain Matrix GlobalTheory.St.G

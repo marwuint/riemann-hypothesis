@@ -8,7 +8,6 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianLieModel
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.LatticeIntegrallyClosedTorsion
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.Imports
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TwistOkAll
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar

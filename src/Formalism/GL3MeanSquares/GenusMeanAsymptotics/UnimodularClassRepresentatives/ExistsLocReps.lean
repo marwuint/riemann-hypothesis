@@ -1,6 +1,4 @@
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.IsIntegralLatOfForall
-import Formalism.HermitianLattices.HermitianLatticesProofs.FinIntermediate
-import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice
 
 open NumberField Module
 

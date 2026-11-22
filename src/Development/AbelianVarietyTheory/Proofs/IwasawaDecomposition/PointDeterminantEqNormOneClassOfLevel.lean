@@ -1,6 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormOneFiniteAdeleDetClassOfIsDetLift
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevOkTwists
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AfsplitB
 
 noncomputable section
 

@@ -1,5 +1,4 @@
 import Formalism.JacobiWeightFamilies.Statement
-import Formalism.StatementU
 import Formalism.CorankShare.StatementFR
 import Mathlib.Analysis.Fourier.FiniteAbelian.PontryaginDuality
 

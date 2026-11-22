@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Is
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ClosedMatrixSubgroupTheorem
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GlueSmoothOfCompactSupport
-import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsAuxiliaryPlaceNotMemFinset
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TransChartSymmApply
 
 namespace CompanionTheory.DM
 

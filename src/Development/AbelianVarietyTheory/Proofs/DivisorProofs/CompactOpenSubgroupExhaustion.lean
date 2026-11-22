@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnipVal
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FourierTransformInversionLocalFieldPi
 
 open MeasureTheory Matrix GlobalTheory.KSp GlobalTheory.SplitUnitary

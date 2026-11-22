@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCohomologyZeroLaurentSurjective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullSpMapComp
 
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in

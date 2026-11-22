@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PlacesDvdNormIffUnderPrimesDvd
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TwTransAlt
 
 open NumberField IsDedekindDomain Formalism.BasicNotions
 attribute [local instance] Formalism.BasicNotions.Host.cmStar

@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlice
 import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.CuspidalNormBounds.RepOps
 import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.CuspidalNormBounds.AmpRep
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.AmpComm
-import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.CapZcMemOfE
 
 open NumberField
 

@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.Columns.RecLevelStep
 import Formalism.LocalToGlobal.GroupLattices.LevelCharts.SplitIntPI
-import Formalism.LocalToGlobal.HermitianForms.PsiZeroNontrivialCharacter
 
 open NumberField IsDedekindDomain Matrix
 open scoped TensorProduct

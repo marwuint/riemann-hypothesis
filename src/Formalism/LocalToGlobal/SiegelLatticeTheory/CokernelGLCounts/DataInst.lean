@@ -6,7 +6,6 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.PtEquivApply
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.CntLocal
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.PairVal
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.Corank
-import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
 
 noncomputable section
 

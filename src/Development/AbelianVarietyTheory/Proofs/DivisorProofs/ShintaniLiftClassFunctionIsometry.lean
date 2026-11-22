@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.OrthSubrepresentation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EveryElementIsNorm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardIsGaloisTwistedNormGLMulCardGLStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeLiftClassFunction
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsConjOfIsConjGlFieldExtensionInclusionStatement
 
 open Polynomial GlobalTheory.CuspGL GlobalTheory.BI GlobalTheory.Shin SemidirectProduct
 open scoped Classical

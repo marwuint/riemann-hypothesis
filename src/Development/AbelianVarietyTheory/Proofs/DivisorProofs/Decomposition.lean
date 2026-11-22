@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagWZero
-import Development.AbelianVarietyTheory.Definitions.Divisors.RankEqCardIffExistsFrameMatrixFirstColumnBlock
 
 open Matrix
 

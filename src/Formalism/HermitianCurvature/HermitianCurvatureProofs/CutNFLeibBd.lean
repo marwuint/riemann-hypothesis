@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutNFLeib
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.OpApplyContinuousOn
 
 open Matrix MeasureTheory Filter Topology
 open scoped ContDiff ComplexConjugate ENNReal

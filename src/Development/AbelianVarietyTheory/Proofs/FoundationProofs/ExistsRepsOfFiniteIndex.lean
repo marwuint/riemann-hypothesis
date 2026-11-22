@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.ThPinsR
-import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
 import Formalism.LocalToGlobal.ProjectiveLattices.ThClassPinsRec
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MovedOfSplitPl
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRepSuppSplit

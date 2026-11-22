@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
-import Formalism.LocalToGlobal.Columns.ColFormsLemmas
 
 open NumberField IsDedekindDomain Formalism.L2.Col Formalism.HermitianLatticesTheory Formalism.BasicNotions Formalism.L2.DIV
 

@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsInertiaInfiniteCyclotomic
-import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.FiniteCohomology
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntegralOfNormBounded
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.MonicNormLtOne
 

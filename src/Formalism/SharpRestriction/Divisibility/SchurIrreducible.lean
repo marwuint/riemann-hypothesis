@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
-import Formalism.SatakeDualWeyl.Statement
 import Formalism.LocalRingCardinality.DataTheta
 
 noncomputable section

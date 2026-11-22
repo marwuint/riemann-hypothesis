@@ -34,8 +34,6 @@ import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PStepThreeOnW
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PStepThree
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PPrimeFiltrationExists
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PPrimeFiltration
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PPrimeFiltrationPoint
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PPrimeFiltrationRestrict
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PRestriction
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PRestrictTwist
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PStepDataJProper

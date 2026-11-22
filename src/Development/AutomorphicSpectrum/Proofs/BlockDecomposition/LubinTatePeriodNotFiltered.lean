@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EvalMod
-import GroundTheory.PAdicHodge.ExistsGalFixCyclotomicLayerCycloCharNeOne
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaloisActionPeriodProductStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PeriodProductFiltrationLevels
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HodgeTateCharacterWeightStatement

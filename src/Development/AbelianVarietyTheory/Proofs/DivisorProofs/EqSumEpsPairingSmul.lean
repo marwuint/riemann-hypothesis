@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SandwichKernelRangeExact
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowEqOfIntegers
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvEqOneOfForallPairing
 
 set_option autoImplicit false
 noncomputable section

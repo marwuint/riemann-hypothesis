@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuadraticWeilFOpNOpFOpGauss
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsStableGauss
 
 open GlobalTheory.JR GlobalTheory.JR.WeilQuad Matrix MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in

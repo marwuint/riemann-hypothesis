@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.ProfiniteCohomology.PoitouTate.PoitouTateNineTermGs
 import GroundTheory.ProfiniteCohomology.PoitouTate.RealAbstract
-import GroundTheory.ProfiniteCohomology.RestrictedRamification.BaseLevel
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.ProfCoh

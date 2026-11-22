@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalRingCardinality.DataSpaces
-import Formalism.SatakeDualWeyl.Statement
 import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
 
 @[reducible] noncomputable def UpperTheory.Reformulated.B.Qk24.VA :

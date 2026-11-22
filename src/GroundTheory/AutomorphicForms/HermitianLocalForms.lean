@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.HermitianBinaryValues
-import GroundTheory.AutomorphicForms.UnitaryGroupScheme
 
 noncomputable section
 

@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.TransferSmoothOfRegularity
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.PositiveOrbitOpen
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt NumberField Matrix
 open scoped ContDiff

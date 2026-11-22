@@ -1,7 +1,6 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGermLow
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ExistsNormBoundThreeFamilies
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.FmSmulLeft
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.SliceCompactSupportCoefficient
 
 namespace Formalism.FourierDecayAlt.P.CutBP
 

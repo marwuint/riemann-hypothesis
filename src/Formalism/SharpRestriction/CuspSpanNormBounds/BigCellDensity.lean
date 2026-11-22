@@ -11,7 +11,6 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentCoordinate
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.IntegrableUnipotentNormRpowNeg
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbitalIntegralIdentities
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.PositiveOrbitOpen
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.BigCellHermitian
 
 noncomputable section
 

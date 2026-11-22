@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOmPinsLev
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PinsMerge
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMapRowOfBaseTupleIdentityRowSpan
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VectorValuedLiftFieldChange
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharacterIdeleCharacterMatchUnique
 
 set_option autoImplicit false

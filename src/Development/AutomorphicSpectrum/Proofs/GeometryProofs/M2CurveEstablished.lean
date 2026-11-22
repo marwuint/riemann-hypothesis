@@ -6,10 +6,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubAndQuotientBundles
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DegreeInvariantLinearEquiv
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigenFlagSlopeBound
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsSplitGaussChars
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GapCondExample
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveLieEigenDegree
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
 
 noncomputable section
 

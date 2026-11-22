@@ -8,7 +8,6 @@ import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ExistsNeZeroOfIsSub
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ChartRingOverOneBlockBase
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsSide
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ExistsNeZeroOfIsSubvar
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ExistsSumEqOneOfMulEqOne
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsTer
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ZpowMemSubringOfInvMem
 import Development.WeilBound.CoreStatements.HodgeTatePoints.A28

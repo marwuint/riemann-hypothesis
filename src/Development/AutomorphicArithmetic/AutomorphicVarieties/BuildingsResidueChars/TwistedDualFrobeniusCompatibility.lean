@@ -1,7 +1,5 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.GuDefs
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.BcPolar
-import Development.AutomorphicArithmetic.AutomorphicVarieties.PartsConj
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharpolyScaledInverse
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeDualRep
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CyclotomicBarContinuous
 

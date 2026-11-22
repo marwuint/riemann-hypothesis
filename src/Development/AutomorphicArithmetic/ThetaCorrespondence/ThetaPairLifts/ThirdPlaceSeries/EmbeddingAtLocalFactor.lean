@@ -4,11 +4,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ad
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HarishChandraModulesOn
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsLocFac
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MatchAtType
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.XiEqXiOffMul
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RealPack
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.GeoAll
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TopReadAt
 
 set_option synthInstance.maxHeartbeats 200000
 

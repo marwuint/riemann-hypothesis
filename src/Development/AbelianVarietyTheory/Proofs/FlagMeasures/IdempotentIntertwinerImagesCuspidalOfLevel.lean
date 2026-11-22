@@ -8,9 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CompletedTensorDiscr
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralInvOfSupport
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalConvolutionOrthogonalProjectorProof
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountedVectorsAreCuspFormsSingleLowestKType
-import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpectrumKFiniteDecomposition
-import Formalism.HarderNarasimhan.ShiftInvariance
-import Formalism.RealPlaceAnalysis.FinalF
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec
 open scoped InnerProductSpace ContDiff

@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
 import GroundTheory.AutomorphicForms.GL2.GJMatrixInfinite
 import GroundTheory.GlobalFields.TateThesis.AdelePoissonUniform
-import GroundTheory.GlobalFields.Adele.Compact
 
 open Matrix NumberField IsDedekindDomain GlobalTheory.WeilM MeasureTheory
 open scoped TensorProduct SchwartzMap nonZeroDivisors Classical

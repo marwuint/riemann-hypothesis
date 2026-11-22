@@ -1,11 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.MapBaseTiedSel
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.IsLinked
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TwArgs
-import Formalism.LocalToGlobal.IndefiniteReal.NonzeroIndexPlaceIndepConstants
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ComplexSidePlacesIffMemNonzeroIndexPlaces
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DivisionPairOfAdelicFormsFaceColumnsData
-import Formalism.LocalToGlobal.Divisibility.TupUsed
 
 open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain
 open Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Cx Formalism.IndefR.Lev

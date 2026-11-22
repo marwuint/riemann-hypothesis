@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.InertKernelTheory.SubBSplit
 import Formalism.LocalToGlobal.InertKernelTheory.ProjRSurj
-import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.FdOfCharts
 
 noncomputable section
 

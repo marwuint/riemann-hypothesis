@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.SharpRestriction.Divisibility.OrbitPlaces
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KurComplete
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Formalism.LocalRingCardinality.DataKerI
 import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
 import Formalism.LocalToGlobal.KernelLattices.LateralTheory
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TauPlBijective

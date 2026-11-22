@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.MaximalCuspKernels.MaxCuspsSt
 import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.MaximalCuspKernels.MaxCuspsPfA
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SublatticeCoefficients
-import Formalism.LocalToGlobal.ProjectiveLattices.RdOrbIntOfLatZ
 
 set_option autoImplicit false
 

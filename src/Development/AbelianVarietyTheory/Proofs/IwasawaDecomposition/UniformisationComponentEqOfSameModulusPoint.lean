@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsLieB
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqOfConjEqOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PtOfFrameEqOfPointEq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OrthonormalFramesLieCoordinatesUnitary
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.HodgeGramEqRiemann
 
 set_option autoImplicit false
 

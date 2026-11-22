@@ -2,7 +2,6 @@ import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
 import Formalism.LocalToGlobal.IndefiniteReal.IsMultMapUnivZero
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.GinfCSecondCountable
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.ContinuousSplitInv
-import Formalism.LocalToGlobal.BesselHermitianTheta.TiedDef
 
 noncomputable section
 

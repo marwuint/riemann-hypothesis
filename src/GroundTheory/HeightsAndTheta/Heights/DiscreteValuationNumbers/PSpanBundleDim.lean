@@ -4,7 +4,6 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsP
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsSpanBundleTrdegGe
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsSpanBundleTrdegLe
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PCutRegular
-import GroundTheory.ArithmeticGeometry.AbelianVarieties.JacobianSmoothness.RingKrullDimLeRingKrullDimQuotientAddOne
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.NumbersDVR

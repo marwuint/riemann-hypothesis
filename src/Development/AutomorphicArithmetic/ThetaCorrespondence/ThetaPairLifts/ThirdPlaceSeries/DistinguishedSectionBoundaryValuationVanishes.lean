@@ -1,11 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFramePointStalk
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ToKnownTheoremsOf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PhiAt
-import Development.AbelianVarietyTheory.Definitions.Divisors.PolyBetween
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaExponentsDominantLastEntryOneDegree
-import Development.AbelianVarietyTheory.Definitions.Divisors.MulSmulIdemMem
-import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LiftLambdaBound
 
 set_option synthInstance.maxHeartbeats 200000

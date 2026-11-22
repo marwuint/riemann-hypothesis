@@ -2,7 +2,6 @@ import Formalism.SharpRestriction.GrowthBounds.FlipOneThree
 import Formalism.MahlerMeasure.CoarseLevelSlackInequalities
 import Formalism.MahlerMeasure.FinalT
 import Formalism.MahlerMeasure.MahlerMeasureProofs.WeightSpaceDimensionMonotone
-import Formalism.MahlerMeasure.MahlerMeasureProofs.SmithZp
 import Formalism.MahlerMeasure.MahlerMeasureProofs.TheoremM
 import Formalism.PolynomialDimension.MultinomialDepth.MonoCount
 import Formalism.PolynomialDimension.MultinomialDepth.PartnerM

@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.JointApprox
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FiltrationZeroMembership
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorProductBasisCoordinates
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankInvariantsEqOfInvertiblePeriodMatrix
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimensionalFilDR
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc
 

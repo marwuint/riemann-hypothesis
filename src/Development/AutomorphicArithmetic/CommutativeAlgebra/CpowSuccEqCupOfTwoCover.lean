@@ -4,8 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupProduct
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupProductAssocStatement
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafBasicProperti
-import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
-import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Pbf UpperTheory.Blow
 

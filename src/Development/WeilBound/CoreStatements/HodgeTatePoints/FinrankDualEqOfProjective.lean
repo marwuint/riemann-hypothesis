@@ -3,11 +3,8 @@ import Development.AutomorphicSpectrum.Statements.AlgebraStatements.HodgeTateNor
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.IsPolLatticePlane
 import Development.WeilBound.CoreStatements.HodgeTatePoints.GdChartFin
 import Development.WeilBound.CoreStatements.HodgeTatePoints.GcChart
-import Development.WeilBound.CoreStatements.HodgeTatePoints.RedOmHTBc
 import Development.WeilBound.CoreStatements.HodgeTatePoints.DualUnique
-import Development.WeilBound.CoreStatements.HodgeTatePoints.GaSurj
 import Development.WeilBound.CoreStatements.HodgeTatePoints.GdSplit
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankDualAndRangeDualMapBaseChange
 
 open Module NumberField GlobalTheory.CompanionTheory.Ar.HT TensorProduct
 

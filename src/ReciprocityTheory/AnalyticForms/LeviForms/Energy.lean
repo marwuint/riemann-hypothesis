@@ -1,8 +1,5 @@
 import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
 import ReciprocityTheory.AnalyticForms.PotentialTheory.Stokes
-import ReciprocityTheory.AnalyticForms.PotentialTheory.PotentialContDiffAt
-import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegrableOnTargetOfTsupport
-import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffFubiniStudyRatioCompChart0
 
 namespace ReciprocityTheory.AnForm.P

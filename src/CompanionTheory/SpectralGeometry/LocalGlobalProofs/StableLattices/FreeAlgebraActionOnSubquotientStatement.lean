@@ -1,6 +1,5 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FreeAlgebraActionOnSubquotient
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.Bdy
 
 open Finset Polynomial
 open Formalism.REAL (GlRel KHighest IsWeight qdet Tm qminor)

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdjoinLocalOrderTensorPadicMatrixAlmostAll
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentreCompat
 
 open scoped TensorProduct
 open GlobalTheory.LKInvGood

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ReductionUniqueUpToParabolic
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JpUnif
 
 open Matrix GlobalTheory.CompanionTheory.Jp
 set_option maxHeartbeats 1000000 in

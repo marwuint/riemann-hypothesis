@@ -3,8 +3,6 @@ import Formalism.PeriodIntegrals.KFinSmooth
 import Formalism.PeriodIntegrals.DSInfCharCap
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CapelliEigenvalues.CoreDefs
 import Formalism.HermitianCurvature.BesselNonvanishingReduction
-import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
-import Formalism.HermitianCurvature.StatementQ
 
 noncomputable section
 

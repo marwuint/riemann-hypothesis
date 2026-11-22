@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SumLamIdealLe
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ConvRealChar
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ClassNumberLeAbsDiscrOfFinrankEqTwo
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntegralOfMemRayI
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsImagQuadIntegers
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RayClassNumberBounds
 
 open Complex ArithmeticFunction MeasureTheory Filter Topology NumberField GlobalTheory.Hk GlobalTheory.Mem

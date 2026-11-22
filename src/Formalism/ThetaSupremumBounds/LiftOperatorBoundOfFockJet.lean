@@ -3,7 +3,6 @@ import Formalism.LogFactorialIndices.StatementSize
 import Formalism.ThetaSupremumBounds.GaussianShiftBounds.HeightsoundOf
 import Formalism.ThetaSupremumBounds.GaussianShiftBounds.BlockIntegralOf
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.TheoremDivIneq
-import Formalism.QuotientMetricDivisors.StatementK
 import Formalism.ThetaSupremumBounds.GaussianShiftBounds.FockJet
 import Formalism.ThetaSupremumBounds.GaussianShiftBounds.GaussCoord
 import Formalism.ThetaSupremumBounds.StatementE

@@ -3,7 +3,6 @@ import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChan
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsDominantOneAndMul
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetFixedFirstCondition
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StrictlyDominantContractsUnipotent
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FixedVectorZeroOfDual
 
 open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 

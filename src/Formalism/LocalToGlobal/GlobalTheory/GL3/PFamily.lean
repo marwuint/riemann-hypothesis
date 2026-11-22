@@ -1,10 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.IsAdmissibleFlagPairOfUnitriangularLeftAutomorph
-import Formalism.LocalToGlobal.GlobalTheory.GL3.Statement
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CardTrivialFirstComponent
-import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts
-import Formalism.LocalToGlobal.GlobalTheory.GL3.PLinkThU
-import Formalism.LocalToGlobal.GlobalTheory.GL3.PThIndep
 
 noncomputable section
 

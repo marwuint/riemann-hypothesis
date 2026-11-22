@@ -6,9 +6,7 @@ import GroundTheory.AutomorphicForms.GL2.GJFEInduced
 import GroundTheory.AutomorphicForms.GL2.GJFELevi
 import GroundTheory.AutomorphicForms.GL2.FiniteIdeleDecomp
 import GroundTheory.AutomorphicForms.GL2.GodementSectionFactor
-import GroundTheory.AutomorphicForms.GL2.GJFEInducedLevi
 import GroundTheory.AutomorphicForms.RestrictedHaarProduct
-import GroundTheory.GlobalFields.LocalFieldAtPlace
 
 open MeasureTheory Filter Set Topology IsDedekindDomain NumberField NumberField.mixedEmbedding
 open scoped NumberField.AdeleRing RestrictedProduct SchwartzMap Classical

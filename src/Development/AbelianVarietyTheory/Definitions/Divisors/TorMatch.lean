@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SharpOverIff
-import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
-import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.GeneratorValues
 
 noncomputable section

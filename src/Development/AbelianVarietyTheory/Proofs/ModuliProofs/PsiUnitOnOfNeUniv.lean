@@ -7,7 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueAlgE
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllSixAbelianSchemeLawsHold
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.QkToAkDescendsAlongBaseChange
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsQkPullEquiv
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TraceFormTwistIsoOfPullback
 
 noncomputable section
 

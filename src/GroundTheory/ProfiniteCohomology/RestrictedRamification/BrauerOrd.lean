@@ -1,7 +1,5 @@
 import Mathlib
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerDefs
-import GroundTheory.ProfiniteCohomology.RestrictedRamification.SDivisor
-import GroundTheory.ProfiniteCohomology.GlobalClassFormation.LocalLimits.LiesOver
 import GroundTheory.ProfiniteCohomology.GlobalClassFormation.Splitting
 set_option maxSynthPendingDepth 1
 

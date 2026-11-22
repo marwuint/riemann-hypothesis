@@ -1,9 +1,7 @@
 import Formalism.FlagUnipotentLattices.AlgebraicIdentityHigherDegree
 import Formalism.FlagUnipotentLattices.StabiliserComplementDecomposition
 import Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.BlockMinorAbsoluteOfExplicit
-import Formalism.FormalDegreeBessel.FinalDS
 import Formalism.SharpRestriction.CuspSpanNormBounds.BesselShellMomentBounds
-import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.FramesPt
 
 open MeasureTheory Matrix Finset
 open scoped InnerProductSpace

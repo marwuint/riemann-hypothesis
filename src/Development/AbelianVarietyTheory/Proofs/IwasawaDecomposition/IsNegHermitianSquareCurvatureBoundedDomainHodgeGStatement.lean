@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNegHermitianSquareCurvatureBoundedDomainHodgeG
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNegSqZero
 
 open Matrix MvPolynomial GlobalTheory.GoodMetric GlobalTheory.HermFrame GlobalTheory.PointFormSign
 open ReciprocityTheory.L2DbarEstimates (V)

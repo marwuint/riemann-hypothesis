@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsComp
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSupportOfIsSubquotientProdIrr
-import Formalism.LocalToGlobal.NormalizedHeckeFactors.TypesDefs
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrincipalCongruenceFixedVectorsLeSmoothVectors
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsLocallyConstantOrbit
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixRegular
 

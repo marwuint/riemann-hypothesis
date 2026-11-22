@@ -2,8 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.PoincareConstantEq
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.LocWSOf
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.Vanish
-import Formalism.PeriodIntegrals.BesselMapUniq
-import Formalism.LocalRingCardinality.DataTies
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsFundOne
 
 noncomputable section

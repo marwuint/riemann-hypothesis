@@ -1,7 +1,6 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PublishedTheorems.PoitouTateDuality.PtfsDefs
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDualInjectiveEquiv
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.PoitouTateNormalised
 
 noncomputable section
 

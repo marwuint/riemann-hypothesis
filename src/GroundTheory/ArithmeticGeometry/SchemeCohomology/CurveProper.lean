@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.CurveBase
-import GroundTheory.ArithmeticGeometry.SchemeCohomology.WeilDivisorLocal
 
 open CategoryTheory AlgebraicGeometry Order Topology
 

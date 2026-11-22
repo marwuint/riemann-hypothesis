@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.HasDataCondition
-import Formalism.LocalToGlobal.ProjectiveLattices.LatPAddRight
 import Formalism.LocalToGlobal.ProjectiveLattices.FamilyUniformisationBasePointOrthogonalBis
 import Formalism.LocalToGlobal.ProjectiveLattices.ParCanon
 import Formalism.LocalToGlobal.ProjectiveLattices.ExistsParameterConditions
@@ -12,7 +11,6 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsPelUnifPsi
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.PsiCoordExistsUniqueUpToUnitLocal
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsCompleteNormalSubringJoin
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.PsiCoordOfIsPullDegId
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsOpenOfRangeGenericSubset
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GenericPointMemModuliOfMeetsAbelianLocus
 
 open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing

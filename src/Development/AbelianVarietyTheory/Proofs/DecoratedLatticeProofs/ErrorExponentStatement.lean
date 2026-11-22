@@ -10,7 +10,6 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsOrth
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TranslateToSecondModelCuspFormMapValueAutomorphi
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselPeriodRightTranslationInvariant
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitOfCocompact
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsClosedNFlag
 
 open Formalism.L2.SG Formalism.L2.SG.PoincareInHH Formalism.BasicNotions Formalism.L2.Theta GlobalTheory.MixPer GlobalTheory.MixModel MeasureTheory
   GlobalTheory.Core.Mi GlobalTheory.IndefiniteRowSideFullHecke.ConjugacyTypeUnfolding Formalism.L2.SG.InstExistsPf Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH Matrix

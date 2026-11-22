@@ -6,8 +6,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaVectorNeZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PureTensorOInjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtensionOfLowSmoothLines
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsNormaliseMeanSquareOfCocompact
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsFockVacAtOfIsThetaAt
 
 noncomputable section
 

@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.IndefiniteReal.RealRec
-import Formalism.LocalRingCardinality.Lemmas
 import Formalism.LocalToGlobal.Divisibility.TupUsed
 
 noncomputable section

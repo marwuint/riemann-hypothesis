@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CharacterValueAtT
-import Formalism.LocalToGlobal.KernelLattices.ThDistC
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocCharEqZpowMul
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker
 
 namespace GlobalTheory.LocCharComp

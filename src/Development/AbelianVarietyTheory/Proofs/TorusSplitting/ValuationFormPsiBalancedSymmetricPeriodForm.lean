@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.TorusSections.IsTorusOf
 import Formalism.LocalToGlobal.ProjectiveLattices.DataAtPointN3
 import Formalism.LocalToGlobal.ProjectiveLattices.LiesOverBaseChange
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ETPoint
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ExistsRosatiGen
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.PsiCoordExistsUniqueUpToUnitLocal
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsGoodIntegral
 

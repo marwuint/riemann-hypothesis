@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.GlobalTheory.IrreducibleOfCountSizes
 import Formalism.PadicSubsetSums.StableGradedCounts.PropertyWOfEstimates
-import Formalism.PadicSubsetSums.StableGradedCounts.LocalEstimateIVOfTypeSetWeight
 
 open Finset Polynomial
 

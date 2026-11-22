@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveTensorOfFibreProjective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorModOfTmul
 
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in

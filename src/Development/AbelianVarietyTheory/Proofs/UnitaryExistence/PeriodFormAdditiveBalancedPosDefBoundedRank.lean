@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.HasDataCondition
-import Formalism.LocalToGlobal.ProjectiveLattices.LatPAddRight
 import Formalism.LocalToGlobal.ProjectiveLattices.FamilyUniformisationBasePointOrthogonalBis
 import Formalism.LocalToGlobal.ProjectiveLattices.ParCanon
 import Formalism.LocalToGlobal.ProjectiveLattices.ExistsParameterConditions

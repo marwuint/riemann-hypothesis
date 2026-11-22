@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealSheafComapIdealAffineOpenOfIsAffine
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealSheafDataComapIdealTopOfIsAffine
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite
 set_option maxHeartbeats 1000000 in

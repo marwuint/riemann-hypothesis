@@ -27,13 +27,11 @@ import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PIsotropicSplit
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PKTransitive
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PLatticeOrbitsFinite
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PLenCauchySchwarz
-import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PLenSq
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PLineCoeffsFG
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PLineIndexCoeffs
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PLineIndexNeZero
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PLinePairOrbitsFinite
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PMahlerCompactness
-import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PMajorantBound
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PMajorantExists
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PMinkowskiVolumeForm
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PParabolicDecomposition
@@ -45,8 +43,6 @@ import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PTorusIntegralHomogen
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PUnfoldingIntegral
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PUnfoldingTorus
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PUnfoldOrbit
-import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PVecAtNeZero
-import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PVectorOrbitsFinite
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PVolumeFormIntComb
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PWeightedIndexBound
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PWeightedLenSmul

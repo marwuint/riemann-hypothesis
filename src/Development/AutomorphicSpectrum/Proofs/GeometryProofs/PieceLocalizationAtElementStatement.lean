@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PieceLocalizationAtElement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProdUpdateDiv
 
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.FlagBun GlobalTheory.CompanionTheory.Ar.FlagBun.Sm
 set_option maxHeartbeats 1000000 in

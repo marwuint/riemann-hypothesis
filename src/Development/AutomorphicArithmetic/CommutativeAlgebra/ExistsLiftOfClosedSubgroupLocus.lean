@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuasiInv
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RangeSubsetOfGeom
 import Development.AutomorphicArithmetic.Foundations.EtaleClopenDescent.SubRepPull
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OverSchemeGrpObjOfMonoFactor
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj

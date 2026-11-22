@@ -24,7 +24,6 @@ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PIntNumUnique
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PIntNumBaseChange
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPFContracted
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPFDegree
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPNProduct
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiHomog
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameHilbFn

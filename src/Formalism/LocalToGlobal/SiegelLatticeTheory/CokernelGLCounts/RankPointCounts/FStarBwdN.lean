@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.FStarBwdNH
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.FStarNMove
 import Formalism.LocalRingCardinality.ConjSqrtMinusD
-import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
 
 noncomputable section
 

@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.AutomorphicForms.TraceClass
 import GroundTheory.AutomorphicForms.CuspidalDiscreteness
 import GroundTheory.AutomorphicForms.L2LocalComponents.Summand
-import GroundTheory.AutomorphicForms.GKModules.Casimir
 
 noncomputable section
 

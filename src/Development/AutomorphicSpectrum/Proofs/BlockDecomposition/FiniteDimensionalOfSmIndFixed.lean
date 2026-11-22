@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ParabolicInductionFiniteLength
-import GroundTheory.AutomorphicForms.GLnLocal
 
 noncomputable section
 

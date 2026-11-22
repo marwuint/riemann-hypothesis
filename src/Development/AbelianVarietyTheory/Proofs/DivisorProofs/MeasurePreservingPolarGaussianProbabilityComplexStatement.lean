@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasurePreservingPolarGaussianProbabilityComplex
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousFirstCoords
-import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
-import ReciprocityTheory.SemistableReduction.SJCoreA
 
 open MeasureTheory Set MvPolynomial ReciprocityTheory.MultiplicativeHeights GlobalTheory.SphereMeanDrop
 set_option maxHeartbeats 1000000 in

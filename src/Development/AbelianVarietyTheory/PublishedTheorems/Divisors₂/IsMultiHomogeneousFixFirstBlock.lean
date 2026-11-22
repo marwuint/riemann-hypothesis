@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IrreducibleOfIrreducibleMap
-import Development.AbelianVarietyTheory.Definitions.Divisors.PointHeight
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsIsHomogeneousOfEquivariant
 import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ProjPointIdealMemProjComponentsOfIsProjPureDim

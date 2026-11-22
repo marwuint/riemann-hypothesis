@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
-import Formalism.HermitianLattices.StatementLat
 
 noncomputable section
 

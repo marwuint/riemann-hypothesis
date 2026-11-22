@@ -1,7 +1,6 @@
 import Formalism.SharpRestriction.GrowthBounds.PowerSeriesFrobeniusCongruence
 import Formalism.SharpRestriction.GrowthBounds.CoeffIdentityPlainChartOfThree
 import Formalism.LocalToGlobal.CharacterGerms.TripleSubstSecondCoordinate
-import Formalism.LocalToGlobal.CharacterGerms.RowTieCartAdd
 
 noncomputable section
 

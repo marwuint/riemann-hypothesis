@@ -1,14 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
-import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
-import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeries₂.Poulsen
-import Formalism.PeriodIntegrals.DSInfCharCap
-import Formalism.PeriodIntegrals.LowCyc
-import Formalism.PeriodIntegrals.UpqRep
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
-import Formalism.RealPlaceAnalysis.StatementE
-import Formalism.RealPlaceAnalysis.StatementKT
-import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ContinuousMulMt
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CasimirScalarOfCapelliDeterminantEigenvalue
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FrameWConjMatrixUnits
@@ -17,9 +9,7 @@ import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.Bessel
 import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselFrameEntryRelation
 import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.QuantumDeterminantEigenvalue
 import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.DualTensorCayleyCompatible
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.SmoothVectorsDiscreteSeriesGlModule
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SplitCasimirEigenvalueOnDualTensorSummand
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG
 
 namespace GlobalTheory
 end GlobalTheory

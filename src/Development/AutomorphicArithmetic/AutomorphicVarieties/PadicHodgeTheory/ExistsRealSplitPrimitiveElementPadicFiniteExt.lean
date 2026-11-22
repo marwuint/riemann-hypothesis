@@ -1,7 +1,5 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.LocalPublishedTheorems
 import Mathlib
-import Formalism.GaloisCohomology.LocalTateDualityK
-import ReciprocityTheory.Hypotheses.GalCoh
 
 open Formalism.BasicNotions Formalism.BasicNotions.Loc NumberField
 

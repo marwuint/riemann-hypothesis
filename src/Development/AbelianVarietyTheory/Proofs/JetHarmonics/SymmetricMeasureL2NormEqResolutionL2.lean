@@ -3,9 +3,7 @@ import Formalism.PeriodIntegrals.BesselPeriodGGP
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ConjugationContinuousOnInvertible
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactGroupHaarExists
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.OppositeWeylSubgroupClosed
-import Formalism.FormalDegreeBessel.FinalG
 import Development.AbelianVarietyTheory.BlockTheory.JetGauges.FormalDegreeHaarQuotient
-import Development.AbelianVarietyTheory.BlockTheory.JetGauges.DecreasingNodeGaps
 
 open MeasureTheory Matrix
 open scoped InnerProductSpace ENNReal

@@ -4,14 +4,10 @@ import Formalism.LocalToGlobal.GroupLattices.LevelCharts.FiniteClassSetOfFiniteI
 import Formalism.LocalToGlobal.GroupLattices.LevelCharts.SplitStab
 import Formalism.LocalToGlobal.GroupLattices.LevelCharts.SplitIntPI
 import Formalism.LocalToGlobal.GroupLattices.LevelCharts.SelfDualPI
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsScale
 import Formalism.SharpRestriction.GrowthBounds.ChartComparison.PStabEq
 import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.LocalClassDataOfTrivialStabilizers
-import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.TiePtOneRec
-import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.RecAct
 import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.TiedCls
 import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.CompInjLocJ
-import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.CompanionOfBaseTied
 import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.GramLevelZeroEqReindex
 
 noncomputable section

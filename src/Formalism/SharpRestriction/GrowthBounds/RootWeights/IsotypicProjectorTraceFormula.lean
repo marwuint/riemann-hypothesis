@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.RootWeights.SchurInvariantProjectionTrace
-import Formalism.SharpRestriction.GrowthBounds.RootWeights.InvariantProjectionRangeTrivial
 
 noncomputable section
 

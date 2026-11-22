@@ -3,7 +3,6 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.NoCommonComponentCoord
 import GroundTheory.HeightsAndTheta.Heights.Intersections.StTorusInvLevi
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.ArithModel
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.ADensStC
-import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LeviOneEqLaplacianThm
 set_option maxSynthPendingDepth 1
 

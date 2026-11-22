@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowsMeanC
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsFundOne
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagUnipotentLebesgueMeasureIsHaarOn
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoordOfMemXa
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianStabiliserCovolumeLe

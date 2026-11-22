@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.OneMemNbh
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ProjExists
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SmoothOfMemLowKSub
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeMultiplicityOneLargeGaps
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeInfinitesimalCharLargeGap

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPullbackOfForallIsPushoutApp
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPushoutAppLEOfIsPullbackOfIsAffine
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchlessingerFlatFibreProduct
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FerrandPushoutAffineFlatAndPushouts
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits

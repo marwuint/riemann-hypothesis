@@ -1,6 +1,5 @@
 import Formalism.GaussValuationBounds.Statement
 import Formalism.WindowSums.PowerSeriesRelationList
-import Formalism.FrobeniusContraction.Statement
 import Formalism.FrobeniusContraction.FrobeniusContractionProofs.FiniteCocyclesLeCocycles
 import Formalism.FrobeniusContraction.FrobeniusContractionProofs.ContractBij
 import Formalism.FrobeniusContraction.FrobeniusContractionProofs.CocycleComponentRelation

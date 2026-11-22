@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LsDatumATools
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.LocOProj
 
 noncomputable section
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsHermRingRat
-import Development.AbelianVarietyTheory.Definitions.Foundations.NonemptyAlgHomOfNotIsField
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitEqNormCompletionTensorOfIsInertAt
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianValuationSplitCriterion
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianSplitRankOne

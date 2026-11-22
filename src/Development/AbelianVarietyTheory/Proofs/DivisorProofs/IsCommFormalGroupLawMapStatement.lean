@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCommFormalGroupLawMap
-import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
 
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Katz
 set_option maxHeartbeats 1000000 in

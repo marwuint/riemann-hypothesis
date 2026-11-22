@@ -2,7 +2,6 @@ import Development.WeilBound.RepresentationTheoryGL.UnitaryDualProof.HermitianFo
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CharacterAnnihilatorIntegerLattice
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactScaledIntoNhds
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MatrixIntegralOfAddCharTraceDual
 
 noncomputable section
 

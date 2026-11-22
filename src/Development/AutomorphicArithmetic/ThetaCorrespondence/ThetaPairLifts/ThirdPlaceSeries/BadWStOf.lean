@@ -1,7 +1,6 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BadWStOfRegular
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ShareWSt
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.BaseLevelIsWhitStatement
 
 set_option synthInstance.maxHeartbeats 200000

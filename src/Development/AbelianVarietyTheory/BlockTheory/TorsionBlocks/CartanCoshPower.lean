@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
-import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 
 noncomputable section
 

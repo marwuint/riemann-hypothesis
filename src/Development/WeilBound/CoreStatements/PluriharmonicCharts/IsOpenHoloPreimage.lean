@@ -6,17 +6,6 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticEi
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TransPtBase
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SamePotBlock
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticSecond
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverFramesAtPoint
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsImg
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.AevalNeZeroOfNotMem
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsValueAtOfTorus
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsBlkCover
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJMap
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishing
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
-import GroundTheory.HeightsAndTheta.Heights.Intersections.PtsOverPt
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PullbackPullback
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical

@@ -1,9 +1,6 @@
 import Formalism.HermitianCurvature.StatementTop
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RealInputsBuiltClosedForm
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentCoordinatesMeasurePreserving
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.DifferentialOperatorBracket
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.HighestWeightPolynomials
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.FrameCompletion
 
 section PartBasic
 

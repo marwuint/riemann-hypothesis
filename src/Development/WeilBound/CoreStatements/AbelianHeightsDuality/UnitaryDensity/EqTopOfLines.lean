@@ -3,7 +3,6 @@ import Development.WeilBound.ThetaLifts.LatticeBasics.ConstOfGood
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.UniqPlugPl
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitaryMatrixEqProdQuasiReflections
-import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.IsHermForm
 
 noncomputable section
 

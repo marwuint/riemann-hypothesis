@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasDerivAtDiagSumProdPairing
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairInfApply
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockFormApply
 
 open MeasureTheory
 set_option maxHeartbeats 1000000 in

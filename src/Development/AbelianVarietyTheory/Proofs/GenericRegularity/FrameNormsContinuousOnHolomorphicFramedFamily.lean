@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.RigFrame
-import Development.AbelianVarietyTheory.Definitions.RegularCharts.BaseNorm
 import Development.AbelianVarietyTheory.Definitions.RegularCharts.Reframe
 import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt
 import Formalism.LocalToGlobal.ProjectiveLattices.NrmContPf

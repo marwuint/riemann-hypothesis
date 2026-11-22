@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPermMatrixRepParabolicDoubleCoset
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.BlockProductIsomorphism
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsCuspidalIffCompositions
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsColReduced
 
 open Formalism.L2.DIV GlobalTheory.FinGL GlobalTheory.Parabolic GlobalTheory.IndefiniteRowSideFullHecke.BlockProductIsomorphism
 set_option maxHeartbeats 1000000 in

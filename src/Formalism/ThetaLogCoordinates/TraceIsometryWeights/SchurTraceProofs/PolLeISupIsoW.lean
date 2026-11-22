@@ -1,6 +1,5 @@
 import Formalism.ThetaLogCoordinates.TraceIsometryWeights.SchurTraceProofs.LatData
 import Formalism.ThetaLogCoordinates.TraceIsometryWeights.StatementB
-import Formalism.ThetaLogCoordinates.TraceIsometryWeights.StatementC
 
 namespace Formalism.InvariantFactorPaths.PW
 

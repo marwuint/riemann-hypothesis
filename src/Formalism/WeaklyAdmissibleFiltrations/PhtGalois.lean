@@ -9,7 +9,6 @@ import Formalism.WeaklyAdmissibleFiltrations.StatementPC
 import Formalism.CoboundaryTransfers.StatementAPI
 import Formalism.CoboundaryTransfers.WachBridges
 import Formalism.WeaklyAdmissibleFiltrations.CrystallineStableLifts.DPotCrisStableAndExistsPotentiallyCrystallineDat
-import Formalism.WeaklyAdmissibleFiltrations.Statement
 
 namespace Formalism.WeaklyAdmissibleFiltrations
 

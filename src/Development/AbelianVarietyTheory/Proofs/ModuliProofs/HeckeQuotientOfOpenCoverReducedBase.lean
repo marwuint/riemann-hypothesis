@@ -8,7 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsogenyPullbac
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RangeOfIsPullback
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeQuotientClassifyingMapIsogenyUnique
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjPull
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabCancel
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor

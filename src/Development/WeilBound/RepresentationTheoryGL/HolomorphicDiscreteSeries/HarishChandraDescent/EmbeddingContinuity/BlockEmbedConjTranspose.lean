@@ -1,7 +1,5 @@
 import Development.WeilBound.RepresentationTheoryGL.HolomorphicDiscreteSeries.HarishChandraDescent.Restrict
 import Development.WeilBound.CoreStatements.BranchingTraces.ContinuousEmb
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SmoothCore
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Unitary
 
 noncomputable section
 

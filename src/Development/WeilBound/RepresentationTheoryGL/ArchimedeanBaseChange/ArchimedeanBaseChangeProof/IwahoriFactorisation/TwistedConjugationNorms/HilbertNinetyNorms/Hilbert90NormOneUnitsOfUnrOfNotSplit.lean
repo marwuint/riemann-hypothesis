@@ -1,10 +1,6 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.TwistedConjugationNorms.OneCoset
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmField
-import Development.AbelianVarietyTheory.Definitions.Divisors.GaloisRepOfPolarizedCuspidal
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormOneUnitHilbertNinety
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IwahoriProjSurjective
 
 noncomputable section
 

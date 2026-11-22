@@ -1,7 +1,5 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.TorusConjugationPreservesCongruence
-import CompanionTheory.RealGroups.UnitaryAdmissibility.ArchimedeanUnitaryDual.StSandwich
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.IsCongIdealTwoTorsion
 
 open CompanionTheory.Rg.FlB
 set_option maxHeartbeats 1000000 in

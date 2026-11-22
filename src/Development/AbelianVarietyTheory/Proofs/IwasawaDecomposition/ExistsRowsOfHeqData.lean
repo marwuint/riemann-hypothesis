@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.Divisibility.MemberDIV
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChKerCCongr
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.IsLinked
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TwArgs
 import Formalism.LocalToGlobal.IndefiniteReal.NonzeroIndexPlaceIndepConstants
 import BuildAid.D3
 

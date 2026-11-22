@@ -5,9 +5,6 @@ import Development.AutomorphicArithmetic.DivisorFrames.HasWeightAtOfNeZeroIntert
 import Development.AutomorphicArithmetic.DivisorFrames.ExistsInvariantNondegeneratePairingWeightRepNabl
 import Development.AutomorphicArithmetic.DivisorFrames.FiniteDimensionalNablaTAndContinuousWtOp
 import Development.AutomorphicArithmetic.DivisorFrames.IsAutFormUOfVectorValuedInvariant
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSystemOf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemilinearActionDualWeylTensor
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeightEqOfFinitePartNeBot
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.PRep GlobalTheory.UnitaryBC Formalism.BasicNotions GlobalTheory.DefU GlobalTheory.FrameAut Formalism.CohomologicalDescent.DepthNonnegative
 
 private theorem cont_cEmb {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (τ : E →+* ℂ) :

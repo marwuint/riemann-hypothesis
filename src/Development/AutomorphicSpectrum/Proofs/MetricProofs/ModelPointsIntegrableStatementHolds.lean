@@ -3,13 +3,7 @@ import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsModelPtsIn
 import ReciprocityTheory.AnalyticForms.PotentialTheory.LocDens
 import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalHolomorphicSectionOfPotential
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FlagIndices
-import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
-import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralModelFormula
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPtsBddConv
-import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.StLemmaETailMass
 
 noncomputable section
 

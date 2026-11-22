@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJDHatJDACapTodaVGrpCut
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.WeylCellMulVecBasis
 
 open Matrix
 open scoped ContDiff

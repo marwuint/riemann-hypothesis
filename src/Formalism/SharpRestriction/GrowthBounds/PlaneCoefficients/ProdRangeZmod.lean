@@ -1,7 +1,5 @@
 import Formalism.SharpRestriction.GrowthBounds.PolynomialLevels.FrRevInj
 import Formalism.SharpRestriction.GrowthBounds.PolynomialLevels.PlMonPsiExpPAdd
-import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.SlackBoundJoint
-import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.MembDd
 
 noncomputable section
 

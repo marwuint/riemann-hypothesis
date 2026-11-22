@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeCountingBound.SepDefs
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeSizeContinuity.LatticeIsometry
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsDual
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlob
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsSpan
 
 noncomputable section

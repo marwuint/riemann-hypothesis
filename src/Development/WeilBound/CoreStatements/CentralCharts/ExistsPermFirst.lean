@@ -1,10 +1,6 @@
 import Development.WeilBound.CoreStatements.CentralCharts.PshAt0
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsSncAdaptedChartAtPoint
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
-import ReciprocityTheory.AnalyticForms.PotentialTheory.Partition
-import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SncAdaptedChartSectionForm
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionFubiniStudyPositive
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SameOrbitRefl

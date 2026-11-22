@@ -1,10 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LeftMulTau
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisTransferFactorKrylovDet
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatch
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedValuationParitySignCharacterKernelNorm
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleHermitianPairStructureFacts
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
 
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 

@@ -1,7 +1,5 @@
 import Mathlib
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.FormalFunctions
-import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.FinitenessStep
-import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperFiniteness
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.FormalAlgebraisation.GEClosedProj
 
 set_option autoImplicit false

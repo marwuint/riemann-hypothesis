@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PlaceEqOneOfNotMem
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RelIndexMulVec
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.StandardRankOneLatticeOfLocal
 open NumberField Matrix IsDedekindDomain GlobalTheory.CompanionTheory.Ar.Cusp.LocFrame
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.LocFrame

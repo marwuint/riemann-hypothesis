@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRingHomLimitOfDoublingJets
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivCompM
 
 open GlobalTheory.Nef
 

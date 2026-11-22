@@ -1,7 +1,6 @@
 import ReciprocityTheory.GroupCohomology.CardLenStatement
 import ReciprocityTheory.GroupCohomology.DEqZeroOfMemB
 import ReciprocityTheory.GroupCohomology.ResNormalHolds
-import ReciprocityTheory.GroupCohomology.InnerHolds
 
 namespace ReciprocityTheory.Coh
 

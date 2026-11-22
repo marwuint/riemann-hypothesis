@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.UnitDualParts
-import Formalism.CoboundaryTransfers.Statement
-import Formalism.WeaklyAdmissibleFiltrations.Statement
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.WachLettersFree
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.CrystallineSubrepresentation
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AcrisTorsionFreeComplete

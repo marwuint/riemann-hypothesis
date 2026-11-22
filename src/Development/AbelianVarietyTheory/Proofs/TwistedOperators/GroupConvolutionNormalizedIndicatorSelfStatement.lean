@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GroupConvolutionNormalizedIndicatorSelf
-import Development.AbelianVarietyTheory.Definitions.Divisors.HasTypeVec
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ExponentSeparation
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralMulRightOfCompact
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelFamOfNotMem
 
 open MeasureTheory Set Filter NumberField IsDedekindDomain
 open GlobalTheory.AdelicU GlobalTheory.OpTrace GlobalTheory.Orb GlobalTheory.AutomorphicL2Unitary GlobalTheory.AutMult Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes

@@ -8,7 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsKurFrobTau
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.RepFrame
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.RepTrace
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.OrbitPowerSeriesCoefficients.OrbEmb
-import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.TransportFirstLevel
 
 noncomputable section
 

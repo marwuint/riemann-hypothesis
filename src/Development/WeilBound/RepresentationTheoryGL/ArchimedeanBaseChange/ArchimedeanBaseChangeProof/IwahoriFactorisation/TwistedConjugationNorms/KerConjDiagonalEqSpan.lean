@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SimpleTwistedTraceF
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramDetChangeOfBases
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmField
-import Development.AbelianVarietyTheory.Definitions.Divisors.GaloisRepOfPolarizedCuspidal
 
 noncomputable section
 

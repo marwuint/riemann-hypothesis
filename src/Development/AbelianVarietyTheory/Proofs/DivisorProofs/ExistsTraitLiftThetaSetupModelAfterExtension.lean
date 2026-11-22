@@ -2,11 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ThetaSetupStructureMapComp
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonUnitAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitExistsAfterFiniteExtensionOfCompleteDVR
-import Development.AbelianVarietyTheory.Definitions.Divisors.NotOrdGeOfNotMem
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSiegPull
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosure
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsCompleteDvrFiniteSubalgebra
 
 noncomputable section
 

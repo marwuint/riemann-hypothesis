@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HermitianCompactForm
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.FramedFlatCoordinates
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FlatSectionAndDegree
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DeterminantSectionRule
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
 
 set_option autoImplicit false

@@ -2,7 +2,6 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.WeightedMirrorLevelOperator
 import Formalism.SharpRestriction.CuspSpanNormBounds.RootMeasBig
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.BoundarySlices.WbPartBvecEI
-import Formalism.FormalDegreeBessel.StatementBF
 import Formalism.FormalDegreeBessel.FinalG
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.StabBig
 

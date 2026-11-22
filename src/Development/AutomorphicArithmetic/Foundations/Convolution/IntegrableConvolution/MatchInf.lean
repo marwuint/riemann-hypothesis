@@ -3,7 +3,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvo
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.MatchSplit
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.RegOkPi
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.PushTens
-import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.GlueBasic
 
 open MeasureTheory NumberField
 

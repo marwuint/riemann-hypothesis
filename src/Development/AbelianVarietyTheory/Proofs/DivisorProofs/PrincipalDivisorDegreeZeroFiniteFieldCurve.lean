@@ -1,6 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAmbOfIsArithVar
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NontrivialIsomClassInt
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DimClosureOfCoheightField
 

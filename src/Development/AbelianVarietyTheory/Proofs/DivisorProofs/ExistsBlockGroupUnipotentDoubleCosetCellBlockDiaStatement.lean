@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBlockGroupUnipotentDoubleCosetCellBlockDia
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSupportComp
 
 open Matrix Topology
 set_option maxHeartbeats 1000000 in

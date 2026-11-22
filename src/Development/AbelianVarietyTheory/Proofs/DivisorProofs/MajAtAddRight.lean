@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart
 import Formalism.MeanHeightDescent.DivisionInequalityWithCovolume
-import Formalism.MeanHeightDescent.AverageDegreeBounds.GlobalBoundRefinements
 
 open NumberField GlobalTheory.AllWt
 

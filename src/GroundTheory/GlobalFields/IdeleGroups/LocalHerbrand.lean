@@ -3,7 +3,6 @@ import GroundTheory.GlobalFields.HerbrandQuotients.CycTate
 import GroundTheory.GlobalFields.CompletionAtPlace.Galois
 import GroundTheory.LocalFields.HerbrandLocal
 import GroundTheory.LocalFields.UnramifiedNorms
-import GroundTheory.LocalFields.HerbrandCyclic
 
 noncomputable section
 

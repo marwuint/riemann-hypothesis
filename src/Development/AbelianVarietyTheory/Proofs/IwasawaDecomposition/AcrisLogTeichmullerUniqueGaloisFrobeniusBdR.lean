@@ -2,10 +2,6 @@ import Mathlib
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsLogAExtends
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApprox
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-import Development.AbelianVarietyTheory.CrystallinePeriods.CrisIncl
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.MemLoc
 open scoped Formalism.Per
 

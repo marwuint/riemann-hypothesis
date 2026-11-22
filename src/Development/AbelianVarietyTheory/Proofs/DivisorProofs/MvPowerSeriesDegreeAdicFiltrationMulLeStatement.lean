@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesDegreeAdicFiltrationMulLe
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntDerApply
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfForallMemFilt
 
 open IsLocalRing GlobalTheory.FormalOrigin GlobalTheory.FormalOrigin.Extend
 set_option maxHeartbeats 1000000 in

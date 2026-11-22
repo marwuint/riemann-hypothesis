@@ -1,6 +1,5 @@
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.WeightedPrimeSumBound
 import Formalism.SharpRestriction.InertJacobiLevels.HostFam
-import Formalism.SharpRestriction.Divisibility.WeightAlgebra
 import Formalism.SharpRestriction.Divisibility.LocalNonemptiness.WeightFamilies
 import Formalism.SharpRestriction.Divisibility.LocalNonemptiness.SubsingletonRankIndicatorIff
 

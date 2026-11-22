@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.StabilizerLa
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SelfDualStabilizer
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.StabTransitiveOfLemmas
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SelfDualLatticesUnramifiedPlaceNoHypothesis
-import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SelfDualLatticeActions
 
 namespace GlobalTheory.StabOrbit
 

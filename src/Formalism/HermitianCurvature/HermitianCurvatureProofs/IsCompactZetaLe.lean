@@ -1,6 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.QQMemAdjAlgCpt
-import Formalism.FormalDegreeBessel.FormalDegreeRatio.ReverseCauchySchwarzHolds
-import Formalism.FormalDegreeBessel.FormalDegreeRatio.GNonneg
 
 open Matrix
 

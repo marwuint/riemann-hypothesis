@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SuppAtMul
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivCoefNeZero
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.ActsLinOfSplitLin
 
 set_option autoImplicit false

@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.BesselHermitianTheta.Lemmas
-import Formalism.RealPlaceAnalysis.SmoothOnGVIff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ImportsRest
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPointsStructureRealPlaces
 

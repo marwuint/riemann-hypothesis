@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IdentityCellTrace.AlgIdentity
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RelevantCarrierNonempty.InSCarrierNonempty
-import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.FourParts
 
 noncomputable section
 

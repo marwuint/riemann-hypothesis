@@ -4,9 +4,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CasimirSignatur
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceElementGelfandPolynomialFormula
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceElementsActByGelfandValues
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TracedQminorComatrixTruncatedInverse
-import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QdetPolyMapMonic
 import Development.WeilBound.CoreStatements.SatakeConjugation.CapEqQdet
 
 noncomputable section

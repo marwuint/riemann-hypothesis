@@ -4,8 +4,6 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.CongruenceAtSplitFrobeniusH
 import Formalism.FlagUnipotentLattices.CardSubgroupsOfIndexLe
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniquePlace
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsZEquivGramBoundedMinors
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoveringOHolds
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramUnipotentStabilizerBruhatCellConjRoot
 
 open NumberField Module Matrix Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.Cnt GlobalTheory.LoopC
 open scoped ENNReal Classical

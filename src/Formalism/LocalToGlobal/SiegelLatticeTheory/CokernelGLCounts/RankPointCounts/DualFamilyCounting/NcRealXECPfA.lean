@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.NcRealXEC
-import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeCSB
 
 noncomputable section
 

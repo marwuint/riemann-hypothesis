@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaA
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TransvectionAction
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ConjugateAdjointDagger
 
 noncomputable section
 

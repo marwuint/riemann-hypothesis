@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsIntegralOfTorsion
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsDescendThrough
 
 set_option autoImplicit false
 

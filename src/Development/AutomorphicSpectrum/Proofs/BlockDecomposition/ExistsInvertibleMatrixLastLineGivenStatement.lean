@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsInvertibleMatrixLastLineGiven
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUnipMir
 
 open GlobalTheory.PRep GlobalTheory.BZMir GroundTheory.LocalField Matrix GlobalTheory.CompanionTheory.MirFourier
 set_option maxHeartbeats 1000000 in

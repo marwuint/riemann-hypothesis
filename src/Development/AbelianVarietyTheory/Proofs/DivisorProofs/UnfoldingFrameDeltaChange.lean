@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CXiValIff
-import Formalism.LocalToGlobal.ProjectiveLattices.SpMapAlgHomId
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.IoOverLeftUnique
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.SecBCAndCuspBC
 

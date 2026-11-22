@@ -1,10 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FormsPin
-import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
 import Formalism.LocalToGlobal.KernelLattices.AdaptedEnt
 import Formalism.LocalToGlobal.KernelLattices.KerMtPin
-import Formalism.LocalToGlobal.KernelLattices.JetFieldLeKR
-import Formalism.LocalToGlobal.KernelLattices.ColumnData.KerEntHyp
 import Formalism.LocalToGlobal.UnitaryNorms.CharTied
 import Formalism.LocalToGlobal.GroupLattices.StabilizerCount.StabiliserTrivialOfTiedChain
 

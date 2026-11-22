@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralUpdateSubShear
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NmatEqLowMat
 
 open ReciprocityTheory.ChartRestriction.G.FD MeasureTheory GlobalTheory.IntBall
 open scoped ENNReal Matrix

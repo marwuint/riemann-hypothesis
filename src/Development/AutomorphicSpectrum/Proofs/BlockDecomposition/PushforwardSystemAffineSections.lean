@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PowIdeal
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedSystemPullback
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.RestrictPullbackIsoHomAppPullbackSections
 
 set_option autoImplicit false
 

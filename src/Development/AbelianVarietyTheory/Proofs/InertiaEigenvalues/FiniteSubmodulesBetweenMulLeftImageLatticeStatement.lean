@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteSubmodulesBetweenMulLeftImageLattice
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
 
 open GlobalTheory.UnitLemma Polynomial
 set_option maxHeartbeats 1000000 in

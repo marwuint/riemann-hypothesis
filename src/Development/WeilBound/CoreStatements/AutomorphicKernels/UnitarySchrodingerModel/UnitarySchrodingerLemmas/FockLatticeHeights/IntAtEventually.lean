@@ -3,7 +3,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MultiplicityLev
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResidueRingStructure
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedFiniteIntegral
-import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.UnramifiedWhittaker.BasisSet
 
 noncomputable section
 

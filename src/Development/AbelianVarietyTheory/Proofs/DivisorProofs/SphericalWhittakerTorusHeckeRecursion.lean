@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAddHaarMeasureVolumeLie
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
 import GroundTheory.AutomorphicForms.MacdonaldHecke
 import GroundTheory.GlobalFields.LocalFieldAtPlace
 import GroundTheory.GlobalFields.CompletionAtPlace.Inertia

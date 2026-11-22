@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.WaveDiffForm
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.CccoefMono
 
 noncomputable section
 

@@ -8,8 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowGeneratorEqConst
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaPairCharactersAtLevel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelFormCompatBaseEmbedding
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsVacuumMultiplierConstantPerLattice
-import Development.AbelianVarietyTheory.Definitions.Divisors.PerCEmb
-import Development.AbelianVarietyTheory.Definitions.Divisors.MarkAd
 
 open NumberField Matrix Complex MeasureTheory IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTheory.ClsVal

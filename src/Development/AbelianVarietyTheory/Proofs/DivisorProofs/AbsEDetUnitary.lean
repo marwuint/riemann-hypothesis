@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ParOpApply
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWittBasisCompactStabiliser
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StableRangeOneDetUnitElementary
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModulusOfNormEqAbs
 
 open scoped TensorProduct NNReal ENNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes

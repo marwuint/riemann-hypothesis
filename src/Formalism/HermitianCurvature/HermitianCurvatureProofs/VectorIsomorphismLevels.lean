@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.PBFVpic
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelsOfBuiltSetting
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermMulVecMulVec
 
 open Matrix MeasureTheory

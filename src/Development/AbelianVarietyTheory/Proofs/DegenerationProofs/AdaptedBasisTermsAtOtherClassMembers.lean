@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.CompanionTheor
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.UTorsSt
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TestQuadraticFormEqPsiValuationMul
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SecIsMulOfSval
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.BOfNsmulLeft
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj

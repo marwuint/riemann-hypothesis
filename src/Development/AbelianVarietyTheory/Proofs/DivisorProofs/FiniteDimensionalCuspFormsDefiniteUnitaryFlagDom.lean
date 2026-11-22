@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsArchOne
 import Development.AbelianVarietyTheory.BlockTheory.PoincareCuspForms.SmallUnipotentElements
-import ReciprocityTheory.SemistableReduction.LatAll
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DefiniteFrameLeadingMinorsSign
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameSectionSliceEqPolyDivDetPow
 
 set_option autoImplicit false

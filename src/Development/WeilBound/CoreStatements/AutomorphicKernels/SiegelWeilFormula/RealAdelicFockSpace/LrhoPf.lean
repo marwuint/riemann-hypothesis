@@ -1,6 +1,5 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.RealAdelicFockSpace.Spf
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.ThetaParabolic.LRhoOm
-import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.THeis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzMemL2
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerPreservesAdelicSchwartz
 

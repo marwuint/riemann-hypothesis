@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LMulBeta
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariant
-import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Polynomial GlobalTheory.Pst GlobalTheory.MemLoc GlobalTheory.Pst.StLat GlobalTheory.Pst.NoLog
 open scoped Formalism.Per
 

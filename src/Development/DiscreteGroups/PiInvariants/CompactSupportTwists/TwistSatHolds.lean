@@ -1,6 +1,4 @@
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.NoPiHk
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SatakeParametersOfTwist
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SubsingletonRankZero
 
 noncomputable section
 

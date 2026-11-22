@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.PeriodIntegrals.UpqRep
 import Formalism.PeriodIntegrals.PhMeasCore
 import Formalism.FormalDegreeBessel.StatementDS
-import Formalism.RealPlaceAnalysis.StatementE
 import Formalism.RealPlaceAnalysis.Complexify
 
 noncomputable section

@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ZeroSectionBase
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDualOfIsPerfectOfAdditive
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianDeRhamPoincareDualityOfCubeDual
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsProdPolAV
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing
 import Development.AutomorphicSpectrum.PublishedTheorems.Algebra₂.ZarhinStatement
 
 set_option autoImplicit false

@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasTraitsOnOfHasTraitsP
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDiagEnd
-import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsTheta
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemDividingLabelsIffClassZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPointsFramesThetaSectionMemberStatement

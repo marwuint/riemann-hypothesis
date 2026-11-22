@@ -4,8 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsOfCmTrip
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsPatOfObj
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsIsLocalModelOfIntegral
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.LawsFieldsSeparately
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.CubePullbacks.CubePull
 
 set_option autoImplicit false
 

@@ -1,6 +1,5 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutSERDIdentOfAB
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.cut_JA_LocLemmas
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbitalIntegralAeConvergenceContinuity
 
 open MeasureTheory Filter Topology
 open scoped Matrix

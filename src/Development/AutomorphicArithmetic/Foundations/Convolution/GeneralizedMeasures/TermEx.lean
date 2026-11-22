@@ -4,8 +4,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeas
 import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.LocAll
 import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.BcPoly
 import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.MatchOne
-import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.PolyMem
-import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.WordHt
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.MatchOfScale
 import Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnalysis.G1St
 

@@ -1,11 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
-import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartLocalAnalyticTrivialization
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PHoloInjDerivInj
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PVertFactorSmooth
-import GroundTheory.HeightsAndTheta.Heights.Regularisation.GlueCharts
 open Filter Topology Metric
 open scoped ContDiff
 open ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.LowerBoundFree

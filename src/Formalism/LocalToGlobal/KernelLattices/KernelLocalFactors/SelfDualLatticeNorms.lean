@@ -7,9 +7,6 @@ import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.SelfDualLattice
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.SelfDualLatticeNorms.IsTorsionPointStandardCM
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.SelfDualLatticeNorms.KapAll
 import Formalism.LocalToGlobal.AlgebraicTheory.LocNormScale
-import Formalism.LocalToGlobal.AlgebraicTheory.SplitPlaceScaledBound
-import Formalism.LocalToGlobal.AlgebraicTheory.AlgebraicTheoryProofs.NormInter
-import Formalism.LocalToGlobal.AlgebraicTheory.AlgebraicTheoryProofs.NormPow
 
 noncomputable section
 open scoped BigOperators

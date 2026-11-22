@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegIdxOfIsStd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFactorOfStageTriangle
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilTopGridStageExists
-import Development.AbelianVarietyTheory.Definitions.Divisors.RegConst
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNonvanishingFactorStage
 
 noncomputable section

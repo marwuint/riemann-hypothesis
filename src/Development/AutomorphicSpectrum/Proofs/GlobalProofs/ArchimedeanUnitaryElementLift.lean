@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsAdaptedEmpty
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LanglandsDecompositionUnipotentLevi
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPointsStructureRealPlaces
 import Formalism.LocalToGlobal.IndefiniteReal.RealSeparation.RealPtExHolds
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousKapSymm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompInfRTensorInlA

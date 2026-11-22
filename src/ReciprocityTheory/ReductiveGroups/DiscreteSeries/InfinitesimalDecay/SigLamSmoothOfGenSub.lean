@@ -1,7 +1,6 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.InfinitesimalDecay.ContinuousDSWOrbit
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.InfinitesimalDecay.FinAlgSepKG
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.FormulaFA
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.MeasurePreservingMulRight
 
 set_option autoImplicit false
 

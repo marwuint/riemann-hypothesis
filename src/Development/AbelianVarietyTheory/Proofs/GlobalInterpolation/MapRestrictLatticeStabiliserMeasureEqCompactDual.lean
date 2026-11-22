@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.AdelicUnitar
 import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.StabilizerLattices
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCompactAdele
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FundamentalDomainNeZero
-import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.FrameTransport
 
 noncomputable section
 

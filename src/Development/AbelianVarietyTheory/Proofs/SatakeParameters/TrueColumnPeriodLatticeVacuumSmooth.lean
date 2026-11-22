@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsEntC
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ColNorm
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JetsInIffStepField
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FixedVectorEqOfStandardData
-import Formalism.LocalToGlobal.KernelLattices.TopPin
 import Formalism.LocalToGlobal.KernelLattices.InterlaceAll
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AbsNormEqOfSplit
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NotDvdDifferent

@@ -2,9 +2,7 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterInvariantAdelicFormEqMulEvalZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzPointValuesAdmitted
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsoRows
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompReixMemAdm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductFunctionOnSumCoordsMemAdelicSchwartzSpace
 
 noncomputable section
 

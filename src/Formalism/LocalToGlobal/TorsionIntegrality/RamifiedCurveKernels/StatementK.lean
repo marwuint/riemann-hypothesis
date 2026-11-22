@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.StatementS
-import Formalism.GaussJetBounds.StatementN
 import Formalism.GaussJetBounds.StatementP
 
 noncomputable section

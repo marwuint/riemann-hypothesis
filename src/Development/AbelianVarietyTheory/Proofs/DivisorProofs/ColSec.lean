@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsFlagBundleRankOne
-import Development.AbelianVarietyTheory.Definitions.Divisors.NormSqColGrLineOfOrthogonal
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.RestrictPullbackIsoHomAppPullbackSections
 
 set_option autoImplicit false
 

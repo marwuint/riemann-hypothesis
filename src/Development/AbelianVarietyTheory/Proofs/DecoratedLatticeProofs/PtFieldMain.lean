@@ -3,12 +3,9 @@ import Formalism.LocalToGlobal.HermitianForms.FormsTied
 import Formalism.LocalToGlobal.Columns.TiedValLatG
 import Formalism.LocalToGlobal.Columns.TiedValNorm
 import Formalism.LocalToGlobal.Columns.TiedValRat
-import Formalism.LocalToGlobal.Columns.CoefModAt
 import Formalism.LocalRingCardinality.PosOfIsomEmb
 import Formalism.QuotientMetricDivisors.ReductionLemmaZero
 import Formalism.QuotientMetricDivisors.FinalW
-import Formalism.LocalToGlobal.Divisibility.FramesLemmas
-import Formalism.LocalRingCardinality.DataArith
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HtPsiLeIffExists
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsIsConjAtOfEmbedding
 

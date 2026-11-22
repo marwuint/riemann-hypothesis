@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsChernExistsUnique
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsNormalFormArcDatumFramedPointRootOfUnity
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsChartPull
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.IsLocallyNoetherian
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAbelianSchemeOfIsGrpPullback
 
 set_option autoImplicit false
 set_option synthInstance.maxHeartbeats 400000

@@ -1,10 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SobContId
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DRhoSumAndSobOLe
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EqZeroOfLintegralEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralNormSqEqToL2
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaFunctionHeisenbergWordSupLeLevelPow
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.CovolOneIntegralAdd
 
 section
 open scoped ComplexConjugate Matrix NNReal ENNReal TensorProduct Classical

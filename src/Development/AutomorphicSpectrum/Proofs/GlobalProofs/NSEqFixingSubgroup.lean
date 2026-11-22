@@ -6,7 +6,6 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.NormalSubgroupLeUnram
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GaloisUnramifiedOutsideCohomology
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteH1UnramifiedOutside
-import GroundTheory.ProfiniteCohomology.ContinuousCochains
 import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalFiniteness.FiniteH2TorsionModule
 
 noncomputable section

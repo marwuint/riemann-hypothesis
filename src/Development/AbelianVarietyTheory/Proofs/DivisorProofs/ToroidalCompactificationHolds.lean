@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvariantSmoothProjFanNoSelfIntersections
-import Development.AbelianVarietyTheory.Definitions.Divisors.EvenDefect
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelToroidalPolCharts
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SecCmp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToroidalCompactificationFanLogKodairaSpencerIso
 
 namespace GlobalTheory

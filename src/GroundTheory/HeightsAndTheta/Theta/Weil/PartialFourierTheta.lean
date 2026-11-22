@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Theta.AdelicFourier
 import GroundTheory.HeightsAndTheta.Theta.EisensteinZeta.WeilPolarization.WmSysObjects
-import GroundTheory.GlobalFields.TateThesis.AdelicChar
 
 namespace GroundTheory.Heights₂.Theta
 

@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.GlobalFields.HerbrandQuotients.SUnitsExact
 import GroundTheory.GlobalFields.HerbrandQuotients.SUnitsPerm
 import GroundTheory.GlobalFields.HerbrandQuotients.SUnitsRep
-import GroundTheory.GlobalFields.HerbrandQuotients.LatticeBridge
 
 namespace GroundTheory.Global
 

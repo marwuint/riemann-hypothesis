@@ -2,8 +2,6 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLe
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.CapQdet
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.InfCharData
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.TopCap
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.PsiFor
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.Exists
 
 namespace ReciprocityTheory.ChartRestriction.DS.Lap.LemK
 

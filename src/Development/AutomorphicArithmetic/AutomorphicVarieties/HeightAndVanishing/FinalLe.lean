@@ -5,9 +5,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.HostOdd
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.CardLeLevel
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.HostLevel
-import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.HostIndex
-import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.BchiFacts
-import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBounds.SumBack
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 

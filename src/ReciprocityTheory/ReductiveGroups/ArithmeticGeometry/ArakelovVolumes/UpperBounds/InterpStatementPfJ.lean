@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.InterpStatementPfG
-import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.ImportsAlt
 
 namespace ReciprocityTheory.ChartRestriction.G.AR.Up.HE
 

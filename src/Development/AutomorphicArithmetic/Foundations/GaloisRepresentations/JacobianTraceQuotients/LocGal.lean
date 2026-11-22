@@ -2,8 +2,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Jacob
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.TraceFormula.OrbitalIntegrals.TwistedOrbitalIntegrals.PlaceData
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapLinearEquivAddHaarLocalField
-import Development.AbelianVarietyTheory.Definitions.Divisors.UnipVal
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.Places
 
 open MeasureTheory NumberField IsDedekindDomain Filter ValuativeRel

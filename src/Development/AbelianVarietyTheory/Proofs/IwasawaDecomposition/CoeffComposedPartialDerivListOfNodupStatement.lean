@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoeffComposedPartialDerivListOfNodup
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.InterPolyProdSum
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BlockSymApply
-import ReciprocityTheory.DualLattices.DetPolyMulCayleyOmegaPow
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BlockGraph
 
 open MvPolynomial ReciprocityTheory.PGsh GlobalTheory.CayleyBlock
 set_option maxHeartbeats 1000000 in

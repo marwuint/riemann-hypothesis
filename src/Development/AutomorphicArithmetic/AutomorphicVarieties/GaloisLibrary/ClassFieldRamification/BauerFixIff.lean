@@ -1,7 +1,5 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.ClassFieldRamification.IsClassFieldHilbert
 import GroundTheory.GlobalFields.TateThesis.Chebotarev
-import GroundTheory.GlobalFields.KummerTheory.Splitting
-import GroundTheory.GlobalFields.SplittingFromInequality.Decomposition
 import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.InertiaRamification.CycInertia
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.ClassFieldRamification.Cheb
 

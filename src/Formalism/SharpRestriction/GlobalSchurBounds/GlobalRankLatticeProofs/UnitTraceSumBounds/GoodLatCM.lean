@@ -3,8 +3,6 @@ import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.EmbeddingPermutesLetters
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.StmtTransInvHolds
 import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Formalism.DirichletDensity.HostDensityArith
 
 open Formalism.MainNotions.TaylorLogMetric Formalism.BasicNotions NumberField
 

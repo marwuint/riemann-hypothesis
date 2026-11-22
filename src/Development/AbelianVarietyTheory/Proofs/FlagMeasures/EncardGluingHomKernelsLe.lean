@@ -9,7 +9,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCoset
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBound
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsGluingHomomorphismDefectGroup
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameLatticeGramDetAndMinorsOrbitInvariant
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBasisFgMaximalOrderSpanningFree
 
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical

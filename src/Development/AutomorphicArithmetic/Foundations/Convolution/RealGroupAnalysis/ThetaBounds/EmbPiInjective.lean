@@ -1,6 +1,4 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ThetaBounds.UnfoldedThetaIntegralConvergesSimilitudeOne
-import GroundTheory.GlobalFields.TateThesis.AdelePoissonUniform
-import GroundTheory.AutomorphicForms.ReductionIdele
 import GroundTheory.AutomorphicForms.GL2.GJGlobalLattice
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology Filter

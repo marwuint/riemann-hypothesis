@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.KernelLattices.FirstKernelLawReading
-import Formalism.SharpRestriction.GlobalSchurBounds.GL3Columns
 import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.JetLL
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.Forms GlobalTheory.KerJ NumberField Classical

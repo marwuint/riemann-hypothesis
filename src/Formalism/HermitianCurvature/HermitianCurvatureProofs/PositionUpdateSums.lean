@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RealWeightedForms
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.TransferMatrixFactorization
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.LiftMatrixTransferConjTransposeCommute
 
 namespace Formalism.FourierDecayAlt.P.CoordinateFlipUpdateSums

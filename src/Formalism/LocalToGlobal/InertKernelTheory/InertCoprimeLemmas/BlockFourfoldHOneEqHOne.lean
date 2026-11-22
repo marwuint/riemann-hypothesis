@@ -6,9 +6,6 @@ import Mathlib
 import Formalism.LocalToGlobal.InertKernelTheory.StatementAlg
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.ReBase
 import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.FinalFree
-import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.OrthogonalGaussModels.HermitianBlockFrames.MemLatticeFourfoldOfMemDualLattice
-import Formalism.LocalToGlobal.GlobalTheory.GL3.PHfTrace
-import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.AnalyticIdentityTheorems.QuasiPeriodConstUniqueOf
 
 noncomputable section
 open scoped BigOperators ComplexConjugate

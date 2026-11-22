@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsCurrent
-import ReciprocityTheory.AnalyticForms.MaIntEmpty
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.BergmanProjective
 import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCIsHermitian
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.AMassStA

@@ -3,7 +3,6 @@ import GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerOrd
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.DivisorModule
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerDivisorKummer
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerDivisorPlaces
-import GroundTheory.GlobalFields.SUnits
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.ProfCoh

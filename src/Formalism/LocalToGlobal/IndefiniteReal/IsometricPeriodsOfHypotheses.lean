@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.CutTuples2
 import Formalism.LocalToGlobal.IndefiniteReal.CxLemmas
 import Formalism.LocalToGlobal.IndefiniteReal.CutPassage
-import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ValBasic
 
 open Module NumberField IsDedekindDomain
 open scoped Matrix ComplexOrder InnerProductSpace

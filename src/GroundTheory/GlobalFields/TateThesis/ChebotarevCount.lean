@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.GlobalFields.TateThesis.ChebotarevFrobenius
-import GroundTheory.GlobalFields.KummerTheory.Splitting
 
 namespace GroundTheory.Global
 

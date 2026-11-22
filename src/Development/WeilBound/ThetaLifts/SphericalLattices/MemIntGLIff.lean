@@ -1,5 +1,4 @@
 import Development.WeilBound.ThetaLifts.SphericalLattices.LocModSt
-import Development.WeilBound.CoreStatements.LocalThetaKernels.IwasLoc
 
 noncomputable section
 

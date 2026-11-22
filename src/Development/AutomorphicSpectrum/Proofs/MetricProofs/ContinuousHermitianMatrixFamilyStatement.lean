@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ContinuousHermitianMatrixFamily
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsEigFrames
 
 open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 set_option maxHeartbeats 1000000 in

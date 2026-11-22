@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.Statements
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.ProjLineChartsNotSubsetBall
-import GroundTheory.HeightsAndTheta.Heights.Regularisation.ToPotentialChartsChartFun
 
 set_option maxSynthPendingDepth 1
 

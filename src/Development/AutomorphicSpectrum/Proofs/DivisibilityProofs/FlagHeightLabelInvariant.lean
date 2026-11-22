@@ -1,10 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.RefLinked
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LowerBoundOfBaseSetting
 import Development.WeilBound.CoreStatements.FlagImmersions.ExistsWord
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PBlockRatioAlg
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PHFlProdLinear
 
 noncomputable section
 

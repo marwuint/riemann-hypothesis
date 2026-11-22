@@ -7,7 +7,6 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackCor
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapFromSpecStalk
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMap
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFreeOverLocalRing
 
 noncomputable section

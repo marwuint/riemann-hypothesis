@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThPr
-import GroundTheory.GlobalFields.Adele.Discrete
 
 noncomputable section
 

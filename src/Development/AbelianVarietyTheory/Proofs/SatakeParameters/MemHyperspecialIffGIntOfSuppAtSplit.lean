@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ConjMemCompleted
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSelfDualCLatFrame
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MemLatOIffExistsActO
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MemRangeOfOneTmulMem
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCoordLattice
 
 noncomputable section

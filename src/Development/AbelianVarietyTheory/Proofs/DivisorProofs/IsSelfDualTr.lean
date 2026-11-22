@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FirstIndexEqOfUnfolded
-import Formalism.LocalToGlobal.ProjectiveLattices.UnFree
 
 noncomputable section
 

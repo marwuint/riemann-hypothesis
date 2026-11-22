@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.HasPartAnd
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.JointCmpEmbeddingY
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepZeroTrivialStabilisersTrueColumns
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLocalModelsOfSplitUnramifiedJoints
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ModelsOK
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ValidForConstructedPointClassesEventuallyWorking
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.JointsAtAllStd
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Ker Formalism.L2.Forms GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.Svd NumberField IsDedekindDomain
 

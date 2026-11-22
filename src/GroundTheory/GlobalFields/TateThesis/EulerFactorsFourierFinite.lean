@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.GlobalFields.TateThesis.EulerFactorsInverse
-import GroundTheory.GlobalFields.TateThesis.SchwartzBruhatFinite
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Topology Filter
   MeasureTheory WithZero

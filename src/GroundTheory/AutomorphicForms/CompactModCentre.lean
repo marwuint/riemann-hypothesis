@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.AutomorphicForms.SmoothRepContragredient
 import GroundTheory.AutomorphicForms.SmoothRepSchur
 import GroundTheory.AutomorphicForms.HeckeAlgebra
-import GroundTheory.AutomorphicForms.LocallyProfinite
 
 noncomputable section
 

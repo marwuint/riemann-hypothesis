@@ -1,9 +1,7 @@
 import Development.WeilBound.ThetaLifts.LocalTheory.StandardValuations.ConeVal
 import Development.WeilBound.ThetaLifts.LocalTheory.StandardValuations.SmallFSing
-import Development.WeilBound.ThetaLifts.LocalTheory.UnramifiedDeterminedBySpherical
 import Development.WeilBound.CoreStatements.CompactAveragingSplitting.EigenvectorLifting.SplitCharacterFacts
 import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ResCardAndUniformizer
-import Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableAndT2LocalField
 
 noncomputable section
 

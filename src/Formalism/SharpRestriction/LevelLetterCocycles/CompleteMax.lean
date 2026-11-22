@@ -2,11 +2,7 @@ import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.JumpsInLetterOfEvenIndex
 import Formalism.SharpRestriction.LevelLetterCocycles.At0HomApply
 import Formalism.SharpRestriction.LevelLetterCocycles.DlOfQp
-import Formalism.SharpRestriction.LevelLetterCocycles.EvaluationAtUniformizerPower
-import Formalism.SharpRestriction.LevelLetterCocycles.LemmaDN0OfAdmits
 import Formalism.LocalRingCardinality.SpanPowerMembership.NDLocE
-import Formalism.SharpRestriction.LevelLetterCocycles.RingConditionOfDeltaInvariants
-import Formalism.SharpRestriction.LevelLetterCocycles.LocalizationQuotientSeparatedDvd
 
 noncomputable section
 

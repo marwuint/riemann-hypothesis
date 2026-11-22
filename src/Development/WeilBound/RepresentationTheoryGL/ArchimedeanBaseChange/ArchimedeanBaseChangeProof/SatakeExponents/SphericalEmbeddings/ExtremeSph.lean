@@ -1,7 +1,5 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.BaseChangeIsobaricOf
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
 
 noncomputable section
 

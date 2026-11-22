@@ -1,6 +1,5 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ChainX1
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.MinorCellOfParts
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.ActualAdjointnessFromHermitian
 
 open Matrix
 

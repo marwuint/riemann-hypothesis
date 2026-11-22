@@ -3,7 +3,6 @@ import Formalism.SharpRestriction.GrowthBounds.HermitianTensor.NuOfWtPQCast
 import Formalism.SharpRestriction.GrowthBounds.HermitianTensor.CloudA
 import Formalism.SharpRestriction.GrowthBounds.HermitianTensor.CloudB
 import Formalism.SharpRestriction.GrowthBounds.HermitianTensor.CloudC
-import Formalism.SharpRestriction.GrowthBounds.HermitianTensor.CloudIso
 
 namespace Formalism.MainNotions.flipOneThree.Pf
 

@@ -4,8 +4,6 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CentreSetDominatingPoint
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChartPrimeExistsUniquePoint
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtChartLocalization
 
 noncomputable section
 

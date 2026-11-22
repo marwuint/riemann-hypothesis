@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetRefinement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterSumLocalConstantFourth
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftFrLifts
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterSumLocalConstantSecond
 
 noncomputable section
 

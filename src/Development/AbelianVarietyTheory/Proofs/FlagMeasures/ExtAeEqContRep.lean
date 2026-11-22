@@ -5,8 +5,6 @@ import Formalism.HarderNarasimhan.ShiftInvariance
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopology
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalUnitaryPointsDiscreteFundamentalDomain
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicUnitaryHaarBiInvariant
-import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
-import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec
 open scoped InnerProductSpace ComplexOrder ContDiff

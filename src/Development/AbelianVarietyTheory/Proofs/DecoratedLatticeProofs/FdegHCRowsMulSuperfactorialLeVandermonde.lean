@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
-import Formalism.FormalDegreeBessel.StatementDS
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GapAtLeast
 open Formalism.BasicNotions
 

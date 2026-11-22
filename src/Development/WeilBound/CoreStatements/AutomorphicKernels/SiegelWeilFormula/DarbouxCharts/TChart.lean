@@ -2,10 +2,6 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.ThetaBijections.JjMulJj
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DarbouxCoordinateChangeRealisedWithDouble
-import Development.AbelianVarietyTheory.Definitions.Divisors.DblActId
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealisedOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterInvariantAdelicFormEqMulEvalZero
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 
 noncomputable section
 

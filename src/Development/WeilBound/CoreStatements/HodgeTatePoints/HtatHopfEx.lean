@@ -5,7 +5,6 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfChar
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfLin
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatLie
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueTangentDualNumber
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT
 

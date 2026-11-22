@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.GL3MeanSquares.OrbitPointsDistinct
 import Formalism.FrobeniusOrbits.HostCorollaries
-import Formalism.DirichletDensity.HostDensityArith
 
 namespace Formalism.HermitianLattices.FiltrationBoundaryCriterion
 

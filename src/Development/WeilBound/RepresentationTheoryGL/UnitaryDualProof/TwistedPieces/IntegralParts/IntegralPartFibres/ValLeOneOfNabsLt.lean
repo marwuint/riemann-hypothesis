@@ -1,6 +1,5 @@
 import Development.WeilBound.RepresentationTheoryGL.UnitaryDualProof.TwistedPieces.IntegralParts.IntegralPartFibres.ContinuousOnZpart
 import Development.WeilBound.RepresentationTheoryGL.UnitaryDualProof.TwistedPieces.IntegralParts.IntegralPartFibres.ContinuousLinearMat
-import Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableAndT2LocalField
 
 noncomputable section
 

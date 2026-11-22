@@ -5,8 +5,6 @@ import GroundTheory.PAdicHodge.FiniteFlat
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HopfOrderInductionInjective
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemBtOrderIffBtSet
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularFunctionIffSection
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteOpenHopfOrder
 
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge

@@ -10,7 +10,6 @@ import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SeparatedOfFiniteSur
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.NormMapRestrictionCompatible
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyOfFinitePresentationOfCancel
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.NormLineBundleDescent
-import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
 
 noncomputable section
 

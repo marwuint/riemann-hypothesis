@@ -4,7 +4,6 @@ import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChan
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupportOfExponentOfCasselman
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ImportsBisTer
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviEmbLeviProjMemKm
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrobeniusReciprocityNonzero
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.SplitWeil ValuativeRel
 

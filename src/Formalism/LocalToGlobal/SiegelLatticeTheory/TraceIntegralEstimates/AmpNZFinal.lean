@@ -1,7 +1,6 @@
 import Formalism.LocalToGlobal.SiegelLatticeTheory.TraceIntegralEstimates.AmpNZTie
 import Formalism.LocalToGlobal.SiegelLatticeTheory.TraceIntegralEstimates.AmpFinal
 import Formalism.LocalToGlobal.SiegelLatticeTheory.TraceIntegralEstimates.MomTie
-import Formalism.SharpRestriction.CuspSpanNormBounds.NonemptyParameterModels.NumericSettingWithGapSatisfiable
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CoefDecay
 
 open MeasureTheory

@@ -2,11 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalDegreeUpperC
 import Development.AbelianVarietyTheory.Definitions.Divisors.RealisedChainTorusEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HookPlusLeMainTerm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicScalarBase
-import Development.AbelianVarietyTheory.Counterexamples.RotationExamples.LevelVectorSizeBounds
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalLevelEigenpartsAndConjugateCharacters
-import Development.AbelianVarietyTheory.Definitions.Divisors.OfCore
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TypePartBase
 
 noncomputable section
 

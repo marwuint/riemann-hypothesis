@@ -1,6 +1,5 @@
 import GroundTheory.ProfiniteCohomology.GlobalEulerCharacteristic.DefsForms
 import ReciprocityTheory.GaloisValuations.SeparatedDvrSecondCohomologyMem
-import GroundTheory.ProfiniteCohomology.RestrictedRamification.LocalMaps
 import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharacteristic.RatioOneKilled
 import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalFiniteness.Transport
 

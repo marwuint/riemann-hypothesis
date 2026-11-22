@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.Columns.TiedGlLoc
-import Formalism.LocalToGlobal.Columns.LevGCount
 
 open NumberField IsDedekindDomain Matrix
 open scoped TensorProduct

@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.NoThreeConsecutiveThickPlaces
-import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostFacts
 
 noncomputable section
 

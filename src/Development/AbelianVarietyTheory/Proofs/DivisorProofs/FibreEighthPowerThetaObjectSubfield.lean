@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMember
-import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
-import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.GoodClass
-import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.ExistsArBaseAway
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SharpRefinementOddPrimeLocalization
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SharpRefinementCoefficientFamily
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing

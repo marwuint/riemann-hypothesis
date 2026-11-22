@@ -2,7 +2,6 @@ import Formalism.SharpRestriction.GrowthBounds.ChartComparison.CmpGlMemMIff
 import Formalism.SharpRestriction.GrowthBounds.ChartComparison.NrmAMemAdForms
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.TiePtOne
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.BlockRationalityField
-import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.RecAct
 
 noncomputable section
 

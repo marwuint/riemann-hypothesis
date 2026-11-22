@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericFibrePointsBaseChange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComapMaximalIdealEqOrigin
 
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in

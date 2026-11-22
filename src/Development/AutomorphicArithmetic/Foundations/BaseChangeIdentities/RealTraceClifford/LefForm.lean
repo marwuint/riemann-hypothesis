@@ -3,7 +3,6 @@ import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.RealTr
 import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.RealTraceClifford.WeylEv
 import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.RealTraceClifford.ChiInj
 import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.RealTraceClifford.SymOfMul
-import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.RealTraceClifford.CfBasic
 
 noncomputable section
 

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MultisetManySeparatedPoints
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FewRootsSmallDisc
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardRootsClosedBallBoundsUltrametric
 open Polynomial
 open Classical
 

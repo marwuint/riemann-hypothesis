@@ -1,9 +1,7 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsExtraSide
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsSideFurther
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PQuotPartGraded
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGenTwistGenerated
-import GroundTheory.HeightsAndTheta.Heights.HeightComparison.IsMultiHomogIdealIff
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.AlgCechSt
 set_option maxSynthPendingDepth 1
 

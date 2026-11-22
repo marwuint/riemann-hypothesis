@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.GlobalFields.IdeleGroups.IdeleNorms.CompletionsOverBasisRepr
 import GroundTheory.GlobalFields.IdeleGroups.Restricted
-import GroundTheory.GlobalFields.Adele.BaseChange.FiniteMap
 
 namespace GroundTheory.Global
 

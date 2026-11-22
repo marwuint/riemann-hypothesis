@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsDominantOfSection
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAmbOfIsArithVar
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIsoIsMonHomOfIsGtOfRangeEq
 
 set_option autoImplicit false
 

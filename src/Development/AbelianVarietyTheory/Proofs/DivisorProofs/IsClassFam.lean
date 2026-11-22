@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TopPlaceLogTheta
-import Formalism.LocalToGlobal.Divisibility.DivisionHeightBoundStatement
 import Formalism.SharpRestriction.Divisibility.PlaceRankTwoOne
-import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
 import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.BadPrimesPeriodBound
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TauPlBijective
 

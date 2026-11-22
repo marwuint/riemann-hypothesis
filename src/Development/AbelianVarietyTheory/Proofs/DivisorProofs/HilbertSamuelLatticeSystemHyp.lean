@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.InclEquiv
-import Development.AbelianVarietyTheory.Definitions.Divisors.IntegralBound
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexifyStatement
 
 set_option autoImplicit false

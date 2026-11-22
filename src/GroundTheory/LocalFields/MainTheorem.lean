@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.LocalFields.LocalArtinUniqueness
 import GroundTheory.LocalFields.LocalArtinCompletion
 import GroundTheory.LocalFields.LocalArtinFunctoriality
-import GroundTheory.LocalFields.LocalArtinTransport
 
 noncomputable section
 

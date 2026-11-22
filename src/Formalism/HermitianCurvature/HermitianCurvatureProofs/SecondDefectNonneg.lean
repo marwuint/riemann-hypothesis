@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.PtEntryAppendStart
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.AeNeZeroComplex
 
 namespace Formalism.FourierDecayAlt.P.PBL
 

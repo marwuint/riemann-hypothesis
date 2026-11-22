@@ -1,7 +1,6 @@
 import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.Imports
 import GroundTheory.GlobalFields.TateThesis.GaussianSchwartz
 import GroundTheory.AutomorphicForms.GL2.SummableNormIffAndTsumEqCoset2
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsOpenIdeleSubgroupContainsCongruenceUnits
 
 noncomputable section

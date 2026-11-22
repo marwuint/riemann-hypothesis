@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormSqLeShifted
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.RegularityAtPlaceOfSubadditive
 
 namespace Formalism.FourierDecayAlt.P.CutBP2
 

@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinHomIffLinEnd
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsValueAtEqUnitMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTauLattice
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMonomialTauOfPerFactor
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.TangentLinearity.ConstPullback
 
 noncomputable section
 

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecialFibreNotInClosure
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.EpsilonPairingZeta
-import Development.AbelianVarietyTheory.Definitions.Divisors.HodgeTateLatticePointFinrankTateModule
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsIsPowGrpSplitTorus
 
 set_option autoImplicit false

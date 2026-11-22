@@ -10,7 +10,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.B
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsSeparatedOfIsQProjOver
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.IsEigBasisIff
-import ReciprocityTheory.DualLattices.UnramifiedCokernelLowerBoundOf
 
 set_option autoImplicit false
 noncomputable section

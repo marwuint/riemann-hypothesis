@@ -1,7 +1,6 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.ExDefs
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.ExistsLocalFirstOrderLifts
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.SmoothPtWeightedPresentationOfPointDerivations
-import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.LMemMax
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.DerHom
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 

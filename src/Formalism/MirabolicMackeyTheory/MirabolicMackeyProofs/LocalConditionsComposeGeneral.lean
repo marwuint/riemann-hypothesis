@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.MirabolicMackeyTheory.StatementC
-import Formalism.MirabolicMackeyTheory.StatementT
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.BoundsChain
 import Formalism.MirabolicMackeyTheory.MirabolicMackeyProofs.RamBasic
 import Formalism.MirabolicMackeyTheory.MirabolicMackeyProofs.UnipotentNumeric

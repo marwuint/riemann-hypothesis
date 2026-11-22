@@ -6,9 +6,7 @@ import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
 import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalAtLocalRing
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
 
 noncomputable section
 

@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.LocalFields.LocalReciprocityFinite
-import GroundTheory.LocalFields.AbstractLocalReciprocity.NormGroups
 
 namespace GroundTheory.LocalField
 

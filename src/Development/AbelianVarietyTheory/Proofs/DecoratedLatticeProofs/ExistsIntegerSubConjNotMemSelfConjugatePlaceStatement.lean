@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsIntegerSubConjNotMemSelfConjugatePlace
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsTransportAdelicCorrection
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.DIV Formalism.IndefR.Lev
 attribute [local instance] Formalism.BasicNotions.Host.cmStar

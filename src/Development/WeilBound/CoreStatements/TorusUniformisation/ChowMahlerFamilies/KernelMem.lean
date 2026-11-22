@@ -6,10 +6,6 @@ import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamili
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.TensOfBc
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.FunctionFamilyIdempotent
 import Development.WeilBound.CoreStatements.HodgeTatePoints.Weilreg
-import Development.WeilBound.CoreStatements.HodgeTatePoints.TwpairGeo
-import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.BtExistsBc
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LemmaBTHolds
-import Development.AutomorphicSpectrum.Statements.GeometryStatements.NonemptyEquivOfCardHom
 open AlgebraicGeometry CategoryTheory NumberField MvPolynomial ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Num GlobalTheory.CompanionTheory.Ar.Top
 open GroundTheory.Heights₂.Heights.NumbersDVR (pointIdeal segreVec IsFlagFrame IsFlagPair SameGenericFibre IsModelOver divCycle)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg fnField)

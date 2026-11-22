@@ -4,8 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqZeroOfInAMul
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsKerPowDvd
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormLtOneOfNotIsUnit
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LubinTateSeriesEqOfCoeffOneEq
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 
 noncomputable section
 

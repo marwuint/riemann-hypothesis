@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IntegralLocallyConstCochainModPow
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmallTracesSubgroupGaloisTowerTop
-import Development.AbelianVarietyTheory.Definitions.Foundations.CosetTrace
-import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteGaloisApproximation
 
 open GlobalTheory.K5

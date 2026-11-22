@@ -2,8 +2,6 @@ import Mathlib
 import Formalism.HermitianCurvature.BesselNonvanishingReduction
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LowerSmoothStability.ExistsFinStableOfMemSSup
 import Development.AbelianVarietyTheory.BlockTheory.JetGauges.SideNormalisedGap
-import Formalism.PeriodIntegrals.UpqRep
-import Formalism.FormalDegreeBessel.StatementG
 import Formalism.FormalDegreeBessel.FinalG
 import Development.AbelianVarietyTheory.Counterexamples.JetSurvey.KFinDecayOfDecInf
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SigmaFiniteOfPosLintegralNeTop

@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.ProfiniteCohomology.RealPlaces.GSDefs
 import GroundTheory.ProfiniteCohomology.RealPlaces.VanishingIndex
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.Dimension
-import GroundTheory.ProfiniteCohomology.Colimit
 import GroundTheory.ProfiniteCohomology.RealPlaces.LocalDualityPlace
 set_option maxSynthPendingDepth 1
 

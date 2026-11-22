@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountHypPAtAddQAt
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SmoothOfMemLowKSub
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DifferentiableAtOrbit
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeInfinitesimalCharLargeGap
-import Formalism.RealPlaceAnalysis.FinalF
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeMultiplicityOneCountingHypotheses
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec

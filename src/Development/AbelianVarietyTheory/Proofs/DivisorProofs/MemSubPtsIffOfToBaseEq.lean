@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IntegralBound
-import Formalism.HarderNarasimhan.StatementPl
 
 set_option autoImplicit false
 

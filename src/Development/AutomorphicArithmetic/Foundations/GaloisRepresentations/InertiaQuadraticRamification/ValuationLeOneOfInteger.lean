@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.InertiaQuadraticRamification.InertiaGenAlt
-import ReciprocityTheory.GaloisValuations.Global
 
 noncomputable section
 

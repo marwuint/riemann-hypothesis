@@ -1,8 +1,5 @@
 import Development.WeilBound.ThetaLifts.LeviDeterminants.ExistsNeOfSurjOn
-import Development.WeilBound.ThetaLifts.LeviDeterminants.EqZeroOfTheta
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicSchwartzNeZeroAtOrigin
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDiagonalLagrangianInvariantForm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryDoubledBlockDiagOne
 import Development.WeilBound.ThetaLifts.LeviDeterminants.ChiIndep

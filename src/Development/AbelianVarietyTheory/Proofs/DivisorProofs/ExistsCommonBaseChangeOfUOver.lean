@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LabRange
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProjectiveModel
 
 noncomputable section
 

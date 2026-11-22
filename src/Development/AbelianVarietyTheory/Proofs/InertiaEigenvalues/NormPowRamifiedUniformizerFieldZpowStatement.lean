@@ -1,11 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormPowRamifiedUniformizerFieldZpow
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsPotential
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.OneSubPhiOntoOfFilZero
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeCrystallineLattices
-import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExponents
-import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.RedKur
-import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModLocB
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per

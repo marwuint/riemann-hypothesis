@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeEisensteinZeroFrequencyPartIsSmoothHolomorphic
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.OmegaFactorization
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PartialZetaFunctionalEquation
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KFacDifferentiable
 
 open NumberField Complex
 open scoped nonZeroDivisors ContDiff

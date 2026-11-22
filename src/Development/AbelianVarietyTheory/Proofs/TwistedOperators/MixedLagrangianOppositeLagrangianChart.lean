@@ -4,9 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrientedHermitianFo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AtWAtPlSelf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfPartAlgebraMapLiftV
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridLocalTensorPlacesSplitIdempotentSum
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinPartIdemMulMemIff
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HermitianActionColumnBase
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationLeOneOfMem
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory Matrix

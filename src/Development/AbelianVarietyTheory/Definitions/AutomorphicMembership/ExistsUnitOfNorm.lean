@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.SubsingletonOfLeOne
 import Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.KerMemAbLocus
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsMonHomOfMul
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HasArcDataIff
 
 noncomputable section
 

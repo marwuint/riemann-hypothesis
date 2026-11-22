@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.DedekindLFunctions.SplitInertia
-import Formalism.SizeWindowBrackets.ChainSlopeWindows.StronglyIrreducible
 
 open Finset
 

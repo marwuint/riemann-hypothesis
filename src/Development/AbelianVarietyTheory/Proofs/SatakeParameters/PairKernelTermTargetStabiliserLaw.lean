@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaDistributio
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FormsAre
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ApplyAt0PolDEquivariant
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TrueWeightConsecutiveStepsPartition
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.JetLL
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.Forms Formalism.L2.Col Formalism.L2.DIV Formalism.HermitianLatticesTheory GlobalTheory.KerJ NumberField IsDedekindDomain Classical
 

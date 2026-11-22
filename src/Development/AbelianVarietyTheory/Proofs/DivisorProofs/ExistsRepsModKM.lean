@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.Definite
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsApprox
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGensModNsmulOfFgNumberFieldStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeModRepsCardLe
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainPointBound
 
 open NumberField Matrix GlobalTheory.AdLat GlobalTheory.UCls ReciprocityTheory.ChartRestriction.G.FD
 open scoped TensorProduct

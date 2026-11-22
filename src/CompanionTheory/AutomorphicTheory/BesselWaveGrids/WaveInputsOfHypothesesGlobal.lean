@@ -1,14 +1,6 @@
 import CompanionTheory.AutomorphicTheory.BesselWaveGrids.WaveBallEstimateWeightedDualAlt
 import CompanionTheory.AutomorphicTheory.BesselWaveGrids.PowFourLeRpowNineHalves
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGaps
-import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
-import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
 import Mathlib
-import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeries₂.Poulsen
-import Formalism.PeriodIntegrals.DSInfCharCap
-import Formalism.PeriodIntegrals.LowCyc
-import Formalism.PeriodIntegrals.UpqRep
-import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
 
 namespace CompanionTheory.WaveGrid.WEnd
 

@@ -1,10 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowFormOfEmb
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalDegreeUpperC
-import Development.AbelianVarietyTheory.Definitions.Divisors.RealisedChainTorusEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalLevelEigenpartsAndConjugateCharacters
-import Development.AbelianVarietyTheory.Definitions.Divisors.OfCore
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TypePartBase
 
 set_option autoImplicit false
 

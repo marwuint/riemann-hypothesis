@@ -1,7 +1,6 @@
 import Development.WeilBound.CoreStatements.FlagImmersions.Transport
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LiftToLogResolutionAnalytic
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BasePartFlagPt
 
 noncomputable section
 

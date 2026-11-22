@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.ArithmeticGeometry.AbelianVarieties.DualQuadratic
-import GroundTheory.ArithmeticGeometry.AbelianVarieties.WeilPairing
 import GroundTheory.ArithmeticGeometry.AbelianVarieties.WeilGaloisFunctionField
 import GroundTheory.ArithmeticGeometry.AbelianVarieties.TateModule
 

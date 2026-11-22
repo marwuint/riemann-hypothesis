@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.MemShaKernelIffLocallyTrivial
 import Development.AbelianVarietyTheory.Definitions.Divisors.SubsingletonComplex
-import Development.AbelianVarietyTheory.Definitions.Divisors.NormSub
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsEquivalenceFiniteEtaleBaseChangeResidueField
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatDegreeMinpolyLeBaseChange
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdjoinRootEquivMk

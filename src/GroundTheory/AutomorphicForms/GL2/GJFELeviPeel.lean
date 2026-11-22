@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.GL2.GJFELeviConv
 import GroundTheory.AutomorphicForms.GL2.GJFEBlock
-import GroundTheory.AutomorphicForms.LeviStagesProduct
 
 noncomputable section
 

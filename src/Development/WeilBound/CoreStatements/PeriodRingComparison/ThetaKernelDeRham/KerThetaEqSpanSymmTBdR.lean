@@ -1,8 +1,6 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PeriodRingComparison.CrystallinePeriodRings.GammaEqDpow
 import Development.AutomorphicArithmetic.IntegralCasts.CrystallinePeriods.DeRham
-import Development.AutomorphicArithmetic.IntegralCasts.CrystallinePeriods.DeRhamMap
-import Development.WeilBound.CoreStatements.CrystallinePeriodRings.ExistsMapEqOfPowMul
 
 noncomputable section
 

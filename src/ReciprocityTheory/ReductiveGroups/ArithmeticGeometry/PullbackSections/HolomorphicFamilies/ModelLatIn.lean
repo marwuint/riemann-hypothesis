@@ -1,6 +1,5 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.ModelLat
 import Mathlib
-import Formalism.FrobeniusOrbits.HostCorollaries
 
 noncomputable section
 

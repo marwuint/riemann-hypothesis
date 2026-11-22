@@ -6,7 +6,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.AdjointCoefficients.SpDims
 import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.AdjointCoefficients.AdFacts
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ObsPres
-import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.AdjointMemSp4
 
 open IsLocalRing UpperTheory.V UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 

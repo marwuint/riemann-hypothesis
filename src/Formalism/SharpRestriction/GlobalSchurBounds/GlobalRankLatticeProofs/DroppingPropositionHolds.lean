@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.SecondPropositionEveryLocalisation
-import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.ThickExists
 
 noncomputable section
 

@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
 import Mathlib
-import Formalism.LocalToGlobal.IndefiniteReal.CxToPkgFamIn
 import Formalism.LocalToGlobal.IndefiniteReal.MemRangeAdjointOfKerStable
 import Formalism.LocalToGlobal.IndefiniteReal.EqZeroOfMemRangeAdjoint
 import Formalism.LocalToGlobal.IndefiniteReal.EqZeroOfRangeAdjoint

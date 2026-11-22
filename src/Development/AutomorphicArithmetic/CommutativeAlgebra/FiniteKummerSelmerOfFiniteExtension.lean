@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.IsChart
 import Development.AutomorphicArithmetic.CommutativeAlgebra.FiniteKernelPowClassesOfPrimitiveRoot
-import GroundTheory.FunctionField.PlaceAbove
 
 open GroundTheory.FunctionField UpperTheory.Et.Sel
 open scoped TensorProduct

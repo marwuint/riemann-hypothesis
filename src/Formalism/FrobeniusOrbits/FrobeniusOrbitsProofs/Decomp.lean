@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.FrobeniusOrbits.Statement
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.Galois
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CoprimeTwoPow
-import Formalism.TameInertiaTowers.TowerFieldFoundations
 
 open NumberField IntermediateField Ideal
 open scoped Pointwise

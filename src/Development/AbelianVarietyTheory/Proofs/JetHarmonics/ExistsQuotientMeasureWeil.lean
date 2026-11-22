@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
 import Formalism.PeriodIntegrals.QuotSetU
-import Formalism.PeriodIntegrals.QuotInv
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LintegralInvEqOfBiInvariantMatGroup
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsNormalisedCutoff
 

@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsMulOfAp
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormLeOfCoord
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DualWeylEqSpanColProd
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExtremalRowWeight
-import Formalism.ThetaSupremumBounds.LiftOperatorBoundOfFockJet
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockSubstLe
 
 open MvPolynomial Formalism.GradedWeylDivisibility Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Ker

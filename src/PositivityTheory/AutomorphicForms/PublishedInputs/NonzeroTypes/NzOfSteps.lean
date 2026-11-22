@@ -1,6 +1,5 @@
 import PositivityTheory.AutomorphicForms.PublishedInputs.NonzeroTypes.FiniteDimensionalTranslationCoordinates
 import PositivityTheory.AutomorphicForms.PublishedInputs.NonzeroTypes.NzOfTypeData
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFixedIff
 
 noncomputable section
 

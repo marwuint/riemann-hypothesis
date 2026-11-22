@@ -1,6 +1,5 @@
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.PNTDHPos
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.DHFinish2Of
-import Formalism.LandauZeroFreeBounds.ExceptionalZeroBounds.LDerivNearOne
 
 open Finset Complex Classical
 

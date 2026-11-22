@@ -9,9 +9,7 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsMulPowEqAevalOf
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsBasicOpenOfIsSncModel
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SndEqZeroOfSpan
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.ConeChart
-import ReciprocityTheory.AnalyticForms.RegularLocalRings.ConeChartB
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterPCProof
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterMinor
 
 noncomputable section
 

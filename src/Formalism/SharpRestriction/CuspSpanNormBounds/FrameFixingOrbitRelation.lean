@@ -1,6 +1,5 @@
 import Formalism.SharpRestriction.CuspSpanNormBounds.FlagEEqHyperbolic
 import Formalism.SharpRestriction.CuspSpanNormBounds.LocalGroupInFamilyNontrivial
-import Formalism.SharpRestriction.CuspSpanNormBounds.IsPrimitiveSub
 import Formalism.SharpRestriction.CuspSpanNormBounds.CntPartners
 
 noncomputable section

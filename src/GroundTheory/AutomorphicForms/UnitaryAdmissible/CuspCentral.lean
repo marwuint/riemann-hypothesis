@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SummandsAreCuspForms
-import GroundTheory.AutomorphicForms.DixmierMalliavinBasic
 
 noncomputable section
 

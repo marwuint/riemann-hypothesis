@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.GroupLattices.LevelGatherings.IdemMulCompl
-import Formalism.LocalToGlobal.GroupLattices.LevelGatherings.FiniteClassSetOfLe
 
 noncomputable section
 

@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ParamCommF
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.DirectionsInParabolic
 
 open Matrix
 open scoped ComplexConjugate

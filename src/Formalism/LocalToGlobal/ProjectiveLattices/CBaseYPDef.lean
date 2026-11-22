@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.ProjectiveLattices.AxHSup
 import Formalism.LocalToGlobal.ProjectiveLattices.SupNDataOfNonneg
-import Formalism.LocalToGlobal.ProjectiveLattices.L2DefiniteCuspForms
 
 noncomputable section
 

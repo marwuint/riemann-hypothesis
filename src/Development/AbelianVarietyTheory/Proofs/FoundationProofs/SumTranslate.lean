@@ -8,7 +8,6 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.HtCoIOfEq
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsLamFROfIsLamF
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsLamFR2
 import Development.AbelianVarietyTheory.Definitions.Foundations.ChiProj
-import Development.AbelianVarietyTheory.Definitions.Foundations.CoPtMu
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormLPowLe
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UntwistedRepresentationOrdinaryTriangularShape
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ShCocQuotCoord

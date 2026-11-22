@@ -6,7 +6,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.I
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagDegreeWeightFormula
-import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.CompactGapsGE
 import Development.WeilBound.CoreStatements.FlagImmersions.AltEqZero
 import Development.WeilBound.CoreStatements.FlagImmersions.SumChooseLe
 import Development.WeilBound.CoreStatements.FlagImmersions.CoeffShift

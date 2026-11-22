@@ -4,7 +4,6 @@ import Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.StatementJ
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.StdBases
 import Formalism.LocalToGlobal.KernelLattices.KerStd
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaZJetsThree
-import Formalism.LocalToGlobal.InertKernelTheory.StatementIota
 
 open NumberField
 

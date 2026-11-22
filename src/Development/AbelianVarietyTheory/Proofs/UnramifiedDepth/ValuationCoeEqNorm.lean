@@ -1,6 +1,5 @@
 import Mathlib
 import ReciprocityTheory.DualLattices.SubMemOfCompat
-import ReciprocityTheory.DualLattices.ExistsPrimitiveRoot
 
 open Ideal
 

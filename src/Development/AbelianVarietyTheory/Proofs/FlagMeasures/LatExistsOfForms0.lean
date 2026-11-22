@@ -3,7 +3,6 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarP
 import Formalism.LocalToGlobal.GroupLattices.DownNaturalLevelZero
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LatExistsOfSteps
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsPrimitiveVectorNormNegHyperbolicPair
-import Formalism.LocalRingCardinality.DataSpaces
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsotropicOrthHyp
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnramifiedDegreeOneOfNcardPlacesOver
 

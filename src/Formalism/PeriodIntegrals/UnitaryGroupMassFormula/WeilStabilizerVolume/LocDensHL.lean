@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilStabilizerVolume.TopoAF
-import Formalism.PeriodIntegrals.VolFromSW
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension
 import ReciprocityTheory.GeneralLinearIntegers.AlgebraMapIntMemOint
 import Formalism.PeriodIntegrals.WeilQuotMeas
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilQuotientMeasure.StepBruhat
@@ -9,8 +7,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilQuotientMeasure.Lin
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilQuotientMeasure.Bruhat
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QuotMeasUniq
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilStabilizerVolume.DensGen
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilStabilizerVolume.TensTop
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.AdeleLC
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilStabilizerVolume.LocDensHC
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilStabilizerVolume.ExistsUnifFv
 

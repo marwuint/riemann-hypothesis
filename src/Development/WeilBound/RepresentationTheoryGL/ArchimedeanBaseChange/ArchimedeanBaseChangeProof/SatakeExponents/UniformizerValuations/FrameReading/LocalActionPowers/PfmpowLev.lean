@@ -1,7 +1,6 @@
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameReading.FmTools
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousCj
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousInvolutiveLocalTransposeInverse
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBallSubset
 
 noncomputable section
 

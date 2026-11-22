@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.HasSmoothLogNearOneOfIsUnitaryLieExpData
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsLieDataCircle
 
 open GlobalTheory.SmoothForms NumberField Matrix
 open scoped ContDiff Topology

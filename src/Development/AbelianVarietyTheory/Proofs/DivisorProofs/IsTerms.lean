@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WtChar
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NormVal
 
 noncomputable section
 

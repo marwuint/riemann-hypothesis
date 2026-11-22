@@ -3,8 +3,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.
 import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.NormCharPowHolds
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnramifiedAtValueHeckeCharCompIdeleNorm
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsWeilGroupRestrictExtension
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DenseRangeUnits
-import GroundTheory.GlobalFields.NormResidueSymbol.FunctorialFinite
 
 noncomputable section
 

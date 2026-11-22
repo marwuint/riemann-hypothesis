@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.ScaleEdges.SPtrueHom
-import Formalism.SharpRestriction.GrowthBounds.ScaleEdges.GainBoundAt
 
 noncomputable section
 

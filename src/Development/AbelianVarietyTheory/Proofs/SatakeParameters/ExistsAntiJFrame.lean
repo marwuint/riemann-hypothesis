@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.InertPlaceSetting
-import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
-import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
-import Formalism.SatakeDualWeyl.StatementF
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertPlaceHeckeDoubleCosetsInverseRepsLabel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryDivisorDualLabel
 

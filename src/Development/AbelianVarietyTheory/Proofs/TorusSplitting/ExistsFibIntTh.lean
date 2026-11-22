@@ -6,7 +6,6 @@ import Formalism.LocalToGlobal.ProjectiveLattices.LiesOverBaseChange
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ETPoint
 import Formalism.LocalToGlobal.ProjectiveLattices.ThetaFramePf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.GenMove
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
 
 set_option autoImplicit false
 

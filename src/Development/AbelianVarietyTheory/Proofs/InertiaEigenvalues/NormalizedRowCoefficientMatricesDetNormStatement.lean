@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormalizedRowCoefficientMatricesDetNorm
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MooreNorm
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RowTEqRowS
 
 open GlobalTheory.PMonE
 set_option maxHeartbeats 1000000 in

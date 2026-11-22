@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRapidInf
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
-import GroundTheory.AutomorphicForms.AdelicGLn
-import GroundTheory.GlobalFields.TateThesis.AdelicChar
 
 noncomputable section
 

@@ -1,9 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.UnitaryAdmissible.CuspCentral
-import GroundTheory.AutomorphicForms.CuspidalDiscreteness
-import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SummandsMeasure
-import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.GKStableConv
-import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.GKStableLaplacian
 
 noncomputable section
 

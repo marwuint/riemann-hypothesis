@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFinPt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplTupBijective
 import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.ThetaIntegralsAgree
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdMinorsMemInv
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasInfExpDiv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalBasePtTopMinors

@@ -9,8 +9,6 @@ import Formalism.EllipticTorsion.EllipticTorsionProofs.IntegralPSBserSubOne
 import Formalism.EllipticTorsion.EllipticTorsionProofs.NDeriv
 import Formalism.EllipticTorsion.EllipticTorsionProofs.JetsCube
 import Formalism.EllipticTorsion.EllipticTorsionProofs.JetsTwo
-import Formalism.EllipticTorsion.JetsCube
-import Formalism.FormalGroupLog.FormalGroupLogProofs.ConstantCoeffSubstOfZero
 import Formalism.EllipticTorsion.EllipticTorsionProofs.FormalGroupPointsSubgroupHolds
 import Formalism.EllipticTorsion.EllipticTorsionProofs.FormalGroupPointsNoPrimeToPTorsion
 import Formalism.EllipticTorsion.EllipticTorsionProofs.TorInt
@@ -18,7 +16,6 @@ import Formalism.EllipticTorsion.EllipticTorsionProofs.IsogenyExpansion
 import Formalism.EllipticTorsion.EllipticTorsionProofs.Change
 import Formalism.EllipticTorsion.EllipticTorsionProofs.UnitCancel
 import Formalism.EllipticTorsion.EllipticTorsionProofs.LogWeight
-import Formalism.EllipticTorsion.UnitCancel
 import Formalism.EllipticTorsion.EllipticTorsionProofs.CompExp
 import Formalism.EllipticTorsion.EllipticTorsionProofs.CoefficientWeightsLemmaTwo
 import Formalism.EllipticTorsion.EllipticTorsionProofs.ExistsSumPowPrimePow

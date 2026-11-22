@@ -1,7 +1,5 @@
 import Mathlib
 import GroundTheory.GlobalFields.GlobalArtinMap.ArtinMap
-import GroundTheory.GlobalFields.IdeleGroups.NormOneCompact
-import GroundTheory.GlobalFields.ClassFieldConsequences.OpenSubgroup
 
 namespace GroundTheory.Global
 

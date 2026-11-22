@@ -2,9 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.CmQuadraticFormEqAlternatingForm
 import Development.AbelianVarietyTheory.Definitions.Jets.TwoPlaces
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DepthTableGoodPrimesOfChartForm
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
-import Development.AbelianVarietyTheory.Definitions.Jets.DepthNumbersThresholdEq
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LeafDepth2Run
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.KLeSubOneOfLt
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LeafDepthLevelRun

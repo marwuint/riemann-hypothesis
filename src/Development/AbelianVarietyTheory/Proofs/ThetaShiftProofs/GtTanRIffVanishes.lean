@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsGtPtGenRel
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIsPullDegOfVal
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsSmulPtSmulPt
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsWithoutCohomology
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaCore
 
 noncomputable section
 

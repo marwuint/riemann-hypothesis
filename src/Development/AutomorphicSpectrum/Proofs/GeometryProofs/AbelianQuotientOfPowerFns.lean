@@ -10,7 +10,6 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SplitTorusToAb
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.KTrivOfLamEq
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsGroupQuotientPullback
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.GlobalFnsHolds
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PicardClassTrivialBySeesaw
 
 noncomputable section

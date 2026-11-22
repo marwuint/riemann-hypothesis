@@ -2,7 +2,6 @@ import Mathlib
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PshBasic
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PshMoll
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PshExtB
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
 
 set_option maxSynthPendingDepth 1
 

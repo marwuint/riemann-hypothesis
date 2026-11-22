@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.ConjEMemHostFIff
 import Formalism.LocalToGlobal.KernelLattices.ColumnData
-import Formalism.LocalRingCardinality.DataHost
-import Formalism.LocalRingCardinality.Params
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.AdjoinSqrtEqRatSpan
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntegralQuadraticHalfInt
 

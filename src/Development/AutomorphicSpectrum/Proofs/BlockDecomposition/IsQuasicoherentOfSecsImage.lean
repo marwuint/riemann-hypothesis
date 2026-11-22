@@ -2,8 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformVanishing
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubsetOfClosedFibre
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubobjectLeIffAffineSections
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PowSubSuccLe
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExactAndSurjectiveAppOfExactOfEpi
 
 set_option autoImplicit false
 

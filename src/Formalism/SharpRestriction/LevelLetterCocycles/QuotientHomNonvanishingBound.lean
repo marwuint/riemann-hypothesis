@@ -1,7 +1,5 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.DataN
-import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Formalism.WeaklyAdmissibleFiltrations.StatementTor
-import Formalism.GaloisCohomology.Statement
 
 noncomputable section
 

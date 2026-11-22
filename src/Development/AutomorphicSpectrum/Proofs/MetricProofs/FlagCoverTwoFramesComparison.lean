@@ -8,7 +8,6 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsBlkCover
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJMap
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishing
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
-import GroundTheory.HeightsAndTheta.Heights.Intersections.PtsOverPt
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameChangeUnderFieldMap
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverBasePointInPoints
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverFrameCompatibility

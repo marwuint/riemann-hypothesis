@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermLoc
-import Formalism.SharpRestriction.CuspSpanNormBounds.IsTermOver
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RelIndexMulMeasure
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ProdResQZpow
 

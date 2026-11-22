@@ -2,9 +2,6 @@ import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsSemilocalIntegral
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsValuativeCentre
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PContractRelDimLe
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPFContracted
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPFContractedDim
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PExistsForm
 import GroundTheory.HeightsAndTheta.Heights.Intersections.TableDegreeThreeBase
 set_option maxSynthPendingDepth 1
 

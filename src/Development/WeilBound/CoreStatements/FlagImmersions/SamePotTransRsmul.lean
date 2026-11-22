@@ -1,10 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LogResolutionPotentialPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LogResolutionReindexed
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyReindexed
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionFunctorialHolomorphic
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
 
 noncomputable section
 

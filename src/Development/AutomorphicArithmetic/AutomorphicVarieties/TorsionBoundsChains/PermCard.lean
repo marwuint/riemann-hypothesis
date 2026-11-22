@@ -5,7 +5,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChains.CardStep
 import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChains.PermTrans
 import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChains.PermEmpty
-import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChains.Transport
 
 open CategoryTheory UpperTheory.V.KH
 

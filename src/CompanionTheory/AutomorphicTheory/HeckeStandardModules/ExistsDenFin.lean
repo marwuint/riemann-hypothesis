@@ -1,5 +1,4 @@
 import CompanionTheory.AutomorphicTheory.HeckeStandardModules.EqZeroOfCompAt
-import Formalism.LocalToGlobal.GaloisLevelStructure.DefsAut
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 
 open NumberField IsDedekindDomain ReciprocityTheory.Aut TensorProduct Formalism.UG Formalism.L2

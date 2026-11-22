@@ -1,11 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DeterminantIdeleAtSplitPlaceMovedGridNode
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairPtsClasses
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairPtsEqSum
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MovFn
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DetIdlVal
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GivenLevelInner
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamificationIdxEqOneOfIsSquare
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.ExpansionInvariance GlobalTheory.RowVertexInv GlobalTheory.SplitFlip

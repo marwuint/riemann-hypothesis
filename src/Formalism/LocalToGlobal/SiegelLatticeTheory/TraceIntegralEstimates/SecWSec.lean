@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.TraceIntegralEstimates.SecWLoc
-import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.RealObj
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.KoszulLowersPower
 
 noncomputable section
 

@@ -1,6 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoFormsOff
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsCharsOfReading
 
 open Polynomial

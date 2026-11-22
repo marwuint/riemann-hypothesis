@@ -13,7 +13,6 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.TraceEtaIdentity
 import Development.AutomorphicArithmetic.CommutativeAlgebra.MultiplierIsUnit
 import Development.AutomorphicArithmetic.CommutativeAlgebra.TracePullbackIdentity
 import Development.AutomorphicArithmetic.CommutativeAlgebra.TraceUnitOfPullbackMultiplier
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelPosOfCoprime
 
 set_option autoImplicit false
 

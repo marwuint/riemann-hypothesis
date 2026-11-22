@@ -2,9 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LinearIndependentVecC
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFramesOfHolPeriods
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsOpenAndFderivMoebI
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLinearEquivLift
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.HolPair
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ConjugateConjugate
 
 set_option autoImplicit false
 

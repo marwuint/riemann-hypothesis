@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedCentralizerMassNeZeroOfMemSupport
-import Development.AbelianVarietyTheory.Definitions.Divisors.PointSide
 
 open GlobalTheory.LKCount
 set_option maxHeartbeats 1000000 in

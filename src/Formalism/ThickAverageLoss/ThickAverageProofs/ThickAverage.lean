@@ -1,5 +1,4 @@
 import Formalism.JacobiWeightFamilies.Statement
-import Formalism.StatementU
 import Formalism.ThickAverageLoss.PartnersToFactorsAt
 
 open Finset

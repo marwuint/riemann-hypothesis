@@ -6,7 +6,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
 import Development.WeilBound.CoreStatements.HodgeTatePoints.MaBase
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DominatesOfCoordsRegular
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EtaleLocalizationAtPrimeTensorOfLowHeight
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 
 namespace PositivityTheory.HtPt.Mb.LMorph.ChMorph

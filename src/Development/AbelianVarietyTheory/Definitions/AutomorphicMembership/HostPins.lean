@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CmQuadraticFormEqAlternatingForm
-import Formalism.LocalToGlobal.UnitaryNorms.MemFIffReal
 
 noncomputable section
 

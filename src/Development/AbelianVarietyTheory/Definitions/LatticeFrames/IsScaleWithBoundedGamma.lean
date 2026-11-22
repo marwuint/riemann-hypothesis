@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.NotInhAbsOfGamLe
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsTwIffCanonEq
-import Formalism.LocalRingCardinality.HeightBoundGeFourthPowerRank
 
 noncomputable section
 

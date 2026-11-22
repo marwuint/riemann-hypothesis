@@ -1,7 +1,6 @@
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.NormProducts.LUnH
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ClassGroupAffineCurveDivisibleCharZero
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValuationEqOneOfPowEqSpan
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DivisorDescentModUnramifiedGaloisSubmodule
 

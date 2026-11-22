@@ -5,7 +5,6 @@ import GroundTheory.PAdicHodge.ACrisGalois
 import GroundTheory.PAdicHodge.InstMulSemiringActionGalPlus
 import GroundTheory.PAdicHodge.BdRGalois
 import GroundTheory.PAdicHodge.UntiltFrobeniusEquivSymmEpsilonNeOne
-import GroundTheory.PAdicHodge.BdRAlg
 set_option maxSynthPendingDepth 1
 
 noncomputable section

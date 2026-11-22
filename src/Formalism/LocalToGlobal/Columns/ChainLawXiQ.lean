@@ -2,11 +2,7 @@ import Formalism.LocalToGlobal.Columns.ChainLawXi
 import Formalism.LocalToGlobal.Columns.ChainTw
 import Formalism.LocalToGlobal.Columns.ChainTwZero
 import Mathlib
-import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
 import Formalism.LocalToGlobal.KernelLattices.TopLawQ
-import Formalism.LocalToGlobal.KernelLattices.ColInst
-import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ColInst
-import Formalism.LocalToGlobal.Columns.ChainInstY
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.MemGoodPrimesOfNoExceptional
 
 open NumberField IsDedekindDomain Module

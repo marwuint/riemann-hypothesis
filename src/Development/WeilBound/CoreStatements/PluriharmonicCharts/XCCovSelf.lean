@@ -4,15 +4,6 @@ import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
 import Development.WeilBound.CoreStatements.PluriharmonicCharts.MinorSingle
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticFirst
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticFifth
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagFrameAtGoodPoint
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsImg
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.AevalNeZeroOfNotMem
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsValueAtOfTorus
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsBlkCover
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJMap
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishing
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
-import GroundTheory.HeightsAndTheta.Heights.Intersections.PtsOverPt
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 

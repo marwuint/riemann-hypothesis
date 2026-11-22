@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockDetCharInvariantsLeSpanProdMaximalMinors
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdMinorsMemInv
 
 open Classical
 set_option maxHeartbeats 1000000 in

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsStrict
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsPowEqOfBaseChange
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsCommonField
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.PullQkSurjective
 

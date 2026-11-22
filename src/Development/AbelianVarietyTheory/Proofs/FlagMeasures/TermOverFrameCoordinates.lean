@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GgNone
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemPerpSpan
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SpanToZero
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameCoordinatesTransportInnerLattices
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinatesTransportInnerLattices
 open ValuativeRel Formalism.MainNotions.S Formalism.MainNotions.S.Loc GlobalTheory.HL
 open scoped Pointwise ENNReal Classical
 

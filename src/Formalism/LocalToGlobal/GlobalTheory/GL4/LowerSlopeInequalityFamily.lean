@@ -1,7 +1,4 @@
 import Formalism.LocalToGlobal.GlobalTheory.GL4.ColumnLatticeExactSlope
-import Formalism.LocalToGlobal.GlobalTheory.GL4.MapIntRatComplex
-import Formalism.LocalToGlobal.GlobalTheory.GL4.PLemTLat
-import Formalism.LocalToGlobal.GlobalTheory.GL4.PCoordH
 
 noncomputable section
 

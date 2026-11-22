@@ -1,15 +1,7 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.FunctionalLowerBoundOfConditionsNumeric
 import Formalism.LocalToGlobal.IndefiniteForms.IndefExample
-import Formalism.LocalToGlobal.IndefiniteForms.IndefSide
-import Formalism.HarderNarasimhan.StatementPl
-import Formalism.HarderNarasimhan.QuotRealize
-import Formalism.PairingDivisors.StatementH
 import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
-import Formalism.LocalToGlobal.IndefiniteForms.IndefUse
-import Formalism.HarderNarasimhan.ShiftInvariance
-import Formalism.QuotientMetricDivisors.PassageScaleFree
-import Formalism.QuotientMetricDivisors.FinalW
 
 open Module NumberField IsDedekindDomain
 open scoped Matrix MatrixOrder ComplexOrder

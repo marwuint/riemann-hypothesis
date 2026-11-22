@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.Divisibility.LiftErrorLocal
 import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
-import Formalism.LocalRingCardinality.DataKerP
-import Formalism.LocalRingCardinality.DataKerI
 import Formalism.LocalToGlobal.Divisibility.CoefMod
 
 noncomputable section

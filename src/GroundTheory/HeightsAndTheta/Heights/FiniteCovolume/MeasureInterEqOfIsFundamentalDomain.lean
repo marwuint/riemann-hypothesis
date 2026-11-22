@@ -3,7 +3,6 @@ import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.DivisionPairOfAdelicF
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PUnfoldingIntegral
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PDiscreteFundamentalDomain
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PScalingLaw
-import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.Statements
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.ReindexBasis
 
 set_option maxSynthPendingDepth 1

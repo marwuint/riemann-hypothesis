@@ -2,8 +2,6 @@ import Formalism.SharpRestriction.GrowthBounds.ChartComparison.KerLabelsMu
 import Formalism.SharpRestriction.GrowthBounds.ChartComparison.CmpJMemSpan
 import Formalism.SharpRestriction.GrowthBounds.ChartComparison.IntAtJIffN
 import Formalism.SharpRestriction.GrowthBounds.ChartComparison.HtupWLeHtupJ
-import Formalism.SharpRestriction.GrowthBounds.ChartComparison.StepIn
-import Formalism.LocalToGlobal.HermitianColumns.HermCols
 
 noncomputable section
 

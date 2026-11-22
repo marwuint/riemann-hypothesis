@@ -1,6 +1,5 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HsConjTranspose
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.KFacts
 
 open Matrix
 open CompanionTheory.RgExh.Dec CompanionTheory.RgExh.Dec.L ReciprocityTheory.ChartRestriction.DS GlobalTheory.CompanionTheory.PSubFlag GlobalTheory.CompanionTheory.UGeo

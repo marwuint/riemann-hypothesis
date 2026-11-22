@@ -1,9 +1,5 @@
 import Formalism.LocalRingCardinality.DataKerI
 import Formalism.LocalRingCardinality.SpanPowerMembership.NZRowQ
-import Formalism.LocalRingCardinality.SpanPowerMembership.NZTypeH
-import Formalism.LocalRingCardinality.SpanPowerMembership.TrivialColumnsRamifiedTop
-import Formalism.LocalRingCardinality.SpanPowerMembership.GPlacesExampleNatAct
-import Formalism.CyclotomicNorms.StatementT
 import Formalism.LocalRingCardinality.SpanPowerMembership.EntPlNonempty
 import Formalism.LocalRingCardinality.Lemmas
 import Formalism.LocalRingCardinality.SpanPowerMembership.NZColF
@@ -17,13 +13,6 @@ import Formalism.SharpRestriction.InertJacobiLevels.GaugeExists
 import Formalism.LocalRingCardinality.SpanPowerMembership.EMjNApply
 import Formalism.LocalRingCardinality.SpanPowerMembership.NZTypeI
 import Formalism.LocalRingCardinality.SpanPowerMembership.NZTypeL
-import Formalism.LocalRingCardinality.DataIdx
-import Formalism.LocalRingCardinality.SpanPowerMembership.DivXExample
-import Formalism.LocalRingCardinality.DataAmbForm
-import Formalism.LocalRingCardinality.DataKap
-import Formalism.LocalRingCardinality.DataDIVDefs
-import Formalism.LocalRingCardinality.SpanPowerMembership.NZRowA
-import Formalism.LocalRingCardinality.SpanPowerMembership.NZRowC
 
 noncomputable section
 

@@ -2,7 +2,6 @@ import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoeffZeroNeOfMonicIrr
 import Formalism.PadicSubsetSums.CentralIdempotents.HCDisjointO
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.DetCharacterMemPrincipalCongruenceFixedVectors
 import Formalism.PadicSubsetSums.StableGradedCounts.IRRCentralIdemOrthogonal
-import Formalism.PadicSubsetSums.CentralIdempotents.GaloisConjCentralIdempotent
 
 open Formalism.IrreducibleCountingLemmas.TYPES Formalism.L2.NT
 open Polynomial CategoryTheory

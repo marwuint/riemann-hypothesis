@@ -1,5 +1,4 @@
 import Development.WeilBound.CoreStatements.AbelianHeightsDuality.ZarhinTrick.QiDefs
-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.FlatAndSurjectiveOfIsFiniteAbelianEnd
 
 set_option autoImplicit false
 

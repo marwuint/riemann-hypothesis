@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ModularCharacterEqOneOnExpHermitian
 
 open MeasureTheory Matrix
 open scoped InnerProductSpace ENNReal

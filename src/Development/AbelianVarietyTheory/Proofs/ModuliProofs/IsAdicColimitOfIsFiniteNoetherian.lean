@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.AllTorsMap
 import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.FiniteAlgebraLocalCompletion
 
 set_option autoImplicit false
 

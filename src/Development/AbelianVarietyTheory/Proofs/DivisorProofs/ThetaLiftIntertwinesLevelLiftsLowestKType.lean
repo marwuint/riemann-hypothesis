@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LiftLowestKTypeCompatibility
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilActionLiftPairStepVectorInvLevelChar
-import Formalism.LocalToGlobal.IndefiniteReal.FWExist
 
 noncomputable section
 

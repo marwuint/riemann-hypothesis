@@ -8,10 +8,8 @@ import Formalism.LocalRingCardinality.DataIdx
 import Formalism.LocalRingCardinality.DataKap
 import Formalism.LocalRingCardinality.DataErr
 import Formalism.SharpRestriction.GrowthBounds.DefsInst
-import Formalism.LocalRingCardinality.PrincipalHermitianLattice
 import Formalism.LocalRingCardinality.DataAmbForm
 import Formalism.LocalRingCardinality.DataKerP
-import Formalism.LocalRingCardinality.DataNChoice
 import Formalism.LocalRingCardinality.DataNChTie
 import Formalism.LocalRingCardinality.DataKerI
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GapAtLeast

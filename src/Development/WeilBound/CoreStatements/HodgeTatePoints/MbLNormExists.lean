@@ -9,7 +9,6 @@ import Development.WeilBound.CoreStatements.HodgeTatePoints.FinClosure
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntegralClosureChartSpan
 import Development.WeilBound.CoreStatements.HodgeTatePoints.MbLMorph
 import Development.WeilBound.CoreStatements.HodgeTatePoints.MbLNormChart
-import Development.WeilBound.CoreStatements.HodgeTatePoints.MaBase
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModelNonempty
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntegralOverLocalizationScaled
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalSubringIntegralClosureMax

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsFrobFixesRootOfOneModPlace
-import ReciprocityTheory.GaloisValuations.Global
 
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in

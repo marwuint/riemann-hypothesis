@@ -1,7 +1,6 @@
 import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicContinuation.GlobalGaussLaws.DerivOne
 import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicContinuation.GlobalGaussLaws.ThetaIntegralCompWeil
 import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicContinuation.GlobalGaussLaws.LocOpSt
-import Formalism.LocalToGlobal.IndefiniteReal.PublishedAut
 import Formalism.LocalToGlobal.IndefiniteReal.FockTheta.QuadraticOperatorPureTensor
 
 noncomputable section

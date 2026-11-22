@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CovariantVectorToFunctionFormCoeffMemRange
-import Development.AbelianVarietyTheory.Definitions.Divisors.InvVolConjLevelOne
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ReprMemOfCoeff
 
 open Formalism.L2.DIV MvPolynomial
 set_option maxHeartbeats 1000000 in

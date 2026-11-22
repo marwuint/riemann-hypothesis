@@ -1,5 +1,4 @@
 import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.IsHolVOf
-import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.WeightChange
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Qminor
 
 open NumberField Neutral.B1 Formalism.L2.Host GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.TR Matrix

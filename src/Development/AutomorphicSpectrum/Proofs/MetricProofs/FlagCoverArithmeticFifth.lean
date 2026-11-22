@@ -7,10 +7,6 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVan
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticFirst
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticThird
-import GroundTheory.HeightsAndTheta.Heights.Intersections.PtsOverPt
-import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PCoordConeArithVar
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Values
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeB
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmallConjFixedOfValuation
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LinearDescent
 
 open Polynomial
 set_option maxHeartbeats 1000000 in

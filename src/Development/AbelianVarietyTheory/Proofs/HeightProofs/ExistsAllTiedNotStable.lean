@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.BesselHermitianTheta.AllTied
-import Formalism.LocalToGlobal.BesselHermitianTheta.NoncompactGapAtLeastRange
 import Formalism.SharpRestriction.CuspSpanNormBounds.CayleySignature
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.SignatureConjugationInvariant
 import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.FinitePartTypes

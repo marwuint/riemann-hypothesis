@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PowIdeal
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubobjectLeIffAffineSections
-import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.FormalFunctions
-import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.RelSerreSections
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.SchemeCoh GlobalTheory.CompanionTheory.GE TensorProduct Opposite
 

@@ -4,8 +4,6 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsSmoothHermTrivLine
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemAbLocusIff
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorFlag
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GrGenOfIsFlagVBOn
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.Chg

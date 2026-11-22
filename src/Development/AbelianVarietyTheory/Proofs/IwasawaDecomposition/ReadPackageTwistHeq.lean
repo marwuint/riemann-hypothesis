@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenUsedOfCenReal
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SettingsFormsExistList
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PlaceModelImp
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DofOTw
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SideTw
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GoodLEq

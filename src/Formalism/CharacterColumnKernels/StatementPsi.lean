@@ -1,5 +1,4 @@
 import Formalism.CharacterColumnKernels.StatementColKer
-import Formalism.CharacterColumnKernels.StatementN
 
 open Finset Classical
 

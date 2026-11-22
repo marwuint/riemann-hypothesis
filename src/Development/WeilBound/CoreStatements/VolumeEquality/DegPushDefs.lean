@@ -1,6 +1,4 @@
 import Development.WeilBound.CoreStatements.VolumeEquality.BaseUnifEx2
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.BundleObjects
 
 noncomputable section
 

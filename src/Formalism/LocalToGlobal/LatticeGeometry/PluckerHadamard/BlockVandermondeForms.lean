@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.LatticeGeometry.PluckerHadamard.FlagIntegralKillsPowerSums
-import Formalism.DegreeFormula.PointDegree.PowSum
 
 noncomputable section
 

@@ -1,6 +1,5 @@
 import Development.WeilBound.RepresentationTheoryGL.UnitaryDualProof.TwistedPieces.LocalTraceForms.LocChi
 import Development.WeilBound.RepresentationTheoryGL.UnitaryDualProof.CompactOrbits.NilpotentOrbits.OrbitIntegrals.ZNClosed
-import GroundTheory.AutomorphicForms.WhittakerDistribution
 
 noncomputable section
 

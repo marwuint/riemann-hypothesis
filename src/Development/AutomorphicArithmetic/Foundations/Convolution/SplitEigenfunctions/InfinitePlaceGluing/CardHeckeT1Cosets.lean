@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsUnitar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeTjCosetsFiniteCardLe
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormHeckeEigenvalueLeCardCosets
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
 
 noncomputable section
 

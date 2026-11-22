@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.KeyBadSt
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsThetaMeanSquareNorm
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.ZhangDimensionPushDownGrassmannianHeightBounds
 import GroundTheory.HeightsAndTheta.Heights.KernelsLattice
 import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.StatementsBundles

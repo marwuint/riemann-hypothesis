@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsMidLevIff
-import Formalism.LocalToGlobal.Columns.ChainInstY
 
 noncomputable section
 

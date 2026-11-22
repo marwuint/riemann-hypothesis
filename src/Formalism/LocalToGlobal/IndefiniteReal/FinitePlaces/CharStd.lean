@@ -1,7 +1,6 @@
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IntegrableOnOfPeriodic
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.InfFam
 import Mathlib
-import Formalism.LocalToGlobal.IndefiniteReal.PHeisFCA
 import Formalism.LocalToGlobal.IndefiniteReal.PHeisThC
 import ReciprocityTheory.AdeleApproximation.AdeleIntA
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegerSubgroupIntersection.IsOpenIntSub

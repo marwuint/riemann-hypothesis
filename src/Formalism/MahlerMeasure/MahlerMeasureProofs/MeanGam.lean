@@ -1,5 +1,4 @@
 import Formalism.MahlerMeasure.StatementTM
-import Formalism.MahlerMeasure.HasOrder
 import Formalism.MahlerMeasure.LegendreDigits
 
 namespace Formalism.GM.MeanGammaLemmas

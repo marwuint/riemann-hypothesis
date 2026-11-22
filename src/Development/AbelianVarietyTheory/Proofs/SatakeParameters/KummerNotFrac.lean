@@ -13,7 +13,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LogPeriodCongrue
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsLogOnePlusKerThetaDeRhamPlus
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GaloisLogTeichmullerRatioEqAddKummer
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsKummerFracCoboundaryFullGalois
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 
 noncomputable section
 

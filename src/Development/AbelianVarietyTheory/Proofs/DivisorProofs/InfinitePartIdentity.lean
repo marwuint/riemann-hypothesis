@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TieTest
-import Development.AbelianVarietyTheory.Definitions.Divisors.SlopeTestRemainingChoicesAlt
 import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.InfClassAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotLeafMMZero

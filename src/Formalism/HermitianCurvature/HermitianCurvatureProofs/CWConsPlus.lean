@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.TopRatio
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.InsertUnitMatrixZeroApply
 
 namespace Formalism.FourierDecayAlt.P.PBL
 

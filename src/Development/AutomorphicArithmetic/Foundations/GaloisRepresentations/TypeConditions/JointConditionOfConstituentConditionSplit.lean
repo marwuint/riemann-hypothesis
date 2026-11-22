@@ -5,9 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecompositionL
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsDecompositionSetting
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RestrictionAtGoodPoints
 import Mathlib
-import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CoefficientCompatibilityOf
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.SplitRep
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AbsIrrDistinctConstituentsAfterExtension
 
 noncomputable section
 

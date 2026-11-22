@@ -1,6 +1,5 @@
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.SymInt
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.WittPNe
-import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.PairLift
 import Formalism.LocalToGlobal.GroupLattices.FockModels.TestSideEdge
 
 noncomputable section

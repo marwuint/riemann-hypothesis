@@ -1,12 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BallVolSuccSq
-import Formalism.LocalRingCardinality.DataCD
-import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
-import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.PerpendicularEmbedding
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ContinuousMatrixEntryAbsSum
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CdScaleIsTrueScale
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GaugeUnfold
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ContinuousGaussSp
 
 open MeasureTheory Matrix Filter Topology Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding GlobalTheory.CompactDualQuot GlobalTheory.GaugeQuot GlobalTheory.Mem.Vol.Scale
 open scoped ENNReal NNReal

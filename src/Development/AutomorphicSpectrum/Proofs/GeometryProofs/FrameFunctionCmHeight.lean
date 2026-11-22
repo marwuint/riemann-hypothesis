@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCMFrame
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDetNeZeroLocalBasisCofinite
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDeterminantLogDifferent
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsTransitionMatrixGram
 import Development.WeilBound.CoreStatements.SesquilinearFractions.DTransUnit
@@ -12,8 +11,6 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPackPureFrameOpen
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPackPureNorm
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsCmPeriodEmbedding
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.ExistsExtensionEmbeddingAlgClosed
-import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor

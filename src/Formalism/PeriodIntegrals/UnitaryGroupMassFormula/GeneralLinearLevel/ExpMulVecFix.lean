@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.HermitianCurvature.StatementQ
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.VectorComplexifiedDerivativeCommutator
 
 open Matrix Filter Topology
 open scoped ContDiff

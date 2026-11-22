@@ -4,9 +4,7 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueAct
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelEigenvectorsAction
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModelBaseChange
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsSubFibreSubFib
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat
 open TensorProduct

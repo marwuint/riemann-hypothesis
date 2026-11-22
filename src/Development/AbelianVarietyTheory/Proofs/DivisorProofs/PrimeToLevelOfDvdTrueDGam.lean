@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.SharpRestriction.ParConsts
 import Formalism.SharpRestriction.ParamsHeightRankConstant
 import Formalism.SharpRestriction.GlobalSchurBounds.MainIn
-import Formalism.LocalRingCardinality.DataErr
 import Formalism.LocalRingCardinality.DataMink
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardFiniteSubgroupGLIntDvd
 import Formalism.SharpRestriction.Divisibility.LocalQuadraticParts
@@ -12,7 +11,6 @@ import Formalism.QuotientMetricDivisors.SixthReductionExplicit
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.LocalToGlobal.GlobalTheory.IsResidueClassZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntSmulMem
-import Formalism.FlagUnipotentLattices.MemOfOrthogonalAnisotropic
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PredMemGamRanks
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AdelicDataRowMeasureScaleTrivialTuple
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LandherrHasse

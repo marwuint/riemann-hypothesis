@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PNormLength
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PVertTermEq
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.IsChowFormCMul
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.Statements
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PGaussEq
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PParAlgIndep
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PSecBLinInj

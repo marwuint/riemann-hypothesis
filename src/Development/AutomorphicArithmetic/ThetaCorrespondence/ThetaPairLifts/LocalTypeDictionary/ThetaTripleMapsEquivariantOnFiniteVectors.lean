@@ -5,7 +5,6 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.TripleTwistTransportEq
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.PlacewisePureTensorFinitePlaces
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRtensOp
 
 section
 noncomputable section

@@ -2,10 +2,7 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.TwChrOne
 import Formalism.LocalToGlobal.Columns.ThetaOpenTwLevQ
 import Formalism.LocalToGlobal.Columns.ChainTwFin
 import Formalism.LocalToGlobal.Columns.UnfoldingNonvanishingDoubleCosetHolds
-import Formalism.LocalToGlobal.Columns.RecLevelSym
-import Formalism.LocalToGlobal.Columns.Record
 import Formalism.LocalToGlobal.Columns.StabMapRLInjective
-import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThDistC
 
 open NumberField IsDedekindDomain Module
 

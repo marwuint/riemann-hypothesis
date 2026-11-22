@@ -4,10 +4,8 @@ import Formalism.CoboundaryTransfers.GammaStableTransfers.DiffOneSmulOfTower
 import Formalism.CoboundaryTransfers.GammaStableTransfers.TorsionKilledCriterionHolds
 import Formalism.CoboundaryTransfers.StatementBridge
 import Formalism.WachModuleLifts.WachModuleProofs.WachModuleStatementHolds
-import Formalism.LagrangeIdealLifts.Statement
 import Formalism.CoboundaryTransfers.GammaStableTransfers.DepthPageFirstZetaFactorEqPrimePower
 import Formalism.CoboundaryTransfers.GammaStableTransfers.Transfer
-import Formalism.CoboundaryTransfers.StatementAPI
 
 noncomputable section
 

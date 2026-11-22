@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsVolData
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarLieNilpotentCoordinates
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.NCoords
 import ReciprocityTheory.GeometryOfNumbers.LatticeCovolumes.CountStA
 
 noncomputable section

@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.PerCEmb
 import Development.AbelianVarietyTheory.Definitions.Divisors.MarkAd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VacuumCharacterPositiveDefiniteSource
-import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CplxOfFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockVacAtOfReads
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaReadingLinearInjectiveAtOrthonormalFrame

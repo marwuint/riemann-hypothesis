@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMapConstEq
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemRingOfIntegersOfHol
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalLevStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCupProductCoboundaryTheorem
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
 
 noncomputable section
 

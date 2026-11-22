@@ -1,6 +1,5 @@
 import Formalism.SharpRestriction.GrowthBounds.StandardPolynomials.ColNumDef
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.FirstCoefficientFacts
-import Formalism.SharpRestriction.GrowthBounds.CoarseMultiplicity.PolyUpperBoundDelta
 
 noncomputable section
 

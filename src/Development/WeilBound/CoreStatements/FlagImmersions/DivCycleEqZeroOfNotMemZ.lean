@@ -2,7 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.MetricsProjectionFormulaNef
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.UnitRatioDivisorSupportEq
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChartLatticeNormMembership
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.MemDivSuppOfDivCycleNeZero
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PVertFactorSmooth
 
 noncomputable section

@@ -1,7 +1,6 @@
 import Mathlib
 import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
 import ReciprocityTheory.AnalyticForms.LeviForms.ConvExpandStatement
-import ReciprocityTheory.AnalyticForms.LeviForms.TailCut
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.CompactPartIntegralsTendsto
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocDensAddOfFunContinuousOn
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsCompactRWSublevel

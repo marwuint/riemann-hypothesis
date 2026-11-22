@@ -2,14 +2,12 @@ import Development.EtaleCohomology.CohomologicalPurity.LeafCompPf
 import Development.EtaleCohomology.CohomologicalPurity.LeafInvPf
 import Development.EtaleCohomology.CohomologicalPurity.LeafRootStdPf
 import Development.EtaleCohomology.CohomologicalPurity.LeafRootHensPf
-import Development.EtaleCohomology.CohomologicalPurity.LeafRootPf
 import Development.EtaleCohomology.CohomologicalPurity.LeafSupPf
 import Development.EtaleCohomology.CohomologicalPurity.LeafCoeqPf
 import Development.EtaleCohomology.CohomologicalPurity.LeafDiagPf
 import Development.EtaleCohomology.CohomologicalPurity.LeafStagePf
 import Development.EtaleCohomology.CohomologicalPurity.LeafColHensPf
 import Development.EtaleCohomology.CohomologicalPurity.LeafColUnivPf
-import Development.EtaleCohomology.CohomologicalPurity.LeafHensCut
 
 namespace LateralTheory.Fin.LeafHens
 theorem henselization_compatible_maps_of_henselization : LateralTheory.CohomologicalPurity.Hz.LeafComp := by

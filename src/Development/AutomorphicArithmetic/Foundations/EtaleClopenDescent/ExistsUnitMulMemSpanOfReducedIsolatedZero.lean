@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Edge1
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsGaloisCover
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.OmegaPullOmegaTraceOfSecTraceOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAffCoverSpec
 

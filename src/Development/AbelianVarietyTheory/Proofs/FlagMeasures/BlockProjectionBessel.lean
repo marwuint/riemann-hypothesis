@@ -5,7 +5,6 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.LeadMinorK
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.KfinCoefMulSplit
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CellDataSupport
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HaarEqSmul
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DiscreteSeriesUnitarySmoothBasic
 
 open BranchingSupport GlobalTheory.CellAmp Formalism.BasicNotions Formalism.MainNotions.S Formalism.QuantumDeterminants Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal

@@ -1,10 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsRealisationPrimeDataCurveLifting
-import Formalism.LocalToGlobal.ProjectiveLattices.RegXInst
-import Formalism.LocalToGlobal.ProjectiveLattices.CurveLocInst
-import Formalism.LocalToGlobal.ProjectiveLattices.LocRingPf
-import Formalism.LocalToGlobal.ProjectiveLattices.TieInst
-import Formalism.LocalToGlobal.ProjectiveLattices.RealPtPf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.NoCommonZeroSt
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.Gaps.EtaleWeightGaps Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in

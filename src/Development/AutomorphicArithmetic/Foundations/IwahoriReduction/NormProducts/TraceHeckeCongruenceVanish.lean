@@ -4,7 +4,6 @@ import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.NormProduc
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.NormProducts.SlFixPoly
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.NormProducts.NegOneNot
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFunctionTowerIntegrality
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SlMulToRingEquiv
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerUnitClassModPrimePowProperties
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.Kd.K4 Polynomial
 open scoped Matrix MatrixGroups

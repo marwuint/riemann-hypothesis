@@ -2,9 +2,7 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.SumInnerBas
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.AdKMeasurePreserving
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.EigenvectorUnitaryMulStar
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.PBridge
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.PolarBasic
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.DetPPos
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.KinstSecondCountable
 
 noncomputable section
 

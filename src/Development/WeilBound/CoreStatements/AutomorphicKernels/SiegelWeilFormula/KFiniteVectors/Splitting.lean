@@ -1,5 +1,4 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.KFiniteVectors.IsCompactK
-import GroundTheory.PAdicHodge.NormalizedTrace
 
 noncomputable section
 

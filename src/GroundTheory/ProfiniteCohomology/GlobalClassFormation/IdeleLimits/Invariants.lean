@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.ProfiniteCohomology.GlobalClassFormation.IdeleLimits.SmulOfEqOfMemFixingSubgroup
 import GroundTheory.GlobalFields.IdeleClassGroup.Invariants
-import GroundTheory.GlobalFields.IdeleGroups.GaloisOnAdeles.Action
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.ProfCoh

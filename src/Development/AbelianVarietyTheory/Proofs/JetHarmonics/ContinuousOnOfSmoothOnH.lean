@@ -1,11 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
 import Development.AbelianVarietyTheory.BlockTheory.JetGauges.SmoothDecompositionForms
-import Formalism.PeriodIntegrals.UpqRep
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffSetIntegralNat
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CasimirEigenvalueCoefficients
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ContinuousMulMt
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CapelliEigenvalues.HeckeMultiplication
 
 open Matrix Finset PI.UpqRep
 open scoped InnerProductSpace ContDiff

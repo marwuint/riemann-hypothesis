@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.GlobalFields.ComplexMultiplication.DifferentialSeparable
 import GroundTheory.ArithmeticGeometry.AbelianVarieties.IsogenyFrobeniusSep
-import GroundTheory.ArithmeticGeometry.AbelianVarieties.IsogenyPoints
 import GroundTheory.ArithmeticGeometry.AbelianVarieties.SupersingularPowField
 
 namespace GroundTheory.Global

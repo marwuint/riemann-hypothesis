@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PredMemGamRanks
 import Formalism.LocalToGlobal.Divisibility.FramesLemmas
-import Formalism.LocalToGlobal.Columns.CoefficientsModP.PairingNondegenerateHolds
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HasRatBasisOfAct
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CoefActionReprMemSubfield
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NablaDeltaOperatorLatticePreserved

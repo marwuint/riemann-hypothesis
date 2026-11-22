@@ -1,10 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MemHalfCosetSelf
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RatInOfDefinite
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftsAtAndSeedFacts
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHasLocalSmall
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsEtaTildeUnramified
-import Formalism.LocalRingCardinality.SpanPowerMembership.Spaces
 
 noncomputable section
 

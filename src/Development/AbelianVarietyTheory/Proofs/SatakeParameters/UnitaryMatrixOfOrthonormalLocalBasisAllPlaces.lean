@@ -8,8 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsKurFrobTau
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormLeOneOfValuationLeOne
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.RepFrame
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.RepTrace
-import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.IntBasis
-import Formalism.GaussJetBounds.GaussJetProofs.NormNatCastEqPowPadicValNat
 
 noncomputable section
 

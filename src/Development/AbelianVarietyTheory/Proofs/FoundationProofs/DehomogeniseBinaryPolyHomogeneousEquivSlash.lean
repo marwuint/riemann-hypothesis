@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.LiftApplyOfMemAd
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsDCReps
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BinaryMonomialDegreeSubstExpansion
-import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
 
 noncomputable section
 

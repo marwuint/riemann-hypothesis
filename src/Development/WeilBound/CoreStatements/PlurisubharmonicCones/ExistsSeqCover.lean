@@ -1,12 +1,7 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.CentreIdent
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PeriodDecompositionNearBoundary
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsEigFrames
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryChartLieModelExists
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbBound
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.CoordinateIdeals
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 

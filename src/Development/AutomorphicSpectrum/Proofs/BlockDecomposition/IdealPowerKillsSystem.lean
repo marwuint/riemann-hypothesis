@@ -2,8 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PowIdeal
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoherentSubobjectCoherent
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExactAndSurjectiveAppOfExactOfEpi
-import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProjectiveCohomology.QcohLocal
-import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.QcqsPushforward
 
 set_option autoImplicit false
 

@@ -1,6 +1,5 @@
 import Formalism.SharpRestriction.GrowthBounds.ValuationLowestDegreeRename
 import Formalism.SharpRestriction.GrowthBounds.BinomialPolynomialIdentities.IndexOffRange
-import Formalism.ThetaLogCoordinates.JacobiPathWeights.FinalP
 import Formalism.PeriodIntegrals.AdmissibleModel.WeylDim
 import Formalism.SharpRestriction.GrowthBounds.LatticeSystems
 import Formalism.LocalRingCardinality.Lemmas

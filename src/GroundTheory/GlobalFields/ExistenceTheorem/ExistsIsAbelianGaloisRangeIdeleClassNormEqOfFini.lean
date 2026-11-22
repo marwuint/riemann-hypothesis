@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.GlobalFields.ExistenceTheorem.Kummer
 import GroundTheory.GlobalFields.ExistenceTheorem.NormLimitation
-import GroundTheory.GlobalFields.IdeleGroups.GaloisOnAdeles
 
 namespace GroundTheory.Global
 

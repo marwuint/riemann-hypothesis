@@ -1,6 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.HidaSetting
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.TensorV
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Closure
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.CoefCExpEntrySummable
 
 noncomputable section

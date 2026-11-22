@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsGauss
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsGaussGCTarget
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussNormAcrisRadiusPosDefinite
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisGaussNormEventuallyMonomial
 open GlobalTheory.PMon.Gauss
 open scoped Formalism.Per
 

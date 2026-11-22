@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormCoefficientIdealFamilyEqTopOfDisjoint
-import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.IsOpenOfMemIrreducibleComponentsOfFinite
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FamIdeal
 
 open AlgebraicGeometry CategoryTheory Limits
 set_option maxHeartbeats 1000000 in

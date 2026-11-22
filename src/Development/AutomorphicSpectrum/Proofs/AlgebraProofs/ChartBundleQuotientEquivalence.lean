@@ -3,8 +3,6 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TrivFlagMo
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.FlagMinor
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.Imports
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeFamiliesGlueToBundle
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsBundles
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.SameGenericSymm
 
 open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.Heights.NumbersDVR
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)

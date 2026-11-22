@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.IndefiniteReal.RealPins
-import Formalism.LocalToGlobal.IndefiniteReal.CutPassage
 
 noncomputable section
 

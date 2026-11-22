@@ -3,9 +3,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeas
 import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.TensF
 import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.TensHt
 import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.WordHt
-import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.PolyMem
-import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.TensApply
-import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.LocEmb
 
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial Filter
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace

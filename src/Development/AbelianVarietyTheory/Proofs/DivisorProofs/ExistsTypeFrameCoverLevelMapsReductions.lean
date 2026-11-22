@@ -1,7 +1,6 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.MemLevEigenIffTransl
 import Development.AbelianVarietyTheory.Definitions.Divisors.CongModRefl
 import Formalism.LocalToGlobal.IndefiniteReal.RhoGeo
-import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MulVecMemOfFrame
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeCoordinatesModPrimeSelfDualStabilizer

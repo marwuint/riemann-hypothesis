@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ConstantTermVanishing
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralMulEqZeroOfCosetIntegralEqZero
-import Development.AbelianVarietyTheory.Definitions.Foundations.ContinuousOfMemCcSmooth
 
 noncomputable section
 

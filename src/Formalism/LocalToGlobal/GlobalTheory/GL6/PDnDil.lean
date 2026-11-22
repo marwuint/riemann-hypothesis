@@ -1,8 +1,5 @@
 import Formalism.LocalToGlobal.GlobalTheory.GL6.PSplitT
 import Formalism.LocalToGlobal.GlobalTheory.GL6.DiamondPreservesRationalFormZero
-import Formalism.LocalToGlobal.GlobalTheory.GL6.AdelicFunctionRightTranslateDiamond
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AfsplitB
-import Formalism.LocalToGlobal.GlobalTheory.GL6.Statement
 import Formalism.LocalToGlobal.GlobalTheory.GL6.FrameTranslate
 import Formalism.LocalToGlobal.GlobalTheory.GL6.EqOneOfCoprimeTorsionTwoPrimes
 import Formalism.LocalToGlobal.GlobalTheory.GL6.PRLocV

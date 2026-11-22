@@ -9,7 +9,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SzValueOfFamily
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertFamilyWeierstrassTwist
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsSideTer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemMulMatSmulOneIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModularGroupRowVecAndConjRightActions
 open NumberField UpperHalfPlane GlobalTheory.HilbFam GlobalTheory.QFam
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization (Emb Frac latM qPow upperHalf cK omegaFactor IsPartialZeta HasExpansion)
 open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (iterD partialD)

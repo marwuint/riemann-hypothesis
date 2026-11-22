@@ -2,9 +2,6 @@ import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.SliceTensor
 import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.SliceTensors.PSliceB
 import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.SliceTensors.PSliceC
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalOfL2CuspidalMem
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DiscreteTopologyRatN
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOfIsOpenStab
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsLeftInvariantOfIsAutForm
 
 noncomputable section
 

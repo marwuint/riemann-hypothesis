@@ -1,11 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtensionIntoInjectiveSheaf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveBundleFormulaOfUnitOnEtalePoints
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TrivV
-import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CotDComp
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsZeroChains
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SxProdIsoHomSnd
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in

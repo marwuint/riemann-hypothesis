@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HermSysHypOneLeLambdaZero
-import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
 
 set_option autoImplicit false
 

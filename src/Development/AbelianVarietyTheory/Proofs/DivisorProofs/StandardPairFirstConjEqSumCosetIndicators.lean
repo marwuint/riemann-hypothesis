@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitDetCharIndicato
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardPairFirstMemberIntegralFrameEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitDetCharIndicatorEqOneOfCongruentOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralUnitaryLiftIdempotentPart
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaLiftIdempotentForm
 
 open NumberField IsDedekindDomain
 open scoped Classical Pointwise

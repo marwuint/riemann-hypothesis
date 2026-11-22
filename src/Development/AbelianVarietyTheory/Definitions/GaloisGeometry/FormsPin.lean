@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.KernelLattices.TopPin
-import Formalism.LocalToGlobal.Columns.KOneCharacterTrivialNearOne
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FormsAre
 
 noncomputable section

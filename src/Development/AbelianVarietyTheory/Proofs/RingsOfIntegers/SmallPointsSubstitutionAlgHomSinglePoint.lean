@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.RegularSectionInt
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsPref
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.TruncationFramesLocalSeries
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.WeilIsAlternatingSkewNatural
-import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.IsNilpotentOfMemKerJetTruncR
 
 set_option autoImplicit false
 noncomputable section

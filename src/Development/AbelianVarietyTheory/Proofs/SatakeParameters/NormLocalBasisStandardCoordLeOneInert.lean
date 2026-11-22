@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsRingHomRhoK
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnitaryMatrixOfOrthonormalLocalBasisAllPlaces
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormPadicEmbeddingLeOneOfMemInverseHalfDifferent
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PrimeOfLiesOver
 
 noncomputable section
 

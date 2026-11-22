@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyValExtOfOve
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.NuAlgLeOfCharts
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsExpEqOfSubstLg
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.GermLinearPartCoordinatePointZero
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.TangentEqLcZero
 
 set_option autoImplicit false
 noncomputable section

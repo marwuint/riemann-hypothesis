@@ -4,7 +4,6 @@ import Formalism.LocalToGlobal.ProjectiveLattices.GenSpecLocFrM
 import Formalism.LocalToGlobal.ProjectiveLattices.LocFrGen
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LieBridgeB
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LieBridgeC
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCRing
 
 noncomputable section
 

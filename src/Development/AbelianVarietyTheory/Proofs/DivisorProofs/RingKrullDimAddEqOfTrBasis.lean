@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
 import Development.AbelianVarietyTheory.Definitions.Divisors.AdjKltOfLtDisc
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RingKrullDimQuotientAddOneOfMemMinimalPrimesSup
 
 set_option autoImplicit false
 

@@ -4,7 +4,6 @@ import ReciprocityTheory.DualLattices.MemDualLat
 import ReciprocityTheory.DualLattices.IsUnitDetOfSpanEq
 import ReciprocityTheory.DualLattices.PowMemCarrier
 import ReciprocityTheory.DualLattices.HasLenCokerDet
-import ReciprocityTheory.DualLattices.MemOfSumSingleEqZero
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsTight
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.StepOrderRes
 

@@ -5,9 +5,6 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNot
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHTFormOver
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NatCastSmulMemHtLat
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChange
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionLiftIsClosedImmersion
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 

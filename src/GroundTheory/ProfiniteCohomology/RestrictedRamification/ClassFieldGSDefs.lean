@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.GlobalFields.ClassFieldConsequences.CongruenceSubgroupLeStandardOpenSubgroup
-import GroundTheory.GlobalFields.IdeleGroups.ClassGroup
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.SPicDefs
 set_option maxSynthPendingDepth 1
 

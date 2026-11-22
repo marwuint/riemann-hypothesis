@@ -1,5 +1,4 @@
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.PNTDHSt
-import Formalism.LandauZeroFreeBounds.SiegelWalfiszAPOfSiegelLower
 
 open Finset Complex Classical Filter Topology
 

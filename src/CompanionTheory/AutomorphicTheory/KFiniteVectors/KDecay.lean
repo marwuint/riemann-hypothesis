@@ -2,7 +2,6 @@ import CompanionTheory.AutomorphicTheory.SchurLimitBounds.ZuckermanDuality.ZuckD
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ContinuousMulMt
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormDiagonalEntryDilationGeneratorLeOne
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.BetaSesquilinearity
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LowerSmoothStability.ExistsFinStableOfMemSSup
 
 namespace MainStatements.BetaInf
 

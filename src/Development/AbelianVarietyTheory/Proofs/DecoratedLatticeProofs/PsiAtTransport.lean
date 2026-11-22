@@ -2,9 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SplitPart
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CongAt
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MemPrinCongOfSm
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LastTwoStepsGuarded
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SmulCompSmul
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsPrimesOk
 
 noncomputable section
 

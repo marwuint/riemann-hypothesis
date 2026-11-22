@@ -2,7 +2,6 @@ import Formalism.LocalToGlobal.Columns.XtSumSingle
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.KerEquivConcrete
 import Formalism.LocalToGlobal.Columns.ReferenceKernelEquivOfLastComponent
 import Formalism.LocalToGlobal.Columns.RecLevelSym
-import Formalism.LocalToGlobal.Columns.LevGCount
 
 open NumberField IsDedekindDomain Module Matrix
 

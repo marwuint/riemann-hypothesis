@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsCurrent
-import ReciprocityTheory.AnalyticForms.MaIntEmpty
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.BergmanProjective
 import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCIsHermitian
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.AMassStA
@@ -8,10 +7,6 @@ import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeLogBound
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PFsLogSmul
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSheetSumMeasurable
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCutOff
-import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.LineInhabitant
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.LogIntegrableOnOfLogIntegrable
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LintegralImageEqLintegralNormSqDetMul
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.MdiscSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterOsgood
 
 set_option maxSynthPendingDepth 1

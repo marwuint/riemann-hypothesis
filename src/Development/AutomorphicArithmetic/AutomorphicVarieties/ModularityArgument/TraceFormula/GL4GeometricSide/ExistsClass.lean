@@ -5,7 +5,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspRapidDecayS
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaloisRepresentationAdmitted
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsThetaInvolution
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsRightHaarMeasure
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrreducibleFixed
 
 open UpperTheory.V.Z.GSp4Splitting PositivityTheory.RgBcC PositivityTheory.RgBcC.RealD PositivityTheory.Rg.BcB.Desc
 open NumberField GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL GlobalTheory.GKCoh MeasureTheory GlobalTheory.CompanionTheory.TwY.ThInv

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReductionToSiegelDomain
-import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in

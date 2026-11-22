@@ -1,12 +1,7 @@
 import Mathlib
 import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowup
 import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowupUniversal
-import Development.ResolutionOfSingularities.Foundations.Blowup.BlowupBasic
-import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowupCartier
-import Development.ResolutionOfSingularities.Foundations.Blowup.BlowupOpenCover
-import Development.ResolutionOfSingularities.Foundations.Schemes.IdealSheafData
 import Development.ResolutionOfSingularities.Foundations.Schemes.SchemeMorphismProperties
-import Development.ResolutionOfSingularities.Foundations.BlowupUniversalProperty
 universe u
 
 open CategoryTheory AlgebraicGeometry CategoryTheory.Limits

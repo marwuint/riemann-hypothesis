@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AdelicLattices₂.Alge
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsSplitIdempotentsOfRelTraceOneModTwo
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBaseChangeFiniteAdeleRingEquiv
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFinitePlaceIdempotentBaseChangeAdeles
-import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasWeil
 
 noncomputable section
 

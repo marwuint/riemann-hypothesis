@@ -2,7 +2,6 @@ import Formalism.SharpRestriction.GrowthBounds.CoarseMultiplicity.CharZeroOfW
 import Formalism.SharpRestriction.GrowthBounds.CoarseMultiplicity.SymVarInlFst
 import Formalism.SharpRestriction.GrowthBounds.CoarseMultiplicity.MemIntPolOfCoeff
 import Formalism.SharpRestriction.GrowthBounds.CoarseMultiplicity.SymbolVariableLowerLetter
-import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.FactorsOfPerturb
 
 noncomputable section
 

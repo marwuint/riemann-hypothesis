@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ReadPk
-import Formalism.LocalToGlobal.IndefiniteReal.LinksStage
 import Formalism.LocalToGlobal.IndefiniteReal.IsotInLeOfIntw
 import Formalism.LocalToGlobal.IndefiniteReal.LinIndepOfOrth
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField

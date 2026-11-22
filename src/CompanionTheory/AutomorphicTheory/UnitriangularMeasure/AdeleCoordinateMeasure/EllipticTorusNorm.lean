@@ -1,7 +1,6 @@
 import Mathlib
 import CompanionTheory.AutomorphicTheory.UnitriangularMeasure.AdeleCoordinateMeasure.GJGlobalModulus
 import GroundTheory.GlobalFields.IdeleGroups.IdeleNorms.BaseChange
-import GroundTheory.GlobalFields.TateThesis.AdeleScaling
 
 set_option maxSynthPendingDepth 1
 

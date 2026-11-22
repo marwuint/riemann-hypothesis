@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionUnitaryGroupTestFunctions
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SchwartzBruhatInvariantIntegralMatrixMul
-import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 
 open Matrix Complex NumberField GlobalTheory.SW Filter Topology
 open ReciprocityTheory.ChartRestriction.G.FD (cc herm)

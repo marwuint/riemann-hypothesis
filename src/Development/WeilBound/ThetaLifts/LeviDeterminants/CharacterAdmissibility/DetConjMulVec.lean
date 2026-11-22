@@ -1,7 +1,6 @@
 import Development.WeilBound.ThetaLifts.LeviDeterminants.CharacterAdmissibility.BoxCancel
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryDoubledBlockDiagOne
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 
 noncomputable section
 

@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VacTheta
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFinPt
-import Formalism.LocalToGlobal.ProjectiveLattices.CuspidalL2Subspace
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.OmAtSmulRight
 
 noncomputable section
 

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecMapApply
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotCoinvQuotEmpty
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsLocallyConstantSplitOm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LagrangianInvariantFormsProportionalFinitePlace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StoneVonNeumannSchwartzBruhatAnyCharacter
 

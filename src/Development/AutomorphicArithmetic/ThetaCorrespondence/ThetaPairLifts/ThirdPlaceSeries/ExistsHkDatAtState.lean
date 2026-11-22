@@ -8,7 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGoodRowH
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ReadWMemGoodW
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EigenCompatibleOfBadSet
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SameGaloisLevelExists
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
 set_option synthInstance.maxHeartbeats 200000
 

@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Descent
 import GroundTheory.ProfiniteCohomology.InflationRestriction
-import GroundTheory.ProfiniteCohomology.CohomologicalDimension.SubsingletonCohomologyOfPrimaryOfFinite
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.ProfCoh

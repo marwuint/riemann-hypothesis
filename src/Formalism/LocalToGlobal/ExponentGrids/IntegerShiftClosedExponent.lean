@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.Divisibility.Inputs
-import Formalism.QuotientMetricDivisors.Complement2Normaliser
 import Formalism.TranslateCocycles.StatementHC
 import Formalism.SizeWindowBrackets.SlopesFromSizeAndCount
 import Formalism.LocalRingCardinality.DataErr

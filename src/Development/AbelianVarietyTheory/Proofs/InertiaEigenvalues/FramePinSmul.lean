@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BaseEmbeddingRea
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaSpanAndGoodRangeObj
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCcIsEquivAtSerOfOneMapRowOfFive
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCoreConstantsBaseSolutionEquivariant
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 
 set_option autoImplicit false
 

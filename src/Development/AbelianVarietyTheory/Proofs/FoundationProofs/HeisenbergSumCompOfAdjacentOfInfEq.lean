@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsHeisTrivial
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PerfectPairingQuotients
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumEqZeroAddUnits
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdjacentSelfDualLatticesIndexSimple
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumOpTransversal
 
 open Classical GlobalTheory.FinWeil
 open scoped BigOperators

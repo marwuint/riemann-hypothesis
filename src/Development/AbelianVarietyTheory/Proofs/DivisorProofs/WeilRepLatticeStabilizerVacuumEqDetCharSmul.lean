@@ -4,8 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.MarkAd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonSplitPlaceStabilizerFixesLatticeVacuum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCartanInvOneSplitStab
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvalVCutIdemOfNotMem
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUnitaryAdelicCharOfHeckeChar
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSelfDualCLatFrame
 import Formalism.LocalToGlobal.ProjectiveLattices.MuValFix
 
 noncomputable section

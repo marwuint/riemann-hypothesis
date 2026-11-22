@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CobOneEqZeroOfConnecting
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualEqSmulOfForallDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueIsLie
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualLieExistsAdditiveEvalModPrimePow

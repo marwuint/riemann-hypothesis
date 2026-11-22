@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
-import Formalism.FormalDegreeBessel.StatementRP
 
 open Matrix MeasureTheory Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 open scoped ENNReal ComplexOrder

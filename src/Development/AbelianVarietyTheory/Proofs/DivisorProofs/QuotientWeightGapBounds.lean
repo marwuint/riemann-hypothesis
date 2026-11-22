@@ -8,8 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightEntrie
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightGapsBlockAndBar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LengthUnitSizeBounds
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightBoundHolds
-import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
-import Development.AbelianVarietyTheory.Definitions.Divisors.UnifOfSpaceEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaExponentsDominantLastEntryOneDegreeStatement
 
 set_option autoImplicit false

@@ -6,7 +6,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.WeilBound.CoreStatements.HodgeTatePoints.InChartOfMemCtrSet
 import Development.WeilBound.CoreStatements.HodgeTatePoints.MbLMorph
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModelNonempty
-import Development.WeilBound.CoreStatements.HodgeTatePoints.MaBase
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 
 namespace PositivityTheory.HtPt.Mb.LJoinExists

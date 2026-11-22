@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.RealObj
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.SettingBlocks
-import Formalism.SharpRestriction.CuspSpanNormBounds.NormalizedLocalScale
-import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.ConcreteSettingExists
 import Formalism.HermitianCurvature.BesselNonvanishingReduction
 
 noncomputable section

@@ -1,6 +1,5 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.HaarVolumes.KdMeasImageProd
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.IntMuCD
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.ConjTransposeEqOfInG
 
 noncomputable section
 

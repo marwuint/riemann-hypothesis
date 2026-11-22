@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralCasimirElementCentral
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdjugateGramSymm
 
 open GlobalTheory.CasimirOrder
 set_option maxHeartbeats 1000000 in

@@ -4,7 +4,6 @@ import Development.AutomorphicArithmetic.DivisorFrames.ExistsMaxCompactEqFrameGr
 import Development.AutomorphicArithmetic.DivisorFrames.LocalCharConductorLeOfHeckeExponent
 import Development.AutomorphicArithmetic.DivisorFrames.ExistsScaledStandardPairSectionsOfMaxCompactTran
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SeesawCharacterConductorAtRamifiedPlace
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocPart
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory Matrix ValuativeRel

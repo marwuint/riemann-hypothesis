@@ -1,7 +1,6 @@
 import Mathlib
 import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
 import ReciprocityTheory.AnalyticForms.LeviForms.TailBoundA
-import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.CompChartEventuallyEq
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LoglogQuotNonneg
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularFamilyC2PullbackOfSection

@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Jets.JetsOnCopiesCompatibleF
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.TwistBCPf
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.InvariantDerivationsCommuteFormalConnection
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.GaugeTrans
 
 set_option autoImplicit false
 

@@ -2,10 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.FunctionalLowerBoundOfConditionsNumeric
 import Formalism.LocalToGlobal.IndefiniteForms.IndefExample
 import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
-import Formalism.LocalToGlobal.IndefiniteForms.IndefUse
-import Formalism.HarderNarasimhan.ShiftInvariance
-import Formalism.QuotientMetricDivisors.PassageScaleFree
-import Formalism.QuotientMetricDivisors.FinalW
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualMatrixMetricMeans
 
 open Module NumberField IsDedekindDomain

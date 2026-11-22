@@ -2,13 +2,6 @@ import Mathlib
 import Formalism.SharpRestriction.Divisibility.ProductZerothFirstParts
 import Formalism.GaussJetBounds.ThmAGauss
 import Formalism.GaussJetBounds.OneLetterGauss
-import Formalism.GaussJetBounds.GenLogInverse
-import Formalism.GaussJetBounds.OneLetterRadius
-import Formalism.GaussJetBounds.GaussJetProofs.AsmRDotAddRight
-import Formalism.GaussJetBounds.GaussJetProofs.LemmaRA
-import Formalism.GaussJetBounds.GaussJetProofs.NormNatCastEqPowPadicValNat
-import Formalism.GaussJetBounds.GaussJetProofs.SubstitutionWeightBound
-import Formalism.IncomingBounds.WeightIdentities
 
 noncomputable section
 

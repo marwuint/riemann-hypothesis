@@ -1,10 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCRing
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaCore
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabCancel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.LieFree
 
 noncomputable section

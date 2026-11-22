@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.Cut_BPEq
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutLimENF
-import Formalism.HermitianCurvature.HerGenC
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.ExistsAuxiliaryXi
 import Development.AbelianVarietyTheory.PublishedTheorems.BesselIntegrals.BesselXiIntegrable
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LimPosOfLimEvTOfCompactPositivity
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WaveIsometryOfRadial

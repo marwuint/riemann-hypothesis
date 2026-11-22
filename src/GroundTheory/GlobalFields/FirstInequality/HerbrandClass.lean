@@ -2,8 +2,6 @@ import Mathlib
 import GroundTheory.GlobalFields.IdeleGroups.SIdeleHerbrand
 import GroundTheory.GlobalFields.HerbrandQuotients.SUnits
 import GroundTheory.GlobalFields.IdeleGroups.LocalNormsEverywhere
-import GroundTheory.GlobalFields.IdeleGroups.GaloisOnAdeles.Action
-import GroundTheory.GlobalFields.CompletionAtPlace.Degree
 
 namespace GroundTheory.Global
 

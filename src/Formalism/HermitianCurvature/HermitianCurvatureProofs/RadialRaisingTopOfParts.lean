@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RadAATopOfParts
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.BigCellValues
 
 open MeasureTheory Matrix
 

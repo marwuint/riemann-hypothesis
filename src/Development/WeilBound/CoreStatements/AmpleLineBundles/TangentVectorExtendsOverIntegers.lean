@@ -1,11 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueSemilinear
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelIsBaseChange
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
 open scoped CategoryTheory.Obj

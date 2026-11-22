@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatrixCoefficientIntegrableSquare
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsNormEmbId
 
 open MeasureTheory GlobalTheory.CompanionTheory.UnitaryFramesMetricPeriods
 open scoped InnerProductSpace

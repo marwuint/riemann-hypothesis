@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.ExtDataOneMapSmulO
-import Formalism.SharpRestriction.LevelLetterCocycles.ExistsPosConstLagrangeCondition
 
 noncomputable section
 

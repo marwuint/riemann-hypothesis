@@ -5,9 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GoodPartMemBasis
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LenRBaseChangeSubquotient
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthCommensurableOfIsLatIn
 import Formalism.LocalToGlobal.Columns.LocWLemmas
-import Formalism.SharpRestriction.LevelLetterCocycles.TwGood
-import Formalism.MirabolicMackeyTheory.MirabolicMackeyProofs.RamBasic
-import Formalism.LocalToGlobal.Divisibility.LiftLatLemmas
 
 set_option autoImplicit false
 

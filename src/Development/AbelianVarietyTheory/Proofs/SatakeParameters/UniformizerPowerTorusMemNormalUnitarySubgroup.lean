@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.FIwasawa
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.FSatakeB
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvMemDoubleCosetAndComm
 open Formalism.UG Matrix
 

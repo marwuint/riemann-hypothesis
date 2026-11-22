@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.GrowthBounds.WeilJacquetShalikaLaw
-import Formalism.SharpRestriction.ParConsts
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsPlaceCofactorValuationLowerBound
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ModelsOK
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeValuationBound

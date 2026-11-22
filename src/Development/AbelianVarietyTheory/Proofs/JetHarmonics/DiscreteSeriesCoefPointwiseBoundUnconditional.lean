@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.DiscreteSeriesShifts.ThmBpDS
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PointwiseBoundDiscreteSeriesCoefficients
-import Development.AbelianVarietyTheory.Definitions.Jets.SupWOfSup
-import Development.AbelianVarietyTheory.PublishedTheorems.BesselIntegrals.BesselXiIntegrable
-import Formalism.HermitianCurvature.HerGenC
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselXiIntegrableHolds
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.ActualClassesCompactSupport
 

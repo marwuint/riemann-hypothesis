@@ -2,12 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaChangeOfRepRootOfUnityOfChartIndependence
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ChartIndependenceUnconditional
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMatrixDetNotMem
-import Formalism.LocalToGlobal.ProjectiveLattices.ThClass
-import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
 import Formalism.LocalToGlobal.ProjectiveLattices.CuspFormsFiniteDimensionalOf
-import Formalism.LocalToGlobal.ProjectiveLattices.MulCMemSec
 import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
-import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsStabForm
 
 section Point
 

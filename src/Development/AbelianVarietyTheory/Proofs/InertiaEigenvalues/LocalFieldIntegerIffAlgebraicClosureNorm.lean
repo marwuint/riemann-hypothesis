@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoTowerQ
 import GroundTheory.LocalFields.Examples
-import GroundTheory.LocalFields.Integers
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory.LocalField GlobalTheory.PMon.Ram
 
 noncomputable section

@@ -1,9 +1,7 @@
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ConclusionG6OfAllParts
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeCharEqOfLAdicRealisation
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspidalGaloisUnramified
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.PartEq
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.TwListSs
 
 set_option synthInstance.maxHeartbeats 200000
 

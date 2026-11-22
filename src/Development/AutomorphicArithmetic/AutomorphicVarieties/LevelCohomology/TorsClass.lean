@@ -5,9 +5,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Ex
 import Formalism.GaloisCohomology.LocalTateDualityK
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.KwlOnto
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.Control
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.ContTw
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.Places
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.QoFacts
 import Development.AutomorphicArithmetic.AutomorphicVarieties.OddResidueBounds.FixLev
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Odd UpperTheory.V.ML UpperTheory.V.X

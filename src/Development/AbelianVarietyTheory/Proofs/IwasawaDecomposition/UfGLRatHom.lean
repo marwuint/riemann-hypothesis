@@ -5,13 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnSp
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryOfIsON
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBasisAtOfIsLocBasis
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EmbFColZeroMemMram
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsPrimesOk
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ValuedLtOfMem
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PlacesOverConjPrimes
 import Formalism.LocalToGlobal.Columns.RecLevelStep
 import Formalism.LocalToGlobal.Columns.ChainInst
 import Formalism.LocalToGlobal.Columns.TiedValRat
-import Formalism.LocalToGlobal.HermitianForms.FramesLemmas
 import Formalism.LocalToGlobal.GlobalTheory.GL6.FrobeniusNoKernelOfFrobeniusSimilitude
 
 noncomputable section

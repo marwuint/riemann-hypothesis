@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LinearMapChainCompositeUpdateSmul
-import Development.AbelianVarietyTheory.Definitions.Divisors.InvVolConjLevelOne
 
 open GlobalTheory.FunObj
 set_option maxHeartbeats 1000000 in

@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeVecMemFixed
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsAntiJFrame
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsNormEqXModMonicOfAdicCompleteInvolution
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnitaryMemIntegralUnitaryDoubleCosetOfGLnDoubleC
 
 noncomputable section
 

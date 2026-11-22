@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPolynomialEqZeroOfVanishSkewHermitian
-import Formalism.SatakeDualWeyl.Statement
 
 set_option autoImplicit false
 noncomputable section

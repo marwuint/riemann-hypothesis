@@ -3,8 +3,6 @@ import Formalism.DistinguishedUnitIdeals.FrobeniusCoboundedArc
 import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.GoodOf
 import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.ThmEFull
 import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.LemmaCFull
-import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.LemmaC
-import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.Descent
 
 namespace Formalism.ExponentWindows.E.Prim
 

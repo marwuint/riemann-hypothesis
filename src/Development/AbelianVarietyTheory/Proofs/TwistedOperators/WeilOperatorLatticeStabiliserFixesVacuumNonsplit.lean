@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDetInt
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSelfDualCLatFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexNeZeroOfFinite
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumFixesVacuumNonSplitPlaceUnramified
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnitaryOnTheta
 
 noncomputable section
 

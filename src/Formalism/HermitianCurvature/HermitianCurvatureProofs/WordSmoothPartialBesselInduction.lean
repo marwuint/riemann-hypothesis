@@ -1,6 +1,5 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.PartialBesselSmoothCompactSupport
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutHB2
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.LocOfSmoothOnH
 
 open Matrix
 

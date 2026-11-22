@@ -1,7 +1,6 @@
 import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.ExampleSatisfiesConditionsAtFive
 import Formalism.SharpRestriction.Divisibility.WeightAlgebra
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndexDeterminant.NegLogValuation
-import Formalism.MirabolicMackeyTheory.MirabolicMackeyProofs.ThreeForms
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsBasisOfPid
 
 open Module NumberField IsDedekindDomain

@@ -1,14 +1,10 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.FWExist
 import Formalism.LocalToGlobal.IndefiniteReal.RhoGeo
-import Formalism.LocalToGlobal.IndefiniteReal.OneMapEq
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsSmoothVector
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LUnifOfRhoGeoEquivAll
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEquivariantUnitConstantsGoodEmbedding
-import Formalism.LocalToGlobal.ProjectiveLattices.CuspFormsFiniteDimensionalOf
-import Formalism.LocalToGlobal.ProjectiveLattices.ThProps
-import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JUnifAndLUnifOfTieIn
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TieInOfFwTie
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PbEqOfPins

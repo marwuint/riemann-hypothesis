@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SerIntAtOfSeriesRat
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedDescentIntegralFormsTowerCover
-import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.RationalRayLevels
 
 namespace GlobalTheory
 

@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.BaseSt
 import Mathlib
-import Formalism.LocalRingCardinality.DataCD
 
 noncomputable section
 

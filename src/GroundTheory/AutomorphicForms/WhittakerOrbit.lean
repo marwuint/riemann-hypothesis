@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.WhittakerLSpace
 import GroundTheory.AutomorphicForms.SmoothRep
-import GroundTheory.AutomorphicForms.LocallyProfinite
 
 namespace GroundTheory.Automorphic
 

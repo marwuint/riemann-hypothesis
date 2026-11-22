@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentres
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtIffValueAt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SegreChartBundle
 

@@ -1,7 +1,6 @@
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameUniformizerPower
 import Development.AutomorphicArithmetic.Foundations.UnitarySphericalFixing.SatakeParameters.GoodLem
 import Mathlib
-import Development.AutomorphicArithmetic.Foundations.UnitarySphericalFixing.SatakeParameters.AbsCentralAlt
 
 set_option synthInstance.maxHeartbeats 200000
 

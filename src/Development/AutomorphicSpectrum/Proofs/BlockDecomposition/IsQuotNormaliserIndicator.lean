@@ -19,7 +19,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Multiplicativit
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WedgeBoundFinitePlaces
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WedgeBoundInfinitePlaces
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdelicGLNormOneSplit
-import GroundTheory.AutomorphicForms.ReductionMahler
 
 noncomputable section
 

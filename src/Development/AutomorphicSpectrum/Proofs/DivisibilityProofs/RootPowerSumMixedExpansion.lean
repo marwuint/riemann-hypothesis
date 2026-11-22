@@ -3,7 +3,6 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPla
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsFlagIndependence
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ExistsMixedDifferenceExpansionStatement
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PowerSumMixedExpansion
-import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.BundleChernComparison
 
 open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.CompanionTheory.Ar.Num GlobalTheory.CompanionTheory.Ar.Top GroundTheory.Heights₂.Heights.ModelLeaves
 open ReciprocityTheory.ChartRestriction.G.Geo (HermLine IsSmoothHerm IsArithVar IsHorizontal mcPts mCoordIdeal IsIntersectionFamily IsIntersectionSystem IntersectionSystem ptsIntegral geoNum charOf recR arInt ChartBundle chartRing)

@@ -8,7 +8,6 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.TransferenceMinima
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.EagonNorthcottIntegral.YHom
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.EagonNorthcottIntegral.DivisionPartitionTotal
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.EagonNorthcottIntegral.BasisZeroEqSingle
-import Formalism.PeriodIntegrals.EagonNorthcott
 
 noncomputable section
 

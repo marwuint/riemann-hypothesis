@@ -1,6 +1,5 @@
 import Development.AutomorphicArithmetic.Foundations.UnitarySphericalFixing.SatakeParameters.AbsCentral
 import Development.AutomorphicArithmetic.Foundations.UnitarySphericalFixing.SatakeParameters.SwOn
-import Development.DiscreteGroups.GlobalIrreducibility.DzMatchCut
 
 noncomputable section
 

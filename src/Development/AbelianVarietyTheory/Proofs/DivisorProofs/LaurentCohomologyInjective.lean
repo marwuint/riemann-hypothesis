@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModulusCharacterUnitActionProduct
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullSpMapComp
 
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 open scoped TensorProduct

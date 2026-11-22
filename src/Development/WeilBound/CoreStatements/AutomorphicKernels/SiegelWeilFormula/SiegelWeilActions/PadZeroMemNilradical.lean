@@ -2,7 +2,6 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarMeasureSplitExactSequence
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdelicSkewMatricesLocallyCompactGroup
-import Development.WeilBound.ThetaLifts.LatticeBasics.UnfoldC
 
 noncomputable section
 

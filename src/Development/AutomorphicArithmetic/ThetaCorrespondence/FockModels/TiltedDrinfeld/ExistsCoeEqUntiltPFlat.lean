@@ -1,5 +1,4 @@
 import Development.WeilBound.RepresentationTheoryGL.PeriodRingBases.PeriodRingUnits.DieudonneManinBasisModification
-import GroundTheory.PAdicHodge.ExistsNormLeOfNormLtOneFinite
 
 noncomputable section
 

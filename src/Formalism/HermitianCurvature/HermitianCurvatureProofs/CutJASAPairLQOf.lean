@@ -1,6 +1,5 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJASAPairL
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJALocToolsAgree
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.PositiveOrbitOpen
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 

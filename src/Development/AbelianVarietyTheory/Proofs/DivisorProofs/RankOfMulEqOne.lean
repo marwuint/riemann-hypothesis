@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasBlockOfOccurs
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
-import Formalism.PieriBlockIdeals.LemmaWFromLattice
-import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
-import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Formalism.LocalRingCardinality.SpanPowerMembership.NDLocE
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DvrComplete
 

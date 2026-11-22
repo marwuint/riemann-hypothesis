@@ -1,17 +1,8 @@
 import Formalism.WeightedDeltaMeans.LowerBoundLinearPower
 import Mathlib
 import Formalism.LocalToGlobal.LatticeGeometry.ShimuraSheafOfIndefiniteSubspace
-import Formalism.LocalToGlobal.LatticeGeometry.CompNe
 import Formalism.LocalToGlobal.LatticeGeometry.ViewsC
 import Formalism.SharpRestriction.Divisibility.HeightShare
-import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
-import Formalism.LocalRingCardinality.DataParams₂
-import Formalism.LocalRingCardinality.DataDIV
-import Formalism.DegreeFormula.FlagDegFormula
-import Formalism.SharpRestriction.Divisibility.LatticeTransfer
-import Formalism.SharpRestriction.Divisibility.WeightThresholdDefs
-import Formalism.SharpRestriction.Divisibility.PrinLevClass
-import Formalism.SharpRestriction.ParamsHeightRankConstant
 import Formalism.LocalRingCardinality.HeightBoundGeFourthPowerRank
 
 noncomputable section

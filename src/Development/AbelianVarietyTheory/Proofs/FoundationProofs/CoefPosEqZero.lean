@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimitiveCharDoubleSumPrimePowEval
-import Development.AbelianVarietyTheory.Definitions.Foundations.Integral
 
 open GlobalTheory.KummerEisensteinGalois Finset
 open scoped Classical

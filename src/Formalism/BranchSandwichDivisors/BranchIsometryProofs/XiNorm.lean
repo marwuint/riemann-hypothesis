@@ -4,7 +4,6 @@ import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ProdFactorialSupportSubSingle
 import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LFocksLemmas
 import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LFockbLemmas
 import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LBidetMinor
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LBidetLemmas
 import Formalism.GradedWeylDivisibility.FockSpaceTableaux.DualWeylNonDom
 
 open MvPolynomial Formalism.GradedWeylDivisibility Formalism.REAL

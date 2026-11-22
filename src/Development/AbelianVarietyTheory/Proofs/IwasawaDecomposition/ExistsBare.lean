@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.WeakCh
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NotBaseCondFalse
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TypeIdempotentCoeffAcrossLayers
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsExplicitParameters
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowNumAt
-import Formalism.LocalRingCardinality.NFLeTwoMulTSq
 
 noncomputable section
 

@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.PieriRules.TensRepA
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.OneParam
 
 noncomputable section
 

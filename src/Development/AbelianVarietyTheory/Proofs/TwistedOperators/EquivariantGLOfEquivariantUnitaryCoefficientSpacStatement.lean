@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EquivariantGLOfEquivariantUnitaryCoefficientSpac
-import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
-import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.FiniteIntertwining
 
 open Formalism.BasicNotions Formalism.L2.DIV
 set_option maxHeartbeats 1000000 in

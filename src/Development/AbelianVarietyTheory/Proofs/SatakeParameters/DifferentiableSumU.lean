@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.KernelLattices.ThDistC
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.IsAdmissibleFlagPairOfUnitriangularLeftAutomorph
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.SelfDualLatticeNorms.SelfDualComap
-import Formalism.LocalToGlobal.GlobalTheory.GL3.PStdOK
 
 noncomputable section
 

@@ -4,7 +4,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceOperatorEi
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LieCentralElementTrace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IteratedDerivSplitCentre
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHasInfCharGL
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BaseChangeSpehOfDiscreteSeries
 
 noncomputable section
 

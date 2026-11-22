@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ReductionDomains.ContinuousEntry
-import GroundTheory.GlobalFields.TateThesis.AdeleScaling
 import GroundTheory.AutomorphicForms.RealIwasawaIntegration
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology Filter

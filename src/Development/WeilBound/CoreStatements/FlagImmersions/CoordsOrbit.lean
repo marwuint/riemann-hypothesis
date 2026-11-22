@@ -2,8 +2,6 @@ import Development.WeilBound.CoreStatements.FlagImmersions.Transport
 import Development.WeilBound.CoreStatements.VolumeEquality.CoverRootsSch
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicCoordsOfGenericPoint
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
-import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.DifferentiableOnOfTendstoLocallyUniformlyOn
 
 noncomputable section
 

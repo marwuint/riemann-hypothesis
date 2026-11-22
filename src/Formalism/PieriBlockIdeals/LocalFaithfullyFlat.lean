@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.PieriBlockIdeals.ExponentBoundCounterexample
-import Formalism.RankGapBounds.TheoremALocOfLemmaA
 import Formalism.SatakeDualWeyl.DualWeylRepApply
 
 open MvPolynomial TensorProduct

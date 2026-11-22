@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.IsCombAt
 import Formalism.LocalToGlobal.ProjectiveLattices.CuspidalL2Subspace
-import Formalism.SharpRestriction.LevelLetterCocycles.DataN
 
 noncomputable section
 

@@ -1,6 +1,4 @@
 import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.SlopeFormulaOfCharacterFinite
-import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.CharacterFiniteLevelZeroOfForms
-import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.GroupActionMulSingleEqDilation
 import Formalism.SharpRestriction.GlobalSchurBounds.FiniteModelOfAdmissibleTransports
 import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.AdmissibleStabilisersOfCompatibleForms
 import Formalism.SharpRestriction.GlobalSchurBounds.LinkMin

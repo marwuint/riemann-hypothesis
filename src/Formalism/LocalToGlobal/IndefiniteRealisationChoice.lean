@@ -4,12 +4,10 @@ import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.NMjT
 import Formalism.LocalToGlobal.SelSide
 import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.TwistedCharacterValue
 import Formalism.LocalToGlobal.KernelLattices.AdaptedEnt
-import Formalism.LocalToGlobal.ClassRec
 import Formalism.LocalToGlobal.KernelLattices.KerChTie
 import Formalism.LocalToGlobal.KernelLattices.TopPin
 import Formalism.LocalToGlobal.KernelLattices.KerMemPin
 import Formalism.LocalToGlobal.KernelLattices.KerMtPin
-import Formalism.LocalToGlobal.KernelLattices.InterlaceAll
 import Formalism.LocalToGlobal.GroupLattices.JointServices.Cut
 import Formalism.LocalToGlobal.Divisibility.RecBridgeSel
 import Formalism.SharpRestriction.Divisibility.HookProducts.Compl3Record

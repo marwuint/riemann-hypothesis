@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.RegularCharts.MatrixTwoByTwoCongr
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsChartFiniteType
 import Formalism.LocalToGlobal.ProjectiveLattices.FrameCharts
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 
 noncomputable section
 

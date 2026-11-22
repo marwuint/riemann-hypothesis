@@ -4,7 +4,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Mem
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.TbTriDiag
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.LevBasis
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.SgnMulSelf
-import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.PtInSmul
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.AdTransfer
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 open scoped Matrix TensorProduct

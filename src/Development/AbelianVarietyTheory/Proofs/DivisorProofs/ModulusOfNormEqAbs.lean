@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
-import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import GroundTheory.GlobalFields.TateThesis.AdeleScaling
 
 open scoped TensorProduct NNReal Matrix

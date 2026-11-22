@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CubeTheore
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMonHomOfClassifying
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDualOfIso
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeIsIsoOfMonoSameDimension
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsoOfIsClosedImmersion
 
 set_option autoImplicit false
 noncomputable section

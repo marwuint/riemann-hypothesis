@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericFlagTrdegFormula
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 
 open GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in

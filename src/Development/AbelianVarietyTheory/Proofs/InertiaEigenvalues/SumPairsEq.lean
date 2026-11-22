@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocFacOfNeg
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsAddHaarMeasureVolumeLie
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsRapidInf
-import Development.AbelianVarietyTheory.Definitions.Divisors.UnrOutside
 
 namespace GlobalTheory.WeightSumSplit
 

@@ -1,7 +1,5 @@
 import Mathlib
 import GroundTheory.PAdicHodge.FieldOfNormsCyclBase
-import GroundTheory.PAdicHodge.FieldOfNormsRam
-import GroundTheory.PAdicHodge.NormalizedTrace
 set_option maxSynthPendingDepth 1
 
 noncomputable section

@@ -3,7 +3,6 @@ import Formalism.LocalToGlobal.BesselHermitianTheta.AllTied
 import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AdelicDataRowMeasureScaleTrivialTuple
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueInfEmb
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.EmbeddingXiZeroNeZero
 
 noncomputable section
 

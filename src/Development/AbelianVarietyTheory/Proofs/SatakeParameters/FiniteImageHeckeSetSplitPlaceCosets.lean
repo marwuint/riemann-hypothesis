@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.GaloisLevelStructure.DefsAut
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteCosetsHeckeSetAtSplitPlaceOutsideLevel
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.GlintPrincRelIndexNeZero
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIntegerUnitSplitPlaceConjugatePrime
 open NumberField IsDedekindDomain ReciprocityTheory.Aut Formalism.AUTREP
 
 noncomputable section

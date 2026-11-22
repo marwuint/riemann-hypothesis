@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalQuotientTransitionCocycle
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.ChainOfKernelsUnique
 
 set_option autoImplicit false
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry

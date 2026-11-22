@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.SumFinsuppAntid
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsMulOfApprox
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FockNormExtremalVectorEqBoundedNat
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MonomialDerivCauchyBoundGaussianGrowth
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.SumIcoTsubTelescope
 
 open MvPolynomial Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Ker GlobalTheory.MvPoly
 open GlobalTheory.IndefiniteRowSideFullHecke.SubstitutionAdjoint (sharp)

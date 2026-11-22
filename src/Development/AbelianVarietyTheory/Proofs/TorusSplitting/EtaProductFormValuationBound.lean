@@ -7,10 +7,6 @@ import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.SupBoundPageRows
 import Formalism.LocalToGlobal.ProjectiveLattices.PhiSetPullSub
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.PhiCLeNormalizedValuationProductFormAlgebraic
-import Development.AbelianVarietyTheory.Definitions.TorusSections.ExistsSecTie
-import Formalism.LocalToGlobal.ProjectiveLattices.DataAtPointN3
-import Formalism.LocalToGlobal.ProjectiveLattices.LiesOverBaseChange
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ETPoint
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.EtaForm GlobalTheory.EtaAn
 
 namespace GlobalTheory.EtaVal

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MovedReadingSameMapsBaseReadingAgrees
 import Formalism.LocalToGlobal.Columns.InvariantSubspaceCoordsX
-import Formalism.LocalToGlobal.Columns.BaseLemmas
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.EventuallyCongOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HcParameterEAddHalfShiftLeBSucc
 

@@ -3,9 +3,6 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateM
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfEx
-import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHens
-import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatBcPull
-import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.BtExistsBc
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT
 

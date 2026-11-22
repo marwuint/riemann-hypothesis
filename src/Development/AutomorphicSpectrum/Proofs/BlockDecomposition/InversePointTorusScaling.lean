@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LintegralSiegelC
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCompactAdele
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSiegelDomainReduction
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CutPMulCutP
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsArchEquivEq
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProjArchOfInfEmbArchPi
 open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory

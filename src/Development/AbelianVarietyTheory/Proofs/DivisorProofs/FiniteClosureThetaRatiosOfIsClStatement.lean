@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteClosureThetaRatiosOfIsCl
-import Development.AbelianVarietyTheory.Statements.SemistableTorsion.ImmersedBy
 
 open AlgebraicGeometry CategoryTheory Limits
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ZH

@@ -4,7 +4,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisCochains.Dec
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisCochains.LocEuler
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.HcUrIndex
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.HcUrAbs
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.Places
 import Mathlib.Topology.Algebra.ClopenNhdofOne
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.Fr UpperTheory.V.GC

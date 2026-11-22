@@ -3,13 +3,7 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsLatticeF
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.BundleChernComparison
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ClassListMapDomainPerm
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChernClassOnFlagPair
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Inhabit
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericFlagComparison
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TrivFlagMod
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.FlagMinor
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.PluckerCoord
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsBundles
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.SameGenericSymm
 open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.Heights.NumbersDVR
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg mcIdeal chartMon joinCoord bcCoord pullDeg restrictChart fnField ck rootNum SameGeneric LatLE IsPull IsPullBC)

@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.SmulCommClassGalIntegers
-import Formalism.LandauZeroFreeBounds.Statement
-import Formalism.FrobeniusOrbits.Statement
 
 noncomputable section
 

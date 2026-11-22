@@ -5,7 +5,6 @@ import Formalism.SharpRestriction.GlobalSchurBounds.MainIn
 import Formalism.QuotientMetricDivisors.FinalW
 import Formalism.QuotientMetricDivisors.SixthReductionExplicit
 import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockDegreeGapBound
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemHeightOneIdealIffAdditiveValuationPos
 

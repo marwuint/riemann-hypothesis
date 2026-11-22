@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowestKTypesJointShapeBlockUnitary
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowestKTypesJointShapeBlockInUnitaryS
 
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible

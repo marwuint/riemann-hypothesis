@@ -1,16 +1,11 @@
 import Mathlib
 import Formalism.LocalToGlobal.KernelLattices.MatrixKernelDiamondCommutation
-import Formalism.GL3MeanSquares.HookFormulaTorsion.DoubleCosetDecompositionAll
-import Formalism.LocalToGlobal.Columns.GSetLemmas
 import Formalism.LocalToGlobal.Columns.BtExistsSmulLeOfFg
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ColInst
 import Formalism.LocalToGlobal.Columns.RowFormsSel
 import Formalism.LocalToGlobal.Columns.ChainInstY
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.MemGoodPrimesOfNoExceptional
 import Formalism.LocalToGlobal.Columns.TiedUpDnA
-import Formalism.LocalToGlobal.Columns.DecoFin
-import Formalism.LocalToGlobal.Columns.SmulMemTrpSet
-import Formalism.HermitianLattices.HermitianLatticesProofs.NeighbourConstruct
 
 open NumberField IsDedekindDomain
 

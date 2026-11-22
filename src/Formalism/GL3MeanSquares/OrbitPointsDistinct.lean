@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.FrobeniusOrbits.HostThickExists
-import Formalism.FrobeniusOrbits.Statement
 import Formalism.SatakeDualWeyl.StatementC
 
 open NumberField IntermediateField Ideal IsDedekindDomain

@@ -1,10 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.UniqGapOfUniq
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.OnePlaceKF
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
-import Formalism.SharpRestriction.CuspSpanNormBounds.LeadMinorK
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DegVand
-import Formalism.LocalRingCardinality.DataTies
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGaps
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AbsCoordLeOfLOneNormLe
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CapParamOfIsHCTypeW
@@ -13,13 +10,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FamiliesHaveLargeGap
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MomentPieriNumericsOfSizeHyps
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarLieIsHaarOnUnipotentRadical
 import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselGapExistsFunctional
-import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
-import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
-import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeries₂.Poulsen
-import Formalism.PeriodIntegrals.DSInfCharCap
-import Formalism.PeriodIntegrals.LowCyc
-import Formalism.PeriodIntegrals.UpqRep
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG
 import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.HaarEqSmul
 
 open BranchingSupport GlobalTheory.CellAmp GlobalTheory.Amp Formalism.BasicNotions Formalism.MainNotions.S Formalism.QuantumDeterminants Matrix MeasureTheory Finset

@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CdpGaloisLeOneOfAlgebraicRatFunc
-import GroundTheory.ProfiniteCohomology.GaloisCohomology.Kummer
-import GroundTheory.ProfiniteCohomology.GaloisCohomology.Brauer
 
 open GroundTheory.ProfCoh
 set_option maxHeartbeats 1000000 in

@@ -7,8 +7,6 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.SmallSectionCountLeOfI
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.WhittakerFunctional
 import GroundTheory.HeightsAndTheta.Heights.Intersections.ArithVarZero
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PThmIUnique
-import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsAntisym
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterDivSupp
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel

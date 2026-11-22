@@ -2,7 +2,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.APa
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LintegralImageEqLintegralNormSqDetMul
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PartsAlg
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.MdiscSt
 
 noncomputable section
 

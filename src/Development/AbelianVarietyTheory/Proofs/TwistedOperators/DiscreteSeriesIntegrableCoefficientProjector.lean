@@ -4,7 +4,6 @@ import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.HighestWeightGeneratedWeightsBelow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectorOfIntegrableDiscreteSeriesCoefficient
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarJacLeExp
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
 
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible Matrix MeasureTheory
 

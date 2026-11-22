@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InnerGaussianVectorsFockSpace
-import Formalism.LocalRingCardinality.DataTheta
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.OscActMonomialOfUnique
 open Formalism.BasicNotions Formalism.BasicNotions.TH GlobalTheory.Mem.Osc Matrix
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in

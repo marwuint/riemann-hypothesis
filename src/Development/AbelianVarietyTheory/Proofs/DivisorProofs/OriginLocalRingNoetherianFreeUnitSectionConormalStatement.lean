@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OriginLocalRingNoetherianFreeUnitSectionConormal
-import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntDerApply
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocalRingDualNumber
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupSchemeStalkEvalAtOriginOriginStalkConstants
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry IsLocalRing
 open scoped CategoryTheory.Obj

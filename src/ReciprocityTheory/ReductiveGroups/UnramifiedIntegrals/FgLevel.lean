@@ -3,7 +3,6 @@ import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.FgAnLat
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.FgTorInt
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.FgAnTwo
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.KapUnit
-import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.NormNatCastClOfNotDvd
 
 noncomputable section
 

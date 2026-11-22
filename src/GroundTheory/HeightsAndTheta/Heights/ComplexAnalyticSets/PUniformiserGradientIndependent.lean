@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StUniformiserGradientIndependent
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StNormalCurveJacobian
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StNormalCurvePointDVR
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.GradientAtPoint
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PointLocalRingOrder
 set_option maxSynthPendingDepth 1

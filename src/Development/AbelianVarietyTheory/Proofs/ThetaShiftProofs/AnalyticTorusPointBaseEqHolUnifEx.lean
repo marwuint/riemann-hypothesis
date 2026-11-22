@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.SectionsEquivAnA
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TraceFormTwistIsoOfPullback
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsPhiEqShift
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsRingHomLift
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TorusExtensionComplexPointsEqCharacters
 
 noncomputable section
 

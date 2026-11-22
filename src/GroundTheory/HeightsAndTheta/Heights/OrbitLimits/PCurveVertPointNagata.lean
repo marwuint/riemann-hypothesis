@@ -1,9 +1,7 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.StatementsCurveVertPointNagata
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.CurveCountObjects
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PLocRingPow
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.CoordinateIdeals.MemMCoordIdealOfAevalEqZero
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterDivSupp
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Targets

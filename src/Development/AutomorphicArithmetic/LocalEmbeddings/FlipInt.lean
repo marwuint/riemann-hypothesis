@@ -9,7 +9,6 @@ import Development.AutomorphicArithmetic.DivisorFrames.NuDetMulSliceBBlockAction
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumOKEx
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTranslatesEqPrimFrameLat
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitThetaGridIsAdmissibleFlipTensor
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ValuationGdetKapAt
 open GlobalTheory.SplitFlip GlobalTheory.SplitWeil
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleCosetMeasures.instMeasMat
 

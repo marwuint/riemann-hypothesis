@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.PairAtTAdjCpt
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.MeasurableOfContinuousOnZero
 
 open Matrix MeasureTheory
 open scoped ComplexConjugate InnerProductSpace

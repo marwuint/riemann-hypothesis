@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Acris0Torsio
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEigenvectorHasSumAdicCompleteFrobenius
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFrobeniusSeriesAcrisUntilt
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 
 open Formalism.Per GlobalTheory.PSer
 open scoped Formalism.Per

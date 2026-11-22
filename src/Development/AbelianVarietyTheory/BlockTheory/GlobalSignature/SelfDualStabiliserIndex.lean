@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalRingCardinality.DataLevel
 import Formalism.LocalRingCardinality.DataLevelD
-import Formalism.SatakeDualWeyl.StatementC
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GapAtLeast
 import Formalism.SharpRestriction.GlobalSchurBounds.StandardLattice
 

@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCoType
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PowDvdOfHermMatEq
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.SatakeMat
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.SatakeComb
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Tjcosets
 
 noncomputable section

@@ -5,7 +5,6 @@ import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.PiInvTop
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.PiVecExHolds
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.TwtrContOfMem
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.HeckeFubiniCompatibility.IntegrableTens
-import GroundTheory.AutomorphicForms.AdelicGLn
 
 noncomputable section
 

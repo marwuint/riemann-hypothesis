@@ -2,8 +2,6 @@ import Mathlib
 import Development.AutomorphicArithmetic.OrbitLabellings.RowDefs
 import Formalism.LocalToGlobal.CharacterGerms.RowTieMemCHarm
 import Formalism.LocalToGlobal.CharacterGerms.RowTieFlagS
-import Formalism.LocalToGlobal.CharacterGerms.RowTieAdm
-import Formalism.LocalToGlobal.CharacterGerms.RowTieJet
 
 open scoped BigOperators
 open Classical

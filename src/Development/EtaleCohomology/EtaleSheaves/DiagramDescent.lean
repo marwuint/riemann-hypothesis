@@ -4,7 +4,6 @@ import Development.EtaleCohomology.EtaleSheaves.LeafObjGluePf
 import Development.EtaleCohomology.EtaleSheaves.LeafInclDescendPf
 import Development.EtaleCohomology.EtaleSheaves.DgMapIsPullback
 import Development.EtaleCohomology.EtaleSheaves.LeafPairRelPf
-import Development.EtaleCohomology.EtaleSheaves.LeafTripleFPPf
 
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4 LateralTheory.E.LeafDescendVCut LateralTheory.E.LeafDescendChainPf

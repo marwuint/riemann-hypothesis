@@ -6,9 +6,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.QuoIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightBoundHolds
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HostBoundHolds
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylDimFormulaDualityBound
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdelicOne
-import Formalism.LocalToGlobal.CMDeterminantIdeals.StatementG
-import Formalism.PolynomialDimension.WeylDim
 import Formalism.SharpRestriction.Divisibility.HookProducts.Compl3Record
 set_option synthInstance.maxHeartbeats 400000
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Pj Formalism.IndefR.Links Formalism.IndefR.FWT ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.BigTop GlobalTheory.CovTop GlobalTheory.DefPt GlobalTheory.FlatLine

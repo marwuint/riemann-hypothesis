@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsCongruenceKernelTraceCharacter
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.PolyApproxZeroPadic
 
 open GlobalTheory.Cong
 set_option maxHeartbeats 1000000 in

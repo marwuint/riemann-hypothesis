@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KurComplete
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.GramExists
-import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.NormLeInvOfLtOne
 
 noncomputable section
 open scoped BigOperators

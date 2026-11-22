@@ -1,9 +1,6 @@
 import Formalism.PeriodIntegrals.HermitianGenusExtension.SemilocalHermitianLattices.ExistsIsomFrame
 import Formalism.PeriodIntegrals.HermitianGenusExtension.SemilocalHermitianLattices.IsHermSemilocalLocRing
 import Formalism.PeriodIntegrals.HermitianGenusExtension.SemilocalHermitianLattices.FiniteDimensionalOfOrtho
-import Formalism.HermitianLattices.HermitianLatticesProofs.GenusCovolBound
-import Formalism.HermitianLattices.HermitianLatticesProofs.TraceReal
-import Formalism.HermitianLattices.HermitianLatticesProofs.IsomAct
 
 open NumberField Module
 

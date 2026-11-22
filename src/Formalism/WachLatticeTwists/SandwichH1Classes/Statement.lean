@@ -1,11 +1,9 @@
 import Formalism.WachLatticeTwists.HodgeTateChains.HodgeTateFiltrations.MinimalExponentAttained
 import Formalism.WachLatticeTwists.HodgeTateChains.XiAdicFiltrationData
 import Formalism.WachLatticeTwists.HodgeTateChains.HodgeTateFiltrations.Imports
-import Formalism.WachLatticeTwists.HodgeTateChains.Statement
 import Formalism.WachLatticeTwists.TorsionLengthCounts.SubmoduleLengthBoundStatement
 import Formalism.WachLatticeTwists.HodgeTateChains.H2KilledByTateDuality
 import Formalism.WachLatticeTwists.HodgeTateChains.GammaIterateMatrixCongruence
-import Formalism.WindowSums.AnnihilatorPolynomials.ZpowVal
 
 noncomputable section
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterAugmentationSubspaceTopEqKerSmul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QActMSubAlgebraMap
 
 open scoped TensorProduct
 universe u

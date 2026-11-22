@@ -4,8 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrredu
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CharAbove
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.WeilDeligneParamMonodromyEqZeroIff
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.WeilDeligneRankOneEqLocal
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsRecTLocRecT
 
 set_option synthInstance.maxHeartbeats 200000
 

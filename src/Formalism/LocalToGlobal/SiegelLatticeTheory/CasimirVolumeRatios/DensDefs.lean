@@ -1,10 +1,7 @@
 import Formalism.PeriodIntegrals.LatCountG
 import Formalism.HarderNarasimhan.StatementPl
 import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.CnDensNonneg
-import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.CNDefs
 import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.CndTauSLeHalf
-import Formalism.SharpRestriction.CuspSpanNormBounds.PlaceDegreeData
-import Formalism.FlagUnipotentLattices.HalfDifferenceL1Bound
 import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.CndHsLeDist
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.InclusionInjective
 

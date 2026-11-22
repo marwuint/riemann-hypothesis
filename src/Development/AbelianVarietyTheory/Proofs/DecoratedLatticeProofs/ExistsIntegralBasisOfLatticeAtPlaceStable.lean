@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WittCoreEm
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualSplitComponentIsLatticeStabilizerEq
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsPrincipalIdealRingSemiLoc
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlob
 
 open NumberField IsDedekindDomain Matrix
 open scoped TensorProduct

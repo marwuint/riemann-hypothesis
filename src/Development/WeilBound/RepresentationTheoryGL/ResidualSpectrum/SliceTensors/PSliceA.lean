@@ -1,6 +1,5 @@
 import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.SliceTensors.TwistedSlicesSquareIntegrable
 import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.ExponentialNegativity.NormalisedExistence.ExistsNormed
-import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.GKStableParabolic
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CapelliConstantTermVanishing
 
 noncomputable section

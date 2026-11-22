@@ -1,6 +1,5 @@
 import Formalism.HermitianCurvature.StatementB
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTransposeMul
 
 open Matrix Filter Topology
 

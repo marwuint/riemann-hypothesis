@@ -4,9 +4,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.SiegelMassRatios.LemmaN
 import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.BlockEnds
 import Formalism.LocalToGlobal.SiegelLatticeTheory.SiegelMassRatios.GramJoint
-import Formalism.LocalToGlobal.SiegelLatticeTheory.SiegelMassRatios.ClassAct
 import Formalism.LocalToGlobal.Columns.NonDeg
-import Formalism.HermitianLattices.StatementMass
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CMDegreeEquality.FinrankEqTwo
 import Formalism.PeriodIntegrals.FinOrdRedOne
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteOrderReduction.EqOneOfIsOfFinOrder

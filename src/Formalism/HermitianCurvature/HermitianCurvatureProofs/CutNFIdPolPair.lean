@@ -1,10 +1,6 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutNFIdPol
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutFpmDecay
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutLimBdPf
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEnergyReal
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.OpApplyContinuousOn
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.HasFDerivAtFsvOther
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.OpApplySub
 
 namespace Formalism.FourierDecayAlt.P.CutBP
 

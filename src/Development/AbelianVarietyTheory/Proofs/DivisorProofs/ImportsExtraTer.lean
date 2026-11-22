@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsHorizontalGeneratorOfCharts
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactification
-import Formalism.LocalToGlobal.ProjectiveLattices.VAtVNeBot
 
 namespace GlobalTheory.LiftAndFactorization
 

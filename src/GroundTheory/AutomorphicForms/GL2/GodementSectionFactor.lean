@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.AutomorphicForms.GL2.GodementSectionSplit
 import GroundTheory.GlobalFields.TateThesis.EulerFactorsFinite
 import GroundTheory.AutomorphicForms.GL2.GodementSectionLocal
-import GroundTheory.GlobalFields.KummerTheory.LocalIndexAtPlace
 import GroundTheory.AutomorphicForms.GL2.FiniteIdeleDecomp
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum MeasureTheory Matrix Filter

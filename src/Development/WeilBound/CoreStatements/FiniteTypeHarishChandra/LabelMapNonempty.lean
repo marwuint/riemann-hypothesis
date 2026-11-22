@@ -2,9 +2,6 @@ import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.Intertwining
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.PendTie
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GreenLabelCharpoly.GaloisClause
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.RegularIffNatDegreeAndExistsEllipticGL
-import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
-import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
 
 open Polynomial CategoryTheory
 open Formalism.IrreducibleCountingLemmas.TYPES hiding zIdem IsCuspidal

@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeas
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.GalAdEq
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.AdNormOne
 import Development.AutomorphicArithmetic.AdelicQuotients.CentralSectionBaseChange
-import GroundTheory.GlobalFields.IdeleGroups.GaloisOnAdeles.Action
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial Filter
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Geo

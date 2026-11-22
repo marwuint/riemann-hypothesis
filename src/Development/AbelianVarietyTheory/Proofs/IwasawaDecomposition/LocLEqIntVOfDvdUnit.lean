@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.HermitianColumns.InLocalDiscriminantKernel
-import Formalism.LocalRingCardinality.DataLevel
 open NumberField IsDedekindDomain
 open scoped TensorProduct
 

@@ -3,23 +3,12 @@ import Formalism.LocalToGlobal.Columns.TiedFv
 import Formalism.LocalToGlobal.Columns.TiedValAll
 import Formalism.LocalToGlobal.Columns.TiedUpDn
 import Formalism.LocalToGlobal.Columns.TiedGlRec
-import Formalism.LocalToGlobal.Columns.TiedGl
-import Formalism.LocalToGlobal.HermitianForms.DefsChi
 import Formalism.LocalToGlobal.Columns.TiedGlSplit
 import Formalism.LocalToGlobal.Columns.TiedXpU
-import Formalism.LocalToGlobal.Columns.TiedXp
 import Formalism.LocalToGlobal.Columns.InputsGenus
 import Formalism.LocalToGlobal.Columns.TiedTilA
-import Formalism.LocalToGlobal.Columns.TiedXpT
-import Formalism.LocalToGlobal.Columns.WordFin
 import Formalism.LocalToGlobal.Columns.TiedPer
 import Formalism.LocalToGlobal.Columns.LevPackFrLat
-import Formalism.LocalToGlobal.Columns.HermOwed
-import Formalism.LocalToGlobal.Columns.LocalLevelIsKOneEverywhere
-import Formalism.LocalToGlobal.Columns.RecLevelLocK
-import Formalism.LocalToGlobal.Columns.RecLevelLocT
-import Formalism.LocalToGlobal.Columns.HermitianFormLastCoordinateUniformizerVectorSelf
-import Formalism.LocalToGlobal.Columns.LocalLevelIsKOneAtT
 import Formalism.LocalToGlobal.Columns.LastVectorMemSpan
 import Formalism.LocalToGlobal.Columns.TiedAll
 

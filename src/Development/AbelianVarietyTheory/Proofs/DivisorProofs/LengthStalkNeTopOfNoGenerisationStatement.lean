@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LengthStalkNeTopOfNoGenerisation
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsTorsionFreeOfForallExists
-import Development.AbelianVarietyTheory.Definitions.Divisors.LineBundleGlobalSectionsDimCongrPicardClass
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsFiniteLengthOfIsArtinianRingAnnihilator
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace GlobalTheory
 set_option maxHeartbeats 1000000 in

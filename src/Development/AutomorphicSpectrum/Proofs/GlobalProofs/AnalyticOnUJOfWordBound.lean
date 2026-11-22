@@ -2,7 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsSmoothVec
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AnalyticVectorExponentialSeries
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SmoothVectorsInvariantSubspace
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.DerivedActionOfSmoothVector
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.DerivedActionAdditive
 import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.AnalyticIntertwiners.CommutatorAdjointHolds
 

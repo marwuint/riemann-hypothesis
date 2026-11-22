@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.DataN
-import Formalism.LocalRingCardinality.DataRows
 import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.NoLocalInvariants
 
 noncomputable section

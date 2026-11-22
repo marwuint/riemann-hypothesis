@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StdLvPr
-import Formalism.LocalToGlobal.HermitianForms.TiedTwJSym
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsForgetsFrames
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepZeroClassesBijectiveSameDeco
 

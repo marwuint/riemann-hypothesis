@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 import ReciprocityTheory.ReductiveGroups.SymplecticTraces.WeylCharacters.SqChar
-import ReciprocityTheory.ReductiveGroups.SymplecticTraces.WeylCharacters.Branch
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeylNumeratorLaplace
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjSubMulNegMulOfNormOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConjDiagonal

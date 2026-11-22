@@ -1,8 +1,5 @@
 import Formalism.LocalToGlobal.InertKernelTheory.GenusOneModelExistsLattice
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.PadicNormTwoHundredSixteenEqOneOfFiveLe
-import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.FlowTwoTorsionWp
-import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.CubeThreeR
-import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KurComplete
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.CurveIdealPrimeReduction
 
 noncomputable section

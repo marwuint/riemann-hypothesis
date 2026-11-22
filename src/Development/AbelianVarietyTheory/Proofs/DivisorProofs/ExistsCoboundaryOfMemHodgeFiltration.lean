@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.PtAlgSpOver
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PoincareDeRhamDuality
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCocycleOnPointsIsCocycleAndEvalEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianDeRhamFreeBaseChangeRigid
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCobWholeOfIsCobCover
@@ -12,7 +10,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ParCocSpOver
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PtAlgCompRight
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CocycleSpecProdAbelianCohomologousSumMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointwiseCocycleOnCoverExtendsUpToCoboundary
-import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDatNeZero
 
 set_option autoImplicit false
 

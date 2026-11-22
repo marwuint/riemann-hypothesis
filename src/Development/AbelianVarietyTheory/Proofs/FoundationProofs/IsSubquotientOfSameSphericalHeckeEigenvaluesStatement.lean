@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsSubquotientOfSameSphericalHeckeEigenvalues
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeVecMemFixed
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIdempotentElemCharIdem
 
 open Formalism.UG GlobalTheory.PRep GlobalTheory.LFun
 set_option maxHeartbeats 1000000 in

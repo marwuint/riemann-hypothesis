@@ -2,7 +2,6 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpPair
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntegersHenselianFiniteResidue
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SplitComps
-import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.OAlgoverAlg
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptMultihomogForm

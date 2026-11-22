@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetRefinement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterSumLocalConstantFourth
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterSumLocalConstantSecond
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemZmuOfPowPred
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemParahoricOfTrivialReduction
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntAtNatCast
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SumModGPeriodValues

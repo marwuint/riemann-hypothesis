@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ClassFunctionActsByScalarOnIrrChar
-import Formalism.LocalToGlobal.Columns.GoodXgFin
 
 open Formalism.L2.DIV
 set_option maxHeartbeats 1000000 in

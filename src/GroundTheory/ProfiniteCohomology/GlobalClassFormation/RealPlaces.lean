@@ -1,9 +1,6 @@
 import Mathlib
 import GroundTheory.ProfiniteCohomology.GlobalClassFormation.SignsCup
 import GroundTheory.ProfiniteCohomology.GlobalClassFormation.SymbolBridgeCyclotomic
-import GroundTheory.ProfiniteCohomology.GlobalClassFormation.EqZeroOfBrauerLocalApplyEqZero
-import GroundTheory.GlobalFields.NormResidueSymbol.CyclotomicCompositum
-import GroundTheory.GlobalFields.NormResidueSymbol.Rational
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.ProfCoh

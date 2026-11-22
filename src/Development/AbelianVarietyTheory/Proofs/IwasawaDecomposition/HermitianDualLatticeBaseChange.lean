@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.QuotientMetricDivisors.Statement
-import Formalism.HermitianLattices.StatementLat
 import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice
 open NumberField IsDedekindDomain
 

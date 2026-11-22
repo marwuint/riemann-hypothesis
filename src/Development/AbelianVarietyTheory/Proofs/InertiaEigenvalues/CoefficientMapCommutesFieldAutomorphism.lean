@@ -3,9 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ConjTupRefl
 import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.ExistsRootNotMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMapOfOfExtends
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCcIsEquivAtSerOfOneMapRowOfCore
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VectorValuedLiftFieldChange
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIoLFRecIff
 
 set_option autoImplicit false

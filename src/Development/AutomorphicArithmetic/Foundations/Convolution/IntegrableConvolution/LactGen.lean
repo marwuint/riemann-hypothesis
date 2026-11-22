@@ -3,7 +3,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvo
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.ArchBasic
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.LactLaws
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.TensSmoothAlt
-import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.LactSpec
 
 noncomputable section
 

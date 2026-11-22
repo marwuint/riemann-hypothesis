@@ -1,10 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.OneMemNbh
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ProjExists
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.FdCons
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceFoundations.PsiFor
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.StdGapOfGapLap
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.Exists
 
 noncomputable section
 

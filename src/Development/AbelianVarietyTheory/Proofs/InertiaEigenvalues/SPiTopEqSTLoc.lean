@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
-import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.TwistedTriples
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CrystallineCocycleTransportConjugation
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicEmbeddingsConjugate
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicAutomorphismUnique

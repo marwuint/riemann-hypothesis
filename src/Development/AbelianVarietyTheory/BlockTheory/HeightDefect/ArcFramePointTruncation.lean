@@ -3,7 +3,6 @@ import Formalism.LocalToGlobal.ProjectiveLattices.IsCombAt
 import Formalism.LocalToGlobal.ProjectiveLattices.VAtVNeBot
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RigidArc
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RigIsoCongr
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.IsNsmul
 
 noncomputable section
 

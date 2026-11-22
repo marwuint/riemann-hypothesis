@@ -1,6 +1,4 @@
 import Formalism.WachLatticeTwists.RealClassMaps.Statement
-import Formalism.WachLatticeTwists.CoprimeLiftBounds.StatBridgeChiOne
-import Formalism.WachLatticeTwists.Statement
 
 open Formalism.NG Formalism.RepresentationBoundsCohomology.BR Formalism.RepresentationBoundsCohomology.JT Formalism.RepresentationBoundsCohomology.LocallyConstantCohomology
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC

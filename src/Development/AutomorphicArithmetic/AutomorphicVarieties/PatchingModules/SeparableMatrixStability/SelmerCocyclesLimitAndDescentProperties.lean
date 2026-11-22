@@ -5,10 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.SeparableMatrixStability.EltLim
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.SeparableMatrixStability.CloseMap
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.SeparableMatrixStability.CommLim
-import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.SeparableMatrixStability.PlProps
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.LimOut
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.LimKer
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.QuotProf
 
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 

@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDv
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.FormalExpMulFormalExpNeg
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalChartEvalSquareProperties
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerTensor
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicContinuousEvaluationExistsUniqueSubstNatura
 
 set_option autoImplicit false
 

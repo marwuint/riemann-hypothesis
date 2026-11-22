@@ -5,7 +5,6 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.ImportsMoreTer
 import GroundTheory.HeightsAndTheta.Heights.Intersections.StLocRingInj
 import GroundTheory.HeightsAndTheta.Heights.Intersections.ImportsMoreFurther
 import GroundTheory.HeightsAndTheta.Heights.Intersections.ImportsBisAlt
-import GroundTheory.HeightsAndTheta.Heights.Intersections.ArithVarZero
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Inter

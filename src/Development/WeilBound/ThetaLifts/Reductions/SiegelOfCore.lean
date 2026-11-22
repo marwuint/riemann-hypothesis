@@ -1,5 +1,4 @@
 import Development.WeilBound.ThetaLifts.Reductions.SiegelPar
-import Development.WeilBound.ThetaLifts.Reductions.SiegelHaar
 
 noncomputable section
 

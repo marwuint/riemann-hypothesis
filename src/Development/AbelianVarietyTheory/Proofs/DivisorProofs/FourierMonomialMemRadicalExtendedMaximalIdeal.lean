@@ -1,8 +1,6 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMemberP
-import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeastVectorUniqueInClassMod
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RangeAlgebraMapEqIInfDiscreteValuationSubring
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg

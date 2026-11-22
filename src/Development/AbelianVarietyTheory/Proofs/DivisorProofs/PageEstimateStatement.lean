@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SingleIn
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.TwoRunDatumBoundUnitAtIndefinitePoint
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThreeLeScaleOfPowBound
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndexBoundParameterRequirementsEventuallyFamily
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OnWithOfIsEmpty
 
 set_option autoImplicit false
 

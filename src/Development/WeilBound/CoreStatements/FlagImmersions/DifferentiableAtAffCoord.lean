@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConeTangentLiftInChart
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeB
-import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 
 noncomputable section
 

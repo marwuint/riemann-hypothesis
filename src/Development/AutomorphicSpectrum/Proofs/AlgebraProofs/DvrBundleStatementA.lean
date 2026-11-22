@@ -8,7 +8,6 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ClassListMa
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericFlagDifferenceStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericBundleChain
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericFlagComparison
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartBundleBaseExtensionUnique
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PairCocycle
 open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.Heights.NumbersDVR
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)

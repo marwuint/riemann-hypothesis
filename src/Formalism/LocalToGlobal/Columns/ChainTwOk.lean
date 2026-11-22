@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.Columns.ChainTwL
-import Formalism.LocalToGlobal.Columns.ChainOneOk
 import Formalism.LocalToGlobal.Columns.ReductionExistsInLatticeStabilizerHolds
 import Formalism.LocalToGlobal.Columns.ResidueFieldUnfoldingClaimsHold
 import Formalism.LocalToGlobal.Columns.BlockTriangularMulVecMemPartialFlag

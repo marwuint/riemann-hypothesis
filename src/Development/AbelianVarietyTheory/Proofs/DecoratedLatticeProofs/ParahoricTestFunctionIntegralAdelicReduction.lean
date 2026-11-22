@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.RescOne
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsRatDatum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalBlockDetBlockTriangular
 
 noncomputable section

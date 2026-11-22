@@ -3,9 +3,7 @@ import Formalism.LogFactorialIndices.StatementIdx
 import Formalism.FilteredPoleLength.ReducedBasisBounds.LengthBaseChangeLocal
 import Formalism.FilteredPoleLength.ReducedBasisBounds.FilteredPoleLength
 import Formalism.FilteredPoleLength.LocalDescentLevels.LevelsChainOfAddOneLe
-import Formalism.FilteredPoleLength.ReducedBasisBounds.ReductionQuotient
 import Formalism.LogFactorialIndices.LogProductFormula
-import Formalism.FilteredPoleLength.LocalDescentLevels.LevelsChain
 import Formalism.FilteredPoleLength.LocalDescentLevels.LocalStepDescent
 
 noncomputable section

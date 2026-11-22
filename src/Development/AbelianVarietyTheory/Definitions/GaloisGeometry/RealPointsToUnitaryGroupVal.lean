@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FinrankPartTrivialMulRel
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.BasicForm
 import GroundTheory.ProfiniteCohomology.GlobalClassFormation.IdeleCohomology.Product
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianCongrOfPositiveIndexEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BijectiveRealTensorToProdMatrixAlgebrasInfPlaces

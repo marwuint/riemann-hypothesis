@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsFrameIff
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SecScalIffPullAb
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniqueCombOfIndependentSpecialFibre
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsDivOfExpandsAt
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.PGAppEqZeroIff
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsSmulMemSpanOfExpandsAt
 

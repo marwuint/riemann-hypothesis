@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonUnitAt
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsThetaCompact
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteTypeCycAway
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdlAlongComapEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFanOrderIdealThetaCompactification

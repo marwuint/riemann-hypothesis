@@ -1,9 +1,7 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCoreGTCLocalFrameA
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCoreGTConnGaugeB
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCRadSpSmooth
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEnTrSmooth
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.NFRadRedF
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormalFormOrderZeroOfParts
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 open scoped ContDiff

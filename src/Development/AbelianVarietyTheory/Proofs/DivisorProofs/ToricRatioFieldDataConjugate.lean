@@ -7,7 +7,6 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ToricSymbols
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NuHTwisted
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DistributionRelationObj
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinPartEqOneOfLevel
 
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheory.BigTop.Fun GlobalTheory.SqTop NumberField IsDedekindDomain
 open GlobalTheory.FunObj.SqNum (nuH halfRank IsTor)

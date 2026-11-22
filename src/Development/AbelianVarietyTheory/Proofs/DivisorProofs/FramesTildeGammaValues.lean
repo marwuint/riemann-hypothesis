@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.Divisibility.ColPins
 import Development.AbelianVarietyTheory.Definitions.Divisors.FactorBounds
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassSumLeFrameNormSqGoodPart
-import Formalism.LocalToGlobal.Divisibility.HeckeCSDICommTrRep
 open Module NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows GlobalTheory.ColRows
 open scoped ComplexOrder
 

@@ -2,7 +2,6 @@ import Mathlib
 import Development.AutomorphicArithmetic.LocalEmbeddings.ComplEquivEvW
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelArchimedeanExponent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGaussianDatumFlippedFiniteTensorBigRoute
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdmissibleCMBaseDataOfSquareTupleStanding
 
 section SlopeTestRemainingChoices
 

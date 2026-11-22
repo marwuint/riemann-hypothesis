@@ -7,7 +7,6 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HeckeP
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeOnMemGoodPart
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IpMSelfEqZero
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFramedPointBaseChangeAlgHom
-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 import Formalism.LocalToGlobal.ProjectiveLattices.AxHSupA
 
 set_option autoImplicit false

@@ -5,7 +5,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCompactIw
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SingleMulSingle
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryAdelicIwasawaCompact
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitarySiegelDomainExists
-import Development.WeilBound.ThetaLifts.Reductions.SiegelCore
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspFormSiegelBound
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspFormRapidDecay
 

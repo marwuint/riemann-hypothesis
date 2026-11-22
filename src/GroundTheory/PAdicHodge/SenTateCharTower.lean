@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.LocalFields.ConductorMatch
 import GroundTheory.PAdicHodge.FieldOfNormsCyclBase
-import GroundTheory.PAdicHodge.FieldOfNormsRam
 import GroundTheory.PAdicHodge.SenTateCharUnits
 set_option maxSynthPendingDepth 1
 

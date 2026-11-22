@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticPowOfRestrictsToQuadraticSig
-import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
-import Formalism.LocalToGlobal.IndefiniteReal.DatumF
 
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes

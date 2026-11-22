@@ -1,8 +1,6 @@
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
 import Formalism.PeriodIntegrals.ZuckTensor
-import Formalism.PeriodIntegrals.DSInfCharCap
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CapelliEigenvalues.HeckeMultiplication
 import CompanionTheory.HarishChandraModules.BesselParameterIntegrals.SmoothCyclicVectors.PhMeas
 
 open Matrix Finset

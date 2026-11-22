@@ -1,6 +1,5 @@
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.SecondBlockCount
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.ZeroCountFirst
-import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.PNTDensSpace
 
 open Complex Finset
 

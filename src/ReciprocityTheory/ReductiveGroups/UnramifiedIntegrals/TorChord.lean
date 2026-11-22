@@ -1,6 +1,5 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.TorDefs
-import Formalism.EllipticTorsion.FormalGroupPointsNoTorsion
 
 noncomputable section
 open scoped Classical

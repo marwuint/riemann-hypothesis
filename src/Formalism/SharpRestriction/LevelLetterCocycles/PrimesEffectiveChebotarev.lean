@@ -1,9 +1,7 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Formalism.SharpRestriction.LevelLetterCocycles.ResidualIrreducibleOfTheoremThreePrime
-import Formalism.CyclotomicNorms.IrreducibilityOfGoodTuple
 import Formalism.PadicSubsetSums.CentralIdempotents.GaloisIrreducibility
-import Formalism.GaloisIrreducibility.NoSolvableTransitive
 import Formalism.PadicSubsetSums.StableGradedCounts.LocalEstimateIVOfTypeSetWeight
 import Formalism.PadicSubsetSums.CentralIdempotents.CentralIdempotentIntegral
 

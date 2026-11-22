@@ -1,6 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.EvenDefect
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelToroidalPolCharts
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SecCmp
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RefinePolarisedMonomialPeriodsMonomialData
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RegularLocalRingNormalDomain

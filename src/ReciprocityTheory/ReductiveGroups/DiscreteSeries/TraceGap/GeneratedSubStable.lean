@@ -1,8 +1,6 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TraceGap.LoweringSpanDiagStable
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.Transported
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.SecondKernelCoupled
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.CasimirGapAtNoncompactWeight
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Unitary
 
 noncomputable section
 

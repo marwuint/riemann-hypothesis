@@ -2,8 +2,6 @@ import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.Singul
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacobiMapsExist
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitaryUnnSubgroupEqTopOfLeviUnipotentWeyl
-import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.AdelicConjTransposeBlockMatrixTwoByTwoFin
-import Development.AbelianVarietyTheory.BlockTheory.SiegelEisenstein.GramMatrixAdjoint
 
 noncomputable section
 

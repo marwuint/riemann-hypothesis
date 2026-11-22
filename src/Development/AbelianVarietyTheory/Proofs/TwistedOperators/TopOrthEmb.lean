@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWeilDatumAnisotropicKernelPair
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.JointSmooth
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CombAtSingleZero
 
 noncomputable section
 

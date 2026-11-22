@@ -2,11 +2,6 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.WeightedGaugeFactors.FactsDS
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.WuDecayAll
 import CompanionTheory.AutomorphicTheory.LocalBesselUniqueness.BesselModels.CoefWeightedLocHolds
-import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedVolumeStatements.LevelSubgroupProperties
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QuotProdK
-import Formalism.RealPlaceAnalysis.FinalF
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalDegreeSquareIntegrable.Closed
-import Formalism.SharpRestriction.CuspSpanNormBounds.ExpansionFromLemmaB
 
 noncomputable section
 

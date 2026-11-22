@@ -1,8 +1,6 @@
 import Mathlib
 import Development.ResolutionOfSingularities.Foundations.Blowup.StrictTransform
 import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.StrictNormalCrossings
-import Development.ResolutionOfSingularities.Foundations.BlowupUniversalProperty
-import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionOfSingularities
 universe u
 
 open CategoryTheory CategoryTheory.Limits Opposite AlgebraicGeometry TopologicalSpace

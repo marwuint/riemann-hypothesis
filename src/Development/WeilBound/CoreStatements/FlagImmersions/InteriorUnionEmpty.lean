@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionCompatiblePullback
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsMultiHomogIdealMap
-import ReciprocityTheory.AnalyticForms.PotentialTheory.Degree
 
 noncomputable section
 

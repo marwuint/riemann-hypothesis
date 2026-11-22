@@ -2,7 +2,6 @@ import Formalism.SharpRestriction.GrowthBounds.BinomialPolynomialIdentities.Lowe
 import Formalism.SharpRestriction.GrowthBounds.BinomialPolynomialIdentities.StandardPathBasisAnyRing
 import Formalism.SharpRestriction.GrowthBounds.BinomialPolynomialIdentities.AdmissibleWordBasis
 import Formalism.SharpRestriction.GrowthBounds.FrobeniusPaths.IntegralJointTypeSumOfParts
-import Formalism.SharpRestriction.GrowthBounds.RootWeights.WeightConditionFromIntegralForm
 
 noncomputable section
 

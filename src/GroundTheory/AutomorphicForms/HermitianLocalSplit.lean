@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.HermitianClassification
 import GroundTheory.AutomorphicForms.HermitianNormLocal
-import GroundTheory.LocalFields.ExistsUnitFiltrationUnitsLeAndRangePowLe
 
 noncomputable section
 

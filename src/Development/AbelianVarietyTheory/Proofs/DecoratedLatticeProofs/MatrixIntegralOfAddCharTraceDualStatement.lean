@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MatrixIntegralOfAddCharTraceDual
-import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurableSpace
 
 open ValuativeRel GlobalTheory.SplitWeil Matrix
 set_option maxHeartbeats 1000000 in

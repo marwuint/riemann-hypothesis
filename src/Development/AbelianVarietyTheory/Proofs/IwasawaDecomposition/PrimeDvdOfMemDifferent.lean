@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.N
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.PublishedTheorems.WeberRayClassFields.WeberRayFieldSt
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.FieldSizeAdjoinKthRoot
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TypeNormOfKummer
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Host GlobalTheory.NT GlobalTheory.Published GlobalTheory.Mem GlobalTheory.Mem.Fld GlobalTheory.Mem.FieldsEx
 open scoped nonZeroDivisors IntermediateField

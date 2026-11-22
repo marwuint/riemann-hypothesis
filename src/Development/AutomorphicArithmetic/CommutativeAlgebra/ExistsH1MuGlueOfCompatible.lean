@@ -4,7 +4,6 @@ import Development.EtaleCohomology.EtaleSheaves.H0TwistOverClosedField
 import Development.AutomorphicArithmetic.CommutativeAlgebra.H1PlEqZeroOfLeISupOfLocalZero
 import Development.AutomorphicArithmetic.Foundations.EtaleClopenDescent.OffDiagonalContinuationInductive
 import Development.EtaleCohomology.WeilConjectures.EmptyVan2
-import Development.EtaleCohomology.EtaleTrace.LCoprodInjPf
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC GroundTheory.FunctionField UpperTheory.Et.Sel LateralTheory.E.E4
 open scoped TensorProduct
 

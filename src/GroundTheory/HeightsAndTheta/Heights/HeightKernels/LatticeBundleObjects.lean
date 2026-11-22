@@ -8,7 +8,6 @@ import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesGenIndexDet
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesIsLattice
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesGenIndexTrans
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesIdealLatticeFG
-import GroundTheory.HeightsAndTheta.Heights.MatrixCharts.DetIneq
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PLinesLineDegree
 import GroundTheory.PowerSubgroups.CountableNeighbourhoods.CommonDenominator
 

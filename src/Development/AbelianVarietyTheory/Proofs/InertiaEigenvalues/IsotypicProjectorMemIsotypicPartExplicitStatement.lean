@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsotypicProjectorMemIsotypicPartExplicit
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DiagScaleApply
 
 open PowerSeries GlobalTheory.BK
 set_option maxHeartbeats 1000000 in

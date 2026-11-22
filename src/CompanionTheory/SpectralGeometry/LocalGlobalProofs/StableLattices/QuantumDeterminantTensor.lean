@@ -1,6 +1,5 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.OmegaMinor
-import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.HeckeAlgebraActions.BackStable
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HeckeRankOne
 import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 

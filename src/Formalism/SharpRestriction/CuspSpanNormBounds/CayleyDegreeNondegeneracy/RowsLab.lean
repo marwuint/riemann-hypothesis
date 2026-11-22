@@ -2,8 +2,6 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.R
 import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.RowsCnt
 import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.RowsTrm
 import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.RowsSiz
-import Formalism.SharpRestriction.CuspSpanNormBounds.AbsoluteAmplitudeSecondOfSource
-import Formalism.FormalDegreeBessel.FinalG
 
 noncomputable section
 

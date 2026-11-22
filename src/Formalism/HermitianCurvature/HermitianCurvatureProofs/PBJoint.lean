@@ -1,7 +1,6 @@
 import Formalism.HermitianCurvature.RealInputsClosedAdmissibleSettings
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RealInputsBuiltClosedForm
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ParametersUPrimeForULower
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.LocalisationScaledIdealMemIff
 
 open Finset NumberField MeasureTheory Formalism.FourierDecayAlt
 

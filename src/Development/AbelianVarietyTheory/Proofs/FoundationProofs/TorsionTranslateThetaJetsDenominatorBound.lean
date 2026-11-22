@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFixedOfCon
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SubstMulLogEqNSer
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationCompEqCocycleMul
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormPadicWeierstrassModelAbscissaTwoTorsionLeOne
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormJetExpNegMulLe
 
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
 open scoped BigOperators

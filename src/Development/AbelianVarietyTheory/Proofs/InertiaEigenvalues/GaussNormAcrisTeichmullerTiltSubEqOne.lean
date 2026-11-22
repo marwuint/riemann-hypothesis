@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsGauss
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaussNormExtensionAcris
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 open GlobalTheory.PMon.Gauss
 open scoped Formalism.Per
 

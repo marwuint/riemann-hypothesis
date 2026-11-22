@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasLocalisationAtElementsTrivSqZeroExtForms
-import Development.AbelianVarietyTheory.Definitions.Divisors.ComparisonMemCechHodgeFiltration
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VanishingH1InvertingMorphisms
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocalizationOfData
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitMpOmjExtIff
 
 open CategoryTheory AlgebraicGeometry KaehlerDifferential GlobalTheory.CatCoh GlobalTheory.CechDR
 set_option maxHeartbeats 1000000 in

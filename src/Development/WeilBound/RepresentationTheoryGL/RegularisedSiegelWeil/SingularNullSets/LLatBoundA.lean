@@ -1,6 +1,5 @@
 import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.WeakApproximationFinitePlace
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.MemIntROfFinPart
-import Development.AutomorphicSpectrum.Proofs.TwistedProofs.NormDetLeFactorialMulProd
 
 noncomputable section
 

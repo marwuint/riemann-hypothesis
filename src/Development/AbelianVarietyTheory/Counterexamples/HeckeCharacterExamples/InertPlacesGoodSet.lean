@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CommutingEndomorphismCondition
 import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CrystallineLatticeOfJumpPoints
-import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates
-import Formalism.SharpRestriction.LevelLetterCocycles.RamifiedCoefficientChains
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostFacts
 
 noncomputable section

@@ -5,8 +5,6 @@ import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
 import Formalism.LocalToGlobal.IndefiniteReal.OrthogonalComplementCharacterisation
 import Formalism.LocalToGlobal.IndefiniteReal.IndefiniteWeightData
 import Formalism.LocalToGlobal.IndefiniteReal.HeckeTupleStatement
-import Formalism.LocalRingCardinality.DataExtra
-import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasWeil
 
 noncomputable section
 

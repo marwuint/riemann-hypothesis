@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsConstAlo
 import Development.WeilBound.ThetaLifts.Reductions.SiegelCore
 import Development.WeilBound.ThetaLifts.Reductions.SiegelPar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StdParEqFlag
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviDecompositionGradedIsotropicFlag
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsSquareIntegrableIffMemL2
 
 noncomputable section
 

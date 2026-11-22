@@ -4,7 +4,6 @@ import Formalism.LocalToGlobal.GlobalTheory.IsResidueClassZero
 import Formalism.SharpRestriction.GrowthBounds.SmallOrderPrimes
 import Formalism.SharpRestriction.GrowthBounds.PlaneCountTheoremWithConstants
 import Formalism.SharpRestriction.GrowthBounds.LogarithmicSums
-import Formalism.SharpRestriction.GrowthBounds.TopChoiceBounds
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.AuxiliaryPrimeMemAvoidedPrimes
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TensorOfPairLift
 

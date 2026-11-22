@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsNotRelZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMulRightInvariantHaarAdelicUnitaryGroupHermiti
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaKernelLeftInvariantRationalUnitary
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawIdentityWeilTriple
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatchedThetaIntegralValue
 
 noncomputable section
 

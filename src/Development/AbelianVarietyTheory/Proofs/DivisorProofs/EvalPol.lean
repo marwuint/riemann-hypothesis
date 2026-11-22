@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasBlockOfOccurs
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LRowdivLemmas
 
 set_option autoImplicit false
 

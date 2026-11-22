@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianXiVector
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.LowerParabolicCoordinates
 
 open Matrix Formalism.FourierDecayAlt Formalism.QuantumDeterminants
 open scoped ComplexConjugate

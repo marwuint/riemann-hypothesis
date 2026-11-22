@@ -5,7 +5,6 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PHomLocRing
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PHomLocRingIsLocal
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PHomLocRingNoetherian
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PHomLocRingDimLe
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PHomLocRingLocal
 
 namespace PositivityTheory.Xgn.A_s_divcyclehomloc
 

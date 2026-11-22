@@ -1,6 +1,5 @@
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.AutDef
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.ContinuousTheta
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralGaussianRealIsometryNoFixed
 
 noncomputable section
 

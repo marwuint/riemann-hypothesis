@@ -1,9 +1,7 @@
 import Development.AutomorphicArithmetic.ShortNorms.SmallOneOf
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormPrimesImagQuadShortIntervalLowerBound
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LamIdealOfNotPrimePow
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PrimesInProgressionsRelativeError
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ZerosDisc
 
 theorem UpperTheory.T3.shortNorm : UpperTheory.T3.ShortNorm := _root_.GlobalTheory.Hk.normPrimes_short_interval_lower
 

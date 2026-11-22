@@ -4,7 +4,6 @@ import Formalism.LocalRingCardinality.DataParams₂
 import Formalism.LocalRingCardinality.DataDIV
 import Formalism.LocalRingCardinality.DataDIVDefs
 import Formalism.LocalRingCardinality.DataKap
-import Formalism.LocalRingCardinality.DataForms
 import Formalism.SharpRestriction.ParamsHeightRankConstant
 
 noncomputable section

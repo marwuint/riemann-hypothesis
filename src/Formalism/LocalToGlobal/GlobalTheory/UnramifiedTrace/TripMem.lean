@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.GlobalTheory.UnramifiedTrace.DUAllOfPt
-import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.LocalUnitaryOfMatchingZero
 
 noncomputable section
 

@@ -7,7 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasureLeCardMul
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsLimitOfChart
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CanonicalLatticeFiltrationSizeProperties
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeftQuotientCovolumeEqFundamentalDomainInter
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsGaugeAll
 
 open MeasureTheory NumberField Formalism.MainNotions.S GlobalTheory.Count
 

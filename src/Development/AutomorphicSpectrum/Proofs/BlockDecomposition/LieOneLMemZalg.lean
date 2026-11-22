@@ -1,7 +1,5 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.AffineGLForms.CuspInvariantsFinite.CuspInvFin
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousConjFin
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QdetTopThreeOrders
 
 open NumberField GlobalTheory.CuspRep Polynomial Finset
 

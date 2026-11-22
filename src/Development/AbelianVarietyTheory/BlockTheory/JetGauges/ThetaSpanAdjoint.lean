@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
-import Formalism.LocalToGlobal.ProjectiveLattices.ThProps
 import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
 
 set_option autoImplicit false

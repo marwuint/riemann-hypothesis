@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCombAt
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CombAtSingleZero
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.JointSmooth
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EventuallyFinEqOne
 
 noncomputable section
 

@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
-import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.BlockJumpCount
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsJumpMultiset
 
 noncomputable section
 

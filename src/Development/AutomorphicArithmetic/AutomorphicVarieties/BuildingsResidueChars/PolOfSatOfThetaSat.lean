@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.B
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.AdTransfer
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.RTwist
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CuspContragredientIsCMConjTwistOfPairedInvTranspStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SatakeParametersOfTwist
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published
 
 theorem UpperTheory.polOfSat_of_thetaSat :

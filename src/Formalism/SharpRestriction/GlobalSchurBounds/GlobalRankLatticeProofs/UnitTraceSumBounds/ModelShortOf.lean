@@ -1,7 +1,5 @@
 import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
 import Mathlib
-import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
-import Formalism.SharpRestriction.GlobalSchurBounds.TaylorLogMetric
 
 namespace Formalism.MainNotions.Ext
 

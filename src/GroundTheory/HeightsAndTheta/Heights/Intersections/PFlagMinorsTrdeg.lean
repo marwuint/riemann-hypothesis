@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.Intersections.ProjLineRankTwoPushforwardHypotheses
 import GroundTheory.HeightsAndTheta.Heights.Intersections.StFlagPivotIdentity
-import GroundTheory.HeightsAndTheta.Heights.Intersections.FlagPivot
 
 set_option maxSynthPendingDepth 1
 

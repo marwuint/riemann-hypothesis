@@ -1,7 +1,6 @@
 import Mathlib
 import CompanionTheory.AutomorphicTheory.SegmentRepresentations.RapidDecayFamilies.WhittakerVanishingImpliesZero
 import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionHeisenbergInvariant
-import GroundTheory.GlobalFields.TateThesis.SchwartzBruhatDual
 
 noncomputable section
 

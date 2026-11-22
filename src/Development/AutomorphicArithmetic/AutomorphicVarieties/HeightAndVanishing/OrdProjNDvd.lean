@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.HostComp
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.PartOrd
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.CompCond
-import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.CompAlg
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.CompOrd
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV

@@ -1,10 +1,7 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.BlochKatoDuality
 import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.LocDualOrth
 import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.QuotLen
-import Formalism.WachLatticeTwists.LatticeDualFibres.Statement
-import ReciprocityTheory.GaloisValuations.ContinuousConstSMulQuotient
 import Formalism.WachLatticeTwists.LatticeDualFibres.FibreDualStable
-import Formalism.WachLatticeTwists.LatticeDualFibres.StatDualFibreLattice
 import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.ExistsBasisOfLattice
 import Formalism.WeaklyAdmissibleFiltrations.PhtGalois
 

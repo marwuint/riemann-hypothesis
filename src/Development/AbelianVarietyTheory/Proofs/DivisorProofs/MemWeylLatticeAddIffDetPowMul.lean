@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LamGApply
-import Formalism.LocalToGlobal.HermitianForms.IsLocBasis
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.WeylRowDivStable
 
 set_option autoImplicit false
 

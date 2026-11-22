@@ -1,7 +1,6 @@
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FixedSpaceRankOne.SphStar
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalAlgebraHolds
-import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.SetupEig
 
 namespace PositivityTheory.Rg.BcB.F.Fok
 

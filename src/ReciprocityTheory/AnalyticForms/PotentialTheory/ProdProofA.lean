@@ -1,6 +1,5 @@
 import ReciprocityTheory.AnalyticForms.PotentialTheory.FubiniStudyPotentialProductIsPotential
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LintegralImageEqLintegralNormSqDetMul
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.MdiscSt
 
 namespace ReciprocityTheory.AnForm.M
 

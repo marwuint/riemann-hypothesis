@@ -1,5 +1,4 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WordInduction.BasePointSmoothAndMem
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.SymmetricScalarBlockMatrixTranspose
 
 open scoped ContDiff ComplexConjugate Matrix
 

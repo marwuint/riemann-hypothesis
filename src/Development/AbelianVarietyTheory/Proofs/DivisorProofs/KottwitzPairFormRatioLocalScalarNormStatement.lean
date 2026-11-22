@@ -1,10 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KottwitzPairFormRatioLocalScalarNorm
-import Development.AbelianVarietyTheory.Definitions.Divisors.PointsNonemptyUnitaryRankOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitsConjOfMinpolyEqOfSeparable
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugatePairRelated
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SameElementSignAmbiguity
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteFixedUnitClassesCentralizerRegularStatement
 
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount GlobalTheory.LKCx
 open scoped TensorProduct Classical

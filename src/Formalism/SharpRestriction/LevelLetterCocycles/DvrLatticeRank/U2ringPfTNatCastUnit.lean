@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.U2ringPfSSplit
-import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.GradNPfC
 
 noncomputable section
 

@@ -1,7 +1,5 @@
 import Formalism.LocalToGlobal.GlobalTheory.GL4.PMsDual
 import Mathlib
-import Formalism.GL3MeanSquares.ConcavityEquidistribution
-import Formalism.LogVandermondeBounds.MultinomialPowerBound
 
 noncomputable section
 

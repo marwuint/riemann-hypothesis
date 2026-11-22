@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PeriodSingle
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MovedReadingSameMapsBaseReadingAgrees
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousSwapR
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCopy
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ClassPresBasic

@@ -2,7 +2,6 @@ import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.GenericUnlinkedGL.UnlinkedRealize
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContragredientProductIrreducible
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DualClassInvolutive
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SmoothContragredientIrreducibleAndReflexive
 import BuildAid.D3
 
 noncomputable section

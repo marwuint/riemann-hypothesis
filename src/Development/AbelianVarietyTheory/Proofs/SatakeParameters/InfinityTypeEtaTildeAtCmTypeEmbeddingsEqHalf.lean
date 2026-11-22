@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenUse
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HtCard
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroWild
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroSupport
-import ReciprocityTheory.Hypotheses.GalCoh
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host NumberField IsDedekindDomain ReciprocityTheory.Gal GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up GlobalTheory.NPin GlobalTheory.NFacts
 
 namespace GlobalTheory.EtaInfType

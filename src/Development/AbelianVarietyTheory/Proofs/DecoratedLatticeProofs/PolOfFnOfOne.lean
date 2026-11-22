@@ -9,7 +9,6 @@ import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThetaLocalEquiv
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThetaLocalEquivalence.ThEquivPStepCIff
 import Formalism.LocalToGlobal.KernelLattices.ENatEq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OrdSubConjEqNeg
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GmapToAddSubgroup
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.RkVolLaHyp
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.RkConj
 

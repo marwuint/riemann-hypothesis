@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.BesselHermitianTheta.MinfDensity
-import Formalism.LocalRingCardinality.DataDIV
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Tjcosets
 import Formalism.LocalToGlobal.BesselHermitianTheta.TiedWeilUnr
 

@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ColHeightSharpWith
 import Development.AbelianVarietyTheory.Definitions.Divisors.FactorBounds
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeightedNormSquareRows
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.OrthogonalNormSquareSum
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetRefinement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrthNormLogBound
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NonnegSubOfLt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LastSideLogBound

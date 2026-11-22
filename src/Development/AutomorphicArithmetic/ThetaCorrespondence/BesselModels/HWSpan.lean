@@ -1,10 +1,6 @@
 import Mathlib
 import Formalism.HermitianCurvature.BesselNonvanishingReduction
-import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
-import Formalism.RealPlaceAnalysis.QuotientSettingHolds
 import Formalism.RealPlaceAnalysis.FinalF
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CompactExponentialSurjective
-import Formalism.PeriodIntegrals.UpqRep
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsWtOnIffOfTorus
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SetIntegralDifferentiability
 

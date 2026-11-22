@@ -2,7 +2,6 @@ import Mathlib
 import Development.AutomorphicArithmetic.CMTraceForms.CmDatumDiscriminantDepthBounds
 import Development.AbelianVarietyTheory.Statements.ShortVectorBound.ScaledLatticesInSupLattices
 import Formalism.LocalToGlobal.ProjectiveLattices.CrudeVal
-import Formalism.LocalToGlobal.ProjectiveLattices.RecPJThAllNeBot
 
 set_option autoImplicit false
 noncomputable section

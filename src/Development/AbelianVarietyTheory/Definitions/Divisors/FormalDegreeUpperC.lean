@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.RealLowestKTypeCoeffSquareIntegrable
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ConjScalarThm
 import Development.AbelianVarietyTheory.Definitions.Divisors.OfCore
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilGramSignature
 
 noncomputable section
 

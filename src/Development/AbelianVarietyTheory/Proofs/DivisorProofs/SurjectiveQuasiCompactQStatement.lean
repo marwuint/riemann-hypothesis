@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveQuasiCompactQ
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsLinearHomPull
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothRayQuotient
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj

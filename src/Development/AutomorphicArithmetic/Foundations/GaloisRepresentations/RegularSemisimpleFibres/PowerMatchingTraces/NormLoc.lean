@@ -2,9 +2,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Regul
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.PowerMatchingTraces.NormTriv
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.Places
 import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.SelmerRankBounds.SelmerRankBoundLaurent
-import GroundTheory.GlobalFields.IdeleGroups.GaloisOnAdeles
-import GroundTheory.GlobalFields.IdeleGroups.IdeleNorms.BaseChange
-import GroundTheory.GlobalFields.NormResidueSymbol.FunctorialFinite
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.GalAdEq
 
 open MeasureTheory NumberField IsDedekindDomain Filter

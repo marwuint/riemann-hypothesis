@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.TieTwRecOf
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.JoinSISel
-import Formalism.LocalToGlobal.HilbertRowConditions.AllJoinP
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AdmissibleLabelWeightsOfGreenCuspidalParametrisa
 
 noncomputable section

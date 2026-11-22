@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolAtlasDelFinsetSum
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
 
 open Set Matrix MeasureTheory
 open GlobalTheory.HermFrame

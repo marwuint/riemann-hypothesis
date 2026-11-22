@@ -2,7 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.RealOfFixedByConjugations
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.TwGFree
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.TwGLam
-import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.TwGTheta
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.TwGStd
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.TwGSemi
 

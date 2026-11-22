@@ -1,7 +1,6 @@
 import Formalism.LocalToGlobal.HilbertRowConditions.RowPin
 import Formalism.LocalToGlobal.IndefiniteForms.PairingConditionOfInverseMatrixIdentity
 import Formalism.LocalToGlobal.Divisibility.DivisionCompatibleToSub2Indef2
-import Formalism.LocalToGlobal.ClassSK
 import Formalism.SharpRestriction.Divisibility.StatementFT.PeriodPointConditions
 import Formalism.SharpRestriction.Divisibility.HookProducts.AdmPtTw
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs

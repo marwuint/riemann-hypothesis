@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
 import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsFlatSecRankZero
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ValuationFormPsiBalancedSymmetricPeriodForm
-import Formalism.LocalToGlobal.ProjectiveLattices.TowerOfAt
 
 set_option autoImplicit false
 

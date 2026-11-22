@@ -5,7 +5,6 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.ExistsScalarOfRealStandingData
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.RegConstEqAwayUnitMulFactor
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.RegConst
 
 section
 noncomputable section

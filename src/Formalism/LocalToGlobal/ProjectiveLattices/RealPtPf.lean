@@ -3,7 +3,6 @@ import Formalism.LocalToGlobal.ProjectiveLattices.RealPtGeo
 import Formalism.LocalToGlobal.ProjectiveLattices.PtOfSInst
 import Formalism.LocalToGlobal.ProjectiveLattices.ComplPf
 import Formalism.LocalToGlobal.ProjectiveLattices.CoreProofs
-import Formalism.LocalToGlobal.ProjectiveLattices.ValSetAlgSubset
 import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
 
 set_option synthInstance.maxHeartbeats 400000

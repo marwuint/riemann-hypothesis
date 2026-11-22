@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.DiscreteSeriesUniqueLargeGap
-import Formalism.PeriodIntegrals.UpqRep
 
 open Matrix
 

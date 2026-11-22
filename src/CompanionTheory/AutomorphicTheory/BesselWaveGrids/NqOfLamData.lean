@@ -1,6 +1,4 @@
 import CompanionTheory.AutomorphicTheory.BesselWaveGrids.PStarTie
-import Formalism.HermitianCurvature.StatementSz
-import CompanionTheory.AutomorphicTheory.BesselWaveGrids.NqMovedExample
 
 namespace CompanionTheory.WaveGrid.Inhab
 

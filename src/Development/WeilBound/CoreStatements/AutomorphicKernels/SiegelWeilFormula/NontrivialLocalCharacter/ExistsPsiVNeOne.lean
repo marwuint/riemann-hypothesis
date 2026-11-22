@@ -1,8 +1,6 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellP
 import Mathlib
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.HermitianCharacters.SelfDualLatticeFiltrationCharacter
-import Formalism.UnipotentAdelicQuotients.SiegelWeilUnitaryConvergent
-import Formalism.UnipotentAdelicQuotients.StdAdditiveCharExists
 
 noncomputable section
 

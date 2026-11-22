@@ -6,12 +6,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
 import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
 import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul
-import Formalism.LocalToGlobal.ProjectiveLattices.VAtVNeBot
-import Formalism.LocalToGlobal.ProjectiveLattices.RulInst
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatLineIdempotentSections
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FramePointVectors
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameBorelChangeVectors
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.Br
 

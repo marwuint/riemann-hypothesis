@@ -1,6 +1,5 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.SplitEigenfunctions.CharacterNorms.XgDefs
 import GroundTheory.IdeleRoots.TorusPowers.HeckeIdem
-import GroundTheory.AutomorphicForms.GLnLocal
 import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaBound.SatakeEigenvalues
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology Filter

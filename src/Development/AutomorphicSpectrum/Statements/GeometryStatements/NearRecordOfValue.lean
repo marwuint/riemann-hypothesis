@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRedF
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsArith
 
 noncomputable section
 

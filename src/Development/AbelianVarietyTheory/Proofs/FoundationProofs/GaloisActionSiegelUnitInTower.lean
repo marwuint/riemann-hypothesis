@@ -2,9 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.SgC
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitCoeffGaloisLevel
-import Development.AbelianVarietyTheory.Definitions.Foundations.Imports
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitQExpansionCoefficients
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasQExpansionOfLevelCoeffAndFunctionUnique
 
 noncomputable section
 

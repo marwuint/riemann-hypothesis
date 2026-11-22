@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNoetherianModelOfDivisorOfConstants
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DivConstClosedPts
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OriginIdeal
 
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in

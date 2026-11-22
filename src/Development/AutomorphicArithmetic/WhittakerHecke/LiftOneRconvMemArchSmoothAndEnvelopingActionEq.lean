@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.RconvSlice
-import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.TensApply
 import GroundTheory.AutomorphicForms.DixmierMalliavin
 
 open MeasureTheory NumberField IsDedekindDomain

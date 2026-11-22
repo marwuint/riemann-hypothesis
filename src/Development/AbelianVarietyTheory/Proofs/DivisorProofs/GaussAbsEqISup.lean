@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.JoinCastSucc
-import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalizedPointHeightLatticeAlgebraMap
 
 set_option autoImplicit false
 

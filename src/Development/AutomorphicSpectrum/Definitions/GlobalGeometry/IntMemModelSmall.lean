@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ModelSmall
-import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameCyclicGenerator
 
 noncomputable section
 

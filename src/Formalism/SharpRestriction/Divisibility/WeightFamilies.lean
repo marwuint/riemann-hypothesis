@@ -6,7 +6,6 @@ import Formalism.LocalRingCardinality.DataParamsT
 import Formalism.LocalRingCardinality.ConjSqrtMinusD
 import Formalism.SharpRestriction.ParamsHeightRankConstant
 import Formalism.SharpRestriction.Divisibility.ModuliIntegralCharts
-import Formalism.GelfandTransference.EnergyIdentity
 
 noncomputable section
 

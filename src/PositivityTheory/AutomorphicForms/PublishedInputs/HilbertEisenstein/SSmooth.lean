@@ -1,6 +1,5 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.Hilbert
 import GroundTheory.GlobalFields.TateThesis.GlobalZetaSplit
-import GroundTheory.GlobalFields.TateThesis.SchwartzBruhatDual
 
 noncomputable section
 

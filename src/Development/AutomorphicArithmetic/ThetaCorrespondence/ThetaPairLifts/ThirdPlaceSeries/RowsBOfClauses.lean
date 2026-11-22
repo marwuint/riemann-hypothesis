@@ -1,17 +1,9 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.RealTB
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneFormMapRowThreeLevelOfCharacterisation
-import Formalism.LocalToGlobal.IndefiniteReal.ZeroPartEigenvalueConvention
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
-import Formalism.LocalToGlobal.IndefiniteReal.OneMapT
-import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
-import Formalism.LocalToGlobal.IndefiniteReal.FWExist
-import Formalism.LocalRingCardinality.DataExtra
-import Formalism.LocalRingCardinality.DataTies
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LayerTwoFamilyClass
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.STiesR
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.IndefRRealTB
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.IndefRRealT
 
 set_option synthInstance.maxHeartbeats 200000
 

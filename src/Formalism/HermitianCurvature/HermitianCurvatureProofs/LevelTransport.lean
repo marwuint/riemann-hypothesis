@@ -1,8 +1,6 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ExistsPlaceWithVectors
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.SiteTransport
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ModuleFormEqRadialFormOne
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.InvariantOperatorUnderJacquet
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.QNFAsm
 
 open Matrix MeasureTheory
 open scoped ENNReal NNReal

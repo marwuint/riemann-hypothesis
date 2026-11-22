@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.Columns.RowFormsLemmas
-import Formalism.GL3MeanSquares.HookFormulaTorsion.DoubleCosetDecompositionAll
 
 open NumberField IsDedekindDomain Module
 

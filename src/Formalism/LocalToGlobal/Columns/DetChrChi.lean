@@ -4,21 +4,11 @@ import Formalism.LocalToGlobal.Columns.WordFin
 import Formalism.LocalToGlobal.Columns.TiedCB
 import Formalism.LocalToGlobal.Columns.ColumnDeterminants.ColsTiedD
 import Formalism.LocalToGlobal.Columns.ReferenceActionRationalLevels
-import Formalism.LocalToGlobal.Columns.RecLevel
-import Formalism.LocalToGlobal.KernelLattices.ThDistC
-import Formalism.LocalToGlobal.KernelLattices.ColInst
 import Formalism.LocalToGlobal.GlobalTheory.CloudNonneg
 import Mathlib
-import Formalism.GL3MeanSquares.HookFormulaTorsion.HilbertSchmidtHalfBound
-import Formalism.GL3MeanSquares.RankMulPowThreeHalvesLeFourthPower
 import Formalism.LogVandermondeBounds.LogVandermondeProofs.LogRatioLowerBoundOfLogVandermondeGap
-import Formalism.GL3MeanSquares.UnitaryConjugateDiagonalMoments
 import Formalism.LogVandermondeBounds.LogVandermondeProofs.UpperPlaceHolds
 import Formalism.LogVandermondeBounds.LogVandermondeProofs.VandNSuccRight
-import Formalism.LocalToGlobal.Columns.RecLevelCls
-import Formalism.LocalToGlobal.Columns.AdelicLemmas
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsSpan
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlobApprox
 
 noncomputable section
 

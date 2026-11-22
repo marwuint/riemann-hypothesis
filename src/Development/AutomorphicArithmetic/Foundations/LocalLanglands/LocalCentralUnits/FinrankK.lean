@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.Foundations.LocalLanglands.RecTTranspor
 import Development.DiscreteGroups.GlobalIrreducibility.DzGalRes
 import Development.DiscreteGroups.GlobalIrreducibility.DzIneEq
 import Development.DiscreteGroups.GlobalIrreducibility.ExistsIneOfVEqOne
-import Development.DiscreteGroups.GlobalIrreducibility.DzNormV
 import Development.DiscreteGroups.GlobalIrreducibility.DzTameRec
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.ArtEx
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.TameArt

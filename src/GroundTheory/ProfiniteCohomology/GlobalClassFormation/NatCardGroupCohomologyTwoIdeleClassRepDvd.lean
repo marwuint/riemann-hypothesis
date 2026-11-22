@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.ProfiniteCohomology.GlobalClassFormation.LevelTower
 import GroundTheory.TateCohomology.TateResEqZeroOfNsmulEqZero
 import GroundTheory.TateCohomology.ResCoresPos
-import GroundTheory.TateCohomology.Annihilation
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.ProfCoh

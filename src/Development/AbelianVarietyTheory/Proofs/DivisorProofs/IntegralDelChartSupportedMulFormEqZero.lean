@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralDelFnMulEqZeroOfIsForm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolAtlasIsFormDel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFormMul
 
 set_option autoImplicit false
 

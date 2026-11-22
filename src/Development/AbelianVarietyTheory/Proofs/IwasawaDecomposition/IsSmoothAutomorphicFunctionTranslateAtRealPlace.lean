@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Adelic
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DifferentiableOneP
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsSigmaList
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.CommuteGelfandInvariantMatrixUnitsOfGlRel
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GelfandInvariantCommRightTranslation
 
 noncomputable section

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.TupleConstantsNeZero
 import Formalism.QuotientMetricDivisors.ReductionLemmaZero
-import Formalism.QuotientMetricDivisors.ProdFormula
 
 open NumberField IsDedekindDomain Finset GlobalTheory.Square
 open Formalism.DivisionValues (vw conjPl)

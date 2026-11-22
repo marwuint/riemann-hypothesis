@@ -1,11 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
-import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
-import Formalism.LocalToGlobal.BesselHermitianTheta.TiedSmooth
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisThetaLaws
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepLatticeStabilizerVacuumEqDetCharSmul
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HomSymplecticHalfFormAlgebraicLawsContinuous
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchurLemmaThetaFunctionsOrientedPair
 
 noncomputable section
 

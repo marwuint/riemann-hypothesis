@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.CoarseMultiplicity.LeadingExponentHomogeneous
-import Formalism.SharpRestriction.GrowthBounds.CoarseMultiplicity.FTDefs
 
 noncomputable section
 

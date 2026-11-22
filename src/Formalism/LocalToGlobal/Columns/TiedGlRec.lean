@@ -1,7 +1,6 @@
 import Formalism.LocalToGlobal.Columns.TiedCls
 import Formalism.LocalToGlobal.Columns.TiedXp
 import Formalism.LocalToGlobal.Columns.TiedGl
-import Formalism.LocalToGlobal.HermitianForms.DefsChi
 
 open NumberField IsDedekindDomain Matrix
 open scoped TensorProduct

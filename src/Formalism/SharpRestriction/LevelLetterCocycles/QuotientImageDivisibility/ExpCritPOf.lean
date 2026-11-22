@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.QuotientImageDivisibility.IndepPhiCmp
-import Formalism.SharpRestriction.LevelLetterCocycles.QuotientImageDivisibility.IndepOfSpan
 
 noncomputable section
 open Classical

@@ -8,7 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointHeightDualAndL
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfIntersectionLowerHeight
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemipositiveNonnegCombination
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NefFibPowIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NontrivialIsomClassInt
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr

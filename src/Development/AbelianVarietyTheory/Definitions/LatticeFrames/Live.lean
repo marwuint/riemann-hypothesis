@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsStdFr
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PinColL
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.FrameTopAlt
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.RescOne
 
 set_option genSizeOfSpec false

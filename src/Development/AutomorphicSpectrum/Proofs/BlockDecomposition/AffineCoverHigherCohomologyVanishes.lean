@@ -11,7 +11,6 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.TotPairing
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousCochainFiltrationDecomposition
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.CechSeparated
-import GroundTheory.ArithmeticGeometry.SchemeCohomology.AffineVanishing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsoToBidualOfLocalFrames
 
 set_option autoImplicit false

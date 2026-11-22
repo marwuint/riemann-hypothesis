@@ -1,11 +1,7 @@
 import Formalism.LocalToGlobal.UnitaryNorms.CharDiv
 import Formalism.LocalToGlobal.UnitaryNorms.DefsDatum
 import Formalism.SharpRestriction.Divisibility.ZetaProductPairs
-import Formalism.LocalRingCardinality.DataIdx
 import Formalism.LocalRingCardinality.SpanPowerMembership.DivXExample
-import Formalism.LocalRingCardinality.DataAmbForm
-import Formalism.LocalRingCardinality.DataKap
-import Formalism.LocalRingCardinality.DataDIVDefs
 import Formalism.LocalRingCardinality.SpanPowerMembership.NZRowA
 import Formalism.LocalRingCardinality.SpanPowerMembership.NZRowC
 

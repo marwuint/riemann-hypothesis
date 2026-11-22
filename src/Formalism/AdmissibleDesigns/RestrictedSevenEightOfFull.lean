@@ -1,6 +1,5 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.LargeLevelLemmas
 import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
-import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.SharpRestriction.LevelLetterCocycles.WildPro
 import Formalism.SharpRestriction.LevelLetterCocycles.QpowOfTw
 import Formalism.LocalRingCardinality.SpanPowerMembership.Places

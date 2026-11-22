@@ -1,5 +1,4 @@
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.FiniteDimensionalOfOrtho
-import Formalism.HermitianLattices.HermitianLatticesProofs.AutFinite
 
 open NumberField Module
 

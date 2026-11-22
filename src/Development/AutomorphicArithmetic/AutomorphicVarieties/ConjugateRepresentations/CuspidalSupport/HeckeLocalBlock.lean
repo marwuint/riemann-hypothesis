@@ -1,7 +1,6 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresentations.CuspidalSupport.HasCapOneFn
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.CmBridge
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.FormsFiniteness.FormsFinite
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Satake
 
 noncomputable section
 

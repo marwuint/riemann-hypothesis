@@ -5,7 +5,6 @@ import Formalism.SharpRestriction.GrowthBounds.RootWeights.IsotypicProjectorLatt
 import Formalism.SharpRestriction.GrowthBounds.RootWeights.ValuationNonnegIffIntegral
 import Formalism.SharpRestriction.GrowthBounds.ProjectionOfIsotypicDecomposition
 import Formalism.SharpRestriction.GrowthBounds.RootWeights.WeightConditionFromIntegralForm
-import Formalism.SharpRestriction.GrowthBounds.RootWeights.PolynomialMemWeightSpaceIff
 import Formalism.GrowthSums.FactorialBaseGrowth.Coarse
 import Formalism.GrowthSums.FactorialBaseGrowth.Harmonic
 import Formalism.GrowthSums.FactorialBaseGrowth.LogCoef
@@ -13,7 +12,6 @@ import Formalism.SharpRestriction.GrowthBounds.RootWeights.MahPadicGeOfDvd
 import Formalism.SharpRestriction.GrowthBounds.RootWeights.BinomialExpansionCoeffZeroOfDeg
 import Formalism.SharpRestriction.GrowthBounds.RootWeights.MemBoundedDegreeExponentsIff
 import Formalism.SharpRestriction.GrowthBounds.CountingStatementReduction
-import Formalism.GradedWeylDivisibility.FinalC
 import Formalism.GradedWeylDivisibility.FinalD
 import Lemmata.MiscLemmasE.Imports
 

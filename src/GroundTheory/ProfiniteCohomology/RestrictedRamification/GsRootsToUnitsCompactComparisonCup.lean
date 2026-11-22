@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.BaseCupFormula
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.BaseCupGlobal
-import GroundTheory.ProfiniteCohomology.RestrictedRamification.IsDiscreteRepResIntRepTrivGs
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.BaseClassIdele
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.BaseKummerDelta
 set_option maxSynthPendingDepth 1

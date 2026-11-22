@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvUAbsU
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemShellUIffDepth
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SwapLtSwapIffOfAddTwo
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsOpenIsCompactUnitaryIntegralPoints
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.FIwasawa
 
 noncomputable section
 

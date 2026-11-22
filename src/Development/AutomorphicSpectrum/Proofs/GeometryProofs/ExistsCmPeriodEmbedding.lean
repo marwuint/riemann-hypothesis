@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCMFrame
-import Development.AbelianVarietyTheory.Proofs.ToricGeometry.ExistsEquivOfSumEq
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PureFamilyDecomposition
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PurePeriodLocalBasisExists
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPackPureFrame
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPeriodAlgebraic

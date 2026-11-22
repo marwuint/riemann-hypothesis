@@ -1,11 +1,6 @@
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.RStatement
-import Formalism.LocalToGlobal.ProjectiveLattices.RecPJThAllNeBot
-import Formalism.LocalToGlobal.ProjectiveLattices.PlaceBelow
-import Formalism.SharpRestriction.Divisibility.AbelianOpenPart.OEOsInjective
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.LemmaBStatement
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermCut
 import Formalism.LocalToGlobal.ProjectiveLattices.DepRun
-import Formalism.LocalToGlobal.ProjectiveLattices.CrudeVal
 
 set_option autoImplicit false
 

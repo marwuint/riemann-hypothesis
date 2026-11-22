@@ -10,8 +10,6 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutSERDJNice
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RadialWaveOrbital
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RadialOperatorLocality
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJALocToolsTheta
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAFFStableAdjComm
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermMulVecMulVec
 
 namespace Formalism.FourierDecayAlt.P.CutSE
 

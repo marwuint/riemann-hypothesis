@@ -24,7 +24,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SectionOrthogon
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DividedPowerIdealTorsionFree
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DividedPowerQuotientExistsStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DividedPowerMorphismCompatible
-import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.AcrisKummerUnits.Splits
 open CategoryTheory AlgebraicGeometry CrystallineSemistableComparison CrystallineSemistableComparison.R
 
 theorem CrystallineSemistableComparison.RL.surj_pass : ∀ {S : Type} [CommRing S] {T : Type} [CommRing T] (φ : S →+* T), Function.Surjective φ → (Aic S → Aic T) ∧ (Val0 S → Val0 T) := _root_.GlobalTheory.CompanionTheory.SurjPass.absolutely_closed_comparable_surjective

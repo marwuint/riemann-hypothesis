@@ -1,8 +1,6 @@
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.GermIntegrals.StepSt
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HermitianFormNormSqLeReMulRe
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LeviRep
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 
 open MeasureTheory PositivityTheory.Tls2.Ming3 GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.ThetaGL ValuativeRel
 

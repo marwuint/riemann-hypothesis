@@ -1,6 +1,5 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJA
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutAsm
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.SquareIntegrableGammaZetabarInv
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 open scoped ComplexConjugate

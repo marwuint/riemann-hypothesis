@@ -1,7 +1,6 @@
 import Formalism.SharpRestriction.GrowthBounds.HermitianTensor.DetFactsPAlt
 import Formalism.SharpRestriction.GrowthBounds.HermitianTensor.DerivativeRepresentation
 import Formalism.SharpRestriction.GrowthBounds.HermitianTensor.InitialMinorLiftFirstEntry
-import Formalism.SharpRestriction.GrowthBounds.ColumnSpanDensity.TensorKP
 
 noncomputable section
 

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.Torsor
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsTjCorrDiagModel
-import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDomainAndIsIntegrallyClosedAtPrimeOfSmoothOfCo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrdinaryPointInvariantUnderObjectMap
 import Development.AutomorphicArithmetic.CommutativeAlgebra.AlgHTDefs
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalAlgebraisation

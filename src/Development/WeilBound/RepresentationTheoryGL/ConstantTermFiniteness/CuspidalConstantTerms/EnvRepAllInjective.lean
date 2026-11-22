@@ -1,11 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAutOfMemAutForms
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EnvelopingActionCommutesTranslation
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPlaceRep
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.UnitaryLieGeneratorsRep
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FaithfulOfDerivationsDualFamily
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolyFunMemSmoothVectors
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RightLieDerivativeRealEntryPolynomialFunctionStatement
 
 noncomputable section
 

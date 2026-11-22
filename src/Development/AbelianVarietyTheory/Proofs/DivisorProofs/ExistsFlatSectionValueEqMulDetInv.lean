@@ -2,12 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EigLatLe
 import Formalism.LocalToGlobal.ProjectiveLattices.LiftLaSpec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightedSectionExponentShift
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsLocalRingTrivSqZeroExt
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFrameRingOverTestRing
-import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.UnivFrame
-import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsLieBasis
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 
 open CategoryTheory GlobalTheory.Frames NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.L2.Pj GlobalTheory.DualWeyl GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.CompHt GlobalTheory.DefPt ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD
 open scoped Matrix Classical

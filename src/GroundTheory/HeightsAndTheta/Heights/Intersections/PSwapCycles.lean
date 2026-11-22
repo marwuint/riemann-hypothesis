@@ -3,7 +3,6 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsArith
 import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsSwap
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.NotRelevantOfDimZero
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.MemMinimalPrimesOfMemDivSuppDivSupp
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterDivSupp
 
 set_option maxSynthPendingDepth 1
 

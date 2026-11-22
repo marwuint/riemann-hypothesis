@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaDistributio
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsMidLevIff
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.SharpPoly
 import Formalism.LocalToGlobal.InertKernelTheory.K2OfAgreements
-import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 import Development.AbelianVarietyTheory.PublishedTheorems.GlobalTheta.WeylDualWeylLatticesAgreeOfLowestAlcove
 
 noncomputable section

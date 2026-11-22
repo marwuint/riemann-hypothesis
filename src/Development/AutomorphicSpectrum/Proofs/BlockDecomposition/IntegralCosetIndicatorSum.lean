@@ -12,7 +12,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SumOverCompactC
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsInducedSectionSupportedOpen
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibreFunctionLocallyConstantCompact
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCompactCosetSet
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothIntegralLinear
 open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib GlobalTheory.CompanionTheory.Rodier GlobalTheory.CompanionTheory.BZPsiPG GlobalTheory.CompanionTheory.BZPsiPG.FibKer
 open scoped TensorProduct
 

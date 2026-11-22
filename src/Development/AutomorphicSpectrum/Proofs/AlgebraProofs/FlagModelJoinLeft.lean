@@ -7,7 +7,6 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinFlagPa
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinPairNumJoinLeft
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinBirationalJoin
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PairNumberPullback
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsBundles
 
 namespace GlobalTheory.CompanionTheory.Ar.Num.FlagModelJoinLeft
 

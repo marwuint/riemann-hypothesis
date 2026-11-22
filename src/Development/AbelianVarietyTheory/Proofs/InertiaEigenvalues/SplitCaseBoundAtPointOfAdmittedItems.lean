@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Ra
 import Formalism.SharpRestriction.LevelLetterCocycles.JumpAndLengthOfAdmitted
 import Formalism.AdmissibleDesigns.AdmG5OfAdm51AdmG5
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelmerLengthBoundAtPoint
-import Formalism.SharpRestriction.LevelLetterCocycles.LargeLevelLemmas
 
 open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.WeaklyAdmissibleFiltrations
 

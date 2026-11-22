@@ -5,9 +5,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ValuationLocalVolumes.V
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.AlTieFD
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.TypedFinal
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.DstarIdxPf
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LeadingMinorIntegrality
-import Formalism.FrobeniusOrbits.RealSubfieldLeCompositum
-import Formalism.LocalRingCardinality.IntCastDvdOfDvdIntegers
 
 set_option linter.unusedVariables false
 

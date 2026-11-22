@@ -3,7 +3,6 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinStable
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatAbsoluteCharacter
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TypedSecondBlockRestriction
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommuteRtOfMemZalg
 import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.SliceTensors.PProjA
 
 noncomputable section

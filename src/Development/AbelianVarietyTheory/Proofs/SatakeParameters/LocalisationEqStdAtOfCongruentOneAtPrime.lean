@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalizedLattice
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicMatrixCongruenceMoveRationalFrame
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TypePrimeFramesRightTranslateDifferIntegralGL
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicLatticeSpec
-import Formalism.LocalToGlobal.Columns.AdelicLemmas
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DatumJetsTranslate
 open NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.UG Formalism.L2.Col Formalism.L2.PairingIndexBounds.F Formalism.MainNotions.G.KAat Formalism.L2.Forms Formalism.L2.Ker Formalism.MainNotions Formalism.L2.DIV Formalism.MainNotions.G GlobalTheory.TwU GlobalTheory.TwV
 open scoped TensorProduct

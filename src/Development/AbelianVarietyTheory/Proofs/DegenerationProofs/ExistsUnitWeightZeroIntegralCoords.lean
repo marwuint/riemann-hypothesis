@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.CompanionTheor
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.UTorsSt
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnitCharts
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ImmByWeightZero
-import Development.AbelianVarietyTheory.Definitions.Degenerations.PullChartIsLB
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.KbIsAlgClosedAndConj
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FramedPointsLiftToLevelCover
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.NoCommonZeroIffOfSec
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointBaseChangeUniqueReflIff
 import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.FromTestIffOfValAtCx
 
 set_option autoImplicit false

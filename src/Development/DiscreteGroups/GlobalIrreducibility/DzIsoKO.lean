@@ -1,6 +1,5 @@
 import Mathlib
 import Development.DiscreteGroups.GlobalIrreducibility.ExistsOfMemKOne
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.PadicIntGLSmulMemPrincipalCongruenceFixed
 
 noncomputable section
 

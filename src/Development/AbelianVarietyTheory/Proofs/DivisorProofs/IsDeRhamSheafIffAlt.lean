@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PoincareDe
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ZeroSectionBase
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeRhamSheaf
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsQuasicoherentEigenQuot
 
 set_option autoImplicit false
 

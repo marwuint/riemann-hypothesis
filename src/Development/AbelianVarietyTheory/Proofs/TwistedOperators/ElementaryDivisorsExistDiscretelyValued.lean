@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasLenOfLatLen
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Cartan
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.GlintPrincRelIndexNeZero
 
 noncomputable section
 

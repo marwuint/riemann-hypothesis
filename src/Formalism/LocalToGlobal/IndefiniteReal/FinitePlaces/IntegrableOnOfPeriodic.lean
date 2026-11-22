@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.CharLem
-import Formalism.LocalToGlobal.IndefiniteReal.PHeisFC
 
 noncomputable section
 

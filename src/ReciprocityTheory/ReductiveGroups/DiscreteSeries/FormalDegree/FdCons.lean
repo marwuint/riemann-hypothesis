@@ -1,6 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.ThmFD
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.FdegTransfer
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.EqZeroOfDatumEmbeddingEqZero
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.FdConsA
 
 noncomputable section

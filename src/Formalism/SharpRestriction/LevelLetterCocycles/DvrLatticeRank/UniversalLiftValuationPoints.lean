@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.Imports
-import Formalism.SharpRestriction.LevelLetterCocycles.DdRFull
 import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.U1r2Basis
 
 noncomputable section

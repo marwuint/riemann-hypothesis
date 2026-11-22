@@ -3,7 +3,6 @@ import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.Di
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.ParabolicSubgroupEquality
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.LineFacts
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HaarExistence
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.RightDerivativeZeroOutsideSupport
 
 noncomputable section
 

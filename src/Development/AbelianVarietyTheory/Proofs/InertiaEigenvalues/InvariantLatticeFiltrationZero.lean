@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.On
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeCrystallineLattices
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExponents
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmulMemFilTOfZero
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 
 section
 open scoped Formalism.Per

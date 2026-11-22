@@ -2,9 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.DepthNumbersThresholdEq
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CharacterBlocksAttainBound
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.MonomialBlockSupplyBothTypings
-import Formalism.LocalToGlobal.CharacterGerms.ContentLargeFromSupplies
-import Formalism.LocalToGlobal.CharacterGerms.ContentZeroAt
-import Formalism.LocalToGlobal.CharacterGerms.LatticeInclusionFormsInjective
 
 open Formalism.L2.FormalSeriesBounds GlobalTheory.GoodDepth
 open scoped BigOperators

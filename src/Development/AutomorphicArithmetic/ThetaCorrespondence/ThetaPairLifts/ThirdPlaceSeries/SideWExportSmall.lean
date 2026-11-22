@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.HeightFunctions.OntoAlong
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.WPtFrame
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.SmallFrameAtColumn
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SideOf
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.NormChoiceOfExtension
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
 set_option synthInstance.maxHeartbeats 200000
 

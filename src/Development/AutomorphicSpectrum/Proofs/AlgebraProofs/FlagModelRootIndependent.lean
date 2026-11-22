@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.InhabitAlt
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinFlagModelRootIndep
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagModelValueIndependent
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.InhabitBis
 
 namespace GlobalTheory.CompanionTheory.Ar.RootIndep
 

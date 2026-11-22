@@ -4,7 +4,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeas
 import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.SmoothStar
 import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.LocHeightDiagPowLe
 import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.SumSmulApply
-import Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnalysis.G1St
 
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial Filter
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace

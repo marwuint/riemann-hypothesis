@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Theta
 import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.MemISupAutomorphicRepsOfInvariantForm
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvariantPositivePeterssonForm
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousMapPFin
 
 open GlobalTheory.UnitaryBC GlobalTheory.DefU
 

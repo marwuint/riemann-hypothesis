@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SetAtOfSizeAt
-import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyGridDataIff
 
 noncomputable section
 

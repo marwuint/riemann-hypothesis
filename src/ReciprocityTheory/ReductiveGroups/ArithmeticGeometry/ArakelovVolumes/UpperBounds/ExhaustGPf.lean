@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.ExhaustFStatementPf
-import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.HoloSmooth
 import ReciprocityTheory.L2DbarEstimates.LeviForms.LogNormSq
 
 namespace ReciprocityTheory.ChartRestriction.G.AR.Up

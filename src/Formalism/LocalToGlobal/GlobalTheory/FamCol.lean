@@ -1,8 +1,5 @@
 import Formalism.LocalToGlobal.Columns.ReferenceActionRationalLevels
 import Formalism.LocalToGlobal.GlobalTheory.FamRec
-import Formalism.SizeWindowBrackets.SlopeHypothesesRounded
-import Formalism.SizeWindowBrackets.ErrorFormsWeakWindowsFalse
-import Formalism.LogVandermondeBounds.LogRatioUpperBound
 import Formalism.SizeWindowBrackets.SlopesFromSizeAndCount
 
 open Module NumberField IsDedekindDomain Matrix

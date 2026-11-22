@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeometricGaloisDenseTauPowMulFixingQRoots
-import Development.AbelianVarietyTheory.Definitions.Foundations.IntegralLocallyConstCochainModPow
 
 open GlobalTheory.K5
 set_option maxHeartbeats 1000000 in

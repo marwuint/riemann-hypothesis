@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.HermitianCurvature.CapelliDeterminantAndBranching
-import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CommonEigenvectors
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.HighestWeightPolynomials
 import Development.AbelianVarietyTheory.Definitions.Jets.Imports

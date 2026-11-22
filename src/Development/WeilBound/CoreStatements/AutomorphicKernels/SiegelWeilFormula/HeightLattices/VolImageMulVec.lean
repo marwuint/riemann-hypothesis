@@ -1,6 +1,4 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrablePowerNormCompact
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddEquivAddHaarCharMulVecArtinianReduced
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.DensInfSS
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.WhitGenOf
 
 noncomputable section

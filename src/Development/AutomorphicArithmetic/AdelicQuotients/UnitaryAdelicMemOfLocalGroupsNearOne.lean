@@ -1,7 +1,6 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.SchurStep
 import Development.WeilBound.ThetaLifts.LatticeBasics.EulerProd
 import Development.WeilBound.ThetaLifts.LatticeBasics.BadFactor
-import Development.WeilBound.ThetaLifts.LatticeBasics.CommuteTheta
 
 open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes

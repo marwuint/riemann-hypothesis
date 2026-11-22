@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReindexDblIncM
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LagrInt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNsmulFix
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFunctionHeisenbergInvariant
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHalfAbstract
 
 open scoped TensorProduct Matrix

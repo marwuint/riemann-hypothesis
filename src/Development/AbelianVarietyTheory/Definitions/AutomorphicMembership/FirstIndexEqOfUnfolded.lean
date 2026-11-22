@@ -6,7 +6,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.Uppe
 import Development.AbelianVarietyTheory.Counterexamples.UpperHalfSurvey.ExistsFundSetOrth
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.FinMuAllData
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUnfFamily
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RelabelEmbeddingsGoodBijectiveConjCompat
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.InvariantDataMet
 
 noncomputable section

@@ -3,7 +3,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvo
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.FinSplit
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.MatchFin
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.SplitLoc
-import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.GlueBasic
 
 open MeasureTheory NumberField IsDedekindDomain
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Global GroundTheory.Global.SemiLocal

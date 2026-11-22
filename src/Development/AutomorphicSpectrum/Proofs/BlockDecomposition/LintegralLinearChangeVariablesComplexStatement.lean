@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LintegralLinearChangeVariablesComplex
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecondCountableHermC
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousBlkM
 
 open MeasureTheory Matrix
 open GlobalTheory.CompanionTheory.SiegelND.Integ.Arch GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.HuaInt

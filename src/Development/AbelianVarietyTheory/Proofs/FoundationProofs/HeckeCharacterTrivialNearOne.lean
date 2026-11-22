@@ -5,7 +5,6 @@ import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.LocalRingCardinality.ConjSqrtMinusD
 import Formalism.LocalToGlobal.ProjectiveLattices.HostRank
 import Formalism.LocalToGlobal.ProjectiveLattices.LevelPb
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.Principal
 
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
 open scoped BigOperators

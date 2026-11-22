@@ -1,6 +1,5 @@
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.LatH
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReindexDblIncM
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsDualFamilySelfDualHermitianSpace
 
 noncomputable section
 

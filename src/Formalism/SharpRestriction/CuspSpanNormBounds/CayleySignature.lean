@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.ParConsts
-import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
-import Formalism.LocalRingCardinality.DataTheta
 
 open MeasureTheory Matrix Finset
 open scoped InnerProductSpace ContDiff ENNReal

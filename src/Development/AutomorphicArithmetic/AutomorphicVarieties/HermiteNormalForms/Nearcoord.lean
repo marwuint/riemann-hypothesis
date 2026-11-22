@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNormalForms
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNormalForms.DetPull
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNormalForms.Cramer
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNormalForms.Scinv
-import Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNormalForms.Rypos
 
 open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder

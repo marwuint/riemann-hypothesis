@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUnifOfIsMumfordOf
-import ReciprocityTheory.CommutativeAlgebra.SaturatedChains.Integral
 open IsLocalRing
 
 namespace GlobalTheory

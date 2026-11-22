@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.ArcLineFunctions.ArcDatumIsArcPointBasis
-import Formalism.LocalToGlobal.ProjectiveLattices.SectionOfLineBundleOne
 import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
 import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.FinitePlaceArcs.BeSumStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.Rationality.FinCoreSt

@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsRationalDblCoord
-import Development.AbelianVarietyTheory.Definitions.Foundations.AnalyticOnNhdTsumNpow
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsIwasawaOfIsCompact
 
 noncomputable section
 

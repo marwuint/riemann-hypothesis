@@ -4,8 +4,6 @@ import Development.AutomorphicSpectrum.Definitions.AdelicLattices.IsGenLevel
 import Development.AbelianVarietyTheory.Definitions.Foundations.UnitarySixTwoHarishChandraParameter
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousWordTranslate
 import Development.WeilBound.CoreStatements.OrbitDecayEstimates.CurveDerivativeDecay.LipschitzEstimate
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.HeBranching
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsNormEmbId
 
 noncomputable section
 

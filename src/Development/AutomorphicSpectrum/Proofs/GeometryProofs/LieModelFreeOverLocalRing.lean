@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteProjective
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.CompanionTheory.Ar
 
 namespace GlobalTheory.CompanionTheory.Ar.LieFreeSmooth

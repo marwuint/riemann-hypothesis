@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.ModelCext
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.OneParam
 
 noncomputable section
 

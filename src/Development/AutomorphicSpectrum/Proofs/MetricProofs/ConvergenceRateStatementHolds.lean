@@ -2,7 +2,6 @@ import Mathlib
 import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
 import ReciprocityTheory.AnalyticForms.LeviForms.TailCut
 import ReciprocityTheory.AnalyticForms.PotentialTheory.Stokes
-import ReciprocityTheory.AnalyticForms.PotentialTheory.MaMeasure
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MaMeasureEqOfConst
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TailBoundStatementHolds
 open MeasureTheory Metric Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.AnForm.M.FinHolAtlas

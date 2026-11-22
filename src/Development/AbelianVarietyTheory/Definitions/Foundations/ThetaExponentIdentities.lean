@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.DescentConstants
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WeightExponentsEmbeddingsDegree
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AMiEqAMinusQ
-import Formalism.LocalToGlobal.ProjectiveLattices.ExistsParameterConditions
 
 set_option autoImplicit false
 

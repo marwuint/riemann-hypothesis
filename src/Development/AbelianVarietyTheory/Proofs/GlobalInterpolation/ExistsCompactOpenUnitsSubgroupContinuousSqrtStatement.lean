@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsCompactOpenUnitsSubgroupContinuousSqrt
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FibOfZero
 
 open MeasureTheory Topology
 set_option maxHeartbeats 1000000 in

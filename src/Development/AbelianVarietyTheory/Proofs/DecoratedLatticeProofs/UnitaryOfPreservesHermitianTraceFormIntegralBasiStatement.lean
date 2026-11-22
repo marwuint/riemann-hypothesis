@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitaryOfPreservesHermitianTraceFormIntegralBasi
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsRealCoord
 
 open NumberField Matrix Formalism.MainNotions.S GlobalTheory.CuspGeo
 set_option maxHeartbeats 1000000 in

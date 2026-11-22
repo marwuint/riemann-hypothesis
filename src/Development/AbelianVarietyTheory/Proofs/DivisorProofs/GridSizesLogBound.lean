@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.AuxiliaryPrimeNeTypePrime
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsValCharTwist
-import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
 import Formalism.LocalToGlobal.ProjectiveLattices.HostSize
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LevelPrimeSplitsCompletelyInCmField
 

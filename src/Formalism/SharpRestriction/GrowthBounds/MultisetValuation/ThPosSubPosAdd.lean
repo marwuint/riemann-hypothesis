@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.ThRestGcVOf
-import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.TheoremSFromKOneOf
 
 noncomputable section
 

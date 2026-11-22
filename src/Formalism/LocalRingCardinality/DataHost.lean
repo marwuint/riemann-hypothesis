@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalRingCardinality.Params
 import Formalism.FrobeniusOrbits.RealSubfieldLeCompositum
 import Formalism.FrobeniusOrbits.DiscrMaximalRealCyclotomic
-import Formalism.FrobeniusOrbits.Statement
 import Formalism.FrobeniusOrbits.HostDiffSupport
 import Formalism.FrobeniusOrbits.HostThickExists
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.ConjEMemHostFIff

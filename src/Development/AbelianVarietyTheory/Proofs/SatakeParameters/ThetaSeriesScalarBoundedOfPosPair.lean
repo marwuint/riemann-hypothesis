@@ -8,10 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormLambdaCharac
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTuplePointDetNormOneOrderEqNegLength
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.MInvFdOfCharts
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.RepAdmRec
-import Formalism.LocalToGlobal.InertKernelTheory.ScalG
 import Formalism.LocalToGlobal.InertKernelTheory.DefsRepLt
-import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.FrecAt
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.LocalToGlobal.GlobalTheory.GL3.IsIntegralOfMemQbar
 
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.MainNotions.G.KAat Formalism.MainNotions.G.CmpJ Formalism.L2.G Formalism.L2.G.Cmp Formalism.L2.Forms Formalism.L2.DIV Formalism.UG Formalism.L2.Ker Formalism.L2.G.Pend Formalism.L2.PairingIndexBounds.F Formalism.L2.KerInert GlobalTheory.TwV GlobalTheory.TwV.Xc TensorProduct

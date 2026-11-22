@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
-import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Formalism.LocalToGlobal.ProjectiveLattices.UnramBridgeHolds
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotents
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvolutionSphericalHeckeAnti

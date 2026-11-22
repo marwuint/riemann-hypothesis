@@ -1,6 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJDHatJDCapRGrpPPComm
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.RestrictionIrrelevantDoubleLevelOperator
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.SumDualVectorEqZeta
 
 open Matrix Finset Filter Topology
 open scoped ContDiff

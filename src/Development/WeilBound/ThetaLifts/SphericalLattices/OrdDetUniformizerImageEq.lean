@@ -1,10 +1,6 @@
 import Development.WeilBound.ThetaLifts.SphericalLattices.LocCommSt
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarInvVolumeConjModularCharacter
-import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermLat
 
 noncomputable section
 

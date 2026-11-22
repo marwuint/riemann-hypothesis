@@ -1,10 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Formalism.LocalRingCardinality.DataTies
-import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
-import Formalism.SharpRestriction.LevelLetterCocycles.QuotientHomNonvanishingBound
-import Formalism.SharpRestriction.LevelLetterCocycles.DataN
-import Formalism.CyclotomicNorms.StatementI
 
 open Polynomial
 

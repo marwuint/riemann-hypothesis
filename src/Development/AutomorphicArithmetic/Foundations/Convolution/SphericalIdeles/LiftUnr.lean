@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalIdeles.RamDefs
 import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalIdeles.CbcSph
-import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalIdeles.LiftAll
 import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalIdeles.NormRam
 
 open NumberField IsDedekindDomain Filter

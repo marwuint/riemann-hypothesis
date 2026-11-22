@@ -5,7 +5,6 @@ import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsSymplecticBasi
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SymplecticUnipotentShape
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SiegelOfRiemann
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.FromBlocksMapIntCastMemSymplecticGroup
-import ReciprocityTheory.AnalyticForms.AnalyticCharts.Osgood
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.Assembly
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.PRiemannExtensionSlices
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.PPuncturedExpOrder

@@ -3,7 +3,6 @@ import ReciprocityTheory.ClassFieldTheory.LocalClassField.TransportDefs
 import ReciprocityTheory.ClassFieldTheory.LocalClassField.TransportA
 import ReciprocityTheory.ClassFieldTheory.LocalClassField.TransportB
 import ReciprocityTheory.ClassFieldTheory.LocalClassField.RecArtin
-import ReciprocityTheory.ClassFieldTheory.LocalClassField.Existence
 
 namespace ReciprocityTheory.DiscreteGroups.LocalClassField
 

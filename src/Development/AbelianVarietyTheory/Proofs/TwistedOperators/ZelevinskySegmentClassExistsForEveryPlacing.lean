@@ -7,7 +7,6 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEqu
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InstAddCommGroupTwo
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParIndJacPlacing
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsInSupportOfMultiProd
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.NotInSupportOfSubsingleton
 
 noncomputable section
 

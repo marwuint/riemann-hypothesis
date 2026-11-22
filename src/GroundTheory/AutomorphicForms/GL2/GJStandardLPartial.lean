@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.GL2.GJStandardLEuler
-import GroundTheory.AutomorphicForms.CuspidalDiscreteness.CuspFormsSiegel
 
 open MeasureTheory Filter Set Topology IsDedekindDomain NumberField NumberField.mixedEmbedding
 open scoped NumberField.AdeleRing RestrictedProduct SchwartzMap Classical ENNReal NNReal

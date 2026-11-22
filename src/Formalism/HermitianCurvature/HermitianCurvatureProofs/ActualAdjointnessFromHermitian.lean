@@ -2,9 +2,6 @@ import Formalism.HermitianCurvature.StatementQ
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.SumDualVectorEqZeta
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ChainRecursionFromSingleDescent
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.QuantumDetHighestWeightHolds
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ShiftedGeneratorEqIteSmulAdd
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ComplexifiedDerivativeCommutator
 
 open Matrix Finset MeasureTheory
 open scoped ContDiff InnerProductSpace

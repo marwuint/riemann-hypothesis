@@ -9,9 +9,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Inert
 import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalIdeles.QuadLift
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GelfandKazhdanDualOfHyps
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GelfandKazhdanDualOfTwoHyps
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AutomorphicFormsFiniteGL
-import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaRigidity.JacquetShalikaRigidity
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspRapidDecaySiegelGL
 
 namespace UpperTheory.Gal.AbelianGaloisNormality
 

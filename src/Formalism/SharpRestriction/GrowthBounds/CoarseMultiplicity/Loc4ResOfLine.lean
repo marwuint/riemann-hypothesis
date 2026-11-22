@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.CoarseMultiplicity.Loc4DivOf
-import Formalism.SharpRestriction.GrowthBounds.CoarseMultiplicity.KeyMinorDvd
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.OtherStart
 
 noncomputable section

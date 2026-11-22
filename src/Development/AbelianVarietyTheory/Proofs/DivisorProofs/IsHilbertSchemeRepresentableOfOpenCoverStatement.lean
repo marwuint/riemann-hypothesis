@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsHilbertSchemeRepresentableOfOpenCover
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsHilbRep
 
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits GlobalTheory.HilbertSch
 set_option maxHeartbeats 1000000 in

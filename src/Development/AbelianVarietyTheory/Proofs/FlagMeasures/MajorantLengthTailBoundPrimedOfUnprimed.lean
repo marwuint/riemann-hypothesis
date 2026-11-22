@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpec
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DegVand
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsNormalFormStabilizerMeasure
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MomAllP
-import Formalism.LocalRingCardinality.DataTies
 
 open BranchingSupport GlobalTheory.CellAmp GlobalTheory.Amp GlobalTheory.TypeAsm Formalism.BasicNotions Formalism.MainNotions.S Formalism.QuantumDeterminants Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal

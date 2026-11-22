@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.KerIsTerm
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsMulAddEqOneOfNotMem
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMulMemSpan
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.InvTrKEmbGLApply
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExtUHInjective

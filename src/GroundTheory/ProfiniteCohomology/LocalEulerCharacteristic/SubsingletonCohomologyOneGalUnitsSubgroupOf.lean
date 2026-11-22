@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.ConjAction
 import GroundTheory.ProfiniteCohomology.ClassFormations.Corestriction
 import GroundTheory.ProfiniteCohomology.LocalClassFormationAlt
-import GroundTheory.ProfiniteCohomology.GaloisCohomology.Kummer
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.ProfCoh

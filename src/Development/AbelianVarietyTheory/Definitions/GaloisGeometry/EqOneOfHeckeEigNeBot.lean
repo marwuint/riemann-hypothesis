@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.NontrivialOfArtinQE
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHeckeMap
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.OmegaPullOmegaTraceOfSecTraceOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsGHeckeMapForget
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.OmegaPullId
 
 noncomputable section
 

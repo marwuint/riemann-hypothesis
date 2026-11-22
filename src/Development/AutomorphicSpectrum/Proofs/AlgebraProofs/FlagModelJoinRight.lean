@@ -1,8 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ExSubAlt
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XSJoinright
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PairNumberPullback
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsBundles
 
 namespace GlobalTheory.CompanionTheory.Ar.Num.FlagModelJoinRight
 

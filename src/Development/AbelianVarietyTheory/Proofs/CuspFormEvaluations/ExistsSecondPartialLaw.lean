@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermCut
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermBGen
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermBSer
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField

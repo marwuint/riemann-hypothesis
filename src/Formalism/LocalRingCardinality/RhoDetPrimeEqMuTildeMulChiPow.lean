@@ -9,7 +9,6 @@ import Formalism.LocalRingCardinality.DataRows
 import Formalism.SharpRestriction.CuspSpanNormBounds.DataS
 import Formalism.SharpRestriction.GrowthBounds.DataG
 import Formalism.SharpRestriction.LevelLetterCocycles.DataN
-import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Formalism.LocalRingCardinality.DataForms
 import Formalism.LocalRingCardinality.DataJet

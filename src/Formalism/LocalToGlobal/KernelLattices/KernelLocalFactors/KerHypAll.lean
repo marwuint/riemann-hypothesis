@@ -12,7 +12,6 @@ import Formalism.LocalToGlobal.Columns.XiFirstLawAllLevels
 import Formalism.LocalToGlobal.Columns.ChainLawPhiPf
 import Formalism.LocalToGlobal.Columns.ChainLawXi
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnfoldingEquivalence.CompSymmComp
-import Formalism.LocalToGlobal.Columns.ChainLawPhi
 import Formalism.LocalToGlobal.Columns.ChainLawTw
 
 open NumberField IsDedekindDomain

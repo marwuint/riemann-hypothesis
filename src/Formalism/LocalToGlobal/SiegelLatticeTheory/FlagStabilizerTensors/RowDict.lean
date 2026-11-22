@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.PoincareInHH
-import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.RowsDef
-import Formalism.SharpRestriction.CuspSpanNormBounds.DstarEq
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GapAtLeast
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedVolumeStatements.LevelSubgroupProperties
 

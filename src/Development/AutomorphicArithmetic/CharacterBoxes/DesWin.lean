@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.SmoothDesignExistence.DesignExistsDes
-import Formalism.SharpRestriction.AdmissibleParameterJoins.SumLogPrimeFactorsLe
 import Development.AutomorphicArithmetic.CharacterBoxes.DivinNOfHypV
 
 noncomputable section

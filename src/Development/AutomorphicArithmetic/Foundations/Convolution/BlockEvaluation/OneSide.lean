@@ -1,6 +1,5 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.BlockEvaluation.TruncSpec
 import Development.AutomorphicArithmetic.Foundations.Convolution.PolynomialCoefficientBounds.ChebBd
-import Development.AutomorphicArithmetic.Foundations.Convolution.PolynomialCoefficientBounds.ChebClosed
 import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.OpBasics
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.CommProj
 

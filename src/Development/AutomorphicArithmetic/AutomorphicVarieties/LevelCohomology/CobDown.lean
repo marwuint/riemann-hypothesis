@@ -4,7 +4,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTupl
 import Formalism.GaloisCohomology.LocalTateDualityK
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.SoAdicCont
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.FdAdjoinRange
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.DvrFacts
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.X
 

@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.TiePtRec
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.CmpHyp0P
-import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.NatActRVtupR
 
 noncomputable section
 

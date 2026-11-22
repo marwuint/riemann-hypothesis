@@ -1,7 +1,6 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.LemCStep
 import Formalism.SharpRestriction.LevelLetterCocycles.ModelKStep
 import Formalism.SharpRestriction.LevelLetterCocycles.DeltaInvariantUniformizer
-import Formalism.SharpRestriction.LevelLetterCocycles.MapCompZero
 import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.NinLamPf
 import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.GamPiPf
 import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.FrobPiNPf

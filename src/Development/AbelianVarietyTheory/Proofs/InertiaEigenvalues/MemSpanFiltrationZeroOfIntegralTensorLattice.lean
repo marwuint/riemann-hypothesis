@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExponents
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InclLSmulCoord
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BdRpToBdR
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 open GlobalTheory.BKGal.HatVal

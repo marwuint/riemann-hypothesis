@@ -1,7 +1,5 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.ResolutionCharZero.PrincipalisationCharZeroBotOfEff
-import Development.WeilBound.CoreStatements.ResolutionCharZero.FromResIso
-import Development.WeilBound.CoreStatements.ResolutionCharZero.FromResSnc
 
 noncomputable section
 

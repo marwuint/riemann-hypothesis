@@ -7,7 +7,6 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StalkClosedPointToG
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtFractionNoetherianClosed
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeConstantRank
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.DetCondIffOfFieldExtension
-import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatLieBc
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.Fl

@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.Compat
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsometryOfLinearIndependent
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.CovolOneIntegralAdd
-import Development.AbelianVarietyTheory.Definitions.Foundations.MemL2OfBoundedContinuousInvariant
 
 noncomputable section
 

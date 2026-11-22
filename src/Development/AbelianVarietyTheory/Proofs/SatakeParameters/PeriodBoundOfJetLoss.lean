@@ -14,7 +14,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NuRowSuccEqWt
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsStdSplit
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SmulMemLocPOfVal
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.JetLossOfFamilyFacts
-import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.KernelAwayPrimes
 
 noncomputable section
 

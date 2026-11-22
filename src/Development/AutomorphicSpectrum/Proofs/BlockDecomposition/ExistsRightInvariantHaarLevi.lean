@@ -3,7 +3,6 @@ import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.Singul
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsRadNMulLevM
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModularCharacterAdelicGLEqOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMulRightInvariantOfModular
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMulRightInvariantHaarAdelicUnitaryGroupHermiti
 
 open scoped Matrix NNReal ENNReal TensorProduct
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory Filter

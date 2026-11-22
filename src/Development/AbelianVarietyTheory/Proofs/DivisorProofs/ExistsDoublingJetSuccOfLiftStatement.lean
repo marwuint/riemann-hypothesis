@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDoublingJetSuccOfLift
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivCompM
 
 open GlobalTheory.Nef
 

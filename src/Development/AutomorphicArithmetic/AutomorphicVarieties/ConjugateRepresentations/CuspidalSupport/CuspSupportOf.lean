@@ -35,7 +35,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresent
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresentations.CuspidalSupport.SuppCusp
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresentations.CuspidalSupport.SuppTwist
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresentations.CuspidalSupport.SuppAdd
-import Development.AbelianVarietyTheory.Definitions.Foundations.AbsCharNotUnitary
 
 noncomputable section
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CharZeroFunctionField
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallyExistsFiniteSubsetNonzeroLocus
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SmallSecTensTriv
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.VolGe
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift

@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.GlobalFields.AnalyticClassNumber.QuadraticLegendre
-import GroundTheory.GlobalFields.AnalyticClassNumber.DirichletHecke
 import GroundTheory.GlobalFields.Artin.ConductorInduction
 import GroundTheory.GlobalFields.Artin.ConductorOneDim
 

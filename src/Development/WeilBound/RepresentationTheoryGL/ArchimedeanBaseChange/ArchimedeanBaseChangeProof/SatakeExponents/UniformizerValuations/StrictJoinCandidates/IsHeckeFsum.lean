@@ -3,7 +3,6 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryLevelSubgroupProperties
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalAlgebraHolds
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatchingTransferOf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexNeZeroOfSubsetCpt
 
 noncomputable section
 

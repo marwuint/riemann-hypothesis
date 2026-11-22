@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MajorantFlagLengthsI
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramSchmidtLengths
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormalFormFlagZeroMiddleInverseMinorOrthogonal
 import Formalism.FlagUnipotentLattices.CardSubgroupsOfIndexLe
-import Formalism.FormalDegreeBessel.FinalG
 
 noncomputable section
 

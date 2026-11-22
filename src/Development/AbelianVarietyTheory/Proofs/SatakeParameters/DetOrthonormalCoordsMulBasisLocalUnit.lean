@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Reframe
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.LocSpBot
 import Formalism.LocalToGlobal.GlobalTheory.BlockActions.FiniteAdeleRingNontrivial
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocSpCompanEq
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsUnitNatCastOfCoprimeLocal

@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.CurveComp
-import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.PublishedIntClosHolds
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.SpanSteps
 
 set_option synthInstance.maxHeartbeats 200000

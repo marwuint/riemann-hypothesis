@@ -3,8 +3,6 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.KFac
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.PhiFacts
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.DerivG
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.ByParts
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.DTauFacts
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.DerivGA
 
 noncomputable section
 

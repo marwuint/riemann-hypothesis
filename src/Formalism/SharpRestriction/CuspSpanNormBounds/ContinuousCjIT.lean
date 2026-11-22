@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.CuspSpanNormBounds.OnePlaceEstimates
-import Formalism.SharpRestriction.CuspSpanNormBounds.RootMeasBig
 
 open MeasureTheory Matrix Finset
 

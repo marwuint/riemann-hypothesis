@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ComapInlMemStLat
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardStableLattices
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
 
 noncomputable section
 

@@ -4,7 +4,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.PtI
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.CopNormLt
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.EptInt
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.OrdLocal
-import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.LMemMax
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.SplAdjUnit
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.SpFlag
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.CrystallineTransferSurjection
@@ -13,7 +12,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.D
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IotaFacts
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.FrobFree
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.Z1fCoef
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.Places
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 private theorem tb_avg {k G W : Type} [Field k] [CharZero k] [Group G] [AddCommGroup W] [Module k W]

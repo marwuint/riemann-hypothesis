@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FinrankEqZeroIff
-import ReciprocityTheory.GaloisValuations.GlobalB
 
 noncomputable section
 

@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevOkTwists
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsPrimesOk
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitaryDiagonalBasePointLevelPrime
 import Formalism.SharpRestriction.Divisibility.OrbitPlaces
-import Formalism.LocalToGlobal.Columns.CoefficientsModP.FkPderivBlockEmbNe
 
 noncomputable section
 

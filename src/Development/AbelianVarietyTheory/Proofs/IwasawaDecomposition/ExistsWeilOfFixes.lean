@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasNormGroup
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ChevalleyUnits
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StandardCosocleGL
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilGroupRestriction
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsNotCongPow
 open NumberField IsDedekindDomain ValuativeRel Matrix MeasureTheory TensorProduct Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.Whittaker GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocDict
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 

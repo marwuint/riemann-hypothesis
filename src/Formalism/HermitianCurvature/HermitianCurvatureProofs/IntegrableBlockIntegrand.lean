@@ -1,6 +1,4 @@
 import Formalism.HermitianCurvature.HeisenbergConjugationMeasurePreserving
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbitTailEstimates
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.WirtingerIntegrationByParts
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.SlicesFiniteRegularityBuilt
 
 namespace Formalism.FourierDecayAlt.P.FormNormSumIdentities

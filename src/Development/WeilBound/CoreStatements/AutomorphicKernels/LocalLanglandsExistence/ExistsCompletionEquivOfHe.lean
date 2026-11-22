@@ -4,9 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GaussSumNeZe
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Mono0OfLpDimEqOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalEmbeddingsTowerCompatibleStatement
 import Formalism.LocalToGlobal.GaloisLevelStructure.DefsGal
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasNormGroups
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalFieldNormValuation
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddCharConductorAndHaarIntegersExist
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsMulLeftInvariantVolGL
 import GroundTheory.GlobalFields.TateThesis.HeckeChar
 import GroundTheory.LocalFields.LocalZetaEpsilon
@@ -15,8 +13,6 @@ import GroundTheory.GlobalFields.SemilocalAlgebras.ContinuousCompletionMap
 import GroundTheory.GlobalFields.TateThesis.AdelicCharLocal
 import GroundTheory.GlobalFields.TateThesis.RootNumberLocalFinite
 import Development.WeilBound.CoreStatements.AutomorphicKernels.LocalLanglandsExistence.WeilEquivOfLocalDegreeOne
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilGroupRestriction
-import GroundTheory.GlobalFields.CompletionAtPlace.Degree
 
 noncomputable section
 

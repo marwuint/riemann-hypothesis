@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HahnSeriesPowOfLeadingQInv
-import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
-import Development.AbelianVarietyTheory.Definitions.Foundations.SiegelNeZeroIff
 
 open scoped MatrixGroups
 open GlobalTheory.KZ

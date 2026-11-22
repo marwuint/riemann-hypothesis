@@ -2,7 +2,6 @@ import Development.WeilBound.ThetaLifts.EigenvalueEndgame.SignatureSplitting.Non
 import Development.WeilBound.ThetaLifts.EigenvalueEndgame.SignatureSplitting.StabClosed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharacterOfIdeleClass
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TensorIdeleNormalizedAbsIdeleHalfAtInfinity
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsHeightLeTwoMulQuotHeight
 
 noncomputable section
 

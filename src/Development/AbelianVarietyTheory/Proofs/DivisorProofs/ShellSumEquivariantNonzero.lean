@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ScaledIntegerPer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZetaIntegralShellsVanishBeyondPeriodRamified
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsMulLeftInvariantVolGL
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CartanAntitone
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Cartan
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegrableZetaIntegrand
 
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.KSplit

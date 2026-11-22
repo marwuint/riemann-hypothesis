@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.ApplyEqOfMemAdjoin
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExists
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HodgeTateCupKummerClassesEqDlogDeterminant
-import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
 
 noncomputable section
 

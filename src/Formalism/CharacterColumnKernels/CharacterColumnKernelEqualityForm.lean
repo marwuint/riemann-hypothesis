@@ -1,5 +1,4 @@
 import Formalism.CharacterColumnKernels.StatementPsi
-import Formalism.CharacterColumnKernels.StatBlockRhoCount
 import Formalism.CharacterColumnKernels.StatementGC
 import Formalism.CharacterColumnKernels.StatementNG
 

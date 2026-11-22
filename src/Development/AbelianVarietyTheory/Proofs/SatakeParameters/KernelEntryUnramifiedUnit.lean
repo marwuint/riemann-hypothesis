@@ -3,10 +3,7 @@ import Formalism.LocalToGlobal.KernelLattices.FirstKernelLawReading
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NrmIdNonneg
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.MtType
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelBasisDeterminantAbsAtPlace
-import Formalism.SharpRestriction.GlobalSchurBounds.GL3Columns
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RhoThreeOfOfDeterminantCharacterFiniteOrderType
-import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
-import Formalism.LocalToGlobal.UnitaryNorms.CharTied
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.Host GlobalTheory.KerJ NumberField Classical
 

@@ -8,7 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DepthZeroSuper
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RegularLocalOfDepthZero
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralCharacterSubquotientProductIrreducibles
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsCuspSpaceBot
 import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.GreenCuspLabels.GreenCuspidal
 
 noncomputable section

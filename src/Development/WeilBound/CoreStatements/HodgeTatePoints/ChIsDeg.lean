@@ -4,7 +4,6 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.SeparableFo
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsUnitIffUnitAt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtCompLocalHom
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
 
 open AlgebraicGeometry CategoryTheory NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj

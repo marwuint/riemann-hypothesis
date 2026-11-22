@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
-import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.CuspidalInducedCharacter
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspidalIdempotentCharacters
 

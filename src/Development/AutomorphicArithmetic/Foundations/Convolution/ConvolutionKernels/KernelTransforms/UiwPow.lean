@@ -1,7 +1,5 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.TensFun
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.HopBasic
-import GroundTheory.AutomorphicForms.IwahoriFactorization
-import GroundTheory.AutomorphicForms.CuspidalAdmissible
 
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace

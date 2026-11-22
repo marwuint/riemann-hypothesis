@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.ThetaSupremumBounds.StatementCB
 import Formalism.ThetaSupremumBounds.LiftOperatorBoundOfFockJet
-import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.TheoremDivIneq
-import Formalism.ThetaSupremumBounds.DivIneqExplicit6
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.DescendedNorm
 
 open Finset NumberField

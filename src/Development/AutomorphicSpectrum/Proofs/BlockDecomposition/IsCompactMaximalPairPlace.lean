@@ -3,7 +3,6 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinsumOutOfLe
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LevelFamInf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThLInvolutive
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsNormalisedThetaSub
 
 noncomputable section
 

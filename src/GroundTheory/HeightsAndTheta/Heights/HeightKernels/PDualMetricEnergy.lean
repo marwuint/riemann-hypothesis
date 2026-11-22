@@ -1,8 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsDualEnergy
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsDualEnergyCharts
-import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsChartEnergy
-import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsChartMass
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsGrassGeomDegChart
 set_option maxSynthPendingDepth 1
 

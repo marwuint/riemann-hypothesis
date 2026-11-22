@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FinrankEqZeroIff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartEmbeddingHolds
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartRootsHolds
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniquePoint
-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 
 noncomputable section
 

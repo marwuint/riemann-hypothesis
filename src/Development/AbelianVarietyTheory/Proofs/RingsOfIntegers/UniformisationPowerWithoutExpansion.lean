@@ -1,6 +1,5 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PullExp
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.FamMod
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ProdExpPf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ProdFam
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.TWMain
@@ -14,7 +13,6 @@ import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.GmCharPow
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsIsoOfIsPowGrp
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsBoxIso
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SymBox
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.GtCoordCompatOfPull
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.LcgLinCombEqProd
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.PullGenBoxGen
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SmoothIsMultiplicative

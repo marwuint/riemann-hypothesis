@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.ResidualIrreducibleOfTheorem
-import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 
 noncomputable section
 

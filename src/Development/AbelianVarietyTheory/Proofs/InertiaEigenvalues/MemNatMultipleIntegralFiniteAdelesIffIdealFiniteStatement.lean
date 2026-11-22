@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemNatMultipleIntegralFiniteAdelesIffIdealFinite
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ZintZero
-import GroundTheory.GlobalFields.TateThesis.AdeleIdealMeasure
 
 open NumberField IsDedekindDomain
 open scoped nonZeroDivisors

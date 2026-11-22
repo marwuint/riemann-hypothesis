@@ -1,6 +1,5 @@
 import Mathlib
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.HessCRestrictThm
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PartsAlg
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsChartCutoffEnergy
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PChartEnergyCocycle
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PChartEnergySwap

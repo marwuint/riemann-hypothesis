@@ -1,7 +1,6 @@
 import Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.CoefficientLeOperatorNorm
 import Formalism.LatticeRigidity.HeightMinimum.PowFinrankEqZeroOfTracePow
 import Formalism.LogSumExpBounds.IsoTransfer
-import Formalism.GelfandTransference.EnergyIdentity
 import Formalism.NormUnitaryBounds.Statement
 import Formalism.NormUnitaryBounds.DetPolynomialWeights.ShearCoefficients
 import Formalism.NormUnitaryBounds.DetPolynomialWeights.LtSuccOfMemWeightCompositions

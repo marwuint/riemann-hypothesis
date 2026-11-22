@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TeichmullerRootPowIdealsTendstoZeroWeakTop
-import Formalism.SharpRestriction.LevelLetterCocycles.UsedLocalConclusion
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NotFullBot
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsWeakTopologyWittTiltTensor
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ZlTowerGen
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc TensorProduct GlobalTheory.NL Formalism.MainNotions.DeltaInvariantLattices GlobalTheory.WeakClosed
 open scoped Topology PowerSeries.WithPiTopology

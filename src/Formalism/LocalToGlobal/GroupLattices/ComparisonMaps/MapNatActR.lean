@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.HermitianForms.IsLocBasis
-import Formalism.SharpRestriction.GrowthBounds.DataG
 
 noncomputable section
 

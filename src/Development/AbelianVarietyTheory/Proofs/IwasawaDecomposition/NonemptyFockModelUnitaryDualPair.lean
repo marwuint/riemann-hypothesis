@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.BesselHermitianTheta.AllTied
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.OscActMonomialOfUnique
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOscillatorRepresentationUnitaryCover
-import Formalism.LocalRingCardinality.DataTheta
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta MeasureTheory
 

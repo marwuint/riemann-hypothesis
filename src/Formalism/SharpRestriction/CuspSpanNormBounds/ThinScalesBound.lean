@@ -1,5 +1,4 @@
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
-import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
 import Formalism.SharpRestriction.CuspSpanNormBounds.LinQRawRange
 import Formalism.SharpRestriction.ParConsts
 

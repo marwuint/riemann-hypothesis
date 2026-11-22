@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SmallPair
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitPlaceHalfHeisenbergInvariantForm
 import Formalism.LocalToGlobal.IndefiniteReal.ExistsGADet
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OmSplitHalves
-import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasWeil
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsNeZeroAtZero
 
 noncomputable section

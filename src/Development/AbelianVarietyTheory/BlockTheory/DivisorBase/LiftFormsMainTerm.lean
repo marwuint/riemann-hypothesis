@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
-import Formalism.LocalRingCardinality.KernelPlaceMeanBound
-import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasSign
 
 noncomputable section
 

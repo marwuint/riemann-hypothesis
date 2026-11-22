@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.UsedLocalConclusion
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NotFullBot
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachLatticeSandwichAinf
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrobeniusIntegralityTensorAinfCoefficients
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NBasisLoc
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachInclusionXQFrobenius
 

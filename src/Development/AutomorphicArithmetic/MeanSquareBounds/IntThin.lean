@@ -1,6 +1,5 @@
 import Development.AutomorphicArithmetic.MeanSquareBounds.PrimeSetTwoBounds
 import Mathlib
-import Formalism.GL3MeanSquares.SecondEstimateOfIntervalHypothesis
 import Formalism.GL3MeanSquares.HookFormulaTorsion.WeightedVonMangoldtSumIdentity
 import Formalism.GL3MeanSquares.HookFormulaTorsion.CharacterEstimateOfHypothesis
 import Formalism.GL3MeanSquares.HookFormulaTorsion.TwistIsPrimitiveCharacter

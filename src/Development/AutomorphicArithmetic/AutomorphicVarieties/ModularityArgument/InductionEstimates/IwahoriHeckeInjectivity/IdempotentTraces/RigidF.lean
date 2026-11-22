@@ -4,9 +4,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.FamParts
 import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.NormCharPowHolds
 import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.AtInj
-import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ExCusp
-import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.SSatIff
-import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaRigidity.JacquetShalikaRigidity
 
 open MeasureTheory NumberField IsDedekindDomain Filter Topology
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace

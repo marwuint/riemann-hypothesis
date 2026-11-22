@@ -1,7 +1,4 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.InductionEstimates.BorelHeckeBounds.Full
-import GroundTheory.AutomorphicForms.CuspidalDiscreteness.DiffBound
-import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SummandsArchConv
-import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SummandsMeasure
 
 open MeasureTheory NumberField Set Filter Topology
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace

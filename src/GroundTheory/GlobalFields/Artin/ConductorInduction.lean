@@ -1,14 +1,6 @@
 import Mathlib
 import GroundTheory.GlobalFields.Artin.ConductorInflation
 import GroundTheory.GlobalFields.Artin.PlacesGalois
-import GroundTheory.GlobalFields.Artin.Mackey
-import GroundTheory.GlobalFields.Artin.Places
-import GroundTheory.GlobalFields.SemilocalAlgebras.ContinuousCompletionMap
-import GroundTheory.GlobalFields.SemilocalAlgebras.NormTrace
-import GroundTheory.GlobalFields.CompletionAtPlace.Integers
-import GroundTheory.LocalFields.Different
-import GroundTheory.GlobalFields.Artin.PlacesFrobenius
-import GroundTheory.GlobalFields.TateThesis.EulerFactorsFourierFinite
 
 set_option maxSynthPendingDepth 1
 

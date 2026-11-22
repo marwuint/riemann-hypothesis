@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.SumPairLevStarMul
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.InvMemOfKappa
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.PairOperatorCommute
 
 open Matrix MeasureTheory

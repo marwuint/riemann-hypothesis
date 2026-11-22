@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetAtOfSizeAt
-import Development.AbelianVarietyTheory.Definitions.Divisors.TieTest
-import Development.AbelianVarietyTheory.Definitions.Divisors.SlopeTestRemainingChoicesAlt
-import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
-import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SettingAtPoint
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SettingOfSize
 

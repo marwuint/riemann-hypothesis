@@ -19,7 +19,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsUnitar
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.TraceFormula.GlobalTraceComparison.TraceAsymptotics.ConstantTermParabolicAverage
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryAutFormsWeightLevelFiniteSumFixedVectors
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsLocCompIffEquiv
 open UpperTheory.V.Z.Mult UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 open NumberField IsDedekindDomain Matrix Polynomial Filter Topology

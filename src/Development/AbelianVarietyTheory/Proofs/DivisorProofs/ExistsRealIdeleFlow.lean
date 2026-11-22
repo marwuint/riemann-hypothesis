@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.LocallyCompactSpaceAxis
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EisensteinResidueLine
 
 noncomputable section
 

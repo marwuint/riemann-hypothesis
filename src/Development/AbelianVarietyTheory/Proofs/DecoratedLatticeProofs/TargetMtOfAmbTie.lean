@@ -2,19 +2,10 @@ import Mathlib
 import Formalism.LocalToGlobal.HilbertRowConditions.CenterIdempotentAction
 import Formalism.LocalToGlobal.Divisibility.ProjLemmas
 import Formalism.LocalToGlobal.GlobalTheory.HLatOpsP
-import Formalism.LocalRingCardinality.DataArith
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.FiniteDimensionalMram
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsIsConjAtOfEmbedding
-import Formalism.HarderNarasimhan.ShiftInvariance
-import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PolygonSlopeSum
-import Formalism.HarderNarasimhan.Statement
-import Formalism.QuotientMetricDivisors.ReductionLemmaZero
-import Formalism.QuotientMetricDivisors.FinalW
-import Formalism.LocalToGlobal.Divisibility.FramesLemmas
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NegLogLeLcvOfIntegralForm
 import Formalism.LocalToGlobal.Columns.ToHLatLemmas
-import Formalism.LocalToGlobal.Columns.RowFormsGood
-import Formalism.LocalToGlobal.Divisibility.ClassSumBridge
 
 open Module NumberField Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Rows Formalism.L2.Indef
 open scoped Matrix ComplexOrder

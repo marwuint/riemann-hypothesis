@@ -3,9 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExponentAndT
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharpolyFinOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsOpenKerOfInfConn
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BijectiveCmType
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalInvariantsMatchSemisimple
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NotMemPlacesOverOfNe
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.AbsPowOneNotIsAlgRat
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting NumberField IsDedekindDomain Polynomial
 
 noncomputable section

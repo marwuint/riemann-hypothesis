@@ -1,6 +1,5 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PullExp
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.FamMod
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ProdExpPf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ProdFam
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.TWMain
@@ -17,7 +16,6 @@ import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ImportsBis
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.CrossEq
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.BoxFamLinearIndependent
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IntegralFamilyOfStrictMin
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.HasBasisOfBasis
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsTwistBasisOffPrime
 
 set_option autoImplicit false

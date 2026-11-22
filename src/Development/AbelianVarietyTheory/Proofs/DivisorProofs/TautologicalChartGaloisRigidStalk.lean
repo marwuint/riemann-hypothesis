@@ -1,13 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.GalRigidOfSurjective
 import Development.AbelianVarietyTheory.Definitions.Divisors.MinSt5OfMinSt4
-import Development.AbelianVarietyTheory.Definitions.Divisors.FromBase
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiffPow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubMemPowOfMemMaximalIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TautologicalChartEqOfSameGenericPoint
-import Development.AbelianVarietyTheory.Definitions.Divisors.ExtId
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg GlobalTheory.SiegJoin GlobalTheory.Poinc GlobalTheory.TChart

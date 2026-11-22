@@ -1,8 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.IsLevMove
-import Formalism.LocalToGlobal.ProjectiveLattices.IsCombAt
-import Formalism.LocalToGlobal.ProjectiveLattices.RhoWApply
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.FlagBasis
 
 noncomputable section
 

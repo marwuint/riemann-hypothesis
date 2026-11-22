@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMemberP
-import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeastVectorUniqueInClassMod
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing

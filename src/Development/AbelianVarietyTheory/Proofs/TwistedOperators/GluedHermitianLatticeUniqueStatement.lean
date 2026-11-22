@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GluedHermitianLatticeUnique
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemHatIffOfSelfDual
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH NumberField IsDedekindDomain Matrix
 open Formalism.L2.DIV (Pl)

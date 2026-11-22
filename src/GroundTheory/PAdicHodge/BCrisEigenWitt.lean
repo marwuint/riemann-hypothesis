@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.PAdicHodge.AInfGalois
 import GroundTheory.PAdicHodge.TiltAlgClosed
-import GroundTheory.PAdicHodge.TiltField
 import GroundTheory.PAdicHodge.BdRAlg
 set_option maxSynthPendingDepth 1
 

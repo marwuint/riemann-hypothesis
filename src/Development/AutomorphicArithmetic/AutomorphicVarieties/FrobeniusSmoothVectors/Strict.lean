@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.Ufacts
-import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.HthPlace
 import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.StSel
 import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.ExistsPlaceRat
 import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.StConj
@@ -7,7 +6,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.StRes
 import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.StEta
 import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.StMu
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.PlaceDict
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 

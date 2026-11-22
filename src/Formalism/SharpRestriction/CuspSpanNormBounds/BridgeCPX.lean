@@ -1,11 +1,6 @@
 import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 import Formalism.RealPlaceAnalysis.FinalF
-import Formalism.RealPlaceAnalysis.SmoothOnGVIff
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTransposeMul
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.RightDerivativeZeroOutsideSupport
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.DecayHypothesisOfLargeConstants
-import Formalism.SharpRestriction.CuspSpanNormBounds.PExtra
-import Formalism.SharpRestriction.CuspSpanNormBounds.CayleySignature
 
 open MeasureTheory Matrix Filter Topology
 open scoped InnerProductSpace ContDiff Convolution

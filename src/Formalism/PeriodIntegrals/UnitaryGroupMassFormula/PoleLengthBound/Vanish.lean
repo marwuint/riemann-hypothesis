@@ -1,7 +1,6 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PoleLengthBound.AssembleAlt
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.HassePresH
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.HasseJidPow
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseJacobsonPowers.SfrMulMemJHfr
 
 noncomputable section
 

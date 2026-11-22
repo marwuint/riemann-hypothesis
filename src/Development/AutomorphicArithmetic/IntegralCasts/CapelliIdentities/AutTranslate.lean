@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.SmoothPartStable
 import Development.AutomorphicArithmetic.DivisorFrames.ExistsIsOpenIsCompactSubgroupFiniteAdelicUnitary
 import Development.AutomorphicArithmetic.DivisorFrames.FiniteDimensionalAutomorphicFormsUnitaryOfTypeLe
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NontrivialOfNeBot
 import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.MemISupIrreducibleOfAdmissibleUnitary
 
 private theorem UpperTheory.Reformulated.B.Gr38.matrix_comm {R₁ R₂ m : Type} [CommRing R₁] [CommRing R₂] [Fintype m]

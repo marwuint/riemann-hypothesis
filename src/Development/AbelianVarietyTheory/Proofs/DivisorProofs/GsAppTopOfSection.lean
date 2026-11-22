@@ -2,10 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SharpBundleFibre
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValMemOfCorrPull
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueScalar
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DefOverOfFiniteOrbit
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFromBase
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.FlatBCSec
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.SectionArithmetic
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LbIsoSecOnto
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsNormalizedBoth
 

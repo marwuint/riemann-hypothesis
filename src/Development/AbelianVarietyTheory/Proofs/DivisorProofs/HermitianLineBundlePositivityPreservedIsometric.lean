@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SmallFam
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SmallSecTensTriv
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemipositiveOfIsometric
-import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
 
 set_option autoImplicit false
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.ConjSubConjSub
-import ReciprocityTheory.Automorphisms.Unitary
 
 noncomputable section
 

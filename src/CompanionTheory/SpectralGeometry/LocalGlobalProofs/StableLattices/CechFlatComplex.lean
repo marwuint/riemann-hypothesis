@@ -1,9 +1,7 @@
 import Mathlib
 import CompanionTheory.AutomorphicTheory.TemperedLocalSpectra.ObstructionLifting.H1StructureDimLe
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FlatQuotientWeaklyRegular
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsRegularOfSupportDimQuotientAddLengthLe
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.RegularSmooth
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.LocalizationOfIsStandardSmooth
 
 open IsLocalRing TensorProduct RingTheory.Sequence
 set_option autoImplicit false

@@ -3,7 +3,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.HlayPlace
 import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.RootOfUnityEqOneOfCloseResidue
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PrimitiveFrobeniusFixed.PlaceBasic
-import Development.AutomorphicArithmetic.AutomorphicVarieties.PartsSign
 
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 open scoped Pointwise

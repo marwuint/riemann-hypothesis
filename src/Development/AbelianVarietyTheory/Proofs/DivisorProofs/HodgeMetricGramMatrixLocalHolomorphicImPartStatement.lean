@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeMetricGramMatrixLocalHolomorphicImPart
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HodgePeriodGram
 
 open Matrix Complex Filter Topology
 open scoped ComplexOrder ContDiff

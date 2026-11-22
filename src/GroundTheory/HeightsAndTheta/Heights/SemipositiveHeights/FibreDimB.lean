@@ -3,7 +3,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersecti
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PFibreMultiHomog
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PEvalKerKrullDim
 import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PIntDomainDim
-import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PCoordConeArithVar
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ChangeOfModel
 set_option maxSynthPendingDepth 1
 

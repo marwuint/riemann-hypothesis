@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PropFTopHolds
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LaurentMapIsIntegral
 
 open GlobalTheory.EtC.GmStep
 set_option maxHeartbeats 1000000 in

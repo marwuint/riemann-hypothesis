@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PeriodDataCrystallineAdmissible
-import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 
 open Formalism Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Module
 set_option maxHeartbeats 1000000 in

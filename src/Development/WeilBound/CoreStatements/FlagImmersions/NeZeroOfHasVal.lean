@@ -1,7 +1,6 @@
 import Development.WeilBound.CoreStatements.FlagImmersions.Transport
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtFractionNoetherianClosed
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
 
 noncomputable section
 

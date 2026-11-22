@@ -2,7 +2,6 @@ import Mathlib
 import Development.WeilBound.ThetaLifts.FrameEstimates.ContinuousMixedSymm
 import Development.WeilBound.ThetaLifts.FrameEstimates.FinBound
 import Development.WeilBound.ThetaLifts.FrameEstimates.LatCpt
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsOpenNsmulAdelicCompletionOfVectorSet
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU Filter Topology
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK NumberField.mixedEmbedding

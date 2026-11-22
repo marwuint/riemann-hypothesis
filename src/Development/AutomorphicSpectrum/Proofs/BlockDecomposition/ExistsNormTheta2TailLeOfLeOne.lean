@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormLeNormInfCModuleSectionMul
-import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.RankOneEisenstein.GodementEis
-import GroundTheory.GlobalFields.TateThesis.TateMain
 
 open NumberField Matrix MeasureTheory Filter Topology
 open scoped NumberField.AdeleRing SchwartzMap ContDiff

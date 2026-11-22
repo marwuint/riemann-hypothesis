@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.PeriodIntegrals.ThGDefs
-import Formalism.PeriodIntegrals.HeisDefs
 
 open MeasureTheory
 

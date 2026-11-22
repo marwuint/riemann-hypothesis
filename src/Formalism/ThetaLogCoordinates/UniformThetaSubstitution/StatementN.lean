@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.StatementE
-import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.CyclicPowerClassOfExpEquiv
-import Formalism.GaussJetBounds.StatementI
 
 noncomputable section
 

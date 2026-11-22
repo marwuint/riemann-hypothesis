@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
-import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 
 set_option autoImplicit false
 

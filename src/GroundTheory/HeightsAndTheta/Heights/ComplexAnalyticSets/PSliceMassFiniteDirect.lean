@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceMassFinite
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceMassFinite
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceAbsIndep
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PConeChartGram
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSheetSumMeasurable
 set_option maxSynthPendingDepth 1
 

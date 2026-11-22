@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.CrystallineLiftingEveryOrdering
-import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.Graded
 import Formalism.SharpRestriction.LevelLetterCocycles.CyclotomicPowerSeries.LinkRing
 
 noncomputable section

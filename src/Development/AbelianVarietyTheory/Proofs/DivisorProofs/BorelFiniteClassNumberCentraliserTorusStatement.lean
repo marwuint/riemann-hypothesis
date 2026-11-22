@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BorelFiniteClassNumberCentraliserTorus
-import Formalism.UnipotentAdelicQuotients.ClassNumberFinite
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormGroupToPadicPointsDegreeOneEqUnitaryPoints
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TC
 
 open GlobalTheory.LKTrip
 open scoped TensorProduct

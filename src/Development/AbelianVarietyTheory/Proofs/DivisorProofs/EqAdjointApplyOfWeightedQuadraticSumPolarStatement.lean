@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqAdjointApplyOfWeightedQuadraticSumPolar
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
 
 open GlobalTheory.Poinc
 set_option maxHeartbeats 1000000 in

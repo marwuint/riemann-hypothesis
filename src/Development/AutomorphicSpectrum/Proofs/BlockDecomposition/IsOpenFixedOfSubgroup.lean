@@ -1,9 +1,7 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.TwistedKernels.ExPhiPlusOnto
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousMirProj
-import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
 import GroundTheory.AutomorphicForms.LocallyProfinite
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 
 open GlobalTheory.PRep GlobalTheory.BZMir GlobalTheory.BZMir.Fun Matrix Topology
 

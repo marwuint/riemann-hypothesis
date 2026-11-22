@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FixedV
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsTwIffCanonEq
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsMidLevIff
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ColNorm
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FunKilled
 
 noncomputable section
 

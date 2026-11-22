@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPosDefMajorantOfPositiveIndexOne
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsCyclotomicExtensionQI
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianFormNegOnOrthogonalOfPositiveIndexOne
 
 open Matrix GlobalTheory.LKTrip
 set_option maxHeartbeats 1000000 in

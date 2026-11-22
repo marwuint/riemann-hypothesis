@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsUnitaryPositiveBlockColumnEq
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ProjExists
 
 open Matrix Finset Formalism.MainNotions.S Formalism.REAL GlobalTheory.SepReal
 set_option maxHeartbeats 1000000 in

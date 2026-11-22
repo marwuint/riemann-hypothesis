@@ -10,8 +10,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Regul
 import Development.AutomorphicArithmetic.Foundations.Convolution.Cbcc
 import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.Outright
 import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.TermEV
-import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.LocGalEx
-import GroundTheory.AutomorphicForms.LocallyProfinite
 
 open MeasureTheory NumberField IsDedekindDomain Filter
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace GroundTheory.Automorphic.AutomorphicForm

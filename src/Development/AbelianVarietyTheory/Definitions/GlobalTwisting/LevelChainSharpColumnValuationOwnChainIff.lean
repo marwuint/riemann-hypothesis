@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.GlobalSchurBounds.ProductFirstZerothParts
-import Formalism.LocalRingCardinality.DataKerP
 import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
 
 noncomputable section

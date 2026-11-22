@@ -5,7 +5,6 @@ import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.Residu
 import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.ResidueVanishing.ContinuationPoleOrder
 import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.ResidueVanishing.LocalRepresentationSmoothness
 import Mathlib
-import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelEisensteinContinuationOfDoublingMethod
 
 noncomputable section
 

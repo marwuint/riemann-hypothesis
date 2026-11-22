@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FieldT
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DsigEq
 import Development.AbelianVarietyTheory.Definitions.HeightFunctions.IntUnit
 import Formalism.LocalToGlobal.ProjectiveLattices.FullXi
-import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
 import Formalism.SharpRestriction.PageFix
 
 set_option autoImplicit false

@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IdTower
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.OmegaPullOmegaTraceOfSecTraceOne
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.OmegaPullId
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HodgePullHodgePull
 
 noncomputable section

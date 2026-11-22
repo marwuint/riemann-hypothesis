@@ -5,7 +5,6 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.StandardPairingOfHe
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.HeadGermSmoothExtension
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RadialExhaustion
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.AeNeZeroComplex
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.MemLevelZeroOfMemGroup
 
 noncomputable section
 

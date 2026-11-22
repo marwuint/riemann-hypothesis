@@ -3,15 +3,12 @@ import Formalism.LocalToGlobal.KernelLattices.InterlaceAll
 import Formalism.BranchSandwichDivisors.BranchIsometryProofs.BranchMap
 import Formalism.BranchSandwichDivisors.BranchIsometryProofs.Numeric
 import Formalism.LocalToGlobal.Columns.CoefficientsModP.StdDual
-import Formalism.LocalToGlobal.Columns.PolyFnLemmas
 import Formalism.SharpRestriction.GlobalSchurBounds.StandardIntegralLatticeExists
 import Formalism.LocalRingCardinality.FactDelDualNabla
 import Formalism.BranchSandwichDivisors.BranchIsometryProofs.BranchScale
-import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 import Formalism.BranchSandwichDivisors.DivFromPassageAndNorm
 import Formalism.PeriodIntegrals.AdmissibleModel.WeylDim
 import Formalism.SharpRestriction.GlobalSchurBounds.FiniteModelOfAdmissibleTransports
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Wlocal
 
 open MvPolynomial NumberField IsDedekindDomain
 

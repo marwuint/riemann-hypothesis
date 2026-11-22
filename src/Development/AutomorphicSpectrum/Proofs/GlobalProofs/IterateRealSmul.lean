@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsSmoothVec
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AnalyticVectorExponentialSeries
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.DerivedActionOfSmoothVector
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.DerivedActionAdditive
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LieAlgebraOfLinearGroupClosed
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DifferentiableAtOrbit
 
 noncomputable section

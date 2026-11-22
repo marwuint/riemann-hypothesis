@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RowMap
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedStandardAddCharConductorProperties
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatch
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelfDualIffLatticeVolumeAndPlancherel
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
 
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 

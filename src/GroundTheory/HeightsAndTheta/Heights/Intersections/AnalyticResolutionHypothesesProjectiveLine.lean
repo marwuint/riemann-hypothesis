@@ -5,7 +5,6 @@ import ReciprocityTheory.AnalyticForms.RegularLocalRings.ExistsAtlas
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.ProjectiveLineHomogeneousLift
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.IfaceInh
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.BaseChangeC
-import ReciprocityTheory.AnalyticForms.RegularLocalRings.BaseChangeCB
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Objects
 set_option maxSynthPendingDepth 1

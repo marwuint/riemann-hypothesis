@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.Divisibility.LiftLatLemmas
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.PolarisedDualSystem
-import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
-import Formalism.LocalRingCardinality.DataRRMetric
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompletelySplitPrimeHostPlaceProperties
 
 noncomputable section

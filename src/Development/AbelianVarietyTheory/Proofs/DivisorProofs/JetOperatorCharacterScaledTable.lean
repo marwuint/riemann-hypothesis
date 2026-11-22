@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SubDSharpInDeg
-import Formalism.LocalToGlobal.KernelLattices.ThDistC
 
 open MvPolynomial Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Ker
 

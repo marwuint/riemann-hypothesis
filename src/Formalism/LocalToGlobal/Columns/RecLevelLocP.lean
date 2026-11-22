@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.Columns.RecLevelLocF
-import Formalism.LocalToGlobal.Columns.BaseLemmas
 
 open NumberField IsDedekindDomain Matrix
 open scoped TensorProduct

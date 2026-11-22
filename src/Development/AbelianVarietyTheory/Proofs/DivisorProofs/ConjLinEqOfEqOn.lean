@@ -1,13 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
-import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingTrRep
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdaptedPlanePairRestrictionFirst
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzConjMem
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjLocalOperator
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDblCoordDblD
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PartialFourierPreservesSchwartzL2
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjLinApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PartialRightPreservesL2Norm
 
 open scoped TensorProduct NNReal Matrix ENNReal

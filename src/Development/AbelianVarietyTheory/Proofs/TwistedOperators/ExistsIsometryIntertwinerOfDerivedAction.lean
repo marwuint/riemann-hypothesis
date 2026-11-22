@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SameBlockOfPosC
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoverUpqClosureExpTopAndCartan
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqZeroOfFactorialBound
 
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible

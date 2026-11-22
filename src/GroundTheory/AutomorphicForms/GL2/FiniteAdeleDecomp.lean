@@ -1,7 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.GL2.GodementSectionFactor
-import GroundTheory.GlobalFields.TateThesis.AdelicCharLocal
-import GroundTheory.GlobalFields.TateThesis.AdeleMeasure
 
 namespace GroundTheory.Automorphic.GodementSection
 

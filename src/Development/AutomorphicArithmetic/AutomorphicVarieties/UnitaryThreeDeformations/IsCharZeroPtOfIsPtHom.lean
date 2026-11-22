@@ -5,7 +5,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoFinite
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.PartSpan
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.KerGen
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.LocalRingsCompletion.DvrIntClosure
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.NormOnValuationRing
 
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia

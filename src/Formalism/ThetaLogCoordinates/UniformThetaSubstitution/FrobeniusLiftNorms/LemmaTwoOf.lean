@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FirstDeriv
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.TopsChoicePartA
-import Formalism.GaussJetBounds.GaussJetProofs.SubstitutionWeightBound
 
 noncomputable section
 

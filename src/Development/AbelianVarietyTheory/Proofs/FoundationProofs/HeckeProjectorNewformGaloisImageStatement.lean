@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeProjectorNewformGaloisImage
-import Development.AbelianVarietyTheory.Definitions.Foundations.LiftApplyOfMemAdmissibleSubalgebra
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
 
 open scoped MatrixGroups TensorProduct
 open Matrix GlobalTheory.KZ

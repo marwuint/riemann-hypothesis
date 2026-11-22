@@ -7,7 +7,6 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Cartier
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PRepresentative
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PIntNumRatSection
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Assembly
-import GroundTheory.HeightsAndTheta.Heights.HeightComparison.IsMultiHomogIdealIff
 
 set_option maxSynthPendingDepth 1
 

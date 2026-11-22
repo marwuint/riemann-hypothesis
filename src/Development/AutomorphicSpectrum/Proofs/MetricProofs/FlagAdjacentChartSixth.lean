@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsBaseChart
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
 import Development.WeilBound.CoreStatements.PluriharmonicCharts.XCWArith
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticSecond
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsSmoothHermTrivLine

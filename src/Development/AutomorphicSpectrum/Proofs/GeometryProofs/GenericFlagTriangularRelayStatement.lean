@@ -1,10 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericFlagTriangularRelay
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericLuDecompositionUnique
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LuFactorsGenerateSameField
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AlgIndepOfSameAdjoin
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericFlagTriangularChange
 
 open scoped Matrix
 set_option maxHeartbeats 1000000 in

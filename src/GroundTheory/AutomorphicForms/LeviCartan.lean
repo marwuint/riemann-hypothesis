@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.AdmissibleInduction
-import GroundTheory.AutomorphicForms.Cartan
 
 noncomputable section
 

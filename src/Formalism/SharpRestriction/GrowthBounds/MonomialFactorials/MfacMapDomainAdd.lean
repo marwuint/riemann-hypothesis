@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.MonomialFactorials.PhisBRenameMul
-import Formalism.MahlerMeasure.MahlerMeasureProofs.RemoveS
 
 noncomputable section
 

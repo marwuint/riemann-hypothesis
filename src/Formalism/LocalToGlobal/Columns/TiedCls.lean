@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.Columns.TiedCrd
-import Formalism.LocalToGlobal.Columns.RecLevelStep
 
 open NumberField IsDedekindDomain Module Matrix
 open scoped TensorProduct

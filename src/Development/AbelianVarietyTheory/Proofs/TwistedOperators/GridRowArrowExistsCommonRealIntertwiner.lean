@@ -8,7 +8,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Di
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CuspAlongSmoothRows
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsUniformRealThetaIntertwinerChainStep
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspAlongOfPairLifts
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContragredientThetaParamsRemoveBlockArrow
 
 noncomputable section
 

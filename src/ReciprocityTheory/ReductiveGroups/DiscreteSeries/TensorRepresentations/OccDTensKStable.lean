@@ -1,9 +1,5 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.OccCExistsPs
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.Unitarize
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.TensorV
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.DataGenSubIrred
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.CoefBTensSubKStable
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.PropsEquivB
 
 noncomputable section
 

@@ -6,8 +6,6 @@ import Formalism.LocalToGlobal.IndefiniteReal.RationalAdjoints.RangeAdjointRat
 import Formalism.LocalToGlobal.IndefiniteReal.RationalAdjoints.RatMuOfRowTest
 import Formalism.LocalToGlobal.IndefiniteReal.RationalAdjoints.RatThOfLiftTest
 import Formalism.LocalToGlobal.IndefiniteReal.FinrankISupLeSum
-import Formalism.LocalToGlobal.IndefiniteReal.CutPassage
-import Formalism.LocalToGlobal.IndefiniteReal.IsometricPeriodsOfUnitHypotheses
 
 open Module NumberField IsDedekindDomain
 open scoped Matrix ComplexOrder InnerProductSpace

@@ -1,7 +1,6 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.HmaxLe
 import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.DenBound
 import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.ExistsPhiBridge
-import Formalism.SharpRestriction.LevelLetterCocycles.AdmBoundsBOfAdm
 import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.ArcGamLiftCore
 import Formalism.SharpRestriction.LevelLetterCocycles.LetterConditionGlobal
 

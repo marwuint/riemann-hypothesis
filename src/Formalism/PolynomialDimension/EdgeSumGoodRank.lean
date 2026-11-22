@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.PolynomialDimension.StatementNum
-import Formalism.PolynomialDimension.WeylDim
 import Formalism.PolynomialDimension.FrameSum
 import Formalism.SubspaceCounting.Statement
 

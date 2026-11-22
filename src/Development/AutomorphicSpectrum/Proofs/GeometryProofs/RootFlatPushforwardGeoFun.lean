@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.PropFTop
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionFamilyMultilinear
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsPowSubMemSpanOfIsUnitModOfIsAlgClosed
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.ThmISt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArMonoAddSingle
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MonoLinesLineSmooth
 open MvPolynomial NumberField Filter Topology ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I2 GlobalTheory.CompanionTheory.Ar.Top GlobalTheory.CompanionTheory.Ar.Flat

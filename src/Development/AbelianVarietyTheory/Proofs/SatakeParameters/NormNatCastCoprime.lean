@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalRingCardinality.DataKerI
 import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
 import Formalism.LocalToGlobal.KernelLattices.LateralTheory
-import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TauPlBijective
 
 open Formalism.MainNotions.G Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric NumberField

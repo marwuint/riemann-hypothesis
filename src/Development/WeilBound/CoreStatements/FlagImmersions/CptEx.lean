@@ -1,7 +1,6 @@
 import Development.WeilBound.CoreStatements.FlagImmersions.FibSandwich
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NonemptyCptOverOfFlatPreimmersion
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentOpenStalksDomain
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenPtSpecializesOfSpecializes
 
 noncomputable section
 

@@ -1,9 +1,7 @@
 import Formalism.SharpRestriction.GrowthBounds.CoarseMultiplicity.RestBlockForm
 import Formalism.LocalToGlobal.GroupLattices.FockModels.FlatModels.LetterWtAnti
 import Formalism.LocalToGlobal.GroupLattices.FockModels.TransposeWords.FormCoreSK
-import Formalism.LocalToGlobal.GroupLattices.FockModels.TestSideEdge
 import Formalism.LocalToGlobal.GroupLattices.FockModels.DualInclusionLattices
-import Formalism.PolynomialDimension.MultinomialDepth.FockGaussComparisonHolds
 
 noncomputable section
 

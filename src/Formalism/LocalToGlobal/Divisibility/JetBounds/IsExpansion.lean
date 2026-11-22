@@ -3,7 +3,6 @@ import Formalism.LocalToGlobal.Divisibility.Inputs
 import Formalism.MirabolicMackeyTheory.MirabolicIsMackey
 import Formalism.GaussJetBounds.StatementS
 import Formalism.GaussJetBounds.OneLetterGauss
-import Formalism.GaussJetBounds.GenLogInverse
 import Formalism.GradedWeylDivisibility.FinalD
 import Formalism.GaussJetBounds.GaussJetProofs.OrbMul
 import Formalism.GaussJetBounds.OneLetterGaussJets.GainDominatesOddLevelSum

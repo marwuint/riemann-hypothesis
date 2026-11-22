@@ -5,7 +5,6 @@ import Formalism.LocalRingCardinality.DataKap
 import Formalism.LocalRingCardinality.DataExtra
 import Formalism.LocalRingCardinality.DataParams
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Formalism.HarderNarasimhan.HarderNarasimhanProofs.Rerealize
 
 open Module NumberField
 

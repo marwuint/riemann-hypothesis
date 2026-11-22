@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTangentVectorOfOriginDerivation
-import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntDerApply
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocalRingDualNumber
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry IsLocalRing
 open scoped CategoryTheory.Obj

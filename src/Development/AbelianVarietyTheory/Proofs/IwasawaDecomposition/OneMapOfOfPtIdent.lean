@@ -11,8 +11,6 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AdelicC
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AdelicLinearIndependent
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftsSpanOfOnto
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaDataLevelForms
-import Formalism.LocalToGlobal.IndefiniteReal.FWTie
-import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelMapExtension
 
 noncomputable section

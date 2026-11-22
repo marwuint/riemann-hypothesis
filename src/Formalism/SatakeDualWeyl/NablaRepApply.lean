@@ -1,5 +1,4 @@
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Actions
-import Formalism.SatakeDualWeyl.Statement
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.InclusionInjective
 
 noncomputable section

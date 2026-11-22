@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TieEmbeddingCastLevelTie
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.TieAll
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.TieFin
-import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.GTiedFOfIsRecCEv
-import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.TiePsiC
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.BlockRationalityField
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.BlockRatReal
 import Formalism.SharpRestriction.GrowthBounds.IntegralWeylLatticeSpan.WeylLatticeDescentHolds

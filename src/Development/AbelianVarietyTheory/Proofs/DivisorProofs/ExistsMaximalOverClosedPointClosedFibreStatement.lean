@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMaximalOverClosedPointClosedFibre
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsorsTrivialIff
 
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in

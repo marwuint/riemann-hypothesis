@@ -1,7 +1,6 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.SegmentCuspLines.ProdIrrFiniteLength
 import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.CuspidalGenericity.Direct
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NontrivialTwJacquetOfSurjective
 
 noncomputable section
 

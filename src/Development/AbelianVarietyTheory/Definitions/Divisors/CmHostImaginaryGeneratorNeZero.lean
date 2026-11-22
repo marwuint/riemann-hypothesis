@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
-import Formalism.LocalToGlobal.BesselHermitianTheta.AllTied
 import Formalism.LocalRingCardinality.ConjSqrtMinusD
 
 noncomputable section

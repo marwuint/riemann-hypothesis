@@ -1,10 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCMFrame
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelEigenvectorsAction
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 import Development.WeilBound.CoreStatements.SesquilinearFractions.DualMapCompAlgebraMap
 import Development.WeilBound.CoreStatements.SesquilinearFractions.GDerivLin
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.ExpRowsPf
 
 noncomputable section
 

@@ -10,8 +10,6 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsRankOneC
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CuspFormsFiniteDimensionalOfGoodEmb
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MemHolSubIff
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CongrOfDvdModulus
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsHermCoordOfDatum
-import Formalism.LocalToGlobal.ProjectiveLattices.DatProofs
 
 noncomputable section
 

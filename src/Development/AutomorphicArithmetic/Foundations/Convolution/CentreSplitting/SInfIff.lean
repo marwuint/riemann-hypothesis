@@ -1,6 +1,5 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.DefsObj
 import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.InfZcCoeff
-import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.CapZcMemOfE
 import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.LactCenGen
 import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.ExpGen
 import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.DiracSep

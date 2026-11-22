@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StrictHenselisationPrimeEq
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsorsTrivial
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OriginIdeal
 
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in

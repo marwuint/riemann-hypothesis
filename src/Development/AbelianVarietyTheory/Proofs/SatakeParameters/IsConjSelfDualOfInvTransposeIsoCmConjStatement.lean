@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsConjSelfDualOfInvTransposeIsoCmConj
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.DualIsConjByOne
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsNormalisedThetaSub
 
 open NumberField Formalism.L2.Host GlobalTheory.CuspRep GlobalTheory.ContraPair
 set_option maxHeartbeats 1000000 in

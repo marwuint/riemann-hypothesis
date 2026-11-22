@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.HeckeSplitOne
-import Formalism.SharpRestriction.LevelLetterCocycles.DataN
-import Formalism.LocalRingCardinality.DataRows
 import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.ThetaLiftOfEachRow
 import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.InternalDirectSumOfParts
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsoLocAppendSingleton

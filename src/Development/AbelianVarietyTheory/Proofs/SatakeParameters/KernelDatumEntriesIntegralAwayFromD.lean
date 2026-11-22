@@ -1,18 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaZJetsThree
-import Formalism.LocalToGlobal.KernelLattices.FirstKernelLawReading
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.StdBases
 import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CombOfTied
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralJetsRealPlaceLocalBases
-import Formalism.SharpRestriction.GlobalSchurBounds.GL3Columns
-import Formalism.LocalToGlobal.KernelLattices.ThDistC
-import Formalism.GaussJetBounds.StatementN
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralJetsNormalisedThetaCombinationsAwayD
-import Formalism.LocalToGlobal.KernelLattices.KerStd
-import Formalism.LocalToGlobal.InertKernelTheory.StatementIota
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KvalGeZeroOfIntegralJets
-import Formalism.SharpRestriction.Divisibility.ProductZerothFirstParts
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Classical
 
 namespace GlobalTheory.Ggeo.AdmEntInt

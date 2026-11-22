@@ -1,5 +1,4 @@
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.PNTExplDefs
-import Formalism.LandauZeroFreeBounds.SiegelWalfiszAPOfSiegelLower
 
 open Complex Classical
 

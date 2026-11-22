@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.RefLinked
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import ReciprocityTheory.AnalyticForms.PotentialTheory.Pullback
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.AnalyticSystemRegularityProperties
 import Development.WeilBound.CoreStatements.FlagImmersions.DifferentiableAtAffCoord

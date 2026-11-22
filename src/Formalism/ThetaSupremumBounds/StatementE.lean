@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.ThetaSupremumBounds.StatementA
-import Formalism.LogFactorialIndices.StatementSize
 
 open Finset MeasureTheory
 open scoped ComplexConjugate Real

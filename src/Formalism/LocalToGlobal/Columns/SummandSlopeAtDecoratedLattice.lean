@@ -1,8 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.Columns.ToHLat
 import Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentFromBound
-import Formalism.GL3MeanSquares.ConcavityEquidistribution
-import Formalism.LogVandermondeBounds.MultinomialPowerBound
 import Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentArithmeticBound
 
 open NumberField IsDedekindDomain Module

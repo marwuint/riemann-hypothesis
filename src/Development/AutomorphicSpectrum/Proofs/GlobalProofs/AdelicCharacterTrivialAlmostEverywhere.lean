@@ -5,8 +5,6 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IntegralIndicatorChar
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CharEqOneOfNear
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.SelfDualMap
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsLocalApproximateIdentity
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountable
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsFiniteAdeleHaarNormalized
 
 noncomputable section
 

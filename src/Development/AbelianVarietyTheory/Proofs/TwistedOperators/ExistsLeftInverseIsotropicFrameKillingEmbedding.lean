@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.T2SpaceHalfAdelicMatrixAddSubgroup
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FinTensMemLatO
 
 noncomputable section
 

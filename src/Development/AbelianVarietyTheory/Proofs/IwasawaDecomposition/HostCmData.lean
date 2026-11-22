@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.RootOfUnityEightQMemCoeffGaloisSubfield
 import Formalism.LocalRingCardinality.SpanPowerMembership.Spaces
 import Formalism.SharpRestriction.InertJacobiLevels.HostFam
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.Inertia
 
 open Formalism.BasicNotions NumberField IsDedekindDomain GlobalTheory.Mem
 open scoped TensorProduct

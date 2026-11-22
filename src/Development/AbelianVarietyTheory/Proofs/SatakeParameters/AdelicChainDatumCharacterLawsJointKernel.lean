@@ -12,8 +12,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteDatumDepen
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AdelicDatumLevelEquivarianceFirstCoupledStep
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SymmTransSymm
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LastStepAdelicDatumLevelEquivariance
-import Formalism.LocalToGlobal.Divisibility.DivisibilityProofs.TuplesP
-import Formalism.LocalToGlobal.GlobalTheory.GL6.PBwLocBases
 
 noncomputable section
 

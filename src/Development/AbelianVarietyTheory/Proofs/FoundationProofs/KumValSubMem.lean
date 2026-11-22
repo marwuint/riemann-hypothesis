@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.HTPresNuOfPolys
-import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ZetaUr
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsLocallyConstantCycMod
 import Development.AbelianVarietyTheory.Definitions.Foundations.HtCoLOfEq
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UniqTrue
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RecipConj

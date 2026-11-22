@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.FramesMeas
-import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.FramesPt
 
 set_option linter.unusedVariables false
 

@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.NonnegOfMemCStar
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsNonzeroOfGenerator
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.PsiCoordOfIsPullDegId
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.PhiCSmulPull
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SemiAbelianModelDeterminedByGenericFibre
 
 set_option autoImplicit false
 

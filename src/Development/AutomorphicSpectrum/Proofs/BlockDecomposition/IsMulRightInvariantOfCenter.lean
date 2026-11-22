@@ -6,7 +6,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwCentPreserves
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EqZeroOfCommuteOfSeparable
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecondCountableNilrad
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.KillingFormDiffCartanInvolution
-import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
 
 noncomputable section
 

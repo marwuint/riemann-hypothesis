@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceEstimates.StepDownStatement
-import Formalism.RealPlaceAnalysis.SmoothVectorGrowthBound
 
 noncomputable section
 

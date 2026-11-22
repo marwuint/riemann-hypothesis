@@ -2,10 +2,8 @@ import Mathlib
 import GroundTheory.PAdicHodge.BCrisNewtonLift
 import GroundTheory.PAdicHodge.PhiGammaBase
 import GroundTheory.PAdicHodge.ExtRobbaEigenGlue
-import GroundTheory.PAdicHodge.ExtRobbaBounded
 import GroundTheory.PAdicHodge.ExtRobbaFixedTerm
 import GroundTheory.PAdicHodge.ExtRobbaFixedSum
-import GroundTheory.PAdicHodge.ExtRobbaDMRankOne
 import GroundTheory.PAdicHodge.ExtRobbaIsoLift
 import GroundTheory.PAdicHodge.ExtRobbaTrivialSB
 import GroundTheory.PAdicHodge.BCrisEigenWitt

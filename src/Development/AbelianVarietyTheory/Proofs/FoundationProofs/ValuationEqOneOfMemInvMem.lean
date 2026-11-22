@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsOneCocycleOnSu
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExists
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FixingSubgroupOfIntermediateFieldProperties
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InertFixesRootOfUnitRatio
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
 open GlobalTheory.KCoh Polynomial
 
 namespace GlobalTheory.K4

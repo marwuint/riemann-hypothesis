@@ -1,7 +1,6 @@
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharpolyFinOne
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
 set_option synthInstance.maxHeartbeats 200000
 

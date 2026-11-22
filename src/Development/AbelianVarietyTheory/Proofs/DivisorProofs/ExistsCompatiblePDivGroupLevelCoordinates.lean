@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DUnitMemRangeOfMemKerIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowEqOfIntegers
 
 set_option autoImplicit false

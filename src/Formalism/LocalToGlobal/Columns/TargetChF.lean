@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
-import Formalism.LocalToGlobal.Columns.ColFormsLemmas
 
 open NumberField IsDedekindDomain Module
 

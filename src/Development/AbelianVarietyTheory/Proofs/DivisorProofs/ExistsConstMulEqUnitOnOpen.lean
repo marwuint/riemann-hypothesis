@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsThetaMeanSquareNorm
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExtAlong
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsPow8F
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ToStkAInjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConstMulEqUnit
 

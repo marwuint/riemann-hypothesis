@@ -1,10 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ZOfSurjective
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsAbsIrrCharCompIff
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsClassSumPairingOfIsFormsOf
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFiniteDetermining
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IpMtTie
-import Formalism.LocalToGlobal.Divisibility.RowSideTie
 
 noncomputable section
 

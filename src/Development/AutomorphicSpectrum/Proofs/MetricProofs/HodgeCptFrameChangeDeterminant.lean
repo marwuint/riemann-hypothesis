@@ -2,9 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ColFlags
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameCoeffsRegularInChart
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordsJoinBlocks
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DetT
 
 noncomputable section

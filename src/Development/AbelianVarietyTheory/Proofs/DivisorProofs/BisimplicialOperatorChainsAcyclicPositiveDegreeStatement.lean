@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BisimplicialOperatorChainsAcyclicPositiveDegree
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasTotalBiChains
 
 open CategoryTheory Limits Opposite AlgebraicTopology GlobalTheory.EZ
 set_option maxHeartbeats 1000000 in

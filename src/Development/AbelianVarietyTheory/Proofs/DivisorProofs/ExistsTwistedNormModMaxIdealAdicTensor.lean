@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsRootSelection
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntBTmulBasis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSmallB
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteRingNormFormSurjective
-import GroundTheory.GlobalFields.LocalAtPlace
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount IsDedekindDomain GlobalTheory.AdicSpan
 open scoped TensorProduct Classical
 

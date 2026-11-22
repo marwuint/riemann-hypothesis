@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RigidifiedSymmetricLineBundleGroupPullback
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSiegPull
 
 open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing Formalism.L2.Pj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor

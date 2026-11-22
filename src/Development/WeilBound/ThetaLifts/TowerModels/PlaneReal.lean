@@ -1,6 +1,4 @@
 import Development.WeilBound.ThetaLifts.TowerModels.PlaneForm
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.SignatureConjugationInvariant
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.SignatureExists
 
 noncomputable section
 

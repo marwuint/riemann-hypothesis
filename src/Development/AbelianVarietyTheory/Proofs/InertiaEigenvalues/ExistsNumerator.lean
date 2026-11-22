@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.BddGood
 import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
-import Formalism.LocalToGlobal.ProjectiveLattices.MulCMemSec
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DetIdealSelfDualLatticeAndInterStandard
 
 set_option autoImplicit false

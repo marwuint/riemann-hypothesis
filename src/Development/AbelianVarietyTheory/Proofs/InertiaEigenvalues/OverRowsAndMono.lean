@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenLocOfCenReal
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RatInEig
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CGTrue
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoFormsOff
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsComp

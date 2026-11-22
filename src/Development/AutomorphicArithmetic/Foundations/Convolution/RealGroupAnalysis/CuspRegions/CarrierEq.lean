@@ -1,6 +1,4 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.DefsObj
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.FoundBridge
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.RTwist
 
 noncomputable section
 

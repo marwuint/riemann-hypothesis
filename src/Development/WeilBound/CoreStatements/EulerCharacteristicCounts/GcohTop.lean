@@ -2,7 +2,6 @@ import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohCmp
 import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohField
 import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohMu
 import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohTate
-import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohTateA
 
 open CategoryTheory GroundTheory.ProfCoh ReciprocityTheory.Gal ValuativeRel
 

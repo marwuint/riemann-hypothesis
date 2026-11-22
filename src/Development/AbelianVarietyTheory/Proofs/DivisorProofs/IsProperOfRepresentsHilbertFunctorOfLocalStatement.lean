@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperOfRepresentsHilbertFunctorOfLocal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsHilbRep
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComapEqKerIff
 
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits GlobalTheory.HilbertSch GlobalTheory.HilbGlue
 set_option maxHeartbeats 1000000 in

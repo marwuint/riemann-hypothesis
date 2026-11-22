@@ -1,6 +1,5 @@
 import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicContinuation.GlobalGaussLaws.HermCocompact
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PoissonSummationHermitianLattice
-import Formalism.LocalToGlobal.IndefiniteReal.SobolevIteration.FdSetIntegralCharEqZero
 
 noncomputable section
 

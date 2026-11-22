@@ -7,8 +7,6 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.PRFormula
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PSemiPosTwist
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PTorusInvLevi
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PSheetHessPSD
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.MdiscSt
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.AMixSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterFib
 set_option maxSynthPendingDepth 1
 

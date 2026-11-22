@@ -3,9 +3,6 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HintConstMul
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralOfTwistConjugatePlace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousMapGLSpl
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwOrbEqFinsum
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjSrcMemOrb
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsNormalisedThetaSub
 
 noncomputable section
 

@@ -6,7 +6,6 @@ import ReciprocityTheory.L2DbarEstimates.NormFibrations.ImportsAlt
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSignHolds
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.L2ExtensionLogCanonical
 import Development.AbelianVarietyTheory.Definitions.Divisors.EtaleEmpty
-import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.AApproxE
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHoloQuadraticAddLeviIsLittleO
 
 open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y GlobalTheory.OTY GlobalTheory.Published.L2Extension

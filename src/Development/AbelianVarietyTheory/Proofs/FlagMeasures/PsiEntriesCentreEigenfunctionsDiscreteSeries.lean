@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpectrumKFiniteDecomposition
-import Formalism.RealPlaceAnalysis.QuotientSettingHolds
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PhiCentreEigenfunctionDiscreteSeries
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PsiRestrictionHolomorphicNearOne
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PsiEntriesRealAnalytic

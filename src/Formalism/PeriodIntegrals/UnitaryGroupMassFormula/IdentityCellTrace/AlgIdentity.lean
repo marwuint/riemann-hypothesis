@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IdentityCellTrace.ExistsSmulMem
-import Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic
 
 noncomputable section
 

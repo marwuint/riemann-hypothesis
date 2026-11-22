@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.CxPass
-import Formalism.LocalToGlobal.Divisibility.GoodPartHermitianSpec
 
 open Formalism.L2.DIV NumberField Module
 

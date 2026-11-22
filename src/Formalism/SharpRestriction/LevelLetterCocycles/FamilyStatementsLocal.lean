@@ -1,6 +1,5 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Formalism.SharpRestriction.CuspSpanNormBounds.PlaceDegreeData
-import Formalism.SharpRestriction.ParConsts
 import Formalism.SharpRestriction.LevelLetterCocycles.PlaceLabelTeichmuller
 
 noncomputable section

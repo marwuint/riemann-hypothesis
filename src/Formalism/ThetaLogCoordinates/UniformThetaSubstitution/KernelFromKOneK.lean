@@ -3,7 +3,6 @@ import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms
 import Mathlib
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.StatementGK
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.EGaussK
-import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.StatementC
 
 namespace Formalism.InvariantFactorPaths.G7.Top
 

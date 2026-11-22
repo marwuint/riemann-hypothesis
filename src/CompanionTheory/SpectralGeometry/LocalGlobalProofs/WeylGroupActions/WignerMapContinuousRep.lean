@@ -1,7 +1,5 @@
 import Mathlib
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ShiftAtRExistsEq
-import Formalism.HermitianCurvature.FrameExists2
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.LieBracketMultiplication
 import Development.AbelianVarietyTheory.Definitions.Jets.WigMap
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.WeylGroupActions.OmgNMulN
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.WeylGroupActions.OmgLeftRight

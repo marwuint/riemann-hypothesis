@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.RowSideOfCompatibleThetaPair
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FamilyHypothesesOfWorkingClassSevenDuties
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ValidForConstructedPointClassesEventuallyWorking
-import Development.AbelianVarietyTheory.Definitions.Divisors.TupleReadBaseTupleEqFamily
-import Formalism.SharpRestriction.SmoothDesignExistence.DGamSmooth
 
 noncomputable section
 

@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.HermitianHasse
-import GroundTheory.AutomorphicForms.HermitianClassification
 
 noncomputable section
 

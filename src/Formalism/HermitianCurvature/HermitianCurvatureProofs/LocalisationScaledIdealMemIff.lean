@@ -1,7 +1,6 @@
 import Formalism.HermitianCurvature.PrimeToDifferent
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.DualIdealInclusion
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.FirstEmbeddingOne
-import Formalism.HermitianCurvature.Statement
 
 namespace Formalism.FourierDecayAlt.P.S6x2
 

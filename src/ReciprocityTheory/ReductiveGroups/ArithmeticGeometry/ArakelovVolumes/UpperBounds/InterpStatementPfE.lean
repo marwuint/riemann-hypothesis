@@ -2,7 +2,6 @@ import ReciprocityTheory.L2DbarEstimates.SkodaWeights.LeviVA
 import ReciprocityTheory.L2DbarEstimates.LeviForms.OfRealNormSqSumMul
 import ReciprocityTheory.L2DbarEstimates.LeviForms.LogNormSq
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.DerivDerivNonposOfIsLocalMax
-import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.HoloSmooth
 
 namespace ReciprocityTheory.ChartRestriction.G.AR.Up.HE
 

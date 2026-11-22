@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBaseElementNegativeAtTwoEmbeddings
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGlobalIffEtaProd
 
 open NumberField IsDedekindDomain
 open scoped TensorProduct

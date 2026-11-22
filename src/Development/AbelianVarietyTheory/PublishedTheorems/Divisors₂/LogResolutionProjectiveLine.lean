@@ -4,7 +4,6 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.IsPotentialPullbackStatem
 import ReciprocityTheory.AnalyticForms.PotentialTheory.AnalyticSubsetChartLocal
 import ReciprocityTheory.AnalyticForms.PotentialTheory.LocDens
 import ReciprocityTheory.AnalyticForms.PotentialTheory.Partition
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LintegralImageEqLintegralNormSqDetMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AnalyticLogResolution
 
 namespace GlobalTheory

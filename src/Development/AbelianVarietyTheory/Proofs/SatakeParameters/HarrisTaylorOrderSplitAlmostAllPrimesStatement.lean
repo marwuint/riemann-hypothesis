@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HarrisTaylorOrderSplitAlmostAllPrimes
-import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGDatumOneOneOne
 
 open NumberField
 open GlobalTheory.UPel.HT.Gen

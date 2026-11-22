@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.TermTieOf
-import Formalism.HermitianLattices.HermitianLatticesProofs.IsomAct
 
 noncomputable section
 

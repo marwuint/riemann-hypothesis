@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoheightEqOneIffClosureDimProjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteCoheightOneNotMemOpen
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemNonzeroLocusFormMap
 
 set_option autoImplicit false
 

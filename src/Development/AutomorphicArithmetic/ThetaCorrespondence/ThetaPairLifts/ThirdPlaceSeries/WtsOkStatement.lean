@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightCombinatorialDataULeUZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LambdaPrimeAllPoints
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AtPtsImp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ParameterLargeAllPointsBound
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoEntryValues
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoBlockConstantCentred

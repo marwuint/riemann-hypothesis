@@ -5,7 +5,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersecti
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ExistsUnique
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ImageArithClosed
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ChangeOfModel
-import GroundTheory.HeightsAndTheta.Heights.Intersections.PConsequences
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.Known
 

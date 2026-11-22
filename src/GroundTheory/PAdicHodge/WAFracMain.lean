@@ -3,16 +3,9 @@ import GroundTheory.PAdicHodge.WABridgeApprox
 import GroundTheory.PAdicHodge.WAFracOrbit
 import GroundTheory.PAdicHodge.BCrisRegularFinal
 import GroundTheory.PAdicHodge.AnnNormAcrisToAnnPosBig
-import GroundTheory.PAdicHodge.WAFracAnn
-import GroundTheory.PAdicHodge.ToUntiltFieldEqZeroIff
-import GroundTheory.PAdicHodge.ExtRobbaRoot
 import GroundTheory.PAdicHodge.FundamentalSeqSurj
-import GroundTheory.PAdicHodge.BCrisPlusInvariants
-import GroundTheory.PAdicHodge.FontaineLemmaInvariants
 import GroundTheory.PAdicHodge.WAFracFrobAnn
 import GroundTheory.PAdicHodge.ExistsNormLeOfNormLtOneFinite
-import GroundTheory.PAdicHodge.WAFracAnnCris
-import GroundTheory.PAdicHodge.ExtRobbaBezout
 
 set_option maxSynthPendingDepth 1
 

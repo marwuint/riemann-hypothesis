@@ -3,10 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.TCoefMInMMul
 import Development.AbelianVarietyTheory.Definitions.Divisors.RangeShape
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.Smooth
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.DSymmHypsInhabited
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.CarSumSqZeroOfAnti
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.IsInfUnitary
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DefsRep
-import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 
 noncomputable section
 

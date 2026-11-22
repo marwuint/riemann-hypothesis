@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.StrongMultiplicityOne.Imports
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsUnitaryOfCharIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SatakeParametersOfTwist
 
 noncomputable section
 

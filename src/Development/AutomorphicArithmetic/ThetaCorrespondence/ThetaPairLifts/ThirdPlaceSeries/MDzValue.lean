@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameUniformize
 import Development.DiscreteGroups.GlobalIrreducibility.DzBigDef
 import Development.AutomorphicArithmetic.Foundations.UnitarySphericalFixing.SatakeParameters.GoodLem
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SglobDzBigDef
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.AbsCentral
-import Development.AutomorphicArithmetic.Foundations.UnitarySphericalFixing.SatakeParameters.AbsCentralAlt
 
 set_option synthInstance.maxHeartbeats 200000
 

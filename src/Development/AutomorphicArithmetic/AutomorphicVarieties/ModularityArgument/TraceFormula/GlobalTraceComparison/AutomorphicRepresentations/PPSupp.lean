@@ -5,8 +5,6 @@ import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.PiVecExHolds
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.PiSeenA
 import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.MulLinearAe
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.MultiplicationFunction
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.MultiplicationNormBound
 
 open UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi DiscreteGroups.T1.G
 

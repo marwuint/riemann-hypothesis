@@ -8,7 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsGrpPullbackOfC
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIsLieBasisBaseChange
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsDerivAt0OfIsPullback
-import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TopLePreimageOfValAtNeZero
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TangentBijectionOfValues
 
 noncomputable section

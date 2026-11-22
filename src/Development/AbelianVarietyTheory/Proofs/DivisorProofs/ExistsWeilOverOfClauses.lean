@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TwistedPlaceChoiceLiesOverPair
-import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyGridDataIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilOver
 
 noncomputable section
 

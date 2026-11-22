@@ -9,9 +9,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.TyEx
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.FdFixed
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.GoodEx
-import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.Places
-import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.OccursBasics
-import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.EigBasic
 
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.T in
 theorem UpperTheory.ConvolutionTheory.T.coreDesc :

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveEventuallyFilteredColimitAlgebra
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsZModTorsorIff
 
 open CategoryTheory Limits TensorProduct
 set_option maxHeartbeats 1000000 in

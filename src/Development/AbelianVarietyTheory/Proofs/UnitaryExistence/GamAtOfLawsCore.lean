@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.GamAt
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CoreArithmeticGroupContainsPrincipalCongruence
-import Formalism.LocalToGlobal.ProjectiveLattices.CuspidalL2Subspace
-import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
-import Development.AbelianVarietyTheory.Definitions.RegularCharts.BaseNorm
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj
 

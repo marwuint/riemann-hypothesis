@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.InvVolConjLevelOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.BplusOfEquivariant
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemGLintOfEntries
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsCompactParahoricLevelAndContainsLifts
 
 namespace ConjugatePlaceIntegrality
 section

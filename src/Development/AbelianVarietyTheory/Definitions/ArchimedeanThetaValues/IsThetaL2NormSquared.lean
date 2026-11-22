@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFra
 import Formalism.LocalToGlobal.ProjectiveLattices.CuspFree
 import Formalism.LocalToGlobal.ProjectiveLattices.NormsFree
 import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.ArchimedeanUniqueness.MetricDef
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ModerateCoefficientPositivity
 
 noncomputable section
 

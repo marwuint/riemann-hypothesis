@@ -4,7 +4,6 @@ import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.AnalyticInter
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KFiniteModuleIrreducibleOfIrreducibleUnitaryRep
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompactTypeInCompactStableSubmodule
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalFiniteIdem
-import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 
 noncomputable section
 

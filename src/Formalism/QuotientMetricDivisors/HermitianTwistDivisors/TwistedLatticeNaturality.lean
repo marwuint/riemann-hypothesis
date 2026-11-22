@@ -6,8 +6,6 @@ import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.LcvBasis
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.LocBasis
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ValBasic
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ProdFormula
-import Formalism.HarderNarasimhan.HarderNarasimhanProofs.SizeMu
-import Formalism.HarderNarasimhan.HarderNarasimhanProofs.DiscreteSpanOfLinIndep
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.DivIntoDual
 
 open Module NumberField IsDedekindDomain

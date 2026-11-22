@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsLieBase
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CarriesFlagsIffAdaptedFrameAtImage
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpperTriangularMul
 
 set_option autoImplicit false

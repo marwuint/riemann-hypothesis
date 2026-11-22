@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FischerInnerFormFockSubstitutionUnitaryInvariant
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FisSelfReNonneg
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TranslateMemCoefLatFn
 
 open Formalism.BasicNotions Formalism.IndefR.Datum Formalism.IndefR.Links
 set_option maxHeartbeats 1000000 in

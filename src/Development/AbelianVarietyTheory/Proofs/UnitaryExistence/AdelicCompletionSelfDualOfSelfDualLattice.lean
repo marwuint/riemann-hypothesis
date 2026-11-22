@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionRationalPointsAndApproximation
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionFractionalIdealProperties
 
 open NumberField IsDedekindDomain GlobalTheory.AdLat
 open scoped TensorProduct Matrix nonZeroDivisors

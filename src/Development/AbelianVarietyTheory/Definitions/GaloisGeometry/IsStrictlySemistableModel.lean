@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsStrictlySemistableAlt
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsMatrixForm
 
 noncomputable section
 

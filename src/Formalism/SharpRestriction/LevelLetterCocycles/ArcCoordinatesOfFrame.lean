@@ -3,7 +3,6 @@ import Formalism.SharpRestriction.LevelLetterCocycles.SaturationPullbackOfRingCo
 import Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorGeneralOfRingCondition
 import Formalism.SharpRestriction.LevelLetterCocycles.WachFrobeniusLatticeUnramifiedFunctor
 import Formalism.SharpRestriction.LevelLetterCocycles.BaseChangePreservesUnitaryOf
-import Formalism.SharpRestriction.LevelLetterCocycles.RingConditionOfDeltaInvariants
 
 noncomputable section
 

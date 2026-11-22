@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.Divisibility.OrbitPlaces
-import Formalism.TameInertiaTowers.CentralOrderTwo.OrderOfThreeUnitsTwoPow
 
 noncomputable section
 

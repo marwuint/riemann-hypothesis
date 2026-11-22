@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CardQuotMatrixRangeDvrEqResiduePowCorank
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EsymmInvMulEsymmCard
 
 open GlobalTheory.LatHecke GlobalTheory.SatakeInv
 set_option maxHeartbeats 1000000 in

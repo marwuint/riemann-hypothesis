@@ -4,8 +4,6 @@ import Development.WeilBound.ThetaLifts.LeviDeterminants.LagrangianUniqueness.La
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationPreservesSchwartz
 import Development.AutomorphicSpectrum.Proofs.MembershipProofs.AdelicCharacterRationalDual
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionHeisenbergInvariant
-import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
 
 open scoped TensorProduct NNReal Matrix Classical
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Matrix

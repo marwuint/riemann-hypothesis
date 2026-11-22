@@ -8,7 +8,6 @@ import Development.AutomorphicSpectrum.Proofs.TwistedProofs.CompletionExists
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.AdditiveVectorExists
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.DualPairingExists
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.SpanEquality
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasLenOfLatLen
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.HeisenbergMatrixFacts
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.PointwiseOfSpanHeisenberg
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.LatticeIndexOfSmithStatement

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralAtOfComponentZeroUnderPrime
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsMidLevIff
 
 open NumberField IsDedekindDomain Formalism.UG Formalism.L2.Col
 open scoped TensorProduct

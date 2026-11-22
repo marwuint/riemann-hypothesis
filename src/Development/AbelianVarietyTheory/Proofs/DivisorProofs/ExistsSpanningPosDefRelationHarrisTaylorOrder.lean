@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RosatiFor
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdjugateGramSymm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceCompPosOfAdjoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralCasimirElementCentralStatement

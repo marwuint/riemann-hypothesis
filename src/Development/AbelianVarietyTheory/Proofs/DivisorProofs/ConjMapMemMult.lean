@@ -4,8 +4,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Howe
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinRepApply
-import Formalism.LocalToGlobal.IndefiniteReal.CutTuples2
-import Formalism.LocalToGlobal.Divisibility.ProjLemmas
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateModelsMultiplicityEqual
 
 noncomputable section

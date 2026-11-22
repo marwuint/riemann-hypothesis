@@ -5,8 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Hermit
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.XiAtPenultimateEqXiCpl1
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ReferenceCharactersFactorTame
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.H90USurjective
-import Formalism.LocalToGlobal.Columns.RowFormsSym
-import Formalism.LocalRingCardinality.DataKerP
 import Formalism.LocalToGlobal.HermitianForms.BothSym
 
 noncomputable section

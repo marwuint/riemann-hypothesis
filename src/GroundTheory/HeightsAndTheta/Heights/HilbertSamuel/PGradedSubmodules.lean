@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsGradedSubmodules
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGradedSubquot
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PQuotPartGraded
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel

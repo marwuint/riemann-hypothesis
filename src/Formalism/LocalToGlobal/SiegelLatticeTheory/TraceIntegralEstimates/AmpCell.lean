@@ -1,7 +1,6 @@
 import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.AmpRootCut
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.PtCellUniq
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianFormFlagVector
-import Formalism.FormalDegreeBessel.FinalG
 
 open MeasureTheory Matrix
 open scoped ENNReal

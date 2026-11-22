@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ImagePolynomialAction
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeierstrassDivisionEisensteinPowIntegral
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NormPowLeNormFactorial
 open PowerSeries GlobalTheory.BK
 open scoped NormedField Valued
 

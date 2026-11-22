@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.So
 import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeformations.FiniteResidue
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.SoCocL
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.SoCobIndex
-import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBounds.ClsFacts
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBounds.PlacesQ
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.X

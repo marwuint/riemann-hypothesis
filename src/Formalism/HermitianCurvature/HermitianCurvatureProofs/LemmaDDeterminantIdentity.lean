@@ -2,12 +2,10 @@ import Formalism.HermitianCurvature.StatementQ
 import Formalism.PeriodIntegrals.ContractionsCovariantIff
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmColExp
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmRowExp
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmRowForm
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmSkip
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmStar
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmIndep
 import Mathlib
-import Formalism.PeriodIntegrals.RTTIndependence
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnCovLin
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnCovDet
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnCovHat
@@ -15,7 +13,6 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.CovariantHatSqOfLin
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnAdapted
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnEabGl
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnEabPres
-import Formalism.FormalDegreeBessel.FinalG
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnMinorLeft
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnRdSkew
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnRuleRight

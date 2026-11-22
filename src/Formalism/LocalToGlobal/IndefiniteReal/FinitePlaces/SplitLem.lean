@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.AffineProjectionSplitting
-import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.IpTheta
 
 set_option synthInstance.maxHeartbeats 100000
 

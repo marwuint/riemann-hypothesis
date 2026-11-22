@@ -1,8 +1,5 @@
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.StatementA
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.StatementB
-import Formalism.GaussJetBounds.StatementN
-import Formalism.GaussJetBounds.StatementP
-import Formalism.GaussJetBounds.StatementQ
 
 noncomputable section
 open scoped BigOperators

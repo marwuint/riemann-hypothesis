@@ -1,5 +1,4 @@
 import Formalism.WachLatticeTwists.RamifiedBlockRings.ChainFromPrimitiveData
-import Formalism.CharacterColumnKernels.StatOntoLattice
 
 open Finset Classical
 

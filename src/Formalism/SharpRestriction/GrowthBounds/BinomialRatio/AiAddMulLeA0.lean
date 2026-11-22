@@ -1,7 +1,5 @@
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.UpperCountOfTopRows
-import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.CoarseDegreeAlternative
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.TopDegreeLeTwoB
-import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.LeAndHalfLeProdOneSubExpNegOfBounds
 
 noncomputable section
 

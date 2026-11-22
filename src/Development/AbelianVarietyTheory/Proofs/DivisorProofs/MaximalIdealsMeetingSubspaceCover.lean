@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinIndMapRangeField
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TotalDegreeLeOfColW
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuesMemOfLocal
-import Formalism.LocalToGlobal.Divisibility.ProjLemmas
 
 set_option autoImplicit false
 noncomputable section

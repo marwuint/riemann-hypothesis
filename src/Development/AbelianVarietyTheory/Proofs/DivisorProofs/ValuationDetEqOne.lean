@@ -6,7 +6,6 @@ import GroundTheory.AutomorphicForms.MacdonaldWhittakerHecke
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SmoothRepresentationsGL.SphDict
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SmoothRepresentationsGL.MemIffLocal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralCosetsDetFiniteSum
-import Formalism.ArtinHasse.ArtinHasseProofs.SymmSeries
 
 noncomputable section
 

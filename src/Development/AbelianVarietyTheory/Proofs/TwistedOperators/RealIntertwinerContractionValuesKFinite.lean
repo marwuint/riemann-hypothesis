@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqMulProdOfPartial
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConjModelExt
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffSetIntegralNat
 
 noncomputable section
 

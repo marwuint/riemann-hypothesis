@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.ForPrimeFlagLattice
-import Formalism.HermitianLattices.FinalMass
 
 noncomputable section
 

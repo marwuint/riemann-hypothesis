@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolarDecompositionIndefiniteUnitary
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
 
 open scoped Matrix
 open Formalism.BasicNotions.TH

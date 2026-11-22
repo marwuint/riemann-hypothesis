@@ -4,7 +4,6 @@ import Formalism.WachLatticeTwists.ShapeRowIsomorphisms.ShapeRowProofs.BkInRow
 import Formalism.WachLatticeTwists.ShapeRowIsomorphisms.ShapeRowProofs.Clause5Row
 import Formalism.WachLatticeTwists.CupProductVanishing.CupProductProofs.Clause4GK
 import Formalism.WachLatticeTwists.CupProductVanishing.CupProductProofs.CoboundaryTrivialActionZero
-import Formalism.WachLatticeTwists.CupProductVanishing.CupProductProofs.H2MapInjectiveStatement
 
 variable [hT2Core : Fact ReciprocityTheory.ChartRestriction.T2.Core]
 

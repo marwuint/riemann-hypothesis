@@ -1,6 +1,4 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.DefsObj
-import GroundTheory.AutomorphicForms.GKModules.KernelCalculus
-import GroundTheory.AutomorphicForms.L2LocalComponents.CenterCommute
 
 open MeasureTheory NumberField
 open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm

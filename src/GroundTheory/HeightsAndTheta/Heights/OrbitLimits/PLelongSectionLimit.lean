@@ -7,7 +7,6 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.PDeLeSemiPos
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PRFormula
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PSegrePartition
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.LogRegLineTensor
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.LelongSectionLimit
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.LelongChartLimit
 set_option maxSynthPendingDepth 1
 

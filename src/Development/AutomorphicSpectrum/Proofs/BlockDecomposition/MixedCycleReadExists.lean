@@ -2,11 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsSmoothHermCombLine
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermRepMetricSmooth
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermRepTwistedBundleExists
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsPullHermPullLine
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRedA
-import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Birational
-import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.IsSmoothHermConstLine
 
 set_option autoImplicit false
 

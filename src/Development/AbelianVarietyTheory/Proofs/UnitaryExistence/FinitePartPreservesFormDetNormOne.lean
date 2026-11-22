@@ -3,8 +3,6 @@ import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasWeil
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.CoeSelfDualLatticeInFrameCoordinatesEq
 import Formalism.LocalToGlobal.ProjectiveLattices.ParCanon
 import Formalism.LocalToGlobal.ProjectiveLattices.ExistsParameterConditions
-import Formalism.LocalToGlobal.ProjectiveLattices.ValSetAlgSubset
-import Formalism.LocalToGlobal.ProjectiveLattices.IntAll
 import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
 import Formalism.LocalToGlobal.ProjectiveLattices.VolProofs
 

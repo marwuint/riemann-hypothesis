@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.BlockAnti
 import Formalism.SharpRestriction.CuspSpanNormBounds.NormalizedLocalScale
-import Formalism.SharpRestriction.CuspSpanNormBounds.RootMeasBig
 import Formalism.FormalDegreeBessel.FinalG
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicLeviEmbeddingHomomorphismProperties
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicStabilizerRadicalStructure

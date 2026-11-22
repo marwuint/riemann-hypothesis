@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.KernelLattices.KerStd
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaZJetsThree
-import Formalism.LocalToGlobal.InertKernelTheory.StatementIota
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.SelfDualLatticeNorms.LocNormAmbOfOf
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.SelfDualLatticeNorms.HalfPeriodStandardCM
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.SelfDualLatticeNorms.SelfDualComap
@@ -15,9 +14,6 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralJetsNorm
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PadicSeriesLinearCoordsEqFlatTaylor
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormalisedThetaFamilyNormalisedAllPlaces
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeJetsIntegralIffIntegralFrames
-import Formalism.SharpRestriction.GlobalSchurBounds.GL3Columns
-import Formalism.LocalToGlobal.KernelLattices.ThDistC
-import Formalism.GaussJetBounds.StatementN
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.Col Classical
 open Formalism.L2.Th1.H (cmL CmOK matH IsIsom taylorMv)
 open Formalism.L2.Th1.GD (LocNorm InMul frameM thetaLin)

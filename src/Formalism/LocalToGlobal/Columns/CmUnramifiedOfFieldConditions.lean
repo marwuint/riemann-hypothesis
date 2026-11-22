@@ -3,11 +3,8 @@ import Formalism.LocalToGlobal.Columns.ColFormsLemmas
 import Formalism.LocalToGlobal.Columns.LevGCount
 import Formalism.LocalToGlobal.Columns.AlgebraMapMemMaximalIdealPowIff
 import Formalism.LocalToGlobal.Columns.Inputs
-import Formalism.GL3MeanSquares.HookFormulaTorsion.DimensionMassJointBound
 import Formalism.GL3MeanSquares.HookFormulaTorsion.OneAddInvPowLeExpOne
-import Formalism.GL3MeanSquares.RankMulPowThreeHalvesLeFourthPower
 import Formalism.GL3MeanSquares.HookFormulaTorsion.SumWeightsOverPrimeLeHalfDegree
-import Formalism.HermitianLattices.FinalNeighbourConstruct
 import Formalism.HermitianLattices.FinalMass
 
 open NumberField IsDedekindDomain Module

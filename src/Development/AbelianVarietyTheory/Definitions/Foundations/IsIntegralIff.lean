@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
-import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
 
 noncomputable section
 open ValuativeRel Formalism.MainNotions.S.Loc

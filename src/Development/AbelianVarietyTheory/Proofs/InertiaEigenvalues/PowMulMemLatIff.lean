@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
-import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.Definitions.Foundations.HTBasis
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExpStar
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface

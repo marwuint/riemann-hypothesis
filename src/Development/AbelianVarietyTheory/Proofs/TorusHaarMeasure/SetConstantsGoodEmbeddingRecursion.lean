@@ -5,7 +5,6 @@ import Formalism.LocalToGlobal.ProjectiveLattices.SupNDataOfNonneg
 import Formalism.LocalToGlobal.ProjectiveLattices.AxHInst
 import Formalism.LocalToGlobal.ProjectiveLattices.ESecPfA
 import Formalism.LocalToGlobal.ProjectiveLattices.CurveLocInst
-import Formalism.LocalToGlobal.ProjectiveLattices.L2DefiniteCuspForms
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.SubMul
 import Development.AbelianVarietyTheory.Definitions.UpperBounds.PhRec
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.CompSplitRecord

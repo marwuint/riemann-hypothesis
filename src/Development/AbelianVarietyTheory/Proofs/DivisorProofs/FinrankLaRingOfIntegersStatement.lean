@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankLaRingOfIntegers
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplittingFw
 
 open NumberField GlobalTheory.UPel.HT
 set_option maxHeartbeats 1000000 in

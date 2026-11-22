@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DivPowerCompatTwoFo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothSectionsMonoReductionAffineInf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedPowerFiltrationIdealLeMapOfIsDPMorphism
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsDPMorphismOfFlatAlgebra
-import Development.AbelianVarietyTheory.Definitions.Divisors.RatBasisLinearIndependentInt
 
 set_option autoImplicit false
 

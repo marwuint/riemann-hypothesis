@@ -3,7 +3,6 @@ import GroundTheory.LocalFields.ConductorFormalGroup
 import GroundTheory.LocalFields.LubinTatePrimitive
 import GroundTheory.LocalFields.LubinTateTowerMaps
 import GroundTheory.LocalFields.LubinTateLimitGalois
-import GroundTheory.LocalFields.SeparableClosureValuation
 import GroundTheory.LocalFields.Monogenic
 import GroundTheory.LocalFields.Different
 import GroundTheory.LocalFields.UpperNumbering

@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
 import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.Chapter
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffHeckeUOperatorLowersLevel
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsModularFormCoeffSeqHeckeUAndDepletion
 

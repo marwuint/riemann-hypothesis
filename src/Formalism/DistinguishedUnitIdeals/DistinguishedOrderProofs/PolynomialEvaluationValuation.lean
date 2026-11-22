@@ -3,8 +3,6 @@ import Formalism.DistinguishedUnitIdeals.PhiFreeOfBasis
 import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.GoodOf
 import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.Graded
 import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.ThmEPrim
-import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.Descent
-import Formalism.WindowSums.PowerSeriesRelationList
 
 namespace Formalism.ExponentWindows.E
 

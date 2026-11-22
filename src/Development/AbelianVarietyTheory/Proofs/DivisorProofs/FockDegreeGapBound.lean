@@ -5,7 +5,6 @@ import Formalism.SharpRestriction.GlobalSchurBounds.MainIn
 import Formalism.QuotientMetricDivisors.FinalW
 import Formalism.QuotientMetricDivisors.SixthReductionExplicit
 import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.OneLeLetterBlockLength
 open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions NumberField Classical
 

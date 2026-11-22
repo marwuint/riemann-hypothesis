@@ -1,5 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.HaarVolumes.TriDens
-import Formalism.LocalRingCardinality.DataCD
 
 noncomputable section
 

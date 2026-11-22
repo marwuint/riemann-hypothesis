@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.TcoMem
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.VerticalBoundHeightCompare
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.KaehlerOneFormsToExtensionDeRhamMulSelf
 
 set_option autoImplicit false
 

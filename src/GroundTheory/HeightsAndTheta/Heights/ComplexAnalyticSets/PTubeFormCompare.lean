@@ -1,6 +1,5 @@
 import Mathlib
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LintegralImageEqLintegralNormSqDetMul
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.MdiscSt
 import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCIsHermitian
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 import ReciprocityTheory.AnalyticForms.AnalyticCharts.Osgood

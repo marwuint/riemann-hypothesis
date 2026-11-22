@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicArithmetic.LocalEmbeddings.ULieDefs
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QdetTopThreeOrders
 
 open NumberField Matrix Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.ULie
 open scoped TensorProduct

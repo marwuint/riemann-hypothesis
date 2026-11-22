@@ -3,7 +3,6 @@ import Formalism.SharpRestriction.InertJacobiLevels.AsmIface
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.PairRowIffQdRows
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ScalePolynomialQuantitiesComparison
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitRanksBasicBoundsLargeScale
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LogAddRpowMulLogPowLeRpow
 open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.MainNotions Formalism.MainNotions.Inhab GlobalTheory.EX NumberField
 
 namespace GlobalTheory.EX

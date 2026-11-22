@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SqMap
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermDimensionUnique
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 
 noncomputable section
 

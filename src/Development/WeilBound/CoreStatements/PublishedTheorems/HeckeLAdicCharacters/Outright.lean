@@ -2,7 +2,6 @@ import Development.WeilBound.CoreStatements.HeckeCharacterDeRham.DeRhamHeckeResu
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrobPowRead
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTatePeriodNotFiltered
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EvalMod
 
 namespace HodgeLocalDeRhamField.HLdR
 

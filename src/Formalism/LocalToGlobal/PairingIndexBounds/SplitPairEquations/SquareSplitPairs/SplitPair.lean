@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.SplitTripleEquations.EqPOfSplit
-import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.PullIopOf
 import Formalism.LocalToGlobal.GlobalTheory.GL3.LinkThetaStatementFamily
 
 noncomputable section

@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyReindexed
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsSmoothHermTrivLine
-import GroundTheory.HeightsAndTheta.Heights.Intersections.PtsOverPt
 
 open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4 MvPolynomial
 set_option maxHeartbeats 1000000 in

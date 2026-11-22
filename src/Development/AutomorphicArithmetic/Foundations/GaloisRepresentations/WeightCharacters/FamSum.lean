@@ -1,7 +1,5 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.WeightCharacters.DeltaNear
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ArchimedeanUnitaryPointsEquivUnitaryGroup
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousMapPFin
 
 noncomputable section
 

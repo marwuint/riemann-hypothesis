@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NVNeZero
 import Formalism.LocalToGlobal.IndefiniteReal.BridgeColPts
-import Formalism.LocalToGlobal.IndefiniteReal.BridgeLemmas
-import Formalism.LocalToGlobal.Columns.AdelicLemmas
-import Formalism.LocalToGlobal.IndefiniteReal.BridgeTie
 import Formalism.LocalToGlobal.Columns.InputsGenus
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemStOneOfInt
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearIndependentFrameFormsBaseChange
-import Development.AbelianVarietyTheory.Definitions.Divisors.HasBlockOfOccurs
 
 open GlobalTheory.ExpFrame Formalism.CohomologicalDescent.DepthNonnegative
 set_option maxHeartbeats 1000000 in

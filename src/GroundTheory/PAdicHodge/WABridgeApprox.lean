@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.PAdicHodge.WAEval
 import GroundTheory.PAdicHodge.ACrisBdRGalois
-import GroundTheory.PAdicHodge.InstMulSemiringActionGalPlus
 import GroundTheory.PAdicHodge.BCrisNewtonApprox
 
 set_option maxSynthPendingDepth 1

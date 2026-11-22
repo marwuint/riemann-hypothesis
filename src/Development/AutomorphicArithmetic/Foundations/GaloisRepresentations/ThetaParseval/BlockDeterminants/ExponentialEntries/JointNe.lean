@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.BlockDeterminants.ExponentialEntries.RightSub
-import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 
 open Formalism.BasicNotions UpperTheory.TP.RP
 

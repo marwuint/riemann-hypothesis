@@ -3,7 +3,6 @@ import Formalism.LocalToGlobal.ProjectiveLattices.CoreProofs
 import Formalism.LocalToGlobal.ProjectiveLattices.FrameCharts
 import Formalism.LocalToGlobal.ProjectiveLattices.GenFrPf
 import Formalism.LocalToGlobal.ProjectiveLattices.IntAllProofFree
-import Formalism.LocalToGlobal.ProjectiveLattices.VAtVNeBot
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosure
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsCombAtGMulVec

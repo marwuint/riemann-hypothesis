@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermOp
-import Formalism.HermitianCurvature.MemParahoricTimesPrincipalCongruenceIff
 import Formalism.LocalToGlobal.SiegelLatticeTheory.PtEquivApply
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.PairVal
 import Formalism.HermitianCurvature.StatementC

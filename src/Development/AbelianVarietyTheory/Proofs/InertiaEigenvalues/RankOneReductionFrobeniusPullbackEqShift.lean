@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.JSmul
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsPresOfRealD
-import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GammaActionReduction
 
 noncomputable section

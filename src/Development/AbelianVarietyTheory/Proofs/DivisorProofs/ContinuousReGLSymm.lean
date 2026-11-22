@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.InvVolConjLevelOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.BplusOfEquivariant
-import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ValuationDetOfMemKO
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HighestWeightBelow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueIsFunForm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocCO

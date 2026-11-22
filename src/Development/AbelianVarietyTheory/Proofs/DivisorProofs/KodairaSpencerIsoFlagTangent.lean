@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Grothendie
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerMatrixUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerMatrixExists
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerTangentDifference
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniversalFirstOrderDeformation
 
 open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 open AlgebraicGeometry CategoryTheory

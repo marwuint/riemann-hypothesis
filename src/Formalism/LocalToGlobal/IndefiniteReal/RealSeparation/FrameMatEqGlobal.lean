@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.IndefiniteReal.RealSeparation.UnfDefs
 import Formalism.LocalToGlobal.IndefiniteReal.RealSeparation.BesPerSt
-import Formalism.LocalToGlobal.BesselHermitianTheta.TiedSmooth
 import Formalism.LocalToGlobal.IndefiniteReal.OrthogonalComplementCharacterisation
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.SobSympl
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.SymplOHZeroRight

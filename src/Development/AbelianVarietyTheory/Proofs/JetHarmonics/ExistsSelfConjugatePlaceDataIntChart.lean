@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.IsSelfOf
 import Development.AbelianVarietyTheory.Definitions.Jets.TwoPlaces
 import Formalism.LocalToGlobal.CharacterGerms.RowTieLab
-import Formalism.LocalToGlobal.CharacterGerms.RowTieTop
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsMatrixStandardToHyperbolicInertPlace
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CmEmbeddingsIntegralAndDistinctModMaximalStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsIdempotentFrobeniusOrbitUnramified

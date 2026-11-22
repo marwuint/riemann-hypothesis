@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdEndomorphismPowLevelComponentEqOneOfRelation
-import Development.AbelianVarietyTheory.Definitions.Divisors.MapSmulOfIsHausdorff
 
 open GlobalTheory.HTLat
 set_option maxHeartbeats 1000000 in

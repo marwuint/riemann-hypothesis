@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MinorRatioRegularOfInvertible
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordTieCompEquiv
 
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.FlagBun
 set_option maxHeartbeats 1000000 in

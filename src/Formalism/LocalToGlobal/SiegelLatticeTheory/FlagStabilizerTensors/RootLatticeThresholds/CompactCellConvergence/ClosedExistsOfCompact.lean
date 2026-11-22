@@ -1,7 +1,5 @@
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.FlagStabClosed
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.SectionDecomposition
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.StabilizerSplit
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentCoordinatesMeasurePreserving
 
 open MeasureTheory Matrix
 open scoped ENNReal

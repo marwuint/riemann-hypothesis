@@ -1,9 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.IsThRule
 import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
-import Formalism.LocalToGlobal.ProjectiveLattices.IsCombAt
-import Formalism.LocalToGlobal.ProjectiveLattices.RowDeg
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ThetaVV
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.InvariantFunctionsDescend
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.StalkMapInjectiveOfFlat

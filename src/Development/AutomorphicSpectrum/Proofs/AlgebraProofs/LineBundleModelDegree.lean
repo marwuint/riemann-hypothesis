@@ -5,7 +5,6 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsB
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.SameGenericSymm
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ClassListMapDomainPerm
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChernClassOnFlagPair
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Inhabit
 
 open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.Heights.NumbersDVR
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)

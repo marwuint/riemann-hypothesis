@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechGluingOfKodaira
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslateUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentBasisTranslateCoefficientsZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompProdOfFn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LePreimageOfClosedPoint
 open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LogKS Formalism.L2.Pj
 open MonoidalCategory CartesianMonoidalCategory MonObj

@@ -9,16 +9,13 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.LatticeIndexAndWeightTheory
 import Formalism.SharpRestriction.CuspSpanNormBounds.UniformConstantsAndStatements
 import Formalism.SharpRestriction.CuspSpanNormBounds.PlaceDegreeData
 import Formalism.SharpRestriction.CuspSpanNormBounds.OnePlaceEstimates
-import Formalism.SharpRestriction.CuspSpanNormBounds.CayleySignature
 import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusProjectedBounds
 import Formalism.SharpRestriction.CuspSpanNormBounds.AdmissibleBoundsFromSource
 import Formalism.SharpRestriction.CuspSpanNormBounds.PExtra
-import Formalism.SharpRestriction.CuspSpanNormBounds.SBridge
 import Formalism.YangianSpanCharacter.YangianRelationFirst
 import Formalism.FormalDegreeBessel.FinalG
 import Formalism.FormalDegreeBessel.FinalDS
 import Formalism.FormalDegreeBessel.FinalIO
-import Formalism.RealPlaceAnalysis.FinalF
 
 noncomputable section
 

@@ -1,8 +1,6 @@
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsZetaTW
-import Development.AbelianVarietyTheory.Definitions.Foundations.EeProd
 import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsEqSubOfMemCob
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsLamOfLSmulIff
-import Development.AbelianVarietyTheory.Definitions.Foundations.PieceEqPieceT
 import Development.AbelianVarietyTheory.Definitions.Foundations.AdmissibleHodgeTateZetaClassParams
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.Thcocd
 

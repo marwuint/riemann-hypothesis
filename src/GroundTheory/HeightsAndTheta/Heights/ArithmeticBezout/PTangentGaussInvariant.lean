@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsTangentGaussInvariant
-import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeIntegralMass
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights

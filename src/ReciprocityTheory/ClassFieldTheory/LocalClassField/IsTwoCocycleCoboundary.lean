@@ -1,6 +1,5 @@
 import Mathlib
 import ReciprocityTheory.GroupCohomology.InfRes
-import ReciprocityTheory.GroupCohomology.ComapZeroCoboundariesEqBot
 import ReciprocityTheory.GroupCohomology.PartialProdCoe
 
 namespace ReciprocityTheory.DiscreteGroups.LocalClassField.Deg2

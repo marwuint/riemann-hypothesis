@@ -1,5 +1,4 @@
 import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicContinuation.GaussianPlaneIntegrals.AssemblyAlt
-import Formalism.RealPlaceAnalysis.InstMeasurableSpaceUJ
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.TotalDegreeLinear
 
 noncomputable section

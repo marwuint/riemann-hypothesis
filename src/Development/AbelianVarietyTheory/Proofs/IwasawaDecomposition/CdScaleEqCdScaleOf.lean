@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.PairVal
-import Formalism.LocalRingCardinality.DataTies
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CdScaleIsTrueScale
 
 open Formalism.BasicNotions

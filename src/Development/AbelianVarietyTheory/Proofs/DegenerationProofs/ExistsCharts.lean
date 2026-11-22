@@ -2,9 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Definitions.Degenerations.HomExtSt
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SpMapComp
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsGrpPullbackOfCommute
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PushEquivSymmLeft
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFormEqOne
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ModNOfDvdModulus
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFiniteEtaleLatticeTorsionHom

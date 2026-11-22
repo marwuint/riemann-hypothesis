@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.DualFockLinear.ValLeOfVK
-import Formalism.SharpRestriction.GrowthBounds.FlipOneThree
 import Formalism.SharpRestriction.GrowthBounds.GLWeightTheory
 
 noncomputable section

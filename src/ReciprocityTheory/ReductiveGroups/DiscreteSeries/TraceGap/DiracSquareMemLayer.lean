@@ -1,6 +1,4 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.PropsKfin
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.RigidityTheorems.MultOne
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.CasimirGapAtNoncompactWeight
 
 noncomputable section
 

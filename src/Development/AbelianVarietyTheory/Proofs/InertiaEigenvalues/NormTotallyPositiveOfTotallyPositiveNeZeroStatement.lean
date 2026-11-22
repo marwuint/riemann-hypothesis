@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormTotallyPositiveOfTotallyPositiveNeZero
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocUnitApply
 
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in

@@ -3,7 +3,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.F
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.RTwist
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.GelfandKazhdanReal
 import GroundTheory.AutomorphicForms.FourierWhittaker
-import GroundTheory.GlobalFields.TateThesis.AdelicCharLocal
 
 noncomputable section
 

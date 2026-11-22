@@ -1,7 +1,5 @@
 import ReciprocityTheory.AnalyticForms.PotentialTheory.IsPotentialPullbackStatement
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LintegralImageEqLintegralNormSqDetMul
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.MdiscSt
-import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.MdiscPos
 
 namespace ReciprocityTheory.AnForm.M
 

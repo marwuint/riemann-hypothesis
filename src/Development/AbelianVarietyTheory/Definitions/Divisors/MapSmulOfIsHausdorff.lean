@@ -4,7 +4,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Ros
 import Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.IsLocallyConstantRankAtStalkEigenSub
 import Development.AbelianVarietyTheory.Definitions.Divisors.KerIdealCompOfSurjective
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsWeilFunction
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.WeilIsGrpPullbackIff
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 
 set_option autoImplicit false

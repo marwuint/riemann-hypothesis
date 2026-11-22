@@ -1,12 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.GlobalTheory.GL4.PColSlope
-import Formalism.SharpRestriction.GlobalSchurBounds.FlipTwoThree
-import Formalism.LocalToGlobal.HermitianColumns.ColsHerm
-import Formalism.LocalToGlobal.HermitianForms.FormsTied
-import Formalism.GradedWeylDivisibility.StatementE
-import Formalism.SuccessiveMinima.StatementMink
-import Formalism.SharpRestriction.GlobalSchurBounds.IntegrableOfContinuousCircleMeasure
-import Formalism.LocalToGlobal.Columns.CoefficientsModP.WeTransposeWordTransposeWord
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.UpperSlopeOfMaximalConstant
 
 open Module NumberField

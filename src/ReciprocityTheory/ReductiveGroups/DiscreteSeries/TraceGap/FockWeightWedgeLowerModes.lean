@@ -1,8 +1,6 @@
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TraceGap.ExistsNonzeroPhysicalHighestWeightVectorTensFock
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SchSharpA
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.CsqDdPt
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.KernelLemma
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.PRVComponents
 
 noncomputable section
 

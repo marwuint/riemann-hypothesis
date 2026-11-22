@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsLieBase
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsVarietyFlagRefinementBundleOfGoodModel
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStalkFactor
 
 set_option autoImplicit false
 

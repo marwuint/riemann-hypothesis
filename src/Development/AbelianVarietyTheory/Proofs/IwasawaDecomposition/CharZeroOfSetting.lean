@@ -2,13 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FrobOrderSpec
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvalRepsSurjective
 import Formalism.LocalToGlobal.GlobalTheory.CoordinateLengths.DuCount
-import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.DeterminantTwistRowActionMem
 import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.ClsRec
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.SelfDualAtColLevel
-import Formalism.LocalToGlobal.GroupLattices.TrivialTransfer.GramTotallyDefinite
-import Formalism.PeriodIntegrals.AdmissibleModel.WeylDim
-import Formalism.LocalToGlobal.GroupLattices.FockModels.Cartan
-import Formalism.LocalRingCardinality.SpanPowerMembership.NZLevB
 import Formalism.SharpRestriction.GrowthBounds.ScaleEdges.WeylDimShift
 import Formalism.SharpRestriction.GrowthBounds.DualFockLinear.TestSideCounting
 

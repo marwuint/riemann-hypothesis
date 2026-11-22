@@ -1,6 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ParamCommF
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.DirectionsInParabolic
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.SymmetricScalarBlockMatrixTranspose
 
 open Matrix Filter Topology
 open scoped ComplexConjugate ContDiff

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsIsDeepOfField
-import Development.AbelianVarietyTheory.Definitions.Divisors.MemLevEigenIffTransl
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsLocalRingTrivSqZeroExt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RightTranslationLiftEqLevelMoveUnitConst
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MovedSectionReadingEqMovedFrameReading
@@ -8,7 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HostHalfRootAddConj
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelBlock
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSecRdUNeZero
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MulVecMemIdealLatHat
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MemCuspFormsOfMultipleRationalIsometryMove
 
 set_option autoImplicit false
 

@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.FdOfCharts
 import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.InvarianceRepresentativesLaw
-import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.InvarianceRepresentativesTrivial
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NatCastMemOfPlace
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemHomLat
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.L2.G.Pend Matrix GlobalTheory.VolAt

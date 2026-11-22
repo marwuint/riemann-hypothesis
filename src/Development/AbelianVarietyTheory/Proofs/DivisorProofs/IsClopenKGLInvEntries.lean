@@ -3,7 +3,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.R
 import GroundTheory.AutomorphicForms.ReductionSplitting
 import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaPair
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SmoothRepresentationsGL.ExistsCombComb
-import GroundTheory.AutomorphicForms.MacdonaldWhittakerHecke
 
 noncomputable section
 

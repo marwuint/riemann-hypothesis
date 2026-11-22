@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChLApply
-import Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableAndT2LocalField
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData
 
 noncomputable section

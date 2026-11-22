@@ -13,7 +13,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.EvlTru
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsTangentEquiv
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FibLatPreSubSpanSubLe
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsExtendResidue
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsProperToroidalModelStructureMap
 
 set_option autoImplicit false
 

@@ -1,9 +1,7 @@
 import Formalism.LocalToGlobal.GroupLattices.LevelGatherings.JPMemAwayP
 import Formalism.LocalToGlobal.GroupLattices.LevelGatherings.RepTie
-import Formalism.LocalToGlobal.GroupLattices.LevelGatherings.FiniteClassSetOfLe
 import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.ClsFib
 import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.ClsLat
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Afsplit
 
 noncomputable section
 

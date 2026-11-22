@@ -1,5 +1,4 @@
 import Formalism.WachLatticeTwists.CharacterSplitJumps.Statement
-import Formalism.WachLatticeTwists.CoprimeLiftBounds.StatBridgeChiOne
 
 open Finset Classical
 

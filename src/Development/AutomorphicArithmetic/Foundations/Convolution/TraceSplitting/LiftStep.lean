@@ -5,8 +5,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.PowTwist
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.CarryLift
 import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ExTwist
-import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ExCusp
-import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.LiftPow
 
 open MeasureTheory NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep UpperTheory.V.Published UpperTheory.CBC PositivityTheory.RgJS
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.T

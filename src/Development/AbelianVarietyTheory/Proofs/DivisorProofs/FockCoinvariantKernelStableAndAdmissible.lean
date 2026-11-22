@@ -4,8 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HoweHighestWeightSu
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHarmonicsSupCoinvariantsEqTop
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockActionsLieRationalWeightsCommute
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockActionIsLocallyBlockUnitary
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHarmonicsGradedCompactStable
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemTensSpanOfKilled
 
 noncomputable section
 

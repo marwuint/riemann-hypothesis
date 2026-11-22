@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.SpectralTiesReal
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.InstExists
-import Formalism.LocalToGlobal.GroupLattices.DownNaturalLevelZero
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RefilledStagesRecord
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LevelMatchIff
 

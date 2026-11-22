@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalDescent.SphericalTwists.RowProps
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsUnitaryTwistAbsPow
 
 theorem UpperTheory.V.Z.Desc.W.satTw :
     UpperTheory.V.Z.Desc.W.SatTw := by

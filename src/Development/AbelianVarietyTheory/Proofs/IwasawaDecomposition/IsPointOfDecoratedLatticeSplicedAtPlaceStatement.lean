@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPointOfDecoratedLatticeSplicedAtPlace
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LatAtLattice
-import Formalism.LocalToGlobal.Columns.TiedUpDnA
-import Formalism.LocalToGlobal.Columns.TiedUpDnLoc
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.HermitianLatticesTheory Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.UG.P Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC Matrix
 set_option maxHeartbeats 1000000 in

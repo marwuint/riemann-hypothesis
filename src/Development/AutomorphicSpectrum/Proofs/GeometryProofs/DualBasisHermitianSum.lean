@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCMFrame
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqSesquilinearSkewHermitian
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 
 noncomputable section
 

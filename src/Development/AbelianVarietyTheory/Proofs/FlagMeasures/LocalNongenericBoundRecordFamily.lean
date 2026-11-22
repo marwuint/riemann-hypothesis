@@ -2,10 +2,6 @@ import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.NonGenericAndKTwoTheorems
 import Formalism.SharpRestriction.CuspSpanNormBounds.UniformConstantsAndStatements
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetAmplitudeBoundLocal
-import Formalism.SharpRestriction.CuspSpanNormBounds.IsTermOver
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GgNone
 
 open Formalism.BasicNotions Formalism.MainNotions
 

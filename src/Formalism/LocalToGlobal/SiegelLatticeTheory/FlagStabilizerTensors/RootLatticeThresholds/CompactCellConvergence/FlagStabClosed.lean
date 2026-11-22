@@ -1,9 +1,5 @@
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.OrbitIdentity
-import Formalism.HermitianCurvature.FiniteOrderIntersectionInSmooth
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.FlagSpanVanishing
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ZhatSectionExists
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianFormFlagVector
-import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds
 
 open MeasureTheory Matrix
 open scoped ENNReal

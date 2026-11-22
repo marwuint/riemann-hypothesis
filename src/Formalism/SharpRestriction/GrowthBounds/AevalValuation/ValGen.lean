@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.AevalValuation.PlDefs
-import Formalism.SharpRestriction.GrowthBounds.TwistedSubstitution.TwistedMonomialFiltration.TwistSubXMemSupported
 import Formalism.SharpRestriction.GrowthBounds.PolynomialLevels.LowestWeightNonposOffSet
 
 noncomputable section

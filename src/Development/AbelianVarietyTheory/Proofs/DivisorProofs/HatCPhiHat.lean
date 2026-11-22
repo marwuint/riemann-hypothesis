@@ -3,7 +3,6 @@ import Formalism.LocalToGlobal.IndefiniteReal.OneMapT
 import Formalism.LocalToGlobal.IndefiniteReal.FWExist
 import Development.AbelianVarietyTheory.Definitions.Divisors.MarkAd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilDatumOfSplittingCharacters
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnitaryOnTheta
 
 open NumberField Matrix IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD

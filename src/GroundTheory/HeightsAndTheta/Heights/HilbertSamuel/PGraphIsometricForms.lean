@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsSemilocRing
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGraphIsometric
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGraphChangeOfModel
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsGraphIsometricForms
 set_option maxSynthPendingDepth 1
 
 noncomputable section

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteTypeFieldStrictlyHenselian
-import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 
 open GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in

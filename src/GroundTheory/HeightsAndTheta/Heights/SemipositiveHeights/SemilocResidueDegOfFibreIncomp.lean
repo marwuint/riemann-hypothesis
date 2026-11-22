@@ -12,10 +12,7 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.PPFFibreSum
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PPFFibreBij
 import GroundTheory.HeightsAndTheta.Heights.Intersections.EqZeroOfEventuallyEval
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PRatioAlgDep
-import GroundTheory.HeightsAndTheta.Heights.Intersections.LeviOfRealSmulRight
 import GroundTheory.HeightsAndTheta.Heights.Intersections.MixedDiscEqZeroOfMulVec
-import GroundTheory.HeightsAndTheta.Heights.Intersections.IsMultiProjPrimeImageZ
-import GroundTheory.HeightsAndTheta.Heights.Intersections.TableDegreeThreeBase
 import GroundTheory.HeightsAndTheta.Heights.Intersections.IsMultiHomogRenameCoordPow
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PConsequences
 import GroundTheory.HeightsAndTheta.Heights.Intersections.IsHorizontalImageZIff
@@ -30,17 +27,10 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.ExistsSheetPullW
 import GroundTheory.HeightsAndTheta.Heights.Intersections.Assembly
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ProjDeg
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PFnDegRelDeg
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Assembly
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDivPushForward
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PContractRelDimLe
 import GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.NumericalSegre
 import GroundTheory.HeightsAndTheta.Heights.LocalFiniteness.NumbersDVRC3ResidualContractionComponent
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ContractMixedField
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ImageArithClosed
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.GeoNum
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ExistsUnique
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ProjContract
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.Multilin
 import GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.FibreDim
 import GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.PtsIntegrable
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PSemilocMaxIdeals
@@ -48,8 +38,6 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.PSemilocResidueDeg
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PSemilocResidueFibreDim
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PSemilocResidueAdjoin
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PSemilocResidueFrac
-import GroundTheory.HeightsAndTheta.Heights.Intersections.PFibreDivSupp
-import GroundTheory.HeightsAndTheta.Heights.Intersections.PFibreOverFinite
 
 set_option maxSynthPendingDepth 1
 

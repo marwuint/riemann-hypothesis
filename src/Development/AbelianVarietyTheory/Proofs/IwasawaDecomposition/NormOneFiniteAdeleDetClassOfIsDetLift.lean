@@ -2,11 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FixedVectorEqOfStandardData
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsTwIffCanonEq
 import Formalism.LocalToGlobal.HilbertRowConditions.TiedEMt
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.H90USurjective
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ValDetSubOneLt
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DetMulConjDet
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RelDetAdelicOfPinned
-import Formalism.LocalToGlobal.Columns.RecLevelTop
 
 noncomputable section
 

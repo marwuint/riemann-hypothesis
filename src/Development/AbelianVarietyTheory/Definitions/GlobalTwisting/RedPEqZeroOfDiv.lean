@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
-import Formalism.LocalToGlobal.Columns.BaseLemmas
 import Formalism.LocalToGlobal.KernelLattices.ThDistC
 
 open NumberField IsDedekindDomain Module

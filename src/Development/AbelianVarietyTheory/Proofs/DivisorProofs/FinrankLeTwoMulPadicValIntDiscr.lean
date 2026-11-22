@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.MemPass
 import Development.AbelianVarietyTheory.Definitions.Divisors.JetAnalytic
-import Development.AbelianVarietyTheory.Definitions.Divisors.HasLevelStd
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModDefs
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.VpBounds
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.PadicValNatAbsNormEqZero
 
 open NumberField IsDedekindDomain UniqueFactorizationMonoid

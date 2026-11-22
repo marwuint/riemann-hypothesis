@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueIsConjAt
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCyclicOfFiniteQuotient
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GramUnimodular
-import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsAHEqOfMemRatPts
 
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU

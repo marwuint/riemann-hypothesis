@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.HeckeJ
 import Formalism.LocalToGlobal.IndefiniteReal.FWExist
-import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
 import Formalism.LocalToGlobal.IndefiniteReal.OneMapEq
 
 noncomputable section

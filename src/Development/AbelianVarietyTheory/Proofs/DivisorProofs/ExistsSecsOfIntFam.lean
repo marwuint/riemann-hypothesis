@@ -1,6 +1,4 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsLeadOfUnif
-import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
-import Development.AbelianVarietyTheory.Definitions.Uniformization.SeriesFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsTailRest
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMapThetaExpansionAllTraits

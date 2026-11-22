@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsSeparatedOfIsQProjOver
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.LinCombTrivG
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TestObj
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.NotGoodClassZeroSucc
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsProperZeroTriple

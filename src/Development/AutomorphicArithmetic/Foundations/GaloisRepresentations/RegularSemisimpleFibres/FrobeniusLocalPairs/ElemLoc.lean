@@ -6,7 +6,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Regul
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.FrobeniusLocalPairs.NormDiag
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.FrobeniusLocalPairs.StrictMap
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.FrobeniusLocalPairs.VolRatio
-import Development.AutomorphicArithmetic.Foundations.Convolution.TwistedLocalOrbits.BallSub
 
 open UpperTheory.Gal.InertialTypesAlt.L in
 theorem UpperTheory.Gal.InertialTypesAlt.L.elemLoc :

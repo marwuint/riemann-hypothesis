@@ -5,7 +5,6 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsB
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.SameGenericSymm
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartBundleExtensionComparison
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartBundleIntersectionSymmetry
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DvrBundleStatementA
 open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.Heights.NumbersDVR
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg mcIdeal chartMon joinCoord bcCoord pullDeg liftVar fnField ck rootNum SameGeneric LatLE IsPull IsPullBC IsSubQuot QuotIso IsFrobPres FlagModel modelDeg)

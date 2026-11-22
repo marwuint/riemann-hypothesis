@@ -5,9 +5,6 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridge
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRed
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AdjoinCoordsArithVar
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularValuesInAdjoinedField
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StandardSmoothChartOfNonzero
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HomogeneousFormNonvanishingPoint
 
 noncomputable section
 

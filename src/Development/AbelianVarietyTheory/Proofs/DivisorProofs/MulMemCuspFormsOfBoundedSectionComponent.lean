@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ComponentMassSum
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KchMul
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.FibreFramesOnModels
-import Formalism.LocalToGlobal.ProjectiveLattices.CuspidalL2Subspace
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUnramPtsDefinite
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSecReadingDecreasingIntegerExponents
 

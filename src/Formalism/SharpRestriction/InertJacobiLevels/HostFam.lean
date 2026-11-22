@@ -1,6 +1,5 @@
 import Formalism.LocalRingCardinality.DataHost
 import Formalism.FrobeniusOrbits.HostCorollaries
-import Formalism.TameInertiaTowers.TowerFieldFoundations
 import Formalism.CyclotomicNorms.StatementI
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.NonemptyFieldAxiomsCyclicPow
 

@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.FamDefs
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.ProdFormulaE
-import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilySeparationBound
 import Formalism.SharpRestriction.CuspSpanNormBounds.BlockEstimateWords
 
 noncomputable section

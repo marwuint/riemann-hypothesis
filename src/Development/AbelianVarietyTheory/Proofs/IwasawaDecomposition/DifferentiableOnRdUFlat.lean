@@ -8,7 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntege
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnfoldingSectionsFiniteType
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsEvenSecEvRNeZero
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyFamOne
-import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDomainAndIsIntegrallyClosedAtPrimeOfSmoothOfCo
 
 set_option autoImplicit false
 

@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HermitianLocalisationAdelicPointLatticeEq
-import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.IsOrthCo
-import Formalism.LocalToGlobal.Columns.RecLevel
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AlgebraMapApply
 
 open NumberField IsDedekindDomain Formalism.UG Formalism.L2.PairingIndexBounds.F
 open scoped TensorProduct

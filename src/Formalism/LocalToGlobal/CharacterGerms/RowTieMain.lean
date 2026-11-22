@@ -7,9 +7,7 @@ import Formalism.LocalToGlobal.CharacterGerms.RowTiePHStab
 import Formalism.LocalToGlobal.CharacterGerms.CoeffSingleSubstOfLowDegree
 import Formalism.LocalToGlobal.CharacterGerms.RowTiePCEqEx
 import Formalism.LocalToGlobal.CharacterGerms.IndependenceBoundRaw
-import Formalism.LocalToGlobal.CharacterGerms.RowTieAxes
 import Formalism.LocalToGlobal.CharacterGerms.RankMaximalOfNondegenerate
-import Formalism.LocalToGlobal.CharacterGerms.RowTieTop
 import Formalism.LocalToGlobal.CharacterGerms.RowTieChar
 import Formalism.LocalToGlobal.CharacterGerms.RowTieLab
 import Formalism.LocalToGlobal.CharacterGerms.RowTieDesc
@@ -18,12 +16,9 @@ import Formalism.LocalToGlobal.CharacterGerms.RowTiePNvalEqSt
 import Formalism.LocalToGlobal.CharacterGerms.RowTiePDescSpanFinal
 import Formalism.LocalToGlobal.CharacterGerms.RowTieValK
 import Formalism.LocalToGlobal.CharacterGerms.RowTiePPTDone
-import Formalism.LocalToGlobal.CharacterGerms.EndomorphismLimitIntegral
 import Formalism.LocalToGlobal.CharacterGerms.RowTieP_TCoord
 import Formalism.LocalToGlobal.CharacterGerms.CharacterHypothesisUnramified
 import Formalism.LocalToGlobal.CharacterGerms.CoeffPowCharFrobenius
-import Formalism.LocalToGlobal.CharacterGerms.RowTiePGerm
-import Formalism.DropLevelBounds.ConstantCoeffVanishing.UbintConstantCoeffEqZero
 import Formalism.LocalToGlobal.CharacterGerms.CoeffFirstPairingLinear
 import Formalism.LocalToGlobal.CharacterGerms.RankMaximalSelfUnconditional
 

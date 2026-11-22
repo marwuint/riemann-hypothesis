@@ -1,8 +1,6 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.WeightProductGermIndep
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.OneSubPowLe
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.IsCompactRoots
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.StandardPairingDecay
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.PBTAsm
 
 namespace Formalism.FourierDecayAlt.P.GermRateSplit
 

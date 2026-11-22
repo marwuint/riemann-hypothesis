@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.ProjectiveLattices.RdOrbIntOfLatZ
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SublatticeCoefficients
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowMeanContinuity
 
 set_option autoImplicit false
 

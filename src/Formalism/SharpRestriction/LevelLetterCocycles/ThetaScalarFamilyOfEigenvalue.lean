@@ -1,9 +1,7 @@
 import Formalism.SharpRestriction.GlobalTheoremInputs
-import Formalism.SharpRestriction.LevelLetterCocycles.LocsCoverTw
 import Formalism.SharpRestriction.LevelLetterCocycles.StatementFamilies.ExportFamilies
 import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Formalism.SharpRestriction.CuspSpanNormBounds.PlaceDegreeData
-import Formalism.SharpRestriction.ParConsts
 import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
 import Formalism.SharpRestriction.Divisibility.CanonicalTranslateJets
 

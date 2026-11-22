@@ -4,9 +4,6 @@ import GroundTheory.PAdicHodge.UntiltApprox
 import GroundTheory.PAdicHodge.UntiltGalois
 import GroundTheory.PAdicHodge.UntiltGaloisCorr
 import GroundTheory.PAdicHodge.CompletedAlgClosure
-import GroundTheory.PAdicHodge.PerfectoidField
-import GroundTheory.PAdicHodge.PerfectoidCriterion
-import GroundTheory.PAdicHodge.TiltAlgClosed
 
 set_option maxSynthPendingDepth 1
 

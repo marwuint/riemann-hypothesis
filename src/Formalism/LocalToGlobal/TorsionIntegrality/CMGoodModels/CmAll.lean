@@ -6,11 +6,9 @@ import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.RedStatus
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModJInt
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModGDefs
-import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.Interface
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModGBasic
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModFixJ
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModInertKur
-import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.FgClose
 
 namespace Formalism.L2.Th1.CM
 

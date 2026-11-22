@@ -6,7 +6,6 @@ import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
 import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
 

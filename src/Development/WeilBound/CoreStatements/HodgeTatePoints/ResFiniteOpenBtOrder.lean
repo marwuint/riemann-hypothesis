@@ -4,12 +4,9 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateM
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderComapHom
-import GroundTheory.PAdicHodge.FiniteFlat
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BaseChangePointsCompat
 import Development.WeilBound.CoreStatements.HodgeTatePoints.TwhopfInd
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopf
-import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHens
-import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatBcPull
 
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar.BT ReciprocityTheory.ChartRestriction.G.Semi

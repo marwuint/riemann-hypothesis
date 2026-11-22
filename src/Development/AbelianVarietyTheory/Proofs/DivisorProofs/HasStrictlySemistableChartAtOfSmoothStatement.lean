@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasStrictlySemistableChartAtOfSmooth
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsStrictlySemistableIff
 
 open AlgebraicGeometry CategoryTheory
 set_option maxHeartbeats 1000000 in

@@ -14,7 +14,6 @@ import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.DvdOfCastDvd
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IsIntegralZpowOfPowEqOne
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.EmbEqOfInPsi
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WeightOnDatum
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 
 set_option autoImplicit false
 noncomputable section

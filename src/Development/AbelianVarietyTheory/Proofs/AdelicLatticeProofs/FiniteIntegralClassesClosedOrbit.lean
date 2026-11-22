@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRealTra
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.TensorSLOrbitMapProperOfIsClosed
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SiegelCover
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.BorelHarishChandra
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MatrixKroneckerPowerTensorActionAlgebra
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 

@@ -6,7 +6,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviStabilityRe
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRelationsReal
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SemisimpleClassificationReal
-import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.RealDescent.RealLeviDescent.LeviCommutantWordReduction
 
 namespace PositivityTheory.RgBcC.RealD
 

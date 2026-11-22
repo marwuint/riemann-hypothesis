@@ -1,10 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.CuspValueComparison
-import Formalism.CyclotomicNorms.StatementT
-import Formalism.LocalToGlobal.Divisibility.DefGroup
-import Formalism.LocalToGlobal.Divisibility.GoodPartHermitianSpec
-import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
-import Development.AbelianVarietyTheory.Definitions.Divisors.SplitDoublingNBlock
 
 noncomputable section
 

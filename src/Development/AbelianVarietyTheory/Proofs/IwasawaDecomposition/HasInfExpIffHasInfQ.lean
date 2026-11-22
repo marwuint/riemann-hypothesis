@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsSplittingCharacterSelf
-import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TendstoInfMulProd
 
 noncomputable section
 

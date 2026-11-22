@@ -1,10 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNeZeroClosureEtaleAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsorsTrivial
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OriginIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosureFiniteEtale
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointAtZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodIffEtaleAt
 
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in

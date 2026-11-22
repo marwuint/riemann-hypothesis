@@ -4,7 +4,6 @@ import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
 import Formalism.LocalToGlobal.JointCharacters.LocEMulLocE
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AdelicDataRowMeasureScaleTrivialTuple
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.IntegralTransport
-import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.WeilIdempotents
 
 noncomputable section
 

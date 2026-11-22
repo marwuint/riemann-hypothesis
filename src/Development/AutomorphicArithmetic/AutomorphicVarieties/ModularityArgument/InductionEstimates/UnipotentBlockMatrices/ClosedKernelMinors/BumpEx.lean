@@ -1,7 +1,5 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.InductionEstimates.UnipotentBlockMatrices.UnipotentBlockPairs
 import GroundTheory.AutomorphicForms.L2LocalComponents.ArchBump
-import GroundTheory.AutomorphicForms.GKModules.KernelCalculus
-import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SmoothingFinite
 
 open MeasureTheory NumberField Set Filter Topology
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace

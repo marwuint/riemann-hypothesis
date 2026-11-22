@@ -4,7 +4,6 @@ import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PSegreChartDim
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PSectionComponents
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterDivSupp
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeB
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRedF
 set_option maxSynthPendingDepth 1
 
 noncomputable section

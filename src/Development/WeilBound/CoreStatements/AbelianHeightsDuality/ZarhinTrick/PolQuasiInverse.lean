@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.IsPolarisationOfRelAmple
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 
 set_option autoImplicit false
 

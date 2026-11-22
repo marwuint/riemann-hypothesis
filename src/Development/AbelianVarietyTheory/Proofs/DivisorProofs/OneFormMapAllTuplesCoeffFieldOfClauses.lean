@@ -2,15 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Formalism.LocalToGlobal.IndefiniteReal.OneMapT
 import Formalism.LocalToGlobal.IndefiniteReal.OneMapEq
-import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
 import Formalism.LocalToGlobal.IndefiniteReal.FWExist
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.TupPrimeEmpty
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftsSpanOfOnto
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneMapOfOfPtIdent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReferenceTupleLiftsSpanAllTuples
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CovarianceAtConstantXi
-import Formalism.LocalToGlobal.IndefiniteReal.FWTie
-import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
 
 noncomputable section
 

@@ -1,11 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PointOfConditions
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
-import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CharacterChoiceData
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspidalGaloisUnramified
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ImportsBisRest
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
 set_option synthInstance.maxHeartbeats 200000
 

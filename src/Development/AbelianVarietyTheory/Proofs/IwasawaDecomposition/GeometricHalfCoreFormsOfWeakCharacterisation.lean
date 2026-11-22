@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Forms
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GeometricHalfCoreFormsUniformisationIntegral
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EventuallyDefiniteSpacesStandardAndLarge
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PbEqOfPins
-import Formalism.LocalToGlobal.IndefiniteReal.LinksW
 
 noncomputable section
 

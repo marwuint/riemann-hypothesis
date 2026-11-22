@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsInternalStableDecompositionDescendsToSubfi
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MapMulVecMemOfMemSpan
 
 open Formalism.MainNotions Formalism.MainNotions.N GlobalTheory.SplitField
 set_option maxHeartbeats 1000000 in

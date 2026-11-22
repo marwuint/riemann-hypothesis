@@ -9,7 +9,6 @@ import Formalism.LatticeSlopes.LatticeSlopesProofs.DegQuot
 import Formalism.LatticeSlopes.LatticeSlopesProofs.SaturationProperties
 import Formalism.LatticeSlopes.LatticeSlopesProofs.ShortVector
 import Formalism.LatticeSlopes.LatticeSlopesProofs.FiniteSaturated
-import Formalism.LatticeSlopes.LatticeSlopesProofs.MuMaxAttained
 import Formalism.LatticeSlopes.LatticeSlopesProofs.MuMaxLeMin
 import Formalism.LatticeSlopes.LatticeSlopesProofs.OrthSum
 

@@ -2,7 +2,6 @@ import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.Di
 import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CayleyHamiltonStatement
 import Mathlib
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantTensor
 
 noncomputable section
 

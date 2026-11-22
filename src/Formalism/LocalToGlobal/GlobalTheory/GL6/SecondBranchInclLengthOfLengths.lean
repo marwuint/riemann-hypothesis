@@ -6,12 +6,8 @@ import Formalism.LocalToGlobal.Columns.SliceIntegralDeltaNeBot
 import Formalism.LocalToGlobal.GlobalTheory.GL6.ValuationClassTranslateMem
 import Formalism.LocalToGlobal.GlobalTheory.GL6.CoordMapInjective
 import Formalism.LocalToGlobal.GlobalTheory.GL6.DiamondPreservesRationalFormZero
-import Formalism.LocalToGlobal.GlobalTheory.GL6.AdelicFunctionRightTranslateDiamond
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AfsplitB
 import Formalism.LocalToGlobal.GlobalTheory.GL6.AdmissibleOfSplitAndRoundTrips
 import Formalism.LocalToGlobal.GlobalTheory.GL6.PSplitT
-import Formalism.LocalToGlobal.GlobalTheory.GL6.LatticeInclusionFamilyOf
-import Formalism.LocalToGlobal.GlobalTheory.GL6.BwAValIntegralNonneg
 
 noncomputable section
 

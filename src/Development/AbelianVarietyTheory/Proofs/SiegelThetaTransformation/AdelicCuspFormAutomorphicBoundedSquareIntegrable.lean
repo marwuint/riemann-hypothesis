@@ -4,7 +4,6 @@ import Formalism.LocalToGlobal.ProjectiveLattices.FamilyUniformisationBasePointO
 import Formalism.LocalToGlobal.ProjectiveLattices.ReadProofs
 import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
-import Formalism.LocalToGlobal.ProjectiveLattices.NormLaws
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFinPartMat
 import Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.LocClauseOfUnifPlaces
 

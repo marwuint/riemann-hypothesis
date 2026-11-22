@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsOrthogonalHermitianSubspace
-import Formalism.RealPlaceAnalysis.SmoothOnGVIff
-import Formalism.FormalDegreeBessel.StatementG
 
 open Matrix
 set_option maxHeartbeats 1000000 in

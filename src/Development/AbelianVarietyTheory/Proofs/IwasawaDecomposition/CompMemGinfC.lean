@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitFrames
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinPartAlgebraMap
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryEqRealMulFiniteSplit
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.SignatureConjugationInvariant
 
 noncomputable section
 

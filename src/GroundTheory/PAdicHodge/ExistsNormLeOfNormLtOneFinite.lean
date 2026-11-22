@@ -2,11 +2,7 @@ import Mathlib
 import GroundTheory.PAdicHodge.WAKummerEps
 import GroundTheory.PAdicHodge.FundamentalSeqLog
 import GroundTheory.PAdicHodge.FundamentalSeqBCris
-import GroundTheory.PAdicHodge.ACrisFrobFixed
 import GroundTheory.PAdicHodge.BCrisRegularFinal
-import GroundTheory.PAdicHodge.BdRInvariants
-import GroundTheory.PAdicHodge.AxLemma
-import GroundTheory.PAdicHodge.FundamentalSeqSurj
 
 set_option maxSynthPendingDepth 1
 

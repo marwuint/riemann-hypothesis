@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.IsOrthCo
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlob
 
 open NumberField IsDedekindDomain Formalism.L2.PairingIndexBounds.F
 open scoped TensorProduct

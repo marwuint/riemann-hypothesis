@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntertwinerFixesOfLocalVacuum
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsHeisTrivial
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumOpTransversal
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeisenbergIntertwiningSumsCompEqIndex
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormalizedHeisenbergIntertwinerComp

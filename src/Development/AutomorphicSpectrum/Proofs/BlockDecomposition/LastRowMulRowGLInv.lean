@@ -1,6 +1,5 @@
 import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaRigidity.ColumnConjugationMeasure
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAdelicGLHomeomorphInfiniteFinite
-import GroundTheory.GlobalFields.TateThesis.AdeleMeasure
 
 noncomputable section
 

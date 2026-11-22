@@ -5,7 +5,6 @@ import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.W
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LatOfLamSt
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
-import Formalism.LocalToGlobal.ProjectiveLattices.IsLevMove
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsPChartOfFramedPoint
 
 set_option autoImplicit false

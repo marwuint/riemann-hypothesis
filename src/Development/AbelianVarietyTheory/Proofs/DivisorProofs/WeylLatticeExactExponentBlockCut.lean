@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.PieriBlockIdeals.StatementE
-import Formalism.PieriBlockIdeals.TailInequalityEventually
 import Formalism.PieriBlockIdeals.PieriColumnMinors.ProdInitialMinorsMemDetSpan
 import Formalism.PieriBlockIdeals.PieriColumnMinors.HighestWeightMemWZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NablaSchur

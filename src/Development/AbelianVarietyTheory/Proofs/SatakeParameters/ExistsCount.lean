@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HtCard
 import Development.AutomorphicArithmetic.BlochKatoExtensions.PhtCmp
-import Formalism.SharpRestriction.LevelLetterCocycles.QuotientImageDivisibility.RkMultVOfNotJump
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompactGroupRepDefinedOverFiniteExtension
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsContinuousLadicGalRepModelFiniteExtHost
 import Formalism.LocalRingCardinality.SpanPowerMembership.NDLocA
 
 noncomputable section

@@ -4,7 +4,6 @@ import GroundTheory.AutomorphicForms.SupercuspidalCoefficients
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasureImageDoubleCoset
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasureImagePrincipalPosLtTop
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockIndexMonotone
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult
 

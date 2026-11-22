@@ -2,7 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.VolumeInputs
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.TowerOrigin
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SumFundCoMulSumIic
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.GenericComplexPoint
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootOriginWeightIdentity
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootOriginDegreeCount
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MemOpenOfForms

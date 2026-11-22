@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankBalancedIntBilinFormsEqOfFiniteIndex
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemBalBil
 
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PolFan
 set_option maxHeartbeats 1000000 in

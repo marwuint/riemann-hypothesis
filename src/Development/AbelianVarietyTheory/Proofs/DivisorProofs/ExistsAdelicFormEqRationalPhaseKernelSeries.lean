@@ -2,10 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceOfAt
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeltaPrimeIsAuxiliarySplitSquarefreeLevel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseTupleThetaSpanHasType
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKernelVectorMovedByRootsOfUnity
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemOfOrderDvd
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLevelDatumReferenceTupleSmallField
-import Formalism.LocalRingCardinality.ConjSqrtMinusD
 
 set_option autoImplicit false
 noncomputable section

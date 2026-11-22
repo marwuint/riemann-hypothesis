@@ -1,8 +1,5 @@
 import Formalism.SharpRestriction.CuspSpanNormBounds.ExpansionFromLemmaB
-import Formalism.SharpRestriction.CuspSpanNormBounds.TheoremBConstants
 import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeLitG
-import Formalism.SharpRestriction.CuspSpanNormBounds.DiagonalEntryIdentity
-import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeCSB
 import Formalism.SharpRestriction.CuspSpanNormBounds.BesselBoundFamilyOfDoubleCoset
 
 noncomputable section

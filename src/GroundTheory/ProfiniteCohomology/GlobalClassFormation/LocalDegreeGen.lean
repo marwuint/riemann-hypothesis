@@ -1,9 +1,7 @@
 import Mathlib
 import GroundTheory.GlobalFields.SplittingFromInequality.Decomposition
 import GroundTheory.GlobalFields.FirstInequality
-import GroundTheory.GlobalFields.SemilocalAlgebras.Finite
 import GroundTheory.GlobalFields.IdeleClassGroup.InvariantsGalois
-import GroundTheory.GlobalFields.Adele.BaseChange.FiniteMap
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.ProfCoh

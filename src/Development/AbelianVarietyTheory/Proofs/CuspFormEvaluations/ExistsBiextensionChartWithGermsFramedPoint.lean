@@ -3,7 +3,6 @@ import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ExpTie
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndBC
-import Formalism.LocalToGlobal.ProjectiveLattices.IsExpChart
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermCut
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermDPf

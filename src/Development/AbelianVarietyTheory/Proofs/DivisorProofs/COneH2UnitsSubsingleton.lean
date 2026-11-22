@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.TateCohomology.CohTrivial
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.C1FieldNormSurjective
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.COnePropertyFiniteExtension
 open IsLocalRing
 

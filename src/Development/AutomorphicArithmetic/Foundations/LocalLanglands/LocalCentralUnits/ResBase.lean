@@ -3,7 +3,6 @@ import Mathlib
 import Development.DiscreteGroups.GlobalIrreducibility.DzMatchCut
 import Development.DiscreteGroups.GlobalIrreducibility.DzGalRes
 import Development.DiscreteGroups.GlobalIrreducibility.DzTame
-import Development.DiscreteGroups.GlobalIrreducibility.DzNormV
 import Development.DiscreteGroups.GlobalIrreducibility.DzIneEq
 import Development.DiscreteGroups.GlobalIrreducibility.ExistsIneOfVEqOne
 import Development.DiscreteGroups.GlobalIrreducibility.ContinuousResI

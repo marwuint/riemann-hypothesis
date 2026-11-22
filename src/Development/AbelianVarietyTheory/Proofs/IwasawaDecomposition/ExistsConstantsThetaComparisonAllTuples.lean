@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JEvExists
-import Formalism.LocalToGlobal.UnitaryNorms.CharTied
-import Formalism.LocalRingCardinality.DataKap
 import Formalism.LocalToGlobal.ProjectiveLattices.HasDataCondition
 import Formalism.LocalToGlobal.ProjectiveLattices.RecCond
 import Formalism.LocalToGlobal.ProjectiveLattices.ParCanon
@@ -16,7 +14,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCharFi
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGeometricHalfRealisationGeometricAction
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitModulusConstantsEquivariantDictionary
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.EmbeddingsDifferOnInteger
 
 set_option autoImplicit false
 set_option synthInstance.maxHeartbeats 200000

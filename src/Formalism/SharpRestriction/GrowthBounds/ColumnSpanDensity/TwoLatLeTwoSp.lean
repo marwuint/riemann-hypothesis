@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.ColumnSpanDensity.DeltaPsiH
-import Formalism.SharpRestriction.GrowthBounds.LatticeSystems
 
 noncomputable section
 

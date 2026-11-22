@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.ExistsDualGen
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.GoodRDet
 
 noncomputable section
 

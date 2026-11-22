@@ -1,7 +1,5 @@
 import Formalism.StatementU
 import Formalism.ZetaNonvanishing.MeasurableGchi
-import Formalism.DefsOC
-import Formalism.ZetaRealNonvanish
 import Formalism.ZetaNonvanishing.MellinSgen
 
 open Complex MeasureTheory Set Filter Topology

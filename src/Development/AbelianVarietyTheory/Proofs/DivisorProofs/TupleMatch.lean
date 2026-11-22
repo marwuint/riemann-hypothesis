@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MixglobA
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NotMemOfStanding
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PolynomialRouteSubmodule
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegWLocalFunctionsThetaPureTensor
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMixModelB
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAwayUnitOfPowEqOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStandingTripleThetaSecond
 
 noncomputable section

@@ -2,12 +2,8 @@ import Mathlib
 import Development.AutomorphicArithmetic.CyclotomicBounds.RamifiedDiscriminants.LogQdLeRd
 import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComponentDegreesSumLeTotalDegree
-import Development.AbelianVarietyTheory.Definitions.Divisors.MulSmulIdemMem
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ComponentMassSum
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.VolPairExAndFinVol
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.FieldSizeMonotone
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 
 noncomputable section
 

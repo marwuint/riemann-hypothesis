@@ -1,5 +1,4 @@
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocVanishOf
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NilradicalChangeOfVariables
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MulVecMemUniRad
 
 open MeasureTheory

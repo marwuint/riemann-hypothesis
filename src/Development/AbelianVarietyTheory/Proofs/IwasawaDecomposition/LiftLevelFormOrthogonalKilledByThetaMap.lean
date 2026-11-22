@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StableIffCarrierEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalLiftFormsEqGoodForms
-import Formalism.LocalToGlobal.IndefiniteReal.PackageFromPrimitiveStatements
-import Formalism.LocalToGlobal.IndefiniteReal.LiftGoodPartComplexEqRangeFamily
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMtTieCoord
 
 noncomputable section

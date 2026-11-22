@@ -1,6 +1,5 @@
 import Formalism.HermitianCurvature.BigCellVanishingOfCommute
 import Formalism.HermitianCurvature.StatementJF
-import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
 import Formalism.FormalDegreeBessel.FinalBF
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RegularisedPairingViaPhase
 

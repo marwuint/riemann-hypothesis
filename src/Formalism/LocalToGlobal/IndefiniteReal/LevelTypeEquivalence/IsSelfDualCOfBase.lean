@@ -2,10 +2,6 @@ import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.KerDiag
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.TameAtOne
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.NatCastKPZero
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.SelfDualLatticeIsSelfDual
-import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
-import Formalism.LocalToGlobal.IndefiniteReal.WeilFull
-import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
-import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.ContinuousSplitInv
 
 noncomputable section
 

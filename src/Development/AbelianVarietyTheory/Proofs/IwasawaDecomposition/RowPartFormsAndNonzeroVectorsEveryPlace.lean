@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StableIffCarrierEq
-import Formalism.LocalToGlobal.IndefiniteReal.LinksStage
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinRepApply
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBaseLevelRowOfNonzeroGoodRowsPart
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNonzeroRationalLiftMemBasePart

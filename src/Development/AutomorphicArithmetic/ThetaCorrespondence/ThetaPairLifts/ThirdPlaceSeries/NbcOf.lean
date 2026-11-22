@@ -1,7 +1,6 @@
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InfOfNodupAlg
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRecTLocRecT
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
 set_option synthInstance.maxHeartbeats 200000
 

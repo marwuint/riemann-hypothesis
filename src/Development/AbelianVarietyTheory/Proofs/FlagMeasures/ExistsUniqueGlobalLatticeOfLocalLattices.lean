@@ -13,7 +13,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsIntegralOfIntegral
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NatCastIsUnitQuadraticCompletionAlmostAllStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsLatticeOfSqueezedBetweenNatMultiplesStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalLatticeLeCompletionGluedLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemSpanSingleIff
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
 open scoped Pointwise ENNReal Classical
 

@@ -3,15 +3,11 @@ import Formalism.LocalToGlobal.Columns.KernelArgumentHypothesisScalar
 import Formalism.LocalToGlobal.Columns.BtExistsSmulLeOfFg
 import Formalism.LocalToGlobal.Columns.AtTOwedV
 import Formalism.LocalToGlobal.Columns.AtTOwedC
-import Formalism.LocalToGlobal.Columns.LocWLemmas
 import Formalism.LocalToGlobal.Columns.ToHLatLemmas
 import Formalism.LocalToGlobal.Columns.Inputs
 import Formalism.GL3MeanSquares.HookFormulaTorsion.ConditionIffDualEqFunctional
-import Formalism.GL3MeanSquares.HookFormulaTorsion.FourierCommutesHeckeScalar
-import Formalism.GL3MeanSquares.HookFormulaTorsion.LengthQuotientBoundGeneral
 import Formalism.GL3MeanSquares.HookFormulaTorsion.LemmaCTwistRamified
 import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 
 open NumberField IsDedekindDomain Module
 

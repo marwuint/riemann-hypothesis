@@ -5,7 +5,6 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsEqMulMultOfUn
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionFamilyFlatTwist
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GreenCurrentIntegralFormula
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatHermUnitConstantStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsPlaceWeightConjInvariantStatement
 
 open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I2 GlobalTheory.CompanionTheory.Ar.Flat
 

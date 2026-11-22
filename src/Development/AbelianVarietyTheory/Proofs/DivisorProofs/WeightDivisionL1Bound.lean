@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DividedWeightUnique
-import Formalism.MeanHeightDescent.DivisionInequalityWithCovolume
-import Formalism.MeanHeightDescent.AverageDegreeBounds.GlobalBoundRefinements
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightEntriesSignsSizes
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightGapsBlockAndBar
 

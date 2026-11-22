@@ -1,6 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.DatumEquiv
 import Development.AbelianVarietyTheory.Definitions.Divisors.VdmSplit
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TraceGap.ExistsNonzeroPhysicalHighestWeightVectorTensFock
 
 section
 open GlobalTheory.PsCo.PcEG

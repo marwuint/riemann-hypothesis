@@ -10,7 +10,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnitOfSp
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LineOfSingleJump
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocChiEpsU
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisRepresentationHomFiniteDimensional
-import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain
 

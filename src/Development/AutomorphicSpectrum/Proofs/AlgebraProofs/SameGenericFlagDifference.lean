@@ -11,11 +11,8 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinRootPo
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinDivDiffExpansion
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PPairNumberExpansionIndependence
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.VerticalDivisorsCommute
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Statements
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagModelValueIndependent
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.InhabitBis
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagModelRootIndependent
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.InhabitAlt
 open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.Heights.NumbersDVR
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg mcIdeal chartMon joinCoord bcCoord pullDeg liftVar fnField ck rootNum SameGeneric LatLE IsPull IsPullBC IsSubQuot QuotIso IsFrobPres FlagModel modelDeg)

@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.GrowthBounds.WeilJacquetShalikaLaw
-import Formalism.SharpRestriction.ParConsts
 import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.EnInParamKProd
 import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.SubstitutionOfVariables
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsPlaceCofactorValuationLowerBound

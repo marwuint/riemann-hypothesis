@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IntegralBound
-import Formalism.HarderNarasimhan.StatementPl
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TopRankPowers
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulBoundAtOfNotIsReal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulBoundAtBaseChange
 
 set_option autoImplicit false
 

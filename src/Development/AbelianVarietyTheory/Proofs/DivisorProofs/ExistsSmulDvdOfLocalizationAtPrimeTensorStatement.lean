@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmulDvdOfLocalizationAtPrimeTensor
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionFreeOver
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GalMapGalElt
 
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in

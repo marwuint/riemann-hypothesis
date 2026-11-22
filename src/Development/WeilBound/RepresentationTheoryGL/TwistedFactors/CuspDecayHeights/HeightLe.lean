@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.CuspidalProjection.OrthogonalProjectionOntoCompSubtypeL
-import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.Height
 import GroundTheory.AutomorphicForms.HarishChandraCentre
 
 noncomputable section

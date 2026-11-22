@@ -5,7 +5,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteConjugacy
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteRestrictionVanishing
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.G8FiniteAuxiliaryStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalComparisonInert
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceUnitaryLocalPointsEquivGL
 
 noncomputable section
 

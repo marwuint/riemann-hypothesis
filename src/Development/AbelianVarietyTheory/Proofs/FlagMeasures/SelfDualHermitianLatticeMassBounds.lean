@@ -10,8 +10,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TupleJacobianRightMu
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassEqConstMulContent
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFiniteClasses
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsConjInt
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ThickOrbitSelfDualUnramifiedLattice
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryGroupOrthogonalComplementUnimodular
 
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical

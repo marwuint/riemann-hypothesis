@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermLoc
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermOp
-import Formalism.SharpRestriction.CuspSpanNormBounds.IsTermOver
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilySeparationBound
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames

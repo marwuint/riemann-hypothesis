@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IwahoriGlCasselmanDatum
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsLocallyConstantOrbit
 
 noncomputable section
 

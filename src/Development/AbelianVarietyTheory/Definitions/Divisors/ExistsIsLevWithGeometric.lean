@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FullLinearLev
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.UniversalWeilPairingPullbackExistsUnique
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ConnectionLinearInSection
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsUniqueWeilIs
 
 set_option autoImplicit false
 

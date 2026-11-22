@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.BaseDefs
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.BaseFormal
 import GroundTheory.ProfiniteCohomology.LocalTateDuality.TensorHomDualRepRootsOfUnityIsoCartierPairing
-import GroundTheory.ProfiniteCohomology.PoincareDuality
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.ProfCoh

@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.CharacterGerms.ValuationChoiceHypothesis
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DropLevelsBasic
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.MulFlowValLe
-import Formalism.DropLevelBounds.Statement
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LevelsUsedBalancedValueOrbitSums
 
 open scoped BigOperators

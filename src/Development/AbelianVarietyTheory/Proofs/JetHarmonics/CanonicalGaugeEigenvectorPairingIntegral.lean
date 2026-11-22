@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BilinPartEigenMemRange
 import Development.AbelianVarietyTheory.Definitions.Jets.TwoPlaces
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ConnectionKillsSeries
 
 set_option autoImplicit false
 

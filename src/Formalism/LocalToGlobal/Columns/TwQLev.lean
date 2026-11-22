@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.Columns.RecLevelStep
-import Formalism.LocalToGlobal.Columns.RecLevelTop
 import Formalism.LocalToGlobal.Columns.TwQDefs
 import Formalism.LocalToGlobal.Columns.TwQThetaOpen
 

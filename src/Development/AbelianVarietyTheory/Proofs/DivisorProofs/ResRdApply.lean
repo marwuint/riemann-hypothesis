@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
-import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
 
 noncomputable section
 namespace GlobalTheory.FlatPair

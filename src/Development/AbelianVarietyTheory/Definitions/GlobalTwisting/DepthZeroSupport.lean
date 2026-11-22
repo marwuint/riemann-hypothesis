@@ -3,9 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.JacquetShalik
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Brauer
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.HypothesesX
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SeriesRatSOf
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ResidualIrreducibilityFormsEquivalent
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroWild
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroSupport
 
 namespace GlobalTheory.Fc.S0
 

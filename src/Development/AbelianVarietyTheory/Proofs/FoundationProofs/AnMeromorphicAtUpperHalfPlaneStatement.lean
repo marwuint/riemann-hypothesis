@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AnMeromorphicAtUpperHalfPlane
-import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
 
 open Matrix GlobalTheory.KZ
 open Filter Topology

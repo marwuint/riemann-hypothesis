@@ -9,10 +9,8 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ClassSu
 import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SingleIndexPlacesAreTwisted
 import Development.AbelianVarietyTheory.Definitions.Divisors.SlopeTestRemainingChoicesAlt
-import Development.AbelianVarietyTheory.Definitions.Divisors.RowSideOfCompatibleThetaPair
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.SerFixOne
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MultW
-import Formalism.SharpRestriction.DesignExistsOfChoices
 
 noncomputable section
 

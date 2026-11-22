@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Se
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubsingletonOfGiso
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShearGL
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsSmoothIterPhi
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NontrivialTwJacquetOfSurjective
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeibnizOrderOfExactSequences
 
 noncomputable section

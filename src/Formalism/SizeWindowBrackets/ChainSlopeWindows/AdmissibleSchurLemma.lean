@@ -1,7 +1,5 @@
 import Formalism.SizeWindowBrackets.SecondKindBucket
 import Formalism.LogFactorialBounds.LogFactorialProofs.PrimeSum
-import Formalism.RankGapBounds.RankAndGapBounds
-import Formalism.RankGapBounds.RandomSubsetCounterexample
 import Mathlib
 import Formalism.RankGapBounds.RankGapProofs.PmModulusFacts
 import Formalism.RankGapBounds.RankGapProofs.FourNotDvdOddSqAddOne

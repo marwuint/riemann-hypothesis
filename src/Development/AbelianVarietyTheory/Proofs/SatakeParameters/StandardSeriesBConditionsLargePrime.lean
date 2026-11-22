@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.BeData
 import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.StatementB
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.BiextensionHypothesesOfLevelOne
-import Formalism.GaussJetBounds.GaussJetProofs.Transfer
 import Formalism.SharpRestriction.Divisibility.JetPolynomialLogs.LetterLogIntegrality
 
 noncomputable section

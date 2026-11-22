@@ -1,7 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RadAATopOfParts
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.CapelliWordSumExpansion
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.TheoremPIntegralOfPlaces
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormDiagonalEntryDilationGeneratorLeOne
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ContDiffHerm
 
 open Matrix

@@ -1,9 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.IsPolLatticePlane
 import Development.WeilBound.CoreStatements.HodgeTatePoints.GeCanon
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderValueEval
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianAdicTorsionOne
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueTangentDualNumber
 
 noncomputable section
 

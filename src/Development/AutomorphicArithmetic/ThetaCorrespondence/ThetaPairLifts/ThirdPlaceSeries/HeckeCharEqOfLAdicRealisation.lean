@@ -2,7 +2,6 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.HeckeCharEqOf
 import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspidalGaloisUnramified
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.EtaPiece
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.TrivialLocalCondition
 
 set_option synthInstance.maxHeartbeats 200000
 

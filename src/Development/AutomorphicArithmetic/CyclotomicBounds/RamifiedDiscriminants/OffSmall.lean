@@ -2,7 +2,6 @@ import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostFacts
 import Development.AutomorphicArithmetic.CyclotomicBounds.ZmodTwoQuadraticNeZero
-import Development.AutomorphicArithmetic.CyclotomicBounds.SmallFacts
 import Development.AutomorphicArithmetic.PrimeDiscriminants.RamDiscr
 
 open NumberField Ideal Formalism.BasicNotions

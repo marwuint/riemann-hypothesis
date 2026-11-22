@@ -3,8 +3,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.DerHom
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.GrGen
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.DvrFacts
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueAlgEquivOfCompatibleQuotient
-import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.MvPowerSeriesEvalOfPowMem
 open Matrix IsLocalRing UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.U3.Mop
 
 section SlopeTestRemainingChoices

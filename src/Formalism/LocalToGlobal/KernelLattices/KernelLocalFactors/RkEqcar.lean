@@ -2,9 +2,7 @@ import Mathlib
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThetaLocalEquivalence.ThEquivPAmbOfTiesD
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.RkConj
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.RkThindEq
-import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ColInst
 import Formalism.LocalToGlobal.Columns.ChainOneOk
-import Formalism.LocalToGlobal.Columns.ReductionExistsInLatticeStabilizerHolds
 import Formalism.LocalToGlobal.Columns.ResidueFieldUnfoldingClaimsHold
 import Formalism.LocalToGlobal.Columns.BlockTriangularMulVecMemPartialFlag
 import Formalism.LocalToGlobal.Columns.ReducedMatrixExtensionEntry

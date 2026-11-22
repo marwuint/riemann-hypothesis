@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.LemmasUnramifiedOfRingCondition
-import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup
 
 noncomputable section
 

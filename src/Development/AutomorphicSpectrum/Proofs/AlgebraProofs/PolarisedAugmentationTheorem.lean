@@ -4,7 +4,6 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsTight
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.StepOrderRes
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.PolarisedAFStatement
 import ReciprocityTheory.DualLattices.HasLenCokerDet
-import ReciprocityTheory.DualLattices.ProdDvdOfIso
 import ReciprocityTheory.DualLattices.PowMemCarrier
 import ReciprocityTheory.DualLattices.MemAugIdeal
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AugmentationQuotientEquivLatticeStatement

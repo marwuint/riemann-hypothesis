@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FiniteDimensionalWdSpace
-import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinExt
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisGaloisActionFontaineTEqCyclotomic
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRGaloisInvariantsEqFinExt
@@ -9,9 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoeffEqMkRoo
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EigenAdd
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EventuallyIntegral
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSumFactorial
-import Development.AbelianVarietyTheory.CrystallinePeriods.AdicMaps
-import Development.AbelianVarietyTheory.CrystallinePeriods.CrisIncl
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pst GlobalTheory.MemLoc
 open scoped Formalism.Per

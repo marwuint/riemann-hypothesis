@@ -1,7 +1,6 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypeJumps
 import Formalism.FrobeniusOrbits.HostCorollaries
 import Formalism.PadicSubsetSums.StableGradedCounts.ARCReuse
-import Formalism.PadicSubsetSums.CentralIdempotents.WindowSums
 import Development.AutomorphicArithmetic.CyclotomicBounds.ImageMemOfGens
 import Formalism.SharpRestriction.LevelLetterCocycles.ProdOneSubPrimitiveRoots
 

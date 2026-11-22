@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWhittakerCharacterPair
-import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsArchOne
-import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.GreenSeriesSt
-import Formalism.LocalToGlobal.GlobalTheory.IrreducibleOfCountSizes
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.BaseLevelIsWhit
 

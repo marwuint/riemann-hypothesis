@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameStabiliserMapsToCompletedLattice
-import Formalism.LocalToGlobal.Divisibility.DefGroup
 
 open NumberField
 open scoped TensorProduct Matrix

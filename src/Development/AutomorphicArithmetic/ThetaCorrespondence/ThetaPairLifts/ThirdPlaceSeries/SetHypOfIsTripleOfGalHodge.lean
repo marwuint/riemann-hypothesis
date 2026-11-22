@@ -8,7 +8,6 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLamTie0OfIsL
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumThEmptyNeZero
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.IsTripleAtOfConj
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.GaloisHypothesesOfIsTriple
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.IsPotCrysAtOfMono0
 
 set_option synthInstance.maxHeartbeats 200000
 

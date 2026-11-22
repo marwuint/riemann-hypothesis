@@ -1,6 +1,5 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MaxBoundPf
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.TransvectionPeriodicity
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SmulMemOfIsIntegral
 
 open NumberField ReciprocityTheory.ChartRestriction.G.FD

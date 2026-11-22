@@ -1,6 +1,5 @@
 import Formalism.LocalToGlobal.IndefiniteReal.RealSeparation.UnfDefs
 import Formalism.LocalToGlobal.IndefiniteReal.RealSeparation.BesPerSt
-import Formalism.LocalToGlobal.BesselHermitianTheta.TiedSmooth
 import Formalism.LocalToGlobal.IndefiniteReal.OrthogonalComplementCharacterisation
 
 noncomputable section

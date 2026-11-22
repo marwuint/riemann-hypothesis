@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntAFSmulMemLatOF
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 
 noncomputable section
 

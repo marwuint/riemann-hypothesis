@@ -2,9 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaActRefl
 import Development.AbelianVarietyTheory.Definitions.Foundations.MemRingOfInR
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModQPrin
-import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModJTau
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModEvalMF
-import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModDeltaInt
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FnHahnSeriesOfHasQ
 
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators

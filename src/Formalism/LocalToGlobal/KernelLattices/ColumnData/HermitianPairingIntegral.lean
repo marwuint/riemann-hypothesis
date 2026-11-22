@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.KernelLattices.ColumnData
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.HfArith
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.OrdUnimod
 import Lemmata.GeneralBFactThirdBis.Imports
 
 noncomputable section

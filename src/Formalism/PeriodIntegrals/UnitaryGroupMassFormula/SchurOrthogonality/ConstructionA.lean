@@ -1,6 +1,5 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SchurOrthogonality.InstMeasurableSpaceMat
 import Formalism.GradedWeylDivisibility.FinalC
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LHwinLemmas
 
 noncomputable section
 

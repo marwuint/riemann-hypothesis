@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDiagEnd
-import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveLabelHomLatticeModLevelThetaMember
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLabelClassZeroOfDividesAllThetaConstants

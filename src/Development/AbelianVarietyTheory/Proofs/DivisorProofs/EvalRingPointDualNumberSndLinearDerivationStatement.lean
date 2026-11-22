@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalRingPointDualNumberSndLinearDerivation
-import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TangentBijectionOfValues
 
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.TangentOrigin
 set_option maxHeartbeats 1000000 in

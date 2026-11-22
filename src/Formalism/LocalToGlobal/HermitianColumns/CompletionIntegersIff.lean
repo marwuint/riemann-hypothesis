@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.HermitianColumns.InLocalDiscriminantKernel
-import Formalism.SharpRestriction.GrowthBounds.DataG
 
 noncomputable section
 

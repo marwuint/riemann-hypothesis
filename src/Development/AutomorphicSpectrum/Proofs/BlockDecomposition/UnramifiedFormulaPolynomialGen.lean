@@ -2,8 +2,6 @@ import Mathlib
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.WhitGenOf
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CardPreimageHom
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SeriesEqDens
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianCharacterOrthogonality
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianRepCountFourierExpansion
 
 noncomputable section
 

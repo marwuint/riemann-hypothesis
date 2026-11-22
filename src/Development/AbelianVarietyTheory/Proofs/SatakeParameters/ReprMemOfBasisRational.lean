@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemCmComplexOfPow
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HasRatBasisOfAct
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CoefActionReprMemSubfield
 
 open Formalism.BasicNotions Formalism.L2.DIV Formalism.IndefR.Links NumberField

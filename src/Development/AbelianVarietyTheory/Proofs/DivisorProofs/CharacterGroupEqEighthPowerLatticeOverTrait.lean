@@ -5,9 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.NotOrdGeOfNotMem
 import Development.AbelianVarietyTheory.Definitions.Divisors.SharpOverIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaModelOpenAbelianEighthPowerWithBundle
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEighthPowerTraitLatticeEquivLocalExt
-import Development.AbelianVarietyTheory.Definitions.Divisors.TorMatch
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EndCharExistsOfIsMonHom
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsPsiCoordOfIsPsiCoord
 
 noncomputable section
 

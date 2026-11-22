@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.BasicOpenSections.BaseFacts
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AnnihilatorModels.GenericMulOfProd
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SplitsSelfOfIso
 
 noncomputable section

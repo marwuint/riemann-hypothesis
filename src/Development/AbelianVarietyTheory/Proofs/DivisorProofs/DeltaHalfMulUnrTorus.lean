@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.LineOppositeParabol
 import Formalism.SatakeDualWeyl.StatementE
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Tjcosets
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousUniMat
 
 open MeasureTheory GlobalTheory.PRep GlobalTheory.LGrp ValuativeRel NumberField IsDedekindDomain

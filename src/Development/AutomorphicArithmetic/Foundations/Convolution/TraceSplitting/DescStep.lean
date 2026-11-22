@@ -4,7 +4,6 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.PowTwist
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.CarryLift
 import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ExTwist
-import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ExCusp
 import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.LocIff
 import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.OccursIff
 import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.OccursBasics

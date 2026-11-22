@@ -2,7 +2,6 @@ import Mathlib
 import GroundTheory.ProfiniteCohomology.GaloisCohomology.Kummer
 import GroundTheory.ProfiniteCohomology.GaloisCohomology.Brauer
 import GroundTheory.TateCohomology.Herbrand
-import GroundTheory.TateCohomology.TateLow
 import GroundTheory.LocalFields.HerbrandLocal
 set_option maxSynthPendingDepth 1
 

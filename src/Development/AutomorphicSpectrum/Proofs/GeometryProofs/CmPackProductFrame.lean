@@ -2,7 +2,6 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCMFrame
 import Development.WeilBound.CoreStatements.SesquilinearFractions.GOntoKer
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsogenyProductDecomposition
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsogenyDecompositionProduct
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsPullback
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.EllMapCancelAndSabMapCancel

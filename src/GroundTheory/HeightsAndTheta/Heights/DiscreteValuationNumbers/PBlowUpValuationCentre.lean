@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsBlowUpFibreSemilocalCut
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PBlowUpModel
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.LiftFormNotMemBlowUpOf
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.ContractRelevant
 set_option maxSynthPendingDepth 1
 

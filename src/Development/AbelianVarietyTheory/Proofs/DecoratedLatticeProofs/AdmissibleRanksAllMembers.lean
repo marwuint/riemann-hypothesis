@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PtRows
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.BrgStdR
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsScaleWithBoundedGamma
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SizesEqCount
 import Mathlib

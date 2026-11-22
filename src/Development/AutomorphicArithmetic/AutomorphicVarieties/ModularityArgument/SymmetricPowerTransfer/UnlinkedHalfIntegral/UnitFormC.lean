@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.Adelise
-import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ConstSmall
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.RW
 
 noncomputable section

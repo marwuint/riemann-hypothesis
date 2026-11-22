@@ -4,8 +4,6 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.IsPolLattic
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.HodgeTateNormComparison
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Birational
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HtatLinkOf
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HTChartExistsHolds
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateChartIntegral
 
 open CategoryTheory AlgebraicGeometry NumberField MvPolynomial GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.HT ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.JumpKernelCokernel.LengthTheoremsWithEarlier
-import Formalism.TruncatedSeriesCounting.EtaDeterminantPolynomialIdentities
 
 noncomputable section
 

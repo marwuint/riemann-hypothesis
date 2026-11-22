@@ -7,8 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TilLatticesOf
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PlacesOverConjPrimes
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SmulMemLocPOfVal
 import Formalism.LocalToGlobal.Columns.BtExistsSmulLeOfFg
-import Formalism.LocalToGlobal.Columns.CoefficientsModP.BaseCh
-import Formalism.LocalToGlobal.Columns.CoefficientsModP.PairBDual
 
 noncomputable section
 

@@ -1,7 +1,6 @@
 import Formalism.SharpRestriction.CuspSpanNormBounds.BesselShellMomentBounds
 import Formalism.SharpRestriction.CuspSpanNormBounds.SBridge
 import Formalism.SharpRestriction.CuspSpanNormBounds.BranchingAndRankConstants
-import Formalism.FormalDegreeBessel.FinalG
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.OwnEvIntro
 import Formalism.SharpRestriction.CuspSpanNormBounds.LatticeGluingRadicals
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CfgTopFalseIff

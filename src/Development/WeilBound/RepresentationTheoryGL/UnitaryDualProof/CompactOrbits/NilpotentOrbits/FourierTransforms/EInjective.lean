@@ -1,10 +1,7 @@
 import Development.WeilBound.RepresentationTheoryGL.UnitaryDualProof.CompactOrbits.NilpotentOrbits.FourierTransforms.CompP
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBoxInvariantSnd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocallyConstantAddChar
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AddCharConductorIntegersContinuousNeOne
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CosInj
 
 noncomputable section
 

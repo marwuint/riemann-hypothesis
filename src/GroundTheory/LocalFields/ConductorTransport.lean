@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.LocalFields.UpperNumbering
 import GroundTheory.LocalFields.LubinTateTowerMaps
-import GroundTheory.LocalFields.SeparableClosure
 
 noncomputable section
 

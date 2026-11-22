@@ -1,6 +1,5 @@
 import Development.AutomorphicArithmetic.FrobeniusLocalisation.DiffDefs
 import Development.AutomorphicArithmetic.FrobeniusLocalisation.DiffMult
-import Development.AutomorphicArithmetic.FrobeniusLocalisation.MemRam
 import Development.AutomorphicArithmetic.FrobeniusLocalisation.DiscrK
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.InertiaGaloisSymmetry.KcDiff
 

@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormWt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousTerm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralHeckeMellinGaussIntegrandEqProdGamma
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GammaIntegralExpSubstitutionRealLine
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmTypeProdNormSqEqAbsNormSpan
 
 noncomputable section

@@ -2,8 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RunModel
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsIsometryOfSabMap
 import Development.AbelianVarietyTheory.Counterexamples.ThetaValuation.UniformMultiplier
-import Development.AbelianVarietyTheory.Counterexamples.JetSurvey.LatticeAndConstantUnique
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.ModelLatA
 
 set_option autoImplicit false
 

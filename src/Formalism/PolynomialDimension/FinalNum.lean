@@ -2,8 +2,6 @@ import Formalism.PolynomialDimension.MultinomialDepth.SecondParameterSizeBoundsH
 import Formalism.PolynomialDimension.MultinomialDepth.SecondParameterSlackBoundsHolds
 import Formalism.PolynomialDimension.MultinomialDepth.FrameMultinomialBoundHolds
 import Mathlib
-import Formalism.PolynomialDimension.StatementNum
-import Formalism.PolynomialDimension.WeylDim
 
 namespace Formalism.CountingSumsFrames.Top
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.LocalWeightCharts.NChartP
-import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 
 noncomputable section
 

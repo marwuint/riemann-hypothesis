@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.MultiplicityOne.ContinuousWhittakerOneRconvIntertwiner
-import GroundTheory.AutomorphicForms.UnitaryRepresentations.IsInvariantIffCommuteStarProjection
 import GroundTheory.AutomorphicForms.MultiplicityOne.FiniteLevelGroups
 import GroundTheory.AutomorphicForms.MultiplicityOne.OpenSubgroupRep
 

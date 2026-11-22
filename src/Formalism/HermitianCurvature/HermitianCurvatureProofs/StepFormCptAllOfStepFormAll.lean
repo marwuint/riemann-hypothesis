@@ -2,8 +2,6 @@ import Formalism.HermitianCurvature.HerGenC
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.QQMemAdjAlgCpt
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.IntegrablePairOfSquareIntegrable
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.SfiniteOfIsHaarOn
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.MeasurableOfContinuousOnZero
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormalFormOrderZeroOfParts
 
 open MeasureTheory
 

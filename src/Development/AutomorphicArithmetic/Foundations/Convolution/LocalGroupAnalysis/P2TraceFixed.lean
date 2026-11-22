@@ -5,7 +5,6 @@ import Development.AutomorphicArithmetic.AdelicQuotients.ExistsNatCombinationIsU
 import Development.AutomorphicArithmetic.AdelicQuotients.IsOpenEmbeddingUnitsValGeneralLinearPi
 import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.GalField
 import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.GalBase
-import GroundTheory.GlobalFields.SemilocalAlgebras.InfiniteAdeleTopology
 open PositivityTheory.Rg.Tf.Geo PositivityTheory.Rg.Tf.Loc
 open scoped TensorProduct
 

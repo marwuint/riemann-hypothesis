@@ -6,9 +6,7 @@ import Formalism.LocalToGlobal.IndefiniteReal.BridgeTie
 import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
 import Formalism.LocalToGlobal.IndefiniteReal.OrthogonalComplementCharacterisation
 import Formalism.LocalToGlobal.IndefiniteReal.GramCEqTranspose
-import Formalism.LocalToGlobal.HeckeThetaElements.DefsWt
 import Formalism.LocalToGlobal.JointCharacters.LocEMulLocE
-import Formalism.LocalToGlobal.UnitaryNorms.CharTied
 
 noncomputable section
 

@@ -1,7 +1,4 @@
 import Formalism.LocalToGlobal.PairingIndexBounds.HalvesRecursion.RecursiveLatticeMembership.MemLamOfIff
-import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
-import Formalism.LocalToGlobal.GlobalTheory.GL3.PIopNorm
-import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
 
 noncomputable section
 open scoped BigOperators

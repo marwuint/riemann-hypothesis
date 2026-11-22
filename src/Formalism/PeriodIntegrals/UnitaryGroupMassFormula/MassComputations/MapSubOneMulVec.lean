@@ -1,5 +1,4 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MassComputations.UnipotentFundamentalDomain
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelStructures.FrameStd
 
 noncomputable section
 

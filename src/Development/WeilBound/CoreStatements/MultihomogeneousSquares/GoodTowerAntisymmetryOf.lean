@@ -2,12 +2,6 @@ import Development.WeilBound.CoreStatements.MultihomogeneousSquares.ChooseTwoAdd
 import Development.WeilBound.CoreStatements.MultihomogeneousSquares.SqOf
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.Antisymmetry
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.APrime
-import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsFibreLocal
-import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.AgreementPositive
-import Development.AutomorphicSpectrum.Statements.GeometryStatements.AgreementPos
 
 noncomputable section
 

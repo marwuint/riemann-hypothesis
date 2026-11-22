@@ -6,7 +6,6 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.PotentialContDiffAt
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LoglogQuotNonneg
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConvergenceStatementHolds
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalDensityInclusionExclusion
-import ReciprocityTheory.AnalyticForms.LeviForms.ConvExpandStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDensityNonnegOffNullSet
 open MeasureTheory Metric Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.AnForm.M.FinHolAtlas
 open scoped ContDiff

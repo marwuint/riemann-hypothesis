@@ -5,7 +5,6 @@ import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.MemSupportSumMono
 import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.TwistSliceCoeff
 import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.MembAlgF
 import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.MembDegF
-import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.MembLabF
 
 noncomputable section
 

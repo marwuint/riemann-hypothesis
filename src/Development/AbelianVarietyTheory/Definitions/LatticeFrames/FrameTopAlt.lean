@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.VacOfShape
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CosInj
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PairForm
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.StabOrd
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LatAtLattice
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsTwIffCanonEq
 
 set_option genSizeOfSpec false

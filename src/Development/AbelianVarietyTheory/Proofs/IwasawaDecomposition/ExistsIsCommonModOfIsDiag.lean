@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsIsoOfIsPro
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsTrans
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingHomExtValuationSubring
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CorrespondenceDiagonal
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MultiplicationLatticeSecond
 
 set_option autoImplicit false
 

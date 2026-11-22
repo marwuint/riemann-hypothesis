@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SuppAtMul
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.SqEqOneOfFixDat
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinPartConjMem
 
 set_option autoImplicit false
 noncomputable section

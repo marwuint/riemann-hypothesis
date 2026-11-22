@@ -1,7 +1,6 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.SplitEigenfunctions.ConjInv
 import GroundTheory.GlobalFields.ExistenceTheorem.ExistsIsAbelianGaloisRangeIdeleClassNormEqOfFini
 import GroundTheory.GlobalFields.HasseNorm
-import GroundTheory.GlobalFields.IdeleGroups.GaloisOnAdeles.Action
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.Hilbert90AdeleRingTensorQuadratic
 
 noncomputable section

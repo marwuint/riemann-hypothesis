@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSectionOfChg
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanNormSquareExists
 
 set_option autoImplicit false
 

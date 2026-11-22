@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PerIntOnAmb
 import Formalism.SharpRestriction.Divisibility.WeightDegreeSizes
-import Formalism.SharpRestriction.Divisibility.LocalQuadraticParts
 import Formalism.LocalRingCardinality.SpanPowerMembership.NZRowF
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalGapNonemptyAndRecordNonempty
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNumeratorIdealOfAntiInvariantDivisor

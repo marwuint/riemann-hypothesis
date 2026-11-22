@@ -4,9 +4,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.WeilBound.CoreStatements.HodgeTatePoints.FamilyEx
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FamilyGivesConjugateLieData
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermLieBasis
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransport
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1 GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj
 open scoped CategoryTheory.Obj

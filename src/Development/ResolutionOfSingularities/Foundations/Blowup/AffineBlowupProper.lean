@@ -1,6 +1,5 @@
 import Mathlib
 import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowup
-import Development.ResolutionOfSingularities.Foundations.Blowup.ReesGrading
 open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.Blowup

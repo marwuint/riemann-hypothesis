@@ -4,7 +4,6 @@ import Formalism.LocalToGlobal.Divisibility.LiftLatLemmas
 import Formalism.LocalToGlobal.IndefiniteForms.IndefUse
 import Formalism.LocalToGlobal.IndefiniteForms.IndefExample
 import Formalism.LocalToGlobal.IndefiniteForms.QuadraticExampleRankThreePackage
-import Formalism.QuotientMetricDivisors.ReductionLemmaZero
 import Formalism.QuotientMetricDivisors.FinalW
 import Formalism.QuotientMetricDivisors.SixthReductionExplicit
 import Formalism.MirabolicMackeyTheory.MirabolicIsMackey

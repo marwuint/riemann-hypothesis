@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransp
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ActLevFullLevelGroupFramedPoints
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ModelAtBare
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameBorelGroupoidProperties
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointBaseChangeUniqueReflIff
 
 set_option autoImplicit false
 

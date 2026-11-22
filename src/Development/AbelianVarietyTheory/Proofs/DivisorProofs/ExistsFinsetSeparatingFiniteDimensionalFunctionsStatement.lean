@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinsetSeparatingFiniteDimensionalFunctions
-import Development.AbelianVarietyTheory.Definitions.Divisors.CentralNilGL
 
 open NumberField MeasureTheory GlobalTheory.CuspRep
 set_option maxHeartbeats 1000000 in

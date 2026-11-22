@@ -6,7 +6,6 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSecti
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagShiftTotalPowerSum
-import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.CompactGapsGE
 
 noncomputable section
 

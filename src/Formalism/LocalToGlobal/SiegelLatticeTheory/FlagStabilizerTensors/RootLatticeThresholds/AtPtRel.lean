@@ -4,7 +4,6 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellInv
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellGeo
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellFin
-import Formalism.SharpRestriction.CuspSpanNormBounds.FlagEEqHyperbolic
 
 noncomputable section
 

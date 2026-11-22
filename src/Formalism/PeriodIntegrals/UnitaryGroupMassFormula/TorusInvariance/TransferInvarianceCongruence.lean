@@ -1,5 +1,4 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.TorusInvariance.TransferInvarianceRestriction
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTransposeMul
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.CapelliHighestWeightConjugated
 

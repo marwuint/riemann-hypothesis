@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndVerb
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndExp
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ExpOfPf
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ExpChartOf
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ExpActOf

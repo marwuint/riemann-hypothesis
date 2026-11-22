@@ -6,7 +6,6 @@ import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CasComm
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.GeneratorPowUpperVanishHolds
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.HWDiag
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.TrPowSumFilterZero
-import Formalism.RealPlaceAnalysis.StatementA
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.QuantumDetHighestWeightHolds
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ShiftedGeneratorEqIteSmulAdd
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.GeneratorCommutatorQuantumDet

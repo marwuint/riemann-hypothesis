@@ -4,7 +4,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Lap
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SobolevOperatorFacts
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalCalculusJointCurve
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformLimitRightDerivatives
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RwAppend
 
 open MeasureTheory Matrix Finset Filter Topology
 open scoped ContDiff ComplexConjugate InnerProductSpace ZeroAtInfty ENNReal

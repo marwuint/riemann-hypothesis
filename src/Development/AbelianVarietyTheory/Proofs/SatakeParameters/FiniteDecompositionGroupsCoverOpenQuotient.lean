@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.De
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.CyclicBaseChangeC
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.IsAlgChar
 import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChebotarevDegreeOne
 
 noncomputable section
 

@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.Divisibility.DivisionHeightBoundStatement
 import Formalism.LocalToGlobal.Divisibility.NumbersLemmas
-import Formalism.QuotientMetricDivisors.FinalW
 
 noncomputable section
 

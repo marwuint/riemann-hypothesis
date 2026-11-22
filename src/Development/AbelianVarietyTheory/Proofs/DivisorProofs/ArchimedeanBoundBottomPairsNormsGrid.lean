@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
-import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ExistsSmallSpherical
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ArchSt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareBottomPairsSmallReferenceTuple
 open Formalism.BasicNotions Formalism.MainNotions Formalism.IndefR Formalism.IndefR.Links IsDedekindDomain NumberField

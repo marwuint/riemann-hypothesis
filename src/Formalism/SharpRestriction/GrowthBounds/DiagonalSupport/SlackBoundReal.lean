@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.TwiceValuationFactorialProduct
-import Formalism.PolynomialDimension.FinalNum
 
 noncomputable section
 

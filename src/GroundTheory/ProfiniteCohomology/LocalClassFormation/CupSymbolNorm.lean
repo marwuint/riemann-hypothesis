@@ -1,6 +1,5 @@
 import Mathlib
 import GroundTheory.ProfiniteCohomology.CupProducts.Projection
-import GroundTheory.ProfiniteCohomology.CupProducts.Cocycles
 import GroundTheory.ProfiniteCohomology.ClassFormations.Corestriction
 import GroundTheory.ProfiniteCohomology.CyclicCupProf
 import GroundTheory.ProfiniteCohomology.GaloisCohomology.Kummer

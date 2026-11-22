@@ -15,9 +15,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Loc
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.NumsZero
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.PhiGam
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.CoefIndep
-import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.HostOdd
-import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.HostIndex
-import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.PZeroLe
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 section Transfer

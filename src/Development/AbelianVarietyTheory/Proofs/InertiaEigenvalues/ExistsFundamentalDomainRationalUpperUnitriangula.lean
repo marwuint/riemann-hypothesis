@@ -1,8 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdelicUnitriangularMulMemUnipotentTimesIntegral
 import GroundTheory.GlobalFields.TateThesis.AdeleMeasure
-import GroundTheory.GlobalFields.Adele.Discrete
-import GroundTheory.GlobalFields.Adele.IntegersLattice
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUniqueRatUnitriangularMulEntriesMemFundameStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCompactAdelicUnitriangularEntriesMemCompact
 

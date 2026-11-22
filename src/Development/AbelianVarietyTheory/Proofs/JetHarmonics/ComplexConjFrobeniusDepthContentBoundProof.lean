@@ -1,9 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.DepthNumbersThresholdEq
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.OddLevelBlockBoundAttained
-import Formalism.LocalToGlobal.CharacterGerms.ContentLargeFromSupplies
-import Formalism.LocalToGlobal.CharacterGerms.ContentZeroAt
-import Formalism.LocalToGlobal.CharacterGerms.LatticeInclusionFormsInjective
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CharacterBlocksAttainBound
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.MonomialBlockSupplyBothTypings
 

@@ -1,7 +1,5 @@
 import Mathlib
 import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SummandsBase
-import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SmoothingFinite
-import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.Uniform
 
 open MeasureTheory Set Filter Topology Function Module
 

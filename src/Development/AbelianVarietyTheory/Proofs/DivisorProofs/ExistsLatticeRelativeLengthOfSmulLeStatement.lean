@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLatticeRelativeLengthOfSmulLe
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.MultiplicationKernelIdentity
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PreEig
 
 open GlobalTheory.IndefiniteRowSideFullHecke.MultiplicationKernelIdentity GlobalTheory.HermitianPreEigenvalues Polynomial Module
 set_option maxHeartbeats 1000000 in

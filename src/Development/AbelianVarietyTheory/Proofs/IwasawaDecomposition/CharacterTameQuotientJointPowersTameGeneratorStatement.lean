@@ -1,9 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharacterTameQuotientJointPowersTameGenerator
-import ReciprocityTheory.GaloisValuations.Global
-import Formalism.LocalToGlobal.NormalizedHeckeFactors.RingHomOfBaseOrderToFraction
-import Formalism.SharpRestriction.LevelLetterCocycles.DataN
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RootEqOfClose
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2
 set_option maxHeartbeats 1000000 in

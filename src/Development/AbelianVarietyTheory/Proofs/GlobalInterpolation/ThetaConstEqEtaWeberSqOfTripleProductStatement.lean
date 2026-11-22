@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ThetaConstEqEtaWeberSqOfTripleProduct
-import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.ThetaConstantWeber
-import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.ThetaLine
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DifferentiableOddTheta
 
 open Complex
 set_option maxHeartbeats 1000000 in

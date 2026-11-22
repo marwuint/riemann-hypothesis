@@ -4,8 +4,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Assemb
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.BaseDataEmbeddingConj
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.EventuallyThickCardLeCyclicOrder
 import Formalism.SharpRestriction.GlobalSchurBounds.GL3Columns
-import Formalism.SharpRestriction.ElevenLe
-import Formalism.LocalRingCardinality.DataParams
 
 open Formalism.BasicNotions Classical NumberField GlobalTheory.LvT
 open Formalism.MainNotions.product_first_zeroth_parts (tops)

@@ -3,8 +3,6 @@ import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ColInst
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ColRecCEvBijective
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NuRowSuccEqWt
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaDistributionUnfolded
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OrdSubDetSubStdL
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.H90USurjective
 
 noncomputable section
 

@@ -2,7 +2,6 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.Crys
 import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.TestFactsAlt
 import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.LiftIntegral
 import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.SplitOnSpec
-import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.SplitsOfSplitOn
 
 set_option backward.isDefEq.respectTransparency false
 

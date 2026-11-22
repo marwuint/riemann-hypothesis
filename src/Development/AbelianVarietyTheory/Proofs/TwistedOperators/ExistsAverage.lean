@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LeviEmbMulSingle
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IwahoriProjSurjective
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsLocallyConstantOrbit
 
 noncomputable section
 

@@ -3,7 +3,6 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.NonemptyParameterModels.Num
 import Formalism.SharpRestriction.CuspSpanNormBounds.AutLzFiniteOfLoop
 import Formalism.SharpRestriction.AdmissibleParameterJoins.SfromGLx
 import Mathlib
-import Formalism.FormalDegreeBessel.FinalDS
 
 open MeasureTheory Finset
 open scoped Matrix

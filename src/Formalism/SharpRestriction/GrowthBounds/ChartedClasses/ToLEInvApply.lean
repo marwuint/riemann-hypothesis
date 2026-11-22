@@ -1,5 +1,4 @@
 import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.PtStep0
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Bridge
 
 noncomputable section
 

@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenUse
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SettingsFormsExistList
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CoefAEqOfHeq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotMemSqOfRamificationIdx
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistDataAgreeAcrossCoefficients
 
 noncomputable section
 

@@ -1,9 +1,6 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
-import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
-import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
-import Formalism.GaloisCohomology.LocalTateDualityK
 
 namespace GlobalTheory.NonzeroScalarLattice
 

@@ -1,5 +1,4 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ArchimedeanSchwartz.ShiftOf
-import GroundTheory.AutomorphicForms.RealGroupsHaar
 
 noncomputable section
 

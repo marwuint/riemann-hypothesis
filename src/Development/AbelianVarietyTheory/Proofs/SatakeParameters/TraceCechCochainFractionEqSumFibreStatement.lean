@@ -1,8 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TraceCechCochainFractionEqSumFibre
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.TcoMem
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsAffCoverSpec
-import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ToPtIdPtBijective
 
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.CechDR GlobalTheory.PD KaehlerDifferential
 set_option maxHeartbeats 1000000 in

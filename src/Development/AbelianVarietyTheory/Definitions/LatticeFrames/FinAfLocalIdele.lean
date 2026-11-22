@@ -6,9 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinAfMemIntU
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsIntegralHalf
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCharOfTrace
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsPrimesOk
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBaseChangeFiniteAdeleRingEquiv
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertAtLeCongN
-import Formalism.LocalToGlobal.JointCharacters.LocEMulLocE
 
 noncomputable section
 

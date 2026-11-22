@@ -2,8 +2,6 @@ import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharact
 import GroundTheory.ProfiniteCohomology.GlobalEulerCharacteristic.Shapiro
 import GroundTheory.ProfiniteCohomology.GlobalEulerCharacteristic.ApplySubrepresentationCongr
 import GroundTheory.ProfiniteCohomology.GlobalEulerCharacteristic.ToFunEqZeroOfForallIsCyclic
-import GroundTheory.ProfiniteCohomology.RestrictedRamification.BaseFixed
-import GroundTheory.ProfiniteCohomology.GlobalEulerCharacteristic.DefsForms
 
 open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh GroundTheory.Global
 

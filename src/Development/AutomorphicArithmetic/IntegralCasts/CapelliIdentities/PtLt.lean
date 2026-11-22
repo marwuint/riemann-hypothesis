@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.DirichletPrimeToLPartMulLPowerPart
-import Formalism.ConjugateSelfDual.Statement
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.NormLtOne
 
 theorem UpperTheory.Reformulated.B.Gs4b.pt_lt :

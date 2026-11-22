@@ -7,7 +7,6 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselNormSqEqBigCel
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselEnergyNormalisedFrameChange
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrbitalSquareEqHilbertSchmidtNormalisedVector
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnipotentHaarMeasureRatio
-import Formalism.FormalDegreeBessel.FinalG
 open Formalism.FourierDecayAlt Formalism.MainNotions.S GlobalTheory.ThA Formalism.QuantumDeterminants MeasureTheory Matrix
 open Formalism.BasicNotions
 

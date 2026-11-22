@@ -1,5 +1,4 @@
 import Formalism.SharpRestriction.GrowthBounds.FockGramWindow.GramWindow2
-import Formalism.ThetaLogCoordinates.BihomogeneousPairs.LetterChainEmbeddings.TieFPowMulFree
 import Formalism.PolynomialDimension.ChangeLatticeGoodRank
 
 noncomputable section

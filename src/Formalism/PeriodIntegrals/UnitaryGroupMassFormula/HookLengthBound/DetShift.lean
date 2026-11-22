@@ -1,6 +1,4 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HookLengthBound.DetShiftNormOf
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LGradedLemmas
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LFockqLemmas
 
 open MvPolynomial Formalism.GradedWeylDivisibility
 

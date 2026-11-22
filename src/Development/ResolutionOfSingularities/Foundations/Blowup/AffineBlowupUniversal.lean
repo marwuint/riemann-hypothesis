@@ -5,7 +5,6 @@ import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowupCart
 import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowupUniversalLift
 import Development.ResolutionOfSingularities.Foundations.Blowup.BlowupOpenCover
 import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowupChartPreimages
-import Development.ResolutionOfSingularities.Foundations.BlowupUniversalProperty
 open CategoryTheory AlgebraicGeometry
 
 noncomputable section

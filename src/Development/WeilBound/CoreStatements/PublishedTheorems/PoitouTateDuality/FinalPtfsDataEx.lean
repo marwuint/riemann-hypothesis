@@ -1,7 +1,6 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PublishedTheorems.PoitouTateDuality.FinalPtfsData
 import Development.WeilBound.CoreStatements.PublishedTheorems.PoitouTateDuality.LocalCmp2
-import Development.WeilBound.CoreStatements.PublishedTheorems.PoitouTateDuality.PtfsDualPf
 
 noncomputable section
 

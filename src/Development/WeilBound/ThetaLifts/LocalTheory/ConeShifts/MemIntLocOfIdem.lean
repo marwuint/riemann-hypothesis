@@ -3,7 +3,6 @@ import Development.WeilBound.CoreStatements.CompactAveragingSplitting.Eigenvecto
 import Development.WeilBound.CoreStatements.CompactAveragingSplitting.EigenvectorLifting.Inertof
 import Development.WeilBound.CoreStatements.LocalThetaKernels.IwasAd
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IdeleCharacterEqOneIntegralUnitsUnramifiedAdelic
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Tjcosets
 
 noncomputable section
 

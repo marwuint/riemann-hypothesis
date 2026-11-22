@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsResolutionInterpIntegral
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.ResolutionPotentials
-import ReciprocityTheory.GeometryOfNumbers.PluriharmonicAnalysis.LogDetSt
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel

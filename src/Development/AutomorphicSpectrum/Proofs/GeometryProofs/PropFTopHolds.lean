@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.PropFTop
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DeltaTermLogDegreeBound
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HBBound
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootFlatPushforwardGeoFun
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.SumLogPrimeDivPredBound
 open MvPolynomial NumberField Filter Topology ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I2 GlobalTheory.CompanionTheory.Ar.Top GlobalTheory.CompanionTheory.Ar.Flat

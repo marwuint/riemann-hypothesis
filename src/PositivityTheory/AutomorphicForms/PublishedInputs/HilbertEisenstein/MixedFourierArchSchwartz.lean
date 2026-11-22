@@ -1,7 +1,4 @@
 import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.HasTemperateGrowthArchPoly
-import GroundTheory.GlobalFields.TateThesis.ConductorIdeal
-import GroundTheory.GlobalFields.TateThesis.Conductor
-import GroundTheory.GlobalFields.TateThesis.NoSmallSubgroups
 
 noncomputable section
 

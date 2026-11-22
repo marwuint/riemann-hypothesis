@@ -1,11 +1,8 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.StRefChartDisc
-import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.StNbarLeviChartReg
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PNbarSmooth
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PVertFactorSmooth
 import GroundTheory.HeightsAndTheta.Heights.Intersections.RegularizedCurvature
-import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCEqZeroOfEventuallyEqZero
-import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 
 set_option maxSynthPendingDepth 1
 

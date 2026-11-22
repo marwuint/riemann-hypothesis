@@ -7,8 +7,6 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsCuspHom
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpectrumKFiniteDecomposition
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DiscreteSeriesUpqUniqueOfClassification
-import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
-import Development.AbelianVarietyTheory.Definitions.Foundations.CdScaleTieIff
 open Formalism.MainNotions.ArithmeticCylinders IsDedekindDomain MeasureTheory Formalism.MainNotions.S Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR.Mult GlobalTheory.RowLev NumberField Matrix
 open scoped InnerProductSpace TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar

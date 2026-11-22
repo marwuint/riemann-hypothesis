@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaSumAdmissibility
-import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
 import Development.WeilBound.ThetaLifts.LeviDeterminants.ThetaSumInvariantRationalUnitary
 import Development.WeilBound.ThetaLifts.LeviDeterminants.ThetaGrow
 

@@ -1,9 +1,7 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.GeneralizedEigenspaces.SmoothDepth.ContCoef
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.SignatureIntegrality.SignatureTorusFixedPoints.Link
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwThetaEx
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHkApply
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwJqEmbed
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHeckePairIwC
 
 open NumberField IsDedekindDomain ValuativeRel GlobalTheory.CuspRep GlobalTheory.PRep GlobalTheory.UnitaryBC GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL Formalism.BasicNotions
 open UpperTheory.V.W (Plc Lp)

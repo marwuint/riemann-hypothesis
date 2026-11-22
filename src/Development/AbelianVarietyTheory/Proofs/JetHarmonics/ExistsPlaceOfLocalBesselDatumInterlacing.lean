@@ -7,7 +7,6 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.OnePlaceEstimates
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ExistsPlaceWithVectors
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliParamMemIntAddHalf
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CapParamOfIsHCTypeW
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsType
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PlExists
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsNormalisedLocalBesselDatumStatement
 

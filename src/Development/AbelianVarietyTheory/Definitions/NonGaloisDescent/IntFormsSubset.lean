@@ -3,7 +3,6 @@ import Formalism.LocalToGlobal.ProjectiveLattices.FamilyUniformisationBasePointO
 import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
 import Formalism.LocalToGlobal.ProjectiveLattices.ThClassPins
 import Formalism.LocalToGlobal.ProjectiveLattices.CuspFormsFiniteDimensionalOf
-import Formalism.LocalToGlobal.ProjectiveLattices.NonnegIffOfLiesTotal
 
 set_option autoImplicit false
 

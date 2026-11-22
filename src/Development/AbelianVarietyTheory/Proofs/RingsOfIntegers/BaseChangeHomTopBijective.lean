@@ -12,7 +12,6 @@ import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsFramedPointOfA
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsLetterRingBaseChange
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllSixAbelianSchemeLawsHold
 import Formalism.LocalToGlobal.ProjectiveLattices.LieFreePf
-import Formalism.LocalToGlobal.ProjectiveLattices.ThetaFramePf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.GenBridgeA
 
 set_option autoImplicit false

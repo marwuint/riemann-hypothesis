@@ -2,8 +2,6 @@ import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.BaseLiftsPackageOfPrimitiveLinks
 import Formalism.LocalToGlobal.IndefiniteReal.LinksExist
 import Formalism.LocalToGlobal.IndefiniteReal.LinksExistW
-import Formalism.LocalToGlobal.IndefiniteReal.CutTuples2
-import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ValBasic
 
 noncomputable section
 

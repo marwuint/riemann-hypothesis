@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ExSubAlt
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.OfSteps
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.AssemblyCN
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PComponentDim
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PFibreVarieties
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PGenericDimGe
@@ -14,9 +13,7 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinJoinVe
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinPairNumJoinLeft
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinPairNumJoinRight
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinPairNumRelabel
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PVerticalComponentFibre
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PairNumberPullback
-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsBundles
 
 namespace PositivityTheory.Xgn.A_s_joinright
 

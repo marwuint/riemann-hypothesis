@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.IsOpenDomP
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.UwClosedSubgroup
 
 open Matrix MeasureTheory
 open scoped ComplexConjugate

@@ -2,7 +2,6 @@ import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.
 import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.HmaxLeAlt
 import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.CmpDSmulLetter
 import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.LiftsAtThickLetterType
-import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.SaturationFractionModule
 
 noncomputable section
 

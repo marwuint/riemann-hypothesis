@@ -1,5 +1,4 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutSERDAsm
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.BXiAsm
 
 open MeasureTheory
 

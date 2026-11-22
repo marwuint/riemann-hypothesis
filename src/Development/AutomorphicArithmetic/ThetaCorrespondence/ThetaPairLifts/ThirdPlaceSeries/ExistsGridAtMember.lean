@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCharacterGridData
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenUsedOfCenReal
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SettingsFormsExistList
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.PublishedInputsThirdLayer
 
 set_option synthInstance.maxHeartbeats 200000

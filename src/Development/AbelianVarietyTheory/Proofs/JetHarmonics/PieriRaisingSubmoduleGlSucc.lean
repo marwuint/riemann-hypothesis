@@ -1,6 +1,5 @@
 import Mathlib
 import Formalism.HermitianCurvature.CapelliDeterminantAndBranching
-import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.IrreducibleCapelliModules
 import Development.AbelianVarietyTheory.Definitions.Jets.Imports
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WignerExtremeNeZero

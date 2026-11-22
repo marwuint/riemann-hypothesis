@@ -1,11 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatLineC1LogBound
-import Development.AbelianVarietyTheory.Definitions.Divisors.QuoIff
-import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
-import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
-import Development.AbelianVarietyTheory.Definitions.Divisors.UnifOfSpaceEq
-import Development.AbelianVarietyTheory.Definitions.Divisors.MulSmulIdemMem
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ComponentMassSum
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LiftLambdaBound
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.FlatVal
 

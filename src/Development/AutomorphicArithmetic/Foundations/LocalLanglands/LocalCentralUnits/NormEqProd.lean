@@ -8,7 +8,6 @@ import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentral
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.TameArt
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.ResBase
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.NameLaws
-import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.FinrankK
 
 noncomputable section
 
