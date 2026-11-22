@@ -125,11 +125,11 @@ theorem GlobalTheory.CxCoh.collapse_resMap_bij : ∀ (C : Type 1) [Category.{0} 
   have a0U := _root_.GlobalTheory.CxCoh.vertical_bijective_h0_injective_h1.1 U qU
   have a1U := _root_.GlobalTheory.CxCoh.VertSurj.instances.1 U qU
   have a2U := _root_.GlobalTheory.CxCoh.vertical_h2_injective_universes.1 U qU
-  have a3U := GlobalTheory.T.vertical_h2_surjective_universes.1 U qU
+  have a3U := _root_.GlobalTheory.CxCoh.VertSurjTwo.inst.1 U qU
   have a0E := _root_.GlobalTheory.CxCoh.vertical_bijective_h0_injective_h1.2.2 E qE
   have a1E := _root_.GlobalTheory.CxCoh.VertSurj.instances.2.2 E qE
   have a2E := _root_.GlobalTheory.CxCoh.vertical_h2_injective_universes.2.2 E qE
-  have a3E := GlobalTheory.T.vertical_h2_surjective_universes.2.2 E qE
+  have a3E := _root_.GlobalTheory.CxCoh.VertSurjTwo.inst.2.2 E qE
   have oU := GlobalTheory.T.joinedMapsAgreeCohomologyZeroOne_instances.1 _ _ _ jU
   have oW := GlobalTheory.T.joinedMapsAgreeCohomologyZeroOne_instances.1 _ _ _ jW
   have oE := GlobalTheory.T.joinedMapsAgreeCohomologyZeroOne_instances.2.2 _ _ _ jE

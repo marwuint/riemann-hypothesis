@@ -67,8 +67,8 @@ theorem defGram_selfDual_of_embedding : ∀ (E K : Type) [Field E] [NumberField 
     have hl : Submodule.IsLattice K (tauLat emb τ L) := _root_.GlobalTheory.TauLat.tauLat_lattice_dual_round.1 E K ι n emb τ L hL.1
     have hd : hdualFr (gramK emb J τ) (tauLat emb τ L) = tauLat emb τ L :=
       _root_.GlobalTheory.TauLat.tauLat_lattice_dual_round.2.1 E K ι n emb cE τ (hemb τ) J L L hdet hL.1 hL.2
-    refine ⟨⟨hl, hd⟩, (GlobalTheory.T.dualLattice_isLattice_and_hermitianDual.1 K n _ _ hdK hl).1, ?_⟩
-    have h := GlobalTheory.T.dualLattice_isLattice_and_hermitianDual.2 K n _ _ h1.1 hdK hl
+    refine ⟨⟨hl, hd⟩, (_root_.GlobalTheory.DualLat.dualFr_lattice_and_hdual.1 K n _ _ hdK hl).1, ?_⟩
+    have h := _root_.GlobalTheory.DualLat.dualFr_lattice_and_hdual.2 K n _ _ h1.1 hdK hl
     rw [hd] at h
     exact h
 

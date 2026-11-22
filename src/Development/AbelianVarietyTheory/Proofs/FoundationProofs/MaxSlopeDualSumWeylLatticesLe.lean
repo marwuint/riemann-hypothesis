@@ -64,7 +64,7 @@ theorem testLatticeCondition_dualFr_sumLat_delK : ∀ (K : Type) [Field K] [Numb
     exact _root_.GlobalTheory.PairInt.extNorm_mul_pairK_integral K ι n lam G (M c) hGh hGu (hM c) _
       ((Submodule.mem_iInf _).1 hx c) _ ((Submodule.mem_iInf _).1 hy c)
   have hint' := dualForm_integral_on_dualFr K N (sumGram lam e G) hH.1 hHu _ s hint
-  have hD := (GlobalTheory.T.dualLattice_isLattice_and_hermitianDual.1 K N (sumGram lam e G) _ hHu hlat).1
+  have hD := (_root_.GlobalTheory.DualLat.dualFr_lattice_and_hdual.1 K N (sumGram lam e G) _ hHu hlat).1
   have hne : dualFr (sumLat lam e fun c => delK lam (M c)) ≠ ⊥ := by
     intro h0
     have htop := hD.span_eq_top

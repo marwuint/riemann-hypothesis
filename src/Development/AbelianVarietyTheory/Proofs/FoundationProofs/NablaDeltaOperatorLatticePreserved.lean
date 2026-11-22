@@ -205,8 +205,8 @@ theorem nabDelLattice : NabDelLattice := by
   intro K _ _ ι _ n lam M hM
   obtain ⟨h1, h2, h3, h4⟩ := _root_.GlobalTheory.StdLatSpan.std_fg_span K ι n lam
   exact ⟨transLat_isLattice _root_.GlobalTheory.LatBasisAt.basisAtEx lam _ h1 h3 M hM
-      fun w B hB => (GlobalTheory.T.transportedLattice_localization_free_le_coefficientSpace.1 K ι n lam M hM w B hB).1,
+      fun w B hB => (_root_.GlobalTheory.TransLoc.nabDelLoc_free_leVV.1 K ι n lam M hM w B hB).1,
     transLat_isLattice _root_.GlobalTheory.LatBasisAt.basisAtEx lam _ h2 h4 M hM
-      fun w B hB => (GlobalTheory.T.transportedLattice_localization_free_le_coefficientSpace.1 K ι n lam M hM w B hB).2⟩
+      fun w B hB => (_root_.GlobalTheory.TransLoc.nabDelLoc_free_leVV.1 K ι n lam M hM w B hB).2⟩
 
 end GlobalTheory.TransLattice
