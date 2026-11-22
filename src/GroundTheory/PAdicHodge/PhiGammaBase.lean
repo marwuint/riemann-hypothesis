@@ -26,6 +26,10 @@ instance : IsAlgClosed (Cb p) := isAlgClosed_tilt
 
 def toWC : AInf ℂ_[p] p →+* WC p := WittVector.map (algebraMap (Ob p) (Cb p))
 
+theorem toWC_coeff (x : AInf ℂ_[p] p) (n : ℕ) :
+    (toWC p x).coeff n = algebraMap (Ob p) (Cb p) (x.coeff n) :=
+  WittVector.map_coeff _ x n
+
 variable {p} {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 theorem preTiltMap_congr {f g : ℂ_[p] →+* ℂ_[p]} (hf : ∀ x, ‖f x‖ = ‖x‖) (hg : ∀ x, ‖g x‖ = ‖x‖)
@@ -92,6 +96,10 @@ instance instMulSemiringActionOb : MulSemiringAction Gal(PadicAlgCl p/K) (Ob p) 
   smul_one σ := map_one (galPreTilt σ)
   smul_mul σ := map_mul (galPreTilt σ)
 
+theorem gal_smul_algebraMap_ob (σ : Gal(PadicAlgCl p/K)) (x : Ob p) :
+    σ • algebraMap (Ob p) (Cb p) x = algebraMap (Ob p) (Cb p) (σ • x) :=
+  galTilt_algebraMap σ x
+
 def galW (σ : Gal(PadicAlgCl p/K)) : WC p →+* WC p := WittVector.map (galTilt σ)
 
 theorem galW_coeff (σ : Gal(PadicAlgCl p/K)) (x : WC p) (n : ℕ) :
@@ -116,8 +124,28 @@ instance instMulSemiringActionWC : MulSemiringAction Gal(PadicAlgCl p/K) (WC p) 
   smul_one σ := map_one (galW σ)
   smul_mul σ := map_mul (galW σ)
 
+theorem gal_smul_wc_coeff (σ : Gal(PadicAlgCl p/K)) (x : WC p) (n : ℕ) :
+    (σ • x).coeff n = σ • x.coeff n :=
+  galW_coeff σ x n
+
 theorem gal_smul_natCast (σ : Gal(PadicAlgCl p/K)) (n : ℕ) : σ • (n : WC p) = n :=
   map_natCast (galW σ) n
+
+theorem gal_smul_frobenius (σ : Gal(PadicAlgCl p/K)) (x : WC p) :
+    σ • WittVector.frobenius x = WittVector.frobenius (σ • x) := by
+  ext n
+  rw [gal_smul_wc_coeff, WittVector.frobenius_eq_map_frobenius, WittVector.map_coeff,
+    WittVector.map_coeff, gal_smul_wc_coeff, frobenius_def, frobenius_def, smul_pow']
+
+theorem gal_smul_frobeniusEquiv (σ : Gal(PadicAlgCl p/K)) (x : WC p) :
+    σ • WittVector.frobeniusEquiv p (Cb p) x = WittVector.frobeniusEquiv p (Cb p) (σ • x) :=
+  gal_smul_frobenius σ x
+
+theorem toWC_gal_smul (σ : Gal(PadicAlgCl p/K)) (x : AInf ℂ_[p] p) :
+    toWC p (σ • x) = σ • toWC p x := by
+  ext n
+  rw [toWC_coeff, gal_smul_wc_coeff, toWC_coeff, AInf.gal_smul_coeff, gal_smul_algebraMap_ob]
+  rfl
 
 end PhiGamma
 end GroundTheory.PAdicHodge

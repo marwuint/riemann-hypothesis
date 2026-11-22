@@ -51,6 +51,18 @@ theorem mult_res {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) (x : 
 
 variable {ξ : T.int} (hξ : T.IsPrimOne ξ)
 
+theorem ptEval_res {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) (hr1 : T.ptRad ξ ≤ ρ1)
+    (x : T.RobbaExt ρ0) :
+    T.ptEval hξ hr1 (T.res h x) = T.ptEval hξ (hr1.trans h) x :=
+  Completion.induction_on x
+    (isClosed_eq ((T.continuous_ptEval hξ hr1).comp (T.continuous_res h))
+      (T.continuous_ptEval hξ _))
+    fun b => by rw [T.res_coe, ptEval_coe, ptEval_coe]; rfl
+
+theorem res_ξExt {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) :
+    T.res h (T.ξExt ξ ρ0) = T.ξExt ξ ρ1 := by
+  rw [ξExt, T.res_coe]; rfl
+
 theorem idx_eq_of_domSet_singleton {a : ℤ → L} {ρ : ℝ} (hρ : 0 < ρ) (hc : ConvergesAt a ρ)
     (ha : a ≠ 0) {k : ℤ} (hk : k ∈ domSet a ρ) (huniq : ∀ n ∈ domSet a ρ, n = k) :
     lowIndex a ρ = k ∧ highIndex a ρ = k :=
@@ -242,6 +254,14 @@ theorem normPtExt_eq (ρ0 : Set.Ioo (0 : ℝ) 1) :
 theorem ξExt_eq_normPtExt (ρ0 : Set.Ioo (0 : ℝ) 1) :
     T.ξExt ξ ρ0 = T.normPtExt hξ ρ0 * T.normUnitInv (ξ := ξ) ρ0 := by
   rw [normPtExt_eq, mul_assoc, normUnit_mul_inv, mul_one]
+
+theorem dvd_ξExt_iff_normPtExt {ρ0 : Set.Ioo (0 : ℝ) 1} (x : T.RobbaExt ρ0) :
+    T.ξExt ξ ρ0 ∣ x ↔ T.normPtExt hξ ρ0 ∣ x := by
+  constructor
+  · rintro ⟨y, rfl⟩
+    exact ⟨T.normUnitInv (ξ := ξ) ρ0 * y, by rw [ξExt_eq_normPtExt, mul_assoc]⟩
+  · rintro ⟨y, rfl⟩
+    exact ⟨T.normUnit hξ ρ0 * y, by rw [normPtExt_eq, mul_assoc]⟩
 
 theorem extNorm_normPtExt_sub_one {ρ0 : Set.Ioo (0 : ℝ) 1} (ρ : Set.Ioc (0 : ℝ) ρ0) :
     T.extNorm ρ0 ρ (T.normPtExt hξ ρ0 - 1) = T.ptRad ξ / ρ := by
