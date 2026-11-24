@@ -102,8 +102,7 @@ theorem valAt'_top {T : Scheme.{0}} (x : Sp ℂ ⟶ T) (f : Γ(T, ⊤)) : valAt'
   have key : (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ x).appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of (DualNumber ℂ))).hom =
       (x.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom) ≫ CommRingCat.ofHom (algebraMap ℂ (DualNumber ℂ)) := by
     rw [Scheme.Hom.comp_appTop, Category.assoc, Scheme.ΓSpecIso_naturality, Category.assoc]
-  have h2 := congrArg (fun g => (g.hom f).fst) key
-  simpa [ev, TrivSqZeroExt.algebraMap_eq_inl] using h2
+  simpa [ev, TrivSqZeroExt.algebraMap_eq_inl] using congrArg (fun g => (g.hom f).fst) key
 
 variable {R : Type} [CommRing R]
 
@@ -424,8 +423,7 @@ theorem periods_map_onto_lattice : ∀ (E : Type) [Field E] [NumberField E] [IsC
       e.ex b (h δ) = P₁ s ∧ ∀ z, ∃ s', P₁ s' = e.ex b (h z) ∧ Q s' = 1 := by
     intro s hs
     have h0 : s ≫ P.τ.q = 1 := by
-      rw [← cancel_mono P.e.hom, MonObj.one_comp, Category.assoc]
-      exact hs
+      rwa [← cancel_mono P.e.hom, MonObj.one_comp, Category.assoc]
     let τ₀ : 𝟙_ (Over (Sp ℂ)) ⟶ splitTorus (Sp ℂ) P.τ.X :=
       P.τ.isKernel.lift s (toUnit _) (by rw [h0, Hom.one_def])
     have hτ : τ₀ ≫ P.τ.i = s := P.τ.isKernel.lift_fst _ _ _

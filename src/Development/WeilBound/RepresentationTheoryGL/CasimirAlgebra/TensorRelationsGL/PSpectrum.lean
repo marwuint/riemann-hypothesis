@@ -287,8 +287,7 @@ theorem filt {k : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (G : Fin n →
     have h2 : (LinearMap.compLeft (LinearMap.ker Z).subtype (Fin k → Fin n))
         (fun I => (⟨Y (f I), hf' I⟩ : LinearMap.ker Z)) = (LinearMap.compLeft Y (Fin k → Fin n)) f := rfl
     rw [h2, ← h1] at h0
-    have h3 := congrFun h0.symm I
-    simpa using h3
+    simpa using congrFun h0.symm I
 
 def Cl (k : ℕ) : Prop := ∀ (n : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M),
   GlRel E → ∀ (l : Fin n → ℂ) (s : ℂ), HasChar E l → (∀ k, ∃ r : ℕ, l k = s + r) → ∀ j : Fin k, Kl (xJ E j) s
@@ -312,8 +311,7 @@ theorem cl_step (h1 : TensorGl) (h3 : Curry) (h5 : StepChar) (k : ℕ) (ih : Cl 
       congr 1
       funext c
       simp [hr c]
-    rw [hx, he]
-    exact hstep1
+    rwa [hx, he]
   | right j' =>
     apply Kl_nat (curF n M 1 k) hbij.1 _ _ (hnat j')
     obtain ⟨hG, hGA, -, -⟩ := h1 n M (Fin 1) E hE Finset.univ
@@ -331,8 +329,7 @@ theorem cl_step (h1 : TensorGl) (h3 : Curry) (h5 : StepChar) (k : ℕ) (ih : Cl 
         exact ih n N F hF (Function.update l c (l c + 1)) s (hstep2 W N F q hW hA c hq hFq hAq) (hls' c) j')
       (List.finRange n)
     have h0 : ((List.finRange n).map fun c => Om E 0 - algebraMap ℂ (Module.End ℂ (TV n M (Fin 1))) (l c)).prod = 0 := by
-      rw [← List.ofFn_eq_map]
-      exact hstep1
+      rwa [← List.ofFn_eq_map]
     refine ⟨L, LinearMap.ext fun f => ?_⟩
     rw [LinearMap.zero_apply]
     exact hL f (fun I => by rw [h0]; rfl)
@@ -341,8 +338,7 @@ theorem cl_all (h1 : TensorGl) (h3 : Curry) (h5 : StepChar) : ∀ m, Cl m := by
   intro m
   induction m with
   | zero =>
-    intro n M _ _ E hE l s hl hls j
-    exact j.elim0
+    exact fun n M _ _ E hE l s hl hls j => j.elim0
   | succ m ih =>
     rw [Nat.add_comm]
     exact cl_step h1 h3 h5 m ih

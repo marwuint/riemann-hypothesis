@@ -73,8 +73,7 @@ theorem Φ_inj {B : Type} [CommRing B] : Function.Injective (Φ (R := R) (m := m
   have h2 := congrArg Prod.snd h
   apply IsLocalization.ringHom_ext (Submonoid.powers (f R m))
   apply MvPolynomial.ringHom_ext
-  · intro r
-    exact RingHom.congr_fun h2 r
+  · exact fun r => RingHom.congr_fun h2 r
   · intro i
     have := congrArg (fun u => ((u i : Bˣ) : B)) h1
     simpa [Φ] using this
@@ -92,8 +91,7 @@ def back {X : Scheme.{0}} {A : CommRingCat.{0}} (φ : X ⟶ Spec A) : A ⟶ Γ(X
   (Scheme.ΓSpecIso A).inv ≫ φ.appTop
 
 theorem back_inj {X : Scheme.{0}} {A : CommRingCat.{0}} : Function.Injective (back (X := X) (A := A)) := by
-  intro a b h
-  exact (ΓSpec.adjunction.homEquiv X (op A)).symm.injective (Opposite.unop_injective h)
+  exact fun a b h => (ΓSpec.adjunction.homEquiv X (op A)).symm.injective (Opposite.unop_injective h)
 
 theorem back_surj {X : Scheme.{0}} {A : CommRingCat.{0}} : Function.Surjective (back (X := X) (A := A)) := by
   intro φ
@@ -136,10 +134,7 @@ theorem τ_bij (X : Scheme.{0}ᵒᵖ) : Function.Bijective ((τ (R := R) (m := m
       have := congrArg Prod.snd h; exact this
     have h2 := congrArg (fun p => (back p).hom) h2'
     simp only [back_ι] at h2
-    apply back_inj
-    apply CommRingCat.hom_ext
-    apply Φ_inj
-    exact Prod.ext h1 h2
+    exact back_inj (CommRingCat.hom_ext (Φ_inj (Prod.ext h1 h2)))
   · rintro ⟨u, χ⟩
     obtain ⟨ψ, hψ⟩ := Φ_surj (R := R) (m := m) (B := Γ(X.unop, ⊤)) (u, (back χ).hom)
     obtain ⟨φ, hφ⟩ := back_surj (CommRingCat.ofHom ψ)

@@ -746,8 +746,7 @@ theorem gramAt_isom (V V' : HSp D) (ι : V'.V →ₗ[D.host.E] V.V) (hι : HSpac
 theorem isUnit_gramAt (V : HSp D) (τ : D.what₂.Tau) : IsUnit (gramAt D V τ) := by
   refine (Matrix.isUnit_iff_isUnit_det _).2 ?_
   have h := (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V).map (tauE D τ)
-  rw [RingHom.map_det] at h
-  exact h
+  rwa [RingHom.map_det] at h
 
 end GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.Frames
 end
@@ -863,8 +862,7 @@ theorem exists_at (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E 
         congr 1
         funext j
         simp [hYu, Matrix.col_apply]
-    rw [h, Set.Sum.elim_range]
-    exact hk
+    rwa [h, Set.Sum.elim_range]
   have orth : ∀ A : Matrix (Fin V.rank) (Fin m) D.host.E,
       (∀ i ∈ upTo T, ∀ c, V.hT (V.frame.equivFun.symm fun j => A j i) (ι (V'.frame c)) = 0) →
       Mᴴ * gramAt D V τ * (A.map (tauE D τ)).submatrix id ((↑) : upTo T → Fin m) = 0 := by
@@ -904,8 +902,7 @@ theorem exists_at (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E 
     · rintro h (i | i)
       · exact (h i.1 i.2).1
       · exact (h i.1 i.2).2
-    · intro h i hi
-      exact ⟨h (Sum.inl ⟨i, hi⟩), h (Sum.inr ⟨i, hi⟩)⟩
+    · exact fun h i hi => ⟨h (Sum.inl ⟨i, hi⟩), h (Sum.inr ⟨i, hi⟩)⟩
   obtain ⟨e', F, j, hFu, hFJ, hjc, hemb⟩ := exists_frame hP k S (Matrix.fromCols Xu Yu) M hspan hCM L hL hGu hcard
   rw [hG'] at hFJ
   obtain ⟨s0, -, hs0, -⟩ := GlobalTheory.Mem.UnitaryEmb.exists_embHom D V V' ι hι
@@ -1078,8 +1075,7 @@ theorem exists_compl : ∀ (D : D7) (V : HSp D) (m : ℕ) (X Y : Matrix (Fin V.r
   · intro hv i hi
     have := hv (e ⟨i, hi⟩)
     simpa [c, d] using this
-  · intro hv k
-    exact hv _ (e.symm k).2
+  · exact fun hv k => hv _ (e.symm k).2
 
 end GlobalTheory.CompanionTheory.WittCompl
 
@@ -1250,8 +1246,7 @@ theorem slice_regular : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[
         funext i
         exact e i (t i)
       rw [map_mul, mul_assoc, hy, ← mul_assoc, e3]
-    rw [e2]
-    exact key
+    rwa [e2]
   · obtain ⟨N, hN⟩ := hψ.growth
     rcases Nat.eq_zero_or_pos V'.rank with hV | hV
     · refine ⟨0, fun l _ x => ⟨‖(l.foldr (fun p f => Rder θ V' p.1 p.2 f) (fun h => ψ (s h * y))) x‖, fun g _ => ?_⟩⟩
@@ -1469,8 +1464,7 @@ theorem exists_symb_low (E : Fin n → Fin n → A) (d : ℕ)
     d π (fun _ => 0)
   simp only [zero_add, pow_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one,
     Matrix.of_apply] at key
-  simp only [List.prod_ofFn]
-  exact key
+  simpa only [List.prod_ofFn] using key
 
 theorem permWord_low {E : Fin n → Fin n → A} (hE : Formalism.REAL.GlRel E) (d : ℕ) (π : Equiv.Perm (Fin d)) :
     ∃ c ∈ Algebra.adjoin ℂ (Set.range fun k : Fin n => gelfA E k.val),
@@ -1481,8 +1475,7 @@ theorem permWord_low {E : Fin n → Fin n → A} (hE : Formalism.REAL.GlRel E) (
   have h1 := symb_sub hE h
   have h3 := sub_mem h2 h1
   rw [sub_sub_sub_cancel_right] at h3
-  rw [wordMap_permMat]
-  exact h3
+  rwa [wordMap_permMat]
 
 theorem low_le (E : Fin n → Fin n → A) :
     Algebra.adjoin ℂ (Set.range fun k : Fin n => gelfA E k.val) ≤ Algebra.adjoin ℂ (Set.range (gelfA E)) :=

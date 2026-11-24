@@ -97,8 +97,7 @@ private theorem support_iteratedStrictTransform_subset_of_strictTransform_mono {
     | zero =>
         intro _ x hx
         have hz : K 0 = d.iteratedStrictTransform 0 D := by rw [h0, iteratedStrictTransform_zero]
-        rw [hz]
-        exact hx
+        rwa [hz]
     | succ n ih =>
         intro hn
         have hlt : n < d.length := hn
@@ -150,10 +149,8 @@ private theorem maxContactIdeal_eq_top_of_orderAtLeastLocus_eq_empty (k : Type u
   intro hy
   have hy' : y ∈ orderAtLeastLocus (derivIdealSheafIterate k p (m - 1) A) 1 := by
     refine (mem_orderAtLeastLocus_one_iff _ y).2 ?_
-    rw [← maxContactIdeal_eq_derivIdealSheafIterate]
-    exact hy
-  rw [h] at hy'
-  exact hy'
+    rwa [← maxContactIdeal_eq_derivIdealSheafIterate]
+  rwa [h] at hy'
 
 private theorem prod_derivIdealSheafIter_pow_le_balancedTunedSheaf (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -198,8 +195,7 @@ private theorem orderAtLeastLocus_balancedTunedSheaf_eq_empty (k : Type u) [Fiel
     · simp [show μ - (μ - 1) = 1 from by omega]
     · intro b _ hb
       simp [hb]
-    · intro hcon
-      exact absurd (Finset.mem_range.mpr (show μ - 1 < μ from by omega)) hcon
+    · exact fun hcon => absurd (Finset.mem_range.mpr (show μ - 1 < μ from by omega)) hcon
   have hle : (List.map
       (fun j => derivIdealSheafIterate k p j A ^ (if j = μ - 1 then tuningExponent μ else 0))
       (List.range μ)).prod ≤ balancedTunedSheaf k p A μ :=
@@ -246,8 +242,7 @@ theorem isMaxContactHypersurface_balancedTunedSheaf (hstar : MaxContactCoverProp
     refine ⟨U, hUaff, hxU, ?_⟩
     rcases hcase with ⟨hdisj, htop⟩ | ⟨n, c, j, hcoord, hmcc⟩
     · refine Or.inl ⟨?_, htop⟩
-      rw [hcs]
-      exact hdisj
+      rwa [hcs]
     · refine Or.inr ⟨n, c, j, hcoord, ?_⟩
       intro i
       rw [hmi]
@@ -304,8 +299,7 @@ theorem inStrictNormalCrossingPosition_iteratedStrictTransform_zero (S : MarkedI
     InStrictNormalCrossingPosition (u.proj 0 ≫ S.structMap) [MaxContactReduction.iteratedStrictTransform u H 0] := by
   have hproj : u.proj 0 = u.isoZero.hom := u.proj_zero
   have h := inStrictNormalCrossingPosition_comap_iso S.structMap u.isoZero [H] hH
-  rw [MaxContactReduction.iteratedStrictTransform_zero u H, hproj]
-  exact h
+  rwa [MaxContactReduction.iteratedStrictTransform_zero u H, hproj]
 
 private theorem prod_map_range_succ_eq_apply_zero {X : Scheme.{u}} (f : ℕ → X.IdealSheafData)
     (hf : ∀ j, j ≠ 0 → f j = 1) (n : ℕ) :
@@ -321,8 +315,7 @@ private theorem support_pow_subset_support {X : Scheme.{u}} (A : X.IdealSheafDat
   intro x hx
   have hx' : stalkIdeal (A ^ e) x ≠ ⊤ := (mem_support_iff_stalkIdeal_ne_top (A ^ e) x).1 hx
   refine (mem_support_iff_stalkIdeal_ne_top A x).2 ?_
-  intro htop
-  exact hx' (by rw [stalkIdeal_pow, htop, ← Ideal.one_eq_top, one_pow])
+  exact fun htop => hx' (by rw [stalkIdeal_pow, htop, ← Ideal.one_eq_top, one_pow])
 
 private theorem pow_tuningExponent_le_balancedTunedSheaf (k : Type u) [Field k] [CharZero k] {P : Scheme.{u}}
     (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -336,8 +329,7 @@ private theorem pow_tuningExponent_le_balancedTunedSheaf (k : Type u) [Field k] 
     · simp
     · intro b _ hb
       simp [hb]
-    · intro hcon
-      exact absurd (Finset.mem_range.mpr (Nat.succ_pos n)) hcon
+    · exact fun hcon => absurd (Finset.mem_range.mpr (Nat.succ_pos n)) hcon
   have hc : tuningExponent (n + 1) ≤ ∑ j ∈ Finset.range (n + 1),
       ((n + 1) - j) * (if j = 0 then tuningExponent (n + 1) else 0) := by
     rw [hsum]
@@ -369,8 +361,7 @@ theorem isAdmissible_derivedTriple (hstar : MaxContactCoverProperties.{u}) (S : 
   constructor
   case charZero => exact hV.charZero
   case locallyOfFiniteType =>
-    rw [MaxContactCoverData.derivedTriple_structureMorphism]
-    exact hft
+    rwa [MaxContactCoverData.derivedTriple_structureMorphism]
   case one_le_mult =>
     rw [MaxContactCoverData.derivedTriple_mult]
     exact one_le_tuningExponent S.mult
@@ -399,8 +390,7 @@ theorem isAdmissible_derivedTriple (hstar : MaxContactCoverProperties.{u}) (S : 
         (support_pow_subset_support (s.ideal s.length) (tuningExponent S.mult))
     rw [LowerDimReductionPullback.ideal_derivedTriple]
     unfold FunctorialResolution.EmbeddedResolution.NonzeroOnComponents
-    intro T hT hsub
-    exact hNZ T hT (Set.Subset.trans hsub hsupp)
+    exact fun T hT hsub => hNZ T hT (Set.Subset.trans hsub hsupp)
 
 theorem isLocallyNoetherian_tunedMarkedBlowupSeq_schemeAt (_hMaxContact : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u})
     (_hV : S.IsAdmissible) (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
@@ -465,8 +455,7 @@ theorem isMaxContactHypersurface_coverMaxContactIdeal (hstar : MaxContactCoverPr
   have key := hstar.coverContact_admissible T h.valid
     (MaxContactCoverData.isMaxContactCover_chosenCoverData T h.valid
       (hstar.exists_goodCover T h.valid h.orderLE))
-  rw [MaxContactCoverData.coverTriple_mult]
-  exact key
+  rwa [MaxContactCoverData.coverTriple_mult]
 
 theorem inStrictNormalCrossingPosition_coverMaxContactIdeal (hstar : MaxContactCoverProperties.{u}) (P : ℕ → Prop) (T : MarkedIdealWithBoundary.{u})
     (h : MaxContactFunctoriality.OrderReductionHypotheses P T) :
@@ -530,8 +519,7 @@ private theorem comap_hom_ne_top_of_ne_top {X Y : Scheme.{u}} (e : X ≅ Y) (J :
   obtain ⟨y, hy⟩ := hs
   have h2 : e.hom (e.inv y) = y := by simp
   have h3 : e.hom.base (e.inv.base y) ∈ J.support := by
-    rw [show e.hom.base (e.inv.base y) = y from h2]
-    exact hy
+    rwa [show e.hom.base (e.inv.base y) = y from h2]
   have h4 : e.inv.base y ∈ (J.comap e.hom).support :=
     AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap.2 h3
   exact ne_top_of_support_nonempty ⟨e.inv.base y, h4⟩
@@ -564,8 +552,7 @@ private theorem orderAtLeastLocus_comap_iso_inter_support_eq_empty {X Y : Scheme
   have hx2' : e.hom.base x ∈ D.support :=
     AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap.1 hx2c
   have hmem : e.hom.base x ∈ orderAtLeastLocus I m ∩ (D.support : Set ↥Y) := ⟨hx1, hx2'⟩
-  rw [h] at hmem
-  exact hmem
+  rwa [h] at hmem
 
 private theorem orderAtLeastLocus_comap_eqToHom_inter_support_eq_empty {X Y : Scheme.{u}} (hinv : ComapIsoInvariance.{u})
     (h : X = Y) (I D : Y.IdealSheafData) (m : ℕ)
@@ -584,17 +571,14 @@ private theorem orderAtLeastLocus_inter_support_eq_empty_of_comap_iso {X Y : Sch
   have k1 : e.inv.base y ∈ orderAtLeastLocus (I.comap e.hom) m := by
     rw [hinv.coSupport_comap e I m]
     show e.hom.base (e.inv.base y) ∈ orderAtLeastLocus I m
-    rw [show e.hom.base (e.inv.base y) = y from h2]
-    exact hy1
+    rwa [show e.hom.base (e.inv.base y) = y from h2]
   have k2 : e.inv.base y ∈ ((D.comap e.hom).support : Set ↥X) := by
     have hy2' : e.hom.base (e.inv.base y) ∈ D.support := by
-      rw [show e.hom.base (e.inv.base y) = y from h2]
-      exact hy2
+      rwa [show e.hom.base (e.inv.base y) = y from h2]
     exact AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap.2 hy2'
   have hmem : e.inv.base y ∈
       orderAtLeastLocus (I.comap e.hom) m ∩ ((D.comap e.hom).support : Set ↥X) := ⟨k1, k2⟩
-  rw [h] at hmem
-  exact hmem
+  rwa [h] at hmem
 
 private theorem getElem_eq_of_list_eq {α : Type*} {L L' : List α} (h : L = L') (n : ℕ)
     (hn : n < L.length) (hn' : n < L'.length) : L[n]'hn = L'[n]'hn' := by
@@ -607,8 +591,7 @@ private theorem getElem_map_of_lt {α β : Type*} (f : α → β) :
   intro L
   induction L with
   | nil =>
-      intro n hn _
-      exact absurd hn (Nat.not_lt_zero n)
+      exact fun n hn _ => absurd hn (Nat.not_lt_zero n)
   | cons a L ih =>
       intro n hn hn'
       cases n with
@@ -628,8 +611,7 @@ private theorem getElem_map_append_of_lt {α β : Type*} (f : α → β) :
   intro L
   induction L with
   | nil =>
-      intro R n hn _
-      exact absurd hn (Nat.not_lt_zero n)
+      exact fun R n hn _ => absurd hn (Nat.not_lt_zero n)
   | cons a L ih =>
       intro R n hn hn'
       cases n with
@@ -652,8 +634,7 @@ private theorem boundary_getElem_eq_iteratedStrictTransform {k : Type u} [Field 
     rw [← _root_.FunctorialResolution.EmbeddedResolution.MarkedBlowupSequenceData.toBlowupSequenceData_boundary_eq_boundary_of_le u i hi]
     exact BlowupSequenceData.boundary_eq_map_iteratedStrictTransform_append u.toBlowupSequenceData E i
   have h2 : n < (E.map (u.iteratedStrictTransform i) ++ u.boundaryFrom ([] : List X.IdealSheafData) i).length := by
-    rw [← h1]
-    exact hn'
+    rwa [← h1]
   rw [getElem_eq_of_list_eq h1 n hn' h2]
   exact getElem_map_append_of_lt (u.iteratedStrictTransform i) E
     (u.boundaryFrom ([] : List X.IdealSheafData) i) n hn h2
@@ -715,8 +696,7 @@ private theorem separateBoundaryInvariant_append (hstar : MaxContactCoverPropert
     rintro ⟨hx1, hx2⟩
     have hmem : x ∈ orderAtLeastLocus (t.ideal r) S.mult ∩ ((K r).support : Set ↥(t.obj r)) :=
       ⟨hx1, hsub r hr hx2⟩
-    rw [hsep] at hmem
-    exact hmem
+    rwa [hsep] at hmem
   have hulen : (s.append t hinv).length = s.length + t.length :=
     MarkedBlowupSequenceData.append_length s t hinv
   have hsle : s.length ≤ (s.append t hinv).length := by omega
@@ -825,9 +805,7 @@ private theorem separateBoundaryInvariant_append (hstar : MaxContactCoverPropert
         omega
       have hbase : orderAtLeastLocus (s.ideal s.length) S.mult ∩
           (((s.boundary s.length)[i]'hiS).support : Set ↥(s.obj s.length)) = ∅ := by
-        have h := hfacts.1 i hij hiS
-        simp only [List.get_eq_getElem] at h
-        exact h
+        simpa only [List.get_eq_getElem] using hfacts.1 i hij hiS
       exact (s.append t hinv).orderAtLeastLocus_disjoint_boundary_of_le hdesc hiE hsle
         (hstep0 i hiS hiU0 hbase) ((s.append t hinv).length) hsle (le_refl _)
     · have hije : i = j := by omega
@@ -885,8 +863,7 @@ theorem separateBoundaryInvariant_appendLowerDimReduction (hstar : MaxContactCov
   have hbdC : (MaxContactCoverData.derivedTriple S s hft [] 0).boundary = s.boundary s.length := by
     rw [MaxContactCoverData.derivedTriple_boundary, List.nil_append, List.drop_zero]
   have hjC' : j < (MaxContactCoverData.derivedTriple S s hft [] 0).boundary.length := by
-    rw [hbdC]
-    exact hbj
+    rwa [hbdC]
   have hjC : j < (([] : List ((s.obj s.length)).IdealSheafData)
       ++ (s.boundary s.length).drop 0).length := by simpa using hbj
   have hsepC : ∀ D ∈ (s.boundary s.length).take 0,
@@ -933,8 +910,7 @@ theorem separateBoundaryInvariant_appendLowerDimReduction (hstar : MaxContactCov
         (((Dv ((A j (MaxContactCoverData.derivedTriple S s hft [] 0)).length)).support) :
           Set ↥((A j (MaxContactCoverData.derivedTriple S s hft [] 0)).schemeAt
             ((A j (MaxContactCoverData.derivedTriple S s hft [] 0)).length))) := ⟨hx1', hx2⟩
-    rw [hC6] at hmem
-    exact hmem
+    rwa [hC6] at hmem
   · intro r hr htop
     exact ((hspec j).center_nonempty (MaxContactCoverData.derivedTriple S s hft [] 0) hVc hPC hordBound hbalanced
       hjC' r hr).ne_empty
@@ -984,11 +960,9 @@ theorem separateBoundaryInvariant_separateBoundarySeq (hstar : MaxContactCoverPr
         MaxContactCoverData.separateBoundary_zero hinv T (MaxContactFunctoriality.lowerDimensionalFamily A T)
           (MaxContactCoverData.coverTriple T h.valid)
       refine And.intro ?_ (And.intro ?_ ?_)
-      · intro i hi
-        exact absurd hi (Nat.not_lt_zero i)
+      · exact fun i hi => absurd hi (Nat.not_lt_zero i)
       · rw [h0]
-        intro i hi
-        exact absurd hi (Nat.not_lt_zero i)
+        exact fun i hi => absurd hi (Nat.not_lt_zero i)
       · exact inStrictNormalCrossingPosition_iteratedStrictTransform_zero (MaxContactCoverData.coverTriple T h.valid)
           (separateBoundarySeq T h.valid hinv A 0) (MaxContactCoverData.coverMaxContactIdeal T h.valid)
           (inStrictNormalCrossingPosition_coverMaxContactIdeal hstar P T h)
@@ -1141,8 +1115,7 @@ theorem exists_cover_eq_separateAllBoundary_append (hstar : MaxContactCoverPrope
     MaxContactCoverData.reduceAlongHypersurface_eq_appendLowerDimReduction hinv T (MaxContactFunctoriality.lowerDimensionalFamily A T)
       (MaxContactCoverData.coverTriple T h.valid) (MaxContactCoverData.coverMaxContactIdeal T h.valid)
   refine ⟨hft, hVc, hP, hmk, ?_, hcos⟩
-  rw [hcover]
-  exact heq
+  rwa [hcover]
 
 end BoundarySeparationByMaxContact
 

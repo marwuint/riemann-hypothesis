@@ -257,8 +257,7 @@ theorem exists_line : ∀ {C : Type u} [Category.{v} C] (U : UF C) (P : ∀ ⦃T
     exact hg1 T
   · intro T t φ a
     exact hu T t φ a
-  · intro T
-    exact hP T (g T) (hg1 T) (hg2 T)
+  · exact fun T => hP T (g T) (hg1 T) (hg2 T)
 
 end GlobalTheory.CompanionTheory.LineUniv
 end -- clump:auto
@@ -524,8 +523,7 @@ theorem directFactor : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (e : A.A), IsId
     have := Hom.comm ψ
     exact this
   refine ⟨⟨Ideal.Quotient.lift _ (Hom.f ψ) hk, hcomm⟩, Hom.ext (RingHom.ext fun x => rfl), fun χ hχ => Hom.ext ?_⟩
-  refine Ideal.Quotient.ringHom_ext (RingHom.ext fun x => ?_)
-  exact RingHom.congr_fun (congrArg Hom.f hχ) x
+  exact Ideal.Quotient.ringHom_ext (RingHom.ext fun x => RingHom.congr_fun (congrArg Hom.f hχ) x)
 
 end GlobalTheory.CompanionTheory.IdemObj
 end -- clump:auto
@@ -795,8 +793,7 @@ theorem fac_loc (k : Bool) (n r : ℕ) (T' : El (F.pt κ)) {m : ℕ} (b : Fin m 
   have hk' : ∀ S x, mapAcr (lam S) n x = 0 →
       (∏ i ∈ S, T'.1.obj.toAcr n (WittVector.teichmuller l (b i))) * x = 0 := fun S x hx => by
     have h := hk S x hx
-    rw [acr_teich_prod] at h
-    exact h
+    rwa [acr_teich_prod] at h
   exact ⟨locModG (F := F) (b := bs l k n) (ht := rfl) (κ := κb κ k n) ((base l).cris n) r (gT F κ k n) T'
     (fun S => facObj F κ T' (A' S) (lam S) (ht S)) (fun S => facHom F κ T' (A' S) (lam S) (ht S))
     (fun i => T'.1.obj.toAcr n (WittVector.teichmuller l (b i))) hf
@@ -852,8 +849,7 @@ theorem zarCov_test : ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] (F : 
     exact e1.trans (by rw [h', map_one])
   have hspan' : Ideal.span (Set.range fun i => Hom.f φ.1.hom (e i)) = ⊤ := by
     have h := congrArg (Ideal.map (Hom.f φ.1.hom)) hspan
-    rw [Ideal.map_span, Ideal.map_top, ← Set.range_comp] at h
-    exact h
+    rwa [Ideal.map_span, Ideal.map_top, ← Set.range_comp] at h
   obtain ⟨Lc', lamE, h1, h2, h3⟩ := factors F κ k n r T' (fun i => Hom.f φ.1.hom (e i))
     (fun i => (hidem i).map (Hom.f φ.1.hom)) hspan'
   exact ⟨Lc', lamE, fun S i hi => h1 S i hi, fun S T'' ψ h => h2 S T'' ψ fun i hi => h i hi, h3⟩
@@ -977,8 +973,7 @@ theorem existsUnique_hom {l : ℕ} [Fact l.Prime] (A A' : PAlg l)
     refine lift_unique hOb A'.natCast_l A'.pi _ _ ?_
     rw [← RingHom.comp_assoc, hf, hg]
   refine ⟨⟨f, hcomm⟩, hf, fun φ hφ => ?_⟩
-  apply PAlg.Hom.ext
-  exact lift_unique A.natCast_l A'.natCast_l A'.pi _ _ (hφ.trans hf.symm)
+  exact PAlg.Hom.ext (lift_unique A.natCast_l A'.natCast_l A'.pi _ _ (hφ.trans hf.symm))
 
 end GlobalTheory.CompanionTheory.PerfLift
 end -- clump:auto
@@ -1150,8 +1145,7 @@ theorem tower_hom : ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {F : Fn
     have h1 : F.Pt.map (CommRingCat.ofHom (mapU φ.1)) (F.Pt.map (CommRingCat.ofHom 𝒯.g) s.y₀) = T.2.1 :=
       congrArg Subtype.val φ.2
     have h2 : F.Pt.map (CommRingCat.ofHom ((mapU φ.1).comp 𝒯.g)) s.y₀ = T.2.1 := by
-      rw [CommRingCat.ofHom_comp, F.Pt.map_comp]
-      exact h1
+      rwa [CommRingCat.ofHom_comp, F.Pt.map_comp]
     exact h2
   refine ⟨g, hg, hall, fun u hu => ?_⟩
   obtain ⟨φ, ⟨hφg, hφk⟩, hφu⟩ := core 𝒯 T.1 g hga u hu
@@ -1159,10 +1153,8 @@ theorem tower_hom : ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {F : Fn
     refine Subtype.ext ?_
     change F.Pt.map (CommRingCat.ofHom (mapU φ)) (F.Pt.map (CommRingCat.ofHom 𝒯.g) s.y₀) = T.2.1
     have h2 : F.Pt.map (CommRingCat.ofHom ((mapU φ).comp 𝒯.g)) s.y₀ = T.2.1 := by
-      rw [hφg]
-      exact hg
-    rw [CommRingCat.ofHom_comp, F.Pt.map_comp] at h2
-    exact h2
+      rwa [hφg]
+    rwa [CommRingCat.ofHom_comp, F.Pt.map_comp] at h2
   refine ⟨⟨φ, hpt⟩, hφk, fun φ' hk => CategoryTheory.Functor.Elements.Hom.ext (hφu φ'.1 (hall φ') hk)⟩
 
 end GlobalTheory.CompanionTheory.TowerHom
@@ -1388,9 +1380,7 @@ theorem elMap_full {P P' : PAlg l ⥤ Type} (u : P ⟶ P') (hu : ∀ A, Function
   exact (NatTrans.naturality_apply u ((testι l).map f.1) X.2).trans f.2
 
 theorem elMap_faithful {P P' : PAlg l ⥤ Type} (u : P ⟶ P') : (elMap u).Faithful := by
-  refine ⟨fun {X Y} f g h => Functor.Elements.Hom.ext ?_⟩
-  have h' := congrArg (fun f => f.hom) h
-  exact h'
+  exact ⟨fun {X Y} f g h => Functor.Elements.Hom.ext (congrArg (fun f => f.hom) h)⟩
 
 variable {O : Type} [CommRing O]
 

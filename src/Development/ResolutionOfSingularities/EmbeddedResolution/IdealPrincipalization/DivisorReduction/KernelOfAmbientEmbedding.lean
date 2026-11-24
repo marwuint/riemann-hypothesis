@@ -159,15 +159,6 @@ theorem isSmoothDivisor_ker_embeddingIntoAmbient_of_eq_top (T : MarkedIdealWithB
     rw [BlowupSequenceData.boundary_length]; omega
   have htS : t ≤ (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.length := by
     rw [MarkedBlowupSequenceData.ofMarkedSequence_length]; exact ht
-  have hker : AlgebraicGeometry.Scheme.Hom.ker
-      (embeddingIntoAmbientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι
-        (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr t) =
-      ((ambientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι
-        (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr).boundaryFrom T.boundary t).get
-          ⟨j, hjt⟩ :=
-    _root_.FunctorialResolution.EmbeddedResolution.forall_le_ker_embeddingIntoAmbient_eq_boundary_get (T.boundary.get ⟨j, hj⟩).subschemeι
-      (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr T.boundary j hj
-      (AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι _).symm t htS hjt
   have hbd : (pushedMarkedSeq hres hno T j hj s hpr hmk).boundary t =
       (ambientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι
         (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr).boundaryFrom T.boundary t := by
@@ -184,19 +175,14 @@ theorem isSmoothDivisor_ker_embeddingIntoAmbient_of_eq_top (T : MarkedIdealWithB
     exact ht
   have hsnc := MarkedSequenceOfBlowups.inStrictNormalCrossingPosition_projectionToSpec_boundary effectiveCartierSupportContainsNoComponent hV
     (pushedMarkedSeq hres hno T j hj s hpr hmk) t htlen
-  have key : AlgebraicGeometry.Scheme.Hom.ker
-      (embeddingIntoAmbientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι
-        (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr t) ∈
-      (ambientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι
-        (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr).boundaryFrom T.boundary t := by
-    rw [hker]
-    exact List.getElem_mem _
   have key2 : AlgebraicGeometry.Scheme.Hom.ker
       (embeddingIntoAmbientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι
         (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr t) ∈
       (pushedMarkedSeq hres hno T j hj s hpr hmk).boundary t := by
-    rw [hbd]
-    exact key
+    rw [hbd, forall_le_ker_embeddingIntoAmbient_eq_boundary_get (T.boundary.get ⟨j, hj⟩).subschemeι
+      (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr T.boundary j hj
+      (AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι _).symm t htS hjt]
+    exact List.getElem_mem _
   exact ((inStrictNormalCrossingPosition_iff _ _).mp hsnc).1 _ key2
 
 end DivisorReduction

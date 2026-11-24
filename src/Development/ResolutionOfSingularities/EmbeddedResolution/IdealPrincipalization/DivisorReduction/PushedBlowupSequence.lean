@@ -262,8 +262,7 @@ private theorem divisorReductionShape_of_strictTransforms {T : MarkedIdealWithBo
   subst hlen
   refine ⟨D, false, h1, h2, h3, fun hbb => Bool.noConfusion hbb, fun t ht _ => h5 t ht, ?_,
     fun t ht _ => h7 t ht⟩
-  rw [MarkedSequenceOfBlowups.lastIdeal_eq]
-  exact h6
+  rwa [MarkedSequenceOfBlowups.lastIdeal_eq]
 
 private theorem divisorReductionShape_of_pullback_then_strictTransforms {T : MarkedIdealWithBoundary.{u}} (j : ℕ) (hj : j < T.boundary.length)
     (S : T.SequenceOfBlowups) (len : ℕ) (hlen : S.length = len + 1)
@@ -308,8 +307,7 @@ private theorem divisorReductionShape_of_pullback_then_strictTransforms {T : Mar
     · exact absurd rfl (hbz rfl)
     · rw [hlen] at ht
       exact h5 t (by omega)
-  · rw [MarkedSequenceOfBlowups.lastIdeal_eq, hlen]
-    exact h6
+  · rwa [MarkedSequenceOfBlowups.lastIdeal_eq, hlen]
   · rintro (_ | t) ht hbz
     · exact absurd rfl (hbz rfl)
     · rw [hlen] at ht
@@ -371,8 +369,7 @@ private theorem exists_principalizationCertificate_ker_of_isClosedImmersion {k :
           = ⇑f (⇑(kerSubschemeIso f).hom x) := by
         rw [← kerSubschemeIso_hom_comp f]
         simp
-      rw [Set.mem_preimage, hb0]
-      exact h2
+      rwa [Set.mem_preimage, hb0]
     have hZe : ZY.comap (AlgebraicGeometry.Scheme.Hom.ker f).subschemeι
         = Z.comap (kerSubschemeIso f).hom := by
       rw [hZY, ← kerSubschemeIso_hom_comp f, Scheme.IdealSheafData.comap_comp,
@@ -391,16 +388,13 @@ private theorem divisorReductionShape_of_orderAtLeastLocus_empty {T : MarkedIdea
   · intro t ht
     obtain rfl : t = 0 := Nat.le_zero.mp ht
     exact hsm
-  · intro t ht
-    exact absurd ht (Nat.not_lt_zero t)
-  · intro t ht
-    exact absurd ht (Nat.not_lt_zero t)
+  · exact fun t ht => absurd ht (Nat.not_lt_zero t)
+  · exact fun t ht => absurd ht (Nat.not_lt_zero t)
   · have hz : orderAtLeastLocus (S.ideal 0) T.mult = (∅ : Set ↥(S.schemeAt 0)) := by
       rw [MarkedSequenceOfBlowups.ideal_zero]
       exact orderAtLeastLocus_comap_iso_eq_empty S.isoZero T.ideal T.mult hcs
     rw [hz, Set.empty_inter]
-  · intro t ht
-    exact absurd ht (Nat.not_lt_zero t)
+  · exact fun t ht => absurd ht (Nat.not_lt_zero t)
 
 private theorem ker_embeddingIntoAmbient_succ_eq_strictTransform (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u}) [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ)
@@ -1117,8 +1111,7 @@ theorem exists_smoothDivisorSeq_divisorFamily_canonicalAlgorithmRules
       have hfin : orderAtLeastLocus ((L (DivisorReduction.restrictToDivisor T j hj)).ideal
           (L (DivisorReduction.restrictToDivisor T j hj)).length) T.mult = ∅ := by
         have hr := hL.resolves (DivisorReduction.restrictToDivisor T j hj) hvl hdimlow
-        rw [MarkedSequenceOfBlowups.isResolution_iff, MarkedSequenceOfBlowups.lastIdeal_eq] at hr
-        exact hr
+        rwa [MarkedSequenceOfBlowups.isResolution_iff, MarkedSequenceOfBlowups.lastIdeal_eq] at hr
       rw [heq hmk0]
       exact divisorReductionShape_ambientBlowupSeq hres hfacts hshape T hV hO hD j hj htop hvl
         (L (DivisorReduction.restrictToDivisor T j hj)) hpr hmk0
@@ -1131,8 +1124,7 @@ theorem exists_smoothDivisorSeq_divisorFamily_canonicalAlgorithmRules
       have hfin : orderAtLeastLocus ((L (DivisorReduction.restrictTwistedToDivisor T j hj)).ideal
           (L (DivisorReduction.restrictTwistedToDivisor T j hj)).length) T.mult = ∅ := by
         have hr := hL.resolves (DivisorReduction.restrictTwistedToDivisor T j hj) hvl hdimlow
-        rw [MarkedSequenceOfBlowups.isResolution_iff, MarkedSequenceOfBlowups.lastIdeal_eq] at hr
-        exact hr
+        rwa [MarkedSequenceOfBlowups.isResolution_iff, MarkedSequenceOfBlowups.lastIdeal_eq] at hr
       rw [heq hmk0]
       exact divisorReductionShape_prependedAmbientBlowupSeq hres hfacts hshape T hV hO hD j hj hne hb hvl
         (L (DivisorReduction.restrictTwistedToDivisor T j hj)) hpr hmk0

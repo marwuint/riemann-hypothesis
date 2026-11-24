@@ -92,8 +92,7 @@ theorem fam_cont {n : ℕ} {H : G D n → ℝ≥0} (hH : IsHt H) {φ : G D n →
   refine Continuous.mul (Continuous.cpow ?_ ?_ ?_) (hφ.comp continuous_snd)
   · exact Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (hH.1.comp continuous_snd))
   · exact (Complex.continuous_ofReal.comp continuous_fst).sub continuous_const
-  · intro u
-    exact Complex.ofReal_mem_slitPlane.mpr (NNReal.coe_pos.mpr (hH.2.1 u.2))
+  · exact fun u => Complex.ofReal_mem_slitPlane.mpr (NNReal.coe_pos.mpr (hH.2.1 u.2))
 
 theorem law_sub {n : ℕ} {s : ℂ} {φ φ' : G D n → ℂ} {χ : (AE D)ˣ →* Circle} (h : IsLaw χ s φ) (h' : IsLaw χ s φ') :
     IsLaw χ s (φ - φ') := by
@@ -131,14 +130,12 @@ theorem exists_bound {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC
   have hcont : ContinuousOn (fun c => ‖s c‖ / (H c : ℝ) ^ (σ + p / 2)) C := by
     refine ContinuousOn.div hc.norm.continuousOn ?_ ?_
     · exact ((NNReal.continuous_coe.comp hH.1).rpow_const (fun c => Or.inl (NNReal.coe_pos.mpr (hH.2.1 c)).ne')).continuousOn
-    · intro c _
-      exact (Real.rpow_pos_of_pos (NNReal.coe_pos.mpr (hH.2.1 c)) _).ne'
+    · exact fun c _ => (Real.rpow_pos_of_pos (NNReal.coe_pos.mpr (hH.2.1 c)) _).ne'
   obtain ⟨δ, hδ⟩ := hC.exists_bound_of_continuousOn hcont
   refine ⟨δ, law_bound hH hcov hs (fun c hc => ?_)⟩
   have hpos := Real.rpow_pos_of_pos (NNReal.coe_pos.mpr (hH.2.1 c)) (σ + p / 2)
   have := hδ c hc
-  rw [Real.norm_eq_abs, abs_div, abs_norm, abs_of_pos hpos, div_le_iff₀ hpos] at this
-  exact this
+  rwa [Real.norm_eq_abs, abs_div, abs_norm, abs_of_pos hpos, div_le_iff₀ hpos] at this
 
 theorem eis_bound (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ σ ∈ Ioc ((p : ℝ) / 2) (p / 2 + 1), ∀ h ∈ C, ∀ (s : G D p → ℂ) (δ : ℝ),
@@ -187,8 +184,7 @@ theorem eventually_small {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)}
   have hFc : ContinuousOn F (Icc ((p : ℝ) / 2) (p / 2 + 1) ×ˢ univ) := by
     refine ContinuousOn.div hc.norm ?_ ?_
     · exact (Continuous.rpow (NNReal.continuous_coe.comp (hH.1.comp continuous_snd)) (continuous_fst.add continuous_const) (fun u => Or.inl (hHpos u.2).ne')).continuousOn
-    · intro u _
-      exact (Real.rpow_pos_of_pos (hHpos u.2) _).ne'
+    · exact fun u _ => (Real.rpow_pos_of_pos (hHpos u.2) _).ne'
   have hP : ∀ c ∈ C, ∀ᶠ z : ℝ × G D p in 𝓝 (((p : ℝ) / 2), c), z.1 ∈ Icc ((p : ℝ) / 2) (p / 2 + 1) → F (z.1, z.2) < ε := by
     intro c _
     have hmem : (((p : ℝ) / 2), c) ∈ Icc ((p : ℝ) / 2) (p / 2 + 1) ×ˢ (univ : Set (G D p)) := ⟨⟨le_rfl, by linarith⟩, mem_univ _⟩
@@ -262,8 +258,7 @@ theorem rho_bound {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : 
   refine ⟨δ, fun g => ?_⟩
   have := hδ g
   have e : ((p : ℝ) / 2 + p / 2) = ((p : ℕ) : ℝ) := by ring
-  rw [e, Real.rpow_natCast] at this
-  exact this
+  rwa [e, Real.rpow_natCast] at this
 
 theorem res_bound (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C' : Set (G D p)} (hC' : IsCompact C') :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ (f : G D p → ℂ) (δ : ℝ), (∀ g, ‖f g‖ ≤ δ * (H g : ℝ) ^ p) →
@@ -272,8 +267,7 @@ theorem res_bound (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : I
   refine ⟨B, hB0, fun f δ hf σ hσ h hh => ?_⟩
   obtain ⟨_, hb⟩ := hB σ hσ h hh _ δ (fam_bound hH hf σ)
   unfold res
-  rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by linarith [hσ.1])]
-  exact hb
+  rwa [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by linarith [hσ.1])]
 
 theorem res_tendsto (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {f : G D p → ℂ} (hf : IsRho f) (h : G D p) :

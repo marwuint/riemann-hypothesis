@@ -60,13 +60,11 @@ def LeafKumMuSurjInj : Prop := LeafKumMuInj
 
 theorem sec_res_comp {R : Type} [CommRing R] (F : Shv R) {W V U : Scheme.{0}} (g : W ⟶ V) (f : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.res f x) = Sec.res (g ≫ f) x := by
-  have h := congrArg (fun m => ModuleCat.Hom.hom m x) (F.obj.map_comp f.op g.op)
-  exact h.symm
+  exact (congrArg (fun m => ModuleCat.Hom.hom m x) (F.obj.map_comp f.op g.op)).symm
 
 theorem sec_map_res {R : Type} [CommRing R] {F G : Shv R} (κ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.map κ (Sec.res g x) = Sec.res g (Sec.map κ x) := by
-  have h := congrArg (fun m => ModuleCat.Hom.hom m x) (κ.hom.naturality g.op)
-  exact h
+  exact congrArg (fun m => ModuleCat.Hom.hom m x) (κ.hom.naturality g.op)
 
 theorem isSheaf_types {R : Type} [CommRing R] (F : Shv R) :
     Presieve.IsSheaf Scheme.etaleTopology (F.obj ⋙ forget _) :=
@@ -84,8 +82,7 @@ theorem sec_glue {R : Type} [CommRing R] (F : Shv R) {U : Scheme.{0}} (S : Sieve
   let x : Presieve.FamilyOfElements (F.obj ⋙ forget _) S.arrows := fun _ f hf => t f hf
   have hx : x.Compatible := by
     rw [Presieve.compatible_iff_sieveCompatible]
-    intro V W f g hf
-    exact ht g f hf
+    exact fun V W f g hf => ht g f hf
   exact ⟨((isSheaf_types F) S hS).amalgamate x hx, fun V f hf => ((isSheaf_types F) S hS).valid_glue hx f hf⟩
 
 def LeafKumMuSurjUnit : Prop := ∀ (q : ℕ) (U : Scheme.{0}) (s : Sec Gm U),
@@ -136,8 +133,7 @@ theorem LeafKumMuSurjUnit_pf : LeafKumMuSurjUnit := by
   have hnat : ∀ {V : Scheme.{0}} (x : P.obj (op V)),
       (LateralTheory.E.H2CurveOrder.LeafKumSeqPf.powGm q).hom.app (op V) (η.app (op V) x) = η.app (op V) (pw.app (op V) x) := by
     intro V x
-    have h := congrArg (fun m => m.app (op V) x) (toSheafify_naturality Scheme.etaleTopology pw)
-    exact h.symm
+    exact (congrArg (fun m => m.app (op V) x) (toSheafify_naturality Scheme.etaleTopology pw)).symm
   have hx : ∀ {V : Scheme.{0}} (f : V ⟶ U) (hf : Presheaf.imageSieve η s f),
       η.app (op V) (pw.app (op V) (Presheaf.localPreimage η s f hf)) = η.app (op V) 0 := by
     intro V f hf

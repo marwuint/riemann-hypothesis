@@ -91,7 +91,6 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 
 theorem isLocalRing_regAt {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (p : Cpt ξ) :
     IsLocalRing (regAt ξ p) := by
-  show IsLocalRing (genMap ξ p).range
   exact IsLocalRing.of_surjective' (genMap ξ p).rangeRestrict (genMap ξ p).rangeRestrict_surjective
 
 theorem unitAt_iff_of_dominated {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω']
@@ -168,8 +167,7 @@ theorem fin_closure : ∀ (A : Type) [CommRing A] [IsDomain A] [Algebra.EssFinit
   · intro y hy
     obtain ⟨m, hm⟩ := IsIntegral.exists_multiple_integral_of_isLocalization S y (hy : IsIntegral A y)
     have h : m • y ∈ Submodule.span A₀ (g : Set L) := by
-      rw [hg]
-      exact hm
+      rwa [hg]
     have h' : (m.1 : A) • y ∈ Submodule.span A (g : Set L) := Submodule.span_le_restrictScalars A₀ A _ h
     obtain ⟨w, hw⟩ := (IsLocalization.map_units A m).exists_left_inv
     have := Submodule.smul_mem _ w h'
@@ -381,8 +379,7 @@ theorem mem_of_isIntegral_of_inv_mem {Ω : Type} [Field Ω] (R : Subring Ω) {v 
       refine Finset.sum_congr rfl fun i hi => ?_
       rw [mul_assoc, key i m (by simp at hi; omega)]
     rw [e]
-    refine neg_mem (sum_mem fun i _ => mul_mem ?_ (pow_mem hu _))
-    exact (p.coeff i).2
+    exact neg_mem (sum_mem fun i _ => mul_mem (p.coeff i).2 (pow_mem hu _))
 
 end PositivityTheory.HtPt.Mb.LNormChart.ChNorm
 
@@ -396,8 +393,7 @@ theorem chRing_join_iff {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra 
   have hrat : ∀ q : κ × (κ ⊕ Fin n), joinCo (RingHom.id Ω) x z q / joinCo (RingHom.id Ω) x z (c, Sum.inl c) =
       x q.1 / x c * (z q.2 / x c ^ d) := by
     intro q
-    simp only [joinCo, RingHom.id_apply, hz c]
-    exact mul_div_mul_comm _ _ _ _
+    simpa only [joinCo, RingHom.id_apply, hz c] using mul_div_mul_comm _ _ _ _
   have hT : chRing o (joinCo (RingHom.id Ω) x z) (c, Sum.inl c) =
       Algebra.adjoin o (Set.range (fun j => x j / x c) ∪ Set.range (fun k => z k / x c ^ d)) := by
     apply le_antisymm
@@ -411,13 +407,11 @@ theorem chRing_join_iff {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra 
       · have h1 : joinCo (RingHom.id Ω) x z (j, Sum.inl c) / joinCo (RingHom.id Ω) x z (c, Sum.inl c) ∈
             chRing o (joinCo (RingHom.id Ω) x z) (c, Sum.inl c) :=
           Algebra.subset_adjoin (Set.mem_range_self (j, Sum.inl c))
-        rw [hrat, hz c, div_self hd, mul_one] at h1
-        exact h1
+        rwa [hrat, hz c, div_self hd, mul_one] at h1
       · have h1 : joinCo (RingHom.id Ω) x z (c, k) / joinCo (RingHom.id Ω) x z (c, Sum.inl c) ∈
             chRing o (joinCo (RingHom.id Ω) x z) (c, Sum.inl c) :=
           Algebra.subset_adjoin (Set.mem_range_self (c, k))
-        rw [hrat, div_self hc, one_mul] at h1
-        exact h1
+        rwa [hrat, div_self hc, one_mul] at h1
   rw [hT]
 
 end PositivityTheory.HtPt.Mb.LNormChart.ChNorm
@@ -427,8 +421,7 @@ namespace PositivityTheory.HtPt.Mb.LNormChart.ChNorm
 theorem joinCo_div {Ω : Type} [Field Ω] {κ : Type} (x : κ → Ω) {d n : ℕ} (z : κ ⊕ Fin n → Ω)
     (hz : ∀ c, z (Sum.inl c) = x c ^ d) (c : κ) (q : κ × (κ ⊕ Fin n)) :
     joinCo (RingHom.id Ω) x z q / joinCo (RingHom.id Ω) x z (c, Sum.inl c) = x q.1 / x c * (z q.2 / x c ^ d) := by
-  simp only [joinCo, RingHom.id_apply, hz c]
-  exact mul_div_mul_comm _ _ _ _
+  simpa only [joinCo, RingHom.id_apply, hz c] using mul_div_mul_comm _ _ _ _
 
 theorem join_chart_normalisation : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (d n : ℕ) (z : κ ⊕ Fin n → Ω) (M' : PModel o (joinCo (RingHom.id Ω) x z)), (∀ c, z (Sum.inl c) = x c ^ d) → (∀ c, x c ≠ 0 → ∀ a : Ω, IsIntegral (chRing o x c) a ↔ a ∈ Submodule.span (chRing o x c) (Set.range fun k => z k / x c ^ d)) → ∀ c, x c ≠ 0 → (∀ a : Ω, a ∈ chRing o (joinCo (RingHom.id Ω) x z) (c, Sum.inl c) ↔ IsIntegral (chRing o x c) a) ∧ ∀ p' : Cpt M'.ξ, (∀ j, x j / x c ∈ regAt M'.ξ p') → InChart M'.ξ (joinCo (RingHom.id Ω) x z) (c, Sum.inl c) p' := by
   intro o _ Ω _ _ κ _ x d n z M' hz hspan c hc
@@ -458,8 +451,7 @@ theorem join_chart_normalisation : ∀ (o : Type) [CommRing o] (Ω : Type) [Fiel
       · rintro _ ⟨k, rfl⟩
         exact Algebra.subset_adjoin (Or.inr ⟨k, rfl⟩)
       · exact zero_mem _
-      · intro a b _ _ ha hb
-        exact add_mem ha hb
+      · exact fun a b _ _ ha hb => add_mem ha hb
       · intro s b _ hb
         rw [Subalgebra.smul_def]
         exact mul_mem (hSle s.2) hb
@@ -490,8 +482,7 @@ theorem join_chart_normalisation : ∀ (o : Type) [CommRing o] (Ω : Type) [Fiel
       rw [e]
       exact mul_mem (hzr k) hv
     refine ⟨?_, fun q => ?_⟩
-    · simp only [joinCo, RingHom.id_apply, hz c]
-      exact mul_ne_zero hc hd
+    · simpa only [joinCo, RingHom.id_apply, hz c] using mul_ne_zero hc hd
     · rw [joinCo_div x z hz c q]
       exact mul_mem (hp' q.1) (hy q.2)
 
@@ -752,10 +743,8 @@ theorem normAt_of_charts (hD : Dominates M'.ξ M.ξ f (algebraMap Ω Ω'))
     · rintro _ ⟨a, ha, rfl⟩ h0 hinv
       have hu : unitAt M'.ξ p' (i₀ a) := ⟨h0, hl.1 a ha, hinv⟩
       exact ⟨a⁻¹, (hl.2 a ha hu).2.2, map_inv₀ _ _⟩
-    · intro t ht
-      exact hN p' t (isIntegral_mono' hRD t ht)
-    · intro b hb
-      exact isIntegral_mono _ _ hAR b ((hB c hc b).1 hb)
+    · exact fun t ht => hN p' t (isIntegral_mono' hRD t ht)
+    · exact fun b hb => isIntegral_mono _ _ hAR b ((hB c hc b).1 hb)
     · intro a ha
       obtain ⟨u, hu, v, hv, hvu, rfl⟩ := (hr'.2 a).1 ha
       exact ⟨u, hu, v, hv, hvu.1, hvu.2.2, rfl⟩

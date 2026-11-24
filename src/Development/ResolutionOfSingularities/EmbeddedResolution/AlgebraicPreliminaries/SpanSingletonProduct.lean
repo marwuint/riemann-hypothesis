@@ -56,8 +56,7 @@ private theorem prod_notMem_of_isPrime {R : Type*} [CommRing R] {ι : Type*} [De
       intro _ h1
       rw [Finset.prod_empty] at h1
       refine hI.ne_top ?_
-      rw [Ideal.eq_top_iff_one]
-      exact h1
+      rwa [Ideal.eq_top_iff_one]
   | @insert a u ha ih =>
       intro h hmem
       rw [Finset.prod_insert ha] at hmem
@@ -133,7 +132,6 @@ theorem map_eq_map_of_map_eq_map {R S T : Type*} [CommRing R] [CommRing S]
   have he : ((IsLocalization.algEquiv M S T).toAlgHom.toRingHom).comp (algebraMap R S)
       = algebraMap R T :=
     RingHom.ext fun r => by
-      show (IsLocalization.algEquiv M S T) (algebraMap R S r) = algebraMap R T r
       exact (IsLocalization.algEquiv M S T).commutes r
   have hmap : ∀ K : Ideal R, Ideal.map (algebraMap R T) K =
       Ideal.map ((IsLocalization.algEquiv M S T).toAlgHom.toRingHom)
@@ -178,8 +176,7 @@ theorem residue_tmul_D_mul_of_mem_maximalIdeal (k : Type*) [CommRing k] (A : Typ
     intro a
     rw [Algebra.smul_def, mul_one, IsLocalRing.ResidueField.algebraMap_eq]
   have hx0 : IsLocalRing.residue A x = 0 := by
-    rw [IsLocalRing.residue_eq_zero_iff]
-    exact hx
+    rwa [IsLocalRing.residue_eq_zero_iff]
   have hstep : IsLocalRing.residue A c •
         ((1 : IsLocalRing.ResidueField A) ⊗ₜ[A] KaehlerDifferential.D k A x)
       = (IsLocalRing.residue A c * 1) ⊗ₜ[A] KaehlerDifferential.D k A x := rfl

@@ -85,8 +85,7 @@ theorem arith_of_trdeg {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype 
       simp [ratioPtL, ratioPt, hc] at h1⟩)
     (by rw [mCoordIdeal_ratioPtL y _ hc]; exact hhor)
   have hL : Algebra.trdeg ℤ (ratioField y c) = ((d : ℕ) : Cardinal) := by
-    rw [ratioField, trdeg_int_adjoin]
-    exact hd
+    rwa [ratioField, trdeg_int_adjoin]
   rw [mCoordIdeal_ratioPtL y _ hc, hL] at htr
   have : (mCoordIdeal y).IsPrime := RingHom.ker_isPrime _
   have hA := IntDomainDim.full (MRing ι ⧸ mCoordIdeal y) (algebraMap_injective _ hhor)
@@ -106,15 +105,13 @@ theorem trdeg_lt {Ω : Type} [Field Ω] [CharZero Ω] (L' L : Subfield Ω) (h : 
     rintro ⟨p, hp0, hp⟩
     have h1 : Polynomial.eval₂ L'.subtype t p = 0 := by
       have := congrArg L.subtype hp
-      rw [Polynomial.aeval_def, Polynomial.hom_eval₂, map_zero] at this
-      exact this
+      rwa [Polynomial.aeval_def, Polynomial.hom_eval₂, map_zero] at this
     have h2 : ∀ n, (p.map L'.subtype).IsRoot (σ n t) := fun n => by
       have := congrArg (σ n) h1
       rw [Polynomial.hom_eval₂, map_zero] at this
       have e : (σ n).comp L'.subtype = L'.subtype := RingHom.ext fun x => hσ n x x.2
       rw [e] at this
-      rw [Polynomial.IsRoot, Polynomial.eval_map]
-      exact this
+      rwa [Polynomial.IsRoot, Polynomial.eval_map]
     refine Polynomial.map_ne_zero (f := L'.subtype) hp0 (Polynomial.eq_zero_of_infinite_isRoot _ ?_)
     exact Set.infinite_of_injective_forall_mem hinj h2
   have hadd := trdeg_add_eq ℤ L' (A := L)
@@ -256,8 +253,7 @@ theorem PositivityTheory.Xgp.t_fl_arith : ∀ (Ψ : Type) [Fintype Ψ] [Decidabl
   have hL : Algebra.trdeg ℤ (Subfield.closure (coneRatios (yFl Ψ N) (leadIdx Ψ N))) =
       ((dimFl Ψ N : ℕ) : Cardinal) := by
     have h := trdeg_closure_of_rat _ (FlagRatioTrdeg.full ℚ Ψ N)
-    rw [coneRatios_eq]
-    exact h
+    rwa [coneRatios_eq]
   have hy : ∀ p, yFl Ψ N p = algebraMap _ _ (yP p) := fun _ => rfl
   obtain ⟨d, hd, hd'⟩ := trdeg_lt (Subfield.closure (coneRatios (yFl Ψ N ∘ v) fun q => leadIdx Ψ N q.1)) _
     (Subfield.closure_mono (t := coneRatios (yFl Ψ N) (leadIdx Ψ N)) (by rintro _ ⟨p, rfl⟩; exact ⟨v p, rfl⟩))

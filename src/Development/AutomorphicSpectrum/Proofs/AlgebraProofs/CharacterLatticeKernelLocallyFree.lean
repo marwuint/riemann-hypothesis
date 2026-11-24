@@ -92,8 +92,7 @@ theorem smul_mem_std (R : Subalgebra o Ω) {m : ℕ} {A : AddSubgroup (Fin m →
     · subst hk; simpa using R.one_mem
     · simpa [Pi.single_apply, hk] using R.zero_mem
   have h1 : w • (Pi.single j 1 : Fin m → Ω) ∈ A := h (AddSubgroup.mem_map.2 ⟨_, h0, rfl⟩)
-  have h2 := (mem_dotDual_iff R).1 hv _ h1
-  simpa [smul_dotProduct] using h2
+  simpa [smul_dotProduct] using (mem_dotDual_iff R).1 hv _ h1
 
 theorem core (R : Subalgebra o Ω) {a b c : ℕ} (W : AddSubgroup (Fin a → Ω))
     (O : AddSubgroup (Fin c → Ω)) (Gam : AddSubgroup ((Fin a → Ω) × (Fin b → Ω)))
@@ -121,8 +120,7 @@ theorem core (R : Subalgebra o Ω) {a b c : ℕ} (W : AddSubgroup (Fin a → Ω)
       exact ⟨z, AddSubgroup.mem_inf.2 ⟨hz, AddSubgroup.mem_prod.2 ⟨hv, trivial⟩⟩⟩
     · intro z
       constructor
-      · intro h
-        exact (d3 z).1 (AddSubgroup.mem_inf.1 h).1
+      · exact fun h => (d3 z).1 (AddSubgroup.mem_inf.1 h).1
       · intro h
         exact AddSubgroup.mem_inf.2 ⟨(d3 z).2 h, AddSubgroup.mem_prod.2 ⟨H.zero_mem, trivial⟩⟩
     · intro z hz
@@ -139,8 +137,7 @@ theorem core (R : Subalgebra o Ω) {a b c : ℕ} (W : AddSubgroup (Fin a → Ω)
         (LinearMap.inl Ω (Fin a → Ω) (Fin b → Ω)).toAddMonoidHom = W := by
       ext x
       constructor
-      · intro h
-        exact (g3 x).1 (AddSubgroup.mem_inf.1 h).1
+      · exact fun h => (g3 x).1 (AddSubgroup.mem_inf.1 h).1
       · intro h
         exact AddSubgroup.mem_inf.2 ⟨(g3 x).2 h, AddSubgroup.mem_prod.2 ⟨trivial, H.zero_mem⟩⟩
     have e2 : (Gam ⊓ (⊤ : AddSubgroup _).prod H).map

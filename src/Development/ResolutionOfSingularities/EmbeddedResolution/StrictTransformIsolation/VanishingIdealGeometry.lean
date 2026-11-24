@@ -183,8 +183,7 @@ private theorem radical_ker_eq_of_isReduced {A B : Scheme.{u}} (g : A ⟶ B)
 private theorem isIso_pullback_snd_of_le {X : Scheme.{u}} (H J : X.IdealSheafData)
     (h : H ≤ J) : IsIso (Limits.pullback.snd H.subschemeι J.subschemeι) := by
   have hker : Scheme.Hom.ker H.subschemeι ≤ Scheme.Hom.ker J.subschemeι := by
-    rw [Scheme.IdealSheafData.ker_subschemeι, Scheme.IdealSheafData.ker_subschemeι]
-    exact h
+    rwa [Scheme.IdealSheafData.ker_subschemeι, Scheme.IdealSheafData.ker_subschemeι]
   have hβfac : AlgebraicGeometry.IsClosedImmersion.lift H.subschemeι J.subschemeι hker
       ≫ H.subschemeι = J.subschemeι :=
     AlgebraicGeometry.IsClosedImmersion.lift_fac _ _ hker
@@ -257,8 +256,7 @@ private theorem le_comap_vanishingIdeal_of_preimage_subset {W : Scheme.{u}} (U :
     H ≤ (Scheme.IdealSheafData.vanishingIdeal T).comap U.ι := by
   rw [comap_opens_vanishingIdeal_eq_vanishingIdeal_support U T]
   refine le_vanishingIdeal_of_subset H _ ?_
-  rw [support_comap_opens_vanishingIdeal]
-  exact hTsubH
+  rwa [support_comap_opens_vanishingIdeal]
 
 private theorem comap_subschemeι_comap_vanishingIdeal {W : Scheme.{u}} (U : W.Opens)
     (H : (U.toScheme).IdealSheafData)
@@ -269,8 +267,7 @@ private theorem comap_subschemeι_comap_vanishingIdeal {W : Scheme.{u}} (U : W.O
       Scheme.IdealSheafData.vanishingIdeal S := by
   rw [comap_opens_vanishingIdeal_eq_vanishingIdeal_support U T]
   refine comap_vanishingIdeal_subschemeι H _ ?_ S ?_
-  · rw [support_comap_opens_vanishingIdeal]
-    exact hTsubH
+  · rwa [support_comap_opens_vanishingIdeal]
   · rw [hS, support_comap_opens_vanishingIdeal, ← Set.preimage_comp]
     rfl
 
@@ -429,8 +426,7 @@ theorem orderAt_vanishingIdeal_eq_one {k : Type u} [Field k] [CharZero k] {W : S
           (U.ι.base y) := by
         rw [key y]; exact le_top
       have h7 := (FunctorialResolution.EmbeddedResolution.one_le_orderAt_iff_mem_support _ _).1 h6
-      rw [hZs] at h7
-      exact h7
+      rwa [hZs] at h7
     obtain ⟨C, hC, hxC⟩ := exists_irreducibleComponent_mem (↥W) x
     refine hcomp C hC ?_
     intro z hzC

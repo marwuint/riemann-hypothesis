@@ -134,8 +134,7 @@ def cocycleKer (ρ : Representation k G V) (f : G → V)
     rw [cocycle_map_inv hf, ha', map_zero, neg_zero]
 
 theorem mem_cocycleKer (hf : ∀ g h : G, f (g * h) = f g + ρ g (f h)) (g : G) :
-    g ∈ cocycleKer ρ f hf ↔ ρ g = 1 ∧ f g = 0 := by
-  exact Iff.rfl
+    g ∈ cocycleKer ρ f hf ↔ ρ g = 1 ∧ f g = 0 := Iff.rfl
 
 theorem cocycle_mul_mem (hf : ∀ g h : G, f (g * h) = f g + ρ g (f h)) (g : G) {c : G}
     (hc : c ∈ cocycleKer ρ f hf) : f (g * c) = f g := by
@@ -191,8 +190,7 @@ theorem isOpen_cocycleKer {k G : Type} [CommRing k] [Group G] [TopologicalSpace 
   · rw [SetLike.mem_coe, mem_stabilizer, map_one]
     rfl
   · rintro g ⟨hg1, hg2⟩
-    refine ⟨LinearMap.ext fun v => ?_, hg2⟩
-    exact (mem_stabilizer A.ρ v g).1 (Set.mem_iInter.1 hg1 v)
+    exact ⟨LinearMap.ext fun v => ((mem_stabilizer A.ρ v g).1 (Set.mem_iInter.1 hg1 v)), hg2⟩
 
 theorem finite_cocycles : ∀ (k G : Type) [CommRing k] [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] (A : Rep.{0} k G) [IsDiscreteRep A], Finite A.V →
@@ -246,8 +244,7 @@ theorem oneCochainFun_cocycle {k G : Type} [CommRing k] [Group G] [TopologicalSp
       ∑ j : Fin 2, (-1 : k) ^ ((j : ℕ) + 1) •
         (c : (Fin 1 → G) → A) (Fin.contractNth j (· * ·) ![g, h]) = 0 := by
     have h1 := congrFun (congrArg Subtype.val hc) ![g, h]
-    rw [dLocallyConstant_hom_apply] at h1
-    exact h1
+    rwa [dLocallyConstant_hom_apply] at h1
   rw [Fin.sum_univ_two] at key
   have e1 : (fun i : Fin 1 => ![g, h] i.succ) = fun _ => h := funext fun i => by
     rw [Subsingleton.elim i 0]
@@ -258,12 +255,8 @@ theorem oneCochainFun_cocycle {k G : Type} [CommRing k] [Group G] [TopologicalSp
   have e3 : Fin.contractNth (1 : Fin 2) (· * ·) ![g, h] = fun _ => g := funext fun i => by
     rw [Subsingleton.elim i 0]
     rfl
-  have p0 : (-1 : k) ^ (((0 : Fin 2) : ℕ) + 1) = -1 := by
-    show (-1 : k) ^ 1 = -1
-    exact pow_one _
-  have p1 : (-1 : k) ^ (((1 : Fin 2) : ℕ) + 1) = 1 := by
-    show (-1 : k) ^ 2 = 1
-    exact neg_one_sq
+  have p0 : (-1 : k) ^ (((0 : Fin 2) : ℕ) + 1) = -1 := pow_one _
+  have p1 : (-1 : k) ^ (((1 : Fin 2) : ℕ) + 1) = 1 := neg_one_sq
   rw [e1, e2, e3, p0, p1, neg_one_smul, one_smul] at key
   show (c : (Fin 1 → G) → A) (fun _ => g * h) =
     (c : (Fin 1 → G) → A) (fun _ => g) + A.ρ g ((c : (Fin 1 → G) → A) (fun _ => h))
@@ -339,8 +332,7 @@ theorem openSubgroups_finite_of_fields_finite :
     haveI : FiniteDimensional F (φ H) := LinearEquiv.finiteDimensional e.toLinearEquiv
     refine ⟨inferInstance, (isUnramifiedOutside_iff_le_maxUnramifiedOutside S).2
       (IntermediateField.lift_le _), ?_⟩
-    rw [← e.toLinearEquiv.finrank_eq, IntermediateField.finrank_eq_fixingSubgroup_index, hfix]
-    exact hHN
+    rwa [← e.toLinearEquiv.finrank_eq, IntermediateField.finrank_eq_fixingSubgroup_index, hfix]
   · intro H₁ h₁ H₂ h₂ h
     have h' := IntermediateField.lift_injective K h
     exact (key H₁ h₁.1).symm.trans ((congrArg IntermediateField.fixingSubgroup h').trans (key H₂ h₂.1))
@@ -443,8 +435,7 @@ private lemma isLocalRing_zmod_prime_pow (p m : ℕ) [hp : Fact p.Prime] (hm : 0
     rw [← ZMod.natCast_zmod_val b] at hb ⊢
     rw [ZMod.isUnit_iff_coprime, Nat.coprime_pow_right_iff hm, Nat.coprime_comm,
       Nat.Prime.coprime_iff_not_dvd hp.out, not_not] at hb
-    rw [map_natCast, ZMod.natCast_eq_zero_iff]
-    exact hb
+    rwa [map_natCast, ZMod.natCast_eq_zero_iff]
   have h1 := congrArg φ (add_sub_cancel a 1)
   rw [map_add (f := _), key a hcon.1, key _ hcon.2, add_zero, map_one] at h1
   exact zero_ne_one h1

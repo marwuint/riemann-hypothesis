@@ -101,8 +101,7 @@ theorem irreducible_pi (h : LF O ϖ nrm q) :
       obtain ⟨o, hoO, hao⟩ := (h.lt_one a).1 ha1
       have hab' : (ϖ : F) = (a : F) * (b : F) := congrArg Subtype.val hab
       have hoI : o ∈ 𝒪[F] := by
-        rw [← h.O_eq]
-        exact hoO
+        rwa [← h.O_eq]
       have hob : (⟨o, hoI⟩ : 𝒪[F]) * b = 1 := by
         apply Subtype.ext
         show o * (b : F) = 1
@@ -115,15 +114,12 @@ theorem val_eq_pow_of_int (h : LF O ϖ nrm q) {x : F} (hx : x ≠ 0)
     (hxO : ValuativeRel.valuation F x ≤ 1) :
     ∃ n : ℕ, ValuativeRel.valuation F x = ValuativeRel.valuation F ϖ ^ n := by
   have hxI : x ∈ 𝒪[F] := (Valuation.mem_integer_iff _ _).2 hxO
-  have hx' : (⟨x, hxI⟩ : 𝒪[F]) ≠ 0 := by
-    intro h0
-    exact hx (congrArg Subtype.val h0)
+  have hx' : (⟨x, hxI⟩ : 𝒪[F]) ≠ 0 := fun h0 => hx (congrArg Subtype.val h0)
   obtain ⟨n, u, hu⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx' (irreducible_pi h)
   refine ⟨n, ?_⟩
   have hv := congrArg (fun y : 𝒪[F] => ValuativeRel.valuation F (y : F)) hu
   have hu1 : ValuativeRel.valuation F ((u : 𝒪[F]) : F) = 1 := (isUnit_iff_valuation_eq_one' _).1 u.isUnit
-  simp only [MulMemClass.coe_mul, SubmonoidClass.coe_pow, map_mul, map_pow, hu1, one_mul] at hv
-  exact hv
+  simpa only [MulMemClass.coe_mul, SubmonoidClass.coe_pow, map_mul, map_pow, hu1, one_mul] using hv
 
 theorem val_eq_zpow (h : LF O ϖ nrm q) {x : F} (hx : x ≠ 0) :
     ∃ e : ℤ, ValuativeRel.valuation F x = ValuativeRel.valuation F ϖ ^ e := by

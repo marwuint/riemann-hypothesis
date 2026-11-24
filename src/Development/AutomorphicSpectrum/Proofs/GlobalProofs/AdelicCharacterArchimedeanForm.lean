@@ -178,16 +178,14 @@ theorem exists_dual {F : Type} [Field F] [NumberField F] (ρ : InfinitePlace F �
   have ha : ∀ c, q c = Algebra.trace ℚ F (a * c) := by
     intro c
     have h1 := LinearMap.BilinForm.toDual_def (traceForm_nondegenerate ℚ F) (m := a) (n := c)
-    rw [LinearEquiv.apply_symm_apply, Algebra.traceForm_apply] at h1
-    exact h1
+    rwa [LinearEquiv.apply_symm_apply, Algebra.traceForm_apply] at h1
   refine ⟨a, fun w => ?_⟩
   have h0 : (fun w => α w - ρ w a) = 0 := by
     refine places_indep ρ hρ _ fun c => ?_
     simp only [sub_mul, Finset.sum_sub_distrib]
     rw [hq c, ha c, ← htr (a * c)]
     simp [map_mul]
-  have h1 := congrFun h0 w
-  simpa [sub_eq_zero] using h1
+  simpa [sub_eq_zero] using congrFun h0 w
 
 theorem exists_char_data : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ (ρ : InfinitePlace F → (F →+* ℝ)) (e : Ainf F ≃+* (InfinitePlace F → ℝ)), (∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) → IsHomeomorph e → (∀ x w, e (algebraMap F (Ainf F) x) w = ρ w x) → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∃ a : F, a ≠ 0 ∧ (∀ x : Ainf F, ψ (pairA F x 0) = Complex.exp (2 * Real.pi * Complex.I * ((∑ w, ρ w a * e x w : ℝ) : ℂ))) ∧ ∃ ψf : AddChar (Af F) ℂ, GlobalTheory.CompanionTheory.SW.Core.IsStdChar F ψf ∧ ∀ y : Af F, ψ (pairA F 0 y) = ψf (algebraMap F (Af F) a * y) := by
   intro F _ _ hF ρ e hρ he heρ ψ hψ
@@ -221,8 +219,7 @@ theorem exists_char_data : ∀ (F : Type) [Field F] [NumberField F], IsTotallyRe
       ((_root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F).2.2.2.2.2.2.1 _).2 ⟨r, rfl⟩
     have h1 : ψ (pairA F 0 (algebraMap F (Af F) ((N : F) * (r : F)))) = 1 := by
       have := hNU _ hr
-      rw [map_mul, map_natCast]
-      exact this
+      rwa [map_mul, map_natCast]
     have h2 := hsplit ((N : F) * (r : F))
     rw [h1, mul_one, hinf, Complex.exp_eq_one_iff] at h2
     obtain ⟨n, hn⟩ := h2

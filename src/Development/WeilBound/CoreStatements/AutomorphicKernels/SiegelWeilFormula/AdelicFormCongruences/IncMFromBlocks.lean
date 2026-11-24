@@ -94,9 +94,7 @@ theorem blk_rel {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) (x : G2 σ Y
   rw [h, blk_form] at h1
   obtain ⟨-, h2, h3, -⟩ := Matrix.fromBlocks_inj.1 h1
   refine ⟨h2, ?_⟩
-  have h4 := congrArg (fun M => (((ε : ℤ) : AE F E)) • M) h3
-  simp only [smul_smul, eps_sq, one_smul] at h4
-  exact h4
+  simpa only [smul_smul, eps_sq, one_smul] using congrArg (fun M => (((ε : ℤ) : AE F E)) • M) h3
 
 theorem blk_form_one {ε : ℤˣ} {A D : Matrix (Fin n) (Fin n) (AE F E)} (h1 : Aᵀ * D.map (cA σ) = 1)
     (h2 : Dᵀ * A.map (cA σ) = 1) :
@@ -236,11 +234,9 @@ theorem rat_blocks {b : GL (Fin n ⊕ Fin n) E} (g : G2 σ Y) (hg : g ∈ rat2 �
   obtain ⟨G0, hG⟩ := rat_frame (b := b) g hg
   refine ⟨G0.toBlocks₁₁, G0.toBlocks₂₂, ?_, ?_⟩
   · have := congrArg Matrix.toBlocks₁₁ (hAD.symm.trans hG)
-    rw [Matrix.toBlocks_fromBlocks₁₁] at this
-    exact this
+    rwa [Matrix.toBlocks_fromBlocks₁₁] at this
   · have := congrArg Matrix.toBlocks₂₂ (hAD.symm.trans hG)
-    rw [Matrix.toBlocks_fromBlocks₂₂] at this
-    exact this
+    rwa [Matrix.toBlocks_fromBlocks₂₂] at this
 
 
 variable (σ Y) in

@@ -160,16 +160,13 @@ theorem sum_Iic_ext_zero {N : ℕ} (D : Fin N → ℝ) (p : Fin N) :
   · intro k hk
     have : k ≤ p := Finset.mem_Iic.mp hk
     exact mem_range.mpr (Nat.lt_succ_of_le this)
-  · intro x _ y _ h
-    exact Fin.ext h
+  · exact fun x _ y _ h => Fin.ext h
   · intro k hk
     have hk' : k < (p : ℕ) + 1 := mem_range.mp (by simpa using hk)
     have hkN : k < N := lt_of_le_of_lt (Nat.le_of_lt_succ hk') p.2
     refine ⟨⟨k, hkN⟩, ?_, rfl⟩
-    simp only [Finset.coe_Iic, Set.mem_Iic]
-    exact Fin.mk_le_of_le_val (Nat.le_of_lt_succ hk')
-  · intro k _
-    exact (extendByZeroOnSubset_apply_coe D k).symm
+    simpa only [Finset.coe_Iic, Set.mem_Iic] using Fin.mk_le_of_le_val (Nat.le_of_lt_succ hk')
+  · exact fun k _ => (extendByZeroOnSubset_apply_coe D k).symm
 
 theorem abel_bound : ∀ (N : ℕ) (a D : Fin N → ℝ) (Up Lo Cc : ℝ), 0 ≤ Up → 0 ≤ Lo → 0 ≤ Cc →
     (∀ p q, p ≤ q → a q ≤ a p) → (∀ p, |a p| ≤ 2) →
@@ -203,11 +200,9 @@ theorem abel_bound : ∀ (N : ℕ) (a D : Fin N → ℝ) (Up Lo Cc : ℝ), 0 ≤
     exact hbd _
   · intro p hp
     have h := hY ⟨p, hlt p hp⟩ (Nat.succ_lt_succ hp)
-    rw [sum_Iic_ext_zero] at h
-    exact h
+    rwa [sum_Iic_ext_zero] at h
   · have h := hC ⟨n, Nat.lt_succ_self n⟩ rfl
-    rw [sum_Iic_ext_zero] at h
-    exact h
+    rwa [sum_Iic_ext_zero] at h
 
 end GlobalTheory.CompanionTheory.AbelBounds
 end -- clump:auto
@@ -522,8 +517,7 @@ theorem eventually_eq_sub (h : ∀ t, IsPsh S.A ((S.potT a t).rsmul (-1)) ∧ Is
   have hsm : ContDiffOn ℝ ∞ ((fun x => S.phT a t x - S.phT a t' x) ∘ (S.A.chart j).symm)
       ((S.A.chart j).target ∩ (S.A.chart j).symm ⁻¹' V) := by
     have h1 := ((S.reg a).2.2 t ht ht₀).1 j
-    have h2 := ((S.reg a).2.2 t' ht' ht₀').1 j
-    exact (h1.sub h2).mono fun z hz => ⟨hz.1, trivial⟩
+    exact (h1.sub (((S.reg a).2.2 t' ht' ht₀').1 j)).mono fun z hz => ⟨hz.1, trivial⟩
   have hev := eventually_eq_of_isMax hO hsm
     (fun z hz w => levi_sub_eq_zero S a h ht ht₀ ht' ht₀' j hz.1 w) hxO
     (fun z hz => by

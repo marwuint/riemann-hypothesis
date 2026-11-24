@@ -82,16 +82,14 @@ theorem denom_fin {K : Set (Af F)} (hK : IsCompact K) :
   refine ⟨M.1, M.2, fun x hx => ?_⟩
   obtain ⟨d, hd, h⟩ := Set.mem_iUnion₂.1 (hM hx)
   have h2 : ∀ v, (algebraMap F (Af F) ((d : F) * x)) v ∈ HeightOneSpectrum.adicCompletionIntegers F v := by
-    rw [map_mul, map_natCast]
-    exact h
+    rwa [map_mul, map_natCast]
   obtain ⟨y, hy⟩ := (GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F).2.2.2.1 _ h2
   have hdx : IsIntegral ℤ ((d : F) * x) := by
     rw [hy]
     exact y.isIntegral_coe
   obtain ⟨e, he⟩ := hd.2
   have hei : IsIntegral ℤ (e : F) := by
-    have h3 := isIntegral_algebraMap (R := ℤ) (A := F) (x := (e : ℤ))
-    simpa using h3
+    simpa using isIntegral_algebraMap (R := ℤ) (A := F) (x := (e : ℤ))
   rw [he, Nat.cast_mul, mul_comm (d : F) (e : F), mul_assoc]
   exact hei.mul hdx
 
@@ -103,15 +101,12 @@ theorem evI_uFin : evI F (uFin F) = 0 := by
   unfold evI uFin pairA
   exact map_zero _
 
-theorem snd_uFin_mul (a : AF F) : sndA F (uFin F * a) = sndA F a := by
-  show (1 : Af F) * a.2 = a.2
-  exact one_mul _
+theorem snd_uFin_mul (a : AF F) : sndA F (uFin F * a) = sndA F a := one_mul _
 
 theorem uFin_mul_rId (t : ℝ) : uFin F * rId F t = uFin F := by
   show pairA F 0 1 * rId F t = pairA F 0 1
   refine Prod.ext ?_ ?_
-  · show (0 : Ainf F) * (rId F t).1 = 0
-    exact zero_mul _
+  · exact zero_mul _
   · show (1 : Af F) * ((1 : Af F) + 0) = 1
     simp
 
@@ -124,14 +119,12 @@ theorem exists_int_mul (x : E) : ∃ m : ℕ, 0 < m ∧ IsIntegral ℤ ((m : E) 
   · refine ⟨k, by omega, ?_⟩
     simpa using hy
   · refine ⟨k, by omega, ?_⟩
-    have h2 := hy.neg
-    simpa using h2
+    simpa using hy.neg
 private theorem isIntegral_natCast_mul_of_dvd {A : Type} [CommRing A] {a b : ℕ} (hab : a ∣ b) {y : A}
     (h : IsIntegral ℤ ((a : A) * y)) : IsIntegral ℤ ((b : A) * y) := by
   obtain ⟨e, rfl⟩ := hab
   have he : IsIntegral ℤ (e : A) := by
-    have h3 := isIntegral_algebraMap (R := ℤ) (A := A) (x := (e : ℤ))
-    simpa using h3
+    simpa using isIntegral_algebraMap (R := ℤ) (A := A) (x := (e : ℤ))
   rw [Nat.cast_mul, mul_comm (a : A) (e : A), mul_assoc]
   exact he.mul h
 
@@ -190,8 +183,7 @@ theorem piInf_rId {w : InfinitePlace F} (τ : EmbOver E w) (t : ℝ) :
     simp only [InfiniteAdeleRing.ringEquiv_mixedSpace_apply] at h1
     rw [← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw, h1]
   · have h1 := congrArg (fun z => z.2 ⟨w, InfinitePlace.not_isReal_iff_isComplex.1 hw⟩) hy
-    simp only [InfiniteAdeleRing.ringEquiv_mixedSpace_apply] at h1
-    exact h1
+    simpa only [InfiniteAdeleRing.ringEquiv_mixedSpace_apply] using h1
 
 end PositivityTheory.ThKEst
 

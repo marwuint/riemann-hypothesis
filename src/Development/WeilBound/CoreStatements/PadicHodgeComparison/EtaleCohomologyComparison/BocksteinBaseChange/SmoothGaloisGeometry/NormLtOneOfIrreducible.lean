@@ -57,7 +57,6 @@ namespace CrystallineSemistableComparison
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 theorem mem_OK (x : K) : x ∈ OK l K ↔ ‖(x : PadicAlgCl l)‖ ≤ 1 := by
-  show (x : PadicAlgCl l) ∈ GroundTheory.PAdicHodge.normInteger (PadicAlgCl l) ↔ _
   exact GroundTheory.PAdicHodge.mem_normInteger
 
 theorem isIntegral_iff_norm_le (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
@@ -77,7 +76,6 @@ theorem isIntegral_iff_norm_le (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖
 theorem OK_eq : OK l K = (integralClosure ℤ_[l] K).toSubring := by
   ext x
   rw [mem_OK, ← isIntegral_iff_norm_le]
-  show _ ↔ IsIntegral ℤ_[l] x
   exact (isIntegral_algHom_iff (K.val.restrictScalars ℤ_[l]) Subtype.val_injective)
 
 theorem norm_OK_le (a : OK l K) : ‖((a : K) : PadicAlgCl l)‖ ≤ 1 := (mem_OK _).1 a.2
@@ -100,16 +98,13 @@ theorem isUnit_OK_iff (a : OK l K) : IsUnit a ↔ ‖((a : K) : PadicAlgCl l)‖
       intro e; rw [e] at h; simp at h
     refine isUnit_iff_exists_inv.2 ⟨⟨(a : K)⁻¹, (mem_OK _).2 ?_⟩, Subtype.ext ?_⟩
     · rw [IntermediateField.coe_inv, norm_inv, h, inv_one]
-    · show (a : K) * (a : K)⁻¹ = 1
-      exact mul_inv_cancel₀ ha
+    · exact mul_inv_cancel₀ ha
 
 theorem norm_lt_one_of_irreducible {ϖ : OK l K} (h : Irreducible ϖ) : ‖((ϖ : K) : PadicAlgCl l)‖ < 1 :=
   lt_of_le_of_ne (norm_OK_le ϖ) fun e => h.not_isUnit ((isUnit_OK_iff ϖ).2 e)
 
 theorem ne_zero_of_irreducible {ϖ : OK l K} (h : Irreducible ϖ) : ((ϖ : K) : PadicAlgCl l) ≠ 0 := by
-  intro e
-  apply h.ne_zero
-  exact Subtype.ext (Subtype.ext e)
+  exact fun e => h.ne_zero (Subtype.ext (Subtype.ext e))
 
 theorem OK_away {ϖ : OK l K} (h : Irreducible ϖ) : IsLocalization.Away ϖ K := by
   have h0 := ne_zero_of_irreducible h

@@ -180,14 +180,12 @@ theorem exists_cover {A : Type} [CommRing A] {X : Scheme.{0}} (y : Spec (CommRin
     constructor
     · rintro ⟨k, rfl⟩
       exact (s'.equivFin.symm k).2
-    · intro ha
-      exact ⟨s'.equivFin ⟨a, ha⟩, by simp⟩
+    · exact fun ha => ⟨s'.equivFin ⟨a, ha⟩, by simp⟩
   · obtain ⟨x, hxk⟩ := hs' (s'.equivFin.symm k).2
     refine ⟨V x, hV x, fun A' _ g hu z _ => ?_⟩
     refine hsub x (PrimeSpectrum.comap g z) ?_
     rw [hxk]
-    intro hmem
-    exact z.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem hu)
+    exact fun hmem => z.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem hu)
 
 end Cover
 
@@ -252,8 +250,7 @@ theorem isNilpotent_of_mem_J (T : Thick (nlFun γ p X q κ)) {x : T.B} (hx : x �
   · obtain ⟨n, hn⟩ := T.adm.2 hp
     refine ⟨n, ?_⟩
     have := Ideal.pow_mem_pow hx n
-    rw [hn] at this
-    exact this
+    rwa [hn] at this
   · exact GlobalTheory.CompanionTheory.ThickZar.isNilpotent_of_mem_J (b := nlBase R I γ p) hp T hx
 
 theorem span_lift (T : Thick (nlFun γ p X q κ)) {m : ℕ} (f : Fin m → T.B) (s : Fin m → T.B ⧸ T.J)
@@ -314,12 +311,10 @@ theorem zarCov_of {Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))} (𝒱 𝒲
       rw [← hf k]; exact h.map (Ideal.Quotient.mk T₁.obj.J)
     have h2 := hVk _ _ hu
     unfold InU
-    rw [pt_hom ψ.hom]
-    exact h2
+    rwa [pt_hom ψ.hom]
   have hg : Ideal.span (Set.range fun k => φ.hom.φ (f k)) = ⊤ := by
     have h := congrArg (Ideal.map φ.hom.φ) hspan
-    rw [Ideal.map_span, Ideal.map_top, ← Set.range_comp] at h
-    exact h
+    rwa [Ideal.map_span, Ideal.map_top, ← Set.range_comp] at h
   obtain ⟨hM⟩ := hF T' (fun k => φ.hom.φ (f k)) hg
   refine ⟨fun S => locO hl T' (∏ k ∈ S, φ.hom.φ (f k)), fun S => locOHom hl T' _, fun S k hk => ?_, fun S T'' ψ h => ?_, ⟨hM⟩⟩
   · exact GlobalTheory.CompanionTheory.ThickZar.unit_of_mem (F := CrystallineSemistableComparison.B.schFn q) (b := nlBase R I γ p) (ht := rfl) (κ := κ) T'.obj
@@ -365,8 +360,7 @@ theorem map_surj {B : Type} [CommRing B] (d : B) (J : Ideal B) (y : Localization
   obtain ⟨n, hn⟩ := s.2
   refine ⟨n, x.1, x.2, ?_⟩
   have hn' : d ^ n = s := hn
-  rw [mul_comm, hn']
-  exact hx
+  rwa [mul_comm, hn']
 
 theorem map_ker {B : Type} [CommRing B] (d : B) (J : Ideal B) (x : B)
     (hx : algebraMap B (Localization.Away d) x ∈ J.map (algebraMap B (Localization.Away d))) :
@@ -446,8 +440,7 @@ theorem bij_sq_of {Q Q' : ObjectProperty (Thick (nlFun γ p X q κ))} (h : Q' �
     (hB : Function.Bijective ((CrystallineSemistableComparison.CH.Mor.restrict (sq a b) (ObjectProperty.ιOfLE h)).pull j)) :
     Function.Bijective (((incl h).sq ha hb).pull j) := by
   subst ea eb
-  rw [sq_eq_restrict]
-  exact hB
+  rwa [sq_eq_restrict]
 
 theorem std_res {Q Q' : ObjectProperty (Thick (nlFun γ p X q κ))} (h : Q' ≤ Q) (r : Option ℤ) (c : R) :
     stdI Q' r c = ((stdI Q r c).res (ObjectProperty.ιOfLE h) : IdF (sP Q').A) := by

@@ -63,8 +63,7 @@ theorem epi_of_surj {X Y Z : Scheme.{0}} (p : X ⟶ Y) [IsSchemeTheoreticallyDom
   have hbase : f.base = g.base := by
     ext y
     obtain ⟨x0, rfl⟩ := hp y
-    have h0 := congrArg (fun k => k.base x0) h
-    simpa using h0
+    simpa using congrArg (fun k => k.base x0) h
   refine Scheme.Hom.ext hbase (fun U => ?_)
   haveI : Mono (p.app (g ⁻¹ᵁ U)) := ConcreteCategory.mono_of_injective _ (p.app_injective _)
   rw [← cancel_mono (p.app (g ⁻¹ᵁ U))]
@@ -116,11 +115,9 @@ theorem joint_epi {D A B : Type} [CommRing D] [CommRing A] [CommRing B] (φ : D 
     rw [← cancel_epi (coprodSpec A B)]
     apply coprod.hom_ext
     · simp only [← Category.assoc, coprodSpec_inl]
-      rw [e1]
-      exact h₁
+      rwa [e1]
     · simp only [← Category.assoc, coprodSpec_inr]
-      rw [e2]
-      exact h₂
+      rwa [e2]
   haveI := std_of_inj (CommRingCat.ofHom (φ.prod ψ)) hi
   exact epi_of_surj (Spec.map (CommRingCat.ofHom (φ.prod ψ))) hp f g hcov
 
@@ -231,10 +228,8 @@ variable (G : Over S) [GrpObj G]
 
 theorem isTanAt_iff (v : epsAt x ⟶ G) : IsTanAt G x v ↔ (zsec x : _ ⟶ ob x R) ≫ v = 1 := by
   constructor
-  · intro h
-    exact Over.OverMorphism.ext h
-  · intro h
-    exact congrArg CommaMorphism.left h
+  · exact fun h => Over.OverMorphism.ext h
+  · exact fun h => congrArg CommaMorphism.left h
 
 theorem hom_add (v : ob x R ⟶ G) (hv : zsec x ≫ v = 1) (f g : R →ₗ[R] M) :
     hom x (f + g) ≫ v = (hom x f ≫ v) * (hom x g ≫ v) := by
@@ -312,8 +307,7 @@ theorem lieModel_exists (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G
     { pt := fun e => e.toMul.1
       tan := fun e => (LieEx.isTanAt_iff x G _).2 e.toMul.2
       inj := fun e e' h => by
-        apply Additive.toMul.injective
-        exact Subtype.ext h
+        exact Additive.toMul.injective (Subtype.ext h)
       onto := fun v hv => ⟨Additive.ofMul ⟨v, (LieEx.isTanAt_iff x G v).1 hv⟩, rfl⟩
       add := fun _ _ => rfl
       smul := fun _ _ => rfl }

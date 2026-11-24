@@ -67,17 +67,12 @@ theorem isFundamentalDomain_range_prodMap {A B X Y : Type} [Group A] [Group B] [
   · rintro ⟨_, ⟨a, b⟩, rfl⟩ hγ
     by_cases ha : f a = 1
     · have hb : (⟨g b, b, rfl⟩ : g.range) ≠ 1 := by
-        intro h
-        apply hγ
-        apply Subtype.ext
-        exact Prod.ext ha (congrArg Subtype.val h)
+        exact fun h => hγ (Subtype.ext (Prod.ext ha (congrArg Subtype.val h)))
       have h3 := (Measure.quasiMeasurePreserving_snd (μ := μ) (ν := ν)).preimage_null (hG.aedisjoint hb)
       refine measure_mono_null ?_ h3
       rintro z ⟨⟨w, hw, rfl⟩, hz⟩
       exact ⟨⟨w.2, hw.2, rfl⟩, ⟨_, hz.2, one_smul _ _⟩⟩
-    · have ha' : (⟨f a, a, rfl⟩ : f.range) ≠ 1 := by
-        intro h
-        exact ha (congrArg Subtype.val h)
+    · have ha' : (⟨f a, a, rfl⟩ : f.range) ≠ 1 := fun h => ha (congrArg Subtype.val h)
       have h3 := (Measure.quasiMeasurePreserving_fst (μ := μ) (ν := ν)).preimage_null (hF.aedisjoint ha')
       refine measure_mono_null ?_ h3
       rintro z ⟨⟨w, hw, rfl⟩, hz⟩

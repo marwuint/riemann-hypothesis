@@ -74,16 +74,13 @@ theorem lex_map_iff_of_strictMono {α β : Type*} [LinearOrder α] [LinearOrder 
   | nil =>
     cases l' with
     | nil =>
-      simp only [List.map_nil]
-      exact iff_of_false (by rintro ⟨⟩) (by rintro ⟨⟩)
+      simpa only [List.map_nil] using iff_of_false (by rintro ⟨⟩) (by rintro ⟨⟩)
     | cons b t =>
-      simp only [List.map_nil, List.map_cons]
-      exact iff_of_true List.Lex.nil List.Lex.nil
+      simpa only [List.map_nil, List.map_cons] using iff_of_true List.Lex.nil List.Lex.nil
   | cons a s ih =>
     cases l' with
     | nil =>
-      simp only [List.map_nil, List.map_cons]
-      exact iff_of_false (by rintro ⟨⟩) (by rintro ⟨⟩)
+      simpa only [List.map_nil, List.map_cons] using iff_of_false (by rintro ⟨⟩) (by rintro ⟨⟩)
     | cons b t =>
       simp only [List.map_cons, List.cons_lex_cons_iff]
       constructor
@@ -140,8 +137,7 @@ theorem binaryEncode_lt_iff {n : ℕ} (J J' : Finset (Fin n)) :
   · rintro ⟨e, he, he', hmax⟩
     obtain ⟨a, haJ, rfl⟩ := Finset.mem_image.mp he
     refine ⟨a, haJ, ?_, ?_⟩
-    · intro haJ'
-      exact he' (Finset.mem_image_of_mem _ haJ')
+    · exact fun haJ' => he' (Finset.mem_image_of_mem _ haJ')
     · intro b hb hbJ
       have hb1 : reversedIndex n b ∈ J'.image (reversedIndex n) := Finset.mem_image_of_mem _ hb
       have hb2 : reversedIndex n b ∉ J.image (reversedIndex n) := by
@@ -160,9 +156,7 @@ theorem binaryEncode_lt_iff {n : ℕ} (J J' : Finset (Fin n)) :
       exact haJ' hc
     · rintro f hf hfnot
       obtain ⟨b, hb, rfl⟩ := Finset.mem_image.mp hf
-      have hbJ : b ∉ J := by
-        intro hbJ
-        exact hfnot (Finset.mem_image_of_mem _ hbJ)
+      have hbJ : b ∉ J := fun hbJ => hfnot (Finset.mem_image_of_mem _ hbJ)
       exact (reversedIndex_lt_reversedIndex_iff b a).mpr (hmin b hb hbJ)
 
 private theorem lex_iff_exists_min_mem {α : Type*} [LinearOrder α] :
@@ -200,11 +194,9 @@ private theorem lex_iff_exists_min_mem {α : Type*} [LinearOrder α] :
             · exact absurd (hL'.1 a h) (not_lt.mpr hab.le)
           · intro y hy _
             rcases List.mem_cons.mp hy with h | h
-            · rw [h]
-              exact hab
+            · rwa [h]
             · exact lt_trans hab (hL'.1 y h)
-        · intro _
-          exact Or.inl hab
+        · exact fun _ => Or.inl hab
       · subst hab
         have ihst := ih t hlen' hs.2 hL'.2
         constructor
@@ -232,8 +224,7 @@ private theorem lex_iff_exists_min_mem {α : Type*} [LinearOrder α] :
               simp
             · exact h
           refine ⟨x, hxs, ?_, ?_⟩
-          · intro hxt
-            exact hxn (List.mem_cons.mpr (Or.inr hxt))
+          · exact fun hxt => hxn (List.mem_cons.mpr (Or.inr hxt))
           · intro y hy hys
             refine hmin y (List.mem_cons.mpr (Or.inr hy)) ?_
             intro hy'
@@ -283,8 +274,7 @@ theorem binaryEncode_injective {n : ℕ} :
   have hJ := binaryEncode_eq_sum_image J
   have hJ' := binaryEncode_eq_sum_image J'
   have h1 : (∑ e ∈ J.image (reversedIndex n), 2 ^ e) = (∑ e ∈ J'.image (reversedIndex n), 2 ^ e) := by
-    rw [← hJ, ← hJ']
-    exact h
+    rwa [← hJ, ← hJ']
   exact Finset.image_injective reversedIndex_injective (Finset.geomSum_injective (le_refl 2) h1)
 
 end MonomialCenter

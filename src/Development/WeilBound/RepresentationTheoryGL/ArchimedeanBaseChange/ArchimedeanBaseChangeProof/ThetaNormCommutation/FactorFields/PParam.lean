@@ -68,8 +68,7 @@ def twR (θ : G →* G) (x y : G) : Prop := ∃ g, y = g⁻¹ * x * θ g
 
 theorem twR_equiv (θ : G →* G) : Equivalence (twR θ) := by
   constructor
-  · intro x
-    exact ⟨1, by simp⟩
+  · exact fun x => ⟨1, by simp⟩
   · rintro x y ⟨g, rfl⟩
     exact ⟨g⁻¹, by rw [map_inv]; group⟩
   · rintro x y z ⟨g, rfl⟩ ⟨h, rfl⟩
@@ -175,10 +174,8 @@ theorem locEl_rel (hU : Unr E) (n : ℕ) (w : Pl E) {z z' : GL (Fin n) E} (h : �
   obtain ⟨k, hk⟩ := locEl_tw hU n w z g
   rw [hk]
   constructor
-  · intro hz
-    exact tw_trans _ ⟨k, rfl⟩ hz
-  · intro hz
-    exact tw_trans _ (tw_symm _ ⟨k, rfl⟩) hz
+  · exact fun hz => tw_trans _ ⟨k, rfl⟩ hz
+  · exact fun hz => tw_trans _ (tw_symm _ ⟨k, rfl⟩) hz
 
 theorem param_main (h1 : SkewEx) (h2 : Struct) (h3 : QuadField) (h4 : LocDict) (h5 : ClsNorm) (h6 : ClsOnto)
     (h7 : ClsEq) (h8 : LocGood) : Param := by
@@ -254,8 +251,7 @@ theorem param_main (h1 : SkewEx) (h2 : Struct) (h3 : QuadField) (h4 : LocDict) (
       have h1 : GlobalTheory.QuadSymbol.finDiag (K i) (ev i 1) u = 1 := by
         rw [map_one]
         exact map_one (GlobalTheory.QuadSymbol.toUnits (K i) (u.adicCompletion (K i)))
-      rw [h1, div_one] at h0
-      exact h0
+      rwa [h1, div_one] at h0
     exact Set.mem_biUnion hWbad (hWu i u).symm
   have hC : ∀ c : {c : TwCl (thE E n) // (c.rep * thE E n c.rep).val.charpoly = P ∧
       ∀ w ∈ S, ∃ g, locEl n w c.rep = g⁻¹ * y w * thL n w g},

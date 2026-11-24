@@ -144,8 +144,7 @@ theorem norm_root_le (p : Polynomial ℂ) (hp : p.Monic) (W : ℂ) (hW : p.eval 
   have h1 := Polynomial.IsRoot.norm_lt_cauchyBound hp.ne_zero hW
   have h2 : p.cauchyBound ≤ B.toNNReal + 1 := by
     rw [Polynomial.cauchyBound, hp.leadingCoeff, nnnorm_one, div_one]
-    refine add_le_add (Finset.sup_le fun i _ => ?_) le_rfl
-    exact NNReal.le_toNNReal_of_coe_le (hB i)
+    exact add_le_add (Finset.sup_le fun i _ => (NNReal.le_toNNReal_of_coe_le (hB i))) le_rfl
   have h3 : (‖W‖₊ : ℝ) ≤ ((B.toNNReal + 1 : NNReal) : ℝ) := by
     exact_mod_cast h1.le.trans h2
   simpa [add_comm, Real.coe_toNNReal _ hB0] using h3
@@ -171,8 +170,7 @@ theorem exists_monic {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ k
   have hs : Function.Surjective π.toRingHom := by
     rintro ⟨x, hx⟩
     have hx' : x ∈ (aeval (chartVec y c) : MRing ι →ₐ[ℤ] Ω).range := by
-      rw [← Algebra.adjoin_range_eq_range_aeval, hv]
-      exact hx
+      rwa [← Algebra.adjoin_range_eq_range_aeval, hv]
     obtain ⟨f, hf⟩ := hx'
     exact ⟨f, Subtype.ext ((hπ f).trans hf)⟩
   obtain ⟨Q, hmap, -, hQ⟩ := Polynomial.lifts_and_natDegree_eq_and_monic
@@ -250,8 +248,7 @@ theorem chart_bound {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (a : K → 
   by_cases hi : i ∈ Finset.range (Q.natDegree + 1)
   · exact (hB i _ hw1).trans (Finset.single_le_sum (fun j _ => hB0 j) hi)
   · have : Q.coeff i = 0 := Polynomial.coeff_eq_zero_of_natDegree_lt (by simpa [Nat.lt_succ_iff] using hi)
-    rw [this, map_zero, norm_zero]
-    exact hT0
+    rwa [this, map_zero, norm_zero]
 
 theorem exists_lower (A : HermLine ι) (hA : IsSmoothHerm A) :
     ∃ δ : ℝ, 0 < δ ∧ ∀ w : (Σ k, ι k) → ℂ, (∀ p, ‖w p‖ ≤ 1) → (∀ k, ∃ i, ‖w ⟨k, i⟩‖ = 1) → δ ≤ A.h w := by
@@ -327,8 +324,7 @@ theorem section_bound : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fin
       simp only [τ, norm_mul, norm_inv]
       rw [inv_mul_le_iff₀ (norm_pos_iff.2 (hc0 p.1)), mul_one]
       exact hcm p.1 p.2
-    · simp only [τ, norm_mul, norm_inv]
-      exact inv_mul_cancel₀ (norm_ne_zero_iff.2 (hc0 k))
+    · simpa only [τ, norm_mul, norm_inv] using inv_mul_cancel₀ (norm_ne_zero_iff.2 (hc0 k))
   have hE : ‖∏ k, z ⟨k, c k⟩ ^ (-((q : ℤ) * A.a k))‖ = e ^ q := by
     rw [prod_zpow_mul (fun k => z ⟨k, c k⟩), norm_pow, norm_prod, he]
     congr 1

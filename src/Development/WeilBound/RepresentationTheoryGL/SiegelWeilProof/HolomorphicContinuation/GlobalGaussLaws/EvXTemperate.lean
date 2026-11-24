@@ -50,9 +50,8 @@ namespace PositivityTheory.Rg.Sw.Glob
 theorem evX_temperate {m n : ℕ} (P : PX m n) :
     Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => evX P u) := by
   have hcoord : ∀ (a : Fin m) (i : Fin n),
-      Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => u a i) := by
-    intro a i
-    exact ((ContinuousLinearMap.proj i : (Fin n → ℂ) →L[ℝ] ℂ).comp
+      Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => u a i) := fun a i =>
+    ((ContinuousLinearMap.proj i : (Fin n → ℂ) →L[ℝ] ℂ).comp
       (ContinuousLinearMap.proj a : (Fin m → Fin n → ℂ) →L[ℝ] (Fin n → ℂ))).hasTemperateGrowth
   have hconj : ∀ (a : Fin m) (i : Fin n),
       Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => star (u a i)) := by
@@ -77,18 +76,12 @@ theorem evX_temperate {m n : ℕ} (P : PX m n) :
   · intro p k hp
     obtain ⟨a, i, b⟩ := k
     cases b
-    · have e : (fun u : Fin m → Fin n → ℂ => evX (p * X (a, i, false)) u) =
-          (fun u => evX p u) * (fun u => u a i) := by
-        funext u
-        simp [evX]
-      rw [e]
-      exact hp.mul (hcoord a i)
-    · have e : (fun u : Fin m → Fin n → ℂ => evX (p * X (a, i, true)) u) =
-          (fun u => evX p u) * (fun u => star (u a i)) := by
-        funext u
-        simp [evX]
-      rw [e]
-      exact hp.mul (hconj a i)
+    · convert hp.mul (hcoord a i) using 1
+      funext u
+      simp [evX]
+    · convert hp.mul (hconj a i) using 1
+      funext u
+      simp [evX]
 
 private theorem hasTemperateGrowth_const_mul_sum_norm_sq {m n : ℕ} (c : ℝ) :
     Function.HasTemperateGrowth

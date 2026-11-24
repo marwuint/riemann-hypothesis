@@ -86,40 +86,28 @@ theorem partialDeriv_mem_sup_of_span_pow_mul_eq_map
   have hgen : ∀ x ∈ (⇑φ '' (J : Set S)),
       partialDeriv k ι S₁ i x ∈ Ideal.span {coord k ι S₁ s ^ (c + 1)} * (L ⊔ L') := by
     rintro _ ⟨f, hf, rfl⟩
-    have h1 : partialDeriv k ι S₁ i (φ f)
-        = coord k ι S₁ s * φ (partialDeriv k ι S i f) :=
-      partialDeriv_map_of_mem k ι S S₁ φ T s hin hs hout i hiT his f
-    have h2 : φ (partialDeriv k ι S i f) ∈ Ideal.map φ (derivIdeal k J) :=
-      Ideal.mem_map_of_mem φ
-        (derivation_apply_mem_derivIdeal k J (partialDeriv k ι S i) (SetLike.mem_coe.mp hf))
+    have h2 := Ideal.mem_map_of_mem φ
+      (derivation_apply_mem_derivIdeal k J (partialDeriv k ι S i) (SetLike.mem_coe.mp hf))
     obtain ⟨z, hz, hzeq⟩ := Ideal.mem_span_singleton_mul.mp (hD h2)
-    rw [h1, ← hzeq]
+    rw [partialDeriv_map_of_mem k ι S S₁ φ T s hin hs hout i hiT his f, ← hzeq]
     exact Ideal.mem_span_singleton_mul.mpr ⟨z, Submodule.mem_sup_right hz, by ring⟩
-  have hGT : Ideal.span (⇑φ '' (J : Set S))
-      ≤ Ideal.span {coord k ι S₁ s ^ (c + 1)} * (L ⊔ L') := by
-    rw [hmapspan, ← hJ]
-    exact Ideal.mul_mono_right le_sup_left
   have hmem : coord k ι S₁ s ^ (c + 1) * g ∈ Ideal.span (⇑φ '' (J : Set S)) := by
     rw [hmapspan, ← hJ]
     exact Ideal.mem_span_singleton_mul.mpr ⟨g, hg, rfl⟩
-  have key := derivation_apply_mem_of_mem_span (partialDeriv k ι S₁ i) hGT hgen hmem
-  have hDy : partialDeriv k ι S₁ i (coord k ι S₁ s) = 0 :=
-    partialDeriv_coord_of_ne k ι S₁ i s his
+  have key := derivation_apply_mem_of_mem_span (partialDeriv k ι S₁ i) (by
+    rw [hmapspan, ← hJ]
+    exact Ideal.mul_mono_right le_sup_left) hgen hmem
   have hDypow : partialDeriv k ι S₁ i (coord k ι S₁ s ^ (c + 1)) = 0 := by
-    rw [Derivation.leibniz_pow, hDy, smul_zero, smul_zero]
+    rw [Derivation.leibniz_pow, partialDeriv_coord_of_ne k ι S₁ i s his, smul_zero, smul_zero]
   have hexp : partialDeriv k ι S₁ i (coord k ι S₁ s ^ (c + 1) * g)
       = coord k ι S₁ s ^ (c + 1) * partialDeriv k ι S₁ i g := by
     rw [Derivation.leibniz, hDypow, smul_zero, add_zero, smul_eq_mul]
   rw [hexp] at key
   obtain ⟨w, hw, hweq⟩ := Ideal.mem_span_singleton_mul.mp key
-  have hnz : coord k ι S₁ s ^ (c + 1) ∈ nonZeroDivisors S₁ := pow_mem hnzd (c + 1)
   have h0 : (partialDeriv k ι S₁ i g - w) * coord k ι S₁ s ^ (c + 1) = 0 := by
     linear_combination -hweq
-  have h1 : partialDeriv k ι S₁ i g - w = 0 :=
-    (mem_nonZeroDivisors_iff.mp hnz).2 _ h0
-  have h2 : partialDeriv k ι S₁ i g = w := sub_eq_zero.mp h1
-  rw [h2]
-  exact hw
+  have hnz := pow_mem hnzd (c + 1)
+  rwa [sub_eq_zero.mp ((mem_nonZeroDivisors_iff.mp hnz).2 _ h0)]
 
 theorem map_logDerivIdeal_le_span_pow_mul [Fintype ι]
     (hin : ∀ i ∈ T, i ≠ s → φ (coord k ι S i) = coord k ι S₁ i * coord k ι S₁ s)

@@ -155,8 +155,7 @@ private theorem boundary_derivedTriple_emptyMarkedBlowupSequenceData (S : Marked
   have hdrop : List.drop S.boundary.length
       ((emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).boundary
         (emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).length) = [] := by
-    apply List.drop_eq_nil_of_le
-    exact le_of_eq (congrArg List.length hB)
+    exact List.drop_eq_nil_of_le (le_of_eq (congrArg List.length hB))
   rw [MaxContactCoverData.derivedTriple_boundary, hdrop]
   exact List.append_nil extra
 
@@ -172,8 +171,7 @@ private theorem isomorphic_of_emptyMarkedBlowupSequenceData_append {k : Type u} 
   have hmain := MarkedBlowupSequenceData.emptyMarkedBlowupSequenceData_append_isomorphic p I m E t hinv
   have e1 := MarkedBlowupSequenceData.toMarkedSequence_toSequenceOfBlowups ((emptyMarkedBlowupSequenceData p I m E).append t hinv)
   have e2 := MarkedBlowupSequenceData.toMarkedSequence_toSequenceOfBlowups t
-  rw [e1, e2] at hmain
-  exact hmain
+  rwa [e1, e2] at hmain
 
 private theorem derivIdealSheaf_eq_top_of_orderAt_le_one (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -199,8 +197,7 @@ private theorem derivIdealSheaf_eq_top_of_orderAt_le_one (k : Type u) [Field k] 
   intro hy
   have hy1 : y ∈ orderAtLeastLocus (derivIdealSheafIterate k p 1 A) 1 :=
     (mem_orderAtLeastLocus_one_iff _ y).2 hy
-  rw [h1] at hy1
-  exact hy1
+  rwa [h1] at hy1
 
 private theorem isMaxContactInvariant_of_mult_eq_one (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -253,8 +250,7 @@ theorem isMaxContactHypersurface_one_of_etaleChart {k : Type u} [Field k] [CharZ
       exists_isAffineOpen_mem_and_subset hx
     have hdisj : Disjoint ((D.support : Set ↥P)) ((V : Set ↥P)) := by
       rw [Set.disjoint_right]
-      intro y hyV hyD
-      exact (hVW hyV) hyD
+      exact fun y hyV hyD => (hVW hyV) hyD
     have htop : restrictIdeal D V = ⊤ :=
       (FunctorialResolution.EmbeddedResolution.restrictIdeal_eq_top_iff_forall_notMem_support _ _).mpr
         (fun y hyV hyD => Set.disjoint_left.mp hdisj hyD hyV)
@@ -294,8 +290,7 @@ theorem IsMaxContactHypersurface.comap_of_isOpenImmersionAtSource {k : Type u} [
     rw [hrw]
     infer_instance
   have : AlgebraicGeometry.IsOpenImmersion (φ ≫ U.ι) := by
-    rw [← hfac]
-    exact hoiV
+    rwa [← hfac]
   have : AlgebraicGeometry.IsOpenImmersion φ :=
     AlgebraicGeometry.IsOpenImmersion.of_comp φ U.ι
   have : AlgebraicGeometry.Etale φ := inferInstance
@@ -308,8 +303,7 @@ theorem IsMaxContactHypersurface.comap_of_isOpenImmersionAtSource {k : Type u} [
   rcases hcase with ⟨hdisj, htop⟩ | ⟨n, c, j, hcoord, hmc⟩
   · refine Or.inl ⟨?_, ?_⟩
     · rw [orderAtLeastLocus_comap k p g A 1, Set.disjoint_left]
-      intro y hy hyV
-      exact (Set.disjoint_left.mp hdisj hy) (hVpre hyV)
+      exact fun y hy hyV => (Set.disjoint_left.mp hdisj hy) (hVpre hyV)
     · rw [hcomapres H, htop]
       simp
   · have := c.isEtale
@@ -358,8 +352,7 @@ private theorem isomorphic_of_isMaxContactHypersurface_singleton_boundary (hin :
     refine isMaxContactInvariant_of_mult_eq_one S.base S.structMap S.ideal S.mult hm1 ?_
     intro x
     have hx := hord x
-    rw [hm1] at hx
-    exact hx
+    rwa [hm1] at hx
   exact DivisorReductionIndependence.isomorphic_withBoundary_cons_of_isMaxContactHypersurface hin P hmono A0 B hspec0 S hSV hP hord hD hMC
     [] H₁ H₂ hbd hV₂ (by intro _i; exact hH₁) (by intro _i; exact hH₂)
 
@@ -593,8 +586,7 @@ private theorem isStrictPullbackBlowupSeq_cover_of_eq_append (hstar : MaxContact
   have hadm1 : IsMaxContactHypersurface T.base T.structMap T.ideal 1
       (AlgebraicGeometry.Scheme.Hom.ker e) := by
     have hx := hadm
-    rw [hmult] at hx
-    exact hx
+    rwa [hmult] at hx
   have hkey := IsMaxContactHypersurface.comap_of_isOpenImmersionAtSource T.structMap hadm1
     (coverMap T h.valid) (MaxContactOpenCover.isLocalIsomorphism_coverMap T h.valid)
   have hA1 : ∀ m : ℕ, m = 1 →
@@ -844,8 +836,7 @@ theorem isStrictPullbackBlowupSeq_coverMarkedBlowupData_of_isSmoothDivisor
     exact exists_etaleChart_restrictIdeal_eq_coordIdeal_singleton T.structMap
       (AlgebraicGeometry.Scheme.Hom.ker e) hdiv x hx
   · rw [hJ, imageIdealSheaf_eq_ker]
-    intro U
-    exact AlgebraicGeometry.Scheme.Hom.le_ker_comp ..
+    exact fun U => AlgebraicGeometry.Scheme.Hom.le_ker_comp ..
 
 end MaxContactCoverData
 

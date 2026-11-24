@@ -174,8 +174,7 @@ theorem mem_torsion (hπ : Irreducible π) {z : ℕ → Ω} (h0 : z 0 = 0)
       rw [psEval_polynomial, aeval_ltPoly]
       exact hs n
     have h2 := (mem_lubinTateTorsion _ _ _).mp (ih (π • x) h1)
-    rw [mem_lubinTateTorsion, pow_succ, mul_smul]
-    exact h2
+    rwa [mem_lubinTateTorsion, pow_succ, mul_smul]
 
 variable [IsSepClosed Ω] {f : PowerSeries 𝒪[K]} (hπ : Irreducible π) (hf : IsLubinTateSeries π f)
 
@@ -239,8 +238,7 @@ theorem continuous_gal (K : FinExt l) : Continuous (gal K) := by
     one_mem (E.restrictScalars ℚ_[l]).fixingSubgroup
   refine Filter.mem_map.mpr (Filter.mem_of_superset (hO.mem_nhds h1) fun g hg => hEs ?_)
   rw [SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]
-  intro x hx
-  exact (IntermediateField.mem_fixingSubgroup_iff _ _).mp hg x hx
+  exact fun x hx => (IntermediateField.mem_fixingSubgroup_iff _ _).mp hg x hx
 
 theorem card_quot (K : FinExt l) {π : 𝒪[↥K.1]} (hπ : Irreducible π) :
     Nat.card (↥(OL K) ⧸ Ideal.span {(intEquiv K).symm π}) = Nat.card 𝓀[↥K.1] := by
@@ -319,8 +317,7 @@ theorem hasSum_of_series (K : FinExt l) {π : 𝒪[↥K.1]} (hπ : Irreducible �
       PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero hF0)] at h2
     change PowerSeries.subst Φ (PowerSeries.map e (ltSeries ((intEquiv K).symm π))) =
       PowerSeries.subst (PowerSeries.map e (ltSeries ((intEquiv K).symm π))) Φ at h2
-    rw [hFm] at h2
-    exact h2
+    rwa [hFm] at h2
   have hΦe := eq_lubinTateHom_toPowerSeries hπ hf hf _ hΦ0 hφ1 hΦs
   have hx := mem_torsion (Ω := Om l) hπ h0 hs n (IdealPoint.mk (z n) (hv n)) rfl
   have hg := apply_eq_smul hπ hf (gal K g) hx
@@ -354,8 +351,7 @@ theorem exists_ltChar {l : ℕ} [Fact l.Prime] (K : FinExt l) :
   · intro g φ hφ0 hφ1 hsub n
     refine hasSum_of_series K hπ h0 hv hs g φ hφ0 ?_ hsub n
     apply Subtype.ext
-    rw [PowerSeries.coeff_map]
-    exact hφ1
+    rwa [PowerSeries.coeff_map]
   · exact (continuous_coe_unit K).comp hC
 
 end GlobalTheory.CompanionTheory.LTHodge.CharEx

@@ -153,8 +153,7 @@ theorem decay : Core → Bridge → Decay := by
   have hB := hBridge D V r X Y hW j
   have hV : Van (unipRad D.sp.cm.sig V.gram (pre X j)) f := by
     have h0 : Van (NA (frameFlag (isIsoFrame_firstCols hW j))) f := fun ν _ x y => (hU ν x y).2
-    rw [hB] at h0
-    exact h0
+    rwa [hB] at h0
   refine ⟨A, fun m => ?_⟩
   obtain ⟨B, hBd⟩ := hA m f hf hV C W hC hW'
   refine ⟨B, fun t ht a ha x hx y hy => ?_⟩
@@ -163,8 +162,7 @@ theorem decay : Core → Bridge → Decay := by
       f (x * (a⁻¹ * rat V ν * a) * y) = nsum (NF D.sp.cm.sig V.gram (pre X j)) f (x * a⁻¹) (a * y) := by
     rw [nsum, ← DDecay.tsum_eq D V r X Y hW j hB (fun g => f (x * a⁻¹ * g * (a * y)))]
     congr 1; funext ν; congr 1; group
-  rw [h2]
-  exact h1
+  rwa [h2]
 
 end MainStatements.WeightKernel.Dec
 end -- clump:auto
@@ -243,8 +241,7 @@ theorem lineSm (h : IsCMExt F E σ) {b : ℝ → GAd σ J} (hb : IsRealLine σ J
         change infEmb τ' _ = _
         rw [e]; rfl
       simp only [this]; exact Complex.conjCLE.contDiff.comp (exp_entry Z i j)
-  · simp only [projArch_embArch_ne σ J hu]
-    exact contDiff_const
+  · simpa only [projArch_embArch_ne σ J hu] using contDiff_const
 
 theorem main (h : IsCMExt F E σ) {b : ℝ → GAd σ J} (hb : IsRealLine σ J b) {f : GAd σ J → ℂ} (hf : f ∈ CcAd σ J) :
     (∀ g, DifferentiableAt ℝ (fun t => f (g * b t)) 0) ∧ lineDer b f ∈ CcAd σ J := by
@@ -414,8 +411,7 @@ theorem MainStatements.WeightKernel.Dec.derVan : MainStatements.WeightKernel.Dec
     rw [h0] at key
     have e := key.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))
     simpa [GlobalTheory.UAut.ConstAut.realLine_zero h hb] using e
-  · intro t
-    exact hfc.1.comp ((continuous_const.mul continuous_subtype_val).mul continuous_const)
+  · exact fun t => hfc.1.comp ((continuous_const.mul continuous_subtype_val).mul continuous_const)
   · exact hf'c.1.comp ((continuous_const.mul (continuous_subtype_val.comp continuous_snd)).mul
       (continuous_const.mul (hbc.comp continuous_fst)))
   · intro t ht m hm
@@ -537,8 +533,7 @@ theorem nearCusp : NearCusp := by
         (projFin σ J k)⁻¹ * projFin σ J q * projFin σ J k := by
       simp only [map_mul, map_inv, hfa, one_mul]
     have := hqW _ hh
-    rw [← e] at this
-    exact this
+    rwa [← e] at this
   · rw [mul_assoc (γ * (a * k)), ofInf_projInf_mul_ofFin_projFin]
     group
 

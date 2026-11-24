@@ -206,8 +206,7 @@ private theorem H_affine_combination_eq_of_quadratic_relation : ∀ (n : ℕ) {V
           hlatx.2 (fun l => by rw [← hs]; exact hx _)
         intro p
         rcases eq_or_ne p q with hpq | hpq
-        · rw [hpq]
-          exact ha
+        · rwa [hpq]
         · obtain ⟨l, rfl⟩ := Fin.exists_succAbove_eq hpq
           have hl' := hl l
           rw [hcomp] at hl'
@@ -221,13 +220,11 @@ private theorem H_affine_combination_eq_of_quadratic_relation : ∀ (n : ℕ) {V
     refine ⟨b', k + 1, hk', latiff, ?_, ?_⟩
     · intro j
       refine Fin.cases ?_ (fun l => ?_) j
-      · rw [hc0, hb'0]
-        exact huW
+      · rwa [hc0, hb'0]
       · rw [hcs, hb's]
         exact hmem l
     · intro x hx
       have hy : (⟨x - b.repr x q • u, hyN x⟩ : N) ∈ W.comap N.subtype := by
-        show x - b.repr x q • u ∈ W
         exact W.sub_mem hx (W.smul_mem _ huW)
       have h1 := hspan hy
       have h2 := Submodule.mem_map_of_mem (f := N.subtype) h1
@@ -413,10 +410,8 @@ private theorem exists_lat_basis_compatible_quotient {V U : Type} [AddCommGroup 
         intro q
         rw [happ, b'.repr_sum_self]
         refine Fin.addCases (fun j => ?_) (fun j => ?_) q
-        · simp only [Fin.append_left, Pi.zero_apply, map_zero]
-          exact zero_le
-        · simp only [Fin.append_right]
-          exact hy j
+        · simpa only [Fin.append_left, Pi.zero_apply, map_zero] using zero_le
+        · simpa only [Fin.append_right] using hy j
       · show g _ = y
 
         rw [map_sum]

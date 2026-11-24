@@ -193,8 +193,7 @@ private theorem le_of_span_singleton_mul_eq_mul {R : Type u} [CommRing R] {f : R
     exact Ideal.mul_mem_mul (Ideal.mem_span_singleton_self f) ha
   obtain ⟨z, hz, hfz⟩ := Ideal.mem_span_singleton_mul.mp h1
   have hza : a = z := ((mul_cancel_left_mem_nonZeroDivisors hf).mp hfz).symm
-  rw [hza]
-  exact hz
+  rwa [hza]
 
 private theorem eq_of_span_singleton_mul_eq_mul {R : Type u} [CommRing R] {f : R}
     (hf : f ∈ nonZeroDivisors R) {I J : Ideal R}
@@ -235,8 +234,7 @@ private theorem eq_of_stalkIdeal_eq {Y : Scheme.{u}} {A B : Y.IdealSheafData}
   have hx : IsAffineOpen.fromSpec V.2 (⟨P, hP.isPrime⟩ : PrimeSpectrum _) ∈ (V : Y.Opens) := by
     have hr : IsAffineOpen.fromSpec V.2 (⟨P, hP.isPrime⟩ : PrimeSpectrum _) ∈
         Set.range (IsAffineOpen.fromSpec V.2) := Set.mem_range_self _
-    rw [IsAffineOpen.range_fromSpec V.2] at hr
-    exact hr
+    rwa [IsAffineOpen.range_fromSpec V.2] at hr
   let _ : Algebra ↑(Y.presheaf.obj (Opposite.op (V : Y.Opens)))
       ↑(Y.presheaf.stalk (IsAffineOpen.fromSpec V.2 (⟨P, hP.isPrime⟩ : PrimeSpectrum _))) :=
     TopCat.Presheaf.algebra_section_stalk Y.presheaf
@@ -354,13 +352,11 @@ theorem isMarked_toBlowupSequenceData {k : Type u} [Field k] {X : Scheme.{u}}
     exact s.center_order i hi
   · intro i hi
     have h := s.center_smooth i hi
-    rw [s.projectionToBase_eq_toBlowupSequenceData_projectionToBase i] at h
-    exact h
+    rwa [s.projectionToBase_eq_toBlowupSequenceData_projectionToBase i] at h
   · intro i hi
     have h := s.center_snc i hi
     rw [s.projectionToBase_eq_toBlowupSequenceData_projectionToBase i] at h
-    rw [s.toBlowupSequenceData_boundary_eq_boundary_of_le i (le_of_lt hi)]
-    exact h
+    rwa [s.toBlowupSequenceData_boundary_eq_boundary_of_le i (le_of_lt hi)]
 
 theorem ofMarkedSequence_controlledTransform {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}

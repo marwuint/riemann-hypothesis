@@ -141,10 +141,8 @@ theorem dT_dT (U : Scheme.{0}) (w : ℤ) : dT I J U (w + 1) ∘ₗ dT I J U w = 
   apply DirectSum.linearMap_ext; rintro ⟨⟨s, t⟩, h⟩
   apply TensorProduct.ext'; intro a b
   simp only [LinearMap.comp_apply, LinearMap.zero_apply]
-  rw [dT_tmul, map_add (f := _), map_zsmul]
-  rw [dT_tmul (s := s + 1) (t := t) (w := w + 1)]
-  rw [dT_tmul (s := s) (t := t + 1) (w := w + 1)]
-  rw [dd0 (K := I), dd0 (K := J)]
+  rw [dT_tmul, map_add (f := _), map_zsmul, dT_tmul (s := s + 1) (t := t) (w := w + 1)]
+  rw [dT_tmul (s := s) (t := t + 1) (w := w + 1), dd0 (K := I), dd0 (K := J)]
   simp only [TensorProduct.zero_tmul, TensorProduct.tmul_zero, map_zero, zero_add, smul_zero, add_zero,
     Int.negOnePow_succ, Units.val_neg, neg_smul, neg_add_cancel]
 
@@ -205,8 +203,7 @@ theorem tau_isTensor : (tau I J).IsTensor := by
   refine ⟨fun U w y => ?_, fun U w x hx => ?_⟩
   · refine ⟨_, Presheaf.imageSieve_mem Scheme.etaleTopology.{0} (toSheafify Scheme.etaleTopology.{0} (TP I J w))
       (U := op U) y, fun V g ⟨t, ht⟩ => ⟨t, ?_⟩⟩
-    rw [tau_lift]
-    exact ht
+    rwa [tau_lift]
   · rw [tau_lift] at hx
     refine ⟨_, Presheaf.equalizerSieve_mem Scheme.etaleTopology.{0} (toSheafify Scheme.etaleTopology.{0} (TP I J w))
       (X := op U) x 0 (by rw [map_zero]; exact hx), fun V g hg => ?_⟩
@@ -218,7 +215,6 @@ end LateralTheory.E.LeafTwTensExPf
 namespace LateralTheory.E.LeafTwTensExPf
 
 theorem LeafTwTensEx_of : LateralTheory.E.LeafTwPairExistsPf.LeafTwTensEx := by
-  intro q _ i j
-  exact ⟨_, tau _ _, tau_isTensor _ _⟩
+  exact fun q _ i j => ⟨_, tau _ _, tau_isTensor _ _⟩
 
 end LateralTheory.E.LeafTwTensExPf

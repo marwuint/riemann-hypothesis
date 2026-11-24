@@ -141,27 +141,21 @@ theorem integral_real_normaliser_eq {f : G → ℝ} (hf : Measurable f)
     exact mul_le_mul_of_nonneg_right (hle g) (abs_nonneg _)
   have hp : Measurable fun g => max (f g) 0 := hf.max measurable_const
   have hn : Measurable fun g => max (-f g) 0 := hf.neg.max measurable_const
-  have hpl : ∀ g, |max (f g) 0| ≤ |f g| := fun g => by
-    rw [abs_of_nonneg (le_max_right _ _)]
-    exact max_le (le_abs_self _) (abs_nonneg _)
-  have hnl : ∀ g, |max (-f g) 0| ≤ |f g| := fun g => by
-    rw [abs_of_nonneg (le_max_right _ _)]
-    exact max_le (neg_le_abs _) (abs_nonneg _)
+  have habs : ∀ x : ℝ, |max x 0| ≤ |x| := fun x => abs_max_le_max_abs_abs.trans (by simp)
   have dec : ∀ {σ : G → ℝ≥0∞}, IsQuotNormaliser H μH σ →
       Integrable (fun g => f g * (σ g).toReal) μG →
       ∫ g, f g * (σ g).toReal ∂μG =
         ∫ g, max (f g) 0 * (σ g).toReal ∂μG - ∫ g, max (-f g) 0 * (σ g).toReal ∂μG := by
     intro σ hσ h
-    rw [← integral_sub (part hσ hp hpl h) (part hσ hn hnl h)]
+    rw [← integral_sub (part hσ hp (fun g => habs (f g)) h)
+      (part hσ hn (fun g => by simpa using habs (-f g)) h)]
     refine integral_congr_ae (ae_of_all _ fun g => ?_)
-    have : f g = max (f g) 0 - max (-f g) 0 := (max_zero_sub_max_neg_zero_eq_self (f g)).symm
     simp only
-    rw [← sub_mul, ← this]
-  rw [dec hρ hi, dec hρ' hi',
-    integral_nonneg_normaliser_eq hp (fun g => le_max_right _ _)
-      (fun h hh g => by simp only [hfH h hh g]) hρ hρ',
-    integral_nonneg_normaliser_eq hn (fun g => le_max_right _ _)
-      (fun h hh g => by simp only [hfH h hh g]) hρ hρ']
+    rw [← sub_mul, max_zero_sub_max_neg_zero_eq_self]
+  rw [dec hρ hi, dec hρ' hi']
+  congr 1 <;>
+    exact integral_nonneg_normaliser_eq (by assumption) (fun g => le_max_right _ _)
+      (fun h hh g => by simp only [hfH h hh g]) hρ hρ'
 
 theorem integral_normaliser_eq_of {F : G → ℂ} (hF : Measurable F)
     (hFH : ∀ h ∈ H, ∀ g, F (h * g) = F g) {ρ ρ' : G → ℝ≥0∞}

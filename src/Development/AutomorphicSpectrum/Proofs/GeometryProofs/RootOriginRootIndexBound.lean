@@ -71,8 +71,7 @@ theorem exists_coeff_of_mem {c : Fin r → L} {s : Set (Fin r)} {x : L} (h : x �
   · by_contra hne
     exact hj (hl (Finsupp.mem_support_iff.mpr hne))
   · rw [Finsupp.linearCombination_apply, Finsupp.sum_fintype]
-    intro i
-    exact zero_smul _ _
+    exact fun i => zero_smul _ _
 
 theorem coeff_unique {c : Fin r → L} (hc : LinearIndependent Ω c) {f g : Fin r → Ω}
     (h : ∑ j, f j • c j = ∑ j, g j • c j) (j : Fin r) : f j = g j := by
@@ -98,8 +97,7 @@ theorem flag_change {b c : Fin r → L} {T : Matrix (Fin r) (Fin r) Ω} (hb : Li
   refine ⟨hc, fun i j hij => ?_⟩
   have hmem : b i ∈ Submodule.span Ω (c '' {k : Fin r | (k : ℕ) < (i : ℕ) + 1}) := by
     have h1 : b i ∈ flagStep Ω b ((i : ℕ) + 1) := Submodule.subset_span ⟨i, Nat.lt_succ_self _, rfl⟩
-    rw [hf] at h1
-    exact h1
+    rwa [hf] at h1
   obtain ⟨f, hf0, hfx⟩ := exists_coeff_of_mem hmem
   rw [coeff_unique hc ((hT i).symm.trans hfx) j]
   refine hf0 j (fun hj => ?_)
@@ -138,8 +136,7 @@ theorem span_gr_eq (A : Subring Ω) {b c : Fin r → L} {T : Matrix (Fin r) (Fin
       have h1 : ∑ k, α k • b k ∈ flagStep Ω c ((i : ℕ) + 1) := by
         have := add_mem (hmono het) (Submodule.smul_mem _ t hci)
         rwa [sub_add_cancel] at this
-      rw [← hf] at h1
-      exact h1
+      rwa [← hf] at h1
     obtain ⟨f, hf0, hfe⟩ := exists_coeff_of_mem he1
     have hαz : ∀ k, i < k → α k = 0 := by
       intro k hk
@@ -209,8 +206,7 @@ theorem unit_of_tens (Λ : Lat ξ Ω) (q : Cpt ξ) (a : ℤ) {s M : Ω} (hs : Λ
     M * s ^ (-a) ∈ regAt ξ q ∧ (M * s ^ (-a))⁻¹ ∈ regAt ξ q := by
   have hs0 : s ≠ 0 := hs.1
   have hsa : s ^ a ∈ Lat.tens (fun _ : Unit => Λ) (fun _ => a) q := by
-    apply Submodule.subset_span
-    exact ⟨fun _ => s, fun _ => hs, by simp⟩
+    exact Submodule.subset_span ⟨fun _ => s, fun _ => hs, by simp⟩
   have hle : Lat.tens (fun _ : Unit => Λ) (fun _ => a) q ≤ Submodule.span (regAt ξ q) {s ^ a} := by
     apply Submodule.span_le.mpr
     rintro t ⟨σ', hσ', rfl⟩
@@ -250,8 +246,7 @@ theorem root_unit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
       (HodgeCpt.rootIdx Dw ρ).2).IsGenAt q (Tm (HodgeCpt.rootIdx Dw ρ).2 (HodgeCpt.rootIdx Dw ρ).2) := by
     refine ⟨hd _, ?_⟩
     have h1 := span_gr_eq (regAt Or.𝔐.ξ q) hfr.1 hfl hT (HodgeCpt.rootIdx Dw ρ).2
-    rw [← hfr.2] at h1
-    exact h1
+    rwa [← hfr.2] at h1
   have hM0 : (∏ k, RM.y ⟨k, ch k⟩ ^ RM.xdeg ρ k) * Or.e ρ ≠ 0 := by
     intro h0
     have hmem : Tm (HodgeCpt.rootIdx Dw ρ).2 (HodgeCpt.rootIdx Dw ρ).2 ^ HodgeCpt.rootSgn Dw ρ ∈

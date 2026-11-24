@@ -299,8 +299,7 @@ theorem mdn_mdn (F : C ⥤ ModuleCat.{0} R) (n : ℕ) (f : MCn F n) : mdn F (n +
   have h := AlgebraicTopology.AlternatingCofaceMapComplex.d_squared (cosim F) n
   have h2 := congrArg (fun φ ↦ φ.hom f) h
   simp only [ModuleCat.hom_comp] at h2
-  rw [← objD_hom, ← objD_hom]
-  exact h2
+  rwa [← objD_hom, ← objD_hom]
 
 end Cochains
 
@@ -322,8 +321,7 @@ theorem pb_gp (Φ : C' ⥤ C) {F : C ⥤ ModuleCat.{0} R} {G : C' ⥤ ModuleCat.
     (θ : Fin (m + 1) →o Fin (n + 1)) (f : MCn F m) : pb Φ α n (gp F θ f) = gp G θ (pb Φ α m f) := by
   funext c
   have h := α.naturality (c.map (homOfLE (Fin.le_last (θ (Fin.last m)))))
-  have h2 := congrArg (fun φ ↦ φ.hom (f (θ.monotone.functor ⋙ c ⋙ Φ))) h
-  exact h2
+  exact congrArg (fun φ ↦ φ.hom (f (θ.monotone.functor ⋙ c ⋙ Φ))) h
 
 theorem pb_mdn (Φ : C' ⥤ C) {F : C ⥤ ModuleCat.{0} R} {G : C' ⥤ ModuleCat.{0} R} (α : Φ ⋙ F ⟶ G) (n : ℕ)
     (f : MCn F n) : pb Φ α (n + 1) (mdn F n f) = mdn G n (pb Φ α n f) := by
@@ -404,14 +402,12 @@ theorem snoc_nonempty {n : ℕ} (c : Fin (n + 1) ⥤ E) (y : E) (f : c.obj (Fin.
     induction i using Fin.lastCases with
     | last => exact ⟨𝟙 _⟩
     | cast i =>
-      simp only [Fin.snoc_castSucc, Fin.snoc_last]
-      exact ⟨c.map (homOfLE (Fin.le_last i)) ≫ f⟩
+      simpa only [Fin.snoc_castSucc, Fin.snoc_last] using ⟨c.map (homOfLE (Fin.le_last i)) ≫ f⟩
   | cast j =>
     induction i using Fin.lastCases with
     | last => exact absurd h (not_le.2 (Fin.castSucc_lt_last j))
     | cast i =>
-      simp only [Fin.snoc_castSucc]
-      exact ⟨c.map (homOfLE (Fin.castSucc_le_castSucc_iff.1 h))⟩
+      simpa only [Fin.snoc_castSucc] using ⟨c.map (homOfLE (Fin.castSucc_le_castSucc_iff.1 h))⟩
 
 def snoc {n : ℕ} (c : Fin (n + 1) ⥤ E) (y : E) (f : c.obj (Fin.last n) ⟶ y) : Fin (n + 2) ⥤ E where
   obj := Fin.snoc (α := fun _ ↦ E) c.obj y
@@ -667,8 +663,7 @@ abbrev ηG : τ.G ⟶ τ.I := coindη τ.G
 theorem comm (x : C × D) (v : τ.F.obj x.1) :
     (τ.up.α.app x).hom ((τ.ηF.app x.1).hom v) = (τ.ηG.app x).hom ((τ.α.app x).hom v) := by
   funext p
-  have h := congrArg (fun t ↦ t.hom v) (τ.α.naturality p.2)
-  exact h
+  exact congrArg (fun t ↦ t.hom v) (τ.α.naturality p.2)
 
 def quo : Tr R C D where
   F := coker τ.ηF
@@ -723,8 +718,7 @@ theorem aug_up_ex [Quiver.IsThin C] [Quiver.IsThin D] (T : C) (k : ℕ) : (τ.up
   match k with
   | 0 =>
     refine Cx.ex_zero_iff.2 fun j hj ↦ funext fun p ↦ funext fun U ↦ ?_
-    have h := congrFun (congrFun hj (pt U)) ⟨(p.1, U), Prod.mkHom p.2 (𝟙 U)⟩
-    exact h
+    exact congrFun (congrFun hj (pt U)) ⟨(p.1, U), Prod.mkHom p.2 (𝟙 U)⟩
   | 1 =>
     refine Cx.ex_succ_iff.2 fun a ha ↦ ?_
     refine ⟨fun p U ↦ (τ.fibD T).ev (𝟙 U) ((a : MCn (τ.up.fibG T) 0) (pt U)) ⟨p.1, p.2⟩, ?_⟩

@@ -121,8 +121,7 @@ theorem d_fc_mem (hF : IsFil Φ Fil) (hc : E.GrConst Fil) {j : ℕ} (I : Fin j �
     rw [hF.top _ (by simp)]; trivial
   have h := d_form_mem E σ hF hc j 0 I x hx s
   have e : ((j : ℤ) + ((0 : ℕ) : ℤ)) + 1 = ((j + 1 : ℕ) : ℤ) := by push_cast; ring
-  rw [e] at h
-  exact h
+  rwa [e] at h
 
 theorem term_fc {j n : ℕ} (I : Fin j → Fin d) (x : Φ.A.obj E.D) (s : ComposableArrows C n)
     (g : Fin (j + 1) → Fin (n + 1)) (hg : Monotone g) :
@@ -235,8 +234,7 @@ theorem bd_cup (hF : IsFil Φ Fil) (m : ℕ) (g : CH.Cn (CH.modF Φ.A) m) (hg : 
   | succ n =>
     obtain ⟨H, hH, rfl⟩ := hg
     refine ⟨(CH.mulP Φ.A).cupC (rfl : n + 1 = n + 1) H l, cup_mem hF rfl hH hl, ?_⟩
-    rw [CrystallineSemistableComparison.P.leibniz]
-    rw [sub_add_cancel_left]
+    rw [CrystallineSemistableComparison.P.leibniz, sub_add_cancel_left]
     exact neg_mem (zsmul_mem (cup_mem hF (r := n + 1) (r' := 1 + 1) (by omega) hH hdl) _)
 
 theorem b_cup_dh (hF : IsFil Φ Fil) (m : ℕ) (B : CH.Cn (CH.modF Φ.A) m) (hB : B ∈ FC (Fil (m : ℤ)) m)
@@ -366,8 +364,7 @@ theorem d_mul (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (w : Φ.A.obj E.D) {n : �
   have h1 : (show Φ.A.obj (s.obj (Fin.last (n + 1))) from (Φ.A.map (toLast i s)).hom (H (face i s))) ∈
       (Fil ((n + 1 : ℕ) : ℤ)).S _ := (Fil _).map_mem _ (mem_FC.1 hH (face i s))
   have h2 : (Φ.A.map (σ _)).hom w - (Φ.A.map (σ _ ≫ toLast i s)).hom w ∈ (Fil ((1 : ℕ) : ℤ)).S _ := by
-    have h := hc 0 (σ (s.obj (Fin.last (n + 1)))) (σ _ ≫ toLast i s) hw
-    simpa using h
+    simpa using hc 0 (σ (s.obj (Fin.last (n + 1)))) (σ _ ≫ toLast i s) hw
   exact hF.mul (n + 1) 1 _ h1 h2
 
 theorem form_mul {j : ℕ} (I : Fin j → Fin d) (w x : Φ.A.obj E.D) (s : ComposableArrows C j) :
@@ -393,8 +390,7 @@ theorem cup_rep {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF 
   have hh : ∀ k, h0 (h k) ∈ FC (Fil ((1 : ℕ) : ℤ)) 0 := fun k => mem_FC.2 fun s => by
     have := hJ k (s.obj (Fin.last 0))
     rw [← hF.one] at this
-    rw [Nat.cast_one]
-    exact this
+    rwa [Nat.cast_one]
   have he : ∀ k, ℓ k - (∑ i, fc E σ ![i] (c k i) + CH.d (CH.modF Φ.A) 0 (h0 (h k))) ∈
       FC (Fil ((1 + 1 : ℕ) : ℤ)) 1 := fun k => mem_FC.2 fun u => by
     have e : vl (ℓ k - (∑ i, fc E σ ![i] (c k i) + CH.d (CH.modF Φ.A) 0 (h0 (h k)))) u =

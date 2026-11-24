@@ -169,13 +169,11 @@ theorem isCptGen_of_comp {W : Scheme.{0}} (ξ : Sp Ω ⟶ W) (f : W ⟶ X) [Surj
     exact congrArg s (hi hy)
   have hb : Function.Bijective ((Scheme.stalkClosedPointTo ξ).hom ∘ (f.stalkMap (ξ (closedPoint Ω))).hom) := by
     have hb0 := h.bij
-    rw [Scheme.stalkClosedPointTo_comp] at hb0
-    exact hb0
+    rwa [Scheme.stalkClosedPointTo_comp] at hb0
   refine ⟨⟨key _ _ hb.1 (f.stalkMap_surjective _), Function.Surjective.of_comp hb.2⟩, fun p => ?_⟩
   have hi : Function.Injective ((genMap ξ p) ∘ (f.stalkMap p.1).hom) := by
     have hi0 := h.inj (push ξ f p)
-    rw [genMap_push] at hi0
-    exact hi0
+    rwa [genMap_push] at hi0
   exact key _ _ hi (f.stalkMap_surjective p.1)
 
 end PositivityTheory.HtPt.Mf

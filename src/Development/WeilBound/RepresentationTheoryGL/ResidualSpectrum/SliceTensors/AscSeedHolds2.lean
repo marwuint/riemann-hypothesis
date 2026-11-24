@@ -351,8 +351,7 @@ theorem restrictAtPoint_holds : RestrictAtPoint := by
   let xw := Matrix.GeneralLinearGroup.map (pLoc E w) x
   let xo := x * (locGL E N w xw)⁻¹
   have hxo : Matrix.GeneralLinearGroup.map (pLoc E w) xo = 1 := by
-    simp only [xo, map_mul, map_inv, pLoc_locGL]
-    exact mul_inv_cancel _
+    simpa only [xo, map_mul, map_inv, pLoc_locGL] using mul_inv_cancel _
   have hx : x = xo * locGL E N w xw := by simp [xo]
   let Lf : X → ((∀ i, GA E (n i)) → ℂ) := fun v m =>
     (F.1 v).1 (leviEmb (Ad E) (stdBlocks n h) m * (infGL E N (Unitary.toUnits k) * finGL E N xo))
@@ -383,8 +382,7 @@ theorem restrictAtPoint_holds : RestrictAtPoint := by
       apply mem_parab_iff.2
       intro a b i j hab
       letI : DecidableEq (Fin c) := Classical.typeDecidableEq _
-      simp [leviEmb]
-      exact Matrix.blockDiagonal'_apply_ne _ _ _ hab.ne'
+      simpa [leviEmb] using Matrix.blockDiagonal'_apply_ne _ _ _ hab.ne'
     let Lp : parab (w.adicCompletion E) (stdBlocks n h) :=
       ⟨leviEmb _ _ (leviProj _ _ p), hemb _⟩
     have hdec : ∃ up ∈ unipRad (w.adicCompletion E) (stdBlocks n h),
@@ -423,8 +421,7 @@ theorem restrictAtPoint_holds : RestrictAtPoint := by
       apply mem_parab_iff.2
       intro a b i j hab
       letI : DecidableEq (Fin c) := Classical.typeDecidableEq _
-      simp [leviEmb]
-      exact Matrix.blockDiagonal'_apply_ne _ _ _ hab.ne'
+      simpa [leviEmb] using Matrix.blockDiagonal'_apply_ne _ _ _ hab.ne'
     have hconj : leviEmb (Ad E) (stdBlocks n h) (m * M') *
         finGL E N (locGL E N w up) * (leviEmb (Ad E) (stdBlocks n h) (m * M'))⁻¹ ∈
         unipRad (Ad E) (stdBlocks n h) := by
@@ -645,8 +642,7 @@ theorem exists_proj {Γ M X : Type} [Group Γ] [AddCommGroup M] [Module ℂ M] [
   obtain ⟨p, hp⟩ := LinearMap.exists_extend qI.toLinearMap
   have hpv : ∀ s (hs : s ∈ T), p s = qI.toLinearMap ⟨s, hs⟩ := fun s hs => LinearMap.congr_fun hp ⟨s, hs⟩
   refine ⟨p, ?_, fun g s hs => ?_⟩
-  · rw [hpv t ht]
-    exact hq
+  · rwa [hpv t ht]
   · rw [hpv _ (hT g s hs), hpv s hs]
     exact LinearMap.congr_fun (qI.isIntertwining' g) ⟨s, hs⟩
 
@@ -767,8 +763,7 @@ open SliceFrobeniusReciprocity in
 theorem frobRecip_holds : PositivityTheory.RSHS.LS.FrobRecip := by
   intro k _ _ _ _ N c n h σ' W _ _ ρ ℓ hℓ0 hℓ
   refine ⟨frobMap hℓ, fun h0 => hℓ0 (LinearMap.ext fun v => ?_)⟩
-  have h1 := congrArg (fun f : _ →ₗ[ℂ] _ => (f v).1.1 1) h0
-  simpa [frobMap, frobFun_apply] using h1
+  simpa [frobMap, frobFun_apply] using congrArg (fun f : _ →ₗ[ℂ] _ => (f v).1.1 1) h0
 
 end PositivityTheory.Rg.Rs
 
@@ -868,9 +863,7 @@ theorem loc_eq_absPow {ν : HChar E} {s : ℝ} (hν : ν.IsAbsPow s) (w : Height
     have hexists : ∃ ϖ : kˣ, GlobalTheory.SmGL.ord k ϖ = 1 ∧
         GlobalTheory.SplitWeil.nabs k ϖ = (GlobalTheory.SplitWeil.resCard k : ℝ)⁻¹ := by
       obtain ⟨p, hp⟩ := IsDiscreteValuationRing.exists_irreducible (valuation k).integer
-      have hp0 : (p : k) ≠ 0 := by
-        intro h
-        exact hp.ne_zero (Subtype.ext h)
+      have hp0 : (p : k) ≠ 0 := fun h => hp.ne_zero (Subtype.ext h)
       obtain ⟨y, hy⟩ : ∃ y : k, valuation k y = uniformizer k := valuation_surjective _
       have hy0 : y ≠ 0 := by
         intro h
@@ -881,9 +874,7 @@ theorem loc_eq_absPow {ν : HChar E} {s : ℝ} (hν : ν.IsAbsPow s) (w : Height
         exact uniformizer_lt_one.le
       obtain ⟨m, u, hu⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible
         (x := (⟨y, hyint⟩ : (valuation k).integer)) (fun h => hy0 (congrArg Subtype.val h)) hp
-      have hu0 : ((u : (valuation k).integer) : k) ≠ 0 := by
-        intro h
-        exact u.ne_zero (Subtype.ext h)
+      have hu0 : ((u : (valuation k).integer) : k) ≠ 0 := fun h => u.ne_zero (Subtype.ext h)
       refine ⟨Units.mk0 (p : k) hp0, ?_, _root_.GlobalTheory.SplitWeil.nabs_uniformiser hp rfl⟩
       have hyo : _root_.GlobalTheory.SmGL.ord k (Units.mk0 y hy0) = 1 :=
         _root_.GlobalTheory.SmGL.ord_eq_one hy
@@ -985,8 +976,7 @@ theorem comp_ne {G U V W : Type} [Monoid G] [AddCommGroup U] [Module ℂ U] [Add
     (g : a.IntertwiningMap b) (hg : g.toLinearMap ≠ 0) (Φ : b.Equiv c) : ∃ f : a.IntertwiningMap c, f ≠ 0 := by
   refine ⟨Φ.toIntertwiningMap.comp g, fun h0 => hg ?_⟩
   refine LinearMap.ext fun v => Φ.toLinearEquiv.injective ?_
-  have h1 := congrArg (fun q : a.IntertwiningMap c => q v) h0
-  simpa using h1
+  simpa using congrArg (fun q : a.IntertwiningMap c => q v) h0
 
 theorem step1 (hR : RestrictAtPoint) (hP : ExistsProj) (E : Type) [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E]
     (N c : ℕ) (n : Fin c → ℕ) (h : ∑ i, n i = N) (π : ∀ i, CuspSub E (n i)) (w : HeightOneSpectrum (𝓞 E))
@@ -1004,10 +994,7 @@ theorem step1 (hR : RestrictAtPoint) (hP : ExistsProj) (E : Type) [Field E] [Num
       rw [hfeq g v]
       exact he3 (.fin _) _ (hfV v)⟩
   have hF0 : F.1 ≠ 0 := by
-    intro h0
-    apply hf0
-    refine LinearMap.ext fun v => ?_
-    exact he2 _ (hfV v) (LinearMap.congr_fun h0 v)
+    exact fun h0 => hf0 (LinearMap.ext fun v => he2 _ (hfV v) (LinearMap.congr_fun h0 v))
   obtain ⟨L, hLT, hL0, hLeq⟩ := hR E N c n h π w σ'.V σ'.ρ F hF0
   obtain ⟨v0, hv0⟩ : ∃ v, L v ≠ 0 := by
     by_contra hc

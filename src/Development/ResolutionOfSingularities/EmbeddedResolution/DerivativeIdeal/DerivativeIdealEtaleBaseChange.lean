@@ -160,32 +160,27 @@ theorem map_derivIdeal_sum (k : Type*) [CommRing k] (ι : Type*) (κ : Type*)
   have key1 : ∀ (D : Derivation k S S) (y : S), y ∈ J →
       algebraMap S T (D y) ∈ derivIdeal k (Ideal.map (algebraMap S T) J) := by
     intro D y hy
-    have hsp : D ∈ Submodule.span S (Set.range (partialDeriv k ι S)) := by
-      rw [span_range_partialDeriv]
-      exact Submodule.mem_top
+    have hsp : D ∈ Submodule.span S (Set.range (partialDeriv k ι S)) :=
+      span_range_partialDeriv k ι S ▸ Submodule.mem_top
     induction hsp using Submodule.span_induction with
     | mem D hD =>
         obtain ⟨i, rfl⟩ := hD
         rw [← partialDeriv_inl_algebraMap k ι κ S T hcoord i y]
         exact derivation_apply_mem_derivIdeal k _ _ (Ideal.mem_map_of_mem _ hy)
     | zero =>
-        have h0 : ((0 : Derivation k S S)) y = 0 := rfl
-        rw [h0, map_zero]
+        rw [zero_apply, map_zero]
         exact Submodule.zero_mem _
     | add a b _ _ ha hb =>
-        have h0 : (a + b) y = a y + b y := rfl
-        rw [h0, map_add (f := _)]
+        rw [add_apply, map_add (f := _)]
         exact Ideal.add_mem _ ha hb
     | smul c a _ ha =>
-        have h0 : (c • a) y = c * a y := rfl
-        rw [h0, map_mul]
+        rw [smul_apply, smul_eq_mul, map_mul]
         exact Ideal.mul_mem_left _ _ ha
   have key2 : ∀ (D' : Derivation k T T) (y : S), y ∈ J →
       D' (algebraMap S T y) ∈ Ideal.map (algebraMap S T) (derivIdeal k J) := by
     intro D' y hy
-    have hsp : D' ∈ Submodule.span T (Set.range (partialDeriv k (ι ⊕ κ) T)) := by
-      rw [span_range_partialDeriv]
-      exact Submodule.mem_top
+    have hsp : D' ∈ Submodule.span T (Set.range (partialDeriv k (ι ⊕ κ) T)) :=
+      span_range_partialDeriv k (ι ⊕ κ) T ▸ Submodule.mem_top
     induction hsp using Submodule.span_induction with
     | mem D hD =>
         obtain ⟨x, rfl⟩ := hD
@@ -198,17 +193,13 @@ theorem map_derivIdeal_sum (k : Type*) [CommRing k] (ι : Type*) (κ : Type*)
             rw [partialDeriv_inr_algebraMap k ι κ S T hcoord j y]
             exact Submodule.zero_mem _
     | zero =>
-        have h0 : ((0 : Derivation k T T)) (algebraMap S T y) = 0 := rfl
-        rw [h0]
+        rw [zero_apply]
         exact Submodule.zero_mem _
     | add a b _ _ ha hb =>
-        have h0 : (a + b) (algebraMap S T y)
-            = a (algebraMap S T y) + b (algebraMap S T y) := rfl
-        rw [h0]
+        rw [add_apply]
         exact Ideal.add_mem _ ha hb
     | smul c a _ ha =>
-        have h0 : (c • a) (algebraMap S T y) = c * a (algebraMap S T y) := rfl
-        rw [h0]
+        rw [smul_apply, smul_eq_mul]
         exact Ideal.mul_mem_left _ _ ha
   refine le_antisymm ?_ ?_
   · rw [Ideal.map_le_iff_le_comap, derivIdeal_le_iff]
@@ -218,15 +209,9 @@ theorem map_derivIdeal_sum (k : Type*) [CommRing k] (ι : Type*) (κ : Type*)
   · rw [derivIdeal_le_iff]
     refine ⟨Ideal.map_mono (le_derivIdeal k J), ?_⟩
     intro D' z hz
-    have hspan : Ideal.map (algebraMap S T) J
-        = Ideal.span ((algebraMap S T) '' (J : Set S)) := by
-      rw [← Ideal.map_span, Ideal.span_eq]
-    rw [hspan] at hz
-    refine derivation_apply_mem_of_mem_span D' ?_ ?_ hz
-    · rw [← hspan]
-      exact Ideal.map_mono (le_derivIdeal k J)
-    · rintro g ⟨y, hy, rfl⟩
-      exact key2 D' y hy
+    refine derivation_apply_mem_of_mem_span D' (Ideal.map_mono (le_derivIdeal k J)) ?_ hz
+    rintro g ⟨y, hy, rfl⟩
+    exact key2 D' y hy
 
 end EtaleCoordinates
 end FunctorialResolution.EmbeddedResolution

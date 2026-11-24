@@ -162,9 +162,7 @@ theorem ideal_comap_mul {X Y : Scheme.{u}} (g : X ⟶ Y) (U : Y.affineOpens)
     Scheme.IdealSheafData.ideal_mul, Pi.mul_apply, Ideal.map_mul]
 
 theorem top_le_ι_preimage_self {Y : Scheme.{u}} (V : Y.Opens) :
-    (⊤ : V.toScheme.Opens) ≤ (Opens.map V.ι.base).obj V := by
-  intro x _
-  exact x.2
+    (⊤ : V.toScheme.Opens) ≤ (Opens.map V.ι.base).obj V := fun x _ => x.2
 
 theorem ι_appLE_top_eq_topIso_inv {Y : Scheme.{u}} (V : Y.Opens) :
     V.ι.appLE V ⊤ (top_le_ι_preimage_self V) = V.topIso.inv := by
@@ -256,8 +254,7 @@ theorem exists_finset_comap_prod_ideal_eq_span_prod_coord {Y W : Scheme.{u}} {k 
           have hD : (D.comap g).ideal ⟨V, hV⟩ = Ideal.span {c.coord j0} := by
             have h2 := EtaleChart.ideal_eq_span_coord c hV (D.comap g) {j0}
               (hsome 0 hD0 j0 hγ0)
-            rw [Finset.coe_singleton, Set.image_singleton] at h2
-            exact h2
+            rwa [Finset.coe_singleton, Set.image_singleton] at h2
           have hj0 : j0 ∉ J' := by
             intro hj0mem
             obtain ⟨i, hi, hγi⟩ := hJ'mem j0 hj0mem
@@ -398,8 +395,7 @@ theorem gCentre : GCentre := by
     rw [restrictIdeal_eq_comap_ι]
     exact h3 i hi t hg
   have h4' : restrictIdeal Z U = c.coordIdeal S := by
-    rw [restrictIdeal_eq_comap_ι]
-    exact h4
+    rwa [restrictIdeal_eq_comap_ι]
   have hdesc : ∀ i, ∀ hi : i < L.length, (a i = none → restrictIdeal (L[i]'hi) V = ⊤) ∧
       ∀ j, a i = some j → restrictIdeal (L[i]'hi) V = (c.restrict hVU).coordIdeal {j} :=
     fun i hi => ⟨fun hg => restrictIdeal_eq_top_of_le _ hVU (h2' i hi hg),
@@ -445,8 +441,7 @@ theorem gCentre : GCentre := by
     have h := @etaleChartCoord_injective k _ m Γ(X, V') _ c'.algebra (c'.algebra_etale hV') hntr
     intro a b hab
     refine h ?_
-    simp only [etaleChartCoord_eq_coord]
-    exact hab
+    simpa only [etaleChartCoord_eq_coord] using hab
   have hrad := @isRadical_span_singleton_prod_etaleChartCoord k _ m Γ(X, V') _ c'.algebra
     (c'.algebra_etale hV') J₀
   simp only [etaleChartCoord_eq_coord] at hrad

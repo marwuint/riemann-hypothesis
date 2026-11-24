@@ -283,9 +283,7 @@ theorem exists_inv (hF : Γ.IsFinOpenSub U) (s : Γ(Γ.G.left, U)) :
     congr 2
     ext r
     simp [φ])
-  have hwx : w ≫ x = Γ.pt a := by
-    apply Over.OverMorphism.ext
-    exact spec_valHom_fromSpec _ hU ha
+  have hwx : w ≫ x = Γ.pt a := Over.OverMorphism.ext (spec_valHom_fromSpec _ hU ha)
   have hw : w ≫ x⁻¹ = Γ.pt a⁻¹ := by
     rw [GrpObj.comp_inv, hwx, map_inv]
   have e : (Γ.pt a⁻¹).left = Spec.map (CommRingCat.ofHom φ) ≫ (x⁻¹).left := by

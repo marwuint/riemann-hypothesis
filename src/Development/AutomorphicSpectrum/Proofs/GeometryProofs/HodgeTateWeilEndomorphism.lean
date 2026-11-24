@@ -73,8 +73,7 @@ theorem epiSp {Ω K : Type} [Field Ω] [Field K] (a : Ω →+* K) : Epi (spMap a
     exact RingHom.flat_algebraMap_iff.mpr inferInstance
   haveI : AlgebraicGeometry.Surjective (Spec.map (CommRingCat.ofHom a)) := by
     rw [AlgebraicGeometry.surjective_iff]
-    intro y
-    exact ⟨(default : PrimeSpectrum K), Subsingleton.elim (α := PrimeSpectrum Ω) _ _⟩
+    exact fun y => ⟨(default : PrimeSpectrum K), Subsingleton.elim (α := PrimeSpectrum Ω) _ _⟩
   exact AlgebraicGeometry.Flat.epi_of_flat_of_surjective _
 
 theorem powDescend {X : Scheme.{0}} {G : Over X} [GrpObj G] {Ω K : Type} [Field Ω] [Field K]
@@ -118,13 +117,10 @@ theorem GlobalTheory.CompanionTheory.Ar.LieModel.isHTAt_end : ∀ (X : Scheme.{0
     exact hle he'
   have hw' : ∀ e' ∈ M.lat q, w e' ∈ regAt ξ q := hw
   refine ⟨?_, a.left ⁻¹ᵁ W, (a.left.app W).hom f, ?_, ?_, ?_⟩
-  · show ∀ e' ∈ M.lat q, (w ∘ₗ A) e' ∈ regAt ξ q
-    intro e' he'
-    exact hw' (A e') (hlat e' he')
+  · exact fun e' he' => hw' (A e') (hlat e' he')
   · have h1 : (η[G] ≫ a).left = (η[G]).left := by rw [IsMonHom.one_hom]
     show a.left ((η[G]).left q.1) ∈ W
-    rw [← Scheme.Hom.comp_apply, ← Over.comp_left, h1]
-    exact hη
+    rwa [← Scheme.Hom.comp_apply, ← Over.comp_left, h1]
   · intro k _ _ i xk g c h hx hg hWe
     have h2 : ⊤ ≤ (g.left ≫ a.left) ⁻¹ᵁ W := h
     rw [secVal_app g.left a.left W f h h2]
@@ -143,5 +139,4 @@ theorem GlobalTheory.CompanionTheory.Ar.LieModel.isHTAt_end : ∀ (X : Scheme.{0
     have h2 : ⊤ ≤ (v.left ≫ a.left) ⁻¹ᵁ W := h
     obtain ⟨r, hr, hE⟩ := P2 (A e') (v ≫ a) (hExt hv) h2
     refine ⟨r, hr, ?_⟩
-    rw [LinearMap.comp_apply, secVal_app v.left a.left W f h h2]
-    exact hE
+    rwa [LinearMap.comp_apply, secVal_app v.left a.left W f h h2]

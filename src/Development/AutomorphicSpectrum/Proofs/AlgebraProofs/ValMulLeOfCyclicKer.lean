@@ -278,8 +278,7 @@ theorem val_mul_le_of_cyclic_ker {C : Type} [Field C] {v : Valuation C NNReal} {
       intro z
       obtain ⟨u, rfl⟩ := hqs z
       exact ⟨Submodule.Quotient.mk u, by simp⟩) hlen hB
-  rw [hdet, map_mul, map_mul, map_prod, map_prod] at this
-  exact this
+  rwa [hdet, map_mul, map_mul, map_prod, map_prod] at this
 
 section Proj
 
@@ -334,8 +333,7 @@ theorem sq_lift {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (ψ : Y → X) (h
     rintro f ⟨⟨g, hg, rfl⟩, hf0⟩
     refine ⟨g, ⟨hg, ?_⟩, rfl⟩
     have : g (ψ 0) = 0 := hf0
-    rw [h0] at this
-    exact this
+    rwa [h0] at this
   induction hf using Submodule.span_induction with
   | mem h hh =>
     obtain ⟨f, hf, f', hf', rfl⟩ := hh
@@ -358,8 +356,7 @@ theorem sq_res {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (ψ : Y → X) (h0
   rintro f ⟨hf, hf0⟩
   refine ⟨⟨f, hf, rfl⟩, ?_⟩
   show f (ψ 0) = 0
-  rw [h0]
-  exact hf0
+  rwa [h0]
 
 variable {F : Type} [Field F] {N : Type} [AddCommGroup N] [Module F N]
 
@@ -369,8 +366,7 @@ theorem sq_stable {M : Submodule R (N → C)} (hF : FStable F M) (a : F) {g : N 
   rintro f ⟨hf, hf0⟩
   refine ⟨hF a f hf, ?_⟩
   show f (a • 0) = 0
-  rw [smul_zero]
-  exact hf0
+  rwa [smul_zero]
 
 end Sq
 
@@ -694,12 +690,10 @@ theorem kernel_stepGraph : ∀ {o C : Type} [CommRing o] [Field C] [Algebra o C]
       have e1 : (a : C) • (g, (0 : Fin (r (φ τ)) → C)) =
           ((fun x => algebraMap RC C a * g x), 0) := by
         ext <;> simp [Algebra.smul_def]
-      rw [e1] at this
-      exact this
+      rwa [e1] at this
     · intro a g hg
       have := hH2 a g 0 hg
-      rw [smul_zero] at this
-      exact this
+      rwa [smul_zero] at this
   have hMproj : ∀ g ∈ AA.carrier, proj σ' g ∈ AA.carrier := fun g hg =>
     proj_mem AA.carrier.toAddSubgroup σ' hu (fun a g hg => by
       rw [smul_fun]; exact AA.carrier.smul_mem a hg) hFs hg
@@ -731,8 +725,7 @@ theorem kernel_stepGraph : ∀ {o C : Type} [CommRing o] [Field C] [Algebra o C]
       push_cast
       ring
     have h01 : flagSub (Pi.basisFun F (Fin n)) i ≤ flagSub (Pi.basisFun F (Fin n)) ((i : ℕ) + 1) := by
-      intro x hx
-      exact mem_flagSub.2 fun l hl => mem_flagSub.1 hx l (by omega)
+      exact fun x hx => mem_flagSub.2 fun l hl => mem_flagSub.1 hx l (by omega)
     have hprojS : ∀ g, (g, (0 : Fin (r (φ τ)) → C)) ∈ D.Th (φ τ) →
         proj σ' g ∈ sqIdeal (augIdeal AA.carrier) := by
       intro g hg

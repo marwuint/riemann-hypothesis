@@ -72,8 +72,7 @@ theorem measure_level_ne_top {X W : Type} [TopologicalSpace X] [MeasurableSpace 
   refine ne_of_lt (lt_of_le_of_lt (measure_mono ?_) (IsCompact.measure_lt_top hc))
   intro x hx
   apply subset_tsupport
-  rw [Function.mem_support, show φ x = v from hx]
-  exact hv
+  rwa [Function.mem_support, show φ x = v from hx]
 
 theorem smInt_comp {X Y W : Type} [MeasurableSpace X] [AddCommGroup W] [Module ℂ W] (μ : Measure X)
     (ψ : X → Y) (g : Y → W) (S : Finset Y) (hS : ∀ x, ψ x ∈ S)
@@ -88,8 +87,7 @@ theorem smInt_comp {X Y W : Type} [MeasurableSpace X] [AddCommGroup W] [Module �
     have : (g ∘ ψ) ⁻¹' {v} = ∅ := by
       ext x
       simp only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false]
-      intro hx
-      exact hvS (Finset.mem_coe.2 (Finset.mem_image.2 ⟨ψ x, hS x, hx⟩))
+      exact fun hx => hvS (Finset.mem_coe.2 (Finset.mem_image.2 ⟨ψ x, hS x, hx⟩))
     simp [this]
   unfold smInt
   rw [finsum_eq_sum_of_support_subset _ hsupp,
@@ -106,15 +104,13 @@ theorem smInt_comp {X Y W : Type} [MeasurableSpace X] [AddCommGroup W] [Module �
       simp only [Set.mem_preimage, Set.mem_singleton_iff, Function.comp, Set.mem_iUnion,
         Finset.mem_filter, exists_prop]
       constructor
-      · intro hx
-        exact ⟨ψ x, ⟨hS x, hx⟩, rfl⟩
+      · exact fun hx => ⟨ψ x, ⟨hS x, hx⟩, rfl⟩
       · rintro ⟨y, ⟨_, hy⟩, rfl⟩
         exact hy
     have hmeas : μ ((g ∘ ψ) ⁻¹' {v}) = ∑ y ∈ S.filter (fun y => g y = v), μ (ψ ⁻¹' {y}) := by
       rw [hset]
       refine measure_biUnion_finset ?_ fun y hy => hm y (Finset.mem_filter.1 hy).1
-      intro a _ b _ hab
-      exact Disjoint.preimage ψ (Set.disjoint_singleton.2 hab)
+      exact fun a _ b _ hab => Disjoint.preimage ψ (Set.disjoint_singleton.2 hab)
     rw [hmeas, ENNReal.toReal_sum (fun y hy => hf y (Finset.mem_filter.1 hy).1
       (by rw [(Finset.mem_filter.1 hy).2]; exact hv0)), Complex.ofReal_sum, Finset.sum_smul]
     exact Finset.sum_congr rfl fun y hy => by rw [(Finset.mem_filter.1 hy).2]

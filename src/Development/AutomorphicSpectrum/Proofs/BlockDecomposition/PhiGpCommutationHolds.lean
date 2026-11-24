@@ -274,8 +274,7 @@ theorem rowQ_mul_of_mem_Q (k : Type) [Field k] (n : ℕ) (q g : Mir k (n + 1)) (
     rowQ k n (q * g) = rowQ k n g := by
   have hb : (blockMat k (n + 1) ((q : GL (Fin (n + 2)) k) : Matrix (Fin (n + 2)) (Fin (n + 2)) k)) (Fin.last n) =
       eLast k n := by
-    have h := (mem_Mir_iff k (mirabolicProjection k (n + 1) q)).1 hq
-    exact h
+    exact (mem_Mir_iff k (mirabolicProjection k (n + 1) q)).1 hq
   have hg : ∀ j : Fin (n + 1), ((g : GL (Fin (n + 2)) k) : Matrix (Fin (n + 2)) (Fin (n + 2)) k)
       (Fin.last (n + 1)) (Fin.castSucc j) = 0 := by
     intro j
@@ -329,8 +328,7 @@ theorem mem_mirabolicParabolic_of_iotaM_mem (m j : ℕ) (p : Mir k (m + j))
   have h1 := (GlobalTheory.CompanionTheory.GPMem.mem_mirabolicParabolic_iff_mirabolicProj_mem_parabolic k m (j + 1) (embedding₂ k (m + j) p)).1 h
   have e : mirabolicProjection k (m + (j + 1)) (embedding₂ k (m + j) p) = (p : GL (Fin (m + j + 1)) k) :=
     mirProj_iotaM (m + j) p
-  rw [e] at h1
-  exact h1
+  rwa [e] at h1
 
 theorem mem_mirabolicParabolic_of_mirabolicProj_eq_one (m j : ℕ) (w : Mir k (m + j)) (h : mirabolicProjection k (m + j) w = 1) :
     w ∈ MirabolicParabolic k m j := by
@@ -344,8 +342,7 @@ theorem rowQ_eq_zero_of_mem_HGP (m j : ℕ) (h : Mir k (m + (j + 1))) (hh : h �
     Fin.ext (by rw [blockIndex_true_val]; simp)
   have e2 : eGP m (j + 1) ⟨false, ⟨i, hi⟩⟩ = Fin.castSucc i :=
     Fin.ext (by rw [blockIndex_false_val]; simp)
-  rw [e1, e2] at h1
-  exact h1
+  rwa [e1, e2] at h1
 
 theorem rowEl_mem_HGP (m j : ℕ) (r : Fin (m + j + 1) → k) (hr : (rowMat (m + j) r).det ≠ 0)
     (h0 : ∀ i : Fin (m + j + 1), (i : ℕ) < m → r i = 0) :
@@ -640,8 +637,7 @@ theorem mem_of_local (H U : Subgroup G) (hUH : U ≤ H) (hU : U.Normal) (θ : U 
       by_contra h0
       obtain ⟨h, hh, c, hc, rfl⟩ := hf g h0
       exact hg ((hE.1 h hh c).2 (hCE hc))
-  rw [e]
-  exact hb
+  rwa [e]
 
 end Abstract
 
@@ -753,8 +749,7 @@ theorem mem_mirabolicParabolic_iff_iotaM_mem (k : Type) [Field k] [ValuativeRel 
     show (g : GL (Fin (m + j + 1)) k) ∈ parab k (eGP m j) ↔ _
     rw [mem_parab_iff]
     constructor
-    · intro h b a
-      exact h true false b a (by decide)
+    · exact fun h b a => h true false b a (by decide)
     · intro h x y i l hxy
       cases x <;> cases y <;> first | exact absurd hxy (by decide) | exact h i l
   rw [mem_iff, mem_iff]
@@ -778,13 +773,11 @@ theorem mem_mirabolicParabolic_iff_iotaM_mem (k : Type) [Field k] [ValuativeRel 
       rw [eL, eF]
       exact iotaM_last_castSucc k (m + j) y _
     | cast b =>
-      rw [eT, eF]
-      rw [iotaM_castSucc_castSucc k (m + j) y]
+      rw [eT, eF, iotaM_castSucc_castSucc k (m + j) y]
       exact h b a
   · intro h b a
     have hb := h (Fin.castSucc b) a
-    rw [eT, eF, iotaM_castSucc_castSucc k (m + j) y] at hb
-    exact hb
+    rwa [eT, eF, iotaM_castSucc_castSucc k (m + j) y] at hb
 
 end GlobalTheory.CompanionTheory.LeibPhi
 
@@ -867,8 +860,7 @@ theorem gpProj_unip (m j : ℕ) (y : MirabolicParabolic k m (j + 1)) (v : Fin (m
     by_cases hab : a = b
     · subst hab; simp
     · rw [Matrix.one_apply_ne hab, Matrix.one_apply_ne]
-      intro e
-      exact hab (by simpa using (eGP m (j + 1)).injective e)
+      exact fun e => hab (by simpa using (eGP m (j + 1)).injective e)
   refine Prod.ext ?_ (Subtype.ext ?_)
   · apply Units.ext
     ext a b
@@ -876,8 +868,7 @@ theorem gpProj_unip (m j : ℕ) (y : MirabolicParabolic k m (j + 1)) (v : Fin (m
       (eGP m (j + 1) ⟨false, b⟩) = _
     rw [hy, unip_entry, hone]
     · rfl
-    · intro e
-      exact absurd e (blockIndex_false_ne_last m (j + 1) b)
+    · exact fun e => absurd e (blockIndex_false_ne_last m (j + 1) b)
   · apply Units.ext
     ext a b
     show ((y : Mir k (m + (j + 1))) : GL (Fin (m + (j + 1) + 1)) k).val (eGP m (j + 1) ⟨true, a⟩)
@@ -1139,8 +1130,7 @@ theorem det_hgp (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNo
           Matrix (Fin (j + 1)) (Fin (j + 1)) k) := by
     rw [← Matrix.det_submatrix_equiv_self (Equiv.ofBijective f hf), hsub, Matrix.det_fromBlocks_zero₂₁]
   ext
-  simp only [Units.val_mul, Matrix.GeneralLinearGroup.val_det_apply]
-  exact key
+  simpa only [Units.val_mul, Matrix.GeneralLinearGroup.val_det_apply] using key
 
 theorem dpowM_hgp : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (m j : ℕ) (s : ℝ) (h : MirabolicParabolic k m j),
     dpowM (m + j) s (h : Mir k (m + j)) = dpow m s (gpProj k m j h).1 * dpowM j s (gpProj k m j h).2 := by
@@ -1335,8 +1325,7 @@ namespace GlobalTheory.CompanionTheory.LeibPhi
 private theorem cIndSpace_apply_mem_mul {G W : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [AddCommGroup W] [Module ℂ W] {H : Subgroup G}
     {σ : Representation ℂ H W} (f : GlobalTheory.PRep.cIndSpace H σ) (h : G) (hh : h ∈ H)
-    (g : G) : f.1.1.1 (h * g) = σ ⟨h, hh⟩ (f.1.1.1 g) := by
-  exact f.1.1.2 ⟨h, hh⟩ g
+    (g : G) : f.1.1.1 (h * g) = σ ⟨h, hh⟩ (f.1.1.1 g) := f.1.1.2 ⟨h, hh⟩ g
 
 private theorem isHK_empty {G : Type} [Group G] [TopologicalSpace G]
     (H : Subgroup G) : GlobalTheory.CompanionTheory.LeibPhi.IsHK H ∅ := by
@@ -1404,8 +1393,7 @@ theorem exists_cInd_restrict_eq {G G' W W' : Type} [Group G] [TopologicalSpace G
       GlobalTheory.CompanionTheory.LeibPhi.isHK_doubleCoset H M hMo (ι c), ?_, e, ?_⟩
     · have hcont : Continuous (fun y : G' => ι (c⁻¹ * y)) := hι.comp (continuous_const_mul c⁻¹)
       exact (hMo.preimage hcont).mem_nhds (by simp [one_mem])
-    · intro y hy
-      exact ⟨1, one_mem _, ι (c⁻¹ * y), hy, by simp⟩
+    · exact fun y hy => ⟨1, one_mem _, ι (c⁻¹ * y), hy, by simp⟩
     · rintro x ⟨a, ha, μ, hμ, hx⟩
       have hκ : ι c * μ * (ι c)⁻¹ ∈ K := hMsub hμ
       obtain ⟨h', hh', κ', hκ', hxeq⟩ := hKemb (x * c⁻¹) a ha (ι c * μ * (ι c)⁻¹) hκ
@@ -1537,8 +1525,7 @@ theorem exists_cInd_restrict : ∀ {G G' W W' : Type} [Group G] [TopologicalSpac
         have hN : (fun n : G => h₀⁻¹ * n * (ι s)⁻¹) ⁻¹' K ∈ 𝓝 (h₀ * ι s) := by
           apply hcont.continuousAt.preimage_mem_nhds
           have e : h₀⁻¹ * (h₀ * ι s) * (ι s)⁻¹ = 1 := by group
-          rw [e]
-          exact hK
+          rwa [e]
         refine ⟨_, mem_nhdsWithin_of_mem_nhds hN, (fun y => y * s) '' K',
           hK'c.image (by fun_prop), fun x a ha n hn e => ?_⟩
         have hn' : h₀⁻¹ * n * (ι s)⁻¹ ∈ K := hn

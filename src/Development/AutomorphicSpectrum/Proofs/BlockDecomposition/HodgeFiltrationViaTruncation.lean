@@ -96,8 +96,7 @@ theorem ses (a₀ a : IdF A) (h0 : ∀ T, a₀.S T = ⊤) :
     have h : (incB a).τ _ (x (s ⋙ 𝟭 C)) = (incB a).τ _ (y (s ⋙ 𝟭 C)) := congrFun hxy s
     exact Subtype.ext ((AlgEquiv.quotientBot R _).injective h)
   · have hm : ∀ s : ComposableArrows C n, (show A.obj (s.obj (Fin.last n)) from y s) ∈ a.S (s.obj (Fin.last n)) := fun s => by
-      have h := congrArg Subtype.val (congrFun hy s)
-      exact Ideal.Quotient.eq_zero_iff_mem.1 h
+      exact Ideal.Quotient.eq_zero_iff_mem.1 (congrArg Subtype.val (congrFun hy s))
     exact ⟨fun s => sqMk a (IdF.bot A) _ (hm s), rfl⟩
   · rintro ⟨x, rfl⟩
     funext s
@@ -203,8 +202,7 @@ theorem pdPow_nil [CharZero K] (T : Thick (nlFun (dividedPowersBot K) 0 X q (Ide
     have h : IsUnit (n : K) := (Nat.cast_ne_zero.2 hn : (n : K) ≠ 0).isUnit
     simpa using h.map T.i
   have := dividedPowerFiltration_le_pow T.δ hu N
-  rw [hN] at this
-  exact this
+  rwa [hN] at this
 
 omit [Field K] in
 theorem inU_top {X : Scheme.{0}} {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ}
@@ -226,8 +224,7 @@ theorem loc_vanish (hG : KH.LocGr) (hP : KH.PolyTf) {V : X.Opens} {d : ℕ} (c :
   have hgood := _root_.GlobalTheory.CompanionTheory.ChartMaps.good c'
   have hQ : ∀ T, St (TFs s') {V} T → InU V T := by
     rintro T ⟨-, W, hW, h⟩
-    rw [Set.mem_singleton_iff.1 hW] at h
-    exact h
+    rwa [Set.mem_singleton_iff.1 hW] at h
   have hD : St (TFs s') {V} c'.D := ⟨hTF, V, rfl, c'.inV⟩
   obtain ⟨hpow, hc⟩ := _root_.GlobalTheory.CompanionTheory.ChartFil.chart_grConst c' hgood _ hQ hD
   obtain ⟨PQ, hPQ⟩ := hP (dividedPowersBot K) q (Ideal.Quotient.mk ⊥) 1 s' {V}
@@ -349,8 +346,7 @@ theorem fil_iff (j r : ℕ) (y : CH.H (CH.modF (thA LL)) j) :
     refine ⟨⟨z, hz⟩, rfl, fun s => ?_⟩
     have h := hs s
     change _ ∈ (s.obj (Fin.last j)).pdPow ((r : ℤ).toNat) at h
-    rw [Int.toNat_natCast] at h
-    exact h
+    rwa [Int.toNat_natCast] at h
 
 end Loc
 

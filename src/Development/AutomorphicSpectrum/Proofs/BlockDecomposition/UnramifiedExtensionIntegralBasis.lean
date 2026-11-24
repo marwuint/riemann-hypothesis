@@ -80,9 +80,7 @@ theorem exists_value_eq_zpow {π : K} (h0 : valuation K π ≠ 0) (h1 : valuatio
     (hmax : ∀ x : K, valuation K x < 1 → valuation K x ≤ valuation K π) {x : K} (hx : x ≠ 0) :
     ∃ m : ℤ, valuation K x = valuation K π ^ m := by
   let e := IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K
-  have hb0 : e (valuation K π) ≠ 0 := by
-    intro h
-    exact h0 (e.injective (h.trans (map_zero e).symm))
+  have hb0 : e (valuation K π) ≠ 0 := fun h => h0 (e.injective (h.trans (map_zero e).symm))
   obtain ⟨y, hy⟩ := ValuativeRel.valuation_surjective (e.symm (WithZero.exp (-1 : ℤ)))
   have hey : e (valuation K y) = WithZero.exp (-1 : ℤ) := by rw [hy]; simp
   have hy1 : valuation K y < 1 := by
@@ -98,8 +96,7 @@ theorem exists_value_eq_zpow {π : K} (h0 : valuation K π ≠ 0) (h1 : valuatio
     congr 1
     omega
   have hx0 : e (valuation K x) ≠ 0 := by
-    intro h
-    exact (Valuation.ne_zero_iff _).2 hx (e.injective (h.trans (map_zero e).symm))
+    exact fun h => (Valuation.ne_zero_iff _).2 hx (e.injective (h.trans (map_zero e).symm))
   refine ⟨-WithZero.log (e (valuation K x)), e.injective ?_⟩
   have hz : (WithZero.exp (-1 : ℤ)) ^ (-WithZero.log (e (valuation K x))) =
       e (valuation K x) := by
@@ -172,8 +169,7 @@ theorem continuous_algebraMap_of_lt_one [ValuativeExtension k E] {π : k}
     (IsValuativeTopology.hasBasis_nhds_zero' k).mem_of_mem (by simpa using pow_ne_zero m hπ0)
   filter_upwards [hmem] with a ha
   have h2 : valuation E (algebraMap k E a) < valuation E (algebraMap k E (π ^ m)) := by
-    rw [← not_le, value_algebraMap_le_iff, not_le]
-    exact ha
+    rwa [← not_le, value_algebraMap_le_iff, not_le]
   show valuation E (algebraMap k E a) < γ
   refine h2.trans_le ?_
   rw [map_pow, map_pow]
@@ -195,8 +191,7 @@ theorem value_lt_one_of_continuous (τ : E ≃ₐ[k] E) (hτ : Continuous τ) {x
     (hx : valuation E x < 1) : valuation E (τ x) < 1 := by
   have ht : Tendsto (fun n : ℕ => τ (x ^ n)) atTop (𝓝 0) := by
     have h := (hτ.tendsto 0).comp (tendsto_pow_zero hx)
-    rw [map_zero] at h
-    exact h
+    rwa [map_zero] at h
   have hmem : {y : E | valuation E y < 1} ∈ 𝓝 (0 : E) :=
     (IsValuativeTopology.hasBasis_nhds_zero' E).mem_of_mem one_ne_zero
   obtain ⟨n, hn, hn0⟩ := ((ht.eventually hmem).and (eventually_gt_atTop 0)).exists
@@ -279,7 +274,6 @@ theorem unramifiedDictionary_a : PositivityTheory.Rg.Tf.Loc.D0a := by
       simp only [Valuation.mem_integer_iff, hval]
     rw [mem_unitGL_iff, mem_unitGL_iff, ← map_inv]
     exact and_congr (forall₂_congr fun i j => hτ _) (forall₂_congr fun i j => hτ _)
-  · intro n
-    exact Continuous.units_map _ (continuous_id.matrix_map hcont)
+  · exact fun n => Continuous.units_map _ (continuous_id.matrix_map hcont)
 
 end GlobalTheory.CompanionTheory.UnramDict

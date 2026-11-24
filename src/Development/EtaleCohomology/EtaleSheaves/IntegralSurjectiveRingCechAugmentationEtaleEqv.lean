@@ -169,8 +169,7 @@ theorem BaseChange_of : BaseChange := by
   obtain ⟨y, hy⟩ := hS'.surj ⟨r, hr⟩
   refine ⟨y.asIdeal, y.isPrime, ?_⟩
   have := congrArg PrimeSpectrum.asIdeal hy
-  rw [Spec.map_base] at this
-  exact this
+  rwa [Spec.map_base] at this
 
 section helpers
 variable {C D : CommRingCat.{0}} (g : C ⟶ D) {J : Type} [HasWidePushout C (fun _ : J => D) (fun _ => g)]
@@ -221,8 +220,7 @@ theorem wp {C D : CommRingCat.{0}} (g : C ⟶ D) (k : ℕ) :
     apply WidePushout.hom_ext
     · intro j
       simp [up]
-    · simp [up]
-      exact s.condition.symm
+    · simpa [up] using s.condition.symm
   · intro s
     simp
   · intro s m h1 h2
@@ -248,15 +246,12 @@ theorem cechConerve_levelwise : LevelP := by
         have : IsIso (WidePushout.ι (fun _ : Fin 1 => g) 0) := (lev0Iso g).isIso_hom
         exact IsPushout.of_vert_isIso ⟨(WidePushout.arrow_ι (fun _ : Fin 1 => g) 0).trans (Category.id_comp _).symm⟩
       have := hP c g (𝟙 C) _ _ hsq hCc hDc (by simpa using hCc)
-      rw [WidePushout.arrow_ι (fun _ : Fin 1 => g) 0] at this
-      exact this
+      rwa [WidePushout.arrow_ι (fun _ : Fin 1 => g) 0] at this
     | succ k ih =>
       have := hP c _ g _ _ (wp g k) hCc ih hDc
       have e : WidePushout.head (fun _ : Fin (k + 1) => g) ≫ up g k = WidePushout.head (fun _ : Fin (k + 2) => g) :=
         hd g _ _ _
-      rw [e] at this
-      exact this
-  intro n
-  exact Q n.len
+      rwa [e] at this
+  exact fun n => Q n.len
 
 end LateralTheory.E.CechSqPf

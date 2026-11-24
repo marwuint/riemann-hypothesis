@@ -117,12 +117,10 @@ theorem isAdmissible_and_isStrictPullbackBlowupSeq_of_etale
   have hftq : AlgebraicGeometry.LocallyOfFiniteType q := hVal.locallyOfFiniteType
   have hOT : T.IsOrderBoundedByMult := (T.isOrderBoundedByMult_iff).2 hO
   have hP' : P (T.pullbackAlong V q ψ).krullDimSucc := by
-    refine hPdown _ _ ?_ hP
-    exact hin.schemeDim_le_of_etale V T.scheme ψ hV.topologicalKrullDim_lt_top
+    exact hPdown _ _ (hin.schemeDim_le_of_etale V T.scheme ψ hV.topologicalKrullDim_lt_top) hP
   have hO' : (T.pullbackAlong V q ψ).IsOrderBoundedByMult := by
     rw [MarkedIdealWithBoundary.isOrderBoundedByMult_iff]
-    intro x
-    exact le_of_eq_of_le (orderAt_comap T.base T.structMap ψ T.ideal x) (hO _)
+    exact fun x => le_of_eq_of_le (orderAt_comap T.base T.structMap ψ T.ideal x) (hO _)
   have hderivBal : IsDerivBalanced T.base T.structMap T.ideal T.mult := hD hft
   have hDB' : IsDerivBalanced T.base q (T.ideal.comap ψ) T.mult :=
     hin.dBalanced_comap T hV V q ψ hcomp hderivBal
@@ -130,15 +128,12 @@ theorem isAdmissible_and_isStrictPullbackBlowupSeq_of_etale
       (T.pullbackAlong V q ψ).IsBalanced hft2 := fun _ => hDB'
   have hj' : 0 < (T.pullbackAlong V q ψ).boundary.length := by
     change 0 < (T.boundary.map (fun D => D.comap ψ)).length
-    rw [List.length_map]
-    exact hlen
+    rwa [List.length_map]
   have hpull : IsPullbackBlowupSequence ψ (A (T.pullbackAlong V q ψ)).toSequenceOfBlowups (A T).toSequenceOfBlowups :=
     hspec.isPullbackBlowupSequence_of_smooth T hV hP hOT (hD _) hlen V q ψ hcomp hVal hP' hO' (hD' _) hj'
   refine ⟨hVal, hin.isStrictPullbackSeq V T.scheme ψ _ _ hpull ?_ ?_⟩
-  · intro i hi
-    exact hspec.center_nonempty T hV hP hOT (hD _) hlen i hi
-  · intro i hi x hx
-    exact hcov (hin.center_mem_coSupport T hV (A T) i hi x hx)
+  · exact fun i hi => hspec.center_nonempty T hV hP hOT (hD _) hlen i hi
+  · exact fun i hi x hx => hcov (hin.center_mem_coSupport T hV (A T) i hi x hx)
 
 theorem isomorphic_withBoundary_cons_of_isMaxContactHypersurface
     (hin : OrderReduction.OrderReductionHypotheses.{u})
@@ -207,8 +202,7 @@ theorem isomorphic_withBoundary_cons_of_isMaxContactHypersurface
         (A (T.pullbackAlong V (ψ₁ ≫ T.structMap) ψ₁)) i hi J hJ)
   refine SequenceOfBlowups.isomorphic_of_isStrictPullback_same_source (A T).toSequenceOfBlowups
     (A (T.withBoundary (H₂ :: N))).toSequenceOfBlowups hin.lifting hstr₁ hstr₂ ?_ ?_ ?_ ?_ c ?_ hcsucc hcle
-  · intro i hi x hx
-    exact hcov₁ (hin.center_mem_coSupport T hV (A T) i hi x hx)
+  · exact fun i hi x hx => hcov₁ (hin.center_mem_coSupport T hV (A T) i hi x hx)
   · intro i hi x hx
     exact hcov₂ (hin.center_mem_coSupport (T.withBoundary (H₂ :: N)) hV₂
       (A (T.withBoundary (H₂ :: N))) i hi x hx)

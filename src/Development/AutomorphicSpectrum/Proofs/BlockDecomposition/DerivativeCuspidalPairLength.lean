@@ -134,10 +134,8 @@ theorem sum_castLE_eq (f : Fin c → ℕ) (t : Fin c) :
   rw [← Finset.sum_filter]
   refine Finset.sum_bij (fun a _ => Fin.castLE t.2.le a) ?_ ?_ ?_ ?_
   · intro a _
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-    exact Fin.lt_def.mpr (by simp)
-  · intro a _ b _ h
-    exact Fin.castLE_injective _ h
+    simpa only [Finset.mem_filter, Finset.mem_univ, true_and] using Fin.lt_def.mpr (by simp)
+  · exact fun a _ b _ h => Fin.castLE_injective _ h
   · intro j hj
     have hjt : (j : ℕ) < t := Fin.lt_def.mp (Finset.mem_filter.mp hj).2
     exact ⟨⟨j, hjt⟩, Finset.mem_univ _, rfl⟩
@@ -147,8 +145,7 @@ private theorem sumRange_lemma {M : Type} [AddCommMonoid M] (ι : Fin r ↪o Fin
     (hg : ∀ j, (¬ ∃ i, ι i = j) → g j = 0) : ∑ j, g j = ∑ i, g (ι i) := by
   rw [← Finset.sum_image (fun a _ b _ h => ι.injective h)]
   refine (Finset.sum_subset (Finset.subset_univ _) ?_).symm
-  intro j _ hj
-  exact hg j fun ⟨i, e⟩ => hj (Finset.mem_image.mpr ⟨i, Finset.mem_univ _, e⟩)
+  exact fun j _ hj => hg j fun ⟨i, e⟩ => hj (Finset.mem_image.mpr ⟨i, Finset.mem_univ _, e⟩)
 
 theorem sum_partial (ι : Fin r ↪o Fin c) (b : Fin c → ℕ) (hz : ∀ j, (¬ ∃ i, ι i = j) → b j = 0) (i : Fin r) :
     ∑ a : Fin (ι i : ℕ), b (Fin.castLE (ι i).2.le a) = ∑ a : Fin (i : ℕ), b (ι (Fin.castLE i.2.le a)) := by
@@ -258,8 +255,7 @@ private theorem prodRange_lemma_2 {M : Type} [CommMonoid M] (ι : Fin r ↪o Fin
     (hg : ∀ j, (¬ ∃ i, ι i = j) → g j = 1) : ∏ j, g j = ∏ i, g (ι i) := by
   rw [← Finset.prod_image (fun a _ b _ h => ι.injective h)]
   refine (Finset.prod_subset (Finset.subset_univ _) ?_).symm
-  intro j _ hj
-  exact hg j fun ⟨i, e⟩ => hj (Finset.mem_image.mpr ⟨i, Finset.mem_univ _, e⟩)
+  exact fun j _ hj => hg j fun ⟨i, e⟩ => hj (Finset.mem_image.mpr ⟨i, Finset.mem_univ _, e⟩)
 
 include hz in
 theorem deltaHalf_drop (G : Levi k fun j => Fin (b j)) :
@@ -302,12 +298,10 @@ theorem injective_of_comp (ψ : G' →* G) (hψ : Function.Surjective ψ) {ρ : 
     have h1 := Representation.IntertwiningMap.isIntertwining _ _ f g' w
     rw [LinearMap.mem_ker] at hw ⊢
     have h2 : f w = 0 := hw
-    rw [h2, map_zero] at h1
-    exact h1
+    rwa [h2, map_zero] at h1
   have hs : IsSimpleOrder (Subrepresentation ρ) := hρ
   rcases hs.eq_bot_or_eq_top ⟨LinearMap.ker f.toLinearMap, fun g w hw => hK g w hw⟩ with h | h
-  · have h2 := congrArg Subrepresentation.toSubmodule h
-    exact LinearMap.ker_eq_bot.mp h2
+  · exact LinearMap.ker_eq_bot.mp (congrArg Subrepresentation.toSubmodule h)
   · exfalso
     have h2 := congrArg Subrepresentation.toSubmodule h
     have h3 : LinearMap.ker f.toLinearMap = (⊤ : Subrepresentation ρ).toSubmodule := h2
@@ -332,9 +326,7 @@ theorem exists_common {ρ : Representation ℂ G V} {σ : Representation ℂ G W
   have hIρ : GlobalTheory.SmGL.IsSubquotient I.toRepresentation ρ := by
     refine ⟨⊤, ⟨(LinearMap.rangeRestrict f.toLinearMap).comp (Submodule.subtype _), fun g => ?_⟩, ?_⟩
     · apply LinearMap.ext
-      intro u
-      apply Subtype.ext
-      exact Representation.IntertwiningMap.isIntertwining _ _ f g u
+      exact fun u => Subtype.ext (Representation.IntertwiningMap.isIntertwining _ _ f g u)
     · rintro ⟨_, ⟨u, rfl⟩⟩
       exact ⟨⟨u, trivial⟩, rfl⟩
   exact ⟨Z, i1, i2, υ, hυ, hsub.trans hIρ, hsub.trans hIσ⟩
@@ -409,8 +401,7 @@ theorem isSubquotient_jac_drop (ι : Fin r ↪o Fin c) (b : Fin c → ℕ) (hb :
     refine ⟨S, ⟨eL.symm.toLinearMap, fun G => LinearMap.ext fun y => ?_⟩, eL.symm.surjective⟩
     obtain ⟨t, rfl⟩ := eL.surjective y
     have he : S.toRepresentation G (eL t) = eL ((GlobalTheory.SmGL.piTensor fun i => (s (ι i)).ρ) (restrictHom b ι G) t) := by
-      apply Subtype.ext
-      exact (LinearMap.congr_fun (hint G) t).symm
+      exact Subtype.ext (LinearMap.congr_fun (hint G) t).symm
     show eL.symm (S.toRepresentation G (eL t)) = _
     rw [he, LinearEquiv.symm_apply_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]
     rfl

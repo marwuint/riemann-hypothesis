@@ -105,16 +105,14 @@ theorem isLocalRing_and_ker {L : Type} [Field L] (O : Subring L) (v : O →+* �
   have hunit : ∀ s : O, IsUnit s ↔ v s ≠ 0 := by
     intro s
     constructor
-    · intro h
-      exact (h.map v).ne_zero
+    · exact fun h => (h.map v).ne_zero
     · intro h
       have hs : (s : L) ≠ 0 := by
         intro h0
         apply h
         have : s = 0 := Subtype.ext h0
         simp [this]
-      refine IsUnit.of_mul_eq_one (⟨(s : L)⁻¹, hv s h⟩ : O) ?_
-      exact Subtype.ext (mul_inv_cancel₀ hs)
+      exact IsUnit.of_mul_eq_one (⟨(s : L)⁻¹, hv s h⟩ : O) (Subtype.ext (mul_inv_cancel₀ hs))
   have hloc : IsLocalRing O := by
     refine IsLocalRing.of_nonunits_add ?_
     intro a b ha hb
@@ -124,8 +122,7 @@ theorem isLocalRing_and_ker {L : Type} [Field L] (O : Subring L) (v : O →+* �
     have hb' : v b = 0 := by
       by_contra h
       exact hb ((hunit b).2 h)
-    intro hab
-    exact (hunit _).1 hab (by simp [ha', hb'])
+    exact fun hab => (hunit _).1 hab (by simp [ha', hb'])
   refine ⟨hloc, ?_⟩
   ext s
   rw [RingHom.mem_ker, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, hunit]
@@ -172,19 +169,15 @@ theorem exists_valuationSubring_place (L : Type) [Field L] (O : Subring L) (v : 
     have ha' : a ∈ IsLocalRing.maximalIdeal O := hker ▸ RingHom.mem_ker.mpr ha
     show f (algebraMap O B a) ∈ IsLocalRing.maximalIdeal V
     rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff] at ha' ⊢
-    intro hu
-    apply ha'
-    exact hlocal.map_nonunit a hu
+    exact fun hu => ha' (hlocal.map_nonunit a hu)
   have hvm : (RingHom.ker v).IsMaximal := by
     rw [hker]
     exact IsLocalRing.maximalIdeal.isMaximal O
   obtain ⟨ψ, hψ⟩ := exists_ringHom_of_finiteType v hvm M hMm hM
   have hO : O ≤ B.toSubring := fun s hs => B.algebraMap_mem (⟨s, hs⟩ : O)
   refine ⟨B.toSubring, hO, ψ, ?_, ?_, ?_⟩
-  · intro t ht
-    exact Algebra.subset_adjoin (Finset.mem_coe.2 (Finset.mem_union_left _ ht))
-  · intro s
-    exact hψ s
+  · exact fun t ht => Algebra.subset_adjoin (Finset.mem_coe.2 (Finset.mem_union_left _ ht))
+  · exact fun s => hψ s
   · intro t ht _ hi
     exact Algebra.subset_adjoin (Finset.mem_coe.2 (Finset.mem_union_right _
       (Finset.mem_image.2 ⟨t, Finset.mem_filter.2 ⟨ht, hi⟩, rfl⟩)))

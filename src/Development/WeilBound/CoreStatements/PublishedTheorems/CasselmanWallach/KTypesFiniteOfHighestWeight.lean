@@ -70,8 +70,7 @@ theorem exists_hull (hL : LocFin ε E) (W : Submodule ℂ V) [FiniteDimensional 
   refine ⟨Y, Submodule.finite_iSup _, ?_, ?_⟩
   · intro a b hab v hv
     refine Submodule.iSup_induction (fun i => S (bW i : V)) (motive := fun x => E a b x ∈ Y) hv ?_ ?_ ?_
-    · intro i x hx
-      exact (le_iSup (fun i => S (bW i : V)) i) (hSk _ a b hab x hx)
+    · exact fun i x hx => (le_iSup (fun i => S (bW i : V)) i) (hSk _ a b hab x hx)
     · simp
     · intro x y hx hy
       rw [map_add (f := _)]
@@ -107,8 +106,7 @@ theorem sq_le_of_khw (hU : IsInfUnitary ε E) {w : V} (hw0 : w ≠ 0) {μ : ℝ}
   rw [hwμ, inner_smul_right, inner_self_eq_norm_sq_to_K] at h1
   have h2 : μ * ‖w‖ ^ 2 = ∑ a, ∑ b ∈ Finset.univ.filter (fun b => ε b = ε a), ‖E b a w‖ ^ 2 := by
     apply Complex.ofReal_injective
-    rw [Complex.ofReal_mul, Complex.ofReal_pow]
-    exact h1
+    rwa [Complex.ofReal_mul, Complex.ofReal_pow]
   have h3 : ∑ a, Λ a ^ 2 * ‖w‖ ^ 2 ≤ ∑ a, ∑ b ∈ Finset.univ.filter (fun b => ε b = ε a), ‖E b a w‖ ^ 2 := by
     refine Finset.sum_le_sum (fun a _ => ?_)
     have hmem : a ∈ Finset.univ.filter (fun b => ε b = ε a) := by simp
@@ -143,16 +141,14 @@ theorem mem_of_eig (hgl : IsGlRep E) (hU : IsInfUnitary ε E) (hL : LocFin ε E)
       choose Λz hΛz using hΛ
       have hkw' : IsKHWVec ε E (fun a => ((Λz a : ℤ) : ℝ)) w := by
         have : Λ = fun a => ((Λz a : ℤ) : ℝ) := funext hΛz
-        rw [← this]
-        exact hkw
+        rwa [← this]
       have hsq : (∑ a, ((Λz a : ℤ) : ℝ) ^ 2) ≤ μ := sq_le_of_khw hU hw0 (hZc w hwZ) hkw'
       have hwY : w ∈ Y := hY w Λz hkw' hsq
       let Kw : Submodule ℂ V := sInf {T | w ∈ T ∧ IsKStableSub ε E T}
       have hKwS : IsKStableSub ε E Kw := by
         intro a b hab x hx
         rw [Submodule.mem_sInf] at hx ⊢
-        intro T hT
-        exact hT.2 a b hab x (hx T hT)
+        exact fun T hT => hT.2 a b hab x (hx T hT)
       have hwKw : w ∈ Kw := Submodule.mem_sInf.2 (fun T hT => hT.1)
       have hKwZ : Kw ≤ Z := sInf_le ⟨hwZ, hZs⟩
       have hKwY : Kw ≤ Y := sInf_le ⟨hwY, hYk⟩
@@ -160,8 +156,7 @@ theorem mem_of_eig (hgl : IsGlRep E) (hU : IsInfUnitary ε E) (hL : LocFin ε E)
       have hZ'lt : Kwᗮ ⊓ Z < Z := by
         refine lt_of_le_of_ne inf_le_right (fun h => ?_)
         have hwZ' : w ∈ Kwᗮ ⊓ Z := by
-          rw [h]
-          exact hwZ
+          rwa [h]
         have h0 : ⟪w, w⟫_ℂ = 0 := Submodule.inner_right_of_mem_orthogonal hwKw hwZ'.1
         exact hw0 (inner_self_eq_zero.1 h0)
       haveI : FiniteDimensional ℂ (Kwᗮ ⊓ Z : Submodule ℂ V) :=

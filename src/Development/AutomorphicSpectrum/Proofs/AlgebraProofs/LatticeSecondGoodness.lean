@@ -101,8 +101,7 @@ theorem mem_swp {Γ : AddSubgroup (V × Z)} {u : Z} {v : V} : (u, v) ∈ swp Γ 
     have e' : (y, x) = (u, v) := e
     obtain ⟨rfl, rfl⟩ := Prod.mk.inj e'
     exact h
-  · intro h
-    exact ⟨(v, u), h, rfl⟩
+  · exact fun h => ⟨(v, u), h, rfl⟩
 
 omit [Module Ω V] [Module Ω Z] in
 theorem map_fst_swp (Γ : AddSubgroup (V × Z)) :
@@ -135,8 +134,7 @@ theorem comap_inl (hb : IsBaseChange C b) (hb' : IsBaseChange C b')
       rw [hv, smul_zero])).2
   have hcom : (swp Γ).comap (AddMonoidHom.inr Z V) = Γ.comap (AddMonoidHom.inl V Z) := by
     ext x
-    simp only [AddSubgroup.mem_comap, AddMonoidHom.inr_apply, AddMonoidHom.inl_apply]
-    exact mem_swp
+    simpa only [AddSubgroup.mem_comap, AddMonoidHom.inr_apply, AddMonoidHom.inl_apply] using mem_swp
   rw [hcom, spanOver_swap RC b' b Γ] at key
   rw [← key]
   ext x
@@ -246,8 +244,7 @@ theorem core (ha : IsBaseChange C a) (hb : IsBaseChange C b) (hc : IsBaseChange 
         (spanOver RC (b '' hh)).prod (⊤ : AddSubgroup Sc) :=
       AddSubgroup.mem_inf.2 ⟨h3, AddSubgroup.mem_prod.2 ⟨h2, AddSubgroup.mem_top _⟩⟩
     rw [e1] at h4
-    rw [← e2]
-    exact h4
+    rwa [← e2]
   have e7 : (Gam ⊓ (⊤ : AddSubgroup A).prod K : AddSubgroup (A × B)) =
       Gam ⊓ (⊤ : AddSubgroup A).prod hh := by
     ext ⟨x, y⟩
@@ -336,8 +333,7 @@ theorem main : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Typ
     refine (LocFreeSchanuel.main R n (s τ) (divLat w (stdLat R (Fin n))) (divLat w (D.omHT τ)) (D.omHT τ)
       (D.Del τ) (LatticeGoodness.locFree_divLat R hw0 (LatticeGoodness.locFree_stdLat R n))
       (LatticeGoodness.locFree_divLat R hw0 hOm) hOm hDs ?_ ?_ hd0 ?_).2
-    · intro v y h
-      exact ⟨(hdF v).1 ⟨y, h⟩, (hdS y).1 ⟨v, h⟩⟩
+    · exact fun v y h => ⟨(hdF v).1 ⟨y, h⟩, (hdS y).1 ⟨v, h⟩⟩
     · exact fun v hv => (hdF v).2 hv
     · exact fun y hy => (hdS y).2 hy
   have hle : D.hh R p (χ τ) ≤ (D.Del τ).map (AddMonoidHom.fst _ _) := by
@@ -349,8 +345,7 @@ theorem main : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Typ
     (by rw [eF]; exact LatticeGoodness.locFree_divLat R hw0 (LatticeGoodness.locFree_stdLat R n)) hle (hG₂.im τ)
     (by rw [eS]; exact LatticeGoodness.locFree_divLat R hw0 hOm) hG2 hGD
   unfold LieLatticeData.kerH
-  rw [hhh]
-  exact key
+  rwa [hhh]
 
 end GlobalTheory.CompanionTheory.Ar.Num.LatticeGoodness.KerBC
 end -- clump:auto
@@ -409,8 +404,7 @@ theorem mem_ker_stepCoord {n : ℕ} (i : Fin n) (v : annSub Ω n i) :
     rcases Nat.lt_succ_iff_lt_or_eq.1 hj with hj | hj
     · exact mem_annSub_iff.1 v.2 j hj
     · rw [Fin.ext hj]; exact h
-  · intro h
-    exact h i (Nat.lt_succ_self _)
+  · exact fun h => h i (Nat.lt_succ_self _)
 
 theorem summand_step {n : ℕ} {L : AddSubgroup (Fin n → Ω)} (i : Fin n)
     (h : Summand L (annSub Ω n ((i : ℕ) + 1))) :
@@ -422,8 +416,7 @@ theorem summand_step {n : ℕ} {L : AddSubgroup (Fin n → Ω)} (i : Fin n)
     fun v hv => ?_⟩
   · rw [mem_ker_stepCoord]
     exact h1 _
-  · apply Subtype.ext
-    exact h2 _ ((mem_ker_stepCoord i u).1 hu)
+  · exact Subtype.ext (h2 _ ((mem_ker_stepCoord i u).1 hu))
   · exact h3 _ hv
 
 theorem locFree_step (R : Subalgebra o Ω) {n : ℕ} {L : AddSubgroup (Fin n → Ω)} (hL : LocFree R n L)
@@ -508,12 +501,10 @@ theorem mem_stepGraph_iff (D : LieLatticeData Ω F n Sg r s) (τ : Sg) (χ : F �
     subst h2
     exact ⟨g, u, hy, hu, h1.symm⟩
   · rintro ⟨g, u, hg, hu, he⟩
-    refine ⟨(g, m), hg, (u, 0), AddSubgroup.mem_prod.2 ⟨hu, rfl⟩, ?_⟩
-    exact Prod.ext he.symm (add_zero m)
+    exact ⟨(g, m), hg, (u, 0), AddSubgroup.mem_prod.2 ⟨hu, rfl⟩, Prod.ext he.symm (add_zero m)⟩
 
 theorem vanSub_apply_zero {i : ℕ} {u : (Fin n → F) → Ω} (hu : u ∈ vanSub Ω F n i) : u 0 = 0 := by
-  have h := (Submodule.mem_pi.1 hu) (0 : Fin n → F) (fun _ _ => rfl)
-  simpa using h
+  simpa using (Submodule.mem_pi.1 hu) (0 : Fin n → F) (fun _ _ => rfl)
 
 theorem stepGraph_stable [Fintype F] (D : LieLatticeData Ω F n Sg r s) {R : Subalgebra o Ω} {p : ℕ} {w : Ω}
     (hB : D.Base R p w) (τ : Sg) (χ : F → Ω) (i : Fin n) :
@@ -529,8 +520,7 @@ theorem fst_mem_xId_of_mem_stepGraph [Fintype F] (D : LieLatticeData Ω F n Sg r
     {m : Fin (r τ) → Ω} (h : (c, m) ∈ D.stepGraph τ χ i) : c ∈ D.xId χ i := by
   obtain ⟨g, u, hg, hu, he⟩ := (mem_stepGraph_iff D τ χ i c m).1 h
   have hgM : g ∈ D.M := (((hB.th τ).1 g).1 ⟨m, hg⟩).1
-  refine AddSubgroup.mem_comap.2 (AddSubgroup.mem_sup.2 ⟨g, hgM, u, hu, ?_⟩)
-  exact he.symm
+  exact AddSubgroup.mem_comap.2 (AddSubgroup.mem_sup.2 ⟨g, hgM, u, hu, he.symm⟩)
 
 theorem exists_mem_stepGraph_of_mem_xId [Fintype F] (D : LieLatticeData Ω F n Sg r s) {R : Subalgebra o Ω}
     {p : ℕ} {w : Ω} (hB : D.Base R p w) (τ : Sg) (χ : F → Ω) (h0 : χ 0 = 0) (i : Fin n) {c : Ω}
@@ -601,8 +591,7 @@ theorem stepKer : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : 
         have h2 : c' = c := congrArg Prod.snd he
         subst h1 h2
         exact h
-      · intro h
-        exact ⟨_, h, rfl⟩
+      · exact fun h => ⟨_, h, rfl⟩
     have e2 : ∀ X : AddSubgroup (C × (Fin (r τ) → C)),
         (X.map (AddEquiv.prodComm (M := C) (N := Fin (r τ) → C)).toAddMonoidHom).comap
           (AddMonoidHom.inr _ _) = X.comap (AddMonoidHom.inl _ _) := by
@@ -614,10 +603,8 @@ theorem stepKer : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : 
         have h2 : c' = c := congrArg Prod.snd he
         subst h1 h2
         exact h
-      · intro h
-        exact ⟨_, h, rfl⟩
-    rw [hsw, e2, e1] at key
-    exact key
+      · exact fun h => ⟨_, h, rfl⟩
+    rwa [hsw, e2, e1] at key
 
 end GlobalTheory.CompanionTheory.Ar.Num.LatticeGoodness
 end -- clump:auto

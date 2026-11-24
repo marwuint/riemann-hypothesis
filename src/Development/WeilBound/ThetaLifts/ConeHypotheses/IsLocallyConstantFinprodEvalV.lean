@@ -99,7 +99,6 @@ theorem isLocallyConstant_finprod_evalV {F : Type} [Field F] [NumberField F] {κ
       have h4 := add_mem (hU' i v) (h2 i)
       have h5 : (y' i - y i) v + Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i) =
           Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y' i) := by
-        show (y' i) v - (y i) v + (y i) v = (y' i) v
         exact sub_add_cancel _ _
       rwa [h5] at h4
     rw [h1, Set.indicator_of_mem (show (fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y' i)) ∈
@@ -161,8 +160,6 @@ theorem hasCompactSupport_finprod : ∀ {F : Type} [Field F] [NumberField F] {κ
     isCompact_univ_pi fun i => PI.VolStabS.AdmissibleCompactSupport.isCompact_finBox (hD i) (hDe i)
   refine HasCompactSupport.intro hbox fun y hy => ?_
   by_contra h
-  apply hy
-  intro i _ v
-  exact Or.inl ⟨_, subset_tsupport _ (hfac y h v), rfl⟩
+  exact hy (fun i _ v => Or.inl ⟨_, subset_tsupport _ (hfac y h v), rfl⟩)
 
 end PositivityTheory.ThKG

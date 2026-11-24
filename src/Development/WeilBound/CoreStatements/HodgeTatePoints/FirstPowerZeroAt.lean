@@ -168,8 +168,7 @@ theorem act_zero_at (x : Pt R n d) : comp1 (B.A.act ((0 : ℕ) : O)) x = 0 := by
           (fun p => GlobalTheory.GaugeAdjoint.const_one hc p.1 p.2) (by simp)
           (fun p => by simpa using ih p.2) (h4 i)
         rw [subst_zero_of_constantCoeff_zero (hc i), sub_zero] at this
-        rw [congrFun h2 i]
-        exact this
+        rwa [congrFun h2 i]
     funext i
     exact GlobalTheory.FormalSeries.eq_of_forall_le_order_sub fun k => by simpa using h5 k i
   rw [Nat.cast_zero, ha, comp1_eq_evalPoint]
@@ -353,21 +352,17 @@ theorem iso_first_power_at {B} {B₂ : FB R d O} {φ ψ : Pt R 1 d} {lam : PS R 
 
 theorem pow_sy : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O) (n : ℕ), pow2 B n * B.sy ^ n = ev (n := 2) ![pt R d 0, comp1 (B.A.act (n : O)) (pt R d 1)] B.sy * ev (n := 2) ![pt R d 1, pt R d 0] (pow1 B n) := by
   intro R _ d O _ _ B n
-  have e := pow_sy_at B (Z_pt (R := R) (d := d) (0 : Fin 2)) (Z_pt 1) n
-  simp only [eval_identity_two] at e
-  exact e
+  simpa only [eval_identity_two] using pow_sy_at B (Z_pt (R := R) (d := d) (0 : Fin 2)) (Z_pt 1) n
 
 theorem pow_inter : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O) (m n : ℕ), pow2 B n ^ m * ev (n := 2) ![pt R d 0, comp1 (B.A.act (n : O)) (pt R d 1)] (pow1 B m) = pow1 B m ^ n * ev (n := 2) ![comp1 (B.A.act (m : O)) (pt R d 0), pt R d 1] (pow2 B n) := by
   intro R _ d O _ _ B m n
   have e := pow_inter_at B (Z_pt (R := R) (d := d) (0 : Fin 2)) (Z_pt 1) m n
-  simp only [eval_identity_two] at e
-  exact e
+  simpa only [eval_identity_two] using e
 
 theorem iso_first_power : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O) (B₂ : FB R d O) (φ ψ : Pt R 1 d) (lam : PS R 2 d) (n : ℕ), IsIso B B₂ φ ψ lam → pow1 B₂ n * ev (n := 2) ![comp1 (B₂.A.act (n : O)) (pt R d 0), pt R d 1] lam = lam ^ n * ev (n := 2) ![comp1 φ (pt R d 0), comp1 φ (pt R d 1)] (pow1 B n) := by
   intro R _ d O _ _ B B₂ φ ψ lam n h
   have e := iso_first_power_at h (Z_pt (R := R) (d := d) (0 : Fin 2)) (Z_pt 1) n
-  simp only [eval_identity_two] at e
-  exact e
+  simpa only [eval_identity_two] using e
 
 end PositivityTheory.HtPt.Cc
 end -- clump:auto

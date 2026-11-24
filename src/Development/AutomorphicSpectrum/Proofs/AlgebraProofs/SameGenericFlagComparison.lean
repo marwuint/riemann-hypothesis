@@ -92,8 +92,7 @@ theorem step_coord (w w' : Module.Basis (Fin N) Ω V)
     rcases lt_or_gt_of_ne hl with hl | hl
     · rw [h l i hl, mul_zero]
     · rw [hv l hl, zero_mul]
-  · intro hi
-    exact absurd (Finset.mem_univ i) hi
+  · exact fun hi => absurd (Finset.mem_univ i) hi
 
 theorem triangular_symm (w w' : Module.Basis (Fin N) Ω V)
     (h : ∀ i j : Fin N, i < j → w.repr (w' i) j = 0) :
@@ -103,8 +102,7 @@ theorem triangular_symm (w w' : Module.Basis (Fin N) Ω V)
   haveI : Invertible (w.toMatrix w') := ⟨w'.toMatrix w, Module.Basis.toMatrix_mul_toMatrix_flip w' w, hMN⟩
   have hinv : (w.toMatrix w')⁻¹ = w'.toMatrix w := Matrix.inv_eq_right_inv hMN
   have hN : (w'.toMatrix w).BlockTriangular id := hinv ▸ Matrix.blockTriangular_inv_of_blockTriangular hM
-  intro i j hij
-  exact hN hij
+  exact fun i j hij => hN hij
 
 end Linear
 
@@ -201,8 +199,7 @@ theorem PositivityTheory.Xgn.t_flagpair_of_frames : ∀ (O : Type) [CommRing O] 
     obtain ⟨v, hvE', hvz, hvi⟩ : ∃ v ∈ E'.lat c, (∀ j, i < j → w'.repr v j = 0) ∧
         w'.repr v i = ∏ k, x ⟨k, c k⟩ ^ b' i k := by
       have hmem : (∏ k, x ⟨k, c k⟩ ^ b' i k) ∈ degLat O x (b' i) c := ⟨1, one_mem _, (one_mul _).symm⟩
-      rw [← hE'.graded c hc i] at hmem
-      exact hmem
+      rwa [← hE'.graded c hc i] at hmem
     obtain ⟨n, hn⟩ := (hSGF c hc).2 v hvE'
     have huz : ∀ j, i < j → w'.repr (algebraMap O Ω ϖ ^ n • v) j = 0 := by
       intro j hj
@@ -217,8 +214,7 @@ theorem PositivityTheory.Xgn.t_flagpair_of_frames : ∀ (O : Type) [CommRing O] 
     obtain ⟨v2, hvE, hv2z, hv2i⟩ : ∃ v ∈ E.lat c, (∀ j, i < j → w.repr v j = 0) ∧
         w.repr v i = ∏ k, x ⟨k, c k⟩ ^ b i k := by
       have hmem : (∏ k, x ⟨k, c k⟩ ^ b i k) ∈ degLat O x (b i) c := ⟨1, one_mem _, (one_mul _).symm⟩
-      rw [← hE.graded c hc i] at hmem
-      exact hmem
+      rwa [← hE.graded c hc i] at hmem
     obtain ⟨n2, hn2⟩ := (hSGF c hc).1 v2 hvE
     have hu2z : ∀ j, i < j → w.repr (algebraMap O Ω ϖ ^ n2 • v2) j = 0 := by
       intro j hj

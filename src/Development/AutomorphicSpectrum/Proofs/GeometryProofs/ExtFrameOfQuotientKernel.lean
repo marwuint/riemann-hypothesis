@@ -69,8 +69,7 @@ theorem ext_frame_of_quotient_kernel (Ω M V : Type) [Field Ω] [AddCommGroup M]
     intro i
     have hmem : (∑ j, P i j • v j) ∈ H.map (π.restrictScalars R) := by
       rw [hmap]; exact Submodule.subset_span ⟨i, rfl⟩
-    obtain ⟨y, hy, e⟩ := hmem
-    exact ⟨y, hy, e⟩
+    exact hmem
   choose h hH hπh using hlift
   have hT : ∀ i, ∃ t : Fin (p + q) → Ω, ∑ k, t k • u k = h i := fun i =>
     (Submodule.mem_span_range_iff_exists_fun Ω).1 (hHu _ (hH i))
@@ -78,36 +77,25 @@ theorem ext_frame_of_quotient_kernel (Ω M V : Type) [Field Ω] [AddCommGroup M]
   have hTP : ∀ i j, T i (Fin.castAdd q j) = P i j := by
     intro i
     have e : ∑ j, T i (Fin.castAdd q j) • v j = ∑ j, P i j • v j := by
-
       rw [← hπh i, ← hT i, map_sum, Fin.sum_univ_add]
       simp [hπ1, hπ2]
-    have e2 : ∑ j, (T i (Fin.castAdd q j) - P i j) • v j = 0 := by
-      simp [sub_smul, Finset.sum_sub_distrib, e]
-    intro j
-    exact sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hv _ e2 j)
+    have e2 := Fintype.linearIndependent_iff.1 hv (fun j => T i (Fin.castAdd q j) - P i j)
+      (by simp [sub_smul, Finset.sum_sub_distrib, e])
+    exact fun j => sub_eq_zero.1 (e2 j)
   let T2 : Matrix (Fin p) (Fin q) Ω := fun i k => T i (Fin.natAdd p k)
   let A : Matrix (Fin (p + q)) (Fin (p + q)) Ω :=
     Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks P T2 0 C)
-  have hA11 : ∀ i j, A (Fin.castAdd q i) (Fin.castAdd q j) = P i j := by
-    intro i j; simp [A, Matrix.reindex_apply, Matrix.submatrix_apply]
-  have hA12 : ∀ i j, A (Fin.castAdd q i) (Fin.natAdd p j) = T i (Fin.natAdd p j) := by
-    intro i j
-    change A (Fin.castAdd q i) (Fin.natAdd p j) = T2 i j
-    simp [A, Matrix.reindex_apply, Matrix.submatrix_apply]
-  have hA21 : ∀ i j, A (Fin.natAdd p i) (Fin.castAdd q j) = 0 := by
-    intro i j; simp [A, Matrix.reindex_apply, Matrix.submatrix_apply]
-  have hA22 : ∀ i j, A (Fin.natAdd p i) (Fin.natAdd p j) = C i j := by
-    intro i j; simp [A, Matrix.reindex_apply, Matrix.submatrix_apply]
   have hdet : A.det = P.det * C.det := by
     simp only [A, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]
   have hw1 : ∀ i, ∑ j, A (Fin.castAdd q i) j • u j = h i := by
     intro i
     rw [← hT i, Fin.sum_univ_add, Fin.sum_univ_add]
-    simp only [hA11, hA12, hTP]
+    simp [A, Matrix.reindex_apply, Matrix.submatrix_apply, hTP]
+    rfl
   have hw2 : ∀ i, ∑ j, A (Fin.natAdd p i) j • u j = ∑ k, C i k • u (Fin.natAdd p k) := by
     intro i
     rw [Fin.sum_univ_add]
-    simp only [hA21, hA22, zero_smul, Finset.sum_const_zero, zero_add]
+    simp [A, Matrix.reindex_apply, Matrix.submatrix_apply]
   refine ⟨A, hdet, ?_, ?_⟩
   · rw [Fintype.linearIndependent_iff]
     intro c hc
@@ -115,14 +103,11 @@ theorem ext_frame_of_quotient_kernel (Ω M V : Type) [Field Ω] [AddCommGroup M]
       rw [← hc]
       simp only [Finset.smul_sum, Finset.sum_smul, mul_smul]
       exact Finset.sum_comm
-    have hz := Fintype.linearIndependent_iff.1 hu _ hc'
     have hvm : Matrix.vecMul c A = 0 := by
       funext j
-      simpa [Matrix.vecMul, dotProduct] using hz j
+      simpa [Matrix.vecMul, dotProduct] using Fintype.linearIndependent_iff.1 hu _ hc' j
     have hdet0 : A.det ≠ 0 := by rw [hdet]; exact mul_ne_zero hP hC
-    have := Matrix.eq_zero_of_vecMul_eq_zero hdet0 hvm
-    intro i
-    exact congrFun this i
+    exact congrFun (Matrix.eq_zero_of_vecMul_eq_zero hdet0 hvm)
   · apply le_antisymm
     · intro y hy
       have hmem : π y ∈ Submodule.span R (Set.range fun i => ∑ j, P i j • v j) := by
@@ -137,16 +122,13 @@ theorem ext_frame_of_quotient_kernel (Ω M V : Type) [Field Ω] [AddCommGroup M]
         have := hw2 j
         simp only at this ⊢
         rw [← this]; exact Submodule.subset_span ⟨_, rfl⟩
-      have hsumH : ∑ i, r i • h i ∈ H := Submodule.sum_mem _ fun i _ => H.smul_mem _ (hH i)
       have hsumS : ∑ i, r i • h i ∈ S := Submodule.sum_mem _ fun i _ => S.smul_mem _ (hhS i)
-      have hdiff : y - ∑ i, r i • h i ∈ H := H.sub_mem hy hsumH
+      have hdiff : y - ∑ i, r i • h i ∈ H :=
+        H.sub_mem hy (Submodule.sum_mem _ fun i _ => H.smul_mem _ (hH i))
       have hπd : π (y - ∑ i, r i • h i) = 0 := by
-        have e : π (∑ i, r i • h i) = ∑ i, r i • ∑ j, P i j • v j := by
-
-          rw [map_sum]
-          refine Finset.sum_congr rfl fun i _ => ?_
-          rw [← hπh i, Subring.smul_def, Subring.smul_def, map_smul]
-        rw [map_sub, e, hr, sub_self]
+        rw [map_sub, ← hr, map_sum, sub_eq_zero]
+        refine Finset.sum_congr rfl fun i _ => ?_
+        rw [← hπh i, Subring.smul_def, Subring.smul_def, map_smul]
       have := hCS (hker _ hdiff hπd)
       simpa using S.add_mem this hsumS
     · rw [Submodule.span_le]

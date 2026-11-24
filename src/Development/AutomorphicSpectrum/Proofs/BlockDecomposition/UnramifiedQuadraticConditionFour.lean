@@ -81,8 +81,7 @@ theorem exists_of_conj_eq (h : IsCMExt F E σ) (e : E) (he : σ e = e) :
   haveI := Subalgebra.isSimpleOrder_of_finrank h.2.2.1
   rcases eq_bot_or_eq_top (AlgHom.equalizer σ (AlgHom.id F E)) with h0 | h0
   · have : e ∈ AlgHom.equalizer σ (AlgHom.id F E) := he
-    rw [h0, Algebra.mem_bot] at this
-    exact this
+    rwa [h0, Algebra.mem_bot] at this
   · exfalso
     obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
     haveI := h.2.1
@@ -148,13 +147,11 @@ variable {d : ℕ} {bs : Module.Basis (Fin d) F E} {v : HeightOneSpectrum (𝓞 
 theorem smul_mem (hcar : (S : Set (Fv F v ⊗[F] E)) = Rv bs v) {β : Fv F v}
     (hβ : β ∈ v.adicCompletionIntegers F) {x : Fv F v ⊗[F] E} (hx : x ∈ S) : β • x ∈ S := by
   have h1 : x ∈ Rv bs v := by
-    rw [← hcar]
-    exact hx
+    rwa [← hcar]
   have h2 : β • x ∈ Rv bs v := fun k => by
     rw [map_smul, Finsupp.smul_apply, smul_eq_mul]
     exact mul_mem hβ (h1 k)
-  rw [← hcar] at h2
-  exact h2
+  rwa [← hcar] at h2
 
 theorem scalar_mem (hcar : (S : Set (Fv F v ⊗[F] E)) = Rv bs v) {β : Fv F v}
     (hβ : β ∈ v.adicCompletionIntegers F) : algebraMap (Fv F v) (Fv F v ⊗[F] E) β ∈ S := by
@@ -168,8 +165,7 @@ theorem basis_mem (hcar : (S : Set (Fv F v ⊗[F] E)) = Rv bs v) (i : Fin d) :
     split_ifs
     · exact one_mem _
     · exact zero_mem _
-  rw [← hcar] at h
-  exact h
+  rwa [← hcar] at h
 
 theorem trace_mem (hcar : (S : Set (Fv F v ⊗[F] E)) = Rv bs v) {a : Fv F v ⊗[F] E} (ha : a ∈ S) :
     Algebra.trace (Fv F v) (Fv F v ⊗[F] E) a ∈ v.adicCompletionIntegers F := by

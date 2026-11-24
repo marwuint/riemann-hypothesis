@@ -300,8 +300,7 @@ theorem exists_lift [SecondCountableTopology G] [T2Space G] (μ : Measure G)
       have : (fun g => κ g U) ⁻¹' Iic t = ({x | transl M η x U ≤ t} ∩ (P : Set G)) * (K : Set G) := by
         ext g
         constructor
-        · intro hg
-          exact ⟨s g, ⟨hg, hs g⟩, r g, hr g, (hsr g).symm⟩
+        · exact fun hg => ⟨s g, ⟨hg, hs g⟩, r g, hr g, (hsr g).symm⟩
         · rintro ⟨p, ⟨hp1, hp2⟩, k, hk, rfl⟩
           simp only [mem_preimage, mem_Iic]
           rw [hκ p hp2 k hk]
@@ -309,11 +308,9 @@ theorem exists_lift [SecondCountableTopology G] [T2Space G] (μ : Measure G)
       rw [this]
       exact (((isClosed_transl_le M η hU t).inter hP).mul_right_of_isCompact hK).measurableSet
     | compl A hA ih =>
-      simp only [prob_compl_eq_one_sub hA]
-      exact ih.const_sub 1
+      simpa only [prob_compl_eq_one_sub hA] using ih.const_sub 1
     | iUnion f hd hf ih =>
-      simp only [measure_iUnion hd hf]
-      exact Measurable.tsum ih
+      simpa only [measure_iUnion hd hf] using Measurable.tsum ih
   have happ : ∀ g, ∀ A, MeasurableSet A → κ g A = η ((fun m : M => s g * (m : G)) ⁻¹' A) := fun g A hA =>
     Measure.map_apply (measurable_transl_fun M _) hA
   refine ⟨μ.bind κ, ?_, ?_, ?_, ?_⟩

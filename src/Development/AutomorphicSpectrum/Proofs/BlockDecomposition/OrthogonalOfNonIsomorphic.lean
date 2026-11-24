@@ -780,8 +780,7 @@ lemma end_coeff_continuous {M : Type} [AddCommGroup M] [Module ℂ M]
     intro k
     rw [← hℓ']
     rfl
-  simp only [this]
-  exact hr ℓ' (b i)
+  simpa only [this] using hr ℓ' (b i)
 
 theorem representing_vector : ∀ {K M H X : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] [MeasurableSpace K] [BorelSpace K] (ν : Measure K) [ν.IsHaarMeasure] [AddCommGroup M] [Module ℂ M] [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ρ : Representation ℂ K M) (ι : M →ₗ[ℂ] H) (U U' : Submodule ℂ M) (ev : X → M →ₗ[ℂ] ℂ),
   (∀ k, ∀ x ∈ U', ∀ y ∈ U, ⟪ι (ρ k x), ι (ρ k y)⟫_ℂ = ⟪ι x, ι y⟫_ℂ) →
@@ -905,9 +904,7 @@ theorem representing_vector : ∀ {K M H X : Type} [Group K] [TopologicalSpace K
     intro d hd
     have hP : ι d ∈ P := Submodule.mem_map_of_mem hd
     have := Submodule.inner_right_of_mem_orthogonal hP (P.sub_starProjection_mem_orthogonal (ι x))
-    rw [ht₀]
-    rw [← sub_eq_zero, ← inner_sub_right]
-    exact this
+    rwa [ht₀, ← sub_eq_zero, ← inner_sub_right]
   have ht₀U : t₀ ∈ U' := hDU ht₀D
   obtain ⟨B, hBfd, htB, hBU, hBst, hBc⟩ := hU' t₀ ht₀U
   haveI := hBfd
@@ -1091,8 +1088,7 @@ theorem exists_adj (μ : Measure (GA E N)) [μ.IsHaarMeasure] [μ.IsMulRightInva
     have e : act (.lie (-X)) x = - lie E N X x := by
       change lie E N (-X) x = _
       rw [map_neg]; rfl
-    rw [e, map_neg, inner_neg_left]
-    exact h
+    rwa [e, map_neg, inner_neg_left]
 
 theorem isoV_of_ne (μ : Measure (GA E N)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {V V' : Submodule ℂ (Sm E N)}
     (hV : IsDiscrete V) (hV' : IsDiscrete V') {x₀ y₀ : Sm E N} (hx₀ : x₀ ∈ V) (hy₀ : y₀ ∈ V')
@@ -1157,8 +1153,7 @@ theorem isoV_of_ne (μ : Measure (GA E N)) [μ.IsHaarMeasure] [μ.IsMulRightInva
       obtain rfl : y' = y := Subtype.ext e
       exact hy'
   refine ⟨LinearEquiv.ofBijective Tl ⟨LinearMap.ker_eq_bot.1 hker, LinearMap.range_eq_top.1 hran⟩, ?_⟩
-  intro o x y hxy
-  exact eqv o x y hxy
+  exact fun o x y hxy => eqv o x y hxy
 
 end GlobalTheory.CompanionTheory.FinDisc.Orth
 

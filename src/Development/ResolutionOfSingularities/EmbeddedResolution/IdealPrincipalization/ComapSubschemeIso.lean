@@ -72,8 +72,7 @@ private theorem ker_comap_subschemeι_le_ker_subschemeι_comp_inv {X Y : Scheme.
   have h : (I.comap f.hom).comap f.inv = I := by
     rw [← Scheme.IdealSheafData.comap_comp, Iso.inv_hom_id, Scheme.IdealSheafData.comap_id]
   have h2 := Scheme.IdealSheafData.le_map_comap (I.comap f.hom) f.inv
-  rw [h] at h2
-  exact h2
+  rwa [h] at h2
 
 theorem exists_iso_subscheme_comap_comm {X Y : Scheme.{u}} (f : X ≅ Y) (I : Y.IdealSheafData) :
     ∃ g : (I.comap f.hom).subscheme ≅ I.subscheme,
@@ -114,8 +113,7 @@ theorem subschemeι_comp_preimageOpens_ι_comp_hom {W W' : Scheme.{u}} (e : W' �
 private theorem coe_support_comap_iso {X Y : Scheme.{u}} (g : X ≅ Y) (J : Y.IdealSheafData) :
     ((J.comap g.hom).support : Set ↥X) = ⇑g.hom.base ⁻¹' (J.support : Set ↥Y) := by
   have h := orderAtLeastLocus_comap_iso_hom_eq_preimage g J 1
-  rw [orderAtLeastLocus_one, orderAtLeastLocus_one] at h
-  exact h
+  rwa [orderAtLeastLocus_one, orderAtLeastLocus_one] at h
 
 private theorem support_comap_iso_subset_of_subset {X Y : Scheme.{u}} (g : X ≅ Y)
     {A B : Y.IdealSheafData} (h : (A.support : Set ↥Y) ⊆ (B.support : Set ↥Y)) :
@@ -139,8 +137,7 @@ private theorem image_mem_irreducibleComponents_of_homeomorph {α β : Type u} [
     constructor
     · rintro ⟨z, hz, rfl⟩
       simpa using hz
-    · intro hy
-      exact ⟨h y, hy, by simp⟩
+    · exact fun hy => ⟨h y, hy, by simp⟩
   have hpre : IsIrreducible (⇑h ⁻¹' S) := by
     rw [← h2]
     exact hS.image _ h.symm.continuous.continuousOn
@@ -223,8 +220,7 @@ private theorem exists_isOpen_comap_eq_comap_preimageOpensIso {W W' : Scheme.{u}
     apply hx
     have hmem2 : x ∈ ⇑(comapSubschemeIso (preimageOpensIso e V) B).hom.base ⁻¹'
         (⇑(B.subschemeι ≫ V.ι).base ⁻¹' Mem) := hmem
-    rw [← preimage_comap_subschemeι_preimageOpens_comp e V B Mem] at hmem2
-    exact hmem2
+    rwa [← preimage_comap_subschemeι_preimageOpens_comp e V B Mem] at hmem2
   obtain ⟨O, hxO, hO⟩ := h ((comapSubschemeIso (preimageOpensIso e V) B).hom.base x) hx'
   refine ⟨preimageOpens (comapSubschemeIso (preimageOpensIso e V) B) O, hxO, ?_⟩
   rw [comap_preimageOpens_ι_comap_iso, comap_preimageOpens_ι_comap_iso, comap_subschemeι_comap_iso, comap_preimageOpens_ι_comap_iso, hO]
@@ -270,8 +266,7 @@ theorem nonzeroOnComponents_comap_iso {X Y : Scheme.{u}} (f : X ≅ Y) (I : Y.Id
   · exact image_mem_irreducibleComponents_of_homeomorph (Scheme.homeoOfIso f) hT
   · rintro y ⟨x, hx, rfl⟩
     have hx' : x ∈ ((I.comap f.hom).support : Set ↥X) := hsub hx
-    rw [coe_support_comap_iso f I] at hx'
-    exact hx'
+    rwa [coe_support_comap_iso f I] at hx'
 
 end PrincipalizationIsoTransport
 

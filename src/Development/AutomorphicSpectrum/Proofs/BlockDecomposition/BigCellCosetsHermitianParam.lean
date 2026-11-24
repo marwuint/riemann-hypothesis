@@ -100,8 +100,7 @@ theorem isSiegelParabolic_iff (M : Matrix (Fin (n + n)) (Fin (n + n)) K) : IsSie
   · intro h
     ext i j
     exact h i j
-  · intro h i j
-    exact congrFun (congrFun h i) j
+  · exact fun h i j => congrFun (congrFun h i) j
 
 theorem cellKer_eq_bot_iff' {E : Type} [Field E] (C : Matrix (Fin n) (Fin n) E) :
     LinearMap.ker C.mulVecLin = ⊥ ↔ IsUnit C.det := by
@@ -178,8 +177,7 @@ theorem of_lower_unit (σ : K →+* K) {x : Matrix (Fin (n + n)) (Fin (n + n)) K
       IsSiegelP (x * (cellM ((lowerC x)⁻¹ * GlobalTheory.CompanionTheory.RatPtsUnn.blkD x))⁻¹) := by
   obtain ⟨a, b, hb⟩ := exists_blockMatrixTwoByTwoFin_eq x
   have hu' : IsUnitary σ (blk4 0 1 (-1) 0) (blk4 a b (lowerC x) (GlobalTheory.CompanionTheory.RatPtsUnn.blkD x)) := by
-    rw [← hb]
-    exact hu
+    rwa [← hb]
   refine ⟨herm_of_rel σ hC (lower_rel σ hu'), ?_⟩
   rw [cellM_inv, isSiegelParabolic_iff]
   have a2 : lowerC x * (lowerC x)⁻¹ = 1 := Matrix.mul_nonsing_inv _ hC
@@ -267,7 +265,6 @@ theorem bigCell : ∀ {D : D7} {n : ℕ} {w : G D n}, mat w = blk4 0 1 (-1) 0 �
         (Quotient.out_eq _).symm
       exact lower_unit hspec.1 _ ((GlobalTheory.CompanionTheory.EisCellsAsm.mk_eq_iff_siegel GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn (c l) _
         (cellM_det _) (hc l) (mat_ratOf _)).1 hmk)
-  · intro f hf l y
-    exact term_mk hf y (c l)
+  · exact fun f hf l y => term_mk hf y (c l)
 
 end GlobalTheory.CompanionTheory.SwUnf.BigCell

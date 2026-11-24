@@ -75,8 +75,7 @@ theorem apply_mem_irreducibleComponent_iff_of_generalizingMap
     obtain ⟨η, hη⟩ := QuasiSober.sober hC.1 (isClosed_of_mem_irreducibleComponents C hC)
     have hη' : closure ({η} : Set ↥Y) = C := hη
     have hxmem : (fun x : ↥X => f x) x ∈ closure ({η} : Set ↥Y) := by
-      rw [hη']
-      exact hx
+      rwa [hη']
     have hspec : η ⤳ (fun x : ↥X => f x) x := specializes_iff_mem_closure.mpr hxmem
     obtain ⟨x', hx'spec, hfx'⟩ := hf hspec
     refine ⟨irreducibleComponent x', irreducibleComponent_mem_irreducibleComponents x',
@@ -255,8 +254,7 @@ theorem detachedIdeal_eq_comap (F : ChartFlatBaseChange S S') [AlgebraicGeometry
   have hZ' : (↑(S'.detachedClosure j) : Set ↥(S'.strictTransform j))
       = ⇑(F.strictTransformComparison j hj.le).base ⁻¹' (⋃₀ S.detachedComponents (F.reindex j)) := by
     have h := F.coe_detachedClosure_eq_preimage j hj
-    rw [S.detachedClosure_coe (F.reindex j), S.detachedLocus_eq_sUnion (F.reindex j)] at h
-    exact h
+    rwa [S.detachedClosure_coe (F.reindex j), S.detachedLocus_eq_sUnion (F.reindex j)] at h
   rw [S'.detachedIdeal_eq j, S.detachedIdeal_eq (F.reindex j)]
   exact (comap_vanishingIdeal_sUnion (F.strictTransformComparison j hj.le)
     (S := S.detachedComponents (F.reindex j)) (Z := S.detachedClosure (F.reindex j))
@@ -324,8 +322,7 @@ theorem isEmpty_of_forall_reindex_ne (F : ChartFlatBaseChange S S') (s : ℕ) (h
   constructor
   intro x
   have hcsq : (q ≫ S.detachedι s ≫ S.strictTransformι s) ≫ S.ambientSeq.projectionToBase s = p ≫ F.ambientMap := by
-    simp only [Category.assoc]
-    exact hcomm
+    simpa only [Category.assoc] using hcomm
   have hpb := IsPullback.of_hasPullback (S.ambientSeq.projectionToBase s) F.ambientMap
   have hcomap := F.comap_center_skipped s hs hskip
     (pullback (S.ambientSeq.projectionToBase s) F.ambientMap)
@@ -342,16 +339,14 @@ theorem isEmpty_of_forall_reindex_ne (F : ChartFlatBaseChange S S') (s : ℕ) (h
       exact ⟨q x, rfl⟩
     rw [S.detachedIdeal_eq s] at h1
     have h2 := (Scheme.IdealSheafData.coe_support_vanishingIdeal (S.detachedClosure s)).le h1
-    rw [S.detachedClosure_coe s] at h2
-    exact h2
+    rwa [S.detachedClosure_coe s] at h2
   have hmem : (S.strictTransformι s) ((S.detachedι s) (q x)) ∈
       (↑(S.ambientCenter s).support : Set ↥(S.schemeAt s)) :=
     S.image_detachedLocus_subset_ambientCenter_support s ⟨_, hfl, rfl⟩
   have hmem2 : (hpb.lift _ _ hcsq) x ∈ (↑((S.ambientCenter s).comap
       (pullback.fst (S.ambientSeq.projectionToBase s) F.ambientMap)).support
         : Set ↥(pullback (S.ambientSeq.projectionToBase s) F.ambientMap)) := by
-    rw [FunctorialResolution.EmbeddedResolution.support_comap, Set.mem_preimage, hpt]
-    exact hmem
+    rwa [FunctorialResolution.EmbeddedResolution.support_comap, Set.mem_preimage, hpt]
   rw [hcomap] at hmem2
   simp at hmem2
 

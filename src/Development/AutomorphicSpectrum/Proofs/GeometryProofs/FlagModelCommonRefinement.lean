@@ -93,8 +93,7 @@ theorem cramer_sub : ∀ (Ω : Type) [Field Ω] (E : Type) [AddCommGroup E] [Mod
       intro l
       have e := LinearMap.congr_fun (b.det_smul_mk_coord_eq_det_update li sp.ge l) (z k)
       have e2 : b.det (z ∘ c₀) * B.repr (z k) l = b.det (z ∘ Function.update c₀ l k) := by
-        rw [Function.comp_update]
-        exact e
+        rwa [Function.comp_update]
       have e3 : B.repr (z k) l = b.det (z ∘ Function.update c₀ l k) / b.det (z ∘ c₀) := by
         rw [← e2, mul_div_cancel_left₀ _ h0]
       rw [e3]
@@ -239,8 +238,7 @@ theorem exists_det_ne {W : Type} [AddCommGroup W] [Module Ω W] {r n : ℕ} (b :
   refine ⟨a ∘ e, ?_⟩
   have hli' : LinearIndependent Ω (z ∘ (a ∘ e)) := hli.comp e e.injective
   have hsp' : Submodule.span Ω (Set.range (z ∘ (a ∘ e))) = ⊤ := by
-    rw [← Function.comp_assoc, EquivLike.range_comp]
-    exact hspan
+    rwa [← Function.comp_assoc, EquivLike.range_comp]
   have hu := b.isUnit_det (Module.Basis.mk hli' hsp'.ge)
   rw [Module.Basis.coe_mk] at hu
   exact hu.ne_zero
@@ -257,8 +255,7 @@ theorem dominant_minor (A : Subring Ω) [IsLocalRing A] (V : Submodule Ω E) {r 
   have hliV : LinearIndependent Ω bV := LinearIndependent.of_comp V.subtype hb
   have hspV : Submodule.span Ω (Set.range bV) = ⊤ := by
     apply Submodule.map_injective_of_injective V.injective_subtype
-    rw [Submodule.map_span, ← Set.range_comp, Submodule.map_subtype_top]
-    exact hV
+    rwa [Submodule.map_span, ← Set.range_comp, Submodule.map_subtype_top]
   have hrr : r' = r := by
     have h1 := Module.finrank_eq_card_basis (Module.Basis.mk hliV hspV.ge)
     have h2 := Module.finrank_eq_card_basis b₀
@@ -294,9 +291,7 @@ theorem span_image_span (i : Ω →+* Ω') (j : E →+ F) (hj : ∀ (a : Ω) (e 
       rw [map_add (f := _)]
       exact Submodule.add_mem _ hy hy'
     | smul a y _ hy =>
-      have e1 : j (a • y) = (⟨i a, hA a a.2⟩ : A) • j y := by
-        show j ((a : Ω) • y) = i a • j y
-        exact hj a y
+      have e1 : j (a • y) = (⟨i a, hA a a.2⟩ : A) • j y := hj a y
       rw [e1]
       exact Submodule.smul_mem _ _ hy
   · exact Submodule.span_mono (Set.image_mono Submodule.subset_span)
@@ -356,8 +351,7 @@ theorem reg_near {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat
   choose U hU using fun t => PositivityTheory.HtPt.Ma.reg_open X Ω ξ p (a t) (h t)
   refine ⟨⟨⋂ t, (U t : Set X), isOpen_iInter_of_finite fun t => (U t).isOpen⟩, ?_, ?_⟩
   · exact Set.mem_iInter.2 fun t => (hU t).1
-  · intro q hq t
-    exact (hU t).2 q (Set.mem_iInter.1 hq t)
+  · exact fun q hq t => (hU t).2 q (Set.mem_iInter.1 hq t)
 
 theorem vb_on {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} [Finite κ] {x : κ → Ω}
     (M : PModel o x) {E : Type} [AddCommGroup E] [Module Ω E] (L : Lat M.ξ E) (V : Submodule Ω E)
@@ -425,8 +419,7 @@ theorem vb_on {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ 
           ⇑(Submodule.span Ω' (j '' (V : Set E))).subtype ∘ w ∘ l := by
         funext k
         exact (hcoe (l k)).symm
-      rw [e4]
-      exact h5
+      rwa [e4]
     · rw [_root_.PositivityTheory.HtPt.Mb.LPulllocCentre.pullLoc_eq_span_centre o Ω κ x M E L X' Ω' ξ' i F j q₀ q' hcoh hq₀, hz c q₀ hq0,
         span_image_span i j hj.1 (regAt M.ξ q₀) (regAt ξ' q') hq₀.1, ← Set.range_comp]
       have e2 := (span_val_eq_iff (regAt ξ' q') (Submodule.span Ω' (j '' (V : Set E))) w (w ∘ l)).2 hcr.2
@@ -469,8 +462,7 @@ theorem plucker_block (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o 
   let zV : Fin n → V := fun k => ⟨z k, hzV k⟩
   have hspanV : Submodule.span Ω (Set.range zV) = ⊤ := by
     apply Submodule.map_injective_of_injective V.injective_subtype
-    rw [Submodule.map_span, ← Set.range_comp, Submodule.map_subtype_top]
-    exact hspanE
+    rwa [Submodule.map_span, ← Set.range_comp, Submodule.map_subtype_top]
   let b₀ := Module.finBasis Ω V
   refine ⟨Fin (Module.finrank Ω V) → Fin n, inferInstance, fun l => b₀.det (zV ∘ l), ?_, ?_, ?_⟩
   · exact exists_det_ne b₀ zV hspanV
@@ -743,8 +735,7 @@ theorem exists_common_normal_model : ∀ (o : Type) [CommRing o] [Algebra.EssFin
         = Set.univ := Set.eq_univ_of_forall fun p' => ⟨hc p', hch₂ (.inr b) p'⟩
     have hs : Submodule.span Ω (AddMonoidHom.id (E b) '' (V b : Set (E b))) = V b := by simp
     rw [hu, hs] at key
-    rw [e]
-    exact key
+    rwa [e]
   · refine (PositivityTheory.HtPt.Mb.iso_comp _ Ω M.ξ _ _ Ω (RingHom.id Ω) p).1 M₁.ξ M₂.ξ f g hg (hiso p ?_) fun p₁ _ => hnorm p₁
     rintro (a | b)
     · exact hp a

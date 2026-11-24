@@ -161,8 +161,7 @@ theorem gauss_scale (hchar : ringChar k ≠ 2) (ψ : AddChar k ℂ) (hψ : ψ �
       intro y
       have hxy : QuadraticMap.associatedHom k Q x y = 0 := hx y
       have hyx : QuadraticMap.associatedHom k Q y x = 0 := by
-        rw [← QuadraticMap.associated_isSymm k Q x y]
-        exact hxy
+        rwa [← QuadraticMap.associated_isSymm k Q x y]
       have e1 := QuadraticMap.associated_eq_self_apply k Q (x + y)
       have e2 := QuadraticMap.associated_eq_self_apply k Q x
       have e3 := QuadraticMap.associated_eq_self_apply k Q y
@@ -175,8 +174,7 @@ theorem gauss_scale (hchar : ringChar k ≠ 2) (ψ : AddChar k ℂ) (hψ : ψ �
       have h3 := hass (Pi.single i 1)
       have hs : x ⬝ᵥ (B *ᵥ (Pi.single i 1)) = (Pi.single i 1 : ι → k) ⬝ᵥ (B *ᵥ x) := by
         rw [Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hB.eq, dotProduct_comm]
-      rw [hs, single_dotProduct, one_mul] at h3
-      exact h3
+      rwa [hs, single_dotProduct, one_mul] at h3
     exact Matrix.eq_zero_of_mulVec_eq_zero hdet hz
   obtain ⟨w, ⟨e⟩⟩ := Q.equivalent_weightedSumSquares_units_of_nondegenerate' hsep
   have hsum : ∀ u : k, ∑ x, ψ (u * quadForm B x) = ∏ i, ∑ y : k, ψ ((u * (w i : k)) * (y * y)) := by
@@ -341,9 +339,7 @@ theorem core_unit (lam : Measure (Fv F v)) (hlam : IsStdV v lam) (h2 : Valued.v 
         show Valued.v ((a : Fv F v)⁻¹) ≤ 1
         rw [map_inv₀, h2, inv_one]
       refine IsUnit.of_mul_eq_one (⟨(a : Fv F v)⁻¹, hinv⟩ : v.adicCompletionIntegers F) ?_
-      apply Subtype.ext
-      show (a : Fv F v) * (a : Fv F v)⁻¹ = 1
-      exact mul_inv_cancel₀ ha0
+      exact Subtype.ext (mul_inv_cancel₀ ha0)
     · intro h hu
       obtain ⟨b, hb⟩ := hu.exists_right_inv
       have h3 : Valued.v ((a : Fv F v) * (b : Fv F v)) = 1 := by
@@ -373,8 +369,7 @@ theorem core_unit (lam : Measure (Fv F v)) (hlam : IsStdV v lam) (h2 : Valued.v 
     · rintro ⟨hx, i₀, hi₀⟩
       refine ⟨fun i => res ⟨x i, hx i⟩, ?_, fun i => ?_⟩
       · intro h0
-        have h1 := (res_eq_zero_iff (⟨x i₀, hx i₀⟩ : 𝒪)).1 (congrFun h0 i₀)
-        exact absurd hi₀ (ne_of_lt h1)
+        exact absurd hi₀ (ne_of_lt ((res_eq_zero_iff (⟨x i₀, hx i₀⟩ : 𝒪)).1 (congrFun h0 i₀)))
       · exact (res_eq_iff (⟨x i, hx i⟩ : 𝒪) (lift _)).1 (res_lift _).symm
     · rintro ⟨y, hy, h⟩
       have hx : ∀ i, x i ∈ 𝒪 := by
@@ -409,8 +404,7 @@ theorem core_unit (lam : Measure (Fv F v)) (hlam : IsStdV v lam) (h2 : Valued.v 
       have h2 : (phi : 𝒪 →+* Fv F v) (c * ((lift ∘ y) ⬝ᵥ (BO *ᵥ (lift ∘ y)))) = phi c * phi ((lift ∘ y) ⬝ᵥ (BO *ᵥ (lift ∘ y))) := map_mul _ _ _
       rw [h1] at h2
       have h3 : phi c = (2 : Fv F v)⁻¹ := hc
-      rw [h3] at h2
-      exact h2
+      rwa [h3] at h2
     · rw [map_mul, hr, map_quad]
       have : (⇑res ∘ lift ∘ y) = y := by
         funext i
@@ -442,8 +436,7 @@ theorem core_unit (lam : Measure (Fv F v)) (hlam : IsStdV v lam) (h2 : Valued.v 
     have e : (phi : 𝒪 →+* Fv F v) (c * 2) = phi c * phi 2 := map_mul _ _ _
     have e2 : (phi : 𝒪 →+* Fv F v) 2 = 2 := map_ofNat _ 2
     have e3 : phi c = (2 : Fv F v)⁻¹ := hc
-    rw [e2, e3, inv_mul_cancel₀ h20] at e
-    exact e
+    rwa [e2, e3, inv_mul_cancel₀ h20] at e
   have hr1 : res c * 2 = 1 := by
     have := congrArg res hc2
     rwa [map_mul, map_one, map_ofNat] at this
@@ -456,8 +449,7 @@ theorem core_unit (lam : Measure (Fv F v)) (hlam : IsStdV v lam) (h2 : Valued.v 
       exact_mod_cast this
     rw [h0, mul_zero] at hr1
     exact zero_ne_one hr1
-  have hBO : BO.IsSymm := by
-    exact Matrix.IsSymm.ext fun i j => Subtype.ext (congrFun (congrFun hBs i) j)
+  have hBO : BO.IsSymm := Matrix.IsSymm.ext fun i j => Subtype.ext (congrFun (congrFun hBs i) j)
   have hBks : (BO.map res).IsSymm := hBO.map _
   have hBkdet : (BO.map res).det ≠ 0 := by
     intro h0
@@ -468,10 +460,7 @@ theorem core_unit (lam : Measure (Fv F v)) (hlam : IsStdV v lam) (h2 : Valued.v 
     rw [e2, hBdet] at h3
     exact lt_irrefl _ h3
   set sb : 𝓴 := res (⟨s, hs⟩ : 𝒪) with hsb
-  have hsb0 : sb ≠ 0 := by
-    intro h0
-    have h1 := (res_eq_zero_iff (⟨s, hs⟩ : 𝒪)).1 h0
-    exact absurd hsu (ne_of_lt h1)
+  have hsb0 : sb ≠ 0 := fun h0 => absurd hsu (ne_of_lt ((res_eq_zero_iff (⟨s, hs⟩ : 𝒪)).1 h0))
   have hcount := GlobalTheory.CompanionTheory.SW.QuadricUnit.card_quadric_unit hchar M hM hM1 (BO.map res) hBks hBkdet hsb0
   let qk : (ι → 𝓴) → 𝓴 := fun y => (2 : 𝓴)⁻¹ * (y ⬝ᵥ ((BO.map res) *ᵥ y))
   let Fl : Finset (ι → 𝓴) := Finset.univ.filter fun y => qk y = sb
@@ -545,8 +534,7 @@ theorem core_unit (lam : Measure (Fv F v)) (hlam : IsStdV v lam) (h2 : Valued.v 
           have h5 : Valued.v (z - s) < 1 := hAs hz
           have h6 := Valuation.map_add_lt _ h5 hlt
           have e : z - s + (s - Qf (lf y)) = z - Qf (lf y) := by ring
-          rw [e] at h6
-          exact h6
+          rwa [e] at h6
         rw [this]
       · have : A ∩ {s' | Valued.v (s' - (2 : Fv F v)⁻¹ * (lf y ⬝ᵥ ((BO.map phi) *ᵥ lf y))) < 1} = ∅ := by
           refine Set.eq_empty_iff_forall_notMem.2 fun z hz => he (hcl.1 ?_)
@@ -554,8 +542,7 @@ theorem core_unit (lam : Measure (Fv F v)) (hlam : IsStdV v lam) (h2 : Valued.v 
           have h6 : Valued.v (z - Qf (lf y)) < 1 := hz.2
           have h7 := Valuation.map_sub_lt _ h6 h5
           have e : z - Qf (lf y) - (z - s) = s - Qf (lf y) := by ring
-          rw [e] at h7
-          exact h7
+          rwa [e] at h7
         rw [this, measure_empty, mul_zero]
     rw [hS, measure_biUnion_finset hdisj hmeas, Finset.sum_congr rfl hclass, ← Finset.sum_filter,
       Finset.sum_const, nsmul_eq_mul]
@@ -580,8 +567,7 @@ theorem density_near_unit {ι : Type} [Fintype ι] [DecidableEq ι] {lam : Measu
   refine ⟨D, hD, fun A hA hsub => ?_⟩
   have hball : A ⊆ {z | Valued.v (z - s) < 1} := fun z hz => by
     have h3 : Valued.v (z - s) < Valued.v s := hsub hz
-    rw [hsu] at h3
-    exact h3
+    rwa [hsu] at h3
   rw [← hprim A hA hball]
   congr 1
   ext x
@@ -624,8 +610,7 @@ theorem density_unit_lattice : ∀ (F E : Type) [Field F] [NumberField F] [Field
   have hv2' : Valued.v (2 : Fv F v) = 1 := by rwa [map_ofNat] at hv2
   have hdet : Valued.v (B.map (algebraMap F (Fv F v))).det = 1 := by
     have h1 := (algebraMap F (Fv F v)).map_det B
-    rw [h1] at hvd
-    exact hvd
+    rwa [h1] at hvd
   have hs0 : s ≠ 0 := by
     intro h0
     rw [h0, map_zero] at hsu
@@ -816,12 +801,10 @@ theorem local_density_binary_unimodular {ι : Type} [Fintype ι] {F : Type} [Fie
             rw [inv_mul_cancel_left₀ hπ0] at h11
             exact mem_int.2 h11
           · change π * (π * _) ∈ A
-            rw [← q_smul]
-            exact hQ
+            rwa [← q_smul]
         · rintro ⟨hy, hQ⟩
           refine ⟨⟨fun i => mem_int.2 (pi_mul_lt hπ (mem_int.1 (hy i))).le, ?_⟩, ?_⟩
-          · rw [q_smul]
-            exact hQ
+          · rwa [q_smul]
           · rintro ⟨i, hi⟩
             exact absurd hi (pi_mul_lt hπ (mem_int.1 (hy i))).ne
       have hscale := pi_scale hstd hπ (ι := ι) (T \ {x | ∃ i, Valued.v (x i) = 1})
@@ -899,8 +882,7 @@ theorem locMass : PositivityTheory.Rg.Mass.LocMass := by
   have hv2' : Valued.v (2 : Fv F v) = 1 := by rwa [map_ofNat] at hv2
   have hdet : Valued.v (B.map (algebraMap F (Fv F v))).det = 1 := by
     have h1 := (algebraMap F (Fv F v)).map_det B
-    rw [h1] at hvd
-    exact hvd
+    rwa [h1] at hvd
   have hmass := fun s hs0 D hD => GlobalTheory.CompanionTheory.SW.LocGood.local_mass σ hCM 2 J hJ d b v
     (B.map (algebraMap F (Fv F v))) (fun x y => hBt (Fv F v) x y) (lam v) (hlam v) (m v) (hm v) s hs0 D hD
   refine ⟨fun s hs hs0 => ?_, fun s hs hs0 => ?_, fun s hsu => ?_⟩
@@ -922,11 +904,9 @@ theorem locMass : PositivityTheory.Rg.Mass.LocMass := by
     simpa [ENNReal.toReal_eq_zero_iff, hfin] using h0
   · obtain ⟨D, hD1, hD⟩ := density_near_value_two (hlam v) hv2' (B.map (algebraMap F (Fv F v)))
       (hBs.map _) (fun i j => hve i j) hdet hcard s hs hs0
-    rw [hmass s hs0 D hD]
-    exact hD1
+    rwa [hmass s hs0 D hD]
   · have h1 := hunit (lam v) (hlam v) (m v) (hm v) s hsu
-    refine h1.trans ?_
-    exact div_le_div_of_nonneg_right (by norm_num) (by positivity)
+    exact h1.trans (div_le_div_of_nonneg_right (by norm_num) (by positivity))
 
 end GlobalTheory.CompanionTheory.SW.LocBin
 end -- clump:auto

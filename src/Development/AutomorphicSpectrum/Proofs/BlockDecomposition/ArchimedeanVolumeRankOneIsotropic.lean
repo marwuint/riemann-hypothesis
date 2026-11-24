@@ -118,16 +118,14 @@ theorem real_indep {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
         exact this.symm⟩
     have h1 : θ₀ = algebraMap F E A + algebraMap F E B * θ := by
       apply mul_right_cancel₀ hb0
-      rw [add_mul, mul_assoc, hθ]
-      exact hAB
+      rwa [add_mul, mul_assoc, hθ]
     rw [h1, map_add (f := _), map_mul, hfix, AlgHom.commutes, AlgHom.commutes]
   have him : (τ θ).im ≠ 0 := im_ne_zero h hmoved τ
   have hb1 : τ (b 1) = τ θ * τ (b 0) := by rw [← map_mul, hθ]
   have ht0 : τ (b 0) ≠ 0 := (map_ne_zero τ).2 hb0
   have h2 : (s : ℂ) + t * τ θ = 0 := by
     apply mul_right_cancel₀ ht0
-    rw [zero_mul, add_mul, mul_assoc, ← hb1]
-    exact hst
+    rwa [zero_mul, add_mul, mul_assoc, ← hb1]
   have hi := congrArg Complex.im h2
   simp only [Complex.add_im, Complex.ofReal_im, Complex.mul_im, Complex.ofReal_re, zero_add,
     zero_mul, add_zero, Complex.zero_im] at hi
@@ -439,8 +437,7 @@ theorem smallDensity_transport : ∀ (F E : Type) [Field F] [NumberField F] [Fie
     · rintro ⟨S, hS, hSX⟩
       have : (⟨gramR (Ainf F) σ J X, hmem⟩ : HermR (Ainf F) σ 1) = S := Subtype.ext hSX.symm
       rwa [this]
-    · intro h
-      exact ⟨_, h, rfl⟩
+    · exact fun h => ⟨_, h, rfl⟩
   have hS : MeasurableSet (qR0 A₀ ⁻¹' U' ∩ (coreR δ R)ᶜ) :=
     (hQc.measurable hU').inter (isClosed_coreR δ R).measurableSet.compl
   have hL : ∫⁻ X in gramR (Ainf F) σ J ⁻¹' (Subtype.val '' A) ∩ {X | (fun w => xw e b X w) ∈ coreR δ R}ᶜ,

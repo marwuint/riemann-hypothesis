@@ -181,8 +181,7 @@ private theorem surjective_appTop_of_iso' {X Y : Scheme.{0}} (f : X ≅ Y) : Fun
     simp
   intro x
   refine ⟨f.inv.appTop.hom x, ?_⟩
-  have hx := congrArg (fun g => g.hom x) h
-  simpa using hx
+  simpa using congrArg (fun g => g.hom x) h
 
 theorem surj_fst_of_proper (hA : IsSemiAbelian A) (T : Over S) (hT : IsProper (pullback.snd A.hom T.hom)) :
     Function.Surjective (fst T A).left.appTop.hom := by
@@ -328,8 +327,7 @@ theorem torsion_desc {X : Scheme.{0}} (G : Over X) [GrpObj G] [LocallyOfFiniteTy
       q = pullback.lift a (toUnit Y) (hmk a ha) := by
     intro Y a ha q hq
     apply pullback.hom_ext
-    · rw [pullback.lift_fst]
-      exact hq
+    · rwa [pullback.lift_fst]
     · exact Subsingleton.elim _ _
   haveI h1lft : LocallyOfFiniteType (1 : 𝟙_ (Over X) ⟶ G).left := by
     have hc : (1 : 𝟙_ (Over X) ⟶ G).left ≫ G.hom = 𝟙 _ := Over.w _
@@ -407,8 +405,7 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.tate_iso_base_change : ∀ (E 
   have hone : ∀ g : Over.mk x ⟶ t.G, e ≫ g = 1 ↔ g = 1 := by
     intro g
     constructor
-    · intro h
-      exact PositivityTheory.HtPt.Mg.extPt_inj i x (h.trans (MonObj.comp_one e).symm)
+    · exact fun h => PositivityTheory.HtPt.Mg.extPt_inj i x (h.trans (MonObj.comp_one e).symm)
     · intro h
       rw [h, MonObj.comp_one]
   have hfinT : ∀ n, 0 < n → Finite {y : Over.mk x ⟶ t.G // y ^ n = 1} := by
@@ -464,8 +461,7 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.tate_iso_base_change : ∀ (E 
               rw [hm]
               convert h using 1
               exact (PositivityTheory.HtPt.Mg.unitOn_map i _).symm }, ?_⟩
-  intro n hn
-  exact ⟨rfl, fun a => rfl⟩
+  exact fun n hn => ⟨rfl, fun a => rfl⟩
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.TateIsoBaseChange =====
@@ -618,8 +614,7 @@ theorem exists_of_tateIso {D : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli D l} 
   have hevw : ∀ τ, (eΩ τ ≫ pullback.fst _ _ ≫ Y.m.φ) ≫ Y.t.G.hom = spMap (algebraMap K Ω) ≫ y ≫ Y.j := fun τ => by
     have h := congrArg (· ≫ Y.j) (hpull τ)
     simp only [Category.assoc] at h ⊢
-    rw [hφ]
-    exact h
+    rwa [hφ]
   let ev : D.La → (Over.mk (spMap (algebraMap K Ω) ≫ y ≫ Y.j) ⟶ Y.t.G) := fun a =>
     Over.homMk (eΩ (r a) ≫ pullback.fst _ _ ≫ Y.m.φ) (hevw (r a))
   refine ⟨Ω, inferInstance, inferInstance, z, ev, hΩfin, ?_⟩
@@ -640,8 +635,7 @@ theorem exists_of_tateIso {D : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli D l} 
     rfl
   obtain ⟨I'', hζ, hev⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.XR.tateIsoAt_move E H D Y.X (Xo.XF c) Y.t Y.oF.t _ Y.m k _ _ hx).2 I'
   refine ⟨I'', ?_, fun a => ?_⟩
-  · rw [← hζ]
-    rw [(hI' N hN0).1]
+  · rw [← hζ, (hI' N hN0).1]
     exact hi' z
   · obtain ⟨b, hb⟩ := hru a
     have hev1 : I.ev N a = I.ev N (u (r a)) := by
@@ -833,8 +827,7 @@ theorem finite_descResidueField_spMap_comp {X : Scheme.{0}} {K Ω : Type} [Field
     first
     | exact e2 ▸ h3
   refine RingHom.Finite.of_comp_finite (f := (X.residue _).hom) ?_
-  rw [← CommRingCat.hom_comp, Scheme.residue_descResidueField]
-  exact hC
+  rwa [← CommRingCat.hom_comp, Scheme.residue_descResidueField]
 
 theorem levelCover : LevelCoverSt := by
   intro E _ _ _ H D l Xo c Y e he N hN

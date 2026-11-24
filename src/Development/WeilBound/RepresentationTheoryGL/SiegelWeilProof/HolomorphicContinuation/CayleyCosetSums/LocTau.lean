@@ -132,9 +132,7 @@ theorem continuous_integrand (z : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) :
   have h3 : Continuous fun k : Kg => ((⟨ι k, hG k⟩ : _root_.PositivityTheory.Rg.Sw.LVs.GSet n), z) :=
     (Continuous.subtype_mk hι (fun k => hG k)).prodMk continuous_const
   have h4 : Continuous fun k : Kg => Hf m e ψ a b z (ι k) := by
-    have h5 := h2.comp h3
-    simp only [Function.comp_def] at h5
-    exact h5
+    simpa only [Function.comp_def] using h2.comp h3
   exact h1.mul h4
 
 include hι hK hψ hψc ha hb in
@@ -183,8 +181,7 @@ theorem Lam_inv (z : ℂ) {U X : Matrix (Fin n) (Fin n) ℂ} (hU : Uᴴ * U = 1)
     rw [← Matrix.det_conjTranspose, ← Matrix.det_mul, hU, Matrix.det_one]
   have hn : Complex.normSq U.det = 1 := by
     have h : (Complex.normSq U.det : ℂ) = 1 := by
-      rw [Complex.normSq_eq_conj_mul_self]
-      exact hd
+      rwa [Complex.normSq_eq_conj_mul_self]
     exact_mod_cast h
   have hl : ∀ w : ℂ, lam m e w (Matrix.fromBlocks U 0 0 U : M2 n) =
       (U.det * U.det) ^ e * U.det ^ (-(m : ℤ)) := by
@@ -223,8 +220,7 @@ theorem Lam_inv (z : ℂ) {U X : Matrix (Fin n) (Fin n) ℂ} (hU : Uᴴ * U = 1)
     simp only [rhoP]
     rw [map_mul, hk0, Hf_up m e ψ ha hb hpG hp21 (hG k) z, fz_up hpG hp21 (hG k) m e 0,
       u1_fromBlocks_diag_mul, u2_fromBlocks_diag_mul, Matrix.mul_inv_rev, hUi, hm]
-    simp only [star_mul']
-    exact aux _ _ _
+    simpa only [star_mul'] using aux _ _ _
   have hinv := integral_mul_left_eq_self (μ := μ)
     (fun k => rhoP ι m e (U * X * Uᴴ) k * Hf m e ψ a b z (ι k)) k0
   simp only [key] at hinv
@@ -409,12 +405,8 @@ theorem Lam_diff : Differentiable ℂ fun z => abelian₂ μ ι m e ψ a b z 1 :
   have hb22 : Continuous fun x : M2 n => toBlocks₂₂ x :=
     continuous_pi fun i => continuous_pi fun j =>
       (continuous_apply (Sum.inr j)).comp (continuous_apply (Sum.inr i))
-  have hu1 : Continuous fun x : M2 n => u1 x := by
-    show Continuous fun x : M2 n => Complex.I • toBlocks₂₁ x + toBlocks₂₂ x
-    exact (hb21.const_smul Complex.I).add hb22
-  have hu2 : Continuous fun x : M2 n => u2 x := by
-    show Continuous fun x : M2 n => -(Complex.I • toBlocks₂₁ x) + toBlocks₂₂ x
-    exact (hb21.const_smul Complex.I).neg.add hb22
+  have hu1 : Continuous fun x : M2 n => u1 x := (hb21.const_smul Complex.I).add hb22
+  have hu2 : Continuous fun x : M2 n => u2 x := (hb21.const_smul Complex.I).neg.add hb22
   have hR : (rhoP ⇑ι m e 1) = fun k =>
       star ((det (ι k) ^ e * (u1 (ι k)).det ^ (-(m : ℤ))) * ((u2 (ι k))ᴴ * u1 (ι k)).trace) := by
     funext k
@@ -429,9 +421,7 @@ theorem Lam_diff : Differentiable ℂ fun z => abelian₂ μ ι m e ψ a b z 1 :
   have hH : Continuous fun p : Kg × ℂ => Hf m e ψ a b p.2 (ι p.1) := by
     have h1 := continuous_Hf m e hψ hψc ha hb
     refine h1.comp (f := fun p : Kg × ℂ => ((⟨ι p.1, hιG p.1⟩ : _root_.PositivityTheory.Rg.Sw.LVs.GSet n), p.2)) ?_
-    refine Continuous.prodMk ?_ continuous_snd
-    refine Continuous.subtype_mk ?_ _
-    exact hι.comp continuous_fst
+    exact Continuous.prodMk (Continuous.subtype_mk (hι.comp continuous_fst) _) continuous_snd
   set G : Kg → ℂ → ℂ := fun k w => rhoP ⇑ι m e 1 k * Hf m e ψ a b w (ι k) with hGdef
   have hG : Continuous (Function.uncurry G) := (hRc.comp continuous_fst).mul hH
   have hGd : ∀ k, Differentiable ℂ (G k) := fun k =>
@@ -874,8 +864,7 @@ theorem core2 (hmn : m < n) (R : Matrix (Fin n) (Fin n) ℂ) (hR : IsUnit R.det)
     rwa [Matrix.conjTranspose_conjTranspose] at h
   have hD : ∀ s : Fin n → Fin n → ℝ, (1 - Complex.I • (R⁻¹ * (H0 + herm s) * (R⁻¹)ᴴ)).det ≠ 0 := by
     intro s
-    have h := GM.det_ne_zero (hBH s) 1
-    simpa using h
+    simpa using GM.det_ne_zero (hBH s) 1
   have hfac : ∀ s : Fin n → Fin n → ℝ, R * Rᴴ - Complex.I • (H0 + herm s) =
       R * (1 - Complex.I • (R⁻¹ * (H0 + herm s) * (R⁻¹)ᴴ)) * Rᴴ := by
     intro s

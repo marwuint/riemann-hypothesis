@@ -71,8 +71,7 @@ theorem mono_bd {r a c C t : ℝ} (hr : 1 ≤ r) (ha : 0 ≤ a) (ht : t ≤ c * 
   · have hcC : c ≤ C := le_trans (le_abs_self c) h2
     have hrc : r ^ c ≤ r ^ C := Real.rpow_le_rpow_of_exponent_le hr hcC
     have hac : a * c ≤ C := by
-      rw [abs_of_nonneg hc] at h1
-      exact h1
+      rwa [abs_of_nonneg hc] at h1
     calc a * t ≤ a * (c * r ^ c) := h3
       _ = (a * c) * r ^ c := by ring
       _ ≤ C * r ^ c := mul_le_mul_of_nonneg_right hac hrc0.le
@@ -90,8 +89,7 @@ theorem isOpen_compl_bdry {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolA
   have hf := hs.1 x j
   have hmem : (A.chart j) x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (L.U x) := by
     refine ⟨(A.chart j).map_source hj, ?_⟩
-    simp only [Set.mem_preimage, (A.chart j).left_inv hj]
-    exact L.mem_U x
+    simpa only [Set.mem_preimage, (A.chart j).left_inv hj] using L.mem_U x
   have hc1 : ContinuousAt (s x ∘ (A.chart j).symm) ((A.chart j) x) := (hf _ hmem).continuousAt
   have hc2 : ContinuousAt ((s x ∘ (A.chart j).symm) ∘ (A.chart j)) x :=
     hc1.comp ((A.chart j).continuousAt hj)
@@ -177,8 +175,7 @@ theorem local_bd {e : ℕ} {X : Type} [TopologicalSpace X] (A B : FinHolAtlas e 
       exact hk'
     have hd3 : DifferentiableAt ℝ ((ph ∘ (A.chart k').symm) ∘ ((A.chart k') ∘ ψ.symm)) (τ y) := by
       apply DifferentiableAt.comp (τ y)
-      · rw [Function.comp_apply, hψl]
-        exact hd1
+      · rwa [Function.comp_apply, hψl]
       · exact hd2.differentiableAt.restrictScalars ℝ
     apply hd3.congr_of_eventuallyEq
     have hnb : ψ.symm ⁻¹' (A.chart k').source ∈ 𝓝 (τ y) :=

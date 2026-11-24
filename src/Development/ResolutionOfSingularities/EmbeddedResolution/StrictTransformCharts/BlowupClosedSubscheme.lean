@@ -65,8 +65,7 @@ private theorem mem_strictTransform_of_mul_mem {X X₁ : Scheme.{u}} (π : X₁ 
     f ∈ (Blowup.strictTransform π Z D).ideal V := by
   obtain ⟨n, hn⟩ := (mem_strictTransform_ideal_iff π Z D V t ht (t * f)).mp hf
   refine (mem_strictTransform_ideal_iff π Z D V t ht f).mpr ⟨n + 1, ?_⟩
-  rw [pow_succ, mul_assoc]
-  exact hn
+  rwa [pow_succ, mul_assoc]
 
 private theorem exists_ideal_eq_span_singleton_of_le {X : Scheme.{u}} (I : X.IdealSheafData)
     (U V : X.affineOpens) (e : (V : X.Opens) ≤ (U : X.Opens)) (t : Γ(X, (U : X.Opens)))
@@ -211,8 +210,7 @@ theorem isBlowupAlongIdealSheaf_strictTransformLiftOfClosedImmersion {X X₁ S :
         hVspan, Ideal.map_span, Scheme.Hom.appLE_eq_app, Set.image_singleton]
   · intro W g hg
     have hECg : Blowup.IsLocallyGeneratedByNonZeroDivisor (Z.comap (g ≫ j)) := by
-      rw [Scheme.IdealSheafData.comap_comp]
-      exact hg
+      rwa [Scheme.IdealSheafData.comap_comp]
     obtain ⟨a, hacomp⟩ : ∃ a : W ⟶ X₁, a ≫ π = g ≫ j :=
       ⟨h.lift (g ≫ j) hECg, h.lift_comp (g ≫ j) hECg⟩
     have hWcomap : (Z.comap j).comap g = (Z.comap π).comap a := by
@@ -269,8 +267,7 @@ theorem isBlowupAlongIdealSheaf_strictTransformLiftOfClosedImmersion {X X₁ S :
           (Scheme.Hom.appLE a ((X₁.affineBasicOpen c : X₁.affineOpens) : X₁.Opens)
               ((W.affineBasicOpen d : W.affineOpens) : W.Opens) hdle').hom
             ((X₁.presheaf.map (homOfLE hCV).op).hom s) = 0 := by
-        rw [← map_pow, ← map_mul]
-        exact hzero1
+        rwa [← map_pow, ← map_mul]
       have hPspan : ((Z.comap π).comap a).ideal (W.affineBasicOpen d)
           = Ideal.span {(W.presheaf.map (homOfLE (W.basicOpen_le d)).op).hom u} := by
         rw [← Scheme.IdealSheafData.map_ideal_basicOpen, ← hWcomap, hP₀span, Ideal.map_span,
@@ -305,14 +302,12 @@ theorem isBlowupAlongIdealSheaf_strictTransformLiftOfClosedImmersion {X X₁ S :
       have h0 : ((X₁.presheaf.map (homOfLE hCV).op
             ≫ Scheme.Hom.appLE a ((X₁.affineBasicOpen c : X₁.affineOpens) : X₁.Opens)
                 ((W.affineBasicOpen d : W.affineOpens) : W.Opens) hdle').hom) s = 0 := by
-        rw [CommRingCat.hom_comp, RingHom.comp_apply]
-        exact happLE
+        rwa [CommRingCat.hom_comp, RingHom.comp_apply]
       rw [hsplit] at h0
       have hEq : (W.presheaf.map (homOfLE hPU').op).hom ((a.app (V : X₁.Opens)).hom s)
           = (Scheme.Hom.appLE a (V : X₁.Opens)
               ((W.affineBasicOpen d : W.affineOpens) : W.Opens) hPU').hom s := rfl
-      rw [hEq]
-      exact h0
+      rwa [hEq]
     have hkerι : Scheme.Hom.ker (Blowup.strictTransform π Z j.ker).subschemeι
         ≤ Scheme.Hom.ker a := by
       rwa [Scheme.IdealSheafData.ker_subschemeι]

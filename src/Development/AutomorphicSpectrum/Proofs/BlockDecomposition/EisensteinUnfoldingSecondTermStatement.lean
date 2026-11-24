@@ -174,12 +174,10 @@ theorem joinAdd_mem_iff (z : Mx D m r × Mx D m s) :
     refine ⟨mem_ratMx.2 ⟨colL γ, ?_⟩, mem_ratMx.2 ⟨colR γ, ?_⟩⟩
     · ext i j
       have := congrFun (congrFun hγ i) (Fin.castAdd s j)
-      rw [joinAdd_apply, colJoin_castAdd] at this
-      exact this
+      rwa [joinAdd_apply, colJoin_castAdd] at this
     · ext i j
       have := congrFun (congrFun hγ i) (Fin.natAdd r j)
-      rw [joinAdd_apply, colJoin_natAdd] at this
-      exact this
+      rwa [joinAdd_apply, colJoin_natAdd] at this
   · rintro ⟨h1, h2⟩
     obtain ⟨p, hp⟩ := mem_ratMx.1 h1
     obtain ⟨q, hq⟩ := mem_ratMx.1 h2
@@ -294,10 +292,8 @@ theorem continuous_colJoin_left {X : Type*} [TopologicalSpace X] {m r s : ℕ} {
     (v : Mx D m s) : Continuous fun x => colJoin (u x) v := by
   refine continuous_matrix fun i k => ?_
   refine Fin.addCases (fun j => ?_) (fun j => ?_) k
-  · simp only [colJoin_castAdd]
-    exact hu.matrix_elem i j
-  · simp only [colJoin_natAdd]
-    exact continuous_const
+  · simpa only [colJoin_castAdd] using hu.matrix_elem i j
+  · simpa only [colJoin_natAdd] using continuous_const
 
 theorem continuous_quad (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (V : HSp D) {r : ℕ}
     (b : Matrix (Fin r) (Fin r) D.host.E) :
@@ -454,8 +450,7 @@ theorem integral_cells_eq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsCha
     rw [← lintegral_tsum fun pq => (hcont pq).enorm.measurable.aemeasurable]
     refine ne_top_of_le_ne_top ?_ (lintegral_mono (g := fun _ => (B : ℝ≥0∞)) fun z => ?_)
     · simp [hνu]
-    · simp only [Core.enorm_cellTerm ψ hψ]
-      exact Core.tsum_join_le ha hB z.1
+    · simpa only [Core.enorm_cellTerm ψ hψ] using Core.tsum_join_le ha hB z.1
   rw [integral_tsum (fun pq => (hcont pq).aestronglyMeasurable) hsum]
   have hterm : ∀ pq : Matrix (Fin V.rank) (Fin r) D.host.E × Matrix (Fin V.rank) (Fin s) D.host.E,
       ∫ z, cellTerm ψ V b a Φ pq.1 pq.2 z.1 z.2 ∂((μr.restrict 𝓕r).prod (μs.restrict 𝓕s)) =
@@ -763,8 +758,7 @@ theorem schwartzA_continuous_and_tsum_enorm_le : ∀ (D : D7) (θ : InfFam D), I
     have hQeq : Q = (Set.univ.pi fun (_ : Fin m) => Set.univ.pi fun (_ : Fin n) => C) := by
       ext w
       exact ⟨fun h i _ j _ => h i j, fun h i j => h i trivial j trivial⟩
-    rw [hQeq]
-    exact h
+    rwa [hQeq]
   obtain ⟨b, hbs, hb⟩ := hN K Q hK hQ
   obtain ⟨c, hc⟩ := hKb N
   set c' : ℝ := max c 0 with hc'

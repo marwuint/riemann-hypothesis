@@ -161,9 +161,7 @@ def tower (d : BlowupSequenceData X) : ℕᵒᵖ ⥤ Scheme.{u} where
     exact (towerMorphism_comp d (leOfHom g.unop) (leOfHom f.unop)).symm
 
 private theorem iteratedBlowupMorphism_one (d : BlowupSequenceData X) (i : ℕ) :
-    d.homAdd i 1 = d.map i := by
-  show d.map (i + 0) ≫ d.homAdd i 0 = d.map i
-  exact Category.comp_id _
+    d.homAdd i 1 = d.map i := Category.comp_id _
 
 private theorem eqToHom_comp_iteratedBlowupMorphism (d : BlowupSequenceData X) (i : ℕ) {k k' : ℕ} (h : k = k')
     (hobj : d.obj (i + k) = d.obj (i + k')) :
@@ -188,8 +186,7 @@ theorem tower_map_succ (d : BlowupSequenceData X) (i : ℕ) :
 theorem isBlowupAlongIdealSheaf_tower_map (d : BlowupSequenceData X) (i : ℕ) (hi : i < d.length) :
     Blowup.IsBlowupAlongIdealSheaf (d.tower.map (CategoryTheory.homOfLE (Nat.le_succ i)).op) (d.center i) := by
   have h := d.isBlowup i hi
-  rw [tower_map_succ]
-  exact h
+  rwa [tower_map_succ]
 
 def toSequenceOfBlowups (d : BlowupSequenceData X) : SequenceOfBlowups X where
   length := d.length
@@ -339,16 +336,14 @@ private theorem smooth_center_comp_projection (d : MarkedBlowupSequenceData p I 
     AlgebraicGeometry.Smooth
       ((d.toBlowupSequenceData.center i).subschemeι ≫ d.toBlowupSequenceData.toSequenceOfBlowups.projectionToBase i ≫ p) := by
   have h := d.center_smooth i hi
-  rw [projectionToBase_eq_toSequenceOfBlowups d i] at h
-  exact h
+  rwa [projectionToBase_eq_toSequenceOfBlowups d i] at h
 
 private theorem hasStrictNormalCrossingsWith_center_boundary (d : MarkedBlowupSequenceData p I m E) (i : ℕ)
     (hi : i < d.toBlowupSequenceData.length) :
     HasStrictNormalCrossingsWith (d.toBlowupSequenceData.toSequenceOfBlowups.projectionToBase i ≫ p) (d.toBlowupSequenceData.center i)
       (d.boundary i) := by
   have h := d.center_snc i hi
-  rw [d.projectionToBase_eq_toSequenceOfBlowups i] at h
-  exact h
+  rwa [d.projectionToBase_eq_toSequenceOfBlowups i] at h
 
 private theorem exceptionalIdeal_pow_mul_ideal_succ_eq_comap (d : MarkedBlowupSequenceData p I m E) (i : ℕ)
     (hi : i < d.toBlowupSequenceData.length) :
@@ -360,8 +355,7 @@ private theorem exceptionalIdeal_pow_mul_ideal_succ_eq_comap (d : MarkedBlowupSe
   have key := d.ideal_succ i hi
   have h : d.toBlowupSequenceData.toSequenceOfBlowups.transitionMapSucc i = d.toBlowupSequenceData.map i :=
     BlowupSequenceData.toSequenceOfBlowups_blowupMorphism d.toBlowupSequenceData i
-  rw [h]
-  exact key
+  rwa [h]
 
 private theorem boundary_succ_eq_map_strictTransform_append (d : MarkedBlowupSequenceData p I m E) (i : ℕ)
     (hi : i < d.toBlowupSequenceData.length) :
@@ -372,8 +366,7 @@ private theorem boundary_succ_eq_map_strictTransform_append (d : MarkedBlowupSeq
   have key := d.boundary_succ i hi
   have h : d.toBlowupSequenceData.toSequenceOfBlowups.transitionMapSucc i = d.toBlowupSequenceData.map i :=
     BlowupSequenceData.toSequenceOfBlowups_blowupMorphism d.toBlowupSequenceData i
-  rw [h]
-  exact key
+  rwa [h]
 
 def toMarkedSequenceOfBlowups (d : MarkedBlowupSequenceData p I m E) : MarkedSequenceOfBlowups p I m E where
   toSequenceOfBlowups := d.toBlowupSequenceData.toSequenceOfBlowups

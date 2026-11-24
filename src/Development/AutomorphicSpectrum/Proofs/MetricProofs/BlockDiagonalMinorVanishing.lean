@@ -109,13 +109,10 @@ theorem minorIJ_eq_zero_of_row (h : Matrix (Fin N) (Fin N) R) {I C : Finset (Fin
   by_cases e : I.card = C.card
   · rw [minorIJ_eq_det h I C _ e rfl]
     have hr : a ∈ Set.range (I.orderEmbOfFin e) := by
-      rw [Finset.range_orderEmbOfFin]
-      exact ha
+      rwa [Finset.range_orderEmbOfFin]
     obtain ⟨x, rfl⟩ := hr
     refine Matrix.det_eq_zero_of_row_eq_zero x fun y => ?_
-    simp only [Matrix.submatrix_apply]
-    refine hz _ ?_
-    exact Finset.orderEmbOfFin_mem _ _ _
+    simpa only [Matrix.submatrix_apply] using hz _ (Finset.orderEmbOfFin_mem _ _ _)
   · exact minorIJ_of_card_ne h e
 
 theorem sum_mem_eq_sum_enum (C : Finset (Fin N)) (f : Fin N → R) :
@@ -151,8 +148,7 @@ theorem minorIJ_self_of_triangular (B : Matrix (Fin N) (Fin N) R) (hB : B.BlockT
     minorIJ B C C = ∏ c ∈ C, B c c := by
   rw [minorIJ_eq_det B C C _ rfl rfl]
   have ht : (B.submatrix (C.orderEmbOfFin rfl) (C.orderEmbOfFin rfl)).BlockTriangular id := by
-    intro x y hxy
-    exact hB ((C.orderEmbOfFin rfl).strictMono hxy)
+    exact fun x y hxy => hB ((C.orderEmbOfFin rfl).strictMono hxy)
   rw [Matrix.det_of_upperTriangular ht, prod_mem_eq_prod_enum C (fun c => B c c)]
   rfl
 
@@ -229,7 +225,6 @@ theorem minors_main : ∀ (R : Type) [CommRing R] (N j : ℕ) (i : Fin N), j ≤
   · intro h bb I hd ht
     rw [minorIJ_mul_of_support h bb I _ (support_stepCols hj bb hd ht),
       minorIJ_self_of_triangular bb ht]
-  · intro T h hT hh
-    exact ⟨isBlockDiag_mul hT hh, detFac_mul i hh⟩
+  · exact fun T h hT hh => ⟨isBlockDiag_mul hT hh, detFac_mul i hh⟩
 
 end GlobalTheory.CompanionTheory.Ar.PB.MinorCalc

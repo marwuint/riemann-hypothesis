@@ -266,8 +266,7 @@ theorem integrable_uncurry_translate (lam : Measure A) [lam.IsAddHaarMeasure] [S
     infer_instance
   refine (integrable_prod_iff hcont.aestronglyMeasurable).2 ⟨ae_of_all _ fun u => ?_, ?_⟩
   · have h1 : Integrable (fun b => G (b + c u)) lam := hGi.comp_add_right (c u)
-    have h2 := integrable_mul_char (h1.const_mul K) hχ hn
-    simpa [Function.uncurry, mul_assoc] using h2
+    simpa [Function.uncurry, mul_assoc] using integrable_mul_char (h1.const_mul K) hχ hn
   · have hconst : ∀ u : ℝ, ∫ b, ‖Function.uncurry (fun (u : ℝ) (b : A) => K * G (b + c u) * χ b) (u, b)‖ ∂lam
         = ‖K‖ * ∫ b, ‖G b‖ ∂lam := by
       intro u
@@ -351,8 +350,7 @@ theorem integral_mul_char_eq_of_hasDerivAt (A : Type) [AddCommGroup A] [Topologi
   rw [hEq] at hL
   have := hL.unique hR
   have h4 : K * (f * Fh) = K * Gh := by
-    rw [← mul_assoc]
-    exact this
+    rwa [← mul_assoc]
   exact (mul_left_cancel₀ hK0 h4).symm
 
 end GlobalTheory.CompanionTheory.OneParamFourier
@@ -391,8 +389,7 @@ theorem hasDerivAt_integral_oscillating_phase
     intro y t
     have h1 : HasDerivAt (fun t : ℝ => ((t * M y : ℝ) : ℂ)) ((M y : ℝ) : ℂ) t := by
       simpa using ((hasDerivAt_id t).mul_const (M y)).ofReal_comp
-    have h2 := ((h1.const_mul (2 * Real.pi * Complex.I)).cexp).const_mul (g y)
-    exact h2.congr_deriv (by ring)
+    exact (((h1.const_mul (2 * Real.pi * Complex.I)).cexp).const_mul (g y)).congr_deriv (by ring)
   obtain ⟨-, hd⟩ := hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (x₀ := s)
     (F := fun (t : ℝ) y => g y * Complex.exp (2 * Real.pi * Complex.I * ((t * M y : ℝ) : ℂ)))
     (F' := fun (t : ℝ) y => 2 * Real.pi * Complex.I *
@@ -472,10 +469,8 @@ theorem tau_nonempty (D : D7) : Nonempty D.what₂.Tau := by
 theorem mem_hermQ {b : Matrix (Fin r) (Fin r) D.host.E} :
     b ∈ hermQ D r ↔ ∀ i j, D.sp.cm.sig (b j i) = b i j := by
   constructor
-  · intro h i j
-    exact congrFun (congrFun h i) j
-  · intro h
-    exact Matrix.ext fun i j => h i j
+  · exact fun h i j => congrFun (congrFun h i) j
+  · exact fun h => Matrix.ext fun i j => h i j
 
 def formH (α : D.host.F) (δ : Matrix (Fin r) (Fin r) D.host.E) : hermQ D r →+ ℝ :=
   AddMonoidHom.mk'
@@ -883,8 +878,7 @@ theorem summable_prod_inv_one_add_sq (d : ℕ) :
     rw [← (Fin.consEquiv (fun _ : Fin (d + 1) => ℤ)).summable_iff]
     refine h2.congr ?_
     intro x
-    simp [Fin.prod_univ_succ, Fin.consEquiv]
-    exact mul_comm _ _
+    simpa [Fin.prod_univ_succ, Fin.consEquiv] using mul_comm _ _
 
 theorem summable_of_lattice_decay (ι : Type) (d : ℕ) (w : ι → ℂ) (f : ι → Fin d → ℝ)
     (hf : Function.Injective f) (N : ℕ) (hN : 0 < N) (C : ℝ)
@@ -1041,8 +1035,7 @@ theorem hasDeriv_Jt {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ
       Complex.exp (2 * Real.pi * Complex.I * ((s * M y : ℝ) : ℂ)) ∂μ := by
     rw [Jt_add]
     exact integral_congr_ae (Filter.Eventually.of_forall fun y => by simp only [hc, mul_assoc])
-  rw [e1, e2]
-  exact h
+  rwa [e1, e2]
 
 theorem decay_abs {Φ ι : Type} {d : ℕ} (S : Set Φ) (w : Φ → ι → ℂ) (T : Fin d → Φ → Φ) (f : Fin d → ι → ℝ)
     (hb : ∀ φ ∈ S, ∃ C, ∀ i, ‖w φ i‖ ≤ C) (hS : ∀ k, ∀ φ ∈ S, T k φ ∈ S)
@@ -1295,8 +1288,7 @@ theorem poissonHerm_main : PositivityTheory.GramSchwartzFunctions.BC.PoissonHerm
     fun β => (W_eq ψ V μ lam φ β).symm
   have hS : Summable (fun t : ratHerm D r => ∫ b, Jt ψ V μ φ b *
       ψ (-halfTr (Matrix.trace (HMul.hMul t.1.1 b.1 : Mx D r r))) ∂lam) := by
-    refine (hermEquiv (D := D) (r := r)).summable_iff.1 ?_
-    exact hW.congr fun β => (hgW β).symm
+    exact (hermEquiv (D := D) (r := r)).summable_iff.1 (hW.congr fun β => (hgW β).symm)
   have e := hP hS
   have hsumJ : ∑' b : HermE D r, J ψ V μ φ b = ∑' c : ratHerm D r, Jt ψ V μ φ c.1 :=
     (hermEquiv (D := D) (r := r)).tsum_eq (fun c => Jt ψ V μ φ c.1)

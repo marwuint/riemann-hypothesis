@@ -91,10 +91,8 @@ theorem map_germ (s : X ⟶ Sp O) (p : X) {K : Type} [CommRing K] (φ : X.preshe
     (h : Spec.map (CommRingCat.ofHom φ) ≫ X.fromSpecStalk p ≫ s = spMap i) (n : O) :
     φ (germ s p n) = i n := by
   have h3 : Spec.map (CommRingCat.ofHom (φ.comp (germ s p))) = Spec.map (CommRingCat.ofHom i) := by
-    rw [CommRingCat.ofHom_comp, Spec.map_comp, spec_germ]
-    exact h
-  have h4 := Spec.map_injective h3
-  exact congrArg (fun g => g.hom n) h4
+    rwa [CommRingCat.ofHom_comp, Spec.map_comp, spec_germ]
+  exact congrArg (fun g => g.hom n) (Spec.map_injective h3)
 
 end Germ
 
@@ -234,8 +232,7 @@ private theorem exists_isActOf_lemma {S : Scheme} {R : Type} [CommRing R]
     apply M.inj
     rw [hf, M.add, hf, hf, act.add, MonObj.comp_mul]
   · unfold GlobalTheory.CompanionTheory.Ar.LieModel.IsActOf GlobalTheory.CompanionTheory.Ar.LieModel.IsDiffOf
-    intro a e
-    exact hf a e
+    exact fun a e => hf a e
 
 theorem exists_lieModel_tied_isEigFrame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (y : Sp ℂ ⟶ Xo.XF c), ∃ (EC : Type) (_ : AddCommGroup EC) (_ : Module ℂ EC) (N : LieModel Y.t.G (y ≫ Y.j) EC) (ρ : 𝓞 E →+* Module.End ℂ EC), N.IsActOf Y.t.act.act ρ ∧ ∀ (ch : 𝓞 E →+* ℂ) (n : ℕ) (v : Vecs y n) (w : Fin n → EC), LieMult Xo.univ.t.act (under y) ch n → (∀ i, SameVec Y y (v i) (N.pt (w i))) → LinearIndependent ℂ w → (∀ i, w i ∈ eigSp ρ ch) → IsEigFrame Xo.univ.t.act (under y) ch v := by
   intro E _ _ _ H D l Xo c O _ β Y y
@@ -409,9 +406,7 @@ theorem exists_local_eigenframes : ∀ (E : Type) [Field E] [NumberField E] [IsC
   haveI : Smooth Y.t.G.hom := Y.t.semi.smooth
   have hsp : ∀ y : Sp ℂ ⟶ Xo.XF c, Set.range y ⊆ U → genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j) := fun y hy => by
     have h1 : genPt Z.ξ₀ ⤳ y (IsLocalRing.closedPoint ℂ) := (Z.closure _).1 (hy ⟨_, rfl⟩)
-    have h2 := h1.map Y.j.continuous
-    simp only [genPt, centre, Scheme.Hom.comp_apply]
-    exact h2
+    simpa only [genPt, centre, Scheme.Hom.comp_apply] using h1.map Y.j.continuous
   have hfib : ∀ (y : Sp ℂ ⟶ Xo.XF c) (h : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j)),
       (⟨centre (y ≫ Y.j), h⟩ : Cpt (Z.ξ₀ ≫ Y.j)) ∈ Z.genFib := fun y h =>
     ⟨Y.jQ (y (IsLocalRing.closedPoint ℂ)), by
@@ -462,8 +457,7 @@ theorem exists_local_eigenframes : ∀ (E : Type) [Field E] [NumberField E] [IsC
   let q : Cpt (Z.ξ₀ ≫ Y.j) := ⟨centre (y ≫ Y.j), h⟩
   have hqr : q.1 ∈ x.opensRange := hrange ⟨spMap χ (IsLocalRing.closedPoint ℂ), rfl⟩
   have hqx : (Y.X.fromSpecStalk q.1) (IsLocalRing.closedPoint (Y.X.presheaf.stalk q.1)) ∈ x.opensRange := by
-    rw [Scheme.fromSpecStalk_closedPoint]
-    exact hqr
+    rwa [Scheme.fromSpecStalk_closedPoint]
   obtain ⟨ψ, hψ⟩ := exists_lift (A := Y.X.presheaf.stalk q.1) x (Y.X.fromSpecStalk q.1) hqx
   have hring : (Scheme.stalkClosedPointTo (y ≫ Y.j)).hom.comp ψ = χ.comp a := by
     refine ring_eq x (y ≫ Y.j) ψ hψ _ ?_

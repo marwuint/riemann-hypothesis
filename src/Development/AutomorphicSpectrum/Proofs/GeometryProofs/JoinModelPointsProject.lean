@@ -120,8 +120,7 @@ theorem inv_mem {G : Subring (Ω × L)} (hG : Maximal Functional G) {b : Ω} {l 
     intro m hm
     obtain ⟨n, hn⟩ := (hmem _).mp hm
     rw [Prod.pow_mk, Prod.mk_mul_mk, mul_zero] at hn
-    have h0 := hG.1 _ hn
-    exact (mul_eq_zero.mp h0).resolve_left (pow_ne_zero n hl)
+    exact (mul_eq_zero.mp (hG.1 _ hn)).resolve_left (pow_ne_zero n hl)
   have hle : G ≤ saturation G (b, l) hb := fun u hu => (hmem u).mpr ⟨0, by simpa using hu⟩
   apply hG.2 hS hle
   refine (hmem _).mpr ⟨1, ?_⟩
@@ -179,8 +178,7 @@ theorem exists_common_root [IsAlgClosed L] {k : Type*} [Field k] (ι : k →+* L
       rw [Ideal.eq_top_iff_one, hmem]
       exact hu.dvd
     have hdeg : (Submodule.IsPrincipal.generator I).degree ≠ 0 := by
-      intro h
-      exact hnu (Polynomial.isUnit_iff_degree_eq_zero.mpr h)
+      exact fun h => hnu (Polynomial.isUnit_iff_degree_eq_zero.mpr h)
     obtain ⟨ξ, hξ⟩ := IsAlgClosed.exists_eval₂_eq_zero ι _ hdeg
     refine ⟨ξ, fun p hp => ?_⟩
     obtain ⟨q, rfl⟩ := (hmem p).mp hp
@@ -205,8 +203,7 @@ theorem mem_of_relations {G : Subring (Ω × L)} (hG : Maximal Functional G) (x 
     rw [hp'] at this
     exact this.trans h2
   have hle : G ≤ (Polynomial.eval₂RingHom G.subtype (x, ξ)).range := by
-    intro t ht
-    exact RingHom.mem_range.mpr ⟨C ⟨t, ht⟩, by simp⟩
+    exact fun t ht => RingHom.mem_range.mpr ⟨C ⟨t, ht⟩, by simp⟩
   exact hG.2 hS hle (RingHom.mem_range.mpr ⟨X, by simp⟩)
 
 theorem exists_mem_of_dominates [IsAlgClosed L] {G : Subring (Ω × L)} (hG : Maximal Functional G)
@@ -224,8 +221,7 @@ theorem exists_mem_of_dominates [IsAlgClosed L] {G : Subring (Ω × L)} (hG : Ma
       exact Submodule.mem_top
     obtain ⟨p, hpI, hp1'⟩ := (Ideal.mem_map_iff_of_surjective _ hsurj).mp h1
     have hp : eval₂ (p₁ G) (x : Ω) p = 0 := by
-      rw [RingHom.mem_ker, Polynomial.coe_eval₂RingHom] at hpI
-      exact hpI
+      rwa [RingHom.mem_ker, Polynomial.coe_eval₂RingHom] at hpI
     have hp1 : Polynomial.map (IsLocalRing.residue G) p = 1 := hp1'
     have hcomp : V.subtype.comp g = p₁ G := RingHom.ext hg
     have h0 : eval₂ g x p = 0 := by
@@ -244,8 +240,7 @@ theorem exists_mem_of_dominates [IsAlgClosed L] {G : Subring (Ω × L)} (hG : Ma
   obtain ⟨ξ, hξ⟩ := exists_common_root (IsLocalRing.ResidueField.lift (p₂ G)) _ hJ
   refine ⟨ξ, mem_of_relations hG (x : Ω) ξ fun p hp => ?_⟩
   have hpI : p ∈ RingHom.ker (Polynomial.eval₂RingHom (p₁ G) (x : Ω)) := by
-    rw [RingHom.mem_ker, Polynomial.coe_eval₂RingHom]
-    exact hp
+    rwa [RingHom.mem_ker, Polynomial.coe_eval₂RingHom]
   have := hξ _ (Ideal.mem_map_of_mem _ hpI)
   rw [Polynomial.coe_mapRingHom, Polynomial.eval₂_map, IsLocalRing.ResidueField.lift_comp_residue] at this
   exact this
@@ -490,7 +485,6 @@ theorem exists_join_lift [IsAlgClosed L] (y : (Σ k, ι₁ k) → Ω) (b : (Σ k
     funext ⟨k, i⟩
     cases k with
     | inl k =>
-      show w ⟨k, i⟩ = w ⟨k, c k⟩ * ψ ⟨_, hr k i⟩
       exact (mul_div_cancel₀ _ (hc k)).symm.trans (congrArg _ (hrv k i).symm)
     | inr k =>
       show ψ _ = 1 * ψ _
@@ -634,21 +628,16 @@ theorem main : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (M R : Ro
     obtain ⟨d, g, h, hg, hh, hn, he⟩ := M.birational s
     refine ⟨Sum.elim d 0, rename (joinInl M.ι R.ι) g, rename (joinInl M.ι R.ι) h, isMultiHomog_rename_inl hg,
       isMultiHomog_rename_inl hh, ?_, ?_⟩
-    · rw [aeval_rename, eL]
-      exact hn
-    · rw [aeval_rename, aeval_rename, eL]
-      exact he
+    · rwa [aeval_rename, eL]
+    · rwa [aeval_rename, aeval_rename, eL]
   · intro L _ z hz
     refine ⟨⟨fun k => hz.1 (Sum.inl k), fun f hf => ?_⟩, ⟨fun k => hz.1 (Sum.inr k), fun f hf => ?_⟩⟩
     · have h1 := hz.2 _ (rename_mem (κ := Sum.inl) (v := joinInl M.ι R.ι) (fun _ => rfl) (joinOf M R i) (f := f) hf)
-      rw [aeval_rename] at h1
-      exact h1
+      rwa [aeval_rename] at h1
     · have h1 := hz.2 _ (rename_mem (κ := Sum.inr) (v := joinInr M.ι R.ι) (fun _ => rfl) (joinOf M R i) (f := f)
         (mem_map i R.y hf))
-      rw [aeval_rename] at h1
-      exact h1
-  · intro L _ _ w hw
-    exact exists_join_lift M.y (fun p => i (R.y p)) hb w hw
+      rwa [aeval_rename] at h1
+  · exact fun L _ _ w hw => exists_join_lift M.y (fun p => i (R.y p)) hb w hw
 
 end GlobalTheory.CompanionTheory.Ar.Ht.JoinFacts
 end -- clump:auto

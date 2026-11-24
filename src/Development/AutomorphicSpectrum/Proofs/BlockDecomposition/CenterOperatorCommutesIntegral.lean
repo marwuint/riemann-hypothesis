@@ -94,8 +94,7 @@ theorem gen_sm {S : Set E} (hS : IsOpen S) {U : ℝ → E → W}
 
 theorem int_real {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {g : ℝ → ℝ} (hg : Continuous g)
     (hgc : HasCompactSupport g) {φ : ℝ → W} (hφ : Continuous φ) : Integrable (fun t => g t • φ t) := by
-  refine Continuous.integrable_of_hasCompactSupport (hg.smul hφ) ?_
-  exact hgc.smul_right
+  exact Continuous.integrable_of_hasCompactSupport (hg.smul hφ) hgc.smul_right
 
 theorem gen_avg [ProperSpace E] [CompleteSpace W] {S : Set E} (hS : IsOpen S) {U : ℝ → E → W}
     (hU : ContDiffOn ℝ ∞ (Function.uncurry U) (Set.univ ×ˢ S)) {g : ℝ → ℝ} (hg : Continuous g)
@@ -143,8 +142,7 @@ theorem gen_avg [ProperSpace E] [CompleteSpace W] {S : Set E} (hS : IsOpen S) {U
     · have : Continuous (fun t => |g t| * C) := (continuous_abs.comp hg).mul continuous_const
       refine Continuous.integrable_of_hasCompactSupport this ?_
       exact (hgc.comp_left (g := fun a : ℝ => |a|) (by simp)).mul_right
-    · refine Filter.Eventually.of_forall fun t y hy => ?_
-      exact (hdiff t y (hball hy)).const_smul (g t)
+    · exact Filter.Eventually.of_forall fun t y hy => (hdiff t y (hball hy)).const_smul (g t)
   rw [key.fderiv, ContinuousLinearMap.integral_apply hIntD]
   rfl
 
@@ -227,8 +225,7 @@ theorem good_sum {ι : Type} (s : Finset ι) {L : ι → (Mat n → V) → (Mat 
   induction s using Finset.induction_on with
   | empty => simpa using good_zero
   | insert a s ha ih =>
-    simp only [Finset.sum_insert ha]
-    exact good_add (h a) ih
+    simpa only [Finset.sum_insert ha] using good_add (h a) ih
 
 theorem good_Rd [CompleteSpace V] (X : Mat n) : Good (n := n) (V := V) (Rd X) := by
   refine ⟨fun U hU => sm_Rd X hU, fun F F' h x hx => ?_, fun U g T hU hg x hx => rd_avg X hU hg hx⟩

@@ -123,18 +123,15 @@ theorem relIndex_inf_eq_of_mem_mul : ∀ (G : Type) [Group G] (Γ K₁ K₂ : Su
     rw [QuotientGroup.leftRel_apply, QuotientGroup.leftRel_apply, Subgroup.mem_subgroupOf,
       Subgroup.mem_subgroupOf, Subgroup.mem_inf]
     constructor
-    · intro H
-      exact H.1
-    · intro H
-      exact ⟨H, (a⁻¹ * b).2.2⟩
+    · exact fun H => H.1
+    · exact fun H => ⟨H, (a⁻¹ * b).2.2⟩
   let f : ↥(K₂ ⊓ Γ) ⧸ (K₁ ⊓ Γ).subgroupOf (K₂ ⊓ Γ) → ↥K₂ ⧸ K₁.subgroupOf K₂ :=
     Quotient.map' i (fun a b H => (key a b).1 H)
   refine Nat.card_congr (Equiv.ofBijective f ⟨?_, ?_⟩)
   · intro x y
     induction x using Quotient.inductionOn' with | h a => ?_
     induction y using Quotient.inductionOn' with | h b => ?_
-    intro H
-    exact Quotient.sound' ((key a b).2 (Quotient.exact' H))
+    exact fun H => Quotient.sound' ((key a b).2 (Quotient.exact' H))
   · intro y
     induction y using Quotient.inductionOn' with | h k => ?_
     obtain ⟨γ, hγ, k', hk', e⟩ := h k.1 k.2
@@ -231,9 +228,7 @@ theorem exists_isFundamentalDomain_of_relIndex_ne_zero :
   let t : Set X := ⋃ q : Γ ⧸ H, (ρ q)⁻¹ • s
   have hdisj : Pairwise (Function.onFun (AEDisjoint μ) fun q : Γ ⧸ H => (ρ q)⁻¹ • s) := by
     intro q q' hqq'
-    apply hs.aedisjoint
-    intro heq
-    exact hqq' (by rw [← hout q, ← hout q', inv_injective (G := Γ) heq])
+    exact hs.aedisjoint (fun heq => hqq' (by rw [← hout q, ← hout q', inv_injective (G := Γ) heq]))
   refine ⟨t, ⟨NullMeasurableSet.iUnion fun q => hs.nullMeasurableSet_smul _, ?_, ?_⟩, ?_⟩
   · filter_upwards [hs.ae_covers] with x hx
     obtain ⟨γ, hγ⟩ := hx

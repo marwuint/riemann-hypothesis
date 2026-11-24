@@ -153,8 +153,7 @@ theorem chartPartition_norm_le_one (A : FinHolAtlas e X) (Q : ChartPartition A) 
   have h : Q.χ j x ≤ ∑ k, Q.χ k x :=
     Finset.single_le_sum (f := fun k => Q.χ k x) (fun k _ => Q.nonneg k x) (Finset.mem_univ j)
   rw [Q.sum_eq_one] at h
-  rw [Real.norm_eq_abs, abs_of_nonneg (Q.nonneg j x)]
-  exact h
+  rwa [Real.norm_eq_abs, abs_of_nonneg (Q.nonneg j x)]
 
 theorem chartTerm_integrableOn (A : FinHolAtlas e X) (Q : ChartPartition A) (P : Fin e → LocPot X)
     (g : X → ℝ) (hg : MIntegrable A P g) (j : Fin A.n) :
@@ -168,8 +167,7 @@ theorem chartTerm_integrableOn (A : FinHolAtlas e X) (Q : ChartPartition A) (P :
     exact (A.chart j).map_source (Q.tsupport_subset j hx)
   have h0 := hg j _ hKt hK
   have hcont : ContinuousOn (fun y => Q.χ j ((A.chart j).symm y)) (A.chart j).target := by
-    have h := (Q.smooth j j).continuousOn
-    simpa [Function.comp_def] using h
+    simpa [Function.comp_def] using (Q.smooth j j).continuousOn
   have hm : AEStronglyMeasurable (fun y => Q.χ j ((A.chart j).symm y))
       (volume.restrict (A.chart j '' tsupport (Q.χ j))) :=
     (hcont.mono hKt).aestronglyMeasurable hK.measurableSet
@@ -230,9 +228,7 @@ theorem chartTerm_hasSum (A : FinHolAtlas e X) (V B : ℕ → Set (Fin e → ℂ
     intro n m hnm
     refine Set.disjoint_left.2 ?_
     rintro _ ⟨z, hz, rfl⟩ ⟨w, hw, hzw⟩
-    have hEq : Φ n z = Φ m w := by
-      refine (A.chart j).injOn hz.2 hw.2 ?_
-      exact hzw.symm
+    have hEq : Φ n z = Φ m w := (A.chart j).injOn hz.2 hw.2 hzw.symm
     exact Set.disjoint_left.1 (hdisj hnm) ⟨z, hz.1, rfl⟩ ⟨w, hw.1, hEq.symm⟩
   have hUsub : (⋃ n, (A.chart j ∘ Φ n) '' (B n ∩ Φ n ⁻¹' (A.chart j).source)) ⊆
       (A.chart j).target := Set.iUnion_subset hsub
@@ -294,8 +290,7 @@ theorem integrableOn_hasSum_paramCover : ∀ (e : ℕ) (X : Type) [TopologicalSp
       funext n
       rw [hfun n]
       exact integral_finsetSum _ fun j _ => (hj j).1 n
-    rw [hEq]
-    exact hs
+    rwa [hEq]
 
 end
 

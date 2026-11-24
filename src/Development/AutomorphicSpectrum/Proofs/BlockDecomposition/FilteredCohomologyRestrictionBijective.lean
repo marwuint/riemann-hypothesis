@@ -120,8 +120,7 @@ variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPower
 
 theorem sub_inf (T : Thick (nlFun γ 0 X q κ)) {s : ℕ} (hs : 1 ≤ s) : T.δ.IsSubDPIdeal (T.pdPow s ⊓ T.J) := by
   have h : T.δ.IsSubDPIdeal (T.pdPow s) := FubiniStudyChowHeightFormula₂.Adr.Fil.fil_isSubDPIdeal T.δ s hs
-  rw [inf_eq_left.mpr h.isSubideal]
-  exact h
+  rwa [inf_eq_left.mpr h.isSubideal]
 
 abbrev redMap (T : Thick (nlFun γ 0 X q κ)) (s : ℕ) :
     T.B ⧸ T.J →+* (T.B ⧸ T.pdPow s) ⧸ T.J.map (Ideal.Quotient.mk (T.pdPow s)) :=
@@ -185,9 +184,7 @@ abbrev cRing (T : Thick (nlFun γ 0 X q κ)) {s : ℕ} (h0 : T.pdPow s = ⊥) : 
   Ideal.Quotient.lift _ (RingHom.id _) fun a ha => by rw [h0] at ha; exact (Ideal.mem_bot.1 ha)
 
 theorem c_le (T : Thick (nlFun γ 0 X q κ)) {s : ℕ} (hs : 1 ≤ s) (h0 : T.pdPow s = ⊥) :
-    (qT T hs).J ≤ T.J.comap (cRing T h0) := by
-  refine Ideal.map_le_iff_le_comap.2 fun x hx => ?_
-  exact hx
+    (qT T hs).J ≤ T.J.comap (cRing T h0) := Ideal.map_le_iff_le_comap.2 fun x hx => hx
 
 def counitH (T : Thick (nlFun γ 0 X q κ)) {s : ℕ} (hs : 1 ≤ s) (h0 : T.pdPow s = ⊥) : qT T hs ⟶ T :=
   mkH (cRing T h0) (fun _ => rfl) (dp_lift T.δ (sub_inf T hs) _ _ (by
@@ -249,8 +246,7 @@ theorem mem_of_mk (T : Thick (nlFun γ 0 X q κ)) {s t : ℕ} (hs : 1 ≤ s) (ht
   rw [pdPow_q] at hy
   obtain ⟨z, hz, e⟩ := (Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hy
   have h1 : z - y ∈ T.pdPow s := Ideal.Quotient.eq.1 e
-  have h2 := (T.pdPow t).sub_mem hz (T.pdPow_anti ht h1)
-  simpa using h2
+  simpa using (T.pdPow t).sub_mem hz (T.pdPow_anti ht h1)
 
 theorem q_tf (T : Thick (nlFun γ 0 X q κ)) {l s : ℕ} (hs : 1 ≤ s)
     (h : l = 1 ∨ ∀ (r : ℕ) (x : T.B), (l : T.B) * x ∈ T.pdPow r → x ∈ T.pdPow r) (r : ℕ) (x : (qT T hs).B)
@@ -260,8 +256,7 @@ theorem q_tf (T : Thick (nlFun γ 0 X q κ)) {l s : ℕ} (hs : 1 ≤ s)
   obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
   have h1 : Ideal.Quotient.mk (T.pdPow s) ((l : T.B) * y) ∈ (qT T hs).pdPow (min r s) := by
     refine (qT T hs).pdPow_anti (min_le_left r s) ?_
-    rw [map_mul, map_natCast]
-    exact hx
+    rwa [map_mul, map_natCast]
   have h2 := h _ _ (mem_of_mk T hs (min_le_right r s) h1)
   rw [pdPow_q]
   rcases le_total r s with hrs | hrs

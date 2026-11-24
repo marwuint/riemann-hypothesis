@@ -134,8 +134,7 @@ theorem exists_analytic_param {A B E : Type} [NormedAddCommGroup A] [NormedSpace
     (hπc.eventually hP).and (Φ₂.open_source.mem_nhds hs₂ |> Filter.eventually_of_mem <| fun _ h => h)
   obtain ⟨V, hVs, hVo, hV0⟩ := mem_nhds_iff.mp hQ
   refine ⟨V, fun z => Φ₁.symm (π z), hVo, hV0, ?_, hback, ?_⟩
-  · intro z hz
-    exact AnalyticAt.comp (f := fun z => π z) (hVs hz).1.2.2 (π.analyticAt z)
+  · exact fun z hz => AnalyticAt.comp (f := fun z => π z) (hVs hz).1.2.2 (π.analyticAt z)
   · intro z hz hGz
     obtain ⟨⟨⟨hU', hG', hsrc⟩, htgt, -⟩, hzs⟩ := hVs hz
     refine ⟨hU', ?_⟩
@@ -188,8 +187,7 @@ theorem exists_chart_inverse {K : Type} [Fintype K] {J : K → Type} [∀ k, Fin
       ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : (Σ k, J k) => ℂ) p).analyticAt _).comp h2
     exact h1.mul h3
   have hGan : AnalyticAt ℂ G (Φ e₀) := by
-    refine AnalyticAt.pi fun l => ?_
-    exact AnalyticOnNhd.eval_mvPolynomial (𝕜 := ℂ) (g l) _ (Set.mem_univ _)
+    exact AnalyticAt.pi fun l => AnalyticOnNhd.eval_mvPolynomial (𝕜 := ℂ) (g l) _ (Set.mem_univ _)
 
   have hdΦ : ∀ c u, fderiv ℂ Φ e₀ (c, u) = fderiv ℂ χ.γ t₀ u + torusSmul c z₀ := by
     have hγd := hγ.differentiableAt.hasFDerivAt
@@ -251,8 +249,7 @@ theorem exists_chart_inverse {K : Type} [Fintype K] {J : K → Type} [∀ k, Fin
       induction hl using Submodule.span_induction with
       | mem x hx =>
         have := congrFun hw ⟨x, hx⟩
-        rw [hdG, hfl] at this
-        exact this
+        rwa [hdG, hfl] at this
       | zero => simp
       | add x y _ _ hx hy => simp [hx, hy]
       | smul a x _ hx => simp [hx]
@@ -262,8 +259,7 @@ theorem exists_chart_inverse {K : Type} [Fintype K] {J : K → Type} [∀ k, Fin
         rw [← hspan]
         exact Submodule.subset_span ⟨q, hq, rfl⟩
       have h0 := hs0 _ this
-      rw [hell] at h0
-      exact h0
+      rwa [hell] at h0
     obtain ⟨u, c, hv⟩ := htan w htv
     exact ⟨(c, u), by rw [hdΦ, hv]⟩
   have hopen : ∀ᶠ e : (K → ℂ) × (Fin n → ℂ) in 𝓝 e₀, (∀ k, e.1 k ≠ 0) ∧ e.2 ∈ Metric.ball (0 : Fin n → ℂ) 1 := by

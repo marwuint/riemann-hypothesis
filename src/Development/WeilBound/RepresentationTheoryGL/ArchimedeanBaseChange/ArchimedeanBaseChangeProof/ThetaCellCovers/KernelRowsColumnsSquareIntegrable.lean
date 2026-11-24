@@ -132,8 +132,7 @@ noncomputable def hits (X : Ctx) (S : Set X.G) (x : X.G) : ℝ≥0∞ :=
 theorem measurable_hits (X : Ctx) {S : Set X.G} (hS : MeasurableSet S) :
     Measurable (hits X S) := by
   unfold hits
-  refine Measurable.tsum fun γ => ?_
-  exact (measurable_one.indicator hS).comp (measurable_const_mul (γ : X.G))
+  exact Measurable.tsum fun γ => (measurable_one.indicator hS).comp (measurable_const_mul (γ : X.G))
 
 theorem lintegral_hits (X : Ctx) {S : Set X.G} (hS : MeasurableSet S) :
     ∫⁻ x, hits X S x ∂X.ν = X.μ S := by
@@ -223,8 +222,7 @@ theorem cnt_ne_top (X : Ctx) (Ω : Set X.G) (hΩ : IsCompact Ω) (x : X.G) : cnt
     have hmem : x⁻¹ * (γ : X.G) * x ∈ Ω := by
       by_contra h
       exact hγ (Set.indicator_of_notMem h _)
-    simp only [Set.Finite.coe_toFinset, Set.mem_ofPred_eq]
-    exact ⟨_, hmem, by group⟩
+    simpa only [Set.Finite.coe_toFinset, Set.mem_ofPred_eq] using ⟨_, hmem, by group⟩
   unfold cnt
   rw [tsum_eq_sum (s := hfin.toFinset) (fun γ hγ => by
     by_contra h
@@ -323,8 +321,7 @@ theorem opExA : KerBasic → RowInt → SchurOp → OpExA := by
       fun x => ∫ y, ker X.Γ (Φ i j) x y * (f : X.G → ℂ) y ∂X.ν := by
     intro i j
     obtain ⟨A, hA, h1, h2⟩ := hR X (Φ i j) (hΦ i j)
-    have hc := (hK X (Φ i j) (hΦ i j)).2.1
-    exact hS X.G X.ν (ker X.Γ (Φ i j)) A hc.measurable hA h1 h2
+    exact hS X.G X.ν (ker X.Γ (Φ i j)) A ((hK X (Φ i j) (hΦ i j)).2.1).measurable hA h1 h2
   choose S hSop using hex
   let T : X.Hs ι →L[ℂ] X.Hs ι :=
     ((PiLp.continuousLinearEquiv 2 ℂ (fun _ : ι => Lp ℂ 2 X.ν)).symm :
@@ -345,8 +342,7 @@ theorem opExA : KerBasic → RowInt → SchurOp → OpExA := by
   refine ⟨T, hIs, ?_⟩
   intro T' hT'
   ext f : 1
-  refine PiLp.ext fun i => Lp.ext ?_
-  exact (hT' f i).trans (hIs f i).symm
+  exact PiLp.ext fun i => Lp.ext ((hT' f i).trans (hIs f i).symm)
 
 end GlobalTheory.CompanionTheory.OpEx
 end -- clump:auto
@@ -398,8 +394,7 @@ theorem colOp : KerBasic → CvTest → KernelL2RowsColumns → KerMul → ColOp
           simp
         rw [integral_congr_ae this]
         simp
-      · intro h
-        exact absurd (Finset.mem_univ j) h
+      · exact fun h => absurd (Finset.mem_univ j) h
     refine ⟨key, ?_⟩
     intro x i v hv
     have hc := hC X (Φ i j) ψ (hΦ i j) hψ
@@ -413,8 +408,7 @@ theorem colOp : KerBasic → CvTest → KernelL2RowsColumns → KerMul → ColOp
     · intro l _ hl
       rw [hv.2 l hl]
       simp
-    · intro h
-      exact absurd (Finset.mem_univ i) h
+    · exact fun h => absurd (Finset.mem_univ i) h
 
 end GlobalTheory.CompanionTheory.KernelColumns
 
@@ -533,8 +527,7 @@ theorem comp_key (hB : KerBasic) (hR : RowInt) (hL : KernelL2RowsColumns) (hS : 
     simp_rw [mul_assoc]
     exact integral_const_mul _ _
   constructor
-  · have h := hint.integral_prod_left
-    simpa only [e1] using h
+  · simpa only [e1] using hint.integral_prod_left
   · have h := integral_integral_swap
       (f := fun z y => ker X.Γ φ x z * ker X.Γ ψ z y * f y) hint
     simp only [e1] at h
@@ -757,16 +750,14 @@ theorem approxU : CvTest → TwoUnif → ApproxU := by
     rw [cv_eq_avg X φ ψ hb]
     refine avg_le X.μ (fun w => ‖ψ w⁻¹‖) (fun w => φ (z * y * w)) (φ y) ε hb0 hb.2.2
       (Continuous.aestronglyMeasurable (hφ.1.comp (by fun_prop))) ?_
-    intro w hw
-    exact hW z hz w (hsupp w hw).1 y
+    exact fun w hw => hW z hz w (hsupp w hw).1 y
   refine ⟨?_, ?_⟩
   · simpa using key 1 (mem_of_mem_nhds hW₀)
   · rw [cv_adj_eq_avg X _ ψ hb]
     have hc : Continuous (cv X.μ φ ψ) := (hcv X φ ψ hφ hb.1).1.1
     refine avg_le X.μ (fun w => ‖ψ w⁻¹‖) (fun z => cv X.μ φ ψ (z⁻¹ * y)) (φ y) ε hb0 hb.2.2
       (Continuous.aestronglyMeasurable (hc.comp (by fun_prop))) ?_
-    intro z hz
-    exact key z⁻¹ (hsupp z hz).2
+    exact fun z hz => key z⁻¹ (hsupp z hz).2
 
 end GlobalTheory.CompanionTheory.ApproxUnit
 
@@ -964,8 +955,7 @@ theorem opAdj_of : KerBasic → RowInt → SchurInt → OpExA → OpAdj := by
     simp_rw [hl, hr]
     rw [Finset.sum_comm]
     exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => (key i j).2.2
-  rw [← hEq]
-  exact hT'
+  rwa [← hEq]
 
 end GlobalTheory.CompanionTheory.KerAdj
 
@@ -1031,15 +1021,13 @@ theorem norm_cv_le {φ ψ : X.G → ℂ} (hψ : Tst ψ) (B : ℝ) (hB : ∀ z, �
     ‖cv X.μ φ ψ y‖ ≤ B * ∫ z, ‖ψ z⁻¹‖ ∂X.μ := by
   have hB0 : 0 ≤ B := (norm_nonneg _).trans (hB 1)
   have hshift : ∫ z, ‖ψ (z⁻¹ * y)‖ ∂X.μ = ∫ z, ‖ψ z⁻¹‖ ∂X.μ := by
-    have h := integral_mul_left_eq_self (μ := X.μ) (fun z => ‖ψ z⁻¹‖) y⁻¹
-    simpa [mul_inv_rev] using h
+    simpa [mul_inv_rev] using integral_mul_left_eq_self (μ := X.μ) (fun z => ‖ψ z⁻¹‖) y⁻¹
   have hle : ‖cv X.μ φ ψ y‖ ≤ ∫ z, B * ‖ψ (z⁻¹ * y)‖ ∂X.μ := by
     refine norm_integral_le_of_norm_le ((integrable_reflect X hψ y).const_mul B) ?_
     refine Filter.Eventually.of_forall fun z => ?_
     rw [norm_mul]
     exact mul_le_mul_of_nonneg_right (hB z) (norm_nonneg _)
-  rw [integral_const_mul, hshift] at hle
-  exact hle
+  rwa [integral_const_mul, hshift] at hle
 
 theorem cvTest : CvTest := by
   intro X φ ψ hφ hψ
@@ -1075,8 +1063,7 @@ theorem kerClose : KerClose := by
       (Function.support fun γ : X.Γ => φ (x⁻¹ * (γ : X.G) * y)) ⊆ (hfin.toFinset : Set X.Γ) := by
     intro φ hφ γ hγ
     have hmem : x⁻¹ * (γ : X.G) * y ∈ Ω := hφ hγ
-    simp only [Set.Finite.coe_toFinset, Set.mem_setOf_eq]
-    exact ⟨_, hmem, by group⟩
+    simpa only [Set.Finite.coe_toFinset, Set.mem_setOf_eq] using ⟨_, hmem, by group⟩
   have hker : ∀ φ : X.G → ℂ, Function.support φ ⊆ Ω →
       ker X.Γ φ x y = ∑ γ ∈ hfin.toFinset, φ (x⁻¹ * (γ : X.G) * y) := fun φ hφ =>
     finsum_eq_sum_of_support_subset _ (hsupp φ hφ)
@@ -1119,8 +1106,7 @@ theorem kerLin_of_kerBasic : KerBasic → KerLin := by
             (fun y => φ a y * c a) + fun y => ∑ i ∈ s, φ i y * c i := by
           funext y
           simp [Finset.sum_cons]
-        rw [h3]
-        exact h2
+        rwa [h3]
     exact key Finset.univ
   · intro x y
     have hfin : ∀ i, (Function.support fun γ : X.Γ => φ i (x⁻¹ * (γ : X.G) * y)).Finite :=
@@ -1254,8 +1240,7 @@ theorem memLp_column (hK : KerBasic) (hC : CntBasic) (hS : ColSq) (X : Ctx) (φ 
       (ENNReal.mul_lt_top (ENNReal.pow_lt_top ENNReal.ofReal_lt_top) hμ.lt_top) hcnt.lt_top
   rw [memLp_iff, eLpNorm_lt_top_iff_lintegral_rpow_eNorm_lt_top
     (by norm_num) (by norm_num) hcont.aestronglyMeasurable]
-  simp only [ENNReal.toReal_ofNat, ENNReal.rpow_ofNat]
-  exact hbound.trans_lt hfin
+  simpa only [ENNReal.toReal_ofNat, ENNReal.rpow_ofNat] using hbound.trans_lt hfin
 
 theorem memLp_row (hK : KerBasic) (hC : CntBasic) (hS : ColSq) (X : Ctx) (φ : X.G → ℂ)
     (hφ : Tst φ) (x : X.G) : MemLp (fun y => ker X.Γ φ x y) 2 X.ν := by
@@ -1807,8 +1792,7 @@ theorem vecLim_of (hCnt : CntBasic) (hCv : CvTest) (hCol : ColOp) (hA : ApproxU)
     refine hfin.trans (le_trans (le_of_eq ?_) hδc)
     rw [hc]; ring
   have hle' : ‖T u - k‖ₑ ≤ ENNReal.ofReal ε := (ENNReal.pow_le_pow_left_iff two_ne_zero).1 hle
-  rw [← ofReal_norm, ENNReal.ofReal_le_ofReal_iff hε.le] at hle'
-  exact hle'
+  rwa [← ofReal_norm, ENNReal.ofReal_le_ofReal_iff hε.le] at hle'
 
 end GlobalTheory.CompanionTheory.KernelColumns
 
@@ -1837,8 +1821,7 @@ theorem isVec_zero (X : Ctx) {ι : Type} [Fintype ι] (y : X.G) (j : ι) :
     X.IsVec (0 : Matrix ι ι (X.G → ℂ)) y j (0 : X.Hs ι) := by
   intro l
   have h : (((0 : X.Hs ι) l : Lp ℂ 2 X.ν) : X.G → ℂ) =ᵐ[X.ν] 0 := Lp.coeFn_zero ℂ 2 X.ν
-  refine h.trans (Filter.Eventually.of_forall fun z => ?_)
-  exact (ker_zero X z y).symm
+  exact h.trans (Filter.Eventually.of_forall fun z => (ker_zero X z y).symm)
 
 theorem tst_zero (X : Ctx) : Tst (0 : X.G → ℂ) :=
   ⟨continuous_const, HasCompactSupport.zero⟩

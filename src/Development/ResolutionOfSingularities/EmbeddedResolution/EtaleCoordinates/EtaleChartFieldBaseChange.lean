@@ -122,24 +122,17 @@ private theorem appTop_topIso_inv_of_comp_eq {Z W : Scheme.{u}} (g : Z ⟶ W) {A
       appLE_comp_appLE B.ι g e eB e4]
     exact hgen _ _ hr e3 e4
   have h2 := congrArg (fun ψ : Γ(W, A) ⟶ Γ(B.toScheme, ⊤) => ψ.hom x) key
-  simp only [CommRingCat.hom_comp, RingHom.comp_apply] at h2
-  exact h2
+  simpa only [CommRingCat.hom_comp, RingHom.comp_apply] using h2
 
 theorem etale_homOfVector_baseChangeCoords (hsq : IsPullback q f (Spec.map φ) p)
     {U : X.Opens} {m : ℕ} (c : EtaleChart p U m) :
     AlgebraicGeometry.Etale
       (AffineSpace.homOfVector ((f ⁻¹ᵁ U).ι ≫ q) (baseChangeCoords f c)) := by
-  have hrι : (f ∣_ U) ≫ U.ι = (f ⁻¹ᵁ U).ι ≫ f := morphismRestrict_ι f U
-  have sq1 : IsPullback (f ∣_ U) (f ⁻¹ᵁ U).ι U.ι f := isPullback_morphismRestrict f U
-  have sqOuter : IsPullback ((f ⁻¹ᵁ U).ι ≫ q) (f ∣_ U) (Spec.map φ) (U.ι ≫ p) :=
-    sq1.flip.paste_horiz hsq
+  have hrι := morphismRestrict_ι f U
   have hover : AffineSpace.homOfVector ((f ⁻¹ᵁ U).ι ≫ q) (baseChangeCoords f c)
       ≫ affineSpaceFinToSpec K m = (f ⁻¹ᵁ U).ι ≫ q := AffineSpace.homOfVector_over _ _
   have hmo : AffineSpace.map (ULift.{u} (Fin m)) (Spec.map φ) ≫ affineSpaceFinToSpec k m
       = affineSpaceFinToSpec K m ≫ Spec.map φ := by simp
-  have tsq : IsPullback (affineSpaceFinToSpec K m)
-      (AffineSpace.map (ULift.{u} (Fin m)) (Spec.map φ)) (Spec.map φ) (affineSpaceFinToSpec k m) :=
-    (AffineSpace.isPullback_map (n := ULift.{u} (Fin m)) (Spec.map φ)).flip
   have hL2 : (AffineSpace.homOfVector ((f ⁻¹ᵁ U).ι ≫ q) (baseChangeCoords f c)
         ≫ AffineSpace.map (ULift.{u} (Fin m)) (Spec.map φ)) ≫ affineSpaceFinToSpec k m
       = (f ⁻¹ᵁ U).ι ≫ q ≫ Spec.map φ := by
@@ -156,27 +149,23 @@ theorem etale_homOfVector_baseChangeCoords (hsq : IsPullback q f (Spec.map φ) p
       have hmc : (AffineSpace.map (ULift.{u} (Fin m)) (Spec.map φ)).appTop.hom
             (AffineSpace.coord (Spec (CommRingCat.of k)) i)
           = AffineSpace.coord (Spec (CommRingCat.of K)) i := by simp
-      have hhv : (AffineSpace.homOfVector ((f ⁻¹ᵁ U).ι ≫ q)
-            (baseChangeCoords f c)).appTop.hom
-              (AffineSpace.coord (Spec (CommRingCat.of K)) i)
-          = baseChangeCoords f c i :=
-        AffineSpace.homOfVector_appTop_coord _ _ i
       have hc : c.map.appTop.hom (AffineSpace.coord (Spec (CommRingCat.of k)) i)
           = U.topIso.inv.hom (c.coord i.down) := by
         rw [EtaleChart.coord_def]
         exact (CommRingCat.inv_hom_apply ..).symm
       simp only [AlgebraicGeometry.Scheme.Hom.comp_appTop, CommRingCat.hom_comp,
         RingHom.comp_apply]
-      rw [hmc, hhv, hc, baseChangeCoords_apply]
+      rw [hmc, AffineSpace.homOfVector_appTop_coord, hc, baseChangeCoords_apply]
       exact (appTop_topIso_inv_of_comp_eq (A := U) (B := f ⁻¹ᵁ U) f le_rfl (f ∣_ U) hrι
         (c.coord i.down)).symm
   have sqBig : IsPullback
       (AffineSpace.homOfVector ((f ⁻¹ᵁ U).ι ≫ q) (baseChangeCoords f c)
         ≫ affineSpaceFinToSpec K m) (f ∣_ U) (Spec.map φ) (c.map ≫ affineSpaceFinToSpec k m) := by
     rw [hover, c.comp_struct]
-    exact sqOuter
-  exact MorphismProperty.IsStableUnderBaseChange.of_isPullback
-    (P := @AlgebraicGeometry.Etale) (sqBig.of_right ecomm tsq).flip c.isEtale
+    exact (isPullback_morphismRestrict f U).flip.paste_horiz hsq
+  exact MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @AlgebraicGeometry.Etale)
+    (sqBig.of_right ecomm
+      (AffineSpace.isPullback_map (n := ULift.{u} (Fin m)) (Spec.map φ)).flip).flip c.isEtale
 
 def EtaleChart.baseChange {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
     (hsq : IsPullback q f (Spec.map φ) p) : EtaleChart q (f ⁻¹ᵁ U) m :=
@@ -234,9 +223,7 @@ private theorem restrictIdeal_eq_top_of_ideal_eq_top {Z : Scheme.{u}} {V : Z.Ope
     (hV : IsAffineOpen V) (D : Z.IdealSheafData) (hD : D.ideal ⟨V, hV⟩ = ⊤) :
     restrictIdeal D V = ⊤ := by
   have : IsAffine V.toScheme := hV
-  have e1 : (⊤ : V.toScheme.Opens) ≤ V.ι ⁻¹ᵁ V := by
-    intro z _
-    exact z.2
+  have e1 : (⊤ : V.toScheme.Opens) ≤ V.ι ⁻¹ᵁ V := fun z _ => z.2
   apply AlgebraicGeometry.Scheme.IdealSheafData.ext_of_isAffine
   rw [restrictIdeal_eq_comap_ι,
     AlgebraicGeometry.Scheme.IdealSheafData.comap_ideal_eq_map_appLE D V.ι ⟨V, hV⟩
@@ -247,12 +234,9 @@ private theorem ideal_eq_top_of_isAffineOpen_of_restrictIdeal_eq_top {Z : Scheme
     (hV : IsAffineOpen V) (D : Z.IdealSheafData) (hD : restrictIdeal D V = ⊤) :
     D.ideal ⟨V, hV⟩ = ⊤ := by
   have : IsAffine V.toScheme := hV
-  have e1 : (⊤ : V.toScheme.Opens) ≤ V.ι ⁻¹ᵁ V := by
-    intro z _
-    exact z.2
+  have e1 : (⊤ : V.toScheme.Opens) ≤ V.ι ⁻¹ᵁ V := fun z _ => z.2
   have hD' : D.comap V.ι = ⊤ := by
-    rw [← restrictIdeal_eq_comap_ι]
-    exact hD
+    rwa [← restrictIdeal_eq_comap_ι]
   have h1 : Ideal.map (V.ι.appLE V ⊤ e1).hom (D.ideal ⟨V, hV⟩) = ⊤ := by
     rw [← AlgebraicGeometry.Scheme.IdealSheafData.comap_ideal_eq_map_appLE D V.ι ⟨V, hV⟩
       ⟨⊤, isAffineOpen_top V.toScheme⟩ e1, hD']

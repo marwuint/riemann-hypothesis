@@ -97,8 +97,7 @@ theorem holo_of_lift_orbit_top :
       have h2 : ∀ᶠ u in (𝒰 : Filter (Fin e → ℂ)),
           (0 : ℂ) = R.lift x (h u) ⟨k, i⟩ * zex u ⟨k, i'⟩ - R.lift x (h u) ⟨k, i'⟩ * zex u ⟨k, i⟩ :=
         hev.mono fun u hu => (sub_eq_zero.2 (orbit_cross (hloc x u hu.1 hu.2) k i i')).symm
-      have h3 := tendsto_nhds_unique h1 (tendsto_const_nhds.congr' h2)
-      exact sub_eq_zero.1 h3
+      exact sub_eq_zero.1 (tendsto_nhds_unique h1 (tendsto_const_nhds.congr' h2))
     exact R.inj x (h u0) (not_mem_mcPts_top _) (orbit_trans horb0 (orbit_symm (horb u0 hu0)))
   refine ⟨fun u hu => (hcont u hu).continuousWithinAt, ?_⟩
   rintro k u0 ⟨hu0, hs0⟩
@@ -113,8 +112,7 @@ theorem holo_of_lift_orbit_top :
   have hzp : ∀ k', zex u0 ⟨k', p k'⟩ ≠ 0 := fun k' => orbit_ne (horb u0 hu0) (hp k')
   have hb : AnalyticAt ℂ (fun u => affCoord p (zex u)) u0 := by
     rw [analyticAt_pi_iff]
-    intro q
-    exact (han q u0 hu0).div (han ⟨q.1, p q.1⟩ u0 hu0) (hzp q.1)
+    exact fun q => (han q u0 hu0).div (han ⟨q.1, p q.1⟩ u0 hu0) (hzp q.1)
   have hG' : AnalyticAt ℂ G (affCoord p (zex u0)) := by
     have hab : affCoord p (R.lift (h u0) ((R.A.chart k).symm (R.A.chart k (h u0)))) = affCoord p (zex u0) := by
       rw [hsym]; exact affCoord_eq (horb u0 hu0) p
@@ -183,14 +181,12 @@ theorem ref_pot_along_exact_family : ∀ (K : Type) [Fintype K] (ι : K → Type
     intro k
     obtain ⟨d, hd, hdz⟩ := hSO z hzV
     have : Re.R.lift (h z) (h z) ⟨k, i k⟩ = d k * zex z ⟨k, i k⟩ := congrFun hdz ⟨k, i k⟩
-    simp only [hcdef, this]
-    exact div_ne_zero (mul_ne_zero (hd k) (hi k)) (hi k)
+    simpa only [hcdef, this] using div_ne_zero (mul_ne_zero (hd k) (hi k)) (hi k)
   have hL : ∀ k, ∃ Lk : (Fin e → ℂ) → ℂ, AnalyticAt ℂ Lk z ∧ ∀ᶠ z' in 𝓝 z, Real.log ‖c k z'‖ = (Lk z').re :=
     fun k => log_norm_eventually_eq_re_analyticAt e (c k) z (hcan k) (hcz0 k)
   choose L hLan hLeq using hL
   refine ⟨fun u => (∑ k, (((Re.ref a).a k : ℤ) : ℂ) * L k u) - G (h u), ?_, ?_⟩
-  · refine AnalyticAt.sub ?_ hGh
-    exact Finset.analyticAt_fun_sum _ fun k _ => analyticAt_const.mul (hLan k)
+  · exact AnalyticAt.sub (Finset.analyticAt_fun_sum _ fun k _ => analyticAt_const.mul (hLan k)) hGh
   · have hne : ∀ᶠ u in 𝓝 z, ∀ k, zex u ⟨k, i k⟩ ≠ 0 :=
       eventually_all.2 fun k => (hana _ z hzV).continuousAt.eventually_ne (hi k)
     filter_upwards [hVn, hne, eventually_all.2 hLeq, hcz.preimage_mem_nhds (hW.mem_nhds hxW),

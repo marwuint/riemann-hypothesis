@@ -145,24 +145,13 @@ theorem embeddedResolutionRule_isStrictPullbackBlowupSeq_baseChange
     EmbeddingDatum.locallyOfFiniteType_baseChangeToSpec_ambientToSpec D K
   have : AlgebraicGeometry.QuasiCompact (baseChangeToSpec D.ambientStruct K) :=
     EmbeddingDatum.quasiCompact_baseChangeToSpec_ambientToSpec D K
-  have : AlgebraicGeometry.Flat (baseChangeProjection D.ambientStruct K) := inferInstance
-  have : AlgebraicGeometry.Surjective (baseChangeProjection p K) := inferInstance
-  have : AlgebraicGeometry.QuasiCompact D.emb := inferInstance
-  have : AlgebraicGeometry.QuasiCompact (D.baseChangeEmb K) := inferInstance
-  show IsStrictPullbackBlowupSeq (baseChangeProjection p K)
-      (embeddedResolutionRuleOfPrincipalization A hw K (baseChange p K) (baseChangeToSpec p K)
-        (D.baseChange K hker hsnc))
-      (embeddedResolutionRuleOfPrincipalization A hw k Y p D)
   have hkerbc : (D.baseChangeEmb K).ker
       = D.emb.ker.comap (baseChangeProjection D.ambientStruct K) :=
     ker_eq_comap_ker_of_isPullback_of_flat (D.isPullback_baseChangeEmb K).flip
   have hI' : NonzeroOnComponents (D.emb.ker.comap (baseChangeProjection D.ambientStruct K)) :=
     hkerbc ▸ hker
-  have hE' : InStrictNormalCrossingPosition (baseChangeToSpec D.ambientStruct K)
-      (List.map (fun Z => Z.comap (baseChangeProjection D.ambientStruct K))
-        ([] : List D.ambient.IdealSheafData)) := hsnc
   have h0 := hA.base_change k D.ambient D.ambientStruct D.emb.ker D.nonzeroOnComponents_ker
-      [] D.sncEmpty K (algebraMap k K) hI' hE'
+      [] D.sncEmpty K (algebraMap k K) hI' hsnc
   have hpb : IsPullbackBlowupSequence (baseChangeProjection D.ambientStruct K)
       ((D.baseChange K hker hsnc).toEmbeddedBlowupSequence A).ambientSeq
       (D.toEmbeddedBlowupSequence A).ambientSeq := by
@@ -171,7 +160,7 @@ theorem embeddedResolutionRule_isStrictPullbackBlowupSeq_baseChange
       (principalizationAlgorithm_toSequenceOfBlowups_congr_ideal A K (baseChange D.ambientStruct K)
         (baseChangeToSpec D.ambientStruct K)
         (D.emb.ker.comap (baseChangeProjection D.ambientStruct K)) (D.baseChangeEmb K).ker
-        hkerbc.symm hI' _ [] hE' _) h0
+        hkerbc.symm hI' _ [] hsnc _) h0
   have hflat2 : AlgebraicGeometry.Flat
       (show ((D.baseChange K hker hsnc).toEmbeddedBlowupSequence A).ambient ⟶
           (D.toEmbeddedBlowupSequence A).ambient from baseChangeProjection D.ambientStruct K) :=

@@ -196,9 +196,7 @@ theorem hasCompactSupport_rows {η : Fin r → Mx D 1 t → ℂ} (h : ∀ i, Has
     HasCompactSupport (fun y : Mx D r t => ∏ i, η i (y.submatrix (fun _ => i) id)) := by
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.TowerResNonzero.lattice_ratMx D r t
   let f : (Fin r → Mx D 1 t) → Mx D r t := fun u => Matrix.of fun i j => u i 0 j
-  have hf : Continuous f := by
-    refine continuous_matrix fun i j => ?_
-    exact (continuous_apply i).matrix_elem 0 j
+  have hf : Continuous f := continuous_matrix fun i j => (continuous_apply i).matrix_elem 0 j
   have hK : IsCompact (f '' Set.pi Set.univ fun i => tsupport (η i)) :=
     (isCompact_univ_pi fun i => h i).image hf
   refine HasCompactSupport.intro hK fun y hy => ?_
@@ -353,8 +351,7 @@ theorem exists_orth (W : HSp D) : ∃ (x₀ : Matrix (Fin W.rank) (Fin W.rank) D
   obtain ⟨P, d, hP, hPG, hfix, hd⟩ := GlobalTheory.HermDiag.exists_congr_diagonal two_ne_zero hc hG
   have hG' : gramQ W (P.map (D.sp.cm.sig : D.host.E →+* D.host.E)) = Matrix.diagonal d := by
     have hT : (P.map (D.sp.cm.sig : D.host.E →+* D.host.E))ᴴ = Pᵀ := by
-      refine Matrix.ext fun i j => ?_
-      exact hc (P j i)
+      exact Matrix.ext fun i j => hc (P j i)
     rw [← hPG, gramQ_eq, hT, Matrix.mul_assoc]
   refine ⟨P.map (D.sp.cm.sig : D.host.E →+* D.host.E), ⟨Matrix.diagonal d, ?_⟩, ⟨Matrix.isDiag_diagonal d, ?_⟩, hG'⟩
   · ext i j
@@ -485,8 +482,7 @@ theorem target : PositivityTheory.Rg.Rsw.Polar → PositivityTheory.Rg.Rsw.ResMu
       have h2 := (hpol.2.2 mu hmu M m b₀ hb.2 β hβ nb lam 𝓖 hCD Ω hΩ g).2
       rw [h2, rsec_translate M m ψ b₀ ωB Φ g Ω]
       exact h Ω hΩ hcs)
-    have h0 := congrFun hAT 0
-    simpa only [sh_zero M, one_mul] using h0
+    simpa only [sh_zero M, one_mul] using congrFun hAT 0
   obtain ⟨x₀, b₀, hb₀, hx₀⟩ := exists_orth W
   have hmid := hMuId D n t B W d hn ψ χ θ μB μW ωB ωW hS mu hmu M m b₀ hb₀ (fun Ω hΩ Φ' => hrho b₀ hb₀.2 Ω hΩ Φ') I
   obtain ⟨κ, hκ⟩ := hmid.2 x₀ hx₀

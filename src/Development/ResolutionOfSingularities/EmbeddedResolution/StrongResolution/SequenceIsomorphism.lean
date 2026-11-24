@@ -77,8 +77,7 @@ private theorem vanishingIdeal_preimage_specMap {A B : CommRingCat.{u}} (φ : A 
     · intro hmem
       refine (mem_specMap_asIdeal φ _ a).mpr ?_
       refine (mem_specMap_asIdeal (inv φ) p _).mpr ?_
-      rw [IsIso.hom_inv_id_apply]
-      exact hmem
+      rwa [IsIso.hom_inv_id_apply]
   apply le_antisymm
   · intro a ha
     rw [PrimeSpectrum.mem_vanishingIdeal] at ha
@@ -96,8 +95,7 @@ private theorem vanishingIdeal_preimage_specMap {A B : CommRingCat.{u}} (φ : A 
     intro a ha
     rw [PrimeSpectrum.mem_vanishingIdeal] at ha
     rw [Ideal.mem_comap, PrimeSpectrum.mem_vanishingIdeal]
-    intro q hq
-    exact (mem_specMap_asIdeal φ q a).mp (ha _ hq)
+    exact fun q hq => (mem_specMap_asIdeal φ q a).mp (ha _ hq)
 
 private theorem vanishingIdeal_preimage_fromSpec_of_isIso {Y Y' : Scheme.{u}} (ψ : Y' ⟶ Y) [IsIso ψ]
     (T : Set Y) (U : Y.affineOpens) (hV : IsAffineOpen (ψ ⁻¹ᵁ (U : Y.Opens))) :
@@ -125,8 +123,7 @@ private theorem map_mem_maximalIdeal_ringEquiv {R S : Type u} [CommRing R] [Comm
     (h : a ∈ IsLocalRing.maximalIdeal R) : e a ∈ IsLocalRing.maximalIdeal S := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff] at h
-  intro hu
-  exact h (by simpa using hu.map (e.symm : S →+* R))
+  exact fun hu => h (by simpa using hu.map (e.symm : S →+* R))
 
 private theorem isRegularParameterSystem_ringEquiv {R S : Type u} [CommRing R] [CommRing S]
     [IsLocalRing R] [IsLocalRing S] (e : R ≃+* S) (n : ℕ) (x : Fin n → R)
@@ -159,8 +156,7 @@ private theorem isRegularParameterSystem_congr {R : Type u} [CommRing R] [IsLoca
     (n : ℕ) {x y : Fin n → R} (h : ∀ i, x i = y i) (hy : IsRegularParameterSystem R n y) :
     IsRegularParameterSystem R n x := by
   have hxy : x = y := funext h
-  rw [hxy]
-  exact hy
+  rwa [hxy]
 
 private theorem iso_inv_comp_eq_comp_inv {W Y Z T : Scheme.{u}} (a : W ≅ Y) (b : Z ≅ T)
     (p : W ⟶ Z) (q : Y ⟶ T) (hw : a.hom ≫ q = p ≫ b.hom) :
@@ -182,8 +178,7 @@ private theorem iso_hom_comp_projectionToBase_of_commute_blowupMorphism {X : Sch
   induction i with
   | zero =>
     intro _
-    rw [B'.projectionToBase_zero, B.projectionToBase_zero]
-    exact h0
+    rwa [B'.projectionToBase_zero, B.projectionToBase_zero]
   | succ n ih =>
     intro hi
     have hn : n < B.length := hi
@@ -195,8 +190,7 @@ private theorem iso_hom_comp_projectionToBase_of_commute_blowupMorphism {X : Sch
 private theorem mem_support_of_mem_support_comap {Y Z : Scheme.{u}} (g : Y ⟶ Z)
     (I : Z.IdealSheafData) {x : Y} (hx : x ∈ (I.comap g).support) : g x ∈ I.support := by
   have h := Scheme.IdealSheafData.support_comap I g
-  rw [h] at hx
-  exact hx
+  rwa [h] at hx
 
 private theorem inv_mem_support_comap_of_iso {Y Z : Scheme.{u}} (g : Y ≅ Z) (I : Z.IdealSheafData)
     {x : Z} (hx : x ∈ I.support) : g.inv x ∈ (I.comap g.hom).support := by
@@ -325,8 +319,7 @@ theorem IsStrongResolution.of_isomorphic (k : Type u) [Field k] (X : Scheme.{u})
     have hA : IsIso (ε.hom ∣_ (B'.lastStructMap ⁻¹ᵁ f.smoothLocus) ≫ B'.lastStructMap ∣_ f.smoothLocus) := by
       have h0 : IsIso ((ε.hom ≫ B'.lastStructMap) ∣_ f.smoothLocus) :=
         isIso_restrict_of_eq hε.symm f.smoothLocus hiso
-      rw [AlgebraicGeometry.morphismRestrict_comp] at h0
-      exact h0
+      rwa [AlgebraicGeometry.morphismRestrict_comp] at h0
     exact IsIso.of_isIso_comp_left (ε.hom ∣_ (B'.lastStructMap ⁻¹ᵁ f.smoothLocus))
       (B'.lastStructMap ∣_ f.smoothLocus)
   have q4 : Dense (⇑B'.lastStructMap ⁻¹' (f.smoothLocus : Set X)) := by
@@ -351,8 +344,7 @@ theorem IsStrongResolution.of_isomorphic (k : Type u) [Field k] (X : Scheme.{u})
     have hval : B'.projectionToBase i x = B.projectionToBase i ((eiso i hi'.le).inv x) := by
       rw [← hinv]
       simp
-    rw [hval]
-    exact hpt
+    rwa [hval]
   have q6 : IsStrictNormalCrossingsDivisor (reducedInverseImage B'.lastStructMap (smoothLocusComplement f)) := by
     rw [hmap]
     exact isStrictNormalCrossingsDivisor_reducedInverseImage_iso_inv_comp ε B.lastStructMap (smoothLocusComplement f) hsnc

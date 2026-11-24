@@ -253,8 +253,7 @@ theorem subsingleton_coh_pull_of_ker_le : ∀ (R : Type) [CommRing R] [IsNoether
       ↑((((ModuleCat.extendScalars (algebraMap R p.asIdeal.ResidueField)).mapHomologicalComplex
         (ComplexShape.up ℕ)).obj K).homology q)) ⟨RingHom.ker g₁, RingHom.ker_isPrime g₁⟩ < 1 := by
     simp only [k1]; exact Nat.zero_lt_one
-  have hlt := ((hus _ 1 h0).filter_mono hspec.nhds_le_nhds).self_of_nhds
-  exact Nat.lt_one_iff.1 hlt
+  exact Nat.lt_one_iff.1 (((hus _ 1 h0).filter_mono hspec.nhds_le_nhds).self_of_nhds)
 
 end GlobalTheory.SemicontLB
 end -- clump:auto
@@ -316,9 +315,7 @@ theorem exists_numberField_point_ne_zero :
     simpa [f] using (IsFractionRing.injective A F).ne ha
   let ψ : A →+* B := f.codRestrict B hmem
   have hu : IsUnit (ψ a) := by
-    refine isUnit_iff_exists_inv.mpr ⟨⟨(f a)⁻¹, hinv⟩, Subtype.ext ?_⟩
-    show f a * (f a)⁻¹ = 1
-    exact mul_inv_cancel₀ hfa
+    exact isUnit_iff_exists_inv.mpr ⟨⟨(f a)⁻¹, hinv⟩, Subtype.ext (mul_inv_cancel₀ hfa)⟩
   obtain ⟨K, _, _, φ, -⟩ := exists_numberField_of_finiteType_rat B
   exact ⟨K, inferInstance, inferInstance, φ.comp ψ, (hu.map φ).ne_zero⟩
 
@@ -340,8 +337,7 @@ theorem exists_eval_mul_ne (f : ℤ[X]) (hf : 0 < f.natDegree) (c a : ℤ) (ha :
     ∃ k : ℤ, f.eval (a * k) ≠ c ∧ f.eval (a * k) ≠ -c := by
 
   have hdeg : 0 < (f.comp (C a * X)).natDegree := by
-    rw [natDegree_comp, natDegree_C_mul_X a ha, mul_one]
-    exact hf
+    rwa [natDegree_comp, natDegree_C_mul_X a ha, mul_one]
   have hne : ∀ b : ℤ, f.comp (C a * X) - C b ≠ 0 := fun b h => by
     rw [sub_eq_zero] at h
     rw [h, natDegree_C] at hdeg

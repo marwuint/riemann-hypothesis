@@ -100,14 +100,12 @@ theorem blocks_ad (y : PositivityTheory.Rg.Sw.GR n) (hy : (mR y).toBlocks₂₁ 
   have hJ : PositivityTheory.Rg.Sw.JJ n = Matrix.fromBlocks 0 1 (-1) 0 := rfl
   rw [hJ, fromBlocks_of y hy, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply,
     Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj] at hG
-  have h12 := hG.2.1
-  simpa using h12
+  simpa using hG.2.1
 
 theorem det_rel (y : PositivityTheory.Rg.Sw.GR n) (hy : (mR y).toBlocks₂₁ = 0) :
     star ((mR y).toBlocks₁₁).det * ((mR y).toBlocks₂₂).det = 1 := by
   have h := congrArg Matrix.det (blocks_ad y hy)
-  rw [Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_one] at h
-  exact h
+  rwa [Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_one] at h
 
 theorem det_ne (y : PositivityTheory.Rg.Sw.GR n) (hy : (mR y).toBlocks₂₁ = 0) : ((mR y).toBlocks₁₁).det ≠ 0 := by
   intro h0
@@ -152,9 +150,7 @@ theorem glob_law {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →
     have hin : GlobalTheory.StdUnn.inner V (0 : Formalism.IndefR.Datum.Mx D V.rank n) 0 = 0 := by
       show GlobalTheory.MixModel.adj 0 * (GlobalTheory.MixModel.gA V * 0) = 0
       rw [Matrix.mul_zero, Matrix.mul_zero]
-    have htr : GlobalTheory.StdUnn.trA (0 : Formalism.L2.Theta.AE D) = 0 := by
-      show Algebra.trace _ _ (0 : Formalism.L2.Theta.AE D) = 0
-      exact map_zero _
+    have htr : GlobalTheory.StdUnn.trA (0 : Formalism.L2.Theta.AE D) = 0 := map_zero _
     have hh : GlobalTheory.StdUnn.halfTr (0 : Formalism.L2.Theta.AE D) = 0 := by
       show _ * GlobalTheory.StdUnn.trA (0 : Formalism.L2.Theta.AE D) = 0
       rw [htr, mul_zero]
@@ -303,8 +299,7 @@ theorem scal {χ : (AE D)ˣ →* Circle} {θ : InfFam D} (hθ : IsInfFam θ) {σ
     have h3 : star ((mR y).toBlocks₁₁).det ≠ 0 := star_ne_zero.2 hZ
     rw [h1, eq_div_iff (pow_ne_zero 2 hR), ← h2]
     field_simp
-  simp only [F0, f0, hu1, hu2, hdy, hd]
-  exact alg_id _ _ hZ hR k j p q m hpq hj
+  simpa only [F0, f0, hu1, hu2, hdy, hd] using alg_id _ _ hZ hR k j p q m hpq hj
 
 end PositivityTheory.Rg.Sw.Glob.LocLawH
 

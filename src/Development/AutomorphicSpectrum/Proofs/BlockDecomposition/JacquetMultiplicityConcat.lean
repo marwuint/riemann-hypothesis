@@ -154,8 +154,7 @@ private theorem eq_of_lexMono_lemma_4 {s : ℕ} {D : Fin s → ℕ} {N : ℕ} (f
       rw [Set.range_id]
       exact Set.range_eq_univ.2 fun u => ⟨g (f.symm u), by simp⟩)
   refine Equiv.ext fun p => ?_
-  have h3 := congrFun heq (g p)
-  simpa using h3
+  simpa using congrFun heq (g p)
 
 theorem refinePlace_stdBlocks (hy : ∑ a, y a = N) (hx : ∀ a, ∑ i, x a i = y a)
     (hcat : ∑ l : Fin (∑ a, c a), x (finSigmaFinEquiv.symm l).1 (finSigmaFinEquiv.symm l).2 = N) :
@@ -247,8 +246,7 @@ private theorem isSmooth_subQuot_lemma_7 {G V₀ : Type} [Group G] [TopologicalS
   show subQuot B A g (Submodule.Quotient.mk y) = Submodule.Quotient.mk y
   rw [show g = g0 * (g0⁻¹ * g) by group, map_mul]
   show subQuot B A g0 (subQuot B A (g0⁻¹ * g) (Submodule.Quotient.mk y)) = Submodule.Quotient.mk y
-  rw [e2]
-  exact hg0
+  rwa [e2]
 
 private theorem jhMult_relJacD_le_add_lemma_8 (e' : ∀ a, (Σ b, Fin (d' a b)) ≃ Fin (d a))
     {σ : Representation ℂ (∀ a, Levi k fun b => Fin (d' a b)) U} (hσ : σ.IsIrreducible)
@@ -394,8 +392,7 @@ private theorem isSubquotient_piTensor_lemma_10 {ι : Type} {Γ Y₀ Z₀ : ι �
           PiTensorProduct.map (fun a => (f a).toLinearMap) u := fun u => LinearMap.congr_fun hΦ u
     have e3 : PiTensorProduct.map (fun a => (f a).toLinearMap) (piTensor (fun a => (S a).toRepresentation) g t) =
         piTensor σ g (PiTensorProduct.map (fun a => (f a).toLinearMap) t) := LinearMap.congr_fun (hf' g) t
-    rw [e1, e2, e2]
-    exact e3
+    rwa [e1, e2, e2]
   · intro z
     obtain ⟨t, ht⟩ := map_surjective_lemma_9 (fun a => (f a).toLinearMap) (fun a => hf a) z
     refine ⟨⟨PiTensorProduct.map (fun a => (S a).toSubmodule.subtype) t, t, rfl⟩, ?_⟩
@@ -404,8 +401,7 @@ private theorem isSubquotient_piTensor_lemma_10 {ι : Type} {Γ Y₀ Z₀ : ι �
     have e2 : PiTensorProduct.map (fun a => (f a).toLinearMap ∘ₗ L a)
         (PiTensorProduct.map (fun a => (S a).toSubmodule.subtype) t) =
           PiTensorProduct.map (fun a => (f a).toLinearMap) t := LinearMap.congr_fun hΦ t
-    rw [e2]
-    exact ht
+    rwa [e2]
 
 theorem jm_le_jm_concat : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {s N : ℕ} (y : Fin s → IrrGL (k := k)) (hy : ∑ a, (y a).1 = N) (c : Fin s → ℕ) (x : ∀ a, Fin (c a) → IrrGL (k := k)) (hx : ∀ a, ∑ i, (x a i).1 = (y a).1) (hcat : ∑ i, (concat c x i).1 = N) (hpos : ∀ a, 1 ≤ jm (x a) (hx a) (y a).rep) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth π) (hfl : HasFiniteLength π), jm y hy π ≤ jm (concat c x) hcat π := by
   intro k _ _ _ _ hA s N y hy c x hx hcat hpos V _ _ π hs _
@@ -435,8 +431,7 @@ theorem jm_le_jm_concat : ∀ {k : Type} [Field k] [ValuativeRel k] [Topological
     refine GlobalTheory.JHMult.jhMult_ne_zero_iff.1 ?_
     refine ((GlobalTheory.SmGL.jhMult_congr_left φ1 _).trans (GlobalTheory.SmGL.jhMult_congr_right _ φ2)).trans_ne ?_
     refine GlobalTheory.JHMult.jhMult_ne_zero_iff.2 (isSubquotient_piTensor_lemma_10 fun a => ?_)
-    refine GlobalTheory.JHMult.jhMult_ne_zero_iff.1 ?_
-    exact Order.one_le_iff_ne_zero.1 (hpos a)
+    exact GlobalTheory.JHMult.jhMult_ne_zero_iff.1 (Order.one_le_iff_ne_zero.1 (hpos a))
   obtain ⟨φ3⟩ := GlobalTheory.JacStagesProof.jac_refinePlace_equiv k s N (fun a => (y a).1) e c (fun a b => (x a b).1) e' V π
   calc Zc.jm y hy π = jhMult (piTensor fun a => (y a).rep) (jac e π) := rfl
     _ ≤ jhMult ((piTensor fun l => (x (finSigmaFinEquiv.symm l).1 (finSigmaFinEquiv.symm l).2).rep).comp

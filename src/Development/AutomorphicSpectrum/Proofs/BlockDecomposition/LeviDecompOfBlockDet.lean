@@ -63,8 +63,7 @@ theorem mem_stab_univ {g : GL (ι ⊕ ι) R} :
       ∀ r c : ι, (g : Matrix (ι ⊕ ι) (ι ⊕ ι) R) (Sum.inr r) (Sum.inl c) = 0 ∧
         ((g⁻¹ : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R) (Sum.inr r) (Sum.inl c) = 0 := by
   constructor
-  · intro h r c
-    exact h (Sum.inr r) (by simp) (Sum.inl c) (by simp)
+  · exact fun h r c => h (Sum.inr r) (by simp) (Sum.inl c) (by simp)
   · intro h r hr c hc
     obtain ⟨c', -, rfl⟩ := hc
     rcases r with r | r
@@ -152,8 +151,7 @@ end Alg
 theorem mem_stab_inl_iff (s : Set ι) (q : stab R (Sum.inl '' (Set.univ : Set ι) : Set (ι ⊕ ι))) :
     q.1 ∈ stab R (Sum.inl '' s : Set (ι ⊕ ι)) ↔ piP q ∈ stab R s := by
   constructor
-  · intro h r hr c hc
-    exact h (Sum.inl r) (by simpa using hr) (Sum.inl c) ⟨c, hc, rfl⟩
+  · exact fun h r hr c hc => h (Sum.inl r) (by simpa using hr) (Sum.inl c) ⟨c, hc, rfl⟩
   · intro h r hr c hc
     obtain ⟨c', hc', rfl⟩ := hc
     rcases r with r | r

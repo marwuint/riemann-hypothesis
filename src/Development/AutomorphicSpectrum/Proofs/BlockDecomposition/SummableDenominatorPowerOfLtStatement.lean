@@ -146,11 +146,9 @@ theorem Kc_le_add {n : ℕ} (c h : Matrix (Fin n) (Fin n) K) (hh : ∀ a b, IsI 
   intro y hy i
   have h1 : IsI ((c *ᵥ fun j => algebraMap (𝓞 K) K (y j)) i) := hy i
   have h2 : IsI ((h *ᵥ fun j => algebraMap (𝓞 K) K (y j)) i) := by
-    show IsI (∑ j, h i j * algebraMap (𝓞 K) K (y j))
     exact isI_sum (K := K) Finset.univ _ fun j _ => (hh i j).mul ⟨y j, rfl⟩
   have h3 := h1.add h2
-  rw [Matrix.add_mulVec]
-  exact h3
+  rwa [Matrix.add_mulVec]
 
 theorem Kc_add {n : ℕ} (c h : Matrix (Fin n) (Fin n) K) (hh : ∀ a b, IsI (h a b)) :
     Kc (c + h) = Kc c := by
@@ -167,8 +165,7 @@ theorem vec_out {m : ℕ} (t : Fin m → K) (i : Fin m) :
     IsI ((Quotient.out (Submodule.Quotient.mk t : (Fin m → K) ⧸ intVec K m) : Fin m → K) i - t i) := by
   have h : Submodule.Quotient.mk (Quotient.out (Submodule.Quotient.mk t : (Fin m → K) ⧸ intVec K m))
       = (Submodule.Quotient.mk t : (Fin m → K) ⧸ intVec K m) := Quotient.out_eq _
-  have h2 := (Submodule.Quotient.eq _).1 h
-  exact h2 i
+  exact ((Submodule.Quotient.eq _).1 h) i
 
 end I
 
@@ -271,15 +268,12 @@ theorem hermClass_blocks : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
     rw [← Quotient.out_eq x, ← Quotient.out_eq x']
     refine QuotientAddGroup.eq.2 ?_
     refine fun i j => herm_isI σ hσ (-(Quotient.out x) + Quotient.out x') ?_ ?_ ?_ i j
-    · intro a b
-      exact h1' a b
+    · exact fun a b => h1' a b
     · intro a
       have : IsI (lastCol (Quotient.out x).1 a - lastCol (Quotient.out x').1 a) := h2' a
-      have e := this.neg
-      simpa [lastCol, add_comm, sub_eq_add_neg] using e
+      simpa [lastCol, add_comm, sub_eq_add_neg] using this.neg
     · have : IsI (dd (Quotient.out x) - dd (Quotient.out x')) := h3' 0
-      have e := (isI_algebraMap (E := E) this).neg
-      simpa [hdd, add_comm, sub_eq_add_neg] using e
+      simpa [hdd, add_comm, sub_eq_add_neg] using (isI_algebraMap (E := E) this).neg
   · intro x
     dsimp only
     set C := Quotient.out x with hC
@@ -290,13 +284,10 @@ theorem hermClass_blocks : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
     have hI : ∀ i j, IsI ((M - C.1) i j) := by
       intro i j
       refine blk_sub_isI σ hσ C _ _ _ ?_ ?_ ?_ i j
-      · intro a b
-        exact herm_out σ (topB σ C) a b
-      · intro a
-        exact vec_out (lastCol C.1) a
+      · exact fun a b => herm_out σ (topB σ C) a b
+      · exact fun a => vec_out (lastCol C.1) a
       · have h := isI_algebraMap (E := E) (vec_out (fun _ : Fin 1 => dd C) 0)
-        rw [map_sub, hdd] at h
-        exact h
+        rwa [map_sub, hdd] at h
     have := delta_add C.1 (M - C.1) hI
     rw [add_sub_cancel] at this
     exact this.symm
@@ -330,8 +321,7 @@ theorem relIndex_split {G H : Type*} [AddCommGroup G] [AddCommGroup H] (f : G �
       refine AddSubgroup.mem_sup.mpr ⟨a, ha, k, AddSubgroup.mem_inf.mpr ⟨?_, hk⟩, rfl⟩
       have := B.sub_mem hx2 (hAB ha)
       simpa using this
-    · refine sup_le (le_inf le_sup_left hAB) (le_inf ?_ inf_le_left)
-      exact inf_le_right.trans le_sup_right
+    · exact sup_le (le_inf le_sup_left hAB) (le_inf (inf_le_right.trans le_sup_right) inf_le_left)
   have h3 : A.relIndex (A ⊔ (B ⊓ f.ker)) = A.relIndex (B ⊓ f.ker) :=
     AddSubgroup.relIndex_sup_left _ _
   have h4 := AddSubgroup.relIndex_mul_relIndex A ((A ⊔ f.ker) ⊓ B) B
@@ -495,8 +485,7 @@ theorem map_lastInc_lastFib {m : ℕ} (C : Matrix (Fin (m + 1)) (Fin (m + 1)) E)
         simp [lastInc, Fin.castSucc_ne_last, this]
     refine ⟨v (Fin.last m), ?_, hv'⟩
     change lastInc E m (v (Fin.last m)) ∈ lam C
-    rw [hv']
-    exact h1
+    rwa [hv']
 
 theorem delta_blk (F E : Type) [Field F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (m : ℕ) (c : Matrix (Fin m) (Fin m) E) (u : Fin m → E) (d : E) :
@@ -562,8 +551,7 @@ theorem mem_den_iff (x : K) (a : 𝓞 K) :
     exact Submodule.mem_one.2 ⟨o, by simpa [Algebra.smul_def] using ho⟩
   · intro h
     obtain ⟨o, ho⟩ := Submodule.mem_one.1 h
-    intro i
-    exact ⟨o, by simpa [Algebra.smul_def] using ho⟩
+    exact fun i => ⟨o, by simpa [Algebra.smul_def] using ho⟩
 
 theorem absNorm_den_le (x : K) (d e : 𝓞 K) (hd : d ≠ 0) (hex : (e : K) = (d : K) * x)
     (B : Ideal (𝓞 K)) (hdB : Ideal.span {d} ≤ B) (heB : e ∈ B)
@@ -763,8 +751,7 @@ theorem mem_den_iff {K : Type} [Field K] [NumberField K] (x : K) (a : 𝓞 K) :
     a ∈ HS.den K x ↔ ∃ o : 𝓞 K, algebraMap (𝓞 K) K o = algebraMap (𝓞 K) K a * x := by
   rw [HS.den, Ideal.mem_torsionOf_iff, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
   show (∀ i : Fin 1, ∃ o, algebraMap (𝓞 K) K o = (a • fun _ : Fin 1 => x) i) ↔ _
-  simp only [Pi.smul_apply, Algebra.smul_def]
-  exact ⟨fun h => h 0, fun h _ => h⟩
+  simpa only [Pi.smul_apply, Algebra.smul_def] using ⟨fun h => h 0, fun h _ => h⟩
 
 theorem exists_bezout {K : Type} [Field K] [NumberField K] (x : K) :
     ∃ a ∈ HS.den K x, ∃ c ∈ HS.den K x,
@@ -923,8 +910,7 @@ theorem mem_of_dot_integral : ∀ (K : Type) [Field K] [NumberField K] (m : ℕ)
     intro x
     have h1 : f (s x) = x := LinearMap.congr_fun hs x
     have h2 := LinearMap.pi_apply_eq_sum_univ f (s x)
-    rw [h1] at h2
-    exact h2
+    rwa [h1] at h2
   choose G hG using fun i => exists_extend L hspan (φ i)
   let a : Fin n → Fin m → K := fun i j => G i (fun k => if j = k then 1 else 0)
   have ha : ∀ i w, a i ⬝ᵥ w = G i w := by
@@ -1077,8 +1063,7 @@ theorem sO_mem_tor (σ : E →ₐ[F] E) (hinv : ∀ x, σ (σ x) = x)
     have e4 : algebraMap (𝓞 E) E (sO σ a) = σ (a : E) := hsO a
     rw [e4]
     ring
-  rw [tor, Ideal.mem_torsionOf_iff, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
-  exact hmem
+  rwa [tor, Ideal.mem_torsionOf_iff, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
 
 end GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.HS.DualCover
 
@@ -1119,13 +1104,11 @@ theorem GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.HS.dual_cover : ∀ (F E
         rw [Submodule.mem_one]
         exact ⟨q, hq⟩
       have h := hb _ ht
-      rw [hsO, hinv] at h
-      rw [Submodule.mem_one] at h
+      rw [hsO, hinv, Submodule.mem_one] at h
       obtain ⟨q, hq⟩ := h
       rw [FractionalIdeal.mem_one_iff]
       refine ⟨q, ?_⟩
-      rw [mul_comm]
-      exact hq
+      rwa [mul_comm]
     rwa [inv_inv] at hbi
   have hbB' : b ∈ bMod c w := hbB
   obtain ⟨p, hp, z, hz, hpz⟩ := Submodule.mem_sup.mp hbB'
@@ -1135,8 +1118,7 @@ theorem GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.HS.dual_cover : ∀ (F E
     rw [← hpz]
     change p + ∑ j, σ (u j) * (y j : E) - _ = p
     ring
-  rw [this]
-  exact hp
+  rwa [this]
 end -- clump:auto
 end -- clump:auto
 end -- clump:auto
@@ -1300,8 +1282,7 @@ theorem GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.HS.LocalBound.local_boun
     have h3 := Submodule.add_mem _ h1 h2
     have h4 : (∑ j, σ (u j) * algebraMap (𝓞 E) E (y j) + algebraMap F E d * algebraMap (𝓞 E) E 0) +
         (b - ∑ j, σ (u j) * (y j : E)) = b := by
-      simp only [map_zero, mul_zero, add_zero]
-      exact add_sub_cancel _ _
+      simpa only [map_zero, mul_zero, add_zero] using add_sub_cancel _ _
     rwa [h4] at h3
   have hnorm := (_root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.NormSig.norm_eq_mul_conj_and_absNorm F E σ hCM t).1
   have hkey : ((sO σ t : 𝓞 E) : E) * (∑ j, σ (u j) * algebraMap (𝓞 E) E (yo j) +
@@ -1493,8 +1474,7 @@ theorem sum_delta_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   generalize hρdef : RingOfIntegers.norm F t = ρ at hf hkt hρ
   have hδ : delta c ≠ 0 := (_root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.HS.DeltaIndex.delta_index E m c).1
   have hN : Ideal.absNorm (tor c u) ≠ 0 := by
-    rw [Ne, Ideal.absNorm_eq_zero_iff]
-    exact hT
+    rwa [Ne, Ideal.absNorm_eq_zero_iff]
   have hδ' : (0 : ℝ) < delta c := by exact_mod_cast Nat.pos_of_ne_zero hδ
   have hN' : (0 : ℝ) < Ideal.absNorm (tor c u) := by exact_mod_cast Nat.pos_of_ne_zero hN
   have hs0 : 0 < s := by linarith
@@ -1529,8 +1509,7 @@ theorem sum_delta_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   have hS : 0 ≤ ∑' x, g x := tsum_nonneg hg0
   have hZ : 0 ≤ zetaR F (2 * s - 1) := hS.trans hzeta
   have hkC : (Ideal.absNorm (Ideal.span {ρ}) : ℝ) ≤ C * Ideal.absNorm (tor c u) := by
-    rw [hkt]
-    exact htC
+    rwa [hkt]
   have hpow : (Ideal.absNorm (tor c u) : ℝ) ^ (-(2 * s)) * (Ideal.absNorm (tor c u) : ℝ) =
       (Ideal.absNorm (tor c u) : ℝ) ^ (1 - 2 * s) := by
     rw [show (1 - 2 * s) = -(2 * s) + 1 by ring, Real.rpow_add hN', Real.rpow_one]
@@ -1541,8 +1520,7 @@ theorem sum_delta_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
     _ ≤ P * ((Ideal.absNorm (Ideal.span {ρ}) : ℝ) * ∑' x, g x) :=
         mul_le_mul_of_nonneg_left hle2 hP
     _ ≤ P * ((C * Ideal.absNorm (tor c u)) * zetaR F (2 * s - 1)) := by
-        refine mul_le_mul_of_nonneg_left ?_ hP
-        exact mul_le_mul hkC hzeta hS (by positivity)
+        exact mul_le_mul_of_nonneg_left (mul_le_mul hkC hzeta hS (by positivity)) hP
     _ = C * zetaR F (2 * s - 1) * (delta c : ℝ) ^ (-s) *
           (Ideal.absNorm (tor c u) : ℝ) ^ (1 - 2 * s) := by
         rw [← hpow]
@@ -1601,8 +1579,7 @@ theorem fibre_bound (c : Matrix (Fin m) (Fin m) E) (b : (Fin m → E) ⧸ lam c)
       have h4 := neg_mem h2
       have h5 : -(-(Quotient.out a.1 - Quotient.out b) + (Quotient.out a'.1 - Quotient.out b)) =
           Quotient.out a.1 - Quotient.out a'.1 := by abel
-      rw [h5] at h4
-      exact h4
+      rwa [h5] at h4
     apply Subtype.ext
     have h6 : (Submodule.Quotient.mk (Quotient.out a.1) : (Fin m → E) ⧸ intVec E m) =
         Submodule.Quotient.mk (Quotient.out a'.1) := (Submodule.Quotient.eq _).2 h3
@@ -1625,8 +1602,7 @@ theorem sum_tor : ∀ (E : Type) [Field E] [NumberField E] (m : ℕ) (c : Matrix
     (fun U => Submodule.Quotient.mk (Quotient.out U)) (delta c) (fibre_bound c)
     (fun x => (Ideal.absNorm (Ideal.torsionOf (𝓞 E) ((Fin m → E) ⧸ lam c) x) : ℝ) ^
       (-((m : ℝ) + r))) hg hs
-  refine ⟨h1, h2.trans ?_⟩
-  exact mul_le_mul_of_nonneg_left hle (Nat.cast_nonneg _)
+  exact ⟨h1, h2.trans (mul_le_mul_of_nonneg_left hle (Nat.cast_nonneg _))⟩
 
 end GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.HS.SumU
 end -- clump:auto
@@ -1670,8 +1646,7 @@ theorem step {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [A
         (Ideal.absNorm (tor (Quotient.out x).1 (Quotient.out U)) : ℝ) ^ (-((m : ℝ) + r)) := by
     intro x U
     have := hD m (Quotient.out x).1 (Quotient.out x).2 (Quotient.out U) s hs1
-    rw [hexp] at this
-    exact this
+    rwa [hexp] at this
   set A : ℝ := C * zetaR F (2 * s - 1) with hA
   have hA0 : 0 ≤ A := mul_nonneg hC.le (zetaR_nonneg _ _)
   have hmid : ∀ x : hermE σ m ⧸ hermO σ m,

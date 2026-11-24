@@ -195,8 +195,7 @@ theorem exists_card_quotient_eq_pow {A : Type} [CommRing A] [Module.Finite ℤ A
     (m : Ideal A) [m.IsMaximal] (hpm : (p : A) ∈ m) : ∃ fd : ℕ, Nat.card (A ⧸ m) = p ^ fd := by
   letI : Field (A ⧸ m) := Ideal.Quotient.field m
   have hp0 : ((p : ℕ) : A ⧸ m) = 0 := by
-    have h := Ideal.Quotient.eq_zero_iff_mem.2 hpm
-    simpa using h
+    simpa using Ideal.Quotient.eq_zero_iff_mem.2 hpm
   haveI hchar : CharP (A ⧸ m) p := by
     rcases (Nat.dvd_prime (Fact.out : p.Prime)).1 (ringChar.dvd hp0) with h | h
     · exact absurd h CharP.ringChar_ne_one
@@ -251,8 +250,7 @@ theorem powerSumsVanish_extTo_of_atPlacesOver : ∀ (K : Type) [Fintype K] [Deci
     have e : (MvPolynomial.map (Int.castRingHom ℤ) : MRing ι ℤ →+* MRing ι ℤ) = RingHom.id _ := by
       rw [show Int.castRingHom ℤ = RingHom.id ℤ from RingHom.ext_int _ _]
       exact RingHom.ext fun f => MvPolynomial.map_id f
-    rw [e, Ideal.comap_id] at h
-    exact h
+    rwa [e, Ideal.comap_id] at h
   have hZ' := (_root_.GlobalTheory.CompanionTheory.Ar.Num.pl_model K ι Ω y ℤ hinjZ hconstZ D harith (Ideal.span {((p : ℕ) : ℤ)}) (ZP p)).1
   rw [hP0] at hZ'
   have hZ : extTo (ZP p) (mCoordIdeal y) = pointIdeal (ZP p) y := by
@@ -271,8 +269,7 @@ theorem powerSumsVanish_extTo_of_atPlacesOver : ∀ (K : Type) [Fintype K] [Deci
     intro k
     obtain ⟨i, hi⟩ := hW.2 k
     refine ⟨i, fun h => hi ?_⟩
-    rw [hW₀, Ideal.mem_comap, map_X] at h
-    exact h
+    rwa [hW₀, Ideal.mem_comap, map_X] at h
   have hle : mCoordIdeal y ≤ W₀ := le_sup_left.trans hW0min.1.2
   obtain ⟨hcomp, hex, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Num.pl_corr K ι Ω y A hconst
   obtain ⟨Wa, ⟨hWap, hWapt, hWac⟩, hu⟩ := hex W₀ hW0p hW0rel hle
@@ -310,8 +307,7 @@ theorem powerSumsVanish_extTo_of_atPlacesOver : ∀ (K : Type) [Fintype K] [Deci
     refine sup_le (hcomp.ge.trans (Ideal.comap_mono le_sup_left)) (Ideal.map_le_iff_le_comap.2 ?_)
     rw [Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, Ideal.mem_comap, hmapC]
     refine Ideal.mem_sup_right ?_
-    have h := Ideal.mem_map_of_mem (C : A →+* MRing ι A) hpm
-    simpa using h
+    simpa using Ideal.mem_map_of_mem (C : A →+* MRing ι A) hpm
   obtain ⟨hW'p, hW'c⟩ := isPrime_map_and_comap_map (O := Localization.AtPrime m) m.primeCompl hWap
     (fun s hs h => hs (show s ∈ m by rw [hm, Ideal.mem_comap]; exact h))
   obtain ⟨W', hW'⟩ : ∃ W', W' = Wa.map (MvPolynomial.map (algebraMap A (Localization.AtPrime m)) :
@@ -328,12 +324,10 @@ theorem powerSumsVanish_extTo_of_atPlacesOver : ∀ (K : Type) [Fintype K] [Deci
     refine ⟨?_, fun k => ?_⟩
     · rw [hO]
       refine (mem_fibre_minimalPrimes_iff m _ W').2 ?_
-      rw [hW'c]
-      exact hWaMin
+      rwa [hW'c]
     · obtain ⟨i, hi⟩ := hW0rel k
       refine ⟨i, fun h => hi ?_⟩
-      rw [← hc0, Ideal.mem_comap, map_X]
-      exact h
+      rwa [← hc0, Ideal.mem_comap, map_X]
   have hv : PowerSumsVanish (pointIdeal (Localization.AtPrime m) y) D x :=
     hpl m hpm (Localization.AtPrime m)
   have hA := intNumL_of_isFibreComp y hconst (p : ℕ) m (Localization.AtPrime m) hpm fd hfd hfib

@@ -96,8 +96,7 @@ theorem ring_trunc (κ : DividedPowers I) (f : R →+* B) (δ : DividedPowers J)
   · refine ExtDP.of_eq δ'' ?_ ?_ ?_
     · rw [Ideal.map_sup, Ideal.map_map]
     · apply huniv
-      have hc := IsDPMorphism.comp δ'' hδ'' h₁
-      simpa using hc
+      simpa using IsDPMorphism.comp δ'' hδ'' h₁
     · exact IsDPMorphism.comp δ'' hδ'' h₂
   · intro C _ L η hη g hg
     have hker : ∀ x ∈ fil δ n, g x = 0 := by
@@ -107,8 +106,7 @@ theorem ring_trunc (κ : DividedPowers I) (f : R →+* B) (δ : DividedPowers J)
       exact (Ideal.mem_bot).mp h3
     refine ⟨Ideal.Quotient.lift _ g hker, ?_, Ideal.Quotient.lift_comp_mk _ g hker⟩
     apply huniv
-    rw [Ideal.Quotient.lift_comp_mk]
-    exact hg
+    rwa [Ideal.Quotient.lift_comp_mk]
 
 theorem ring_poly (κ : DividedPowers I) (f : R →+* B) (δ : DividedPowers J) (h : ExtDP κ f δ) :
     ∃ (A : Type) (_ : CommRing A) (a : B →+* A) (JA : Ideal A) (θ : DividedPowers JA) (y : A),
@@ -124,8 +122,7 @@ theorem ring_poly (κ : DividedPowers I) (f : R →+* B) (δ : DividedPowers J) 
   refine ⟨(stdPoly B).P, inferInstance, algebraMap B (stdPoly B).P, (stdPoly B).ext J, η, (stdPoly B).e 1,
     hQ.dp, ?_, h1, ?_, ?_⟩
   · refine ExtDP.of_eq η' ?_ ?_ ?_
-    · simp only [PDPoly.ext, Ideal.map_sup, Ideal.map_map]
-      exact sup_right_comm _ _ _
+    · simpa only [PDPoly.ext, Ideal.map_sup, Ideal.map_map] using sup_right_comm _ _ _
     · refine dp_of_std δ (stdPoly B) η hQ η' (RingHom.id _) ((stdPoly B).e 1) ((stdPoly B).e_one_mem_ext _) ?_ ?_
       · simpa using IsDPMorphism.comp η' hQ'.dp h₁
       · intro m
@@ -166,8 +163,7 @@ theorem ring_adj (κ : DividedPowers I) (f : R →+* B) (δ : DividedPowers J) (
   obtain ⟨A2, _, a2, JA2, θ2, ha2, hlev, hext2, hsurj, huniv2⟩ := ring_trunc κ (a1.comp f) θ1 hext1 n hn
   have hmem : a2 y1 ∈ JA2 := ha2.1 (Ideal.mem_map_of_mem a2 hy1)
   refine ⟨A2, inferInstance, a2.comp a1, JA2, θ2, a2 y1, IsDPMorphism.comp θ2 ha2 ha1, hlev, ?_, hmem, ?_⟩
-  · rw [RingHom.comp_assoc]
-    exact hext2
+  · rwa [RingHom.comp_assoc]
   · intro C _ L η hη g hg z hz
     obtain ⟨G1, hG1, hG1a, hG1y⟩ := huniv1 C L η g hg z hz
     obtain ⟨G, hG, hGa⟩ := huniv2 C L η hη G1 hG1

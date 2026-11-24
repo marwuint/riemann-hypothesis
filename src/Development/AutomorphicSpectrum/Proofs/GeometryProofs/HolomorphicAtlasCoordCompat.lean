@@ -61,8 +61,7 @@ theorem aeval_mul_of_isHomogeneous {σ R : Type*} [Fintype σ] [CommRing R] {alg
   have hdeg : ∑ i, d i = n := by
     have h := hF (MvPolynomial.mem_support_iff.1 hd)
     have h2 : Finsupp.degree d = n := by
-      rw [Finsupp.degree_eq_weight_one]
-      exact h
+      rwa [Finsupp.degree_eq_weight_one]
     rw [← h2, Finsupp.degree_apply]
     exact (Finset.sum_subset (Finset.subset_univ _) (fun i _ hi => by simpa using hi)).symm
   simp only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg, _root_.mul_assoc]
@@ -154,8 +153,7 @@ theorem immersion_block : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero 
     intro k
     by_cases h : k = k₀
     · subst h
-      rw [hp'0]
-      exact hp
+      rwa [hp'0]
     · rw [hp'def, Function.update_of_ne h]
       exact hr k
   have hblk := fun k => _root_.GlobalTheory.CompanionTheory.Ar.BlockRatio.ratios_quotients_of_forms X Ω ξ K J y k₀ hTie hEmb ℂ (lam x x) hwpts (ix p) k (p' k) hp (hp' k)
@@ -165,9 +163,7 @@ theorem immersion_block : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero 
   have ht0 : G v₀ ⟨k₀, ix p⟩ ≠ 0 := by rw [hG0]; exact hp
   have hfd : DifferentiableAt ℂ f v₀ :=
     by
-    refine differentiableAt_pi.2 fun i => ?_
-    have h := differentiableAt_quot (hAn ⟨k₀, ix i⟩) (hAn ⟨k₀, ix p⟩) ht0
-    exact h
+    exact differentiableAt_pi.2 fun i => differentiableAt_quot (hAn ⟨k₀, ix i⟩) (hAn ⟨k₀, ix p⟩) ht0
 
   set ev : MvPolynomial (J k₀) ℤ → (κ → ℂ) → ℂ :=
     fun P u => MvPolynomial.aeval (fun i' : J k₀ => u (ix.symm i')) P with hevdef
@@ -185,8 +181,7 @@ theorem immersion_block : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero 
   have hΨd : DifferentiableAt ℂ Ψ (f v₀) :=
     by
     refine differentiableAt_pi.2 fun q => ?_
-    have h := differentiableAt_quot (hevd (F q.1 q.2) (f v₀)) (hevd (F q.1 (p' q.1)) (f v₀)) (hden0 q.1)
-    exact h
+    exact differentiableAt_quot (hevd (F q.1 q.2) (f v₀)) (hevd (F q.1 (p' q.1)) (f v₀)) (hden0 q.1)
 
   have e1 : ∀ᶠ v in nhds v₀, G v ∈ mcPts (mCoordIdeal y) := by
     filter_upwards [hSo.mem_nhds hS] with v hv

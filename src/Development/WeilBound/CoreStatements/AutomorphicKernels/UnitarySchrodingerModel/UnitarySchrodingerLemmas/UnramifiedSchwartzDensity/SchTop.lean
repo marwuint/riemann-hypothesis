@@ -443,8 +443,7 @@ theorem mem_hermR_iff (σ : E →ₐ[F] E) {n : ℕ} (S : Matrix (Fin n) (Fin n)
     S ∈ HermR R σ n ↔ conjT R σ S = S := by
   constructor
   · intro h; ext a b; exact h a b
-  · intro h a b
-    exact congrFun (congrFun h a) b
+  · exact fun h a b => congrFun (congrFun h a) b
 
 theorem conjT_conjT {σ : E →ₐ[F] E} (hs : ∀ x, σ (σ x) = x) {n : ℕ}
     (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)) : conjT R σ (conjT R σ g) = g := by
@@ -622,8 +621,7 @@ theorem scaleInf : PositivityTheory.PfSWUS.SchInf.ScaleInf := by
     exact (Measure.IsAddHaarMeasure.toIsOpenPosMeasure (μ := ν)).open_pos Set.univ isOpen_univ Set.univ_nonempty
       (by rw [hB0]; simp)
   · have : τ = τ₀ := funext fun S => Subtype.ext ((hτ S).trans (hcT S).symm)
-    rw [this]
-    exact hB0
+    rwa [this]
 
 end GlobalTheory.CompanionTheory.SW.HaarScale
 end -- clump:auto
@@ -839,8 +837,7 @@ theorem exists_quadratic_section {N : ℕ} (q : (Fin N → ℝ) → (Fin N → �
     exact P.map_source h0
   · intro s hs
     have := P.right_inv hs
-    rw [hcoe] at this
-    exact this
+    rwa [hcoe] at this
 
 theorem exists_ring_section {A : Type} [Ring A] [TopologicalSpace A] [IsTopologicalRing A] {N : ℕ}
     (e : A ≃+ (Fin N → ℝ)) (he : Continuous e) (he' : Continuous e.symm)
@@ -865,8 +862,7 @@ theorem exists_ring_section {A : Type} [Ring A] [TopologicalSpace A] [IsTopologi
   refine ⟨e ⁻¹' T, fun S => e.symm (ψ (e S)), hT.preimage he, haT, ?_, ?_⟩
   · exact he'.comp_continuousOn (hψ.comp he.continuousOn (fun x hx => hx))
   · intro S hS
-    have h := congrArg e.symm (hs (e S) hS)
-    simpa [map_add (f := _)] using h
+    simpa [map_add (f := _)] using congrArg e.symm (hs (e S) hS)
 
 theorem tau_mul_mul_eq {A : Type} [Ring A] (τ : A →+ A) (hτm : ∀ x y, τ (x * y) = τ y * τ x)
     (hτ1 : τ 1 = 1) (hττ : ∀ x, τ (τ x) = x) (h c d S Y : A) (hcen : ∀ x, h * x = x * h)
@@ -1153,8 +1149,7 @@ theorem density_limit {V X Y : Type} [TopologicalSpace V] [LocallyCompactSpace V
       exact tendsto_integral_of_dominated_convergence (fun x => ‖φ x‖) (fun k => hmeas k _)
         (hφS S (hKB hS)).norm (fun k => Filter.Eventually.of_forall (hψn k))
         (Filter.Eventually.of_forall hψl)
-  refine tendsto_nhds_unique hL (hR.congr fun k => ?_)
-  exact ((H _ (hψc k) (hψs k)).1.2 K hK hKB).symm
+  exact tendsto_nhds_unique hL (hR.congr fun k => ((H _ (hψc k) (hψs k)).1.2 K hK hKB).symm)
 
 
 

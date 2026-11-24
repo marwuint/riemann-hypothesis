@@ -73,8 +73,7 @@ theorem pa_neg_lin_pow {J : Type} [Fintype J] [DecidableEq J] (d : ℕ) (c : J �
     simpa using hg.1
   · intro m hm
     simp only [Finset.mem_finsuppAntidiag] at hm
-    simp only [Finset.mem_piAntidiag]
-    exact ⟨hm.1, fun i _ => Finset.mem_univ i⟩
+    simpa only [Finset.mem_piAntidiag] using ⟨hm.1, fun i _ => Finset.mem_univ i⟩
   · intro g _
     simp
   · intro m _

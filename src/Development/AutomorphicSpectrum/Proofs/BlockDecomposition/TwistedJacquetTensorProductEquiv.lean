@@ -195,9 +195,7 @@ theorem twKer_piTensor_le (π : ∀ a, Representation ℂ (Γ a) (X a)) (H : ∀
     apply Submodule.smul_mem
     rw [e1, e2, e3]
     apply tprod_sub_mem
-    intro a
-    apply Submodule.subset_span
-    exact ⟨⟨(n : ∀ a, Γ a) a, n.2 a (Set.mem_univ a)⟩, x a, rfl⟩
+    exact fun a => Submodule.subset_span ⟨⟨(n : ∀ a, Γ a) a, n.2 a (Set.mem_univ a)⟩, x a, rfl⟩
   | add v₁ v₂ h₁ h₂ =>
     rw [map_add (f := _), smul_add, add_sub_add_comm]
     exact Submodule.add_mem _ h₁ h₂
@@ -243,8 +241,7 @@ theorem pureSpan_le_twKer (π : ∀ a, Representation ℂ (Γ a) (X a)) (H : ∀
           have : (⟨(n : ∀ a, Γ a) b, n.2 b (Set.mem_univ b)⟩ : H b) = 1 :=
             Subtype.ext (by simp [n, Pi.mulSingle_eq_of_ne hb])
           rw [this, map_one]
-        · intro h
-          exact absurd (Finset.mem_univ a) h
+        · exact fun h => absurd (Finset.mem_univ a) h
       have hw : PiTensorProduct.tprod ℂ (Function.update x a ((π a) (g : Γ a) v - ((χ a g : ℂˣ) : ℂ) • v)) =
           (piTensor π) (n : ∀ a, Γ a) (PiTensorProduct.tprod ℂ (Function.update x a v)) -
             ((piChar χ n : ℂˣ) : ℂ) • PiTensorProduct.tprod ℂ (Function.update x a v) := by

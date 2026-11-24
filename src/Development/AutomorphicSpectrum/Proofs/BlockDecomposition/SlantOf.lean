@@ -121,8 +121,7 @@ theorem XD.kun_cup (hT : TopRes) (E : XD K) (U₁ : ObjectProperty E.C₁) (U₂
   have hc₂ := CrystallineSemistableComparison.CechClassBoundaries.cyc (CH.Mor.restrict (E.F₃ c) U₃.ι).hom _ hc
   have hz : (CH.cx (U₃.ι ⋙ E.F₃ c)).d n ((E.pr U₁ U₂ U₃ h₁ h₂ t.ha).μ t.h
       ((CH.Mor.restrict (E.F₁ t.a) U₁.ι).pullC t.i x) ((CH.Mor.restrict (E.F₂ t.a') U₂.ι).pullC t.j y)) = 0 := by
-    rw [XD.pr_restrict]
-    exact hc₂
+    rwa [XD.pr_restrict]
   have key := he t _ _ hx₂ hy₂ hz
   refine Eq.trans ?_ key.symm |>.trans rfl
   change (CH.Mor.restrict (E.F₃ c) U₃.ι).pull n ((E.μ t.ha).cup t.h ((CH.cx _).cls _ hx₁) ((CH.cx _).cls _ hy₁)) = _
@@ -373,8 +372,7 @@ theorem glue_r : MVBij → CovDesc → ∀ {K : Type} [Field K] (E : XD K) (U₁
     (fun S hS => hK S hS)
   intro A B A' B' r₁ r₂ k k' a a' c ha i j n hn x y
   have h := _root_.GlobalTheory.CompanionTheory.KunGlue.pr_res E r₁.1 r₁.2 r₂.1 r₂.2 (le_refl U₁) k k' ha hn x y
-  rw [_root_.GlobalTheory.CompanionTheory.KunGlue.resU_self_pullC] at h
-  exact h
+  rwa [_root_.GlobalTheory.CompanionTheory.KunGlue.resU_self_pullC] at h
 
 end GlobalTheory.CompanionTheory.KunGlue
 end -- clump:auto
@@ -483,9 +481,7 @@ variable {K : Type} [Field K]
 def diag (c : ℕ) (a : Fin (c + 1)) : Idx c c :=
   ⟨a, a, c - a, c - a, by omega, by omega⟩
 
-theorem diag_inj (c : ℕ) : Function.Injective (diag c) := by
-  intro a b h
-  exact Fin.ext (congrArg Idx.a h)
+theorem diag_inj (c : ℕ) : Function.Injective (diag c) := fun a b h => Fin.ext (congrArg Idx.a h)
 
 theorem kunE_of_diag {P Q T : ℕ → Cx.{w} K} (pr : ∀ {a a' c : ℕ}, a + a' = c → CxPairing (P a) (Q a') (T c))
     (hP : ∀ a j, j ≠ a → Subsingleton ((P a).H j)) (hQ : ∀ a j, j ≠ a → Subsingleton ((Q a).H j))
@@ -586,8 +582,7 @@ theorem kun_aff : SiteLaws → AffOm → KunAff → ∀ (K : Type) [Field K] [Ch
     refine ⟨e, fun a hc x y hx hy hz => ?_⟩
     have eq := hodge_pr_eq q q' p₁ p₂ hP.w.symm (inU q V) (inU q' V') (inU (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V')) h₁ h₂ hc hc x y
     have hz' : (CH.cx ((inU (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V')).ι ⋙ G (p₁ ≫ q) c)).d c (cupU (p₁ ≫ q) _ hc hc ((morV p₁ rfl a h₁).pullC a x) ((morV p₂ hP.w.symm (c - a) h₂).pullC (c - a) y)) = 0 := by
-      rw [← eq]
-      exact hz
+      rwa [← eq]
     exact (he a hc x y hx hy hz').trans (_root_.CrystallineSemistableComparison.Auxff.cls_congr _ eq.symm _ _)
 
 end GlobalTheory.CompanionTheory.KunGlue.Aff

@@ -66,8 +66,7 @@ private theorem support_imageIdealSheaf_nonempty {X Y : Scheme.{u}} (f : X ⟶ Y
   have := hf
   obtain ⟨x, hx⟩ := h
   have hmem : x ∈ Set.range ⇑J.subschemeι := by
-    rw [Scheme.IdealSheafData.range_subschemeι]
-    exact hx
+    rwa [Scheme.IdealSheafData.range_subschemeι]
   obtain ⟨z, -⟩ := hmem
   refine ⟨(J.subschemeι ≫ f) z, ?_⟩
   rw [imageIdealSheaf_eq_ker, Scheme.Hom.support_ker]
@@ -291,17 +290,12 @@ theorem DivisorReduction.divisorReductionSeq_orderAt_le_mult (hres : FunctorialR
       have hlen : (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian T j hj
           (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T)
           (L (DivisorReduction.restrictToDivisor T j hj)) hpr).length
-          = (L (DivisorReduction.restrictToDivisor T j hj)).length := by
-        have h := ambientBlowupSequence_length (T.boundary.get ⟨j, hj⟩).subschemeι
-          (MarkedBlowupSequenceData.ofMarkedSequence (L (DivisorReduction.restrictToDivisor T j hj))).toBlowupSequenceData
-          hres blowupPreservesNoetherian hpr
-        calc (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian T j hj
-              (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T)
-              (L (DivisorReduction.restrictToDivisor T j hj)) hpr).length
-            = (MarkedBlowupSequenceData.ofMarkedSequence
-                (L (DivisorReduction.restrictToDivisor T j hj))).toBlowupSequenceData.length := h
-          _ = (L (DivisorReduction.restrictToDivisor T j hj)).length :=
-              MarkedBlowupSequenceData.ofMarkedSequence_length _
+          = (L (DivisorReduction.restrictToDivisor T j hj)).length :=
+        (ambientBlowupSequence_length (T.boundary.get ⟨j, hj⟩).subschemeι
+          (MarkedBlowupSequenceData.ofMarkedSequence
+            (L (DivisorReduction.restrictToDivisor T j hj))).toBlowupSequenceData
+          hres blowupPreservesNoetherian hpr).trans
+          (MarkedBlowupSequenceData.ofMarkedSequence_length _)
       rw [heq hmk]
       intro i hi x
       rw [MarkedBlowupSequenceData.toMarkedSequence_length, BlowupSequenceData.toMarkedBlowupSequenceData_length, hlen] at hi
@@ -312,17 +306,12 @@ theorem DivisorReduction.divisorReductionSeq_orderAt_le_mult (hres : FunctorialR
       have hlen : (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian T j hj
           (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj)
           (L (DivisorReduction.restrictTwistedToDivisor T j hj)) hpr).length
-          = (L (DivisorReduction.restrictTwistedToDivisor T j hj)).length := by
-        have h := ambientBlowupSequence_length (T.boundary.get ⟨j, hj⟩).subschemeι
-          (MarkedBlowupSequenceData.ofMarkedSequence (L (DivisorReduction.restrictTwistedToDivisor T j hj))).toBlowupSequenceData
-          hres blowupPreservesNoetherian hpr
-        calc (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian T j hj
-              (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj)
-              (L (DivisorReduction.restrictTwistedToDivisor T j hj)) hpr).length
-            = (MarkedBlowupSequenceData.ofMarkedSequence
-                (L (DivisorReduction.restrictTwistedToDivisor T j hj))).toBlowupSequenceData.length := h
-          _ = (L (DivisorReduction.restrictTwistedToDivisor T j hj)).length :=
-              MarkedBlowupSequenceData.ofMarkedSequence_length _
+          = (L (DivisorReduction.restrictTwistedToDivisor T j hj)).length :=
+        (ambientBlowupSequence_length (T.boundary.get ⟨j, hj⟩).subschemeι
+          (MarkedBlowupSequenceData.ofMarkedSequence
+            (L (DivisorReduction.restrictTwistedToDivisor T j hj))).toBlowupSequenceData
+          hres blowupPreservesNoetherian hpr).trans
+          (MarkedBlowupSequenceData.ofMarkedSequence_length _)
       rw [heq hmk]
       intro i hi x
       rw [MarkedBlowupSequenceData.toMarkedSequence_length, BlowupSequenceData.toMarkedBlowupSequenceData_length,

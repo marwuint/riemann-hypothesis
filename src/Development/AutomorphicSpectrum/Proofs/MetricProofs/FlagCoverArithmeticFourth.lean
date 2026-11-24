@@ -127,8 +127,7 @@ theorem exists_isArithVar [CharZero Ω] [Nonempty K] (y : (Σ k, ι k) → Ω) (
     exfalso
     have h1 : (1 : WithBot ℕ∞) + ((Nat.card (Σ k, ι k) : ℕ∞) : WithBot ℕ∞) =
         (((1 + Nat.card (Σ k, ι k) : ℕ) : ℕ∞) : WithBot ℕ∞) := by push_cast; rfl
-    rw [ENat.card_eq_coe_natCard] at hle
-    rw [h1, WithBot.coe_le_coe] at hle
+    rw [ENat.card_eq_coe_natCard, h1, WithBot.coe_le_coe] at hle
     simp only [top_add] at hle
     exact ENat.natCast_ne_top _ (top_le_iff.1 hle)
   | coe n =>
@@ -170,8 +169,7 @@ theorem count_of_nonempty (hGood : Inter.GenericPointsAvoidBadLocus.Statement) (
     subst hk
     refine ⟨p.2, ?_⟩
     show y (v ⟨p.1, p.2⟩) ≠ 0
-    rw [Sigma.eta, hp]
-    exact hi
+    rwa [Sigma.eta, hp]
   obtain ⟨n, hA⟩ := exists_isArithVar (y ∘ v) hne
   have halg := isAlgebraic_of_relfinrank_pos (blockFnField_comp_le hv y) hpos
   have hP' : IsArithVar (mCoordIdeal y) (n + 1) :=
@@ -351,13 +349,11 @@ theorem ncard_ptsOverPt_addOne [IsEmpty K] (v : (Σ k, ι k) → Σ k, ι' k) (y
   · rintro _ _ ⟨z₁, hz₁, rfl, -⟩ ⟨z₂, hz₂, rfl, -⟩ h
     have h' : {w | SameOrbit w (z₁ ∘ inlV (ι := ι') (ι₂ := SingletonBlock))} =
         {w | SameOrbit w (z₂ ∘ inlV (ι := ι') (ι₂ := SingletonBlock))} := by
-      rw [← image_orbit, ← image_orbit]
-      exact h
+      rwa [← image_orbit, ← image_orbit]
     have h1 : SameOrbit (z₁ ∘ inlV (ι := ι') (ι₂ := SingletonBlock)) (z₂ ∘ inlV) := by
       have : z₁ ∘ inlV (ι := ι') (ι₂ := SingletonBlock) ∈ {w | SameOrbit w (z₁ ∘ inlV (ι := ι') (ι₂ := SingletonBlock))} :=
         Cj.sameOrbit_refl _
-      rw [h'] at this
-      exact this
+      rwa [h'] at this
     have h2 := sameOrbit_of_comp_inlV (fun u => hz₁.1 (Sum.inr u)) (fun u => hz₂.1 (Sum.inr u)) h1
     ext w
     exact ⟨fun hw => Cj.sameOrbit_trans hw h2, fun hw => Cj.sameOrbit_trans hw (Cj.sameOrbit_symm h2)⟩

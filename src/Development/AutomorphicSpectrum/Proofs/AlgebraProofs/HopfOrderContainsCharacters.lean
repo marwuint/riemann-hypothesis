@@ -82,8 +82,7 @@ lemma sum_conv_mul (l m g : T → K) :
     ∑ t, conv l m t * g t = ∑ x, ∑ y, l x * m y * g (x * y) := by
   simp only [conv, Finset.sum_mul]
   rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun x _ => ?_
-  exact Fintype.sum_equiv (Equiv.mulLeft x⁻¹) _ _ (fun t => by simp)
+  exact Finset.sum_congr rfl fun x _ => Fintype.sum_equiv (Equiv.mulLeft x⁻¹) _ _ (fun t => by simp)
 
 lemma conv_mem {A : Subalgebra R (T → R)} (hc : ∀ f ∈ A, (fun z : T × T => f (z.1 * z.2)) ∈ prodSpan A)
     {l m : T → K} (hl : l ∈ dualOrder K A) (hm : m ∈ dualOrder K A) : conv l m ∈ dualOrder K A := by
@@ -187,14 +186,12 @@ lemma isIntegral_pairWith [FaithfulSMul R K] {A : Subalgebra R (T → R)} (hA : 
   haveI := hA.finite
   haveI := hA.projective
   have hfg : (dualOrder K A).FG := by
-    rw [← range_psi hd0 hd]
-    rw [← Submodule.map_top]
+    rw [← range_psi hd0 hd, ← Submodule.map_top]
     exact (Module.Finite.fg_top (R := R) (M := Module.Dual R A)).map _
   let M : Submodule R K := (dualOrder K A).map (pairWith (R := R) c)
   have hone : (1 : K) ∈ M := by
     refine ⟨Pi.single 1 1, ?_, ?_⟩
-    · intro f _
-      exact ⟨f 1, by simp [Pi.single_apply]⟩
+    · exact fun f _ => ⟨f 1, by simp [Pi.single_apply]⟩
     · simp [pairWith, Pi.single_apply, hc1]
   have hmul : ∀ x ∈ M, ∀ y ∈ M, x * y ∈ M := by
     rintro _ ⟨a, ha, rfl⟩ _ ⟨b, hb, rfl⟩
@@ -251,8 +248,6 @@ theorem GlobalTheory.CompanionTheory.Ar.BT.char_mem_hopfOrder : ∀ (R : Type) [
   simp only [hr, mul_smul, ← Finset.smul_sum] at hx
   have hc : c = ((∑ i, r i • p (fun j => if i = j then 1 else 0) : A) : T → R) := by
     funext t
-    have e := congrArg (fun a : A => (a : T → R) t) hx
-    apply mul_left_cancel₀ hd0
-    exact e.symm
+    exact mul_left_cancel₀ hd0 (congrArg (fun a : A => (a : T → R) t) hx).symm
   rw [hc]
   exact Subtype.property _

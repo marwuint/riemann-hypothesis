@@ -65,11 +65,9 @@ theorem mem_of_mem_iSup_of_indep {Ω W I : Type} [Field Ω] [AddCommGroup W] [Mo
       iSup₂_le fun t e v hv => (le_iSup₂_of_le t e le_rfl : F t ≤ ⨆ (t) (_ : t ≠ s), F t) (hP t hv)
     exact hle hd
   have hd3 : d ∈ F s := by
-    have h := sub_mem hxs (show a ∈ F s from hP s ha)
-    simpa using h
+    simpa using sub_mem hxs (show a ∈ F s from hP s ha)
   have h0 : d = 0 := Submodule.disjoint_def.1 (hF s) d hd3 hd2
-  rw [h0, add_zero]
-  exact ha
+  rwa [h0, add_zero]
 
 theorem eigLat_isFlagVBOn_of_pull_char0 : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Tor.Level H) (c : Coeff l)
     (X X' : Scheme.{0}) (t : SAB H X) (t' : SAB H X') (f : X' ⟶ X) (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [CharZero Ω₀]
@@ -107,8 +105,7 @@ theorem eigLat_isFlagVBOn_of_pull_char0 : ∀ (E : Type) [Field E] [NumberField 
       have he' : e ∈ M.lat.inter (eigSp ρ (cst.comp (labelEmb c u))) ⟨f q.1, h⟩ := by
         have h3 := hL u ⟨f q.1, h⟩ hp
         have h4 : e ∈ L u ⟨f q.1, h⟩ := he
-        rw [h3] at h4
-        exact h4
+        rwa [h3] at h4
       refine ⟨?_, hj u e he'.2⟩
       show j e ∈ M'.lat q
       rw [hlat]
@@ -118,18 +115,14 @@ theorem eigLat_isFlagVBOn_of_pull_char0 : ∀ (E : Type) [Field E] [NumberField 
       refine Submodule.span_le.2 ?_
       rintro _ ⟨h', e, he, rfl⟩
       have he1 : e ∈ ⨆ u, M.lat.inter (eigSp ρ (cst.comp (labelEmb c u))) ⟨f q.1, h⟩ := by
-        rw [← hsum]
-        exact he
+        rwa [← hsum]
       refine Submodule.iSup_induction _ (motive := fun e => j e ∈ ⨆ u, ((L u).pull ξ' f j) q) he1
         (fun u e he => ?_) ?_ (fun x y hx hy => ?_)
       · refine Submodule.mem_iSup_of_mem u (Submodule.subset_span ⟨h, e, ?_, rfl⟩)
         have h3 := hL u ⟨f q.1, h⟩ hp
-        rw [h3]
-        exact he
-      · simp only [map_zero]
-        exact zero_mem _
-      · simp only [map_add (f := _)]
-        exact add_mem hx hy
+        rwa [h3]
+      · simpa only [map_zero] using zero_mem _
+      · simpa only [map_add (f := _)] using add_mem hx hy
     refine le_antisymm ?_ (hle s)
     rintro x ⟨hx1, hx2⟩
     exact mem_of_mem_iSup_of_indep (regAt ξ' q) hind (fun u => (hle u).trans inf_le_right) s (hall hx1) hx2

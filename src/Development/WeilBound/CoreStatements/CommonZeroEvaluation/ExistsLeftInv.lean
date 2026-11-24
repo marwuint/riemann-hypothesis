@@ -168,8 +168,7 @@ theorem diag_mul {A B : Matrix (Fin r) (Fin r) K} (hA : A.BlockTriangular id) (h
     rcases lt_or_gt_of_ne hk with h | h
     · rw [hA h, zero_mul]
     · rw [hB h, mul_zero]
-  · intro h
-    exact absurd (Finset.mem_univ i) h
+  · exact fun h => absurd (Finset.mem_univ i) h
 
 theorem vV_diag_eq {g : Matrix (Fin n) (Fin r) K} {C C' : Matrix (Fin r) (Fin r) K} (hC : C.BlockTriangular id)
     (hC' : C'.BlockTriangular id) (h0 : ∀ i, C i i ≠ 0) (h0' : ∀ i, C' i i ≠ 0) {u u' : Matrix (Fin n) (Fin r) V}
@@ -274,8 +273,7 @@ theorem tend_val (s : S) : Tend V ψ (fun ψ' => ψ' s) (ψ s) := by
   show valV V (ψ' s - ψ s) < valV V c
   have hc0 : 0 < valV V c := zero_lt_iff.mpr (valV_ne_zero hc)
   by_cases hd : ψ' s - ψ s = 0
-  · rw [hd, map_zero]
-    exact hc0
+  · rwa [hd, map_zero]
   · rcases h s (Finset.mem_singleton_self s) with h1 | h1
     · exact absurd (sub_eq_zero.mpr h1) hd
     · apply valV_lt_of_vV_lt_lemma_2 hd hc
@@ -319,8 +317,7 @@ theorem Tend.sum {I : Type} (s : Finset I) {a : I → (S →+* K) → K} {b : I 
   induction s using Finset.induction_on with
   | empty => simpa using (tend_const (V := V) (ψ := ψ) (0 : K))
   | insert i s hi ih =>
-    have h2 := (h i).add ih
-    simpa [Finset.sum_insert hi] using h2
+    simpa [Finset.sum_insert hi] using (h i).add ih
 
 theorem Tend.div {a a' : (S →+* K) → K} {b b' : K} (h : Tend V ψ a b) (h' : Tend V ψ a' b') (hb : b' ≠ 0) :
     Tend V ψ (fun ψ' => a ψ' / a' ψ') (b / b') := by
@@ -411,8 +408,7 @@ theorem Tend.cong {a : (S →+* K) → K} {b : V} (h : Tend V ψ a (algebraMap V
   refine ⟨b + y, by rw [map_add (f := _), hy, add_sub_cancel], ?_⟩
   rw [add_sub_cancel_left]
   have h3 : valV V (algebraMap V K y) < 1 := by
-    rw [hy]
-    exact h1
+    rwa [hy]
   exact (IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem _ y).mp h3
 
 end Close

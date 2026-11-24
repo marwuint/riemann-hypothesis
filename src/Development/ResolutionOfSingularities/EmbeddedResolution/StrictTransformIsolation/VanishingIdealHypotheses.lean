@@ -86,8 +86,7 @@ theorem isOpenImmersion_subschemeMap {V W : Scheme.{u}} (f : V ⟶ W) [IsOpenImm
   have heq : g = g' := by
     refine (cancel_mono D.subschemeι).mp ?_
     rw [hg, hg'fac]
-  rw [heq]
-  exact hg'
+  rwa [heq]
 
 theorem isSmoothDivisor_comap {V W : Scheme.{u}} {k : Type u} [Field k]
     (f : V ⟶ W) [IsOpenImmersion f] (p : W ⟶ Spec (CommRingCat.of k))
@@ -210,8 +209,7 @@ theorem orderAt_vanishingIdeal_eq_one_of_not_mem_irreducibleComponents
   have hMax : Maximal (fun s : Set ↥X => IsIrreducible s ∧ s ⊆ (S : Set ↥X)) (S : Set ↥X) := by
     constructor
     · exact ⟨hSirr, subset_rfl⟩
-    · intro b hb _
-      exact hb.2
+    · exact fun b hb _ => hb.2
   obtain ⟨t, htpre, hSt, hmaxt⟩ := exists_preirreducible (S : Set ↥X) hSirr.2
   have htirr : IsIrreducible t := ⟨⟨x, hSt hxS⟩, htpre⟩
   have htclosed : IsClosed t := by
@@ -221,11 +219,8 @@ theorem orderAt_vanishingIdeal_eq_one_of_not_mem_irreducibleComponents
   have htmem : t ∈ irreducibleComponents ↥X := by
     constructor
     · exact htirr
-    · intro u hu htu
-      exact (hmaxt u hu.2 htu).le
-  have hSnet : (S : Set ↥X) ≠ t := by
-    intro hEq
-    exact hS (hEq ▸ htmem)
+    · exact fun u hu htu => (hmaxt u hu.2 htu).le
+  have hSnet : (S : Set ↥X) ≠ t := fun hEq => hS (hEq ▸ htmem)
   obtain ⟨y, hy⟩ := QuasiSober.sober htirr htclosed
   have hy' : closure ({y} : Set ↥X) = t := hy
   have hyx : y ⤳ x := by

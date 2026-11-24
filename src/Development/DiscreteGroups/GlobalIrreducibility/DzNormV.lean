@@ -106,22 +106,18 @@ theorem normV_eq_of_padic (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuou
     refine ⟨a, mem_of_val_lt_one w _ ?_⟩
     have h5 : ‖x - a‖ < 1 := by
       have h := (PadicInt.mem_nonunits).mp ha
-      rw [PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_natCast] at h
-      exact h
+      rwa [PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_natCast] at h
     have h6 := val_lt_one_of_norm_lt_one w g i hi _ h5
     rw [map_sub, hxy, map_natCast] at h6
-    rw [alg_sub_natCast]
-    exact h6
+    rwa [alg_sub_natCast]
   have hgw : ((g : ℕ) : 𝓞 E) ∈ w.asIdeal := by
     apply mem_of_val_lt_one w
     have := val_lt_one_of_norm_lt_one w g i hi (g : ℚ_[g]) Padic.norm_p_lt_one
     rw [map_natCast] at this
-    rw [alg_natCast]
-    exact this
+    rwa [alg_natCast]
   haveI : w.asIdeal.IsPrime := w.isPrime
   have hgQ : ((g : ℕ) : 𝓞 E ⧸ w.asIdeal) = 0 := by
-    rw [← map_natCast (Ideal.Quotient.mk w.asIdeal), Ideal.Quotient.eq_zero_iff_mem]
-    exact hgw
+    rwa [← map_natCast (Ideal.Quotient.mk w.asIdeal), Ideal.Quotient.eq_zero_iff_mem]
   haveI : CharP (𝓞 E ⧸ w.asIdeal) g := (CharP.charP_iff_prime_eq_zero hg.out).mpr hgQ
   let f : ZMod g →+* 𝓞 E ⧸ w.asIdeal := ZMod.castHom (dvd_refl g) _
   have hinj : Function.Injective f := f.injective
@@ -132,8 +128,7 @@ theorem normV_eq_of_padic (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuou
     refine ⟨(a : ZMod g), ?_⟩
     rw [ZMod.castHom_apply, ZMod.cast_natCast (dvd_refl g), ← map_natCast (Ideal.Quotient.mk w.asIdeal),
       Ideal.Quotient.eq]
-    rw [← neg_mem_iff, neg_sub]
-    exact ha
+    rwa [← neg_mem_iff, neg_sub]
   unfold normV
   rw [← Nat.card_congr (RingEquiv.ofBijective f ⟨hinj, hsurj⟩).toEquiv, Nat.card_zmod]
 

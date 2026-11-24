@@ -77,30 +77,21 @@ theorem integrable_and_norm_integral_le (X : Type) [NormedAddCommGroup X] [Norme
   have hbound : ∀ t : ℝ × ℝ, ‖Complex.exp (dot l t) • φ t‖ ≤
       M * (Real.exp (-ε * |t.1|) * Real.exp (-ε * |t.2|)) := by
     intro t
-    rw [norm_smul, Complex.norm_exp]
-    have hre : (dot l t).re = rdot (l.1.re, l.2.re) t := by simp [dot, rdot]
-    rw [hre]
+    rw [norm_smul, Complex.norm_exp,
+      show (dot l t).re = rdot (l.1.re, l.2.re) t by simp [dot, rdot]]
     have h1 : Real.exp (rdot (l.1.re, l.2.re) t) * Real.exp (-rdot (l.1.re, l.2.re) t) = 1 := by
       rw [← Real.exp_add, add_neg_cancel, Real.exp_zero]
-    have h2 : Real.exp (-ε * (|t.1| + |t.2|)) = Real.exp (-ε * |t.1|) * Real.exp (-ε * |t.2|) := by
-      rw [← Real.exp_add]; ring_nf
-    calc Real.exp (rdot (l.1.re, l.2.re) t) * ‖φ t‖
-        ≤ Real.exp (rdot (l.1.re, l.2.re) t) * (M * Real.exp (-rdot (l.1.re, l.2.re) t) *
-          Real.exp (-ε * (|t.1| + |t.2|))) := mul_le_mul_of_nonneg_left (hb t) (Real.exp_pos _).le
-      _ = M * (Real.exp (-ε * |t.1|) * Real.exp (-ε * |t.2|)) := by
-        rw [h2]
-        linear_combination (M * (Real.exp (-ε * |t.1|) * Real.exp (-ε * |t.2|))) * h1
+    refine (mul_le_mul_of_nonneg_left (hb t) (Real.exp_pos _).le).trans_eq ?_
+    rw [mul_add, Real.exp_add]
+    linear_combination (M * (Real.exp (-ε * |t.1|) * Real.exp (-ε * |t.2|))) * h1
   have hc : Continuous (fun t : ℝ × ℝ => Complex.exp (dot l t) • φ t) := by
-    have hd : Continuous (fun t : ℝ × ℝ => dot l t) := by simp only [dot]; fun_prop
-    exact (Complex.continuous_exp.comp hd).smul hφ
+    simp only [dot]
+    fun_prop
   refine ⟨hgi.mono' hc.aestronglyMeasurable (Filter.Eventually.of_forall hbound), ?_⟩
-  calc ‖∫ t : ℝ × ℝ, Complex.exp (dot l t) • φ t‖
-      ≤ ∫ t : ℝ × ℝ, M * (Real.exp (-ε * |t.1|) * Real.exp (-ε * |t.2|)) :=
-        norm_integral_le_of_norm_le hgi (Filter.Eventually.of_forall hbound)
-    _ = M * (2 / ε) ^ 2 := by
-        rw [integral_const_mul, Measure.volume_eq_prod,
-          integral_prod_mul (fun u : ℝ => Real.exp (-ε * |u|)) (fun u : ℝ => Real.exp (-ε * |u|)),
-          integral_exp_neg_mul_abs hε]
-        ring
+  refine (norm_integral_le_of_norm_le hgi (Filter.Eventually.of_forall hbound)).trans_eq ?_
+  rw [integral_const_mul, Measure.volume_eq_prod,
+    integral_prod_mul (fun u : ℝ => Real.exp (-ε * |u|)) (fun u : ℝ => Real.exp (-ε * |u|)),
+    integral_exp_neg_mul_abs hε]
+  ring
 
 end GlobalTheory.CompanionTheory.TubeFourier

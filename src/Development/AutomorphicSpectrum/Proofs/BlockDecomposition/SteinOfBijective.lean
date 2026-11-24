@@ -72,8 +72,7 @@ theorem eq_of_res_affine (W : X.Opens) (a b : Γ(X, W))
       TopologicalSpace.Opens.isBasis_iff_nbhd.mp (AlgebraicGeometry.Scheme.isBasis_affineOpens X) hx
     rw [TopologicalSpace.Opens.mem_iSup]
     exact ⟨⟨⟨V, hV⟩, hVW⟩, hxV⟩
-  · intro i
-    exact h i.1 i.2
+  · exact fun i => h i.1 i.2
 
 theorem exists_global (g : ∀ U : X.affineOpens, Γ(X, U.1))
     (hg : ∀ (U V : X.affineOpens) (h : V.1 ≤ U.1), X.presheaf.map (homOfLE h).op (g U) = g V) :
@@ -103,8 +102,7 @@ theorem stein_of_bijective (s : X ⟶ Sp R) (h : Function.Bijective s.appTop.hom
   have key : ∀ (r : R) (U : X.affineOpens),
       (algebraMap R (GlobalTheory.CatCoh.C0 (OAff s)) r) (op U) = X.presheaf.map (homOfLE (le_top : U.1 ≤ ⊤)).op
         (s.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) := by
-    intro r U
-    exact algebraMap_sec s U.1 r
+    exact fun r U => algebraMap_sec s U.1 r
   refine ⟨?_, ?_⟩
   · intro y
     constructor
@@ -139,8 +137,7 @@ theorem stein_of_bijective (s : X ⟶ Sp R) (h : Function.Bijective s.appTop.hom
       intro V hV
       rw [map_zero]
       have e2 := congrFun hr (op V)
-      rw [key] at e2
-      exact e2
+      rwa [key] at e2
     have e3 := h.1 (e.trans (map_zero _).symm)
     have hr2 : (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom
         ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r) = r :=
@@ -150,7 +147,6 @@ theorem stein_of_bijective (s : X ⟶ Sp R) (h : Function.Bijective s.appTop.hom
 
 theorem stein_holds : SteinSt := by
   unfold MainStatements.Hodge.SteinSt MainStatements.Hodge.AllAb
-  intro R _ A _ g hA _
-  exact stein_of_bijective A.hom (GlobalTheory.globalFns_holds (Sp R) A hA)
+  exact fun R _ A _ g hA _ => stein_of_bijective A.hom (GlobalTheory.globalFns_holds (Sp R) A hA)
 
 end GlobalTheory.CompanionTheory.Hodge

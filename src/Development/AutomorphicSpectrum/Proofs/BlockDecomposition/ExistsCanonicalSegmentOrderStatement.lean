@@ -112,8 +112,7 @@ private theorem lineOf_eq_height_eq_add_of_eq_nu {x y : IrrGL (k := k)} (hy : 0 
   have hRpos : 0 < (lineRep y).fst := by
     have h2 := congrArg Sigma.fst (nu_height y)
     rw [IrrGL.nu_fst] at h2
-    rw [h2]
-    exact hy
+    rwa [h2]
   apply (IrrGL.nu_intCast_inj hRpos).1
   calc (lineRep y).nu (height x) = (lineRep x).nu (height x) := by rw [hR]
     _ = x := nu_height x
@@ -129,8 +128,7 @@ theorem key_le {Δ Δ' : Segment k} (h : key Δ ≤ key Δ') :
   constructor
   · rintro ⟨n, hn, heq⟩
     have heq' : Δ.first = Δ'.first.nu ((n : ℤ) : ℂ) := by
-      rw [Int.cast_natCast]
-      exact heq
+      rwa [Int.cast_natCast]
     obtain ⟨hl, hh⟩ := lineOf_eq_height_eq_add_of_eq_nu hpos heq'
     rcases hle with hlt | ⟨_, hlt | ⟨heq2, _⟩⟩
     · rw [hl] at hlt

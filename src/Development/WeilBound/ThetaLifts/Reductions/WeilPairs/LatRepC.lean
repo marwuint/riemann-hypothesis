@@ -177,8 +177,7 @@ theorem lat_sd (hσ : ∀ x, σ (σ x) = x) (hψ : IsStd ψ) (hg : GoodLat Λ) (
       rw [hn]; ring
     exact_mod_cast h4
   have h5 := add_mem hγ (ft_mem (F := F) one_int hΛ)
-  rw [sub_add_cancel] at h5
-  exact h5
+  rwa [sub_add_cancel] at h5
 
 theorem continuous_mtF {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     Continuous (mtF (F := F) σ J) ∧ Continuous fun g : GAF (F := F) σ J => mtF σ J g⁻¹ :=
@@ -241,13 +240,11 @@ theorem near (hg : GoodLat Λ) : ∀ᶠ p in 𝓝 (1 : GAF (F := F) σ JS × GAF
         (x := ((1 : GAF (F := F) σ JS × GAF (F := F) σ JT), y))
       refine h1.preimage_mem_nhds ?_
       show V ∈ 𝓝 (actOF σ JS JT 1 1 y - y)
-      rw [actOF_one, sub_self]
-      exact hV
+      rwa [actOF_one, sub_self]
   filter_upwards [h] with p hp a ha
   have h2 := hV' _ (hp a ha) (rhoFF σ JS JT p a - a).fin
   have h3 := add_mem h2 (show (a : WOF F E nS nT) ∈ latOF F E nS nT Λ from ha)
-  rw [sub_add_cancel] at h3
-  exact h3
+  rwa [sub_add_cancel] at h3
 
 theorem near' (hg : GoodLat Λ) (x : XFF F E nS nT) (N : ℕ) (hN : 0 < N) :
     ∀ᶠ p in 𝓝 (1 : GAF (F := F) σ JS × GAF (F := F) σ JT), ∃ l ∈ latF F E nS nT Λ, rhoFF σ JS JT p x = x + N • l := by
@@ -265,8 +262,7 @@ theorem near' (hg : GoodLat Λ) (x : XFF F E nS nT) (N : ℕ) (hN : 0 < N) :
       incAF F E (N : E)⁻¹ • (actOF σ JS JT p.1 p.2 x - x)) ⁻¹' V ∈ 𝓝 1 := by
     refine h0.continuousAt.preimage_mem_nhds ?_
     show V ∈ 𝓝 (incAF F E (N : E)⁻¹ • (actOF σ JS JT 1 1 x - x))
-    rw [actOF_one, sub_self, smul_zero]
-    exact hV
+    rwa [actOF_one, sub_self, smul_zero]
   filter_upwards [h1] with p hp
   refine ⟨incAF F E (N : E)⁻¹ • (rhoFF σ JS JT p x - x), hV' _ hp (XFF.fin _), ?_⟩
   rw [nsmul_inv_smul hN, add_sub_cancel]

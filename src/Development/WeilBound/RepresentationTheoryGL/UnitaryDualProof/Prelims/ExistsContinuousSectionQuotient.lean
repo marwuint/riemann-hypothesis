@@ -125,8 +125,7 @@ theorem exists_refine [SecondCountableTopology G] (H K L : Subgroup G) [IsClosed
       have : (t x)⁻¹ * (t x * k * l) = k * l := by group
       rw [this]
       exact K.mul_mem hk (hLK hl)
-    · rw [← hn, mul_inv_cancel_right]
-      exact hkx
+    · rwa [← hn, mul_inv_cancel_right]
   obtain ⟨f, hf, hfV⟩ := exists_isLocallyConstant_mem V hV hcov
   exact ⟨fun x => e (f x), hf.comp e, fun x => (hfV x).2, fun x => (hfV x).1⟩
 
@@ -190,8 +189,7 @@ theorem exists_continuous_section (G : Type) [Group G] [TopologicalSpace G] [IsT
     constructor
     · rintro ⟨k, hk, rfl⟩
       simpa using hk
-    · intro hg
-      exact ⟨_, hg, by simp⟩
+    · exact fun hg => ⟨_, hg, by simp⟩
   have hCanti : ∀ x n, C x (n + 1) ⊆ C x n := by
     intro x n g hg
     rw [hCmem] at hg ⊢

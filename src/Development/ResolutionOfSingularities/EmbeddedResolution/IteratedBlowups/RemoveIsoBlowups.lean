@@ -70,8 +70,7 @@ theorem isIso_transitionMap_of_center_eq_top (s : SequenceOfBlowups X) {a b : �
   revert hb h
   induction b, hab using Nat.le_induction with
   | base =>
-    intro _ _
-    exact isIso_transitionMap_refl s _
+    exact fun _ _ => isIso_transitionMap_refl s _
   | succ b hab ih =>
     intro hb h
     have hbl : b ≤ s.length := le_trans (Nat.le_succ b) hb
@@ -83,11 +82,9 @@ theorem isIso_transitionMap_of_center_eq_top (s : SequenceOfBlowups X) {a b : �
     rw [hcen] at hB
     have : IsIso (s.transitionMap (Nat.le_succ b)) := by
       have h4 := hB.isIso_of_top
-      rw [s.blowupMorphism_eq_transitionMap b] at h4
-      exact h4
+      rwa [s.blowupMorphism_eq_transitionMap b] at h4
     have h3 : IsIso (s.transitionMap (Nat.le_succ b) ≫ s.transitionMap hab) := inferInstance
-    rw [s.transitionMap_trans hab (Nat.le_succ b)] at h3
-    exact h3
+    rwa [s.transitionMap_trans hab (Nat.le_succ b)] at h3
 
 theorem exists_le_center_ne_top_or_length_le (s : SequenceOfBlowups X) (a : ℕ) :
     ∃ i, a ≤ i ∧ (s.center i ≠ ⊤ ∨ s.length ≤ i) :=
@@ -130,8 +127,7 @@ noncomputable def nontrivialIndex (s : SequenceOfBlowups X) (j : ℕ) : ℕ :=
 
 theorem nontrivialIndex_lt_succ (s : SequenceOfBlowups X) (j : ℕ) : s.nontrivialIndex j < s.nontrivialIndex (j + 1) := by
   have h := s.le_nextNontrivialIndex (s.nontrivialIndex j + 1)
-  rw [nontrivialIndex_succ]
-  exact h
+  rwa [nontrivialIndex_succ]
 
 theorem succ_le_nontrivialIndex_succ (s : SequenceOfBlowups X) (j : ℕ) :
     s.nontrivialIndex j + 1 ≤ s.nontrivialIndex (j + 1) :=
@@ -174,11 +170,9 @@ private theorem nontrivialIndex_le_length_of_forall_lt (s : SequenceOfBlowups X)
     (h : ∀ i, i < j → s.nontrivialIndex i < s.length) : s.nontrivialIndex j ≤ s.length := by
   cases j with
   | zero =>
-      show s.nextNontrivialIndex 0 ≤ s.length
       exact s.nextNontrivialIndex_le_length (Nat.zero_le _)
   | succ j =>
       have hj : s.nontrivialIndex j < s.length := h j (Nat.lt_succ_self j)
-      show s.nextNontrivialIndex (s.nontrivialIndex j + 1) ≤ s.length
       exact s.nextNontrivialIndex_le_length hj
 
 theorem nontrivialIndex_lengthWithoutIsoBlowups (s : SequenceOfBlowups X) : s.nontrivialIndex s.lengthWithoutIsoBlowups = s.length := by
@@ -214,15 +208,13 @@ theorem isIso_transitionMap_nontrivialIndex_zero (s : SequenceOfBlowups X) :
     IsIso (s.transitionMap (Nat.zero_le (s.nontrivialIndex 0))) := by
   refine s.isIso_transitionMap_of_center_eq_top (Nat.zero_le (s.nontrivialIndex 0)) ?_ ?_
   · exact s.nextNontrivialIndex_le_length (Nat.zero_le _)
-  · intro i _ hi
-    exact s.center_eq_top_of_lt_nontrivialIndex_zero hi
+  · exact fun i _ hi => s.center_eq_top_of_lt_nontrivialIndex_zero hi
 
 theorem isIso_transitionMap_nontrivialIndex_succ (s : SequenceOfBlowups X) {j : ℕ} (h : j < s.lengthWithoutIsoBlowups) :
     IsIso (s.transitionMap (s.succ_le_nontrivialIndex_succ j)) := by
   refine s.isIso_transitionMap_of_center_eq_top (s.succ_le_nontrivialIndex_succ j)
     (s.nontrivialIndex_le_length (Nat.succ_le_of_lt h)) ?_
-  intro i hi hib
-  exact s.center_eq_top_of_nontrivialIndex_lt (Nat.lt_of_succ_le hi) hib
+  exact fun i hi hib => s.center_eq_top_of_nontrivialIndex_lt (Nat.lt_of_succ_le hi) hib
 
 noncomputable def objNontrivialIndexZeroIso (s : SequenceOfBlowups X) : s.schemeAt (s.nontrivialIndex 0) ≅ X :=
   haveI : IsIso (s.transitionMap (Nat.zero_le (s.nontrivialIndex 0))) := s.isIso_transitionMap_nontrivialIndex_zero
@@ -246,9 +238,7 @@ theorem isBlowupAlongIdealSheaf_towerWithoutIsoBlowups_map (s : SequenceOfBlowup
       = s.transitionMap (s.nontrivialIndex_monotone (Nat.le_succ i)) := by
     rw [SequenceOfBlowups.blowupMorphism_eq_transitionMap]
     exact s.transitionMap_trans (Nat.le_succ (s.nontrivialIndex i)) (s.succ_le_nontrivialIndex_succ i)
-  rw [heq] at hcomp
-  show Blowup.IsBlowupAlongIdealSheaf (s.transitionMap (s.nontrivialIndex_monotone (Nat.le_succ i))) (s.center (s.nontrivialIndex i))
-  exact hcomp
+  rwa [heq] at hcomp
 
 noncomputable def withoutIsoBlowups (s : SequenceOfBlowups X) : SequenceOfBlowups X where
   length := s.lengthWithoutIsoBlowups
@@ -274,8 +264,7 @@ theorem withoutIsoBlowups_blowupMorphism (s : SequenceOfBlowups X) (j : ℕ) :
   rw [SequenceOfBlowups.blowupMorphism_eq_transitionMap, withoutIsoBlowups_transitionMap]
 
 theorem withoutIsoBlowups_center_ne_top (s : SequenceOfBlowups X) {j : ℕ} (h : j < s.withoutIsoBlowups.length) :
-    s.withoutIsoBlowups.center j ≠ ⊤ := by
-  exact s.center_nontrivialIndex_ne_top h
+    s.withoutIsoBlowups.center j ≠ ⊤ := s.center_nontrivialIndex_ne_top h
 
 theorem withoutIsoBlowups_lastObj (s : SequenceOfBlowups X) : s.withoutIsoBlowups.lastObj = s.lastObj :=
   congrArg s.schemeAt s.nontrivialIndex_lengthWithoutIsoBlowups
@@ -305,8 +294,7 @@ theorem withoutIsoBlowups_centersLieOver (s : SequenceOfBlowups X) {S : Set X} (
   intro j hj x hx
   have hx' : x ∈ (s.center (s.nontrivialIndex j)).support := hx
   have h2 := h (s.nontrivialIndex j) (s.nontrivialIndex_lt_length hj) x hx'
-  rw [withoutIsoBlowups_projectionToBase_eq_nontrivialIndex]
-  exact h2
+  rwa [withoutIsoBlowups_projectionToBase_eq_nontrivialIndex]
 
 end SequenceOfBlowups
 

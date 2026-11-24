@@ -150,14 +150,10 @@ theorem deg_scale [FiniteDimensional K V] {L : C.I → AddSubgroup V} (c : C.I �
     (fun i => isLatOf_scale C c (hb i))
   have hs1 : (Function.support fun i =>
       (C.w i : ℤ) * WithZero.log (C.v i ((Module.finBasis K V).det (b i)))).Finite := by
-    refine hf.subset fun i hi => ?_
-    intro h1
-    exact hi (by simp [h1])
+    exact hf.subset fun i hi => fun h1 => hi (by simp [h1])
   have hs3 : (Function.support fun i => (Module.finrank K V : ℤ) *
       ((C.w i : ℤ) * WithZero.log (C.v i (c i)))).Finite := by
-    refine hc.subset fun i hi => ?_
-    intro h1
-    exact hi (by simp [h1])
+    exact hc.subset fun i hi => fun h1 => hi (by simp [h1])
   rw [e, e', mul_finsum, ← finsum_add_distrib hs1 hs3]
   refine finsum_congr fun i => ?_
   have hd : (Module.finBasis K V).det ((b i).unitsSMul fun _ => c i) =

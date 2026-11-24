@@ -193,10 +193,8 @@ private theorem germ_mem_maximalIdeal_iff_not_mem_basicOpen {X : Scheme.{u}} (x 
   have h := AlgebraicGeometry.Scheme.mem_basicOpen X f x hxU
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
   constructor
-  · intro hn hx
-    exact hn (h.mp hx)
-  · intro hn hu
-    exact hn (h.mpr hu)
+  · exact fun hn hx => hn (h.mp hx)
+  · exact fun hn hu => hn (h.mpr hu)
 
 private theorem mem_support_iff_forall_germ_mem_maximalIdeal {X : Scheme.{u}}
     (I : X.IdealSheafData) (x : X) (U : X.affineOpens) (hxU : x ∈ U.1) :
@@ -205,10 +203,8 @@ private theorem mem_support_iff_forall_germ_mem_maximalIdeal {X : Scheme.{u}}
   rw [AlgebraicGeometry.Scheme.IdealSheafData.mem_support_iff_of_mem (I := I) (U := U) hxU,
     AlgebraicGeometry.Scheme.mem_zeroLocus_iff]
   constructor
-  · intro h f hf
-    exact (germ_mem_maximalIdeal_iff_not_mem_basicOpen x U.1 hxU f).mpr (h f hf)
-  · intro h f hf
-    exact (germ_mem_maximalIdeal_iff_not_mem_basicOpen x U.1 hxU f).mp (h f hf)
+  · exact fun h f hf => (germ_mem_maximalIdeal_iff_not_mem_basicOpen x U.1 hxU f).mpr (h f hf)
+  · exact fun h f hf => (germ_mem_maximalIdeal_iff_not_mem_basicOpen x U.1 hxU f).mp (h f hf)
 
 theorem mem_support_iff_stalkIdeal_le_maximalIdeal (I : X.IdealSheafData) (x : X) :
     x ∈ I.support ↔ stalkIdeal I x ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk x) := by
@@ -217,10 +213,8 @@ theorem mem_support_iff_stalkIdeal_le_maximalIdeal (I : X.IdealSheafData) (x : X
   rw [stalkIdeal_eq_map_germ I x U hxU, Ideal.map_le_iff_le_comap,
     mem_support_iff_forall_germ_mem_maximalIdeal I x U hxU]
   constructor
-  · intro h f hf
-    exact h f hf
-  · intro h f hf
-    exact h hf
+  · exact fun h f hf => h f hf
+  · exact fun h f hf => h hf
 
 theorem mem_support_iff_stalkIdeal_ne_top (I : X.IdealSheafData) (x : X) :
     x ∈ I.support ↔ stalkIdeal I x ≠ ⊤ := by
@@ -333,8 +327,7 @@ private theorem maximalIdeal_not_le_sq {R : Type*} [CommRing R] [IsLocalRing R]
   intro hle
   refine h (Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (IsLocalRing.maximalIdeal R)
       (IsLocalRing.maximalIdeal R) (IsNoetherian.noetherian _) ?_ ?_)
-  · rw [Ideal.smul_eq_mul, ← pow_two]
-    exact hle
+  · rwa [Ideal.smul_eq_mul, ← pow_two]
   · exact (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge
 
 theorem orderAt_eq_one_of_stalkIdeal_eq_maximalIdeal [IsLocallyNoetherian X]
@@ -389,8 +382,7 @@ private theorem map_algebraMap_eq_maximalIdeal {R S : Type*} [CommRing R] [CommR
     have hPmax : P ≤ IsLocalRing.maximalIdeal S := IsLocalRing.le_maximalIdeal hPprime.ne_top
     have h1 : Ideal.comap (algebraMap R S) P = p := by
       refine hmin _ (Ideal.comap_isPrime (algebraMap R S) P) ?_ ?_
-      · rw [← Ideal.map_le_iff_le_comap]
-        exact hPle
+      · rwa [← Ideal.map_le_iff_le_comap]
       · exact le_trans (Ideal.comap_mono hPmax) hcomap_le
     have heq : IsLocalRing.maximalIdeal S = P := by
       rw [← hmap, ← h1]

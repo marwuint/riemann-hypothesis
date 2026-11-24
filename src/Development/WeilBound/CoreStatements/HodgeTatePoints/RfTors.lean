@@ -138,14 +138,11 @@ theorem evGen_bij {C R A : Type} [Field C] [IsAlgClosed C] [CharZero C] [CommRin
     rw [hb] at h1
     have h2 : e.symm (Ideal.Quotient.mk m.asIdeal b) = 0 := h1
     have h3 := congrArg e h2
-    rw [AlgEquiv.apply_symm_apply, map_zero] at h3
-    exact h3
+    rwa [AlgEquiv.apply_symm_apply, map_zero] at h3
   · by_contra hns
     have hlt : LinearMap.range (evGen C pt).toLinearMap < ⊤ := by
       rw [lt_top_iff_ne_top]
-      intro h
-      apply hns
-      exact LinearMap.range_eq_top.1 h
+      exact fun h => hns (LinearMap.range_eq_top.1 h)
     obtain ⟨f, hf0, hf⟩ := Submodule.exists_dual_map_eq_bot_of_lt_top hlt inferInstance
     have hfE : ∀ b, f (evGen C pt b) = 0 := fun b => by
       have h : f (evGen C pt b) ∈ (LinearMap.range (evGen C pt).toLinearMap).map f := ⟨evGen C pt b, ⟨b, rfl⟩, rfl⟩
@@ -158,9 +155,7 @@ theorem evGen_bij {C R A : Type} [Field C] [IsAlgClosed C] [CharZero C] [CommRin
       apply hpt.1
       ext a
       apply inj
-      have h := congrArg (fun g : C ⊗[R] A →* C => g (1 ⊗ₜ a)) hxy
-      simp only [hM, evGen_tmul, one_mul] at h
-      exact h
+      simpa only [hM, evGen_tmul, one_mul] using congrArg (fun g : C ⊗[R] A →* C => g (1 ⊗ₜ a)) hxy
     have hli := (linearIndependent_monoidHom (C ⊗[R] A) C).comp M hMinj
     have hsingle : ∀ (x : N) (c : C), (Pi.single x c : N → C) = c • Pi.single x 1 := by
       intro x c
@@ -219,8 +214,7 @@ theorem hopfalg : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed
     intro x a
     have hn : WithConv.toConv (pt (-x)) = (WithConv.toConv (pt x))⁻¹ := by
       rw [eq_inv_iff_mul_eq_one, ← hP, neg_add_cancel, h0]
-    have h := congrArg (fun f : WithConv (A →ₐ[R] R) => (WithConv.ofConv f) a) hn
-    exact h
+    exact congrArg (fun f : WithConv (A →ₐ[R] R) => (WithConv.ofConv f) a) hn
   let E : A →ₗ[R] (N → C) := LinearMap.pi (fun x => (Algebra.linearMap R C).comp (pt x).toLinearMap)
   have hE : ∀ a x, E a x = algebraMap R C (pt x a) := fun _ _ => rfl
   refine ⟨sep, card, ⟨{ carrier := LinearMap.range E, lat := ?_, le_int := ?_, one_mem := ?_, mul_mem := ?_, comul := ?_, antipode := ?_ }, ?_⟩⟩

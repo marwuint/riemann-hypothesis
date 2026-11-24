@@ -64,8 +64,7 @@ theorem prim_of_isAlgClosed (q : ℕ) [NeZero q] (k : Type) [Field k] [IsAlgClos
   obtain ⟨ζ, hζ⟩ := IsAlgClosed.exists_root (Polynomial.cyclotomic q k)
     (ne_of_gt (Polynomial.degree_cyclotomic_pos q k (NeZero.pos q)))
   refine ⟨⟨ζ, hq, ?_⟩⟩
-  rw [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]
-  exact hζ
+  rwa [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]
 
 theorem finite_of_exact {A M N : Type*} [AddCommGroup A] [AddCommGroup M] [AddCommGroup N] [Finite A]
     (a : A →+ M) (b : M →+ N) (h : Function.Exact a b) (hb : Finite b.range) : Finite M := by
@@ -97,10 +96,7 @@ theorem goal_of (hT : LeafTwist) (hG : EtaleFirstCohomologyMultiplicativeGroupPi
       have : q • E y.1 = 0 := by rw [← hx, ← map_nsmul, ← map_nsmul, h0, map_zero, map_zero]
       rw [← toMul_nsmul, this, toMul_zero]
     · intro y z h
-      apply Subtype.ext
-      apply E.injective
-      apply Additive.toMul.injective
-      exact congrArg Subtype.val h
+      exact Subtype.ext (E.injective (Additive.toMul.injective (congrArg Subtype.val h)))
   have : Finite (Ht q (sp B) 1 1) := finite_of_exact a b hab hr
   exact Finite.of_equiv _ e.symm.toEquiv
 

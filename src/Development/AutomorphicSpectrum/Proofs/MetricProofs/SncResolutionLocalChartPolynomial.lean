@@ -110,17 +110,16 @@ theorem chart_coord_ratio : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k,
     simp [ReciprocityTheory.AnForm.R.affCoord, hy k]
   have hne : ∀ k, ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y) ⟨k, p' k⟩ ≠ 0 := fun k =>
     div_ne_zero (hy' k) (hy k)
-  have ha : ∀ k, ReciprocityTheory.AnForm.R.affCoord p' (ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y)) ⟨k, p k⟩ ≠ 0 := by
-    intro k
-    have : ReciprocityTheory.AnForm.R.affCoord p' (ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y)) ⟨k, p k⟩ =
-        1 / ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y) ⟨k, p' k⟩ := by
-      rw [← hone k]; rfl
-    rw [this]
-    exact div_ne_zero one_ne_zero (hne k)
+  have hinv : ∀ k, ReciprocityTheory.AnForm.R.affCoord p'
+        (ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y)) ⟨k, p k⟩ =
+      1 / ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y) ⟨k, p' k⟩ := fun k => by
+    rw [← hone k]; rfl
   refine ⟨(key y hy).2 hy', ?_, fun l => ?_⟩
   · rw [map_prod]
     simp only [eval_X]
-    exact Finset.prod_ne_zero_iff.2 fun k _ => ha k
+    exact Finset.prod_ne_zero_iff.2 fun k _ => by
+      rw [hinv k]
+      exact div_ne_zero one_ne_zero (hne k)
   · set q := (Fintype.equivFin (Σ k, ι k)).symm l with hq
     have hcoord : SncRes.coord P p y l = ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y) q := rfl
     rw [map_mul, map_prod, map_prod, hcoord]
@@ -129,12 +128,7 @@ theorem chart_coord_ratio : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k,
       (fun k => ReciprocityTheory.AnForm.R.affCoord p' (ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y)) ⟨k, p k⟩)
       (Finset.mem_univ q.1), ← mul_assoc]
     congr 1
-    have h1 : ReciprocityTheory.AnForm.R.affCoord p' (ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y)) ⟨q.1, p q.1⟩ =
-        1 / ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y) ⟨q.1, p' q.1⟩ := by
-      rw [← hone q.1]; rfl
-    have h2 : ReciprocityTheory.AnForm.R.affCoord p' (ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y)) q =
-        ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y) q /
-          ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y) ⟨q.1, p' q.1⟩ := rfl
-    rw [h1, h2, mul_one_div]
+    rw [hinv q.1]
+    exact mul_one_div _ _
 
 end GlobalTheory.CompanionTheory.Ar.Cmp.SncRes.ChartInv

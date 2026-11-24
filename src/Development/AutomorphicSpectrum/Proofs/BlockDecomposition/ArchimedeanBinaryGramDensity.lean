@@ -110,14 +110,12 @@ theorem continuous_hermScal [IsTopologicalRing R] : Continuous (hermScal R σ) :
       simp [Algebra.TensorProduct.algebraMap_apply]
     rw [this]
     exact IsModuleTopology.continuous_of_linearMap _
-  refine Continuous.subtype_mk ?_ _
-  exact continuous_matrix fun _ _ => h1
+  exact Continuous.subtype_mk (continuous_matrix fun _ _ => h1) _
 
 theorem continuous_qR (htr : Continuous (Algebra.trace R (R ⊗[F] E))) [IsTopologicalRing R] :
     Continuous (qR R σ) := by
   unfold qR
-  refine continuous_const.mul (htr.comp ?_)
-  exact (continuous_subtype_val.matrix_elem 0 0)
+  exact continuous_const.mul (htr.comp (continuous_subtype_val.matrix_elem 0 0))
 
 variable [MeasurableSpace R] [BorelSpace R]
 
@@ -154,8 +152,7 @@ theorem coordHerm_qR (h : IsCMExt F E σ) [IsTopologicalRing R] [SecondCountable
     constructor
     · rintro ⟨S, hS, rfl⟩
       simpa [hgf S] using hS
-    · intro hx
-      exact ⟨g x, hx, hfg x⟩
+    · exact fun hx => ⟨g x, hx, hfg x⟩
   have hinj : Function.Injective f := Function.LeftInverse.injective hgf
   have hP : MeasurableSet {S | qR R σ S ∈ V} := (continuous_qR R htr).measurable hV
   have hset : f '' {S | qR R σ S ∈ V} = (Set.pi Set.univ fun _ : Fin 1 => V) ×ˢ Set.univ := by

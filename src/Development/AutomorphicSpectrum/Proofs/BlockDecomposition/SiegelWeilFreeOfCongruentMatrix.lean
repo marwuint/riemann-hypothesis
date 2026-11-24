@@ -85,8 +85,7 @@ theorem linInd_mul {K : Type} [CommRing K] {M n : ℕ} (X : Fin n → Fin M → 
     have h2 := congrFun hw i
     simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, Finset.mul_sum,
       Matrix.mulVec, dotProduct, Finset.sum_mul] at h2 ⊢
-    rw [Finset.sum_comm]
-    rw [← h2]
+    rw [Finset.sum_comm, ← h2]
     refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_
     ring
   have h2 : g.mulVec w = 0 := funext (hX _ h1)
@@ -127,8 +126,7 @@ theorem transport_univ {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [
   · intro φ hφ hcs hts
     have hts' : tsupport (φ ∘ e) ⊆ U := by
       rw [tsupport_comp_eq_preimage]
-      intro x hx
-      exact (Set.ext_iff.1 hU x).1 (hts hx)
+      exact fun x hx => (Set.ext_iff.1 hU x).1 (hts hx)
     obtain ⟨hi, hcont⟩ := h3 (φ ∘ e) (hφ.comp e.continuous)
       (hcs.comp_isClosedEmbedding e.isClosedEmbedding) hts'
     refine ⟨fun b _ => ?_, ?_⟩
@@ -219,8 +217,7 @@ theorem free_rmul (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {M : ℕ} (J : Mat
         rw [hτ]
         exact key _ _ _ hg2)
       continuous_toFun := by
-        refine Topology.IsInducing.subtypeVal.continuous_iff.2 ?_
-        exact (hcj g).congr fun S => (hτ S).symm
+        exact Topology.IsInducing.subtypeVal.continuous_iff.2 ((hcj g).congr fun S => (hτ S).symm)
       continuous_invFun := (hcj g⁻¹).subtype_mk _ }
   have hcomm : ∀ X, G (e X) = τh (G X) := by
     intro X
@@ -237,10 +234,8 @@ theorem free_rmul (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {M : ℕ} (J : Mat
       have h2 := linInd_mul (rmul R X g) g⁻¹ g hg1 h1
       have h3 : rmul R (rmul R X g) g⁻¹ = X := by simp only [hcomp, hg1, hone]
       have h4 : (fun (a : Fin n) (i : Fin M) => ∑ c, rmul R X g c i * g⁻¹ c a) = X := h3
-      rw [h4] at h2
-      exact h2
-    · intro hX
-      exact linInd_mul X g g⁻¹ hg2 hX
+      rwa [h4] at h2
+    · exact fun hX => linInd_mul X g g⁻¹ hg2 hX
   have hf : ∀ (X : Fin n → Fin M → R ⊗[F] E) (b : HermR R σ n),
       gramR R σ J (e X) = ((τh b : HermR R σ n) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) ↔
         gramR R σ J X = (b : Matrix (Fin n) (Fin n) (R ⊗[F] E)) := by
@@ -431,8 +426,7 @@ theorem local_gram_fibration_scaling_free (σ : E →ₐ[F] E) (hcm : IsCMExt F 
   have hν := hHm n
   have hdet : IsUnit (H.map (inclR (F := F) R)).det := by
     have h1 : IsUnit ((inclR (F := F) R) H.det) := (IsUnit.mk0 _ hH).map (inclR (F := F) R)
-    rw [RingHom.map_det] at h1
-    exact h1
+    rwa [RingHom.map_det] at h1
   let τ := tauH R σ hinv (H.map (inclR R))
   have key := free_rmul σ hcm J hJ R hR n _ _ m hμ hν hm hfree (H.map (inclR R)) hdet τ
     (fun S => rfl) a c (ha _ hμ) (hc' _ hν τ (fun S => rfl)) (hermOf R σ T' hT')

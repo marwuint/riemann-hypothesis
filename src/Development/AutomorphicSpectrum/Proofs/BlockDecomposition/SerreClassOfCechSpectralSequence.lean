@@ -123,8 +123,7 @@ theorem serre_of_injective {M N : Type w} [AddCommGroup M] [Module R M] [AddComm
   refine 𝒮.mid PUnit.{w + 1} M N 0 f ?_ (𝒮.zero _ inferInstance) hN
   intro x
   constructor
-  · intro hx
-    exact ⟨0, hf (by simpa using hx.symm) ⟩
+  · exact fun hx => ⟨0, hf (by simpa using hx.symm) ⟩
   · rintro ⟨y, rfl⟩
     simp
 
@@ -133,8 +132,7 @@ theorem serre_of_surjective {M N : Type w} [AddCommGroup M] [Module R M] [AddCom
   refine 𝒮.mid M N PUnit.{w + 1} f 0 ?_ hM (𝒮.zero _ inferInstance)
   intro x
   constructor
-  · intro _
-    exact hf x
+  · exact fun _ => hf x
   · rintro _
     rfl
 
@@ -163,8 +161,7 @@ theorem serre_step {Z H E : Type w} [AddCommGroup Z] [Module R Z] [AddCommGroup 
       obtain ⟨y, rfl⟩ := Submodule.mkQ_surjective _ x
       obtain ⟨z, hz⟩ := c.surjective_rangeRestrict y
       exact ⟨Submodule.Quotient.mk z, by simp [hz]⟩
-  refine 𝒮.mid B' _ _ B'.subtype B'.mkQ ?_ h1 h3
-  exact LinearMap.exact_subtype_mkQ B'
+  exact 𝒮.mid B' _ _ B'.subtype B'.mkQ (LinearMap.exact_subtype_mkQ B') h1 h3
 
 end Serre
 
@@ -210,8 +207,7 @@ theorem pi_H_bij : ∀ {R : Type} [CommRing R] {A : Cx.{w} R} {I : Type} (B : I 
     | zero =>
       show _ ∈ (⊥ : Submodule R _)
       rw [Submodule.mem_bot, sub_eq_zero]
-      refine (hb 0).1 (funext fun i => ?_)
-      exact sub_eq_zero.1 ((Submodule.mem_bot R).1 (hi i))
+      exact (hb 0).1 (funext fun i => sub_eq_zero.1 ((Submodule.mem_bot R).1 (hi i)))
     | succ q =>
       choose w hw using hi
       obtain ⟨w', hw'⟩ := (hb q).2 w
@@ -246,8 +242,7 @@ theorem const_H : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F :
     · intro x y h
       funext c
       exact congrFun h (c ⋙ G)
-    · intro y
-      exact ⟨fun c => y (c ⋙ G), funext fun s => rfl⟩
+    · exact fun y => ⟨fun c => y (c ⋙ G), funext fun s => rfl⟩
   exact ⟨LinearEquiv.ofBijective (m.hom.mapH n) (P.mapH_bij m.hom hb n)⟩
 
 theorem mapH_sum {R : Type} [CommRing R] {A B : Cx.{w} R} {κ : Type} [Fintype κ] (ψ : Cx.Hom A B (RingHom.id R))
@@ -324,8 +319,7 @@ theorem tup_bij : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {ι 
     funext s
     have h1 := congrFun (congrFun h (tupI U hU s)) (tupL U hU s)
     exact (tup_eval U hU F x s).symm.trans (Eq.trans h1 (tup_eval U hU F y s))
-  · intro y
-    exact ⟨fun s => y (tupI U hU s) (tupL U hU s), funext fun i => funext fun c => rfl⟩
+  · exact fun y => ⟨fun s => y (tupI U hU s) (tupL U hU s), funext fun i => funext fun c => rfl⟩
 
 end Nerve2
 

@@ -94,8 +94,7 @@ theorem sq_inj (hba : ∀ T, b.S T ≤ a.S T) (T : C) :
   intro x y h
   obtain ⟨x', hx, rfl⟩ := sqM_rep b c T x
   obtain ⟨y', hy, rfl⟩ := sqM_rep b c T y
-  have h' := congrArg (fun z : sqM a c T => z.1) h
-  exact Subtype.ext h'
+  exact Subtype.ext (congrArg (fun z : sqM a c T => z.1) h)
 
 theorem sq_exact (hba : ∀ T, b.S T ≤ a.S T) (hcb : ∀ T, c.S T ≤ b.S T) (T : C) :
     Function.Exact ((sqLe (a := b) (b := c) (a' := a) (b' := c) hba fun _ => le_rfl).τ T)
@@ -114,8 +113,7 @@ theorem sq_exact (hba : ∀ T, b.S T ≤ a.S T) (hcb : ∀ T, c.S T ≤ b.S T) (
     rw [Ideal.Quotient.eq_zero_iff_mem]
     have := Ideal.Quotient.eq.1 e
     have h2 := hcb T this
-    have h3 := (b.S T).sub_mem hy' h2
-    simpa using h3
+    simpa using (b.S T).sub_mem hy' h2
 
 theorem sq_surj (hcb : ∀ T, c.S T ≤ b.S T) (T : C) :
     Function.Surjective ((sqLe (a := a) (b := c) (a' := a) (b' := b) (fun _ => le_rfl) hcb).τ T) := by
@@ -204,8 +202,7 @@ theorem tfBase (K : Type) [Field K] [CharZero K] (s : ℕ) (hs : 0 < s) : TFBase
     exact DividedPowers.dpow_eval_zero _ h0
   · intro r x h
     simpa using h
-  · intro n hn
-    exact ⟨0, (n : K)⁻¹, by simp [Nat.cast_ne_zero.2 hn]⟩
+  · exact fun n hn => ⟨0, (n : K)⁻¹, by simp [Nat.cast_ne_zero.2 hn]⟩
 
 end GlobalTheory.CompanionTheory.KFin
 
@@ -254,8 +251,7 @@ theorem gr_fin (hSerre : KH.GlobSerreSt) (hAff : KH.GrAff) (hCech : KH.GrCechFin
     have e := capT_eq (K := K) (X := X) (q := q) (TF 1 s) U.U i
     have h' : Subsingleton (HU (Pb.sq (thFil (smFun X q) r) (thFil (smFun X q) ((r : ℤ) + 1)))
         (capT (fun α => St (TF 1 s) {U.U α}) i) b) := by
-      rw [e]
-      exact h
+      rwa [e]
     exact h'.elim _ _
 
 end Spec

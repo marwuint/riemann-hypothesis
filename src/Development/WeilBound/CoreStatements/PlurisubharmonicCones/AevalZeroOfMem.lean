@@ -231,13 +231,10 @@ theorem exists_lift_blk {Ω L : Type} [Field Ω] [Field L] (y' : (Σ k, J' k) �
       simp only [E, coe_eval₂Hom, eval₂_X]
       have : u ⟨k, c' k⟩ = 1 := Subtype.ext (div_self (hc'0 k))
       simp only [ub, this, map_one]
-    intro h0
-    exact one_ne_zero ((map_one _).symm.trans (h1.symm.trans h0))
+    exact fun h0 => one_ne_zero ((map_one _).symm.trans (h1.symm.trans h0))
   · refine le_mCoordIdeal (isMultiHomogIdeal y') fun g hg => ?_
     rw [mCoordIdeal_ratioPt y' c' hc'0] at hg
-    have h1 : aeval u g = 0 := by
-      apply Subtype.ext
-      exact (aeval_hom A.subtype u g).trans (aeval_zero_of_mem hg)
+    have h1 : aeval u g = 0 := Subtype.ext ((aeval_hom A.subtype u g).trans (aeval_zero_of_mem hg))
     have h3 : IsLocalRing.residue A (aeval u g) = 0 := by rw [h1, map_zero]
     have h4 := hom_eq_aeval (E.comp (MvPolynomial.map (Int.castRingHom q.ResidueField))) ub
       (fun p => by simp only [RingHom.comp_apply, map_X, E, coe_eval₂Hom, eval₂_X]) g

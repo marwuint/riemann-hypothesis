@@ -60,8 +60,7 @@ theorem smul_wit {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] (I : I
     ∃ l : List (R × M), (∀ p ∈ l, p.1 ∈ I ∧ p.2 ∈ N) ∧ x = (l.map (fun p => p.1 • p.2)).sum := by
   refine Submodule.smul_induction_on (p := fun x => ∃ l : List (R × M), (∀ p ∈ l, p.1 ∈ I ∧ p.2 ∈ N) ∧
     x = (l.map (fun p => p.1 • p.2)).sum) hx ?_ ?_
-  · intro a ha n hn
-    exact ⟨[(a, n)], by simp [ha, hn], by simp⟩
+  · exact fun a ha n hn => ⟨[(a, n)], by simp [ha, hn], by simp⟩
   · rintro x y ⟨l1, h1, rfl⟩ ⟨l2, h2, rfl⟩
     refine ⟨l1 ++ l2, fun p hp => ?_, by simp⟩
     rcases List.mem_append.mp hp with h | h
@@ -87,8 +86,7 @@ theorem approx_base {A : Type} [CommRing A] [IsLocalRing A] (S : Set A) (hS : S.
   refine ⟨A', inferInstance, inferInstance, inferInstance, φ, ?_, ?_⟩
   · intro a ha
     refine ⟨algebraMap A₀ A' ⟨a, Subring.subset_closure ha⟩, IsLocalization.lift_eq _ _, fun hm => ?_⟩
-    rw [IsLocalization.AtPrime.to_map_mem_maximal_iff A' P₀]
-    exact hm
+    rwa [IsLocalization.AtPrime.to_map_mem_maximal_iff A' P₀]
   · intro a' ha'
     obtain ⟨x, s, rfl⟩ := IsLocalization.mk'_surjective P₀.primeCompl a'
     rw [IsLocalization.AtPrime.mk'_mem_maximal_iff A' P₀] at ha'
@@ -161,8 +159,7 @@ theorem int_wit (t x : K) (hx : IsIntegral (Algebra.adjoin A {t}) x) :
     exact ⟨⟨_, hmem⟩, rfl⟩
   obtain ⟨q', hq'map, -, hq'm⟩ := Polynomial.lifts_and_natDegree_eq_and_monic hPl (hm.map _)
   refine ⟨q', hq'm, ?_⟩
-  rw [← Polynomial.eval_map, hq'map, Polynomial.eval_map]
-  exact hp
+  rwa [← Polynomial.eval_map, hq'map, Polynomial.eval_map]
 
 end Tools
 
@@ -190,8 +187,7 @@ theorem mS_sub [IsLocalRing A']
     have e : (a • n : K) = (φ a) • n := by simp only [Algebra.smul_def, h, RingHom.comp_apply]
     rw [e]
     exact Submodule.smul_mem_smul (hmax a ha) (hsub n hn)
-  · intro x y hx hy
-    exact add_mem hx hy
+  · exact fun x y hx hy => add_mem hx hy
 
 theorem list_mem [IsLocalRing A'] (l : List (A × K)) (N : Submodule A' K)
     (h1 : ∀ p ∈ l, ∃ a' ∈ IsLocalRing.maximalIdeal A', φ a' = p.1) (h2 : ∀ p ∈ l, p.2 ∈ N) :

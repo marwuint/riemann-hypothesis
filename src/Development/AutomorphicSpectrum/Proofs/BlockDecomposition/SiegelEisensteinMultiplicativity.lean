@@ -122,12 +122,10 @@ def mat (hV : ∀ v ∈ V, ∀ k : K, (fun x => v (x * (k : G))) ∈ V) (k : K) 
 
 theorem mat_mul (hV : ∀ v ∈ V, ∀ k : K, (fun x => v (x * (k : G))) ∈ V) (a b : K) :
     mat hV (a * b) = mat hV a * mat hV b := by
-  simp only [mat, map_mul]
-  exact LinearMap.toMatrix_mul _ _ _
+  simpa only [mat, map_mul] using LinearMap.toMatrix_mul _ _ _
 
 theorem mat_one (hV : ∀ v ∈ V, ∀ k : K, (fun x => v (x * (k : G))) ∈ V) : mat hV 1 = 1 := by
-  simp only [mat, map_one]
-  exact LinearMap.toMatrix_one _
+  simpa only [mat, map_one] using LinearMap.toMatrix_one _
 
 def rho (hV : ∀ v ∈ V, ∀ k : K, (fun x => v (x * (k : G))) ∈ V) :
     K →* ((Fin (Module.finrank ℂ V) → ℂ) →L[ℂ] (Fin (Module.finrank ℂ V) → ℂ)) where
@@ -375,8 +373,7 @@ theorem scalar_wall (hSec : SecLaw) (hWL : WallLaw) {G : Type} [Group G] [Topolo
       rw [hsec (rep q * g), map_smul, map_smul, smul_eq_mul, smul_eq_mul, e3]
       ring
     have h4 : HasSum (fun q : Cos P Γ => e (D z • (Complex.exp (z * η (rep q * g)) • sec K P c ρ (rep q * g) w))) (e (H z g w')) := h3
-    rw [e2] at h4
-    exact h4
+    rwa [e2] at h4
 
 theorem hasSum_cos {G U X : Type} [Group G] [Group U] [AddCommMonoid X] [TopologicalSpace X] (Φ : G ≃* U)
     (Γ P : Subgroup G) (Γ' P' : Subgroup U) (hΓ : ∀ x, x ∈ Γ ↔ Φ x ∈ Γ') (hP : ∀ x, x ∈ P ↔ Φ x ∈ P') (T : U → X)
@@ -393,8 +390,7 @@ theorem hasSum_cos {G U X : Type} [Group G] [Group U] [AddCommMonoid X] [Topolog
     intro q₁ q₂
     induction q₁ using Quotient.inductionOn' with | h a => ?_
     induction q₂ using Quotient.inductionOn' with | h b => ?_
-    intro e
-    exact Quotient.sound' ((hrel a b).2 (Quotient.exact' e))
+    exact fun e => Quotient.sound' ((hrel a b).2 (Quotient.exact' e))
   have hsurj : Function.Surjective g := by
     intro q
     induction q using Quotient.inductionOn' with | h a => ?_
@@ -417,8 +413,7 @@ theorem hasSum_cos {G U X : Type} [Group G] [Group U] [AddCommMonoid X] [Topolog
       simp [rep, mul_assoc]
     rw [e3, hT _ (Subtype.coe_prop _) e2]
     rfl
-  rw [e] at h2
-  exact h2
+  rwa [e] at h2
 
 theorem fin_pull {G U : Type} [Group G] [Group U] (Φ : G ≃* U) (K : Subgroup G) (K' : Subgroup U)
     (hKK : ∀ x, x ∈ K ↔ Φ x ∈ K') (f : G → ℂ)
@@ -500,8 +495,7 @@ theorem uH_eq (hD : Dict) (hBd : BdetLaw) (χ : Chr F E) (hg : (adCM σ χ).Good
     · intro q₁ h₁ q₂ h₂
       show (adCM σ χ).lg (bdet _ (q₁.1 * q₂.1)) = _
       rw [hmul q₁.1 h₁ q₂.1 h₂, hg.lgmul]
-    · intro r h₁ h₂
-      exact hzero _ h₁ h₂
+    · exact fun r h₁ h₂ => hzero _ h₁ h₂
   rw [h1, _root_.GlobalTheory.CompanionTheory.SiegelFrameDet.bdet_frameEquiv F E σ n Y χ ε b hb t₀ ht₀ p t hp]
   have h2 := (hD F E).2.2.2.2 (Matrix.GeneralLinearGroup.det t)
   show Real.log ((GroundTheory.Global.IdeleGroup.ideleModule E _ : ℝ)) = _
@@ -633,8 +627,7 @@ theorem eis_from_U (hSec : SecLaw) (hWL : WallLaw) {U : Type} [Group U] [Topolog
       rw [e', Complex.cpow_def_of_ne_zero hne, Complex.ofReal_log h.le, hu]
       congr 3
       ring
-    rw [e] at h1
-    exact h1
+    rwa [e] at h1
 
 theorem siegelMult_of : SecLaw → WallLaw → Dict → DictInf → CMGood → GrpTop → BdetLaw → ExtLaw → ParLaw → SgAll →
     SiegelEisensteinSeries.BRoad.SiegelMult := by
@@ -657,8 +650,7 @@ theorem siegelMult_of : SecLaw → WallLaw → Dict → DictInf → CMGood → G
       have : par2 σ Y ≤ ((adCM σ χ).uQ ε (Set.univ : Set (Fin n))).comap Φ.toMonoidHom :=
         (Subgroup.closure_le _).2 fun p hp => (hIP p).1 hp
       exact this hx
-    · intro hx
-      exact Subgroup.subset_closure ((hIP x).2 hx)
+    · exact fun hx => Subgroup.subset_closure ((hIP x).2 hx)
   have hH := fun x => uH_eq hD hBd χ hgood ε b hε t₀ ht₀ K hKK a ha x
   have hiwa : Iwa ((adCM σ χ).uQ ε (Set.univ : Set (Fin n))) ((adCM σ χ).uK ε (Fin n)) := by
     intro y

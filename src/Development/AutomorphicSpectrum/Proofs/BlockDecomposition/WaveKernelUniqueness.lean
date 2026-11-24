@@ -137,9 +137,7 @@ theorem emb_val (κ : UK n) : (emb κ).val = κ.1 := rfl
 
 theorem continuous_emb : Continuous (emb : UK n → G n) := by
   rw [Units.continuous_iff]
-  refine ⟨continuous_subtype_val, ?_⟩
-  show Continuous fun κ : UK n => star κ.1
-  exact continuous_subtype_val.star
+  exact ⟨continuous_subtype_val, continuous_subtype_val.star⟩
 
 theorem map_mul_emb {_ : MeasurableSpace (G n)} [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
     (κ : UK n) : Measure.map (· * emb κ) μ = μ :=
@@ -191,13 +189,11 @@ theorem isCompact_preimage_val {C : Set (Mat n)} (hC : IsCompact C) (hs : C ⊆ 
     refine ⟨continuous_subtype_val, ?_⟩
     have : Continuous fun c : C => (c.1)⁻¹ :=
       continuousOn_iff_continuous_restrict.1 (continuousOn_inv.mono hs)
-    refine this.congr fun c => ?_
-    exact (Matrix.coe_units_inv (φ c)).symm
+    exact this.congr fun c => (Matrix.coe_units_inv (φ c)).symm
   have he : {y : G n | y.val ∈ C} = Set.range φ := by
     ext y
     constructor
-    · intro hy
-      exact ⟨⟨y.val, hy⟩, Units.ext rfl⟩
+    · exact fun hy => ⟨⟨y.val, hy⟩, Units.ext rfl⟩
     · rintro ⟨c, rfl⟩
       exact c.2
   rw [he]

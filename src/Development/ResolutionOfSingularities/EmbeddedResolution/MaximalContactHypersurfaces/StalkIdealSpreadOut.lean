@@ -125,24 +125,21 @@ theorem exists_opens_stalkIdeal_eq {X : Scheme.{u}} [IsLocallyNoetherian X]
     have h1 := stalkIdeal_eq_map_germ I x ⟨U, hU⟩ hxU
     have h2 := stalkIdeal_eq_map_germ J x ⟨U, hU⟩ hxU
     rw [h1, h2] at h
-    rw [halg]
-    exact h
+    rwa [halg]
   obtain ⟨u₁, hu₁M, hu₁⟩ := exists_mem_mul_mem_of_map_le _ hloc (I.ideal ⟨U, hU⟩)
     (J.ideal ⟨U, hU⟩) (IsNoetherian.noetherian _) (le_of_eq hmapeq)
   obtain ⟨u₂, hu₂M, hu₂⟩ := exists_mem_mul_mem_of_map_le _ hloc (J.ideal ⟨U, hU⟩)
     (I.ideal ⟨U, hU⟩) (IsNoetherian.noetherian _) (le_of_eq hmapeq.symm)
   have hmb : ∀ (z : ↥X) (hz : z ∈ U),
       z ∈ X.basicOpen (u₁ * u₂) ↔ IsUnit ((X.presheaf.germ U z hz).hom (u₁ * u₂)) := by
-    intro z hz
-    exact X.mem_basicOpen (u₁ * u₂) z hz
+    exact fun z hz => X.mem_basicOpen (u₁ * u₂) z hz
   have hxunit : IsUnit ((X.presheaf.germ U x hxU).hom (u₁ * u₂)) := by
     have hmem : u₁ * u₂ ∈ (hUaff.primeIdealOf ⟨x, hxU⟩).asIdeal.primeCompl :=
       Submonoid.mul_mem _ hu₁M hu₂M
     have hone := IsLocalization.map_units
       (M := (hUaff.primeIdealOf ⟨x, hxU⟩).asIdeal.primeCompl)
       (S := ↑(X.presheaf.stalk x)) ⟨u₁ * u₂, hmem⟩
-    rw [halg] at hone
-    exact hone
+    rwa [halg] at hone
   refine ⟨X.basicOpen (u₁ * u₂), (hmb x hxU).mpr hxunit, ?_⟩
   intro y hy
   have hyU : y ∈ U := X.basicOpen_le (u₁ * u₂) hy
@@ -173,8 +170,7 @@ private theorem exists_notMem_mul_mem_of_map_le {R : Type*} [CommRing R] (S : Ty
     hAB (Ideal.mem_map_of_mem _ ha)
   obtain ⟨⟨b, s⟩, hbs⟩ := (IsLocalization.mem_map_algebraMap_iff m.primeCompl S).mp hmem
   have hbs' : algebraMap R S (a * (s : R)) = algebraMap R S (b : R) := by
-    rw [map_mul]
-    exact hbs
+    rwa [map_mul]
   obtain ⟨c, hc⟩ := (IsLocalization.eq_iff_exists m.primeCompl S).mp hbs'
   have hc2 : (c : R) ∉ m := notMem_of_mem_primeCompl c.2
   have hs2 : (s : R) ∉ m := notMem_of_mem_primeCompl s.2
@@ -231,8 +227,7 @@ private theorem ideal_le_of_stalkIdeal_le {Y : Scheme.{u}} (A B : Y.IdealSheafDa
   set x : ↥Y := W.2.fromSpec.base y with hxdef
   have hy : x ∈ W.1 := by
     have hmem : x ∈ Set.range (W.2.fromSpec.base) := ⟨y, rfl⟩
-    rw [W.2.range_fromSpec] at hmem
-    exact hmem
+    rwa [W.2.range_fromSpec] at hmem
   let algI : Algebra Γ(Y, W.1) ↑(Y.presheaf.stalk x) :=
     (Y.presheaf.germ W.1 x hy).hom.toAlgebra
   have hloc : IsLocalization m.primeCompl ↑(Y.presheaf.stalk x) :=
@@ -266,9 +261,7 @@ theorem restrictIdeal_eq_of_stalkIdeal_eq {X : Scheme.{u}} (I J : X.IdealSheafDa
       have h2 : U.ι.base v ∈ (fun w => U.ι.base w) '' (↑V.1 : Set U.toScheme) := ⟨v, hv, rfl⟩
       exact h2
     have hIJ : I.ideal ⟨U.ι ''ᵁ V.1, hWaff⟩ = J.ideal ⟨U.ι ''ᵁ V.1, hWaff⟩ := by
-      refine ideal_eq_of_stalkIdeal_eq I J ⟨U.ι ''ᵁ V.1, hWaff⟩ ?_
-      intro z hz
-      exact h z (hWU hz)
+      exact ideal_eq_of_stalkIdeal_eq I J ⟨U.ι ''ᵁ V.1, hWaff⟩ (fun z hz => h z (hWU hz))
     show (I.comap U.ι).ideal V = (J.comap U.ι).ideal V
     rw [Scheme.IdealSheafData.comap_ideal_eq_map_appLE I U.ι ⟨U.ι ''ᵁ V.1, hWaff⟩ V e,
       Scheme.IdealSheafData.comap_ideal_eq_map_appLE J U.ι ⟨U.ι ''ᵁ V.1, hWaff⟩ V e, hIJ]

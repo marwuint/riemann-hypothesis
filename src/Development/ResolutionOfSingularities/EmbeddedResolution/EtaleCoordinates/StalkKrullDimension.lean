@@ -300,8 +300,7 @@ private theorem comap_comap_symm {A B : Type u} [CommRing A] [CommRing B] (φ : 
     rwa [h] at hmem'
   · intro hmem
     show (φ.symm : B →+* A) ((φ : A →+* B) a) ∈ I
-    rw [h]
-    exact hmem
+    rwa [h]
 
 private theorem comap_symm_comap {A B : Type u} [CommRing A] [CommRing B] (φ : A ≃+* B)
     (J : Ideal B) : Ideal.comap (φ.symm : B →+* A) (Ideal.comap (φ : A →+* B) J) = J := by
@@ -313,8 +312,7 @@ private theorem comap_symm_comap {A B : Type u} [CommRing A] [CommRing B] (φ : 
     rwa [h] at hmem'
   · intro hmem
     show (φ : A →+* B) ((φ.symm : B →+* A) b) ∈ J
-    rw [h]
-    exact hmem
+    rwa [h]
 
 private theorem exists_ltSeries_comap {A B : Type u} [CommRing A] [CommRing B] (φ : A ≃+* B)
     (s : LTSeries (PrimeSpectrum B)) :
@@ -343,10 +341,8 @@ private theorem comap_C_map_C {S : Type u} [CommRing S] (I : Ideal S) :
   constructor
   · intro h
     have h2 : (Polynomial.C a) ∈ I.map (Polynomial.C : S →+* Polynomial S) := h
-    have h3 := (Ideal.mem_map_C_iff).mp h2 0
-    simpa using h3
-  · intro h
-    exact Ideal.mem_map_of_mem _ h
+    simpa using (Ideal.mem_map_C_iff).mp h2 0
+  · exact fun h => Ideal.mem_map_of_mem _ h
 
 private theorem isMaximal_comap_C {S : Type u} [CommRing S] [IsJacobsonRing S]
     (M' : Ideal (Polynomial S)) (hM' : M'.IsMaximal) :
@@ -365,8 +361,7 @@ private theorem isMaximal_comap_C {S : Type u} [CommRing S] [IsJacobsonRing S]
     refine Ideal.ext fun a => ?_
     rw [Ideal.mem_comap, Ideal.mem_comap, Ideal.mem_bot, RingHom.comp_apply,
       Ideal.Quotient.eq_zero_iff_mem]
-  rw [← hker]
-  exact hmax
+  rwa [← hker]
 
 private theorem map_C_ne_of_isMaximal {S : Type u} [CommRing S] (N : Ideal S) (hN : N.IsMaximal)
     (M' : Ideal (Polynomial S)) (hM' : M'.IsMaximal) :
@@ -498,8 +493,7 @@ private theorem le_ringKrullDim_stalk_of_chain (X : Scheme.{u}) (x : X) (n : ℕ
     le_iSup (fun t : LTSeries (PrimeSpectrum (X.presheaf.stalk x)) => (t.length : WithBot ℕ∞))
       ⟨n, q, hstep⟩
   have hcast : ((n : ℕ∞) : WithBot ℕ∞) = ((n : ℕ) : WithBot ℕ∞) := by norm_cast
-  rw [hcast]
-  exact hlen
+  rwa [hcast]
 
 private theorem le_ringKrullDim_stalk_affineSpace (k : Type u) [Field k] (m : ℕ)
     (x : ↥(AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k))))
@@ -523,20 +517,17 @@ private theorem le_ringKrullDim_stalk_affineSpace (k : Type u) [Field k] (m : �
     have h1 : s i ≤ s.last := s.strictMono.monotone (Fin.le_last i)
     have h2 : (s i) ⤳ s.last := (PrimeSpectrum.le_iff_specializes _ _).mp h1
     have h3 := h2.map e.symm.continuous
-    rw [hlast, e.symm_apply_apply] at h3
-    exact h3
+    rwa [hlast, e.symm_apply_apply] at h3
   have hmono : ∀ i j, i < j → (fun l => e.symm (s l)) i ⤳ (fun l => e.symm (s l)) j := by
     intro i j hij
     have h1 : s i < s j := s.strictMono hij
     exact ((PrimeSpectrum.le_iff_specializes _ _).mp h1.le).map e.symm.continuous
   have hinj : Function.Injective (fun i => e.symm (s i)) := by
-    intro i j hij
-    exact s.strictMono.injective (e.symm.injective hij)
+    exact fun i j hij => s.strictMono.injective (e.symm.injective hij)
   have key := le_ringKrullDim_stalk_of_chain
     (AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k))) x s.length
     (fun i => e.symm (s i)) hspec hmono hinj
-  rw [hslen] at key
-  exact key
+  rwa [hslen] at key
 
 theorem ringKrullDim_stalk_eq_of_etale_affineSpace {k : Type u} [Field k] {m : ℕ} {Y : Scheme.{u}}
     (c : Y ⟶ AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k)))

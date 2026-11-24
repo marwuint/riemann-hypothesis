@@ -102,8 +102,7 @@ theorem mem_regAt_of_over {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (Co
   have h1 : Spec.map (ψ ≫ CommRingCat.ofHom (genMap ξ q)) = Spec.map (CommRingCat.ofHom φ) :=
     (Spec.map_comp _ _).trans ((congrArg (Spec.map (CommRingCat.ofHom (genMap ξ q)) ≫ ·) hψ).trans
       ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ g) (LieCarrier.genMap_fromSpecStalk q)).trans h)))
-  have h2 := Spec.map_injective h1
-  exact ⟨ψ.hom r, congrArg (fun t => t.hom r) h2⟩
+  exact ⟨ψ.hom r, congrArg (fun t => t.hom r) (Spec.map_injective h1)⟩
 
 theorem inv_natCast_mem_regAt {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     (q : Cpt ξ) (hq : ∀ p : ℕ, p.Prime → ¬ InFibre ξ p q) (n : ℕ) : ((n : Ω))⁻¹ ∈ regAt ξ q := by
@@ -182,8 +181,7 @@ theorem eigen_lattice_decomposition : ∀ (E : Type) [Field E] [NumberField E] (
   have hΨ : ∀ b, Ψ (1 ⊗ₜ b) = ρ b := fun b => by
     have := Algebra.TensorProduct.lift_tmul (Algebra.ofId Ω _) ρ.toIntAlgHom
       (fun x y => Algebra.commutes x _) 1 b
-    rw [map_one, one_mul] at this
-    exact this
+    rwa [map_one, one_mul] at this
   have hΦi : Function.Injective Φ := chars_injective emb hinj hcard Φ.toLinearMap hΦ
   let t : ι → TensorProduct ℤ Ω (𝓞 E) := fun j =>
     (emb i (a j) - emb j (a j))⁻¹ • (1 ⊗ₜ a j - algebraMap Ω _ (emb j (a j)))
@@ -391,8 +389,7 @@ theorem lie_lattice_local_ring : ∀ (X : Scheme.{0}) (G : CategoryTheory.Over X
     have h2 := hv.2
     rw [hg'] at h2
     have : w = e' := M.inj (Over.OverMorphism.ext (hw.trans h2.symm))
-    rw [this]
-    exact he'
+    rwa [this]
 
 end ModelDimension
 end -- clump:auto
@@ -556,11 +553,9 @@ theorem diag_unit {Ω Li : Type} [Field Ω] [AddCommGroup Li] [Module Ω Li] (A 
     (fun x hx => by rw [one_smul, hs]; exact hx) i
   refine ⟨c, c.2, c', c'.2, ?_, ?_⟩
   · have e := hc
-    rw [map_one, one_mul] at e
-    exact e
+    rwa [map_one, one_mul] at e
   · have e := hc'
-    rw [map_one, one_mul] at e
-    exact e
+    rwa [map_one, one_mul] at e
 
 theorem span_mono_subring {Ω Li : Type} [Field Ω] [AddCommGroup Li] [Module Ω Li] {B A : Subring Ω} (hBA : B ≤ A)
     {T : Set Li} {x : Li} (hx : x ∈ Submodule.span B T) : x ∈ Submodule.span A T := by

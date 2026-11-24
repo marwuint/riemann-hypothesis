@@ -75,14 +75,11 @@ theorem smooth_metric_zpow {A : HermLine ι} (hA : IsSmoothHerm A) (n : ℤ) :
 
 theorem combLine_smooth {J : Type} [Fintype J] (ℓ : J → HermLine ι) (n : J → ℤ)
     (h : ∀ j, IsSmoothHerm (ℓ j)) : IsSmoothHerm (combLine ℓ n) := by
-  show ContDiffOn ℝ _ (fun z => ∏ j, (ℓ j).h z ^ n j) _
   exact contDiffOn_prod fun j _ => smooth_metric_zpow (h j) (n j)
 
 theorem combLine_conj_invariant {J : Type} [Fintype J] (ℓ : J → HermLine ι) (n : J → ℤ)
     (h : ∀ j, IsConjInvariantH (ℓ j)) : IsConjInvariantH (combLine ℓ n) := by
-  intro z
-  show ∏ j, (ℓ j).h _ ^ n j = ∏ j, (ℓ j).h z ^ n j
-  exact Finset.prod_congr rfl fun j _ => by rw [h j z]
+  exact fun z => Finset.prod_congr rfl fun j _ => by rw [h j z]
 
 end
 

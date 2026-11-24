@@ -337,8 +337,7 @@ theorem expand (Z : CptOver Y U) {F : Type} [Field F] {y : Sp F ⟶ Xo.XF c}
     rw [e] at hw₁
     have e' := LieModel.ValAt.unique Z.gen hw₁ hv₁
     subst e'
-    rw [← SameVec.unique_left hw₂ hv₂]
-    exact hw'
+    rwa [← SameVec.unique_left hw₂ hv₂]
   refine ⟨Matrix.of A, hcomb, frame_det hf₀ hf hcomb, ?_⟩
   rw [hdet]
   exact val_det h hA
@@ -409,8 +408,7 @@ theorem exists_chart
   refine ⟨h, c₁, c₂, (u * α')⁻¹, (u' * α')⁻¹, v₀, w₀, r₀, f₁, f₂, ?_, ?_, hv₀, hw₀, ⟨hy, hU, hf₁, hf₂⟩, ?_, hne⟩
   · rw [e₁, smul_smul, smul_smul, show (u * α')⁻¹ * (u : Z.Ω) * α' = 1 by field_simp, one_smul]
   · rw [e₂, smul_smul, smul_smul, show (u' * α')⁻¹ * (u' : Z.Ω) * α' = 1 by field_simp, one_smul]
-  · rw [hq]
-    exact hr₀
+  · rwa [hq]
 
 variable {Z τ a b}
 
@@ -441,8 +439,7 @@ theorem vs_chart {F : Type} [Field F] {βF : c.F →+* F} {y : Sp F ⟶ Xo.XF c}
   have := val_mul (val_mul hr₀ vB) (val_inv vA dA)
   have e : α₀ / κ₀ * (κ₀ / κ) * (α₀ / α)⁻¹ = α / κ := by field_simp
   rw [e] at this
-  rw [div_eq_mul_inv (r₀ * B.det)]
-  exact this
+  rwa [div_eq_mul_inv (r₀ * B.det)]
 
 variable (hβ : Function.Injective β ∧ IsNoetherianRing O ∧ ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a)
   (hτ : τ (H.rt : E) = H.rt0)
@@ -602,8 +599,7 @@ theorem represents_repFn : Represents Y U τ Z.M a b (repFn Z τ a b) := by
   obtain ⟨A, B, hA, hB, dA, dB, l⟩ := vs_chart hg.1 hg.2.1 f₁ f₂ ea₀ eb₀ hv₀ hw₀ hfr₀ hr₀ hfr ea eb hv hw
   have h : IsGen Z τ a b y v w (r₀ * B.det / A.det) :=
     ⟨v₀, w₀, r₀, A, B, ⟨βF, c₁, c₂, α₀, κ₀, hfr₀, ea₀, eb₀, hv₀, hw₀, hr₀⟩, hA, hB, dA, div_mul_cancel₀ _ dA⟩
-  rw [repFn_eq hβ hτ hg h]
-  exact l
+  rwa [repFn_eq hβ hτ hg h]
 
 end Main
 

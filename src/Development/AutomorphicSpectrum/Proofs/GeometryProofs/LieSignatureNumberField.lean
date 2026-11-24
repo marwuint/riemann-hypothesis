@@ -169,10 +169,7 @@ theorem extend_functionField {X Y S : Scheme.{0}} [IsIntegral X] [Y.IsSeparated]
     refine Scheme.PartialMap.equiv_of_fromSpecStalkOfMem_eq (x := genericPoint X) gx r0 hg hr0 ?_
     rw [key, Scheme.PartialMap.fromSpecStalkOfMem_ofFromSpecStalk]
   let P := r0.toRationalMap.toPartialMap
-  have htop : (⊤ : X.Opens) = P.domain := by
-    refine (top_le_iff.mp ?_).symm
-    intro x _
-    exact hdom x
+  have htop : (⊤ : X.Opens) = P.domain := (top_le_iff.mp (fun x _ => hdom x)).symm
   refine ⟨X.topIso.inv ≫ (X.isoOfEq htop).hom ≫ P.hom, ?_⟩
   have hP : P.toRationalMap = r0.toRationalMap := Scheme.RationalMap.toRationalMap_toPartialMap _
   have hgP : genericPoint X ∈ P.domain := hdom _
@@ -511,8 +508,7 @@ theorem PositivityTheory.Xgn.tate_isomorphism_descends : ∀ (E : Type) [Field E
     have h₂ := I'.isom n hn a b
     rw [← evp n a hn, ← evp n b hn, ← hζ n hn, ← map_zpow] at h₂
     have e := ginj (GlobalTheory.weilIs_unique_fieldPoint S P.A P.L P.isLB Ω x' n _ _ _ _ h₁ h₂)
-    rw [← e]
-    exact hc
+    rwa [← e]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.TateIsomorphismDescends =====
@@ -655,8 +651,7 @@ theorem exists_field_alg (C : Type) [CommRing C] [Algebra ℚ C] [Module.Finite 
     simp only [S, Finset.mem_biUnion, Finset.mem_univ, true_and, Multiset.mem_toFinset]
     refine ⟨i, Polynomial.mem_aroots.mpr ⟨minpoly.ne_zero (hint _), ?_⟩⟩
     have h := Polynomial.aeval_algHom_apply ψ.toRatAlgHom (bs i) (minpoly ℚ (bs i))
-    rw [minpoly.aeval, map_zero] at h
-    exact h
+    rwa [minpoly.aeval, map_zero] at h
   refine ⟨IntermediateField.adjoin ℚ (S : Set ℂ), ?_, ?_⟩
   · apply IntermediateField.finiteDimensional_adjoin
     intro z hz
@@ -708,8 +703,7 @@ theorem exists_field_scheme (L : Type) [Field L] [NumberField L] (σ : L →+* �
   · have hqg : q ≫ g = CommRingCat.ofHom σ := by
       apply Spec.map_injective
       rw [Spec.map_comp, hg, hq]
-      simp only [Category.assoc, Iso.hom_inv_id_assoc]
-      exact hw
+      simpa only [Category.assoc, Iso.hom_inv_id_assoc] using hw
     dsimp only [spMap]
     rw [Category.assoc, ← hq, ← Spec.map_comp]
     congr 1

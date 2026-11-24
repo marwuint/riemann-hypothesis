@@ -83,10 +83,8 @@ theorem r_enlarge : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace 
   obtain ⟨hpot, hsm, hpsh, hb⟩ := hS
   obtain ⟨h0, h1, hf⟩ := hR
   refine ⟨⟨hpot, ?_, ?_, ?_⟩, ⟨h0, h1, ?_⟩, ?_⟩
-  · intro j
-    exact (hsm j).mono (fun z hz => ⟨hz.1, hnb _ hz.2⟩)
-  · intro x j y hy w
-    exact hpsh x j y ⟨hy.1, hy.2.1, hnb _ hy.2.2⟩ w
+  · exact fun j => (hsm j).mono (fun z hz => ⟨hz.1, hnb _ hz.2⟩)
+  · exact fun x j y hy w => hpsh x j y ⟨hy.1, hy.2.1, hnb _ hy.2.2⟩ w
   · intro y hy
     obtain ⟨hlo, hhi⟩ := hb y (hnb y hy)
     refine ⟨?_, hhi⟩
@@ -106,13 +104,11 @@ theorem r_enlarge : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace 
       unfold epsT
       exact div_nonneg (mul_nonneg hC (Real.log_nonneg hL1)) (by linarith)
     refine ⟨a1, a2, fun y hy => a3 y (hnb y hy), a4, a5, ?_, ?_, a8⟩
-    · intro y hy hle
-      exact a6 y (hnb y hy) (le_trans (hrw y hy) hle)
+    · exact fun y hy hle => a6 y (hnb y hy) (le_trans (hrw y hy) hle)
     · intro y hy
       have h7 := a7 y (hnb y hy)
       nlinarith [mul_le_mul_of_nonneg_left (hrw y hy) heps]
-  · intro j K hK hKc
-    exact hC2 j K (fun z hz => ⟨(hK hz).1, hnb _ (hK hz).2⟩) hKc
+  · exact fun j K hK hKc => hC2 j K (fun z hz => ⟨(hK hz).1, hnb _ (hK hz).2⟩) hKc
 
 end PositivityTheory.UnitarySelfGeneration
 end -- clump:auto

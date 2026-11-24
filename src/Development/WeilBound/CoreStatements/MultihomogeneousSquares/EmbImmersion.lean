@@ -80,8 +80,7 @@ theorem emb_immersion {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSp
   have hm : A.chart j x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (ψ ⁻¹' (B.chart k).source) := by
     refine ⟨(A.chart j).map_source hx, ?_⟩
     show ψ ((A.chart j).symm (A.chart j x)) ∈ (B.chart k).source
-    rw [(A.chart j).left_inv hx]
-    exact hk
+    rwa [(A.chart j).left_inv hx]
   have hg : AnalyticAt ℂ (B.chart k ∘ ψ ∘ (A.chart j).symm) (A.chart j x) := hψ.2 j k _ hm
   have hgt : (B.chart k ∘ ψ ∘ (A.chart j).symm) (A.chart j x) = B.chart k (ψ x) := by
     simp only [Function.comp_apply, (A.chart j).left_inv hx]
@@ -89,8 +88,7 @@ theorem emb_immersion {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSp
     rw [hgt]
     refine hπ.2 k j _ ⟨(B.chart k).map_source hk, ?_⟩
     show π ((B.chart k).symm (B.chart k (ψ x))) ∈ (A.chart j).source
-    rw [(B.chart k).left_inv hk, h1]
-    exact hx
+    rwa [(B.chart k).left_inv hk, h1]
   have hid : (A.chart j ∘ π ∘ (B.chart k).symm) ∘ (B.chart k ∘ ψ ∘ (A.chart j).symm) =ᶠ[𝓝 (A.chart j x)] id := by
     filter_upwards [hO.mem_nhds hm] with u hu
     simp only [Function.comp_apply, id, (B.chart k).left_inv hu.2, h1, (A.chart j).right_inv hu.1]
@@ -123,8 +121,7 @@ theorem emb_immersion {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSp
         rw [fderiv_zero_of_not_differentiableAt hF]
         rfl
       exact this
-    rw [hf, Submodule.mem_bot] at h0
-    exact h0
+    rwa [hf, Submodule.mem_bot] at h0
 
 theorem stEmb : StEmb := by
   intro K _ ι _ P e σ S Re β b hJ hdeg hbr hβ hβP hbd
@@ -157,15 +154,13 @@ theorem stEmb : StEmb := by
   · intro x y hy
     rw [hI]
     exact Re.R.mem (ψ x) (ψ y) hy
-  · intro x x' y hy
-    exact Re.R.compat (ψ x) (ψ x') (ψ y) hy
+  · exact fun x x' y hy => Re.R.compat (ψ x) (ψ x') (ψ y) hy
   · intro z hz
     rw [hI] at hz
     obtain ⟨x', hx'⟩ := Re.R.surj z hz (hmc z)
     refine ⟨Re.π x', ?_⟩
     show SameOrbit (Re.R.lift (ψ (Re.π x')) (ψ (Re.π x'))) z
-    rw [h2]
-    exact hx'
+    rwa [h2]
   · intro x x' h
     have := Re.R.inj (ψ x) (ψ x') (hmc _) h
     rw [← h1 x, ← h1 x', this]
@@ -177,8 +172,7 @@ theorem stEmb : StEmb := by
     show SameOrbit (Re.R.lift (ψ (Re.π x)) (ψ (Re.π x))) fun p => Re.R.lift x x p
     rw [h2]
     exact ⟨fun _ => 1, fun _ => one_ne_zero, by simp⟩
-  · rw [hI]
-    exact hβP
+  · rwa [hI]
   · intro x hx
     exact hbd (ψ x) (by rw [h1]; exact hx)
 

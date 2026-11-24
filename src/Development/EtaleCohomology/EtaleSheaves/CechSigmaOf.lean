@@ -132,8 +132,7 @@ theorem ZarLocal_of (hCop : t_E3Cut.Coprod) (hCS : CechSigma) : t_E3Cut.ZarLocal
       · rw [e]; exact (hAaff x).basicOpen _
       · exact (iInf_le _ 0).trans ((X.basicOpen_le _).trans (hAU x))
   refine eqv_of_top g (hCS hH R F g ⊤ A (fun _ => le_top) ?_ ?_)
-  · intro y _
-    exact TopologicalSpace.Opens.mem_iSup.2 ⟨y, hxA y⟩
+  · exact fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hxA y⟩
   · exact fun n => sigmaEqv hCop _ fun j => st1 (j 0) _ (iInf_le _ 0)
 
 end LateralTheory.E.ZariskiLocalCech
@@ -231,8 +230,7 @@ theorem CechSigma_of (hL : LevelIso) : ZariskiLocalCech.CechSigma := by
     exact eqv_of_arrowIso e' (hn _)
   have w : Arrow.mapCechNerve (arr g O V hV) ≫ cechAug (cov O V hV) =
       cechAug (cov (g ⁻¹ᵁ O) (fun j => g ⁻¹ᵁ V j) (fun j => pre_le g (hV j))) ≫ sch.map (g ∣_ O) := by
-    have h := (Arrow.mapAugmentedCechNerve (arr g O V hV)).w
-    exact h
+    exact (Arrow.mapAugmentedCechNerve (arr g O V hV)).w
   have h4 : Eqv R (cechAug (cov (g ⁻¹ᵁ O) (fun j => g ⁻¹ᵁ V j) (fun j => pre_le g (hV j))) ≫ sch.map (g ∣_ O)) F := by
     rw [← w]; exact ZariskiLocalCech.eqv_comp e3 e1
   exact eqv_of_comp_left e2 h4

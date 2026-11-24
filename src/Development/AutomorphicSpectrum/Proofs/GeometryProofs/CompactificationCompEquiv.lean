@@ -95,8 +95,7 @@ theorem mem_secZ_zero {f : Rul Xo c} (hf : f ∈ Formalism.L2.Pj.sec Xo c 0 0) :
   have h0 : ∀ i, exZ Dw 0 i = 0 := fun i => by cases i <;> rfl
   have h1 := hf.2 p t y y' hb
   rw [hw, one_mul] at h1
-  simp only [h0, zpow_zero, Units.val_one, Finset.prod_const_one, one_mul]
-  exact h1
+  simpa only [h0, zpow_zero, Units.val_one, Finset.prod_const_one, one_mul] using h1
 
 def evA {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S)
     (hy : FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y) : Rul Xo c →ₐ[c.F] S where
@@ -358,9 +357,7 @@ theorem comp_over : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
     refine ⟨hv0 Z Z' hZ' y hy, fun a f hf => ?_⟩
     have hf1 : f ∈ secZ Xo c a := (Submodule.mem_inf.1 (Submodule.mem_inf.1 hf).1).1
     have hf2 : evC h Z' f = 0 := by
-      have h2 := (Submodule.mem_inf.1 hf).2
-      have h3 := (Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 h2 Z') hZ'
-      exact h3
+      exact (Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 ((Submodule.mem_inf.1 hf).2) Z') hZ'
     have hg : f * e Z' = 0 := by
       refine i1 (a + 0) _ (i3 a 0 f hf1 _ (mem_secZ_zero (hL.e_sec Z'))) fun W => ?_
       show evR Xo c (f * e Z') (genFr h W) = 0
@@ -380,7 +377,6 @@ theorem comp_over : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
       exact evalAt_zero _ _ _
     have e4 : evR Xo c (e Z') ((U σ).un (κ Z') ⟨y, hy⟩) = 1 := (e2.symm.trans (hv1 Z' y hy))
     rw [e4, mul_one] at e3
-    rw [e1]
-    exact e3
+    rwa [e1]
 
 end GlobalTheory.CompanionTheory.Ar.Rec

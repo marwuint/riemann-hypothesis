@@ -117,8 +117,7 @@ private lemma square_of_approx {R K : Type*} [CommRing R] [IsDedekindDomain R] [
       · exact Ideal.pow_le_pow_right hm' (hb m k h)
       · have := Ideal.pow_le_pow_right hk' (hb k m h)
         rw [← neg_sub]; exact neg_mem this
-    have h2 := hval _ _ this
-    simpa [hf, map_sub] using h2
+    simpa [hf, map_sub] using hval _ _ this
   obtain ⟨L, hL⟩ := cauchySeq_tendsto_of_complete hcau
   have h0 : Tendsto (fun m => f m * f m - D) atTop (𝓝 0) := by
     rw [(Valued.hasBasis_nhds_zero _ _).tendsto_right_iff]
@@ -183,11 +182,8 @@ private theorem core {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     intro x
     obtain ⟨u, w, h⟩ := hsp x
     exact ⟨u, w, by rw [h, Algebra.smul_def, Algebra.smul_def, mul_one]⟩
-  have hθ0 : θ ≠ 0 := by
-    rintro rfl
-    apply hd
-    have h0 : algebraMap F E d = 0 := by rw [← hθ]; simp
-    exact (map_eq_zero (algebraMap F E)).1 h0
+  have hθ0 : θ ≠ 0 := fun h =>
+    hd ((map_eq_zero (algebraMap F E)).1 (by rw [← hθ, h, mul_zero]))
   have hσσ : ∀ x, σ (σ x) = x := by
     intro x
     obtain ⟨u, w, rfl⟩ := hsp' x
@@ -196,47 +192,32 @@ private theorem core {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     intro x hx
     obtain ⟨u, w, rfl⟩ := hsp' x
     simp only [map_add (f := _), map_mul, AlgHom.commutes, hσ, mul_neg] at hx
-    have h2 : (2 : E) * (algebraMap F E w * θ) = 0 := by
-      have h3 := add_left_cancel hx
-      linear_combination -h3
     have hw : w = 0 := by
-      rcases mul_eq_zero.1 h2 with h | h
-      · exact absurd h two_ne_zero
-      · rcases mul_eq_zero.1 h with h | h
-        · exact (map_eq_zero (algebraMap F E)).1 h
-        · exact absurd h hθ0
+      have h2 : (2 : E) * (algebraMap F E w * θ) = 0 := by
+        linear_combination -(add_left_cancel hx)
+      simpa [hθ0] using h2
     exact ⟨u, by simp [hw]⟩
   let s : 𝓞 E →+* 𝓞 E := RingOfIntegers.mapRingHom (σ : E →+* E)
   have hs : ∀ y : 𝓞 E, ((s y : 𝓞 E) : E) = σ y := fun _ => rfl
-  have hss : ∀ y, s (s y) = y := by
-    intro y
-    apply RingOfIntegers.ext
-    rw [hs, hs, hσσ]
+  have hss : ∀ y, s (s y) = y := fun y => RingOfIntegers.ext (by rw [hs, hs, hσσ])
   have hfixO : ∀ y : 𝓞 E, s y = y → ∃ r : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) r = y := by
     intro y hy
     obtain ⟨u, hu⟩ := hfix (y : E) (by rw [← hs, hy])
-    have hint : IsIntegral ℤ u := by
-      have h1 : IsIntegral ℤ (algebraMap F E u) := hu ▸ RingOfIntegers.isIntegral_coe y
-      exact (isIntegral_algebraMap_iff ).1 h1
-    refine ⟨⟨u, hint⟩, ?_⟩
-    apply RingOfIntegers.ext
-    exact hu.symm
+    have h1 : IsIntegral ℤ (algebraMap F E u) := hu ▸ RingOfIntegers.isIntegral_coe y
+    exact ⟨⟨u, isIntegral_algebraMap_iff.1 h1⟩, RingOfIntegers.ext hu.symm⟩
   have htr : ∀ y, ∃ r : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) r = y + s y := fun y =>
     hfixO _ (by rw [map_add (f := _), hss, add_comm])
   have hnm : ∀ y, ∃ r : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) r = y * s y := fun y =>
     hfixO _ (by rw [map_mul, hss, mul_comm])
   have hint : IsIntegral ℤ θ := by
-    have h1 : IsIntegral ℤ (θ ^ 2) := by
-      rw [pow_two, hθ]
-      exact (RingOfIntegers.isIntegral_coe d).algebraMap
-    exact h1.of_pow (by norm_num)
+    refine IsIntegral.of_pow two_pos ?_
+    rw [pow_two, hθ]
+    exact (RingOfIntegers.isIntegral_coe d).algebraMap
   let t : 𝓞 E := ⟨θ, hint⟩
-  have ht : t * t = algebraMap (𝓞 F) (𝓞 E) d := by
-    apply RingOfIntegers.ext
-    exact hθ
+  have ht : t * t = algebraMap (𝓞 F) (𝓞 E) d := RingOfIntegers.ext hθ
   have := P.isMaximal
   have := Q.isMaximal
-  have hne' : P.asIdeal ≠ Q.asIdeal := fun h => hne (HeightOneSpectrum.ext h)
+  have hne' : P.asIdeal ≠ Q.asIdeal := mt HeightOneSpectrum.ext hne
   choose a ha using
     approx (R := 𝓞 F) s hss htr hnm P.asIdeal Q.asIdeal hne' (hP.trans hQ.symm) t
   have : P.asIdeal.LiesOver v.asIdeal := ⟨hP.symm⟩
@@ -247,32 +228,25 @@ private theorem core {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
       x ∈ v.asIdeal ^ m := by
     intro x m hx
     rw [← intValuation_le_pow_iff_mem] at hx ⊢
-    rw [← intValuation_liesOver v P x] at hx
-    rw [← Ideal.ramificationIdx'_eq_ramificationIdx v.asIdeal P.asIdeal v.ne_bot, ← he'] at hx
     have h1 : exp (-((e * m : ℕ) : ℤ)) = (exp (-(m : ℤ))) ^ e := by
       rw [← exp_nsmul]
-      congr 1
       simp
-    rw [h1] at hx
+    rw [← intValuation_liesOver v P x,
+      ← Ideal.ramificationIdx'_eq_ramificationIdx v.asIdeal P.asIdeal v.ne_bot, ← he', h1] at hx
     exact (pow_le_pow_iff_left₀ zero_le zero_le he).1 hx
   have hb : ∀ m k, m ≤ k → a (e * k) - a (e * m) ∈ v.asIdeal ^ m := by
     intro m k hmk
     apply hdown
-    have h1 := ha (e * m)
-    have h2 := Ideal.pow_le_pow_right (Nat.mul_le_mul_left e hmk) (ha (e * k))
-    have h3 := sub_mem h1 h2
-    have h4 : t - algebraMap (𝓞 F) (𝓞 E) (a (e * m)) - (t - algebraMap (𝓞 F) (𝓞 E) (a (e * k))) =
-        algebraMap (𝓞 F) (𝓞 E) (a (e * k) - a (e * m)) := by
-      rw [map_sub]; ring
-    rwa [h4] at h3
+    convert sub_mem (ha (e * m))
+      (Ideal.pow_le_pow_right (Nat.mul_le_mul_left e hmk) (ha (e * k))) using 1
+    rw [map_sub]
+    ring
   have hdd : ∀ m, a (e * m) * a (e * m) - d ∈ v.asIdeal ^ m := by
     intro m
     apply hdown
-    have h1 := Ideal.mul_mem_left _ (-(t + algebraMap (𝓞 F) (𝓞 E) (a (e * m)))) (ha (e * m))
-    have h2 : -(t + algebraMap (𝓞 F) (𝓞 E) (a (e * m))) * (t - algebraMap (𝓞 F) (𝓞 E) (a (e * m))) =
-        algebraMap (𝓞 F) (𝓞 E) (a (e * m) * a (e * m) - d) := by
-      rw [map_sub, map_mul, ← ht]; ring
-    rwa [h2] at h1
+    convert Ideal.mul_mem_left _ (-(t + algebraMap (𝓞 F) (𝓞 E) (a (e * m)))) (ha (e * m)) using 1
+    rw [map_sub, map_mul, ← ht]
+    ring
   exact square_of_approx v (fun m => a (e * m)) d hb hdd
 
 noncomputable def IsCMExt (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]

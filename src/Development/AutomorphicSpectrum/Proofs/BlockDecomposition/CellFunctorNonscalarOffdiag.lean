@@ -287,11 +287,7 @@ theorem relDeltaHalf_eq_one (c : Bool → Bool → Type) [∀ i j, Fintype (c i 
     (q : ∀ i, Levi k (c i)) : relDeltaHalf k c q = 1 := by
   haveI := h₀
   haveI := h₁
-  have hA : ∀ x : kˣ, GlobalTheory.SmGL.absPow k 0 x = 1 := by
-    intro x
-    apply Units.ext
-    show ((GlobalTheory.SplitWeil.nabs k x : ℝ) : ℂ) ^ (0 : ℂ) = 1
-    exact Complex.cpow_zero _
+  have hA : ∀ x : kˣ, GlobalTheory.SmGL.absPow k 0 x = 1 := fun x => Units.ext (Complex.cpow_zero _)
   have hE : ∀ (i j : Bool), GlobalTheory.SmGL.detChar (c i j) (GlobalTheory.SmGL.absPow k (↑(GlobalTheory.SmGL.modExp (c i) j) / 2)) (q i j) = 1 := by
     intro i j
     cases i <;> cases j
@@ -299,12 +295,10 @@ theorem relDeltaHalf_eq_one (c : Bool → Bool → Type) [∀ i j, Fintype (c i 
       rw [det_of_isEmpty (q false false), map_one]
     · show GlobalTheory.SmGL.absPow k (↑(GlobalTheory.SmGL.modExp (c false) true) / 2) (GeneralLinearGroup.det (q false true)) = 1
       rw [GlobalTheory.CellScalarTwo.modExp_true, Fintype.card_eq_zero]
-      simp only [Nat.cast_zero, neg_zero, Int.cast_zero, zero_div]
-      exact hA _
+      simpa only [Nat.cast_zero, neg_zero, Int.cast_zero, zero_div] using hA _
     · show GlobalTheory.SmGL.absPow k (↑(GlobalTheory.SmGL.modExp (c true) false) / 2) (GeneralLinearGroup.det (q true false)) = 1
       rw [GlobalTheory.CellScalarTwo.modExp_false, Fintype.card_eq_zero]
-      simp only [Nat.cast_zero, Int.cast_zero, zero_div]
-      exact hA _
+      simpa only [Nat.cast_zero, Int.cast_zero, zero_div] using hA _
     · show GlobalTheory.SmGL.absPow k _ (GeneralLinearGroup.det (q true true)) = 1
       rw [det_of_isEmpty (q true true), map_one]
   show (∏ i, (GlobalTheory.SmGL.deltaHalf k (c i)).comp (Pi.evalMonoidHom (fun i => Levi k (c i)) i)) q = 1

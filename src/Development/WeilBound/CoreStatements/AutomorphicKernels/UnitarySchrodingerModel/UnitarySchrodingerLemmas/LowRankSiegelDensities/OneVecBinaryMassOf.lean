@@ -135,8 +135,7 @@ theorem coreSharp (hSC : SharpCount) (lam : Measure (Fv F v)) (hlam : IsStdV v l
     have e : (phi : 𝒪 →+* Fv F v) (c * 2) = phi c * phi 2 := map_mul _ _ _
     have e2 : (phi : 𝒪 →+* Fv F v) 2 = 2 := map_ofNat _ 2
     have e3 : phi c = (2 : Fv F v)⁻¹ := hc
-    rw [e2, e3, inv_mul_cancel₀ h20] at e
-    exact e
+    rwa [e2, e3, inv_mul_cancel₀ h20] at e
   have hr1 : res c * 2 = 1 := by
     have := congrArg res hc2
     rwa [map_mul, map_one, map_ofNat] at this
@@ -149,8 +148,7 @@ theorem coreSharp (hSC : SharpCount) (lam : Measure (Fv F v)) (hlam : IsStdV v l
       exact_mod_cast this
     rw [h0, mul_zero] at hr1
     exact zero_ne_one hr1
-  have hBO : BO.IsSymm := by
-    exact Matrix.IsSymm.ext fun i j => Subtype.ext (congrFun (congrFun hBs i) j)
+  have hBO : BO.IsSymm := Matrix.IsSymm.ext fun i j => Subtype.ext (congrFun (congrFun hBs i) j)
   have hBks : (BO.map res).IsSymm := hBO.map _
   have hBkdet : (BO.map res).det ≠ 0 := by
     intro h0
@@ -242,8 +240,7 @@ theorem coreSharp (hSC : SharpCount) (lam : Measure (Fv F v)) (hlam : IsStdV v l
           have h5 : Valued.v (z - s) < 1 := hAs hz
           have h6 := Valuation.map_add_lt _ h5 hlt
           have e : z - s + (s - Qf (lf y)) = z - Qf (lf y) := by ring
-          rw [e] at h6
-          exact h6
+          rwa [e] at h6
         rw [this]
       · have : A ∩ {s' | Valued.v (s' - (2 : Fv F v)⁻¹ * (lf y ⬝ᵥ ((BO.map phi) *ᵥ lf y))) < 1} = ∅ := by
           refine Set.eq_empty_iff_forall_notMem.2 fun z hz => he (hcl.1 ?_)
@@ -251,8 +248,7 @@ theorem coreSharp (hSC : SharpCount) (lam : Measure (Fv F v)) (hlam : IsStdV v l
           have h6 : Valued.v (z - Qf (lf y)) < 1 := hz.2
           have h7 := Valuation.map_sub_lt _ h6 h5
           have e : z - Qf (lf y) - (z - s) = s - Qf (lf y) := by ring
-          rw [e] at h7
-          exact h7
+          rwa [e] at h7
         rw [this, measure_empty, mul_zero]
     rw [hS, measure_biUnion_finset hdisj hmeas, Finset.sum_congr rfl hclass, ← Finset.sum_filter,
       Finset.sum_const, nsmul_eq_mul]
@@ -289,8 +285,7 @@ theorem dens_unit (hSC : SharpCount) (lam : Measure (Fv F v)) (hlam : IsStdV v l
     linarith
   · have hball : A ⊆ {z | Valued.v (z - s) < 1} := fun z hz => by
       have := hsub hz
-      rw [hsu] at this
-      exact this
+      rwa [hsu] at this
     rw [← hprim A hA hball]
     congr 1
     ext x
@@ -342,8 +337,7 @@ theorem lattice_unit (hSC : SharpCount) : ∀ (F E : Type) [Field F] [NumberFiel
   have hv2' : Valued.v (2 : Fv F v) = 1 := by rwa [map_ofNat] at hv2
   have hdet : Valued.v (B.map (algebraMap F (Fv F v))).det = 1 := by
     have h1 := (algebraMap F (Fv F v)).map_det B
-    rw [h1] at hvd
-    exact hvd
+    rwa [h1] at hvd
   obtain ⟨D, hD1, hD⟩ := dens_unit hSC lam hlam hv2' (Fin M × Fin d)
     (B.map (algebraMap F (Fv F v))) (hBs.map _) (fun i j => hve i j) hdet M hcard h3 s hsu
   rw [GlobalTheory.CompanionTheory.SW.LocGood.local_mass σ hCM M J hJ d b v (B.map (algebraMap F (Fv F v))) (fun x y => hBt (Fv F v) x y)

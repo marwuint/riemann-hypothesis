@@ -87,8 +87,7 @@ theorem flag_isometry_diagonal_on_frame (n r : ℕ) (J P p : Matrix (Fin n) (Fin
     (B : Matrix (Fin r) (Fin r) ℂ) (hB : B.BlockTriangular id) (hpX : p * X = X * B) :
     ∃ d : Fin r → ℂ, p * X = X * diagonal d ∧ p * Y = Y * diagonal d := by
   have hXPX : Xᴴ * P * X = 1 := by
-    rw [Matrix.mul_assoc, hPX, ← Matrix.mul_assoc]
-    exact hXY
+    rwa [Matrix.mul_assoc, hPX, ← Matrix.mul_assoc]
   have hBB : Bᴴ * B = 1 := by
     calc Bᴴ * B = Bᴴ * (Xᴴ * P * X) * B := by rw [hXPX, Matrix.mul_one]
       _ = (X * B)ᴴ * P * (X * B) := by
@@ -99,8 +98,7 @@ theorem flag_isometry_diagonal_on_frame (n r : ℕ) (J P p : Matrix (Fin n) (Fin
           rw [Matrix.conjTranspose_mul]
           simp only [Matrix.mul_assoc]
       _ = 1 := by
-          rw [hpP]
-          exact hXPX
+          rwa [hpP]
   have hBd := eq_diagonal_of_upperTriangular_of_unitary B hB hBB
   obtain ⟨D, hD⟩ : ∃ D : Matrix (Fin r) (Fin r) ℂ, D = diagonal (fun i => B i i) := ⟨_, rfl⟩
   have hBD : B = D := hBd.trans hD.symm
@@ -197,8 +195,7 @@ theorem exists_abs_sign {R : Matrix (Fin n) (Fin n) ℂ} (hR : R.IsHermitian) :
     simp only [hds]
   · conv_lhs => rw [hspec]
     rw [conj_mul _ _ _ _ hUU, conj_mul _ _ _ _ hUU, diagonal_mul_diagonal, diagonal_mul_diagonal]
-    simp only [hssd]
-    exact hspec.symm
+    simpa only [hssd] using hspec.symm
 
 theorem exists_adapted_majorant (n r : ℕ) (J : Matrix (Fin n) (Fin n) ℂ)
     (X Y : Matrix (Fin n) (Fin r) ℂ) (hJ : J.IsHermitian) (hdet : IsUnit J.det)
@@ -324,8 +321,7 @@ theorem isCompact_unitaryFn (n : ℕ) :
     rw [mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]
     intro i
     rw [pi_norm_le_iff_of_nonneg zero_le_one]
-    intro j
-    exact entry_norm_bound_of_unitary hu i j
+    exact fun j => entry_norm_bound_of_unitary hu i j
 
 open scoped MatrixOrder Matrix.Norms.L2Operator in
 theorem exists_factor {n : ℕ} {P : Matrix (Fin n) (Fin n) ℂ} (hP : P.PosSemidef) : ∃ B : Matrix (Fin n) (Fin n) ℂ, P = Bᴴ * B := by
@@ -379,8 +375,7 @@ theorem arch_unitary (hcm : IsCMExt F E σ) (τ : EmbOver E w) (y : GArch σ J w
     (archMat σ J τ y)ᴴ * J.map τ.1 * archMat σ J τ y = J.map τ.1 := by
   have h : cT (starRingEnd ℂ) (archEquiv J hcm τ y).1.1 * J.map τ.1 * (archEquiv J hcm τ y).1.1 = J.map τ.1 :=
     (archEquiv J hcm τ y).2
-  rw [_root_.Formalism.UG.P.cT_conj_eq] at h
-  exact h
+  rwa [_root_.Formalism.UG.P.cT_conj_eq] at h
 
 theorem det_map_ne (hdet : J.det ≠ 0) (τ : E →+* ℂ) : (J.map τ).det ≠ 0 := by
   have h : (J.map τ).det = τ J.det := (RingHom.map_det τ J).symm
@@ -398,8 +393,7 @@ theorem exists_lift (hcm : IsCMExt F E σ) (hdet : J.det ≠ 0) (τ : EmbOver E 
   let u : GL (Fin n) ℂ := Matrix.nonsingInvUnit m (isUnit_iff_ne_zero.2 hd)
   have hu : u ∈ Formalism.UG.UJ (starRingEnd ℂ) (J.map τ.1) := by
     change cT (starRingEnd ℂ) m * J.map τ.1 * m = J.map τ.1
-    rw [_root_.Formalism.UG.P.cT_conj_eq]
-    exact hm
+    rwa [_root_.Formalism.UG.P.cT_conj_eq]
   refine ⟨(archEquiv J hcm τ).symm ⟨u, hu⟩, ?_⟩
   rw [GlobalTheory.Orb.archMat_eq_archEquiv J hcm, MulEquiv.apply_symm_apply]
   rfl
@@ -443,8 +437,7 @@ theorem isCompact_stabAt (hcm : IsCMExt F E σ) (hdet : J.det ≠ 0) (τ : EmbOv
       obtain ⟨y, hy⟩ := exists_lift J hcm hdet τ (m := Matrix.of M) h2
       refine ⟨y, ?_, ?_⟩
       · change (archMat σ J τ y)ᴴ * P * archMat σ J τ y = P
-        rw [hy]
-        exact h1
+        rwa [hy]
       · funext i j
         exact congrFun (congrFun hy i) j
   refine himg ▸ (isCompact_stabFn hP).inter_right hcl
@@ -530,8 +523,7 @@ theorem frame_coeff (hcm : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOve
       ← Matrix.map_mul, hQ, Matrix.map_one _ (map_zero _) (map_one _)]
   refine ⟨_, tensMat_ext hcm τ (fun w => ?_) ?_, hfin, hinf⟩
   · obtain ⟨Bw, hB⟩ := h w
-    rw [Matrix.map_mul, Matrix.map_mul (L := adMat F X), hinf w Bw hB, map_adMat, map_matHom]
-    exact hB
+    rwa [Matrix.map_mul, Matrix.map_mul (L := adMat F X), hinf w Bw hB, map_adMat, map_matHom]
   · rw [Matrix.map_mul, Matrix.map_mul (L := adMat F X), hfin, map_matHom_fin J hg, Matrix.one_mul, Matrix.mul_one]
 
 theorem mem_minPar_of (hcm : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {g : GAd σ J} (hg : g ∈ infPts σ J)
@@ -614,8 +606,7 @@ theorem iwasawa (hcm : IsCMExt F E σ) (hdet : J.det ≠ 0) (τ : ∀ w : Infini
   · refine mem_minPar_of J hcm τ (ofInf_mem_infPts J _) hQ fun w => ?_
     obtain ⟨B, ht, he⟩ := hB w
     refine ⟨B, ht, ?_⟩
-    rw [projArch_ofInf_embArchPi, hy]
-    exact he
+    rwa [projArch_ofInf_embArchPi, hy]
   · refine ⟨z, fun w _ => ?_, rfl⟩
     change (archMat σ J (τ w) (z w))ᴴ * P w * archMat σ J (τ w) (z w) = P w
     rw [hz]
@@ -649,8 +640,7 @@ theorem good (hcm : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w)
       exact hx w (Set.mem_univ w)
     · rw [Matrix.map_apply, hBt hij, map_zero]
     · have := congrArg (fun A => A.map (evC (τ w))) hBe
-      simp only [Matrix.map_mul, map_adMat, map_matHom] at this
-      exact this
+      simpa only [Matrix.map_mul, map_adMat, map_matHom] using this
   obtain ⟨d, hd⟩ := exists_diag J hcm τ hinf hQ fun w => (hw w).imp fun _ h => h.1
   obtain ⟨d', hd'⟩ := exists_diag J hcm τ hinf hQ' fun w => (hw w).imp fun _ h => h.2
   exact ⟨d, d', hd, hd'⟩
@@ -676,8 +666,7 @@ theorem exists_kInf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
   have hyx : ∀ w, (Y.map (τ w).1)ᴴ * J.map (τ w).1 * X.map (τ w).1 = 1 := fun w => by
     have h := congrArg conjTranspose (hxy w)
     rw [conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, (hher w).eq, conjTranspose_one] at h
-    rw [Matrix.mul_assoc]
-    exact h
+    rwa [Matrix.mul_assoc]
   obtain ⟨w₀⟩ : Nonempty (InfinitePlace F) := inferInstance
   have hQ : cT (σ : E →+* E) Y * J * X = 1 := by
     have h : (cT (σ : E →+* E) Y * J * X).map (τ w₀).1 = (1 : Matrix (Fin r) (Fin r) E).map (τ w₀).1 := by

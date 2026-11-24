@@ -134,8 +134,7 @@ theorem eq_zero_of_sum_mem_span : ∀ (E : Type) [Field E] [NumberField E] (V : 
   have hxe : ∑ c, l c • q c ∈ eigSp ρ s₀ := Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (hq c)
   have hW : ∑ c, l c • q c ∈ W := by
     have h := hS hl
-    rw [Submodule.mem_comap, hπ, h3 _ hxe] at h
-    exact h
+    rwa [Submodule.mem_comap, hπ, h3 _ hxe] at h
   obtain ⟨m, hm⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).1 hW
   have hz := Fintype.linearIndependent_iff.1 hli (Fin.append (-m) l) (by
     rw [Fin.sum_univ_add]
@@ -566,8 +565,7 @@ theorem oFamily_of_image : ∀ (E : Type) [Field E] [NumberField E] (g : ℕ) (�
     have hIΛ : I.toAddSubgroup = J.toAddSubgroup.map W.subtype.toAddMonoidHom := by
       ext x
       constructor
-      · intro hx
-        exact ⟨⟨x, hIW hx⟩, hx, rfl⟩
+      · exact fun hx => ⟨⟨x, hIW hx⟩, hx, rfl⟩
       · rintro ⟨z, hz, rfl⟩
         exact hz
     rw [hspan, hPΛ, hIΛ, AddSubgroup.relIndex_map_map_of_injective _ _ hinj,
@@ -788,8 +786,7 @@ theorem limit_of_data : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
       funext z
       exact ((hcf τ) (Fin g → ℂ) (L.B z)).1 _
     rw [e]
-    refine tendsto_finsetSum _ fun e _ => ?_
-    exact (contAt_act L e _ (hs (y a')).1).tendsto.const_smul _
+    exact tendsto_finsetSum _ fun e _ => (contAt_act L e _ (hs (y a')).1).tendsto.const_smul _
   have hqc : ∀ τ c, ContinuousAt (fun z => qt τ z c) 0 := fun τ c =>
     tendsto_finsetSum _ fun j _ => (hbc τ j).tendsto.const_smul _
   have hFc : ∀ τ i, ContinuousAt (fun z => F τ z i) 0 := by
@@ -816,8 +813,7 @@ theorem limit_of_data : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
       filter_upwards [Metric.isOpen_ball.mem_nhds h0ball] with z hz i
       rw [(hb.2 z hz τ).2]
       refine Fin.addCases (fun a' => ?_) (fun c => ?_) i
-      · simp only [F, Fin.append_left]
-        exact ((hcf τ) (Fin g → ℂ) (L.B z)).2.1 _
+      · simpa only [F, Fin.append_left] using ((hcf τ) (Fin g → ℂ) (L.B z)).2.1 _
       · simp only [F, Fin.append_right]
         rw [← (hb.2 z hz τ).2]
         exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩))
@@ -853,8 +849,7 @@ theorem limit_of_data : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
     · have := li_of_det (fun i => b τ i 0) (F τ 0) (T τ) (hb.2 0 h0ball τ).1
         (fun i => by rw [hF0 τ]; exact hT τ i) (hdet τ)
       rwa [hF0 τ] at this
-    · refine Submodule.span_mono ?_ hl
-      exact AddSubgroup.subset_closure
+    · exact Submodule.span_mono AddSubgroup.subset_closure hl
   have hTne : ∀ τ, 0 < ‖(Tt τ 0).det‖ ^ 2 := fun τ => by
     rw [hT0 τ]
     have := norm_pos_iff.2 (hdet τ)
@@ -926,8 +921,7 @@ theorem limit_of_data : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
     · have hzb : z ∈ Metric.ball (0 : Fin n → ℂ) 1 := expCover_mem_ball L.a_le hw
       have h5 : qt τ z c ∈ Submodule.span ℂ (Set.range fun i => b τ i z) :=
         Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
-      rw [(hb.2 z hzb τ).2] at h5
-      exact h5
+      rwa [(hb.2 z hzb τ).2] at h5
   have hDG : ∀ τ, ‖(Tt τ z).det‖ ^ 2 * (R.gram fun i => b τ i z).det.re = (R.gram (f τ z)).det.re * (Qd τ z).re := by
     intro τ
     have e1 := _root_.GlobalTheory.CompanionTheory.Ar.RiemannLimit.GramChange.gram_det_change E g Λ R (r + k) (fun i => b τ i z) (F τ z) (Tt τ z) (h1 τ)
@@ -989,8 +983,7 @@ theorem limit_of_data : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
     rw [hnz2, hlogν, Real.log_div hPne hidxpos.ne', Real.log_prod (fun τ _ => hGne τ), RiemLat.logDet]
     simp only [hlogD, Finset.sum_add_distrib]
     ring
-  rw [hmain]
-  exact h4
+  rwa [hmain]
 
 theorem limit_at_centre : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (Ψ : Type) [Fintype Ψ] (L : ActPeriods E n a g Λ) (σ : Ψ → (𝓞 E →+* ℂ)) (m : ℕ) (b : Ψ → Fin m → (Fin n → ℂ) → Fin g → ℂ), IsCMFam σ → IsEigFrames (Metric.ball 0 1) L.B σ b → ∃ (W : Submodule (𝓞 E) Λ) (I : Submodule (𝓞 E) Λ) (per : W →+ (Fin g → ℂ)) (s : W → (Fin n → ℂ) → Fin g → ℂ) (Hb : Matrix (Fin g) (Fin g) ℂ), (∀ x, x ∈ I ↔ x ∈ W ∧ ∀ y ∈ W, L.toLogPeriods.E x y = 0) ∧ IsSaturated I ∧ Function.Injective per ∧ (∀ x : W, ContinuousAt (s x) 0 ∧ s x 0 = per x ∧ ∀ w ∈ logCover L.a_le, s x (expCover a w) = L.P w x) ∧ (∀ (ws : ℕ → Fin n → ℂ) (x : ℕ → Λ) (p : Fin g → ℂ), (∀ k, ws k ∈ logCover L.a_le) → Tendsto (fun k => expCover a (ws k)) atTop (𝓝 0) → Tendsto (fun k => L.P (ws k) (x k)) atTop (𝓝 p) → ∃ x₀ : W, p = per x₀) ∧ Submodule.span ℂ (Set.range per) = ⊤ ∧ Hb.IsHermitian ∧ (∀ x x' : W, (per x ⬝ᵥ Hb *ᵥ star (per x')).im = L.toLogPeriods.E x x') ∧ (∀ x : W, (x : Λ) ∈ I → Hb *ᵥ star (per x) = 0) ∧ ∀ ν : ℝ, PhiNormSq (L.B 0) (fun x y => y ⬝ᵥ Hb *ᵥ star x) (AddSubgroup.closure {p | ∃ x : W, (x : Λ) ∈ I ∧ p = per x}) 1 σ (fun τ i => b τ i 0) ν → 0 < ν ∧ ∀ ε > (0 : ℝ), ∃ δ > (0 : ℝ), ∀ w (hw : w ∈ logCover L.a_le), ‖expCover a w‖ < δ → |(L.riem w hw).logDet (fun τ i => b τ i (expCover a w)) - Real.log ((L.riem w hw).nz σ I) - Real.log ν| < ε := by
   intro E _ _ _ n a g Λ _ _ Ψ _ L σ m b hσ hb
@@ -1087,10 +1080,8 @@ theorem limit_at_centre : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     exact ⟨⟨x₀.1, x₀.2⟩, hx₀⟩
   · rw [← hspan]
     congr 1
-  · intro x x'
-    exact hIm (toZ x) (toZ x')
-  · intro x hx
-    exact hKill (toZ x) ((hrad (toZ x)).2 hx)
+  · exact fun x x' => hIm (toZ x) (toZ x')
+  · exact fun x hx => hKill (toZ x) ((hrad (toZ x)).2 hx)
   · refine limit_of_data E n a g Λ Ψ L σ m b W I per s (chartQ Pr A T0 0) (chartQ Pr A T0) ρ' hσ hb (fun x hx => hx.1)
       (fun x hx y hy => hx.2 y hy.1) hinj' hact hs' hHerm ?_ hQc rfl hρ' ?_
     · intro v

@@ -160,7 +160,7 @@ theorem root_near (B : Type) [CommRing B] (π : B) (hπ : π ∈ nonZeroDivisors
       (1 - e) * π ^ M ∈ Ideal.span {a - b j} := fun j =>
     hV (a - b j) (π ^ M) ⟨M, Ideal.subset_span (Set.mem_insert_of_mem _ (Set.mem_singleton _))⟩
   choose e he1 he2 he3 using key
-  have hee : ∀ j, e j * e j = e j := fun j => he1 j
+  have hee : ∀ j, e j * e j = e j := he1
   have hr : ∀ j, ∃ r : B, (1 - e j) * π ^ M = (a - b j) * r := fun j =>
     Ideal.mem_span_singleton.mp (he3 j)
   choose r hr using hr
@@ -176,45 +176,26 @@ theorem root_near (B : Type) [CommRing B] (π : B) (hπ : π ∈ nonZeroDivisors
       rw [hEdef]; exact Finset.mul_prod_erase _ (fun i => 1 - e i) (Finset.mem_univ j)
     rw [← hsplit]
     linear_combination (∏ i ∈ Finset.univ.erase j, (1 - e i)) * hee j
-  have hT : ∀ j, (a - b j) * (E * r j) = E * π ^ M := by
-    intro j
-    calc (a - b j) * (E * r j) = E * ((a - b j) * r j) := by ring
-      _ = E * ((1 - e j) * π ^ M) := by rw [← hr j]
-      _ = (E * (1 - e j)) * π ^ M := by ring
-      _ = E * π ^ M := by rw [hEj j]
-  have hEpow : ∀ n : ℕ, E ^ (n + 1) = E := by
-    intro n
-    induction n with
-    | zero => simp
-    | succ n ih => rw [pow_succ, ih, hEE]
-  have hEd : E ^ d = E := by
-    have hd' : d = (d - 1) + 1 := by omega
-    rw [hd', hEpow]
+  have hT : ∀ j, (a - b j) * (E * r j) = E * π ^ M := fun j => by
+    linear_combination (-E) * hr j + π ^ M * hEj j
+  have hEd : E ^ d = E := IsIdempotentElem.pow_eq hEE hd.ne'
   have hmain : π ^ (d * M) * (q * ∏ j, (E * r j)) = π ^ (d * M) * E := by
-    calc π ^ (d * M) * (q * ∏ j, (E * r j)) = (∏ j, (a - b j)) * ∏ j, (E * r j) := by
-          rw [hq]; ring
-      _ = ∏ j, ((a - b j) * (E * r j)) := Finset.prod_mul_distrib.symm
-      _ = ∏ _j : Fin d, (E * π ^ M) := Finset.prod_congr rfl (fun j _ => hT j)
-      _ = π ^ (d * M) * E := by
-          rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, mul_pow, hEd, ← pow_mul,
-            mul_comm M d]
-          ring
-  have hpow : π ^ (d * M) ∈ nonZeroDivisors B := pow_mem hπ _
+    rw [← mul_assoc, ← hq, ← Finset.prod_mul_distrib]
+    simp only [hT, Finset.prod_const, Finset.card_univ, Fintype.card_fin, mul_pow, hEd, ← pow_mul]
+    ring
   have hET : E = q * ∏ j, (E * r j) := by
     have h0 : (q * ∏ j, (E * r j) - E) * π ^ (d * M) = 0 := by linear_combination hmain
-    exact (sub_eq_zero.mp ((mem_nonZeroDivisors_iff.mp hpow).2 _ h0)).symm
+    exact (sub_eq_zero.mp ((mem_nonZeroDivisors_iff.mp (pow_mem hπ _)).2 _ h0)).symm
   have hEa : E * (a - b j0) ∈ Ideal.span {π ^ M} := by
     rw [Ideal.mem_span_singleton]
     have hsplit : (E * r j0) * ∏ i ∈ Finset.univ.erase j0, (E * r i) = ∏ i, (E * r i) :=
       Finset.mul_prod_erase _ (fun i => E * r i) (Finset.mem_univ j0)
     refine ⟨q * (∏ i ∈ Finset.univ.erase j0, (E * r i)) * E, ?_⟩
-    calc E * (a - b j0) = q * (∏ i, (E * r i)) * (a - b j0) := by rw [← hET]
-      _ = q * (∏ i ∈ Finset.univ.erase j0, (E * r i)) * ((a - b j0) * (E * r j0)) := by
-          rw [← hsplit]; ring
-      _ = π ^ M * (q * (∏ i ∈ Finset.univ.erase j0, (E * r i)) * E) := by rw [hT j0]; ring
+    linear_combination (a - b j0) * hET - (a - b j0) * q * hsplit +
+      q * (∏ i ∈ Finset.univ.erase j0, (E * r i)) * hT j0
   obtain ⟨s, hs, w, hw⟩ := exists_shift (Ideal.span {π ^ M}) (fun j => a - b j) e Finset.univ
     (fun j _ => he1 j) (fun j _ => he2 j)
-  have hw' : ∏ j, (a - b j - s) = E * w := by rw [hEdef]; exact hw
+  have hw' : ∏ j, (a - b j - s) = E * w := by rwa [hEdef]
   obtain ⟨a₁, ha₁⟩ : ∃ x : B, x = (1 - E) * (a - s) + E * b j0 := ⟨_, rfl⟩
   refine ⟨a₁, ?_, ?_⟩
   · have h1 : a₁ - a = (E - 1) * s - E * (a - b j0) := by rw [ha₁]; ring
@@ -223,15 +204,12 @@ theorem root_near (B : Type) [CommRing B] (π : B) (hπ : π ∈ nonZeroDivisors
   · have hsplit2 : (a₁ - b j0) * ∏ i ∈ Finset.univ.erase j0, (a₁ - b i) = ∏ i, (a₁ - b i) :=
       Finset.mul_prod_erase _ (fun i => a₁ - b i) (Finset.mem_univ j0)
     have hE0 : E * ∏ i, (a₁ - b i) = 0 := by
-      rw [← hsplit2]
-      linear_combination E * (∏ i ∈ Finset.univ.erase j0, (a₁ - b i)) * ha₁ +
+      linear_combination (-E) * hsplit2 + E * (∏ i ∈ Finset.univ.erase j0, (a₁ - b i)) * ha₁ +
         (∏ i ∈ Finset.univ.erase j0, (a₁ - b i)) * (b j0 - (a - s)) * hEE
     have hcong : (1 - E) * ∏ i, (a₁ - b i) = (1 - E) * ∏ i, (a - b i - s) :=
       mul_prod_congr (1 - E) _ _ Finset.univ
         (fun j _ => by linear_combination (1 - E) * ha₁ + (a - s - b j0) * hEE)
-    calc ∏ i, (a₁ - b i) = E * ∏ i, (a₁ - b i) + (1 - E) * ∏ i, (a₁ - b i) := by ring
-      _ = 0 + (1 - E) * ∏ i, (a - b i - s) := by rw [hE0, hcong]
-      _ = 0 := by rw [hw']; linear_combination (-w) * hEE
+    linear_combination hE0 + hcong + (1 - E) * hw' - w * hEE
 
 end GlobalTheory.CompanionTheory.RootNear
 end -- clump:auto

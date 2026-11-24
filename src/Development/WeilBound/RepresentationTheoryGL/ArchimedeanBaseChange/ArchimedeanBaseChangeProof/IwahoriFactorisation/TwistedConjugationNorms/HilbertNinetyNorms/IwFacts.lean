@@ -441,8 +441,7 @@ theorem iw_goodT_one (n : ℕ) (t : GL (Fin n) k) (ht : t ∈ Tor k n) (hinc : I
   refine ⟨ht, fun i hi => ?_, ?_⟩
   · obtain rfl : i = 0 := by omega
     simpa using hd
-  · rw [tnorm_one_one]
-    exact hs
+  · rwa [tnorm_one_one]
 
 theorem iw_tor_entries (n : ℕ) (κ : GL (Fin n) k) (hκ : κ ∈ iwahori k (Fin n) ⊓ Tor k n) :
     (∀ i j : Fin n, i ≠ j → (κ : Matrix (Fin n) (Fin n) k) i j = 0) ∧
@@ -454,8 +453,7 @@ theorem iw_tor_entries (n : ℕ) (κ : GL (Fin n) k) (hκ : κ ∈ iwahori k (Fi
     · exact h1
     · intro b _ hb
       rw [tor_offDiag hκ.2 (Ne.symm hb), zero_mul]
-    · intro hi
-      exact absurd (Finset.mem_univ i) hi
+    · exact fun hi => absurd (Finset.mem_univ i) hi
   have ha := iw_entry_le hκ.1 i i
   have hb := iw_entry_le (inv_mem hκ.1) i i
   have hm := congrArg (valuation k) hmul

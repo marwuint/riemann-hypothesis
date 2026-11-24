@@ -97,16 +97,13 @@ theorem isFil_sFil : ∀ {b : Base} {L : b.Fun} (Q : ObjectProperty (Thick L)), 
   · intro r r' T x y hx hy
     have hx' : (show T.obj.B from x) ∈ pdP T.obj.δ r := by
       have : (show T.obj.B from x) ∈ T.obj.pdPow ((r : ℤ).toNat) := hx
-      rw [Int.toNat_natCast] at this
-      exact this
+      rwa [Int.toNat_natCast] at this
     have hy' : (show T.obj.B from y) ∈ pdP T.obj.δ r' := by
       have : (show T.obj.B from y) ∈ T.obj.pdPow ((r' : ℤ).toNat) := hy
-      rw [Int.toNat_natCast] at this
-      exact this
+      rwa [Int.toNat_natCast] at this
     have h := dividedPowerFiltration_mul_le T.obj.δ r r' (Ideal.mul_mem_mul hx' hy')
     change _ ∈ T.obj.pdPow (((r + r' : ℕ) : ℤ).toNat)
-    rw [Int.toNat_natCast]
-    exact h
+    rwa [Int.toNat_natCast]
   · intro k T x hx
     change _ ∈ T.obj.pdPow ((k : ℤ).toNat)
     rw [Int.toNat_natCast]

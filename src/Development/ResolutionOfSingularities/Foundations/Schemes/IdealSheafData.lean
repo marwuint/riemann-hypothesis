@@ -86,8 +86,7 @@ private theorem map_appLE_le_ker_pullbackFst (I : Y.IdealSheafData) (f : X ⟶ Y
   have hle : (Limits.pullback.fst f I.subschemeι) ⁻¹ᵁ (V : X.Opens)
       ≤ (Limits.pullback.snd f I.subschemeι) ⁻¹ᵁ (I.subschemeι ⁻¹ᵁ (U : Y.Opens)) := by
     rw [← h2]
-    intro x hx
-    exact e hx
+    exact fun x hx => e hx
   have happ : f.appLE (U : Y.Opens) (V : X.Opens) e
         ≫ (Limits.pullback.fst f I.subschemeι).app (V : X.Opens)
       = I.subschemeι.app (U : Y.Opens)
@@ -100,8 +99,7 @@ private theorem map_appLE_le_ker_pullbackFst (I : Y.IdealSheafData) (f : X ⟶ Y
   intro a ha
   have hker : (I.subschemeι.app (U : Y.Opens)).hom a = 0 := by
     have hd := I.ker_subschemeι_app U
-    rw [← RingHom.mem_ker, hd]
-    exact ha
+    rwa [← RingHom.mem_ker, hd]
   simp only [Ideal.mem_comap, RingHom.mem_ker]
   rw [← RingHom.comp_apply, ← CommRingCat.hom_comp, happ, CommRingCat.hom_comp,
     RingHom.comp_apply, hker, map_zero]
@@ -117,8 +115,7 @@ private theorem appLE_top_eq_appTop (f : X ⟶ Y) (e0 : (⊤ : X.Opens) ≤ f �
 theorem ofIdealTop_ideal_top {Z : Scheme.{u}} [IsAffine Z] (J : Ideal Γ(Z, ⊤)) :
     (ofIdealTop J).ideal ⟨⊤, isAffineOpen_top Z⟩ = J := by
   have h := (equivOfIsAffine (X := Z)).apply_symm_apply J
-  rw [equivOfIsAffine_symm_apply, equivOfIsAffine_apply] at h
-  exact h
+  rwa [equivOfIsAffine_symm_apply, equivOfIsAffine_apply] at h
 
 private theorem exists_hom_comp_eq_appLE_comp (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens) (e : (V : X.Opens) ≤ f ⁻¹ᵁ (U : Y.Opens))
@@ -132,8 +129,7 @@ private theorem exists_hom_comp_eq_appLE_comp (I : Y.IdealSheafData) (f : X ⟶ 
         (q.hom.comp (f.appLE (U : Y.Opens) (V : X.Opens) e).hom) ?_), ?_⟩
   · intro a ha
     have h := hq (Ideal.mem_map_of_mem _ ha)
-    rw [RingHom.mem_ker] at h
-    exact h
+    rwa [RingHom.mem_ker] at h
   · rw [subschemeι_app, Category.assoc, Iso.inv_hom_id_assoc]
     ext a
     rfl
@@ -149,41 +145,30 @@ private theorem exists_hom_pullbackFst_app_comp_eq (I : Y.IdealSheafData) (f : X
       (Limits.pullback.fst f I.subschemeι).app (V : X.Opens) ≫ θ = q := by
   have hV : IsAffineOpen (V : X.Opens) := V.2
   have hU : IsAffineOpen (U : Y.Opens) := U.2
-  have hf := IsAffineOpen.SpecMap_appLE_fromSpec f hU hV e
-  have hι := IsAffineOpen.SpecMap_appLE_fromSpec I.subschemeι hU
-      (hU.preimage I.subschemeι) (le_refl (I.subschemeι ⁻¹ᵁ (U : Y.Opens)))
   have hsq : (Spec.map q ≫ hV.fromSpec) ≫ f
       = (Spec.map ψ ≫ (hU.preimage I.subschemeι).fromSpec) ≫ I.subschemeι := by
-    rw [Category.assoc, Category.assoc, ← hf, ← hι, ← Category.assoc, ← Category.assoc,
-      ← Spec.map_comp, ← Spec.map_comp, Scheme.Hom.appLE_eq_app, hring]
+    rw [Category.assoc, Category.assoc, ← IsAffineOpen.SpecMap_appLE_fromSpec f hU hV e,
+      ← IsAffineOpen.SpecMap_appLE_fromSpec I.subschemeι hU (hU.preimage I.subschemeι) le_rfl,
+      ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp,
+      Scheme.Hom.appLE_eq_app, hring]
   obtain ⟨g, hlift⟩ : ∃ g : Spec C ⟶ Limits.pullback f I.subschemeι,
       g ≫ Limits.pullback.fst f I.subschemeι = Spec.map q ≫ hV.fromSpec :=
     ⟨Limits.pullback.lift _ _ hsq, Limits.pullback.lift_fst _ _ _⟩
   have hpre : (⊤ : (Spec C).Opens)
       ≤ g ⁻¹ᵁ (Limits.pullback.fst f I.subschemeι ⁻¹ᵁ (V : X.Opens)) := by
-    have h3 := congrArg (fun h : Spec C ⟶ X => h ⁻¹ᵁ (V : X.Opens)) hlift
-    have h4 : g ⁻¹ᵁ (Limits.pullback.fst f I.subschemeι ⁻¹ᵁ (V : X.Opens))
-        = Spec.map q ⁻¹ᵁ (hV.fromSpec ⁻¹ᵁ (V : X.Opens)) := by simpa using h3
-    rw [h4, hV.fromSpec_preimage_self]
+    rw [← Scheme.Hom.comp_preimage, hlift, Scheme.Hom.comp_preimage, hV.fromSpec_preimage_self]
     simp
   have e₁ : (⊤ : (Spec Γ(X, (V : X.Opens))).Opens) ≤ hV.fromSpec ⁻¹ᵁ (V : X.Opens) :=
     le_of_eq (hV.fromSpec_preimage_self).symm
-  have e₂ : (⊤ : (Spec C).Opens)
-      ≤ Spec.map q ⁻¹ᵁ (⊤ : (Spec Γ(X, (V : X.Opens))).Opens) := by simp
+  have e₂ := (Spec.map q).preimage_top.ge
   have hsplit := Scheme.Hom.appLE_comp_appLE (Spec.map q) hV.fromSpec (V : X.Opens)
       (⊤ : (Spec Γ(X, (V : X.Opens))).Opens) (⊤ : (Spec C).Opens) e₁ e₂
   have h0 : ∀ i : (op (⊤ : (Spec Γ(X, (V : X.Opens))).Opens))
       ⟶ op (⊤ : (Spec Γ(X, (V : X.Opens))).Opens),
-      (Spec Γ(X, (V : X.Opens))).presheaf.map i = 𝟙 _ := by
-    intro i
-    have hi : i = 𝟙 _ := rfl
-    rw [hi, CategoryTheory.Functor.map_id]
-  have hdef : hV.fromSpec.appLE (V : X.Opens) (⊤ : (Spec Γ(X, (V : X.Opens))).Opens) e₁
-      = hV.fromSpec.app (V : X.Opens)
-        ≫ (Spec Γ(X, (V : X.Opens))).presheaf.map (homOfLE e₁).op := rfl
+      (Spec Γ(X, (V : X.Opens))).presheaf.map i = 𝟙 _ := fun _ => CategoryTheory.Functor.map_id _ _
   have ha : hV.fromSpec.appLE (V : X.Opens) (⊤ : (Spec Γ(X, (V : X.Opens))).Opens) e₁
       = (Scheme.ΓSpecIso Γ(X, (V : X.Opens))).inv := by
-    rw [hdef, hV.fromSpec_app_self, Category.assoc, ← Functor.map_comp, ← op_comp,
+    rw [Scheme.Hom.appLE, hV.fromSpec_app_self, Category.assoc, ← Functor.map_comp, ← op_comp,
       h0, Category.comp_id]
   have hb : (Spec.map q).appTop
       = (Scheme.ΓSpecIso Γ(X, (V : X.Opens))).hom ≫ q ≫ (Scheme.ΓSpecIso C).inv := by
@@ -331,11 +316,9 @@ theorem mem_support_comap {f : X ⟶ Y} {I : Y.IdealSheafData} {x : X} :
     x ∈ (I.comap f).support ↔ f.base x ∈ I.support := by
   constructor
   · intro hx
-    rw [AlgebraicGeometry.Scheme.IdealSheafData.support_comap] at hx
-    exact hx
+    rwa [AlgebraicGeometry.Scheme.IdealSheafData.support_comap] at hx
   · intro hx
-    rw [AlgebraicGeometry.Scheme.IdealSheafData.support_comap]
-    exact hx
+    rwa [AlgebraicGeometry.Scheme.IdealSheafData.support_comap]
 
 theorem ne_top_of_mem_support (J : Y.IdealSheafData) (x : ↥Y) (hx : x ∈ J.support) : J ≠ ⊤ := by
   intro hc
@@ -358,8 +341,7 @@ theorem notMem_support_of_comap_ι_eq_top (I : Y.IdealSheafData) {U : Y.Opens}
     (h : I.comap U.ι = ⊤) {x : Y} (hxU : x ∈ U) : x ∉ I.support := by
   intro hx
   have h1 : (⟨x, hxU⟩ : ↥U) ∈ (I.comap U.ι).support := by
-    rw [AlgebraicGeometry.Scheme.IdealSheafData.support_comap]
-    exact hx
+    rwa [AlgebraicGeometry.Scheme.IdealSheafData.support_comap]
   rw [h, AlgebraicGeometry.Scheme.IdealSheafData.support_top] at h1
   have h2 : (⟨x, hxU⟩ : ↥U) ∈ ((⊥ : TopologicalSpace.Closeds ↥U) : Set ↥U) := h1
   simp at h2

@@ -57,13 +57,11 @@ theorem factorL : FactorL := by
   intro G _ S l C hC hcont hlin hbd
   haveI : CompactSpace C := isCompact_iff_compactSpace.mp hC
   have hl0 : l 0 = 0 := by
-    have h := hbd 0 S.zero_mem 0 (by simp)
-    simpa using h
+    simpa using hbd 0 S.zero_mem 0 (by simp)
   let lS : S →ₗ[ℂ] ℂ :=
     { toFun := fun F => l F.1
       map_add' := fun F₁ F₂ => by
-        have h := hlin 1 F₁.1 F₁.2 F₂.1 F₂.2
-        simpa using h
+        simpa using hlin 1 F₁.1 F₁.2 F₂.1 F₂.2
       map_smul' := fun a F => by
         have h := hlin a F.1 F.2 0 S.zero_mem
         simpa [hl0] using h }

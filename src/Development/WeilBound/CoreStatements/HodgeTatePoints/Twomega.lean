@@ -105,8 +105,7 @@ variable {p : ℕ} {O : Type} [CommRing O] {La : Type} [AddCommGroup La]
 theorem der_smul (n : ℕ) (r : O) (f : LevGrp La p n → O) (w : Module.Dual O L) (h : X.der n f w) :
     X.der n (r • f) (r • w) := by
   have := X.der_mul n _ _ _ _ (X.der_const n r) h
-  rw [smul_zero, add_zero] at this
-  exact this
+  rwa [smul_zero, add_zero] at this
 
 theorem der_sub (n : ℕ) (f g : LevGrp La p n → O) (w w' : Module.Dual O L) (h : X.der n f w)
     (h' : X.der n g w') : X.der n (f - g) (w - w') := by
@@ -121,19 +120,16 @@ theorem der_of_mem_sq (n : ℕ) (f : X.A n) (hf : f ∈ BT.augIdeal (X.A n) ^ 2)
     have ha0 : a.1 1 = 0 := ha
     have hb0 : b.1 1 = 0 := hb
     have := X.der_mul n _ _ _ _ hw hw'
-    rw [ha0, hb0, zero_smul, zero_smul, add_zero] at this
-    exact this
+    rwa [ha0, hb0, zero_smul, zero_smul, add_zero] at this
   · have := X.der_add n _ _ _ _ ha hb
-    rw [add_zero] at this
-    exact this
+    rwa [add_zero] at this
 
 variable [Fact p.Prime] {X} {G : PDivGroup p O} {e : ∀ n, G.A n ≃ₐ[O] X.A n} {τ : La →+ G.Tate}
 
 theorem counit_eq (hre : X.Realises G e τ) (n : ℕ) (a : G.A n) :
     Bialgebra.counitAlgHom O (G.A n) a = (e n a).1 1 := by
   have h := hre.pt 0 n a
-  rw [map_zero] at h
-  exact h
+  rwa [map_zero] at h
 
 theorem map_ker (hre : X.Realises G e τ) (n : ℕ) :
     (BT.augIdeal (X.A n)).comap (e n) = RingHom.ker (Bialgebra.counitAlgHom O (G.A n)) := by
@@ -178,8 +174,7 @@ theorem dUnit_eq_iff (hre : X.Realises G e τ) (n : ℕ) (a b : G.A n) (w : Modu
     simpa using this
   · intro h1
     have := der_sub X n _ _ _ _ h1 h
-    rw [sub_self] at this
-    exact this
+    rwa [sub_self] at this
 
 omit [Fact p.Prime] in
 theorem exists_der (e : ∀ n, G.A n ≃ₐ[O] X.A n) (n : ℕ) (w : Module.Dual O L) :

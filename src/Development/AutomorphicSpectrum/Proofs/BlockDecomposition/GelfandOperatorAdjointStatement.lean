@@ -69,12 +69,9 @@ namespace GlobalTheory.CompanionTheory.WaveMult.Ibp
 
 variable {n : ℕ}
 
-theorem isOpen_GLs : IsOpen (GLs n) := by
-  exact isOpen_ne_fun (continuous_id.matrix_det) continuous_const
+theorem isOpen_GLs : IsOpen (GLs n) := isOpen_ne_fun (continuous_id.matrix_det) continuous_const
 
-theorem val_mem (y : G n) : y.val ∈ GLs n := by
-  show Matrix.det y.val ≠ 0
-  exact (Matrix.isUnits_det_units y).ne_zero
+theorem val_mem (y : G n) : y.val ∈ GLs n := (Matrix.isUnits_det_units y).ne_zero
 
 section Loc
 
@@ -101,7 +98,6 @@ theorem Rd_add (X : Mat n) {f g : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n
     (hg : ContDiffOn ℝ ∞ g (GLs n)) : Set.EqOn (Rd X (f + g)) (Rd X f + Rd X g) (GLs n) := by
   intro y hy
   have e := (((diffAt hf hy).hasFDerivAt).add ((diffAt hg hy).hasFDerivAt)).fderiv
-  show fderiv ℝ (f + g) y (y * X) = fderiv ℝ f y (y * X) + fderiv ℝ g y (y * X)
   exact congrArg (fun L => L (y * X)) e
 
 theorem sm_sum {ι : Type} (t : Finset ι) (F : ι → Mat n → V)
@@ -294,8 +290,7 @@ theorem integrable_of_cpt (hL : LgFacts) {φ : Mat n → ℂ} (hφ : ContinuousO
   have hc : Continuous (fun y : G n => φ y.val) :=
     hφ.comp_continuous Units.continuous_val val_mem
   refine hc.integrable_of_hasCompactSupport (HasCompactSupport.intro ((hL n).2.2.2.2.1 R) ?_)
-  intro y hy
-  exact hR _ (val_mem y) (not_le.1 hy)
+  exact fun y hy => hR _ (val_mem y) (not_le.1 hy)
 
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V]
 
@@ -327,8 +322,7 @@ theorem ibp_Rd (hL : LgFacts) (hR : RCalc) (X : Mat n) {f h : Mat n → V}
   have h0 := (hR n).2.2 μ ℂ (fun y => ⟪f y, h y⟫_ℂ) (sm_inner hf hh) (Cpt_inner cf) X
   have e : ∀ y : G n, Rd X (fun y => ⟪f y, h y⟫_ℂ) y.val =
       ⟪f y.val, Rd X h y.val⟫_ℂ + ⟪Rd X f y.val, h y.val⟫_ℂ := by
-    intro y
-    exact fderiv_inner_apply ℂ (diffAt hf (val_mem y)) (diffAt hh (val_mem y)) _
+    exact fun y => fderiv_inner_apply ℂ (diffAt hf (val_mem y)) (diffAt hh (val_mem y)) _
   simp_rw [e] at h0
   rw [integral_add (int_inner' μ hL hf (sm_Rd hR X hh) (Cpt_Rd hL X ch))
     (int_inner μ hL (sm_Rd hR X hf) hh (Cpt_Rd hL X cf))] at h0

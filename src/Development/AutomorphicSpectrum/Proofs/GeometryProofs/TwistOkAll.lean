@@ -147,11 +147,9 @@ private theorem fix_adj_lemma_3 {E : Type} [Field E] [NumberField E] [IsCMField 
   | algebraMap r =>
     simp
   | add x y _ _ hx hy =>
-    simp only [map_add (f := _), hx.1, hy.1, hx.2, hy.2]
-    exact ⟨trivial, trivial⟩
+    simpa only [map_add (f := _), hx.1, hy.1, hx.2, hy.2] using ⟨trivial, trivial⟩
   | mul x y _ _ hx hy =>
-    simp only [map_mul, hx.1, hy.1, hx.2, hy.2]
-    exact ⟨trivial, trivial⟩
+    simpa only [map_mul, hx.1, hy.1, hx.2, hy.2] using ⟨trivial, trivial⟩
 
 theorem tw_mb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (g : HostAut H), l.Mb.map (g.s : 𝓞 E →+* 𝓞 E) = l.Mb ∧ (l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)).map (g.s : 𝓞 E →+* 𝓞 E) = l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) := by
   intro E _ _ _ H l g
@@ -164,8 +162,7 @@ theorem tw_mb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host
     constructor
     · rintro ⟨y, hy, rfl⟩
       simp only [RingEquiv.coe_toRingHom]
-      rw [(fix_adj_lemma_3 g y hy.2).1]
-      exact hy
+      rwa [(fix_adj_lemma_3 g y hy.2).1]
     · intro hx
       exact ⟨x, hx, by simp only [RingEquiv.coe_toRingHom]; exact (fix_adj_lemma_3 g x hx.2).1⟩
   · rw [hS, Ideal.map_span, Ideal.map_span, Set.image_image]
@@ -174,12 +171,10 @@ theorem tw_mb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host
     constructor
     · rintro ⟨y, hy, rfl⟩
       refine ⟨y, hy, ?_⟩
-      simp only [RingEquiv.coe_toRingHom]
-      exact ((fix_adj_lemma_3 g y hy.2).2).symm
+      simpa only [RingEquiv.coe_toRingHom] using ((fix_adj_lemma_3 g y hy.2).2).symm
     · rintro ⟨y, hy, rfl⟩
       refine ⟨y, hy, ?_⟩
-      simp only [RingEquiv.coe_toRingHom]
-      exact (fix_adj_lemma_3 g y hy.2).2
+      simpa only [RingEquiv.coe_toRingHom] using (fix_adj_lemma_3 g y hy.2).2
 
 end PositivityTheory.UnitarySelfGeneration
 end -- clump:auto
@@ -244,8 +239,7 @@ theorem tw_tate : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Ho
   · intro n c x
     rw [map_smul]
     exact I.lin n (g.s c) (a.a n x)
-  · intro n hn x
-    exact (I.ker n hn (a.a n x)).trans (a.inj n hn x)
+  · exact fun n hn x => (I.ker n hn (a.a n x)).trans (a.inj n hn x)
   · intro n hn x
     refine (I.onto n hn x).trans ⟨?_, ?_⟩
     · rintro ⟨b, rfl⟩
@@ -273,8 +267,7 @@ theorem tw_tate : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Ho
         linarith
       rw [h2, zpow_add, zpow_mul, zpow_natCast, hpow, one_zpow, _root_.mul_one]
     show e n (I.ev n (a.a n x)) (I.ev n (a.a n y)) (I.ζ n ^ (D.EF x) y)
-    rw [← heq]
-    exact h
+    rwa [← heq]
 
 end PositivityTheory.UnitarySelfGeneration
 end -- clump:auto

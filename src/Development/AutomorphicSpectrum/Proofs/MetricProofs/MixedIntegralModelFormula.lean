@@ -141,8 +141,7 @@ theorem exists_localInverse (M : CxModel P e) (Ψ : (((k : K) → ι k) → ℂ)
   have hdetinv : LinearMap.det ((Ce.symm : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) :
       (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) = (LinearMap.det (Df : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)))⁻¹ := by
     have := ContinuousLinearEquiv.det_coe_symm Ce
-    rw [hCe'] at this
-    exact this
+    rwa [hCe'] at this
   refine ⟨F.symm, ?_, ?_, ?_, ?_⟩
   · rw [← hy0]; exact hσa
   · rw [← hy0]; exact hσu
@@ -176,8 +175,7 @@ theorem cxHessian_eq_of_torus (L : HermLine ι) (r : ℝ) {γ γ' : (Fin e → �
       simp only [ht_def, h2]
       exact mul_div_cancel_right₀ _ (h1 k)
     refine ⟨fun k => by rw [htc k]; exact hc k, ?_⟩
-    rw [show (fun k => t k y') = c from funext htc]
-    exact h2
+    rwa [show (fun k => t k y') = c from funext htc]
   obtain ⟨ht0, -⟩ := hrel'.self_of_nhds
   have htan : ∀ k, AnalyticAt ℂ (t k) y := fun k =>
     (analyticAt_coord hγ' ⟨k, i0 k⟩).div (analyticAt_coord hγ ⟨k, i0 k⟩) (hi0 k)
@@ -522,8 +520,7 @@ theorem integrable_mInt_fibreSum {e : ℕ} {X : Type} [TopologicalSpace X] [Comp
   have hN : ∀ j, volume ((q ∘ (A.chart j).symm) '' (goodT A q j ∩ (A.chart j).symm ⁻¹' S)) = 0 := by
     intro j
     refine addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume ?_ ?_
-    · intro u hu
-      exact (hu.1.2.1.differentiableAt.restrictScalars ℝ).differentiableWithinAt
+    · exact fun u hu => (hu.1.2.1.differentiableAt.restrictScalars ℝ).differentiableWithinAt
     · exact measure_mono_null (Set.inter_subset_inter_left _ fun u (hu : u ∈ goodT A q j) => hu.1)
         (hS j)
   have hfinj : ∀ j, ∀ᵐ y, (goodT A q j ∩ (q ∘ (A.chart j).symm) ⁻¹' {y}).Finite := by
@@ -608,8 +605,7 @@ theorem aestronglyMeasurable_fibSum {O : Set (Fin e → ℂ)} (hO : IsOpen O)
     exact hne (hu huO)
   have himg : volume (Q '' (O ∩ {u | h u ≠ hm.mk h u})) = 0 := by
     refine addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume ?_ hnull
-    intro u hu
-    exact ((hQ u hu.1).1.differentiableAt.restrictScalars ℝ).differentiableWithinAt
+    exact fun u hu => ((hQ u hu.1).1.differentiableAt.restrictScalars ℝ).differentiableWithinAt
   have hp : AEMeasurable (fibSum O Q fun u => max (hm.mk h u) 0) :=
     aemeasurable_fibSum_of_nonneg hO hQ (fun u => le_max_right _ _) (hmm.max measurable_const) hfin
   have hn : AEMeasurable (fibSum O Q fun u => max (-hm.mk h u) 0) :=
@@ -636,8 +632,7 @@ theorem aestronglyMeasurable_fibreSum_pushDens : ∀ {e : ℕ} {X : Type} [Topol
   have hN : ∀ j, volume ((q ∘ (A.chart j).symm) '' (goodT A q j ∩ (A.chart j).symm ⁻¹' S)) = 0 := by
     intro j
     refine addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume ?_ ?_
-    · intro u hu
-      exact (hu.1.2.1.differentiableAt.restrictScalars ℝ).differentiableWithinAt
+    · exact fun u hu => (hu.1.2.1.differentiableAt.restrictScalars ℝ).differentiableWithinAt
     · exact measure_mono_null
         (Set.inter_subset_inter_left _ fun u (hu : u ∈ goodT A q j) => hu.1) (hS j)
   have hfinj : ∀ j, ∀ᵐ y, (goodT A q j ∩ (q ∘ (A.chart j).symm) ⁻¹' {y}).Finite := by
@@ -648,8 +643,7 @@ theorem aestronglyMeasurable_fibreSum_pushDens : ∀ {e : ℕ} {X : Type} [Topol
   have hχc : ∀ j, ContinuousOn (fun u => Pt.χ j ((A.chart j).symm u)) (A.chart j).target := by
     intro j
     have := (Pt.smooth j j).continuousOn
-    rw [Set.preimage_univ, Set.inter_univ] at this
-    exact this
+    rwa [Set.preimage_univ, Set.inter_univ] at this
   have hjm : ∀ j, AEStronglyMeasurable (hj j) (volume.restrict (goodT A q j)) := fun j =>
     (((hχc j).aestronglyMeasurable (A.chart j).open_target.measurableSet).mul (hG j)).mono_measure
       (Measure.restrict_mono (by exact fun u hu => hu.1) le_rfl)
@@ -1014,8 +1008,7 @@ theorem psi0_null (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) �
       intro z hz h
       refine hΨ z hz (funext fun i => ?_)
       have := congrFun h (Equiv.swap 0 i0 i)
-      rw [hΨ'app, Equiv.swap_apply_self] at this
-      exact this
+      rwa [hΨ'app, Equiv.swap_apply_self] at this
     have hg'c : ContinuousOn (fun u => Ψ' (segre (modelLift M x0 ((M.atlas.chart j).symm u))) 0)
         (Metric.ball u0 r) := fun u hu =>
       (analyticAt_pi_iff.mp (analyticAt_segre_lift M Ψ' x0 j (hball hu)) 0).continuousAt.continuousWithinAt
@@ -1025,8 +1018,7 @@ theorem psi0_null (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) �
     have hu0O : u0 ∈ O := by
       refine ⟨Metric.mem_ball_self hr, ?_⟩
       show Ψ' (segre (modelLift M x0 x0)) 0 ≠ 0
-      rw [hΨ'app, Equiv.swap_apply_left]
-      exact hi0
+      rwa [hΨ'app, Equiv.swap_apply_left]
     have h0O : ∀ u ∈ O,
         Ψ' (segre (modelLift M ((M.atlas.chart j).symm u) ((M.atlas.chart j).symm u))) 0 ≠ 0 := by
       intro u hu

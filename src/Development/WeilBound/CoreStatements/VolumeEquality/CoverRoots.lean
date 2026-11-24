@@ -111,8 +111,7 @@ theorem exists_prim (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [CharZero Ω] [Al
   obtain ⟨G₀, hG₀⟩ := pb.exists_eq_aeval' γ
   obtain ⟨Q₀, hQ₀⟩ : ∃ Q₀ : MvPolynomial σ Ω₀, MvPolynomial.aeval t Q₀ = pb.gen := by
     have : pb.gen ∈ Algebra.adjoin Ω₀ (Set.range t) := ht ▸ Algebra.mem_top
-    rw [Algebra.adjoin_range_eq_range_aeval] at this
-    exact this
+    rwa [Algebra.adjoin_range_eq_range_aeval] at this
   obtain ⟨u₀, v₀, huv⟩ : (minpoly Ω₀ pb.gen).Separable := Algebra.IsSeparable.isSeparable Ω₀ pb.gen
   refine ⟨pb.gen, Set.range a₀ ∪ Set.range (fun q : σ × Fin pb.dim => cf₀ q.1 q.2) ∪ G₀.coeffs ∪ Q₀.coeffs ∪
     u₀.coeffs ∪ v₀.coeffs, by
@@ -231,8 +230,7 @@ theorem point_of_root (hξ : IsCptGen ξ) (hall : ∀ q : X, genPt ξ ⤳ q) (hd
   refine ⟨z, hz, eq_of_val hU₀ (hWU hz) (hU hp) fun r => ?_, fun G hG => ?_⟩
   · refine (val_comp z f U₀ W hWU hz _ r).symm.trans ?_
     rw [hv, hχ _ (C ((Y.presheaf.map (homOfLE hU).op).hom r))]
-    · simp only [ev₀, coe_eval₂RingHom, eval₂_C]
-      exact val_res p hU hp r
+    · simpa only [ev₀, coe_eval₂RingHom, eval₂_C] using val_res p hU hp r
     · rw [val_pull hdom U₀ (hU h₀) W hWU h]
       simp only [ev, coe_eval₂RingHom, eval₂_C, RingHom.comp_apply]
       exact congrArg fn (val_res ξ₀ hU h₀ r)
@@ -359,8 +357,7 @@ theorem cover {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y 
   simp only [root_iff]
   refine ⟨?_, fun x hx => ?_, fun z hz => ?_, fun x x' z hx hx' hc1 hc2 => ?_⟩
   · have := hsep.map (f := val p U hp)
-    rw [mon_map] at this
-    exact this
+    rwa [mon_map] at this
   · obtain ⟨z, hz, hzp, hv⟩ := point_of_root hξ hall hdom hU₀ (hUle.trans inf_le_left) h₀ (hW.basicOpen g) hgU hηg θ
       hr p hp x (key x hx)
     refine ⟨z, hzp, coordsAt_of_val c hy (fun s => ?_) (hone x hx)⟩
@@ -385,8 +382,7 @@ theorem cover {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y 
           MvPolynomial.eval₂ φ (fun s => eval₂ φ u (low (cf s))) Q := by
       intro S _ φ u
       have := MvPolynomial.eval₂_comp_left (eval₂RingHom φ u) C (fun s => low (cf s)) Q
-      rw [show (eval₂RingHom φ u).comp C = φ from RingHom.ext fun r => eval₂_C _ _] at this
-      exact this
+      rwa [show (eval₂RingHom φ u).comp C = φ from RingHom.ext fun r => eval₂_C _ _] at this
     have hX : ∀ u, eval₂ (val p U hp) u (mon a) = 0 →
         u = MvPolynomial.eval₂ (val p U hp) (fun s => eval₂ (val p U hp) u (low (cf s))) Q := by
       intro u hu
@@ -407,8 +403,7 @@ theorem coverRoots : CoverRoots := by
   obtain ⟨U, a, cf, h₀, h⟩ := Cov.cover 𝔐.tie 𝔐.all 𝔐.normal 𝔐.gen₀ 𝔐.fn_over d hd.1 hd.2
   refine ⟨U, a, cf, h₀, fun p hp => ?_⟩
   have hp' := (top_le_iff p U).1 hp
-  simp only [valAt'_eq p U hp']
-  exact h p hp'
+  simpa only [valAt'_eq p U hp'] using h p hp'
 
 end SheetDecomposition
 end -- clump:auto

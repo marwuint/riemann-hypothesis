@@ -628,8 +628,7 @@ theorem injB {R : Type} (hn : ρ + p = n) {a a' : Matrix (Fin ρ) (Fin ρ) R}
   have h' : Matrix.fromBlocks a b c d = Matrix.fromBlocks a' b' c' d' := by
     ext i j
     have := congrFun (congrFun h ((finSumFinEquiv.trans (finCongr hn)) i)) ((finSumFinEquiv.trans (finCongr hn)) j)
-    simp only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply] at this
-    exact this
+    simpa only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply] using this
   exact Matrix.fromBlocks_inj.1 h'
 
 theorem cTB (σ : K →+* K) (hn : ρ + p = n) (a : Matrix (Fin ρ) (Fin ρ) K) (b : Matrix (Fin ρ) (Fin p) K)
@@ -664,8 +663,7 @@ theorem what₂ (σ : K →+* K) {A B C E : Matrix (Fin n) (Fin n) K}
   · have : B * cT σ A - A * cT σ B = 0 := by simpa [sub_eq_add_neg, add_comm] using e1
     exact (sub_eq_zero.1 this).symm
   · have : B * cT σ C - A * cT σ E = -1 := by simpa [sub_eq_add_neg, add_comm] using e2
-    rw [← sub_eq_zero]
-    rw [← neg_eq_zero]
+    rw [← sub_eq_zero, ← neg_eq_zero]
     have e : -(A * cT σ E - (1 + B * cT σ C)) = B * cT σ C - A * cT σ E + 1 := by abel
     rw [e, this]
     simp
@@ -1382,8 +1380,7 @@ theorem cell : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) (M : Maps D hn),
     constructor
     · intro hz
       have hker : LinearMap.ker ((lowerC (ratOf (Quotient.out q))).mulVecLin ∘ₗ zinc hn) = ⊥ := by
-        rw [LinearMap.ker_comp]
-        exact hz
+        rwa [LinearMap.ker_comp]
       obtain ⟨T₀, a₁, b₁, Z, a₂, b₂, X, Y, a₃, b₃, W, a₄, b₄, c', d', hU, hD, hL1, hL2⟩ :=
         GlobalTheory.T.unitary_cell_block_normal_form (sg D) hσ hn _ hspec.1 hspec.2 hker
       obtain ⟨ζ₀, η₀, T, hyD, hyU, hζ₀, hr1, hr2⟩ :=
@@ -1424,8 +1421,7 @@ theorem cell : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) (M : Maps D hn),
       obtain ⟨T, hT, hTC⟩ := exists_unit_lowerC hspec'.1 (hRs l u).1 hS
       rw [hRC] at hTC
       have h := ker_rows_eq_bot hn hT u.2 (a u.1) (cc u.1)
-      rw [← hTC, LinearMap.ker_comp] at h
-      exact h
+      rwa [← hTC, LinearMap.ker_comp] at h
   · intro l l' u h
     change rmulEquiv (P D n) (GF D n) ⟨M.nzx l'.1 0, h⟩ (mk ((P D n).subgroupOf (GF D n)) (c l u)) =
       mk ((P D n).subgroupOf (GF D n)) (c (l' + l) u)
@@ -1448,8 +1444,7 @@ theorem cell : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) (M : Maps D hn),
             simp only [mul_assoc]
     rw [e]
     exact rmul_mk _ _
-  · intro f hf l u y
-    exact term_mk hf y (c l u)
+  · exact fun f hf l u y => term_mk hf y (c l u)
 
 end GlobalTheory.CompanionTheory.ZUnf.CellGlue
 end -- clump:auto

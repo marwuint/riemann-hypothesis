@@ -354,8 +354,7 @@ theorem class_eq_zero_of_coboundary (R : Type) [CommRing R] (C : Type) [Category
     rw [e, map_sub, h, ← LinearMap.rTensor_comp_apply, hδ, LinearMap.rTensor_sub, LinearMap.sub_apply,
       LinearMap.rTensor_comp_apply, hu, hu, sub_self]
   have hz : H1.mk F ∘ₗ δ = 0 := by
-    refine LinearMap.ext fun c ↦ ?_
-    exact (H1.mk_eq_zero (F := F) (f := δ c)).2 ⟨c, rfl⟩
+    exact LinearMap.ext fun c ↦ ((H1.mk_eq_zero (F := F) (f := δ c)).2 ⟨c, rfl⟩)
   rw [key, ← LinearMap.rTensor_comp_apply, hz, LinearMap.rTensor_zero, LinearMap.zero_apply]
 
 end GlobalTheory.CompanionTheory.Axis.KFlat
@@ -520,8 +519,7 @@ theorem existsUnique_const_of_trivSqZeroExt (R : Type) [CommRing R] (C : Type) [
       rw [hconst, h2, map_zero]
     have h3 : (TrivSqZeroExt.inr (m₂ - r.snd) : TrivSqZeroExt R M) = 0 :=
       hS.2 (h0.trans (map_zero _).symm)
-    have h4 := congrArg TrivSqZeroExt.snd h3
-    simpa [sub_eq_zero] using h4
+    simpa [sub_eq_zero] using congrArg TrivSqZeroExt.snd h3
 
 end GlobalTheory.CompanionTheory.Axis
 end -- clump:auto
@@ -745,8 +743,7 @@ theorem isAffineOpen_inf_preimage (U : X.affineOpens) (V : Y.affineOpens) :
     IsAffineOpen (pullback.fst f g ⁻¹ᵁ U.1 ⊓ pullback.snd f g ⁻¹ᵁ V.1) := by
   have h := isAffineOpen_opensRange (tensPt f g U V)
   convert h using 1
-  refine TopologicalSpace.Opens.ext ?_
-  exact (range_tensPt f g U V).symm
+  exact TopologicalSpace.Opens.ext (range_tensPt f g U V).symm
 
 theorem bijective_tens (U : X.affineOpens) (V : Y.affineOpens) (W : (pullback f g).affineOpens)
     (hW : W.1 = pullback.fst f g ⁻¹ᵁ U.1 ⊓ pullback.snd f g ⁻¹ᵁ V.1) (s' : pullback f g ⟶ Sp R)
@@ -1043,8 +1040,7 @@ theorem flat_sec_of_smooth : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X
   have h1 := HasRingHomProperty.appLE @Flat s hfl ⟨⊤, hT⟩ U le_top
   have h2 : RingHom.Flat (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom :=
     RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso _)
-  have h3 := RingHom.Flat.comp h2 h1
-  exact h3
+  exact RingHom.Flat.comp h2 h1
 
 end GlobalTheory.CompanionTheory.Axis
 end -- clump:auto
@@ -1152,8 +1148,7 @@ theorem kunneth (R : Type) [CommRing R] (C : Type) [Category.{0} C] [Finite C] [
         (mp F ψ).toLinearMap.lTensor _ ((H1.mk F).rTensor _ (t b)) := by
       rw [← LinearMap.comp_apply, ← LinearMap.comp_apply, LinearMap.rTensor_comp_lTensor,
         LinearMap.lTensor_comp_rTensor]
-    rw [map_sub, e, sub_eq_zero] at k
-    exact k
+    rwa [map_sub, e, sub_eq_zero] at k
   obtain ⟨x, hx, -⟩ := hU (H1 F) (fun b ↦ (H1.mk F).rTensor _ (t b)) hcomp
   obtain ⟨z, rfl⟩ := H1.mk_surjective F x
   have hg : ∀ b : C, ∃ g : ∀ T : C, F.obj T ⊗[R] F.obj b, ∀ (T T' : C) (φ : T ⟶ T'),
@@ -1223,8 +1218,7 @@ theorem isPullO_through_unit {R : Type} [CommRing R] {X Y : Over (Sp R)} (t : X 
     (u : 𝟙_ (Over (Sp R)) ⟶ Y) (a : HO1 Y.hom) (b : HO1 X.hom) (h : IsPullO (wOver (t ≫ u)) a b) : b = 0 := by
   have h1 := isPullO_pullHO1 (wOver u) a
   rw [first_cohomology_of_base_zero R (pullHO1 (wOver u) a)] at h1
-  have h2 := isPullO_comp R t u a 0 0 h1 ((map_zero _).trans (map_zero _).symm)
-  exact isPullO_unique _ h h2
+  exact isPullO_unique _ h (isPullO_comp R t u a 0 0 h1 ((map_zero _).trans (map_zero _).symm))
 
 theorem axOSt : DescentSt → LowSt → SysBCSt → SteinSt → AxOSt := by
   intro hD hL hB hS R _ A _ g hA hg c h1 h2

@@ -212,8 +212,7 @@ private theorem isPullback_prependComparisonMap_zero {φ : X' ⟶ X} {d' : Blowu
     prepend_toSequenceOfBlowups_projectionToBase_zero (Z.comap φ) hZ' d'
   have h3 : (BlowupSequenceData.prepend Z hZ d).toSequenceOfBlowups.projectionToBase (prependIndex c.idx 0) = 𝟙 X :=
     prepend_toSequenceOfBlowups_projectionToBase_zero Z hZ d
-  rw [h1, h2, h3]
-  exact key
+  rwa [h1, h2, h3]
 
 private theorem isPullback_prependComparisonMap_succ {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -409,8 +408,7 @@ private theorem prepend_center_ne_top {φ : X' ⟶ X} {d' : BlowupSequenceData X
       have h0 : (BlowupSequenceData.prepend (Z.comap φ) hZ' d').toSequenceOfBlowups.center 0 = Z.comap φ :=
         (BlowupSequenceData.toSequenceOfBlowups_center (BlowupSequenceData.prepend (Z.comap φ) hZ' d') 0).trans
           (BlowupSequenceData.prepend_center_zero (Z.comap φ) hZ' d')
-      intro htop
-      exact hne (h0.symm.trans htop)
+      exact fun htop => hne (h0.symm.trans htop)
   | succ n =>
       have hn : n < d'.toSequenceOfBlowups.length := by omega
       have h1 : (BlowupSequenceData.prepend (Z.comap φ) hZ' d').toSequenceOfBlowups.center (n + 1) =
@@ -418,8 +416,7 @@ private theorem prepend_center_ne_top {φ : X' ⟶ X} {d' : BlowupSequenceData X
         (BlowupSequenceData.toSequenceOfBlowups_center (BlowupSequenceData.prepend (Z.comap φ) hZ' d') (n + 1)).trans
           ((BlowupSequenceData.prepend_center_succ (Z.comap φ) hZ' d' n).trans
             (BlowupSequenceData.toSequenceOfBlowups_center d' n).symm)
-      intro htop
-      exact c.center_ne_top n hn (h1.symm.trans htop)
+      exact fun htop => c.center_ne_top n hn (h1.symm.trans htop)
 
 private theorem prepend_center_succ {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) (n : ℕ) :
@@ -445,16 +442,13 @@ private theorem ne_projectionToBase_of_forall_prependIndex_ne {φ : X' ⟶ X} {d
   obtain ⟨n, rfl⟩ : ∃ n : ℕ, i = n + 1 := ⟨i - 1, by omega⟩
   have hn : n < d.toSequenceOfBlowups.length := by omega
   have hmiss' : ∀ m : ℕ, m < d'.toSequenceOfBlowups.length → c.idx m ≠ n := by
-    intro m hm hmn
-    exact hmiss (m + 1) (by omega) (by rw [prependIndex_succ, hmn])
+    exact fun m hm hmn => hmiss (m + 1) (by omega) (by rw [prependIndex_succ, hmn])
   have hzc : z ∈ (d.toSequenceOfBlowups.center n).support := by
     have hz2 := hz
-    rw [prepend_center_succ Z hZ d n] at hz2
-    exact hz2
+    rwa [prepend_center_succ Z hZ d n] at hz2
   intro heq
   refine c.omitted n hn hmiss' z hzc x' ?_
-  rw [← prepend_toSequenceOfBlowups_projectionToBase_succ Z hZ d n]
-  exact heq
+  rwa [← prepend_toSequenceOfBlowups_projectionToBase_succ Z hZ d n]
 
 @[no_expose]
 def prepend {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
@@ -598,13 +592,11 @@ private theorem ne_projectionToBase_of_forall_succIndex_ne {φ : X' ⟶ X} {d' :
         (BlowupSequenceData.toSequenceOfBlowups_center (BlowupSequenceData.prepend Z hZ d) 0).trans
           (BlowupSequenceData.prepend_center_zero Z hZ d)
       have hzZ : z ∈ Z.support := by
-        rw [hc0] at hz
-        exact hz
+        rwa [hc0] at hz
       have hst : (BlowupSequenceData.prepend Z hZ d).toSequenceOfBlowups.projectionToBase 0 = 𝟙 X :=
         prepend_toSequenceOfBlowups_projectionToBase_zero Z hZ d
       have hb : φ.base x' ∈ Z.support := by
-        rw [heq, hst]
-        exact hzZ
+        rwa [heq, hst]
       have hmem : x' ∈ (Z.comap φ).support :=
         AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap.mpr hb
       exact AlgebraicGeometry.Scheme.IdealSheafData.ne_top_of_mem_support
@@ -612,16 +604,13 @@ private theorem ne_projectionToBase_of_forall_succIndex_ne {φ : X' ⟶ X} {d' :
   | succ n =>
       have hn : n < d.toSequenceOfBlowups.length := by omega
       have hmiss' : ∀ m : ℕ, m < d'.toSequenceOfBlowups.length → c.idx m ≠ n := by
-        intro m hm hmn
-        exact hmiss m hm (by rw [succIndex_apply, hmn])
+        exact fun m hm hmn => hmiss m hm (by rw [succIndex_apply, hmn])
       have hzc : z ∈ (d.toSequenceOfBlowups.center n).support := by
         have hz2 := hz
-        rw [prepend_center_succ Z hZ d n] at hz2
-        exact hz2
+        rwa [prepend_center_succ Z hZ d n] at hz2
       intro heq
       refine c.omitted n hn hmiss' z hzc x' ?_
-      rw [← prepend_toSequenceOfBlowups_projectionToBase_succ Z hZ d n]
-      exact heq
+      rwa [← prepend_toSequenceOfBlowups_projectionToBase_succ Z hZ d n]
 
 @[no_expose]
 def prependOfComapEqTop {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
@@ -719,8 +708,7 @@ private theorem prepend_center_zero {Y : Scheme.{u}} (Z : Y.IdealSheafData)
 private theorem isPullback_congr {P Q R S : Scheme.{u}} {f f' : P ⟶ Q} {g g' : P ⟶ R}
     {h h' : Q ⟶ S} {k k' : R ⟶ S} (hf : f = f') (hg : g = g') (hh : h = h') (hk : k = k')
     (H : IsPullback f' g' h' k') : IsPullback f g h k := by
-  rw [hf, hg, hh, hk]
-  exact H
+  rwa [hf, hg, hh, hk]
 
 theorem IsStrictPullbackBlowupSeq.prepend {X X' : Scheme.{u}} {φ : X' ⟶ X} {d' : BlowupSequenceData X'}
     {d : BlowupSequenceData X} (h : IsStrictPullbackBlowupSeq φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)

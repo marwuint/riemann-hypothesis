@@ -346,8 +346,7 @@ theorem exists_dual {Ω : Type} [Field Ω] {r : ℕ} (b : Fin r → Fin r → Ω
   have hrow : ∀ p q, b p ⬝ᵥ (fun i => M⁻¹ i q) = if p = q then 1 else 0 := by
     intro p q
     have h := congrFun (congrFun (Matrix.mul_nonsing_inv M hdet) p) q
-    rw [Matrix.mul_apply, Matrix.one_apply] at h
-    exact h
+    rwa [Matrix.mul_apply, Matrix.one_apply] at h
   refine ⟨fun q i => M⁻¹ i q, ?_, ?_⟩
   · intro a q
     rw [sum_dotProduct]
@@ -430,8 +429,7 @@ theorem main {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] (R : Subalgebr
     have h := (mem_dotDual R L _).mp hn _ hN
     rw [smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul] at h
     show f ^ (N + n) * (b q ⬝ᵥ e) ∈ R
-    rw [pow_add, mul_assoc]
-    exact h
+    rwa [pow_add, mul_assoc]
   · rintro ⟨a, ha, rfl⟩
     have hsk : ∀ k, s k ⬝ᵥ (∑ p, a p • d p) = ∑ p, c k p * a p := by
       intro k
@@ -719,9 +717,7 @@ theorem dualPair : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuation
   obtain ⟨htri, hdiag⟩ := _root_.GlobalTheory.CompanionTheory.Ar.DualPair.dualRevTri Ω r w w' v v' hv hv' h.sameFlag
   have hdual : ∀ B₀ : ChartBundle O (segreVec y) r (Fin r → Ω),
       IsDualLat O y (dotForm Ω r) B₀.lat (dualBundle B₀).lat := by
-    intro B₀
-    refine ⟨dotForm_flip_bijective Ω r, fun s _ e => ?_⟩
-    exact mem_dualBundle _ _ _
+    exact fun B₀ => ⟨dotForm_flip_bijective Ω r, fun s _ e => mem_dualBundle _ _ _⟩
   refine ⟨dualBundle B, dualBundle B', v, v', fun c _ => ⟨rfl, rfl⟩, ?_⟩
   refine ⟨?_, ?_, htri, fun i => ?_, fun i => ?_⟩
   · exact _root_.PositivityTheory.Xgn.t_flagframe_dual O Ω K J y r (Fin r → Ω) (Fin r → Ω) B (dualBundle B) (dotForm Ω r) (hdual B) w x h.flag v

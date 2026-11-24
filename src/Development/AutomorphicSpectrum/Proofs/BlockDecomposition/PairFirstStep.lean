@@ -79,8 +79,7 @@ theorem mem_of_separating {κ V Y : Type} [AddCommGroup V] [Module ℂ V] (D : S
       rw [Submodule.eq_bot_iff]
       intro w hw
       rw [Submodule.mem_dualCoannihilator] at hw
-      refine Subtype.ext (funext fun k => ?_)
-      exact hw (e k) (Submodule.subset_span ⟨k, rfl⟩)
+      exact Subtype.ext (funext fun k => hw (e k) (Submodule.subset_span ⟨k, rfl⟩))
     have := Subspace.dualCoannihilator_dualAnnihilator_eq (W := Submodule.span ℂ (Set.range e))
     rw [hco] at this
     rw [← this]
@@ -233,8 +232,7 @@ theorem typeH_ap₁ (hS : PairSlices) {K₁ : Subgroup (GL (Fin a) (Af E))} {K�
         ap₁ T F (x * (infGL E a (Unitary.toUnits k.1), infGL E b (Unitary.toUnits k.2)))) =
         fun k => ((ev x.1).comp T) (s k) :=
       funext fun k => ap₁_mul hS T hT hF (.cpt k.1) _ _ (fun _ _ => rfl) x
-    rw [e]
-    exact h
+    rwa [e]
 
 end Slices
 

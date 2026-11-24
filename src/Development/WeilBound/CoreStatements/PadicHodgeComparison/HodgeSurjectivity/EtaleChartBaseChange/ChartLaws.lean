@@ -266,8 +266,7 @@ theorem pres_base_change {R S R' S' : CommRingCat.{0}} {φ : R ⟶ S} {g : R ⟶
         change eb (h.hom (φ'.hom r)) = φ'.hom r
         rw [hr]
         simp [rQ, eb, he']
-    intro s'
-    exact RingHom.congr_fun (congrArg CommRingCat.Hom.hom hid) s'
+    exact fun s' => RingHom.congr_fun (congrArg CommRingCat.Hom.hom hid) s'
   have hbe : (h.hom.comp eb).comp (Ideal.Quotient.mk K') = Ideal.Quotient.mk K' := by
     apply MvPolynomial.ringHom_ext
     · intro r
@@ -551,8 +550,7 @@ theorem coord_nzd {K B σ : Type} [Field K] [CommRing B] [Algebra K B] (y : σ �
   rw [hy] at hB
   have hmem : y j ∈ nonZeroDivisors B := by
     rw [mem_nonZeroDivisors_iff_right]
-    intro z hz
-    exact hB (by simpa [smul_eq_mul, mul_comm] using hz)
+    exact fun z hz => hB (by simpa [smul_eq_mul, mul_comm] using hz)
   exact Module.Flat.isSMulRegular_of_nonZeroDivisors hmem (show y j • ω = y j • (0 : Om K B a) by rw [hω, smul_zero])
 
 theorem quot_etale {K B C σ : Type} [CommRing K] [CommRing B] [CommRing C] (s : K →+* B) (y : σ → B) (j0 : σ)
@@ -578,8 +576,7 @@ theorem quot_etale {K B C σ : Type} [CommRing K] [CommRing B] [CommRing C] (s :
       apply MvPolynomial.ringHom_ext
       · intro r; simp [g]
       · intro j; simp [g, j.2]
-    intro p
-    exact ⟨MvPolynomial.rename Subtype.val p, RingHom.congr_fun hid p⟩
+    exact fun p => ⟨MvPolynomial.rename Subtype.val p, RingHom.congr_fun hid p⟩
   letI : Algebra (MvPolynomial σ K) B := f.toAlgebra
   letI : Algebra (MvPolynomial σ K) (MvPolynomial {j // j ≠ j0} K) := g.toAlgebra
   letI : Algebra (MvPolynomial σ K) C := (ψ.comp f).toAlgebra
@@ -723,8 +720,7 @@ theorem ker_snd {W Z Y : Scheme.{0}} (i : W ⟶ Z) [IsClosedImmersion i] (π : Y
     rw [appLE_fromSpec_quot hD J he x] at h0
     have h1 : Ideal.Quotient.mk J x = 0 := by
       have h2 := congrArg (Scheme.ΓSpecIso (CommRingCat.of (Γ(Y, D) ⧸ J))).hom.hom h0
-      rw [← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply, map_zero] at h2
-      exact h2
+      rwa [← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply, map_zero] at h2
     exact Ideal.Quotient.eq_zero_iff_mem.1 h1
   · rw [Ideal.map_le_iff_le_comap]
     intro g hg
@@ -842,8 +838,7 @@ theorem chartLaws_B : ∀ (K : Type) [Field K] (W Z Y : Scheme.{0}) (q : Z ⟶ S
     have key : ∀ ω' : Om K (Sec (π ≫ q) D) a, (cD.t j0 : Sec (π ≫ q) D) • ω' = 0 → ω' = 0 :=
       coord_nzd (K := K) (B := Sec (π ≫ q) D) _ he j0 a
     apply key
-    rw [ht]
-    exact hω
+    rwa [ht]
 
 end CrystallineSemistableComparison.Onto
 

@@ -82,8 +82,7 @@ theorem ker_baseChange {k B K σ Φ Φ' : Type} [Field k] [CommRing B] [Algebra 
         simp only [RingHom.comp_apply, map_C, hΘC, ha, hL, RingHom.coe_coe, algHom_C]
       · intro s
         simp only [RingHom.comp_apply, map_X, hΘX, RingHom.coe_coe]
-    intro p
-    exact DFunLike.congr_fun h p
+    exact fun p => DFunLike.congr_fun h p
   have hΘα : ∀ Q, Θ (α Q) = ν (map (ψ : MvPolynomial σ k →+* B) Q) := by
     have h : Θ.comp α = ν.comp (map (ψ : MvPolynomial σ k →+* B)) := by
       apply MvPolynomial.ringHom_ext
@@ -91,8 +90,7 @@ theorem ker_baseChange {k B K σ Φ Φ' : Type} [Field k] [CommRing B] [Algebra 
         simp only [RingHom.comp_apply, hαC, hΘa, map_C, RingHom.coe_coe]
       · intro i
         simp only [RingHom.comp_apply, hαX, hΘC, hL, map_X]
-    intro Q
-    exact DFunLike.congr_fun h Q
+    exact fun Q => DFunLike.congr_fun h Q
   have hαmapC : ∀ p : MvPolynomial K k, α (map (C : k →+* MvPolynomial σ k) p) =
       C (algebraMap (MvPolynomial K k) Φ p) := by
     have h : α.comp (map (C : k →+* MvPolynomial σ k)) =
@@ -102,8 +100,7 @@ theorem ker_baseChange {k B K σ Φ Φ' : Type} [Field k] [CommRing B] [Algebra 
         simp only [RingHom.comp_apply, map_C, hαC, ha]
       · intro i
         simp only [RingHom.comp_apply, map_X, hαX]
-    intro p
-    exact DFunLike.congr_fun h p
+    exact fun p => DFunLike.congr_fun h p
   have hCmem : ∀ q : MvPolynomial K k, C (algebraMap (MvPolynomial K k) Φ q) ∈ α.range :=
     fun q => RingHom.mem_range.mpr ⟨_, hαmapC q⟩
   have hXmem : ∀ s : σ, (X s : MvPolynomial σ Φ) ∈ α.range := fun s =>
@@ -153,8 +150,7 @@ theorem ker_baseChange {k B K σ Φ Φ' : Type} [Field k] [CommRing B] [Algebra 
       refine Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ?_)
       rw [RingHom.mem_ker]
       have hv := congrArg (AddMonoidAlgebra.coeff · v) hQ0
-      rw [coeff_map, AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply] at hv
-      exact hv
+      rwa [coeff_map, AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply] at hv
     have hqne : algebraMap (MvPolynomial K k) Φ q ≠ 0 :=
       IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hq)
     have hP' : P = C (algebraMap (MvPolynomial K k) Φ q)⁻¹ * α Q := by

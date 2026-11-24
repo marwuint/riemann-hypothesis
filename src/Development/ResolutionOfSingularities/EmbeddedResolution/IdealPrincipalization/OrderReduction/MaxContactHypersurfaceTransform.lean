@@ -104,8 +104,7 @@ private theorem isMaxContactHypersurface_comap_iso (k : Type u) [Field k] {X Y :
     constructor
     · have hd : Disjoint (⇑e.hom.base ⁻¹' orderAtLeastLocus A m) (⇑e.hom.base ⁻¹' (U : Set ↥Y)) :=
         hdisj.preimage _
-      rw [orderAtLeastLocus_comap_iso_hom_eq_preimage]
-      exact hd
+      rwa [orderAtLeastLocus_comap_iso_hom_eq_preimage]
     · rw [restrictIdeal_comap, htop]
       simp
   · right
@@ -143,8 +142,7 @@ theorem isMaxContactHypersurface_iteratedStrictTransform (hstar : MaxContactCove
     | zero =>
         intro _ inst
         have hiso : AlgebraicGeometry.LocallyOfFiniteType (u.isoZero.hom ≫ S.structMap) := by
-          rw [← u.proj_zero]
-          exact inst
+          rwa [← u.proj_zero]
         refine isMaxContactHypersurface_congr S.base hiso inst ?_ (u.ideal_zero).symm
           (MaxContactReduction.iteratedStrictTransform_zero u H).symm
           (@isMaxContactHypersurface_comap_iso S.base _ _ _ S.structMap hv.smooth
@@ -156,15 +154,12 @@ theorem isMaxContactHypersurface_iteratedStrictTransform (hstar : MaxContactCove
         have instj : AlgebraicGeometry.LocallyOfFiniteType (u.proj j ≫ S.structMap) :=
           hlft j (le_of_lt hjl)
         have instsj : AlgebraicGeometry.LocallyOfFiniteType (u.toMarkedSequenceOfBlowups.projectionToSpec j) := by
-          rw [MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec]
-          exact instj
+          rwa [MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec]
         have instsj1 : AlgebraicGeometry.LocallyOfFiniteType
             (u.toMarkedSequenceOfBlowups.projectionToSpec (j + 1)) := by
-          rw [MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec]
-          exact inst
+          rwa [MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec]
         have hlt : j < u.toMarkedSequenceOfBlowups.toSequenceOfBlowups.length := by
-          rw [MarkedBlowupSequenceData.toMarkedSequence_length]
-          exact hjl
+          rwa [MarkedBlowupSequenceData.toMarkedSequence_length]
         have hadm := isMaxContactHypersurface_congr S.base instj instsj
           (MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec u j).symm
           (MarkedBlowupSequenceData.toMarkedSequence_ideal u j).symm
@@ -223,8 +218,7 @@ theorem inStrictNormalCrossingPosition_iteratedStrictTransform_cons_drop (hstar 
     have hsm : AlgebraicGeometry.Smooth (u.toMarkedSequenceOfBlowups.projectionToSpec i) :=
       MarkedSequenceOfBlowups.smooth_projectionToSpec effectiveCartierSupportContainsNoComponent hv u.toMarkedSequenceOfBlowups i
         (by rw [MarkedBlowupSequenceData.toMarkedSequence_length]; exact hi)
-    rw [MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec] at hsm
-    exact hsm
+    rwa [MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec] at hsm
   have hkey : ∀ i : ℕ, i < u.length →
       MaxContactReduction.iteratedStrictTransform u H i ≤ u.center i := by
     intro i hi
@@ -255,8 +249,7 @@ theorem inStrictNormalCrossingPosition_iteratedStrictTransform_cons_drop (hstar 
       have hb : (u.boundary 0).drop S.boundary.length = [] := by
         rw [u.boundary_zero]
         simp
-      rw [hb]
-      exact h0
+      rwa [hb]
   | succ j ih =>
       intro hj
       have hjl : j < u.length := hj
@@ -278,15 +271,12 @@ theorem inStrictNormalCrossingPosition_iteratedStrictTransform_cons_drop (hstar 
       have hcons : HasStrictNormalCrossingsWith (u.proj j ≫ S.structMap) (u.center j)
           (MaxContactReduction.iteratedStrictTransform u H j :: (u.boundary j).drop S.boundary.length) := by
         have hsm' : AlgebraicGeometry.Smooth (u.toMarkedSequenceOfBlowups.projectionToSpec j) := by
-          rw [MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec]
-          exact hsmj
+          rwa [MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec]
         have hlt : j < u.toMarkedSequenceOfBlowups.toSequenceOfBlowups.length := by
-          rw [MarkedBlowupSequenceData.toMarkedSequence_length]
-          exact hjl
+          rwa [MarkedBlowupSequenceData.toMarkedSequence_length]
         have hsnc' : InStrictNormalCrossingPosition (u.toMarkedSequenceOfBlowups.projectionToSpec j)
             (MaxContactReduction.iteratedStrictTransform u H j :: (u.boundary j).drop S.boundary.length) := by
-          rw [MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec]
-          exact hsncj
+          rwa [MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec]
         have hZN' : HasStrictNormalCrossingsWith (u.toMarkedSequenceOfBlowups.projectionToSpec j) (u.toMarkedSequenceOfBlowups.center j)
             ((u.boundary j).drop S.boundary.length) := by
           rw [MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec, MarkedBlowupSequenceData.toMarkedSequence_center]

@@ -131,8 +131,7 @@ theorem det_eq_of_intertwine {M N : Type} [AddCommGroup M] [AddCommGroup N]
   obtain ⟨e⟩ : Nonempty (M ≃ₗ[ℤ] N) := ⟨LinearEquiv.ofFinrankEq M N h.symm⟩
   have hj : Function.Injective ((e : M →ₗ[ℤ] N) ∘ₗ ι) := e.injective.comp hι
   have hdet : LinearMap.det ((e : M →ₗ[ℤ] N) ∘ₗ ι) ≠ 0 := by
-    intro h0
-    exact (LinearMap.det_eq_zero_iff_ker_ne_bot.mp h0) (LinearMap.ker_eq_bot.mpr hj)
+    exact fun h0 => (LinearMap.det_eq_zero_iff_ker_ne_bot.mp h0) (LinearMap.ker_eq_bot.mpr hj)
   have hcomm : ((e : M →ₗ[ℤ] N) ∘ₗ ι) ∘ₗ g =
       ((e : M →ₗ[ℤ] N) ∘ₗ f ∘ₗ (e.symm : N →ₗ[ℤ] M)) ∘ₗ ((e : M →ₗ[ℤ] N) ∘ₗ ι) := by
     apply LinearMap.ext
@@ -183,14 +182,12 @@ theorem det_lsmul (E : Type) [Field E] [NumberField E] (Λ : Type) [AddCommGroup
       obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ q
       obtain ⟨r, hr, hrx⟩ := htorsZ x
       refine ⟨r, hr, ?_⟩
-      rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
-      exact hrx
+      rwa [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
     omega
   have hfg : ∀ y, Lz (((LinearMap.lsmul (𝓞 E) (Fin (finrank (𝓞 E) Λ) → 𝓞 E) a).restrictScalars ℤ) y)
       = ((LinearMap.lsmul (𝓞 E) Λ a).restrictScalars ℤ) (Lz y) := by
     intro y
-    simp only [Lz, LinearMap.restrictScalars_apply, LinearMap.lsmul_apply]
-    exact map_smul L a y
+    simpa only [Lz, LinearMap.restrictScalars_apply, LinearMap.lsmul_apply] using map_smul L a y
   have hsmul : LinearMap.lsmul (𝓞 E) (Fin (finrank (𝓞 E) Λ) → 𝓞 E) a = a • LinearMap.id :=
     LinearMap.ext fun y => by simp
   rw [PositivityTheory.Xgn.AmalgamKernelBound.det_eq_of_intertwine Lz hLz hrankZ _ _ hfg,
@@ -269,8 +266,7 @@ theorem corank_le {M : Type} [AddCommGroup M] [Module.Free ℤ M] [Module.Finite
       ← Matrix.rank_eq_finrank_range_toLin, hAk, Matrix.rank_mul_eq_left_of_isUnit_det]
     · convert Matrix.rank_diagonal (fun i => algebraMap ℤ k (d i))
     · have := hQ.map (algebraMap ℤ k)
-      rw [RingHom.map_det] at this
-      exact this
+      rwa [RingHom.map_det] at this
   haveI : Module.Finite k (TensorProduct ℤ k M) :=
     Module.Finite.of_basis (Algebra.TensorProduct.basis k t)
   have hsum := LinearMap.finrank_range_add_finrank_ker (LinearMap.baseChange k f)
@@ -555,8 +551,7 @@ theorem lie_surjective (q : G ⟶ B) [IsMonHom q] (hs : Smooth q.left)
   have hb : v ≫ G.hom = (epsAt (𝟙 (Sp k))).hom := by
     have e1 := Over.w q
     have e2 := Over.w (MB.pt w)
-    rw [← e1, ← Category.assoc, hv2]
-    exact e2
+    rwa [← e1, ← Category.assoc, hv2]
   let vv : epsAt (𝟙 (Sp k)) ⟶ G := Over.homMk v hb
   obtain ⟨e, he⟩ := MG.onto vv hv1
   refine ⟨e, MB.inj ?_⟩
@@ -828,8 +823,7 @@ theorem lie_seq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Ho
   · intro l v hv1 hv2
     have hv : v = (Mk.pt (eG.symm (Pi.single l 1))).left := by
       apply pullback.hom_ext
-      · rw [hM, germ_coord g M eG hcG l]
-        exact hv1
+      · rwa [hM, germ_coord g M eG hcG l]
       · exact hv2.trans (Over.w (Mk.pt (eG.symm (Pi.single l 1)))).symm
     have e1 : v ≫ Q.q.left = (MB.pt (dq (eG.symm (Pi.single l 1)))).left := by
       rw [hdq, hv]; rfl
@@ -837,8 +831,7 @@ theorem lie_seq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Ho
     have e2 : (fun i => P i l) = eB (dq (eG.symm (Pi.single l 1))) := by
       funext i
       have := congrFun (hP (Pi.single l 1)) i
-      rw [Matrix.mulVec_single_one] at this
-      exact this
+      rwa [Matrix.mulVec_single_one] at this
     rw [e2]
     exact hcB _
   · intro w
@@ -1345,8 +1338,7 @@ theorem ker_bound {d d' : ℕ} {L : Type} [AddCommGroup L] [Module k L] [FiniteD
     simp only [sub_dotProduct, zero_dotProduct] at this
     have e3 : A.transpose.mulVec y.1 ⬝ᵥ j v = 0 := by
       rw [Matrix.mulVec_transpose, ← Matrix.dotProduct_mulVec, hAj, dotProduct_zero]
-    rw [e3, sub_zero] at this
-    exact this
+    rwa [e3, sub_zero] at this
 
   have hφ : ∀ y, c y = 0 → P.transpose.mulVec (Q.transpose.mulVec y.2) = y.2 := by
     intro y hy
@@ -1383,8 +1375,7 @@ theorem ker_bound {d d' : ℕ} {L : Type} [AddCommGroup L] [Module k L] [FiniteD
         simp only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mulVec_mulVec, Matrix.mul_assoc]
       have e7 : ∀ v, Q.transpose.mulVec (P.transpose.mulVec v) = v := fun v => by
         rw [Matrix.mulVec_mulVec, hQt, Matrix.one_mulVec]
-      rw [e5, e6, Matrix.mulVec_sub, e7, e7] at e4
-      exact e4
+      rwa [e5, e6, Matrix.mulVec_sub, e7, e7] at e4
   have s3 : (K ⊓ LinearMap.ker c) ⊓ LinearMap.ker m ≤
       (LinearMap.ker Sa).map (LinearMap.inl k (Fin d → k) (Fin d → k) ∘ₗ j) := by
     rintro y ⟨⟨hy, hcy⟩, hmy⟩

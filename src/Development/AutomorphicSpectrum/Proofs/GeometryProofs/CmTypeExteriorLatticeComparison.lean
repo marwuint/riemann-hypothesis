@@ -171,9 +171,7 @@ theorem tie_val {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} 
   refine (Category.assoc _ _ _).trans ?_
   refine (congrArg (_ ≫ ·) hAB').trans ?_
   refine (Category.assoc _ _ _).symm.trans ?_
-  refine Eq.trans ?_ e1.symm
-  refine congrArg (· ≫ vx.left) ?_
-  exact spec_dual_comp' _ _
+  exact Eq.trans (congrArg (· ≫ vx.left) (spec_dual_comp' _ _)) e1.symm
 
 theorem exists_gram : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S), IsProper t.G.hom → Out.RelAmple t.G t.PP.L → Out.KTriv t.G t.PP.L → ∀ (x : Sp ℂ ⟶ S) (n : ℕ) (v : Fin n → (epsAt x ⟶ t.G)), (∀ i, IsTanAt t.G x (v i)) → ∃ Γ : Matrix (Fin n) (Fin n) ℂ, IsHodgeGram t.G t.PP.L x v Γ := by
   intro E _ _ _ H S t hp hA hK x n v hv
@@ -267,8 +265,7 @@ theorem frame_change : ∀ (X X' : Scheme.{0}) (Ω Ω' : Type) [Field Ω] [Field
           rw [hT a]
           exact Finset.sum_congr rfl fun k _ => by rw [← hS k]
       _ = ∑ c, ∑ k, (genMap ξ' p' (T a k) * genMap ξ' p' (S k c)) • j (b c) := by
-          simp only [Finset.smul_sum, smul_smul]
-          exact Finset.sum_comm
+          simpa only [Finset.smul_sum, smul_smul] using Finset.sum_comm
       _ = _ := by
           refine Finset.sum_congr rfl fun c _ => ?_
 
@@ -280,8 +277,7 @@ theorem frame_change : ∀ (X X' : Scheme.{0}) (Ω Ω' : Type) [Field Ω] [Field
   have h3 : ∑ c, (genMap ξ' p' ((Matrix.of T * Matrix.of S) a c) - genMap ξ' p' ((1 : Matrix (Fin n) (Fin n) _) a c)) • j (b c) = 0 := by
     simp only [sub_smul, Finset.sum_sub_distrib]
     rw [← h1, h2, sub_self]
-  have h4 := Fintype.linearIndependent_iff.1 hjb _ h3 c
-  exact hξ.inj p' (sub_eq_zero.1 h4)
+  exact hξ.inj p' (sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hjb _ h3 c))
 
 theorem val_const' {X : Scheme.{0}} {Ω : Type} [Field Ω] {O : Type} [CommRing O] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     (g : X ⟶ Sp O) {σ₀ : O →+* Ω} (hs : ξ ≫ g = spMap σ₀) {σ : O →+* ℂ} (z : Spec (CommRingCat.of ℂ) ⟶ X)
@@ -327,8 +323,7 @@ theorem exists_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
     have e : (pullback.fst Y.s (spMap (algebraMap (𝓞 c.F) c.F))) (w (IsLocalRing.closedPoint ℂ)) = 𝔐.f (centre z) :=
       congrArg (fun t : Spec (CommRingCat.of ℂ) ⟶ Y.X => t (IsLocalRing.closedPoint ℂ)) hw1
     show _ ∈ abLocus Y.t.G
-    rw [e]
-    exact hab
+    rwa [e]
   haveI := Y.jQ_open
   let y₀ : Sp ℂ ⟶ Xo.XF c := IsOpenImmersion.lift Y.jQ w hrange
   have hy : y₀ ≫ Y.jQ = w := IsOpenImmersion.lift_fac _ _ _
@@ -429,8 +424,7 @@ theorem mem_genFibre {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRin
   intro o ho
   have hx : (Scheme.stalkClosedPointTo z).hom (o : X.presheaf.stalk (centre z)) ≠ 0 := by
     intro h0
-    have e := (map_intCast (Scheme.stalkClosedPointTo z).hom o).symm.trans h0
-    exact ho (by exact_mod_cast e)
+    exact ho (by exact_mod_cast ((map_intCast (Scheme.stalkClosedPointTo z).hom o).symm.trans h0))
   obtain ⟨x, hxo⟩ := CxVal.isUnit _ hx
   have e : genMap ξ ⟨centre z, hc⟩ x.val = algebraMap ℤ Ω o := by rw [hxo, map_intCast]; simp
   have hu : IsUnit (algebraMap ℤ Ω o) := e ▸ (x.isUnit.map (genMap ξ ⟨centre z, hc⟩))

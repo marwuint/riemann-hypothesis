@@ -180,8 +180,7 @@ theorem hasDerivAt_Lp_of_dominated {E : Type*} [MeasurableSpace E] {μ : Measure
       have h1 := hasDerivAt_iff_tendsto_slope_zero.1 (hd x t₀ (Metric.mem_ball_self hδ))
       have h2 : Tendsto (fun s : ℝ => d s x) (𝓝[≠] 0) (𝓝 (f' t₀ x - f' t₀ x)) :=
         h1.sub tendsto_const_nhds
-      have h3 := (h2.norm).pow 2
-      simpa using h3
+      simpa using (h2.norm).pow 2
   have hlim0 : Tendsto (fun s : ℝ => ‖s⁻¹ • (F (t₀ + s) - F t₀) - G‖ ^ 2) (𝓝[≠] 0) (𝓝 0) := by
     simp only [hsq]
     simpa using hlim
@@ -229,8 +228,7 @@ theorem hasDerivAt_toL_exp (X : Lie E a) (t : ℝ) :
     HasDerivAt (fun s : ℝ => toL (NormedSpace.exp (s • Matrix.of X))) (rmul X (toL (NormedSpace.exp (t • Matrix.of X)))) t := by
   let L : Matrix (Fin a) (Fin a) (Cinf E) →L[ℝ] Lie E a :=
     LinearMap.toContinuousLinearMap (Matrix.ofLinearEquiv ℝ).symm.toLinearMap
-  have h1 := hasDerivAt_exp_smul_const (𝕂 := ℝ) (Matrix.of X) t
-  exact L.hasFDerivAt.comp_hasDerivAt t h1
+  exact L.hasFDerivAt.comp_hasDerivAt t (hasDerivAt_exp_smul_const (𝕂 := ℝ) (Matrix.of X) t)
 
 theorem hasDerivAt_expG {φ : GA E a → ℂ} (hφ : φ ∈ Sm E a) (X : Lie E a) (x : GA E a) (t : ℝ) :
     HasDerivAt (fun s => φ (x * infGL E a (expG X s))) (lieD X φ (x * infGL E a (expG X t))) t := by
@@ -265,10 +263,8 @@ theorem hasDerivAt_R (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightIn
     rw [e]
     exact hl'.coeFn_toL2
   · exact memLp_const C
-  · intro q t _
-    exact hasDerivAt_expG φ.2 X q.out t
-  · intro q t _
-    exact hC _
+  · exact fun q t _ => hasDerivAt_expG φ.2 X q.out t
+  · exact fun q t _ => hC _
 
 theorem inner_lie_skew' (hB : GlobalTheory.Published.CuspFormsBoundedGL) (μ : Measure (GA E a)) [μ.IsHaarMeasure]
     {π : CuspSub E a} (hπ : IsNormalised π) (X : Lie E a) (f g : π.V) :
@@ -291,8 +287,7 @@ theorem inner_lie_skew' (hB : GlobalTheory.Published.CuspFormsBoundedGL) (μ : M
   rw [hconst] at hd
   have h0 := hd.unique (hasDerivAt_const _ _)
   simp only [expG_zero, map_one, ContinuousLinearMap.one_apply] at h0
-  rw [add_comm]
-  exact h0
+  rwa [add_comm]
 
 end PositivityTheory.PRW.GKD
 

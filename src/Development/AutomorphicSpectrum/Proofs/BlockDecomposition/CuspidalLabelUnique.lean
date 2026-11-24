@@ -213,8 +213,7 @@ theorem regular_iff_degree {d : ℕ} (hd : 0 < d) (α : AlgebraicClosure K)
     have hu := (Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hdet)
     exact ⟨hu.unit, by rw [IsUnit.unit_spec]; exact hchar⟩
 
-theorem two_le_card : 2 ≤ Fintype.card K := by
-  exact Fintype.one_lt_card
+theorem two_le_card : 2 ≤ Fintype.card K := Fintype.one_lt_card
 
 theorem gen_primitive (C : LabelConv K) {d : ℕ} (hd : 0 < d) :
     IsPrimitiveRoot (C.gen d) (Fintype.card K ^ d - 1) := by
@@ -368,8 +367,7 @@ private theorem multiset_eq_of_psum_lemma_5 {d : ℕ} (u v : Fin d → ℂ)
       MvPolynomial.aeval v (MvPolynomial.psum (Fin d) ℂ j) := by
     intro j h1 h2
 
-    simp only [MvPolynomial.psum, map_sum, map_pow, MvPolynomial.aeval_X]
-    exact h j h1 h2
+    simpa only [MvPolynomial.psum, map_sum, map_pow, MvPolynomial.aeval_X] using h j h1 h2
   have hes : ∀ k, k ≤ d → MvPolynomial.aeval u (MvPolynomial.esymm (Fin d) ℂ k) =
       MvPolynomial.aeval v (MvPolynomial.esymm (Fin d) ℂ k) := by
     intro k
@@ -444,8 +442,7 @@ theorem hasCuspLabel_unique : ∀ (K : Type) [Field K] [Fintype K] [DecidableEq 
     rw [h1] at h2
     have h3 := mul_left_cancel₀ (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) h2
     rw [Finset.sum_range, Finset.sum_range] at h3
-    simp only [epow]
-    exact h3
+    simpa only [epow] using h3
   have hmult := multiset_eq_of_psum_lemma_5 _ _ hpow
   have hmem : C.ι x ∈ Multiset.map (fun a : Fin (Fintype.card ι) => C.ι x' ^ Fintype.card K ^ (a : ℕ))
       Finset.univ.val := by

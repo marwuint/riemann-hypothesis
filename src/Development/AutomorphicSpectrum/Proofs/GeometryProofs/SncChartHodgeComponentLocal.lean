@@ -89,8 +89,7 @@ theorem interior_range {E : Type} [Field E] [NumberField E] [IsCMField E] {H : H
   have e : (x ≫ pullback.fst _ _) q = (z ≫ 𝔐.f) q := by rw [hx]
   simp only [Scheme.Hom.comp_apply] at e
   have : x q ∈ pullback.fst Y.s (spMap (algebraMap (𝓞 c.F) c.F)) ⁻¹' abLocus Y.t.G := by
-    rw [Set.mem_preimage, e, hq]
-    exact hab
+    rwa [Set.mem_preimage, e, hq]
   rwa [Y.ab_gen] at this
 
 theorem dualMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
@@ -142,8 +141,7 @@ theorem exists_bdryChart_at : Top.Given → ∀ (E : Type) [Field E] [NumberFiel
     have : w 0 = χ.γ t₀ := by
       simp only [hwdef]
       rw [HodgeMetric.recentre_zero]
-    rw [this]
-    exact hz₀
+    rwa [this]
   have hhol : IsHolTo (Metric.ball 0 1) p := _root_.GlobalTheory.CompanionTheory.Ar.PeriodsHol.isHolTo_of_coordsAt_family 𝔐.X Ω 𝔐.ξ K J y htie hall n _ w p Metric.isOpen_ball hw hp
   haveI : FiniteDimensional ℚ c.F := c.fin
   haveI : NumberField c.F := ⟨⟩
@@ -162,8 +160,7 @@ theorem exists_bdryChart_at : Top.Given → ∀ (E : Type) [Field E] [NumberFiel
   have hW0 : ⊤ ≤ p 0 ⁻¹ᵁ W := fun x _ => by
     have : x = IsLocalRing.closedPoint ℂ := Subsingleton.elim _ _
     subst this
-    rw [hp0]
-    exact hq
+    rwa [hp0]
   obtain ⟨ρ₁, ψ, hρ₁, hρ₁', hψ, hψp⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HolFac.exists_ringMaps_of_hol 𝔐.X W hW n p hhol hW0
   have hp₁ : IsHolTo (Metric.ball 0 1) (fun u => spMap (ψ u)) :=
     ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_spMap Metric.isOpen_ball hψ.2
@@ -197,8 +194,7 @@ theorem exists_bdryChart_at : Top.Given → ∀ (E : Type) [Field E] [NumberFiel
   · rw [hpt u hu]
     have := hp _ (smul_mem_ball h12 h12' hu)
     simp only [hwdef] at this
-    rw [← recentre_mul] at this
-    exact this
+    rwa [← recentre_mul] at this
   · have e' : spMap ((C.ψ u).comp θ) ≫ hW.fromSpec = spMap (C.ψ u) ≫ spMap θ ≫ hW.fromSpec := by
       rw [← Category.assoc]; congr 1; exact Spec.map_comp _ _
     obtain ⟨w', hw1, hw2⟩ := hv ((C.ψ u).comp θ) _ e' (𝔐.all _) (e i)

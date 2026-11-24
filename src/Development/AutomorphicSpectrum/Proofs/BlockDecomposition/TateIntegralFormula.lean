@@ -251,8 +251,7 @@ theorem lintegral_normOne_mul (a : IdeleGroup F) {f : IdeleGroup F → ℝ≥0�
     _ = ∫⁻ u in normOneFundamentalDomain F, ∑' γ : (diagonalNormOne F).op, h (γ • u) ∂normOneMeasure F :=
         (lintegral_tsum fun γ => (hm.comp (measurable_const_smul γ)).aemeasurable).symm
     _ = ∫⁻ u in normOneFundamentalDomain F, ∑' ξ : Fˣ, h (e ξ • u) ∂normOneMeasure F := by
-        refine lintegral_congr fun u => ?_
-        exact (e.tsum_eq (fun γ => h (γ • u))).symm
+        exact lintegral_congr fun u => (e.tsum_eq (fun γ => h (γ • u))).symm
     _ = _ := by
         refine lintegral_congr fun u => tsum_congr fun ξ => ?_
         change f (((u * diagonalToNormOne F ξ : normOneSubgroup F) : IdeleGroup F) * a) = f (pr ξ * ((u : IdeleGroup F) * a))
@@ -350,9 +349,7 @@ theorem vol_inter (H : Subgroup (IdeleGroup F)) (hHo : IsOpen (H : Set (IdeleGro
   have hunion : (Set.univ : Set (normOneSubgroup F)) = ⋃ q, A q := by
     ext u; simp [A]
   have hdisj : Pairwise (Function.onFun Disjoint A) := by
-    intro q q' hne
-    refine Set.disjoint_left.2 fun u h h' => hne ?_
-    exact h.symm.trans h'
+    exact fun q q' hne => Set.disjoint_left.2 fun u h h' => hne (h.symm.trans h')
   have htot : m Set.univ = (H.index : ℝ≥0∞) * m A₀ := by
     rw [hunion, measure_iUnion hdisj hAm, tsum_fintype]
     simp only [hq]
@@ -459,8 +456,7 @@ theorem tate : Tate := by
   have hf' : Measurable (f : IdeleGroup F → ℝ≥0∞) := by
     have e : (HeckeCharacterZeroLocus.SiegelWeilU.measAF : MeasurableSpace (HeckeCharacterZeroLocus.SiegelWeilU.AF F)) = measurableSpace_adeleRing F :=
       (borelSpace_adeleRing F).measurable_eq.symm
-    rw [e] at hf
-    exact hf
+    rwa [e] at hf
   have hL := tendsto_fiber hF hθ hr w H hHo hHi hpr hrH hf' hA
   obtain ⟨⟨C, hC⟩, ⟨R, hR⟩, -, -⟩ := hA
   set J : ℝ → ℝ≥0∞ := fun y => ENNReal.ofReal (Real.exp y) * ∫⁻ u in normOneFundamentalDomain F,
@@ -484,8 +480,7 @@ theorem tate : Tate := by
       refine hR _ ?_
       have hu : md (u : IdeleGroup F) = 1 := mem_normOneSubgroup.1 u.2
       have hs : md (moduleSection w (expPos y)) = Real.exp y := by simp [md]
-      rw [md_mul, hu, hs, one_mul]
-      exact hlt
+      rwa [md_mul, hu, hs, one_mul]
     simp [this]
   have hB : (C : ℝ≥0∞) * normOneMeasure F (normOneFundamentalDomain F) ≠ ⊤ :=
     ENNReal.mul_ne_top ENNReal.coe_ne_top (normOneMeasure_normOneFundamentalDomain_lt_top F).ne

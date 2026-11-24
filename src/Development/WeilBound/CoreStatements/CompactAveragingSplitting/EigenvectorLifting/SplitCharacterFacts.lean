@@ -78,10 +78,8 @@ theorem val_eq_one_iff (x : Fv F v) : valuation (Fv F v) x = 1 ↔ Valued.v x = 
   have h2 := he.le_iff_le (x := 1) (y := x)
   simp only [map_one] at h1 h2
   constructor
-  · intro h
-    exact le_antisymm (h1.mp h.le) (h2.mp h.ge)
-  · intro h
-    exact le_antisymm (h1.mpr h.le) (h2.mpr h.ge)
+  · exact fun h => le_antisymm (h1.mp h.le) (h2.mp h.ge)
+  · exact fun h => le_antisymm (h1.mpr h.le) (h2.mpr h.ge)
 
 theorem isUnram_chrW_iff (χ : Chr F E) (τ : E →ₐ[F] Fv F v) :
     GlobalTheory.SplitWeil.IsUnram (chrW χ τ) ↔ UnrAt χ (splitPrime τ) := by
@@ -93,21 +91,18 @@ theorem isUnram_chrW_iff (χ : Chr F E) (τ : E →ₐ[F] Fv F v) :
     let x : (Fv F v)ˣ := Units.map ψ.symm.toRingHom.toMonoidHom y
     have hxv : valuation (Fv F v) (x : Fv F v) = 1 := by
       show valuation (Fv F v) (ψ.symm (y : HeightOneSpectrum.adicCompletion E (splitPrime τ))) = 1
-      rw [val_eq_one_iff, ← hv, RingEquiv.apply_symm_apply]
-      exact hy'
+      rwa [val_eq_one_iff, ← hv, RingEquiv.apply_symm_apply]
     have h1 := hU x hxv
     have hxy : Units.map (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under τ)).toMonoidHom x = y := by
       apply Units.ext
       show GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under τ)
         (ψ.symm (y : HeightOneSpectrum.adicCompletion E (splitPrime τ))) = y
       rw [← hψ, RingEquiv.apply_symm_apply]
-    rw [← hxy]
-    exact h1
+    rwa [← hxy]
   · intro hU x hx
     have hx' : Valued.v (x : Fv F v) = 1 := (val_eq_one_iff _).mp hx
     have hc : Valued.v (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under τ) (x : Fv F v)) = 1 := by
-      rw [← hψ, hv]
-      exact hx'
+      rwa [← hψ, hv]
     exact hU (Units.map (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under τ)).toMonoidHom x) hc
 
 theorem continuous_chrW {χ : Chr F E} (hχ : Continuous χ) (τ : E →ₐ[F] Fv F v) :
@@ -127,10 +122,8 @@ theorem split_character_facts : ChrFacts := by
     delta GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.unifAt
     exact Exists.choose_spec _
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
-  · intro x
-    exact Circle.norm_coe _
-  · intro x
-    exact Circle.norm_coe _
+  · exact fun x => Circle.norm_coe _
+  · exact fun x => Circle.norm_coe _
   · exact chrW_div X.α X.β τ
   · obtain ⟨e₁, h₁⟩ := GlobalTheory.GaussNonvanish.exists_condLE hu (chrW X.α τ) (continuous_chrW heckeα.1 τ)
     obtain ⟨e₂, h₂⟩ := GlobalTheory.GaussNonvanish.exists_condLE hu (chrW X.β τ) (continuous_chrW heckeβ.1 τ)
@@ -140,15 +133,13 @@ theorem split_character_facts : ChrFacts := by
   · intro hvT hU
     rw [isUnram_chrW_iff] at hU
     refine ram (splitPrime τ) ?_ hU
-    rw [GlobalTheory.AdelicU.splitPrime_under]
-    exact hvT
+    rwa [GlobalTheory.AdelicU.splitPrime_under]
   · intro hvT
     have hw : splitPrime τ ∉ GlobalTheory.LFun.above E (X.T : Set (Pl F)) := by
       intro hm
       apply hvT
       have hm' : HeightOneSpectrum.under (NumberField.RingOfIntegers F) (splitPrime τ) ∈ (X.T : Set (Pl F)) := hm
-      rw [GlobalTheory.AdelicU.splitPrime_under] at hm'
-      exact hm'
+      rwa [GlobalTheory.AdelicU.splitPrime_under] at hm'
     exact ⟨(isUnram_chrW_iff _ _).mpr (unrα _ hw), (isUnram_chrW_iff _ _).mpr (unrβ _ hw)⟩
 
 end PositivityTheory.ThK.SplitAsm

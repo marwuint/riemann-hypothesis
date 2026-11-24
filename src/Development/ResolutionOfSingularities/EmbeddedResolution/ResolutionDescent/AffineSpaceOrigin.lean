@@ -129,8 +129,7 @@ private theorem appTop_hom_appTop_inv_apply {X Y : Scheme.{u}} (e : X ≅ Y)
   have h : Scheme.Hom.appTop e.inv ≫ Scheme.Hom.appTop e.hom =
       𝟙 (X.presheaf.obj (Opposite.op ⊤)) := by
     rw [← Scheme.Hom.comp_appTop, e.hom_inv_id, appTop_id]
-  have h2 := congrArg (fun φ => CommRingCat.Hom.hom φ x) h
-  simpa using h2
+  simpa using congrArg (fun φ => CommRingCat.Hom.hom φ x) h
 
 private theorem nontrivial_globalSections_spec (k : Type u) [Field k] :
     Nontrivial ↑((Spec (CommRingCat.of k)).presheaf.obj (Opposite.op ⊤)) := by
@@ -194,8 +193,7 @@ private theorem sub_C_constantCoeff_mem_span_X {σ : Type u} {A : Type u} [CommR
       Ideal.span (Set.range (MvPolynomial.X : σ → MvPolynomial σ A)) := by
   induction p using MvPolynomial.induction_on
   · rename_i a
-    simp only [MvPolynomial.constantCoeff_C, sub_self]
-    exact Ideal.zero_mem _
+    simpa only [MvPolynomial.constantCoeff_C, sub_self] using Ideal.zero_mem _
   · rename_i q r hq hr
     have hadd : q + r - MvPolynomial.C (MvPolynomial.constantCoeff (q + r)) =
         (q - MvPolynomial.C (MvPolynomial.constantCoeff q)) +
@@ -227,8 +225,7 @@ private theorem ker_eq_span_range_X {σ : Type u} {K : Type u} [Field K] {T : Ty
     RingHom.mem_ker.mp (hspan hsub)
   have hp0 : g p = 0 := RingHom.mem_ker.mp hp
   have h0 : g (MvPolynomial.C (MvPolynomial.constantCoeff p)) = 0 := by
-    rw [map_sub, hp0, zero_sub, neg_eq_zero] at h1
-    exact h1
+    rwa [map_sub, hp0, zero_sub, neg_eq_zero] at h1
   have hc : MvPolynomial.constantCoeff p = 0 := by
     have hinj : Function.Injective (g.comp (MvPolynomial.C : K →+* MvPolynomial σ K)) :=
       RingHom.injective _
@@ -236,8 +233,7 @@ private theorem ker_eq_span_range_X {σ : Type u} {K : Type u} [Field K] {T : Ty
     simpa using h0
   have hpe : p = p - MvPolynomial.C (MvPolynomial.constantCoeff p) := by
     rw [hc, map_zero, sub_zero]
-  rw [hpe]
-  exact hsub
+  rwa [hpe]
 
 private theorem ker_eq_span_image_of_surjective {A B C : Type u} [CommRing A] [CommRing B]
     [CommRing C] (ψ : A →+* B) (hsurj : Function.Surjective ψ) (g : B →+* C) (s : Set A)

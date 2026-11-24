@@ -79,11 +79,7 @@ theorem nonempty_equiv_contra_twist (hA : GlobalTheory.Published.IrreducibleAdmi
     rw [h2, map_inv, map_inv]
   have hdual : ∀ (g : GL (Fin n) k) (l : Module.Dual ℂ V),
       (twist π (detChar (Fin n) χ)).dual g l = ((detChar (Fin n) χ g⁻¹ : ℂˣ) : ℂ) • π.dual g l := by
-    intro g l
-    apply LinearMap.ext
-    intro v
-    show l (((detChar (Fin n) χ g⁻¹ : ℂˣ) : ℂ) • π g⁻¹ v) = ((detChar (Fin n) χ g⁻¹ : ℂˣ) : ℂ) • l (π g⁻¹ v)
-    exact map_smul l _ _
+    exact fun g l => LinearMap.ext (fun v => map_smul l _ _)
   have hker : ∀ g : GL (Fin n) k, g ∈ (detChar (Fin n) χ).ker →
       ((detChar (Fin n) χ g⁻¹ : ℂˣ) : ℂ) = 1 := by
     intro g hg
@@ -103,8 +99,7 @@ theorem nonempty_equiv_contra_twist (hA : GlobalTheory.Published.IrreducibleAdmi
       rintro g ⟨hg1, hg2⟩
       have h3 : π.dual g l = l := hg1
       show (twist π (detChar (Fin n) χ)).dual g l = l
-      rw [hdual, hker g hg2, one_smul]
-      exact h3
+      rwa [hdual, hker g hg2, one_smul]
     · intro hl
       apply mem_smoothPart_of_nhds
       refine Filter.mem_of_superset (Filter.inter_mem (IsOpen.mem_nhds hl (by
@@ -113,9 +108,7 @@ theorem nonempty_equiv_contra_twist (hA : GlobalTheory.Published.IrreducibleAdmi
         rfl)) hkn) ?_
       rintro g ⟨hg1, hg2⟩
       have h3 : (twist π (detChar (Fin n) χ)).dual g l = l := hg1
-      rw [hdual, hker g hg2, one_smul] at h3
-      show π.dual g l = l
-      exact h3
+      rwa [hdual, hker g hg2, one_smul] at h3
   have htw : ∀ (g : GL (Fin n) k) (l : smoothPart π.dual),
       ((twist (contra π) (detChar (Fin n) χ') g l : smoothPart π.dual) : Module.Dual ℂ V) =
         ((detChar (Fin n) χ' g : ℂˣ) : ℂ) • ((contra π g l : smoothPart π.dual) : Module.Dual ℂ V) :=
@@ -201,8 +194,7 @@ theorem dualCl_nu : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace 
   rw [dualCl_eq hA, dualCl_eq hA]
   refine Sigma.ext ?_ ?_
   · rfl
-  apply heq_of_eq
-  exact IrrRep.cl_eq_iff.mpr ⟨(e2.symm.trans e3.symm).trans e5.symm⟩
+  exact heq_of_eq (IrrRep.cl_eq_iff.mpr ⟨(e2.symm.trans e3.symm).trans e5.symm⟩)
 
 end GlobalTheory.CompanionTheory.ZcDual
 

@@ -182,9 +182,7 @@ theorem ringHom_of_relations {Ω : Type} [Field Ω] {κ : Type} (r : κ → Ω) 
     exact ⟨P, Subtype.ext rfl⟩
   let g : MvPolynomial κ ℤ →+* ℂ := (MvPolynomial.aeval ρ : MvPolynomial κ ℤ →ₐ[ℤ] ℂ).toRingHom
   have hk : RingHom.ker f ≤ RingHom.ker g := by
-    intro P hP
-    refine h P ?_
-    exact congrArg Subtype.val (show f P = 0 from hP)
+    exact fun P hP => h P (congrArg Subtype.val (show f P = 0 from hP))
   refine ⟨f.liftOfRightInverse _ (Function.rightInverse_surjInv hf) ⟨g, hk⟩, fun j hj => ?_⟩
   have e : f (MvPolynomial.X j) = ⟨r j, hj⟩ := Subtype.ext (MvPolynomial.aeval_X r j)
   rw [← e, RingHom.liftOfRightInverse_comp_apply]
@@ -206,8 +204,7 @@ theorem val_segre {z : Sp ℂ ⟶ X} {v : (Σ k, J k) → ℂ} (hz : genPt ξ �
   obtain ⟨r, hr, hr'⟩ := h2 (c' k)
   have : v ⟨k, c' k⟩ / v ⟨k, c k⟩ = r := by
     rw [hr', mul_div_cancel_right₀ _ (hc k)]
-  rw [this]
-  exact hr
+  rwa [this]
 
 theorem relation_limit (hall : ∀ q : X, genPt ξ ⤳ q) (hξ : IsCptGen ξ) (c : (k : K) → J k)
     {w : (Σ k, J k) → ℂ} (hw : w ∈ closure {w' : (Σ k, J k) → ℂ | ∃ z : Sp ℂ ⟶ X, CoordsAt ξ y z w'})
@@ -261,9 +258,7 @@ theorem coords_of_values (hξ : IsCptGen ξ) {z : Sp ℂ ⟶ X} {w : (Σ k, J k)
   refine ⟨fun k => ⟨c k, isUnit_iff_ne_zero.2 (hc k)⟩, fun k c₁ hu => ?_⟩
   have h1 : w ⟨k, c₁⟩ ≠ 0 := hu.ne_zero
   have hq : w ⟨k, c₁⟩ / w ⟨k, c k⟩ ≠ 0 := div_ne_zero h1 (hc k)
-  have hy1 : y ⟨k, c₁⟩ ≠ 0 := by
-    have h := val_ne_zero hξ (r := Units.mk0 _ hq) (V k c₁)
-    exact (div_ne_zero_iff.1 h).1
+  have hy1 : y ⟨k, c₁⟩ ≠ 0 := (div_ne_zero_iff.1 (val_ne_zero hξ (r := Units.mk0 _ hq) (V k c₁))).1
   have hk := hy k
   have hck := hc k
   refine ⟨hy1, fun i => ⟨w ⟨k, i⟩ / w ⟨k, c₁⟩, ?_, by field_simp⟩⟩

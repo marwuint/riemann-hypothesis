@@ -122,8 +122,7 @@ theorem exists_linear_separation {σ : Type} [Fintype σ] (I : Ideal (MvPolynomi
       constructor
       · rintro ⟨t, rfl⟩
         exact t.2
-      · intro hx
-        exact ⟨⟨x, hx⟩, rfl⟩
+      · exact fun hx => ⟨⟨x, hx⟩, rfl⟩
     rw [this, hspan]
     rfl
   let W : Submodule ℂ (σ → ℂ) := LinearMap.ker M.mulVecLin
@@ -203,8 +202,7 @@ theorem localOrbitChart : LocalOrbitChart.Statement := by
     (han z hz).continuousAt.continuousWithinAt
   refine ⟨D ∩ ReciprocityTheory.AnForm.R.affCoord p ⁻¹' B, hcont.isOpen_inter_preimage hDopen hB, ⟨hp, hwB⟩,
     fun z => π (ReciprocityTheory.AnForm.R.affCoord p z), ?_, ?_, ?_⟩
-  · intro z hz
-    exact (π.analyticAt _).comp (han z hz.1)
+  · exact fun z hz => (π.analyticAt _).comp (han z hz.1)
   · intro z hz c hc
     have hA : ReciprocityTheory.AnForm.R.affCoord p (torusSmul c z) = ReciprocityTheory.AnForm.R.affCoord p z :=
       ReciprocityTheory.AnForm.R.affCoord_eq_of_sameOrbit p ⟨c, hc, rfl⟩

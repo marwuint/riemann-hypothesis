@@ -105,8 +105,7 @@ theorem exists_embedding (p : ℕ) [Fact p.Prime] {C : Type} [Field C] [IsAlgClo
     refine ⟨Ideal.Quotient.mk _ r, ?_⟩
     have h0 : Q.eval r = 0 := by
       apply hv.hom_inj
-      rw [map_zero, ← Polynomial.eval_map_apply]
-      exact hz
+      rwa [map_zero, ← Polynomial.eval_map_apply]
     rw [← hQ, Polynomial.eval_map_apply, h0, map_zero]
   haveI : CharP (R ⧸ mIdeal v R hv) p := by
     rw [CharP.charP_iff_prime_eq_zero Fact.out, ← map_natCast (Ideal.Quotient.mk (mIdeal v R hv)),
@@ -145,8 +144,7 @@ theorem fund_ex : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed
   have hζg : Ideal.Quotient.mk (mIdeal v R hv) ζ = φ (g : F) := by
     rw [← hr]
     symm
-    rw [Ideal.Quotient.eq, mem_mIdeal, map_sub]
-    exact hrz
+    rwa [Ideal.Quotient.eq, mem_mIdeal, map_sub]
   let ζu : Rˣ := Units.ofPowEqOne ζ _ hζ hN
   have hζu : ζu ∈ rootsOfUnity (Fintype.card Fˣ) R := by
     rw [mem_rootsOfUnity]
@@ -192,13 +190,11 @@ theorem fund_ex : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed
     exact hp.ne this)
   rw [← Ideal.Quotient.eq_zero_iff_mem]
   have h0 : Ideal.Quotient.mk (Ideal.span {(p : R)}) μ ^ p ^ (f * k) = 0 := by
-    rw [← map_pow, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]
-    exact hdvd
+    rwa [← map_pow, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]
   have hfix' : ∀ c : F, Ideal.Quotient.mk (Ideal.span {(p : R)}) (σ c) ^ p ^ (f * k) =
       Ideal.Quotient.mk (Ideal.span {(p : R)}) (σ c) := fun c => by rw [← map_pow, hfix]
   rw [hμ, map_sub, map_sub, sub_pow_char_pow, sub_pow_char_pow, hfix', hfix', hfix'] at h0
-  rw [hμ, map_sub, map_sub]
-  exact h0
+  rwa [hμ, map_sub, map_sub]
 
 theorem finrank_eq (p : ℕ) [Fact p.Prime] (F : Type) [Field F] [Fintype F] [Algebra (ZMod p) F]
     (f : ℕ) (hc : Fintype.card F = p ^ f) : Module.finrank (ZMod p) F = f := by
@@ -215,8 +211,7 @@ theorem frob_pow_inj (p : ℕ) [Fact p.Prime] (F : Type) [Field F] [Fintype F] [
   subst hf
   apply (FiniteField.bijective_frobeniusAlgHom_pow (ZMod p) F).1
   ext a
-  simp only [AlgHom.coe_pow, FiniteField.coe_frobeniusAlgHom, pow_iterate, ZMod.card]
-  exact h a
+  simpa only [AlgHom.coe_pow, FiniteField.coe_frobeniusAlgHom, pow_iterate, ZMod.card] using h a
 
 theorem fund_pow_inj (p : ℕ) [Fact p.Prime] {C : Type} [Field C]
     (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C] (hv : v.Integers R)
@@ -300,7 +295,6 @@ theorem moore : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C
   have e' := congrFun e n
   rw [Pi.sub_apply] at e'
   rw [e', Matrix.vecMul, dotProduct]
-  refine Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ ?_
-  exact h' (b i)
+  exact Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ (h' (b i))
 
 end PositivityTheory.HtPt.Rb

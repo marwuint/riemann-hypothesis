@@ -94,8 +94,7 @@ theorem tanMap_mul (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') (a b : epsAt 
     tanMap h y (a * b) = tanMap h y a * tanMap h y b := by
   rw [tanMap_eq, tanMap_eq, tanMap_eq, ← MonObj.comp_mul]
   congr 1
-  apply Over.OverMorphism.ext
-  exact (h.2 _ a b (pushAt h a) (pushAt h b) rfl rfl).symm
+  exact Over.OverMorphism.ext (h.2 _ a b (pushAt h a) (pushAt h b) rfl rfl).symm
 
 theorem left_eq_of_comp (h : IsGrpPullback G' G f φ) {Z : Scheme.{0}} {a b : Z ⟶ G'.left}
     (h₁ : a ≫ φ = b ≫ φ) (h₂ : a ≫ G'.hom = b ≫ G'.hom) : a = b :=
@@ -112,8 +111,7 @@ theorem tanMap_surjective (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') : Func
   have hw : w.left ≫ G.hom = (spMap (algebraMap R (DualNumber R)) ≫ y) ≫ f := by
     rw [Category.assoc]; exact Over.w w
   refine ⟨Over.homMk (h.1.lift _ _ hw) (h.1.lift_snd _ _ hw), ?_⟩
-  apply Over.OverMorphism.ext
-  exact h.1.lift_fst _ _ hw
+  exact Over.OverMorphism.ext (h.1.lift_fst _ _ hw)
 
 def tanEquiv (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') : (epsAt y ⟶ G') ≃* (epsAt (y ≫ f) ⟶ G) :=
   { Equiv.ofBijective (tanMap h y) ⟨tanMap_injective h y, tanMap_surjective h y⟩ with
@@ -174,13 +172,11 @@ theorem isComb_iff (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') {n : ℕ} (c 
     refine ⟨u', fun i => (eps_left_iff h y _ _ _).1 (hu i), (tanEquiv h y).injective ?_⟩
     have := map_list_prod (tanEquiv h y) (List.ofFn u')
     rw [List.map_ofFn] at this
-    rw [this]
-    exact hw
+    rwa [this]
   · rintro ⟨u, hu, rfl⟩
     refine ⟨fun i => tanMap h y (u i), fun i => (eps_left_iff h y _ _ _).2 (hu i), ?_⟩
     have := map_list_prod (tanEquiv h y) (List.ofFn u)
-    rw [List.map_ofFn] at this
-    exact this
+    rwa [List.map_ofFn] at this
 
 variable {O : Type} [CommRing O]
 
@@ -249,7 +245,6 @@ theorem exists_eigFrame_univ : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
   refine ⟨fun i => tanMap hp y (w i), fun i => ⟨(w i).left, Over.w (w i), rfl, ?_⟩,
     (isEigFrame_iff hp Y.oF.t.act Xo.univ.t.act Y.m0.act y _ w).2 hfr⟩
   have := congrArg (fun z => z.left) (hw i)
-  rw [dualMap_eq_pj]
-  exact this
+  rwa [dualMap_eq_pj]
 
 end GlobalTheory.CompanionTheory.Ar.LocFn

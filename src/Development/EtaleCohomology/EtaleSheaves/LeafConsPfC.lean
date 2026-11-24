@@ -119,11 +119,9 @@ theorem rpl_bij (q : ℕ) (i : ℤ) {U E U' E' : Scheme.{0}} (f : U ⟶ E) (f' :
     rw [IsIso.eq_inv_comp, ← Category.assoc, ← c, Category.assoc, IsIso.hom_inv_id, Category.comp_id]
   refine Function.bijective_iff_has_inverse.2 ⟨rpl q i f' f (inv u) (inv e) c2 n, fun y => ?_, fun y => ?_⟩
   · rw [← rpl_comp q i f f' f u e (inv u) (inv e) c c2 (by simp), ]
-    simp only [IsIso.inv_hom_id]
-    exact rpl_id q i f _ n y
+    simpa only [IsIso.inv_hom_id] using rpl_id q i f _ n y
   · rw [← rpl_comp q i f' f f' (inv u) (inv e) u e c2 c (by simp)]
-    simp only [IsIso.hom_inv_id]
-    exact rpl_id q i f' _ n y
+    simpa only [IsIso.hom_inv_id] using rpl_id q i f' _ n y
 
 end LateralTheory.E.LeafConsPfA
 end -- clump:auto
@@ -199,10 +197,8 @@ theorem LeafGlob_pf : LateralTheory.E.LeafConsPf.LeafGlob := by
   intro q _ i B W Y0 Y1 Y2 ι _ p g1 g2 K0 K1 K2 L f g ℓ l0 l1 l2 lL r0 r1 r2 rL mf mg mℓ
   refine ⟨fun n y => l0 (top B) n (TT q i p ι n y), fun n y => l2 (top B) n (TT q i (g2 ≫ g1 ≫ p) ι n y),
     fun n c => lL (top B) n (TL q i ι n c), ?_, ?_, ?_, ?_⟩
-  · intro n
-    exact (r2.1 _ n).1.comp (rpl_bij _ _ _ _ _ _ _ _).1
-  · intro n
-    exact (rL.1 _ n).2.comp (rpl_bij _ _ _ _ _ _ _ _).2
+  · exact fun n => (r2.1 _ n).1.comp (rpl_bij _ _ _ _ _ _ _ _).1
+  · exact fun n => (rL.1 _ n).2.comp (rpl_bij _ _ _ _ _ _ _ _).2
   · intro n y
     have h1 := mf (top B) n (TT q i p ι n y)
     have h2 := mg (top B) n (rpl q i (prU p ι (top B)) (prU (g1 ≫ p) ι (top B)) (mW p g1 ι (top B)) (mY p g1 (top B))

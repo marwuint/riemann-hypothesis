@@ -512,8 +512,7 @@ theorem map_translate (νN : Measure N) [νN.IsHaarMeasure] (νM : Measure M) [�
     rw [h1, h2] at h3
     show map (Prod.map _ _) _ = _
     rw [← h3, prod_smul_left]
-  · intro x
-    exact modInv_mul N M m x.2
+  · exact fun x => modInv_mul N M m x.2
 
 end
 
@@ -522,8 +521,7 @@ theorem mulMap_injective {Q : Type} [Group Q] (N M : Subgroup Q) (hinf : N ⊓ M
   rintro ⟨u, m⟩ ⟨u', m'⟩ h
   have h' : (u : Q) * m = u' * m' := h
   have h1 : (u' : Q)⁻¹ * u = m' * (m : Q)⁻¹ := by
-    rw [inv_mul_eq_iff_eq_mul, ← mul_assoc, eq_mul_inv_iff_mul_eq]
-    exact h'
+    rwa [inv_mul_eq_iff_eq_mul, ← mul_assoc, eq_mul_inv_iff_mul_eq]
   have h2 : (u' : Q)⁻¹ * u ∈ N ⊓ M :=
     ⟨N.mul_mem (N.inv_mem u'.2) u.2, by rw [h1]; exact M.mul_mem m'.2 (M.inv_mem m.2)⟩
   rw [hinf, Subgroup.mem_bot] at h2
@@ -737,8 +735,7 @@ theorem normaliser_proj {Q T : Subgroup G} (hTQ : T ≤ Q) (N M : Subgroup Q) [h
       group
     rw [e, hpr]
     rfl
-  simp only [key]
-  exact hρ.2 _
+  simpa only [key] using hρ.2 _
 
 end Normalisers
 
@@ -1030,8 +1027,7 @@ theorem quotVanish : QuotVanish := by
     have e : ∀ X, F ((((radHomeo hW X : (uniRad hW).subgroupOf (flagStab W₁ W₂)) : flagStab W₁ W₂) :
         GL (Fin n) ℂ) * (q * k)) = F (uOf hW X * q) := fun X => by
       rw [radHomeo_coe, ← mul_assoc, hFK _ k hk]
-    simp only [e]
-    exact h0 q hq
+    simpa only [e] using h0 q hq
 
 end GlobalTheory.CompanionTheory.QuotVan
 end
@@ -1080,8 +1076,7 @@ theorem nilChange_of_flag : NilChange := by
     obtain ⟨Φ, c, _, hΦ, hmap⟩ := exists_homeo_map_eq_smul ν (nilrad2 W₁ W₂) L hLF Q hQc hQF hQinv
     refine ⟨c, ?_⟩
     have e : (fun X => L X + Q X) = Φ := funext fun X => (hΦ X).symm
-    rw [e]
-    exact hmap
+    rwa [e]
 
 end GlobalTheory.CompanionTheory.LocVan
 end -- clump:auto
@@ -1103,8 +1098,7 @@ theorem quotVanishL : GlobalTheory.CompanionTheory.LocVan.QuotVanish := by
   haveI : BorelSpace (nilrad W₁ W₂) := ⟨rfl⟩
   haveI : LocallyCompactSpace (nilrad W₁ W₂) := (nilrad W₁ W₂).closed_of_finiteDimensional.isClosedEmbedding_subtypeVal.locallyCompactSpace
   refine GlobalTheory.CompanionTheory.QuotVan.quotVanish n μ d μd W₁ W₂ hW Measure.addHaar F hs h1 h2 hF hT hK fun q _ => ?_
-  simp only [GlobalTheory.CompanionTheory.QuotVan.uOf_eq]
-  exact h0 _ q
+  simpa only [GlobalTheory.CompanionTheory.QuotVan.uOf_eq] using h0 _ q
 
 theorem locVanish : LocVanish := GlobalTheory.CompanionTheory.LocVan.locVanish_of GlobalTheory.CompanionTheory.LocVan.nilChange_of_flag quotVanishL
 

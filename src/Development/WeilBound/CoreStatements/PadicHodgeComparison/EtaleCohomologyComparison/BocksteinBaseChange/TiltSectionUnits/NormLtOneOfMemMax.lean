@@ -143,8 +143,7 @@ abbrev algZ : Algebra ℤ_[l] (OK l K) := (zToOK (K := K)).toAlgebra
 
 attribute [local instance] algZ
 
-theorem towZ : IsScalarTower ℤ_[l] (OK l K) K := by
-  exact IsScalarTower.of_algebraMap_eq fun _ => rfl
+theorem towZ : IsScalarTower ℤ_[l] (OK l K) K := IsScalarTower.of_algebraMap_eq fun _ => rfl
 
 attribute [local instance] towZ
 
@@ -167,8 +166,7 @@ theorem locZ : IsLocalHom (algebraMap ℤ_[l] (OK l K)) := by
 
 attribute [local instance] locZ
 
-theorem finZ : Module.Finite ℤ_[l] (OK l K) := by
-  exact IsIntegralClosure.finite ℤ_[l] ℚ_[l] K (OK l K)
+theorem finZ : Module.Finite ℤ_[l] (OK l K) := IsIntegralClosure.finite ℤ_[l] ℚ_[l] K (OK l K)
 
 attribute [local instance] finZ
 

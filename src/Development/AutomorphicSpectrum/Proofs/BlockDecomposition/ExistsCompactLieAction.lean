@@ -185,8 +185,7 @@ theorem hasDeriv_dA (hρ : Continuous ρ) (X : (Mn n)) (hX : Xᴴ = -X) :
   have : CompleteSpace H := FiniteDimensional.complete ℂ H
   have hd := hasDerivAt_exp_smul_const (𝕂 := ℝ) (dA ρ X hX) (0 : ℝ)
   rw [zero_smul, NormedSpace.exp_zero, one_mul] at hd
-  rw [funext (rho_exp hρ X hX)]
-  exact hd
+  rwa [funext (rho_exp hρ X hX)]
 
 theorem dA_smul (hρ : Continuous ρ) {X : (Mn n)} (hX : Xᴴ = -X) (s : ℝ) (h : ((s : ℂ) • X)ᴴ = -((s : ℂ) • X)) :
     dA ρ ((s : ℂ) • X) h = s • dA ρ X hX := by
@@ -292,8 +291,7 @@ theorem ring_conj {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [Comp
   have hb := hasDerivAt_exp_smul_const (𝕂 := ℝ) (-A) (0 : ℝ)
   have h := (ha.mul_const B).mul hb
   simp only [zero_smul, NormedSpace.exp_zero, one_mul, mul_one, mul_neg] at h
-  rw [← sub_eq_add_neg] at h
-  exact h
+  rwa [← sub_eq_add_neg] at h
 
 theorem lin_conj {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (L : (Mn n) →ₗ[ℝ] E) (X Y : (Mn n)) :
     HasDerivAt (fun s : ℝ => L (NormedSpace.exp ((s : ℂ) • X) * Y * NormedSpace.exp ((s : ℂ) • (-X))))
@@ -434,7 +432,6 @@ theorem derivative_of_rep : ∀ {n : ℕ} (H : Type) [NormedAddCommGroup H] [Inn
     have e : (∑ a, ∑ b, X a b • R (gL hρ (Matrix.single a b 1)) w) = dA ρ X hX w := by
       rw [← gL_skew hρ hX, hs]
       simp [R]
-    simp only [e]
-    exact hasDeriv_apply hρ X hX w
+    simpa only [e] using hasDeriv_apply hρ X hX w
 
 end GlobalTheory.CompanionTheory.RealCount.DerivRep

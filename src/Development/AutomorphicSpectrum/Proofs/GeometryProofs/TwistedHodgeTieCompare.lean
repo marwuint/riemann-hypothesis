@@ -426,8 +426,7 @@ theorem eig_iff (Y : Model Xo c β) (Y' : Model Xo c β') (g : HostAut H) (Φ : 
       rw [← Category.assoc, e2, Category.assoc]
     rw [e0, e1, Category.assoc (spMap (dualMap ψ.toRingHom))]
     constructor
-    · intro h
-      exact sp_dual_cancel ψ.symm.toRingHom ψ.toRingHom (fun a => by simp) h
+    · exact fun h => sp_dual_cancel ψ.symm.toRingHom ψ.toRingHom (fun a => by simp) h
     · intro h
       rw [h]
   constructor
@@ -479,8 +478,7 @@ theorem flag_eig (A : HodgeCpt Y S y) (Fl : A.Flag) (c₀ : c.F →+* A.Ω₀) (
       · intro h
         apply A.M.inj
         apply Over.OverMorphism.ext
-        rw [ha, A.M.smul, Over.comp_left]
-        exact h
+        rwa [ha, A.M.smul, Over.comp_left]
     have hq := Fl.j_pt e
     have s2 := cart_eig A.m.cart.1 (A.t.act.act a) _ (A.m.act a) (A.M.pt (Fl.j e)).left
       (spMap (epsMul (A.emb s a))) (eps_base _ _ A.ξ (Over.w (A.M.pt (Fl.j e))) _)
@@ -684,8 +682,7 @@ theorem general_of_indep {F : Type} [Field F] [Algebra Ω F] (u : ∀ σ, Matrix
     have e : (⇑(MvPolynomial.aeval (R := Ω) (ent u)).toRingHom ∘ ⇑MvPolynomial.C) = algebraMap Ω F := by
       funext a
       simp
-    rw [e] at this
-    exact this
+    rwa [e] at this
   intro h0
   rw [key F u hu, map_eq_zero_iff _ hi] at h0
   exact hw' σ k (by rw [key _ w hw, h0, map_zero])
@@ -1222,8 +1219,7 @@ theorem pull_both {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
     _root_.GlobalTheory.CompanionTheory.Ar.HcptPullK.hodgeCpt_pull E H D l Xo c O β Y S Ω Ω' i K K' J J' y y' A x Z ξ' h hx hdisc hvb hall htie hnorm hd
   have hdom : GlobalTheory.CompanionTheory.Ar.Dominates A'.ξ A.ξ (e.hom ≫ h) i := by
     show A'.ξ ≫ e.hom ≫ h = _
-    rw [← Category.assoc, h1]
-    exact hd
+    rwa [← Category.assoc, h1]
   have hf : A'.f = (e.hom ≫ h) ≫ A.f := by rw [h2, Category.assoc]
   obtain ⟨Fl', hb', -, ⟨ψ', θ', q1, -, q3, q4⟩, q5⟩ :=
     GlobalTheory.CompanionTheory.Ar.FlagPull.flag_pull E H D l Xo c O β Y S Ω Ω' i K K' J J' y y' A A' (e.hom ≫ h) j m κ v Fl hb hy hdom hf h3
@@ -1397,17 +1393,14 @@ theorem pair_iso : HodgeComparisonCompatibility → ThetaUnifAV → ∀ (E : Typ
     exact (PositivityTheory.UnitarySelfGeneration.t_ideal M'.K M'.ι M'.Ω Ω₃ i₂ M'.y).1
   · rw [hr₁, hf₁]
     exact hn₁.ne'
-  · rw [hr₁, hr₂, hf₁, hf₂]
-    exact hn
+  · rwa [hr₁, hr₂, hf₁, hf₂]
   · intro r L L' hL hL'
     have hdeg : (Fl₁.rootLat (r.1, r.2)).IsDegOn Set.univ y L.a (i₁ (T.e r)) := by
       have := p10 _ _ T.roots r
-      rw [hL.1, T.sing_deg]
-      exact this
+      rwa [hL.1, T.sing_deg]
     have hdeg' : (Fl₂.rootLat (π₀ r.1, r.2)).IsDegOn Set.univ y L'.a (i₂ (T'.e (π₀ r.1, r.2))) := by
       have := q10 _ _ T'.roots (π₀ r.1, r.2)
-      rw [hL'.1, T'.sing_deg]
-      exact this
+      rwa [hL'.1, T'.sing_deg]
     have hH := p11 r (T.e r) (T.sing r) L (T.hodge r) hL
     have hH' := q11 (π₀ r.1, r.2) (T'.e (π₀ r.1, r.2)) (T'.sing (π₀ r.1, r.2)) L' (T'.hodge _) hL'
     obtain ⟨f, f', hiso, hdef⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.RootIso.rootLine_iso E H D l Xo c O O β β Y Y S Ω₃ K ι y A₁ A₂ (e₂ ≪≫ e₁.symm) φ Fl₁ Fl₂ r.1 (π₀ r.1) r.2

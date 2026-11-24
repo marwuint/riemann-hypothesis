@@ -149,8 +149,7 @@ theorem le_of_forall_exists_affineOpen {Y : Scheme.{u}} {A B : Y.IdealSheafData}
   refine of_affine_open_cover (P := fun W : Y.affineOpens => A.ideal W ≤ B.ideal W)
     (fun y : ↥Y => (h y).choose) ?_ U ?_ ?_ ?_
   · rw [eq_top_iff]
-    intro y _
-    exact TopologicalSpace.Opens.mem_iSup.mpr ⟨y, (h y).choose_spec.1⟩
+    exact fun y _ => TopologicalSpace.Opens.mem_iSup.mpr ⟨y, (h y).choose_spec.1⟩
   · intro W f hW
     rw [← A.map_ideal_basicOpen W f, ← B.map_ideal_basicOpen W f]
     exact Ideal.map_mono hW
@@ -165,8 +164,7 @@ theorem le_of_forall_exists_affineOpen {Y : Scheme.{u}} {A B : Y.IdealSheafData}
       exact Ideal.mem_map_of_mem _ hxA
     obtain ⟨n, hn⟩ := exists_pow_mul_mem_of_map_mem_basicOpen W f (B.ideal W) x hmem
     exact ⟨n, by simpa [smul_eq_mul] using hn⟩
-  · intro y
-    exact (h y).choose_spec.2
+  · exact fun y => (h y).choose_spec.2
 
 theorem derivIdealSheaf_pow_succ_mul_le (k : Type u) [Field k] [CharZero k] {Y : Scheme.{u}}
     (q : Y ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth q]
@@ -235,8 +233,7 @@ theorem exists_affineOpen_comap_derivIdealSheafIterate_eq (k : Type u) [Field k]
       ((V : X₁.Opens).ι ≫ (π ≫ p)) hassoc j ((I.comap π).comap (V : X₁.Opens).ι)] at h1
   have key : ((derivIdealSheafIterate k p j I).comap π).comap (V : X₁.Opens).ι
       = (derivIdealSheafIterate k (π ≫ p) j (I.comap π)).comap (V : X₁.Opens).ι := by
-    rw [← hcomp (derivIdealSheafIterate k p j I), ← h1]
-    exact h2
+    rwa [← hcomp (derivIdealSheafIterate k p j I), ← h1]
   exact ideal_eq_of_comap_ι_eq V key
 
 theorem comap_derivIdealSheafIterate_le_exceptionalIdeal_pow_mul (k : Type u) [Field k] [CharZero k]

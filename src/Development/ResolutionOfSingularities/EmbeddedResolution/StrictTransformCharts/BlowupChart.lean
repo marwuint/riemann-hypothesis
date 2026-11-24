@@ -72,8 +72,7 @@ private theorem exists_opens_isPullback_of_opens {X₁ M : Scheme.{u}} (V : X₁
   have hdle : Scheme.Hom.opensRange ((q ⁻¹ᵁ W).ι ≫ V.ι) ≤ V := by
     rintro x ⟨y, rfl⟩
     have h1 : V.ι.base ((q ⁻¹ᵁ W).ι.base y) ∈ Set.range V.ι.base := ⟨_, rfl⟩
-    rw [Scheme.Opens.range_ι] at h1
-    exact h1
+    rwa [Scheme.Opens.range_ι] at h1
   obtain ⟨e, he⟩ : ∃ e : (Scheme.Hom.opensRange ((q ⁻¹ᵁ W).ι ≫ V.ι)).toScheme ≅
       (q ⁻¹ᵁ W).toScheme,
       e.hom ≫ ((q ⁻¹ᵁ W).ι ≫ V.ι) = (Scheme.Hom.opensRange ((q ⁻¹ᵁ W).ι ≫ V.ι)).ι :=
@@ -86,10 +85,8 @@ private theorem exists_opens_isPullback_of_opens {X₁ M : Scheme.{u}} (V : X₁
       IsPullback.of_horiz_isIso ⟨by simp⟩
     have h2 := h1.paste_horiz (isPullback_morphismRestrict q W)
     rwa [Category.id_comp] at h2
-  · rw [Category.assoc]
-    exact he
-  · intro y hy
-    exact ⟨⟨y, hy⟩, rfl⟩
+  · rwa [Category.assoc]
+  · exact fun y hy => ⟨⟨y, hy⟩, rfl⟩
 
 theorem exists_blowupChart_family_isPullback_covering {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} (π : X₁ ⟶ X) {U : X.Opens} {m : ℕ}
@@ -161,8 +158,7 @@ theorem exists_blowupChart_family_isPullback_covering {X X₁ : Scheme.{u}} {k :
   refine ⟨F, hF1, ?_⟩
   intro x hx
   have hx' : x ∈ Set.range (π ⁻¹ᵁ U).ι.base := by
-    rw [Scheme.Opens.range_ι]
-    exact hx
+    rwa [Scheme.Opens.range_ι]
   obtain ⟨y, rfl⟩ := hx'
   have hy : q.base y ∈
       (⨆ i : ↥S, Scheme.Hom.opensRange (affineSpaceCoordBlowupChart k m S i.1 i.2)) := by

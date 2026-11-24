@@ -110,23 +110,20 @@ theorem map_trL {A : Submodule R (X → C)} {B : Submodule R (N → C)}
   constructor
   · rintro ⟨f, hf, rfl⟩
     exact (h f).1 hf
-  · intro hg
-    exact ⟨g ∘ e.symm, (h _).2 (by rwa [comp_symm]), comp_symm e g⟩
+  · exact fun hg => ⟨g ∘ e.symm, (h _).2 (by rwa [comp_symm]), comp_symm e g⟩
 
 theorem iff_of_map {A : Submodule R (X → C)} {B : Submodule R (N → C)}
     (h : A.map (trL R C e : (X → C) →ₗ[R] (N → C)) = B) (f : X → C) : f ∈ A ↔ f ∘ e ∈ B := by
   subst h
   constructor
-  · intro hf
-    exact ⟨f, hf, rfl⟩
+  · exact fun hf => ⟨f, hf, rfl⟩
   · rintro ⟨f', hf', h'⟩
     have : f' = f := (trL R C e).injective h'
     rwa [← this]
 
 theorem intFun_iff (f : X → C) : f ∈ intFun (C := C) R X ↔ f ∘ e ∈ intFun (C := C) R N := by
   constructor
-  · intro h x
-    exact h (e x)
+  · exact fun h x => h (e x)
   · intro h x
     obtain ⟨r, hr⟩ := h (e.symm x)
     exact ⟨r, by simpa using hr⟩
@@ -145,8 +142,7 @@ theorem linFun_iff (p : ℕ) (f : X → C) :
 theorem pFun_iff (p : ℕ) (f : X → C) : f ∈ pFun (C := C) R p X ↔ f ∘ e ∈ pFun (C := C) R p N := by
   simp only [pFun, Submodule.mem_pi, Set.mem_univ, true_imp_iff]
   constructor
-  · intro h x
-    exact h (e x)
+  · exact fun h x => h (e x)
   · intro h x
     simpa using h (e.symm x)
 

@@ -107,12 +107,9 @@ theorem piTensor_rep_isIrreducible (hA : GlobalTheory.Published.IrreducibleAdmis
           ext A
           show (∀ i j, A i j ∈ O) ↔ ∀ i ∈ (Set.univ : Set (Fin N)), ∀ j ∈ (Set.univ : Set (Fin N)), A i j ∈ (O : Set k)
           constructor
-          · intro hA i _ j _
-            exact hA i j
-          · intro hA i j
-            exact hA i (Set.mem_univ i) j (Set.mem_univ j)
-        rw [hSe]
-        exact h
+          · exact fun hA i _ j _ => hA i j
+          · exact fun hA i j => hA i (Set.mem_univ i) j (Set.mem_univ j)
+        rwa [hSe]
       have hsub : Units.embedProduct (Matrix (Fin N) (Fin N) k) '' (K : Set (GL (Fin N) k)) =
           (S ×ˢ (MulOpposite.op '' S)) ∩
             {p | p.1 * MulOpposite.unop p.2 = 1 ∧ MulOpposite.unop p.2 * p.1 = 1} := by
@@ -123,8 +120,7 @@ theorem piTensor_rep_isIrreducible (hA : GlobalTheory.Published.IrreducibleAdmis
         · rintro ⟨⟨hA, B, hB, hBp⟩, h1, h2⟩
           refine ⟨⟨p.1, MulOpposite.unop p.2, h1, h2⟩, ⟨hA, ?_⟩, rfl⟩
           show ∀ i j, (MulOpposite.unop p.2) i j ∈ O
-          rw [← hBp]
-          exact hB
+          rwa [← hBp]
       rw [hsub]
       refine (hS.prod (hS.image MulOpposite.continuous_op)).inter_right ?_
       exact (isClosed_eq (continuous_fst.mul (MulOpposite.continuous_unop.comp continuous_snd))
@@ -228,7 +224,6 @@ theorem one_le_jm : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace 
   let f' : τ.IntertwiningMap (parInd (stdBlocks (fun a => (x a).1) hd) (piTensor fun a => (x a).rep)) := f
   obtain ⟨y, hy⟩ := frobMap_ne_zero _ f' hf
   have hs := surjective_of_ne_zero (piTensor_rep_isIrreducible hA x) (frobMap _ f') ⟨y, hy⟩
-  have hq := jhMult_ne_zero_iff.2 (IsSubquotient.of_surjective _ hs)
-  exact Order.one_le_iff_ne_zero.2 hq
+  exact Order.one_le_iff_ne_zero.2 (jhMult_ne_zero_iff.2 (IsSubquotient.of_surjective _ hs))
 
 end GlobalTheory.CompanionTheory.FrobJm

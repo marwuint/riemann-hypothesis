@@ -76,8 +76,7 @@ theorem map_derivation_eq_of_map_eq (f : S →ₐ[k] T) (D : Derivation k S S)
   have hD' := hD _ hker
   rw [RingHom.mem_ker, map_sub D s s'] at hD'
   have h2 : f (D s) - f (D s') = 0 := by
-    rw [← map_sub f (D s) (D s')]
-    exact hD'
+    rwa [← map_sub f (D s) (D s')]
   exact eq_of_sub_eq_zero h2
 
 noncomputable def derivationOfSurjectiveFun (f : S →ₐ[k] T) (hf : Function.Surjective f)
@@ -115,8 +114,7 @@ theorem derivationOfSurjectiveFun_smul (f : S →ₐ[k] T) (hf : Function.Surjec
   have h3 : f (c • D a) = c • f (D a) := map_smul f c (D a)
   rw [← h1]
   simp only [derivationOfSurjectiveFun_apply f hf D hD]
-  rw [h2]
-  exact h3
+  rwa [h2]
 
 noncomputable def derivationOfSurjectiveLinearMap (f : S →ₐ[k] T) (hf : Function.Surjective f)
     (D : Derivation k S S)
@@ -130,8 +128,7 @@ theorem derivationOfSurjectiveFun_one (f : S →ₐ[k] T) (hf : Function.Surject
     (hD : ∀ s ∈ RingHom.ker f.toRingHom, D s ∈ RingHom.ker f.toRingHom) :
     derivationOfSurjectiveFun f hf D 1 = 0 := by
   have h : (1 : T) = f 1 := (map_one f).symm
-  rw [h]
-  rw [derivationOfSurjectiveFun_apply f hf D hD, D.map_one_eq_zero, map_zero]
+  rw [h, derivationOfSurjectiveFun_apply f hf D hD, D.map_one_eq_zero, map_zero]
 
 theorem derivationOfSurjectiveFun_mul (f : S →ₐ[k] T) (hf : Function.Surjective f)
     (D : Derivation k S S)
@@ -192,8 +189,7 @@ theorem map_logDerivIdeal_ker_le_derivIdeal_map (f : S →ₐ[k] T)
     have h2 := derivation_apply_mem_derivIdeal k (Ideal.map f.toRingHom J)
       (derivationOfSurjective f hf D hD') hmem
     rw [derivationOfSurjective_apply] at h2
-    rw [Ideal.mem_comap]
-    exact h2
+    rwa [Ideal.mem_comap]
 
 theorem map_logDerivIdealIterate_ker_le_derivIdealIterate_map (f : S →ₐ[k] T)
     (hf : Function.Surjective f) (r : ℕ) (J : Ideal S) :
@@ -254,8 +250,7 @@ private theorem comap_le_of_map_ideal_le {S X : Scheme.{u}} (ι : S ⟶ X) [IsAf
   have hle : L ≤ Scheme.Hom.ker (D.subschemeι ≫ ι) := by
     unfold Scheme.Hom.ker
     exact Scheme.IdealSheafData.le_ofIdeals_iff.mpr key
-  rw [← Scheme.IdealSheafData.le_map_iff_comap_le]
-  exact hle
+  rwa [← Scheme.IdealSheafData.le_map_iff_comap_le]
 
 private theorem derivIdealIterate_mono_of_le (k : Type u) [CommRing k] {T : Type u} [CommRing T]
     [Algebra k T] (r : ℕ) {I J : Ideal T} (h : I ≤ J) :
@@ -389,8 +384,7 @@ theorem base_mem_orderAtLeastLocus_of_mem_comap
     have hstep := support_derivIdealSheafIterate_eq_orderAtLeastLocus k (ι ≫ p) ((K l).comap ι) hml
     rw [← hstep] at hy2
     have hexp : m - 1 - l = m - l - 1 := by omega
-    rw [hexp]
-    exact hy2
+    rwa [hexp]
   rw [← support_derivIdealSheafIterate_eq_orderAtLeastLocus k p A hm]
   exact Scheme.IdealSheafData.support_antitone hdom hsupp
 

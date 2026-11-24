@@ -109,8 +109,7 @@ private theorem mem_basicOpen_iff_notMem_primeIdealOf {X : Scheme.{u}} {U : X.Op
         ∈ AlgebraicGeometry.IsAffineOpen.fromSpec hU ⁻¹ᵁ X.basicOpen f := by
       show (AlgebraicGeometry.IsAffineOpen.fromSpec hU).base
         (AlgebraicGeometry.IsAffineOpen.primeIdealOf hU x) ∈ X.basicOpen f
-      rw [h2]
-      exact hx
+      rwa [h2]
     rw [h1] at hmem
     exact (PrimeSpectrum.mem_basicOpen f _).mp hmem
   · intro hx
@@ -119,8 +118,7 @@ private theorem mem_basicOpen_iff_notMem_primeIdealOf {X : Scheme.{u}} {U : X.Op
     rw [← h1] at hmem
     have h3 : (AlgebraicGeometry.IsAffineOpen.fromSpec hU).base
         (AlgebraicGeometry.IsAffineOpen.primeIdealOf hU x) ∈ X.basicOpen f := hmem
-    rw [h2] at h3
-    exact h3
+    rwa [h2] at h3
 
 private theorem mem_support_of_ideal_eq_span_singleton {X : Scheme.{u}} (I : X.IdealSheafData) {x : ↥X}
     {U : X.Opens} (hU : IsAffineOpen U) (hx : x ∈ U) (g : Γ(X, U))
@@ -190,8 +188,7 @@ private theorem complInv_eq_some_iff (m : ℕ) (S : Finset (Fin m)) {t : Fin m}
     · rw [complInv_def, dite_eq_right ht] at h
       have hj : Classical.choose (exists_complOrderEmb_eq m S ht) = j := Option.some.inj h
       have hspec := Classical.choose_spec (exists_complOrderEmb_eq m S ht)
-      rw [hj] at hspec
-      exact hspec
+      rwa [hj] at hspec
   · intro h
     have ht : t ∉ S := by
       rw [← h]
@@ -422,8 +419,7 @@ theorem exists_etaleChart_on_open_of_hasStrictNormalCrossingsWith (q : W ⟶ Spe
       (U₀.2.preimage hcont) ⟨y, mem_irreducibleComponent, ?_⟩ hcont
       (E[i]'hi).support.2 ?_
     · show (T.ι ≫ Z.subschemeι).base y ∈ (U₀ : Set ↥W)
-      rw [hbase y]
-      exact hwU₀
+      rwa [hbase y]
     · rintro _ ⟨z, ⟨-, hz⟩, rfl⟩
       have hzU₀ : (T.ι ≫ Z.subschemeι).base z ∈ U₀ := hz
       have hzZ : (T.ι ≫ Z.subschemeι).base z ∈ Z.support := by
@@ -450,8 +446,7 @@ theorem exists_etaleChart_on_open_of_hasStrictNormalCrossingsWith (q : W ⟶ Spe
           (T.ι ⁻¹ᵁ (Z.subschemeι ⁻¹ᵁ U₀)) = ⊤ :=
         restrictIdeal_comap_preimage_eq_top T.ι _ _ h2
       have h4 := restrictIdeal_eq_top_of_le _ hU₁le h3
-      rw [Scheme.IdealSheafData.comap_comp]
-      exact h4
+      rwa [Scheme.IdealSheafData.comap_comp]
     · intro j hj
       have hj' : (a i).bind (complOrderEmbInv m S) = some j := hj
       have ha : a i = some (complOrderEmb m S j) := eq_some_complOrderEmb_of_bind_complInv_eq_some m S (a i) j hj'
@@ -463,8 +458,7 @@ theorem exists_etaleChart_on_open_of_hasStrictNormalCrossingsWith (q : W ⟶ Spe
           (T.ι ⁻¹ᵁ (Z.subschemeι ⁻¹ᵁ U₀)) = d'.coordIdeal {j} :=
         restrictIdeal_comap_eq_coordIdeal_pullbackOpenImmersion d T.ι _ _ h2
       have h4 := restrictIdeal_eq_restrict_coordIdeal_of_le hU₁le d' _ _ h3
-      rw [Scheme.IdealSheafData.comap_comp]
-      exact h4
+      rwa [Scheme.IdealSheafData.comap_comp]
   · intro i i' hi hi' j hj hj'
     have hja : (a i).bind (complOrderEmbInv m S) = some j := hj
     have hjb : (a i').bind (complOrderEmbInv m S) = some j := hj'
@@ -501,8 +495,7 @@ theorem exists_etaleChart_coord_mem_primeIdealOf_on_clopen (q : W ⟶ Spec (Comm
     intro i hi
     have hi' : i < E.length := by rwa [hlen] at hi
     obtain ⟨hA, hB⟩ := hdesc i hi'
-    simp only [List.getElem_map]
-    exact ⟨hA, hB⟩
+    simpa only [List.getElem_map] using ⟨hA, hB⟩
   have hinj' : ∀ i i', i < (E.map fun D : W.IdealSheafData =>
       D.comap (T.ι ≫ Z.subschemeι)).length →
       i' < (E.map fun D : W.IdealSheafData => D.comap (T.ι ≫ Z.subschemeι)).length →

@@ -165,41 +165,30 @@ theorem stepIdentity (r l : ℕ) (i : Fin r) (v : (Fin r → ℕ) → ℚ) (g : 
     ∑' m, (v m : ℂ) * g m = ∑' m, (Bop l i v m : ℂ) * g m - ∑' m, (Aop l i v m : ℂ) * fd i g m := by
   obtain ⟨C, hC⟩ := hv
   have hC0 : 0 ≤ C := le_trans (abs_nonneg _) (hC 0)
-  have hlC : 0 ≤ (l : ℝ) * C := mul_nonneg (Nat.cast_nonneg _) hC0
   have hPS := partialSum_bound hl hgood hC0 hC
   have hMP : ∀ m, |(meanP l i v m : ℝ)| ≤ l * C := abs_partialSumMean_le hl hPS
   set δ : Fin r → ℕ := Pi.single i 1 with hδ
-  have hsub : ∀ a b : ℝ, |a - b| ≤ |a| + |b| := fun a b => by
-    simpa only [Real.norm_eq_abs] using norm_sub_le a b
   have hBb : ∀ m, |(Bop l i v m : ℝ)| ≤ l * C := by
     intro m
     unfold Bop
     split_ifs
     · exact hMP m
     · rw [Rat.cast_zero, abs_zero]
-      exact hlC
+      exact mul_nonneg (Nat.cast_nonneg _) hC0
   have hAb : ∀ m, |(Aop l i v m : ℝ)| ≤ 2 * (l * C) := by
     intro m
     simp only [Aop, Rat.cast_sub]
-    calc _ ≤ |(partialSum i v (m + Pi.single i 1) : ℝ)| + |(meanP l i v m : ℝ)| := hsub _ _
-      _ ≤ l * C + l * C := add_le_add (hPS _) (hMP m)
-      _ = _ := by ring
+    exact (abs_sub _ _).trans (by linarith [hPS (m + Pi.single i 1), hMP m])
   let T : (Fin r → ℕ) → ℂ := fun m =>
     ((partialSum i v m - meanP l i v m + Bop l i v m : ℚ) : ℂ) * g m
   have hTb : ∀ m, |((partialSum i v m - meanP l i v m + Bop l i v m : ℚ) : ℝ)| ≤ 3 * (l * C) := by
     intro m
     push_cast
-    calc _ ≤ |(partialSum i v m : ℝ) - meanP l i v m| + |(Bop l i v m : ℝ)| := abs_add_le _ _
-      _ ≤ (|(partialSum i v m : ℝ)| + |(meanP l i v m : ℝ)|) + |(Bop l i v m : ℝ)| :=
-          add_le_add (hsub _ _) le_rfl
-      _ ≤ (l * C + l * C) + l * C := add_le_add (add_le_add (hPS m) (hMP m)) (hBb m)
-      _ = _ := by ring
+    refine (abs_add_le _ _).trans ?_
+    linarith [abs_sub (partialSum i v m : ℝ) (meanP l i v m), hPS m, hMP m, hBb m]
   have hinj : Function.Injective (fun m : Fin r → ℕ => m + δ) := add_left_injective δ
   have hgs : Summable (fun m => g (m + δ)) := hg.comp_injective hinj
-  have hfd : Summable (fd i g) := by
-    have : fd i g = fun m => g (m + δ) - g m := rfl
-    rw [this]
-    exact hgs.sub hg
+  have hfd : Summable (fd i g) := hgs.sub hg
   have hsB : Summable (fun m => (Bop l i v m : ℂ) * g m) := summable_cast_mul _ _ hBb hg
   have hsA : Summable (fun m => (Aop l i v m : ℂ) * fd i g m) := summable_cast_mul _ _ hAb hfd
   have hsT : Summable T := summable_cast_mul _ _ hTb hg
@@ -207,36 +196,24 @@ theorem stepIdentity (r l : ℕ) (i : Fin r) (v : (Fin r → ℕ) → ℚ) (g : 
   have hT0 : ∀ m, m i = 0 → T m = 0 := by
     intro m hm
     simp [T, Bop, hm, partialSum_of_zero i v m hm]
-  have hBs : ∀ m, Bop l i v (m + δ) = 0 := by
-    intro m
-    simp [Bop, δ]
+  have hBs : ∀ m : Fin r → ℕ, Bop l i v (m + Pi.single i 1) = 0 := fun m => by simp [Bop]
   have hpt : ∀ m, (v m : ℂ) * g m =
       ((Bop l i v m : ℂ) * g m - (Aop l i v m : ℂ) * fd i g m) + (T (m + δ) - T m) := by
     intro m
-    have h1 := partialSum_succ i v m
-    have h2 := partialSumMean_add_single_one l i v m
-    have h3 : Bop l i v (m + Pi.single i 1) = 0 := hBs m
-    simp only [T, Aop, fd, hδ, h1, h2, h3]
+    simp only [T, Aop, fd, hδ, partialSum_succ i v m, partialSumMean_add_single_one l i v m, hBs m]
     push_cast
     ring
   have hshift : ∑' m, T (m + δ) = ∑' m, T m := by
-    refine hinj.tsum_eq (f := T) ?_
-    intro m hm
+    refine hinj.tsum_eq (f := T) fun m hm => ?_
     have hmi : m i ≠ 0 := fun h0 => hm (hT0 m h0)
-    refine ⟨m - δ, ?_⟩
-    funext j
+    refine ⟨m - δ, funext fun j => ?_⟩
     by_cases hj : j = i
     · subst hj
       simp only [Pi.add_apply, Pi.sub_apply, δ, Pi.single_eq_same]
       omega
     · simp [δ, hj]
-  calc ∑' m, (v m : ℂ) * g m
-      = ∑' m, (((Bop l i v m : ℂ) * g m - (Aop l i v m : ℂ) * fd i g m) + (T (m + δ) - T m)) :=
-        tsum_congr hpt
-    _ = (∑' m, (Bop l i v m : ℂ) * g m - ∑' m, (Aop l i v m : ℂ) * fd i g m) +
-          (∑' m, T (m + δ) - ∑' m, T m) := by
-        rw [(hsB.sub hsA).tsum_add (hsT'.sub hsT), hsB.tsum_sub hsA, hsT'.tsum_sub hsT]
-    _ = _ := by rw [hshift, sub_self, add_zero]
+  rw [tsum_congr hpt, (hsB.sub hsA).tsum_add (hsT'.sub hsT), hsB.tsum_sub hsA, hsT'.tsum_sub hsT,
+    hshift, sub_self, add_zero]
 
 end GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.StepIdentity
 end -- clump:auto

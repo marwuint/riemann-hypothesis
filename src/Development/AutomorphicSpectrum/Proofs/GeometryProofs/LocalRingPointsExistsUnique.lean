@@ -82,8 +82,7 @@ theorem valAt_mul (hξ : IsCptGen ξ) {a b : Ω} {r s : R} (h : ValAt ξ z a r) 
 
 theorem valAt_one (hξ : IsCptGen ξ) (h : genPt ξ ⤳ centre z) : ValAt ξ z (1 : Ω) (1 : R) := by
   obtain ⟨φ, h1, _⟩ := ValHom.exists_valAt_hom X Ω ξ R z h hξ
-  refine (h1 _ _).2 ⟨one_mem _, ?_⟩
-  exact map_one φ
+  exact (h1 _ _).2 ⟨one_mem _, map_one φ⟩
 
 theorem exists_valAt (hξ : IsCptGen ξ) (h : genPt ξ ⤳ centre z) {a : Ω}
     (ha : a ∈ regAt ξ ⟨centre z, h⟩) : ∃ r : R, ValAt ξ z a r := by
@@ -337,8 +336,7 @@ theorem exists_local_ext {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x :
       exact IsUnit.of_mul_eq_one ⟨_, hinv⟩ (Subtype.ext (mul_inv_cancel₀ h0))
     · obtain ⟨s, hsA, hu, hsa⟩ :=
         (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ o κ x T c p hp a).1 a.2
-      refine ⟨(⟨s * a, hsa⟩, ⟨⟨s, hsA⟩, (hψ ⟨s, hsA⟩).2 hu⟩), Subtype.ext ?_⟩
-      exact mul_comm (a : Ω) s
+      exact ⟨(⟨s * a, hsa⟩, ⟨⟨s, hsA⟩, (hψ ⟨s, hsA⟩).2 hu⟩), Subtype.ext (mul_comm (a : Ω) s)⟩
     · have : a = b := Subtype.ext (congrArg (fun q : regAt ξ p => (q : Ω)) e)
       exact ⟨1, by rw [this]⟩
   let φ : regAt ξ p →+* R := IsLocalization.lift (M := M) (g := ψ) (fun s => s.2)
@@ -403,8 +401,7 @@ theorem existsUnique_point (T : CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏
       refine ⟨∏ k, MvPolynomial.X ⟨k, j k⟩, ?_⟩
       change aeval t (∏ k, MvPolynomial.X ⟨k, j k⟩) = _
       rw [map_prod, hx]
-      simp only [aeval_X, t]
-      exact Finset.prod_div_distrib _ _
+      simpa only [aeval_X, t] using Finset.prod_div_distrib _ _
     obtain ⟨f, hf⟩ := h1 a.2
     exact ⟨f, Subtype.ext ((hπ f).trans hf)⟩
   let u : K → R := fun k => (((hc k).unit⁻¹ : Rˣ) : R)
@@ -468,8 +465,7 @@ theorem existsUnique_point (T : CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏
       have h1 : s ⟨k, i⟩ = r := by
         change w ⟨k, i⟩ * u k = r
         rw [e, mul_assoc, hu1, mul_one]
-      rw [h1]
-      exact v
+      rwa [h1]
     have hreg : ∀ q, t q ∈ regAt ξ ⟨centre z', h'⟩ := fun q => by
       obtain ⟨_, g, e, _⟩ := hv' q
       exact ⟨g, e⟩
@@ -496,8 +492,7 @@ theorem existsUnique_point (T : CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏
         funext q
         obtain ⟨_, e⟩ := (h1 _ _).1 (hv' q)
         exact e
-      rw [e2] at e1
-      exact e1
+      rwa [e2] at e1
     have hval' : ∀ a : Algebra.adjoin ℤ (Set.range fun j => x j / x c),
         ValAt ξ z' (a : Ω) (ψ a) := fun a => (h1 _ _).2 ⟨hmem' a, hcomp a⟩
     have hpp : (⟨centre z', h'⟩ : Cpt ξ) = p := by
@@ -515,8 +510,7 @@ theorem existsUnique_point (T : CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏
       rfl
     have hun : IsUnit (ψ ⟨σ, hσA⟩) := (hψu _).2 hσu
     have e5 : r = φ a := hun.mul_left_cancel (e3.trans e4.symm)
-    rw [← e5]
-    exact hr
+    rwa [← e5]
 
 end Main
 

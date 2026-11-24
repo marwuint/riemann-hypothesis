@@ -350,8 +350,7 @@ theorem fderiv_cj (u : HolUnif A L g) (U : A.left.Opens) (f : Γ(A.left, U)) (a 
       fun z => starRingEnd ℂ (valAt' (u.ex (star z)).left U f) := funext fun z => valAt'_pc _ U f
   have e := fderiv_conj (fun z => valAt' (u.ex z).left U f) 0 (star a)
   rw [star_zero, star_star] at e
-  rw [hF]
-  exact e
+  rwa [hF]
 
 theorem isDiff_cj (u : HolUnif A L g) {a : Fin g → ℂ} {v : epsR ℂ ⟶ A} (h : u.IsDiff a v) :
     (cjU u).IsDiff (star a) (cjV v) := by

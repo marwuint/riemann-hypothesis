@@ -66,8 +66,7 @@ theorem isAnalyticSubset_preimage {e : ℕ} {X Y : Type} [TopologicalSpace X] [T
   obtain ⟨W, hW, hx, r, f, hf, hSW⟩ := hS (g x)
   refine ⟨g ⁻¹' W, hW.preimage hg.1, hx, r, fun i => f i ∘ g, fun i => Cj.holoOn_comp hg (hf i), ?_⟩
   ext y
-  have h1 := Set.ext_iff.1 hSW (g y)
-  simpa using h1
+  simpa using Set.ext_iff.1 hSW (g y)
 
 theorem det_fderiv_ne_zero_of_factor {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {T : (Fin n → ℂ) → Fin n → ℂ} {Q L : (Fin n → ℂ) → E} {t : Fin n → ℂ}
@@ -94,15 +93,13 @@ theorem affCoord_eq_of_orbit {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') 
     affCoord p z = affCoord p z' := by
   obtain ⟨c, hc, rfl⟩ := h
   funext q
-  simp only [affCoord]
-  exact mul_div_mul_left _ _ (hc q.1)
+  simpa only [affCoord] using mul_div_mul_left _ _ (hc q.1)
 
 theorem analyticAt_affCoord {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {F : E → (Σ k, ι k) → ℂ} {u : E} (hF : AnalyticAt ℂ F u) (p : (k : K) → ι k)
     (hp : ∀ k, F u ⟨k, p k⟩ ≠ 0) : AnalyticAt ℂ (fun v => affCoord p (F v)) u := by
   have hc : ∀ q, AnalyticAt ℂ (fun v => F v q) u := analyticAt_pi_iff.1 hF
-  refine analyticAt_pi_iff.2 fun q => ?_
-  exact (hc q).div (hc ⟨q.1, p q.1⟩) (hp q.1)
+  exact analyticAt_pi_iff.2 fun q => (hc q).div (hc ⟨q.1, p q.1⟩) (hp q.1)
 
 end GlobalTheory.CompanionTheory.Ar.PB.CovMap.Deg
 
@@ -235,8 +232,7 @@ theorem isDegreeOff_of_correspondence : ∀ (K : Type) [Fintype K] (ι : K → T
     constructor
     · rintro ⟨x, hx, rfl⟩
       rw [Set.mem_preimage, hρπ]; exact hx
-    · intro hs
-      exact ⟨ρ s, hs, hπρ s⟩
+    · exact fun hs => ⟨ρ s, hs, hπρ s⟩
   rw [hbr]
   have hSa : R.A.IsAnalyticSubset S := by
     rw [hS]; exact HilbertSamuel.AnResNullForm.isAnalyticSubset R.toAnRes hG
@@ -266,8 +262,7 @@ theorem isDegreeOff_of_correspondence : ∀ (K : Type) [Fintype K] (ι : K → T
       intro h0
       apply hs
       show ρ s ∈ S
-      rw [← hx₀, hS]
-      exact h0
+      rwa [← hx₀, hS]
     have hwP : R.lift x₀ x₀ ∈ mcPts P := R.mem x₀ x₀ (R.mem_U x₀)
     have hc := hcount _ hwP hGw
     have himg : {O | ∃ z ∈ mcPts P', O = {z'' | SameOrbit z'' z} ∧ Rel z (R.lift x₀ x₀)} =

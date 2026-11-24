@@ -273,8 +273,7 @@ theorem PositivityTheory.Xgn.t_pt_af_type : ∀ {o C : Type} [CommRing o] [Field
   · intro h l hl
     let l' : Fin n → RC := fun k => ⟨l k, hco l hl k⟩
     have e := h _ ((P1 l').1 hl)
-    rw [dot_eq, Matrix.vecMul_vecMul, hPJ, Matrix.vecMul_one] at e
-    exact e
+    rwa [dot_eq, Matrix.vecMul_vecMul, hPJ, Matrix.vecMul_one] at e
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XPtAfType =====
@@ -413,21 +412,17 @@ theorem lattices_alg {O Ω C : Type} [CommRing O] [Field Ω] [Field C] [Algebra 
           simpa only [map_smul, smul_eq_mul, map_mul, hev] using this
         · simp only [hzero, mul_zero, Finset.sum_const_zero]; exact RC.zero_mem
         · intro x y _ _ hx hy
-          simp only [hadd, mul_add, Finset.sum_add_distrib]
-          exact RC.add_mem hx hy
+          simpa only [hadd, mul_add, Finset.sum_add_distrib] using RC.add_mem hx hy
         · intro s x _ hx
-          simp only [hsm, mul_left_comm _ (s : C), ← Finset.mul_sum]
-          exact RC.mul_mem s.2 hx
+          simpa only [hsm, mul_left_comm _ (s : C), ← Finset.mul_sum] using RC.mul_mem s.2 hx
       have := RC.mul_mem hs key
       rw [Finset.mul_sum] at this
       convert this using 2 with k
       exact _root_.mul_assoc _ _ _
     · intro x y _ _ hx hy
-      simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib]
-      exact RC.add_mem hx hy
+      simpa only [Pi.add_apply, add_mul, Finset.sum_add_distrib] using RC.add_mem hx hy
     · intro x _ hx
-      simp only [Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]
-      exact RC.neg_mem hx
+      simpa only [Pi.neg_apply, neg_mul, Finset.sum_neg_distrib] using RC.neg_mem hx
   · obtain ⟨n, e, f, hef⟩ := exists_dual_family R L
     have hid : (∑ m, (j (f m)).smulRight (toLi (e m)) : Li →ₗ[Ω] Li) = LinearMap.id :=
       hbc.algHom_ext _ _ fun v => by
@@ -506,8 +501,7 @@ theorem lattices (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (HT.eigProj 𝔐.ρ σ).codRestrict _ hπ
   have hsum : ∀ x, ∑ k, co x k • b k = HT.eigProj 𝔐.ρ σ x := fun x => by
     have := hb.linearCombination_repr ⟨_, hπ x⟩
-    rw [Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)] at this
-    exact this
+    rwa [Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)] at this
   have hco : ∀ k, co (b k) = Pi.single k 1 := fun k => by
     have h1 : HT.eigProj 𝔐.ρ σ (b k) = b k :=
       HT.LatBasic.eigProj_of_mem ((heig _).2 (hb' ▸ Submodule.subset_span ⟨k, rfl⟩))
@@ -615,12 +609,8 @@ theorem chi_cong {E : Type} [Field E] [NumberField E] (p : ℕ) [Fact p.Prime] {
     have h3 : ((u⁻¹ : RCˣ) : RC) * d = 1 := by rw [← hu]; simp
     have h4 := congrArg (fun r : RC => (r : C)) h3
     simp only [hd, hc0, Subalgebra.coe_mul, Subalgebra.coe_sub, Subalgebra.coe_one] at h4
-    rw [ho1]
-    exact h4
-  have hvd : v (d : C) < 1 := by
-    refine lt_of_le_of_ne ((hv _).1 d.2) ?_
-    intro h
-    exact hdn (isUnit_of_val hv d h)
+    rwa [ho1]
+  have hvd : v (d : C) < 1 := lt_of_le_of_ne ((hv _).1 d.2) (fun h => hdn (isUnit_of_val hv d h))
   by_cases hpu : IsUnit (p : RC)
   · rw [Ideal.span_singleton_eq_top.mpr hpu]
     trivial
@@ -1171,8 +1161,7 @@ theorem chart_matrices {A K : Type} [CommRing A] [IsDomain A] [Field K] [Algebra
     obtain ⟨y, hy, hz⟩ := hr.ht_eq (dl m)
     have : (⟨ι₀ ⟨D.h (dl m), D.h_mem _⟩, hmem _⟩ : P.om) = ⟨_, h⟩ + (p : O) ^ R • ⟨y, hy⟩ := by
       apply Subtype.ext
-      rw [Submodule.coe_add, Submodule.coe_smul, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]
-      exact hz
+      rwa [Submodule.coe_add, Submodule.coe_smul, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]
     rw [hk, hio, this, map_add (f := _), map_smul, Finsupp.add_apply, Finsupp.smul_apply, smul_eq_mul, sub_add_cancel_left]
     exact neg_mem (hpR _)
 
@@ -1433,8 +1422,7 @@ theorem typed {O C : Type} [CommRing O] [Field C] [Algebra O C] (RC : Subalgebra
     have := hx _ (h0 (Pi.single m 1))
     rw [Finset.sum_eq_single m (fun j _ hj => by simp [Pi.single_eq_of_ne hj]) (by simp)] at this
     simp only [Pi.smul_apply, Pi.single_eq_same, smul_eq_mul, mul_one, map_mul, hc] at this
-    rw [hv, map_mul]
-    exact this
+    rwa [hv, map_mul]
   have hev : ∀ (f : (Fin g → C) →ₗ[C] C) (x : I → C),
       f (Hm.map (algebraMap RC C) *ᵥ x) = ∑ m, x m * f fun j => (Hm j m : C) := fun f x => by
     have : Hm.map (algebraMap RC C) *ᵥ x = ∑ m, x m • fun j => (Hm j m : C) := by

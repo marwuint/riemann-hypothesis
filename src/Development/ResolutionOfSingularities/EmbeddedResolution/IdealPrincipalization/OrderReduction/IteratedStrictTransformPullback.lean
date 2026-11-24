@@ -73,8 +73,7 @@ private theorem isPullback_of_unique {P A C B : Scheme.{u}} (e : P ⟶ A) [IsIso
     (Limits.PullbackCone.IsLimit.mk w (fun s => s.snd ≫ inv e) ?_ ?_ ?_)
   · intro s
     have h1 := huniq s.pt s.snd s.fst s.condition
-    simp only [Category.assoc, IsIso.inv_hom_id_assoc]
-    exact h1.symm
+    simpa only [Category.assoc, IsIso.inv_hom_id_assoc] using h1.symm
   · intro s
     simp
   · intro s m _ hm2
@@ -116,8 +115,7 @@ private theorem exists_lift_of_centers_comap_eq_top {A B : Scheme.{u}} (φ : A �
     · intro T v u h
       have hdown : u ≫ c.transitionMapSucc m = v ≫ ψ := by
         refine hu T v (u ≫ c.transitionMapSucc m) ?_
-        rw [Category.assoc, h2]
-        exact h
+        rwa [Category.assoc, h2]
       have hcart2 : Blowup.IsLocallyGeneratedByNonZeroDivisor ((c.center m).comap (v ≫ ψ)) := by
         rw [Scheme.IdealSheafData.comap_comp, htop]
         exact Blowup.isLocallyGeneratedByNonZeroDivisor_comap_top v
@@ -192,8 +190,7 @@ private theorem iteratedStrictTransform_succ_eq_comap_map {X X' : Scheme.{u}} {�
     fun i h1 h2 => c.index_ne_of_index_lt_of_lt_index_succ j hj i h1 h2
   have hfin := eq_comap_mapToEarlierScheme_of_le_of_index_ne c K hN hrec (j + 1) hj (K' (j + 1)) (c.idx j + 1)
     (c.idx_strictMono j hj) hmiss e2 (c.idx (j + 1)) (c.idx_strictMono j hj) le_rfl
-  rw [c.mapToEarlierScheme_index (j + 1) hj] at hfin
-  exact hfin
+  rwa [c.mapToEarlierScheme_index (j + 1) hj] at hfin
 
 private theorem iteratedStrictTransform_eq_comap_lastMap_of_sequence {X X' : Scheme.{u}} {φ : X' ⟶ X} {t' : SequenceOfBlowups X'}
     {t : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ t' t) [AlgebraicGeometry.Flat φ]
@@ -214,8 +211,7 @@ private theorem iteratedStrictTransform_eq_comap_lastMap_of_sequence {X X' : Sch
         fun i _ h2 => c.index_ne_of_lt_index_zero i h2
       have hfin := eq_comap_mapToEarlierScheme_of_le_of_index_ne c K hN hrec 0 hj (K' 0) 0 (Nat.zero_le _) hmiss hzero
         (c.idx 0) (Nat.zero_le _) le_rfl
-      rw [c.mapToEarlierScheme_index 0 hj] at hfin
-      exact hfin
+      rwa [c.mapToEarlierScheme_index 0 hj] at hfin
     | succ m ih =>
       intro hj
       exact iteratedStrictTransform_succ_eq_comap_map c K K' hN hN' hrec hrec' m hj (ih (Nat.le_of_lt hj))
@@ -259,10 +255,8 @@ theorem iteratedStrictTransform_eq_comap_lastMap {s : MarkedBlowupSequenceData p
       K' (j + 1) = Blowup.strictTransform (s'.map j) (s'.center j) (K' j)) :
     K' s'.length = (K s.length).comap d.lastMap := by
   refine iteratedStrictTransform_eq_comap_lastMap_of_sequence d K K' ?_ ?_ hzero ?_ ?_
-  · intro i hi
-    exact hN i hi
-  · intro j hj
-    exact hN' j hj
+  · exact fun i hi => hN i hi
+  · exact fun j hj => hN' j hj
   · intro i hi
     rw [BlowupSequenceData.toSequenceOfBlowups_blowupMorphism, BlowupSequenceData.toSequenceOfBlowups_center]
     exact hrec i hi

@@ -71,8 +71,7 @@ theorem qm_eq (S : Multiset ℂ) :
     by_cases ha : a = 0
     · subst ha
       rw [show qm (0 ::ₘ S) = qm S by simp [qm]]
-      rw [Multiset.filter_cons_of_neg (p := fun c : ℂ => c ≠ 0) S (by simp)]
-      exact ih
+      rwa [Multiset.filter_cons_of_neg (p := fun c : ℂ => c ≠ 0) S (by simp)]
     · rw [show qm (a ::ₘ S) = (1 - C a * X) * qm S by simp [qm], ih, Multiset.filter_cons_of_pos (p := fun c : ℂ => c ≠ 0) S ha]
       simp only [Multiset.map_cons, Multiset.prod_cons, C_mul, one_sub_eq a ha]
       ring
@@ -80,16 +79,14 @@ theorem qm_eq (S : Multiset ℂ) :
 theorem roots_qm (S : Multiset ℂ) : (qm S).roots = (S.filter (· ≠ 0)).map fun c => c⁻¹ := by
   rw [qm_eq, roots_C_mul]
   · have := roots_multiset_prod_X_sub_C ((S.filter (· ≠ 0)).map fun c => c⁻¹)
-    rw [Multiset.map_map] at this
-    exact this
+    rwa [Multiset.map_map] at this
   · exact Multiset.prod_ne_zero (by simp)
 
 theorem filter_eq_of_qm {S T : Multiset ℂ} (h : qm S = qm T) : S.filter (· ≠ 0) = T.filter (· ≠ 0) := by
   have e := congrArg Polynomial.roots h
   rw [roots_qm, roots_qm] at e
   have e2 := congrArg (Multiset.map fun c : ℂ => c⁻¹) e
-  simp only [Multiset.map_map, Function.comp_def, inv_inv, Multiset.map_id'] at e2
-  exact e2
+  simpa only [Multiset.map_map, Function.comp_def, inv_inv, Multiset.map_id'] using e2
 
 theorem eq_of_qm {S T : Multiset ℂ} (h : qm S = qm T) (hc : Multiset.card S = Multiset.card T) : S = T := by
   have h1 := filter_eq_of_qm h
@@ -279,8 +276,7 @@ theorem gelfInj : GelfInj := by
   have e3 := eq_of_qm e2 hc
   have e4 := eq_of_shift _ a b rfl e3
   have e5 := congrArg (Multiset.map fun c => c - ((n : ℂ) - 1) / 2) e4
-  simp only [a, b, Multiset.map_map, Function.comp_def, hl, hl', add_sub_cancel_right] at e5
-  exact e5
+  simpa only [a, b, Multiset.map_map, Function.comp_def, hl, hl', add_sub_cancel_right] using e5
 
 end PositivityTheory.Rg.BcB.F.gamma_zeta_nabla_cancel
 

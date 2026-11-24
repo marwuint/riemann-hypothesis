@@ -100,8 +100,7 @@ theorem disjointUnionMap_summandι_mem (D : FiniteOpenCoverWithIdeals T) (i : D.
   have hmem : D.disjointUnionMap.base ((D.summandι i).base y) ∈ Set.range (D.opens i).ι.base := by
     rw [← summandι_comp_disjointUnionMap D i]
     exact ⟨y, rfl⟩
-  rw [Scheme.Opens.range_ι] at hmem
-  exact hmem
+  rwa [Scheme.Opens.range_ι] at hmem
 
 private theorem comap_imageIdealSheaf_summandι (D : FiniteOpenCoverWithIdeals T) (i : D.idx) :
     (_root_.FunctorialResolution.Blowup.schemeImageIdeal (D.summandι i) (D.localIdeal i)).comap (D.summandι i) = D.localIdeal i :=
@@ -280,21 +279,17 @@ private theorem eq_of_map_eq_of_bijective {A B : Type u} [CommRing A] [CommRing 
       exact Ideal.mem_map_of_mem φ hx
     obtain ⟨a, ha, hax⟩ := (Ideal.mem_map_iff_of_surjective (f := φ) hsurj).mp hmem
     have hax' : a = x := hinj hax
-    rw [hax'] at ha
-    exact ha
+    rwa [hax'] at ha
   · intro hx
     have hmem : φ x ∈ Ideal.map φ I := by
       rw [h]
       exact Ideal.mem_map_of_mem φ hx
     obtain ⟨a, ha, hax⟩ := (Ideal.mem_map_iff_of_surjective (f := φ) hsurj).mp hmem
     have hax' : a = x := hinj hax
-    rw [hax'] at ha
-    exact ha
+    rwa [hax'] at ha
 
 private theorem top_le_preimage_opens {X : Scheme.{u}} (V : X.Opens) :
-    (⊤ : V.toScheme.Opens) ≤ (TopologicalSpace.Opens.map V.ι.base).obj V := by
-  intro y _
-  exact y.2
+    (⊤ : V.toScheme.Opens) ≤ (TopologicalSpace.Opens.map V.ι.base).obj V := fun y _ => y.2
 
 private theorem appLE_ι_eq_topIso_inv {X : Scheme.{u}} (V : X.Opens) :
     V.ι.appLE V ⊤ (top_le_preimage_opens V) = V.topIso.inv := by
@@ -397,8 +392,7 @@ private theorem le_of_ideal_le_locally {Y : Scheme.{u}} {J J' : Y.IdealSheafData
       exact TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨⟨W, hW⟩, x, hWV⟩, hxW⟩
     · rintro ⟨⟨W, hW⟩, y, hWV⟩
       show (J ⊓ J').ideal ⟨W, hW⟩ = J.ideal ⟨W, hW⟩
-      simp only [Scheme.IdealSheafData.ideal_inf, Pi.inf_apply, inf_eq_left]
-      exact hloc y W hW hWV
+      simpa only [Scheme.IdealSheafData.ideal_inf, Pi.inf_apply, inf_eq_left] using hloc y W hW hWV
   exact inf_eq_left.mp key
 
 theorem le_of_comap_summandι_le (D : FiniteOpenCoverWithIdeals T) {J J' : D.disjointUnion.IdealSheafData}
@@ -409,8 +403,7 @@ theorem le_of_comap_summandι_le (D : FiniteOpenCoverWithIdeals T) {J J' : D.dis
   intro y W hW hWle
   refine ideal_le_of_comap_ι_le W hW ?_
   have hrange : Set.range W.ι.base ⊆ Set.range (D.summandι (idxf y)).base := by
-    rw [Scheme.Opens.range_ι, range_summandι D (idxf y), Scheme.Opens.range_ι]
-    exact hWle
+    rwa [Scheme.Opens.range_ι, range_summandι D (idxf y), Scheme.Opens.range_ι]
   have hg : IsOpenImmersion.lift (D.summandι (idxf y)) W.ι hrange ≫ D.summandι (idxf y)
       = W.ι :=
     IsOpenImmersion.lift_fac (D.summandι (idxf y)) W.ι hrange

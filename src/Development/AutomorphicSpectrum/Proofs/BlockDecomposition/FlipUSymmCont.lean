@@ -168,10 +168,8 @@ theorem isDS_flip : ∀ (n : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProduc
   unfold Formalism.MainNotions.S.IsDS at h ⊢
   obtain ⟨h1, h2, h3, h4, h5, h6, h7⟩ := h
   refine ⟨h1, h2, ?_, ?_, sqInt_flip he h5, ?_, ?_⟩
-  · rw [UJset_flip he]
-    exact h3
-  · rw [UJset_flip he]
-    exact h4
+  · rwa [UJset_flip he]
+  · rwa [UJset_flip he]
   · obtain ⟨S, hS⟩ := h6
     exact ⟨S, by rw [lowK_flip he, ktype_flip he]; exact hS⟩
   · intro μ S hS

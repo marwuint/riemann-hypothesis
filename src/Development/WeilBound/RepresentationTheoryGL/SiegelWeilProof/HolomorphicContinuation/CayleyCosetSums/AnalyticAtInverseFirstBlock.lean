@@ -81,8 +81,7 @@ theorem analyticAt_det_comp {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E
       ∑ σ : Equiv.Perm ι, fun x => ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, F x (σ i) i := by
     funext x
     simp [Matrix.det_apply', Finset.sum_apply]
-  rw [hfun]
-  exact hs
+  rwa [hfun]
 
 theorem analyticAt_inv_entry (x0 : M2 n) (h : x0.det ≠ 0) (i j : Fin n ⊕ Fin n) :
     AnalyticAt ℂ (fun x : M2 n => x⁻¹ i j) x0 := by
@@ -93,10 +92,8 @@ theorem analyticAt_inv_entry (x0 : M2 n) (h : x0.det ≠ 0) (i j : Fin n ⊕ Fin
     intro a b
     by_cases ha : a = j
     · subst ha
-      simp only [Matrix.updateRow_self]
-      exact analyticAt_const
-    · simp only [Matrix.updateRow_ne ha]
-      exact analyticAt_entryM a b x0
+      simpa only [Matrix.updateRow_self] using analyticAt_const
+    · simpa only [Matrix.updateRow_ne ha] using analyticAt_entryM a b x0
   have hdet : AnalyticAt ℂ (fun x : M2 n => x.det) x0 :=
     analyticAt_det_comp (F := fun x : M2 n => x) analyticAt_id
   have h2 := (hdet.inv h).mul hadj
@@ -104,8 +101,7 @@ theorem analyticAt_inv_entry (x0 : M2 n) (h : x0.det ≠ 0) (i j : Fin n ⊕ Fin
       (fun x : M2 n => x.det)⁻¹ * fun x : M2 n => x.adjugate i j := by
     funext x
     simp [Matrix.inv_def, Ring.inverse_eq_inv']
-  rw [hfun]
-  exact h2
+  rwa [hfun]
 
 theorem analyticAt_first_cayley_block (x0 : M2 n) : AnalyticAt ℂ (fun x : M2 n => u1 x) x0 := by
   refine analyticAt_matrix fun a b => ?_

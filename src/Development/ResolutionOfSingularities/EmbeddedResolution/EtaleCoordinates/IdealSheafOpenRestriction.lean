@@ -178,28 +178,13 @@ private theorem ker_app_morphismRestrict_eq_map_ker {Y T : Scheme.{u}} (m : Y �
       Scheme.Hom.appLE_comp_appLE (Scheme.Opens.ι (m ⁻¹ᵁ V)) m (Scheme.Opens.ι V ''ᵁ P.1)
         (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)) ((m ∣_ V) ⁻¹ᵁ P.1) le_rfl hpre2.le]
     exact AlgebraicGeometry.Scheme.Hom.appLE_congr_hom (morphismRestrict_ι m V) _ _ _ _
-  have hsqr : ∀ x, (CommRingCat.Hom.hom ((m ∣_ V).app P.1))
-        ((CommRingCat.Hom.hom
-          (Scheme.Hom.appLE (Scheme.Opens.ι V) (Scheme.Opens.ι V ''ᵁ P.1) P.1 e)) x)
-      = (CommRingCat.Hom.hom (Scheme.Hom.appLE (Scheme.Opens.ι (m ⁻¹ᵁ V))
-          (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)) ((m ∣_ V) ⁻¹ᵁ P.1) hpre2.le))
-        ((CommRingCat.Hom.hom (m.app (Scheme.Opens.ι V ''ᵁ P.1))) x) := by
-    intro x
-    have h' := congrArg (fun mm => (CommRingCat.Hom.hom mm) x) hsq
-    simpa only [CommRingCat.hom_comp, RingHom.comp_apply] using h'
-  refine le_antisymm ?_ ?_
-  · intro y hy
-    rw [RingHom.mem_ker] at hy
-    obtain ⟨x, rfl⟩ := hbij.2 y
-    refine Ideal.mem_map_of_mem _ ?_
-    rw [RingHom.mem_ker]
-    apply hinj
-    rw [← hsqr x, hy, map_zero]
-  · rw [Ideal.map_le_iff_le_comap]
-    intro x hx
-    rw [Ideal.mem_comap, RingHom.mem_ker, hsqr x]
-    rw [RingHom.mem_ker] at hx
-    rw [hx, map_zero]
+  have hker : RingHom.ker (CommRingCat.Hom.hom (m.app (Scheme.Opens.ι V ''ᵁ P.1))) =
+      Ideal.comap (CommRingCat.Hom.hom (Scheme.Hom.appLE (Scheme.Opens.ι V)
+        (Scheme.Opens.ι V ''ᵁ P.1) P.1 e))
+        (RingHom.ker (CommRingCat.Hom.hom ((m ∣_ V).app P.1))) := by
+    rw [RingHom.comap_ker, ← CommRingCat.hom_comp, hsq, CommRingCat.hom_comp,
+      RingHom.ker_comp_of_injective _ hinj]
+  rw [hker, Ideal.map_comap_of_surjective _ hbij.2]
 
 theorem restrictIdeal_openSubschemeKer_of_preimage_le {X : Scheme.{u}} (Z : X.IdealSheafData)
     (W : Z.subscheme.Opens) (hW : IsClosed (W : Set Z.subscheme)) (U : X.Opens)
@@ -258,10 +243,8 @@ theorem restrictIdeal_openSubschemeKer_of_preimage_le {X : Scheme.{u}} (Z : X.Id
       rw [CommRingCat.hom_comp, RingHom.comp_apply]
     simp only [RingHom.mem_ker, hfac]
     constructor
-    · intro hx
-      exact hinjW (hx.trans (map_zero _).symm)
-    · intro hx
-      exact (congrArg _ hx).trans (map_zero _)
+    · exact fun hx => hinjW (hx.trans (map_zero _).symm)
+    · exact fun hx => (congrArg _ hx).trans (map_zero _)
   rw [AlgebraicGeometry.Scheme.Hom.ker_apply ((openSubschemeKer Z W).subschemeι ∣_ U) P,
     AlgebraicGeometry.Scheme.Hom.ker_apply (Z.subschemeι ∣_ U) P,
     ker_app_morphismRestrict_eq_map_ker (openSubschemeKer Z W).subschemeι U P e,
@@ -296,17 +279,12 @@ theorem restrictIdeal_openSubschemeKer_eq_top {X : Scheme.{u}} (Z : X.IdealSheaf
       exact Set.mem_range_self y
     exact hnot _ h1
   have hObot : ∀ O : (((openSubschemeKer Z W).subschemeι ⁻¹ᵁ U).toScheme).Opens, O = ⊥ := by
-    intro O
-    refine le_antisymm ?_ bot_le
-    intro y _
-    exact (hempty y).elim
+    exact fun O => le_antisymm (fun y _ => (hempty y).elim) bot_le
   have hqcm : QuasiCompact ((openSubschemeKer Z W).subschemeι ∣_ U) := by
     refine ⟨fun O _ _ => ?_⟩
     have hE : (⇑((openSubschemeKer Z W).subschemeι ∣_ U).base ⁻¹' O) = ∅ := by
       ext y
-      simp only [Set.mem_empty_iff_false, iff_false]
-      intro _
-      exact hempty y
+      simpa only [Set.mem_empty_iff_false, iff_false] using fun _ => hempty y
     rw [hE]
     exact isCompact_empty
   rw [restrictIdeal_eq_comap_ι, comap_opensι_eq_ker_morphismRestrict (openSubschemeKer Z W) U]
@@ -331,13 +309,11 @@ theorem exists_opens_preimage_subschemeι_le {X : Scheme.{u}} (Z : X.IdealSheafD
   obtain ⟨w, hw, rfl⟩ := hx
   refine ⟨⟨t, ht⟩, ?_, ?_⟩
   · have hwt : w ∈ ⇑Z.subschemeι.base ⁻¹' t := by
-      rw [hteq]
-      exact hw
+      rwa [hteq]
     exact hwt
   · intro y hy
     have hy' : y ∈ ⇑Z.subschemeι.base ⁻¹' t := hy
-    rw [hteq] at hy'
-    exact hy'
+    rwa [hteq] at hy'
 
 theorem exists_opens_notMem_image {X : Scheme.{u}} (Z : X.IdealSheafData)
     (W : Z.subscheme.Opens) (hW : IsClosed (W : Set Z.subscheme)) (x : X)
@@ -346,8 +322,7 @@ theorem exists_opens_notMem_image {X : Scheme.{u}} (Z : X.IdealSheafData)
   have hclosed : IsClosed (⇑Z.subschemeι.base '' (W : Set Z.subscheme)) :=
     Z.subschemeι.isClosedEmbedding.isClosedMap _ hW
   refine ⟨⟨(⇑Z.subschemeι.base '' (W : Set Z.subscheme))ᶜ, hclosed.isOpen_compl⟩, hx, ?_⟩
-  intro w hw hmem
-  exact hmem ⟨w, hw, rfl⟩
+  exact fun w hw hmem => hmem ⟨w, hw, rfl⟩
 
 private theorem ker_app_opensι_comp_subschemeι_eq_of_preimage_le {X : Scheme.{u}} (Z : X.IdealSheafData) (W : Z.subscheme.Opens)
     (V : X.Opens) (hVW : (Z.subschemeι ⁻¹ᵁ V) ≤ W) :
@@ -363,10 +338,8 @@ private theorem ker_app_opensι_comp_subschemeι_eq_of_preimage_le {X : Scheme.{
     rw [CommRingCat.hom_comp, RingHom.comp_apply]
   simp only [RingHom.mem_ker, hfac]
   constructor
-  · intro ha
-    exact hinjW (ha.trans (map_zero _).symm)
-  · intro ha
-    exact (congrArg _ ha).trans (map_zero _)
+  · exact fun ha => hinjW (ha.trans (map_zero _).symm)
+  · exact fun ha => (congrArg _ ha).trans (map_zero _)
 
 private theorem exists_ideal_basicOpen_eq_span_singleton_of_eq_span {X : Scheme.{u}} (J : X.IdealSheafData)
     (U : X.affineOpens) (s f : Γ(X, U.1)) (hf : f ∈ nonZeroDivisors Γ(X, U.1))

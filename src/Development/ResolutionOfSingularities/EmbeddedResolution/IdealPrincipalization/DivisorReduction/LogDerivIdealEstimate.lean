@@ -91,8 +91,7 @@ private theorem map_eq_comap_of_inverse {A B : Type u} [CommRing A] [CommRing B]
   apply le_antisymm
   · rw [Ideal.map_le_iff_le_comap]
     intro a ha
-    rw [Ideal.mem_comap, Ideal.mem_comap, h1]
-    exact ha
+    rwa [Ideal.mem_comap, Ideal.mem_comap, h1]
   · intro x hx
     rw [Ideal.mem_comap] at hx
     have hmem := Ideal.mem_map_of_mem φ hx
@@ -180,9 +179,7 @@ theorem logDerivIdealSheafIterate_comap_ideal_of_isOpenImmersion
     ((logDerivIdealSheafIterate k p P r A).comap g).ideal V =
       (logDerivIdealSheafIterate k (g ≫ p) (P.comap g) r (A.comap g)).ideal V := by
   have hU : IsAffineOpen (g ''ᵁ (V : Y.Opens)) := V.2.image_of_isOpenImmersion g
-  have e : (V : Y.Opens) ≤ g ⁻¹ᵁ (g ''ᵁ (V : Y.Opens)) := by
-    intro x hx
-    exact ⟨x, hx, rfl⟩
+  have e : (V : Y.Opens) ≤ g ⁻¹ᵁ (g ''ᵁ (V : Y.Opens)) := fun x hx => ⟨x, hx, rfl⟩
   have hbij : Function.Bijective
       (g.appLE (g ''ᵁ (V : Y.Opens)) (V : Y.Opens) e).hom :=
     bijective_appLE_image_of_isOpenImmersion g (V : Y.Opens) e
@@ -262,8 +259,7 @@ theorem exists_affineOpen_comap_logDerivIdealSheafIterate_eq (k : Type u) [Field
         (logDerivIdealSheafIterate k (π ≫ p) (P.comap π) a (K.comap π)).ideal V := by
   obtain ⟨⟨V, hVaff⟩, hxV, hVU⟩ :
       ∃ V : X₁.affineOpens, x₁ ∈ V.1 ∧ V.1 ≤ π ⁻¹ᵁ W := by
-    apply AlgebraicGeometry.Scheme.exists_affineOpens_mem_le
-    exact hx₁
+    exact AlgebraicGeometry.Scheme.exists_affineOpens_mem_le hx₁
   refine ⟨⟨V, hVaff⟩, hxV, hVU, ?_⟩
   have : IsOpenImmersion (π ∣_ W) := inferInstance
   have : LocallyOfFiniteType (W.ι ≫ p) := inferInstance
@@ -723,10 +719,8 @@ private theorem partialDerivIdeal_logDerivIdeal_le [Fintype ι] [DecidableEq ι]
             exact logDerivIdeal_mono k _ (le_partialDerivIdeal k ι S h I)
               (partialDeriv_mem_logDerivIdeal_of_ne k ι S hi I hy)
   refine partialDerivIdeal_le k ι S h ?_ ?_
-  · intro g hg
-    exact ((mem_idealInfComapPartialDeriv_iff k ι S h _ g).mp (key hg)).1
-  · intro g hg
-    exact ((mem_idealInfComapPartialDeriv_iff k ι S h _ g).mp (key hg)).2
+  · exact fun g hg => ((mem_idealInfComapPartialDeriv_iff k ι S h _ g).mp (key hg)).1
+  · exact fun g hg => ((mem_idealInfComapPartialDeriv_iff k ι S h _ g).mp (key hg)).2
 
 private theorem partialDerivIdeal_logDerivIdealIterate_le [Fintype ι] [DecidableEq ι] (h : ι) (m : ℕ)
     (I : Ideal S) :
@@ -801,11 +795,9 @@ theorem partialDerivIdeal_iSup_le {κ : Sort*} (h : ι) (F : κ → Ideal S) :
   · intro j x hx
     exact le_iSup (fun j => partialDerivIdeal k ι S h (F j)) j
       (partialDeriv_mem_partialDerivIdeal k ι S h (F j) hx)
-  · simp only [map_zero]
-    exact Submodule.zero_mem _
+  · simpa only [map_zero] using Submodule.zero_mem _
   · intro x y hx hy
-    simp only [map_add (f := _)]
-    exact Submodule.add_mem _ hx hy
+    simpa only [map_add (f := _)] using Submodule.add_mem _ hx hy
 
 theorem partialDerivIdeal_biSup_le (h : ι) (n : ℕ) (F : ℕ → Ideal S) :
     partialDerivIdeal k ι S h (⨆ i, ⨆ _ : i ≤ n, F i) ≤
@@ -957,8 +949,7 @@ private theorem ideal_affineOpen_eq_top_of_restrictIdeal_eq_top {Y : Scheme.{u}}
     {V : Y.Opens} (hV : IsAffineOpen V) (h : restrictIdeal D V = ⊤) :
     D.ideal ⟨V, hV⟩ = ⊤ := by
   have h2 : restrictIdeal D V = restrictIdeal (⊤ : Y.IdealSheafData) V := by
-    rw [restrictIdeal_top]
-    exact h
+    rwa [restrictIdeal_top]
   rw [ideal_eq_of_restrictIdeal_eq D ⊤ ⟨V, hV⟩ h2, top_ideal_eq_top]
 
 theorem exists_affineOpen_derivIdealSheafIterate_le_biSup_logDerivIdealSheafIterate

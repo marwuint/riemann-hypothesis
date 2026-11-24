@@ -126,13 +126,9 @@ theorem st1a : St1a := by
   have hw1 : LinearMap.restrict (G ^ d) hmaps w = μ • w := Module.End.mem_eigenspace_iff.mp hw.1
   set v : V := (w : V) with hv_def
   have hGd : (G ^ d) v = μ • v := by
-    have h := congrArg Subtype.val hw1
-    simpa [LinearMap.restrict_apply] using h
+    simpa [LinearMap.restrict_apply] using congrArg Subtype.val hw1
   have hvE : M v = z • v := Module.End.mem_eigenspace_iff.mp w.2
-  have hv0 : v ≠ 0 := by
-    intro h
-    apply hw.2
-    exact Subtype.ext h
+  have hv0 : v ≠ 0 := fun h => hw.2 (Subtype.ext h)
 
   let bb : Fin d → V := fun i => (G ^ (i : ℕ)) v
   have hb_eig : ∀ i : Fin d, M (bb i) = z ^ q ^ (i : ℕ) • bb i := fun i =>
@@ -192,8 +188,7 @@ theorem st1a : St1a := by
     · exact h
   have hfr : Module.finrank ℂ V = d := by
     have h := finrank_span_eq_card hli
-    rw [← hW_def, hWtop, finrank_top, Fintype.card_fin] at h
-    exact h
+    rwa [← hW_def, hWtop, finrank_top, Fintype.card_fin] at h
   refine ⟨z, hzE, ?_⟩
   rw [hfr]
   refine ⟨?_, hzd, fun e he0 hed h => hdmin e hed ⟨he0, h⟩⟩

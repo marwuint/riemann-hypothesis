@@ -95,15 +95,17 @@ theorem freq_ker {g : ℕ} (Bs : Matrix (Fin g) (Fin g) ℤ) (σ : Matrix (Fin g
     (hy : Tendsto (fun m => (fun k => (us m k : ℂ)) + τs m *ᵥ (fun k => (vs m k : ℂ))) atTop (𝓝 y))
     (v : Fin g → ℤ) (hv : ∃ᶠ m in atTop, vs m = v) :
     Bs *ᵥ v = 0 ∧ ∀ k, (y k).im = ((σ.map Complex.im) *ᵥ (fun k => (v k : ℝ))) k := by
-  have hyk : ∀ k, Tendsto (fun m => ((fun k => (us m k : ℂ)) + τs m *ᵥ (fun k => (vs m k : ℂ))) k)
-      atTop (𝓝 (y k)) := fun k => tendsto_pi_nhds.1 hy k
-  have hσk : ∀ k, Tendsto (fun m => (σs m *ᵥ (fun k => (v k : ℂ))) k) atTop
-      (𝓝 ((σ *ᵥ (fun k => (v k : ℂ))) k)) := by
+  have hyk : ∀ k, Tendsto
+      (fun m => (((fun k => (us m k : ℂ)) + τs m *ᵥ (fun k => (vs m k : ℂ))) k).im)
+      atTop (𝓝 (y k).im) :=
+    fun k => (Complex.continuous_im.tendsto _).comp (tendsto_pi_nhds.1 hy k)
+  have hσk : ∀ k, Tendsto (fun m => ((σs m *ᵥ (fun k => (v k : ℂ))) k).im) atTop
+      (𝓝 ((σ *ᵥ (fun k => (v k : ℂ))) k).im) := by
     intro k
-    have hc : Continuous (fun M : Matrix (Fin g) (Fin g) ℂ => (M *ᵥ (fun k => (v k : ℂ))) k) :=
-      (continuous_apply k).comp (continuous_id.matrix_mulVec continuous_const)
+    have hc : Continuous (fun M : Matrix (Fin g) (Fin g) ℂ => ((M *ᵥ (fun k => (v k : ℂ))) k).im) :=
+      Complex.continuous_im.comp ((continuous_apply k).comp
+        (continuous_id.matrix_mulVec continuous_const))
     exact (hc.tendsto σ).comp hσ
-  have htpos : ∀ᶠ m in atTop, 0 < (t m).im := ht.eventually_gt_atTop 0
   have hid : ∀ m, vs m = v → ∀ k,
       (((fun k => (us m k : ℂ)) + τs m *ᵥ (fun k => (vs m k : ℂ))) k).im
         = ((σs m *ᵥ (fun k => (v k : ℂ))) k).im + (t m).im * (((Bs *ᵥ v) k : ℤ) : ℝ) := by
@@ -112,28 +114,17 @@ theorem freq_ker {g : ℕ} (Bs : Matrix (Fin g) (Fin g) ℤ) (σ : Matrix (Fin g
     simp [Complex.mul_im]
   have hker : Bs *ᵥ v = 0 := by
     funext k
-    have hf : Tendsto (fun m => ((((fun k => (us m k : ℂ)) + τs m *ᵥ (fun k => (vs m k : ℂ))) k).im
-        - ((σs m *ᵥ (fun k => (v k : ℂ))) k).im) / (t m).im) atTop (𝓝 0) :=
-      (((Complex.continuous_im.tendsto _).comp (hyk k)).sub
-        ((Complex.continuous_im.tendsto _).comp (hσk k))).div_atTop ht
-    have hfreq : ∃ᶠ m in atTop, ((((fun k => (us m k : ℂ)) + τs m *ᵥ (fun k => (vs m k : ℂ))) k).im
-        - ((σs m *ᵥ (fun k => (v k : ℂ))) k).im) / (t m).im = (((Bs *ᵥ v) k : ℤ) : ℝ) := by
-      refine (hv.and_eventually htpos).mono fun m hm => ?_
-      rw [hid m hm.1 k, add_sub_cancel_left]
-      exact mul_div_cancel_left₀ _ hm.2.ne'
-    have h0 := tendsto_nhds_unique_of_frequently_eq hf tendsto_const_nhds hfreq
-    show (Bs *ᵥ v) k = 0
-    exact_mod_cast h0.symm
+    have h0 : (0 : ℝ) = (((Bs *ᵥ v) k : ℤ) : ℝ) := tendsto_nhds_unique_of_frequently_eq
+      (((hyk k).sub (hσk k)).div_atTop ht) tendsto_const_nhds
+      ((hv.and_eventually (ht.eventually_gt_atTop 0)).mono fun m hm => by
+        rw [hid m hm.1 k, add_sub_cancel_left]
+        exact mul_div_cancel_left₀ _ hm.2.ne')
+    exact Int.cast_eq_zero.1 h0.symm
   refine ⟨hker, fun k => ?_⟩
   rw [← im_mulVec_lemma σ v k]
-  have hfreq2 : ∃ᶠ m in atTop,
-      (((fun k => (us m k : ℂ)) + τs m *ᵥ (fun k => (vs m k : ℂ))) k).im
-        = ((σs m *ᵥ (fun k => (v k : ℂ))) k).im := by
-    refine hv.mono fun m hm => ?_
+  exact tendsto_nhds_unique_of_frequently_eq (hyk k) (hσk k) (hv.mono fun m hm => by
     rw [hid m hm k, hker]
-    simp
-  exact tendsto_nhds_unique_of_frequently_eq ((Complex.continuous_im.tendsto _).comp (hyk k))
-    ((Complex.continuous_im.tendsto _).comp (hσk k)) hfreq2
+    simp)
 
 private theorem cast_mulVec_lemma_2 {g : ℕ} (Bs : Matrix (Fin g) (Fin g) ℤ) (v : Fin g → ℤ) :
     Bs.map (fun x : ℤ => (x : ℝ)) *ᵥ (fun k => (v k : ℝ)) = fun k => (((Bs *ᵥ v) k : ℤ) : ℝ) := by

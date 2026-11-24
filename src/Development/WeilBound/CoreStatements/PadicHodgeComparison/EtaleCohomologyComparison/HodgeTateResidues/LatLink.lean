@@ -202,26 +202,21 @@ theorem existsUnique_limit_of_dvd {R : Type*} [CommRing R] (t : R)
     | base => simp
     | succ n hn ih =>
       have h1 : t ^ m ∣ z (n + 1) - z n := (pow_dvd_pow t (by omega)).trans (hz n)
-      have h2 := dvd_add h1 ih
-      simpa using h2
+      simpa using dvd_add h1 ih
   obtain ⟨L, hL⟩ := IsPrecomplete.prec' (I := Ideal.span {t}) z (fun {m n} hmn => by
     rw [SModEq.comm, SModEq.sub_mem, hmem]
     exact hchain hmn)
   refine ⟨L, fun m => ?_, fun x hx => ?_⟩
   · have h1 : t ^ (m + 1) ∣ L - z (m + 1) := by
       have := hL (m + 1)
-      rw [SModEq.comm, SModEq.sub_mem, hmem] at this
-      exact this
-    have h2 := dvd_add h1 (hz m)
-    simpa using h2
+      rwa [SModEq.comm, SModEq.sub_mem, hmem] at this
+    simpa using dvd_add h1 (hz m)
   · have hLd : ∀ m, t ^ (m + 1) ∣ L - z m := by
       intro m
       have h1 : t ^ (m + 1) ∣ L - z (m + 1) := by
         have := hL (m + 1)
-        rw [SModEq.comm, SModEq.sub_mem, hmem] at this
-        exact this
-      have h2 := dvd_add h1 (hz m)
-      simpa using h2
+        rwa [SModEq.comm, SModEq.sub_mem, hmem] at this
+      simpa using dvd_add h1 (hz m)
     refine sub_eq_zero.1 (IsHausdorff.haus' (I := Ideal.span {t}) _ fun n => ?_)
     rw [SModEq.zero, hmem]
     have h3 := dvd_sub (hx n) (hLd n)
@@ -256,8 +251,7 @@ theorem existsUnique_bdRp_of_compatible (l : ℕ) [Fact l.Prime]
     intro m
     rw [← key m]
     have := hy m
-    rw [← hz (m + 1)] at this
-    exact this
+    rwa [← hz (m + 1)] at this
   obtain ⟨x, hx, hu⟩ := existsUnique_limit_of_dvd (tBdR l) z hstep
   exact ⟨x, fun m => (key m x).2 (hx m), fun x' hx' => hu x' fun m => (key m x').1 (hx' m)⟩
 
@@ -683,8 +677,7 @@ namespace GlobalTheory.CompanionTheory.LatLevel
 
 theorem dk_fk (l : ℕ) [Fact l.Prime] (k : ℕ) (w : Ainf l) :
     Lat.dk l k (Lat.fk l (k + 1) w) = Lat.fk l k w := by
-  simp only [Lat.dk, Lat.fk, RingHom.comp_apply]
-  exact Ideal.Quotient.factor_mk _ _
+  simpa only [Lat.dk, Lat.fk, RingHom.comp_apply] using Ideal.Quotient.factor_mk _ _
 
 theorem dk_dpE (l : ℕ) [Fact l.Prime] (M k i : ℕ) :
     Lat.dk l k (Lat.dpE (Lat.fk l (k + 1)) (xi0 l) l M i) = Lat.dpE (Lat.fk l k) (xi0 l) l M i := by
@@ -848,8 +841,7 @@ theorem sigmaB_fixes_K {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (
         = algClToBdR l ((toBot g.1) (a : PadicAlgCl l)) :=
       gal_smul_algClToBdR (toBot g.1) (a : PadicAlgCl l)
     have h2 : (toBot g.1) (a : PadicAlgCl l) = (a : PadicAlgCl l) := g.2 a
-    rw [h2] at h1
-    exact h1
+    rwa [h2] at h1
   change gB h k g (pk l k (kP l K a)) = pk l k (kP l K a)
   change Ideal.quotientMap _ (gP l g) (h.galT k g) (Ideal.Quotient.mk _ (kP l K a)) = Ideal.Quotient.mk _ (kP l K a)
   rw [Ideal.quotientMap_mk, key]
@@ -886,8 +878,7 @@ theorem gP_kP {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgC
   have h1 : (toBot g.1) • algClToBdR l (K.val x) = algClToBdR l ((toBot g.1) (K.val x)) :=
     gal_smul_algClToBdR _ _
   have h2 : (toBot g.1) (K.val x) = K.val x := (IntermediateField.mem_fixingSubgroup_iff _ _).1 g.2 _ x.2
-  rw [h2] at h1
-  exact h1
+  rwa [h2] at h1
 
 theorem sigA_fix : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {M : ℕ} (h : LevHyp l K M) (k : ℕ), ∀ g (a : OK l K), (lev h k).σA g (algebraMap (OK l K) (lev h k).A a) = algebraMap (OK l K) (lev h k).A a := by
   intro l _ K M h k g a
@@ -1198,9 +1189,7 @@ theorem dk_gB {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgC
 theorem levSys_dA_σA {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {M : ℕ}
     (h : LevHyp l K M) : ∀ m g a,
     (levSys h).dA m (((levSys h).L (m + 1)).σA g a) = ((levSys h).L m).σA g ((levSys h).dA m a) := by
-  intro m g a
-  apply Subtype.ext
-  exact dk_gB h (m + 1) g a.1
+  exact fun m g a => Subtype.ext (dk_gB h (m + 1) g a.1)
 
 end GlobalTheory.CompanionTheory.LatLevel
 end -- clump:auto
@@ -1325,8 +1314,7 @@ theorem toB_on_K : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (
       have := (RingEquiv.ofBijective (algebraMap (BdRp l) (BdR l)).rangeRestrict
         ⟨fun x y h => IsPerfectoidField.algebraMap_bDeRham_injective (K := ℂ_[l]) (p := l) (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩).apply_symm_apply y
       exact congrArg Subtype.val this
-    rw [h1]
-    exact hy
+    rwa [h1]
   show pk l k (pInv l y) = pk l k (kP l K a)
   rw [key]
 
@@ -1408,8 +1396,7 @@ theorem sigmaB_toB {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (Padi
       (lev h k).σB g ((lev h k).toB x) = (lev h k).toB y := by
   rintro g ⟨_, b, rfl⟩ ⟨y, hy⟩ hxy
   have hy' : y = algebraMap (BdRp l) (BdR l) (gP l g b) := by
-    refine (Eq.trans hxy.symm ?_)
-    exact galBdRField_algebraMap (toBot g.1) b
+    exact (Eq.trans hxy.symm (galBdRField_algebraMap (toBot g.1) b))
   subst hy'
   show gB h k g (pk l k (pInv l ⟨_, _⟩)) = pk l k (pInv l ⟨_, _⟩)
   rw [pInv_algebraMap, pInv_algebraMap]

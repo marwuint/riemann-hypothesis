@@ -62,10 +62,8 @@ theorem continuous_glReindex {a b : Type} [Fintype a] [DecidableEq a] [Fintype b
     (e : a ≃ b) : Continuous (glReindex (k := k) e) := by
   rw [Units.continuous_iff]
   refine ⟨?_, ?_⟩
-  · show Continuous fun g : GL a k => Matrix.reindex e e (g : Matrix a a k)
-    exact Units.continuous_val.matrix_reindex e e
-  · show Continuous fun g : GL a k => Matrix.reindex e e ((g⁻¹ : GL a k) : Matrix a a k)
-    exact Units.continuous_coe_inv.matrix_reindex e e
+  · exact Units.continuous_val.matrix_reindex e e
+  · exact Units.continuous_coe_inv.matrix_reindex e e
 
 theorem glReindex_symm {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
     (e : a ≃ b) (g : GL b k) : (glReindex (k := k) e).symm g = glReindex e.symm g := by
@@ -127,7 +125,6 @@ theorem irreducibleAdmissible :
       have h1 := hv (ψ.symm h) (by simpa [K'] using h.2)
       simp only [MonoidHom.one_apply, Units.val_one, one_smul]
       simpa [π'] using h1
-  rw [heq]
-  exact hfd
+  rwa [heq]
 
 end GlobalTheory.CompanionTheory.SmGLBridge

@@ -129,8 +129,7 @@ theorem dual_iff (O : Subring K) (b : Module.Basis (Fin d) K A)
     rw [hk]
     refine O.mul_mem huO (O.sum_mem fun j _ => O.mul_mem ?_ (adjugate_mem O M hMO j k))
     exact h _ (repr_basis_mem O b j)
-  · intro ha y hy
-    exact trace_mem O b hc (repr_mul_mem O b hc ha hy)
+  · exact fun ha y hy => trace_mem O b hc (repr_mul_mem O b hc ha hy)
 
 end Abstract
 
@@ -175,16 +174,14 @@ theorem traceDualAt : TraceDualAt := by
     refine hv _ ?_
     simp only [basisSet, Finset.mem_union, Finset.mem_image, Finset.mem_univ, true_and]
     exact Or.inl (Or.inl (Or.inl ⟨(i, j, k), rfl⟩))
-  have hD : Algebra.discr F (⇑bs) ≠ 0 := by
-    exact Algebra.discr_not_zero_of_basis F bs
+  have hD : Algebra.discr F (⇑bs) ≠ 0 := Algebra.discr_not_zero_of_basis F bs
   have hu : algebraMap F (Fv F v) (Algebra.discr F (⇑bs))⁻¹ ∈ O := by
     refine hv _ ?_
     simp [basisSet]
   have h1 : algebraMap F (Fv F v) (Algebra.discr F (⇑bs))⁻¹ *
       (Algebra.traceMatrix (Fv F v) (Algebra.TensorProduct.basis (Fv F v) bs)).det = 1 := by
     rw [det_traceMatrix_base, ← map_mul, inv_mul_cancel₀ hD, map_one]
-  have key := dual_iff O (Algebra.TensorProduct.basis (Fv F v) bs) hc _ hu h1 a
-  exact key
+  exact dual_iff O (Algebra.TensorProduct.basis (Fv F v) bs) hc _ hu h1 a
 
 end GlobalTheory.CompanionTheory.Gunr.TraceDual
 

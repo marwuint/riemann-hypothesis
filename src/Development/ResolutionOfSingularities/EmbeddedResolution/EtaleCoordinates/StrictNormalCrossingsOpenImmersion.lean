@@ -195,8 +195,7 @@ theorem isStrictNormalCrossingsAt_base_of_comap {X' Y' : Scheme.{u}} (h : X' ⟶
     intro i
     have h1 := stalkMap_germ_eq_germ_appLE h (h ''ᵁ U'.1) U'.1 he x hx hy (ε.symm (g i))
     have h2 : (h.appLE (h ''ᵁ U'.1) U'.1 he) (ε.symm (g i)) = g i := ε.apply_symm_apply (g i)
-    rw [h2] at h1
-    exact h1
+    rwa [h2] at h1
   refine ⟨IsRegularLocalRing.of_ringEquiv τ.symm, ⟨h ''ᵁ U'.1, hU⟩, hy, n,
     fun i => ε.symm (g i), J, ?_, ?_⟩
   · refine isRegularParameterSystem_of_ringEquiv τ.symm n
@@ -259,17 +258,14 @@ theorem IsStrictNormalCrossingsDivisor.reducedInverseImage_coprod {A B Z : Schem
         = reducedInverseImage ((coprod.inl : A ⟶ A ⨿ B) ≫ g) W :=
       comap_reducedInverseImage_of_isOpenImmersion _ g W
     refine isStrictNormalCrossingsAt_base_of_comap (coprod.inl : A ⟶ A ⨿ B) (reducedInverseImage g W) ?_ a
-    rw [h1]
-    exact hA
+    rwa [h1]
   · have hz' : z ∈ Set.range ⇑(coprod.inr : B ⟶ A ⨿ B).base := by
-      rw [Blowup.range_coprod_inr_eq_compl]
-      exact hz
+      rwa [Blowup.range_coprod_inr_eq_compl]
     obtain ⟨b, rfl⟩ := hz'
     have h1 : (reducedInverseImage g W).comap (coprod.inr : B ⟶ A ⨿ B)
         = reducedInverseImage ((coprod.inr : B ⟶ A ⨿ B) ≫ g) W :=
       comap_reducedInverseImage_of_isOpenImmersion _ g W
     refine isStrictNormalCrossingsAt_base_of_comap (coprod.inr : B ⟶ A ⨿ B) (reducedInverseImage g W) ?_ b
-    rw [h1]
-    exact hB
+    rwa [h1]
 
 end FunctorialResolution.EmbeddedResolution

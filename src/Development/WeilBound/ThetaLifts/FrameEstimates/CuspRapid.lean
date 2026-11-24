@@ -238,8 +238,7 @@ omit [NumberField E] in
 theorem mem_cols {C : Matrix (Fin n) (Fin r) E} {u : Fin n → E} (hu : u ∈ Submodule.span E (Set.range Cᵀ)) :
     ∃ a, C *ᵥ a = u := by
   have e : LinearMap.range C.mulVecLin = Submodule.span E (Set.range Cᵀ) := Matrix.range_mulVecLin C
-  rw [← e] at hu
-  exact hu
+  rwa [← e] at hu
 
 omit [NumberField E] in
 theorem span_eq (C : Matrix (Fin n) (Fin r) E) (x : Fin n → AE F E) :
@@ -376,8 +375,7 @@ theorem moderate (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w
         have e2 : lineDer γ (l.foldr lineDer f) = f₂ := funext fun g => by
           rw [e]
           exact (a2 g).deriv
-        rw [List.foldr_cons, e2]
-        exact a1
+        rwa [List.foldr_cons, e2]
     exact (hSS _ this).2.1
 
 theorem cuspidal (f : GAd σ J → ℂ)
@@ -503,8 +501,7 @@ theorem step (β : Multiplicative ℝ →* H) (hβ : Continuous β) (f f' : H �
     have e : R t = f (p t * β (Multiplicative.ofAdd (u t))) - u t * f' (p 0) - f (p t) := by
       simp only [hR]
       ring
-    rw [e]
-    exact h3
+    rwa [e]
   have hO : u =O[𝓝 0] fun t : ℝ => t - 0 := by
     have := hu.isBigO_sub
     simpa [hu0] using this
@@ -615,8 +612,7 @@ theorem prod_strict : ∀ (m : ℕ) {V : Type} [NormedAddCommGroup V] [NormedSpa
     simp only [h2] at h1
     simp only [h0, one_smul, MulOpposite.op_one] at h1
     simp only [List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ]
-    rw [add_comm (e' 0)]
-    exact h1
+    rwa [add_comm (e' 0)]
 
 theorem coords (ha : ∀ x y, a (x * y) = a y * a x) (h1 : a 1 = 1) {m : ℕ} (Y : Fin m → A) (hY : ∀ i, a (Y i) = -Y i)
     (c : A →L[ℝ] (Fin m → ℝ)) (hc : ∀ s : Fin m → ℝ, c (∑ i, s i • Y i) = s)
@@ -692,8 +688,7 @@ theorem gr_exp [CompleteSpace A] (ha : ∀ x y, a (x * y) = a y * a x) (h1 : a 1
   have h2 := NormedSpace.map_exp φ (MulOpposite.continuous_op.comp a.continuous) Y
   have h3 : a (NormedSpace.exp Y) = NormedSpace.exp (-Y) := by
     apply MulOpposite.op_injective
-    rw [← hY, ← NormedSpace.exp_op]
-    exact h2
+    rwa [← hY, ← NormedSpace.exp_op]
   constructor
   · rw [h3, ← NormedSpace.exp_add_of_commute (Commute.refl Y).neg_left, neg_add_cancel, NormedSpace.exp_zero]
   · rw [h3, ← NormedSpace.exp_add_of_commute (Commute.refl Y).neg_right, add_neg_cancel, NormedSpace.exp_zero]
@@ -1696,8 +1691,7 @@ theorem contDiff_comp_pr [FiniteDimensional ℝ A] (m : ι → G →* A) (L : Se
     · exact ContDiff.sum fun i _ =>
         (StrongDual.smulRightL ℝ (Fin k → ℝ) ℂ (ContinuousLinearMap.proj i)).contDiff.comp (hD i)
     · obtain ⟨γ', h1, h2, h3⟩ := hZ' i t
-      simp only [h3, ← mul_assoc]
-      exact hl f f' (fun j => ⟨(hS _ (hf'S j)).1, hf' j⟩) γ' h1 _ h2 _
+      simpa only [h3, ← mul_assoc] using hl f f' (fun j => ⟨(hS _ (hf'S j)).1, hf' j⟩) γ' h1 _ h2 _
 
 end PositivityTheory.ThKEst.UMGS
 

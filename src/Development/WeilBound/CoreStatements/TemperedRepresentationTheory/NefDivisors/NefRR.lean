@@ -793,8 +793,7 @@ theorem lower_of_pos (hK : VeryAmpleNefPlusAmple.Statement) (hS : SectionCount.S
     (ε - δ) (by linarith)
   · have e' : (genDeg (mCoordIdeal y) (d + 1) a : ℝ) - (δ : ℝ) - (ε - δ) =
         (genDeg (mCoordIdeal y) (d + 1) a : ℝ) - ε := by ring
-    rw [e'] at hmain
-    exact hmain
+    rwa [e'] at hmain
   · filter_upwards [eventually_ge_atTop (a₀ * (B * k + 1))] with N hN1
     have hNr : a₀ * (N / a₀) + N % a₀ = N := Nat.div_add_mod N a₀
     have hr : N % a₀ < a₀ := Nat.mod_lt _ ha0

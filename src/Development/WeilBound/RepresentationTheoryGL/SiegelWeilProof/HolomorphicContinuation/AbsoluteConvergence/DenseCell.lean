@@ -104,8 +104,7 @@ theorem det_I (y : GR n) : (Complex.I • (mR y).toBlocks₁₁ + (mR y).toBlock
     simp [v]
   have hCx : (mR y).toBlocks₂₁ *ᵥ x = -(Complex.I • ((mR y).toBlocks₁₁ *ᵥ x)) := by
     rw [add_mulVec, smul_mulVec] at hx
-    rw [eq_neg_iff_add_eq_zero, add_comm]
-    exact hx
+    rwa [eq_neg_iff_add_eq_zero, add_comm]
   have hy : (mR y)ᴴ * JJ n * mR y = JJ n := y.2
   have hform : star (mR y *ᵥ v) ⬝ᵥ (JJ n *ᵥ (mR y *ᵥ v)) = 0 := by
     rw [star_mulVec, mulVec_mulVec, dotProduct_mulVec, vecMul_vecMul, ← Matrix.mul_assoc, hy,
@@ -168,8 +167,7 @@ theorem dense_cell : Dense {y : GR n | (mR y).toBlocks₂₁.det ≠ 0} := by
     (hS.diff (s := S) (t := {0})).isClosed.isOpen_compl.mem_nhds (by simp)
   have hcont : Continuous fun t : ℝ => nbG (n := n) t * y := cont_nbG.mul continuous_const
   have htend : Tendsto (fun t : ℝ => nbG (n := n) t * y) (𝓝[≠] 0) (𝓝 y) := by
-    have h := (hcont.tendsto 0).mono_left (nhdsWithin_le_nhds (s := {0}ᶜ))
-    simpa [nbG_zero] using h
+    simpa [nbG_zero] using (hcont.tendsto 0).mono_left (nhdsWithin_le_nhds (s := {0}ᶜ))
   apply mem_closure_of_tendsto htend
   filter_upwards [nhdsWithin_le_nhds hT, self_mem_nhdsWithin] with t h1 h2
   simp only [nbG_low]

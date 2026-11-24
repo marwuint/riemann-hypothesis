@@ -157,11 +157,9 @@ private theorem image_mem_irreducibleComponents_of_isOpenEmbedding {A B : Type u
         obtain ⟨a₂, ha₂, ha₂e⟩ := hy2
         refine ⟨a₂, ?_, ?_, ha₂⟩
         · show f a₂ ∈ D
-          rw [ha₂e]
-          exact hyD
+          rwa [ha₂e]
         · have hEq : a₂ = a₁ := hf.injective (ha₂e.trans ha₁e.symm)
-          rw [hEq]
-          exact ha₁
+          rwa [hEq]
     have hTle : T ≤ f ⁻¹' D := fun x hx => hsubD ⟨x, hx, rfl⟩
     intro y hy
     obtain ⟨a, rfl⟩ := hDr hy
@@ -193,8 +191,7 @@ private theorem isBlowupAlongIdealSheaf_coprodDesc_coprod {A B F G : Scheme.{u}}
       (coprod.desc (coprod.inr : F ⟶ B ⨿ F) (g ≫ (coprod.inl : B ⟶ B ⨿ F)))) J := by
   have hmap : Blowup.IsBlowupAlongIdealSheaf (coprod.map (coprod.desc a g) (𝟙 F)) J := by
     refine Blowup.IsBlowupAlongIdealSheaf.coprod ?_ ?_
-    · rw [hinl]
-      exact h
+    · rwa [hinl]
     · rw [hinr]
       exact Blowup.isBlowupAlongIdealSheaf_id_top _
   have := isIso_coprodSwapAssocHom A F G
@@ -258,13 +255,11 @@ theorem range_strictTransformMap_subset_discardedLocusClosureCompl (i : ℕ) (_h
         ((S.discardedLocusClosureCompl i : (S.strictTransform i).Opens) : Set ↥(S.strictTransform i)) := by
     rintro w ⟨hw, hw'⟩
     have hw2 : w ∈ Set.range ⇑(S.strictTransformι i).base := by
-      rw [Scheme.IdealSheafData.range_subschemeι (S.strictTransformIdeal i)]
-      exact hw
+      rwa [Scheme.IdealSheafData.range_subschemeι (S.strictTransformIdeal i)]
     obtain ⟨z, rfl⟩ := hw2
     refine ⟨z, ?_, rfl⟩
     rw [hUcoe]
-    intro hz
-    exact hw' (S.image_discardedLocus_subset_support i ⟨z, hz, rfl⟩)
+    exact fun hz => hw' (S.image_discardedLocus_subset_support i ⟨z, hz, rfl⟩)
   have hcl : closure (⇑(S.ambientBlowupMorphism i).base ⁻¹'
         (((S.strictTransformIdeal i).support : Set ↥(S.ambientLevel i)) \
           ((S.ambientCenter i).support : Set ↥(S.ambientLevel i))))
@@ -286,12 +281,10 @@ theorem range_strictTransformMap_subset_discardedLocusClosureCompl (i : ℕ) (_h
   have h3 : ⇑(S.strictTransformι i).base (⇑(S.strictTransformMap i).base x) ∈
       ⇑(S.strictTransformι i).base ''
         ((S.discardedLocusClosureCompl i : (S.strictTransform i).Opens) : Set ↥(S.strictTransform i)) := by
-    rw [he]
-    exact h2
+    rwa [he]
   obtain ⟨z, hz, hzeq⟩ := h3
   have hzz : z = ⇑(S.strictTransformMap i).base x := hιemb.injective hzeq
-  rw [← hzz]
-  exact hz
+  rwa [← hzz]
 
 theorem exists_iso_discardedSubscheme_discardedLocusOpens (i : ℕ)
     [AlgebraicGeometry.IsReduced (S.strictTransform i)]
@@ -387,8 +380,7 @@ private theorem isBlowupAlongIdealSheaf_coprodDesc_of_restrict (i : ℕ)
     refine hmem ?_
     have h0 : ⇑(S.discardedLocusOpens i hopen).ι.base x ∈
         Set.range ⇑(S.discardedLocusOpens i hopen).ι.base := Set.mem_range_self x
-    rw [Scheme.Opens.range_ι] at h0
-    exact h0
+    rwa [Scheme.Opens.range_ι] at h0
   have hoi : ∀ b : Bool, AlgebraicGeometry.IsOpenImmersion
       (Bool.rec (motive := fun b : Bool =>
           (cond b (S.discardedLocusClosureCompl i).toScheme (S.discardedLocusOpens i hopen).toScheme) ⟶ S.strictTransform i)
@@ -407,12 +399,10 @@ private theorem isBlowupAlongIdealSheaf_coprodDesc_of_restrict (i : ℕ)
     by_cases hx : x ∈ S.discardedLocus i
     · refine ⟨false, ?_⟩
       show x ∈ Set.range ⇑(S.discardedLocusOpens i hopen).ι.base
-      rw [Scheme.Opens.range_ι]
-      exact hx
+      rwa [Scheme.Opens.range_ι]
     · refine ⟨true, ?_⟩
       show x ∈ Set.range ⇑(S.discardedLocusClosureCompl i).ι.base
-      rw [Scheme.Opens.range_ι, hUcoe]
-      exact hx
+      rwa [Scheme.Opens.range_ι, hUcoe]
   · intro b
     cases b
     · show Blowup.IsBlowupAlongIdealSheaf (pullback.snd (coprod.desc (S.strictTransformMap i) (S.discardedι i))

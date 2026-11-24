@@ -62,13 +62,11 @@ theorem sigR_algebraMap (c : Fv F v) :
 theorem smul_mem (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) {β : Fv F v} (hβ : β ∈ v.adicCompletionIntegers F)
     {x : Fv F v ⊗[F] E} (hx : x ∈ S) : β • x ∈ S := by
   have h1 : x ∈ Rv bs v := by
-    rw [← hG.carrier]
-    exact hx
+    rwa [← hG.carrier]
   have h2 : β • x ∈ Rv bs v := fun k => by
     rw [map_smul, Finsupp.smul_apply, smul_eq_mul]
     exact mul_mem hβ (h1 k)
-  rw [← hG.carrier] at h2
-  exact h2
+  rwa [← hG.carrier] at h2
 
 theorem fixed_eq (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (a : S) (ha : σS a = a) :
     ∃ α : Fv F v, (a : Fv F v ⊗[F] E) = algebraMap (Fv F v) (Fv F v ⊗[F] E) α :=
@@ -81,8 +79,7 @@ theorem basis_mem (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (i : Fin d) :
     split_ifs
     · exact one_mem _
     · exact zero_mem _
-  rw [← hG.carrier] at h
-  exact h
+  rwa [← hG.carrier] at h
 
 theorem nontrivial_S (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) : Nontrivial S := by
   by_contra h
@@ -173,8 +170,7 @@ theorem mem_level_of_character_trivial (hG : GoodLoc σ J T bs v ψv S σS ϖ ε
     field_simp
   have hγ : ϖ⁻¹ * α ∈ v.adicCompletionIntegers F := by
     rw [HeightOneSpectrum.mem_adicCompletionIntegers, ← Valued.toNormedField.norm_le_one_iff] at hkey ⊢
-    rw [norm_mul, hc1, one_mul] at hkey
-    exact hkey
+    rwa [norm_mul, hc1, one_mul] at hkey
   have hgS : algebraMap (Fv F v) (Fv F v ⊗[F] E) (ϖ⁻¹ * α) ∈ S := by
     have h1 := smul_mem hG hγ (one_mem S)
     rwa [← Algebra.algebraMap_eq_smul_one] at h1

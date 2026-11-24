@@ -124,8 +124,7 @@ theorem isSmoothHerm_fsOfDeg (γ : K → ℕ) : IsSmoothHerm (fsOfDeg γ : HermL
     refine contDiffOn_prod fun k _ => ContDiffOn.pow ?_ _
     refine ContDiffOn.sqrt ?_ fun z hz => (sum_sq_pos (hz k)).ne'
     refine ContDiff.contDiffOn ?_
-    refine ContDiff.sum fun i _ => ?_
-    exact (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ (fun _ => ℂ) _)
+    exact ContDiff.sum fun i _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ (fun _ => ℂ) _)
   exact h1.congr fun z hz =>
     show (blockSet ι).indicator (fun z : (Σ k, ι k) → ℂ => ∏ k, blockNorm k z ^ γ k) z = _ from
       indicator_of_mem (show z ∈ blockSet ι from hz) _
@@ -180,8 +179,7 @@ theorem evC_zero_iff (R : AnLogRes P J e) {s : MRing ι} {a : K → ℕ} (hs : I
   have h := eval_bsmul_of_isMultiHomog hs c (R.lift x y)
   have hp : ∏ k, c k ^ a k ≠ 0 := Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)
   have h' : evC (R.lift y y) s = (∏ k, c k ^ a k) * evC (R.lift x y) s := by
-    rw [hzc]
-    exact h
+    rwa [hzc]
   rw [h']
   simp [hp]
 
@@ -241,12 +239,10 @@ theorem not_flat_form (R : AnLogRes P J e) (Ψ : (((k : K) → ι k) → ℂ) �
       have hl : R.lift x x ∈ mcPts (Ideal.span {s}) := mem_mcPts_span hmem.1 (h0 u huO)
       refine mem_mcPts_of_sameOrbit hJh (sameOrbit_of_segre hmem.1 (Ψ (segre (R.lift x x)) 0)⁻¹
         (inv_ne_zero hx0) hzw) hl
-    · rw [hzw]
-      exact hzΨ
+    · rwa [hzw]
   have hmem : {y : Fin e → ℂ | ∃ z ∈ mcPts P, z ∈ mcPts (Ideal.span {s}) ∧
       Ψ (segre z) = Fin.cons 1 y} ∈ 𝓝 (Q u1) := by
-    rw [← hmap]
-    exact hev
+    rwa [← hmap]
   exact (Measure.measure_pos_of_mem_nhds volume hmem).ne' hN
 
 theorem zeros_null (R : AnLogRes P J e) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))

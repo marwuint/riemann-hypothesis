@@ -88,8 +88,7 @@ private theorem simple_iff_isIrr {Γ : Type} [Group Γ] (τ : FDRep ℂ Γ) :
       rw [Limits.IsZero.iff_id_eq_zero]
       apply basics_hom_ext
       rw [basics_lin_id, basics_lin_zero]
-      refine LinearMap.ext fun v => ?_
-      exact @Subsingleton.elim _ hnt _ _
+      exact LinearMap.ext fun v => @Subsingleton.elim _ hnt _ _
     · haveI hmono : Mono (basicsIncl τ W hW) :=
         basics_mono_of_inj _ (fun x y hxy => Subtype.ext hxy)
       rcases eq_or_ne (basicsIncl τ W hW) 0 with h0 | h0
@@ -99,8 +98,7 @@ private theorem simple_iff_isIrr {Γ : Type} [Group Γ] (τ : FDRep ℂ Γ) :
         have h1 : basicsLin (basicsIncl τ W hW) (⟨w, hw⟩ : W) = w := rfl
         have h2 := congrArg (fun f => basicsLin f (⟨w, hw⟩ : W)) h0
         simp only [basics_lin_zero, LinearMap.zero_apply] at h2
-        rw [← h1]
-        exact h2
+        rwa [← h1]
       · right
         haveI hiso : IsIso (basicsIncl τ W hW) :=
           (Simple.mono_isIso_iff_nonzero (basicsIncl τ W hW)).mpr h0
@@ -130,8 +128,7 @@ private theorem simple_iff_isIrr {Γ : Type} [Group Γ] (τ : FDRep ℂ Γ) :
       have hinv : ∀ g : Γ, ∀ v ∈ LinearMap.range (basicsLin f),
           τ.ρ g v ∈ LinearMap.range (basicsLin f) := by
         rintro g v ⟨y, rfl⟩
-        refine ⟨Y.ρ g y, ?_⟩
-        exact LinearMap.congr_fun (basics_lin_comm f g) y
+        exact ⟨Y.ρ g y, LinearMap.congr_fun (basics_lin_comm f g) y⟩
       rcases hirr _ hinv with hbot | htop
       · exfalso
         apply h0
@@ -153,12 +150,10 @@ private theorem simple_iff_isIrr {Γ : Type} [Group Γ] (τ : FDRep ℂ Γ) :
         refine ⟨⟨basicsMk e.symm.toLinearMap hcomm, ?_, ?_⟩⟩
         · apply basics_hom_ext
           rw [basics_lin_comp, basics_lin_id]
-          refine LinearMap.ext fun y => ?_
-          exact e.symm_apply_apply y
+          exact LinearMap.ext fun y => e.symm_apply_apply y
         · apply basics_hom_ext
           rw [basics_lin_comp, basics_lin_id]
-          refine LinearMap.ext fun v => ?_
-          exact e.apply_symm_apply v
+          exact LinearMap.ext fun v => e.apply_symm_apply v
 
 theorem simpleIffIrr : ReciprocityTheory.Ty.Fin.St.SimpleIffIrr := by
   unfold ReciprocityTheory.Ty.Fin.St.SimpleIffIrr

@@ -88,8 +88,7 @@ private theorem mem_closure_image_iff_exists_prod_pow {α : Type*} {N : Type*} [
         exact Finset.prod_congr rfl fun i _ => by rw [Pi.add_apply, pow_add]
   · rintro ⟨a, rfl⟩
     apply Submonoid.prod_mem
-    intro i _
-    exact pow_mem (Submonoid.subset_closure (Set.mem_image_of_mem f (by simp))) _
+    exact fun i _ => pow_mem (Submonoid.subset_closure (Set.mem_image_of_mem f (by simp))) _
 
 theorem isMonomialIn_iff_forall_exists_mem_closure (E : List X.IdealSheafData)
     (M : X.IdealSheafData) :
@@ -199,8 +198,7 @@ theorem isMonomialSplitting_nil (I : X.IdealSheafData) :
     refine ⟨⊤, by simp, fun _ => 0, ?_⟩
     rw [Scheme.IdealSheafData.comap_top, ← Scheme.IdealSheafData.one_eq_top]
     exact (Fin.prod_univ_zero _).symm
-  · intro D hD
-    exact absurd hD (by simp)
+  · exact fun D hD => absurd hD (by simp)
 
 namespace IsMonomialSplitting
 
@@ -229,8 +227,7 @@ theorem support_nonMonomial_subset (h : IsMonomialSplitting E I M N) :
 theorem nonzeroOnComponents_nonMonomial (h : IsMonomialSplitting E I M N)
     (hI : NonzeroOnComponents I) : NonzeroOnComponents N := by
   rw [nonzeroOnComponents_iff] at hI ⊢
-  intro T hT hTsub
-  exact hI T hT (hTsub.trans h.support_nonMonomial_subset)
+  exact fun T hT hTsub => hI T hT (hTsub.trans h.support_nonMonomial_subset)
 
 theorem orderAt_eq_add {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     (p : Y ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -260,8 +257,7 @@ theorem exists_comap_eq_prod_pow_of_orderAt_eq_zero (h : IsMonomialSplitting E I
   obtain ⟨U₀, hU₀⟩ : ∃ U₀ : X.Opens, (U₀ : Set ↥X) = ((N.support : Set ↥X))ᶜ :=
     ⟨⟨((N.support : Set ↥X))ᶜ, N.support.2.isOpen_compl⟩, rfl⟩
   have hx0 : x ∈ (U₀ : Set ↥X) := by
-    rw [hU₀]
-    exact hxN
+    rwa [hU₀]
   have hxV : x ∈ U ⊓ U₀ := by
     have hmem : x ∈ ((U ⊓ U₀ : X.Opens) : Set ↥X) := by
       rw [TopologicalSpace.Opens.coe_inf]

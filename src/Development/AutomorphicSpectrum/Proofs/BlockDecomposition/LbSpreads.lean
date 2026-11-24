@@ -174,12 +174,10 @@ theorem exists_units_stage [∀ i, QuasiSeparatedSpace (D.obj i)] {j : I} {A : T
       rw [← Scheme.Hom.comp_apply (c.π.app n') (D.map g), c.w g, ← Scheme.Hom.comp_apply, c.w f]
     have hz' : c.π.app n' z ∈ D.map (g ≫ f) ⁻¹ᵁ U p := by
       show D.map (g ≫ f) (c.π.app n' z) ∈ U p
-      rw [e1]
-      exact hz
+      rwa [e1]
     have hz'' : D.map g (c.π.app n' z) ∈ D.map f ⁻¹ᵁ U p := by
       show D.map f (D.map g (c.π.app n' z)) ∈ U p
-      rw [e2]
-      exact hz
+      rwa [e2]
     rw [gm_res _ _ hle hz', gm_pull _ _ _ _ hz'', c.w g]
     exact ht z hz
   have hexist : ∀ p : A, ∃ (n : I) (f : n ⟶ j) (t : Γ(D.obj n, D.map f ⁻¹ᵁ U p)ˣ),
@@ -287,16 +285,14 @@ theorem exists_lb_stage [∀ i, CompactSpace (D.obj i)] [∀ i, QuasiSeparatedSp
   · obtain ⟨k, hk⟩ := hcov (D.map (g ≫ f) y)
     refine ⟨k, ?_⟩
     show D.map f (D.map g y) ∈ W k
-    rw [← Scheme.Hom.comp_apply, ← D.map_comp]
-    exact hk
+    rwa [← Scheme.Hom.comp_apply, ← D.map_comp]
   · rw [ht₂ _ k l y h₁ h₂, ht₂ _ l m y h₂ h₃, ht₂ _ k m y h₁ h₃, Category.id_comp]
     exact hg k l m y h₁ h₂ h₃
   · refine exists_iso_pull (c.π.app n') M hM ⟨S, V₁, t₂⟩ a (fun k y hy => ?_)
       (fun k l y hk hl => ?_)
     · refine hle₁ k ?_
       show c.π.app n y ∈ V k
-      rw [← hπ g y]
-      exact hy
+      rwa [← hπ g y]
     · have hk' : c.π.app n y ∈ V k := by rw [← hπ g y]; exact hk
       have hl' : c.π.app n y ∈ V l := by rw [← hπ g y]; exact hl
       refine (ht₂ _ k l y hk hl).trans ?_
@@ -380,8 +376,7 @@ theorem lbSpreads : LBSpreads := by
   have hρ (s : (Finset R)ᵒᵖ) : IsPullback (ρ s) f (pullback.snd f₀ (κ s)) (cG.π.app s) := by
     refine IsPullback.of_right (h₁₂ := pullback.fst f₀ (κ s)) (v₁₃ := f₀) (h₂₂ := κ s) ?_
       (ρ₂ s) (IsPullback.of_hasPullback f₀ (κ s))
-    rw [hι', ρ₁]
-    exact hpb
+    rwa [hι', ρ₁]
   have hcD : IsLimit cD := isLimitOfIsPullbackOfIsConnected α cD cG
     { hom := f, w s := (hρ s).w.symm } (fun s => hρ s) hcG
   have hD {s t : (Finset R)ᵒᵖ} (h : s ⟶ t) :

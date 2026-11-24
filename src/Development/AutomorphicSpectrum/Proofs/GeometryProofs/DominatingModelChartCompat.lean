@@ -202,8 +202,7 @@ theorem inChart_genPt {ξ : Spec (CommRingCat.of Ω) ⟶ X} (hg : IsCptGen ξ) {
   obtain ⟨g, hg'⟩ := hg.bij.2 (x c' / x c)
   refine ⟨g, ?_⟩
   simp only [genMap]
-  rw [TopCat.Presheaf.stalkSpecializes_refl]
-  exact hg'
+  rwa [TopCat.Presheaf.stalkSpecializes_refl]
 
 theorem mem_chRing_iff {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x : κ → Ω} (M : PModel o x) {c : κ}
     (hc : x c ≠ 0) {U : M.X.Opens} (hU : ∀ q : M.X, q ∈ U ↔ ∃ h : genPt M.ξ ⤳ q, InChart M.ξ x c ⟨q, h⟩)
@@ -260,10 +259,8 @@ theorem chart_step {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω]
     obtain ⟨r₀, h₀, rfl⟩ := hr
     obtain ⟨a, ha⟩ := (mem_chRing_iff M hc hUm hg r₀).1 h₀
     exact ⟨a, by rw [ha]; rfl⟩
-  · intro t ht
-    exact (mem_chRing_iff M' hne hV hg' t).1 ((hs t).2 (Submodule.subset_span ht))
-  · intro b
-    exact (hs _).1 ((mem_chRing_iff M' hne hV hg' _).2 ⟨b, rfl⟩)
+  · exact fun t ht => (mem_chRing_iff M' hne hV hg' t).1 ((hs t).2 (Submodule.subset_span ht))
+  · exact fun b => (hs _).1 ((mem_chRing_iff M' hne hV hg' _).2 ⟨b, rfl⟩)
 
 
 set_option backward.isDefEq.respectTransparency false in
@@ -287,7 +284,6 @@ theorem isFinite_of_charts {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algeb
   dsimp only
   rw [morphismRestrict_appTop, CommRingCat.hom_comp, RingHom.finite_respectsIso.cancel_right_isIso]
   change (Scheme.Hom.app f ((U i).ι ''ᵁ ⊤)).hom.Finite
-  rw [Scheme.Opens.ι_image_top]
-  exact h2
+  rwa [Scheme.Opens.ι_image_top]
 
 end GlobalTheory.CompanionTheory.Ar.ChartFin

@@ -69,8 +69,7 @@ theorem hkE_eq_sum (ρ : Representation ℂ G V) (K : Subgroup G) (f : G → ℂ
   intro q hq
   rw [Function.mem_support] at hq
   rw [Set.Finite.coe_toFinset, Set.mem_ofPred_eq]
-  intro h0
-  exact hq (by simp [h0])
+  exact fun h0 => hq (by simp [h0])
 
 theorem map_sum_sum_apply {A B : Type} (s : Finset A) (t : Finset B) (a : A → ℂ) (b : B → ℂ)
     (P : A → Module.End ℂ V) (Q : B → Module.End ℂ W) (v : V ⊗[ℂ] W) :
@@ -113,15 +112,13 @@ theorem apply_out_mk {X : Type} (K : Subgroup G) (Φ : G → X) (hΦ : ∀ x, �
   have hk : x⁻¹ * (QuotientGroup.mk x : G ⧸ K).out ∈ K :=
     QuotientGroup.eq.mp (QuotientGroup.out_eq' (QuotientGroup.mk x : G ⧸ K)).symm
   have e := hΦ x _ hk
-  rw [mul_inv_cancel_left] at e
-  exact e
+  rwa [mul_inv_cancel_left] at e
 
 theorem tensHk : TensHk := by
   intro G H V W _ _ _ _ _ _ ρ σ K L f e hf he hsf hse v hv
   have hfix : ∀ k ∈ K.prod L, extTensor ρ σ k v = v := by
     intro k hk
-    have h1 := hv ⟨k, hk⟩
-    simpa using h1
+    simpa using hv ⟨k, hk⟩
   have hinv : ∀ x : G × H, ∀ k ∈ K.prod L,
       (f (x * k).1 * e (x * k).2) • extTensor ρ σ (x * k) v = (f x.1 * e x.2) • extTensor ρ σ x v := by
     intro x k hk
@@ -136,8 +133,7 @@ theorem tensHk : TensHk := by
     have h2 := apply_out_mk (K.prod L) (fun m : G × H => (f m.1 * e m.2) • extTensor ρ σ m v) hinv
       (p.1.out, p.2.out)
     simp only at h2
-    rw [extTensor_apply_eq] at h2
-    exact h2
+    rwa [extTensor_apply_eq] at h2
   unfold PositivityTheory.Rg.BcB.F.Tail.PExp.hkS
   show (∑ᶠ q : (G × H) ⧸ K.prod L, (f q.out.1 * e q.out.2) • extTensor ρ σ q.out v) = _
   rw [key, hkE_eq_sum ρ K f hsf, hkE_eq_sum σ L e hse, map_sum_sum_apply]
@@ -147,10 +143,8 @@ theorem tensHk : TensHk := by
   rw [Finset.coe_product, Set.mem_prod, Set.Finite.coe_toFinset, Set.Finite.coe_toFinset,
     Set.mem_ofPred_eq, Set.mem_ofPred_eq]
   constructor
-  · intro h0
-    exact hp (by simp [h0])
-  · intro h0
-    exact hp (by simp [h0])
+  · exact fun h0 => hp (by simp [h0])
+  · exact fun h0 => hp (by simp [h0])
 
 end GlobalTheory.CompanionTheory.TensHkSum
 

@@ -169,8 +169,7 @@ theorem continuous_glIso [TopologicalSpace R] (e : (Σ a, m a) ≃ n) : Continuo
   · have : ∀ g : GL (Fin (∑ i, blockSize m i)) R, (((glIso R e g)⁻¹ : GL n R) : Matrix n n R) x y =
         ((g⁻¹ : GL _ R) : Matrix _ _ R) ((stdIdx e).symm x) ((stdIdx e).symm y) := fun g => by
       rw [← map_inv]; rfl
-    simp only [this]
-    exact Units.continuous_coe_inv.matrix_elem _ _
+    simpa only [this] using Units.continuous_coe_inv.matrix_elem _ _
 
 theorem continuous_leviMap [TopologicalSpace R] [IsTopologicalRing R] (e : (Σ a, m a) ≃ n) :
     Continuous (leviMap R e) := by
@@ -341,8 +340,7 @@ theorem pos_stdE (a : Fin r) (x : Fin (d a)) : pos d (stdE d ⟨a, x⟩) = a := 
 
 variable (k d) in
 theorem blockUpper_le_parab : blockUpper k (∑ a, d a) (pos d) ≤ parab k (stdE d) := by
-  intro g hg
-  exact hg
+  exact fun g hg => hg
 
 
 variable (k d) in
@@ -361,8 +359,7 @@ theorem leviTo_surjective : Function.Surjective (leviTo k d) := by
     rw [mem_levi]
     intro i j hij
     exact GlobalTheory.JacquetBlocks.leviEmb_apply_of_blk_ne (stdE d) g (fun h => hij (congrArg Fin.val h))
-  refine ⟨⟨_, hmem⟩, ?_⟩
-  exact GlobalTheory.JacquetBlocks.leviProj_eq_of_coe_eq (stdE d) _ g rfl
+  exact ⟨⟨_, hmem⟩, GlobalTheory.JacquetBlocks.leviProj_eq_of_coe_eq (stdE d) _ g rfl⟩
 
 theorem leviTo_leviProj (p : blockUpper k (∑ a, d a) (pos d)) :
     leviTo k d (GroundTheory.Automorphic.Parabolic.leviProj k (∑ a, d a) (pos d) p) =
@@ -389,7 +386,6 @@ theorem isSmoothChar_invHalf : IsSmoothChar (invHalf k d) := by
   rw [MonoidHom.mem_ker]
   apply Units.ext
   rw [Units.val_one]
-  show (invSqrtModular k (∑ a, d a) (pos d)) (leviIncl m) = 1
   exact GroundTheory.Automorphic.Parabolic.invSqrtModular_leviIncl_of_mem m hm
 
 
@@ -528,8 +524,7 @@ theorem hasFiniteLength_parInd_std (ρ : Representation ℂ (Levi k fun a => Fin
     rw [SetLike.mem_coe, GroundTheory.Automorphic.mem_stabilizerOf]
     rw [SetLike.mem_coe, MonoidHom.mem_ker] at hx2
     show ((adj k d x : ℂˣ) : ℂ) • ρ (leviTo k d x) v = v
-    rw [hx2, Units.val_one, one_smul]
-    exact hx1
+    rwa [hx2, Units.val_one, one_smul]
   have hfl : GlobalTheory.SmGL.HasFiniteLength (carry ρ) :=
     (GlobalTheory.JacquetBlocks.hasFiniteLength_twist_iff _ _).2
       ((GlobalTheory.SmGL.hasFiniteLength_comp_iff ρ (leviTo k d) leviTo_surjective).2 hl)
@@ -547,7 +542,6 @@ theorem hasFiniteLength_parInd_std (ρ : Representation ℂ (Levi k fun a => Fin
       exact ⟨parInd (stdE d) ρ g x, U.apply_mem_toSubmodule g hx,
         Representation.IntertwiningMap.isIntertwining _ _ (toIndMap ρ) g x⟩⟩
   have hmono : Monotone φ := fun U V h => by
-    show U.toSubmodule.map (toIndMap ρ).toLinearMap ≤ V.toSubmodule.map (toIndMap ρ).toLinearMap
     exact Submodule.map_mono h
   have hinj : Function.Injective φ := fun U V h =>
     Subrepresentation.toSubmodule_injective

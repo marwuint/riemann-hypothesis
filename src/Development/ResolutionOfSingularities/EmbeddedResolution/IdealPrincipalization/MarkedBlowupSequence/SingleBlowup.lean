@@ -105,7 +105,6 @@ def singleBlowupBoundary {X : Scheme.{u}} (Z : X.IdealSheafData) (E : List X.Ide
 private theorem isBlowupAlongIdealSheaf_singleBlowupMap {X : Scheme.{u}} (Z : X.IdealSheafData) (i : ℕ) (hi : i < 1) :
     Blowup.IsBlowupAlongIdealSheaf (singleBlowupMap Z i) (singleBlowupCenter Z i) := by
   obtain rfl : i = 0 := Nat.lt_one_iff.mp hi
-  show Blowup.IsBlowupAlongIdealSheaf (Blowup.blowup.proj Z) Z
   exact Blowup.blowup.isBlowupAlongIdealSheaf_proj Z
 
 def singleBlowupSequenceData {X : Scheme.{u}} (Z : X.IdealSheafData) : BlowupSequenceData X where
@@ -120,10 +119,8 @@ private theorem singleBlowupProj_succ {X : Scheme.{u}} (Z : X.IdealSheafData) (i
     singleBlowupProj Z (i + 1) = singleBlowupMap Z i ≫ singleBlowupProj Z i := by
   cases i with
   | zero =>
-      show Blowup.blowup.proj Z = Blowup.blowup.proj Z ≫ 𝟙 X
       exact (Category.comp_id _).symm
   | succ j =>
-      show Blowup.blowup.proj Z = 𝟙 (Blowup.blowup Z) ≫ Blowup.blowup.proj Z
       exact (Category.id_comp _).symm
 
 private theorem singleBlowupCenter_support_subset_orderAtLeastLocus {X : Scheme.{u}} (I Z : X.IdealSheafData) (m : ℕ)
@@ -133,8 +130,7 @@ private theorem singleBlowupCenter_support_subset_orderAtLeastLocus {X : Scheme.
   intro i hi
   obtain rfl : i = 0 := Nat.lt_one_iff.mp hi
   show (Z.support : Set ↥X) ⊆ orderAtLeastLocus (I.comap (𝟙 X)) m
-  rw [Scheme.IdealSheafData.comap_id]
-  exact hord
+  rwa [Scheme.IdealSheafData.comap_id]
 
 private theorem smooth_singleBlowupCenter_of_smooth {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} (Z : X.IdealSheafData)
@@ -144,8 +140,7 @@ private theorem smooth_singleBlowupCenter_of_smooth {k : Type u} [Field k] {X : 
   intro i hi
   obtain rfl : i = 0 := Nat.lt_one_iff.mp hi
   show AlgebraicGeometry.Smooth (Z.subschemeι ≫ 𝟙 X ≫ p)
-  rw [Category.id_comp]
-  exact hsm
+  rwa [Category.id_comp]
 
 private theorem hasStrictNormalCrossingsWith_singleBlowupCenter {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} (Z : X.IdealSheafData) (E : List X.IdealSheafData)
@@ -155,8 +150,7 @@ private theorem hasStrictNormalCrossingsWith_singleBlowupCenter {k : Type u} [Fi
   intro i hi
   obtain rfl : i = 0 := Nat.lt_one_iff.mp hi
   show HasStrictNormalCrossingsWith (𝟙 X ≫ p) Z (E.map (fun D => D.comap (𝟙 X)))
-  rw [map_comap_id_list_idealSheafData E, Category.id_comp]
-  exact hsnc
+  rwa [map_comap_id_list_idealSheafData E, Category.id_comp]
 
 private theorem exceptionalIdeal_pow_mul_singleBlowupResidualIdeal_succ {X : Scheme.{u}} (I Z : X.IdealSheafData) (m : ℕ)
     (hdiv : ∃ B : (Blowup.blowup Z).IdealSheafData,

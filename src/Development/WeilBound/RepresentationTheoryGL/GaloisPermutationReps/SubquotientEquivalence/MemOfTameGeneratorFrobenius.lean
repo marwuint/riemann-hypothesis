@@ -94,8 +94,7 @@ theorem mem_of_tame_generator_frobenius {M : Type*} [Monoid M] (f : Weil h →* 
     · show ineIncl h ⟨γ0, hγ.1⟩ ∈ S
       have e : ineIncl h ⟨γ0, hγ.1⟩ = ⟨γ0, GlobalTheory.WeilDeligne.Ine_le_Weil h hγ.1⟩ :=
         Subtype.ext (coe_ineIncl h _)
-      rw [e]
-      exact h1
+      rwa [e]
     · intro τ hτ
       show ineIncl h τ ∈ S
       apply hS
@@ -228,8 +227,7 @@ theorem st2 : St2 := by
   let x : Weil h := (γ ^ normV w)⁻¹ * (φ⁻¹ * γ * φ⁻¹⁻¹)
   have hx : Formalism.MainNotions.BlochKatoReduction.IsWild A (x : G E Ω) := by
     apply wild_inertia_isWild
-    have ht := tame_relation (γ := γ0) (q := normV w) hγ.1 hfr
-    simpa [x, γ] using ht
+    simpa [x, γ] using tame_relation (γ := γ0) (q := normV w) hγ.1 hfr
   have hid : γ * φ = φ * γ ^ normV w * x := by
     simp only [x]
     group
@@ -248,11 +246,9 @@ theorem st2 : St2 := by
       intro u
       simp [hτ]
     · rw [mem_weil_stabiliser_iff]
-      intro u
-      exact ⟨h1 u, mem_of_injective_maps_into (hinj b _) h1⟩
+      exact fun u => ⟨h1 u, mem_of_injective_maps_into (hinj b _) h1⟩
     · rw [mem_weil_stabiliser_iff]
-      intro u
-      exact ⟨h2 u, mem_of_injective_maps_into (hinj b _) h2⟩
+      exact fun u => ⟨h2 u, mem_of_injective_maps_into (hinj b _) h2⟩
   refine ⟨γ, ?_, ?_⟩
   · intro n a ha
     refine ⟨?_, fun hirr => ⟨irreducible_nontrivial hirr, fun U h1 h2 => irreducible_stable_bot_or_top hirr U (hstab a ha U h1 h2)⟩⟩
@@ -286,10 +282,8 @@ theorem st2 : St2 := by
         intro u
         rw [hτ.1, hτ.2]
         rfl
-      · rw [mem_weil_intertwining_iff]
-        exact he1
-      · rw [mem_weil_intertwining_iff]
-        exact he2
+      · rwa [mem_weil_intertwining_iff]
+      · rwa [mem_weil_intertwining_iff]
     · intro v
       rw [irreducible_monodromy_zero a hai, irreducible_monodromy_zero b hbi]
       simp

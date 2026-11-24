@@ -102,8 +102,7 @@ theorem compactOpen_mass_le : ∀ (V K : Type) [TopologicalSpace V] [MeasurableS
     refine continuous_indicator ?_ continuous_const.continuousOn
     simp [hPo.frontier_eq, hPc.isClosed.closure_eq]
   have hφs : HasCompactSupport φ := by
-    refine HasCompactSupport.intro hPc fun x hx => ?_
-    exact Set.indicator_of_notMem hx _
+    exact HasCompactSupport.intro hPc fun x hx => Set.indicator_of_notMem hx _
   have hts : tsupport φ ⊆ Z := by
     refine subset_trans (closure_minimal (fun x hx => ?_) hPc.isClosed) hPZ
     by_contra h
@@ -124,9 +123,7 @@ theorem compactOpen_mass_le : ∀ (V K : Type) [TopologicalSpace V] [MeasurableS
   obtain ⟨C, hCb⟩ := (hPc.image hQ).exists_bound_of_continuousOn hcont
   have hoff : ∀ s, s ∉ Q '' P → m s P = 0 := fun s hs => by
     have hae := GlobalTheory.CompanionTheory.SiegelND.Coef.AvgV.ae_lift_eq h (g := Q) (fun _ => rfl) Function.injective_id s
-    refine measure_mono_null (t := {x | ¬ Q x = s}) ?_ hae
-    intro x hx hxs
-    exact hs ⟨x, hx, hxs⟩
+    exact measure_mono_null (t := {x | ¬ Q x = s}) (fun x hx hxs => hs ⟨x, hx, hxs⟩) hae
   have hbd : ∀ s, m s P ≤ (C.toNNReal : ℝ≥0∞) := fun s => by
     by_cases hs : s ∈ Q '' P
     · have h1 : (m s P).toReal ≤ C := le_trans (le_abs_self _) (by simpa using hCb s hs)
@@ -180,13 +177,11 @@ theorem fibre_mass_le_of_pushforward : ∀ (V K : Type) [TopologicalSpace V] [Me
     rw [integral_indicator hPm, setIntegral_const]
     simp [Measure.real]
   have hgcont : Continuous (fun b => (m b P).toReal) := by
-    have h := continuousOn_univ.1 hgc
-    simpa only [hgeq] using h
+    simpa only [hgeq] using continuousOn_univ.1 hgc
   by_contra hlt
   rw [not_le] at hlt
   have hcs : (c : ℝ) < (m s P).toReal := by
-    have h := (ENNReal.toReal_lt_toReal ENNReal.coe_ne_top (hfin s).ne).2 hlt
-    simpa using h
+    simpa using (ENNReal.toReal_lt_toReal ENNReal.coe_ne_top (hfin s).ne).2 hlt
   obtain ⟨d, hcd, hds⟩ := exists_between hcs
   obtain ⟨N, ⟨hsN, hNo⟩, hNfin⟩ := (lam.finiteAt_nhds s).exists_mem_basis (nhds_basis_opens s)
   have hWo : IsOpen ({b | d < (m b P).toReal} ∩ N) :=
@@ -214,8 +209,7 @@ theorem fibre_mass_le_of_pushforward : ∀ (V K : Type) [TopologicalSpace V] [Me
         refine ⟨⟨hvP, ?_⟩, hvT⟩
         have hQv : Q v = b := hvT.1
         show Q v ∈ ({b | d < (m b P).toReal} ∩ N)
-        rw [hQv]
-        exact hb
+        rwa [hQv]
     · rw [Set.indicator_of_notMem hb]
       have hE : (P ∩ Q ⁻¹' ({b | d < (m b P).toReal} ∩ N)) ∩ (Q ⁻¹' {id b} ∩ Z) = ∅ := by
         ext v
@@ -223,8 +217,7 @@ theorem fibre_mass_le_of_pushforward : ∀ (V K : Type) [TopologicalSpace V] [Me
         rintro ⟨⟨_, hvW⟩, hvT⟩
         have hQv : Q v = b := hvT.1
         apply hb
-        rw [← hQv]
-        exact hvW
+        rwa [← hQv]
       rw [hE, measure_empty]
   have hlhs : ∫⁻ v in Z, (P ∩ Q ⁻¹' ({b | d < (m b P).toReal} ∩ N)).indicator 1 v ∂μ =
       μ (P ∩ Q ⁻¹' ({b | d < (m b P).toReal} ∩ N)) := by
@@ -493,8 +486,7 @@ theorem exists_sphere {T : Type} [AddCommGroup T] [Module K T] [Module.Finite K 
     constructor
     · rintro ⟨w, hw, rfl⟩
       simpa using hw
-    · intro hX
-      exact ⟨c X, hX, by simp⟩
+    · exact fun hX => ⟨c X, hX, by simp⟩
   refine ⟨c.symm '' Metric.sphere 0 1, k, (isCompact_sphere _ _).image hc', ?_, ?_, ?_⟩
   · rw [himg]
     exact (IsUltrametricDist.isClopen_sphere 0 one_ne_zero).isOpen.preimage hc
@@ -569,8 +561,7 @@ theorem exists_cover (hR : IsField R) (π : K) (h0 : π ≠ 0) (h1 : ‖π‖ < 
     rw [Units.val_zpow_eq_zpow_val]
     rfl
   refine ⟨ℕ, inferInstance, P, u, hPc, hPo, ?_, ?_, ?_⟩
-  · intro X hX
-    exact linearIndependent_of_ne_zero hR fun h => hP0 (h ▸ hX)
+  · exact fun X hX => linearIndependent_of_ne_zero hR fun h => hP0 (h ▸ hX)
   · have hd : 0 < Module.finrank K R := Module.finrank_pos
     have hπ : 0 < ‖π‖₊ := nnnorm_pos.2 h0
     have hlt : ‖π‖₊ < 1 := by exact_mod_cast h1
@@ -695,8 +686,7 @@ theorem null_nonfree : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   have hh := GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hσ (Fv F v) d b lam hlam.1
   have h0 := (NullV.null_nonunits F E σ hσ M J hJ hM v (coordW (Fv F v) b lam 1 M) lam (hh.2.1 1 M) hlam.1).2
   refine measure_mono_null ?_ h0
-  intro X hX hu
-  exact hX (linearIndependent_of_isUnit_qR hσ hJ (Fv F v) X hu)
+  exact fun X hX hu => hX (linearIndependent_of_isUnit_qR hσ hJ (Fv F v) X hu)
 
 end GlobalTheory.CompanionTheory.WeilSiegel.Free.NonFree
 end -- clump:auto
@@ -777,13 +767,11 @@ theorem push_dil : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
     · rintro ⟨⟨X, hX, rfl⟩, hY⟩
       refine ⟨X, ⟨hX, ?_⟩, rfl⟩
       show n * Q X ∈ S
-      rw [← hdil]
-      exact hY
+      rwa [← hdil]
     · rintro ⟨X, ⟨hX, hXS⟩, rfl⟩
       refine ⟨⟨X, hX, rfl⟩, ?_⟩
       show Q (D X) ∈ S
-      rw [hdil]
-      exact hXS
+      rwa [hdil]
   have hQc : Continuous Q := by
     have h1 : Continuous (Algebra.trace (Fv F v) (Fv F v ⊗[F] E)) :=
       PI.VolStabSW.SdUniqW.continuous_trace_tens (F := F) (E := E) (Fv F v)
@@ -944,8 +932,7 @@ theorem isOpen_unitVecs (τ : E →ₐ[F] Fv F v) : IsOpen (unitVecs (M := M) σ
   have hS : IsOpen {Y : Fin 1 → Fin M → Fv F v | ‖Y‖ = 1} := by
     have := IsUltrametricDist.isOpen_sphere (0 : Fin 1 → Fin M → Fv F v) (r := 1) one_ne_zero
     have e : {Y : Fin 1 → Fin M → Fv F v | ‖Y‖ = 1} = Metric.sphere 0 1 := Set.ext fun Y => by simp
-    rw [e]
-    exact this
+    rwa [e]
   exact (hS.preimage (continuous_comp τ)).inter (hS.preimage (continuous_comp (τ.comp σ)))
 
 theorem isCompact_unitVecs (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) : IsCompact (unitVecs (M := M) σ τ) := by
@@ -1194,8 +1181,7 @@ theorem linearIndependent_dil {A : Type} [CommRing A] {M : ℕ} (u : Aˣ) (X : F
     simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this ⊢
     rw [← this]
     exact Finset.sum_congr rfl fun j _ => by ring
-  have h1 := hX (fun i => g i * (u : A)) h0 i
-  exact (Units.mul_left_eq_zero u).1 h1
+  exact (Units.mul_left_eq_zero u).1 (hX (fun i => g i * (u : A)) h0 i)
 
 theorem dil_set : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (v : HeightOneSpectrum (𝓞 F)) (u : (Fv F v ⊗[F] E)ˣ) (P : Set (Fin 1 → Fin M → Fv F v ⊗[F] E)), IsCompact P → IsOpen P → P ⊆ {X : Fin 1 → Fin M → Fv F v ⊗[F] E | LinearIndependent (Fv F v ⊗[F] E) X} → IsCompact ((fun (X : Fin 1 → Fin M → Fv F v ⊗[F] E) (p : Fin 1) (k : Fin M) => (u : Fv F v ⊗[F] E) * X p k) '' P) ∧ IsOpen ((fun (X : Fin 1 → Fin M → Fv F v ⊗[F] E) (p : Fin 1) (k : Fin M) => (u : Fv F v ⊗[F] E) * X p k) '' P) ∧ (fun (X : Fin 1 → Fin M → Fv F v ⊗[F] E) (p : Fin 1) (k : Fin M) => (u : Fv F v ⊗[F] E) * X p k) '' P ⊆ {X : Fin 1 → Fin M → Fv F v ⊗[F] E | LinearIndependent (Fv F v ⊗[F] E) X} := by
   intro F E _ _ _ _ _ σ _ M v u P hc ho hP
@@ -1267,8 +1253,7 @@ theorem avg_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
     Subtype.ext (funext fun _ => funext fun _ => by
       show (1 : Fv F v) ⊗ₜ[F] (0 : E) = (0 : Fv F v) ⊗ₜ[F] (1 : E)
       simp)
-  rw [e0]
-  exact key
+  rwa [e0]
 
 end GlobalTheory.CompanionTheory.SW.AvgZero
 end -- clump:auto

@@ -148,39 +148,18 @@ private theorem C_sub_map_C_aeval_mem_graphRelationIdeal (f : τ → MvPolynomia
     MvPolynomial.C a - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R)
       (MvPolynomial.aeval f a) ∈ graphRelationIdeal f := by
   induction a using MvPolynomial.induction_on with
-  | C r =>
-      have key : (MvPolynomial.C (MvPolynomial.C r : MvPolynomial τ R) :
-            MvPolynomial σ (MvPolynomial τ R))
-          - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R)
-            (MvPolynomial.aeval f (MvPolynomial.C r : MvPolynomial τ R)) = 0 := by
-        simp [MvPolynomial.algebraMap_eq]
-      rw [key]
-      exact Ideal.zero_mem _
+  | C r => simp [MvPolynomial.algebraMap_eq]
   | add p q hp hq =>
-      have key : (MvPolynomial.C (p + q) : MvPolynomial σ (MvPolynomial τ R))
-          - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R)
-            (MvPolynomial.aeval f (p + q))
-          = (MvPolynomial.C p - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R)
-              (MvPolynomial.aeval f p))
-            + (MvPolynomial.C q - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R)
-              (MvPolynomial.aeval f q)) := by
-        simp only [map_add (f := _)]
-        ring
-      rw [key]
-      exact Ideal.add_mem _ hp hq
+      convert Ideal.add_mem _ hp hq using 1
+      simp only [map_add (f := _)]
+      ring
   | mul_X p j hp =>
       have hrel : graphRelation f j ∈ graphRelationIdeal f := Ideal.subset_span ⟨j, rfl⟩
-      have key : (MvPolynomial.C (p * MvPolynomial.X j) : MvPolynomial σ (MvPolynomial τ R))
-          - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R)
-            (MvPolynomial.aeval f (p * MvPolynomial.X j))
-          = MvPolynomial.C p * graphRelation f j
-            + (MvPolynomial.C p - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R)
-                (MvPolynomial.aeval f p))
-              * MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R) (f j) := by
-        simp only [graphRelation, map_mul, MvPolynomial.aeval_X]
-        ring
-      rw [key]
-      exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ hrel) (Ideal.mul_mem_right _ _ hp)
+      convert Ideal.add_mem _ (Ideal.mul_mem_left _ (MvPolynomial.C p) hrel)
+        (Ideal.mul_mem_right (MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R) (f j)) _
+          hp) using 1
+      simp only [graphRelation, map_mul, MvPolynomial.aeval_X]
+      ring
 
 private theorem sub_map_C_mem_graphRelationIdeal (f : τ → MvPolynomial σ R)
     (p : MvPolynomial σ (MvPolynomial τ R)) :

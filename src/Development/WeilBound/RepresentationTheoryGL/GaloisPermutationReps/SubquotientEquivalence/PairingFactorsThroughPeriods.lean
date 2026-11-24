@@ -141,9 +141,7 @@ theorem basis_side {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional
         rw [smul_smul]
       have e3 : (∑ j, (c j * z ^ q ^ (j : ℕ)) • b j) = ∑ j, (z * c j) • b j :=
         e1.symm.trans (hx.trans e2)
-      have e4 := congrArg (fun y => b.repr y j) e3
-      simp only [Module.Basis.repr_sum_self] at e4
-      exact e4
+      simpa only [Module.Basis.repr_sum_self] using congrArg (fun y => b.repr y j) e3
     have hc0 : ∀ j : Fin (m + 1), j ≠ 0 → c j = 0 := by
       intro j hj
       have hjpos : 0 < (j : ℕ) := Nat.pos_of_ne_zero (fun h => hj (Fin.ext h))
@@ -161,8 +159,7 @@ theorem basis_side {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional
     · have hx00 : G (b (Fin.last m)) = 0 := by rw [← hxdef, hx0, h, zero_smul]
       exact b.ne_zero (Fin.last m)
         (((Module.End.isUnit_iff _).mp hG).injective (by rw [map_zero]; exact hx00))
-    · rw [← hxdef]
-      exact hx0
+    · rwa [← hxdef]
 
 end PairingFactorsThroughPeriods
 
@@ -194,8 +191,7 @@ theorem st1b : St1b := by
       G'' = T.symm.toLinearMap ∘ₗ G' ∘ₗ T.toLinearMap := ⟨_, rfl⟩
   have hdet'' : LinearMap.det G'' = LinearMap.det G' := by
     rw [hG'']
-    have h := LinearMap.det_conj G' T.symm
-    simpa using h
+    simpa using LinearMap.det_conj G' T.symm
   obtain ⟨d, hd⟩ : ∃ d : Fin (m + 1) → ℂ, d = fun j => if j = Fin.last m then μ / μ' else 1 :=
     ⟨_, rfl⟩
   obtain ⟨D, hDdef⟩ : ∃ D : Module.End ℂ V, D = Matrix.toLin b b (Matrix.diagonal d) := ⟨_, rfl⟩

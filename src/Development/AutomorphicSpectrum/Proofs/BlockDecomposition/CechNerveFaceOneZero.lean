@@ -135,24 +135,18 @@ section Faces
 
 variable {T T' T'' T''' : C} (φ : T ⟶ T') (ψ : T' ⟶ T'') (χ : T'' ⟶ T''')
 
-theorem cech_nerve_face_one_zero : face 0 (mk₁ φ) = mk₀ T' := by
-  exact ComposableArrows.ext₀ rfl
-theorem cech_nerve_face_one_one : face 1 (mk₁ φ) = mk₀ T := by
-  exact ComposableArrows.ext₀ rfl
-theorem cech_nerve_face_two_zero : face 0 (mk₂ φ ψ) = mk₁ ψ := by
-  exact eq_mk₁ (face 0 (mk₂ φ ψ)) ψ rfl
+theorem cech_nerve_face_one_zero : face 0 (mk₁ φ) = mk₀ T' := ComposableArrows.ext₀ rfl
+theorem cech_nerve_face_one_one : face 1 (mk₁ φ) = mk₀ T := ComposableArrows.ext₀ rfl
+theorem cech_nerve_face_two_zero : face 0 (mk₂ φ ψ) = mk₁ ψ := eq_mk₁ (face 0 (mk₂ φ ψ)) ψ rfl
 theorem cech_nerve_face_two_one : face 1 (mk₂ φ ψ) = mk₁ (φ ≫ ψ) := by
   exact eq_mk₁ (face 1 (mk₂ φ ψ)) (φ ≫ ψ) rfl
-theorem cech_nerve_face_two_two : face 2 (mk₂ φ ψ) = mk₁ φ := by
-  exact eq_mk₁ (face 2 (mk₂ φ ψ)) φ rfl
-theorem face_zero_mk3 : face 0 (mk₃ φ ψ χ) = mk₂ ψ χ := by
-  exact eq_mk₂ (face 0 (mk₃ φ ψ χ)) ψ χ rfl rfl
+theorem cech_nerve_face_two_two : face 2 (mk₂ φ ψ) = mk₁ φ := eq_mk₁ (face 2 (mk₂ φ ψ)) φ rfl
+theorem face_zero_mk3 : face 0 (mk₃ φ ψ χ) = mk₂ ψ χ := eq_mk₂ (face 0 (mk₃ φ ψ χ)) ψ χ rfl rfl
 theorem face_one_mk3 : face 1 (mk₃ φ ψ χ) = mk₂ (φ ≫ ψ) χ := by
   exact eq_mk₂ (face 1 (mk₃ φ ψ χ)) (φ ≫ ψ) χ rfl rfl
 theorem face_two_mk3 : face 2 (mk₃ φ ψ χ) = mk₂ φ (ψ ≫ χ) := by
   exact eq_mk₂ (face 2 (mk₃ φ ψ χ)) φ (ψ ≫ χ) rfl rfl
-theorem face_three_mk3 : face 3 (mk₃ φ ψ χ) = mk₂ φ ψ := by
-  exact eq_mk₂ (face 3 (mk₃ φ ψ χ)) φ ψ rfl rfl
+theorem face_three_mk3 : face 3 (mk₃ φ ψ χ) = mk₂ φ ψ := eq_mk₂ (face 3 (mk₃ φ ψ χ)) φ ψ rfl rfl
 
 end Faces
 

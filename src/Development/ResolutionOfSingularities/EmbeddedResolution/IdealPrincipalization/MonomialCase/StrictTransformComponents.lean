@@ -126,11 +126,9 @@ theorem exists_specializes_of_homeomorph {α β : Type*} [TopologicalSpace α] [
     rw [← h1]
     simp
   · have h2 : ((e ⟨y, hy⟩ : {z : β // q z}) : β) ∈ closure ({ξ} : Set β) := by
-      rw [he ⟨y, hy⟩]
-      exact hs
+      rwa [he ⟨y, hy⟩]
     have h3 : (e ⟨y, hy⟩) ∈ closure ({(⟨ξ, hξ⟩ : {z : β // q z})} : Set {z : β // q z}) := by
-      rw [closure_subtype, Set.image_singleton]
-      exact h2
+      rwa [closure_subtype, Set.image_singleton]
     have h4 := Set.mem_image_of_mem (⇑e.symm) h3
     rw [e.symm.image_closure, Set.image_singleton, Homeomorph.symm_apply_apply] at h4
     have h5 := closure_subtype.mp h4
@@ -172,8 +170,7 @@ theorem eq_of_isBlowupAlongIdealSheaf_of_notMem_support {X X' : Scheme.{u}} (π 
   have hy' : y ∈ (π ⁻¹ᵁ Z.support.compl) := hy
   have key : e ⟨x, hx'⟩ = e ⟨y, hy'⟩ := by
     apply Subtype.ext
-    rw [he ⟨x, hx'⟩, he ⟨y, hy'⟩]
-    exact hxy
+    rwa [he ⟨x, hx'⟩, he ⟨y, hy'⟩]
   exact congrArg Subtype.val (e.injective key)
 
 theorem notMem_support_exceptionalIdeal {X X' : Scheme.{u}} (π : X' ⟶ X)
@@ -202,119 +199,60 @@ theorem exists_eq_closure_of_isIrreducibleComponentOf_strictTransform :
                 IsIrreducibleComponentOf C (↑D.support : Set ↥T.scheme) ∧
                 ¬ C ⊆ (↑Z.support : Set ↥T.scheme) ∧
                 C = closure ({π η'} : Set ↥T.scheme) := by
-  intro T hT Z _hsm _hsnc X' π hπ D _hD C' hC'
+  rintro T hT Z _hsm _hsnc X' π hπ D _hD C' ⟨hC'irr, hC'sub, hC'max⟩
   have hTnoeth : AlgebraicGeometry.IsNoetherian T.scheme := hT.isNoetherian
   have hX'noeth : AlgebraicGeometry.IsNoetherian X' := isNoetherian_of_isBlowupAlongIdealSheaf hπ
-  have hX'loc : AlgebraicGeometry.IsLocallyNoetherian X' := inferInstance
-  have hX'top : TopologicalSpace.NoetherianSpace ↥X' := inferInstance
-  obtain ⟨hC'irr, hC'sub, hC'max⟩ := hC'
-  have hcont : Continuous (⇑π.base) := π.continuous
   have hSclosed : IsClosed (↑(Blowup.strictTransform π Z D).support : Set ↥X') :=
     (Blowup.strictTransform π Z D).support.2
-  have hSeq : (↑(Blowup.strictTransform π Z D).support : Set ↥X')
-      = closure (⇑π.base ⁻¹'
-          ((↑D.support : Set ↥T.scheme) \ (↑Z.support : Set ↥T.scheme))) :=
-    support_strictTransform_eq_closure_preimage π Z D
-  have hC'closed : IsClosed C' := by
-    have h1 : closure C' = C' :=
-      hC'max (closure C') hC'irr.closure subset_closure
-        (hSclosed.closure_subset_iff.mpr hC'sub)
-    rw [← h1]
-    exact isClosed_closure
+  have hSeq := support_strictTransform_eq_closure_preimage π Z D
+  have hC'closed : IsClosed C' :=
+    closure_eq_iff_isClosed.1
+      (hC'max _ hC'irr.closure subset_closure (hSclosed.closure_subset_iff.mpr hC'sub))
   obtain ⟨η', hgen⟩ := QuasiSober.sober hC'irr hC'closed
   have hη'' : closure ({η'} : Set ↥X') = C' := hgen
-  obtain ⟨O, hOopen, hOne, hOsub⟩ :=
-    exists_isOpen_inter_subset_of_maximal (↑(Blowup.strictTransform π Z D).support : Set ↥X')
-      hSclosed C' hC'irr hC'sub hC'max
-  obtain ⟨w, hwO, hwS⟩ := hOne
-  have hwA : w ∈ closure (⇑π.base ⁻¹'
-      ((↑D.support : Set ↥T.scheme) \ (↑Z.support : Set ↥T.scheme))) := by
-    rw [← hSeq]; exact hwS
-  obtain ⟨a, haO, haA⟩ := mem_closure_iff.mp hwA O hOopen hwO
-  have haA' : (⇑π.base) a
-      ∈ ((↑D.support : Set ↥T.scheme) \ (↑Z.support : Set ↥T.scheme)) := haA
-  have haS : a ∈ (↑(Blowup.strictTransform π Z D).support : Set ↥X') := by
-    rw [hSeq]
-    exact subset_closure haA
-  have haC' : a ∈ C' := hOsub ⟨haO, haS⟩
-  have hVopen : IsOpen ((π ⁻¹ᵁ Z.support.compl : X'.Opens) : Set ↥X') :=
-    (π ⁻¹ᵁ Z.support.compl).isOpen
-  have haV : a ∈ ((π ⁻¹ᵁ Z.support.compl : X'.Opens) : Set ↥X') := haA'.2
+  obtain ⟨O, hOopen, ⟨w, hwO, hwS⟩, hOsub⟩ :=
+    exists_isOpen_inter_subset_of_maximal _ hSclosed C' hC'irr hC'sub hC'max
+  obtain ⟨a, haO, haA⟩ := mem_closure_iff.mp (hSeq.subset hwS) O hOopen hwO
+  have haC' : a ∈ C' := hOsub ⟨haO, hSeq.symm.subset (subset_closure haA)⟩
+  have haV : a ∈ ((π ⁻¹ᵁ Z.support.compl : X'.Opens) : Set ↥X') := haA.2
   have hη'V : η' ∈ ((π ⁻¹ᵁ Z.support.compl : X'.Opens) : Set ↥X') := by
-    have h1 : a ∈ closure ({η'} : Set ↥X') := by rw [hη'']; exact haC'
-    obtain ⟨z, hzV, hz⟩ := mem_closure_iff.mp h1 _ hVopen haV
-    have hz' : z = η' := hz
-    rwa [hz'] at hzV
+    obtain ⟨z, hzV, hz⟩ := mem_closure_iff.mp (hη''.symm.subset haC') _
+      (π ⁻¹ᵁ Z.support.compl).isOpen haV
+    exact Set.mem_singleton_iff.mp hz ▸ hzV
   have hπη' : (⇑π.base) η' ∉ (↑Z.support : Set ↥T.scheme) := hη'V
-  have hη'S : η' ∈ (↑(Blowup.strictTransform π Z D).support : Set ↥X') := by
-    refine hC'sub ?_
-    rw [← hη'']
-    exact subset_closure rfl
   have hπη'D : (⇑π.base) η' ∈ (↑D.support : Set ↥T.scheme) := by
-    have h2 : η' ∈ closure (⇑π.base ⁻¹'
-        ((↑D.support : Set ↥T.scheme) \ (↑Z.support : Set ↥T.scheme))) := by
-      rw [← hSeq]; exact hη'S
-    have h3 : closure (⇑π.base ⁻¹'
-          ((↑D.support : Set ↥T.scheme) \ (↑Z.support : Set ↥T.scheme)))
-        ⊆ ⇑π.base ⁻¹' (↑D.support : Set ↥T.scheme) :=
-      closure_minimal (Set.preimage_mono Set.sdiff_subset)
-        (IsClosed.preimage hcont D.support.2)
-    exact h3 h2
-  have hCirr : IsIrreducible (closure ({((⇑π.base) η')} : Set ↥T.scheme)) :=
-    isIrreducible_singleton.closure
-  have hCsub : closure ({((⇑π.base) η')} : Set ↥T.scheme) ⊆ (↑D.support : Set ↥T.scheme) :=
-    closure_minimal (Set.singleton_subset_iff.mpr hπη'D) D.support.2
-  have hCmax : ∀ C₂ : Set ↥T.scheme, IsIrreducible C₂ →
-      closure ({((⇑π.base) η')} : Set ↥T.scheme) ⊆ C₂ →
-      C₂ ⊆ (↑D.support : Set ↥T.scheme) →
-      C₂ = closure ({((⇑π.base) η')} : Set ↥T.scheme) := by
-    intro C₂ hC₂irr hCC₂ hC₂D
-    obtain ⟨ξ, hgen2⟩ := QuasiSober.sober hC₂irr.closure isClosed_closure
-    have hξ2 : closure ({ξ} : Set ↥T.scheme) = closure C₂ := hgen2
-    have hξD : ξ ∈ (↑D.support : Set ↥T.scheme) := by
-      have h4 : ξ ∈ closure C₂ := by rw [← hξ2]; exact subset_closure rfl
-      exact (closure_minimal hC₂D D.support.2) h4
-    have hspec : (⇑π.base) η' ∈ closure ({ξ} : Set ↥T.scheme) := by
-      rw [hξ2]
-      exact subset_closure (hCC₂ (subset_closure rfl))
-    have hξZ : ξ ∉ (↑Z.support : Set ↥T.scheme) := by
-      intro hmem
-      exact hπη' ((closure_minimal (Set.singleton_subset_iff.mpr hmem) Z.support.2) hspec)
-    obtain ⟨x, hx1, hx2⟩ :=
-      exists_lift_of_specializes_of_isBlowupAlongIdealSheaf π Z hπ ξ hξZ η' hπη' hspec
-    have hx1' : (⇑π.base) x = ξ := hx1
-    have hxmem : (⇑π.base) x
-        ∈ ((↑D.support : Set ↥T.scheme) \ (↑Z.support : Set ↥T.scheme)) := by
-      rw [hx1']
-      exact ⟨hξD, hξZ⟩
-    have hxS : x ∈ (↑(Blowup.strictTransform π Z D).support : Set ↥X') := by
-      rw [hSeq]
-      exact subset_closure hxmem
-    have hclx : closure ({x} : Set ↥X') ⊆ (↑(Blowup.strictTransform π Z D).support : Set ↥X') :=
-      closure_minimal (Set.singleton_subset_iff.mpr hxS) hSclosed
-    have hsub2 : C' ⊆ closure ({x} : Set ↥X') := by
-      rw [← hη'']
-      exact closure_minimal (Set.singleton_subset_iff.mpr hx2) isClosed_closure
-    have heq : closure ({x} : Set ↥X') = C' :=
-      hC'max (closure ({x} : Set ↥X')) isIrreducible_singleton.closure hsub2 hclx
-    have hxC' : x ∈ closure ({η'} : Set ↥X') := by
-      rw [hη'', ← heq]
-      exact subset_closure rfl
-    have himg : (⇑π.base) x ∈ closure (⇑π.base '' ({η'} : Set ↥X')) :=
-      image_closure_subset_closure_image hcont ⟨x, hxC', rfl⟩
-    rw [Set.image_singleton] at himg
-    have hξC : ξ ∈ closure ({((⇑π.base) η')} : Set ↥T.scheme) := by
-      rw [← hx1']; exact himg
-    refine Set.Subset.antisymm ?_ hCC₂
-    refine subset_trans subset_closure ?_
-    rw [← hξ2]
-    exact closure_minimal (Set.singleton_subset_iff.mpr hξC) isClosed_closure
-  have hcomp : IsIrreducibleComponentOf (closure ({((⇑π.base) η')} : Set ↥T.scheme))
-      (↑D.support : Set ↥T.scheme) := ⟨hCirr, hCsub, hCmax⟩
+    show η' ∈ ⇑π.base ⁻¹' (↑D.support : Set ↥T.scheme)
+    exact closure_minimal (Set.preimage_mono Set.sdiff_subset)
+      (IsClosed.preimage π.continuous D.support.2) (hSeq.subset (hC'sub hgen.mem))
   refine ⟨η', closure ({((⇑π.base) η')} : Set ↥T.scheme), hη''.symm,
-    notMem_support_exceptionalIdeal π Z η' hπη', hcomp, ?_, rfl⟩
-  intro hsub
-  exact hπη' (hsub (subset_closure rfl))
+    notMem_support_exceptionalIdeal π Z η' hπη',
+    ⟨isIrreducible_singleton.closure,
+      closure_minimal (Set.singleton_subset_iff.mpr hπη'D) D.support.2, ?_⟩,
+    fun hsub => hπη' (hsub (subset_closure rfl)), rfl⟩
+  intro C₂ hC₂irr hCC₂ hC₂D
+  obtain ⟨ξ, hgen2⟩ := QuasiSober.sober hC₂irr.closure isClosed_closure
+  have hξ2 : closure ({ξ} : Set ↥T.scheme) = closure C₂ := hgen2
+  have hξD := closure_minimal hC₂D D.support.2 hgen2.mem
+  have hspec : (⇑π.base) η' ∈ closure ({ξ} : Set ↥T.scheme) := by
+    rw [hξ2]
+    exact subset_closure (hCC₂ (subset_closure rfl))
+  have hξZ : ξ ∉ (↑Z.support : Set ↥T.scheme) := fun hmem =>
+    hπη' (closure_minimal (Set.singleton_subset_iff.mpr hmem) Z.support.2 hspec)
+  obtain ⟨x, rfl, hx2⟩ :=
+    exists_lift_of_specializes_of_isBlowupAlongIdealSheaf π Z hπ ξ hξZ η' hπη' hspec
+  have hxS : x ∈ (↑(Blowup.strictTransform π Z D).support : Set ↥X') :=
+    hSeq.symm.subset (subset_closure ⟨hξD, hξZ⟩)
+  have hsub2 : C' ⊆ closure ({x} : Set ↥X') :=
+    hη''.symm.subset.trans (closure_minimal (Set.singleton_subset_iff.mpr hx2) isClosed_closure)
+  have heq := hC'max _ isIrreducible_singleton.closure hsub2
+    (closure_minimal (Set.singleton_subset_iff.mpr hxS) hSclosed)
+  have hxC' : x ∈ closure ({η'} : Set ↥X') := hη''.symm.subset (heq.subset (subset_closure rfl))
+  have himg : (⇑π.base) x ∈ closure (⇑π.base '' ({η'} : Set ↥X')) :=
+    image_closure_subset_closure_image π.continuous ⟨x, hxC', rfl⟩
+  rw [Set.image_singleton] at himg
+  refine Set.Subset.antisymm (subset_trans subset_closure ?_) hCC₂
+  rw [← hξ2]
+  exact closure_minimal (Set.singleton_subset_iff.mpr himg) isClosed_closure
 
 end FunctorialResolution.EmbeddedResolution
 

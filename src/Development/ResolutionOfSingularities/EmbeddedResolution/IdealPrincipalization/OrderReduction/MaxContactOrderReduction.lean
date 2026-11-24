@@ -371,8 +371,7 @@ private theorem isEmpty_subscheme_top (X : Scheme.{u}) :
 theorem eq_top_of_imageIdealSheaf_eq_top {S X : Scheme.{u}} (σ : S ⟶ X) (J : S.IdealSheafData)
     (h : _root_.FunctorialResolution.Blowup.schemeImageIdeal σ J = ⊤) : J = ⊤ := by
   have hker : (J.subschemeι ≫ σ).ker = ⊤ := by
-    rw [← imageIdealSheaf_eq_ker]
-    exact h
+    rwa [← imageIdealSheaf_eq_ker]
   have hle : (⊤ : X.IdealSheafData).subschemeι.ker ≤ (J.subschemeι ≫ σ).ker :=
     le_of_eq (by rw [AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι, hker])
   have hZ : IsEmpty ↥J.subscheme := by
@@ -428,20 +427,17 @@ theorem isPushforward_of_isSmoothDivisor
   · have hlen0 : (maxContactPrincipalization hinv A T).length = 0 :=
       length_eq_zero_of_orderAtLeastLocus_eq_empty hinv P A T hv hP hord' hemp
     have h1 : orderAtLeastLocus T.ideal 1 = ∅ := by
-      rw [← hmult]
-      exact hemp
+      rwa [← hmult]
     have hsupp : (↑T.ideal.support : Set ↥T.scheme) = ∅ := by
       rw [Set.eq_empty_iff_forall_notMem]
       intro x hx
       have hx1 : x ∈ orderAtLeastLocus T.ideal 1 := (mem_orderAtLeastLocus_one_iff T.ideal x).mpr hx
-      rw [h1] at hx1
-      exact hx1
+      rwa [h1] at hx1
     have htop : T.ideal = ⊤ :=
       (Scheme.IdealSheafData.eq_top_iff_support_eq_empty T.ideal).mpr hsupp
     have hJtop : J = ⊤ := by
       refine eq_top_of_imageIdealSheaf_eq_top e J ?_
-      rw [← hJideal]
-      exact htop
+      rwa [← hJideal]
     have hS : (L (T.withSchemeIdealBoundary Y q J [])).length = 0 := by
       refine hlow.trivial_of_coSupport_empty (T.withSchemeIdealBoundary Y q J []) hJvalid hQdim ?_
       rw [MarkedIdealWithBoundary.withSchemeIdealBoundary_ideal, MarkedIdealWithBoundary.withSchemeIdealBoundary_mult, hJtop, hmult]
@@ -484,17 +480,14 @@ theorem isPushforward_of_isSmoothDivisor
     have hT'valid : ((MaxContactReduction.dropTrivialBoundary T).withBoundary [Scheme.Hom.ker e]).IsAdmissible :=
       hdes.valid_withDivisor T hv hbdry Y q e hq hsm
     have hT'P : P ((MaxContactReduction.dropTrivialBoundary T).withBoundary [Scheme.Hom.ker e]).krullDimSucc := by
-      rw [MarkedIdealWithBoundary.withBoundary_dim]
-      exact hP
+      rwa [MarkedIdealWithBoundary.withBoundary_dim]
     have hT'ord : ((MaxContactReduction.dropTrivialBoundary T).withBoundary [Scheme.Hom.ker e]).IsOrderBoundedByMult := by
-      rw [MarkedIdealWithBoundary.isOrderBoundedByMult_iff]
-      exact hord'
+      rwa [MarkedIdealWithBoundary.isOrderBoundedByMult_iff]
     have hT'ft : AlgebraicGeometry.LocallyOfFiniteType
         ((MaxContactReduction.dropTrivialBoundary T).withBoundary [Scheme.Hom.ker e]).structMap :=
       hT'valid.locallyOfFiniteType
     have hT'm : ((MaxContactReduction.dropTrivialBoundary T).withBoundary [Scheme.Hom.ker e]).mult = 1 := by
-      rw [MarkedIdealWithBoundary.withBoundary_mult]
-      exact hmultOne
+      rwa [MarkedIdealWithBoundary.withBoundary_mult]
     have hT'db : ((MaxContactReduction.dropTrivialBoundary T).withBoundary [Scheme.Hom.ker e]).IsBalanced hT'ft :=
       isBalanced_of_mult_eq_one _ hT'ft hT'm
     have hT'j : 0 < ((MaxContactReduction.dropTrivialBoundary T).withBoundary [Scheme.Hom.ker e]).boundary.length := by
@@ -506,16 +499,14 @@ theorem isPushforward_of_isSmoothDivisor
     have hDsub : (T.withSchemeIdealBoundary (Scheme.Hom.ker e).subscheme
         ((Scheme.Hom.ker e).subschemeι ≫ T.structMap)
         (_root_.FunctorialResolution.Blowup.schemeImageIdeal (kerSubschemeIso e).inv J) []).krullDimSucc < T.krullDimSucc := by
-      rw [hkerdata.2]
-      exact hJdim
+      rwa [hkerdata.2]
     have hIdsub : T.ideal
         = _root_.FunctorialResolution.Blowup.schemeImageIdeal (Scheme.Hom.ker e).subschemeι
             (_root_.FunctorialResolution.Blowup.schemeImageIdeal (kerSubschemeIso e).inv J) := by
       have h1 := imageIdealSheaf_comp_comap_of_isIso (kerSubschemeIso e).inv
         (Scheme.Hom.ker e).subschemeι (_root_.FunctorialResolution.Blowup.schemeImageIdeal (kerSubschemeIso e).inv J)
       rw [comap_imageIdealSheaf, hεe] at h1
-      rw [hJideal]
-      exact h1
+      rwa [hJideal]
     have hpushD : IsPushforwardBlowupSeq (Scheme.Hom.ker e).subschemeι
         (L (T.withSchemeIdealBoundary (Scheme.Hom.ker e).subscheme
             ((Scheme.Hom.ker e).subschemeι ≫ T.structMap)
@@ -531,8 +522,7 @@ theorem isPushforward_of_isSmoothDivisor
         (_root_.FunctorialResolution.Blowup.schemeImageIdeal (kerSubschemeIso e).inv J) []).structMap = q := by
       have h0 : (kerSubschemeIso e).inv
           ≫ ((Scheme.Hom.ker e).subschemeι ≫ T.structMap) = q := by
-        rw [← Category.assoc, hεe]
-        exact hq
+        rwa [← Category.assoc, hεe]
       exact h0
     have htripleeq : ((T.withSchemeIdealBoundary (Scheme.Hom.ker e).subscheme
         ((Scheme.Hom.ker e).subschemeι ≫ T.structMap)
@@ -553,14 +543,12 @@ theorem isPushforward_of_isSmoothDivisor
         ((Scheme.Hom.ker e).subschemeι ≫ T.structMap)
         (_root_.FunctorialResolution.Blowup.schemeImageIdeal (kerSubschemeIso e).inv J) []).pullbackAlong Y q
           (kerSubschemeIso e).inv).withBoundary []).IsAdmissible := by
-      rw [htripleeq]
-      exact hJvalid
+      rwa [htripleeq]
     have hQ' : Q (((T.withSchemeIdealBoundary (Scheme.Hom.ker e).subscheme
         ((Scheme.Hom.ker e).subschemeι ≫ T.structMap)
         (_root_.FunctorialResolution.Blowup.schemeImageIdeal (kerSubschemeIso e).inv J) []).pullbackAlong Y q
           (kerSubschemeIso e).inv).withBoundary []).krullDimSucc := by
-      rw [htripleeq]
-      exact hQdim
+      rwa [htripleeq]
     have hstrict := @IsMaxOrderReduction.smooth_pullback_strict Q L L' hlow
       (T.withSchemeIdealBoundary (Scheme.Hom.ker e).subscheme
         ((Scheme.Hom.ker e).subschemeι ≫ T.structMap)
@@ -577,8 +565,7 @@ theorem isPushforward_of_isSmoothDivisor
         (L (T.withSchemeIdealBoundary (Scheme.Hom.ker e).subscheme
             ((Scheme.Hom.ker e).subschemeι ≫ T.structMap)
             (_root_.FunctorialResolution.Blowup.schemeImageIdeal (kerSubschemeIso e).inv J) [])).toSequenceOfBlowups := by
-      rw [← hLeq]
-      exact hstrict
+      rwa [← hLeq]
     have hpushY : IsPushforwardBlowupSeq e (L (T.withSchemeIdealBoundary Y q J [])).toSequenceOfBlowups
         (A 0 ((MaxContactReduction.dropTrivialBoundary T).withBoundary [Scheme.Hom.ker e])).toSequenceOfBlowups :=
       IsPushforwardBlowupSeq.isIso_comp (kerSubschemeIso e).inv (Scheme.Hom.ker e).subschemeι e

@@ -145,39 +145,21 @@ theorem exists_upper_lower (I : Ideal R) (hI : ∀ s : R, s - 1 ∈ I → IsUnit
       intro i j
       have h1 := hA i.castSucc j.castSucc
       rw [one_cc] at h1
-      have h2 : A i.castSucc (Fin.last n) * t * A (Fin.last n) j.castSucc ∈ I :=
-        I.mul_mem_left _ (hr j)
-      have : P i j - (1 : Matrix (Fin n) (Fin n) R) i j
-          = (A i.castSucc j.castSucc - (1 : Matrix (Fin n) (Fin n) R) i j)
-            - A i.castSucc (Fin.last n) * t * A (Fin.last n) j.castSucc := by
-        simp only [P]; ring
-      rw [this]
-      exact I.sub_mem h1 h2
+      convert I.sub_mem h1 (I.mul_mem_left (A i.castSucc (Fin.last n) * t) (hr j)) using 1
+      simp only [P]; ring
     obtain ⟨U', L', hU', hL', hUt, hLt, hUL⟩ := ih P hP
     refine ⟨bordered U' (fun i => A i.castSucc (Fin.last n) * t) 0 1,
       bordered L' 0 (fun j => A (Fin.last n) j.castSucc) (A (Fin.last n) (Fin.last n)),
       hU'.bordered (fun i => I.mul_mem_right _ (hq i)) (fun _ => I.zero_mem) (by simp),
       hL'.bordered (fun _ => I.zero_mem) hr hs1, ?_, ?_, ?_⟩
     · intro i j hij
-      induction i using Fin.lastCases with
-      | last =>
-        induction j using Fin.lastCases with
-        | last => exact absurd hij (lt_irrefl _)
-        | cast j => simp
-      | cast i =>
-        induction j using Fin.lastCases with
-        | last => exact absurd hij (not_lt.mpr (Fin.castSucc_lt_last i).le)
-        | cast j => simpa using hUt i j (by simpa using hij)
+      induction i using Fin.lastCases <;> induction j using Fin.lastCases <;>
+        first | exact absurd hij (not_lt.mpr (Fin.le_last _)) | simp
+      exact hUt _ _ (by simpa using hij)
     · intro i j hij
-      induction i using Fin.lastCases with
-      | last =>
-        induction j using Fin.lastCases with
-        | last => exact absurd hij (lt_irrefl _)
-        | cast j => exact absurd hij (not_lt.mpr (Fin.castSucc_lt_last j).le)
-      | cast i =>
-        induction j using Fin.lastCases with
-        | last => simp
-        | cast j => simpa using hLt i j (by simpa using hij)
+      induction i using Fin.lastCases <;> induction j using Fin.lastCases <;>
+        first | exact absurd hij (not_lt.mpr (Fin.le_last _)) | simp
+      exact hLt _ _ (by simpa using hij)
     · ext i j
       rw [Matrix.mul_apply, Fin.sum_univ_castSucc]
       induction i using Fin.lastCases with
@@ -193,9 +175,7 @@ theorem exists_upper_lower (I : Ideal R) (hI : ∀ s : R, s - 1 ∈ I → IsUnit
           rw [mul_assoc, mul_comm t, hst, mul_one]
         | cast j =>
           simp only [bordered_cc, bordered_cl, bordered_lc]
-          have h := congrFun (congrFun hUL i) j
-          rw [Matrix.mul_apply] at h
-          rw [← h]
+          rw [← Matrix.mul_apply, ← hUL]
           simp only [P]; ring
 
 section conj

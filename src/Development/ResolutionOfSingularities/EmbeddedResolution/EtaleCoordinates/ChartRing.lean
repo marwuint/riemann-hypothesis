@@ -107,8 +107,7 @@ private theorem appTop_hom_appTop_inv_apply {A B : Scheme.{u}} (e : A ≅ B) (x 
   have h : Scheme.Hom.appTop e.inv ≫ Scheme.Hom.appTop e.hom = 𝟙 Γ(A, ⊤) := by
     rw [← Scheme.Hom.comp_appTop, e.hom_inv_id]
     simp
-  have h2 := congrArg (fun f : Γ(A, ⊤) ⟶ Γ(A, ⊤) => CommRingCat.Hom.hom f x) h
-  simpa using h2
+  simpa using congrArg (fun f : Γ(A, ⊤) ⟶ Γ(A, ⊤) => CommRingCat.Hom.hom f x) h
 
 private theorem affineSpace_specIso_inv_appTop_coord (K : Type u) [Field K] (n : ℕ) (j : Fin n) :
     ((AffineSpace.SpecIso (ULift.{u} (Fin n)) (CommRingCat.of K)).inv.appTop).hom
@@ -159,8 +158,7 @@ theorem EtaleChart.coordRingHom_comp_C (c : EtaleChart p U m) :
       ← Category.assoc _ _ (c.map.appTop ≫ U.topIso.hom), ← Scheme.Hom.comp_appTop,
       affineSpace_specIso_hom_comp_specMap_C k m, ← Category.assoc _ _ U.topIso.hom,
       ← Scheme.Hom.comp_appTop, c.comp_struct, appTop_comp_topIso_hom p U (le_preimage_top k p U)]
-  have h := congrArg CommRingCat.Hom.hom key
-  exact RingHom.ext fun x => DFunLike.congr_fun h x
+  exact RingHom.ext fun x => DFunLike.congr_fun (congrArg CommRingCat.Hom.hom key) x
 
 theorem EtaleChart.coordRingHom_C (c : EtaleChart p U m) (a : k) :
     c.coordRingHom (MvPolynomial.C a) = sectionsAlgebraMap k p U a :=
@@ -202,8 +200,7 @@ theorem EtaleChart.algebra_etale (c : EtaleChart p U m) (hU : IsAffineOpen U) :
 
 theorem EtaleChart.algebra_formallyEtale (c : EtaleChart p U m) (hU : IsAffineOpen U) :
     @Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, U) _ _ c.algebra := by
-  have h := EtaleChart.algebra_etale c hU
-  exact h.1
+  exact (EtaleChart.algebra_etale c hU).1
 
 theorem EtaleChart.isScalarTower (c : EtaleChart p U m) :
     @IsScalarTower k (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, U)
@@ -212,8 +209,7 @@ theorem EtaleChart.isScalarTower (c : EtaleChart p U m) :
       (@Algebra.toSMul k Γ(X, U) _ _ (sectionsAlgebra k p U)) := by
   let instPoly : Algebra (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, U) := c.algebra
   let instBase : Algebra k Γ(X, U) := sectionsAlgebra k p U
-  refine IsScalarTower.of_algebraMap_eq fun x => ?_
-  exact (EtaleChart.coordRingHom_C c x).symm
+  exact IsScalarTower.of_algebraMap_eq fun x => (EtaleChart.coordRingHom_C c x).symm
 
 private theorem ideal_map_topIso_inv_injective {X₁ : Scheme.{u}} (V : X₁.Opens)
     {J₁ J₂ : Ideal Γ(X₁, V)}
@@ -238,9 +234,7 @@ theorem EtaleChart.ideal_eq_span_coord (c : EtaleChart p U m) (hU : IsAffineOpen
     (h : restrictIdeal I U = c.coordIdeal S) :
     I.ideal ⟨U, hU⟩ = Ideal.span (c.coord '' (S : Set (Fin m))) := by
   have hUaff : IsAffine U.toScheme := hU
-  have e : (⊤ : (U.toScheme).Opens) ≤ U.ι ⁻¹ᵁ U := by
-    intro x _
-    exact x.2
+  have e : (⊤ : (U.toScheme).Opens) ≤ U.ι ⁻¹ᵁ U := fun x _ => x.2
   have hL : (restrictIdeal I U).ideal ⟨⊤, isAffineOpen_top U.toScheme⟩
       = Ideal.map U.topIso.inv.hom (I.ideal ⟨U, hU⟩) := by
     rw [restrictIdeal_eq_comap_ι, ← ι_appLE_top_eq_topIso_inv U e]
@@ -251,8 +245,7 @@ theorem EtaleChart.ideal_eq_span_coord (c : EtaleChart p U m) (hU : IsAffineOpen
     rw [EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, Scheme.IdealSheafData.comap_ideal_top_eq_map_appTop,
       coordSubspaceIdeal_eq_ofIdealTop_span_coord, AlgebraicGeometry.Scheme.IdealSheafData.ofIdealTop_ideal_top,
       Ideal.map_span, Ideal.map_span, ← Set.image_comp, ← Set.image_comp]
-    refine congrArg Ideal.span (Set.image_congr fun j _ => ?_)
-    exact (Iso.hom_inv_id_apply U.topIso _).symm
+    exact congrArg Ideal.span (Set.image_congr fun j _ => (Iso.hom_inv_id_apply U.topIso _).symm)
   have hfin : Ideal.map U.topIso.inv.hom (I.ideal ⟨U, hU⟩)
       = Ideal.map U.topIso.inv.hom (Ideal.span (c.coord '' (S : Set (Fin m)))) := by
     rw [← hL, ← hR, h]

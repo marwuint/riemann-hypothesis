@@ -105,8 +105,7 @@ theorem clause2 : ∀ g : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E, IsUnit g.
   have hu' : u ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) (Jst D n) := hu
   refine ⟨ratEmb _ _ ⟨u, hu'⟩, ?_, rfl⟩
   have h : ratEmb D.sp.cm.sig (Jst D n) ⟨u, hu'⟩ ∈ (ratEmb D.sp.cm.sig (Jst D n)).range := ⟨_, rfl⟩
-  rw [range_ratEmb] at h
-  exact h
+  rwa [range_ratEmb] at h
 
 theorem mem_P_iff (γ : G D n) :
     γ ∈ P D n ↔ ∀ x : Fin (n + n) → AE D, x ∈ upperHalf D n ↔ mat γ *ᵥ x ∈ upperHalf D n := by
@@ -122,8 +121,7 @@ theorem clause3 : ∀ γ ∈ GF D n, ∀ g : Matrix (Fin (n + n)) (Fin (n + n)) 
   · intro h i j
     have hx : (Pi.single (finSumFinEquiv (Sum.inl j)) 1 : Fin (n + n) → AE D) ∈ upperHalf D n := by
       rw [mem_upperHalf]
-      intro k
-      exact Pi.single_eq_of_ne (fun e => Sum.inr_ne_inl (finSumFinEquiv.injective e)) _
+      exact fun k => Pi.single_eq_of_ne (fun e => Sum.inr_ne_inl (finSumFinEquiv.injective e)) _
     have h2 := (mem_upperHalf _).1 ((h _).1 hx) i
     rw [Matrix.mulVec_single_one] at h2
     change incA D (g _ _) = 0 at h2
@@ -135,8 +133,7 @@ theorem clause3 : ∀ γ ∈ GF D n, ∀ g : Matrix (Fin (n + n)) (Fin (n + n)) 
       have h1 : IsUnit (mat γ).det := by
         unfold mat
         exact (Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _)
-      rw [hg] at h1
-      rw [det_eq_of_lowerLeft_zero _ hM] at h1
+      rw [hg, det_eq_of_lowerLeft_zero _ hM] at h1
       exact isUnit_of_mul_isUnit_right h1
     have hinj : ∀ y : Fin n → AE D, blkD (g.map (incA D)) *ᵥ y = 0 → y = 0 := by
       intro y hy
@@ -156,10 +153,8 @@ theorem clause3 : ∀ γ ∈ GF D n, ∀ g : Matrix (Fin (n + n)) (Fin (n + n)) 
       have h0 : (blkD (g.map (incA D)) *ᵥ fun k => x (finSumFinEquiv (Sum.inr k))) = 0 := by
         funext i
         have := hx i
-        rw [mulVec_inr, hsum, zero_add] at this
-        exact this
-      have h1 := hinj _ h0
-      exact fun i => congrFun h1 i
+        rwa [mulVec_inr, hsum, zero_add] at this
+      exact fun i => congrFun (hinj _ h0) i
 
 theorem ratPtsUnn : RatPts := fun _ _ => ⟨clause1, clause2, clause3⟩
 

@@ -81,11 +81,9 @@ theorem exists_inv_add_sq {C R : Type} [Field C] [IsAlgClosed C] [CharZero C] [C
   obtain ⟨-, -, -, H4⟩ := ReciprocityTheory.PGsh.L2.h3 C R ‹IsAlgClosed C› ‹CharZero C› v hv N K AA
   have hg' : g ∈ augIdeal AA.carrier := by
     refine Submodule.mem_inf.2 ⟨hg, ?_⟩
-    rw [LinearMap.mem_ker]
-    exact h0
+    rwa [LinearMap.mem_ker]
   have hres : ReciprocityTheory.PGsh.L2.resK (R := R) K g = 0 := by
     funext k
-    show g k = 0
     exact hK k k.2
   have h2 := H4 g hg' (by rw [hres]; exact zero_mem _)
   obtain ⟨h, hh, q, hq, hgq⟩ := Submodule.mem_sup.1 h2
@@ -94,9 +92,7 @@ theorem exists_inv_add_sq {C R : Type} [Field C] [IsAlgClosed C] [CharZero C] [C
   refine ⟨_, hbA, q, ?_, ?_, ?_, hgq.symm⟩
   · have hsq : augIdeal AA.carrier * augIdeal AA.carrier ≤ sqIdeal (augIdeal AA.carrier) := by
       rw [Submodule.mul_le]
-      intro x hx y hy
-      show x * y ∈ Submodule.span R {h | ∃ f ∈ augIdeal AA.carrier, ∃ f' ∈ augIdeal AA.carrier, h = f * f'}
-      exact Submodule.subset_span ⟨x, hx, y, hy, rfl⟩
+      exact fun x hx y hy => Submodule.subset_span ⟨x, hx, y, hy, rfl⟩
     exact hsq hq
   · show b (QuotientAddGroup.mk 0) = 0
     rw [QuotientAddGroup.mk_zero]

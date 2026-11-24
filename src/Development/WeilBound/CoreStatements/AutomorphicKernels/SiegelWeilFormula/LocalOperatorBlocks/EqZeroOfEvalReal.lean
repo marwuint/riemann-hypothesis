@@ -162,8 +162,7 @@ theorem evX_injective : Function.Injective (evX (m := m) (n := n)) := by
       funext k
       obtain ⟨a, j, b⟩ := k
       cases b <;> simp [subF, Complex.ext_iff]
-    rw [e]
-    exact this
+    rwa [e]
   rw [← subG_subF R, h0, map_zero]
 
 theorem fP_injective : Function.Injective (fP (m := m) (n := n)) := by
@@ -218,10 +217,7 @@ theorem continuousOn_of_evX {X : Type} [TopologicalSpace X] {S : Set X} (d : ℕ
   have hW : ∀ x ∈ S, φ x ∈ W := fun x hx => (MvPolynomial.mem_restrictTotalDegree _ _ _).2 (hd x hx)
   rw [continuousOn_iff_continuous_restrict]
   let g : S → LinearMap.range (evW (m := m) (n := n) d) := fun x => e ⟨φ x, hW x x.2⟩
-  have hg : Continuous g := by
-    refine Continuous.subtype_mk ?_ _
-    refine continuous_pi fun u => ?_
-    exact (hc u).restrict
+  have hg : Continuous g := Continuous.subtype_mk (continuous_pi fun u => (hc u).restrict) _
   refine (hl'.comp hg).congr fun x => ?_
   simp [l', g]
 

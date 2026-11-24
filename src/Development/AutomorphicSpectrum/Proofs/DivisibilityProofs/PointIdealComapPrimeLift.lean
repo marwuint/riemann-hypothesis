@@ -65,8 +65,7 @@ theorem length_self_eq {S T : Type*} [CommRing S] [CommRing T] (e : S ≃+* T) :
   rw [Module.length_eq_coheight, Module.length_eq_coheight]
   have := Ideal.coheight_comap_of_surjective (e : S →+* T) e.surjective ⊥
   have hb : Ideal.comap (e : S →+* T) ⊥ = ⊥ := Ideal.comap_bot_of_injective _ e.injective
-  rw [hb] at this
-  exact this
+  rwa [hb] at this
 
 theorem length_loc_quot {R : Type*} [CommRing R] (J W : Ideal R) [W.IsPrime] :
     Module.length (Localization.AtPrime W) (LocalizedModule W.primeCompl (R ⧸ J)) =
@@ -109,8 +108,7 @@ theorem key (h : ∀ r : R', ∃ (n : ℕ) (g : R), φ s ^ n * r - φ g ∈ P') 
     {x : R'} (hx : x ∈ P' ⊔ J.map φ) : ∃ n : ℕ, ∃ g ∈ J, φ s ^ n * x - φ g ∈ P' := by
   have hle : P' ⊔ J.map φ ≤ sat h J hJ := by
     refine sup_le (fun y hy => ⟨0, 0, J.zero_mem, by simpa using hy⟩) (Ideal.map_le_iff_le_comap.2 ?_)
-    intro g hg
-    exact ⟨0, g, hg, by simp⟩
+    exact fun g hg => ⟨0, g, hg, by simp⟩
   exact hle hx
 
 theorem key' (h : ∀ r : R', ∃ (n : ℕ) (g : R), φ s ^ n * r - φ g ∈ P') (J : Ideal R) (hJ : P'.comap φ ≤ J)
@@ -318,8 +316,7 @@ theorem exists_pow_chartMonomial_mul_sub_map_mem {y : (Σ k, ι k) → Ω} (hA :
   | C a =>
     obtain ⟨n, G, -, hG⟩ := const_mul_chartMonomial_pow_form K ι Ω y A hA c a
     refine ⟨n, G, ?_⟩
-    rw [mul_comm]
-    exact hG
+    rwa [mul_comm]
   | add p q hp hq =>
     obtain ⟨n, g, hg⟩ := hp
     obtain ⟨m, k, hk⟩ := hq
@@ -363,15 +360,13 @@ theorem pl_corr : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [
     have hc' : MvPolynomial.map (Int.castRingHom A) (∏ k, X ⟨k, c k⟩ : MRing ι ℤ) ∉ W' := by
       intro hm
       apply hc
-      rw [← hWc]
-      exact hm
+      rwa [← hWc]
     refine ⟨W', ⟨hW', hPW', hWc⟩, ?_⟩
     rintro V ⟨hV, hPV, hVc⟩
     have hcV : MvPolynomial.map (Int.castRingHom A) (∏ k, X ⟨k, c k⟩ : MRing ι ℤ) ∉ V := by
       intro hm
       apply hc
-      rw [← hVc]
-      exact hm
+      rwa [← hVc]
     exact le_antisymm (BaseChangeColon.Corr.mono h hW' hPV hPW' hc' (by rw [hVc, hWc]))
       (BaseChangeColon.Corr.mono h hV hPW' hPV hcV (by rw [hVc, hWc]))
   · intro f W' hW' hr hPW'
@@ -393,14 +388,12 @@ theorem pl_corr : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [
     have hWp : (W'.comap φ).IsPrime := Ideal.comap_isPrime φ W'
     have hlen := BaseChangeColon.Corr.length_eq h J hJ W' (W'.comap φ) rfl hPW' hc
     have hmin' : W' ∈ (pointIdeal A y ⊔ Ideal.span {φ f}).minimalPrimes ↔ W'.comap φ ∈ J.minimalPrimes := by
-      rw [hJeq]
-      exact hmin
+      rwa [hJeq]
     have hlen' : Module.length (Localization.AtPrime W')
         (LocalizedModule W'.primeCompl (MRing ι A ⧸ (pointIdeal A y ⊔ Ideal.span {φ f}))) =
         Module.length (Localization.AtPrime (W'.comap φ))
           (LocalizedModule (W'.comap φ).primeCompl (MRing ι ℤ ⧸ J)) := by
-      rw [hJeq]
-      exact hlen
+      rwa [hJeq]
     unfold divCycle
     by_cases hm : W'.comap φ ∈ J.minimalPrimes
     · rw [dite_eq_left ⟨hmin'.2 hm, hr⟩, dite_eq_left ⟨hm, hrel⟩]

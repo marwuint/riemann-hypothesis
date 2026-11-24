@@ -101,9 +101,7 @@ theorem avg_joint_smooth : ∀ (n : ℕ) {V : Type} [NormedAddCommGroup V] [Norm
   have hc := contDiffOn_convolution_right_with_param (𝕜 := ℝ) (μ := (volume : Measure ℝ)) (n := ⊤)
     (f := fun _ : ℝ => (1 : ℝ)) (ContinuousLinearMap.lsmul ℝ ℝ : ℝ →L[ℝ] V →L[ℝ] V) hSo hk hz hloc hh
   have hcomp : ContDiffOn ℝ ∞ (fun p : ℝ × Mat n => ((fun _ : ℝ => (1 : ℝ)) ⋆[ContinuousLinearMap.lsmul ℝ ℝ, volume] h p) 0) S := by
-    refine hc.comp (contDiff_id.prodMk contDiff_const).contDiffOn ?_
-    intro p hp
-    exact ⟨hp, Set.mem_univ _⟩
+    exact hc.comp (contDiff_id.prodMk contDiff_const).contDiffOn (fun p hp => ⟨hp, Set.mem_univ _⟩)
   refine hcomp.congr ?_
   rintro ⟨t, x⟩ -
   simp [convolution_def, h, Function.uncurry]
@@ -210,8 +208,7 @@ theorem av_integrable {U : ℝ → Mat n → V} {g : ℝ → ℝ} {T : ℝ} (hU 
     ContinuousOn.comp_continuous (f := fun s : ℝ => (t + s, x)) (g := Function.uncurry U)
       hU.continuousOn ((continuous_const.add continuous_id).prodMk continuous_const)
       (fun s => ⟨Set.mem_univ _, hx⟩)
-  simp only [Complex.coe_smul]
-  exact bump_integrable hg.1.continuous hg.2.2 hc
+  simpa only [Complex.coe_smul] using bump_integrable hg.1.continuous hg.2.2 hc
 
 variable [CompleteSpace V]
 
@@ -286,8 +283,7 @@ theorem good_Rd (X : Mat n) : Good (Rd (V := V) X) := by
   refine ⟨fun U hU => ?_, fun f f' h => GlobalTheory.CompanionTheory.WaveAll.Rd_congr GlobalTheory.CompanionTheory.WaveAll.isOpen_GLs h X, ?_⟩
   · exact GlobalTheory.CompanionTheory.WaveSpd.SmCalc.smooth_field GlobalTheory.CompanionTheory.WaveAll.isOpen_GLs hU
       (GlobalTheory.CompanionTheory.WaveSpd.SmCalc.contDiff_mulRight X)
-  · intro U g T hU hg t x hx
-    exact Rd_av hU hg X t hx
+  · exact fun U g T hU hg t x hx => Rd_av hU hg X t hx
 
 theorem good_add {L₁ L₂ : (Mat n → V) → (Mat n → V)} (h₁ : Good L₁) (h₂ : Good L₂) :
     Good (fun f => L₁ f + L₂ f) := by
@@ -315,8 +311,7 @@ theorem good_smul (c : ℂ) {L : (Mat n → V) → (Mat n → V)} (h : Good L) :
     rw [← integral_smul]
     congr 1
     funext s
-    simp only [Pi.smul_apply]
-    exact smul_comm c (g s : ℂ) _
+    simpa only [Pi.smul_apply] using smul_comm c (g s : ℂ) _
 
 theorem good_comp {L₁ L₂ : (Mat n → V) → (Mat n → V)} (h₁ : Good L₁) (h₂ : Good L₂) :
     Good (fun f => L₁ (L₂ f)) := by

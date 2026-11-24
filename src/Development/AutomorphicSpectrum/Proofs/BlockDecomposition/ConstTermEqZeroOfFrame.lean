@@ -226,35 +226,29 @@ theorem exists_isometry_mul_eq (K : Type) [Field K] [StarRing K] (θ : K) (hθ :
     ∃ g : Matrix (Fin n) (Fin n) K, gᴴ * J * g = J ∧ g * X = Y := by
   have hXl := linearIndependent_col_of_rank hX
   have hYl := linearIndependent_col_of_rank hY
+  have hc : ∀ t : K, starRingEnd K (starRingEnd K t) = t := fun t => by simp
   by_cases h2 : (2 : K) = 0
   · obtain ⟨B, hBd⟩ := exists_form_lemma J
-    have hc : ∀ t : K, starRingEnd K (starRingEnd K t) = t := fun t => by simp
-    have hB : ∀ x y, starRingEnd K (B x y) = B y x := by
-      intro x y
+    have hB : ∀ x y, starRingEnd K (B x y) = B y x := fun x y => by
       rw [hBd, hBd, starRingEnd_apply, ← star_dotProduct_star, star_star, star_mulVec,
         ← dotProduct_mulVec, hJ]
-    have hrep : ∀ ψ : (Fin n → K) →ₗ[K] K, ∃ w, ∀ z, B z w = ψ z := by
-      intro ψ
+    have hrep : ∀ ψ : (Fin n → K) →ₗ[K] K, ∃ w, ∀ z, B z w = ψ z := fun ψ => by
       obtain ⟨r, hr⟩ : ∃ r : Fin n → K, ∀ z, ψ z = r ⬝ᵥ z :=
         ⟨fun k => ψ (fun j => if k = j then 1 else 0), fun z => by
           rw [LinearMap.pi_apply_eq_sum_univ ψ z]; simp [dotProduct, mul_comm]⟩
       refine ⟨star ((Jᵀ)⁻¹ *ᵥ r), fun z => ?_⟩
-      have hdT : IsUnit Jᵀ.det := by rwa [det_transpose]
       rw [hBd, hr, star_star, dotProduct_mulVec, ← mulVec_transpose, mulVec_mulVec,
-        mul_nonsing_inv _ hdT, one_mulVec]
+        mul_nonsing_inv _ (J.isUnit_det_transpose hdet), one_mulVec]
     have hs : ∀ b : K, starRingEnd K b = b → ∃ s : K, s ≠ 0 ∧ s + starRingEnd K s = b := by
       intro b hb
       by_cases hb0 : b = 0
       · refine ⟨1, one_ne_zero, ?_⟩
         rw [map_one, hb0, one_add_one_eq_two, h2]
-      · have hθ0 : θ ≠ 0 := by
-          rintro rfl
-          simp at hθ
+      · have hθ0 : θ ≠ 0 := fun h => by simp [h] at hθ
         refine ⟨θ * b, mul_ne_zero hθ0 hb0, ?_⟩
         rw [map_mul, hb, starRingEnd_apply]
         linear_combination b * hθ
-    have hxy : ∀ i j, B (X.col i) (X.col j) = B (Y.col i) (Y.col j) := by
-      intro i j
+    have hxy : ∀ i j, B (X.col i) (X.col j) = B (Y.col i) (Y.col j) := fun i j => by
       rw [hBd, hBd, ← entry_lemma_2, ← entry_lemma_2, hXY]
     obtain ⟨γ, hγ, hγX⟩ := exists_isometry_of_linearIndependent hs hc hB hrep hXl hYl hxy
     refine ⟨LinearMap.toMatrix' (γ : (Fin n → K) →ₗ[K] (Fin n → K)), ?_, ?_⟩
@@ -266,29 +260,20 @@ theorem exists_isometry_mul_eq (K : Type) [Field K] [StarRing K] (θ : K) (hθ :
       simp
     · ext i j
       have e : (LinearMap.toMatrix' (γ : (Fin n → K) →ₗ[K] (Fin n → K)) * X).col j =
-          LinearMap.toMatrix' (γ : (Fin n → K) →ₗ[K] (Fin n → K)) *ᵥ X.col j := by
-        ext k
-        simp [Matrix.col, Matrix.mul_apply, Matrix.mulVec, dotProduct]
-      rw [LinearMap.toMatrix'_mulVec] at e
-      have := congrFun e i
-      simp only [LinearEquiv.coe_coe, hγX] at this
-      exact this
-  · have hc : ∀ t : K, starRingEnd K (starRingEnd K t) = t := fun t => by simp
-    have hG : ∀ a b, starRingEnd K (Jᵀ a b) = Jᵀ b a := by
-      intro a b
+          LinearMap.toMatrix' (γ : (Fin n → K) →ₗ[K] (Fin n → K)) *ᵥ X.col j := rfl
+      simp only [LinearMap.toMatrix'_mulVec, LinearEquiv.coe_coe, hγX] at e
+      exact congrFun e i
+  · have hG : ∀ a b, starRingEnd K (Jᵀ a b) = Jᵀ b a := fun a b => by
       rw [transpose_apply, transpose_apply, starRingEnd_apply, ← conjTranspose_apply, hJ]
-    have hdT : Jᵀ.det ≠ 0 := by rw [det_transpose]; exact hdet.ne_zero
-    have h0 : ∀ v, X *ᵥ v = 0 ↔ Y *ᵥ v = 0 := by
-      intro v
-      constructor
-      · intro h; rw [eq_zero_of_mulVec_eq_zero_of_linearIndependent_col hXl v h, mulVec_zero]
-      · intro h; rw [eq_zero_of_mulVec_eq_zero_of_linearIndependent_col hYl v h, mulVec_zero]
+    have h0 : ∀ v, X *ᵥ v = 0 ↔ Y *ᵥ v = 0 := fun v =>
+      ⟨fun h => by rw [eq_zero_of_mulVec_eq_zero_of_linearIndependent_col hXl v h, mulVec_zero],
+        fun h => by rw [eq_zero_of_mulVec_eq_zero_of_linearIndependent_col hYl v h, mulVec_zero]⟩
     have hXY' : Yᵀ * Jᵀ * Y.map (starRingEnd K) = Xᵀ * Jᵀ * X.map (starRingEnd K) := by
-      have e := transpose_mul_transpose_mul_map_star_eq J X
-      have e' := transpose_mul_transpose_mul_map_star_eq J Y
       change Yᵀ * Jᵀ * Y.map star = Xᵀ * Jᵀ * X.map star
-      rw [e, e', hXY]
-    obtain ⟨γ, hγ, hγX⟩ := exists_gl_isometry_mul_eq h2 hc hG hdT h0 hXY'
+      rw [transpose_mul_transpose_mul_map_star_eq J X, transpose_mul_transpose_mul_map_star_eq J Y,
+        hXY]
+    obtain ⟨γ, hγ, hγX⟩ :=
+      exists_gl_isometry_mul_eq h2 hc hG (J.isUnit_det_transpose hdet).ne_zero h0 hXY'
     refine ⟨γ, ?_, hγX⟩
     have e := transpose_mul_transpose_mul_map_star_eq J (γ : Matrix (Fin n) (Fin n) K)
     change (γ : Matrix (Fin n) (Fin n) K)ᵀ * Jᵀ * (γ : Matrix (Fin n) (Fin n) K).map star = Jᵀ at hγ

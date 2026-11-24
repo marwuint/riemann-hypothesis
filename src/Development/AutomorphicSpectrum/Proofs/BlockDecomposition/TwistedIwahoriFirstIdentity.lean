@@ -286,8 +286,7 @@ theorem exists_twist_of_contract [TopologicalSpace G] [IsTopologicalGroup G] [T2
         have e : (n ^ (p + 1))⁻¹ * y * n ^ (p + 1) = n⁻¹ * ((n ^ p)⁻¹ * y * n ^ p) * n := by
           rw [pow_succ]
           group
-        rw [e]
-        exact this
+        rwa [e]
     obtain ⟨p, rfl⟩ := Nat.exists_eq_add_of_le hm
     have e : (n ^ (j + p))⁻¹ * ((τ' ^ (j + p))⁻¹ * x * τ' ^ (j + p)) * n ^ (j + p) =
         (n ^ j)⁻¹ * ((n ^ p)⁻¹ * ((τ' ^ (j + p))⁻¹ * x * τ' ^ (j + p)) * n ^ p) * n ^ j := by
@@ -438,9 +437,7 @@ theorem UpperTheory.Reformulated.B.Qf33.aux7 :
           (e : (a : α) × m a → n) (⟨a, i⟩ : (a : α) × m a)) =
         (1 : Matrix (m a) (m a) R) := by
   intro R _ α n m _ _ _ _ _ e a
-  refine Matrix.submatrix_one _ ?_
-  intro i j h
-  exact sigma_mk_injective (e.injective h)
+  exact Matrix.submatrix_one _ (fun i j h => sigma_mk_injective (e.injective h))
 
 theorem UpperTheory.Reformulated.B.Qf33.aux8 :
     ∀ (R : Type) [inst : CommRing R] {α n : Type} {m : α → Type} [Fintype α] [inst_2 : LinearOrder α]
@@ -463,8 +460,7 @@ theorem UpperTheory.Reformulated.B.Qf33.aux8 :
     rcases lt_or_gt_of_ne hb with h | h
     · rw [hx (by simpa [UpperTheory.Reformulated.B.Qf33.blk] using h), zero_mul]
     · rw [hy (i := e ⟨b, k⟩) (by simpa [UpperTheory.Reformulated.B.Qf33.blk] using h), mul_zero]
-  · intro h
-    exact absurd (Finset.mem_univ a) h
+  · exact fun h => absurd (Finset.mem_univ a) h
 
 noncomputable def UpperTheory.Reformulated.B.Qf33.diagBlock :
     (R : Type) →
@@ -691,10 +687,8 @@ theorem fil_step (hmJ : Jm ≤ J) (htJ : Jt ≤ J) (hpJ : Jp ≤ J) (hmN : Jm �
   refine ⟨?_, J ⊓ W.map ψ.toMonoidHom, ?_, ?_, ?_, ?_⟩
   · rintro _ ⟨v, hv, rfl⟩
     exact hψp v (hVp hv)
-  · intro x hx
-    exact ⟨hmJ hx, ψ⁻¹ x, hmW (hψm x hx), by simp⟩
-  · intro x hx
-    exact ⟨htJ hx, ψ⁻¹ x, htW (hψt x hx), by simp⟩
+  · exact fun x hx => ⟨hmJ hx, ψ⁻¹ x, hmW (hψm x hx), by simp⟩
+  · exact fun x hx => ⟨htJ hx, ψ⁻¹ x, htW (hψt x hx), by simp⟩
   · rintro _ ⟨v, hv, rfl⟩
     exact ⟨hpJ (hψp v (hVp hv)), v, hVW hv, rfl⟩
   · rintro w ⟨hwJ, y, hy, rfl⟩
@@ -732,8 +726,7 @@ theorem contr (hmN : Jm ≤ Nl) (htT : Jt ≤ T) (hpN : Jp ≤ Nu)
   obtain ⟨a₁, ha₁, b₁, hb₁, v₁, hv₁, e₁⟩ := hW _ hmem
   have := huniq a₁ (hmN ha₁) 1 (one_mem _) b₁ (htT hb₁) 1 (one_mem _) v₁ (hpN (hVp hv₁)) _
     (hpN (mul_mem (inv_mem hp) hp')) (by simpa using e₁.symm)
-  rw [← this.2.2]
-  exact hv₁
+  rwa [← this.2.2]
 
 theorem exists_fixed [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     (hmJ : Jm ≤ J) (htJ : Jt ≤ J) (hpJ : Jp ≤ J) (hmN : Jm ≤ Nl) (htT : Jt ≤ T) (hpN : Jp ≤ Nu)
@@ -825,8 +818,7 @@ theorem exists_fixed [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
       rw [memC] at hg ⊢
       have := mul_mem (hsV n) (hanti n hg)
       simpa [mul_assoc] using this
-    · intro n
-      exact ⟨_, 1, one_mem _, rfl⟩
+    · exact fun n => ⟨_, 1, one_mem _, rfl⟩
   obtain ⟨w, hw⟩ := hne
   have hw1 : ∀ n, (s n)⁻¹ * w ∈ V n := fun n => (memC n w).1 (Set.mem_iInter.1 hw n)
   have hwJ : w ∈ Jp := by

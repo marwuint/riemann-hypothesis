@@ -103,8 +103,7 @@ theorem flagiso_span {Ω V V' : Type} [Field Ω] [AddCommGroup V] [Module Ω V] 
   · rintro ⟨w, hw, hwv⟩
     have hwv' : w = v := φ.injective hwv
     exact hwv' ▸ hw
-  · intro hv
-    exact ⟨v, hv, rfl⟩
+  · exact fun hv => ⟨v, hv, rfl⟩
 
 theorem flagiso_step {Ω V V' : Type} [Field Ω] [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω V']
     (φ : V ≃ₗ[Ω] V') {r : ℕ} (b : Fin r → V) (i : ℕ) :
@@ -123,8 +122,7 @@ theorem flag_bundle_iff_under_isomorphism : ∀ (X X' : Scheme.{0}) (Ω : Type) 
     intro y hy
     have h1 := e.inv.base.hom.map_specializes hy
     have h2 : e.inv (genPt (ξ' ≫ e.hom)) = genPt ξ' := hi _
-    rw [← h2]
-    exact h1
+    rwa [← h2]
   have hframe : ∀ (q : Cpt ξ') (p : Cpt (ξ' ≫ e.hom)), e.hom q.1 = p.1 → ∀ c : Fin r → V,
       (L.IsFrameAt c p ↔ L'.IsFrameAt (fun k => φ (c k)) q) := by
     rintro q ⟨p, hp⟩ hqp c
@@ -154,8 +152,7 @@ theorem flag_bundle_iff_under_isomorphism : ∀ (X X' : Scheme.{0}) (Ω : Type) 
   · rintro H q' -
     obtain ⟨U, hU, c, hc, hfr⟩ := H ⟨e.hom q'.1, hfwd _ q'.2⟩ trivial
     refine ⟨e.hom ⁻¹ᵁ U, hU, fun k => φ (c k), fun i => (hstep c i).1 (hc i), ?_⟩
-    intro q₁ _ hq₁
-    exact (hframe q₁ ⟨e.hom q₁.1, hfwd _ q₁.2⟩ rfl c).1 (hfr _ trivial hq₁)
+    exact fun q₁ _ hq₁ => (hframe q₁ ⟨e.hom q₁.1, hfwd _ q₁.2⟩ rfl c).1 (hfr _ trivial hq₁)
   · rintro H p -
     obtain ⟨U', hU', c', hc', hfr'⟩ := H ⟨e.inv p.1, hbwd _ p.2⟩ trivial
     refine ⟨e.inv ⁻¹ᵁ U', hU', fun k => φ.symm (c' k), fun i => ?_, ?_⟩
@@ -181,8 +178,7 @@ theorem flag_bundle_iff_under_isomorphism : ∀ (X X' : Scheme.{0}) (Ω : Type) 
       · rintro ⟨v, hv, hvt⟩
         refine ⟨φ v, (hL q h v).1 hv, ?_⟩
         rw [flagiso_step]
-        have hm := Submodule.mem_map_of_mem (f := φ.toLinearMap) hvt
-        simpa using hm
+        simpa using Submodule.mem_map_of_mem (f := φ.toLinearMap) hvt
     have key : ∀ (R₁ R₂ : Subring Ω), R₁ = R₂ → ∀ S : Set Ω,
         (Submodule.span R₁ S : Set Ω) = Submodule.span R₂ S := by
       rintro _ _ rfl _
@@ -245,8 +241,7 @@ theorem genMap_stalk (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (g : X' ⟶ X) (q :
   have e := Scheme.Hom.stalkSpecializes_stalkMap g _ _ q.2
   have e2 := congrArg (fun t => (t ≫ Scheme.stalkClosedPointTo ξ').hom s) e
   have e3 := Scheme.stalkClosedPointTo_comp ξ' g
-  have e4 := congrArg (fun t => (X.presheaf.stalkSpecializes h ≫ t).hom s) e3
-  exact e2.symm.trans e4.symm
+  exact e2.symm.trans (congrArg (fun t => (X.presheaf.stalkSpecializes h ≫ t).hom s) e3).symm
 
 theorem regAt_eq (e : X' ≅ X) {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingCat.of Ω) ⟶ X'}
     (hξ : ξ' ≫ e.hom = ξ) (q : Cpt ξ') (h : genPt ξ ⤳ e.hom q.1) :
@@ -471,8 +466,7 @@ theorem frame_move (e : X' ≅ X) (hξ : ξ' ≫ e.hom = ξ) {V V' : Type} [AddC
     rfl
   rw [e1, hb.2, span_ring_congr (regAt_eq e hξ q h), e2, Submodule.mem_map]
   constructor
-  · intro hx
-    exact ⟨_, hx, by simp⟩
+  · exact fun hx => ⟨_, hx, by simp⟩
   · rintro ⟨v, hv, rfl⟩
     simpa using hv
 
@@ -524,8 +518,7 @@ theorem core (e : X' ≅ X) {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (C
   set ρ : Ω := μ ^ n * e₀' / e₀ with hρ
   have hρe : ρ * e₀ = μ ^ n * e₀' := by rw [hρ]; field_simp
   have hD₂ : (Lat.tens (fun _ : Unit => V.gr b j) fun _ => n).IsDegOn Set.univ y L'.a (ρ • e₀) := by
-    rw [smul_eq_mul, hρe]
-    exact hmove
+    rwa [smul_eq_mul, hρe]
   have hne : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0 := by
     obtain ⟨c, hc⟩ := tie.cover ⟨genPt ξ, specializes_rfl⟩
     exact fun k => ⟨c k, fun h0 => hc.1 (Finset.prod_eq_zero (Finset.mem_univ k) h0)⟩
@@ -549,8 +542,7 @@ theorem core (e : X' ≅ X) {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (C
       refine ⟨c j - t₀ • b j, ht, ?_⟩
       simp
     have a2 : b' j - μ • φ (b j) ∈ flagStep Ω b' j := by
-      rw [hF' j]
-      exact hμb
+      rwa [hF' j]
     have : φ (c j) - (t₀ / μ) • b' j = (φ (c j) - t₀ • φ (b j)) - (t₀ / μ) • (b' j - μ • φ (b j)) := by
       simp only [smul_sub, smul_smul, div_mul_cancel₀ _ hμ]
       abel

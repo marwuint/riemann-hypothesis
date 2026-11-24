@@ -139,8 +139,7 @@ theorem withoutIsoBlowups_isomorphic_self {X : Scheme.{u}} (t : SequenceOfBlowup
     | succ j ih => rw [t.nontrivialIndex_succ, hnext, ih]
   have hplen : t.withoutIsoBlowups.length = t.length := by
     have h2 := t.nontrivialIndex_lengthWithoutIsoBlowups
-    rw [hret] at h2
-    exact h2
+    rwa [hret] at h2
   have h1 : (eqToIso (congrArg t.schemeAt (hret 0))).hom ≫ t.isoZero.hom = t.withoutIsoBlowups.isoZero.hom := by
     rw [t.withoutIsoBlowups_isoObjZero, t.objNontrivialIndexZeroIso_hom, t.projectionToBase_def,
       t.transitionMap_eq_eqToHom _ (hret 0).symm]
@@ -153,8 +152,7 @@ theorem withoutIsoBlowups_isomorphic_self {X : Scheme.{u}} (t : SequenceOfBlowup
     exact t.eqToHom_comp_transitionMap (hret i) (hret (i + 1)) _ _
   have h3 : ∀ i : ℕ, i < t.withoutIsoBlowups.length →
       (t.center i).comap (eqToIso (congrArg t.schemeAt (hret i))).hom = t.withoutIsoBlowups.center i := by
-    intro i _
-    exact t.center_comap_eqToHom (hret i)
+    exact fun i _ => t.center_comap_eqToHom (hret i)
   unfold SequenceOfBlowups.Isomorphic
   exact ⟨hplen, fun i _ => eqToIso (congrArg t.schemeAt (hret i)), h1, h2, h3⟩
 
@@ -168,16 +166,14 @@ private theorem isPullback_eqToHom_right {P Y X Z X' Z' : Scheme.{u}}
   subst hX
   subst hZ
   simp only [eqToHom_refl, Category.comp_id, Category.id_comp] at hf ⊢
-  rw [hf]
-  exact h
+  rwa [hf]
 
 private theorem center_eq_comap_comp_eqToHom {X' X : Scheme.{u}} (t : SequenceOfBlowups X')
     (s : SequenceOfBlowups X) {a b : ℕ} (hab : a = b) (f : t.schemeAt a ⟶ s.schemeAt a)
     (hf : t.center a = (s.center a).comap f) :
     t.center a = (s.center b).comap (f ≫ eqToHom (congrArg s.schemeAt hab)) := by
   subst hab
-  simp only [eqToHom_refl, Category.comp_id]
-  exact hf
+  simpa only [eqToHom_refl, Category.comp_id] using hf
 
 theorem IsStrictPullbackBlowupSeq.withoutIsoBlowups {X' X : Scheme.{u}} {g : X' ⟶ X}
     [AlgebraicGeometry.Surjective g] {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
@@ -230,12 +226,9 @@ private theorem isStrictPullbackSequenceOfBlowups_id_of_isomorphic {X : Scheme.{
   unfold IsStrictPullbackBlowupSeq
   obtain ⟨hlen, e, hzero, hstep, hcen⟩ := h
   refine ⟨hlen, fun i hi => (e i hi).hom, ?_, ?_, ?_⟩
-  · rw [Category.comp_id]
-    exact hzero
-  · intro i hi
-    exact IsPullback.of_horiz_isIso ⟨hstep i hi⟩
-  · intro i hi
-    exact (hcen i hi).symm
+  · rwa [Category.comp_id]
+  · exact fun i hi => IsPullback.of_horiz_isIso ⟨hstep i hi⟩
+  · exact fun i hi => (hcen i hi).symm
 
 theorem SequenceOfBlowups.Isomorphic.withoutIsoBlowups {X : Scheme.{u}} {t₁ t₂ : SequenceOfBlowups X}
     (h : t₁.Isomorphic t₂) : t₁.withoutIsoBlowups.Isomorphic t₂.withoutIsoBlowups :=

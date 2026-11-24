@@ -69,16 +69,14 @@ theorem smul_mem_tangentDerivations (P : Ideal S) {p : S} (hp : p ∈ P)
     (D : Derivation k S S) : p • D ∈ tangentDerivations k P := by
   rw [mem_tangentDerivations]
   intro x _
-  have h := Ideal.mul_mem_right (D x) P hp
-  simpa [smul_eq_mul] using h
+  simpa [smul_eq_mul] using Ideal.mul_mem_right (D x) P hp
 
 theorem mem_tangentDerivations_span_singleton (x : S) (D : Derivation k S S) :
     D ∈ tangentDerivations k (Ideal.span ({x} : Set S)) ↔
       D x ∈ Ideal.span ({x} : Set S) := by
   rw [mem_tangentDerivations]
   constructor
-  · intro hD
-    exact hD x (Ideal.subset_span (Set.mem_singleton x))
+  · exact fun hD => hD x (Ideal.subset_span (Set.mem_singleton x))
   · intro hD y hy
     refine derivation_apply_mem_of_mem_span D le_rfl ?_ hy
     intro g hg
@@ -128,8 +126,7 @@ theorem logDerivIdeal_le_logDerivIdeal (P : Ideal S) {I J : Ideal S} (h : I ≤ 
 theorem logDerivIdeal_le_derivIdeal (P J : Ideal S) :
     logDerivIdeal k P J ≤ derivIdeal k J := by
   rw [logDerivIdeal_le_iff]
-  refine ⟨le_derivIdeal k J, fun D _ x hx => ?_⟩
-  exact derivation_apply_mem_derivIdeal k J D hx
+  exact ⟨le_derivIdeal k J, fun D _ x hx => derivation_apply_mem_derivIdeal k J D hx⟩
 
 theorem logDerivIdeal_top_eq_derivIdeal (J : Ideal S) :
     logDerivIdeal k (⊤ : Ideal S) J = derivIdeal k J := by
@@ -138,8 +135,7 @@ theorem logDerivIdeal_top_eq_derivIdeal (J : Ideal S) :
   refine ⟨le_logDerivIdeal k ⊤ J, fun D x hx => ?_⟩
   refine derivation_apply_mem_logDerivIdeal k ⊤ J D ?_ hx
   rw [mem_tangentDerivations]
-  intro y _
-  exact Submodule.mem_top
+  exact fun y _ => Submodule.mem_top
 
 theorem logDerivIdeal_iSup_le {ι : Sort*} (P : Ideal S) (J : ι → Ideal S) :
     logDerivIdeal k P (⨆ i, J i) ≤ ⨆ i, logDerivIdeal k P (J i) := by
@@ -184,8 +180,7 @@ theorem logDerivIdealIterate_mono (P : Ideal S) (r : ℕ) :
   induction r with
   | zero =>
       intro I J h
-      rw [logDerivIdealIterate_zero, logDerivIdealIterate_zero]
-      exact h
+      rwa [logDerivIdealIterate_zero, logDerivIdealIterate_zero]
   | succ r ih =>
       intro I J h
       rw [logDerivIdealIterate_succ, logDerivIdealIterate_succ]

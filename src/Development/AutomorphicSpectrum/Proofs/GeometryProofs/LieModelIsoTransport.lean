@@ -123,10 +123,8 @@ theorem htAt_push (hψ : IsGrpPullback G G' g ψ) (fg : f ≫ g = 𝟙 _) (gf : 
   have hx' : x'.left = x.left ≫ ψ := by rw [← hx, Category.assoc, φψ, Category.comp_id]
   obtain ⟨hw0, W', s', hηW', htor', hext'⟩ := hw
   refine ⟨?_, ψ ⁻¹ᵁ W', ψ.app W' s', ?_, ?_, ?_⟩
-  · intro e he
-    exact hreg (hw0 e (lat_le hψ fg hξ hM q' q hq e he))
-  · rw [Scheme.Hom.mem_preimage, ← Scheme.Hom.comp_apply, mv_eta hψ, Scheme.Hom.comp_apply, hgq]
-    exact hηW'
+  · exact fun e he => hreg (hw0 e (lat_le hψ fg hξ hM q' q hq e he))
+  · rwa [Scheme.Hom.mem_preimage, ← Scheme.Hom.comp_apply, mv_eta hψ, Scheme.Hom.comp_apply, hgq]
   · intro k _ _ i xk g0 c h hxk hpow hweil
     have hz : (spMap i ≫ ξ) ≫ g = spMap i ≫ ξ' := by rw [Category.assoc, hξg]
     have hz' : (spMap i ≫ ξ') ≫ f = spMap i ≫ ξ := by rw [Category.assoc, hξ]
@@ -146,8 +144,7 @@ theorem htAt_push (hψ : IsGrpPullback G G' g ψ) (fg : f ≫ g = 𝟙 _) (gf : 
     have hpow' : g0' ^ n = 1 := mv_pow hψ hz (a' := g0) (a := g0') rfl hpow
     have h' : ⊤ ≤ g0'.left ⁻¹ᵁ W' := by
       show ⊤ ≤ (g0.left ≫ ψ) ⁻¹ᵁ W'
-      rw [Scheme.Hom.comp_preimage]
-      exact h
+      rwa [Scheme.Hom.comp_preimage]
     rw [← htor' k i xk' g0' c h' hxk' hpow' hweil']
     exact mv_secVal_comp g0.left ψ g0'.left rfl W' s' h h'
   · intro e v hv h
@@ -204,8 +201,7 @@ theorem model (hφ : IsGrpPullback G' G f φ) (hψ : IsGrpPullback G G' g ψ) (f
     simpa using hy
   let P : V → (epsAt ξ' ⟶ G') := fun e => Over.homMk ((M.pt e).left ≫ ψ) (hc (M.pt e))
   refine ⟨{ pt := P, tan := ?_, inj := ?_, onto := ?_, add := ?_, smul := ?_ }, fun e => rfl⟩
-  · intro e
-    exact mv_tan hψ hξg (v' := M.pt e) (v := P e) rfl (M.tan e)
+  · exact fun e => mv_tan hψ hξg (v' := M.pt e) (v := P e) rfl (M.tan e)
   · intro e e' h
     apply M.inj
     have h1 : (M.pt e).left ≫ ψ = (M.pt e').left ≫ ψ := congrArg (fun a => Over.Hom.left a) h
@@ -316,8 +312,7 @@ theorem lie_model_transport_isomorphism : ∀ (E : Type) [Field E] [NumberField 
       obtain ⟨a0, rfl⟩ := (hbij inferInstance).2 a
       obtain ⟨b0, rfl⟩ := (hbij inferInstance).2 b
       have hab' : genMap ξ ⟨e.hom p.1, hsp p⟩ a0 = genMap ξ ⟨e.hom p.1, hsp p⟩ b0 := by
-        rw [← h2]
-        exact hab
+        rwa [← h2]
       rw [hc.inj _ hab']
   · intro q h
     have hq2 : e.inv (e.hom q.1) = q.1 := by
@@ -327,17 +322,13 @@ theorem lie_model_transport_isomorphism : ∀ (E : Type) [Field E] [NumberField 
       (mv_regAt_le hξ q ⟨e.hom q.1, h⟩ rfl), ?_, ?_⟩
     · ext v
       constructor
-      · intro hv
-        exact Isomove.lat_le hφ gf hξ' hM' ⟨e.hom q.1, h⟩ q hq2 v hv
-      · intro hv
-        exact Isomove.lat_le hψ fg hξ hM q ⟨e.hom q.1, h⟩ rfl v hv
+      · exact fun hv => Isomove.lat_le hφ gf hξ' hM' ⟨e.hom q.1, h⟩ q hq2 v hv
+      · exact fun hv => Isomove.lat_le hψ fg hξ hM q ⟨e.hom q.1, h⟩ rfl v hv
     · intro n
       ext w
       constructor
-      · intro hw
-        exact Isomove.htOm_le hφ hψ fg gf φψ ψφ hξ hM (hW1 n) q ⟨e.hom q.1, h⟩ rfl w hw
-      · intro hw
-        exact Isomove.htOm_le hψ hφ gf fg ψφ φψ hξ' hM' (hW2 n) ⟨e.hom q.1, h⟩ q hq2 w hw
+      · exact fun hw => Isomove.htOm_le hφ hψ fg gf φψ ψφ hξ hM (hW1 n) q ⟨e.hom q.1, h⟩ rfl w hw
+      · exact fun hw => Isomove.htOm_le hψ hφ gf fg ψφ φψ hξ' hM' (hW2 n) ⟨e.hom q.1, h⟩ q hq2 w hw
 
 end PositivityTheory.UnitarySelfGeneration
 end -- clump:auto

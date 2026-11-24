@@ -61,10 +61,6 @@ theorem blk_inv_val {E : Type} [Field E] [NumberField E] {n a b : ℕ} (h : a + 
     ((blk h w m X)⁻¹).val =
       reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h))
         (fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val) := by
-  have a1 : m.1.val * (m.1⁻¹).val = 1 := Units.mul_inv m.1
-  have a2 : (m.1⁻¹).val * m.1.val = 1 := Units.inv_mul m.1
-  have b1 : m.2.val * (m.2⁻¹).val = 1 := Units.mul_inv m.2
-  have b2 : (m.2⁻¹).val * m.2.val = 1 := Units.inv_mul m.2
   have h1 : fromBlocks m.1.val (m.1.val * X) 0 m.2.val *
       fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val = 1 := by
     rw [fromBlocks_multiply, ← fromBlocks_one]
@@ -73,26 +69,13 @@ theorem blk_inv_val {E : Type} [Field E] [NumberField E] {n a b : ℕ} (h : a + 
     · simp [Matrix.mul_assoc]
     · simp
     · simp
-  have h2 : fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val *
-      fromBlocks m.1.val (m.1.val * X) 0 m.2.val = 1 := by
-    rw [fromBlocks_multiply, ← fromBlocks_one]
-    congr 1
-    · simp
-    · simp [← Matrix.mul_assoc, a2, Matrix.mul_assoc]
-    · simp
-    · simp
   have r1 : reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h))
         (fromBlocks m.1.val (m.1.val * X) 0 m.2.val) *
       reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h))
         (fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val) = 1 := by
     simp only [reindex_apply, submatrix_mul_equiv, h1, submatrix_one_equiv]
-  have r2 : reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h))
-        (fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val) *
-      reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h))
-        (fromBlocks m.1.val (m.1.val * X) 0 m.2.val) = 1 := by
-    simp only [reindex_apply, submatrix_mul_equiv, h2, submatrix_one_equiv]
   have hU : IsUnit (reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h))
-      (fromBlocks m.1.val (m.1.val * X) 0 m.2.val)) := ⟨⟨_, _, r1, r2⟩, rfl⟩
+      (fromBlocks m.1.val (m.1.val * X) 0 m.2.val)) := ⟨⟨_, _, r1, mul_eq_one_comm.1 r1⟩, rfl⟩
   have hb : (blk h w m X).val = reindex (finSumFinEquiv.trans (finCongr h))
       (finSumFinEquiv.trans (finCongr h)) (fromBlocks m.1.val (m.1.val * X) 0 m.2.val) := by
     unfold blk

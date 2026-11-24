@@ -278,15 +278,12 @@ theorem vert_sum_re (M : XModel D) (T : Finset ℕ) (hT : T ⊆ D.S) {U : Set M.
   classical
   induction T using Finset.induction_on with
   | empty =>
-    refine ⟨U, hU, hy, subset_rfl, fun _ => 0, ?_, by simp⟩
-    intro j y _
-    exact analyticAt_const
+    exact ⟨U, hU, hy, subset_rfl, fun _ => 0, fun j y _ => analyticAt_const, by simp⟩
   | insert r T hr ih =>
     obtain ⟨W₁, hW₁, hy₁, hs₁, G₁, hG₁, e₁⟩ := vert_re M (hT (Finset.mem_insert_self r T)) hU hs hh hy
     obtain ⟨W₂, hW₂, hy₂, hs₂, G₂, hG₂, e₂⟩ := ih fun q hq => hT (Finset.mem_insert_of_mem hq)
     refine ⟨W₁ ∩ W₂, hW₁.inter hW₂, ⟨hy₁, hy₂⟩, Set.inter_subset_left.trans hs₁, fun y => G₁ y + G₂ y, ?_, ?_⟩
-    · intro j y hyW
-      exact (hG₁ j y ⟨hyW.1, hyW.2.1⟩).add (hG₂ j y ⟨hyW.1, hyW.2.2⟩)
+    · exact fun j y hyW => (hG₁ j y ⟨hyW.1, hyW.2.1⟩).add (hG₂ j y ⟨hyW.1, hyW.2.2⟩)
     · intro y hyW
       rw [Finset.sum_insert hr, e₁ y hyW.1, e₂ y hyW.2, Complex.add_re]
 
@@ -372,8 +369,7 @@ theorem rel_reg (X : ComponentSetting D O Lt) (B : ℕ) (t : ℝ) (x y₀ : X.M.
   refine ⟨W ∩ X.S.R.Yo, hW.inter hop, ⟨hyW, hy.2⟩, fun y hy' => ⟨⟨hsub (hWU hy'.1), Set.mem_univ _⟩, hy'.2⟩,
     s, fun y hy' => hs y (hWU hy'.1), fun p => holo_mono (hh p) fun y hy' => hWU hy'.1,
     fun y => G₀ y - G₁ y, ?_, ?_⟩
-  · intro j y hyW'
-    exact (hG₀ j y ⟨hyW'.1, hWU hyW'.2.1⟩).sub (hG₁ j y ⟨hyW'.1, hyW'.2.1⟩)
+  · exact fun j y hyW' => (hG₀ j y ⟨hyW'.1, hWU hyW'.2.1⟩).sub (hG₁ j y ⟨hyW'.1, hyW'.2.1⟩)
   · intro y hy'
     have h1 := e₀ y (hWU hy'.1)
     have h2 := e₁ y hy'.1
@@ -500,8 +496,7 @@ theorem core (X : ComponentSetting D O Lt) (B : ℕ) (Q : (((k : K) → ι k) �
     filter_upwards [hC1, hP1] with t ht hp
     intro _
     refine ⟨ht.1, ?_, fun x hx => ?_⟩
-    · rw [rsmul_one] at hp
-      exact hp
+    · rwa [rsmul_one] at hp
     · have h1 := (ht.2 x hx).1
       have h2 := (ht.2 x hx).2
       have h3 := X.S.R.ph_ge x hx
@@ -522,8 +517,7 @@ theorem core (X : ComponentSetting D O Lt) (B : ℕ) (Q : (((k : K) → ι k) �
       · nlinarith
       · linarith
       · linarith
-  · intro _ j K' hK' hKc
-    exact hc2 j K' hK' hKc
+  · exact fun _ j K' hK' hKc => hc2 j K' hK' hKc
   · refine Filter.Eventually.of_forall fun _ => ⟨hm, fun x hx => ?_⟩
     have hL := hlog x hx
     have hCg : Cg ≤ C := by
@@ -558,10 +552,8 @@ theorem muMeasureLimit : GroundTheory.Heights₂.Heights.LowerBoundFree.MuMeasur
     have hd : degMu X.H = 0 := h0 _ _
     have hg : ∀ t, geomDeg (mCoordIdeal D.y) (muReg X.H X.S B t) D.n = 0 := fun t => h0 _ _
     refine ⟨?_, ?_⟩
-    · simp only [h0, hd, mul_zero, zero_div]
-      exact tendsto_const_nhds
-    · simp only [hg, hd]
-      exact tendsto_const_nhds
+    · simpa only [h0, hd, mul_zero, zero_div] using tendsto_const_nhds
+    · simpa only [hg, hd] using tendsto_const_nhds
   · have hat : ∀ (φ : Fin D.n → ((Σ k, ι k) → ℂ) → ℝ) (g : ((Σ k, ι k) → ℂ) → ℝ),
         ptsIntegral (e := D.n) (mCoordIdeal D.y) φ g =
           ptsIntegralAt (mCoordIdeal D.y) hΨ.choose φ g := fun φ g => by
@@ -599,8 +591,7 @@ theorem muMeasureLimit : GroundTheory.Heights₂.Heights.LowerBoundFree.MuMeasur
         linarith) (fun _ _ _ => rfl)
     have hdeg : degMu X.H = mInt X.M.atlas (fun _ : Fin D.n => X.S.R.th + LocPot.ofFun X.S.R.ph) fun _ => 1 := by
       show ptsIntegral (e := D.n) (mCoordIdeal D.y) _ _ = _
-      rw [hat]
-      exact c1
+      rwa [hat]
     have hhalf : meanU X.H X.Cd * degMu X.H / 2 =
         mInt X.M.atlas (fun _ : Fin D.n => X.S.R.th + LocPot.ofFun X.S.R.ph) fun x => G x / 2 := by
       by_cases hd : degMu X.H = 0
@@ -608,15 +599,12 @@ theorem muMeasureLimit : GroundTheory.Heights₂.Heights.LowerBoundFree.MuMeasur
         exact (mInt_zero _ _ _ _ hnull hdens hI1 (hdeg ▸ hd)).symm
       · have h2 := ptsIntegral_div_two (e := D.n) (mCoordIdeal D.y) (fun _ => phMu X.H) X.Cd.cuspWeight
         unfold meanU
-        rw [div_mul_cancel₀ _ hd, ← h2, hat]
-        exact cU
+        rwa [div_mul_cancel₀ _ hd, ← h2, hat]
     refine ⟨?_, ?_⟩
     · rw [hhalf]
-      simp only [hat]
-      exact tU
+      simpa only [hat] using tU
     · rw [hdeg]
       unfold geomDeg
-      simp only [hat]
-      exact t1
+      simpa only [hat] using t1
 
 end GlobalTheory.CompanionTheory.Ar.Giv

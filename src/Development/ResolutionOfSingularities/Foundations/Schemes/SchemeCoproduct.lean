@@ -65,8 +65,7 @@ theorem isClosed_range_coprod_inl (X Y : Scheme.{u}) :
       (Set.range ⇑(coprod.inr : Y ⟶ X ⨿ Y).base) := isCompl_range_inl_inr X Y
   have hopen : IsOpen (Set.range ⇑(coprod.inr : Y ⟶ X ⨿ Y).base) :=
     (coprod.inr : Y ⟶ X ⨿ Y).isOpenEmbedding.isOpen_range
-  rw [← isOpen_compl_iff, h.compl_eq]
-  exact hopen
+  rwa [← isOpen_compl_iff, h.compl_eq]
 
 instance instIsClosedImmersionCoprodInl (X Y : Scheme.{u}) :
     IsClosedImmersion (coprod.inl : X ⟶ X ⨿ Y) := by
@@ -90,8 +89,7 @@ variable {ι : Type u} (X : ι → Scheme.{u}) [HasCoproduct X]
 
 theorem sigmaι_base_ne {i j : ι} (hij : i ≠ j) (x : ↥(X i)) (y : ↥(X j)) :
     (Sigma.ι X i).base x ≠ (Sigma.ι X j).base y := by
-  intro h
-  exact hij (congrArg Sigma.fst ((sigmaι_eq_iff X i j x y).mp h))
+  exact fun h => hij (congrArg Sigma.fst ((sigmaι_eq_iff X i j x y).mp h))
 
 private noncomputable def iSupOpensRangeSigmaι {κ : Type u} (Y : κ → Scheme.{u}) [HasCoproduct Y] : (∐ Y).Opens :=
   ⟨⋃ i, Set.range ⇑(Sigma.ι Y i).base,
@@ -100,16 +98,13 @@ private noncomputable def iSupOpensRangeSigmaι {κ : Type u} (Y : κ → Scheme
 private theorem range_sigmaι_subset_iUnion {κ : Type u} (Y : κ → Scheme.{u}) [HasCoproduct Y]
     (i : κ) : Set.range ⇑(Sigma.ι Y i).base ⊆ Set.range ⇑(iSupOpensRangeSigmaι Y).ι.base := by
   rw [Scheme.Opens.range_ι]
-  intro z hz
-  show z ∈ ⋃ i, Set.range ⇑(Sigma.ι Y i).base
-  exact Set.mem_iUnion.mpr ⟨i, hz⟩
+  exact fun z hz => Set.mem_iUnion.mpr ⟨i, hz⟩
 
 private theorem surjective_base_of_comp_eq_id {A B : Scheme.{u}} (g : A ⟶ B) (h : B ⟶ A)
     (hgh : g ≫ h = 𝟙 A) : Function.Surjective ⇑h.base := by
   intro x
   refine ⟨g.base x, ?_⟩
-  have h1 := congrArg (fun m : A ⟶ A => m.base x) hgh
-  simpa using h1
+  simpa using congrArg (fun m : A ⟶ A => m.base x) hgh
 
 private theorem exists_sigmaι_base_eq {κ : Type u} (Y : κ → Scheme.{u}) [HasCoproduct Y]
     (x : ↥(∐ Y)) : ∃ (i : κ) (y : ↥(Y i)), (Sigma.ι Y i).base y = x := by

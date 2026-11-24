@@ -183,8 +183,7 @@ theorem ZarPow_of (hA : AlgPow) : ZarPow := by
     unfold TopologicalSpace.IsOpenCover
     have h := iSup_basicOpen_of_span_eq_top ⊤ s hs
     show ⨆ f : s, V.basicOpen f.1 = ⊤
-    rw [iSup_subtype]
-    exact h
+    rwa [iSup_subtype]
   let 𝒰 := V.openCoverOfIsOpenCover U hU
   refine ⟨Sieve.generate (Presieve.ofArrows 𝒰.X 𝒰.f),
     Scheme.zariskiTopology_le_etaleTopology _ (Scheme.mem_grothendieckTopology_iff.2 ⟨𝒰, Sieve.le_generate _⟩), ?_⟩
@@ -197,8 +196,7 @@ theorem ZarPow_of (hA : AlgPow) : ZarPow := by
     have e : V.presheaf.map (homOfLE (x := (U i).ι ''ᵁ ⊤) (y := ⊤) le_top).op =
         V.presheaf.map (homOfLE (V.basicOpen_le i.1)).op ≫ V.presheaf.map (homOfLE hle).op := by
       rw [← Functor.map_comp]; rfl
-    rw [Scheme.Opens.ι_appTop, e]
-    exact this
+    rwa [Scheme.Opens.ι_appTop, e]
   have key : (U i).ι.appTop.hom ξ.1 = ((U i).ι.appTop.hom ζ.1) ^ (a : ZMod q).val := by
     have h0 : (U i).ι.appTop.hom (i.1 ^ n * (ξ.1 - ζ.1 ^ (a : ZMod q).val)) = 0 := by rw [hn, map_zero]
     rw [map_mul, map_pow, map_sub, map_pow] at h0
@@ -237,9 +235,7 @@ theorem eq_pow_dom {K : Type} [CommRing K] [IsDomain K] (q : ℕ) [NeZero q] (z 
 theorem pow_ne_dom {K : Type} [CommRing K] (q : ℕ) [NeZero q] (z : K)
     (hz : IsPrimitiveRoot z q) (a b : (ZMod q)ˣ) (h : a ≠ b) :
     z ^ (a : ZMod q).val ≠ z ^ (b : ZMod q).val := by
-  intro e
-  apply h
-  exact Units.ext (ZMod.val_injective q (hz.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) e))
+  exact fun e => h (Units.ext (ZMod.val_injective q (hz.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) e)))
 
 theorem pow_q {A : Type} [CommRing A] (q : ℕ) (z : A) (hz : aeval z (cyclotomic q ℤ) = 0) : z ^ q = 1 := by
   obtain ⟨p, hp⟩ := cyclotomic.dvd_X_pow_sub_one q ℤ
@@ -253,8 +249,7 @@ theorem self_sq {A : Type} [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit (q : A
   set u := ∑ i ∈ Finset.range q, x ^ i * y ^ (q - 1 - i)
   have hdu : u * d = 0 := by
     have := geom_sum₂_mul x y q
-    rw [hx, hy, sub_self] at this
-    exact this
+    rwa [hx, hy, sub_self] at this
   have hyu : IsUnit y := isUnit_iff_exists_inv.2 ⟨y ^ (q - 1), by rw [← pow_succ', Nat.sub_add_cancel (Nat.pos_of_ne_zero (NeZero.ne q)), hy]⟩
   set c : A := (q : A) * y ^ (q - 1)
   have hc : IsUnit c := hq.mul (hyu.pow _)

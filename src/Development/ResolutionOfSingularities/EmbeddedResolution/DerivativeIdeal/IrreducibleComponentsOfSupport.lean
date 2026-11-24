@@ -106,8 +106,7 @@ private theorem vanishingIdeal_ideal_le_primeIdealOf {X : Scheme.{u}} (Z : Close
   refine hf (hV.primeIdealOf ⟨x, hx⟩) ?_
   have : hV.fromSpec.base (hV.primeIdealOf ⟨x, hx⟩) = x := hV.fromSpec_primeIdealOf ⟨x, hx⟩
   show hV.fromSpec.base (hV.primeIdealOf ⟨x, hx⟩) ∈ (Z : Set ↥X)
-  rw [this]
-  exact hxZ
+  rwa [this]
 
 private theorem le_vanishingIdeal_of_subset_support {X : Scheme.{u}} (I : X.IdealSheafData)
     (Z : Closeds ↥X) (h : (Z : Set ↥X) ⊆ (I.support : Set ↥X)) :
@@ -150,8 +149,7 @@ theorem genericPoint_mem (hC : IsIrreducibleComponentOfSupport D C) :
 theorem genericPoint_specializes (hC : IsIrreducibleComponentOfSupport D C) {x : X} (hx : x ∈ C) :
     hC.isIrreducible.genericPoint ⤳ x := by
   refine specializes_iff_mem_closure.mpr ?_
-  rw [hC.closure_genericPoint]
-  exact hx
+  rwa [hC.closure_genericPoint]
 
 theorem genericPoint_mem_support (hC : IsIrreducibleComponentOfSupport D C) :
     hC.isIrreducible.genericPoint ∈ (D.support : Set X) :=
@@ -290,14 +288,12 @@ private theorem vanishingIdeal_ideal_eq_of_restrictIdeal_eq_coordIdeal {X : Sche
     rintro P ⟨hPle, hPprime⟩
     obtain ⟨hz, hzP⟩ := exists_fromSpec_mem_and_primeIdealOf_eq hW ⟨P, hPprime⟩
     have hzs : hW.fromSpec.base (⟨P, hPprime⟩ : PrimeSpectrum Γ(X, W)) ∈ D.support := by
-      rw [mem_support_iff_ideal_le_primeIdealOf D hW hz, hzP]
-      exact hPle
+      rwa [mem_support_iff_ideal_le_primeIdealOf D hW hz, hzP]
     have hzC : hW.fromSpec.base (⟨P, hPprime⟩ : PrimeSpectrum Γ(X, W)) ∈ C := hWC _ hz hzs
     have hfinal : (Scheme.IdealSheafData.vanishingIdeal (⟨C, hCcl⟩ : Closeds ↥X)).ideal ⟨W, hW⟩
         ≤ (hW.primeIdealOf ⟨_, hz⟩).asIdeal :=
       vanishingIdeal_ideal_le_primeIdealOf (⟨C, hCcl⟩ : Closeds ↥X) hW hz hzC
-    rw [hzP] at hfinal
-    exact hfinal
+    rwa [hzP] at hfinal
   · exact le_vanishingIdeal_of_subset_support D (⟨C, hCcl⟩ : Closeds ↥X) hCsub ⟨W, hW⟩
 
 namespace IsIrreducibleComponentOfSupport
@@ -352,8 +348,7 @@ theorem disjoint {C' : Set X} (hC : IsIrreducibleComponentOfSupport D C) (hC' : 
           Set.singleton_subset_iff.mpr (specializes_iff_mem_closure.mp hspz)
         have h2 := closure_mono h1
         rw [closure_closure] at h2
-        rw [← hC'.closure_genericPoint]
-        exact h2
+        rwa [← hC'.closure_genericPoint]
       · have h3 : closure {hV.fromSpec.base (⟨P, hP⟩ : PrimeSpectrum Γ(X, V))}
             ⊆ closure ((D.support : Set ↥X)) :=
           closure_mono (Set.singleton_subset_iff.mpr hzs)
@@ -377,8 +372,7 @@ theorem disjoint {C' : Set X} (hC : IsIrreducibleComponentOfSupport D C) (hC' : 
       = hV.primeIdealOf ⟨hC'.isIrreducible.genericPoint, heta'V⟩ :=
     PrimeSpectrum.ext (e1.trans e2.symm)
   have hpts : hC.isIrreducible.genericPoint = hC'.isIrreducible.genericPoint := by
-    have h := congrArg (fun q => hV.fromSpec.base q) hP
-    simpa only [hV.fromSpec_primeIdealOf] using h
+    simpa only [hV.fromSpec_primeIdealOf] using congrArg (fun q => hV.fromSpec.base q) hP
   rw [← hC.closure_genericPoint, ← hC'.closure_genericPoint, hpts]
 
 theorem exists_affineOpen_etaleChart_coordIdeal [TopologicalSpace.NoetherianSpace ↥X] (hC : IsIrreducibleComponentOfSupport D C)

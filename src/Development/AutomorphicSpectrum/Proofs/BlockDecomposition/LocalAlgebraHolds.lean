@@ -105,12 +105,10 @@ theorem hint_eq (K K' : Subgroup G) (hle : K' ≤ K) (hidx : K'.relIndex K ≠ 0
     intro x hx
     refine ⟨e.symm x, ?_, by simp⟩
     show u (e.symm x).out ≠ 0
-    rw [he, Equiv.apply_symm_apply]
-    exact hx
+    rwa [he, Equiv.apply_symm_apply]
   have hfinA : {p : G ⧸ S | u p.out ≠ 0}.Finite := by
     refine (hfinP.image Prod.fst).subset ?_
-    intro p hp
-    exact ⟨(p, ((1 : S) : S ⧸ K'.subgroupOf S)), hp, rfl⟩
+    exact fun p hp => ⟨(p, ((1 : S) : S ⧸ K'.subgroupOf S)), hp, rfl⟩
   have hsub1 : (Function.support fun x : (G ⧸ S) × (S ⧸ K'.subgroupOf S) => u x.1.out) ⊆
       ↑(hfinA.toFinset ×ˢ (Finset.univ : Finset (S ⧸ K'.subgroupOf S))) := by
     intro x hx
@@ -119,8 +117,7 @@ theorem hint_eq (K K' : Subgroup G) (hle : K' ≤ K) (hidx : K'.relIndex K ≠ 0
     exact hx
   have hsub2 : (Function.support fun p : G ⧸ S => u p.out) ⊆ ↑hfinA.toFinset := by
     intro p hp
-    rw [Set.Finite.coe_toFinset]
-    exact hp
+    rwa [Set.Finite.coe_toFinset]
   have hsum : ∑ᶠ q : G ⧸ K', u q.out = ((K'.relIndex S : ℕ) : ℂ) * ∑ᶠ p : G ⧸ S, u p.out := by
     rw [finsum_congr he, h3, finsum_eq_sum_of_support_subset _ hsub1,
       finsum_eq_sum_of_support_subset _ hsub2, Finset.sum_product]
@@ -292,8 +289,7 @@ theorem levOp_conv (ρ : Representation ℂ G V) {K K' : Subgroup G} (ho : IsOpe
   have hsub : ∀ p : G ⧸ K', (Function.support fun q : G ⧸ K' => f₁ q.out * f₂ (q.out⁻¹ * p.out)) ⊆ ↑S₁ := by
     intro p q hq
     rw [hS₁, Set.Finite.coe_toFinset]
-    intro h0
-    exact hq (by simp [h0])
+    exact fun h0 => hq (by simp [h0])
   have hsubT : (Function.support fun p : G ⧸ K' =>
       (c * ∑ q ∈ S₁, f₁ q.out * f₂ (q.out⁻¹ * p.out)) • ρ p.out v) ⊆ ↑T := by
     intro p hp
@@ -318,8 +314,7 @@ theorem levOp_conv (ρ : Representation ℂ G V) {K K' : Subgroup G} (ho : IsOpe
       f₁ q.out • ρ q.out (c • ∑ᶠ r : G ⧸ K', f₂ r.out • ρ r.out v)) ⊆ ↑S₁ := by
     intro q hq
     rw [hS₁, Set.Finite.coe_toFinset]
-    intro h0
-    exact hq (by simp [h0])
+    exact fun h0 => hq (by simp [h0])
   calc ∑ᶠ p : G ⧸ K', (c * ∑ᶠ q : G ⧸ K', f₁ q.out * f₂ (q.out⁻¹ * p.out)) • ρ p.out v
       = ∑ᶠ p : G ⧸ K', (c * ∑ q ∈ S₁, f₁ q.out * f₂ (q.out⁻¹ * p.out)) • ρ p.out v := by
         apply finsum_congr

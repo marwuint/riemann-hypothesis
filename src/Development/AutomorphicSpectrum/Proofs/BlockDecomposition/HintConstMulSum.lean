@@ -109,11 +109,8 @@ theorem avg_conj {G : Type} [Group G] (K K' : Subgroup G) (X : Finset G) (hXK : 
   have hφ : Function.Bijective φ := by
     constructor
     · intro x y hxy
-      have h1 : (x.1)⁻¹ * y.1 ∈ K' := by
-        have h2 := QuotientGroup.eq.1 hxy
-        exact Subgroup.mem_subgroupOf.1 h2
-      have hy := hX y.1 (hXK _ y.2)
-      exact Subtype.ext (hy.unique ⟨x.2, h1⟩ ⟨y.2, by simp [K'.one_mem]⟩)
+      have h1 : (x.1)⁻¹ * y.1 ∈ K' := Subgroup.mem_subgroupOf.1 (QuotientGroup.eq.1 hxy)
+      exact Subtype.ext ((hX y.1 (hXK _ y.2)).unique ⟨x.2, h1⟩ ⟨y.2, by simp [K'.one_mem]⟩)
     · intro q
       obtain ⟨k, rfl⟩ := QuotientGroup.mk_surjective q
       obtain ⟨x, ⟨hxX, hxk⟩, -⟩ := hX k.1 k.2
@@ -164,8 +161,7 @@ theorem support_finite {G H : Type} [Group G] [Group H] (L : Subgroup H) (K' : S
   · rintro _ ⟨q, hq, rfl⟩
     obtain ⟨s, hs⟩ := QuotientGroup.mk_out_eq_mul K' (θ q.out)
     show f ((θ q.out : G) : G ⧸ K').out ≠ 0
-    rw [hs, hr _ s.2]
-    exact hq
+    rwa [hs, hr _ s.2]
   · intro q _ q' _ hqq
     have h2 : ((q.out : H) : H ⧸ L) = q'.out := QuotientGroup.eq.2 (hθ _ _ (QuotientGroup.eq.1 hqq))
     simpa using h2

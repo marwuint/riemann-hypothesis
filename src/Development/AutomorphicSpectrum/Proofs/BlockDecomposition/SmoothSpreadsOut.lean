@@ -107,8 +107,7 @@ theorem formallySmooth_of_witness (Q : Algebra.Presentation T S ι σ) (h : ι �
       change Ideal.Quotient.mk _ _ = 0
       rw [Ideal.Quotient.eq_zero_iff_mem]
       have := h2 j
-      rw [← hkerf] at this
-      exact this
+      rwa [← hkerf] at this
     exact this ha'
   let g : S →ₐ[T] Q.Ring ⧸ RingHom.ker f.toRingHom ^ 2 :=
     (Ideal.Quotient.liftₐ (RingHom.ker f.toRingHom) g₀ hg₀).comp
@@ -127,8 +126,7 @@ theorem formallySmooth_of_witness (Q : Algebra.Presentation T S ι σ) (h : ι �
     rw [aeval_X]
   have hfx : f (h i) = f (X i) := by
     have := h1 i
-    rw [← hkerf, RingHom.mem_ker, map_sub, sub_eq_zero] at this
-    exact this
+    rwa [← hkerf, RingHom.mem_ker, map_sub, sub_eq_zero] at this
   simp only [AlgHom.comp_apply, hgf, AlgHom.id_apply]
   rw [AlgHom.kerSquareLift_mk, hfx]
 
@@ -171,8 +169,7 @@ theorem exists_finite_smooth [Algebra.FinitePresentation R₀ B] [Algebra.Smooth
     MvPolynomial.map_injective _ Subtype.val_injective
   have hMX {ι : Type} (i : ι) : M (X i) = (X i : MvPolynomial ι R) := MvPolynomial.map_X _ _
   have lift {ι : Type} (p : MvPolynomial ι R) (hp : (p.coeffs : Set R) ⊆ A) : ∃ q, M q = p := by
-    refine MvPolynomial.mem_range_map_iff_coeffs_subset.mpr fun x hx ↦ ?_
-    exact ⟨⟨x, hp hx⟩, rfl⟩
+    exact MvPolynomial.mem_range_map_iff_coeffs_subset.mpr fun x hx ↦ ⟨⟨x, hp hx⟩, rfl⟩
   have hh' (i) : ∃ q, M q = h i := lift _ fun x hx ↦
     hA (.inl (.inl (Set.mem_iUnion.mpr ⟨i, hx⟩)))
   have hc' (i j) : ∃ q, M q = c i j := lift _ fun x hx ↦
@@ -191,8 +188,7 @@ theorem exists_finite_smooth [Algebra.FinitePresentation R₀ B] [Algebra.Smooth
     · rw [Ideal.mem_span_range_iff_exists_fun]
       refine ⟨c' i, hM ?_⟩
 
-      simp only [map_sum, map_mul, map_sub, hc', hrel, hh', hMX]
-      exact hc i
+      simpa only [map_sum, map_mul, map_sub, hc', hrel, hh', hMX] using hc i
     · rw [span_range_sq, Ideal.mem_span_range_iff_exists_fun]
       refine ⟨d' j, hM ?_⟩
       have hMa (q : MvPolynomial _ A) : M (aeval h' q) = aeval h (M q) := by
@@ -248,8 +244,7 @@ theorem exists_finite_chart {R R₀ : Type} [CommRing R] [CommRing R₀] [Algebr
     have : LocallyOfFinitePresentation (Spec.map α) := by
       rw [hα]
       infer_instance
-    rw [HasRingHomProperty.Spec_iff (P := @LocallyOfFinitePresentation.{0})] at this
-    exact this
+    rwa [HasRingHomProperty.Spec_iff (P := @LocallyOfFinitePresentation.{0})] at this
   have hsm : Algebra.Smooth R (R ⊗[R₀] B) := by
     refine (smooth_iff_of_isPullback (j ≫ f₀) e he
       ((IsPullback.of_hasPullback j π).paste_vert hpb)).mp ?_

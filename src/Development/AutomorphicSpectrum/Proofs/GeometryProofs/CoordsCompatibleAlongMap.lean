@@ -288,8 +288,7 @@ theorem smooth_chRing {κ₁ κ₂ : Type} [Finite κ₂] {x₁ : κ₁ → Ω} 
   haveI : Algebra.FinitePresentation ℚ (chRing ℚ x₂ c) := Algebra.FinitePresentation.of_finiteType.1 this
   refine ⟨?_, inferInstance⟩
   rw [← Algebra.smoothLocus_eq_univ_iff]
-  refine Set.eq_univ_of_forall fun P => ?_
-  exact formallySmooth_atPrime tie₁ tie₂ dom sm iso hc P.asIdeal
+  exact Set.eq_univ_of_forall fun P => formallySmooth_atPrime tie₁ tie₂ dom sm iso hc P.asIdeal
 
 theorem adjoin_blocks_eq {K : Type} [Fintype K] {J : K → Type} (y : (Σ k, J k) → Ω) (c : (k : K) → J k)
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) :
@@ -305,8 +304,7 @@ theorem adjoin_blocks_eq {K : Type} [Fintype K] {J : K → Type} (y : (Σ k, J k
     · simp
     · intro b _ hb
       rw [Function.update_of_ne hb, div_self (hc b)]
-    · intro h
-      exact absurd (Finset.mem_univ k) h
+    · exact fun h => absurd (Finset.mem_univ k) h
   · refine Algebra.adjoin_le ?_
     rintro _ ⟨c', rfl⟩
     show (∏ k, y ⟨k, c' k⟩) / (∏ k, y ⟨k, c k⟩) ∈ _

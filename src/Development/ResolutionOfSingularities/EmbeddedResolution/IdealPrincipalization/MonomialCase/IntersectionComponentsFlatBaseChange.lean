@@ -99,8 +99,7 @@ theorem support_intersectionIdeal_pullbackOverField (T : MarkedIdealWithBoundary
   have h2 : (↑((intersectionIdeal T.boundary J).comap g).support : Set ↥Y)
       = ⇑g ⁻¹' (↑(intersectionIdeal T.boundary J).support : Set ↥T.scheme) :=
     support_comap g (intersectionIdeal T.boundary J)
-  rw [h]
-  exact h2
+  rwa [h]
 
 theorem mem_intersectionComponents_pullbackOverField_iff (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u)
     [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme)
@@ -109,8 +108,7 @@ theorem mem_intersectionComponents_pullbackOverField_iff (T : MarkedIdealWithBou
       IsIrreducibleComponentOf C' (⇑g ⁻¹' (↑(intersectionIdeal T.boundary J).support : Set ↥T.scheme)) := by
   have h1 := mem_intersectionComponents_iff (T.pullbackOverField Y k' q g).boundary
       (J.image (pullbackOverFieldIndex T Y k' q g)) C'
-  rw [support_intersectionIdeal_pullbackOverField T Y k' q g J] at h1
-  exact h1
+  rwa [support_intersectionIdeal_pullbackOverField T Y k' q g J] at h1
 
 theorem IsIrreducibleComponentOf.exists_isGenericPoint {Y : Scheme.{u}} {C S : Set ↥Y}
     (h : IsIrreducibleComponentOf C S) (hS : IsClosed S) :
@@ -155,8 +153,7 @@ theorem exists_isIrreducibleComponentOf {Y : Scheme.{u}} (S A : Set ↥Y) (hA : 
     zorn_subset_nonempty {C : Set ↥Y | IsIrreducible C ∧ C ⊆ S} hchain A ⟨hA, hAS⟩
   have hmem : IsIrreducible C ∧ C ⊆ S := hmax.1
   refine ⟨C, ⟨hmem.1, hmem.2, ?_⟩, hAC⟩
-  intro C' hC' hCle hC'S
-  exact subset_antisymm (hmax.2 ⟨hC', hC'S⟩ hCle) hCle
+  exact fun C' hC' hCle hC'S => subset_antisymm (hmax.2 ⟨hC', hC'S⟩ hCle) hCle
 
 theorem IsIrreducibleComponentOf.closure_image_genericPoint {X Y : Scheme.{u}} (g : Y ⟶ X)
     (hg : GeneralizingMap (fun y : ↥Y => g y)) {S : Set ↥X} (hS : IsClosed S) {C' : Set ↥Y}
@@ -264,8 +261,7 @@ theorem exists_isIrreducibleComponentOf_preimage {X Y : Scheme.{u}} (g : Y ⟶ X
     have hζeq : closure ({ζ} : Set ↥Y) = C' := hζ
     have h4 : y₀ ∈ closure ({ζ} : Set ↥Y) := by rw [hζeq]; exact hy₀C'
     have h6 := image_closure_subset_closure_image hcont (Set.mem_image_of_mem (⇑g) h4)
-    rw [Set.image_singleton] at h6
-    rw [hgy₀] at h6
+    rw [Set.image_singleton, hgy₀] at h6
     have hCsub : C ⊆ closure ({g ζ} : Set ↥X) := by
       rw [← hξeq]
       exact closure_minimal (Set.singleton_subset_iff.mpr h6) isClosed_closure
@@ -417,8 +413,7 @@ private theorem exists_isOpen_comap_ker_of_flat {X Y : Scheme.{u}} (g : Y ⟶ X)
   refine ⟨hopen, ?_⟩
   have hV : subschemePreimageOpens (W.comap g) (⇑g ⁻¹' A) hopen
       = comapSubschemeHom W g ⁻¹ᵁ subschemePreimageOpens W A hA := by
-    apply TopologicalSpace.Opens.ext
-    exact hset
+    exact TopologicalSpace.Opens.ext hset
   rw [hV]
   have hsq2 := (AlgebraicGeometry.isPullback_morphismRestrict (comapSubschemeHom W g)
     (subschemePreimageOpens W A hA)).paste_vert (isPullback_comapSubschemeHom W g)
@@ -475,8 +470,7 @@ theorem comap_componentUnionIdeal_of_flat (T : MarkedIdealWithBoundary.{u}) (hT 
       have hξ0e : closure ({ξ₀} : Set ↥T.scheme) = C₀ := hξ₀
       have h3 : C₀ = C := by rw [← hξ0e, ← hξe, ← h1, ← h2]
       refine ⟨C', ⟨hC'mem, C, hC𝒞, ?_⟩, hyC'⟩
-      rw [← h3]
-      exact hmaps0
+      rwa [← h3]
   have hqc := quasiCompact_comp_of_noetherianSpace
     (subschemePreimageOpens (intersectionIdeal T.boundary J) (⋃₀ 𝒞) hop).ι
     (intersectionIdeal T.boundary J).subschemeι hns

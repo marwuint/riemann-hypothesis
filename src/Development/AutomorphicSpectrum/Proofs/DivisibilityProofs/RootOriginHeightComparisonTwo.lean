@@ -89,8 +89,7 @@ theorem pull_mem_mcPts {y₀ : (Σ k, ι₀ k) → Ω₀} {y : (Σ k, J k) → �
     subst h2
     refine ⟨pi, ?_⟩
     show z (v ⟨pk, pi⟩) ≠ 0
-    rw [hp]
-    exact hj
+    rwa [hp]
   · have := hz.2 _ (rename_mem_mCoordIdeal i hb.2.2.1 hy hf)
     rwa [map_rename, eval_rename] at this
 
@@ -232,15 +231,13 @@ theorem lines_isometric : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     have e := congrArg (fun φ => φ (Fx.yf i)) hg
     simp only [RingHom.comp_apply] at e
     show y (v₀ _) = y (v₁ _)
-    rw [hy₀, hy₁, o₀.y_eq, o₁.y_eq]
-    exact e
+    rwa [hy₀, hy₁, o₀.y_eq, o₁.y_eq]
   obtain ⟨j, hj⟩ := ha.2.1.2.2 (κ₀ o₀.k₀)
   obtain ⟨a, ha'⟩ := s₀ ⟨κ₀ o₀.k₀, j⟩ rfl
   rw [← ha'] at hj
   have hf : (X (w₀ a) : MRing J) ∉ mCoordIdeal y := hj
   have hg' : (X (w₁ a) : MRing J) ∉ mCoordIdeal y := by
-    rw [X_mem_mCoordIdeal_iff, ← hw, ← X_mem_mCoordIdeal_iff]
-    exact hf
+    rwa [X_mem_mCoordIdeal_iff, ← hw, ← X_mem_mCoordIdeal_iff]
   have d₀ : (pullHerm h₀ M₀.A).a = fun k => (((Pi.single (κ₀ o₀.k₀) 1 : K → ℕ) k : ℕ) : ℤ) :=
     pullDeg_single h₀.1 o₀.A_deg.1 o₀.A_deg.2
   have d₁ : (pullHerm h₁ M₁.A).a = fun k => (((Pi.single (κ₁ o₁.k₀) 1 : K → ℕ) k : ℕ) : ℤ) :=
@@ -255,8 +252,7 @@ theorem lines_isometric : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     show _ = (pullHerm h₀ M₀.A).a - (pullHerm h₁ M₁.A).a
     rw [d₀, d₁]
     rfl
-  · intro W hW hPW hrel _
-    exact exists_unit b₀ b₁ s₀ s₁ hw a hW hPW hrel
+  · exact fun W hW hPW hrel _ => exists_unit b₀ b₁ s₀ s₁ hw a hW hPW hrel
   · intro z hz
     obtain ⟨r, hr, hp⟩ := exists_prop b₀ b₁ s₀ s₁ hw hz
     have z₀ := pull_mem_mcPts i₀ h₀ hy₀ hz

@@ -128,27 +128,17 @@ theorem partialDeriv_algHom_apply (φ : S →ₐ[k] S')
   have hcomp : ∀ (c : k) (y : S'), c • y = (algebraMap k L c) • y := by
     intro c y
     rw [Algebra.smul_def, Algebra.smul_def, IsScalarTower.algebraMap_apply k L S']
-  have hadd1 : ∀ x y : S', partialDeriv L ι S' i (x + y)
-      = partialDeriv L ι S' i x + partialDeriv L ι S' i y :=
-    fun x y => (partialDeriv L ι S' i).toLinearMap.map_add x y
-  have hadd2 : ∀ x y : S, partialDeriv k ι S i (x + y)
-      = partialDeriv k ι S i x + partialDeriv k ι S i y :=
-    fun x y => (partialDeriv k ι S i).toLinearMap.map_add x y
-  have hsm1 : ∀ (c : L) (y : S'), partialDeriv L ι S' i (c • y) = c • partialDeriv L ι S' i y :=
-    fun c y => (partialDeriv L ι S' i).toLinearMap.map_smul c y
-  have hsm2 : ∀ (c : k) (x : S), partialDeriv k ι S i (c • x) = c • partialDeriv k ι S i x :=
-    fun c x => (partialDeriv k ι S i).toLinearMap.map_smul c x
   have hpsmul : ∀ (c : k) (y : S'),
       partialDeriv L ι S' i (c • y) = c • partialDeriv L ι S' i y := by
     intro c y
-    rw [hcomp c y, hsm1, ← hcomp]
+    rw [hcomp c y, Derivation.map_smul, ← hcomp]
   let F₁ : S →ₗ[k] S' :=
     { toFun := fun s => partialDeriv L ι S' i (φ s)
       map_add' := by
         intro x y
         show partialDeriv L ι S' i (φ (x + y))
             = partialDeriv L ι S' i (φ x) + partialDeriv L ι S' i (φ y)
-        rw [map_add (f := _), hadd1]
+        rw [map_add (f := _), Derivation.map_add]
       map_smul' := by
         intro c x
         show partialDeriv L ι S' i (φ (c • x)) = c • partialDeriv L ι S' i (φ x)
@@ -159,11 +149,11 @@ theorem partialDeriv_algHom_apply (φ : S →ₐ[k] S')
         intro x y
         show φ (partialDeriv k ι S i (x + y))
             = φ (partialDeriv k ι S i x) + φ (partialDeriv k ι S i y)
-        rw [hadd2, map_add (f := _)]
+        rw [Derivation.map_add, map_add (f := _)]
       map_smul' := by
         intro c x
         show φ (partialDeriv k ι S i (c • x)) = c • φ (partialDeriv k ι S i x)
-        rw [hsm2, hφsmul] }
+        rw [Derivation.map_smul, hφsmul] }
   let D₁ : Derivation k S S' := Derivation.mk' F₁ (by
     intro a b
     show partialDeriv L ι S' i (φ (a * b))
@@ -278,8 +268,7 @@ private theorem span_eq_top_of_isAffineOpen_of_forall_mem_basicOpen {X : Scheme.
   have hx : hU.fromSpec.base (⟨m, hmp⟩ : PrimeSpectrum Γ(X, U)) ∈ U := by
     have hr : hU.fromSpec.base (⟨m, hmp⟩ : PrimeSpectrum Γ(X, U))
         ∈ Set.range hU.fromSpec.base := ⟨_, rfl⟩
-    rw [hU.range_fromSpec] at hr
-    exact hr
+    rwa [hU.range_fromSpec] at hr
   obtain ⟨g, hgs, hg⟩ := hcov _ hx
   have hmem : (⟨m, hmp⟩ : PrimeSpectrum Γ(X, U)) ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen g := hg
   rw [hU.fromSpec_preimage_basicOpen] at hmem
@@ -310,8 +299,7 @@ private theorem exists_pow_mul_mem_of_map_mem {X : Scheme.{u}} (U : X.affineOpen
       (S := Γ(X, X.basicOpen g))).mp hmem
   have hEq' : algebraMap Γ(X, U.1) Γ(X, X.basicOpen g) (s * (mm : Γ(X, U.1)))
       = algebraMap Γ(X, U.1) Γ(X, X.basicOpen g) y := by
-    rw [map_mul]
-    exact hEq
+    rwa [map_mul]
   obtain ⟨cc, hcc⟩ :=
     (IsLocalization.eq_iff_exists (Submonoid.powers g) Γ(X, X.basicOpen g)).mp hEq'
   obtain ⟨n₁, hn₁⟩ := (Submonoid.mem_powers_iff (cc : Γ(X, U.1)) g).mp cc.2
@@ -348,8 +336,7 @@ private theorem ideal_le_of_locally_eq {X : Scheme.{u}} (I J : X.IdealSheafData)
     rintro g ⟨n, hn⟩
     exact Ideal.mem_radical_iff.mpr ⟨n, (hK _).mpr hn⟩
   have htop : K.radical = ⊤ := by
-    rw [eq_top_iff, ← hspan]
-    exact hsub
+    rwa [eq_top_iff, ← hspan]
   have h1 : (1 : Γ(X, U.1)) ∈ K.radical := by
     rw [htop]
     exact Submodule.mem_top
@@ -432,7 +419,6 @@ private theorem exists_affineOpen_derivIdealSheaf_comap_eq {k L : Type u} [Field
     have h2 : EtaleCoordinates.coord L (ULift.{u} (Fin m)) Γ(Y, V) (ULift.up j) = c'.coord j :=
       c'.etaleCoordinates_coord j
     rw [h1, h2]
-    show (f.appLE U V hVU).hom (c.coord j) = c'.coord j
     exact (hcoord j).symm
   have key := DerivIdealBaseChange.map_derivIdeal k L (ULift.{u} (Fin m)) Γ(X, U) Γ(Y, V) ψ hψ
       (I.ideal ⟨U, hU⟩)
@@ -499,8 +485,7 @@ theorem orderAt_comap_fieldBaseChange {k L : Type u} [Field k] [Field L] [CharZe
   refine ENat.eq_of_forall_natCast_le_iff ?_
   intro n
   have h := orderAtLeastLocus_comap_fieldBaseChange p φ I n
-  have hy := Set.ext_iff.mp h y
-  simpa [mem_orderAtLeastLocus_iff, Set.mem_preimage] using hy
+  simpa [mem_orderAtLeastLocus_iff, Set.mem_preimage] using Set.ext_iff.mp h y
 
 end FunctorialResolution.EmbeddedResolution
 end -- clump:auto

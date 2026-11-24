@@ -241,8 +241,7 @@ theorem map_mem_closedNormal {A B : Type} [Group A] [TopologicalSpace A] [IsTopo
   have hc : IsClosed ((K.comap f : Subgroup A) : Set A) := hK.preimage Φ.continuous
   have hle : Subgroup.normalClosure X ≤ K.comap f := by
     apply Subgroup.normalClosure_le_normal
-    intro x hx
-    exact Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure (h x hx))
+    exact fun x hx => Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure (h x hx))
   exact Subgroup.topologicalClosure_minimal _ hle hc ha
 
 def quotientIso {A B : Type} [Group A] [TopologicalSpace A] [IsTopologicalGroup A]
@@ -594,9 +593,7 @@ theorem cycMod_intrinsic : ∀ (F Ω F' Ω' : Type) [Field F] [NumberField F] [F
     (by rw [← map_pow, hζ.pow_eq_one, map_one])
   have hζ' : IsPrimitiveRoot (E ζ) (l ^ r) := hζ.map_of_injective E.injective
   rw [hΦ, h1, map_pow] at h2
-  have hv := hζ'.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h2
-  apply Units.ext
-  exact ZMod.val_injective _ hv.symm
+  exact Units.ext (ZMod.val_injective _ (hζ'.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h2).symm)
 
 end GlobalTheory.CompanionTheory.PTIso
 end -- clump:auto
@@ -637,8 +634,7 @@ theorem isPlaceOver_transfer_fieldIso :
   · intro h x'
     obtain ⟨x, rfl⟩ := eO.surjective x'
     exact (hx x).2 (h x)
-  · intro h x
-    exact (hx x).1 (h (eO x))
+  · exact fun h x => (hx x).1 (h (eO x))
 
 end GlobalTheory.CompanionTheory.PTIso
 end -- clump:auto
@@ -735,14 +731,12 @@ theorem isNormalised_transfer : ∀ (F Ω F' Ω' : Type) [Field F] [NumberField 
     · intro g h
       show χ' (eD (g * h)) = χ' (eD g) + χ' (eD h)
       rw [map_mul, h5]
-    · intro g hg
-      exact h6 (eD g) ((hD (g : G F Ω)).2.1.1 hg)
+    · exact fun g hg => h6 (eD g) ((hD (g : G F Ω)).2.1.1 hg)
     · intro g hg
       refine h7 (eD g) ?_
       rw [hN]
       exact ((hD (g : G F Ω)).2.2 _).1 hg
-    · intro g h
-      exact h8 (eD g) (eD h)
+    · exact fun g h => h8 (eD g) (eD h)
   rw [hrel zz z' ?_]
   · exact key
   · intro g h g' h' hg hh
@@ -810,8 +804,7 @@ theorem exists_places_of_ringEquiv : ∀ (F F' : Type) [Field F] [NumberField F]
   refine ⟨RingOfIntegers.mapRingEquiv e, placeEquiv (RingOfIntegers.mapRingEquiv e), ?_, ?_, ?_, ?_⟩
   · intro x
     rw [RingOfIntegers.mapRingEquiv_apply]
-  · intro v x
-    exact mem_iff_apply_mem_map _ _ x
+  · exact fun v x => mem_iff_apply_mem_map _ _ x
   · intro v x
     change x ∈ v.asIdeal ^ 2 ↔ _ ∈ (v.asIdeal.map (RingOfIntegers.mapRingEquiv e)) ^ 2
     rw [← Ideal.map_pow]
@@ -844,8 +837,7 @@ theorem nonempty_equiv_of_mem_iff {R A B : Type} [CommRing R] [AddCommGroup A] [
   constructor
   · rintro ⟨x, hx, rfl⟩
     exact (h x).1 hx
-  · intro hy
-    exact ⟨e.symm y, (h _).2 (by simpa using hy), by simp⟩
+  · exact fun hy => ⟨e.symm y, (h _).2 (by simpa using hy), by simp⟩
 
 theorem dualData_transfer {R A B A' B' : Type} [CommRing R] [AddCommGroup A] [Module R A]
     [AddCommGroup B] [Module R B] [AddCommGroup A'] [Module R A'] [AddCommGroup B'] [Module R B']
@@ -1080,8 +1072,7 @@ theorem ptConcl_of_iso_of (hL : PositivityTheory.PTN.LocHyp) : ∀ (F Ω F' Ω' 
     subgroupIso Φ _ _ (fun σ => (hloc _ _ (hAv'' v) σ).1)
   have hcomp : ∀ (v : S) (d : Dec (F := F) (Av v)),
       locFam S' Av' (eI v) (eD v d) = Ψ (locFam S Av v d) := by
-    intro v d
-    exact (hΨ (d : G F Ω)).symm
+    exact fun v d => (hΨ (d : G F Ω)).symm
   have hχ : ∀ g, μ' (Ψ g) = μ g := fun g => by simp [μ']
   have hρc : ∀ g m, ρ' (Ψ g) m = ρ g m := fun g m => by simp [ρ']
   refine ⟨?_, ?_⟩

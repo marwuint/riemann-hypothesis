@@ -168,11 +168,8 @@ theorem sections_generic_indicators : ∀ (E : Type) [Field E] [NumberField E] [
   · obtain ⟨h1, h2⟩ := Submodule.mem_inf.1 hf
     refine secZ_eq_zero_of_generic h (Submodule.mem_inf.1 h1).1 fun Z' => ?_
     by_cases hZ : Z' = Z
-    · rw [hZ]
-      exact h0
-    · have h3 := Submodule.mem_iInf _ |>.1 h2 Z'
-      have h4 := Submodule.mem_iInf _ |>.1 h3 hZ
-      exact h4
+    · rwa [hZ]
+    · exact Submodule.mem_iInf _ |>.1 (Submodule.mem_iInf _ |>.1 h2 Z') hZ
   · refine heq (hmul (hz Z) (hz Z)) (hz Z) fun Z' => ?_
     rw [evC_mul_of_test hT]
     by_cases hZ : Z' = Z
@@ -196,7 +193,6 @@ theorem sections_generic_indicators : ∀ (E : Type) [Field E] [NumberField E] [
     · intro Z _ hZ
       rw [evL_apply]
       exact (hC.e_val Z).2 Y (Ne.symm hZ)
-    · intro hY
-      exact absurd (Finset.mem_univ Y) hY
+    · exact fun hY => absurd (Finset.mem_univ Y) hY
 
 end GlobalTheory.CompanionTheory.Ar.Rec

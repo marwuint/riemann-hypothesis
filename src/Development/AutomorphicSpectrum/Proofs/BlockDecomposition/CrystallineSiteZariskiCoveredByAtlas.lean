@@ -186,8 +186,7 @@ theorem loc_surj (T : Thick (F.cr b ht κ)) (a : T.B) (r : ℕ) (y : Localizatio
   obtain ⟨n, hn⟩ := s.2
   refine ⟨n, x.1, x.2, ?_⟩
   have hn' : a ^ n = s := hn
-  rw [mul_comm, hn']
-  exact hx
+  rwa [mul_comm, hn']
 
 theorem span_lift (hp : b.p ≠ 0) (T : Thick (F.cr b ht κ)) {m : ℕ} (f : Fin m → T.B) (s : Fin m → T.B ⧸ T.J)
     (hf : ∀ k, Ideal.Quotient.mk T.J (f k) = s k) (hs : Ideal.span (Set.range s) = ⊤) :
@@ -261,8 +260,7 @@ theorem zarCov_pdS : ∀ {O : Type} [CommRing O] (F : Fn O) (b : Base) (ht : b.t
   intro O _ F b ht κ Λ _ c d 𝒜 hp r
   refine ⟨fun T T' φ ⟨α, hα⟩ => ⟨α, ?_⟩, fun T => ?_⟩
   · have h := (𝒜.V α).in_map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle)) hα
-    rw [← φ.pt]
-    exact h
+    rwa [← φ.pt]
   obtain ⟨m, s, hs, hcov⟩ := 𝒜.cov (CommRingCat.of (T.B ⧸ T.J)) T.y.1.2
   choose f hf using fun k => Ideal.Quotient.mk_surjective (s k)
   have hspan : Ideal.span (Set.range f) = ⊤ := span_lift hp T f s hf hs
@@ -271,14 +269,12 @@ theorem zarCov_pdS : ∀ {O : Type} [CommRing O] (F : Fn O) (b : Base) (ht : b.t
       rw [← hf k]; exact h.map (Ideal.Quotient.mk T₁.J)
     obtain ⟨α, hα⟩ := hcov k _ _ hu
     refine ⟨α, ?_⟩
-    rw [← ψ.pt]
-    exact hα
+    rwa [← ψ.pt]
   refine ⟨fun S => locT T' (∏ k ∈ S, φ.φ (f k)), fun S => locHom T' _, fun S k hk => unit_of_mem T' _ S hk,
     fun S T'' ψ h => locT_univ T' _ ψ ?_, ⟨locMod c r T' (fun k => φ.φ (f k)) ?_⟩⟩
   · rw [map_prod]
     exact Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one h
   · have h := congrArg (Ideal.map φ.φ) hspan
-    rw [Ideal.map_span, Ideal.map_top, ← Set.range_comp] at h
-    exact h
+    rwa [Ideal.map_span, Ideal.map_top, ← Set.range_comp] at h
 
 end GlobalTheory.CompanionTheory.ThickZar

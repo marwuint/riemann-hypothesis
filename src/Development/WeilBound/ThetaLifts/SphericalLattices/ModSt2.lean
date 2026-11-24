@@ -438,8 +438,7 @@ theorem A_mul (r s : L) : A (r * s) = (A r).comap (AddMonoidHom.mulLeft s) := by
 
 theorem relIndex_A_mul (r r' s : L) (hs : s ≠ 0) : (A (r * s)).relIndex (A (r' * s)) = (A r).relIndex (A r') := by
   rw [A_mul, A_mul, AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self_of_surjective]
-  intro y
-  exact ⟨s⁻¹ * y, by simp [hs]⟩
+  exact fun y => ⟨s⁻¹ * y, by simp [hs]⟩
 
 variable {ϖ : L} {c : L →+* L} {q : ℕ}
 
@@ -503,8 +502,7 @@ theorem relIndex_MA (m : ℕ) (r : L) : (MA m r).relIndex (MA m (1 : L)) = ((A r
   have e : MA m (1 : L) = g.range := by
     ext X
     constructor
-    · intro hX
-      exact ⟨fun i j => ⟨X i j, mem_MA.mp hX i j⟩, rfl⟩
+    · exact fun hX => ⟨fun i j => ⟨X i j, mem_MA.mp hX i j⟩, rfl⟩
     · rintro ⟨Y, rfl⟩
       exact mem_MA.mpr fun i j => (Y i j).2
   have e2 : (MA m r).comap g = AddSubgroup.pi Set.univ fun _ => AddSubgroup.pi Set.univ fun _ =>
@@ -626,8 +624,7 @@ theorem IntM.mul {α β γ : Type} [Fintype β] {X : Matrix α β L} {Y : Matrix
   exact sum_mem fun k _ => mul_mem (hX i k) (hY k j)
 
 theorem IntM.conjT (h : IsUnramInv ϖ c q) {α β : Type} {X : Matrix α β L} (hX : IntM X) : IntM (X.map c)ᵀ := by
-  intro i j
-  exact c_int h (hX j i)
+  exact fun i j => c_int h (hX j i)
 
 theorem intM_one {α : Type} [DecidableEq α] : IntM (1 : Matrix α α L) := by
   intro i j
@@ -689,8 +686,7 @@ theorem inv_of_iso (h : IsUnramInv ϖ c q) {g : GL (Fin m ⊕ Fin m) L} (hg : Is
   have hg' : g.valᵀ * Wm L (Fin m) * g.val.map c = Wm L (Fin m) := hg
   have h2 : (g.val.map c)ᵀ * Wm L (Fin m) * g.val = Wm L (Fin m) := by
     have e := congrArg (fun M => M.map c) hg'
-    rw [Matrix.map_mul, Matrix.map_mul, hW, hgg, Matrix.transpose_map] at e
-    exact e
+    rwa [Matrix.map_mul, Matrix.map_mul, hW, hgg, Matrix.transpose_map] at e
   apply Units.inv_eq_of_mul_eq_one_left
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (g.val.map c)ᵀ, h2, Wm_mul_self]
 
@@ -708,9 +704,7 @@ theorem mem_KPW (h : IsUnramInv ϖ c q) {g : GL (Fin m ⊕ Fin m) L} :
       · exact absurd hij (Nat.not_lt_zero _)
       · exact congrFun (congrFun h0 i) j
       · exact absurd hij (lt_irrefl _)
-  have hWint : IntM (Wm L (Fin m)) := by
-    show IntM (fromBlocks 0 1 1 0 : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) L)
-    exact intM_fromBlocks.mpr ⟨intM_zero, intM_one, intM_one, intM_zero⟩
+  have hWint : IntM (Wm L (Fin m)) := intM_fromBlocks.mpr ⟨intM_zero, intM_one, intM_one, intM_zero⟩
   show g ∈ (GW L c m ⊓ GlobalTheory.LGrp.blockQ L (GlobalTheory.LGrp.twoBlocks (Fin m) (Fin m))) ⊓ (GW L c m ⊓ IntGL L m) ↔ _
   simp only [Subgroup.mem_inf, hB, mem_IntGL]
   constructor
@@ -753,15 +747,13 @@ theorem mem_conj (h : IsUnramInv ϖ c q) {x : Lˣ} (hx : (x : L) = ϖ) {g : GL (
     · intro hg
       obtain ⟨k, hk, rfl⟩ := Subgroup.mem_map.mp hg
       simpa [mul_assoc] using hk
-    · intro hk
-      exact Subgroup.mem_map.mpr ⟨_, hk, by simp [mul_assoc]⟩
+    · exact fun hk => Subgroup.mem_map.mpr ⟨_, hk, by simp [mul_assoc]⟩
   have hGW : (zW L m x)⁻¹ * g * zW L m x ∈ GW L c m ↔ g ∈ GW L c m := by
     constructor
     · intro h1
       have := (GW L c m).mul_mem ((GW L c m).mul_mem hz h1) ((GW L c m).inv_mem hz)
       simpa [mul_assoc] using this
-    · intro h1
-      exact (GW L c m).mul_mem ((GW L c m).mul_mem ((GW L c m).inv_mem hz) h1) hz
+    · exact fun h1 => (GW L c m).mul_mem ((GW L c m).mul_mem ((GW L c m).inv_mem hz) h1) hz
   have hp : ϖ ≠ 0 := pi_ne h
   rw [key, mem_KPW h, hGW, conj_val, Matrix.toBlocks_fromBlocks₂₁, intM_fromBlocks, hx]
   constructor
@@ -771,8 +763,7 @@ theorem mem_conj (h : IsUnramInv ϖ c q) {x : Lˣ} (hx : (x : L) = ϖ) {g : GL (
       exact hC.resolve_left (mul_ne_zero hp hp)
     refine ⟨hG, hC', hA, hD, ?_⟩
     rw [mem_MA]
-    intro i j
-    exact hB i j
+    exact fun i j => hB i j
   · rintro ⟨hG, hC, hA, hD, hB⟩
     rw [mem_MA] at hB
     refine ⟨hG, by rw [hC, smul_zero], hA, fun i j => hB i j, by rw [hC, smul_zero]; exact intM_zero, hD⟩
@@ -807,8 +798,7 @@ theorem nU_mem (h : IsUnramInv ϖ c q) {X : Matrix (Fin m) (Fin m) L} (hX : X �
     ext i j
     exact hXs i j
   · exact Matrix.toBlocks_fromBlocks₂₁ _ _ _ _
-  · show IntM (fromBlocks 1 X 0 1 : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) L)
-    exact intM_fromBlocks.mpr ⟨intM_one, hXi, intM_zero, intM_one⟩
+  · exact intM_fromBlocks.mpr ⟨intM_one, hXi, intM_zero, intM_one⟩
 
 def nHom (h : IsUnramInv ϖ c q) (m : ℕ) : Multiplicative (NA c m) →* KPW L c m where
   toFun X := ⟨nU (X.toAdd : NA c m).1, nU_mem h (X.toAdd : NA c m).2⟩
@@ -834,8 +824,7 @@ theorem skew_of_iso (h : IsUnramInv ϖ c q) {a b d : Matrix (Fin m) (Fin m) L}
   have e1 : (a.map c)ᵀ * d = 1 := by
     have e := congrArg (fun M => M.map c) h12
     simp only [Matrix.map_mul, hmm, Matrix.map_one (⇑c) (map_zero c) (map_one c)] at e
-    rw [← Matrix.transpose_map]
-    exact e
+    rwa [← Matrix.transpose_map]
   have hA : a.map c * dᵀ = 1 := mul_eq_one_comm.mp h21
   have hD : d.map c * aᵀ = 1 := mul_eq_one_comm.mp h12
   have h22' : dᵀ * b.map c = -(bᵀ * d.map c) := eq_neg_of_add_eq_zero_left h22
@@ -858,12 +847,10 @@ theorem cover (h : IsUnramInv ϖ c q) {x : Lˣ} (hx : (x : L) = ϖ) (k : KPW L c
   have hv : (k : GL (Fin m ⊕ Fin m) L).val = fromBlocks A B 0 D := by
     rw [hA', hB', hD', ← hC, Matrix.fromBlocks_toBlocks]
   have hiso : Iso c (Wm L (Fin m)) (Wm L (Fin m)) (fromBlocks A B 0 D) := by
-    rw [← hv]
-    exact hG
+    rwa [← hv]
   obtain ⟨e1, e2⟩ := skew_of_iso h hiso
   have hIfb : IntM (fromBlocks A B 0 D) := by
-    rw [← hv]
-    exact hI
+    rwa [← hv]
   obtain ⟨hA, hB, -, hD⟩ := intM_fromBlocks.mp hIfb
   obtain ⟨X, hXdef⟩ : ∃ X : Matrix (Fin m) (Fin m) L, X = B * (A.map c)ᵀ := ⟨_, rfl⟩
   have hXNA : X ∈ NA c m := by
@@ -898,8 +885,7 @@ theorem comap_eq (h : IsUnramInv ϖ c q) {x : Lˣ} (hx : (x : L) = ϖ) :
   constructor
   · rintro ⟨-, -, -, -, hM⟩
     exact hM
-  · intro hM
-    exact ⟨(nHom h m X).2.1.1, rfl, intM_one, intM_one, hM⟩
+  · exact fun hM => ⟨(nHom h m X).2.1.1, rfl, intM_one, intM_one, hM⟩
 
 end PositivityTheory.Sph.M2.ZC
 
@@ -1022,8 +1008,7 @@ theorem relIndex_conj_range (a : O) [Finite (O ⧸ Ideal.span {a})] (p : GL n L)
         (Matrix.GeneralLinearGroup.map (n := n) O.subtype).range ≠ 0 := by
     rw [MonoidHom.range_eq_map, Subgroup.relIndex_map_map_of_injective _ _ hinj, Subgroup.relIndex_top_right]
     exact Subgroup.FiniteIndex.index_ne_zero
-  intro h0
-  exact h1 (Subgroup.relIndex_eq_zero_of_le_left (ker_le_conj O a p h) h0)
+  exact fun h0 => h1 (Subgroup.relIndex_eq_zero_of_le_left (ker_le_conj O a p h) h0)
 
 end Abs
 
@@ -1119,14 +1104,11 @@ theorem relIndex_intGL (ϖ : L) (c : L →+* L) (q : ℕ) (h : IsUnramInv ϖ c q
   have hev : ∀ᶠ N : ℕ in Filter.atTop, ∀ i j k l,
       ϖ ^ N * (((p⁻¹ : GL (Fin m ⊕ Fin m) L) : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) L) i j *
         (p : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) L) k l) ∈ intL L := by
-    simp only [Filter.eventually_all]
-    intro i j k l
-    exact eventually_int ϖ h.2.2.2.1 _
+    simpa only [Filter.eventually_all] using fun i j k l => eventually_int ϖ h.2.2.2.1 _
   obtain ⟨N, hN⟩ := hev.exists
   haveI := hF N
   refine relIndex_conj_range (intL L) (a ^ N) p ?_
-  rw [SubmonoidClass.coe_pow, ha]
-  exact hN
+  rwa [SubmonoidClass.coe_pow, ha]
 
 theorem KPW_eq (c : L →+* L) (m : ℕ) : KPW L c m = PW L c m ⊓ IntGL L m := by
   show PW L c m ⊓ (GW L c m ⊓ IntGL L m) = _
@@ -1423,9 +1405,7 @@ theorem mem_IntGL {g : GL (Fin m ⊕ Fin m) L}
   have hBA : B * A = 1 := hinj _ _ (by
     rw [Matrix.map_mul, hA, hB, Matrix.map_one _ (map_zero _) (map_one _)]
     exact Units.inv_mul g)
-  refine ⟨⟨A, B, hAB, hBA⟩, ?_⟩
-  apply Units.ext
-  exact hA
+  exact ⟨⟨A, B, hAB, hBA⟩, Units.ext hA⟩
 
 end PositivityTheory.Sph.M2.GenB
 
@@ -1531,8 +1511,7 @@ theorem gen : GenSt := by
     have e1 : φ (u * x ^ k) = 1 := by rw [hφ, hψ]; exact hK _ (lev_sc_mem hc hv hk)
     have e2 : φ x = 1 := by rw [hφ, hψ, lev_sc_eq (x := x) hϖ]; exact hzx
     have e3 : φ (x ^ k) = 1 := zpow_mem (show x ∈ φ.ker from e2) k
-    rw [map_mul, e3, mul_one] at e1
-    exact e1
+    rwa [map_mul, e3, mul_one] at e1
   have hall := all_one ψ (fun t => hpos _ (lev_mem hc t)) h0 (one_add_ne hlt) hsc
   obtain ⟨t, X, hX, rfl⟩ := decomp hc ha
   have hr : 1 + -(ϖ * ϖ) ≠ 0 := one_add_ne (by

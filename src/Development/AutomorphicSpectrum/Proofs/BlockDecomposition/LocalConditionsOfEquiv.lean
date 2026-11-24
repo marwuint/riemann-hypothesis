@@ -89,14 +89,12 @@ theorem finite_support (e : G ≃* G') (θ : G →* G) (θ' : G' →* G')
         (k₁⁻¹ * e k) = t * e (Quotient.out q * k) := by
       rw [hout, map_mul]; group
     simp only []
-    rw [hmul, twConj_mul θ' (e d) t _ ht₀, ← map_twConj e θ θ' hθ, ← hf]
-    exact hne
+    rwa [hmul, twConj_mul θ' (e d) t _ ht₀, ← map_twConj e θ θ' hθ, ← hf]
   · intro q₁ _ q₂ _ heq
     obtain ⟨t', ht', k', hk', hy⟩ := (@DoubleCoset.eq _ _ _ _ _ _).1 heq
     have h₂ : Quotient.out q₂ = e.symm t' * Quotient.out q₁ * e.symm k' := by
       apply e.injective
-      simp only [map_mul, e.apply_symm_apply]
-      exact hy
+      simpa only [map_mul, e.apply_symm_apply] using hy
     have ht : e.symm t' ∈ twCent θ d := by
       rw [mem_twCent_iff e θ θ' hθ, e.apply_symm_apply]; exact ht'
     have hk : e.symm k' ∈ K := by
@@ -126,8 +124,7 @@ theorem index_ne_zero (e : G ≃* G') (K : Subgroup G) (K' : Subgroup G') (hK : 
       show u (x * k) = u x
       rw [hu', hu', map_mul]
       exact hk (φ x)
-  rw [hstab, Subgroup.index_comap_of_surjective _ hφ]
-  exact h
+  rwa [hstab, Subgroup.index_comap_of_surjective _ hφ]
 
 theorem mem_conj_iff (e : G ≃* G') (K : Subgroup G) (K' : Subgroup G') (hK : ∀ x, x ∈ K ↔ e x ∈ K') (y x : G) :
     x ∈ K.map (MulAut.conj y).toMonoidHom ↔ e x ∈ K'.map (MulAut.conj (e y)).toMonoidHom := by
@@ -200,8 +197,7 @@ theorem locConds_of_equiv : ∀ {G G' : Type} [Group G] [TopologicalSpace G] [Gr
       rw [← hB] at hx'
       obtain ⟨z, hz, hzx⟩ := hx'
       rwa [← e.toMulEquiv.injective hzx]
-    · rw [hA, Subgroup.relIndex_comap, hB]
-      exact hb
+    · rwa [hA, Subgroup.relIndex_comap, hB]
 
 end GlobalTheory.CompanionTheory.TransportLoc
 

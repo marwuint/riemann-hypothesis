@@ -294,8 +294,7 @@ theorem exists_sub_star_notMem (H : Host E) (ℓ : Nat.Primes) (m : Ideal (locRi
       obtain ⟨a, ha⟩ := _root_.GlobalTheory.CompanionTheory.CommAlg.conj_not_trivial_mod_maximal E H.bar H.bar_eq H.unram M hM
       refine ⟨a, ?_⟩
       rw [h0, Ideal.mem_bot]
-      intro h
-      exact ha (h ▸ M.zero_mem)
+      exact fun h => ha (h ▸ M.zero_mem)
     · exact _root_.GlobalTheory.CompanionTheory.CommAlg.conj_not_trivial_mod_maximal E H.bar H.bar_eq H.unram _ (Ideal.IsPrime.isMaximal inferInstance h0)
   obtain ⟨a, ha⟩ := key
   refine ⟨ofInt ℓ a, fun h => ha ?_⟩
@@ -350,8 +349,7 @@ theorem gram_det_ne_zero (D : Datum H) {I : Type} [Fintype I] [DecidableEq I] (x
     exact_mod_cast this
   have hcv : ∀ i, (c i : E) = (b : 𝓞 E) * v i := fun i => by
     have := hc i
-    rw [Algebra.smul_def] at this
-    exact this
+    rwa [Algebra.smul_def] at this
   set y : D.La := ∑ i, c i • x i with hy
   have h1 : ∀ n, sesq D y (x n) = 0 := by
     intro n
@@ -444,15 +442,13 @@ theorem isLocBasis_comb {O M : Type} [CommRing O] [IsDomain O] [AddCommGroup M] 
     intro c hc
     have h1 : ∑ k, (∑ a, c a * A a k) • x k = 0 := by
       rw [← hc]
-      simp only [Finset.smul_sum, Finset.sum_smul, smul_smul]
-      exact Finset.sum_comm
+      simpa only [Finset.smul_sum, Finset.sum_smul, smul_smul] using Finset.sum_comm
     have h2 := Fintype.linearIndependent_iff.1 hli _ h1
     have h3 : Matrix.vecMul c A = 0 := by
       funext k
       simpa [Matrix.vecMul, dotProduct] using h2 k
     have := Matrix.eq_zero_of_vecMul_eq_zero hdet h3
-    intro i
-    exact congrFun this i
+    exact fun i => congrFun this i
   · rcases (Nat.Prime.dvd_mul hℓ).1 h with h | h
     exacts [hn h, hN h]
   · have h1 : ∀ k, N • x k ∈ Submodule.span O (Set.range fun a => ∑ k, A a k • x k) := by
@@ -513,8 +509,7 @@ theorem exists_diag_basis (H : Host E) (D : Datum H) (n : ℕ) (hn : n = D.p + D
       ext a b
       rfl
     have h2 := RingHom.map_det (locRing E ℓ).subtype G
-    rw [h1, Matrix.det_smul, Fintype.card_fin] at h2
-    exact h2
+    rwa [h1, Matrix.det_smul, Fintype.card_fin] at h2
   have hd0 := gram_det_ne_zero D x ℓ ℓ.2 hx
   have hGu : IsUnit G.det := by
     refine isUnit_of_norm_eq_one _ (by rw [hGdet]; exact mul_ne_zero (pow_ne_zero _ hδE) hd0) fun j => ?_

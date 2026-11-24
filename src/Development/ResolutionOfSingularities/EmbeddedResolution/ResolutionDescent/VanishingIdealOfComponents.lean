@@ -206,8 +206,7 @@ theorem comap_vanishingIdeal_sUnion {X X' : Scheme.{u}} (f : X' ⟶ X)
         have hDsubC : D ⊆ C := hCcomp.2 hDcomp.1 hCsubD
         exact hDS (Set.Subset.antisymm hCsubD hDsubC ▸ hCS)
       have hspec : η ⤳ f.base x' := by
-        rw [specializes_iff_mem_closure, hη]
-        exact hfx
+        rwa [specializes_iff_mem_closure, hη]
       obtain ⟨y', hy'spec, hy'eq⟩ := AlgebraicGeometry.Flat.generalizingMap f hspec
       have hy'mem : f.base y' ∈ ((⋃₀ (irreducibleComponents ↥X \ S))ᶜ) := by
         rw [hy'eq]; exact hηU

@@ -122,8 +122,7 @@ theorem blk_val {j : ℕ} (x : UnipotentBlockColumnIndex k j j → Ad E) (i c : 
       apply Matrix.single_apply_of_ne
       rintro ⟨h1, h2⟩
       exact ht (Subtype.ext (Prod.ext h1 h2))
-    · intro hn
-      exact absurd (Finset.mem_univ _) hn
+    · exact fun hn => absurd (Finset.mem_univ _) hn
   · refine Finset.sum_eq_zero fun t _ => Matrix.single_apply_of_ne _ _ _ _ _ ?_
     rintro ⟨rfl, rfl⟩
     exact h ⟨t.2.1, le_antisymm t.2.2.2 t.2.2.1⟩
@@ -144,8 +143,7 @@ theorem blk_mul_val (j : ℕ) (hj : j < k) (x : UnipotentBlockColumnIndex k j j 
       rw [dite_eq_right, zero_mul]
       rintro ⟨_, h2⟩
       exact hm (Fin.ext h2)
-    · intro h
-      exact absurd (Finset.mem_univ _) h
+    · exact fun h => absurd (Finset.mem_univ _) h
 
 theorem bU_add {j : ℕ} (x y : UnipotentBlockColumnIndex k j j → Ad E) : (blkU (x + y) : GA E k) = blkU x * blkU y :=
   posU_add _ x y
@@ -349,14 +347,12 @@ theorem props_succ (hDt : ∀ j (u : GA E k), UU j u → Dt u = 1)
       ∫⁻ n, G (blkU x * n * blkU (-x)) ∂nuD E k d = ∫⁻ n, G n ∂nuD E k d := by
     intro x G hG
     have h1 := hconj (blkU x) (blk_blkU_succ x) G hG
-    rw [hDt _ _ (UU_blk x), inv_one, ENNReal.ofReal_one, one_pow, one_mul, bU_inv] at h1
-    exact h1
+    rwa [hDt _ _ (UU_blk x), inv_one, ENNReal.ofReal_one, one_pow, one_mul, bU_inv] at h1
   have iconj' : ∀ x : UnipotentBlockColumnIndex k (k - (d + 1)) (k - (d + 1)) → Ad E, ∀ G : GA E k → ℝ≥0∞, Measurable G →
       ∫⁻ n, G (blkU (-x) * n * blkU x) ∂nuD E k d = ∫⁻ n, G n ∂nuD E k d := by
     intro x G hG
     have h1 := iconj (-x) G hG
-    rw [neg_neg] at h1
-    exact h1
+    rwa [neg_neg] at h1
   refine ⟨inferInstance, ?_, ?_, ?_, ?_⟩
   ·
     rw [nuD_succ, ae_map_iff (meas_blkmul _).aemeasurable (isClosed_UU _).measurableSet]
@@ -473,8 +469,7 @@ theorem props (hDt : ∀ j (u : GA E k), UU j u → Dt u = 1)
 end HermitianFormNormLemmas
 
 theorem monic_polynomial_is_matrix_charpoly : D0 → ColumnConjugationMeasure → N1 := by
-  intro hD0 hM E _ _ _ k d hd
-  exact HermitianFormNormLemmas.props (hD0 E k).2.2.2.2.1 (hM E k) d hd
+  exact fun hD0 hM E _ _ _ k d hd => HermitianFormNormLemmas.props (hD0 E k).2.2.2.2.1 (hM E k) d hd
 
 end PositivityTheory.AdelicQuotientData
 

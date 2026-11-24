@@ -148,8 +148,7 @@ theorem ext_of_affine_points {R : Type} [CommRing R] {W X : Over (Sp R)} (u v : 
     letI : Algebra R B := (Spec.preimage (j₀ ≫ W.hom)).hom.toAlgebra
     let j : sp (R₀ := R) B ⟶ W := Over.homMk j₀ (Spec.map_preimage (j₀ ≫ W.hom)).symm
     exact congrArg CommaMorphism.left (h B j)
-  apply Over.OverMorphism.ext
-  exact Scheme.Cover.hom_ext W.left.affineCover _ _ fun i => key _ _
+  exact Over.OverMorphism.ext (Scheme.Cover.hom_ext W.left.affineCover _ _ fun i => key _ _)
 
 theorem comp_eq_of_comp_eq {R : Type} [CommRing R] {A B A' : Over (Sp R)} [GrpObj A] [GrpObj B] [GrpObj A']
     (l : A ⟶ B) (f : A ⟶ A') [IsMonHom l] [IsMonHom f]
@@ -207,11 +206,9 @@ namespace GlobalTheory.CompanionTheory.AbFibre
 theorem isPullback_baseChange {S T : Scheme.{0}} (s : T ⟶ S) {X Y : Over S} (f : X ⟶ Y) :
     IsPullback ((Over.pullback s).map f).left (pullback.fst X.hom s) (pullback.fst Y.hom s) f.left := by
   have h1 : ((Over.pullback s).map f).left ≫ pullback.snd Y.hom s = pullback.snd X.hom s := by
-    simp only [Over.pullback_map_left]
-    exact pullback.lift_snd _ _ _
+    simpa only [Over.pullback_map_left] using pullback.lift_snd _ _ _
   have h2 : ((Over.pullback s).map f).left ≫ pullback.fst Y.hom s = pullback.fst X.hom s ≫ f.left := by
-    simp only [Over.pullback_map_left]
-    exact pullback.lift_fst _ _ _
+    simpa only [Over.pullback_map_left] using pullback.lift_fst _ _ _
   have hX : f.left ≫ Y.hom = X.hom := Over.w f
   refine IsPullback.of_right ?_ h2 (IsPullback.of_hasPullback Y.hom s).flip
   rw [h1, hX]
@@ -400,8 +397,7 @@ theorem kernelFinFlat : PositivityTheory.Tls2.Zar3.Ch1.KernelFinFlat := by
     apply GlobalTheory.NatFun.spMap_injective (k := R) (A := F) (B := S)
     have h₁ : (spMap φ ≫ ee.hom) ≫ f = (spMap φ' ≫ ee.hom) ≫ f := by simpa using h
     exact (cancel_mono ee.hom).1 (fmono _ _ h₁)
-  · intro S _ _
-    exact (ker S 1).1 (one_comp_hom l)
+  · exact fun S _ _ => (ker S 1).1 (one_comp_hom l)
   · intro S _ _ φ φ'
     exact (ker S _).1 (by
       rw [mul_comp_hom, (ker S _).2 ⟨φ, rfl⟩, (ker S _).2 ⟨φ', rfl⟩, _root_.mul_one])
@@ -678,8 +674,7 @@ theorem killedAny_of (hc : Qi.KilledCore) : KilledAny := by
       rw [comp_onePt]
       rfl
     ext y
-    apply uu_injective (C := C) hinj
-    exact congrArg (fun f => f y) (a1.trans (e1.symm.trans a0.symm))
+    exact uu_injective (C := C) hinj (congrArg (fun f => f y) (a1.trans (e1.symm.trans a0.symm)))
   refine ⟨N, hN0, fun S _ _ φ => ?_⟩
   rw [← powPt_spec hs, ← onePt_spec hs S]
   have e : φ.comp (powPt hs (AlgHom.id R F) N) = φ.comp (onePt hs F) := by rw [key]
@@ -790,8 +785,7 @@ theorem pfiF_range_finite_closed {G : Over (Sp Ω)} [GrpObj G] (hG : IsAbelianSc
   haveI : Finite H.left := finite_of_compact_of_discrete
   refine ⟨Set.finite_range _, ?_⟩
   rintro _ ⟨h, rfl⟩
-  have hc := j.left.isClosedMap {h} (isClosed_discrete _)
-  simpa [Set.image_singleton] using hc
+  simpa [Set.image_singleton] using j.left.isClosedMap {h} (isClosed_discrete _)
 
 private theorem pfiF_fib_closed_lemma_2 {G G' : Over (Sp Ω)} [GrpObj G] [GrpObj G'] (f : G ⟶ G')
     [IsMonHom f] (H : Over (Sp Ω)) (j : H ⟶ G)
@@ -1041,8 +1035,7 @@ theorem qc_functional (ε : H →ₐ[K] K) {x : H} (hx : x ∈ RingHom.ker ε) (
       simpa using h1
     subst hc
     apply hx2
-    rw [← hyz, zero_smul, zero_add]
-    exact hz2
+    rwa [← hyz, zero_smul, zero_add]
   obtain ⟨f, hf, hfW⟩ := Submodule.exists_dual_map_eq_bot_of_notMem hxW inferInstance
   have hW : ∀ w ∈ W, f w = 0 := fun w hw => by
     have : f w ∈ W.map f := Submodule.mem_map_of_mem hw
@@ -1456,8 +1449,7 @@ theorem killedCore : KilledCore := by
     refine idem_eq_zero (K := K) (he.map (pw Δ ε m)) fun x => ?_
     have := congrArg (fun f : H →ₐ[K] K => f e) (hpt x)
     simp only [AlgHom.comp_apply] at this
-    rw [this]
-    exact heI
+    rwa [this]
   refine ⟨m * s, Nat.mul_pos hm hs0, AlgHom.ext fun x => ?_⟩
   have hy : x - algebraMap K H (ε x) ∈ I := by
     change ε (x - algebraMap K H (ε x)) = 0

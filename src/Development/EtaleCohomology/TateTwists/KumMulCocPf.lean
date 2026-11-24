@@ -184,8 +184,7 @@ theorem KP_exists (hk : IsKum q (kumT q)) (hp : EtalePrimitiveRootsExistLocally)
     obtain ⟨S₁, h₁, P₁⟩ := (hp q V).2.2.2 hq u
     obtain ⟨S₂, h₂, P₂⟩ := (hp q V).2.2.2 hq v
     refine Scheme.etaleTopology.superset_covering ?_ (Scheme.etaleTopology.intersection_covering h₁ h₂)
-    intro W g hg
-    exact ⟨P₁ W g hg.1, P₂ W g hg.2⟩
+    exact fun W g hg => ⟨P₁ W g hg.1, P₂ W g hg.2⟩
   let sfun : ∀ (W : Scheme.{0}) (g : W ⟶ V), S.arrows g → Sec ((res _ (tw q 1)).X 0) W :=
     fun W g hg => D q W (Classical.choose (And.left hg)) (Classical.choose (And.right hg))
   obtain ⟨Z, hZ⟩ := (hs _ _ V).2 S hS sfun (by
@@ -249,9 +248,7 @@ theorem kum_mul_coc_of (hkT : EtaleKummerTriangleExists) (hp : EtalePrimitiveRoo
     fun U x => ((hd (ZMod q) (n := 0) (m := 1) rfl y U).1 x).trans (congrArg _ (hy 0 0 _ U x))
   refine ⟨γu + γv + β, ⟨?_, ?_⟩, ?_⟩
   · intro U x
-    rw [e]
-    rw [hadd1, hadd1]
-    rw [ku.1 U x, kv.1 U x, zero_add, zero_add]
+    rw [e, hadd1, hadd1, ku.1 U x, kv.1 U x, zero_add, zero_add]
     refine ((hd (ZMod q) (n := 0) (m := 1) rfl y U).2 0 (-1) 0 (by simp) (by simp) x).trans ?_
     have hy1 : ev y (0 + 1) (-1) (by simp) U x = 0 := hy 1 (-1) _ U x
     have hface : ∀ i, ev y 0 0 (by simp) U (Sx.face (E := sch.obj X) (p := 0) x i) = Y U x := fun i => hy 0 0 _ U _
@@ -259,8 +256,7 @@ theorem kum_mul_coc_of (hkT : EtaleKummerTriangleExists) (hp : EtalePrimitiveRoo
     simp only [hface]
     simp [Fin.sum_univ_two, Sec.map]
   · intro U x w hw
-    rw [e]
-    rw [hadd0, hadd0, hδ0]
+    rw [e, hadd0, hadd0, hδ0]
     apply (hs _ _ U).1
     refine loc_mono ((hp q U).2.2.2 (unit_q q x hq) (Units.map x.appTop.hom.toMonoidHom u)) (fun W k ha => ?_)
     obtain ⟨a, ha⟩ := ha

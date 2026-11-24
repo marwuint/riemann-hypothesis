@@ -150,8 +150,7 @@ theorem continuous_orb_shear : IkSch → Dom → OrbFin → Shift → JnBl → E
   have hΨ : ikp I Φ ∈ schwartzA θ W.rank n := (hIk D n t B W d I θ hθ Φ hΦ).2
   have hcΨ : Continuous (ikp I Φ) := (GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ _ hΨ).1
   have hinj : Function.Injective fun j : Fin W.rank => finCongr hn (Fin.castAdd t j) := by
-    intro a b h
-    exact Fin.castAdd_injective _ _ ((finCongr hn).injective h)
+    exact fun a b h => Fin.castAdd_injective _ _ ((finCongr hn).injective h)
   obtain ⟨M, hM, -, hMd⟩ := hDom D θ hθ W.rank n W.rank _ hinj _ hΨ
   have hcM : Continuous M := (GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ M hM).1
   have hform : ∀ (y : Mx D W.rank t) (h : GA D W),
@@ -859,8 +858,7 @@ theorem nuT_form : ZpEq → AcEq → JnPi → Ext0 → Fub4 → ∀ (D : D7) (n 
     rw [hJ D n t B W d hn x₀ _ q, (hA D W.rank t B b₀ _ _).2.1, (hZ D n t B W d hn b₀ hb x₀ hx q).2.1]
   refine ⟨?_, ?_⟩
   · unfold nuT
-    rw [integrable_map_measure hGc.aestronglyMeasurable hπ.aemeasurable, hcomp]
-    exact hint
+    rwa [integrable_map_measure hGc.aestronglyMeasurable hπ.aemeasurable, hcomp]
   · have e1 : ∫ z, Φ (jn hn z.1 z.2) * conj (η (yv B b₀ z)) ∂(nuT hn I μ x₀) =
         ∫ p, core hn I x₀ Φ η p ∂(I.νK.prod (Q0 I μ)) := by
       unfold nuT
@@ -1244,8 +1242,7 @@ theorem orbFin_of_latBound : LatBound → OrbFin := by
       rw [h1, h2, hu, rat_mul]
       exact Matrix.mul_assoc _ _ _
     rw [h3]
-  rw [hfd.lintegral_eq_tsum']
-  rw [← lintegral_tsum fun γ => ?_]
+  rw [hfd.lintegral_eq_tsum', ← lintegral_tsum fun γ => ?_]
   · calc ∫⁻ h in stdDom (GQ W), ∑' γ : GQ W, ‖N (ww W x₀ (γ⁻¹ • h))‖ₑ ∂m
         ≤ ∫⁻ _ in stdDom (GQ W), (C : ℝ≥0∞) ∂m := lintegral_mono fun h => by
           simp only [hterm]
@@ -1559,8 +1556,7 @@ theorem measurable_sA {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ
   have e : sA hn I μ x₀ A = fun x => Q0 I μ (Prod.mk x ⁻¹' {p : GA D B × Par D n t W | ac B p.1⁻¹ (zp d hn x₀ p.2) ∈ A}) := by
     funext x
     exact rho_apply hn I μ x₀ (measurable_ac B x⁻¹ hA)
-  rw [e]
-  exact key
+  rwa [e]
 
 theorem sA_stab (hL : Law) {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ : Measure (Mx D W.rank t))
     (hμ : μ.IsAddHaarMeasure) (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E)
@@ -1585,8 +1581,7 @@ theorem nuT_apply {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ : M
   have := sigmaFinite_parameter_product_measure I μ hμ
   unfold nuT
   rw [Measure.map_apply (measurable_pi hn I x₀) hA, Measure.prod_apply (measurable_pi hn I x₀ hA)]
-  refine lintegral_congr fun k => ?_
-  exact (rho_apply hn I μ x₀ (measurable_ac B (k : GA D B)⁻¹ hA)).symm
+  exact lintegral_congr fun k => (rho_apply hn I μ x₀ (measurable_ac B (k : GA D B)⁻¹ hA)).symm
 
 theorem nuT_map_ac (hQ : QK) (hL : Law) (D : D7) (n t : ℕ) (B W : HSp D) (d : HypDec B W t) (hn : W.rank + t = n)
     (I : IkD d n) (μ : Measure (Mx D W.rank t)) (hμ : μ.IsAddHaarMeasure) (x₀) (h : GA D B) :
@@ -1687,8 +1682,7 @@ theorem det_shear {r : ℕ} (hn : r + t = n) (y : Mx D r t) :
 theorem integral_shear {r : ℕ} (hn : r + t = n) (y : Mx D r t) {m : ℕ} (μ : Measure (Mx D m n)) (hμ : μ.IsAddHaarMeasure)
     (f : Mx D m n → ℂ) : ∫ U, f (mm U (bl hn 1 y 0 1)) ∂μ = ∫ U, f U ∂μ := by
   have h := GlobalTheory.CompanionTheory.IwaAd.integral_mul_right m μ hμ (shear hn y) f
-  rw [det_shear, map_one, one_npow, one_mul] at h
-  exact h
+  rwa [det_shear, map_one, one_npow, one_mul] at h
 
 end GlobalTheory.CompanionTheory.ColumnSplitting.ShiftP
 

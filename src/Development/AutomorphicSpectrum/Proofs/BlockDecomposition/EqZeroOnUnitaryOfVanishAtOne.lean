@@ -126,8 +126,7 @@ theorem real_linear_skew (L : Mat n →ₗ[ℝ] ℂ) (X : Mat n) (hX : Xᴴ = -X
     intro a b
     have := congrFun (congrFun hX a) b
     simp only [Matrix.conjTranspose_apply, Matrix.neg_apply] at this
-    have h2 := congrArg (starRingEnd ℂ) this
-    simpa using h2
+    simpa using congrArg (starRingEnd ℂ) this
   have h1 : L X = ∑ a, ∑ b, (((X a b).re : ℂ) * L (Matrix.single a b 1) + ((X a b).im : ℂ) * L (Matrix.single a b Complex.I)) := by
     conv_lhs => rw [Matrix.matrix_eq_sum_single X]
 
@@ -149,8 +148,7 @@ theorem real_linear_skew (L : Mat n →ₗ[ℝ] ℂ) (X : Mat n) (hX : Xᴴ = -X
     intro x y p q
     linear_combination (y * q) * Complex.I_sq
   have := key (X a b).re (X a b).im (L (Matrix.single a b 1)) (L (Matrix.single a b Complex.I))
-  rw [hz, ← hc] at this
-  exact this
+  rwa [hz, ← hc] at this
 
 theorem Kf_apply (a b : Fin n) (h : GlobalTheory.CompanionTheory.ModelS.SmF n) {g : Mat n} (hg : g ∈ GLs n) :
     (GlobalTheory.CompanionTheory.ModelS.Kf a b h).1 g = (1 / 2 : ℂ) * (Rd (Matrix.single a b 1) h.1 g - Complex.I * Rd (Matrix.single a b Complex.I) h.1 g)
@@ -196,8 +194,7 @@ theorem exp_deriv (X : Mat n) (t : ℝ) :
     rw [hasDerivAt_pi]
     intro i
     rw [hasDerivAt_pi]
-    intro j
-    exact exp_entry X t i j
+    exact fun j => exp_entry X t i j
   exact this
 
 theorem exp_mem (X : Mat n) (t : ℝ) : NormedSpace.exp ((t : ℂ) • X) ∈ GLs n := by
@@ -209,8 +206,7 @@ theorem curve_deriv (X : Mat n) (hX : Xᴴ = -X) (w : GlobalTheory.CompanionTheo
   have hg := exp_mem X t
   have hd := (GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth w.2.1 hg).hasFDerivAt
   have := hd.comp_hasDerivAt t (exp_deriv X t)
-  rw [AX_apply X hX w hg]
-  exact this
+  rwa [AX_apply X hX w hg]
 
 theorem ode_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (B : E →L[ℝ] E) (f : ℝ → E)
     (h : ∀ t, HasDerivAt f (B (f t)) t) (h0 : f 0 = 0) (t : ℝ) : f t = 0 := by
@@ -246,8 +242,7 @@ theorem vanish_curve (S : Submodule ℂ (GlobalTheory.CompanionTheory.ModelS.SmF
       refine this.trans ?_
       show _ = (C.mulVec (f t)) i
       rfl
-    rw [← e]
-    exact hc
+    rwa [← e]
   have h0 : f 0 = 0 := by
     funext i
     simpa [f] using h1 _ (bs i).2
@@ -264,8 +259,7 @@ theorem main : ∀ (n : ℕ) (S : Submodule ℂ (GlobalTheory.CompanionTheory.Mo
   obtain ⟨X, hX, hk⟩ := GlobalTheory.CompanionTheory.UnitaryLog.main n k
   have := vanish_curve S fd hS h1 X hX 1 w hw
   simp only [Complex.ofReal_one, one_smul] at this
-  rw [hk]
-  exact this
+  rwa [hk]
 
 end GlobalTheory.CompanionTheory.ModelS.Sep
 end -- clump:auto

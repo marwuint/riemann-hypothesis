@@ -171,9 +171,7 @@ theorem exists_equiv_subQuot : ∀ {G V W : Type} [Group G] [AddCommGroup V] [Mo
     refine Submodule.mem_map.mpr ⟨S.toRepresentation g x, ?_, rfl⟩
     rw [LinearMap.mem_ker] at hx ⊢
     rw [hint, hx, map_zero]⟩
-  have hBS : B ≤ S := by
-    show K.map S.toSubmodule.subtype ≤ S.toSubmodule
-    exact Submodule.map_subtype_le _ _
+  have hBS : B ≤ S := Submodule.map_subtype_le _ _
   have hQ : Submodule.comap S.toSubmodule.subtype B.toSubmodule = K :=
     Submodule.comap_map_eq_of_injective Subtype.val_injective K
   let φ := Submodule.liftQ (Submodule.comap S.toSubmodule.subtype B.toSubmodule) f.toLinearMap hQ.le
@@ -394,12 +392,10 @@ theorem nonempty_equiv_subQuot (ρ : Representation ℂ G V) (E K L : Subreprese
     (hE : ¬ E ≤ E ⊓ K ⊔ E ⊓ L) : Nonempty ((subQuot E K).Equiv (subQuot E L)) := by
   have hPK : ∀ g, K.toSubmodule.comap E.toSubmodule.subtype ≤
       (K.toSubmodule.comap E.toSubmodule.subtype).comap (E.toRepresentation g) := by
-    intro g x hx
-    exact K.2 g hx
+    exact fun g x hx => K.2 g hx
   have hPL : ∀ g, L.toSubmodule.comap E.toSubmodule.subtype ≤
       (L.toSubmodule.comap E.toSubmodule.subtype).comap (E.toRepresentation g) := by
-    intro g x hx
-    exact L.2 g hx
+    exact fun g x hx => L.2 g hx
   have hK' : (E.toRepresentation.quotient _ hPK).IsIrreducible := hK
   have hL' : (E.toRepresentation.quotient _ hPL).IsIrreducible := hL
   have hsup : ∀ g, K.toSubmodule.comap E.toSubmodule.subtype ⊔ L.toSubmodule.comap E.toSubmodule.subtype ≤
@@ -431,8 +427,7 @@ theorem nonempty_equiv_subQuot (ρ : Representation ℂ G V) (E K L : Subreprese
       Subrepresentation.toSubmodule_inf, Subrepresentation.toSubmodule_inf]
     exact inf_eq_left.mpr hle
   have hne' : L.toSubmodule.comap E.toSubmodule.subtype ⊔ K.toSubmodule.comap E.toSubmodule.subtype ≠ ⊤ := by
-    rw [sup_comm]
-    exact hne
+    rwa [sup_comm]
   have h1 := (GlobalTheory.CompanionTheory.GenCore.eq_or_eq_top_of_isIrreducible_quotient _ _ hPK hK' _ hsup le_sup_left).resolve_right hne
   have h2 := (GlobalTheory.CompanionTheory.GenCore.eq_or_eq_top_of_isIrreducible_quotient _ _ hPL hL' _ hsup' le_sup_left).resolve_right hne'
   have hPQ : K.toSubmodule.comap E.toSubmodule.subtype = L.toSubmodule.comap E.toSubmodule.subtype :=
@@ -478,8 +473,7 @@ theorem subQuot_equiv_of_sup : ∀ {G V : Type} [Group G] [AddCommGroup V] [Modu
     intro x hx
     rw [LinearMap.mem_ker]
     show Submodule.Quotient.mk (p := PA) (Submodule.inclusion hEA' x) = 0
-    rw [Submodule.Quotient.mk_eq_zero]
-    exact hx
+    rwa [Submodule.Quotient.mk_eq_zero]
   let φ := PE.liftQ f hf
   have hφ : ∀ x, φ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (Submodule.inclusion hEA' x) :=
     fun _ => rfl
@@ -488,8 +482,7 @@ theorem subQuot_equiv_of_sup : ∀ {G V : Type} [Group G] [AddCommGroup V] [Modu
     intro q hq
     obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective PE q
     rw [LinearMap.mem_ker, hφ, Submodule.Quotient.mk_eq_zero] at hq
-    rw [Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]
-    exact hq
+    rwa [Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]
   have hsurj : Function.Surjective φ := by
     intro q
     obtain ⟨a, rfl⟩ := Submodule.Quotient.mk_surjective PA q
@@ -552,7 +545,6 @@ theorem sup_eq_of_isIrreducible_subQuot :
         rw [Submodule.mem_bot] at hq ⊢
         rw [hq, map_zero]⟩
     have hmem : Submodule.Quotient.mk (p := P) ⟨e, hea⟩ ∈ W := by
-      show _ ∈ S
       exact Submodule.mem_map.mpr ⟨⟨e, hea⟩, heEB, rfl⟩
     rw [hW] at hmem
     have hZ : Submodule.Quotient.mk (p := P) ⟨e, hea⟩ ∈ Z := (bot_le : ⊥ ≤ Z) hmem
@@ -576,8 +568,7 @@ theorem sup_eq_of_isIrreducible_subQuot :
     have hb' : (y : V) - x ∈ (E ⊔ B).toSubmodule := (le_sup_right : B ≤ E ⊔ B) hb
     have hy' : (y : V) ∈ (E ⊔ B).toSubmodule := hy
     have hsub := (E ⊔ B).toSubmodule.sub_mem hy' hb'
-    rw [sub_sub_cancel] at hsub
-    exact hsub
+    rwa [sub_sub_cancel] at hsub
 
 end GlobalTheory.CompanionTheory.GenCore
 end -- clump:auto

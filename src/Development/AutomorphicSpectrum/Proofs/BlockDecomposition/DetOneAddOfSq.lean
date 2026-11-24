@@ -209,8 +209,7 @@ theorem det_one_add_of_sq (N : Matrix (Fin k) (Fin k) ℂ) (hN : N * N = 0) : (1
   obtain ⟨r, -, hr⟩ := Polynomial.isUnit_iff.mp hu
   have h0 : r = 1 := by
     have h := Matrix.eval_charpolyRev (M := -N)
-    rw [← hr, Polynomial.eval_C] at h
-    exact h
+    rwa [← hr, Polynomial.eval_C] at h
   have hrev : (-N).charpolyRev = 1 := by rw [← hr, h0, Polynomial.C_1]
   have key : Polynomial.eval 1 (-N).charpolyRev = (1 + N).det := by
     rw [Matrix.charpolyRev, ← Polynomial.coe_evalRingHom, RingHom.map_det]

@@ -109,8 +109,7 @@ theorem isIntegral_of_norm_le_one (z : Om l) (h : ‖z‖ ≤ 1) : IsIntegral �
   rw [spectralValue_le_one_iff (minpoly.monic hz)] at h
   have hlift : minpoly ℚ_[l] z ∈ lifts (algebraMap ℤ_[l] ℚ_[l]) := by
     rw [lifts_iff_coeff_lifts]
-    intro n
-    exact ⟨⟨_, h n⟩, rfl⟩
+    exact fun n => ⟨⟨_, h n⟩, rfl⟩
   obtain ⟨q, hq, -, hqm⟩ := lifts_and_natDegree_eq_and_monic hlift (minpoly.monic hz)
   refine ⟨q, hqm, ?_⟩
   rw [IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (Om l), ← eval₂_map, hq, ← aeval_def]
@@ -259,8 +258,7 @@ theorem nev_step {y : C} (hy : IsNilpotent y) (π : R) (q : ℕ) (hq : q ≠ 0) 
       = PowerSeries.C (algebraMap R C π * y + y ^ q) := by
     simp only [map_add (f := _), map_mul, map_pow]
   rw [e3] at e1
-  have e4 := congrArg (PowerSeries.constantCoeff (R := C)) e1
-  simpa [nev] using e4
+  simpa [nev] using congrArg (PowerSeries.constantCoeff (R := C)) e1
 
 theorem nev_iter {y : C} (hy : IsNilpotent y) (π : R) (q : ℕ) (hq : q ≠ 0) {φ : PowerSeries R}
     (h0 : PowerSeries.constantCoeff φ = 0)
@@ -348,8 +346,7 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card {R C : Type} [CommRing R] [CommRing 
   have hn0 : IsNilpotent (mk (v' 0)) := by
     have hf : ((v' 0 ^ M - ϖ' ^ 1 * s0' : S) : B) ∈ F 1 := by
       push_cast
-      rw [hv', hϖ', hs0']
-      exact hf0
+      rwa [hv', hϖ', hs0']
     have hfk : mk (v' 0 ^ M - ϖ' ^ 1 * s0') ^ k = 0 := by
       rw [← map_pow]
       refine hmF _ ?_
@@ -621,8 +618,7 @@ theorem ltIter_mem_succ (hE : PerEnv S F ϖ) (ϖ' : B) (hϖ : ϖ * ϖ' = 1) (q :
     | zero => simp
     | succ j ih =>
       have hym : ltIter ϖ q (n + j) Q ∈ F m := by
-        have h1 := (F m).add_mem (hE.anti m ih) ((F m).mul_mem_left (ϖ ^ j) hy)
-        simpa using h1
+        simpa using (F m).add_mem (hE.anti m ih) ((F m).mul_mem_left (ϖ ^ j) hy)
       have hsq : ltIter ϖ q (n + j) Q * ltIter ϖ q (n + j) Q ∈ F (m + 1) :=
         hanti (by omega : m + 1 ≤ m + m) (hE.mul_le m m (Ideal.mul_mem_mul hym hym))
       obtain ⟨r, rfl⟩ : ∃ r, q = r + 2 := ⟨q - 2, by omega⟩
@@ -753,8 +749,7 @@ theorem step_congr {B : Type} [CommRing B] {S : Subring B} {ϖ : B} (hϖ : ϖ �
     (⟨b, hb⟩ : S) (⟨ϖ ^ m * c, hy⟩ : S)
   have hk' : (b + ϖ ^ m * c) ^ q =
       b ^ q + (q : B) * b ^ (q - 1) * (ϖ ^ m * c) + (k : B) * (ϖ ^ m * c) ^ 2 := by
-    have h := congrArg (Subtype.val) hk
-    simpa [Polynomial.derivative_X_pow] using h
+    simpa [Polynomial.derivative_X_pow] using congrArg (Subtype.val) hk
   have ha : a = b + ϖ ^ m * c := by linear_combination hab
   obtain ⟨m', rfl⟩ : ∃ m', m = m' + 1 := ⟨m - 1, by omega⟩
   refine ⟨c + s * b ^ (q - 1) * c + (k : B) * ϖ ^ m' * c ^ 2, ?_, ?_⟩
@@ -927,9 +922,7 @@ theorem exists_norm_unit (K : FinExt l) [FiniteDimensional ℚ_[l] ↥K.1] (u : 
   have hm : ((y * y' : ℤ_[l]) : ℚ_[l]) = 1 := by
     rw [PadicInt.coe_mul, hy, hy', ← map_mul, ← MulMemClass.coe_mul, Units.mul_inv]
     simp
-  have hm1 : y * y' = 1 := by
-    apply Subtype.ext
-    exact hm
+  have hm1 : y * y' = 1 := Subtype.ext hm
   exact ⟨⟨y, y', hm1, by rw [mul_comm]; exact hm1⟩, hy⟩
 
 theorem toZModPow_eq_of_pow (a b : ℤ_[l])
@@ -941,9 +934,7 @@ theorem toZModPow_eq_of_pow (a b : ℤ_[l])
   have : NeZero ((l ^ n : ℕ) : Om l) := ⟨Nat.cast_ne_zero.mpr hl.ne'⟩
   obtain ⟨ζ, hζ⟩ : ∃ z : Om l, IsPrimitiveRoot z (l ^ n) :=
     HasEnoughRootsOfUnity.exists_primitiveRoot (Om l) (l ^ n)
-  have h1 := h n ζ hζ.pow_eq_one
-  have h2 := hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h1
-  exact ZMod.val_injective _ h2
+  exact ZMod.val_injective _ (hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) (h n ζ hζ.pow_eq_one))
 
 theorem mem_maximalAbelian {n : ℕ} {ζ : Om l} (hζ : ζ ^ l ^ n = 1) :
     ζ ∈ maximalAbelianExtension ℚ_[l] (Om l) := by
@@ -974,8 +965,7 @@ theorem norm_eq_cyclo : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (χ : ↥(GK
   have hw : (w : ℚ_[l]) = (((v⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) * (l : ℚ_[l]) ^ (0 : ℤ) := by
     have e1 : (w : ℚ_[l]) = Algebra.norm ℚ_[l] ((x : (↥K.1)ˣ) : ↥K.1) := coe_normUnits x
     have e2 : ((x : (↥K.1)ˣ) : ↥K.1) * ((u : 𝒪[↥K.1]) : ↥K.1) = 1 := by
-      have h := congrArg (fun c : 𝒪[↥K.1] => (c : ↥K.1)) (Units.inv_mul u)
-      simpa [x, unitsIncl] using h
+      simpa [x, unitsIncl] using congrArg (fun c : 𝒪[↥K.1] => (c : ↥K.1)) (Units.inv_mul u)
     have e3 : (w : ℚ_[l]) * ((v : ℤ_[l]) : ℚ_[l]) = 1 := by
       rw [e1, hv, ← map_mul, e2, map_one]
     have e4 : ((v : ℤ_[l]) : ℚ_[l]) * (((v⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) = 1 := by
@@ -1001,8 +991,7 @@ theorem norm_eq_cyclo : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (χ : ↥(GK
     have h1 := GroundTheory.PAdicHodge.cycloChar_spec (K := ⊥) (Formalism.Per6.toBot g) hζ
     have h2 := GroundTheory.LocalField.Padic.apply_of_pow_eq_one_of_prime_pow l w v⁻¹ 0 hw hσ hζ
     rw [inv_inv] at h2
-    rw [← h2, ← key n ζ hζ]
-    exact h1
+    rwa [← h2, ← key n ζ hζ]
   rw [hfin]
 
 end GlobalTheory.CompanionTheory.LTNorm
@@ -1775,8 +1764,7 @@ theorem pre_period (HT : TiltLeaf) (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)�
         rw [map_add (f := _), map_mul, map_pow] at h2
         have e : thB l ϖ = (((π : ↥K.1) : Om l) : ℂ_[l]) := by
           rw [← hϖe, thB_rB, hμ]; rfl
-        rw [e]
-        exact h2
+        rwa [e]
       · intro n
         have e : thB l ϖ = (((π : ↥K.1) : Om l) : ℂ_[l]) := by
           rw [← hϖe, thB_rB, hμ]; rfl
@@ -1828,8 +1816,7 @@ theorem hasPeriods_main (HT : TiltLeaf) (HP : ProductLeaf) {l : ℕ} [Fact l.Pri
     apply T.eD.injective
     rw [T.actD, map_mul, hy, PositivityTheory.LocInh.tie_o, σD_algebraMap, (ht μ).2.1 g hg hfix, map_mul]
     rfl
-  · intro hμ
-    exact ⟨f1.2 (hF1 ((ht μ).2.2 hμ)), fun h => (hP μ).1 hμ (f2.1 h)⟩
+  · exact fun hμ => ⟨f1.2 (hF1 ((ht μ).2.2 hμ)), fun h => (hP μ).1 hμ (f2.1 h)⟩
   · intro hμ
     refine ⟨f0.2 ?_, fun h => (hP μ).2 hμ (f1.1 h)⟩
     rw [FB, pow_zero, Ideal.one_eq_top]; exact Submodule.mem_top

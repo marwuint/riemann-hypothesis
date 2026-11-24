@@ -66,8 +66,7 @@ theorem kerSubschemeIso_hom_comp {X Y : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.IsClosedImmersion f] :
     (kerSubschemeIso f).hom ≫ f = (Scheme.Hom.ker f).subschemeι := by
   have key := IsIso.inv_hom_id_assoc (Scheme.Hom.toImage f) (Scheme.Hom.imageι f)
-  rw [Scheme.Hom.toImage_imageι] at key
-  exact key
+  rwa [Scheme.Hom.toImage_imageι] at key
 
 theorem kerSubschemeIso_inv_comp {X Y : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.IsClosedImmersion f] :
@@ -357,24 +356,19 @@ theorem IsMaxOrderReduction.mono {P : ℕ → Prop} {A B : PrincipalizationAssig
     (hs : IsMaxOrderReduction P A B) (Q : ℕ → Prop) (hQP : ∀ n, Q n → P n) :
     IsMaxOrderReduction Q A B := by
   constructor
-  · intro T hV hQ
-    exact hs.cert T hV (hQP _ hQ)
-  · intro T hV hQ
-    exact hs.orderRed_equiv T hV (hQP _ hQ)
+  · exact fun T hV hQ => hs.cert T hV (hQP _ hQ)
+  · exact fun T hV hQ => hs.orderRed_equiv T hV (hQP _ hQ)
   · intro T hV hQ L _ _ f E' hBE hV' hQ'
     exact hs.base_change T hV (hQP _ hQ) L f E' hBE hV' (hQP _ hQ')
   · intro T hV hQ L _ _ f E' hBE hV' hQ'
     exact hs.base_change_strict T hV (hQP _ hQ) L f E' hBE hV' (hQP _ hQ')
-  · intro T hV hQ
-    exact hs.center_nonempty T hV (hQP _ hQ)
-  · intro T hV hQ
-    exact hs.resolves T hV (hQP _ hQ)
+  · exact fun T hV hQ => hs.center_nonempty T hV (hQP _ hQ)
+  · exact fun T hV hQ => hs.resolves T hV (hQP _ hQ)
   · intro T hV hQ Y q h _ hq E' hBE hV' hQ'
     exact hs.smooth_pullback T hV (hQP _ hQ) Y q h hq E' hBE hV' (hQP _ hQ')
   · intro T hV hQ Y q h _ _ hq E' hBE hV' hQ'
     exact hs.smooth_pullback_strict T hV (hQP _ hQ) Y q h hq E' hBE hV' (hQP _ hQ')
-  · intro T hV hQ
-    exact hs.trivial_of_coSupport_empty T hV (hQP _ hQ)
+  · exact fun T hV hQ => hs.trivial_of_coSupport_empty T hV (hQP _ hQ)
 
 theorem IsMaxOrderReduction.isPullbackBlowupSequence_of_smooth {P : ℕ → Prop} {A B : PrincipalizationAssignment.{u}}
     (hs : IsMaxOrderReduction P A B) (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (hP : P T.krullDimSucc)

@@ -130,11 +130,8 @@ theorem sub_mem_pdP (c : Chart γ p q κ V d) {T : Thick (nlFun γ p X q κ)} (h
     (n : ℕ) {x : c.D.B} (hx : x ∈ (pdP γ n).map c.D.i) : f.φ x - g.φ x ∈ pdP T.δ (n + 1) := by
   refine Submodule.span_induction (p := fun x _ => f.φ x - g.φ x ∈ pdP T.δ (n + 1)) ?_ ?_ ?_ ?_ hx
   · rintro _ ⟨a, -, rfl⟩
-    have e : f.φ (c.D.i a) - g.φ (c.D.i a) = 0 := by rw [f.comm, g.comm, sub_self]
-    rw [e]
-    exact Ideal.zero_mem _
-  · rw [map_zero, map_zero, sub_zero]
-    exact Ideal.zero_mem _
+    simp [f.comm, g.comm]
+  · simp
   · intro y z _ _ hy hz
     rw [map_add (f := _), map_add (f := _), add_sub_add_comm]
     exact Ideal.add_mem _ hy hz
@@ -144,12 +141,11 @@ theorem sub_mem_pdP (c : Chart γ p q κ V d) {T : Thick (nlFun γ p X q κ)} (h
       ring
     rw [e]
     refine Ideal.add_mem _ (Ideal.mul_mem_left _ _ ih) ?_
-    have h1 : f.φ a - g.φ a ∈ pdP T.δ 1 := T.J_le_pdPow_one (sub_mem_J c hT f g a)
     have hm : (pdP γ n).map c.D.i ≤ pdP c.D.δ n :=
       Ideal.map_le_iff_le_comap.2 fun x hx => dividedPowerFiltration_map c.D.compat n hx
-    have hy' : y ∈ pdP c.D.δ n := hm hy
-    have h2 : g.φ y ∈ pdP T.δ n := dividedPowerFiltration_map g.dp n hy'
-    have h3 := GlobalTheory.CompanionTheory.DPFil.dividedPowerFiltration_mul_le T.δ 1 n (Ideal.mul_mem_mul h1 h2)
+    have h3 := GlobalTheory.CompanionTheory.DPFil.dividedPowerFiltration_mul_le T.δ 1 n
+      (Ideal.mul_mem_mul (T.J_le_pdPow_one (sub_mem_J c hT f g a))
+        (dividedPowerFiltration_map g.dp n (hm hy)))
     rwa [add_comm 1 n] at h3
 
 theorem chart_grConst : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ} {X : Scheme.{0}}

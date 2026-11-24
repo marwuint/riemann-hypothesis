@@ -71,12 +71,9 @@ theorem hasStrictNormalCrossingsWith_exceptionalIdeal (hZ : HasStrictNormalCross
   obtain ⟨s, hs, hxs⟩ := exists_mem_domain_blowupChart_of_isBlowupAlongIdealSheaf π c S hπ hZU x hxU
   refine ⟨(blowupChartOfIsBlowup π c S hπ hZU s hs).domain, hxs, m,
     (blowupChartOfIsBlowup π c S hπ hZU s hs).chart, fun _ => none, {s}, ?_, ?_, ?_, ?_⟩
-  · intro i hi
-    exact absurd hi (Nat.not_lt_zero i)
-  · intro i hi
-    exact absurd hi (Nat.not_lt_zero i)
-  · intro i hi
-    exact absurd hi (Nat.not_lt_zero i)
+  · exact fun i hi => absurd hi (Nat.not_lt_zero i)
+  · exact fun i hi => absurd hi (Nat.not_lt_zero i)
+  · exact fun i hi => absurd hi (Nat.not_lt_zero i)
   · exact BlowupChart.restrictIdeal_exceptionalIdeal
       (blowupChartOfIsBlowup π c S hπ hZU s hs) Z hs hZU
 
@@ -121,8 +118,7 @@ theorem smooth_comp_of_isBlowupAlongIdealSheaf [Smooth p] (hZ : HasStrictNormalC
   choose U hU hsm using key
   have hUtop : iSup U = ⊤ := by
     rw [eq_top_iff]
-    intro x _
-    exact TopologicalSpace.Opens.mem_iSup.mpr ⟨x, hU x⟩
+    exact fun x _ => TopologicalSpace.Opens.mem_iSup.mpr ⟨x, hU x⟩
   exact smooth_of_iSup_eq_top (π ≫ p) U hUtop hsm
 
 end FunctorialResolution.EmbeddedResolution

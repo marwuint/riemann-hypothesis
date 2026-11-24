@@ -257,10 +257,7 @@ private theorem exists_affineOpen_maxContactCoord_or_disjoint_locus (T : MarkedI
       exists_etaleChart_le T.structMap x
         ⟨(orderAtLeastLocus (MaxContactCoverData.balancedTunedIdeal T hv) (MaxContactCoverData.tunedMult T))ᶜ,
           hcl.isOpen_compl⟩ hx
-    refine ⟨V, ⊤, hxV, hVaff, Or.inl ⟨?_, rfl⟩⟩
-    refine Set.disjoint_left.2 ?_
-    intro y hyS hyV
-    exact (hVW hyV) hyS
+    exact ⟨V, ⊤, hxV, hVaff, Or.inl ⟨Set.disjoint_left.2 (fun y hyS hyV => (hVW hyV) hyS), rfl⟩⟩
 
 theorem exists_isMaxContactCover (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (h : ∀ x : ↥T.scheme,
@@ -274,8 +271,7 @@ theorem exists_isMaxContactCover (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdm
   choose V J hxV hVaff hdich using exists_affineOpen_maxContactCoord_or_disjoint_locus T hv h
   have hcover : (Set.univ : Set ↥T.scheme) ⊆
       ⋃ x : ↥T.scheme, ((V x : T.scheme.Opens) : Set ↥T.scheme) := by
-    intro y _
-    exact Set.mem_iUnion.2 ⟨y, hxV y⟩
+    exact fun y _ => Set.mem_iUnion.2 ⟨y, hxV y⟩
   obtain ⟨t, ht⟩ := isCompact_univ.elim_finite_subcover
     (fun x : ↥T.scheme => ((V x : T.scheme.Opens) : Set ↥T.scheme))
     (fun x => (V x).isOpen) hcover
@@ -412,8 +408,7 @@ theorem krullDimSucc_coverTriple_scheme_le_dim (T : MarkedIdealWithBoundary.{u})
       exact Set.mem_iUnion.mpr ⟨i, hi⟩
     · intro i
       have hpiece := topologicalKrullDim_coverTripleOpen_le T hv i
-      rw [hdeq] at hpiece
-      exact hpiece
+      rwa [hdeq] at hpiece
 
 end MaxContactOpenCover
 

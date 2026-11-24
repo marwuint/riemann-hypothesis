@@ -137,8 +137,7 @@ private theorem mem_span_range_subtype_iff {R N : Type} [CommRing R] [AddCommGro
     rfl
   rw [← hmap, Submodule.mem_map]
   constructor
-  · intro h
-    exact ⟨z, h, rfl⟩
+  · exact fun h => ⟨z, h, rfl⟩
   · rintro ⟨y, hy, hyz⟩
     rwa [← Subtype.ext hyz]
 
@@ -225,8 +224,7 @@ theorem relIndex_matrix {r : ℕ} {v w : Fin r → M} (hv : LinearIndependent (�
     intro b
     simp
   have hinj : Function.Injective f := by
-    rw [hfeq]
-    rw [LinearMap.coe_comp]
+    rw [hfeq, LinearMap.coe_comp]
     exact Function.Injective.comp hw' bV.repr.injective
   have hdet : LinearMap.det f = A.det := LinearMap.det_toLin bV A
   have hrange : (LinearMap.range f).map V.subtype = Submodule.span (𝓞 E) (Set.range w) := by
@@ -254,8 +252,7 @@ private theorem bijective_algHom_comp_algebraMap {E : Type} [Field E] [NumberFie
     Function.Bijective fun σ : E →ₐ[ℚ] ℂ => (σ : E →+* ℂ).comp (algebraMap (𝓞 E) E) := by
   constructor
   · intro σ₁ σ₂ h
-    apply AlgHom.coe_ringHom_injective
-    exact IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) h
+    exact AlgHom.coe_ringHom_injective (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) h)
   · intro s
     refine ⟨(IsFractionRing.lift (_root_.LevelTowerAlt.emb_inj s)).toRatAlgHom, ?_⟩
     apply RingHom.ext
@@ -411,8 +408,7 @@ theorem nzOf_eq {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) {I : Submodu
   let f : Λ →ₗ[𝓞 E] Λ := (n : 𝓞 E) • LinearMap.id
   have hf : LinearMap.ker f = ⊥ := by
     rw [LinearMap.ker_eq_bot']
-    intro m hm
-    exact eq_zero_of_smul hn0 (by simpa [f] using hm)
+    exact fun m hm => eq_zero_of_smul hn0 (by simpa [f] using hm)
   have hli : LinearIndependent (𝓞 E) (f ∘ w) := hw.2.2.1.map' f hf
   have h1 : R.nzOf σ I (f ∘ w) = R.nzOf σ I v :=
     nzOf_of_le R hσ hv hli (fun b => by simpa [f] using family_nsmul (v := v) (hw.2.1 b))
@@ -437,8 +433,7 @@ theorem nzOf_pos (σ : Ψ → (𝓞 E →+* ℂ)) {I : Submodule (𝓞 E) Λ} (h
   · apply Finset.prod_pos
     intro τ _
     have hli := proj_indep R hI (σ τ) hvI hvli
-    simp only [eigComp_eq]
-    exact gram_det_pos R hli
+    simpa only [eigComp_eq] using gram_det_pos R hli
   · exact_mod_cast Nat.pos_of_ne_zero hidx
 
 end Riem

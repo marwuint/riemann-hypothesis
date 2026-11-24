@@ -106,8 +106,7 @@ theorem isPullback_transitionMap_of_isPullback_blowupMorphism {X' X : Scheme.{u}
         rw [SequenceOfBlowups.blowupMorphism_eq_transitionMap, SequenceOfBlowups.transitionMap_trans]
       have e₂ : s.transitionMapSucc b ≫ s.transitionMap hab = s.transitionMap (hab.trans (Nat.le_succ b)) := by
         rw [SequenceOfBlowups.blowupMorphism_eq_transitionMap, SequenceOfBlowups.transitionMap_trans]
-      rw [e₁, e₂] at key
-      exact key
+      rwa [e₁, e₂] at key
 
 theorem isPullback_projectionToBase_of_isPullback_blowupMorphism {X' X : Scheme.{u}} (g : X' ⟶ X)
     (t : SequenceOfBlowups X') (s : SequenceOfBlowups X) (L : ℕ)
@@ -152,8 +151,7 @@ theorem comp {X'' X' X : Scheme.{u}} {ψ : X'' ⟶ X'} {φ : X' ⟶ X}
   have hlt : ∀ i : ℕ, i < u.length → i < t.length := fun i hi => by omega
   refine ⟨hl1.trans hl2, fun i hi => σ i hi ≫ τ i (hle i hi), ?_, ?_, ?_⟩
   · rw [Category.assoc, hz2, ← Category.assoc, hz1, Category.assoc]
-  · intro i hi
-    exact (hp1 i hi).paste_horiz (hp2 i (hlt i hi))
+  · exact fun i hi => (hp1 i hi).paste_horiz (hp2 i (hlt i hi))
   · intro i hi
     rw [hc1 i hi, hc2 i (hlt i hi)]
     simp [Scheme.IdealSheafData.comap_comp]
@@ -196,11 +194,8 @@ theorem of_isomorphic_base {X' X : Scheme.{u}} {g : X' ⟶ X}
   have hle : ∀ i : ℕ, i ≤ t.length → i ≤ s.length := fun i hi => by omega
   have hlt : ∀ i : ℕ, i < t.length → i < s.length := fun i hi => by omega
   refine ⟨hl1.trans hl2, fun i hi => σ i hi ≫ (e i (hle i hi)).hom, ?_, ?_, ?_⟩
-  · rw [Category.assoc, hz2]
-    exact hz1
-  · intro i hi
-    refine (hp1 i hi).paste_horiz ?_
-    exact IsPullback.of_horiz_isIso ⟨hp2 i (hlt i hi)⟩
+  · rwa [Category.assoc, hz2]
+  · exact fun i hi => (hp1 i hi).paste_horiz (IsPullback.of_horiz_isIso ⟨hp2 i (hlt i hi)⟩)
   · intro i hi
     have h2 := hc2 i (hlt i hi)
     rw [hc1 i hi, ← h2]
@@ -282,8 +277,7 @@ private theorem idealSheafData_eq_top_of_comap_eq_top {Y Z : Scheme.{u}} (f : Y 
   obtain ⟨y, hy⟩ := f.surjective z
   rw [← hy] at hz
   have h2 : y ∈ (⊥ : TopologicalSpace.Closeds ↥Y) := by
-    rw [hsup]
-    exact hz
+    rwa [hsup]
   exact h2
 
 theorem center_eq_top_iff {X' X : Scheme.{u}} {g : X' ⟶ X}

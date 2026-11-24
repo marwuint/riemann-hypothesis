@@ -208,11 +208,9 @@ theorem nonzeroOnComponents_of_pow_mul_eq_comap (hcart : EffectiveCartierSupport
   have hx₀U : ⇑π.base x₀ ∈ ((Z.support : Set ↥X))ᶜ := by
     intro hmem
     refine hx₀E ?_
-    rw [coe_support_comap_eq_preimage π Z]
-    exact hmem
+    rwa [coe_support_comap_eq_preimage π Z]
   have hCK : C ⊆ ⇑π.base ⁻¹' ((I.support : Set ↥X)) := by
-    rw [← coe_support_comap_eq_preimage π I]
-    exact hsub2
+    rwa [← coe_support_comap_eq_preimage π I]
   obtain ⟨g, hgc, hgf, hgs⟩ := exists_section_off_center π Z hπ
   obtain ⟨T, hTcomp, hTK⟩ :=
     exists_irreducibleComponent_subset_of_section (⇑π.base) π.continuous (((Z.support : Set ↥X))ᶜ)

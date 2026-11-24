@@ -87,8 +87,7 @@ theorem val_lift_of {Ω Φ : Type} [Field Ω] [Field Φ] (φ : Ω →+* Φ) {κ 
   have v2 : IsValueAt y (φ s) z _ :=
     ⟨_, _, _, hg', hh', aeval_ne_zero_of_notMem hz hh' hn', heq', eval_ne_zero_of_notMem hh' hn', rfl⟩
   rw [valAt_eq hzb v1]
-  rw [eval_rename_block, eval_rename_block] at v2
-  exact v2
+  rwa [eval_rename_block, eval_rename_block] at v2
 
 end Lift
 
@@ -149,16 +148,13 @@ theorem exists_coord {κ : Kk → K} {v : (Σ k, ιk k) → Σ k, ι k} (hb : Is
     rcases hq : v ⟨k₁, c₁⟩ with ⟨kq, c⟩
     have h1 : kq = κ k₁ := by
       have h2 := hb.2.2.1 ⟨k₁, c₁⟩
-      rw [hq] at h2
-      exact h2
+      rwa [hq] at h2
     subst h1
     exact ⟨c, rfl⟩
   obtain ⟨c, hc⟩ := hex
   refine ⟨c, ?_, ?_⟩
-  · rw [← hc, upV_apply hb.2.1]
-    exact hc₁
-  · rw [← hc]
-    exact hy
+  · rwa [← hc, upV_apply hb.2.1]
+  · rwa [← hc]
 
 theorem flag_fwd_kept (M : FlagModel y Ψ N j) (keep : Ψ × Fin N → Prop) {κ : Kk → K} {v : (Σ k, ιk k) → Σ k, ι k}
     (hb : IsBlockMap κ v)

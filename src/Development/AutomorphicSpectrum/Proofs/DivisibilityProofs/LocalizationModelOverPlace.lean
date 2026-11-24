@@ -139,47 +139,32 @@ theorem trdeg_eq {O : Type} [CommRing O] [IsDomain O] [Algebra.IsAlgebraic ℤ O
   have hZ : Function.Injective (algebraMap ℤ (MRing ι ℤ ⧸ P)) := by
     refine (injective_iff_map_eq_zero (algebraMap ℤ (MRing ι ℤ ⧸ P))).2 fun a ha => ?_
     have h : (C a : MRing ι ℤ) ∈ P := Ideal.Quotient.eq_zero_iff_mem.1 (by simpa using ha)
-    have h' : a ∈ P.comap (C : ℤ →+* MRing ι ℤ) := h
-    rw [hCP] at h'
-    exact (Submodule.mem_bot _).1 h'
+    rw [← Ideal.mem_bot, ← hCP]
+    exact h
   have : @FaithfulSMul ℤ (MRing ι ℤ ⧸ P) Algebra.toSMul :=
     (faithfulSMul_iff_algebraMap_injective ℤ (MRing ι ℤ ⧸ P)).2 hZ
   have hOB : Function.Injective (algebraMap O (MRing ι O ⧸ Q)) := by
     refine (injective_iff_map_eq_zero (algebraMap O (MRing ι O ⧸ Q))).2 fun a ha => ?_
     have h : (C a : MRing ι O) ∈ Q :=
       Ideal.Quotient.eq_zero_iff_mem.1 (show Ideal.Quotient.mk Q (C a) = 0 from ha)
-    have h' : a ∈ Q.comap (C : O →+* MRing ι O) := h
-    rw [hCQ] at h'
-    exact (Submodule.mem_bot _).1 h'
+    rw [← Ideal.mem_bot, ← hCQ]
+    exact h
   have : FaithfulSMul O (MRing ι O ⧸ Q) := (faithfulSMul_iff_algebraMap_injective _ _).2 hOB
   have hZO : Function.Injective (algebraMap ℤ O) := by
     refine (injective_iff_map_eq_zero (algebraMap ℤ O)).2 fun a ha => ?_
     have h : MvPolynomial.map (Int.castRingHom O) (C a : MRing ι ℤ) ∈ Q := by
-      rw [map_C]
-      have e : Int.castRingHom O a = 0 := by simpa using ha
-      rw [e, map_zero]
+      rw [map_C, show Int.castRingHom O a = 0 by simpa using ha, map_zero]
       exact Q.zero_mem
-    have h1 : (C a : MRing ι ℤ) ∈ P := by
-      rw [← hQP]
-      exact h
-    have h' : a ∈ P.comap (C : ℤ →+* MRing ι ℤ) := h1
-    rw [hCP] at h'
-    exact (Submodule.mem_bot _).1 h'
+    rw [← Ideal.mem_bot, ← hCP, ← hQP]
+    exact h
   have : @FaithfulSMul ℤ O Algebra.toSMul := (faithfulSMul_iff_algebraMap_injective ℤ O).2 hZO
-  have hφZ : Function.Injective (algebraMap ℤ (MRing ι O ⧸ Q)) := by
-    rw [IsScalarTower.algebraMap_eq ℤ O (MRing ι O ⧸ Q)]
-    exact hOB.comp hZO
   have : Algebra.IsAlgebraic (MRing ι ℤ ⧸ P) (MRing ι O ⧸ Q) := by
     refine ⟨fun b => ?_⟩
     obtain ⟨g, rfl⟩ := Ideal.Quotient.mk_surjective b
     induction g using MvPolynomial.induction_on with
-    | C a =>
-      have h1 : IsAlgebraic ℤ (algebraMap O (MRing ι O ⧸ Q) a) :=
-        (Algebra.IsAlgebraic.isAlgebraic a : IsAlgebraic ℤ a).algebraMap
-      exact h1.extendScalars hZ
+    | C a => exact (Algebra.IsAlgebraic.isAlgebraic a : IsAlgebraic ℤ a).algebraMap.extendScalars hZ
     | add f g hf hg =>
-      rw [map_add (f := _)]
-      exact hf.add hg
+      simpa only [map_add] using hf.add hg
     | mul_X f i hf =>
       rw [map_mul]
       refine hf.mul ?_
@@ -191,9 +176,8 @@ theorem trdeg_eq {O : Type} [CommRing O] [IsDomain O] [Algebra.IsAlgebraic ℤ O
       exact isAlgebraic_algebraMap _
   have h1 := trdeg_add_eq ℤ O (A := MRing ι O ⧸ Q)
   have h2 := trdeg_add_eq ℤ (MRing ι ℤ ⧸ P) (A := MRing ι O ⧸ Q)
-  rw [trdeg_eq_zero (R := ℤ) (A := O), zero_add] at h1
-  rw [trdeg_eq_zero (R := MRing ι ℤ ⧸ P) (A := MRing ι O ⧸ Q), add_zero] at h2
-  exact h1.trans h2.symm
+  simpa [trdeg_eq_zero (R := ℤ) (A := O),
+    trdeg_eq_zero (R := MRing ι ℤ ⧸ P) (A := MRing ι O ⧸ Q)] using h1.trans h2.symm
 
 variable [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)]
   {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O Ω]

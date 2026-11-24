@@ -69,9 +69,7 @@ private theorem sum_smul_derivation_apply (k : Type*) [CommRing k] {R : Type*} [
 
 theorem eulerDerivation_apply (k : Type*) [CommRing k] {R : Type*} [CommRing R] [Algebra k R]
     {ι : Type*} [Fintype ι] (x : ι → R) (D : ι → Derivation k R R) (a : R) :
-    eulerDerivation k x D a = ∑ i, x i * D i a := by
-  show (∑ i, x i • D i) a = ∑ i, x i * D i a
-  exact sum_smul_derivation_apply k Finset.univ x D a
+    eulerDerivation k x D a = ∑ i, x i * D i a := sum_smul_derivation_apply k Finset.univ x D a
 
 theorem eulerDerivation_apply_mem_span (k : Type*) [CommRing k] {R : Type*} [CommRing R] [Algebra k R]
     {ι : Type*} [Fintype ι] (x : ι → R) (D : ι → Derivation k R R) (a : R) :
@@ -122,8 +120,7 @@ private theorem forall_eulerDerivation_sub_natCast_mul_mem (k : Type*) [CommRing
   induction r with
   | zero =>
       intro f _
-      have h := eulerDerivation_apply_mem_span k x D f
-      simpa using h
+      simpa using eulerDerivation_apply_mem_span k x D f
   | succ r ih =>
       intro f hf
       rw [pow_succ] at hf
@@ -139,8 +136,7 @@ private theorem forall_eulerDerivation_sub_natCast_mul_mem (k : Type*) [CommRing
           have hb1 : b ∈ Ideal.span (Set.range x) ^ 1 := by rwa [pow_one]
           have h := Ideal.mul_mem_mul hEa hb1
           have e : r + 1 + 1 = r + 2 := by omega
-          rw [← pow_add, e] at h
-          exact h
+          rwa [← pow_add, e] at h
         have key : eulerDerivation k x D (a * b) - ((r + 1 : ℕ) : R) * (a * b)
             = a * (eulerDerivation k x D b - b) + (eulerDerivation k x D a - (r : R) * a) * b := by
           rw [Derivation.leibniz, smul_eq_mul, smul_eq_mul]
@@ -181,15 +177,13 @@ theorem mem_pow_succ_of_deriv_mem_pow (k : Type*) [CommRing k] {R : Type*} [Comm
       rw [pow_one]
       exact Ideal.subset_span ⟨i, rfl⟩
     have h := Ideal.mul_mem_mul hx1 (hdf i)
-    rw [← pow_add, Nat.add_comm 1 r] at h
-    exact h
+    rwa [← pow_add, Nat.add_comm 1 r] at h
   have h1 : eulerDerivation k x D f ∈ Ideal.span (Set.range x) ^ (r + 1) := by
     rw [eulerDerivation_apply]
     exact Ideal.sum_mem _ fun i _ => hgen i
   have h2 := eulerDerivation_sub_natCast_mul_mem_pow_succ k x D hD r hf
   have h3 : (r : R) * f ∈ Ideal.span (Set.range x) ^ (r + 1) := by
-    have h := Submodule.sub_mem _ h1 h2
-    simpa using h
+    simpa using Submodule.sub_mem _ h1 h2
   obtain ⟨u, hu⟩ := hr
   have key : (↑u⁻¹ : R) * ((r : R) * f) = f := by
     rw [← hu, ← mul_assoc, u.inv_mul, one_mul]
@@ -214,9 +208,7 @@ private theorem eq_natCast_of_le_of_not_succ_le (n : ℕ) (a : ℕ∞) (h1 : (n 
   · exact absurd le_top h2
   · lift a to ℕ using hlt.ne
     have hn : n ≤ a := by exact_mod_cast h1
-    have hn2 : ¬ (n + 1 ≤ a) := by
-      intro hc
-      exact h2 (by exact_mod_cast hc)
+    have hn2 : ¬ (n + 1 ≤ a) := fun hc => h2 (by exact_mod_cast hc)
     have ha : a = n := by omega
     exact_mod_cast ha
 
@@ -262,8 +254,7 @@ theorem idealOrder_derivIdealIterate_of_isUnit_natCast (k : Type*) [CommRing k] 
   induction j with
   | zero =>
       intro _
-      rw [derivIdealIterate_zero, Nat.sub_zero]
-      exact hI
+      rwa [derivIdealIterate_zero, Nat.sub_zero]
   | succ j ih =>
       intro hj
       have hj' : j ≤ r := by omega

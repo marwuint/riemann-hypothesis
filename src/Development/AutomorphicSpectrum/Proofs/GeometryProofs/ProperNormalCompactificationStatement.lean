@@ -211,9 +211,7 @@ private theorem mem_range_pullback_fst_iff_unitAt {X : Scheme} {Ω O F : Type} [
         Spec.map (CommRingCat.ofHom (k.comp β)) :=
       (Spec.map_comp _ _).trans ((congrArg (Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.genMap ξ x)) ≫ ·) hθs).trans
         ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ s) e1).trans hs)))
-    have h2 := Spec.map_injective h1
-    intro o
-    exact congrArg (fun f => f.hom o) h2
+    exact fun o => congrArg (fun f => f.hom o) (Spec.map_injective h1)
   have hcp := congrArg (fun f : Spec (X.presheaf.stalk x.1) ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp O =>
     f (IsLocalRing.closedPoint (X.presheaf.stalk x.1))) hθs
   have hpt : s x.1 = Spec.map θ (IsLocalRing.closedPoint (X.presheaf.stalk x.1)) :=
@@ -224,8 +222,7 @@ private theorem mem_range_pullback_fst_iff_unitAt {X : Scheme} {Ω O F : Type} [
   refine Iff.trans ?_ (GlobalTheory.CompanionTheory.Ar.unitAt_iff_of_isCptGen ξ hg x _).symm
   rw [hmem, Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]
   constructor
-  · intro hu
-    exact ⟨θ.hom o, hu, hgen o⟩
+  · exact fun hu => ⟨θ.hom o, hu, hgen o⟩
   · rintro ⟨u, hu, hu'⟩
     rw [← hgen o] at hu'
     rwa [← hg.inj x hu']

@@ -116,24 +116,19 @@ theorem isBlockMap_v₁ (k₀ : K) : IsBlockMap (κ₁ k₀) (v₁ (ι := ι) k�
   · intro u w h
     by_cases hu : u = k₀ <;> by_cases hw : w = k₀ <;> simp_all [κ₁]
   · rintro ⟨k, m⟩ ⟨k', m'⟩ h
-    by_cases hk : k = k₀
+    by_cases hk : k = k₀ <;> by_cases hk' : k' = k₀
+    · subst hk hk'
+      rw [v₁_self, v₁_self] at h
+      rw [eq_of_heq (Sigma.mk.inj h).2]
     · subst hk
-      by_cases hk' : k' = k
-      · subst hk'
-        rw [v₁_self, v₁_self] at h
-        have h2 : m = m' := eq_of_heq (Sigma.mk.inj h).2
-        rw [h2]
-      · rw [v₁_self, v₁_ne (p := ⟨k', m'⟩) hk'] at h
-        exact absurd (congrArg Sigma.fst h) (by simp)
-    · by_cases hk' : k' = k₀
-      · subst hk'
-        rw [v₁_self, v₁_ne (p := ⟨k, m⟩) hk] at h
-        exact absurd (congrArg Sigma.fst h) (by simp)
-      · rw [v₁_ne (p := ⟨k, m⟩) hk, v₁_ne (p := ⟨k', m'⟩) hk'] at h
-        have h1 : k = k' := Option.some.inj (congrArg Sigma.fst h)
-        subst h1
-        have h2 : m = m' := eq_of_heq (Sigma.mk.inj h).2
-        rw [h2]
+      rw [v₁_self, v₁_ne (p := ⟨k', m'⟩) hk'] at h
+      exact absurd (congrArg Sigma.fst h) (by simp)
+    · subst hk'
+      rw [v₁_self, v₁_ne (p := ⟨k, m⟩) hk] at h
+      exact absurd (congrArg Sigma.fst h) (by simp)
+    · rw [v₁_ne (p := ⟨k, m⟩) hk, v₁_ne (p := ⟨k', m'⟩) hk'] at h
+      obtain rfl : k = k' := Option.some.inj (congrArg Sigma.fst h)
+      rw [show m = m' from eq_of_heq (Sigma.mk.inj h).2]
   · rintro ⟨k, m⟩
     by_cases hk : k = k₀
     · subst hk
@@ -144,15 +139,9 @@ theorem isBlockMap_v₁ (k₀ : K) : IsBlockMap (κ₁ k₀) (v₁ (ι := ι) k�
   · rintro ⟨o, m⟩ ⟨k, hk⟩
     by_cases e : k = k₀
     · subst e
-      have ho : o = none := by
-        have hk' : κ₁ k k = o := hk
-        rw [← hk']; simp [κ₁]
-      subst ho
+      obtain rfl : o = none := by simpa [κ₁] using hk.symm
       exact ⟨⟨k, m⟩, v₁_self k m⟩
-    · have ho : o = some k := by
-        have hk' : κ₁ k₀ k = o := hk
-        rw [← hk']; simp [κ₁, e]
-      subst ho
+    · obtain rfl : o = some k := by simpa [κ₁, e] using hk.symm
       exact ⟨⟨k, m⟩, v₁_ne (p := ⟨k, m⟩) e⟩
 
 theorem basePart_orbit {σ : Type} (blk : σ → Option K) {z z' : (Σ k, ι k) → ℂ}

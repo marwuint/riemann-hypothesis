@@ -172,9 +172,7 @@ theorem isPsh_of_le {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e
       c * Θ.φ x ((A.chart j).symm z)) a y w,
     levi_split A Θ th u hΘ hth hu ε c x j y hyt hsub.1 hsub.2 w]
   have hmem : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (th + LocPot.ofFun u + Θ.rsmul ε).U x := by
-    refine ⟨hyt, ?_⟩
-    show (A.chart j).symm y ∈ th.U x ∩ Set.univ ∩ Θ.U x
-    exact ⟨⟨hsub.1, trivial⟩, hsub.2⟩
+    exact ⟨hyt, ⟨⟨hsub.1, trivial⟩, hsub.2⟩⟩
   have hPs := hP x j y hmem w
   rcases eq_or_ne w 0 with rfl | hw
   · simp [levi_zero']
@@ -197,9 +195,7 @@ theorem isPosPot_of_lt {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtla
     simp only [Function.comp_apply, hφ]
   rw [hfun, levi_split A Θ th u hΘ hth hu ε c x j y hyt hsub.1 hsub.2 w]
   have hmem : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (th + LocPot.ofFun u + Θ.rsmul ε).U x := by
-    refine ⟨hyt, ?_⟩
-    show (A.chart j).symm y ∈ th.U x ∩ Set.univ ∩ Θ.U x
-    exact ⟨⟨hsub.1, trivial⟩, hsub.2⟩
+    exact ⟨hyt, ⟨⟨hsub.1, trivial⟩, hsub.2⟩⟩
   have hPs := hP x j y hmem w
   have hΘp := hpos x j y ⟨hyt, hsub.2⟩ w hw
   have hce : 0 < c - ε := sub_pos.mpr hεc

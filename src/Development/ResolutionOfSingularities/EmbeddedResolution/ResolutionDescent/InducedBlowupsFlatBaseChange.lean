@@ -325,8 +325,7 @@ theorem isPullback_strictTransformComparison_strictTransformToBase (F : ChartFla
   have h1 := (F.isPullback_strictTransformComparison_strictTransformι j hj).paste_vert (F.isPullback_level j hj)
   have h2 : IsPullback (F.strictTransformComparison j hj) (S'.strictTransformToBase j ≫ S'.emb)
       (S.strictTransformToBase (F.reindex j) ≫ S.emb) F.ambientMap := by
-    rw [S'.strictTransformToBase_emb j, S.strictTransformToBase_emb (F.reindex j)]
-    exact h1
+    rwa [S'.strictTransformToBase_emb j, S.strictTransformToBase_emb (F.reindex j)]
   exact h2.of_bot (F.strictTransformComparison_comp_strictTransformToBase j hj) F.isPullback_emb
 
 theorem isEmpty_of_comm_detachedScheme_of_not_mem_range (F : ChartFlatBaseChange S S') (s : ℕ) (hs : s < S.length)
@@ -381,8 +380,7 @@ private theorem forall_isEmpty_of_comm_inactiveTotalToBase (F : ChartFlatBaseCha
   intro i
   induction i with
   | zero =>
-      intro _ _ P q _ _
-      exact isEmpty_of_hom_to_initial q
+      exact fun _ _ P q _ _ => isEmpty_of_hom_to_initial q
   | succ n ih =>
       intro hlt hskip P q p hcomm
       have h1 : IsPullback (initial.to (S.detachedCoprod n)) (initial.to Y')
@@ -426,8 +424,7 @@ theorem isPullback_detachedCoprodMapOfLE_inactiveTotalToBase (F : ChartFlatBaseC
         have hself : S.detachedCoprodMapOfLE (Nat.le_refl a) = 𝟙 (S.detachedCoprod a) := S.detachedCoprodMapOfLE_self a
         have hpbRefl : IsPullback (q ≫ S.detachedCoprodMapOfLE (Nat.le_refl a)) p
             (S.inactiveTotalToBase h a) F.baseMap := by
-          rw [hself, Category.comp_id]
-          exact hsq
+          rwa [hself, Category.comp_id]
         exact hpbRefl
     | succ c hac ih =>
         intro hlt1 hskip1
@@ -446,8 +443,7 @@ theorem isPullback_detachedCoprodMapOfLE_inactiveTotalToBase (F : ChartFlatBaseC
         have hinr : S.detachedCoprodInr c ≫ S.inactiveTotalToBase h (c + 1) =
             S.detachedι c ≫ S.strictTransformToBase c := by
           have hkey := S.detachedToCoprod_inactiveTotalToBase h c (c + 1) (Nat.lt_succ_self c)
-          rw [S.detachedToCoprod_self c] at hkey
-          exact hkey
+          rwa [S.detachedToCoprod_self c] at hkey
         have hdesc : (coprod.desc (S.inactiveTotalToBase h c) (S.detachedι c ≫ S.strictTransformToBase c) :
             S.detachedCoprod c ⨿ S.detachedScheme c ⟶ Y) = S.inactiveTotalToBase h (c + 1) := by
           apply coprod.hom_ext
@@ -459,14 +455,12 @@ theorem isPullback_detachedCoprodMapOfLE_inactiveTotalToBase (F : ChartFlatBaseC
             (S.inactiveTotalToBase h (c + 1)) F.baseMap := by
           have key0 := isPullback_comp_inl_coprodDesc (q ≫ S.detachedCoprodMapOfLE hac) p
             (S.inactiveTotalToBase h c) F.baseMap (S.detachedι c ≫ S.strictTransformToBase c) ih' hF
-          rw [hdesc] at key0
-          exact key0
+          rwa [hdesc] at key0
         have hup : S.detachedCoprodMapOfLE (Nat.le_succ_of_le hac) = S.detachedCoprodMapOfLE hac ≫ S.detachedCoprodInl c :=
           S.detachedCoprodMapOfLE_succ hac
         have hpbSucc : IsPullback (q ≫ S.detachedCoprodMapOfLE (Nat.le_succ_of_le hac)) p
             (S.inactiveTotalToBase h (c + 1)) F.baseMap := by
-          rw [hup, ← Category.assoc]
-          exact key1
+          rwa [hup, ← Category.assoc]
         exact hpbSucc
   exact main b hab hlt hskip
 
@@ -531,8 +525,7 @@ private theorem forall_detachedToCoprod_inactiveTotalMap (F : ChartFlatBaseChang
   intro j
   induction j with
   | zero =>
-      intro hj s hs
-      exact absurd hs (Nat.not_lt_zero s)
+      exact fun hj s hs => absurd hs (Nat.not_lt_zero s)
   | succ n ih =>
       intro hj s hs
       rcases lt_or_eq_of_le (Nat.lt_succ_iff.mp hs) with hlt | heq
@@ -550,8 +543,7 @@ private theorem inl_detachedCoprodMapOfLE (T : EmbeddedBlowupSequence k Y pY) {c
       T.detachedCoprodMapOfLE (Nat.le_of_succ_le hcb) := by
   refine T.detachedCoprod_hom_ext c (fun s hs => ?_)
   have h1 := T.detachedToCoprod_detachedCoprodInl_detachedCoprodMapOfLE s c b hs hcb
-  have h2 := T.detachedToCoprod_detachedCoprodMapOfLE hs (Nat.le_of_succ_le hcb)
-  exact h1.trans h2.symm
+  exact h1.trans (T.detachedToCoprod_detachedCoprodMapOfLE hs (Nat.le_of_succ_le hcb)).symm
 
 private theorem inr_detachedCoprodMapOfLE (T : EmbeddedBlowupSequence k Y pY) {c b : ℕ}
     (hcb : c + 1 ≤ b) :
@@ -683,8 +675,7 @@ theorem isPullback_totalSpaceMap (F : ChartFlatBaseChange S S') [AlgebraicGeomet
     (S.strictTransformToBase (F.reindex j)) (S.inactiveTotalToBase h (F.reindex j)) F.baseMap
     (F.isPullback_strictTransformComparison_strictTransformToBase j hj) (F.isPullback_inactiveTotalMap h h' j hj)
   rw [S'.coprodDesc_strictTransformToBase_inactiveTotalToBase h' j, S.coprodDesc_strictTransformToBase_inactiveTotalToBase h (F.reindex j)] at key
-  rw [F.totalSpaceMap_eq_coprodMap j hj]
-  exact key
+  rwa [F.totalSpaceMap_eq_coprodMap j hj]
 
 end ChartFlatBaseChange
 
@@ -733,8 +724,7 @@ private theorem ne_top_iff_exists_mem_support {X : Scheme.{u}} (I : X.IdealSheaf
     refine hne (hiff.mp (SetLike.ext fun y => ⟨fun hy => ?_, fun hy => (hy : False).elim⟩))
     exact absurd (⟨y, hy⟩ : ∃ x, x ∈ I.support) hx
   · rintro ⟨x, hx⟩ hI
-    rw [hiff.mpr hI] at hx
-    exact hx
+    rwa [hiff.mpr hI] at hx
 
 private theorem comap_iso_hom_ne_top {X Y : Scheme.{u}} (E : X ≅ Y) (J : Y.IdealSheafData)
     (h : J ≠ ⊤) : J.comap E.hom ≠ ⊤ := by
@@ -746,8 +736,7 @@ private theorem comap_iso_hom_ne_top {X Y : Scheme.{u}} (E : X ≅ Y) (J : Y.Ide
 
 private theorem comp_eq_of_eq_of_comp_eq {A B C : Scheme.{u}} (u : A ⟶ B) {f g : B ⟶ C} (hfg : f = g)
     {k : A ⟶ C} (hk : u ≫ g = k) : u ≫ f = k := by
-  rw [hfg]
-  exact hk
+  rwa [hfg]
 
 private theorem comp_comp_eq_of_comp_eq {A B C D : Scheme.{u}} {u : A ⟶ B} {v : B ⟶ C} {w : A ⟶ C}
     (h : u ≫ v = w) (k : C ⟶ D) : u ≫ v ≫ k = w ≫ k := by
@@ -994,8 +983,7 @@ theorem isPullbackSequenceOfBlowups_withoutIsoBlowups {X X' : Scheme.{u}} {φ : 
       obtain ⟨k, hk1, hk2⟩ := s'.exists_nontrivialIndex_eq_of_center_ne_top hj0 hcen
       refine ⟨k, hk1, ?_⟩
       apply s.nontrivialIndex_strictMono.injective
-      rw [hμ k (le_of_lt hk1), hk2]
-      exact hrj0
+      rwa [hμ k (le_of_lt hk1), hk2]
     · rintro ⟨j, hj, rfl⟩
       refine (ne_top_iff_exists_mem_support _).mp ((nontrivialIndex_comap_ne_top_iff_withoutIsoBlowups φ s (μ j)).mp ?_)
       refine center_comap_pullback_snd_ne_top_congr φ s (hμ j (le_of_lt hj)) ?_
@@ -1193,8 +1181,7 @@ theorem levelMap_succ_comp_transitionMap (F : ChartFlatBaseChange S S') (j : ℕ
     rw [show S.blowdown (F.reindex j) = S.ambientSeq.transitionMap (Nat.le_succ (F.reindex j)) from
         S.ambientSeq.blowupMorphism_eq_transitionMap _, S.ambientSeq.transitionMap_trans]
   have hw := (F.isPullback_step j hj hσ').w
-  rw [Category.assoc, key] at hw
-  exact hw
+  rwa [Category.assoc, key] at hw
 
 theorem strictTransformComparison_succ_comp_strictTransformMapOfLE (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length)
     (hσ : F.reindex j ≤ F.reindex (j + 1)) :
@@ -1243,8 +1230,7 @@ private theorem totalTransition_comp_totalSpaceMap (F : ChartFlatBaseChange S S'
       have h2 := S.detachedToCoprod_detachedCoprodMapOfLE (F.reindex_lt_reindex hlt (le_of_lt hj)) hσ
       have h3 := S.detachedCoprodMapOfLE_inr_totalMapOfLE hσ
       have h6 := S'.detachedCoprodInl_inr_totalTransition_assoc j (F.totalSpaceMap j (le_of_lt hj))
-      rw [reassoc_of% h1, ← h2]
-      rw [S'.detachedToCoprod_succ_of_lt s j hlt]
+      rw [reassoc_of% h1, ← h2, S'.detachedToCoprod_succ_of_lt s j hlt]
       simp only [Category.assoc]
       rw [h6, h4, h3]
     · subst heq
@@ -1291,8 +1277,7 @@ private theorem comap_center_eq_top_of_not_mem_range_reindex (F : ChartFlatBaseC
       closure (Set.range
         (⇑((S.centerOffDetached i).subschemeι ≫
           (coprod.inl : S.strictTransform i ⟶ S.totalSpace i)))) := by
-    rw [← Scheme.Hom.support_ker]
-    exact hx
+    rwa [← Scheme.Hom.support_ker]
   have hrange : Set.range
         (⇑((S.centerOffDetached i).subschemeι ≫ (coprod.inl : S.strictTransform i ⟶ S.totalSpace i)))
       ⊆ (⇑(coprod.inl : S.strictTransform i ⟶ S.totalSpace i)) ''
@@ -1338,8 +1323,7 @@ private theorem comap_center_eq_top_of_not_mem_range_reindex (F : ChartFlatBaseC
     rw [hz2]; exact ha2
   have hz : z ∈ ((S.ambientCenter i).comap
       (pullback.snd F.ambientMap (S.ambientSeq.projectionToBase i))).support := by
-    rw [Scheme.IdealSheafData.support_comap]
-    exact hz0
+    rwa [Scheme.IdealSheafData.support_comap]
   rw [hcs] at hz
   simp at hz
   exact hz
@@ -1388,8 +1372,7 @@ theorem isPullbackUpToEmptyCenters_inducedBlowups (F : ChartFlatBaseChange S S')
     rw [F.comap_center_eq_top_of_not_mem_range_reindex h i hi' hskip] at hx
     simp at hx
     exact hx
-  · intro i hi
-    exact F.inducedBlowupsIso_hom_fst h h' i hi
+  · exact fun i hi => F.inducedBlowupsIso_hom_fst h h' i hi
   · intro i hi hr
     have hi' : i < S'.length := by rwa [FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_length] at hi
     apply pullback.hom_ext

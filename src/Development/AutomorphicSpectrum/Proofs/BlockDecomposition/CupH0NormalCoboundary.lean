@@ -378,8 +378,7 @@ theorem fm_change (hF : IsFil Φ Fil) {a : ℕ} {u₀ u₀' : ∀ T : C, Φ.A.ob
       funext k
       rw [map_sub]
       abel
-    rw [e] at this
-    exact this
+    rwa [e] at this
   obtain ⟨W, hW, hD⟩ := cup_h0_normal_coboundary hF hbd h₀'
   set D := (CH.mulP Φ.A).cupC (add_zero a) (P' - P) (h0 u₀') with hDdef
   set V := (CH.mulP Φ.A).cupC (add_zero a) P (h0 u₀' - h0 u₀) with hV
@@ -398,8 +397,7 @@ theorem fm_change (hF : IsFil Φ Fil) {a : ℕ} {u₀ u₀' : ∀ T : C, Φ.A.ob
     abel
   have h3 : -(W + V) ∈ FC (Fil ((a + 1 : ℕ) : ℤ)) a := neg_mem (add_mem hW hVm)
   have h4 := mem_FC.1 h3 s
-  rw [← e2] at h4
-  exact h4
+  rwa [← e2] at h4
 
 theorem fm_exists (hF : IsFil Φ Fil) {a : ℕ} {u₀ : ∀ T : C, Φ.A.obj T} {u : Fin a → ∀ T : C, Φ.A.obj T}
     (h₀ : Nr Fil u₀) (hu : ∀ k, Nr Fil (u k)) :
@@ -428,16 +426,13 @@ theorem isFil_thFil {b : Base} (L : b.Fun) : IsFil (thP L) (thFil L) := by
   · intro r r' T x y hx hy
     have hx' : (show T.B from x) ∈ pdP T.δ r := by
       have : (show T.B from x) ∈ T.pdPow ((r : ℤ).toNat) := hx
-      rw [Int.toNat_natCast] at this
-      exact this
+      rwa [Int.toNat_natCast] at this
     have hy' : (show T.B from y) ∈ pdP T.δ r' := by
       have : (show T.B from y) ∈ T.pdPow ((r' : ℤ).toNat) := hy
-      rw [Int.toNat_natCast] at this
-      exact this
+      rwa [Int.toNat_natCast] at this
     have h := GlobalTheory.CompanionTheory.DPFil.dividedPowerFiltration_mul_le T.δ r r' (Ideal.mul_mem_mul hx' hy')
     change _ ∈ T.pdPow (((r + r' : ℕ) : ℤ).toNat)
-    rw [Int.toNat_natCast]
-    exact h
+    rwa [Int.toNat_natCast]
   · intro k T x hx
     change _ ∈ T.pdPow ((k : ℤ).toNat)
     rw [Int.toNat_natCast]

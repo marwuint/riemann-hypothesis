@@ -92,8 +92,7 @@ theorem levi_step (hg : Formalism.REAL.GlRel K) (lev : Fin n → ℕ) (C : Fin n
     · split_ifs with h
       · exact hv.2 c b ((hC a b c d hab hcd).2 h)
       · exact Z.zero_mem
-  intro a b hab z hz
-  exact (hle hz).2 a b hab
+  exact fun a b hab z hz => (hle hz).2 a b hab
 
 def shift (c : Fin n → Fin n → ℕ) (t : Fin n) : ℝ :=
   ∑ a, ∑ b, (c a b : ℝ) * ((if t = a then 1 else 0) - (if t = b then 1 else 0))
@@ -201,8 +200,7 @@ theorem inCone_of_highest : ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module �
       constructor
       · rintro rfl; show lev d < lev a; omega
       · rintro rfl; show lev b < lev c; omega
-    · intro a b hab y hy
-      exact hYZ (hYl a b hab y hy)
+    · exact fun a b hab y hy => hYZ (hYl a b hab y hy)
 
   have step2 : ∀ a b, ∀ y ∈ Y, K a b y ∈ Z := by
     let S : Submodule ℂ V :=
@@ -233,8 +231,7 @@ theorem inCone_of_highest : ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module �
         · split_ifs
           · exact hv.2 c b
           · exact Z.zero_mem
-    intro a b y hy
-    exact (hle hy).2 a b
+    exact fun a b y hy => (hle hy).2 a b
 
   have step3 : ∀ a b, ∀ z ∈ Z, K a b z ∈ Z := by
     intro a b
@@ -252,11 +249,9 @@ theorem inCone_of_highest : ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module �
       intro z hz
       simpa [Module.algebraMap_end_apply] using Z.smul_mem r hz
     | add A B _ _ hA hB =>
-      intro z hz
-      exact Z.add_mem (hA z hz) (hB z hz)
+      exact fun z hz => Z.add_mem (hA z hz) (hB z hz)
     | mul A B _ _ hA hB =>
-      intro z hz
-      exact hA _ (hB z hz)
+      exact fun z hz => hA _ (hB z hz)
   by_contra hcone
 
   have hY0 : Y ≤ LinearMap.ker ev := by

@@ -290,8 +290,7 @@ theorem Dual.eq_zero (h : Dual r e) (hD : IsAddFundamentalDomain r.range D μ) {
   let L₀ : C(G ⧸ r.range, ℂ) →ₗ[ℂ] ℂ :=
     { toFun := fun g => ∫ u in D, g (u : G ⧸ r.range) * P u ∂μ
       map_add' := fun x y => by
-        simp only [ContinuousMap.add_apply, add_mul]
-        exact integral_add (hint x) (hint y)
+        simpa only [ContinuousMap.add_apply, add_mul] using integral_add (hint x) (hint y)
       map_smul' := fun c x => by
         simp only [ContinuousMap.smul_apply, smul_eq_mul, mul_assoc, RingHom.id_apply]
         exact integral_const_mul _ _ }
@@ -362,8 +361,7 @@ theorem Dual.series (h : Dual r e) (hD : IsAddFundamentalDomain r.range D μ) {P
     intro ξ
     have hsw : ∀ u, e ξ u * S u = ∑' ξ', c ξ' * e (ξ - ξ') u := by
       intro u
-      simp only [hSdef, ← tsum_mul_left, sub_eq_add_neg, h.addl]
-      exact tsum_congr fun _ => by ring
+      simpa only [hSdef, ← tsum_mul_left, sub_eq_add_neg, h.addl] using tsum_congr fun _ => by ring
     simp_rw [hsw]
     have hInt : ∀ ξ', Integrable (fun u => c ξ' * e (ξ - ξ') u) (μ.restrict D) :=
       fun ξ' => h.intOn hD (continuous_const.mul (h.cont _)) fun η u => by rw [h.per]
@@ -639,9 +637,7 @@ theorem pure_bound [Fintype κ] (f : SchwartzMap (κ → mixedEmbedding.mixedSpa
       exact hM _
     · have hz : g (y + finOf a) = 0 := by
         by_contra hne
-        apply hyV
-        apply hDV
-        exact ⟨(y + finOf a, finOf a), ⟨subset_tsupport g hne, ⟨a, ha, rfl⟩⟩, by simp⟩
+        exact hyV (hDV ⟨(y + finOf a, finOf a), ⟨subset_tsupport g hne, ⟨a, ha, rfl⟩⟩, by simp⟩)
       rw [hz, norm_zero]
       exact mul_nonneg hM0 (norm_nonneg _)
   calc ‖f (p + infOf a)‖ * ‖g (y + finOf a)‖
@@ -658,7 +654,6 @@ theorem schA_bound [Fintype κ] {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA 
       ∃ u : (κ → F) → ℝ, Summable u ∧ ∀ ξ, ∀ a ∈ K, ‖Φ (ratA ξ + a)‖ ≤ u ξ) ?_ ?_ ?_ ?_ hΦ
   · rintro x ⟨f, g, hg, rfl⟩
     refine ⟨?_, fun K hK => pure_bound f hg hK⟩
-    show Continuous fun x => f (infOf x) * g (finOf x)
     exact (f.continuous.comp continuous_infOf).mul (hg.1.continuous.comp continuous_finOf)
   · refine ⟨continuous_const, fun K _ => ⟨0, summable_zero, fun ξ a _ => by simp⟩⟩
   · rintro x y _ _ ⟨hxc, hxb⟩ ⟨hyc, hyb⟩

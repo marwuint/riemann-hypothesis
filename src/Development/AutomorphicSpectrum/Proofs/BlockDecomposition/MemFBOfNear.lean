@@ -110,8 +110,7 @@ theorem adic_sum_exists {W : Type} [CommRing W] (p : ℕ)
     have := hL (M / N)
     rw [SModEq.sub_mem] at this
     simp only [smul_eq_mul, Ideal.mul_top] at this
-    have h2 := (I ^ (M / N)).neg_mem this
-    simpa using h2
+    simpa using (I ^ (M / N)).neg_mem this
   have h₂ : g M - g (M / N * N) ∈ I ^ (M / N) := key _ _ _ le_rfl (Nat.div_mul_le_self M N)
   have h₃ : L - g M ∈ I ^ (M / N) := by
     have := (I ^ (M / N)).sub_mem h₁ h₂
@@ -232,8 +231,7 @@ theorem latS_finite_span {l : ℕ} [Fact l.Prime] (K' : IntermediateField ℚ_[l
       wB l (GroundTheory.PAdicHodge.IsPerfectoidField.padicIntToWitt (K := ℂ_[l]) l c) := by
     intro c
     have h := GroundTheory.PAdicHodge.IsPerfectoidField.algebraMap_padic_coe (K := ℂ_[l]) l c
-    have h2 := (GroundTheory.PAdicHodge.algClToBdR l).commutes (c : ℚ_[l])
-    exact h2.trans h
+    exact ((GroundTheory.PAdicHodge.algClToBdR l).commutes (c : ℚ_[l])).trans h
   have hιmul : ∀ x y, ι (x * y) = ι x * ι y := fun x y => by simp [ι]
   have hO : ∀ z, ι z ∈ N := by
     intro z
@@ -347,8 +345,7 @@ theorem pow_natDegree_eq_zero_of_eval₂ {A B R : Type*} [CommRing A] [CommRing 
     have hlt : i < P.natDegree := lt_of_le_of_ne (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)) hne
     rw [Polynomial.coeff_scaleRoots, map_mul, map_pow, hn, zero_pow (Nat.sub_ne_zero_of_lt hlt)]
     simp
-  · intro h
-    exact absurd (Finset.mem_range.2 (Nat.lt_succ_self _)) h
+  · exact fun h => absurd (Finset.mem_range.2 (Nat.lt_succ_self _)) h
 
 theorem tch_ne_mul_of_pow_eq {l : ℕ} [Fact l.Prime] (S : Subring (Formalism.Per6.BdRp l)) (T : Finset (Formalism.Per6.BdRp l)) :
     (∀ a, wB l a ∈ S) → (∀ t ∈ T, t ∈ S) →
@@ -422,8 +419,7 @@ theorem keyL : ∀ {l : ℕ} [Fact l.Prime] (b : Formalism.Per6.BdRp l) (k : ℕ
       simp only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, RingHom.map_sub]
       rw [e, ha0, sub_self]
     rw [GroundTheory.PAdicHodge.ker_adicCompletion_evalₐ hfg k] at h1
-    rw [hm, h']
-    exact h1
+    rwa [hm, h']
   obtain ⟨⟨w, ⟨_, c, rfl⟩⟩, rfl⟩ := IsLocalization.mk'_surjective
     (Submonoid.powers ((l : Wl l))) a0
   refine ⟨c, w, ?_⟩
@@ -438,8 +434,7 @@ theorem keyL : ∀ {l : ℕ} [Fact l.Prime] (b : Formalism.Per6.BdRp l) (k : ℕ
       simp only [map_pow, map_natCast]
     simp only [] at h3
     rw [h4] at h3
-    rw [mul_comm]
-    exact h3
+    rwa [mul_comm]
   rw [← e, ← mul_sub]
   exact Ideal.mul_mem_left _ _ hz
 
@@ -498,8 +493,7 @@ theorem xpowL : ∀ {l : ℕ} [Fact l.Prime] (K' : IntermediateField ℚ_[l] (Om
       exact absurd hN (not_lt.2 hle)
     · exact h
   refine ⟨N, x ^ N / (l : Om l), hNpos, ?_, ?_, ?_⟩
-  · refine div_mem (pow_mem hx N) ?_
-    exact natCast_mem K' l
+  · exact div_mem (pow_mem hx N) (natCast_mem K' l)
   · rw [GlobalTheory.isIntegral_padicInt_iff_norm_le_one, norm_div, norm_pow]
     exact (div_le_one hlp).2 hN.le
   · field_simp
@@ -572,8 +566,7 @@ theorem FB_complete {l : ℕ} [Fact l.Prime] (x : ℕ → Formalism.Per6.BdRp l)
     exact hstep m n hmn)
   refine ⟨t, fun k => ?_⟩
   have := ht k
-  rw [SModEq.comm, SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← ker_thB_eq] at this
-  exact this
+  rwa [SModEq.comm, SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← ker_thB_eq] at this
 
 theorem lattice_main : ∀ {l : ℕ} [Fact l.Prime] (K' : IntermediateField ℚ_[l] (Om l)) [FiniteDimensional ℚ_[l] K'] [Normal ℚ_[l] K'],
     ∃ S : Subring (Formalism.Per6.BdRp l), (∀ a, wB l a ∈ S) ∧

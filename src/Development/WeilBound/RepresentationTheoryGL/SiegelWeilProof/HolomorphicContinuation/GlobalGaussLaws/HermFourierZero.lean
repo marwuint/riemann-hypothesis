@@ -103,10 +103,8 @@ theorem hermFourierZero (D : D7) (r : ℕ) (ψ : AddChar (AF D.host.F) ℂ) (hψ
   · intro t y l hl
     show chi ψ t.1.1 (y + l) = chi ψ t.1.1 y
     rw [chi_add_right, chi_rat hψ (hmem t) ⟨l, hl⟩, mul_one]
-  · intro y
-    exact chi_zero_left ψ y
-  · intro s t y
-    exact chi_add_left ψ s.1.1 t.1.1 y
+  · exact fun y => chi_zero_left ψ y
+  · exact fun s t y => chi_add_left ψ s.1.1 t.1.1 y
   · intro t y
     show star (chi ψ t.1.1 y) = chi ψ (-t.1.1) y
     rw [chi_neg_left]
@@ -115,15 +113,13 @@ theorem hermFourierZero (D : D7) (r : ℕ) (ψ : AddChar (AF D.host.F) ℂ) (hψ
     refine rat_of_chi hψ (-a + b) fun t => ?_
     have h1 : chi ψ t.1.1 a * chi ψ t.1.1 (-a) = 1 := by
       rw [← chi_add_right, add_neg_cancel, chi_zero_right]
-    rw [chi_add_right, ← hab t, mul_comm]
-    exact h1
+    rwa [chi_add_right, ← hab t, mul_comm]
   · intro t
     obtain ⟨β, hβ⟩ := (ofHermE_bijective (D := D) (r := r)).2 t
     have h1 : ∀ b : hermA D r, chi ψ (-t).1.1 b =
         ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D r r))) := fun b => by
       show chi ψ (-t.1.1) b = _
       rw [chi_neg_left, ← hβ, ofHermE_val]
-    simp only [h1]
-    exact hco β
+    simpa only [h1] using hco β
 
 end PositivityTheory.Rg.Sw.Glob

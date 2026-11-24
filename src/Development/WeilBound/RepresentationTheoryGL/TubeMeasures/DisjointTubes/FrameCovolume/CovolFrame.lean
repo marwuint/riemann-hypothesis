@@ -302,8 +302,7 @@ theorem exists_proj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r 
   · refine Continuous.subtype_mk (continuous_pi fun τ => ?_) _
     exact (continuous_gl _ _ _ _ _).comp (continuous_apply _)
   · intro b ρ
-    simp only [hF]
-    exact mul_gl _ _ _ _ _ _
+    simpa only [hF] using mul_gl _ _ _ _ _ _
   · intro s b₀ hs b
     refine Subtype.ext (funext fun τ => ?_)
     obtain ⟨ρ, rfl⟩ := σ.surjective τ
@@ -450,8 +449,7 @@ theorem exists_ident_frame : ∀ (D : D7) (V : HSp D) (P Q : ℕ), V.SigOK → (
       Matrix.diagonal fun a : Fin V.rank => ((sgn Q (a : ℕ) : ℝ) : ℂ) := fun ρ => by
     have h1 := hg ρ
     simp only [hs] at h1
-    rw [fdgram_eq, hmapT, Matrix.mul_neg, Matrix.neg_mul]
-    exact h1
+    rwa [fdgram_eq, hmapT, Matrix.mul_neg, Matrix.neg_mul]
   have hin : ∀ ρ, tauE D ρ ∈ Formalism.L2.Pj.cmTypeOfSqrt D := fun ρ => by
     rw [Formalism.L2.Pj.mem_cm_type_iff, Formalism.L2.Theta.tauE_sqrtMinusD]
     exact (D.host.φ₀_mem).symm
@@ -582,9 +580,7 @@ theorem packing_set_covolume_le :
     · intro γ hγ y hy hγy
       by_contra hne
       have hne' : (⟨γ, hγ⟩ : Γ) ≠ 1 := fun h => hne (congrArg Subtype.val h)
-      apply hγy.2
-      refine Set.mem_iUnion.2 ⟨⟨⟨γ, hγ⟩, hne'⟩, ?_⟩
-      exact ⟨y, hy.1, rfl⟩
+      exact hγy.2 (Set.mem_iUnion.2 ⟨⟨⟨γ, hγ⟩, hne'⟩, ⟨y, hy.1, rfl⟩⟩)
 
 end GlobalTheory
 end -- clump:auto
@@ -737,8 +733,7 @@ theorem meas_low (D : D7) (V : HSp D) (θ : InfFam D) (A : Frames V) (rp : GA D 
       rw [e1]
       exact isKM_mul (isKM_inv hkz) hkx
     · show rp (w⁻¹ * x) ∈ B
-      rw [map_mul, map_inv, hw1, inv_one, one_mul]
-      exact hxB
+      rwa [map_mul, map_inv, hw1, inv_one, one_mul]
   calc μ {h | h ∈ KM V 1 ∧ rp h ∈ B} ≤ μ (⋃ s ∈ S, P s) := measure_mono hcov
     _ ≤ ∑ s ∈ S, μ (P s) := measure_biUnion_finset_le S P
     _ ≤ ∑ s ∈ S, μ Q := Finset.sum_le_sum hP
@@ -911,12 +906,10 @@ theorem tube_disj (D : D7) (V : HSp D) (θ : InfFam D) (A : Frames V) (rp : GA D
     have h5 := congrArg (fun s : realSU Ψ Gm => ((s.1 (σ ρ₀) : GL (Fin V.rank) ℂ) : Matrix (Fin V.rank) (Fin V.rank) ℂ)) hs1
     have h6 : (δ0 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (σ ρ₀).1 =
         (1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (σ ρ₀).1 := by
-      rw [Matrix.map_one _ (map_zero _) (map_one _)]
-      exact h5
+      rwa [Matrix.map_one _ (map_zero _) (map_one _)]
     exact Units.ext (Matrix.map_injective (σ ρ₀).1.injective h6)
   refine ⟨Subtype.ext ?_, rfl⟩
-  rw [hδ1, map_one] at hmat
-  exact hmat
+  rwa [hδ1, map_one] at hmat
 
 end MainStatements.Tam.T2
 end -- clump:auto
@@ -1119,8 +1112,7 @@ theorem tube : VolSt → StabSt → IdxSt → TubeSt := by
         _ ≤ ENNReal.ofReal (ReciprocityTheory.ChartRestriction.DS.volU V.rank ^ D.R.f * massI D V.rank) *
               ((M : ℝ≥0∞) ^ (2 * D.R.f * V.rank ^ 2)) * μ 𝓕 := by
             gcongr
-            rw [← hμS]
-            exact hSF
+            rwa [← hμS]
         _ = _ := by ring
     exact (ENNReal.mul_le_mul_iff_right hF0 hFtop).1 h1
   have hcov : ∀ k, covolume (inReal (X k).Ψ (X k).Gm (X k).Γ) (realSU (X k).Ψ (X k).Gm) (riemHaar (X k).Ψ (X k).Gm (x0 k)) ≤

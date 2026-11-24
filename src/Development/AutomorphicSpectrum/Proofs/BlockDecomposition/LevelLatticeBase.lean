@@ -108,8 +108,7 @@ theorem sum_single {m : ℕ} (hn : f ξ ^ m = 0) (k : ℕ) (a : W) :
     · simp
     · intro b _ hb
       simp [Pi.single_eq_of_ne hb]
-    · intro h
-      exact absurd (Finset.mem_range.2 hk) h
+    · exact fun h => absurd (Finset.mem_range.2 hk) h
   · rw [dpE_eq_zero l M hn (not_lt.1 hk), mul_zero]
     refine Finset.sum_eq_zero fun i hi => ?_
     have : i ≠ k := by
@@ -219,8 +218,7 @@ theorem dividedPowerFiltration_fg : ∀ {W B : Type} [CommRing W] [CommRing B] [
       · rw [hc0 i hir, map_zero, zero_mul]
         exact Ideal.zero_mem _
       · refine Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, ?_, rfl⟩)
-        simp only [Finset.coe_Ico, Set.mem_Ico]
-        exact ⟨not_lt.1 hir, Finset.mem_range.1 hi⟩
+        simpa only [Finset.coe_Ico, Set.mem_Ico] using ⟨not_lt.1 hir, Finset.mem_range.1 hi⟩
     · refine Ideal.span_le.2 ?_
       rintro _ ⟨i, hi, rfl⟩
       simp only [Finset.coe_Ico, Set.mem_Ico] at hi
@@ -890,8 +888,7 @@ private theorem exists_sub_iota_mem_of_sub_involution_mem {W B : Type} [CommRing
           rw [Lat.dpE, Algebra.smul_def, pow_succ']
           exact Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ hη)
         refine Subring.mem_comap.2 (RingHom.mem_range.2 ⟨0, ?_⟩)
-        rw [map_zero, eq_comm, Ideal.Quotient.eq_zero_iff_mem]
-        exact hd
+        rwa [map_zero, eq_comm, Ideal.Quotient.eq_zero_iff_mem]
   obtain ⟨w, hw⟩ := RingHom.mem_range.1 (Subring.mem_comap.1 (hle hb))
   exact ⟨w, Ideal.Quotient.eq.1 hw⟩
 
@@ -903,8 +900,7 @@ theorem pow_mem_span_sup_I : ∀ {W B : Type} [CommRing W] [CommRing B] [Algebra
   obtain ⟨w, hw⟩ := exists_sub_iota_mem_of_sub_involution_mem f ξ l M _ hxmem
   have hxw : Lat.ofW f ξ l M w - x ∈ Lat.I f ξ l M := by
     show Lat.ι f ξ l M (Lat.ofW f ξ l M w - x) ∈ Lat.IB f ξ
-    rw [map_sub, Lat.ι_ofW]
-    exact hw
+    rwa [map_sub, Lat.ι_ofW]
   have hξI : Lat.ofW f ξ l M ξ ∈ Lat.I f ξ l M := by
     show Lat.ι f ξ l M (Lat.ofW f ξ l M ξ) ∈ Lat.IB f ξ
     rw [Lat.ι_ofW]
@@ -915,11 +911,9 @@ theorem pow_mem_span_sup_I : ∀ {W B : Type} [CommRing W] [CommRing B] [Algebra
     have h1 : Lat.ofW f ξ l M (ξ * v) ∈ Lat.I f ξ l M := by
       rw [map_mul]
       exact Ideal.mul_mem_right _ _ hξI
-    have h2 := (Lat.I f ξ l M).sub_mem h1 hxw
-    simpa using h2
+    simpa using (Lat.I f ξ l M).sub_mem h1 hxw
   have hq : Ideal.Quotient.mk (Ideal.span {ξ}) w ≠ 0 := by
-    rw [Ne, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]
-    exact hwnot
+    rwa [Ne, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]
   obtain ⟨n, c, hc⟩ := hH.dv _ hq
   obtain ⟨u, rfl⟩ := Ideal.Quotient.mk_surjective c
   have hmem : (l : W) ^ n - w * u ∈ Ideal.span {ξ} := by

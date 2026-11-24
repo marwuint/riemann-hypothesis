@@ -108,8 +108,7 @@ theorem regularAt_generic [Finite T] (Γ : QFGroup R T) (f : T → FractionRing 
     rw [e, basicOpen_eq_of_affine]
     refine ⟨hgV, ?_⟩
     change d ∉ (Γ.G.hom g).asIdeal
-    rw [hg]
-    exact hd
+    rwa [hg]
   let ρ : Γ(Γ.G.left, V) →+* Γ(Γ.G.left, W) := (Γ.G.left.presheaf.map (homOfLE hW).op).hom
   have hu : IsUnit (ρ σ) := Γ.G.left.toRingedSpace.isUnit_res_basicOpen σ
   obtain ⟨u, hu⟩ := hu.exists_left_inv
@@ -134,8 +133,7 @@ theorem valHom_top_comp {B C : Type} [CommRing B] [CommRing C] {X : Scheme.{0}} 
       (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (valAt x ⊤ le_top s) := by
     simp [valAt]
   have e1 := valHom_appLE (Spec.map (CommRingCat.ofHom φ)) x (V := ⊤) (W := ⊤) le_top le_top le_top s
-  have e2 := valHom_spec_top φ le_top (valAt x ⊤ le_top s)
-  exact e1.symm.trans ((congrArg _ e).trans e2)
+  exact e1.symm.trans ((congrArg _ e).trans (valHom_spec_top φ le_top (valAt x ⊤ le_top s)))
 
 section sec
 
@@ -295,23 +293,20 @@ theorem exists_order [ValuationRing R] [Finite T] (Γ : QFGroup R T) (U : Γ.G.l
       rw [hg' z, ← hc z.1 z.2 z.1.2 z.2.2 (z.1 * z.2).2]
       exact (hΦ s (z.1 * z.2) (z.1 * z.2).2).symm
     change (fun z : subH Γ hF × subH Γ hF => (Φ s) (z.1 * z.2)) ∈ prodSpan Φ.range
-    rw [this]
-    exact hg
+    rwa [this]
   · rintro _ ⟨s, rfl⟩
     obtain ⟨c, hc⟩ := exists_inv hρ hF s
     refine ⟨c, funext fun x => inj ?_⟩
     have e1 := hc x x.2 (x⁻¹).2
     have e2 := hΦ s x⁻¹ (x⁻¹).2
-    have e3 := hΦ c x x.2
-    exact e3.symm.trans (Eq.trans (valAlg_apply hρ _ _ _).symm (e1.symm.trans e2))
+    exact (hΦ c x x.2).symm.trans (Eq.trans (valAlg_apply hρ _ _ _).symm (e1.symm.trans e2))
   · rintro _ ⟨s, rfl⟩
     exact ⟨s, fun t h => hΦ s t h⟩
   · intro s g hg
     obtain ⟨c, hc⟩ := exists_tensor_of_prod hρ s
     obtain ⟨g', hg1, hg2⟩ := key c
     have : g = g' := funext fun z => inj (by rw [hg2 z, ← hc z.1 z.2 z.1.2 z.2.2, hg z])
-    rw [this]
-    exact hg1
+    rwa [this]
 
 theorem bichar_mem_prodSpan [ValuationRing R] (hH : HenselianLocalRing R)
     (hdim : ∀ P : PrimeSpectrum R, P.asIdeal = ⊥ ∨ P = IsLocalRing.closedPoint R) [Finite T] (Γ : QFGroup R T)

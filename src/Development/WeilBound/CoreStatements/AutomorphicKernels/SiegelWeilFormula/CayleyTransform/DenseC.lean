@@ -169,8 +169,7 @@ theorem scalar_avoid {J h : Matrix ι ι ℂ} (hh : hᴴ * J * h = J) {V : Set (
     rw [Metric.mem_ball, Real.dist_eq, sub_zero, abs_of_pos hθ.1]
     exact lt_of_lt_of_le hθ.2 (min_le_left δ 1)
   · rw [isUnit_iff_ne_zero, ← hq]
-    intro h0
-    exact hμ (Multiset.mem_toFinset.2 ((Polynomial.mem_roots hq0).2 h0))
+    exact fun h0 => hμ (Multiset.mem_toFinset.2 ((Polynomial.mem_roots hq0).2 h0))
 
 end PositivityTheory.SiegelWeilFormula.Krd.CP
 
@@ -225,7 +224,6 @@ theorem continuousOn_cay : ContinuousOn (cay (ι := ι)) {Y | IsUnit (1 - Y).det
       have h2 := NormedRing.inverse_continuousAt hY.unit
       rwa [hY.unit_spec] at h2
     exact h1.comp (continuous_const.sub continuous_id).continuousAt
-  show ContinuousAt (fun Z : Matrix ι ι ℂ => (1 + Z) * (1 - Z)⁻¹) Y
   exact (continuous_const.add continuous_id).continuousAt.mul hinv
 
 theorem inLie_proj {J : Matrix ι ι ℂ} {c d : ℂ} (hc : Jᴴ = c • J) (hcc : c * c = 1) (hd : J * J = d • 1) (hd0 : d ≠ 0)
@@ -266,8 +264,7 @@ theorem lie_dense {J : Matrix ι ι ℂ} {c d : ℂ} (hc : Jᴴ = c • J) (hcc 
   have hW : IsOpen (proj J d ⁻¹' U) := hU.preimage (continuous_proj J d)
   have hmem : (1 / 2 : ℂ) • Y ∈ proj J d ⁻¹' U := by
     show proj J d ((1 / 2 : ℂ) • Y) ∈ U
-    rw [proj_half hd hd0 hY]
-    exact hYU
+    rwa [proj_half hd hd0 hY]
   obtain ⟨X, hXS, hXW⟩ := hS.exists_mem_open hW ⟨_, hmem⟩
   exact ⟨proj J d X, hSp X hXS, inLie_proj hc hcc hd hd0 hds X, hXW⟩
 
@@ -291,8 +288,7 @@ theorem densG {J : Matrix ι ι ℂ} {c d : ℂ} (hc : Jᴴ = c • J) (hcc : c 
   have hYU : Y ∈ {Y : Matrix ι ι ℂ | IsUnit (1 - Y).det} ∩ cay ⁻¹' V := by
     refine ⟨hYu, ?_⟩
     show cay Y ∈ V
-    rw [hYc]
-    exact hμV
+    rwa [hYc]
   obtain ⟨X, hXS, hXL, hXU⟩ := lie_dense hc hcc hd hd0 hds hS hSp hYL hU hYU
   exact ⟨cay X, hXU.2, hSc X hXS hXU.1, cay_inU hXL hXU.1⟩
 

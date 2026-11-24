@@ -85,8 +85,7 @@ theorem sub_mem_span_of_etale {Λ D : Type} [CommRing Λ] [CommRing D] (i : Λ �
       simp only [RingHom.comp_apply, MvPolynomial.eval₂Hom_C]
       rw [← RingHom.comp_apply g i, hgi]
     · intro k
-      simp only [RingHom.comp_apply, MvPolynomial.eval₂Hom_X']
-      exact Ideal.Quotient.eq.mpr (hgt k)
+      simpa only [RingHom.comp_apply, MvPolynomial.eval₂Hom_X'] using Ideal.Quotient.eq.mpr (hgt k)
   let φ₁ : D →ₐ[MvPolynomial (Fin d) Λ] D ⧸ Ideal.span ({μ} : Set D) := Ideal.Quotient.mkₐ _ _
   let φ₂ : D →ₐ[MvPolynomial (Fin d) Λ] D ⧸ Ideal.span ({μ} : Set D) :=
     { (q.comp g) with
@@ -98,8 +97,7 @@ theorem sub_mem_span_of_etale {Λ D : Type} [CommRing Λ] [CommRing D] (i : Λ �
     Ideal.span ((fun s => q (g s - s)) '' (S : Set D))
   have hfg : I.FG := Submodule.fg_span (S.finite_toSet.image _)
   have hnil : IsNilpotent I := by
-    rw [Ideal.FG.isNilpotent_iff_le_nilradical hfg]
-    rw [Ideal.span_le]
+    rw [Ideal.FG.isNilpotent_iff_le_nilradical hfg, Ideal.span_le]
     rintro _ ⟨s, -, rfl⟩
     exact mem_nilradical.mpr ((hJ _ (hgJ s)).map q)
   have hψ : (Ideal.Quotient.mkₐ (MvPolynomial (Fin d) Λ) I).comp φ₁ =
@@ -108,12 +106,10 @@ theorem sub_mem_span_of_etale {Λ D : Type} [CommRing Λ] [CommRing D] (i : Λ �
     intro s hs
     have hmem : q (g s - s) ∈ I := Ideal.subset_span ⟨s, hs, rfl⟩
     rw [map_sub] at hmem
-    show Ideal.Quotient.mk I (q s) = Ideal.Quotient.mk I (q (g s))
     exact (Ideal.Quotient.eq.mpr hmem).symm
   have hφ : φ₁ = φ₂ := by
     apply Algebra.FormallyUnramified.ext I hnil
-    intro x
-    exact congrArg (fun ψ : D →ₐ[MvPolynomial (Fin d) Λ] _ => ψ x) hψ
+    exact fun x => congrArg (fun ψ : D →ₐ[MvPolynomial (Fin d) Λ] _ => ψ x) hψ
   have hz : q z = q (g z) := congrArg (fun ψ : D →ₐ[MvPolynomial (Fin d) Λ] _ => ψ z) hφ
   exact Ideal.Quotient.eq.mp hz.symm
 

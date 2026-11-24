@@ -68,8 +68,7 @@ theorem coset_chain {W : Type} [CommRing W] {M : Type w} [AddCommGroup M] [Modul
     | succ j ih =>
       have h1 : c (k + j + 1) - c (k + j) ∈ K k := hanti (Nat.le_add_right k j) (hc (k + j))
       have h2 := add_mem h1 ih
-      rw [sub_add_sub_cancel] at h2
-      exact h2
+      rwa [sub_add_sub_cancel] at h2
   refine ⟨c m, fun k => ?_⟩
   rcases le_total k m with hkm | hmk
   · obtain ⟨j, rfl⟩ := Nat.exists_eq_add_of_le hkm
@@ -78,8 +77,7 @@ theorem coset_chain {W : Type} [CommRing W] {M : Type w} [AddCommGroup M] [Modul
     have hKeq : K m = K (m + j) := hm (m + j) (Nat.le_add_right m j)
     rw [← hKeq]
     have h3 := neg_mem (hdiff m j)
-    rw [neg_sub] at h3
-    exact h3
+    rwa [neg_sub] at h3
 
 section
 variable {W : Type} [CommRing W] (S : Sys.{w} W) (N : ∀ n, Submodule W (S.M n))
@@ -102,9 +100,7 @@ theorem imgSub_succ_le (hN : ∀ n x, x ∈ N (n + 1) → S.r n x ∈ N n) :
   intro k
   induction k with
   | zero =>
-    intro n
-    show Submodule.map (S.r n) (N (n + 1)) ≤ N n
-    exact Submodule.map_le_iff_le_comap.mpr (fun u hu => hN n u hu)
+    exact fun n => Submodule.map_le_iff_le_comap.mpr (fun u hu => hN n u hu)
   | succ k ih =>
     intro n
     show Submodule.map (S.r n) (imgSub S N (k + 1) (n + 1)) ≤
@@ -143,10 +139,8 @@ theorem stable_surj (hN : ∀ n x, x ∈ N (n + 1) → S.r n x ∈ N n)
     obtain ⟨v, hv, hve⟩ := Submodule.mem_map.mp h1
     refine ⟨v + imgPt S y k (n + 1), ?_, ?_⟩
     · rw [map_add (f := _), hve]
-      show x - S.r n (imgPt S y k (n + 1)) + S.r n (imgPt S y k (n + 1)) = x
       exact sub_add_cancel _ _
-    · rw [add_sub_cancel_right]
-      exact hv
+    · rwa [add_sub_cancel_right]
   choose c hc1 hc2 using hA
   have hKanti : ∀ k, LinearMap.ker (S.r n) ⊓ imgSub S N (k + 1) (n + 1) ≤
       LinearMap.ker (S.r n) ⊓ imgSub S N k (n + 1) :=
@@ -169,8 +163,7 @@ theorem stable_surj (hN : ∀ n x, x ∈ N (n + 1) → S.r n x ∈ N n)
     rw [e]
     exact add_mem (Submodule.mem_inf.mp (hx' k)).2 (hc2 k)
   · have h0 := (Submodule.mem_inf.mp (hx' 0)).1
-    rw [LinearMap.mem_ker, map_sub, hc1, sub_eq_zero] at h0
-    exact h0
+    rwa [LinearMap.mem_ker, map_sub, hc1, sub_eq_zero] at h0
 
 end
 

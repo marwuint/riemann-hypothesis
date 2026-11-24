@@ -113,8 +113,7 @@ theorem BS.ext {c : R} {M : Type w} [AddCommGroup M] [Module R M] (N : Submodule
       obtain ⟨y, hy⟩ := hx (n + k₂)
       have hy2 : c ^ k₂ • y ∈ N := by
         refine key y (k₂ + (n + k₂)) ?_
-        rw [pow_add, mul_smul, ← hy]
-        exact hx2
+        rwa [pow_add, mul_smul, ← hy]
       exact ⟨⟨_, hy2⟩, by rw [hy, pow_add, mul_smul]⟩
     obtain ⟨w₀, hw₀⟩ := hw 0
     have hxN : x ∈ N := by
@@ -513,8 +512,7 @@ theorem gen (c : R) (red : ∀ n, CH.Mor F (G n) (RingHom.id R)) (tr : ∀ n, CH
     · rintro ⟨y, rfl⟩
       funext s
       exact (hred n j _ s).trans ((hker n _ _).2 ⟨_, rfl⟩)
-  · intro j x hx
-    exact funext fun s => htors _ _ (congrFun hx s)
+  · exact fun j x hx => funext fun s => htors _ _ (congrFun hx s)
 
 end Coch
 
@@ -699,8 +697,7 @@ theorem mem_some (r : ℤ) (c : b.R) (T : Q.FullSubcategory) (x : (sP Q).A.obj T
   · rintro ⟨u, hu, v, hv, rfl⟩
     obtain ⟨y, rfl⟩ := Ideal.mem_span_singleton'.1 hv
     refine ⟨y, ?_⟩
-    rw [Algebra.smul_def, mul_comm, add_sub_cancel_right]
-    exact hu
+    rwa [Algebra.smul_def, mul_comm, add_sub_cancel_right]
   · rintro ⟨y, hy⟩
     refine ⟨_, hy, c • y, ?_, sub_add_cancel _ _⟩
     rw [Algebra.smul_def]
@@ -742,8 +739,7 @@ theorem liftingProperty_of_bounds (c : b.R) (s : ℕ) (hzero : ∀ T : Q.FullSub
     ∃ e : ℕ, LiftP Q c s j e := by
   have htop : ∀ (T : Q.FullSubcategory) (x : (sP Q).A.obj T), c • x = 0 → x = 0 := fun T x h => by
     have h' : x ∈ (sFil Q (s : ℤ)).S T := htf _ T x (by rw [h]; exact Ideal.zero_mem _)
-    rw [hzero] at h'
-    exact h'
+    rwa [hzero] at h'
   have hHO : ∀ j, AFG c (HO Q j) := fun j =>
     afg_of_bij _ (quoM Q s j) (bij_quoM Q _ hzero j) (hQ s le_rfl j)
   obtain ⟨k, a, b, d⟩ := hb _ _ (hHO j) (hHO (j + 1))
@@ -788,10 +784,8 @@ theorem liftA_of_afgA : AfgA → LiftA := by
       rw [Algebra.smul_def, map_natCast]
     rw [e] at h
     exact T.property.1.2 _ _ h
-  · intro t ht j
-    exact hA γ l s m hdv hO hL hms q U 𝒱 h𝒱 0 t (by omega) (by omega) j
-  · intro M M' _ _ _ _ h h'
-    exact bounds hL h h'
+  · exact fun t ht j => hA γ l s m hdv hO hL hms q U 𝒱 h𝒱 0 t (by omega) (by omega) j
+  · exact fun M M' _ _ _ _ h h' => bounds hL h h'
 
 end GlobalTheory.CompanionTheory.LiftLat
 end -- clump:auto

@@ -197,8 +197,7 @@ theorem isLSeg_dualCl (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {Δ 
       omega) hd1
   have c1 : IsCosocle δ.rep
       (MonoidHom.comp (MonoidHom.comp (prodIrr Δ.term hd) (Zc.Cos.thetaW k _)) (Zc.Cos.thetaW k _)) := by
-    rw [GlobalTheory.CompanionTheory.LSocle.comp_thetaW_thetaW]
-    exact cos
+    rwa [GlobalTheory.CompanionTheory.LSocle.comp_thetaW_thetaW]
   have c2 := GlobalTheory.CompanionTheory.LSocle.isCosocle_comp_thetaW c1
   obtain ⟨e3⟩ := GlobalTheory.CompanionTheory.ThetaW.comp_thetaW_equiv_contra gk _ δ.rep δ.snd.rep.smooth δ.snd.rep.irr
   have c3 : IsCosocle (contra δ.rep) (prodIrr (Zc.segDual Δ).term hdQ) :=
@@ -464,8 +463,7 @@ theorem list_symmetric_pair_decomposition {α : Type*} : ∀ (n : ℕ) (l : List
     obtain ⟨a', b', hb', hperm'⟩ := ih l'.length (by simp at hlen; omega) l' rfl hl'
     have hp0 : ((p.1, (0 : ℝ)) : α × ℝ) = p := Prod.ext rfl h0.symm
     refine ⟨p.1 :: a', b', fun q hq => ⟨(hb' q hq).1, List.mem_cons_of_mem _ (hb' q hq).2⟩, ?_⟩
-    simp only [List.map_cons, List.cons_append, hp0]
-    exact hperm'.cons p
+    simpa only [List.map_cons, List.cons_append, hp0] using hperm'.cons p
   · have hnp : ((p.1, -p.2) : α × ℝ) ≠ p := by
       intro h
       have h2 := congrArg Prod.snd h
@@ -725,8 +723,7 @@ theorem tail_step {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] {π : Rep
     ∃ (h' : ℕ) (x : Fin h' → IrrGL (k := k)) (hd : ∑ a, (x a).1 = N), List.ofFn x = F ∧ Nonempty (π.Equiv (prodIrr x hd)) := by
   obtain ⟨y, hy, σ, rfl⟩ := perm_ofFn X F hF
   have hd' : ∑ j, (X (σ j)).1 = N := by
-    rw [Equiv.sum_comp σ (fun j => (X j).1)]
-    exact hd
+    rwa [Equiv.sum_comp σ (fun j => (X j).1)]
   exact ⟨h, fun j => X (σ j), hd', hy, ⟨φ.trans (hR σ hd').some⟩⟩
 
 end Local
@@ -753,8 +750,7 @@ theorem genericUnitaryDualGL_holds : GlobalTheory.Published.GenericUnitaryDualGL
   rw [Fin.univ_val_map, Fin.univ_val_map, Multiset.coe_eq_coe] at hm2
   set l := List.ofFn (fun j => (δ j, s j)) with hl
   have hperm : (l.map (fun p : IrrGL (k := k) × ℝ => (p.1, -p.2))).Perm l := by
-    rw [hl, List.map_ofFn]
-    exact hm2
+    rwa [hl, List.map_ofFn]
   obtain ⟨a, b, hb, hab⟩ := comb l hperm
   have memL : ∀ p ∈ l, ∃ j, (δ j, s j) = p := by
     intro p hp
@@ -781,8 +777,7 @@ theorem genericUnitaryDualGL_holds : GlobalTheory.Published.GenericUnitaryDualGL
     have hF : (GlobalTheory.GenericUnitary.factors a b).Perm (List.ofFn (fun j => (δ j).nu ((s j : ℝ) : ℂ))) := by
       rw [hfac]
       have := hab.map (fun p : IrrGL (k := k) × ℝ => p.1.nu (p.2 : ℂ))
-      rw [hl, List.map_ofFn] at this
-      exact this
+      rwa [hl, List.map_ofFn] at this
     exact tail_step (fun j => (δ j).nu ((s j : ℝ) : ℂ)) hd φ _ hF
       (fun σ hd' => reorder δ Δ s hL hcent hs σ hd hd')
 

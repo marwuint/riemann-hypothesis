@@ -87,8 +87,7 @@ theorem logBound_radius_eq {n a : ℕ} (h : a ≤ n) (z : Fin n → ℂ) :
   refine Finset.sum_bij (fun j _ => Fin.castLE h j) ?_ ?_ ?_ ?_
   · intro j _
     simp
-  · intro j _ j' _ e
-    exact Fin.castLE_injective h e
+  · exact fun j _ j' _ e => Fin.castLE_injective h e
   · intro i hi
     have hi' : i.val < a := by simpa using hi
     exact ⟨⟨i.val, hi'⟩, Finset.mem_univ _, by ext; simp⟩
@@ -147,29 +146,19 @@ theorem logBound_inv_bounds {g m : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) (F : Ma
   obtain ⟨b1, b2⟩ := GlobalTheory.CompanionTheory.Ar.Flat.subframe_inv_bounds Y hc hD h1 h2
   have t1 := GlobalTheory.transpose_le_transpose_of_le b1
   have t2 := GlobalTheory.transpose_le_transpose_of_le b2
-  have e : ∀ t : ℝ, (t • (1 : Matrix (Fin g) (Fin g) ℂ))ᵀ = t • (1 : Matrix (Fin g) (Fin g) ℂ) := by
-    intro t
-    rw [Matrix.transpose_smul, Matrix.transpose_one]
-  rw [e] at t1 t2
+  simp only [Matrix.transpose_smul, Matrix.transpose_one] at t1 t2
   have l1 := GlobalTheory.conjTranspose_mul_mul_le_of_le t1 F
   have l2 := GlobalTheory.conjTranspose_mul_mul_le_of_le t2 F
-  have e2 : ∀ t : ℝ, Fᴴ * (t • (1 : Matrix (Fin g) (Fin g) ℂ)) * F = t • (Fᴴ * F) := by
-    intro t
-    simp [Matrix.mul_smul, Matrix.smul_mul]
-  rw [e2] at l1 l2
-  obtain ⟨S, hS⟩ : ∃ S, S = Fᴴ * ((Y⁻¹).map Complex.ofReal)ᵀ * F := ⟨_, rfl⟩
-  rw [← hS] at l1 l2 ⊢
-  have hpi := Real.pi_pos
+  simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one] at l1 l2
+  generalize Fᴴ * ((Y⁻¹).map Complex.ofReal)ᵀ * F = S at l1 l2 ⊢
   have p1 : (Real.pi * (D⁻¹ * δ)) • (1 : Matrix (Fin m) (Fin m) ℂ) ≤ Real.pi • S := by
     have q1 := GlobalTheory.real_smul_le_real_smul_of_le h3 (inv_pos.2 hD).le
-    rw [smul_smul] at q1
-    have q2 := GlobalTheory.real_smul_le_real_smul_of_le (q1.trans l1) hpi.le
-    rwa [smul_smul] at q2
+    simpa only [smul_smul] using
+      GlobalTheory.real_smul_le_real_smul_of_le (q1.trans l1) Real.pi_pos.le
   have p2 : Real.pi • S ≤ (Real.pi * (c⁻¹ * K)) • (1 : Matrix (Fin m) (Fin m) ℂ) := by
     have q1 := GlobalTheory.real_smul_le_real_smul_of_le h4 (inv_pos.2 hc).le
-    rw [smul_smul] at q1
-    have q2 := GlobalTheory.real_smul_le_real_smul_of_le (l2.trans q1) hpi.le
-    rwa [smul_smul] at q2
+    simpa only [smul_smul] using
+      GlobalTheory.real_smul_le_real_smul_of_le (l2.trans q1) Real.pi_pos.le
   have ha : 0 < Real.pi * (D⁻¹ * δ) := by positivity
   have hb : 0 < Real.pi * (c⁻¹ * K) := by positivity
   have pa : ((Real.pi * (D⁻¹ * δ)) • (1 : Matrix (Fin m) (Fin m) ℂ)).PosDef :=
@@ -397,8 +386,7 @@ theorem logBound_subframe : ∀ (n a g m : ℕ) (Λ : Type) [AddCommGroup Λ] (L
       subst hZ
       refine ⟨d1, ?_, d3.trans ?_⟩
       · have := InvEntryBound.proof g Y c hc hlow l j
-        rw [hY] at this
-        exact this
+        rwa [hY] at this
       · rw [← hr]
         exact mul_le_mul_of_nonneg_right (le_abs_self _) (Real.exp_pos _).le
     have hFf : ∀ j l, DifferentiableAt ℝ (fun y => F y j l) z ∧ ‖F z j l‖ ≤ bF ∧
@@ -486,8 +474,7 @@ theorem norm_fderiv_comp_uncentre {n : ℕ} {E : Type*} [NormedAddCommGroup E] [
         fun_prop
       have h' : DifferentiableAt ℝ (fun t' => G (uncentre t₀ ρ π t'))
           (recentre t₀ ρ π (uncentre t₀ ρ π t)) := by
-        rw [recentre_uncentre t₀ hρ π t]
-        exact h
+        rwa [recentre_uncentre t₀ hρ π t]
       have h2 := h'.comp (uncentre t₀ ρ π t) (hdr _)
       have he : ((fun t' => G (uncentre t₀ ρ π t')) ∘ recentre t₀ ρ π) = G := by
         funext u

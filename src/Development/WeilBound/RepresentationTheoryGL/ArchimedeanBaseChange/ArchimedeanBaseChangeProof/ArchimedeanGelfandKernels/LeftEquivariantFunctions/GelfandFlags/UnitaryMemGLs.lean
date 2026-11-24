@@ -60,9 +60,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
-theorem mem_GLs (y : G n) : y.val ∈ GLs n := by
-  show y.val.det ≠ 0
-  exact ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
+theorem mem_GLs (y : G n) : y.val ∈ GLs n := ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
 
 theorem unitary_mem_GLs (k : Matrix.unitaryGroup (Fin n) ℂ) : k.1 ∈ GLs n := by
   show k.1.det ≠ 0
@@ -125,8 +123,7 @@ theorem vcKer_of (hKC : KerComm) (hKN : KerNId) (hNA : NAvg) (hTZ : TrZero) (hLg
       ext y
       simp only [Set.mem_preimage, Set.mem_image]
       constructor
-      · intro hy
-        exact ⟨y * d, hy, by rw [mul_assoc, mul_inv_cancel, mul_one]⟩
+      · exact fun hy => ⟨y * d, hy, by rw [mul_assoc, mul_inv_cancel, mul_one]⟩
       · rintro ⟨z, hz, rfl⟩
         rwa [Set.mem_ofPred_eq, mul_assoc, inv_mul_cancel, mul_one]
     rw [this]
@@ -139,8 +136,7 @@ theorem vcKer_of (hKC : KerComm) (hKN : KerNId) (hNA : NAvg) (hTZ : TrZero) (hLg
   have hint : Integrable (fun u : N => k ((u : G n).val * d.val)) ν := hcont.integrable_of_hasCompactSupport hcpt
   have hphi : (fun u : N => phiOf E T k (u * d)) = fun u : N => trT T (k ((u : G n).val * d.val)) := rfl
   refine ⟨by rw [hphi]; exact (trT T).integrable_comp hint, ?_⟩
-  rw [hphi, (trT T).integral_comp_comm hint]
-  exact htr
+  rwa [hphi, (trT T).integral_comp_comm hint]
 
 theorem vcOf_of (hIS : IntSmooth) (hVK : VCKer) : VCOf := by
   intro hWE hWS _ hGC hGF hFF hNU hKZ n lam E Fr ε ι S Γ T h _ _ μ _ k val τ hk d W₁ W₂ hW hW1 hd1 hd2 N hN ν _

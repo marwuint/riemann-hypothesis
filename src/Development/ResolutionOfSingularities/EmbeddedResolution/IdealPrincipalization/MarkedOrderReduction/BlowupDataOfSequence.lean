@@ -80,13 +80,11 @@ private theorem ofSequenceOfBlowups_toSequenceOfBlowups_schemeAt {X : Scheme.{u}
 
 private theorem le_length_of_le_ofSequenceOfBlowups_length {X : Scheme.{u}} (s : SequenceOfBlowups X) {j : ℕ}
     (hj : j ≤ (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.length) : j ≤ s.length := by
-  rw [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length] at hj
-  exact hj
+  rwa [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length] at hj
 
 private theorem le_ofSequenceOfBlowups_length_of_le_length {X : Scheme.{u}} (s : SequenceOfBlowups X) {j : ℕ}
     (hj : j ≤ s.length) : j ≤ (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.length := by
-  rw [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]
-  exact hj
+  rwa [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]
 
 theorem BlowupSequenceData.projectionToBase_toSequenceOfBlowups_ofSequenceOfBlowups {X : Scheme.{u}} (t : SequenceOfBlowups X) (j : ℕ) :
     (BlowupSequenceData.ofSequenceOfBlowups t).toSequenceOfBlowups.projectionToBase j = t.projectionToBase j :=
@@ -192,8 +190,7 @@ theorem ofSequenceOfBlowups_blowupMorphism_comp_map (c : SequenceOfBlowupsPullba
   intro j hj
   have hlt : j < s'.length := by
     have h := hj
-    rw [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length] at h
-    exact h
+    rwa [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length] at h
   rw [ofSequenceOfBlowups_map_eq c j (le_of_lt hj), ofSequenceOfBlowups_map_eq c (j + 1) hj,
     ofSequenceOfBlowups_toSequenceOfBlowups_blowupMorphism, ofSequenceOfBlowups_toSequenceOfBlowups_transitionMap]
   exact c.step j hlt
@@ -229,16 +226,13 @@ theorem ofSequenceOfBlowups_ne_of_mem_unmatched_center (c : SequenceOfBlowupsPul
         ∀ x' : ↥X', φ.base x' ≠ ((BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.projectionToBase i).base z := by
   intro i hi hmiss z hz x'
   have hi' : i < s.length := by
-    rw [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length] at hi
-    exact hi
+    rwa [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length] at hi
   have hmiss' : ∀ j : ℕ, j < s'.length → c.idx j ≠ i := by
     intro j hj
     refine hmiss j ?_
-    rw [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]
-    exact hj
+    rwa [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]
   have h := c.omitted i hi' hmiss' z hz x'
-  rw [BlowupSequenceData.projectionToBase_toSequenceOfBlowups_ofSequenceOfBlowups s i]
-  exact h
+  rwa [BlowupSequenceData.projectionToBase_toSequenceOfBlowups_ofSequenceOfBlowups s i]
 
 def toBlowupDataOfSeq (c : SequenceOfBlowupsPullback φ s' s) :
     SequenceOfBlowupsPullback φ (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups where
@@ -272,19 +266,16 @@ theorem ofSequenceOfBlowups_index_lt_length
     ∀ j : ℕ, j < s'.length → c.idx j < s.length := by
   intro j hj
   have hj' : j < (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length := by
-    rw [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]
-    exact hj
+    rwa [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]
   have h := c.idx_lt j hj'
-  rw [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length] at h
-  exact h
+  rwa [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length] at h
 
 theorem index_lt_index_succ_of_lt_length
     (c : SequenceOfBlowupsPullback φ (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups) :
     ∀ j : ℕ, j < s'.length → c.idx j < c.idx (j + 1) := by
   intro j hj
   refine c.idx_strictMono j ?_
-  rw [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]
-  exact hj
+  rwa [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]
 
 private theorem transportedMap_eq_map
     (c : SequenceOfBlowupsPullback φ (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups)
@@ -309,12 +300,10 @@ theorem blowupMorphism_comp_map_of_ofSequenceOfBlowups
         transportedMap c (j + 1) hj ≫ s.transitionMap (le_of_lt (index_lt_index_succ_of_lt_length c j hj)) := by
   intro j hj
   have hj' : j < (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length := by
-    rw [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]
-    exact hj
+    rwa [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]
   have key := c.step j hj'
   rw [ofSequenceOfBlowups_toSequenceOfBlowups_blowupMorphism, ofSequenceOfBlowups_toSequenceOfBlowups_transitionMap] at key
-  rw [transportedMap_eq_map c j (le_of_lt hj), transportedMap_eq_map c (j + 1) hj]
-  exact key
+  rwa [transportedMap_eq_map c j (le_of_lt hj), transportedMap_eq_map c (j + 1) hj]
 
 theorem center_eq_comap_transportedMap
     (c : SequenceOfBlowupsPullback φ (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups) :
@@ -322,8 +311,7 @@ theorem center_eq_comap_transportedMap
       s'.center j = (s.center (c.idx j)).comap (transportedMap c j (le_of_lt hj)) := by
   intro j hj
   have hj' : j < (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length := by
-    rw [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]
-    exact hj
+    rwa [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]
   have hmap : transportedMap c j (le_of_lt hj) = c.map j (le_of_lt hj') :=
     eqToHom_refl_comp_comp_eqToHom_refl (ofSequenceOfBlowups_toSequenceOfBlowups_schemeAt s' j).symm (ofSequenceOfBlowups_toSequenceOfBlowups_schemeAt s (c.idx j))
       (c.map j (le_ofSequenceOfBlowups_length_of_le_length s' (le_of_lt hj)))
@@ -335,8 +323,7 @@ theorem center_ne_top_of_pullback_ofSequenceOfBlowups
     ∀ j : ℕ, j < s'.length → s'.center j ≠ ⊤ := by
   intro j hj
   have hj' : j < (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length := by
-    rw [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]
-    exact hj
+    rwa [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]
   exact c.center_ne_top j hj'
 
 theorem ofSequenceOfBlowups_projectionToBase_ne
@@ -346,16 +333,13 @@ theorem ofSequenceOfBlowups_projectionToBase_ne
         ∀ x' : ↥X', φ.base x' ≠ (s.projectionToBase i).base z := by
   intro i hi hmiss z hz x'
   have hi' : i < (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.length := by
-    rw [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]
-    exact hi
+    rwa [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]
   have hmiss' : ∀ j : ℕ, j < (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length → c.idx j ≠ i := by
     intro j hj
     refine hmiss j ?_
-    rw [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length] at hj
-    exact hj
+    rwa [BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length] at hj
   have h := c.omitted i hi' hmiss' z hz x'
-  rw [BlowupSequenceData.projectionToBase_toSequenceOfBlowups_ofSequenceOfBlowups s i] at h
-  exact h
+  rwa [BlowupSequenceData.projectionToBase_toSequenceOfBlowups_ofSequenceOfBlowups s i] at h
 
 def ofBlowupDataOfSeq (c : SequenceOfBlowupsPullback φ (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups) :
     SequenceOfBlowupsPullback φ s' s where

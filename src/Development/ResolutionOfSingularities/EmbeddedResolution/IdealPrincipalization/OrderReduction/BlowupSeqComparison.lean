@@ -77,8 +77,7 @@ private theorem mem_support_of_le {X : Scheme.{u}} {I J : X.IdealSheafData} (h :
 private theorem exists_subschemeι_base_eq {X : Scheme.{u}} (I : X.IdealSheafData) (x : ↥X)
     (hx : x ∈ I.support) : ∃ z, I.subschemeι.base z = x := by
   have hmem : x ∈ Set.range ⇑I.subschemeι := by
-    rw [Scheme.IdealSheafData.range_subschemeι I]
-    exact hx
+    rwa [Scheme.IdealSheafData.range_subschemeι I]
   obtain ⟨z, hz⟩ := hmem
   exact ⟨z, hz⟩
 
@@ -204,36 +203,29 @@ theorem BlowupSeqLevelIso.center_comap_iso_hom_eq (hd : BlowupSeqComparison f g 
       rw [st.compat hi.le]
     have e2 : (σ₁ i hi.le).base ((a i).subschemeι.base z)
         = st.iso.inv.base ((σ₂ i hi.le).base ((a i).subschemeι.base z)) := e1
-    rw [hz] at e2
-    exact e2
+    rwa [hz] at e2
   have h1 : (B₁.center i).support ≤ ((B₂.center i).comap st.iso.hom).support := by
     intro x hx
     obtain ⟨y, hy⟩ := hd.exists_preimage_of_mem_center_support_left i hi x hx
     have hyc : y ∈ (C.center i).support := by
-      rw [hd.center_C₁ i hi, Scheme.IdealSheafData.mem_support_comap, hy]
-      exact hx
+      rwa [hd.center_C₁ i hi, Scheme.IdealSheafData.mem_support_comap, hy]
     have hy2 : (σ₂ i hi.le).base y ∈ (B₂.center i).support := by
       have := hyc
-      rw [hd.center_C₂ i hi, Scheme.IdealSheafData.mem_support_comap] at this
-      exact this
+      rwa [hd.center_C₂ i hi, Scheme.IdealSheafData.mem_support_comap] at this
     rw [Scheme.IdealSheafData.mem_support_comap]
     have hx' : x = st.iso.inv.base ((σ₂ i hi.le).base y) := by
       rw [← hy]
       exact hkey y hyc
-    rw [hx', Scheme.inv_hom_apply]
-    exact hy2
+    rwa [hx', Scheme.inv_hom_apply]
   have h2 : (B₂.center i).support ≤ ((B₁.center i).comap st.iso.inv).support := by
     intro x hx
     obtain ⟨y, hy⟩ := hd.exists_preimage_of_mem_center_support_right i hi x hx
     have hyc : y ∈ (C.center i).support := by
-      rw [hd.center_C₂ i hi, Scheme.IdealSheafData.mem_support_comap, hy]
-      exact hx
+      rwa [hd.center_C₂ i hi, Scheme.IdealSheafData.mem_support_comap, hy]
     have hy1 : (σ₁ i hi.le).base y ∈ (B₁.center i).support := by
       have := hyc
-      rw [hd.center_C₁ i hi, Scheme.IdealSheafData.mem_support_comap] at this
-      exact this
-    rw [Scheme.IdealSheafData.mem_support_comap, ← hy, ← hkey y hyc]
-    exact hy1
+      rwa [hd.center_C₁ i hi, Scheme.IdealSheafData.mem_support_comap] at this
+    rwa [Scheme.IdealSheafData.mem_support_comap, ← hy, ← hkey y hyc]
   have hle1 : (B₂.center i).comap st.iso.hom ≤ B₁.center i :=
     hd.determined₁ i hi _ h1
   have hle2 : (B₁.center i).comap st.iso.inv ≤ B₂.center i :=

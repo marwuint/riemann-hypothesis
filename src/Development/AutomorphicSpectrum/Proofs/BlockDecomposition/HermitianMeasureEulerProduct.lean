@@ -326,8 +326,7 @@ theorem GlobalTheory.CompanionTheory.SiegelND.piCovol_map_matrix : ∀ (F : Type
     rw [hinv, hrat]
   · intro v hv
     obtain ⟨ξ, rfl⟩ := (hmemG v).1 hv
-    refine (hmemG _).2 ⟨A.mulVec ξ, ?_⟩
-    exact hrat A ξ
+    exact (hmemG _).2 ⟨A.mulVec ξ, hrat A ξ⟩
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CovolumeOneInvariantUnderMatrix =====
@@ -465,8 +464,7 @@ theorem coordHerm_map_hCo : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
   have hr : Measurable r := Tr.toMeasurableEquiv.measurable
   have hκ : (GlobalTheory.CompanionTheory.SW.coordK R b lam).map r = Measure.pi fun _ => lam := by
     have := map_comp_comap Tr.toMeasurableEquiv (Measure.pi fun _ => lam) (c := id) measurable_id
-    rw [Measure.map_id] at this
-    exact this
+    rwa [Measure.map_id] at this
 
   let T := (GlobalTheory.CompanionTheory.SW.HaarCoord.hermCoord_isHomeomorph R hinv h2 hδ hσδ n t5 t6).homeomorph
     (GlobalTheory.CompanionTheory.SW.HaarCoord.hermCoord R σ n)
@@ -488,8 +486,7 @@ theorem coordHerm_map_hCo : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
       T.toMeasurableEquiv := by
     funext S i
     rcases i with i | q <;> rfl
-  rw [hfun]
-  exact hm
+  rwa [hfun]
 
 end GlobalTheory.CompanionTheory.SiegelND.Coef.TestN
 end -- clump:auto
@@ -560,8 +557,7 @@ theorem mulVec_mem_integers (F : Type) [Field F] [NumberField F] (ι : Type) [Fi
     (hB : ∀ i j, B i j ∈ v.adicCompletionIntegers F)
     (hy : ∀ i, y i ∈ v.adicCompletionIntegers F) (i : ι) :
     B.mulVec y i ∈ v.adicCompletionIntegers F := by
-  simp only [Matrix.mulVec, dotProduct]
-  exact sum_mem fun j _ => mul_mem (hB i j) (hy j)
+  simpa only [Matrix.mulVec, dotProduct] using sum_mem fun j _ => mul_mem (hB i j) (hy j)
 
 theorem exists_finset_mulVec_integral_iff : ∀ (F : Type) [Field F] [NumberField F] (ι : Type)
     [Fintype ι] [DecidableEq ι] (A : Matrix ι ι F), A.det ≠ 0 →
@@ -627,8 +623,7 @@ theorem preimage_box_shrinking : ∀ (G A ι : Type) [AddCommGroup G] [Topologic
     intro t ht
     have hc : Filter.Tendsto e.symm (nhds 0) (nhds 0) := by
       have h0 : Filter.Tendsto e.symm (nhds 0) (nhds (e.symm 0)) := e.symm.continuous.tendsto 0
-      rw [map_zero] at h0
-      exact h0
+      rwa [map_zero] at h0
     have h1 : e.symm ⁻¹' t ∈ nhds (0 : ι → A) := hc ht
     rw [nhds_pi, Filter.mem_pi'] at h1
     obtain ⟨I, s, hs, hsub⟩ := h1
@@ -896,13 +891,10 @@ theorem core (F : Type) [Field F] [NumberField F] (hF : IsTotallyReal F) (ψ : A
     have hiff : (∀ i, sndA F (Bm.mulVec y i) ∈ intF S) ↔ ∀ i, sndA F (y i) ∈ intF S := by
       have hv : ∀ v, v ∉ S → ((∀ i, (sndA F (Bm.mulVec y i)) v ∈ v.adicCompletionIntegers F) ↔
           ∀ i, (sndA F (y i)) v ∈ v.adicCompletionIntegers F) := fun v hvS => by
-        simp only [hBm, eval_mulVec]
-        exact h₂ v (fun h => hvS (hS (Finset.mem_union_right _ h))) _
+        simpa only [hBm, eval_mulVec] using h₂ v (fun h => hvS (hS (Finset.mem_union_right _ h))) _
       constructor
-      · intro h i v hvS
-        exact (hv v hvS).1 (fun j => h j v hvS) i
-      · intro h i v hvS
-        exact (hv v hvS).2 (fun j => h j v hvS) i
+      · exact fun h i v hvS => (hv v hvS).1 (fun j => h j v hvS) i
+      · exact fun h i v hvS => (hv v hvS).2 (fun j => h j v hvS) i
     by_cases hy : ∀ i, sndA F (y i) ∈ intF S
     · rw [Set.indicator_of_mem (by exact hy)]
       exact (Finset.prod_eq_one fun i _ => Set.indicator_of_mem (hiff.2 hy i) _).symm
@@ -926,8 +918,7 @@ theorem mem_latH_iff {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F
   · rintro ⟨h1, h2⟩ (i | ⟨k, p⟩)
     · exact h1 i
     · exact h2 _ _ p.2 k
-  · intro h
-    exact ⟨fun i => h (Sum.inl i), fun i j hij k => h (Sum.inr (k, ⟨(i, j), hij⟩))⟩
+  · exact fun h => ⟨fun i => h (Sum.inl i), fun i j hij k => h (Sum.inr (k, ⟨(i, j), hij⟩))⟩
 
 theorem hCo_fin {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {d : ℕ}
     (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) {n : ℕ} (y : HermR (AF F) σ n) (i : Idx n d) :
@@ -1114,27 +1105,22 @@ theorem exists_testH_approx : ∀ (F E : Type) [Field F] [NumberField F] [Field 
     · change HasCompactSupport (fun T => ∏ i, ρ k (hCo (Ainf F) σ b T i))
       rw [e]
       exact (g1 k).2.1
-    · intro T
-      exact Finset.prod_nonneg fun i _ => (h1 k).2.2.1 _
+    · exact fun T => Finset.prod_nonneg fun i _ => (h1 k).2.2.1 _
     · rw [hρI]
       exact pow_pos (h1 k).2.2.2 _
   · have e : (fun k => tsupport (ρh k)) = fun k => tsupport (fun T => ∏ i, ρ k (eI T i)) := by
       funext k
       exact congrArg tsupport (hρe k)
-    rw [e]
-    exact g2
+    rwa [e]
   · have e := hUe k v
     obtain ⟨c1, c2, c3⟩ := (g3 v).1 k
     refine ⟨?_, ?_, ?_, ?_⟩
     · change IsCompact (hCo (Fv F v) σ b ⁻¹' Set.pi Set.univ (fun _ => U k v))
-      rw [e]
-      exact c1
+      rwa [e]
     · change IsOpen (hCo (Fv F v) σ b ⁻¹' Set.pi Set.univ (fun _ => U k v))
-      rw [e]
-      exact c2
+      rwa [e]
     · change (0 : HermR (Fv F v) σ n) ∈ hCo (Fv F v) σ b ⁻¹' Set.pi Set.univ (fun _ => U k v)
-      rw [e]
-      exact c3
+      rwa [e]
     · rw [hUr]
       exact pow_pos (ENNReal.toReal_pos (hUpos k v).ne' (hUfin k v)) _
   · have e : (fun k => Uh k v) = fun k => eV v ⁻¹' Set.pi Set.univ (fun _ => U k v) := funext fun k => hUe k v
@@ -1165,8 +1151,7 @@ theorem exists_testH_approx : ∀ (F E : Type) [Field F] [NumberField F] [Field 
           refine (mem_intH_iff σ b S y).2 ?_
           rwa [← heA]
         rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem h']
-    rw [e]
-    exact hlim
+    rwa [e]
 
 end GlobalTheory.CompanionTheory.SiegelND.Coef.TestN
 end -- clump:auto

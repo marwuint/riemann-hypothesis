@@ -200,8 +200,7 @@ theorem exists_test_vectors_at_place (b : Br B M om M₁ om₁ H' χ r S S₁ Ev
   · subst e; rwa [Function.update_self]
   · rw [Function.update_of_ne e]
     obtain ⟨a, ha⟩ := h3 u
-    intro z
-    exact h2 u (by rw [ha, map_smul, z, smul_zero])
+    exact fun z => h2 u (by rw [ha, map_smul, z, smul_zero])
 
 theorem exists_test_vectors (b : Br B M om M₁ om₁ H' χ r S S₁ Ev L Λ) (j : Inj B M₁ om₁ pi₁ p₁ S₁) (pt : Pt B M S pi₁ p₁ L Λ) :
     ∃ φ ψ, ∃ c : ℂ, c ≠ 0 ∧ admitted M S φ ∧ admitted M₁ S₁ ψ ∧ (∀ f : SInf F _, Ev (pure f φ) = c • pure (L f) ψ) ∧
@@ -216,8 +215,7 @@ theorem exists_test_vectors (b : Br B M om M₁ om₁ H' χ r S S₁ Ev L Λ) (j
   · subst e; rw [Function.update_self]; exact h2 _
   · rw [Function.update_of_ne e]
     obtain ⟨a, ha⟩ := h3 u
-    intro z
-    exact h2 u (by rw [ha, map_smul, z, smul_zero])
+    exact fun z => h2 u (by rw [ha, map_smul, z, smul_zero])
 
 theorem I_smul_eq_zero {c : ℂ} (hc : c ≠ 0) {Ψ} (h : M₁.I om₁ (c • Ψ) = 0) : M₁.I om₁ Ψ = 0 := by
   funext g
@@ -316,8 +314,7 @@ theorem eqL (s : Side B M om pi p S) (s₁ : Side B M₁ om₁ pi₁ p₁ S₁) 
     have k : (fun t => (l.comp L) (T t f)) = fun t => sc χ r (τ t) * l (T₁ t (L f)) := funext fun t => by
       have k := b.rule f hf _ hφ _ _ _ (hl t) 1 (one_mem _) h
       rw [one_mul, s.arch hφ (hT t), h1, h1, I_smul, I_smul, ← I_right', s₁.arch hψ (hT₁ t), ← hl', ← hl'] at k
-      apply mul_left_cancel₀ hc
-      exact k.trans (by ring)
+      exact mul_left_cancel₀ hc (k.trans (by ring))
     have d := dg (l.comp L)
     rw [k] at d
     have z : l (T₁ 0 (L f)) = l (L f) := by
@@ -583,8 +580,7 @@ theorem I_add₂ {o : Rep σ Y W} {χ χ' : Chr F E} (hw : M.IsWeil B.ψ χ χ' 
   have e : ∀ g, theta o (Φ + Ψ) g h = theta o Φ g h + theta o Ψ g h := fun g => by
     simp only [theta, map_add (f := _)]
     exact thetaSum_add F (hw.isUSplitting.pres _ _ hΦ) (hw.isUSplitting.pres _ _ hΨ)
-  simp only [Model.I, e]
-  exact integral_add (c h) (c' h)
+  simpa only [Model.I, e] using integral_add (c h) (c' h)
 
 structure Hyp : Prop where
   acts : ActsEx
@@ -658,8 +654,7 @@ theorem side_of (H : Hyp) (hp : IsPair B M χX χW om r s r' s') (hp₂ : IsPair
 theorem cont_weil (H : Hyp) (hp : IsPair B M χX χW om r s r' s') (hw : d + 2 * min r s < 2 * n ∨ min r s = 0) {φ}
     (a : admitted M (fun _ => SB _) φ) (h) : Continuous fun f : SInf F (Fin n × Fin d) => M.I om (pure f φ) h := by
   obtain ⟨g, hg, e⟩ := pure_eq_pureA hp.good φ a.1 a.2
-  simp only [e]
-  exact (H.weil F E σ B _ _ _ _ M _ _ om _ _ _ _ hp hw).2 g hg h
+  simpa only [e] using (H.weil F E σ B _ _ _ _ M _ _ om _ _ _ _ hp hw).2 g hg h
 
 end Mk
 

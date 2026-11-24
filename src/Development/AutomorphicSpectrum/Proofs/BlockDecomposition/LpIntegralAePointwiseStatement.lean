@@ -130,9 +130,7 @@ theorem bochner_Lp_ae (A : Type) [MeasurableSpace A] (α : Measure A) [SFinite �
     (hcF : ∀ᵐ a ∂α, c a =ᵐ[ν] F a) :
     (⇑(∫ a, c a ∂α) : Y → V) =ᵐ[ν] fun y => ∫ a, F a y ∂α := by
   have hFs : ∀ s : Set Y, AEStronglyMeasurable (Function.uncurry F) (α.prod (ν.restrict s)) := by
-    intro s
-    refine hF.mono_measure ?_
-    exact Measure.prod_mono le_rfl Measure.restrict_le_self
+    exact fun s => hF.mono_measure (Measure.prod_mono le_rfl Measure.restrict_le_self)
   have hint : ∀ s : Set Y, ν s ≠ ⊤ → Integrable (Function.uncurry F) (α.prod (ν.restrict s)) := by
     intro s hs
     rw [integrable_prod_iff (hFs s)]
@@ -150,10 +148,8 @@ theorem bochner_Lp_ae (A : Type) [MeasurableSpace A] (α : Measure A) [SFinite �
       rw [this]
       exact integral_norm_restrict_le (Lp.memLp (c a)) hs
   refine ae_eq_of_forall_setIntegral_eq_of_sigmaFinite ?_ ?_ ?_
-  · intro s _ hs
-    exact integrableOn_of_memLp_two (Lp.memLp _) hs.ne
-  · intro s _ hs
-    exact (hint s hs.ne).integral_prod_right
+  · exact fun s _ hs => integrableOn_of_memLp_two (Lp.memLp _) hs.ne
+  · exact fun s _ hs => (hint s hs.ne).integral_prod_right
   · intro s hsm hs
     have h1 : ∫ y in s, (∫ a, c a ∂α) y ∂ν = ∫ a, ∫ y in s, c a y ∂ν ∂α := by
       rw [← setIntegralCLM_apply s hs.ne, ← ContinuousLinearMap.integral_comp_comm _ hc]

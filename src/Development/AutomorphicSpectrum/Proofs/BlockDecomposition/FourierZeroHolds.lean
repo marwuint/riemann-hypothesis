@@ -226,8 +226,7 @@ theorem sym_rat (η : Matrix (Fin n) (Fin n) D.host.E) : sym (rat η) ∈ ratMx 
   show rat ((2⁻¹ : D.host.E) • (η + ηᴴ)) = sym (rat η)
   rw [sym, ← rat_conjTranspose]
   ext i j
-  simp [rat, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]
-  exact (mul_add _ _ _).symm
+  simpa [rat, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul] using (mul_add _ _ _).symm
 
 theorem continuous_sym : Continuous (sym : Mx D n n → Mx D n n) := by
   show Continuous fun y : Mx D n n => (incA D 2⁻¹ : AE D) • (y + adj y)
@@ -311,8 +310,7 @@ theorem nb_rat {nb : hermA D n → G D n} (h : IsNMap nb) (γ : hermA D n) (hγ 
   have h2 : adj (mat (nb γ)) * JR (AF D.host.F) (Jst D n) * mat (nb γ) = JR (AF D.host.F) (Jst D n) := (nb γ).2
   rw [h γ, ← hm] at h2
   change ((Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) x.1 * Jst D n * x.1).map (incA D)) = _
-  rw [Matrix.map_mul, Matrix.map_mul]
-  exact h2
+  rwa [Matrix.map_mul, Matrix.map_mul]
 
 
 
@@ -348,7 +346,6 @@ theorem fourierZero : PositivityTheory.PfSWUS.FourierZero := by
       rw [nb_add hnb, mul_assoc]
       exact hinv _ (nb_rat hnb γ hγ) _)
     (fun a => (integral_congr_ae (.of_forall fun x => mul_comm _ _)).trans (hco ⟨a.1, a.2⟩ g))
-  have h0 := congrFun key 0
-  simpa [nb_zero hnb] using h0
+  simpa [nb_zero hnb] using congrFun key 0
 
 end GlobalTheory.CompanionTheory.FourierN

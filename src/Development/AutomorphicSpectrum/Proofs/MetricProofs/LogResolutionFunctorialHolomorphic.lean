@@ -108,8 +108,7 @@ theorem affCoord_eq {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') (p : (k :
     affCoord p z = affCoord p z' := by
   obtain ⟨c, hc, rfl⟩ := h
   funext q
-  simp only [affCoord]
-  exact mul_div_mul_left _ _ (hc q.1)
+  simpa only [affCoord] using mul_div_mul_left _ _ (hc q.1)
 
 theorem not_mem_mcPts_top (z : (Σ k, ι k) → ℂ) : z ∉ mcPts (⊤ : Ideal (MRing ι)) := by
   intro h
@@ -211,8 +210,7 @@ theorem continuous_of_orbit (hVo : ∀ y, IsOpen (V y)) (hVm : ∀ y, y ∈ V y)
   have hxy : SameOrbit (R.lift x x) (μ y y) :=
     orbit_of_cross (R.mem x x (R.mem_U x)).1 (hmem y y (hVm y)).1 hcr
   have hxe : x = h y := R.inj x (h y) (not_mem_mcPts_top _) (orbit_trans hxy (orbit_symm (hh y)))
-  rw [← hxe]
-  exact hx
+  rwa [← hxe]
 
 theorem analytic_of_orbit (hVo : ∀ y, IsOpen (V y)) (hVm : ∀ y, y ∈ V y)
     (hμ : ∀ y q, B.HoloOn (V y) fun u => μ y u q)
@@ -245,8 +243,7 @@ theorem analytic_of_orbit (hVo : ∀ y, IsOpen (V y)) (hVm : ∀ y, y ∈ V y)
     exact (affCoord_eq horb p).symm
   have hGb : AnalyticAt ℂ (G ∘ fun u' => affCoord p (μ y₀ ((B.chart j).symm u'))) u := by
     refine AnalyticAt.comp ?_ hB
-    simp only [hbu]
-    exact hG
+    simpa only [hbu] using hG
   refine hGb.congr ?_
   have c1 : ContinuousAt (B.chart j).symm u := (B.chart j).continuousAt_symm hu
   have e1 : ∀ᶠ u' in 𝓝 u, (B.chart j).symm u' ∈ V y₀ :=
@@ -295,8 +292,7 @@ theorem comp_mem_mcPts {κ : K → K'} {v : (Σ k, ι k) → (Σ k, ι' k)} {P :
     subst hk
     refine ⟨q.2, ?_⟩
     change z (v q) ≠ 0
-    rw [hq]
-    exact hi'
+    rwa [hq]
   · have h1 : rename v f ∈ P' := hP hf
     have h2 := hz.2 _ h1
     rwa [map_rename, eval_rename] at h2

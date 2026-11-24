@@ -258,16 +258,14 @@ theorem isCompact_overSet (y : (Σ k, ι k) → Ω) (φ : F →+* Ω) (σ : F �
   · have hs : {z : (Σ k, ι k) → ℂ | IsMultiHomog g d → IsMultiHomog h d →
         aeval y g = φ a * aeval y h → evC z g = σ a * evC z h} = {z | evC z g = σ a * evC z h} := by
       ext z
-      simp only [Set.mem_setOf_eq]
-      exact ⟨fun H => H hp.1 hp.2.1 hp.2.2, fun H _ _ _ => H⟩
+      simpa only [Set.mem_setOf_eq] using ⟨fun H => H hp.1 hp.2.1 hp.2.2, fun H _ _ _ => H⟩
     rw [hs]
     exact isClosed_eq (evC_continuous g) (continuous_const.mul (evC_continuous h))
   · have hs : {z : (Σ k, ι k) → ℂ | IsMultiHomog g d → IsMultiHomog h d →
         aeval y g = φ a * aeval y h → evC z g = σ a * evC z h} = Set.univ := by
       ext z
       simp only [Set.mem_setOf_eq, Set.mem_univ, iff_true]
-      intro h1 h2 h3
-      exact absurd ⟨h1, h2, h3⟩ hp
+      exact fun h1 h2 h3 => absurd ⟨h1, h2, h3⟩ hp
     rw [hs]
     exact isClosed_univ
 
@@ -302,8 +300,7 @@ private theorem exists_smooth_sep_lemma {E : Type} [NormedAddCommGroup E] [Norme
         exact fun hxW => hWU hxW hx
       exact (add_pos_of_pos_of_nonneg (lt_of_le_of_ne (hnn1 x) (Ne.symm h1)) (hnn2 x)).ne'
     · have h2 : x ∈ Function.support g2 := by
-        rw [hg2s]
-        exact hx
+        rwa [hg2s]
       exact (add_pos_of_nonneg_of_pos (hnn1 x) (lt_of_le_of_ne (hnn2 x) (Ne.symm h2))).ne'
   refine ⟨fun x => g1 x / (g1 x + g2 x), hg1.div (hg1.add hg2) hpos, ?_, ?_⟩
   · filter_upwards [hU.mem_nhdsSet.mpr hsU] with x hx

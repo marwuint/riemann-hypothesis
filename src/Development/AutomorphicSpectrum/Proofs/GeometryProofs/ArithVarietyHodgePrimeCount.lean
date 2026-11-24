@@ -744,8 +744,7 @@ theorem ext_of_affine {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {S T 
   have e2 : a ≫ i = b ≫ i := Spec.map_injective e
   have e3 : a = b := by
     ext s
-    apply hi
-    exact ConcreteCategory.congr_hom e2 s
+    exact hi (ConcreteCategory.congr_hom e2 s)
   rw [← ea, ← eb, e3]
 
 theorem fromSpecStalk_mem {X : Scheme.{0}} {U : X.Opens} {y : X} (hy : y ∈ U) (z : Spec (X.presheaf.stalk y)) :
@@ -844,8 +843,7 @@ theorem spec_field_ext {K K' : Type} [Field K] [Field K'] (φ : K →+* K') {Y :
   let z : Spec (CommRingCat.of K') := IsLocalRing.closedPoint K'
   have e : (spMap φ) z = IsLocalRing.closedPoint K := Subsingleton.elim (α := PrimeSpectrum K) _ _
   have h1 : (spMap φ ≫ v) z = (spMap φ ≫ v') z := by rw [h]
-  rw [Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, e] at h1
-  exact h1
+  rwa [Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, e] at h1
 
 section Tors
 
@@ -992,8 +990,7 @@ theorem mem_chart_of_forall (P : ChartPack G O c') (hpt : Dominated P) (a : Ω)
   let I : Ideal (CR O y c') :=
     { carrier := {r | (r : Ω) * a ∈ CR O y c'}
       add_mem' := fun {u v} hu hv => by
-        have h := (CR O y c').add_mem hu hv
-        simpa [add_mul] using h
+        simpa [add_mul] using (CR O y c').add_mem hu hv
       zero_mem' := by simp [(CR O y c').zero_mem]
       smul_mem' := fun s r hr => by
         have h := (CR O y c').mul_mem s.2 hr
@@ -1102,10 +1099,8 @@ theorem mem_coordLat_dR_iff (P : ChartPack G O c')
   rw [Fam.mem_coordLat_iff, hsec]
   have hV : ∑ k, a k • b k ∈ 𝔐.Vgen s := sum_mem fun k _ => Submodule.smul_mem _ _ (hb k)
   constructor
-  · intro h q hq
-    exact (Submodule.mem_inf.1 (h q hq.1 hq.2)).1
-  · intro h q h1 h2
-    exact Submodule.mem_inf.2 ⟨h q ⟨h1, h2⟩, hV⟩
+  · exact fun h q hq => (Submodule.mem_inf.1 (h q hq.1 hq.2)).1
+  · exact fun h q h1 h2 => Submodule.mem_inf.2 ⟨h q ⟨h1, h2⟩, hV⟩
 
 theorem ev_mem_dotDual (P : ChartPack G O c')
     (hsec : ∀ e, (∃ v, P.toLi v = e) ↔ ∀ q, OnChart 𝔐 O c' q → e ∈ 𝔐.M.lat q)
@@ -1180,8 +1175,7 @@ theorem exists_form [CharZero Ω] (P : ChartPack G O c')
 
       rw [← ha, map_sum]
       simp [dotProduct, hψb]
-    rw [h4]
-    exact h3
+    rwa [h4]
   let u : Module.Dual (CR O y c') P.L :=
     { toFun := fun x => ⟨_, hΨ x⟩
       map_add' := fun x x' => Subtype.ext (by simp)
@@ -1208,8 +1202,7 @@ theorem exists_form [CharZero Ω] (P : ChartPack G O c')
       LinearMap.congr_fun (s4 a) _
     have h2 : 𝔐.ρ a (HT.eigProj 𝔐.ρ τ (P.toLi v)) = 𝔐.emb s a • HT.eigProj 𝔐.ρ τ (P.toLi v) := by
       have h3 : HT.eigProj 𝔐.ρ τ (P.toLi v) ∈ 𝔐.Vgen s := heig ▸ s1 _
-      have h4 := (Submodule.mem_iInf _).1 h3 a
-      simpa [sub_eq_zero] using h4
+      simpa [sub_eq_zero] using (Submodule.mem_iInf _).1 h3 a
     rw [h1, h2, map_smul, smul_eq_mul]
     rfl
 
@@ -1308,12 +1301,10 @@ theorem chartD_fun_clauses : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
     exact Subalgebra.algebraMap_mem _ dv
   refine ⟨?_, l2, ⟨k, ?_⟩, l4, fun τ => ?_⟩
   · have hcard : Fintype.card (Fin (D.p + D.q) → F) = Fintype.card F ^ (D.p + D.q) := by simp
-    rw [← hcard]
-    exact l1
+    rwa [← hcard]
   · rintro _ ⟨h, hh, rfl⟩
     have := l3 h hh
-    rw [hck] at this
-    exact this
+    rwa [hck] at this
   · have hbτ : ∀ k, b (e τ) k ∈ 𝔐.Vgen (e τ) := fun k => (hb (e τ)).2 ▸ Submodule.subset_span ⟨k, rfl⟩
     have hemb : ∀ a, 𝔐.emb (e τ) a ∈ CR O y c' := fun a => by
       obtain ⟨o, ho, -⟩ := hres τ a

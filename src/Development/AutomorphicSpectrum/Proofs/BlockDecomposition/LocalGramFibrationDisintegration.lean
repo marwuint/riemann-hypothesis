@@ -78,8 +78,7 @@ theorem isFibreFamily_map_homeo {V X Y : Type} [TopologicalSpace V] [MeasurableS
   · intro φ hφ
     have hr : μ.restrict U = (μ.restrict U).map e := by
       have := hemb.restrict_map μ U
-      rw [hμ, hU] at this
-      exact this
+      rwa [hμ, hU] at this
     rw [hr, hemb.lintegral_map, h2 (fun v => φ (e v)) (hφ.comp e.measurable)]
     refine lintegral_congr fun b => ?_
     simp only [hemb.lintegral_map]
@@ -95,8 +94,7 @@ theorem isFibreFamily_map_homeo {V X Y : Type} [TopologicalSpace V] [MeasurableS
     · have : (fun b => ∫ v, φ v ∂((fib b).map e)) = fun b => ∫ v, (φ ∘ e) v ∂(fib b) := by
         funext b
         exact hemb.integral_map φ
-      rw [this]
-      exact hcont
+      rwa [this]
 
 theorem linearIndependent_mulVec {K : Type} [CommRing K] {M n : ℕ} (g : GL (Fin M) K) (X : Fin n → Fin M → K)
     (hX : LinearIndependent K X) :
@@ -136,18 +134,15 @@ theorem map_actW_fibre_free : ∀ (F E : Type) [Field F] [NumberField F] [Field 
     refine ⟨fun hX => ?_, hfree h X⟩
     have h2 : actW R σ J h⁻¹ (actW R σ J h X) ∈ W := hfree h⁻¹ _ hX
     have h3 : actW R σ J h⁻¹ (actW R σ J h X) = X := by rw [← hmul, inv_mul_cancel, hone]
-    rw [h3] at h2
-    exact h2
+    rwa [h3] at h2
   have hμm : μ.map e = μ := _root_.GlobalTheory.CompanionTheory.SW.HInv.map_actW_eq F E σ hσ M J hJ R hR n μ hμ h
   have ht := isFibreFamily_map_homeo μ ν (gramR R σ J) Subtype.val e (fun X => hgr h X) W hU hμm
     Set.univ m hm
   have hm0 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ (gramR R σ J) Subtype.val (g ⁻¹' Set.univ ∩ W) ν Set.univ m := by
-    rw [Set.preimage_univ, Set.univ_inter]
-    exact hm
+    rwa [Set.preimage_univ, Set.univ_inter]
   have ht0 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ (gramR R σ J) Subtype.val (g ⁻¹' Set.univ ∩ W) ν Set.univ
       (fun b => (m b).map e) := by
-    rw [Set.preimage_univ, Set.univ_inter]
-    exact ht
+    rwa [Set.preimage_univ, Set.univ_inter]
   exact _root_.GlobalTheory.CompanionTheory.SW.FibreUniq.fibreFamily_eq_inter _ _ _ μ ν (gramR R σ J) g Subtype.val Subtype.val_injective hgc hgf W hWo Set.univ Set.univ
     isOpen_univ isOpen_univ subset_rfl m (fun b => (m b).map e) hm0 ht0 S (Set.mem_univ S)
 

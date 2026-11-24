@@ -99,14 +99,12 @@ theorem exists_inv [CompactSpace Y] [T2Space X] (A : FinHolAtlas e X) (B : FinHo
     exact L.symm.injective
   refine ⟨⇑Φ.symm, fun x => Φ.apply_symm_apply x, fun y => Φ.symm_apply_apply y,
     ⟨Φ.symm.continuous, ?_⟩, ?_⟩
-  · intro i j z hz
-    exact (key i j z ⟨⟨hz.1, Set.mem_univ _⟩, hz.2⟩).1
+  · exact fun i j z hz => (key i j z ⟨⟨hz.1, Set.mem_univ _⟩, hz.2⟩).1
   · intro x k j hxk hxj
     have hz : A.chart k x ∈ (Ψ k j).target := by
       refine ⟨⟨(A.chart k).map_source hxk, Set.mem_univ _⟩, ?_⟩
       show Φ.symm ((A.chart k).symm (A.chart k x)) ∈ (B.chart j).source
-      rw [(A.chart k).left_inv hxk]
-      exact hxj
+      rwa [(A.chart k).left_inv hxk]
     exact (key k j _ hz).2
 
 theorem holoOn_comp {A : FinHolAtlas e X} {B : FinHolAtlas e' Y} {h : Y → X} (hh : HoloMap B A h) {W : Set X}
@@ -115,8 +113,7 @@ theorem holoOn_comp {A : FinHolAtlas e X} {B : FinHolAtlas e' Y} {h : Y → X} (
 
 theorem holoOn_mono {A : FinHolAtlas e X} {W W' : Set X} {f : X → ℂ} (h : A.HoloOn W f) (s : W' ⊆ W) :
     A.HoloOn W' f := by
-  intro j
-  exact (h j).mono (fun z hz => ⟨hz.1, s hz.2⟩)
+  exact fun j => (h j).mono (fun z hz => ⟨hz.1, s hz.2⟩)
 
 theorem holoOn_at {A : FinHolAtlas e X} {W : Set X} {f : X → ℂ} (h : A.HoloOn W f) {x : X} (hx : x ∈ W) {k : Fin A.n}
     (hk : x ∈ (A.chart k).source) : AnalyticAt ℂ (fun w => f ((A.chart k).symm w)) (A.chart k x) := by
@@ -163,8 +160,7 @@ theorem isOpen_ne {A : FinHolAtlas e X} {W : Set X} (hW : IsOpen W) {T : Type} [
     simp only [Function.comp_apply, (A.chart k).left_inv hz]
   have hev : ∀ᶠ z in 𝓝 y, ∀ t, f t z ≠ 0 := by
     rw [Filter.eventually_all]
-    intro t
-    exact (hcont t).eventually_ne (hy t)
+    exact fun t => (hcont t).eventually_ne (hy t)
   filter_upwards [hW.mem_nhds hyW, hev] with z hz1 hz2
   exact ⟨hz1, hz2⟩
 
@@ -207,8 +203,7 @@ theorem lower_left_zero {H X D : Matrix (Fin N) (Fin N) ℂ} (hH : IsBlockDiag j
       by_cases hm : (m : ℕ) < N - j
       · rw [hI c m (fun hiff => by have := hiff.mpr hm; omega), zero_mul]
       · rw [hD m d (fun hiff => hm (hiff.mpr hdd)), mul_zero]
-    rw [hHD, add_zero] at hT
-    exact hT
+    rwa [hHD, add_zero] at hT
   have hX : X = H * (H⁻¹ * X * H) * H⁻¹ := by
     simp only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hunit, Matrix.one_mul]
     rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hunit, Matrix.mul_one]
@@ -244,8 +239,7 @@ theorem eq_zero_of_lower {L D : Matrix (Fin N) (Fin N) ℂ} (hL : IsLowerUni L) 
       rcases lt_or_ge a c with hac | hca
       · rw [hlow' (OrderDual.toDual_lt_toDual.mpr hac), zero_mul]
       · rw [hD c b (hca.trans hab), mul_zero]
-  have h2 := congrArg (fun M => L * M) hM
-  simpa [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hunit] using h2
+  simpa [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hunit] using congrArg (fun M => L * M) hM
 
 theorem fderiv_mul_of {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {P Q : E → Matrix (Fin N) (Fin N) ℂ}
     {w : E} (hP : ∀ a b, DifferentiableAt ℂ (fun u => P u a b) w) (hQ : ∀ a b, DifferentiableAt ℂ (fun u => Q u a b) w)

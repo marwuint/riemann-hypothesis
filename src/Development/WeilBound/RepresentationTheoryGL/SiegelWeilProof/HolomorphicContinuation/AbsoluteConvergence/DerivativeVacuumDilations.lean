@@ -58,8 +58,7 @@ theorem cnt_add (ε : Fin m → Bool) : cnt ε true + cnt ε false = m := by
   simp only [Finset.card_univ, Fintype.card_fin] at h
   have h2 : (Finset.univ.filter fun a => ε a = false) = Finset.univ.filter fun a => ¬ ε a = true := by
     ext a; simp
-  rw [h2]
-  exact h
+  rwa [h2]
 
 theorem bS_herm (X : Fin n → ℝ) (h : ℝ) {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian) : (bS X h b).IsHermitian := by
   have hD : (diagonal (fun j => (Real.exp (-(h * X j)) : ℂ)))ᴴ = diagonal (fun j => (Real.exp (-(h * X j)) : ℂ)) := by
@@ -113,8 +112,7 @@ theorem derivative_vacuum_of_parts (hG : GaussPart) (hH : GroupPart) : Derivativ
     have hf : (fun x => sL Q (y * a x)) = fun x => sL Q (y * a s * a (x - s)) := by
       funext x
       rw [mul_assoc, ← hadd, add_sub_cancel]
-    rw [hf]
-    exact h1
+    rwa [hf]
   have hjc : ∀ (Q : PX m n), Continuous (fun z : GR n × ℝ => sL Q (z.1 * a z.2)) := fun Q =>
     (hL.cont Q).comp (continuous_fst.mul (hcont.comp continuous_snd))
 
@@ -143,8 +141,7 @@ theorem derivative_vacuum_of_parts (hG : GaussPart) (hH : GroupPart) : Derivativ
     have hf : (fun h => sL Q (y * a h)) = fun x => sL Q y + ∫ u in (0 : ℝ)..x, sL (dil c X Q) (y * a u) := by
       funext x
       rw [← L3 Q x y]; ring
-    rw [hf]
-    exact h2
+    rwa [hf]
   have L5 : ∀ k : ℕ, iteratedDeriv k (fun s => F0 p q e (y * a s)) = fun s => sL ((dil c X ^ k) 1) (y * a s) := by
     intro k
     induction k with
@@ -156,8 +153,7 @@ theorem derivative_vacuum_of_parts (hG : GaussPart) (hH : GroupPart) : Derivativ
   refine ⟨?_, ?_⟩
   · rw [L5 r]
     have := L4 ((dil c X ^ r) 1) y 0
-    rw [ha0, mul_one, ← Module.End.mul_apply, ← pow_succ'] at this
-    exact this
+    rwa [ha0, mul_one, ← Module.End.mul_apply, ← pow_succ'] at this
   · rw [L5 r]
     show sL ((dil c X ^ r) 1) (y * a 0) = _
     rw [ha0, mul_one]

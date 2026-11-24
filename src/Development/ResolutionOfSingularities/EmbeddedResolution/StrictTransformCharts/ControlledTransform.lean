@@ -118,16 +118,14 @@ private theorem ideal_le_ideal_of_mul_le_mul {Y : Scheme.{u}} {F J J' : Y.IdealS
   have h3 : (b - j) * t = 0 := by
     rw [sub_mul, mul_comm b t, mul_comm j t, hje, sub_self]
   have h4 : b = j := eq_of_sub_eq_zero ((mem_nonZeroDivisors_iff.mp ht).2 (b - j) h3)
-  rw [h4]
-  exact hj
+  rwa [h4]
 
 private theorem span_eq_top_of_forall_exists_mem_basicOpen {Y : Scheme.{u}} {U : Y.Opens}
     (hU : IsAffineOpen U) (s : Set Γ(Y, U))
     (h : ∀ x : Y, x ∈ U → ∃ f : s, x ∈ Y.basicOpen (f : Γ(Y, U))) :
     Ideal.span s = ⊤ := by
   rw [← IsAffineOpen.self_le_iSup_basicOpen_iff hU]
-  intro x hx
-  exact TopologicalSpace.Opens.mem_iSup.mpr (h x hx)
+  exact fun x hx => TopologicalSpace.Opens.mem_iSup.mpr (h x hx)
 
 theorem _root_.FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor.le_of_mul_le_mul {F J J' : Y.IdealSheafData}
     (hF : FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor F) (h : F * J ≤ F * J') : J ≤ J' := by
@@ -194,8 +192,7 @@ private theorem image_opensι_le {Y' : Scheme.{u}} (U : Y'.Opens) (V : U.toSchem
   have hz' : z ∈ U.ι.base '' (V : Set U.toScheme) := hz
   obtain ⟨w, -, rfl⟩ := hz'
   have hr : U.ι.base w ∈ Set.range U.ι.base := Set.mem_range_self w
-  rw [range_opensι] at hr
-  exact hr
+  rwa [range_opensι] at hr
 
 private theorem image_preimage_opensι {Y' : Scheme.{u}} (U : Y'.Opens) (D : Y'.Opens)
     (hD : D ≤ U) : U.ι ''ᵁ (U.ι ⁻¹ᵁ D) = D := by
@@ -255,8 +252,7 @@ theorem _root_.FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor.co
   have himg : U.ι ''ᵁ (U.ι ⁻¹ᵁ (Y.basicOpen a)) = Y.basicOpen a :=
     EmbeddedResolution.image_preimage_opensι U (Y.basicOpen a) hDU
   have himgW : (U.ι ''ᵁ (U.ι ⁻¹ᵁ (Y.basicOpen a))) ≤ (W : Y.Opens) := by
-    rw [himg]
-    exact hDW
+    rwa [himg]
   have hleW : (U.ι ⁻¹ᵁ (Y.basicOpen a)) ≤ U.ι ⁻¹ᵁ (W : Y.Opens) := fun z hz => hDW hz
   refine ⟨⟨U.ι ⁻¹ᵁ (Y.basicOpen a), hV₁aff⟩,
     (U.ι.appLE (W : Y.Opens) (U.ι ⁻¹ᵁ (Y.basicOpen a)) hleW).hom t, hya, ?_, ?_⟩
@@ -363,8 +359,7 @@ private theorem map_colon_eq_colon_map_away {R S : Type*} [CommRing R] [CommRing
       rw [heq]
       exact Ideal.mem_map_of_mem _ hNa
     have hbv := Ideal.mul_mem_right v (Ideal.map (algebraMap R S) (I.colon J)) hb2
-    rw [mul_assoc, hv, mul_one] at hbv
-    exact hbv
+    rwa [mul_assoc, hv, mul_one] at hbv
 
 theorem idealSheafColon_ideal_map_basicOpen [IsLocallyNoetherian Y]
     (I' F : Y.IdealSheafData) (U : Y.affineOpens) (f : Γ(Y, U)) :
@@ -375,8 +370,7 @@ theorem idealSheafColon_ideal_map_basicOpen [IsLocallyNoetherian Y]
   have : IsLocalization.Away f Γ(Y, Y.basicOpen f) := U.2.isLocalization_basicOpen f
   have key := map_colon_eq_colon_map_away (S := Γ(Y, Y.basicOpen f)) f (I'.ideal U) (F.ideal U)
     (IsNoetherian.noetherian (F.ideal U))
-  rw [← I'.map_ideal_basicOpen U f, ← F.map_ideal_basicOpen U f]
-  exact key
+  rwa [← I'.map_ideal_basicOpen U f, ← F.map_ideal_basicOpen U f]
 
 def idealSheafColon [IsLocallyNoetherian Y] (I' F : Y.IdealSheafData) :
     Y.IdealSheafData where
@@ -397,8 +391,7 @@ private theorem span_singleton_mul_colon {R : Type*} [CommRing R] {P J : Ideal R
     intro a ha b hb
     have hb' := Submodule.mem_colon.mp hb a ha
     rw [smul_eq_mul] at hb'
-    rw [mul_comm a b]
-    exact hb'
+    rwa [mul_comm a b]
   · intro y hy
     obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.mp (hJ hy)
     have hc : c ∈ J.colon (Ideal.span {f}) := by
@@ -476,8 +469,7 @@ theorem _root_.FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor.mu
     intro a ha b hb
     have hb' := Submodule.mem_colon.mp hb a ha
     rw [smul_eq_mul] at hb'
-    rw [mul_comm a b]
-    exact hb'
+    rwa [mul_comm a b]
   · intro x hx
     have hspan : Ideal.span {g : Γ(Y, U) | ∃ f : Γ(Y, Y.affineBasicOpen g),
         F.ideal (Y.affineBasicOpen g) = Ideal.span {f}} = ⊤ := by
@@ -502,8 +494,7 @@ theorem _root_.FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor.ex
     {F I' : Y.IdealSheafData} (hF : FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor F) (hI : I' ≤ F) :
     ∃! J : Y.IdealSheafData, F * J = I' := by
   refine ⟨EmbeddedResolution.idealSheafColon I' F, hF.mul_idealSheafColon hI, ?_⟩
-  intro J hJ
-  exact hF.eq_of_mul_eq_mul (hJ.trans (hF.mul_idealSheafColon hI).symm)
+  exact fun J hJ => hF.eq_of_mul_eq_mul (hJ.trans (hF.mul_idealSheafColon hI).symm)
 
 variable {X X₁ : Scheme.{u}}
 

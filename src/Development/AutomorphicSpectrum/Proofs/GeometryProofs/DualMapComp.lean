@@ -90,8 +90,7 @@ theorem exists_uniform_factor (w : 𝓞 E) :
   have key : ∀ p : ℤ[X], eval₂ (Int.castRingHom (𝓞 E)) w p = aeval w p := fun p => by
     rw [aeval_def, algebraMap_int_eq]
   have hF : (f.map (Int.castRingHom (𝓞 E))).IsRoot w := by
-    rw [IsRoot, eval_map, key]
-    exact hroot
+    rwa [IsRoot, eval_map, key]
   set g := f.map (Int.castRingHom (𝓞 E)) /ₘ (X - C w) with hg
   have hfac : (X - C w) * g = f.map (Int.castRingHom (𝓞 E)) :=
     (mul_divByMonic_eq_iff_isRoot).2 hF
@@ -99,8 +98,7 @@ theorem exists_uniform_factor (w : 𝓞 E) :
   · have hd : (derivative (f.map (Int.castRingHom (𝓞 E)))).eval w = g.eval w := by
       rw [← hfac, derivative_mul]
       simp
-    rw [← hd, derivative_map, eval_map, key]
-    exact hder
+    rwa [← hd, derivative_map, eval_map, key]
   · intro Ω _ V _ _ ρ σ
     refine ⟨eval₂ (scal V σ) (ρ w) g, eval₂_mem_opRing ρ σ w g, ?_, ?_⟩
     · have hcomm : ∀ k, Commute (scal V σ (g.coeff k)) (ρ w) :=
@@ -111,8 +109,7 @@ theorem exists_uniform_factor (w : 𝓞 E) :
       have hc : (scal V σ).comp (Int.castRingHom (𝓞 E)) = ρ.comp (Int.castRingHom (𝓞 E)) :=
         RingHom.ext_int _ _
       rw [hc, ← hom_eval₂, key, hroot, map_zero]
-    · intro v hv
-      exact eval₂_apply_of_eigen ρ σ w hv g
+    · exact fun v hv => eval₂_apply_of_eigen ρ σ w hv g
 
 private theorem mem_eigSp_iff_geometry {Ω : Type} [Field Ω] {V : Type} [AddCommGroup V] [Module Ω V]
     (ρ : 𝓞 E →+* Module.End Ω V) (σ : 𝓞 E →+* Ω) (v : V) :
@@ -182,8 +179,7 @@ theorem exists_eigen_op_uniform : ∀ (E : Type) [Field E] [NumberField E], ∃ 
     | mem w hw =>
       have h := congrArg (fun U : Module.End Ω V => U v) (hTk w hw)
       change (ρ w - scal V σ w) (T v) = 0 at h
-      rw [LinearMap.sub_apply, scal_apply, sub_eq_zero] at h
-      exact h
+      rwa [LinearMap.sub_apply, scal_apply, sub_eq_zero] at h
     | zero => simp
     | add a b _ _ iha ihb =>
       rw [map_add (f := _), map_add (f := _), LinearMap.add_apply, iha, ihb, add_smul]
@@ -261,8 +257,7 @@ theorem smul_V_mem_lat (s : CMType H ⊕ CMType H) (q : Cpt 𝔐.ξ) {p : ℕ} (
     induction he using Submodule.span_induction with
     | mem x hx =>
       have h1 := hdual _ _ (hx.2 _ hD)
-      rw [map_natCast, smul_smul, mul_comm] at h1
-      exact h1
+      rwa [map_natCast, smul_smul, mul_comm] at h1
     | zero => simp
     | add a b _ _ ha hb =>
       rw [smul_add]
@@ -307,8 +302,7 @@ theorem hodge_loc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], ∃ 
     have e1 : ((D₁ * D₂ : ℕ) : Ω) * κ = (D₁ : Ω) * ((D₂ : Ω) * κ) := by
       push_cast
       ring
-    rw [e1]
-    exact h1
+    rwa [e1]
 
 end GlobalTheory.CompanionTheory.Ar.OrVert
 end -- clump:auto
@@ -503,8 +497,7 @@ theorem core (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D 
     have ht' : ι (b₀ k) - i t₀ • o.Fl.b s k ∈ flagStep M.Ω (o.Fl.b s) k := by
       have h := mem_flagStep_map hsl (o₀.Fl.b s) k ht₀
       rw [map_sub, hsl] at h
-      rw [hbF]
-      exact h
+      rwa [hbF]
     have c1 := _root_.GlobalTheory.CompanionTheory.Ar.leadCoef_ratio_mem M.Ω _ W.toSubring _ (o.Fl.b s) b (fun a => ι (b₀ a)) _ k t (i t₀) hfr.1 hf hf' C1 ht ht'
     have c2 := _root_.GlobalTheory.CompanionTheory.Ar.leadCoef_ratio_mem M.Ω _ W.toSubring _ (o.Fl.b s) (fun a => ι (b₀ a)) b _ k (i t₀) t (hext.2 _ b₀ hfr₀.1) hf' hf C2 ht' ht
     refine ⟨b, b₀, t, t₀, hf, hfr, hf₀, hfr₀, ht, ht₀, ?_, ?_⟩
@@ -514,8 +507,7 @@ theorem core (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D 
       exact mul_mem hκW c1
     · have : (((m₁ * Dn : ℕ) : M.Ω) * κ) * (t / i t₀) = (i (m₁ : R.Ω) * ((Dn : M.Ω) * κ)) * (t / i t₀) := by
         rw [map_natCast]; push_cast; ring
-      rw [this]
-      exact c2
+      rwa [this]
   obtain ⟨b, b₀, t, t₀, hf, hfr, hf₀, hfr₀, ht, ht₀, x1, x2⟩ := key (rootIdx D r).1 (rootIdx D r).2
   have u1 := _root_.GlobalTheory.CompanionTheory.Ar.OrVert.rootLine_unitAt E H D l Xo c Y S M.Ω M.K M.ι M.y o.𝔐 o.Fl M.xdeg o.e r q cM b t o.lines hqc hf hfr ht
   have u0 := _root_.GlobalTheory.CompanionTheory.Ar.OrVert.rootLine_unitAt E H D l Xo c Y ∅ R.Ω R.K R.ι R.y o₀.𝔐 o₀.Fl R.xdeg o₀.e r q₀ cR b₀ t₀ o₀.lines hqc₀ hf₀ hfr₀ ht₀
@@ -607,8 +599,7 @@ theorem or_vert : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Ho
   have prod_neg'' : ∀ cc : (k : M.K ⊕ R.K) → Cmp.joinIdx M.ι R.ι k,
       ∏ k, Ht.joinOf M R i ⟨k, cc k⟩ ^ (-((-Ht.joinDeg M R (some r)) k)) =
         ∏ k, Ht.joinOf M R i ⟨k, cc k⟩ ^ (Ht.joinDeg M R (some r) k) := by
-    intro cc
-    exact Finset.prod_congr rfl fun k _ => by simp
+    exact fun cc => Finset.prod_congr rfl fun k _ => by simp
   have hchart : ∀ (cc : (k : M.K ⊕ R.K) → Cmp.joinIdx M.ι R.ι k), (∀ k, Ht.joinOf M R i ⟨k, cc k⟩ ≠ 0) →
       ∀ W : ValuationSubring M.Ω, (∀ p, Ht.joinOf M R i p / Ht.joinOf M R i ⟨p.1, cc p.1⟩ ∈ W) →
       ∃ κ : M.Ω, (κ = 1 ∨ ∃ p ∈ S, HT.IsCp p κ) ∧

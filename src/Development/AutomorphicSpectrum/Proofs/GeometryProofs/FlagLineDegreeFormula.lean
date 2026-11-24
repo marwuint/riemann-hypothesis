@@ -290,8 +290,7 @@ theorem exists_phi : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶
   have huκ0 : uκ ≠ 0 := by
     have h1 := val_mul huκ huκi
     rw [mul_inv_cancel₀ hκ0] at h1
-    have h2 := val_unique hξ h1 (val_one hp)
-    exact left_ne_zero_of_mul_eq_one h2
+    exact left_ne_zero_of_mul_eq_one (val_unique hξ h1 (val_one hp))
   have hdec : ∀ (n : ℕ) (e : Li) (he : e ∈ M.lat ⟨centre _, hp⟩), e ∈ flagStep Ω b n →
       ∃ ρ : Fin r → L, (∀ l, ValAt ξ (spMap (algebraMap (𝓞 L) L) ≫ z) (π l e) (ρ l)) ∧ (∀ l : Fin r, n ≤ l → ρ l = 0) ∧
         ev ⟨e, he⟩ = ∑ l, ρ l • ev ⟨b l, hbl l⟩ := by
@@ -302,8 +301,7 @@ theorem exists_phi : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶
     have h3 : (⟨e, he⟩ : M.lat ⟨centre _, hp⟩) =
         ∑ l, (⟨π l e, hπr l e he⟩ : regAt ξ ⟨centre _, hp⟩) • (⟨b l, hbl l⟩ : M.lat ⟨centre _, hp⟩) := by
       apply Subtype.ext
-      rw [Submodule.coe_sum]
-      exact h1
+      rwa [Submodule.coe_sum]
 
     rw [h3, map_sum]
     exact Finset.sum_congr rfl fun l _ => hevs _ _ _ (hρ l)
@@ -456,8 +454,7 @@ theorem linearIndependent_snoc {F : Submodule R M}
     exact F.neg_mem (F.sum_mem fun a _ => F.smul_mem _ (hf a))
   rw [hlast, zero_smul, add_zero] at hg
   have hz := Fintype.linearIndependent_iff.mp hli (fun a => g a.castSucc) hg
-  intro j
-  exact Fin.lastCases hlast (fun a => hz a) j
+  exact fun j => Fin.lastCases hlast (fun a => hz a) j
 
 theorem card_quotient_line {F G P : Submodule R M} (hFG : F ≤ G) (hPF : P ≤ F)
     (hsat : ∀ (a : R) (x : M), a ≠ 0 → a • x ∈ F → x ∈ F) {s : M} (hs : s ∉ F)
@@ -679,8 +676,7 @@ theorem card_quot_mul_absNorm {M : Type} [AddCommGroup M] [Module (𝓞 L) M] (�
     rw [← hk, ← hr]
     exact Nat.card_congr (T.mkQ ∘ₗ ψ).quotKerEquivRange.toEquiv
   rw [hc]
-  simp only [Ideal.absNorm_apply, Submodule.cardQuot_apply]
-  exact h
+  simpa only [Ideal.absNorm_apply, Submodule.cardQuot_apply] using h
 
 theorem place_le_iSup {M : Type} [AddCommGroup M] [Module (𝓞 L) M] (φ : M →ₗ[𝓞 L] L) {n : ℕ} (g : Fin n → M)
     (hg : Submodule.span (𝓞 L) (Set.range g) = ⊤) (v : FinitePlace L) (x : M) :
@@ -726,9 +722,7 @@ theorem log_card_eq {M : Type} [AddCommGroup M] [Module (𝓞 L) M] (φ : M →�
   have hb0 : b ≠ 0 := nonZeroDivisors.ne_zero hb
   have hbL : (b : L) ≠ 0 := by rwa [Ne, RingOfIntegers.coe_eq_zero_iff]
   have hzy : ∀ i, ((z i : 𝓞 L) : L) = (b : L) * y i := fun i ↦ by
-    have h := hz i
-    simp only [Algebra.smul_def] at h
-    exact h
+    simpa only [Algebra.smul_def] using hz i
 
   have hint' : ∀ x, ∃ r : 𝓞 L, (r : L) = (b : L) * φ x := by
     intro x

@@ -69,8 +69,7 @@ private theorem cd_det_lemma {ι : Type} [Fintype ι] [DecidableEq ι] :
   simp_rw [Matrix.det_apply']
   exact ContDiff.sum (fun σ _ => contDiff_const.mul (contDiff_prod (fun i _ => he _ _)))
 
-theorem cd_det : ContDiff ℂ ∞ (fun x : M2 n => x.det) := by
-  exact cd_det_lemma
+theorem cd_det : ContDiff ℂ ∞ (fun x : M2 n => x.det) := cd_det_lemma
 
 theorem cd_detu1 : ContDiff ℂ ∞ (fun x : M2 n => (u1 x).det) := by
   exact cd_det_lemma.comp contDiff_first_cayley_block
@@ -93,7 +92,6 @@ theorem continuous_mR' : Continuous (mR : GR n → M2 n) :=
   Units.continuous_val.comp continuous_subtype_val
 
 theorem det_mR_ne' (g : GR n) : (mR g).det ≠ 0 := by
-  show ((g : GL (Fin n ⊕ Fin n) ℂ) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℂ).det ≠ 0
   exact ((Matrix.isUnit_iff_isUnit_det _).mp (g : GL (Fin n ⊕ Fin n) ℂ).isUnit).ne_zero
 
 def rD (X x : M2 n) : ℂ := fderiv ℂ (fun x : M2 n => x.det) x (x * X) / x.det

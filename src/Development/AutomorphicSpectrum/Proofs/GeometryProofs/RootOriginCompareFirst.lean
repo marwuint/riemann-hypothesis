@@ -367,8 +367,7 @@ theorem germ_frac {U : X.Opens} (hU : IsAffineOpen U) {p : X} (hp : p ∈ U) (s 
   have h0 : ∀ f : Γ(X, U), X.presheaf.germ (X.basicOpen d) p hpd (algebraMap Γ(X, U) Γ(X, X.basicOpen d) f) =
       X.presheaf.germ U p hp f := fun f =>
     X.presheaf.germ_res_apply (homOfLE (X.basicOpen_le d)) p hpd f
-  rw [h0, h0, TopCat.Presheaf.germ_res_apply] at e'
-  exact e'
+  rwa [h0, h0, TopCat.Presheaf.germ_res_apply] at e'
 
 theorem genMap_germ (ξ : Spec (CommRingCat.of Ω) ⟶ X) {U : X.Opens} {q : X} (hq : q ∈ U) (h : genPt ξ ⤳ q)
     (f : Γ(X, U)) :
@@ -503,8 +502,7 @@ theorem contains_localRing : ∀ (X : Scheme.{0}) (Ω Ω' : Type) [Field Ω] [Fi
   obtain ⟨hd', vd⟩ := hval d
   refine frac_mem (m := m) hU hn hd' vn vd (hd.map (Scheme.stalkClosedPointTo z).hom).ne_zero ?_ ?_
   · have e1 := congrArg (genMap ξ ⟨centre z, hz⟩) e
-    rw [map_mul, map_pow, hsa, genMap_germ ξ hpU hz, genMap_germ ξ hpU hz] at e1
-    exact e1
+    rwa [map_mul, map_pow, hsa, genMap_germ ξ hpU hz, genMap_germ ξ hpU hz] at e1
   · rw [← hsr]
     exact val_frac (Scheme.stalkClosedPointTo z).hom e
 
@@ -655,8 +653,7 @@ theorem norm_cmp (𝔐 : HodgeCpt Y S y) (𝔐₀ : HodgeCpt Y S₀ y₀) (Fl : 
     have hon : Set.EqOn (T : 𝔐.Li →ₗ[Ω] 𝔐.Li) (LinearMap.id : 𝔐.Li →ₗ[Ω] 𝔐.Li) (Set.range b) := by
       rintro _ ⟨k, rfl⟩
       simp [hT, hπ, ite_smul]
-    intro x hx
-    exact LinearMap.eqOn_span hon hx
+    exact fun x hx => LinearMap.eqOn_span hon hx
   have fr := _root_.GlobalTheory.CompanionTheory.Ar.Frames.two_frames Ω Ω₀ i 𝔐.Li 𝔐₀.Li jj hext hspan W (𝔐₀.M.lat q₀ : Set 𝔐₀.Li) (𝔐.M.lat q : Set 𝔐.Li)
     (labelRk D s) b b₀ π₀ T 1 1 1 (hlat W q q₀ regW regW₀ hfq)
     (fun e he => by
@@ -684,8 +681,7 @@ theorem norm_cmp (𝔐 : HodgeCpt Y S y) (𝔐₀ : HodgeCpt Y S₀ y₀) (Fl : 
   have ht' : jj (b₀ idx) - i t₀ • Fl.b s idx ∈ flagStep Ω (Fl.b s) idx := by
     have e1 := FlagPull.map_mem_flagStep hext.1 (Fl₀.b s) idx ht₀
     have e2 : (fun k => jj (Fl₀.b s k)) = Fl.b s := funext (hb s)
-    rw [e2, map_sub, hext.1, hb] at e1
-    exact e1
+    rwa [e2, map_sub, hext.1, hb] at e1
   obtain ⟨a, ha, e1, e2⟩ := GrNorm.compare (A := W) (φ := φ) (Lm := Lm) (val := val) h0 hadd hsm h hFlli hfr.1
     (hext.2 _ _ hfr₀.1) (fun k => (hv₁ _ _ (hv k)).1) hs hflag hflagJ idx ht ht'
   refine ⟨a, ha, e1, ?_⟩
@@ -698,8 +694,7 @@ theorem norm_cmp (𝔐 : HodgeCpt Y S y) (𝔐₀ : HodgeCpt Y S₀ y₀) (Fl : 
     ext p p'
     have e3 := (hodge_move 𝔐.m 𝔐₀.m hz (hv₂ _ _ (hv₀ p)).2 (hv₂ _ _ (hv₀ p')).2 _).2 (hI₀ p p')
     exact (hHI _ _ _).1 e3
-  rw [eΓ, eΓ₀]
-  exact e2
+  rwa [eΓ, eΓ₀]
 
 end Norm
 
@@ -715,8 +710,7 @@ theorem real_alg {N Pn hM hR U₁ U₂ X W₁ W₂ V : ℝ} (hP : Pn * N ≠ 0) 
 theorem zpow_unit_val {R F : Type} [CommRing R] [Field F] (f : R →+* F) (u : Rˣ) (n : ℤ) :
     f ((u ^ n : Rˣ) : R) = f (u : R) ^ n := by
   have e := congrArg Units.val (map_zpow (Units.map (f : R →* F)) u n)
-  rw [Units.val_zpow_eq_zpow_val] at e
-  exact e
+  rwa [Units.val_zpow_eq_zpow_val] at e
 
 theorem sing_agree : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S S₀ : Finset ℕ) (M R : Top.RootModel (CMType H) (D.p + D.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (D.p + D.q)) (Option (RootIx D))) (Fx : FixedData Y Sys) (o : RootOrigin Y S M Fx) (o₀ : RootOrigin Y S₀ R Fx) (i : R.Ω →+* M.Ω), i.comp o₀.g = o.g → ∀ (z₁ : Spec (CommRingCat.of ℂ) ⟶ o.𝔐.X) (z₂ : Spec (CommRingCat.of ℂ) ⟶ o₀.𝔐.X) (w : (Σ k, Cmp.joinIdx M.ι R.ι k) → ℂ), w ∈ Small.ptsOver ℂ (mCoordIdeal (Ht.joinOf M R i)) → CoordsAt o.𝔐.ξ M.y z₁ (fun p => w (Cmp.joinInl M.ι R.ι p)) → CoordsAt o₀.𝔐.ξ R.y z₂ (fun p => w (Cmp.joinInr M.ι R.ι p)) → o.𝔐.Interior z₁ → o₀.𝔐.Interior z₂ → ∀ (r : RootIx D) (v : ℂ), Small.HasVal (Ht.joinOf M R i) (Ht.joinDeg M R (some r)) (i (o₀.e r) / o.e r) w v → ‖v‖ * (o₀.sing r).h (fun p => w (Cmp.joinInr M.ι R.ι p)) = (o.sing r).h (fun p => w (Cmp.joinInl M.ι R.ι p)) := by
   intro E _ _ _ H D l Xo c Y S S₀ M R Sys Fx o o₀ i hi z₁ z₂ w hw hc₁ hc₂ hI₁ hI₂ r v hv

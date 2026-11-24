@@ -304,8 +304,7 @@ theorem exists_maxEven (Hr : IsHermRing c 𝔬) (H : IsHerm c h) (Hp : IsPerfect
     rw [Submodule.map_comap_subtype]; exact inf_eq_right.2 hl
   have hS : (L₀.comap D.subtype) ∈ S := by
     have := hcm L₀ (hD L₀ hE le_rfl)
-    simp only [S, Set.mem_setOf_eq, this]
-    exact ⟨hE, le_rfl⟩
+    simpa only [S, Set.mem_setOf_eq, this] using ⟨hE, le_rfl⟩
   obtain ⟨N, hN, hmin⟩ := (wellFounded_gt (α := Submodule 𝔬 D)).has_min S ⟨_, hS⟩
   refine ⟨N.map D.subtype, hN.2, ⟨?_, ?_⟩, hN.1, fun L' hE' hle => ?_⟩
   · exact (IsNoetherian.noetherian N).map _
@@ -314,8 +313,7 @@ theorem exists_maxEven (Hr : IsHermRing c 𝔬) (H : IsHerm c h) (Hp : IsPerfect
     exact Submodule.span_mono hN.2
   · have hDL : L' ≤ D := hD L' hE' (hN.2.trans hle)
     have hmem : L'.comap D.subtype ∈ S := by
-      simp only [S, Set.mem_setOf_eq, hcm L' hDL]
-      exact ⟨hE', hN.2.trans hle⟩
+      simpa only [S, Set.mem_setOf_eq, hcm L' hDL] using ⟨hE', hN.2.trans hle⟩
     have hNle : N ≤ L'.comap D.subtype := by
       rw [← Submodule.map_le_iff_le_comap]; exact hle
     have : ¬ N < L'.comap D.subtype := hmin _ hmem
@@ -372,8 +370,7 @@ theorem exists_maxEven_adapted : ∀ {R : Type} [CommRing R] (c : R →+* R) (�
   have hct : c t = t := by
     have h2 : (2 : R) * c t = 1 := by
       have := congrArg c ht
-      rw [map_mul, map_ofNat c 2, map_one] at this
-      exact this
+      rwa [map_mul, map_ofNat c 2, map_one] at this
     calc c t = (2 * t) * c t := by rw [ht, one_mul]
       _ = t * (2 * c t) := by ring
       _ = t := by rw [h2, mul_one]
@@ -1391,8 +1388,7 @@ theorem gram_yx (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) {X Y : Matrix (Fin n
     ext i j
     simp [cT, Matrix.one_apply, eq_comm]
   have := congrArg (cT (σ : E →+* E)) hW.xy
-  rw [cT_mul_rect, cT_mul_rect, hcT, hcc, h1, ← Matrix.mul_assoc] at this
-  exact this
+  rwa [cT_mul_rect, cT_mul_rect, hcT, hcc, h1, ← Matrix.mul_assoc] at this
 
 def projP (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E)
     (X Y : Matrix (Fin n) (Fin r) E) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) :=
@@ -1553,8 +1549,7 @@ theorem isMaxEven_map {V : Type} [AddCommGroup V] [Module R V] {h : V → V → 
     have h1 := isEvenInt_map c 𝔬 e.symm hs hL'
     have h2 : L ≤ L'.map (e.symm.toLinearMap.restrictScalars 𝔬) := fun y hy =>
       ⟨e y, hle ⟨y, hy, rfl⟩, by simp⟩
-    intro z hz
-    exact ⟨e.symm z, hmax _ h1 h2 ⟨z, hz, rfl⟩, by simp⟩
+    exact fun z hz => ⟨e.symm z, hmax _ h1 h2 ⟨z, hz, rfl⟩, by simp⟩
 
 variable {n r : ℕ}
 
@@ -1591,8 +1586,7 @@ theorem isPerfect_hform (hc : ∀ a, c (c a) = a) (Jm : Matrix (Fin n) (Fin n) R
     have h1 : (fun i => c (x i)) ᵥ* Jm = 0 := by
       funext j
       have h2 := hx (Pi.single j 1)
-      rw [hform_eq, Matrix.dotProduct_mulVec, dotProduct_single, mul_one] at h2
-      exact h2
+      rwa [hform_eq, Matrix.dotProduct_mulVec, dotProduct_single, mul_one] at h2
     have h2 : (fun i => c (x i)) = 0 := by
       have h3 := congrArg (fun w => w ᵥ* Jm⁻¹) h1
       simpa [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hd] using h3
@@ -1611,8 +1605,7 @@ theorem isPerfect_hform (hc : ∀ a, c (c a) = a) (Jm : Matrix (Fin n) (Fin n) R
     have h2 : u ᵥ* Jm = w := by
       simp only [u, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hd, Matrix.vecMul_one]
     rw [h2, LinearMap.pi_apply_eq_sum_univ f y]
-    simp only [dotProduct, smul_eq_mul, w]
-    exact Finset.sum_congr rfl fun i _ => mul_comm _ _
+    simpa only [dotProduct, smul_eq_mul, w] using Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 theorem hform_mulVec (Jm g : Matrix (Fin n) (Fin n) R) (hg : cT c g * Jm * g = Jm) (x y : Fin n → R) :
     Formalism.UG.hform c Jm (g *ᵥ x) (g *ᵥ y) = Formalism.UG.hform c Jm x y := by
@@ -1696,8 +1689,7 @@ theorem iwasawa_abs (hc : ∀ a, c (c a) = a) (Jm : Matrix (Fin n) (Fin n) R)
       rfl
     rw [hpL (((P⁻¹ * g : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) *ᵥ w), hz]
     constructor
-    · intro hw
-      exact ⟨w, hw, rfl⟩
+    · exact fun hw => ⟨w, hw, rfl⟩
     · rintro ⟨w', hw', h'⟩
       have h2 : w' = w := e.injective h'
       exact h2 ▸ hw'
@@ -1804,8 +1796,7 @@ theorem flag_map_kfin {A A' : Type} [CommRing A] [Algebra F A] [TopologicalSpace
   have := congrArg (fun M : Matrix (Fin n) (Fin r) (A ⊗[F] E) =>
     M.map (Algebra.TensorProduct.map φ (AlgHom.id F E))) h
   rw [Matrix.map_mul, Matrix.map_mul, map_adMat_kfin] at this
-  rw [matHom_mapH_kfin]
-  exact this
+  rwa [matHom_mapH_kfin]
 
 theorem exists_compact_iwasawa_good : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∃ K : Subgroup (GAd σ J), K ≤ finPts σ J ∧ IsCompact (K : Set (GAd σ J)) ∧ (∀ g ∈ finPts σ J, ∃ p ∈ minPar σ J X, p ∈ finPts σ J ∧ ∃ k ∈ K, g = p * k) ∧ GoodPosition σ J X Y K := by
   intro F E _ _ _ _ _ σ hCM n J hJ r X Y hW
@@ -1875,8 +1866,7 @@ theorem exists_compact_iwasawa_good : ∀ (F E : Type) [Field F] [NumberField F]
     have hfin : {v | proj σ J v g ∉ stabLat σ J (Λ v)}.Finite := by
       refine eventually_cofinite.1 ?_
       filter_upwards [hev, eventually_proj_mem_stabLoc σ J L₀ g] with v e hv
-      rw [hstab v e]
-      exact hv
+      rwa [hstab v e]
     let S : Finset (HeightOneSpectrum (𝓞 F)) := hfin.toFinset
     choose pl kl hkl hgl Bl hBl hpl using fun v => _root_.GlobalTheory.CompanionTheory.KFin.Iwasawa.iwasawa_loc (X := X) hCM hJ hW v (hT v) (Λ v) (hΛ1 v) (proj σ J v g)
     let x : ∀ v : S, GLoc σ J v := fun v => pl v

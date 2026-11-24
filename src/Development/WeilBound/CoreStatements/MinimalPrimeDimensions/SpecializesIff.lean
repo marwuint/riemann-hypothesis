@@ -173,8 +173,7 @@ theorem Ch.germ_eval (h : Ch p s k t) {z : Z} (hz : z ∈ nonzeroLocus (s k)) {i
   rw [hfun, hc]
   have := eval₂Hom_mul ((Z.presheaf.germ _ z hz).hom.comp (algX p (nonzeroLocus (s k))))
     (fun j => (Z.presheaf.germ _ z hz).hom (t j)) hg ((Z.presheaf.germ _ z hi).hom ((s k).f i))
-  rw [coe_eval₂Hom, coe_eval₂Hom] at this
-  exact this
+  rwa [coe_eval₂Hom, coe_eval₂Hom] at this
 
 theorem mem_ker_coneHom {z : Z} {i : B.ι} (hi : z ∈ B.U i) (g : MvPolynomial (Fin m) R) :
     g ∈ RingHom.ker (coneHom p s z i hi) ↔ ∀ d, ¬ IsUnit ((Z.presheaf.germ _ z hi).hom
@@ -189,8 +188,7 @@ theorem mem_ker_coneHom {z : Z} {i : B.ι} (hi : z ∈ B.U i) (g : MvPolynomial 
   have e := Scheme.evaluation_eq_zero_iff_notMem_basicOpen Z z hi
     (eval₂Hom (algX p (B.U i)) (fun j => (s j).f i) (homogeneousComponent d g))
   rw [Scheme.mem_basicOpen Z _ z hi] at e
-  rw [coe_eval₂Hom, ← hom_eval₂]
-  exact e
+  rwa [coe_eval₂Hom, ← hom_eval₂]
 
 theorem Ch.ptIdeal_eq (h : Ch p s k t) (hB : B.IsLB) {z : Z} (hz : z ∈ nonzeroLocus (s k)) :
     ptIdeal p s z = pr (algX p _) t (qOf h.aff hz) := by
@@ -212,8 +210,7 @@ theorem Ch.ptIdeal_eq (h : Ch p s k t) (hB : B.IsLB) {z : Z} (hz : z ∈ nonzero
   · intro H d
     rw [mem_qOf]
     exact (key i0 hi0 d).not.mp (H i0 hi0 d)
-  · intro H i hi d
-    exact (key i hi d).not.mpr ((mem_qOf _ _ _).mp (H d))
+  · exact fun H i hi d => (key i hi d).not.mpr ((mem_qOf _ _ _).mp (H d))
 
 theorem isProjPrime (hE : Emb p s) (z : Z) : IsProjPrime (ptIdeal p s z) := by
   obtain ⟨k, hk⟩ := exists_mem hE z
@@ -324,8 +321,7 @@ private theorem mem_minimalPrimes_span_iff_mem_height_eq_one {A : Type} [CommRin
     intro p _ hfp
     have hlt : (⊥ : Ideal A) < p := by
       refine bot_lt_iff_ne_bot.mpr fun hp => hf ?_
-      rw [hp, Ideal.mem_bot] at hfp
-      exact hfp
+      rwa [hp, Ideal.mem_bot] at hfp
     exact le_trans le_add_self (Ideal.height_add_one_le_of_lt_of_isPrime hlt)
   constructor
   · intro hq
@@ -424,9 +420,7 @@ theorem stDiv : StDiv := by
       haveI : Ring.KrullDimLE 1 (Z.presheaf.stalk z) := krullDimLE_of_coheight_le hc.le
       have hne0 : algebraMap _ (Z.presheaf.stalk z)
           (eval₂Hom (algX p (nonzeroLocus (s k))) t (GroundTheory.Heights₂.Heights.linForm u)) ≠ 0 := by
-        intro h0
-        apply hf0
-        exact germ_injective_of_isIntegral Z z hz (h0.trans (map_zero _).symm)
+        exact fun h0 => hf0 (germ_injective_of_isIntegral Z z hz (h0.trans (map_zero _).symm))
       have hfin := isFiniteLength_quotient_span_singleton (Z.presheaf.stalk z)
         (mem_nonZeroDivisors_of_ne_zero hne0)
       have hntop := Module.length_ne_top_iff.mpr hfin

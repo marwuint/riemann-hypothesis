@@ -240,10 +240,8 @@ theorem isLocIn_regAt_chartRing : ∀ (E : Type) [Field E] [NumberField E] [IsCM
       obtain ⟨m, n, hn, e⟩ := (ho _).1 ⟨r, rfl⟩
       rw [e, div_eq_mul_inv]
       exact mul_mem (intCast_mem _ m) (hu n hn).2.2
-    · intro x z _ _ hx hz
-      exact add_mem hx hz
-    · intro x z _ _ hx hz
-      exact mul_mem hx hz
+    · exact fun x z _ _ hx hz => add_mem hx hz
+    · exact fun x z _ _ hx hz => mul_mem hx hz
   · obtain ⟨t, ht, hut, htb⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction 𝔐.X Ω 𝔐.ξ ℤ _ (mseg y) 𝔐.tie s q hs b).1 hb
     have hle : ∀ x ∈ Algebra.adjoin ℤ (Set.range fun j => mseg y j / mseg y s),
         x ∈ chartRing o (mseg y) s := by
@@ -253,10 +251,8 @@ theorem isLocIn_regAt_chartRing : ∀ (E : Type) [Field E] [NumberField E] [IsCM
         exact div_mem_chartRing _ _ _
       · intro n
         simp
-      · intro x z _ _ hx hz
-        exact add_mem hx hz
-      · intro x z _ _ hx hz
-        exact mul_mem hx hz
+      · exact fun x z _ _ hx hz => add_mem hx hz
+      · exact fun x z _ _ hx hz => mul_mem hx hz
     exact ⟨⟨t, hle t ht⟩, ⟨t * b, hle _ htb⟩, hut.1, hut.2.2, rfl⟩
 
 end GlobalTheory.CompanionTheory.Ar.Flat.HTL
@@ -286,8 +282,7 @@ theorem mem_V_inr_iff_latOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
       apply hm
       obtain ⟨u, hu'⟩ := hu
       have h1 : (m : Ω) * (((u⁻¹ : (regAt 𝔐.ξ q)ˣ) : regAt 𝔐.ξ q) : Ω) = 1 := by
-        have h2 := congrArg (fun x : regAt 𝔐.ξ q => (x : Ω)) u.mul_inv
-        simpa [hu'] using h2
+        simpa [hu'] using congrArg (fun x : regAt 𝔐.ξ q => (x : Ω)) u.mul_inv
       have h0 : (m : Ω) ≠ 0 := left_ne_zero_of_mul_eq_one h1
       refine ⟨h0, natCast_mem _ m, ?_⟩
       rw [← eq_inv_of_mul_eq_one_right h1]
@@ -603,8 +598,7 @@ theorem exists_zp (Ω : Type) [Field Ω] (p : ℕ) [Fact p.Prime] : ∃ o : Subr
   refine ⟨o, fun x => ⟨?_, ?_⟩⟩
   · rintro ⟨a, rfl⟩
     exact a.2
-  · intro h
-    exact ⟨⟨x, h⟩, rfl⟩
+  · exact fun h => ⟨⟨x, h⟩, rfl⟩
 
 theorem dvd_sq (A K : Type) [CommRing A] [IsDomain A] [Field K] [Algebra A K] (hinj : Function.Injective (algebraMap A K))
     (p : ℕ) [Fact p.Prime] (κ : A) (h : IsCp p (algebraMap A K κ)) : κ ∣ (p : A) ^ 2 := by
@@ -660,8 +654,7 @@ theorem div_mem_of_mul (K : Type) [Field K] (B : Subring K) (ϖ : K) (N : ℕ) (
           exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
       _ = v i + ϖ * ∑ l, v l * Z l i := by
           simp only [h1, mul_add, Finset.sum_add_distrib, Matrix.one_apply, Finset.mul_sum]
-          simp
-          exact Finset.sum_congr rfl fun _ _ => by ring
+          simpa using Finset.sum_congr rfl fun _ _ => by ring
   have e2 : v i / ϖ = ∑ j, ((∑ l, v l * G l j) / ϖ) * H j i - ∑ l, v l * Z l i := by
     have : ∑ j, ((∑ l, v l * G l j) / ϖ) * H j i = (∑ j, (∑ l, v l * G l j) * H j i) / ϖ := by
       rw [Finset.sum_div]

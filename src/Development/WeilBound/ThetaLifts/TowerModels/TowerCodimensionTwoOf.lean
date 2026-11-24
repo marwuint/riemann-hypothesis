@@ -109,8 +109,7 @@ theorem towerB_of (hP : PlaneEx) (hM : ModelEx) (hW : WeilEx) : TowerB := by
     · show 2 * (G.p + (G.q - 1)) + 1 < b
       omega
     · show V₁.IsHerm σ B (G.q - 1) (b - (G.q - 1))
-      rw [show b - (G.q - 1) = b + 2 - G.q - 1 by omega]
-      exact hV₁
+      rwa [show b - (G.q - 1) = b + 2 - G.q - 1 by omega]
     · show W₁.IsSkew σ B (a + b - (G.p + (G.q - 1))) (G.p + (G.q - 1))
       rw [show a + b - (G.p + (G.q - 1)) = a + (b + 2) - (G.p + G.q) - 1 by omega,
         show G.p + (G.q - 1) = G.p + G.q - 1 by omega]
@@ -133,8 +132,7 @@ theorem towerA_of (hP : PlaneEx) (hM : ModelEx) (hW : WeilEx) : TowerA := by
     (b + 2 + a' - (G.p + 0)) (G.p + 0) (by omega) (by omega) hW0 0 (b + 1) (by omega) (by omega)
   have hV0' : (reS G.V' G.V').IsHerm σ B 0 (a' - 0) := by
     have := g.hV'
-    rw [hq0] at this
-    exact this
+    rwa [hq0] at this
   obtain ⟨M₁, hM₁⟩ := hM F E σ B hT.base b (b + a') V₁ W₁ _ _ _ _ hV₁ hW₁
   obtain ⟨M₁', hM₁'⟩ := hM F E σ B hT.base a' (b + a') (reS G.V' G.V') W₁ _ _ _ _ hV0' hW₁
   have rβ : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range X.β b := resEtaPow_of_add_two c.resβ
@@ -162,8 +160,7 @@ theorem towerA_of (hP : PlaneEx) (hM : ModelEx) (hW : WeilEx) : TowerA := by
     · show 2 * (G.p - 1 + 0) + 1 < a'
       omega
     · show V₁.IsHerm σ B (b - (G.p - 1)) (G.p - 1)
-      rw [show b - (G.p - 1) = b + 2 - G.p - 1 by omega]
-      exact hV₁
+      rwa [show b - (G.p - 1) = b + 2 - G.p - 1 by omega]
     · show W₁.IsSkew σ B (b + a' - (G.p - 1 + 0)) (G.p - 1 + 0)
       rw [show b + a' - (G.p - 1 + 0) = b + 2 + a' - (G.p + 0) - 1 by omega,
         show G.p - 1 + 0 = G.p + 0 - 1 by omega]
@@ -208,8 +205,7 @@ theorem towerCodimensionTwo_of (hP : PlaneEx) (hM : ModelEx) (hW : WeilEx) : Pos
     · show 2 * (G.p - 1 + G.q) + 1 < a'
       omega
     · show V₁.IsHerm σ B (b - (G.p - 1)) (G.p - 1)
-      rw [show b - (G.p - 1) = b + 2 - G.p - 1 by omega]
-      exact hV₁
+      rwa [show b - (G.p - 1) = b + 2 - G.p - 1 by omega]
     · show W₁.IsSkew σ B (b + a' - (G.p - 1 + G.q)) (G.p - 1 + G.q)
       rw [show b + a' - (G.p - 1 + G.q) = b + 2 + a' - (G.p + G.q) - 1 by omega,
         show G.p - 1 + G.q = G.p + G.q - 1 by omega]

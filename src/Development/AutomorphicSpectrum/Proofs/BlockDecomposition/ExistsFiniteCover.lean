@@ -134,8 +134,7 @@ def pt (W : X.affineOpens) : (Fin 1)ᵒᵖ ⥤ AffOp X := (v₀ W).monotone.func
 theorem acyc_fin (hA : AffAcycSt) {Q : Type} [SemilatticeInf Q] [Finite Q] (v : Q →o X.affineOpens)
     (W : X.affineOpens) (hle : ∀ a, (v a).1 ≤ W.1) (hinf : ∀ a b, (v (a ⊓ b)).1 = (v a).1 ⊓ (v b).1)
     (hcov : ⨆ a, (v a).1 = W.1) : Acyc s v.monotone.functor.op W.1 (fun T ↦ hle T.unop) := by
-  have k := hA R X s W Q v hle hinf hcov
-  exact k
+  exact hA R X s W Q v hle hinf hcov
 
 theorem acyc_pt (hA : AffAcycSt) (W : X.affineOpens) :
     Acyc s (pt W) W.1 (fun _ ↦ le_rfl) :=
@@ -200,8 +199,7 @@ theorem acyc_of_cone (hCx : CxSt) (hHt : HtpySt) (hA : AffAcycSt) [Quiver.IsThin
   refine acyc_of_map s hCx hA f (pt W) c₁ hc₁ W hle (fun _ ↦ le_rfl) (fun x hx hx' ↦ ?_)
     (fun n x hx ⟨y, hy⟩ ↦ ?_) (acyc_pt s hA W)
   · have k₁ := (H₁.1 x hx).trans (H₂.1 x hx).symm
-    rw [h₀, ← hp, hx', map_zero] at k₁
-    exact k₁
+    rwa [h₀, ← hp, hx', map_zero] at k₁
   · obtain ⟨y₁, e₁⟩ := H₁.2 n x hx
     obtain ⟨y₂, e₂⟩ := H₂.2 n x hx
     refine ⟨pulln (rm s (pt W) f c₂ hc₂) n y + y₁ - y₂, ?_⟩

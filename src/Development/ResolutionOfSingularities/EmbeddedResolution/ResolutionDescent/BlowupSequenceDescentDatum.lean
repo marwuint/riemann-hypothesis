@@ -109,14 +109,12 @@ theorem comap_map_center_eq_center_of_isPullback {W Y : Scheme.{u}} (g : W ⟶ Y
   rw [hcond, ← hsq.w] at Big
   have comm : (e.hom ≫ pullback.snd (pullback.snd g g) (t.projectionToBase n)) ≫ γ
       = pullback.snd (pullback.fst g g) (t.projectionToBase n) ≫ γ := by
-    rw [Category.assoc]
-    exact hgamma
+    rwa [Category.assoc]
   have key : IsPullback (e.hom ≫ pullback.snd (pullback.snd g g) (t.projectionToBase n))
       (pullback.snd (pullback.fst g g) (t.projectionToBase n)) γ γ :=
     IsPullback.of_bot Big comm hsq
   refine comap_map_eq_self_of_isPullback γ key (t.center n) ?_
-  rw [Scheme.IdealSheafData.comap_comp]
-  exact hcenter
+  rwa [Scheme.IdealSheafData.comap_comp]
 
 theorem exists_isPullback_blowup_proj_map_center {W X : Scheme.{u}} {t : SequenceOfBlowups W} {n : ℕ}
     (hn : n < t.length) {γ : t.schemeAt n ⟶ X} (hflat : AlgebraicGeometry.Flat γ)
@@ -424,8 +422,7 @@ private theorem exists_isStrictPullbackSequenceOfBlowups_of_descentDatum {W Y : 
       exact Functor.ofOpSequence_map_homOfLE_succ (descendedBlowupMorphism g t D) i
     rw [hmap]
     exact (descendedBlowupAt g t D i (descendedSchemeDataAt g t D i)).hpb hi
-  · intro i hi
-    exact (descendedBlowupAt g t D i (descendedSchemeDataAt g t D i)).hcen hi
+  · exact fun i hi => (descendedBlowupAt g t D i (descendedSchemeDataAt g t D i)).hcen hi
 
 theorem exists_isStrictPullback_of_isomorphic_baseChange {W Y : Scheme.{u}}
     (g : W ⟶ Y) [AlgebraicGeometry.Flat g] [AlgebraicGeometry.QuasiCompact g] (t : SequenceOfBlowups W)
@@ -442,12 +439,10 @@ theorem exists_isStrictPullback_of_isomorphic_baseChange {W Y : Scheme.{u}}
   · intro i hi
     have key := SequenceOfBlowups.iso_hom_comp_projectionToBase (t.baseChange (pullback.fst g g))
       (t.baseChange (pullback.snd g g)) _ e hstep hzero i (by rw [hlp]; exact hi)
-    rw [baseChange_projectionToBase_eq_fst, baseChange_projectionToBase_eq_fst] at key
-    exact key
+    rwa [baseChange_projectionToBase_eq_fst, baseChange_projectionToBase_eq_fst] at key
   · intro i hi
     have key := hcen i (by rw [hlp]; exact hi)
-    rw [SequenceOfBlowups.baseChange_center, SequenceOfBlowups.baseChange_center] at key
-    exact key
+    rwa [SequenceOfBlowups.baseChange_center, SequenceOfBlowups.baseChange_center] at key
   · intro i hi
     have key := hstep i (by rw [hlp]; exact hi)
     rw [SequenceOfBlowups.baseChange_blowupMorphism, SequenceOfBlowups.baseChange_blowupMorphism] at key

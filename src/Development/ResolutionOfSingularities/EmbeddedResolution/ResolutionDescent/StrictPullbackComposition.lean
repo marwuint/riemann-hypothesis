@@ -85,14 +85,12 @@ private theorem support_comap_pullback_snd_nonempty_iff {W V Y T : Scheme.{u}} (
   · rintro ⟨x, hx⟩
     rw [mem_support_comap] at hx
     refine ⟨q.base x, ?_⟩
-    rw [mem_support_comap, ← hbase x]
-    exact hx
+    rwa [mem_support_comap, ← hbase x]
   · rintro ⟨y, hy⟩
     rw [mem_support_comap] at hy
     obtain ⟨x, hx⟩ := hqs.surj y
     refine ⟨x, ?_⟩
-    rw [mem_support_comap, hbase x, hx]
-    exact hy
+    rwa [mem_support_comap, hbase x, hx]
 
 namespace IsPullbackBlowupSequence
 
@@ -138,15 +136,11 @@ theorem comp_isStrictPullbackSequenceOfBlowups {W V Y : Scheme.{u}} {u : V ⟶ Y
           Limits.pullback.snd u (s.projectionToBase (r i)) ≫ k := by
     intro i hi Z k
     rw [← Category.assoc, hFsnd, Category.assoc, Category.assoc]
-  have hc1 : ∀ i < t.length, r i < s.length := by
-    intro i hi
-    exact hr1 i (by omega)
+  have hc1 : ∀ i < t.length, r i < s.length := fun i hi => hr1 i (by omega)
   have hc2 : ∀ (i j : ℕ), j ≤ t.length → i < j → r i < r j := by
-    intro i j hj hij
-    exact hr2 i j (by omega) hij
+    exact fun i j hj hij => hr2 i j (by omega) hij
   have hc3 : r t.length = s.length := by
-    rw [hlen]
-    exact hr3
+    rwa [hlen]
   have hc4 : ∀ i < s.length,
       (∃ x, x ∈ ((s.center i).comap
         (Limits.pullback.snd (c ≫ u) (s.projectionToBase i))).support) ↔

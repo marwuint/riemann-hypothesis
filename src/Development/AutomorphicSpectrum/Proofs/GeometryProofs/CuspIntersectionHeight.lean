@@ -400,8 +400,7 @@ section Field
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {L : Type} [Field L]
 
 theorem centre_map (zL : Sp L ⟶ X) (e : L →+* ℂ) : centre (spMap e ≫ zL) = centre zL := by
-  refine (Scheme.Hom.comp_apply (spMap e) zL _).trans ?_
-  exact congrArg zL (Subsingleton.elim _ _)
+  exact (Scheme.Hom.comp_apply (spMap e) zL _).trans (congrArg zL (Subsingleton.elim _ _))
 
 theorem descend {ξ : Sp Ω ⟶ X} (hξ : IsCptGen ξ) (zL : Sp L ⟶ X) (e : L →+* ℂ) {a : Ω} {r : ℂ}
     (h : ValAt ξ (spMap e ≫ zL) a r) : ∃ t : L, ValAt ξ zL a t ∧ e t = r := by
@@ -493,10 +492,8 @@ theorem vertical_value : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
       (e (w ⟨k, cc k⟩) / e (w ⟨k, c k⟩)) := fun k => by
     obtain ⟨ρ, h1, h2⟩ := ((hwe e).2 k (c k) (isUnit_iff_ne_zero.2 (hcs' k))).2 (cc k)
     have h3 : e (w ⟨k, cc k⟩) / e (w ⟨k, c k⟩) = ρ := by
-      rw [div_eq_iff (hcs' k)]
-      exact h2
-    rw [h3]
-    exact h1
+      rwa [div_eq_iff (hcs' k)]
+    rwa [h3]
   have hall := RootHt.valAt_mul hve (val_prod_zpow (Or.𝔐.all _) Finset.univ (Dc.vdeg p) hr
     (fun k => div_ne_zero (hccz k) (hcs' k)))
   have ha : MvPolynomial.aeval Dc.y (Dc.vnum p) / MvPolynomial.aeval Dc.y (Dc.vden p) *
@@ -587,8 +584,7 @@ theorem centre_local (A : Type) [CommRing A] [IsLocalRing A] [Algebra (𝓞 L) A
     [IsLocalization.AtPrime A (primeOf v).asIdeal] :
     centre (spMap (algebraMap (𝓞 L) A) ≫ z) = z (primeOf v) := by
   have e : (spMap (algebraMap (𝓞 L) A)) (IsLocalRing.closedPoint A) = primeOf v := by
-    apply PrimeSpectrum.ext
-    exact IsLocalization.AtPrime.under_maximalIdeal A (primeOf v).asIdeal
+    exact PrimeSpectrum.ext (IsLocalization.AtPrime.under_maximalIdeal A (primeOf v).asIdeal)
   exact (Scheme.Hom.comp_apply _ _ _).trans (congrArg z e)
 
 end Centre
@@ -708,8 +704,7 @@ theorem core (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Typ
   set G : Ω := GlobalTheory.CompanionTheory.Ar.RootHt.gen y a e₀ ch with hG
   have hG0 : G ≠ 0 := mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy k)) he₀
   have hsp : Submodule.span (regAt ξ ⟨centre zA, h⟩) {D⁻¹} = Submodule.span (regAt ξ ⟨centre zA, h⟩) {G} := by
-    rw [← ht]
-    exact hdg
+    rwa [← ht]
   obtain ⟨hε, hε'⟩ := div_mem_of_span_eq _ (inv_ne_zero hD0) hG0 hsp
 
   obtain ⟨r, hr⟩ := GlobalTheory.CompanionTheory.Ar.RootHt.FinLocal.val_of_mem h hε
@@ -1066,9 +1061,7 @@ theorem g_height : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMF
       rw [← Real.log_prod (fun τ _ => (hp τ).ne'), ← hx, Real.log_mul (Finset.prod_pos fun τ _ => hp τ).ne' (hρ x).ne']
       ring
     · intro τ _
-      refine (hb5 τ).subset fun x hx => ?_
-      intro hbad
-      exact hx (by simp [hbad.2])
+      exact (hb5 τ).subset fun x hx => fun hbad => hx (by simp [hbad.2])
 
   have harch := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.PtHt.Arch.geo_height_arch E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 L z P V MV A Or.sm r k _ hrk v q s sL C hLP hO hAd hsLv hC1 hC2
   choose hgram ν hGeo hν0 hνe using harch

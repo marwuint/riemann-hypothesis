@@ -99,14 +99,12 @@ theorem idealOrder_eq_top_iff (I : Ideal R) :
     exact le_top
   · intro h
     rw [ENat.eq_top_iff_forall_ge]
-    intro n
-    exact (le_idealOrder_iff I n).mpr (h n)
+    exact fun n => (le_idealOrder_iff I n).mpr (h n)
 
 theorem one_le_idealOrder_iff (I : Ideal R) :
     1 ≤ idealOrder I ↔ I ≤ IsLocalRing.maximalIdeal R := by
   have h := le_idealOrder_iff I 1
-  rw [Nat.cast_one, pow_one] at h
-  exact h
+  rwa [Nat.cast_one, pow_one] at h
 
 theorem one_le_idealOrder_iff_ne_top (I : Ideal R) :
     1 ≤ idealOrder I ↔ I ≠ ⊤ := by
@@ -115,8 +113,7 @@ theorem one_le_idealOrder_iff_ne_top (I : Ideal R) :
   · intro h hI
     rw [hI] at h
     exact (maximalIdeal.isMaximal R).ne_top (top_le_iff.mp h)
-  · intro h
-    exact IsLocalRing.le_maximalIdeal h
+  · exact fun h => IsLocalRing.le_maximalIdeal h
 
 theorem idealOrder_eq_zero_iff (I : Ideal R) :
     idealOrder I = 0 ↔ ¬ I ≤ IsLocalRing.maximalIdeal R := by
@@ -125,15 +122,13 @@ theorem idealOrder_eq_zero_iff (I : Ideal R) :
 theorem idealOrder_top : idealOrder (⊤ : Ideal R) = 0 := by
   by_contra h
   have h1 : (1 : ℕ∞) ≤ idealOrder (⊤ : Ideal R) := by
-    rw [Order.one_le_iff_ne_zero]
-    exact h
+    rwa [Order.one_le_iff_ne_zero]
   rw [one_le_idealOrder_iff_ne_top] at h1
   exact h1 rfl
 
 theorem idealOrder_bot : idealOrder (⊥ : Ideal R) = ⊤ := by
   rw [idealOrder_eq_top_iff]
-  intro n
-  exact bot_le
+  exact fun n => bot_le
 
 theorem idealOrder_ne_top_of_ne_bot [IsNoetherianRing R] {I : Ideal R} (hI : I ≠ ⊥) :
     idealOrder I ≠ ⊤ := by
@@ -180,22 +175,19 @@ private theorem enat_add_le_of_forall_natCast_add_le {a b c : ℕ∞}
   · have hc : c = ⊤ := by
       rw [ENat.eq_top_iff_forall_ge]
       intro n
-      have hn := h n 0 le_top (by simp)
-      simpa using hn
+      simpa using h n 0 le_top (by simp)
     rw [hc]
     exact le_top
   rcases eq_or_ne b ⊤ with rfl | hb
   · have hc : c = ⊤ := by
       rw [ENat.eq_top_iff_forall_ge]
       intro n
-      have hn := h 0 n (by simp) le_top
-      simpa using hn
+      simpa using h 0 n (by simp) le_top
     rw [hc]
     exact le_top
   lift a to ℕ using ha
   lift b to ℕ using hb
-  have hab := h a b le_rfl le_rfl
-  simpa using hab
+  simpa using h a b le_rfl le_rfl
 
 theorem add_idealOrder_le_idealOrder_mul (I J : Ideal R) :
     idealOrder I + idealOrder J ≤ idealOrder (I * J) := by

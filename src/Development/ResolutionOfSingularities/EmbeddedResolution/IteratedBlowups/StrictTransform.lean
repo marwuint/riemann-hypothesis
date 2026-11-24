@@ -96,8 +96,7 @@ private theorem image_preimage_ι_of_le {X : Scheme.{u}} (U O : X.Opens) (h : O 
   refine le_antisymm ?_ ?_
   · rintro x ⟨y, hy, rfl⟩
     exact hy
-  · intro x hx
-    exact ⟨⟨x, h hx⟩, hx, rfl⟩
+  · exact fun x hx => ⟨⟨x, h hx⟩, hx, rfl⟩
 
 theorem ker_comap_ι_eq_ker_morphismRestrict {W T : Scheme.{u}} (m : W ⟶ T) [QuasiCompact m]
     (V : T.Opens) :
@@ -112,39 +111,24 @@ theorem ker_comap_ι_eq_ker_morphismRestrict {W T : Scheme.{u}} (m : W ⟶ T) [Q
   have hpre2 : ((m ∣_ V) ⁻¹ᵁ P.1)
       = Scheme.Opens.ι (m ⁻¹ᵁ V) ⁻¹ᵁ (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)) := by
     rw [← Scheme.Hom.comp_preimage, ← morphismRestrict_ι, Scheme.Hom.comp_preimage, hpre]
-  have hQV : (Scheme.Opens.ι V ''ᵁ P.1) ≤ V := Scheme.Opens.ι_image_le V P.1
-  have hle : m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1) ≤ m ⁻¹ᵁ V := fun x hx => hQV hx
   have himg : Scheme.Opens.ι (m ⁻¹ᵁ V) ''ᵁ ((m ∣_ V) ⁻¹ᵁ P.1)
       = m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1) := by
     rw [hpre2]
-    exact image_preimage_ι_of_le (m ⁻¹ᵁ V) (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)) hle
-  have hbij := IsOpenImmersion.bijective_appLE_of_image_eq (Scheme.Opens.ι V)
-    (Scheme.Opens.ι V ''ᵁ P.1) P.1 e rfl
-  have hinj := (IsOpenImmersion.bijective_appLE_of_image_eq (Scheme.Opens.ι (m ⁻¹ᵁ V))
-    (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)) ((m ∣_ V) ⁻¹ᵁ P.1) hpre2.le himg).1
-  have hsq : Scheme.Hom.appLE (Scheme.Opens.ι V) (Scheme.Opens.ι V ''ᵁ P.1) P.1 e ≫
-        (m ∣_ V).app P.1
-      = m.app (Scheme.Opens.ι V ''ᵁ P.1) ≫
-        Scheme.Hom.appLE (Scheme.Opens.ι (m ⁻¹ᵁ V))
-          (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)) ((m ∣_ V) ⁻¹ᵁ P.1) hpre2.le := by
+    exact image_preimage_ι_of_le _ _ (m.preimage_mono (Scheme.Opens.ι_image_le V P.1))
+  have hbij := IsOpenImmersion.bijective_appLE_of_image_eq (Scheme.Opens.ι V) _ _ e rfl
+  have hinj :=
+    (IsOpenImmersion.bijective_appLE_of_image_eq (Scheme.Opens.ι (m ⁻¹ᵁ V)) _ _ hpre2.le himg).1
+  have hsq : Scheme.Hom.appLE (Scheme.Opens.ι V) _ _ e ≫ (m ∣_ V).app P.1
+      = m.app _ ≫ Scheme.Hom.appLE (Scheme.Opens.ι (m ⁻¹ᵁ V)) _ _ hpre2.le := by
     rw [Scheme.Hom.app_eq_appLE (m ∣_ V), Scheme.Hom.app_eq_appLE m,
-      Scheme.Hom.appLE_comp_appLE (m ∣_ V) (Scheme.Opens.ι V) (Scheme.Opens.ι V ''ᵁ P.1) P.1
-        ((m ∣_ V) ⁻¹ᵁ P.1) e le_rfl,
-      Scheme.Hom.appLE_comp_appLE (Scheme.Opens.ι (m ⁻¹ᵁ V)) m (Scheme.Opens.ι V ''ᵁ P.1)
-        (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)) ((m ∣_ V) ⁻¹ᵁ P.1) le_rfl hpre2.le]
+      Scheme.Hom.appLE_comp_appLE (m ∣_ V) (Scheme.Opens.ι V) _ _ _ e le_rfl,
+      Scheme.Hom.appLE_comp_appLE (Scheme.Opens.ι (m ⁻¹ᵁ V)) m _ _ _ le_rfl hpre2.le]
     exact Scheme.Hom.appLE_congr_hom (morphismRestrict_ι m V) ..
-  have hsqr : ∀ x, (CommRingCat.Hom.hom ((m ∣_ V).app P.1))
-        ((CommRingCat.Hom.hom
-          (Scheme.Hom.appLE (Scheme.Opens.ι V) (Scheme.Opens.ι V ''ᵁ P.1) P.1 e)) x)
-      = (CommRingCat.Hom.hom (Scheme.Hom.appLE (Scheme.Opens.ι (m ⁻¹ᵁ V))
-          (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)) ((m ∣_ V) ⁻¹ᵁ P.1) hpre2.le))
-        ((CommRingCat.Hom.hom (m.app (Scheme.Opens.ι V ''ᵁ P.1))) x) := by
-    intro x
-    have h' := congrArg (fun mm => (CommRingCat.Hom.hom mm) x) hsq
-    simpa only [CommRingCat.hom_comp, RingHom.comp_apply] using h'
+  have hsqr := RingHom.congr_fun (congrArg CommRingCat.Hom.hom hsq)
+  simp only [CommRingCat.hom_comp, RingHom.comp_apply] at hsqr
   rw [Scheme.IdealSheafData.comap_ideal_eq_map_appLE _ (Scheme.Opens.ι V)
       ⟨Scheme.Opens.ι V ''ᵁ P.1, hQaff⟩ P e,
-    ker_ideal_eq_ker_app m ⟨Scheme.Opens.ι V ''ᵁ P.1, hQaff⟩, ker_ideal_eq_ker_app (m ∣_ V) P]
+    ker_ideal_eq_ker_app m _, ker_ideal_eq_ker_app (m ∣_ V) P]
   dsimp only
   refine le_antisymm ?_ ?_
   · rw [Ideal.map_le_iff_le_comap]
@@ -315,15 +299,13 @@ theorem isBlowupAlongIdealSheaf_of_isIso_comp {X A B : Scheme.{u}} (f : A ⟶ X)
     have ht' : t ≫ g = q := ht
     refine ⟨t ≫ inv e, ?_, ?_⟩
     · show (t ≫ inv e) ≫ f = q
-      rw [← hfac, Category.assoc, IsIso.inv_hom_id_assoc]
-      exact ht'
+      rwa [← hfac, Category.assoc, IsIso.inv_hom_id_assoc]
     · intro y hy
       have hy' : y ≫ f = q := hy
       have hye : y ≫ e = t := by
         refine huniq _ ?_
         show (y ≫ e) ≫ g = q
-        rw [Category.assoc, hfac]
-        exact hy'
+        rwa [Category.assoc, hfac]
       rw [← hye, Category.assoc, IsIso.hom_inv_id, Category.comp_id]
 
 private theorem isCompact_of_subset_noetherianSpace {α : Type u} [TopologicalSpace α] (s : Set α)
@@ -334,8 +316,7 @@ private theorem isCompact_of_subset_noetherianSpace {α : Type u} [TopologicalSp
     apply Set.Subset.antisymm
     · rintro x ⟨y, hy, rfl⟩
       exact hy
-    · intro x hx
-      exact ⟨⟨x, ht hx⟩, hx, rfl⟩
+    · exact fun x hx => ⟨⟨x, ht hx⟩, hx, rfl⟩
   rwa [h3] at h2
 
 private theorem isCompact_of_subset_isCompact {B : Scheme.{u}} [IsLocallyNoetherian B]
@@ -367,8 +348,7 @@ private theorem isCompact_of_subset_isCompact {B : Scheme.{u}} [IsLocallyNoether
 private theorem quasiCompact_of_isInducing {A B : Scheme.{u}} [IsLocallyNoetherian B]
     (f : A ⟶ B) (hf : Topology.IsInducing ⇑f.base) : QuasiCompact f := by
   refine ⟨fun U _ hU' => ?_⟩
-  refine hf.isCompact_iff.mpr ?_
-  exact isCompact_of_subset_isCompact hU' (Set.image_preimage_subset _ _)
+  exact hf.isCompact_iff.mpr (isCompact_of_subset_isCompact hU' (Set.image_preimage_subset _ _))
 
 theorem quasiCompact_strictTransformι_of_isLocallyNoetherian {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) [IsLocallyNoetherian X₁] :

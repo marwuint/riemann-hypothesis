@@ -240,13 +240,11 @@ theorem main : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (N : TrueGeo
     exact h₁ a
   have hy := N.pb.lift_fst _ _ hw
   refine ⟨v, e, ⟨N.pb.lift _ _ hw, N.pb.lift_snd _ _ hw⟩, yt, hy.symm, ?_, ?_, ?_⟩
-  · intro x _
-    exact hle ((Set.ext_iff.1 hU.range_fromSpec _).1 ⟨_, rfl⟩)
+  · exact fun x _ => hle ((Set.ext_iff.1 hU.range_fromSpec _).1 ⟨_, rfl⟩)
   · intro h
     refine (hb (PrimeSpectrum.comap φ (IsLocalRing.closedPoint e.O))).1 h ?_
     have := hle' hp
-    rw [← h₂] at this
-    exact this
+    rwa [← h₂] at this
   · change (N.pb.lift _ _ hw ≫ N.j) (IsLocalRing.closedPoint (AlgebraicClosure F)) ∈ _
     rw [hy]
     refine (hb (PrimeSpectrum.comap φ (PrimeSpectrum.comap e.O.subtype
@@ -398,8 +396,7 @@ theorem place_eq {F : Type} [Field F] [NumberField F] {v v' : HeightOneSpectrum 
     obtain ⟨c, hc, hu⟩ := h a ha
     have h1 : e.w c < 1 := not_le.1 fun h' => hu (RegCrit.isUnit_of_one_le e c h')
     rw [hc, e.w_alg] at h1
-    rw [← FinitePlace.norm_lt_one_iff_mem F v' a, FinitePlace.norm_embedding]
-    exact h1
+    rwa [← FinitePlace.norm_lt_one_iff_mem F v' a, FinitePlace.norm_embedding]
   exact HeightOneSpectrum.ext (v.isMaximal.eq_of_le v'.isPrime.ne_top hle).symm
 
 theorem exists_hom (F : Type) [Field F] [NumberField F] (A K : Type) [CommRing A] [Field K] [Algebra A K]
@@ -421,8 +418,7 @@ theorem exists_hom (F : Type) [Field F] [NumberField F] (A K : Type) [CommRing A
   obtain ⟨𝔫, h𝔫, hle⟩ := Ideal.exists_le_maximal _ hne
   obtain ⟨v, e, φ, h₁, h₂, h₃⟩ := _root_.GlobalTheory.TrueGeo.HorizRing.main F B 𝔫 h𝔫 (algebraMap A B c) fun h => hc (hB (by rw [h, map_zero]))
   have hn : ∀ s ∈ 𝔫, ¬ IsUnit (φ s) := fun s hs => by
-    rw [← h₂] at hs
-    exact hs
+    rwa [← h₂] at hs
   refine ⟨v, e, φ.comp (algebraMap A B), φ ⟨t, Algebra.subset_adjoin rfl⟩, h₁,
     fun m hm => hn _ (hle (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hm))), h₃,
     hn _ (hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))), fun a b hab => ?_⟩
@@ -456,8 +452,7 @@ theorem main : RegLocSt := by
   obtain ⟨h, hhW, hh⟩ := hU.exists_basicOpen_le ⟨_, gen_mem hw⟩ (gen_mem hxU)
   have hh0 : h ≠ 0 := by
     rintro rfl
-    rw [Scheme.basicOpen_zero] at hh
-    exact hh
+    rwa [Scheme.basicOpen_zero] at hh
   obtain ⟨𝔪, h𝔪, hle'⟩ := Ideal.exists_le_maximal _ (hU.primeIdealOf ⟨x, hxU⟩).isPrime.ne_top
   obtain ⟨a, b, hb, hab⟩ := IsFractionRing.div_surjective (A := Γ(V.X, U)) g
   have hb0 : b ≠ 0 := nonZeroDivisors.ne_zero hb
@@ -472,10 +467,8 @@ theorem main : RegLocSt := by
     have hx' : hU.fromSpec (hU.primeIdealOf ⟨x, hxU⟩) = x := hU.fromSpec_primeIdealOf ⟨x, hxU⟩
     have hc' : c ∈ ((hU.fromSpec ≫ V.p) (hU.primeIdealOf ⟨x, hxU⟩)).asIdeal := by
       change c ∈ (V.p (hU.fromSpec (hU.primeIdealOf ⟨x, hxU⟩))).asIdeal
-      rw [hx', hxv]
-      exact hc
-    rw [fromSpec_str] at hc'
-    exact hc'
+      rwa [hx', hxv]
+    rwa [fromSpec_str] at hc'
   have hτ : τ * φ a = φ b := h₅ a b (by rw [← hgb, ← mul_assoc, inv_mul_cancel₀ hg0, one_mul])
   rw [map_mul] at h₃
   let κ : Γ(V.X, U) →+* AlgebraicClosure F := e.O.subtype.comp φ
@@ -826,8 +819,7 @@ theorem strip_prime_factors (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRi
         · exact hnd hdvd
         · exact hy i hi hpi (hdvd.trans (Dvd.intro_left _ hy'.symm))
     · refine ⟨Function.update m j 0, y, ?_, ?_⟩
-      · rw [Finset.prod_insert hj, Function.update_self, pow_zero, one_mul]
-        rw [hxy]
+      · rw [Finset.prod_insert hj, Function.update_self, pow_zero, one_mul, hxy]
         congr 1
         refine Finset.prod_congr rfl fun i hi => ?_
         rw [Function.update_of_ne (by rintro rfl; exact hj hi)]
@@ -964,8 +956,7 @@ theorem prime_algebraMap_localization_of_isRegularRing_quotient :
   have hprime : (Ideal.span {algebraMap A R x}).IsPrime := (Ideal.Quotient.isDomain_iff_prime _).1 hdom
   have hne : algebraMap A R x ≠ 0 := by
     intro h0
-    apply hx
-    exact IsLocalization.injective R (P.primeCompl_le_nonZeroDivisors) (by simpa using h0)
+    exact hx (IsLocalization.injective R (P.primeCompl_le_nonZeroDivisors) (by simpa using h0))
   exact (Ideal.span_singleton_prime hne).1 hprime
 
 end GlobalTheory
@@ -1155,8 +1146,7 @@ theorem regAt_iff_frac {y : X} (hy : y ∈ U) (g : X.functionField) :
     RegAt y g ↔ ∃ a b : Γ(X, U), b ∉ (hU.primeIdealOf ⟨y, hy⟩).asIdeal ∧
       g * fnOf U (gen_mem hy) b = fnOf U (gen_mem hy) a := by
   constructor
-  · intro hg
-    exact GlobalTheory.FieldPair.regAt_exists_fraction hU hy hg
+  · exact fun hg => GlobalTheory.FieldPair.regAt_exists_fraction hU hy hg
   · rintro ⟨a, b, hb, e⟩
     have hu := GlobalTheory.FieldPair.unitAt_fnOf_of_not_mem hU hy hb
     have eg : g = fnOf U (gen_mem hy) a * (fnOf U (gen_mem hy) b)⁻¹ := by
@@ -1200,8 +1190,7 @@ theorem exists_specializes_of_le {y : X} (hy : y ∈ U) (Q : Ideal Γ(X, U)) (hQ
   refine ⟨(GlobalTheory.QCoh.pointOfPrime hU ⟨Q, hQ⟩ : X), (GlobalTheory.QCoh.pointOfPrime hU ⟨Q, hQ⟩).2, ?_, ?_⟩
   · have h1 := ((PrimeSpectrum.le_iff_specializes ⟨Q, hQ⟩ (hU.primeIdealOf ⟨y, hy⟩)).mp hQP).map
       hU.fromSpec.continuous
-    rw [hU.fromSpec_primeIdealOf ⟨y, hy⟩] at h1
-    exact h1
+    rwa [hU.fromSpec_primeIdealOf ⟨y, hy⟩] at h1
   · rw [GlobalTheory.QCoh.primeIdealOf_pointOfPrime]
 
 theorem isLogChart_of_isEtCoord : ∀ (p : ℕ) [Fact p.Prime] (X : Scheme.{0}) [IsIntegral X]
@@ -1423,7 +1412,6 @@ theorem _root_.GlobalTheory.LogPair.flat_germ_comp_cstOn_of_isEtCoord : ∀ {R :
   have hG : (Y.presheaf.germ U y hy).hom.Flat := by
     letI := (Y.presheaf.germ U y hy).hom.toAlgebra
     have := hU.isLocalization_stalk ⟨y, hy⟩
-    show Module.Flat _ _
     exact IsLocalization.flat _ (hU.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl
   rw [← MvPolynomial.eval₂Hom_comp_C (_root_.GlobalTheory.LogPair.cstOn g U) t, ← RingHom.comp_assoc]
   exact (hC.comp hE).comp hG
@@ -1746,8 +1734,7 @@ theorem lifted_stalkMap_germ_appLE {Y Z : Scheme.{0}} (f : Z ⟶ Y) (W : Y.Opens
     (f.stalkMap z).hom ((Y.presheaf.germ W (f z) (h hz)).hom s) =
       (Z.presheaf.germ W' z hz).hom ((f.appLE W W' h).hom s) := by
   have h1 := Scheme.Hom.germ_stalkMap_apply f W z (h hz) s
-  have h2 := TopCat.Presheaf.germ_res_apply Z.presheaf (homOfLE h) z hz ((f.app W).hom s)
-  exact h1.trans h2.symm
+  exact h1.trans (TopCat.Presheaf.germ_res_apply Z.presheaf (homOfLE h) z hz ((f.app W).hom s)).symm
 
 theorem isLifted_of_sncCharts : ∀ (p : ℕ) [Fact p.Prime] (Y X : Scheme.{0}) [IsIntegral X] (g : Y ⟶ Sp (ZMod (p ^ 2))) (f : X ⟶ Sp (ZMod p)) (π : X ⟶ Y), IsPullback π f g (spMap (ZMod.castHom (dvd_pow_self p two_ne_zero) (ZMod p))) → ∀ {n s : ℕ} (L : Fin s → LB Y) (σ : ∀ i, (L i).Sec), (∀ i, (L i).IsLB) → ∀ {ι : Type} [Nonempty ι] (C : ι → SncChart g n L σ) (Z : Set X) (U : ι → X.Opens) (hU : ∀ i, U i ≤ π ⁻¹ᵁ (C i).U) (hgen : ∀ i, genericPoint X ∈ U i) (x : ι → Fin n → X.functionFieldˣ) (J : ι → Finset (Fin n)), (∀ i l, (x i l : X.functionField) = fnOf (U i) (hgen i) ((π.appLE (C i).U (U i) (hU i)).hom ((C i).t l))) → (∀ i l, l ∈ J i → ∃ c, (C i).e c = some l) → (∀ i, IsLogChart Z (U i) (x i) (J i)) → IsLifted p Z U x := by
   intro p _ Y X _ q f π hpb n s L σ hL ι _ C Z U hU hgen x J hx hJ hchart
@@ -1757,8 +1744,7 @@ theorem isLifted_of_sncCharts : ∀ (p : ℕ) [Fact p.Prime] (Y X : Scheme.{0}) 
   have hflat : IsFlatLift p πK :=
     _root_.GlobalTheory.DI.isFlatLift_stalkMap_of_isEtCoord p Y X q f π hpb (C i₁).U (C i₁).t (C i₁).affine (C i₁).etale (genericPoint X) (hη i₁)
   have hpK : (p : X.functionField) = 0 := by
-    have h0 := (hflat.ker (p : Y.presheaf.stalk (π (genericPoint X)))).2 ⟨1, by ring⟩
-    simpa using h0
+    simpa using (hflat.ker (p : Y.presheaf.stalk (π (genericPoint X)))).2 ⟨1, by ring⟩
   haveI : CharP X.functionField p := (CharP.charP_iff_prime_eq_zero Fact.out).2 hpK
   have hpp := logLift_pp_zero p πK hflat
   choose F hF1 hF2 hF3 using fun i =>
@@ -1773,8 +1759,7 @@ theorem isLifted_of_sncCharts : ∀ (p : ℕ) [Fact p.Prime] (Y X : Scheme.{0}) 
   · intro i z
     obtain ⟨w, hw⟩ := hF1 i z
     rw [hw, map_add (f := _), map_pow, map_mul, map_natCast, hpK, zero_mul, add_zero]
-  · intro i l
-    exact ⟨_, hlift i l, hF2 i l⟩
+  · exact fun i l => ⟨_, hlift i l, hF2 i l⟩
   intro y t hyt a ha
   rcases t.eq_empty_or_nonempty with rfl | ⟨i₀, hi₀⟩
   · obtain ⟨z, hz⟩ := hflat.surj (a : X.functionField)
@@ -1833,8 +1818,7 @@ theorem isLifted_of_sncCharts : ∀ (p : ℕ) [Fact p.Prime] (Y X : Scheme.{0}) 
       · exact hF2 i l
     obtain ⟨w, hwA, hw⟩ := _root_.GlobalTheory.DI.unit_mul_logarithmic_lift p At (F i) sv sv' _ hpp hsv'A hvv (hstab i hi sv hsvA) (hkey ((C i).e c))
     refine ⟨w, Subring.mem_map.2 ⟨w, hwA, rfl⟩, ?_⟩
-    rw [hv2]
-    exact hw
+    rwa [hv2]
   rw [Units.val_mul, Units.coe_prod]
   refine logLift_mul p πK F t _ hflat hU1 ?_
   refine Finset.prod_induction _ (LogLift p πK F t (At.map πK : Set X.functionField))
@@ -1978,8 +1962,7 @@ theorem exists_atlas_decomp : ∀ (p : ℕ) [Fact p.Prime] (Y X : Scheme.{0}) [I
       obtain ⟨c, hc⟩ := (hJ k j).1 hj
       refine Set.mem_iUnion.2 ⟨c, (heq k c y hy).mem_supp_iff.2 ?_⟩
       change ¬ UnitAt y ((((C k).e c).elim 1 (x k) : X.functionFieldˣ) : X.functionField)
-      rw [hc]
-      exact hu
+      rwa [hc]
   let 𝒜 : SncAtlas E d (Fin T.card) :=
     { U := fun k => (pullChart hP (C k)).U
       x := x

@@ -231,8 +231,7 @@ theorem exists_pow_mem_of_ne_zero (R : Type) [CommRing R] [IsDomain R] [Valuatio
       have hbJ' : b ∈ J := hbJ (Ideal.mem_span_singleton_self b)
       have hJ0 : J ≠ ⊥ := fun h => hb (by simpa [h] using hbJ')
       have hmax := Ring.DimensionLEOne.maximalOfPrime hJ0 hJ
-      rw [IsLocalRing.eq_maximalIdeal hmax]
-      exact hπ
+      rwa [IsLocalRing.eq_maximalIdeal hmax]
     obtain ⟨n, hn⟩ := hrad
     obtain ⟨c, hc⟩ := Ideal.mem_span_singleton'.1 hn
     exact ⟨n, c, by rw [← hc, mul_comm]⟩
@@ -254,8 +253,7 @@ theorem isOpenImmersion_spMap_fraction :
         (map_ne_zero_iff _ inj).2 (nonZeroDivisors.ne_zero hb)
       rw [← map_pow, hc, map_mul, map_mul]
       field_simp
-    · intro a b hab
-      exact ⟨0, by rw [inj hab]⟩
+    · exact fun a b hab => ⟨0, by rw [inj hab]⟩
   exact IsOpenImmersion.of_isLocalization π
 
 end GlobalTheory.CompanionTheory.ValGeneric
@@ -307,8 +305,7 @@ theorem exists_isRoot_of_monic {C : Type} [Field C] [IsAlgClosed C] {R : Type} [
     exact (natDegree_pos_iff_degree_pos.mp hd).ne'
   obtain ⟨x, hx⟩ := IsAlgClosed.exists_root (f.map (algebraMap R C)) hdeg
   have hxa : aeval x f = 0 := by
-    rw [aeval_def, ← Polynomial.eval_map]
-    exact hx
+    rwa [aeval_def, ← Polynomial.eval_map]
   have hint : IsIntegral R x := ⟨f, hf, by rw [← aeval_def]; exact hxa⟩
   obtain ⟨r, rfl⟩ := IsIntegrallyClosed.isIntegral_iff.mp hint
   refine ⟨r, hinj ?_⟩
@@ -499,8 +496,7 @@ theorem eq_zero_of_pull_generic_eq_zero : ∀ (C : Type) [Field C] [IsAlgClosed 
     have e := hsq.lift_fst (𝟙 _) g (by simpa using hg.symm)
     have := pull_comp (hsq.lift (𝟙 _) g (by simpa using hg.symm))
       (pullback.fst A.hom (spMap (algebraMap R C)) ∣_ Y) q
-    rw [e, pull_id, hq, map_zero] at this
-    exact this
+    rwa [e, pull_id, hq, map_zero] at this
 
 end GlobalTheory.CompanionTheory.ValFibre
 end -- clump:auto
@@ -579,8 +575,7 @@ theorem exists_open_pull_eq_zero {O K : Type} [CommRing O] [IsDomain O] [Valuati
     have h0 : p ∈ XK.basicOpen (0 : Γ(XK, j ⁻¹ᵁ V)) := by
       rw [hb, Scheme.basicOpen_mul]
       exact ⟨hc _ hπ' p hpV, hpσ⟩
-    rw [Scheme.basicOpen_zero] at h0
-    exact h0
+    rwa [Scheme.basicOpen_zero] at h0
   letI := (AbLaw.cst f V).toAlgebra
   letI := φ.toAlgebra
   haveI : IsScalarTower O (MvPolynomial (Fin n) O) Γ(X, V) := .of_algebraMap_eq' hφ.symm
@@ -599,8 +594,7 @@ theorem exists_open_pull_eq_zero {O K : Type} [CommRing O] [IsDomain O] [Valuati
   · have hz : j z.1 ∈ X.basicOpen b' := z.2
     have hzV : z.1 ∈ j ⁻¹ᵁ V := X.basicOpen_le b' hz
     have hz' : z.1 ∈ XK.basicOpen ((j.app V).hom b') := by
-      rw [← Scheme.preimage_basicOpen]
-      exact hz
+      rwa [← Scheme.preimage_basicOpen]
     have hρ : algebraMap O K ρ ≠ 0 := fun h => hb0 (by
       rw [e, IsFractionRing.injective O K (h.trans (map_zero _).symm), map_zero, zero_mul])
     have e' : (j.app V).hom b = AbLaw.cst fK (j ⁻¹ᵁ V) (algebraMap O K ρ) * (j.app V).hom b' := by
@@ -678,10 +672,8 @@ theorem exists_extend_of_pull_inf_eq_zero (X : Scheme.{0}) (W V : X.Opens) (p : 
       Set.range (X.homOfLE (le_sup_right : V ≤ W ⊔ V)) = Set.univ := by
     refine Set.eq_univ_of_forall fun x => ?_
     rcases x.2 with h | h
-    · refine Or.inl ⟨⟨x.1, h⟩, ?_⟩
-      exact Subtype.ext (by simp [Scheme.homOfLE_apply])
-    · refine Or.inr ⟨⟨x.1, h⟩, ?_⟩
-      exact Subtype.ext (by simp [Scheme.homOfLE_apply])
+    · exact Or.inl ⟨⟨x.1, h⟩, Subtype.ext (by simp [Scheme.homOfLE_apply])⟩
+    · exact Or.inr ⟨⟨x.1, h⟩, Subtype.ext (by simp [Scheme.homOfLE_apply])⟩
   have hT := LB.isLB_triv V.toScheme
   have iso : LBIso (N.pull (X.homOfLE (inf_le_left : W ⊓ V ≤ W)))
       ((LB.triv V.toScheme).pull (X.homOfLE (inf_le_right : W ⊓ V ≤ V))) := by
@@ -1063,8 +1055,7 @@ theorem transl_id {S S' : Scheme.{0}} (A : Over S) [GrpObj A] (s : S' ⟶ S) (hS
       rw [Category.assoc, Category.assoc, b₁, sq_fst, ← Category.assoc, a₁]
       simp [j]
     · change _ ≫ (snd A A).left = _ ≫ (snd A A).left
-      rw [Category.assoc, Category.assoc, b₂, sq_snd, ← Category.assoc, a₂]
-      exact ht
+      rwa [Category.assoc, Category.assoc, b₂, sq_snd, ← Category.assoc, a₂]
   have h₀ : ∀ u : S' ⟶ B.left, pull (B.hom ≫ u) l = 0 := fun u ↦ by
     rw [pull_comp, hS (pull u l), map_zero]
   have e₁ : pull t.left l = 0 := h₀ u
@@ -1102,8 +1093,7 @@ theorem near : ∀ (C : Type) [Field C] [IsAlgClosed C] (R : Type) [CommRing R] 
     have e : (GlobalTheory.PolTranslate.transl d).left (b.left (IsLocalRing.closedPoint R)) =
         (b ≫ GlobalTheory.PolTranslate.transl d).left (IsLocalRing.closedPoint R) := by
       rw [Over.comp_left]; rfl
-    rw [← hb, e, hbd]
-    exact hb₀
+    rwa [← hb, e, hbd]
   · set W := jj A (spMap (algebraMap R C)) ⁻¹ᵁ ((GlobalTheory.PolTranslate.transl d).left ⁻¹ᵁ V₀ ⊓ V₂) with hW
     have t₁ : pull W.ι (pull τ l) = 0 := by
       rw [← pull_comp]
@@ -1135,8 +1125,7 @@ theorem extend : ∀ (C : Type) [Field C] [IsAlgClosed C] (R : Type) [CommRing R
   let U₀ : A.left.Opens := j.opensRange
   let Q : A.left.Opens → Prop := fun W ↦ IsCompact (W : Set A.left) ∧
     ∃ (r : ((Over.pullback (spMap (algebraMap R C))).obj A).left ⟶ W.toScheme) (p : Pic W.toScheme), r ≫ W.ι = j ∧ pull r p = l
-  have hcA : CompactSpace A.left := by
-    exact QuasiCompact.compactSpace_of_compactSpace A.hom
+  have hcA : CompactSpace A.left := QuasiCompact.compactSpace_of_compactSpace A.hom
   have hcK : CompactSpace ((Over.pullback (spMap (algebraMap R C))).obj A).left :=
     QuasiCompact.compactSpace_of_compactSpace (pullback.snd A.hom (spMap (algebraMap R C)))
   have hqs : QuasiSeparatedSpace A.left := quasiSeparatedSpace_of_quasiSeparated A.hom

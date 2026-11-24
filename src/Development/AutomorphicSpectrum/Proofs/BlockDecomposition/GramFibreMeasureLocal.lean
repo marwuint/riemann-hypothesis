@@ -83,9 +83,7 @@ theorem fib_similitude : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
   have hKu := GlobalTheory.CompanionTheory.SW.KUnits.units_val_isOpenEmbedding F E σ hσ R hR
   have hcont : ∀ h : GL (Fin M) (R ⊗[F] E),
       Continuous (actTup R h : (Fin n → Fin M → R ⊗[F] E) → (Fin n → Fin M → R ⊗[F] E)) := by
-    intro h
-    refine continuous_pi fun b => ?_
-    exact continuous_const.matrix_mulVec (continuous_apply b)
+    exact fun h => continuous_pi fun b => continuous_const.matrix_mulVec (continuous_apply b)
   let e : (Fin n → Fin M → R ⊗[F] E) ≃ₜ (Fin n → Fin M → R ⊗[F] E) :=
     { toFun := actTup R g
       invFun := actTup R g⁻¹
@@ -136,15 +134,13 @@ theorem fib_similitude : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
     constructor
     · rintro ⟨S, hS, rfl⟩
       exact hdet _ _ hS
-    · intro hS'
-      exact ⟨τh.symm S', hdet _ _ hS', τh.apply_symm_apply _⟩
+    · exact fun hS' => ⟨τh.symm S', hdet _ _ hS', τh.apply_symm_apply _⟩
   have hU : G ⁻¹' B = {X | IsUnit (gramR R σ J X).det} := by
     ext X
     show IsUnit _ ↔ IsUnit _
     rw [hGe]
   have hfam : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ (gramR R σ J) Subtype.val (G ⁻¹' B) ν B m := by
-    rw [hU]
-    exact hm
+    rwa [hU]
   have hgram : ∀ X : Fin n → Fin M → R ⊗[F] E, gramR R σ J (actTup R g X) =
       (algebraMap R (R ⊗[F] E) (u : R)) • gramR R σ J X := by
     intro X

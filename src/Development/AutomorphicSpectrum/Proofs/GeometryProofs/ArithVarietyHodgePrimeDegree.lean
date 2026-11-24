@@ -110,8 +110,7 @@ theorem exists_genPts (𝔐 : HodgeCpt Y S y) (n : ℕ) (T : (Fin (D.p + D.q) �
   have hsub : ∀ x x', T (x - x') = 1 → T x = T x' := by
     intro x x' h
     have := hadd (x - x') x'
-    rw [sub_add_cancel, h, _root_.one_mul] at this
-    exact this
+    rwa [sub_add_cancel, h, _root_.one_mul] at this
   have hdep : ∀ x x', qmk n x = qmk n x' → T x = T x' := by
     intro x x' h
     obtain ⟨z, hz⟩ := (qmk_eq_iff n x x').1 h
@@ -212,8 +211,7 @@ theorem eq_of_specializes_of_fst_of_ne {X : Scheme.{0}} {O F Ω₀ : Type} [Comm
     (IsLocalRing.closedPoint Ω₀) hy'
   have hzz : z' ⤳ z := by
     rw [← hemb.isInducing.specializes_iff, specializes_prod]
-    simp only [hz, hz', hz₂, hz₂']
-    exact ⟨hyy, specializes_rfl⟩
+    simpa only [hz, hz', hz₂, hz₂'] using ⟨hyy, specializes_rfl⟩
   have sq : IsPullback (pullback.snd (pullback.fst s (spMap β)) ξ₀)
       (pullback.fst (pullback.fst s (spMap β)) ξ₀ ≫ pullback.snd s (spMap β)) (spMap g₀) (spMap β) := by
     rw [← hs]
@@ -230,8 +228,7 @@ theorem eq_of_specializes_of_fst_of_ne {X : Scheme.{0}} {O F Ω₀ : Type} [Comm
     Ideal.isMaximal_of_isIntegral_of_isMaximal_under (R := Ω₀) p'.asIdeal hcm
   have heq : p' = p := PrimeSpectrum.ext (hmax.eq_of_le p.isPrime.ne_top hle)
   have hzeq : z' = z := by
-    have h := congrArg e.inv heq
-    simpa [p, p'] using h
+    simpa [p, p'] using congrArg e.inv heq
   rw [← hz, ← hz', hzeq]
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
@@ -258,8 +255,7 @@ theorem exists_point_of_hodgeCpt (𝔐 : HodgeCpt Y S y) : ∃ x : Sp Ω ⟶ Xo.
     have h1 : spMap (𝔐.fn.comp g₀) = spMap (𝔐.cst.comp β) := by
       rw [← 𝔐.cst_over, ← Category.assoc, hfn, Category.assoc, hs]
       simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
-    have h2 := Spec.map_injective h1
-    exact congrArg CommRingCat.Hom.hom h2
+    exact congrArg CommRingCat.Hom.hom (Spec.map_injective h1)
   have hk : ∀ a, g₀ a = 0 → β a = 0 := by
     intro a ha
     apply hcst

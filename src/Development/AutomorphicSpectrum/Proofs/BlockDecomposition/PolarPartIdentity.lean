@@ -68,8 +68,7 @@ theorem npow_mul' {a b : ℝ≥0} (w : ℂ) : npow (a * b) w = npow a w * npow b
   exact Complex.mul_cpow_ofReal_nonneg a.2 b.2 w
 
 theorem npow_add' {a : ℝ≥0} (ha : a ≠ 0) (v w : ℂ) : npow a (v + w) = npow a v * npow a w := by
-  simp only [npow]
-  exact Complex.cpow_add _ _ (by exact_mod_cast ha)
+  simpa only [npow] using Complex.cpow_add _ _ (by exact_mod_cast ha)
 
 theorem absA_ne_zero_of_ht {H : G D n → ℝ≥0} (hH : IsHt H) {q : G D n} (hq : q ∈ P D n)
     {a : GL (Fin n) (AE D)} (ha : blkA (mat q) = a.1) :
@@ -110,18 +109,15 @@ variable {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) (ψ : AddChar (AF D
 
 theorem zc_const_mul (c : ℂ) (F : G D n → ℂ) (g : G D n) :
     zc M m ψ b₀ (fun x => c * F x) g = c * zc M m ψ b₀ F g := by
-  simp only [zc, mul_assoc]
-  exact integral_const_mul _ _
+  simpa only [zc, mul_assoc] using integral_const_mul _ _
 
 theorem pc_const_mul (c : ℂ) (F : G D n → ℂ) (g : G D n) :
     pc M m ψ b₀ (fun x => c * F x) g = c * pc M m ψ b₀ F g := by
-  simp only [PositivityTheory.Rg.Rsw.pc, zc_const_mul]
-  exact integral_const_mul _ _
+  simpa only [PositivityTheory.Rg.Rsw.pc, zc_const_mul] using integral_const_mul _ _
 
 theorem FJ_const_mul (c : ℂ) (F : G D n → ℂ) (g : G D n) (η : Mx D ρ p → ℂ) :
     FJ M m ψ b₀ (fun x => c * F x) g η = c * FJ M m ψ b₀ F g η := by
-  simp only [FJ, pc_const_mul, mul_assoc]
-  exact integral_const_mul _ _
+  simpa only [FJ, pc_const_mul, mul_assoc] using integral_const_mul _ _
 
 end Homog
 
@@ -188,8 +184,7 @@ theorem rank_of_FJ (hPB : PcBound) (hTh : ThTotal) (hPc : PcFc)
     · exact (hc F hF hl).comp (M.sh_cont.mul continuous_const)
     · intro Ω hΩ
       exact hv b₀ hb Ω hΩ g'
-  have h1 := congrFun (key ((M.sh 0)⁻¹ * g)) 0
-  simpa using h1
+  simpa using congrFun (key ((M.sh 0)⁻¹ * g)) 0
 
 theorem sph_bound (hHt : HtExist) (hS : SphBound) (hp : 1 ≤ p) (f : ℝ → G D p → ℂ)
     (hcont : ContinuousOn (fun u : ℝ × G D p => f u.1 u.2) (Set.Icc ((p : ℝ) / 2) (p / 2 + 1) ×ˢ Set.univ))
@@ -305,8 +300,7 @@ theorem rsec_real (hRS : RSec) {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ 
   constructor
   · refine hRc.comp (f := fun u : ℝ × G D p => ((u.1 : ℂ), u.2))
       ((Complex.continuous_ofReal.comp continuous_fst).prodMk continuous_snd).continuousOn ?_
-    intro u hu
-    exact ⟨by simpa using hlt.trans_le hu.1.1, Set.mem_univ _⟩
+    exact fun u hu => ⟨by simpa using hlt.trans_le hu.1.1, Set.mem_univ _⟩
   · intro σ hσ
     have := hRl (σ : ℂ) (by simpa using hlt.trans_le hσ.1)
     rwa [mul_inv_cancel] at this
@@ -383,8 +377,7 @@ theorem polar : MapsExist → HtExist → HeckeEta → RightId → PoleReal → 
       rwa [hfs] at h2
     · have h1 := hlw s hsm
       rw [hfs] at h1
-      rw [hs']
-      exact h1
+      rwa [hs']
   · have hpf := (hPc D n r t hn M m ψ hψ _ (hcf 1).1 (hcf 1).2).2 (P1 1 le_rfl) b₀ hb β hβ nb lam 𝓖 hcd
     have hE : ∫ y, fc ψ lam 𝓖 nb (cf d E (s : ℂ) ε 1) β (M.sh y * g) * conj (Ω 1 y) ∂m.μ =
         FJ M m ψ b₀ (cf d E (s : ℂ) ε 1) g (Ω 1) := by

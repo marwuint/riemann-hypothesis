@@ -273,8 +273,7 @@ theorem card_field (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpOb
   refine hcard.symm.trans ?_
   refine Nat.card_eq_of_bijective
     (fun t => ⟨i t.1, by rw [← map_pow, t.2, map_one], t.1, rfl⟩) ⟨?_, ?_⟩
-  · intro a b h
-    exact Subtype.ext (hi (congrArg Subtype.val h))
+  · exact fun a b h => Subtype.ext (hi (congrArg Subtype.val h))
   · rintro ⟨x, hx, t, rfl⟩
     have hx₁ : i t ^ 2 = 1 := hx
     exact ⟨⟨t, hi (by rw [map_pow, hx₁, map_one])⟩, rfl⟩
@@ -331,8 +330,7 @@ theorem exists_points {S : Scheme.{0}} (G : Over S) [GrpObj G] (hG : IsSemiAbeli
   · rw [← hc₀, ← hc₀, h]
   · refine GlobalTheory.TorsionRat.comp_injective (algebraMap L F) c₀ rfl ?_
     rw [MonObj.comp_pow, hc₀, (u j).2, MonObj.comp_one]
-  · rw [hτ']
-    exact hc
+  · rwa [hτ']
 
 end PositivityTheory.Xgn.StratumGenericTorsion
 
@@ -592,8 +590,7 @@ theorem PositivityTheory.Xgn.torus_kernel_trivial_spreads_open : ∀ (Z' : Schem
   have e2 := hux.mul_left_cancel e1
   have e3 : cv (A := A) t.left = k.comp (cv t₀) := by rw [← cv_comp, hk₂]
   have e4 : cv (A := A) (1 : Over.mk a ⟶ splitTorus Z' X).left = k.comp (cv o) := by rw [← cv_comp, ← ho]
-  rw [e3, e4]
-  exact e2
+  rwa [e3, e4]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.TorusKernelTrivialSpreadsOpen =====
@@ -752,8 +749,7 @@ theorem PositivityTheory.Xgn.two_torsion_points_spread_open : ∀ (Z' S : Scheme
     obtain ⟨w, hw, hwt⟩ := hxW t
     have : x' t = w := U.ι.isOpenEmbedding.injective (by
       rw [← Scheme.Hom.comp_apply, IsOpenImmersion.lift_fac, hwt])
-    rw [this]
-    exact hw
+    rwa [this]
   · show (y ≫ s i) ^ 2 = 1
     rw [pow_two, ← MonObj.comp_mul, ← pow_two, hs2 i]
     simp
@@ -808,8 +804,7 @@ theorem card_toric_torsion (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)
   rw [← hcard]
   refine (Nat.card_eq_of_bijective
     (fun t => ⟨i t.1, by rw [← map_pow, t.2, map_one], t.1, rfl⟩) ⟨?_, ?_⟩).symm
-  · intro a b h
-    exact Subtype.ext (hi (congrArg Subtype.val h))
+  · exact fun a b h => Subtype.ext (hi (congrArg Subtype.val h))
   · rintro ⟨x, hx, t, rfl⟩
     have hx₁ : i t ^ N = 1 := hx
     exact ⟨⟨t, hi (by rw [map_pow, hx₁, map_one])⟩, rfl⟩
@@ -923,8 +918,7 @@ theorem pt_inj (R : Type) [CommRing R] [Algebra K R] : Function.Injective (pt K 
     exact congrArg (fun t => Over.Hom.left t ≫ Rosenlicht.torusFst _ X) h
   have h2 := congrArg CommRingCat.Hom.hom (Spec.map_injective h1)
   ext x
-  have h3 := congrArg (fun f => f (AddMonoidAlgebra.single x 1)) h2
-  simpa [charRing_single] using h3
+  simpa [charRing_single] using congrArg (fun f => f (AddMonoidAlgebra.single x 1)) h2
 
 theorem pt_surj (R : Type) [CommRing R] [Algebra K R] : Function.Surjective (pt K X R) := by
   intro t
@@ -978,8 +972,7 @@ theorem exists_char [Module.Free ℤ X] [Module.Finite ℤ X]
     rw [← pt_nat, hε1, map_one]
   have hε : (Units.map (ε : AddMonoidAlgebra K X →* K)).comp ψ = 1 := by
     apply pt_inj (K := K) (X := Y) K
-    rw [pt_nat, hψ, ← Category.assoc, h1, map_one]
-    exact hw
+    rwa [pt_nat, hψ, ← Category.assoc, h1, map_one]
   have hc1 : ∀ y, c y = 1 := by
     intro y
     have h2 := congrArg (fun g => ((g (Multiplicative.ofAdd y) : Kˣ) : K)) hε
@@ -1035,9 +1028,7 @@ theorem inj_of_surj [Module.Free ℤ X] [Module.Finite ℤ X] [Module.Free ℤ Y
   let e : X ≃ₗ[ℤ] Y := LinearEquiv.ofFinrankEq X Y (le_antisymm hle hr)
   have hs : Function.Surjective (e.toLinearMap ∘ₗ φ.toIntLinearMap) :=
     e.surjective.comp hφ
-  have hi := OrzechProperty.injective_of_surjective_endomorphism _ hs
-  intro a b hab
-  exact hi (by simp [hab])
+  exact fun a b hab => (OrzechProperty.injective_of_surjective_endomorphism _ hs) (by simp [hab])
 
 theorem field_case [Module.Free ℤ X] [Module.Finite ℤ X] {G : Over (Sp K)} [GrpObj G]
     (v : splitTorus (Sp K) X ⟶ G) [IsMonHom v]

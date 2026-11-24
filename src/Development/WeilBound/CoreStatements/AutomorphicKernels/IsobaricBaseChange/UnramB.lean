@@ -111,8 +111,7 @@ theorem unramB_irr_quot (w : HeightOneSpectrum (𝓞 E)) {V : Type} [AddCommGrou
   have hsph : GlobalTheory.LGrp.IsSpherical P.ρ (GlobalTheory.LFun.KGL w (n := n)) := (Submodule.ne_bot_iff _).2 ⟨_, hy0K, hq0⟩
   refine ⟨P, ⟨S, qI, fun z => hqs z⟩, hsph, hsph, fun x hx hx0 => ?_⟩
   have hx' : x ∈ (fixed S.toRepresentation (GlobalTheory.LFun.KGL w (n := n))).map qI.toLinearMap := by
-    rw [GlobalTheory.LocGL.map_fixed_of_surjective hSs hKc (f := qI) fun z => hqs z]
-    exact hx
+    rwa [GlobalTheory.LocGL.map_fixed_of_surjective hSs hKc (f := qI) fun z => hqs z]
   obtain ⟨u, hu, hux⟩ := Submodule.mem_map.1 hx'
   have hqu : q u = x := hux
   have hu0 : u ≠ 0 := fun e => hx0 (by rw [← hqu, e, map_zero])
@@ -124,8 +123,7 @@ theorem unramB_irr_quot (w : HeightOneSpectrum (𝓞 E)) {V : Type} [AddCommGrou
     GlobalTheory.LFun.IsSatVecGL.of_map (ρ' := ρ) S.toSubmodule.subtype (fun _ _ => rfl) Subtype.val_injective hu1
   have hu3 : GlobalTheory.LFun.IsSatVecGL w π (q u) B :=
     hu2.map (ρ' := π) q (fun g y => hqi g y) (by rw [hqu]; exact hx0)
-  rw [hqu] at hu3
-  exact hu3
+  rwa [hqu] at hu3
 
 theorem unram_component {c : ℕ} {N : Fin c → ℕ} (h : ∑ i, N i = n) (w : HeightOneSpectrum (𝓞 E))
     (σ : ∀ i, SmIrr (GL (Fin (N i)) (w.adicCompletion E))) (B : Fin c → Multiset ℂˣ)
@@ -149,8 +147,7 @@ theorem unram_component {c : ℕ} {N : Fin c → ℕ} (h : ∑ i, N i = n) (w : 
       funext a
       exact GlobalTheory.LGrp.mem_fixed.1 (hvK a) (g a) (by rw [hKO]; exact hg a)
   have hf0K : f0 ∈ fixed (locProd h w σ) (GlobalTheory.LFun.KGL w (n := n)) := by
-    rw [hKO]
-    exact hf0
+    rwa [hKO]
   have hf0ne : f0 ≠ 0 := by
     rintro rfl
     exact unramB_tprod_ne_zero v hv0 hf01.symm
@@ -160,8 +157,7 @@ theorem unram_component {c : ℕ} {N : Fin c → ℕ} (h : ∑ i, N i = n) (w : 
     intro f hf hf0
     obtain ⟨S, hS, hfS⟩ := GlobalTheory.SatInd.exists_sat_multiProd h (fun a => (σ a).smooth) (fun a => (σ a).irred) hf hf0
     have hSB : S = B := funext fun a => (hS a).unique (hB a).2
-    rw [← hSB]
-    exact hfS
+    rwa [← hSB]
   exact unramB_irr_quot w (locProd h w σ) (GlobalTheory.SmGL.isSmooth_parInd _ _) hf0ne hf0K _ hsat
 
 end GlobalTheory.PfBCI

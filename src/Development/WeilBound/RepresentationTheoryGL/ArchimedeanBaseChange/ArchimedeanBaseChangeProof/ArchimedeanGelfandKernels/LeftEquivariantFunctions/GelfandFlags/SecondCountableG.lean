@@ -104,9 +104,7 @@ theorem lg_inv (A : Mat n) (hA : A ∈ GLs n) : lg A⁻¹ = lg A := by
   have hA' : IsUnit A.det := isUnit_iff_ne_zero.mpr hA
   rw [lg_eq, lg_eq, Matrix.nonsing_inv_nonsing_inv A hA', add_right_comm]
 
-theorem isOpen_GLs : IsOpen (GLs n) := by
-  show IsOpen {g : Mat n | det g ≠ 0}
-  exact isOpen_ne_fun (continuous_id.matrix_det) continuous_const
+theorem isOpen_GLs : IsOpen (GLs n) := isOpen_ne_fun (continuous_id.matrix_det) continuous_const
 
 theorem continuousAt_lg (x : Mat n) (hx : x ∈ GLs n) : ContinuousAt lg x := by
   have hinv : ContinuousAt (fun y : Mat n => y⁻¹) x := by
@@ -121,9 +119,7 @@ theorem continuousAt_lg (x : Mat n) (hx : x ∈ GLs n) : ContinuousAt lg x := by
   rw [show (lg : Mat n → ℝ) = fun y => Real.log (1 + sq y + sq y⁻¹) from funext lg_eq]
   exact ((continuousAt_const.add hsq.continuousAt).add (hsq.continuousAt.comp hinv)).log hpos.ne'
 
-theorem mem_GLsG (y : G n) : y.val ∈ GLs n := by
-  show det y.val ≠ 0
-  exact (Matrix.isUnits_det_units y).ne_zero
+theorem mem_GLsG (y : G n) : y.val ∈ GLs n := (Matrix.isUnits_det_units y).ne_zero
 
 theorem mem_GLs_mul {A B : Mat n} (hA : A ∈ GLs n) (hB : B ∈ GLs n) : A * B ∈ GLs n := by
   show (A * B).det ≠ 0
@@ -209,8 +205,7 @@ theorem nAvg_of (hIS : IntSmooth) (hLg : LgCpt) (hNU : NilUni) : NAvg := by
         hopen.uniqueDiffOn hgx (hle m)
       have e1 := iteratedFDerivWithin_of_isOpen (𝕜 := ℝ) (f := φ ∘ ⇑(lmulL U)) m hopen hx'
       have e2 := iteratedFDerivWithin_of_isOpen (𝕜 := ℝ) (f := φ) m isOpen_GLs hgx
-      rw [← e1, ← e2]
-      exact h1
+      rwa [← e1, ← e2]
     have hUc : Continuous (fun p : N × Mat n => ((p.1 : G n) : Mat n)) := by fun_prop
     have hUx : Continuous (fun p : N × Mat n => ((p.1 : G n) : Mat n) * p.2) := by fun_prop
     have key := hIS n N ν E.V (fun u => φ ∘ ⇑(lmulL ((u : G n) : Mat n)))
@@ -238,8 +233,7 @@ theorem nAvg_of (hIS : IntSmooth) (hLg : LgCpt) (hNU : NilUni) : NAvg := by
     exact ContinuousLinearMap.integral_comp_comm _ (hint g hg)
   · intro u₀ hu₀ x hx
     have hu₁ : u₀ ∈ N := by
-      rw [← SetLike.mem_coe, hN]
-      exact hu₀
+      rwa [← SetLike.mem_coe, hN]
     set u₁ : N := ⟨u₀, hu₁⟩ with hu₁def
     have key : ∀ f : N → E.V, ∫ u, f (u * u₁) ∂ν = ∫ u, f u ∂ν := by
       intro f

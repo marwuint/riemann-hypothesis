@@ -86,8 +86,7 @@ theorem mem_of_test_ideal : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o
     · rintro ⟨y, hy, hyx⟩
       have : y = x := e.injective hyx
       rwa [← this]
-    · intro hx
-      exact ⟨x, hx, rfl⟩
+    · exact fun hx => ⟨x, hx, rfl⟩
   refine (hmem v).1 (_root_.GlobalTheory.CompanionTheory.Ar.Num.HaLattice.main R p hp hp0 hN hF hI 1 _ hL' (e v) ?_ ?_)
   · obtain ⟨m, hm⟩ := hm
     refine ⟨m, ?_⟩
@@ -415,8 +414,7 @@ theorem pow_mem_dId (hc : CharData R p w χ) (τ : Sg) (i : Fin n) :
     rw [map_smul]
     refine AddSubgroup.mem_sup_right ⟨linMap n (χ τ) (Pi.single i 1), fun x _ => ?_, rfl⟩
     show linMap n (χ τ) (Pi.single i 1) x ∈ R
-    simp only [linMap, Fintype.linearCombination_apply_single, one_smul]
-    exact (hc.2.2.2.2 τ).2.2 _
+    simpa only [linMap, Fintype.linearCombination_apply_single, one_smul] using (hc.2.2.2.2 τ).2.2 _
   · intro j hj
     have : j ≠ i := by
       rintro rfl
@@ -433,8 +431,7 @@ theorem kk_le (hb : D.Base R p w) (τ : Sg) (i : ℕ) : D.kk τ i ≤ dotDual R 
 omit [One F] in
 theorem le_kk (hb : D.Base R p w) (τ : Sg) (i : ℕ) :
     mulLat (p : Ω) (dotDual R (D.lie τ)) ≤ D.kk τ i := by
-  intro m hm
-  exact ⟨(0, m), ⟨((hb.th τ).2.2 m).2 hm, zero_mem _, trivial⟩, rfl⟩
+  exact fun m hm => ⟨(0, m), ⟨((hb.th τ).2.2 m).2 hm, zero_mem _, trivial⟩, rfl⟩
 
 omit [One F] in
 theorem step_le (hb : D.Base R p w) (τ : Sg) (ψ : F → Ω) (i : Fin n) :
@@ -482,8 +479,7 @@ theorem pow_mem_ker (hc : CharData R p w χ) (hb : D.Base R p w) (τ : Sg) (i : 
   show (((p : Ω) ^ (m + 1) • fun x : Fin n → F => χ τ (x i)), (0 : Fin (r τ) → Ω)) ∈
     D.Th τ ⊔ (vanSub Ω F n ((i : ℕ) + 1)).toAddSubgroup.prod ⊥
   refine AddSubgroup.mem_sup_left ?_
-  rw [Prod.smul_mk, Prod.mk_sub_mk, sub_zero, sub_self, smul_smul, ← pow_succ'] at h3
-  exact h3
+  rwa [Prod.smul_mk, Prod.mk_sub_mk, sub_zero, sub_self, smul_smul, ← pow_succ'] at h3
 
 theorem powSpan_le (R : Subalgebra o Ω) (p : ℕ) (X : AddSubgroup Ω) (hX : ∀ c ∈ X, c ∈ R) :
     ∀ c ∈ powSpan R p X, c ∈ R := by
@@ -603,14 +599,12 @@ theorem GlobalTheory.CompanionTheory.Ar.Num.HodgeAnnihilatorSequence.main : ∀ 
       have h : bcMap Ω C _ v ∈ (D.bc RC).imH RC p τ (fun a => algebraMap Ω C (χ τ a)) := by
         rw [hbc1 C RC hRC.2.2.2 τ]
         exact mem_span RC ⟨v, hv, rfl⟩
-      have e := (hT C RC hRC).im τ
-      exact e.le h
+      exact ((hT C RC hRC).im τ).le h
   · refine _root_.GlobalTheory.CompanionTheory.Ar.Num.HaLattice.main R p hp hp0 hN hF hI _ _ (hG2.im τ) v (pow_one_smul_mem (hG2.im τ) hw ?_) ?_
     · exact ⟨(0, w • v), ⟨((hb.del τ).2.2.1 _).2 (i4 hv), zero_mem _, trivial⟩, rfl⟩
     · intro C _ _ _ _ RC hRC
       rw [← hbc1 C RC hRC.2.2.2 τ]
-      have e := (hT C RC hRC).im τ
-      exact e.ge (mem_span RC ⟨v, hv, rfl⟩)
+      exact ((hT C RC hRC).im τ).ge (mem_span RC ⟨v, hv, rfl⟩)
   · show w • v ∈ D.lie τ
     refine _root_.GlobalTheory.CompanionTheory.Ar.Num.HaLattice.main R p hp hp0 hN hF hI _ _ flie _ (pow_one_smul_mem flie hw ?_) ?_
     · obtain ⟨⟨a, b⟩, ⟨h, -⟩, rfl⟩ := hv

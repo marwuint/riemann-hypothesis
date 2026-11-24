@@ -148,8 +148,7 @@ theorem avg_gen {V X Y : Type} {_ : TopologicalSpace V} {_ : MeasurableSpace V} 
     refine continuous_indicator ?_ continuous_const.continuousOn
     simp [hA'o.frontier_eq, hA'c.isClosed.closure_eq]
   have hφs : HasCompactSupport φ := by
-    refine HasCompactSupport.intro hA'c fun x hx => ?_
-    exact Set.indicator_of_notMem hx _
+    exact HasCompactSupport.intro hA'c fun x hx => Set.indicator_of_notMem hx _
   have hts : tsupport φ ⊆ W := by
     refine subset_trans (closure_minimal (fun x hx => ?_) hA'c.isClosed) hA'W
     by_contra h
@@ -158,8 +157,7 @@ theorem avg_gen {V X Y : Type} {_ : TopologicalSpace V} {_ : MeasurableSpace V} 
   have hint : ∀ s, ∫ x, φ x ∂(fib s) = (fib s A').toReal := fun s => by
     simp [φ, integral_indicator hA'm, Measure.real]
   have hG : ContinuousAt (fun s => (fib s A').toReal) c := by
-    have h := hC.continuousAt hBc
-    simpa only [hint] using h
+    simpa only [hint] using hC.continuousAt hBc
   have hfin : ∀ᶠ s in nhds c, fib s A' ≠ ⊤ := by
     filter_upwards [hBc] with s hs
     have h := hI s hs

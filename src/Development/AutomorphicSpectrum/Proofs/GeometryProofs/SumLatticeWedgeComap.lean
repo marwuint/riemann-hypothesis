@@ -73,8 +73,7 @@ theorem frame_of_sum_frame : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : S
       have h : e = i (b (headIdx hj k)) - a := by rw [← hae]; abel
       rw [h]
       exact Va.sub_mem (hbhead k) (hAV a ha)) (hBV e he)
-    rw [← hae, he0, add_zero]
-    exact ha
+    rwa [← hae, he0, add_zero]
   have hT : ∀ k, i (b (tailIdx hj k)) - s k ∈ A p ∧ s k ∈ B p := fun k => by
     obtain ⟨a, ha, e, he, hae⟩ := Submodule.mem_sup.1 (hmemfr (tailIdx hj k))
     have hes : e - s k = 0 := hzero (by
@@ -84,8 +83,7 @@ theorem frame_of_sum_frame : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : S
     have hes' : e = s k := sub_eq_zero.1 hes
     refine ⟨?_, hes' ▸ he⟩
     have h : i (b (tailIdx hj k)) - s k = a := by rw [← hae, hes']; abel
-    rw [h]
-    exact ha
+    rwa [h]
   have hcase : ∀ k : Fin N, (∃ a, k = headIdx hj a) ∨ ∃ a, k = tailIdx hj a := fun k => by
     by_cases h : (k : ℕ) < j
     · exact Or.inl ⟨⟨k, h⟩, by ext; rfl⟩
@@ -125,14 +123,11 @@ theorem frame_of_sum_frame : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : S
       rw [hrange]
       exact Submodule.mem_sup_right (hBV e he)
     obtain ⟨x, rfl⟩ := hr
-    have hxc : x ∈ (Lat.comap (fun q => A q ⊔ B q) i) p := by
-      show i x ∈ A p ⊔ B p
-      exact Submodule.mem_sup_right he
+    have hxc : x ∈ (Lat.comap (fun q => A q ⊔ B q) i) p := Submodule.mem_sup_right he
     rw [hfr.2] at hxc
     obtain ⟨t, ht, hxt⟩ := hspan x hxc
     have h0 : i x - t = 0 := hzero hxt (Vb.sub_mem (hBV _ he) (hBV _ (hle ht)))
-    rw [sub_eq_zero.1 h0]
-    exact ht
+    rwa [sub_eq_zero.1 h0]
   have htinj : Function.Injective (tailIdx hj) := fun a c h => by
     have h' := congrArg Fin.val h
     simp only [tailIdx] at h'
@@ -159,8 +154,7 @@ theorem frame_of_sum_frame : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : S
       Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _
         (Submodule.subset_span ⟨_, ⟨k, rfl⟩, rfl⟩)
     have hx3 : (∑ k, g k • b (tailIdx hj k)) ∈ Submodule.span Ω (b '' Set.range (headIdx hj)) := by
-      rw [← Set.range_comp, hhead]
-      exact hx1
+      rwa [← Set.range_comp, hhead]
     have hx0 := Submodule.disjoint_def.1 hd _ hx3 hx2
     exact Fintype.linearIndependent_iff.1 (hfr.1.comp _ htinj) g hx0
   exact ⟨⟨hli, hgen⟩, fun k => (hT k).1, hH⟩

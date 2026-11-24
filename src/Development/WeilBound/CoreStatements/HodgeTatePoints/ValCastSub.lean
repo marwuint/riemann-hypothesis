@@ -171,8 +171,7 @@ theorem mul_mem_pInt {f g : N → C} (hg : g ∈ AA.carrier) (hf : f 0 ∈ pInt 
     (f * g) 0 ∈ pInt (C := C) R p := by
   obtain ⟨r, hr⟩ := AA.le_int hg 0
   have := Submodule.smul_mem _ r hf
-  rw [Algebra.smul_def, hr, mul_comm] at this
-  exact this
+  rwa [Algebra.smul_def, hr, mul_comm] at this
 
 omit [IsAlgClosed C] in
 theorem der_tl (hv : v.Integers R) (hp : v (p : C) < 1) (hD : IsDerAt0 _ Dv) (hW : ∀ w : W, (p : R) • w = 0)
@@ -711,8 +710,7 @@ theorem surj_aug {N : Type} [AddCommGroup N] {M : Submodule R (N → C)} {p g : 
     qq p R g ∘ₗ (Ideal.span {(p : R)} • (⊤ : Submodule R (Fin g → R))).mkQ with hL
   have hLu : ∀ u, L u = fun k => Ideal.Quotient.mk _ (u k) := by
     intro u
-    simp only [hL, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply]
-    exact qq_mk p g u
+    simpa only [hL, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply] using qq_mk p g u
   have hLs : Function.Surjective L := fun w =>
     ⟨fun k => (Ideal.Quotient.mk_surjective (w k)).choose, by
       rw [hLu]
@@ -723,9 +721,7 @@ theorem surj_aug {N : Type} [AddCommGroup N] {M : Submodule R (N → C)} {p g : 
     rw [Submodule.map_span, Submodule.span_le]
     rintro _ ⟨u, hu, rfl⟩
     obtain ⟨f, hf0, hf⟩ := hs u hu
-    have hfa : f.1 ∈ augIdeal M := by
-      show f.1 ∈ M ⊓ LinearMap.ker (LinearMap.proj 0)
-      exact Submodule.mem_inf.2 ⟨f.2, LinearMap.mem_ker.2 hf0⟩
+    have hfa : f.1 ∈ augIdeal M := Submodule.mem_inf.2 ⟨f.2, LinearMap.mem_ker.2 hf0⟩
     refine ⟨⟨f.1, hfa⟩, ?_⟩
     have hinc : Submodule.inclusion (aug_le M) ⟨f.1, hfa⟩ = f := rfl
     simp only [LinearMap.coe_comp, Function.comp_apply, hinc, hf, hL, Submodule.mkQ_apply]
@@ -763,8 +759,7 @@ theorem om_bound (hv : v.Integers R) {N : Type} [AddCommGroup N] [Fintype N] [De
     intro x hx
     obtain ⟨y, hy, hyx⟩ := hsq hx
     have hyx' : y = x := Subtype.ext hyx
-    rw [← hyx']
-    exact hy
+    rwa [← hyx']
   refine (hasLen_le_of_surj hv hO (p : R) g (Submodule.liftQ _ F hle) ?_).trans_eq ?_
   · intro w
     obtain ⟨a, ha⟩ := hF w
@@ -932,8 +927,7 @@ theorem core_pull {p : ℕ} [Fact p.Prime] [IsAlgClosed C] [CharZero C] (hv : v.
     obtain ⟨a, ha⟩ := surj_aug Dv S hS hs w
     refine ⟨T (Submodule.inclusion (aug_le AA.carrier) a), ?_⟩
     show qq p R g (Dv (T.symm (T _))) = w
-    rw [T.symm_apply_apply]
-    exact ha
+    rwa [T.symm_apply_apply]
   obtain ⟨Kf, hKf, hKv⟩ := hK
   have hK' := comp_mem_tens_map_pbE_of_addEquiv φ AA.carrier hKf
   have hfun : (fun z : (Ix E n → ZMod p) × (Ix E n → ZMod p) =>
@@ -947,8 +941,7 @@ theorem core_pull {p : ℕ} [Fact p.Prime] [IsAlgClosed C] [CharZero C] (hv : v.
   have htens : (fun z : (Ix E n → ZMod p) × (Ix E n → ZMod p) =>
       ζ ^ (z.1 ⬝ᵥ (Matrix.of fun a b => ZMod.castHom hm (ZMod p) (e (dl a) (dl b))) *ᵥ z.2).val) ∈
       tens (hopfPull φ AA).carrier (hopfPull φ AA).carrier := by
-    rw [hfun]
-    exact hK'
+    rwa [hfun]
   have hEg : ∀ a b, Eg a b - ((((Matrix.of fun a b => ZMod.castHom hm (ZMod p) (e (dl a) (dl b))) :
       Matrix (Ix E n) (Ix E n) (ZMod p)) a b).val : R) ∈ Ideal.span {(p : R)} := by
     intro a b
@@ -972,8 +965,7 @@ theorem core_pull {p : ℕ} [Fact p.Prime] [IsAlgClosed C] [CharZero C] (hv : v.
       conv_lhs => rw [← sum_cz x0]
 
       simp only [map_sum, map_zsmul, Finset.sum_apply, Pi.smul_apply]
-      simp only [zsmul_eq_mul]
-      exact Finset.sum_congr rfl fun m _ => mul_comm _ _
+      simpa only [zsmul_eq_mul] using Finset.sum_congr rfl fun m _ => mul_comm _ _
     have hA' := sum_co_sub p (Hm k) x0
     have hB : ∑ m, (Hm k m - ih (dl m) k) * (cz x0 m : R) ∈ Ideal.span {(p : R)} :=
       Ideal.sum_mem _ fun m _ => Ideal.mul_mem_right _ _ (hH m k)

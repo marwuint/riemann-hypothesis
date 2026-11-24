@@ -237,12 +237,10 @@ theorem endB_of (L : Leaves) (hB : TowerB) (hS : SplitEx) (hM : MatchEx) : EndB 
         (half_ne hT) h3.1 h3.2.1 h3.2.2 u hu h).2
     · obtain ⟨m1, m2⟩ := L.matchStab F E σ B a a' G X om om' R Rf hm k hk Φ Φ' hΦ' hP
       have := hc _ _ m1 m2 _ _ _ _ (split_trans G.M om h1 k) (split_trans G.M' om' h2 k) h₁ l hl
-      simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
-      exact sub_eq_zero.2 this
+      simpa only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] using sub_eq_zero.2 this
   have hz := sumB L hB B X G.p a a' G om om' hT rfl hq _ hf
     ⟨d₁, W₁, H', _, hpl, by simpa [h0] using h3.1, h3.2.1⟩
-  intro h
-  exact sub_eq_zero.1 (congrFun hz h)
+  exact fun h => sub_eq_zero.1 (congrFun hz h)
 
 theorem endA_of (L : Leaves) (hS : SplitEx) (hM : MatchEx) : EndA := by
   intro F E _ _ _ _ _ σ B a a' G X om om' R Rf hm hq hp d₁ W₁ H' i₀ i₁ hH c hc Φ Φ' hΦ' hP
@@ -255,12 +253,10 @@ theorem endA_of (L : Leaves) (hS : SplitEx) (hM : MatchEx) : EndA := by
         (half_ne hT) h3.1 h3.2.1 h3.2.2 u hu h).1
     · obtain ⟨m1, m2⟩ := L.matchStab F E σ B a a' G X om om' R Rf hm k hk Φ Φ' hΦ' hP
       have := hc _ _ m1 m2 _ _ _ _ (split_trans G.M om h1 k) (split_trans G.M' om' h2 k) h₁ l hl
-      simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
-      exact sub_eq_zero.2 this
+      simpa only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] using sub_eq_zero.2 this
   have h0' := L.betaZero F E σ B a a' G X om om' hT hq hp d₁ W₁ H' i₀ i₁ hH _ hf _ _ h3
   have hz := zero_of_line L.cuspOfLine L.orthIso L.orthAn L.perpZero hT (Or.inl hp) hpl hf (by simpa [h0, h0'] using h3.1)
-  intro h
-  exact sub_eq_zero.1 (congrFun hz h)
+  exact fun h => sub_eq_zero.1 (congrFun hz h)
 
 end PositivityTheory.ThKEnd
 

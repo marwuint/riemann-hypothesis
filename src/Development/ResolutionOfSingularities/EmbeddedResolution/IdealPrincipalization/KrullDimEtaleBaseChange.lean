@@ -84,8 +84,7 @@ theorem ringKrullDim_stalk_le_of_etaleChart_of_isLocallyNoetherian {k : Type u} 
   have h1 : ringKrullDim (U.toScheme.presheaf.stalk (⟨x, hx⟩ : U.toScheme))
       ≤ ((m : ℕ∞) : WithBot ℕ∞) :=
     ringKrullDim_stalk_le_of_etale_affineSpace c.map (⟨x, hx⟩ : U.toScheme)
-  rw [ringKrullDim_stalk_opens X U (⟨x, hx⟩ : U.toScheme)] at h1
-  exact h1
+  rwa [ringKrullDim_stalk_opens X U (⟨x, hx⟩ : U.toScheme)] at h1
 
 theorem etaleChart_dim_le_topologicalKrullDim {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.IsLocallyNoetherian X]
@@ -131,22 +130,12 @@ private theorem eq_bot_of_formallyUnramified_of_comap_le (R : Type v) (D : Type 
     (p : Ideal R) (hp : p.IsPrime) (hker : ∀ r : R, algebraMap R D r = 0 ↔ r ∈ p)
     (Q : Ideal D) (hQ : Q.IsPrime) (hQc : ∀ r : R, algebraMap R D r ∈ Q → r ∈ p) :
     Q = ⊥ := by
-  have := hp
-  have := hQ
-  have : IsDomain (R ⧸ p) := Ideal.Quotient.isDomain p
   obtain ⟨M, hMdef⟩ : ∃ M : Submonoid D, M = Submonoid.map (algebraMap R D) p.primeCompl :=
     ⟨_, rfl⟩
-  have hmemM : ∀ r : R, r ∈ p.primeCompl → algebraMap R D r ∈ M := by
-    intro r hr
-    rw [hMdef]
-    exact Submonoid.mem_map.mpr ⟨r, hr, rfl⟩
   have hMle : M ≤ nonZeroDivisors D := by
-    intro z hz
-    rw [hMdef] at hz
-    obtain ⟨r, hr, rfl⟩ := Submonoid.mem_map.mp hz
-    refine mem_nonZeroDivisors_of_ne_zero ?_
-    intro h0
-    exact hr ((hker r).mp h0)
+    rw [hMdef]
+    rintro _ ⟨r, hr, rfl⟩
+    exact mem_nonZeroDivisors_of_ne_zero fun h0 => hr ((hker r).mp h0)
   have : IsDomain (Localization M) :=
     IsLocalization.isDomain_of_le_nonZeroDivisors (Localization M) hMle
   have : Algebra.FormallyUnramified D (Localization M) :=
@@ -157,20 +146,17 @@ private theorem eq_bot_of_formallyUnramified_of_comap_le (R : Type v) (D : Type 
     Algebra.FormallyUnramified.comp R D (Localization M)
   have : Algebra.EssFiniteType R (Localization M) :=
     Algebra.EssFiniteType.comp R D (Localization M)
-  have hzero : ∀ a : R, a ∈ p → algebraMap R (Localization M) a = 0 := by
-    intro a ha
+  have hzero : ∀ a : R, a ∈ p → algebraMap R (Localization M) a = 0 := fun a ha => by
     rw [IsScalarTower.algebraMap_apply R D (Localization M) a, (hker a).mpr ha, map_zero]
   have hunits : ∀ z : nonZeroDivisors (R ⧸ p),
       IsUnit (Ideal.Quotient.lift p (algebraMap R (Localization M)) hzero (z : R ⧸ p)) := by
     rintro ⟨z, hz⟩
     obtain ⟨r, rfl⟩ := Ideal.Quotient.mk_surjective z
-    have hne : (Ideal.Quotient.mk p r) ≠ 0 := nonZeroDivisors.ne_zero hz
-    have hrp : r ∈ p.primeCompl := fun hmem => hne (Ideal.Quotient.eq_zero_iff_mem.mpr hmem)
-    have h1 : Ideal.Quotient.lift p (algebraMap R (Localization M)) hzero
-        (Ideal.Quotient.mk p r) = algebraMap D (Localization M) (algebraMap R D r) := by
-      rw [Ideal.Quotient.lift_mk, IsScalarTower.algebraMap_apply R D (Localization M) r]
-    rw [h1]
-    exact IsLocalization.map_units (Localization M) ⟨algebraMap R D r, hmemM r hrp⟩
+    rw [Ideal.Quotient.lift_mk, IsScalarTower.algebraMap_apply R D (Localization M) r]
+    refine IsLocalization.map_units (M := M) (Localization M) ⟨algebraMap R D r, ?_⟩
+    rw [hMdef]
+    exact Submonoid.mem_map_of_mem _ fun hmem =>
+      nonZeroDivisors.ne_zero hz (Ideal.Quotient.eq_zero_iff_mem.mpr hmem)
   let _ : Algebra (FractionRing (R ⧸ p)) (Localization M) :=
     RingHom.toAlgebra (IsLocalization.lift hunits : FractionRing (R ⧸ p) →+* Localization M)
   have : IsScalarTower R (FractionRing (R ⧸ p)) (Localization M) := by
@@ -183,32 +169,21 @@ private theorem eq_bot_of_formallyUnramified_of_comap_le (R : Type v) (D : Type 
     Algebra.EssFiniteType.of_comp R (FractionRing (R ⧸ p)) (Localization M)
   have : Algebra.FormallyUnramified (FractionRing (R ⧸ p)) (Localization M) := by
     apply Algebra.FormallyUnramified.of_restrictScalars (R := R)
-  have hfield : IsField (Localization M) :=
-    isField_of_formallyUnramified (FractionRing (R ⧸ p)) (Localization M)
   by_contra hQne
-  obtain ⟨y, hyQ, hy0⟩ : ∃ y ∈ Q, y ≠ 0 := by
-    by_contra hcon
-    push Not at hcon
-    exact hQne ((Submodule.eq_bot_iff Q).mpr hcon)
-  have hdisj : Disjoint (M : Set D) ((Q : Set D)) := by
-    rw [Set.disjoint_left]
-    intro z hzM hzQ
-    rw [hMdef] at hzM
-    obtain ⟨r, hr, rfl⟩ := Submonoid.mem_map.mp hzM
+  obtain ⟨y, hyQ, hy0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hQne
+  have hdisj : Disjoint (M : Set D) (Q : Set D) := by
+    rw [Set.disjoint_left, hMdef]
+    rintro _ ⟨r, hr, rfl⟩ hzQ
     exact hr (hQc r hzQ)
   have hQP : (Q.map (algebraMap D (Localization M))).IsPrime :=
     IsLocalization.isPrime_of_isPrime_disjoint M (Localization M) Q hQ hdisj
-  have hyL : algebraMap D (Localization M) y ≠ 0 := by
-    intro h0
-    refine hy0 (IsLocalization.injective (Localization M) hMle ?_)
-    rw [h0, map_zero]
-  obtain ⟨z, hz⟩ := hfield.mul_inv_cancel hyL
-  have hmem : algebraMap D (Localization M) y ∈ Q.map (algebraMap D (Localization M)) :=
-    Ideal.mem_map_of_mem _ hyQ
-  have hone : (1 : Localization M) ∈ Q.map (algebraMap D (Localization M)) := by
-    rw [← hz]
-    exact Ideal.mul_mem_right z _ hmem
-  exact hQP.ne_top ((Ideal.eq_top_iff_one _).mpr hone)
+  have hyL : algebraMap D (Localization M) y ≠ 0 := fun h0 =>
+    hy0 (IsLocalization.injective (Localization M) hMle (by rw [h0, map_zero]))
+  obtain ⟨z, hz⟩ := (isField_of_formallyUnramified (FractionRing (R ⧸ p))
+    (Localization M)).mul_inv_cancel hyL
+  refine hQP.ne_top ((Ideal.eq_top_iff_one _).mpr ?_)
+  rw [← hz]
+  exact Ideal.mul_mem_right z _ (Ideal.mem_map_of_mem _ hyQ)
 
 private theorem eq_of_le_of_comap_eq (R : Type v) (S : Type w) [CommRing R] [CommRing S]
     [Algebra R S] [Algebra.EssFiniteType R S] [Algebra.FormallyUnramified R S]
@@ -226,8 +201,7 @@ private theorem eq_of_le_of_comap_eq (R : Type v) (S : Type w) [CommRing R] [Com
     fun r => IsScalarTower.algebraMap_apply R S (S ⧸ q) r
   have hQ : (q'.map (Ideal.Quotient.mk q)).IsPrime := by
     refine Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective ?_
-    rw [Ideal.mk_ker]
-    exact hle
+    rwa [Ideal.mk_ker]
   have hbot : q'.map (Ideal.Quotient.mk q) = ⊥ := by
     refine eq_bot_of_formallyUnramified_of_comap_le R (S ⧸ q) (q.comap (algebraMap R S))
       inferInstance ?_ (q'.map (Ideal.Quotient.mk q)) hQ ?_
@@ -237,8 +211,7 @@ private theorem eq_of_le_of_comap_eq (R : Type v) (S : Type w) [CommRing R] [Com
     · intro r hr
       rw [hmk r] at hr
       have hmem : algebraMap R S r ∈ q' := (Ideal.mem_quotient_iff_mem hle).mp hr
-      rw [hc]
-      exact hmem
+      rwa [hc]
   refine le_antisymm hle ?_
   intro z hz
   have hzz : Ideal.Quotient.mk q z ∈ q'.map (Ideal.Quotient.mk q) := Ideal.mem_map_of_mem _ hz

@@ -94,11 +94,9 @@ theorem root_branch {d : ℕ} (a₀ : Fin d → ℂ) (x₀ : ℂ) (h0 : (monicOf
   refine ⟨ha.differentiableAt one_ne_zero, ?_⟩
   have : f (a₀, x₀) = 0 := by
     have := h0
-    rw [IsRoot.def, eval_monicOf] at this
-    exact this
+    rwa [IsRoot.def, eval_monicOf] at this
   rw [this] at hb
-  rw [IsRoot.def, eval_monicOf]
-  exact hb
+  rwa [IsRoot.def, eval_monicOf]
 
 theorem root_iff_of_injective {d : ℕ} (a : Fin d → ℂ) (r : Fin d → ℂ) (hr : Function.Injective r)
     (h : ∀ i, (monicOf a).IsRoot (r i)) (x : ℂ) : (monicOf a).IsRoot x ↔ ∃ i, x = r i := by
@@ -130,8 +128,7 @@ theorem exists_roots {d : ℕ} (a : Fin d → ℂ) (hs : (monicOf a).Separable) 
   let e := Finset.equivFinOfCardEq hc
   refine ⟨fun i => (e.symm i : ℂ), Subtype.val_injective.comp e.symm.injective, fun i => ?_⟩
   have := (e.symm i).2
-  rw [Multiset.mem_toFinset, mem_roots (monic_monicOf a).ne_zero] at this
-  exact this
+  rwa [Multiset.mem_toFinset, mem_roots (monic_monicOf a).ne_zero] at this
 
 theorem rootBranches : RootBranches := by
   intro n d T a hT ha hs t₀ ht₀

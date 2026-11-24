@@ -198,24 +198,20 @@ theorem exists_udl_of_isUnit (I : Ideal R) (hI : ∀ x ∈ I, IsUnit (1 + x)) (n
     have hts : t * s = 1 := by rw [mul_comm]; exact hst
     have hcI : ∀ i k, c i k ∈ I := fun i k => by
       have := hg i.castSucc (Fin.last n)
-      rw [Matrix.one_apply_ne (Fin.castSucc_lt_last i).ne, sub_zero] at this
-      exact this
+      rwa [Matrix.one_apply_ne (Fin.castSucc_lt_last i).ne, sub_zero] at this
     have hrI : ∀ k j, r k j ∈ I := fun k j => by
       have := hg (Fin.last n) j.castSucc
-      rw [Matrix.one_apply_ne (Fin.castSucc_lt_last j).ne', sub_zero] at this
-      exact this
+      rwa [Matrix.one_apply_ne (Fin.castSucc_lt_last j).ne', sub_zero] at this
     set a : Matrix (Fin 1) (Fin 1) R := fun _ _ => s with ha
     set b : Matrix (Fin 1) (Fin 1) R := fun _ _ => t with hb
     have hab : a * b = 1 := by
       ext i j
       rw [Subsingleton.elim i j, Matrix.mul_apply, Matrix.one_apply_eq]
-      simp only [Finset.univ_unique, Finset.sum_singleton]
-      exact hst
+      simpa only [Finset.univ_unique, Finset.sum_singleton] using hst
     have hba : b * a = 1 := by
       ext i j
       rw [Subsingleton.elim i j, Matrix.mul_apply, Matrix.one_apply_eq]
-      simp only [Finset.univ_unique, Finset.sum_singleton]
-      exact hts
+      simpa only [Finset.univ_unique, Finset.sum_singleton] using hts
     have hS : ∀ i j, (A - c * b * r) i j - (1 : Matrix (Fin n) (Fin n) R) i j ∈ I := by
       intro i j
       have h1 : A i j - (1 : Matrix (Fin n) (Fin n) R) i j ∈ I := by

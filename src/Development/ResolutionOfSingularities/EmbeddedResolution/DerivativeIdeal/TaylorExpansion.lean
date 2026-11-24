@@ -59,67 +59,20 @@ variable {A R : Type*} [CommRing A] [CommRing R] [Algebra A R]
 private theorem iterate_deriv_mul_eq_sum_nsmul (D : Derivation A R R) (n : ℕ) (f g : R) :
     (⇑D)^[n] (f * g) =
       ∑ i ∈ Finset.range (n + 1), n.choose i • ((⇑D)^[i] f * (⇑D)^[n - i] g) := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    have key : ∀ i : ℕ,
-        ⇑D (n.choose i • ((⇑D)^[i] f * (⇑D)^[n - i] g))
-          = n.choose i • ((⇑D)^[i] f * (⇑D)^[n - i + 1] g)
-            + n.choose i • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g) := by
-      intro i
-      rw [map_nsmul, Derivation.leibniz, smul_eq_mul, smul_eq_mul,
-        ← Function.iterate_succ_apply' (⇑D) (n - i) g,
-        ← Function.iterate_succ_apply' (⇑D) i f,
-        mul_comm ((⇑D)^[n - i] g) ((⇑D)^[i + 1] f), smul_add]
-    have e3 : ∑ i ∈ Finset.range (n + 1), n.choose (i + 1) • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g)
-        = ∑ i ∈ Finset.range n, n.choose (i + 1) • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g) := by
-      rw [Finset.sum_range_succ, Nat.choose_eq_zero_of_lt (show n < n + 1 by omega), zero_smul,
-        add_zero]
-    have e1 : ∑ i ∈ Finset.range (n + 1), n.choose i • ((⇑D)^[i] f * (⇑D)^[n - i + 1] g)
-        = (∑ i ∈ Finset.range n, n.choose (i + 1) • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g))
-          + f * (⇑D)^[n + 1] g := by
-      have inner : ∑ i ∈ Finset.range n,
-            n.choose (i + 1) • ((⇑D)^[i + 1] f * (⇑D)^[n - (i + 1) + 1] g)
-          = ∑ i ∈ Finset.range n, n.choose (i + 1) • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g) := by
-        refine Finset.sum_congr rfl fun i hi => ?_
-        have h := Finset.mem_range.mp hi
-        have hi' : n - (i + 1) + 1 = n - i := by omega
-        rw [hi']
-      rw [Finset.sum_range_succ', inner]
-      simp only [Nat.choose_zero_right, one_smul, Function.iterate_zero_apply, Nat.sub_zero]
-    have e2 : ∑ i ∈ Finset.range (n + 1 + 1),
-          (n + 1).choose i • ((⇑D)^[i] f * (⇑D)^[n + 1 - i] g)
-        = ((∑ i ∈ Finset.range (n + 1), n.choose i • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g))
-            + ∑ i ∈ Finset.range n, n.choose (i + 1) • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g))
-          + f * (⇑D)^[n + 1] g := by
-      have inner2 : ∑ i ∈ Finset.range (n + 1),
-            (n + 1).choose (i + 1) • ((⇑D)^[i + 1] f * (⇑D)^[n + 1 - (i + 1)] g)
-          = (∑ i ∈ Finset.range (n + 1), n.choose i • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g))
-            + ∑ i ∈ Finset.range n, n.choose (i + 1) • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g) := by
-        rw [← e3, ← Finset.sum_add_distrib]
-        refine Finset.sum_congr rfl fun i _ => ?_
-        have hc : (n + 1).choose (i + 1) = n.choose i + n.choose (i + 1) :=
-          Nat.choose_succ_succ n i
-        have hs : n + 1 - (i + 1) = n - i := by omega
-        rw [hc, hs, add_smul]
-      rw [Finset.sum_range_succ', inner2]
-      simp only [Nat.choose_zero_right, one_smul, Function.iterate_zero_apply, Nat.sub_zero]
-    calc (⇑D)^[n + 1] (f * g)
-        = ⇑D ((⇑D)^[n] (f * g)) := Function.iterate_succ_apply' _ _ _
-      _ = ⇑D (∑ i ∈ Finset.range (n + 1), n.choose i • ((⇑D)^[i] f * (⇑D)^[n - i] g)) := by
-            rw [ih]
-      _ = ∑ i ∈ Finset.range (n + 1), ⇑D (n.choose i • ((⇑D)^[i] f * (⇑D)^[n - i] g)) := by
-
-            rw [map_sum]
-      _ = ∑ i ∈ Finset.range (n + 1), (n.choose i • ((⇑D)^[i] f * (⇑D)^[n - i + 1] g)
-            + n.choose i • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g)) :=
-            Finset.sum_congr rfl fun i _ => key i
-      _ = (∑ i ∈ Finset.range (n + 1), n.choose i • ((⇑D)^[i] f * (⇑D)^[n - i + 1] g))
-            + ∑ i ∈ Finset.range (n + 1), n.choose i • ((⇑D)^[i + 1] f * (⇑D)^[n - i] g) :=
-            Finset.sum_add_distrib
-      _ = ∑ i ∈ Finset.range (n + 1 + 1),
-            (n + 1).choose i • ((⇑D)^[i] f * (⇑D)^[n + 1 - i] g) := by
-            rw [e1, e2]; ring
+  have h : ∀ n : ℕ, (⇑D)^[n] (f * g) =
+      ∑ ij ∈ Finset.antidiagonal n, n.choose ij.1 • ((⇑D)^[ij.1] f * (⇑D)^[ij.2] g) := by
+    intro n
+    induction n with
+    | zero => simp
+    | succ n ih =>
+      rw [Finset.sum_antidiagonal_choose_succ_nsmul (M := R) (fun i j => (⇑D)^[i] f * (⇑D)^[j] g) n]
+      simp only [Function.iterate_succ_apply', ih, map_sum, map_nsmul, Derivation.leibniz,
+        smul_eq_mul, smul_add, Finset.sum_add_distrib, add_right_inj]
+      refine Finset.sum_congr rfl fun ij hij => ?_
+      rw [n.choose_symm_of_eq_add (Finset.mem_antidiagonal.1 hij).symm, mul_comm]
+  rw [h]
+  exact Finset.Nat.sum_antidiagonal_eq_sum_range_succ
+    (fun i j => n.choose i • ((⇑D)^[i] f * (⇑D)^[j] g)) n
 
 theorem iterate_deriv_mul (D : Derivation A R R) (n : ℕ) (f g : R) :
     (⇑D)^[n] (f * g) =

@@ -338,8 +338,7 @@ theorem nonempty_strictPullbackSeq_appendLowerDimReduction_baseChange
     MarkedBlowupSequenceData.toMarkedSequence_projectionToBase s s.length
   have hsq : IsPullback D.lastMap (t.proj t.length ≫ (S.baseChange L f).structMap)
       (s.proj s.length ≫ S.structMap) (specMapOfFieldHom S.base L f) := by
-    rw [← e1, ← e2]
-    exact hbase3
+    rwa [← e1, ← e2]
   have hsq1 : IsPullback D.lastMap (t.proj t.length ≫ (S.baseChange L f).structMap)
       (MaxContactCoverData.derivedTriple S s hftS extra keep).structMap
       (specMapOfFieldHom (MaxContactCoverData.derivedTriple S s hftS extra keep).base L f) := hsq
@@ -1017,8 +1016,7 @@ private theorem comp_assoc_eq_of_eq_comp {X Y Z W V : Scheme.{u}}
     (p : X ⟶ Y) (q : Y ⟶ W) (b : Y ⟶ Z) (c : Z ⟶ W) (r : X ⟶ V) (s : V ⟶ W)
     (hq : q = b ≫ c) (h : p ≫ q = r ≫ s) :
     (p ≫ b) ≫ c = r ≫ s := by
-  rw [Category.assoc, ← hq]
-  exact h
+  rwa [Category.assoc, ← hq]
 
 theorem coverBaseChangeMap_condition (A : MarkedIdealWithBoundary.{u}) (hv : A.IsAdmissible) (L : Type u) [Field L]
     (f : A.base →+* L) :
@@ -1126,13 +1124,10 @@ theorem dropTrivialBoundary_withBoundary_baseChange (T : MarkedIdealWithBoundary
       MarkedIdealWithBoundary.withBoundary_boundary]
     refine filter_eq_map_filter_of_nontrivialPart_eq
       (pullback.fst T.structMap (specMapOfFieldHom T.base L f)) ?_ ?_ ?_
-    · intro _
-      exact decide_eq_true_iff_self _ _
-    · intro _
-      exact decide_eq_true_iff_self _ _
+    · exact fun _ => decide_eq_true_iff_self _ _
+    · exact fun _ => decide_eq_true_iff_self _ _
     · have h := (MarkedIdealWithBoundary.sameNontrivialBoundary_iff ((T.baseChange L f).boundary) E').mp hE
-      rw [MarkedIdealWithBoundary.baseChange_boundary] at h
-      exact h
+      rwa [MarkedIdealWithBoundary.baseChange_boundary] at h
   exact congrArg (fun E : List (T.baseChange L f).scheme.IdealSheafData =>
     (T.baseChange L f).withBoundary E) hb
 
@@ -1523,8 +1518,7 @@ theorem isStrictPullbackBlowupSeq_baseChange_of_cover
   have hVQ1 : (LowerDimReductionPullback.pullbackTriple (MaxContactCoverData.coverTriple (A.baseChange L f) hv')
       (pullback.fst (MaxContactCoverData.coverMap (A.baseChange L f) hv')
         (coverBaseChangeMap A hv L f))).IsAdmissible := by
-    rw [hT]
-    exact hVQ2
+    rwa [hT]
   have hVb : ((MaxContactCoverData.coverTriple (A.baseChange L f) hv').withBoundary
       [MaxContactCoverData.coverMaxContactIdeal (A.baseChange L f) hv']).IsAdmissible :=
     isAdmissible_withBoundary_singleton (MaxContactCoverData.coverTriple (A.baseChange L f) hv')
@@ -1753,8 +1747,7 @@ theorem isStrictPullbackBlowupSeq_baseChange_withBoundary
   have hord' : ∀ x : ↥((T.baseChange L f).withBoundary E').scheme,
       orderAt ((T.baseChange L f).withBoundary E').ideal x
         ≤ ((((T.baseChange L f).withBoundary E').mult : ℕ) : ℕ∞) := by
-    intro x
-    exact (hord x).le.trans (hO _)
+    exact fun x => (hord x).le.trans (hO _)
   by_cases hemp : orderAtLeastLocus T.ideal T.mult = (∅ : Set ↥T.scheme)
   · have h1 : (MaxContactFunctoriality.maxContactPrincipalization hinv Fam T).length = 0 :=
       MaxContactFunctoriality.length_eq_zero_of_orderAtLeastLocus_eq_empty hinv P Fam T hV hP hO hemp

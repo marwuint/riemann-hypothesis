@@ -93,8 +93,7 @@ theorem exists_point_of_hom {X : Scheme.{0}} {W₀ : X.Opens} (hW₀ : IsAffineO
   refine ⟨hW₀.fromSpec P, ?_, fun a => ?_⟩
   · have := hW₀.range_fromSpec
     have h2 : hW₀.fromSpec P ∈ Set.range hW₀.fromSpec := ⟨P, rfl⟩
-    rw [this] at h2
-    exact h2
+    rwa [this] at h2
   · have h := hW₀.fromSpec_preimage_basicOpen a
     have h2 : hW₀.fromSpec P ∈ X.basicOpen a ↔ P ∈ hW₀.fromSpec ⁻¹ᵁ X.basicOpen a := Iff.rfl
     rw [h2, h]
@@ -137,8 +136,7 @@ theorem exists_local_quot {Ω : Type} [Field Ω] [CharZero Ω] {X X' : Scheme.{0
   have hyV : ⊤ ≤ y ⁻¹ᵁ V := fun u _ => by
     have h1 : ξ u ∈ O := hbO (hD (Set.mem_univ u))
     rw [← hyr] at h1
-    have h2 := (((f ⁻¹ᵁ U).ι ≫ f).preimage_image_eq V).le h1
-    exact h2
+    exact (((f ⁻¹ᵁ U).ι ≫ f).preimage_image_eq V).le h1
   have hl0 : x' l ≠ 0 := ne_zero_of_le hφ hyV le_rfl
   let s : Fin (r + 1) → Γ(X, O) := fun i => (((f ⁻¹ᵁ U).ι ≫ f).appIso V).inv.hom (pullRatio φ V l le_rfl i)
   have hs : ∀ i, valR ξ O (s i) = x' i / x' l := fun i => by
@@ -152,8 +150,7 @@ theorem exists_local_quot {Ω : Type} [Field Ω] [CharZero Ω] {X X' : Scheme.{0
   have hres : ∀ c : Γ(X, W₀), valR ξ (X.basicOpen b) (algebraMap Γ(X, W₀) Γ(X, X.basicOpen b) c) =
       valR ξ W₀ c := fun c => valR_res ξ (X.basicOpen_le b) hD c
   refine ⟨l, hl0, b ^ (n + 1), ?_, fun i => ?_⟩
-  · rw [Scheme.basicOpen_pow _ _ n.succ_pos]
-    exact htb
+  · rwa [Scheme.basicOpen_pow _ _ n.succ_pos]
   · obtain ⟨a, ha⟩ := hn i
     refine ⟨a * b, ?_⟩
     have hv := congrArg (valR ξ (X.basicOpen b)) ha
@@ -792,8 +789,7 @@ theorem immersion_inl {e : ℕ} {Y : Type} [TopologicalSpace Y] {A : FinHolAtlas
     rw [hD]
     simp [hv']
   have hv3 : v ∈ (fderiv ℂ (fun t => affCoord pt (lam x ((A.chart j).symm t))) (A.chart j x)).ker := hv2
-  rw [himm] at hv3
-  exact hv3
+  rwa [himm] at hv3
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 theorem joinInl_injective : Function.Injective (joinInl ι 𝔅) := by
@@ -887,14 +883,11 @@ theorem anLogRes_of_embedded_join : ∀ (K : Type) [Fintype K] (ι : K → Type)
       exact hJ z hzm ((evC_rename_inl z γ).trans (mem_mcPts_span_iff.1 h2).2)
     obtain ⟨r, m, W, hW⟩ := R.snc _ (Sum.elim a 0) hfP' (homog_rename_inl hfa) hz'
     refine ⟨r, m, W, ?_⟩
-    simp only [eval_rename_inl] at hW
-    exact hW
+    simpa only [eval_rename_inl] using hW
   · intro j
     refine measure_mono_null ?_ (R.null j)
     intro t ht
-    refine ⟨ht.1, ?_⟩
-    have h1 := (mem_mcPts_span_iff.1 ht.2).2
-    exact hJ _ (hxm _) ((evC_rename_inl _ γ).trans h1)
+    exact ⟨ht.1, hJ _ (hxm _) ((evC_rename_inl _ γ).trans ((mem_mcPts_span_iff.1 ht.2).2))⟩
 
 end GlobalTheory.CompanionTheory.Ar.Giv
 end -- clump:auto
@@ -980,8 +973,7 @@ theorem resExists_of_resK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKSt
       (joinInl ι fun _ : Unit => Fin M) Ω (joinVec y y') (e + 1) isBlockMap_joinInl hblocks ?_ ?_
     · rw [hcomp]; exact hP
     · rw [hcomp, hfield]
-      intro t ht
-      exact isAlgebraic_algebraMap (⟨t, ht⟩ : blockFnField y)
+      exact fun t ht => isAlgebraic_algebraMap (⟨t, ht⟩ : blockFnField y)
   obtain ⟨R, hR⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.SncRes.isEmbedded_of_isSncModel (K ⊕ Unit) (joinIdx ι fun _ : Unit => Fin M) Ω (joinVec y y') e J₁
     harith hJ₁h hJ₁ hsnc
   have hγ := homog_mul hβ hβ'
@@ -993,8 +985,7 @@ theorem resExists_of_resK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKSt
     exact J.mul_mem_right _ hβJ
   · rintro f rfl
     exact ⟨_, hγ⟩
-  · rw [Ideal.span_singleton_le_iff_mem]
-    exact hγP
+  · rwa [Ideal.span_singleton_le_iff_mem]
   · refine _root_.GlobalTheory.CompanionTheory.Ar.Giv.anLogRes_of_embedded_join K ι Ω y e M y' J₁ R (β * β') (b + b') hR hy' hy hγ hγP ?_ ?_
     · intro z hzm h0
       apply hz z hzm

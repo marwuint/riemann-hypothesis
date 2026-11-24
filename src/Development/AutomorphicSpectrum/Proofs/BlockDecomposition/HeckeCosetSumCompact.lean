@@ -139,8 +139,7 @@ theorem split_quotient_finsum_regroup : ∀ (P M N V : Type) [Group P] [Group M]
         = e ⁻¹' {q : P ⧸ UP | Φ q.out ≠ 0} := by
       ext cx; simp only [Function.mem_support, Set.mem_preimage, Set.mem_setOf_eq, hval]
     rw [this]; exact hfin.preimage e.injective.injOn
-  rw [← finsum_comp_equiv e]
-  rw [finsum_congr hval]
+  rw [← finsum_comp_equiv e, finsum_congr hval]
   exact finsum_curry (fun cx : (M ⧸ UM) × (N ⧸ UP.comap u) => Φ (s cx.1.out * u cx.2.out)) hsupp
 
 end GlobalTheory
@@ -214,8 +213,7 @@ theorem iwasawa_parabolic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
       rw [hY]; exact (c⁻¹).isUnit
     apply Units.ext
     simp only [blk]
-    rw [dite_eq_left hU, IsUnit.unit_spec]
-    exact hY
+    rwa [dite_eq_left hU, IsUnit.unit_spec]
   refine ⟨(m₁, m₂), Y, _, inv_mem hk, ?_⟩
   rw [hblk, ← inv_inv g, hg, _root_.mul_inv_rev]
 
@@ -262,8 +260,7 @@ theorem finite_of_image {S K : Subgroup G} (hSK : S ≤ K) (hfin : S.relIndex K 
     rw [h1]
     exact QuotientGroup.eq.2 (hSK (QuotientGroup.eq.1 (QuotientGroup.out_eq' (g : G ⧸ S)).symm))
   refine ((hA.prod (Set.finite_univ (α := K ⧸ S.subgroupOf K))).preimage e.injective.injOn).subset ?_
-  intro q hq
-  exact ⟨⟨q, hq, (hfst q).symm⟩, Set.mem_univ _⟩
+  exact fun q hq => ⟨⟨q, hq, (hfst q).symm⟩, Set.mem_univ _⟩
 
 theorem relIndex_eq_card {K K' : Subgroup G} (X : Finset G) (hX : ∀ x ∈ X, x ∈ K)
     (hu : ∀ k ∈ K, ∃! x ∈ X, x⁻¹ * k ∈ K') : K'.relIndex K = X.card := by
@@ -274,8 +271,7 @@ theorem relIndex_eq_card {K K' : Subgroup G} (X : Finset G) (hX : ∀ x ∈ X, x
       have h1 : (x.1)⁻¹ * x'.1 ∈ K' := by
         have := QuotientGroup.eq.1 hxx
         simpa [Subgroup.mem_subgroupOf] using this
-      apply Subtype.ext
-      exact (hu x'.1 (hX _ x'.2)).unique ⟨x.2, h1⟩ ⟨x'.2, by simp [K'.one_mem]⟩
+      exact Subtype.ext ((hu x'.1 (hX _ x'.2)).unique ⟨x.2, h1⟩ ⟨x'.2, by simp [K'.one_mem]⟩)
     · intro q
       obtain ⟨⟨k, hk⟩, rfl⟩ := QuotientGroup.mk_surjective q
       obtain ⟨x, ⟨hx, hxk⟩, -⟩ := hu k hk
@@ -301,8 +297,7 @@ theorem sum_mul_mem {K K' : Subgroup G} (X : Finset G) (hX : ∀ x ∈ X, x ∈ 
       have h4 := K'.mul_mem (K'.inv_mem h1) h2
       have e : ((σ y).1⁻¹ * (k * y.1))⁻¹ * ((σ y).1⁻¹ * (k * y'.1)) = (y.1)⁻¹ * y'.1 := by group
       rwa [e] at h4
-    apply Subtype.ext
-    exact (hu y'.1 (hX _ y'.2)).unique ⟨y.2, h3⟩ ⟨y'.2, by simp [K'.one_mem]⟩
+    exact Subtype.ext ((hu y'.1 (hX _ y'.2)).unique ⟨y.2, h3⟩ ⟨y'.2, by simp [K'.one_mem]⟩)
   have hbij : Function.Bijective σ := Finite.injective_iff_bijective.1 hinj
   have hterm : ∀ y : X, φ (g * k * y.1) = φ (g * (σ y).1) := by
     intro y
@@ -349,8 +344,7 @@ theorem finsum_fibre {K K' : Subgroup G} (hle : K' ≤ K) (X : Finset G) (hX : �
   have hsupp : (Function.support fun py : (G ⧸ K) × X => φ (py.1.out * py.2.1)).Finite := by
     refine (hfin.preimage he.1.injOn).subset fun py hpy => ?_
     show φ (e py).out ≠ 0
-    rw [hterm]
-    exact hpy
+    rwa [hterm]
   calc ∑ᶠ q : G ⧸ K', φ q.out = ∑ᶠ py : (G ⧸ K) × X, φ (e py).out :=
         (finsum_comp (g := fun q : G ⧸ K' => φ q.out) e he).symm
     _ = ∑ᶠ py : (G ⧸ K) × X, φ (py.1.out * py.2.1) := finsum_congr hterm
@@ -414,8 +408,7 @@ theorem iwasawa_sum (h : a + b = n) (w : Pl E) (Ψ : GLw n w → ℂ) (hΨ : Glo
   have hfinP : {q : P ⧸ KP | Ψ (q.out : GLw n w) ≠ 0}.Finite := by
     refine (hfin.preimage hι.1.injOn).subset fun q hq => ?_
     show Ψ (ι q).out ≠ 0
-    rw [hterm]
-    exact hq
+    rwa [hterm]
   have e1 : ∑ᶠ p : GLw n w ⧸ GlobalTheory.LFun.KGL w (n := n), Ψ p.out = ∑ᶠ q : P ⧸ KP, Ψ (q.out : GLw n w) :=
     (finsum_comp (g := fun p : GLw n w ⧸ GlobalTheory.LFun.KGL w (n := n) => Ψ p.out) ι hι).symm.trans (finsum_congr hterm)
   have hl : KP.map (GlobalTheory.LeviFubini.levH h w) ≤ (GlobalTheory.LFun.KGL w (n := a)).prod (GlobalTheory.LFun.KGL w (n := b)) := by
@@ -499,12 +492,10 @@ theorem integral_decomposition : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
   generalize hLdef : (K'.subgroupOf (GlobalTheory.LeviFubini.parB h w)).comap (GlobalTheory.LeviFubini.uN h w) = L at hLle hLfin
   have hLmem : ∀ Z ∈ L, blk h w 1 (Multiplicative.toAdd Z) ∈ K' := by
     intro Z hZ
-    rw [← hLdef] at hZ
-    exact hZ
+    rwa [← hLdef] at hZ
   have hmemL : ∀ Z, blk h w 1 (Multiplicative.toAdd Z) ∈ K' → Z ∈ L := by
     intro Z hZ
-    rw [← hLdef]
-    exact hZ
+    rwa [← hLdef]
   have hLinv : ∀ y ∈ X, ∀ m, L ≤ rStab (fun Y => φ (blk h w m (Multiplicative.toAdd Y) * y)) := by
     intro y hy m Z hZ Y
     show φ (blk h w m (Multiplicative.toAdd (Y * Z)) * y) = φ (blk h w m (Multiplicative.toAdd Y) * y)
@@ -514,15 +505,13 @@ theorem integral_decomposition : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
     rw [e]
     exact hφ _ _ (by simpa using hnorm y⁻¹ (inv_mem (hX y hy)) _ (hLmem Z hZ))
   have hLΨ : ∀ m, L ≤ rStab (fun Y => Ψ (blk h w m (Multiplicative.toAdd Y))) := by
-    intro m Z hZ Y
-    exact Finset.sum_congr rfl fun y hy => hLinv y hy m hZ Y
+    exact fun m Z hZ Y => Finset.sum_congr rfl fun y hy => hLinv y hy m hZ Y
   have hNfin : ∀ m, ∀ y ∈ X, (Function.support fun q : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) ⧸ L =>
       φ (blk h w m (Multiplicative.toAdd q.out) * y)).Finite := by
     intro m y hy
     refine Set.Finite.of_injOn (f := fun q : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) ⧸ L =>
       (QuotientGroup.mk (blk h w m (Multiplicative.toAdd q.out) * y) : GLw n w ⧸ K')) ?_ ?_ hZ'
-    · intro q hq
-      exact ⟨_, hq, rfl⟩
+    · exact fun q hq => ⟨_, hq, rfl⟩
     · intro q _ q' _ hqq
       have h1 := QuotientGroup.eq.1 hqq
       have e0 : blk h w m (Multiplicative.toAdd q.out) * blk h w 1 (Multiplicative.toAdd (q.out⁻¹ * q'.out)) =
@@ -547,12 +536,10 @@ theorem integral_decomposition : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
     congr 1
     exact (finsum_sum_comm X _ fun y hy => hNfin m y hy).symm
   have hdiag : ∀ c ∈ (GlobalTheory.LFun.KGL w (n := a)).prod (GlobalTheory.LFun.KGL w (n := b)), blk h w c 0 ∈ GlobalTheory.LFun.KGL w (n := n) := by
-    intro c hc
-    exact hM ⟨c, hc, rfl⟩
+    exact fun c hc => hM ⟨c, hc, rfl⟩
   have hNK : ∀ Z ∈ intMat a b w, blk h w 1 (Multiplicative.toAdd Z) ∈ GlobalTheory.LFun.KGL w (n := n) := by
     intro Z hZ
-    rw [← hN] at hZ
-    exact hZ
+    rwa [← hN] at hZ
   have hNΨ : ∀ m, intMat a b w ≤ rStab (fun Y => Ψ (blk h w m (Multiplicative.toAdd Y))) := by
     intro m Z hZ Y
     show Ψ (blk h w m (Multiplicative.toAdd (Y * Z))) = Ψ (blk h w m (Multiplicative.toAdd Y))
@@ -576,8 +563,7 @@ theorem integral_decomposition : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
     intro y hy c hc m
     have hcK := Subgroup.mem_prod.1 (hSMK hc)
     have hd : CtLevel.dgM h w c ∈ K' := by
-      rw [← blk_zero_eq_dgM]
-      exact hc
+      rwa [← blk_zero_eq_dgM]
     have e : (fun Y => φ (blk h w (m * c) (Multiplicative.toAdd Y) * y)) = fun Y =>
         (fun Z => φ (blk h w m (Multiplicative.toAdd Z) * y))
           (Multiplicative.ofAdd (c.1.val * Multiplicative.toAdd Y * (c.2⁻¹).val)) := by
@@ -591,8 +577,7 @@ theorem integral_decomposition : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
       c.1 c.2⁻¹ hcK.1 (inv_mem hcK.2)
     show hint (intMat a b w) (fun Y => φ (blk h w (m * c) (Multiplicative.toAdd Y) * y)) =
       hint (intMat a b w) (fun Y => φ (blk h w m (Multiplicative.toAdd Y) * y))
-    rw [e]
-    exact hh
+    rwa [e]
   have hTinv : (GlobalTheory.LFun.KGL w (n := a)).prod (GlobalTheory.LFun.KGL w (n := b)) ≤ rStab (fun m =>
       hint (intMat a b w) (fun Y => Ψ (blk h w m (Multiplicative.toAdd Y)))) := by
     intro c hc m
@@ -610,8 +595,7 @@ theorem integral_decomposition : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
       c.1 c.2⁻¹ hcK.1 (inv_mem hcK.2)
     show hint (intMat a b w) (fun Y => Ψ (blk h w (m * c) (Multiplicative.toAdd Y))) =
       hint (intMat a b w) (fun Y => Ψ (blk h w m (Multiplicative.toAdd Y)))
-    rw [e]
-    exact hh
+    rwa [e]
   have hFfin : ∀ y ∈ X, (Function.support fun q : (GLw a w × GLw b w) ⧸ K'.comap f =>
       hint (intMat a b w) (fun Y => φ (blk h w q.out (Multiplicative.toAdd Y) * y))).Finite := by
     intro y hy

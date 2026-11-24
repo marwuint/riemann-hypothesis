@@ -56,8 +56,7 @@ def lowCount (lev : Fin n → ℕ) (a : Fin n) : ℕ := (univ.filter fun b => le
 theorem lowCount_lt (lev : Fin n → ℕ) (a : Fin n) : lowCount lev a < n := by
   have h : (univ.filter fun b => lev b < lev a).card < (univ : Finset (Fin n)).card :=
     Finset.card_lt_card (Finset.filter_ssubset.2 ⟨a, Finset.mem_univ a, lt_irrefl (lev a)⟩)
-  rw [Finset.card_univ, Fintype.card_fin] at h
-  exact h
+  rwa [Finset.card_univ, Fintype.card_fin] at h
 
 theorem lowCount_le_of_le {lev : Fin n → ℕ} {a b : Fin n} (h : lev a ≤ lev b) :
     lowCount lev a ≤ lowCount lev b := by
@@ -73,8 +72,7 @@ theorem lowCount_lt_of_lt {lev : Fin n → ℕ} {a b : Fin n} (h : lev a < lev b
   apply Finset.card_lt_card
   rw [Finset.ssubset_iff_of_subset]
   · refine ⟨a, ?_, ?_⟩
-    · simp only [Finset.mem_filter]
-      exact ⟨Finset.mem_univ a, h⟩
+    · simpa only [Finset.mem_filter] using ⟨Finset.mem_univ a, h⟩
     · simp only [Finset.mem_filter, lt_irrefl, and_false, not_false_eq_true]
   · intro c hc
     simp only [Finset.mem_filter] at hc ⊢
@@ -114,7 +112,6 @@ theorem muQ_mem_harmSet {lam : Fin n → ℤ} {lev : Fin n → ℕ} (h : IsLev l
   unfold harmSet
   rw [Finset.mem_image]
   refine ⟨l, ?_, he⟩
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-  exact hl
+  simpa only [Finset.mem_filter, Finset.mem_univ, true_and] using hl
 
 end GlobalTheory.CompanionTheory.LevelCompress

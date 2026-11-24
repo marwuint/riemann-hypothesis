@@ -336,8 +336,7 @@ theorem rFullSat : RFullSat := by
     obtain ⟨B, hB, hBα⟩ := hD.2 w hu hw
     obtain ⟨B', hB', hBα'⟩ := hD'.2 w hu hw
     refine ⟨B, hB, ?_⟩
-    rw [hBα s ϖ q hs hinv α hα, ← hBα' s ϖ q hs hinv α hα]
-    exact hB'
+    rwa [hBα s ϖ q hs hinv α hα, ← hBα' s ϖ q hs hinv α hα]
 
 theorem rFullTheta : RFullTheta := by
   intro hU hI hC E _ _ _ hE n π hπ D hD
@@ -373,8 +372,7 @@ theorem rFullTheta : RFullTheta := by
       by_contra h
       exact hsp ⟨hw, h⟩
     have e := hC E n π hπ D w u hw hwu hu hsw (hsu hus) B B' hB hB'
-    rw [← e]
-    exact hB'
+    rwa [← e]
   · obtain ⟨s, ϖ, q, α, hs', hinv, hα⟩ := hI E hE n π hπ w hw hu
     obtain ⟨B, hB, hBα⟩ := hD.2 w hu hw
     refine ⟨B, hB, fun u hwu => ?_⟩
@@ -383,8 +381,7 @@ theorem rFullTheta : RFullTheta := by
       exact hw ⟨u, hne, hwu.1⟩
     subst hu'
     have e := hBα s ϖ q hs' hinv α hα
-    rw [e, _root_.GlobalTheory.LFun.ConjPlace.bcParam_map_inv, ← e]
-    exact hB
+    rwa [e, _root_.GlobalTheory.LFun.ConjPlace.bcParam_map_inv, ← e]
 
 end PositivityTheory.Rg.BcB.F.Rig
 
@@ -426,8 +423,7 @@ theorem sc_hasSatGL_of_isSubquotient {w : HeightOneSpectrum (𝓞 E)} {V W : Typ
     exact Subtype.ext_iff
   refine ⟨hsph, fun x hx hx0 => ?_⟩
   have hx' : x ∈ (fixed S.toRepresentation (GlobalTheory.LFun.KGL w (n := n))).map q.toLinearMap := by
-    rw [GlobalTheory.LocGL.map_fixed_of_surjective hSs hKc (f := q) hq]
-    exact hx
+    rwa [GlobalTheory.LocGL.map_fixed_of_surjective hSs hKc (f := q) hq]
   obtain ⟨u, hu, hux⟩ := Submodule.mem_map.1 hx'
   have hu0 : u ≠ 0 := fun e => hx0 (by rw [← hux, e, map_zero])
   have huK : u.1 ∈ fixed ρ (GlobalTheory.LFun.KGL w (n := n)) :=
@@ -438,8 +434,7 @@ theorem sc_hasSatGL_of_isSubquotient {w : HeightOneSpectrum (𝓞 E)} {V W : Typ
   have hu3 : GlobalTheory.LFun.IsSatVecGL w σ (q.toLinearMap u) B :=
     hu2.map (ρ' := σ) q.toLinearMap (fun g y => Representation.IntertwiningMap.isIntertwining _ _ q g y)
       (by rw [hux]; exact hx0)
-  rw [hux] at hu3
-  exact hu3
+  rwa [hux] at hu3
 
 theorem sc_satVec (X : Pre E n) (w : HeightOneSpectrum (𝓞 E)) (B : Multiset ℂˣ) (h : X.Sat w B) :
     ∀ f ∈ fixed (locProd X.h w (X.σ · w)) (GlobalTheory.LFun.KGL w (n := n)), f ≠ 0 →
@@ -449,8 +444,7 @@ theorem sc_satVec (X : Pre E n) (w : HeightOneSpectrum (𝓞 E)) (B : Multiset �
   obtain ⟨S, hS, hfS⟩ := GlobalTheory.SatInd.exists_sat_multiProd X.h (π := fun i => (X.σ i w).ρ)
     (fun i => (X.σ i w).smooth) (fun i => (X.σ i w).irred) hf hf0
   have e : S = b := funext fun a => (hS a).unique (hb a).2
-  rw [← e]
-  exact hfS
+  rwa [← e]
 
 theorem sc_cLoc_conj (x : UA E n) (u : HeightOneSpectrum (𝓞 E)) :
     cLoc u x = GlobalTheory.LFun.ConjPlace.invT (GlobalTheory.ThetaSatake.cloc u) n (cLoc (GlobalTheory.ThetaSatake.cw u) x) := by
@@ -502,8 +496,7 @@ theorem splitConj : SplitConj := by
     have e := hf ⟨x, hx⟩ v
     show f (P.ρ ((GlobalTheory.LFun.ConjPlace.invT (GlobalTheory.ThetaSatake.cloc u) n).symm (cLoc u (x : UA E n))) v) =
       RU E n (x : UA E n) (f v)
-    rw [sc_cLoc_conj (x : UA E n) u, MulEquiv.symm_apply_apply]
-    exact e
+    rwa [sc_cLoc_conj (x : UA E n) u, MulEquiv.symm_apply_apply]
   have hsu : IsSplitAt u := ⟨GlobalTheory.ThetaSatake.cw u, Ne.symm huw, hwu.1.symm⟩
   have hP'inv : GlobalTheory.LFun.HasSatGL u P'.ρ (B.map (·⁻¹)) :=
     GlobalTheory.SplitSatake.hasSatGL_of_isCompAlong_split E n π hπ u hsu _ _ _ P'.ρ hQc hP'c _ hQsat

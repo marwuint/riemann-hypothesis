@@ -236,14 +236,12 @@ theorem emb_eq_star_iff {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ :
     cases t with
     | inl t =>
       simp only [emb, Sum.elim_inl, Sum.isLeft_inl, ne_eq, not_true_eq_false, and_false, iff_false]
-      intro h
-      exact not_eq_conj hσ τ τ' h
+      exact fun h => not_eq_conj hσ τ τ' h
     | inr t =>
       simp only [emb, Sum.elim_inl, Sum.elim_inr, Sum.isLeft_inl, Sum.isLeft_inr, RingHom.comp_apply,
         starRingEnd_apply, star_star, ne_eq, Bool.true_eq_false, not_false_eq_true, and_true]
       constructor
-      · intro h
-        exact hσ.1 (RingHom.ext h)
+      · exact fun h => hσ.1 (RingHom.ext h)
       · rintro rfl a
         rfl
   | inr s =>
@@ -252,15 +250,13 @@ theorem emb_eq_star_iff {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ :
       simp only [emb, Sum.elim_inl, Sum.elim_inr, Sum.isLeft_inl, Sum.isLeft_inr, RingHom.comp_apply,
         starRingEnd_apply, ne_eq, Bool.false_eq_true, not_false_eq_true, and_true]
       constructor
-      · intro h
-        exact hσ.1 (RingHom.ext fun a => star_injective (h a))
+      · exact fun h => hσ.1 (RingHom.ext fun a => star_injective (h a))
       · rintro rfl a
         rfl
     | inr t =>
       simp only [emb, Sum.elim_inr, Sum.isLeft_inr, RingHom.comp_apply, starRingEnd_apply, star_star,
         ne_eq, not_true_eq_false, and_false, iff_false]
-      intro h
-      exact not_eq_conj hσ τ' τ fun a => (h a).symm
+      exact fun h => not_eq_conj hσ τ' τ fun a => (h a).symm
 
 end GlobalTheory.CompanionTheory.Ar.Cusp.Univ.EmbConj
 end -- clump:auto
@@ -343,8 +339,7 @@ theorem ip_act (hc : ∀ i i', R.ip (c i) (c i') = if i = i' then 1 else 0) (s :
     R.ip (c i) (R.B a z) = s i a * R.ip (c i) z := by
   have hB : ∀ l, R.B a (c l) = s l a • c l := fun l => by
     have h := (Submodule.mem_iInf _).1 (hs l) a
-    have h' := LinearMap.mem_ker.1 h
-    simpa [sub_eq_zero] using h'
+    simpa [sub_eq_zero] using LinearMap.mem_ker.1 h
   conv_lhs => rw [← sum_ip_smul R e c hc z]
 
   rw [map_sum, ip_eq_ipLin, map_sum]
@@ -378,8 +373,7 @@ theorem exists_riemLat_coord (R₀ : RiemLat E g Λ) (σ : Ψ → (𝓞 E →+* 
     have key : P x ⬝ᵥ (1 : Matrix (Fin g) (Fin g) ℂ) *ᵥ star (P y) = R₀.P x ⬝ᵥ R₀.Hm *ᵥ star (R₀.P y) := by
       have h := sum_ip_mul_conj R₀ e c hc (R₀.P x) (R₀.P y)
       rw [← e.symm.sum_comp] at h
-      rw [one_mulVec]
-      exact h
+      rwa [one_mulVec]
     rw [key]
     exact R₀.im x y
   · intro a x
@@ -533,8 +527,7 @@ theorem im_terms_separate (P Q R S : Matrix I I ℂ)
       + star α * star β * R a b + star α * β * S a b).im = 0 := by
     intro a b α β
     have := h (Pi.single a α) (Pi.single b β)
-    rw [hs, hs, he, he, he, he] at this
-    exact this
+    rwa [hs, hs, he, he, he, he] at this
   have h4 : ∀ a b, (P a b).re = (S a b).re ∧ (P a b).im = -(S a b).im ∧
       (Q a b).re = (R a b).re ∧ (Q a b).im = -(R a b).im := by
     intro a b
@@ -645,8 +638,7 @@ theorem symm_posDef_of_relations (G Z : Matrix I I ℂ) (hG : G.PosDef)
     abel
   have hV : Gc * (1 - Z * Zc) = 1 := by
     have := congrArg (Matrix.map · star) hU
-    simp only [mapmul, mapsub, mapone, hcc] at this
-    exact this
+    simpa only [mapmul, mapsub, mapone, hcc] using this
   have hU' : (1 - Zc * Z) * G = 1 := mul_eq_one_comm.mp hU
   have hV' : (1 - Z * Zc) * Gc = 1 := mul_eq_one_comm.mp hV
   have hcomm : (1 - Zc * Z) * Zc = Zc * (1 - Z * Zc) := by
@@ -668,8 +660,7 @@ theorem symm_posDef_of_relations (G Z : Matrix I I ℂ) (hG : G.PosDef)
   · have := congrArg (Matrix.map · star) h4
     simp only [hcc] at this
     ext i j
-    have h := congrFun (congrFun this j) i
-    simpa [conjTranspose_apply] using h
+    simpa [conjTranspose_apply] using congrFun (congrFun this j) i
   · rw [← h4]
     have hinv : (1 - Zc * Z) = G⁻¹ := (Matrix.inv_eq_right_inv hU).symm
     rw [hinv]
@@ -1236,8 +1227,7 @@ theorem exists_orthoBasis (R : RiemLat E g Λ) (S : Submodule ℂ (Fin g → ℂ
     have hm := congrArg (Submodule.map S'.subtype) hb
     rw [Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp] at hm
     have hx' : x ∈ S' := hx
-    rw [← hm] at hx'
-    exact hx'
+    rwa [← hm] at hx'
 
 theorem linearIndependent_of_ortho (R : RiemLat E g Λ) {I : Type} [DecidableEq I] (c : I → Fin g → ℂ)
     (h : ∀ i i', R.ip (c i) (c i') = if i = i' then 1 else 0) : LinearIndependent ℂ c := by

@@ -72,8 +72,7 @@ def HasLocalEtaleCharts {X' : Scheme.{u}} {k : Type u} [Field k]
 private theorem ofIdealTop_mono {X : Scheme.{u}} {I J : Ideal Γ(X, ⊤)} (h : I ≤ J) :
     AlgebraicGeometry.Scheme.IdealSheafData.ofIdealTop I ≤
       AlgebraicGeometry.Scheme.IdealSheafData.ofIdealTop J := by
-  intro U
-  exact Ideal.map_mono h
+  exact fun U => Ideal.map_mono h
 
 theorem EtaleChart.coordIdeal_mono {Y : Scheme.{u}} {k : Type u} [Field k]
     {p : Y ⟶ Spec (CommRingCat.of k)} {U : Y.Opens} {m : ℕ} (ch : EtaleChart p U m)
@@ -170,12 +169,8 @@ theorem exists_disjointEtaleChart {X X' : Scheme.{u}} {k : Type u} [Field k]
   set O : X'.Opens := ⟨(W : Set X') ∩ (Set.range τ.base)ᶜ, hopen⟩
   have hyO : y ∈ O := Set.mem_inter hyW hynot
   obtain ⟨U, hyU, hUO⟩ := AlgebraicGeometry.Scheme.exists_affineOpens_mem_le hyO
-  have hUW : (U : X'.Opens) ≤ W := by
-    intro z hz
-    exact (hUO hz).1
-  refine ⟨⟨(U : X'.Opens), U.2, n, ch.restrict hUW, ?_⟩, hyU⟩
-  intro x hx
-  exact (hUO hx).2 ⟨x, rfl⟩
+  have hUW : (U : X'.Opens) ≤ W := fun z hz => (hUO hz).1
+  exact ⟨⟨(U : X'.Opens), U.2, n, ch.restrict hUW, (fun x hx => (hUO hx).2 ⟨x, rfl⟩)⟩, hyU⟩
 
 def coverOpens {X X' : Scheme.{u}} {k : Type u} [Field k]
     {p : X' ⟶ Spec (CommRingCat.of k)} {τ : X ⟶ X'} {c : ℕ} {α : Type v} {β : Type w}
@@ -227,8 +222,7 @@ theorem nonempty_maximalContactCover {X X' : Scheme.{u}} {k : Type u} [Field k]
     · obtain ⟨x, hx⟩ := hy
       obtain ⟨A, hA⟩ := exists_adaptedEtaleChart p τ c hc hcodim x
       refine ⟨Sum.inl A, ?_⟩
-      rw [← hx]
-      exact hA
+      rwa [← hx]
     · have hy' : ∀ x : X, τ.base x ≠ y := fun x hx => hy ⟨x, hx⟩
       obtain ⟨F, hF⟩ := exists_disjointEtaleChart p τ hcharts y hy'
       exact ⟨Sum.inr F, hF⟩
@@ -469,8 +463,7 @@ theorem idealOnHypersurface_eq_imageIdealSheaf (C : MaximalContactCover p τ I c
           (_root_.FunctorialResolution.Blowup.schemeImageIdeal C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase)) := by
     have h := Scheme.IdealSheafData.map_comp (I.comap C.pullbackFiberToBase) C.pullbackFiberToHypersurface
       C.toCoverData.iInfImageIdeal.subschemeι
-    rw [C.pullbackFiberToHypersurface_comp_subschemeι] at h
-    exact h
+    rwa [C.pullbackFiberToHypersurface_comp_subschemeι] at h
   have h3 : (_root_.FunctorialResolution.Blowup.schemeImageIdeal C.toCoverData.iInfImageIdeal.subschemeι
         (_root_.FunctorialResolution.Blowup.schemeImageIdeal C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase))).comap
         C.toCoverData.iInfImageIdeal.subschemeι

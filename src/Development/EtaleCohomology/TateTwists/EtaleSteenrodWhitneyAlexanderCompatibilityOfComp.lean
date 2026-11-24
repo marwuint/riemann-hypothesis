@@ -360,10 +360,8 @@ theorem LateralTheory.EtaleFoundations.SteenPf.leaf_acyc_of : LateralTheory.Etal
     conv_rhs => rw [← Finsupp.sum_single c]
     conv_lhs => rw [← Finsupp.sum_single c]
 
-    simp only [Finsupp.sum, map_sum, ← Finset.sum_add_distrib]
-    exact Finset.sum_congr rfl h
-  rw [hcyc, map_zero, add_zero] at e
-  exact e
+    simpa only [Finsupp.sum, map_sum, ← Finset.sum_add_distrib] using Finset.sum_congr rfl h
+  rwa [hcyc, map_zero, add_zero] at e
 
 end
 end -- clump:auto
@@ -463,8 +461,7 @@ lemma bd_sum {N : ℕ} {ι : Type*} (s : Finset ι) (g : ι → Pr N →₀ ℤ)
     Pr.bd (∑ x ∈ s, g x) = ∑ x ∈ s, Pr.bd (g x) := by
   unfold Pr.bd
 
-  simp only [map_sum, Finset.smul_sum]
-  exact Finset.sum_comm
+  simpa only [map_sum, Finset.smul_sum] using Finset.sum_comm
 
 lemma d_S (n : ℕ) (x : ℕ × ℕ) : Pr.d n (S n x) = g1 n x + g2 n x := by
   unfold S g1 g2
@@ -544,7 +541,6 @@ theorem leaf_aw_of : LateralTheory.EtaleFoundations.SteenPf.leaf_aw := by
     unfold g1; rw [dite_eq_left (by simp)]; rfl
   have z2 : g2 (N + 1) (N + 1, 0) = 0 := by
     unfold g2; rw [dite_eq_left (by simp)]
-    show (-1 : ℤ) ^ (N + 1) • (0 : Pr (N + 1) →₀ ℤ) = 0
     exact smul_zero _
   rw [z1, z2, zero_add, zero_add, ← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl fun x hx => ?_
@@ -618,8 +614,7 @@ lemma d_tau_single {N : ℕ} (z : Pr N) :
 
 lemma d_tau {N : ℕ} (c : Pr N →₀ ℤ) : Pr.d N (tau N c) = tau N (Pr.d N c) := by
   have : (Pr.d N).comp (tau N) = (tau N).comp (Pr.d N) := by
-    refine Finsupp.lhom_ext' fun z => LinearMap.ext_ring ?_
-    exact d_tau_single z
+    exact Finsupp.lhom_ext' fun z => LinearMap.ext_ring (d_tau_single z)
   exact LinearMap.congr_fun this c
 
 lemma tau_push {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M) (c : Pr N →₀ ℤ) :

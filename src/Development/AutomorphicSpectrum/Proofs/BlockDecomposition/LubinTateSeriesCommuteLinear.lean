@@ -220,8 +220,7 @@ theorem mem_nearI (hϖ : ϖ ∈ S) {k m : ℕ} {x : S} :
     have e : ((c * (⟨ϖ, hϖ⟩ : S) ^ m + b : S) : B) - ϖ ^ m * (c : B) = (b : B) := by
       push_cast
       ring
-    rw [e]
-    exact hb'
+    rwa [e]
   · rintro ⟨s, hs, hx⟩
     refine Submodule.mem_sup.2 ⟨(⟨s, hs⟩ : S) * (⟨ϖ, hϖ⟩ : S) ^ m,
       Ideal.mem_span_singleton'.2 ⟨_, rfl⟩, x - (⟨s, hs⟩ : S) * (⟨ϖ, hϖ⟩ : S) ^ m, ?_, by ring⟩
@@ -229,8 +228,7 @@ theorem mem_nearI (hϖ : ϖ ∈ S) {k m : ℕ} {x : S} :
       push_cast
       ring
     show ((x - (⟨s, hs⟩ : S) * (⟨ϖ, hϖ⟩ : S) ^ m : S) : B) ∈ F k
-    rw [e]
-    exact hx
+    rwa [e]
 
 theorem pow_mem_F (E : PerEnv S F ϖ) {x : B} (hx : x ∈ F 1) (k : ℕ) : x ^ k ∈ F k := by
   induction k with
@@ -249,8 +247,7 @@ theorem nilp_of_near (E : PerEnv S F ϖ) (Q : S) {M : ℕ} (hN : Near S ϖ (F 1)
   have hxS : (xS : B) ∈ F 1 := by
     have e : (xS : B) = (Q : B) ^ M - ϖ ^ 1 * s := by
       simp [xS, sS, wS]
-    rw [e]
-    exact hx
+    rwa [e]
   have hw : IsNilpotent (Ideal.Quotient.mk I wS) := by
     refine ⟨m, ?_⟩
     rw [← map_pow, Ideal.Quotient.eq_zero_iff_mem]
@@ -453,8 +450,7 @@ theorem galois_log : ∀ {B : Type} [CommRing B] {S : Subring B} {F : ℕ → Id
           push_cast
           rw [hr, hyS]
           ring
-        rw [e1]
-        exact hx
+        rwa [e1]
       have hE4 := small E.mem hP hs hu w.2 hd hx' hu'
       have e2 : ϖ ^ c * (σ t - a * t) =
           a * (ϖ ^ c * (ϖ' ^ n * ltIter ϖ q n Q - t)) -

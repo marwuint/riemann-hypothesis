@@ -504,8 +504,7 @@ theorem factor {S : Finset (Pl D)} (hS2 : ∀ v ∉ S, (2 : 𝓞 D.host.F) ∉ v
   have hS' : ∀ v ∈ S, a.map (cv D v) = 1 ∧ b.map (cv D v) = 0 ∧ c.map (cv D v) = 0 ∧ d.map (cv D v) = 1 := by
     intro v hv
     have := blocks_at (cv D v) (hSv v hv)
-    simp only [← ha, ← hb, ← hc, ← hd] at this
-    exact this
+    simpa only [← ha, ← hb, ← hc, ← hd] using this
 
   have m4 : nOf (-X) hXh' ∈ KOff D n S :=
     nOf_mem _ _ (by rw [map_neg', hXinf, neg_zero]) (fun v hv => by rw [map_neg', hXS v hv, neg_zero])
@@ -575,8 +574,7 @@ theorem genK : GenK := by
   have a4 := hgen g4 m4 (Or.inl n4) 1 h1
   have a3 := hgen g3 m3 (Or.inr (Or.inr w3)) _ a4
   have a2 := hgen g2 m2 (Or.inr (Or.inl i2)) _ a3
-  have a1 := hgen g1 m1 (Or.inl n1) _ a2
-  simpa only [mul_one] using a1
+  simpa only [mul_one] using hgen g1 m1 (Or.inl n1) _ a2
 
 end PositivityTheory.Rg.Rsw.L
 end -- clump:auto

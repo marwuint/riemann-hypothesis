@@ -91,8 +91,7 @@ theorem pullback_sep {K B₁ B₂ I J : Type} [Field K] [Algebra R K] [IsFractio
     (hz : ∀ i j (w : Spec (CommRingCat.of K) ⟶ pullback a₁ a₂),
       w ≫ pullback.fst a₁ a₂ = Spec.map (CommRingCat.ofHom (e i).toRingHom) →
       w ≫ pullback.snd a₁ a₂ = Spec.map (CommRingCat.ofHom (f j).toRingHom) → w.appTop u = 0) :
-    u = 0 := by
-  exact GlobalTheory.CompanionTheory.Ar.BT.CharMul.pullback_sep e f he hf a₁ a₂ h₁ h₂ u hz
+    u = 0 := GlobalTheory.CompanionTheory.Ar.BT.CharMul.pullback_sep e f he hf a₁ a₂ h₁ h₂ u hz
 
 variable {T : Type} [CommGroup T]
 
@@ -114,8 +113,7 @@ theorem valAt_chart {B C : Type} [CommRing B] [CommRing C] {X : Scheme.{0}} (c :
       (Scheme.ΓSpecIso (CommRingCat.of B)).inv b := Iso.inv_hom_id_apply _ _
   have h4 : (Scheme.ΓSpecIso (CommRingCat.of B)).hom ((Scheme.ΓSpecIso (CommRingCat.of B)).inv b) = b :=
     Iso.inv_hom_id_apply _ _
-  rw [h4, ← h3] at h2
-  exact h2
+  rwa [h4, ← h3] at h2
 
 theorem chart_sep [Finite T] (Γ : QFGroup R T) (B : Type) [CommRing B] [Algebra R B]
     (c : Spec (CommRingCat.of B) ⟶ Γ.G.left) [IsOpenImmersion c]
@@ -138,8 +136,7 @@ theorem chart_sep [Finite T] (Γ : QFGroup R T) (B : Type) [CommRing B] [Algebra
         rw [CommRingCat.ofHom_comp, Spec.map_comp, hφ, ← hc, ← Category.assoc, hg]
         exact Over.w (Γ.pt i.1)
       exact congrArg CommRingCat.Hom.hom (Spec.map_injective h1)
-    refine ⟨{ φ with commutes' := fun r => congr($hcomp r) }, ?_⟩
-    exact (congrArg (· ≫ c) hφ).trans hg
+    exact ⟨{ φ with commutes' := fun r => congr($hcomp r) }, (congrArg (· ≫ c) hφ).trans hg⟩
   choose e he using lift
   refine ⟨I, inferInstance, Subtype.val, e, he, fun b hb => ?_⟩
   have hs := PositivityTheory.HtPt.Twhopf.sec_inj R T Γ (c ''ᵁ ⊤)
@@ -157,8 +154,7 @@ theorem chart_sep [Finite T] (Γ : QFGroup R T) (B : Type) [CommRing B] [Algebra
         exact hb ⟨t, hr⟩
       exact key _ (he ⟨t, hr⟩) h)
   have h1 := congr((c.appIso ⊤).hom $hs)
-  have h2 := congr((Scheme.ΓSpecIso (CommRingCat.of B)).hom $h1)
-  simpa using h2
+  simpa using congr((Scheme.ΓSpecIso (CommRingCat.of B)).hom $h1)
 
 theorem chart_pair [Finite T] (Γ : QFGroup R T) (A₁ A₂ : Type) [CommRing A₁] [CommRing A₂]
     (c₁ : Spec (CommRingCat.of A₁) ⟶ Γ.G.left) (c₂ : Spec (CommRingCat.of A₂) ⟶ Γ.G.left)
@@ -246,8 +242,7 @@ theorem PositivityTheory.HtPt.Htat.SeparatedTensorPullback.charValues_mul : ∀ 
   intro R _ _ T _ _ Γ χ s hs Y
   refine ⟨fun y z => ?_, ?_⟩
   · have h := congrArg (lift y z).left.appTop (mul_univ Γ χ s hs)
-    rw [pull, map_mul, pull, pull, comp_mul, lift_fst, lift_snd] at h
-    exact h
+    rwa [pull, map_mul, pull, pull, comp_mul, lift_fst, lift_snd] at h
   · rw [Hom.one_def, ← pull, one_univ Γ χ s hs, map_one]
 
 end -- clump:auto
@@ -294,8 +289,7 @@ theorem valAt_one [Finite T] (Γ : QFGroup R T) (χ : T →* Rˣ) (s : Γ(Γ.G.l
     valAt (B := B) (1 : Over.mk q ⟶ Γ.G).left ⊤ le_top s = 1 := by
   have h := (_root_.PositivityTheory.HtPt.Htat.SeparatedTensorPullback.charValues_mul R T Γ χ s hs (Over.mk q)).2
   rw [valAt_top]
-  refine (congrArg _ h).trans ?_
-  exact map_one _
+  exact (congrArg _ h).trans (map_one _)
 
 theorem tors_one {Γ : QFGroup R T} {S : Scheme.{0}} {G : Over S} [GrpObj G]
     {x : Spec (CommRingCat.of R) ⟶ S} {N : ℕ} {i : Γ.G.left ⟶ G.left} (h : Γ.IsTorsionAlong G x N i)
@@ -379,10 +373,8 @@ theorem fst_valAt [Finite T] (h : Γ.IsTorsionAlong G x N i) (χ : T →* Rˣ) (
     exact congrArg (r ≫ ·) (M.tan e)
   have h2 : valAt (p ≫ v) ⊤ le_top s = 1 := by
     have h3 := valAt_one Γ χ s hs r
-    rw [← hy] at h3
-    exact h3
-  have h4 := valAt_spec_comp (TrivSqZeroExt.fstHom A A A).toRingHom v s
-  exact h4.symm.trans h2
+    rwa [← hy] at h3
+  exact (valAt_spec_comp (TrivSqZeroExt.fstHom A A A).toRingHom v s).symm.trans h2
 
 theorem isTan_add [Finite T] (h : Γ.IsTorsionAlong G x N i) (χ : T →* Rˣ) (s : Γ(Γ.G.left, ⊤))
     (hs : Γ.HasValues s (fun t => ((χ t : Rˣ) : R))) {e e' : L}

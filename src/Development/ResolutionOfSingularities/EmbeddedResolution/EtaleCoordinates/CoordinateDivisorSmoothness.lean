@@ -127,8 +127,7 @@ theorem smooth_subschemeι_comp_of_locally_eq_coordIdeal (Z : X.IdealSheafData)
   choose W hyW hWsm using key
   have hsup : (⨆ y, W y) = ⊤ := by
     rw [eq_top_iff]
-    intro y _
-    exact Opens.mem_iSup.mpr ⟨y, hyW y⟩
+    exact fun y _ => Opens.mem_iSup.mpr ⟨y, hyW y⟩
   exact (IsZariskiLocalAtSource.iff_of_iSup_eq_top W hsup).mpr hWsm
 
 theorem smooth_subschemeι_comp_of_hasStrictNormalCrossingsWith (Z : X.IdealSheafData) (E : List X.IdealSheafData)
@@ -146,8 +145,7 @@ private theorem algebraMap_mem_nonZeroDivisors_of_flat {R A : Type u} [CommRing 
   have key : ∀ x : A, algebraMap R A r * x = 0 → x = 0 := by
     intro x hx
     have hsm : r • x = r • (0 : A) := by
-      rw [smul_zero, Algebra.smul_def]
-      exact hx
+      rwa [smul_zero, Algebra.smul_def]
     exact hreg hsm
   rw [mem_nonZeroDivisors_iff]
   exact ⟨key, fun x hx => key x (by rw [mul_comm]; exact hx)⟩
@@ -239,8 +237,7 @@ private theorem mem_map_of_mul_mem_of_etale {P A : Type u} [CommRing P] [CommRin
   have : Algebra.Etale (P ⧸ I) (A ⧸ Ideal.map f I) := hg
   have : Module.Flat (P ⧸ I) (A ⧸ Ideal.map f I) := inferInstance
   have hreg : IsSMulRegular (P ⧸ I) ((Ideal.Quotient.mk I) w) := by
-    intro a b h
-    exact hw a b (by simpa only [smul_eq_mul] using h)
+    exact fun a b h => hw a b (by simpa only [smul_eq_mul] using h)
   have hregB : IsSMulRegular (A ⧸ Ideal.map f I) ((Ideal.Quotient.mk I) w) := hreg.of_flat
   have hy : (Ideal.Quotient.mk I) w • (Ideal.Quotient.mk (Ideal.map f I)) x
       = (Ideal.Quotient.mk I) w • (0 : A ⧸ Ideal.map f I) := by
@@ -259,9 +256,7 @@ theorem mem_span_coord_of_coord_mul_mem {U : X.Opens} (hU : IsAffineOpen U) (c :
       (Ideal.span {(MvPolynomial.X (ULift.up j) : MvPolynomial (ULift.{u} (Fin m)) k)})
       = Ideal.span {c.coord j} := by
     rw [Ideal.map_span, Set.image_singleton, c.coordRingHom_X]
-  have hju : (ULift.up j : ULift.{u} (Fin m)) ≠ ULift.up s := by
-    intro h
-    exact hjs (congrArg ULift.down h)
+  have hju : (ULift.up j : ULift.{u} (Fin m)) ≠ ULift.up s := fun h => hjs (congrArg ULift.down h)
   have hu : ∀ a b : MvPolynomial (ULift.{u} (Fin m)) k ⧸
         Ideal.span {(MvPolynomial.X (ULift.up j) : MvPolynomial (ULift.{u} (Fin m)) k)},
       (Ideal.Quotient.mk
@@ -274,13 +269,11 @@ theorem mem_span_coord_of_coord_mul_mem {U : X.Opens} (hU : IsAffineOpen U) (c :
   have hx' : c.coordRingHom (MvPolynomial.X (ULift.up s)) * x
       ∈ Ideal.map c.coordRingHom
           (Ideal.span {(MvPolynomial.X (ULift.up j) : MvPolynomial (ULift.{u} (Fin m)) k)}) := by
-    rw [hmapspan, c.coordRingHom_X]
-    exact hx
+    rwa [hmapspan, c.coordRingHom_X]
   have hfin := mem_map_of_mul_mem_of_etale (c.coordRingHom_etale hU)
       (Ideal.span {(MvPolynomial.X (ULift.up j) : MvPolynomial (ULift.{u} (Fin m)) k)})
       (MvPolynomial.X (ULift.up s)) hu x hx'
-  rw [hmapspan] at hfin
-  exact hfin
+  rwa [hmapspan] at hfin
 
 private theorem X_pow_dvd_of_X_pow_dvd_X_mul {σ : Type u} {k : Type u} [Field k]
     {j s : σ} (hjs : j ≠ s) :
@@ -308,8 +301,7 @@ private theorem X_pow_dvd_of_X_pow_dvd_X_mul {σ : Type u} {k : Type u} [Field k
           = MvPolynomial.X s * (MvPolynomial.X j * r') := by ring
       have e2 : (MvPolynomial.X j : MvPolynomial σ k) * MvPolynomial.X j ^ n
           = MvPolynomial.X j ^ (n + 1) := by ring
-      rw [e1, e2]
-      exact hr
+      rwa [e1, e2]
     have h4 : (MvPolynomial.X j : MvPolynomial σ k) ^ n ∣ MvPolynomial.X s * r' :=
       (mul_dvd_mul_iff_left hXne).mp h3
     have h5 := ih r' h4
@@ -340,9 +332,7 @@ theorem mem_span_coord_pow_of_mul_mem {U : X.Opens} (hU : IsAffineOpen U) (c : E
       (Ideal.span {(MvPolynomial.X (ULift.up j) : MvPolynomial (ULift.{u} (Fin m)) k) ^ n})
       = Ideal.span {c.coord j ^ n} := by
     rw [Ideal.map_span, Set.image_singleton, map_pow, c.coordRingHom_X]
-  have hju : (ULift.up j : ULift.{u} (Fin m)) ≠ ULift.up s := by
-    intro h
-    exact hjs (congrArg ULift.down h)
+  have hju : (ULift.up j : ULift.{u} (Fin m)) ≠ ULift.up s := fun h => hjs (congrArg ULift.down h)
   have hu : ∀ a b : MvPolynomial (ULift.{u} (Fin m)) k ⧸
         Ideal.span {(MvPolynomial.X (ULift.up j) : MvPolynomial (ULift.{u} (Fin m)) k) ^ n},
       (Ideal.Quotient.mk
@@ -356,13 +346,11 @@ theorem mem_span_coord_pow_of_mul_mem {U : X.Opens} (hU : IsAffineOpen U) (c : E
       ∈ Ideal.map c.coordRingHom
           (Ideal.span
             {(MvPolynomial.X (ULift.up j) : MvPolynomial (ULift.{u} (Fin m)) k) ^ n}) := by
-    rw [hmapspan, c.coordRingHom_X]
-    exact hx
+    rwa [hmapspan, c.coordRingHom_X]
   have hfin := mem_map_of_mul_mem_of_etale (c.coordRingHom_etale hU)
       (Ideal.span {(MvPolynomial.X (ULift.up j) : MvPolynomial (ULift.{u} (Fin m)) k) ^ n})
       (MvPolynomial.X (ULift.up s)) hu x hx'
-  rw [hmapspan] at hfin
-  exact hfin
+  rwa [hmapspan] at hfin
 
 private theorem appLE_ι_top_eq_topIso_inv {Y : Scheme.{u}} (V : Y.Opens)
     (hle : (⊤ : V.toScheme.Opens) ≤ V.ι ⁻¹ᵁ V) :
@@ -421,8 +409,7 @@ private theorem notMem_support_of_mem_of_restrictIdeal_eq_top {Y : Scheme.{u}}
     x ∉ I.support := by
   intro hx
   have h1 : (⟨x, hxU⟩ : ↥U) ∈ (I.comap U.ι).support := by
-    rw [AlgebraicGeometry.Scheme.IdealSheafData.support_comap]
-    exact hx
+    rwa [AlgebraicGeometry.Scheme.IdealSheafData.support_comap]
   rw [← restrictIdeal_eq_comap_ι, h, AlgebraicGeometry.Scheme.IdealSheafData.support_top] at h1
   have h2 : (⟨x, hxU⟩ : ↥U) ∈ ((⊥ : TopologicalSpace.Closeds ↥U) : Set ↥U) := h1
   simp at h2

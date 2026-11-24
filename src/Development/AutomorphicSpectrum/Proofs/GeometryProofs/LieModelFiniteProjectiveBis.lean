@@ -128,8 +128,7 @@ theorem dualMap_comp_dualMap {A B C : Type} [CommRing A] [CommRing B] [CommRing 
 theorem span_range_inl {J : Type} (f : J → R) (hf : Ideal.span (Set.range f) = ⊤) :
     Ideal.span (Set.range fun k => (TrivSqZeroExt.inl (f k) : DualNumber R)) = ⊤ := by
   have := congrArg (Ideal.map (TrivSqZeroExt.inlHom R R)) hf
-  rw [Ideal.map_span, Ideal.map_top, ← Set.range_comp] at this
-  exact this
+  rwa [Ideal.map_span, Ideal.map_top, ← Set.range_comp] at this
 
 theorem spMap_algebraMap_eq (s : R) :
     spMap (algebraMap (DualNumber R) (Ld s)) = spMap (toL s) ≫ spMap (dAway s) := by
@@ -221,8 +220,7 @@ theorem glue_of_compat {X : Scheme.{0}} {J : Type} (f : J → R) (hf : Ideal.spa
         B.hom.comp (algebraMap (DualNumber R) (Ld (f l))) :=
       congrArg CommRingCat.Hom.hom (Spec.map_injective e1)
     have hkey : (A.hom.comp (toL (f k))).comp (dAway (f k)) = (B.hom.comp (toL (f l))).comp (dAway (f l)) := by
-      rw [RingHom.comp_assoc, RingHom.comp_assoc, toL_comp, toL_comp]
-      exact key
+      rwa [RingHom.comp_assoc, RingHom.comp_assoc, toL_comp, toL_comp]
     have h := hc k l _ (A.hom.comp (toL (f k))) (B.hom.comp (toL (f l))) hkey
     show a ≫ pullback.fst (𝒰.f k) (𝒰.f l) ≫ Spec.map (CommRingCat.ofHom (toL (f k))) ≫ w k =
       a ≫ pullback.snd (𝒰.f k) (𝒰.f l) ≫ Spec.map (CommRingCat.ofHom (toL (f l))) ≫ w l
@@ -369,12 +367,10 @@ theorem isLocalizedModule_of_basic_cover : ∀ (R E : Type) [CommRing R] [AddCom
       have h4 := hM (j, k)
       dsimp only at h4 ⊢
       rw [smul_sub, sub_eq_zero] at h4
-      rw [map_smul, map_smul]
-      exact h4
+      rwa [map_smul, map_smul]
     refine ⟨(e, ⟨f i ^ (M + N), pow_mem (Submonoid.mem_powers _) _⟩), ?_⟩
     show f i ^ (M + N) • z = ρ ⟨f i, i, dvd_rfl⟩ e
-    rw [he i]
-    rw [← hii, smul_smul, ← pow_add]
+    rw [he i, ← hii, smul_smul, ← pow_add]
   · have hd : ρ ⟨f i, i, dvd_rfl⟩ (x₁ - x₂) = 0 := by rw [map_sub, hx, sub_self]
     have Rj : ∀ j, ∃ n, f i ^ n • ρ ⟨f j, j, dvd_rfl⟩ (x₁ - x₂) = 0 := by
       intro j
@@ -388,8 +384,7 @@ theorem isLocalizedModule_of_basic_cover : ∀ (R E : Type) [CommRing R] [AddCom
     have h0 : f i ^ N • (x₁ - x₂) = 0 := hsep _ fun j => by rw [map_smul]; exact hN j
     refine ⟨⟨f i ^ N, pow_mem (Submonoid.mem_powers _) N⟩, ?_⟩
     show f i ^ N • x₁ = f i ^ N • x₂
-    rw [← sub_eq_zero, ← smul_sub]
-    exact h0
+    rwa [← sub_eq_zero, ← smul_sub]
 
 end GlobalTheory.CompanionTheory.BasicCover
 end -- clump:auto
@@ -595,8 +590,7 @@ theorem loc_of_family {R : Type} [CommRing R] (x : Sp R ⟶ S) {J : Type} [Finit
   · intro g a h
     obtain ⟨i, -⟩ := g.2
     exact unit_end (A := Localization.Away g.1) (unit_of_dvd h)
-  · intro g g' h t ht
-    exact hqc g g' h t ht _ (hres g g' h)
+  · exact fun g g' h t ht => hqc g g' h t ht _ (hres g g' h)
   · intro e he
     refine pt_left_inj M (v := 0) ((hglue G.left).2.1 _ _ fun i => ?_)
     have h1 := hρ ⟨f i, i, dvd_rfl⟩ e
@@ -691,8 +685,7 @@ theorem cmap_loc {R : Type} [CommRing R] {g g' t : R} (h : g ∣ g') (ht : g' = 
     ring
   · intro x₁ x₂ he
     have hz : cmap h (x₁ - x₂) = 0 := by
-      rw [map_sub, sub_eq_zero]
-      exact he
+      rwa [map_sub, sub_eq_zero]
     obtain ⟨n, a, hy⟩ := IsLocalization.Away.surj g (x₁ - x₂)
     have h0 : algebraMap R (Localization.Away (g * t)) a = 0 := by
       have h1 := congrArg (cmap h) hy
@@ -739,8 +732,7 @@ theorem fin_of_charts {R : Type} [CommRing R] (x : Sp R ⟶ S) {J : Type} [Finit
     have hrr : r = (e : _ →ₗ[R] _) ∘ₗ LinearMap.compRight R (cmap h).toLinearMap := by
       refine LinearMap.ext fun y => pt_left_inj (m (ix g') _ (unit_of_dvd (hix g'))) ?_
       rw [hr]
-      refine Eq.trans ?_ (he _).symm
-      exact (nat (ix g) _ _ (unit_of_dvd (hix g)) hu' (cmap h) y).symm
+      exact Eq.trans (nat (ix g) _ _ (unit_of_dvd (hix g)) hu' (cmap h) y).symm (he _).symm
     rw [hrr]
     exact IsLocalizedModule.of_linearEquiv _ _ _
   obtain ⟨ρ, -, hloc⟩ := loc_of_family x f hf M (fun g => P (ix g) →ₗ[R] Localization.Away g.1)

@@ -322,15 +322,13 @@ theorem affCoord_congr_sameOrbit (p : (k : K) → ι k) {z z' : (Σ k, ι k) →
     affCoord p z = affCoord p z' := by
   obtain ⟨c, hc, rfl⟩ := h
   funext q
-  simp only [affCoord]
-  exact mul_div_mul_left _ _ (hc q.1)
+  simpa only [affCoord] using mul_div_mul_left _ _ (hc q.1)
 
 theorem OrbitChart.analyticAt_affCoord {P : Ideal (MRing ι)} {e : ℕ} (C : OrbitChart P e) {w : Fin e → ℂ}
     (hw : w ∈ C.D) (p : (k : K) → ι k) (hp : ∀ k, C.φ w ⟨k, p k⟩ ≠ 0) :
     AnalyticAt ℂ (fun w' => affCoord p (C.φ w')) w := by
   rw [analyticAt_pi_iff]
-  intro q
-  exact (C.holo q w hw).div (C.holo ⟨q.1, p q.1⟩ w hw) (hp q.1)
+  exact fun q => (C.holo q w hw).div (C.holo ⟨q.1, p q.1⟩ w hw) (hp q.1)
 
 end
 
@@ -364,8 +362,7 @@ theorem OrbitChart.analyticOnNhd_transition (K : Type) [Fintype K] (ι : K → T
   have hval : affCoord p (C₂.φ (C₂.ρ (C₁.φ w₀))) = affCoord p (C₁.φ w₀) := affCoord_congr_sameOrbit p horb
   have hΛ' : AnalyticAt ℂ Λ (affCoord p (C₁.φ w₀)) := by
     have := hΛ
-    simp only [hval] at this
-    exact this
+    simpa only [hval] using this
   have hcomp : AnalyticAt ℂ (fun w => Λ (affCoord p (C₁.φ w))) w₀ :=
     AnalyticAt.comp (f := fun w => affCoord p (C₁.φ w)) (g := Λ) hΛ' hA₁
   refine hcomp.congr ?_
@@ -414,8 +411,7 @@ include hP
 
 theorem mem_O_of_mem_srcOf {w : Fin e → ℂ} (hw : w ∈ C₁.D) (h : clsT x₁ (C₁.φ w) ∈ srcOf C₂) : C₁.φ w ∈ C₂.O := by
   have h' : rep (cls (C₁.φ w) (C₁.mem w hw)) ∈ C₂.O := by
-    rw [← clsT_of_mem x₁ (C₁.mem w hw)]
-    exact h
+    rwa [← clsT_of_mem x₁ (C₁.mem w hw)]
   exact mem_O_of_orbit C₂ hP h' (Proj.orbit_symm (rep_cls_orbit _ _)) (rep_mem_mcPts _)
 
 theorem rho_clsT {w : Fin e → ℂ} (hw : w ∈ C₁.D) (h : clsT x₁ (C₁.φ w) ∈ srcOf C₂) :

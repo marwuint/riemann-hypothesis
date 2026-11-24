@@ -198,8 +198,7 @@ theorem Fr.xJ_M (h : Fr s J J' P Q x y) (h1 : M * M' = 1) (hU : cT s M * J * M =
     simpa [Matrix.mul_assoc, h1] using this
   have e2 : cT s M * J * x = β' • (J * x) := by rw [e, Matrix.mul_assoc, hx', Matrix.mul_smul]
   have := congrArg (cT s) e2
-  rw [cT_mul, cT_mul, h.cc, h.herm, cT_smul, cT_mul, h.herm, ← Matrix.mul_assoc] at this
-  exact this
+  rwa [cT_mul, cT_mul, h.cc, h.herm, cT_smul, cT_mul, h.herm, ← Matrix.mul_assoc] at this
 
 theorem Fr.MP (h : Fr s J J' P Q x y) (h1 : M * M' = 1) (hU : cT s M * J * M = J) (hx' : M' * x = β' • x) :
     M * P = P * (Q * M * P) + x * (cT s y * J * (M * P)) := by
@@ -419,8 +418,7 @@ theorem Fr.det_ne (h : Fr s J J' P Q x y) (hJ : J.det ≠ 0) : J'.det ≠ 0 := b
     rw [Matrix.mulVec_mulVec, ← h.Qgram, ← Matrix.mulVec_mulVec, e, Matrix.mulVec_zero]
   have e2 : P *ᵥ v = 0 := Matrix.eq_zero_of_mulVec_eq_zero hJ e1
   apply hv
-  have e3 := congrArg (Q *ᵥ ·) e2
-  simpa [Matrix.mulVec_mulVec, h.QP] using e3
+  simpa [Matrix.mulVec_mulVec, h.QP] using congrArg (Q *ᵥ ·) e2
 
 theorem hform_eq (s : K →+* K) (J : Matrix (Fin n) (Fin n) K) (u v : Fin n → K) :
     Formalism.UG.hform s J u v = (fun i => s (u i)) ⬝ᵥ (J *ᵥ v) := by
@@ -514,8 +512,7 @@ theorem Fr.witt : IsWittFrame σ J' (Q * tl X) (Q * tl Y) := by
   · have e1 : (cT (σ : E →+* E) (hd X) * J) *ᵥ (P *ᵥ z) = 0 := by rw [Matrix.mulVec_mulVec, h.xP]; simp
     have e2 : (cT (σ : E →+* E) (hd Y) * J) *ᵥ (P *ᵥ z) = 0 := by rw [Matrix.mulVec_mulVec, h.yP]; simp
     have e3 : P *ᵥ z = 0 := hW.aniso _ (row e1 (tlz h1)) (row e2 (tlz h2)) ((h.hform_P z).trans h3)
-    have e4 := congrArg (Q *ᵥ ·) e3
-    simpa [Matrix.mulVec_mulVec, h.QP] using e4
+    simpa [Matrix.mulVec_mulVec, h.QP] using congrArg (Q *ᵥ ·) e3
 
 end Witt
 
@@ -616,10 +613,8 @@ theorem mem_minParOne_of {p : GAd σ J} {u : (AF F ⊗[F] E)ˣ} (hu : GlobalTheo
     p ∈ minParOne σ J X := by
   refine ⟨blk u c B, blk_bt hB, ?_, fun i => ?_⟩
   · refine ext_cols ?_ ?_
-    · rw [(mul_blk _ _ _ _).1, mul_hd]
-      exact e1
-    · rw [(mul_blk _ _ _ _).2, mul_tl]
-      exact e2
+    · rwa [(mul_blk _ _ _ _).1, mul_hd]
+    · rwa [(mul_blk _ _ _ _).2, mul_tl]
   · induction i using Fin.cases with
     | zero => exact ⟨u, rfl, hu⟩
     | succ i => exact hdg i
@@ -783,8 +778,7 @@ theorem Fr.dec (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ 
   have lin : ∀ q ∈ minPar σ J X, (matHom _ σ J q).1 * adMat F (hd X) = Bm σ J X Y q 0 0 • adMat F (hd X) := fun q hq => by
     obtain ⟨hbt, e⟩ := (mem_minPar_iff hF).1 hq
     have := congrArg hd e
-    rw [mul_hd, hd_mul_bt _ hbt] at this
-    exact this
+    rwa [mul_hd, hd_mul_bt _ hbt] at this
   have hx := lin p hp
   have hx' := lin p⁻¹ hp'
   have gg1 := h.gg h1 h2 hU' hx
@@ -811,8 +805,7 @@ theorem Fr.dec (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ 
   have hA1 : (matHom _ σ J (a t)⁻¹).1 * adMat F (hd X) = algebraMap (AF F) (AF F ⊗[F] E) (rId F (-s₁)) • adMat F (hd X) := by
     have e := congrArg hd (ha.onX (-t))
     rw [mul_hd, hd_mul_bt _ (Matrix.blockTriangular_diagonal _), Matrix.diagonal_apply_eq] at e
-    rw [hainv]
-    exact e
+    rwa [hainv]
   have hA2 : (matHom _ σ J (a t)⁻¹).1 * adMat F P = adMat F P := by
     obtain ⟨-, i2⟩ := matInv (a t)
     conv_lhs => rw [← h.tor_on_P hσ hJ hW ha s₁]

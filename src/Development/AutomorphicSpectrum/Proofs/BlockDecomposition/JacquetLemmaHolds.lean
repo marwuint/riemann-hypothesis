@@ -148,8 +148,7 @@ theorem exists_avg (K : Subgroup G) (hK : IsCompact (K : Set G)) (π : Represent
       apply Subtype.ext
       simpa using e.symm
     show (x i')⁻¹ * ⟨y, hy⟩ ∈ H'
-    rw [this]
-    exact hg
+    rwa [this]
 
 end Avg
 
@@ -167,8 +166,7 @@ theorem conj_pow_mem (D : CassData G) (t : D.T) (hd : D.IsDom t) (j : ℕ) :
     have e : ((t : G) ^ (j + 1))⁻¹ * b * (t : G) ^ (j + 1)
         = (t : G)⁻¹ * (((t : G) ^ j)⁻¹ * b * (t : G) ^ j) * (t : G) := by
       rw [pow_succ]; group
-    rw [e]
-    exact h
+    rwa [e]
 
 end Dom
 
@@ -213,8 +211,7 @@ theorem exists_fixed_proj_eq_piN_pow : ∀ (G : Type) [Group G] [TopologicalSpac
     have hbi := hb i
     have hn' : (b i)⁻¹ * n * b i ∈ D.J ⊓ D.Nm := by
       refine ⟨D.J.mul_mem (D.J.mul_mem (inv_mem hbi.1) hn.1) hbi.1, ?_⟩
-      have h2 := (Subgroup.mem_normalizer_iff.1 (D.norm_Nm _ (inv_mem hbi.2)) n).1 hn.2
-      simpa using h2
+      simpa using (Subgroup.mem_normalizer_iff.1 (D.norm_Nm _ (inv_mem hbi.2)) n).1 hn.2
     have h3 := hxNm _ hn'
     conv_rhs => rw [← h3]
     rw [pi_mul, pi_mul]
@@ -289,11 +286,7 @@ theorem jacquet_projection_surjective : ∀ (G : Type) [Group G] [TopologicalSpa
     rintro _ ⟨v, rfl⟩
     exact ⟨U v, by rw [hL, hL]; exact hA2 v⟩
   let A' : I →ₗ[ℂ] I := A.restrict hmaps
-  have hinj' : Function.Injective A' := by
-    intro x y hxy
-    apply Subtype.ext
-    apply hinj
-    exact congrArg Subtype.val hxy
+  have hinj' : Function.Injective A' := fun x y hxy => Subtype.ext (hinj (congrArg Subtype.val hxy))
   have hsurj : Function.Surjective A' := LinearMap.injective_iff_surjective.1 hinj'
   have hback : ∀ x, A x ∈ I → x ∈ I := by
     intro x hx
@@ -309,8 +302,7 @@ theorem jacquet_projection_surjective : ∀ (G : Type) [Group G] [TopologicalSpa
       intro x hx
       apply ih
       apply hback
-      rw [pow_succ', map_mul, Module.End.mul_apply] at hx
-      exact hx
+      rwa [pow_succ', map_mul, Module.End.mul_apply] at hx
   obtain ⟨v, hv⟩ := hpow j w ⟨v₀, by rw [hL]; exact hv₀⟩
   exact ⟨v, by rw [← hL]; exact hv⟩
 
@@ -332,8 +324,7 @@ theorem proj_mem_fixed_piN (G : Type) [Group G] [TopologicalSpace G] [IsTopologi
   intro t
   have ht : ((t : D.T) : G) ∈ D.J := Subgroup.mem_comap.mp t.2
   have hv : π ((t : D.T) : G) (v : V) = (v : V) := by
-    have h := v.2 ⟨((t : D.T) : G), ht⟩
-    simpa using h
+    simpa using v.2 ⟨((t : D.T) : G), ht⟩
   have hq : (D.piN π) (t : D.T) (D.proj π (v : V)) = D.proj π (π ((t : D.T) : G) (v : V)) := rfl
   rw [hq, hv, MonoidHom.one_apply, Units.val_one, one_smul]
 

@@ -131,8 +131,7 @@ theorem locFree_prod (R : Subalgebra O Ω) {N N₁ : ℕ} (L : AddSubgroup V) (L
     constructor
     · rintro ⟨p, hp, rfl⟩
       exact hp.2
-    · intro hw
-      exact ⟨(0, w), ⟨L.zero_mem, hw⟩, rfl⟩
+    · exact fun hw => ⟨(0, w), ⟨L.zero_mem, hw⟩, rfl⟩
 
 end Gen
 
@@ -208,11 +207,9 @@ theorem op_sum (N N₁ : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (V₁ : 
   obtain ⟨m, hm⟩ := F.overlap s t hs ht _ hv.2
   refine ⟨n + m, ?_, ?_⟩
   · have := E.stable t _ (pow_mem (div_mem x s t) m) _ hn
-    rw [smul_smul, ← pow_add, add_comm] at this
-    exact this
+    rwa [smul_smul, ← pow_add, add_comm] at this
   · have := F.stable t _ (pow_mem (div_mem x s t) n) _ hm
-    rw [smul_smul, ← pow_add] at this
-    exact this
+    rwa [smul_smul, ← pow_add] at this
 
 theorem op_scale (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (E : ChartBundle O (mseg x) N V)
     (c : Ω) (hc : c ≠ 0) : ∃ E' : ChartBundle O (mseg x) N V, IsScaled x c E.lat E'.lat := by
@@ -233,8 +230,7 @@ theorem op_scale (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (E : ChartB
   intro s _ v
   rw [hΓ, he]
   constructor
-  · intro hv
-    exact ⟨_, hv, (smul_inv_smul₀ hc v).symm⟩
+  · exact fun hv => ⟨_, hv, (smul_inv_smul₀ hc v).symm⟩
   · rintro ⟨w, hw, rfl⟩
     rwa [inv_smul_smul₀ hc]
 
@@ -283,8 +279,7 @@ theorem op_triv (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (b : Module.
     refine locFree_of_free _ _ b b.linearIndependent b.span_eq fun v => ?_
     rw [hΓ]
     constructor
-    · intro hv
-      exact ⟨fun i => b.repr v i, hv, (b.sum_repr v).symm⟩
+    · exact fun hv => ⟨fun i => b.repr v i, hv, (b.sum_repr v).symm⟩
     · rintro ⟨r, hr, rfl⟩ i
       rw [b.repr_sum_self]
       exact hr i
@@ -328,8 +323,7 @@ theorem op_dual (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (V₁ : Type
         have e : (mseg x s / mseg x t) ^ n * β ((mseg x t / mseg x s) ^ n • v) w = β.flip w v := by
           rw [map_smul, LinearMap.smul_apply, smul_eq_mul, ← mul_assoc, ← mul_pow,
             div_mul_div_cancel₀ ht, div_self hs, one_pow, one_mul, LinearMap.flip_apply]
-        rw [e] at h3
-        exact h3
+        rwa [e] at h3
     refine ⟨m, (hΓ _ _).2 fun v hv => ?_⟩
     rw [map_smul]
     exact hm v hv

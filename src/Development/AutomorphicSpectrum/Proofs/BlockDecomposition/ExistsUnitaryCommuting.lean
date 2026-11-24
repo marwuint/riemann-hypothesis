@@ -258,35 +258,32 @@ theorem iwasawa_witt_flag : ∀ (n r : ℕ) (J P : Matrix (Fin n) (Fin n) ℂ)
     ∃ p k : Matrix (Fin n) (Fin n) ℂ, pᴴ * J * p = J ∧ kᴴ * J * k = J ∧ kᴴ * P * k = P ∧
       g = p * k ∧ ∃ B : Matrix (Fin r) (Fin r) ℂ, B.BlockTriangular id ∧ p * X = X * B := by
   intro n r J P X Y hJ hJu hXX _ hXY hP hPJ hPX g hg
-  have hJi : J⁻¹ * J = 1 := Matrix.nonsing_inv_mul J hJu
-  have hJH : Jᴴ = J := hJ.eq
+  have conj : ∀ {a b c : Type} [Fintype a] [Fintype b] (A : Matrix a b ℂ) (B : Matrix b c ℂ)
+      (M : Matrix a a ℂ), (A * B)ᴴ * M * (A * B) = Bᴴ * (Aᴴ * M * A) * B := fun A B M => by
+    simp only [conjTranspose_mul, Matrix.mul_assoc]
+  have hinv : ∀ a b M : Matrix (Fin n) (Fin n) ℂ, a * b = 1 → aᴴ * M * a = M → bᴴ * M * b = M := by
+    intro a b M hab hM
+    calc bᴴ * M * b = bᴴ * (aᴴ * M * a) * b := by rw [hM]
+      _ = (bᴴ * aᴴ) * M * (a * b) := by simp only [Matrix.mul_assoc]
+      _ = M := by rw [← conjTranspose_mul, hab, conjTranspose_one, Matrix.one_mul, Matrix.mul_one]
 
   set gi : Matrix (Fin n) (Fin n) ℂ := J⁻¹ * gᴴ * J with hgi
   have hgig : gi * g = 1 := by
     calc gi * g = J⁻¹ * (gᴴ * J * g) := by simp only [hgi, Matrix.mul_assoc]
-      _ = 1 := by rw [hg, hJi]
+      _ = 1 := by rw [hg, Matrix.nonsing_inv_mul J hJu]
   have hggi : g * gi = 1 := mul_eq_one_comm.1 hgig
-  have hgiH : giᴴ * gᴴ = 1 := by rw [← conjTranspose_mul, hggi, conjTranspose_one]
-  have hgiJ : giᴴ * J * gi = J := by
-    calc giᴴ * J * gi = giᴴ * (gᴴ * J * g) * gi := by rw [hg]
-      _ = (giᴴ * gᴴ) * J * (g * gi) := by simp only [Matrix.mul_assoc]
-      _ = J := by rw [hgiH, hggi, Matrix.one_mul, Matrix.mul_one]
 
   set Z : Matrix (Fin n) (Fin r) ℂ := gi * X with hZ
   have hZJ : Zᴴ * J * Z = 0 := by
-    calc Zᴴ * J * Z = Xᴴ * (giᴴ * J * gi) * X := by
-          simp only [hZ, conjTranspose_mul, Matrix.mul_assoc]
-      _ = 0 := by rw [hgiJ, hXX]
+    rw [hZ, conj, hinv g gi J hggi hg, hXX]
   have hYX : Yᴴ * J * X = 1 := by
-    have := congrArg conjTranspose hXY
-    simpa only [conjTranspose_mul, conjTranspose_conjTranspose, hJH, conjTranspose_one,
-      Matrix.mul_assoc] using this
+    simpa only [conjTranspose_mul, conjTranspose_conjTranspose, hJ.eq, conjTranspose_one,
+      Matrix.mul_assoc] using congrArg conjTranspose hXY
   have hLZ : (Yᴴ * J * g) * Z = 1 := by
-    calc (Yᴴ * J * g) * Z = Yᴴ * J * (g * gi) * X := by simp only [hZ, Matrix.mul_assoc]
-      _ = 1 := by rw [hggi, Matrix.mul_one, hYX]
+    rw [hZ, ← Matrix.mul_assoc (Yᴴ * J * g), Matrix.mul_assoc _ g gi, hggi, Matrix.mul_one, hYX]
   have hZinj : Function.Injective Z.mulVec := fun a b hab => by
-    have := congrArg (Matrix.mulVec (Yᴴ * J * g)) hab
-    simpa only [Matrix.mulVec_mulVec, hLZ, Matrix.one_mulVec] using this
+    simpa only [Matrix.mulVec_mulVec, hLZ, Matrix.one_mulVec] using
+      congrArg (Matrix.mulVec (Yᴴ * J * g)) hab
   have hG : (Zᴴ * P * Z).PosDef := hP.conjTranspose_mul_mul_same hZinj
 
   obtain ⟨R, hRt, hR⟩ := GroundTheory.Automorphic.exists_isUpperTriangular_conjTranspose_mul_self hG
@@ -295,33 +292,19 @@ theorem iwasawa_witt_flag : ∀ (n r : ℕ) (J P : Matrix (Fin n) (Fin n) ℂ)
     rw [Matrix.det_mul] at hd
     exact isUnit_of_mul_isUnit_right hd
   letI := Matrix.invertibleOfIsUnitDet R hRu
-  have hBt : (R⁻¹).BlockTriangular id := blockTriangular_inv_of_blockTriangular hRt
   have hRi' : R * R⁻¹ = 1 := Matrix.mul_nonsing_inv R hRu
   have hRiH : (R⁻¹)ᴴ * Rᴴ = 1 := by rw [← conjTranspose_mul, hRi', conjTranspose_one]
   have hX'P : (Z * R⁻¹)ᴴ * P * (Z * R⁻¹) = 1 := by
-    calc (Z * R⁻¹)ᴴ * P * (Z * R⁻¹) = (R⁻¹)ᴴ * (Zᴴ * P * Z) * R⁻¹ := by
-          simp only [conjTranspose_mul, Matrix.mul_assoc]
-      _ = ((R⁻¹)ᴴ * Rᴴ) * (R * R⁻¹) := by rw [← hR]; simp only [Matrix.mul_assoc]
-      _ = 1 := by rw [hRiH, hRi', Matrix.one_mul]
+    rw [conj, ← hR, ← Matrix.mul_assoc (R⁻¹)ᴴ, Matrix.mul_assoc _ R, hRiH, hRi', Matrix.one_mul]
   have hX'J : (Z * R⁻¹)ᴴ * J * (Z * R⁻¹) = 0 := by
-    calc (Z * R⁻¹)ᴴ * J * (Z * R⁻¹) = (R⁻¹)ᴴ * (Zᴴ * J * Z) * R⁻¹ := by
-          simp only [conjTranspose_mul, Matrix.mul_assoc]
-      _ = 0 := by rw [hZJ, Matrix.mul_zero, Matrix.zero_mul]
+    rw [conj, hZJ, Matrix.mul_zero, Matrix.zero_mul]
   have hXP : Xᴴ * P * X = 1 := by rw [Matrix.mul_assoc, hPX, ← Matrix.mul_assoc, hXY]
   obtain ⟨m, mi, hm1, _, hmJ, hmP, hmX⟩ := exists_mem_K J P X (Z * R⁻¹) hJ hJu hP hPJ
     (by rw [hXP, hX'P]) (by rw [hXX, hX'J])
-  have hmiH : miᴴ * mᴴ = 1 := by rw [← conjTranspose_mul, hm1, conjTranspose_one]
-  have hinv : ∀ M : Matrix (Fin n) (Fin n) ℂ, mᴴ * M * m = M → miᴴ * M * mi = M := fun M hM => by
-    calc miᴴ * M * mi = miᴴ * (mᴴ * M * m) * mi := by rw [hM]
-      _ = (miᴴ * mᴴ) * M * (m * mi) := by simp only [Matrix.mul_assoc]
-      _ = M := by rw [hmiH, hm1, Matrix.one_mul, Matrix.mul_one]
-  refine ⟨g * m, mi, ?_, hinv J hmJ, hinv P hmP, ?_, R⁻¹, hBt, ?_⟩
-  · calc (g * m)ᴴ * J * (g * m) = mᴴ * (gᴴ * J * g) * m := by
-          simp only [conjTranspose_mul, Matrix.mul_assoc]
-      _ = J := by rw [hg, hmJ]
+  refine ⟨g * m, mi, ?_, hinv m mi J hm1 hmJ, hinv m mi P hm1 hmP, ?_, R⁻¹,
+    blockTriangular_inv_of_blockTriangular hRt, ?_⟩
+  · rw [conj, hg, hmJ]
   · rw [Matrix.mul_assoc, hm1, Matrix.mul_one]
-  · calc g * m * X = g * (m * X) := Matrix.mul_assoc _ _ _
-      _ = (g * gi) * X * R⁻¹ := by rw [hmX]; simp only [hZ, Matrix.mul_assoc]
-      _ = X * R⁻¹ := by rw [hggi, Matrix.one_mul]
+  · rw [Matrix.mul_assoc, hmX, hZ, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hggi, Matrix.one_mul]
 
 end GlobalTheory.CompanionTheory.WittIwasawa

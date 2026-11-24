@@ -453,8 +453,7 @@ theorem alg_prim_pow {A : Type} [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit (
     · exact (root ζ hζ).ne_zero (NeZero.ne q) (eq_zero_of_pow_eq_zero (eq_zero_of_pow_eq_zero h))
   · have hv : ((ZMod.unitOfCoprime i hcop : (ZMod q)ˣ) : ZMod q).val = i := by
       rw [ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi]
-    rw [hv, geom_sum₂_mul]
-    rw [pq ξ hξ, ← pow_mul, mul_comm i q, pow_mul, pq ζ hζ, one_pow, sub_self]
+    rw [hv, geom_sum₂_mul, pq ξ hξ, ← pow_mul, mul_comm i q, pow_mul, pq ζ hζ, one_pow, sub_self]
 
 theorem unit_res {U : Scheme.{0}} (s : Γ(U, ⊤)) : ∀ (O : U.Opens) (h : O ≤ ⊤), O = U.basicOpen s →
     IsUnit (U.presheaf.map (homOfLE h).op s) := by
@@ -760,8 +759,7 @@ theorem LateralTheory.EtaleFoundations.simplicial_subinterval_of_subinterval_alo
     · intro V g
       simp only [Sx.sub, Sx.res]
       have hn := ConcreteCategory.congr_hom ((E.map (SimplexCategory.subinterval j l h).op).naturality g.op) x
-      simp only [ConcreteCategory.comp_apply] at hn
-      exact hn
+      simpa only [ConcreteCategory.comp_apply] using hn
     · intro E' f
       simp only [Sx.sub, Sx.map]
       have hn := congrArg (fun t => t.app (op U)) (f.naturality (SimplexCategory.subinterval j l h).op)
@@ -937,8 +935,7 @@ theorem t_pa_precomp_of : t_pa_precomp := by
   intro R _ I I' J K u μ
   refine ⟨⟨fun U s t w h => (μ.mul U s t w h).comp ((u.f s).hom.app (op U)).hom, ?_, ?_⟩, ?_⟩
   · intro V U g s t w h a b
-    simp only [LinearMap.comp_apply]
-    exact (μ.nat g s t w h _ b).trans (by rw [pa_sec_res_map])
+    simpa only [LinearMap.comp_apply] using (μ.nat g s t w h _ b).trans (by rw [pa_sec_res_map])
   · intro U s t w h a b
     simp only [LinearMap.comp_apply]
     rw [μ.leibniz]
@@ -1108,16 +1105,14 @@ theorem tau_isTensor (I J : Cx R) : (tau I J).IsTensor := by
       (by rw [map_zero]; exact hx), ?_⟩
     intro V g hg
     have : (TP I J w).map g.op x = (TP I J w).map g.op 0 := hg
-    rw [map_zero] at this
-    exact this
+    rwa [map_zero] at this
 
 end LateralTheory.EtaleFoundations.TensEx
 
 namespace LateralTheory.EtaleFoundations
 
 theorem t_pa_tens_ex_of : t_pa_tens_ex := by
-  intro R _ I J
-  exact ⟨TensEx.T I J, TensEx.tau I J, TensEx.tau_isTensor I J⟩
+  exact fun R _ I J => ⟨TensEx.T I J, TensEx.tau I J, TensEx.tau_isTensor I J⟩
 
 end LateralTheory.EtaleFoundations
 end -- clump:auto
@@ -1203,8 +1198,7 @@ theorem tu_locInj {I J T : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (w : ℤ)
   refine Scheme.etaleTopology.superset_covering ?_ hS
   intro V g hg
   have h1 : Tens.res g w (x - y) = 0 := hP V g hg
-  rw [map_sub, sub_eq_zero] at h1
-  exact h1
+  rwa [map_sub, sub_eq_zero] at h1
 
 theorem tu_locSurj {I J T : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (w : ℤ) :
     Presheaf.IsLocallySurjective Scheme.etaleTopology.{0} (Lf τ w) := by
@@ -1289,8 +1283,7 @@ def EtaleTateTwistCupPairingExistsAndCupUnique : Prop :=
       ∀ (E : Spc) {n m w : ℤ} (h : n + m = w), μ.cup E h = ν.cup E h
 
 theorem t_twpair_ex_of (htw : EtaleTateTwistCupPairingExistsAndCupUnique) : t_twpair_ex := by
-  intro q _ i j
-  exact ⟨twPair q i j, (htw q i j).1⟩
+  exact fun q _ i j => ⟨twPair q i j, (htw q i j).1⟩
 
 end LateralTheory.EtaleFoundations
 end -- clump:auto
@@ -1393,8 +1386,7 @@ theorem shPair_isTensor {I J : Cx R} (T : TensPre I J) : (shPair T).IsTensor := 
     refine ⟨(T.e V w).symm x, ?_⟩
     rw [shPair_lift]
     show ((toSheafify Scheme.etaleTopology.{0} (T.P.X w)).app (op V)).hom (T.e V w ((T.e V w).symm x)) = _
-    rw [LinearEquiv.apply_symm_apply]
-    exact hx
+    rwa [LinearEquiv.apply_symm_apply]
   · rw [shPair_lift] at hx
     obtain ⟨S, hS, hP⟩ := tt_sheafify_locInj (T.P.X w) U (T.e U w x) hx
     refine ⟨S, hS, fun V g hg => ?_⟩
@@ -1458,8 +1450,7 @@ theorem dI_dI (I : Cx R) (U : Scheme.{0}) (s : ℤ) (a : Sec (I.X s) U) : dI I U
 
 theorem dI_res (I : Cx R) {V U : Scheme.{0}} (g : V ⟶ U) (s : ℤ) (a : Sec (I.X s) U) :
     dI I V s (((I.X s).obj.map g.op).hom a) = ((I.X (s + 1)).obj.map g.op).hom (dI I U s a) := by
-  have h := congrArg (fun f => ModuleCat.Hom.hom f a) ((I.d s (s + 1)).hom.naturality g.op)
-  exact h
+  exact congrArg (fun f => ModuleCat.Hom.hom f a) ((I.d s (s + 1)).hom.naturality g.op)
 
 def dT (I J : Cx R) (U : Scheme.{0}) (w : ℤ) : Tens I J U w →ₗ[ULift.{1} R] Tens I J U (w + 1) :=
   DirectSum.toModule _ _ _ fun p =>
@@ -1621,8 +1612,7 @@ theorem lam_eq {I J K I' J' K' : Cx R} (τ : Pair I J K) (hτ : τ.IsTensor) (ν
     (f : I ⟶ I') (g : J ⟶ J') (V : Scheme.{0}) (w : ℤ) (x x' : Tens I J V w) (hx : τ.lift V w x = τ.lift V w x') :
     ν.lift V w (tmap f g V w x) = ν.lift V w (tmap f g V w x') := by
   have := lam_zero τ hτ ν f g V w (x - x') (by rw [map_sub, hx, sub_self])
-  rw [map_sub, map_sub, sub_eq_zero] at this
-  exact this
+  rwa [map_sub, map_sub, sub_eq_zero] at this
 
 end LateralTheory.EtaleFoundations.ExDeg
 
@@ -1672,9 +1662,7 @@ theorem glue_spec {I J K I' J' K' : Cx R} (τ : Pair I J K) (hτ : τ.IsTensor) 
     Sec.res k (glue τ hτ ν f g w y) = ν.lift V w (tmap f g V w x) := by
   have hk : (sv τ w y).arrows k := ⟨x, hx⟩
   have := (sheafT (K'.X w) _ (sv_cov τ hτ w y)).valid_glue (fam_compat τ hτ ν f g w y) k hk
-  refine this.trans ?_
-  show ν.lift V w (tmap f g V w hk.choose) = _
-  exact lam_eq τ hτ ν f g V w _ _ (hk.choose_spec.trans hx.symm)
+  exact this.trans (lam_eq τ hτ ν f g V w _ _ (hk.choose_spec.trans hx.symm))
 
 end LateralTheory.EtaleFoundations.ExDeg
 

@@ -170,8 +170,7 @@ theorem mem_prod_asIdeal (t : Finset (HeightOneSpectrum (𝓞 F))) {y : 𝓞 F} 
     refine IsCoprime.prod_right fun w hw => ?_
     rw [Ideal.isCoprime_iff_sup_eq]
     refine Ideal.IsMaximal.coprime_of_ne v.isMaximal w.isMaximal fun hvw => hv ?_
-    rw [HeightOneSpectrum.ext hvw]
-    exact hw
+    rwa [HeightOneSpectrum.ext hvw]
   rw [Ideal.mul_eq_inf_of_isCoprime hcop]
   exact Ideal.mem_inf.mpr ⟨h v (Finset.mem_insert_self v t), ih fun w hw => h w (Finset.mem_insert_of_mem hw)⟩
 
@@ -241,8 +240,7 @@ theorem sum_bounded_prod : CountBd → ∀ (F : Type) [Field F] [NumberField F],
     (fun t ht => by
       convert hcnt t ht)
   refine le_of_le_of_eq key ?_
-  refine congrArg _ (Finset.prod_congr rfl fun v _ => ?_)
-  exact (mul_div_assoc _ _ _).symm
+  exact congrArg _ (Finset.prod_congr rfl fun v _ => (mul_div_assoc _ _ _).symm)
 
 end GlobalTheory.CompanionTheory.Mass.SumDev
 
@@ -352,7 +350,6 @@ theorem eventually_valued_algebraMap_eq_one (F : Type) [Field F] [NumberField F]
   rw [Set.mem_ofPred_eq, e] at hv
   rcases lt_or_gt_of_ne hv with h | h
   · refine Set.mem_union_right _ ?_
-    show 1 < v.valuation F β⁻¹
     exact ((v.valuation F).one_lt_val_iff (inv_ne_zero hβ)).mpr (by rwa [inv_inv])
   · exact Set.mem_union_left _ h
 
@@ -464,8 +461,7 @@ theorem tsum_unitVec_eq {F : Type} [Field F] [NumberField F] (T : Finset (Height
   let e : {x : Unit → F // ∀ v, v ∉ T → ∀ i, algebraMap F (Fv F v) (x i) ∈ v.adicCompletionIntegers F} ≃ (IntOut T) :=
     (Equiv.funUnique Unit F).subtypeEquiv (fun x => by
       constructor
-      · intro hx v hv
-        exact hx v hv ()
+      · exact fun hx v hv => hx v hv ()
       · intro hx v hv i
         exact hx v hv)
   rw [← tsum_subtype (IntOut T) h]

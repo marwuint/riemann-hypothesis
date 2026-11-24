@@ -95,8 +95,7 @@ theorem isSmoothDivisor_boundary_get (T : MarkedIdealWithBoundary.{u}) (hV : T.I
     (hj : j < T.boundary.length) :
     IsSmoothDivisor T.structMap (T.boundary.get ⟨j, hj⟩) := by
   have hmem : T.boundary.get ⟨j, hj⟩ ∈ T.boundary := by
-    simp only [List.get_eq_getElem]
-    exact List.getElem_mem hj
+    simpa only [List.get_eq_getElem] using List.getElem_mem hj
   exact ((inStrictNormalCrossingPosition_iff T.structMap T.boundary).1 hV.snc).1 _ hmem
 
 theorem support_containedComponentsIdeal_subset_orderAtLeastLocus (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
@@ -157,8 +156,7 @@ theorem exists_etaleChart_containedComponentsIdeal (T : MarkedIdealWithBoundary.
     have h1 : x ∈ ((openSubschemeKer (T.boundary.get ⟨j, hj⟩)
         (⟨divisorComponentsInOrderLocus T j hj, hopen⟩ :
           (T.boundary.get ⟨j, hj⟩).subscheme.Opens)).support : Set ↥T.scheme) := by
-      rw [← hpre]
-      exact hx
+      rwa [← hpre]
     rw [support_openSubschemeKer (T.boundary.get ⟨j, hj⟩)
       (⟨divisorComponentsInOrderLocus T j hj, hopen⟩ : (T.boundary.get ⟨j, hj⟩).subscheme.Opens) hWclosed] at h1
     obtain ⟨U₀, hxU₀, hU₀⟩ := exists_opens_preimage_subschemeι_le (T.boundary.get ⟨j, hj⟩)
@@ -169,8 +167,7 @@ theorem exists_etaleChart_containedComponentsIdeal (T : MarkedIdealWithBoundary.
     have hxU : x ∈ U₀ ⊓ U₁ := ⟨hxU₀, hxU₁⟩
     have hpreU : ((T.boundary.get ⟨j, hj⟩).subschemeι ⁻¹ᵁ (U₀ ⊓ U₁)) ≤
         (⟨divisorComponentsInOrderLocus T j hj, hopen⟩ : (T.boundary.get ⟨j, hj⟩).subscheme.Opens) := by
-      intro y hy
-      exact hU₀ hy.1
+      exact fun y hy => hU₀ hy.1
     have hrestr : restrictIdeal (DivisorReduction.containedComponentsIdeal T j hj) (U₀ ⊓ U₁) =
         restrictIdeal (T.boundary.get ⟨j, hj⟩) (U₀ ⊓ U₁) := by
       rw [hpre]
@@ -194,8 +191,7 @@ theorem exists_etaleChart_containedComponentsIdeal (T : MarkedIdealWithBoundary.
     · intro i hi t hai
       refine restrictIdeal_eq_restrict_coordIdeal_of_le hUle c _ {t} ?_
       simpa only [List.get_eq_getElem] using hsome i hi t hai
-    · intro i i' hi hi' t h4 h5
-      exact hinj i hi i' hi' t h4 h5
+    · exact fun i i' hi hi' t h4 h5 => hinj i hi i' hi' t h4 h5
     · rw [hrestr]
       refine restrictIdeal_eq_restrict_coordIdeal_of_le hUle c _ {b} ?_
       simpa only [List.get_eq_getElem] using hsome j hj b hb
@@ -226,12 +222,9 @@ theorem hasStrictNormalCrossingsWith_containedComponentsIdeal (T : MarkedIdealWi
   obtain ⟨U, hxU, n, c, a, b, hab, hnone, hsome, hinj, hZ⟩ :=
     exists_etaleChart_containedComponentsIdeal T hV j hj x hx
   refine ⟨U, hxU, n, c, a, {b}, ?_, ?_, ?_, hZ⟩
-  · intro i hi i' hi' t hti hti'
-    exact hinj i i' hi hi' t hti hti'
-  · intro i hi hni
-    exact hnone i hi hni
-  · intro i hi t hti
-    exact hsome i hi t hti
+  · exact fun i hi i' hi' t hti hti' => hinj i i' hi hi' t hti hti'
+  · exact fun i hi hni => hnone i hi hni
+  · exact fun i hi t hti => hsome i hi t hti
 
 theorem isBlowupAlongIdealSheaf_id_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :

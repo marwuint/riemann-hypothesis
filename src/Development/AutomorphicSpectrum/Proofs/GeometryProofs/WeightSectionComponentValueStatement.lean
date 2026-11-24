@@ -316,8 +316,7 @@ theorem approx_std {F K : Type} [Field F] [NormedField K] [Algebra F K] (hH : He
         ‖(p s).eval₂ (ev t.1) t.2 / P.g.eval₂ (ev t.1) t.2 ^ m s - ψ s‖) (a, ψ P.x) := by
       have h3 : ContinuousAt (fun t : (Fin n → K) × K => P.g.eval₂ (ev t.1) t.2 ^ m s) (a, ψ P.x) :=
         ((hc2 P.g).pow (m s)).continuousAt
-      have h4 := (hc2 (p s)).continuousAt.div h3 (pow_ne_zero (m s) hg0)
-      exact (h4.sub continuousAt_const).norm
+      exact (((hc2 (p s)).continuousAt.div h3 (pow_ne_zero (m s) hg0)).sub continuousAt_const).norm
     refine hca.eventually (gt_mem_nhds ?_)
     show ‖(p s).eval₂ (ev a) (ψ P.x) / P.g.eval₂ (ev a) (ψ P.x) ^ m s - ψ s‖ < ε
     rw [hψ (p s), ← hpm, map_mul, map_pow, ← hψ, mul_div_cancel_right₀ _ (pow_ne_zero _ hg0), sub_self, norm_zero]
@@ -367,8 +366,7 @@ theorem approx_std {F K : Type} [Field F] [NormedField K] [Algebra F K] (hH : He
     have h3 := hχ' (p s)
     rw [← hpm, map_mul, map_pow, map_mul, map_pow, hχ'] at h3
     dsimp only at h2 e1
-    rw [← h3, mul_div_cancel_right₀ _ (pow_ne_zero _ e1)] at h2
-    exact h2
+    rwa [← h3, mul_div_cancel_right₀ _ (pow_ne_zero _ e1)] at h2
   · intro h
     obtain ⟨u, hu⟩ := hc
     apply hbc
@@ -471,8 +469,7 @@ theorem ModelDimension.Alg.approx_dvr (F : Type) [Field F] [NumberField F] (R : 
       nlinarith
     have hdpos : 0 < ‖algebraMap V K d‖ ^ 2 := by positivity
     have hq : ‖algebraMap V K y / algebraMap V K d ^ 2‖ < 1 := by
-      rw [norm_div, norm_pow, div_lt_one hdpos]
-      exact hlt
+      rwa [norm_div, norm_pow, div_lt_one hdpos]
     obtain ⟨e, he⟩ := hmem _ hq.le
     have hem : e ∈ IsLocalRing.maximalIdeal V := (hintlt e).mp (by rw [he]; exact hq)
     have hy : y = d ^ 2 * e := by
@@ -503,8 +500,7 @@ theorem ModelDimension.Alg.approx_dvr (F : Type) [Field F] [NumberField F] (R : 
       obtain ⟨k, hk⟩ := IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hne hϖ
       haveI : Finite (V ⧸ IsLocalRing.maximalIdeal V) := hT
       have hfin := Ideal.finite_quotient_pow (IsNoetherian.noetherian (IsLocalRing.maximalIdeal V)) k
-      rw [hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, ← hk] at hfin
-      exact hfin
+      rwa [hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, ← hk] at hfin
   have hNK : ‖(N : K)‖ < 1 := by
     have := (hintlt (N : V)).mpr hNm
     simpa using this
@@ -562,8 +558,7 @@ theorem ModelDimension.algebraic_approximation_valued : ∀ (F : Type) [Field F]
   obtain ⟨p, hp, hpx⟩ := h2 x
   refine ⟨p, hp, ?_⟩
   simp only [Polynomial.aeval_def, algebraMap_int_eq] at hpx
-  rw [Polynomial.aeval_def, show algebraMap ℤ T.Fr = Int.castRingHom T.Fr from RingHom.ext_int _ _]
-  exact hpx
+  rwa [Polynomial.aeval_def, show algebraMap ℤ T.Fr = Int.castRingHom T.Fr from RingHom.ext_int _ _]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.WeilBound.CoreStatements.CommonZeroEvaluation.AlgebraicApproximationValued =====
@@ -1292,8 +1287,7 @@ theorem approx_main : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [Is
       have h1 : evR Xo c f z'' = ψ₂ fS := GlobalTheory.Reg.PChartModel.evR_map hL hf.1 ψ₂ hz''
       have h2 : evR Xo c f y'.1 = ((∏ i, t' i ^ GlobalTheory.AllWt.exOf Dw u 0 i : T'.Frˣ) : T'.Fr) * evR Xo c f z'' :=
         GlobalTheory.FlagTan.evR_frBor hf hb'
-      rw [h1] at h2
-      exact h2
+      rwa [h1] at h2
     rw [hyv, hy₀]
     refine nval_transfer ho.1 ho'.1 _ t₀ t' (fun i hi => ?_) φ.toRingHom hvφ hψf
       (close_of_le (le_max_right _ _) (hψ₁n fS (Finset.mem_insert_self _ _)))

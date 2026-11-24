@@ -462,27 +462,17 @@ theorem twist_val (d : GL (Fin n) ℂ) (h1 : perpD cj d W₁ = W₂) (h2 : perpD
     (u : GL (Fin n) ℂ) (X : Mx) (hX : X ∈ nilrad W₁ W₂) (hu : u.val = 1 + X) :
     u.val * (1 + (slin d X - X + quad d X)) = (d * thetaR cj n u * d⁻¹).val := by
   have hS := slin_mem d h1 h2 hX
-  have h3 : X * X * X = 0 := eq_zero_of_mulVec fun y => by
-    rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]
-    exact hX.2.2 _ (hX.2.1 _ (hX.1 y))
-  have h4 : X * X * slin d X = 0 := eq_zero_of_mulVec fun y => by
-    rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]
-    exact hX.2.2 _ (hX.2.1 _ (hS.1 y))
-  have h5 : X * slin d X * slin d X = 0 := eq_zero_of_mulVec fun y => by
-    rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]
-    exact hX.2.2 _ (hS.2.1 _ (hS.1 y))
+  have h3 : X * X * X = 0 := two_mul_nil (nil_mul_mem hX hX).2 hX
+  have h4 : X * X * slin d X = 0 := two_mul_nil (nil_mul_mem hX hX).2 hS
+  have h5 : X * slin d X * slin d X = 0 := two_mul_nil (nil_mul_mem hX hS).2 hS
   have hinv : (u⁻¹ : GL (Fin n) ℂ).val = 1 - X + X * X := by
     refine Units.inv_eq_of_mul_eq_one_right ?_
-    have : (1 + X) * (1 - X + X * X) = 1 + X * X * X := by noncomm_ring
-    rw [hu, this, h3, add_zero]
+    rw [hu, show (1 + X) * (1 - X + X * X) = 1 + X * X * X by noncomm_ring, h3, add_zero]
   have hid : d.val * (d⁻¹ : GL (Fin n) ℂ).val = 1 := by simp
   have hdi : (d⁻¹ : GL (Fin n) ℂ).val * d.val = 1 := by simp
   have hSS : slin d X * slin d X = d.val * (Xᴴ * Xᴴ) * (d⁻¹ : GL (Fin n) ℂ).val := by
-    simp only [slin, neg_mul, mul_neg, neg_neg]
-    calc d.val * Xᴴ * (d⁻¹ : GL (Fin n) ℂ).val * (d.val * Xᴴ * (d⁻¹ : GL (Fin n) ℂ).val)
-        = d.val * Xᴴ * ((d⁻¹ : GL (Fin n) ℂ).val * d.val) * Xᴴ * (d⁻¹ : GL (Fin n) ℂ).val := by
-          simp only [mul_assoc]
-      _ = _ := by rw [hdi]; simp only [mul_one, mul_assoc]
+    simp only [slin, neg_mul, mul_neg, neg_neg, mul_assoc]
+    rw [← mul_assoc _ d.val, hdi, one_mul]
   have hR : (d * thetaR cj n u * d⁻¹).val = 1 + slin d X + slin d X * slin d X := by
     rw [Units.val_mul, Units.val_mul, theta_val, hinv, hSS]
     simp only [Matrix.conjTranspose_add, Matrix.conjTranspose_sub, Matrix.conjTranspose_one,

@@ -147,8 +147,7 @@ theorem val_segreRatio {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) 
   rw [← Finset.prod_div_distrib]
   refine val_prod _ hz fun k _ => ?_
   obtain ⟨r, hr, hr'⟩ := (hw.2 k (c k) (isUnit_iff_ne_zero.2 (hc k))).2 (c' k)
-  rw [hr', mul_div_cancel_right₀ _ (hc k)]
-  exact hr
+  rwa [hr', mul_div_cancel_right₀ _ (hc k)]
 
 theorem continuousAt_segreRatio {K : Type} [Fintype K] {J : K → Type} {w₀ : (Σ k, J k) → ℂ}
     {c : (k : K) → J k} (hc : ∀ k, w₀ ⟨k, c k⟩ ≠ 0) (c' : (k : K) → J k) :
@@ -188,8 +187,7 @@ theorem open_near : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ 
   have hreg : (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ W (genPt ξ) hgW Q) ∈
       Algebra.adjoin ℤ (Set.range fun j : (k : K) → J k => (∏ k, y ⟨k, j k⟩) / ∏ k, y ⟨k, c k⟩) := by
     rw [ht.ring c hin₀.1]
-    intro p hp
-    exact ⟨X.presheaf.germ W p.1 ((hW _).2 ⟨p.2, hp⟩) Q, genMap_germ hgW Q p _⟩
+    exact fun p hp => ⟨X.presheaf.germ W p.1 ((hW _).2 ⟨p.2, hp⟩) Q, genMap_germ hgW Q p _⟩
   rw [Algebra.adjoin_range_eq_range_aeval] at hreg
   obtain ⟨P, hP⟩ := hreg
   have hval : ∀ (z : Sp ℂ ⟶ X) (w : (Σ k, J k) → ℂ), CoordsAt ξ y z w → (∀ k, w ⟨k, c k⟩ ≠ 0) →
@@ -233,11 +231,9 @@ theorem inner_sum_left (core : InnerProductSpace.Core ℂ V) {I : Type} (s : Fin
     core.inner (∑ l ∈ s, c l • u l) y = ∑ l ∈ s, (starRingEnd ℂ) (c l) * core.inner (u l) y := by
   classical
   have h0 : core.inner (0 : V) y = 0 := by
-    have h := core.smul_left (0 : V) y 0
-    simpa using h
+    simpa using core.smul_left (0 : V) y 0
   induction s using Finset.induction_on
-  · simp only [Finset.sum_empty]
-    exact h0
+  · simpa only [Finset.sum_empty] using h0
   · rename_i a t ha ih
     rw [Finset.sum_insert ha, Finset.sum_insert ha, core.add_left, core.smul_left, ih]
 
@@ -398,8 +394,7 @@ theorem ev_sum {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {z : S
     ev ⟨w, hw⟩ = ∑ l, c l • ev ⟨g l, hg l⟩ := by
   have h1 : (⟨w, hw⟩ : L) = ∑ l, (⟨a l, ha l⟩ : regAt ξ p) • (⟨g l, hg l⟩ : L) := by
     apply Subtype.ext
-    rw [Submodule.coe_sum]
-    exact hwe
+    rwa [Submodule.coe_sum]
 
   rw [h1, map_sum]
   exact Finset.sum_congr rfl fun l _ => hev _ _ _ (hc l)
@@ -576,8 +571,7 @@ theorem val_ratio {w : (Σ k, J k) → ℂ} {c : (k : K) → J k} (hz : genPt ξ
   refine val_finsetProd hz _ _ _ fun k _ => ?_
   obtain ⟨-, h2⟩ := hw.2 k (c k) (isUnit_iff_ne_zero.2 (hc k))
   obtain ⟨r, hr, e⟩ := h2 (c' k)
-  rw [e, mul_div_cancel_right₀ _ (hc k)]
-  exact hr
+  rwa [e, mul_div_cancel_right₀ _ (hc k)]
 
 theorem val_ratioPoly {w : (Σ k, J k) → ℂ} {c : (k : K) → J k} (hz : genPt ξ ⤳ centre z)
     (hw : CoordsAt ξ y z w) (hc : ∀ k, w ⟨k, c k⟩ ≠ 0) (P : MvPolynomial ((k : K) → J k) ℤ) :

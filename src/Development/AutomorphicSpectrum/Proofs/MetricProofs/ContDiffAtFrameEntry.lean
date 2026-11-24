@@ -82,8 +82,7 @@ theorem GlobalTheory.CompanionTheory.Ar.PB.FibPt.contDiffAt_frame_entry {d : ℕ
   have hg' : ∀ i j, ContDiffAt ℝ 2 (fun y' => g y' i j) y := fun i j =>
     ((ReciprocityTheory.AnForm.Osgood.osgood d Set.univ _ isOpen_univ (hg i j).differentiableOn y (Set.mem_univ _)).contDiffAt).restrict_scalars ℝ
   have hs : ∀ i j, ContDiffAt ℝ 2 (fun y' => star (g y' i j)) y := fun i j => by
-    have h := (Complex.conjCLE.contDiff (n := 2)).contDiffAt.comp y (hg' i j)
-    simpa [Function.comp_def] using h
+    simpa [Function.comp_def] using (Complex.conjCLE.contDiff (n := 2)).contDiffAt.comp y (hg' i j)
   simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, Fin.sum_univ_two]
   exact ((((hs 0 p).mul (hC 0 0)).add ((hs 1 p).mul (hC 1 0))).mul (hg' 0 q)).add
     ((((hs 0 p).mul (hC 0 1)).add ((hs 1 p).mul (hC 1 1))).mul (hg' 1 q))
@@ -93,8 +92,7 @@ theorem GlobalTheory.CompanionTheory.Ar.PB.FibPt.contDiffAt_xiPot {E : Type} [No
     (hC : ∀ p q, ContDiffAt ℝ 2 (fun w => H w p q) w₀) (hb : ContDiffAt ℝ 2 b w₀) :
     ContDiffAt ℝ 2 (fun w => xiPot (H w) (b w)) w₀ := by
   have hb' : ContDiffAt ℝ 2 (fun w => star (b w)) w₀ := by
-    have h := (Complex.conjCLE.contDiff (n := 2)).contDiffAt.comp w₀ hb
-    simpa [Function.comp_def] using h
+    simpa [Function.comp_def] using (Complex.conjCLE.contDiff (n := 2)).contDiffAt.comp w₀ hb
   have h00 := hC 0 0
   have h01 := hC 0 1
   have h10 := hC 1 0
@@ -113,8 +111,7 @@ theorem GlobalTheory.CompanionTheory.Ar.PB.FibPt.contDiffAt_xiPot {E : Type} [No
     intro h
     have := congrFun h 0
     simp at this
-  have hp1 : 0 < herm2 (H w₀) ![1, b w₀] ![1, b w₀] := by
-    exact hpd.dotProduct_mulVec_pos hv
+  have hp1 : 0 < herm2 (H w₀) ![1, b w₀] ![1, b w₀] := hpd.dotProduct_mulVec_pos hv
   have hp2 : 0 < (H w₀).det := hpd.det_pos
   simp only [xiPot]
   exact (hqr.log (Complex.pos_iff.1 hp1).1.ne').neg.add (contDiffAt_const.mul (hdr.log (Complex.pos_iff.1 hp2).1.ne'))

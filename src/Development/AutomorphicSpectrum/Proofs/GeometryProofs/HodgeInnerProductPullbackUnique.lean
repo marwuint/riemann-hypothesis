@@ -130,8 +130,7 @@ theorem exists_chart_at (hM : M.IsLB) (x : 𝟙_ (Over (Sp ℂ)) ⟶ A) : ∃ b,
     trivial
   obtain ⟨b, hb⟩ := TopologicalSpace.Opens.mem_iSup.1 hc
   refine ⟨b, fun q _ => ?_⟩
-  rw [hsub q]
-  exact hb
+  rwa [hsub q]
 
 def frameAt (u : HolUnif A M g) (w : LB.Iso M M') (b : (Fin g → ℂ) → M.ι) (a : M'.ι) (z : Fin g → ℂ) : ℂ :=
   valAt' (u.ex z).left (M'.U a ⊓ M.U (b z)) (isoU w a (b z)).val * u.fr (b z) z
@@ -252,8 +251,7 @@ theorem fderiv_eq_zero_of_isDiff_one (u : HolUnif A L g) {w : Fin g → ℂ} (h 
     have e : (u.ex 0 ≫ T).left = (u.ex z).left := by rw [hT, ex_comp_transl, add_zero]
     intro p hp
     have := hz hp
-    rw [← e] at this
-    exact this
+    rwa [← e] at this
   have hvU := (tangent_mem_iff (u := u) hv _).2 h0
   have e1 := h _ hvU ((T.left.app W).hom s)
   have e2 := GlobalTheory.UnifDifferential.isDiff_one u _ hvU ((T.left.app W).hom s)
@@ -263,8 +261,7 @@ theorem fderiv_eq_zero_of_isDiff_one (u : HolUnif A L g) {w : Fin g → ℂ} (h 
       fun y => valAt' (u.ex (z + y)).left W s := by
     funext y
     rw [← GlobalTheory.HomLinear.valAt'_comp_left, hT, ex_comp_transl]
-  rw [e4, fderiv_comp_add_left (f := fun y => valAt' (u.ex y).left W s), add_zero] at e3
-  exact e3
+  rwa [e4, fderiv_comp_add_left (f := fun y => valAt' (u.ex y).left W s), add_zero] at e3
 
 theorem eq_zero_of_isDiff_one (u : HolUnif A L g) {w : Fin g → ℂ} (h : u.IsDiff w (1 : epsR ℂ ⟶ A)) : w = 0 := by
   let pt : (𝟙_ (Over (Sp ℂ))).left := (default : PrimeSpectrum ℂ)
@@ -274,8 +271,7 @@ theorem eq_zero_of_isDiff_one (u : HolUnif A L g) {w : Fin g → ℂ} (h : u.IsD
     (Set.mem_univ _)
   have h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U := by
     intro q _
-    rw [hsub q]
-    exact hpU
+    rwa [hsub q]
   have hcont : Continuous fun t : ℂ => t • w := continuous_id.smul continuous_const
   have hopen : IsOpen ((fun t : ℂ => t • w) ⁻¹' {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ U}) := (u.hol U 0).1.preimage hcont
   obtain ⟨ρ, hρ, hball⟩ := Metric.isOpen_iff.1 hopen 0 (by simpa using h0)
@@ -290,8 +286,7 @@ theorem eq_zero_of_isDiff_one (u : HolUnif A L g) {w : Fin g → ℂ} (h : u.IsD
       have hl : HasDerivAt (fun t : ℂ => t • w) w t := by
         simpa using (hasDerivAt_id t).smul_const w
       have := hd.hasFDerivAt.comp_hasDerivAt t hl
-      rw [fderiv_eq_zero_of_isDiff_one u h _ hm s] at this
-      exact this
+      rwa [fderiv_eq_zero_of_isDiff_one u h _ hm s] at this
     exact Metric.isOpen_ball.is_const_of_deriv_eq_zero (convex_ball _ _).isPreconnected
       (fun t ht => (hder t ht).differentiableAt.differentiableWithinAt)
       (fun t ht => (hder t ht).deriv) ht (Metric.mem_ball_self hρ)
@@ -324,8 +319,7 @@ theorem exists_affine (u : HolUnif A L g) : ∃ U : A.left.Opens, IsAffineOpen U
     (Set.mem_univ _)
   refine ⟨U, hU, ?_⟩
   intro q _
-  rw [hsub q]
-  exact hpU
+  rwa [hsub q]
 
 theorem eq_of_isDiff (u : HolUnif A L g) {v : epsR ℂ ⟶ A} (hv : IsTangent v) {d d' : Fin g → ℂ}
     (h : u.IsDiff d v) (h' : u.IsDiff d' v) : d = d' := by
@@ -559,9 +553,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
     have h₂ : φ ≫ t'.G.hom = A.hom ≫ z := m.cart.1.lift_snd _ _ _
     refine ⟨φ, m.cart.cancel (by rw [h₁]; exact hp) h₂, ?_, ?_, ?_⟩
     · exact LBIso.symm (GlobalTheory.GenSpread.lbIso_pull_of_lbIso (GlobalTheory.Ex.UnifModel.iso_of_map m) φ h₁.symm)
-    · intro x e
-      exact lift_eq m.cart.1 h₁ h₂ e ev
-    · intro x e
-      exact lift_eq m.cart.1 h₁ h₂ e ew
+    · exact fun x e => lift_eq m.cart.1 h₁ h₂ e ev
+    · exact fun x e => lift_eq m.cart.1 h₁ h₂ e ew
 
 end GlobalTheory.CompanionTheory.Ar.HodgeUnique

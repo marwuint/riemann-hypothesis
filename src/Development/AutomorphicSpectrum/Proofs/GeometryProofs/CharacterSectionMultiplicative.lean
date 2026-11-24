@@ -178,8 +178,7 @@ theorem valAt_chart {B C : Type} [CommRing B] [CommRing C] {X : Scheme.{0}} (c :
       (Scheme.ΓSpecIso (CommRingCat.of B)).inv b := Iso.inv_hom_id_apply _ _
   have h4 : (Scheme.ΓSpecIso (CommRingCat.of B)).hom ((Scheme.ΓSpecIso (CommRingCat.of B)).inv b) = b :=
     Iso.inv_hom_id_apply _ _
-  rw [h4, ← h3] at h2
-  exact h2
+  rwa [h4, ← h3] at h2
 
 theorem chart_sep [Finite T] (Γ : QFGroup R T) (B : Type) [CommRing B] [Algebra R B]
     (c : Spec (CommRingCat.of B) ⟶ Γ.G.left) [IsOpenImmersion c]
@@ -202,8 +201,7 @@ theorem chart_sep [Finite T] (Γ : QFGroup R T) (B : Type) [CommRing B] [Algebra
         rw [CommRingCat.ofHom_comp, Spec.map_comp, hφ, ← hc, ← Category.assoc, hg]
         exact Over.w (Γ.pt i.1)
       exact congrArg CommRingCat.Hom.hom (Spec.map_injective h1)
-    refine ⟨{ φ with commutes' := fun r => congr($hcomp r) }, ?_⟩
-    exact (congrArg (· ≫ c) hφ).trans hg
+    exact ⟨{ φ with commutes' := fun r => congr($hcomp r) }, (congrArg (· ≫ c) hφ).trans hg⟩
   choose e he using lift
   refine ⟨I, inferInstance, Subtype.val, e, he, fun b hb => ?_⟩
   have hs := _root_.GlobalTheory.CompanionTheory.Ar.BT.section_eq_zero_of_val_generic R T Γ (c ''ᵁ ⊤)
@@ -221,8 +219,7 @@ theorem chart_sep [Finite T] (Γ : QFGroup R T) (B : Type) [CommRing B] [Algebra
         exact hb ⟨t, hr⟩
       exact key _ (he ⟨t, hr⟩) h)
   have h1 := congr((c.appIso ⊤).hom $hs)
-  have h2 := congr((Scheme.ΓSpecIso (CommRingCat.of B)).hom $h1)
-  simpa using h2
+  simpa using congr((Scheme.ΓSpecIso (CommRingCat.of B)).hom $h1)
 
 theorem chart_pair [Finite T] (Γ : QFGroup R T) (A₁ A₂ : Type) [CommRing A₁] [CommRing A₂]
     (c₁ : Spec (CommRingCat.of A₁) ⟶ Γ.G.left) (c₂ : Spec (CommRingCat.of A₂) ⟶ Γ.G.left)
@@ -329,6 +326,5 @@ theorem GlobalTheory.CompanionTheory.Ar.BT.charValues_mul : ∀ (R : Type) [Comm
   intro R _ _ T _ _ Γ χ s hs Y
   refine ⟨fun y z => ?_, ?_⟩
   · have h := congrArg (lift y z).left.appTop (mul_univ Γ χ s hs)
-    rw [pull, map_mul, pull, pull, comp_mul, lift_fst, lift_snd] at h
-    exact h
+    rwa [pull, map_mul, pull, pull, comp_mul, lift_fst, lift_snd] at h
   · rw [Hom.one_def, ← pull, one_univ Γ χ s hs, map_one]

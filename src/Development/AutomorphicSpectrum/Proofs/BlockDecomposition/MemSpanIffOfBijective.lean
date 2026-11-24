@@ -134,8 +134,7 @@ theorem surjective_of_unramified {R S : Type} [CommRing R] [CommRing S] (p : ℕ
     rw [Algebra.isEpi_iff_forall_one_tmul_eq]
     intro s
     have := ht2 s
-    rw [ht, mul_one, sub_eq_zero] at this
-    exact this
+    rwa [ht, mul_one, sub_eq_zero] at this
   exact Algebra.isEpi_iff_surjective_algebraMap_of_finite.1 hepi
 
 theorem pf_of_etale : ∀ (p : ℕ), p.Prime → ∀ {P E : Type} [CommRing P] [CommRing E] (ψ : P →+* E),
@@ -297,10 +296,8 @@ theorem pf_rootExt (p : ℕ) (hp : p.Prime) {k : Type} [CommRing k] (hk : D.Pf p
       · rw [RingHom.comp_apply, hF, map_pow, hg2]
         exact Y.r_succ j m
     refine ⟨hcE, Function.bijective_iff_has_inverse.2 ⟨g, fun x => ?_, fun x => ?_⟩⟩
-    · have hx := congrArg (fun φ => φ x) (h2.trans hid.symm)
-      simpa [hF] using hx
-    · have hx := congrArg (fun φ => φ x) (h1.trans hid.symm)
-      simpa [hF] using hx
+    · simpa [hF] using congrArg (fun φ => φ x) (h2.trans hid.symm)
+    · simpa [hF] using congrArg (fun φ => φ x) (h1.trans hid.symm)
 
 theorem exists_etale_rootExt (p : ℕ) {P E₀ : Type} [CommRing P] [CommRing E₀] (ψ : P →+* E₀)
     (hψ : ψ.Etale) {d : ℕ} (s : Fin d → P) (t : Fin d → E₀) (hst : ∀ j, ψ (s j) = t j)
@@ -401,8 +398,7 @@ theorem root_perf : ∀ (p : ℕ), p.Prime → ∀ {k E₀ : Type} [CommRing k] 
   rw [mem_nonZeroDivisors_iff_right]
   intro z hz
   apply hreg''.right_eq_zero_of_smul
-  rw [Algebra.smul_def, mul_comm]
-  exact hz
+  rwa [Algebra.smul_def, mul_comm]
 
 end GlobalTheory.CompanionTheory.RootPerf
 end -- clump:auto
@@ -644,8 +640,7 @@ theorem exists_kappa {O : Type} [CommRing O] (κ : O →+* OC l) :
     have e2 := (base l).oC_theta0 w
     have e3 : (base l).sW w = w := wmap_id w
     rw [e3] at e2
-    rw [e2]
-    exact e1
+    rwa [e2]
   rw [h1, RingHom.comp_apply, RingHom.comp_apply, Ideal.Quotient.eq, ← map_sub]
   exact mem_span_iff_of_bijective _ hb l _
 
@@ -698,8 +693,7 @@ theorem tower_ex {O : Type} [CommRing O] {F : Fn O} (κ : O →+* OC l) {d : ℕ
     have e3 := hcp o' w' e1
     rw [e2, WittVector.teichmuller_coeff_zero] at e3
     exact e3) h0 hs
-  simp only [pow_one] at this
-  exact this
+  simpa only [pow_one] using this
 
 end GlobalTheory.CompanionTheory.TowerEx
 end -- clump:auto

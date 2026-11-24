@@ -132,8 +132,7 @@ theorem exists_mul_stalkSpecializes {X : Scheme.{0}} {x y : X} (h : x ⤳ y)
   refine ⟨(X.presheaf.germ U y hyU).hom t, fun hm => ?_, (X.presheaf.germ U y hyU).hom r, ?_⟩
   · rw [← hP, Ideal.mem_comap, hg] at hm
     exact (IsLocalRing.mem_maximalIdeal _).1 hm hu
-  · rw [hg, hg, mul_comm]
-    exact ht
+  · rwa [hg, hg, mul_comm]
 
 end GlobalTheory.CompanionTheory.Ar.LieStalk.HeightOne
 
@@ -187,14 +186,12 @@ theorem exists_generisation_of_height_eq_one : ∀ (X : Scheme.{0}) (Ω : Type) 
     rfl
   refine ⟨q, hs', ⟨hdom, isDVR_of_ringKrullDim_eq_one _ hdim⟩, fun s hsP => ?_, ?_⟩
   · have ha : (regIso hgen p).symm s ∉ P'.asIdeal := by
-      rw [hmem, RingEquiv.apply_symm_apply]
-      exact hsP
+      rwa [hmem, RingEquiv.apply_symm_apply]
     obtain ⟨u, hu⟩ := (hunit _ ha).exists_right_inv
     refine ⟨u, ?_⟩
     refine eq_inv_of_mul_eq_one_right ?_
     have h1 := congrArg (genMap ξ q) hu
-    rw [map_mul, map_one, hgf, genMap_regIso_symm] at h1
-    exact h1
+    rwa [map_mul, map_one, hgf, genMap_regIso_symm] at h1
   · rintro _ ⟨b, rfl⟩
     obtain ⟨a, ha, c, hc⟩ := hfrac b
     refine ⟨regIso hgen p a, fun h => ha ((hmem a).2 h), ⟨c, ?_⟩⟩
@@ -426,8 +423,7 @@ theorem isFractionRing_regAt : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ :
   intro X Ω _ ξ h p
   refine IsFractionRing.of_field (regAt ξ p) Ω fun a => ?_
   obtain ⟨f, g, hg, e⟩ := exists_germ_frac ξ h.bij (y := p.1) p.2 a
-  refine ⟨⟨genMap ξ p f, f, rfl⟩, ⟨genMap ξ p g, g, rfl⟩, ?_⟩
-  exact eq_div_of_mul_eq hg e
+  exact ⟨⟨genMap ξ p f, f, rfl⟩, ⟨genMap ξ p g, g, rfl⟩, eq_div_of_mul_eq hg e⟩
 
 end GlobalTheory.CompanionTheory.Ar.LieStalk
 end -- clump:auto
@@ -506,8 +502,7 @@ theorem tangent_transport_dvr (hψ : IsGrpPullback G₀ G x ψ) (hψ' : IsGrpPul
       have b := Over.w w
       dsimp at a b
       rw [Category.assoc, Category.assoc, a, hκ, ← Category.assoc (Over.Hom.left w), b]
-      simp only [Category.comp_id]
-      exact spec_dualMap_alg k
+      simpa only [Category.comp_id] using spec_dualMap_alg k
   refine ⟨LieMove.pushEps hψ' v₀, (LieMove.tan_iff hψ' v₀).1 t₀, ?_⟩
   rw [LieMove.pushEps_left, ← Category.assoc, key, Category.assoc, e₂, hw']
 

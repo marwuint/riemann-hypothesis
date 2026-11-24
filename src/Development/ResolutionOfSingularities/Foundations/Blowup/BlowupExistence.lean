@@ -175,11 +175,9 @@ private theorem pullback_hom_ext_of_mono {Z A B : Scheme.{u}} (a : A ⟶ Z) (b :
     [Mono a] [Mono b] {P : Scheme.{u}} {u v : P ⟶ pullback a b}
     (h : u ≫ pullback.fst a b ≫ a = v ≫ pullback.fst a b ≫ a) : u = v := by
   have h1 : u ≫ pullback.fst a b = v ≫ pullback.fst a b := by
-    rw [← cancel_mono a, Category.assoc, Category.assoc]
-    exact h
+    rwa [← cancel_mono a, Category.assoc, Category.assoc]
   have h2 : u ≫ pullback.snd a b = v ≫ pullback.snd a b := by
-    rw [← cancel_mono b, Category.assoc, Category.assoc, ← pullback.condition]
-    exact h
+    rwa [← cancel_mono b, Category.assoc, Category.assoc, ← pullback.condition]
   exact pullback.hom_ext h1 h2
 
 private def IsBlowupAlongIdealSheafOver {X : Scheme.{u}} (I : X.IdealSheafData) (S : X.Opens) {Z : Scheme.{u}}
@@ -238,8 +236,7 @@ private theorem blowupOver_inf_preimage {X Z : Scheme.{u}} {I : X.IdealSheafData
   refine ⟨?_, ?_, ?_⟩
   · rintro _ ⟨p, rfl⟩
     rw [comp_base_apply]
-    refine TopologicalSpace.Opens.mem_inf.mpr ⟨hz.1 (Set.mem_range_self _), ?_⟩
-    exact ι_base_mem (z ⁻¹ᵁ T) p
+    exact TopologicalSpace.Opens.mem_inf.mpr ⟨hz.1 (Set.mem_range_self _), ι_base_mem (z ⁻¹ᵁ T) p⟩
   · exact isLocallyGeneratedByNonZeroDivisor_comap_openImmersion_comp I _ z hz.2.1
   · intro Y y hy hr
     have hrS : Set.range ⇑y.base ⊆ (S : Set X) := fun p hp =>
@@ -344,7 +341,6 @@ private theorem isIso_overlapIncl_self {X : Scheme.{u}} (I : X.IdealSheafData)
   have e2 : ((overlap I i i : (localBlowup I i).Opens) : Set (localBlowup I i)) = Set.univ := by
     ext v
     simp only [Set.mem_univ, iff_true]
-    show (localBlowupToBase I i).base v ∈ (i : X.Opens)
     exact (blowupOver_localBlowupMap I i).1 (Set.mem_range_self v)
   have h1 : Set.range ⇑(overlapInclusion I i i).base
       = Set.range ⇑(𝟙 (localBlowup I i) : localBlowup I i ⟶ localBlowup I i).base := by
@@ -574,19 +570,16 @@ private theorem mem_range_gluedIncl_of_mem {X : Scheme.{u}} (I : X.IdealSheafDat
     p ∈ Set.range ⇑(localBlowupToGlued I i).base := by
   obtain ⟨j, y, hy⟩ := gluedIncl_jointly_surjective I p
   have h1 : (localBlowupToBase I j).base y ∈ (i : X.Opens) := by
-    rw [← gluedProj_base_gluedIncl I j y, hy]
-    exact hp
+    rwa [← gluedProj_base_gluedIncl I j y, hy]
   have h2 : y ∈ Set.range ⇑(overlapInclusion I j i).base := by
-    rw [overlapIncl_eq, Scheme.Opens.range_ι]
-    exact h1
+    rwa [overlapIncl_eq, Scheme.Opens.range_ι]
   obtain ⟨v, hv⟩ := h2
   have hcb : (overlapTransition I j i ≫ overlapInclusion I i j ≫ localBlowupToGlued I i).base v
       = (overlapInclusion I j i ≫ localBlowupToGlued I j).base v := by
     rw [overlapTrans_comp_gluedIncl I j i]
   rw [comp_base_apply, comp_base_apply, comp_base_apply] at hcb
   refine ⟨(overlapInclusion I i j).base ((overlapTransition I j i).base v), ?_⟩
-  rw [hcb, hv]
-  exact hy
+  rwa [hcb, hv]
 
 private theorem comp_gluedIncl_eq_of_comp_localBlowupMap {X P : Scheme.{u}} (I : X.IdealSheafData)
     (x y : X.affineOpens) (q : P ⟶ X) (hq : IsLocallyGeneratedByNonZeroDivisor (I.comap q))
@@ -655,8 +648,7 @@ private noncomputable def preimageAffineOpensCover {X W : Scheme.{u}} (g : W ⟶
 
 private theorem hom_ext_of_preimageAffineOpen_ι_comp {X W : Scheme.{u}} (g : W ⟶ X) {Z : Scheme.{u}} (a b : W ⟶ Z)
     (h : ∀ i : X.affineOpens, (preimageAffineOpen g i).ι ≫ a = (preimageAffineOpen g i).ι ≫ b) : a = b := by
-  refine (preimageAffineOpensCover g).hom_ext a b (fun i => ?_)
-  exact h i
+  exact (preimageAffineOpensCover g).hom_ext a b (fun i => h i)
 
 private theorem liftChart_pullback_condition {X W : Scheme.{u}} (I : X.IdealSheafData) (g : W ⟶ X)
     (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g)) (x y : X.affineOpens) :

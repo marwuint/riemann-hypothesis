@@ -422,8 +422,7 @@ theorem norm_notMem_iff {A B : Type} [CommRing A] [CommRing B] [Algebra A B] [Mo
     [Module.Finite A B] (e : B) (p : Ideal A) (hp : p.IsPrime) :
     Algebra.norm A e ∉ p ↔ ∀ q : Ideal B, q.IsPrime → q.comap (algebraMap A B) = p → e ∉ q := by
   constructor
-  · intro hN q _ hc he
-    exact hN (hc ▸ norm_mem_comap e q he)
+  · exact fun hN q _ hc he => hN (hc ▸ norm_mem_comap e q he)
   · intro H hN
     have h0 : Algebra.norm p.ResidueField ((1 : p.ResidueField) ⊗ₜ[A] e : p.ResidueField ⊗[A] B) = 0 := by
       rw [norm_one_tmul]
@@ -693,10 +692,8 @@ theorem stable_of_forall (V : X.left.Opens) (h : ∀ y ∈ V, orbit G X y ⊆ V)
     (γ[G, X] : G ⊗ X ⟶ X).left ⁻¹ᵁ V = (snd G X).left ⁻¹ᵁ V := by
   ext z
   constructor
-  · intro hz
-    exact h _ hz (orbit_symm G X ((mem_orbit_iff G X).2 ⟨z, rfl, rfl⟩))
-  · intro hz
-    exact h _ hz ((mem_orbit_iff G X).2 ⟨z, rfl, rfl⟩)
+  · exact fun hz => h _ hz (orbit_symm G X ((mem_orbit_iff G X).2 ⟨z, rfl, rfl⟩))
+  · exact fun hz => h _ hz ((mem_orbit_iff G X).2 ⟨z, rfl, rfl⟩)
 
 variable {G X} in
 theorem isFinite_snd (hG : IsFiniteLocallyFree G.hom) : IsFinite (snd G X).left := by
@@ -719,8 +716,7 @@ theorem isOpen_saturated (hG : IsFiniteLocallyFree G.hom) (O : X.left.Opens) :
   ext y
   simp only [Set.mem_setOf_eq, Set.mem_compl_iff, Set.mem_image, Set.mem_preimage, not_exists, not_and]
   constructor
-  · intro h z hz hy
-    exact hz (h ((mem_orbit_iff G X).2 ⟨z, hy, rfl⟩))
+  · exact fun h z hz hy => hz (h ((mem_orbit_iff G X).2 ⟨z, hy, rfl⟩))
   · intro h w hw
     obtain ⟨z, hz, rfl⟩ := (mem_orbit_iff G X).1 hw
     by_contra hn
@@ -742,10 +738,8 @@ theorem exists_norm {P D : Scheme.{0}} [IsAffine P] [IsAffine D] (v : P ⟶ D)
   refine ⟨Algebra.norm Γ(D, ⊤) e, GlobalTheory.T.basic_open_norm_fibre_iff v _ e fun p => ?_⟩
   rw [GlobalTheory.T.norm_not_mem_prime_iff e p.asIdeal p.isPrime]
   constructor
-  · intro h q hq
-    exact h q.asIdeal q.isPrime hq
-  · intro h q hq hq'
-    exact h ⟨q, hq⟩ hq'
+  · exact fun h q hq => h q.asIdeal q.isPrime hq
+  · exact fun h q hq hq' => h ⟨q, hq⟩ hq'
 
 theorem exists_stable_affine_nbhd : ∀ {S : Scheme.{0}} (G X : Over S) [GrpObj G] [ModObj G X], IsFiniteLocallyFree G.hom → ∀ (x : X.left) (U : X.left.Opens), IsAffineOpen U → orbit G X x ⊆ U → ∃ (V : X.left.Opens) (W : S.Opens), x ∈ V ∧ IsAffineOpen V ∧ IsAffineOpen W ∧ V ≤ X.hom ⁻¹ᵁ W ∧ (γ[G, X] : G ⊗ X ⟶ X).left ⁻¹ᵁ V = (snd G X).left ⁻¹ᵁ V := by
   intro S G X _ _ hG x U hU hxU

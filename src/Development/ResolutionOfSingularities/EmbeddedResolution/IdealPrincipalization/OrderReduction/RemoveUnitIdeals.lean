@@ -72,8 +72,7 @@ theorem isPullback_of_length_eq_zero_of_length_eq_zero {X' X : Scheme.{u}} (φ :
     (t : SequenceOfBlowups X') (s : SequenceOfBlowups X) (ht : t.length = 0) (hs : s.length = 0) :
     IsPullbackBlowupSequence φ t s := by
   refine isPullback_of_length_zero_of_comap_center_eq_top φ t s ht ?_
-  intro i hi _ _
-  exact absurd hi (by omega)
+  exact fun i hi _ _ => absurd hi (by omega)
 
 namespace MaxContactFunctoriality
 
@@ -883,8 +882,7 @@ theorem maxContactPrincipalization_isPullbackBlowupSequence_of_smooth
       Set.nonempty_iff_ne_empty.mpr hemp₂
     have hcs₁ : (orderAtLeastLocus T.ideal T.mult).Nonempty := by
       rw [Set.nonempty_iff_ne_empty]
-      intro hzero
-      exact hemp₂ (orderAtLeastLocus_comap_eq_empty T hv h hzero)
+      exact fun hzero => hemp₂ (orderAtLeastLocus_comap_eq_empty T hv h hzero)
     have hypT : OrderReductionHypotheses P T := ⟨hP, hord, hcs₁, hv⟩
     have hypT₂ : OrderReductionHypotheses P ((T.pullbackAlong Y qY h).withBoundary E') := ⟨hP', hord₂, hcs₂, hv'⟩
     obtain ⟨d₁, hd₁, he₁⟩ := exists_isStrictPullback_cover_dropTrivialBoundary hsf hmd htv htm T hypT

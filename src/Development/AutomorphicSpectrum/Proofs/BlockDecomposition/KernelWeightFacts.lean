@@ -151,8 +151,7 @@ theorem good_sum {ι : Type} (s : Finset ι) (T : ι → (Mat n → V) → (Mat 
   induction s using Finset.induction_on with
   | empty => simpa using good_zero
   | insert a s ha ih =>
-    simp only [Finset.sum_insert ha]
-    exact good_add (h a) ih
+    simpa only [Finset.sum_insert ha] using good_add (h a) ih
 
 theorem good_Eu (hR : RCalc) (s : Bool) (a b : Fin n) : Good (n := n) (V := V) (Eu s a b) :=
   good_smul (1 / 2 : ℂ) (good_add (good_Rd hR _) (good_smul _ (good_Rd hR _)))
@@ -237,8 +236,7 @@ theorem lg_val_le (hL : LgFacts) (z : G n) {x : Mat n} (hx : x ∈ GLs n) :
     rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv x (isUnit_iff_ne_zero.2 hx), Matrix.mul_one]
   have h1 := hsub _ hy _ (inv_mem hx)
   have h2 : lg (z⁻¹ : G n).val = lg z.val := by rw [val_inv, hinv _ (_root_.GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val z)]
-  rw [e, hinv x hx, h2] at h1
-  exact h1
+  rwa [e, hinv x hx, h2] at h1
 
 theorem fderiv_far (hL : LgFacts) {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {K : Mat n → W} {R : ℝ}
     (hR : ∀ y ∈ GLs n, R < lg y → K y = 0) {y : Mat n} (hy : y ∈ GLs n) (h : R < lg y) : fderiv ℝ K y = 0 := by
@@ -344,8 +342,7 @@ theorem hasFDerivAt_integrand {K : Mat n → (V →L[ℂ] V)} (hK : ContDiffOn �
     (GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth hK hy).hasFDerivAt
   have h2 : HasFDerivAt (fun x' : Mat n => mulL (z⁻¹ : G n).val x') (mulL (z⁻¹ : G n).val) x :=
     (mulL (z⁻¹ : G n).val).hasFDerivAt
-  have h3 := HasFDerivAt.comp x (g := K) h1 h2
-  exact (evL (f z.val)).hasFDerivAt.comp x h3
+  exact (evL (f z.val)).hasFDerivAt.comp x (HasFDerivAt.comp x (g := K) h1 h2)
 
 theorem hasFDerivAt_Lk [CompleteSpace V] (hL : LgFacts) {K : Mat n → (V →L[ℂ] V)} (hK : ContDiffOn ℝ ∞ K (GLs n))
     (hc : Cpt K) {f : Mat n → V} (hf : ContinuousOn f (GLs n)) {x₀ : Mat n} (hx₀ : x₀ ∈ GLs n) :
@@ -427,8 +424,7 @@ theorem Rel.smul {f : Mat n → V} {K : Mat n → (V →L[ℂ] V)} {B : Mat n �
   · obtain ⟨R, hR⟩ := h.2.1
     exact ⟨R, fun y hy hl => by simp [hR y hy hl]⟩
   · rw [Pi.smul_apply, h.2.2 x hx]
-    simp only [Lk, Pi.smul_apply, ContinuousLinearMap.smul_apply]
-    exact (integral_smul c _).symm
+    simpa only [Lk, Pi.smul_apply, ContinuousLinearMap.smul_apply] using (integral_smul c _).symm
 
 theorem Rel.sum (hL : LgFacts) {f : Mat n → V} (hf : ContinuousOn f (GLs n)) {ι : Type} (s : Finset ι)
     {K : ι → Mat n → (V →L[ℂ] V)} {B : ι → Mat n → V} (h : ∀ i, Rel μ f (K i) (B i)) :
@@ -455,8 +451,7 @@ theorem Rel.Epow [CompleteSpace V] (hL : LgFacts) {f : Mat n → V} (hf : Contin
     · simpa [PositivityTheory.RgBcC.Epow, e] using h
     · simpa [PositivityTheory.RgBcC.Epow, e] using Rel.zero f
   | succ m ih =>
-    intro a b
-    exact Rel.sum hL hf Finset.univ fun c => (ih c b).Eu hL hf s a c
+    exact fun a b => Rel.sum hL hf Finset.univ fun c => (ih c b).Eu hL hf s a c
 
 theorem Rel.gel [CompleteSpace V] (hL : LgFacts) {f : Mat n → V} (hf : ContinuousOn f (GLs n))
     {K : Mat n → (V →L[ℂ] V)} {B : Mat n → V} (h : Rel μ f K B) (s : Bool) (m : ℕ) :

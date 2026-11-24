@@ -87,8 +87,7 @@ theorem ker_aeval_eq (τ : Fin m → Ω) (k : Fin m) (hk : τ k = 1) :
     have hh0 : aeval τ h = 0 := by
 
       simp only [hh, map_sum, map_mul, map_pow, aeval_X, hk, one_pow, one_mul]
-      rw [← hcomp]
-      exact hg
+      rwa [← hcomp]
     have hdiff : g - h ∈ Ideal.span {X k - 1} := by
       have hg' : g = ∑ d ∈ Finset.range (N + 1), homogeneousComponent d g :=
         (sum_homogeneousComponent g).symm
@@ -231,8 +230,7 @@ theorem dim_add_one_le (h1 : StPts) (hE : Emb p s) :
   have hgen : ∀ S : IrreducibleCloseds Z, closure {gen S} = (S : Set Z) := by
     intro S
     have := S.isIrreducible.isGenericPoint_genericPoint_closure
-    rw [S.isClosed.closure_eq] at this
-    exact this
+    rwa [S.isClosed.closure_eq] at this
   have hle : ∀ S T : IrreducibleCloseds Z,
       (T : Set Z) ⊆ S ↔ ptIdeal p s (gen S) ≤ ptIdeal p s (gen T) := by
     intro S T
@@ -272,8 +270,7 @@ theorem dim_add_one_le (h1 : StPts) (hE : Emb p s) :
         have hab' : OrderDual.ofDual T < OrderDual.ofDual S := hab
         show (⟨ptIdeal p s (gen (OrderDual.ofDual S)), _⟩ : PrimeSpectrum _) <
           ⟨ptIdeal p s (gen (OrderDual.ofDual T)), _⟩
-        refine lt_of_le_not_ge ((hle _ _).mp hab'.le) fun h => ?_
-        exact hab'.not_ge ((hle _ _).mpr h)
+        exact lt_of_le_not_ge ((hle _ _).mp hab'.le) fun h => hab'.not_ge ((hle _ _).mpr h)
   calc topologicalKrullDim Z + 1 = Order.krullDim (WithTop (IrreducibleCloseds Z)ᵒᵈ) := by
         rw [Order.krullDim_WithTop, Order.krullDim_orderDual]
         rfl

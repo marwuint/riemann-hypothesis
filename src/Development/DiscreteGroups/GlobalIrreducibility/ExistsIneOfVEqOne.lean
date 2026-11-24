@@ -72,10 +72,8 @@ theorem val_eq_one_iff (y : w'.adicCompletion E') :
   rw [Valued.toNormedField.norm_lt_one_iff] at e1
   rw [Valued.toNormedField.norm_le_one_iff] at e2
   constructor
-  · intro h
-    exact le_antisymm (e2.1 h.le) (not_lt.1 fun hl => (e1.2 hl).ne h)
-  · intro h
-    exact le_antisymm (e2.2 h.le) (not_lt.1 fun hl => (e1.1 hl).ne h)
+  · exact fun h => le_antisymm (e2.1 h.le) (not_lt.1 fun hl => (e1.2 hl).ne h)
+  · exact fun h => le_antisymm (e2.2 h.le) (not_lt.1 fun hl => (e1.1 hl).ne h)
 
 theorem exists_ine_of_v_eq_one {a' : Weil h' →* (w'.adicCompletion E')ˣ} (ha' : IsLocalArtin h' a')
     (u : (w'.adicCompletion E')ˣ) (hu : Valued.v (u : w'.adicCompletion E') = 1) :
@@ -191,8 +189,7 @@ theorem exists_resChar {E' Ω : Type} [Field E'] [NumberField E'] [Field Ω] [Al
         rw [Units.val_mul, mul_sub, Units.inv_mul]
       rw [e, map_mul, hinv, one_mul, Valuation.map_sub_swap]
       exact h2)
-    rw [map_mul, map_inv, inv_mul_eq_one] at this
-    exact this
+    rwa [map_mul, map_inv, inv_mul_eq_one] at this
   have hv1 : ∀ x : 𝓞 E', red x ≠ 0 → Valued.v (algebraMap E' (w'.adicCompletion E') (x : E')) = 1 := by
     intro x hx
     have hnm : x ∉ w'.asIdeal := fun hm => hx (by rw [← RingHom.mem_ker, hk]; exact hm)
@@ -213,8 +210,7 @@ theorem exists_resChar {E' Ω : Type} [Field E'] [NumberField E'] [Field Ω] [Al
     have hm : xz z - x ∈ w'.asIdeal := by rw [← hk, RingHom.mem_ker, map_sub, hxz, hx, sub_self]
     have := (w'.valuation_lt_one_iff_mem (K := E') (xz z - x)).2 hm
     show Valued.v (algebraMap E' (w'.adicCompletion E') (xz z : E') - algebraMap E' (w'.adicCompletion E') (x : E')) < 1
-    rw [← map_sub, hvF]
-    exact this
+    rwa [← map_sub, hvF]
   let ξ : Kˣ →* ℂˣ :=
     { toFun := fun z => χ (Uz z)
       map_one' := by

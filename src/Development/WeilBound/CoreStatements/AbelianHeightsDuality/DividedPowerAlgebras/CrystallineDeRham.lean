@@ -558,8 +558,7 @@ theorem exists_adj_one (S : Thick (dp0 R) s) (hS : InN κ S) (n : ℕ) (hn : 1 �
       rw [hψ] at h1
       exact h1.symm
     have heq : g = G := huniq g ⟨ψ.dp, hcomp, hψy⟩
-    refine Thick.Hom.ext' (AlgHom.ext fun x ↦ ?_)
-    exact DFunLike.congr_fun heq x
+    exact Thick.Hom.ext' (AlgHom.ext fun x ↦ (DFunLike.congr_fun heq x))
 
 theorem exists_adj' (S : Thick (dp0 R) s) (hS : InN κ S) (d n : ℕ) (hn : 1 ≤ n) :
     ∃ (P : Thick (dp0 R) s) (i : S ⟶ P) (y : Fin d → P.B), InN κ P ∧ IsLev P.δ n ∧ (∀ k, y k ∈ P.J) ∧
@@ -595,8 +594,7 @@ theorem exists_adj' (S : Thick (dp0 R) s) (hS : InN κ S) (d n : ℕ) (hn : 1 �
       · rintro ψ' ⟨hψ', hψ'y⟩
         have h1 : j ≫ ψ' = ψ₁ := by
           refine huniq₁ (j ≫ ψ') ⟨?_, fun k ↦ ?_⟩
-          · rw [← Category.assoc]
-            exact hψ'
+          · rwa [← Category.assoc]
           · rw [Thick.comp_φ]
             have := hψ'y k.succ
             simpa only [Fin.cons_succ] using this
@@ -701,8 +699,7 @@ theorem res_etale {U V : X.affineOpens} (h : V.1 ≤ U.1) : (Sec.res s h : Sec s
   have key : ((𝟙 X : X ⟶ X).appLE U.1 V.1 e).hom = (Sec.res s h : Sec s U.1 →+* Sec s V.1) := by
     simp only [Scheme.Hom.appLE, Scheme.Hom.id_app]
     rfl
-  rw [key] at H
-  exact H
+  rwa [key] at H
 
 theorem sec_smooth (hs : Smooth s) (U : X.affineOpens) : Algebra.Smooth R (Sec s U.1) := by
   have e : U.1 ≤ s ⁻¹ᵁ (⊤ : (Sp R).Opens) := le_top
@@ -710,8 +707,7 @@ theorem sec_smooth (hs : Smooth s) (U : X.affineOpens) : Algebra.Smooth R (Sec s
   have H0 : (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom.Smooth :=
     RingHom.Smooth.of_bijective (ConcreteCategory.bijective_of_isIso _)
   have H := H0.comp H1
-  rw [← RingHom.smooth_algebraMap]
-  exact H
+  rwa [← RingHom.smooth_algebraMap]
 
 theorem chart_cover (hs : Smooth s) : ⨆ U : Chart s, U.1.1 = ⊤ := by
   classical
@@ -800,8 +796,7 @@ theorem exists_hom_of_le (U : X.affineOpens) {B : Type} [CommRing B] (x : Sp B �
     rintro _ ⟨p, rfl⟩
     have hp : p ∈ x ⁻¹ᵁ U.1 := h trivial
     show _ ∈ Set.range U.2.fromSpec
-    rw [U.2.range_fromSpec]
-    exact hp
+    rwa [U.2.range_fromSpec]
   let y := IsOpenImmersion.lift (affPt s U) x hr
   refine ⟨(Spec.preimage y).hom, ?_⟩
   have e : spMap (Spec.preimage y).hom = y := Spec.map_preimage y
@@ -823,8 +818,7 @@ theorem exists_lift_of_coord (U : X.affineOpens) {d : ℕ} (t : MvPolynomial (Fi
     · intro r
       have h1 := RingHom.congr_fun hR r
       show f (t (MvPolynomial.C r)) = T.π (u (MvPolynomial.C r))
-      rw [← MvPolynomial.algebraMap_eq, t.commutes, u.commutes]
-      exact h1
+      rwa [← MvPolynomial.algebraMap_eq, t.commutes, u.commutes]
     · intro k
       show f (t (MvPolynomial.X k)) = T.π (u (MvPolynomial.X k))
       rw [MvPolynomial.aeval_X]
@@ -842,8 +836,7 @@ theorem exists_lift_of_coord (U : X.affineOpens) {d : ℕ} (t : MvPolynomial (Fi
   refine ⟨Thick.trivHom φ hφ, fun k => ?_⟩
   have h1 := RingHom.congr_fun hg1 (MvPolynomial.X k)
   simp only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at h1
-  rw [MvPolynomial.aeval_X] at h1
-  exact h1
+  rwa [MvPolynomial.aeval_X] at h1
 
 theorem exists_lift (U : Chart s) (T : Thick (dp0 R) s) (h : ⊤ ≤ T.x ⁻¹ᵁ U.1.1) : Nonempty (bas s U.1 ⟶ T) := by
   obtain ⟨-, d, t, ht⟩ := U.2
@@ -888,8 +881,7 @@ theorem exists_coprod (U : Chart s) (S : Thick (dp0 R) s) (hS : InN κ S) (h : �
   let zV : Fin d → V.B := fun k => b.φ (t (MvPolynomial.X k)) - (jS ≫ φ).φ (t (MvPolynomial.X k))
   have hzV : ∀ k, zV k ∈ V.J := fun k => by
     refine (V.ker _).1 ?_
-    simp only [zV, map_sub]
-    exact sub_eq_zero.2 (π_eq U.1 b (jS ≫ φ) _)
+    simpa only [zV, map_sub] using sub_eq_zero.2 (π_eq U.1 b (jS ≫ φ) _)
   obtain ⟨ψ, ⟨hψ1, hψ2⟩, hψu⟩ := huniv V hV φ zV hzV
   refine ⟨ψ, ⟨hψ1, ?_⟩, ?_⟩
   · apply lift_ext U.1 t ht
@@ -1067,8 +1059,7 @@ theorem acyc_toSmall (hinf : ∀ k l, ∃ m, U m = U k ⊓ U l) (T : (IsSmall γ
   have h2 : ∀ a, ⊤ ≤ T.obj.x ⁻¹ᵁ U (m2 a) := by
     intro a
     rw [hm2 a]
-    intro p hp
-    exact ⟨comma_le a hp, h0 hp⟩
+    exact fun p hp => ⟨comma_le a hp, h0 hp⟩
   let S1 := selfFun (T := T) (fun a => a.left.k) comma_le (fun a b f => Tag.Hom.le f.left)
   let S2 := selfFun (T := T) m2 h2 (fun a b f => by
     rw [hm2 a, hm2 b]
@@ -1088,8 +1079,7 @@ theorem acyc_toSmall (hinf : ∀ k l, ∃ m, U m = U k ⊓ U l) (T : (IsSmall γ
   · intro g hg
     have key : ∀ a, g a = g (selfObj k0 h0) := fun a =>
       (hg _ _ (θ1.app a)).symm.trans ((hg _ _ (θ2.app a)).trans (hg _ _ (θ3.app a)).symm)
-    intro a b
-    exact (key a).trans (key b).symm
+    exact fun a b => (key a).trans (key b).symm
   · intro c
     exact (pull1_restrict_id _ c).symm.trans ((pull1_restrict_const_eq_of_natTrans M _ _ θ1 c).trans
       ((pull1_restrict_const_eq_of_natTrans M _ _ θ2 c).symm.trans ((pull1_restrict_const_eq_of_natTrans M _ _ θ3 c).trans
@@ -1125,8 +1115,7 @@ private theorem pull2_restrict_isSmall_bijective_of_cover (hcov : ⨆ k, U k = �
       obtain ⟨ψ, hψ⟩ := hfac S u hu'
       exact ⟨ψ, hψ, fun ψ' h' =>
         SmallDescent.IsLoc.hom_ext ⟨hu, hsurj, hker, hfac⟩ (h'.trans hψ.symm)⟩
-  · intro S S' a hS
-    exact SmallDescent.isSmall_of_hom a hS
+  · exact fun S S' a hS => SmallDescent.isSmall_of_hom a hS
   · intro T
     obtain ⟨σ, hσ, hσs⟩ := SmallDescent.exists_cover hcov T
     refine ⟨σ.card, fun i => (σ.equivFin.symm i : T.B), ?_, ?_⟩
@@ -1135,12 +1124,9 @@ private theorem pull2_restrict_isSmall_bijective_of_cover (hcov : ⨆ k, U k = �
         constructor
         · rintro ⟨i, rfl⟩
           exact (σ.equivFin.symm i).2
-        · intro hx
-          exact ⟨σ.equivFin ⟨x, hx⟩, by simp⟩
-      rw [hr]
-      exact hσ
-    · intro i S u hu
-      exact hσs _ (σ.equivFin.symm i).2 S u hu
+        · exact fun hx => ⟨σ.equivFin ⟨x, hx⟩, by simp⟩
+      rwa [hr]
+    · exact fun i S u hu => hσs _ (σ.equivFin.symm i).2 S u hu
 
 theorem tag_pull2 (hcov : ⨆ k, U k = ⊤) (hinf : ∀ k l, ∃ m, U m = U k ⊓ U l) :
     Function.Bijective (CoefMap.restrict (O γ s) (Tag.forget γ s U)).pull2 := by

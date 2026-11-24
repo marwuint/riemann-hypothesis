@@ -261,52 +261,35 @@ private theorem one_tmul_eq_zero_of_app_eq_zero {Z X X' Z' : Scheme.{u}} {h : Z 
   have h3 : h.appLE (U : X.Opens) (W : Z.Opens) hW ≫ il
       = g.appLE (U : X.Opens) (V : X'.Opens) e ≫ ir := by
     ext a
-    show ((h.appLE (U : X.Opens) (W : Z.Opens) hW).hom a) ⊗ₜ[↑Γ(X, (U : X.Opens))]
-        (1 : ↑Γ(X', (V : X'.Opens)))
-      = (1 : ↑Γ(Z, (W : Z.Opens))) ⊗ₜ[↑Γ(X, (U : X.Opens))]
-        ((g.appLE (U : X.Opens) (V : X'.Opens) e).hom a)
+    simp only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply]
     rw [← hWa, ← hVa]
     exact algebraMap_tmul_one_eq_one_tmul_algebraMap a
   set p : Spec T ⟶ Z := Spec.map il ≫ hWaff.fromSpec with hp
   set q : Spec T ⟶ X' := Spec.map ir ≫ hVaff.fromSpec with hq
   have hcomm : p ≫ h = q ≫ g := by
-    have h1 : Spec.map (h.appLE (U : X.Opens) (W : Z.Opens) hW) ≫ hUaff.fromSpec
-        = hWaff.fromSpec ≫ h := IsAffineOpen.SpecMap_appLE_fromSpec h hUaff hWaff hW
-    have h2 : Spec.map (g.appLE (U : X.Opens) (V : X'.Opens) e) ≫ hUaff.fromSpec
-        = hVaff.fromSpec ≫ g := IsAffineOpen.SpecMap_appLE_fromSpec g hUaff hVaff e
-    calc p ≫ h = Spec.map il ≫ (hWaff.fromSpec ≫ h) := by rw [hp, Category.assoc]
-      _ = Spec.map il ≫ Spec.map (h.appLE (U : X.Opens) (W : Z.Opens) hW) ≫ hUaff.fromSpec := by
-          rw [h1]
-      _ = Spec.map (h.appLE (U : X.Opens) (W : Z.Opens) hW ≫ il) ≫ hUaff.fromSpec := by
-          rw [Spec.map_comp, Category.assoc]
-      _ = Spec.map (g.appLE (U : X.Opens) (V : X'.Opens) e ≫ ir) ≫ hUaff.fromSpec := by rw [h3]
-      _ = Spec.map ir ≫ Spec.map (g.appLE (U : X.Opens) (V : X'.Opens) e) ≫ hUaff.fromSpec := by
-          rw [Spec.map_comp, Category.assoc]
-      _ = Spec.map ir ≫ (hVaff.fromSpec ≫ g) := by rw [h2]
-      _ = q ≫ g := by rw [hq, Category.assoc]
+    rw [hp, hq, Category.assoc, Category.assoc,
+      ← IsAffineOpen.SpecMap_appLE_fromSpec h hUaff hWaff hW,
+      ← IsAffineOpen.SpecMap_appLE_fromSpec g hUaff hVaff e,
+      ← Spec.map_comp_assoc, ← Spec.map_comp_assoc, h3]
   have hr : H.lift p q hcomm ≫ h' = q := H.lift_snd p q hcomm
   have hqpre : q ⁻¹ᵁ (V : X'.Opens) = ⊤ := by
     rw [hq, Scheme.Hom.comp_preimage, hVaff.fromSpec_preimage_self, Scheme.Hom.preimage_top]
   have e1 : (⊤ : (Spec T).Opens) ≤ q ⁻¹ᵁ (V : X'.Opens) := hqpre.ge
   have hrp : H.lift p q hcomm ⁻¹ᵁ (h' ⁻¹ᵁ (V : X'.Opens)) = ⊤ := by
     rw [← Scheme.Hom.comp_preimage, hr, hqpre]
-  have e2 : (⊤ : (Spec T).Opens) ≤ H.lift p q hcomm ⁻¹ᵁ (h' ⁻¹ᵁ (V : X'.Opens)) := hrp.ge
   have hsplit : q.appLE (V : X'.Opens) ⊤ e1
       = h'.appLE (V : X'.Opens) (h' ⁻¹ᵁ (V : X'.Opens)) le_rfl
-        ≫ (H.lift p q hcomm).appLE (h' ⁻¹ᵁ (V : X'.Opens)) ⊤ e2 := by
+        ≫ (H.lift p q hcomm).appLE (h' ⁻¹ᵁ (V : X'.Opens)) ⊤ hrp.ge := by
     rw [Scheme.Hom.appLE_comp_appLE]
     exact appLE_congr_of_eq hr.symm _ _ _ _
   have hA : (q.appLE (V : X'.Opens) ⊤ e1).hom s = 0 := by
     rw [hsplit]
     simp only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply]
     rw [← Scheme.Hom.app_eq_appLE h' (U := (V : X'.Opens)), hs, map_zero]
-  have hfin : q.appLE (V : X'.Opens) ⊤ e1 ≫ (Scheme.ΓSpecIso T).hom = ir :=
-    appLE_top_comp_ΓSpecIso_hom hVaff ir q hq e1
-  have step : ir.hom s = 0 := by
-    rw [← hfin]
-    simp only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply]
-    rw [hA, map_zero]
-  exact step
+  change ir.hom s = 0
+  rw [← appLE_top_comp_ΓSpecIso_hom hVaff ir q hq e1]
+  simp only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply]
+  rw [hA, map_zero]
 
 private theorem ker_app_eq_map_ker_of_isPullback_of_flat {Z X X' Z' : Scheme.{u}} {h : Z ⟶ X} {g : X' ⟶ X}
     {g' : Z' ⟶ Z} {h' : Z' ⟶ X'} (H : IsPullback g' h' h g) [QuasiCompact h]

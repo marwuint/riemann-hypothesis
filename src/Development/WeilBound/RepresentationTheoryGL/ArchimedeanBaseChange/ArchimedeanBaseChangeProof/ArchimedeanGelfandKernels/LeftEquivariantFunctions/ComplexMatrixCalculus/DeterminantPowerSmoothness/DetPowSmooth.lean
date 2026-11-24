@@ -80,12 +80,10 @@ theorem rowAct_smooth (f : MvPolynomial (Fin n × Fin n) ℂ) :
   | C a =>
     intro ℓ
     have e : ∀ x : Mat n, Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) xᵀ (C a) = C a := fun x => by simp [Formalism.GradedWeylDivisibility.rowAct]
-    simp only [e]
-    exact contDiff_const
+    simpa only [e] using contDiff_const
   | add p q hp hq =>
     intro ℓ
-    simp only [map_add (f := _)]
-    exact (hp ℓ).add (hq ℓ)
+    simpa only [map_add (f := _)] using (hp ℓ).add (hq ℓ)
   | mul_X p v hp =>
     intro ℓ
     have e : ∀ x : Mat n, ℓ (Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) xᵀ (p * X v)) =
@@ -109,8 +107,7 @@ theorem extL_spec (lam : Fin n → ℤ) (i : Jd n lam) (f : Formalism.BasicNotio
     extL lam i (f : MvPolynomial (Fin n × Fin n) ℂ) = (wb lam).repr f i := by
   have h := Classical.choose_spec (LinearMap.exists_extend ((wb lam).coord i))
   have h2 := LinearMap.congr_fun h f
-  rw [LinearMap.comp_apply, Submodule.subtype_apply, Module.Basis.coord_apply] at h2
-  exact h2
+  rwa [LinearMap.comp_apply, Submodule.subtype_apply, Module.Basis.coord_apply] at h2
 
 theorem rm_entry (lam : Fin n → ℤ) (x : Mat n) (hx : IsUnit x.det) (i j : Jd n lam) :
     Rm lam x i j = x.det ^ (dw lam).detShift * extL lam i (Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) xᵀ ((wb lam j : _) : MvPolynomial (Fin n × Fin n) ℂ)) := by

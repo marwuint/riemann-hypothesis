@@ -146,13 +146,11 @@ private theorem mem_ker_sq_of_tmul_D_eq_zero (k A : Type*) [CommRing k] [CommRin
   have hx2 : (x : A) ∈ (residueFieldExtension k A).ker := x.2
   have h0 : (residueFieldExtension k A).cotangentComplex
       (Algebra.Extension.Cotangent.mk ⟨(x : A), hx2⟩) = 0 := by
-    rw [Algebra.Extension.cotangentComplex_mk]
-    exact hx
+    rwa [Algebra.Extension.cotangentComplex_mk]
   have hinj := LinearMap.ker_eq_bot.mp hbot
   have h1 : Algebra.Extension.Cotangent.mk (⟨(x : A), hx2⟩ : (residueFieldExtension k A).ker) = 0 :=
     hinj (by rw [h0, map_zero])
-  rw [Algebra.Extension.Cotangent.mk_eq_zero_iff] at h1
-  exact h1
+  rwa [Algebra.Extension.Cotangent.mk_eq_zero_iff] at h1
 
 private theorem injective_liftBaseChange_dTensor (k A : Type*) [CommRing k] [CommRing A]
     [Algebra k A] [IsLocalRing A] [Algebra k (IsLocalRing.ResidueField A)]
@@ -181,8 +179,7 @@ private theorem injective_liftBaseChange_dTensor (k A : Type*) [CommRing k] [Com
     exact Ideal.Quotient.eq_zero_iff_mem.mp ha'
   refine tmul_eq_zero_of_toCotangent_eq_zero A
     (RingHom.ker (algebraMap A (IsLocalRing.ResidueField A))) hle x ?_
-  rw [Ideal.toCotangent_eq_zero]
-  exact h3
+  rwa [Ideal.toCotangent_eq_zero]
 
 section
 
@@ -214,8 +211,7 @@ theorem linearIndependent_tensor_D_of_ker {ι : Type*}
         (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (KaehlerDifferential.D k A ((m i : A))) := by
     funext i
     simp only [Function.comp_apply, LinearMap.liftBaseChange_tmul, one_smul, dTensor_apply]
-  rw [heq] at hmain
-  exact hmain
+  rwa [heq] at hmain
 
 omit [IsNoetherianRing A] [Module.Free A (KaehlerDifferential k A)]
   [Module.Finite A (KaehlerDifferential k A)] in
@@ -276,8 +272,7 @@ theorem exists_local_parameters :
         = Set.range (fun i => ((y i : A))) := by
       ext t
       simp
-    rw [himg] at h3
-    exact h3
+    rwa [himg] at h3
   · have hfun : (fun i => (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (y i))
         = ⇑(Module.finBasis (IsLocalRing.ResidueField A)
             (IsLocalRing.ResidueField A ⊗[A] ↥(IsLocalRing.maximalIdeal A))) := funext hy
@@ -337,45 +332,24 @@ theorem exists_local_parameters_and_dual_derivations :
       simp only [LinearMap.comp_apply, Algebra.linearMap_apply, hφ, hσ,
         LinearMap.coe_restrictScalars, TensorProduct.mk_apply]
     intro ω
-    have hh := LinearMap.congr_fun hmaps ω
-    simpa using hh
+    simpa using LinearMap.congr_fun hmaps ω
   obtain ⟨M, hMdef⟩ : ∃ M : Matrix (Fin h) (Fin h) A,
       M = Matrix.of fun i j => φ i (KaehlerDifferential.D k A (y j)) := ⟨_, rfl⟩
   have hMapp : ∀ a b, M a b = φ a (KaehlerDifferential.D k A (y b)) := by
     intro a b; rw [hMdef]; rfl
-  have hMres : ∀ a b, algebraMap A (IsLocalRing.ResidueField A) (M a b)
-      = if a = b then 1 else 0 := by
-    intro a b
-    rw [hMapp, hres a, hψ' a b]
   have hmapM : M.map (algebraMap A (IsLocalRing.ResidueField A)) = 1 := by
     ext a b
-    rw [Matrix.map_apply, hMres, Matrix.one_apply]
+    rw [Matrix.map_apply, hMapp, hres a, hψ' a b, Matrix.one_apply]
   have hdet1 : algebraMap A (IsLocalRing.ResidueField A) M.det = 1 := by
     rw [RingHom.map_det, RingHom.mapMatrix_apply, hmapM, Matrix.det_one]
-  have hdet : IsUnit M.det := by
-    by_contra hcon
-    have h1 : Ideal.span ({M.det} : Set A) ≠ ⊤ := fun hq =>
-      hcon (Ideal.span_singleton_eq_top.mp hq)
-    have hmem : M.det ∈ IsLocalRing.maximalIdeal A :=
-      IsLocalRing.le_maximalIdeal h1 (Ideal.mem_span_singleton_self _)
-    have hzero : algebraMap A (IsLocalRing.ResidueField A) M.det = 0 :=
-      Ideal.Quotient.eq_zero_iff_mem.mpr hmem
-    rw [hdet1] at hzero
-    exact one_ne_zero hzero
-  have hinvMul : M⁻¹ * M = 1 := Matrix.nonsing_inv_mul M hdet
+  have hdet : IsUnit M.det :=
+    (IsLocalRing.residue_ne_zero_iff_isUnit _).1 fun h => one_ne_zero (hdet1.symm.trans h)
   refine ⟨h, y, fun i => (∑ l : Fin h, (M⁻¹ i l) • φ l).compDer (KaehlerDifferential.D k A),
     hspan, ?_⟩
   intro i j
-  have hsum : (∑ l : Fin h, M⁻¹ i l * M l j) = if i = j then 1 else 0 := by
-    rw [← Matrix.mul_apply, hinvMul, Matrix.one_apply]
   show (∑ l : Fin h, (M⁻¹ i l) • φ l) (KaehlerDifferential.D k A (y j)) = if i = j then 1 else 0
-  simp only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]
-  calc (∑ l : Fin h, M⁻¹ i l * φ l (KaehlerDifferential.D k A (y j)))
-      = ∑ l : Fin h, M⁻¹ i l * M l j := by
-        refine Finset.sum_congr rfl ?_
-        intro l _
-        rw [hMapp]
-    _ = if i = j then 1 else 0 := hsum
+  simp only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, ← hMapp]
+  rw [← Matrix.mul_apply, Matrix.nonsing_inv_mul M hdet, Matrix.one_apply]
 
 end
 

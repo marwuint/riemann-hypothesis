@@ -98,8 +98,7 @@ theorem comap_specIdealSheaf_ideal {R : Type u} [CommRing R] (I : Ideal R) {W : 
   have h1 := Scheme.IdealSheafData.comap_ideal_eq_map_appLE (specIdealSheaf I) g
       ⟨⊤, isAffineOpen_top (Spec (CommRingCat.of R))⟩ V
       (le_top.trans (Scheme.Hom.preimage_top g).ge)
-  rw [specIdealSheaf_ideal_top, Ideal.map_map] at h1
-  exact h1
+  rwa [specIdealSheaf_ideal_top, Ideal.map_map] at h1
 
 private theorem localization_mk_one_pow {A : Type u} [CommRing A] (S : Submonoid A) (x : A)
     (n : ℕ) :
@@ -316,8 +315,7 @@ private theorem basicOpen_chartFraction_le_opensRange {R : Type u} [CommRing R] 
   have hq2 : q ∈ affineBlowupChart I c ⁻¹ᵁ
       ((affineBlowup I).basicOpen ((chartSectionsIso I c).hom.hom (chartFraction I c a))) := hp
   rw [affineBlowupChart_preimage_basicOpen, ← hpre] at hq2
-  rw [← hq]
-  exact hq2
+  rwa [← hq]
 
 private theorem basicOpen_chartSectionsRingHom {R : Type u} [CommRing R] (I : Ideal R) {W : Scheme.{u}}
     (h : W ⟶ affineBlowup I) (c : ↥I) (V : W.Opens)
@@ -353,8 +351,7 @@ theorem mem_opensRange_affineBlowupChart_of_ideal_eq_span {R : Type u} [CommRing
   obtain ⟨Uaff, g, hwU, hgnzd, hUspan⟩ := hcart w
   have hwpre : w ∈ ((V : W.Opens) ⊓ h ⁻¹ᵁ (affineBlowupChart I c ''ᵁ ⊤) : W.Opens) := by
     refine ⟨hwV, ?_⟩
-    rw [Scheme.Hom.image_top_eq_opensRange]
-    exact hc
+    rwa [Scheme.Hom.image_top_eq_opensRange]
   obtain ⟨r, hrle, hwr⟩ := Uaff.2.exists_basicOpen_le
     (⟨w, hwpre⟩ : ↥((V : W.Opens) ⊓ h ⁻¹ᵁ (affineBlowupChart I c ''ᵁ ⊤) : W.Opens)) hwU
   have hbaff : IsAffineOpen (W.basicOpen r) := Uaff.2.basicOpen r
@@ -407,8 +404,7 @@ theorem mem_opensRange_affineBlowupChart_of_ideal_eq_span {R : Type u} [CommRing
     ⟨⟨chartSectionsRingHom I h c (W.basicOpen r) hVc (chartFraction I c a), d,
       by linear_combination -h2, by linear_combination -h2⟩, rfl⟩
   have hmem : w ∈ W.basicOpen (chartSectionsRingHom I h c (W.basicOpen r) hVc (chartFraction I c a)) := by
-    rw [W.basicOpen_of_isUnit hunit]
-    exact hwr
+    rwa [W.basicOpen_of_isUnit hunit]
   exact mem_opensRange_of_mem_basicOpen_chartSectionsRingHom I h c a (W.basicOpen r) hVc hmem
 
 private theorem mem_preimage_affineBlowupChart_iff {R : Type u} [CommRing R] (I : Ideal R)
@@ -431,8 +427,7 @@ private theorem mem_preimage_affineBlowupChart_iff {R : Type u} [CommRing R] (I 
     exact ⟨⟨V, hVmem⟩, hwV, comap_specIdealSheaf_ideal_eq_span I h a ⟨V, hVmem⟩ hle⟩
   · intro hex
     have hmem := mem_opensRange_affineBlowupChart_of_ideal_eq_span I h hcart w a hex
-    rw [Scheme.Hom.image_top_eq_opensRange]
-    exact hmem
+    rwa [Scheme.Hom.image_top_eq_opensRange]
 
 theorem preimage_affineBlowupChart_eq_of_toSpec_eq {R : Type u} [CommRing R] {I : Ideal R} {W : Scheme.{u}}
     (h₁ h₂ : W ⟶ affineBlowup I)
@@ -441,8 +436,7 @@ theorem preimage_affineBlowupChart_eq_of_toSpec_eq {R : Type u} [CommRing R] {I 
     (a : ↥I) :
     h₁ ⁻¹ᵁ (affineBlowupChart I a ''ᵁ ⊤) = h₂ ⁻¹ᵁ (affineBlowupChart I a ''ᵁ ⊤) := by
   have hcart₂ : IsLocallyGeneratedByNonZeroDivisor ((specIdealSheaf I).comap (h₂ ≫ AffineBlowup.toSpec I)) := by
-    rw [← he]
-    exact hcart
+    rwa [← he]
   apply TopologicalSpace.Opens.ext
   apply Set.ext
   intro w
@@ -462,8 +456,7 @@ theorem exists_chart_affineOpen_mem_nonZeroDivisors {R : Type u} [CommRing R] (I
   obtain ⟨a, ha⟩ := exists_mem_opensRange_affineBlowupChart I (h.base w)
   have hwU₀ : w ∈ h ⁻¹ᵁ (affineBlowupChart I a ''ᵁ ⊤) := by
     have h1 := ha
-    rw [← Scheme.Hom.image_top_eq_opensRange (affineBlowupChart I a)] at h1
-    exact h1
+    rwa [← Scheme.Hom.image_top_eq_opensRange (affineBlowupChart I a)] at h1
   obtain ⟨U, c, hwU, hcnzd, hideal⟩ := hcart w
   have hUaff : IsAffineOpen (U : W.Opens) := U.2
   obtain ⟨t, htle, hwt⟩ :=
@@ -477,8 +470,7 @@ theorem exists_chart_affineOpen_mem_nonZeroDivisors {R : Type u} [CommRing R] (I
     exact sectionsRingHom_restrict (h ≫ AffineBlowup.toSpec I) (W.basicOpen_le t) r
   have hmapU : Ideal.map (sectionsRingHom (h ≫ AffineBlowup.toSpec I) (U : W.Opens)) I
       = Ideal.span {c} := by
-    rw [← comap_specIdealSheaf_ideal I (h ≫ AffineBlowup.toSpec I) U]
-    exact hideal
+    rwa [← comap_specIdealSheaf_ideal I (h ≫ AffineBlowup.toSpec I) U]
   have hmapV : Ideal.map (sectionsRingHom (h ≫ AffineBlowup.toSpec I) (W.basicOpen t)) I
       = Ideal.span {algebraMap (↥Γ(W, (U : W.Opens))) (↥Γ(W, W.basicOpen t)) c} := by
     rw [hres, ← Ideal.map_map, hmapU, Ideal.map_span, Set.image_singleton]
@@ -504,8 +496,7 @@ theorem exists_chart_affineOpen_mem_nonZeroDivisors {R : Type u} [CommRing R] (I
       ↥Γ(W, W.basicOpen t) hcnzd
   have hdnzd : d * sectionsRingHom (h ≫ AffineBlowup.toSpec I) (W.basicOpen t) (a : R)
       ∈ nonZeroDivisors ↥Γ(W, W.basicOpen t) := by
-    rw [hd]
-    exact hcnzd'
+    rwa [hd]
   exact ⟨a, ⟨W.basicOpen t, hUaff.basicOpen t⟩, hwt', htle,
     (mul_mem_nonZeroDivisors.mp hdnzd).2⟩
 
@@ -521,8 +512,7 @@ private theorem chartSectionsRingHom_mul_pow_eq {R : Type u} [CommRing R] (I : I
     map_pow (chartSectionsRingHom I h a V hV) (chartRingHom I a (a : R)) n
   have h0 : chartSectionsRingHom I h a V hV (z * chartRingHom I a (a : R) ^ n)
       = chartSectionsRingHom I h a V hV (chartRingHom I a r) := by rw [hnr]
-  rw [map_mul, hpow, chartSectionsRingHom_chartRingHom, chartSectionsRingHom_chartRingHom] at h0
-  exact h0
+  rwa [map_mul, hpow, chartSectionsRingHom_chartRingHom, chartSectionsRingHom_chartRingHom] at h0
 
 private def openCoverBySpecOfIsAffineOpen {W : Scheme.{u}} (VV : ↥W → W.Opens)
     (hVaff : ∀ w : ↥W, IsAffineOpen (VV w)) (hmem : ∀ w : ↥W, w ∈ VV w) : W.OpenCover :=
@@ -545,8 +535,7 @@ private theorem fromSpec_comp_eq_of_toSpec_eq {R : Type u} [CommRing R] {I : Ide
       nonZeroDivisors ↥Γ(W, V)) :
     hVaff.fromSpec ≫ h₁ = hVaff.fromSpec ≫ h₂ := by
   have hle₂ : V ≤ h₂ ⁻¹ᵁ (affineBlowupChart I a ''ᵁ ⊤) := by
-    rw [← preimage_affineBlowupChart_eq_of_toSpec_eq h₁ h₂ he hcart a]
-    exact hle
+    rwa [← preimage_affineBlowupChart_eq_of_toSpec_eq h₁ h₂ he hcart a]
   have hTaff : IsAffineOpen (affineBlowupChart I a ''ᵁ ⊤) :=
     (isAffineOpen_top _).image_of_isOpenImmersion (affineBlowupChart I a)
   have hcp : chartSectionsRingHom I h₁ a V hle = chartSectionsRingHom I h₂ a V hle₂ := by

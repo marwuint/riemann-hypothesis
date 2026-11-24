@@ -145,8 +145,7 @@ theorem inner_step (k : ℕ) {j : ℕ} (hj : j < l) (b : A.A)
   have hz : A.aToU1 b = 0 := by
     have e := A.sharpMap_coeff (WittVector.teichmuller l b)
     rw [WittVector.teichmuller_coeff_zero] at e
-    rw [e, Ideal.Quotient.eq_zero_iff_mem]
-    exact hth
+    rwa [e, Ideal.Quotient.eq_zero_iff_mem]
   obtain ⟨-, hker⟩ := GlobalTheory.CompanionTheory.Untilt.sharp_map_surjective_ker A
   rw [← hker]
   exact RingHom.mem_ker.mpr hz
@@ -235,15 +234,10 @@ theorem expand_eq_zero_iff : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (c : ℕ 
     A.expand c = 0 ↔ ∀ k, c k ∈ Ideal.span {A.pi ^ l} := by
   intro l _ A c
   constructor
-  · intro h0 k
-    refine Nat.strong_induction_on k ?_
-    intro k ih
-    exact coeff_mem A c h0 k ih
+  · exact fun h0 k => Nat.strong_induction_on k (fun k ih => coeff_mem A c h0 k ih)
   · intro h
     unfold CrystallineSemistableComparison.PAlg.expand
     rw [Finsupp.sum]
-    apply Finset.sum_eq_zero
-    intro i _
-    exact term_eq_zero A (h i) _
+    exact Finset.sum_eq_zero (fun i _ => term_eq_zero A (h i) _)
 
 end GlobalTheory.CompanionTheory.ExpandKer

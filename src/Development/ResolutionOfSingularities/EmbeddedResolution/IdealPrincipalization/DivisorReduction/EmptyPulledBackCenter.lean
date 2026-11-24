@@ -206,15 +206,10 @@ theorem divisorFamily_isPullbackBlowupSequence (hres : FunctorialResolution.Blow
             BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups]
           exact hfacts.isPullbackSeq_ambientTower T.scheme Y
             (T.boundary.get ⟨j, hj⟩).subscheme (E'.get ⟨j, hjE⟩).subscheme
-            (T.boundary.get ⟨j, hj⟩).subschemeι (E'.get ⟨j, hjE⟩).subschemeι h
-            (divisorPullbackMap T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) Y h (E'.get ⟨j, hjE⟩)
-              (get_eq_comap_get_boundary T j hj Y q h E' hjE htake))
+            (T.boundary.get ⟨j, hj⟩).subschemeι (E'.get ⟨j, hjE⟩).subschemeι h _
             ((isPullback_divisorPullbackMap hbc T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) Y h
               (E'.get ⟨j, hjE⟩) (get_eq_comap_get_boundary T j hj Y q h E' hjE htake)).flip)
-            (MarkedBlowupSequenceData.ofMarkedSequence (L (restrictToDivisor T j hj))).toBlowupSequenceData
-            (MarkedBlowupSequenceData.ofMarkedSequence
-              (L (restrictToDivisor ((T.pullbackAlong Y q h).withBoundary E') j hjE))).toBlowupSequenceData
-            hpr hpr'
+            _ _ hpr hpr'
             (hdel.isPullbackSeq_ofMarkedSeq
               (restrictToDivisor ((T.pullbackAlong Y q h).withBoundary E') j hjE) (restrictToDivisor T j hj)
               (divisorPullbackMap T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) Y h (E'.get ⟨j, hjE⟩)
@@ -234,15 +229,10 @@ theorem divisorFamily_isPullbackBlowupSequence (hres : FunctorialResolution.Blow
           refine IsPullbackBlowupSequence.prepend_of_comap_eq_top ?_ (containedComponentsIdeal T j hj) hb htop
           exact hfacts.isPullbackSeq_ambientTower T.scheme Y
             (T.boundary.get ⟨j, hj⟩).subscheme (E'.get ⟨j, hjE⟩).subscheme
-            (T.boundary.get ⟨j, hj⟩).subschemeι (E'.get ⟨j, hjE⟩).subschemeι h
-            (divisorPullbackMap T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) Y h
-              (E'.get ⟨j, hjE⟩) (get_eq_comap_get_boundary T j hj Y q h E' hjE htake))
+            (T.boundary.get ⟨j, hj⟩).subschemeι (E'.get ⟨j, hjE⟩).subschemeι h _
             ((isPullback_divisorPullbackMap hbc T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj)
               Y h (E'.get ⟨j, hjE⟩) (get_eq_comap_get_boundary T j hj Y q h E' hjE htake)).flip)
-            (MarkedBlowupSequenceData.ofMarkedSequence (L (restrictTwistedToDivisor T j hj))).toBlowupSequenceData
-            (MarkedBlowupSequenceData.ofMarkedSequence
-              (L (restrictToDivisor ((T.pullbackAlong Y q h).withBoundary E') j hjE))).toBlowupSequenceData
-            hpr hpr'
+            _ _ hpr hpr'
             (hdel.isPullbackSeq_ofMarkedSeq
               (restrictToDivisor ((T.pullbackAlong Y q h).withBoundary E') j hjE) (restrictTwistedToDivisor T j hj)
               (divisorPullbackMap T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) Y h
@@ -260,15 +250,10 @@ theorem divisorFamily_isPullbackBlowupSequence (hres : FunctorialResolution.Blow
           refine IsPullbackBlowupSequence.prepend_of_comap_ne_top ?_ (containedComponentsIdeal T j hj) hb hbb hne
           exact hfacts.isPullbackSeq_ambientTower T.scheme Y
             (T.boundary.get ⟨j, hj⟩).subscheme (E'.get ⟨j, hjE⟩).subscheme
-            (T.boundary.get ⟨j, hj⟩).subschemeι (E'.get ⟨j, hjE⟩).subschemeι h
-            (divisorPullbackMap T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) Y h
-              (E'.get ⟨j, hjE⟩) (get_eq_comap_get_boundary T j hj Y q h E' hjE htake))
+            (T.boundary.get ⟨j, hj⟩).subschemeι (E'.get ⟨j, hjE⟩).subschemeι h _
             ((isPullback_divisorPullbackMap hbc T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj)
               Y h (E'.get ⟨j, hjE⟩) (get_eq_comap_get_boundary T j hj Y q h E' hjE htake)).flip)
-            (MarkedBlowupSequenceData.ofMarkedSequence (L (restrictTwistedToDivisor T j hj))).toBlowupSequenceData
-            (MarkedBlowupSequenceData.ofMarkedSequence
-              (L (restrictTwistedToDivisor ((T.pullbackAlong Y q h).withBoundary E') j hjE))).toBlowupSequenceData
-            hpr hpr'
+            _ _ hpr hpr'
             (hdel.isPullbackSeq_ofMarkedSeq
               (restrictTwistedToDivisor ((T.pullbackAlong Y q h).withBoundary E') j hjE) (restrictTwistedToDivisor T j hj)
               (divisorPullbackMap T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) Y h

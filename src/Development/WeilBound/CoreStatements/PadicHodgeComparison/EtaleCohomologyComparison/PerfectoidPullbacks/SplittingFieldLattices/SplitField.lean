@@ -169,8 +169,7 @@ theorem sqC_zK : ∀ {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {I : I
   change Submodule.Quotient.mk _ = a • Submodule.Quotient.mk _
   rw [← Submodule.Quotient.mk_smul]
   refine congrArg _ (Subtype.ext (funext fun c => ?_))
-  refine Subtype.ext ?_
-  exact congrArg (Ideal.Quotient.mk _) (Algebra.smul_def _ _).symm
+  exact Subtype.ext (congrArg (Ideal.Quotient.mk _) (Algebra.smul_def _ _).symm)
 
 end GlobalTheory.CompanionTheory.BasisBase
 end -- clump:auto
@@ -236,8 +235,7 @@ theorem gr_decomp {K B : Type} [CommRing K] [CommRing B] [Algebra K B] {I : Idea
         rcases Nat.lt_succ_iff_lt_or_eq.1 hi with h | h
         · exact ih i h
         · have h2 : S.ν i (n i) = - ∑ b ∈ Finset.univ.erase i, S.ν b (n b) := by
-            rw [eq_neg_iff_add_eq_zero, add_comm, Finset.sum_erase_add _ _ (Finset.mem_univ i)]
-            exact hn
+            rwa [eq_neg_iff_add_eq_zero, add_comm, Finset.sum_erase_add _ _ (Finset.mem_univ i)]
           refine S.inj i _ ?_
           rw [h2]
           refine Ideal.neg_mem_iff _ |>.2 (Ideal.sum_mem _ fun b hb => ?_)
@@ -671,8 +669,7 @@ theorem van_coord (hLoc : KH.LocGr) (hPoly : KH.PolyTf) (l s : ℕ) (hb : TFBase
   let Q : ObjectProperty (Thick (nlFun (dividedPowersBot O) 0 X q (Ideal.Quotient.mk ⊥))) := St (TF l s) {W}
   have hQ : ∀ T, Q T → InU W T := fun T hT => by
     obtain ⟨_, V, hV, h⟩ := hT
-    rw [Set.mem_singleton_iff.1 hV] at h
-    exact h
+    rwa [Set.mem_singleton_iff.1 hV] at h
   have hD : Q c'.D := ⟨hTF, W, rfl, c'.inV⟩
   obtain ⟨hpd, hgc⟩ := _root_.GlobalTheory.CompanionTheory.ChartFil.chart_grConst c' hg Q hQ hD
   obtain ⟨P, hP⟩ := hPoly (dividedPowersBot O) q (Ideal.Quotient.mk ⊥) l s {W}
@@ -687,9 +684,7 @@ theorem van_coord (hLoc : KH.LocGr) (hPoly : KH.PolyTf) (l s : ℕ) (hb : TFBase
       obtain ⟨x, hx, f, hf, rfl, hfs⟩ := (main.2 k (by push_cast; omega)).1 z
       have hx0 : ∀ I, x I = 0 := fun I => by
         have h2 : x I ∈ c'.D.pdPow ((k : ℤ).toNat) := hx I
-        rw [Int.toNat_natCast] at h2
-        rw [hpd k, dividedPowerFiltration_bot O hk1, Ideal.map_bot] at h2
-        exact h2
+        rwa [Int.toNat_natCast, hpd k, dividedPowerFiltration_bot O hk1, Ideal.map_bot] at h2
       have f0 : f = 0 := funext fun s => Subtype.ext (by
         rw [hfs s]
         simp [hx0, Frame.form])
@@ -788,8 +783,7 @@ theorem finO : KH.LocGr → KH.PolyTf → KH.GlobSerreSt → KH.GrCechFin → Fi
   have B1 := (_root_.GlobalTheory.CompanionTheory.NlZar.zariski_descent _ hU _ _ h1 c1 j).1 r r'
   have B2 := (_root_.GlobalTheory.CompanionTheory.NlZar.zariski_descent _ hU _ _ h2 c2 j).1 r r'
   obtain ⟨n, hn⟩ : ∃ n : ℕ, r' = r + n := ⟨(r' - r).toNat, by omega⟩
-  have hR := range_fin hLoc hPoly hSer hCech l s hb q U n r r' hn hr' j
-  exact fin_surj _ B2.2 (fin_bij _ B1 hR)
+  exact fin_surj _ B2.2 (fin_bij _ B1 (range_fin hLoc hPoly hSer hCech l s hb q U n r r' hn hr' j))
 
 end GlobalTheory.CompanionTheory.FinOverO
 end -- clump:auto
@@ -817,8 +811,7 @@ theorem mem_of_pow_smul_mem (c : O) (W : Submodule O M) (h2 : ∀ x : M, c • x
   | zero => simpa using h
   | succ k ih =>
     refine ih (h2 _ ?_)
-    rw [smul_smul, ← pow_succ']
-    exact h
+    rwa [smul_smul, ← pow_succ']
 
 theorem exists_ext (c : O) (W : Submodule O M) (ρ₀ : W →ₗ[O] M')
     (h1 : ∀ x : M, ∃ w ∈ W, ∃ z, x = w + c • z) (h2 : ∀ x : M, c • x ∈ W → x ∈ W)
@@ -1190,8 +1183,7 @@ theorem nonempty_grSplit : ∀ {O A : Type} [CommRing O] [IsDomain O] [IsDiscret
   have hν : ∀ (r : ℕ) (n : (L r).map (L (r + 1)).mkQ), s (r + 1) n ∈ pdP γ r := by
     rintro r ⟨_, y, hy, rfl⟩
     have h1 : s (r + 1) ((L (r + 1)).mkQ y) - y ∈ pdP γ (r + 1) := (hmk _ _).1 (by rw [map_sub, hs, sub_self])
-    have h2 := (pdP γ r).add_mem (hanti r h1) hy
-    simpa using h2
+    simpa using (pdP γ r).add_mem (hanti r h1) hy
   exact ⟨{ N := fun i => ↥((L i).map (L (i + 1)).mkQ)
            flat := fun i => hflat i
            ν := fun i => s (i + 1) ∘ₗ Submodule.subtype _
@@ -1270,8 +1262,7 @@ theorem exists_fg_pull_sqC (m : SMor Φ Φ' σ) {a b : IdF Φ.A} {a' b' : IdF Φ
   refine Submodule.span_induction
     (p := fun c _ => ∀ (ha : m.LeC c a a') (hb : m.LeC c b b'), (m.sqC c ha hb).pull j x ∈ Submodule.span R' (Set.range φ))
     ?_ ?_ ?_ ?_ hc ha hb
-  · intro g hg ha hb
-    exact hgen g hg ha hb x
+  · exact fun g hg ha hb => hgen g hg ha hb x
   · intro ha hb
     rw [pull_sqC_comb m (c₁ := 0) (c₂ := 0) (e := 0) (e' := 0) (by simp) ha hb ha hb ha hb j x]
     simp

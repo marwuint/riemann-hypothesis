@@ -124,15 +124,13 @@ theorem exists_affine_mem [PreirreducibleSpace A.left] [LocallyOfFiniteType A.ho
     (Set.mem_univ ((1 : 𝟙_ (Over (Sp ℂ)) ⟶ A).left (default : PrimeSpectrum ℂ))) isOpen_univ
   have h1 : ⊤ ≤ (1 : 𝟙_ (Over (Sp ℂ)) ⟶ A).left ⁻¹ᵁ W := (GlobalTheory.top_le_preimage_iff_mem _ _).2 h0
   have h2 : ⊤ ≤ (a⁻¹).left ⁻¹ᵁ ((tr a).left ⁻¹ᵁ W) := by
-    rw [← GlobalTheory.top_le_preimage_comp, ← Over.comp_left, comp_tr, mul_inv_cancel]
-    exact h1
+    rwa [← GlobalTheory.top_le_preimage_comp, ← Over.comp_left, comp_tr, mul_inv_cancel]
   obtain ⟨b, hb⟩ := exists_complex_point A (W ⊓ (tr a).left ⁻¹ᵁ W)
     (nonempty_preirreducible_inter W.isOpen ((tr a).left ⁻¹ᵁ W).isOpen ⟨_, h0⟩
       ⟨_, h2 (Set.mem_univ (default : PrimeSpectrum ℂ))⟩)
   obtain ⟨hb1, hb2⟩ := (GlobalTheory.top_le_preimage_inf _ _ _).1 hb
   refine ⟨(tr b).left ⁻¹ᵁ W, hW.preimage_of_isIso _, ?_, ?_⟩
-  · rw [← GlobalTheory.top_le_preimage_comp, ← Over.comp_left, comp_tr, _root_.mul_one]
-    exact hb1
+  · rwa [← GlobalTheory.top_le_preimage_comp, ← Over.comp_left, comp_tr, _root_.mul_one]
   · rw [← GlobalTheory.top_le_preimage_comp, ← Over.comp_left, comp_tr, hcomm, ← comp_tr, Over.comp_left,
       GlobalTheory.top_le_preimage_comp]
     exact hb2
@@ -154,8 +152,7 @@ theorem red_surjective (p : Sp (DualNumber ℂ)) :
     have h1 : a * a = 0 := by
       ext <;> simp [h0]
     exact (PrimeSpectrum.isPrime p).mul_mem_iff_mem_or_mem.1 (h1 ▸ Ideal.zero_mem _) |>.elim id id
-  rw [← h] at hp
-  exact hp
+  rwa [← h] at hp
 
 def basePt (v : epsR ℂ ⟶ A) : 𝟙_ (Over (Sp ℂ)) ⟶ A :=
   Over.homMk (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left) (by
@@ -191,8 +188,7 @@ theorem fderiv_eq_zero_of_affine (D : Fin g → ℂ) (U : A.left.Opens) (hU : Is
   have hloc := hU.isLocalization_basicOpen q
   obtain ⟨n, p, e⟩ := IsLocalization.Away.surj (S := Γ(A.left, A.left.basicOpen q)) q (resG _ hq1 f)
   have e' : resG _ hq1 f * resG _ hBU (q ^ n) = resG _ hBU p := by
-    rw [map_pow]
-    exact e
+    rwa [map_pow]
   have hval : ∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ A.left.basicOpen q →
       valAt' (u.ex z).left U₁ f * valAt' (u.ex z).left U (q ^ n) = valAt' (u.ex z).left U p := by
     intro z hz
@@ -338,8 +334,7 @@ theorem eq_relativeDimension : ∀ (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left
   have h2 : AnalyticAt ℂ (fun w => φ (u.ex w)) 0 :=
     hu.analyticAt t (Set.mem_univ _) (hu0 ▸ hU1)
   have hG0 : hφ.log (φ (u.ex 0)) = 0 := by
-    simp only [h1]
-    exact hφ.isLocalCommGroupLaw.log_zero
+    simpa only [h1] using hφ.isLocalCommGroupLaw.log_zero
   have hGa : AnalyticAt ℂ (fun w => hφ.log (φ (u.ex w))) 0 :=
     AnalyticAt.comp (g := hφ.log) (h1 ▸ hφ.isLocalCommGroupLaw.analyticAt_log) h2
   have hGe : ∀ᶠ w in 𝓝 (0 : Fin g → ℂ), (hφ.exp (hφ.log (φ (u.ex w)))).toMul = u.ex w := by
@@ -403,8 +398,7 @@ theorem exists_linear_of_smooth {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {
     (Set.mem_univ _)
   have h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U := by
     intro q _
-    rw [hsub q]
-    exact hpU
+    rwa [hsub q]
   have hker : (ex.ker : Set (Fin g → ℂ)) = u.Λ := Set.ext fun z ↦ u.ker z
   have key : ∃! F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), ∀ z, ex (F z) = G' z := by
    refine existsUnique_linear_lift_of_separating (ex := ex) (G := G') u.ex_onto
@@ -412,8 +406,7 @@ theorem exists_linear_of_smooth {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {
     (S := {a | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U})
     (f := fun (s : Γ(A.left, U)) a ↦ valAt' (Additive.toMul a).left U s)
     ?_ ?_ (u.hol U 0).1 (u₀.hol U 0).1 (fun s ↦ (u.hol U s).2) (fun s ↦ (u₀.hol U s).2) ?_
-   · rw [← map_zero ex]
-     exact h0
+   · rwa [← map_zero ex]
    · intro a ha b hb h
      refine Over.OverMorphism.ext (f := Additive.toMul a) (g := Additive.toMul b)
        (ext_evalPt (R := ℂ) hU ha hb (RingHom.ext fun s ↦ ?_))
@@ -474,8 +467,7 @@ theorem exists_transport {X : Scheme.{0}} {G : Over X} [GrpObj G] {y : Sp ℂ �
       Set.ext fun z => (hj j z).symm
     rw [es]
     exact u'.fr_hol _
-  · intro j z hz
-    exact u'.fr_ne _ z ((hj j z).2 hz)
+  · exact fun j z hz => u'.fr_ne _ z ((hj j z).2 hz)
   · intro j j' z hz
     obtain ⟨h1, h2⟩ := (GlobalTheory.top_le_preimage_inf _ _ _).1 hz
     have hz' := (GlobalTheory.top_le_preimage_inf (u'.ex z).left _ _).2 ⟨(hj j z).2 h1, (hj j' z).2 h2⟩
@@ -487,8 +479,7 @@ theorem isDiff_of_comp {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] {L : LB A.l
     (h : v₂.left ≫ ψ = v₁.left) (d : u'.IsDiff w v₂) : u.IsDiff w v₁ := by
   intro U hU f
   have hU' : ⊤ ≤ v₂.left ⁻¹ᵁ (ψ ⁻¹ᵁ U) := by
-    rw [← Scheme.Hom.comp_preimage, h]
-    exact hU
+    rwa [← Scheme.Hom.comp_preimage, h]
   have k := d (ψ ⁻¹ᵁ U) hU' ((ψ.app U).hom f)
   have aux : ∀ (q : (epsR ℂ).left ⟶ A.left) (_ : v₂.left ≫ ψ = q) (hq : ⊤ ≤ q ⁻¹ᵁ U),
       (q.appLE U ⊤ hq).hom f = (v₂.left.appLE (ψ ⁻¹ᵁ U) ⊤ hU').hom ((ψ.app U).hom f) := by
@@ -500,8 +491,7 @@ theorem isDiff_of_comp {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] {L : LB A.l
     funext z
     rw [GlobalTheory.valAt'_comp, hex]
   rw [e2] at k
-  rw [aux _ h hU]
-  exact k
+  rwa [aux _ h hU]
 
 theorem isDiff_unique {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
     (hs : SmoothOfRelativeDimension g A.hom) (hc : ConnectedSpace A.left) {v : epsR ℂ ⟶ A}

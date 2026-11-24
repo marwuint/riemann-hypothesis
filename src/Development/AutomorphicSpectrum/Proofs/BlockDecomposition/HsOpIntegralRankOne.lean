@@ -94,59 +94,43 @@ theorem hsOp_integral_rank_one (m : Measure K) [IsFiniteMeasure m] {u : K → V}
     simp_rw [this]
     rw [integral_complex_ofReal]
     push_cast; ring
-  have hQ' : ∀ v : V, ⟪A v, v⟫_ℂ = ((d * ∫ k, φ k * ‖⟪v, u k⟫_ℂ‖ ^ 2 ∂m : ℝ) : ℂ) := by
-    intro v
-    rw [← inner_conj_symm, hQ, Complex.conj_ofReal]
   set b := stdOrthonormalBasis ℂ V with hb
   have hsum : ∀ v : V, ∑ i, ⟪v, b i⟫_ℂ * ⟪A (b i), v⟫_ℂ = ⟪A v, v⟫_ℂ := by
     intro v
     simp_rw [← ContinuousLinearMap.adjoint_inner_right]
     rw [b.sum_inner_mul_inner]
-  have hterm : ∀ i, ((‖A (b i)‖ ^ 2 : ℝ) : ℂ) =
-      (d : ℂ) * ∫ k, ((φ k : ℝ) : ℂ) * (⟪u k, b i⟫_ℂ * ⟪A (b i), u k⟫_ℂ) ∂m := by
-    intro i
-    rw [← hkey, inner_self_eq_norm_sq_to_K]
-    push_cast; rfl
   have hintg : ∀ i ∈ (Finset.univ : Finset _), Integrable
       (fun k => ((φ k : ℝ) : ℂ) * (⟪u k, b i⟫_ℂ * ⟪A (b i), u k⟫_ℂ)) m := by
     intro i _
-    have hc : Continuous fun k => ((φ k : ℝ) : ℂ) * (⟪u k, b i⟫_ℂ * ⟪A (b i), u k⟫_ℂ) :=
-      hφC.mul ((hu.inner continuous_const).mul (continuous_const.inner hu))
-    exact (integrableOn_univ).mp (hc.continuousOn.integrableOn_compact isCompact_univ)
+    exact (integrableOn_univ).mp ((hφC.mul ((hu.inner continuous_const).mul
+      (continuous_const.inner hu))).continuousOn.integrableOn_compact isCompact_univ)
   have hC : ((hsOp A : ℝ) : ℂ) =
       ((d * ∫ k, φ k * (d * ∫ k', φ k' * ‖⟪u k, u k'⟫_ℂ‖ ^ 2 ∂m) ∂m : ℝ) : ℂ) := by
-    calc ((hsOp A : ℝ) : ℂ) = ∑ i, ((‖A (b i)‖ ^ 2 : ℝ) : ℂ) := by
+    calc _ = ∑ i, ((‖A (b i)‖ ^ 2 : ℝ) : ℂ) := by
           simp only [hsOp, hb]; push_cast; rfl
       _ = ∑ i, (d : ℂ) * ∫ k, ((φ k : ℝ) : ℂ) * (⟪u k, b i⟫_ℂ * ⟪A (b i), u k⟫_ℂ) ∂m :=
-          sum_congr rfl fun i _ => hterm i
+          sum_congr rfl fun i _ => by
+            rw [← hkey, inner_self_eq_norm_sq_to_K]
+            push_cast; rfl
       _ = (d : ℂ) * ∫ k, ∑ i, ((φ k : ℝ) : ℂ) * (⟪u k, b i⟫_ℂ * ⟪A (b i), u k⟫_ℂ) ∂m := by
           rw [← mul_sum, integral_finsetSum _ hintg]
       _ = (d : ℂ) * ∫ k, ((φ k * (d * ∫ k', φ k' * ‖⟪u k, u k'⟫_ℂ‖ ^ 2 ∂m) : ℝ) : ℂ) ∂m := by
           congr 1
           refine integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)
           simp only []
-          rw [← mul_sum, hsum, hQ']
+          rw [← mul_sum, hsum, ← inner_conj_symm, hQ, Complex.conj_ofReal]
           push_cast; rfl
-      _ = ((d * ∫ k, φ k * (d * ∫ k', φ k' * ‖⟪u k, u k'⟫_ℂ‖ ^ 2 ∂m) ∂m : ℝ) : ℂ) := by
+      _ = _ := by
           rw [integral_complex_ofReal]
           push_cast; rfl
-  have hR : hsOp A = d * ∫ k, φ k * (d * ∫ k', φ k' * ‖⟪u k, u k'⟫_ℂ‖ ^ 2 ∂m) ∂m := by
-    exact_mod_cast hC
   have hF : Continuous fun p : K × K => φ p.1 * φ p.2 * ‖⟪u p.1, u p.2⟫_ℂ‖ ^ 2 :=
     ((hφ.comp continuous_fst).mul (hφ.comp continuous_snd)).mul
       (((hu.comp continuous_fst).inner (hu.comp continuous_snd)).norm.pow 2)
   have hFi : Integrable (fun p : K × K => φ p.1 * φ p.2 * ‖⟪u p.1, u p.2⟫_ℂ‖ ^ 2) (m.prod m) :=
     (integrableOn_univ).mp (hF.continuousOn.integrableOn_compact isCompact_univ)
-  rw [hR, integral_prod _ hFi]
-  have e1 : ∀ k, ∫ k', φ k * φ k' * ‖⟪u k, u k'⟫_ℂ‖ ^ 2 ∂m =
-      φ k * ∫ k', φ k' * ‖⟪u k, u k'⟫_ℂ‖ ^ 2 ∂m := by
-    intro k
-    rw [← integral_const_mul]
-    simp only [mul_assoc]
-  have e2 : ∀ k, φ k * (d * ∫ k', φ k' * ‖⟪u k, u k'⟫_ℂ‖ ^ 2 ∂m) =
-      d * (φ k * ∫ k', φ k' * ‖⟪u k, u k'⟫_ℂ‖ ^ 2 ∂m) := fun k => by ring
-  simp_rw [e1, e2]
-  rw [integral_const_mul]
+  norm_cast at hC
+  rw [hC, integral_prod _ hFi]
+  simp_rw [mul_assoc, mul_left_comm (φ _) d, integral_const_mul]
   ring
 
 end General

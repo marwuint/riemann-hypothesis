@@ -76,10 +76,8 @@ theorem exists_half (bar : ι → ι) (h1 : ∀ τ, bar (bar τ) = τ) (h2 : ∀
   simp only [Set.mem_setOf_eq, h1, not_lt]
   have hne : e τ ≠ e (bar τ) := fun h => h2 τ (e.injective h).symm
   constructor
-  · intro h
-    exact h.le
-  · intro h
-    exact lt_of_le_of_ne h hne
+  · exact fun h => h.le
+  · exact fun h => lt_of_le_of_ne h hne
 
 variable {bar : ι → ι} {κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ}
 
@@ -160,8 +158,7 @@ theorem entry_mem (hK : IsKD bar κ) {H : Set ι} (hH : ∀ τ, τ ∈ H ↔ bar
       · simp
       · intro b _ hb
         simp [hb]
-      · intro h
-        exact absurd (Finset.mem_univ _) h
+      · exact fun h => absurd (Finset.mem_univ _) h
     have hadj : (fun k => (κ (bar τ) k).adjugate j i) ∈ monoAlg hK H := by
       have hfun : (fun k => (κ (bar τ) k).adjugate j i) = ∑ p : Equiv.Perm (Fin n),
           (Equiv.Perm.sign p : ℤ) • ∏ r, (fun k => ((κ (bar τ) k).updateRow i (Pi.single j 1)) (p r) r) := by
@@ -172,8 +169,7 @@ theorem entry_mem (hK : IsKD bar κ) {H : Set ι} (hH : ∀ τ, τ ∈ H ↔ bar
       by_cases h : p r = i
       · simp only [h, Matrix.updateRow_self]
         exact Subalgebra.algebraMap_mem (monoAlg hK H) ((Pi.single j (1 : ℂ) : Fin n → ℂ) r)
-      · simp only [Matrix.updateRow_ne h]
-        exact hent _ hσ _ _
+      · simpa only [Matrix.updateRow_ne h] using hent _ hσ _ _
     have hkey : (fun k => κ τ k i j) =
         (fun k => (κ (bar τ) k).det ^ (-1 : ℤ)) * (fun k => (κ (bar τ) k).adjugate j i) := by
       funext k

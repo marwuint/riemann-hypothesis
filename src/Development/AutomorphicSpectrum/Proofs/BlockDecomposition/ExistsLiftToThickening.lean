@@ -70,8 +70,7 @@ theorem lift_hom_existsUnique {O R Λ : Type} [CommRing O] [CommRing R] [CommRin
       (Ideal.Quotient.mk J).comp (MvPolynomial.eval₂Hom h u) := by
     apply MvPolynomial.ringHom_ext
     · intro c
-      simp only [RingHom.comp_apply, MvPolynomial.eval₂Hom_C]
-      exact RingHom.congr_fun hg0i c
+      simpa only [RingHom.comp_apply, MvPolynomial.eval₂Hom_C] using RingHom.congr_fun hg0i c
     · intro k
       simp only [RingHom.comp_apply, MvPolynomial.eval₂Hom_X']
       rw [hu k]
@@ -89,16 +88,13 @@ theorem lift_hom_existsUnique {O R Λ : Type} [CommRing O] [CommRing R] [CommRin
     refine ⟨?_, ?_⟩
     · apply MvPolynomial.ringHom_ext
       · intro c
-        simp only [RingHom.comp_apply, MvPolynomial.eval₂Hom_C]
-        exact RingHom.congr_fun hf'i c
+        simpa only [RingHom.comp_apply, MvPolynomial.eval₂Hom_C] using RingHom.congr_fun hf'i c
       · intro k
-        simp only [RingHom.comp_apply, MvPolynomial.eval₂Hom_X']
-        exact hf't k
+        simpa only [RingHom.comp_apply, MvPolynomial.eval₂Hom_X'] using hf't k
     · apply hg0u
       refine ⟨?_, ?_⟩
       · rw [RingHom.comp_assoc, hf'i]
-      · intro r z hz
-        exact hf'j r z hz
+      · exact fun r z hz => hf'j r z hz
 
 end GlobalTheory.CompanionTheory.EtaleLift
 end -- clump:auto
@@ -143,13 +139,11 @@ theorem comp_eq (T : Thick (F.cr b ht κ)) {g : s.R →+* T.B ⧸ T.J}
     (hx : Ideal.Quotient.mk b.I x = κ o) : g (s.a o) = Ideal.Quotient.mk T.J (T.i x) := by
   have h1 : F.Ov T.y.1.2 (g.comp s.a) := by
     have := F.ov_map (CommRingCat.ofHom g) s.ov
-    rw [hg] at this
-    exact this
+    rwa [hg] at this
   have h2 := F.ov_uniq h1 T.y.2
   have h3 := congrArg (fun f : O →+* _ => f o) h2
   have h4 : T.y.1.1 (Ideal.Quotient.mk _ x) = Ideal.Quotient.mk T.J (T.i x) := T.w x
-  rw [← h4, hx]
-  exact h3
+  rwa [← h4, hx]
 
 variable (𝓛 : Lift s.a (fun k => (s.T k : s.R)) b.R b.I κ) (δ : DividedPowers (b.I.map 𝓛.i))
   (hδ : IsDPMorphism b.γ δ 𝓛.i) (hp : b.p ≠ 0) (hn : IsNilpotent (b.p : b.R))
@@ -212,8 +206,7 @@ theorem main (T : Thick (F.cr b ht κ)) :
       (F.Pt.map_comp (CommRingCat.ofHom 𝓛.j) (CommRingCat.ofHom (Ideal.quotientMap T.J c.φ c.hle)))) s.y₀
     have hq : (Ideal.quotientMap T.J c.φ c.hle).comp 𝓛.j = g := hgu _ (e.trans hpt)
     have := congrArg (fun e : s.R →+* T.B ⧸ T.J => e r) hq
-    refine Eq.trans ?_ this
-    exact congrArg (Ideal.quotientMap T.J c.φ c.hle) hz
+    exact Eq.trans (congrArg (Ideal.quotientMap T.J c.φ c.hle) hz) this
   refine ⟨g, hc, hg, fun u hu => ?_⟩
   have hJ : EtLift T.J := GlobalTheory.CompanionTheory.EtNil.etLift_of_nil T.J fun x hx =>
     isNilpotent_of_mem T.δ hp (T.adm.1 hp) hx

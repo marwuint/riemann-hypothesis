@@ -176,8 +176,7 @@ theorem exists_strictHenselian_absolutely_closed_local_ring (X : FlagCover Y) (k
         (vec e.M.toMChart x hM (((e.u σ).map (ev x _ h)) *ᵥ a j)) = _
       rw [← hv, Frames.vecAt, LinearEquiv.symm_apply_apply, ← hw]
       rfl
-    have e2 := congrFun ((LinearMap.toMatrix'_mulVec L (a j)).trans e1) i
-    exact e2
+    exact congrFun ((LinearMap.toMatrix'_mulVec L (a j)).trans e1) i
   have h2 := congrArg Matrix.det h1
   rw [Matrix.det_mul, Matrix.det_one, _root_.mul_comm] at h2
   exact IsUnit.of_mul_eq_one _ h2
@@ -237,8 +236,7 @@ theorem exists_cell_pt (b : A.B) {x : Sp S ⟶ Y.X} (h : ⊤ ≤ x ⁻¹ᵁ (A.k
   change (((A.k b).u σ).map ψ₀ * T σ) r i = _
   rw [key, Matrix.mul_apply]
   erw [Finset.sum_apply]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  exact _root_.mul_comm _ _
+  exact Finset.sum_congr rfl fun j _ => _root_.mul_comm _ _
 
 def Rel (X : FlagCover Y) (z : Sp S ⟶ X.YY) (z' : Sp S ⟶ Z) : Prop :=
   ∃ hx' : z' ≫ π = z ≫ X.π, ∀ σ i, (cellFrames hZ ht).step z' hx' σ i = X.F.step z rfl σ i
@@ -286,8 +284,7 @@ theorem exists_local (X : FlagCover Y) (y : X.YY) :
     have h := hφ ⟨σ, ⟨n, Nat.lt_succ_of_le hn⟩⟩
     have e : (((T σ).map φ).submatrix (w σ) id).submatrix (Fin.castLE hn) (Fin.castLE hn) =
         φ.mapMatrix (((T σ).submatrix (w σ) id).submatrix (Fin.castLE hn) (Fin.castLE hn)) := rfl
-    rw [e, ← RingHom.map_det]
-    exact h
+    rwa [e, ← RingHom.map_det]
   have hs' : ∀ σ i, (cellFrames hZ ht).step z' hx' σ i = X.F.step (spMap φ ≫ z₀) rfl σ i := fun σ i =>
     (hs σ i).symm.trans ((congrArg (fun v => initSpan _ v i)
       (funext (T_bc X k σ z₀ hz₀ (A.k b) h₀ hM₀ (T σ) (hT σ) φ hz₁ h₁ hM₁))).symm.trans
@@ -421,15 +418,13 @@ theorem exists_iso (M : FlagModel Y) : ∃ h : M.YY ⟶ Z, IsIso h ∧ h ≫ π 
     obtain ⟨hx, hs⟩ := two S (t ≫ a) (t ≫ a') (by rw [Category.assoc, Category.assoc, e])
     refine (eq_of_step M.toFlagCover _ _ hx (fun q _ => ?_) hs).symm
     have := ha (t q)
-    rw [← hπ]
-    exact this
+    rwa [← hπ]
   · let K : Type := Z.residueField w
     let t : Sp K ⟶ Z := Z.fromSpecResidueField w
     have hi : ⊤ ≤ (t ≫ π) ⁻¹ᵁ LogKS.interior Y := fun q _ => by
       have e : t q = w := Scheme.fromSpecResidueField_apply w q
       change π (t q) ∈ LogKS.interior Y
-      rw [e]
-      exact hw
+      rwa [e]
     obtain ⟨_, y, hy, hx⟩ := exists_y _ hi
     obtain ⟨k', hk'⟩ := exists_chart_of_isLocalRing (cellFrames hZ ht).cover t
     obtain ⟨Q, hQ⟩ := hT.exists_chartFr hy hx k' hk'

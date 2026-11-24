@@ -132,9 +132,7 @@ theorem isSmoothDivisor_mul_of_disjoint_support {X : Scheme.{u}} {k : Type u} [F
       exists_etaleChart_restrictIdeal_eq_coordIdeal_singleton p A hA x hxA
     refine ⟨U ⊓ B.support.compl, ⟨hxU, hxB⟩, m, c.restrict inf_le_left, Or.inr ⟨j, ?_⟩⟩
     have hBtop : restrictIdeal B (U ⊓ B.support.compl) = ⊤ := by
-      refine (restrictIdeal_eq_top_iff_forall_notMem_support ..).mpr ?_
-      intro y hy
-      exact hy.2
+      exact (restrictIdeal_eq_top_iff_forall_notMem_support ..).mpr (fun y hy => hy.2)
     have hc := restrictIdeal_eq_restrict_coordIdeal_of_le (U := U) (V := U ⊓ B.support.compl)
       inf_le_left c A {j} hAU
     rw [restrictIdeal_mul, hBtop, Scheme.IdealSheafData.mul_top, hc]
@@ -143,9 +141,7 @@ theorem isSmoothDivisor_mul_of_disjoint_support {X : Scheme.{u}} {k : Type u} [F
         exists_etaleChart_restrictIdeal_eq_coordIdeal_singleton p B hB x hxB
       refine ⟨U ⊓ A.support.compl, ⟨hxU, hxA⟩, m, c.restrict inf_le_left, Or.inr ⟨j, ?_⟩⟩
       have hAtop : restrictIdeal A (U ⊓ A.support.compl) = ⊤ := by
-        refine (restrictIdeal_eq_top_iff_forall_notMem_support ..).mpr ?_
-        intro y hy
-        exact hy.2
+        exact (restrictIdeal_eq_top_iff_forall_notMem_support ..).mpr (fun y hy => hy.2)
       have hc := restrictIdeal_eq_restrict_coordIdeal_of_le (U := U) (V := U ⊓ A.support.compl)
         inf_le_left c B {j} hBU
       rw [restrictIdeal_mul, hAtop, Scheme.IdealSheafData.top_mul, hc]
@@ -153,13 +149,9 @@ theorem isSmoothDivisor_mul_of_disjoint_support {X : Scheme.{u}} {k : Type u} [F
         exists_etaleChart_le p x (A.support.compl ⊓ B.support.compl) ⟨hxA, hxB⟩
       refine ⟨U, hxU, m, c, Or.inl ?_⟩
       have hAtopW : restrictIdeal A (A.support.compl ⊓ B.support.compl) = ⊤ := by
-        refine (restrictIdeal_eq_top_iff_forall_notMem_support ..).mpr ?_
-        intro y hy
-        exact hy.1
+        exact (restrictIdeal_eq_top_iff_forall_notMem_support ..).mpr (fun y hy => hy.1)
       have hBtopW : restrictIdeal B (A.support.compl ⊓ B.support.compl) = ⊤ := by
-        refine (restrictIdeal_eq_top_iff_forall_notMem_support ..).mpr ?_
-        intro y hy
-        exact hy.2
+        exact (restrictIdeal_eq_top_iff_forall_notMem_support ..).mpr (fun y hy => hy.2)
       have hAtop : restrictIdeal A U = ⊤ := restrictIdeal_eq_top_of_le A hUW hAtopW
       have hBtop : restrictIdeal B U = ⊤ := restrictIdeal_eq_top_of_le B hUW hBtopW
       rw [restrictIdeal_mul, hAtop, hBtop, Scheme.IdealSheafData.mul_top]
@@ -176,8 +168,7 @@ private theorem restrictIdeal_comap_eq_top_of_notMem_support {X X' : Scheme.{u}}
     rw [Scheme.Opens.range_ι] at hy
     have h2 : π.base (V.ι.base y) ∉ B.support := hV _ hy
     simpa using h2
-  rw [restrictIdeal_eq_comap_ι, ← hcc]
-  exact htop
+  rwa [restrictIdeal_eq_comap_ι, ← hcc]
 
 theorem isSmoothDivisor_comap_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}} {k : Type u} [Field k]
     [CharZero k] (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -198,8 +189,7 @@ theorem isSmoothDivisor_comap_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}} {k 
       isIso_morphismRestrict_of_isBlowupAlongIdealSheaf hπ (U ⊓ Z.support.compl : X.Opens) hWsup
     have hiso2 : IsIso (π.resLE (U ⊓ Z.support.compl : X.Opens)
         (π ⁻¹ᵁ (U ⊓ Z.support.compl : X.Opens)) le_rfl) := by
-      rw [Scheme.Hom.resLE_eq_morphismRestrict]
-      exact hiso
+      rwa [Scheme.Hom.resLE_eq_morphismRestrict]
     have he : AlgebraicGeometry.Etale (π.resLE (U ⊓ Z.support.compl : X.Opens)
         (π ⁻¹ᵁ (U ⊓ Z.support.compl : X.Opens)) le_rfl) := inferInstance
     have hxV : x' ∈ (π ⁻¹ᵁ (U ⊓ Z.support.compl : X.Opens)) := ⟨hxU, hxZ⟩
@@ -232,14 +222,11 @@ theorem strictTransform_mul_of_disjoint_support {X X' : Scheme.{u}} [IsLocallyNo
   · have hxB : π.base x ∉ B.support := fun hB => (Set.disjoint_left.mp hBZ hB) hx
     refine ⟨π ⁻¹ᵁ B.support.compl, ?_, ?_⟩
     · exact hxB
-    · have hVmem : ∀ y : X', y ∈ π ⁻¹ᵁ B.support.compl → π.base y ∉ B.support := by
-        intro y hy
-        exact hy
+    · have hVmem : ∀ y : X', y ∈ π ⁻¹ᵁ B.support.compl → π.base y ∉ B.support := fun y hy => hy
       have hBtop : restrictIdeal (B.comap π) (π ⁻¹ᵁ B.support.compl) = ⊤ :=
         restrictIdeal_comap_eq_top_of_notMem_support π B _ hVmem
       have hcomapB : B.comap ((π ⁻¹ᵁ B.support.compl).ι ≫ π) = ⊤ := by
-        rw [Scheme.IdealSheafData.comap_comp]
-        exact hBtop
+        rwa [Scheme.IdealSheafData.comap_comp]
       have hD : (A * B).comap ((π ⁻¹ᵁ B.support.compl).ι ≫ π)
           = A.comap ((π ⁻¹ᵁ B.support.compl).ι ≫ π) := by
         rw [Scheme.IdealSheafData.comap_mul, hcomapB, Scheme.IdealSheafData.mul_top]
@@ -249,9 +236,7 @@ theorem strictTransform_mul_of_disjoint_support {X X' : Scheme.{u}} [IsLocallyNo
       exact strictTransform_eq_of_comap_eq _ _ Z (A * B) Z A rfl hD
   · refine ⟨π ⁻¹ᵁ Z.support.compl, ?_, ?_⟩
     · exact hx
-    · have hVmem : ∀ y : X', y ∈ π ⁻¹ᵁ Z.support.compl → π.base y ∉ Z.support := by
-        intro y hy
-        exact hy
+    · have hVmem : ∀ y : X', y ∈ π ⁻¹ᵁ Z.support.compl → π.base y ∉ Z.support := fun y hy => hy
       rw [restrictIdeal_strictTransform_eq_comap_of_notMem_support π Z (A * B) _ hVmem,
         Scheme.IdealSheafData.comap_mul, restrictIdeal_mul, restrictIdeal_mul,
         restrictIdeal_strictTransform_eq_comap_of_notMem_support π Z A _ hVmem]
@@ -314,8 +299,7 @@ theorem isSmoothDivisor_iteratedComap {k : Type u} [Field k] [CharZero k] {X : S
   intro t
   induction t with
   | zero =>
-    intro _
-    exact hB₀
+    exact fun _ => hB₀
   | succ n ih =>
     intro hn
     have hlt : n < L := Nat.lt_of_succ_le hn
@@ -329,8 +313,7 @@ theorem isSmoothDivisor_iteratedComap {k : Type u} [Field k] [CharZero k] {X : S
     have hblow : Blowup.IsBlowupAlongIdealSheaf (d.map n) (d.center n) := d.isBlowup n (lt_of_lt_of_le hlt hL)
     have key := isSmoothDivisor_comap_of_isBlowupAlongIdealSheaf (BlowupSequenceData.projectionToBase d n ≫ p) (d.map n)
       (d.center n) (iteratedComap d B₀ n) hblow (ih hle) (hcent n hlt)
-    rw [iteratedComap_succ, heq]
-    exact key
+    rwa [iteratedComap_succ, heq]
 
 theorem strictTransform_eq_mul_iteratedComap {X : Scheme.{u}} (d : BlowupSequenceData X) (L : ℕ)
     (hnoeth : ∀ t, t ≤ L → IsLocallyNoetherian (d.obj t))
@@ -349,8 +332,7 @@ theorem strictTransform_eq_mul_iteratedComap {X : Scheme.{u}} (d : BlowupSequenc
   intro t
   induction t with
   | zero =>
-    intro _
-    exact ⟨hK0, hdisj0⟩
+    exact fun _ => ⟨hK0, hdisj0⟩
   | succ n ih =>
     intro hn
     have hlt : n < L := Nat.lt_of_succ_le hn
@@ -371,8 +353,7 @@ theorem strictTransform_eq_mul_iteratedComap {X : Scheme.{u}} (d : BlowupSequenc
       rw [Scheme.IdealSheafData.support_comap]; rfl
     rw [iteratedComap_succ, hpre]
     rw [Set.disjoint_left] at hdn ⊢
-    intro x hx hx'
-    exact hdn (hsub hx) hx'
+    exact fun x hx hx' => hdn (hsub hx) hx'
 
 theorem isSmoothDivisor_strictTransform_of_disjoint_center {k : Type u} [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (d : BlowupSequenceData X) (L : ℕ) (hL : L ≤ d.length)
@@ -466,8 +447,7 @@ private theorem boundary_succ_get_eq_strictTransform {k : Type u} [Field k] {X :
   have hb := S.boundary_succ n hn
   have hlen : j < (List.map (Blowup.strictTransform (S.transitionMapSucc n) (S.center n))
       (S.boundary n)).length := by
-    rw [List.length_map]
-    exact hjn
+    rwa [List.length_map]
   rw [List.get_eq_getElem, List.get_eq_getElem, List.getElem_of_eq hb h]
   simp [List.getElem_append_left hlen]
 
@@ -483,14 +463,12 @@ private theorem containedComponentsIdeal_pow_mul_lowerIdealAfterBlowup (T : Mark
   have h1 : ∃ B, Blowup.exceptionalIdeal (𝟙 T.scheme) (DivisorReduction.containedComponentsIdeal T j hj) ^ T.mult * B
       = (T.ideal.comap (𝟙 T.scheme)).comap (𝟙 T.scheme) := by
     refine ⟨J, ?_⟩
-    rw [hex, hA]
-    exact hJ
+    rwa [hex, hA]
   have h2 := pow_mul_residualByPow ((T.ideal.comap (𝟙 T.scheme)).comap (𝟙 T.scheme))
     (Blowup.exceptionalIdeal (𝟙 T.scheme) (DivisorReduction.containedComponentsIdeal T j hj)) T.mult h1
   rw [hex, hA] at h2
   unfold DivisorReduction.lowerIdealAfterBlowup
-  rw [hex, hA]
-  exact h2
+  rwa [hex, hA]
 
 namespace TransportedDivisor
 
@@ -773,12 +751,10 @@ private theorem isSmoothDivisor_prependedAmbientSeq_boundary_get (hres : Functor
       (prependedPushedMarkedSeq hres hno T j hj hb s hpr hmk) i
       (by rw [prependedAmbientSeq_length hres hno T j hj hb s hpr hmk]; omega)
   have h2 : j < (T.transformAt (prependedPushedMarkedSeq hres hno T j hj hb s hpr hmk) i).boundary.length := by
-    rw [MarkedIdealWithBoundary.transformAt_boundary]
-    exact h
+    rwa [MarkedIdealWithBoundary.transformAt_boundary]
   have h3 := isSmoothDivisor_boundary_get
     (T.transformAt (prependedPushedMarkedSeq hres hno T j hj hb s hpr hmk) i) hvl j h2
-  rw [MarkedIdealWithBoundary.transformAt_structureMorphism] at h3
-  exact h3
+  rwa [MarkedIdealWithBoundary.transformAt_structureMorphism] at h3
 
 private theorem prependedAmbientSeq_boundary_succ_get
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -844,8 +820,7 @@ private theorem projectionToBase_mem_support_of_mem_support_ideal (T : MarkedIde
     have h3 : (MarkedBlowupSequenceData.ofMarkedSequence s).proj 0
         = (MarkedBlowupSequenceData.ofMarkedSequence s).isoZero.hom :=
       (MarkedBlowupSequenceData.ofMarkedSequence s).proj_zero
-    rw [h3]
-    exact h2
+    rwa [h3]
   | succ n ih =>
     intro hn y hy
     have hn' : n < (MarkedBlowupSequenceData.ofMarkedSequence s).length := by
@@ -877,8 +852,7 @@ private theorem projectionToBase_mem_support_of_mem_support_ideal (T : MarkedIde
     have h10 : (MarkedBlowupSequenceData.ofMarkedSequence s).proj (n + 1)
         = (MarkedBlowupSequenceData.ofMarkedSequence s).map n ≫ (MarkedBlowupSequenceData.ofMarkedSequence s).proj n :=
       (MarkedBlowupSequenceData.ofMarkedSequence s).proj_succ n
-    rw [h10]
-    exact h9
+    rwa [h10]
 
 private theorem disjoint_support_center_iteratedComap_containedComponentsIdeal
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -908,8 +882,7 @@ private theorem disjoint_support_center_iteratedComap_containedComponentsIdeal
     (lowerBoundaryAfterBlowup T j hj) s hpr n] at hy1
   obtain ⟨z, hz, rfl⟩ := hy1
   have hn' : n < (MarkedBlowupSequenceData.ofMarkedSequence s).length := by
-    rw [MarkedBlowupSequenceData.ofMarkedSequence_length]
-    exact hn
+    rwa [MarkedBlowupSequenceData.ofMarkedSequence_length]
   have hzco := (MarkedBlowupSequenceData.ofMarkedSequence s).center_order n hn' hz
   rw [mem_orderAtLeastLocus_iff] at hzco
   have hz2 : (1 : ℕ∞) ≤ orderAt ((MarkedBlowupSequenceData.ofMarkedSequence s).ideal n) z :=
@@ -978,8 +951,7 @@ theorem isSmoothDivisor_ker_embeddingIntoAmbient (hres : FunctorialResolution.Bl
     have h1 := MarkedSequenceOfBlowups.smooth_projectionToSpec effectiveCartierSupportContainsNoComponent hV
       (prependedPushedMarkedSeq hres hno T j hj hb s hpr hmk) (t + 1)
       (by rw [prependedAmbientSeq_length hres hno T j hj hb s hpr hmk]; omega)
-    rw [prependedAmbientSeq_projectionToSpec_succ hres hno T j hj hb s hpr hmk t] at h1
-    exact h1
+    rwa [prependedAmbientSeq_projectionToSpec_succ hres hno T j hj hb s hpr hmk t] at h1
   intro t ht
   rw [prependedAmbientSeq_projectionToSpec_succ hres hno T j hj hb s hpr hmk t]
   refine TransportedDivisor.isSmoothDivisor_strictTransform_of_disjoint_center T.structMap
@@ -999,8 +971,7 @@ theorem isSmoothDivisor_ker_embeddingIntoAmbient (hres : FunctorialResolution.Bl
     exact ker_embeddingIntoAmbientBlowupSequence_succ (T.boundary.get ⟨j, hj⟩).subschemeι
       (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr n
       (by rw [MarkedBlowupSequenceData.ofMarkedSequence_length]; exact hn)
-  · intro n _
-    exact strictTransformIter_succ _ _ n
+  · exact fun n _ => strictTransformIter_succ _ _ n
   · rw [ambientBlowupSeq_projectionToBase_zero_comp_structureMorphism hres hno T j hj (lowerIdealAfterBlowup T j hj)
       (lowerBoundaryAfterBlowup T j hj) s hpr]
     exact DivisorReductionBoundary.isSmoothDivisor_containedComponentsIdeal T hV j hj

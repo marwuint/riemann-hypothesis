@@ -416,8 +416,7 @@ theorem chi_eq_zero_F
     refine Set.indicator_of_notMem ?_ _
     rintro ⟨⟨S, hS, hSe⟩, -⟩
     apply hy
-    rw [← corner_half_trace_gram_cons R σ _ y Z, ← hSe]
-    exact hS
+    rwa [← corner_half_trace_gram_cons R σ _ y Z, ← hSe]
   simp [hz]
 
 end Main
@@ -480,8 +479,7 @@ theorem first_step_free : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
       refine lintegral_eq_zero_of_ae_eq_zero ?_
       filter_upwards [hae (hermScal R σ x)] with y hy
       refine hzero y ?_
-      rw [hy, hs0]
-      exact hx
+      rwa [hy, hs0]
   rw [e1, e2, e3, e4]
   refine setLIntegral_congr_fun D.hB₀.measurableSet fun x hx => ?_
   have hm : m₁ (hermScal R σ x) =
@@ -760,9 +758,7 @@ theorem continuousOn_fibre_integral_of_subset : ∀ (V X Y : Type) [TopologicalS
         (ContinuousAt.comp (f := fun z : P × V => z.2) (g := Φ p₀)
           (hslice p₀ hp₀).continuousAt continuousAt_snd)
     have h2 : Filter.Tendsto (fun z : P × V => Φ z.1 z.2 - Φ p₀ z.2) (𝓝 (p₀, v)) (𝓝 0) := by
-      have h3 := h1.tendsto
-      simp only [sub_self] at h3
-      exact h3
+      simpa only [sub_self] using h1.tendsto
     have h4 := (Metric.tendsto_nhds.1 h2) δ hδ0
     filter_upwards [h4] with z hz
     simpa [Real.dist_eq] using hz
@@ -915,8 +911,7 @@ theorem cont_double_free : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
   refine ContinuousAt.continuousWithinAt ?_
   obtain ⟨N, hNn, hNs, hNc⟩ := local_compact_nhds (hval.isOpen_range.mem_nhds hα₀)
   have hUc : IsCompact ((Units.val : Rˣ → R) ⁻¹' N) := by
-    rw [hval.isInducing.isCompact_iff, Set.image_preimage_eq_of_subset hNs]
-    exact hNc
+    rwa [hval.isInducing.isCompact_iff, Set.image_preimage_eq_of_subset hNs]
   have hNi : IsCompact ((Units.val : Rˣ → R) '' ((fun u : Rˣ => u⁻¹) '' ((Units.val : Rˣ → R) ⁻¹' N))) :=
     (hUc.image continuous_inv).image Units.continuous_val
   obtain ⟨Dc, hDc, hDn⟩ := exists_compact_mem_nhds S₀
@@ -1164,8 +1159,7 @@ theorem measurable_PintF (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   have hinner := Measurable.lintegral_kernel_prod_right' (κ := κ') (hφ.comp hΦ)
   have hfin := Measurable.lintegral_prod_right' (ν := m₁ (hermScal R σ (algebraMap F R t))) hinner
   have hm'κ : m' = fun S => κ S := funext fun S => (hκm S).symm
-  rw [hm'κ]
-  exact hfin
+  rwa [hm'κ]
 
 end GlobalTheory.CompanionTheory.SW.StageF
 end -- clump:auto
@@ -1264,8 +1258,7 @@ theorem foldF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
         ∂(Measure.pi fun _ => coordK R b lam) ∂lam := by
     have hGe : Measurable (fun p => G (e p)) := hGm.comp e.continuous.measurable
     rw [← hemap, lintegral_map hGm e.continuous.measurable, lintegral_prod _ hGe.aemeasurable]
-    refine lintegral_congr fun x => ?_
-    exact lintegral_prod _ (hGe.comp measurable_prodMk_left).aemeasurable
+    exact lintegral_congr fun x => lintegral_prod _ (hGe.comp measurable_prodMk_left).aemeasurable
   have hs0 : ∀ p, s0 R (e p : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) = p.1 :=
     fun p => Fold.corner_half_trace_of_cm_pure_tensor R σ hσ _ _ (he00 p)
   have hoff : ∀ x, x ∉ B₀ → ∫⁻ r, ∫⁻ S'', G (e (x, r, S'')) ∂(coordHerm R σ b lam n)
@@ -1513,8 +1506,7 @@ theorem fibre_block_stages_free : ∀ (F E : Type) [Field F] [NumberField F] [Fi
       (gramR R σ (blockOne (algebraMap F E t) J)) Subtype.val
       (g ⁻¹' Set.univ ∩ {X | LinearIndependent (R ⊗[F] E) X})
       (coordHerm R σ b lam (n + 1)) Set.univ m := by
-    rw [Set.preimage_univ, Set.univ_inter]
-    exact hm
+    rwa [Set.preimage_univ, Set.univ_inter]
   rw [hU'] at hfib
   have hmT : fib (hermOf R σ _ hT') = m (hermOf R σ _ hT') :=
     _root_.GlobalTheory.CompanionTheory.SW.FibreUniq.fibreFamily_eq_inter _ _ _ (coordW R b lam (n + 1) (M + 1)) (coordHerm R σ b lam (n + 1))
@@ -1535,8 +1527,7 @@ theorem fibre_block_stages_free : ∀ (F E : Type) [Field F] [NumberField F] [Fi
   haveI hσ : SigmaFinite (m' (hermOf R σ T hT)) := by
     refine sigmaFinite_of_integrable (_root_.GlobalTheory.CompanionTheory.WeilSiegel.FreeOpen.isOpen_free F E σ hCM R hR n M) ?_ ?_
     · exact measure_mono_null (Set.compl_subset_compl.2 Set.inter_subset_right) (hm'.1 _)
-    · intro f hfc hfs hft
-      exact (hm'.2.2 f hfc hfs hft).1 _ (Set.mem_univ _)
+    · exact fun f hfc hfs hft => (hm'.2.2 f hfc hfs hft).1 _ (Set.mem_univ _)
   refine ⟨fun y => ∫⁻ X, φ (actW R σ _ (s y) (consTup X)) ∂(m' (hermOf R σ T hT)),
     hF.lintegral_prod_right', ?_, ?_⟩
   · intro h

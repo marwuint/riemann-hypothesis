@@ -200,8 +200,7 @@ private theorem continuousOn_levi_of_contDiffOn' {e : ℕ} (d : (Fin e → ℂ) 
   have hc0 := ReciprocityTheory.AnForm.continuousOn_levi Metric.isOpen_ball hd2
   refine hc0.comp (f := fun v : Fin e → ℂ => (v, w)) ?_ ?_
   · exact (continuous_id.prodMk continuous_const).continuousOn
-  · intro v hv
-    exact Set.mk_mem_prod hv (Set.mem_univ w)
+  · exact fun v hv => Set.mk_mem_prod hv (Set.mem_univ w)
 
 open HolomorphicMinorCharts ReciprocityTheory.AnForm in
 theorem r_pluri : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (U : Set X) (P Q : LocPot X), IsPotential A P → IsPotential A Q → IsOpen U → Dense U → SamePot A U P Q → SamePot A Set.univ P Q := by
@@ -260,22 +259,18 @@ theorem r_pluri : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X]
     have hne2 : (ψ.source ∩ ψ ⁻¹' M).Nonempty := by
       refine ⟨ψ.symm z, ψ.map_target hzt, ?_⟩
       show ψ (ψ.symm z) ∈ M
-      rw [ψ.right_inv hzt]
-      exact hzM
+      rwa [ψ.right_inv hzt]
     obtain ⟨u, ⟨hus, huM⟩, huU⟩ := hUd.inter_open_nonempty _ (ψ.isOpen_inter_preimage hMo) hne2
     have hvM := hMsub huM
     apply hvM.1
     apply hzero (ψ u) (hball hvM.2)
-    rw [ψ.left_inv hus]
-    exact huU
+    rwa [ψ.left_inv hus]
   obtain ⟨G0, hG0an, hG0eq⟩ := exists_re_of_levi_zero hr hd2 hlevi
   refine ⟨ψ.source ∩ ψ ⁻¹' Metric.ball (ψ x) r, ψ.isOpen_inter_preimage Metric.isOpen_ball,
     ⟨hxj, Metric.mem_ball_self hr⟩, fun y => G0 (ψ y), ?_, ?_⟩
   · exact holoOn_of_compat (isCompatChart_chart A j) Set.inter_subset_left (fun y hy => hG0an _ hy.2)
   · intro y hy
-    have h := hG0eq (ψ y) hy.2
-    simp only [hdd, ψ.left_inv hy.1] at h
-    exact h
+    simpa only [hdd, ψ.left_inv hy.1] using hG0eq (ψ y) hy.2
 
 end PositivityTheory.UnitarySelfGeneration
 end -- clump:auto

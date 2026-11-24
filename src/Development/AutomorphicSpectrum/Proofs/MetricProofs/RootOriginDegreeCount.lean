@@ -110,8 +110,7 @@ theorem not_inFibre (h : genPt ξ ⤳ centre z) {r : ℕ} (hr : r.Prime) : ¬ In
     have := congrArg (genMap ξ ⟨centre z, h⟩) ht
     rwa [map_mul, map_natCast, map_one] at this
   have h0 : (r : Ω) ≠ 0 := left_ne_zero_of_mul_eq_one e
-  refine ⟨h0, natCast_mem _ r, ⟨t, ?_⟩⟩
-  exact eq_inv_of_mul_eq_one_right e
+  exact ⟨h0, natCast_mem _ r, ⟨t, eq_inv_of_mul_eq_one_right e⟩⟩
 
 theorem valAt_prod {σ : Type} (hz : genPt ξ ⤳ centre z) (s : Finset σ) {a : σ → Ω} {r : σ → ℂ}
     (h : ∀ i, ValAt ξ z (a i) (r i)) : ValAt ξ z (∏ i ∈ s, a i) (∏ i ∈ s, r i) := by
@@ -173,8 +172,7 @@ theorem form_mono (c : ∀ k, J k) (e : K → ℕ) : IsMultiHomog (mono c e) e :
   have e1 : (∑ k, e k • (Pi.single k 1 : K → ℕ)) = e := by
     funext k'
     simp [Finset.sum_apply, Pi.single_apply]
-  rw [e1] at h
-  exact h
+  rwa [e1] at h
 
 theorem aeval_mono {S : Type} [CommRing S] (v : (Σ k, J k) → S) (c : ∀ k, J k) (e : K → ℕ) :
     aeval v (mono c e) = ∏ k, v ⟨k, c k⟩ ^ e k := by
@@ -218,11 +216,9 @@ theorem exists_form_of_mem (hz : genPt ξ ⤳ centre z) (hw : CoordsAt ξ y z w)
       rw [← Finset.prod_div_distrib]
       exact valAt_prod hz _ hr
     · rw [aeval_mono, pow_one]
-      simp only [pow_one]
-      exact (div_mul_cancel₀ _ hM).symm
+      simpa only [pow_one] using (div_mul_cancel₀ _ hM).symm
     · rw [aeval_mono, pow_one, ← Finset.prod_mul_distrib]
-      simp only [pow_one]
-      exact Finset.prod_congr rfl fun k _ => hr' k
+      simpa only [pow_one] using Finset.prod_congr rfl fun k _ => hr' k
   | algebraMap n =>
     refine ⟨(n : ℂ), 0, C n, ?_, form_C n, ?_, ?_⟩
     · rw [eq_intCast]

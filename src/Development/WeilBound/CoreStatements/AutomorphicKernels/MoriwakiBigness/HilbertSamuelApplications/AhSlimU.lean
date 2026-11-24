@@ -469,8 +469,7 @@ theorem exists_of_cotMap_res_eq_zero (G : PDivGroup p O) (n : ℕ) (y : Cot O (G
     exact x.2
   obtain ⟨y', hy'⟩ := dUnit_of_mem_torsionIdeal (p ^ n) hxmem
   refine ⟨y', ?_⟩
-  rw [← hx', ← Nat.cast_pow]
-  exact hy'
+  rwa [← hx', ← Nat.cast_pow]
 
 def lev (G : PDivGroup p O) (n : ℕ) : G.omega →ₗ[O] Cot O (G.A n) :=
   LinearMap.proj n ∘ₗ G.omegaSub.subtype
@@ -1353,8 +1352,7 @@ theorem mem_basicOpen_normFun {V : X.Opens} (b : Γ(Y, π ⁻¹ᵁ V)) {x : X} (
     have hy'' : y ∈ Y.basicOpen (resG Y (π.preimage_mono (hW''W.trans hWV)) b) := by
       rw [Y.basicOpen_of_isUnit hu']
       show π y ∈ W''
-      rw [hy]
-      exact hxW''
+      rwa [hy]
     rw [basicOpen_resG_eq_inf_basicOpen] at hy''
     exact hy''.2
   · intro hall
@@ -1363,8 +1361,7 @@ theorem mem_basicOpen_normFun {V : X.Opens} (b : Γ(Y, π ⁻¹ᵁ V)) {x : X} (
       rw [basicOpen_resG_eq_inf_basicOpen]
       refine ⟨?_, hall y hy⟩
       show π y ∈ W
-      rw [hy]
-      exact hxW
+      rwa [hy]
     obtain ⟨V', hxV', hV'⟩ := exists_preimage_le π hall'
     obtain ⟨W'', hW'', hxW'', hle, hF''⟩ :=
       exists_finFree_app_of_finitePresentation π (U := W ⊓ V') ⟨hxW, hxV'⟩
@@ -1374,8 +1371,7 @@ theorem mem_basicOpen_normFun {V : X.Opens} (b : Γ(Y, π ⁻¹ᵁ V)) {x : X} (
     have hu2 := hu.map (nm (π.app W'').hom)
     rw [← _root_.GlobalTheory.FlatNorm.resG_nm π hW hW'' hW''W hF] at hu2
     have h3 : x ∈ X.basicOpen (resG X hW''W (nm (π.app W).hom (resG Y (π.preimage_mono hWV) b))) := by
-      rw [X.basicOpen_of_isUnit hu2]
-      exact hxW''
+      rwa [X.basicOpen_of_isUnit hu2]
     rw [basicOpen_resG_eq_inf_basicOpen] at h3
     exact h3.2
 

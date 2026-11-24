@@ -85,17 +85,14 @@ theorem secSp_eq (h : K₁ ≤ K.comap j) {s : P → G₁} (hs : ∀ p, j (s p) 
       rw [hs]
     simp only [MonoidHom.comp_apply, h2] at h1
     rwa [h3] at h1
-  · intro hw r hr
-    exact hw (kj j h r) hr
+  · exact fun hw r hr => hw (kj j h r) hr
 
 theorem isPar_comap (hj : Continuous j) (hΓ : Γ₁.map j = Γ) (hi : Iwa (P.comap j) K₁)
     (h : IsPar Γ K P c) : IsPar Γ₁ K₁ (P.comap j) (c ∘ j) := by
   refine ⟨h.closed.preimage hj, hi, ⟨?_, ?_, ?_, ?_⟩⟩
   · intro p hp q hq
-    simp only [Function.comp, map_mul]
-    exact h.ch.mul _ hp _ hq
-  · intro p hp
-    exact h.ch.norm _ hp
+    simpa only [Function.comp, map_mul] using h.ch.mul _ hp _ hq
+  · exact fun p hp => h.ch.norm _ hp
   · intro γ hγ hγP
     exact h.ch.rat _ (hΓ ▸ Subgroup.mem_map_of_mem j hγ) hγP
   · exact h.ch.cont.comp hj.continuousOn (fun _ hx => hx)
@@ -259,8 +256,7 @@ theorem hD_cont [IsTopologicalGroup G] {T : Type} [TopologicalSpace T] (hK : IsC
     ((continuous_snd.tendsto y₀).comp hU').mul
       (((continuous_subtype_val.tendsto k₁).comp hk).inv)
   have hqe : ∀ y : T × G, y.2 * ((kOf hi y.2 : K) : G)⁻¹ = (pOf hi y.2 : G) := by
-    intro y
-    exact mul_inv_eq_of_eq_mul (pk_spec hi y.2)
+    exact fun y => mul_inv_eq_of_eq_mul (pk_spec hi y.2)
   simp only [hqe] at hqG
   have hmem : y₀.2 * (k₁ : G)⁻¹ ∈ P :=
     hcl.mem_of_tendsto hqG (Eventually.of_forall fun y => (pOf hi y.2).2)
@@ -271,8 +267,7 @@ theorem hD_cont [IsTopologicalGroup G] {T : Type} [TopologicalSpace T] (hK : IsC
   have hy : hD hi ρ s (F y₀.1) y₀.2 = (ρ k₁⁻¹).comp (F y₀.1 (s ⟨_, hmem⟩)) := by
     rw [← hD_eq hi hs (hF y₀.1), hs]
     simp
-  rw [hy]
-  exact hlim
+  rwa [hy]
 
 theorem hD_bdd [IsTopologicalGroup G] [LocallyCompactSpace G] {T : Type} (hK : IsCompact (K : Set G))
     (hcl : IsClosed (P : Set G)) (hi : Iwa P K) {ρ : K →* (W →L[ℂ] W)} (hρ : Continuous ρ)
@@ -305,8 +300,7 @@ theorem hD_bdd [IsTopologicalGroup G] [LocallyCompactSpace G] {T : Type} (hK : I
   obtain ⟨B, hB⟩ := isCompact_univ.exists_bound_of_continuousOn hρ.continuousOn
   refine ⟨B * M, fun t ht g' hg' => ?_⟩
   have hq : (pOf hi g' : G) ∈ C₁ := by
-    refine ⟨(g', kOf hi g'), ⟨hg', (kOf hi g').2⟩, ?_⟩
-    exact mul_inv_eq_of_eq_mul (pk_spec hi g')
+    exact ⟨(g', kOf hi g'), ⟨hg', (kOf hi g').2⟩, mul_inv_eq_of_eq_mul (pk_spec hi g')⟩
   have h2 := hM t ht (s (pOf hi g')) ⟨_, hq, rfl⟩
   have h1 := hB (kOf hi g')⁻¹ (Set.mem_univ _)
   unfold hD

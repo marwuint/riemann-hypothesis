@@ -267,8 +267,7 @@ variable {X Y : Scheme.{0}}
 
 theorem rs_app (π : X ⟶ Y) {U V : Y.Opens} (h : V ≤ U) (h' : π ⁻¹ᵁ V ≤ π ⁻¹ᵁ U) (x : Γ(Y, U)) :
     rs X h' ((π.app U).hom x) = (π.app V).hom (rs Y h x) := by
-  have e := congrArg (fun φ => φ.hom x) (π.naturality (homOfLE h).op)
-  exact e.symm
+  exact (congrArg (fun φ => φ.hom x) (π.naturality (homOfLE h).op)).symm
 
 theorem swap_rel {U V : Y.Opens} (u : Γ(Y, V ⊓ U)ˣ) (x : Γ(Y, U)) (y : Γ(Y, V))
     (h : rs Y (inf_le_left : U ⊓ V ≤ U) x =
@@ -315,16 +314,12 @@ theorem rs_pullIso {M M' : LB Y} (w : LB.Iso M M') (π : X ⟶ Y) (a : M'.ι) (b
   have hk : π ⁻¹ᵁ O ≤ π ⁻¹ᵁ (LB.div M' M).U (a, b) := fun _ hy => hO hy
   have e2 : wu w (π ⁻¹ᵁ O) π a b = res hk (pullU π _ (w.s (a, b))) :=
     tu_def (U := (LB.div M' M).U) (p := (a, b)) hk
-  have e3 := congrArg Units.val (e.trans e2)
-  refine e3.trans ?_
-  exact rs_app π hO hk _
+  exact (congrArg Units.val (e.trans e2)).trans (rs_app π hO hk _)
 
 theorem rel_res {A B O : X.Opens} (hp : O ≤ A ⊓ B) (u : Γ(X, A ⊓ B)ˣ) (x : Γ(X, A)) (y : Γ(X, B))
     (h : rs X (inf_le_left : A ⊓ B ≤ A) x = u.val * rs X (inf_le_right : A ⊓ B ≤ B) y) :
     rs X (hp.trans inf_le_left) x = rs X hp u.val * rs X (hp.trans inf_le_right) y := by
-  have e := congrArg (rs X hp) h
-  simp only [map_mul, GlobalTheory.AbLaw.rs_rs] at e
-  exact e
+  simpa only [map_mul, GlobalTheory.AbLaw.rs_rs] using congrArg (rs X hp) h
 
 theorem rel_on {M M' : LB Y} (w : LB.Iso M M') (π : X ⟶ Y) {S : LB.Sec (M.pull π)}
     {S' : LB.Sec (M'.pull π)} (h : IsoRel (pullIso w π) S S') (a : M'.ι) (b : M.ι) {O : Y.Opens}

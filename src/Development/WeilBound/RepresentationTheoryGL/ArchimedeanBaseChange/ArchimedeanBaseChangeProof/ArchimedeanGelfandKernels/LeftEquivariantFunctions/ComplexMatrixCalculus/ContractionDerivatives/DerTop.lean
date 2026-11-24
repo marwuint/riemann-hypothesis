@@ -271,13 +271,11 @@ theorem gamM_hasFDerivAt (n : ℕ) : ∃ L : type_of% (fderiv ℂ (gamM (n := n)
   have h1 : (1 : Matrix (Md n) (Md n) ℂ) = one' n := by
     ext i j
     simp [one', Matrix.one_apply]
-  rw [h1]
-  exact h
+  rwa [h1]
 
 theorem gamM_contDiff (n : ℕ) : ContDiff ℂ ∞ (gamM (n := n)) := by
   have h := Gpi_contDiff (n := n)
-  rw [← gamM_fun] at h
-  exact h
+  rwa [← gamM_fun] at h
 
 theorem gamDer : GamDer := by
   intro n

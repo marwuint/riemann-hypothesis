@@ -114,8 +114,7 @@ theorem isCompact_unitary_GL (n : ℕ) : IsCompact {k : GL (Fin n) ℂ | k.val �
     constructor
     · rintro ⟨u, rfl⟩
       exact u.2
-    · intro hk
-      exact ⟨⟨k.val, hk⟩, Units.ext rfl⟩
+    · exact fun hk => ⟨⟨k.val, hk⟩, Units.ext rfl⟩
   rw [← hr]
   exact isCompact_range hφ
 
@@ -427,8 +426,7 @@ theorem exists_proj {W₁ W₂ V₂ V₃ : Sb} (c₁ : W₁ ⊔ V₂ = W₂) (d�
         e1' c (Submodule.mem_sup_right hc), add_zero, add_zero]
     have f3 : E₃ (a + b + c) = c := by
       rw [map_add (f := _), map_add (f := _), e3' a (hle₁ ha), e3' b (hle₂ hb), e3 c hc, zero_add, zero_add]
-    rw [f1, f3, show a + b + c - a - c = b by abel]
-    exact hb
+    rwa [f1, f3, show a + b + c - a - c = b by abel]
   · rw [m3]; exact Submodule.projection_apply_mem h3 y
   · rw [m3]; exact e3' y hy
   · rw [m2, e1 y hy, e3' y (hle₁ hy)]; simp
@@ -485,20 +483,16 @@ theorem levi_decomp {W₁ W₂ V₂ V₃ : Sb} (c₁ : W₁ ⊔ V₂ = W₂) (d�
     simp only [L, lev, Matrix.add_mulVec, mv]
   have L1 : ∀ A, ∀ y ∈ W₁, L A *ᵥ y ∈ W₁ := fun A y hy => by
     rw [Lv, k₂ y hy, k₃ y (hle₁ hy)]
-    simp only [Matrix.mulVec_zero, add_zero]
-    exact r₁ _
+    simpa only [Matrix.mulVec_zero, add_zero] using r₁ _
   have L2 : ∀ A, ∀ y ∈ W₂, L A *ᵥ y ∈ W₂ := fun A y hy => by
     rw [Lv, k₃ y hy]
-    simp only [Matrix.mulVec_zero, add_zero]
-    exact W₂.add_mem (hle₁ (r₁ _)) (hle₂ (r₂ _))
+    simpa only [Matrix.mulVec_zero, add_zero] using W₂.add_mem (hle₁ (r₁ _)) (hle₂ (r₂ _))
   have LV2 : ∀ A, ∀ y ∈ V₂, L A *ᵥ y ∈ V₂ := fun A y hy => by
     rw [Lv, k₁₂ y hy, k₃ y (hle₂ hy)]
-    simp only [Matrix.mulVec_zero, add_zero, zero_add]
-    exact r₂ _
+    simpa only [Matrix.mulVec_zero, add_zero, zero_add] using r₂ _
   have LV3 : ∀ A, ∀ y ∈ V₃, L A *ᵥ y ∈ V₃ := fun A y hy => by
     rw [Lv, k₁₃ y hy, k₂₃ y hy]
-    simp only [Matrix.mulVec_zero, zero_add]
-    exact r₃ _
+    simpa only [Matrix.mulVec_zero, zero_add] using r₃ _
   have hmm' : L q.val * L (q⁻¹ : GL (Fin n) ℂ).val = 1 :=
     lev_mul hs o12 o13 o21 o23 o31 o32 (Units.mul_inv q) a21 a31 a32 b21 b32 b31
   have hm'm : L (q⁻¹ : GL (Fin n) ℂ).val * L q.val = 1 :=
@@ -519,8 +513,7 @@ theorem levi_decomp {W₁ W₂ V₂ V₃ : Sb} (c₁ : W₁ ⊔ V₂ = W₂) (d�
     · rw [mv, Dv]
       exact W₂.add_mem (W₂.add_mem (hle₁ (r₁ _)) (hle₁ (r₁ _))) (hle₂ (r₂ _))
     · rw [mv, Dv, k₃ _ (L2 _ y hy)]
-      simp only [Matrix.mulVec_zero, add_zero]
-      exact r₁ _
+      simpa only [Matrix.mulVec_zero, add_zero] using r₁ _
     · rw [mv, Dv, k₃ _ (hle₁ (L1 _ y hy)), k₂ _ (L1 _ y hy)]
       simp
   · exact img_eq_of_mapsTo m W₁ (L1 _) (L1 _)

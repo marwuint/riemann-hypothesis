@@ -90,13 +90,10 @@ private theorem apply_eq_self_of_strictMono_of_surjective (L L' : ℕ) (r : ℕ 
     intro n
     induction n with
     | zero =>
-      intro i hi hiL
-      exact key i (fun j hj _ => by omega) hiL
+      exact fun i hi hiL => key i (fun j hj _ => by omega) hiL
     | succ n ih =>
-      intro i hi hiL
-      exact key i (fun j _ hjL => ih j (by omega) hjL) hiL
-  intro i hi
-  exact le_antisymm (hB' i i le_rfl hi) (hA i hi)
+      exact fun i hi hiL => key i (fun j _ hjL => ih j (by omega) hjL) hiL
+  exact fun i hi => le_antisymm (hB' i i le_rfl hi) (hA i hi)
 
 private theorem isPullback_pullbackTransitionMap_comp_transitionMap {X X' : Scheme.{u}} (s : SequenceOfBlowups X)
     (φ : X' ⟶ X) (i j j' : ℕ) (hj : j = i) (hj' : j' = i + 1) (hjj' : j ≤ j')
@@ -138,8 +135,7 @@ theorem support_comap_center_nonempty_of_mem_range {X X' : Scheme.{u}} (φ : X' 
   refine ⟨z, ?_⟩
   have hmem : (pullback.snd φ (s.projectionToBase i)) z ∈ ((s.center i).support : Set ↥(s.schemeAt i)) := by
     rw [hz2]; exact hx
-  rw [Scheme.IdealSheafData.support_comap]
-  exact hmem
+  rwa [Scheme.IdealSheafData.support_comap]
 
 theorem IsPullbackBlowupSequence.isStrictPullback_of_support_comap_center_nonempty {X X' : Scheme.{u}} {φ : X' ⟶ X} {s' : SequenceOfBlowups X'}
     {s : SequenceOfBlowups X} (h : IsPullbackBlowupSequence φ s' s)
@@ -169,8 +165,7 @@ theorem IsPullbackBlowupSequence.isStrictPullback_of_support_comap_center_nonemp
     have hrle : r i ≤ r (i + 1) := le_of_lt (h2 i (i + 1) hi1 (Nat.lt_succ_self i))
     have sq1 : IsPullback (e (i + 1) hi).hom (s'.transitionMapSucc i) (s.pullbackTransitionMap φ hrle)
         (e i hile).hom := by
-      refine IsPullback.of_horiz_isIso ⟨?_⟩
-      exact (h6 i hi hrle).symm
+      exact IsPullback.of_horiz_isIso ⟨(h6 i hi hrle).symm⟩
     have sq2 : IsPullback
         (pullback.snd φ (s.projectionToBase (r (i + 1))) ≫ s.transitionMap (le_of_eq (hid (i + 1) hi1).symm))
         (s.pullbackTransitionMap φ hrle) (s.transitionMapSucc i)
@@ -191,7 +186,6 @@ theorem IsPullbackBlowupSequence.isStrictPullback_of_surjective {X X' : Scheme.{
   refine h.isStrictPullback_of_support_comap_center_nonempty ?_
   refine support_comap_center_nonempty_of_mem_range φ s
     (fun i hi => support_nonempty_of_ne_top (s.center i) (hc i hi)) ?_
-  intro i _ x _
-  exact φ.surjective _
+  exact fun i _ x _ => φ.surjective _
 
 end FunctorialResolution.EmbeddedResolution

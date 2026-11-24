@@ -73,8 +73,7 @@ theorem finite_det_line {κ : Type} [Fintype κ] [DecidableEq κ] (A B : Matrix 
     congr 1
     ext a b
     show Polynomial.eval s (Q a b) = _
-    simp [Q]
-    exact mul_comm _ _
+    simpa [Q] using mul_comm _ _
   have hne : Q.det ≠ 0 := by
     intro h0
     have := ev 1
@@ -84,8 +83,7 @@ theorem finite_det_line {κ : Type} [Fintype κ] [DecidableEq κ] (A B : Matrix 
   refine (Q.det.roots.toFinset.finite_toSet).subset ?_
   intro s hs
   simp only [Finset.mem_coe, Multiset.mem_toFinset]
-  rw [Polynomial.mem_roots hne, Polynomial.IsRoot.def, ev]
-  exact hs
+  rwa [Polynomial.mem_roots hne, Polynomial.IsRoot.def, ev]
 
 theorem minorIJ_self {N : ℕ} (h : Matrix (Fin N) (Fin N) ℂ) (I : Finset (Fin N)) :
     minorIJ h I I = (h.submatrix (I.orderEmbOfFin rfl) (I.orderEmbOfFin rfl)).det := by
@@ -95,8 +93,7 @@ theorem det_submatrix_lowerUni {N : ℕ} {T : Matrix (Fin N) (Fin N) ℂ} (hT : 
     (T.submatrix (I.orderEmbOfFin rfl) (I.orderEmbOfFin rfl)).det = 1 := by
   rw [Matrix.det_of_lowerTriangular]
   · simp [hT.1]
-  · intro a b hab
-    exact hT.2 _ _ ((I.orderEmbOfFin rfl).strictMono hab)
+  · exact fun a b hab => hT.2 _ _ ((I.orderEmbOfFin rfl).strictMono hab)
 
 theorem finite_minor_line {N : ℕ} (A B : Matrix (Fin N) (Fin N) ℂ) (I : Finset (Fin N))
     (hB : (B.submatrix (I.orderEmbOfFin rfl) (I.orderEmbOfFin rfl)).det ≠ 0) :
@@ -130,10 +127,8 @@ theorem exists_good_param {Ψ : Type} [Fintype Ψ] {N : ℕ} (h₀ T : Ψ → Ma
     ⟨0, Metric.mem_ball_self hε⟩
   refine ⟨s, by simpa using hs, fun τ' i => ?_⟩
   constructor
-  · intro h0
-    exact hsb (Set.mem_iUnion.2 ⟨τ', Set.mem_iUnion.2 ⟨i, Or.inl h0⟩⟩)
-  · intro h0
-    exact hsb (Set.mem_iUnion.2 ⟨τ', Set.mem_iUnion.2 ⟨i, Or.inr h0⟩⟩)
+  · exact fun h0 => hsb (Set.mem_iUnion.2 ⟨τ', Set.mem_iUnion.2 ⟨i, Or.inl h0⟩⟩)
+  · exact fun h0 => hsb (Set.mem_iUnion.2 ⟨τ', Set.mem_iUnion.2 ⟨i, Or.inr h0⟩⟩)
 
 theorem exists_off_bdry {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ]
     {y : (Σ k, ι k) → Φ} {Ψ : Type} {N j : ℕ} {M : FlagModel y Ψ N j} {n : ℕ} (BM : BaseMetric M n)
@@ -244,8 +239,7 @@ theorem GlobalTheory.CompanionTheory.Ar.PB.WSq.Dens.dens_core : ∀ (K : Type) [
     refine ⟨?_, ?_, fun τ' => ?_⟩
     · rw [ht₀]
       exact c.map_source hkb
-    · rw [hb₀]
-      exact hb
+    · rwa [hb₀]
     · have : hh τ' u₀ = h₀ τ' := congrFun hhh₀ τ'
       rw [this]
       exact (hh₀ τ').2
@@ -274,8 +268,7 @@ theorem GlobalTheory.CompanionTheory.Ar.PB.WSq.Dens.dens_core : ∀ (K : Type) [
   have hmem : u ∈ Metric.ball u₀ ε := by
     refine Metric.mem_ball.2 ((dist_pi_lt_iff hε).2 fun i => ?_)
     refine Fin.cases ?_ (fun i => ?_) i
-    · rw [hzu, hz₀, dist_zero_right]
-      exact hs
+    · rwa [hzu, hz₀, dist_zero_right]
     · have h1 : u i.succ = c p i := Fin.cons_succ _ _ _
       have h2 : u₀ i.succ = c b i := Fin.cons_succ _ _ _
       rw [h1, h2]
@@ -289,5 +282,4 @@ theorem GlobalTheory.CompanionTheory.Ar.PB.WSq.Dens.dens_core : ∀ (K : Type) [
     exact this
   · intro τ' i _
     have := hgood τ' i
-    rw [← hzu] at this
-    exact this
+    rwa [← hzu] at this

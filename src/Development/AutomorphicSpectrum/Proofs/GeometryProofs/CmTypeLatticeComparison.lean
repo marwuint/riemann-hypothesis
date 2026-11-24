@@ -80,8 +80,7 @@ theorem asIdeal_eq_bot {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommR
   refine (Submodule.eq_bot_iff _).2 fun o ho => ?_
   by_contra h0
   have hn : Ideal.absNorm (Ideal.span {o}) ≠ 0 := by
-    rw [Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
-    exact h0
+    rwa [Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
   have hmem : ((Ideal.absNorm (Ideal.span {o}) : ℕ) : 𝓞 F) ∈ (s p.1).asIdeal :=
     (Ideal.span_singleton_le_iff_mem _).2 ho (Ideal.absNorm_mem _)
   have hu := hp ((Ideal.absNorm (Ideal.span {o}) : ℕ) : ℤ) (by exact_mod_cast hn)
@@ -169,16 +168,13 @@ theorem eigLat_eq_pull [CharZero Ω₀] [CharZero Ω] (cst : c.F →+* Ω₀) (h
     refine Submodule.span_le.2 ?_
     rintro _ ⟨h', e, he, rfl⟩
     have he1 : e ∈ ⨆ u, M.lat.inter (eigSp ρ (cst.comp (labelEmb c u))) ⟨f q.1, h⟩ := by
-      rw [← hsum]
-      exact he
+      rwa [← hsum]
     refine Submodule.iSup_induction _ (motive := fun e =>
       j₂ e ∈ ⨆ u, ((M.eigLat ρ (cst.comp (labelEmb c u))).pull ξ' f j₂) q) he1 (fun u e he => ?_) ?_
       (fun x y hx hy => ?_)
     · exact Submodule.mem_iSup_of_mem u (Submodule.subset_span ⟨h, e, he, rfl⟩)
-    · simp only [map_zero]
-      exact zero_mem _
-    · simp only [map_add (f := _)]
-      exact add_mem hx hy
+    · simpa only [map_zero] using zero_mem _
+    · simpa only [map_add (f := _)] using add_mem hx hy
   refine le_antisymm ?_ (hle s)
   rintro x ⟨hx1, hx2⟩
   exact FlagStep.mem_of_mem_iSup_of_indep (regAt ξ' q) hind (fun u => (hle u).trans inf_le_right) s (hall hx1) hx2

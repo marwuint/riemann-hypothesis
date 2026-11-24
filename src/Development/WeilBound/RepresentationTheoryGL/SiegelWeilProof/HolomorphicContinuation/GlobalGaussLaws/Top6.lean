@@ -197,8 +197,7 @@ theorem gComm {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.hos
       _ = (ω (κ g0) Φ).1 (mt V h ⬝ x) := (congrFun (hT g0 f hf Φ hfΦ.symm) _).symm
   have e : κ (κ.symm g) = g := κ.apply_symm_apply g
   have k := key (κ.symm g)
-  rw [e] at k
-  exact k
+  rwa [e] at k
 
 end PositivityTheory.Rg.Sw.Glob.GCommH
 end -- clump:auto
@@ -608,8 +607,7 @@ theorem l2_word_tendsto (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam �
           om (x, 1) (heisDer ψ θ a f) + om (x, 1) (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ a.1 (zx x - z) f) := by
         rw [← map_add (f := _)]
         have := GlobalTheory.ThetaDens.WeilCompact.dRho_om hom hθ x 1 a.1 z hf
-        refine this.trans (congrArg _ ?_)
-        exact dRho_dir_split hψ hθ hf a.1 _ z
+        exact this.trans (congrArg _ (dRho_dir_split hψ hθ hf a.1 _ z))
       have e2 : heisDer ψ θ a (om (x, 1) f - f) = heisDer ψ θ a (om (x, 1) f) - heisDer ψ θ a f :=
         GlobalTheory.ThetaDens.wordAct_heisDer_sub hψ hθ hof hf [a]
       rw [wordAct_append, wordAct_cons, wordAct_nil, e2, e1, add_sub_right_comm,
@@ -1319,11 +1317,9 @@ theorem assemble {G G' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGrou
   refine ⟨(· + (w : ℂ)) ⁻¹' U', Polynomial.taylor (w : ℂ) d', fun z g => E' (z + (w : ℂ)) g,
     R - w, hU'o.preimage (continuous_id.add continuous_const), hU'r.preimage_add _, hs₀', ?_, ?_, ?_, ?_, ?_⟩
   · exact fun h => hd' ((Polynomial.taylor_eq_zero _ d').1 h)
-  · intro g
-    exact (hE'd g).comp (differentiableOn_id.add_const _) (fun z hz => hz)
+  · exact fun g => (hE'd g).comp (differentiableOn_id.add_const _) (fun z hz => hz)
   · refine hE'c.comp ((continuous_fst.add continuous_const).prodMk continuous_snd).continuousOn ?_
-    intro y hy
-    exact ⟨hy.1, Set.mem_univ _⟩
+    exact fun y hy => ⟨hy.1, Set.mem_univ _⟩
   · intro z hz γ hγ g
     exact hE'i (z + (w : ℂ)) hz ⟨γ, hγ⟩ g
   · intro z hz

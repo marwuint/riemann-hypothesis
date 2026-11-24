@@ -122,19 +122,9 @@ theorem lamOf_antitone_gap_sum (N : ℕ) (g : Fin (N - 1) → ℕ) :
         split_ifs with hc
         · exact absurd (lt_of_le_of_lt hc.1 hc.2) hn
         · rfl
-    calc (∑ i : Fin N, ∑ i' : Fin N,
-            if i < i' then (Zls.lamOf g i - Zls.lamOf g i').toNat else 0)
-        = ∑ i : Fin N, ∑ i' : Fin N, ∑ j : Fin (N - 1),
-            if (i : ℕ) ≤ (j : ℕ) ∧ (j : ℕ) < (i' : ℕ) then g j else 0 :=
-          Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun i' _ => step i i'
-      _ = ∑ i : Fin N, ∑ j : Fin (N - 1), ∑ i' : Fin N,
-            if (i : ℕ) ≤ (j : ℕ) ∧ (j : ℕ) < (i' : ℕ) then g j else 0 :=
-          Finset.sum_congr rfl fun i _ => Finset.sum_comm
-      _ = ∑ j : Fin (N - 1), ∑ i : Fin N, ∑ i' : Fin N,
-            if (i : ℕ) ≤ (j : ℕ) ∧ (j : ℕ) < (i' : ℕ) then g j else 0 :=
-          Finset.sum_comm
-      _ = ∑ j : Fin (N - 1), g j * (((j : ℕ) + 1) * (N - ((j : ℕ) + 1))) := by
-          refine Finset.sum_congr rfl fun j _ => ?_
-          exact gap_count N (g j) j (by have := j.isLt; omega)
+    simp_rw [step]
+    rw [Finset.sum_comm_cycle]
+    refine Finset.sum_congr rfl fun j _ => ?_
+    exact gap_count N (g j) j (by have := j.isLt; omega)
 
 end GlobalTheory.CompanionTheory.LamGap

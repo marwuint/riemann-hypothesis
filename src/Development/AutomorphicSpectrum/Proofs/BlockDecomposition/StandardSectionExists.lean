@@ -187,8 +187,7 @@ theorem mem_ratPts_of (σ : E →ₐ[F] E) {N : ℕ} (J : Matrix (Fin N) (Fin N)
   have e2 : (Formalism.UG.cT (σ : E →+* E) γ.1).map (inclR (F := F) (E := E) (AF F)) =
       Formalism.UG.cT (sigR (AF F) σ) (Formalism.UG.bc (inclR (F := F) (E := E) (AF F)) γ).1 := rfl
   change Matrix.map (Formalism.UG.cT (σ : E →+* E) γ.1 * J * γ.1) (inclR (F := F) (E := E) (AF F)) = Matrix.map J _
-  rw [Matrix.map_mul, Matrix.map_mul, e2]
-  exact hg
+  rwa [Matrix.map_mul, Matrix.map_mul, e2]
 
 end Gen3
 
@@ -206,8 +205,7 @@ theorem rx_kGL (A : Ad E R) (m : GL (Fin (n + n)) R) : rx m ∈ A.kGL (Fin n ⊕
     · intro h r c
       have := h (finSumFinEquiv.symm r) (finSumFinEquiv.symm c)
       simpa only [Matrix.submatrix_apply, Equiv.apply_symm_apply] using this
-    · intro h r c
-      exact h _ _
+    · exact fun h r c => h _ _
   · have e : (rx m).1.map (A.φ w) = (m.1.map (A.φ w)).submatrix finSumFinEquiv finSumFinEquiv := rfl
     rw [e]
     exact (sub_unitary (m.1.map (A.φ w))).symm
@@ -260,8 +258,7 @@ theorem stab_iff (g : GL (Fin (n + n)) (AE D)) :
     have h2 : ∀ i j : Fin n, (g⁻¹ : GL (Fin (n + n)) (AE D)).1 (finSumFinEquiv (Sum.inr i)) (finSumFinEquiv (Sum.inl j)) = 0 :=
       fun i j => by
         have := (h _ (hr i) _ (hc j)).2
-        rw [rx_inv_val] at this
-        exact this
+        rwa [rx_inv_val] at this
     intro x
     refine ⟨keep_of_low D h1, fun hx => ?_⟩
     have := keep_of_low D h2 hx
@@ -304,8 +301,7 @@ theorem mem_GF (g : GlobalTheory.StdUnn.G D n) :
   · rintro ⟨γ', e⟩
     refine mem_ratPts_of _ _ g (rx.symm γ') ?_
     apply rx.injective
-    rw [rx_bc, MulEquiv.apply_symm_apply]
-    exact e
+    rwa [rx_bc, MulEquiv.apply_symm_apply]
 
 theorem mem_K (hD : Dict) (hI : DictInf) (g : GlobalTheory.StdUnn.G D n) :
     g ∈ GlobalTheory.StdUnn.K D n ↔ Psi D χ n g ∈ (adCM D.sp.cm.sig χ).uK (-1) (Fin n) :=

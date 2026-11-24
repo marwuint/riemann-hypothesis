@@ -309,8 +309,7 @@ theorem isSncModel_joinPt (y : (Σ k, ι k) → Ω) (x' : Fin (r + 1) → Ω) (e
     rw [hSeq]
     exact Algebra.subset_adjoin (Set.mem_insert_of_mem _ ⟨p, rfl⟩)
   constructor
-  · intro h s hs
-    exact h _ (Ideal.subset_span rfl) s hs
+  · exact fun h s hs => h _ (Ideal.subset_span rfl) s hs
   · intro h g hg s hs
     obtain ⟨g', rfl⟩ := Ideal.mem_span_singleton'.1 hg
     have h1 := h ⟨_, hmemS _⟩ rfl
@@ -331,16 +330,14 @@ theorem mem_mcPts_span (y : (Σ k, ι k) → Ω) (x' : Fin (r + 1) → Ω) (β :
     refine ⟨fun k => hz.1 (Sum.inl k), fun f hf => ?_⟩
     have h1 := hz.2 _ (rename_inl_mem y (fun p : (Σ _ : Unit, Fin (r + 1)) => x' p.2) hf)
     change evC _ _ = 0 at h1
-    rw [evC_rename_inl] at h1
-    exact h1
+    rwa [evC_rename_inl] at h1
   rw [evC_rename_inl] at hb
   have h2 := hβ _ hw hb
   rw [eval_map_int] at h2
   refine ⟨hz.1, fun f hf => ?_⟩
   obtain ⟨g, rfl⟩ := Ideal.mem_span_singleton'.1 hf
   have h3 : evC z (rename (joinInl ι fun _ : Unit => Fin (r + 1)) (segForm E Gz)) = 0 := by
-    rw [evC_rename_inl, evC, eval_map_int, aeval_segForm]
-    exact h2
+    rwa [evC_rename_inl, evC, eval_map_int, aeval_segForm]
   change eval z (map (Int.castRingHom ℂ) _) = 0
   rw [map_mul, map_mul]
   change _ * evC z _ = 0

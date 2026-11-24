@@ -71,8 +71,7 @@ theorem restrictIdeal_eq_top_iff_forall_notMem_support {X : Scheme.{u}} (I : X.I
     constructor
     · rintro rfl y hy
       have hy' : y ∈ ((⊥ : TopologicalSpace.Closeds U.toScheme) : Set U.toScheme) := hy
-      rw [hbot] at hy'
-      exact hy'
+      rwa [hbot] at hy'
     · intro hall
       have hA : (A : Set U.toScheme) = ∅ :=
         Set.Subset.antisymm (fun y hy => absurd hy (hall y)) (Set.empty_subset _)
@@ -82,11 +81,9 @@ theorem restrictIdeal_eq_top_iff_forall_notMem_support {X : Scheme.{u}} (I : X.I
     intro x hx
     simp only [Scheme.IdealSheafData.support_comap]
     rfl
-  rw [restrictIdeal_eq_comap_ι]
-  rw [← Scheme.IdealSheafData.support_eq_bot_iff, hbot']
+  rw [restrictIdeal_eq_comap_ι, ← Scheme.IdealSheafData.support_eq_bot_iff, hbot']
   constructor
-  · intro h x hx hmem
-    exact h ⟨x, hx⟩ ((key x hx).mpr hmem)
+  · exact fun h x hx hmem => h ⟨x, hx⟩ ((key x hx).mpr hmem)
   · rintro h ⟨x, hx⟩ hy
     exact h x hx ((key x hx).mp hy)
 

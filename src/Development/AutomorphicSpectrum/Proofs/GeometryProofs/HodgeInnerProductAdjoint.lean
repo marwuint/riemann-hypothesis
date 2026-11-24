@@ -116,8 +116,7 @@ theorem fderiv_eq_zero_of_isDiff_one (u : HolUnif A L g) {w : Fin g → ℂ} (h 
     have e : (u.ex 0 ≫ T).left = (u.ex z).left := by rw [hT, ex_comp_transl, add_zero]
     intro p hp
     have := hz hp
-    rw [← e] at this
-    exact this
+    rwa [← e] at this
   have hvU := (tangent_mem_iff (u := u) hv _).2 h0
   have e1 := h _ hvU ((T.left.app W).hom s)
   have e2 := GlobalTheory.UnifDifferential.isDiff_one u _ hvU ((T.left.app W).hom s)
@@ -127,8 +126,7 @@ theorem fderiv_eq_zero_of_isDiff_one (u : HolUnif A L g) {w : Fin g → ℂ} (h 
       fun y => valAt' (u.ex (z + y)).left W s := by
     funext y
     rw [← GlobalTheory.HomLinear.valAt'_comp_left, hT, ex_comp_transl]
-  rw [e4, fderiv_comp_add_left (f := fun y => valAt' (u.ex y).left W s), add_zero] at e3
-  exact e3
+  rwa [e4, fderiv_comp_add_left (f := fun y => valAt' (u.ex y).left W s), add_zero] at e3
 
 theorem eq_zero_of_isDiff_one (u : HolUnif A L g) {w : Fin g → ℂ} (h : u.IsDiff w (1 : epsR ℂ ⟶ A)) : w = 0 := by
   let pt : (𝟙_ (Over (Sp ℂ))).left := (default : PrimeSpectrum ℂ)
@@ -138,8 +136,7 @@ theorem eq_zero_of_isDiff_one (u : HolUnif A L g) {w : Fin g → ℂ} (h : u.IsD
     (Set.mem_univ _)
   have h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U := by
     intro q _
-    rw [hsub q]
-    exact hpU
+    rwa [hsub q]
   have hcont : Continuous fun t : ℂ => t • w := continuous_id.smul continuous_const
   have hopen : IsOpen ((fun t : ℂ => t • w) ⁻¹' {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ U}) := (u.hol U 0).1.preimage hcont
   obtain ⟨ρ, hρ, hball⟩ := Metric.isOpen_iff.1 hopen 0 (by simpa using h0)
@@ -154,8 +151,7 @@ theorem eq_zero_of_isDiff_one (u : HolUnif A L g) {w : Fin g → ℂ} (h : u.IsD
       have hl : HasDerivAt (fun t : ℂ => t • w) w t := by
         simpa using (hasDerivAt_id t).smul_const w
       have := hd.hasFDerivAt.comp_hasDerivAt t hl
-      rw [fderiv_eq_zero_of_isDiff_one u h _ hm s] at this
-      exact this
+      rwa [fderiv_eq_zero_of_isDiff_one u h _ hm s] at this
     exact Metric.isOpen_ball.is_const_of_deriv_eq_zero (convex_ball _ _).isPreconnected
       (fun t ht => (hder t ht).differentiableAt.differentiableWithinAt)
       (fun t ht => (hder t ht).deriv) ht (Metric.mem_ball_self hρ)
@@ -188,8 +184,7 @@ theorem exists_affine (u : HolUnif A L g) : ∃ U : A.left.Opens, IsAffineOpen U
     (Set.mem_univ _)
   refine ⟨U, hU, ?_⟩
   intro q _
-  rw [hsub q]
-  exact hpU
+  rwa [hsub q]
 
 theorem eq_of_isDiff (u : HolUnif A L g) {v : epsR ℂ ⟶ A} (hv : IsTangent v) {d d' : Fin g → ℂ}
     (h : u.IsDiff d v) (h' : u.IsDiff d' v) : d = d' := by

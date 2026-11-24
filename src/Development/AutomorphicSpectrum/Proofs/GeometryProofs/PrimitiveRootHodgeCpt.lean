@@ -215,22 +215,17 @@ theorem genWeil_move {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
       (⟨P x.1, pw _ x.2⟩ : {x : Over.mk q ⟶ t.G // x ^ n = 1}))
       fun x x' hxx => Subtype.ext (P.injective (congrArg Subtype.val hxx))
   · intro x x' g hx hx' hg
-    simp only [map_mul]
-    exact h.mul_left _ _ _ (pw _ hx) (pw _ hx') (pw _ hg)
+    simpa only [map_mul] using h.mul_left _ _ _ (pw _ hx) (pw _ hx') (pw _ hg)
   · intro x g g' hx hg hg'
-    simp only [map_mul]
-    exact h.mul_right _ _ _ (pw _ hx) (pw _ hg) (pw _ hg')
+    simpa only [map_mul] using h.mul_right _ _ _ (pw _ hx) (pw _ hg) (pw _ hg')
   · intro χ hχ
     obtain ⟨x, hx, hxg⟩ := h.perfect (fun g => χ (P.symm g)) fun g g' hg hg' => by
-      simp only [map_mul]
-      exact hχ _ _ (pw' _ hg) (pw' _ hg')
+      simpa only [map_mul] using hχ _ _ (pw' _ hg) (pw' _ hg')
     refine ⟨P.symm x, pw' _ hx, fun g hg => ?_⟩
-    have h1 := hxg (P g) (pw _ hg)
-    simpa using h1
+    simpa using hxg (P g) (pw _ hg)
   · intro g hg hall
     have h1 : P g = 1 := h.nondeg (P g) (pw _ hg) fun x hx => by
-      have h2 := hall (P.symm x) (pw' _ hx)
-      simpa using h2
+      simpa using hall (P.symm x) (pw' _ hx)
     exact (map_eq_one_iff P P.injective).1 h1
   · intro x g hx hg k _ _ i xk gk c hxk hgk
     have hr : spMap i ≫ q = (spMap i ≫ ξ') ≫ f := by rw [hq, Category.assoc]
@@ -368,8 +363,7 @@ theorem torsion_of_tate {E : Type} [Field E] [NumberField E] [IsCMField E] (H : 
       have h1 := hsb (m + m')
       have h2 := hsb m
       have h3 := hsb m'
-      rw [map_add (f := _)]
-      rw [smul_sub, smul_add]
+      rw [map_add (f := _), smul_sub, smul_add]
       have h4 : φ (s (m + m')) = m + m' - N • b (m + m') := by rw [eq_sub_iff_add_eq]; exact h1.symm
       rw [h4]
       nth_rw 1 [h2]

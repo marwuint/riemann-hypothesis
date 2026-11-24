@@ -448,12 +448,10 @@ theorem cfFJ_of_pcBound : PcBound → CfFJ := by
       intro y
       have := (h1.comp (φ := fun x : Mx D ρ p => (y, x)) (by fun_prop)).swap hκ2 hε hS (ha k)
       simp only [mul_one] at this
-      simp only [PositivityTheory.Rg.Rsw.pc, e1]
-      exact this
+      simpa only [PositivityTheory.Rg.Rsw.pc, e1] using this
     have e3 : FJ M m ψ b₀ (cf d E s₀ ε k) g η = ∮ w in C(s₀, ε), a k w * FJ M m ψ b₀ (E w) g η := by
       have := h2.swap hκ3 hε hS (ha k)
-      simp only [FJ, e2]
-      exact this
+      simpa only [FJ, e2] using this
     rw [e3]
     exact ker_eq d _ s₀ ε k
 
@@ -483,8 +481,7 @@ theorem factor_of_real_bound (s₀ ε : ℝ) (hε : 0 < ε) :
   intro r
   induction r with
   | zero =>
-    intro u hc hd _
-    exact ⟨u, hc, hd, fun z _ _ => by simp⟩
+    exact fun u hc hd _ => ⟨u, hc, hd, fun z _ _ => by simp⟩
   | succ r ih =>
     intro u hc hd hb
     obtain ⟨B, hB⟩ := hb
@@ -551,10 +548,8 @@ theorem extend_of_real_bound (h : ℂ → ℂ) (d : Polynomial ℂ) (s₀ ε : �
     intro z hz
     by_cases hzs : z = s₀
     · subst hzs
-      intro h0
-      exact hndvd (Polynomial.dvd_iff_isRoot.mpr h0)
-    · intro h0
-      exact hne z hz hzs (by rw [hdeval, h0, mul_zero])
+      exact fun h0 => hndvd (Polynomial.dvd_iff_isRoot.mpr h0)
+    · exact fun h0 => hne z hz hzs (by rw [hdeval, h0, mul_zero])
   have hkey : ∀ z, (z - s₀) ^ n * (h z / d.eval z) =
       ((z - s₀) ^ n * h z / q.eval z) / (z - s₀) ^ m := by
     intro z
@@ -676,10 +671,8 @@ theorem rightId : RightId := by
     intro w hw
     have hw' : M < w.re := hw
     refine ⟨hσ₀ ?_, ?_⟩
-    · show σ₀ < w.re
-      exact lt_of_le_of_lt (le_trans (le_max_left _ _) (le_max_left _ _)) hw'
-    · show c < w.re
-      exact lt_of_le_of_lt (le_max_right _ _) hw'
+    · exact lt_of_le_of_lt (le_trans (le_max_left _ _) (le_max_left _ _)) hw'
+    · exact lt_of_le_of_lt (le_max_right _ _) hw'
   set x₀ : ℂ := ((M + 1 : ℝ) : ℂ)
   have hx₀ : M < x₀.re := by
     show M < ((M + 1 : ℝ) : ℂ).re
@@ -752,8 +745,7 @@ theorem eisHol_of_htExist : HtExist → EisHol := by
       exact this)
     (fun τ hτ => summable_spherical τ (lt_of_le_of_lt (le_max_right _ _) hτ))
     (fun g => (hd g).mono hsub) h
-  refine key.differentiableOn.mono fun z hz => ?_
-  exact mem_rightOf.2 (max_lt hz.1 hz.2)
+  exact key.differentiableOn.mono fun z hz => mem_rightOf.2 (max_lt hz.1 hz.2)
 
 end GlobalTheory.CompanionTheory.EisHolFam
 
@@ -1186,14 +1178,12 @@ theorem small : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) {ψ : AddChar (AF 
   · have h := trace_val (rat β.1) (adj_rat_herm β) (rat V0) (rat R0) (algebraMap (AF D.host.F) (AE D) t) hS
     change ψ (halfTr (Matrix.trace ((rat β.1 : Mx D ρ ρ) ⬝ _))) ≠ 1
     change ψ (halfTr (Matrix.trace ((rat β.1 : Mx D ρ ρ) ⬝ (algebraMap (AF D.host.F) (AE D) t • _)))) ≠ 1
-    rw [h, ht]
-    exact hx0
+    rwa [h, ht]
   · intro γ u hγ x hx hW' hu
     refine cell_absorb (rat (Matrix.replicateCol (Fin 1) (zinc hn v))) (rat (Matrix.replicateRow (Fin 1) (zinc hn r)))
       (algebraMap (AF D.host.F) (AE D) t) ((rank_two_embedding_small hn _ v r).symm) γ u hu ?_
     have hv : lowerC x *ᵥ zinc hn v = 0 := by
-      rw [← hW'] at hvW
-      exact hvW
+      rwa [← hW'] at hvW
     have h0 : (HMul.hMul (lowerC x) (Matrix.replicateCol (Fin 1) (zinc hn v)) : Matrix (Fin n) (Fin 1) D.host.E) = 0 := by
       refine Matrix.ext fun i j => ?_
       have := congrFun hv i
@@ -1469,8 +1459,7 @@ theorem chz_add (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (z : hermA 
 
 theorem trace_rat {k : ℕ} (N : Matrix (Fin k) (Fin k) D.host.E) :
     Matrix.trace (rat N : Mx D k k) = incA D (Matrix.trace N) := by
-  simp only [Matrix.trace, Matrix.diag, rat, Matrix.map_apply]
-  exact (map_sum (incA D) _ _).symm
+  simpa only [Matrix.trace, Matrix.diag, rat, Matrix.map_apply] using (map_sum (incA D) _ _).symm
 
 theorem character_phase_identity {A : Type} [AddCommGroup A] (ψ : AddChar A ℂ) (a c q u : A) (hq : ψ q = 1) :
     ψ (a - c) * ψ (q + c + u) = ψ u * ψ a := by
@@ -1603,8 +1592,7 @@ theorem poisson_step {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F �
           rw [Pp_add_left, Pp_neg_left, Pp_comm b₀ y]
           abel
         rw [e, AddChar.map_add_eq_mul, mul_assoc]
-  · simp only [hs _ w, pairing_eq]
-    exact continuous_psi_Pp hψ b₀ w
+  · simpa only [hs _ w, pairing_eq] using continuous_psi_Pp hψ b₀ w
   · rw [pairing_eq, pairing_eq, pairing_eq, Pp_add_left, AddChar.map_add_eq_mul]
   · rw [pairing_eq]
     exact hn1 _
@@ -1614,8 +1602,7 @@ theorem poisson_step {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F �
     refine ⟨b, hb1, fun u hu ξ => ?_⟩
     have h3 := hb2 (u + y) ⟨u, hu, rfl⟩ ξ
     simp only [f]
-    rw [norm_mul, hn1, mul_one, add_assoc]
-    exact h3
+    rwa [norm_mul, hn1, mul_one, add_assoc]
   · obtain ⟨b, hb1, hb2⟩ := ThetaPoisson.translates_bound hθ ⟨Ω (g * h), hΩ.mem _⟩ {x} isCompact_singleton
     refine Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun γ => ?_) hb1
     rw [hval, norm_mul, hn1, one_mul]
@@ -1757,8 +1744,7 @@ theorem thTwist : ThTwist := by
       exact ⟨z, _, _, gl_levi M g (glR a ha) hg z x y, th_levi hχ hΩ g a ha hg h z x y⟩
     · intro g b hb' hg h z x y
       exact ⟨_, _, y, gl_unip M g (rat b) hb' hg z x y, th_unip hψ hΩ g b hb' hg h z x y⟩
-    · intro g hg h z x y
-      exact ⟨_, _, _, gl_weyl M g hg z x y, th_weyl hψ hb hθ m hΩ g hg h z x y⟩
+    · exact fun g hg h z x y => ⟨_, _, _, gl_weyl M g hg z x y, th_weyl hψ hb hθ m hΩ g hg h z x y⟩
   obtain ⟨z2, x2, y2, e2, t2⟩ := hS 1 z x y
   have e3 : M.nzx z' x' * M.sh y' = M.nzx z2 x2 * M.sh y2 := mul_right_cancel (e.symm.trans e2)
   obtain ⟨rfl, rfl, rfl⟩ := nzx_sh_inj M e3

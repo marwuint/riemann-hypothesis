@@ -325,8 +325,7 @@ theorem swap_datum {Tau : Type} [Fintype Tau] {tauE : Tau → (E →+* ℂ)} {χ
       refine h𝓕.preimage_of_equiv hp.quasiMeasurePreserving
         (e := fun γ => (⟨γ.1ᵀ, by obtain ⟨γ, δ, rfl⟩ := γ; exact ⟨δᵀ, rfl⟩⟩ : ratLF F E nS nT)) ?_ fun γ x => rfl
       constructor
-      · intro a b hab
-        exact Subtype.ext (congrArg Matrix.transpose (congrArg Subtype.val hab))
+      · exact fun a b hab => Subtype.ext (congrArg Matrix.transpose (congrArg Subtype.val hab))
       · rintro ⟨_, δ, rfl⟩
         exact ⟨⟨_, δᵀ, rfl⟩, rfl⟩
     have key := h.om_unit (μ.map m) _ hH hF (dualG σ hS p.2, dualG σ hT p.1) _ (theta_trW σ hS hT ξ₀ ψ hf)
@@ -344,8 +343,7 @@ theorem swap_datum {Tau : Type} [Fintype Tau] {tauE : Tau → (E →+* ℂ)} {χ
       exact hℓ _ (fun i j => hu j i) _ (theta_trW' σ hS hT ξ₀ ψ hf)) _ (theta_trW σ hS hT ξ₀ ψ hf)
     have e1 : splitFacOF χS χT y⁻¹ x⁻¹ = splitFacOF χT χS x y := by
       rw [splitFacOF, splitFacOF, map_inv, map_inv, inv_inv, mul_comm]
-    rw [e1] at this
-    exact this
+    rwa [e1] at this
 
 
 theorem swap_transport {ξ ξ' : AF F ⊗[F] E} {JA : Matrix (Fin nT) (Fin nT) E} {JB JB' : Matrix (Fin nS) (Fin nS) E}

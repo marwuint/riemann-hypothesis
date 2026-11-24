@@ -163,13 +163,11 @@ private theorem iteratedFDeriv_comp_add_clm_zero {E E' G : Type} [NormedAddCommG
     iteratedFDerivWithin_of_isOpen b hU' h0
   have key2 : iteratedFDeriv ℂ b (F' ∘ L) 0 =
       (iteratedFDeriv ℂ b F' (L 0)).compContinuousLinearMap fun _ => L := by
-    rw [← e1, ← e2]
-    exact key
+    rwa [← e1, ← e2]
   have e3 : iteratedFDeriv ℂ b F' (L 0) = iteratedFDeriv ℂ b F y := by
     have := iteratedFDerivWithin_comp_add_left (𝕜 := ℂ) (f := F) (s := Set.univ) b y (L 0)
     simp only [iteratedFDerivWithin_univ, Set.vadd_set_univ, map_zero, add_zero] at this
-    rw [map_zero]
-    exact this
+    rwa [map_zero]
   have hfun : (fun S => F (y + L S)) = F' ∘ L := rfl
   rw [hfun, key2, e3]
   rfl
@@ -195,14 +193,9 @@ theorem detD_detD_comp {ιA ιB : Type} [Fintype ιA] [DecidableEq ιA] [Fintype
     simp only [detD]
     refine Finset.sum_congr rfl (fun τ _ => ?_)
     exact congrArg _ (iteratedFDeriv_comp_add_clm_zero F U hU hF (x₀ + LA T) hT LB _ _)
-  have hD : iteratedFDeriv ℂ (Fintype.card ιA) (fun T => detD (fun S : Matrix ιB ιB ℂ => F (x₀ + LA T + LB S))) 0 =
-      iteratedFDeriv ℂ (Fintype.card ιA) (fun T => ∑ τ : Equiv.Perm ιB, (Equiv.Perm.sign τ : ℂ) *
-        iteratedFDeriv ℂ (Fintype.card ιB) F (x₀ + LA T)
-          (fun i => LB (Matrix.single ((Fintype.equivFin ιB).symm i) (τ ((Fintype.equivFin ιB).symm i)) 1))) 0 := by
-    have h2 := hev
-    rw [← nhdsWithin_univ] at h2
-    have := h2.iteratedFDerivWithin_eq (𝕜 := ℂ) hev.eq_of_nhds (Fintype.card ιA)
-    simpa only [iteratedFDerivWithin_univ] using this
+  have hD := (hev.filter_mono nhdsWithin_le_nhds).iteratedFDerivWithin_eq (𝕜 := ℂ) (s := Set.univ)
+    hev.eq_of_nhds (Fintype.card ιA)
+  simp only [iteratedFDerivWithin_univ] at hD
   have hsum : ∀ u : Fin (Fintype.card ιA) → Matrix ιA ιA ℂ,
       iteratedFDeriv ℂ (Fintype.card ιA) (fun T => ∑ τ : Equiv.Perm ιB, (Equiv.Perm.sign τ : ℂ) *
         iteratedFDeriv ℂ (Fintype.card ιB) F (x₀ + LA T)
@@ -226,13 +219,9 @@ theorem detD_detD_comp {ιA ιB : Type} [Fintype ιA] [DecidableEq ιA] [Fintype
       fun τ _ => contDiffAt_const.mul (hcd' τ)
     rw [iteratedFDeriv_fun_sum_apply hcd, ContinuousMultilinearMap.sum_apply]
     refine Finset.sum_congr rfl (fun τ _ => ?_)
-    have hfun : (fun T => (Equiv.Perm.sign τ : ℂ) * iteratedFDeriv ℂ (Fintype.card ιB) F (x₀ + LA T)
-          (fun i => LB (Matrix.single ((Fintype.equivFin ιB).symm i) (τ ((Fintype.equivFin ιB).symm i)) 1))) =
-        (Equiv.Perm.sign τ : ℂ) • (fun T => iteratedFDeriv ℂ (Fintype.card ιB) F (x₀ + LA T)
-          (fun i => LB (Matrix.single ((Fintype.equivFin ιB).symm i) (τ ((Fintype.equivFin ιB).symm i)) 1))) := by
-      funext T
-      simp
-    rw [hfun, iteratedFDeriv_const_smul_apply (hcd' τ), ContinuousMultilinearMap.smul_apply, smul_eq_mul]
+    have hfun := iteratedFDeriv_const_smul_apply' (a := (Equiv.Perm.sign τ : ℂ)) (hcd' τ)
+    simp only [smul_eq_mul] at hfun
+    rw [hfun, ContinuousMultilinearMap.smul_apply, smul_eq_mul]
     congr 1
     exact (iteratedFDeriv_comp_add_clm_zero _ U hU (hΨ τ) x₀ hx LA _ _).trans
       (iteratedFDeriv_add_append_eq_iteratedFDeriv_apply _ _ F U hU hF x₀ hx _ _).symm
@@ -290,8 +279,7 @@ private theorem fderiv_apply_mul_equivariant_of_equivariant {G : M2 n → ℂ} (
   have hB : HasFDerivAt (fun y => c * G y) (c • fderiv ℂ G x) x := hd2.hasFDerivAt.const_mul c
   have e3 := hA'.unique hB
   have e4 : ((fderiv ℂ G (L x)).comp L) (x * Z) = (c • fderiv ℂ G x) (x * Z) := by rw [e3]
-  rw [Matrix.mul_assoc]
-  exact e4
+  rwa [Matrix.mul_assoc]
 
 private theorem fderiv_fderiv_mul_comm_of_mul_zero {G : M2 n → ℂ} (hG : ContDiffOn ℂ ∞ G (Dom n)) {a b : M2 n} (hab : a * b = 0)
     (hba : b * a = 0) :
@@ -478,8 +466,7 @@ theorem transpose (hI : InfInv) (F1 F2 : M2 n → ℂ) (χ1 χ2 : M2 n → ℂ) 
     fun k => (iteratedFDeriv_mul_eq_foldr_fderiv_of_mul_zero hF2 N W hW (ι k) (hin k)).trans (foldr_fderiv_reverse_eqOn_of_mul_zero (List.ofFn W) hF2 hl (hin k)).symm
   simp_rw [eA, eB]
   have key := transpose_lemma_14 hI Kg μ ι hι hK χ1 χ2 h12 (List.ofFn W) hl F1 hF1 h1 F2 hF2 h2
-  rw [List.length_ofFn] at key
-  exact key
+  rwa [List.length_ofFn] at key
 
 alias iteratedFDeriv_left_mul := _root_.PositivityTheory.Rg.Sw.LVs.left_mul'
 

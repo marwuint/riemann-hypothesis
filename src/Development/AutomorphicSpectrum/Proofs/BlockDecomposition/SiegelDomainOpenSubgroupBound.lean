@@ -89,8 +89,7 @@ theorem mem_parFlag_first_of_minParOne : ∀ (F E : Type) [Field F] [NumberField
   choose u hu1 _ using hu
   have e1 := mul_firstCols_eq _ _ B hB e s
   have hBs : (B.submatrix (Fin.castLE s.2) (Fin.castLE s.2)).BlockTriangular id := by
-    intro i j hij
-    exact hB hij
+    exact fun i j hij => hB hij
   have hdet : IsUnit (B.submatrix (Fin.castLE s.2) (Fin.castLE s.2)).det := by
     rw [Matrix.det_of_isUpperTriangular hBs]
     refine ⟨∏ i, u (Fin.castLE s.2 i), ?_⟩
@@ -101,12 +100,9 @@ theorem mem_parFlag_first_of_minParOne : ∀ (F E : Type) [Field F] [NumberField
       (GlobalTheory.SiegelSet.adMat F X).submatrix id (Fin.castLE s.2) := rfl
   refine ⟨⟨B.submatrix (Fin.castLE s.2) (Fin.castLE s.2), ?_, ?_⟩,
     ⟨(B.submatrix (Fin.castLE s.2) (Fin.castLE s.2))⁻¹, ?_, ?_⟩⟩
-  · intro i j h
-    exact absurd h (lt_irrefl 0)
-  · rw [hZ]
-    exact e1
-  · intro i j h
-    exact absurd h (lt_irrefl 0)
+  · exact fun i j h => absurd h (lt_irrefl 0)
+  · rwa [hZ]
+  · exact fun i j h => absurd h (lt_irrefl 0)
   · rw [hZ, map_inv]
     set g := GlobalTheory.AdelicU.matHom (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) σ J p
     set Z := (GlobalTheory.SiegelSet.adMat F X).submatrix id (Fin.castLE s.2)
@@ -243,8 +239,7 @@ theorem near_cusp_one (F E : Type) [Field F] [NumberField F] [Field E] [NumberFi
         (projFin σ J p * projFin σ J k)⁻¹ * projFin σ J q * (projFin σ J p * projFin σ J k) := by
       simp only [map_mul, map_inv, hfa, mul_one]
     have := hqW _ hh
-    rw [← e] at this
-    exact this
+    rwa [← e] at this
   · rw [mul_assoc (γ * (p * a * k)), ofInf_projInf_mul_ofFin_projFin]
     group
 

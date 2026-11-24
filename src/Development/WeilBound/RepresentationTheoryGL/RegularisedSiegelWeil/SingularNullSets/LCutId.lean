@@ -160,8 +160,7 @@ theorem nb_comm {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D} {y : her
   have key : ∀ {S : Type} [CommRing S] (φ : AE D →+* S), (mat (nb y)).map φ = 1 ∨ (mat g).map φ = 1 →
       ∀ i j, φ ((mat (nb y) * mat g) i j) = φ ((mat g * mat (nb y)) i j) := by
     intro S _ φ h i j
-    have e := map_comm φ (mat (nb y)) (mat g) h
-    exact congrFun (congrFun e i) j
+    exact congrFun (congrFun (map_comm φ (mat (nb y)) (mat g) h) i) j
   ext i j
   refine ae_ext _ _ (fun w => key _ (Or.inl (mat_nb_map_one hnb _ y fun a b => hi w a b)) i j) (fun v' => ?_)
   by_cases hv : v' = v
@@ -229,8 +228,7 @@ theorem nb_mem_KAt {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D} {y : 
       have e := mat_nb_map_one hnb (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom y
         fun a b => fst_zero _ fun w => hi w a b
       apply Units.ext
-      rw [MonoidHom.comp_apply, Formalism.UG.bc, Units.coe_map, Units.val_one]
-      exact e
+      rwa [MonoidHom.comp_apply, Formalism.UG.bc, Units.coe_map, Units.val_one]
     · refine Subgroup.mem_iInf.2 fun v' => Subgroup.mem_iInf.2 fun hv' => ?_
       rw [MonoidHom.mem_ker]
       exact hoff v' fun h => hv' (Finset.mem_singleton.2 h)
@@ -272,8 +270,7 @@ theorem omega_fix {W : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ θ} {μ : Mea
     rw [nb_comm hnb hy.1 hy.2.1 hg, map_mul, Module.End.mul_apply, hΨ _ (nb_mem_KAt hnb hy)]
   have e2 := hω.unip (nb y) y.1 (hnb y) (ω g Ψ) X
   rw [map_mul, Module.End.mul_apply] at e1
-  rw [e1] at e2
-  exact e2
+  rwa [e1] at e2
 
 theorem ip_orbit (W : HSp D) (h : GA D W) (x : Matrix (Fin W.rank) (Fin n) D.host.E) :
     ip W (mm (Formalism.L2.Theta.mt W h) (rat x)) (mm (Formalism.L2.Theta.mt W h) (rat x)) = rat (gramQ W x) := by
@@ -415,8 +412,7 @@ theorem cutId : Polar → CfFJ → CoefId → ThCoef → FourierPt → WeakAppro
   have hF₂L : ∀ γ ∈ GF D n, ∀ g, F₂ (γ * g) = F₂ g := by
     intro γ hγ g
     rw [hF₂]
-    refine integral_congr_ae (Eventually.of_forall fun h => ?_)
-    exact hthL γ hγ g h
+    exact integral_congr_ae (Eventually.of_forall fun h => hthL γ hγ g h)
   have hF₂R : ∀ k ∈ U₂, k ∈ atPts D.sp.cm.sig (Jst D n) {v} → ∀ g, F₂ (g * k) = F₂ g := by
     intro k hk hk' g
     rw [hF₂]
@@ -430,8 +426,7 @@ theorem cutId : Polar → CfFJ → CoefId → ThCoef → FourierPt → WeakAppro
     have hthS : ∀ x : hermA D n, F₂ (nb x * g) = thS W I.m 𝓕 (fun X => pch ψ x.1 (ip W X X) * (ωW g Ψ').1 X) := by
       intro x
       rw [hF₂]
-      refine integral_congr_ae (Eventually.of_forall fun h => ?_)
-      exact (hthF x g hg).2 h
+      exact integral_congr_ae (Eventually.of_forall fun h => (hthF x g hg).2 h)
     have hF₂c : Continuous fun x : hermA D n => F₂ (nb x * g) := by
       simp only [hthS]; exact hTc
     have hF₁c' : Continuous fun x : hermA D n => cutR nb C (cf dd E ((t : ℂ) / 2) ε 1) (nb x * g) :=

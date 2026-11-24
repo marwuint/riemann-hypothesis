@@ -180,34 +180,21 @@ theorem LateralTheory.EtaleFoundations.etale_free_sheaf_hom_universal_property_h
     apply ModuleCat.free_hom_ext
     intro x
     have := h U.unop x.down
-    rw [gen_eq, gen_eq] at this
-    exact this
+    rwa [gen_eq, gen_eq] at this
   · intro V U g x
-    have hn := (toSheafify Scheme.etaleTopology ((freeP R).obj P)).naturality g.op
-    calc _ = (((toSheafify Scheme.etaleTopology ((freeP R).obj P)).app (op U) ≫
-          (sheafify Scheme.etaleTopology ((freeP R).obj P)).map g.op)).hom
-            (ModuleCat.freeMk (ULift.up x) : ((freeP R).obj P).obj (op U)) := rfl
-      _ = ((((freeP R).obj P).map g.op ≫
-          (toSheafify Scheme.etaleTopology ((freeP R).obj P)).app (op V))).hom
-            (ModuleCat.freeMk (ULift.up x) : ((freeP R).obj P).obj (op U)) := by rw [hn]
-      _ = ((toSheafify Scheme.etaleTopology ((freeP R).obj P)).app (op V)).hom
-            ((((freeP R).obj P).map g.op).hom
-              (ModuleCat.freeMk (ULift.up x) : ((freeP R).obj P).obj (op U))) := rfl
-      _ = _ := by rw [freePresheaf_obj_map_generator]; rfl
+    have hn := congrArg
+      (fun η => η.hom (ModuleCat.freeMk (ULift.up x) : ((freeP R).obj P).obj (op U)))
+      ((toSheafify Scheme.etaleTopology ((freeP R).obj P)).naturality g.op)
+    exact hn.symm.trans
+      (congrArg ((toSheafify Scheme.etaleTopology ((freeP R).obj P)).app (op V)).hom
+        (freePresheaf_obj_map_generator R P g x))
   · intro Q f U x
-    have hn := congrArg (fun η => η.app (op U))
+    have hn := congrArg
+      (fun η => (η.app (op U)).hom (ModuleCat.freeMk (ULift.up x) : ((freeP R).obj P).obj (op U)))
       (toSheafify_naturality Scheme.etaleTopology ((freeP R).map f))
-    calc _ = (((toSheafify Scheme.etaleTopology ((freeP R).obj P)).app (op U) ≫
-          (sheafifyMap Scheme.etaleTopology ((freeP R).map f)).app (op U))).hom
-            (ModuleCat.freeMk (ULift.up x) : ((freeP R).obj P).obj (op U)) := rfl
-      _ = ((((freeP R).map f).app (op U) ≫
-          (toSheafify Scheme.etaleTopology ((freeP R).obj Q)).app (op U))).hom
-            (ModuleCat.freeMk (ULift.up x) : ((freeP R).obj P).obj (op U)) := by
-              simp only [NatTrans.comp_app] at hn; rw [hn]
-      _ = ((toSheafify Scheme.etaleTopology ((freeP R).obj Q)).app (op U)).hom
-            ((((freeP R).map f).app (op U)).hom
-              (ModuleCat.freeMk (ULift.up x) : ((freeP R).obj P).obj (op U))) := rfl
-      _ = _ := by rw [freePresheaf_map_generator]; rfl
+    exact hn.symm.trans
+      (congrArg ((toSheafify Scheme.etaleTopology ((freeP R).obj Q)).app (op U)).hom
+        (freePresheaf_map_generator R f U x))
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.EtaleCohomology.TateTwists.EtaleFreeSheafHomUniversalPropertyHolds =====

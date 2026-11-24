@@ -100,10 +100,7 @@ theorem exists_etale_lift_of_surjective {Q Qb : Type} [CommRing Q] [CommRing Qb]
   choose g hg using fun j : σ => hsurj (P.relation j)
   let N := Algebra.PreSubmersivePresentation.naive (R := Q) (v := g) P.map P.map_inj
   let Nb := N.baseChange Qb
-  have hrel : ∀ j, Nb.relation j = P.relation j := by
-    intro j
-    show MvPolynomial.map (algebraMap Q Qb) (g j) = P.relation j
-    exact hg j
+  have hrel : ∀ j, Nb.relation j = P.relation j := fun j => hg j
   have hker : RingHom.ker (MvPolynomial.aeval (R := Qb) Nb.val) =
       RingHom.ker (MvPolynomial.aeval (R := Qb) P.val) := by
     rw [← Algebra.Generators.ker_eq_ker_aeval_val, ← Algebra.Generators.ker_eq_ker_aeval_val,
@@ -133,8 +130,7 @@ theorem exists_etale_lift_of_surjective {Q Qb : Type} [CommRing Q] [CommRing Qb]
       exact He _
     exact (isUnit_map_iff e _).mp (h2 ▸ P.jacobian_isUnit)
   have hjac : IsUnit ((1 : Qb) ⊗ₜ[Q] N.jacobian) := by
-    rw [← Algebra.PreSubmersivePresentation.baseChange_jacobian]
-    exact hjacb
+    rwa [← Algebra.PreSubmersivePresentation.baseChange_jacobian]
   let L := Algebra.SubmersivePresentation.localizationAway (Localization.Away N.jacobian) N.jacobian
   let S : Algebra.SubmersivePresentation Q (Localization.Away N.jacobian) (Unit ⊕ ι) (Unit ⊕ σ) :=
     { __ := L.toPreSubmersivePresentation.comp N
@@ -309,15 +305,13 @@ theorem nonempty_lift {O R Λ : Type} [CommRing O] [CommRing R] [CommRing Λ] (a
     have e1 : MvPolynomial.eval₂Hom a T (MvPolynomial.C o) = a o := by simp
     have e2 : μ (MvPolynomial.C o) = MvPolynomial.C (Ideal.Quotient.mk I x) := by simp [μ, hx]
     have := DFunLike.congr_fun h2 (MvPolynomial.C o)
-    rw [RingHom.comp_apply, RingHom.comp_apply, e1, e2, hjbC] at this
-    exact this
+    rwa [RingHom.comp_apply, RingHom.comp_apply, e1, e2, hjbC] at this
   have hT' : ∀ k, j (T k) = Ideal.Quotient.mk _ (t k) := by
     intro k
     have e1 : MvPolynomial.eval₂Hom a T (MvPolynomial.X k) = T k := by simp
     have e2 : μ (MvPolynomial.X k) = MvPolynomial.X k := by simp [μ]
     have := DFunLike.congr_fun h2 (MvPolynomial.X k)
-    rw [RingHom.comp_apply, RingHom.comp_apply, e1, e2, hjbX] at this
-    exact this
+    rwa [RingHom.comp_apply, RingHom.comp_apply, e1, e2, hjbX] at this
   refine ⟨{ D := D, i := i, t := t, et := by rw [hqe]; exact hq, j := j, hj := hj', hT := hT',
             univ := ?_ }⟩
   intro B _ h g hI hg

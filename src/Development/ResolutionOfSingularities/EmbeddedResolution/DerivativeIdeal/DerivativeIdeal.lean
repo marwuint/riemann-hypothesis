@@ -130,8 +130,7 @@ theorem derivIdeal_iSup_le (k : Type*) [CommRing k] {S : Type*} [CommRing S] [Al
   intro D x hx
   rw [hspan] at hx
   refine derivation_apply_mem_of_mem_span D ?_ ?_ hx
-  · rw [← hspan]
-    exact hle
+  · rwa [← hspan]
   · intro g hg
     obtain ⟨i, hi⟩ := Set.mem_iUnion.mp hg
     have hi' : g ∈ J i := hi
@@ -144,8 +143,7 @@ theorem derivIdeal_mul_le (k : Type*) [CommRing k] {S : Type*} [CommRing S] [Alg
   rw [derivIdeal_le_iff]
   constructor
   · rw [Ideal.mul_le]
-    intro r hr s hs
-    exact Submodule.mem_sup_left (Ideal.mul_mem_mul hr (le_derivIdeal k J hs))
+    exact fun r hr s hs => Submodule.mem_sup_left (Ideal.mul_mem_mul hr (le_derivIdeal k J hs))
   · intro D x hx
     refine Submodule.mul_induction_on hx ?_ ?_
     · intro m hm n hn
@@ -167,8 +165,7 @@ private theorem derivation_apply_mem_pow_mul_derivIdeal (k : Type*) [CommRing k]
   | zero =>
       intro x hx
       have hx' : x ∈ J := by simpa using hx
-      have h := derivation_apply_mem_derivIdeal k J D hx'
-      simpa using h
+      simpa using derivation_apply_mem_derivIdeal k J D hx'
   | succ n ih =>
       intro x hx
       rw [pow_succ] at hx
@@ -193,8 +190,7 @@ theorem derivIdeal_pow_succ_le (k : Type*) [CommRing k] {S : Type*} [CommRing S]
   refine ⟨?_, ?_⟩
   · rw [pow_succ]
     exact Ideal.mul_le.mpr fun a ha b hb => Ideal.mul_mem_mul ha (le_derivIdeal k J hb)
-  · intro D x hx
-    exact derivation_apply_mem_pow_mul_derivIdeal k J D n x hx
+  · exact fun D x hx => derivation_apply_mem_pow_mul_derivIdeal k J D n x hx
 
 private theorem derivation_apply_mem_pow_of_mem_pow_succ {k : Type*} [CommRing k] {S : Type*}
     [CommRing S] [Algebra k S] (J : Ideal S) (D : Derivation k S S) :
@@ -214,8 +210,7 @@ private theorem derivation_apply_mem_pow_of_mem_pow_succ {k : Type*} [CommRing k
         refine Submodule.add_mem _ (Ideal.mul_mem_right _ _ ha) ?_
         have hb' : D a * b ∈ J ^ n * J := Ideal.mul_mem_mul (ih a ha) hb
         rw [← pow_succ] at hb'
-        rw [mul_comm b (D a)]
-        exact hb'
+        rwa [mul_comm b (D a)]
       · intro a b ha hb
         rw [map_add (f := _)]
         exact Submodule.add_mem _ ha hb
@@ -227,12 +222,9 @@ theorem derivIdeal_pow_succ_le_pow (k : Type*) [CommRing k] {S : Type*} [CommRin
   · intro x hx
     rw [pow_succ] at hx
     refine Submodule.mul_induction_on hx ?_ ?_
-    · intro m hm y _
-      exact Ideal.mul_mem_right _ _ hm
-    · intro a b ha hb
-      exact Submodule.add_mem _ ha hb
-  · intro D x hx
-    exact derivation_apply_mem_pow_of_mem_pow_succ J D n x hx
+    · exact fun m hm y _ => Ideal.mul_mem_right _ _ hm
+    · exact fun a b ha hb => Submodule.add_mem _ ha hb
+  · exact fun D x hx => derivation_apply_mem_pow_of_mem_pow_succ J D n x hx
 
 private theorem pow_succ_le_pow {S : Type*} [CommRing S] (J : Ideal S) (m : ℕ) :
     J ^ (m + 1) ≤ J ^ m := by
@@ -305,8 +297,7 @@ theorem derivIdealIterate_le_pow_of_le_pow (k : Type*) [CommRing k] {S : Type*} 
     derivIdealIterate k r I ≤ P ^ (n - r) := by
   induction r with
   | zero =>
-      rw [derivIdealIterate_zero, Nat.sub_zero]
-      exact h
+      rwa [derivIdealIterate_zero, Nat.sub_zero]
   | succ r ih =>
       rw [derivIdealIterate_succ]
       have h1 : derivIdeal k (derivIdealIterate k r I) ≤ derivIdeal k (P ^ (n - r)) :=

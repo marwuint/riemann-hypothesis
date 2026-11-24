@@ -70,9 +70,7 @@ theorem mul_val_mem {x : Mat n} (hx : x ∈ GLs n) (y : G n) : x * y.val ∈ GLs
   rw [Matrix.det_mul]
   exact mul_ne_zero hx ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
 
-theorem val_mem (y : G n) : y.val ∈ GLs n := by
-  show y.val.det ≠ 0
-  exact ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
+theorem val_mem (y : G n) : y.val ∈ GLs n := ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
 
 section Congr
 
@@ -106,8 +104,7 @@ theorem epow_congr {f₁ f₂ : Mat n → V} (h : EqOn f₁ f₂ (GLs n)) (s : B
 theorem gel_congr {f₁ f₂ : Mat n → V} (h : EqOn f₁ f₂ (GLs n)) (s : Bool) (m : ℕ) :
     EqOn (gel s m f₁) (gel s m f₂) (GLs n) := by
   intro g hg
-  simp only [gel, Finset.sum_apply]
-  exact Finset.sum_congr rfl fun a _ => epow_congr h s m a a hg
+  simpa only [gel, Finset.sum_apply] using Finset.sum_congr rfl fun a _ => epow_congr h s m a a hg
 
 theorem zop_congr : ∀ (w : List (Bool × ℕ)) {f₁ f₂ : Mat n → V}, EqOn f₁ f₂ (GLs n) →
     EqOn (zOp w f₁) (zOp w f₂) (GLs n)
@@ -234,8 +231,7 @@ theorem kerComm_of (hWN : WaveN) (hWA : WaveA) : KerComm := by
     refine hIS n ℝ MeasureTheory.volume E.V (fun t x' => ((g t : ℝ) : ℂ) • u t x') ?_ ?_ ?_
     · intro t
       exact hU'.comp ((contDiff_const.prodMk contDiff_id).contDiffOn) fun y hy => ⟨trivial, hy⟩
-    · intro m
-      exact slice_cont isOpen_GLs hU' m
+    · exact fun m => slice_cont isOpen_GLs hU' m
     · intro x₀ _
       refine ⟨Set.univ, Filter.univ_mem, Set.Icc (-T) T, isCompact_Icc, fun t ht y _ => ?_⟩
       have : T < |t| := by

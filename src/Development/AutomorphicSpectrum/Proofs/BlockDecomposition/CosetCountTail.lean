@@ -100,20 +100,15 @@ theorem UpperTheory.Reformulated.B.Yla7.main :
         exact QuotientGroup.eq.mp this
     · rintro ⟨q, hq, hx⟩
       rw [hmem] at hx
-      have h1 := hD _ ((hS q).mp hq) _ hx
-      simpa using h1
+      simpa using hD _ ((hS q).mp hq) _ hx
   have hdisj : (S : Set (G ⧸ I)).PairwiseDisjoint f := by
     intro a _ b _ hab
     rw [Function.onFun, Set.disjoint_left]
-    intro x hxa hxb
-    exact hab ((hmk a x hxa).symm.trans (hmk b x hxb))
+    exact fun x hxa hxb => hab ((hmk a x hxa).symm.trans (hmk b x hxb))
   have hmeas : ∀ q ∈ S, MeasurableSet (f q) := by
-    intro q _
-    exact (hI.preimage (continuous_const.mul continuous_id)).measurableSet
+    exact fun q _ => (hI.preimage (continuous_const.mul continuous_id)).measurableSet
   rw [hDeq, MeasureTheory.measure_biUnion_finset hdisj hmeas]
-  have : ∀ q ∈ S, μ (f q) = μ (I : Set G) := by
-    intro q _
-    exact MeasureTheory.measure_preimage_mul μ _ _
+  have : ∀ q ∈ S, μ (f q) = μ (I : Set G) := fun q _ => MeasureTheory.measure_preimage_mul μ _ _
   rw [Finset.sum_congr rfl this, Finset.sum_const, nsmul_eq_mul]
 end -- clump:auto
 end -- clump:auto

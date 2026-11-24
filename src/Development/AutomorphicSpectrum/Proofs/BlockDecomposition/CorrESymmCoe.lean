@@ -272,8 +272,7 @@ theorem ext_cont {T : Type} [TopologicalSpace T] (hK : IsCompact (K : Set G))
     ((continuous_snd.tendsto y₀).comp hU').mul
       (((continuous_subtype_val.tendsto k₁).comp hk).inv)
   have hqe : ∀ y : T × G, y.2 * ((kOf hL y.2 : K) : G)⁻¹ = (qOf hL y.2 : G) := by
-    intro y
-    exact mul_inv_eq_of_eq_mul (qk_spec hL y.2)
+    exact fun y => mul_inv_eq_of_eq_mul (qk_spec hL y.2)
   simp only [hqe] at hqG
   have hmem : y₀.2 * (k₁ : G)⁻¹ ∈ Q :=
     hL.par.closed.mem_of_tendsto hqG (Eventually.of_forall fun y => (qOf hL y.2).2)
@@ -284,8 +283,7 @@ theorem ext_cont {T : Type} [TopologicalSpace T] (hK : IsCompact (K : Set G))
   have hy : ext hL ρ (F y₀.1) y₀.2 = (am ρ c₀ π ⟨_, hmem⟩ k₁).comp (F y₀.1 (π ⟨_, hmem⟩)) := by
     rw [← ext_eq hL ρ (hF y₀.1)]
     simp
-  rw [hy]
-  exact hlim
+  rwa [hy]
 
 theorem am_bound (hK : IsCompact (K : Set G)) (hL : IsLevi Γ K Q Γ' K' π ι c₀)
     {ρ : K →* (W →L[ℂ] W)} (hρ : Continuous ρ) : ∃ B : ℝ, ∀ (q : Q) (k : K), ‖am ρ c₀ π q k‖ ≤ B := by
@@ -328,8 +326,7 @@ theorem ext_bdd [LocallyCompactSpace G] {T : Type} (hK : IsCompact (K : Set G))
   obtain ⟨B, hB⟩ := am_bound hK hL hρ
   refine ⟨B * M, fun t ht g' hg' => ?_⟩
   have hq : (qOf hL g' : G) ∈ C₁ := by
-    refine ⟨(g', kOf hL g'), ⟨hg', (kOf hL g').2⟩, ?_⟩
-    exact mul_inv_eq_of_eq_mul (qk_spec hL g')
+    exact ⟨(g', kOf hL g'), ⟨hg', (kOf hL g').2⟩, mul_inv_eq_of_eq_mul (qk_spec hL g')⟩
   have h2 := hM t ht (π (qOf hL g')) ⟨_, hq, rfl⟩
   have h1 := hB (qOf hL g') (kOf hL g')
   unfold ext
@@ -376,8 +373,7 @@ theorem cos_exists (hL : IsLevi Γ K Q Γ' K' π ι c₀) (hP : IsPull Q P P' π
       refine ⟨Quotient.mk _ ⟨ι m, hL.ιΓ m m.2, (ι m).2⟩, ?_⟩
       show Quotient.mk _ (f _) = _
       congr 1
-      apply Subtype.ext
-      exact hL.sect m
+      exact Subtype.ext (hL.sect m)
   refine ⟨Equiv.ofBijective φ₀ hbij, fun x => ?_⟩
   set d := Quotient.out x with hd
   have hx : Quotient.mk _ d = x := Quotient.out_eq x
@@ -500,10 +496,8 @@ theorem mem_secSp_iff (hL : IsLevi Γ K Q Γ' K' π ι c₀) (hP : IsPull Q P P'
     have h2 := hw _ hιP
     have h3 : c ((kι hL m : K) : G) = c' m := by
       have := hP.ch (ι m) (by rw [hL.sect]; exact hm)
-      rw [hL.sect, hL.triv, one_mul] at this
-      exact this
-    rw [h3] at h2
-    exact h2
+      rwa [hL.sect, hL.triv, one_mul] at this
+    rwa [h3] at h2
   · rintro ⟨hfix, hw⟩ r hr
     obtain ⟨hrQ, hrπ⟩ := (hP.mem _).1 hr
     set m : K' := ⟨π ⟨r, hrQ⟩, hL.πK ⟨r, hrQ⟩ r.2⟩ with hm
@@ -554,8 +548,7 @@ theorem isPar_pull [IsTopologicalGroup G] (hL : IsLevi Γ K Q Γ' K' π ι c₀)
     · show π (q * ι k'⁻¹) ∈ P'
       have : π (q * ι k'⁻¹) = p' := by
         simp [map_mul, map_inv, hL.sect, hq]
-      rw [this]
-      exact hp'
+      rwa [this]
     · simp [hg, hm, kι, MonoidHom.codRestrict, MonoidHom.comp, Subgroup.subtype]
   · intro p hp q hq
     obtain ⟨hp1, hp2⟩ := (hP.mem _).1 hp

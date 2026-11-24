@@ -162,10 +162,8 @@ private theorem top_le_span_range_one_tmul
   intro w _
   refine TensorProduct.induction_on w ?_ ?_ ?_
   · exact Submodule.zero_mem _
-  · intro a m
-    exact key m a
-  · intro u v hu hv
-    exact Submodule.add_mem _ hu hv
+  · exact fun a m => key m a
+  · exact fun u v hu hv => Submodule.add_mem _ hu hv
 
 omit [Algebra k S] [IsScalarTower k (MvPolynomial ι k) S] in
 theorem top_le_span_one_tmul_D_X :
@@ -421,8 +419,7 @@ private theorem span_union_image_erase_eq_top {K V : Type*} [Field K] [AddCommGr
   rintro v (hv | ⟨j, hj, rfl⟩)
   · exact Submodule.subset_span (Set.mem_union_left _ hv)
   · by_cases hjj : j = j0
-    · rw [hjj]
-      exact hb
+    · rwa [hjj]
     · exact Submodule.subset_span (Set.mem_union_right _
         ⟨j, Finset.mem_coe.mpr (Finset.mem_erase.mpr ⟨hjj, Finset.mem_coe.mp hj⟩), rfl⟩)
 
@@ -460,8 +457,7 @@ theorem exists_basis_sum_of_linearIndependent {K V : Type*} [Field K] [AddCommGr
     intro g hg
     have hg' : (∑ i : Fin h, g (Sum.inl i) • c i)
         + (∑ j : {j : ι // j ∈ J}, g (Sum.inr j) • b (j : ι)) = 0 := by
-      rw [Fintype.sum_sum_type] at hg
-      exact hg
+      rwa [Fintype.sum_sum_type] at hg
     have hz : ∀ j : {j : ι // j ∈ J}, g (Sum.inr j) = 0 := by
       by_contra hcon
       push Not at hcon
@@ -479,9 +475,7 @@ theorem exists_basis_sum_of_linearIndependent {K V : Type*} [Field K] [AddCommGr
       have hB : (∑ j ∈ Finset.univ.erase j0, g (Sum.inr j) • b (j : ι))
           ∈ Submodule.span K (Set.range c ∪ (⇑b) '' (↑(J.erase (j0 : ι)) : Set ι)) := by
         refine Submodule.sum_mem _ fun j hj => Submodule.smul_mem _ _ ?_
-        have hne : (j : ι) ≠ (j0 : ι) := by
-          intro hh
-          exact (Finset.ne_of_mem_erase hj) (Subtype.ext hh)
+        have hne : (j : ι) ≠ (j0 : ι) := fun hh => (Finset.ne_of_mem_erase hj) (Subtype.ext hh)
         exact Submodule.subset_span (Set.mem_union_right _
           ⟨(j : ι), Finset.mem_coe.mpr (Finset.mem_erase.mpr ⟨hne, j.2⟩), rfl⟩)
       have hxmem : g (Sum.inr j0) • b (j0 : ι)
@@ -602,8 +596,7 @@ theorem formallyEtale_of_isUnit_det_of_eq_coord (k : Type*) [CommRing k] (ι : T
     rw [hw i]
   have h : IsUnit (e.det fun i : ι =>
       KaehlerDifferential.D k T (JacobianCriterion.coord k ι T i)) := by
-    rw [hfun]
-    exact hdet
+    rwa [hfun]
   exact JacobianCriterion.formallyEtale_of_isUnit_det k ι T e h
 
 theorem formallyEtale_aeval_of_isUnit_det {k : Type*} [CommRing k] {ι : Type*} [Fintype ι]
@@ -702,8 +695,7 @@ theorem exists_generators_maximalIdeal_of_linearIndependent_D (k : Type*) [CommR
       simp [Units.smul_def]
     have key := hindep.units_smul
       (fun i : Fin h => Units.mk0 (IsLocalRing.residue A (c i)) (hne i))
-    rw [hfun, ← hsmul]
-    exact key
+    rwa [hfun, ← hsmul]
 
 end
 

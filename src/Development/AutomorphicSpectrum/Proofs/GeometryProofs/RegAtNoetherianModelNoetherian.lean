@@ -92,8 +92,7 @@ lemma exists_secVal_eq {ξ : Spec (CommRingCat.of Ω) ⟶ X} (hg : IsCptGen ξ) 
     have hqW : q.1 ∈ V ⊓ U := ⟨hqV, q.2⟩
     have hW : genPt ξ ∈ V ⊓ U := (hU _ q.2).mem_open (V ⊓ U).isOpen hqW
     refine ⟨V ⊓ U, hqW, homOfLE inf_le_right, hW, X.presheaf.map (homOfLE inf_le_left).op s, ?_⟩
-    rw [secVal_res, ← genMap_germ ξ ⟨q.1, hU _ q.2⟩ V hqV]
-    exact ht
+    rwa [secVal_res, ← genMap_germ ξ ⟨q.1, hU _ q.2⟩ V hqV]
   choose W hq i hW s hs using key
   have comp : TopCat.Presheaf.IsCompatible X.sheaf.1 W s := by
     intro p q
@@ -137,8 +136,7 @@ lemma isNoetherianRing_chart {ξ : Spec (CommRingCat.of Ω) ⟶ X} {o : Type} [C
     (secVal ξ U h).codRestrict _ fun s => (mem _).2 ⟨s, rfl⟩
   have hb : Function.Bijective g := by
     constructor
-    · intro s t e
-      exact secVal_injective tie.gen U h hsp (congrArg Subtype.val e)
+    · exact fun s t e => secVal_injective tie.gen U h hsp (congrArg Subtype.val e)
     · rintro ⟨a, ha⟩
       obtain ⟨s, rfl⟩ := (mem a).1 ha
       exact ⟨s, rfl⟩

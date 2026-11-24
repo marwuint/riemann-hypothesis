@@ -358,8 +358,7 @@ theorem monomialBlowupSeq_schemeAt (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Sp
   have hlen : (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n).length = n := by
     have h := monomialBlowupIterate_length hinv (emptyMarkedBlowupSequenceData p I m E) n
       (fun j hj => isAdmissibleCenter_of_lt_monomialStallIndex hinv p I m E j (lt_of_lt_of_le hj hn))
-    rw [emptyMarkedBlowupSequenceData_length, Nat.zero_add] at h
-    exact h
+    rwa [emptyMarkedBlowupSequenceData_length, Nat.zero_add] at h
   rw [hlen]
   have hsplit : monomialStallIndex hinv p I m E = n + (monomialStallIndex hinv p I m E - n) := by
     omega
@@ -488,8 +487,7 @@ private theorem monomialBlowupIterate_boundary_of_le (hinv : ComapIsoInvariance.
           List.map (fun D => D.comap (eqToHom ho)) (s.boundary i) := by
   induction d with
   | zero =>
-      intro _ ho
-      exact (map_comap_eqToHom_self ho (s.boundary i)).symm
+      exact fun _ ho => (map_comap_eqToHom_self ho (s.boundary i)).symm
   | succ d ih =>
       intro hstep ho
       have h2 : MarkedBlowupSequenceData.IsAdmissibleCenter (MarkedBlowupSequenceData.monomialBlowupIterate hinv s d) :=
@@ -610,8 +608,7 @@ private theorem monomialBlowupIterate_center_of_lt {p : X ⟶ Spec (CommRingCat.
       (MarkedBlowupSequenceData.monomialBlowupIterate hinv d j).center i = (d.center i).comap (eqToHom e) := by
   induction j with
   | zero =>
-      intro e
-      exact (comap_eqToHom_self e (d.center i)).symm
+      exact fun e => (comap_eqToHom_self e (d.center i)).symm
   | succ j ih =>
       intro e
       have e2 : (MarkedBlowupSequenceData.monomialBlowupIterate hinv d j).obj i = d.obj i :=
@@ -699,8 +696,7 @@ theorem monomialBlowupSeq_center (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec
   have hlen : (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n).length = n := by
     have h := monomialBlowupIterate_length hinv (emptyMarkedBlowupSequenceData p I m E) n
       (fun j hj => isAdmissibleCenter_of_lt_monomialStallIndex hinv p I m E j (lt_trans hj hn))
-    rw [emptyMarkedBlowupSequenceData_length, Nat.zero_add] at h
-    exact h
+    rwa [emptyMarkedBlowupSequenceData_length, Nat.zero_add] at h
   have hstep : MarkedBlowupSequenceData.IsAdmissibleCenter
       (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n) :=
     isAdmissibleCenter_of_lt_monomialStallIndex hinv p I m E n hn
@@ -741,7 +737,6 @@ def monomialStallIndex (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequence
 theorem monomialStallIndex_eq_zero_of_not_isAdmissibleCenter (hinv : ComapIsoInvariance.{u})
     (s : MarkedBlowupSequenceData p I m E) (h : ¬ IsAdmissibleCenter s) : monomialStallIndex hinv s = 0 := by
   have h0 : IsStationaryAt hinv s 0 := (isStationaryAt_iff_not_isAdmissibleCenter hinv s 0).mpr h
-  show sInf {n : ℕ | IsStationaryAt hinv s n} = 0
   exact Nat.le_zero.mp (Nat.sInf_le h0)
 
 end

@@ -167,8 +167,7 @@ theorem exists_act_of_hom {b : Base} {L : b.Fun} (q : b.Rˣ) (hq : (q : b.R) - 1
     obtain ⟨y, hy⟩ := hx.exists_right_inv
     obtain ⟨y', rfl⟩ := Ideal.Quotient.mk_surjective y
     have hm : x * y' - 1 ∈ T.J := by
-      rw [← Ideal.Quotient.eq, map_mul, map_one]
-      exact hy
+      rwa [← Ideal.Quotient.eq, map_mul, map_one]
     have h1 : IsUnit (1 + (x * y' - 1)) := (GlobalTheory.LogCris.CupModel.isNilpotent_of_mem T hm).isUnit_one_add
     rw [add_sub_cancel] at h1
     exact isUnit_of_mul_isUnit_left h1
@@ -236,8 +235,7 @@ theorem exists_act_of_hom {b : Base} {L : b.Fun} (q : b.Rˣ) (hq : (q : b.R) - 1
       simp only [hact] at h
       change ((a' k).1 : T.B) = (((hw T c' k).unit * ((hw T c k).unit)⁻¹ : T.Bˣ) : T.B)
       rw [Units.val_mul, IsUnit.unit_spec (hw T c' k), ← h, mul_assoc, IsUnit.mul_val_inv, mul_one]
-  · intro T a c k
-    exact hact T a c k
+  · exact fun T a c k => hact T a c k
 
 theorem thick_act : ∀ {O : Type} [CommRing O] {F : Fn O} {d : ℕ} (s : F.Small d) {b : Base} (ht : b.t = 1) {κ : O →+* b.R ⧸ b.I} (𝓛 : Lift s.a (fun k => (s.T k : s.R)) b.R b.I κ) (δ : DividedPowers (b.I.map 𝓛.i)) (hδ : IsDPMorphism b.γ δ 𝓛.i) (hp : b.p ≠ 0) (hn : IsNilpotent (b.p : b.R)) (q : b.Rˣ) (hq : (q : b.R) - 1 ∈ b.I), ∃ A : Act (𝟭 _) (thU (F.cr b ht κ) q hq) d (liftObj s ht 𝓛 δ hδ hp hn), ∀ (T : Thick (F.cr b ht κ)) (a : Fin d → (thU (F.cr b ht κ) q hq).U T) (c : liftObj s ht 𝓛 δ hδ hp hn ⟶ T) (k : Fin d), (A.act a c).φ (𝓛.t k) = ((a k).1 : T.B) * c.φ (𝓛.t k) := by
   intro O _ F d s b ht κ 𝓛 δ hδ hp hn q hq
@@ -473,8 +471,7 @@ theorem ker_and_surjective : ∀ {B M : Type} [CommRing B] [AddCommGroup M] [Mod
     have h1 := pow_sub_mem _ (D * shift e - 1) (raise e) hstable
       (sub_raise_mem e J q ν D hqJ hνJ hν1 hD) p z
     have h2 := raise_pow_mem e J p hp0 hpJ z
-    have h3 := Submodule.add_mem _ h1 h2
-    simpa using h3
+    simpa using Submodule.add_mem _ h1 h2
   have hV : IsNilpotent (D * shift e - 1 : Module.End B M) :=
     (nilpotent_of_pow_mem J hJ _ hVp).of_pow
   have hW : IsNilpotent (1 - D * shift e : Module.End B M) := by
@@ -740,8 +737,7 @@ theorem dpow_pow_sub_one : ∀ {B : Type} [CommRing B] {J : Ideal B} (δ : Divid
   refine ⟨⟨n, hn _ hμJ⟩, ν, h1 1 rfl, fun m ↦ (h2 (m + 1) (by omega)).1, fun m ↦ ?_, fun m hm ↦ ?_,
     p * (n + 2), fun m hm ↦ h3 m hm⟩
   · have h := (h2 (m + 1) (by omega)).2
-    rw [Nat.add_sub_cancel] at h
-    exact h
+    rwa [Nat.add_sub_cancel] at h
   · exact ⟨n, hn _ (GlobalTheory.Cris.ExpBij.dpFil_le δ (show 1 ≤ m - 1 by omega) (h2 m (by omega)).2)⟩
 
 end GlobalTheory.CompanionTheory.QPd
@@ -1118,16 +1114,14 @@ theorem small_of_affine (q : X ⟶ Spec (CommRingCat.of O)) (V : (schFn q).Sub) 
     have h2 : Spec.map (CommRingCat.ofHom g) =
         IsOpenImmersion.lift hW.fromSpec (show Spec B ⟶ X from y.1) hr := by
       rw [← cancel_mono hW.fromSpec, IsOpenImmersion.lift_fac, h1]
-    have h3 := Spec.map_injective (h2.trans (Spec.map_preimage _).symm)
-    exact congrArg CommRingCat.Hom.hom h3
+    exact congrArg CommRingCat.Hom.hom (Spec.map_injective (h2.trans (Spec.map_preimage _).symm))
 
 theorem rs_etale {U W : X.Opens} (hU : IsAffineOpen U) (hW : IsAffineOpen W) (h : W ≤ U) :
     (rs X h).Etale := by
   have h1 := (𝟙 X : X ⟶ X).etale_appLE hU hW h
   have e : (𝟙 X : X ⟶ X).appLE U W h = X.presheaf.map (homOfLE h).op := by
     simp [Scheme.Hom.appLE]
-  rw [e] at h1
-  exact h1
+  rwa [e] at h1
 
 theorem et_res (q : X ⟶ Spec (CommRingCat.of O)) {U W : X.Opens} (hU : IsAffineOpen U)
     (hW : IsAffineOpen W) (h : W ≤ U) {d : ℕ} (t : Fin d → Γ(X, U))
@@ -1219,8 +1213,7 @@ theorem exists_unimodular_cover_refining_opens {A : Type} (U : A → X.Opens) (h
       constructor
       · rintro ⟨k, rfl⟩
         exact (s'.equivFin.symm k).2
-      · intro hb
-        exact ⟨s'.equivFin ⟨b, hb⟩, by simp⟩
+      · exact fun hb => ⟨s'.equivFin ⟨b, hb⟩, by simp⟩
     rw [this, hspan]
   · intro k B' φ hu
     obtain ⟨α, hα⟩ := hs' (s'.equivFin.symm k).2
@@ -1241,12 +1234,10 @@ theorem preimage_open_top_of_jacobson_surjection (U : X.Opens) (B B' : CommRingC
   have hm' : PrimeSpectrum.comap φ.hom m' = m := by
     refine PrimeSpectrum.ext ?_
     change Ideal.comap φ.hom (M.map φ.hom) = M
-    rw [Ideal.comap_map_of_surjective' _ hs, sup_eq_left]
-    exact hker
+    rwa [Ideal.comap_map_of_surjective' _ hs, sup_eq_left]
   have h1 : y m ∈ U := by
     have := h (show (m' : Spec B') ∈ (⊤ : (Spec B').Opens) from trivial)
-    rw [← hm']
-    exact this
+    rwa [← hm']
   exact ((PrimeSpectrum.le_iff_specializes _ _).mp hle).mem_open (y ⁻¹ᵁ U).isOpen h1
 
 theorem mem_biInf_of_finite {A : Type} [Finite A] (S : Set A) (U : A → X.Opens) {x : X}

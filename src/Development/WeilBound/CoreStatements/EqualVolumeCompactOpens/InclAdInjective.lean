@@ -86,8 +86,7 @@ theorem relIndex_ne_zero_of_isCompact_of_relOpen :
         exact this.1
       · intro hx
         have : (x : G) ∈ O ∩ (S : Set G) := ⟨hx, hK'S x.2⟩
-        rw [hOS] at this
-        exact this
+        rwa [hOS] at this
     rw [hset]
     exact hO.preimage continuous_subtype_val
   have := (K.subgroupOf K').quotient_finite_of_isOpen hopen
@@ -153,8 +152,7 @@ theorem mem_conjBy {G : Type} [Group G] {g x : G} {K : Subgroup G} : x ∈ conjB
   constructor
   · rintro ⟨y, hy, rfl⟩
     simpa [mul_assoc] using hy
-  · intro h
-    exact ⟨_, h, by simp [mul_assoc]⟩
+  · exact fun h => ⟨_, h, by simp [mul_assoc]⟩
 
 theorem conj_mem_su {R : Type} [CommRing R] {N : ℕ} {σ : R →+* R} {J : Matrix (Fin N) (Fin N) R}
     {g x : GL (Fin N) R} (hg : g ∈ uGrp σ J) : g⁻¹ * x * g ∈ suGrp σ J ↔ x ∈ suGrp σ J := by
@@ -270,8 +268,7 @@ theorem coSA (h : ReciprocityTheory.ChartRestriction.G.SA.SAOpenStatement) : CoS
           have hg : g ∈ SUA c J := ⟨h3.2, Units.ext h3.1⟩
           refine ⟨g, eO.le ⟨?_, hg⟩, rfl⟩
           show ((g : Matrix (Fin N) (Fin N) (Adf F E)), MulOpposite.op ((g⁻¹ : GL (Fin N) (Adf F E)) : Matrix _ _ _)) ∈ W
-          rw [hinv g hg]
-          exact h1
+          rwa [hinv g hg]
         · rintro ⟨g, hg, rfl⟩
           refine ⟨?_, hSU g (hK hg)⟩
           have h1 : ((g : Matrix (Fin N) (Fin N) (Adf F E)),
@@ -357,8 +354,7 @@ theorem indexEq_of (h3 : CoSA) (h4 : Divisible) : IndexEq := by
         ⟨s, hs.1⟩, hs, Subtype.ext e⟩)
     _ ⟨K, hK, rfl⟩ ⟨g, hg⟩
   have hK' := coConj F E N c J K hK g hg
-  rw [hconj, hidx _ _ hK'.1, hidx _ _ hK.1] at key
-  exact key
+  rwa [hconj, hidx _ _ hK'.1, hidx _ _ hK.1] at key
 
 end PositivityTheory.EqVol
 end -- clump:auto

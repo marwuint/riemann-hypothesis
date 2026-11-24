@@ -72,8 +72,7 @@ theorem exp_one : Iwasawa.iwasawaExponent F n 1 = 0 := by
 theorem exp_of_mem {κ : GL (Fin n) F} (hκ : κ ∈ GLnLocal.integralGL F n) :
     Iwasawa.iwasawaExponent F n κ = 0 := by
   have := Iwasawa.iwasawaExponent_mul_of_mem_integralGL F n 1 hκ
-  rw [one_mul, exp_one] at this
-  exact this
+  rwa [one_mul, exp_one] at this
 
 theorem isOpen_exp (A : Set (Fin n → ℤ)) :
     IsOpen {x : GL (Fin n) F | Iwasawa.iwasawaExponent F n x ∈ A} := by
@@ -83,8 +82,7 @@ theorem isOpen_exp (A : Set (Fin n → ℤ)) :
   · intro y hy
     have e : y = x * (x⁻¹ * y) := by group
     show Iwasawa.iwasawaExponent F n y ∈ A
-    rw [e, Iwasawa.iwasawaExponent_mul_of_mem_integralGL F n x hy]
-    exact hx
+    rwa [e, Iwasawa.iwasawaExponent_mul_of_mem_integralGL F n x hy]
   · exact (GLnLocal.isOpen_integralGL F n).preimage (continuous_const_mul _)
   · show x⁻¹ * x ∈ GLnLocal.integralGL F n
     rw [inv_mul_cancel]
@@ -127,8 +125,7 @@ theorem uu_mul {g h : GA E k} (hg : UU 0 g) (hh : UU 0 h) : UU 0 (g * h) := by
       rcases lt_or_gt_of_ne hj with hj | hj
       · rw [hg.1 i j hj, zero_mul]
       · rw [hh.1 j i hj, mul_zero]
-    · intro h
-      exact absurd (Finset.mem_univ i) h
+    · exact fun h => absurd (Finset.mem_univ i) h
 
 theorem uu_fl (w : Pl E) {n : GL (Fin k) (w.adicCompletion E)} (hn : n ∈ Iwasawa.unipotent (w.adicCompletion E) k) :
     UU 0 (fl k w n) := by
@@ -159,8 +156,7 @@ theorem gd_fin (g : GA E k) : {w | ¬ Gd g w}.Finite := by
   have h : ∀ᶠ w in cofinite, Gd g w := by
     unfold Gd
     simp only [Filter.eventually_all]
-    intro i j
-    exact (pFin E (g.val i j)).2.and (pFin E ((g⁻¹ : GA E k).val i j)).2
+    exact fun i j => (pFin E (g.val i j)).2.and (pFin E ((g⁻¹ : GA E k).val i j)).2
   exact Filter.eventually_cofinite.1 h
 
 theorem gd_mem {g : GA E k} {w : Pl E} (h : Gd g w) : cLoc w g ∈ GLnLocal.integralGL (w.adicCompletion E) k := by
@@ -249,8 +245,7 @@ theorem decomp (hG : jumpWindows.G0) {E : Type} [Field E] [NumberField E] [_root
         (fun w hw hwT => by
           by_cases hwv : w = v
           · subst hwv
-            rw [hv']
-            exact hκ
+            rwa [hv']
           · rw [hloc' w hwv]
             exact hK w hw fun h => (Finset.mem_insert.1 h).elim hwv hwT)
       refine ⟨fl k v u * n, g₀, κ', uu_mul (uu_fl v hu) hn, h1, h2, h3, h4, ?_⟩
@@ -276,10 +271,8 @@ theorem open_decomposition_of_G0 : jumpWindows.G0 → C0 := by
       ExponentialDecomposition.gd_mem (not_not.1 fun h => hwT ((ExponentialDecomposition.gd_fin g).mem_toFinset.2 h))
   · intro g
     refine (ExponentialDecomposition.gd_fin g).subset fun w hw => ?_
-    intro h
-    exact hw (ExponentialDecomposition.exp_of_mem _ _ (ExponentialDecomposition.gd_mem h))
-  · intro w l
-    exact (ExponentialDecomposition.isClopen_exp _ k l).preimage (hcont w)
+    exact fun h => hw (ExponentialDecomposition.exp_of_mem _ _ (ExponentialDecomposition.gd_mem h))
+  · exact fun w l => (ExponentialDecomposition.isClopen_exp _ k l).preimage (hcont w)
   · intro w g
     refine ⟨g * (fl k w (cLoc w g))⁻¹, ?_, ?_, ?_, ?_⟩
     · rw [map_mul, map_inv, hloc, mul_inv_cancel]

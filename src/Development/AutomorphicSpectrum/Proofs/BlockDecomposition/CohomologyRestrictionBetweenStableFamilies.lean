@@ -62,8 +62,7 @@ theorem nil_of_mem (T : Thick (nlFun γ p X q κ)) {x : T.B} (hx : x ∈ T.J) : 
   · obtain ⟨n, hn⟩ := T.adm.2 hp
     refine ⟨n, ?_⟩
     have h : x ^ n ∈ T.J ^ n := Ideal.pow_mem_pow hx n
-    rw [hn] at h
-    exact h
+    rwa [hn] at h
   · obtain ⟨n, hn⟩ : IsNilpotent ((p : ℕ) : T.B) := T.adm.1 hp
     refine ⟨p * n, ?_⟩
     have h1 : x ^ p = (p.factorial : T.B) * T.δ.dpow p x := (T.δ.factorial_mul_dpow_eq_pow hx).symm
@@ -124,8 +123,7 @@ theorem exists_cover (𝒱 : Set X.Opens) (T : Thick (nlFun γ p X q κ)) (h : I
   choose V hV g hxg hsub using hcov
   have htop : Ideal.span (Set.range g) = ⊤ := by
     rw [← PrimeSpectrum.iSup_basicOpen_eq_top_iff]
-    refine top_le_iff.1 fun x _ => ?_
-    exact TopologicalSpace.Opens.mem_iSup.2 ⟨x, hxg x⟩
+    exact top_le_iff.1 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hxg x⟩
   obtain ⟨s', hs', hspan⟩ := (Ideal.span_eq_top_iff_finite _).1 htop
   refine ⟨s'.card, fun k => (s'.equivFin.symm k : T.B ⧸ T.J), ?_, fun k => ?_⟩
   · have : Set.range (fun k => (s'.equivFin.symm k : T.B ⧸ T.J)) = (s' : Set (T.B ⧸ T.J)) := by
@@ -133,8 +131,7 @@ theorem exists_cover (𝒱 : Set X.Opens) (T : Thick (nlFun γ p X q κ)) (h : I
       constructor
       · rintro ⟨k, rfl⟩
         exact (s'.equivFin.symm k).2
-      · intro he
-        exact ⟨s'.equivFin ⟨e, he⟩, by simp⟩
+      · exact fun he => ⟨s'.equivFin ⟨e, he⟩, by simp⟩
     rw [this, hspan]
   obtain ⟨x, hx⟩ := hs' (s'.equivFin.symm k).2
   refine ⟨V x, hV x, fun T' ψ hu z _ => ?_⟩
@@ -332,8 +329,7 @@ theorem zarCov (Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))) (hQ : Used Q�
     hc _ _ (locH _ _) T'.property (Q_locT hQ _ (h' _ T'.property).1 _)
   have hspan' : Ideal.span (Set.range fun k => φ.hom.φ (f k)) = ⊤ := by
     have h := congrArg (Ideal.map φ.hom.φ) hspan
-    rw [Ideal.map_span, Ideal.map_top, ← Set.range_comp] at h
-    exact h
+    rwa [Ideal.map_span, Ideal.map_top, ← Set.range_comp] at h
   refine ⟨fun S => lc T' _ (hq S), fun S => lch T' _ (hq S), fun S k hk => ?_, fun S T'' ψ h => ?_, hF T' _ hspan' hq⟩
   · have h : IsUnit (algebraMap T'.obj.B (Localization.Away (∏ k ∈ S, φ.hom.φ (f k))) (∏ k ∈ S, φ.hom.φ (f k))) :=
       IsLocalization.Away.algebraMap_isUnit _

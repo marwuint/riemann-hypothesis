@@ -308,8 +308,7 @@ theorem HasCO.comap {G H : Type} [AddGroup G] [TopologicalSpace G] [AddGroup H] 
   · have : ((P.comap f : AddSubgroup G) : Set G) = e.symm '' (P : Set H) := by
       ext x
       constructor
-      · intro hx
-        exact ⟨e x, hx, by simp⟩
+      · exact fun hx => ⟨e x, hx, by simp⟩
       · rintro ⟨y, hy, rfl⟩
         change f (e.symm y) ∈ P
         rw [← he]
@@ -328,8 +327,7 @@ theorem HasCO.sub {G : Type} [AddGroup G] [TopologicalSpace G] (h : HasCO G) (S 
   refine ⟨P.comap S.subtype, hPo.preimage continuous_subtype_val, ?_, ?_⟩
   · have hemb : Topology.IsClosedEmbedding (Subtype.val : S → G) := hS.isClosedEmbedding_subtypeVal
     exact hemb.isCompact_preimage hPc
-  · intro x hx
-    exact hsub (hPW hx)
+  · exact fun x hx => hsub (hPW hx)
 
 theorem small_pow {z : ℂ} (h : ∀ k : ℕ, ‖z ^ k - 1‖ < 1 / 2) : z = 1 :=
   by apply _root_.UpperTheory.Reformulated.B.EqOneOfPowNear.eq_one_of_pow_near <;> assumption
@@ -621,8 +619,7 @@ theorem hermE_dense_finite : ∀ (F E : Type) [Field F] [NumberField F] [Field E
     show inclR (Af F) (h • (c₀ a b + σ (c₀ b a))) =
       h • (inclR (Af F) (c₀ a b) + sigR (Af F) σ (inclR (Af F) (c₀ b a)))
     rw [inclR_smul, map_add (f := _), _root_.GlobalTheory.Mem.VolFin.sigR_inclR]
-  rw [hcP]
-  exact hc₀
+  rwa [hcP]
 
 end GlobalTheory.CompanionTheory.SiegelND.Integ.Hua
 end -- clump:auto
@@ -729,8 +726,7 @@ theorem nhds_unif {ι Y : Type} [Finite ι] [TopologicalSpace Y] (y0 : Y) (W : S
   rw [nhds_pi, Filter.mem_pi'] at hW
   obtain ⟨I, t, ht, hsub⟩ := hW
   refine ⟨⋂ i, t i, Filter.iInter_mem.mpr ht, fun y hy => hsub ?_⟩
-  intro i _
-  exact Set.mem_iInter.mp (hy i) i
+  exact fun i _ => Set.mem_iInter.mp (hy i) i
 
 end GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.Commens
 
@@ -769,8 +765,7 @@ theorem exists_smul_mem_open : ∀ (F E : Type) [Field F] [NumberField F] [Field
     simp
   have h0 : (0 : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) ∈ U' := by
     have h1 : (0 : HermR (Af F) σ n) ∈ (U : Set (HermR (Af F) σ n)) := U.zero_mem
-    rw [← hU'] at h1
-    exact h1
+    rwa [← hU'] at h1
   have hW : G ⁻¹' U' ∈ 𝓝 (fun _ => (0 : Af F)) :=
     (hU'o.preimage hG).mem_nhds (by rw [Set.mem_preimage, hG0]; exact h0)
   obtain ⟨V, hV, hVW⟩ := nhds_unif _ _ hW
@@ -796,8 +791,7 @@ theorem exists_smul_mem_open : ∀ (F E : Type) [Field F] [NumberField F] [Field
         GlobalTheory.CompanionTheory.SW.Core.Oh F := (hF _).mpr ⟨p * r, by simp⟩
     have := hNV _ hmem
     show algebraMap F (Af F) (b.repr (((((D₁ * D₂ * N : ℕ) : F) / t) • c).1 a a') k) ∈ V
-    rw [hval, map_mul, map_natCast]
-    exact this
+    rwa [hval, map_mul, map_natCast]
   have hGy : G y ∈ U' := hVW y hy
   have heq : G y = (hermIn (Af F) σ n ((((D₁ * D₂ * N : ℕ) : F) / t) • c)).1 := by
     ext a a'
@@ -815,8 +809,7 @@ theorem exists_smul_mem_open : ∀ (F E : Type) [Field F] [NumberField F] [Field
   have hfin : hermIn (Af F) σ n ((((D₁ * D₂ * N : ℕ) : F) / t) • c) ∈ (U : Set (HermR (Af F) σ n)) := by
     rw [← hU']
     show _ ∈ U'
-    rw [← heq]
-    exact hGy
+    rwa [← heq]
   exact hfin
 
 end GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.Commens
@@ -997,8 +990,7 @@ theorem summable_comp_of_injective_prod {X Y Q : Type*} [Finite Q] {d : Y → �
     (hinj : Function.Injective fun x => (y x, q x)) : Summable fun x => d (y x) := by
   have h1 : Summable (fun p : Y × Q => d p.1 * (fun _ : Q => (1 : ℝ)) p.2) :=
     Summable.mul_of_nonneg hs (Summable.of_finite) hd (fun _ => zero_le_one)
-  have h2 := h1.comp_injective hinj
-  simpa [Function.comp_def] using h2
+  simpa [Function.comp_def] using h1.comp_injective hinj
 
 theorem finite_quot_nsmul {M : Type*} [AddCommGroup M] [Module.Finite ℤ M] {τ : ℕ} (hτ : 0 < τ) :
     Finite (M ⧸ (nsmulAddMonoidHom τ : M →+ M).range) := by
@@ -1312,8 +1304,7 @@ theorem integrable_starN : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
       rw [hmap']
       exact hAB.smul_measure hc'
     have := (hme'.integrable_map_iff.1 hAB').const_mul (c.toReal : ℂ)
-    refine this.congr (Filter.Eventually.of_forall fun b => ?_)
-    exact (hfac i b).symm
+    exact this.congr (Filter.Eventually.of_forall fun b => (hfac i b).symm)
   have hdec : starN σ J ψ dx Φ = fun b => ∑ i, starN σ J ψ dx (fun X => P i (projInf X) * Q i (projFin X)) b := by
     funext b
     unfold starN

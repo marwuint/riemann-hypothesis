@@ -66,8 +66,7 @@ theorem hint_const_mul (K : Subgroup Γ) (u : Γ → ℂ) (c : ℂ) :
       ext r
       simp only [GlobalTheory.CompanionTheory.FamClP.mem_rStab']
       constructor
-      · intro h x
-        exact mul_left_cancel₀ hc (h x)
+      · exact fun h x => mul_left_cancel₀ hc (h x)
       · intro h x
         rw [h x]
     unfold hint
@@ -93,8 +92,7 @@ theorem hint_lin {K L : Subgroup Γ} {C : Set Γ} (hK : IsCompact (K : Set Γ)) 
   rw [GlobalTheory.CompanionTheory.HintLevel.hint_eq_level Γ K L u hLK (fun l hl x => hu l hl x) (relIndex_ne_zero hK hL)]
   congr 1
   refine finsum_eq_sum_of_support_subset _ fun q hq => ?_
-  simp only [Set.Finite.coe_toFinset]
-  exact ⟨q.out, hs _ hq, QuotientGroup.out_eq' q⟩
+  simpa only [Set.Finite.coe_toFinset] using ⟨q.out, hs _ hq, QuotientGroup.out_eq' q⟩
 
 theorem hint_comm {K₁ L₁ : Subgroup Γ} {K₂ L₂ : Subgroup Γ'} {C₁ : Set Γ} {C₂ : Set Γ'}
     (hK₁ : IsCompact (K₁ : Set Γ)) (hL₁ : IsOpen (L₁ : Set Γ)) (hLK₁ : L₁ ≤ K₁) (hC₁ : IsCompact C₁)
@@ -188,7 +186,6 @@ theorem act_comm {e₁ : Γ →* Y} {e₂ : Γ' →* Y} {K₁ A₁ : Subgroup Γ
   have hL₂ : IsOpen (L₂ : Set Γ') := (hA₂.inter hG₂).inter hKo₂
   let F : Γ → Γ' → ℂ := fun x y => f₁ x * (f₂ y * G (z * e₁ x * e₂ y))
   have l : act e₁ K₁ f₁ (act e₂ K₂ f₂ G) z = hint K₁ (fun x => hint K₂ (F x)) := by
-    show hint K₁ (fun m => f₁ m * hint K₂ (fun m' => f₂ m' * G (z * e₁ m * e₂ m'))) = _
     exact congrArg (hint K₁) (funext fun x => (hint_const_mul _ _ _).symm)
   have r : act e₂ K₂ f₂ (act e₁ K₁ f₁ G) z = hint K₂ (fun y => hint K₁ fun x => F x y) := by
     show hint K₂ (fun m' => f₂ m' * hint K₁ (fun m => f₁ m * G (z * e₂ m' * e₁ m))) = _
@@ -262,8 +259,7 @@ variable [TopologicalSpace P] [IsTopologicalGroup P]
 
 theorem sm_of_lev {fH : P →* Y} {ε : Γ →* P} (hε : Continuous ε) {G : Y → ℂ} (hG : Lev fH G) : Sm (fH.comp ε) G := by
   obtain ⟨U, hU, hUG⟩ := hG
-  refine Subgroup.isOpen_mono (H₁ := U.comap ε) (fun l hl x => ?_) (hU.preimage hε)
-  exact hUG _ hl x
+  exact Subgroup.isOpen_mono (H₁ := U.comap ε) (fun l hl x => (hUG _ hl x)) (hU.preimage hε)
 
 theorem act_lev {fH : P →* Y} {ε : Γ →* P} (hε : Continuous ε) {K A : Subgroup Γ} {f : Γ → ℂ} {G : Y → ℂ}
     (hK : IsCompact (K : Set Γ)) (hKo : IsOpen (K : Set Γ)) (hA : IsOpen (A : Set Γ)) (hf : IsHecke A f)

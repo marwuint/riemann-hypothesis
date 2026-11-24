@@ -66,8 +66,7 @@ lemma cauchy_nhds {U V : Set ℂ} (hU : IsOpen U) {z₀ : ℂ} (hz₀ : z₀ ∈
       ∀ C : ℝ, (∀ z ∈ V ∩ U, ‖f z‖ ≤ C) → ∀ z ∈ W, ‖deriv f z‖ ≤ C / R := by
   obtain ⟨ε, hε, hεs⟩ := Metric.mem_nhds_iff.mp (Filter.inter_mem hV (hU.mem_nhds hz₀))
   refine ⟨ε / 2, half_pos hε, Metric.ball z₀ (ε / 2), Metric.ball_mem_nhds z₀ (half_pos hε), ?_, ?_⟩
-  · intro z hz
-    exact (hεs (Metric.ball_subset_ball (by linarith) hz)).2
+  · exact fun z hz => (hεs (Metric.ball_subset_ball (by linarith) hz)).2
   · intro f hf C hC z hz
     have hsub : Metric.closedBall z (ε / 2) ⊆ V ∩ U := by
       intro w hw
@@ -80,8 +79,7 @@ lemma cauchy_nhds {U V : Set ℂ} (hU : IsOpen U) {z₀ : ℂ} (hz₀ : z₀ ∈
     apply Complex.norm_deriv_le_of_forall_mem_sphere_norm_le (half_pos hε)
     · apply DifferentiableOn.diffContOnCl
       exact hf.mono (Metric.closure_ball_subset_closedBall.trans (hsub.trans Set.inter_subset_right))
-    · intro w hw
-      exact hC w (hsub (Metric.sphere_subset_closedBall hw))
+    · exact fun w hw => hC w (hsub (Metric.sphere_subset_closedBall hw))
 
 section Series
 
@@ -112,8 +110,7 @@ lemma series_step (hU : IsOpen U) (F : κ → ℂ → ℂ) (hF : ∀ k, Differen
     obtain ⟨V, hV, u, hu, hle⟩ := hb z₀ hz₀
     obtain ⟨R, hR, W, hW, hWU, hest⟩ := cauchy_nhds hU hz₀ hV
     refine ⟨W, hW, fun k => u k / R, hu.div_const R, ?_⟩
-    intro z hz k
-    exact hest (F k) (hF k) (u k) (fun w hw => hle w hw k) z hz.1
+    exact fun z hz k => hest (F k) (hF k) (u k) (fun w hw => hle w hw k) z hz.1
 
 lemma iteratedDeriv_series (hU : IsOpen U) (r : ℕ) : ∀ (F : κ → ℂ → ℂ),
     (∀ k, DifferentiableOn ℂ (F k) U) →
@@ -125,8 +122,7 @@ lemma iteratedDeriv_series (hU : IsOpen U) (r : ℕ) : ∀ (F : κ → ℂ → �
     induction n with
     | zero =>
       intro f g h z hz
-      simp only [iteratedDeriv_zero]
-      exact h hz
+      simpa only [iteratedDeriv_zero] using h hz
     | succ n ih =>
       intro f g h z hz
       rw [iteratedDeriv_succ, iteratedDeriv_succ]
@@ -170,8 +166,7 @@ lemma aesm_deriv (hU : IsOpen U) (G : ℂ → Ω → ℂ)
   have htc : Tendsto (fun n => (t n : ℂ)) atTop (𝓝[≠] 0) := by
     refine tendsto_nhdsWithin_iff.mpr ⟨?_, Filter.Eventually.of_forall fun n => ?_⟩
     · have := (Complex.continuous_ofReal.tendsto 0).comp ht0
-      rw [Complex.ofReal_zero] at this
-      exact this
+      rwa [Complex.ofReal_zero] at this
     · exact Set.mem_compl_singleton_iff.mpr (Complex.ofReal_ne_zero.mpr (htpos n).ne')
   refine aestronglyMeasurable_of_tendsto_ae
     (f := fun n ω => ((t n : ℂ))⁻¹ • (G (z + t n) ω - G z ω)) atTop (fun n => ?_)
@@ -188,8 +183,7 @@ lemma aesm_iteratedDeriv_real (hU : IsOpen U) (n : ℕ) : ∀ G : ℂ → Ω →
   induction n with
   | zero =>
     intro G _ hm t ht
-    simp only [iteratedDeriv_zero]
-    exact hm t ht
+    simpa only [iteratedDeriv_zero] using hm t ht
   | succ n ih =>
     intro G hd hm t ht
     simp only [iteratedDeriv_succ']
@@ -200,8 +194,7 @@ lemma aesm_iteratedDeriv_real (hU : IsOpen U) (n : ℕ) : ∀ G : ℂ → Ω →
       intro s hs
       refine aesm_deriv hU G hd hs (fun x hx => ?_)
       have h := hm (s + x) (by rw [Complex.ofReal_add]; exact hx)
-      rw [Complex.ofReal_add] at h
-      exact h
+      rwa [Complex.ofReal_add] at h
     exact ih (fun z ω => deriv (fun w => G w ω) z) hd' hm' t ht
 
 lemma aesm_of_real (hU : IsOpen U)
@@ -221,10 +214,8 @@ lemma aesm_of_real (hU : IsOpen U)
       (z - t) ^ n • iteratedDeriv n (fun w => G w ω) (t : ℂ)) atTop (fun N => ?_)
     (ae_of_all μ fun ω => ?_)
   · have h := Finset.aestronglyMeasurable_sum (μ := μ) (Finset.range N) (fun n _ => hterm n)
-    rw [Finset.sum_fn] at h
-    exact h
-  · have hs := Complex.hasSum_taylorSeries_on_ball ((hd ω).mono hsub) hzb
-    exact hs.tendsto_sum_nat
+    rwa [Finset.sum_fn] at h
+  · exact (Complex.hasSum_taylorSeries_on_ball ((hd ω).mono hsub) hzb).tendsto_sum_nat
 
 end Measurability
 
@@ -276,8 +267,7 @@ lemma iteratedDeriv_integral (hU : IsOpen U) (r : ℕ) : ∀ G : ℂ → Ω → 
     induction n with
     | zero =>
       intro f g h z hz
-      simp only [iteratedDeriv_zero]
-      exact h hz
+      simpa only [iteratedDeriv_zero] using h hz
     | succ n ih =>
       intro f g h z hz
       rw [iteratedDeriv_succ, iteratedDeriv_succ]

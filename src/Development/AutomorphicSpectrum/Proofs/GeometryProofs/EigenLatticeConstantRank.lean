@@ -107,8 +107,7 @@ alias rt0_conj_neg_ne_zero := _root_.UpperTheory.Reformulated.B.Ydc3.main
 theorem labelEmb_rt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Geo.Tor.Level H) (c : Coeff l) (τ : CMType H), labelEmb c (Sum.inl τ) H.rt = IntermediateField.inclusion c.le (baseKA l).ρ ∧ labelEmb c (Sum.inr τ) H.rt = -IntermediateField.inclusion c.le (baseKA l).ρ := by
   intro E _ _ _ H l c τ
   constructor
-  · apply Subtype.ext
-    exact τ.2
+  · exact Subtype.ext (τ.2)
   · apply Subtype.ext
     show τ.1 (((H.bar H.rt : 𝓞 E)) : E) = - H.rt0
     rw [H.bar_eq, IsCMField.complexEmbedding_complexConj, τ.2]
@@ -131,8 +130,7 @@ theorem structure_of_model_point : ∀ (E : Type) [Field E] [NumberField E] [IsC
     have h3 : spMap (g.comp (algebraMap (𝓞 c.F) c.F)) = spMap (cst.comp (algebraMap (𝓞 c.F) c.F)) := by
       rw [← hy]
       simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
-    have h4 := Spec.map_injective h3
-    exact congrArg CommRingCat.Hom.hom h4
+    exact congrArg CommRingCat.Hom.hom (Spec.map_injective h3)
   have h5 : g = cst := IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 c.F)) h2
   rw [pullback.condition, ← Category.assoc, hg, h5]
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
@@ -199,8 +197,7 @@ theorem finrank_eigSp_of_lieMult : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] 
     have h2 := hsat 0
     have z : ∑ i, (0 : Fin n → k) i • e i = 0 := by simp
     rw [z] at h2
-    have h0 := (huq _ ((eig 0).2 (Submodule.zero_mem _))).unique h1 h2
-    exact fun i => congrFun h0 i
+    exact fun i => congrFun ((huq _ ((eig 0).2 (Submodule.zero_mem _))).unique h1 h2) i
   have hspan : eigSp ρ τ = Submodule.span k (Set.range e) := by
     apply le_antisymm
     · intro y hy
@@ -264,8 +261,7 @@ theorem finrank_eigSp_baseChange : ∀ (k k' : Type) [Field k] [Field k'] [Algeb
     rw [hsymm, hc, hfwd]
   have h := ReciprocityTheory.ChartRestriction.G.Chart.finrank_eig_bc _ _ hL (fun a => σ a)
   rw [finrank_conj b.equivFun (fun a => ρ a) (fun a => σ a)] at h
-  have h' := finrank_conj bL.equivFun (fun a => ρ' a) (fun a => algebraMap k k' (σ a))
-  exact h.trans h'
+  exact h.trans (finrank_conj bL.equivFun (fun a => ρ' a) (fun a => algebraMap k k' (σ a)))
 
 end GlobalTheory.CompanionTheory.Ar.EigRank
 

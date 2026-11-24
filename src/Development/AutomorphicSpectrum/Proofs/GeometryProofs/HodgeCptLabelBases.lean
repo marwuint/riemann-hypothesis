@@ -154,8 +154,7 @@ theorem regAt_iso (e : X' ≅ Z) (he : ξ' ≫ e.hom = ξ₁) (q : Cpt ξ') (h :
     have h1 := LatModel.dominates_spec hd ⟨e.hom q.1, h⟩
     have h2 : (⟨e.inv (e.hom q.1), h1⟩ : Cpt ξ') = q := Subtype.ext (by simp)
     exact LatModel.dominates_regAt hd ⟨e.hom q.1, h⟩ h1 (by rw [h2]; exact ha)
-  · intro a ha
-    exact LatModel.dominates_regAt (dom_iff.2 he) q h ha
+  · exact fun a ha => LatModel.dominates_regAt (dom_iff.2 he) q h ha
 
 theorem mem_pull_iso (e : X' ≅ Z) (he : ξ' ≫ e.hom = ξ₁) (J : V →ₗ[Ω] V') (L : Lat ξ₁ V) (q : Cpt ξ')
     (h : genPt ξ₁ ⤳ e.hom q.1) (x : V') :
@@ -297,8 +296,7 @@ theorem quot_free (𝔐 : HodgeCpt Y S y) (b : ∀ s, Fin (labelRk D s) → 𝔐
   obtain ⟨h1, -, h2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeChar0.lattices_of_char_zero E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ q fun r hr h => h (hq r hr.pos)
   have hli : LinearIndependent Ω fun a : Σ t, Fin (labelRk D t) => b' a.1 a.2 := by
     refine linearIndependent_iUnion_finite (fun t => (hfr t).1) fun t T _ ht => ?_
-    simp only [hsp]
-    exact hind.disjoint_biSup ht
+    simpa only [hsp] using hind.disjoint_biSup ht
   refine frame_quot hli ?_ (Sigma.mk s '' {k | (k : ℕ) < n}) ?_
   · rw [h2]
     simp only [← h1, (hfr _).2]
@@ -333,8 +331,7 @@ theorem omP_pull [CharZero Ω] (hW : Out.WeilSt) {K' : Type} [Fintype K'] {J' : 
   have h2 := isVBOn_pull hd φ.symm.dualMap.toLinearMap φ.symm.dualMap.injective
     (T := {q | InFibre 𝔐.ξ p q}) (T' := {q | InFibre A.ξ p q}) (fun q hq (hu : unitAt _ _ _) => hq ⟨hu.1, LatModel.dominates_regAt hd q _ hu.2.1,
       LatModel.dominates_regAt hd q _ hu.2.2⟩) h
-  rw [← key, Submodule.map_top, LinearEquiv.range, φ.finrank_eq, ← hR] at h2
-  exact h2
+  rwa [← key, Submodule.map_top, LinearEquiv.range, φ.finrank_eq, ← hR] at h2
 
 end Hodge
 
@@ -370,8 +367,7 @@ theorem exists_flag_model : Out.WeilSt → ∀ (E : Type) [Field E] [NumberField
     refine (injective_iff_map_eq_zero φ₀).2 fun v hv => by_contra fun h0 => ?_
     exact (hext.2 1 (fun _ => v) (linearIndependent_unique_iff.2 h0)).ne_zero 0 hv
   have hsur : Function.Surjective φ₀ := by
-    rw [← LinearMap.range_eq_top, ← Submodule.span_eq (LinearMap.range φ₀)]
-    exact hsurj
+    rwa [← LinearMap.range_eq_top, ← Submodule.span_eq (LinearMap.range φ₀)]
   let φ : 𝔐.Li ≃ₗ[Ω] A.Li := LinearEquiv.ofBijective φ₀ ⟨hinj, hsur⟩
   have hVg : ∀ s, A.Vgen s = (𝔐.Vgen s).map φ₀ := fun s => by
     have h1 : (A.V s).IsVB (labelRk D s) (A.Vgen s) := A.vb s
@@ -381,13 +377,11 @@ theorem exists_flag_model : Out.WeilSt → ∀ (E : Type) [Field E] [NumberField
     exact (span_of_isVB h1 ⟨genPt A.ξ, specializes_rfl⟩).symm.trans (span_of_isVB h2 _)
   have hflV : ∀ s, (A.V s).IsFlagVBOn Set.univ fun k => φ₀ (b s k) := fun s => by
     have h := flag_transfer e he hd φ₀ hinj (𝔐.V s) _ (hfl (s, true))
-    rw [← V_inter A s, hVg, ← hb, hV]
-    exact h
+    rwa [← V_inter A s, hVg, ← hb, hV]
   have hflR : ∀ s, (A.dR s).IsFlagVBOn Set.univ fun k => φ₀ (b s k) := fun s => by
     have h := flag_transfer e he hd φ₀ hinj 𝔐.M.lat _ (hfl (s, false))
     show (A.M.lat.inter (A.Vgen s)).IsFlagVBOn _ _
-    rw [hVg, ← hb, hlat']
-    exact h
+    rwa [hVg, ← hb, hlat']
   have hpt' : ∀ v, (A.M.pt (φ₀ v)).left ≫ A.m.φ = (𝔐.M.pt v).left ≫ 𝔐.m.φ := fun v => by
     have h1 : dualMap (RingHom.id Ω) = RingHom.id _ := by
       ext a <;> simp [dualMap]

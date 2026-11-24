@@ -947,12 +947,10 @@ theorem integrable_height_rpow : ∀ (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (
     rw [Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
   have hJ1 : GlobalTheory.StdUnn.blk4 (0 : Mx D ρ ρ) 1 (-1) 0 * GlobalTheory.StdUnn.blk4 0 (-1) 1 0 = 1 := by
     rw [GlobalTheory.StdUnn.Model.submatrix_fromBlocks_mul]
-    simp only [mul_zero, mul_one, zero_add, add_zero, mul_neg, neg_neg, neg_zero]
-    exact hone
+    simpa only [mul_zero, mul_one, zero_add, add_zero, mul_neg, neg_neg, neg_zero] using hone
   have hJ2 : GlobalTheory.StdUnn.blk4 (0 : Mx D ρ ρ) (-1) 1 0 * GlobalTheory.StdUnn.blk4 0 1 (-1) 0 = 1 := by
     rw [GlobalTheory.StdUnn.Model.submatrix_fromBlocks_mul]
-    simp only [mul_zero, mul_one, zero_add, add_zero, mul_neg, neg_neg, neg_zero]
-    exact hone
+    simpa only [mul_zero, mul_one, zero_add, add_zero, mul_neg, neg_neg, neg_zero] using hone
   let u : GL (Fin (ρ + ρ)) (AE D) := ⟨GlobalTheory.StdUnn.blk4 0 1 (-1) 0, GlobalTheory.StdUnn.blk4 0 (-1) 1 0, hJ1, hJ2⟩
   have hu : GlobalTheory.MixModel.adj (u : Mx D (ρ + ρ) (ρ + ρ)) * GlobalTheory.StdUnn.blk4 0 1 (-1) 0 * (u : Mx D (ρ + ρ) (ρ + ρ)) =
       GlobalTheory.StdUnn.blk4 0 1 (-1) 0 := by
@@ -1345,8 +1343,7 @@ theorem exists_shear_bound (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (M : Maps D
     have h1 := hpw ⌈|u|⌉₊ u (Nat.le_ceil _) x
     refine h1.trans (mul_le_mul_of_nonneg_right ?_ (NNReal.coe_nonneg _))
     have hc : (⌈|u|⌉₊ : ℝ) ≤ Real.log r + 1 := by
-      have h := Nat.ceil_lt_add_one (abs_nonneg u)
-      exact h.le.trans (by rw [hu])
+      exact (Nat.ceil_lt_add_one (abs_nonneg u)).le.trans (by rw [hu])
     calc κ₁ ^ ⌈|u|⌉₊ ≤ Real.exp N ^ ⌈|u|⌉₊ := pow_le_pow_left₀ (zero_le_one.trans hκ₁) hκE _
       _ = Real.exp ((N : ℝ) * (⌈|u|⌉₊ : ℝ)) := by rw [← Real.exp_nat_mul]; ring_nf
       _ ≤ Real.exp ((N : ℝ) * (Real.log r + 1)) := Real.exp_le_exp.2 (by gcongr)
@@ -1409,8 +1406,7 @@ theorem exists_shear_bound (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (M : Maps D
   calc (H (x * e (Real.log r) * M.sh y₀ * e (-Real.log r) * M.sh y₂) : ℝ)
       ≤ κ₀ * (Real.exp N * r ^ N * (κ₀ * (Real.exp N * r ^ N * (H x : ℝ)))) := by
         refine s1.trans (mul_le_mul_of_nonneg_left ?_ hκ₀')
-        refine s2.trans (mul_le_mul_of_nonneg_left ?_ hE)
-        exact s3.trans (mul_le_mul_of_nonneg_left s4 hκ₀')
+        exact s2.trans (mul_le_mul_of_nonneg_left (s3.trans (mul_le_mul_of_nonneg_left s4 hκ₀')) hE)
     _ = κ₀ ^ 2 * Real.exp N ^ 2 * r ^ (2 * N) * (H x : ℝ) := by ring
 
 theorem height_shear_majorant : ∀ (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (M : Maps D hn) (m : Meas D ρ p) (θ : InfFam D), IsInfFam θ →

@@ -75,8 +75,7 @@ theorem aeval_scale [Fintype K] [DecidableEq K] {L : Type} [CommRing L] [Algebra
     · simp
     · intro x _ hx
       simp [hx]
-    · intro h
-      exact absurd (Finset.mem_univ _) h
+    · exact fun h => absurd (Finset.mem_univ _) h
   conv_lhs => rw [f.as_sum]
   conv_rhs => rw [f.as_sum]
 
@@ -218,8 +217,7 @@ theorem relDeg_pointIdeal [Fintype K] [DecidableEq K] [Fintype K'] [DecidableEq 
     intro b h
     apply X_ne_zero (R := Ω) b
     apply IsFractionRing.injective M L
-    rw [map_zero]
-    exact h
+    rwa [map_zero]
   have hφ : ∀ p, φ (algebraMap (MRing ι' k ⧸ P') _ (Ideal.Quotient.mk P' (X p))) = c (y p) * t p.1 := by
     intro p
     simp only [φ, IsFractionRing.liftAlgHom_apply, IsFractionRing.lift_algebraMap]
@@ -260,9 +258,7 @@ theorem numPull : NumPull := by
   obtain ⟨hκ, hvinj, hv, hvs⟩ := hbm
   let j : K ↪ K' := ⟨κ, hκ⟩
   let τf : (Σ b, ι b) → Σ b : K, ι' (j b) := fun p => ⟨p.1, cast (congrArg ι' (hv p)) (v p).2⟩
-  have hτv : ∀ p, blockIncl j ι' (τf p) = v p := by
-    intro p
-    exact Sigma.ext (hv p).symm (cast_heq _ _)
+  have hτv : ∀ p, blockIncl j ι' (τf p) = v p := fun p => Sigma.ext (hv p).symm (cast_heq _ _)
   have hbinj : Function.Injective (blockIncl j ι') := by
     rintro ⟨b1, i1⟩ ⟨b2, i2⟩ h
     simp only [blockIncl, Sigma.mk.inj_iff] at h
@@ -304,10 +300,8 @@ theorem numPull : NumPull := by
     · obtain ⟨i, hi⟩ := h1 b
       refine ⟨(τf ⟨b, i⟩).2, fun h0 => hi ?_⟩
       show y (v ⟨b, i⟩) = 0
-      rw [← hτv]
-      exact h0
-    · rw [← hF1]
-      exact h2
+      rwa [← hτv]
+    · rwa [← hF1]
   obtain ⟨hP'm, hrel, -⟩ := ptDim k Ω K' ι' y d hy
   obtain ⟨hPzm, hrelz, -⟩ := ptDim k Ω K (fun b => ι' (j b)) z d hzPt
   haveI : (pointIdeal k y).IsPrime := hP'm.isPrime

@@ -317,9 +317,7 @@ theorem prM_unip_frameMat (hι : HSpace.IsIsomEmb V' V ι)
   have h2 := prM_kills_colSpan h h1
   rw [Matrix.mulVec_sub, Matrix.mulVec_mulVec (Pi.single j 1) (adMat D.host.F (prM V V' ι)) (adMat D.host.F (frameMat V V' ι)),
     hPI, Matrix.one_mulVec, sub_eq_zero] at h2
-  rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]
-  rw [Matrix.one_mulVec]
-  exact h2
+  rwa [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.one_mulVec]
 
 theorem mt_eq_of_mem (hι : HSpace.IsIsomEmb V' V ι)
     (h : ∀ i ∈ upTo T, ∀ v' : V'.V, V.hT (V.frame.equivFun.symm fun j => X j i) (ι v') = 0)
@@ -413,8 +411,7 @@ theorem frameMat_mulVec (z : Fin V'.rank → D.host.E) :
     frameMat V V' ι *ᵥ z = ⇑(V.frame.repr (ι (V'.frame.equivFun.symm z))) := by
   have h := LinearMap.toMatrix_mulVec_repr V'.frame V.frame ι (V'.frame.equivFun.symm z)
   have hz : ⇑(V'.frame.repr (V'.frame.equivFun.symm z)) = z := funext fun i => repr_symm V' z i
-  rw [hz] at h
-  exact h
+  rwa [hz] at h
 
 theorem symm_frameMat_mulVec (z : Fin V'.rank → D.host.E) :
     V.frame.equivFun.symm (frameMat V V' ι *ᵥ z) = ι (V'.frame.equivFun.symm z) := by
@@ -490,8 +487,7 @@ theorem exists_sliceFrame : ∀ (D : D7) (V : HSp D) (m : ℕ) (X Y : Matrix (Fi
   have hsym : ∀ w : V'.V, V'.frame.equivFun.symm (fun a => V'.frame.repr w a) = w := by
     intro w
     have h := V'.frame.equivFun.symm_apply_apply w
-    rw [Module.Basis.equivFun_apply] at h
-    exact h
+    rwa [Module.Basis.equivFun_apply] at h
   have hcol : ∀ (Z : Matrix (Fin V.rank) (Fin m) D.host.E) (w : Fin S.card → V'.V),
       (∀ k, ι (w k) = V.frame.equivFun.symm fun j => Z j (S.orderEmbOfFin rfl k)) →
       frameMat V V' ι * Matrix.of (fun a k => V'.frame.repr (w k) a) =
@@ -500,8 +496,7 @@ theorem exists_sliceFrame : ∀ (D : D7) (V : HSp D) (m : ℕ) (X Y : Matrix (Fi
     ext a k
     have h := congrFun (frameMat_mulVec (V := V) (V' := V') (ι := ι)
       (fun b => V'.frame.repr (w k) b)) a
-    rw [hsym (w k), hw k, repr_symm] at h
-    exact h
+    rwa [hsym (w k), hw k, repr_symm] at h
   refine ⟨S.card, fun k => S.orderEmbOfFin rfl k, Matrix.of (fun a k => V'.frame.repr (wx k) a),
     Matrix.of (fun a k => V'.frame.repr (wy k) a), ?_, ?_⟩
   · exact And.intro he_mono (And.intro he_range (And.intro (hcol X wx hwx) (hcol Y wy hwy)))
@@ -794,8 +789,7 @@ theorem core (σ : E →ₐ[F] E) {n n' r r' : ℕ} {J : Matrix (Fin n) (Fin n) 
   have c1 : ∀ {a c : ℕ} (Z : Matrix (Fin a) (Fin c) E), Formalism.UG.cT (sigR (AF F) σ) (adMat F Z) = adMat F (Formalism.UG.cT (σ : E →+* E) Z) :=
     fun Z => rfl
   have fix : (matHom _ σ J' b).1 * adMat F (initCols X' k) = adMat F (initCols X' k) := by
-    rw [hM, Matrix.sub_mul, Matrix.one_mul, sub_eq_zero] at hfix
-    exact hfix
+    rwa [hM, Matrix.sub_mul, Matrix.one_mul, sub_eq_zero] at hfix
   rw [unip_singleton hW' k]
   apply Subgroup.subset_closure
   refine ⟨hM ▸ hfix, ?_, fun x hx => ?_⟩
@@ -1143,8 +1137,7 @@ theorem mem_unip_of_mat {T : Finset (Fin m)} {X : Matrix (Fin n) (Fin m) E} {X' 
     have e3 : {l | ∃ k' ∈ ({k} : Finset (Fin m')), l ≤ k' ∧ k' < i} = ∅ := by
       ext l
       simpa using fun _ => hi
-    rw [e3, colSpan, Set.image_empty, Submodule.span_empty, Submodule.mem_bot, sub_eq_zero] at h
-    exact h
+    rwa [e3, colSpan, Set.image_empty, Submodule.span_empty, Submodule.mem_bot, sub_eq_zero] at h
   have spanB : ∀ j, k < j → (matHom _ σ J' b).1 *ᵥ (adMat F X')ᵀ j - (adMat F X')ᵀ j ∈ colSpan F X' {i | i ≤ k} :=
     fun j hj => by
       have h := (Subgroup.mem_iInf.1 hb.1 j).2 _ (Submodule.subset_span ⟨j, rfl, rfl⟩)
@@ -1179,8 +1172,7 @@ theorem mem_unip_of_mat {T : Finset (Fin m)} {X : Matrix (Fin n) (Fin m) E} {X' 
       rfl
     have h2 := hy (e i) ⟨e k, Finset.mem_insert_self _ _, he.monotone hi⟩
     change (adMat F (Formalism.UG.cT (σ : E →+* E) X' * J') *ᵥ adMat F P *ᵥ y) i = 0
-    rw [mulVec_mulVec, c0, h1]
-    exact h2
+    rwa [mulVec_mulVec, c0, h1]
   refine ⟨Subgroup.mem_iInf.2 fun j => ⟨mem_iff_of_ptStab pt ?_, fun y hy => ?_⟩,
     mem_iff_of_ptStab pt le_rfl, fun y hy => ?_⟩
   · exact Submodule.span_mono (Set.image_mono fun i ⟨k', h1, h2, _⟩ => ⟨k', h1, h2⟩)

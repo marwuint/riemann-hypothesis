@@ -60,8 +60,7 @@ lemma beta_nat {j j' : J} (f : j ⟶ j') (b : B) : (D.map f).hom ((β.app j).hom
 
 lemma iota_nat (c : Cocone D) {j j' : J} (f : j ⟶ j') (x : D.obj j) :
     (c.ι.app j').hom ((D.map f).hom x) = (c.ι.app j).hom x := by
-  have h := congrArg (fun g => g.hom x) (c.w f)
-  simpa using h
+  simpa using congrArg (fun g => g.hom x) (c.w f)
 
 lemma mapI (I : Ideal B) {j j' : J} (f : j ⟶ j') {x : D.obj j} (hx : x ∈ I.map (β.app j).hom) :
     (D.map f).hom x ∈ I.map (β.app j').hom := by

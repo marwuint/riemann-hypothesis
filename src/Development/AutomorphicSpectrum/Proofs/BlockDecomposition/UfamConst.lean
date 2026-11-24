@@ -128,8 +128,7 @@ theorem exists_ker [MeasurableSpace (archGroup K n)] [BorelSpace (archGroup K n)
     refine ⟨min e (1 / 2), by positivity, by
       exact lt_of_le_of_lt (min_le_right _ _) (by norm_num), fun y hy => hsub ?_⟩
     apply hball
-    simp only [Metric.mem_closedBall, dist_eq_norm]
-    exact le_trans hy (min_le_left _ _)
+    simpa only [Metric.mem_closedBall, dist_eq_norm] using le_trans hy (min_le_left _ _)
   obtain ⟨ρ, hρ0, hρ1, hρU⟩ := hb
   set β₀ : archGroup K n → ℝ := fun y => max 0 (1 - ‖mat y - 1‖ / ρ) with hβ₀
   have hβc : Continuous β₀ :=
@@ -160,8 +159,7 @@ theorem exists_ker [MeasurableSpace (archGroup K n)] [BorelSpace (archGroup K n)
              lip := ⟨c⁻¹ * ρ⁻¹, mul_nonneg hcpos (inv_nonneg.2 hρ0.le), fun y y' => ?_⟩ }
     · rw [integral_const_mul, ← hcdef, inv_mul_cancel₀ hpos.ne']
     · rw [← mul_sub, abs_mul, abs_of_nonneg hcpos, mul_assoc]
-      refine mul_le_mul_of_nonneg_left ?_ hcpos
-      exact tent_lip hρ0 _ _ _
+      exact mul_le_mul_of_nonneg_left (tent_lip hρ0 _ _ _) hcpos
   exact ⟨_, hk, (tsupport_mul_subset_right (f := fun _ => c⁻¹) (g := β₀)).trans (hts.trans hρU)⟩
 
 end GlobalTheory.CompanionTheory.Conc
