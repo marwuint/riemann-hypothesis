@@ -64,8 +64,7 @@ private theorem coe_mem_orbit (U : Subgroup G) (a g : G) :
   · rintro ⟨u, hu, u', hu', rfl⟩
     refine ⟨⟨u, hu⟩, ?_⟩
     show ((u * a : G) : G ⧸ U) = ((u * a * u' : G) : G ⧸ U)
-    rw [QuotientGroup.eq, show (u * a)⁻¹ * (u * a * u') = u' by group]
-    exact hu'
+    rwa [QuotientGroup.eq, show (u * a)⁻¹ * (u * a * u') = u' by group]
 
 private theorem out_mem_orbit (U : Subgroup G) (a : G) (y : G ⧸ U) :
     y ∈ MulAction.orbit U (a : G ⧸ U) ↔ y.out ∈ DC U a := by
@@ -74,11 +73,9 @@ private theorem out_mem_orbit (U : Subgroup G) (a : G) (y : G ⧸ U) :
 private theorem val_out (U : Subgroup G) {φ : G → V} (hφ : ∀ u ∈ U, ∀ g, φ (g * u) = φ g)
     (g y : G) (q : G ⧸ U) (h : (y : G ⧸ U) = q) : φ (g * q.out) = φ (g * y) := by
   have hm : y⁻¹ * q.out ∈ U := by
-    rw [← QuotientGroup.eq, QuotientGroup.out_eq']
-    exact h
+    rwa [← QuotientGroup.eq, QuotientGroup.out_eq']
   have e := hφ _ hm (g * y)
-  rw [show g * y * (y⁻¹ * q.out) = g * q.out by group] at e
-  exact e
+  rwa [show g * y * (y⁻¹ * q.out) = g * q.out by group] at e
 
 private theorem dcF_eq_mem (U : Subgroup G) (a : G) (φ : G → V) :
     dcF U a φ = (∑ᶠ q ∈ MulAction.orbit U (a : G ⧸ U), rightReg ℂ G V q.out) φ := by
@@ -122,10 +119,8 @@ theorem UpperTheory.V.Z.Sym.So.dcBasic :
       obtain ⟨r, ⟨hr, hry⟩, -⟩ := hu _ ((out_mem_orbit U a y).mp hy)
       refine ⟨r, hr, ?_⟩
       show (r : G ⧸ U) = y
-      rw [← QuotientGroup.out_eq' y, QuotientGroup.eq]
-      exact hry
-    · intro r hr
-      exact (val_out U hφ g r (r : G ⧸ U) rfl).symm
+      rwa [← QuotientGroup.out_eq' y, QuotientGroup.eq]
+    · exact fun r hr => (val_out U hφ g r (r : G ⧸ U) rfl).symm
   refine ⟨?_, ?_, ?_, ?_, h5⟩
   · intro u hu g
     rw [dcF_apply U a hfin φ, dcF_apply U a hfin φ]
@@ -137,10 +132,8 @@ theorem UpperTheory.V.Z.Sym.So.dcBasic :
     · intro y hy
       simp only [Set.Finite.mem_toFinset] at hy ⊢
       exact hO u'⁻¹ y hy
-    · intro y _
-      exact inv_smul_smul u' y
-    · intro y _
-      exact smul_inv_smul u' y
+    · exact fun y _ => inv_smul_smul u' y
+    · exact fun y _ => smul_inv_smul u' y
     · intro y _
       have hq : ((u * y.out : G) : G ⧸ U) = u' • y := by
         conv_rhs => rw [← QuotientGroup.out_eq' y]

@@ -101,26 +101,22 @@ theorem UpperTheory.Cb.equiv_of_stalkwise_base_change :
       obtain ⟨V, h, y, hV, hs, hy⟩ := (key ((Scheme.Etale.forget S).obj U.unop) U.unop.prop n).1 x
       refine ⟨op (@Scheme.Etale.mk S _ V.hom hV), etHom U V hV h, ?_, y, ?_⟩
       · change Surjective (etHom U V hV h).unop.left
-        rw [etHom_left]
-        exact hs
+        rwa [etHom_left]
       · have hm : (Φ.map (etHom U V hV h)).unop = (bc (α ≫ p)).map h := by
           change (bc (α ≫ p)).map ((Scheme.Etale.forget S).map (etHom U V hV h).unop) = _
           rw [etHom_map]
           rfl
-        rw [hm]
-        exact hy
+        rwa [hm]
     · intro U n y hy
       obtain ⟨V, h, hV, hs, hz⟩ := (key ((Scheme.Etale.forget S).obj U.unop) U.unop.prop n).2 y hy
       refine ⟨op (@Scheme.Etale.mk S _ V.hom hV), etHom U V hV h, ?_, ?_⟩
       · change Surjective (etHom U V hV h).unop.left
-        rw [etHom_left]
-        exact hs
+        rwa [etHom_left]
       · have hm : (Φ'.map (etHom U V hV h)).unop = (bc p).map h := by
           change (bc p).map ((Scheme.Etale.forget S).map (etHom U V hV h).unop) = _
           rw [etHom_map]
           rfl
-        rw [hm]
-        exact hz
+        rwa [hm]
   have hid : Eqv R ((bcMap α p).app (Over.mk (𝟙 S))) F :=
     hall (op (@Scheme.Etale.mk S S (𝟙 S) inferInstance))
   have i1 := fst_iso E S (α ≫ p)

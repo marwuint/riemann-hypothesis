@@ -200,8 +200,7 @@ theorem isIntegral_of_isPullback : ∀ (k : Type) [Field k] (N : ℕ) (X X' : Sc
     exact ⟨H'.isoPullback.inv z, by rw [← Scheme.Hom.comp_apply, H'.isoPullback_inv_fst]⟩
   have hflat : Flat π := by
     refine MorphismProperty.of_isPullback H.flip ?_
-    refine (HasRingHomProperty.Spec_iff (P := @Flat)).2 ?_
-    exact GlobalTheory.GeomIrr.flat_of_field _
+    exact (HasRingHomProperty.Spec_iff (P := @Flat)).2 (GlobalTheory.GeomIrr.flat_of_field _)
   have : IsReduced X' := by
     have (x' : X') : _root_.IsReduced (X'.presheaf.stalk x') := by
       obtain ⟨A, _, _, _, j, _, q, hq, hj⟩ := chart (π x')
@@ -382,10 +381,8 @@ theorem eq_zero_of_one_tmul_mem (a : Fin N → A) {j : Fin N} (hu : IsUnit (a j)
   have h1 := Ideal.mem_map_of_mem (polyEquiv k A N) hx
   rw [map_span_genForm, polyEquiv_one_tmul] at h1
   have h2 : C x ∈ RingHom.ker (linFormElim a hu (Set.univ : Set Unit)) := by
-    rw [ker_linFormElim, Set.image_univ, Set.range_unique]
-    exact h1
-  rw [RingHom.mem_ker, algHom_C, algebraMap_eq, C_eq_zero] at h2
-  exact h2
+    rwa [ker_linFormElim, Set.image_univ, Set.range_unique]
+  rwa [RingHom.mem_ker, algHom_C, algebraMap_eq, C_eq_zero] at h2
 
 theorem span_genericForm_isPrime_or_eq_top :
     ∀ (k A : Type) [Field k] [CommRing A] [IsDomain A] [Algebra k A] (N : ℕ) (a : Fin N → A)
@@ -421,8 +418,7 @@ theorem span_genericForm_isPrime_or_eq_top :
     rintro _ ⟨p, hp, rfl⟩
     refine mem_nonZeroDivisors_of_ne_zero fun h => nonZeroDivisors.ne_zero hp ?_
     refine Algebra.TensorProduct.includeLeft_injective (R := k) (S := k) (A := P) (B := A) hkA ?_
-    rw [map_zero]
-    exact h
+    rwa [map_zero]
   have hinj : Function.Injective (algebraMap B (K ⊗[k] A)) := IsLocalization.injective _ hM
   have ht0 : t = algebraMap B (K ⊗[k] A) (genForm (k := k) a) := by
 
@@ -619,8 +615,7 @@ theorem isIntegral_or_isEmpty_subscheme : ∀ (Y : Scheme.{0}) (I : Y.IdealSheaf
         I.subschemeι x = (W a).2.fromSpec ⟨I.ideal (W a), ha⟩ := by
       intro a ha
       have := fromSpec_mem_support I (W a) (W a).2 ⟨I.ideal (W a), ha⟩ le_rfl
-      rw [← I.range_subschemeι] at this
-      exact this
+      rwa [← I.range_subschemeι] at this
     have hrange : ∀ a (x : I.subscheme), I.subschemeι x ∈ (W a).1 → x ∈ Set.range (I.subschemeCover.f (W a)) := by
       intro a x hx
       haveI := I.subschemeCover.map_prop (W a)
@@ -746,8 +741,7 @@ theorem eq_zero_of_germ_eq_zero {k : Type} [CommRing k] {Y : Scheme.{0}} [IsInte
     (hi : y ∈ B.U i) (h0 : H0.germ i y (show y ∈ (⊤ : Y.Opens) from trivial) hi f = 0) : f = 0 := by
   have hi0 : f.loc i = 0 := by
     apply germ_injective_of_isIntegral Y y (memInf (U := ⊤) trivial hi)
-    rw [map_zero]
-    exact h0
+    rwa [map_zero]
   refine H0.ext_germ fun z hz => ?_
   obtain ⟨j, hj⟩ := hc z
   refine ⟨j, hj, ?_⟩
@@ -842,8 +836,7 @@ theorem cls_L₀_nsmul (u : AllWt.Weight Dw) (k : ℕ) :
     exact (left_eq_add.1 e).symm ▸ rfl
   | succ k ih =>
     have e := cls_common_add (common₀ X Z) (k • u) u
-    rw [succ_nsmul, succ_nsmul, ← ih]
-    exact e
+    rwa [succ_nsmul, succ_nsmul, ← ih]
 
 end Comp
 
@@ -1224,8 +1217,7 @@ theorem imageDeg_eq_del (hQ : GlobalTheory.HSCore.Quoted) {F : Type} [Field F] [
   obtain ⟨f, hf, -⟩ := hQ.chowInt F S.N S.D S.imageIdeal S.isHomogeneous_imageIdeal
     (GlobalTheory.Adelic.HeightExists.isPrime_imageIdeal hV) hdim
   rw [GlobalTheory.CompHt.imageIdeal_eq_coneIdeal_of_generic F Ω S x hx a _ ha hc] at hf hdeg
-  rw [GlobalTheory.CompHt.IsImageDeg.imageDeg_eq ⟨S.N, b, f, hf⟩]
-  exact hdeg
+  rwa [GlobalTheory.CompHt.IsImageDeg.imageDeg_eq ⟨S.N, b, f, hf⟩]
 
 theorem exists_basis_fin (F V : Type) [Field F] [AddCommGroup V] [Module F V] [Module.Finite F V] :
     ∃ N, Nonempty (Module.Basis (Fin N) F V) := ⟨_, ⟨Module.finBasis F V⟩⟩
@@ -1257,8 +1249,7 @@ theorem exists_chart_val (h : GenFrEx Xo c) {u : AllWt.Weight Dw} (R : Modif (st
   have hU : ⊤ ≤ (z ≫ R.σ) ⁻¹ᵁ U₀ X Z := by
     intro s _
     have := hO (Set.mem_univ s)
-    rw [R.off_eq] at this
-    exact this
+    rwa [R.off_eq] at this
   have hO₂ : ⊤ ≤ ((z ≫ R.σ) ≫ inc₀ X Z) ⁻¹ᵁ flagOpen X := hU
   obtain ⟨n, hn⟩ := exists_chart Δ.isLB (ptOf z)
   have hz' : ptOf z ∈ R.off := (le_iff_ptOf_mem _ _).1 hO

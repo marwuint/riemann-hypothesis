@@ -135,8 +135,7 @@ theorem normV_eq_of_localDegreeOne (h : IsPlaceOver A v) (h' : IsPlaceOver A w)
         algebraMap F Ω (x : F) ^ normV v - algebraMap F Ω (x : F) := by
       push_cast
       rfl
-    rw [e]
-    exact h1
+    rwa [e]
   have : w.asIdeal.IsPrime := w.isPrime
   have : Finite (𝓞 F ⧸ w.asIdeal) := w.asIdeal.finiteQuotientOfFreeOfNeBot w.ne_bot
   let _ : Fintype (𝓞 F ⧸ w.asIdeal) := Fintype.ofFinite _
@@ -203,8 +202,7 @@ theorem continuous_symm_of_valued_eq {K F : Type} [Field K] [NumberField K] [Fie
   have h1 : Valued.v y < Valued.v (ι x) := by
     simpa using hy
   have h2 : Valued.v (ι.symm y) < Valued.v x := by
-    rw [← hv (ι.symm y), ← hv x, RingEquiv.apply_symm_apply]
-    exact h1
+    rwa [← hv (ι.symm y), ← hv x, RingEquiv.apply_symm_apply]
   show Valued.v.restrict (ι.symm y) < γ
   rw [← hx]
   simpa using h2
@@ -255,8 +253,7 @@ theorem exists_completionEquiv_of_he (h : IsPlaceOver A v) (h' : IsPlaceOver A w
   let ι := RingEquiv.ofBijective (algebraMap (v.adicCompletion K) (w.adicCompletion F)) hbij
   have hv : ∀ x, Valued.v (ι x) = Valued.v x := fun x => by
     have := GroundTheory.Global.valued_algebraMap_adicCompletion v w x
-    rw [he, pow_one] at this
-    exact this
+    rwa [he, pow_one] at this
   exact ⟨ι, GroundTheory.Global.continuous_adicCompletionMap v w, continuous_symm_of_valued_eq ι hv,
     GroundTheory.Global.adicCompletionMap_algebraMap v w, hv⟩
 

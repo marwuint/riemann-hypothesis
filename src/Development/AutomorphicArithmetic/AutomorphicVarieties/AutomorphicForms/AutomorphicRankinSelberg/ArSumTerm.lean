@@ -95,8 +95,7 @@ theorem UpperTheory.V.Af.Rs.arSum :
   set G : ℕ → ℝ := Q.indicator (fun n => g (φ n)) with hG
   have hu0 : ∀ n, 0 ≤ u n := fun n => by simp only [hu]; positivity
   have hc0 : ∀ m, 0 ≤ c m := fun m => by
-    simp only [hc]
-    exact Set.indicator_nonneg (fun _ _ => by positivity) _
+    simpa only [hc] using Set.indicator_nonneg (fun _ _ => by positivity) _
   have hPu : Summable (P.indicator u) := hsu.indicator P
   have hzeta : Summable (fun m : ℕ => 1 / (m:ℝ) ^ 2) := hasSum_zeta_two.summable
   have hcs : Summable c := hzeta.indicator _
@@ -163,8 +162,7 @@ theorem UpperTheory.V.Af.Rs.arSum :
       by_cases hq : 1 ≤ n ∧ a n ≠ 0
       · have hφn := hφ n hq.1 hq.2
         have hGn : G n = P.indicator u (φ n).1 * c (φ n).2 := by
-          simp only [hG, hg]
-          exact Set.indicator_of_mem (show n ∈ Q from ⟨hn, hq.1, hq.2⟩) _
+          simpa only [hG, hg] using Set.indicator_of_mem (show n ∈ Q from ⟨hn, hq.1, hq.2⟩) _
         rcases hφq : φ n with ⟨n₁, m⟩
         rw [hφq] at hφn hGn
         obtain ⟨hn₁P, hnm, hA, hB⟩ := hφn
@@ -177,8 +175,7 @@ theorem UpperTheory.V.Af.Rs.arSum :
           · simp at hnm
             exact hn (hnm ▸ hn₁P)
         have hc2 : c m = 1 / (m:ℝ) ^ 2 := by
-          simp only [hc]
-          exact Set.indicator_of_mem (show m ∈ {m : ℕ | 2 ≤ m} from hm2) _
+          simpa only [hc] using Set.indicator_of_mem (show m ∈ {m : ℕ | 2 ≤ m} from hm2) _
         have hPn1 : P.indicator u n₁ = u n₁ := Set.indicator_of_mem hn₁P u
         rw [hc2, hPn1] at hGn
         have h1n : 1 ≤ n₁ * m ^ 2 := hnm ▸ hq.1
@@ -198,8 +195,7 @@ theorem UpperTheory.V.Af.Rs.arSum :
             _ ≤ _ := by simp only [hu]; linarith
         have hun : u n ≤ G n := by
           rw [hGn]
-          simp only [hu]
-          exact k1
+          simpa only [hu] using k1
         have hre : -‖w n‖ ≤ (w n).re := by
           have := Complex.abs_re_le_norm (w n)
           linarith [neg_abs_le (w n).re]

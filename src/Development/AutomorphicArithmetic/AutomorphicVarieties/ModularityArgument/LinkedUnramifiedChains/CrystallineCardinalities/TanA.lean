@@ -380,8 +380,7 @@ private theorem gk_case [IsTopologicalRing E] (hP : LocalPublishedTheorems) (K :
     · exact b.toDual_inj x (LinearMap.ext hx)
     · exact b.ext_elem fun i => by rw [← b.toDual_apply_right, hy, map_zero, Finsupp.zero_apply]
   have hκ' : κ ∈ Formalism.WeaklyAdmissibleFiltrations.finiteCocycles ((PP l).PD K) (resCoef ℚ_[l] (chRep ((cycA l l E).comp (GK K).subtype))) := by
-    rw [← (isCrField K _).2.2]
-    exact hκ
+    rwa [← (isCrField K _).2.2]
   have hD := ((hP.bk l (PP l) (AIP l) T K).2.1 E E _ 1 b.toDual
     (fun x => hc.mul continuous_const) (fun y => continuous_const) hdR hdual).1 κ hκ'.1
   have hf : ∀ i, ∃ f : ↥(GK K) → ℚ_[l], Continuous f ∧ ∀ s s', f (s * s') =
@@ -620,8 +619,7 @@ private theorem crConj {l : ℕ} [Fact l.Prime] {D : Type} [Group D] [Topologica
     (r t : D →* GL (Fin 3) E) (g : GL (Fin 3) E) (hr : Continuous fun s => (r s : Matrix (Fin 3) (Fin 3) E))
     (h : ∀ s, t s = g * r s * g⁻¹) (U : Subgroup D) (hU : IsOpen (U : Set D)) (hc : CrOn φ (colRep r) U) : CrOn φ (colRep t) U := by
   have ht : Continuous fun s => (t s : Matrix (Fin 3) (Fin 3) E) := by
-    simp only [h, Units.val_mul]
-    exact (continuous_const.matrix_mul hr).matrix_mul continuous_const
+    simpa only [h, Units.val_mul] using (continuous_const.matrix_mul hr).matrix_mul continuous_const
   have hψ : IsOpenEmbedding (φ.comp U.subtype) := hφ.comp hU.isOpenEmbedding_subtypeVal
   have hr' : Continuous fun s : U => ((r.comp U.subtype) s : Matrix (Fin 3) (Fin 3) E) := hr.comp continuous_subtype_val
   have ht' : Continuous fun s : U => ((t.comp U.subtype) s : Matrix (Fin 3) (Fin 3) E) := ht.comp continuous_subtype_val
@@ -764,8 +762,7 @@ private theorem flagStep (hP : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] 
   have hm : ∀ (x : GL (Fin 3) c₁.O) a b, (((m x : Matrix (Fin 3) (Fin 3) ↥E.1) a b : ↥E.1) : PadicAlgCl l) = ((x : Matrix (Fin 3) (Fin 3) c₁.O) a b : c₁.O).1 :=
     fun x a b => rfl
   have hr'c : Continuous fun s => (r' s : Matrix (Fin 3) (Fin 3) ↥E.1) := by
-    refine continuous_matrix fun a b => Continuous.subtype_mk ?_ _
-    exact (hcont a b).comp (hF.loc_cont v)
+    exact continuous_matrix fun a b => Continuous.subtype_mk ((hcont a b).comp (hF.loc_cont v)) _
   have hht' : ∀ s, t' s = m g * r' s * (m g)⁻¹ := fun s => by
     show m (t s) = _
     rw [ht, map_mul, map_mul, map_inv]
@@ -892,14 +889,12 @@ theorem UpperTheory.V.Z.J.unitOf :
   have hrel : (x ^ (e : ℤ) * y) ^ (Fr.w 3 i - Fr.w 3 j) = x := by
     have h1 := hij g₀
     rw [hI v i g₀ hg₀, hI v j g₀ hg₀] at h1
-    rw [← hPsi, zpow_sub, ← map_zpow μ, ← map_zpow μ]
-    rw [mul_inv_eq_iff_eq_mul, mul_comm]
+    rw [← hPsi, zpow_sub, ← map_zpow μ, ← map_zpow μ, mul_inv_eq_iff_eq_mul, mul_comm]
     exact Units.ext h1
   obtain ⟨i', rfl, rfl⟩ := idxStep e hL.e_pos x y hy hx i j hrel
   refine ⟨i', flagStep hP c₁ R.ok R.S ξ v φ hφ hcy (fun s hs => (hIq s).2 hs) i' (fun s => ?_) fun E r' h => ?_⟩
   · have h1 := hij s
-    rw [hcb s] at h1
-    exact h1
+    rwa [hcb s] at h1
   · refine hcr φ ψ' hφ hcomp E r' fun s a b => ?_
     rw [hr, hp]
     exact h s a b

@@ -75,8 +75,7 @@ private theorem iwahori_relIndex_ne_zero {G : Type} [Group G] (I : Iwa G) (c : �
   have hT : I.T ≤ I.Iw c := le_trans le_sup_right le_sup_left
   have hN : I.N ≤ I.Iw c := le_trans le_sup_left le_sup_left
   refine relIndex_ne_zero_of_cover_ordinary_hecke_characters (I.Iw c) (I.Iw 0) (I.Nm 0) ?_ le_sup_right ?_ ?_
-  · show I.N ⊔ I.T ⊔ I.Nm c ≤ I.N ⊔ I.T ⊔ I.Nm 0
-    exact sup_le_sup_left (I.Nm_anti (Nat.zero_le c)) _
+  · exact sup_le_sup_left (I.Nm_anti (Nat.zero_le c)) _
   · intro g hg
     obtain ⟨x, hx, t, ht, y, hy, e⟩ := ((iwMem G I 0 g⁻¹).1).1 (inv_mem hg)
     refine ⟨y⁻¹, inv_mem hy, t⁻¹ * x⁻¹, mul_mem (hT (inv_mem ht)) (hN (inv_mem hx)), ?_⟩
@@ -93,12 +92,8 @@ private theorem iwahori_pro_unipotent_finite_index {G : Type} [Group G] (I : Iwa
   have hN1 : I.N ≤ I.I1 c := le_trans le_sup_left le_sup_left
   have hNm1 : I.Nm c ≤ I.I1 c := le_sup_right
   have hT : I.T ≤ I.Iw c := le_trans le_sup_right le_sup_left
-  have hle : I.I1 c ≤ I.Iw c := by
-    show I.N ⊔ I.Tc c ⊔ I.Nm c ≤ I.N ⊔ I.T ⊔ I.Nm c
-    exact sup_le_sup_right (sup_le_sup_left (I.Tc_le c) _) _
-  have hle' : I.Iw c ≤ I.Iw 0 := by
-    show I.N ⊔ I.T ⊔ I.Nm c ≤ I.N ⊔ I.T ⊔ I.Nm 0
-    exact sup_le_sup_left (I.Nm_anti (Nat.zero_le c)) _
+  have hle : I.I1 c ≤ I.Iw c := sup_le_sup_right (sup_le_sup_left (I.Tc_le c) _) _
+  have hle' : I.Iw c ≤ I.Iw 0 := sup_le_sup_left (I.Nm_anti (Nat.zero_le c)) _
   have h1 : (I.I1 c).relIndex (I.Iw c) ≠ 0 := by
     refine relIndex_ne_zero_of_cover_ordinary_hecke_characters (I.I1 c) (I.Iw c) I.T hle hT ?_ ?_
     · intro g hg
@@ -118,5 +113,4 @@ private theorem iwahori_pro_unipotent_finite_index {G : Type} [Group G] (I : Iwa
 
 theorem UpperTheory.V.Hi.iwFin :
     ∀ (G : Type) [Group G] (I : Iwa G) (c : ℕ), (I.Iw c).relIndex (I.Iw 0) ≠ 0 ∧ (I.I1 c).relIndex (I.Iw 0) ≠ 0 := by
-  intro G _ I c
-  exact ⟨iwahori_relIndex_ne_zero I c, iwahori_pro_unipotent_finite_index I c⟩
+  exact fun G _ I c => ⟨iwahori_relIndex_ne_zero I c, iwahori_pro_unipotent_finite_index I c⟩

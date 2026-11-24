@@ -58,15 +58,13 @@ private theorem conj_ine {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Alg
   refine ⟨σ, fun τ hτ => ?_⟩
   have h1 := conjGal_mem_Ine hlift hmem hτ
   have heq : conjGal hlift τ = σ⁻¹ * τ * σ := AlgEquiv.ext fun x => rfl
-  rw [← heq]
-  exact h1
+  rwa [← heq]
 
 private theorem ine_NS {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Algebra k Ω]
     {S : Set (W.Plc k)} {A : ValuationSubring Ω} {v : W.Plc k} (hv : v ∉ S)
     (hA : IsPlaceOver A v) {t : G k Ω} (ht : t ∈ Ine (F := k) A) : toGS Ω S t = 1 := by
   refine (QuotientGroup.eq_one_iff t).2 (Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ?_))
-  simp only [Set.mem_iUnion]
-  exact ⟨v, hv, A, hA, ht⟩
+  simpa only [Set.mem_iUnion] using ⟨v, hv, A, hA, ht⟩
 
 private theorem normal_map {l : ℕ} [Fact l.Prime] (F : W.GFrame l) (N : Subgroup F.G₀) (hN : N.Normal)
     (hc : ∀ g ∈ N, F.conj g ∈ N) : (N.map F.η.ker.subtype).Normal := by
@@ -103,16 +101,14 @@ theorem UpperTheory.frame_criterion_kernel :
     (Topology.IsInducing.subtypeVal.of_comp_iff).1 (galEmbTop ℚ (W.Lp L) Ω).1.isInducing
   have hKupc : IsClosed (Kup : Set (upl Ω L)) := by
     obtain ⟨t, ht, hpre⟩ := hind.isClosed_iff.1 hKc
-    rw [Subgroup.coe_map, ← hpre, Set.image_preimage_eq t toUpl_surj]
-    exact ht
+    rwa [Subgroup.coe_map, ← hpre, Set.image_preimage_eq t toUpl_surj]
   have hgen : ∀ u : upl Ω L, ∀ B' : ValuationSubring Ω, ¬B'.valuation (l : Ω) < 1 →
       (u : G ℚ Ω) ∈ Ine B' → barChar O Ψ (u : G ℚ Ω) = 1 → u ∈ Kup := by
     intro u B' hl hIne hbar
     obtain ⟨τ, hτ⟩ := toUpl_surj (Ω := Ω) (L := L) u
     refine ⟨τ, ?_, hτ⟩
     have hτI : τ ∈ Ine (F := W.Lp L) B' := by
-      rw [← hτ] at hIne
-      exact hIne
+      rwa [← hτ] at hIne
     by_cases htop : B' = ⊤
     · have hbot := ((places (W.Lp L) Ω l B').2.1 htop).1
       rw [hbot] at hτI
@@ -126,8 +122,7 @@ theorem UpperTheory.frame_criterion_kernel :
       obtain ⟨t, ht⟩ := s.unr (s.A v) v (s.hA v) hτ'
       have htI : t ∈ Ine (F := L) (s.A v) := by
         have h1 : W.resP L Ω t ∈ Ine (F := W.Lp L) (s.A v) := by
-          rw [ht]
-          exact hτ'
+          rwa [ht]
         exact h1
       have hprN : V.pr t ∈ N := by
         rcases hvS' with hlv | hvSt | hv0
@@ -141,8 +136,7 @@ theorem UpperTheory.frame_criterion_kernel :
           have hu : (galEmb ℚ (W.Lp L) Ω) τ = (u : G ℚ Ω) := by
             rw [← hτ]
             rfl
-          rw [hu]
-          exact hbar
+          rwa [hu]
         · apply hI0
           subst hv0
           exact ⟨t, htI, rfl⟩
@@ -155,8 +149,7 @@ theorem UpperTheory.frame_criterion_kernel :
         simp only [map_mul, map_inv]
         group
       change toGS Ω V.S' τ ∈ N'
-      rw [← heq]
-      exact hconj
+      rwa [← heq]
     · change toGS Ω V.S' τ ∈ N'
       rw [ine_NS hvS hv hτI]
       exact N'.one_mem
@@ -169,8 +162,7 @@ theorem UpperTheory.frame_criterion_kernel :
   intro g0 hg0
   obtain ⟨g, rfl⟩ := pr_surj V g0
   have hp0 : k.p0 g = 1 := by
-    rw [← hπ g]
-    exact hg0
+    rwa [← hπ g]
   have hpk : toUpl Ω L (W.resP L Ω g) ∈ k.p.ker := by
     rw [MonoidHom.mem_ker, ← k.galois_link_projection_coe, hp0]
     rfl
@@ -182,5 +174,4 @@ theorem UpperTheory.frame_criterion_kernel :
     change toGS Ω V.S' (W.resP L Ω g) = (m : V.frame.Γ)
     rw [← hτg]
     exact hmeq.symm
-  rw [hpr]
-  exact hm
+  rwa [hpr]

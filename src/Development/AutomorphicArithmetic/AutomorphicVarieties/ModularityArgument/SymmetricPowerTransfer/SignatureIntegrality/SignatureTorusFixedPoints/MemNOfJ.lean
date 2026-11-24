@@ -66,8 +66,7 @@ private theorem conjN {d : Fin n → kˣ} (hd : Dom d) {x : GL (Fin n) k} (hx : 
 private theorem conjNm {d : Fin n → kˣ} (hd : Dom d) {c : ℕ} {y : GL (Fin n) k} (hy : y ∈ (glIwa k n).Nm c) :
     (dg d)⁻¹ * y * dg d ∈ (glIwa k n).Nm c := by
   have h := GlAx.conj_Nm (t := d⁻¹) (a := fun i => ord k ((d⁻¹) i)) (fun i => val_ord _) (c := c) (c' := c) ?_ hy
-  · rw [map_inv, inv_inv] at h
-    exact h
+  · rwa [map_inv, inv_inv] at h
   · intro i j hji
     have h1 : valuation k ((d j : k)) ≤ valuation k (d i : k) := hd j i hji.le
     have h2 : valuation k (((d⁻¹) i : kˣ) : k) ≤ valuation k (((d⁻¹) j : kˣ) : k) := by
@@ -120,16 +119,14 @@ private theorem key (V : Lev k) {d d' : Fin n → kˣ} (hd : Dom d) (hd' : Dom d
     have h0 := GlAx.conj_up (d⁻¹) hu
     rw [map_inv, inv_inv] at h0
     have h3 : x = (diagT k (Fin n) d)⁻¹ * (n₁⁻¹ * n₂) * diagT k (Fin n) d := by rw [hxdef]; group
-    rw [h3]
-    exact h0
+    rwa [h3]
   have hw : (dg d')⁻¹ * (a₁⁻¹ * x * a₂) * dg d' = b₁ * b₂⁻¹ := by rw [hx]; group
   have hwu : (dg d')⁻¹ * (a₁⁻¹ * x * a₂) * dg d' ∈ unipB k (Fin n) := by
     have h0 : a₁⁻¹ * x * a₂ ∈ unipB k (Fin n) :=
       (unipB k (Fin n)).mul_mem ((unipB k (Fin n)).mul_mem
         ((unipB k (Fin n)).inv_mem ((glIwa k n).N_le ha₁)) hxu) ((glIwa k n).N_le ha₂)
     have h3 := GlAx.conj_up (d'⁻¹) h0
-    rw [map_inv, inv_inv] at h3
-    exact h3
+    rwa [map_inv, inv_inv] at h3
   obtain ⟨α, hα, s, hs, γ, hγ, eβ⟩ :=
     (factJ k V n).1 (b₁ * b₂⁻¹) ((V.J n).mul_mem hb₁ ((V.J n).inv_mem hb₂))
   obtain ⟨t, -, rfl⟩ := Subgroup.mem_map.1 hs

@@ -397,8 +397,7 @@ theorem UpperTheory.etale_purity_free_cover :
       (U ⊔ V).ι y ∈ O → ∃ z, X.homOfLE hO z = y := by
     intro O hO y hy
     have hy' : (U ⊔ V).ι y ∈ Set.range O.ι := by
-      rw [Scheme.Opens.range_ι]
-      exact hy
+      rwa [Scheme.Opens.range_ι]
     obtain ⟨z, hz⟩ := hy'
     refine ⟨z, (U ⊔ V).ι.isOpenEmbedding.injective ?_⟩
     change (X.homOfLE hO ≫ (U ⊔ V).ι) z = _
@@ -783,9 +782,7 @@ private theorem van (q : ℕ) [NeZero q] (X : Scheme.{0}) [IsIntegral X] (hζ : 
       have hx : P.ι x ∈ ⨆ i, A i := hP (hmem x)
       obtain ⟨i, hi⟩ := TopologicalSpace.Opens.mem_iSup.1 hx
       exact TopologicalSpace.Opens.mem_iSup.2 ⟨i, hi⟩) d (fun i => by
-        have e : P.ι ⁻¹ᵁ A i ≤ P.ι ⁻¹ᵁ (A i ⊓ P) := by
-          intro x hx
-          exact ⟨hx, hmem x⟩
+        have e : P.ι ⁻¹ᵁ A i ≤ P.ι ⁻¹ᵁ (A i ⊓ P) := fun x hx => ⟨hx, hmem x⟩
         have w : P.ι.resLE (A i ⊓ P) (P.ι ⁻¹ᵁ A i) e ≫ X.homOfLE (inf_le_right : A i ⊓ P ≤ P) =
             (P.ι ⁻¹ᵁ A i).ι := by
           rw [← cancel_mono P.ι]
@@ -807,8 +804,7 @@ theorem UpperTheory.exists_h1Mu_glue_of_compatible :
   intro q _ X _ hζ hq n
   induction n with
   | zero =>
-    intro U x _
-    exact ⟨0, fun i => i.elim0⟩
+    exact fun U x _ => ⟨0, fun i => i.elim0⟩
   | succ n ih =>
     intro U x hx
     set W : X.Opens := ⨆ i : Fin n, U i.castSucc with hW
@@ -950,8 +946,7 @@ private theorem sec_unit [IsIntegral X] (hn : ∀ y : X, IsIntegrallyClosed (X.p
     have h2 : X.germToFunctionField W ((c⁻¹ : (Γ(X, W))ˣ) : Γ(X, W)) * X.germToFunctionField W (c : Γ(X, W)) = 1 := by
       rw [← map_mul]; simp
     rw [hc] at h2
-    rw [eq_comm, ← mul_right_inj' (pow_ne_zero q g.ne_zero)]
-    rw [← mul_pow]
+    rw [eq_comm, ← mul_right_inj' (pow_ne_zero q g.ne_zero), ← mul_pow]
     simpa [mul_comm] using h2.symm)
   have h3 : s * s' = 1 := Scheme.germToFunctionField_injective X W (by
     rw [map_mul, hs, hs', map_one]; simp)
@@ -1160,8 +1155,7 @@ private lemma exists_prim (q : ℕ) [NeZero q] (L : Type) [Field L] [IsAlgClosed
     exact_mod_cast this.ne'
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_root _ hdeg
   refine ⟨⟨z, hq, ?_⟩⟩
-  rw [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]
-  exact hz
+  rwa [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]
 
 private lemma pl_id (q : ℕ) (i : ℤ) {X : Scheme.{0}} (m : ℤ) (y : Ht q (sch.obj X) m i) :
     pl q i (𝟙 X) m y = y := by
@@ -1204,8 +1198,7 @@ private lemma main (hA : LateralTheory.KummerTheory.AlgExt) : Hyps → ∀ (q : 
       kum q (Units.map (Spec.map (CommRingCat.ofHom φ)).appTop.hom.toMonoidHom w) := by
     rw [← hxx, ← hu, ← pl_comp, ← hφ, pl_comp]
     have h2 : pl q 1 (C.fromSpecStalk (genericPoint C)) 1 x₀ = kum q w := hw.symm
-    rw [h2]
-    exact K1
+    rwa [h2]
   let iX : (X.functionField)ˣ →* (Γ(Spec X.functionField, ⊤))ˣ :=
     Units.map (Scheme.ΓSpecIso X.functionField).inv.hom.toMonoidHom
   let fK : (C.functionField)ˣ := Units.map (Scheme.ΓSpecIso C.functionField).hom.hom.toMonoidHom w
@@ -1239,8 +1232,7 @@ private lemma main (hA : LateralTheory.KummerTheory.AlgExt) : Hyps → ∀ (q : 
   refine ⟨fK, h, ?_⟩
   have h6 : F = φu * h ^ q := by rw [hh, mul_comm F, mul_inv_cancel_left]
   have h7 := congrArg Units.val h6
-  rw [Units.val_mul, Units.val_pow_eq_pow_val] at h7
-  exact h7
+  rwa [Units.val_mul, Units.val_pow_eq_pow_val] at h7
 
 end UpperTheory.PicRigid
 
@@ -1476,8 +1468,7 @@ theorem UpperTheory.isChart_affine_sections_of_isCurve :
       show algebraMap Γ(C, W) _ (h.symm (h a)) = (h a : C.functionField)
       rw [h.symm_apply_apply]
       rfl
-    rw [heq] at this
-    exact this
+    rwa [heq] at this
   · intro L _ _ _
     have hp := IsPullback.of_hasPullback c (Spec.map (CommRingCat.ofHom (algebraMap k L)))
     obtain ⟨hX, e, -, -⟩ := UpperTheory.baseChange_affine_sections_subalgebra_tensor k L c _ _ hp hgen W hW B hB

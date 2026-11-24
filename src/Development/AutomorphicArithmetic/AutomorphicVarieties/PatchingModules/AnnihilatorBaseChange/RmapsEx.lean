@@ -70,8 +70,7 @@ open scoped TensorProduct
 private theorem mem_map {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R]
     [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') {y : R} (hy : y ∈ maximalIdeal R) :
     f y ∈ maximalIdeal R' := by
-  rw [← res_eq_zero_iff O, res_map, res_eq_zero_iff]
-  exact hy
+  rwa [← res_eq_zero_iff O, res_map, res_eq_zero_iff]
 
 private theorem adic_map {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R]
     [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') {Γ : Type} [TopologicalSpace Γ] {a : Γ → R}
@@ -125,8 +124,7 @@ theorem UpperTheory.V.Pa.Core.tupPi :
       rw [MonoidAlgebra.mapRingHom_single, map_one] at h2
       rw [h2, lam_comap]
       rfl
-    simp only [h1]
-    exact adic_map f (fun N => ((u.cont i) N).comp_continuous hφc)
+    simpa only [h1] using adic_map f (fun N => ((u.cont i) N).comp_continuous hφc)
   case red =>
     rw [(UpperTheory.V.CA.d_gmap _).2.1]
     have h3 : (↑(res O (Spo A)) : Spo A →+* ResidueField O).comp (algebraMap B (Spo A)) = ↑(res O B) :=
@@ -251,15 +249,13 @@ theorem UpperTheory.V.Pa.Core.tupN :
   have hmap : ∀ z : Sinf O Unit D T.q n, z ∈ maximalIdeal (Sinf O Unit D T.q n) →
       (A.A N).s z ∈ maximalIdeal (A.A N).R := by
     intro z hz
-    rw [← res_eq_zero_iff O, res_map, res_eq_zero_iff]
-    exact hz
+    rwa [← res_eq_zero_iff O, res_map, res_eq_zero_iff]
   have hcomp := (A.A N).compat
   have key : ∀ (g : Ph0 Λ) (i : Fin n),
       (r.chib i) ((T.h N).p₀ (πN0 Λ N g)) = (r.chib i) (Λ.h.p₀ (πo0 Λ g)) := by
     intro g i
     have hH := hAd.1 ((T.h N).p₀ (πN0 Λ N g) * (Λ.h.p₀ (πo0 Λ g))⁻¹) (Λ.modH N g) i
-    rw [map_mul, map_inv, mul_inv_eq_one] at hH
-    exact hH
+    rwa [map_mul, map_inv, mul_inv_eq_one] at hH
   refine ⟨⟨(A.A N).p.D.comap (πN0 Λ N), ?_, ?_, (A.A N).p.ψ, ?_,
     (A.A N).s (MvPowerSeries.C (MvPowerSeries.X (.inl ()))), ?_, (A.A N).U, (A.A N).U_res,
     fun j i => (A.A N).s (MvPowerSeries.X (j, i)), ?_⟩, rfl, rfl, rfl, rfl, rfl⟩
@@ -284,8 +280,7 @@ theorem UpperTheory.V.Pa.Core.tupN :
     have hp := (A.A N).p.psi v i
     exact ⟨hp.cont, fun g => by rw [hp.red g, hcomp.2.1], fun g => by rw [hp.mu g, hcomp.2.2] <;> rfl⟩
   · exact hmap _ (hC _ (tupN_X _))
-  · intro j i
-    exact hmap _ (tupN_X _)
+  · exact fun j i => hmap _ (tupN_X _)
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.AnnihilatorBaseChange.TupNOfRep =====
@@ -306,8 +301,7 @@ private theorem rm_ext {O : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing
     (ey : ∀ p, g (MvPowerSeries.X p) = ρ (s (MvPowerSeries.X p))) (z : Sinf O Unit D q n) : ρ (s z) = g z := by
   have hm : ∀ x ∈ maximalIdeal R, ρ x ∈ maximalIdeal R' := by
     intro x hx
-    rw [← res_eq_zero_iff O R', res_map, res_eq_zero_iff O R]
-    exact hx
+    rwa [← res_eq_zero_iff O R', res_map, res_eq_zero_iff O R]
   obtain ⟨f, -, huniq⟩ := sinfExt O D q n R' (fun k => g (MvPowerSeries.C (MvPowerSeries.X k)))
     (fun p => g (MvPowerSeries.X p))
     (fun k => by rw [ea]; exact hm _ (ha k)) (fun p => by rw [ey]; exact hm _ (hy p))

@@ -93,14 +93,11 @@ theorem pull_one (hP : IsGrpPullback A₁ A x φ₁) (T' : Over S) (t : T'.left 
   unfold IsGrpPullback at hP'
   obtain ⟨hPb, -⟩ := hP'
   have hw : ((1 : Over.mk t ⟶ A₁).left ≫ φ₁) ≫ A.hom = T'.hom := by
-    rw [Category.assoc, hPb.w, ← Category.assoc, Over.w (1 : Over.mk t ⟶ A₁)]
-    exact ht
+    rwa [Category.assoc, hPb.w, ← Category.assoc, Over.w (1 : Over.mk t ⟶ A₁)]
   let c : T' ⟶ A := Over.homMk _ hw
   have hc := pull_mul hP T' t ht (g := 1) (g' := 1) (a := c) (a' := c) rfl rfl
   rw [_root_.mul_one] at hc
-  have hcc : c * c = c := by
-    apply Over.OverMorphism.ext
-    exact hc.symm
+  have hcc : c * c = c := Over.OverMorphism.ext hc.symm
   have h1 : c = 1 := mul_eq_left.mp hcc
   show c.left = _
   rw [h1]
@@ -112,14 +109,11 @@ theorem pull_inv (hP : IsGrpPullback A₁ A x φ₁) (T' : Over S) (t : T'.left 
   unfold IsGrpPullback at hP'
   obtain ⟨hPb, -⟩ := hP'
   have hw : ((g⁻¹).left ≫ φ₁) ≫ A.hom = T'.hom := by
-    rw [Category.assoc, hPb.w, ← Category.assoc, Over.w (g⁻¹)]
-    exact ht
+    rwa [Category.assoc, hPb.w, ← Category.assoc, Over.w (g⁻¹)]
   let c : T' ⟶ A := Over.homMk _ hw
   have hc := pull_mul hP T' t ht (g := g) (g' := g⁻¹) (a := a) (a' := c) h rfl
   rw [_root_.mul_inv_cancel, pull_one hP T' t ht] at hc
-  have hac : a * c = 1 := by
-    apply Over.OverMorphism.ext
-    exact hc.symm
+  have hac : a * c = 1 := Over.OverMorphism.ext hc.symm
   have h1 : c = a⁻¹ := eq_inv_of_mul_eq_one_right hac
   show c.left = _
   rw [h1]

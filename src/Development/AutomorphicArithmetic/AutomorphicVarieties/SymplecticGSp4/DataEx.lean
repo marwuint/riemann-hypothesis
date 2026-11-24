@@ -275,8 +275,7 @@ theorem UpperTheory.exists_primitive_odd_dirichletCharacter_two_pow :
     rw [← map_mul, neg_one_mul, neg_neg, map_one]
   rcases mul_self_eq_one_iff.1 hsq with h | h
   · refine ⟨χ * ψ, prim _ ?_, ?_⟩
-    · rw [MulChar.mul_apply, hψz, mul_one]
-      exact hχ
+    · rwa [MulChar.mul_apply, hψz, mul_one]
     · rw [MulChar.mul_apply, h, hψm, one_mul]
   · exact ⟨χ, prim χ hχ, h⟩
 end -- clump:auto
@@ -317,8 +316,7 @@ theorem UpperTheory.exists_primitive_two_pow_twist_mul :
       have h1 := (DirichletCharacter.factorsThrough_iff_ker_unitsMap hn1).mp hψf hx
       have h2 := (DirichletCharacter.factorsThrough_iff_ker_unitsMap hn1).mp hpf hx
       rw [MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, Units.val_one] at h1 h2 ⊢
-      rw [MulChar.mul_apply, h1, one_mul] at h2
-      exact h2
+      rwa [MulChar.mul_apply, h1, one_mul] at h2
     have hle : ξ.conductor ≤ 2 ^ (n - 1) := Nat.sInf_le hξf
     have hξ' : ξ.conductor = 2 ^ n := hξ
     rw [hξ'] at hle
@@ -394,8 +392,7 @@ private theorem pt_exists (l : ℕ) (hl : l.Prime) (Γ : Type) [Group Γ] [Topol
   rw [Filter.frequently_map] at hfr
   obtain ⟨n, hn1, hn2⟩ := (hfr.and_eventually hy).exists
   have hy' : y = QuotientGroup.mk g' := by
-    rw [← hn2, ← QuotientGroup.mk_pow, eq_comm, QuotientGroup.eq]
-    exact hn1
+    rwa [← hn2, ← QuotientGroup.mk_pow, eq_comm, QuotientGroup.eq]
   filter_upwards [hy] with m hm
   rw [hy', ← QuotientGroup.mk_pow, QuotientGroup.eq] at hm
   have := hH (H.toSubgroup.inv_mem hm)
@@ -411,8 +408,7 @@ private theorem pt_step {R ι : Type} [CommRing R] [Fintype ι] [DecidableEq ι]
       rw [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.zero_apply, Ideal.Quotient.eq_zero_iff_mem]
       exact hX a b
     have h1 : (Ideal.Quotient.mk J).mapMatrix X = 1 := by
-      rw [map_sub, map_one, sub_eq_zero] at h0
-      exact h0
+      rwa [map_sub, map_one, sub_eq_zero] at h0
     have h2 : (Ideal.Quotient.mk J).mapMatrix (X ^ i - 1) = 0 := by
       rw [map_sub, map_pow, h1, one_pow, map_one, sub_self]
     intro a b
@@ -440,8 +436,7 @@ private theorem pt_pow {R ι : Type} [CommRing R] [Fintype ι] [DecidableEq ι] 
     intro a b
     have h := pt_step I (I ^ (k + 1)) (Ideal.pow_le_self (Nat.succ_ne_zero k)) l hl (X ^ l ^ k) ih a b
     rw [← pow_mul, ← pow_succ] at h
-    rw [pow_succ' I (k + 1)]
-    exact h
+    rwa [pow_succ' I (k + 1)]
 
 theorem UpperTheory.V.GradeZeroInterpolatingElement.primeTo :
     ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] [T2Space Γ] (g : Γ), (∃ g', Filter.Tendsto (fun n : ℕ => g ^ l ^ n.factorial) Filter.atTop (nhds g')) ∧ ∀ g', Filter.Tendsto (fun n : ℕ => g ^ l ^ n.factorial) Filter.atTop (nhds g') → ∀ (O : Type) [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] [CharP (ResidueField O) l] (ι : Type) [Fintype ι] [DecidableEq ι] (rbar : Γ →* Matrix ι ι (ResidueField O)) (m : ℕ), l.Coprime m → rbar g ^ m = 1 → ∀ (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (ρ : Lift O rbar R), rbar g' = rbar g ∧ ρ.hom g' ^ m = 1 := by
@@ -463,13 +458,10 @@ theorem UpperTheory.V.GradeZeroInterpolatingElement.primeTo :
     intro N
     have h1 : ∀ᶠ y in nhds g', ∀ a b, Ideal.Quotient.mk (maximalIdeal R ^ N) (ρ.hom y a b) =
         Ideal.Quotient.mk (maximalIdeal R ^ N) (ρ.hom g' a b) := by
-      simp only [Filter.eventually_all]
-      intro a b
-      exact (ρ.cont a b N).eventually_eq g'
+      simpa only [Filter.eventually_all] using fun a b => (ρ.cont a b N).eventually_eq g'
     filter_upwards [hlim.eventually h1] with n hn
     ext a b
-    simp only [RingHom.mapMatrix_apply, Matrix.map_apply]
-    exact hn a b
+    simpa only [RingHom.mapMatrix_apply, Matrix.map_apply] using hn a b
   have hres : ∀ x y : R, Ideal.Quotient.mk (maximalIdeal R ^ 1) x = Ideal.Quotient.mk (maximalIdeal R ^ 1) y →
       res O R x = res O R y := by
     intro x y h
@@ -505,8 +497,7 @@ theorem UpperTheory.V.GradeZeroInterpolatingElement.primeTo :
     have e : (ρ.hom (g ^ l ^ n.factorial)) ^ m = ((ρ.hom g) ^ m) ^ l ^ n.factorial := by
       rw [map_pow, ← pow_mul, ← pow_mul, mul_comm]
     have hr : (Ideal.Quotient.mk (maximalIdeal R ^ N)).mapMatrix ((ρ.hom g') ^ m) = 1 := by
-      rw [map_pow, ← hn1, ← map_pow, e]
-      exact hq
+      rwa [map_pow, ← hn1, ← map_pow, e]
     intro a b
     have h2 : (Ideal.Quotient.mk (maximalIdeal R ^ N)).mapMatrix ((ρ.hom g') ^ m - 1) = 0 := by
       rw [map_sub, hr, map_one, sub_self]
@@ -520,8 +511,7 @@ theorem UpperTheory.V.GradeZeroInterpolatingElement.primeTo :
   ext a b
   have hmem : ((ρ.hom g') ^ m - 1) a b ∈ ⨅ i : ℕ, maximalIdeal R ^ i := Ideal.mem_iInf.2 (fun N => hB N a b)
   rw [hbot, Ideal.mem_bot] at hmem
-  rw [Matrix.zero_apply]
-  exact hmem
+  rwa [Matrix.zero_apply]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.PrimeTo =====
@@ -564,8 +554,7 @@ variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
 
 private theorem re_cc : ∃ σ : G ℚ Ω, IsCC σ := by
   obtain ⟨σ, h⟩ := exists_isConjOm (E := ℚ) (Ω := Ω)
-  refine ⟨AlgEquiv.ofRingEquiv (f := σ) fun x => by rw [eq_ratCast (algebraMap ℚ Ω), map_ratCast], ?_⟩
-  exact h
+  exact ⟨AlgEquiv.ofRingEquiv (f := σ) fun x => by rw [eq_ratCast (algebraMap ℚ Ω), map_ratCast], h⟩
 
 private theorem re_mul {A : ValuationSubring Ω} {q : ℕ} {t g : G ℚ Ω} (ht : t ∈ Ine (F := ℚ) A)
     (hg : IsFrob (F := ℚ) A q g) : IsFrob (F := ℚ) A q (t * g) := by
@@ -573,8 +562,7 @@ private theorem re_mul {A : ValuationSubring Ω} {q : ℕ} {t g : G ℚ Ω} (ht 
   have hy : A.valuation (g x) ≤ 1 :=
     (A.valuation_le_one_iff _).2 ((apply_mem_iff_of_mem_Dec hg.1 x).2 ((A.valuation_le_one_iff _).1 hx))
   have h3 := Valuation.map_add_lt A.valuation (ht.2 _ hy) (hg.2 x hx)
-  rw [sub_add_sub_cancel] at h3
-  exact h3
+  rwa [sub_add_sub_cancel] at h3
 
 private theorem re_frob (l : ℕ) [hl : Fact l.Prime] (v : ℕ) :
     ∃ (A : ValuationSubring Ω) (σ : G ℚ Ω), v.Prime → A.valuation (v : Ω) < 1 ∧ IsFrob (F := ℚ) A v σ ∧
@@ -673,8 +661,7 @@ private theorem dirG_pow_one {O : Type} [CommRing O] {N : ℕ} [NeZero N]
   ext g
   have h1 : (χ ^ m) (Chr.cls ℚ Ω N g : ZMod N) = 1 := by rw [h, MulChar.one_apply_coe]
   rw [MulChar.pow_apply_coe] at h1
-  rw [MonoidHom.pow_apply, Units.val_pow_eq_pow_val, MonoidHom.one_apply, Units.val_one]
-  exact h1
+  rwa [MonoidHom.pow_apply, Units.val_pow_eq_pow_val, MonoidHom.one_apply, Units.val_one]
 
 private theorem dirG_inv {O : Type} [CommRing O] {N : ℕ} [NeZero N]
     (χ : DirichletCharacter O N) : Chr.dirG ℚ Ω χ⁻¹ = (Chr.dirG ℚ Ω χ)⁻¹ := by

@@ -132,8 +132,7 @@ private lemma omega_at {E : Type} [Field E] [NumberField E] [IsCMField E] (bar :
     rw [← hsum, ← hprod]; ring
   have hint : IsIntegral ℤ w := by
     refine ⟨Polynomial.X ^ 2 + (Polynomial.C (-tr) * Polynomial.X + Polynomial.C nm), ?_, ?_⟩
-    · refine Polynomial.monic_X_pow_add ?_
-      exact lt_of_le_of_lt (Polynomial.degree_linear_le) (by norm_num)
+    · exact Polynomial.monic_X_pow_add (lt_of_le_of_lt (Polynomial.degree_linear_le) (by norm_num))
     · simp only [Polynomial.eval₂_add, Polynomial.eval₂_mul, Polynomial.eval₂_pow,
         Polynomial.eval₂_X, Polynomial.eval₂_C]
       simp only [eq_intCast, Int.cast_neg]
@@ -467,8 +466,7 @@ theorem UpperTheory.discriminant_mul_integral_mem :
       linear_combination hsq
   have hwQ : IsIntegral ℚ w := hw.tower_top
   have hmem' : y ∈ Algebra.adjoin ℚ {w} := by
-    rw [← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hwQ.isAlgebraic]
-    exact hmem
+    rwa [← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hwQ.isAlgebraic]
   have hrep : ∀ z ∈ Algebra.adjoin ℚ {w}, ∃ p q : ℚ, z = (p : K) + (q : K) * w := by
     intro z hz
     induction hz using Algebra.adjoin_induction with
@@ -523,8 +521,7 @@ theorem UpperTheory.Reformulated.B.Qk39.pDiscInt :
     (by rw [← h1]; exact congrArg _ (A.bar_eq _).symm) (by rw [← h2]; exact congrArg _ (A.bar_eq _).symm)
     (NumberField.RingOfIntegers.isIntegral_coe y) hy
   refine ⟨a, b, NumberField.RingOfIntegers.coe_injective ?_⟩
-  simp only [map_add (f := _), map_mul, map_intCast]
-  exact h
+  simpa only [map_add (f := _), map_mul, map_intCast] using h
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.PDiscInt =====
@@ -631,16 +628,14 @@ theorem UpperTheory.Gal.G1.pSides :
           push_cast; ring
         rw [e]
         exact u.asIdeal.neg_mem h
-  · intro u h
-    exact ((hS _ _).1 h _ hmemq).2 hw
+  · exact fun u h => ((hS _ _).1 h _ hmemq).2 hw
   · intro u u' h y hy
     rw [hadj] at hy
     rw [hCj E A u, hCj E A u']
     exact (hS _ _).1 h _ (hBar E A y hy)
   · intro s hsw u
     constructor
-    · intro h
-      exact ⟨((hS _ _).1 h _ hmemq).2 hw, ((hS _ _).1 h _ (hmemω s)).2 hsw⟩
+    · exact fun h => ⟨((hS _ _).1 h _ hmemq).2 hw, ((hS _ _).1 h _ (hmemω s)).2 hsw⟩
     · rintro ⟨h1, h2⟩
       exact (hS _ _).2 (hKey E A q hq hnd s u w h1 hw h2 hsw)
 end -- clump:auto

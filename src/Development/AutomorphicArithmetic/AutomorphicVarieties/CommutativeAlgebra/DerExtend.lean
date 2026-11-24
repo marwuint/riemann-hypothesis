@@ -81,8 +81,7 @@ theorem UpperTheory.V.Alg.der_extend :
       simp
     have horig : ∀ x : R, W.origin h x = W.originA h (y x) := fun x => by
       have h1 : x - y x ∈ RingHom.ker (W.origin h) := Ideal.pow_le_self two_ne_zero (hy x)
-      rw [RingHom.mem_ker, map_sub, sub_eq_zero] at h1
-      exact h1
+      rwa [RingHom.mem_ker, map_sub, sub_eq_zero] at h1
     let D' : R →ₗ[O] Q :=
       { toFun := fun x => D (y x)
         map_add' := fun a b => by
@@ -113,8 +112,7 @@ theorem UpperTheory.V.Alg.der_extend :
     · rintro E ⟨hE, rfl⟩
       ext x
       have := der_sq _ E hE _ (hy x)
-      rw [map_sub, sub_eq_zero] at this
-      exact this
+      rwa [map_sub, sub_eq_zero] at this
   · ext x
     obtain ⟨f, rfl⟩ := W.surj x
     have hspan : ∀ g ∈ Ideal.span (Set.range (MvPowerSeries.X : W.σ → MvPowerSeries W.σ O)),
@@ -129,9 +127,7 @@ theorem UpperTheory.V.Alg.der_extend :
         rw [WPres.z, W.origin_π]
         simp
       rw [map_mul]
-      rw [hz i, h2, smul_zero, zero_smul, add_zero] at h1
-      exact h1
+      rwa [hz i, h2, smul_zero, zero_smul, add_zero] at h1
     have h1 := hspan (f - algebraMap O _ (constantCoeff f))
       (_root_.UpperTheory.Reformulated.B.MemSpanVariable.mem_span_X _ (by simp [MvPowerSeries.algebraMap_apply]))
-    rw [map_sub, AlgHom.commutes, map_sub, der_algebraMap _ D hD, sub_zero] at h1
-    exact h1
+    rwa [map_sub, AlgHom.commutes, map_sub, der_algebraMap _ D hD, sub_zero] at h1

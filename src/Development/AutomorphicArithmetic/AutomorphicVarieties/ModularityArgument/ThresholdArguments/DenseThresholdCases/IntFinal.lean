@@ -105,9 +105,7 @@ private theorem hecke_eq_sum {G : Type} [Group G] (K : Subgroup G) (h : G → �
     rw [Finset.sum_image (fun a _ b _ e => Quotient.out_injective e)]
     have hsupp : (Function.support fun q : G ⧸ K => h q.out • ρ q.out x) ⊆ hfin.toFinset := by
       intro q hq
-      simp only [Set.Finite.coe_toFinset, Set.mem_setOf_eq]
-      intro h0
-      exact hq (by simp [h0])
+      simpa only [Set.Finite.coe_toFinset, Set.mem_setOf_eq] using fun h0 => hq (by simp [h0])
     have hsum : heckeVec ρ K h x = ∑ q ∈ hfin.toFinset, h q.out • ρ q.out x :=
       finsum_eq_sum_of_support_subset _ hsupp
     rw [hsum]
@@ -152,8 +150,7 @@ private theorem satVec_of_mem {σ : Submodule ℂ (UA E n → ℂ)} (hσ : IsAut
     rw [map_mul]; rfl
   have hfg : ∀ g v, f (τ.ρ g v) = repG e g (f v) := fun g v => by
     have h1 := hfe (e.symm g) v
-    rw [MonoidHom.comp_apply, Subgroup.subtype_apply, hpe] at h1
-    exact h1
+    rwa [MonoidHom.comp_apply, Subgroup.subtype_apply, hpe] at h1
   have hFe : ∀ c g v, F c (τ.ρ g v) = repG e g (F c v) := by
     intro c g v
     rw [hF, hF, hfg, hrep, hRm, hRm]
@@ -193,8 +190,7 @@ private theorem satVec_of_mem {σ : Submodule ℂ (UA E n → ℂ)} (hσ : IsAut
   refine GlobalTheory.HeightCounting.Blocks.isSatVecGL_of_mem_iSup hirr hB F hFe hφS
     (GlobalTheory.LGrp.mem_fixed.2 fun k hk => hK _ (e.symm k).2 ?_) h0
   show cLoc w ((e.symm k : locU n w) : UA E n) ∈ KGL w (n := n)
-  rw [hpe]
-  exact hk
+  rwa [hpe]
 
 private theorem tj_one {L : Type} [Field L] {O : Subring L} {ϖ : L} {j : ℕ} (g : GL (Fin n) L)
     (hg : Tj ℂ n O ϖ j g ≠ 0) : Tj ℂ n O ϖ j g = 1 := by
@@ -583,8 +579,7 @@ theorem UpperTheory.V.Z.Int.slopeCsd :
   have hS := UpperTheory.V.Z.Int.coreU l ι E n hn U hU.aut lam hlam w hw σ B (hU.split w hw σ hσ)
     ((GlobalTheory.BcSpehCompare.hasSat_iff hσ B).1 hB)
   have e : (CG.mk π).infChar = fun φ => infOfWeight (lam φ) := funext fun φ => hU.inf φ _ (hlam φ)
-  rw [e]
-  exact hS
+  rwa [e]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.IntegralDeterminants.SlopeCsd =====
@@ -744,8 +739,7 @@ theorem UpperTheory.V.Z.Int.charVal :
   rw [finprod_eq_single _ w fun v hv => hloc v hv, hlocw] at hp
   have hC : (κ.val w : ℂ) ^ N * ∏ φ : E →+* ℂ, φ (z : E) ^ m φ = 1 := by
     have := congrArg Units.val hp
-    rw [Units.val_mul, Units.val_pow_eq_pow_val, hκ z, Units.val_one] at this
-    exact this
+    rwa [Units.val_mul, Units.val_pow_eq_pow_val, hκ z, Units.val_one] at this
 
   have hterm : ∀ φ : E →+* ℂ, nu ι (φ (z : E)) ^ m φ =
       if φ ∈ Ov ι w then (nu ι (φ ((unif w : Eˣ) : E)) ^ m φ) ^ N else 1 := fun φ => by
@@ -766,8 +760,7 @@ theorem UpperTheory.V.Z.Int.charVal :
     simp only [map_zpow₀, nuHom_apply] at h1
     rw [Finset.prod_congr rfl fun φ _ => hterm φ, Finset.prod_ite_mem, Finset.univ_inter,
       Finset.prod_pow] at h1
-    rw [mul_pow]
-    exact h1
+    rwa [mul_pow]
   have hnn : 0 ≤ nu ι (κ.val w : ℂ) * ∏ τ ∈ Ov ι w, nu ι (τ ((unif w : Eˣ) : E)) ^ m τ :=
     mul_nonneg (norm_nonneg _) (Finset.prod_nonneg fun τ _ => zpow_nonneg (norm_nonneg _) _)
   exact (pow_eq_one_iff_of_nonneg hnn hNpos.ne').1 hR

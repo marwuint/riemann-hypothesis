@@ -69,8 +69,7 @@ private theorem ss_proj {R V : Type} [Ring R] [AddCommGroup V] [Module R V]
     rw [← isSimpleModule_iff_isAtom]
     have := ht i.1
     exact IsSimpleModule.congr (LinearEquiv.ofInjective _ (hj i.1)).symm
-  · intro i w
-    exact ⟨e w i.1, rfl⟩
+  · exact fun i w => ⟨e w i.1, rfl⟩
   · intro w hw
     rw [Finset.sum_coe_sort K (fun i => Q i w)]
     apply e.injective
@@ -79,11 +78,9 @@ private theorem ss_proj {R V : Type} [Ring R] [AddCommGroup V] [Module R V]
     have h1 : ∀ i, e (Q i w) = DFinsupp.single i (e w i) := fun i => by simp [Q]
     simp_rw [h1]
     ext1 m
-    rw [DFinsupp.finsetSum_apply]
-    rw [Finset.sum_eq_single m]
+    rw [DFinsupp.finsetSum_apply, Finset.sum_eq_single m]
     · simp
-    · intro b _ hb
-      exact DFinsupp.single_eq_of_ne hb.symm
+    · exact fun b _ hb => DFinsupp.single_eq_of_ne hb.symm
     · intro hm
       have : e w m = 0 := by
         by_contra h
@@ -130,8 +127,7 @@ private theorem from_le_iff (A B : Submodule ℂ[H] ρ.asModule) :
   · intro h x hx
     have := @h (ρ.asModuleEquiv x) (by simpa [mem_fromSub] using hx)
     simpa [mem_fromSub] using this
-  · intro h x hx
-    exact h hx
+  · exact fun h x hx => h hx
 
 private theorem from_inj {A B : Submodule ℂ[H] ρ.asModule} (h : fromSub ρ A = fromSub ρ B) :
     A = B :=

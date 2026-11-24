@@ -65,8 +65,7 @@ theorem UpperTheory.ConvolutionTheory.R2.I.cosetSpan :
       (continuous_fst.tendsto p).eventually (hev p.1)
     filter_upwards [e1, e2] with q h1 h2
     show a (q.1 * q.2) = a q.1
-    rw [h1, h2]
-    exact hp
+    rwa [h1, h2]
   obtain ⟨W1, W0, -, hW0, hKW, h1W, hWS⟩ :=
     generalized_tube_lemma hK (isCompact_singleton (x := (1 : G))) hS (by
       rintro ⟨x, u⟩ ⟨-, hu⟩
@@ -117,14 +116,11 @@ theorem UpperTheory.ConvolutionTheory.R2.I.cosetSpan :
   · obtain ⟨g, hg, hgx⟩ := h
     rw [Finset.sum_eq_single g, h1 _ hgx, mul_one]
     · have e := hinv g _ hgx
-      rw [mul_inv_cancel_left] at e
-      exact e
+      rwa [mul_inv_cancel_left] at e
     · intro b hb hne
       rw [h0, mul_zero]
-      intro hbx
-      exact hne (huniq g hg b hb hgx hbx)
-    · intro hn
-      exact absurd hg hn
+      exact fun hbx => hne (huniq g hg b hb hgx hbx)
+    · exact fun hn => absurd hg hn
   · have hx0 : a x = 0 := by
       by_contra hne
       have hxs : x ∈ tsupport a := subset_tsupport _ hne

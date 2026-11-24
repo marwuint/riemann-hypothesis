@@ -349,8 +349,7 @@ private theorem classes {K L K' L' : CochainComplex C ℤ}
     obtain ⟨n', hn', β, hβ⟩ := hx
     rw [CohomologyClass.mk_eq_zero_iff]
     refine ⟨n', hn', (e n').symm β, (e n).injective ?_⟩
-    rw [← he n' n hn', AddEquiv.apply_symm_apply]
-    exact hβ
+    rwa [← he n' n hn', AddEquiv.apply_symm_apply]
   · intro x
     obtain ⟨β, rfl⟩ := x.mk_surjective
     have h0 : δ n (n + 1) ((e n).symm β.1) = 0 := by
@@ -504,8 +503,7 @@ private theorem cochain_of_natural_values {A : Spc} {J : Cx R} {n : ℤ}
   choose φ hφ using components
   refine ⟨Cochain.mk φ, fun p s h U x => ?_⟩
   have hEval := hφ _ _ h p rfl U x
-  rw [eqToHom_refl, Category.id_comp] at hEval
-  exact hEval
+  rwa [eqToHom_refl, Category.id_comp] at hEval
 
 private theorem up_ex {I : Cx R} {n : ℤ} (γ : Cochain ((chains R).obj E) (Bc W I) n) :
     ∃ β : Cochain ((chains R).obj (sch.obj W ⨯ E)) I n,
@@ -697,8 +695,7 @@ private lemma pmap_op (P : Cᵒᵖ ⥤ ModuleCat.{1} S) {X Y Y' Z : C}
     (a : Y ⟶ X) (b : Z ⟶ Y) (c : Y' ⟶ X) (d : Z ⟶ Y') (h : b ≫ a = d ≫ c) (m : P.obj (op X)) :
     (P.map b.op).hom ((P.map a.op).hom m) = (P.map d.op).hom ((P.map c.op).hom m) := by
   have e := congrArg (fun f : Z ⟶ X => (P.map f.op).hom m) h
-  simp only [op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply] at e
-  exact e
+  simpa only [op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply] using e
 
 private lemma pmap_id (P : Cᵒᵖ ⥤ ModuleCat.{1} S) {X Y : C}
     (a : Y ⟶ X) (b : X ⟶ Y) (h : b ≫ a = 𝟙 X) (m : P.obj (op X)) :
@@ -880,8 +877,7 @@ private noncomputable def UpperTheory.PwInj.sheafAdj (R : Type) [CommRing R] (W 
 
 theorem UpperTheory.injective_productPushforward_of_injective :
     ∀ (R : Type) [CommRing R] (W : Scheme.{0}) (J : Shv R) [Injective J], Injective ((pw R W).obj J) := by
-  intro R _ W J _
-  exact Injective.injective_of_adjoint (UpperTheory.PwInj.sheafAdj R W) J
+  exact fun R _ W J _ => Injective.injective_of_adjoint (UpperTheory.PwInj.sheafAdj R W) J
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.CommutativeAlgebra.InjectiveProductPushforwardOfInjective =====
@@ -922,8 +918,7 @@ theorem UpperTheory.exists_lift_free_to_kernel_of_shortExact_vanishing_sections 
   intro Q S hS hQ P hP f
   have hsub := UpperTheory.subsingleton_hypercohomology_free_of_supp_of_sections_vanish Q S.X₃ hQ P hP 0
   have hz : f ≫ S.g = 0 := by
-    apply (UpperTheory.bijective_cl_hypercohomology_singleton_zero _ _).1
-    exact Subsingleton.elim _ _
+    exact (UpperTheory.bijective_cl_hypercohomology_singleton_zero _ _).1 (Subsingleton.elim _ _)
   haveI := hS.mono_f
   exact ⟨hS.exact.lift f hz, hS.exact.lift_f f hz⟩
 end -- clump:auto
@@ -972,8 +967,7 @@ theorem UpperTheory.exists_lift_free_to_middle_of_shortExact_acy :
   obtain ⟨y, hy⟩ := (e (cl f)).1 h0
   obtain ⟨h, rfl⟩ := (UpperTheory.bijective_cl_hypercohomology_singleton_zero _ _).2 y
   refine ⟨h, (UpperTheory.bijective_cl_hypercohomology_singleton_zero _ _).1 ?_⟩
-  rw [← UpperTheory.hypercohomology_post_cl_eq_cl_comp]
-  exact hy
+  rwa [← UpperTheory.hypercohomology_post_cl_eq_cl_comp]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.CommutativeAlgebra.ExistsLiftFreeToMiddleOfShortExactAcy =====
@@ -996,8 +990,7 @@ private theorem res_map_of_sheaf_morphism {F G : Shv ℤ} (φ : F ⟶ G) {V U : 
 
 private theorem map_map_eq_zero {F G H : Shv ℤ} (φ : F ⟶ G) (ψ : G ⟶ H) (h : φ ≫ ψ = 0) {U : Scheme.{0}} (a : Sec F U) :
     Sec.map ψ (Sec.map φ a) = 0 := by
-  have h2 := congrArg (fun t : F ⟶ H => (t.hom.app (op U)).hom a) h
-  simpa [Sec.map] using h2
+  simpa [Sec.map] using congrArg (fun t : F ⟶ H => (t.hom.app (op U)).hom a) h
 
 private theorem local_bind {U : Scheme.{0}} {P R : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P)
     (h : ∀ (V : Scheme.{0}) (g : V ⟶ U), P V g → Loc V fun W k => R W (k ≫ g)) : Loc U R := by
@@ -1140,8 +1133,7 @@ theorem UpperTheory.exists_primitive_free_of_acy_locally_exact :
         (IsZero.of_mono (kernel.ι _) (isZero_of_isStrictlyGE C a n hn))
     refine Int.inductionOn' (motive := fun n => Acy Q (kernel (C.d n (n + 1)))) i (a - 1)
       (below (a - 1) (by omega)) (fun n _ ih => (step n ih).1) ?_
-    intro n hn _
-    exact below (n - 1) (by omega)
+    exact fun n hn _ => below (n - 1) (by omega)
   obtain ⟨i, rfl⟩ : ∃ i, j = i + 1 := ⟨j - 1, by omega⟩
   rw [show i + 1 - 1 = i by omega]
   obtain ⟨h, hh⟩ := (step i (hAcy i)).2 P hP (kernel.lift _ f hf)
@@ -1275,8 +1267,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 private theorem rcx_ge (R : Type) [CommRing R] (L : Cx R) [L.IsStrictlyGE 0] :
     ((rcx (Int.castRingHom R)).obj L).IsStrictlyGE 0 := by
   rw [CochainComplex.isStrictlyGE_iff]
-  intro i hi
-  exact (restr (Int.castRingHom R)).map_isZero (L.isZero_of_isStrictlyGE 0 i hi)
+  exact fun i hi => (restr (Int.castRingHom R)).map_isZero (L.isZero_of_isStrictlyGE 0 i hi)
 
 private theorem semi_bij (R : Type) [CommRing R] (L B : Cx R) [L.IsStrictlyGE 0] [B.IsStrictlyGE 0]
     (hL : ∀ s, Injective (L.X s)) (hB : ∀ s, Injective (B.X s)) (ρ : SemiMap L B) (E : Spc)
@@ -1339,8 +1330,7 @@ theorem UpperTheory.injectiveComplex_productSection_map_quasiIso :
       comm := fun T s t a => hψc T s t a }
   haveI : (UpperTheory.Bc.Bc W I).IsStrictlyGE 0 := by
     rw [CochainComplex.isStrictlyGE_iff]
-    intro i hi'
-    exact Functor.map_isZero (UpperTheory.Bc.pw R W) (I.isZero_of_isStrictlyGE 0 i hi')
+    exact fun i hi' => Functor.map_isZero (UpperTheory.Bc.pw R W) (I.isZero_of_isStrictlyGE 0 i hi')
   have hB : ∀ s, Injective ((UpperTheory.Bc.Bc W I).X s) := fun s => by
     haveI := hI s
     exact UpperTheory.injective_productPushforward_of_injective R W (I.X s)

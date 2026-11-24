@@ -68,12 +68,10 @@ theorem UpperTheory.exists_crystalline_unit_frobenius_eigen :
       ext
       change ((PP l).PD (botExt l)).ι ((PP l).PD (botExt l)).t = (PP l).ιB (t : Bcr l)
       rw [(PP l).PD_ι, ht]
-    rw [e, ← map_zpow] at h
-    exact h
+    rwa [e, ← map_zpow] at h
   · have h1 : (PP l).φB (t : Bcr l) = algebraMap ℚ_[l] (Bcr l) (l : ℚ_[l]) * (t : Bcr l) := by
       have := ((PP l).PD (botExt l)).t_φ
-      rw [(PP l).PD_φ, (PP l).PD_p, Algebra.smul_def, ← ht] at this
-      exact this
+      rwa [(PP l).PD_φ, (PP l).PD_p, Algebra.smul_def, ← ht] at this
     have e : Units.map ((PP l).φB : Bcr l →* Bcr l) t =
         Units.map (algebraMap ℚ_[l] (Bcr l) : ℚ_[l] →* Bcr l) (Units.mk0 _ hl) * t := Units.ext h1
     have e2 := congrArg (fun x : (Bcr l)ˣ => ((x ^ a : (Bcr l)ˣ) : Bcr l)) e
@@ -120,8 +118,7 @@ private theorem sl_alg (K : FinExt l) (c : ↥(K0 K)) : algebraMap ↥(K0 K) (Bc
     exact (((PP l).PD K).Fil 0).smul_mem _ ((PP l).PD K).one_mem
   have h2 := (PP l).PD_Fil K (botExt l) 0
   change (PP l).ιB _ ∈ (((PP l).PD (botExt l)).Fil 0 : Set (PP l).R.BdR)
-  rw [← h2]
-  exact h
+  rwa [← h2]
 
 end UpperTheory.V
 
@@ -141,8 +138,7 @@ theorem UpperTheory.filtration_entries_of_frobenius_matrix :
       rw [Function.iterate_succ_apply', ih, map_mul, AlgHom.commutes, hφu, pow_succ, map_mul, mul_assoc]
   have huM : ∀ i j, (u : Bcr l) * M i j ∈ slS l := fun i j => by
     have := ((PP l).PD (botExt l)).Fil_mul _ _ _ _ hu (hFil i j)
-    rw [neg_add_cancel, ← map_mul] at this
-    exact this
+    rwa [neg_add_cancel, ← map_mul] at this
   have key : ∀ (k : ℕ) (E : Matrix (Fin d) (Fin d) ↥(K0 K)),
       M.map (((PP l).φB)^[k]) = M * E.map (algebraMap ↥(K0 K) (Bcr l)) →
       ((u : Bcr l) • M).map (((PP l).φB)^[k]) = ((u : Bcr l) • M) *

@@ -225,8 +225,7 @@ theorem _root_.GlobalTheory.T.ordinaryIdeal_saturators_conj_invariant :
         exact N.mul_mem (Subgroup.mem_sup_right (Subgroup.inv_mem _ hi)) (Subgroup.mem_sup_left u.2)
       have hdvd : (m : ℤ) ∣ k := by
         change (orderOf q : ℤ) ∣ k
-        rw [orderOf_dvd_iff_zpow_eq_one, ← QuotientGroup.mk_zpow, QuotientGroup.eq_one_iff]
-        exact hkN
+        rwa [orderOf_dvd_iff_zpow_eq_one, ← QuotientGroup.mk_zpow, QuotientGroup.eq_one_iff]
       obtain ⟨j, rfl⟩ := hdvd
       have hφu : φ (u : GQ l) = φ σ ^ j := by
         rw [← hiz, map_mul, hφ.2 hi, one_mul, map_zpow, zpow_mul, zpow_natCast, hφm]
@@ -267,16 +266,14 @@ theorem _root_.GlobalTheory.T.ordinaryIdeal_saturators_conj_invariant :
         (Or.inl ⟨s, hs, i, by rw [hmat s (Subgroup.mem_inf.1 hs).1, GlobalTheory.OrdLoc.charpoly_conj]⟩)
     · rw [hprod t ht]
       apply GlobalTheory.OrdLoc.ent_mem_mul
-      intro a b
-      exact Ideal.subset_span (Or.inr ⟨t, ht, a, b, rfl⟩)
+      exact fun a b => Ideal.subset_span (Or.inr ⟨t, ht, a, b, rfl⟩)
   · rw [Ideal.span_le]
     rintro x (⟨s, hs, i, rfl⟩ | ⟨t, ht, i, j, rfl⟩)
     · exact Ideal.subset_span
         (Or.inl ⟨s, hs, i, by rw [hmat s (Subgroup.mem_inf.1 hs).1, GlobalTheory.OrdLoc.charpoly_conj]⟩)
     · rw [GlobalTheory.OrdLoc.unconj h (D.sh r 0 (t 0) * D.sh r 1 (t 1) * D.sh r 2 (t 2)), ← hprod t ht]
       apply GlobalTheory.OrdLoc.ent_mem_mul
-      intro a b
-      exact Ideal.subset_span (Or.inr ⟨t, ht, a, b, rfl⟩)
+      exact fun a b => Ideal.subset_span (Or.inr ⟨t, ht, a, b, rfl⟩)
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.OrdinaryIdealSaturatorsConjInvariantStatement =====
@@ -355,8 +352,7 @@ theorem _root_.GlobalTheory.T.saturatingElement_notMem_minimalPrimes_reducedOrdi
   refine ⟨k, (hmem _).2 ⟨n + k, ?_⟩⟩
   have e : D.del U.r.hom ^ (n + k) * y ^ k = D.del U.r.hom ^ n * (D.del U.r.hom * y) ^ k := by
     ring
-  rw [e]
-  exact hn
+  rwa [e]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.SaturatingElementNotMemMinimalPrimesReducedOrdinStatement =====

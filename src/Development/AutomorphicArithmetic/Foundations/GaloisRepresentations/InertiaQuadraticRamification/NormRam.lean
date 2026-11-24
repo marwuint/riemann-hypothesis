@@ -81,8 +81,7 @@ theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.normRam :
       exact Filter.eventually_cofinite.1 (h2.and hηev)
     have hone := GlobalTheory.FrobDense.eq_one_of_frob M Ω artM hartM (Qbar 2)ˣ (r.comp (UpperTheory.V.Af.Bc.res K Ω M)) hφc
       hbad.toFinset ?_
-    · intro g
-      exact DFunLike.congr_fun hone g
+    · exact fun g => DFunLike.congr_fun hone g
     · intro w hw A' hA' σ hσ
       rw [Set.Finite.mem_toFinset] at hw
       simp only [Set.mem_setOf_eq, not_not] at hw
@@ -104,11 +103,9 @@ theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.normRam :
         rfl
       rw [h7] at h6
       have h8 : (((r.comp (UpperTheory.V.Af.Bc.res K Ω M)) σ⁻¹ : (Qbar 2)ˣ) : Qbar 2) = 1 := by
-        have h9 := congrArg ι.symm h6
-        simpa using h9
+        simpa using congrArg ι.symm h6
       have h10 : (r.comp (UpperTheory.V.Af.Bc.res K Ω M)) σ⁻¹ = 1 := Units.ext h8
-      rw [map_inv, inv_eq_one] at h10
-      exact h10
+      rwa [map_inv, inv_eq_one] at h10
   have hr1 : ∀ g : G K Ω, r g = 1 := by
     haveI : Fact (Nat.Prime (Module.finrank K M)) := ⟨hp⟩
     let ρ : G K Ω →* (M ≃ₐ[K] M) := AlgEquiv.restrictNormalHom M
@@ -142,8 +139,7 @@ theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.normRam :
     have h4 : ρ ((τ ^ k)⁻¹ * g) = 1 := by
       rw [map_mul, map_inv, map_zpow, hk, inv_mul_cancel]
     have h5 := hfix _ h4
-    rw [map_mul, map_inv, map_zpow, hτ1, one_zpow, inv_one, one_mul] at h5
-    exact h5
+    rwa [map_mul, map_inv, map_zpow, hτ1, one_zpow, inv_one, one_mul] at h5
   apply hη1
   apply Subtype.ext
   apply MonoidHom.ext

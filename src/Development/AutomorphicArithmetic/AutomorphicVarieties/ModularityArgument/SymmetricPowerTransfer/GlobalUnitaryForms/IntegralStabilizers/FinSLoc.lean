@@ -181,14 +181,12 @@ theorem isIntegral_Ov {v : Pl F} {t : Kv v} : IsIntegral (Ov v) t ↔ t ∈ v.ad
 theorem isIntegral_glob {t : F} : IsIntegral ℤ t ↔ ∀ v : Pl F, IsIntegral (Ov v) (cv v t) := by
   simp only [isIntegral_Ov]
   constructor
-  · intro h v
-    exact HeightOneSpectrum.coe_mem_adicCompletionIntegers v (⟨t, h⟩ : 𝓞 F)
+  · exact fun h v => HeightOneSpectrum.coe_mem_adicCompletionIntegers v (⟨t, h⟩ : 𝓞 F)
   · intro h
     obtain ⟨y, rfl⟩ := HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 F) F t fun v => by
       have := h v
       rw [HeightOneSpectrum.mem_adicCompletionIntegers] at this
-      rw [← HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v t]
-      exact this
+      rwa [← HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v t]
     exact y.2
 
 theorem exists_nat_mul (t : F) : ∃ n : ℕ, n ≠ 0 ∧ IsIntegral ℤ ((n : F) * t) := by

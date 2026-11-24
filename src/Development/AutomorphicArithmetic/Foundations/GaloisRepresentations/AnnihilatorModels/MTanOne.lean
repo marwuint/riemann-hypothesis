@@ -131,8 +131,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.tanOne_of :
   simp only [pow_one] at h1 h2 h3
   have hρ : β b.ρ = (r : κ) := by
     have h0 := hβ i0 _ (hw (sub_mem_uIdeal D r))
-    rw [map_sub, map_sub, b.t_ω, map_intCast, map_intCast, sub_eq_zero] at h0
-    exact h0
+    rwa [map_sub, map_sub, b.t_ω, map_intCast, map_intCast, sub_eq_zero] at h0
   let Tm : 𝓞 D.F →+* Module.End κ (GlobalTheory.TanPtMod.Tan (𝟙 (Sp κ)) o.A) :=
     (GlobalTheory.TanPtMod.actEnd o.act).comp (algebraMap (𝓞 D.F) D.O)
   let toE : (algPt κ (DualNumber κ) ⟶ o.A) → (epsPtR (𝟙 (Sp κ)) ⟶ o.A) :=
@@ -157,8 +156,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.tanOne_of :
     have hu := alg_core p Tm (uIdeal D r) α (D.bar α) h1 h2 h3 _ e' hkill
     have hsc : IsTanScal o.act (𝟙 (Sp κ)) (algebraMap (𝓞 D.F) D.O D.ω) (β b.ρ) (toE v) := by
       refine ⟨?_, ?_⟩
-      · rw [GlobalTheory.TanPtMod.mem_tanSub_iff] at hmem
-        exact hmem
+      · rwa [GlobalTheory.TanPtMod.mem_tanSub_iff] at hmem
       · have hz := hu _ (sub_mem_uIdeal D r)
         rw [map_sub, LinearMap.sub_apply, sub_eq_zero, map_intCast] at hz
         have hz2 := congrArg GlobalTheory.TanPtMod.Tan.hom hz
@@ -169,8 +167,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.tanOne_of :
     rw [ofFn_prod_one ha, hi ⟨0, _⟩ i0] at hprod
     refine ⟨hsc.1, fun c => ?_⟩
     have h5 := (hw' i0 c).2
-    rw [← hprod] at h5
-    exact h5
+    rwa [← hprod] at h5
   obtain ⟨vs, hvs, huniq⟩ := o.lieRank κ (𝟙 (Sp κ)) β (Category.id_comp _) i0
   refine ⟨frE (vs j0), ⟨?_, 1, ?_⟩, ?_, ?_⟩
   · ext1
@@ -189,13 +186,11 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.tanOne_of :
     have h7 := (hvs j0).2 a
     rw [RingHom.comp_apply, hz] at h7
     have h0 := congrArg Over.Hom.left (GlobalTheory.GrpTangentPt.epsScalePt_zero_comp (𝟙 (Sp κ)) (hvs j0).1)
-    rw [← h0]
-    exact h7
+    rwa [← h0]
   · exact (hvs j0).1
   · intro v ⟨_, hk⟩ hinf
     obtain ⟨c, ⟨u', hu', hprod⟩, -⟩ := huniq (toE v) (eig v hinf hk)
     rw [ofFn_prod_one hm, hj ⟨0, _⟩ j0] at hprod
     refine ⟨c j0, ?_⟩
     have h8 := hu' j0
-    rw [← hprod] at h8
-    exact h8
+    rwa [← hprod] at h8

@@ -196,8 +196,7 @@ theorem UpperTheory.V.Z.Win.Birth.autOf4W (hne : AlNe) :
   have hLa : IsAbelianGalois ℚ T.L := by
     have h := @GroundTheory.Global.isAbelianGalois_sup ℚ Ω _ _ _ _ T.F T.K
       T.nF.to_finiteDimensional T.nK.to_finiteDimensional T.abF hK
-    rw [← T.hL] at h
-    exact h
+    rwa [← T.hL] at h
   have hatt := hoff T.L hLa hkL
     (goodOf4 Ω l d.c d.D d.T₀ T d.ctx.1 hT d.K' d.quad.splS d.quad.off d.w d.θ d.wp d.wsp d.wunr d.k _ d.ρ d.c₁ d.h d.ρ₁ d.x d.mod) hL
   have key : Af.tw (((d.Q T).map (algebraMap d.c₁.O (PadicAlgCl l))).r.comp (resLe T.F_le)).toHomUnits
@@ -209,8 +208,7 @@ theorem UpperTheory.V.Z.Win.Birth.autOf4W (hne : AlNe) :
     simp only [MonoidHom.inv_apply, MonoidHom.comp_apply]
     rw [show resQ T.F (resLe T.F_le g) = resQ T.L g from AlgEquiv.ext fun _ => rfl, Units.inv_mul, one_smul]
     rfl
-  rw [key]
-  exact hatt
+  rwa [key]
 end -- clump:auto
 end -- clump:auto
 end -- clump:auto
@@ -275,8 +273,7 @@ theorem UpperTheory.V.Cu.tower_is_initial_of_ok :
     · exact ⟨2 * (d.m : ℤ), by omega, by simp <;> ring⟩
   · have := φ.ker.pow_index_mem (resQ T.L s)
     rw [MonoidHom.mem_ker, map_pow] at this
-    rw [neg_neg]
-    exact this
+    rwa [neg_neg]
 end
 end -- clump:auto
 end -- clump:auto
@@ -310,8 +307,7 @@ theorem UpperTheory.V.Cu.fourth_initial_of_rank_four_data : AlNe → _root_.Uppe
         (chi D T₀.pr 0 (resQ T₀.F T₀.g0) * (chi D T₀.pr 2 (resQ T₀.F T₀.g0))⁻¹) ^ (0 : ℤ) : c.Oˣ) : c.O) = 1 := h1
     rw [zpow_one, zpow_zero, mul_one] at h2
     have h3 := congrArg (· * residue c.O (chi D T₀.pr 1 (resQ T₀.F T₀.g0) : c.O)) h2
-    simp only [← map_mul, ← Units.val_mul, inv_mul_cancel_right, one_mul] at h3
-    exact h3
+    simpa only [← map_mul, ← Units.val_mul, inv_mul_cancel_right, one_mul] using h3
   obtain ⟨m, c₀, κ, hκ⟩ := hTau hH Ω l ι K' hg.l_odd hq.deg hq.imag hq.disc hq.split ⟨D.cc, hg.isCC⟩ _ hg0
   obtain ⟨w, θ, k, ρ, c₁, h, ρ₁, x, hw, hsp, hθl, hθm, hB, hk, hE, ⟨hI, hrw⟩, h₀, hM⟩ :=
     hRho hP Ω l c D T₀ hc hok h4 ι (2 * (m * 9) + 3) c₀
@@ -333,8 +329,7 @@ theorem UpperTheory.V.Cu.fourth_initial_of_rank_four_data : AlNe → _root_.Uppe
   · rw [hred]
     exact hPair Ω l d T₀ hle hok {w} 𝔞.k (𝔞.red c₁) (fun g _ => r3 g) fun A hA g hg =>
       hunr A (fun p hp => hA p (Finset.mem_insert_of_mem hp)) hg
-  · rw [hred]
-    exact r1
+  · rwa [hred]
   · have := hPair Ω l d T hT tok ∅ c₁.O (RingHom.id _) (fun g hg => hM.det g (hdies T.F hd hg)) fun A _ g _ =>
       hdies T.F hd (hfix T g)
     have e : (d.Q T).map (RingHom.id c₁.O) = d.Q T := by

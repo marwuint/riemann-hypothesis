@@ -120,12 +120,9 @@ theorem main : ∀ (k G : Type) [CommRing k] [Group G] (i : ℕ) (C : ℕ → Re
     rw [Rep.epi_iff_surjective]
     intro z
     have hz : v.hom ((kernel.ι v).hom z) = 0 := by
-      have h := congrArg (fun f => f.hom z) (kernel.condition v)
-      simpa using h
+      simpa using congrArg (fun f => f.hom z) (kernel.condition v)
     obtain ⟨y, hy⟩ := (hex _).mp hz
-    refine ⟨y, hinj ?_⟩
-    have h := congrArg (fun f => f.hom y) (kernel.lift_ι v u huv)
-    exact h.trans hy
+    exact ⟨y, hinj ((congrArg (fun f => f.hom y) (kernel.lift_ι v u huv)).trans hy)⟩
   have epi0 : ∀ (X Y : Rep.{0, 0, 0} k G) (f : X ⟶ Y), Function.Surjective f.hom →
       Function.Surjective (hMap f 0).hom := by
     intro X Y f hf
@@ -140,8 +137,7 @@ theorem main : ∀ (k G : Type) [CommRing k] [Group G] (i : ℕ) (C : ℕ → Re
     intro q
     induction q with
     | zero =>
-      intro p hp
-      exact epi0 _ _ _ (liftSurj p (by omega))
+      exact fun p hp => epi0 _ _ _ (liftSurj p (by omega))
     | succ q ih =>
       intro p hp
       have hab : d (p + 3) ≫ kernel.lift (d (p + 1)) (d (p + 2)) (hd (p + 1)) = 0 := by

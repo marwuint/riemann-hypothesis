@@ -117,8 +117,7 @@ private theorem finite_quotient_X_pow_one_smul_module_of_free {K M : Type} [Fiel
   dsimp only
   conv_rhs => rw [← b.sum_repr m]
 
-  simp only [map_sum]
-  exact Finset.sum_congr rfl fun i _ => (key _ _).symm
+  simpa only [map_sum] using Finset.sum_congr rfl fun i _ => (key _ _).symm
 
 private theorem eq_zero_of_forall_mem_X_pow_smul_module {K M : Type} [Field K] [AddCommGroup M] [Module (PowerSeries K) M]
     [Module.Finite (PowerSeries K) M] (x : M)
@@ -191,8 +190,7 @@ theorem UpperTheory.V.Pa.Det.z1Fg :
         filter_upwards [(IsLocallyConstant.iff_eventually_eq _).1 (hz1 (N + 1)) g] with g' hg'
         rw [Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq] at hg' ⊢
         apply mem_X_pow_smul_of_X_smul_mem_X_pow_succ_smul N
-        rw [smul_sub, hw', hw']
-        exact hg'
+        rwa [smul_sub, hw', hw']
       · apply smul_right_injective M (PowerSeries.X_ne_zero (R := K))
         dsimp only
         rw [smul_add, ← LinearMap.map_smul (ρ g), hw', hw', hw']

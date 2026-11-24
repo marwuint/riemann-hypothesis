@@ -926,8 +926,7 @@ theorem setIntegral_star_mul_self_pos {G : Type} [Group G] [TopologicalSpace G] 
     show x (((γ⁻¹ : Γ) : G) * g) ≠ 0 ↔ x g ≠ 0
     rw [hx _ (γ⁻¹).2 g]
 
-  refine pos_iff_ne_zero.mpr fun hz => ht_pos.ne' ?_
-  exact h.measure_zero_of_invariant _ hinv hz
+  exact pos_iff_ne_zero.mpr fun hz => ht_pos.ne' (h.measure_zero_of_invariant _ hinv hz)
 
 private theorem natCast_inv_and_sub_one_inv_bounds_of_eleven_le {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D}
     (hθ : IsInfFam θ) {τ : D.what₂.Tau} {k : Matrix (Fin V.rank) (Fin V.rank) ℂ}
@@ -978,8 +977,7 @@ theorem rTr_mem_cuspSub (hθ : IsInfFam θ) {τ : D.what₂.Tau} {k : Matrix (Fi
   show IsAutFunSm θ V _ ∧ IsCuspFun V _
   refine ⟨GlobalTheory.Mem.RealTranslate.isAutFunSm_rTr_atTau D θ hθ V f hf'.1 τ k hk, ?_⟩
   intro r C hC μ 𝓕 hμ h𝓕 g
-  have h1 := hf'.2 r C hC μ 𝓕 hμ h𝓕 (g * atTau θ V τ k)
-  simpa only [rTr, mul_assoc] using h1
+  simpa only [rTr, mul_assoc] using hf'.2 r C hC μ 𝓕 hμ h𝓕 (g * atTau θ V τ k)
 
 theorem Rder_mem_cuspSub (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) {f : GA D V → ℂ} (hf : f ∈ cuspSub θ V) : Rder θ V τ X f ∈ cuspSub θ V := by
@@ -992,8 +990,7 @@ private theorem det_gramAt_ne_zero {D : D7} (V : HSp D) (τ : D.what₂.Tau) : (
   have h' : (V.gram.map (tauE D τ)).det = 0 := h
   apply _root_.Formalism.L2.Theta.gram_det_ne V
   apply (tauE D τ).injective
-  rw [RingHom.map_det, map_zero]
-  exact h'
+  rwa [RingHom.map_det, map_zero]
 
 private theorem oneP_add_twisted_operators (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (s t : ℝ) : oneP θ V τ X (s + t) = oneP θ V τ X s * oneP θ V τ X t := by
@@ -1282,8 +1279,7 @@ namespace GlobalTheory.GKGlobalise
 theorem kFin_eq {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : Formalism.IndefR.Mult.DSModel V S) (τ : D.what₂.Tau) :
     GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin (M.ε τ) (M.σ τ) = GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ := by
   apply le_antisymm
-  · refine sSup_le fun W hW v hv => ?_
-    exact ⟨W, hW.1, hv, hW.2⟩
+  · exact sSup_le fun W hW v hv => ⟨W, hW.1, hv, hW.2⟩
   · rintro v ⟨A, hA, hv, hs⟩
     exact le_sSup (show A ∈ {W : Submodule ℂ (M.H τ) | FiniteDimensional ℂ W ∧
       Formalism.MainNotions.S.IsKStableOn (M.ε τ) (M.σ τ) W} from ⟨hA, hs⟩) hv
@@ -1352,8 +1348,7 @@ theorem gelfandKirillov_local_to_global : _root_.GlobalTheory.FunPr.ThetaLocalIn
         rw [← GlobalTheory.SmVec.sm_eq]; exact kFin_le_sm hHC M τ (u τ).2
       have h1 := GlobalTheory.SmVec.hasDerivAt_dRep hsm (X := X) hX
       show HasDerivAt _ (w : M.H τ) 0
-      rw [hw]
-      exact h1
+      rwa [hw]
   obtain ⟨U, N, hU, hTU⟩ := GlobalTheory.T.exists_common_level_growth_exponent_gKMap hHC D θ hθ V S M ∅ 1 0 ∅ T₀ hGK
   obtain ⟨E, i1, i2, i3, i4, i5, i6, p, ι, hinj, hrange, hp, hπ⟩ :=
     _root_.GlobalTheory.CuspFrechet.exists_frechet D θ hθ V (GlobalTheory.ChainFr.Fr.ofModel M) U N hU
@@ -1367,8 +1362,7 @@ theorem gelfandKirillov_local_to_global : _root_.GlobalTheory.FunPr.ThetaLocalIn
     eι.symm.toLinearMap.compMultilinearMap (T₀.codRestrict (LinearMap.range ι) hmem)
   have hT₀' : ∀ u, ι (T₀' u) = T₀ u := fun u => by
     have h1 := congrArg Subtype.val (eι.apply_symm_apply ⟨T₀ u, hmem u⟩)
-    rw [LinearEquiv.ofInjective_apply] at h1
-    exact h1
+    rwa [LinearEquiv.ofInjective_apply] at h1
   have hK' : ∀ τ, ∀ k ∈ Formalism.REAL.Kset (M.ε τ), ∀ (u : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.KVec M) (w : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ),
       (w : M.H τ) = M.σ τ k (u τ) → T₀' (Function.update u τ w) = π τ k (T₀' u) := by
     intro τ k hk u w hw
@@ -1683,8 +1677,7 @@ theorem upperArrow_approx : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmo
       intro g
       have := hbd h' g
       rw [mul_pow, ← mul_assoc] at this
-      rw [hk]
-      exact this
+      rwa [hk]
     refine (GlobalTheory.Grow.norm_le_quotHeight_pow hinv hb g).trans ?_
     have h1 : GlobalTheory.Grow.height _ h' ^ Aexp ≤ Hq ^ Aexp :=
       pow_le_pow_left₀ (GlobalTheory.Grow.height_pos _ h').le (hHC h hh) _

@@ -252,8 +252,7 @@ theorem UpperTheory.tower_covering_of_invariant_finiteEtale_separated :
   have hinv : ∀ δ, act hd δ ≫ S.pi T C = S.pi T C := fun δ => by
     have := hInv p D G L E gb w q r 𝔴 𝔫 S k T K₀ hLev N N 1 c a (_root_.mul_one _).symm hNum C' C
       (δ⁻¹).out.1 (δ⁻¹).out.2 (hd.mem _ (δ⁻¹).out.2) (hd.nrm _ (δ⁻¹).out.2)
-    rw [hC'] at this
-    exact this
+    rwa [hC'] at this
   have hfst : pullback.lift (S.pi T C) (T.X.q (T.lev N)) e ≫ pullback.fst _ _ = S.pi T C := pullback.lift_fst _ _ e
   have hsnd : pullback.lift (S.pi T C) (T.X.q (T.lev N)) e ≫ pullback.snd _ _ = T.X.q (T.lev N) := pullback.lift_snd _ _ e
   have ha : ∀ δ, act hd δ ≫ pullback.lift (S.pi T C) (T.X.q (T.lev N)) e = pullback.lift (S.pi T C) (T.X.q (T.lev N)) e := by
@@ -266,13 +265,10 @@ theorem UpperTheory.tower_covering_of_invariant_finiteEtale_separated :
       ∃! δ, z' = z ≫ act hd δ := by
     intro Ω _ _ z z' h
     have h' : z ≫ S.pi T C = z' ≫ S.pi T C := by
-      have h2 := congrArg (· ≫ pullback.fst _ _) h
-      simp only [Category.assoc, hfst] at h2
-      exact h2
+      simpa only [Category.assoc, hfst] using congrArg (· ≫ pullback.fst _ _) h
     obtain ⟨u, hu, x, y, e'⟩ := hSep p D G L E gb w q r 𝔴 𝔫 S k T K₀ hLev N c a hNum C Ω z z' h'
     have hz : z' = z ≫ act hd (((⟨u, hu⟩ : K₀)⁻¹ : K₀) : K₀ ⧸ (T.X.K (T.lev N)).subgroupOf K₀) := by
-      rw [act_mk]
-      exact e'
+      rwa [act_mk]
     exact ⟨_, hz, fun δ' hδ' => act_inj hd hj Ω z _ _ (hδ'.symm.trans hz)⟩
   have hfix : ∀ δ : K₀ ⧸ (T.X.K (T.lev N)).subgroupOf K₀, ∃ j, IsIso ((T.tower N g).s j) ∧
       (T.tower N g).t j = (T.tower N g).s j ≫ act hd δ ∧ θ j = 1 := by

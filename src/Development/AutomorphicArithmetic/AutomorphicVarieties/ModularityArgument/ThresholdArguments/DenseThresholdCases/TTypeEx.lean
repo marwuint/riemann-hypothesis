@@ -926,9 +926,7 @@ private theorem cosocle_main (γ : ℂ ≃+* ℂ) {V V' : Type} [AddCommGroup V]
     (isSmoothChar_absPow (((n : ℂ) - 1) / 2)))
   refine (prod_conj γ (stdBlocks (fun _ => 1) hd) ω).elim fun F hF => ?_
   have h3 := h1.of_equiv (.refl σ) E
-  have h2 := cosocle_conj hF hf hi h3
-  have h4 := h2.of_equiv (.refl σ') E'.symm
-  exact cosocle_move' h4 e1
+  exact cosocle_move' ((cosocle_conj hF hf hi h3).of_equiv (.refl σ') E'.symm) e1
 end Loc2
 section Gal
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
@@ -1175,8 +1173,7 @@ private theorem te_loc (P : _root_.GlobalTheory.Mem.LiteralAutomorphy.Literature
     simp only [WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]
     refine Iff.trans e.symm ⟨fun h0 rc' hrc' => ?_, fun h0 => ?_⟩
     · have h1 : IsTypeWD h (fun i => (χ i).comp (Subgroup.inclusion (Ine_le_Dec A))) (rc (algNorm π)) := by
-        rw [algNorm, H.nu_eq]
-        exact h0
+        rwa [algNorm, H.nu_eq]
       have hg : UpperTheory.Zero.LLC.Good (algNorm π) := by
         obtain ⟨b, hb, -, hχ⟩ := h1
         obtain ⟨z, hz, hc⟩ := UpperTheory.Zero.LLC.abConv L Ω A w h rc (_root_.UpperTheory.V.Z.Desc.P.toTL'_alt P hrc) (algNorm π)
@@ -1184,8 +1181,7 @@ private theorem te_loc (P : _root_.GlobalTheory.Mem.LiteralAutomorphy.Literature
             rw [← hb, WD.charPol_mk, hχ t, Matrix.charpoly_toLin', Matrix.charpoly_diagonal]
             rfl
         exact ⟨z, hz, fun y hy => Or.inl (hc y hy)⟩
-      rw [_root_.UpperTheory.V.Z.Win.uniqRec'_alt P hrc' hrc _ hg]
-      exact h1
+      rwa [_root_.UpperTheory.V.Z.Win.uniqRec'_alt P hrc' hrc _ hg]
     · have := h0 rc hrc
       rwa [algNorm, H.nu_eq] at this
   · have := _root_.UpperTheory.V.Z.Win.T2.typeConj_alt P L Ω n w A h rc' hrc' γ.toRingEquiv σ σ' f h1 h2 χ ho (hσ rc' hrc')
@@ -1238,8 +1234,7 @@ theorem UpperTheory.V.Z.Desc.P.exists_integral_type_for_residual_rep :
     (fun i => Subgroup.isOpen_mono (H₁ := (r.chib i).ker.comap (V.pr.comp (Dec (F := L) (s.A u)).subtype))
       (fun g hg => by
         have h1 : t i (V.pr g) = 1 := by
-          rw [← hker] at hg
-          exact hg
+          rwa [← hker] at hg
         change Units.map _ (t i (V.pr g)) = 1
         rw [h1, map_one])
       ((r.chib_open i).preimage ((V.pr_cont W.continuous_resP).comp continuous_subtype_val)))
@@ -1764,8 +1759,7 @@ theorem step_tensor_alt {n : ℕ} (G : Grp k n) : G.Step_tensor_alt := by
       intro b _
       by_cases hb : b = a
       · subst hb
-        rw [Pi.mulSingle_eq_same]
-        exact hg
+        rwa [Pi.mulSingle_eq_same]
       · rw [Pi.mulSingle_eq_of_ne hb]
         exact one_mem _
     rw [← hE, hy _ hm, map_smul]
@@ -1774,8 +1768,7 @@ theorem step_tensor_alt {n : ℕ} (G : Grp k n) : G.Step_tensor_alt := by
     · rw [Pi.mulSingle_eq_same]
     · intro b _ hb
       rw [Pi.mulSingle_eq_of_ne hb, map_one, map_one, Units.val_one]
-    · intro h
-      exact absurd (Finset.mem_univ a) h
+    · exact fun h => absurd (Finset.mem_univ a) h
   exact Tensor₂.exists_factor_vec (fun b => (s b).ρ) a (E y) hEy _ _ hK
 end UpperTheory.TNZ.Grp
 end

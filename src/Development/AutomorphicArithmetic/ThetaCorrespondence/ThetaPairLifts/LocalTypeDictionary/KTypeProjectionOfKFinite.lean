@@ -141,8 +141,7 @@ theorem exists_proj_sesq_posDef_finiteDim : ∀ {M : Type} [AddCommGroup M] [Mod
   show b ((Aeq.symm (B x) : F) : M) f = b x f
   refine key (Aeq.symm (B x)) x ?_ f hf
   intro i
-  have h1 : A (Aeq.symm (B x)) = B x := by
-    exact Aeq.apply_symm_apply (B x)
+  have h1 : A (Aeq.symm (B x)) = B x := Aeq.apply_symm_apply (B x)
   have := congrFun h1 i
   simpa [A, B] using this
 
@@ -279,8 +278,7 @@ theorem rTr_mem_of_kStable {W : Submodule ℂ (GA D V → ℂ)} (hW : FiniteDime
     exact hK τ g hg
   · intro f hf
     have e : rTr V 1 f = f := funext fun g => by simp [rTr]
-    rw [e]
-    exact hf
+    rwa [e]
   · intro f hf
     rw [rTr_mul]
     exact hx _ (hy f hf)
@@ -443,11 +441,9 @@ theorem typeSpan_proj_mem {M ι : Type} [AddCommGroup M] [Module ℂ M] (b : M �
     have h1 := he' x _ hd
     have h2 := LinearMap.mem_ker.mp (hle hd)
     rw [map_sub b x (π₁ x), LinearMap.sub_apply] at h2
-    rw [map_sub b (e x) (π₁ x), LinearMap.sub_apply]
-    rw [h1, sub_eq_zero.mp h2, sub_self]
+    rw [map_sub b (e x) (π₁ x), LinearMap.sub_apply, h1, sub_eq_zero.mp h2, sub_self]
   have h0 := hzero _ (hSG hd) hdd
-  rw [sub_eq_zero.mp h0]
-  exact hpY
+  rwa [sub_eq_zero.mp h0]
 
 end GlobalTheory.KTypeProj
 
@@ -705,7 +701,6 @@ theorem isContRep_kRep (hθ : IsInfFam (D := D) θ) (Y : Submodule ℂ (GA D V �
   intro ℓ w
   have hℓ : Continuous ℓ := LinearMap.continuous_of_finiteDimensional ℓ
   refine hℓ.comp (continuous_induced_rng.2 (continuous_pi fun x => ?_))
-  show Continuous fun k => (w : GA D V → ℂ) (x * kAt θ V τ (M.ε τ) (M.fr τ) k)
   exact (hc _ w.2).comp (continuous_const.mul (continuous_kAt M hθ τ))
 
 end GlobalTheory.KTypeRep
@@ -771,7 +766,6 @@ theorem exists_finset_joint_eigen : ∀ {E ι : Type} [AddCommGroup E] [Module �
   let core : InnerProductSpace.Core ℂ Z :=
     { inner := fun x y => b x y
       conj_inner_symm := fun x y => by
-        show star (b (y : E) x) = b x y
         exact hsymm y y.2 x x.2
       re_inner_nonneg := fun x => by
         show 0 ≤ (b (x : E) x).re
@@ -903,8 +897,7 @@ theorem gelf_mem_typeSpan : ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F 
         hLa _ (GlobalTheory.RegSch.CentreRight.rTr_mem_all hθ _ hs), GlobalTheory.RegSch.CentreRight.gelf_rTr_all hθ _ τ k hs]
     have := GlobalTheory.KTypeProj.map_le_typeSpan ρ (L ∘ₗ T) hmap hcomm ⟨w, hw, rfl⟩
     simpa [hLa _ (hGsm _ hTw)] using this
-  intro f hf
-  exact (hle hf).2
+  exact fun f hf => (hle hf).2
 
 end GlobalTheory.KTypeGelf
 end -- clump:auto
@@ -1042,8 +1035,7 @@ theorem sum_words (φ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] A) (M : Matrix (F
   rw [← gelfA_swap (fun a b => φ (Matrix.single a b 1)),
     ← gelfA_conj _ M⁻¹ M (Matrix.mul_nonsing_inv M hM), gelfA, Finset.smul_sum]
   refine Finset.sum_congr rfl fun idx _ => ?_
-  simp only [map_neg, e]
-  exact prod_ofFn_neg _ _
+  simpa only [map_neg, e] using prod_ofFn_neg _ _
 
 end Alg
 
@@ -1111,8 +1103,7 @@ theorem sum_words_rev {R : Type} [Ring R] [Algebra ℂ R] {n : ℕ} (φ : Matrix
     intro g; rw [List.map_ofFn]; rfl
   have hs : ∀ f : (Fin (k + 1) → Fin n) → R, ∑ i, MulOpposite.op (f i) = MulOpposite.op (∑ i, f i) :=
     fun f => (map_sum MulOpposite.opAddEquiv f _).symm
-  simp only [hψ, e, e', hs, MulOpposite.unop_smul, MulOpposite.unop_op] at h
-  exact h
+  simpa only [hψ, e, e', hs, MulOpposite.unop_smul, MulOpposite.unop_op] using h
 
 end GlobalTheory.GelfSymm
 
@@ -1388,8 +1379,7 @@ theorem mem_iSup_jointEigen_inf_of_stable : ∀ {E ι : Type} [AddCommGroup E] [
       refine ⟨hvG, ?_⟩
       rw [hv' i, ← sub_smul]
       exact hmemS s c hc ((V c).smul_mem _ hv)
-    intro z hz
-    exact ((hM z).1 (hle hz)).2
+    exact fun z hz => ((hM z).1 (hle hz)).2
   have hB : ∀ (a : ι → ℂ) (s : Finset (ι → ℂ)), a ∉ s → ∀ y ∈ V a, ∀ z ∈ ⨆ c ∈ s, V c,
       y + z ∈ P → y ∈ P := by
     intro a s

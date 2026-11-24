@@ -159,8 +159,7 @@ private theorem order_of_mem_pow {σ E : Type} [Field E] (k : ℕ) :
       refine le_trans ?_ MvPowerSeries.le_order_mul
       rw [Nat.cast_add]
       exact add_le_add (ih a ha) h1
-    · intro a b ha hb
-      exact le_trans (le_min ha hb) MvPowerSeries.min_order_le_add
+    · exact fun a b ha hb => le_trans (le_min ha hb) MvPowerSeries.min_order_le_add
 
 theorem UpperTheory.eq_zero_of_homogeneous_aeval_mem_maximalIdeal_pow_succ :
     ∀ (O E : Type) [CommRing O] [IsDomain O] [Field E] [Algebra O E] [IsFractionRing O E] (n : ℕ) (u : Fin n → MvPowerSeries (Fin n) E) (c : O), c ≠ 0 → (∀ i, u i - c • MvPowerSeries.X i ∈ maximalIdeal (MvPowerSeries (Fin n) E) ^ 2) → ∀ (N : ℕ) (h : MvPolynomial (Fin n) O), h.IsHomogeneous N → MvPolynomial.aeval u h ∈ maximalIdeal (MvPowerSeries (Fin n) E) ^ (N + 1) → h = 0 := by
@@ -220,8 +219,7 @@ theorem UpperTheory.eq_zero_of_homogeneous_aeval_mem_maximalIdeal_pow_succ :
   · rw [MvPowerSeries.coeff_monomial_same,
       map_eq_zero_iff _ (IsFractionRing.injective O E)] at h0
     exact mul_ne_zero (MvPolynomial.mem_support_iff.1 hd) (pow_ne_zero _ hc) h0
-  · intro e _ he
-    exact MvPowerSeries.coeff_monomial_ne he.symm _
+  · exact fun e _ he => MvPowerSeries.coeff_monomial_ne he.symm _
   · intro h'; exact absurd hd h'
 end -- clump:auto
 end -- clump:auto
@@ -326,8 +324,7 @@ theorem UpperTheory.exists_derivations_dual_to_cotangent_parameters :
     rfl
   · intro i u hu
     simp [hπN u (hJN u (Submodule.mem_sup_right hu))]
-  · intro i
-    exact hgp _
+  · exact fun i => hgp _
   · intro i j
     simp [hbt, Finsupp.single_apply, eq_comm]
   · intro u hu
@@ -472,8 +469,7 @@ private theorem a3one_of_factSplit_of_countCont (R : Type) [CommRing R] [IsNoeth
     intro N
     obtain ⟨s, hs, hsa⟩ := h N
     have h1 : Ideal.Quotient.mk I (s * a) ∈ (p.map (Ideal.Quotient.mk I)) ^ N := by
-      rw [← Ideal.map_pow, Ideal.mem_quotient_iff_mem_sup]
-      exact hsa
+      rwa [← Ideal.map_pow, Ideal.mem_quotient_iff_mem_sup]
     have h2 : algebraMap (R ⧸ I) (Localization.AtPrime (p.map (Ideal.Quotient.mk I)))
         (Ideal.Quotient.mk I (s * a)) ∈
           IsLocalRing.maximalIdeal (Localization.AtPrime (p.map (Ideal.Quotient.mk I))) ^ N := by
@@ -496,8 +492,7 @@ private theorem a3one_of_factSplit_of_countCont (R : Type) [CommRing R] [IsNoeth
   have hc' : Ideal.Quotient.mk I y ∉ p.map (Ideal.Quotient.mk I) := hc
   refine ⟨y, fun hy => hc' (Ideal.mem_map_of_mem _ hy), ?_⟩
   have hca' : Ideal.Quotient.mk I y * Ideal.Quotient.mk I a = 0 := hca
-  rw [← map_mul, Ideal.Quotient.eq_zero_iff_mem] at hca'
-  exact hca'
+  rwa [← map_mul, Ideal.Quotient.eq_zero_iff_mem] at hca'
 
 theorem UpperTheory.exists_not_mem_mul_mem_ideal_of_forall_prime_pow_sup :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I p P : Ideal R), p.IsPrime → I ≤ p → (∀ a ∈ P, ∀ N : ℕ, ∃ s, s ∉ p ∧ s * a ∈ p ^ N ⊔ I) → ∃ y, y ∉ p ∧ ∀ a ∈ P, y * a ∈ I := by
@@ -686,8 +681,7 @@ private theorem appr_all {φ : R →ₐ[O] A} {m : Ideal A} (h : ∀ N, ∀ f �
       rw [map_add (f := _), map_smul]
       simp only [Algebra.smul_def, map_mul]
       ring
-    rw [this]
-    exact hb
+    rwa [this]
 
 end Abstract
 
@@ -797,8 +791,7 @@ theorem UpperTheory.exists_finite_injective_mvPowerSeries_compatible_section :
   have hpm : p ∈ maximalIdeal O := hm ▸ Ideal.mem_span_singleton_self p
   have hp0 : algebraMap O S p ≠ 0 := fun h => hp.ne_zero (by simpa using congrArg x h)
   have hx : ∀ s ∈ maximalIdeal S, x s ∈ maximalIdeal O := fun s hs => by
-    rw [← res_eq_zero_iff O O, res_map, res_eq_zero_iff]
-    exact hs
+    rwa [← res_eq_zero_iff O O, res_map, res_eq_zero_iff]
   obtain ⟨n, y, hy, hd, N, hN⟩ := GlobalTheory.exists_systemOfParameters_insert S _ hp0 (hloc p hpm)
   let z : Fin n → S := fun i => y i - algebraMap O S (x (y i))
   have hz : ∀ i, z i ∈ maximalIdeal S := fun i => sub_mem (hy i) (hloc _ (hx _ (hy i)))
@@ -827,8 +820,7 @@ theorem UpperTheory.exists_finite_injective_mvPowerSeries_compatible_section :
         rw [← hφX i]
         exact Ideal.mem_map_of_mem (algebraMap A S)
           (FormalIsogeny.mem_maximalIdeal_iff_constantCoeff.2 (by simp))
-      have h2 := add_mem h1 (hCm _ (hx _ (hy i)))
-      simpa [z] using h2
+      simpa [z] using add_mem h1 (hCm _ (hx _ (hy i)))
   have : IsHausdorff ((maximalIdeal A).map (algebraMap A S)) S :=
     IsHausdorff.of_isLocalRing _ _ (ne_top_of_le_ne_top (maximalIdeal.isMaximal _).ne_top hle)
   have : Module.Finite A (S ⧸ (maximalIdeal A).map (algebraMap A S)) := by

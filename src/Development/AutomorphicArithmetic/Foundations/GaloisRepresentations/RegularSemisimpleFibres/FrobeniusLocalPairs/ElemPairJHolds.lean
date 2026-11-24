@@ -213,8 +213,7 @@ private theorem quotInt_smul {G T X : Type*} [Group G] [MeasurableSpace G] [Meas
     quotInt μ u j ν (c • Φ) = c * quotInt μ u j ν Φ := by
   unfold quotInt
   split_ifs with h
-  · simp only [Pi.smul_apply, smul_eq_mul, mul_assoc]
-    exact integral_const_mul _ _
+  · simpa only [Pi.smul_apply, smul_eq_mul, mul_assoc] using integral_const_mul _ _
   · simp
 
 private theorem orb_smul {n : ℕ} {R : Type*} [CommRing R] [TopologicalSpace R] [MeasurableSpace (GL (Fin n) R)]
@@ -360,8 +359,7 @@ private theorem conj_ball {r : ValueGroupWithZero k} {d : Fin n → kˣ} (hd : �
     exact hg i i
   · have := hg i j
     rw [Matrix.one_apply_ne h, sub_zero] at this ⊢
-    rw [map_mul, map_mul, hd j, mul_one, map_inv₀, hd i, inv_one, one_mul]
-    exact this
+    rwa [map_mul, map_mul, hd j, mul_one, map_inv₀, hd i, inv_one, one_mul]
 
 private theorem diag_ball {r : ValueGroupWithZero k} {a : GL (Fin n) k} (ha : a ∈ ball n r) {d : Fin n → kˣ}
     (hd : ∀ i, valuation k (d i : k) = 1)
@@ -441,8 +439,7 @@ theorem levOf : LevOf := by
       rwa [map_inv, inv_inv] at this
     · rw [e, map_mul]
       group
-  · intro t ht u hu
-    exact hBK (hBI.up t ht u ⟨hK1 u hu.1 ((mem_unipB k).1 hu.2).2, hu.2⟩)
+  · exact fun t ht u hu => hBK (hBI.up t ht u ⟨hK1 u hu.1 ((mem_unipB k).1 hu.2).2, hu.2⟩)
   · intro t ht c hc
     exact hBK (hBI.low t ht c ⟨hK1 c hc.1 (GlobalTheory.IwahoriTraceProof.mem_unipBLower.1 hc.2).2, hc.2⟩)
   · intro t
@@ -542,8 +539,7 @@ private theorem val_iter (σ : k' ≃+* k') (h : ∀ x, valuation k' (σ x) = va
 
 private theorem val_near {r : ValueGroupWithZero k'} (h1 : r < 1) {x : k'} (hx : valuation k' (x - 1) ≤ r) :
     valuation k' x = 1 := by
-  have h := Valuation.map_one_add_of_lt (valuation k') (lt_of_le_of_lt hx h1)
-  simpa using h
+  simpa using Valuation.map_one_add_of_lt (valuation k') (lt_of_le_of_lt hx h1)
 
 end Val
 
@@ -666,10 +662,8 @@ theorem UpperTheory.Gal.InertialTypesAlt.L.elemPairJ :
       rw [el, hKd, hset]
       rfl
     refine ⟨?_, ?_⟩
-    · rw [e1, e2]
-      exact hm'
-    · rw [hKd, hset]
-      exact hnS
+    · rwa [e1, e2]
+    · rwa [hKd, hset]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.FrobeniusLocalPairs.ElemPairJ =====
@@ -735,7 +729,6 @@ private def rp (ρ : Representation ℂ G V) (ι : H →* G) (p : H →* Γ) (hp
 
 private theorem rp_spec (ρ : Representation ℂ G V) (ι : H →* G) (p : H →* Γ) (hp : Function.Surjective p)
     (y : H) (x : fixed ρ (p.ker.map ι)) : (rp ρ ι p hp (p y) x : V) = ρ (ι y) x := by
-  show ρ (ι (Function.surjInv hp (p y))) x = _
   exact fx_eq ρ ι p (Function.surjInv_eq hp (p y)) x.2
 
 private theorem rel_eq (ι : H →* G) (hι : Function.Injective ι) (p : H →* Γ) (hp : Function.Surjective p) :
@@ -751,8 +744,7 @@ private theorem lev_eq_lemma (ι : H →* G) (hι : Function.Injective ι) (p : 
   · rintro ⟨k, hk, hke⟩
     have hk0 : p k = 1 := hk
     have hkb : k = a⁻¹ * b := hι (by rw [hke, map_mul, map_inv])
-    rw [hkb, map_mul, map_inv, inv_mul_eq_one] at hk0
-    exact hk0
+    rwa [hkb, map_mul, map_inv, inv_mul_eq_one] at hk0
   · intro h
     refine ⟨a⁻¹ * b, ?_, by rw [map_mul, map_inv]⟩
     show p (a⁻¹ * b) = 1
@@ -839,8 +831,7 @@ private theorem iota_inj (n : ℕ) :
     Function.Injective (GeneralLinearGroup.map (n := Fin n) (algebraMap 𝒪[k] k)) := by
   intro a b h
   ext i j
-  have h2 := congrArg (fun g : GL (Fin n) k => (g : Matrix (Fin n) (Fin n) k) i j) h
-  simpa using h2
+  simpa using congrArg (fun g : GL (Fin n) k => (g : Matrix (Fin n) (Fin n) k) i j) h
 
 private theorem unit_of_ne (rd : 𝒪[k] →+* F₀) (hrd : Function.Surjective rd) {x : 𝒪[k]} (hx : rd x ≠ 0) :
     IsUnit x := by
@@ -865,7 +856,6 @@ private theorem gl_onto (rd : 𝒪[k] →+* F₀) (hrd : Function.Surjective rd)
     exact ((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit).ne_zero
   refine ⟨Matrix.nonsingInvUnit M hdet, ?_⟩
   ext i j
-  show rd (M i j) = _
   exact Function.surjInv_eq hrd _
 
 private theorem infl_on (rd : 𝒪[k] →+* F₀) {n : ℕ} (fb : GL (Fin n) F₀ → ℂ) (y : GL (Fin n) 𝒪[k]) :
@@ -1045,8 +1035,7 @@ theorem finTrace :
   haveI : FiniteDimensional F E := Module.finite_of_finrank_pos hp.pos
   haveI : Fact (Module.finrank F E).Prime := ⟨hp⟩
   haveI : IsCyclic (E ≃ₐ[F] E) := by
-    apply isCyclic_of_prime_card (p := Module.finrank F E)
-    exact IsGalois.card_aut_eq_finrank F E
+    exact isCyclic_of_prime_card (p := Module.finrank F E) (IsGalois.card_aut_eq_finrank F E)
   obtain ⟨σ, hσ⟩ := IsCyclic.exists_generator (α := E ≃ₐ[F] E)
   obtain ⟨i1, i2, i3, i4, s0, hs0, hr, h1, h2, h3⟩ := UpperTheory.V.Z.Tf.Orb.placeData_holds F E σ hσ v w hw
   letI := Fintype.ofFinite 𝓀[v.adicCompletion F]

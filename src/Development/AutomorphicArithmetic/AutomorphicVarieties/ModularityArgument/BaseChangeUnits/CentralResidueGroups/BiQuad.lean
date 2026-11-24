@@ -46,8 +46,7 @@ private theorem mem_range_resG_iff (k L Ω : Type) [Field k] [Field L] [Field Ω
   constructor
   · rintro ⟨t, rfl⟩ x
     exact t.commutes x
-  · intro h
-    exact ⟨{ s.toRingEquiv with commutes' := h }, AlgEquiv.ext fun _ => rfl⟩
+  · exact fun h => ⟨{ s.toRingEquiv with commutes' := h }, AlgEquiv.ext fun _ => rfl⟩
 
 private theorem comm_on (k K M : Type) [Field k] [Field K] [Field M] [Algebra k K] [Algebra k M] [Algebra K M]
     [IsScalarTower k K M] [h : IsAbelianGalois k K] (σ τ : M ≃ₐ[k] M) (x : K) :
@@ -96,8 +95,7 @@ private theorem exists_compositum (k K K' Ω : Type) [Field k] [Field K] [Field 
     have := hext (M.val.comp (σ * τ : M ≃ₐ[k] M)) (M.val.comp (τ * σ : M ≃ₐ[k] M))
       (fun x => congrArg Subtype.val (comm_on k K M σ τ x)) (fun x => congrArg Subtype.val (comm_on k K' M σ τ x))
     exact AlgEquiv.ext fun x => Subtype.ext (DFunLike.congr_fun this x)
-  · intro s h1 h2 x
-    exact DFunLike.congr_fun (hext ((s : Ω →ₐ[k] Ω).comp M.val) M.val h1 h2) x
+  · exact fun s h1 h2 x => DFunLike.congr_fun (hext ((s : Ω →ₐ[k] Ω).comp M.val) M.val h1 h2) x
 
 private theorem abelian_of_two (K : Type) [Field K] [NumberField K] (h : Module.finrank ℚ K = 2) : IsAbelianGalois ℚ K := by
   haveI : Algebra.IsQuadraticExtension ℚ K := ⟨h⟩
@@ -126,12 +124,10 @@ theorem UpperTheory.V.Z.Bc.biQuad :
     · intro hs x
       rw [IsScalarTower.algebraMap_apply K' M Ω]
       exact hs _
-    · intro hs
-      exact hfix (resG ℚ K Ω s) s.commutes hs
+    · exact fun hs => hfix (resG ℚ K Ω s) s.commutes hs
   · rw [mem_range_resG_iff, mem_range_resG_iff]
     constructor
     · intro hs x
       rw [IsScalarTower.algebraMap_apply K M Ω]
       exact hs _
-    · intro hs
-      exact hfix (resG ℚ K' Ω s) hs s.commutes
+    · exact fun hs => hfix (resG ℚ K' Ω s) hs s.commutes

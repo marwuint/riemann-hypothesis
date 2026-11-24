@@ -107,8 +107,7 @@ theorem int_surj {A : Type} [Group A] [TopologicalSpace A] [IsTopologicalGroup A
   have h1 : ∀ x, ∫ y, f (s x * y) ∂κ = ∫ y, f y ∂κ := fun x => integral_mul_left_eq_self f (s x)
   have h2 : ∀ y, ∫ x, f (s x * y) ∂α = ∫ x, f (s x) ∂α := fun y => by
     obtain ⟨z, rfl⟩ := ho y
-    simp only [← hm]
-    exact integral_mul_right_eq_self (fun x => f (s x)) z
+    simpa only [← hm] using integral_mul_right_eq_self (fun x => f (s x)) z
   simpa only [h1, h2, integral_const, probReal_univ, one_smul] using h
 
 theorem idem_fin (κ : Measure K) [IsProbabilityMeasure κ] [κ.IsMulLeftInvariant] {e : K → ℂ} (he : Continuous e)
@@ -438,15 +437,13 @@ private theorem leftFin_of {K : Type} [Field K] [NumberField K] {n : ℕ} {b : T
     LeftFin b := by
   have e1 : (⇑b : archGroup K n → ℂ) = f := funext h
   unfold LeftFin
-  rw [e1]
-  exact hf
+  rwa [e1]
 
 private theorem smoothT_of {K : Type} [Field K] [NumberField K] {n : ℕ} {b : TI K n} {f : archGroup K n → ℂ} (h : ∀ g, b g = f g)
     (hf : (isExpLieAlgebra K n).IsSmoothFun f) : SmoothT b := by
   have e1 : (⇑b : archGroup K n → ℂ) = f := funext h
   unfold SmoothT
-  rw [show (fun g => b g) = f from e1]
-  exact hf
+  rwa [show (fun g => b g) = f from e1]
 
 private theorem exTI {K : Type} [Field K] [NumberField K] {n : ℕ} {f : archGroup K n → ℂ} (hc : Continuous f) (hs : HasCompactSupport f) :
     ∃ b : TI K n, ∀ g, b g = f g :=
@@ -583,8 +580,7 @@ theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.ampEx :
   have hβEc : Continuous βE := continuous_finsetProd _ fun i _ => hβc.comp (hccont i)
   have hβEc' : Continuous fun y => (βE y : ℂ) := by fun_prop
   have hbE : ∀ x, ec κ e (fun y => (βE y : ℂ)) x = ∏ i, b (compA D n i x) := fun x => by
-    simp only [hbe]
-    exact tens_ec D hF hE hSq hβc x
+    simpa only [hbe] using tens_ec D hF hE hSq hβc x
   have hbEc := ec_cont κ hE.cont hβEc'
   have hH := tens_cv D hs' hbEc hbE
   have hβs' : HasCompactSupport fun y => (β y : ℂ) := hβs.comp_left Complex.ofReal_zero
@@ -603,8 +599,7 @@ theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.ampEx :
     exact bi_sq κ νE hE.cont hE.star hbEc (ec_cs κ e hβEs') (ec_idem κ hE.cont hE.idem hβEc') g
   · simp only [hH]
     refine hne βE hβEc hβEs (fun y => Finset.prod_nonneg fun i _ => hβ0 _) ⟨glueA D n fun _ => x₀, ?_⟩ fun y hy => ?_
-    · simp only [hβE, hgc]
-      exact Finset.prod_ne_zero_iff.2 fun _ _ => hx₀
+    · simpa only [hβE, hgc] using Finset.prod_ne_zero_iff.2 fun _ _ => hx₀
     · have h1 : ∀ i, β (compA D n i y) ≠ 0 := fun i => Finset.prod_ne_zero_iff.1 hy i (Finset.mem_univ _)
       have h2 : (fun i => compA D n i y) ∈ glueA D n ⁻¹' O := hsub fun i _ => Set.mem_iInter.1 (hβN _ (h1 i)) i
       simpa [Set.mem_preimage, hcg] using h2

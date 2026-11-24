@@ -72,8 +72,7 @@ private theorem en_mul (x y : SL(2, ℤ)) (i j : Fin 2) :
 
 private theorem en_det (x : SL(2, ℤ)) : en x 0 0 * en x 1 1 - en x 0 1 * en x 1 0 = 1 := by
   have h := x.2
-  rw [Matrix.det_fin_two] at h
-  exact h
+  rwa [Matrix.det_fin_two] at h
 
 private noncomputable def PP (X : Tower Ω ε) (l n N M : ℕ) [Fact l.Prime] [NeZero M] (gm : (ZMod l)ˣ → SL(2, ℤ)) (W : X.K)
     (e : ZMod (l ^ n) → ℕ) : X.K :=
@@ -118,13 +117,11 @@ private theorem PP_translate (X : Tower Ω ε) {l n N M : ℕ} [Fact l.Prime] [N
       rw [← hg, ← hg', map_mul, map_mul, map_mul, map_liftSL, map_liftSL, mul_assoc]
     have h1 : X.sl (ofSL δ) (X.sl (ofSL g) W) = X.sl (ofSL g') W := by
       have hν : (g * δ) * g'⁻¹ ∈ CongruenceSubgroup.Gamma M := by
-        rw [CongruenceSubgroup.Gamma_mem']
-        rw [map_mul, map_inv, hgg, mul_inv_cancel]
+        rw [CongruenceSubgroup.Gamma_mem', map_mul, map_inv, hgg, mul_inv_cancel]
       have e1 : g * δ = ((g * δ) * g'⁻¹) * g' := by group
       rw [← X.sl_mul, ← map_mul, e1, map_mul, X.sl_mul, hW _ hν]
     have e00 : ((en (g * δ) 0 0 : ℤ) : ZMod M) = ((en g' 0 0 : ℤ) : ZMod M) := by
-      have h := congrArg (fun x : SL(2, ZMod M) => (x : Matrix (Fin 2) (Fin 2) (ZMod M)) 0 0) hgg
-      exact h
+      exact congrArg (fun x : SL(2, ZMod M) => (x : Matrix (Fin 2) (Fin 2) (ZMod M)) 0 0) hgg
     have e00' := cast_dvd hM e00
     rw [en_mul] at e00'
     push_cast at e00'
@@ -254,8 +251,7 @@ theorem UpperTheory.Kd.L.wit :
   have hWinv : ∀ ν ∈ CongruenceSubgroup.Gamma (topMu l n m N),
       X.sl (ofSL ν) (wkMu X l n m N x c d σ) = wkMu X l n m N x c d σ := by
     intro ν hν
-    have h := Subfield.mem_iInf.1 (Subfield.mem_iInf.1 hWm ν) hν
-    exact h
+    exact Subfield.mem_iInf.1 (Subfield.mem_iInf.1 hWm ν) hν
   have hM : l ^ n ∣ topMu l n m N := (pow_dvd_pow l (Nat.le_add_left n m)).mul_right _
   let u : X.Kˣ := Units.mk0 _ hW0
   let FU : X.Kˣ := ∏ r₀ : (ZMod l)ˣ, ∏ γ ∈ Gs N l (topMu l n m N),
@@ -273,8 +269,7 @@ theorem UpperTheory.Kd.L.wit :
     simp only [FU, cls_prod']
 
     simp only [clsBmu, Finset.sum_apply, map_sum]
-    refine Finset.sum_congr rfl fun r₀ _ => Finset.sum_congr rfl fun γ _ => ?_
-    exact eval_term X l n w u _
+    exact Finset.sum_congr rfl fun r₀ _ => Finset.sum_congr rfl fun γ _ => eval_term X l n w u _
   rw [h2, cls_pow', ← Nat.cast_smul_eq_nsmul ℤ_[l]]
   push_cast
   rfl

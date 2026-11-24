@@ -167,9 +167,7 @@ theorem finite_fixed {K : Type} [Field K] [NumberField K] [StarRing K] (h : ∃ 
 theorem exists_star_ne (D : D7) : ∃ x : D.host.E, star x ≠ x := by
   by_contra hn
   push Not at hn
-  apply IsCMField.complexConj_ne_one D.host.E
-  refine AlgEquiv.ext fun x => ?_
-  exact hn x
+  exact IsCMField.complexConj_ne_one D.host.E (AlgEquiv.ext fun x => hn x)
 
 theorem cofinite_labels {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz)
@@ -466,8 +464,7 @@ theorem norm_sq_blockValue_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies 
   obtain rfl : ν = fun Q => Formalism.L2.Col.firstValA (p.P.A3.A.muVal j (p.R.mu w)) p.P.A3.A.etaVal p.P.A3.A.q p.P.A3.A.r Q.1 :=
     List.mem_singleton.1 hν
   have e : (blk p j (p.R.mu w)).n - (blk p j (p.R.mu w)).t = p.P.A3.A.r := Nat.add_sub_cancel ..
-  rw [e]
-  exact h
+  rwa [e]
 end GlobalTheory.FrameAut
 end
 end -- clump:auto
@@ -568,8 +565,7 @@ theorem UpperTheory.good_place_of_twist_place_dividing :
       apply RingOfIntegers.ext
       have e1 : (((D.host.g k : ℕ) : 𝓞 D.host.E) : D.host.E) = ((D.host.g k : ℕ) : D.host.E) := map_natCast (algebraMap (𝓞 D.host.E) D.host.E) _
       have h3 : (c' : D.host.E) = star (((D.host.g k : ℕ) : 𝓞 D.host.E) : D.host.E) := h2
-      rw [e1, star_natCast, ← e1] at h3
-      exact h3
+      rwa [e1, star_natCast, ← e1] at h3
     exact this ▸ h1
   · exact ⟨fun e => (hL.Q_ram (p.R.mu w) v).2 (Or.inl (e ▸ hPP)) hunr,
       fun hc => (hL.Q_ram (p.R.mu w) v).2 (Or.inr ⟨PP, hPP, hc⟩) hunr⟩
@@ -645,8 +641,7 @@ private theorem frame_embedding_exists {D : D7} {L : SizeData₂ D} {hT : GatTie
       levChi p j t ⟨_, h⟩ = 1) → ∀ g, Fm (g * (Formalism.L2.Theta.finHom (Vc D j)).rangeRestrict k) = Fm g := by
     rintro k ⟨h, h1⟩ g
     have := hFr ⟨_, h⟩ g
-    rw [h1, Units.val_one, one_smul] at this
-    exact this
+    rwa [h1, Units.val_one, one_smul] at this
   have hev : ∀ᶠ κ in nhds (1 : Formalism.L2.Theta.GA D (Vc D j)), ∀ g,
       Fm (g * (Formalism.L2.Theta.finHom (Vc D j)).rangeRestrict κ) = Fm g :=
     (GlobalTheory.ThetaIntegrand.eventually_level (Vc D j) (p.R.βV j) (p.R.datVt j t)).mono fun κ h => hfix κ h

@@ -364,8 +364,7 @@ theorem _root_.GlobalTheory.T.exists_truncated_polynomial_thickening_fibre_squar
   haveI : IsArtinianRing B := IsArtinianRing.of_finite E B
   obtain ⟨e, he⟩ : IsNilpotent (RingHom.ker (π : B →+* E)) := by
     rw [Ideal.FG.isNilpotent_iff_le_nilradical (IsNoetherian.noetherian _)]
-    intro c hc
-    exact mem_nilradical.mpr (hπ c (by simpa using hc))
+    exact fun c hc => mem_nilradical.mpr (hπ c (by simpa using hc))
   set I := RingHom.ker (π : B →+* E) with hIdef
   set N := J * e + 1 with hN
   have hN0 : N ≠ 0 := by omega
@@ -454,8 +453,7 @@ theorem _root_.GlobalTheory.T.exists_truncated_polynomial_thickening_fibre_squar
       have := congrArg (fun p => p.coeff n) hmod
       simpa using this
     have := Ideal.mem_map_of_mem (AdjoinRoot.mk ((X : B[X]) ^ N)) hin
-    rw [Ideal.map_map] at this
-    exact this
+    rwa [Ideal.map_map] at this
   refine ⟨AdjoinRoot ((X : E[X]) ^ N), inferInstance, inferInstance, inferInstance,
     AdjoinRoot ((X : B[X]) ^ N), inferInstance, inferInstance, inferInstance, πC, p1, p2,
     AdjoinRoot.root _, ⟨N, hrootE⟩, hnilC, hnilT, hcomm, hsurj, ?_⟩
@@ -879,8 +877,7 @@ theorem core (hL : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {O : Type} [
     obtain ⟨g, -, hg⟩ := unramified_lift_deformation D U E B π hπ ((π.restrictScalars O).comp f) (push f U.r.hom) hf.mult hx hf.cont
     refine (hg _ ?_).trans (hg f rfl).symm
     show push ((p₁.restrictScalars O).comp F) U.r.hom = push f U.r.hom
-    rw [push_comp, hF]
-    exact hr1
+    rwa [push_comp, hF]
   have h0 := _root_.GlobalTheory.OrdLoc.ordIdeal_eq_bot_of_inDcr hL D E T (π.comp p₁) hπT r hr
   obtain ⟨hmap, -, hdelF⟩ := GlobalTheory.T.ordinaryIdeal_saturators_map_algHom D F U.r.hom
   have h1 : F (GlobalTheory.OrdLoc.del D U.r.hom ^ k * a) = 0 := by
@@ -894,8 +891,7 @@ theorem core (hL : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {O : Type} [
   have hP : p₂ (GlobalTheory.OrdLoc.del D r ^ k) = t ^ (j * k) * ((v ^ k : Cˣ) : C) := by
     rw [map_pow, show p₂ (GlobalTheory.OrdLoc.del D r) = t ^ j * v from hdel2, mul_pow, ← pow_mul, Units.val_pow_eq_pow_val]
   have h2 := hcanc _ (F a) (j * k) (v ^ k) (by nlinarith) hP h1
-  rw [← hF1]
-  exact h2
+  rwa [← hF1]
 
 theorem main (hL : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O)

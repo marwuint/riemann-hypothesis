@@ -60,22 +60,17 @@ theorem UpperTheory.V.Kum.lenDirected :
   rw [← WithBot.coe_le_coe, Module.coe_length, Order.krullDim, iSup_le_iff]
   intro p
   have hstep : ∀ i : Fin p.length, ∃ x : W, x ∈ p i.succ ∧ x ∉ p i.castSucc := by
-    intro i
-    exact SetLike.exists_of_lt (p.step i)
+    exact fun i => SetLike.exists_of_lt (p.step i)
   choose x hx1 hx2 using hstep
   have hdir : Directed (· ≤ ·) P := hP.directed_le
   have hmem : ∀ i : Fin p.length, ∃ n, (x i : X) ∈ P n := by
-    intro i
-    exact (Submodule.mem_iSup_of_directed P hdir).mp (hW (x i).2)
+    exact fun i => (Submodule.mem_iSup_of_directed P hdir).mp (hW (x i).2)
   choose m hm using hmem
   obtain ⟨n, hn, hlen⟩ := hBd (Finset.univ.sup m)
   have hxn : ∀ i, (x i : X) ∈ P n := by
-    intro i
-    exact hP ((Finset.le_sup (Finset.mem_univ i)).trans hn) (hm i)
+    exact fun i => hP ((Finset.le_sup (Finset.mem_univ i)).trans hn) (hm i)
   let f : Submodule R W → Submodule R (P n) := fun S => (S.map W.subtype).comap (P n).subtype
-  have hfmono : Monotone f := by
-    intro S T hST
-    exact Submodule.comap_mono (Submodule.map_mono hST)
+  have hfmono : Monotone f := fun S T hST => Submodule.comap_mono (Submodule.map_mono hST)
   let q : LTSeries (Submodule R (P n)) :=
     { length := p.length
       toFun := fun i => f (p i)

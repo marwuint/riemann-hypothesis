@@ -205,9 +205,7 @@ theorem rI_le (l m h n : ℕ) (hl : l.Prime) (U : Finset ℤ) (U' : Set ℤ) (hU
   have hfin : U'.Finite := (U.finite_toSet).subset hU
   unfold LocalSituation.rI
   rw [finsum_mem_eq_finite_toFinset_sum _ hfin]
-  have hsub : hfin.toFinset ⊆ U := by
-    intro x hx
-    exact hU ((Set.Finite.mem_toFinset hfin).1 hx)
+  have hsub : hfin.toFinset ⊆ U := fun x hx => hU ((Set.Finite.mem_toFinset hfin).1 hx)
   have hcard : hfin.toFinset.card ≤ n := (Finset.card_le_card hsub).trans hn
   have hterm : ∀ u ∈ hfin.toFinset, (∑ᶠ (_ : u ≠ i), (m + LocalSituation.vZ l (u - i))) ≤ m + Nat.log l (2 * h) := by
     intro u hu

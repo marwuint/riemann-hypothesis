@@ -66,8 +66,7 @@ private theorem den_of_norm {p : ℕ} [Fact p.Prime] {c : ℚ} (h : ‖(c : ℚ_
   have hn1 : ‖((c.num.natAbs : ℕ) : ℚ_[p])‖ = 1 := by
     have h0 : ‖((c.num.natAbs : ℕ) : ℤ_[p])‖ = 1 :=
       PadicInt.norm_natCast_eq_one_iff.2 ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hn)
-    rw [← PadicInt.coe_natCast]
-    exact h0
+    rwa [← PadicInt.coe_natCast]
   have h2 : ‖(c.num : ℚ_[p])‖ = 1 := by
     rcases Int.natAbs_eq c.num with e | e <;> rw [e] <;> simpa using hn1
   have h3 : (c : ℚ_[p]) * (c.den : ℚ_[p]) = c.num := by exact_mod_cast Rat.mul_den_eq_num c
@@ -79,8 +78,7 @@ private theorem val_rat_le {p : ℕ} [Fact p.Prime] {E : Type} [Field E] [Number
     (hw : (p : 𝓞 E) ∈ w.asIdeal) {c : ℚ} (h : ‖(c : ℚ_[p])‖ ≤ 1) : w.valuation E (algebraMap ℚ E c) ≤ 1 := by
   have hd := den_of_norm h
   have hc : algebraMap ℚ E c = algebraMap (𝓞 E) E (c.num : 𝓞 E) / algebraMap (𝓞 E) E (c.den : 𝓞 E) := by
-    simp only [eq_ratCast, map_intCast, map_natCast]
-    exact Rat.cast_def c
+    simpa only [eq_ratCast, map_intCast, map_natCast] using Rat.cast_def c
   have hden : (c.den : 𝓞 E) ∉ w.asIdeal := by
     intro hm
     have hcop : Nat.Coprime p c.den := ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hd)
@@ -124,8 +122,7 @@ private theorem val_le_one_of_forall {p : ℕ} [Fact p.Prime] {E : Type} [Field 
       have : (a : PadicAlgCl p) = _ := ha
       rw [this, Polynomial.coeff_map]
       simp
-    rw [h2, PadicAlgCl.norm_extends] at h1
-    exact h1
+    rwa [h2, PadicAlgCl.norm_extends] at h1
   have hlift2 : (minpoly ℚ x).map (algebraMap ℚ E) ∈ Polynomial.lifts ((w.valuation E).valuationSubring.subtype) := by
     refine (Polynomial.lifts_iff_coeff_lifts _).2 fun n => ?_
     rw [Polynomial.coeff_map]
@@ -145,11 +142,9 @@ private theorem val_le_one_of_forall {p : ℕ} [Fact p.Prime] {E : Type} [Field 
 private theorem omega_root {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) :
     (A.ω : E) ^ 2 - (A.tr : E) * (A.ω : E) + (A.nm : E) = 0 := by
   have h1 : (A.ω : E) + IsCMField.complexConj E (A.ω : E) = (A.tr : E) := by
-    have h := congrArg (fun z : 𝓞 E => (z : E)) A.tr_eq
-    simpa [A.bar_eq] using h
+    simpa [A.bar_eq] using congrArg (fun z : 𝓞 E => (z : E)) A.tr_eq
   have h2 : (A.ω : E) * IsCMField.complexConj E (A.ω : E) = (A.nm : E) := by
-    have h := congrArg (fun z : 𝓞 E => (z : E)) A.nm_eq
-    simpa [A.bar_eq] using h
+    simpa [A.bar_eq] using congrArg (fun z : 𝓞 E => (z : E)) A.nm_eq
   linear_combination (A.ω : E) * h1 - h2
 
 private theorem omega_not_rat {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (q : ℚ) :
@@ -210,8 +205,7 @@ private theorem lies_or {E : Type} [Field E] [NumberField E] [IsCMField E] (A : 
     simp only [map_add (f := _), map_sub, map_mul, map_pow, map_intCast, map_zero] at h1
     exact h1
   have ht : (τ (A.ω : E)) ^ 2 - (A.tr : PadicAlgCl p) * τ (A.ω : E) + (A.nm : PadicAlgCl p) = 0 := by
-    have h1 := congrArg τ (omega_root A)
-    simpa using h1
+    simpa using congrArg τ (omega_root A)
   have hfac : (τ (A.ω : E) - algebraMap ℚ_[p] (PadicAlgCl p) (P.u ⟨A.ω, h⟩)) *
       (τ (A.ω : E) + algebraMap ℚ_[p] (PadicAlgCl p) (P.u ⟨A.ω, h⟩) - (A.tr : PadicAlgCl p)) = 0 := by
     linear_combination ht - hr
@@ -219,8 +213,7 @@ private theorem lies_or {E : Type} [Field E] [NumberField E] [IsCMField E] (A : 
   · exact Or.inl (key τ (sub_eq_zero.1 e))
   · refine Or.inr (key _ ?_)
     have h1 : (A.ω : E) + cj E (A.ω : E) = (A.tr : E) := by
-      have h := congrArg (fun z : 𝓞 E => (z : E)) A.tr_eq
-      simpa [A.bar_eq] using h
+      simpa [A.bar_eq] using congrArg (fun z : 𝓞 E => (z : E)) A.tr_eq
     have h2 := congrArg τ h1
     simp only [map_add (f := _), map_intCast] at h2
     simp only [RingHom.comp_apply]
@@ -269,8 +262,7 @@ private theorem norm_of_Kint {p : ℕ} [Fact p.Prime] (t : ℚ_[p]ˣ)
   rw [e, _root_.GlobalTheory.mem_padicAlgCl_valuationSubring_iff_norm_le_one] at h1
   have h2 : (((algebraMap ℚ_[p] (Qr p 1) (t : ℚ_[p])) : Qr p 1) : PadicAlgCl p) =
       algebraMap ℚ_[p] (PadicAlgCl p) (t : ℚ_[p]) := rfl
-  rw [h2, PadicAlgCl.norm_extends] at h1
-  exact h1
+  rwa [h2, PadicAlgCl.norm_extends] at h1
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {A : Arith E} {n p : ℕ} [Fact p.Prime]
 
@@ -285,8 +277,7 @@ private theorem inv_hyp (S : Setup A n p) (y : Gam0 E n)
 private theorem sim_norm (S : Setup A n p) (y : Gam0 E n)
     (hy : inclG S.G 1 (locC S.G (y : GL (Fin n) E × ℚˣ)) ∈ LocalSmoothExtension.Kp S.G) :
     ‖(((y.1.2 : ℚˣ) : ℚ) : ℚ_[p])‖ ≤ 1 := by
-  have a1 := norm_of_Kint (Units.map (algebraMap ℚ ℚ_[p]).toMonoidHom y.1.2) hy.1
-  simpa using a1
+  simpa using norm_of_Kint (Units.map (algebraMap ℚ ℚ_[p]).toMonoidHom y.1.2) hy.1
 
 private theorem entry_norm (S : Setup A n p) (y : Gam0 E n)
     (hy : inclG S.G 1 (locC S.G (y : GL (Fin n) E × ℚˣ)) ∈ LocalSmoothExtension.Kp S.G) (i : Fin S.P.m) (j l : Fin n) :
@@ -299,8 +290,7 @@ private theorem entry_norm (S : Setup A n p) (y : Gam0 E n)
   have h1 := norm_of_mem_intKQ (S.G.Fw i') (k.val j' l').2
   let a : S.G.Fw i' := embOf (S.P.emb i) (y.1.1.val j l)
   have e' : ((k.val j' l' : intKQ p (S.G.Fw i') 1) : KQ p (S.G.Fw i') 1) = inclK p (S.G.Fw i') 1 a := e
-  rw [e', mulKQ_inclK] at h1
-  exact h1
+  rwa [e', mulKQ_inclK] at h1
 
 private theorem conj_entry (y : Gam0 E n) (j l : Fin n) :
     cj E (y.1.1.val j l) = algebraMap ℚ E (y.1.2 : ℚ) * (y.1.1)⁻¹.val l j := by

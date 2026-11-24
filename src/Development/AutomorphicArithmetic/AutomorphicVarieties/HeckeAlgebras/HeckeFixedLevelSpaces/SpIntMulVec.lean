@@ -118,11 +118,9 @@ theorem sum_clOrd (φ : X.I.T →* Ωˣ) (c : ℕ) (U U' : Subgroup X.Ub) {κ : 
     refine Submodule.mem_iSup_of_mem μ ⟨?_, ?_⟩
     · exact sum_cl X W τ φ c U U' u G hG1 (h G hG1.1.2)
     · exact Module.End.mapsTo_maxGenEigenspace_of_comm hcomm _ hG2
-  · simp only [map_zero]
-    exact zero_mem _
+  · simpa only [map_zero] using zero_mem _
   · intro x y hx hy
-    simp only [map_add (f := _)]
-    exact add_mem hx hy
+    simpa only [map_add (f := _)] using add_mem hx hy
 
 private theorem UF_z_comm_and_preserves_N_fixed (a : X.I.P) (G : Fin m → X.Fn Ω (W.d + 1))
     (hG : G ∈ fixd (X.rpF Ω (W.d + 1) m) X.I.N) :
@@ -170,11 +168,9 @@ theorem uf_clOrd (φ : X.I.T →* Ωˣ) (c : ℕ) (U : Subgroup X.Ub)
         · rw [c1, map_sub, map_smul]
         · exact sub_mem c2 (Submodule.smul_mem _ _ ih2)
     rw [(key k G hN).1, hk, map_zero]
-  · simp only [map_zero]
-    exact zero_mem _
+  · simpa only [map_zero] using zero_mem _
   · intro x y hx hy
-    simp only [map_add (f := _)]
-    exact add_mem hx hy
+    simpa only [map_add (f := _)] using add_mem hx hy
 
 theorem clOrd_mono (φ : X.I.T →* Ωˣ) {c c' : ℕ} (hc : c ≤ c') {U U' : Subgroup X.Ub} (hU : U' ≤ U) :
     X.ClOrd W τ U c φ ≤ X.ClOrd W τ U' c' φ :=

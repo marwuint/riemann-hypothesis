@@ -99,8 +99,7 @@ theorem UpperTheory.V.Pa.pl_props :
     have hc : ∀ h ∈ H, ∃ e : ℕ, h ^ l ^ e ∈ HU := by
       intro h hh
       refine ⟨0, ?_⟩
-      rw [pow_zero, pow_one]
-      exact hh
+      rwa [pow_zero, pow_one]
     exact cond_le HU hc
   have hPn : (proLResOf l H).Normal := by
     constructor
@@ -138,8 +137,7 @@ theorem UpperTheory.V.Pa.pl_props :
     let t : ι → Set H := fun i => i.1.toSubgroup
     have hdisjoint : Disjoint (K : Set H)ᶜ (⋂ i, t i) := by
       simp only [Set.disjoint_left, Set.mem_compl_iff, Set.mem_iInter]
-      intro y hy hall
-      exact hy (hleK (mem_proLRes.mpr fun N hN => hall ⟨N, hN⟩))
+      exact fun y hy hall => hy (hleK (mem_proLRes.mpr fun N hN => hall ⟨N, hN⟩))
     obtain ⟨s, hs⟩ := hKo.isClosed_compl.isCompact.elim_finite_subfamily_closed t
       (fun i => i.1.toOpenSubgroup.isClosed) hdisjoint
     let g : H := ⟨h, hh⟩
@@ -184,9 +182,7 @@ theorem UpperTheory.V.Pa.pl_props :
       exact mem_proLRes.mp hy N hpg
   have hiff : ∀ U : OpenNormalSubgroup Γ,
       PL (l := l) H ≤ U.toSubgroup ↔ ∀ h ∈ H, ∃ e : ℕ, h ^ l ^ e ∈ U := by
-    intro U
-    refine ⟨fun h => ?_, cond_le U⟩
-    exact hPcond U (heq ▸ h)
+    exact fun U => ⟨fun h => (hPcond U (heq ▸ h)), cond_le U⟩
   have hbot : PL (l := l) H = ⊥ ↔ IsProL l H := by
     rw [isProL_iff]
     constructor
@@ -200,8 +196,7 @@ theorem UpperTheory.V.Pa.pl_props :
       refine ⟨e, ?_⟩
       obtain ⟨y, hy, hyg⟩ := Subgroup.mem_map.mp (hUK he)
       have hy' : y = g ^ l ^ e := Subtype.ext hyg
-      rw [← hy']
-      exact hy
+      rwa [← hy']
     · intro hP
       rw [eq_bot_iff]
       intro x hx

@@ -119,20 +119,6 @@ private theorem key {T' : Over S'} (y' : T' ⟶ (Over.pullback t).obj Y) :
     (y' ▷ (Over.pullback t).obj G).left ≫ cmp t G Y =
       fwd t G T' ≫ (((Over.mapPullbackAdj t).homEquiv _ _).symm y' ▷ G).left := by
   set x := ((Over.mapPullbackAdj t).homEquiv _ _).symm y' with hx
-  have a1 : (y' ▷ (Over.pullback t).obj G).left ≫
-      pullback.fst ((Over.pullback t).obj Y).hom ((Over.pullback t).obj G).hom =
-      pullback.fst T'.hom ((Over.pullback t).obj G).hom ≫ y'.left :=
-    Over.whiskerRight_left_fst _
-  have a2 : (y' ▷ (Over.pullback t).obj G).left ≫
-      pullback.snd ((Over.pullback t).obj Y).hom ((Over.pullback t).obj G).hom =
-      pullback.snd T'.hom ((Over.pullback t).obj G).hom :=
-    Over.whiskerRight_left_snd _
-  have b1 : (x ▷ G).left ≫ pullback.fst Y.hom G.hom =
-      pullback.fst ((Over.map t).obj T').hom G.hom ≫ x.left :=
-    Over.whiskerRight_left_fst _
-  have b2 : (x ▷ G).left ≫ pullback.snd Y.hom G.hom =
-      pullback.snd ((Over.map t).obj T').hom G.hom :=
-    Over.whiskerRight_left_snd _
   have c1 : cmp t G Y ≫ pullback.fst Y.hom G.hom =
       pullback.fst ((Over.pullback t).obj Y).hom ((Over.pullback t).obj G).hom ≫
         pullback.fst Y.hom t :=
@@ -144,10 +130,11 @@ private theorem key {T' : Over S'} (y' : T' ⟶ (Over.pullback t).obj Y) :
   have hxl : x.left = y'.left ≫ pullback.fst Y.hom t := by
     simp [hx, Over.mapPullbackAdj]
   apply pullback.hom_ext
-  · rw [Category.assoc, c1, ← Category.assoc, a1, Category.assoc, Category.assoc, b1,
-      ← Category.assoc, hxl]
+  · rw [Category.assoc, c1, ← Category.assoc, Over.whiskerRight_left_fst, Category.assoc,
+      Category.assoc, Over.whiskerRight_left_fst, ← Category.assoc, hxl]
     exact congrArg (· ≫ y'.left ≫ pullback.fst Y.hom t) (fwd_fst t G T').symm
-  · rw [Category.assoc, c2, ← Category.assoc, a2, Category.assoc, b2]
+  · rw [Category.assoc, c2, ← Category.assoc, Over.whiskerRight_left_snd, Category.assoc,
+      Over.whiskerRight_left_snd]
     exact (fwd_snd t G T').symm
 
 end UpperTheory.ClopPullback

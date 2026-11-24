@@ -89,10 +89,8 @@ theorem UpperTheory.V.Fr.ext_A :
       refine Ideal.mul_mem_right _ _ ?_
       have h3 : algebraMap S.B S.A b ∈ S.x0 ^ N := by
         have := Ideal.mem_map_of_mem (S.inc : S.B →+* S.A) hb
-        rw [Ideal.map_pow] at this
-        exact this
-      have h4 := Ideal.pow_right_mono hf N h3
-      exact Ideal.le_comap_pow (f : S.A →+* C) N h4
+        rwa [Ideal.map_pow] at this
+      exact Ideal.le_comap_pow (f : S.A →+* C) N (Ideal.pow_right_mono hf N h3)
     · rw [map_add (f := _)]
       exact add_mem hx hy
   have hB : S.B ≤ E := by
@@ -107,8 +105,7 @@ theorem UpperTheory.V.Fr.ext_A :
     have hg : S.inc ⟨b - y, sub_mem hb hyB⟩ ∈ S.gr 0 := by
       have h5 : (1 : S.A) ∈ S.gr 0 := Submodule.subset_span ⟨[], by simp, by simp⟩
       have h6 := Submodule.smul_mem _ (⟨b - y, sub_mem hb hyB⟩ : S.B) h5
-      rw [Algebra.smul_def, mul_one] at h6
-      exact h6
+      rwa [Algebra.smul_def, mul_one] at h6
     have hm := hM _ hg hby
     have he : ξ ⟨y, S.B_le_A hyB⟩ = ξ' ⟨y, S.B_le_A hyB⟩ := (hE _).1 (h0 hy)
     have hs : (⟨b, S.B_le_A hb⟩ : S.A) = S.inc ⟨b - y, sub_mem hb hyB⟩ + ⟨y, S.B_le_A hyB⟩ :=
@@ -139,11 +136,9 @@ private theorem residue_eq_residueField_map_comp_res {O' C : Type} [CommRing O']
   ext z
   obtain ⟨a, ha⟩ := IsCO.res_surj (O := O') z
   have h1 : (res O' C) z = (res O' C) (algebraMap O' C a) := by
-    rw [← sub_eq_zero, ← map_sub, res_eq_zero_iff]
-    exact ha
+    rwa [← sub_eq_zero, ← map_sub, res_eq_zero_iff]
   have h2 : IsLocalRing.residue C z = IsLocalRing.residue C (algebraMap O' C a) := by
-    rw [← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]
-    exact ha
+    rwa [← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]
   rw [RingHom.comp_apply, RingHom.coe_coe, h1, h2, AlgHom.commutes]
   exact (IsLocalRing.ResidueField.map_residue _ a).symm
 
@@ -234,8 +229,7 @@ theorem UpperTheory.V.Fr.def_iso :
   have hgι : (g : L.R →+* C).comp (L.ι : S.A →+* L.R) = (ξ : S.A →+* C) := RingHom.ext hg
   refine ⟨g, ?_, fun g' hg' => huniq g' ?_⟩
   · show NRep.map ((g : L.R →+* C).comp (L.ι : S.A →+* L.R)) S.u = ρ
-    rw [hgι]
-    exact hξ
+    rwa [hgι]
   · let ξ' : S.A →ₐ[O] C := (g'.restrictScalars O).comp L.ι
     have h' : ξ' = ξ := by
       refine ext_A hF hn S C ξ' ξ ?_ ?_ hξx
@@ -248,8 +242,7 @@ theorem UpperTheory.V.Fr.def_iso :
         show g' (L.ι a) ∈ maximalIdeal C
         rw [← res_eq_zero_iff L.O' C, res_map]
         exact (res_eq_zero_iff L.O' L.R _).mpr hm
-    intro a
-    exact AlgHom.congr_fun h' a
+    exact fun a => AlgHom.congr_fun h' a
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.DefIso =====

@@ -108,8 +108,7 @@ theorem UpperTheory.V.Ws.H5.pairTw :
       P := fun i g => ?_
       Ord := fun v g h => ?_
       I := fun u g hg h => ?_ }, rfl, fun _ _ => rfl⟩
-  · simp only [pt_single]
-    exact pt_mul (pt_pow hγ.cont _) (p.cont i)
+  · simpa only [pt_single] using pt_mul (pt_pow hγ.cont _) (p.cont i)
   · rw [← p.red]
     refine GDet.ext fun B _ _ x => ?_
     letI : Algebra R B := ((algebraMap (ResidueField O) B).comp (res O R : R →+* ResidueField O)).toAlgebra
@@ -171,8 +170,7 @@ theorem UpperTheory.V.Ws.H5.twMapEx :
         (γ g : R) • (MonoidAlgebra.single g 1 : MonoidAlgebra R F.G₀) := by simp
     rw [h, lamSmul, min_eq_left hi]
   · have h1 := congrArg (fun χ : F.Gv v →* Rˣ => (χ g : R)) ((hf' v i).trans (hq' v i))
-    rw [← hp' v i] at h1
-    exact h1
+    rwa [← hp' v i] at h1
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.TwistedFourierKernels.TwMapEx =====

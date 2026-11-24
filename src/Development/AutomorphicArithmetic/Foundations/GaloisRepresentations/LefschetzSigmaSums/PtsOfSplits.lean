@@ -97,16 +97,13 @@ theorem UpperTheory.Gal.G3.pHopDeep :
       · simp [h0]
       · rw [X.pl_pl T (X.isAdmissibleIntegralBasisChange_one hn'n) (hadn _ h0), mul_one]
     · intro z hz
-      simp only [Set.mem_setOf_eq]
-      intro h0
-      exact hz (by simp [h0])
+      simpa only [Set.mem_setOf_eq] using fun h0 => hz (by simp [h0])
   constructor
   · obtain ⟨m, hmj, -, hS⟩ := X.deep j (hfin.toFinset.image fun z => (j, (Quotient.out z)⁻¹))
     refine ⟨m, hmj, fun g hg => ⟨hf.2.1 g hg, fun u hu => ?_⟩⟩
     obtain ⟨⟨h, hh⟩, hheq⟩ := QuotientGroup.mk_out_eq_mul (X.K j) g
     have hz : (g : G ⧸ X.K j) ∈ hfin.toFinset := by
-      rw [Set.Finite.mem_toFinset, Set.mem_setOf_eq, hheq, (hf.1 h hh g).2]
-      exact hg
+      rwa [Set.Finite.mem_toFinset, Set.mem_setOf_eq, hheq, (hf.1 h hh g).2]
     have hc := hS (j, (Quotient.out (g : G ⧸ X.K j))⁻¹) (Finset.mem_image_of_mem _ hz) u hu
     simp only [hheq] at hc
     have hmem := mul_mem (mul_mem hh hc) (inv_mem hh)
@@ -159,9 +156,7 @@ theorem UpperTheory.Gal.G3.pHopEx :
   have hsub : ∀ (w : G ⧸ X.K j → T.H (X.q m)),
       Function.support (fun z => f z.out • w z) ⊆ (S : Set (G ⧸ X.K j)) := by
     intro w z hz
-    simp only [S, Set.Finite.coe_toFinset, Set.mem_setOf_eq]
-    intro h0
-    exact hz (by simp [h0])
+    simpa only [S, Set.Finite.coe_toFinset, Set.mem_setOf_eq] using fun h0 => hz (by simp [h0])
   let Y : T.H (X.q j) →ₗ[R] T.H (X.q m) := ∑ z ∈ S, f z.out • X.pl T m j z.out⁻¹
   have hYS : ∀ x, Y x = ∑ z ∈ S, f z.out • X.pl T m j z.out⁻¹ x := by
     intro x
@@ -185,9 +180,7 @@ theorem UpperTheory.Gal.G3.pHopEx :
     have hsub2 : Function.support (fun z : G ⧸ X.K j => X.pl T m m k (f z.out • X.pl T m j z.out⁻¹ x))
         ⊆ (S : Set (G ⧸ X.K j)) := by
       intro z hz
-      simp only [S, Set.Finite.coe_toFinset, Set.mem_setOf_eq]
-      intro h0
-      exact hz (by simp [h0])
+      simpa only [S, Set.Finite.coe_toFinset, Set.mem_setOf_eq] using fun h0 => hz (by simp [h0])
 
     rw [hYS, map_sum, ← finsum_eq_sum_of_support_subset _ hsub2, ← hYS, hY]
     simp_rw [key]
@@ -204,8 +197,7 @@ theorem UpperTheory.Gal.G3.pHopEx :
     intro x
     have h := congrArg Subtype.val
       ((LinearEquiv.ofInjective (X.pl T m j 1) hinj).apply_symm_apply ⟨Y x, hrange x⟩)
-    rw [LinearEquiv.ofInjective_apply] at h
-    exact h
+    rwa [LinearEquiv.ofInjective_apply] at h
   have hex : ∃ A, X.IsHop T j f A := ⟨A, hiso A m hmj had (fun x => by rw [hA, hY])⟩
   have hh : X.IsHop T j f (X.hecke T j f) := by
     unfold Tower.hecke
@@ -228,9 +220,7 @@ universe u v
 private lemma supp_fin {B : Scheme.{0}} {G : Type} [Group G] (X : Tower B G) {R : Type} [Field R] (T : Th.{u} B R)
     {j m : X.ι} {f : G → R} (hf : X.IsFn j f) (x : T.H (X.q j)) :
     (Function.support fun y : G ⧸ X.K j => f y.out • X.pl T m j y.out⁻¹ x).Finite := by
-  refine hf.2.2.subset ?_
-  intro y hy h0
-  exact hy (by simp only [h0, zero_smul])
+  exact hf.2.2.subset (fun y hy h0 => hy (by simp only [h0, zero_smul]))
 
 theorem UpperTheory.Gal.G3.pHopLin :
     FnRing → HopDeep.{u} → HopEx.{u} → HopLin.{u} := by
@@ -323,8 +313,7 @@ private theorem sum_conv {G R : Type} {M : Type*} [Group G] [Field R] [AddCommGr
     refine Finset.mem_biUnion.2 ⟨y, hy, Finset.mem_image.2 ⟨((y.out⁻¹ * w.out : G) : G ⧸ K), ?_, ?_⟩⟩
     · obtain ⟨k, hk⟩ := QuotientGroup.mk_out_eq_mul K (y.out⁻¹ * w.out)
       simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq]
-      rw [hk, hf' _ k.2]
-      exact hw
+      rwa [hk, hf' _ k.2]
     · show ((y.out * (y.out⁻¹ * w.out) : G) : G ⧸ K) = w
       rw [mul_inv_cancel_left, QuotientGroup.out_eq']
   have hin : ∀ y ∈ sf.toFinset, ∑ᶠ w : G ⧸ K, f' (y.out⁻¹ * w.out) • Φ w.out =
@@ -336,16 +325,12 @@ private theorem sum_conv {G R : Type} {M : Type*} [Group G] [Field R] [AddCommGr
   have hc : ∀ w : G ⧸ K, conv K f f' w.out = ∑ y ∈ sf.toFinset, f y.out * f' (y.out⁻¹ * w.out) := by
     intro w
     refine finsum_eq_sum_of_support_subset _ fun y hy => ?_
-    simp only [Set.Finite.coe_toFinset, Set.mem_setOf_eq]
-    intro h
-    exact hy (by simp [h])
+    simpa only [Set.Finite.coe_toFinset, Set.mem_setOf_eq] using fun h => hy (by simp [h])
   have hl : ∑ᶠ y : G ⧸ K, f y.out • ∑ᶠ z : G ⧸ K, f' z.out • Φ (y.out * z.out) =
       ∑ y ∈ sf.toFinset, f y.out • ∑ᶠ w : G ⧸ K, f' (y.out⁻¹ * w.out) • Φ w.out := by
     refine (finsum_congr fun y => by rw [sum_translate K f' Φ hf' hΦ y.out]).trans ?_
     refine finsum_eq_sum_of_support_subset _ fun y hy => ?_
-    simp only [Set.Finite.coe_toFinset, Set.mem_setOf_eq]
-    intro h
-    exact hy (by simp [h])
+    simpa only [Set.Finite.coe_toFinset, Set.mem_setOf_eq] using fun h => hy (by simp [h])
   have hs : Function.support (fun w : G ⧸ K => conv K f f' w.out • Φ w.out) ⊆ (Tw : Set (G ⧸ K)) := by
     intro w hw
     have h0 : conv K f f' w.out ≠ 0 := fun h => hw (by simp [h])
@@ -357,8 +342,7 @@ private theorem sum_conv {G R : Type} {M : Type*} [Group G] [Field R] [AddCommGr
       = ∑ y ∈ sf.toFinset, f y.out • ∑ w ∈ Tw, f' (y.out⁻¹ * w.out) • Φ w.out :=
         Finset.sum_congr rfl fun y hy => by rw [hin y hy]
     _ = ∑ w ∈ Tw, (∑ y ∈ sf.toFinset, f y.out * f' (y.out⁻¹ * w.out)) • Φ w.out := by
-        simp only [Finset.smul_sum, Finset.sum_smul, mul_smul]
-        exact Finset.sum_comm
+        simpa only [Finset.smul_sum, Finset.sum_smul, mul_smul] using Finset.sum_comm
     _ = ∑ w ∈ Tw, conv K f f' w.out • Φ w.out :=
         Finset.sum_congr rfl fun w _ => by rw [hc w]
 
@@ -678,12 +662,9 @@ theorem twGal : TwGal := pTwGal twSplit
 theorem plInv : PlInv.{0} := pPlInv pGalInv twGal
 theorem hopDeep : HopDeep.{0} := pHopDeep plInv
 theorem hopEx : HopEx.{0} := pHopEx plInv hopDeep
-theorem hopLin : HopLin.{0} := by
-  exact pHopLin _root_.UpperTheory.Gal.G3.pFnRing hopDeep hopEx
-theorem hopMul : HopMul.{0} := by
-  exact pHopMul _root_.UpperTheory.Gal.G3.pFnRing hopDeep hopEx
-theorem hopOp : HopOp.{0} := by
-  exact pHopOp _root_.UpperTheory.Gal.G3.pFnRing hopEx twSplit twGal
+theorem hopLin : HopLin.{0} := pHopLin _root_.UpperTheory.Gal.G3.pFnRing hopDeep hopEx
+theorem hopMul : HopMul.{0} := pHopMul _root_.UpperTheory.Gal.G3.pFnRing hopDeep hopEx
+theorem hopOp : HopOp.{0} := pHopOp _root_.UpperTheory.Gal.G3.pFnRing hopEx twSplit twGal
 theorem hodgeTr : HodgeTr := by
   exact pHodgeTr (pHodgeFun _root_.UpperTheory.Gal.G3.pPtsOfSplits (pAlgSplit (pAlgIsoPts pIsoPts)) pAlgTr)
 theorem hodgeGood : HodgeGood := pHodgeGood hodgeTr pHodgeInj

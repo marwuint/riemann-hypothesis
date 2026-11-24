@@ -208,14 +208,12 @@ theorem UpperTheory.V.Ws.Gys.ob :
     rw [hr, hx0, hy0, hz0]
     simpa [uQ_zero] using Matrix.isDiag_diagonal (fun i => a ↑(Φ.χ i Φ.g0))
   case low =>
-    intro v
-    exact isLow_uQ _ _ _
+    exact fun v => isLow_uQ _ _ _
   case flag =>
     intro v s hs
     dsimp only
     rw [hconj v s hs]
-    intro i j hij
-    exact Matrix.diagonal_apply_ne _ hij.ne'
+    exact fun i j hij => Matrix.diagonal_apply_ne _ hij.ne'
   case mu =>
     intro v s hs i
     obtain ⟨hg, h1⟩ := hMu v s hs
@@ -240,19 +238,16 @@ theorem UpperTheory.V.Ws.Gys.ob :
       rw [hr]
       exact UpperTheory.V.Ws.Gys.suppM_mono (by decide)
         (UpperTheory.V.Ws.Gys.suppM_mul (suppM_uQ _ _ _) _)
-    · intro v
-      exact suppM_uQ _ _ _
+    · exact fun v => suppM_uQ _ _ _
   case cont =>
-    intro i j N
-    exact (hlc i j).comp _
+    exact fun i j N => (hlc i j).comp _
   case inn =>
     constructor
     · intro g
       show SuppM qQ (r g)
       rw [hr]
       exact UpperTheory.V.Ws.Gys.suppM_mul (suppM_uQ _ _ _) _
-    · intro v
-      exact suppM_uQ _ _ _
+    · exact fun v => suppM_uQ _ _ _
   case e1 =>
     intro g
     show r g 1 0 = _

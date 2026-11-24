@@ -151,8 +151,7 @@ private theorem card_points {V A : Over Y} [IsFinite V.hom] [Etale V.hom] (j : V
   rw [← hcard]
   refine Nat.card_eq_of_bijective (fun v => ⟨Over.homMk v.1 v.2 ≫ j, h1 _⟩) ⟨?_, ?_⟩
   · intro v v' hvv
-    have h := hj _ _ (congrArg Subtype.val hvv)
-    exact Subtype.ext (congrArg (fun m => m.left) h)
+    exact Subtype.ext (congrArg (fun m => m.left) (hj _ _ (congrArg Subtype.val hvv)))
   · rintro ⟨g, hg⟩
     obtain ⟨h', hh'⟩ := h2 g hg
     refine ⟨⟨h'.left, Over.w h'⟩, Subtype.ext ?_⟩
@@ -194,8 +193,7 @@ private theorem exists_count_scheme (o : Obj b N s) {B : Over Y} [GrpObj B] (hB 
   · intro T g hg
     obtain ⟨y, hy, -⟩ := existsUnique_torsion o.A c g (hkill g hg.1)
     have hPy : y ≫ (torsion.ι o.A c ≫ ψ) = 1 ∧ KilledBy o w (y ≫ torsion.ι o.A c) := by
-      rw [← Category.assoc, hy]
-      exact hg
+      rwa [← Category.assoc, hy]
     obtain ⟨h', hh'⟩ := (hVi T y).mp ((hUiff T y).mp hPy)
     exact ⟨h', by rw [← Category.assoc, hh', hy]⟩
 
@@ -222,8 +220,7 @@ private theorem exists_killed_locus (o : Obj b N s) {B : Over Y} [GrpObj B] (hB 
       (∃ e : ℕ, KilledBy o (uIdeal D r ^ e) (z ≫ torsion.ι o.A c)) ↔
         KilledBy o (uIdeal D r ^ E) (z ≫ torsion.ι o.A c) := by
     intro T z
-    simp only [killedBy_iff]
-    exact ⟨fun ⟨e, he⟩ => hE _ (hcann z) e he, fun h => ⟨E, h⟩⟩
+    simpa only [killedBy_iff] using ⟨fun ⟨e, he⟩ => hE _ (hcann z) e he, fun h => ⟨E, h⟩⟩
   have hψc : (torsion.ι o.A c ≫ ψ) ^ c = 1 := by
     rw [← MonObj.pow_comp, torsionι_pow_eq_one, MonObj.one_comp]
   have hP : ClopenCond (torsion o.A c) fun _ z =>
@@ -293,5 +290,4 @@ theorem UpperTheory.Cb.exists_clopen_locus_of_annihilator :
       rw [hq]
     refine ⟨(hW1 k (a ≫ t)).mpr hkil ⟨q, hz⟩, ?_⟩
     show V.hom.finrank (t.base z) = _
-    rw [← hz, hV k (a ≫ t) q]
-    exact hcnt
+    rwa [← hz, hV k (a ≫ t) q]

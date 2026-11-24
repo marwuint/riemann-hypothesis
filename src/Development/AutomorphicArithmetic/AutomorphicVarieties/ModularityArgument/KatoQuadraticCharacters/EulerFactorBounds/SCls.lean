@@ -73,28 +73,22 @@ theorem sCls : SCls := by
   · intro f f' a a' ha ha'
     refine ⟨?_, ?_⟩
     · show (AdicCompletion.eval (idl l) (X.Kl l) n) (a + a') = X.cls l n (f * f')
-      rw [map_add (f := _), hmul]
-      rw [ha, ha']
+      rw [map_add (f := _), hmul, ha, ha']
     · show (AdicCompletion.eval (idl l) (X.Kl l) n) (a - a') = X.cls l n (f / f')
-      rw [map_sub, hdiv]
-      rw [ha, ha']
+      rw [map_sub, hdiv, ha, ha']
   · intro f a k ha
     show (AdicCompletion.eval (idl l) (X.Kl l) n) (k • a) = X.cls l n (f ^ k)
-    rw [map_nsmul, hpow]
-    rw [ha]
+    rw [map_nsmul, hpow, ha]
   · intro f f' a a' ha ha' hc
     obtain ⟨g, hg⟩ := hc
-    rw [map_sub]
-    rw [ha, ha', (hinj f f').2 ⟨g, hg⟩, sub_self]
+    rw [map_sub, ha, ha', (hinj f f').2 ⟨g, hg⟩, sub_self]
   · intro φ f a ha
     exact hmap φ a f ha
-  · intro f a ha
-    exact hsucc a f ha
+  · exact fun f a ha => hsucc a f ha
   · intro f k a ha
     refine ⟨((PadicInt.toZModPow n) k).val, ?_⟩
     show (AdicCompletion.eval (idl l) (X.Kl l) n) (k • a) = X.cls l n (f ^ ((PadicInt.toZModPow n) k).val)
-    rw [map_smul]
-    rw [ha, hsmul]
+    rw [map_smul, ha, hsmul]
 
 end UpperTheory.V.Z.Kato.Nb
 

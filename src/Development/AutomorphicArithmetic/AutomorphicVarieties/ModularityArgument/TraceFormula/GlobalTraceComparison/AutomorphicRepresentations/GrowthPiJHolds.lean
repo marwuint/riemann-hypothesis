@@ -292,8 +292,7 @@ private theorem point_bound {E : Type} [Field E] [NumberField E] [IsCMField E] {
       _ = C * c₁ ^ (2 * M) * ((1 + r) ^ (2 * M) * Real.exp (-r)) * (1 + R) ^ (2 * M) * Real.exp (-(L * ρ)) := by ring
       _ ≤ C * c₁ ^ (2 * M) * K * (1 + R) ^ (2 * M) * Real.exp (-(L * ρ)) := by
           gcongr
-  rw [hz, ← div_eq_mul_inv, le_div_iff₀ hwpos]
-  exact hmain
+  rwa [hz, ← div_eq_mul_inv, le_div_iff₀ hwpos]
 
 theorem domInt_pf : Basic → Sizes → DomInt := by
   intro hB hS E _ _ _ n hn D π hθ ψ hψ Ω hΩ
@@ -420,8 +419,7 @@ theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.finFac_pf :
     have hy : ldet (ac E n (-ldet ((g, 1) : H E n 0)) * ((g, 1) : H E n 0)) = 0 := by
       rw [hmul, hl]; ring
     have h0 := h ⟨_, hy⟩
-    have h1 := s.fix.1 ψ.1 ψ.2 (-ldet ((g, 1) : H E n 0) / (n * Module.finrank ℚ E)) g
-    exact h1.symm.trans h0
+    exact (s.fix.1 ψ.1 ψ.2 (-ldet ((g, 1) : H E n 0) / (n * Module.finrank ℚ E)) g).symm.trans h0
   haveI : FiniteDimensional ℂ W := hWf
   obtain ⟨d, xs, ws, hw, hrep⟩ := hE {x : H E n 0 // ldet x = 0} s.π.V (fun x => evAt s.π x.1) sep
     (LinearMap.range (Submodule.inclusion hWV)) inferInstance
@@ -587,8 +585,7 @@ private theorem cnt_le_sq {G : Type} [Group G] (Γ : Subgroup G) (Ω : Set G) (x
       have h2 := ENNReal.le_tsum (f := fun γ : Γ => Ω.indicator (1 : G → ℝ≥0∞) (x⁻¹ * (γ : G) * x)) γ
       have h3 : Ω.indicator (1 : G → ℝ≥0∞) (x⁻¹ * (γ : G) * x) = 1 := by
         rw [Set.indicator_of_mem hγ]; rfl
-      rw [h3] at h2
-      exact h2
+      rwa [h3] at h2
     rw [sq]
     exact le_mul_of_one_le_left zero_le h1
   · have h0 : cnt Γ Ω x = 0 := by
@@ -624,8 +621,7 @@ private theorem norm_part_le {V : Type} [NormedAddCommGroup V] [InnerProductSpac
 private theorem le_ofReal_sqrt {e : ℝ≥0∞} {r : ℝ} (hr : 0 ≤ r) (h : e ^ 2 ≤ ENNReal.ofReal r) :
     e ≤ ENNReal.ofReal (Real.sqrt r) := by
   refine (ENNReal.pow_le_pow_left_iff two_ne_zero).1 ?_
-  rw [← ENNReal.ofReal_pow (Real.sqrt_nonneg r), Real.sq_sqrt hr]
-  exact h
+  rwa [← ENNReal.ofReal_pow (Real.sqrt_nonneg r), Real.sq_sqrt hr]
 
 private theorem enorm_inner_le {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (a b : V) (T U : V →L[ℂ] V) (hT : ‖T‖ ≤ ‖U‖) (P Q : ℝ) (hP : 0 ≤ P) (hQ : 0 ≤ Q) (c : ℝ≥0∞)
@@ -703,8 +699,7 @@ private theorem deg_finrank_zero {E : Type} [Field E] [NumberField E] [IsCMField
 open NumberField PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.E GlobalTheory.CuspRep GlobalTheory.UnitaryBC in
 private theorem logSize_inv' {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (h : GA E n) :
     logSize (h⁻¹ : GA E n) = logSize h := by
-  simp only [logSize, inv_inv]
-  exact add_comm _ _
+  simpa only [logSize, inv_inv] using add_comm _ _
 
 open NumberField PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.E GlobalTheory.CuspRep GlobalTheory.UnitaryBC in
 private theorem tau_le_prof {n k : ℕ} {τ : ℝ} (hτ : 0 ≤ τ) (h1 : 1 ≤ k) (hk : k ≤ n) : τ ≤ prof n τ k := by
@@ -786,8 +781,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {ι : Type
 
 private theorem op_unique {D : Dom E n 0} {Φ : Matrix ι ι (H E n 0 → ℂ)}
     {T T' : Hs (ι := ι) D →L[ℂ] Hs (ι := ι) D} (h : IsROp D Φ T) (h' : IsROp D Φ T') : T = T' := by
-  refine ContinuousLinearMap.ext fun f => PiLp.ext fun i => ?_
-  exact Lp.ext ((h f i).trans (h' f i).symm)
+  exact ContinuousLinearMap.ext fun f => PiLp.ext fun i => Lp.ext ((h f i).trans (h' f i).symm)
 
 private theorem isTestM_adjM {Φ : Matrix ι ι (H E n 0 → ℂ)} (hΦ : IsTestM Φ) : IsTestM (adjM Φ) := by
   intro i j
@@ -935,8 +929,7 @@ theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.pDiag_pf :
   refine Submodule.eq_starProjection_of_mem_orthogonal (vecM_mem π c hmem) ?_
   rw [← vecM_sub]
   refine vecM_orth π c ?_
-  rw [vecM_sub, vecM_unit]
-  exact horth
+  rwa [vecM_sub, vecM_unit]
 
 end
 end -- clump:auto
@@ -1526,8 +1519,7 @@ theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.uncutOf_pf :
       { toFun := fun ψ => ψ.1.1 g, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }
     have h3 : (∑ b, e b (L v) • w b).1.1 g = ev (∑ b, e b (L v) • w b) := rfl
 
-    rw [h3, map_sum]
-    exact h2
+    rwa [h3, map_sum]
   have htr := hT π.V p.B L w e hspan
   refine ⟨?_, ?_⟩
   · rw [hsum]
@@ -1566,8 +1558,7 @@ private theorem tst_trM (D : Dom E n 0) {ι : Type} [Fintype ι] {Φ : Matrix ι
     funext y
     rw [Fintype.sum_prod_type]
     rfl
-  rw [e]
-  exact h
+  rwa [e]
 
 private theorem cusp_projection_self (D : Dom E n 0) (π : CuspSub E n) {ψ : Sm E n} (hψ : ψ ∈ π.V) {w : ℝ → ℂ}
     (hw : Continuous w) (hws : HasCompactSupport w) (v : Lp ℂ 2 D.ν)

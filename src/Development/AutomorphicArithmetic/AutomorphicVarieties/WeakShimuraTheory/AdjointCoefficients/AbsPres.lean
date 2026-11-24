@@ -167,8 +167,7 @@ theorem UpperTheory.V.Ws.X1.coneTan :
           ρ (loc v s) (X - P v X) - (X - P v X) := by
         rw [map_sub]; abel
       simp only
-      rw [e]
-      exact h2
+      rwa [e]
     · simp [hPn]
   let f : W →ₗ[k] S :=
     { toFun := fun X => ⟨_, fmem X⟩
@@ -493,9 +492,7 @@ private theorem cont_conj {Γ A : Type} [TopologicalSpace Γ] [CommRing A] (I : 
     intro g0
     have hev : ∀ᶠ g in nhds g0, ∀ k m,
         Ideal.Quotient.mk (I ^ N) (f g k m) = Ideal.Quotient.mk (I ^ N) (f g0 k m) := by
-      simp only [Filter.eventually_all]
-      intro k m
-      exact (h k m N).eventually_eq g0
+      simpa only [Filter.eventually_all] using fun k m => (h k m N).eventually_eq g0
     filter_upwards [hev] with g hg
     funext k m
     exact hg k m
@@ -512,8 +509,7 @@ theorem UpperTheory.V.Ws.X1.sect :
   obtain ⟨r', n', hWP, hcont, hr', hn'⟩ := hW
   have hPair := hDef.1.pair
   have hmapmul : ∀ X Y : M4 A, Matrix.map (X * Y) p = Matrix.map X p * Matrix.map Y p := by
-    intro X Y
-    exact Matrix.map_mul (f := (p : A →+* R))
+    exact fun X Y => Matrix.map_mul (f := (p : A →+* R))
   have hrπ : ∀ g, Matrix.map (r' (π g)) p = P.r g := by
     intro g
     rw [hr', ← hr]
@@ -560,8 +556,7 @@ theorem UpperTheory.V.Ws.X1.sect :
       Matrix.map m p = Matrix.map (adj u * n' v) p ∧ m = adj u * n' v * b := by
     intro v
     refine X1.lowLift p hsurj hker (adj u * n' v) ?_ ?_
-    · have h := (grp A).2.2.2.2.2.2.2.1 1 1 (adj u) (n' v) hadjGSp (hWP.sp v)
-      simpa using h
+    · simpa using (grp A).2.2.2.2.2.2.2.1 1 1 (adj u) (n' v) hadjGSp (hWP.sp v)
     · rw [hmapmul, hmapadj, one_mul, hn']
       exact hPair.low v
   choose m b hm using hlow
@@ -591,8 +586,7 @@ theorem UpperTheory.V.Ws.X1.sect :
       change IsGSp (algebraMap Λ A (a (Φ.ν g))) (adj u * r' (π g) * u)
       rw [← hν g]
       have h1 : IsGSp (algebraMap Λ A (ν (π g))) (r' (π g)) := hWP.mult (π g)
-      have h2 := (grp A).2.2.2.2.2.2.2.1 _ _ _ _ ((grp A).2.2.2.2.2.2.2.1 _ _ _ _ hadjGSp h1) hu1
-      simpa using h2
+      simpa using (grp A).2.2.2.2.2.2.2.1 _ _ _ _ ((grp A).2.2.2.2.2.2.2.1 _ _ _ _ hadjGSp h1) hu1
     · intro g hg
       have hπg : π g = 1 := by
         rw [← MonoidHom.mem_ker, hQuo.ker]
@@ -600,8 +594,7 @@ theorem UpperTheory.V.Ws.X1.sect :
       change adj u * r' (π g) * u = 1
       rw [hπg, map_one, mul_one, huadj]
     · exact hudiag
-    · intro v
-      exact (hm v).1
+    · exact fun v => (hm v).1
     · intro v s hs
       change IsUp (adj (m v) * (adj u * r' (π s) * u) * m v)
       have hfl : IsUp (adj (n' v) * r' (π s) * n' v) := hWP.flag v ⟨s, hs⟩
@@ -794,8 +787,7 @@ private theorem lc_mat {Γ k : Type} [TopologicalSpace Γ] {f : Γ → M4 k} (h 
   intro x
   have hev : ∀ᶠ y in nhds x, ∀ i j, f y i j = f x i j := by
     simp only [Filter.eventually_all]
-    intro i j
-    exact (IsLocallyConstant.iff_eventually_eq _).mp (h i j) x
+    exact fun i j => (IsLocallyConstant.iff_eventually_eq _).mp (h i j) x
   filter_upwards [hev] with y hy
   ext i j
   exact hy i j
@@ -833,9 +825,7 @@ theorem UpperTheory.V.Ws.X1.tanInj :
         rw [← MonoidHom.mem_ker, hquo.ker]
         exact Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure hg)
       have h0 : (x.1.1 1).1 = 0 := by
-        have h11 := hcoc x 1 1
-        simp only [mul_one, inv_one, map_one, one_mul, left_eq_add] at h11
-        exact h11
+        simpa only [mul_one, inv_one, map_one, one_mul, left_eq_add] using hcoc x 1 1
       rw [hr', ← hrbg, hπ, h0, zero_mul, map_one, dm_one]
     · rw [hr']
       intro i j hij
@@ -855,8 +845,7 @@ theorem UpperTheory.V.Ws.X1.tanInj :
       have hZ3 := hZ.2.2 v ⟨s, hs⟩
       have hr1 : rb (π s)⁻¹ * c.r s = 1 := by rw [← hrbg, ← map_mul, inv_mul_cancel, map_one]
       have h2 : IsUp (adj (c.n v) * ((x.1.1 (π s)).1 - (c.r s * (x.1.2 v).1 * rb (π s)⁻¹ - (x.1.2 v).1)) * c.n v) := by
-        rw [← hrbg s]
-        exact hZ3
+        rwa [← hrbg s]
       exact dm_flag (hc.pair.low v).1 (x.1.2 v).2 hr1 (hc.pair.flag v s hs) h2
     · intro v s hs
       rw [hmu v] at hs
@@ -872,8 +861,7 @@ theorem UpperTheory.V.Ws.X1.tanInj :
       have hall := IsLocallyConstant.comp₂ hcr hX
         (fun A B => Ideal.Quotient.mk ((maximalIdeal (DualNumber (ResidueField Λ))) ^ N) (dm A (B * A) i j))
       show IsLocallyConstant fun g => Ideal.Quotient.mk _ ((P' x).r g i j)
-      simp only [hr']
-      exact hall
+      simpa only [hr'] using hall
     · apply PD.ext
       · ext g i j
         show res Λ _ ((P' x).r g i j) = c.r g i j

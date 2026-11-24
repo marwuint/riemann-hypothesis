@@ -249,8 +249,7 @@ private theorem map_centralSection {F E : Type} [Field F] [NumberField F] [Field
   obtain ⟨s, rfl⟩ := exists_pow_eq (Module.finrank F E) Module.finrank_pos.ne' t
   have h := UpperTheory.centralSection_baseChange F E n s
   rw [← h]
-  refine Units.ext (Matrix.ext fun i j => ?_)
-  exact galAd_adeleMap σ _
+  exact Units.ext (Matrix.ext fun i j => galAd_adeleMap σ _)
 
 theorem UpperTheory.galTwist_finProj_eq_of_galAd_finEmb_eq :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E] (σ : E ≃ₐ[F] E) (n : ℕ), 0 < n →
@@ -263,8 +262,7 @@ theorem UpperTheory.galTwist_finProj_eq_of_galAd_finEmb_eq :
   set s := detModule E n (finEmb E n h) with hs
   have hmem : finEmb E n h' * (centralSection E n s)⁻¹ ∈ normOneGL (K := E) (n := n) := by
     have h1 := (θ.e (MultiplicityOne.finProj E n h)).2
-    rw [hθ, MultiplicityOne.coe_finProj, map_mul, map_inv, hh, map_centralSection] at h1
-    exact h1
+    rwa [hθ, MultiplicityOne.coe_finProj, map_mul, map_inv, hh, map_centralSection] at h1
   have hd : detModule E n (finEmb E n h') = s := by
     have h2 := (mem_normOneGL_iff_detModule).1 hmem
     rw [map_mul, map_inv, detModule_centralSection hn] at h2
@@ -330,8 +328,7 @@ private theorem cosets {G G' : Type} [Group G] [Group G'] (s : G ≃* G') (J : S
     · rintro ⟨i, rfl⟩
       have : (QuotientGroup.mk (i.1.out) : G ⧸ J) ∈ S := by rw [hout]; exact i.2
       exact this
-    · intro hc
-      exact ⟨⟨c, hc⟩, hout ⟨c, hc⟩⟩
+    · exact fun hc => ⟨⟨c, hc⟩, hout ⟨c, hc⟩⟩
   · intro a b h
     apply Subtype.ext
     have h' := (mk_iff s J J' hJ _ _).1 h
@@ -343,15 +340,13 @@ private theorem cosets {G G' : Type} [Group G] [Group G'] (s : G ≃* G') (J : S
       refine ⟨s k, (hJ k).1 hk, ?_⟩
       have h1 : (QuotientGroup.mk (i.1.out) : G ⧸ J) = QuotientGroup.mk (k * x) := (hout i).trans e
       have h2 := (mk_iff s J J' hJ _ _).2 h1
-      rw [map_mul] at h2
-      exact h2
+      rwa [map_mul] at h2
     · rintro ⟨k, hk, rfl⟩
       have hk0 : s.symm k ∈ J := (hJ _).2 (by simpa using hk)
       have hc : (QuotientGroup.mk (s.symm k * x) : G ⧸ J) ∈ S := ⟨_, hk0, rfl⟩
       refine ⟨⟨_, hc⟩, ?_⟩
       have h2 := (mk_iff s J J' hJ _ _).2 (hout ⟨_, hc⟩)
-      rw [map_mul, MulEquiv.apply_symm_apply] at h2
-      exact h2
+      rwa [map_mul, MulEquiv.apply_symm_apply] at h2
 
 private theorem cosets_eq {G : Type} [Group G] (J : Subgroup G) (a b x : G) (ha : a ∈ J) (hb : b ∈ J) :
     {c : G ⧸ J | ∃ k ∈ J, c = QuotientGroup.mk (k * (a * x * b))} =

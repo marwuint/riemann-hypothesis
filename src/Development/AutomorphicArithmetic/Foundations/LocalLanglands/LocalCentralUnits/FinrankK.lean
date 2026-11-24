@@ -124,8 +124,7 @@ theorem UpperTheory.Zero.LLC.resEx :
       rw [hRR t t' e]
       refine hone t' (PositivityTheory.LocalParametersCuspidal.DZC.wild_to_unitsOne D.a' D.ha' (ineIncl D.h' t') ⟨t'.2, fun x hx => ?_⟩)
       have := hw.2 x hx
-      rw [e] at this
-      exact this
+      rwa [e] at this
     have hq : normV w = g := normV_eq_of_padic w g i hi
     refine ⟨hn, hq, finrank_K D hn, ?_, ?_, hwild, ?_⟩
     · intro z
@@ -160,8 +159,7 @@ theorem UpperTheory.Zero.LLC.resEx :
         rw [IntermediateField.mem_fixingSubgroup_iff]
         intro x hx
         have := (IntermediateField.mem_fixingSubgroup_iff _ _).1 ht x hx
-        rw [show (Ine (F := E) A).subtype t = (t : G E Ω) from rfl, e] at this
-        exact this
+        rwa [show (Ine (F := E) A).subtype t = (t : G E Ω) from rfl, e] at this
       have hm : t' ∈ (fun τ : Ine (F := D.E') A => D.a' (ineIncl D.h' τ)) ⁻¹' U := hOs (hLO hfix)
       show R t = 1
       rw [hRR t t' e]
@@ -173,7 +171,6 @@ theorem UpperTheory.Zero.LLC.resEx :
         Subtype.ext (congrArg Subtype.val hc).symm
       rw [e] at hW
       have := hwild _ hW
-      rw [map_mul, map_inv, map_pow, mul_inv_eq_one] at this
-      exact this
+      rwa [map_mul, map_inv, map_pow, mul_inv_eq_one] at this
 
 end

@@ -100,19 +100,14 @@ private theorem ld_ok (hF : F.Ok C₀) (hB : F.Big C₀) {S : Space O F 2} {M : 
     (h1 : P1' S M) {x : Ideal S.A} (hx : ¬ S.u.triP ≤ x) (L : S.Loc x) : (ld M L).Ok := by
   obtain ⟨hc, ht⟩ := sharp2 hF S x L hB hx
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · intro P Q h hP
-    exact le_trans hP (Ideal.comap_mono (Ideal.comap_mono h))
-  · intro P Q h hQ
-    exact ti_down _ h hQ
-  · intro p hp
-    exact Or.inl ⟨hp.off, fun a => absurd a (by decide)⟩
+  · exact fun P Q h hP => le_trans hP (Ideal.comap_mono (Ideal.comap_mono h))
+  · exact fun P Q h hQ => ti_down _ h hQ
+  · exact fun p hp => Or.inl ⟨hp.off, fun a => absurd a (by decide)⟩
   · intro I hI hd
     obtain ⟨p, hp, hle⟩ := exists_nice_prime_above_of_large_dim l O F C₀ 2 hF hB (Or.inl rfl) S x L hx M hM I.asIdeal hI hd
     exact ⟨⟨p, hp.prime⟩, hp, hle⟩
-  · intro e he
-    exact absurd he (Set.notMem_empty _)
-  · intro P _ hP
-    exact hP
+  · exact fun e he => absurd he (Set.notMem_empty _)
+  · exact fun P _ hP => hP
   · intro P Q hP hQ
     have key : ∀ q : Ideal L.R, Relation.ReflTransGen
         (fun P Q => P ∈ (⊥ : Ideal L.R).minimalPrimes ∧ Q ∈ (⊥ : Ideal L.R).minimalPrimes ∧
@@ -128,12 +123,9 @@ private theorem ld_ok (hF : F.Ok C₀) (hB : F.Big C₀) {S : Space O F 2} {M : 
         subst hQ
         exact (ih ⟨b, hbc.1.1.1⟩ rfl).tail hbc
     exact key _ (hc.2 _ hP _ hQ) Q rfl
-  · intro P hP
-    exact Or.inl (ht _ hP)
-  · intro p hp hI hG P hP
-    exact h1 x L p.asIdeal hp hI hG P.asIdeal P.2 hP
-  · intro p _ he
-    exact absurd he (Set.notMem_empty _)
+  · exact fun P hP => Or.inl (ht _ hP)
+  · exact fun p hp hI hG P hP => h1 x L p.asIdeal hp hI hG P.asIdeal P.2 hP
+  · exact fun p _ he => absurd he (Set.notMem_empty _)
 
 private theorem ti_open (S : Space O F 2) (M : Ideal S.B) : IsOpen (gd S M).TI := by
   have : (gd S M).TI = (PrimeSpectrum.zeroLocus (S.u.triP : Set S.A))ᶜ ∩
@@ -205,5 +197,4 @@ theorem UpperTheory.V.Pr.components_good_rank_two :
       show ((2 * F.d + 1 : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (L.R ⧸ P)
       rw [hdim, show ringKrullDim (S.B ⧸ Z) = _ from hd]
       exact_mod_cast (by omega : 2 * F.d + 1 ≤ 1 + 2 * F.d + 1)
-  intro p hp hI
-  exact globProp _ (gd S M) hok (a := ⟨p, hp⟩) hI
+  exact fun p hp hI => globProp _ (gd S M) hok (a := ⟨p, hp⟩) hI

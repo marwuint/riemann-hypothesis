@@ -56,8 +56,7 @@ private theorem fac_conj {Ω : Type} [Field Ω] [CharZero Ω] (l : ℕ) (A : Val
     rw [ValuationSubring.mem_comap]
     rfl
   refine ⟨A.comap (σ : Ω →+* Ω), ?_, ?_⟩
-  · rw [← val_lt_one hA (l : Ω), map_natCast]
-    exact hl
+  · rwa [← val_lt_one hA (l : Ω), map_natCast]
   · have hc := conjGal_mem_Ine h hA hx
     convert hc using 1
     ext z
@@ -75,8 +74,7 @@ theorem UpperTheory.exists_frame_factorization_of_trivial_on_inertia :
     { toFun := k.p0
       map_one' := by
         apply Subtype.ext
-        rw [hq]
-        rw [show (⟨galEmb ℚ L Ω 1, hmem 1⟩ : upl Ω L) = 1 from Subtype.ext (map_one _), map_one]
+        rw [hq, show (⟨galEmb ℚ L Ω 1, hmem 1⟩ : upl Ω L) = 1 from Subtype.ext (map_one _), map_one]
         rfl
       map_mul' := fun s t => by
         apply Subtype.ext
@@ -97,9 +95,7 @@ theorem UpperTheory.exists_frame_factorization_of_trivial_on_inertia :
     rw [hqv, ← hu]
     exact congrArg k.p (Subtype.ext hs)
   have hgc : Continuous (galEmb ℚ L Ω) := (galEmbTop ℚ L Ω).1.continuous
-  have hqc : Continuous q := by
-    refine continuous_induced_rng.2 ?_
-    exact k.p_cont.comp (hgc.subtype_mk hmem)
+  have hqc : Continuous q := continuous_induced_rng.2 (k.p_cont.comp (hgc.subtype_mk hmem))
   have hinj : Function.Injective (galEmb ℚ L Ω) := (galEmbTop ℚ L Ω).1.injective
   have hker : ∀ s, q s = 1 → r s = 1 := by
     intro s hs
@@ -147,14 +143,11 @@ theorem UpperTheory.exists_frame_factorization_of_trivial_on_inertia :
       show r t = 1
       refine hine A' hA'l t ?_ ?_
       · show galEmb ℚ L Ω t ∈ Ine (F := ℚ) A'
-        rw [ht]
-        exact hcI
-      · rw [ht]
-        exact hΨ
+        rwa [ht]
+      · rwa [ht]
     have h2 := (Subgroup.topologicalClosure_minimal _ hX hcl) h1
     obtain ⟨t, ht, hts⟩ := h2
-    rw [hinj hts] at ht
-    exact ht
+    rwa [hinj hts] at ht
   have hle : q.ker ≤ r.ker := fun s hs => hker s hs
   let e := QuotientGroup.quotientKerEquivOfSurjective q hqs
   let r' : Φ.G0 →* GL (Fin n) (Qbar l) := (QuotientGroup.lift q.ker r hle).comp e.symm.toMonoidHom
@@ -190,9 +183,7 @@ theorem UpperTheory.exists_frame_factorization_of_trivial_on_inertia :
     rw [hqv, hqv, ← hσc, ← map_inv, ← map_mul, ← map_mul]
     apply congrArg k.p
     apply Subtype.ext
-    simp only [Subgroup.coe_mul, Subgroup.coe_inv]
-    exact hs'.symm
+    simpa only [Subgroup.coe_mul, Subgroup.coe_inv] using hs'.symm
   rw [hconj, hr'q, hr'q]
   have h := hP s s' hs'
-  rw [MonoidHom.one_apply, Units.val_one, one_smul] at h
-  exact h
+  rwa [MonoidHom.one_apply, Units.val_one, one_smul] at h

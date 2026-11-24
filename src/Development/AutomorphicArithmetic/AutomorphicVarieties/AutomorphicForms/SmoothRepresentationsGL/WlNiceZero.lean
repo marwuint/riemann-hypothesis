@@ -63,8 +63,7 @@ private theorem wl_nice_add {f f' : GA E n → ℂ} (h : Nice f) (h' : Nice f') 
     exact ⟨C + C', fun g => (norm_add_le _ _).trans (add_le_add (hC g) (hC' g))⟩
   · intro r a b g
     have e := constantTerm_add (r := r) h.cont h'.cont g
-    rw [h.cusp r a b g, h'.cusp r a b g, add_zero] at e
-    exact e
+    rwa [h.cusp r a b g, h'.cusp r a b g, add_zero] at e
   · obtain ⟨V, hV⟩ := h.level
     obtain ⟨V', hV'⟩ := h'.level
     refine ⟨V ⊓ V', fun g v hv => ?_⟩
@@ -79,8 +78,7 @@ private theorem wl_nice_smul {f : GA E n → ℂ} (h : Nice f) (z : ℂ) : Nice 
     exact mul_le_mul_of_nonneg_left (hC g) (norm_nonneg _)
   · intro r a b g
     have e := constantTerm_smul (r := r) z f g
-    rw [h.cusp r a b g, smul_zero] at e
-    exact e
+    rwa [h.cusp r a b g, smul_zero] at e
   · obtain ⟨V, hV⟩ := h.level
     exact ⟨V, fun g v hv => by rw [Pi.smul_apply, Pi.smul_apply, hV g v hv]⟩
 
@@ -90,14 +88,12 @@ private theorem wl_nice_tr {f : GA E n → ℂ} (h : Nice f) (x : GL (Fin n) (Af
     h.bdd.imp (fun _ hC _ => hC _), ?_, ?_, ?_⟩
   · intro γ g
     have e := h.left γ (g * finGL E n x)
-    rw [← mul_assoc] at e
-    exact e
+    rwa [← mul_assoc] at e
   · intro r a b g
     exact (constantTerm_rightTranslate (r := r) f (finGL E n x) g).trans (h.cusp r a b _)
   · obtain ⟨V, hV⟩ := h.level
     refine ⟨V.comap (MulAut.conj x⁻¹).toMonoidHom ?_, fun g v hv => ?_⟩
-    · show Continuous fun v => x⁻¹ * v * x⁻¹⁻¹
-      exact (continuous_const.mul continuous_id).mul continuous_const
+    · exact (continuous_const.mul continuous_id).mul continuous_const
     · have hv' : x⁻¹ * v * x⁻¹⁻¹ ∈ V := hv
       have e := hV (g * finGL E n x) _ hv'
       rw [inv_inv, mul_assoc g, ← map_mul, ← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul, map_mul,
@@ -115,13 +111,11 @@ private theorem wl_add {f f' : GA E n → ℂ} (h : Continuous f) (h' : Continuo
     ((FourierWhittaker.continuous_wInt 0 hφ g).continuousOn.integrableOn_compact hC).mono_set hD
   have e := integral_add (i h) (i h')
   simp only [FourierWhittaker.wInt] at e
-  simp only [whittaker, Pi.add_apply, add_mul]
-  exact e
+  simpa only [whittaker, Pi.add_apply, add_mul] using e
 
 private theorem wl_smul (f : GA E n → ℂ) (z : ℂ) : whittaker (z • f) = z • whittaker f := by
   funext g
-  simp only [whittaker, Pi.smul_apply, smul_eq_mul, mul_assoc]
-  exact integral_const_mul _ _
+  simpa only [whittaker, Pi.smul_apply, smul_eq_mul, mul_assoc] using integral_const_mul _ _
 
 private theorem wl_tr (f : GA E n → ℂ) (y : GA E n) :
     whittaker (fun g => f (g * y)) = fun g => whittaker f (g * y) := by

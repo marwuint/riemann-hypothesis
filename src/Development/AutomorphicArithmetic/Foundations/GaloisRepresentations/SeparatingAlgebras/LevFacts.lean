@@ -104,8 +104,7 @@ theorem UpperTheory.Gal.Gen.levFacts_pf :
       · rintro ⟨h, hh, rfl⟩
         refine ⟨hs_mem h, ?_⟩
         show cLoc w₀ (s h) ∈ J
-        rw [hs_loc]
-        exact hh
+        rwa [hs_loc]
     rw [this]
     exact hJc.image hs_cont
   refine ⟨⟨sup_le hK.fin (fun x hx => ((mem_locU_iff x).1 (Subgroup.mem_inf.1 hx).1).1), ?_, ?_⟩, hmem J, hJmem,
@@ -122,8 +121,7 @@ theorem UpperTheory.Gal.Gen.levFacts_pf :
     refine ⟨k ⁻¹' N₀ ∩ cLoc w₀ ⁻¹' (J : Set _), (hN₀o.preimage hkc).inter (hJo.preimage hcont), ⟨?_, ?_⟩, ?_⟩
     · show k 1 ∈ N₀
       have : k 1 = 1 := by simp [k, hs1]
-      rw [this]
-      exact hN₀1
+      rwa [this]
     · show cLoc w₀ 1 ∈ J
       rw [map_one]
       exact J.one_mem
@@ -133,8 +131,7 @@ theorem UpperTheory.Gal.Gen.levFacts_pf :
         · exact mul_mem hxf (inv_mem ((mem_locU_iff _).1 (hs_mem _)).1)
         · exact one_of_cLoc hw _ (by simp only [k, map_mul, map_inv, hs_loc, mul_inv_cancel])
       refine (hmem J x).2 ⟨k x, hkx, s (cLoc w₀ x), hs_mem _, ?_, by simp [k]⟩
-      rw [hs_loc]
-      exact hxJ
+      rwa [hs_loc]
   · intro c hc h1
     obtain ⟨k, hk, x, hx, -, rfl⟩ := (hmem J c).1 hc
     rw [hloc k hk] at h1
@@ -145,8 +142,7 @@ theorem UpperTheory.Gal.Gen.levFacts_pf :
         rwa [map_one] at this
       rw [h1, hs1] at h2
       exact h2.symm
-    rw [hx1, mul_one]
-    exact hk
+    rwa [hx1, mul_one]
   · intro J' c hc hcJ'
     obtain ⟨k, hk, x, hx, -, rfl⟩ := (hmem J c).1 hc
     rw [hloc k hk] at hcJ'

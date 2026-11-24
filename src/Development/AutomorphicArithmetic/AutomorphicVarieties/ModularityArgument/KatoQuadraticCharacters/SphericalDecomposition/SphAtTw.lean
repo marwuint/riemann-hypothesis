@@ -177,8 +177,7 @@ theorem inv_up {k : Type} [Field k] (B : GL (Fin 2) k) (hB : (B : Matrix (Fin 2)
       exact absurd e11 zero_ne_one
     · exact h
   refine ⟨hN, ?_⟩
-  rw [hN, mul_zero, add_zero] at e00
-  exact e00
+  rwa [hN, mul_zero, add_zero] at e00
 
 end GlobalTheory.NfEx
 
@@ -325,8 +324,7 @@ theorem exists_upperTriangular_conj_integral :
       exact ⟨y.2, by simpa using hy⟩
   have hf : Continuous fun g : Γ => fun p : Fin 2 × Fin 2 =>
       (r g : Matrix (Fin 2) (Fin 2) (Qbar l)) p.1 p.2 := by
-    refine continuous_pi fun p => ?_
-    exact (Units.continuous_val.comp hcont).matrix_elem p.1 p.2
+    exact continuous_pi fun p => (Units.continuous_val.comp hcont).matrix_elem p.1 p.2
   obtain ⟨C, hC⟩ := (isCompact_range hf).isBounded.exists_pos_norm_le
   obtain ⟨c, hc0, hc⟩ := NormedField.exists_norm_lt ℚ_[l] (inv_pos.mpr hC.1)
   have hn : ‖algebraMap ℚ_[l] (Qbar l) c‖ = ‖c‖ := norm_algebraMap' _ _
@@ -373,8 +371,7 @@ private theorem isIrrSub_of_conj {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (H
       simp [hconj, Matrix.mulVec_mulVec, mul_assoc]
     have h1 := hinv ⟨s, hHH s s.2⟩ _ hv
     simp only [MonoidHom.comp_apply, Subgroup.coe_subtype] at h1 ⊢
-    rw [key]
-    exact h1
+    rwa [key]
   have hback : ∀ w, ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).mulVec w ∈ W₀ ↔ w ∈ W := fun w => by
     rw [hmem, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
   rcases hmin W₀ le_top hinv₀ with h0 | htop
@@ -389,8 +386,7 @@ private theorem isIrrSub_of_conj {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (H
     exact Submodule.zero_mem _
   · right
     rw [eq_top_iff]
-    intro w _
-    exact (hback w).mp (htop ▸ Submodule.mem_top)
+    exact fun w _ => (hback w).mp (htop ▸ Submodule.mem_top)
 
 theorem target : ∀ {Γ k : Type} [inst : Group Γ] [inst_1 : Field k] {n : ℕ} (H H' : Subgroup Γ), (∀ s ∈ H, s ∈ H') → ∀ (r r' : Γ →* GL (Fin n) k) (g : GL (Fin n) k), (∀ (s : Γ), (r' : Γ → GL (Fin n) k) s = g * (r : Γ → GL (Fin n) k) s * g⁻¹) → Formalism.MainNotions.N.IsIrrSub (MonoidHom.comp r (Subgroup.subtype H)) ⊤ → Formalism.MainNotions.N.IsIrrSub (MonoidHom.comp r' (Subgroup.subtype H')) ⊤ := by
   intro Γ k _ _ n H H' hHH r r' g hconj hirr
@@ -562,9 +558,7 @@ theorem GlobalTheory.Ord2.exists_nf_srcUr : ∀ (l : ℕ) [Fact l.Prime] (Ω : T
   obtain ⟨M, hM, hMa⟩ := hW.away
   obtain ⟨S, hSa, hSu⟩ := _root_.GlobalTheory.Ord2.unramified_of_levelAway l Ω W M hM hMa
   let r : G ℚ Ω →* GL (Fin 2) (Qbar l) := (MulAut.conj g).toMonoidHom.comp W
-  have hrc : Continuous r := by
-    show Continuous fun s => g * W s * g⁻¹
-    exact (continuous_const.mul hW.cont).mul continuous_const
+  have hrc : Continuous r := (continuous_const.mul hW.cont).mul continuous_const
   obtain ⟨E, hE, hEm⟩ := GlobalTheory.CompactRepField.exists_finiteDimensional_entries_mem l (G ℚ Ω) 2 r
     (fun i j => ((Units.continuous_val.comp hrc).matrix_elem i j))
   obtain ⟨B, hB10, hBint⟩ := _root_.GlobalTheory.StableLatticeTriangular.exists_upperTriangular_conj_integral l (G ℚ Ω) E r hE hrc hEm
@@ -636,12 +630,10 @@ theorem GlobalTheory.Ord2.exists_nf_srcUr : ∀ (l : ℕ) [Fact l.Prime] (Ω : T
         upper := fun s hs => (hup s hs).1
         wt := ?_
         ne := ?_ }
-    · show Continuous fun s => h * W s * h⁻¹
-      exact (continuous_const.mul hW.cont).mul continuous_const
+    · exact (continuous_const.mul hW.cont).mul continuous_const
     · have := (hBint s i j).1; simpa only [mat, hW'] using this
     · have := (hBint s i j).2; simpa only [mat, hW'] using this
-    · intro w hw B' hB' s hs
-      exact (hker s).2 (hSu w hw B' hB' hs)
+    · exact fun w hw B' hB' s hs => (hker s).2 (hSu w hw B' hB' hs)
     · refine ⟨l - 1, ?_, fun s hs => ?_⟩
       · have := (Fact.out : l.Prime).two_le; omega
       · rw [hline s hs, mul_pow, ← pow_mul]
@@ -650,8 +642,7 @@ theorem GlobalTheory.Ord2.exists_nf_srcUr : ∀ (l : ℕ) [Fact l.Prime] (Ω : T
     · obtain ⟨s, hs⟩ := hne A κ hA ⟨g, hg⟩
       refine ⟨s, s.2, ?_⟩
       rw [(hup s s.2).2.1]
-      intro hh
-      exact hs (Units.ext hh)
+      exact fun hh => hs (Units.ext hh)
   · refine ⟨hM0, ha0, χ, hχ, ?_, ?_⟩
     · rw [hdt]
       exact SrcConj.att_conj ι g0 _ _ h (SrcConj.tw_conj W W' _ h hh) hatt
@@ -695,18 +686,15 @@ theorem UpperTheory.V.X.Kato.conj :
     refine ⟨(P : Matrix (Fin n) (Fin n) (Qbar l)).mulVec y, ?_⟩
     rw [hfa, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
   have hcont : Continuous (fun g => f (c g)) := by
-    simp only [hfa]
-    exact continuous_const.matrix_mulVec hc.1
+    simpa only [hfa] using continuous_const.matrix_mulVec hc.1
   have hz : (fun g => f (c g)) ∈ Z1 (Loc.colRep r) := by
     refine ⟨hcont, fun g g' => ?_⟩
-    have h1 := congrArg f (hc.2 g g')
-    simpa only [map_add (f := _), hf] using h1
+    simpa only [map_add (f := _), hf] using congrArg f (hc.2 g g')
   obtain ⟨m, hm⟩ := (mem_coboundaries1 _ _).1 (h _ hz (UpperTheory.V.X.Kato.bkMap l F Ω _ _ _ _ _ _ f hf c hcont hbk))
   obtain ⟨m', rfl⟩ := hsurj m
   refine (mem_coboundaries1 _ _).2 ⟨m', fun g => hinj ?_⟩
   have := hm g
-  simp only [map_sub, hf]
-  exact this
+  simpa only [map_sub, hf] using this
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.KatoConj =====

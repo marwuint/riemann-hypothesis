@@ -120,8 +120,7 @@ theorem UpperTheory.V.GradeZeroInterpolatingElement.ptIn :
   have hy : ∀ a : c.O, (y : R →+* K) (algebraMap c.O R a) = algebraMap c.O K a := fun a => y.commutes a
   have hm : D.Mult (mapRep (y : R →+* K) ρ.hom) := fun g => by
     have h := ptIn_gsp (y : R →+* K) (he.mult g)
-    rw [hy] at h
-    exact h
+    rwa [hy] at h
   have hh : D.hEl (mapRep (y : R →+* K) ρ.hom) = (y : R →+* K).mapMatrix (D.hEl ρ.hom) := by
     unfold Raw.hEl
     rw [map_add (f := _), ptIn_smul, hy, ptIn_rep, ptIn_rep]
@@ -138,5 +137,4 @@ theorem UpperTheory.V.GradeZeroInterpolatingElement.ptIn :
     show (y : R →+* K).mapMatrix (ρ.hom g) = 1
     rw [h, map_one]
   · have h := ptIn_span (y : R →+* K) ρ.hom (eii D hD R ρ he.mult he.nrm i)
-    rw [RingHom.mapMatrix_apply, Matrix.map_single, map_one] at h
-    exact h
+    rwa [RingHom.mapMatrix_apply, Matrix.map_single, map_one] at h

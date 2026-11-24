@@ -186,8 +186,7 @@ private theorem aux (N : ℕ) [NeZero N] (b : ℕ) : ∀ (a : ℕ) (ha : a ∣ N
 
 theorem UpperTheory.V.CF.unitsGen :
     ∀ (a b : ℕ) [NeZero (a * b)], a.Coprime b → (ZMod.unitsMap (dvd_mul_right a b)).ker ≤ ⨆ p ∈ b.primeFactors, KStar.Ram.inertiaUnits (a * b) p := by
-  intro a b _ h
-  exact aux (a * b) b a _ rfl h
+  exact fun a b _ h => aux (a * b) b a _ rfl h
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.ClassFieldRamification.UnitsGen =====
@@ -259,8 +258,7 @@ theorem UpperTheory.V.CF.cycDescend :
     have hmod : (χ σ).val.val * b ≡ 1 * b [MOD a * b] := by
       rw [one_mul]
       have h2 := (hζ.isOfFinOrder (NeZero.ne _)).pow_inj_mod.mp hfix
-      rw [← hζ.eq_orderOf] at h2
-      exact h2
+      rwa [← hζ.eq_orderOf] at h2
     have hk := Nat.ModEq.mul_right_cancel' hb0 hmod
     rw [← Nat.cast_one]
     exact (ZMod.natCast_eq_natCast_iff _ _ _).mpr hk
@@ -411,9 +409,7 @@ private theorem abelian_ramification_cyclotomic_bound (Ω : Type) [Field Ω] [Ch
   have hLV : L.fixingSubgroup = V :=
     InfiniteGalois.fixingSubgroup_fixedField ⟨V, hVc⟩
   haveI : FiniteDimensional ℚ L := by
-    rw [← InfiniteGalois.isOpen_iff_finite]
-    rw [hLV]
-    exact hV
+    rwa [← InfiniteGalois.isOpen_iff_finite, hLV]
   have hVn : V.Normal := by
     constructor
     intro v hv g
@@ -485,8 +481,7 @@ private theorem abelian_ramification_cyclotomic_bound (Ω : Type) [Field Ω] [Ch
   let S : Subgroup (G ℚ Ω) := MulAction.stabilizer (G ℚ Ω) ζ
   have hζS : ζ ∈ IntermediateField.fixedField S := by
     rw [IntermediateField.mem_fixedField_iff]
-    intro f hf
-    exact hf
+    exact fun f hf => hf
   have hLS : L ≤ IntermediateField.fixedField S :=
     hLζ.trans (IntermediateField.adjoin_simple_le_iff.2 hζS)
   have hgS : g ∈ S := hg ζ hζ.pow_eq_one

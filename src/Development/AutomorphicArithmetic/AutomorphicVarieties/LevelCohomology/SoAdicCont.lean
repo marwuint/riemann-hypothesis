@@ -112,8 +112,7 @@ private theorem ev_dvd {l : ℕ} [Fact l.Prime] (c : HV.Coef l) (a : c.O) (ha : 
   have hc : Continuous (fun y : c.O => ‖(y : PadicAlgCl l) - x‖) :=
     (continuous_subtype_val.sub continuous_const).norm
   have h0 : ‖((x : c.O) : PadicAlgCl l) - x‖ < ‖(a : PadicAlgCl l)‖ := by
-    rw [sub_self, norm_zero]
-    exact ha'
+    rwa [sub_self, norm_zero]
   have hev : ∀ᶠ y : c.O in nhds x, ‖(y : PadicAlgCl l) - x‖ < ‖(a : PadicAlgCl l)‖ :=
     hc.continuousAt.eventually_lt (continuous_const (y := ‖(a : PadicAlgCl l)‖)).continuousAt h0
   filter_upwards [hev] with y hy
@@ -137,8 +136,7 @@ theorem UpperTheory.V.X.So.adicCont :
     rw [IsLocallyConstant.iff_eventually_eq]
     intro x
     filter_upwards [ev_dvd c a ha x] with y hy
-    rw [← sub_eq_zero, ← map_sub, Lev.mk_eq_zero]
-    exact hy
+    rwa [← sub_eq_zero, ← map_sub, Lev.mk_eq_zero]
   · obtain ⟨w, hw⟩ := IsDiscreteValuationRing.exists_irreducible c.O
     have hm : ∀ N : ℕ, maximalIdeal c.O ^ N = Ideal.span {w ^ N} := fun N => by
       rw [hw.maximalIdeal_eq, Ideal.span_singleton_pow]
@@ -163,13 +161,11 @@ theorem UpperTheory.V.X.So.adicCont :
       calc ‖(w : PadicAlgCl l)‖ ^ N * ‖(t : PadicAlgCl l)‖ ≤ ‖(w : PadicAlgCl l)‖ ^ N * 1 :=
             mul_le_mul_of_nonneg_left (norm_coef_O_coe_padicAlgCl_le_one c t) (by positivity)
         _ < ε := by
-          rw [mul_one]
-          exact hN
+          rwa [mul_one]
     · intro hz N
       rw [IsLocallyConstant.iff_eventually_eq]
       intro g0
       have hne : w ^ N ≠ 0 := pow_ne_zero _ hw.ne_zero
       have h1 := (hz.tendsto g0).eventually (ev_dvd c (w ^ N) hne (z g0))
       filter_upwards [h1] with g hg
-      rw [Ideal.Quotient.eq, hm, Ideal.mem_span_singleton]
-      exact hg
+      rwa [Ideal.Quotient.eq, hm, Ideal.mem_span_singleton]

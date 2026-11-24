@@ -262,8 +262,7 @@ private theorem sum_step (w : InfinitePlace F) (K b : InfinitePlace F → ℝ) (
   · simp
   · intro b' _ hb
     simp [Pi.single_eq_of_ne hb]
-  · intro h
-    exact absurd (Finset.mem_univ w) h
+  · exact fun h => absurd (Finset.mem_univ w) h
 
 private theorem gauss_step (δ : F) (v : V4 F) (i : Fin 4) (w : InfinitePlace F) (t : ℝ) :
     gauss δ (v + Pi.single i (at1 w t)) =
@@ -322,17 +321,14 @@ private theorem line_step (δ : F) (O : Ops F) (φ : S4 F)
       rw [O.x_apply, cw_step]
       simp only [f]
       ring
-    rw [key] at h2
-    exact h2
+    rwa [key] at h2
   have hX : ∀ t : ℝ, HasDerivAt X ((Real.pi : ℂ) * κ * (2 * a + 2 * t)) t := by
     intro t
     have h1 : HasDerivAt (fun t : ℝ => (t : ℂ)) 1 t := (hasDerivAt_id t).ofReal_comp
     have h2 := ((h1.const_mul (2 * a)).add (h1.mul h1)).const_mul ((Real.pi : ℂ) * κ)
     exact h2.congr_deriv (by ring)
   have hE : ∀ t : ℝ, HasDerivAt (fun t => f t * Complex.exp (X t)) 0 t := by
-    intro t
-    have h2 := (hf t).mul (hX t).cexp
-    exact h2.congr_deriv (by ring)
+    exact fun t => ((hf t).mul (hX t).cexp).congr_deriv (by ring)
   have hc := is_const_of_deriv_eq_zero (fun t => (hE t).differentiableAt) (fun t => (hE t).deriv) t 0
   have h0 : f 0 = φ.1 v := by
     simp only [f]
@@ -385,8 +381,7 @@ theorem UpperTheory.ConvolutionTheory.R2.Fo.annVac :
       · intro b _ hb
         rw [Finset.sum_apply]
         exact Finset.sum_eq_zero fun w _ => Pi.single_eq_of_ne hb.symm _
-      · intro hj
-        exact absurd (Finset.mem_univ j) hj
+      · exact fun hj => absurd (Finset.mem_univ j) hj
     rw [Pi.add_apply, h2]
     abel
   have := chain_step δ O φ h v c Finset.univ
@@ -632,8 +627,7 @@ theorem UpperTheory.ConvolutionTheory.R2.Fo.vacL :
       have h2 : (Matrix.GeneralLinearGroup.map (pInf E) h).val * star (Matrix.GeneralLinearGroup.map (pInf E) h).val = 1 :=
         Unitary.mul_star_self_of_mem hu
       exact left_inv_eq_right_inv h1 h2
-    rw [hm]
-    exact hs
+    rwa [hm]
   have hg := gaussAct F E D h⁻¹ hinv
   obtain ⟨ρ, hρ, -, -⟩ := UpperTheory.ConvolutionTheory.R2.D.actMat F E D
   have hfin : finPartPi (D.act h⁻¹ v) = finPartPi (D.act h⁻¹ v') := by
@@ -701,8 +695,7 @@ theorem UpperTheory.ConvolutionTheory.R2.Fo.omFinite :
     have hc : Continuous fun k : G1 F => pf (k₀⁻¹ * k) :=
       hpf.comp (continuous_const.mul continuous_id)
     have h1 : Tendsto (fun k : G1 F => pf (k₀⁻¹ * k)) (𝓝 k₀) (𝓝 1) := by
-      have h := hc.tendsto k₀
-      simpa using h
+      simpa using hc.tendsto k₀
     filter_upwards [h1.eventually (W.level φ)] with k hk
     have h2 := hk (hp _).2.1
     have h3 : pf k = pf k₀ * pf (k₀⁻¹ * k) := by rw [← map_mul, mul_inv_cancel_left]
@@ -1052,8 +1045,7 @@ theorem UpperTheory.ConvolutionTheory.R2.Fo.actFin :
     by_cases e' : i = j
     · subst e'; simp
     · simp [Matrix.one_apply_ne e']
-  have hm1 : (infGL E 2 y).val.map (pFin E) = 1 := by
-    exact Matrix.ext fun i j => hg i j
+  have hm1 : (infGL E 2 y).val.map (pFin E) = 1 := Matrix.ext fun i j => hg i j
   have hm2 : (((infGL E 2 y).val.map D.bar)ᵀ).map (pFin E) = 1 := by
     refine Matrix.ext fun i j => ?_
     have := hb j i

@@ -78,8 +78,7 @@ theorem UpperTheory.V.Alg.gr_internal :
     · rfl
   have hgr : ∀ (i : X) (y : W.A), y ∈ W.gr i ↔ y.1 ∈ W.part i := fun i y => Iff.rfl
   have hpart : ∀ (i : X) (x : R), x ∈ W.part i ↔ ∃ f ∈ wtPart O W.wt i, W.π f = x := by
-    intro i x
-    exact Submodule.mem_map
+    exact fun i x => Submodule.mem_map
   let T : X → Submodule O W.A := fun j =>
     { carrier := {y | ∀ f, W.π f = y.1 → W.π (wcomp O W.wt j f) = 0}
       add_mem' := by
@@ -122,15 +121,12 @@ theorem UpperTheory.V.Alg.gr_internal :
   · rw [eq_top_iff]
     rintro ⟨a, ha⟩ -
     have hle : ∀ i, W.part i ≤ LinearMap.range W.A.val.toLinearMap := by
-      intro i x hx
-      exact ⟨⟨x, W.part_le_A hx⟩, rfl⟩
+      exact fun i x hx => ⟨⟨x, W.part_le_A hx⟩, rfl⟩
     have hmap : Submodule.map W.A.val.toLinearMap (⨆ i, W.gr i) = ⨆ i, W.part i := by
       rw [Submodule.map_iSup]
       exact iSup_congr fun i => Submodule.map_comap_eq_self (hle i)
     have hmem : a ∈ Submodule.map W.A.val.toLinearMap (⨆ i, W.gr i) := by
-      rw [hmap]
-      exact ha
+      rwa [hmap]
     obtain ⟨b, hb, hba⟩ := hmem
     have : b = ⟨a, ha⟩ := Subtype.ext hba
-    rw [← this]
-    exact hb
+    rwa [← this]

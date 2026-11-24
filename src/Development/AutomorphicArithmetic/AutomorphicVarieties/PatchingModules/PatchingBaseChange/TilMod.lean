@@ -176,11 +176,7 @@ theorem UpperTheory.V.Pa.BC.til_ev :
         rw [Algebra.smul_def, hmulC, hsm] }
   have hcf : Function.Bijective cf := by
     constructor
-    · intro a b hab
-      apply PowerSeries.ext
-      intro k
-      have h1 := congrFun hab k
-      exact tc.injective h1
+    · exact fun a b hab => PowerSeries.ext (fun k => tc.injective (congrFun hab k))
     · intro f
       refine ⟨PowerSeries.mk (fun k => tc.symm (f k)), ?_⟩
       funext k

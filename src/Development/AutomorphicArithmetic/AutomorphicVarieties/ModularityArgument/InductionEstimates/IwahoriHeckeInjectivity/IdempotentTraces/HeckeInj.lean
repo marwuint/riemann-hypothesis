@@ -202,8 +202,7 @@ private theorem local_inj {V : Type} [AddCommGroup V] [Module ℂ V]
   have hS := cosets_finite (GLnLocal.iwahori F n) (GLnLocal.isCompact_iwahori F n)
     (GLnLocal.isOpen_iwahori F n) (Cartan.diagPow F n ν)
   have h1 : ∑ c ∈ hS.toFinset, ρ c.out v = 0 := by
-    rw [← finsum_mem_eq_finite_toFinset_sum _ hS]
-    exact h0
+    rwa [← finsum_mem_eq_finite_toFinset_sum _ hS]
   let π := onSub ρ Z hZ
   have hπ : ∀ (g : GL (Fin n) F) (a : Z), ((π g a : Z) : V) = ρ g a := fun _ _ => rfl
   have hsmooth : GlobalTheory.PRep.IsSmooth π := fun a => by
@@ -216,8 +215,7 @@ private theorem local_inj {V : Type} [AddCommGroup V] [Module ℂ V]
     refine mem_twKer_of_sum π (GLnLocal.iwahori F n) _ (Cartan.diagPow F n ν) _
       (fun u hu => Subtype.ext (hv u hu)) hS.toFinset (fun c => by simp)
       (factor hν) (fun x hx => conj_mem_unipB ν hx) (Subtype.ext ?_)
-    rw [Submodule.coe_sum]
-    exact h1
+    rwa [Submodule.coe_sum]
   have hfix : (⟨v, hvZ⟩ : Z) ∈ fixed π (iwahori F (Fin n)) :=
     GlobalTheory.IwahoriInj.mem_fixed.2 fun h hh => Subtype.ext (hv h (iwahori_le h hh))
   have h2 := (injective_iff_map_eq_zero _).1
@@ -309,15 +307,13 @@ theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.heckeInj :
   intro K _ _ _ μ _ μ₂ _ τ₁ τ₂ hP κ e he S U hU D hD d A w hw hUw ν hν M hM
   obtain ⟨r, w', hinj, rfl⟩ : ∃ (r : ℕ) (w' : Fin r → Pl K), Function.Injective w' ∧ im w' = S := by
     refine ⟨S.card, fun j => (S.equivFin.symm j : Pl K), ?_, ?_⟩
-    · intro a b h
-      exact S.equivFin.symm.injective (Subtype.ext h)
+    · exact fun a b h => S.equivFin.symm.injective (Subtype.ext h)
     · ext x
       simp only [Finset.mem_image, Finset.mem_univ, true_and]
       constructor
       · rintro ⟨j, rfl⟩
         exact (S.equivFin.symm j).2
-      · intro hx
-        exact ⟨S.equivFin ⟨x, hx⟩, by simp⟩
+      · exact fun hx => ⟨S.equivFin ⟨x, hx⟩, by simp⟩
   obtain ⟨i, rfl⟩ : ∃ i, w' i = w := by simpa [im] using hw
   obtain ⟨⟨ι, hι⟩, hemb⟩ := embEx (K := K) (2 + 2) w' hinj
   obtain ⟨-, -, -, -, -, hmem⟩ := hemb ι hι

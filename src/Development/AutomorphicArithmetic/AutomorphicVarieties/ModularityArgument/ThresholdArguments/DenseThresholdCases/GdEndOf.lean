@@ -150,8 +150,7 @@ private theorem keeps_of_pot (hFL : FlagLaws) {K M Ω : Type} [Field K] [NumberF
   intro w hw _
   have hv : ((l : ℕ) : 𝓞 ℚ) ∈ (w.under (𝓞 ℚ)).asIdeal := by
     simpa [HeightOneSpectrum.under, Ideal.mem_comap] using hw
-  have h := (((hFL ℚ Ω l n r).2.2.2 M).2.2 w hw).1 (hp _ hv)
-  exact unlocked_of_potentially h
+  exact unlocked_of_potentially ((((hFL ℚ Ω l n r).2.2.2 M).2.2 w hw).1 (hp _ hv))
 private theorem step (hFL : FlagLaws) (hUD : _root_.UpperTheory.V.Z.Win.AUpDownAlt) (hP : _root_.UpperTheory.V.Af.HypothesesH') (hR : RowT) (K K' Ω : Type) [Field K] [NumberField K] [IsCMField K]
     [Field K'] [NumberField K'] [IsCMField K'] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra K Ω] [Algebra K' Ω]
     (hK : Module.finrank ℚ K = 2) (hK' : Module.finrank ℚ K' = 2) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ) (hn : 1 ≤ n)
@@ -324,8 +323,7 @@ private theorem flag_at_place {F K Ω : Type} [Field F] [NumberField F] [Field K
   · rw [MonoidHom.comp_apply, hrep]
     exact hP (d s)
   · have h := hI i (d s) (hIn s hs)
-    rw [hd, hcyc, hcyc] at h
-    exact h
+    rwa [hd, hcyc, hcyc] at h
 
 end
 
@@ -1161,8 +1159,7 @@ theorem UpperTheory.V.Z.Win.Dn.gdEnd_of_frame_linkedEnd_downCsdK_descent (H : _r
   haveI : CharP (ResidueField c.O) l := by
     rw [CharP.charP_iff_prime_eq_zero hl.out, ← map_natCast (residue c.O), residue_eq_zero_iff,
       mem_maximalIdeal, mem_nonunits_iff, ← map_natCast (algebraMap ℤ_[l] c.O)]
-    intro hu
-    exact PadicInt.prime_p.not_unit (isUnit_of_map_unit _ _ hu)
+    exact fun hu => PadicInt.prime_p.not_unit (isUnit_of_map_unit _ _ hu)
   obtain ⟨L, _, _, _, _, g₁, Φ, C₀, ⟨k⟩, ok, big, sc⟩ := hF Ω K l c N e ψ D B hB
   have hσ' : IsConjOm D.cc.toRingEquiv := hσ
   have hsq : D.cc * D.cc = 1 := by

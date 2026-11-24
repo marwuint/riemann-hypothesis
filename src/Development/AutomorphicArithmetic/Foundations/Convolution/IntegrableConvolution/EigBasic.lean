@@ -97,38 +97,27 @@ private lemma avg_mem (π : UnitaryRep G H) {J : Subgroup G} {χ : G → ℂ} (h
   set f : G → H := fun g => conj (χ g) • π g v with hf
   have hint : IntegrableOn f (J : Set G) m := integrableOn_avg π hJ hχ m v
   have hmeas : MeasurableSet (J : Set G) := hJ.2.measurableSet
-  have h1 : ∫ g, (J : Set G).indicator f (y * g) ∂m = ∫ g, (J : Set G).indicator f g ∂m :=
-    integral_mul_left_eq_self _ y
   have h2 : (fun g => (J : Set G).indicator f (y * g)) =
       (J : Set G).indicator fun g => (conj (χ y) • (π y)) (f g) := by
     funext g
     by_cases hg : g ∈ J
-    · have hyg : y * g ∈ J := J.mul_mem hy hg
-      rw [Set.indicator_of_mem (show y * g ∈ (J : Set G) from hyg),
-        Set.indicator_of_mem (show g ∈ (J : Set G) from hg)]
+    · rw [Set.indicator_of_mem (s := (J : Set G)) (J.mul_mem hy hg),
+        Set.indicator_of_mem (s := (J : Set G)) hg]
       simp only [hf, hχ.2.2 y hy g hg, map_mul, UnitaryRep.map_mul_apply,
         ContinuousLinearMap.smul_apply, map_smul, smul_smul]
       rw [mul_comm]
     · have hyg : y * g ∉ J := fun h => hg (by simpa using J.mul_mem (J.inv_mem hy) h)
-      rw [Set.indicator_of_notMem (show y * g ∉ (J : Set G) from hyg),
-        Set.indicator_of_notMem (show g ∉ (J : Set G) from hg)]
+      rw [Set.indicator_of_notMem (s := (J : Set G)) hyg,
+        Set.indicator_of_notMem (s := (J : Set G)) hg]
   have h3 : avg π J χ m v = conj (χ y) • π y (avg π J χ m v) := by
-    have e1 : avg π J χ m v = ∫ g, (J : Set G).indicator f g ∂m := (integral_indicator hmeas).symm
-    have e2 : ∫ g, (J : Set G).indicator (fun g => (conj (χ y) • (π y)) (f g)) g ∂m =
-        (conj (χ y) • (π y)) (avg π J χ m v) := by
-      rw [integral_indicator hmeas]
-      exact (conj (χ y) • (π y)).integral_comp_comm hint
-    calc avg π J χ m v = ∫ g, (J : Set G).indicator f g ∂m := e1
-      _ = ∫ g, (J : Set G).indicator f (y * g) ∂m := h1.symm
-      _ = ∫ g, (J : Set G).indicator (fun g => (conj (χ y) • (π y)) (f g)) g ∂m :=
-        congrArg (fun F : G → H => ∫ g, F g ∂m) h2
-      _ = (conj (χ y) • (π y)) (avg π J χ m v) := e2
-      _ = conj (χ y) • π y (avg π J χ m v) := rfl
-  calc π y (avg π J χ m v) = (conj (χ y) * χ y) • π y (avg π J χ m v) := by
-        rw [conj_mul_chr hχ hy, one_smul]
-    _ = χ y • (conj (χ y) • π y (avg π J χ m v)) := by
-        rw [smul_smul, mul_comm]
-    _ = χ y • avg π J χ m v := by rw [← h3]
+    calc avg π J χ m v = ∫ g, (J : Set G).indicator f g ∂m := (integral_indicator hmeas).symm
+      _ = ∫ g, (J : Set G).indicator f (y * g) ∂m := (integral_mul_left_eq_self _ y).symm
+      _ = ∫ g, (J : Set G).indicator (fun g => (conj (χ y) • (π y)) (f g)) g ∂m := by rw [h2]
+      _ = (conj (χ y) • (π y)) (avg π J χ m v) := by
+        rw [integral_indicator hmeas]
+        exact (conj (χ y) • (π y)).integral_comp_comm hint
+  conv_rhs => rw [h3]
+  rw [smul_smul, mul_comm, conj_mul_chr hχ hy, one_smul]
 
 private lemma inner_avg (π : UnitaryRep G H) {J : Subgroup G} {χ : G → ℂ} (hJ : CO J) (hχ : IsChr J χ)
     (m : Measure G) [m.IsHaarMeasure] (hm : m J = 1) (v e : H) (he : e ∈ eigU π J χ) :

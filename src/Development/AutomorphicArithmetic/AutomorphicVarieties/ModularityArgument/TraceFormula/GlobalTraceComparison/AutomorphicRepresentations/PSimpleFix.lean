@@ -67,8 +67,7 @@ private theorem dc_left (N : Subgroup G) (g : G) {k : G} (hk : k ∈ N) (x : G) 
   · rintro ⟨a, ha, b, hb, e⟩
     refine ⟨k⁻¹ * a, N.mul_mem (N.inv_mem hk) ha, b, hb, ?_⟩
     simp only [mul_assoc] at e ⊢
-    rw [eq_inv_mul_iff_mul_eq]
-    exact e
+    rwa [eq_inv_mul_iff_mul_eq]
   · rintro ⟨a, ha, b, hb, rfl⟩
     exact ⟨k * a, N.mul_mem hk ha, b, hb, by simp only [mul_assoc]⟩
 
@@ -148,13 +147,10 @@ private theorem lv_dc (ρ : Representation ℂ G V) (N : Subgroup G) (hNo : IsOp
     · exact N.mul_mem (N.inv_mem (a.out).2) (b.out).2
     · have e : g⁻¹ * (((a.out⁻¹ * b.out : N)) : G) * g = ((a.out : G) * g)⁻¹ * ((b.out : G) * g) := by
         simp [mul_assoc]
-      rw [e]
-      exact h1
+      rwa [e]
   have hsup : Function.support (fun q : G ⧸ N => F q.out) ⊆ Set.range Φ := by
     intro q hq
-    have hne : f q.out ≠ 0 := by
-      intro h0
-      exact hq (by simp [hF, h0])
+    have hne : f q.out ≠ 0 := fun h0 => hq (by simp [hF, h0])
     have hmem : q.out ∈ dc N g := by
       by_contra hn
       exact hne (Set.indicator_of_notMem hn _)

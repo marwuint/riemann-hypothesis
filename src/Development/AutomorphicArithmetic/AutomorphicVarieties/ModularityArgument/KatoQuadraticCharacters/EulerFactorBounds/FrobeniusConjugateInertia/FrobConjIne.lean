@@ -74,14 +74,12 @@ private theorem normV_injective' : Function.Injective (fun w : Pl => normV w) :=
   apply Rat.HeightOneSpectrum.primesEquiv.injective
   apply Subtype.ext
   change Rat.HeightOneSpectrum.natGenerator a = Rat.HeightOneSpectrum.natGenerator b
-  rw [← normV_eq_natGenerator, ← normV_eq_natGenerator]
-  exact h
+  rwa [← normV_eq_natGenerator, ← normV_eq_natGenerator]
 
 theorem finite_dvd {n : ℕ} (hn : n ≠ 0) : {w : Pl | normV w ∣ n}.Finite := by
   refine ((Nat.divisors n).finite_toSet.preimage normV_injective'.injOn).subset ?_
   intro w hw
-  simp only [Set.mem_preimage, Finset.mem_coe, Nat.mem_divisors]
-  exact ⟨hw, hn⟩
+  simpa only [Set.mem_preimage, Finset.mem_coe, Nat.mem_divisors] using ⟨hw, hn⟩
 
 theorem finite_normV (T : Finset ℕ) : {w : Pl | normV w ∈ T}.Finite := by
   exact T.finite_toSet.preimage normV_injective'.injOn
@@ -114,11 +112,9 @@ theorem frob_root {w : Pl} {M : ℕ} (hM0 : M ≠ 0) (hM : Nat.Coprime M (normV 
       have := (hB (normV w : 𝓞 ℚ)).mpr hq
       simpa using this
     · have := ValuationSubring.smul_mem_pointwise_smul σ x B hx
-      rw [hs] at this
-      exact this
+      rwa [hs] at this
     · have := ValuationSubring.smul_mem_pointwise_smul σ⁻¹ x B hx
-      rw [hs'] at this
-      exact this
+      rwa [hs'] at this
     · exact hσ.2 x ((B.valuation_le_one_iff x).mpr hx)
   exact hF.apply_rootOfUnity hM0 hM hζ
 

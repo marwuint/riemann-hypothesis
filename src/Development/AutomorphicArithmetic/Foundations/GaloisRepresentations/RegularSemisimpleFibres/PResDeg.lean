@@ -51,7 +51,7 @@ theorem UpperTheory.Gal.InertialTypesAlt.resDeg :
   intro hcard K M _ _ _ _ _ _ hn v w hns hunr _
   classical
   have hw : (w : HeightOneSpectrum (𝓞 M)).asIdeal.LiesOver v.asIdeal := w.2
-  set f := (w : HeightOneSpectrum (𝓞 M)).asIdeal.inertiaDeg (𝓞 K) with hf
+  set f := (w : HeightOneSpectrum (𝓞 M)).asIdeal.inertiaDeg (𝓞 K)
   have hfconst : ∀ u : PlacesOver M v,
       (u : HeightOneSpectrum (𝓞 M)).asIdeal.inertiaDeg (𝓞 K) = f := by
     intro u
@@ -65,63 +65,40 @@ theorem UpperTheory.Gal.InertialTypesAlt.resDeg :
   have hsum := GroundTheory.Global.SemiLocal.sum_ramificationIdx_mul_inertiaDeg M v
   have hdvd : f ∣ Module.finrank K M := by
     rw [← hsum]
-    apply Finset.dvd_sum
-    intro u _
-    rw [heone u, hfconst u, one_mul]
+    exact Finset.dvd_sum fun u _ => by rw [heone u, hfconst u, one_mul]
   have hf1 : f ≠ 1 := by
     intro h1
-    apply hns
-    intro u
+    refine hns fun u => ?_
     haveI := u.2
     have hrk := GroundTheory.Global.SemiLocal.finrank_eq_ramificationIdx_mul_inertiaDeg M v
       (u : HeightOneSpectrum (𝓞 M))
     rw [heone u, hfconst u, h1, one_mul] at hrk
-    have htop := Subalgebra.bot_eq_top_of_finrank_eq_one hrk
-    intro y
-    have hy : y ∈ (⊥ : Subalgebra (HeightOneSpectrum.adicCompletion K v)
-        (HeightOneSpectrum.adicCompletion M (u : HeightOneSpectrum (𝓞 M)))) := by
-      rw [htop]
-      trivial
-    obtain ⟨x, hx⟩ := Algebra.mem_bot.mp hy
-    exact ⟨x, hx⟩
+    exact (Algebra.finrank_eq_one_iff_bijective_algebraMap.mp hrk).2
   have hfn : f = Module.finrank K M := (hn.eq_one_or_self_of_dvd f hdvd).resolve_left hf1
-  have hnormK : normV v = v.asIdeal.absNorm := by
-    rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
-    rfl
+  have hnormK : normV v = v.asIdeal.absNorm :=
+    ((Ideal.absNorm_apply _).trans (Submodule.cardQuot_apply _)).symm
   have hnormM : normV (w : HeightOneSpectrum (𝓞 M)) =
-      (w : HeightOneSpectrum (𝓞 M)).asIdeal.absNorm := by
-    rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
-    rfl
+      (w : HeightOneSpectrum (𝓞 M)).asIdeal.absNorm :=
+    ((Ideal.absNorm_apply _).trans (Submodule.cardQuot_apply _)).symm
   have hpow : v.asIdeal.absNorm ^ f = (w : HeightOneSpectrum (𝓞 M)).asIdeal.absNorm :=
     Ideal.absNorm_pow_inertiaDeg v.asIdeal _
   have hK := hcard K v
-  have hM := hcard M (w : HeightOneSpectrum (𝓞 M))
   have hge : 2 ≤ v.asIdeal.absNorm := by
-    have h0 : v.asIdeal.absNorm ≠ 0 := by
-      rw [Ne, Ideal.absNorm_eq_zero_iff]
-      exact v.ne_bot
-    have h1 : v.asIdeal.absNorm ≠ 1 := by
-      rw [Ne, Ideal.absNorm_eq_one_iff]
-      exact v.isPrime.ne_top
+    have h0 := mt Ideal.absNorm_eq_zero_iff.1 v.ne_bot
+    have h1 := mt Ideal.absNorm_eq_one_iff.1 v.isPrime.ne_top
     omega
   have hcardM : Nat.card 𝓀[HeightOneSpectrum.adicCompletion M (w : HeightOneSpectrum (𝓞 M))] =
       Nat.card 𝓀[HeightOneSpectrum.adicCompletion K v] ^ Module.finrank K M := by
-    rw [hM, hK, hnormM, hnormK, ← hpow, hfn]
+    rw [hcard M _, hK, hnormM, hnormK, ← hpow, hfn]
   haveI : Finite 𝓀[HeightOneSpectrum.adicCompletion K v] :=
     Nat.finite_of_card_ne_zero (by rw [hK, hnormK]; omega)
   haveI : Finite 𝓀[HeightOneSpectrum.adicCompletion M (w : HeightOneSpectrum (𝓞 M))] :=
     Nat.finite_of_card_ne_zero (by rw [hcardM, hK, hnormK]; positivity)
   letI := Fintype.ofFinite 𝓀[HeightOneSpectrum.adicCompletion K v]
-  haveI : Module.Finite 𝓀[HeightOneSpectrum.adicCompletion K v]
-      𝓀[HeightOneSpectrum.adicCompletion M (w : HeightOneSpectrum (𝓞 M))] :=
-    Module.Finite.of_finite
   refine ⟨?_, ?_⟩
   · have hc := Module.natCard_eq_pow_finrank (K := 𝓀[HeightOneSpectrum.adicCompletion K v])
       (V := 𝓀[HeightOneSpectrum.adicCompletion M (w : HeightOneSpectrum (𝓞 M))])
     rw [hcardM] at hc
-    have h2 : 2 ≤ Nat.card 𝓀[HeightOneSpectrum.adicCompletion K v] := by
-      rw [hK, hnormK]
-      exact hge
-    exact (Nat.pow_right_injective h2 hc).symm
+    exact (Nat.pow_right_injective (by rwa [hK, hnormK]) hc).symm
   · refine ⟨FiniteField.frobeniusAlgEquivOfAlgebraic _ _, fun z => ?_⟩
     rw [FiniteField.frobeniusAlgEquivOfAlgebraic_apply, Nat.card_eq_fintype_card]

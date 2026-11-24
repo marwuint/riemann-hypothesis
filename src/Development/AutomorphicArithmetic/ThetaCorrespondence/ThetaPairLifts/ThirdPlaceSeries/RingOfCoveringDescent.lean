@@ -221,8 +221,7 @@ theorem slope_sq_sub_le_of_different_smul {K K' V V' : Type} [Field K] [NumberFi
     rw [h4]
     refine Submodule.smul_mem _ _ ?_
     have h5 : (δ : K') • x = δ • x := algebraMap_smul K' δ x
-    rw [h5]
-    exact h2
+    rwa [h5]
   classical
   letI : StarRing K := starRingOfComm
   letI : StarRing K' := starRingOfComm
@@ -422,14 +421,11 @@ theorem slope_sq_latOver_sub_le : ∀ (D : D7) (T : CoreJ D) (j : ℕ) (Y : Deep
     rw [← Submodule.comap_map_eq_of_injective U.injective_subtype
       (Submodule.span T.Q.c.F (U.subtype ⁻¹' S)), Submodule.map_span,
       Set.image_preimage_eq_of_subset]
-    intro f hf
-    exact ⟨⟨f, hSc f hf⟩, rfl⟩
+    exact fun f hf => ⟨⟨f, hSc f hf⟩, rfl⟩
   let P := Submodule.span Y.d.c₂.F {g | ∃ f ∈ S, Y.Pull f g}
   have hCQ : C ≤ (P.comap W.subtype).comap π := by
     rw [hCspan]
-    apply Submodule.span_le.2
-    intro f hf
-    exact Submodule.subset_span ⟨(f : T.R j), hf, hPf f⟩
+    exact Submodule.span_le.2 (fun f hf => Submodule.subset_span ⟨(f : T.R j), hf, hPf f⟩)
   let Q := Submodule.span Y.d.c₂.F (π '' (C : Set U))
   -- A generator of P differs from the chosen pullback of its source by an element of Z.
   have hP : P ≤ Q.map W.subtype ⊔ Z := by
@@ -452,9 +448,7 @@ theorem slope_sq_latOver_sub_le : ∀ (D : D7) (T : CoreJ D) (j : ℕ) (Y : Deep
     have hgP : (g : Rul Y.d.Xo₂ Y.d.c₂) ∈ P := (Submodule.mem_inf.1 hg).2
     obtain ⟨y, hy, z, hz, hsum⟩ := Submodule.mem_sup.1 (hP hgP)
     obtain ⟨x, hx, rfl⟩ := Submodule.mem_map.1 hy
-    have hzW : z ∈ W := by
-      have hsub := eq_sub_of_add_eq' hsum
-      exact hsub ▸ W.sub_mem g.2 x.2
+    have hzW : z ∈ W := (eq_sub_of_add_eq' hsum) ▸ W.sub_mem g.2 x.2
     have hz0 : z = 0 := hu.unique ⟨hzW, hz⟩ ⟨W.zero_mem, p0⟩
     have hgx : g = x := by
       rw [hz0, add_zero] at hsum

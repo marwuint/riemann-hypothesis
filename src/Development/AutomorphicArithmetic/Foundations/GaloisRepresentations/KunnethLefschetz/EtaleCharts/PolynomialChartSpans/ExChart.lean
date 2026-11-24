@@ -97,8 +97,7 @@ private theorem mem_map_ker_app_of_pullback_fst_app_eq_zero {X Y S : Scheme.{0}}
     intro x _
     show t x ∈ (V : Set X)
     rw [← hV.range_fromSpec]
-    simp only [t, Scheme.Hom.comp_apply]
-    exact Set.mem_range_self _
+    simpa only [t, Scheme.Hom.comp_apply] using Set.mem_range_self _
   have key : ∀ (m : Spec (CommRingCat.of (Γ(X, V) ⧸ J)) ⟶ X) (hm : m = t)
       (e : ⊤ ≤ m ⁻¹ᵁ V), (m.appLE V ⊤ e).hom a = (t.appLE V ⊤ e0).hom a := by
     rintro m rfl e; rfl
@@ -132,8 +131,7 @@ theorem exChart : ExChart := by
   have hle : (exI π).left ⁻¹ᵁ b.V j ≤ (exG π).left ⁻¹ᵁ (dg Z).left ⁻¹ᵁ c.N := by
     intro x hx
     have h1 : ((exI π).left ≫ π.left) x ∈ c.N := b.le j hx
-    rw [← hsq] at h1
-    exact h1
+    rwa [← hsq] at h1
   refine ⟨hM, hE, ?_, hle, ?_⟩
   all_goals
     set φ := (secMap π (b.le j)).toRingHom with hφ
@@ -151,8 +149,7 @@ theorem exChart : ExChart := by
         (Set.range fun k ↦ MvPolynomial.C (c.s k) - MvPolynomial.C (c.s j) * MvPolynomial.X k)) →
         MvPolynomial.eval₂Hom φ (b.y j) p = 0 := by
       intro p hp
-      rw [← b.ker j] at hp
-      exact hp
+      rwa [← b.ker j] at hp
     have hyk : ∀ k, φ (c.s k) = φ (c.s j) * b.y j k := by
       intro k
       have := hmemker _ (Ideal.subset_span (Set.mem_insert_of_mem _ ⟨k, rfl⟩))
@@ -201,8 +198,7 @@ theorem exChart : ExChart := by
         apply MvPolynomial.ringHom_ext
         · intro x
           show P (ρ (MvPolynomial.C x)) = α (ev (MvPolynomial.C x))
-          simp only [ρ, hP, hev, MvPolynomial.eval₂Hom_C, RingHom.comp_apply]
-          exact (hcomm x).symm
+          simpa only [ρ, hP, hev, MvPolynomial.eval₂Hom_C, RingHom.comp_apply] using (hcomm x).symm
         · intro k
           by_cases h : k = j
           · subst h; simp [ρ, P, ev, hyj]
@@ -247,8 +243,7 @@ theorem exChart : ExChart := by
         rw [map_sub, map_mul] at h4
         simp only [ρ, MvPolynomial.eval₂Hom_C, RingHom.comp_apply, hsk, map_zero, zero_mul,
           sub_zero] at h4
-        rw [← RingHom.congr_fun hρren q]
-        exact h4
+        rwa [← RingHom.congr_fun hρren q]
       · intro e
         obtain ⟨a, rfl⟩ := hαsurj e
         obtain ⟨p, rfl⟩ := b.surj j a

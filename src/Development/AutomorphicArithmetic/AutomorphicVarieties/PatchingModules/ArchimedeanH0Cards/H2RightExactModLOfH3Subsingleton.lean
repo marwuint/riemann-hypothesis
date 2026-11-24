@@ -116,9 +116,7 @@ theorem UpperTheory.V.Pa.B2.H2_right_exact_mod_l_of_H3_subsingleton :
   have hcont : ContAction ρK :=
     continuous_induced_rng.2 (M.cont.comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd)))
   let K : FRep A G := FRep.mk N ρK hcont
-  have hKl : ∀ m : K.X, l • m = 0 := by
-    intro m
-    exact Subtype.ext (hl m.1)
+  have hKl : ∀ m : K.X, l • m = 0 := fun m => Subtype.ext (hl m.1)
   have hsub := h A K hKl
   let C : (Fin 2 → G) → M.X := fun x => c (x 0, x 1)
   have hfN : ∀ g : Fin 3 → G, dn M.ρ 2 C g ∈ N := by
@@ -155,9 +153,7 @@ theorem UpperTheory.V.Pa.B2.H2_right_exact_mod_l_of_H3_subsingleton :
       Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, map_sub, map_add, hmul]
     simp only [mul_assoc]
     abel
-  have fmem : f ∈ Zn K.ρ 3 := by
-    refine Submodule.mem_inf.2 ⟨fcont, ?_⟩
-    exact LinearMap.mem_ker.2 fcyc
+  have fmem : f ∈ Zn K.ρ 3 := Submodule.mem_inf.2 ⟨fcont, LinearMap.mem_ker.2 fcyc⟩
   have h0 : (Submodule.Quotient.mk ⟨f, fmem⟩ : Hn K.ρ 3) = 0 := Subsingleton.elim _ _
   rw [Submodule.Quotient.mk_eq_zero, Submodule.mem_comap] at h0
   change f ∈ Submodule.map (dn ρK 2) (Cn ρK 2) at h0

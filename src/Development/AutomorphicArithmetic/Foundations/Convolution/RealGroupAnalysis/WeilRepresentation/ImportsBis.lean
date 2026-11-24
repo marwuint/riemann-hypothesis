@@ -262,8 +262,7 @@ theorem UpperTheory.ConvolutionTheory.R2.G.goodLift :
       funext fun ξ => by
         rw [hWE]
         exact ((hw h).2.2 ξ.1 ξ.2).symm
-    rw [e]
-    exact hs''
+    rwa [e]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.GaussianProducts.GoodLift =====

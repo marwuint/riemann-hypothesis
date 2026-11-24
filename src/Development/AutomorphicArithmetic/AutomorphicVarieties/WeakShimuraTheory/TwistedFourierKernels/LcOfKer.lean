@@ -249,8 +249,7 @@ theorem UpperTheory.V.Ws.H5.levelJ :
       have eb : pushCh e ((MonoidAlgebra.of B.B Q).toHomUnits.comp q) = β := by
         ext g
         exact he2 (q g)
-      rw [ea, eb] at h2
-      exact h2
+      rwa [ea, eb] at h2
     have hx'J : J ≤ RingHom.ker (x' : B.B →+* Qbar l) := by
       refine hT x x' h0 β hxJ hxG (Subgroup.isOpen_mono hker hq) ⟨k, ?_⟩ ?_ ?_ ?_ ?_ ?_
       · ext g
@@ -260,8 +259,7 @@ theorem UpperTheory.V.Ws.H5.levelJ :
       · ext g
         show (χ (q (V.frame.conj g)) : Qbar l) = ((χ (q g))⁻¹ : (Qbar l)ˣ)
         rw [eq_inv_of_mul_eq_one_left (hA.conj g), map_inv]
-      · intro u
-        exact (hA.iu u).trans hker
+      · exact fun u => (hA.iu u).trans hker
       · exact hA.i0.trans hker
       · exact isTwistOf B _ _ β htw'
       · intro v j
@@ -299,14 +297,11 @@ private theorem single_sub_mem {l : ℕ} (hl : l.Prime) {B Q : Type} [CommRing B
   obtain ⟨k, hk⟩ := hQ z
   have hlM : ((l : ℕ) : MonoidAlgebra B Q) ∈ M := by
     have h1 : ((l : ℕ) : B) ∈ M.comap (algebraMap B (MonoidAlgebra B Q)) := by
-      rw [comap_max M]
-      exact hB
-    rw [Ideal.mem_comap, map_natCast] at h1
-    exact h1
+      rwa [comap_max M]
+    rwa [Ideal.mem_comap, map_natCast] at h1
   letI : Field (MonoidAlgebra B Q ⧸ M) := Ideal.Quotient.field M
   have hlK : ((l : ℕ) : MonoidAlgebra B Q ⧸ M) = 0 := by
-    rw [← map_natCast (Ideal.Quotient.mk M), Ideal.Quotient.eq_zero_iff_mem]
-    exact hlM
+    rwa [← map_natCast (Ideal.Quotient.mk M), Ideal.Quotient.eq_zero_iff_mem]
   haveI : CharP (MonoidAlgebra B Q ⧸ M) l := by
     rcases hl.eq_one_or_self_of_dvd _ (ringChar.dvd hlK) with h1 | h1
     · exact absurd h1 (CharP.ringChar_ne_one)
@@ -354,16 +349,14 @@ theorem UpperTheory.V.Ws.H5.grpCO :
       exact (residue_eq_zero_iff _).mp hx
     have h2 : algebraMap B _ (aug x) ∈ M := by
       have : aug x ∈ M.comap (algebraMap B _) := by
-        rw [comap_max M]
-        exact h1
+        rwa [comap_max M]
       exact this
     have h3 : x - algebraMap B _ (aug x) ∈ M := sub_aug_mem M (single_sub_mem hl hB hQ M) x
     have := M.add_mem h3 h2
     rwa [sub_add_cancel] at this
   haveI : IsLocalRing (MonoidAlgebra B Q) := by
     apply IsLocalRing.of_unique_max_ideal
-    refine ⟨RingHom.ker φ, hM0, fun M hM => ?_⟩
-    exact (hM0.eq_of_le hM.ne_top (hle M hM)).symm
+    exact ⟨RingHom.ker φ, hM0, fun M hM => (hM0.eq_of_le hM.ne_top (hle M hM)).symm⟩
   have hres : ∀ x : MonoidAlgebra B Q, ∃ a : O, x - algebraMap O _ a ∈ maximalIdeal (MonoidAlgebra B Q) := by
     intro x
     obtain ⟨a, ha⟩ := IsCO.res_surj (O := O) (aug x)
@@ -372,8 +365,7 @@ theorem UpperTheory.V.Ws.H5.grpCO :
       sub_aug_mem _ (single_sub_mem hl hB hQ _) x
     have h4 : algebraMap B (MonoidAlgebra B Q) (aug x - algebraMap O B a) ∈ maximalIdeal (MonoidAlgebra B Q) := by
       have : aug x - algebraMap O B a ∈ (maximalIdeal (MonoidAlgebra B Q)).comap (algebraMap B _) := by
-        rw [comap_max]
-        exact ha
+        rwa [comap_max]
       exact this
     have := (maximalIdeal _).add_mem h3 h4
     rw [IsScalarTower.algebraMap_apply O B (MonoidAlgebra B Q)]
@@ -441,8 +433,7 @@ theorem UpperTheory.V.Ws.H5.twJN :
   have h3 := twMapUniq B _ _ ((e.restrictScalars c.O).comp tw) ((Ideal.Quotient.mkₐ c.O (maximalIdeal B.B ^ (N + 1))).comp τ) h1 h2
   have h4 : e (tw b) = Ideal.Quotient.mk (maximalIdeal B.B ^ (N + 1)) (τ b) := DFunLike.congr_fun h3 b
   have h5 := lift_mem ((Units.coeHom _).comp j) J (tw b) hJ
-  rw [← Ideal.mem_quotient_iff_mem_sup, ← h4]
-  exact h5
+  rwa [← Ideal.mem_quotient_iff_mem_sup, ← h4]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.TwistedFourierKernels.LcOfKer =====

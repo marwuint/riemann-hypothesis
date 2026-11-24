@@ -130,8 +130,7 @@ theorem detect_conj {D : D7} {n : ℕ} {A : Type} [AddCommGroup A] [Module ℂ A
   obtain ⟨q, hq0, hq⟩ := GlobalTheory.isotIn_detect_by_eqv_map D A ρ C π y hy hy0
   refine ⟨(NG.rt D.host.E n c⁻¹).comp q, fun h0 => hq0 ?_, fun z hz => ⟨π.stable _ _ (hq z hz).1, fun h => ?_⟩⟩
   · funext g
-    have e := congrFun h0 (g * c)
-    simpa [NG.rt, mul_assoc] using e
+    simpa [NG.rt, mul_assoc] using congrFun h0 (g * c)
   · have e : (ρ.comp (MulAut.conj c).toMonoidHom) h = ρ (c * h * c⁻¹) := rfl
     rw [e, LinearMap.comp_apply, LinearMap.comp_apply, (hq z hz).2]
     funext g
@@ -167,8 +166,7 @@ theorem intertwine {D : D7} {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCom
       ((ρA g z : SA) : A) ∈ N ∧ ((ρB g z' : SB) : B) = q (ρA g z) := by
     refine typePrime_finiteGroup_induction_factor D _ ?_ ?_
     · intro z z' hz hz'
-      simp only [map_one, Module.End.one_apply]
-      exact ⟨hz, hz'⟩
+      simpa only [map_one, Module.End.one_apply] using ⟨hz, hz'⟩
     · intro g k v m ih z z' hz hz'
       obtain ⟨h1, h2⟩ := ih z z' hz hz'
       simp only [map_mul, Module.End.mul_apply]
@@ -177,8 +175,7 @@ theorem intertwine {D : D7} {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCom
   induction a using MonoidAlgebra.induction_on with
   | of g =>
     intro z z' hz hz'
-    simp only [Representation.asAlgebraHom_of]
-    exact hg g z z' hz hz'
+    simpa only [Representation.asAlgebraHom_of] using hg g z z' hz hz'
   | add a c ha hc =>
     intro z z' hz hz'
     obtain ⟨a1, a2⟩ := ha z z' hz hz'
@@ -286,11 +283,8 @@ theorem typeVec_rows {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
         GlobalTheory.SplitSec.exists_trivOutside_loc D.host.E D.R.r (s k v) _
       have eV := hρV k v _ x hl z
       rw [hy0] at eV
-      have e1 := hpe _ x hl _ hzf
-      exact (congrArg (fun f => p (conjL f)) eV).trans e1
-  · intro h0
-    apply hq0
-    exact congrArg Subtype.val h0
+      exact (congrArg (fun f => p (conjL f)) eV).trans (hpe _ x hl _ hzf)
+  · exact fun h0 => hq0 (congrArg Subtype.val h0)
   · intro a
     obtain ⟨h1, h2⟩ := hall a ⟨Tm, hK⟩ ⟨q Tm, hqK⟩ hN rfl
     show ((ρV.asAlgebraHom a ⟨q Tm, hqK⟩ : KFix D s j (rtHom D.host.E D.R.r)) : GAf D.host.E D.R.r → ℂ) ∈

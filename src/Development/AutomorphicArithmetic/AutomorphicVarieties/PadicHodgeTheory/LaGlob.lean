@@ -402,8 +402,7 @@ private theorem exists_sqrt_padic (l : ℕ) [Fact l.Prime] : ∃ d : ℚ_[l], d 
   let P : Polynomial ℤ_[l] := Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (l : ℤ_[l])
   have h : ‖Polynomial.aeval (0 : ℤ_[l]) P‖ < ‖Polynomial.aeval (0 : ℤ_[l]) (Polynomial.derivative P)‖ ^ 2 := by
     have hl : (1 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).one_lt
-    simp [P]
-    exact inv_lt_one_of_one_lt₀ hl
+    simpa [P] using inv_lt_one_of_one_lt₀ hl
   obtain ⟨z, hz, -⟩ := hensels_lemma h
   have hz' : z ^ 2 - z + l = 0 := by simpa [P] using hz
   have hz2 : (z : ℚ_[l]) ^ 2 - z + l = 0 := by exact_mod_cast congrArg (fun t : ℤ_[l] => (t : ℚ_[l])) hz'
@@ -453,11 +452,9 @@ theorem UpperTheory.exists_totally_imaginary_padic_sqrt :
     apply hreal
     have h0 : Polynomial.aeval b' g = 0 := by
       apply (algebraMap E Ω).injective
-      rw [← Polynomial.aeval_algebraMap_apply, map_zero]
-      exact hbg
+      rwa [← Polynomial.aeval_algebraMap_apply, map_zero]
     have := Polynomial.aeval_algHom_apply φ.toRatAlgHom b' g
-    rw [h0, map_zero] at this
-    exact this
+    rwa [h0, map_zero] at this
   have htc : IsTotallyComplex E := ⟨fun w => by
     rw [← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]
     intro h
@@ -555,8 +552,7 @@ private theorem locAlg_step {l : ℕ} [Fact l.Prime] (c : Weil h →* Weil h')
     refine Subgroup.isOpen_of_mem_nhds _ (g := 1)
       (Filter.mem_of_superset ((hU.preimage continuous_subtype_val).mem_nhds hU1) fun τ hτ => ?_)
     have hO : e τ ∈ Subtype.val ⁻¹' O' := hUO τ hτ _ (hc (ineIncl h τ))
-    rw [hpre] at hO
-    exact hO
+    rwa [hpre] at hO
   · obtain ⟨a', ha', haa⟩ := hA a ha
     have h1 := hph a' ha' (e σ)
     rw [hκ _ (Subgroup.inclusion (Weil_le_Dec h') (ineIncl h' (e σ))) (hc (ineIncl h σ)), MonoidHom.comp_apply, h1, he, haa]
@@ -693,8 +689,7 @@ theorem exists_isInduced_emb {F Ω : Type} [Field F] [NumberField F] [Field Ω] 
   refine GlobalTheory.CharAboveRead.exists_isInduced_of (j.comp (algebraMap F (w.adicCompletion F))) w hl' (fun x => ?_) A h O Bw hj
   rw [RingOfIntegers.coe_eq_algebraMap]
   refine ⟨fun hx => h2 x ?_, fun hx => ?_⟩
-  · rw [RingHom.comp_apply]
-    exact hx
+  · rwa [RingHom.comp_apply]
   · rw [RingHom.comp_apply]
     exact h1 x hx
 

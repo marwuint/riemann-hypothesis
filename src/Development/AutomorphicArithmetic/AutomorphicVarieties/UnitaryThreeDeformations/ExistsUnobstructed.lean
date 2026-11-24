@@ -142,8 +142,7 @@ theorem exists_procyc_lift {D H H' : Type} [Group D] [TopologicalSpace D] [IsTop
   have h2 : IsClosed (((π.comp (e.comp d)).eqLocus u' : Subgroup D) : Set D) := by
     have := ((hlc.comp π).prodMk hu').isClopen_fiber
     have h3 := ((hlc.comp π).prodMk hu') {z | z.1 = z.2}ᶜ
-    rw [← isOpen_compl_iff]
-    exact h3
+    rwa [← isOpen_compl_iff]
   have h4 := Subgroup.topologicalClosure_minimal _ h1 h2
   rw [hφ] at h4
   exact MonoidHom.ext fun g => h4 (Subgroup.mem_top g)
@@ -316,8 +315,7 @@ theorem isLocallyConstant_GG {A D : Type} [CommRing A] [Group D] [TopologicalSpa
       exact Prod.ext rfl (hr g)
     rw [this]
     exact h.prodMk hη
-  · intro z w e
-    exact SemidirectProduct.ext (Units.ext (congrArg Prod.fst e)) (congrArg Prod.snd e)
+  · exact fun z w e => SemidirectProduct.ext (Units.ext (congrArg Prod.fst e)) (congrArg Prod.snd e)
 
 def twist {A D : Type} [CommRing A] [Group D] (χ : D →* Aˣ) (u : D →* GG (m := 3) (R := A)) (hu : ∀ g, (u g).mat.IsDiag) :
     D →* GG (m := 3) (R := A) where
@@ -452,8 +450,7 @@ private theorem res_left [IsLocalRing O] {η : D →* ℤˣ} {Ψ : D →* Oˣ} {
   have h := (residue_eq_zero_iff _).2 (hr.red g a b)
   rw [Matrix.sub_apply, map_sub, sub_eq_zero] at h
   have h2 : GeneralLinearGroup.map (algebraMap O A) (tor O (Ψ g)) = tor A (chr Ψ A g) := map_tor _ _
-  rw [← h2]
-  exact h
+  rwa [← h2]
 
 private theorem res_conj {h : GL (Fin 3) A} (hh : InHat h) (r : D →* GG (m := 3) (R := A)) (g : D) :
     GeneralLinearGroup.map (residue A) (conjBy h⁻¹ r g).left = GeneralLinearGroup.map (residue A) (r g).left := by
@@ -672,8 +669,7 @@ private theorem lu_conj {H H' A : Type} [Group H] [Finite H] [Group H'] [Group A
       Nat.card_eq_fintype_card, map_prod]
   have h2 : k = c a * act a k := by
     apply hbij.1
-    rw [powCoprime_apply, powCoprime_apply, mul_pow, ← map_pow, hk]
-    exact h1
+    rwa [powCoprime_apply, powCoprime_apply, mul_pow, ← map_pow, hk]
   have h3 := congrArg Subtype.val h2
   rw [Subgroup.coe_mul, hact] at h3
   simp only [c] at h3
@@ -806,8 +802,7 @@ private theorem lu_sub {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] [A
   have h1 : GrMat 𝒜 (1 : Matrix (Fin 3) (Fin 3) R) := fun a b => by
     by_cases h : a = b
     · subst h
-      simp only [wt, sub_self, Matrix.one_apply_eq]
-      exact SetLike.GradedOne.one_mem
+      simpa only [wt, sub_self, Matrix.one_apply_eq] using SetLike.GradedOne.one_mem
     · simp [Matrix.one_apply_ne h]
   have hm : ∀ X Y : Matrix (Fin 3) (Fin 3) R, GrMat 𝒜 X → GrMat 𝒜 Y → GrMat 𝒜 (X * Y) := fun X Y hX hY a b => by
     rw [Matrix.mul_apply]
@@ -1370,8 +1365,7 @@ private theorem inHat_push (φ : R →ₐ[O] R') {h : GL (Fin 3) R} (H : InHat h
     InHat (GeneralLinearGroup.map (φ : R →+* R') h) := by
   have hm : ∀ x ∈ maximalIdeal R, φ x ∈ maximalIdeal R' := by
     intro x hx
-    rw [← res_eq_zero_iff O R', res_map, res_eq_zero_iff O R]
-    exact hx
+    rwa [← res_eq_zero_iff O R', res_map, res_eq_zero_iff O R]
   unfold InHat CongOne EntIn at H ⊢
   intro a b
   have e : ((GeneralLinearGroup.map (φ : R →+* R') h : Matrix (Fin 3) (Fin 3) R') - 1) a b =
@@ -1478,8 +1472,7 @@ theorem UpperTheory.V.UnitaryThreeInertia.exists_unobstructed :
       simp only [Matrix.map_sub _ (map_sub φ), Matrix.map_add _ (map_add φ), act_map,
         Matrix.map_zero _ (map_zero φ)] at e
       show (F.gbar j g (κ φ (g', k))).val - _ + _ - _ = _
-      rw [Frame.gbar, Frame.Ψbar, act_val]
-      exact e
+      rwa [Frame.gbar, Frame.Ψbar, act_val]
     · exact (IsLocallyConstant.desc (α φ v) Gb.val ((hAc v).comp fun Y => Y.map φ) hval).continuous
     · funext ⟨g, g'⟩
       apply hval
@@ -1487,8 +1480,7 @@ theorem UpperTheory.V.UnitaryThreeInertia.exists_unobstructed :
         (fun gg => K (F.loc v gg.1, F.loc v gg.2)) (fun g g' => by rw [map_mul]; exact hK (_, _)) (A v) (hA v) g g')
       simp only [Matrix.map_sub _ (map_sub φ), Matrix.map_add _ (map_add φ), act_map] at e
       show (F.gbar j (F.loc v g) (α φ v g')).val - _ + _ = _
-      rw [Frame.gbar, Frame.Ψbar, act_val]
-      exact e
+      rwa [Frame.gbar, Frame.Ψbar, act_val]
   obtain ⟨φ, hφ, hB⟩ : ∃ φ, φ ≠ 0 ∧ (κ φ, α φ) ∈ F.framedTwoCoboundaries j := by
     have : Finite (F.Ob j) := Module.finite_of_finite (ResidueField O)
     have hn : ¬ Function.Injective fun φ => (Submodule.Quotient.mk ⟨_, hZ φ⟩ : F.Ob j) := fun hi => by
@@ -1500,8 +1492,7 @@ theorem UpperTheory.V.UnitaryThreeInertia.exists_unobstructed :
       rw [← Module.natCard_eq_pow_finrank (K := ResidueField O) (V := F.Ob j)] at hlt
       exact absurd hlt (not_lt.2 h1)
     obtain ⟨φ₁, φ₂, e, hne⟩ := Function.not_injective_iff.1 hn
-    refine ⟨φ₁ - φ₂, sub_ne_zero.2 hne, ?_⟩
-    exact (Submodule.Quotient.eq _).1 e
+    exact ⟨φ₁ - φ₂, sub_ne_zero.2 hne, (Submodule.Quotient.eq _).1 e⟩
   obtain ⟨R'', _, _, _, p₁, q, ε, hp₁, hq, hqi, hε, hqε, hm, hk⟩ := UpperTheory.exists_small_extension_factorization_of_functional p hI.kill hI.le φ hφ
   have hS' : Sm ε := ⟨hm, hk⟩
   have hqp : ∀ x : GG (m := 3) (R := R), GG.map (q : R'' →+* R') (GG.map (p₁ : R →+* R'') x) = GG.map (p : R →+* R') x :=

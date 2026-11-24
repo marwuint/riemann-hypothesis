@@ -139,13 +139,11 @@ private theorem eU_surj (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (hs : s * s = Δ) : 
   have q1 : (star M).map (proj hs) = B := by
     ext i j
     rw [Matrix.map_apply, Matrix.star_apply, proj_star]
-    have e := congrFun (congrFun p2 j) i
-    simpa only [Matrix.map_apply, Matrix.transpose_apply] using e
+    simpa only [Matrix.map_apply, Matrix.transpose_apply] using congrFun (congrFun p2 j) i
   have q2 : (star M).map (proj (neg_sq hs)) = (A : Matrix (Fin 3) (Fin 3) K)ᵀ := by
     ext i j
     rw [Matrix.map_apply, Matrix.star_apply, proj_star']
-    have e := congrFun (congrFun p1 j) i
-    simpa only [Matrix.map_apply, Matrix.transpose_apply] using e
+    simpa only [Matrix.map_apply, Matrix.transpose_apply] using congrFun (congrFun p1 j) i
   have hBA : B * (A : Matrix (Fin 3) (Fin 3) K) = 1 := by
     rw [hB]
     exact A.inv_mul
@@ -158,14 +156,11 @@ private theorem eU_surj (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (hs : s * s = Δ) : 
   have hu : star M * M = 1 := by
     refine Matrix.ext fun i j => ?_
     apply proj_ext h2 h0 hs
-    · have e := congrFun (congrFun e1 i) j
-      simpa only [Matrix.map_apply] using e
-    · have e := congrFun (congrFun e2 i) j
-      simpa only [Matrix.map_apply] using e
+    · simpa only [Matrix.map_apply] using congrFun (congrFun e1 i) j
+    · simpa only [Matrix.map_apply] using congrFun (congrFun e2 i) j
   refine ⟨⟨M, (Matrix.mem_unitaryGroup_iff').2 hu⟩, ?_⟩
   apply Units.ext
-  rw [eU_val]
-  exact p1
+  rwa [eU_val]
 
 private theorem hasTau_iff (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (hs : s * s = Δ) (δ : U3 Δ) (τ : K) :
     HasTau δ τ ↔ ((eU hs δ * th K 3 (eU hs δ) : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K).charpoly =
@@ -180,9 +175,7 @@ private theorem hasTau_iff (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (hs : s * s = Δ)
   have htt : theta Δ (theta Δ δ) = δ := by
     apply Subtype.ext
     rw [theta_val, theta_val]
-    refine Matrix.ext fun i j => ?_
-    show star (star ((δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) i j)) = _
-    exact star_star _
+    exact Matrix.ext fun i j => star_star _
   have hθ : (theta Δ δ * δ : U3 Δ) = theta Δ (δ * theta Δ δ) := by
     rw [map_mul, htt]
   have hB : N.map (proj (neg_sq hs)) =
@@ -256,12 +249,10 @@ private theorem comap_KO (hO : IsInts k O) (h2 : (2 : k) ≠ 0) (h0 : s ≠ 0) (
   · rintro ⟨hA, hB⟩
     have a1 : ∀ i j, valuation k (proj hs ((g : Matrix (Fin 3) (Fin 3) (Lsq k Δ)) i j)) ≤ 1 := fun i j => by
       have e := hA i j
-      rw [eU_val, Matrix.map_apply, Valuation.mem_integer_iff] at e
-      exact e
+      rwa [eU_val, Matrix.map_apply, Valuation.mem_integer_iff] at e
     have a2 : ∀ i j, valuation k (proj (neg_sq hs) ((g : Matrix (Fin 3) (Fin 3) (Lsq k Δ)) i j)) ≤ 1 := fun i j => by
       have e := hB j i
-      rw [eU_inv_apply, Valuation.mem_integer_iff] at e
-      exact e
+      rwa [eU_inv_apply, Valuation.mem_integer_iff] at e
     show ∀ i j, _ ∧ _
     refine fun i j => ⟨int_of_val hO h2 h0 hs (a1 i j) (a2 i j), int_of_val hO h2 h0 hs ?_ ?_⟩
     · rw [proj_star]

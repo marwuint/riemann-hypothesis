@@ -303,8 +303,7 @@ theorem tauE_sig_of {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (x 
   have h := GlobalTheory.Mem.VolExists.infEmb_sigR hcm (hθ τ) ((1 : Ainf D.host.F) ⊗ₜ[D.host.F] x)
   have e : sigR (Ainf D.host.F) D.sp.cm.sig ((1 : Ainf D.host.F) ⊗ₜ[D.host.F] x) =
       (1 : Ainf D.host.F) ⊗ₜ[D.host.F] (D.sp.cm.sig x) := rfl
-  rw [e, (hθ τ).1, (hθ τ).1] at h
-  exact h
+  rwa [e, (hθ τ).1, (hθ τ).1] at h
 
 theorem psi_incA {θ : InfFam D} (hθ : IsInfFam θ) (ρ : D.what₂.Tau) (x : D.host.E) :
     ((θ ρ).comp (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom) (incA D x) =
@@ -461,8 +460,7 @@ theorem isClosedEmbedding_atP : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → �
     refine Subgroup.subset_closure ((mem_NI_iff_unipEq hL hR _).1 (unipEq_of_real hθ _ hs.1 fun ρ => ?_))
     by_cases hρ : ρ = τ
     · subst hρ
-      rw [hs.2.1]
-      exact hc
+      rwa [hs.2.1]
     · rw [hs.2.2 ρ hρ, sub_self]
       exact ⟨by simp, by simp, by simp⟩
 
@@ -727,8 +725,7 @@ theorem comm_and_inf_trivial : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀
     apply Subtype.ext
     have e2 : (p : GA D V) * q * (p : GA D V)⁻¹ * (q : GA D V)⁻¹ = 1 := e
     have e3 : (p : GA D V) * q = (q : GA D V) * p := by
-      rw [mul_inv_eq_one, mul_inv_eq_iff_eq_mul] at e2
-      exact e2
+      rwa [mul_inv_eq_one, mul_inv_eq_iff_eq_mul] at e2
     simpa using e3
   · rw [mem_atP] at hp
     rw [mem_offP] at hq
@@ -996,8 +993,7 @@ theorem fibre_integral_eq_zero : GlobalTheory.Published.DiscreteSeriesCoefficien
   have hι : Topology.IsClosedEmbedding ι := hemb
   have hmap := isHaarSub_map_closedEmb ι hι ⊤ isClosed_univ ν (isHaarSub_top ν)
   have hr : (((⊤ : Subgroup (atP θ V C τ)).map ι : Subgroup _) : Set _) = GlobalTheory.Dec.NW (M.ε τ) W := by
-    rw [← MonoidHom.range_eq_map, MonoidHom.coe_range]
-    exact hrange
+    rwa [← MonoidHom.range_eq_map, MonoidHom.coe_range]
   rw [hr] at hmap
   have hsq : GlobalTheory.Dec.IsSqIntIrr (M.ε τ) (M.σ τ) := by
     have hDS := M.ds τ
@@ -1106,8 +1102,7 @@ theorem fibre_integral_eq_zero : ∀ (D : D7) (θ : InfFam D), IsInfFam θ →
   have hι : Topology.IsClosedEmbedding ι := hemb
   have hmap := isHaarSub_map_closedEmb ι hι ⊤ isClosed_univ ν (isHaarSub_top ν)
   have hr : (((⊤ : Subgroup (atP θ V C τ)).map ι : Subgroup _) : Set _) = GlobalTheory.Dec.NW (M.ε τ) W := by
-    rw [← MonoidHom.range_eq_map, MonoidHom.coe_range]
-    exact hrange
+    rwa [← MonoidHom.range_eq_map, MonoidHom.coe_range]
   rw [hr] at hmap
   have hsq : GlobalTheory.Dec.IsSqIntIrr (M.ε τ) (M.σ τ) := by
     have hDS := M.ds τ

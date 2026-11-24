@@ -85,14 +85,12 @@ theorem UpperTheory.ConvolutionTheory.R2.C.chirpInf :
     | C a =>
       simpa using Function.HasTemperateGrowth.const (E := ι → mixedEmbedding.mixedSpace K) a
     | add p q hp hq =>
-      simp only [map_add (f := _)]
-      exact hp.fun_add hq
+      simpa only [map_add (f := _)] using hp.fun_add hq
     | mul_X p i hp =>
       have hi : Function.HasTemperateGrowth fun x : ι → mixedEmbedding.mixedSpace K => x i :=
         (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : ι => mixedEmbedding.mixedSpace K)
           i).hasTemperateGrowth
-      simp only [map_mul, MvPolynomial.eval_X]
-      exact hp.fun_mul hi
+      simpa only [map_mul, MvPolynomial.eval_X] using hp.fun_mul hi
   exact GlobalTheory.Published.Metaplectic.hasTemperateGrowth_eChar.comp (l.hasTemperateGrowth.comp hp)
 end -- clump:auto
 end -- clump:auto
@@ -146,8 +144,7 @@ private theorem psi_split (x : A F) :
   have h2 : x.2 * (1 : A F).2 = adeleFinHom x := by
     change x.2 * 1 = x.2
     rw [mul_one]
-  rw [h2] at h
-  exact h
+  rwa [h2] at h
 
 private theorem chirp_poly (p : MvPolynomial (Fin 4) (A F)) (φ : V4 F → ℂ)
     (hφ : φ ∈ schwartzBruhatPi (K := F) (ι := Fin 4)) :

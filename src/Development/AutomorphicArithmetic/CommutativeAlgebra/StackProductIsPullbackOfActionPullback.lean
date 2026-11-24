@@ -71,9 +71,7 @@ theorem UpperTheory.isPullback_of_unique_simplices_pullback :
     exact hw' x
   · rintro x y ⟨h1, h2⟩
     obtain ⟨z, -, hz⟩ := h k T (Sx.map t (x : Sx P k T)) (Sx.map l (x : Sx P k T)) (hw' x)
-    have hx := hz x ⟨rfl, rfl⟩
-    have hy := hz y ⟨h1.symm, h2.symm⟩
-    exact hx.trans hy.symm
+    exact (hz x ⟨rfl, rfl⟩).trans (hz y ⟨h1.symm, h2.symm⟩).symm
   · intro a b hab
     obtain ⟨z, ⟨h1, h2⟩, -⟩ := h k T a b hab
     exact ⟨z, h1, h2⟩
@@ -140,8 +138,7 @@ private theorem lift_chain {P a b c : Act} (t : Act.Hom P a) (l : Act.Hom P b) (
           rw [l.eq, (hzg i j f).2, (hzo j).2]
           exact (y.map f).2.symm⟩
       map_id := fun j => by
-        apply Subtype.ext
-        exact (hzgu j j (𝟙 j) 1 ⟨law_id t x j, law_id l y j⟩).symm
+        exact Subtype.ext (hzgu j j (𝟙 j) 1 ⟨law_id t x j, law_id l y j⟩).symm
       map_comp := fun {i j k} f g => by
         apply Subtype.ext
         exact (hzgu i k (f ≫ g) (zg i j f * zg j k g)
@@ -185,8 +182,7 @@ theorem UpperTheory.stackProduct_isPullback_of_actionPullback :
   have hsq : ∀ A, t.fn A ⋙ r.fn A = l.fn A ⋙ u.fn A := fun A => fn_square t l r u A (h1 A) (h2 A)
   apply isPullback_of_unique_simplices_pullback
   · ext k T s
-    refine Prod.ext rfl ?_
-    exact congrArg (fun F => s.2 ⋙ F) (hsq _)
+    exact Prod.ext rfl (congrArg (fun F => s.2 ⋙ F) (hsq _))
   · intro k T x y hxy
     have e1 : pr1 x = pr1 y := congrArg pr1 hxy
     have e2 : pr2 x ⋙ r.fn _ = pr2 y ⋙ u.fn _ := congrArg pr2 hxy

@@ -382,8 +382,7 @@ theorem UpperTheory.V.Base.lenEigLe :
     obtain ⟨z, hz⟩ := HasEnoughRootsOfUnity.exists_primitiveRoot O (Monoid.exponent Q)
     have he : 0 < Monoid.exponent Q := Nat.pos_of_ne_zero Monoid.exponent_ne_zero_of_finite
     obtain ⟨m, hm⟩ : n i ∣ Monoid.exponent Q := hg i ▸ Monoid.order_dvd_exponent (g i)
-    have h := hz.pow he (hm.trans (mul_comm _ _))
-    exact ⟨_, h.isUnit_unit (hn i).ne'⟩
+    exact ⟨_, (hz.pow he (hm.trans (mul_comm _ _))).isUnit_unit (hn i).ne'⟩
   choose ζ hζ using hζ
   have h1 := lenEigLe_many k n (fun i => (ζ i : O)) hn (fun i => IsPrimitiveRoot.coe_units_iff.2 (hζ i))
     (fun i => π (g i)) (fun i => by rw [← map_pow, ← hg i, pow_orderOf_eq_one, map_one])
@@ -495,8 +494,7 @@ theorem UpperTheory.V.Base.lenEigSign :
   let πE := π.subrepresentation _ hE
   have hkerE : ∀ g, p g = 1 → ∀ x, πE g x = x := by
     intro g hg x
-    apply Subtype.ext
-    exact hker g hg x
+    exact Subtype.ext (hker g hg x)
   obtain ⟨hlen, -⟩ := lenEigVia O W Q _ πE p hp hkerE
   refine hlen.trans ?_
   have hzero : ∀ ψ : Q →* Oˣ, ψ ∉ T → Module.length O (eig πE (ψ.comp p)) = 0 := by
@@ -522,9 +520,7 @@ theorem UpperTheory.V.Base.lenEigSign :
       have h3 : ((s : O) - ψ (p c)) • y.1.1 = 0 := by
         rw [sub_smul, ← h1, ← h2', sub_self]
       have h4 : y.1.1 = 0 := hu.smul_eq_zero.mp h3
-      apply Subtype.ext
-      apply Subtype.ext
-      exact h4
+      exact Subtype.ext (Subtype.ext h4)
     rw [Module.length_eq_zero_iff]
     exact ⟨fun a b => (key a).trans (key b).symm⟩
   have hmono : ∀ ψ : Q →* Oˣ,

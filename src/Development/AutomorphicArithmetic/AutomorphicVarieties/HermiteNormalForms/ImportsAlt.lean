@@ -138,8 +138,7 @@ theorem UpperTheory.V.KT.torsfree :
           simp only [pow_succ, pow_zero, mul_add, add_mul, mul_sub, mul_neg, mul_one, one_mul,
             smul_mul_assoc, mul_smul_comm, mul_assoc]
           module
-        rw [hv3, sub_self, sub_eq_zero] at e
-        exact e
+        rwa [hv3, sub_self, sub_eq_zero] at e
       rw [hz, add_zero] at hv
       exact ih m (by omega) u x hm (by rw [h3]; exact hu) hv
     · obtain ⟨w, hw⟩ := UpperTheory.V.KT.torsfree_binom ((3 : ℤ) • x) k
@@ -175,9 +174,7 @@ theorem UpperTheory.V.KT.mink3 :
     Nat.card H ≤ 3 ^ Module.finrank ℤ R := by
   intro R _ _ _ H hH
   let f : H → R := fun h => ((h : Rˣ) : R)
-  have hinj : Function.Injective f := by
-    intro a b hab
-    exact Subtype.ext (Units.ext hab)
+  have hinj : Function.Injective f := fun a b hab => Subtype.ext (Units.ext hab)
   have hsep : ∀ a ∈ Set.range f, ∀ b ∈ Set.range f, ∀ x : R, a - b = (3 : ℕ) • x → a = b := by
     rintro _ ⟨h1, rfl⟩ _ ⟨h2, rfl⟩ x hx
     have ha : f h1 = f h2 + 3 * x := by
@@ -202,8 +199,7 @@ theorem UpperTheory.V.KT.mink3 :
     have : h2 = h1 := inv_mul_eq_one.mp hu1
     rw [this]
   obtain ⟨_, hcard⟩ := UpperTheory.V.KT.cardsep R 3 (by norm_num) (Set.range f) hsep
-  rw [Set.ncard_range_of_injective hinj] at hcard
-  exact hcard
+  rwa [Set.ncard_range_of_injective hinj] at hcard
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNormalForms.Mink3 =====

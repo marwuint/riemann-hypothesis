@@ -426,8 +426,7 @@ theorem UpperTheory.V.Z.Desc.W.twist_away_statement : _root_.UpperTheory.V.Z.Des
     refine LinearMap.ext fun v => funext fun i => ?_
     rw [Subsingleton.elim i 0]
     simp [toEndC_apply, Matrix.mulVec, dotProduct, hval, hL.loc_away (Or.inl hw) _ _ (ha.glob art hart g)]] at h4
-  rw [h4] at h3
-  exact h3
+  rwa [h4] at h3
 end
 end -- clump:auto
 end -- clump:auto
@@ -544,8 +543,7 @@ private theorem pr_ine (V : s.Lev) {A : ValuationSubring Ω} {w : Plc L} (hw : w
     (hA : IsPlaceOver A w) {g : G L Ω} (hg : g ∈ Ine (F := L) A) : V.pr g = 1 := by
   refine Subtype.ext ((QuotientGroup.eq_one_iff (W.resP L Ω g)).2
     (Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ?_)))
-  simp only [Set.mem_iUnion]
-  exact ⟨_, hw, A, place_under hA, hg⟩
+  simpa only [Set.mem_iUnion] using ⟨_, hw, A, place_under hA, hg⟩
 private theorem pr_surj (V : s.Lev) : Function.Surjective V.pr := by
   rintro ⟨g, hg⟩
   obtain ⟨g, rfl⟩ : ∃ t, toGS Ω V.S' t = g := QuotientGroup.mk'_surjective _ g
@@ -602,8 +600,7 @@ private theorem autP (hP : _root_.UpperTheory.V.Af.HypothesesH') (hn : 1 ≤ n) 
     have : Finite (ResidueField c.O) := hfinite
     have : CharP (ResidueField c.O) l := by
       refine (CharP.charP_iff_prime_eq_zero (Fact.out : l.Prime)).2 ?_
-      rw [← map_natCast (residue c.O), residue_eq_zero_iff]
-      exact hmem
+      rwa [← map_natCast (residue c.O), residue_eq_zero_iff]
     have : CharP (c.O ⧸ maximalIdeal c.O) l := inferInstanceAs (CharP (ResidueField c.O) l)
     have : PerfectRing (ResidueField c.O) l := inferInstance
     let lift := Perfection.lift l (ResidueField c.O) (c.O ⧸ maximalIdeal c.O)
@@ -655,8 +652,7 @@ private theorem pt_part (PH : _root_.UpperTheory.V.Af.HypothesesH') {l : ℕ} [F
     (autP Q R.τ₀ ι PH hn r R.type) R.a K _ _ hf lam trivial y hg.2.1
   refine ⟨d, ξ, Y, h1, ((congrArg B.u.D.map e2.symm).trans ((CA.d_gmap B.u.D).2.1 _ _).symm).trans h4, fun v => ?_⟩
   obtain ⟨ω, w1, w2⟩ := h5 v
-  refine ⟨ω, w1, fun i => ?_⟩
-  exact ord_congr (w2 i) fun g => hy _
+  exact ⟨ω, w1, fun i => (ord_congr (w2 i) fun g => hy _)⟩
 
 theorem UpperTheory.V.Z.Desc.W.jTwist_of_alt : TypeGd → _root_.UpperTheory.V.Z.Desc.W.TwAwayAlt → _root_.UpperTheory.V.Z.Desc.W.SphUntwAlt → OrdTw → _root_.UpperTheory.V.Z.Desc.W.PsFullAlt →
     _root_.UpperTheory.V.Af.HypothesesH' → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →
@@ -715,8 +711,7 @@ theorem UpperTheory.V.Z.Desc.W.jTwist_of_alt : TypeGd → _root_.UpperTheory.V.Z
       have : Finite (ResidueField c.O) := hfinite
       have : CharP (ResidueField c.O) l := by
         refine (CharP.charP_iff_prime_eq_zero (Fact.out : l.Prime)).2 ?_
-        rw [← map_natCast (residue c.O), residue_eq_zero_iff]
-        exact hmem
+        rwa [← map_natCast (residue c.O), residue_eq_zero_iff]
       have : CharP (c.O ⧸ maximalIdeal c.O) l := inferInstanceAs (CharP (ResidueField c.O) l)
       have : PerfectRing (ResidueField c.O) l := inferInstance
       let lift := Perfection.lift l (ResidueField c.O) (c.O ⧸ maximalIdeal c.O)

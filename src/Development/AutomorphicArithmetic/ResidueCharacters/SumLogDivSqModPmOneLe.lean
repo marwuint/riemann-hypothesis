@@ -174,8 +174,7 @@ lemma step_le (u M : ℝ) (hu : 1 ≤ u) (hM : 1 ≤ M) :
     have h2 : (Real.log (u + M) - Real.log u) * u ≤ (u + M - u) / u * u :=
       mul_le_mul_of_nonneg_right hb hu0.le
     nlinarith
-  rw [div_le_div_iff₀ (by positivity) (by linarith)]
-  rw [div_sub_div _ _ hu0.ne' huM.ne']
+  rw [div_le_div_iff₀ (by positivity) (by linarith), div_sub_div _ _ hu0.ne' huM.ne']
   rw [div_mul_eq_mul_div, le_div_iff₀ (by positivity)]
   nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ u + 2 * M) hX, mul_nonneg ha (mul_nonneg (by linarith : (0:ℝ) ≤ M) (by linarith : (0:ℝ) ≤ M)),
     mul_nonneg (by linarith : (0:ℝ) ≤ M) hu0.le, mul_pos huM huM, mul_pos hu0 huM]
@@ -413,8 +412,7 @@ namespace Formalism.MainNotions.TwistedPlaces.Cong
 
 lemma coprime_two_pow_of_odd (K : ℕ) (g : ℤ) (hg : Odd g) : IsCoprime ((2:ℤ) ^ K) g := by
   apply IsCoprime.pow_left
-  rw [Prime.coprime_iff_not_dvd Int.prime_two, ← even_iff_two_dvd, Int.not_even_iff_odd]
-  exact hg
+  rwa [Prime.coprime_iff_not_dvd Int.prime_two, ← even_iff_two_dvd, Int.not_even_iff_odd]
 
 lemma geom_sum_even_iff (x : ℤ) (hx : Odd x) (n : ℕ) :
     Even (∑ i ∈ Finset.range n, x ^ i) ↔ Even n := by

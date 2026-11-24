@@ -85,10 +85,8 @@ theorem UpperTheory.isOpen_stabilizer_linear_map :
     ext g
     simp only [Set.mem_setOf_eq, Set.mem_iInter]
     constructor
-    · intro hg i
-      exact LinearMap.congr_fun hg (b i)
-    · intro hg
-      exact b.ext fun i => hg i
+    · exact fun hg i => LinearMap.congr_fun hg (b i)
+    · exact fun hg => b.ext fun i => hg i
   rw [key]
   exact isOpen_iInter_of_finite fun i => h (b i)
 end -- clump:auto
@@ -139,8 +137,7 @@ private theorem lev_erase_le (S : Finset (Plc E)) (Kw : (w : Plc E) → Subgroup
     ⟨fun h => hv.1 (Finset.mem_of_mem_erase h), fun h => hv.2 (Finset.mem_of_mem_erase h)⟩⟩⟩
   by_cases e : v = w
   · subst e
-    rw [Function.update_self]
-    exact hw
+    rwa [Function.update_self]
   · rw [Function.update_of_ne e]
     exact h2 v (Finset.mem_erase.2 ⟨e, hv⟩)
 
@@ -189,14 +186,12 @@ theorem UpperTheory.Reformulated.B.Grk2.pVecU_of :
     Function.update_self _ _ _, fun w hw hap hsat => ?_, f', hf', hf'ne, hf'e⟩
   · by_cases e : v = w₀
     · subst e
-      rw [Function.update_self]
-      exact hJo
+      rwa [Function.update_self]
     · rw [Function.update_of_ne e]
       exact s2 v hv
   · by_cases e : v = w₀
     · subst e
-      rw [Function.update_self]
-      exact hJc
+      rwa [Function.update_self]
     · rw [Function.update_of_ne e]
       exact s3 v hv
   · rw [Function.update_of_ne e]

@@ -185,8 +185,7 @@ theorem finrank_eq_of_bij {K M N : Type} [Field K] [AddCommGroup M] [Module K M]
     constructor
     · rintro ⟨x', hx', e'⟩
       exact hf.1 e' ▸ (h x').1 hx'
-    · intro hy
-      exact ⟨x, (h x).2 hy, rfl⟩
+    · exact fun hy => ⟨x, (h x).2 hy, rfl⟩
   rw [← e]
   exact (Submodule.equivMapOfInjective f hf.1 p).finrank_eq
 
@@ -389,8 +388,7 @@ variable {fw : FWTie J R κ v₀} {hc : LawsCore J.toCore} {run : HeightOneSpect
 
 theorem card_comap_base (h1 : R.grp_levels F) : Nat.card (F.P0.comap (mirIncl R)) = Nat.card F.P0 := by
   refine Nat.card_congr (Equiv.ofBijective (fun u : F.P0.comap (mirIncl R) => (⟨mirIncl R u, u.2⟩ : F.P0)) ⟨?_, ?_⟩)
-  · intro a b hab
-    exact Subtype.ext (mirIncl_injective R (congrArg Subtype.val hab))
+  · exact fun a b hab => Subtype.ext (mirIncl_injective R (congrArg Subtype.val hab))
   · rintro ⟨g, hg⟩
     obtain ⟨u, -, rfl⟩ := (mem_base_iff h1 g).1 hg
     exact ⟨⟨u, hg⟩, rfl⟩
@@ -445,8 +443,7 @@ theorem tied_dims {O : OnObj ((R.toCx F).data F.cr false) (Mir R) c}
       · intro hu
         refine ⟨w.symm u, ?_, w.apply_symm_apply u⟩
         refine (mem_eig_iff h1 h2 hinc j w (t.rho_eq_of_actionPin (ht v j).2) t.U_eq t.ψ_eq _).2 ?_
-        rw [w.apply_symm_apply]
-        exact hu
+        rwa [w.apply_symm_apply]
     unfold OnObj.d0
     rw [← hm, LinearEquiv.finrank_map_eq]
 
@@ -473,8 +470,7 @@ theorem leafShareI_of_shareW (p : PtAt ex Csz) {Pm : ParameterChoice' D L} {Tp :
     rw [hfk.1, hfk.2]
   have hw := hW j
   unfold ShareW at hw
-  rw [hy, hn, hd, hU]
-  exact hw
+  rwa [hy, hn, hd, hU]
 
 end Point
 
@@ -676,19 +672,16 @@ theorem shareW_of_modelAt (p : PtAt ex Csz) (i : Fin D.R.m) (T : ℕ) (y : ℝ) 
     · have hsO : sOf M ≤ T := by
         have := hs M.p0 hr.le
         unfold sOf TwoLevels.dimX
-        rw [hcard]
-        exact this
+        rwa [hcard]
       have hR := _root_.GlobalTheory.ShareRanks.ranks _ _ _ _ M (hlev ⊥ (halfUnip_bot p)) h0 hr ka T harch hsO
       have hS := (_root_.GlobalTheory.ShareEig.share_eig _ _ _ _ M ka ρ hpull _ _ hR H (hlev H hH) lam).2
       have hY : ((M.dimY : ℝ) * (M.dimY + 6) / T) ≤ y := by
         unfold TwoLevels.dimY
-        rw [hcard]
-        exact he
+        rwa [hcard]
       have : (0 : ℝ) ≤ finrank ℂ (M.cusp ka) := Nat.cast_nonneg _
       nlinarith
   unfold ShareW
-  rw [← hdim, ← hn]
-  exact key
+  rwa [← hdim, ← hn]
 
 end GlobalTheory.ShareOn
 

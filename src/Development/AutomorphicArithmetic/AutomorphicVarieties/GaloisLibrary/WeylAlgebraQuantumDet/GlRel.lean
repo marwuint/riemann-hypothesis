@@ -133,8 +133,7 @@ private theorem hasDerivAt_mul_mul_entry {n : ℕ} (P Q : ℂ → Matrix (Fin n)
   have ef : (fun t => (P t * Y * Q t) p q) = fun t => ∑ m, (∑ l, P t p l * Y l m) * Q t m q := by
     funext t
     simp only [Matrix.mul_apply]
-  rw [e, ef]
-  exact h
+  rwa [e, ef]
 
 private theorem pre_D_eq_sum_single {n : ℕ} (Ξ : Pre n) (M : Matrix (Fin n) (Fin n) ℂ) (i k : Fin Ξ.d) :
     Ξ.D M i k = ∑ p, ∑ q, M p q * Ξ.D (Matrix.single p q 1) i k := by
@@ -211,8 +210,7 @@ theorem UpperTheory.V.Weyl.glRel :
     split_ifs with hbc
     · subst hbc; rw [Matrix.single_mul_single_same, mul_one]; rfl
     · rw [Matrix.single_mul_single_of_ne _ _ _ _ hbc, map_zero]
-  rw [map_sub, h1, h2] at h
-  exact h
+  rwa [map_sub, h1, h2] at h
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.WeylAlgebraQuantumDet.GlRel =====

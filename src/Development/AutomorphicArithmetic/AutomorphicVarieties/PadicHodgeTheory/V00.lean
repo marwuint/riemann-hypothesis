@@ -93,5 +93,4 @@ theorem UpperTheory.V.Loc.v00 :
   · have h1 : g * σ⁻¹ ∈ U := by
       have := U.inv_mem hσg
       simpa using this
-    have h2 := hU.conj_mem _ h1 σ⁻¹
-    simpa [mul_assoc] using h2
+    simpa [mul_assoc] using hU.conj_mem _ h1 σ⁻¹

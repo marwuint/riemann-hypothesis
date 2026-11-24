@@ -106,8 +106,7 @@ theorem lAbs_maxCompact {k : GA E n} (hk : k ∈ maxCompact (K := E) (n := n)) :
     (DiscreteGroups.T1.G.continuous_logAbs_det (E := E) (n := n)).continuousOn
   refine eq_zero_of_nat_mul_le (C := C) fun m => ?_
   have h := hC (k ^ m) (pow_mem hk m)
-  rw [Real.norm_eq_abs, lAbs_pow, abs_mul, Nat.abs_cast] at h
-  exact h
+  rwa [Real.norm_eq_abs, lAbs_pow, abs_mul, Nat.abs_cast] at h
 
 end DiscreteGroups.T1.G.CP
 
@@ -341,8 +340,7 @@ theorem eq_zero_of_ae (D : Dom E n 0) {π : CuspSub E n} {φ : Sm E n} (hφ : φ
   have hZo : IsOpen Z := isOpen_ne_fun (hφc.comp (continuous_fst (X := GA E n) (Y := GA E 0))) continuous_const
   have hνZ : D.ν Z = 0 := ae_iff.1 h
   have hμZF : D.μ (Z ∩ D.F) = 0 := by
-    rw [← Measure.restrict_apply hZo.measurableSet]
-    exact hνZ
+    rwa [← Measure.restrict_apply hZo.measurableSet]
   have hinv : ∀ γ : ratH E n 0, γ • Z = Z := by
     intro γ
     ext y
@@ -357,8 +355,7 @@ theorem eq_zero_of_ae (D : Dom E n 0) {π : CuspSub E n} {φ : Sm E n} (hφ : φ
   refine Subtype.ext (funext fun g => ?_)
   by_contra hg
   have : ((g, 1) : H E n 0) ∈ Z := hg
-  rw [hZe] at this
-  exact this
+  rwa [hZe] at this
 
 theorem piSeen_holds : PiSeen := by
   intro E _ _ _ n hn D π hθ W hWle hWfd
@@ -380,9 +377,7 @@ theorem piSeen_holds : PiSeen := by
   have hbv : ∀ (a : Fin r) (N k : ℕ), ∫ x, starRingEnd ℂ (((b a : W) : Sm E n).1 x.1 *
       ((chi N (ldet x) * ldet x ^ k : ℝ) : ℂ)) * (φ.1 x.1 * Complex.exp (z * ldet x)) ∂D.ν = 0 := by
     intro a N k
-    have h := hz (e.symm (a.1, N, k))
-    simp only [Equiv.apply_symm_apply, dif_pos a.2, Fin.eta] at h
-    exact h
+    simpa only [Equiv.apply_symm_apply, dif_pos a.2, Fin.eta] using hz (e.symm (a.1, N, k))
   have hrep : ∀ g, φ.1 g = ∑ a, (b.repr ⟨φ, hφ⟩ a) * ((b a : W) : Sm E n).1 g := by
     intro g
     have h := congrArg (fun w : W => ((w : Sm E n) : GA E n → ℂ) g) (b.sum_repr ⟨φ, hφ⟩)
@@ -466,8 +461,7 @@ private theorem lAbs_fin {u : GL (Fin n) (Af E)} (hu : u ∈ Kf E n) : logAbs (f
   obtain ⟨C, hC⟩ := (GlobalTheory.CompanionTheory.EulerV.isCompact_Kf (E := E) (n := n)).exists_bound_of_continuousOn hc.continuousOn
   refine DiscreteGroups.T1.G.CP.eq_zero_of_nat_mul_le (C := C) fun m => ?_
   have h := hC (u ^ m) (pow_mem hu m)
-  rw [map_pow, Real.norm_eq_abs, DiscreteGroups.T1.G.CP.lAbs_pow, abs_mul, Nat.abs_cast] at h
-  exact h
+  rwa [map_pow, Real.norm_eq_abs, DiscreteGroups.T1.G.CP.lAbs_pow, abs_mul, Nat.abs_cast] at h
 
 private theorem lAbs_inf (k : Kinf E n) : logAbs (infGL E n (Unitary.toUnits k)).val.det = 0 := by
   rw [← UpperTheory.V.Cm.infEmb_grpEq]
@@ -547,8 +541,7 @@ private theorem vecEx {ι : Type} [Fintype ι] (hn : 1 ≤ n) (D : Dom E n 0) (�
       refine (integral_congr_ae (g := fun _ => 0) ?_).trans (by simp)
       filter_upwards [hz i' h] with x hx
       simp [hx]
-    · intro h
-      exact absurd (Finset.mem_univ i) h
+    · exact fun h => absurd (Finset.mem_univ i) h
 
 theorem testsEx : PiAdm → TestsEx := by
   intro hAdm E _ _ _ n hn l₁ l₂ D A π hθ K W hK hKf hW

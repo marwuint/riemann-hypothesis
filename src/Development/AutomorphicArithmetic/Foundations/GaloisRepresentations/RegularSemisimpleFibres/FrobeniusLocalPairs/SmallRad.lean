@@ -111,16 +111,14 @@ private theorem unit_nhds {A : Type} [Monoid A] [TopologicalSpace A] {U : Set A�
 
 private theorem val_near {r : ValueGroupWithZero k} (h1 : r < 1) {x : k} (hx : valuation k (x - 1) ≤ r) :
     valuation k x = 1 := by
-  have h := Valuation.map_one_add_of_lt (valuation k) (lt_of_le_of_lt hx h1)
-  simpa using h
+  simpa using Valuation.map_one_add_of_lt (valuation k) (lt_of_le_of_lt hx h1)
 
 private theorem near_mul' {r : ValueGroupWithZero k} (h1 : r < 1) {x y : k} (hx : valuation k (x - 1) ≤ r)
     (hy : valuation k (y - 1) ≤ r) : valuation k (x * y - 1) ≤ r := by
   have e : x * y - 1 = x * (y - 1) + (x - 1) := by ring
   rw [e]
   refine Valuation.map_add_le _ ?_ hx
-  rw [map_mul, val_near h1 hx, one_mul]
-  exact hy
+  rwa [map_mul, val_near h1 hx, one_mul]
 
 private theorem near_inv' {r : ValueGroupWithZero k} (h1 : r < 1) (x : kˣ) (hx : valuation k ((x : k) - 1) ≤ r) :
     valuation k (((x⁻¹ : kˣ) : k) - 1) ≤ r := by
@@ -130,8 +128,7 @@ private theorem near_inv' {r : ValueGroupWithZero k} (h1 : r < 1) (x : kˣ) (hx 
     ring
   have hv' : valuation k ((x⁻¹ : kˣ) : k) = 1 := by
     rw [Units.val_inv_eq_inv_val, map_inv₀, hv, inv_one]
-  rw [e, map_mul, hv', mul_one, Valuation.map_neg]
-  exact hx
+  rwa [e, map_mul, hv', mul_one, Valuation.map_neg]
 
 private theorem t2 : T2Space k := by
   letI := IsTopologicalAddGroup.rightUniformSpace k
@@ -150,8 +147,7 @@ private theorem compact_units (r : ValueGroupWithZero k) (h1 : r < 1) :
     convert h using 1
     ext x
     constructor
-    · intro hx
-      exact ⟨x - 1, hx, sub_add_cancel _ _⟩
+    · exact fun hx => ⟨x - 1, hx, sub_add_cancel _ _⟩
     · rintro ⟨y, hy, rfl⟩
       simpa using hy
   have h := (Units.isClosedEmbedding_embedProduct (α := k)).isCompact_preimage

@@ -191,8 +191,7 @@ theorem fockAniso_gt : GlobalTheory.Published.WeilSiegelFormulaUnitary → ∀ D
     funext g
     rw [← swSection_eq_swSec]
     exact hsum g
-  rw [he] at hv
-  exact hv
+  rwa [he] at hv
 
 def FA : Prop := ∀ D : D7, GlobalTheory.BottomRallis.SiegelWeilFockAniso D
 
@@ -374,8 +373,7 @@ theorem PositivityTheory.SiegelWeilFormulaUnitary.siegelFormula_theta_of_schwart
     have hs := LeftInvSect.leftInv_sect D A.rank (Iwasawa.exists_mul D A.rank) B (shift ψ lam) χ⁻¹ θ ν omS hχ.1 hWS H hH Φ
       (s0 B A.rank)
     intro γ hγ g
-    have h := hs γ hγ g
-    simpa only [sect, sub_self, npow, Complex.cpow_zero, one_mul] using h
+    simpa only [sect, sub_self, npow, Complex.cpow_zero, one_mul] using hs γ hγ g
   obtain ⟨hleft, hg⟩ := GlobalTheory.StdUnn.cosetSum_along_mulEquiv _ _ κ (siegel A) (GQ (dblSp A)) (P D A.rank) (GF D A.rank)
     (GlobalTheory.StdUnn.mem_siegel_iff_chart_mem_P D A μ hμ κ hκ) (GlobalTheory.StdUnn.chart_mem_GF_iff D A μ hμ κ hκ) (fun γ => (omS γ Φ).1 0) 1 1 _ hval hL
   have hterm : ∀ g, term (P D A.rank) (GF D A.rank) (fun γ => (omS γ (omS (κ g) Φ)).1 0) 1 =
@@ -589,8 +587,7 @@ theorem hyp_pull : ∀ (D : D7) (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F
   have hli : LinearIndependent D.host.E a :=
     Matrix.linearIndependent_rows_of_isUnit ((Matrix.isUnit_iff_isUnit_det a).mpr (isUnit_iff_ne_zero.mpr ha))
   refine ⟨h1, h2, h3, h4, h5, h6, GlobalTheory.T.pullback_schwartz_linear_independent D θ h3 _ _ _ a hli φ h7, ?_⟩
-  rw [absThetaInt_pull V ν φ a ha]
-  exact h8
+  rwa [absThetaInt_pull V ν φ a ha]
 
 end GlobalTheory.CompanionTheory.WeilSiegel.Deg
 end -- clump:auto
@@ -662,8 +659,7 @@ theorem exists_radical_basis {K : Type*} [Field K] {r : ℕ} (B : Matrix (Fin r)
     have hc : ((∑ j, w j • bC j : C) : Fin r → K) = ∑ j, w j • (bC j : Fin r → K) := by
       simp
     have hNmem : ((∑ j, w j • bC j : C) : Fin r → K) ∈ N := by
-      rw [hmemN, hc]
-      exact hw
+      rwa [hmemN, hc]
     have h0 : ((∑ j, w j • bC j : C) : Fin r → K) = 0 :=
       Submodule.disjoint_def.mp hC.disjoint _ hNmem (Submodule.coe_mem _)
     funext j
@@ -856,8 +852,7 @@ theorem measurePreserving_of_covol {G : Type*} [AddCommGroup G] [TopologicalSpac
   let σ : Γ → Γ := fun g => ⟨T.symm g, hT' g g.2⟩
   have hσ : Function.Bijective σ := by
     refine ⟨fun g g' h => ?_, fun g => ⟨⟨T g, hT g g.2⟩, ?_⟩⟩
-    · apply Subtype.ext
-      exact T.symm.injective (congrArg Subtype.val h)
+    · exact Subtype.ext (T.symm.injective (congrArg Subtype.val h))
     · apply Subtype.ext
       simp [σ]
   have hpre : IsAddFundamentalDomain Γ (e ⁻¹' 𝓕) μ := by

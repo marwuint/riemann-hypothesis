@@ -94,8 +94,7 @@ private theorem leviLevel_sum {A G M : Type} [CommRing A] [Group G] [AddCommGrou
   have hinj : ∀ u ∈ r, ∀ u' ∈ r, ((f u * m : G) : G ⧸ K') = ((f u' * m : G) : G ⧸ K') → u = u' :=
     fun u hu u' hu' e => (hr _ (hf u' hu')).unique ⟨hu, QuotientGroup.eq.1 e⟩ ⟨hu', by simp⟩
   rw [(UpperTheory.V.AlgebraTools.hkApply A G M ρ K K' m hfin).2.1 (r.image fun u => f u * m) ?_ ?_ v, Finset.sum_image]
-  · intro u hu u' hu' e
-    exact hinj u hu u' hu' (congrArg _ e)
+  · exact fun u hu u' hu' e => hinj u hu u' hu' (congrArg _ e)
   · intro y hy
     obtain ⟨u, hu, rfl⟩ := Finset.mem_image.1 hy
     exact ⟨⟨f u, hS (hf u hu)⟩, rfl⟩

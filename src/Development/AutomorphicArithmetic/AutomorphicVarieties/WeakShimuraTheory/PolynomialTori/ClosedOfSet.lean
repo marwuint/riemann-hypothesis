@@ -334,8 +334,7 @@ theorem rep_ex (hD : D.Good) (hP : Loc.LocalPublishedTheorems) (v : ℕ) (hv : v
   haveI : CharP (ResidueField c.O) l := by
     rw [CharP.charP_iff_prime_eq_zero hl.out, ← map_natCast (residue c.O), residue_eq_zero_iff,
       mem_maximalIdeal, mem_nonunits_iff, ← map_natCast (algebraMap ℤ_[l] c.O)]
-    intro hu
-    exact PadicInt.prime_p.not_unit (isUnit_of_map_unit _ _ hu)
+    exact fun hu => PadicInt.prime_p.not_unit (isUnit_of_map_unit _ _ hu)
   obtain ⟨-, -, -, -, -, -, -, -, -, -, -, hk, -⟩ := facts D hD
   have hlc : IsLocallyConstant (D.rbarAt v) := by
     refine IsLocallyConstant.comp_continuous (g := D.rbar) ?_ continuous_subtype_val
@@ -428,8 +427,7 @@ theorem fin_res (c : Coef l) : Finite (ResidueField c.O) ∧ CharP (ResidueField
   refine ⟨Module.finite_of_finite (ResidueField ℤ_[l]), ?_⟩
   rw [CharP.charP_iff_prime_eq_zero hl.out, ← map_natCast (residue c.O), residue_eq_zero_iff,
     mem_maximalIdeal, mem_nonunits_iff, ← map_natCast (algebraMap ℤ_[l] c.O)]
-  intro hu
-  exact PadicInt.prime_p.not_unit (isUnit_of_map_unit _ _ hu)
+  exact fun hu => PadicInt.prime_p.not_unit (isUnit_of_map_unit _ _ hu)
 
 end Main
 

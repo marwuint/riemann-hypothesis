@@ -107,8 +107,7 @@ private theorem top_inv {V : Scheme.{0}} {C : Y.Opens} (g : V ⟶ (C : Scheme.{0
   have e1 := Scheme.Hom.appLE_comp_appLE g C.ι C ⊤ ⊤ e0 (fun x _ => trivial)
   have e2 : C.ι.appLE C ⊤ e0 = C.topIso.inv := by
     simp only [Scheme.Hom.appLE, Scheme.Opens.ι_app, Scheme.Opens.topIso_inv, Scheme.Opens.toScheme_presheaf_map]
-    refine (Y.presheaf.map_comp _ _).symm.trans ?_
-    exact congrArg _ (Subsingleton.elim _ _)
+    exact (Y.presheaf.map_comp _ _).symm.trans (congrArg _ (Subsingleton.elim _ _))
   have e3 : g.appLE ⊤ ⊤ (fun x _ => trivial) = g.appTop := by
     simp only [Scheme.Hom.appLE, Scheme.Hom.appTop]
     exact (congrArg (g.app ⊤ ≫ ·) (V.presheaf.map_id _)).trans (Category.comp_id _)
@@ -327,8 +326,7 @@ theorem UpperTheory.Gal.KunnethLefschetz.G.PX.chartNzdAlg :
   intro r hr
   obtain ⟨f, rfl⟩ := hsurj r
   have h1 : f * MvPolynomial.C (s j) ∈ RingHom.ker (MvPolynomial.eval₂Hom ψ y) := by
-    rw [RingHom.mem_ker, map_mul, MvPolynomial.eval₂Hom_C]
-    exact hr
+    rwa [RingHom.mem_ker, map_mul, MvPolynomial.eval₂Hom_C]
   have h2 : Φ (f * MvPolynomial.C (s j)) = 0 := hIΦ h1
   have h3 : (MvPolynomial.X j : MvPolynomial (Fin D) A) • Φ f =
       (MvPolynomial.X j : MvPolynomial (Fin D) A) • 0 := by
@@ -337,8 +335,7 @@ theorem UpperTheory.Gal.KunnethLefschetz.G.PX.chartNzdAlg :
     rw [← MvPolynomial.algebraMap_eq, AlgHom.commutes, ← hX j,
       ← IsScalarTower.algebraMap_apply]
   have h4 : Φ f = 0 := hreg h3
-  have h5 := hΦI f h4
-  simpa using h5
+  simpa using hΦI f h4
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.EtaleCharts.FlatSectionExtension.ChartNzdAlg =====
@@ -375,8 +372,7 @@ private theorem flat_mem_nzd {A R : Type} [CommRing A] [CommRing R] (φ : A →+
   have hreg : IsSMulRegular R a := Module.Flat.isSMulRegular_of_nonZeroDivisors ha
   refine mem_nonZeroDivisors_iff_right.2 fun x hx => hreg ?_
   change a • x = a • (0 : R)
-  rw [Algebra.smul_def, smul_zero, mul_comm]
-  exact hx
+  rwa [Algebra.smul_def, smul_zero, mul_comm]
 
 theorem UpperTheory.Gal.KunnethLefschetz.G.PX.nzdRes :
     ∀ {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) (β : B.ι) (l : Fin d) (Q : Y.Opens), IsAffineOpen Q → ∀ (h : ⊤ ≤ Q.ι ⁻¹ᵁ (B.c β).C l), (Q.ι.appLE ((B.c β).C l) ⊤ h).hom ((π.appLE (B.V β) ((B.c β).C l) ((B.c β).C_le l)).hom ((B.c β).t l)) ∈ nonZeroDivisors Γ((Q : Scheme.{0}), ⊤) := by
@@ -471,8 +467,7 @@ theorem UpperTheory.Gal.KunnethLefschetz.G.PX.gvChart :
     have h := hU (show (⟨x, hxU⟩ : U) ∈ (⊤ : (U : Scheme.{0}).Opens) from trivial)
     have e : π (y x) = i (p x) := by
       rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hyp]
-    rw [e]
-    exact h
+    rwa [e]
   have hyP : y x ∈ (B.c α).C k ⊓ (B.c β).C l ⊓ π ⁻¹ᵁ N :=
     ⟨⟨h₁ (show x ∈ (⊤ : V.Opens) from trivial), h₂ (show x ∈ (⊤ : V.Opens) from trivial)⟩, hxN⟩
   obtain ⟨Q, hQ, hyQ, hQP⟩ := exists_isAffineOpen_mem_and_subset hyP

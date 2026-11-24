@@ -88,17 +88,12 @@ theorem UpperTheory.V.Af.Nf.nslMul :
     simp only [SignType.coe_one, Complex.ofReal_one, one_mul]
     rw [← hmdef, UpperHalfPlane.ofComplex_apply_of_im_pos hm]
     simp only [Matrix.mul_apply, Fin.sum_univ_two]
-    have hJ : ((↑(x 1 0 * y 0 0 + x 1 1 * y 1 0) : ℂ) * z + ↑(x 1 0 * y 0 1 + x 1 1 * y 1 1)) =
-        ((x 1 0 : ℂ) * m + x 1 1) * ((y 1 0 : ℂ) * z + y 1 1) := by
+    have key (a b : ℝ) : (↑(a * y 0 0 + b * y 1 0) : ℂ) * z + ↑(a * y 0 1 + b * y 1 1) =
+        ((a : ℂ) * m + b) * ((y 1 0 : ℂ) * z + y 1 1) := by
       rw [hmdef, add_mul, mul_assoc, div_mul_cancel₀ _ hjy]
       push_cast
       ring
-    have hN : ((↑(x 0 0 * y 0 0 + x 0 1 * y 1 0) : ℂ) * z + ↑(x 0 0 * y 0 1 + x 0 1 * y 1 1)) =
-        ((x 0 0 : ℂ) * m + x 0 1) * ((y 1 0 : ℂ) * z + y 1 1) := by
-      rw [hmdef, add_mul, mul_assoc, div_mul_cancel₀ _ hjy]
-      push_cast
-      ring
-    rw [hJ, hN, mul_div_mul_right _ _ hjy, mul_zpow]
+    rw [key, key, mul_div_mul_right _ _ hjy, mul_zpow]
     push_cast
     ring
   · intro x
@@ -112,27 +107,20 @@ theorem UpperTheory.V.Af.Nf.nslMul :
     ring
   · intro t x ht
     funext z
-    simp only [nsl, Matrix.det_fin_two, Matrix.smul_apply, smul_eq_mul]
-    have h1 : t * x 0 0 * (t * x 1 1) - t * x 0 1 * (t * x 1 0) =
-        t ^ 2 * (x 0 0 * x 1 1 - x 0 1 * x 1 0) := by ring
-    rw [h1]
-    set d := x 0 0 * x 1 1 - x 0 1 * x 1 0
-    have h2 : SignType.sign (t ^ 2 * d) = SignType.sign d := by
+    simp only [nsl, Matrix.det_smul, Fintype.card_fin, Matrix.smul_apply, smul_eq_mul]
+    have h2 : SignType.sign (t ^ 2 * x.det) = SignType.sign x.det := by
       rw [sign_mul, sign_pos (by positivity), one_mul]
-    have h3 : |t ^ 2 * d| ^ ((k : ℝ) / 2) = t ^ k * |d| ^ ((k : ℝ) / 2) := by
+    have h3 : |t ^ 2 * x.det| ^ ((k : ℝ) / 2) = t ^ k * |x.det| ^ ((k : ℝ) / 2) := by
       rw [abs_mul, Real.mul_rpow (by positivity) (abs_nonneg _),
         abs_of_pos (by positivity : (0:ℝ) < t ^ 2)]
       congr 1
       rw [show (t ^ 2 : ℝ) = t ^ (2:ℝ) by norm_cast, ← Real.rpow_mul ht.le,
         show (2:ℝ) * (k / 2) = k by ring, Real.rpow_natCast]
-    have hj : ((↑(t * x 1 0) : ℂ) * ↑z + ↑(t * x 1 1)) = (t : ℂ) * ((x 1 0 : ℂ) * z + x 1 1) := by
-      push_cast
-      ring
-    have hn : ((↑(t * x 0 0) : ℂ) * ↑z + ↑(t * x 0 1)) = (t : ℂ) * ((x 0 0 : ℂ) * z + x 0 1) := by
+    have key (a b : ℝ) : (↑(t * a) : ℂ) * ↑z + ↑(t * b) = (t : ℂ) * ((a : ℂ) * z + b) := by
       push_cast
       ring
     have ht' : (t : ℂ) ≠ 0 := by exact_mod_cast ht.ne'
-    rw [h2, h3, hj, hn, mul_div_mul_left _ _ ht']
+    rw [h2, h3, key, key, mul_div_mul_left _ _ ht']
     congr 1
     push_cast
     rw [mul_zpow, zpow_neg, zpow_neg, zpow_natCast]

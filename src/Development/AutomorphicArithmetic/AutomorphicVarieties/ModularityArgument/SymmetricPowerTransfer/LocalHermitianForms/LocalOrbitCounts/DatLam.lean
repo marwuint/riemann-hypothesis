@@ -71,37 +71,26 @@ theorem UpperTheory.V.Z.Sym.Loc.datLam : UpperTheory.V.Z.Sym.Loc.DatLam := by
     isUnit_of_mul_isUnit_left (hzw ▸ z.isUnit)
   have ha : algebraMap K (Etau K τ) (2 + τ) * (w * w) = ω := by
     apply hNu.mul_left_cancel
-    calc algebraMap K (Etau K τ) (2 + τ) * (algebraMap K (Etau K τ) (2 + τ) * (w * w))
-        = (algebraMap K (Etau K τ) (2 + τ) * w) * (algebraMap K (Etau K τ) (2 + τ) * w) := by ring
-      _ = (z : Etau K τ) * (z : Etau K τ) := by rw [← hzw]
-      _ = algebraMap K (Etau K τ) (2 + τ) * ω := hzz
+    rw [← hzz, hzw]
+    ring
   have hstarN : star (algebraMap K (Etau K τ) (2 + τ)) = algebraMap K (Etau K τ) (2 + τ) := by
     ext <;> simp
   have hs' : star (z : Etau K τ) = algebraMap K (Etau K τ) (2 + τ) * star w := by
-    conv_lhs => rw [hzw]
-    rw [star_mul', hstarN]
+    rw [hzw, star_mul', hstarN]
   have hb : algebraMap K (Etau K τ) (2 + τ) * (w * star w) = 1 := by
-    calc algebraMap K (Etau K τ) (2 + τ) * (w * star w)
-        = w * (algebraMap K (Etau K τ) (2 + τ) * star w) := by ring
-      _ = w * star (z : Etau K τ) := by rw [hs']
-      _ = 1 := by rw [mul_comm, hsz]
+    rw [mul_left_comm, ← hs', mul_comm, hsz]
   have ofE_one : ofE Δ (1 : Etau K τ) = 1 := by
     ext <;> simp [ofE]
-  have ofE_sm : ∀ (r : K) (y : Etau K τ),
+  have ofE_sm (r : K) (y : Etau K τ) :
       ofE Δ (algebraMap K (Etau K τ) r * y) = (algebraMap K (Lsq K Δ) r) • ofE Δ y := by
-    intro r y
     ext <;> simp [ofE]
-  have sig_ofE : ∀ y : Etau K τ, sigL (ofE Δ y) = ofE Δ y := by
-    intro y
+  have sig_ofE (y : Etau K τ) : sigL (ofE Δ y) = ofE Δ y := by
     ext <;> simp [sigL, ofE]
-  have star_ofE : ∀ y : Etau K τ, star (ofE Δ y) = ofE Δ (star y) := by
-    intro y
+  have star_ofE (y : Etau K τ) : star (ofE Δ y) = ofE Δ (star y) := by
     ext <;> simp [ofE]
-  have sig_sm : ∀ (a : Lsq K Δ) (y : EL Δ τ), sigL (a • y) = star a • sigL y := by
-    intro a y
+  have sig_sm (a : Lsq K Δ) (y : EL Δ τ) : sigL (a • y) = star a • sigL y := by
     ext <;> simp [sigL]
-  have star_sm : ∀ (a : Lsq K Δ) (y : EL Δ τ), star (a • y) = a • star y := by
-    intro a y
+  have star_sm (a : Lsq K Δ) (y : EL Δ τ) : star (a • y) = a • star y := by
     ext <;> simp <;> ring
   have sig_one : sigL (1 : EL Δ τ) = 1 := by
     ext <;> simp [sigL]

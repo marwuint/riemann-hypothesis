@@ -129,9 +129,7 @@ theorem cvOp : CvOp := by
     intro y
     rw [cv_eq K f g hfr hgl y]
     refine finsum_eq_sum_of_support_subset _ fun q hq => ?_
-    simp only [hS, Set.Finite.coe_toFinset, Set.mem_setOf_eq]
-    intro h0
-    exact hq (by simp [h0])
+    simpa only [hS, Set.Finite.coe_toFinset, Set.mem_setOf_eq] using fun h0 => hq (by simp [h0])
   have hCfin : (Function.support fun p : G ⧸ K => cv K f g p.out).Finite := by
     refine (S.finite_toSet.biUnion fun q _ =>
       hSg.image (fun r : G ⧸ K => (q.out • r : G ⧸ K))).subset ?_
@@ -160,8 +158,6 @@ theorem cvOp : CvOp := by
     _ = ∑ᶠ q : G ⧸ K, f q.out • ρ q.out (∑ᶠ r : G ⧸ K, g r.out • ρ r.out x) := by
         symm
         refine finsum_eq_sum_of_support_subset _ fun q hq => ?_
-        simp only [hS, Set.Finite.coe_toFinset, Set.mem_setOf_eq]
-        intro h0
-        exact hq (by simp [h0])
+        simpa only [hS, Set.Finite.coe_toFinset, Set.mem_setOf_eq] using fun h0 => hq (by simp [h0])
 
 end UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm

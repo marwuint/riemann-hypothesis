@@ -101,10 +101,8 @@ private lemma realForm_eq_zero {E : Type} [Field E] [NumberField E] {P : Type} [
     · exact h
     · norm_num at h
   constructor
-  · have h4 := congrArg Complex.re h1'
-    simpa using h4
-  · have h4 := congrArg Complex.im h1'
-    simpa using h4
+  · simpa using congrArg Complex.re h1'
+  · simpa using congrArg Complex.im h1'
 
 theorem UpperTheory.Gal.W2.Seed.pRealIso :
     TraceType → RealIso := by
@@ -113,8 +111,7 @@ theorem UpperTheory.Gal.W2.Seed.pRealIso :
   obtain ⟨-, -, hpl, him⟩ := hT E A
   have hcardPhi : Fintype.card (Phi A) = Fintype.card (InfinitePlace E) := by
     refine Fintype.card_congr (Equiv.ofBijective (fun τ : Phi A => InfinitePlace.mk τ.1) ⟨?_, ?_⟩)
-    · intro a b hab
-      exact (hpl (InfinitePlace.mk a.1)).unique rfl hab.symm
+    · exact fun a b hab => (hpl (InfinitePlace.mk a.1)).unique rfl hab.symm
     · intro v
       obtain ⟨τ, hτ, -⟩ := hpl v
       exact ⟨τ, hτ⟩
@@ -139,8 +136,7 @@ theorem UpperTheory.Gal.W2.Seed.pRealIso :
         rw [Algebra.TensorProduct.basis_apply]
         rfl
       rw [hk, Module.Basis.constr_basis]
-    intro x
-    exact LinearMap.congr_fun hcomp x
+    exact fun x => LinearMap.congr_fun hcomp x
   have dec : ∀ (φ : Module.Dual ℝ (Phi A × Fin n → ℂ)) p (w : ℂ),
       φ (Pi.single p w) = w.re * φ (Pi.single p 1) + w.im * φ (Pi.single p Complex.I) := by
     intro φ p w

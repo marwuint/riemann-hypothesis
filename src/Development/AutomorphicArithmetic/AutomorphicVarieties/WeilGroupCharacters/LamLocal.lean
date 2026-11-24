@@ -105,8 +105,7 @@ private theorem ext_hom {M A P : Type} [CommGroup M] [CommGroup A] [TopologicalS
       rw [tendsto_comap_iff]
       have := (hrt (r m)).const_mul (r m)⁻¹
       simpa [Function.comp_def, map_mul, map_inv] using this
-    have h2 := (h.comp h1).const_mul (φ m)
-    simpa [Function.comp_def, map_mul, map_inv] using h2
+    simpa [Function.comp_def, map_mul, map_inv] using (h.comp h1).const_mul (φ m)
   have hmul : ∀ x y, a (x * y) = a x * a y := by
     intro x y
     haveI := hne x
@@ -162,8 +161,7 @@ private theorem mod_split (l : ℕ) [Fact l.Prime] (N : Type) [AddCommGroup N] [
     have hk' : a • n = 0 := by simpa using congrArg Subtype.val hk
     rw [← Nat.cast_smul_eq_nsmul ℤ_[l], Nat.cast_pow]
     have h2 : ((PadicInt.unitCoeff hane : ℤ_[l]) * (l : ℤ_[l]) ^ a.valuation) • n = 0 := by
-      rw [← PadicInt.unitCoeff_spec hane]
-      exact hk'
+      rwa [← PadicInt.unitCoeff_spec hane]
     rw [mul_smul] at h2
     have h3 := congrArg (fun m => (((PadicInt.unitCoeff hane)⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) • m) h2
     simpa [smul_smul] using h3
@@ -332,8 +330,7 @@ private theorem sep_open {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
     exact QuotientGroup.isOpenMap_coe _ H.isOpen
   · intro hm
     obtain ⟨u, hu, he⟩ := Subgroup.mem_map.mp hm
-    have hq := QuotientGroup.eq.mp he
-    exact hH hu (by simpa [mul_inv_rev] using N.inv_mem hq)
+    exact hH hu (by simpa [mul_inv_rev] using N.inv_mem (QuotientGroup.eq.mp he))
 
 private theorem core_ab (l d : ℕ) [Fact l.Prime] {A M : Type} [CommGroup A] [TopologicalSpace A] [IsTopologicalGroup A]
     [CompactSpace A] [T2Space A] [CommGroup M] (r : M →* A) (hr : DenseRange r)
@@ -400,8 +397,7 @@ private theorem core_ab (l d : ℕ) [Fact l.Prime] {A M : Type} [CommGroup A] [T
         show b (b (r x)) = b (r x)
         simp only [hb, MonoidHom.comp_apply, hββ])
     exact congrFun heq g
-  · intro j g hg
-    exact tf (a g) j (by rw [← map_pow, hg, map_one])
+  · exact fun j g hg => tf (a g) j (by rw [← map_pow, hg, map_one])
   · intro k g hag hbg
     have hS : IsClosed (Set.range fun z : A => z ^ l ^ k) :=
       (isCompact_range (continuous_pow (l ^ k))).isClosed
@@ -421,8 +417,7 @@ private theorem core_ab (l d : ℕ) [Fact l.Prime] {A M : Type} [CommGroup A] [T
       obtain ⟨_, ⟨x, rfl⟩, hx1, hx2⟩ := hr.inter_nhds_nonempty (Filter.inter_mem hFU hB)
       have hx2' : ‖(φ x).toAdd‖ ≤ (l : ℝ) ^ (-k : ℤ) := by
         have := hx2
-        simp only [Set.mem_preimage, Metric.mem_closedBall, dist_zero_right, ha] at this
-        exact this
+        simpa only [Set.mem_preimage, Metric.mem_closedBall, dist_zero_right, ha] using this
       obtain ⟨y, hy⟩ := (ball_pow l d k _).mp hx2'
       have hβ' : β (x * (β x)⁻¹) = 1 := by
         rw [map_mul, map_inv, hββ, mul_inv_cancel]
@@ -433,8 +428,7 @@ private theorem core_ab (l d : ℕ) [Fact l.Prime] {A M : Type} [CommGroup A] [T
       refine ⟨r (x * (β x)⁻¹), ?_, r z, ?_⟩
       · have h3 : r (x * (β x)⁻¹) = r x * (b (r x))⁻¹ := by
           rw [hb, map_mul, map_inv, MonoidHom.comp_apply]
-        rw [h3]
-        exact hx1
+        rwa [h3]
       · show r z ^ l ^ k = r (x * (β x)⁻¹)
         rw [hz, map_pow]
     obtain ⟨z, hz⟩ := hS.closure_eq ▸ hmem
@@ -658,8 +652,7 @@ private theorem ab_map {G G' : Type} [Group G] [TopologicalSpace G] [IsTopologic
       exact Subgroup.commutator_mono le_top le_top
     · exact (Subgroup.isClosed_topologicalClosure _).preimage hf
   refine ⟨QuotientGroup.map _ _ f hle, ?_, fun g => rfl⟩
-  apply (QuotientGroup.isQuotientMap_mk _).continuous_iff.mpr
-  exact continuous_quot_mk.comp hf
+  exact (QuotientGroup.isQuotientMap_mk _).continuous_iff.mpr (continuous_quot_mk.comp hf)
 
 open UpperTheory.V.W GroundTheory.LocalField ValuativeRel GroundTheory.LocalField.Abstract in
 private theorem loc_field (l : ℕ) [Fact l.Prime] (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
@@ -685,9 +678,7 @@ private theorem loc_field (l : ℕ) [Fact l.Prime] (K Ω : Type) [Field K] [Valu
     intro y
     obtain ⟨g, rfl⟩ := QuotientGroup.mk_surjective y
     refine ⟨QuotientGroup.mk (ε g), ?_⟩
-    have h1 := hF (ε g)
-    simp only [MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply] at h1
-    exact h1
+    simpa only [MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply] using hF (ε g)
   let r : Kˣ →* TopologicalAbelianization G := F.comp (localReciprocityLimit K Ω)
   have hr : DenseRange r := hFsurj.denseRange.comp denseRange_localReciprocityLimit hFc
   let o : Kˣ →* Multiplicative ℤ :=
@@ -792,8 +783,7 @@ private theorem loc_field (l : ℕ) [Fact l.Prime] (K Ω : Type) [Field K] [Valu
       have h3 : unramifiedCoord K (ε g) n = 0 := hg
       rw [← proj_toAdd_unramifiedDegree, h2] at h3
       simp only [toAdd_ofAdd, map_intCast] at h3
-      have h4 := (ZMod.intCast_zmod_eq_zero_iff_dvd _ n).mp h3
-      simpa [ho, n] using h4
+      simpa [ho, n] using (ZMod.intCast_zmod_eq_zero_iff_dvd _ n).mp h3
   exact core l _ I r hr o (uniformizerUnit hϖ) hπ φ β e hφo hφs hβe hββ hpow hopen hI1 hI2
 
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc
@@ -838,8 +828,7 @@ theorem UpperTheory.V.W.lam_local :
     intro m
     rw [Ne, CharP.cast_eq_zero_iff 𝓀[K.1] l]
     constructor
-    · intro h
-      exact ⟨Nat.pos_of_ne_zero (fun h0 => h (h0 ▸ dvd_zero l)), h⟩
+    · exact fun h => ⟨Nat.pos_of_ne_zero (fun h0 => h (h0 ▸ dvd_zero l)), h⟩
     · exact fun h => h.2
   have hI : ∀ g, g ∈ (UpperTheory.V.Loc.Iq l).comap (GK K).subtype ↔
       unramifiedDegree K.1 (Om l) (K.1.fixingSubgroupEquiv g) = 1 := by

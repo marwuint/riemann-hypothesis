@@ -124,8 +124,7 @@ theorem UpperTheory.V.CA.f_nil :
     rw [ha, ha0, zero_smul]
   refine ⟨fun x => ⟨fun hz i => hJ x hz i, fun h => ?_⟩, fun x hx => ?_⟩
   · funext i
-    have h2 := congrFun (congrArg π (h i)) i
-    simpa [map_mul, hπ] using h2
+    simpa [map_mul, hπ] using congrFun (congrArg π (h i)) i
   · obtain ⟨F, hF⟩ : ∃ F : Finset (Fin n) → E, ∀ T, F T = ∑ i ∈ T, e i := ⟨_, fun _ => rfl⟩
     have D : ∀ (m : ℕ) (T : Finset (Fin n)), T.card = m → ∀ t : List E, (∀ y ∈ t, π y = 0) →
         m ≤ t.length → F T * (t.map (· * F T)).prod = 0 := by
@@ -162,8 +161,7 @@ theorem UpperTheory.V.CA.f_nil :
         exact hx s)
       (by simp)
     have h1 : F Finset.univ = 1 := by rw [hF]; exact he.complete
-    rw [h1, one_mul, show (fun y : E => y * 1) = id from funext mul_one, List.map_id] at key
-    exact key
+    rwa [h1, one_mul, show (fun y : E => y * 1) = id from funext mul_one, List.map_id] at key
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.FNil =====
@@ -293,8 +291,7 @@ private theorem lc_of_ker {G E : Type} [Group G] [TopologicalSpace G] [IsTopolog
     simp only [Set.mem_preimage, SetLike.mem_coe, MonoidHom.mem_ker, map_mul] at hy
     have h2 := congrArg (fun z => ρ x * z) hy
     simp only [mul_one] at h2
-    rw [← mul_assoc, ← map_mul, mul_inv_cancel, map_one, one_mul] at h2
-    exact h2
+    rwa [← mul_assoc, ← map_mul, mul_inv_cancel, map_one, one_mul] at h2
 
 private theorem idempotent_corner_eq_proj_smul {n : ℕ} {k E : Type} [Field k] [Ring E] [Algebra k E]
     (e : Fin n → E) (π : E →ₐ[k] (Fin n → k)) (hπe : ∀ i, π (e i) = Pi.single i 1)
@@ -384,8 +381,7 @@ private theorem dual_vanishes_on_ker_of_offdiag_vanishing {n : ℕ} {k E G : Typ
     have hx' := hle (by rw [hspan]; exact Submodule.mem_top (x := x))
     rw [LinearMap.mem_ker] at hx'
     simp only [LinearMap.comp_apply, LinearMap.mulLeft_apply, LinearMap.mulRight_apply] at hx'
-    rw [mul_assoc]
-    exact hx'
+    rwa [mul_assoc]
 
 private theorem finrank_ker_le_finrank_ker_sq_add {n h : ℕ} {k E G : Type} [Field k] [Ring E] [Algebra k E] [Module.Finite k E]
     [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
@@ -488,8 +484,7 @@ theorem UpperTheory.V.CA.f_cot :
       refine ⟨(b : E), Submodule.mem_map_of_mem hb, (a : E), ha, ?_⟩
       have := congrArg Subtype.val hab
       simp only [Submodule.coe_add] at this
-      rw [add_comm]
-      exact this
+      rwa [add_comm]
     have hfq : Module.finrank k ↥V = Module.finrank k ↥q := Submodule.finrank_map_subtype_eq J q
     have hfc := Submodule.finrank_add_eq_of_isCompl hq
     have hfL : Module.finrank k ↥((J * J).comap J.subtype) = Module.finrank k ↥(J * J) := by
@@ -594,8 +589,7 @@ private theorem level_field {n h : ℕ} {k G : Type} [Field k] [Group G] [Topolo
   obtain ⟨c, hc, hcs, -⟩ := Submodule.exists_fun_fin_finrank_span_eq k (Set.range ρ)
   choose g hg using hc
   refine ⟨Finset.univ.image g, Finset.card_image_le.trans ?_, fun y => ?_⟩
-  · rw [Finset.card_univ, Fintype.card_fin, hspan, finrank_top]
-    exact hfin
+  · rwa [Finset.card_univ, Fintype.card_fin, hspan, finrank_top]
   · have h1 : f y ∈ (Submodule.span k ((fun g => MonoidAlgebra.single g (1 : k)) ''
         ((Finset.univ.image g : Finset G) : Set G))).map f.toLinearMap := by
       have : f y ∈ Submodule.span k (Set.range c) := by rw [hcs, hspan]; trivial
@@ -967,8 +961,7 @@ theorem UpperTheory.V.CA.f_limit :
       (S ∪ {z | ∃ u ∈ U, z = MonoidAlgebra.single u 1 - 1})).asIdeal.restrictScalars B ⊔ maximalIdeal B ^ n • ⊤) →
       x ∈ closureIdeal (maximalIdeal B) S := by
     intro x hx
-    simp only [closureIdeal, TwoSidedIdeal.mem_iInf]
-    exact fun n U => (fl_mem _ _ _ _).2 (hx n U)
+    simpa only [closureIdeal, TwoSidedIdeal.mem_iInf] using fun n U => (fl_mem _ _ _ _).2 (hx n U)
   refine ⟨s, hs, fun y => ?_, fun N => ?_⟩
   · obtain ⟨z, hz, hyz⟩ := h1 y
     exact ⟨z, hz, hcl _ hyz⟩
@@ -1004,9 +997,7 @@ theorem UpperTheory.V.CA.finE :
     · exact Or.inr hx)
   have key : ∀ a b : MonoidAlgebra B G, a - b ∈ closureIdeal (maximalIdeal B) (D.CH ∪ Z) →
       D.toQuot Z a = D.toQuot Z b := by
-    intro a b hab
-    show RingCon.mkₐ B (D.chBar Z).ringCon a = RingCon.mkₐ B (D.chBar Z).ringCon b
-    exact Quot.sound ((TwoSidedIdeal.rel_iff _ _ _).2 hab)
+    exact fun a b hab => Quot.sound ((TwoSidedIdeal.rel_iff _ _ _).2 hab)
   have hspan : Submodule.span B ((fun g => D.toQuot Z (MonoidAlgebra.single g 1)) '' (s : Set G)) = ⊤ := by
     rw [eq_top_iff]
     intro q _

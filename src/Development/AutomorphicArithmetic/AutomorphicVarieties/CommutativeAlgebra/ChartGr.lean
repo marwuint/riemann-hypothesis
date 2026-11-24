@@ -78,10 +78,8 @@ theorem UpperTheory.V.Alg.chart_gr :
   intro O X R _ _ _ _ _ _ W h _ _ τ wt φ hφ
   obtain ⟨hk, hsurj⟩ := ker_pow O R X W h 2
   refine ⟨?_, ?_, ?_, ?_⟩
-  · intro j f hf
-    exact hφ.graded j f.val hf
-  · intro f
-    exact hφ.const f.val
+  · exact fun j f hf => hφ.graded j f.val hf
+  · exact fun f => hφ.const f.val
   · intro i
     obtain ⟨g, hg1, hg2⟩ := hφ.onto i
     obtain ⟨y, hy⟩ := hsurj g
@@ -94,13 +92,11 @@ theorem UpperTheory.V.Alg.chart_gr :
       rw [map_sub, map_sub, sub_eq_zero] at this
       exact this.symm
     refine ⟨y, ?_, ?_⟩
-    · rw [he]
-      exact hg1
+    · rwa [he]
     · intro i' hi'
       rw [he]
       exact hg2 i' hi'
   · intro f hf hco
     obtain ⟨c, hc0, hcf⟩ := hφ.inj f.val hf hco
     refine ⟨c, hc0, ?_⟩
-    rw [← hk, Ideal.mem_comap]
-    exact hcf
+    rwa [← hk, Ideal.mem_comap]

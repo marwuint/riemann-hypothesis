@@ -51,8 +51,7 @@ private theorem exists_finite_residue_reps_mod_natCast (M K : ℕ) (hK : K ∣ M
     ((L i j : ℤ) : ZMod K) = ((γ i j : ℤ) : ZMod K) := by
   have h1 : ((L i j : ℤ) : ZMod M) = ((γ i j : ℤ) : ZMod M) :=
     congrArg (fun g : SL(2, ZMod M) => g i j) h
-  have h2 := congrArg (ZMod.castHom hK (ZMod K)) h1
-  simpa only [map_intCast] using h2
+  simpa only [map_intCast] using congrArg (ZMod.castHom hK (ZMod K)) h1
 
 private theorem exists_mem_mul_or_neg_mul_symm (M : ℕ) (a b : ℕ) : Tm M (a + b) = Tm M a * Tm M b := by
   simp only [Tm, pow_add, map_mul]
@@ -103,11 +102,9 @@ private theorem liftSL_mem_gam_and_map_eq_of_mem_gs (N l M : ℕ) [NeZero M] (hM
   obtain ⟨h1, h0⟩ := Subgroup.mem_inf.1 hg'
   refine Subgroup.mem_inf.2 ⟨?_, ?_⟩
   · rw [CongruenceSubgroup.Gamma1_mem] at h1 ⊢
-    rw [eN, eN, eN]
-    exact h1
+    rwa [eN, eN, eN]
   · rw [CongruenceSubgroup.Gamma0_mem] at h0 ⊢
-    rw [el]
-    exact h0
+    rwa [el]
 
 theorem UpperTheory.Kd.L.reps :
     ∀ (l : ℕ) [Fact l.Prime] (N : ℕ) [NeZero N] (c d : ℕ) (gm : (ZMod l)ˣ → SL(2, ℤ)), Par l N c d gm → ∀ (M : ℕ) [NeZero M], N * l ∣ M → (∃ R, IsReps N l M R) ∧ ∀ γ ∈ Gs N l M, ∀ r₀, Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) (liftSL M γ) = γ ∧ gm r₀ * liftSL M γ ∈ CongruenceSubgroup.Gamma0 N ∧ ((en (gm r₀ * liftSL M γ) 0 0 : ℤ) : ZMod N) = ((en (gm 1) 0 0 : ℤ) : ZMod N) ∧ ¬ (l : ℤ) ∣ en (gm r₀ * liftSL M γ) 0 0 ∧ ¬ (l : ℤ) ∣ en (gm r₀ * liftSL M γ) 1 0 := by
@@ -168,8 +165,7 @@ theorem UpperTheory.Kd.L.reps :
             rw [← hγr, tm_mod_eq, ← hr1, hk]
           exact mul_left_cancel e
         have := eq_of_tm_eq_of_lt M k' (k % M) hk' (Nat.mod_lt _ (NeZero.pos M)) hT
-        simp only [Prod.mk.injEq]
-        exact ⟨hr1.symm, this⟩
+        simpa only [Prod.mk.injEq] using ⟨hr1.symm, this⟩
   · intro γ hγ r₀
     obtain ⟨hLG, hL⟩ := liftSL_mem_gam_and_map_eq_of_mem_gs N l M hM γ hγ
     obtain ⟨hL1, hL0⟩ := Subgroup.mem_inf.1 hLG
@@ -180,8 +176,7 @@ theorem UpperTheory.Kd.L.reps :
       rw [Matrix.det_fin_two] at h1
       have h2 := congrArg (Int.cast : ℤ → ZMod l) h1
       push_cast at h2
-      rw [hL0, mul_zero, sub_zero] at h2
-      exact h2
+      rwa [hL0, mul_zero, sub_zero] at h2
     have hL00 : (((liftSL M γ) 0 0 : ℤ) : ZMod l) ≠ 0 := left_ne_zero_of_mul_eq_one detL
     have hg00 : (((gm r₀) 0 0 : ℤ) : ZMod l) ≠ 0 := by
       intro h0
@@ -198,8 +193,7 @@ theorem UpperTheory.Kd.L.reps :
     · have ga := hP.ga r₀
       simp only [en, Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two] at ga ⊢
       push_cast
-      rw [hL1.1, hL1.2.2, mul_one, mul_zero, add_zero]
-      exact ga
+      rwa [hL1.1, hL1.2.2, mul_one, mul_zero, add_zero]
     · rw [← ZMod.intCast_zmod_eq_zero_iff_dvd]
       simp only [en, Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]
       push_cast

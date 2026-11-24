@@ -84,8 +84,7 @@ private lemma strong_of {G κ : Type} [Group G] [TopologicalSpace G] [IsTopologi
   obtain ⟨O, hO, hOU⟩ := isOpen_induced_iff.1 hU
   have h1 : (1 : G) ∈ O := by
     have : (1 : ↥(V ⊓ G')) ∈ (U : Set ↥(V ⊓ G')) := U.one_mem
-    rw [← hOU] at this
-    exact this
+    rwa [← hOU] at this
   obtain ⟨V', hV', hsub⟩ := open_basis (O ∩ V) (hO.inter hV) ⟨h1, V.one_mem⟩
   refine hirr V' hV' W fun g hg => ?_
   have h2 := hsub hg.1

@@ -218,8 +218,7 @@ theorem UpperTheory.V.Pa.Det.ellClosed :
       (∀ i j, AdicCont (Ideal.span {(DD.C x.t : DD x.A k.g)}) fun s => N s i j) →
       ∀ i j, AdicCont (Ideal.span {(DD.C x.t : DD x.A k.g)}) fun s => (M s * N s) i j := by
     intro M N hM hN i j
-    simp only [Matrix.mul_apply]
-    exact ac_sum _ fun m => ac_mul (hM i m) (hN m j)
+    simpa only [Matrix.mul_apply] using ac_sum _ fun m => ac_mul (hM i m) (hN m j)
   have hρ : ∀ i j, AdicCont (Ideal.span {(DD.C x.t : DD x.A k.g)}) fun s => x.ρX (DD x.A k.g) s i j := by
     intro i j
     have h := x.cont i j
@@ -238,12 +237,10 @@ theorem UpperTheory.V.Pa.Det.ellClosed :
     have := hmul (fun s => 1 + DD.epM fun m => (k.κ m s).map ⇑(algebraMap x.A x.A))
       (fun s => x.ρX (DD x.A k.g) s)
       (fun i j => by simpa only [Matrix.add_apply] using ac_add (ac_const _) (hκ i j)) hρ
-    intro i j
-    exact this i j
+    exact fun i j => this i j
   have hprod := hmul z (fun s => k.ρ1 x.A s) hzc hρ1
   have htr : AdicCont (Ideal.span {(DD.C x.t : DD x.A k.g)}) fun s => (z s * k.ρ1 x.A s).trace := by
-    simp only [Matrix.trace, Matrix.diag]
-    exact ac_sum _ fun i => hprod i i
+    simpa only [Matrix.trace, Matrix.diag] using ac_sum _ fun i => hprod i i
   have hf : AdicCont (Ideal.span {x.t}) fun s => ell k x.A s z := ac_eta x.t htr
   have sep : ∀ a : x.A, (∀ N : ℕ, Ideal.Quotient.mk (Ideal.span {x.t} ^ N) a = 0) → a = 0 := by
     intro a ha
@@ -305,8 +302,7 @@ theorem UpperTheory.V.Pa.Det.maxIndep :
   have hli : LinearIndependent A (fun j => (ψ (Finsupp.single j 1) : M ⧸ B)) := by
     have h1 := (Finsupp.basisSingleOne (R := A) (ι := Fin n)).linearIndependent
     have h2 := h1.map' ψ (LinearMap.ker_eq_bot.mpr hψinj)
-    have h3 := h2.map' (S.map B.mkQ).subtype (Submodule.ker_subtype _)
-    simpa [Function.comp_def] using h3
+    simpa [Function.comp_def] using h2.map' (S.map B.mkQ).subtype (Submodule.ker_subtype _)
   refine ⟨n, κ, hκS, ?_, ?_⟩
   · intro c hc
     have h0 : ∑ j, c j • (ψ (Finsupp.single j 1) : M ⧸ B) = 0 := by
@@ -394,8 +390,7 @@ theorem UpperTheory.V.Pa.Det.kapEx :
       simp only [MonoidHom.one_apply]
       exact IsLocallyConstant.const (X := F.G₀) _
     · intro i j
-      have h := x.cont i j
-      simpa [PowerSeries.maximalIdeal_eq_span_X] using h
+      simpa [PowerSeries.maximalIdeal_eq_span_X] using x.cont i j
     · intro z hz
       rw [← SetLike.mem_coe, hS] at hz
       refine ⟨hz.2.1, ?_⟩
@@ -416,14 +411,12 @@ theorem UpperTheory.V.Pa.Det.kapEx :
   refine ⟨⟨g, κ, hsel, Y, hYmem, hYloc, ?_, ?_⟩⟩
   · intro c hc
     apply hind c
-    rw [← SetLike.mem_coe, hB]
-    exact hc
+    rwa [← SetLike.mem_coe, hB]
   · intro z hz
     rw [← hS] at hz
     obtain ⟨s, c, hsc⟩ := hgen z hz
     refine ⟨s, c, ?_⟩
-    rw [← hB]
-    exact hsc
+    rwa [← hB]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DeterminantPadicFree.CharPOfPadic =====
@@ -485,9 +478,7 @@ private theorem sep_open {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : 
   obtain ⟨N, hN⟩ := hN
   have hev : ∀ᶠ g in nhds s, ∀ i j, Ideal.Quotient.mk (maximalIdeal x.A ^ N) (mat x.ρ g i j)
       = Ideal.Quotient.mk (maximalIdeal x.A ^ N) (mat x.ρ s i j) := by
-    simp only [Filter.eventually_all]
-    intro i j
-    exact (x.cont i j N).eventually_eq s
+    simpa only [Filter.eventually_all] using fun i j => (x.cont i j N).eventually_eq s
   filter_upwards [hev] with g hg h0
   apply hN
   have hM : (mat x.ρ g).map (Ideal.Quotient.mk (maximalIdeal x.A ^ N))
@@ -677,10 +668,8 @@ private theorem ker_restrict_mem_Zu_of_comp_zero {A G : Type} [CommRing A] [Grou
   show _ ∈ Z1 (kerRep M M' u hu).ρ ∧ _
   refine ⟨(mem_Z1_iff_cocycle _ _).2 ⟨?_, ?_⟩, ?_⟩
   · exact hzc.1.subtype_mk _
-  · intro g h
-    exact Subtype.ext (hzc.2 g h)
-  · intro g hg
-    exact Subtype.ext (hz'.2 g hg)
+  · exact fun g h => Subtype.ext (hzc.2 g h)
+  · exact fun g hg => Subtype.ext (hz'.2 g hg)
 
 theorem UpperTheory.V.Pa.B2.urOf :
     ∀ (l : ℕ) [Fact l.Prime] (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (J : Subgroup G), UnrCount l G J → UrAx l J := by
@@ -739,7 +728,6 @@ theorem UpperTheory.V.Pa.B2.urOf :
         apply Subtype.ext
         show (Submodule.Quotient.mk (Submodule.inclusion hZ (d m)) : H1 M.ρ) = 0
         apply (Submodule.Quotient.mk_eq_zero (Submodule.comap (Z1 M.ρ).subtype (B1 M.ρ))).2
-        show d0 M.ρ m ∈ B1 M.ρ
         exact (mem_coboundaries1 _ _).2 ⟨m, fun g => rfl⟩
       · intro hz
         have hz2 : (Submodule.Quotient.mk (Submodule.inclusion hZ z) : H1 M.ρ) = 0 :=
@@ -795,8 +783,7 @@ theorem UpperTheory.V.Pa.B2.urOf :
         exact ⟨⟨_, ker_restrict_mem_Zu_of_comp_zero M M' u hu z.1 z.2 hk⟩, Subtype.ext rfl⟩
     have hcM : Nat.card M.X = Nat.card K.X * Nat.card M'.X := by
       have e := card_ker_range u
-      rw [LinearMap.range_eq_top.2 hsu, Nat.card_congr Submodule.topEquiv.toEquiv] at e
-      exact e
+      rwa [LinearMap.range_eq_top.2 hsu, Nat.card_congr Submodule.topEquiv.toEquiv] at e
     have e2 := card_ker_range ψ
     rw [← hιr, Nat.card_congr (LinearEquiv.ofInjective ι hιinj).symm.toEquiv, hcZ, hcZK, hcM] at e2
     have hposK : 0 < Nat.card K.X := Nat.card_pos
@@ -854,8 +841,7 @@ private theorem UpperTheory.V.Pa.B2.ge_real (hE : GlobalEulerChar) (F Ω : Type)
     Finset.filter_true_of_mem fun w _ => IsTotallyReal.isReal w] at h
   have c0 : Nat.card (H0 M.ρ) = Nat.card (H0 (GlobalTheory.Published.zmodRep (l ^ 1) M.ρ)) :=
     Nat.card_congr (Equiv.subtypeEquivRight fun _ => Iff.rfl)
-  rw [c0, Nat.card_congr e1.toEquiv, Nat.card_congr e2.toEquiv]
-  exact h
+  rwa [c0, Nat.card_congr e1.toEquiv, Nat.card_congr e2.toEquiv]
 
 theorem UpperTheory.V.Pa.B2.arGE :
     CohP → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (V0 V : s.Lev) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid V0.frame O n), ∃ c : Fin (Module.finrank ℚ (Lp L)) → (globOf r V).Γ, (∀ i, (globOf r V).η (c i) = -1 ∧ c i * c i = 1) ∧ ∀ (A : Type) [CommRing A] (M : FRep A (globOf r V).Γ), (∀ m : M.X, l • m = 0) → Nat.card (H0 M.ρ) * Nat.card (H2 M.ρ) * Nat.card M.X ^ Module.finrank ℚ (Lp L) = Nat.card (H1 M.ρ) * ∏ i, Nat.card {m : M.X // M.ρ (c i) m = m} := by
@@ -872,8 +858,7 @@ theorem UpperTheory.V.Pa.B2.arGE :
     refine ⟨(Int.units_eq_one_or (V.η (toGS Ω V.S' (c (e i))))).resolve_left fun h => a2 ((V.hη _).1 h), ?_⟩
     exact (map_mul (toGS Ω V.S') _ _).symm.trans (by rw [a1, map_one]; rfl)
   · have h := UpperTheory.V.Pa.B2.ge_real hP.ge (Lp L) Ω l V.S' V.fin (fun v hv => V.sub (Or.inl hv)) c hc A M hM
-    rw [← Equiv.prod_comp e] at h
-    exact h
+    rwa [← Equiv.prod_comp e] at h
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.ArchH0Card =====
@@ -1011,10 +996,7 @@ private theorem ck_pt (hP : GlobalTheory.Published.PoitouTateNormalised) (F Ω :
       rw [← e, map_mul, ← ck_castMod]
       rfl
     · apply Subtype.ext
-      apply LinearMap.ext
-      intro m
-      apply c.injective
-      exact DFunLike.congr_fun (congrArg Subtype.val h) m
+      exact LinearMap.ext (fun m => c.injective (DFunLike.congr_fun (congrArg Subtype.val h) m))
 
 end UpperTheory.V.Pa.B2
 
@@ -1126,8 +1108,7 @@ private theorem card_H0_pullback_eq : Nat.card (H0 (pull p.toMonoidHom hp M).ρ)
     · intro h g
       rw [← back p hp M g m]
       exact h _
-    · intro h g
-      exact h (p g)
+    · exact fun h g => h (p g)
   rw [e]
   rfl
 
@@ -1232,8 +1213,7 @@ theorem UpperTheory.V.Pa.B2.cohAxIso :
       exact hf g0 m
     · intro hf g m
       have := hf (e.p g) m
-      rw [e.ε] at this
-      exact this
+      rwa [e.ε] at this
 end -- clump:auto
 end -- clump:auto
 end -- clump:auto
@@ -1285,8 +1265,7 @@ theorem UpperTheory.V.Pa.B2.arSum :
     deg_split l L Ω (s.A v.1) v.1 (s.w v.1) (s.hA _) (s.hw _) v.2 (s.split _ (Or.inl v.2))
   rw [Finset.sum_congr rfl (fun v _ => key v)]
   letI : Fintype {v : HeightOneSpectrum (𝓞 (Lp L)) // ((l : ℕ) : 𝓞 (Lp L)) ∈ v.asIdeal} := (locOf r).finV
-  have h := GlobalTheory.Proof.LocalDegreeSum.sum_locDeg (Lp L) l
-  exact h
+  exact GlobalTheory.Proof.LocalDegreeSum.sum_locDeg (Lp L) l
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.DegSplit =====
@@ -1561,8 +1540,7 @@ theorem UpperTheory.V.Pa.Det.coefficientExtension_preserves_conditions_and_det :
     ext a c
     have hz : ∀ i, p i (Z a c) = 0 := by
       intro i
-      have h1 := congrFun (congrFun (hZi i) a) c
-      simpa only [Matrix.map_apply, Matrix.zero_apply] using h1
+      simpa only [Matrix.map_apply, Matrix.zero_apply] using congrFun (congrFun (hZi i) a) c
     rw [hsum (Z a c), Matrix.zero_apply]
     simp [hz]
   · intro h3 U hU hne
@@ -1607,8 +1585,7 @@ theorem UpperTheory.V.Pa.Det.constMap :
     set c := PowerSeries.constantCoeff f with hcdef
     have hc : c ^ (p ^ (n : ℕ)) = c := by
       have h2 := congrArg PowerSeries.constantCoeff hf
-      rw [map_pow] at h2
-      exact h2
+      rwa [map_pow] at h2
     have hd : (f - PowerSeries.C c) ^ (p ^ (n : ℕ)) = f - PowerSeries.C c := by
       rw [sub_pow_char_pow, hf, ← map_pow, hc]
     have hd0 : PowerSeries.constantCoeff (f - PowerSeries.C c) = 0 := by
@@ -1833,8 +1810,7 @@ theorem chain_of (hN : Norm) (hC : Choice) (hP : ArPl) (h1 : FirstOrderDualArith
       f := { ((j' i).comp (j i)).comp (f i : B.B →+* (x i).A) with
         commutes' := fun a => by
           change ((j' i).comp (j i)) (f i (algebraMap O B.B a)) = _
-          rw [AlgHom.commutes]
-          rw [PowerSeries.algebraMap_apply, PowerSeries.algebraMap_apply]
+          rw [AlgHom.commutes, PowerSeries.algebraMap_apply, PowerSeries.algebraMap_apply]
           exact hι i _ }
       maps := ⟨by rw [hD i, ← (hf i).1]; rfl, fun v a => by
         rw [(hE i).2.2.2.2.2 v a, jψ i v a, ← (hf i).2 v a]; rfl⟩ }

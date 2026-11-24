@@ -123,8 +123,7 @@ private theorem pe_curve (l : ℕ) [Fact l.Prime] (O O' R : Type) [CommRing O] [
     exact Ideal.Quotient.eq.mpr ha
   haveI : CharP (R ⧸ p) l := by
     rw [CharP.charP_iff_prime_eq_zero (Fact.out)]
-    rw [← map_natCast (Ideal.Quotient.mk p), Ideal.Quotient.eq_zero_iff_mem]
-    exact hl
+    rwa [← map_natCast (Ideal.Quotient.mk p), Ideal.Quotient.eq_zero_iff_mem]
   obtain ⟨k, _, _, f, hfi, hfl, _⟩ := Pr.T.curveNorm l hd
   let g : O →+* R ⧸ p := (Ideal.Quotient.mk p).comp (algebraMap O R)
   have hg : ∀ a ∈ maximalIdeal O, g a = 0 := fun a ha => Ideal.Quotient.eq_zero_iff_mem.mpr (hm a ha)
@@ -163,8 +162,7 @@ private theorem pe_res {O B K : Type} [CommRing O] [IsLocalRing O] [CommRing B] 
   ext b
   obtain ⟨a, ha⟩ := IsCO.res_surj (O := O) (R := B) b
   have h1 : f (b - algebraMap O B a) = 0 := by
-    rw [← RingHom.mem_ker, hmax]
-    exact ha
+    rwa [← RingHom.mem_ker, hmax]
   have h2 : res O B (b - algebraMap O B a) = 0 := (res_eq_zero_iff O B _).mpr ha
   rw [map_sub, sub_eq_zero] at h1 h2
   rw [RingHom.comp_apply, h1, hf]
@@ -248,12 +246,10 @@ private theorem pe_form (ρ : NRep F n A) : G.IsForm O n (K.tw ρ).toHomUnits (J
     have e2 : G.eps O A g = Units.map ((algebraMap O A : O →+* A) : O →* A) (G.eps O O g) := by
       ext
       simp [W.GFrame.eps, W.pushCh]
-    rw [e1, e1, e2]
-    exact h
+    rwa [e1, e1, e2]
   have hstar : ∀ h : F.G0, ρ.r (F.conj h) = Jmat A n * (ρ.r h⁻¹)ᵀ * Jmat A n := by
     intro h
-    have h' := ρ.pol h⁻¹
-    simpa [Frame.star] using h'
+    simpa [Frame.star] using ρ.pol h⁻¹
   have hinv : ∀ h : F.G0, (ρ.r h)ᵀ * (ρ.r h⁻¹)ᵀ = 1 := by
     intro h
     rw [← Matrix.transpose_mul, ← map_mul, inv_mul_cancel, map_one, Matrix.transpose_one]
@@ -324,10 +320,7 @@ private theorem pe_ine {k : Type} [Field k] [Algebra (ResidueField O) k] [CharP 
     (h : (W.GDet.ofRep (K.tw ρ)).map (PowerSeries.constantCoeff : PowerSeries k →+* k) =
       r.Dbar.map (algebraMap (ResidueField O) k)) (u : G.St) (g : G.G₀) (hg : g ∈ r.Ip u) : K.tw ρ g = 1 := by
   have hIu : g ∈ G.Iu u := (Subgroup.mem_inf.mp hg).1
-  have hker : ∀ i, r.chib i g = 1 := by
-    intro i
-    have h' := (Subgroup.mem_inf.mp hg).2
-    exact (Subgroup.mem_iInf.mp h' i)
+  have hker : ∀ i, r.chib i g = 1 := fun i => Subgroup.mem_iInf.mp ((Subgroup.mem_inf.mp hg).2) i
   obtain ⟨m, hlm, hπ, hκ⟩ := K.tame u g hIu
   have hdiag : W.diagRep r.chib g = 1 := by
     simp [W.diagRep, hker]
@@ -364,8 +357,7 @@ private theorem pe_ine {k : Type} [Field k] [Algebra (ResidueField O) k] [CharP 
       have h3 : (Polynomial.map (PowerSeries.constantCoeff : PowerSeries k →+* k)
           ((K.tw ρ g).charpoly - (Polynomial.X - 1) ^ n)).coeff i = (0 : Polynomial k).coeff i := by
         rw [h0]
-      rw [Polynomial.coeff_map, Polynomial.coeff_zero] at h3
-      exact h3
+      rwa [Polynomial.coeff_map, Polynomial.coeff_zero] at h3
     rw [Polynomial.map_sub, sub_eq_zero] at hd
     rw [hd]
     simp
@@ -404,8 +396,7 @@ theorem UpperTheory.V.Pr.pointEx_of_le {l : ℕ} [Fact l.Prime] {O : Type} [Comm
   have h0 : T.B.u.Maps ((T.S.A.val : T.S.A →+* T.S.R).comp ((T.S.inc.comp Φ : T.B.B →ₐ[O] T.S.A) : T.B.B →+* T.S.A))
       (W.GDet.ofRep (T.K.tw (T.S.u.map (T.S.A.val : T.S.A →+* T.S.R))))
       (T.K.twψ (T.S.u.map (T.S.A.val : T.S.A →+* T.S.R))) := by
-    rw [hSu]
-    exact hΦ
+    rwa [hSu]
   have h1 := pe_maps_of T.K T.B.u _ T.S.A.val Subtype.val_injective T.S.u h0
   have h2 := pe_maps T.K T.B.u _ (j.comp L.ι) T.S.u h1
   have hρ : T.S.u.map ((j.comp L.ι : T.S.A →ₐ[O] PowerSeries K) : T.S.A →+* PowerSeries K)
@@ -447,8 +438,7 @@ theorem UpperTheory.V.Pr.pointEx_of_le {l : ℕ} [Fact l.Prime] {O : Type} [Comm
     rw [hmat]
     exact pe_tw_cont T.K _ hcont a b
   · exact Jmat_transpose n
-  · rw [hmat]
-    exact hred
+  · rwa [hmat]
   · intro u g hg
     haveI := IsCoef.char (l := l) (O := O)
     apply Units.ext
@@ -485,9 +475,7 @@ theorem UpperTheory.V.Pr.pointEx :
   refine UpperTheory.V.Pr.pointEx_of_le T Φ hΦ x L p hp hd fun a ha => ?_
   haveI := hp
   have h1 : (l : O) ∈ p.comap (algebraMap O L.R) := by
-    rw [Ideal.mem_comap, map_natCast]
-    exact hl
+    rwa [Ideal.mem_comap, map_natCast]
   have h2 : (p.comap (algebraMap O L.R)).IsMaximal :=
     IsPrime.to_maximal_ideal fun h => h0 (by rwa [h, Ideal.mem_bot] at h1)
-  rw [← eq_maximalIdeal h2] at ha
-  exact ha
+  rwa [← eq_maximalIdeal h2] at ha

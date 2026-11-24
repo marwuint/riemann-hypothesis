@@ -76,8 +76,7 @@ private lemma aux {Γ : Subgroup (GL (Fin 2) ℝ)} [Γ.IsArithmetic] {k : ℤ} (
   have hper : ∀ w : ℍ, Function.Periodic (fun t : ℝ => F (t +ᵥ w)) N := fun w t => by
     have := SlashInvariantForm.vAdd_apply_of_mem_strictPeriods F (t +ᵥ w) hP
     simp only
-    rw [add_comm, add_vadd]
-    exact this
+    rwa [add_comm, add_vadd]
   refine ⟨N, hN, hper z, ?_⟩
   have h0 := CuspFormClass.qExpansion_coeff_zero F hN' hP
   rw [ModularFormClass.qExpansion_coeff_eq_intervalIntegral F hN' hP 0 z.im_pos] at h0
@@ -111,8 +110,7 @@ private lemma aux2 (k M : ℕ) (hM : 1 ≤ M) (f : CuspForm (Gamma1 M) (k : ℤ)
   haveI : NeZero M := ⟨by omega⟩
   haveI : (ConjAct.toConjAct (toR γ)⁻¹ • (Gamma1 M : Subgroup (GL (Fin 2) ℝ))).IsArithmetic := by
     have := Subgroup.IsArithmetic.conj (Gamma1 M : Subgroup (GL (Fin 2) ℝ)) γ⁻¹
-    rw [← map_inv]
-    exact this
+    rwa [← map_inv]
   obtain ⟨N, hN, hp, hi⟩ := aux (CuspForm.translate f (toR γ)) z
   refine ⟨N, hN, ?_, ?_⟩
   · intro t
@@ -245,8 +243,7 @@ private theorem all_case (k M : ℕ) (hM : 1 ≤ M) (f : CuspForm (Gamma1 M) (k 
     · rw [intervalIntegral.integral_comp_neg G]
       have := hp.intervalIntegral_add_eq (-(N : ℝ)) 0
       simp only [neg_add_cancel, zero_add] at this
-      rw [neg_zero, this]
-      exact hi
+      rwa [neg_zero, this]
   · exact pos_case k M hM f γ y hy
 
 end UpperTheory.V.Af.Nf
@@ -267,8 +264,7 @@ theorem UpperTheory.V.Af.Nf.liftCT :
       simp only [map_mul, mul_assoc]
     rw [e, hφ γ _ u hu]
     rfl
-  simp only [key]
-  exact all_case k M hM f γ⁻¹ _ (toR γ * h).det_ne_zero
+  simpa only [key] using all_case k M hM f γ⁻¹ _ (toR γ * h).det_ne_zero
 end -- clump:auto
 end -- clump:auto
 end -- clump:auto

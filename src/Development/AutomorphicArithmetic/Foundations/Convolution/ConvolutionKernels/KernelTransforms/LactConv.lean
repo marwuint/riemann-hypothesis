@@ -249,8 +249,7 @@ private theorem UpperTheory.ConvolutionTheory.Tf.Crv.deriv {A : ℝ → U} {D : 
     simp [hA', map_sum]
   rw [e]
 
-  simp only [map_sum, map_smul, smul_eq_mul]
-  exact HasDerivAt.fun_sum fun i _ => (hc i).mul_const _
+  simpa only [map_sum, map_smul, smul_eq_mul] using HasDerivAt.fun_sum fun i _ => (hc i).mul_const _
 
 end
 
@@ -291,8 +290,7 @@ private theorem UpperTheory.ConvolutionTheory.Tf.crv_AdU (X : 𝔤) (u : Univers
           UniversalEnvelopingAlgebra.ι ℝ x * UniversalEnvelopingAlgebra.ι ℝ (h.toLie X) := by
       show UniversalEnvelopingAlgebra.ι ℝ ⁅h.toLie X, x⁆ = _
       rw [LieHom.map_lie, Ring.lie_def]
-    rw [e2] at key
-    exact key
+    rwa [e2] at key
   | mul a b ha hb =>
     have key := ha.mul hb
     simp only [map_mul]
@@ -624,8 +622,7 @@ theorem UpperTheory.ConvolutionTheory.Tf.convZ :
       simp [GroundTheory.Automorphic.rightTranslate]
     have h3 := hk2 1
     rw [one_mul] at h3
-    rw [h2, hc]
-    exact h3
+    rwa [h2, hc]
   have hk1 : HasCompactSupport (fun g : archGroup K n => β₁ g⁻¹) :=
     β₁.hasCompactSupport.comp_homeomorph (Homeomorph.inv _)
   have hk2 : HasCompactSupport (fun g : archGroup K n => β₂ g⁻¹) :=
@@ -733,8 +730,7 @@ theorem UpperTheory.ConvolutionTheory.Tf.lactConv :
       intro a ha
       ext x
       rw [conv_apply, conv_apply]
-      simp only [e₁, e₂]
-      exact UpperTheory.ConvolutionTheory.Tf.convZ K n ν β₁ β₂ h₁ h₂ a ha x
+      simpa only [e₁, e₂] using UpperTheory.ConvolutionTheory.Tf.convZ K n ν β₁ β₂ h₁ h₂ a ha x
     obtain ⟨⟨a, b, hab⟩, hc⟩ := UpperTheory.ConvolutionTheory.Tf.centerC (UEnv K n) z
     obtain ⟨ha, hb⟩ := (hc a b hab).1 hz
     rw [hab, lactConv_split _ hβ₁, lactConv_split _ hβ₂, lactConv_left, lactConv_right, key a ha, key b hb]

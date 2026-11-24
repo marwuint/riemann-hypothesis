@@ -104,8 +104,7 @@ private theorem exists_ext {F Ω : Type} [Field F] [NumberField F] [Field Ω] [A
     have : (1 : ↥(GK Bw.Kw)) ∈ Subtype.val ⁻¹' U' := by
       rw [hUe']
       change ((Bw.e.symm 1 : ↥(Dec (F := F) A)) : G F Ω) ∈ U
-      rw [map_one]
-      exact h1
+      rwa [map_one]
     exact this
   obtain ⟨E, hE, hEU⟩ := (krullTopology_mem_nhds_one_iff ℚ_[l] (Om l) U').1 (hU'.mem_nhds h1')
   refine ⟨GlobalTheory.Pst.supExt Bw.Kw ⟨E, hE⟩, le_sup_left, fun g hg => ?_⟩
@@ -119,8 +118,7 @@ private theorem exists_ext {F Ω : Type} [Field F] [NumberField F] [Field Ω] [A
     exact GlobalTheory.FrobGen.norm_sub_lt ((UpperTheory.V.Loc.memIK _ g).1 hg) _
       ((hj x).1 ((A.valuation_le_one_iff x).1 hx))
   have h2 : (⟨_, hI⟩ : ↥(Ine (F := F) A)) ∈ Subtype.val ⁻¹' U := hgU
-  rw [hUe] at h2
-  exact h2
+  rwa [hUe] at h2
 
 theorem UpperTheory.rankOne_character_isdR_and_jumps_zero :
     ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} (κ : ↥(Dec (F := F) A) →* (Qbar l)ˣ), Continuous κ → IsOpen {σ : ↥(Ine (F := F) A) | κ (Subgroup.inclusion (Ine_le_Dec A) σ) = 1} → ∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O), GlobalTheory.Pst.Induces Bw → GlobalTheory.Pst.IsdRAt (UpperTheory.V.Loc.PP l) Bw (GlobalTheory.TripleGal.rk1 κ) ∧ ∀ (τ : F →+* Qbar l) (LL' : FinExt l) (τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥LL'.1), GlobalTheory.Pst.IsInduced Bw τ τ' → GlobalTheory.Pst.IsJumpsAt (UpperTheory.V.Loc.PP l) Bw (GlobalTheory.TripleGal.rk1 κ) τ {0} := by
@@ -180,8 +178,7 @@ theorem UpperTheory.rankOne_character_isdR_and_jumps_zero :
       (GlobalTheory.Per.CrisDR.isDR_of_isCrys l _ _ T K LL _ _ hcr').1
   have hD : Bw.IsdRE (UpperTheory.V.Loc.PP l) LL r := by
     unfold Formalism.MainNotions.N.IsDR at hd
-    rw [Module.finrank_fin_fun] at hd
-    exact hd
+    rwa [Module.finrank_fin_fun] at hd
   refine ⟨⟨_, _, hM, hD⟩, fun τ LL' τ' hτ => ?_⟩
   obtain ⟨σ, hσ⟩ := IsAlgClosed.surjective_restrictDomain_of_isAlgebraic (K := ℚ_[l]) (L := ↥Bw.Kw.1)
     (M := Om l) (E := Om l) (LL'.1.val.comp τ')
@@ -251,8 +248,7 @@ private theorem bridge_transfer {F E Ω : Type} [Field F] [NumberField F] [Field
     rfl
   have hV₁ : Bw.IsdRE P L r₁ := by
     unfold LocBridge.IsdRE at hV ⊢
-    rw [hrep]
-    exact hV
+    rwa [hrep]
   refine ⟨⟨L, r₁, hm₁, hV₁⟩, fun τ τ' hτ => ⟨(Bw.LL.1.val.comp τ').toRingHom.comp
     ((Bw.j.comp (algebraMap E Ω)).codRestrict Bw.Kw.1 jE'), τ', fun _ => rfl, fun _ _ => rfl, fun J hJ => ?_⟩⟩
   refine ⟨L, r₁, hm₁, hV₁, (IntermediateField.inclusion hm.1).comp τ', hτ, fun a => ?_⟩

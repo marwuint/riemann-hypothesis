@@ -209,8 +209,7 @@ private theorem scS_stab {t : A} (Φ : C →ₗ[A] C')
     obtain ⟨s, hs, hsz⟩ := Submodule.mem_map.1 hz2
     have e : (z : C ⧸ (Ideal.span {t} • ⊤ : Submodule A C)) = (Ideal.span {t} • ⊤ : Submodule A C).mkQ x := by
       have e0 := congrArg Subtype.val hz
-      rw [Submodule.coe_inclusion] at e0
-      exact e0
+      rwa [Submodule.coe_inclusion] at e0
     have hq : (Ideal.span {t} • ⊤ : Submodule A C).mkQ x = (Ideal.span {t} • ⊤ : Submodule A C).mkQ s :=
       e.symm.trans hsz.symm
     have hxs : x - s ∈ (Ideal.span {t} • ⊤ : Submodule A C) := (Submodule.Quotient.eq _).1 hq
@@ -222,8 +221,7 @@ private theorem scS_step {t : A} (Φ : C →ₗ[A] C') (h : ∀ y : C', t • y 
     ∀ x ∈ scS t Φ (m0 + j), ∃ s ∈ scS t Φ M, ∃ c, t ^ j • c = x - s := by
   induction j with
   | zero =>
-    intro x _
-    exact ⟨0, Submodule.zero_mem _, x, by rw [pow_zero, one_smul, sub_zero]⟩
+    exact fun x _ => ⟨0, Submodule.zero_mem _, x, by rw [pow_zero, one_smul, sub_zero]⟩
   | succ j ih =>
     intro x hx
     obtain ⟨s1, hs1, c1, hc1⟩ :=
@@ -379,8 +377,7 @@ theorem UpperTheory.V.Pa.solCnt :
   haveI hf1 : Finite ((scS t Φ 1).map (Ideal.span {t} • ⊤ : Submodule A C).mkQ) := by
     show Finite (((Ideal.span {t ^ 1} • ⊤ : Submodule A C').comap Φ).map
       (Ideal.span {t} • ⊤ : Submodule A C).mkQ)
-    rw [pow_one]
-    exact hfin
+    rwa [pow_one]
   have hkf : Module.Finite A (LinearMap.ker Φ) := sc_kerfin Φ hC'
   haveI := hkf
   obtain ⟨s, hs⟩ := sc_unif (t := t) (LinearMap.ker Φ) B fun z hz => hBk z (LinearMap.mem_ker.1 hz)
@@ -401,8 +398,7 @@ theorem UpperTheory.V.Pa.solCnt :
     obtain ⟨y, hy⟩ := (sc_mem _ _).1 hkg
     refine ⟨(g : C), Finset.mem_map_of_mem (Function.Embedding.subtype _) hg, ?_⟩
     have e := hs y y.2
-    rw [← Submodule.coe_smul, hy] at e
-    exact e
+    rwa [← Submodule.coe_smul, hy] at e
   obtain ⟨m0, h0⟩ := scS_stab (t := t) Φ
   have h1 := scS_step Φ hC' h0
   haveI := scS_fin Φ hC' m0

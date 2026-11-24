@@ -130,8 +130,7 @@ theorem UpperTheory.V.Pr.T.cliffordSS :
         rw [hmul] at h2 ⊢
         have : g * n * g⁻¹ * g = g * n := by group
         rwa [this] at h2
-      intro s hs
-      exact (hle hs).2
+      exact fun s hs => (hle hs).2
   have hU := hirr (⨅ g : G, (W ⊔ W').comap (ρ g)) (by
     intro g v hv
     simp only [Submodule.mem_iInf, Submodule.mem_comap] at hv ⊢
@@ -142,8 +141,7 @@ theorem UpperTheory.V.Pr.T.cliffordSS :
     apply hS0
     rw [eq_bot_iff, ← hU]
     intro s hs
-    simp only [Submodule.mem_iInf, Submodule.mem_comap]
-    exact fun g => key g s hs
+    simpa only [Submodule.mem_iInf, Submodule.mem_comap] using fun g => key g s hs
   · rw [eq_top_iff]
     intro v _
     have hv : v ∈ (⨅ g : G, (W ⊔ W').comap (ρ g)) := hU ▸ Submodule.mem_top
@@ -283,10 +281,8 @@ theorem UpperTheory.V.Pr.T.selfTwist :
   obtain ⟨p, hpW, hpW', hpmem⟩ : ∃ p : V →ₗ[K] V, (∀ w ∈ W, p w = w) ∧ (∀ w ∈ W', p w = 0) ∧
       ∀ v, p v ∈ W := by
     refine ⟨W.subtype ∘ₗ W.linearProjOfIsCompl W' hc, ?_, ?_, ?_⟩
-    · intro w hw
-      exact congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hc ⟨w, hw⟩)
-    · intro w hw
-      exact congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_right hc ⟨w, hw⟩)
+    · exact fun w hw => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hc ⟨w, hw⟩)
+    · exact fun w hw => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_right hc ⟨w, hw⟩)
     · intro v; exact (W.linearProjOfIsCompl W' hc v).2
   have hp : ∀ n ∈ N, (Representation.linHom ρ ρ) n p = p := by
     intro n hn
@@ -308,8 +304,7 @@ theorem UpperTheory.V.Pr.T.selfTwist :
   have hy' : ∀ g v, ρ g (y v) = (φ g : K) • y (ρ g v) := by
     intro g v
     have h := LinearMap.congr_fun (hy g) (ρ g v)
-    rw [hc', hinv] at h
-    exact h
+    rwa [hc', hinv] at h
   have hker : LinearMap.ker y = ⊥ := by
     refine (hirr (LinearMap.ker y) ?_).resolve_right (fun h => hy0 (LinearMap.ker_eq_top.mp h))
     intro g v hv
@@ -417,10 +412,7 @@ theorem UpperTheory.V.Ws.exists_sign_twist_charpoly_of_not_irreducible_restricti
   by_cases hsq : ∀ g, φ g * φ g = 1
   · exact quadratic_twist_charpoly_eq h2 r S φ e h1 hS hsq he
   · refine quadratic_twist_charpoly_eq h2 r S (φ * φ) (e.trans e) ?_ ?_ ?_ ?_
-    · intro h
-      apply hsq
-      intro g
-      exact DFunLike.congr_fun h g
+    · exact fun h => hsq (fun g => DFunLike.congr_fun h g)
     · intro g hg
       have : φ g = 1 := hS hg
       rw [MonoidHom.mem_ker, MonoidHom.mul_apply, this, one_mul]

@@ -61,8 +61,7 @@ private theorem val_int {E : Type} [Field E] [NumberField E] (v : HeightOneSpect
   have hr' : algebraMap (𝓞 E) E r ≠ 0 :=
     (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).mpr hr
   have hI : FractionalIdeal.spanSingleton (𝓞 E)⁰ (algebraMap (𝓞 E) E r) ≠ 0 := by
-    rw [Ne, FractionalIdeal.spanSingleton_eq_zero_iff]
-    exact hr'
+    rwa [Ne, FractionalIdeal.spanSingleton_eq_zero_iff]
   have h : FractionalIdeal.spanSingleton (𝓞 E)⁰ (algebraMap (𝓞 E) E r) =
       FractionalIdeal.spanSingleton (𝓞 E)⁰ ((algebraMap (𝓞 E) E 1)⁻¹) * ↑(Ideal.span {r}) := by
     rw [map_one, inv_one, FractionalIdeal.spanSingleton_one, one_mul,
@@ -85,11 +84,9 @@ private theorem val_count {E : Type} [Field E] [NumberField E] (v : HeightOneSpe
   have ha' : algebraMap (𝓞 E) E a ≠ 0 :=
     (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).mpr ha0
   have hIa : FractionalIdeal.spanSingleton (𝓞 E)⁰ (algebraMap (𝓞 E) E a) ≠ 0 := by
-    rw [Ne, FractionalIdeal.spanSingleton_eq_zero_iff]
-    exact ha'
+    rwa [Ne, FractionalIdeal.spanSingleton_eq_zero_iff]
   have hIb : (FractionalIdeal.spanSingleton (𝓞 E)⁰ (algebraMap (𝓞 E) E b))⁻¹ ≠ 0 := by
-    rw [Ne, inv_eq_zero, FractionalIdeal.spanSingleton_eq_zero_iff]
-    exact hb'
+    rwa [Ne, inv_eq_zero, FractionalIdeal.spanSingleton_eq_zero_iff]
   rw [div_eq_mul_inv, ← FractionalIdeal.spanSingleton_mul_spanSingleton, ← FractionalIdeal.spanSingleton_inv,
     FractionalIdeal.count_mul E v hIa hIb, FractionalIdeal.count_inv, map_mul, map_inv₀,
     val_int v ha0, val_int v hb0, neg_add, neg_neg, WithZero.exp_add]
@@ -105,8 +102,7 @@ private theorem count_fam {E ι : Type} [Field E] [NumberField E] [Fintype ι]
   · exact FractionalIdeal.count_zpow_self E (P t) _
   · intro s _ hs
     rw [FractionalIdeal.count_zpow, FractionalIdeal.count_maximal_coprime E (P t) fun h => hs (hP h), mul_zero]
-  · intro h
-    exact absurd (Finset.mem_univ t) h
+  · exact fun h => absurd (Finset.mem_univ t) h
 
 theorem UpperTheory.valuation_kummerElement_at_conjugate_prime :
     ∀ (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (b r : ℕ) (v w : HeightOneSpectrum (𝓞 K)) (X : K) (t : (ZMod M)ˣ), r.Prime → r ≡ 1 [MOD M] → IsX M K b v.asIdeal X → (r : 𝓞 K) ∈ v.asIdeal → w.asIdeal = conjI M K v.asIdeal t → w.valuation K X = w.valuation K (r : K) ^ th M b t := by
@@ -145,9 +141,7 @@ theorem UpperTheory.valuation_kummerElement_at_conjugate_prime :
   rw [hπ] at hprime hprod hinj
   let fam : (ZMod M)ˣ → HeightOneSpectrum (𝓞 K) := fun s =>
     ⟨conjI M K v.asIdeal s, Ideal.isPrime_of_prime (hprime s), (hprime s).ne_zero⟩
-  have hfam : Function.Injective fam := by
-    intro s s' h
-    exact hinj (congrArg HeightOneSpectrum.asIdeal h)
+  have hfam : Function.Injective fam := fun s s' h => hinj (congrArg HeightOneSpectrum.asIdeal h)
   obtain rfl : w = fam t := HeightOneSpectrum.ext hw
   have hX0 : X ≠ 0 := left_ne_zero_of_mul_eq_one hX.1
   have hr0 : (r : 𝓞 K) ≠ 0 := by exact_mod_cast hr.ne_zero

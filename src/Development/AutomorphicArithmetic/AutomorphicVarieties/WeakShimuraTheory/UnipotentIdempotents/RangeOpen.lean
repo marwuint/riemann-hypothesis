@@ -101,8 +101,7 @@ theorem UpperTheory.V.Ws.Lk.v0Ex :
   have hback : ∀ x : G L Ω, W.resP L Ω x ∈ N.toSubgroup → x ∈ U := by
     intro x hx
     obtain ⟨u, hu, hux⟩ := hN hx
-    rw [hinj hux] at hu
-    exact hu
+    rwa [hinj hux] at hu
   have hdec : ∀ d : G L Ω, d ∈ Dec (F := L) A ↔ W.resP L Ω d ∈ Dec (F := W.Lp L) A := by
     intro d
     rw [mem_Dec, mem_Dec]
@@ -121,15 +120,13 @@ theorem UpperTheory.V.Ws.Lk.v0Ex :
   have hDecH : Dec (F := W.Lp L) A ≤ Subgroup.zpowers (W.resP L Ω g) ⊔ N.toSubgroup := by
     intro d hd
     have hfrob' : IsFrob A (normV v) σ := by
-      rw [hnv]
-      exact hfrob
+      rwa [hnv]
     have hcl := GlobalTheory.TameQuot.closure_frob_sup_Ine (W.Lp L) Ω A v hAv ⟨σ, hfrob.1⟩ hfrob'
     have hle : (Subgroup.zpowers (⟨σ, hfrob.1⟩ : Dec (F := W.Lp L) A) ⊔
         (Ine A).subgroupOf (Dec (F := W.Lp L) A)) ≤
         (Subgroup.zpowers (W.resP L Ω g) ⊔ N.toSubgroup).subgroupOf (Dec (F := W.Lp L) A) := by
       refine sup_le ?_ ?_
-      · rw [Subgroup.zpowers_le, Subgroup.mem_subgroupOf]
-        exact hσH
+      · rwa [Subgroup.zpowers_le, Subgroup.mem_subgroupOf]
       · intro x hx
         rw [Subgroup.mem_subgroupOf] at hx ⊢
         exact Subgroup.mem_sup_right (hIne hx)
@@ -159,5 +156,4 @@ theorem UpperTheory.V.Ws.Lk.v0Ex :
   · rw [hdec, hd0]
     exact hfrob.1
   · apply hback
-    rw [map_mul, map_inv, hd0]
-    exact hσg
+    rwa [map_mul, map_inv, hd0]

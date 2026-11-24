@@ -163,8 +163,7 @@ private theorem act_sec_cg (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ
   rw [CongruenceSubgroup.Gamma_mem] at hδ
   have hd : ∀ a : ℤ, (a : ZMod (l ^ n)) = 0 → (l : ℤ_[l]) ^ n ∣ (a : ℤ_[l]) := fun a h => by
     have h1 := (ZMod.intCast_zmod_eq_zero_iff_dvd _ (l ^ n)).1 h
-    have e := map_dvd (Int.castRingHom ℤ_[l]) h1
-    simpa using e
+    simpa using map_dvd (Int.castRingHom ℤ_[l]) h1
   have e : ((lam 0 : ℤ_[l]) * (mZl l (δ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u) 0 +
         (lam 1 : ℤ_[l]) * (mZl l (δ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u) 1) -
       ((lam 0 : ℤ_[l]) * u 0 + (lam 1 : ℤ_[l]) * u 1) =
@@ -191,8 +190,7 @@ private theorem sec_cong (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ) 
 private theorem act_cg (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (m : Matrix (Fin 2) (Fin 2) ℤ) {a b : X.Fn l}
     (h : CgF X l n a b) : CgF X l n (X.act l m a) (X.act l m b) := by
   rw [cgF_iff] at *
-  intro u
-  exact eval_kmap_eq X l n _ (h _)
+  exact fun u => eval_kmap_eq X l n _ (h _)
 
 private theorem act_coset {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n w : ℕ} {H : Subgroup SL(2, ℤ)}
     (hH : H ≤ CongruenceSubgroup.Gamma (l ^ n)) {a : X.Kˣ} (ha : InvH X H (l ^ n) a) {x x' : X.Khat l}
@@ -244,11 +242,9 @@ private theorem isTr_mul {H G : Subgroup SL(2, ℤ)} {ι : Type} {γ : ι → SL
   obtain ⟨i, hi, hi'⟩ := hγ.2 (d * g⁻¹) (G.mul_mem hd (G.inv_mem hg))
   refine ⟨i, ?_, fun j hj => hi' j ?_⟩
   · show d * (γ i * g)⁻¹ ∈ H
-    rw [mul_inv_rev, ← mul_assoc]
-    exact hi
+    rwa [mul_inv_rev, ← mul_assoc]
   · have : d * (γ j * g)⁻¹ ∈ H := hj
-    rw [mul_inv_rev, ← mul_assoc] at this
-    exact this
+    rwa [mul_inv_rev, ← mul_assoc] at this
 
 private theorem isTr_comp {H H' G : Subgroup SL(2, ℤ)} {ι κ : Type} {γ : ι → SL(2, ℤ)} {δ : κ → SL(2, ℤ)}
     (hHH : H' ≤ H) (hH : H ≤ G) (hγ : IsTr H G γ) (hδ : IsTr H' H δ) :
@@ -258,13 +254,11 @@ private theorem isTr_comp {H H' G : Subgroup SL(2, ℤ)} {ι κ : Type} {γ : ι
   obtain ⟨k, hk, hk'⟩ := hδ.2 _ hi
   refine ⟨(k, i), ?_, ?_⟩
   · show d * (δ k * γ i)⁻¹ ∈ H'
-    rw [mul_inv_rev, ← mul_assoc]
-    exact hk
+    rwa [mul_inv_rev, ← mul_assoc]
   · rintro ⟨k2, i2⟩ h
     have h0 : d * (δ k2 * γ i2)⁻¹ ∈ H' := h
     have h' : d * (γ i2)⁻¹ * (δ k2)⁻¹ ∈ H' := by
-      rw [mul_inv_rev, ← mul_assoc] at h0
-      exact h0
+      rwa [mul_inv_rev, ← mul_assoc] at h0
     have hi2 : d * (γ i2)⁻¹ ∈ H := by
       have := H.mul_mem (hHH h') (hδ.1 k2)
       simpa using this

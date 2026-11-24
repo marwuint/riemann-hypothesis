@@ -113,35 +113,30 @@ private theorem trace_cut {Z : Type} [NormedAddCommGroup Z] [InnerProductSpace �
     (hker : ∀ z, (∀ j ∈ s, a j z = a' j z) → Q z = z) :
     LinearMap.trace ℂ Z T = LinearMap.trace ℂ Z (T * Q) := by
   set M : Module.End ℂ Z := ∑ j ∈ s, (a j - a' j) * (a j - a' j) + Q with hM
-  have hds : ∀ j ∈ s, LinearMap.IsSymmetric (a j - a' j) := fun j hj x y => by
-    simp only [LinearMap.sub_apply, inner_sub_left, inner_sub_right, hs j hj x y, hs' j hj x y]
   have hinj : LinearMap.ker M = ⊥ := by
     rw [LinearMap.ker_eq_bot']
     intro z hz
     have h1 : ⟪z, M z⟫_ℂ = ∑ j ∈ s, ((‖(a j - a' j) z‖ ^ 2 : ℝ) : ℂ) + ((‖Q z‖ ^ 2 : ℝ) : ℂ) := by
       have hq : ⟪z, Q z⟫_ℂ = ((‖Q z‖ ^ 2 : ℝ) : ℂ) := by
-        have : ⟪z, Q z⟫_ℂ = ⟪z, Q (Q z)⟫_ℂ := by
-          rw [← Module.End.mul_apply, hQQ]
-        rw [this, ← hQs z (Q z), inner_self_eq_norm_sq_to_K]
+        nth_rw 1 [← hQQ]
+        rw [Module.End.mul_apply, ← hQs z (Q z), inner_self_eq_norm_sq_to_K]
         push_cast
         rfl
       rw [hM, LinearMap.add_apply, LinearMap.sum_apply, inner_add_right, inner_sum, hq]
       congr 1
       refine Finset.sum_congr rfl fun j hj => ?_
-      rw [Module.End.mul_apply, ← hds j hj z, inner_self_eq_norm_sq_to_K]
+      rw [Module.End.mul_apply, ← ((hs j hj).sub (hs' j hj)) z, inner_self_eq_norm_sq_to_K]
       push_cast
       rfl
     rw [hz, inner_zero_right] at h1
-    have h2 : ∑ j ∈ s, ‖(a j - a' j) z‖ ^ 2 + ‖Q z‖ ^ 2 = 0 := by
-      exact_mod_cast h1.symm
+    have h2 : ∑ j ∈ s, ‖(a j - a' j) z‖ ^ 2 + ‖Q z‖ ^ 2 = 0 := by exact_mod_cast h1.symm
     have hn : 0 ≤ ∑ j ∈ s, ‖(a j - a' j) z‖ ^ 2 := Finset.sum_nonneg fun _ _ => by positivity
     have hq0 : ‖Q z‖ ^ 2 = 0 := by nlinarith [sq_nonneg ‖Q z‖]
     have hd0 : ∑ j ∈ s, ‖(a j - a' j) z‖ ^ 2 = 0 := by nlinarith [sq_nonneg ‖Q z‖]
     have hd : ∀ j ∈ s, a j z = a' j z := by
       intro j hj
-      have := (Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => by positivity)).1 hd0 j hj
-      have h3 : (a j - a' j) z = 0 := by simpa using this
-      exact sub_eq_zero.1 h3
+      simpa [sub_eq_zero] using
+        (Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => by positivity)).1 hd0 j hj
     rw [← hker z hd]
     simpa using hq0
   obtain ⟨u, hu⟩ : IsUnit M := (LinearMap.isUnit_iff_ker_eq_bot M).2 hinj
@@ -154,8 +149,7 @@ private theorem trace_cut {Z : Type} [NormedAddCommGroup Z] [InnerProductSpace �
     exact this.mul_right this
   have hcomc : ∀ j ∈ s, Commute (a j) c := by
     intro j hj
-    have : Commute (a j) (u : Module.End ℂ Z) := by rw [hu]; exact hcomM j hj
-    exact this.units_inv_right
+    exact Commute.units_inv_right (by rw [hu]; exact hcomM j hj)
   have hzero : ∀ j ∈ s, LinearMap.trace ℂ Z (T * ((a j - a' j) * (a j - a' j) * c)) = 0 := by
     intro j hj
     set x := (a j - a' j) * c with hx
@@ -166,21 +160,14 @@ private theorem trace_cut {Z : Type} [NormedAddCommGroup Z] [InnerProductSpace �
     rw [e1, map_sub, ← hT j hj, mul_assoc (a j), LinearMap.trace_mul_comm ℂ (a j),
       mul_assoc T, mul_assoc T, hxc.eq, sub_self]
   have hQM : Q * M = Q := by
-    have : Q * ∑ j ∈ s, (a j - a' j) * (a j - a' j) = 0 := by
-      rw [Finset.mul_sum]
-      refine Finset.sum_eq_zero fun j hj => ?_
-      rw [← mul_assoc, hQd j hj, zero_mul]
-    rw [hM, mul_add, this, zero_add, hQQ]
-  have hQc : Q * c = Q := by
-    calc Q * c = Q * M * c := by rw [hQM]
-      _ = Q := by rw [mul_assoc, hMc, mul_one]
-  calc LinearMap.trace ℂ Z T = LinearMap.trace ℂ Z (T * (M * c)) := by rw [hMc, mul_one]
-    _ = ∑ j ∈ s, LinearMap.trace ℂ Z (T * ((a j - a' j) * (a j - a' j) * c))
-          + LinearMap.trace ℂ Z (T * (Q * c)) := by
-
-        rw [hM, add_mul, mul_add, map_add (f := _), Finset.sum_mul, Finset.mul_sum, map_sum]
-    _ = LinearMap.trace ℂ Z (T * Q) := by
-        rw [Finset.sum_eq_zero hzero, zero_add, hQc]
+    rw [hM, mul_add, Finset.mul_sum, Finset.sum_eq_zero, zero_add, hQQ]
+    intro j hj
+    rw [← mul_assoc, hQd j hj, zero_mul]
+  have hQc : Q * c = Q := by rw [← hQM, mul_assoc, hMc, mul_one, hQM]
+  conv_lhs =>
+    rw [← mul_one T, ← hMc, hM, add_mul, mul_add, map_add (f := _), Finset.sum_mul,
+      Finset.mul_sum, map_sum]
+  rw [Finset.sum_eq_zero hzero, zero_add, hQc]
 
 end SlopeTestRemainingChoices
 

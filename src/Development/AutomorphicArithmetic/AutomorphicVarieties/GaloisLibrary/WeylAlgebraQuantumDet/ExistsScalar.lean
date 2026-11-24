@@ -356,11 +356,9 @@ theorem UpperTheory.V.Weyl.preSub :
   have h2 := UpperTheory.V.Weyl.curve n Ξ' _ X h0 hc
   ext i j
   have e1 : HasDerivAt (fun t : ℂ => (Ξ.mat (1 + t • X) * A) i j) ((Ξ.D X * A) i j) 0 := by
-    simp only [Matrix.mul_apply]
-    exact HasDerivAt.fun_sum fun k _ => (h1 i k).mul_const (A k j)
+    simpa only [Matrix.mul_apply] using HasDerivAt.fun_sum fun k _ => (h1 i k).mul_const (A k j)
   have e2 : HasDerivAt (fun t : ℂ => (A * ρ' (1 + t • X)) i j) ((A * Ξ'.D X) i j) 0 := by
-    simp only [Matrix.mul_apply]
-    exact HasDerivAt.fun_sum fun k _ => (h2 k j).const_mul (A i k)
+    simpa only [Matrix.mul_apply] using HasDerivAt.fun_sum fun k _ => (h2 k j).const_mul (A i k)
   simp only [hcomm] at e1
   exact e1.unique e2
 end -- clump:auto
@@ -601,8 +599,7 @@ private theorem prod_fin_castLE_eq_prod_le {M : Type*} [CommMonoid M] {n : ℕ} 
   · intro l _
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_iff_val_le_val, Fin.coe_castLE]
     omega
-  · intro a _ b _ h
-    exact Fin.castLE_injective _ h
+  · exact fun a _ b _ h => Fin.castLE_injective _ h
   · intro i hi
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_iff_val_le_val] at hi
     exact ⟨⟨i.val, by omega⟩, Finset.mem_univ _, Fin.ext (by simp)⟩
@@ -615,8 +612,7 @@ private theorem sum_fin_castLE_eq_sum_le {M : Type*} [AddCommMonoid M] {n : ℕ}
   · intro l _
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_iff_val_le_val, Fin.coe_castLE]
     omega
-  · intro a _ b _ h
-    exact Fin.castLE_injective _ h
+  · exact fun a _ b _ h => Fin.castLE_injective _ h
   · intro i hi
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_iff_val_le_val] at hi
     exact ⟨⟨i.val, by omega⟩, Finset.mem_univ _, Fin.ext (by simp)⟩
@@ -685,8 +681,7 @@ theorem UpperTheory.V.Weyl.topPol :
       i ∈ Finset.univ.filter (fun i : Fin n => h < ν i) ↔ i ≤ (Finset.univ.filter (fun i : Fin n => h < ν i)).max' hs := by
     intro h hs i
     constructor
-    · intro hi
-      exact Finset.le_max' _ _ hi
+    · exact fun hi => Finset.le_max' _ _ hi
     · intro hi
       have hm := Finset.max'_mem _ hs
       rw [Finset.mem_filter] at hm ⊢
@@ -698,18 +693,15 @@ theorem UpperTheory.V.Weyl.topPol :
       minor ((Finset.univ.filter (fun i : Fin n => h < ν i)).max' hs) else 1, ?_, ?_, ?_⟩
     · intro h
       by_cases hs : (Finset.univ.filter (fun i : Fin n => h < ν i)).Nonempty
-      · simp only [dite_eq_left hs]
-        exact (minorDeg n _).1
-      · simp only [dite_eq_right hs]
-        exact one_ne_zero
+      · simpa only [dite_eq_left hs] using (minorDeg n _).1
+      · simpa only [dite_eq_right hs] using one_ne_zero
     · intro h
       by_cases hs : (Finset.univ.filter (fun i : Fin n => h < ν i)).Nonempty
       · simp only [dite_eq_left hs]
         have h1 := (minorDeg n ((Finset.univ.filter (fun i : Fin n => h < ν i)).max' hs)).2
         have h2 := ((Finset.univ.filter (fun i : Fin n => h < ν i)).max' hs).isLt
         omega
-      · simp only [dite_eq_right hs, MvPolynomial.totalDegree_one]
-        exact Nat.zero_le _
+      · simpa only [dite_eq_right hs, MvPolynomial.totalDegree_one] using Nat.zero_le _
     · intro b hb h
       by_cases hs : (Finset.univ.filter (fun i : Fin n => h < ν i)).Nonempty
       · simp only [dite_eq_left hs]

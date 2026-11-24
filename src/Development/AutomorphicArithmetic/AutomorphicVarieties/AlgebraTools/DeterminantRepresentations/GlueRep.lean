@@ -156,8 +156,7 @@ theorem UpperTheory.V.AlgebraTools.Det.liftIndep :
       simp [w, ψ, map_sum, MonoidAlgebra.coeff_single, Finsupp.single_apply, hg, h0]
   have key : p.comp φ = q.comp ψ := by
     refine MvPolynomial.algHom_ext fun g => ?_
-    have h := congrArg (fun y : MonoidAlgebra B G => y.coeff g) hxz
-    simpa [φ, ψ] using h
+    simpa [φ, ψ] using congrArg (fun y : MonoidAlgebra B G => y.coeff g) hxz
   calc p (d σ x) = p (φ (d G w)) := by rw [← hd, hx]
     _ = (p.comp φ) (d G w) := rfl
     _ = (q.comp ψ) (d G w) := by rw [key]
@@ -187,9 +186,7 @@ theorem UpperTheory.V.AlgebraTools.Det.extendPoly :
         ((MvPolynomial.aeval id : MvPolynomial B A →ₐ[A] B) : MvPolynomial B A →+* B)) := by
     intro B _ _
     rw [MonoidAlgebra.coe_mapRingHom]
-    refine MonoidAlgebra.map_surjective _ ?_
-    intro b
-    exact ⟨MvPolynomial.X b, by simp⟩
+    exact MonoidAlgebra.map_surjective _ (fun b => ⟨MvPolynomial.X b, by simp⟩)
   have spec : ∀ (B : Type) [CommRing B] [Algebra A B] (y : MonoidAlgebra B G),
       MonoidAlgebra.mapRingHom G
         ((MvPolynomial.aeval id : MvPolynomial B A →ₐ[A] B) : MvPolynomial B A →+* B)

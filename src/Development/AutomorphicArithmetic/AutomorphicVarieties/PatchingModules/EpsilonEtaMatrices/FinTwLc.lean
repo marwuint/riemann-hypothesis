@@ -65,8 +65,7 @@ private theorem finTw_lc {Γ R : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ �
     (IsLocallyConstant.iff_eventually_eq _).1 (h i j)
   refine (IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_
   have hall : ∀ᶠ y in nhds x, ∀ i j, f y i j = f x i j := by
-    simp only [Filter.eventually_all]
-    exact fun i j => hs i j x
+    simpa only [Filter.eventually_all] using fun i j => hs i j x
   filter_upwards [hall] with y hy
   ext i j
   exact hy i j
@@ -128,8 +127,7 @@ theorem UpperTheory.V.Pa.finTw :
     haveI := hΦ N hN
     have z1 : ∀ z ∈ Zl ρ, z 1 = 0 := by
       intro z hz
-      have h := ((mem_Zl ρ).1 hz).2 1 1
-      simpa using h
+      simpa using ((mem_Zl ρ).1 hz).2 1 1
     have zN : ∀ z ∈ Zl ρ, ∀ a b : Γ, a ∈ N → z (a * b) = z a + z b := by
       intro z hz a b ha
       rw [((mem_Zl ρ).1 hz).2, ha]

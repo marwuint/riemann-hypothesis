@@ -64,8 +64,7 @@ theorem UpperTheory.cm_inertia_restriction_holds : UpperTheory.V.Af.Cr.IneRes :=
     have h2 := h1.map (f := algebraMap ℚ F₀)
     rw [minpoly.isIntegrallyClosed_eq_field_fractions' ℚ hmint, Polynomial.map_map] at h2
     have h3 : (algebraMap ℚ F₀).comp (algebraMap ℤ ℚ) = algebraMap ℤ F₀ := RingHom.ext_int _ _
-    rw [h3] at h2
-    exact h2
+    rwa [h3] at h2
   set c : F := Polynomial.aeval α (Polynomial.derivative f) with hcdef
   have hc0 : c ≠ 0 := hfsep.aeval_derivative_ne_zero hfα
   have hcint : IsIntegral ℤ c := by
@@ -74,19 +73,14 @@ theorem UpperTheory.cm_inertia_restriction_holds : UpperTheory.V.Af.Cr.IneRes :=
     have key := Polynomial.aeval_algHom_apply (integralClosure ℤ F).val
       (⟨α, hmint⟩ : integralClosure ℤ F) (Polynomial.derivative g)
     rw [h1]
-    refine key ▸ ?_
-    exact (Polynomial.aeval (⟨α, hmint⟩ : integralClosure ℤ F) (Polynomial.derivative g)).2
+    exact key ▸ (Polynomial.aeval (⟨α, hmint⟩ : integralClosure ℤ F) (Polynomial.derivative g)).2
   set d : F₀ := Algebra.norm F₀ c with hddef
   have hdint : IsIntegral ℤ d := Algebra.isIntegral_norm F₀ hcint
   have hd0 : d ≠ 0 := Algebra.norm_ne_zero_iff.mpr hc0
   set D : 𝓞 F₀ := ⟨d, hdint⟩ with hDdef
-  have hD0 : D ≠ 0 := by
-    intro h
-    apply hd0
-    exact congrArg (fun x : 𝓞 F₀ => (x : F₀)) h
+  have hD0 : D ≠ 0 := fun h => hd0 (congrArg (fun x : 𝓞 F₀ => (x : F₀)) h)
   have hspan : Ideal.span {D} ≠ 0 := by
-    rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
-    exact hD0
+    rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
   refine Filter.eventually_cofinite.mpr ((Ideal.finite_factors hspan).subset ?_)
   intro v hv
   simp only [Set.mem_setOf_eq] at hv ⊢
@@ -105,22 +99,19 @@ theorem UpperTheory.cm_inertia_restriction_holds : UpperTheory.V.Af.Cr.IneRes :=
     have hfΩ0 : fΩ ≠ 0 := hfΩ_monic.ne_zero
     have hroot : ∀ y : Ω, Polynomial.aeval y f = 0 → y ∈ fΩ.roots := by
       intro y hy
-      rw [Polynomial.mem_roots hfΩ0, Polynomial.IsRoot, hfΩ, Polynomial.eval_map_algebraMap]
-      exact hy
+      rwa [Polynomial.mem_roots hfΩ0, Polynomial.IsRoot, hfΩ, Polynomial.eval_map_algebraMap]
     have hα₀root : α₀ ∈ fΩ.roots := hroot _ h0
     have hβroot : σ α₀ ∈ fΩ.roots := by
       apply hroot
       have := Polynomial.aeval_algHom_apply (σ : Ω ≃ₐ[F₀] Ω).toAlgHom α₀ f
-      rw [h0, map_zero] at this
-      exact this
+      rwa [h0, map_zero] at this
     have hrootint : ∀ y ∈ fΩ.roots, IsIntegral ℤ y := by
       intro y hy
       refine ⟨g, hgmonic, ?_⟩
       rw [Polynomial.mem_roots hfΩ0, Polynomial.IsRoot, hfΩ, hfdef, Polynomial.map_map,
         ← Polynomial.eval₂_eq_eval_map] at hy
       have hZ : algebraMap ℤ Ω = (algebraMap F₀ Ω).comp (algebraMap ℤ F₀) := RingHom.ext_int _ _
-      rw [hZ]
-      exact hy
+      rwa [hZ]
     have hder : algebraMap F Ω c = ((fΩ.roots.erase α₀).map (α₀ - ·)).prod := by
       rw [← (IsAlgClosed.splits fΩ).eval_root_derivative hfΩ_monic hα₀root]
       rw [hfΩ, Polynomial.derivative_map, Polynomial.eval_map_algebraMap, hcdef, hα₀def,
@@ -163,8 +154,7 @@ theorem UpperTheory.cm_inertia_restriction_holds : UpperTheory.V.Af.Cr.IneRes :=
         (Algebra.IsAlgebraic.isAlgebraic α₁), hα₁, IntermediateField.top_toSubalgebra]
     refine AlgHom.ext_of_adjoin_eq_top hadj ?_
     intro x hx
-    rw [Set.mem_singleton_iff.mp hx]
-    exact hfix1
+    rwa [Set.mem_singleton_iff.mp hx]
   have hcomm : ∀ y : F, σ (algebraMap F Ω y) = algebraMap F Ω y := fun y => DFunLike.congr_fun hφ y
   refine ⟨AlgEquiv.ofRingEquiv (f := (σ : Ω ≃ₐ[F₀] Ω).toRingEquiv) hcomm, ?_⟩
   ext x

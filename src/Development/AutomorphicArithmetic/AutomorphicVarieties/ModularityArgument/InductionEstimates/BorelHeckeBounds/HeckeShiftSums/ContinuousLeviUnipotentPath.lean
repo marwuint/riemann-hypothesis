@@ -148,8 +148,7 @@ theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.secIp :
       filter_upwards [hu, hu'] with x h h'
       rw [h, h', inner_smul_left, inner_smul_right, mul_assoc]
     have hvol : volN K = 1 := (volOne (K := K) 0 0).2.1
-    rw [hin, hvol] at hP
-    rw [Complex.ofReal_one] at hP
+    rw [hin, hvol, Complex.ofReal_one] at hP
     exact cancelN hN hP
   · have hz : ∀ x y, pm μ₂ (A.sec v) (A'.sec w) x y = 0 := fun x y =>
       (hlaw τ₁ τ₂ τ₂ τ₁ _ _ (hS v).1 (hS' w).1 (hS v).2 (hS' w).2 x y).1 hp.orth
@@ -197,10 +196,8 @@ private theorem closed_stable [IsFiniteMeasure (quotientMeasure Γ μ)]
   let Φ : G → ℂ := fun m => ∫ u, Ψ u m ∂lam
   have hΦc : Continuous Φ := by
     refine continuous_of_dominated (bound := fun _ => C) ?_ ?_ (integrable_const _) ?_
-    · intro m
-      exact (hc.comp (by fun_prop : Continuous fun u : U => (u, m))).aestronglyMeasurable
-    · intro m
-      exact Eventually.of_forall fun u => hC u m
+    · exact fun m => (hc.comp (by fun_prop : Continuous fun u : U => (u, m))).aestronglyMeasurable
+    · exact fun m => Eventually.of_forall fun u => hC u m
     · exact Eventually.of_forall fun u => hc.comp (by fun_prop : Continuous fun m => (u, m))
   have hΦb : ∀ m, ‖Φ m‖ ≤ C * lam.real univ := fun m =>
     norm_integral_le_of_norm_le_const (Eventually.of_forall fun u => hC u m)
@@ -382,8 +379,7 @@ private theorem cont (G : G1 K (2 + 2) → ℂ) (B R : ℝ) (hG : Continuous G) 
       rw [show w0 K * nn X * x₀ * (x₀⁻¹ * x) = w0 K * nn X * x by group] at h2
       linarith [h1.1, h2.2]
   · exact (integrable_indicator_iff hC.isClosed.measurableSet).2 (integrableOn_const hC.measure_lt_top.ne)
-  · refine Eventually.of_forall fun X => ?_
-    exact (hG.comp (continuous_const.mul continuous_id)).continuousAt
+  · exact Eventually.of_forall fun X => (hG.comp (continuous_const.mul continuous_id)).continuousAt
 
 private theorem shift (G : G1 K (2 + 2) → ℂ) (Y : UPos (2 + 2) 2 → 𝔸[K]) (x : G1 K (2 + 2)) :
     ∫ X, G (w0 K * nn X * (nn Y * x)) ∂unipMeasure K (2 + 2) 2 = ∫ X, G (w0 K * nn X * x) ∂unipMeasure K (2 + 2) 2 := by
@@ -504,14 +500,12 @@ private theorem slice (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ : Sub
 private theorem lvc₂ (a : G1 K 2) : Continuous fun m : G1 K 2 => lv a m 0 := by
   have h : Continuous fun m : G1 K 2 => ((a, m, 0) : G1 K 2 × G1 K 2 × ℝ) :=
     continuous_const.prodMk (continuous_id.prodMk continuous_const)
-  have h2 := (blkLaws (K := K)).2.2.2.1.comp' h
-  exact h2.congr fun m => rfl
+  exact ((blkLaws (K := K)).2.2.2.1.comp' h).congr fun m => rfl
 
 private theorem lvc₁ (a : G1 K 2) : Continuous fun m : G1 K 2 => lv m a 0 := by
   have h : Continuous fun m : G1 K 2 => ((m, a, 0) : G1 K 2 × G1 K 2 × ℝ) :=
     continuous_id.prodMk continuous_const
-  have h2 := (blkLaws (K := K)).2.2.2.1.comp' h
-  simpa only [Function.comp_def] using h2
+  simpa only [Function.comp_def] using (blkLaws (K := K)).2.2.2.1.comp' h
 
 end UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.Cell
 

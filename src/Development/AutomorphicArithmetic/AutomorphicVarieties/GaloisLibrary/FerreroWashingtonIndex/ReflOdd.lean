@@ -203,9 +203,7 @@ theorem UpperTheory.V.Kum.reflMap :
         have h4 := hζ'.dvd_of_pow_eq_one _ h3
         exact (ZMod.val_eq_zero _).1 (Nat.eq_zero_of_dvd_of_lt h4 (ZMod.val_lt _))
       exact Multiplicative.toAdd.injective (Subtype.ext h0)
-    · intro x
-      refine ⟨_, hker _ (hsel (Multiplicative.toAdd x).1) ?_, hj x⟩
-      exact (Multiplicative.toAdd x).2
+    · exact fun x => ⟨_, hker _ (hsel (Multiplicative.toAdd x).1) (Multiplicative.toAdd x).2, hj x⟩
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.ReflMap =====
@@ -225,8 +223,7 @@ private theorem exp_tors (K : Type) [Field K] [NumberField K] :
   let x : 𝓞 K := ⟨a, hi⟩
   have hx : x ^ k = 1 := by
     apply RingOfIntegers.coe_injective
-    rw [map_pow, map_one]
-    exact hak
+    rwa [map_pow, map_one]
   let y : (𝓞 K)ˣ := Units.ofPowEqOne x k hx hk.ne'
   have hy : y ∈ Units.torsion K :=
     (CommGroup.mem_torsion _).2 (isOfFinOrder_iff_pow_eq_one.2 ⟨k, hk, Units.ext (by simpa [y] using hx)⟩)
@@ -367,8 +364,7 @@ private theorem intValuation_mapRingEquiv {K K' : Type} [Field K] [NumberField K
     rw [Ideal.mem_map_of_equiv]
     show ρ.symm y ∈ v.asIdeal ↔ _
     constructor
-    · intro h
-      exact ⟨_, h, ρ.apply_symm_apply y⟩
+    · exact fun h => ⟨_, h, ρ.apply_symm_apply y⟩
     · rintro ⟨z, hz, rfl⟩
       rwa [ρ.symm_apply_apply]
   by_cases hx : x = 0
@@ -454,8 +450,7 @@ theorem UpperTheory.V.Kum.radClMap :
   constructor
   · rintro ⟨z, hz, rfl⟩
     rwa [RingEquiv.symm_apply_apply]
-  · intro h
-    exact ⟨_, h, RingEquiv.apply_symm_apply _ y⟩
+  · exact fun h => ⟨_, h, RingEquiv.apply_symm_apply _ y⟩
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.RadClMap =====
@@ -623,8 +618,7 @@ theorem UpperTheory.V.Kum.unitMinus :
     (IsCMField.unitsMulComplexConjInv K u).2
   have htor : a * (Units.map (UpperTheory.V.cE (E := K)).toMonoidHom a)⁻¹ ∈ CommGroup.torsion Kˣ := by
     have := f.isOfFinOrder hfin
-    rw [map_mul, map_inv, hu, hcu] at this
-    exact this
+    rwa [map_mul, map_inv, hu, hcu] at this
   have h2 : a ^ 2 ∈ CommGroup.torsion Kˣ ⊔ powK (K := K) n := by
     have e : a ^ 2 = (a * (Units.map (UpperTheory.V.cE (E := K)).toMonoidHom a)⁻¹) *
         (a * Units.map (UpperTheory.V.cE (E := K)).toMonoidHom a) := by
@@ -719,15 +713,12 @@ theorem UpperTheory.V.Kum.reflect :
     rintro ⟨c, φ, rfl⟩
     obtain ⟨β, a, -, -, -, h4, -, h6⟩ := key φ
     show Additive.toMul (f φ) ∈ _
-    rw [h4]
-    exact h6
+    rwa [h4]
   refine le_trans (reflect_card f (fun φ => (⟨φ.1.1, φ.1.2.1, hker φ⟩ : {φ : U → ZMod n // φ ∈ EqHom N U (scalRep (ZMod n) ψ) ∧ ∃ (β : Ω) (a : Kˣ), IsRad (algebraMap K Ω ζ) U φ β ∧ β ^ n = algebraMap K Ω a ∧ IsOfFinOrder β})) ?_
     (fun c => (⟨Additive.toMul c.1, hran c⟩ : (ClTw K n (χ * ψ⁻¹) ⊓ ClMinus (cE K) : Subgroup (ClassGroup (𝓞 K))))) ?_)
     (Nat.mul_le_mul_right _ hR)
-  · intro x y h
-    exact Subtype.ext (Subtype.ext (Subtype.mk.inj h))
-  · intro x y h
-    exact Subtype.ext (Additive.toMul.injective (Subtype.mk.inj h))
+  · exact fun x y h => Subtype.ext (Subtype.ext (Subtype.mk.inj h))
+  · exact fun x y h => Subtype.ext (Additive.toMul.injective (Subtype.mk.inj h))
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.Reflect =====
@@ -836,9 +827,7 @@ theorem UpperTheory.V.FW.reflOdd :
     apply Subgroup.card_le_of_le
     intro c hc
     obtain ⟨hc1, hc2⟩ := Subgroup.mem_inf.mp hc
-    refine Subgroup.mem_inf.mpr ⟨hc2, ?_⟩
-    show c ∈ (powMonoidHom l : Cl K →* Cl K).ker
-    exact hc1.1
+    exact Subgroup.mem_inf.mpr ⟨hc2, hc1.1⟩
   calc H.index ≤ _ := h1
     _ = _ := hcardE
     _ ≤ _ := hR

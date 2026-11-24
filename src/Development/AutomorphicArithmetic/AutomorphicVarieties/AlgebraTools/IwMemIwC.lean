@@ -133,8 +133,7 @@ private theorem factor [IsLocalRing R] (C : Subgroup (IsLocalRing.ResidueField R
     change leviEmb R (points n) ((leviTorus R n) ((leviTorus R n).symm _)) = _
     rw [MulEquiv.apply_symm_apply]
   have hp' : h * L = diagT R n d * u := by
-    rw [hd]
-    exact hp
+    rwa [hd]
   have heq : h = diagT R n d * u * L⁻¹ := by rw [← hp', mul_inv_cancel_right]
   have hLb : GeneralLinearGroup.map (n := n) (IsLocalRing.residue R) L ∈
       borel (IsLocalRing.ResidueField R) n := by
@@ -167,8 +166,7 @@ private theorem factor [IsLocalRing R] (C : Subgroup (IsLocalRing.ResidueField R
   have h1 := ((mem_unipB _).mp (map_unipB (IsLocalRing.residue R) hu)).2 i
   rw [h1, mul_one, map_diagT, val_diagT, Matrix.diagonal_apply_eq] at e
   have hc' : c = Units.map (IsLocalRing.residue R).toMonoidHom (d i) := Units.ext e
-  rw [← hc']
-  exact hc
+  rwa [← hc']
 
 end Ring
 
@@ -228,16 +226,14 @@ theorem UpperTheory.V.AlgebraTools.memIwC :
         apply (IsLocalRing.residue_ne_zero_iff_isUnit _).mp
         intro h0
         apply c.ne_zero
-        rw [e]
-        exact h0
+        rwa [e]
       have hcu : Units.map (IsLocalRing.residue 𝒪[k]).toMonoidHom hu.unit = c := by
         apply Units.ext
         rw [e]
         rfl
       refine ⟨Units.map (algebraMap 𝒪[k] k).toMonoidHom hu.unit, ⟨hu.unit, ?_, rfl⟩, rfl⟩
       show Units.map (IsLocalRing.residue 𝒪[k]).toMonoidHom hu.unit ∈ C
-      rw [hcu]
-      exact hc
+      rwa [hcu]
     · rintro ⟨⟨h, hh, rfl⟩, hd⟩
       refine ⟨h, ⟨hh, fun i => ?_⟩, rfl⟩
       obtain ⟨c, ⟨c', hc', rfl⟩, e⟩ := hd i

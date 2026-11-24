@@ -146,8 +146,7 @@ theorem UpperTheory.V.Ws.Pp.genFlag :
   obtain ⟨t, ht, hh⟩ := gram u⁻¹ hA
   have hadj : adj (((u⁻¹ : (M4 K)ˣ) : M4 K) * (t : M4 K)) = ((t⁻¹ : (M4 K)ˣ) : M4 K) * (u : M4 K) := by
     have e := adj_mul_self hh
-    rw [← mul_assoc, Units.mul_eq_one_iff_eq_inv, Units.mul_inv_eq_iff_eq_mul] at e
-    exact e
+    rwa [← mul_assoc, Units.mul_eq_one_iff_eq_inv, Units.mul_inv_eq_iff_eq_mul] at e
   have key : ∀ g, adj (((u⁻¹ : (M4 K)ˣ) : M4 K) * (t : M4 K)) * r g * (((u⁻¹ : (M4 K)ˣ) : M4 K) * (t : M4 K))
       = ((t⁻¹ : (M4 K)ˣ) : M4 K) * ((u : M4 K) * r g * ((u⁻¹ : (M4 K)ˣ) : M4 K)) * (t : M4 K) := fun g => by
     rw [hadj]
@@ -177,16 +176,14 @@ theorem UpperTheory.V.Ws.Pp.nilPoly :
     intro J hJ'
     obtain ⟨hJ, hJp⟩ := hJ'
     have hle : maximalIdeal B ≤ Ideal.comap (algebraMap B S) J := by
-      intro b hb
-      exact hJ (Ideal.mem_map_of_mem _ hb)
+      exact fun b hb => hJ (Ideal.mem_map_of_mem _ hb)
     have hc : Ideal.comap (algebraMap B S) J = maximalIdeal B :=
       ((IsLocalRing.maximalIdeal.isMaximal B).eq_of_le (Ideal.comap_ne_top _ hJp.ne_top) hle).symm
     have hcm : (Ideal.comap (algebraMap B S) J).IsMaximal := by
       rw [hc]
       exact IsLocalRing.maximalIdeal.isMaximal B
     have hJm : J.IsMaximal := Ideal.isMaximal_of_isIntegral_of_isMaximal_under (R := B) J hcm
-    rw [IsLocalRing.eq_maximalIdeal hJm]
-    exact hv
+    rwa [IsLocalRing.eq_maximalIdeal hJm]
   obtain ⟨n, hn⟩ := hrad
   have hN : v ^ (n + 1) ∈ (maximalIdeal B).map (algebraMap B S) := by
     rw [pow_succ]
@@ -205,14 +202,12 @@ theorem UpperTheory.V.Ws.Pp.nilPoly :
     rw [coeff_expand (Nat.succ_pos n)]
     split_ifs with hd
     · have hlt : k / (n + 1) < p.natDegree := by
-        rw [Nat.div_lt_iff_lt_mul (Nat.succ_pos n)]
-        exact hk
+        rwa [Nat.div_lt_iff_lt_mul (Nat.succ_pos n)]
       exact Ideal.pow_le_self (Nat.sub_ne_zero_of_lt hlt) (hpc _)
     · exact zero_mem _
   · rw [expand_aeval]
     rw [Polynomial.aeval_algHom_apply] at hpa
-    have h1 := LinearMap.congr_fun hpa 1
-    simpa using h1
+    simpa using LinearMap.congr_fun hpa 1
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.SymplecticIwahori.NilPoly =====
@@ -254,8 +249,7 @@ theorem UpperTheory.V.Ws.Pp.nearPoly :
       (by rw [(RingHom.injective_iff_ker_eq_bot _).1 hinj]; exact bot_le)
     have h3 : t ∈ Q.comap (algebraMap B S) := by
       change t ∈ Ideal.under B Q
-      rw [hQ]
-      exact ht
+      rwa [hQ]
     have h4 : algebraMap O B d ∈ Q.comap (algebraMap B S) := by
       rw [Ideal.mem_comap, h2]
       exact Q.mul_mem_right _ h3
@@ -265,8 +259,7 @@ theorem UpperTheory.V.Ws.Pp.nearPoly :
   obtain ⟨p, hp, h0⟩ := nilPoly (B := B) w hw
   refine ⟨p, hp, ?_⟩
   have := aeval_algHom_apply S.val w p
-  rw [h0, map_zero] at this
-  exact this
+  rwa [h0, map_zero] at this
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.SymplecticIwahori.NearPoly =====

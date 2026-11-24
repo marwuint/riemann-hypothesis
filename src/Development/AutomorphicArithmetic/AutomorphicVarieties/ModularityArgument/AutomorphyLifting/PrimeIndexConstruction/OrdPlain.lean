@@ -244,8 +244,7 @@ theorem detCent : DetCent := by
     field_simp
     linear_combination e5
   have hωe : ω = χ * P := by
-    rw [mul_assoc, ← mul_inv, mul_inv_eq_one] at hν
-    exact hν
+    rwa [mul_assoc, ← mul_inv, mul_inv_eq_one] at hν
   refine ⟨⟨m, hm, ?_⟩, fun A hA hU => ?_⟩
   · have h1 : ω.loc w (atFin w (unif w)) = ω.val w := rfl
     have h2 : ((χ.val w : ℂˣ) : ℂ) ^ m = 1 := by
@@ -259,8 +258,7 @@ theorem detCent : DetCent := by
       have h1 := hU x hx
       rw [hωe] at h1
       change (χ.loc w) x * (P.loc w) x = 1 at h1
-      rw [hP, (GlobalTheory.HeckeGal.Model.absPow_isAbsPow F _).1 w x hx, mul_one] at h1
-      exact h1
+      rwa [hP, (GlobalTheory.HeckeGal.Model.absPow_isAbsPow F _).1 w x hx, mul_one] at h1
     exact fun σ hσ => (hχ.unr_iff ha (Or.inr rfl) hA).2 hu σ hσ
 
 end UpperTheory.V.Z.Win.Birth
@@ -1360,8 +1358,7 @@ theorem ordPlain : OrdPlain := by
     · obtain ⟨hc1, h12, hs, ha, ⟨lam, hlU, hnear⟩, -⟩ := h.above v hl
       have e := norm_of_near hnear ha
       have hn : ‖ι.symm lam‖ * ‖(normV v : Qbar l)‖ ^ m v 0 = 1 := by
-        rw [← norm_zpow, ← norm_mul]
-        exact e
+        rwa [← norm_zpow, ← norm_mul]
       refine ⟨lam, hc1 ▸ hlU, ?_, fun _ => ⟨hn, h12, hs⟩⟩
       rintro rfl
       simp at hn
@@ -1373,8 +1370,7 @@ theorem ordPlain : OrdPlain := by
   obtain ⟨ψ, hsm, hsub, hun, hsq⟩ := uLoc F v (c v) lam σ hc hl0 ((hU _ _) hlU)
   have hprod : ∀ z, ψ 0 z * ψ 1 z = ω.loc v z := by
     intro z
-    have e := (psCent F v σ ψ hsub z x).symm.trans (hcent' z x)
-    exact Units.ext (smul_left_injective ℂ hx e)
+    exact Units.ext (smul_left_injective ℂ hx ((psCent F v σ ψ hsub z x).symm.trans (hcent' z x)))
   refine psPlain F v σ ψ hsm hsub ?_
   rintro i j ⟨hu, hq⟩
   by_cases hij : i = j
@@ -1400,11 +1396,9 @@ theorem ordPlain : OrdPlain := by
     · have e := congrArg (fun z : ℂ => ‖ι.symm z‖) hNe
       simp only [map_pow, norm_pow, map_one, norm_one] at e
       have e2 := (pow_eq_one_iff_of_nonneg (norm_nonneg _) hN0.ne').1 e
-      rw [hnorm, ← hprod, Units.val_mul, hnorm, map_zpow₀, norm_zpow, hqn] at e2
-      exact e2
+      rwa [hnorm, ← hprod, Units.val_mul, hnorm, map_zpow₀, norm_zpow, hqn] at e2
     · have e := congrArg (fun z : ℂ => ‖ι.symm z‖) hsq
-      simp only [map_pow, norm_pow, map_mul, norm_mul, map_natCast] at e
-      exact e
+      simpa only [map_pow, norm_pow, map_mul, norm_mul, map_natCast] using e
     · have e := congrArg (fun z : ℂ => ‖ι.symm z‖) hq
       simp only [hnorm, hqn] at e
       rcases fin2 i j hij with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩

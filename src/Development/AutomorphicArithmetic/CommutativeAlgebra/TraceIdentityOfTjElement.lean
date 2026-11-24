@@ -129,8 +129,7 @@ theorem kill_of_pow [IsDedekindDomain R] [IsNoetherian R Q] (𝔴 𝔟 : Ideal R
   intro y hy
   have h1 := (mem𝔞 _).1 hr1 y hy
   have h2 : (r * y) • t = 0 := by rw [mul_comm, mul_smul, hr t Submodule.mem_top, smul_zero]
-  rw [sub_mul, one_mul, sub_smul, h2, zero_sub, neg_eq_zero] at h1
-  exact h1
+  rwa [sub_mul, one_mul, sub_smul, h2, zero_sub, neg_eq_zero] at h1
 
 end Alg
 
@@ -169,11 +168,9 @@ theorem Setup.mem_W (S : Setup Λ ι H₀ U U' J M) (x : La) :
     x ∈ Wm Λ ι J ↔ ∃ v ∈ Λ, H₀ (U (ι x)) = M • v := by
   show J (ι x) ∈ Λ ↔ _
   constructor
-  · intro h
-    exact ⟨_, h, (S.J_eq _).symm⟩
+  · exact fun h => ⟨_, h, (S.J_eq _).symm⟩
   · rintro ⟨v, hv, he⟩
-    rw [S.cancel ((S.J_eq _).trans he)]
-    exact hv
+    rwa [S.cancel ((S.J_eq _).trans he)]
 
 theorem Setup.ps_zero (S : Setup Λ ι H₀ U U' J M) (x : Wm Λ ι J) :
     Ps Λ ι H₀ J x = 0 ↔ ∃ z, x.1 = M • z := by
@@ -306,8 +303,7 @@ theorem Setup.core2 (S : Setup Λ ι H₀ U U' J M) (ev : La → P) (act : R →
     constructor
     · rintro ⟨z, hz⟩
       rw [hz, ev_ker']
-    · intro h
-      exact ev_ker _ h
+    · exact fun h => ev_ker _ h
   have kil : ∀ x : Wm Λ ι J, (∀ y ∈ 𝔴, y • Ps Λ ι H₀ J x = 0) ↔ (∀ y ∈ 𝔴, act y (ev x.1) = 1) := by
     intro x
     refine forall₂_congr fun y _ => ?_
@@ -315,8 +311,7 @@ theorem Setup.core2 (S : Setup Λ ι H₀ U U' J M) (ev : La → P) (act : R →
     constructor
     · rintro ⟨z, hz⟩
       rw [show y • x.1 = M • z from hz, ev_ker']
-    · intro h
-      exact ev_ker _ h
+    · exact fun h => ev_ker _ h
   have memW : ∀ x : La, Kp (ev x) → x ∈ Wm Λ ι J := fun x h => (S.mem_W x).2 ((ev_K x).1 h)
   have inK : ∀ x : Wm Λ ι J, Kp (ev x.1) := fun x => (ev_K x.1).2 ((S.mem_W x.1).1 x.2)
   let F : {t : Qt Λ H₀ // ∀ y ∈ 𝔴, y • t = 0} → {g // Kp g ∧ ∀ y ∈ 𝔴, act y g = 1} := fun t =>
@@ -332,9 +327,7 @@ theorem Setup.core2 (S : Setup Λ ι H₀ U U' J M) (ev : La → P) (act : R →
     · rintro ⟨g, hg, hk⟩
       obtain ⟨x, rfl⟩ := K_ev g hg
       let xw : Wm Λ ι J := ⟨x, memW x hg⟩
-      refine ⟨⟨Ps Λ ι H₀ J xw, (kil xw).2 hk⟩, ?_⟩
-      apply Subtype.ext
-      exact (key _ xw).1 (S.ps_surj _).choose_spec
+      exact ⟨⟨Ps Λ ι H₀ J xw, (kil xw).2 hk⟩, Subtype.ext ((key _ xw).1 (S.ps_surj _).choose_spec)⟩
   rw [← Nat.card_eq_of_bijective F hF, card_tors 𝔴 s hs (S.kill_Q 𝔴 s kill)]
   let φ : Λ.toAddSubgroup →+ (Qt Λ H₀ ⧸ (𝔴 • ⊤ : Submodule R (Qt Λ H₀))) :=
     ((𝔴 • ⊤ : Submodule R (Qt Λ H₀)).mkQ ∘ₗ ((Λ.map H₀).submoduleOf Λ).mkQ).toAddMonoidHom
@@ -492,8 +485,7 @@ theorem lat_main (q : ℕ) (r : ℤ) (𝔴 : Ideal (𝓞 D.F)) (i : ℕ) (h₀ u
       tf := fun v hv => by rw [← ha' v, hv, smul_zero]
       inj := fun v w h => by
         have h' := congrArg (A h₀⁻¹) h
-        rw [hAmul, hAmul, inv_mul_cancel, map_one] at h'
-        exact h'
+        rwa [hAmul, hAmul, inv_mul_cancel, map_one] at h'
       H₀_mem := hI
       back := hT.back
       U_mem := integ_of_mem hu

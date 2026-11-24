@@ -222,8 +222,7 @@ private theorem relIndex_open_compact {G : Type} [Group G] [TopologicalSpace G] 
 private theorem comm_comap {G H : Type} [Group G] [Group H] (f : H →* G) (U K : Subgroup G)
     (h : U.relIndex K ≠ 0) : (U.comap f).relIndex (K.comap f) ≠ 0 := by
   rw [Subgroup.relIndex_comap]
-  intro h0
-  exact h (Subgroup.relIndex_eq_zero_of_le_right (Subgroup.map_comap_le f K) h0)
+  exact fun h0 => h (Subgroup.relIndex_eq_zero_of_le_right (Subgroup.map_comap_le f K) h0)
 
 theorem UpperTheory.arithmetic_subgroups_commensurable :
     UpperTheory.V.Af.CohB.ArithComm := by
@@ -237,8 +236,7 @@ theorem UpperTheory.arithmetic_subgroups_commensurable :
     rw [e1]
     ext x
     constructor
-    · intro hx
-      exact ⟨_, hx, by simp [mul_assoc]⟩
+    · exact fun hx => ⟨_, hx, by simp [mul_assoc]⟩
     · rintro ⟨y, hy, rfl⟩
       simpa [mul_assoc] using hy
   have ho : IsOpen (U' : Set (GL (Fin n) (GlobalTheory.CuspRep.Af F))) := e1 ▸ hUo.preimage hc
@@ -390,8 +388,7 @@ theorem UpperTheory.cohomology_to_coinvariants_injective :
   rw [UpperTheory.V.Af.CohB.toCo_apply, UpperTheory.V.Af.CohB.toCo_apply] at h1
   simp only [inv_smul_smul] at h1
   have h2 := congrArg (fun v => ξ g⁻¹ *ᵥ v) h1
-  simp only [Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mulVec] at h2
-  exact h2
+  simpa only [Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mulVec] using h2
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.CohomologyToCoinvariantsInjective =====
@@ -416,8 +413,7 @@ theorem UpperTheory.cohomology_to_coinvariants_surjective :
     have hs : g * g'⁻¹ ∈ MulAction.stabilizer Γ y := by
       have h1 : p z.1 = y := z.2
       have h2 : p z'.1 = y := z'.2
-      rw [hz', hp, h2] at h1
-      exact h1
+      rwa [hz', hp, h2] at h1
     have h3 := congrFun (F.2 ⟨_, hs⟩ g') z
     have h4 : (⟨_, hs⟩ : ↥(MulAction.stabilizer Γ y))⁻¹ • z = z' := by
       apply Subtype.ext
@@ -635,8 +631,7 @@ private theorem cohBound_of (hE : BddEquiv) (hA : AbsBound) (hF : FibCard)
   rw [← levelRep_eq] at key
   have e : c * 3 ^ (Module.finrank ℚ F * (n * n)) * M ^ (Module.finrank ℚ F * (n * n)) * d =
       c * (3 * M) ^ (Module.finrank ℚ F * (n * n)) * d := by rw [mul_pow, mul_assoc c]
-  rw [e]
-  exact key
+  rwa [e]
 
 theorem UpperTheory.V.Af.cohBoundFree :
     ∀ (F : Type) [Field F] [NumberField F], (IsTotallyComplex F ∨ IsTotallyReal F) → ∀ (n : ℕ) (Γ : Subgroup (GL (Fin n) F)),

@@ -163,8 +163,7 @@ private theorem cyc1 {D : Type} [Group D] [TopologicalSpace D] [IsTopologicalGro
     refine ⟨⟨J.mul_mem (J.inv_mem hg) (J.pow_mem hu m), hN'⟩, (hiff n _).mpr ?_⟩
     have h1 : en (g⁻¹ * u ^ m) = 1 := by rw [map_mul, map_inv, map_pow, hm', inv_mul_cancel]
     exact congrArg Units.val h1
-  rw [hn] at this
-  exact this
+  rwa [hn] at this
 
 private theorem exChar {B : Type} [CommGroup B] [Finite B] {l : ℕ} [Fact l.Prime] (hB : IsPGroup l B)
     (H : Subgroup B) (hH : H ≠ ⊤) :
@@ -312,8 +311,7 @@ private theorem core {D : Type} [Group D] [TopologicalSpace D] [IsTopologicalGro
         rw [map_pow] at h3
         have h4 : (r : ZMod l) * f g = 0 := by
           have := congrArg Multiplicative.toAdd h3
-          rw [toAdd_pow, nsmul_eq_mul] at this
-          exact this
+          rwa [toAdd_pow, nsmul_eq_mul] at this
         have h5 : (r : ZMod l) ≠ 0 := by rwa [Ne, ZMod.natCast_eq_zero_iff]
         exact congrArg Multiplicative.ofAdd ((mul_eq_zero.mp h4).resolve_left h5)
       have hcl : IsClosed (ψ.ker : Set D) := (isClosed_discrete ({0} : Set (ZMod l))).preimage c1
@@ -407,8 +405,7 @@ private theorem toZMod_cycZ_eq_one_of_cycMod_eq_one (F Ω : Type) [Field F] [Fie
   simp only [cycMod, MonoidHom.comp_apply, Units.coe_map, Units.val_one] at h1
   have hk : ((cycZ F Ω l g : ℤ_[l]ˣ) : ℤ_[l]) - 1 ∈
       RingHom.ker (PadicInt.toZModPow 1 : ℤ_[l] →+* ZMod (l ^ 1)) := by
-    rw [RingHom.mem_ker, map_sub, map_one, sub_eq_zero]
-    exact h1
+    rwa [RingHom.mem_ker, map_sub, map_one, sub_eq_zero]
   rw [PadicInt.ker_toZModPow, pow_one, ← PadicInt.maximalIdeal_eq_span_p, ← PadicInt.ker_toZMod,
     RingHom.mem_ker, map_sub, map_one, sub_eq_zero] at hk
   exact hk
@@ -432,9 +429,7 @@ theorem UpperTheory.V.GC.gen :
   let eq : Φ.Gv v ≃* Dec (A v) :=
     (MonoidHom.ofInjective (hL.loc.ι_inj v)).trans (MulEquiv.subgroupCongr (hL.loc.range v))
   have heq : ∀ x, ((eq x : Dec (A v)) : G F Ω) = ι v x := fun x => rfl
-  have hcont : Continuous eq := by
-    apply continuous_induced_rng.2
-    exact hL.loc.cont v
+  have hcont : Continuous eq := continuous_induced_rng.2 (hL.loc.cont v)
   let h' := hcont.homeoOfEquivCompactToT2 (f := eq.toEquiv)
   refine ⟨fun a => eq.symm (u' (Fin.cast hdv a)), Fin.cast hdv.symm a₀', fun a => ⟨?_, ?_⟩,
     fun a ha => ?_, ?_⟩
@@ -459,8 +454,7 @@ theorem UpperTheory.V.GC.gen :
       exact hχ.preimage h'.symm.continuous
     have hg' : ((eq g : Dec (A v)) : G F Ω) ∈ Ine (A v) := by
       rw [heq]
-      rw [hL.ine v] at hg
-      exact hg
+      rwa [hL.ine v] at hg
     have := hu3 B hB χ' hopen (fun a => by simpa [χ'] using hu (Fin.cast hdv.symm a)) (eq g) hg'
     simpa [χ'] using this
 end -- clump:auto

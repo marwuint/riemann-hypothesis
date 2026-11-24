@@ -440,8 +440,7 @@ theorem kerX_of_clsPinD : ∀ (D : D7) (c : Comm D) (𝒯 : Type) (t : 𝒯 → 
     (castP (ρ.hN j (Nat.le_of_succ_le hj1)) (ρ.hN (j + 1) hj1) P)
   have hz : ∀ i, ∀ τ, IsUnit ((fun τ => ρ.sc j τ • y' i τ) τ).det := by
     intro i τ
-    simp only [Matrix.det_smul]
-    exact (IsUnit.pow _ (Ne.isUnit (hρ.sc j τ))).mul (hinv i τ)
+    simpa only [Matrix.det_smul] using (IsUnit.pow _ (Ne.isUnit (hρ.sc j τ))).mul (hinv i τ)
   let z : Fin m' → FrN D (ρ.N (j + 1)) := fun i => ⟨fun τ => ρ.sc j τ • y' i τ, hz i⟩
   let y'' : Fin m' → c.Fr (j + 1) := fun i => (ρ.fr (j + 1)).symm (z i)
   let cst : ℂ := ∏ τ, ((ρ.fr j y).1 τ).det ^ (-ρ.sS j τ)
@@ -1373,8 +1372,7 @@ theorem reads_uniq {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hc
       apply eW.injective
 
       rw [map_sum]
-      simp only [LinearEquiv.apply_symm_apply]
-      exact (Finset.univ_sum_single (eW z)).symm
+      simpa only [LinearEquiv.apply_symm_apply] using (Finset.univ_sum_single (eW z)).symm
 
     rw [hdec, map_sum, LinearMap.sum_apply]
     refine Finset.sum_eq_zero fun c _ => ?_
@@ -1384,8 +1382,7 @@ theorem reads_uniq {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hc
   have hz0 : jM (G - G') = 0 := hpos _ (hjM _) (by rw [← hper]; exact hz _ (hjM _))
   intro w
   have := hper w (G - G')
-  rw [hz0, map_zero, LinearMap.zero_apply, map_sub, sub_eq_zero] at this
-  exact this
+  rwa [hz0, map_zero, LinearMap.zero_apply, map_sub, sub_eq_zero] at this
 
 end GlobalTheory.MiTop.TailColumnRecursion
 
@@ -1449,14 +1446,12 @@ theorem eW_rep_G (V : ValuationAtPrimes K okW) (o : FrP D) (z : Pm.Wrow) (hz : z
   have hQ0' : Q0 ∈ CSpan M.sg := by
     have := CSpan_shW M.sg (fun _ => ((D.R.m * (D.R.t + 1) / 2 : ℕ) : ℤ))
     unfold sgTG at hQ0
-    rw [this] at hQ0
-    exact hQ0
+    rwa [this] at hQ0
   have he : V.eW z c = fnOf _ (shiftOf (sgTG M)) 1 Q0 := by
     rw [hfn, ← hres]; rfl
   have hM : ∀ τ, IsUnit ((o.1 τ)⁻¹).det := fun τ => by
     rw [Matrix.det_nonsing_inv]; exact (o.2 τ).ringInverse
-  refine ⟨_, ?_, he.trans (fnOf_change _ _ _ _ hM Q0)⟩
-  exact Submodule.smul_mem _ _ (blkRow_mem _ _ hQ0')
+  exact ⟨_, Submodule.smul_mem _ _ (blkRow_mem _ _ hQ0'), he.trans (fnOf_change _ _ _ _ hM Q0)⟩
 
 theorem pos_G (V : ValuationAtPrimes K okW) : ∀ z ∈ M.ptC, M.ipP z z = 0 → z = 0 := by
   intro z hz h0
@@ -1762,8 +1757,7 @@ theorem GlobalTheory.Fam.lawsLinks_of_geo_rows_cols_alt : GlobalTheory.Published
       rw [hCO.sc t]; exact (hVf t).2 j h P
     · intro j
       have := hCO.atQ t j
-      rw [← hsQ, ← he, ← heT] at this
-      exact this
+      rwa [← hsQ, ← he, ← heT] at this
     · intro j α
       obtain ⟨h1, h2⟩ := hCO.e t j α
       have hb : k.v.b j = a.g.b j := htie.b j

@@ -75,15 +75,13 @@ private theorem norm_prod [FiniteDimensional k E] [IsGalois k E] (σ : E ≃ₐ[
   rw [hN]
   symm
   refine Finset.prod_bij (fun j _ => σ ^ j) (fun _ _ => Finset.mem_univ _) ?_ ?_ ?_
-  · intro a ha b hb hab
-    exact pow_injOn_Iio_orderOf (by simpa using ha) (by simpa using hb) hab
+  · exact fun a ha b hb hab => pow_injOn_Iio_orderOf (by simpa using ha) (by simpa using hb) hab
   · intro τ _
     have hτ : τ ∈ Submonoid.powers σ := mem_powers_iff_mem_zpowers.mpr (hg τ)
     rw [mem_powers_iff_mem_range_orderOf, Finset.mem_image] at hτ
     obtain ⟨m, hm, h⟩ := hτ
     exact ⟨m, hm, h⟩
-  · intro j _
-    exact iter_eq σ j x
+  · exact fun j _ => iter_eq σ j x
 
 private theorem map_diag {F : Type} [Field F] (f : E →+* F) (u : Fin n → Eˣ) :
     Matrix.GeneralLinearGroup.map f (diagT E (Fin n) u) = diagT F (Fin n) fun i => Units.map (f : E →* F) (u i) := by
@@ -132,8 +130,7 @@ private theorem h90 [FiniteDimensional k E] [IsGalois k E] (σ : E ≃ₐ[k] E)
   haveI : IsCyclic (E ≃ₐ[k] E) := ⟨⟨σ, hg⟩⟩
   have hzi : ∀ i, Algebra.norm k ((z i : Eˣ) : E) = 1 := by
     intro i
-    have h1 := congrArg Units.val (congrFun hz i)
-    simpa [nrmT] using h1
+    simpa [nrmT] using congrArg Units.val (congrFun hz i)
   choose y hy using fun i => groupCohomology.exists_div_of_norm_eq_one (K := k) (g := σ) hg (hzi i)
   refine ⟨fun i => (y i)⁻¹, ?_⟩
   funext i
@@ -176,8 +173,7 @@ private theorem emb_alg : Topology.IsEmbedding (algebraMap k E) := by
       refine ⟨Units.mk0 _ hb0, ?_⟩
       rintro _ ⟨z, hz, rfl⟩
       show valuation E (0 + z) < _
-      rw [zero_add]
-      exact hz
+      rwa [zero_add]
     · intro a ha
       apply hδ
       refine ⟨a, ?_, zero_add a⟩
@@ -214,8 +210,7 @@ private theorem cont_sg {σ : E ≃+* E} (hσ : Isom σ) : Continuous σ := by
   rw [map_add (f := _)]
   refine hγ ⟨σ z, ?_, rfl⟩
   show valuation E (σ z) < _
-  rw [hσ z]
-  exact hz
+  rwa [hσ z]
 
 private theorem cont_norm [IsGalois k E] (σ : E ≃ₐ[k] E) (hg : ∀ τ : E ≃ₐ[k] E, τ ∈ Subgroup.zpowers σ)
     (hσ : Isom (σ : E ≃+* E)) : Continuous (Algebra.norm k : E → k) := by
@@ -329,8 +324,7 @@ theorem UpperTheory.Gal.InertialTypesAlt.L.normDiag :
         have := (s i).ne_zero
         have := (d i).ne_zero
         field_simp
-      rw [e2]
-      exact hs
+      rwa [e2]
   refine ⟨fun d => ⟨hdiag d, hstrict d, hreg d⟩, hpart2, fun r hr t ht => ⟨?_, ?_⟩⟩
   · rintro x ⟨u, hu, rfl⟩
     apply hstrict

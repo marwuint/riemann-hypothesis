@@ -114,8 +114,7 @@ private def U : Subgroup (Qbar l)ˣ where
 private theorem cong_mul {a u : (Qbar l)ˣ} (ha : ‖(a : Qbar l)‖ = 1) (hu : u ∈ U l) : Cong (a * u) a := by
   have e : ((a * u : (Qbar l)ˣ) : Qbar l) - a = a * (u - 1) := by push_cast; ring
   unfold Cong
-  rw [e, norm_mul, ha, one_mul]
-  exact hu
+  rwa [e, norm_mul, ha, one_mul]
 private theorem resSum_of {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin 2) (Qbar l)) (Φ : Γ →* (Qbar l)ˣ)
     (ht : ∀ s, ‖(ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).trace - (1 + Φ s)‖ < 1)
     (hd : ∀ s, ‖(ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).det - Φ s‖ < 1) : ResSum ρ ![1, Φ] := by
@@ -181,8 +180,7 @@ private theorem above_of {ρ : G ℚ Ω →* GL (Fin 2) (Qbar l)} (hρ : Continu
       rw [(hg t).2]
       exact ht) (isClosed_small hc) h1
     show ‖_‖ < 1
-    rw [← (hg s).2]
-    exact h2
+    rwa [← (hg s).2]
 private theorem core (P : _root_.UpperTheory.V.Af.HypothesesH') (hl2 : l ≠ 2) (ι : Qbar l ≃+* ℂ) {k N : ℕ} [NeZero N] (hk : 3 ≤ k) (hN : ¬ l ∣ N)
     {χ : DirichletCharacter ℂ N} (hχ : χ.IsPrimitive) (g : Eigenform k N χ)
     (hg : ∀ p : ℕ, p.Prime → ‖ι.symm (g.a p - (1 + χ (p : ZMod N) * (p : ℂ) ^ (k - 1)))‖ < 1)
@@ -308,8 +306,7 @@ theorem UpperTheory.V.Sd.propEG_of_printsH :
     rw [MonoidHom.pow_apply, Units.val_pow_eq_pow_val, hθ, dirG_val] at h1
     rw [MulChar.pow_apply_coe, MulChar.one_apply_coe]
     apply ι.symm.injective
-    rw [map_pow, map_one]
-    exact h1
+    rwa [map_pow, map_one]
   have hdvd : l ∣ w' - 1 := by
     have h1 : orderOf θ₀ = l := orderOf_eq_prime hpow hne
     rw [← h1, ← ZMod.card_units w']
@@ -326,8 +323,7 @@ theorem UpperTheory.V.Sd.propEG_of_printsH :
       obtain ⟨d, rfl⟩ := hMN
       rw [pow_mul, hζ, one_pow])] at h2
     apply ι.symm.injective
-    rw [map_one]
-    exact h2
+    rwa [map_one]
   have E : EDat l M w' φ₀ θ₀ χ :=
     ⟨hx.odd, lt_of_le_of_ne (NeZero.pos M) (dirG_ne_one hφ).symm, fun h => hx.cop (h.trans hMN), hφp, hx.prime, hdvd,
       fun h => hx.wN (h.trans hMN), hφw, hne, hpow, hχ⟩

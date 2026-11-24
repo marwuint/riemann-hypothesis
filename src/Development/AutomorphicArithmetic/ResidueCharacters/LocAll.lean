@@ -241,8 +241,7 @@ theorem tb_top (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) 
     rw [e3, e1, e2]
     exact LocNum.cTB_le l N h n t e _ _ Fact.out U _ hsub hn hb he ht hvd hgl
   · have e4 : ((((D.loc l).PD K).p : ℕ) : ↥(OL LL)) = (l : ↥(OL LL)) := by rw [(D.loc l).PD_p]
-    rw [← e4]
-    exact key
+    rwa [← e4]
 
 end UpperTheory.N
 
@@ -306,8 +305,7 @@ theorem transfer_mem_blochKato_cocycles [IsTopologicalGroup G'] (PD : PeriodData
     have hc := GlobalTheory.transfer_continuous_of_continuousOn LL G' T.V T.ρ ι.range ho hρc f hfc
     have hfun : (trCochain ι T z : G' → T.V) = fun g => ∑ q : G' ⧸ ι.range,
         T.ρ (Quotient.out (g • q)) (f ((Quotient.out (g • q))⁻¹ * g * Quotient.out q)) := funext htr
-    rw [hfun]
-    exact hc
+    rwa [hfun]
   · intro a b
     rw [htr, htr, htr]
     refine hmem.2.1 f ?_ a b
@@ -324,8 +322,7 @@ theorem transfer_mem_blochKato_cocycles [IsTopologicalGroup G'] (PD : PeriodData
     simp only at key
     rw [htr, TensorProduct.sum_tmul]
     have hstep : ∀ (h : G') (v : T.V), (T.ρ h v) ⊗ₜ[Qp] (1 : B) = repVB PD' T h (v ⊗ₜ[Qp] 1) := by
-      intro h v
-      exact (actVB_tmul_one PD' T h v).symm
+      exact fun h v => (actVB_tmul_one PD' T h v).symm
     simp only [hstep]
     rw [key]
     rfl
@@ -423,8 +420,7 @@ theorem tbK_of (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) 
         ((algebraMap ℚ_[l] ↥LL.1 (((D.loc l).PD K').χ g : ℚ_[l]))⁻¹) ^ e • x := fun g x => by
       rw [(D.loc l).PD_χ]
       have := hε.2 (Subgroup.inclusion hle g) x
-      rw [(D.loc l).PD_χ] at this
-      exact this
+      rwa [(D.loc l).PD_χ] at this
     obtain ⟨c, hcle, key⟩ := tb_top D HW F l h4 hCo hW hF N h n t e _ K' LL hg hKs U hn hb he ht hidx
       (LocRes.res hle Yt) (LocRes.res hle VeL) r1 (fun τ a ha => hJ _ (hjmp _ a ((j1 τ a).1 ha))) p
       (fun g v => hp _ v) hint e₀ he₀ hpe hε.1 hχ φ (fun g y hy hy0 => hφ _ y hy hy0)
@@ -510,8 +506,7 @@ theorem tbe_of (PD : PeriodData G Qp K₀ K B BdR) (I : Subgroup G) [Topological
     intro he
     obtain ⟨g, hg1⟩ := hchi e he
     have hu : ((algebraMap Qp LL (PD.χ g : Qp))⁻¹) ^ e ≠ 1 := by
-      rw [inv_pow, Ne, inv_eq_one, ← map_pow, map_eq_one_iff _ (algebraMap Qp LL).injective]
-      exact hg1
+      rwa [inv_pow, Ne, inv_eq_one, ← map_pow, map_eq_one_iff _ (algebraMap Qp LL).injective]
     exact ⟨HfD_eq_BD PD Ve (GlobalTheory.HfZero.z1f_le_b1 PD h5 h7 hO (toG Ve) hDR hFil
       (fixed_points_trivial_of_scalar_action_ne_one Ve _ _ hu (hχ _))), BD_ne_bot hO Ve h1 _ _ hu (hχ _)⟩
   have hzero : e = 0 → HfD PD Ve.L ≠ ⊥ ∧ ∀ c : G → Ve.V ⧸ Ve.L.T, c ∈ HfD PD Ve.L ↔
@@ -542,8 +537,7 @@ theorem tbe_of (PD : PeriodData G Qp K₀ K B BdR) (I : Subgroup G) [Topological
       n • Module.length O (O ⧸ Ideal.span {((PD.p : ℕ) : O)}) :=
     Ring.ord_pow (mem_nonZeroDivisors_of_ne_zero hp) n
   unfold lenOl
-  rw [Nat.cast_mul, mul_assoc, ← nsmul_eq_mul n, ← hord]
-  exact key
+  rwa [Nat.cast_mul, mul_assoc, ← nsmul_eq_mul n, ← hord]
 
 end
 
@@ -566,8 +560,7 @@ theorem tbe_all (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.l
   · intro e he
     obtain ⟨g, hg, hg1⟩ := GlobalTheory.Cyc.exists_mem_GK_chi_pow_ne_one l (D.loc l).χQ (D.loc l).χQ_cyc K e he
     refine ⟨⟨g, hg⟩, ?_⟩
-    rw [(D.loc l).PD_χ K ⟨g, hg⟩]
-    exact hg1
+    rwa [(D.loc l).PD_χ K ⟨g, hg⟩]
 
 end UpperTheory.N.TwistK
 

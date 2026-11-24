@@ -93,8 +93,7 @@ private theorem card_cls (h : ContAction ρ) (L : Submodule k (H1 ρ)) :
     ((B1 ρ).comap (Z1 ρ).subtype).toAddSubgroup (L : Set (H1 ρ)))).trans (Nat.card_prod _ _)
   have e3 : Nat.card ((B1 ρ).comap (Z1 ρ).subtype) = Nat.card (B1 ρ) :=
     Nat.card_congr (Submodule.comapSubtypeEquivOfLe (coboundaries_le_cocycles ρ h)).toEquiv
-  rw [e1, Set.ncard_image_of_injective _ Subtype.val_injective, ← e3]
-  exact e2
+  rwa [e1, Set.ncard_image_of_injective _ Subtype.val_injective, ← e3]
 
 omit [TopologicalSpace G] [TopologicalSpace M] [DiscreteTopology M] in
 private theorem card_coboundaries_mul_card_h0 : Nat.card (B1 ρ) * Nat.card (H0 ρ) = Nat.card M := by
@@ -130,8 +129,7 @@ private theorem ex_cls {n : ℕ} {G M : Type} [Group G] [TopologicalSpace G] [Ad
     have e' : y.1 - z ∈ B1 ρ := (Submodule.Quotient.eq ((B1 ρ).comap (Z1 ρ).subtype)).1 e
     have := N.sub_mem hy (h1 e')
     simpa using this
-  · intro hz
-    exact ⟨(Zl_iff ρ z).1 (h2 hz), ⟨z, _⟩, hz, rfl⟩
+  · exact fun hz => ⟨(Zl_iff ρ z).1 (h2 hz), ⟨z, _⟩, hz, rfl⟩
 
 private def Conc {R R' Γ M M' W : Type} [CommRing R] [CommRing R'] [Group Γ] [TopologicalSpace Γ] [AddCommGroup M] [Module R M]
     [AddCommGroup M'] [Module R' M'] [Fintype W] {D : W → Type} [∀ w, Group (D w)] [∀ w, TopologicalSpace (D w)]
@@ -497,9 +495,7 @@ private theorem cardInv {n : ℕ} [Fact n.Prime] {D M M' : Type} [Group D] [AddC
     intro y y' h
     have := hr (y - y') (fun x => by rw [map_sub, h x, sub_self])
     exact sub_eq_zero.mp this
-  have hΦi : Function.Injective Φ := by
-    intro y y' h
-    exact hsep y y' (fun x => by rw [← hΦ, ← hΦ, h])
+  have hΦi : Function.Injective Φ := fun y y' h => hsep y y' (fun x => by rw [← hΦ, ← hΦ, h])
   have hΨi : Function.Injective (fun x : M => (b x).toZModLinearMap n) := by
     intro x x' h
     have h' : ∀ y, b x y = b x' y := fun y => LinearMap.congr_fun h y
@@ -540,8 +536,7 @@ private theorem cardInv {n : ℕ} [Fact n.Prime] {D M M' : Type} [Group D] [AddC
   refine (Nat.card_congr (Equiv.ofBijective
     (fun y : {y : M' // ∀ g, τ g y = y} =>
       (⟨Φ y.1, (hmem y.1).2 y.2⟩ : ↥(H0 ((twDual χ σ).comp (MonoidHom.id D))))) ⟨?_, ?_⟩)).symm
-  · intro y y' h
-    exact Subtype.ext (hΦi (congrArg Subtype.val h))
+  · exact fun y y' h => Subtype.ext (hΦi (congrArg Subtype.val h))
   · intro φ
     obtain ⟨y, hy⟩ := hΦb.2 φ.1
     have hy' : Φ y ∈ H0 ((twDual χ σ).comp (MonoidHom.id D)) := by
@@ -627,8 +622,7 @@ theorem UpperTheory.V.Pa.locBare :
     have hσ : ReciprocityTheory.Gal.ContAction σ := by
       show Continuous fun p : (Dec (F := F) A) × M => ρ p.1 p.2
       rw [continuous_prod_of_discrete_right]
-      intro m
-      exact (hLC m).continuous
+      exact fun m => (hLC m).continuous
     obtain ⟨hf0, hf1, hf2, -⟩ := hF F Ω l 1 M A σ v one_pos hv hσ
     haveI := hf0
     haveI := hf1
@@ -679,8 +673,7 @@ theorem UpperTheory.V.Pa.locBare :
     · rw [hE1, ← hH2, add_comm 1 d, pow_succ (Nat.card M) d]
       ring
   refine ⟨fun hl => core (locDeg v) ?_, fun hl => core 0 ?_⟩
-  · intro M _ _ _ _ _ rho hc
-    exact (hE F Ω l 1 M A rho v one_pos hv hc).1 hl
+  · exact fun M _ _ _ _ _ rho hc => (hE F Ω l 1 M A rho v one_pos hv hc).1 hl
   · intro M _ _ _ _ _ rho hc
     rw [pow_zero, mul_one]
     exact (hE F Ω l 1 M A rho v one_pos hv hc).2 hl
@@ -746,8 +739,7 @@ theorem UpperTheory.V.Pa.locCongr :
     · intro hv g
       have := hv (α g)
       simpa [ρ2', hσ] using this
-    · intro hv g
-      exact hv (α.symm g)
+    · exact fun hv g => hv (α.symm g)
   refine ⟨Finite.of_equiv _ e.symm, ?_⟩
   rw [Nat.card_congr e, hcard, hinv]
 end -- clump:auto
@@ -792,10 +784,8 @@ theorem UpperTheory.V.Pa.presCounts :
       ((P.pl_l _).2 ⟨v, rfl⟩)
     rw [← P.dv_eq v] at h1
     exact key (Sum.inl v) _ h1
-  · intro u
-    exact notl (Sum.inr (Sum.inl u)) (fun v h => by cases h)
-  · intro j
-    exact notl (Sum.inr (Sum.inr j)) (fun v h => by cases h)
+  · exact fun u => notl (Sum.inr (Sum.inl u)) (fun v h => by cases h)
+  · exact fun j => notl (Sum.inr (Sum.inr j)) (fun v h => by cases h)
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DegreeCountCohomology.PresCounts =====

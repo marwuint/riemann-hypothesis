@@ -235,8 +235,7 @@ theorem UpperTheory.Gal.productCup_of_system.goodZ_of :
     exact (_root_.GlobalTheory.PD.rB_mono_loc ℂ F K d (xv x) hx I i hi).1 J hIJ
   have hx0 : ∀ i, xv x i ≠ 0 := fun i => (x i).ne_zero
   refine ⟨⟨?_, ?_, ?_, ?_, ?_⟩, ⟨?_, ?_, ?_, ?_, ?_⟩, ?_⟩
-  · intro I I' J J' hI hJ hII hJJ
-    exact range_mono (hrB I I' hI hII) (hrB J J' hJ hJJ)
+  · exact fun I I' J J' hI hJ hII hJJ => range_mono (hrB I I' hI hII) (hrB J J' hJ hJJ)
   · intro I I' J J' hI hJ hII hJJ
     show MZ F K (xv x) a I J ≤ MZ F K (xv x) a I' J'
     unfold MZ
@@ -250,8 +249,7 @@ theorem UpperTheory.Gal.productCup_of_system.goodZ_of :
   · intro I J hI j hj b
     rw [sysZ_Y]
     exact tmul_mem_range (Subalgebra.one_mem _) (ratio_mem_rB K x hj b)
-  · intro I I' J J' hI hJ hII hJJ
-    exact range_mono (rA_le_of_subset hII) (hrB J J' hJ hJJ)
+  · exact fun I I' J J' hI hJ hII hJJ => range_mono (rA_le_of_subset hII) (hrB J J' hJ hJJ)
   · intro I I' J J' hI hJ hII hJJ
     exact Submodule.map₂_le_map₂ (omA_le_of_subset hx0 hI hII) (omB_mono' (hrB J J' hJ hJJ) _)
   · intro I J hI hJ
@@ -263,8 +261,7 @@ theorem UpperTheory.Gal.productCup_of_system.goodZ_of :
   · intro I J hI j hj b
     rw [sysP_Y]
     exact tmul_mem_range (Subalgebra.one_mem _) (ratio_mem_rB K x hj b)
-  · intro s t hs hst
-    exact omB_mono' (hrB s t hs hst) a
+  · exact fun s t hs hst => omB_mono' (hrB s t hs hst) a
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.LocalMaximality.PGoodZ =====

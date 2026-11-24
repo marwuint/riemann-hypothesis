@@ -279,8 +279,7 @@ private theorem is_smooth_char_inv {k : Type} [Field k] [ValuativeRel k] [Topolo
     ext x
     simp [MonoidHom.mem_ker]
   unfold IsSmoothChar
-  rw [hk]
-  exact h
+  rwa [hk]
 
 theorem main : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.UnlinkedProductIrreducible → GlobalTheory.Published.DepthZeroJacquetInjective → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], BlockSplit k := by
   intro hBZ hGL hUP hDZ k _ _ _ _ r t χ π v hχ hT hv hvec
@@ -296,8 +295,7 @@ theorem main : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTh
     have h2 := GlobalTheory.SplitPairLift.twist_twist_inv π₂ χ⁻¹
     rw [inv_inv] at h2
     show Nonempty (π.π.Equiv (prod₂ π₁.π (twist (twist π₂.π (detChar (Fin t) χ⁻¹)) (detChar (Fin t) χ))))
-    rw [h2]
-    exact hE
+    rwa [h2]
 
 end GlobalTheory.BlockSplitProof
 end -- clump:auto
@@ -638,8 +636,7 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 theorem trivOutside_one (T : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))) :
     TrivOutside T (1 : GAf L n) := by
-  intro w _
-  exact Matrix.map_one _ (map_zero _) (map_one _)
+  exact fun w _ => Matrix.map_one _ (map_zero _) (map_one _)
 
 theorem detDD_one (s : SplitPlace L) (r : ℕ) :
     NG.detDD s r (1 : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) = 1 := by
@@ -841,7 +838,6 @@ theorem GlobalTheory.VTypeTame.ramified_of_isComp : ∀ (E : Type) [Field E] [Nu
     Valuation.Compatible.ofValuation _
   have h1 := ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E))
     (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))
-  show Valued.v (x : w.adicCompletion E) = 1
   exact h1.eq_one_iff_eq_one.1 hx
 end -- clump:auto
 end -- clump:auto
@@ -897,8 +893,7 @@ theorem eq_comp {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitPla
         (Units.continuous_val.sub (continuous_const (y := (1 : s.v.adicCompletion (maximalRealSubfield L)))))
       simpa only [Set.preimage_setOf_eq, Valuation.restrict_lt_iff, Pi.sub_apply] using h1
     refine Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset (hU.mem_nhds ?_) fun x hx => ?_)
-    · simp only [Set.mem_setOf_eq, Units.val_one, sub_self, map_zero, hz]
-      exact WithZero.exp_pos
+    · simpa only [Set.mem_setOf_eq, Units.val_one, sub_self, map_zero, hz] using WithZero.exp_pos
     · have hx' : Valued.v ((x : s.v.adicCompletion (maximalRealSubfield L)) - 1) < Valued.v z := hx
       exact hN x (by rw [← hz]; exact hx'.le)
   have hcu : Continuous (Units.map c.toRingHom.toMonoidHom :
@@ -957,8 +952,7 @@ theorem isParahoricVec_of_eigen : ∀ (L : Type) [Field L] [NumberField L] [IsCM
     Units.ext (Matrix.ext fun a b => c.apply_symm_apply _)
   have hcc : Units.map c.toRingHom.toMonoidHom (Units.map c.symm.toRingHom.toMonoidHom x) = x :=
     Units.ext (c.apply_symm_apply _)
-  rw [hpp, GlobalTheory.SameParahoric.eq_comp s ξ μ c hc hci hμ N hN hglob, hcc] at key
-  exact key
+  rwa [hpp, GlobalTheory.SameParahoric.eq_comp s ξ μ c hc hci hμ N hN hglob, hcc] at key
 
 end GlobalTheory.SameParahoric
 end -- clump:auto
@@ -1049,8 +1043,7 @@ theorem typeTame_of_ramified_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (
       have e : Units.map ((GlobalTheory.TypeTame.conjSP s).i : D.host.E →* s.v.adicCompletion (maximalRealSubfield D.host.E)) k =
           Units.map (s.i : D.host.E →* s.v.adicCompletion (maximalRealSubfield D.host.E))
             (Units.map (MonoidHom.ofClass D.host.conj) k) := by
-        apply Units.ext
-        exact hci' (k : D.host.E)
+        exact Units.ext (hci' (k : D.host.E))
       have e2 := hcs.2 (Units.map (MonoidHom.ofClass D.host.conj) k)
       rw [e, e2, hcomp.2 k]
       exact hcsd.1 _ _ hconj k
@@ -1312,8 +1305,7 @@ theorem GlobalTheory.NPin.pairRead_of_join_alt : GlobalTheory.Published.Bernstei
   have hFiso : (Fp : GAf D.host.E D.R.nV → (P.M.loc i).wt.W) ∈
       NG.isoTyp (P.M.loc i).wt.ρ (P.H.av.S i Q) := by
     have := hF
-    rw [P.H.av.typeV] at this
-    exact this
+    rwa [P.H.av.typeV] at this
   have hspan := GlobalTheory.T.isotypicPart_spanned_by_splitPlace_localComponent D.host.E D.R.nV (P.M.loc i).wt (P.H.av.S i Q) (P.H.av.irr i Q) s _
     (hT.rep i s hw Q) c hc hci
   let ℓF : ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ) →+ ℂ :=
@@ -1379,8 +1371,7 @@ theorem GlobalTheory.NPin.pairRead_of_join_alt : GlobalTheory.Published.Bernstei
       congr 1
       exact Subtype.ext hc0
     show Θ.Λ (ι Φ0) (T' a0) (T'' c0) ≠ 0
-    rw [e1, e2]
-    exact hℓg2
+    rwa [e1, e2]
   refine GlobalTheory.T.thetaPairing_of_invariant_trilinear_form _ D.R.r (D.R.r + D.R.t) _ _ (S i s.w hw).mu ((S i s.w hw).row σ).π
     (twist ((S i s.w hw).rep Q).π (detChar (Fin (D.R.r + D.R.t)) (S i s.w hw).eta))
     ((hBZ _).1 (Fin D.R.r) _ _ ((S i s.w hw).row σ).smooth ((S i s.w hw).row σ).irr)
@@ -1458,8 +1449,7 @@ theorem rowUnit_of_isTrue_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists
     (fun _ _ _ => by simp only [map_add (f := _), hadd]) (fun _ _ _ => by simp only [map_smul, hsmul, smul_eq_mul, RingHom.id_apply])
     (fun _ _ _ => by simp only [map_add (f := _), hadd']) (fun _ _ _ => by simp only [map_smul, hsmul', smul_eq_mul]), ?_, ?_, ?_⟩
   · intro v u
-    simp only [LinearMap.mk₂'ₛₗ_apply]
-    exact hherm _ _
+    simpa only [LinearMap.mk₂'ₛₗ_apply] using hherm _ _
   · intro v hv
     simp only [LinearMap.mk₂'ₛₗ_apply]
     refine hpos _ fun h => hv (hTinj ?_)
@@ -1474,8 +1464,7 @@ theorem rowUnit_of_isTrue_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists
       exact Units.ext (Matrix.ext fun a b => ι.apply_symm_apply _)
     have key : ∀ a, T (((S i s.w hw).row σ).π g a) = NG.rt D.host.E D.R.r x (T a) := fun a => by
       have := hTeq x hx a
-      rw [hg] at this
-      exact this
+      rwa [hg] at this
     exact hinv x (Tm u) (Tm v) _ _ (key u) (key v)
 end GlobalTheory.RowUnitProof
 end
@@ -1522,8 +1511,7 @@ theorem unitarySphericalComponent_of_reading_alt : GlobalTheory.Published.Bernst
   intro hBZ R H what₂ N A T S hL hU i σ hσ w hw hu
   have hloc := (S i w hw).locW σ hσ
   have hsph : IsSpherical ((S i w hw).row σ).π := by
-    rw [← (hL i w hw).sph _ _, ← hloc, ← T.unr]
-    exact hu
+    rwa [← (hL i w hw).sph _ _, ← hloc, ← T.unr]
   obtain ⟨α, hα⟩ := _root_.GlobalTheory.SatakeExists.main hBZ _ _ _ hsph
   have hfrob : A.frobEig (A.locW i σ w) =
       (Finset.univ.val.map fun j => (α j : ℂ)).map (·⁻¹) := by

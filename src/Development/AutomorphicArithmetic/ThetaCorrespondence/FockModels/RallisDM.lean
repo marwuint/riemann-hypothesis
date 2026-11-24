@@ -214,8 +214,7 @@ theorem graph_finDim_mem_of_pointwise_tendsto : ∀ (X : Type) (R : Submodule �
     rw [← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]
     intro p hp
     rw [LinearMap.mem_ker] at hp
-    have h1 : p.1.1 = 0 := by
-      exact congrArg Subtype.val hp
+    have h1 : p.1.1 = 0 := congrArg Subtype.val hp
     have hpR : p.1 ∈ R := (Submodule.mem_inf.mp p.2).1
     have h2 : p.1.2 = 0 := by
       apply hR
@@ -268,8 +267,7 @@ theorem exists_reproducing_kernel : ∀ (K : Type) [Group K] [TopologicalSpace K
   let Ψ : Dual ℂ W → Dual ℂ (Dual ℂ W) := fun l =>
     { toFun := fun m => ∫ k, conj (l (o k)) * m (o k) ∂ν
       map_add' := fun m m' => by
-        simp only [LinearMap.add_apply, mul_add]
-        exact integral_add (hint l m) (hint l m')
+        simpa only [LinearMap.add_apply, mul_add] using integral_add (hint l m) (hint l m')
       map_smul' := fun c m => by
         simp only [LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply]
         rw [← integral_const_mul]; congr 1; funext k; ring }
@@ -984,8 +982,7 @@ theorem thetaMean_add {ψ : AddChar (AF D.host.F) ℂ}
       (AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO om g h f) + (AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO om g h f') := by
     funext q; simp [thetaKO, AutomorphicL2Unitary.descend]
   simp only [GlobalTheory.ThetaMean.thetaMean, Pi.add_apply]
-  rw [e]
-  rw [average_eq, average_eq, average_eq, integral_add' (hi f hf g) (hi f' hf' g), smul_add]
+  rw [e, average_eq, average_eq, average_eq, integral_add' (hi f hf g) (hi f' hf' g), smul_add]
 
 theorem thetaMean_smul {om : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)} (m : Measure (GA D B))
     (c : ℂ) (f : WO (dblSp A) B → ℂ) :
@@ -1222,8 +1219,7 @@ theorem normSq_thetaKO_modGrowth : GlobalTheory.Published.WeilThetaConvergence �
       exact (hcont g).aestronglyMeasurable
     refine (memLp_two_iff_integrable_sq_norm hm).2 ?_
     refine (hint (io A (g, g))).norm.congr (Filter.Eventually.of_forall fun q => ?_)
-    simp only [GlobalTheory.AutomorphicL2Unitary.descend]
-    exact (knorm g _).symm
+    simpa only [GlobalTheory.AutomorphicL2Unitary.descend] using (knorm g _).symm
   refine ⟨hL2, ?_⟩
   obtain ⟨C₁, N, hC₁⟩ := _root_.UpperTheory.Lit.Rallis.ThetaAbsGrowth.absTheta_modGrowth hW D ψ A B χB omh homh hA hw mH hmH _ hφ
   have hE : ∀ x, ∫ q, ‖descend (GQ B) (fun h => thetaKO omh x h (delta A B Φ Φ)) q‖ ∂autMeasure B mH ≤
@@ -1290,8 +1286,7 @@ theorem volQuot_pos {D : D7} (B : HSp D) (mH : Measure (GA D B)) [mH.IsHaarMeasu
   refine ENNReal.toReal_pos ?_ (measure_ne_top _ _)
   have hmk : Measurable (AutomorphicL2Unitary.mk (GQ B)) := by first | fun_prop
   show (Measure.map (AutomorphicL2Unitary.mk (GQ B)) (mH.restrict (stdDom (GQ B)))) Set.univ ≠ 0
-  rw [Measure.map_apply hmk MeasurableSet.univ, Set.preimage_univ, Measure.restrict_apply_univ]
-  exact h0
+  rwa [Measure.map_apply hmk MeasurableSet.univ, Set.preimage_univ, Measure.restrict_apply_univ]
 
 end UpperTheory.Lit.Rallis.RallisIPProof
 

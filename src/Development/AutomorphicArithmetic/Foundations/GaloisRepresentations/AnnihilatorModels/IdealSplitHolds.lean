@@ -193,8 +193,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.adjoint_of :
     intro q Y u v
     have h1 := (GlobalTheory.CechPic.cls_eq_iff q.isLB (pull_isLB q.isLB _)).2 q.symm
     have h2 := congrArg (GlobalTheory.CechPic.pull (lift u v).left) h1
-    rw [GlobalTheory.AbDual.cls_ev q.isLB, GlobalTheory.AbDual.pull_evc, lift_snd, lift_fst] at h2
-    exact h2
+    rwa [GlobalTheory.AbDual.cls_ev q.isLB, GlobalTheory.AbDual.pull_evc, lift_snd, lift_fst] at h2
 
   have hL1 := pull_isLB o'.isLB (lift (fst o.A o'.A ≫ ψ) (snd o.A o'.A)).left
   have hL2 := pull_isLB o.isLB (lift (fst o.A o'.A) (snd o.A o'.A ≫ ψ')).left
@@ -414,8 +413,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.constSub_of : ConstSub := by
       have := (cancel_epi _).1 hc
       rw [this]
       exact c.2
-    · intro hg
-      exact ⟨PointQuot.constPt (Sp K) (⟨g, hg⟩ : Γ), constPt_desc _ _⟩
+    · exact fun hg => ⟨PointQuot.constPt (Sp K) (⟨g, hg⟩ : Γ), constPt_desc _ _⟩
   · intro α hα
     apply constObj_hom_ext
     intro c
@@ -544,8 +542,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.frobHom_of :
   obtain ⟨hpb, hmul⟩ := hpull
   have hκ : ((p : ℕ) : Γ(Sp κ, ⊤)) = 0 := by
     have e := congrArg (Scheme.ΓSpecIso (CommRingCat.of κ)).inv.hom (CharP.cast_eq_zero κ p)
-    rw [map_natCast, map_zero] at e
-    exact e
+    rwa [map_natCast, map_zero] at e
   have hfrκ : GlobalTheory.SS.FrobField.absFrob (Sp κ) p f hp hκ = spMap φ :=
     GlobalTheory.SS.FrobField.absFrob_spec κ p f hp hκ φ hφ
   have hsq : GlobalTheory.SS.FrobField.absFrob A.left p f hp h ≫ A.hom = A.hom ≫ spMap φ := by
@@ -579,8 +576,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.frobHom_of :
   constructor
   · intro hg h'
     have e := congrArg (fun k => k.left ≫ ψ) hg
-    rw [key, hone] at e
-    exact e
+    rwa [key, hone] at e
   · intro hk
     apply Over.OverMorphism.ext
     apply hpb.hom_ext
@@ -650,8 +646,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.frobRing_of :
   · intro h x hx
     have := RingHom.congr_fun h x
     simp only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, hx, map_zero] at this
-    rw [hσ] at this
-    exact this
+    rwa [hσ] at this
   · intro h
     ext x
     have hy : ε₀ (x - algebraMap κ B (ε₀ x)) = 0 := by
@@ -770,8 +765,7 @@ private theorem exists_coprime_mul_le {A : Type} [CommRing A] [IsDedekindDomain 
       have hc : IsCoprime 𝔞 p := by
         rw [Ideal.isCoprime_iff_sup_eq]
         by_contra h
-        have h2 := hpm.eq_of_le h le_sup_right
-        exact hap (h2 ▸ le_sup_left)
+        exact hap ((hpm.eq_of_le h le_sup_right) ▸ le_sup_left)
       refine ⟨m, p * b, IsCoprime.mul_right hc hcop, ?_⟩
       calc 𝔞 ^ m * (p * b) = p * (𝔞 ^ m * b) := by ring
         _ ≤ p * a := Ideal.mul_mono_right hle
@@ -922,8 +916,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.liftFF_of :
         Spec.map (CommRingCat.ofHom (IsLocalRing.residue V)) := by
       rw [CommRingCat.ofHom_comp, Spec.map_comp]
       exact (congrArg (· ≫ spMap (algebraMap V B)) hχ).trans hua
-    have h2 := Spec.map_injective h1
-    exact congrArg CommRingCat.Hom.hom h2
+    exact congrArg CommRingCat.Hom.hom (Spec.map_injective h1)
   obtain ⟨z₀, hz₀⟩ := hPt V B χ hχa
   refine ⟨spMap z₀.toRingHom ≫ k, ?_, ?_⟩
   · have hc : z₀.toRingHom.comp (algebraMap V B) = RingHom.id V := by
@@ -1069,13 +1062,11 @@ theorem picFrob_of : PicFrob := by
     intro J x hx
     show x ∈ ⋂ k, (𝟙 X : X ⟶ X) ⁻¹' (L.U (J k) : Set X)
     rw [Set.mem_iInter]
-    intro k
-    exact hx
+    exact fun k => hx
   rw [← GlobalTheory.CechPic.cls_pull hL F (pull_isLB hL F), ← GlobalTheory.CechPic.cls_lbPow hL (p ^ f) hB,
     GlobalTheory.CechPic.cls_eq_iff]
   refine GlobalTheory.CechPic.iso_of_chart hB ⟨fun J => J, ?_, ?_⟩
-  · intro J x hx
-    exact hmem J x (mem_pull.1 hx)
+  · exact fun J x hx => hmem J x (mem_pull.1 hx)
   · intro y i j hi hj
     have hi' : y ∈ L.U (i PUnit.unit) := mem_pull.1 hi
     have hj' : y ∈ L.U (j PUnit.unit) := mem_pull.1 hj
@@ -1160,8 +1151,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.powExt_of :
     PowExt := by
   intro S A k
   refine ⟨fun h => flat_pow A inferInstance k, ?_⟩
-  intro X u v h1 h2
-  exact GlobalTheory.KS.PowPB.pow_left_hom_ext u v h1 h2
+  exact fun X u v h1 h2 => GlobalTheory.KS.PowPB.pow_left_hom_ext u v h1 h2
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AnnihilatorModels.MPowExt =====
@@ -1335,8 +1325,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.quasiInv_of :
       rw [Nat.coprime_self] at h3
       exact (Fact.out : p.Prime).one_lt.ne' h3
     have h1 := h0.map (Scheme.ΓSpecIso (CommRingCat.of κ)).inv.hom
-    have h2 := h1.map T.hom.appTop.hom
-    simpa using h2
+    simpa using h1.map T.hom.appTop.hom
   have hkc : ∀ (T : Over (Sp κ)) (x : T ⟶ o.A), x ≫ ψ = 1 → x ^ c = 1 := by
     intro T x hx
     have h1 : (x ^ c) ^ e = 1 := by
@@ -1493,8 +1482,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.resClosed_of :
   obtain ⟨y, rfl⟩ := IsIntegrallyClosed.isIntegral_iff.1 hint
   have hy : P.eval y = 0 := by
     apply hinj
-    rw [map_zero, ← Polynomial.eval₂_at_apply, ← Polynomial.eval_map]
-    exact hx
+    rwa [map_zero, ← Polynomial.eval₂_at_apply, ← Polynomial.eval_map]
   refine ⟨IsLocalRing.residue V y, ?_⟩
   rw [← hP, Polynomial.eval_map, Polynomial.eval₂_at_apply, hy, map_zero]
 end -- clump:auto
@@ -1630,15 +1618,13 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.secCard_of :
     intro a
     rw [ObjMap.ptEquiv_left]
     constructor
-    · intro h
-      exact h a rfl
+    · exact fun h => h a rfl
     · intro h a' ha'
       have ha : a' = a := by
         apply (T.ms.ptEquiv (Over.mk y)).injective
         apply Over.OverMorphism.ext
         rw [ObjMap.ptEquiv_left, ObjMap.ptEquiv_left, ha']
-      rw [ha]
-      exact h
+      rwa [ha]
   refine Nat.card_congr (Equiv.subtypeEquiv (T.ms.ptEquiv (Over.mk y)).toEquiv (fun a => ?_))
   exact ⟨fun h => ⟨(hK a).mp h.2, (hker a).mpr h.1⟩, fun h => ⟨(hker a).mp h.2, (hK a).mpr h.1⟩⟩
 end -- clump:auto
@@ -1814,20 +1800,15 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.wModEx_of :
   intro p _ D R _ b N S s o w T
   letI := ptModuleWvs o T
   have htor : Module.IsTorsionBySet (𝓞 D.F) (killedSub o w T) (w : Set (𝓞 D.F)) := by
-    intro x a
-    apply Subtype.ext
-    show (a : 𝓞 D.F) • (x : Additive (T ⟶ o.A)) = Additive.ofMul 1
-    exact x.2 a a.2
+    exact fun x a => Subtype.ext (x.2 a a.2)
   letI : Module (𝓞 D.F ⧸ w) (killedSub o w T) := htor.module
   refine ⟨⟨killedSub o w T, fun x => Additive.toMul (x : Additive (T ⟶ o.A)), ?_, ?_, ?_, ?_⟩⟩
-  · intro x y h
-    exact Subtype.ext (Additive.toMul.injective h)
+  · exact fun x y h => Subtype.ext (Additive.toMul.injective h)
   · intro g
     constructor
     · rintro ⟨h, rfl⟩
       exact h.2
-    · intro hg
-      exact ⟨⟨Additive.ofMul g, hg⟩, rfl⟩
+    · exact fun hg => ⟨⟨Additive.ofMul g, hg⟩, rfl⟩
   · intro x y
     rfl
   · intro a x

@@ -76,8 +76,7 @@ theorem UpperTheory.Reformulated.B.FinrankIntEqFinrankRat.finrank_eq_of_place :
 
       simp only [map_sum, map_zsmul]
     rw [hu]
-    refine Submodule.sum_mem _ fun i _ => ?_
-    exact zsmul_mem (Submodule.subset_span (Set.mem_range_self i)) _
+    exact Submodule.sum_mem _ fun i _ => zsmul_mem (Submodule.subset_span (Set.mem_range_self i)) _
   have h3 : ⊤ ≤ Submodule.span ℚ (Set.range (j.toIntLinearMap ∘ b)) := by
     intro w _
     obtain ⟨m, u, hm, hw⟩ := hs w
@@ -132,8 +131,7 @@ private theorem exists_extend {M V E : Type} [AddCommGroup M] [AddCommGroup V] [
     push_cast
     congr 2 <;> field_simp
   · intro v
-    have hk := key (j v) 1 v one_ne_zero (by simp)
-    simpa using hk
+    simpa using key (j v) 1 v one_ne_zero (by simp)
 
 private theorem period_of_basis {M : Type} [AddCommGroup M] [Module.Free ℤ M] [Module.Finite ℤ M] {g : ℕ}
     (P : M →+ (Fin g → ℂ)) (hs : Submodule.span ℝ (Set.range P) = ⊤)
@@ -152,8 +150,7 @@ private theorem period_of_basis {M : Type} [AddCommGroup M] [Module.Free ℤ M] 
     refine Submodule.span_le.mpr ?_
     rintro _ ⟨x, rfl⟩
     rw [hPx]
-    refine Submodule.sum_mem _ fun i _ => ?_
-    exact zsmul_mem (Submodule.subset_span (Set.mem_range_self i)) _
+    exact Submodule.sum_mem _ fun i _ => zsmul_mem (Submodule.subset_span (Set.mem_range_self i)) _
   have hfr : Fintype.card (Fin (Module.finrank ℤ M)) = Module.finrank ℝ (Fin g → ℂ) := by
     rw [Fintype.card_fin, hc, Module.finrank_pi_fintype]
     simp [Complex.finrank_real_complex, mul_comm]
@@ -186,8 +183,7 @@ private theorem period_of_basis {M : Type} [AddCommGroup M] [Module.Free ℤ M] 
         | smul r a _ h1 => exact zsmul_mem (h1 (by assumption)) r
     have hd : DiscreteTopology (Submodule.span ℤ (Set.range bb)) := inferInstance
     have hd' : DiscreteTopology ((Submodule.span ℤ (Set.range bb) : Set (Fin g → ℂ))) := hd
-    rw [← hset] at hd'
-    exact hd'
+    rwa [← hset] at hd'
 
 private theorem herm_smul_mat {g : ℕ} (r : ℂ) (H : Matrix (Fin g) (Fin g) ℂ) (x y : Fin g → ℂ) :
     hermForm (r • H) x y = r * hermForm H x y := by

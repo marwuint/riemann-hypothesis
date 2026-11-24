@@ -54,8 +54,7 @@ private theorem exists_ext (L : IntermediateField ℚ_[p] (PadicAlgCl p))
   obtain ⟨φ, hφ⟩ := IntermediateField.exists_algHom_of_splits (F := ℚ_[p]) (E := PadicAlgCl p)
     (K := PadicAlgCl p) (fun t => ⟨Algebra.IsIntegral.isIntegral t, IsAlgClosed.splits _⟩) s
   refine ⟨AlgEquiv.ofBijective φ (Algebra.IsAlgebraic.algHom_bijective φ), fun y => ?_⟩
-  have hy := congrArg (fun f => f y) hφ
-  simpa using hy
+  simpa using congrArg (fun f => f y) hφ
 
 variable {F : Type} [Field F] {J : Type} [Fintype J]
 
@@ -104,9 +103,7 @@ private theorem span_top (τ : J → F →+* PadicAlgCl p)
     obtain ⟨σ, hσ⟩ := exists_ext (L i) s
     obtain ⟨σ', hσ'⟩ := exists_ext (L j) s'
     have key : ∀ x, σ (τ i x) = σ' (τ j x) := fun x => by
-      have h1 := hσ ⟨τ i x, hm i x⟩
-      have h2 := hσ' ⟨τ j x, hm j x⟩
-      exact h1.trans ((hx x).trans h2.symm)
+      exact (hσ ⟨τ i x, hm i x⟩).trans ((hx x).trans (hσ' ⟨τ j x, hm j x⟩).symm)
     have hij : i = j := by
       apply hd i j (σ.trans σ'.symm)
       ext x
@@ -144,8 +141,7 @@ private theorem span_top (τ : J → F →+* PadicAlgCl p)
       have hy' : σ'.symm (σ y) = y := hy
       have hy'' := congrArg σ' hy'
       rw [AlgEquiv.apply_symm_apply] at hy''
-      rw [← hσ y, ← hσ' y]
-      exact hy''
+      rwa [← hσ y, ← hσ' y]
     subst hss
     rfl
   have hli : LinearIndependent (PadicAlgCl p) (fun t => (χ t : F → PadicAlgCl p)) :=
@@ -202,15 +198,13 @@ private theorem approx (τ : J → F →+* PadicAlgCl p)
     obtain ⟨y, rfl⟩ := hw
     intro e he
     refine ⟨y, fun i => ?_⟩
-    rw [sub_self, norm_zero]
-    exact he
+    rwa [sub_self, norm_zero]
   | zero =>
     intro e he
     refine ⟨0, fun i => ?_⟩
     rw [map_zero]
     show ‖(0 : PadicAlgCl p) - 0‖ < e
-    rw [sub_self, norm_zero]
-    exact he
+    rwa [sub_self, norm_zero]
   | add w1 w2 _ _ h1 h2 =>
     intro e he
     obtain ⟨x1, hx1⟩ := h1 (e / 2) (by linarith)

@@ -150,15 +150,13 @@ theorem frobeniusTraces_agree_of_layer_alt : _root_.GlobalTheory.HeightCounting.
   refine ⟨⟨t.r.Y.hF, ad.PV, fun j => (stdFrame_iff _ _).1 (ad.std j), fun j => (stdFrame_iff _ _).1 (t.r.Y.stdPsi.2 j),
     fun _ => 1, ?_, fun μ hμ j => (ad.eW μ hμ j).symm, ?_, ?_, fun σ => ?_⟩⟩
   · intro j h
-    simp only [inv_one, one_mul, mul_one]
-    exact ad.rat j h
+    simpa only [inv_one, one_mul, mul_one] using ad.rat j h
   · intro μ hμ j h γ hγ he v
     have he' := he
     simp only [inv_one, one_mul, mul_one] at he'
     have key := ad.wt μ hμ j h γ hγ he' ((ad.eW μ hμ j).symm v)
     refine (LinearEquiv.symm_apply_eq _).2 ?_
-    refine Eq.trans ?_ key.symm
-    exact congrArg _ (LinearEquiv.apply_symm_apply _ v).symm
+    exact Eq.trans (congrArg _ (LinearEquiv.apply_symm_apply _ v).symm) key.symm
   · intro μ hμ j x h
     refine (LinearEquiv.eq_symm_apply _).2 ?_
     refine (ad.read μ hμ j x h).trans ?_
@@ -221,8 +219,7 @@ theorem typesTrue_rows {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : 
   have hg := t.grp
   rw [h1]
   have h2 := w.C_eq
-  rw [h2]
-  exact hg
+  rwa [h2]
 
 end GlobalTheory.HeightCounting.Up.TypesAt
 end -- clump:auto
@@ -248,8 +245,7 @@ theorem inertialTypes_at_member_alt : _root_.GlobalTheory.HeightCounting.Up.Publ
   intro _ hL
   refine EvG.imp evG_good fun K _ _ _ _ _ => ?_
   refine ⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, ?_⟩
-  intro B f T _ _ _ _ _ w Z Wt p0 t nch n xd c _ _ _
-  exact typesTrue_rows t
+  exact fun B f T _ _ _ _ _ w Z Wt p0 t nch n xd c _ _ _ => typesTrue_rows t
 end GlobalTheory.HeightCounting.Up.TypesAt
 end
 end

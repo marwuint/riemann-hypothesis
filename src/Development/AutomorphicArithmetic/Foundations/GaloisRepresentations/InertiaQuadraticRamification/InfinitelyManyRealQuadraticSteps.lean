@@ -184,8 +184,7 @@ theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.apartUp :
       rw [← hQm, Ideal.under_def, ← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).1 hinj]
     refine ⟨⟨Q, hQ.isPrime, hne⟩, ?_⟩
     apply HeightOneSpectrum.ext
-    rw [HeightOneSpectrum.under_asIdeal]
-    exact hQm
+    rwa [HeightOneSpectrum.under_asIdeal]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.InertiaQuadraticRamification.ApartUp =====
@@ -292,8 +291,7 @@ private theorem apart_of_moves {E Y Ω : Type} [Field E] [NumberField E] [IsCMFi
         algebraMap (maximalRealSubfield E) Ω x := by
       change algebraMap Y Ω (algebraMap E Y x) = algebraMap E Ω x
       exact (IsScalarTower.algebraMap_apply E Y Ω _).symm
-    rw [e] at h
-    exact h
+    rwa [e] at h
   let ρ' : G (maximalRealSubfield E) Ω := AlgEquiv.ofRingEquiv (f := ρ.toRingEquiv) hρF
   let σ' : G (maximalRealSubfield E) Ω := σ.restrictScalars _
   have hg : ρ'⁻¹ * σ' ∈ Dec (F := maximalRealSubfield E) A := mem_Dec.2 (by
@@ -305,8 +303,7 @@ private theorem apart_of_moves {E Y Ω : Type} [Field E] [NumberField E] [IsCMFi
   have h5 : -algebraMap Y Ω δ = algebraMap Y Ω δ := by
     have a : σ' (algebraMap Y Ω δ) = σ (algebraMap Y Ω δ) := rfl
     have b : ρ' (algebraMap Y Ω δ) = ρ (algebraMap Y Ω δ) := rfl
-    rw [a, b, hσ, hρδ] at h4
-    exact h4
+    rwa [a, b, hσ, hρδ] at h4
   haveI : CharZero Y := algebraRat.charZero Y
   haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap Y Ω).injective
   have h6 : algebraMap Y Ω δ = 0 := self_eq_neg.1 h5.symm
@@ -491,8 +488,7 @@ theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.freshPrime :
   have hfinset : ∀ a : 𝓞 F, a ≠ 0 → {w : HeightOneSpectrum (𝓞 F) | a ∈ w.asIdeal}.Finite := by
     intro a ha
     have h0 : Ideal.span {a} ≠ (0 : Ideal (𝓞 F)) := by
-      rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
-      exact ha
+      rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
     simpa only [Ideal.dvd_span_singleton] using Ideal.finite_factors h0
   have hcast : ∀ m : ℕ, m ≠ 0 → ((m : ℕ) : 𝓞 F) ≠ 0 := fun m hm => by exact_mod_cast hm
   set B : Set (HeightOneSpectrum (𝓞 F)) :=
@@ -511,8 +507,7 @@ theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.freshPrime :
   refine ⟨u, fun h => huB (Or.inl (Or.inl h)), hp, hpu, hpu2,
     fun A' hA' => le_trans (hdec A' hA') inf_le_left, ?_, ?_⟩
   · refine (hR F Ω A u hA (normV u) hp rfl ζ (2 * n) (by omega) (hDA ζ (Set.mem_insert _ _))).2 hζ ?_
-    intro h2
-    exact huB (Or.inr (hdvd_mem _ h2))
+    exact fun h2 => huB (Or.inr (hdvd_mem _ h2))
   · intro t ht
     refine ⟨?_, (hR F Ω A u hA (normV u) hp rfl (y t) n hn
       (hDA (y t) (Set.mem_insert_of_mem _ ⟨t, ht, rfl⟩))).1 (normV t) (hy t)⟩
@@ -549,8 +544,7 @@ private theorem fixingSubgroup_fieldRange {E Ω : Type} [Field E] [Field Ω] [Al
   ext g
   rw [mem_fixGrp, IntermediateField.mem_fixingSubgroup_iff]
   constructor
-  · intro h x
-    exact h _ ⟨x, rfl⟩
+  · exact fun h x => h _ ⟨x, rfl⟩
   · rintro h _ ⟨x, rfl⟩
     exact h x
 
@@ -565,8 +559,7 @@ theorem inclOf : InclOf := by
     rw [← InfiniteGalois.fixedField_fixingSubgroup f.fieldRange,
       ← InfiniteGalois.fixedField_fixingSubgroup g.fieldRange]
     apply IntermediateField.fixedField_le
-    rw [hX, hY]
-    exact hXY
+    rwa [hX, hY]
   set eX := AlgEquiv.ofInjectiveField f
   set eY := AlgEquiv.ofInjectiveField g
   set φ : X.K →ₐ[E] Y.K := (eY.symm.toAlgHom.comp (IntermediateField.inclusion hle)).comp eX.toAlgHom
@@ -720,8 +713,7 @@ private theorem val_natCast_sub_lt {p i : ℕ} (hp : p.Prime) {ζ μ Y : Ω} (h�
     rw [h4] at h5
     exact absurd hvp (not_lt.mpr h5)
   have hvY0 : A.valuation Y ≠ 0 := by
-    rw [Ne, Valuation.zero_iff]
-    exact hY0
+    rwa [Ne, Valuation.zero_iff]
   have hw : A.valuation ((1 - ζ) / Y) = 1 := by
     rw [map_div₀, ← hvY, div_self hvY0]
   have hgeom : 1 - ζ ^ i = (1 - ζ) * ∑ k ∈ Finset.range i, ζ ^ k := (mul_neg_geom_sum ζ i).symm
@@ -779,8 +771,7 @@ theorem inertiaGen : InertiaGen := by
   · rw [orderOf_eq_iff hm]
     refine ⟨ZMod.units_pow_card_sub_one_eq_one p _, fun k hk hk0 hpow => ?_⟩
     have hzk : ((i ^ k : ℕ) : ZMod p) = 1 := by
-      have h := congrArg (fun x : (ZMod p)ˣ => (x : ZMod p)) hpow
-      simpa [ZMod.coe_unitOfCoprime] using h
+      simpa [ZMod.coe_unitOfCoprime] using congrArg (fun x : (ZMod p)ˣ => (x : ZMod p)) hpow
     have hik : 1 ≤ i ^ k := Nat.one_le_pow _ _ (Nat.pos_of_ne_zero hi0)
     have hdvd : p ∣ i ^ k - 1 := by
       rw [← ZMod.natCast_eq_zero_iff, Nat.cast_sub hik, hzk, Nat.cast_one, sub_self]
@@ -860,8 +851,7 @@ theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.layerOf :
   have hfixX : Fixes X.K τ' := (hX τ').2 (by rw [hres]; exact hτH)
   refine ⟨⟨x0, t0E, t0Ω, hgal, by rw [hfin]; exact hp, w, ?_, ?_, A, hw,
     GlobalTheory.AboveL.DecRes.lift (E := X.K) τ' hfixX, ?_, ?_⟩, ?_⟩
-  · intro hwS
-    exact hS w hwS hwu
+  · exact fun hwS => hS w hwS hwu
   · intro B hB g hg
     have hBu : IsPlaceOver B u := by
       rw [← hwu]
@@ -907,8 +897,7 @@ theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.powChar :
   have hprim := Complex.isPrimitiveRoot_exp n hn.ne'
   obtain ⟨ω, hωc⟩ := hprim.isUnit hn.ne'
   have hωp : IsPrimitiveRoot ω n := by
-    rw [← IsPrimitiveRoot.coe_units_iff, hωc]
-    exact hprim
+    rwa [← IsPrimitiveRoot.coe_units_iff, hωc]
   have hωo : orderOf ω = n := hωp.eq_orderOf.symm
   have hnd : n ∣ p - 1 := Dvd.dvd.trans (Dvd.intro_left 2 rfl) hdvd
   have hd : orderOf ω ∣ orderOf g := by rw [hωo, hog]; exact hnd
@@ -1024,8 +1013,7 @@ theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.rootMod :
   obtain ⟨σ, hσD, hσ⟩ := exists_isFrob hu
   have hfy : σ y = y := hfix σ hσD
   have hvp : A.valuation (p : Ω) < 1 := by
-    have h := (hu (p : 𝓞 F)).mpr (natCast_mem_asIdeal_of_normV_eq u p hN)
-    simpa using h
+    simpa using (hu (p : 𝓞 F)).mpr (natCast_mem_asIdeal_of_normV_eq u p hN)
   refine ⟨fun m hm => ?_, fun hprim hpn => ?_⟩
   · have hvy : A.valuation y ≤ 1 := by
       have h1 : A.valuation y ^ n ≤ 1 := by
@@ -1149,8 +1137,7 @@ private theorem norm_not_mem_sq {F : Type} [Field F] [NumberField F] (u : Height
     rw [hspan, Ne, Ideal.span_singleton_eq_bot]
     exact_mod_cast hprime.ne_zero
   have he' : (u.asIdeal.under ℤ).ramificationIdx' u.asIdeal = 1 := by
-    rw [Ideal.ramificationIdx'_eq_ramificationIdx (u.asIdeal.under ℤ) u.asIdeal hp0]
-    exact he
+    rwa [Ideal.ramificationIdx'_eq_ramificationIdx (u.asIdeal.under ℤ) u.asIdeal hp0]
   have hmap : (u.asIdeal.under ℤ).map (algebraMap ℤ (𝓞 F)) ≤ u.asIdeal := Ideal.map_comap_le
   intro hmem
   refine (Ideal.ramificationIdx'_ne_one_iff hmap).2 ?_ he'
@@ -1198,8 +1185,7 @@ theorem splitPlace : SplitPlace := by
       rw [mem_Dec] at hρ ⊢
       rw [← hτ] at hρ
       rw [mul_smul, mul_smul, hρ, ← mul_smul, inv_mul_cancel, one_smul]
-    have h2 := hNn.conj_mem _ (hdec h1) τ
-    simpa [mul_assoc] using h2
+    simpa [mul_assoc] using hNn.conj_mem _ (hdec h1) τ
 
 end UpperTheory.Gal.UnramifiedFromSplittingCriterion
 end -- clump:auto

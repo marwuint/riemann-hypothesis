@@ -104,8 +104,7 @@ theorem normV_mem (v : HeightOneSpectrum (𝓞 M)) : ((normV v : ℕ) : 𝓞 M) 
   let := Fintype.ofFinite (𝓞 M ⧸ v.asIdeal)
   have hc : ((Fintype.card (𝓞 M ⧸ v.asIdeal) : ℕ) : 𝓞 M ⧸ v.asIdeal) = 0 := Nat.cast_card_eq_zero _
   rw [← Nat.card_eq_fintype_card] at hc
-  rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
-  exact hc
+  rwa [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
 
 
 omit [IsAlgClosure M Ω] in
@@ -235,9 +234,7 @@ private theorem glob_norm {Ω : Type} [Field Ω] [Algebra K Ω] [Algebra L Ω] [
   rw [← hρσ, ← hx]
   let ψ : Ideles L →* Gab K Ω := art.comp (GroundTheory.Global.ideleNorm K L) / ρ.comp art'
   suffices hψ : ∀ y, ψ y = 1 by
-    have h0 := hψ x
-    simp only [ψ, MonoidHom.div_apply, MonoidHom.comp_apply, div_eq_one] at h0
-    exact h0
+    simpa only [ψ, MonoidHom.div_apply, MonoidHom.comp_apply, div_eq_one] using hψ x
   intro y
   apply GlobalTheory.GabSep.eq_one_of_forall_isOpen_subgroup K Ω
   intro U hU
@@ -259,8 +256,7 @@ private theorem glob_norm {Ω : Type} [Field Ω] [Algebra K Ω] [Algebra L Ω] [
     have hcomap : Ideal.comap (algebraMap (𝓞 K) (𝓞 L)) w.asIdeal = (below K w).asIdeal :=
       ((below_eq_iff w (below K w)).1 rfl).over.symm
     have hunit : ∀ z, IsUnitAt (below K w) z → χ (art (localIdele K (below K w) z)) = 1 := by
-      intro z hz
-      exact (QuotientGroup.eq_one_iff _).2 (hS _ hw z hz)
+      exact fun z hz => (QuotientGroup.eq_one_iff _).2 (hS _ hw z hz)
     obtain ⟨-, h2⟩ := GlobalTheory.ArtinTransport.chi_artin_transport K Ω L Ω (RingEquiv.refl Ω)
       (fun z => IsScalarTower.algebraMap_apply K L Ω z) art art' ha ha' ρ (fun τ' σ' h => hρ τ' σ' h)
       _ χ (below K w) w hcomap hunit
@@ -305,8 +301,7 @@ private theorem norm_at_unique (v : HeightOneSpectrum (𝓞 K)) (W : HeightOneSp
   have hW' : W.asIdeal.LiesOver (below K W).asIdeal := (below_eq_iff W _).1 rfl
   rw [Fintype.prod_eq_single ⟨W, hW'⟩ ?_] at h
   · exact h.symm
-  · intro w hw
-    exact absurd (Subtype.ext (hu w.1 w.2.over.symm)) hw
+  · exact fun w hw => absurd (Subtype.ext (hu w.1 w.2.over.symm)) hw
 
 private theorem res_art_norm (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (K : IntermediateField E Ω) [FiniteDimensional E K] [NumberField K] [IsAlgClosure K Ω]
@@ -390,14 +385,12 @@ private theorem ine_of_unit : GlobalTheory.Published.GlobalArtinReciprocity → 
   have hvu : Valued.v (algebraMap E (v.adicCompletion E) (u : E)) = 1 := by
     rw [← hx1]
     refine Valuation.map_eq_of_sub_lt _ ?_
-    rw [Valuation.map_sub_swap, hx1]
-    exact hxu
+    rwa [Valuation.map_sub_swap, hx1]
   have hun : u ∉ v.asIdeal := by
     intro hm
     have h2 := (HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) v u).2 hm
     have h3 : v.valuation E (u : E) = 1 := by
-      rw [← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
-      exact hvu
+      rwa [← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
     exact (ne_of_lt h2) h3
   have hϖ0 : (ϖ : E) ≠ 0 := by
     intro h0
@@ -454,8 +447,7 @@ private theorem ine_of_unit : GlobalTheory.Published.GlobalArtinReciprocity → 
       rw [sub_mul, Units.mul_inv, Units.val_mul, mul_comm]
     have hcuinv : Valued.v ((cu⁻¹ : (v.adicCompletion E)ˣ) : v.adicCompletion E) = 1 := by
       rw [Units.val_inv_eq_inv_val, map_inv₀, hcu', hvu, inv_one]
-    rw [hsplit, map_mul, hcuinv, mul_one, hcu']
-    exact hxu
+    rwa [hsplit, map_mul, hcuinv, mul_one, hcu']
   obtain ⟨z, hz1, hzy⟩ := _root_.GlobalTheory.OneUnitRoot.exists_unit_pow_normV_sub_one E v (cu⁻¹ * x) hy
   obtain ⟨ρ, hρI, hρ⟩ := (ha.ine v A hA (art (localIdele E v z))).1 ⟨z, hz1, rfl⟩
   refine ⟨(τ'⁻¹ * τ) * ρ ^ (normV v - 1), mul_mem hI1 (pow_mem hρI _), ?_, ?_⟩
@@ -560,12 +552,10 @@ private theorem tame_all : ∀ (M Ω : Type) [Field M] [NumberField M] [Field Ω
   have heq : a (ineIncl h ⟨σ, hσI⟩) = a (ineIncl h t) := by
     apply GlobalTheory.ArtinLocalInj.artin_localIdele_injective GlobalTheory.Published.chevalleyUnits' M Ω art hart v
     simp only [ha.glob art hart]
-    rw [ha.glob art hart] at hσ
-    exact hσ
+    rwa [ha.glob art hart] at hσ
   have key := weil_smul_eq_of_local_artin_eq h a ha π _ hπ0 hπ' _ _ heq
   have key' : (t : G M Ω) π = σ π := key.symm
-  rw [key']
-  exact hσv
+  rwa [key']
 
 end Main
 

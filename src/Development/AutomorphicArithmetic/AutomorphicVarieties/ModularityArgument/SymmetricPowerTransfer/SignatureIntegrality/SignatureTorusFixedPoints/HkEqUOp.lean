@@ -73,8 +73,7 @@ private theorem sum_reps {I : Subgroup G} (F : LeviFact I) (a : G) (hI : HeckePa
     exact I.mul_mem (I.inv_mem (hp.2.2 l hl)) (I.inv_mem (hn m hm).2)
   show (hk2 ρ I I a v : M) = _
   rw [h2 (s.image (· * a)) ?_ ?_ v, Finset.sum_image]
-  · intro x _ y _ hxy
-    exact mul_right_cancel hxy
+  · exact fun x _ y _ hxy => mul_right_cancel hxy
   · intro y hy
     obtain ⟨u, hu, rfl⟩ := Finset.mem_image.mp hy
     exact ⟨⟨u, (hs u hu).2⟩, hsm _⟩
@@ -85,8 +84,7 @@ private theorem sum_reps {I : Subgroup G} (F : LeviFact I) (a : G) (hI : HeckePa
     have hq : ((u * a : G) : G ⧸ I) = ((u' * a : G) : G ⧸ I) := by
       rw [QuotientGroup.eq]
       have e : (u * a)⁻¹ * (u' * a) = a⁻¹ * (u⁻¹ * u') * a := by group
-      rw [e]
-      exact hui
+      rwa [e]
     refine ⟨u * a, ⟨Finset.mem_image_of_mem _ hus, ?_⟩, ?_⟩
     · show ((u * a : G) : G ⧸ I) = ((g * a : G) : G ⧸ I)
       rw [he, hq]
@@ -98,8 +96,7 @@ private theorem sum_reps {I : Subgroup G} (F : LeviFact I) (a : G) (hI : HeckePa
         refine ⟨hw, ?_⟩
         rw [he] at hyq
         have e : a⁻¹ * (w⁻¹ * u') * a = (w * a)⁻¹ * (u' * a) := by group
-        rw [e, ← QuotientGroup.eq]
-        exact hyq
+        rwa [e, ← QuotientGroup.eq]
       simp [hw']
 
 private theorem hk_eq_uOp (D : Iwa G) {I : Subgroup G} (F : LeviFact I) (a : G) (hI : HeckePair I)
@@ -116,8 +113,7 @@ private theorem hk_eq_uOp (D : Iwa G) {I : Subgroup G} (F : LeviFact I) (a : G) 
       have e : a⁻¹ * ((MulAut.conj a).toMonoidHom m) * a = m := by
         simp only [MulEquiv.toMonoidHom_eq_coe, MonoidHom.coe_coe, MulAut.conj_apply]
         group
-      rw [e]
-      exact hm
+      rwa [e]
     · intro h
       refine ⟨a⁻¹ * y * a, h, ?_⟩
       simp only [MulEquiv.toMonoidHom_eq_coe, MonoidHom.coe_coe, MulAut.conj_apply]
@@ -128,8 +124,7 @@ private theorem hk_eq_uOp (D : Iwa G) {I : Subgroup G} (F : LeviFact I) (a : G) 
     rw [QuotientGroup.eq, Subgroup.mem_subgroupOf, hc]
     push_cast
     constructor
-    · intro h
-      exact (hNI _ h).2
+    · exact fun h => (hNI _ h).2
     · intro h
       have hy : (u : G)⁻¹ * x ∈ F.Uf := (hNI _ (D.N.mul_mem (D.N.inv_mem u.2) x.2)).1
       have hm : a⁻¹ * ((u : G)⁻¹ * x) * a ∈ F.Uf ⊓ I :=
@@ -146,8 +141,7 @@ private theorem hk_eq_uOp (D : Iwa G) {I : Subgroup G} (F : LeviFact I) (a : G) 
     have h2 : a⁻¹ * (((Quotient.out q : D.N) : G)⁻¹ * (Quotient.out q' : D.N)) * a ∈ I := by
       have e : a⁻¹ * (((Quotient.out q : D.N) : G)⁻¹ * (Quotient.out q' : D.N)) * a =
           (((Quotient.out q : D.N) : G) * a)⁻¹ * (((Quotient.out q' : D.N) : G) * a) := by group
-      rw [e]
-      exact h1
+      rwa [e]
     rw [← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q']
     exact (heq _ _).mpr h2
   haveI := Fintype.ofFinite (↥D.N ⧸ (D.Nconj a).subgroupOf D.N)
@@ -245,10 +239,8 @@ private theorem normJ (V : Lev k) (d : Fin n → kˣ) : (lf V n).NormJ (dg d) :=
     show diagT k (Fin n) d * diagT k (Fin n) t = diagT k (Fin n) t * diagT k (Fin n) d
     rw [← map_mul, ← map_mul, mul_comm]
   constructor
-  · rw [hc, mul_inv_cancel_right]
-    exact hj
-  · rw [mul_assoc, ← hc, inv_mul_cancel_left]
-    exact hj
+  · rwa [hc, mul_inv_cancel_right]
+  · rwa [mul_assoc, ← hc, inv_mul_cancel_left]
 
 end Lin
 
@@ -268,8 +260,7 @@ theorem UpperTheory.V.Z.Sym.Sig.hkMul :
       apply le_antisymm
       · rintro x ⟨hx, hxJ⟩
         exact ⟨hx, V.J_le_KO hxJ⟩
-      · intro x hx
-        exact ⟨(glIwa k n).N_le hx, V.N_le hx⟩
+      · exact fun x hx => ⟨(glIwa k n).N_le hx, V.N_le hx⟩
     exact hk_eq_uOp (glIwa k n) (lf V n) (dg d) hJ (pos V hd) (normJ V d) hU ρ v
 
 end

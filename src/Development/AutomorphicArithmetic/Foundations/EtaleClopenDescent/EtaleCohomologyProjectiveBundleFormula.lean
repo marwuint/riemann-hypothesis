@@ -261,8 +261,7 @@ private theorem isUnit_um_join_of_span_castSucc_eq_whole {N : ℕ} {A : Type} [C
     rintro _ ⟨_, ⟨i, rfl⟩, rfl⟩
     simp only [Um.join, Fin.snoc_castSucc]
     exact Ideal.mul_mem_right _ _ (Ideal.subset_span (Set.mem_singleton _))
-  rw [h, top_le_iff, Ideal.span_singleton_eq_top] at h'
-  exact h'
+  rwa [h, top_le_iff, Ideal.span_singleton_eq_top] at h'
 
 private def sU {N : ℕ} {A : CommRingCat.{0}} (y : ((BC N).sub ((Q2 N).comap (βC N))).D.obj A) : Aˣ :=
   (isUnit_um_join_of_span_castSucc_eq_whole (A := A) y.1 y.2).unit
@@ -388,8 +387,7 @@ private theorem lhmv_phi_sub (q : ℕ) {X E : Spc} (π : X ⟶ E) {m : ℕ} (d e
   unfold UpperTheory.LHMV.Phi
   rw [← Finset.sum_sub_distrib]
   refine Finset.sum_congr rfl fun j _ => ?_
-  simp only [Pi.sub_apply, map_sub, AddMonoidHom.sub_apply]
-  exact ht_cast_sub' q _ _ _ _
+  simpa only [Pi.sub_apply, map_sub, AddMonoidHom.sub_apply] using ht_cast_sub' q _ _ _ _
 
 private theorem lhmv_phi_zero (q : ℕ) {X E : Spc} (π : X ⟶ E) {m : ℕ} (d e : Fin m → ℤ) (c : ∀ j, Ht q X (d j) (e j))
     (n i : ℤ) : UpperTheory.LHMV.Phi q π d e c n i 0 = 0 := by
@@ -447,8 +445,7 @@ private theorem lerayHirsch_of_mayerVietoris_cover_lemma_10 (q : ℕ) [NeZero q]
     have h3 := UpperTheory.LHMV.IsMVd_cast fX gX (by ring : n - 1 - d j + d j = n - 1) (by ring)
       (by ring : i - e j + e j = i) _ _ h2
     rw [UpperTheory.LHMV.pull_cast', UpperTheory.LHMV.cup_cast_left, UpperTheory.LHMV.cast_cast', UpperTheory.LHMV.cast_cast'] at h3
-    rw [UpperTheory.LHMV.cast_cast']
-    exact h3
+    rwa [UpperTheory.LHMV.cast_cast']
   have h0 : IsMVd fX gX (tw q i) (n - 1) 0 0 := by
     obtain ⟨x, hx⟩ := P1 0
     have : x = 0 := (P4 _ _ hx).2 ⟨0, 0, by simp⟩
@@ -462,8 +459,7 @@ private theorem lerayHirsch_of_mayerVietoris_cover_lemma_10 (q : ℕ) [NeZero q]
     (fun j _ => hterm j)
   simp only [Prod.fst_sum, Prod.snd_sum] at hs
   unfold UpperTheory.LHMV.Phi
-  rw [ht_cast_finset_sum]
-  exact hs
+  rwa [ht_cast_finset_sum]
 
 private theorem lh_pullback_map_fst_snd_of_lh (q : ℕ) {U V E X : Spc} (f : U ⟶ E) (g : V ⟶ E) (π : X ⟶ E) {m : ℕ}
     (d e : Fin m → ℤ) (c : ∀ j, Ht q X (d j) (e j))
@@ -509,8 +505,7 @@ private theorem lh_pullback_map_fst_snd_of_lh (q : ℕ) {U V E X : Spc} (f : U �
       pull _ (pullback.fst (pullback.fst π f) (pullback.fst π g) ≫ pullback.fst π f) _ _ (c j) := by
     intro j; rw [← pull_comp, pullback.lift_fst]
   rw [e1] at key
-  simp only [e2] at key
-  exact key
+  simpa only [e2] using key
 
 private theorem lh_of_cover2_lh_pieces_and_overlap (q : ℕ) [NeZero q] {U V E X XU XV : Spc} (f : U ⟶ E) (g : V ⟶ E) (π : X ⟶ E)
     (fX : XU ⟶ X) (gX : XV ⟶ X) (pU : XU ⟶ U) (pV : XV ⟶ V) (hu : fX ≫ π = pU ≫ f) (hv : gX ≫ π = pV ≫ g)
@@ -609,8 +604,7 @@ private theorem lh_of_cover2_lh_pieces_and_overlap (q : ℕ) [NeZero q] {U V E X
       obtain ⟨P1, _, _, _, _, _⟩ := (UpperTheory.mayerVietorisConnecting_exists_unique_additive_exact (ZMod q) (tw q (i - e j)) (n - 1 - d j)).1 f g hE
       obtain ⟨x'', hx''⟩ := P1 (γ j)
       refine ⟨(Ht.cast (q := q) (by ring) rfl x'' : Ht q E (n - d j) (i - e j)), ?_⟩
-      rw [UpperTheory.LHMV.cast_cast']
-      exact hx''
+      rwa [UpperTheory.LHMV.cast_cast']
     choose a' ha' using ha'
     have hb := lerayHirsch_of_mayerVietoris_cover_lemma_10 q f g π fX gX pU pV hu hv hE hX d e c n i γ a' ha'
     have heq := ht_cast_injective q _ _ _ _ (P2X _ _ _ hw hb)
@@ -664,8 +658,7 @@ private theorem sq (E : Spc) {c a : Act} (π : Act.Hom c a) {Q' Q : Pred a} (h :
     rintro z ⟨h1, -⟩
     have e1 : z.1 = x.1 := congrArg Subtype.val h1
     exact Subtype.ext e1
-  · intro A g g' hg
-    exact ⟨g, ⟨rfl, hg⟩, fun z hz => hz.1⟩
+  · exact fun A g g' hg => ⟨g, ⟨rfl, hg⟩, fun z hz => hz.1⟩
 
 private theorem sq_inf (E : Spc) {a : Act} {Q Q₁ Q₂ : Pred a} (h₁ : Q₁.Le Q) (h₂ : Q₂.Le Q) :
     IsPullback (Sp.map E (inclLe (show (Q₁.inf Q₂).Le Q₁ from fun _ _ h => h.1)))
@@ -677,14 +670,11 @@ private theorem sq_inf (E : Spc) {a : Act} {Q Q₁ Q₂ : Pred a} (h₁ : Q₁.L
     refine ⟨⟨x.1, x.2, ?_⟩, ⟨rfl, ?_⟩, ?_⟩
     · rw [hv]
       exact y.2
-    · apply Subtype.ext
-      exact hv
+    · exact Subtype.ext hv
     · rintro z ⟨hz, -⟩
       have hz' : z.1 = x.1 := congrArg Subtype.val hz
-      apply Subtype.ext
-      exact hz'
-  · intro A g k hgk
-    exact ⟨g, ⟨rfl, hgk⟩, fun z hz => hz.1⟩
+      exact Subtype.ext hz'
+  · exact fun A g k hgk => ⟨g, ⟨rfl, hgk⟩, fun z hz => hz.1⟩
 
 private theorem cover_tr {R : Type} [CommRing R] {U U' V V' E : Spc} (u : U ⟶ E) (v : V ⟶ E) (u' : U' ⟶ E) (v' : V' ⟶ E)
     (e : U ⟶ U') (e' : V ⟶ V') [IsIso e] [IsIso e'] (hu : e ≫ u' = u) (hv : e' ≫ v' = v) (h : Cover2 R u v) :
@@ -713,12 +703,8 @@ private theorem cov (R : Type) [CommRing R] (E : Spc) {a : Act} {Q Q₁ Q₂ : P
       Loc T fun V g => Q₁.P _ (a.D.map g.appTop x) ∨ Q₂.P _ (a.D.map g.appTop x)) :
     Cover2 R (Sp.map E (inclLe h₁)) (Sp.map E (inclLe h₂)) := by
   refine UpperTheory.mayerVietoris_stackProduct_of_injective_of_locally_covered R E _ _ ?_ ?_ (fun _ => Function.bijective_id) (fun _ => Function.bijective_id) ?_
-  · intro A x y h
-    have e := congrArg (fun w : {z // Q.P A z} => w.1) h
-    exact Subtype.ext e
-  · intro A x y h
-    have e := congrArg (fun w : {z // Q.P A z} => w.1) h
-    exact Subtype.ext e
+  · exact fun A x y h => Subtype.ext (congrArg (fun w : {z // Q.P A z} => w.1) h)
+  · exact fun A x y h => Subtype.ext (congrArg (fun w : {z // Q.P A z} => w.1) h)
   · intro T x
     obtain ⟨S, hS, hP⟩ := hloc T x.1 x.2
     refine ⟨S, hS, fun V g hg => ?_⟩
@@ -737,8 +723,7 @@ private theorem tr (q : ℕ) [NeZero q] (E : Spc) {c a : Act} (π : Act.Hom c a)
       fun j => pull _ u _ _ (pull _ (Sp.map E (incl (Q'.comap π))) _ _ (cl j)) := by
     funext j
     rw [← pull_comp, ← pull_comp, ← hu, Category.assoc, map_incl]
-  rw [h2]
-  exact h1
+  rwa [h2]
 
 end UpperTheory.Glue
 
@@ -800,10 +785,8 @@ namespace UpperTheory.DividedPowerChartLift
 
 private theorem iso_incl (E : Spc) {a : Act} (Q : Pred a) (h : ∀ A x, Q.P A x) : IsIso (Sp.map E (incl Q)) := by
   refine UpperTheory.isIso_stackProductMap_of_bijective E (incl Q) (fun A => ⟨?_, ?_⟩) (fun _ => Function.bijective_id)
-  · intro x y hxy
-    exact Subtype.ext hxy
-  · intro y
-    exact ⟨⟨y, h A y⟩, rfl⟩
+  · exact fun x y hxy => Subtype.ext hxy
+  · exact fun y => ⟨⟨y, h A y⟩, rfl⟩
 
 private theorem le_unit {N : ℕ} (i : Fin N) {Q : Pred (XC N)} (h : Q.Le (spanOn ((({i} : Finset (Fin N))) : Set (Fin N)))) :
     Q.Le (unitAt i) := by
@@ -836,8 +819,7 @@ private theorem loc_step {N : ℕ} (i : Fin N) (F' : Finset (Fin N)) (hi : i ∉
     refine ⟨hQx, ?_⟩
     apply Ideal.eq_top_of_isUnit_mem _ _ hk
     have hm := Ideal.mem_map_of_mem g.appTop.hom hsF
-    rw [Ideal.map_span, ← Set.image_comp] at hm
-    exact hm
+    rwa [Ideal.map_span, ← Set.image_comp] at hm
 
 private theorem all_of_units (q : ℕ) [NeZero q] (N : ℕ) (E : Spc) (hE : Inv q E) {c : Act} (π : Act.Hom c (XC N)) {m : ℕ}
     (d e : Fin m → ℤ) (cl : ∀ j, Ht q (Sp E c) (d j) (e j))
@@ -846,14 +828,12 @@ private theorem all_of_units (q : ℕ) [NeZero q] (N : ℕ) (E : Spc) (hE : Inv 
     ∀ Q : Pred (XC N), Q.Le (spanOn (F : Set (Fin N))) → LHQ q E π d e cl Q := by
   induction hF using Finset.Nonempty.cons_induction with
   | singleton j =>
-    intro Q hQ
-    exact H j Q (le_unit j hQ)
+    exact fun Q hQ => H j Q (le_unit j hQ)
   | cons j F' hj hF' ih =>
     intro Q hQ
     refine UpperTheory.leraHirsch_of_local_cover_of_inf q E hE π d e cl Q (Q.inf (spanOn (F' : Set (Fin N)))) (Q.inf (unitAt j))
       (fun A x hx => hx.1) (fun A x hx => hx.1) ?_ ?_ ?_ ?_
-    · intro T x hx
-      exact loc_step j F' hj Q hQ T x hx
+    · exact fun T x hx => loc_step j F' hj Q hQ T x hx
     · exact ih _ (fun A x hx => hx.2)
     · exact H j _ (fun A x hx => hx.2)
     · exact H j _ (fun A x hx => hx.2.2)
@@ -1001,8 +981,7 @@ private theorem equiv_first_twist [NeZero q] (E : Spc) (hE : Inv q E) (i : ℤ) 
     funext x
     simp only [Function.comp_apply]
     rw [e2]
-  rw [h4] at h3
-  exact h3
+  rwa [h4] at h3
 
 private def invU {A : Type} [CommRing A] (a : A) (h : IsUnit a) : A := ((h.unit⁻¹ : Aˣ) : A)
 
@@ -1063,8 +1042,7 @@ private theorem bij_plain (M : ℕ) (A : Type) [CommRing A] :
       have e2 : y.1.1 0 * invU _ y.2 * y.1.1 (Fin.last (M + 1)) = y.1.1 0 := by
         rw [mul_assoc, mul_comm (invU _ _), mul_invU, mul_one]
       rw [← e1, ← e2, h2, ht]
-    refine Subtype.ext (Subtype.ext (funext fun k => ?_))
-    exact Fin.cases h0 (fun j => congrFun h1 j) k
+    exact Subtype.ext (Subtype.ext (funext fun k => Fin.cases h0 (fun j => congrFun h1 j) k))
   · rintro ⟨w, r⟩
     have hw : IsUnit ((Fin.cons (r * w.1.1 (Fin.last M)) w.1.1 : Fin (M + 2) → A) (Fin.last (M + 1))) := by
       rw [← Fin.succ_last, Fin.cons_succ]
@@ -1080,8 +1058,7 @@ private theorem bij_grp (M : ℕ) (A : CommRingCat.{0}) :
     Function.Bijective (fun g : ((XC (M + 2)).sub (Q1 (M + 1))).G.obj A =>
       (((rho M).g.app A g, (sig M).g.app A g) : ((XC (M + 1)).sub (Q1 M)).G.obj A × affC.G.obj A)) := by
   constructor
-  · intro x y h
-    exact congrArg Prod.fst h
+  · exact fun x y h => congrArg Prod.fst h
   · rintro ⟨g, u⟩
     exact ⟨g, rfl⟩
 
@@ -1169,8 +1146,7 @@ private theorem etC_inv_of_hom {q : ℕ} {X Y : Spc} (f : X ⟶ Y) (h : GlobalTh
 private theorem um_scale_scale_eq_of_mul_eq_one {A : Type} [CommRing A] (c d : Fin 2 → Aˣ) (h : ∀ j, c j * d j = 1)
     (w : Um 2 A) : Um.scale c (Um.scale d w) = w := by
   rw [← Um.scale_mul]
-  simp only [h]
-  exact Um.scale_one w
+  simpa only [h] using Um.scale_one w
 
 theorem UpperTheory.leraHirsch_chernPowers_on_unitChart :
     ∀ (q : ℕ) [NeZero q] (N : ℕ) (E : Spc) (i : Fin N) (Q : Pred (XC N)), Q.Le (unitAt i) → Inv q E →
@@ -1197,10 +1173,8 @@ theorem UpperTheory.leraHirsch_chernPowers_on_unitChart :
         exact um_scale_scale_eq_of_mul_eq_one _ _ (by intro j; fin_cases j <;> simp) w
     · intro A
       constructor
-      · intro g h e
-        exact Prod.ext (congrArg Prod.fst e) (congrArg Prod.snd e)
-      · intro p
-        exact ⟨(p.1, p.2), rfl⟩
+      · exact fun g h e => Prod.ext (congrArg Prod.fst e) (congrArg Prod.snd e)
+      · exact fun p => ⟨(p.1, p.2), rfl⟩
   have hS : GlobalTheory.EtC.Inv q (Sp E ((XC N).sub Q)) := etC_inv_of_hom (Sp.fst E _) hE
   have hP : Pbf q (Sp E ((XC N).sub Q)) 2 :=
     (UpperTheory.projBundleFormula_iff_pglForm q _ 2 hS).mp (UpperTheory.projectiveBundleFormula_rank_two q _ hS)
@@ -1401,10 +1375,8 @@ private theorem g_bij {N : ℕ} (Q : Pred (XC N)) (i : Fin N) (A : CommRingCat.{
     Function.Bijective (fun g : (aC N Q).G.obj A =>
       (((rHom Q i).g.app A g, (tHom N Q).g.app A g) : (prC ((XC N).sub Q)).G.obj A × (XC 1).G.obj A)) := by
   constructor
-  · intro g h e
-    exact Prod.ext (congrArg Prod.fst e) (congrArg Prod.snd e)
-  · intro y
-    exact ⟨(show Aˣ × Aˣ from y), rfl⟩
+  · exact fun g h e => Prod.ext (congrArg Prod.fst e) (congrArg Prod.snd e)
+  · exact fun y => ⟨(show Aˣ × Aˣ from y), rfl⟩
 
 private theorem pr_d_bij (b : Act) (A : CommRingCat.{0}) :
     Function.Bijective (fun x : (prC b).D.obj A => (((prFst b).d.app A x, (prSnd b).d.app A x) : b.D.obj A × affC.D.obj A)) :=
@@ -1490,8 +1462,7 @@ theorem UpperTheory.leraHirsch_unit_on_blowupChart :
   have key : pull _ (Sp.map E (incl (Q.comap ((incl ((Q1 N).comap (βC N))).comp (pC N))))) _ _ (one q _) = one q _ :=
     (GlobalTheory.T.tateTwistUnitClass_rootClass_spec q).2.2.1 _ hc
   unfold LHQ
-  simp only [key]
-  exact h
+  simpa only [key] using h
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.CommutativeAlgebra.LeraHirschUnitOnBlowupChart =====
@@ -1749,8 +1720,7 @@ private theorem q_of_unit {N : ℕ} {A : Type} [CommRing A] (v : Fin (N + 1) →
   obtain ⟨i, hi⟩ := h
   by_cases hl : i = Fin.last N
   · left
-    rw [← hl]
-    exact hi
+    rwa [← hl]
   · right
     obtain ⟨j, rfl⟩ := Fin.exists_castSucc_eq.2 hl
     exact Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨_, ⟨j, rfl⟩, rfl⟩) hi
@@ -1893,8 +1863,7 @@ private theorem eq_triv (U : Scheme.{0}) {N : ℕ} (V : sch.obj U ⟶ ofCat (glC
   ext k T x
   let f : (Opposite.op (SimplexCategory.mk 0)) ⟶ k := (SimplexCategory.isTerminalZero.from k.unop).op
   have h := congrArg (fun φ => (ConcreteCategory.hom (NatTrans.app φ T)).toFun x) (V.naturality f)
-  refine h.trans ?_
-  exact functor_to_single_object_const _ _
+  exact h.trans (functor_to_single_object_const _ _)
 
 private theorem pbf_all (q : ℕ) [NeZero q] (N : ℕ) : ∀ E : Spc, Inv q E → PBF q E N := by
   induction N with

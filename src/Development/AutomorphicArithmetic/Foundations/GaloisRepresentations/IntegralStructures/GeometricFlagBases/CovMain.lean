@@ -122,8 +122,7 @@ private theorem actOn_comm_mulF (x : 𝓞 D.F) (y : AfP p ⊗[ℚ] G.C) :
     have hb : (Module.End.baseChangeHom ℚ (AfP p) (VQ D) (L.rep c)) * mulF D x =
         mulF D x * (Module.End.baseChangeHom ℚ (AfP p) (VQ D) (L.rep c)) := by
       have := congrArg (Module.End.baseChangeHom ℚ (AfP p) (VQ D)) hc
-      rw [map_mul, map_mul] at this
-      exact this
+      rwa [map_mul, map_mul] at this
     have ht : actOn L.rep (AfP p) (a ⊗ₜ[ℚ] c) = algebraMap (AfP p) (Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)) a *
         Module.End.baseChangeHom ℚ (AfP p) (VQ D) (L.rep c) :=
       Algebra.TensorProduct.lift_tmul _ _ _ a c
@@ -470,8 +469,7 @@ private theorem actOn_comm (L : Link D G) (y : AfP p ⊗[ℚ] G.C) (b : D.O) :
     have h2 : (L.rep c).baseChange (AfP p) * (actQ D b).baseChange (AfP p) =
         (actQ D b).baseChange (AfP p) * (L.rep c).baseChange (AfP p) := by
       have := congrArg (Module.End.baseChangeHom ℚ (AfP p) (VQ D)) h
-      rw [map_mul, map_mul] at this
-      exact this
+      rwa [map_mul, map_mul] at this
     rw [e, smul_mul_assoc, mul_smul_comm, h2]
 
 private theorem actG_mulF (L : Link D G) (g : G.GAf) (c : 𝓞 D.F) (v : AfP p ⊗[ℚ] VQ D) :
@@ -703,8 +701,7 @@ open UpperTheory.Gal.Int.Geo
 
 theorem UpperTheory.group_scheme_pullback_exists :
     GPull := by
-  intro G R _ _ gb N X X' s e o
-  exact GlobalTheory.UPel.HT.Gen.BaseChange.exists_gObjMap_pull e o
+  exact fun G R _ _ gb N X X' s e o => GlobalTheory.UPel.HT.Gen.BaseChange.exists_gObjMap_pull e o
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.CommutativeAlgebra.GroupSchemePullbackExists =====
@@ -1013,8 +1010,7 @@ theorem UpperTheory.hecke_lift_separated_of_lattice_congruence :
     have hl : b₁.left = b₂.left := by
       apply Lj.ms.cart.1.hom_ext
       · rw [e₁, e₂]
-      · rw [Over.w b₁, Over.w b₂]
-        exact hy
+      · rwa [Over.w b₁, Over.w b₂]
     rw [← k₁, ← k₂]
     exact kill_transfer hy b₁ b₂ hl Lj.ψ
   have hI₁ : Integ L (h * u₁ * v₁) := (hInt.mul (integ_of_mem (hKN hu₁))).mul (integ_of_mem (hKN hv₁))
@@ -1089,8 +1085,7 @@ private theorem UpperTheory.power_zero_isIso {S : Scheme.{0}} (A : Over S) : IsI
   let f : GlobalTheory.KS.pow A 0 ⟶ Over.mk (𝟙 S) := Over.homMk (GlobalTheory.KS.pow A 0).hom
   have hfg : f ≫ g = 𝟙 _ := Pi.hom_ext _ _ fun i => Fin.elim0 i
   refine ⟨⟨g.left, ?_, ?_⟩⟩
-  · have h := congrArg (fun x => x.left) hfg
-    simpa [f] using h
+  · simpa [f] using congrArg (fun x => x.left) hfg
   · simpa using Over.w g
 
 private theorem UpperTheory.power_succ_lift {S : Scheme.{0}} (A : Over S) (m : ℕ) (T : Over S)
@@ -1308,8 +1303,7 @@ theorem UpperTheory.quotient_separated_of_trace_unit_crt :
     have hF' : F = z ≫ C.j := hF.symm.trans hfeq
     subst hF'
     have h := hQU q (datAt S.atq S.sp) (Ow w) E S.b gb N S.N₀ c S.std.three S.std.cop _ _ _ _ _ _ _ nB nA
-    rw [hnB, hnI, hnW, hnA] at h
-    exact h
+    rwa [hnB, hnI, hnW, hnA] at h
   apply Over.OverMorphism.ext
   apply nW.cart.1.hom_ext
   · simp only [Over.comp_left, Category.assoc]
@@ -1317,8 +1311,7 @@ theorem UpperTheory.quotient_separated_of_trace_unit_crt :
     have hl := C.lv y
     have hr : Over.Hom.left ((T.M N).univ.eta x) ≫ C.m.φ = C.j ≫ Over.Hom.left (S.Y.lv y) := hl
     have hz' := mz.eta x
-    rw [ht]
-    rw [← reassoc_of% hz', hAB, reassoc_of% hz', hr, reassoc_of% hfeq]
+    rw [ht, ← reassoc_of% hz', hAB, reassoc_of% hz', hr, reassoc_of% hfeq]
   · simp only [Over.comp_left, Category.assoc, Over.w]
 end -- clump:auto
 end -- clump:auto
@@ -1400,8 +1393,7 @@ theorem UpperTheory.site_exists_of_splitting_and_power_projector :
   have hYsm : SmoothOfRelativeDimension (0 + (datAt hat sp).a * ((datAt hat sp).n - 1)) Y.s := by
     rw [← hov]
     haveI : SmoothOfRelativeDimension 0 π := by
-      rw [← AlgebraicGeometry.Etale.eq_smoothOfRelativeDimension_zero]
-      exact het
+      rwa [← AlgebraicGeometry.Etale.eq_smoothOfRelativeDimension_zero]
     haveI := M.smooth
     infer_instance
   have hPw := fun k => hP q (datAt hat sp) (Ow w) b N₀ h3 hcq Y.X Y.s Y.univ k
@@ -1719,10 +1711,8 @@ theorem UpperTheory.tower_separated_of_trivial_powerCartesian :
     haveI := hopen
     rw [← cancel_mono (pullback.lift ρ (T.X.q M) e)]
     apply pullback.hom_ext
-    · simp only [Category.assoc, pullback.lift_fst]
-      exact hzM
-    · simp only [Category.assoc, pullback.lift_snd]
-      exact hzq
+    · simpa only [Category.assoc, pullback.lift_fst] using hzM
+    · simpa only [Category.assoc, pullback.lift_snd] using hzq
   have hnorm : ∀ g ∈ T.X.K M, ∀ u ∈ T.X.K (T.lev N), g * u * g⁻¹ ∈ T.X.K (T.lev N) := by
     intro g hg u hu
     rw [hKM] at hg

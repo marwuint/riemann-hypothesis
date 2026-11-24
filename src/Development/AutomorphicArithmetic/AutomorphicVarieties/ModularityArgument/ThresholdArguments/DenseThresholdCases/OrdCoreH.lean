@@ -268,8 +268,7 @@ private theorem hasSupport_iff (hZ : GlobalTheory.Published.ZelevinskyPolynomial
     have h3 := congrArg Polynomial.roots h1
     rw [roots_multiset_prod_X_sub_C, roots_multiset_prod_X_sub_C] at h3
     rw [h3]
-  rw [htt, Multiset.map_map] at hs
-  exact hs
+  rwa [htt, Multiset.map_map] at hs
 end
 private theorem isSubquotient_of_hasSupport (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) {k : Type} [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ} (τ : IrrRep (GL (Fin n) k)) (μ : Fin n → kˣ →* ℂˣ)
@@ -360,8 +359,7 @@ private theorem core0 {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSp
     (ine_normal h) (isSmooth_wdRho P ι Bw h hj ρ).finite_range hc hμ
   refine ⟨hN _ (isNilpotent_wdN P ι ρ) fun s => ?_, fun j hj1 => ?_⟩
   · have := wdRho_wdN P ι Bw h hj ρ (ineIncl h s)
-    rw [deg_ineIncl, zpow_zero, one_smul] at this
-    exact this
+    rwa [deg_ineIncl, zpow_zero, one_smul] at this
   obtain ⟨h1, h2⟩ := hL j
   simp only [hj1, MonoidHom.one_apply, Units.val_one, one_smul] at h1 h2
   obtain ⟨h3, h4⟩ := UpperTheory.exists_invariant_vector_of_finite_image_averaging ι h Bw hj P ρ h1 h2
@@ -399,13 +397,11 @@ private theorem core (hB : DeRhamPotSemistable) {n : ℕ} (r : ↥(Dec (F := F) 
   refine ⟨fun i => (v i : Om l), fun h0 => v0 (funext fun i => Subtype.ext (congrFun h0 i)), fun g => ?_⟩
   have h5 : (r' g : Matrix (Fin n) (Fin n) ↥L.1) *ᵥ v = v := by
     have := hv (Bw.e g)
-    rw [← Bw.e.symm_apply_apply g]
-    exact this
+    rwa [← Bw.e.symm_apply_apply g]
   funext i
   have h6 := congrArg (algebraMap ↥L.1 (Om l)) (congrFun h5 i)
   rw [RingHom.map_mulVec] at h6
-  rw [← hm.2]
-  exact h6
+  rwa [← hm.2]
 omit [IsAlgClosure F Ω] in
 private theorem ordChar_inv {a : ↥(Weil h) →* (w.adicCompletion F)ˣ} {ω : (w.adicCompletion F)ˣ →* ℂˣ}
     {hh : (F →+* Qbar l) → ℤ} {ψ : ↥(Dec (F := F) A) →* (Qbar l)ˣ} (H : OrdChar ι a ω hh ψ) :

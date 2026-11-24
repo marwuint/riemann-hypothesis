@@ -100,8 +100,7 @@ private theorem blk_sand {U₁ U₂ V₁ V₂ : Submodule A R} (H : Act U₁ U�
     (hP : P ∈ blkMat n a U₁ U₂) (hQ : Q ∈ blkMat n a U₁ U₂) (hZ : Z ∈ blkMat n a V₁ V₂) :
     P * Z * Q ∈ blkMat n a V₁ V₂ := by
   have h1 := blk_mul H hP hZ
-  have h2 := blk_tr (blk_mul H (blk_tr hQ) (blk_tr h1))
-  simpa [Matrix.transpose_mul] using h2
+  simpa [Matrix.transpose_mul] using blk_tr (blk_mul H (blk_tr hQ) (blk_tr h1))
 
 private theorem alg_smul_mem {V : Submodule A (Matrix (Fin n) (Fin n) R)} (c : A) {Z : Matrix (Fin n) (Fin n) R}
     (hZ : Z ∈ V) : algebraMap A R c • Z ∈ V := by
@@ -145,8 +144,7 @@ private theorem galois_lift_mem_first_order_deformations {l : ℕ} [Fact l.Prime
     show _ ∈ blkMat n x.a (ddPart x.A X k.g true false false false) (ddPart x.A X k.g false true false false)
     refine mem_blkMat_iff_mem_of_same_block_and_mem_off.2 (fun i j => ⟨fun h => ?_, fun h => ?_⟩)
     · have hκ : ∀ m, k.κ m g i j = 0 := fun m => by
-        have hm := ((mem_blkMat_iff_mem_of_same_block_and_mem_off.1 ((k.mem m).1 g)) i j).1 h
-        simpa using hm
+        simpa using ((mem_blkMat_iff_mem_of_same_block_and_mem_off.1 ((k.mem m).1 g)) i j).1 h
       rw [mem_part]
       by_cases hij : i = j
       · subst hij
@@ -182,8 +180,7 @@ theorem UpperTheory.V.Pa.ok1 :
     intro V₁ V₂ H
     refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
     · show k.ρ1 X (h.p₀ 1) = 1
-      rw [map_one]
-      exact r1
+      rwa [map_one]
     · intro a b
       show k.ρ1 X (h.p₀ (a * b)) = k.ρ1 X (h.p₀ a) * k.ρ1 X (h.p₀ b)
       rw [map_mul]
@@ -202,7 +199,5 @@ theorem UpperTheory.V.Pa.ok1 :
     · intro g Z hZ
       show algebraMap x.A (DD X k.g) (χ g) • (k.ρ1 X (h.p₀ g) * Z * k.ρ1 X (h.p₀ g⁻¹)) ∈ _
       exact alg_smul_mem _ (blk_sand H (galois_lift_mem_first_order_deformations k X _) (galois_lift_mem_first_order_deformations k X _) hZ)
-    · intro Z hZ
-      show algebraMap x.A (DD X k.g) (χ G.frame.c) • Zᵀ ∈ _
-      exact alg_smul_mem _ (blk_tr hZ)
+    · exact fun Z hZ => alg_smul_mem _ (blk_tr hZ)
   exact ⟨key _ _ act1, key _ _ act1s, key _ _ act2⟩

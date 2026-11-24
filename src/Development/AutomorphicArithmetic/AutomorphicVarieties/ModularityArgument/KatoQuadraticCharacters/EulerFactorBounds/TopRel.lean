@@ -156,8 +156,7 @@ private theorem term (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ �
   have r6 := congrArg₂ (· + ·) r5 r4
   simp only [← map_add (f := _), add_zero, smul_sub] at r6
   show AdicCompletion.eval _ _ _ (X.kmap l _ (_ • _) - _) = 0
-  rw [← r6]
-  rw [map_smul]
+  rw [← r6, map_smul]
   exact congrArg (AdicCompletion.eval (idl l) (X.Kl l) n) (sub_add_sub_cancel (G := X.Khat l) _ _ _).symm
 
 end UpperTheory.V.Z.Kato.Nb
@@ -195,8 +194,7 @@ theorem UpperTheory.V.Z.Kato.Nb.sXiOne :
     symm
     refine Finset.sum_bij (fun γ _ => φ γ) ?_ ?_ ?_ ?_
     · intro γ hγ
-      simp only [Finset.mem_filter]
-      exact ⟨Finset.mem_univ _, hC γ hγ, hdet γ⟩
+      simpa only [Finset.mem_filter] using ⟨Finset.mem_univ _, hC γ hγ, hdet γ⟩
     · intro γ _ γ' _ e
       exact mul_left_cancel (Matrix.SpecialLinearGroup.toGL_injective e)
     · intro m hm
@@ -207,8 +205,7 @@ theorem UpperTheory.V.Z.Kato.Nb.sXiOne :
         apply Units.ext
         simp only [φ, map_mul r, map_inv r, hr, mul_inv_cancel_left]; rfl
       refine ⟨r (g⁻¹ * liftSL M s), Finset.mem_filter.2 ⟨Finset.mem_univ _, ⟨_, ?_, rfl⟩⟩, e⟩
-      rw [← e, hφ, mul_inv_cancel_left, cnd_iff hN hl g _ L.g0] at h1
-      exact h1
+      rwa [← e, hφ, mul_inv_cancel_left, cnd_iff hN hl g _ L.g0] at h1
     · intro γ _; rfl
   rw [hXi]
   refine (sApi Ω ε X l n).2.2.2.1 _ _ _ _ fun γ hγ => ?_
@@ -262,8 +259,7 @@ private theorem isTr_img {M N l : ℕ} [NeZero M] (hN : N ∣ M) (hl : l ∣ M) 
   · obtain ⟨δ, hδ, e⟩ := (Finset.mem_filter.1 γ.2).2
     have h1 : liftSL M γ.1 * δ⁻¹ ∈ CongruenceSubgroup.Gamma M := by
       rw [mem_gam_iff, _root_.GlobalTheory.K4.map_liftSL, e]
-    have h2 := mul_mem (gam_le hN hl h1) hδ
-    simpa using h2
+    simpa using mul_mem (gam_le hN hl h1) hδ
   · refine ⟨⟨Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) δ,
       Finset.mem_filter.2 ⟨Finset.mem_univ _, δ, hδ, rfl⟩⟩, ?_, fun γ hγ => ?_⟩
     · show _ ∈ _
@@ -291,8 +287,7 @@ private theorem recip_mod [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {M : ℕ} (hM 
   have hij : (i : ZMod (M0 * M)) * j = 1 := by
     have : ζ ^ (i * j) = ζ ^ 1 := by
       rw [pow_mul, hi, ← map_pow, hj, pow_one, ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]
-    have h2 := (ZMod.natCast_eq_natCast_iff _ _ _).2 (hmod _ _ this)
-    simpa using h2
+    simpa using (ZMod.natCast_eq_natCast_iff _ _ _).2 (hmod _ _ this)
   have hi1 : (i : ZMod M) = 1 := by
     have h1 : σ (ζ ^ M0) = ζ ^ M0 := (mem_fixMu_iff σ).1 hσ _ (by rw [← pow_mul, hζ.pow_eq_one])
     have : ζ ^ (M0 * i) = ζ ^ (M0 * 1) := by

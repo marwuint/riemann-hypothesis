@@ -60,11 +60,9 @@ private theorem residue_eq_map_algebraMap_comp_res_of_isCO {O' C : Type} [CommRi
   ext z
   obtain ⟨a, ha⟩ := IsCO.res_surj (O := O') z
   have h1 : (res O' C) z = (res O' C) (algebraMap O' C a) := by
-    rw [← sub_eq_zero, ← map_sub, res_eq_zero_iff]
-    exact ha
+    rwa [← sub_eq_zero, ← map_sub, res_eq_zero_iff]
   have h2 : IsLocalRing.residue C z = IsLocalRing.residue C (algebraMap O' C a) := by
-    rw [← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]
-    exact ha
+    rwa [← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]
   rw [RingHom.comp_apply, RingHom.coe_coe, h1, h2, AlgHom.commutes]
   exact (IsLocalRing.ResidueField.map_residue _ a).symm
 
@@ -103,14 +101,12 @@ theorem UpperTheory.V.Fr.pr_res :
       have hle : L.ρ.triP ≤ maximalIdeal L.R := by
         rw [(hloc.2.2.1 (maximalIdeal L.R)).1]
         show S.u.triP ≤ Ideal.comap (L.ι : S.A →+* L.R) (maximalIdeal L.R)
-        rw [L.lies]
-        exact hP
+        rwa [L.lies]
       intro g i j hji
       have hm : L.ρ.r g i j ∈ maximalIdeal L.R := by
         refine hle ?_
         unfold NRep.triP
         exact Ideal.subset_span ⟨g, i, j, hji, rfl⟩
-      show res L.O' L.R (L.ρ.r g i j) = 0
       exact (res_eq_zero_iff _ _ _).mpr hm
     · right
       have hle := (hloc.2.2.2 hP).2
@@ -119,5 +115,4 @@ theorem UpperTheory.V.Fr.pr_res :
         refine hle ?_
         unfold NRep.triM
         exact Ideal.subset_span ⟨g, j, i, hji, rfl⟩
-      show res L.O' L.R (L.ρ.r g j i) = 0
       exact (res_eq_zero_iff _ _ _).mpr hm

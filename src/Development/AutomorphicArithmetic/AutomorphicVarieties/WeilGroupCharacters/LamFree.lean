@@ -83,8 +83,7 @@ private theorem a_mu (l : ℕ) [Fact l.Prime] (G : Type) [Group G] [TopologicalS
     · exact (isClosed_singleton.preimage A.cont : IsClosed (A.a ⁻¹' {1}))
   obtain ⟨n, hn⟩ := CommGroup.mem_primaryComponent.mp hg
   have hpow : g ^ (l ^ n) ∈ (commutator G).topologicalClosure := by
-    rw [← map_pow, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff] at hn
-    exact hn
+    rwa [← map_pow, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff] at hn
   have h1 : A.a g ^ (l ^ n) = 1 := by
     rw [← map_pow]
     exact hc hpow
@@ -118,8 +117,7 @@ private theorem factor (l : ℕ) [Fact l.Prime] (G : Type) [Group G] [Topologica
 
         rw [← Ideal.Quotient.eq_zero_iff_mem, map_sum]
         simp only [map_pow, h1, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]
-        rw [← map_natCast (Ideal.Quotient.mk m), Ideal.Quotient.eq_zero_iff_mem]
-        exact hl
+        rwa [← map_natCast (Ideal.Quotient.mk m), Ideal.Quotient.eq_zero_iff_mem]
       have e : x ^ (l ^ (k + 1)) - 1 = (∑ i ∈ Finset.range l, (x ^ (l ^ k)) ^ i) * (x ^ (l ^ k) - 1) := by
         rw [geom_sum_mul, ← pow_mul, ← pow_succ]
       rw [e, pow_succ' m (k + 1)]
@@ -140,8 +138,7 @@ private theorem factor (l : ℕ) [Fact l.Prime] (G : Type) [Group G] [Topologica
       rw [e]
       exact hc N {1}
     have hopen : IsOpen (ρ.rangeRestrict.ker : Set G) := by
-      rw [MonoidHom.ker_rangeRestrict]
-      exact hko
+      rwa [MonoidHom.ker_rangeRestrict]
     haveI : Finite ρ.range := by
       haveI := Subgroup.quotient_finite_of_isOpen ρ.ker hko
       exact Finite.of_equiv _ (QuotientGroup.quotientKerEquivRange ρ).toEquiv
@@ -159,8 +156,7 @@ private theorem factor (l : ℕ) [Fact l.Prime] (G : Type) [Group G] [Topologica
       show Units.map (Ideal.Quotient.mk (m ^ N)).toMonoidHom (δ g') = 1
       rw [hm g' hg', map_one]
     have := A.univ ρ.range hp ρ.rangeRestrict hopen hmu (MonoidHom.mem_ker.mpr hg)
-    rw [MonoidHom.ker_rangeRestrict, MonoidHom.mem_ker, hρ] at this
-    exact this
+    rwa [MonoidHom.ker_rangeRestrict, MonoidHom.mem_ker, hρ] at this
   have hδ1 : ∀ g, A.a g = 1 → δ g = 1 := by
     intro g hg
     apply Units.ext
@@ -245,8 +241,7 @@ theorem UpperTheory.V.W.lam_factor :
       obtain ⟨g, rfl⟩ := (A v).surj x
       rw [hχ g]
       have := hδr g
-      rw [← res_eq_zero_iff O R, map_sub, map_one, sub_eq_zero] at this
-      exact this
+      rwa [← res_eq_zero_iff O R, map_sub, map_one, sub_eq_zero] at this
     · refine MonoidHom.ext fun g => ?_
       rw [MonoidHom.mul_apply, MonoidHom.comp_apply, hχ g]
       simp only [δ, MonoidHom.mul_apply, MonoidHom.inv_apply]
@@ -265,8 +260,7 @@ theorem UpperTheory.V.W.lam_factor :
       exact h0.red g
     · intro g
       have ha := a_mu l (F.Gv v) (F.Iv v) (d v) (A v) g g.2
-      simp only [MonoidHom.mul_apply, MonoidHom.comp_apply, ha, map_one, mul_one]
-      exact h0.mu g
+      simpa only [MonoidHom.mul_apply, MonoidHom.comp_apply, ha, map_one, mul_one] using h0.mu g
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacters.LamFactor =====
@@ -345,8 +339,7 @@ private theorem zl_one (l : ℕ) [Fact l.Prime] {R : Type} [CommRing R] (I : Ide
     rw [this]
     exact ((zl_lc l N).comp_continuous continuous_toAdd).comp _
   · have := hp 1 n 1 (by simp)
-    rw [pow_one] at this
-    exact this
+    rwa [pow_one] at this
 
 theorem UpperTheory.V.W.lam_zl :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsLocalRing O] [CharP (ResidueField O) l] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (ι : Type) [Fintype ι] [DecidableEq ι] (u : ι → Rˣ), (∀ i, res O R (u i) = 1) →
@@ -540,8 +533,7 @@ private theorem lam_inl_cont (l : ℕ) [Fact l.Prime] (d : ℕ) : Continuous (la
 
 private theorem lam_inl_fst (l : ℕ) [Fact l.Prime] (d : ℕ) (x : Multiplicative ((Fin d → ℤ_[l]) × ℤ_[l]))
     (hx : x.toAdd.2 = 0) : lam_inl l d (lam_fst l d x) = x := by
-  apply Multiplicative.toAdd.injective
-  exact Prod.ext rfl hx.symm
+  exact Multiplicative.toAdd.injective (Prod.ext rfl hx.symm)
 
 private theorem lam_uniq {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O]
     [Algebra ℤ_[l] O] {n : ℕ} {r : Resid F O n} (L M : LamObj r) :

@@ -108,8 +108,7 @@ private theorem prod_zero {O S K α : Type} [CommRing O] [CommRing S] [Algebra O
   have e1 : (⟨_, hm⟩ : B) = (L.map e).prod := Subtype.ext hp.symm
   rw [e1, map_list_prod, List.map_map]
   apply List.prod_eq_zero
-  simp only [List.mem_map, Function.comp_apply]
-  exact ⟨a, ha, h0⟩
+  simpa only [List.mem_map, Function.comp_apply] using ⟨a, ha, h0⟩
 
 theorem UpperTheory.V.GradeZeroInterpolatingElement.signs :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ M : Model D, ∀ [GradedAlgebra M.gr], D.Fin0 → ∀ ξ : M.SS →ₐ[c.O] PadicAlgCl l, ((∀ i j, (wt i j).2 < 0 → ¬ Ge (M.rep ξ) i j) → NegZero M.gr (ξ.comp M.toSS)) ∧ ((∀ i j, 0 < (wt i j).2 → ¬ Ge (M.rep ξ) i j) → PosZero M.gr (ξ.comp M.toSS)) ∧ (PosZero M.gr (ξ.comp M.toSS) → ¬ Ge (M.rep ξ) 0 2) ∧ (NegZero M.gr (ξ.comp M.toSS) → ¬ Ge (M.rep ξ) 2 0) ∧ ∀ ξ' : M.SS →ₐ[c.O] PadicAlgCl l, Same0 M.gr (ξ.comp M.toSS) (ξ'.comp M.toSS) → (∀ g i, M.rep ξ g i i = M.rep ξ' g i i) ∧ (DiagType (M.rep ξ) → DiagType (M.rep ξ')) := by
@@ -130,8 +129,7 @@ theorem UpperTheory.V.GradeZeroInterpolatingElement.signs :
     intro n g i j he
     apply (kerA D hD M).2.1 n (M.ent g i j)
     have := M.entry_mem g i j
-    rw [he] at this
-    exact this
+    rwa [he] at this
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
   · intro hneg n hn f hf
     change ξ (M.toSS f) = 0
@@ -154,15 +152,13 @@ theorem UpperTheory.V.GradeZeroInterpolatingElement.signs :
     apply hg
     have := hpos 1 one_pos f hf
     change ξ (M.toSS f) = 0 at this
-    rw [hfx] at this
-    exact this
+    rwa [hfx] at this
   · rintro hneg ⟨g, hg⟩
     obtain ⟨f, hf, hfx⟩ := from_part (-1) g 2 0 (by decide)
     apply hg
     have := hneg (-1) (by norm_num) f hf
     change ξ (M.toSS f) = 0 at this
-    rw [hfx] at this
-    exact this
+    rwa [hfx] at this
   · intro ξ' hs
     have key : ∀ x : M.SS, (x : M.S) ∈ M.sPart ((0 : ℤ), 0) → ξ x = ξ' x := by
       intro x hx

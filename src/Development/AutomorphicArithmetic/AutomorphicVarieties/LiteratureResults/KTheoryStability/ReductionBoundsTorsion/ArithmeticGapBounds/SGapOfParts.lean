@@ -146,8 +146,7 @@ theorem mem_Hq (π : 𝓞 L) (hπ : π ≠ 0) (a : Matrix.SpecialLinearGroup (Fi
         rfl
       rw [h3] at h2
       exact (FaithfulSMul.algebraMap_injective (𝓞 L) L) (by rw [h2, map_one])
-    refine ⟨⟨δ, hdet⟩, ?_⟩
-    exact hm
+    exact ⟨⟨δ, hdet⟩, hm⟩
   · rintro ⟨γ, hγ⟩
     refine ⟨Matrix.SpecialLinearGroup.toGL γ, Units.ext ?_⟩
     simp only [GeneralLinearGroup.coe_mul, coe_qel, coe_toK_toGL]
@@ -183,8 +182,7 @@ theorem Hq_surj (π : 𝓞 L) (hπ : π ≠ 0) (hN : 0 < N) (γ : Gm L N) :
     exact Units.inv_mul u
   refine ⟨⟨_, hdet⟩, ?_⟩
   have hg : Matrix.SpecialLinearGroup.toGL ⟨_, hdet⟩ = h⁻¹ * γ := Units.ext rfl
-  rw [hg, _root_.mul_inv_rev, inv_inv, ← mul_assoc, mul_inv_cancel, one_mul]
-  rw [mem_Hq_iff]
+  rw [hg, _root_.mul_inv_rev, inv_inv, ← mul_assoc, mul_inv_cancel, one_mul, mem_Hq_iff]
   refine ⟨h, Units.ext ?_⟩
   simp only [GeneralLinearGroup.coe_mul, coe_qel]
   have hK : ((toK L N h : GK L N) : Matrix (Fin N) (Fin N) L) = diagonal fun i => algebraMap (𝓞 L) L (du i) := by
@@ -362,7 +360,6 @@ instance instCountSL : Countable (Matrix.SpecialLinearGroup (Fin N) L) := by
   exact inferInstanceAs (Countable (Subtype _))
 
 theorem continuous_ofS : Continuous (ofS L N) := by
-  show Continuous fun x : Sp L N => fun w => Matrix.SpecialLinearGroup.toGL (x w)
   exact continuous_pi fun w => Matrix.SpecialLinearGroup.continuous_toGL.comp (continuous_apply w)
 
 theorem coe_jS (g : Matrix.SpecialLinearGroup (Fin N) L) (w : InfinitePlace L) :
@@ -401,8 +398,7 @@ theorem exists_q (π : 𝓞 L) (hπ : π ≠ 0) (r : ℕ) (hN : 0 < N) : ∃ (q 
   let s : InfinitePlace L → ℂˣ := fun w => Units.mk0 (t w)⁻¹ (inv_ne_zero (ht0 w))
   refine ⟨fun w => ⟨(s w : ℂ) • (dg L N π r).map w.embedding, ?_⟩, s, fun w => rfl⟩
   rw [Matrix.det_smul, Fintype.card_fin, ← ht w]
-  simp only [s, Units.val_mk0, inv_pow]
-  exact inv_mul_cancel₀ (pow_ne_zero _ (ht0 w))
+  simpa only [s, Units.val_mk0, inv_pow] using inv_mul_cancel₀ (pow_ne_zero _ (ht0 w))
 
 theorem coe_latS (γ : Matrix.SpecialLinearGroup (Fin N) (𝓞 L)) (w : InfinitePlace L) :
     ((((MonoidHom.pi fun w : InfinitePlace L => Matrix.SpecialLinearGroup.map (n := Fin N) (embO w)) γ) w :
@@ -627,8 +623,7 @@ theorem _root_.PositivityTheory.KB.sGap_of_parts : GapAbs → Unfold → Arith �
     obtain ⟨-, i1⟩ := finsum_transfer (Matrix.SpecialLinearGroup.toGL) (Hq L N π hπ) C
       (fun a => Iff.rfl) (fun γ => Hq_surj L N π hπ hN0 γ) (E := ℝ) (fun _ => 0) (fun _ _ _ => rfl)
     obtain ⟨-, i2⟩ := finsum_transfer ψ H' C hψ hψs (E := ℝ) (fun _ => 0) (fun _ _ _ => rfl)
-    rw [← i1, i2]
-    exact hH'0
+    rwa [← i1, i2]
   refine ⟨?_, ?_⟩
   · unfold Lz
     refine ⟨?_, ?_, ?_, ?_, ?_⟩
@@ -656,18 +651,15 @@ theorem _root_.PositivityTheory.KB.sGap_of_parts : GapAbs → Unfold → Arith �
       apply finsum_congr
       intro c
       rw [← mul_assoc, ← scal_comm L N s', mul_assoc, hfs]
-    · simp only [hkey]
-      exact hAint
-    · simp only [hkey]
-      exact hA0
+    · simpa only [hkey] using hAint
+    · simpa only [hkey] using hA0
   · calc ∫ x in d.D, hecke (toK L N) (toP L N) (qel L N π hπ) f (ofS L N x) ^ 2 ∂d.μ
         = ∫ x in d.D, avg (jS L N) (Kg L N π 0 ⊓ Kg L N π 1) (Kg L N π 0) w x ^ 2 ∂d.μ := by
           simp only [hkey]
       _ ≤ (2 / 5) ^ 2 * ∫ x in (fun x => q * x) ⁻¹' d.D, w x ^ 2 ∂d.μ := hAle
       _ = (2 / 5) ^ 2 * ∫ x in d.D, f (ofS L N x) ^ 2 ∂d.μ := by rw [hw2]
       _ ≤ (3 / 5) ^ 2 * ∫ x in d.D, f (ofS L N x) ^ 2 ∂d.μ := by
-          apply mul_le_mul_of_nonneg_right (by norm_num)
-          exact integral_nonneg (fun x => sq_nonneg _)
+          exact mul_le_mul_of_nonneg_right (by norm_num) (integral_nonneg (fun x => sq_nonneg _))
 
 end PositivityTheory.KB.SpectralGap
 

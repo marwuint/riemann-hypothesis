@@ -181,38 +181,13 @@ private theorem reps_sub {a : S} (ha : ∀ u ∈ U, ∃ c ∈ U, c * (a : G) = a
       ((k * a : S) : S ⧸ U.subgroupOf S) ∈
         MulAction.orbit (U.subgroupOf S) (a : S ⧸ U.subgroupOf S) :=
     fun k hk => ⟨⟨k, hk⟩, rfl⟩
-  refine ⟨hfin.toFinset.image (fun q => Quotient.out q), ?_, ?_, ?_⟩
-  · intro y hy
-    obtain ⟨q, hq, rfl⟩ := Finset.mem_image.mp hy
-    obtain ⟨k, rfl⟩ := hfin.mem_toFinset.mp hq
-    obtain ⟨h, hh⟩ := QuotientGroup.mk_out_eq_mul (U.subgroupOf S) ((k : S) * a)
-    have hq' : k • (a : S ⧸ U.subgroupOf S) = (((k : S) * a : S) : S ⧸ U.subgroupOf S) := rfl
-    dsimp only
-    rw [hq', hh]
-    exact dc_right h.2 ⟨k, k.2, 1, one_mem _, (mul_one _).symm⟩
-  · intro y hy
-    obtain ⟨u, hu, u', hu', rfl⟩ := hy
-    obtain ⟨h, hh⟩ := QuotientGroup.mk_out_eq_mul (U.subgroupOf S) (u * a)
-    refine ⟨Quotient.out ((u * a : S) : S ⧸ U.subgroupOf S), ⟨?_, ?_⟩, ?_⟩
-    · exact Finset.mem_image.mpr ⟨_, hfin.mem_toFinset.mpr (orb u hu), rfl⟩
-    · rw [hh]
-      have e : (u * a * (h : S))⁻¹ * (u * a * u') = (h : S)⁻¹ * u' := by group
-      rw [e]
-      exact mul_mem (inv_mem h.2) hu'
-    · rintro r ⟨hr, hry⟩
-      obtain ⟨q, -, rfl⟩ := Finset.mem_image.mp hr
-      have e : q = ((u * a : S) : S ⧸ U.subgroupOf S) :=
-        calc q = ((Quotient.out q : S) : S ⧸ U.subgroupOf S) := (QuotientGroup.out_eq' q).symm
-          _ = ((u * a * u' : S) : S ⧸ U.subgroupOf S) := QuotientGroup.eq.mpr hry
-          _ = _ := QuotientGroup.eq.mpr (by
-            rw [show (u * a * u')⁻¹ * (u * a) = u'⁻¹ by group]
-            exact inv_mem hu')
-      rw [e]
-  · intro y hy
+  have h3 : ∀ y ∈ DC U (a : G), ∃! r : S,
+      r ∈ hfin.toFinset.image (fun q => Quotient.out q) ∧ (r : G)⁻¹ * y ∈ U := by
+    intro y hy
     obtain ⟨t, ht, hty⟩ := dc_rep ha hy
     obtain ⟨h, hh⟩ := QuotientGroup.mk_out_eq_mul (U.subgroupOf S) (t * a)
     refine ⟨Quotient.out ((t * a : S) : S ⧸ U.subgroupOf S), ⟨?_, ?_⟩, ?_⟩
-    · exact Finset.mem_image.mpr ⟨_, hfin.mem_toFinset.mpr (orb t ht), rfl⟩
+    · exact Finset.mem_image_of_mem _ (hfin.mem_toFinset.mpr (orb t ht))
     · rw [hh]
       have e : ((t * a * (h : S) : S) : G)⁻¹ * y
           = ((h : S) : G)⁻¹ * (((t * a : S) : G)⁻¹ * y) := by
@@ -229,6 +204,15 @@ private theorem reps_sub {a : S} (ha : ∀ u ∈ U, ∃ c ∈ U, c * (a : G) = a
             convert m using 1
             group)
       rw [e]
+  refine ⟨_, ?_, fun y hy => h3 _ (dc_up hy), h3⟩
+  intro y hy
+  obtain ⟨q, hq, rfl⟩ := Finset.mem_image.mp hy
+  obtain ⟨k, rfl⟩ := hfin.mem_toFinset.mp hq
+  obtain ⟨h, hh⟩ := QuotientGroup.mk_out_eq_mul (U.subgroupOf S) ((k : S) * a)
+  have hq' : k • (a : S ⧸ U.subgroupOf S) = (((k : S) * a : S) : S ⧸ U.subgroupOf S) := rfl
+  dsimp only
+  rw [hq', hh]
+  exact dc_right h.2 ⟨k, k.2, 1, one_mem _, (mul_one _).symm⟩
 
 end SlopeTestRemainingChoices
 

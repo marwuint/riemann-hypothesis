@@ -173,8 +173,7 @@ private theorem g3'_up (hl : l ≠ 2) (h : T.Le T') (ho : T.Ok) (η : T'.GalL �
   refine MonoidHom.ext fun g => ?_
   rw [hη g, MonoidHom.one_apply, div_eq_one, ← hφ, ← hφ]
   have := congrArg (fun f : T.GalL →* (ResidueField c.O)ˣ => f ⟨resLe h.le g, (galL_resLe h g).2 g.2⟩) h0
-  simp only [hη₀, MonoidHom.one_apply, div_eq_one] at this
-  exact this
+  simpa only [hη₀, MonoidHom.one_apply, div_eq_one] using this
 
 private theorem ok_up (hl : l ≠ 2) (h : T.Le T') (ho : T.Ok) : T'.Ok := by
   obtain ⟨k, hk⟩ := up h
@@ -191,8 +190,7 @@ private theorem ok_up (hl : l ≠ 2) (h : T.Le T') (ho : T.Ok) : T'.Ok := by
     show Even (Module.finrank ℚ T'.F)
     rw [hn]
     exact (show Even (Module.finrank ℚ T.F) from ho.even).mul_right n
-  · intro A g hg
-    exact (galL_resLe h g).1 (ho.unr A ((ine_resLe h.le A g).2 hg))
+  · exact fun A g hg => (galL_resLe h g).1 (ho.unr A ((ine_resLe h.le A g).2 hg))
   · intro p hp A hA
     rw [h.K]
     exact ho.split p hp A hA
@@ -200,8 +198,7 @@ private theorem ok_up (hl : l ≠ 2) (h : T.Le T') (ho : T.Ok) : T'.Ok := by
     obtain ⟨g, hg, hne⟩ := ho.g2 w
     obtain ⟨g', hm, hg'⟩ := liftL g hg
     refine ⟨g', hm, fun heq => hne (pow_inj k ?_)⟩
-    rw [← rb_pow, ← bar_pow, ← map_pow (resQ T.F), ← hg', ← rb_resLe h]
-    exact heq
+    rwa [← rb_pow, ← bar_pow, ← map_pow (resQ T.F), ← hg', ← rb_resLe h]
   · intro w hw
     obtain ⟨g, hg, hne⟩ := ho.g3 w hw
     obtain ⟨g', hm, hg'⟩ := liftL g hg
@@ -212,28 +209,23 @@ private theorem ok_up (hl : l ≠ 2) (h : T.Le T') (ho : T.Ok) : T'.Ok := by
     obtain ⟨g, hg, hne⟩ := hord n hn0 hn4
     obtain ⟨g', hm, hg'⟩ := liftL g hg
     refine ⟨g', hm, fun heq => hne (L1 _ ?_)⟩
-    rw [← pow_mul, mul_comm, pow_mul, ← rb_pow, ← hg', ← rb_resLe h]
-    exact heq
-  · intro A hA g hg h1
-    exact ho.kb A hA (resLe h.le g) ((ine_resLe h.le A g).2 hg) h1
+    rwa [← pow_mul, mul_comm, pow_mul, ← rb_pow, ← hg', ← rb_resLe h]
+  · exact fun A hA g hg h1 => ho.kb A hA (resLe h.le g) ((ine_resLe h.le A g).2 hg) h1
   · obtain ⟨m, hm, hψ⟩ := ho.kc
     exact ⟨m, hm, fun g hg => hψ (resLe h.le g) hg⟩
-  · intro A hA g hg
-    exact ho.ineL A hA (resLe h.le g) ((ine_resLe h.le A g).2 hg)
+  · exact fun A hA g hg => ho.ineL A hA (resLe h.le g) ((ine_resLe h.le A g).2 hg)
   · intro i j hij heq
     apply ho.dist i j hij
     obtain ⟨k', hk'⟩ := h.g0
     apply pow_inj k'
     rw [← bar_pow, ← bar_pow, ← hk']
-    rw [h.pr] at heq
-    exact heq
+    rwa [h.pr] at heq
   · intro A hA
     rcases ho.locL A hA with ⟨g, hg, hne⟩ | ⟨g, hg, h1, h2, h3⟩
     · obtain ⟨g', hg'⟩ := hk g
       left
       refine ⟨g', (ine_resLe h.le A g').1 (by rw [hg']; exact pow_mem hg _), fun heq => hne (L1 _ ?_)⟩
-      rw [← bar_pow, ← map_pow (resQ T.F), ← hg']
-      exact heq
+      rwa [← bar_pow, ← map_pow (resQ T.F), ← hg']
     · obtain ⟨g', hg'⟩ := hk g
       right
       refine ⟨g', (dec_resLe h.le A g').1 (by rw [hg']; exact pow_mem hg _), ?_, ?_, ?_⟩

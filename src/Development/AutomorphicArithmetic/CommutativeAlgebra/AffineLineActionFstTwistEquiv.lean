@@ -78,9 +78,7 @@ private theorem coord_bij (T : Scheme.{0}) : Function.Bijective (coord (T := T))
   · intro f g h
     rw [eq_of_appTop f, eq_of_appTop g]
     congr 2
-    apply CommRingCat.hom_ext
-    refine Polynomial.ringHom_ext' (RingHom.ext_int _ _) ?_
-    exact h
+    exact CommRingCat.hom_ext (Polynomial.ringHom_ext' (RingHom.ext_int _ _) h)
   · intro a
     refine ⟨T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (eval₂RingHom (Int.castRingHom _) a)), ?_⟩
     simp [coord, Scheme.toSpecΓ_appTop]
@@ -116,8 +114,7 @@ private theorem lineMap_bij (k : ℕ) (T : Scheme.{0}) :
     Function.Bijective (fun x : Sx (sch.obj Pbf.A1) k T => x.map lineMap) := by
   constructor
   · intro f g h
-    refine (coord_bij T).1 ?_
-    exact congrArg (fun c : Fin (k + 1) ⥤ Ob affC Γ(T, ⊤) => (c.obj 0).pt) h
+    exact (coord_bij T).1 (congrArg (fun c : Fin (k + 1) ⥤ Ob affC Γ(T, ⊤) => (c.obj 0).pt) h)
   · intro y
     obtain ⟨f, hf⟩ := (coord_bij T).2 ((show Fin (k + 1) ⥤ Ob affC Γ(T, ⊤) from y).obj 0).pt
     refine ⟨f, ?_⟩
@@ -148,8 +145,7 @@ theorem UpperTheory.affineLineAction_fst_twistEquiv :
     apply Limits.prod.hom_ext
     · rw [Category.assoc, prod.lift_fst, ← Category.assoc, hu2]
       simp
-    · rw [Category.assoc, prod.lift_snd, Category.id_comp]
-      exact hu1
+    · rwa [Category.assoc, prod.lift_snd, Category.id_comp]
   have hvu : v ≫ u = 𝟙 _ := by
     apply mulS_hom_ext
     · rw [Category.assoc, hu1, prod.lift_snd, Category.id_comp]

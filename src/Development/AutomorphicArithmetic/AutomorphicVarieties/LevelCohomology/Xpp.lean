@@ -280,8 +280,7 @@ theorem UpperTheory.V.X.dirData :
         congr 1
         omega
       have hb' : 2 * (l * q * 4 ^ (l ^ f0 l ψ - 1).factorization 2) ≤ 2 * 2 ^ (c2 ψ - 1) := by
-        rw [← mul_assoc, ← h2]
-        exact hb
+        rwa [← mul_assoc, ← h2]
       exact le_trans (Nat.mul_le_mul_right _ hfle) (Nat.le_of_mul_le_mul_left hb' two_pos)
     · have hc1 : IsCoprime (-1 : ℤ) ((l * N : ℕ) : ℤ) := isCoprime_one_left.neg_left
       have hc2 : IsCoprime (-1 : ℤ) (N : ℤ) := isCoprime_one_left.neg_left
@@ -330,8 +329,7 @@ section -- clump:auto
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.X
 
 private theorem res_of_sub {O : Type} [CommRing O] [IsLocalRing O] {x y : O} (h : x - y ∈ maximalIdeal O) :
-    residue O x = residue O y := by
-  exact Ideal.Quotient.eq.2 h
+    residue O x = residue O y := Ideal.Quotient.eq.2 h
 
 private theorem dirG_pow_one {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {O : Type} [CommRing O] {N : ℕ} [NeZero N]
     (χ : DirichletCharacter O N) (m : ℕ) (h : χ ^ m = 1) : Chr.dirG ℚ Ω χ ^ m = 1 := by
@@ -406,7 +404,6 @@ private def eGb {k : Type} [CommRing k] (a : k) : Gb (k := k) (-2) :=
     fin_cases i <;> fin_cases j <;> first | (exfalso; revert h; decide) | simp⟩ : gw (R := k) (-2))
 
 private theorem eGb_val {k : Type} [CommRing k] (a : k) : (eGb a).val 2 0 = a := by
-  show Matrix.single 2 0 a 2 0 = a
   exact Matrix.single_apply_same _ _ _
 
 private theorem gb_ext {k : Type} [CommRing k] {X Y : Gb (k := k) (-2)} (h : X.val 2 0 = Y.val 2 0) : X = Y := by
@@ -511,8 +508,7 @@ theorem UpperTheory.V.X.xpp :
     have h := (dvrFacts l c.O).2.2.1
     have h1 : (l : c.O) ∈ maximalIdeal c.O := by
       have : ¬ IsUnit (algebraMap ℤ_[l] c.O l) := fun h2 => PadicInt.irreducible_p.not_isUnit (h.map_nonunit _ h2)
-      rw [map_natCast] at this
-      exact this
+      rwa [map_natCast] at this
     have := (residue_eq_zero_iff _).2 h1
     rwa [map_natCast] at this)
   set γ : G ℚ Ω →* (ResidueField c.O)ˣ := (redChar Ω (residue c.O) (prodX φ ξ))⁻¹ with hγd
@@ -548,8 +544,7 @@ theorem UpperTheory.V.X.xpp :
     rw [← hγ', ← hπ]
     simp [γ', h1, h2]
   have hl : (A F.vl).valuation (l : Ω) < 1 := by
-    have h := (hF.isOver F.vl ((l : ℕ) : 𝓞 ℚ)).2 hF.vl
-    simpa using h
+    simpa using (hF.isOver F.vl ((l : ℕ) : 𝓞 ℚ)).2 hF.vl
   have hV := vanOf Ω l _ γ (hX Ω l c _ (residue c.O) d f n φ ξ hx γ (.inr rfl)) {l} (fun _ => A F.vl) κ.ker
     (by simpa using ⟨Fact.out, hl⟩) inferInstance hidx
   refine xppOf F γ' (fun g => by simp only [γ']; rw [mul_right_comm, ← mul_pow]; simp) fun z z1 z2 z3 z4 => ?_

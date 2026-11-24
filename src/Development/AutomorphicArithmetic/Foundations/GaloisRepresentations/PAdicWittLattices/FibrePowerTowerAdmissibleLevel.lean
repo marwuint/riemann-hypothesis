@@ -229,8 +229,7 @@ private theorem congOne_conj {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup
   have hhv : L.actG h (L.actG h⁻¹ v) = v := by
     rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
   have := conj_core (L.actG h).toAddMonoidHom (L.actG u).toAddMonoidHom (L.actG h⁻¹).toAddMonoidHom hk (v := v) (w := w) hhv e
-  rw [map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]
-  exact this
+  rwa [map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]
 
 end UpperTheory.Gal.G3
 
@@ -325,8 +324,7 @@ theorem UpperTheory.Gal.G3.pFullOf :
     have h' := h
     rw [← e1, ← e1] at h'
     have := GlobalTheory.WeilIsogeny.weilIs_pull_hom GlobalTheory.globalFns_holds o.ab hLB hLB (Out.mulA o.A j) hiso h'
-    rw [Nat.cast_mul]
-    exact this
+    rwa [Nat.cast_mul]
   · intro r s'
     rw [pow_add]
     exact I'.ζ_pow _ _ (hpos r) (hpos s')
@@ -458,8 +456,7 @@ private theorem isUnit_nat_of_rat {R : Type} [CommRing R] [Algebra ℚ R] {S : S
     have hq : IsUnit (algebraMap ℚ R (d : ℚ)) :=
       (isUnit_iff_ne_zero.mpr (by exact_mod_cast hd.ne')).map _
     simpa using hq
-  have h := hR.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ s.appTop).hom
-  simpa using h
+  simpa using hR.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ s.appTop).hom
 
 theorem UpperTheory.Gal.G3.pIsogFEt :
     IsogFEt := by
@@ -833,8 +830,7 @@ theorem UpperTheory.Gal.G3.pPtOrbit :
   obtain ⟨C, hC'⟩ := exists_comp c B (Category.id_comp (x ≫ π))
   have key : c.φ ≫ ny.φ ≫ φ.φ = nx.φ ≫ φ.φ := by
     have := hr C A
-    rw [hC', hB, hA] at this
-    exact this
+    rwa [hC', hB, hA] at this
   calc Over.Hom.left θ ≫ my.φ ≫ Over.Hom.left ψ ≫ φ.φ
       = Over.Hom.left θ ≫ (my.φ ≫ Over.Hom.left ψ) ≫ φ.φ := by rw [Category.assoc]
     _ = Over.Hom.left (θ ≫ ψy) ≫ ny.φ ≫ φ.φ := by rw [← cy]; simp
@@ -1284,8 +1280,7 @@ theorem UpperTheory.Gal.G3.pTransPull :
     have key := congrArg (fun a => a.left ≫ m₂.φ) e
     simp only [Over.comp_left, Category.assoc, hψ] at key
     erw [← Category.assoc, hev₁ n x, hev₂ n y] at key
-    rw [Over.comp_left]
-    exact key
+    rwa [Over.comp_left]
   · intro e
     apply Over.OverMorphism.ext
     apply m₂.cart.1.hom_ext
@@ -1481,8 +1476,7 @@ theorem UpperTheory.Gal.G3.pWitDeep :
     Nat.Coprime.mul_left N'.2.2 Nk.2.2⟩
   have hNkM : (↑Nk : ℕ) ∣ ↑M := Dvd.intro_left _ rfl
   refine ⟨M, Dvd.intro _ rfl, ?_, ?_⟩
-  · intro u hu
-    exact hAk N u (UpperTheory.Gal.Int.Geo.KN_anti hNkM hu)
+  · exact fun u hu => hAk N u (UpperTheory.Gal.Int.Geo.KN_anti hNkM hu)
   · haveI : Smooth (X Nk).s := (hSm p D R gb Nk (X Nk)).1
     haveI : IsLocallyNoetherian (X Nk).X := LocallyOfFiniteType.isLocallyNoetherian (X Nk).s
     obtain ⟨o, ψ, ht⟩ := hex N (X Nk).X (X Nk).s (X Nk).univ

@@ -198,8 +198,7 @@ theorem UpperTheory.Reformulated.B.Qh52.exists_orthonormal_basis_sesquilinear :
   · simp only [hB]
     have h := inner_mul_inner_self_le (𝕜 := ℂ) y x
     rw [norm_inner_symm x y] at h
-    rw [sq, mul_comm (inner ℂ x x).re]
-    exact h
+    rwa [sq, mul_comm (inner ℂ x x).re]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsOrthonormalBasisSesquilinear =====
@@ -245,20 +244,17 @@ theorem UpperTheory.irreducible_hermitian_form_unique :
       intro g
       simp [map_smulₛₗ]
       ring
-    simp only [S, this]
-    exact integral_const_mul _ _
+    simpa only [S, this] using integral_const_mul _ _
   have hS3 : ∀ w y y', S (y + y') w = S y w + S y' w := by
     intro w y y'
-    simp only [S, map_add (f := _), add_mul]
-    exact integral_add (hint _ _ _ _) (hint _ _ _ _)
+    simpa only [S, map_add (f := _), add_mul] using integral_add (hint _ _ _ _) (hint _ _ _ _)
   have hS4 : ∀ (r : ℂ) w y, S (r • y) w = star r * S y w := by
     intro r w y
     have : ∀ g, B (ρ g a) (r • y) * star (B (ρ g c) w) = star r * (B (ρ g a) y * star (B (ρ g c) w)) := by
       intro g
       simp [map_smulₛₗ]
       ring
-    simp only [S, this]
-    exact integral_const_mul _ _
+    simpa only [S, this] using integral_const_mul _ _
   let B₁ : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ :=
     LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun w y => S y w)
       (fun w w' y => hS1 w w' y) (fun r w y => hS2 r w y)
@@ -533,8 +529,7 @@ theorem UpperTheory.TP.schurStep_k : _root_.UpperTheory.TP.Tools_k → _root_.Up
   have hΨ : ∀ a, Ψ a ∈ schA _ (Fin n × Fin d) := fun a => (hrest (i a)).2
   have hact : ∀ x a, om (x.1, 1) (Ψ a) = Ψ (π x a) := fun x a => by
     have h := hA (p x) a _ (hrest (i a))
-    rw [hpe] at h
-    exact h
+    rwa [hpe] at h
   have hsp := IsUWeilPair.isUSplitting P.weil
   let B₁ : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ := LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ)
     (fun a b => lD _ (Fin n × Fin d) (boxFun (Ψ a) (star (Ψ b))))

@@ -136,8 +136,7 @@ private theorem quad_ex {Ω : Type} [Field Ω] [CharZero Ω] {K : Type} [Field K
     obtain ⟨a, b, rfl⟩ := hspan x
     rw [map_add (f := _), map_mul, map_ratCast, map_ratCast, map_add (f := _), map_mul, hs, map_ratCast, map_ratCast]
   have hsq : (algebraMap K Ω δ0) ^ 2 = -((discr K).natAbs : Ω) := by
-    rw [← map_pow, hδ0, map_intCast]
-    rw [← Int.cast_natCast, hnd, Int.cast_neg, neg_neg]
+    rw [← map_pow, hδ0, map_intCast, ← Int.cast_natCast, hnd, Int.cast_neg, neg_neg]
   refine ⟨algebraMap K Ω δ0, hsq, ?_⟩
   intro s
   have hs2 : (s (algebraMap K Ω δ0)) ^ 2 = (algebraMap K Ω δ0) ^ 2 := by
@@ -317,8 +316,7 @@ theorem UpperTheory.V.Fr.gen_gd :
     rw [← D.η_ker]
     apply hle
     have hw1 : w' s = 1 := by
-      rw [← MonoidHom.mem_ker, hwker1]
-      exact hs1
+      rwa [← MonoidHom.mem_ker, hwker1]
     have hψ1 : Chr.dirG ℚ Ω ψ s = 1 := by
       have h3 := hs2
       rw [MonoidHom.mem_ker, hrel] at h3
@@ -329,8 +327,7 @@ theorem UpperTheory.V.Fr.gen_gd :
     refine ⟨s, hs.1, (hIneL B hB).1 hs, ?_⟩
     intro h
     have h' : residue c.O ((D.Ψ s : c.O) ^ 2) = residue c.O 1 := by
-      have h4 := congrArg Units.val h
-      simpa [barChar] using h4
+      simpa [barChar] using congrArg Units.val h
     exact (IsLocalRing.mem_maximalIdeal _).mp (Ideal.Quotient.eq.mp h') hu
   · exact isOpen_univ
   · intro B' hB' s hs hb
@@ -348,8 +345,7 @@ theorem UpperTheory.V.Fr.gen_gd :
       apply (congrFacts Ω l c).2.2.2.1 _ 1 _ hm hpow (one_pow _)
       rw [hbarPsi, ← hbar, hc, map_one, one_pow, one_mul] at hb
       have hb' : residue c.O (Chr.dirG ℚ Ω ψ s : c.O) = residue c.O 1 := by
-        have h6 := congrArg Units.val hb
-        simpa using h6
+        simpa using congrArg Units.val hb
       exact Ideal.Quotient.eq.mp hb'
     rw [hPsi, hc, hx, one_pow, one_mul]
 end -- clump:auto

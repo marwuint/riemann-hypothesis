@@ -86,19 +86,14 @@ theorem _root_.UpperTheory.KN.mem_lNab_iff_coefficients_in_nabla_lattice :
     GlobalTheory.PresBasic.ext_y (X.R.B.L j t).pres f a
   have h3 := hN a
   constructor
-  · intro h
-    refine ⟨e _, ?_, h2.trans (he _)⟩
-    exact h3.le ⟨_, h, rfl⟩
+  · exact fun h => ⟨e _, (h3.le ⟨_, h, rfl⟩), h2.trans (he _)⟩
   · rintro ⟨F, hF, hv⟩
     obtain ⟨v, hv1, hv2⟩ := h3.ge hF
     have h4 : (X.R.B.L j t).pres.coef ((show (X.A3.A.MtCSD j t).Forms from f).1 a) = (X.R.B.L j t).pres.coef v := by
-      refine h2.symm.trans (hv.trans ?_)
-      refine Eq.trans ?_ (he v).symm
-      exact congrArg (c0L j) hv2.symm
+      exact h2.symm.trans (hv.trans (Eq.trans (congrArg (c0L j) hv2.symm) (he v).symm))
     have h5 : (show (X.A3.A.MtCSD j t).Forms from f).1 a - v = 0 :=
       Bridge.ClassPres.coef_inj (X.R.B.L j t).pres (by rw [map_sub, h4, sub_self])
-    rw [sub_eq_zero.1 h5]
-    exact hv1
+    rwa [sub_eq_zero.1 h5]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.CyclotomicBounds.DeRhamLattices.MemLNabIffCoefficientsInNablaLattice =====

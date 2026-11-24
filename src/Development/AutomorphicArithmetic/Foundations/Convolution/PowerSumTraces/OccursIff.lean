@@ -51,9 +51,7 @@ theorem UpperTheory.ConvolutionTheory.C.occursIff
   constructor
   · rintro ⟨f, hf0, hfV, hf⟩
     refine ⟨f.codRestrict V hfV, ?_, ?_⟩
-    · intro h
-      apply hf0
-      exact LinearMap.ext fun x => congrArg Subtype.val (LinearMap.congr_fun h x)
+    · exact fun h => hf0 (LinearMap.ext fun x => congrArg Subtype.val (LinearMap.congr_fun h x))
     · intro g x
       apply Subtype.ext
       change f (σ.ρ g x) = Dp.localRepresentationL2 μ w g (f x)
@@ -61,9 +59,7 @@ theorem UpperTheory.ConvolutionTheory.C.occursIff
       exact hf g x
   · rintro ⟨f, hf0, hf⟩
     refine ⟨V.subtype ∘ₗ f, ?_, fun x => (f x).2, ?_⟩
-    · intro h
-      apply hf0
-      exact LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun h x)
+    · exact fun h => hf0 (LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun h x))
     · intro g x
       change (f (σ.ρ g x) : LL μ) = rhoL μ w g (f x)
       rw [Dp.rhoLoc K n μ w g]

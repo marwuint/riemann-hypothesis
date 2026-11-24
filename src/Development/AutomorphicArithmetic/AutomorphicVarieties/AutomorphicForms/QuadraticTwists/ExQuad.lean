@@ -138,11 +138,9 @@ private theorem exists_padicInt_sq_eq_neg_of_dvd_one_add (l : ℕ) [Fact l.Prime
     exact hl ((Nat.prime_dvd_prime_iff_eq (Fact.out) Nat.prime_two).mp h')
   have ha : (aeval (1 : ℤ_[l])) F = ((1 + p : ℤ) : ℤ_[l]) := by simp [F]
   have hd : (aeval (1 : ℤ_[l])) (derivative F) = ((2 : ℤ) : ℤ_[l]) := by
-    simp [F]
-    exact map_ofNat _ 2
+    simpa [F] using map_ofNat _ 2
   have hlt : ‖(aeval (1 : ℤ_[l])) F‖ < ‖(aeval (1 : ℤ_[l])) (derivative F)‖ ^ 2 := by
-    rw [ha, hd, h2, one_pow, PadicInt.norm_int_lt_one_iff_dvd]
-    exact hdiv
+    rwa [ha, hd, h2, one_pow, PadicInt.norm_int_lt_one_iff_dvd]
   obtain ⟨z, hz, -⟩ := hensels_lemma hlt
   refine ⟨z, ?_⟩
   have hz' : z ^ 2 + (p : ℤ_[l]) = 0 := by simpa [F] using hz
@@ -229,6 +227,4 @@ theorem UpperTheory.V.Af.Cq.exQuad :
   refine ⟨Kstar p, inferInstance, inferInstance, IsCMField.ofCMExtension ℚ (Kstar p), alg, tower, hac,
     hfr, ⟨ι⟩, vf p, Af p, hSv, hvf1 p, σ, hσI, ?_⟩
   rintro ⟨τ, rfl⟩
-  apply hσG
-  intro x
-  exact τ.commutes x
+  exact hσG (fun x => τ.commutes x)

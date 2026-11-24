@@ -49,10 +49,8 @@ private theorem val_smul {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alg
     · intro hy
       obtain ⟨z, hz, hzy⟩ := (ValuationSubring.mem_smul_pointwise_iff_exists _ _ _).1 hy
       have hzy' : g z = g y := hzy
-      rw [g.injective hzy'] at hz
-      exact hz
-    · intro hy
-      exact ValuationSubring.smul_mem_pointwise_smul g y A hy
+      rwa [g.injective hzy'] at hz
+    · exact fun hy => ValuationSubring.smul_mem_pointwise_smul g y A hy
   exact val_lt_one key x
 
 open scoped Pointwise in
@@ -83,8 +81,7 @@ theorem UpperTheory.frame_criterion_galois_equivariance :
     obtain ⟨γ, -, hγ⟩ := k.pl_conj w
     have h1 := (val_smul γ B (l : Ω)).2 hB
     rw [map_natCast] at h1
-    rw [hγ]
-    exact h1
+    rwa [hγ]
   have hpick : ∀ v : W.Vl l L, ∃ w : Φ.V, IsPlaceOver (k.pl w) (v : W.Plc (W.Lp L)) := by
     intro v
     obtain ⟨A, hA⟩ := exists_isPlaceOver Ω (v : W.Plc (W.Lp L))
@@ -109,9 +106,7 @@ theorem UpperTheory.frame_criterion_galois_equivariance :
   have hsurj : Function.Surjective e := by
     intro w
     have hfacts := places (W.Lp L) Ω l (k.pl w)
-    have hne : k.pl w ≠ ⊤ := by
-      intro htop
-      exact (hfacts.2.1 htop).2 (hpl w)
+    have hne : k.pl w ≠ ⊤ := fun htop => (hfacts.2.1 htop).2 (hpl w)
     obtain ⟨v0, hv0⟩ := hfacts.1 hne
     have hl0 : ((l : 𝓞 (W.Lp L))) ∈ v0.asIdeal := (natCast_place hv0 l).1 (hpl w)
     let v : W.Vl l L := ⟨v0, hl0⟩

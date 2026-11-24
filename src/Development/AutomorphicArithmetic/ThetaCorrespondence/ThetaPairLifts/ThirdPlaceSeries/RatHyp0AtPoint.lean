@@ -57,26 +57,16 @@ theorem ratHyp0_at_point_alt : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : F
   ∀ j : Fin (Fm.D x i).R.m, RatHyp0 p.T p.R (F2 p) p.κ p.v₀ p.O t j := by
   intro eps Fm x hx i p hp hM t ht hlow j
   obtain ⟨hc, -, hu, -⟩ := _root_.GlobalTheory.BigOn.links2_of_rows_alt _ _ _ _ _ _ _ _ _ _ p hp hM.1
-  have hTie : TieIn p.T p.R.toRealDat p.κ p.v₀ :=
-    ⟨p.fw.laws, p.fw.alg_eq, p.fw.kap, p.fw.hv₀, p.fw.chiR, p.fw.x0⟩
   exact
     { size := (Fm.parT x hx i).nV_ge
       host := p.host
       std := GlobalTheory.StdFrame.vStd_of_orthonormal_span _ j (p.stdV j)
       laws := p.fw.laws
-      core :=
-        { lev := hc.lev
-          grp := ⟨hc.grp.red_R, hc.grp.red_L, hc.grp.levels, hc.grp.record, hc.grp.chiW⟩
-          fam := ⟨hc.fam.tie, hc.fam.Sb, hc.fam.roots, hc.fam.pl_onto, hc.fam.degR, hc.fam.degL, hc.fam.muVal, hc.fam.etaVal⟩
-          models := ⟨hc.models.inf, hc.models.vpos, hc.models.cX, hc.models.cV, hc.models.prX, hc.models.HX, hc.models.HV,
-            hc.models.HE, hc.models.HW, hc.models.gE, hc.models.gW, hc.models.jX, hc.models.jV, hc.models.νY, hc.models.νY',
-            hc.models.ν0, hc.models.νX, hc.models.νV, hc.models.νW, hc.models.BV, hc.models.order⟩
-          chain := ⟨hc.chain.ωY, hc.chain.ωX, hc.chain.vY, hc.chain.vX, hc.chain.ptY, hc.chain.ptX, hc.chain.ItY, hc.chain.ItX,
-            hc.chain.ioY, hc.chain.ioX, hc.chain.Th⟩
-          thP := ⟨hc.thP.ωP, hc.thP.vP, hc.thP.pt_theta, hc.thP.ioP, hc.thP.thF_mem, hc.thP.thF, hc.thP.thG⟩ }
+      core := { lev := hc.lev, grp := { hc.grp with }, fam := { hc.fam with },
+                models := { hc.models with }, chain := { hc.chain with }, thP := { hc.thP with } }
       unif := hu
       fw := ⟨p.fw⟩
-      tieIn := hTie
+      tieIn := ⟨p.fw.laws, p.fw.alg_eq, p.fw.kap, p.fw.hv₀, p.fw.chiR, p.fw.x0⟩
       io := hp.ioExt
       guard := p.qGuard
       fin := GlobalTheory.BigOn.Check.finite_tuples_of_indefiniteSidePoint p

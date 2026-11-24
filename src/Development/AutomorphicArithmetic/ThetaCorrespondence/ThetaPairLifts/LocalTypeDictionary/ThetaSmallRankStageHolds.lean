@@ -339,15 +339,13 @@ theorem theta_vanish_all_of_irreducible : _root_.GlobalTheory.FunPr.ThetaLocalIn
     obtain ⟨Φ₀, hΦ₀, hd, -, hI⟩ := hc Ψ hΨ
     have hp00 : p' Φ₀ = 0 := by
       have := kerp' hd
-      rw [LinearMap.mem_ker, map_sub, hp0, zero_sub, neg_eq_zero] at this
-      exact this
+      rwa [LinearMap.mem_ker, map_sub, hp0, zero_sub, neg_eq_zero] at this
     have h1 := hI 0 (zero_mem _) (by rw [map_zero, hp00])
     have h2 : GlobalTheory.SquareComm.thetaInt ωA ν 𝓕 0 = 0 := by funext h; simp [GlobalTheory.SquareComm.thetaInt, thetaKO]
     rw [h2] at h1
     have h3 : GlobalTheory.SquareComm.thetaInt ωB ν₁ 𝓕₁ Φ₀ = 0 := (smul_eq_zero.1 h1.symm).resolve_left hc0
     have h4 := hrel _ hd
-    rw [tsub Ψ Φ₀ (hint Ψ hΨ) (hint Φ₀ hΦ₀), h3, sub_zero] at h4
-    exact h4
+    rwa [tsub Ψ Φ₀ (hint Ψ hΨ) (hint Φ₀ hΦ₀), h3, sub_zero] at h4
   have stf : ∀ g ∈ GfC X, ∀ x ∈ K.map p', rf g x ∈ K.map p' := by
     rintro g hg _ ⟨Ψ, ⟨hΨS, hΨi, hΨ0⟩, rfl⟩
     refine ⟨ωB (1, g) Ψ, ⟨hm.mapB.stabX.1 g hg Ψ hΨS, fun h => ?_, ?_⟩, hm.mapB.eqf g hg Ψ hΨS⟩
@@ -373,8 +371,7 @@ theorem theta_vanish_all_of_irreducible : _root_.GlobalTheory.FunPr.ThetaLocalIn
   · have : p' Φ₂ ∈ K.map p' := by rw [htop]; exact Submodule.mem_top
     obtain ⟨Ψ, ⟨hΨS, hΨi, hΨ0⟩, hΨp⟩ := this
     have h0 := kill (Φ₂ - Ψ) (S.sub_mem hΦ₂ hΨS) (by rw [map_sub, hΨp, sub_self])
-    rw [tsub Φ₂ Ψ (hint Φ₂ hΦ₂) hΨi, hΨ0, sub_zero] at h0
-    exact h0
+    rwa [tsub Φ₂ Ψ (hint Φ₂ hΦ₂) hΨi, hΨ0, sub_zero] at h0
 end GlobalTheory.DefiniteSmallIrred
 end
 end

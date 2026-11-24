@@ -80,34 +80,23 @@ private theorem archSm_eval_eq (k : ℕ) (f : ℍ → ℂ) (hf : MDiff f) (σ : 
       ((|x 0 0 * x 1 1 - x 0 1 * x 1 0| ^ ((k : ℝ) / 2) : ℝ) : ℂ)) x0 := by
     refine Complex.ofRealCLM.contDiff.contDiffAt.comp x0 ?_
     exact habs.rpow_const_of_ne (abs_ne_zero.mpr hD)
-  have h2 : ContDiffAt ℝ ∞ (fun x : Fin 2 → Fin 2 → ℝ =>
-      ((x 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 1 1 : ℂ)) ^ (-(k : ℤ))) x0 := by
-    have hz : AnalyticAt ℂ (fun z : ℂ => z ^ (-(k : ℤ)))
+  have hpow : ∀ n : ℤ, ContDiffAt ℝ ∞ (fun x : Fin 2 → Fin 2 → ℝ =>
+      ((x 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 1 1 : ℂ)) ^ n) x0 := fun n => by
+    have hz : AnalyticAt ℂ (fun z : ℂ => z ^ n)
         ((x0 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x0 1 1 : ℂ)) :=
-      (differentiableOn_zpow (-(k : ℤ)) _ (by tauto)).analyticOnNhd isOpen_compl_singleton _ hc
+      (differentiableOn_zpow n _ (by tauto)).analyticOnNhd isOpen_compl_singleton _ hc
     exact (hz.contDiffAt.restrict_scalars ℝ).comp x0 hcd.contDiffAt
-  have hinv : ContDiffAt ℝ ∞ (fun x : Fin 2 → Fin 2 → ℝ =>
-      ((x 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 1 1 : ℂ)) ^ (-1 : ℤ)) x0 := by
-    have hz : AnalyticAt ℂ (fun z : ℂ => z ^ (-1 : ℤ))
-        ((x0 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x0 1 1 : ℂ)) :=
-      (differentiableOn_zpow (-1 : ℤ) _ (by tauto)).analyticOnNhd isOpen_compl_singleton _ hc
-    exact ContDiffAt.comp (g := fun z : ℂ => z ^ (-1 : ℤ))
-      (f := fun x : Fin 2 → Fin 2 → ℝ =>
-        (x 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 1 1 : ℂ)) x0
-      (hz.contDiffAt.restrict_scalars ℝ) hcd.contDiffAt
   have hw : ContDiffAt ℝ ∞ (fun x : Fin 2 → Fin 2 → ℝ =>
       σ * (((x 0 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 0 1 : ℂ)) /
         ((x 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 1 1 : ℂ)))) x0 := by
     simp only [div_eq_mul_inv, ← zpow_neg_one]
-    exact contDiffAt_const.mul (had.contDiffAt.mul hinv)
-  have hF : AnalyticAt ℂ (f ∘ ofComplex) (σ * (((x0 0 0 : ℂ) * (UpperHalfPlane.I : ℂ) +
-      (x0 0 1 : ℂ)) / ((x0 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x0 1 1 : ℂ)))) :=
-    (UpperHalfPlane.mdifferentiable_iff.mp hf).analyticOnNhd isOpen_upperHalfPlaneSet _ him
+    exact contDiffAt_const.mul (had.contDiffAt.mul (hpow (-1)))
   have h3 := ContDiffAt.comp (g := f ∘ ofComplex) (f := fun x : Fin 2 → Fin 2 → ℝ =>
       σ * (((x 0 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 0 1 : ℂ)) /
         ((x 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 1 1 : ℂ)))) x0
-    (hF.contDiffAt.restrict_scalars ℝ) hw
-  exact (h1.mul h2).mul h3
+    ((UpperHalfPlane.mdifferentiable_iff.mp hf).analyticOnNhd isOpen_upperHalfPlaneSet _ him
+      |>.contDiffAt.restrict_scalars ℝ) hw
+  exact (h1.mul (hpow _)).mul h3
 
 theorem UpperTheory.V.Af.Nf.archSm :
     UpperTheory.V.Af.Nf.ArchSm := by

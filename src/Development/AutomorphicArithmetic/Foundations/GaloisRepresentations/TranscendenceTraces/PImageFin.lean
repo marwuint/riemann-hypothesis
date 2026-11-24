@@ -57,9 +57,7 @@ private theorem isFinite_sigma_desc_of_finite (ι : Type) [Finite ι] :
       apply Sigma.hom_ext
       intro a
       simp [i]
-    have h' : Sigma.desc p = i.inv ≫ Sigma.desc (fun a => p (e a)) := by
-      rw [← h, Iso.inv_hom_id_assoc]
-    rw [h']
+    rw [i.eq_inv_comp.2 h]
     infer_instance
   | h_empty =>
     intro S Z p hp
@@ -91,12 +89,8 @@ private theorem isFinite_sigma_desc_of_finite (ι : Type) [Finite ι] :
       · apply Sigma.hom_ext
         intro a
         simp [i]
-    have h' : Sigma.desc p = i.inv ≫ coprod.desc (p none) (Sigma.desc fun a => p (some a)) := by
-      rw [← h, Iso.inv_hom_id_assoc]
-    have c : IsFinite (coprod.desc (p none) (Sigma.desc fun a => p (some a))) := inferInstance
     have d0 : IsIso i.inv := ⟨i.hom, i.inv_hom_id, i.hom_inv_id⟩
-    have d : IsFinite i.inv := inferInstance
-    rw [h']
+    rw [i.eq_inv_comp.2 h]
     infer_instance
 
 set_option backward.isDefEq.respectTransparency false in

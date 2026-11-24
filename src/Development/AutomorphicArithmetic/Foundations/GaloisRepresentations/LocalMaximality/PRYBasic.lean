@@ -70,8 +70,7 @@ private lemma int_mono {E L : Type} [CommRing E] [Algebra ℂ E] [CommRing L] [A
     {A B : Subalgebra ℂ E} (h : A ≤ B) {y : L} (hy : IsIntegral A y) : IsIntegral B y := by
   obtain ⟨p, hp, he⟩ := hy
   refine ⟨p.map (Subalgebra.inclusion h).toRingHom, hp.map _, ?_⟩
-  rw [Polynomial.eval₂_map]
-  exact he
+  rwa [Polynomial.eval₂_map]
 
 private lemma int_scale {L : Type} [Field L] [Algebra ℂ L] (A A' : Subalgebra ℂ L) (s : L) (hs : s ∈ A)
     (hc : ∀ c ∈ A', ∃ N : ℕ, s ^ N * c ∈ A) {y : L} (hy : IsIntegral A' y) :
@@ -104,8 +103,7 @@ private lemma int_scale {L : Type} [Field L] [Algebra ℂ L] (A A' : Subalgebra 
   have hre : (Polynomial.scaleRoots q (s ^ M)).eval₂ (RingHom.id L) (y * s ^ M) = 0 := by
     have := Polynomial.scaleRoots_eval₂_mul (p := q) (RingHom.id L) y (s ^ M)
     rw [hqe, mul_zero] at this
-    rw [mul_comm]
-    exact this
+    rwa [mul_comm]
   have hA : ∀ i, (Polynomial.scaleRoots q (s ^ M)).coeff i ∈ A := by
     intro i
     rw [Polynomial.coeff_scaleRoots]
@@ -121,8 +119,7 @@ private lemma int_scale {L : Type} [Field L] [Algebra ℂ L] (A A' : Subalgebra 
       exact A.zero_mem
   have hlift : Polynomial.scaleRoots q (s ^ M) ∈ Polynomial.lifts (algebraMap A L) := by
     rw [Polynomial.lifts_iff_coeff_lifts]
-    intro i
-    exact ⟨⟨_, hA i⟩, rfl⟩
+    exact fun i => ⟨⟨_, hA i⟩, rfl⟩
   obtain ⟨r, hr, -, hrm'⟩ := Polynomial.lifts_and_natDegree_eq_and_monic hlift hrm
   refine ⟨r, hrm', ?_⟩
   rw [← hr, Polynomial.eval₂_map] at hre
@@ -235,5 +232,4 @@ theorem UpperTheory.Gal.productCup_of_system.rYBasic_of :
       rw [e]
       exact (le_sup_right : R2 (xv x) j2 J ≤ RY (xv x) j2 I J)
         (j2_mem_R2_of_mem_rB (xv x) j2 (rA_mem_rB (xv x) (ratio_mem (xv x) hj b)))
-  · intro J j hj j' y hy
-    exact integralClosure_shift_power (xv x) j2 hY.covZ hj hy
+  · exact fun J j hj j' y hy => integralClosure_shift_power (xv x) j2 hY.covZ hj hy

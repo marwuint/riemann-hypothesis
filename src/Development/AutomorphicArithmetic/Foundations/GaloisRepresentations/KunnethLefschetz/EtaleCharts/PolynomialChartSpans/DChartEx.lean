@@ -120,8 +120,7 @@ private theorem alg_core {D : ℕ} (u : Fin D → B)
       obtain ⟨s, rfl⟩ := hx
       refine Ideal.Quotient.eq_zero_iff_mem.1 ?_
       have := congrArg ρ (ht0 s)
-      rw [map_mul, map_sub, hρ, hρ, map_zero, ← ht, ← map_sub, ← map_mul, mul_comm] at this
-      exact this
+      rwa [map_mul, map_sub, hρ, hρ, map_zero, ← ht, ← map_sub, ← map_mul, mul_comm] at this
     | zero => simp
     | add x y _ _ hx hy => rw [mul_add]; exact J.add_mem hx hy
     | smul a x _ hx => rw [smul_eq_mul, mul_left_comm]; exact J.mul_mem_left a hx
@@ -244,8 +243,7 @@ private theorem sq_main (Z : Sch R) (U : Z.left.Opens) (hU : IsAffineOpen U) :
   haveI : IsOpenImmersion j := inferInstanceAs (IsOpenImmersion hU.fromSpec)
   have hj : Spec.map (CommRingCat.ofHom (algebraMap R B)) = j ≫ Z.hom := by
     have := IsAffineOpen.SpecMap_appLE_fromSpec Z.hom (isAffineOpen_top _) hU (le_top : U ≤ Z.hom ⁻¹ᵁ ⊤)
-    rw [IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp] at this
-    exact this
+    rwa [IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp] at this
   let ψ₀ := pullback.map (Spec.map (CommRingCat.ofHom (algebraMap R B))) (Spec.map (CommRingCat.ofHom (algebraMap R B)))
     Z.hom Z.hom j j (𝟙 _) (by rw [Category.comp_id, hj]) (by rw [Category.comp_id, hj])
   haveI : IsOpenImmersion ψ₀ := MorphismProperty.pullbackMap (P := IsOpenImmersion) inferInstance inferInstance hj hj
@@ -344,8 +342,7 @@ theorem dChartEx : DChartEx := by
       rw [Ideal.map_span, ← Set.range_comp, map_mul] at h3
       have hu : IsUnit ((secRes (XX Z) hNW).toRingHom t) := by
         have := (XX Z).left.toRingedSpace.isUnit_res_basicOpen t'
-        rw [show (secRes (XX Z) hNW).toRingHom t = _ from secRes_apply (XX Z) hNW t]
-        exact this
+        rwa [show (secRes (XX Z) hNW).toRingHom t = _ from secRes_apply (XX Z) hNW t]
       exact (Ideal.unit_mul_mem_iff_mem _ hu).1 h3
     · rintro _ ⟨k, rfl⟩
       refine Ideal.mem_map_of_mem (secRes (XX Z) hNW).toRingHom ?_

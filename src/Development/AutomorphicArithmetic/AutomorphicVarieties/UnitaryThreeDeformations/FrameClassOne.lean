@@ -93,8 +93,7 @@ private theorem char_triv (K Ω : Type) [Field K] [NumberField K] [IsCyclotomicE
       have hinj := (algebraMap K Ω).injective
       have : (IsCyclotomicExtension.zeta (2 ^ 2) ℚ K) ^ 2 = 1 := by
         apply hinj
-        rw [map_pow, map_one]
-        exact h2
+        rwa [map_pow, map_one]
       have := (hζ.pow_eq_one_iff_dvd 2).1 this
       norm_num at this
     have hsq : z ^ 2 = -1 := by
@@ -148,38 +147,30 @@ private theorem mem_iff (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
     rw [hs]
     interval_cases n
     · constructor
-      · intro h
-        exact absurd (by simpa using h.symm) h1
-      · intro h
-        exact absurd h (by decide)
+      · exact fun h => absurd (by simpa using h.symm) h1
+      · exact fun h => absurd h (by decide)
     · constructor
       · intro _
         decide
-      · intro _
-        exact pow_one ζ
+      · exact fun _ => pow_one ζ
     · constructor
       · intro h
         exfalso
         apply h1
         have h' : ζ * ζ = ζ * 1 := by
-          rw [mul_one, ← pow_two]
-          exact h
+          rwa [mul_one, ← pow_two]
         exact mul_left_cancel₀ hz h'
-      · intro h
-        exact absurd h (by decide)
+      · exact fun h => absurd h (by decide)
     · constructor
       · intro h
         exfalso
         apply h2
         have h' : ζ ^ 2 * ζ = 1 * ζ := by
-          rw [one_mul, ← pow_succ]
-          exact h
+          rwa [one_mul, ← pow_succ]
         exact mul_right_cancel₀ hz h'
-      · intro h
-        exact absurd h (by decide)
+      · exact fun h => absurd h (by decide)
   constructor
-  · intro h
-    exact (hcls σ).1 (h ⟨ζ, IntermediateField.mem_adjoin_simple_self ℚ ζ⟩)
+  · exact fun h => (hcls σ).1 (h ⟨ζ, IntermediateField.mem_adjoin_simple_self ℚ ζ⟩)
   · intro h x
     have hs : σ ζ = ζ := (hcls σ).2 h
     have hle : ℚ⟮ζ⟯ ≤ IntermediateField.fixedField (Subgroup.zpowers σ) := by
@@ -188,8 +179,7 @@ private theorem mem_iff (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
       have hst : σ ∈ MulAction.stabilizer (Formalism.ConjugateSelfDual.G ℚ Ω) ζ := hs
       have := (Subgroup.zpowers_le (H := MulAction.stabilizer (Formalism.ConjugateSelfDual.G ℚ Ω) ζ)).2 hst hτ
       exact this
-    have hx := (IntermediateField.mem_fixedField_iff _ _).1 (hle x.2) σ (Subgroup.mem_zpowers σ)
-    exact hx
+    exact (IntermediateField.mem_fixedField_iff _ _).1 (hle x.2) σ (Subgroup.mem_zpowers σ)
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual UpperTheory.V in
 open scoped Pointwise in
@@ -266,8 +256,7 @@ theorem UpperTheory.V.UnitaryThreeInertia.frame_class_one :
           rw [hF.D]
           exact hg.1
         have hgI : (⟨_, hgD⟩ : F.D ⟨v, hvS⟩) ∈ F.Iv ⟨v, hvS⟩ := by
-          rw [Subgroup.mem_subgroupOf, hF.I]
-          exact hg
+          rwa [Subgroup.mem_subgroupOf, hF.I]
         have heq : F.π g * (F.loc ⟨v, hvS⟩) ⟨_, hgD⟩ * (F.π g)⁻¹ = F.π u := by
           simp only [UpperTheory.V.UnitaryThreeInertia.Frame.loc, MonoidHom.comp_apply, Subgroup.coe_subtype, map_mul, map_inv]
           group
@@ -307,8 +296,7 @@ theorem UpperTheory.V.UnitaryThreeInertia.frame_class_one :
     rw [mem_iff Ω ζ hζ u]
     have h1 := DFunLike.congr_fun hF.η u
     rw [MonoidHom.comp_apply] at h1
-    rw [← h1]
-    exact hγ
+    rwa [← h1]
   have := htriv (eq ⟨u, hu⟩)
   simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply] at this
   rw [MonoidHom.one_apply, ← this]

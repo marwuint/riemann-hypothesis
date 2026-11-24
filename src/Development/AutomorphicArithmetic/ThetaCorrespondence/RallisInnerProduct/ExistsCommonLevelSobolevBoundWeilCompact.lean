@@ -438,8 +438,7 @@ theorem tendstoUniformly_heisO {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : 
   have := hj (w + x t)
   rw [dist_eq_norm] at this ⊢
   simp only [heisO]
-  rw [← mul_sub, norm_mul, hψ.1.2.1, one_mul]
-  exact this
+  rwa [← mul_sub, norm_mul, hψ.1.2.1, one_mul]
 
 theorem heisDer_of_tendstoUniformly : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (S T : HSp D) (G : ℕ → WO S T → ℂ) (F F' : WO S T → ℂ), (∀ j, IsThetaFunO ψ S T (G j)) → TendstoUniformly G F Filter.atTop → ∀ a : (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool), TendstoUniformly (fun j => GlobalTheory.Size.heisDer ψ θ a (G j)) F' Filter.atTop → GlobalTheory.Size.heisDer ψ θ a F = F' := by
   intro D ψ hψ θ hθ S T G F F' hG hF a hF'
@@ -456,8 +455,7 @@ theorem heisDer_of_tendstoUniformly : ∀ (D : D7) (ψ : AddChar (AF D.host.F) �
     (Filter.Eventually.of_forall fun j s => GlobalTheory.OrientedHeis.hasDerivAt_heisO hθ hψ hL (hG j) w s)
     (fun s => h1.tendsto_at s) 0
   have h4 := h3.deriv
-  rw [map_zero, GlobalTheory.OrientedHeis.heisO_zero] at h4
-  exact h4
+  rwa [map_zero, GlobalTheory.OrientedHeis.heisO_zero] at h4
 
 end UpperTheory.Lit.Rallis.ThetaLimDeriv
 
@@ -507,8 +505,7 @@ theorem differentiableAt_of_tendstoLocallyUniformly_directional :
         ∑ a, fderiv ℝ (g j) y (v a) • ((c a).smulRight (1 : ℂ)) := by
       funext j z
       exact key _
-    rw [e]
-    exact hlim
+    rwa [e]
   have hd : HasFDerivAt φ (∑ a, ψ a y • ((c a).smulRight (1 : ℂ))) y :=
     hasFDerivAt_of_tendstoLocallyUniformlyOn (l := atTop) (s := Set.univ) (f := g)
       (f' := fun j y => fderiv ℝ (g j) y) isOpen_univ
@@ -628,8 +625,7 @@ theorem sm_of_tendstoUniformly_words {G R A : Type} [AddCommGroup G] [NormedAddC
       rw [map_add (f := _), add_assoc]
     rw [← this, e2]
     ring
-  rw [e]
-  exact h2
+  rwa [e]
 
 theorem sum_coord_single {τs : Type} [Fintype τs] {m n : ℕ} (x : τs → Fin m → Fin n → ℂ)
     (v : τs × Fin m × Fin n × Bool → τs → Fin m → Fin n → ℂ)
@@ -777,8 +773,7 @@ theorem exists_bound_of_complete {E : Type} [AddCommGroup E] [Module ℂ E] (p :
       refine ⟨max N₁ N₂, fun i hi j hj => ?_⟩
       have := hN (j, i) (Prod.mk_le_mk.2 ⟨le_of_max_le_left hj, le_of_max_le_right hi⟩)
       simpa using this
-    refine ⟨x, (hp.tendsto_nhds u x).2 fun d ε hε => ?_⟩
-    exact (hx d).eventually (gt_mem_nhds hε)
+    exact ⟨x, (hp.tendsto_nhds u x).2 fun d ε hε => (hx d).eventually (gt_mem_nhds hε)⟩
   haveI : BarrelledSpace ℂ E := inferInstance
   have hlsc : LowerSemicontinuous q := by
     rw [lowerSemicontinuous_iff_isClosed_preimage]

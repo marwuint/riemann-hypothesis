@@ -171,31 +171,24 @@ private theorem map_mem_j_of_pres {k : Type} [Field k] [ValuativeRel k] [Topolog
   exact h hg
 
 theorem UpperTheory.V.Z.Sym.Sig.contract : UpperTheory.V.Z.Sym.Sig.Contract := by
-  intro k _ _ _ _ V n σ hσ d hd g hg
-  obtain ⟨x, hx, y, hy, rfl⟩ := hg
+  rintro k _ _ _ _ V n σ hσ d hd _ ⟨x, hx, y, hy, rfl⟩
   have NJ : ∀ z ∈ (glIwa k n).N, z ∈ V.J n := fun z hz =>
     Subgroup.mem_sup_left (Subgroup.mem_sup_left hz)
-  have NmJ : ∀ z ∈ (glIwa k n).Nm V.c, z ∈ V.J n := fun z hz => Subgroup.mem_sup_right hz
-  have NKO : ∀ z ∈ (glIwa k n).N, z ∈ KO k (Fin n) := fun z hz => hz.2
-  have NmKO : ∀ c, ∀ z ∈ (glIwa k n).Nm c, z ∈ KO k (Fin n) := fun c z hz =>
-    Subgroup.map_le_range _ _ hz.2
-  have hh : y * σ x ∈ V.J n := mul_mem hy (map_mem_j_of_pres V σ hσ x hx)
   have key : ∀ u : (glIwa k n).N, ∃ a ∈ (glIwa k n).N, ∃ s ∈ V.TH n, ∃ b ∈ (glIwa k n).Nm V.c,
       y * σ x * σ (u : GL (Fin n) k) = a * s * b := fun u =>
-    (factJ k V n).1 _ (mul_mem hh (NJ _ (hσ.N _ u.2)))
+    (factJ k V n).1 _
+      (mul_mem (mul_mem hy (map_mem_j_of_pres V σ hσ x hx)) (NJ _ (hσ.N _ u.2)))
   choose a ha s hs b hb hab using key
   let Ψ : (glIwa k n).N → (glIwa k n).N := fun u =>
     ⟨dg d * a u * (dg d)⁻¹,
-      ((shrink k n d hd 0).1 (a u) (ha u) (mem_kc_zero_of_mem_ko _ (NKO _ (ha u)))).1⟩
+      ((shrink k n d hd 0).1 (a u) (ha u) (mem_kc_zero_of_mem_ko _ (ha u).2)).1⟩
   obtain ⟨u, hu⟩ := fixPt k n (glIwa k n).N (Or.inl rfl) Ψ (by
     intro m u1 u2 h12
-    have e1 : (y * σ x * σ (u1 : GL (Fin n) k))⁻¹ * (y * σ x * σ (u2 : GL (Fin n) k)) =
-        σ ((u1 : GL (Fin n) k)⁻¹ * u2) := by
+    have h1 : (a u1 * s u1 * b u1)⁻¹ * (a u2 * s u2 * b u2) ∈ Kc k n m := by
+      rw [← hab, ← hab]
+      convert hσ.K m _ h12 using 1
       rw [map_mul, map_inv]
       group
-    have h1 : (a u1 * s u1 * b u1)⁻¹ * (a u2 * s u2 * b u2) ∈ Kc k n m := by
-      rw [← hab, ← hab, e1]
-      exact hσ.K m _ h12
     have h2 := (factJ k V n).2 m _ (ha u1) _ (ha u2) _ (hs u1) _ (hs u2) _ (hb u1) _ (hb u2) h1
     have h3 := ((shrink k n d hd m).1 _ (mul_mem (inv_mem (ha u1)) (ha u2)) h2).2
     have e2 : ((Ψ u1 : GL (Fin n) k))⁻¹ * (Ψ u2 : GL (Fin n) k) =
@@ -206,45 +199,38 @@ theorem UpperTheory.V.Z.Sym.Sig.contract : UpperTheory.V.Z.Sym.Sig.Contract := b
     exact h3)
   have hu' : dg d * a u * (dg d)⁻¹ = (u : GL (Fin n) k) := congrArg Subtype.val hu
   have ht := mem_ko_and_torus_of_mem_th V _ (hs u)
-  have tinvT : (s u)⁻¹ ∈ (glIwa k n).T := inv_mem ht.2
   have memΨ : ∀ w ∈ (glIwa k n).Nm V.c,
       (b u)⁻¹ * ((s u)⁻¹ * ((dg d)⁻¹ * σ w * dg d) * s u) ∈ (glIwa k n).Nm V.c := by
     intro w hw
     refine mul_mem (inv_mem (hb u)) ?_
-    have h1 := ((shrink k n d hd 0).2 V.c (σ w) (hσ.Nm _ _ hw)
-      (mem_kc_zero_of_mem_ko _ (NmKO _ _ (hσ.Nm _ _ hw)))).1
-    have h2 := (glIwa k n).T_Nm V.c _ tinvT _ h1
+    have h2 := (glIwa k n).T_Nm V.c _ (inv_mem ht.2) _ ((shrink k n d hd 0).2 V.c (σ w)
+      (hσ.Nm _ _ hw) (mem_kc_zero_of_mem_ko _ (Subgroup.map_le_range _ _ (hσ.Nm _ _ hw).2))).1
     rwa [inv_inv] at h2
   let Ψ₂ : (glIwa k n).Nm V.c → (glIwa k n).Nm V.c := fun w => ⟨_, memΨ w w.2⟩
   obtain ⟨w, hw⟩ := fixPt k n ((glIwa k n).Nm V.c) (Or.inr ⟨V.c, rfl⟩) Ψ₂ (by
     intro m w1 w2 h12
-    have e : ((Ψ₂ w1 : GL (Fin n) k))⁻¹ * (Ψ₂ w2 : GL (Fin n) k) =
-        (s u)⁻¹ * ((dg d)⁻¹ * σ ((w1 : GL (Fin n) k)⁻¹ * w2) * dg d) * ((s u)⁻¹)⁻¹ := by
-      simp only [Ψ₂]
-      rw [map_mul, map_inv]
-      group
-    rw [e]
-    refine conj_mem_kc_of_mem_ko _ _ _ (inv_mem ht.1) ?_
     have hmem : σ ((w1 : GL (Fin n) k)⁻¹ * w2) ∈ (glIwa k n).Nm V.c :=
       hσ.Nm _ _ (mul_mem (inv_mem w1.2) w2.2)
-    exact ((shrink k n d hd m).2 V.c _ hmem (hσ.K m _ h12)).2)
+    convert conj_mem_kc_of_mem_ko _ _ _ (inv_mem ht.1)
+      ((shrink k n d hd m).2 V.c _ hmem (hσ.K m _ h12)).2 using 1
+    simp only [Ψ₂]
+    rw [map_mul, map_inv]
+    group)
   have hw' : (b u)⁻¹ * ((s u)⁻¹ * ((dg d)⁻¹ * σ w * dg d) * s u) = (w : GL (Fin n) k) :=
     congrArg Subtype.val hw
   have comm : dg d * s u = s u * dg d :=
     (glIwa k n).comm _ ⟨d, rfl⟩ _ ((glIwa k n).T_le ht.2)
-  refine ⟨x * u * σ w, mul_mem (mul_mem hx (NJ _ u.2)) (NmJ _ (hσ.Nm _ _ w.2)), s u, hs u, ?_⟩
+  refine ⟨x * u * σ w, mul_mem (mul_mem hx (NJ _ u.2))
+    (Subgroup.mem_sup_right (hσ.Nm _ _ w.2)), s u, hs u, ?_⟩
   rw [map_mul, map_mul, hσ.invol]
   have E0 : (x * (u : GL (Fin n) k) * σ w)⁻¹ * (x * dg d * y) * (σ x * σ (u : GL (Fin n) k) * w) =
       (σ w)⁻¹ * ((u : GL (Fin n) k)⁻¹ * dg d * (y * σ x * σ (u : GL (Fin n) k)) * w) := by
-    group
-  have E4 : b u * (w : GL (Fin n) k) = (s u)⁻¹ * ((dg d)⁻¹ * σ w * dg d) * s u := by
-    conv_lhs => rw [← hw']
     group
   rw [E0, hab u, ← hu']
   have E5 : (dg d * a u * (dg d)⁻¹)⁻¹ * dg d * (a u * s u * b u) * (w : GL (Fin n) k) =
       dg d * s u * (b u * w) := by
     group
-  rw [E5, E4, ← comm]
+  rw [E5, ← eq_mul_of_inv_mul_eq hw', ← comm]
   group
 
 end

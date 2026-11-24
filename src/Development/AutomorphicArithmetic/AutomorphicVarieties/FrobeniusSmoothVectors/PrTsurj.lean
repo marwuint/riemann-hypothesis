@@ -73,8 +73,7 @@ theorem UpperTheory.V.Fr.pr_tbox :
     intro y
     obtain ⟨a, rfl⟩ := IsLocalRing.residue_surjective y
     have h := (res O (ResidueField O)).commutes a
-    rw [IsLocalRing.ResidueField.algebraMap_eq] at h
-    exact h
+    rwa [IsLocalRing.ResidueField.algebraMap_eq] at h
   have hbar : Box.bar O B = B := by
     apply Box.ext
     · ext s
@@ -89,9 +88,7 @@ theorem UpperTheory.V.Fr.pr_tbox :
     intro X
     ext i j
     simp [p, ι, TrivSqZeroExt.algebraMap_eq_inl]
-  have hloc : ∀ v, Continuous (F.loc v) := by
-    intro v
-    exact continuous_subtype_val.comp (hF.loc_cont v)
+  have hloc : ∀ v, Continuous (F.loc v) := fun v => continuous_subtype_val.comp (hF.loc_cont v)
   have hlc : ∀ (f : Matrix (Fin n) (Fin n) (ResidueField O) → DualNumber (ResidueField O)) (N : ℕ),
       IsLocallyConstant fun s => Ideal.Quotient.mk (maximalIdeal (DualNumber (ResidueField O)) ^ N) (f (B.r s).mat) :=
     fun f N => hB.comp (fun M => Ideal.Quotient.mk _ (f M))
@@ -104,13 +101,11 @@ theorem UpperTheory.V.Fr.pr_tbox :
       t := fun v s => GeneralLinearGroup.map ι (B.g v * (B.r (F.loc v s)).left * (B.g v)⁻¹)
       t_cont := by
         intro v i j N
-        have h := (hlc (fun M => ι (((B.g v).val * M * (B.g v)⁻¹.val) i j)) N).comp_continuous (hloc v)
-        exact h
+        exact (hlc (fun M => ι (((B.g v).val * M * (B.g v)⁻¹.val) i j)) N).comp_continuous (hloc v)
       t_tri := by
         intro v s i j hij
         have h := congrArg ι (B.tri v s i j hij)
-        rw [map_zero] at h
-        exact h
+        rwa [map_zero] at h
       t_map := fun v s => hp _ }
   let μ : ResidueField O →+ DualNumber (ResidueField O) :=
     (TrivSqZeroExt.inrHom (ResidueField O) (ResidueField O)).toAddMonoidHom
@@ -137,8 +132,7 @@ theorem UpperTheory.V.Fr.pr_tbox :
     intro s t
     have h1 := congrArg SemidirectProduct.left (map_mul ((GG.map ι).comp B.r) s t)
     have h2 : (((GG.map ι).comp B.r) s).right = F.del s := B.nu s
-    rw [SemidirectProduct.mul_left, h2] at h1
-    exact h1
+    rwa [SemidirectProduct.mul_left, h2] at h1
   refine (pr_correct hF O _ _ p B D μ hμ (fun c => by simp [p, μ]) (fun s => -x.1 s) (fun v => -x.2 v)
     (fun _ _ => 0) ?g1 ?g2 ?g3 ?g4).imp fun B' h => ⟨h.1, h.2.1, fun s => ?g5⟩
   case g5 =>

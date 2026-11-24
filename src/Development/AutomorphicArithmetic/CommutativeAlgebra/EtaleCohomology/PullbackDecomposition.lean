@@ -90,10 +90,8 @@ private theorem exists_idem {A : Test l} {S : Fam A} (h : IsDec S) :
   · refine ext' _ _ fun j => ?_
 
     rw [map_sum, map_one, Finset.sum_eq_single j, hsame]
-    · intro i _ hij
-      exact hne i j hij.symm
-    · intro hj
-      exact absurd (Finset.mem_univ j) hj
+    · exact fun i _ hij => hne i j hij.symm
+    · exact fun hj => absurd (Finset.mem_univ j) hj
   · intro i a ha
     refine ext' _ _ fun j => ?_
     rw [map_mul, map_zero]

@@ -213,8 +213,7 @@ theorem UpperTheory.integralClosure_range_isLocalization_idempotent :
     obtain ⟨⟨b, s⟩, hbs⟩ := IsLocalization.surj S (t' z)
     have hbs' : t' z = jB b := by
       have h : t' z * jB s = jB b := hbs
-      rw [h1 _ s.2, mul_one] at h
-      exact h
+      rwa [h1 _ s.2, mul_one] at h
     obtain ⟨p, hp, hpz⟩ := (hC' (t' z)).mp ⟨z, rfl⟩
     have hj : jB (Polynomial.eval₂ a b p) = jB 0 := by
       rw [map_zero, Polynomial.hom_eval₂, ← hbs']
@@ -394,8 +393,7 @@ private theorem away_rho (R : Type) [CommRing R] (f : R) (V : (Spec (CommRingCat
   have hp : Submonoid.map φ.symm (Submonoid.powers ((Scheme.ΓSpecIso (CommRingCat.of R)).inv f)) = Submonoid.powers f := by
     rw [Submonoid.map_powers]
     exact congrArg Submonoid.powers (φ.symm_apply_apply f)
-  rw [hp] at h2
-  exact h2
+  rwa [hp] at h2
 
 private theorem loc_part {W : Type} [CommRing W] (hW : ProdACF W) (q : PrimeSpectrum W)
     (V : (Spec (CommRingCat.of W)).Opens) (hV : IsCompact (V : Set (Spec (CommRingCat.of W)))) :
@@ -439,8 +437,7 @@ private theorem sec_part {X Y : Scheme.{0}} (f : X ⟶ Y) [QuasiCompact f] [Quas
   rw [h2]
   have hb := ConcreteCategory.bijective_of_isIso (f.normalizationObjIso hU).hom
   constructor
-  · intro x y hxy
-    exact hb.1 (Subtype.ext hxy)
+  · exact fun x y hxy => hb.1 (Subtype.ext hxy)
   · intro b
     constructor
     · rintro ⟨x, rfl⟩

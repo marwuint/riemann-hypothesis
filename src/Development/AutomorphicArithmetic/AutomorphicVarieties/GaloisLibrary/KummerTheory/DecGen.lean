@@ -155,8 +155,7 @@ private theorem frob_pow {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alg
       have hc1 : A.valuation (c : Ω) ≤ 1 := A.valuation_le_one c
       calc _ ≤ A.valuation ((φ ^ n) x - x ^ q ^ n) * 1 := by gcongr
         _ < 1 := by
-          rw [mul_one]
-          exact e2
+          rwa [mul_one]
     have h5 : (φ ^ (n + 1)) x - x ^ q ^ (n + 1) =
         (φ ((φ ^ n) x) - ((φ ^ n) x) ^ q) + (((φ ^ n) x) ^ q - (x ^ q ^ n) ^ q) := by
       rw [pow_succ' φ n, AlgEquiv.mul_apply, pow_succ q n, pow_mul]
@@ -189,11 +188,7 @@ private theorem dec_pow_fin {K Ω : Type} [Field K] [NumberField K] [Field Ω] [
     obtain ⟨x, rfl⟩ := IsLocalRing.residue_surjective y
     exact alg_residue A _ x ((IsFractionRing.isAlgebraic_iff ℤ ℚ Ω).2 (Algebra.IsAlgebraic.isAlgebraic (x : Ω)))⟩
   let gD : ValuationSubring.decompositionSubgroup K A := ⟨g, hg⟩
-  have hfix : ∀ a : 𝓞 K, gD • f0 a = f0 a := by
-    intro a
-    apply Subtype.ext
-    show g (algebraMap K Ω (a : K)) = algebraMap K Ω (a : K)
-    exact g.commutes _
+  have hfix : ∀ a : 𝓞 K, gD • f0 a = f0 a := fun a => Subtype.ext (g.commutes _)
   let τ : IsLocalRing.ResidueField A →ₐ[𝓞 K ⧸ v.asIdeal] IsLocalRing.ResidueField A :=
     { MulSemiringAction.toRingHom _ (IsLocalRing.ResidueField A) gD with
       commutes' := by
@@ -210,8 +205,7 @@ private theorem dec_pow_fin {K Ω : Type} [Field K] [NumberField K] [Field Ω] [
     hi _ (Finset.mem_image_of_mem _ hx)
   have h2 : IsLocalRing.residue A (gD • x - x ^ normV v ^ i) = 0 := by
     rw [map_sub, IsLocalRing.ResidueField.residue_smul, map_pow, h1, sub_self]
-  rw [IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff] at h2
-  exact h2
+  rwa [IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff] at h2
 
 private theorem closed_ev {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] [Algebra.IsAlgebraic K Ω] (x : Ω)
     (P : Ω → Prop) : IsClosed {h : G K Ω | P (h x)} := by
@@ -225,8 +219,7 @@ private theorem closed_ev {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] [Alg
     have hkx : k x = x :=
       (IntermediateField.mem_fixingSubgroup_iff _ _).1 hk x (IntermediateField.mem_adjoin_simple_self K x)
     show ¬ P ((h * k) x)
-    rw [AlgEquiv.mul_apply, hkx]
-    exact hh
+    rwa [AlgEquiv.mul_apply, hkx]
   · exact isOpenMap_mul_left h _ (IntermediateField.fixingSubgroup_isOpen _)
 
 theorem UpperTheory.V.Kum.decGen :
@@ -242,8 +235,7 @@ theorem UpperTheory.V.Kum.decGen :
       ext h
       simp only [Set.mem_iInter, Set.mem_setOf_eq, SetLike.mem_coe]
       constructor
-      · intro hh x
-        exact apply_mem_iff_of_mem_Dec hh x
+      · exact fun hh x => apply_mem_iff_of_mem_Dec hh x
       · intro hh
         rw [mem_Dec]
         ext y

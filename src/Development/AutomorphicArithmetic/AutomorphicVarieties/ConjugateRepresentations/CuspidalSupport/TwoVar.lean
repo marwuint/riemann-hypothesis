@@ -78,8 +78,7 @@ private theorem tensor_exists_finBasis_expansion {V W : Type} [AddCommGroup V] [
     refine ⟨fun a => (Module.finBasis ℂ V).repr v a • w, ?_⟩
     conv_lhs => rw [← (Module.finBasis ℂ V).sum_repr v]
     rw [TensorProduct.sum_tmul]
-    refine Finset.sum_congr rfl (fun a _ => ?_)
-    exact TensorProduct.smul_tmul _ _ _
+    exact Finset.sum_congr rfl (fun a _ => TensorProduct.smul_tmul _ _ _)
   | add t1 t2 h1 h2 =>
     obtain ⟨m1, rfl⟩ := h1
     obtain ⟨m2, rfl⟩ := h2
@@ -173,17 +172,13 @@ theorem UpperTheory.V.Cj.S.twoVar :
   have hA' : ∀ i (v : V), ((A' i v : V) : M) = A i v := fun i v => rfl
   have hB' : ∀ k (w : W), ((B' k w : W) : N) = B k w := fun k w => rfl
   have cA : ∀ i i', Commute (A' i) (A' i') := by
-    intro i i'
-    exact LinearMap.ext fun v => Subtype.ext (hAc i i' v v.2)
+    exact fun i i' => LinearMap.ext fun v => Subtype.ext (hAc i i' v v.2)
   have cB : ∀ k k', Commute (B' k) (B' k') := by
-    intro k k'
-    exact LinearMap.ext fun w => Subtype.ext (hBc k k' w w.2)
+    exact fun k k' => LinearMap.ext fun w => Subtype.ext (hBc k k' w w.2)
   obtain ⟨v, w', l, m, hv, hw', hAv, hBw, hprop⟩ := hT V W ι κ A' B' cA cB z hz0
   refine ⟨v, v.2, w', w'.2, l, m, ?_, ?_, ?_, ?_, ?_⟩
-  · intro h
-    exact hv (Subtype.ext h)
-  · intro h
-    exact hw' (Subtype.ext h)
+  · exact fun h => hv (Subtype.ext h)
+  · exact fun h => hw' (Subtype.ext h)
   · intro i
     have := congrArg Subtype.val (hAv i)
     simpa [hA'] using this

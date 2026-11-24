@@ -122,8 +122,7 @@ private theorem inc_mem {l : ℕ} [Fact l.Prime] {c c' : Coef l} (h : c.O ≤ c'
   obtain ⟨hinj, -⟩ := dvrFacts l c.O
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible c.O
   have hx' : π ∣ x := by
-    rw [hπ.maximalIdeal_eq, Ideal.mem_span_singleton] at hx
-    exact hx
+    rwa [hπ.maximalIdeal_eq, Ideal.mem_span_singleton] at hx
   have hl0 : (l : c.O) ≠ 0 := by
     rw [← map_natCast (algebraMap ℤ_[l] c.O)]
     exact (map_ne_zero_iff _ hinj).2 (by exact_mod_cast (Fact.out : l.Prime).ne_zero)
@@ -173,8 +172,7 @@ theorem UpperTheory.deformationSpace_local_characters_continuous :
   refine ⟨hl', fun v i => IsUnit.liftRight
     { toFun := fun s => f (X.ψ v i s)
       map_one' := by
-        simp only [OneMemClass.coe_one]
-        exact (congrArg f (one v i)).trans (map_one f)
+        simpa only [OneMemClass.coe_one] using (congrArg f (one v i)).trans (map_one f)
       map_mul' := by
         intro s t
         simp only [Subgroup.coe_mul]
@@ -189,16 +187,14 @@ theorem UpperTheory.deformationSpace_local_characters_continuous :
   · intro s hs
     have hr := hT.ineL (T.pl v) (T.ovl v) s hs
     have hps : ∀ j, residue c.O ↑(D.ps j (resQ T.F s)) = 1 := fun j => by
-      have e := congrArg (fun M => M j j) hr
-      simpa [Raw.rbar, Raw.r0, mapRep_apply, diagRep] using e
+      simpa [Raw.rbar, Raw.r0, mapRep_apply, diagRep] using congrArg (fun M => M j j) hr
     refine ⟨?_, ?_⟩
     · show f (X.ψ v i s) - 1 ∈ maximalIdeal R
       have hres : residue c'.O (inc h ↑(D.ps (lab T.pr i) (resQ T.F s))) = 1 := by
         have h1 : (↑(D.ps (lab T.pr i) (resQ T.F s)) : c.O) - 1 ∈ maximalIdeal c.O :=
           (residue_eq_zero_iff _).1 (by rw [map_sub, hps, map_one, sub_self])
         have h2 := inc_mem h h1
-        rw [map_sub, map_one, ← residue_eq_zero_iff, map_sub, map_one, sub_eq_zero] at h2
-        exact h2
+        rwa [map_sub, map_one, ← residue_eq_zero_iff, map_sub, map_one, sub_eq_zero] at h2
       have hB : X.ψ v i s - 1 ∈ maximalIdeal X.B := by
         rw [← res_eq_zero_iff c'.O X.B, map_sub, map_one, X.ψ_red v i s s.2]
         show residue c'.O (inc h ↑(D.ps (lab T.pr i) (resQ T.F s))) - 1 = 0

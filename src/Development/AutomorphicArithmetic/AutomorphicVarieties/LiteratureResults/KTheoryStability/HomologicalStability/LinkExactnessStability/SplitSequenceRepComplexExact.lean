@@ -95,8 +95,7 @@ theorem splitSet_chains_incl : ∀ (R : Type) [CommRing R] (n p : ℕ), Function
     constructor
     · rintro ⟨x, rfl⟩
       exact x.2
-    · intro hl
-      exact ⟨⟨l, hl⟩, rfl⟩
+    · exact fun hl => ⟨⟨l, hl⟩, rfl⟩
   · intro c
     rw [hD]
     have key := LinearMap.congr_fun (split_set_boundary_comp_face_sum R n p) c
@@ -152,11 +151,9 @@ theorem main : ∀ (R : Type) [CommRing R] (n : ℕ), (∀ p, splitD R n (p + 1)
     obtain ⟨b, hb, hbeq⟩ := h0 _ hy hbd
     have hb' : b ∈ LinearMap.range
         (Finsupp.lmapDomain ℤ ℤ (Subtype.val : SplitSet R n 1 → List ((Fin n → R) × (Fin n → R)))) := by
-      rw [(key 1).2.1]
-      exact hb
+      rwa [(key 1).2.1]
     obtain ⟨x, rfl⟩ := LinearMap.mem_range.mp hb'
-    refine ⟨x, (key 0).1 ?_⟩
-    exact ((key 0).2.2 x).trans hbeq
+    exact ⟨x, (key 0).1 (((key 0).2.2 x).trans hbeq)⟩
   · intro (y : SplitSet R n (p + 1) →₀ ℤ)
     constructor
     · intro hy0
@@ -171,11 +168,9 @@ theorem main : ∀ (R : Type) [CommRing R] (n : ℕ), (∀ p, splitD R n (p + 1)
       obtain ⟨b, hb, hbeq⟩ := hp _ hy hbd
       have hb' : b ∈ LinearMap.range
           (Finsupp.lmapDomain ℤ ℤ (Subtype.val : SplitSet R n (p + 1 + 1) → List ((Fin n → R) × (Fin n → R)))) := by
-        rw [(key (p + 1 + 1)).2.1]
-        exact hb
+        rwa [(key (p + 1 + 1)).2.1]
       obtain ⟨x, rfl⟩ := LinearMap.mem_range.mp hb'
-      refine ⟨x, (key (p + 1)).1 ?_⟩
-      exact ((key (p + 1)).2.2 x).trans hbeq
+      exact ⟨x, (key (p + 1)).1 (((key (p + 1)).2.2 x).trans hbeq)⟩
     · rintro ⟨x, rfl⟩
       exact hzero p x
 

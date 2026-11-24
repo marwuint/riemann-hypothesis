@@ -70,8 +70,7 @@ private theorem eq_one_of_cong {L : Type} [Field L] [NumberField L] [IsCMField L
       field_simp
     have hval : Valued.v (algebraMap L (v.adicCompletion L) ((δ - 1) / m)) = v.valuation L ((δ - 1) / m) :=
       v.valuedAdicCompletion_eq_valuation' _
-    rw [← hval, hxa]
-    exact ha
+    rwa [← hval, hxa]
   obtain ⟨y, hy⟩ := HeightOneSpectrum.mem_integers_of_valuation_le_one L _ hx
   by_contra hne
   have hy0 : y ≠ 0 := by
@@ -144,8 +143,7 @@ theorem UpperTheory.V.Z.Sym.So.detRoot :
       simp only [Formalism.UG.cT, Matrix.det_transpose]
       exact (RingHom.map_det (IsCMField.complexConj L).toRingEquiv.toRingHom γ₀.val).symm
     rw [hc] at this
-    rw [mul_comm]
-    exact this
+    rwa [mul_comm]
   have hD : (f : GA L 2).val.det * (k : GA L 2).val.det = algebraMap L (Ad L) γ₀.val.det := by
     rw [RingHom.map_det]
     have h2 : (γ₀.val.map (algebraMap L (Ad L))) = ((f * k : UA L 2) : GA L 2).val := by rw [← hv, hγ₀]
@@ -199,9 +197,7 @@ theorem UpperTheory.V.Z.Sym.So.detRoot :
     exact hfI.trans e.symm
   have hk1 : (k : GA L 2).val.det = 1 := by rwa [hf1, one_mul] at hD
   refine ⟨?_, ?_⟩
-  · refine MonoidHom.mem_ker.2 (Units.ext ?_)
-    exact hf1
-  · refine MonoidHom.mem_ker.2 (Units.ext ?_)
-    exact hk1
+  · exact MonoidHom.mem_ker.2 (Units.ext hf1)
+  · exact MonoidHom.mem_ker.2 (Units.ext hk1)
 
 end

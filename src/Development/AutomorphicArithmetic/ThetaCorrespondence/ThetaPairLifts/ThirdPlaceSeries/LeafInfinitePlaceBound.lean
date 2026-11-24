@@ -192,13 +192,11 @@ theorem fun0Fit_of_leaves_alt (Fld : FldT) (Comparison₂ : TieT) (hB : _root_.G
   · have : LinearMap.ker (d.O.vmu _).mulVecLin = _ := l3
     rw [v1] at this
     show LinearMap.ker ((d.data ze Tf dF).vmu _).mulVecLin = _
-    rw [v0]
-    exact this
+    rwa [v0]
   · have := GlobalTheory.finitePlaceBound_inv_rootOfUnity_smul _ ze _ _ _ z2 l4
     simp only [v1] at this
     exact this
-  · intro vb hvb
-    exact l5 vb (hvb.trans v0)
+  · exact fun vb hvb => l5 vb (hvb.trans v0)
 end GlobalTheory.BigTop.Fun
 end
 end

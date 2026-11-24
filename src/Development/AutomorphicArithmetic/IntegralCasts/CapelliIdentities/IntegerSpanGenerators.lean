@@ -87,8 +87,7 @@ theorem UpperTheory.divisibility_filtration :
     induction n with
     | zero => intro a h; simpa using h
     | succ n ih =>
-      intro a h
-      exact ih a (hl _ (by rwa [← mul_assoc, ← pow_succ']))
+      exact fun a h => ih a (hl _ (by rwa [← mul_assoc, ← pow_succ']))
   let t : ℕ → A := fun y => s y * l ^ (e y - E y)
   have ht : ∀ y, l ^ E y * t y = l ^ σ * r y := by
     intro y
@@ -231,10 +230,8 @@ theorem UpperTheory.filtration_exponent_bound :
         rw [Finset.smul_sum]
         refine Finset.sum_congr rfl fun y hy => ?_
         have hy' : E y ≤ E K := hE (Nat.lt_succ_iff.mp (Finset.mem_range.mp hy))
-        rw [smul_smul, ← pow_add]
-        rw [Nat.sub_add_sub_cancel hK hy']
-      have hp : l ^ E (K + 1) = l ^ (E (K + 1) - E K) * l ^ E K := by
-        exact (pow_sub_mul_pow l hK).symm
+        rw [smul_smul, ← pow_add, Nat.sub_add_sub_cancel hK hy']
+      have hp : l ^ E (K + 1) = l ^ (E (K + 1) - E K) * l ^ E K := (pow_sub_mul_pow l hK).symm
       have hl : lam (K + 1) • (ϖ ^ (K + 1) • (c (K + 1) : D)) =
           l ^ (E (K + 1) - E K) • (ϖ ^ (K + 1) • (s K : D)) := by
         rw [hcS, Submodule.coe_smul, smul_comm (ϖ ^ (K + 1)), smul_smul, hu]
@@ -250,8 +247,7 @@ theorem UpperTheory.filtration_exponent_bound :
   | succ K =>
     have hK : E K ≤ e (K + 1) := (hEe K).trans (he (Nat.le_succ K))
     refine ⟨l ^ (e (K + 1) - E K) • (s K : D), N.smul_mem _ (s K).2, ?_⟩
-    have hp : l ^ e (K + 1) = l ^ (e (K + 1) - E K) * l ^ E K := by
-      exact (pow_sub_mul_pow l hK).symm
+    have hp : l ^ e (K + 1) = l ^ (e (K + 1) - E K) * l ^ E K := (pow_sub_mul_pow l hK).symm
     rw [smul_comm (ϖ ^ (K + 1)), ← key, smul_sub (l ^ (e (K + 1) - E K)), ← mul_smul, ← hp,
       Finset.smul_sum]
     congr 1
@@ -313,8 +309,7 @@ private theorem unit_of_val {LL O : Type} [Field LL] [CommRing O] [Algebra O LL]
       exact (WithTop.add_right_cancel hk ((zero_add _).trans h3)).symm
     obtain ⟨o, ho⟩ := hO _ h2.ge
     refine ⟨fun h => hb0 (by rw [h, map_zero]), o, hinj ?_⟩
-    rw [map_mul, ho]
-    exact h1
+    rwa [map_mul, ho]
   obtain ⟨hy0, o, ho⟩ := key x y hx hy
   obtain ⟨-, o', ho'⟩ := key y x hy hx
   have h1 : o * o' = 1 := by

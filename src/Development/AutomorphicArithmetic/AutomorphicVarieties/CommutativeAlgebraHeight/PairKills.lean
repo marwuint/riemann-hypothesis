@@ -98,8 +98,7 @@ private theorem star_star_monoidAlgebra (R : Type) [CommRing R] [Algebra O R] (n
 private theorem pk_surj (R : Type) [CommRing R] [Algebra O R] (n : ℕ) : Function.Surjective (F.starOp O R n) := by
   intro x
   refine ⟨F.star O R n (MulOpposite.unop x), ?_⟩
-  apply MulOpposite.unop_injective
-  exact star_star_monoidAlgebra F O R n (MulOpposite.unop x)
+  exact MulOpposite.unop_injective (star_star_monoidAlgebra F O R n (MulOpposite.unop x))
 
 private theorem pk_eps (R B : Type) [CommRing R] [Algebra O R] [CommRing B] [Algebra R B] [Algebra O B]
     [IsScalarTower O R B] (g : F.G₀) (m : ℤ) :
@@ -156,8 +155,7 @@ theorem UpperTheory.V.CA.pair_kills :
     change p.D.D B (ofT R F.G₀ B (Det.unopS R (MonoidAlgebra R F.G₀) B
       (Algebra.TensorProduct.map (AlgHom.id B B) (F.starOp O R n) (toT R F.G₀ B y)))) =
       p.D.D B (ofT R F.G₀ B (toT R F.G₀ B y)) at h1
-    rw [pk_bc, ofT_toT] at h1
-    exact h1
+    rwa [pk_bc, ofT_toT] at h1
   haveI : IsLocalHom (algebraMap O R) := IsCO.isLocalHom
   haveI : IsAdicComplete (maximalIdeal R) R := IsCO.complete (O := O)
   have he : Function.Injective (ResidueField.map (algebraMap O R)) := (resMap_bijective O R).1
@@ -187,8 +185,7 @@ theorem UpperTheory.V.CA.pair_kills :
       · intro h
         apply Units.ext
         apply he
-        have h2 := congrArg Units.val h
-        simpa using h2
+        simpa using congrArg Units.val h
       · intro h
         rw [h, map_one]
     rw [hk]
@@ -213,7 +210,5 @@ theorem UpperTheory.V.CA.pair_kills :
   · intro z hz
     rw [← d_toDet_CH] at hz ⊢
     exact hCH z hz
-  · intro v g
-    exact (hK _).2 (p.Ord v g)
-  · intro u g hg
-    exact (hK _).2 (p.I u g hg)
+  · exact fun v g => (hK _).2 (p.Ord v g)
+  · exact fun u g hg => (hK _).2 (p.I u g hg)

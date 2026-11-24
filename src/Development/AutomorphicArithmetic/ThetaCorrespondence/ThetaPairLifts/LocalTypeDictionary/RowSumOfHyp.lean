@@ -131,8 +131,7 @@ theorem _root_.GlobalTheory.T.sum_smul_multilinear_eq_zero_of_prod_vanish : ∀ 
         intro d hd
         have h := congrArg Subtype.val (b.sum_repr ⟨f d i₀, hmem d hd⟩)
         simp only [Submodule.coe_sum, Submodule.coe_smul] at h
-        simp only [a, dite_eq_left hd]
-        exact h.symm
+        simpa only [a, dite_eq_left hd] using h.symm
       have hP : ∀ d ∈ s, P (f d) = ∑ l, a d l • P (update (f d) i₀ (b l)) := by
         intro d hd
         have e : f d = update (f d) i₀ (∑ l, a d l • (b l : A i₀)) := by
@@ -184,8 +183,7 @@ theorem _root_.GlobalTheory.T.sum_smul_multilinear_eq_zero_of_prod_vanish : ∀ 
       · intro i hi d hd d' hd'
         by_cases h : i = i₀
         · subst h; simp
-        · simp only [update_of_ne h]
-          exact hconst i (by simp [h, hi]) d hd d' hd'
+        · simpa only [update_of_ne h] using hconst i (by simp [h, hi]) d hd d' hd'
       · intro x
         have h := hB x l
         calc ∑ d ∈ s, c d * a d l * ∏ i, (update (f d) i₀ (b l) i : X i → K) (x i)
@@ -196,8 +194,7 @@ theorem _root_.GlobalTheory.T.sum_smul_multilinear_eq_zero_of_prod_vanish : ∀ 
               rw [hsplit, hupd, update_self]
               ring
           _ = 0 := by rw [h, mul_zero]
-  intro D s c f hx
-  exact vanish univ s c f (fun i hi => absurd (mem_univ i) hi) hx
+  exact fun D s c f hx => vanish univ s c f (fun i hi => absurd (mem_univ i) hi) hx
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.MultilinearVanishOfProdVanishStatement =====
@@ -269,8 +266,7 @@ theorem fockComp_lin (W : G.Weil) (B : VertexFrames G) (p : Pair T) (x : FinPt G
     (c • jetTab W B p f x y) (jetTab W B p g x y)
   rw [LinearMap.map_smul] at this
   unfold fockComp
-  rw [ht]
-  exact this
+  rwa [ht]
 
 theorem fockComp_zero (W : G.Weil) (B : VertexFrames G) (p : Pair T) (x : FinPt G p.small) (y : FinPt G p.big) :
     fockComp W B p 0 x y = 0 := by
@@ -550,8 +546,7 @@ theorem GlobalTheory.FunObj.sumOK_vec_indep : ∀ (D : D7) (T : Type) (L : LevCh
     · refine Finset.sum_congr rfl fun d hd => congrArg (τ₀ d • ·) ?_
       rw [colMap_eq S t e d (hk d hd), rowMap_eq S t e d (hk d hd)]
       rfl
-    · intro d _
-      exact zero_smul _ _
+    · exact fun d _ => zero_smul _ _
   rw [hP τ Finset.subset_union_left, hP τ' Finset.subset_union_right, ← sub_eq_zero, ← Finset.sum_sub_distrib]
   simp_rw [← sub_smul]
   refine GlobalTheory.T.sum_smul_multilinear_eq_zero_of_prod_vanish (aSub S t e) (pairML S t e (S.ptTop c) (S.ptRow c)) _ (fun d => τ d - τ' d) (gd S t e) fun x => ?_

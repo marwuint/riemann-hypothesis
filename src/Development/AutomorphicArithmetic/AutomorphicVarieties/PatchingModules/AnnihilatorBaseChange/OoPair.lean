@@ -78,8 +78,7 @@ private theorem oo_finite_hom (G : Type) [Group G] [TopologicalSpace G] [IsTopol
   apply Subtype.ext
   have hE : Subgroup.closure s ≤ φ.1.eqLocus ψ.1 := by
     rw [Subgroup.closure_le]
-    intro x hx
-    exact congrFun hφψ ⟨x, hx⟩
+    exact fun x hx => congrFun hφψ ⟨x, hx⟩
   have hopen : IsOpen (φ.1.eqLocus ψ.1 : Set G) := by
     apply Subgroup.isOpen_mono (H₁ := φ.1.ker ⊓ ψ.1.ker)
     · intro x hx
@@ -173,8 +172,7 @@ private theorem oo_adic_map {Γ : Type} [TopologicalSpace Γ] {u : Γ → R} (hu
   intro N
   have hm : maximalIdeal R ≤ (maximalIdeal R').comap (f : R →+* R') := by
     intro x hx
-    rw [Ideal.mem_comap, ← res_eq_zero_iff O, RingHom.coe_coe, res_map, res_eq_zero_iff]
-    exact hx
+    rwa [Ideal.mem_comap, ← res_eq_zero_iff O, RingHom.coe_coe, res_map, res_eq_zero_iff]
   have hN : maximalIdeal R ^ N ≤ (maximalIdeal R' ^ N).comap (f : R →+* R') := by
     rw [← Ideal.map_le_iff_le_comap, Ideal.map_pow]
     exact Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.mpr hm) N
@@ -190,11 +188,9 @@ private theorem oo_def_map {n : ℕ} {G : Type} [Group G] [TopologicalSpace G] {
   · have key : ∀ g : G, (D.map (f : R →+* R')).lam i (MonoidAlgebra.single g 1) =
         f (D.lam i (MonoidAlgebra.single g 1)) := by
       intro g
-      have h2 := ((d_gmap D).2.2.1 (f : R →+* R') (MonoidAlgebra.single g 1)).2 i
-      simpa using h2
+      simpa using ((d_gmap D).2.2.1 (f : R →+* R') (MonoidAlgebra.single g 1)).2 i
     show AdicCont _ fun g => (D.map (f : R →+* R')).lam i (MonoidAlgebra.single g 1)
-    simp only [key]
-    exact oo_adic_map f (hc i)
+    simpa only [key] using oo_adic_map f (hc i)
   · rw [(d_gmap D).2.1]
     have h3 : (res O R' : R' →+* ResidueField O).comp (f : R →+* R') = res O R := by
       ext x
@@ -379,8 +375,7 @@ theorem UpperTheory.V.Pa.Core.ooPair :
     obtain ⟨g, hj, rfl⟩ := hg.1
     obtain ⟨ga, hga⟩ := hs (Λ.G.φu w g)
     have h1 := h0 _ (Rel.ine w g ga h hj hga)
-    rw [GDet.tr, ← key, map_mul, map_sub, ps, ps, map_one, map_one, hga] at h1
-    exact h1
+    rwa [GDet.tr, ← key, map_mul, map_sub, ps, ps, map_one, map_one, hga] at h1
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.AnnihilatorBaseChange.OoPair =====

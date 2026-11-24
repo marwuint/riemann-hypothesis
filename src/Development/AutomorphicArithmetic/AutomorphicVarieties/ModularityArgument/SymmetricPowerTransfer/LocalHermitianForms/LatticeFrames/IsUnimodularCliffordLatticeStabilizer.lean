@@ -72,8 +72,7 @@ theorem lat_basis (L : IsLoc O Δ) (hD : τ ^ 2 - 4 ≠ 0) {Λ : Set (Etau K τ)
       rw [QuadraticAlgebra.algebraMap_norm_eq_mul_star]
       ring
     rw [e, QuadraticAlgebra.im_mul]
-    simp
-    exact ⟨hx, hn⟩
+    simpa using ⟨hx, hn⟩
   · intro b
     simp only [Set.mem_image, SetLike.mem_coe, Submodule.mem_span_pair]
     constructor
@@ -89,8 +88,7 @@ theorem mem_S0_of_sum_eq {s : K} {β y₁ y₂ : Etau K τ} {Λ : Set (Etau K τ
     {v : K × Etau K τ} : v ∈ S0 s β Λ ↔ psi s β v y₁ ∈ Λ ∧ psi s β v y₂ ∈ Λ := by
   simp only [S0, Set.mem_setOf_eq]
   constructor
-  · intro hv
-    exact ⟨hv _ ((h _).2 ⟨1, 0, by simp⟩), hv _ ((h _).2 ⟨0, 1, by simp⟩)⟩
+  · exact fun hv => ⟨hv _ ((h _).2 ⟨1, 0, by simp⟩), hv _ ((h _).2 ⟨0, 1, by simp⟩)⟩
   · rintro ⟨h1, h2⟩ y hy
     obtain ⟨p, q, rfl⟩ := (h _).1 hy
     obtain ⟨p1, q1, e1⟩ := (h _).1 h1
@@ -125,8 +123,7 @@ theorem Bf_int (L2 : IsUnit (2 : O)) (hc : c = (τ ^ 2 - 4) * algebraMap O K ε 
     exact hsm ε _ (hadd _ _ (hv _ (hw _ h1)) (hw _ (hv _ h1)))
   obtain ⟨p, q, e⟩ := (h _).1 key
   have e' : (2 * Bf τ c t v w) • y₁ + (0 : K) • y₂ = algebraMap O K p • y₁ + algebraMap O K q • y₂ := by
-    rw [zero_smul, add_zero]
-    exact e
+    rwa [zero_smul, add_zero]
   obtain ⟨e1, -⟩ := coord_uniq hg e'
   refine ⟨((L2.unit⁻¹ : Oˣ) : O) * p, ?_⟩
   have h2 : algebraMap O K ((L2.unit⁻¹ : Oˣ) : O) * 2 = 1 := by
@@ -239,8 +236,7 @@ theorem isUnimodular_cliffordLatticeStabilizer (L : IsLoc O Δ) (hD : τ ^ 2 - 4
       exact ⟨RingHom.mem_range.mpr ⟨p, u1.symm⟩, RingHom.mem_range.mpr ⟨q, u2.symm⟩, RingHom.mem_range.mpr ⟨r, u3.symm⟩⟩
   · intro y
     constructor
-    · intro hy x hx
-      exact Bf_int L.two hc hβ hg hΛ' hx hy
+    · exact fun hy x hx => Bf_int L.two hc hβ hg hΛ' hx hy
     · intro H
       obtain ⟨a, b, d, rfl⟩ := dec y
       have meme : e ∈ S0 s β Λ := by

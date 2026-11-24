@@ -126,13 +126,10 @@ theorem UpperTheory.Gal.W2.adExists_of :
   have hc' : ∀ b, (ρ b).map star * N = N * (ρ b).map star := by
     intro b
     rw [hNdef, ← map_star_mul_spherical_coordinates, ← map_star_mul_spherical_coordinates, hcomm]
-  have hC' : (Cᵀ * M₀)ᵀ = Cᵀ * M₀ ∧
+  obtain ⟨hS1, hS2⟩ : (Cᵀ * M₀)ᵀ = Cᵀ * M₀ ∧
       ∀ a, Cᵀ * M₀ * (ρ (bar a)).map star = (ρ a)ᴴ * (Cᵀ * M₀) := hC
-  obtain ⟨hS1, hS2⟩ := hC'
   have hHM : Hᵀ * M₀ = (m : ℂ) • (M₀ * N⁻¹) := by
-    calc Hᵀ * M₀ = Hᵀ * M₀ * N * N⁻¹ := by
-          rw [Matrix.mul_assoc (Hᵀ * M₀), Matrix.mul_nonsing_inv _ hNu, Matrix.mul_one]
-      _ = (m : ℂ) • (M₀ * N⁻¹) := by rw [hform, Matrix.smul_mul]
+    rw [← Matrix.smul_mul, ← hform, Matrix.mul_nonsing_inv_cancel_right _ _ hNu]
   have hkey : (H * C * N⁻¹)ᵀ * M₀ = (m : ℂ) • (N⁻¹ᵀ * (Cᵀ * M₀) * N⁻¹) := by
     rw [Matrix.transpose_mul, Matrix.transpose_mul, Matrix.mul_assoc, Matrix.mul_assoc, hHM]
     simp only [Matrix.mul_smul, Matrix.mul_assoc]
@@ -144,18 +141,11 @@ theorem UpperTheory.Gal.W2.adExists_of :
   · simp only [Matrix.transpose_smul, Matrix.transpose_mul, Matrix.transpose_transpose, hS1,
       Matrix.mul_assoc]
   · intro a
-    have c1 : N⁻¹ * (ρ (bar a)).map star = (ρ (bar a)).map star * N⁻¹ :=
-      inv_mul_comm_of_mul_comm_of_det_unit _ N hNu (hc' (bar a))
     have hX : (ρ a)ᴴ * Nᵀ = Nᵀ * (ρ a)ᴴ := by
       rw [← PerCoordU.map_star_transpose, ← Matrix.transpose_mul, ← Matrix.transpose_mul, hc' a]
-    have c2 : Nᵀ⁻¹ * (ρ a)ᴴ = (ρ a)ᴴ * Nᵀ⁻¹ := inv_mul_comm_of_mul_comm_of_det_unit _ _ hNtu hX
     rw [Matrix.transpose_nonsing_inv]
-    calc (m : ℂ) • (Nᵀ⁻¹ * S * N⁻¹) * (ρ (bar a)).map star
-        = (m : ℂ) • (Nᵀ⁻¹ * S * (N⁻¹ * (ρ (bar a)).map star)) := by
-          simp only [Matrix.smul_mul, Matrix.mul_assoc]
-      _ = (m : ℂ) • (Nᵀ⁻¹ * (S * (ρ (bar a)).map star) * N⁻¹) := by
-          rw [c1]; simp only [Matrix.mul_assoc]
-      _ = (m : ℂ) • (Nᵀ⁻¹ * ((ρ a)ᴴ * S) * N⁻¹) := by rw [hS2 a]
-      _ = (m : ℂ) • (Nᵀ⁻¹ * (ρ a)ᴴ * S * N⁻¹) := by simp only [Matrix.mul_assoc]
-      _ = (ρ a)ᴴ * ((m : ℂ) • (Nᵀ⁻¹ * S * N⁻¹)) := by
-          rw [c2]; simp only [Matrix.mul_smul, Matrix.mul_assoc]
+    simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]
+    rw [inv_mul_comm_of_mul_comm_of_det_unit _ N hNu (hc' (bar a)), ← Matrix.mul_assoc S, hS2 a]
+    simp only [Matrix.mul_assoc]
+    rw [← Matrix.mul_assoc Nᵀ⁻¹, inv_mul_comm_of_mul_comm_of_det_unit _ _ hNtu hX,
+      Matrix.mul_assoc]

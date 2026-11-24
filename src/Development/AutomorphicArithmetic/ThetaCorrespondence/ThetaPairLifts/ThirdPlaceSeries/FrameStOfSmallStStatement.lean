@@ -419,8 +419,7 @@ theorem levFn_flag1_pow {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D))
   have hd : ∀ PP ∈ L.Pg ∪ L.Q, Nat.card (Formalism.L2.DIV.kP PP)ˣ ∣ expOf L := fun PP hP =>
     Finset.dvd_prod_of_mem (fun PP => Nat.card (Formalism.L2.DIV.kP PP)ˣ) hP
   rw [prod_pow_eq_one _ _ _ ?_, prod_pow_eq_one _ _ _ ?_, one_mul]
-  · intro PP hP
-    exact pow_of_dvd (residue_char_pow PP _ _) (hd PP (Finset.mem_union_right _ hP))
+  · exact fun PP hP => pow_of_dvd (residue_char_pow PP _ _) (hd PP (Finset.mem_union_right _ hP))
   · intro PP hP
     refine prod_pow_eq_one _ _ _ fun c _ => ?_
     exact pow_of_dvd (residue_char_pow PP _ _) (hd PP (Finset.mem_union_left _ hP))
@@ -697,8 +696,7 @@ theorem ext_cmp {z₁ z₂ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassV
   have e := congrArg (fun z => (Algebra.TensorProduct.basis (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F w)
     (Module.finBasis D.host.F D.host.E)).repr z i) (h w)
   simp only [GlobalTheory.HeckeRowsCompare.cmp, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at e
-  rw [GlobalTheory.HeckeRowsCompare.repr_map, GlobalTheory.HeckeRowsCompare.repr_map] at e
-  exact e
+  rwa [GlobalTheory.HeckeRowsCompare.repr_map, GlobalTheory.HeckeRowsCompare.repr_map] at e
 
 theorem mul_comm_of_locAt (V : Formalism.BasicNotions.TH.HSp D) {v v' : HeightOneSpectrum (𝓞 D.host.F)} (hv : v ≠ v') {x y : Bridge.Gf V}
     (hx : GlobalTheory.IndefiniteRowSideFullHecke.HeckeIntertwinersInert.LocAt V v x) (hy : GlobalTheory.IndefiniteRowSideFullHecke.HeckeIntertwinersInert.LocAt V v' y) : x * y = y * x := by
@@ -891,8 +889,7 @@ theorem exists_aut {E K : Type} [Field E] [NumberField E] [IsGalois ℚ E] [Fiel
   let φ : E →ₐ[ℚ] K := i.toRatAlgHom
   refine ⟨AlgEquiv.ofBijective (φ.restrictNormal E) (AlgHom.normal_bijective ℚ E E _), ?_⟩
   ext x
-  have h := AlgHom.restrictNormal_commutes φ E x
-  exact h.symm
+  exact (AlgHom.restrictNormal_commutes φ E x).symm
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
@@ -1186,8 +1183,7 @@ theorem perm_of_isDC {G : Type} [Group G] (J : Subgroup G) (x : G) (A : Finset G
       have := J.mul_mem (J.inv_mem h1) h2
       simpa [mul_assoc] using this
     obtain ⟨k₁, k₂, hs'⟩ := h.1 s' s'.2
-    have hu := (h.2 s' ⟨k₁, k₂, hs'⟩).unique ⟨s.2, h3⟩ ⟨s'.2, by simp [J.one_mem]⟩
-    exact Subtype.ext hu
+    exact Subtype.ext ((h.2 s' ⟨k₁, k₂, hs'⟩).unique ⟨s.2, h3⟩ ⟨s'.2, by simp [J.one_mem]⟩)
   refine ⟨Equiv.ofBijective f (Finite.injective_iff_bijective.mp hinj), fun s => ?_⟩
   simpa [mul_assoc] using hf s
 
@@ -1204,8 +1200,7 @@ theorem map_ev_eq_one_of_loc : ∀ {D : D7} (V : Formalism.BasicNotions.TH.HSp D
     rwa [map_natCast] at h1
   have h2 := GlobalTheory.SplitHeckeAdj.map_eq_one_of_supp (ev.comp (Formalism.L2.Theta.finPart D)) (e + Formalism.L2.Theta.cA D e)
     (by rw [hf]; exact h0) (Formalism.L2.Theta.mt V α) hs
-  rw [hxα]
-  exact h2
+  rwa [hxα]
 
 theorem chi_move {G : Type} [Group G] (J Lc : Subgroup G) (χ : J →* ℂˣ)
     (l2 : ∀ k ∈ J, ∃ k₁ ∈ J, ∃ k₂ ∈ J, k₁ ∈ Lc ∧ k = k₁ * k₂ ∧ ∀ l ∈ Lc, Commute k₂ l)
@@ -1273,9 +1268,7 @@ theorem perm_gen (p : PtAt ex Csz) (j : Fin D.R.m) (t : p.P.T) {l : ℕ} [Fact l
   have hR : 1 ≤ i.1.2 ∧ i.1.2 ≤ (Vc D j).rank := ⟨i.2.1, by rw [← hN]; exact i.2.2.1⟩
   have hp := perm_core p j t i.1 hR κ
   refine hp.elim fun σ hσ => ?_
-  have hinj : Function.Injective (intEmb Lf) := by
-    intro x y hxy
-    exact Subtype.ext (Subtype.ext hxy)
+  have hinj : Function.Injective (intEmb Lf) := fun x y hxy => Subtype.ext (Subtype.ext hxy)
   have loc : ∀ y ∈ hkA p j t i.1, ∀ τ,
       ((y : GL (Fin (Vc D j).rank) (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E)).val).map (ev τ) = 1 := by
     intro y hy τ
@@ -1311,9 +1304,7 @@ theorem perm_gen (p : PtAt ex Csz) (j : Fin D.R.m) (t : p.P.T) {l : ℕ} [Fact l
       apply Units.ext
       apply Matrix.ext
       intro a c
-      apply hinj
-      have h1 := (hkap κ' τ).trans ((hmat τ).trans (hkap κ τ).symm)
-      exact congrFun (congrFun h1 a) c
+      exact hinj (congrFun (congrFun ((hkap κ' τ).trans ((hmat τ).trans (hkap κ τ).symm)) a) c)
     refine ⟨hK, ?_⟩
     have hL := levChi_eq_of_loc p j t i.1 hR.1 hR.2 κ κ' a s ha hs he
     have hX : (∏ τ, intEmb Lf (kap κ τ).val.det ^ sh τ) ≠ 0 := by
@@ -1539,8 +1530,7 @@ theorem rat_eq_one {D : D7} (V : TH.HSp D) (l : ℕ) (hl : l.Prime) (hN : V.rank
     simp only [Subgroup.coe_pow, Units.val_pow_eq_pow_val, OneMemClass.coe_one, Units.val_one] at h2
     rw [key] at h2
     have h3 : φ.mapMatrix (u.val ^ l) = φ.mapMatrix 1 := by
-      rw [map_pow, map_one, RingHom.mapMatrix_apply]
-      exact h2
+      rwa [map_pow, map_one, RingHom.mapMatrix_apply]
     have hu1 : u.val ^ l = 1 := Matrix.map_injective hφ h3
     have hu2 : u.val = 1 :=
       GlobalTheory.no_order_l_of_cyclotomic_irreducible D.host.E l V.rank _ hl hirr hN hu1
@@ -1602,8 +1592,7 @@ end Groups
 theorem tameSt_alt : _root_.GlobalTheory.ExpTie.InRangeAlt fun _ _ _ _ p j P _ w => SmallAt p j P w → TameAt p j w := by
   unfold _root_.GlobalTheory.ExpTie.InRangeAlt _root_.GlobalTheory.BigOn.AtPtsAlt Formalism.MainNotions.Closed _root_.GlobalTheory.BigTop.EventuallyAtPoints
   refine ⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, fun x hx _ i p _ _ => ?_⟩⟩⟩
-  intro j P W hD _ w _ _ hS
-  exact tameAt_of_smallAt p j P w hD.Nr hS
+  exact fun j P W hD _ w _ _ hS => tameAt_of_smallAt p j P w hD.Nr hS
 end GlobalTheory.TameStab
 end
 end

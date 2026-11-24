@@ -157,14 +157,12 @@ theorem UpperTheory.V.PropA.helly :
     · obtain ⟨a0, ha0, hmin⟩ := u.exists_min_image r hu
       refine ⟨x a0, Set.mem_univ _, ?_⟩
       simp only [Set.mem_iInter, Metric.mem_closedBall, dist_eq_norm]
-      intro a ha
-      exact (hx a0 a).trans (max_le (hmin a ha) le_rfl)
+      exact fun a ha => (hx a0 a).trans (max_le (hmin a ha) le_rfl)
   obtain ⟨s, -, hs⟩ := isCompact_univ.inter_iInter_nonempty
     (fun a => Metric.closedBall (x a) (r a)) (fun a => Metric.isClosed_closedBall) hne
   refine ⟨s, fun a => ?_⟩
   have h1 := Set.mem_iInter.1 hs a
-  rw [Metric.mem_closedBall, dist_eq_norm] at h1
-  exact h1
+  rwa [Metric.mem_closedBall, dist_eq_norm] at h1
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationNorms.Helly =====
@@ -230,8 +228,7 @@ theorem UpperTheory.V.PropA.ball :
   refine ⟨s, fun e => ?_⟩
   have := hs e
   simp only [hr] at this
-  rw [inv_mul_le_iff₀ hK]
-  exact this
+  rwa [inv_mul_le_iff₀ hK]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationNorms.PadicUnitsDistanceLeMax =====
@@ -267,8 +264,7 @@ theorem UpperTheory.V.PropA.detBound :
   apply Finset.prod_le_prod₀
   · intro i _
     positivity
-  · intro i _
-    exact hs i e
+  · exact fun i _ => hs i e
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationNorms.DetBound =====
@@ -490,8 +486,7 @@ theorem UpperTheory.V.PropA.nilLen :
         rw [bot_lt_iff_ne_bot, Ne, LinearMap.range_eq_bot]
         exact hm m (by omega)
       have h0 := Order.height_add_one_le hlt
-      simp only [Nat.cast_zero, zero_add]
-      exact le_trans le_add_self h0
+      simpa only [Nat.cast_zero, zero_add] using le_trans le_add_self h0
     | succ j ih =>
       intro m hmj
       have h1 := ih (m + 1) (by omega)
@@ -554,8 +549,7 @@ theorem UpperTheory.V.PropA.unipPow :
   have hF0 := nilLen ℤ_[l] (X ⧸ p) F R hnil hlen
   intro x
   have hk := key R x
-  rw [hF0, LinearMap.zero_apply, eq_comm, Submodule.Quotient.mk_eq_zero, memp] at hk
-  exact hk
+  rwa [hF0, LinearMap.zero_apply, eq_comm, Submodule.Quotient.mk_eq_zero, memp] at hk
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationNorms.UnipPow =====
@@ -681,9 +675,7 @@ theorem UpperTheory.V.PropA.twist :
     intro f h hf v
     obtain ⟨w, hw⟩ := hf v
     exact ⟨h w, by rw [Module.End.mul_apply, hw, map_smul]⟩
-  have right : ∀ f h : Module.End ℤ_[l] X, InPow 1 f → InPow 1 (f * h) := by
-    intro f h hf v
-    exact hf (h v)
+  have right : ∀ f h : Module.End ℤ_[l] X, InPow 1 f → InPow 1 (f * h) := fun f h hf v => hf (h v)
   have zero : InPow 1 (0 : Module.End ℤ_[l] X) := fun v => ⟨0, by simp⟩
   have add : ∀ f h : Module.End ℤ_[l] X, InPow 1 f → InPow 1 h → InPow 1 (f + h) := by
     intro f h hf hh v
@@ -933,8 +925,7 @@ theorem UpperTheory.V.PropA.dualUnip :
       simp
     | succ n ih =>
       intro x φ
-      rw [pow_succ, Module.End.mul_apply, ih]
-      rw [pow_succ' (g - 1), Module.End.mul_apply]
+      rw [pow_succ, Module.End.mul_apply, ih, pow_succ' (g - 1), Module.End.mul_apply]
       simp [ht, map_sub]
   refine ⟨hT.toFinset.sup k, fun x => ?_⟩
   obtain ⟨y, hy⟩ := dualDiv l D (((t - 1) ^ (hT.toFinset.sup k)) x) (by

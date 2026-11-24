@@ -66,9 +66,7 @@ private theorem frobN_nat (X : Scheme.{0}) (h : (p : Γ(X, ⊤)) = 0) (f : X ⟶
     rw [Category.assoc, ih, ← Category.assoc, GlobalTheory.VB.frob_naturality p h f h, Category.assoc]
 
 private theorem frobN_succ' (X : Scheme.{0}) (h : (p : Γ(X, ⊤)) = 0) (j : ℕ) :
-    frobN p X h (j + 1) = frobN p X h j ≫ GlobalTheory.VB.frob X p h := by
-  show GlobalTheory.VB.frob X p h ≫ frobN p X h j = _
-  exact (frobN_nat X h _ j).symm
+    frobN p X h (j + 1) = frobN p X h j ≫ GlobalTheory.VB.frob X p h := (frobN_nat X h _ j).symm
 
 private theorem smor_comp {A : Over (Sp k)} [GrpObj A] {σ τ : k →+* k} {ψ φ : A.left ⟶ A.left}
     (m : SMor A σ ψ) (n : SMor A τ φ) : SMor A (τ.comp σ) (φ ≫ ψ) := by
@@ -85,8 +83,7 @@ private theorem smor_act {A : Over (Sp k)} [GrpObj A] {C : Type} [CommRing C] (i
   haveI := i.hom c
   have hc := homMor (dp0 k) (𝟙 (Sp k)) (i.act c)
   unfold SMor
-  rw [spMap_id]
-  exact hc
+  rwa [spMap_id]
 
 private theorem pull_act {A : Over (Sp k)} [GrpObj A] {C : Type} [CommRing C] (i : OAct C A) (c : C)
     (m : SMor A (RingHom.id k) (i.act c).left) (x : primDR A) : m.pull x = rho i c x := rfl
@@ -115,13 +112,11 @@ private theorem card_bound {C : Type} [CommRing C] (χ : C →+* k) {f j : ℕ}
   have hfin : Finite χ.range := Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)
   have hS : (χ.range : Set k).Finite := Set.finite_coe_iff.mp hfin
   have hZ : hS.toFinset.card = p ^ f := by
-    rw [← Set.ncard_eq_toFinset_card _ hS, ← Nat.card_coe_set_eq]
-    exact hcard
+    rwa [← Set.ncard_eq_toFinset_card _ hS, ← Nat.card_coe_set_eq]
   have hsub : hS.toFinset.val ⊆ (Polynomial.X ^ (p ^ j) - Polynomial.X : Polynomial k).roots := by
     intro x hx
     have hx' : x ∈ (χ.range : Set k) := by
-      rw [Finset.mem_val, Set.Finite.mem_toFinset] at hx
-      exact hx
+      rwa [Finset.mem_val, Set.Finite.mem_toFinset] at hx
     obtain ⟨c, rfl⟩ := RingHom.mem_range.mp hx'
     rw [Polynomial.mem_roots (Polynomial.X_pow_sub_X_ne_zero (R := k) hq)]
     simp [hc c]
@@ -177,8 +172,7 @@ private theorem frob_pull (hk : (p : k) = 0) {A : Over (Sp k)} [GrpObj A] {σ : 
   have e1 := GrpMor.pull_pull m F M
     (fun r => by simp only [RingHom.comp_apply, frobR_apply, map_pow])
     (GlobalTheory.VB.frob_naturality p _ ψ _) z
-  have e2 := GrpMor.pull_pull F m M (fun _ => rfl) rfl z
-  exact e1.trans e2.symm
+  exact e1.trans (GrpMor.pull_pull F m M (fun _ => rfl) rfl z).symm
 
 private theorem kill (hk : (p : k) = 0) {A : Over (Sp k)} [GrpObj A] [IsReduced A.left]
     {C : Type} [CommRing C] {w : Ideal C} {f : ℕ} (π : Par p w f) {χ : C →+* k} (i : OAct C A)

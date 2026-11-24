@@ -84,9 +84,7 @@ private theorem len_map_le {R N : Type} [CommRing R] [AddCommGroup N] [Module R 
   have hg : Function.Surjective g := LinearMap.submoduleMap_surjective _ _
   have hle : LinearMap.range (a • (LinearMap.id : F →ₗ[R] F)) ≤ LinearMap.ker g := by
     rintro _ ⟨x, rfl⟩
-    refine Subtype.ext ?_
-    show P.mkQ (a • (x : N)) = 0
-    exact (Submodule.Quotient.mk_eq_zero _).2 ⟨x, rfl⟩
+    exact Subtype.ext ((Submodule.Quotient.mk_eq_zero _).2 ⟨x, rfl⟩)
   have hg' : Function.Surjective (Submodule.liftQ _ g hle) := by
     intro y
     obtain ⟨x, rfl⟩ := hg y

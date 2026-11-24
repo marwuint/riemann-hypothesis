@@ -138,15 +138,12 @@ private theorem cmpPrime_core {Λ B : Type} [CommRing Λ] [IsDomain Λ] [CommRin
     have hd : x * e - y * e ∈ J := by rw [← sub_mul]; exact J.mul_mem_right _ hxy
     constructor
     · intro hx
-      have h2 := J.sub_mem hx hd
-      simpa using h2
+      simpa using J.sub_mem hx hd
     · intro hy
-      have h2 := J.add_mem hd hy
-      simpa using h2
+      simpa using J.add_mem hd hy
   refine ⟨⟨?_, ?_⟩, key, nunit⟩
   · rw [Ideal.ne_top_iff_one]
-    have h1 := nunit 1 one_ne_zero
-    simpa using h1
+    simpa using nunit 1 one_ne_zero
   · intro a b hab
     obtain ⟨c, hc, Pa, ha⟩ := prim a
     obtain ⟨d, hd, Pb, hb⟩ := prim b

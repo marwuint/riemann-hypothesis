@@ -83,38 +83,29 @@ private theorem pA_der (F : V → V) (hF : ∀ l : V →ₗ[ℝ] ℂ, (fun x => 
   induction hP using Algebra.adjoin_induction with
   | mem f hf =>
     obtain ⟨l, rfl⟩ := hf
-    have h : (fun x => fderiv ℝ (l : V → ℂ) x (F x)) = fun x => l (F x) := by
-      funext x
-      have := (LinearMap.toContinuousLinearMap l).fderiv (x := x)
-      exact congrArg (fun L : V →L[ℝ] ℂ => L (F x)) this
-    exact h ▸ hF l
+    convert hF l using 1
+    funext x
+    have := (LinearMap.toContinuousLinearMap l).fderiv (x := x)
+    exact congrArg (fun L : V →L[ℝ] ℂ => L (F x)) this
   | algebraMap c =>
-    have h : (fun x => fderiv ℝ (algebraMap ℂ (V → ℂ) c) x (F x)) = fun _ => 0 := by
-      funext x
-      have : fderiv ℝ (algebraMap ℂ (V → ℂ) c) x = 0 := fderiv_const_apply c
-      rw [this]; rfl
-    rw [h]
-    exact const_mem 0
+    convert const_mem 0 using 1
+    funext x
+    have : fderiv ℝ (algebraMap ℂ (V → ℂ) c) x = 0 := fderiv_const_apply c
+    rw [this]; rfl
   | add f g hf' hg' hf hg =>
     have df := (pA_smooth hf').differentiable (by simp)
     have dg := (pA_smooth hg').differentiable (by simp)
-    have h : (fun x => fderiv ℝ (f + g) x (F x)) =
-        (fun x => fderiv ℝ f x (F x)) + fun x => fderiv ℝ g x (F x) := by
-      funext x
-      rw [fderiv_add (df x) (dg x)]
-      rfl
-    rw [h]
-    exact (pA V).add_mem hf hg
+    convert (pA V).add_mem hf hg using 1
+    funext x
+    rw [fderiv_add (df x) (dg x)]
+    rfl
   | mul f g hf' hg' hf hg =>
     have df := (pA_smooth hf').differentiable (by simp)
     have dg := (pA_smooth hg').differentiable (by simp)
-    have h : (fun x => fderiv ℝ (f * g) x (F x)) =
-        f * (fun x => fderiv ℝ g x (F x)) + g * fun x => fderiv ℝ f x (F x) := by
-      funext x
-      rw [fderiv_mul (df x) (dg x)]
-      simp
-    rw [h]
-    exact (pA V).add_mem ((pA V).mul_mem hf' hg) ((pA V).mul_mem hg' hf)
+    convert (pA V).add_mem ((pA V).mul_mem hf' hg) ((pA V).mul_mem hg' hf) using 1
+    funext x
+    rw [fderiv_mul (df x) (dg x)]
+    simp
 
 private theorem pA_bd (q : V → ℝ) (hq : ∀ x, ‖x‖ ^ 2 ≤ q x) {P : V → ℂ} (hP : P ∈ pA V) :
     ∃ (C : ℝ) (k : ℕ), 0 ≤ C ∧ ∀ x, ‖P x‖ ≤ C * (1 + q x) ^ k := by

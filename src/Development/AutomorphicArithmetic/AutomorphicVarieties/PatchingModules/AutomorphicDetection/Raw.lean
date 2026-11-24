@@ -179,16 +179,13 @@ private theorem maps_desc (A : TWRing b h ut N) (hr : r.psib = r'.psib) (hψ : u
     rw [e3] at e2
     exact e1.symm.trans (h1.trans e2)
   · have := h1' v i
-    rw [← hp, ← hψ] at this
-    exact this
+    rwa [← hp, ← hψ] at this
   · obtain ⟨a, rfl⟩ := g.p₀_surj a
     have := m.rel1 j a x
-    rw [← htr, map_mul, mapDom_single, s1] at this
-    exact this
+    rwa [← htr, map_mul, mapDom_single, s1] at this
   · obtain ⟨a, rfl⟩ := g.p₀_surj a
     have := m.rel2 j i a x
-    rw [← htr, map_mul, mapDom_single, s2] at this
-    exact this
+    rwa [← htr, map_mul, mapDom_single, s2] at this
 
 end
 
@@ -605,26 +602,22 @@ private theorem first_order_lift_comp_pullback :
 private theorem selP_iff (z : G'.G₀ → Matrix (Fin n) (Fin n) X) :
     (fun a => z (g.p₀ a)) ∈ SelP h x X ↔ z ∈ SelP h' (x.desc g0 ρ' hρ) X := by
   have := g.sel_iff x.t (fun a => (x.desc g0 ρ' hρ).ρX X (h'.p₀ a)) (x.wX X) (x.wiX X) (Ev x.A X n x.a) z
-  rw [rhoX_eq g h g0 h' hc ρ' hρ X] at this
-  exact this
+  rwa [rhoX_eq g h g0 h' hc ρ' hρ X] at this
 
 private theorem mem_selmer_first_iff_pullback (z : G'.G₀ → Matrix (Fin n) (Fin n) (DD X k.g)) :
     (fun a => z (g.p₀ a)) ∈ Sel1 h X k ↔ z ∈ Sel1 h' X (k.desc g0 ρ' hρ κ' hκ) := by
   have := g.sel_iff x.t (fun a => (k.desc g0 ρ' hρ κ' hκ).ρ1 X (h'.p₀ a)) (k.w1 X) (k.wi1 X) (W1 n x.A X k.g x.a) z
-  rw [first_order_lift_comp_pullback g h g0 h' hc k ρ' hρ κ' hκ X] at this
-  exact this
+  rwa [first_order_lift_comp_pullback g h g0 h' hc k ρ' hρ κ' hκ X] at this
 
 private theorem mem_selmer_second_iff_pullback (z : G'.G₀ → Matrix (Fin n) (Fin n) (DD X k.g)) :
     (fun a => z (g.p₀ a)) ∈ Sel2 h X k ↔ z ∈ Sel2 h' X (k.desc g0 ρ' hρ κ' hκ) := by
   have := g.sel_iff x.t (fun a => (k.desc g0 ρ' hρ κ' hκ).ρ1 X (h'.p₀ a)) (k.w1 X) (k.wi1 X) (W2 n x.A X k.g x.a) z
-  rw [first_order_lift_comp_pullback g h g0 h' hc k ρ' hρ κ' hκ X] at this
-  exact this
+  rwa [first_order_lift_comp_pullback g h g0 h' hc k ρ' hρ κ' hκ X] at this
 
 private theorem mem_coboundary_first_iff_pullback (z : G'.G₀ → Matrix (Fin n) (Fin n) (DD X k.g)) :
     (fun a => z (g.p₀ a)) ∈ Bd1 h X k ↔ z ∈ Bd1 h' X (k.desc g0 ρ' hρ κ' hκ) := by
   have := g.bd_iff (fun a => (k.desc g0 ρ' hρ κ' hκ).ρ1 X (h'.p₀ a)) (W1 n x.A X k.g x.a) z
-  rw [first_order_lift_comp_pullback g h g0 h' hc k ρ' hρ κ' hκ X] at this
-  exact this
+  rwa [first_order_lift_comp_pullback g h g0 h' hc k ρ' hρ κ' hκ X] at this
 
 private theorem coboundary_first_eq_image_pullback :
     Bd1 h X k = (fun (z : G'.G₀ → Matrix (Fin n) (Fin n) (DD X k.g)) (a : G.G₀) => z (g.p₀ a)) ''
@@ -722,8 +715,7 @@ theorem UpperTheory.V.Pa.np_desc :
       apply Units.ext
       have hm : x.ρX x.A d = 1 :=
         Matrix.ext fun i j => sub_eq_zero.mp (sep _ (fun m => (h0 m i j).1))
-      rw [hρ] at hm
-      exact hm
+      rwa [hρ] at hm
     · intro j
       have hj := (coc_pl l L G n x.A _ (x.ρX x.A) (k.κ j) H hH hη hl hR.1 hR.2.1 hR.2.2 hunip
         (k.mem j).2.1 (k.mem j).2.2.1).2 d hdP
@@ -762,8 +754,7 @@ private theorem cast_zero (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [Finite 
     haveI : Infinite ℤ_[l] := Infinite.of_injective (Nat.cast : ℕ → ℤ_[l]) Nat.cast_injective
     exact not_injective_infinite_finite _
   have hker : RingHom.ker (algebraMap ℤ_[l] K) ≠ ⊥ := by
-    intro h
-    exact hni ((RingHom.injective_iff_ker_eq_bot _).2 h)
+    exact fun h => hni ((RingHom.injective_iff_ker_eq_bot _).2 h)
   obtain ⟨e, he⟩ := PadicInt.ideal_eq_span_pow_p hker
   have hmem : (l : ℤ_[l]) ^ e ∈ RingHom.ker (algebraMap ℤ_[l] K) := by
     rw [he]
@@ -1037,8 +1028,7 @@ private theorem pl_le_ker {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [Topol
       exact (iInf_le _ U).trans (iInf_le _ hcond)
     have hxU : x ∈ χ.ker := hle hx
     rw [MonoidHom.mem_ker] at hxU
-    have hv := congrArg Units.val hxU
-    simpa [χ] using hv
+    simpa [χ] using congrArg Units.val hxU
   exact Units.ext (PadicInt.ext_of_toZModPow.mp (fun k => by rw [key k, Units.val_one, map_one]))
 
 theorem UpperTheory.V.Pa.quot_ex :
@@ -1048,8 +1038,7 @@ theorem UpperTheory.V.Pa.quot_ex :
     constructor
     intro x hx g
     simp only [PL, Subgroup.mem_iInf] at hx ⊢
-    intro U hU
-    exact U.isNormal'.conj_mem _ (hx U hU) g
+    exact fun U hU => U.isNormal'.conj_mem _ (hx U hU) g
   have hC : IsClosed (PL l H : Set G.Γ) := by
     simp only [PL, Subgroup.coe_iInf]
     exact isClosed_iInter fun U => isClosed_iInter fun _ => U.toOpenSubgroup.isClosed
@@ -1076,12 +1065,10 @@ theorem UpperTheory.V.Pa.quot_ex :
       ext y
       obtain ⟨x, rfl⟩ := hπs y
       constructor
-      · intro hy
-        exact ⟨x, hy, rfl⟩
+      · exact fun hy => ⟨x, hy, rfl⟩
       · rintro ⟨z, hz, hzx⟩
         show η' (π x) = 1
-        rw [← hzx]
-        exact hz
+        rwa [← hzx]
     rw [hset]
     exact hπo _ G.η_open
   have hεc : Continuous ε' := by
@@ -1225,8 +1212,7 @@ theorem UpperTheory.V.Pa.raw_main :
     refine ⟨fun g hg i => ?_, hIp hA.2⟩
     obtain ⟨a, rfl⟩ := Q.g0.p₀_surj g
     have := hA.1 a ((Q.H'_iff a).1 hg) i
-    rw [hc.1 i] at this
-    exact this
+    rwa [hc.1 i] at this
   have hsub : pairVals u ⊆ pairVals u' := by
     rintro b (⟨i, g, rfl⟩ | ⟨v, i, g, rfl⟩)
     · refine Or.inl ⟨i, Q.g0.p₀ g, ?_⟩

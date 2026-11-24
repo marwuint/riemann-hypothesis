@@ -205,8 +205,7 @@ theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.zTr_pf :
     intro i k hik f g
     refine comm_res y.Y _ _ _ _ (fun _ => rfl) (fun _ => rfl)
       ((hLoc (i.1, false) (hSl _ i.2 _) f.1 f.2).2 (k.1, false) (hSl _ k.2 _) ?_ g.1 g.2)
-    intro h
-    exact hik (Subtype.ext (Prod.ext_iff.1 h).1)
+    exact fun h => hik (Subtype.ext (Prod.ext_iff.1 h).1)
   have h4 : ∀ (i k : ↥Z) f g, Commute (c false i f) (c true k g) := by
     intro i k f g
     refine comm_res y.Y _ _ _ _ (fun _ => rfl) (fun _ => rfl)
@@ -214,9 +213,7 @@ theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.zTr_pf :
   have h5 : ∀ (i : ↥Z) f, y.A * c false i f = c true i f * y.A := by
     intro i f
     apply LinearMap.ext
-    intro x
-    apply Subtype.ext
-    exact hYS E n S Z N hS hZ hG π y i.1 i.2 f.1 f.2 x (c false i f x) rfl
+    exact fun x => Subtype.ext (hYS E n S Z N hS hZ hG π y i.1 i.2 f.1 f.2 x (c false i f x) rfl)
   have h6 : ∀ W : Submodule ℂ y.Y, (∀ (i : ↥Z) f, ∀ x ∈ W, c false i f x ∈ W ∧ c true i f x ∈ W) → W = ⊥ ∨ W = ⊤ := by
     intro W hW
     refine simple_of _ W (hZS E n S Z N hS hZ hG π y (W.map (Submodule.subtype _))

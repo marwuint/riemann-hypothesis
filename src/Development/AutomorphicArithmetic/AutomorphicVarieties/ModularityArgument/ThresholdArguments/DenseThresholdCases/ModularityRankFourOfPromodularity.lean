@@ -278,8 +278,7 @@ private theorem con_trace {K : Type} [Field K] [IsAlgClosed K] {l : ℕ} [Fact l
     rw [← isIntegral_algHom_iff φ Subtype.val_injective, map_sub, map_sum]
     refine IsIntegral.sub ?_ (IsIntegral.sum _ fun i _ => hdi i)
 
-    rw [Matrix.trace, map_sum]
-    exact h1
+    rwa [Matrix.trace, map_sum]
   have h5 : M.trace - ∑ i, d i ∈ maximalIdeal V := by
     rw [Matrix.trace, ← Finset.sum_sub_distrib]
     exact Ideal.sum_mem _ fun i _ => hr i
@@ -361,8 +360,7 @@ theorem UpperTheory.V.Ws.contradiction_star_promodular :
       refine con_kill 𝔞 c _ _ ?_
       have := congrArg Units.val (pow_card_eq_one' (x := Units.map (residue c.O : c.O →* ResidueField c.O) (D.ps i g)))
       rw [Units.val_pow_eq_pow_val] at this
-      rw [map_pow, map_one]
-      exact this
+      rwa [map_pow, map_one]
     · simpa [Raw.r0, diagRep] using hk.red g i i
     · have h1 := hc g'
       rw [hg', map_pow] at h1
@@ -381,8 +379,7 @@ theorem UpperTheory.V.Ws.contradiction_star_promodular :
     by_contra hne
     have h1 : 𝔞.a c (chi D T.pr i (resQ T.F T.g0) - chi D T.pr j (resQ T.F T.g0) : c.O) = 0 := by
       rw [map_sub, sub_eq_zero]; exact Subtype.val_injective hij
-    refine hok.dist i j hne (Ideal.Quotient.eq.2 fun hu => ?_)
-    exact not_isUnit_zero (h1 ▸ hu.map (𝔞.a c))
+    exact hok.dist i j hne (Ideal.Quotient.eq.2 fun hu => not_isUnit_zero (h1 ▸ hu.map (𝔞.a c)))
 end
 end -- clump:auto
 end -- clump:auto
@@ -638,8 +635,7 @@ private theorem last_step (hC : CohomologyHyp) (hPM : _root_.UpperTheory.V.Ws.PM
     refine ⟨Asm.pair_of f fi ?_, qc, inj ?_⟩
     · rw [← RingHom.comp_assoc, fa]
       have : (𝔞.a c').comp (inc h) = 𝔞.a c := RingHom.ext fun x => 𝔞.compat c c' h x
-      rw [this]
-      exact hp
+      rwa [this]
     · show (QR.map _).map _ = s.map _
       rw [es, PD.map_map, PD.map_map, fr]
   obtain ⟨f₀, hf₀⟩ := X.univ R s _ rs lR
@@ -653,8 +649,7 @@ private theorem last_step (hC : CohomologyHyp) (hPM : _root_.UpperTheory.V.Ws.PM
   refine ⟨c', h, X, J, f.comp (f₀ : X.A →+* R), hJ, ?_, fun b hb => ?_, Asm.zero_of_allIn X J _ all fun z hz => ?_, ?_⟩
   · rw [RingHom.comp_assoc, AlgHom.comp_algebraMap, fa]
   · have h0 : res c'.O R ((f₀.comp (IsScalarTower.toAlgHom c'.O X.B X.A)) b) = 0 := by
-      rw [res_map, res_eq_zero_iff]
-      exact hb
+      rwa [res_map, res_eq_zero_iff]
     refine (residue_eq_zero_iff _).1 ((RingHom.congr_fun fr (f₀ (algebraMap X.B X.A b))).trans ?_)
     exact (congrArg (𝔞.j c') h0).trans (map_zero _)
   · have h0 : f₀ z = 0 := (map_eq_zero_iff f fi).1 hz

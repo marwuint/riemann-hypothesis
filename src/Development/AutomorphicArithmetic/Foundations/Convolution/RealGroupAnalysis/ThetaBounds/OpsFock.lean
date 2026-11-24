@@ -90,8 +90,7 @@ private lemma coord_shift (w w' : InfinitePlace F) (i j : Fin 4) (v : V4 F) (t :
   · simp [h]
 
 private lemma lin_der (a c : ℂ) : HasDerivAt (fun t : ℝ => a + c * (t : ℂ)) c 0 := by
-  have h := ((hasDerivAt_id (0 : ℝ)).ofReal_comp.const_mul c).const_add a
-  simpa using h
+  simpa using ((hasDerivAt_id (0 : ℝ)).ofReal_comp.const_mul c).const_add a
 
 private lemma coord_mem (j : Fin 4) (w : InfinitePlace F) :
     (fun v : V4 F => ((TR.pInf F (v j) w : ℝ) : ℂ)) ∈ UpperTheory.ConvolutionTheory.R2.polyFn (F := F) :=
@@ -200,8 +199,7 @@ private lemma span_d (δ : F) (w : InfinitePlace F) (i : Fin 4) {f : V4 F → �
         (p' v * UpperTheory.ConvolutionTheory.R2.gauss δ v + p v * (UpperTheory.ConvolutionTheory.R2.gauss δ v * q v)) * g (finPartPi v) := by
       simp only [Pi.add_apply, Pi.mul_apply]
       ring
-    rw [e]
-    exact h
+    rwa [e]
   | zero => exact ⟨0, zero_mem _, fun v => hasDerivAt_const _ _⟩
   | add x y _ _ hx hy =>
     obtain ⟨x', hxm, hx⟩ := hx
@@ -227,5 +225,4 @@ theorem UpperTheory.ConvolutionTheory.R2.Ff.opsFock :
   · obtain ⟨f', hf', hd⟩ := span_d D.δ w i hs
     have e : (O.d w i φ).1 = f' := funext fun v => (O.d_spec w i φ v).unique (hd v)
     change (O.d w i φ).1 ∈ Submodule.span ℂ (Gen D.δ)
-    rw [e]
-    exact hf'
+    rwa [e]

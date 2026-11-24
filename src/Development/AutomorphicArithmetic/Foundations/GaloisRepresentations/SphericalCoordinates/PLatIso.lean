@@ -60,12 +60,10 @@ private noncomputable def rdHom (x : (AfP p ⊗[ℚ] G.C)ˣ) (h : G.GAf) : VQ D 
   AddMonoidHom.mk' (rd L x h) (rd_add L x h)
 
 private theorem rd_sub (x : (AfP p ⊗[ℚ] G.C)ˣ) (h : G.GAf) (u v : VQ D) :
-    rd L x h (u - v) = rd L x h u - rd L x h v := by
-  exact map_sub (rdHom L x h) u v
+    rd L x h (u - v) = rd L x h u - rd L x h v := map_sub (rdHom L x h) u v
 
 private theorem rd_nsmul (x : (AfP p ⊗[ℚ] G.C)ˣ) (h : G.GAf) (n : ℕ) (u : VQ D) :
-    rd L x h (n • u) = n • rd L x h u := by
-  exact map_nsmul (rdHom L x h) n u
+    rd L x h (n • u) = n • rd L x h u := map_nsmul (rdHom L x h) n u
 
 private theorem actY_inv {β : G.Cˣ} (y : GlobalTheory.LKCx.grp G β) (w : VQ D) : actY L y (actY L y⁻¹ w) = w := by
   show L.rep _ (L.rep _ w) = w
@@ -149,8 +147,7 @@ private theorem mark_div {x : (AfP p ⊗[ℚ] G.C)ˣ} {N : ℕ} (hN0 : 0 < N) (h
   have e : rd L x h w = w₃ := by
     have h1 : (N : ℚ) • rd L x h w = (N : ℚ) • w₃ := by
       rw [Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, ← rd_nsmul, hNw, hd]
-    have h2 := congrArg (fun z => (N : ℚ)⁻¹ • z) h1
-    simpa only [smul_smul, inv_mul_cancel₀ hN, one_smul] using h2
+    simpa only [smul_smul, inv_mul_cancel₀ hN, one_smul] using congrArg (fun z => (N : ℚ)⁻¹ • z) h1
   obtain ⟨r, u, hu⟩ := (hc w).2 (e ▸ hw₃)
   have h3 : j (p ^ r • d) = j (N • u) := by
     rw [map_nsmul, map_nsmul, ← hNw, ← hu, smul_comm]
@@ -181,8 +178,7 @@ theorem UpperTheory.Gal.W2.latIso_of :
     have hlat : PD.lat a.2 = PD.lat (GlobalTheory.LKCx.toP1 G B.β y * a''.2) :=
       (PD.inj _ _).2 (by rwa [← _root_.mul_assoc])
     have hlpY' : IsLocP D'' (placeY L y j'') (PD.lat a.2) := by
-      rw [hlat]
-      exact hlpY
+      rwa [hlat]
     have hex : ∀ u : D''.La, ∃ u', j u' = placeY L y j'' u := range_le L hcaY' hca hlpY' hlp
     have hex' : ∀ u' : D'.La, ∃ u, placeY L y j'' u = j u' := range_le L hca hcaY' hlp hlpY'
     choose f hf using hex

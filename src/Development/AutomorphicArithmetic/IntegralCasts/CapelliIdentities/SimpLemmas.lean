@@ -126,11 +126,8 @@ private lemma core {R K : Type*} [CommRing R] [IsDedekindDomain R] [Field K] [Al
       rw [← hm' p] at h2
       exact div_le_one_of_le₀ h2 zero_le'
     · have hnd : ¬ (p.asIdeal ∣ Ideal.span {(d : R)}) := by
-        intro h
-        exact hpT (Finset.mem_union_right _ (by simpa using h))
-      have hmem : (d : R) ∉ p.asIdeal := by
-        intro h
-        exact hnd (Ideal.dvd_span_singleton.2 h)
+        exact fun h => hpT (Finset.mem_union_right _ (by simpa using h))
+      have hmem : (d : R) ∉ p.asIdeal := fun h => hnd (Ideal.dvd_span_singleton.2 h)
       have hone : p.valuation K (algebraMap R K (d : R)) = 1 :=
         le_antisymm (p.valuation_le_one _)
           (not_lt.1 (fun h => hmem ((p.valuation_lt_one_iff_mem _).1 h)))
@@ -173,5 +170,4 @@ theorem UpperTheory.Reformulated.B.ApproximationIntegralOutsideFinset.approxF :
     exact Valuation.map_add_le _ h1 (ha p)
   · have h1 : p.valuation F f ≤ p.valuation F 1 := by simpa using hf2 p hp
     have h2 := ((A p).val _ _).2 h1
-    rw [(valuation (A p).Fp).vle_iff_le, map_one, map_one] at h2
-    exact h2
+    rwa [(valuation (A p).Fp).vle_iff_le, map_one, map_one] at h2

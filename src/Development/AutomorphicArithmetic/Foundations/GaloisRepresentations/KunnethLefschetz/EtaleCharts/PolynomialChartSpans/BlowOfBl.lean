@@ -99,8 +99,7 @@ private theorem nzd_rs {U V : Y.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen 
   intro x hx
   apply hr'
   change rs h s * x = rs h s * 0
-  rw [mul_zero, mul_comm]
-  exact hx
+  rwa [mul_zero, mul_comm]
 
 private theorem exists_unit (J : Y.IdealSheafData) {U₁ U₂ T : Y.Opens}
     (a₁ : IsAffineOpen U₁) (a₂ : IsAffineOpen U₂) (aT : IsAffineOpen T) (h₁ : T ≤ U₁) (h₂ : T ≤ U₂)
@@ -174,8 +173,7 @@ private theorem gg_spec [X.left.IsSeparated] (J : X.left.IdealSheafData) {T : X.
     rs ta a.2.1 = rs hT (gg (X := X) J j).val * rs tc c.2.1 := by
   subst ha hc
   have e := congrArg (rs hT) (exists_g (X := X) J j).choose_spec
-  rw [map_mul, rs_rs, rs_rs] at e
-  exact e
+  rwa [map_mul, rs_rs, rs_rs] at e
 
 private theorem gg_coc [X.left.IsSeparated] (J : X.left.IdealSheafData) (i : Fin 3 → Idx J) :
     rs (inter_le_comp (X := X.left.toTopCat) (idxU J) i (Fin.succAbove 2)) (gg (X := X) J (i ∘ Fin.succAbove 2)).val *
@@ -267,8 +265,7 @@ private lemma flat_nzd {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (
   intro y hy
   apply hr
   change a • y = a • 0
-  rw [Algebra.smul_def, Algebra.smul_def, mul_zero, mul_comm]
-  exact hy
+  rwa [Algebra.smul_def, Algebra.smul_def, mul_zero, mul_comm]
 
 private def Reg {X : Scheme.{0}} (b : Γ(X, ⊤)) : Prop :=
   ∀ x : X, (X.presheaf.germ ⊤ x trivial).hom b ∈ nonZeroDivisors (X.presheaf.stalk x)
@@ -278,8 +275,7 @@ private lemma reg_flat {X Z : Scheme.{0}} (φ : X ⟶ Z) [Flat φ] {b : Γ(Z, �
   intro x
   have h := flat_nzd (φ.stalkMap x).hom (Flat.stalkMap φ x) (hb (φ x))
   have e := Scheme.Hom.germ_stalkMap_apply φ ⊤ x trivial b
-  rw [e] at h
-  exact h
+  rwa [e] at h
 
 private lemma reg_of_affine {X : Scheme.{0}} [IsAffine X] {b : Γ(X, ⊤)} (hb : b ∈ nonZeroDivisors Γ(X, ⊤)) :
     Reg b := by
@@ -322,8 +318,7 @@ private lemma glue_div {X : Scheme.{0}} (a b : Γ(X, ⊤)) (hb : Reg b)
     refine sub_eq_zero.1 (reg_cancel hb (O x ⊓ O y) _ ?_)
     have e1 := congrArg (X.presheaf.map (homOfLE inf_le_left : O x ⊓ O y ⟶ O x).op).hom (hW x)
     have e2 := congrArg (X.presheaf.map (homOfLE inf_le_right : O x ⊓ O y ⟶ O y).op).hom (hW y)
-    rw [map_mul, rr] at e1 e2
-    rw [rr] at e1 e2
+    rw [map_mul, rr, rr] at e1 e2
     rw [sub_mul, ← e1, ← e2, sub_self]
   obtain ⟨c, hc⟩ : ∃ c : Γ(X, ⊤), ∀ x, (X.presheaf.map (homOfLE le_top : O x ⟶ ⊤).op).hom c = W x := by
     obtain ⟨c, hc, -⟩ := X.sheaf.existsUnique_gluing' O ⊤ (fun x => homOfLE le_top)
@@ -334,8 +329,7 @@ private lemma glue_div {X : Scheme.{0}} (a b : Γ(X, ⊤)) (hb : Reg b)
   have h1 := hW x
   rw [← hc x, ← map_mul] at h1
   have h2 := congrArg (X.presheaf.germ (O x) x (hx x)).hom h1
-  rw [X.presheaf.germ_res_apply, X.presheaf.germ_res_apply] at h2
-  exact h2
+  rwa [X.presheaf.germ_res_apply, X.presheaf.germ_res_apply] at h2
 
 private lemma appTop_comp {X Y Z : Scheme.{0}} (g : X ⟶ Y) (a : Y ⟶ Z) (s : Γ(Z, ⊤)) :
     (g ≫ a).appTop.hom s = g.appTop.hom (a.appTop.hom s) := by
@@ -445,8 +439,7 @@ private lemma local_div {Y : Scheme.{0}} {I : Type} (U : I → Y.Opens) (s : ∀
 private lemma reg_cancel_top {X : Scheme.{0}} {b : Γ(X, ⊤)} (hb : Reg b) (z : Γ(X, ⊤)) (h : z * b = 0) : z = 0 := by
   refine reg_cancel hb ⊤ z ?_
   have e : X.presheaf.map (homOfLE le_top : (⊤ : X.Opens) ⟶ ⊤).op = 𝟙 _ := X.presheaf.map_id _
-  rw [e]
-  exact h
+  rwa [e]
 
 private lemma nzd_topIso {Y : Scheme.{0}} {V : Y.Opens} {s : Γ(Y, V)} (hs : s ∈ nonZeroDivisors Γ(Y, V)) :
     V.topIso.inv.hom s ∈ nonZeroDivisors Γ(V, ⊤) := by
@@ -495,8 +488,7 @@ private lemma off_image {Y T : Scheme.{0}} (j : T ⟶ Y) [IsClosedImmersion j] {
     rw [Scheme.basicOpen_mul] at hgy
     exact hns hgy.2
   have h2 : y ∈ (j.ker.support : Set Y) := h1
-  rw [Scheme.Hom.support_ker, j.isClosedEmbedding.isClosed_range.closure_eq] at h2
-  exact h2
+  rwa [Scheme.Hom.support_ker, j.isClosedEmbedding.isClosed_range.closure_eq] at h2
 
 private lemma line_core {Y : Scheme.{0}} {I : Type} (U : I → Y.Opens) (s : ∀ i, Γ(Y, U i))
     (haff : ∀ i, IsAffineOpen (U i)) (hnz : ∀ i, s i ∈ nonZeroDivisors Γ(Y, U i)) (hcov : ∀ y : Y, ∃ i, y ∈ U i)
@@ -539,8 +531,7 @@ private lemma line_core {Y : Scheme.{0}} {I : Type} (U : I → Y.Opens) (s : ∀
   have hu {V : Scheme.{0}} (a b : V ⟶ C) (h : a ≫ F = b ≫ F) :
       a.appTop.hom s0 = (u a b h : Γ(V, ⊤)) * b.appTop.hom s0 := by
     have e1 := congrArg (pullback.lift a b h).appTop.hom hw
-    rw [map_mul, ← appTop_comp, ← appTop_comp, pullback.lift_fst, pullback.lift_snd] at e1
-    exact e1
+    rwa [map_mul, ← appTop_comp, ← appTop_comp, pullback.lift_fst, pullback.lift_snd] at e1
   have unat {V' V : Scheme.{0}} (g : V' ⟶ V) (a b : V ⟶ C) (h : a ≫ F = b ≫ F) :
       u (g ≫ a) (g ≫ b) (by rw [Category.assoc, h, Category.assoc]) = Units.map g.appTop.hom.toMonoidHom (u a b h) := by
     apply Units.ext
@@ -609,8 +600,7 @@ private lemma line_core {Y : Scheme.{0}} {I : Type} (U : I → Y.Opens) (s : ∀
       exact (hs0 i).symm ▸ hq
     exact hp ▸ h2
   have e2 : v ∈ a ⁻¹ᵁ C.basicOpen s0 := e1
-  rw [Scheme.preimage_basicOpen] at e2
-  exact e2
+  rwa [Scheme.preimage_basicOpen] at e2
 
 theorem lineEx : LineEx := by
   intro Y T j _ hc
@@ -683,8 +673,7 @@ private theorem chart_etale {R : Type} [CommRing R] {Z : Sch R} {d : ℕ} (c : D
   have e : ((secMap (p1 Z) c.h1).toRingHom.comp (algebraMap R (Sec Z c.U))) = Pb.strV (XX Z).hom c.N := by
     ext r
     exact (secMap (p1 Z) c.h1).commutes r
-  rw [e] at h
-  exact h
+  rwa [e] at h
 
 private theorem ker_app {R : Type} [CommRing R] {X Y : Sch R} (i : Y ⟶ X) (V : X.left.Opens) :
     RingHom.ker (i.left.app V).hom = RingHom.ker (secMap i (le_refl (i.left ⁻¹ᵁ V))).toRingHom := by
@@ -738,8 +727,7 @@ theorem blowOfBl : BlowOfBl := by
     iso := hiso
     unit := fun {V} a ha => f_unit a fun v hv => by
       have h1 : (a ≫ D.f) v ∈ ((π.left ⁻¹ᵁ U : W.left.Opens) : Set W.left) := by
-        have h2 := ha (show v ∈ (⊤ : V.Opens) from trivial)
-        simpa using h2
+        simpa using ha (show v ∈ (⊤ : V.Opens) from trivial)
       rw [hpre] at h1
       exact h1 hv
     loc := hsup

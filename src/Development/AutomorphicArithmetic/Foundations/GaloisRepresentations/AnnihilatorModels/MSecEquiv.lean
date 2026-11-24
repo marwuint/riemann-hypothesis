@@ -70,10 +70,8 @@ private theorem kerAt_sub {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [Com
         apply e.injective
         rw [MulEquiv.apply_symm_apply]
         apply Over.OverMorphism.ext
-        rw [ObjMap.ptEquiv_left]
-        exact ha'
-      rw [hq]
-      exact h
+        rwa [ObjMap.ptEquiv_left]
+      rwa [hq]
   let f : (Over.mk z ⟶ T.o.A) →* (Over.mk z ⟶ T.o'.A) :=
     { toFun := fun a => a ≫ T.ψ
       map_one' := MonObj.one_comp _
@@ -143,8 +141,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.secEquiv_of :
     intro h0
     apply hp
     apply IsFractionRing.injective V (FractionRing V)
-    rw [map_natCast, map_zero]
-    exact h0
+    rwa [map_natCast, map_zero]
   let Φ : W.H → (Over.mk (q ≫ x) ⟶ M.univ.A) := fun h => u ≫ W.pt h
   have hΦinj : Function.Injective Φ := fun a c h => W.inj (uinj _ _ h)
   have hΦrange : ∀ g', (∃ h, Φ h = g') ↔ KilledBy M.univ w g' := by
@@ -168,10 +165,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.secEquiv_of :
         KilledBy M.univ w g' ∧ KerAt T (q ≫ z.1) g'.left} :=
       Equiv.ofBijective (fun h => ⟨Φ h.1, (hΦrange _).1 ⟨_, rfl⟩, (hΦT z h.1).1 h.2⟩) (by
         constructor
-        · intro a c h
-          apply Subtype.ext
-          apply hΦinj
-          exact congrArg Subtype.val h
+        · exact fun a c h => Subtype.ext (hΦinj (congrArg Subtype.val h))
         · rintro ⟨g', hk, hT⟩
           obtain ⟨h, rfl⟩ := (hΦrange g').2 hk
           exact ⟨⟨h, (hΦT z h).2 hT⟩, rfl⟩)
@@ -221,17 +215,12 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.secEquiv_of :
       intro h
       constructor
       · rintro ⟨h', hh', he⟩
-        rw [← hΦinj he]
-        exact hh'
-      · intro hh
-        exact ⟨h, hh, rfl⟩
+        rwa [← hΦinj he]
+      · exact fun hh => ⟨h, hh, rfl⟩
     have hcardG : Nat.card GK = Ideal.absNorm w ^ j := by
       have e2 : Us ≃ GK := Equiv.ofBijective (fun h => ⟨Φ h.1, (hmem h.1).2 h.2⟩) (by
         constructor
-        · intro a c h
-          apply Subtype.ext
-          apply hΦinj
-          exact congrArg Subtype.val h
+        · exact fun a c h => Subtype.ext (hΦinj (congrArg Subtype.val h))
         · rintro ⟨g', h, hh, rfl⟩
           exact ⟨⟨h, hh⟩, rfl⟩)
       rw [← Nat.card_congr e2, Module.natCard_eq_pow_finrank (K := 𝓞 D.F ⧸ w) (V := Us), hck, hrank]

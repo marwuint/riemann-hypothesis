@@ -55,8 +55,7 @@ private theorem compl_of_nil {Q : Type} [CommRing Q] (J : Ideal Q) (N : ℕ) (h 
   refine { haus' := ?_, prec' := ?_ }
   · intro x hx
     have := (smod _ _ _).1 (hx N)
-    rw [h, sub_zero, Ideal.mem_bot] at this
-    exact this
+    rwa [h, sub_zero, Ideal.mem_bot] at this
   · intro f hf
     refine ⟨f N, fun n => ?_⟩
     rcases le_total n N with hn | hn
@@ -71,8 +70,7 @@ private theorem mem_max {Λ R R' : Type} [CommRing Λ] [IsLocalRing Λ] [CommRin
   have hle : (maximalIdeal R).map h ≤ maximalIdeal R' := by
     rw [Ideal.map_le_iff_le_comap]
     intro z hz
-    rw [Ideal.mem_comap, ← res_eq_zero_iff Λ R', res_map, res_eq_zero_iff]
-    exact hz
+    rwa [Ideal.mem_comap, ← res_eq_zero_iff Λ R', res_map, res_eq_zero_iff]
   have := Ideal.mem_map_of_mem h hy
   rw [Ideal.map_pow] at this
   exact Ideal.pow_right_mono hle n this
@@ -118,8 +116,7 @@ private theorem co_pow {Λ A : Type} [CommRing Λ] [IsLocalRing Λ] [CommRing A]
     obtain ⟨z, rfl⟩ := Ideal.Quotient.mk_surjective y
     rw [hunit, not_not, Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective]
     constructor
-    · intro hz
-      exact ⟨z, hz, rfl⟩
+    · exact fun hz => ⟨z, hz, rfl⟩
     · rintro ⟨z', hz', he⟩
       rw [Ideal.Quotient.eq] at he
       have := Ideal.sub_mem _ hz' (hJle he)
@@ -215,8 +212,7 @@ theorem UpperTheory.V.Ws.fibCpl :
         have h2 : h (algebraMap A R z) = Ideal.Quotient.mk (P ^ (k + 1)) z := by
           have := AlgHom.congr_fun hh z
           simpa using this
-        rw [h2, Ideal.Quotient.eq_zero_iff_mem] at h1
-        exact h1
+        rwa [h2, Ideal.Quotient.eq_zero_iff_mem] at h1
     · rw [hP]
       exact Ideal.le_comap_pow (algebraMap A R) n
   have hdense : ∀ (n : ℕ) (r : R), ∃ c : A, r - algebraMap A R c ∈ maximalIdeal R ^ n := by

@@ -55,22 +55,17 @@ theorem UpperTheory.ConvolutionTheory.RankTwoDescent.uiLaws :
       β ((u * diagonalToNormOne E k : IdeleGroup.normOneSubgroup E) : IdeleGroup E) = β (u : IdeleGroup E) := by
     intro k u
     have h := hinv k (u : IdeleGroup E)
-    rw [mul_comm] at h
-    exact h
+    rwa [mul_comm] at h
   refine ⟨?_, ?_, ?_⟩
   · exact (hf.continuousOn.integrableOn_compact hcl).mono_set subset_closure
   · obtain ⟨B, hB⟩ := hcl.exists_bound_of_continuousOn hf.continuousOn
     refine ⟨B, fun t ht => ?_⟩
-    have hm : t ∈ IdeleGroup.normOneSubgroup E := by
-      refine MonoidHom.mem_ker.2 (Subtype.ext ?_)
-      exact ht
+    have hm : t ∈ IdeleGroup.normOneSubgroup E := MonoidHom.mem_ker.2 (Subtype.ext ht)
     obtain ⟨k, hk, -⟩ := existsUnique_mul_mem_normOneFundamentalDomain E ⟨t, hm⟩
     have h := hB _ (subset_closure hk)
     rwa [hinv' k ⟨t, hm⟩] at h
   · intro d hd
-    have hm : d ∈ IdeleGroup.normOneSubgroup E := by
-      refine MonoidHom.mem_ker.2 (Subtype.ext ?_)
-      exact hd
+    have hm : d ∈ IdeleGroup.normOneSubgroup E := MonoidHom.mem_ker.2 (Subtype.ext hd)
     set b : IdeleGroup.normOneSubgroup E := ⟨d, hm⟩ with hb
     set g : IdeleGroup.normOneSubgroup E → ℂ := fun z => β (z : IdeleGroup E) with hg
     have hD := isFundamentalDomain_normOneFundamentalDomain E (normOneMeasure E)

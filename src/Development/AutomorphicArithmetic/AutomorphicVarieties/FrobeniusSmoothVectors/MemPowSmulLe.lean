@@ -93,9 +93,7 @@ theorem UpperTheory.V.Fr.cont_u :
       · intro p hp q hq
         obtain ⟨p', rfl, hp'⟩ := ih p hp
         have hq0 : q ∈ S.B := (hB q).2 hq.1
-        have hqm : (⟨q, hq0⟩ : S.B) ∈ S.mB := by
-          show q ∈ maximalIdeal S.R
-          exact hq.2
+        have hqm : (⟨q, hq0⟩ : S.B) ∈ S.mB := hq.2
         refine ⟨p' * ⟨q, hq0⟩, rfl, ?_⟩
         rw [pow_succ]
         exact Ideal.mul_mem_mul hp' hqm
@@ -113,7 +111,6 @@ theorem UpperTheory.V.Fr.cont_u :
       have hib : S.inc b ∈ S.x0 ^ N := by
         rw [Space.x0, ← Ideal.map_pow]
         exact Ideal.mem_map_of_mem _ hb
-      show S.inc b * ⟨q, hqA⟩ ∈ S.x0 ^ N
       exact Ideal.mul_mem_right _ _ hib
     · rintro x z ⟨x', rfl, hx1, hx2⟩ ⟨z', rfl, hz1, hz2⟩
       exact ⟨x' + z', rfl, Submodule.add_mem _ hx1 hz1, Ideal.add_mem _ hx2 hz2⟩
@@ -128,8 +125,7 @@ theorem UpperTheory.V.Fr.cont_u :
     rw [Ideal.Quotient.eq] at hy ⊢
     obtain ⟨a, ha, -, ha2⟩ := hT N j _ (hM ⟨Submodule.sub_mem _ (hf y) (hf x), hy⟩)
     have hax : f y - f x = a := Subtype.ext (by rw [ha]; rfl)
-    rw [hax]
-    exact ha2
+    rwa [hax]
   have hcB : ∀ {Γ : Type} [TopologicalSpace Γ] (f : Γ → S.B),
       AdicCont (maximalIdeal S.R) (fun g => (f g : S.R)) → AdicCont S.mB f := by
     intro Γ _ f hc N
@@ -142,8 +138,7 @@ theorem UpperTheory.V.Fr.cont_u :
     have hd : ((f y : S.R) - f x) ∈ W.part 0 := (hB _).1 (S.B.sub_mem (f y).2 (f x).2)
     obtain ⟨b, hb, hb2⟩ := hmulB N _ (hmulB N _ (hP N)) _ (hM ⟨hd, hy⟩)
     have hbx : f y - f x = b := Subtype.ext (by rw [hb]; rfl)
-    rw [hbx]
-    exact hb2
+    rwa [hbx]
   refine ⟨⟨fun i j => ?_, fun v i => ?_⟩, fun i => ?_, fun v i => ?_, fun j N => ?_⟩
   · exact hcA (w n i - w n j) (fun g => S.u.r g i j) (fun g => hr g i j) (S.lift.1.1 i j)
   · exact hcA 0 (fun g => (S.u.ψ v i g : S.A)) (fun g => (hB _).1 (S.ψB v i g).2) (S.lift.1.2 v i)
@@ -153,5 +148,4 @@ theorem UpperTheory.V.Fr.cont_u :
     refine ⟨M, fun a ha hm => ?_⟩
     obtain ⟨b, hb, hb1, -⟩ := hT N j _ (hM ⟨(hgr j a).1 ha, hm⟩)
     have hba : b = a := Subtype.ext hb
-    rw [← hba]
-    exact hb1
+    rwa [← hba]

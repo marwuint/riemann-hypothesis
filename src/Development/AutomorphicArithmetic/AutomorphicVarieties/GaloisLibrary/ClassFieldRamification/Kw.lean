@@ -112,8 +112,7 @@ theorem UpperTheory.V.CF.cheb :
   have hF := (IsArithFrobAt.arithFrobAt (𝓞 K) Gal(L/K) w.asIdeal).conj c⁻¹
   rw [← hc] at hF
   have e : c⁻¹ * (c * σ * c⁻¹) * c⁻¹⁻¹ = σ := by group
-  rw [e] at hF
-  exact hF
+  rwa [e] at hF
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.ClassFieldRamification.Cheb =====
@@ -147,9 +146,7 @@ private theorem UpperTheory.V.CF.bauer_fix_iff (K M N : Type) [Field K] [NumberF
   let j : MulAction.stabilizer (N ≃ₐ[M] N) P → MulAction.stabilizer (N ≃ₐ[K] N) P :=
     fun σ => ⟨σ.1.restrictScalars K, σ.2⟩
   have hj : Function.Injective j := by
-    intro a b e
-    apply Subtype.ext
-    exact AlgEquiv.restrictScalars_injective K (congrArg Subtype.val e)
+    exact fun a b e => Subtype.ext (AlgEquiv.restrictScalars_injective K (congrArg Subtype.val e))
   have hpos : 0 < Nat.card (MulAction.stabilizer (N ≃ₐ[M] N) P) := Nat.card_pos
   constructor
   · intro h
@@ -202,8 +199,7 @@ private theorem UpperTheory.V.CF.bauer_fix (K A C N : Type) [Field K] [NumberFie
       ← Ideal.inertiaDegIn_eq_inertiaDeg v.asIdeal _ Gal(C/K)] at hC ⊢
     exact mul_eq_one.1 hC
   have hA := h v hv hsC (w.under (𝓞 A)) (inferInstanceAs ((w.asIdeal.under (𝓞 A)).LiesOver v.asIdeal))
-  refine (bauer_fix_iff K A N w.asIdeal w.ne_bot).2 ?_ σ hF.mem_stabilizer x
-  exact mul_eq_one.2 hA
+  exact (bauer_fix_iff K A N w.asIdeal w.ne_bot).2 (mul_eq_one.2 hA) σ hF.mem_stabilizer x
 
 theorem UpperTheory.V.CF.bauer :
     ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (A C : IntermediateField K Ω) [NumberField A] [NumberField C] [IsGalois K A] [IsGalois K C] (T : Set (HeightOneSpectrum (𝓞 K))), T.Finite → (∀ v ∉ T, GroundTheory.Global.SplitsCompletely C v → GroundTheory.Global.SplitsCompletely A v) → A ≤ C := by
@@ -240,8 +236,7 @@ theorem UpperTheory.Reformulated.B.Qi16.rayPrime_span :
       (↑p : NumberField.RingOfIntegers ℚ) ∈ v.asIdeal → v.asIdeal = Ideal.span {(↑p : NumberField.RingOfIntegers ℚ)} := by
   intro v p hp hmem
   have hprime : Prime (p : NumberField.RingOfIntegers ℚ) := by
-    rw [← MulEquiv.prime_iff Rat.ringOfIntegersEquiv]
-    rw [map_natCast]
+    rw [← MulEquiv.prime_iff Rat.ringOfIntegersEquiv, map_natCast]
     exact Nat.prime_iff_prime_int.mp hp
   have hP : (Ideal.span {(p : NumberField.RingOfIntegers ℚ)}).IsPrime :=
     (Ideal.span_singleton_prime hprime.ne_zero).mpr hprime
@@ -313,8 +308,7 @@ theorem UpperTheory.V.CF.splitCyc :
     PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible
   have hvZ : v.asIdeal.under ℤ = Ideal.span {(p : ℤ)} := by
     refine (hspan.eq_of_le (Ideal.IsPrime.under ℤ v.asIdeal).ne_top ?_).symm
-    rw [Ideal.span_singleton_le_iff_mem, Ideal.under, Ideal.mem_comap, map_natCast]
-    exact hpv
+    rwa [Ideal.span_singleton_le_iff_mem, Ideal.under, Ideal.mem_comap, map_natCast]
   haveI : v.asIdeal.LiesOver (Ideal.span {(p : ℤ)}) := ⟨hvZ.symm⟩
   have hsurj : Function.Surjective (algebraMap ℤ (𝓞 ℚ)) := fun y => ⟨Rat.ringOfIntegersEquiv y, by
     have h : (Rat.ringOfIntegersEquiv.symm : ℤ →+* 𝓞 ℚ) = algebraMap ℤ (𝓞 ℚ) :=

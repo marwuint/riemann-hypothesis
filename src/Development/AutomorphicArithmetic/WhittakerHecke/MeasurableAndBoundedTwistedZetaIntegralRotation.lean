@@ -101,8 +101,7 @@ private theorem exists_Xr {E : Type} [Field E] [NumberField E] [_root_.NumberFie
 
 private theorem mul_sg (v : H.P ℚ) (y : A ℚ) (x : H.Kv v) : y * H.sg v x = H.sg v (H.cp v y * x) := by
   refine Prod.ext ?_ (FiniteAdeleRing.ext (K := ℚ) fun w => ?_)
-  · show y.1 * 0 = 0
-    exact mul_zero _
+  · exact mul_zero _
   · by_cases h : w = v
     · subst h
       show y.2 w * (H.sg w x).2 w = (H.sg w (H.cp w y * x)).2 w
@@ -124,12 +123,10 @@ private theorem wo_int {E : Type} [Field E] [NumberField E] [_root_.NumberField.
   rw [e'] at e
   have h1 : ψ (-((y : A ℚ) * H.sg v c)) = 1 := by
     have : (1 : ℂ) * Wo D φ (em E (aE y) * infGL E 2 X) = ψ (-((y : A ℚ) * H.sg v c)) * Wo D φ (em E (aE y) * infGL E 2 X) := by
-      rw [one_mul]
-      exact e
+      rwa [one_mul]
     exact (mul_right_cancel₀ hne this).symm
   have h2 := Nz.psi_neg_mul ((y : A ℚ) * H.sg v c)
-  rw [h1, one_mul, mul_sg, mul_comm] at h2
-  exact h2
+  rwa [h1, one_mul, mul_sg, mul_comm] at h2
 
 private theorem key_bd {x B : ℝ} {m : ℕ} {σ : ℝ} {n : ℕ} (hσ : 4 < σ) (hm : σ ≤ m) (hx : 0 < x) (hn : 0 < n) (hB : 0 ≤ B) {w : ℝ}
     (hw : w ≤ B * ((1 + x) ^ (m + 2))⁻¹) :
@@ -273,8 +270,7 @@ theorem UpperTheory.measurable_and_bounded_twisted_zeta_integral_rotation :
     intro t y
     obtain ⟨t', ht', e⟩ := rot_per t
     have := (hB y (em E (rot t')) ⟨t', ht', rfl⟩).1
-    rw [e, map_mul]
-    exact this
+    rwa [e, map_mul]
   have hB0 : 0 ≤ B := by
     have h1 := (norm_nonneg _).trans (hBt 0 1)
     have h2 : 0 < ((1 + |re ((1 : (A ℚ)ˣ) : A ℚ)|) ^ (m + 2))⁻¹ := by positivity

@@ -171,8 +171,7 @@ theorem up_mem (t : Tup c) (ht : t.Is) (ψ : t.Col 0) (hψ : ψ ∈ t.Ram 0) :
     rw [up_succ]
     have h0 := ih (by omega)
     have h1 := ht.stabS (2 * k) (by omega) _ h0
-    have h2 := ht.stabK (2 * k) (by omega) _ h1
-    exact ht.stabK (2 * k + 1) (by omega) _ h2
+    exact ht.stabK (2 * k + 1) (by omega) _ (ht.stabK (2 * k) (by omega) _ h1)
 
 theorem up_ind {𝒯 : Type} (t : 𝒯 → Tup c) (ht : ∀ s, (t s).Is) (hS : StepX t) :
     ∀ k ρ (h : 2 * k + 2 * ρ + 2 = D.R.m) (I : Type) [Fintype I] (s : I → 𝒯) (β : I → ℂ) (ψ : ∀ i, (t (s i)).Col 0)
@@ -387,8 +386,7 @@ theorem twoX_of_laws : ∀ (D : D7) (c : Comm D) (𝒯 : Type) (t : 𝒯 → Tup
     · push Not at hex
       refine ⟨0, Fin.elim0, Fin.elim0, fun s ψ _ β => ?_⟩
       simp only [Finset.univ_eq_empty, Finset.sum_empty]
-      refine Finset.sum_eq_zero fun α _ => Finset.sum_eq_zero fun γ _ => ?_
-      exact ((hex s α γ β).elim)
+      exact Finset.sum_eq_zero fun α _ => Finset.sum_eq_zero fun γ _ => (hex s α γ β).elim
   obtain ⟨n, P, P', hstep⟩ := step1
   choose a ha using fun i : Fin n => hker j hj0 y (P i)
   choose b hb using fun (i : Fin n) (y' : c.Fr (j + 1)) => hker (j + 1) hj1 y' (P' i)
@@ -486,8 +484,7 @@ theorem perF_smul {c : Comm D} (t : Tup c) (j ρ : ℕ) (h : j + 2 * ρ + 2 = D.
   simp only [Tup.perF, trc_smul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun α _ => ?_
   have e := GlobalTheory.HandHom.per_smul (c.B j ρ h) c.ψ 1 a (φ α) (trc (t.e j α) f)
-  rw [one_smul, one_mul] at e
-  exact e
+  rwa [one_smul, one_mul] at e
 
 theorem contAut_trc {V : HSp D} (e : GA D V →₀ ℂ) {f : GA D V → ℂ} (hf : IsContAut V f) : IsContAut V (trc e f) := by
   refine ⟨fun γ hγ g => ?_, ?_⟩
@@ -582,8 +579,7 @@ theorem GlobalTheory.SeeSaw.lastX_of_laws : GlobalTheory.Published.HarishChandra
         (t (s i)).cP * b y' * (t (s i)).tail (j + 1 + 1) h ((t (s i)).K (j + 1) ((t (s i)).K j ((t (s i)).S j (ψ i)))) (F i) :=
       fun y' => hb y' (s i) _ hψ₂ (F i)
     rw [e2, e3]
-    simp only [hb', Finset.mul_sum]
-    exact Finset.sum_congr rfl fun y' _ => by ring
+    simpa only [hb', Finset.mul_sum] using Finset.sum_congr rfl fun y' _ => by ring
   rw [Finset.sum_congr rfl fun i _ => hterm i, Finset.sum_comm]
   refine Finset.sum_eq_zero fun y' _ => ?_
   rw [← Finset.mul_sum, hF, mul_zero]
@@ -724,12 +720,10 @@ theorem vw_eq_zero_of_unitRatio : ∀ (K : Type) [Field K] [NumberField K] (σ :
     exact hr0 (by exact_mod_cast hpow'.symm)
   have hnum : ((r.num : ℤ) : 𝓞 K) ∉ w.asIdeal := by
     refine intCast_notMem_of_natAbs _ _ (natCast_notMem_of_primes w.asIdeal _ (by simpa using hr0) ?_)
-    intro p hp hd
-    exact hS p hp (hrS p hp (padicValRat_ne_zero_of_dvd_num hr0 hp hd))
+    exact fun p hp hd => hS p hp (hrS p hp (padicValRat_ne_zero_of_dvd_num hr0 hp hd))
   have hden : ((r.den : ℕ) : 𝓞 K) ∉ w.asIdeal := by
     refine natCast_notMem_of_primes w.asIdeal _ r.den_nz ?_
-    intro p hp hd
-    exact hS p hp (hrS p hp (padicValRat_ne_zero_of_dvd_den hp hd))
+    exact fun p hp hd => hS p hp (hrS p hp (padicValRat_ne_zero_of_dvd_den hp hd))
   have vnum := ReductionFirst.vw_unit w _ hnum
   have vden := ReductionFirst.vw_unit w _ hden
   rw [show (((r.num : ℤ) : 𝓞 K) : K) = (r.num : K) from map_intCast (algebraMap (𝓞 K) K) _] at vnum

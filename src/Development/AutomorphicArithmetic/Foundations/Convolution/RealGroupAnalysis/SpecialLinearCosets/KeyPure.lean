@@ -764,9 +764,7 @@ theorem UpperTheory.ConvolutionTheory.R2.I.loc :
         by_cases hx : x ∈ C <;> simp
       rw [e, map_add (f := _), hb _ (fun x hx => by by_contra hc; exact hx (by simp [hc])), hb', add_zero]
       intro x hx
-      have hxC : x ∉ C := by
-        intro hc
-        exact hx (by simp [hc])
+      have hxC : x ∉ C := fun hc => hx (by simp [hc])
       have hxb : b.1 x ≠ 0 := by
         intro h0
         apply hx
@@ -847,16 +845,14 @@ theorem UpperTheory.ConvolutionTheory.R2.I.absM :
         congrArg (fun c : SB (SL v) => c.1 ⟨m, hm⟩) (hs' (resL v b))
       show (s (resL v b)).1 m - b.1 m = 0
       rw [h1, sub_self]
-    rw [map_sub, sub_eq_zero] at hz
-    exact hz
+    rwa [map_sub, sub_eq_zero] at hz
   have key := UpperTheory.ConvolutionTheory.R2.I.absS F v V ρ hρ (β.compl₂ s) ?_ f (resL v a)
     (fun x => resL v (aa x)) ?_
   · have hfun : (fun x => β (ρ (dd x) f) (aa x)) =
         fun x => (β.compl₂ s) (ρ (dd x) f) (resL v (aa x)) := by
       funext x
       rw [LinearMap.compl₂_apply, hdep]
-    rw [hfun]
-    exact key
+    rwa [hfun]
   · intro g h c c' hc
     rw [LinearMap.compl₂_apply, LinearMap.compl₂_apply]
     have e : resL v (trM g (s c)) = c' := by
@@ -1019,8 +1015,7 @@ private theorem sg_add' (x y : Kv v) : sg v (x + y) = sg v x + sg v y := (sgLaws
 private theorem sg_mul' (a : A F) (x : Kv v) : a * sg v x = sg v (cp v a * x) := (sgLaws F v).2.1 a x
 private theorem cp_sg' (x : Kv v) : cp v (sg v x) = x := (sgLaws F v).2.2.1 x
 private theorem sg_zero' : sg v (0 : Kv v) = 0 := by
-  have h := sg_add' v (0 : Kv v) 0
-  simpa using h
+  simpa using sg_add' v (0 : Kv v) 0
 private theorem sg_neg' (x : Kv v) : sg v (-x) = -sg v x := by
   have h := sg_add' v (-x) x
   rw [neg_add_cancel, sg_zero'] at h
@@ -1031,8 +1026,7 @@ private theorem cp_rt' (c : F) : cp v (rt c) = algebraMap F (Kv v) c := rfl
 private theorem mk_add (u t u' t' : A F) : D.mkE u t + D.mkE u' t' = D.mkE (u + u') (t + t') :=
   (mkLaws F E D).2.1 u t u' t'
 private theorem mk_zero : D.mkE (0 : A F) 0 = 0 := by
-  have h := mk_add D (0 : A F) 0 0 0
-  simpa using h
+  simpa using mk_add D (0 : A F) 0 0 0
 private alias mk_co := _root_.UpperTheory.ConvolutionTheory.R2.Dat.co_mkE
 
 private noncomputable def sB (k : Kv v) : A E := D.mkE (sg v (k / 2)) (sg v (-(k / (2 * θ))))
@@ -1067,8 +1061,7 @@ private theorem sE_mul (hq : θ ^ 2 = algebraMap F (Kv v) D.δ) (h0 : θ ≠ 0) 
   have h := mk_sE D v hq h0 (sg v (k / 2)) (sg v (k / (2 * θ))) k'
   rw [cp_sg', cp_sg'] at h
   have e : (k / 2 + k / (2 * θ) * θ) * k' = k * k' := by field_simp; ring
-  rw [e] at h
-  exact h
+  rwa [e] at h
 
 private theorem sE_sB (hq : θ ^ 2 = algebraMap F (Kv v) D.δ) (h0 : θ ≠ 0) (k k' : Kv v) :
     sE D v θ k * sB D v θ k' = 0 := by
@@ -1369,8 +1362,7 @@ theorem UpperTheory.ConvolutionTheory.R2.I.actN :
   set a := sg v (s / 2) with ha
   set b := sg v (-(s / (2 * θ))) with hb
   have hN : a ^ 2 - rt D.δ * b ^ 2 = 0 := by
-    rw [pow_two, pow_two, ← mul_assoc]
-    rw [ha, hb, smul, smul, smul, scp, scp, hδ, sub_eq_zero]
+    rw [pow_two, pow_two, ← mul_assoc, ha, hb, smul, smul, smul, scp, scp, hδ, sub_eq_zero]
     congr 1
     field_simp
   let d : Fin 4 → Kv v := ![0, -(s * cp v (X 2)) - s * θ * cp v (X 3), -(s / 2 * cp v (X 0)), s / (2 * θ) * cp v (X 0)]

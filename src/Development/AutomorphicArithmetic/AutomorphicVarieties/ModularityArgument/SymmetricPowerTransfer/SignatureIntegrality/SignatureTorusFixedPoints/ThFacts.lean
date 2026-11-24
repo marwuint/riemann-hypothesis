@@ -111,10 +111,8 @@ private theorem exists_rt_ne_cycF_of_good_of_ok {k : Type} [Field k] [ValuativeR
 private theorem th'_mem_n {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (g : GL (Fin 3) k) (hg : g ∈ (glIwa k 3).N) :
     th' k g ∈ (glIwa k 3).N := by
-  have hg' : g ∈ unipB k (Fin 3) ⊓ KO k (Fin 3) := hg
-  show th' k g ∈ unipB k (Fin 3) ⊓ KO k (Fin 3)
-  obtain ⟨hu, hk⟩ := Subgroup.mem_inf.1 hg'
-  refine Subgroup.mem_inf.2 ⟨?_, ?_⟩
+  obtain ⟨hu, hk⟩ := Subgroup.mem_inf.1 (hg : g ∈ unipB k (Fin 3) ⊓ KO k (Fin 3))
+  refine (Subgroup.mem_inf.2 ⟨?_, ?_⟩ : th' k g ∈ unipB k (Fin 3) ⊓ KO k (Fin 3))
   · obtain ⟨hl, hd⟩ := (mem_unipB k).1 (inv_mem hu)
     have a := hl 1 0 (by decide)
     have b := hl 2 0 (by decide)
@@ -124,11 +122,8 @@ private theorem th'_mem_n {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
     have d2 := hd 2
     clear hl hd
     rw [mem_unipB]
-    refine ⟨fun i j hij => ?_, fun i => ?_⟩
-    · rw [nu_eq_one_of_mem_n_of_good_of_ok]
-      fin_cases i <;> fin_cases j <;> simp_all
-    · rw [nu_eq_one_of_mem_n_of_good_of_ok]
-      fin_cases i <;> simp_all
+    refine ⟨fun i j hij => ?_, fun i => ?_⟩ <;> rw [nu_eq_one_of_mem_n_of_good_of_ok] <;>
+      fin_cases i <;> (try fin_cases j) <;> simp_all
   · rw [← GlAx.Kc_zero] at hk ⊢
     exact exists_rt_ne_cycF_of_good_of_ok 0 g hk
 
@@ -155,10 +150,7 @@ private theorem th'_mem_nm {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
     fin_cases i <;> simp_all
 
 private theorem th_th' {k : Type} [Field k] (n : ℕ) (g : GL (Fin n) k) :
-    th k n (th k n g) = g := by
-  apply Units.ext
-  show ((g : Matrix (Fin n) (Fin n) k)ᵀ)ᵀ = g
-  exact Matrix.transpose_transpose _
+    th k n (th k n g) = g := Units.ext (Matrix.transpose_transpose _)
 
 private theorem th'_th' {k : Type} [Field k] (g : GL (Fin 3) k) :
     th' k (th' k g) = g := by
@@ -199,14 +191,10 @@ theorem UpperTheory.V.Z.Sym.Sig.thFacts : UpperTheory.V.Z.Sym.Sig.ThFacts := by
   refine ⟨hP, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · have hJ : V.J 3 ≤ (V.J 3).comap (th' k) := by
       refine sup_le (sup_le ?_ ?_) ?_
-      · intro g hg
-        exact V.N_le (th'_mem_n g hg)
-      · intro g hg
-        exact V.TH_le (hT g hg)
-      · intro g hg
-        exact V.Nm_le (th'_mem_nm V.c g hg)
-    intro g hg
-    exact hJ hg
+      · exact fun g hg => V.N_le (th'_mem_n g hg)
+      · exact fun g hg => V.TH_le (hT g hg)
+      · exact fun g hg => V.Nm_le (th'_mem_nm V.c g hg)
+    exact fun g hg => hJ hg
   · intro x y z
     simp [dg, mul_self_eq_one_and_nu_neg_one_of_isCC]
   · exact th_th'

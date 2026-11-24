@@ -138,16 +138,14 @@ theorem UpperTheory.V.Ws.Lk.polar :
       have key : F.eps O R g ^ (1 - (n : ℤ)) * χ i (F.conj g)⁻¹ = χ (π i) g := by
         have h := hχ i g
         have hb : χ (π i) g = ((χ i) (F.conj g) * F.eps O R g ^ ((n : ℤ) - 1))⁻¹ := by
-          rw [eq_inv_iff_mul_eq_one, mul_left_comm, ← mul_assoc]
-          exact h
+          rwa [eq_inv_iff_mul_eq_one, mul_left_comm, ← mul_assoc]
         rw [hb, mul_inv, show (1 : ℤ) - n = -((n : ℤ) - 1) by ring, zpow_neg, map_inv, mul_comm]
       rw [he, ← map_zpow, Units.coe_map, ← key, Units.val_mul]
       simp
   show Matrix.det (W.GDet.repAlg (W.diagRep χ) B (F.star O B n y)) =
     Matrix.det (W.GDet.repAlg (W.diagRep χ) B y)
   rw [hrep, hrep, Matrix.det_diagonal, Matrix.det_diagonal]
-  simp only [hst]
-  exact Equiv.prod_comp π (fun i => Ψ i y)
+  simpa only [hst] using Equiv.prod_comp π (fun i => Ψ i y)
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.UnipotentIdempotents.StarOp =====
@@ -192,8 +190,7 @@ theorem UpperTheory.V.Ws.Lk.cbInj :
   have hu2 : residue c'.O (inc h (chi D T.pr j (resQ T.L g') : c.O)) ≠ 0 :=
     (((chi D T.pr j (resQ T.L g')).isUnit.map (inc h)).map (residue c'.O)).ne_zero
   have hr : residue c'.O (inc h (r : c.O)) = 1 := by
-    have h1 := mul_left_cancel₀ hu1 hcb
-    exact mul_right_cancel₀ hu2 (h1.trans (one_mul _).symm)
+    exact mul_right_cancel₀ hu2 ((mul_left_cancel₀ hu1 hcb).trans (one_mul _).symm)
   apply hg
   by_contra hne1
   have hmem : (r : c.O) - 1 ∉ maximalIdeal c.O := by
@@ -229,9 +226,7 @@ theorem UpperTheory.V.Ws.Lk.residEx :
       (fun A v hA hv => hcb.2.1 i A (Y.away A v hA (by rwa [hS] at hv)))
   choose χ hχo hχ using hd
   have hinj : Function.Injective χ := by
-    intro i j hij
-    apply cbInj X hT
-    exact MonoidHom.ext fun g => by rw [← hχ, ← hχ, hij]
+    exact fun i j hij => cbInj X hT (MonoidHom.ext fun g => by rw [← hχ, ← hχ, hij])
   have hpol : V.frame.IsPolar c'.O (W.GDet.ofRep (W.diagRep χ)) := by
     apply polar V.frame c'.O (ResidueField c'.O) 4 χ Fin.revPerm
     intro i g
@@ -246,12 +241,10 @@ theorem UpperTheory.V.Ws.Lk.residEx :
       Fin.revPerm_apply]
     erw [hχ i g', hχ i.rev g1, heps, IsLocalRing.ResidueField.algebraMap_eq]
     have e3 : ((4 : ℕ) : ℤ) - 1 = ((3 : ℕ) : ℤ) := by norm_num
-    rw [e3, zpow_natCast]
-    exact key
+    rwa [e3, zpow_natCast]
   refine ⟨W.Resid.mk χ hχo hinj hpol (fun v i => (χ i).comp (V.frame.φ v)) ?_ (fun _ _ => 1)
     (fun _ _ _ _ => rfl), fun i g => hχ i g, fun v i g => rfl, fun v i => rfl⟩
-  intro v i
-  exact (hχo i).preimage (V.frame.φ_cont v)
+  exact fun v i => (hχo i).preimage (V.frame.φ_cont v)
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.UnipotentIdempotents.ResidEx =====

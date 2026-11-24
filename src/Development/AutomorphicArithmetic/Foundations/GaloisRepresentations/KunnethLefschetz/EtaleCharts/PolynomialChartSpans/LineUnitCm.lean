@@ -418,8 +418,7 @@ theorem UpperTheory.projBundleData_bundle_isLocallySurjective_etale :
   choose O hO t ht using fun x => exists_local_lift P p x
   have hc : TopologicalSpace.IsOpenCover O := by
     rw [TopologicalSpace.IsOpenCover, eq_top_iff]
-    intro x _
-    exact TopologicalSpace.Opens.mem_iSup.2 ⟨x, hO x⟩
+    exact fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hO x⟩
   apply Scheme.zariskiTopology_le_etaleTopology
   refine GrothendieckTopology.superset_covering _ ?_
     (Scheme.Cover.mem_grothendieckTopology (U.openCoverOfIsOpenCover O hc))
@@ -600,8 +599,7 @@ private abbrev vtx {X : Spc} {Q : PSh} (p : X ⟶ disc.obj Q) : X.obj (op ⦋0�
 private lemma vtx_cond {X : Spc} {Q : PSh} (p : X ⟶ disc.obj Q) (n : SimplexCategoryᵒᵖ)
     (i : Fin (n.unop.len + 1)) :
     X.map (SimplexCategory.const ⦋0⦌ n.unop i).op ≫ vtx p = p.app n := by
-  have h := p.naturality (SimplexCategory.const ⦋0⦌ n.unop i).op
-  simpa using h
+  simpa using p.naturality (SimplexCategory.const ⦋0⦌ n.unop i).op
 
 private noncomputable def nerveMap {X : Spc} {Q : PSh} (p : X ⟶ disc.obj Q) :
     X ⟶ (Arrow.mk (vtx p)).cechNerve where
@@ -671,8 +669,7 @@ private theorem isIso_nerveMap_of_existsUnique_vertices {X : Spc} {Q : PSh} (p :
       · intro x y hxy
         let t : Fin (n.unop.len + 1) → Sx X 0 U := fun i => (X.map (SimplexCategory.const ⦋0⦌ n.unop i).op).app (op U) x
         have ht : ∀ i j, (p.app (op ⦋0⦌)).app (op U) (t i) = (p.app (op ⦋0⦌)).app (op U) (t j) := by
-          intro i j
-          exact (hv n U x i).trans (hv n U x j).symm
+          exact fun i j => (hv n U x i).trans (hv n U x j).symm
         obtain ⟨z, -, huniq⟩ := h n.unop.len U t ht
         have hx : ∀ i, Sx.along (E := X) (N := n.unop.len) x (SimplexCategory.const ⦋0⦌ ⦋n.unop.len⦌ i) = t i := fun i => rfl
         have hy : ∀ i, Sx.along (E := X) (N := n.unop.len) y (SimplexCategory.const ⦋0⦌ ⦋n.unop.len⦌ i) = t i := by
@@ -685,8 +682,7 @@ private theorem isIso_nerveMap_of_existsUnique_vertices {X : Spc} {Q : PSh} (p :
       · intro w
         let t : Fin (n.unop.len + 1) → Sx X 0 U := fun i => (WidePullback.π (fun _ : Fin (n.unop.len + 1) => vtx p) i).app (op U) w
         have ht : ∀ i j, (p.app (op ⦋0⦌)).app (op U) (t i) = (p.app (op ⦋0⦌)).app (op U) (t j) := by
-          intro i j
-          exact (hbπ n U w i).trans (hbπ n U w j).symm
+          exact fun i j => (hbπ n U w i).trans (hbπ n U w j).symm
         obtain ⟨z, hz, -⟩ := h n.unop.len U t ht
         refine ⟨z, ?_⟩
         apply yonedaEquiv.symm.injective
@@ -867,8 +863,7 @@ theorem UpperTheory.Gal.KunnethLefschetz.G.pBE :
   refine ⟨?_, ?_⟩
   · obtain ⟨P, τ, hτ, hw⟩ := UpperTheory.Gal.KunnethLefschetz.G.pBEx K p i π D d hB j r hpb
     have hqW : IsUnit (q : Γ(W, ⊤)) := by
-      have h := hq.map (((i ≫ p).appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom)
-      simpa using h
+      simpa using hq.map (((i ≫ p).appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom)
     have hx' : pull _ (cechAug P.e) _ 2 (pull _ (sch.map j) _ 2 x) = c1 q (cm τ j hτ ≫ L) := by
       rw [← pull_comp, ← cm_aug τ j hτ, pull_comp, hx]
       exact (hI.a6nat q).2.2.1 _ L hinvD

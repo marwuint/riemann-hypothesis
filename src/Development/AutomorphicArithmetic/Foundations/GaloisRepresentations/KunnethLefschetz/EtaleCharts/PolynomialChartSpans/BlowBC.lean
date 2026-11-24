@@ -326,8 +326,7 @@ theorem blowBC : BlowBC := by
         simp only [Category.assoc]
         rw [reassoc_of% h1, hc.w]
         rfl
-      rw [this]
-      exact he
+      rwa [this]
     loc := loc_pb D c B.loc
     ι := B.ι
     fin := B.fin
@@ -339,8 +338,7 @@ theorem blowBC : BlowBC := by
       have h3 : a (i' w) = i (b w) := by rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hb.w]
       refine Opens.mem_iSup.2 ⟨α, ?_⟩
       change a (i' w) ∈ B.V α
-      rw [h3]
-      exact h2
+      rwa [h3]
     c := fun α => chartPb φ hq hb hc hcl (B.c α)
     σ := fun α k => secPb D c ((B.c α).C k) (B.σ α k) (B.σ_f α k)
     σ_f := fun α k => secPb_f D c _ _ _

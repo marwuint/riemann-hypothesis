@@ -447,8 +447,7 @@ private theorem exists_one {F : GL (Fin 2) (A ℚ) → ℂ} (hF : Bd F) (h0 : F 
     ∃ x : normOneGL (K := ℚ) (n := 2), F (x : AdelicGLn.AdelicGL ℚ 2) ≠ 0 := by
   obtain ⟨g, hg⟩ := Function.ne_iff.1 h0
   refine ⟨retractOne g, ?_⟩
-  rw [coe_retractOne, ← centralSection_inv_mul_comm, ← map_inv, hF.cen]
-  exact hg
+  rwa [coe_retractOne, ← centralSection_inv_mul_comm, ← map_inv, hF.cen]
 
 end UpperTheory.ConvolutionTheory.RankTwoDescent.Cp
 
@@ -519,8 +518,7 @@ private theorem dM_fin (t : (A ℚ)ˣ) (ht : (t : A ℚ).1 = 1) :
     refine Units.ext ?_
     ext i j
     fin_cases i <;> fin_cases j <;> simp [ht']
-  rw [h1, map_one, one_mul] at h
-  exact h
+  rwa [h1, map_one, one_mul] at h
 
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction in
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.formBd :
@@ -603,15 +601,13 @@ theorem UpperTheory.eq_sl2Rat_mul_of_gl2Rat_smul_adelicSL2IdeleMap_eq :
     have hm : IdeleGroup.diagonal ℚ (Matrix.GeneralLinearGroup.det r) ∈
         RationalIdeles.positiveSubgroup ⊓ (IdeleGroup.diagonal ℚ).range :=
       ⟨h3 ▸ us_pos _, ⟨_, rfl⟩⟩
-    rw [RationalIdeles.positiveSubgroup_inf_diagonal_range] at hm
-    exact hm
+    rwa [RationalIdeles.positiveSubgroup_inf_diagonal_range] at hm
   have h5 : (q.2 : (A ℚ)ˣ) = (p.2 : (A ℚ)ˣ) := by rw [← h2, h4, one_mul]
   have h6 : (r : Matrix (Fin 2) (Fin 2) ℚ).det = 1 := by
     have := congrArg Units.val h4
     rw [IdeleGroup.coe_diagonal, Units.val_one] at this
     apply NumberField.AdeleRing.algebraMap_injective (𝓞 ℚ) ℚ
-    rw [map_one]
-    exact this
+    rwa [map_one]
   let s : SpecialLinearGroup (Fin 2) ℚ := ⟨r.val, h6⟩
   have h7 : GroundTheory.Automorphic.AdelicGLn.diagonal ℚ 2 r = gl (ratS ℚ s) := by
     apply Units.ext
@@ -690,8 +686,7 @@ theorem UpperTheory.exists_gl2Rat_smul_mem_range_adelicSL2IdeleMap :
   rw [range_pm]
   change GroundTheory.Automorphic.AdelicGLn.det ℚ 2
     (GroundTheory.Automorphic.AdelicGLn.diagonal ℚ 2 r * (x : GL (Fin 2) (A ℚ))) ∈ UU
-  rw [map_mul, h, hr, ← hq, map_inv, inv_mul_cancel_left]
-  exact hy
+  rwa [map_mul, h, hr, ← hq, map_inv, inv_mul_cancel_left]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AdelicSL2.ExistsGl2RatSmulMemRangeAdelicSL2IdeleMap =====
@@ -752,8 +747,7 @@ theorem UpperTheory.isFundamentalDomain_image_sl2Domain_prod_ideles :
       exact (inv_mul_eq_one.1 (Subtype.ext (Subtype.ext (h2.trans (Units.ext rfl))))).symm)
     refine ⟨q, ⟨Set.mem_iUnion.2 ⟨⟨s, hs⟩, ⟨p.1, hp.1, h1.symm⟩, by rw [one_smul]; exact hq.1⟩, trivial⟩, ?_⟩
     change pm q = γ'⁻¹ • x
-    rw [eq_inv_smul_iff]
-    exact e'
+    rwa [eq_inv_smul_iff]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AdelicSL2.IsFundamentalDomainImageSl2DomainProdIdeles =====
@@ -786,8 +780,7 @@ theorem UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.fibre :
       obtain ⟨r, hr⟩ := γ.2
       exact ⟨r, hr⟩
     have := hΦ.left r (x : GL (Fin 2) (A ℚ))
-    rw [hr] at this
-    exact this
+    rwa [hr] at this
   let Φq : GroundTheory.Automorphic.RightCosetSpace Ga → ℂ := fun y => Φ ((Quotient.out y : GG) : GL (Fin 2) (A ℚ))
   have hq : ∀ x : GG, Φq (GroundTheory.Automorphic.RightCosetSpace.mk Ga x) = Φ (x : GL (Fin 2) (A ℚ)) := by
     intro x

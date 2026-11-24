@@ -598,14 +598,12 @@ private theorem ot_pair {l : ℕ} [Fact l.Prime] {L : Loc} {G G' : Glob l L} (k 
       obtain ⟨hgI, hgk⟩ := Subgroup.mem_inf.mp hg
       refine Subgroup.mem_inf.mpr ⟨?_, ?_⟩
       · obtain ⟨x, hx, rfl⟩ := Subgroup.mem_map.mp hgI
-        refine Subgroup.mem_map.mpr ⟨x, hx, ?_⟩
-        exact Subtype.ext (k.φu u x).symm
+        exact Subgroup.mem_map.mpr ⟨x, hx, Subtype.ext (k.φu u x).symm⟩
       · rw [Subgroup.mem_iInf] at hgk ⊢
         intro i
         have := hgk i
         rw [MonoidHom.mem_ker, h1 i] at this
-        rw [MonoidHom.mem_ker, hπ]
-        exact this
+        rwa [MonoidHom.mem_ker, hπ]
   obtain ⟨p', hD, hψ⟩ := exists_determinantPair_pullback l G'.frame G.frame fh O n r' r hfc
     (fun h0 => (p.isEmpty_of_zero h0).1) R p
   exact ⟨p', hD, funext fun v => funext fun i => by rw [hψ]; rfl⟩
@@ -649,16 +647,13 @@ theorem UpperTheory.V.Pa.Lev.opTransport :
               β_pair := hβ }, ?_⟩
   refine ⟨?_, fun j g => ?_, fun j i g => ?_⟩
   · dsimp only
-    simp only [hpe]
-    exact hR.two
+    simpa only [hpe] using hR.two
   · dsimp only
     rw [hpD, hmc, ot_tr_comap, map_mul, ot_single, mapDomain_charpoly_element]
-    simp only [hke]
-    exact hR.rel1 j (k.p₀ g)
+    simpa only [hke] using hR.rel1 j (k.p₀ g)
   · dsimp only
     rw [hpD, hmc, ot_tr_comap, map_mul, ot_single, mapDomain_partial_charpoly_element]
-    simp only [hke]
-    exact hR.rel2 j i (k.p₀ g)
+    simpa only [hke] using hR.rel2 j i (k.p₀ g)
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.NilpotentLevelLowering.OpTransport =====

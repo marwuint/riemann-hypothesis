@@ -62,8 +62,7 @@ theorem UpperTheory.V.Fr.ep_upt :
     ∀ {C : Type} [CommRing C] {n : ℕ} (h T T' : Matrix (Fin n) (Fin n) C), UpT T → UpT T' → (∀ i j, j < i → IsUnit (T j j - T' i i)) → h * T = T' * h → UpT h := by
   intro C _ n h T T' hT hT' hu hc
   suffices key : ∀ m, ∀ i j : Fin n, j.val + (n - i.val) = m → j < i → h i j = 0 by
-    intro i j hji
-    exact key _ i j rfl hji
+    exact fun i j hji => key _ i j rfl hji
   intro m
   induction m using Nat.strong_induction_on with
   | _ m ih =>
@@ -78,8 +77,7 @@ theorem UpperTheory.V.Fr.ep_upt :
         · have hk' := Fin.lt_iff_val_lt_val.mp hk
           rw [ih (k.val + (n - i.val)) (by omega) i k rfl (hk.trans hji), zero_mul]
         · rw [hT k j hk, mul_zero]
-      · intro hn
-        exact absurd (Finset.mem_univ j) hn
+      · exact fun hn => absurd (Finset.mem_univ j) hn
     have R : ∑ k, T' i k * h k j = T' i i * h i j := by
       rw [Finset.sum_eq_single i]
       · intro k _ hki
@@ -88,8 +86,7 @@ theorem UpperTheory.V.Fr.ep_upt :
         · have hk' := Fin.lt_iff_val_lt_val.mp hk
           have hkn := k.isLt
           rw [ih (j.val + (n - k.val)) (by omega) k j rfl (hji.trans hk), mul_zero]
-      · intro hn
-        exact absurd (Finset.mem_univ i) hn
+      · exact fun hn => absurd (Finset.mem_univ i) hn
     rw [L, R] at e
     have e2 : h i j * (T j j - T' i i) = 0 := by
       rw [mul_sub, e, mul_comm]
@@ -129,8 +126,7 @@ private theorem grM_iff {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ
 private theorem diag_sq (R : Type) [CommRing R] (α : Fin 3 → ZMod 2) :
     diagonal (fun a => sg R (α a)) * diagonal (fun a => sg R (α a)) = 1 := by
   rw [diagonal_mul_diagonal]
-  simp only [sg_mul_self]
-  exact diagonal_one
+  simpa only [sg_mul_self] using diagonal_one
 
 private theorem map_diag {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R)
     (α : Fin 3 → ZMod 2) :

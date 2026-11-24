@@ -145,8 +145,7 @@ theorem UpperTheory.V.Ws.isAlgChar_pushCh_link_kappa :
   refine ⟨A, hA, a, k, hk, fun s hs => ?_⟩
   rw [← (auChi T.L Ω c').1]
   have h2 := congrArg (Units.map (algebraMap c'.O (PadicAlgCl l)).toMonoidHom) (H s hs).1
-  rw [map_pow, map_mul, map_zpow, map_one] at h2
-  exact h2
+  rwa [map_pow, map_mul, map_zpow, map_one] at h2
 end
 end -- clump:auto
 end -- clump:auto
@@ -284,8 +283,7 @@ private theorem across_irr {Γ Δ Δ' k : Type} [Group Γ] [Group Δ] [Group Δ'
   refine ⟨H.1, fun _ _ _ => trivial, fun W hW hI => H.2.2 W hW fun s v hv => ?_⟩
   obtain ⟨t, ht⟩ := h s
   have := hI t v hv
-  rw [MonoidHom.comp_apply, ht] at this
-  exact this
+  rwa [MonoidHom.comp_apply, ht] at this
 theorem UpperTheory.V.Z.Bc.across_alt :
     _root_.UpperTheory.V.Af.HypothesesH' → SolC → BiQuad → Across := by
   intro _ hS hB K K' Ω _ _ _ _ _ _ _ iA _ _ iT iT' iC hK hK' l _ ι n hn r θ hr hθ hd hirr haut
@@ -412,8 +410,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 private theorem comm_le_fix {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] (F : IntermediateField k Ω)
     (hF : IsAbelianGalois k F) : commutator (Ω ≃ₐ[k] Ω) ≤ F.fixingSubgroup := by
   haveI : Normal k F := IsGalois.to_normal
-  rw [← IntermediateField.restrictNormalHom_ker]
-  rw [commutator_def, Subgroup.commutator_le]
+  rw [← IntermediateField.restrictNormalHom_ker, commutator_def, Subgroup.commutator_le]
   intro a _ b _
   rw [MonoidHom.mem_ker, map_commutatorElement, commutatorElement_eq_one_iff_mul_comm]
   exact hF.toIsMulCommutative.is_comm.comm _ _
@@ -479,8 +476,7 @@ private theorem tri_mul (X Y : Matrix (Fin 4) (Fin 4) k) (hX : ∀ i j, j < i �
       rcases lt_or_gt_of_ne hb with h | h
       · rw [hX i b h, zero_mul]
       · rw [hY b i h, mul_zero]
-    · intro h
-      exact absurd (Finset.mem_univ i) h
+    · exact fun h => absurd (Finset.mem_univ i) h
 
 private theorem flag_of {Γ : Type} [Group Γ] (H : Subgroup Γ) (r : Γ →* GL (Fin 4) k) (a : GL (Fin 4) k)
     (h : ∀ g ∈ H, ∀ i j, j < i → (a * r g * a⁻¹ : GL (Fin 4) k) i j = 0) :
@@ -618,8 +614,7 @@ theorem UpperTheory.V.Keep.unlL :
     UpperTheory.V.Keep.UnlL := by
   intro Ω _ _ _ l _ c D T hD ho r h w hw A hA
   have hl : A.valuation (l : Ω) < 1 := by
-    have h' := (hA ((l : ℕ) : 𝓞 T.L)).2 hw
-    simpa only [map_natCast, eq_natCast, Nat.cast_id] using h'
+    simpa only [map_natCast, eq_natCast, Nat.cast_id] using (hA ((l : ℕ) : 𝓞 T.L)).2 hw
   obtain ⟨κ, hκ, hne⟩ := h A hl
   let ρ : ↥(Dec (F := T.L) A) →* ↥(Dec (F := T.F) A) :=
     ((resLe T.F_le).comp (Dec (F := T.L) A).subtype).codRestrict _ fun s =>
@@ -686,8 +681,7 @@ private theorem res_step {l : ℕ} [Fact l.Prime] (c : Coef l) (a b d : c.Oˣ) (
     rw [hsplit]
     refine lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ?_ ?_)
     · rwa [norm_neg]
-    · rw [norm_mul, hd, mul_one]
-      exact hy
+    · rwa [norm_mul, hd, mul_one]
   have hmem : z ∈ maximalIdeal c.O := by
     rw [mem_maximalIdeal, mem_nonunits_iff]
     intro hu
@@ -696,8 +690,7 @@ private theorem res_step {l : ℕ} [Fact l.Prime] (c : Coef l) (a b d : c.Oˣ) (
     rw [this] at hnorm
     exact lt_irrefl _ hnorm
   have h0 : residue c.O z = 0 := (residue_eq_zero_iff _).2 hmem
-  rw [hz, map_sub, map_mul, sub_eq_zero] at h0
-  exact h0
+  rwa [hz, map_sub, map_mul, sub_eq_zero] at h0
 
 section
 
@@ -782,8 +775,7 @@ theorem UpperTheory.V.Keep.upTri :
           · have hv : b.val < j.val := h
             rw [ih (b.val + (n - i.val)) (by omega) i b rfl (h.trans hji), zero_mul]
           · rw [hM b j h, mul_zero]
-        · intro h
-          exact absurd (Finset.mem_univ j) h
+        · exact fun h => absurd (Finset.mem_univ j) h
       have h2 : (M' * B) i j = d i * B i j := by
         rw [Matrix.mul_apply, Finset.sum_eq_single i, hM'd]
         · intro b _ hb
@@ -792,16 +784,14 @@ theorem UpperTheory.V.Keep.upTri :
           · have hv : i.val < b.val := h
             have hb' : b.val < n := b.isLt
             rw [ih (j.val + (n - b.val)) (by omega) b j rfl (hji.trans h), mul_zero]
-        · intro h
-          exact absurd (Finset.mem_univ i) h
+        · exact fun h => absurd (Finset.mem_univ i) h
       have h3 : B i j * (d j - d i) = 0 := by
         rw [hB, h2] at h1
         rw [mul_sub, ← h1, mul_comm, sub_self]
       rcases mul_eq_zero.mp h3 with h | h
       · exact h
       · exact absurd (hd (sub_eq_zero.mp h)) hji.ne
-  intro i j hji
-  exact key _ i j rfl hji
+  exact fun i j hji => key _ i j rfl hji
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.NormalValuationBounds.UpTri =====
@@ -943,8 +933,7 @@ theorem flagF : FlagF := by
   have hn : adj ((X.P.map (y : X.A →+* PadicAlgCl l)).n v) * (X.P.map (y : X.A →+* PadicAlgCl l)).n v = 1 := by
     have h1 : adj (X.P.n v) * X.P.n v = 1 := by
       have := (X.pair.low v).1
-      rw [IsGSp, one_smul] at this
-      exact this
+      rwa [IsGSp, one_smul] at this
     show adj ((X.P.n v).map _) * (X.P.n v).map _ = 1
     rw [adj_map, ← Matrix.map_mul, h1]
     simp
@@ -966,8 +955,7 @@ theorem flagF : FlagF := by
       rfl
     obtain ⟨-, a, a1, -, ha⟩ := (coPt c' X.B).1 yB
     have hb' : X.ψ v i (g⁻¹ * (s : G T.F Ω) * g) - algebraMap c'.O X.B (inc h z) ∈ maximalIdeal X.B ^ 1 := by
-      rw [pow_one]
-      exact hb
+      rwa [pow_one]
     have h2 := ha 1 _ hb'
     have e : yB (X.ψ v i (g⁻¹ * (s : G T.F Ω) * g) - algebraMap c'.O X.B (inc h z)) =
         (κ i s : PadicAlgCl l) - (z : PadicAlgCl l) := by
@@ -980,8 +968,7 @@ theorem flagF : FlagF := by
     exact lt_of_le_of_lt h2 a1
   · obtain ⟨U, hU, hw⟩ := hW
     refine ⟨U.comap (MulAut.conj g⁻¹).toMonoidHom, hU.preimage ?_, fun i s hs => ?_⟩
-    · show Continuous fun s : G T.F Ω => g⁻¹ * s * g⁻¹⁻¹
-      exact (continuous_const.mul continuous_id).mul continuous_const
+    · exact (continuous_const.mul continuous_id).mul continuous_const
     · have h1 : g⁻¹ * (s : G T.F Ω) * g ∈ U := by
         have := hs.1
         simpa [Subgroup.mem_comap] using this
@@ -1118,8 +1105,7 @@ private theorem exists_placeOver_of_placeOver_lp {L Ω : Type} [Field L] [Number
     have e2 : (y : W.Lp L) = 0 := (algebraMap (W.Lp L) L).injective (by rw [← e, map_zero]; rfl)
     exact hy0 (RingOfIntegers.ext (by rw [e2]; rfl))
   refine ⟨⟨(IsLocalRing.maximalIdeal A).comap g, Ideal.comap_isPrime _ _, hnb⟩, ?_⟩
-  intro x
-  exact (hmem x).symm
+  exact fun x => (hmem x).symm
 
 theorem UpperTheory.Gal.projectedFormsSystemPart.mkSetP :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω], l ≠ 2 → (∀ A : ValuationSubring Ω, Ine (F := W.Lp L) A ≤ (W.resP L Ω).range) → ∀ S : Finset ℕ, (∀ q ∈ S, q.Prime) → l ∈ S → (∀ q ∈ S, ∀ A : ValuationSubring Ω, A.valuation (q : Ω) < 1 → Dec (F := W.Lp L) A ≤ (W.resP L Ω).range) → ∀ A₀ : W.Vl l L → ValuationSubring Ω, (∀ v, IsPlaceOver (A₀ v) v.1) → ∀ (v₀ : W.Plc (W.Lp L)) (B : ValuationSubring Ω) (p : ℕ), p.Prime → p ≠ 2 → p ∉ S → ¬ (p : ℤ) ∣ discr L → ((p : ℕ) : 𝓞 (W.Lp L)) ∈ v₀.asIdeal → normV v₀ = p → IsPlaceOver B v₀ → Dec (F := W.Lp L) B ≤ (W.resP L Ω).range → ∃ s : W.HidaSetting l L Ω, s.p = p ∧ (∀ v : W.Vl l L, s.A v = A₀ v) ∧ s.A s.v0 = B ∧ s.S.Finite ∧ (∀ q ∈ S, ¬ B.valuation (q : Ω) < 1) ∧ ∀ (A : ValuationSubring Ω) (v : W.Plc (W.Lp L)), IsPlaceOver A v → v ∉ s.S → ∀ q ∈ S, ¬ A.valuation (q : Ω) < 1 := by
@@ -1179,8 +1165,7 @@ theorem UpperTheory.Gal.projectedFormsSystemPart.mkSetP :
     · exact hSd l hlS (Aof v) ((val_nat (hAof v) l).mpr h)
     · obtain ⟨q, hq, hqv, -⟩ := (hSt v).mp h
       exact hSd q hq (Aof v) ((val_nat (hAof v) q).mpr hqv)
-    · rw [hA0]
-      exact hBd
+    · rwa [hA0]
   have exists_conj : ∃ c : G (W.Lp L) Ω, ∃ j : Ω →+* ℂ, ∀ x, j (c x) = starRingEnd ℂ (j x) := by
     obtain ⟨φ⟩ : Nonempty (L →+* ℂ) := inferInstance
     let : Algebra L ℂ := φ.toAlgebra
@@ -1312,13 +1297,11 @@ theorem UpperTheory.Gal.projectedFormsSystemPart.setAv :
     obtain ⟨d, hd, hdU⟩ := hU2
     refine ⟨d, hd, ?_⟩
     have hk := eq_of_ker (γ := D.om) hdU.2
-    rw [← bu_val, hk, bu_val]
-    exact hg₂
+    rwa [← bu_val, hk, bu_val]
   refine ⟨SetD.mk s e hsA hSf (fun A w h1 h2 => hAway A w h1 h2) (by rw [hsv0]; exact hBaway) hchi hom (ccOf T s), ?_⟩
   show ¬ s.p ∣ p₀
   rw [hsp]
-  intro h
-  exact hpM (((h.mul_right 2).mul_right _).mul_right _)
+  exact fun h => hpM (((h.mul_right 2).mul_right _).mul_right _)
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PlainTorsionPairs.LinkTwo =====
@@ -1550,8 +1533,7 @@ private theorem pf_int {Λ B : Type} [CommRing Λ] [CommRing B] [Algebra O Λ] [
     exact ⟨a, by rw [coeff_map]; exact ha.symm⟩
   obtain ⟨q, hq, -, hm⟩ := lifts_and_natDegree_eq_and_monic hl (hp.map _)
   refine ⟨q, hm, ?_⟩
-  rw [← eval_map, hq, eval_map]
-  exact h1
+  rwa [← eval_map, hq, eval_map]
 variable {O₀ Γ : Type} [CommRing O₀] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O₀ Γ} {a : O₀ →+* O} (X : Space Φ a)
 private theorem pf_sq (f : X.B →ₐ[O] R) (g : Γ) (hg : ∀ n, IsIntegral O (f ((X.cp (g ^ 2)).coeff n))) (n : ℕ) :
     IsIntegral O (f ((X.cp g).coeff n)) := by
@@ -1570,15 +1552,13 @@ private theorem pf_sq (f : X.B →ₐ[O] R) (g : Γ) (hg : ∀ n, IsIntegral O (
   obtain ⟨q, hq, -, hm⟩ := lifts_and_natDegree_eq_and_monic hl (hp.map _)
   have h2 : q.eval₂ S₀.subtype ((X.cp g).coeff n) = 0 := by
     apply X.inj
-    rw [hom_eval₂, map_zero, ← eval_map, hq, eval_map]
-    exact hb
+    rwa [hom_eval₂, map_zero, ← eval_map, hq, eval_map]
   let j : S₀ →+* integralClosure O R := ((f : X.B →+* R).comp S₀.subtype).codRestrict _ fun y => y.2
   have h3 : IsIntegral (integralClosure O R) (f ((X.cp g).coeff n)) := by
     refine ⟨q.map j, hm.map j, ?_⟩
     have h4 := congrArg (f : X.B →+* R) h2
     rw [hom_eval₂, map_zero] at h4
-    rw [eval₂_map]
-    exact h4
+    rwa [eval₂_map]
   exact isIntegral_trans _ h3
 private theorem pf_gen [IsDomain R] (h0 : ∀ a ∈ maximalIdeal O, algebraMap O R a = 0) (f : X.B →ₐ[O] R)
     (h1 : ∀ g n, IsIntegral O (f ((X.cp g).coeff n))) (h2 : ∀ v i, ∀ s ∈ Φ.Gv v, IsIntegral O (f (X.ψ v i s))) :
@@ -1654,8 +1634,7 @@ theorem UpperTheory.V.Ws.exists_pow_maximalIdeal_le_of_modular_phi :
   · obtain ⟨v, rfl⟩ := K.e.surjective v
     obtain ⟨g', rfl⟩ := pf_lift T (g := s) (hT.1.split l hl _ (T.ovl (K.e v)) hs)
     have hg : g' ∈ Dec (F := T.L) (K.s.A v) := by
-      rw [K.hA]
-      exact hs
+      rwa [K.hA]
     have h1 := hB (B.u.ψ v i ⟨g', hg⟩)
     rw [AlgHom.comp_apply, hφ.2 v i ⟨g', hg⟩, map_mul, π.commutes, ← Units.val_pow_eq_pow_val, ← Units.val_mul] at h1
     exact pf_unit h1

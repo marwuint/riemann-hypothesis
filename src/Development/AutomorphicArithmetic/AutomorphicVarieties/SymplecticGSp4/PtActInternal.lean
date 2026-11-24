@@ -67,8 +67,7 @@ private theorem UpperTheory.V.GradeZeroInterpolatingElement.ptAct_internal {O R 
     constructor
     · rintro ⟨y, rfl⟩
       exact y.2
-    · intro hx
-      exact ⟨⟨x, hx⟩, rfl⟩
+    · exact fun hx => ⟨⟨x, hx⟩, rfl⟩
   have htop : ⨆ j, (𝒜 j).comap f = ⊤ := by
     apply Submodule.map_injective_of_injective hinj
     rw [Submodule.map_iSup, Submodule.map_top]

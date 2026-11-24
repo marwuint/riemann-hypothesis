@@ -171,8 +171,7 @@ private theorem cl_gen {κ : Type*} (Y : κ → Submodule ℂ M) (W : Submodule 
     have hm : ∀ y ∈ Y i ⊓ W, T y ∈ Y i ⊓ W := fun y hy => ⟨hY i y hy.1, hW y hy.2⟩
     have h0 := congrArg (Submodule.map (Y i ⊓ W).subtype) (Module.End.iSup_maxGenEigenspace_eq_top (T.restrict hm))
     rw [Submodule.map_iSup, Submodule.map_subtype_top] at h0
-    refine h0.ge.trans (iSup_mono fun ν => ?_)
-    exact (Submodule.inf_genEigenspace T (Y i ⊓ W) hm).ge
+    exact h0.ge.trans (iSup_mono fun ν => (Submodule.inf_genEigenspace T (Y i ⊓ W) hm).ge)
   have h2 : W ≤ (⨆ i, Y i ⊓ (W ⊓ T.maxGenEigenspace μ)) ⊔ ⨆ ν ≠ μ, T.maxGenEigenspace ν := by
     refine h.trans (iSup_le fun i => (h1 i).trans (iSup_le fun ν => ?_))
     by_cases hν : ν = μ
@@ -272,8 +271,7 @@ private theorem classical_fixed_by_iwahori (c0 : ℕ) (he : c0 ≤ e)
   refine Subgroup.list_prod_mem _ fun g hg => ?_
   obtain ⟨i, rfl⟩ := List.mem_ofFn.1 hg
   have := h3 v i (y i)
-  rw [triv v i (y i) (hy' c0 htv i), map_one, inv_one, one_smul] at this
-  exact this
+  rwa [triv v i (y i) (hy' c0 htv i), map_one, inv_one, one_smul] at this
 
 private theorem cl_stab (c0 : ℕ) (he : c0 ≤ e)
     (triv : ∀ v i (y : Uo ((H.Sl v).adicCompletion L)), (y : ((H.Sl v).adicCompletion L)ˣ) ∈ Uc _ (c0 + 1) →
@@ -307,8 +305,7 @@ private theorem cl_back (F y : Fin H.m → H.X.Fn ℂ d) (hF : F ∈ H.ClAt θ �
     rw [cl_fixd, Subgroup.pi_le_iff] at h ⊢
     rintro v _ ⟨g, hg, rfl⟩
     have := hv v g (hU v hg) 1 (by rw [one_smul]; exact h v ⟨g, hg, rfl⟩)
-    rw [one_smul] at this
-    exact this
+    rwa [one_smul] at this
   refine (cl_mem H ι θ x lam ξ K e _).2 ⟨hy, ?_, key _ (fun v => (cl_KO _ n e).1) h1, key _ (fun v => (cl_KO _ n e).2.1) h2,
     fun v i z => hv v (eT _ n i z : GLw n (H.Sl v)) ((cl_KO _ n e).2.2 (eT _ n i z).2) _ (h3 v i z)⟩
   rw [cl_fixd] at hl ⊢
@@ -317,8 +314,7 @@ private theorem cl_back (F y : Fin H.m → H.X.Fn ℂ d) (hF : F ∈ H.ClAt θ �
   have := hq q g hg 1 (by
     rw [one_smul]
     exact hl (Subgroup.mem_sup_right (Subgroup.mem_iSup_of_mem q ⟨g, hg, rfl⟩)))
-  rw [one_smul] at this
-  exact this
+  rwa [one_smul] at this
 
 private theorem cl_QQ (hH : H.Ax) (q q' : H.Q) (hq : q ≠ q') (g : GLw n (H.wq q)) (g' : GLw n (H.wq q'))
     (y : Fin H.m → H.X.Fn ℂ d) :
@@ -346,8 +342,7 @@ theorem UpperTheory.V.Hi.cl_Yuz_of (Y : Submodule ℂ (Fin H.m → H.X.Fn ℂ d)
     refine cl_pi (G := fun v : H.V => GLw n (H.Sl v)) (H.X.rpF ℂ d H.m) Y fun v g z hz => ?_
     obtain ⟨σ, hσ⟩ := hL v
     exact (cl_iso hσ hz).1 g
-  intro y hy
-  exact Submodule.smul_mem _ _ (cl_uOp H.X.I (H.X.rpF ℂ d H.m) H.X.I.z Y hYrp y hy)
+  exact fun y hy => Submodule.smul_mem _ _ (cl_uOp H.X.I (H.X.rpF ℂ d H.m) H.X.I.z Y hYrp y hy)
 
 theorem UpperTheory.V.Hi.cl_one_of (hH : H.Ax) {κ : Type 1} (Y : κ → Submodule ℂ (Fin H.m → H.X.Fn ℂ d))
     (hle : ∀ i, Y i ≤ H.Big ι ξ)

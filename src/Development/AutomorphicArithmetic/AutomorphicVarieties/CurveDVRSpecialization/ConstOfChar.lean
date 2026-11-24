@@ -249,8 +249,7 @@ private theorem diag_const {k A : Type} [Field k] [CommRing A] [IsDomain A] [IsL
   classical
   apply UpperTheory.V.Pr.constOfAlg k A
   · refine ⟨M₀.charpoly, (charpoly_monic M₀).ne_zero, ?_⟩
-    rw [Polynomial.aeval_def, ← Polynomial.eval_map, ← hp, Matrix.eval_charpoly]
-    exact ha
+    rwa [Polynomial.aeval_def, ← Polynomial.eval_map, ← hp, Matrix.eval_charpoly]
   · simpa using h a a
 
 private theorem zmat_map {G R S : Type} [Group G] [CommRing R] [CommRing S] (f : R →+* S) (c g₁ : G)
@@ -337,8 +336,7 @@ private theorem not_typeII {G κ : Type} [Group G] [Field κ] (η : G →* ℤˣ
       ring
     rw [show UpperTheory.V.Pr.gm ρ g = corner (r g).mat from hρ g, hc2]
     simp [chPoly, Fin.prod_univ_two, χ]
-  · intro W hW
-    exact hirr W (fun g hg v hv => by simpa [hρ] using hW ⟨g, hg⟩ trivial v hv)
+  · exact fun W hW => hirr W (fun g hg v hv => by simpa [hρ] using hW ⟨g, hg⟩ trivial v hv)
 
 private theorem mat_mul_eq_of_mat_eq_one {G R : Type} [Group G] [CommRing R] (r : G →* GG (m := 3) (R := R)) (c g : G)
     (h : (r c).mat = 1) : (r (g * c)).mat = (r g).mat := by
@@ -410,20 +408,17 @@ theorem UpperTheory.V.Pr.constOfChar :
   have hz' : zeta c g₁ r' ≠ 0 := by
     show zmat c g₁ r' 0 0 ≠ 0
     rw [zmat_map]
-    intro h0
-    exact hzu.ne_zero (hf (h0.trans (map_zero f).symm))
+    exact fun h0 => hzu.ne_zero (hf (h0.trans (map_zero f).symm))
   have h2A : (2 : A) ≠ 0 := by
     intro h0
     apply h2
     apply (algebraMap k A).injective
-    rw [map_ofNat, map_zero]
-    exact h0
+    rwa [map_ofNat, map_zero]
   have h2' : (2 : FractionRing A) ≠ 0 := by
     intro h0
     apply h2A
     apply hf
-    rw [map_ofNat, map_zero]
-    exact h0
+    rwa [map_ofNat, map_zero]
   let Φ : G →* (FractionRing A)ˣ := (Units.map (f.comp (algebraMap k A)).toMonoidHom).comp Ψ
   have hp' : ∀ g ∈ η.ker, (r' g).mat.charpoly =
       (X - C (Φ g : FractionRing A)) * (X - C 1) * (X - C ((Φ g)⁻¹ : (FractionRing A)ˣ).1) := by
@@ -435,15 +430,13 @@ theorem UpperTheory.V.Pr.constOfChar :
     apply hf
     rw [map_zero]
     have := h g hg a b hab
-    rw [hmat'] at this
-    exact this
+    rwa [hmat'] at this
   have hLoT : Lower η r' → Lower η r := by
     intro h g hg a b hab
     apply hf
     rw [map_zero]
     have := h g hg a b hab
-    rw [hmat'] at this
-    exact this
+    rwa [hmat'] at this
   have hUL : Upper η r ∨ Lower η r := by
     rcases shape_cases η r' c g₁ h2' hm' hMk.ηc hMk.ηg hN' hz' with hI | hUp' | hLo' | hII
     · exact absurd hI (not_typeI η Φ r' hm' hp')
@@ -457,8 +450,7 @@ theorem UpperTheory.V.Pr.constOfChar :
         apply hf
         rw [map_zero]
         have := hII.1 g hg a b hab
-        rw [hmat'] at this
-        exact this
+        rwa [hmat'] at this
       have hcpb := charpoly_block (r g).mat (hB 0 1 ⟨0, by simp [wt, wt1]⟩) (hB 1 0 ⟨-1, by simp [wt, wt1]⟩)
         (hB 1 2 ⟨0, by simp [wt, wt1]⟩) (hB 2 1 ⟨-1, by simp [wt, wt1]⟩)
       have hdet : (scalar (Fin 3) ((r g).mat 1 1) - (r g).mat).det = 0 := by

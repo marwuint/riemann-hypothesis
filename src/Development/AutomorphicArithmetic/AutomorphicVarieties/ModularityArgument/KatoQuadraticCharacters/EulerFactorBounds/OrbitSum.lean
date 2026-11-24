@@ -65,10 +65,8 @@ private theorem orbit_sum {G V : Type} [Group G] [Fintype G] [AddCommMonoid V] (
   · obtain ⟨m, hm, rfl⟩ := h
     have e : ∑ k : K, T (m * k) = ∑ i ∈ S with (QuotientGroup.mk i : G ⧸ K) = QuotientGroup.mk m, T i := by
       refine Finset.sum_bij (fun k _ => m * (k : G)) ?_ ?_ ?_ ?_
-      · intro k _
-        exact Finset.mem_filter.2 ⟨hS m hm k k.2, QuotientGroup.mk_mul_of_mem m k.2⟩
-      · intro k _ k' _ hk
-        exact Subtype.ext (mul_left_cancel hk)
+      · exact fun k _ => Finset.mem_filter.2 ⟨hS m hm k k.2, QuotientGroup.mk_mul_of_mem m k.2⟩
+      · exact fun k _ k' _ hk => Subtype.ext (mul_left_cancel hk)
       · intro i hi
         refine ⟨⟨m⁻¹ * i, QuotientGroup.eq.1 (Finset.mem_filter.1 hi).2.symm⟩, Finset.mem_univ _, by simp⟩
       · intro k _; rfl
@@ -89,8 +87,7 @@ private theorem rho_det (M : ℕ) (γ : SL(2, ℤ)) : Matrix.GeneralLinearGroup.
 private theorem rho_one (M : ℕ) (γ : SL(2, ℤ)) : rho M γ = 1 ↔ γ ∈ CongruenceSubgroup.Gamma M := by
   rw [CongruenceSubgroup.Gamma_mem']
   constructor
-  · intro h
-    exact Subtype.ext (congrArg Units.val h)
+  · exact fun h => Subtype.ext (congrArg Units.val h)
   · intro h
     simp [rho, h]
 
@@ -175,8 +172,7 @@ private theorem FU_act (X : Tower Ω ε) {k N M₀ M : ℕ} [NeZero N] [NeZero M
   ext
   have := s1 _ _ (by rw [γ.2]; exact one_pos) hc
     (a (x ᵥ* cD N M₀ (m : Matrix (Fin 2) (Fin 2) (ZMod M))) (y ᵥ* cD N M₀ (m : Matrix (Fin 2) (Fin 2) (ZMod M))) : X.K)
-  rw [s2, s2] at this
-  exact this
+  rwa [s2, s2] at this
 
 private def lamOf {M : ℕ} (m : GL (Fin 2) (ZMod M)) : Fin 2 → ℤ :=
   fun j => (((m : Matrix (Fin 2) (Fin 2) (ZMod M)) 0 j).val : ℤ)

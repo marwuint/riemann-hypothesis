@@ -275,8 +275,7 @@ theorem inf_val (D : D7) (c : (Formalism.L2.Theta.AE D)ˣ →* Circle) (n : ℕ)
   have f2 : ∀ τ', θ τ' (Formalism.L2.Theta.infPart D ((Units.map (f τ) (z τ) : (Formalism.L2.Theta.AE D)ˣ) : Formalism.L2.Theta.AE D)) =
       (Pi.mulSingle τ (tauE D τ k) : D.what₂.Tau → ℂ) τ' := fun τ' => e2 _ τ'
   have := hm τ (Units.map (f τ) (z τ)) (e1 _) fun τ' ht => by rw [f2, Pi.mulSingle_eq_of_ne ht]
-  rw [f2, Pi.mulSingle_eq_same] at this
-  exact this
+  rwa [f2, Pi.mulSingle_eq_same] at this
 
 def finIso (D : D7) : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E :=
   (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).toRingEquiv.trans (GlobalTheory.Mem.Col2.afIso D.host.F D.host.E)
@@ -856,8 +855,7 @@ private theorem jets_of_real_frames {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {�
     rw [GlobalTheory.FunObj.period, GlobalTheory.AdTh.Fock.norm_embedding_hostFormConstant_eq, div_eq_mul_inv]
   have hprod : (k.prod fun v n => GlobalTheory.FunObj.period δ v.1 ^ n) =
       (δ * (((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹)) ^ (k.sum fun _ n => n) := by
-    simp only [hper, Finsupp.prod, Finsupp.sum]
-    exact Finset.prod_pow_eq_pow_sum _ _ _
+    simpa only [hper, Finsupp.prod, Finsupp.sum] using Finset.prod_pow_eq_pow_sum _ _ _
   rw [hprod, mul_pow]
   ring
 
@@ -1333,8 +1331,7 @@ theorem normSq_real_form {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam 
   refine mean_eq_of_swap μ 𝓕 hμ.2.2 volume _ v0 vt (fun w => ‖f w‖ ^ 2) (hf.cont.norm.pow 2) (M ^ 2)
     (fun w => by rw [norm_pow, norm_norm]; exact pow_le_pow_left₀ (norm_nonneg _) (hM w) 2) ι hιc 1 _ (fun x => ?_)
     (fun w => ?_)
-  · rw [setIntegral_shift hμ (fun w => ‖f w‖ ^ 2) (fun γ hγ a => by simp only [hper γ hγ a]) x]
-    exact hn
+  · rwa [setIntegral_shift hμ (fun w => ‖f w‖ ^ 2) (fun γ hγ a => by simp only [hper γ hγ a]) x]
   · obtain ⟨γ, u, huU, hu0, r, hr0, rfl⟩ := GlobalTheory.VacNonzeroReal.decomp_WO U hUo w
     rw [← huni (δ • GlobalTheory.FockPos.zCo θ frS frT r)]
     change _ = ⨍ z in _, GlobalTheory.ThetaInter.rho (GlobalTheory.ThetaInter.sesqOf D (tor0 D D.host.ccK δ) S.rank T.rank)
@@ -1357,15 +1354,13 @@ theorem inV_stdL {D : D7} {n : ℕ} (B : GL (Fin n) D.host.E) :
   constructor
   · rintro ⟨y, hy, rfl⟩
     have hy' : y ∈ Formalism.L2.Pj.stdLat D.host.E n := hy
-    rw [← hc] at hy'
-    exact hy'
+    rwa [← hc] at hy'
   · intro hx
     refine ⟨(B⁻¹ : GL (Fin n) D.host.E).1.mulVec x, ?_, ?_⟩
     · show _ ∈ Formalism.L2.Pj.stdLat D.host.E n
       rw [← hc, Submodule.mem_comap]
       simp only [LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec]
-      rw [show (B.1 * (B⁻¹).1) = 1 from B.mul_inv, Matrix.one_mulVec]
-      exact hx
+      rwa [show (B.1 * (B⁻¹).1) = 1 from B.mul_inv, Matrix.one_mulVec]
     · simp only [Matrix.mulVec_mulVec]
       rw [show (B.1 * (B⁻¹).1) = 1 from B.mul_inv, Matrix.one_mulVec]
 
@@ -1452,8 +1447,7 @@ theorem normSq_scalar {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) 
       rw [GlobalTheory.FunObj.period, GlobalTheory.AdTh.Fock.norm_embedding_hostFormConstant_eq, div_eq_mul_inv]
     have hprod : (k.prod fun v n => GlobalTheory.FunObj.period δ v.1 ^ n) =
         (δ * (((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹)) ^ (k.sum fun _ n => n) := by
-      simp only [hper, Finsupp.prod, Finsupp.sum]
-      exact Finset.prod_pow_eq_pow_sum _ _ _
+      simpa only [hper, Finsupp.prod, Finsupp.sum] using Finset.prod_pow_eq_pow_sum _ _ _
     rw [hprod, mul_pow]
     ring
   obtain ⟨κ, hκ, -⟩ := GlobalTheory.MovedKappa.intertwining_mem_ne_zero hC ht he0 hLs hLt hTh hΘ0

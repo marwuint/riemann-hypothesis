@@ -243,8 +243,7 @@ theorem UpperTheory.V.Lit.Bor.holIdExp :
   choose A B hAB using fun i j => emb_split (X i j)
   let P := (Matrix.of A).map (emb E)
   let Q := (Matrix.of B).map (emb E)
-  have hX : X = P + Complex.I • Q := by
-    exact Matrix.ext fun i j => hAB i j
+  have hX : X = P + Complex.I • Q := Matrix.ext fun i j => hAB i j
   have hd : Differentiable ℂ fun s : ℂ => Φ fun i j => NormedSpace.exp (P + s • Q) i j :=
     differentiableOn_univ.1 (hΦ.comp (exp_diff P Q).differentiableOn fun s _ => Matrix.isUnit_exp (P + s • Q))
   have hr : ∀ t : ℝ, (Φ fun i j => NormedSpace.exp (P + (t : ℂ) • Q) i j) = 0 := fun t => by
@@ -284,8 +283,7 @@ private theorem diff_translate {T : Type} [Fintype T] {a : ℕ} (Φ : (Fin a →
     refine differentiable_pi.2 fun i => differentiable_pi.2 fun j => differentiable_pi.2 fun t => ?_
     simp only [Matrix.mul_apply, Finset.sum_apply, Pi.mul_apply, Matrix.of_apply]
     fun_prop
-  refine hΦ.comp hd.differentiableOn fun x hx => ?_
-  exact (A.isUnit.mul hx).mul B.isUnit
+  exact hΦ.comp hd.differentiableOn fun x hx => (A.isUnit.mul hx).mul B.isUnit
 
 theorem UpperTheory.V.Lit.Bor.holId :
     UpperTheory.V.Lit.Bor.HolId := by

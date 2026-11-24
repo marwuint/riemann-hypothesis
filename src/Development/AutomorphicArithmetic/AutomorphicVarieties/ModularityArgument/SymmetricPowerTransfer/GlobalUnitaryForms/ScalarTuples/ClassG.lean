@@ -95,8 +95,7 @@ private theorem core_lemma {R A : Type} [CommRing R] [Ring A] [Algebra R A] {t c
     E * E = E ∧ M * E = E * M ∧ M * (M * E) = t • (M * E) - E ∧ M * (1 - E) = 1 - E := by
   set P := M * M - t • M + 1 with hP
   have hMP : M * P = P := by
-    rw [sub_mul, one_mul, sub_eq_zero] at hCH
-    exact hCH
+    rwa [sub_mul, one_mul, sub_eq_zero] at hCH
   have hMP2 : M * (M * P) = P := by rw [hMP, hMP]
   have hPM : P * M = P := by
     have h : P * M = M * P := by
@@ -312,13 +311,11 @@ theorem UpperTheory.exists_hermitian_conjugation_of_unitary_tau :
     have h := Matrix.aeval_self_charpoly N
     have hcp : N.charpoly = (Polynomial.X - 1) * (Polynomial.X ^ 2 -
         Polynomial.C (algebraMap K (Lsq K Δ) τ) * Polynomial.X + 1) := by
-      rw [hN]
-      exact hδ
+      rwa [hN]
     rw [hcp] at h
     simp only [map_mul, map_sub, map_add (f := _), map_one, map_pow, Polynomial.aeval_X,
       Polynomial.aeval_C] at h
-    rw [Algebra.smul_def, ← sq]
-    exact h
+    rwa [Algebra.smul_def, ← sq]
   exact core (algebraMap K (Lsq K Δ) τ) (algebraMap K (Lsq K Δ) (2 - τ)⁻¹) (hstar τ) (hstar _) hc
     d u hdu huu (δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) N hN' hCH
 end -- clump:auto
@@ -339,8 +336,7 @@ variable {K : Type} [Field K] {Δ τ : K}
 private def hh (x y : Fin 3 → Lsq K Δ) : Lsq K Δ := ∑ i, x i * star (y i)
 
 private theorem hh_star (x y : Fin 3 → Lsq K Δ) : star (hh x y) = hh y x := by
-  simp only [hh, star_sum, star_mul', star_star]
-  exact Finset.sum_congr rfl fun i _ => mul_comm _ _
+  simpa only [hh, star_sum, star_mul', star_star] using Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 private theorem hh_unitary {N : Matrix (Fin 3) (Fin 3) (Lsq K Δ)} (hN : N ∈ Matrix.unitaryGroup (Fin 3) (Lsq K Δ))
     (x y : Fin 3 → Lsq K Δ) : hh (N *ᵥ x) (N *ᵥ y) = hh x y := by
@@ -483,8 +479,7 @@ theorem UpperTheory.exists_hermitian_form_of_unitary_rotation_basis :
     have hn : (4 - (algebraMap K (Lsq K Δ) τ) ^ 2) * QuadraticAlgebra.norm m = a * a - (algebraMap K (Lsq K Δ) τ * a - b) * b := by
       rw [QuadraticAlgebra.norm_def, hm0, hm1]
       linear_combination (u * ((algebraMap K (Lsq K Δ) τ) ^ 2 - 4) + 1) * (a * a - (algebraMap K (Lsq K Δ) τ * a - b) * b) * hut
-    rw [hvw', ← hb', ← ha] at hq
-    rw [← hn] at hq
+    rw [hvw', ← hb', ← ha, ← hn] at hq
     exact isUnit_of_mul_isUnit_right hq
   · refine QuadraticAlgebra.ext ?_ ?_
     · rw [QuadraticAlgebra.re_star]
@@ -559,8 +554,7 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob Matrix
 private lemma star_mulVec_fin_three {L : Type} [CommRing L] [StarRing L] (N : Matrix (Fin 3) (Fin 3) L) (v : Fin 3 → L) :
     star (N *ᵥ v) = N.map star *ᵥ star v := by
   funext i
-  have h := RingHom.map_mulVec (starRingEnd L) N v i
-  exact h
+  exact RingHom.map_mulVec (starRingEnd L) N v i
 
 theorem UpperTheory.semilinear_coords_eq_mulVec_star :
     ∀ (K : Type) [Field K] (Δ τ : K) (d : EL Δ τ) (A N : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) (e v : Fin 3 → Lsq K Δ),

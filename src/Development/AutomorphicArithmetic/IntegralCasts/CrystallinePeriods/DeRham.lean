@@ -95,8 +95,7 @@ theorem eq_zero_of_algebraMap_mul_eq_zero [IsDomain A] {I : Ideal A} {a : A} (hI
   rw [h2, mem_span_singleton, pow_succ', mul_dvd_mul_iff_left ha] at h1
   rw [← factorPow_evalₐ I n.le_succ, ← hy, map_zero]
   simp only [Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]
-  rw [h2, mem_span_singleton]
-  exact h1
+  rwa [h2, mem_span_singleton]
 
 end Adic
 
@@ -340,8 +339,7 @@ theorem isLocalization_away : IsLocalization.Away π (BdR p R) := by
     have hu : algebraMap (BdRPlus p R) (BdR p R) u ≠ 0 := (u.isUnit.map _).ne_zero
     rw [map_mul, map_mul, map_pow, map_units_inv]
     field_simp
-  · intro a b h
-    exact ⟨0, by rw [algebraMap_injective h]⟩
+  · exact fun a b h => ⟨0, by rw [algebraMap_injective h]⟩
 
 end Uniformizer
 

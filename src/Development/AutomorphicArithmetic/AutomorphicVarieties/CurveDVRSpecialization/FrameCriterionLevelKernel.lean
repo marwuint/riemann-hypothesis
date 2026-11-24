@@ -71,8 +71,7 @@ private theorem ker_pr_le {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [Numb
       exact fun h => hv (hM v h)
     have htI : t ∈ Ine (F := L) A := by
       have h1 : W.resP L Ω t ∈ Ine (F := W.Lp L) A := by
-        rw [ht]
-        exact hτ
+        rwa [ht]
       exact h1
     exact ⟨t, hI A hM' htI, ht⟩
   have hNSle : NS Ω V.S' ≤ Kp := by
@@ -94,8 +93,7 @@ private theorem ker_pr_le {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [Numb
     have h1 := conjGal_mem_Ine hlift hmem hxA
     have heq : conjGal hlift x = c * x * c⁻¹ := AlgEquiv.ext fun z => rfl
     have hcA : ∀ z : Ω, c.toRingEquiv z ∈ c • A ↔ z ∈ A := by
-      intro z
-      exact ValuationSubring.smul_mem_pointwise_smul_iff (g := c) (S := A) (x := z)
+      exact fun z => ValuationSubring.smul_mem_pointwise_smul_iff (g := c) (S := A) (x := z)
     have hplace : IsPlaceOver (c • A) v := by
       intro z
       have hz : c.toRingEquiv ((algebraMap (W.Lp L) Ω) (z : W.Lp L)) = (algebraMap (W.Lp L) Ω) (z : W.Lp L) :=
@@ -108,8 +106,7 @@ private theorem ker_pr_le {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [Numb
   have hgg : g' = g := by
     ext z
     exact DFunLike.congr_fun hg'eq z
-  rw [← hgg]
-  exact hg'K
+  rwa [← hgg]
 
 private theorem coef_algebraMap_padicInt_eq (l : ℕ) [Fact l.Prime] (c₁ : Coef l) (z : ℤ_[l]) :
     ((algebraMap c₁.O c₁.O (algebraMap ℤ_[l] c₁.O z) : c₁.O) : Qbar l) =
@@ -158,11 +155,7 @@ theorem UpperTheory.frame_criterion_level_kernel :
   have hκ : ∀ g, κ (V.pr g) = ka0 g := fun g =>
     MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ g
   let φ : (c₁.O)ˣ →* (Qbar l)ˣ := Units.map (c₁.O.val : c₁.O →* Qbar l)
-  have hφ : Function.Injective φ := by
-    intro a b hab
-    apply Units.ext
-    apply Subtype.ext
-    exact congrArg Units.val hab
+  have hφ : Function.Injective φ := fun a b hab => Units.ext (Subtype.ext (congrArg Units.val hab))
   have hφka : ∀ g, φ (ka0 g) = ka g := fun g => Units.ext rfl
   refine ⟨κ, ?_, ?_, ?_⟩
   · intro g
@@ -203,5 +196,4 @@ theorem UpperTheory.frame_criterion_level_kernel :
       rw [hε, coef_algebraMap_padicInt_eq]
     rw [hconjpr, hκ, hκ]
     apply hφ
-    rw [map_mul, map_zpow, hφka, hφka, he]
-    exact hk
+    rwa [map_mul, map_zpow, hφka, hφka, he]

@@ -123,8 +123,7 @@ private theorem slc_op {K : Type} [Field K] [NumberField K] {n : ℕ} (X : (isEx
       simp only [slc, LinearMap.coe_mk, AddHom.coe_mk, archSlice_apply, one_mul, Subgroup.coe_mul, map_mul,
         mul_assoc]
       rfl
-    rw [e]
-    exact d
+    rwa [e]
   let P : Submodule ℂ (archCompact K n → ℂ) :=
     { carrier := {f | ∀ k, DifferentiableAt ℝ (fun t => f (k * γ t)) 0}
       add_mem' := fun ha hb k => (ha k).add (hb k)
@@ -134,7 +133,6 @@ private theorem slc_op {K : Type} [Field K] [NumberField K] {n : ℕ} (X : (isEx
     { toFun := fun f k => deriv (fun t => f.1 (k * γ t)) 0
       map_add' := fun f h => by
         funext k
-        show deriv (fun t => f.1 (k * γ t) + h.1 (k * γ t)) 0 = _
         exact deriv_add (f.2 k) (h.2 k)
       map_smul' := fun c f => by
         funext k
@@ -203,8 +201,7 @@ theorem UpperTheory.algMod_bot_compact_casimir_of_types :
     exact fun g => hSV φ hφ g
   apply Subtype.ext
   funext g
-  have h1 := congrFun (hq0 g φ hN) 1
-  simpa [slc] using h1
+  simpa [slc] using congrFun (hq0 g φ hN) 1
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.AlgModBotCompactCasimirOfTypes =====

@@ -522,8 +522,7 @@ theorem stepX_weil_vec_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {
   have hC := hP.bot.hyp.2.2.2.1
   have hQ : (_root_.GlobalTheory.Fam.pk_z W).Q W.P.A3.A.μ0 = ∅ := by
     ext PP
-    simp only [Finset.notMem_empty, iff_false]
-    exact _root_.GlobalTheory.MiTop.not_mem_Q_base' W PP
+    simpa only [Finset.notMem_empty, iff_false] using _root_.GlobalTheory.MiTop.not_mem_Q_base' W PP
   refine ⟨?_, ?_⟩
   · have key : ∀ n (e : D.R.m - 1 = n), IsWeilDatumO (_root_.GlobalTheory.Fam.pk_z W).ψ (Yc D n) D.sp.X'
         (Lift.chrStep ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu W.P.A3.A.μ0) (_root_.GlobalTheory.Fam.pk_z W).eta D.R.m).1
@@ -533,14 +532,12 @@ theorem stepX_weil_vec_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {
       exact hC.chain.ωX W.P.A3.A.μ0
     have := key _ (idx_top h)
     simp only [_root_.GlobalTheory.BaseChain.com_z, _root_.GlobalTheory.BaseChain.stageOfSpaceY, _root_.GlobalTheory.BaseChain.stageOfSpaceX, _root_.GlobalTheory.BaseChain.transitionToSpaceX, GlobalTheory.ChainOnto.Com.chS, GlobalTheory.ChainOnto.Com.chT]
-    rw [hm]
-    exact this
+    rwa [hm]
   · refine ⟨(_root_.GlobalTheory.Fam.pk_z W).xiR W.P.A3.A.μ0, vacT (_root_.GlobalTheory.Fam.pk_z W) j h, ?_⟩
     have hv := (hf.row W.P.A3.A.μ0).vT j h
     rw [hQ] at hv
     simp only [_root_.GlobalTheory.BaseChain.com_z, _root_.GlobalTheory.BaseChain.stageOfSpaceY, _root_.GlobalTheory.BaseChain.stageOfSpaceX, _root_.GlobalTheory.BaseChain.transitionToSpaceX]
-    rw [hm]
-    exact hv
+    rwa [hm]
 end GlobalTheory.BaseChain
 end
 end -- clump:auto
@@ -645,8 +642,7 @@ theorem GlobalTheory.BaseChain.stepY_isIo_alt : ∀ {D : D7} {L : SizeData₂ D}
   refine ⟨fun F φ v g => ?_, fun F φ v g => ?_⟩
   · obtain ⟨h, hio⟩ := hrow.io j hj F
     have hI := (_root_.GlobalTheory.BaseChain.stepY_integrable_and_eq_alt W hW W.P.A3.A.μ0 j hj F h _ (hrow.vP j hj) φ v g).1.smul_measure hne
-    rw [← Measure.restrict_smul] at hI
-    exact hI
+    rwa [← Measure.restrict_smul] at hI
   · obtain ⟨h, hio⟩ := hrow.io j hj F
     have e := (_root_.GlobalTheory.BaseChain.stepY_integrable_and_eq_alt W hW W.P.A3.A.μ0 j hj F h _ (hrow.vP j hj) φ v g).2
     have hk : (_root_.GlobalTheory.BaseChain.inverseLevelCardinality W).toReal • (Nat.card (_root_.GlobalTheory.Fam.complexLevelStructure W).H : ℂ) = 1 := by
@@ -768,8 +764,7 @@ theorem stepY_weil_vec_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {
     Finset.eq_empty_of_forall_notMem fun PP => _root_.GlobalTheory.MiTop.not_mem_Q_base' W PP
   refine ⟨hC.chain.ωY W.P.A3.A.μ0 j hj, (_root_.GlobalTheory.Fam.pk_z W).xiR W.P.A3.A.μ0, (_root_.GlobalTheory.Fam.pk_z W).vac j, ?_⟩
   have h := (hf.row W.P.A3.A.μ0).vP j hj
-  rw [hQ] at h
-  exact h
+  rwa [hQ] at h
 end GlobalTheory.BaseChain
 end
 end -- clump:auto
@@ -815,8 +810,7 @@ theorem comb_pureTensorO {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T :
     rw [← Finset.sum_coe_sort e.support]
     exact (Equiv.sum_comp q.symm (fun u : e.support => e u.1 • g u.1)).symm
   simp only [comb]
-  rw [h1, h1]
-  exact key
+  rwa [h1, h1]
 
 theorem isItW_of_comb {V W : HSp D} {S S' : D.what₂.Tau → SPar} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     {M : DSModel V S} {M' : DSModel W S'} {χS χT : (AE D)ˣ →* Circle}

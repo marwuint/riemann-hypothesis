@@ -177,8 +177,7 @@ private lemma fam_det {k M : Type} [Field k] [Finite k] [CommGroup M] (a : k) (h
           simp [cj, scal]
           rfl
       rw [he, hadd, hone, ih] at hc
-      rw [Fin.prod_univ_succ]
-      exact hc
+      rwa [Fin.prod_univ_succ]
   have hstd : ∀ (n : ℕ) (g₀ : (Fin n → k) ≃ₗ[k] (Fin n → k)), F (Fin n → k) g₀ = w (LinearEquiv.det g₀) := by
     intro n g₀
     let Φ : GL (Fin n) k →* M := (F (Fin n → k)).comp
@@ -234,8 +233,7 @@ private lemma cyc_prism (h1 : SChain) (h2 : SPrism) {A : Type} [CommRing A] {C G
   have hw : Cyc (cm A f (m + 1) z) := cyc_cm h1 f hz
   have hp := h2 A G g m (cm A f (m + 1) z)
   unfold Cyc at hw ⊢
-  rw [hw, map_zero, add_zero, conj_fix h1 f g hg (m + 1) z, sub_self] at hp
-  exact hp
+  rwa [hw, map_zero, add_zero, conj_fix h1 f g hg (m + 1) z, sub_self] at hp
 
 private lemma scal_comm {k V : Type} [Field k] [AddCommGroup V] [Module k V] (u : kˣ) (g : V ≃ₗ[k] V) :
     scal V u * g = g * scal V u := by
@@ -264,9 +262,7 @@ theorem sThetaOf : SThetaOf := by
     have := NeZero.ne q
     omega
   have ha0 : (ζ : k) ≠ 0 := ζ.ne_zero
-  have ha1 : (ζ : k) ≠ 1 := by
-    intro h
-    exact hζ.ne_one hq1 (Units.val_eq_one.mp h)
+  have ha1 : (ζ : k) ≠ 1 := fun h => hζ.ne_one hq1 (Units.val_eq_one.mp h)
   let w : kˣ →* Multiplicative (ZMod q) := MonoidHom.mk'
     (fun u => Multiplicative.ofAdd ((x : ZMod q) ^ (e + 1) * Multiplicative.toAdd (v u)))
     (by

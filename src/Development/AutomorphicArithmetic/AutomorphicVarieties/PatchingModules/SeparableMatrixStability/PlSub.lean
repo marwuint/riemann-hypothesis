@@ -63,8 +63,7 @@ theorem UpperTheory.V.Pa.pl_sub :
     obtain ⟨e, he⟩ := hU k hk
     set q : K ⧸ U.toSubgroup := (QuotientGroup.mk k : K ⧸ U.toSubgroup)
     have hqe : q ^ l ^ e = 1 := by
-      rw [← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]
-      exact he
+      rwa [← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]
     have hqn : q ^ U.toSubgroup.index = 1 := by
       rw [← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]
       exact U.toSubgroup.pow_index_mem k
@@ -77,8 +76,7 @@ theorem UpperTheory.V.Pa.pl_sub :
       rw [ha]
       exact pow_dvd_pow l (by omega)
     have hq : q ^ l ^ U.toSubgroup.index = 1 := orderOf_dvd_iff_pow_eq_one.mp h3
-    rw [← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff] at hq
-    exact hq
+    rwa [← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff] at hq
   let O : Subgroup Γ := U.toSubgroup.map K.subtype
   have hOo : IsOpen (O : Set Γ) := by
     rw [Subgroup.coe_map]
@@ -98,13 +96,11 @@ theorem UpperTheory.V.Pa.pl_sub :
     intro b
     rw [← conj_pow]
     have hbH : b * h * b⁻¹ ∈ H := ‹H.Normal›.conj_mem h hh b
-    have hm := lem ⟨b * h * b⁻¹, hHK hbH⟩ hbH
-    exact Subgroup.mem_map.mpr ⟨_, hm, rfl⟩
+    exact Subgroup.mem_map.mpr ⟨_, (lem ⟨b * h * b⁻¹, hHK hbH⟩ hbH), rfl⟩
   have hgC : (g : Γ) ∈ C.toOpenSubgroup := by
     unfold PL at hg
     exact Subgroup.mem_iInf.mp (Subgroup.mem_iInf.mp hg C) hcond
   have hgO : (g : Γ) ∈ O := O.normalCore_le hgC
   obtain ⟨x, hx, hxg⟩ := Subgroup.mem_map.mp hgO
   have : x = g := Subtype.ext hxg
-  rw [← this]
-  exact hx
+  rwa [← this]

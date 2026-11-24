@@ -275,11 +275,9 @@ private theorem key {B S : Type} [CommRing B] [HenselianLocalRing B] [CommRing S
     have hder : (Polynomial.derivative (F.map ψ)).eval c ≠ 0 := by
       rw [hFψ, Polynomial.derivative_mul]
       simp only [Polynomial.derivative_sub, Polynomial.derivative_X, Polynomial.derivative_C, sub_zero, one_mul, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]
-      rw [show c - ∏ i ∈ I0, θb i = 0 from sub_self _, zero_mul, add_zero]
-      exact hGc
+      rwa [show c - ∏ i ∈ I0, θb i = 0 from sub_self _, zero_mul, add_zero]
     have h1 : F.eval A ∈ IsLocalRing.maximalIdeal B := by
-      rw [← hψ, ← Polynomial.eval₂_at_apply, ← Polynomial.eval_map, hψA]
-      exact hev
+      rwa [← hψ, ← Polynomial.eval₂_at_apply, ← Polynomial.eval_map, hψA]
     have h2' : IsUnit ((Polynomial.derivative F).eval A) := by
       by_contra hcon
       have hm : (Polynomial.derivative F).eval A ∈ IsLocalRing.maximalIdeal B :=
@@ -372,8 +370,7 @@ private theorem loc_hom {l : ℕ} [Fact (Nat.Prime l)] (κ : PadicAlgCl l) (hκ 
   have hc := (spectralValue_le_one_iff hm).mp hs
   have hl : minpoly ℚ_[l] w ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l]) := by
     rw [Polynomial.lifts_iff_coeff_lifts]
-    intro n
-    exact ⟨⟨_, hc n⟩, rfl⟩
+    exact fun n => ⟨⟨_, hc n⟩, rfl⟩
   obtain ⟨q, hq, -, hqm⟩ := Polynomial.lifts_and_natDegree_eq_and_monic hl hm
   refine ⟨q.reverse, ?_, ?_⟩
   · letI : Invertible w := invertibleOfNonzero (inv_ne_zero hκ0)
@@ -387,8 +384,7 @@ private theorem loc_hom {l : ℕ} [Fact (Nat.Prime l)] (κ : PadicAlgCl l) (hκ 
     rcases mul_eq_zero.mp h1 with h4 | h4
     · exact h4
     · exact absurd h4 (pow_ne_zero _ (inv_ne_zero hκ0))
-  · rw [Polynomial.coeff_zero_reverse]
-    exact hqm
+  · rwa [Polynomial.coeff_zero_reverse]
 
 private theorem cl_exists {B : Type} [CommRing B] [IsDomain B] [HenselianLocalRing B] (v : FractionRing B)
     (hv : IsIntegral B v) :
@@ -403,9 +399,7 @@ private theorem cl_exists {B : Type} [CommRing B] [IsDomain B] [HenselianLocalRi
   have hinjΩ : Function.Injective (algebraMap B Ω) := by
     rw [IsScalarTower.algebraMap_eq B K Ω]
     exact (algebraMap K Ω).injective.comp (IsFractionRing.injective B K)
-  have hinj : Function.Injective (algebraMap B S) := by
-    intro a b hab
-    exact hinjΩ (congrArg Subtype.val hab)
+  have hinj : Function.Injective (algebraMap B S) := fun a b hab => hinjΩ (congrArg Subtype.val hab)
   haveI hI : Algebra.IsIntegral B S := inferInstance
   have hkey : ∀ (θ0 : S) (n n' : Ideal S), n.IsMaximal → n'.IsMaximal → θ0 ∉ n → θ0 ∉ n' := by
     intro θ0 n n' hn hn' h0
@@ -417,8 +411,7 @@ private theorem cl_exists {B : Type} [CommRing B] [IsDomain B] [HenselianLocalRi
       intro z hz
       have hz' := (Polynomial.mem_roots'.mp hz).2
       refine ⟨Q, hQm, ?_⟩
-      rw [Polynomial.IsRoot.def, Polynomial.eval_map] at hz'
-      exact hz'
+      rwa [Polynomial.IsRoot.def, Polynomial.eval_map] at hz'
     let s' : Multiset S := s.attach.map (fun z => ⟨z.1, hint z.1 z.2⟩)
     have hs' : s'.map (algebraMap S Ω) = s := by
       simp only [s', Multiset.map_map]
@@ -457,8 +450,7 @@ private theorem cl_exists {B : Type} [CommRing B] [IsDomain B] [HenselianLocalRi
   intro a b hab
   apply Subtype.ext
   have := congrArg (algebraMap K Ω) hab
-  rw [map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply] at this
-  exact this
+  rwa [map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply] at this
 
 theorem UpperTheory.Reformulated.B.MajorantSquareBound.spl_near :
     ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] {O B : Type}
@@ -511,8 +503,7 @@ theorem UpperTheory.Reformulated.B.MajorantSquareBound.spl_near :
     rfl
   set w := Polynomial.eval₂ φ vS h with hw
   have hyw : gy w = 0 := by
-    rw [hw, Polynomial.hom_eval₂, hφ, h2]
-    exact hh0
+    rwa [hw, Polynomial.hom_eval₂, hφ, h2]
   have hwm : w ∈ IsLocalRing.maximalIdeal S := by
     rw [IsLocalRing.mem_maximalIdeal]
     intro hu

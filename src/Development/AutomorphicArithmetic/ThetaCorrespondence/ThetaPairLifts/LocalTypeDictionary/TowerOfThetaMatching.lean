@@ -647,8 +647,7 @@ theorem GlobalTheory.RightTranslateFundDomain.haar_and_fundDomain : ∀ {D : D7}
   intro D V m fd g hm hfd
   have hmeas : Measurable (fun x : GA D V => x * g⁻¹) := measurable_mul_const g⁻¹
   refine ⟨?_, ?_⟩
-  · have h := Measure.isHaarMeasure_map_mul_right m g⁻¹
-    exact h
+  · exact Measure.isHaarMeasure_map_mul_right m g⁻¹
   · refine hfd.preimage_of_equiv (e := id) ?_ Function.bijective_id ?_
     · refine ⟨(measurable_mul_const g).aemeasurable, ?_⟩
       rw [Measure.map_map (measurable_mul_const g) hmeas]
@@ -807,8 +806,7 @@ theorem _root_.GlobalTheory.T.movedFiniteDatum_negHom_eq_standardPair_first : �
   show IsThetaAt ψ (symplO (neg A) WW) (heisO ψ (neg A) WW) (Y.e t) (latO (neg A) WW ΛA ΛW fun _ => True) 1 (Y.ω t₀ (g, h) Y.vac)
     (stdFst (α t / β t) (Y.e t) (Y.ideal S t) A WW (Lev.finE A g * Y.rA.β) (Lev.finE WW h * Y.rW.β))
     ((r t)⁻¹ • Y.ω t (g, h) (Y.f t))
-  rw [e2]
-  exact h2
+  rwa [e2]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.MovedFiniteDatumNegHomEqStandardPairFirst =====
@@ -928,8 +926,7 @@ theorem _root_.GlobalTheory.T.movedVacuum_negHom_eq_vacuum_movedLattices : ∀ {
   have e3 : (moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').rA.Λ = ΛA := rfl
   have e4 : (moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').rW.Λ = ΛW := rfl
   have e5 : (moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').vac = Y.ω t₀ (g, h) Y.vac := rfl
-  rw [e1, e2, e3, e4, e5]
-  exact key
+  rwa [e1, e2, e3, e4, e5]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.MovedVacuumNegHomEqVacuumMovedLattices =====
@@ -1010,8 +1007,7 @@ theorem stdSnd_move (ν : (AE D)ˣ →* Circle) (e : AE D) (I : Ideal (𝓞 D.ho
     (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (g : GA D S) (h : GA D T) (x : WO S T) :
     stdSnd ν e I a S T (Lev.finE S g * βS) (Lev.finE T h * βT) x = stdSnd ν e I a S T βS βT (actO S T g⁻¹ h⁻¹ x) := by
   unfold stdSnd dualCoord
-  rw [frMapAdj_move]
-  rw [propext (isHalf_actO_inv_iff (cA D e) g h x)]
+  rw [frMapAdj_move, propext (isHalf_actO_inv_iff (cA D e) g h x)]
 
 theorem snd_moved : ∀ {D : D7} {T : Type} {A A' WW : HSp D} (Y : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (α β : T → ((AE D)ˣ →* Circle)) (νH : T → HChar D.host.E) (S : T → Finset (Formalism.L2.DIV.Pl D.host.E)),
@@ -1040,8 +1036,7 @@ theorem snd_moved : ∀ {D : D7} {T : Type} {A A' WW : HSp D} (Y : Tri T A A' WW
   have hΦ : (fun x => stdSnd (α t / β t) (Y.e t) (Y.ideal S t) A.rank A' WW Y.rA'.β Y.rW.β (actO A' WW g'⁻¹ h⁻¹ x)) =
       stdSnd (α t / β t) (Y.e t) (Y.ideal S t) A.rank A' WW (Lev.finE A' g' * Y.rA'.β) (Lev.finE WW h * Y.rW.β) :=
     funext fun x => (stdSnd_move _ _ _ _ _ _ _ _ _ _ x).symm
-  rw [hΦ] at hm2
-  exact hm2
+  rwa [hΦ] at hm2
 
 end GlobalTheory.BotMoveSnd
 

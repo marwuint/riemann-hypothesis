@@ -107,12 +107,6 @@ theorem UpperTheory.baseChange_affine_sections_subalgebra_tensor :
   refine ⟨E.commRingCatIsoToRingEquiv, ?_, ?_⟩
   · intro a b hab
     have h1 := congr($(IsPushout.inr_isoIsPushout_hom _ _ hT hP').hom b)
-    have h2 : iB.hom b = a := by
-      apply hinj
-      have h3 := congrArg Subtype.val (gB.apply_symm_apply b)
-      exact h3.trans hab
-    rw [← h2]
-    exact h1
-  · intro l
-    have h1 := congr($(IsPushout.inl_isoIsPushout_hom _ _ hT hP').hom l)
-    exact h1
+    have h2 : iB.hom b = a := hinj ((congrArg Subtype.val (gB.apply_symm_apply b)).trans hab)
+    rwa [← h2]
+  · exact fun l => congr($(IsPushout.inl_isoIsPushout_hom _ _ hT hP').hom l)

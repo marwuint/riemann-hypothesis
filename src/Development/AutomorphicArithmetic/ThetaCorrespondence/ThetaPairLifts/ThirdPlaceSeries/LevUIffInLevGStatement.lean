@@ -168,8 +168,7 @@ theorem bc_prV_mem_Uloc_off_alt : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalThe
       show IsIntegral ℤ ((Pi.single j _ : Fin _ → _) (finCongr hn i))
       rw [hr]
       exact r.isIntegral_coe
-  rw [e]
-  exact hb
+  rwa [e]
 end GlobalTheory.FamTrace
 end
 end
@@ -701,8 +700,7 @@ theorem entry_mem_of_levelVL : ∀ (F E : Type) [Field F] [NumberField F] [Field
         rw [e, mul_comm (g.1 _ _), ← mul_assoc, ← map_mul, inv_mul_cancel₀ ht, map_one, one_mul] at this
         exact mul_mem htS this
       · have := h2.1 i hi
-        rw [e, mul_comm] at this
-        exact this
+        rwa [e, mul_comm] at this
     · subst hi
       have := h2.2
       rw [e, mul_comm (g.1 _ _), ← mul_assoc, ← map_mul, inv_mul_cancel₀ ht, map_one, one_mul] at this
@@ -711,8 +709,7 @@ theorem entry_mem_of_levelVL : ∀ (F E : Type) [Field F] [NumberField F] [Field
   have hU : Formalism.UG.cT (Formalism.UG.sigR σ (v.adicCompletion F)) g.1 * g.1 = 1 := by
     have h1 := hg.1
     change Formalism.UG.cT _ g.1 * ((1 : Matrix (Fin n) (Fin n) E).map ι) * g.1 = (1 : Matrix (Fin n) (Fin n) E).map ι at h1
-    rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one] at h1
-    exact h1
+    rwa [Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one] at h1
   have hinv : ((g⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) = Formalism.UG.cT (Formalism.UG.sigR σ (v.adicCompletion F)) g.1 :=
     Units.inv_eq_of_mul_eq_one_left hU
   have hginv := hcols g⁻¹ (inv_mem hg.2)
@@ -907,8 +904,7 @@ theorem map_mulVec_single {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
   · rw [h1, mul_one]
   · intro b _ hb
     rw [h0 b hb, map_zero, mul_zero]
-  · intro hs
-    exact (hs (Finset.mem_univ _)).elim
+  · exact fun hs => (hs (Finset.mem_univ _)).elim
 
 theorem toEAf_pair (D : D7) (α : Af D.host.F) (e : D.host.E) :
     toEAf D (pairA D.host.F 0 α ⊗ₜ[D.host.F] e) = e ⊗ₜ[D.host.F] α := by
@@ -961,10 +957,8 @@ theorem finM_entry_int : ∀ (D : D7) (S : HSp D) {n : ℕ} (hn : S.rank = n) (L
     intro k
     by_cases hk : k = s
     · subst hk
-      simp only [x, Pi.single_eq_same]
-      exact isIntegral_one
-    · simp only [x, Pi.single_eq_of_ne hk]
-      exact isIntegral_zero
+      simpa only [x, Pi.single_eq_same] using isIntegral_one
+    · simpa only [x, Pi.single_eq_of_ne hk] using isIntegral_zero
   let y : Fin S.rank → AE D := fun i => pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 * x i)
   have hy : y ∈ GlobalTheory.FinPl.latV S L (fun _ => True) := by
     refine AddSubgroup.subset_closure ⟨1, ?_, fun w hw => (hw trivial).elim, 1, rfl, x, hx, rfl⟩
@@ -975,8 +969,7 @@ theorem finM_entry_int : ∀ (D : D7) (S : HSp D) {n : ℕ} (hn : S.rank = n) (L
     intro i
     refine Submodule.mem_inf.2 ⟨infPart_pair D _ _, ?_⟩
     rw [Submodule.mem_iInf]
-    intro w
-    exact (w.2 trivial).elim
+    exact fun w => (w.2 trivial).elim
   have h := coord_int D S L hL v _ ((hκ y hid).1 hy) r
   have h2 : toEAf D ((Formalism.L2.Theta.mt S κ *ᵥ y) r) = toEAf D (Formalism.L2.Theta.mt S κ r s) := by
     refine map_mulVec_single (toEAf D) _ y r s ?_ ?_
@@ -984,8 +977,7 @@ theorem finM_entry_int : ∀ (D : D7) (S : HSp D) {n : ℕ} (hn : S.rank = n) (L
       rfl
     · intro b hb
       simp only [y, x, Pi.single_eq_of_ne hb, mul_zero, TensorProduct.tmul_zero]
-  rw [h2] at h
-  exact h
+  rwa [h2] at h
 
 end GlobalTheory.FinPl.MovesEntries
 end -- clump:auto
@@ -1134,11 +1126,9 @@ theorem eq_mul_of_val_lt_one : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k
   have hs : s ∈ Formalism.L2.DIV.idS D.host.F P.asIdeal := by
     rw [← Formalism.L2.DIV.resS_eq_zero_iff, hres]
     change valuation k (π₀ (Formalism.UG.P.afsplitIE p.v _)) < 1
-    rw [Formalism.UG.P.afsplit_decomp, map_mul, heps, one_mul, hπ₀]
-    exact hval
+    rwa [Formalism.UG.P.afsplit_decomp, map_mul, heps, one_mul, hπ₀]
   have hv : ∀ b : 𝓞 D.host.F, algebraMap (𝓞 D.host.F) (𝓞 D.host.E) b ∈ P.asIdeal → b ∈ p.v.asIdeal := fun b hb => by
-    rw [GlobalTheory.LocMod.LevelPlaces.splitPt_v_eq_under p hP]
-    exact hb
+    rwa [GlobalTheory.LocMod.LevelPlaces.splitPt_v_eq_under p hP]
   have key : ∀ z ∈ Formalism.L2.DIV.idS D.host.F P.asIdeal, ∃ c ∈ intV D.host.E p.v,
       Formalism.UG.prV (E := D.host.E) p.v (z : Formalism.L2.Herm.intAf D.host.F D.host.E) =
         Formalism.UG.inclE (F := D.host.F) (p.v.adicCompletion D.host.F) (t : D.host.E) * c := by
@@ -1203,8 +1193,7 @@ theorem row_lt_of_smul_pair_eq {k : Type} [Field k] [ValuativeRel k] [Topologica
     refine (hQ _ _).2 ⟨yE, fun r => ?_, s0, hs0, rfl⟩
     rw [Matrix.mulVec_mulVec, hb, Matrix.one_mulVec, hyE]
   have h2 : Q.HasVal (g • (b' *ᵥ (Pi.single s 1 : Fin n → k))) (residue 𝒪[k] (s0 * yE r₀)) := by
-    rw [← hfix, GlobalTheory.LatPair.Pair.smul_hasVal, inv_smul_smul]
-    exact h1
+    rwa [← hfix, GlobalTheory.LatPair.Pair.smul_hasVal, inv_smul_smul]
   obtain ⟨y1, hy1, s1, hs1, ha1⟩ := (hQ _ _).1 h2
   obtain rfl : s1 = s0 := Subtype.ext (hs1.trans hs0.symm)
   have hM : (y1 r₀ : k) = M r₀ s := by
@@ -1219,8 +1208,7 @@ theorem row_lt_of_smul_pair_eq {k : Type} [Field k] [ValuativeRel k] [Topologica
     ((IsLocalRing.mem_maximalIdeal _).1 ((IsLocalRing.residue_eq_zero_iff _).1 h3))
   have h5 : ((y1 r₀ - yE r₀ : 𝒪[k]) : k) = M r₀ s - (1 : Matrix (Fin n) (Fin n) k) r₀ s := by
     rw [AddSubgroupClass.coe_sub, hM, hyE, Pi.single_apply, Matrix.one_apply]
-  rw [← h5]
-  exact h4
+  rwa [← h5]
 
 
 
@@ -1277,8 +1265,7 @@ theorem entry_cong (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
     · exact Subring.one_mem _
     · exact Subring.zero_mem _
   · simp only [y]
-    rw [map_sub, h7]
-    exact hl
+    rwa [map_sub, h7]
 
 end GlobalTheory.FamTrace.LastRow
 
@@ -1405,8 +1392,7 @@ theorem GlobalTheory.FamTrace.uloc_T_of_inLevG_alt : ∀ {B : GlobalTheory.Mem.B
       apply RingOfIntegers.ext (K := (I.rec7 l Z).host.E)
       rw [hsc, hF.piU]
       exact (B.fields_conjO_coe _).symm
-    rw [e, hF.piU]
-    exact h1
+    rwa [e, hF.piU]
   have hint : ∀ (w : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)) (r t : Fin ((I.rec7 l Z).R.N 0)), Formalism.UG.prV (E := (I.rec7 l Z).host.E) w (GlobalTheory.AdForm.finM ((I.rec7 l Z).sp.X 0) (Formalism.L2.Forms.rankN (I.rec7 l Z) 0 (Nat.zero_le _)) κ r t) ∈ Formalism.BasicNotions.intV (I.rec7 l Z).host.E w :=
     _root_.GlobalTheory.FinPl.MovesEntries.finM_entry_int (I.rec7 l Z) ((I.rec7 l Z).sp.X 0) (Formalism.L2.Forms.rankN (I.rec7 l Z) 0 (Nat.zero_le _)) (a.g.x 0).L
       ((hat.std.2 0 (Nat.zero_le _)).1) κ hIn.1

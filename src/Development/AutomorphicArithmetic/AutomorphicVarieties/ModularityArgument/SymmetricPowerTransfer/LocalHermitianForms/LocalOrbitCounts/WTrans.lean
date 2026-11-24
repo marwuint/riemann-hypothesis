@@ -72,9 +72,7 @@ private theorem wcount_sub {T Y : Type} [Group T] [MulAction T Y] (C : Subgroup 
     fun o => ((MulAction.stabilizer T o.out).relIndex C : ℂ) * k o.out with hg
   have hs : Function.support g ⊆ {o : MulAction.orbitRel.Quotient T Y | k o.out ≠ 0} := by
     intro o ho
-    simp only [Set.mem_setOf_eq]
-    intro h0
-    exact (Function.mem_support.mp ho) (by simp [hg, h0])
+    simpa only [Set.mem_setOf_eq] using fun h0 => (Function.mem_support.mp ho) (by simp [hg, h0])
   have h1 := finsum_set_coe_eq_finsum_mem (f := g) {o : MulAction.orbitRel.Quotient T Y | k o.out ≠ 0}
   rw [← finsum_mem_inter_support g, Set.inter_eq_right.mpr hs, finsum_mem_support] at h1
   exact h1.symm
@@ -129,14 +127,12 @@ theorem UpperTheory.V.Z.Sym.Loc.wTrans :
   · rintro ⟨o', ho'⟩
     obtain ⟨z, hz, -⟩ := hex' o'.out ho'
     have hkz : k z ≠ 0 := by
-      rw [hkk _ _ hz]
-      exact ho'
+      rwa [hkk _ _ hz]
     have hmem : Quotient.mk (MulAction.orbitRel T Y) z ∈
         {o : MulAction.orbitRel.Quotient T Y | k o.out ≠ 0} := by
       obtain ⟨s, hs⟩ := out_mk_smul (T := T) z
       show k _ ≠ 0
-      rw [hs, hk]
-      exact hkz
+      rwa [hs, hk]
     refine ⟨⟨_, hmem⟩, ?_⟩
     obtain ⟨s, hs⟩ := out_mk_smul (T := T) z
     have h1 : R (Quotient.mk (MulAction.orbitRel T Y) z).out (s • o'.out) := by

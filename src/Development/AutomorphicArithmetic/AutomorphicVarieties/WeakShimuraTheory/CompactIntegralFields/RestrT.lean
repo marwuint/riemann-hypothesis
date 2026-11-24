@@ -142,8 +142,7 @@ theorem UpperTheory.V.Ws.Rt.splitMod :
     letI := hint
     have hmax : (IsLocalRing.maximalIdeal c.O).comap (algebraMap ℤ_[l] c.O) = IsLocalRing.maximalIdeal ℤ_[l] :=
       IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_under_of_isIntegral_of_isMaximal (IsLocalRing.maximalIdeal c.O))
-    rw [← hmax]
-    exact hm
+    rwa [← hmax]
   have hcast : ((w : ℤ_[l]) - 1) = (((w : ℤ) - 1 : ℤ) : ℤ_[l]) := by push_cast; rfl
   rw [hcast, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits, PadicInt.norm_int_lt_one_iff_dvd] at key
   have h1 : ((w - 1 : ℕ) : ℤ) = (w : ℤ) - 1 := by
@@ -201,8 +200,7 @@ private theorem UpperTheory.V.Ws.Rt.wild_mem_ker
     exact hn x hx
   have hker : σ ^ m ∈ ψ.ker := by
     have h2 : (σ ^ m) ∈ (Subtype.val ⁻¹' t : Set (Ine (F := F) A)) := hL hτ
-    rw [hte] at h2
-    exact h2
+    rwa [hte] at h2
   rw [MonoidHom.mem_ker, map_pow] at hker
   have hcop : Nat.Coprime l m := (Nat.Prime.coprime_iff_not_dvd hl).2 hm
   have hg := pow_gcd_eq_one.2 ⟨hψ σ, hker⟩
@@ -276,8 +274,7 @@ theorem UpperTheory.V.Ws.Rt.tameExp :
   obtain ⟨j, rfl⟩ := hdvd
   have hu : φ' σ = 1 := by
     rw [← hk1, zpow_mul, zpow_natCast, hφ'l, one_zpow]
-  have hv := congrArg Units.val hu
-  simpa [φ'] using hv
+  simpa [φ'] using congrArg Units.val hu
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.GradedFlagMoves.TameExp =====
@@ -303,8 +300,7 @@ private theorem thetaEx_pow {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {η
     have e : (1 : Ω) - η ^ (n + 1) = (1 - η ^ n) + η ^ n * (1 - η) := by ring
     rw [e]
     refine Valuation.map_add_lt _ ih ?_
-    rw [map_mul, map_pow, h1, one_pow, one_mul, ← Valuation.map_neg, neg_sub]
-    exact h
+    rwa [map_mul, map_pow, h1, one_pow, one_mul, ← Valuation.map_neg, neg_sub]
 
 private theorem thetaEx_eta {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m : ℕ} (hm : m ≠ 0)
     (hv : ¬ A.valuation (m : Ω) < 1) {η : Ω} (hη : η ^ m = 1) (h : A.valuation (η - 1) < 1) : η = 1 := by
@@ -335,8 +331,7 @@ private theorem thetaEx_fix {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure �
     rw [mul_pow, ← map_pow, hζ, map_one, inv_pow, hζ, inv_one, one_mul]
   have hlt : A.valuation (g ζ * ζ⁻¹ - 1) < 1 := by
     have e : g ζ * ζ⁻¹ - 1 = (g ζ - ζ) * ζ⁻¹ := by field_simp
-    rw [e, map_mul, map_inv₀, hv1, inv_one, mul_one]
-    exact hd
+    rwa [e, map_mul, map_inv₀, hv1, inv_one, mul_one]
   have h1 := thetaEx_eta A hm hw hpow hlt
   have : g ζ = ζ := by
     have := congrArg (· * ζ) h1
@@ -390,14 +385,12 @@ theorem UpperTheory.V.Ws.Rt.thetaEx :
       have hk : ordCompl[w] w = 1 := by
         rw [hw.factorization_self, pow_one, Nat.div_self hw.pos]
       haveI : Subsingleton (ZMod (ordCompl[w] w)) := by
-        rw [ZMod.subsingleton_iff]
-        exact hk
+        rwa [ZMod.subsingleton_iff]
       exact Subsingleton.elim _ _
     rw [← hmap] at hb'
     obtain ⟨g, hg, hgb⟩ := hb'
     refine ⟨g, hg, ?_⟩
-    rw [MonoidHom.comp_apply, hgb]
-    exact hb
+    rwa [MonoidHom.comp_apply, hgb]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.GradedFlagMoves.ThetaEx =====
@@ -507,8 +500,7 @@ private theorem lc_of_cont {ι Γ k : Type} [Group Γ] [TopologicalSpace Γ] [Fi
   refine IsLocallyConstant.desc _ (Ideal.Quotient.mk ((⊥ : Ideal k) ^ 1)) hc ?_
   intro x y hxy
   have h1 := Ideal.Quotient.eq.mp hxy
-  rw [pow_one, Ideal.mem_bot, sub_eq_zero] at h1
-  exact h1
+  rwa [pow_one, Ideal.mem_bot, sub_eq_zero] at h1
 
 private theorem lc_mat {ι Γ k : Type} [Group Γ] [TopologicalSpace Γ] [Field k] {P : PD ι Γ k} (h : P.Cont ⊥) :
     IsLocallyConstant P.r := by
@@ -551,8 +543,7 @@ private theorem chi_one {k : Type} [Field k] (a : c.O →+* k) (ha : ∀ x ∈ m
     rw [← map_one (residue c.O)] at hj
     exact Ideal.Quotient.eq.mp hj
   have h2 := ha _ hm
-  rw [map_sub, map_one, sub_eq_zero] at h2
-  exact h2
+  rwa [map_sub, map_one, sub_eq_zero] at h2
 
 private theorem killW (hD : D.Good) (T : Tower D) {k : Type} [Field k] (a : c.O →+* k) (ha : ∀ x ∈ maximalIdeal c.O, a x = 0)
     {W : Finset ℕ} {s : PD T.ι (G T.F Ω) k} (hs : (T.fr W).IsRes a s) (h5 : 5 ≤ l ∨ Supp qQ s.r) {w : ℕ} (hw : w.Prime)
@@ -649,9 +640,7 @@ theorem UpperTheory.V.Ws.restrT :
     rw [e] at key
     exact ⟨key.1, fun i => key.2 i⟩
   let s' : PD T'.ι (G T'.F Ω) k := ⟨s.r.comp (resLe hle), nn⟩
-  have hcont : s'.Cont ⊥ := by
-    intro i j N
-    exact (hs.cont i j N).comp_continuous (cont_resLe hle)
+  have hcont : s'.Cont ⊥ := fun i j N => (hs.cont i j N).comp_continuous (cont_resLe hle)
   have hdiag : ∀ (g : G T'.F Ω) (i : Fin 4), s'.r g i i = a ↑(((T'.fr ∅).χ i) g) := by
     intro g i
     have := hs.res.diag (resLe hle g) i
@@ -673,8 +662,7 @@ theorem UpperTheory.V.Ws.restrT :
   · intro g
     have := hs.pair.mult (resLe hle g)
     simp only [Tower.fr, MonoidHom.comp_apply] at this ⊢
-    rw [hQ] at this
-    exact this
+    rwa [hQ] at this
   · rintro g ⟨A, hAw, hgI, hgr⟩
     show s.r (resLe hle g) = 1
     have hgI' : resLe hle g ∈ Ine (F := T.F) A := hgI
@@ -692,8 +680,7 @@ theorem UpperTheory.V.Ws.restrT :
         · exact absurd hpA hlA
         · have hF : resQ T.F (resLe hle g) ∈ T'.F.fixingSubgroup := by
             rw [hQ, IntermediateField.mem_fixingSubgroup_iff]
-            intro x hx
-            exact g.commutes ⟨x, hx⟩
+            exact fun x hx => g.commutes ⟨x, hx⟩
           exact killW hD T a ha hs (by first | exact Or.inl h5 | exact Or.inr h5) (hW p hpW).1 (hW p hpW).2 (hWd p hpW) hpA hlA hgI' hF
   · obtain ⟨j, hj⟩ := hT.g0
     have e : resLe hle T'.g0 = T.g0 ^ l ^ j := by
@@ -707,8 +694,7 @@ theorem UpperTheory.V.Ws.restrT :
     rw [Matrix.isDiag_iff_diagonal_diag] at hd
     rw [← hd, Matrix.diagonal_pow]
     exact Matrix.isDiag_diagonal _
-  · intro v' t ht
-    exact (hmove v' _ ht).1
+  · exact fun v' t ht => (hmove v' _ ht).1
   · intro v' t ht i
     refine (hchar v' t ht.1 i).trans ?_
     let ψh : G T'.F Ω →* k := a.toMonoidHom.comp ((Units.coeHom c.O).comp ((T'.fr ∅).χ i))
@@ -721,8 +707,7 @@ theorem UpperTheory.V.Ws.restrT :
   · rcases hs.res.shape with ⟨h1, h2⟩ | h1
     · exact Or.inl ⟨fun g => h1 _, fun v' => hnq v' ⟨h1 _, h2 _⟩⟩
     · exact Or.inr (fun g => h1 _)
-  · intro v'
-    exact ⟨bv v', bg v', hbg v', hnup v'⟩
+  · exact fun v' => ⟨bv v', bg v', hbg v', hnup v'⟩
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.CompactIntegralFields.RestrT =====

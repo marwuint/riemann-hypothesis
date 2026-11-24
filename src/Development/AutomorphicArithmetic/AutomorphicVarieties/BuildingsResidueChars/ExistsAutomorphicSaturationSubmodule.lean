@@ -156,8 +156,7 @@ theorem UpperTheory.centerU_action_commute_rightTranslation :
     rw [Subalgebra.mem_centralizer_iff] at hm
     exact (hm _ rfl).symm
   have hfin : Commute (uAction z) (rtFin (finPart g)) := by
-    refine LinearMap.ext fun φ => ?_
-    exact uAction_rtFin z (finPart g) φ
+    exact LinearMap.ext fun φ => uAction_rtFin z (finPart g) φ
   exact hinf.mul_right hfin
 end -- clump:auto
 end -- clump:auto
@@ -189,8 +188,7 @@ private theorem id1 (g k : AdelicGLn.AdelicGL K n) (u : AdelicGLn.FiniteAdelicGL
     g * finEmb K n u * k = g * k * finEmb K n ((finPart k)⁻¹ * u * finPart k) := by
   have h := grp1 g _ (finEmb K n (finPart k)) _ (infEmb_mul_finEmb_comm (archPart k) u)
   rw [infEmb_archPart_mul_finEmb_finPart] at h
-  rw [map_mul, map_mul, map_inv]
-  exact h
+  rwa [map_mul, map_mul, map_inv]
 
 private theorem id2 (g k : AdelicGLn.AdelicGL K n) (u : archGroup K n) :
     g * infEmb K n u * k = g * finEmb K n (finPart k) * infEmb K n (u * archPart k) := by
@@ -198,8 +196,7 @@ private theorem id2 (g k : AdelicGLn.AdelicGL K n) (u : archGroup K n) :
   rw [map_mul] at h0
   have h := grp2 g _ _ _ h0
   rw [infEmb_archPart_mul_finEmb_finPart] at h
-  rw [map_mul]
-  exact h
+  rwa [map_mul]
 
 private theorem hmul (a b : AdelicGLn.AdelicGL K n) (φ : archSmooth K n) : rt a (rt b φ) = rt (a * b) φ :=
   Subtype.ext (funext fun x => by rw [rt_apply, rt_apply, rt_apply, mul_assoc])
@@ -240,8 +237,7 @@ private theorem sat_growth (hS : Bdd S) : Growth (sat S) := by
   intro k _ φ hφ
   have h := (hS.growth φ hφ).translate k
   have e : (rt k φ).1 = rightTranslate k φ.1 := funext fun x => rt_apply k φ x
-  rw [e]
-  exact h
+  rwa [e]
 
 private theorem sat_level (hS : Bdd S) : Level (sat S) := by
   obtain ⟨L, hL, hinv⟩ := hS.level
@@ -265,8 +261,7 @@ private theorem sat_types (hS : Bdd S) : Types (sat S) := by
   have e : (fun k' : archCompact K n => (rt k φ).1 (g * infEmb K n k'.1)) =
       fun k' : archCompact K n => φ.1 (g * finEmb K n (finPart k) * infEmb K n (k'.1 * archPart k)) :=
     funext fun k' => by rw [rt_apply, id2]
-  rw [e]
-  exact h
+  rwa [e]
 
 private theorem sat_centre (hS : Bdd S) : Centre (sat S) := by
   intro z hz

@@ -60,14 +60,10 @@ theorem UpperTheory.V.Z.Sym.So.dcLocal :
       ((j h : G) : G ⧸ U) ∈ MulAction.orbit U ((j d : G) : G ⧸ U) := by
     rintro h ⟨a, ha⟩
     have h1 : (((a : H) * d : H) : H ⧸ J) = (h : H ⧸ J) := ha
-    have h2 : ((a : H) * d)⁻¹ * h ∈ J := QuotientGroup.eq.1 h1
-    have h3 : (j ((a : H) * d))⁻¹ * j h ∈ U := by
-      have := hJ _ h2
-      simpa [map_mul] using this
     refine ⟨⟨j a, hJ _ a.2⟩, ?_⟩
     change ((j a * j d : G) : G ⧸ U) = ((j h : G) : G ⧸ U)
     refine QuotientGroup.eq.2 ?_
-    simpa [map_mul] using h3
+    simpa [map_mul] using hJ _ (QuotientGroup.eq.1 h1)
 
   have hsurj : ∀ y ∈ MulAction.orbit U ((j d : G) : G ⧸ U),
       ∃ h : H, (h : H ⧸ J) ∈ MulAction.orbit J (d : H ⧸ J) ∧ ((j h : G) : G ⧸ U) = y := by
@@ -79,20 +75,19 @@ theorem UpperTheory.V.Z.Sym.So.dcLocal :
     change ((j (p u * d) : G) : G ⧸ U) = (((u : G) * j d : G) : G ⧸ U)
     have hfac : (u : G) * j d = j (p u * d) * c := by
       have h1 : (u : G) = c * j (p u) := by simp [hcdef]
-      calc (u : G) * j d = c * j (p u * d) := by rw [map_mul, ← mul_assoc, ← h1]
-        _ = j (p u * d) * c := hc _
+      rw [← hc, map_mul, ← mul_assoc, ← h1]
     rw [hfac]
     exact (QuotientGroup.mk_mul_of_mem _ hcU).symm
+  have hout : ∀ h : H, ((j (h : H ⧸ J).out : G) : G ⧸ U) = ((j h : G) : G ⧸ U) := by
+    intro h
+    refine QuotientGroup.eq.2 ?_
+    have h1 : ((h : H ⧸ J).out)⁻¹ * h ∈ J := QuotientGroup.eq.1 (by simp)
+    simpa [map_mul] using hJ _ h1
   have hfin : AlgebraTools.FinOrb U U (j d) := by
     refine (hd.image fun q : H ⧸ J => ((j q.out : G) : G ⧸ U)).subset ?_
     intro y hy
     obtain ⟨h, hh, rfl⟩ := hsurj y hy
-    refine ⟨(h : H ⧸ J), hh, ?_⟩
-    change ((j (h : H ⧸ J).out : G) : G ⧸ U) = ((j h : G) : G ⧸ U)
-    refine QuotientGroup.eq.2 ?_
-    have h1 : ((h : H ⧸ J).out)⁻¹ * h ∈ J := QuotientGroup.eq.1 (by simp)
-    have := hJ _ h1
-    simpa [map_mul] using this
+    exact ⟨(h : H ⧸ J), hh, hout h⟩
   refine ⟨hfin, fun φ hφ => ?_⟩
   haveI : Finite (MulAction.orbit J (d : H ⧸ J)) := Set.Finite.to_subtype hd
   haveI : Finite (MulAction.orbit U ((j d : G) : G ⧸ U)) := Set.Finite.to_subtype hfin
@@ -104,22 +99,14 @@ theorem UpperTheory.V.Z.Sym.So.dcLocal :
     · intro q q' hqq
       have h1 : ((j (q : H ⧸ J).out : G) : G ⧸ U) = ((j (q' : H ⧸ J).out : G) : G ⧸ U) :=
         congrArg Subtype.val hqq
-      have h2 : (j (q : H ⧸ J).out)⁻¹ * j (q' : H ⧸ J).out ∈ U := QuotientGroup.eq.1 h1
-      have h3 := (hU _ h2).1
+      have h3 := (hU _ (QuotientGroup.eq.1 h1)).1
       have h4 : ((q : H ⧸ J).out)⁻¹ * (q' : H ⧸ J).out ∈ J := by
         simpa [map_mul, map_inv, hpj] using h3
-      have h5 : (((q : H ⧸ J).out : H) : H ⧸ J) = (((q' : H ⧸ J).out : H) : H ⧸ J) :=
-        QuotientGroup.eq.2 h4
       apply Subtype.ext
-      simpa using h5
+      simpa using QuotientGroup.eq.2 h4
     · rintro ⟨y, hy⟩
       obtain ⟨h, hh, rfl⟩ := hsurj y hy
-      refine ⟨⟨(h : H ⧸ J), hh⟩, Subtype.ext ?_⟩
-      change ((j (h : H ⧸ J).out : G) : G ⧸ U) = ((j h : G) : G ⧸ U)
-      refine QuotientGroup.eq.2 ?_
-      have h1 : ((h : H ⧸ J).out)⁻¹ * h ∈ J := QuotientGroup.eq.1 (by simp)
-      have := hJ _ h1
-      simpa [map_mul] using this
+      exact ⟨⟨(h : H ⧸ J), hh⟩, Subtype.ext (hout h)⟩
   unfold dcF dc
   rw [finsum_end_apply, finsum_end_apply, ← finsum_comp e he]
   refine finsum_congr fun q => ?_

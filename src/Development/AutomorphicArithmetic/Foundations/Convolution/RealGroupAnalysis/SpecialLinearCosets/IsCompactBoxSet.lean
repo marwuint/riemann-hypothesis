@@ -90,12 +90,10 @@ private theorem lgrp_matrix : Lgrp (Multiplicative (Matrix (Fin 2) (Fin 2) K)) :
     convert this using 1
     ext x
     constructor
-    · intro hx
-      exact ⟨Multiplicative.toAdd x, hx, rfl⟩
+    · exact fun hx => ⟨Multiplicative.toAdd x, hx, rfl⟩
     · rintro ⟨y, hy, rfl⟩
       exact hy
-  · intro x hx
-    exact hr hx
+  · exact fun x hx => hr hx
 
 private def cgrp (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] (n : ℕ) : Subgroup (Matrix.SpecialLinearGroup (Fin 2) K) where
@@ -168,12 +166,10 @@ private theorem lgrp_sl [T2Space K] : Lgrp (Matrix.SpecialLinearGroup (Fin 2) K)
   have h1 : g.1 - 1 ∈ (fun m : Matrix (Fin 2) (Fin 2) K => m + 1) ⁻¹' W :=
     hr fun i j => valBall_antitone (m := (r : ℤ)) (n := (r : ℤ) + 1) (by omega) (hg i j)
   have h2 : (g.1 - 1) + 1 ∈ W := h1
-  rw [sub_add_cancel] at h2
-  exact h2
+  rwa [sub_add_cancel] at h2
 
 end SlopeTestRemainingChoices
 
 theorem UpperTheory.ConvolutionTheory.R2.I.lgrp :
     ∀ (F : Type) [Field F] [NumberField F] (v : P F), Lgrp (SL v) ∧ Lgrp (Multiplicative (M2 v)) := by
-  intro F _ _ v
-  exact ⟨lgrp_sl, lgrp_matrix⟩
+  exact fun F _ _ v => ⟨lgrp_sl, lgrp_matrix⟩

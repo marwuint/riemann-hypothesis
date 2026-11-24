@@ -120,14 +120,11 @@ private theorem prinSeries_irreducible {n : ℕ} (ω : Fin n → kˣ →* ℂˣ)
       apply GlobalTheory.CompanionTheory.BZPair.not_linked_single
       · unfold IrrGL.nu
         rw [IrrGL.tw_ofChar]
-        intro he
-        exact h i j (IrrGL.ofChar_inj.mp he)
+        exact fun he => h i j (IrrGL.ofChar_inj.mp he)
       · unfold IrrGL.nu
         rw [IrrGL.tw_ofChar]
-        intro he
-        exact h j i (IrrGL.ofChar_inj.mp he)
-    · intro i
-      exact (single_spec (IrrGL.isCusp_ofChar (ω i) (hω i))).2.1
+        exact fun he => h j i (IrrGL.ofChar_inj.mp he)
+    · exact fun i => (single_spec (IrrGL.isCusp_ofChar (ω i) (hω i))).2.1
   let e1 := stdBlocks (fun a => (IrrGL.ofChar (ω a) (hω a)).fst) hd
   have E1 : (prodIrr (fun a => IrrGL.ofChar (ω a) (hω a)) hd).Equiv
       (multiProd e1 fun a => detRep (Fin 1) (ω a)) :=
@@ -162,8 +159,7 @@ private theorem prinSeries_irreducible {n : ℕ} (ω : Fin n → kˣ →* ℂˣ)
     refine ⟨equivOfBijective F ⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, hs⟩⟩
     rcases eq_bot_or_eq_top F.ker with h | h
     · have : x ∈ F.ker := hx
-      rw [h] at this
-      exact this
+      rwa [h] at this
     · have : v.1 ∈ F.ker := by rw [h]; trivial
       exact absurd this hy
   obtain ⟨E3⟩ := he (GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k n ω) hM

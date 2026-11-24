@@ -162,9 +162,7 @@ theorem UpperTheory.V.Pa.chebOne :
     intro v
     obtain ⟨a, ha, ha0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot
     refine (hfin (algebraMap (𝓞 (Lp L)) (𝓞 L) a) ?_).subset ?_
-    · intro h0
-      apply ha0
-      exact FaithfulSMul.algebraMap_injective _ _ (h0.trans (map_zero _).symm)
+    · exact fun h0 => ha0 (FaithfulSMul.algebraMap_injective _ _ (h0.trans (map_zero _).symm))
     · intro w hw
       have hw' : φ w = v := hw
       have : a ∈ (φ w).asIdeal := by rw [hw']; exact ha
@@ -179,10 +177,8 @@ theorem UpperTheory.V.Pa.chebOne :
   have hp : (Ideal.absNorm w.asIdeal).Prime :=
     ((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified L).1 w).mpr hin
   refine ⟨φ w, w, B, σ, ?_, hB, hφ w B hB, UpperTheory.V.Pa.chebOne_split hB hp x0 ?_, hF, hσU⟩
-  · intro hv
-    exact hwS (Or.inr (Set.mem_biUnion hv rfl))
-  · intro h
-    exact hwS (Or.inl h)
+  · exact fun hv => hwS (Or.inr (Set.mem_biUnion hv rfl))
+  · exact fun h => hwS (Or.inl h)
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ChebotarevFamilies.ChebOne =====
@@ -200,8 +196,7 @@ theorem UpperTheory.V.Pa.chebFam :
   revert g
   induction q with
   | zero =>
-    intro g
-    exact ⟨Fin.elim0, Fin.elim0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun j => j.elim0⟩
+    exact fun g => ⟨Fin.elim0, Fin.elim0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun j => j.elim0⟩
   | succ q ih =>
     intro g
     obtain ⟨v, w, B, σ, hinj, hj⟩ := ih (fun i => g i.castSucc)
@@ -219,11 +214,9 @@ theorem UpperTheory.V.Pa.chebFam :
     · intro j
       induction j using Fin.lastCases with
       | last =>
-        simp only [Fin.lastCases_last]
-        exact ⟨fun h => h1 (Or.inl h), h2, h3, h4, h5, h6⟩
+        simpa only [Fin.lastCases_last] using ⟨fun h => h1 (Or.inl h), h2, h3, h4, h5, h6⟩
       | cast i =>
-        simp only [Fin.lastCases_castSucc]
-        exact hj i
+        simpa only [Fin.lastCases_castSucc] using hj i
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ChebotarevFamilies.ChebFam =====
@@ -289,9 +282,7 @@ private theorem frS_normal (l : ℕ) (K : Subgroup Γ) [hK : K.Normal] : (frS l 
   refine Subgroup.mem_map.mpr ⟨c k, ?_, hc k⟩
   rw [Subgroup.mem_iInf] at hk ⊢
   intro ψ
-  have hφ : IsOpen ((ψ.1.comp c).ker : Set K) := by
-    show IsOpen (c ⁻¹' (ψ.1.ker : Set K))
-    exact ψ.2.preimage hcc
+  have hφ : IsOpen ((ψ.1.comp c).ker : Set K) := ψ.2.preimage hcc
   exact hk ⟨ψ.1.comp c, hφ⟩
 
 private theorem frS_open (l : ℕ) (h : PhiCond Γ l) (K : Subgroup Γ) (hK : IsOpen (K : Set Γ)) :
@@ -364,8 +355,7 @@ private theorem fr_lt (l : ℕ) [Fact l.Prime] [CompactSpace Γ] (h : PhiCond Γ
     exact hfk.symm
   rw [MonoidHom.mem_ker] at hf'ψ ⊢
   show φ (π k) = 1
-  rw [hπeq]
-  exact hf'ψ
+  rwa [hπeq]
 
 private theorem pow_mem (l : ℕ) [CompactSpace Γ] (H : Subgroup Γ) (V : OpenNormalSubgroup Γ)
     (hV : PL l H ≤ V.toSubgroup) : ∀ k ∈ H, ∃ e : ℕ, k ^ l ^ e ∈ V.toSubgroup := by
@@ -400,15 +390,13 @@ private theorem pow_mem (l : ℕ) [CompactSpace Γ] (H : Subgroup Γ) (V : OpenN
     apply hxV
     apply hV
     simp only [UpperTheory.V.Pa.PL, Subgroup.mem_iInf]
-    intro U hU
-    exact Set.mem_iInter.mp hx ⟨U, hU⟩
+    exact fun U hU => Set.mem_iInter.mp hx ⟨U, hU⟩
   obtain ⟨i, hi⟩ := (hVc.elim_directed_family_closed t hclosed (Set.disjoint_iff_inter_eq_empty.2 hempty) hdir).imp (fun _ => Disjoint.inter_eq)
   obtain ⟨e, he⟩ := i.2 k hk
   refine ⟨e, ?_⟩
   by_contra hne
   have hmem : k ^ l ^ e ∈ (V.toSubgroup : Set Γ)ᶜ ∩ t i := ⟨hne, he⟩
-  rw [hi] at hmem
-  exact hmem
+  rwa [hi] at hmem
 
 end UpperTheory.V.Pa.FrattiniSubgroup
 
@@ -566,8 +554,7 @@ theorem UpperTheory.V.Pa.homBound :
         ⟨c.out * (h : Γ')⁻¹ * c.out⁻¹, hb⟩⁻¹, ?_, ?_⟩
       · rw [SetLike.mem_coe, MonoidHom.mem_ker, map_mul, map_mul, map_inv]
         have : (χ.1 * (g (f χ)).1⁻¹) ⟨c.out * ta j * c.out⁻¹, hmem _ _⟩ = 1 := by
-          simp only [MonoidHom.mul_apply, MonoidHom.inv_apply]
-          exact mul_inv_eq_one.2 ha.symm
+          simpa only [MonoidHom.mul_apply, MonoidHom.inv_apply] using mul_inv_eq_one.2 ha.symm
         rw [this, mul_one, mul_inv_cancel]
       · simp only [Subgroup.subtype_apply, Subgroup.coe_mul, Subgroup.coe_inv]
         rw [hh]
@@ -688,8 +675,7 @@ theorem UpperTheory.V.Pa.prokerPL :
     show φ x ^ l ^ e = 1
     rw [← map_pow]
     show (QuotientGroup.mk (f (x ^ l ^ e)) : Γ ⧸ U.toSubgroup) = 1
-    rw [QuotientGroup.eq_one_iff, map_pow]
-    exact he
+    rwa [QuotientGroup.eq_one_iff, map_pow]
   obtain ⟨n, hn⟩ := IsPGroup.iff_card.1 hp
   have hker : φ.ker = U.toSubgroup.comap f := by
     ext x
@@ -699,8 +685,7 @@ theorem UpperTheory.V.Pa.prokerPL :
     exact U.isOpen.preimage hf
   have h2 := GlobalTheory.TameQuot.mem_proKer.1 hg φ.ker inferInstance hopen
     ⟨n, by rw [Subgroup.index_ker, hn]⟩
-  rw [hker] at h2
-  exact h2
+  rwa [hker] at h2
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ChebotarevFamilies.ProkerPL =====
@@ -741,15 +726,13 @@ private theorem ine_NS {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Algeb
     {S : Set (HeightOneSpectrum (𝓞 k))} {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 k)} (hv : v ∉ S)
     (hA : IsPlaceOver A v) {t : G k Ω} (ht : t ∈ Ine (F := k) A) : toGS Ω S t = 1 := by
   refine (QuotientGroup.eq_one_iff t).2 (Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ?_))
-  simp only [Set.mem_iUnion]
-  exact ⟨v, hv, A, hA, ht⟩
+  simpa only [Set.mem_iUnion] using ⟨v, hv, A, hA, ht⟩
 
 private theorem PL_normal (l : ℕ) {Γ : Type} [Group Γ] [TopologicalSpace Γ] (H : Subgroup Γ) : (PL l H).Normal := by
   refine ⟨fun x hx g => ?_⟩
   unfold PL at hx ⊢
   simp only [Subgroup.mem_iInf] at hx ⊢
-  intro U hU
-  exact U.isNormal'.conj_mem _ (hx U hU) g
+  exact fun U hU => U.isNormal'.conj_mem _ (hx U hU) g
 
 theorem UpperTheory.V.Pa.kerLe :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (V0 V : s.Lev) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid V0.frame O n) (h : (globOf r V).Hom (globOf r V0)) (H : Subgroup (globOf r V0).Γ) (q : ℕ) (v : Fin q → Plc (Lp L)) (B : Fin q → ValuationSubring Ω) (τ : Fin q → G L Ω), (∀ g, h.p (toGS Ω V.S' g) = toGS Ω V0.S' g) → V.S' = V0.S' ∪ Set.range v → (∀ j, v j ∉ V0.S' ∧ IsPlaceOver (B j) (v j) ∧ Dec (F := Lp L) (B j) ≤ (resP L Ω).range ∧ GlobalTheory.TameQuot.IsProGen L (B j) l (τ j)) → (∀ j, ∀ g ∈ Ine (F := L) (B j), h.p (V.pr g : GS Ω V.S') = 1) ∧ (∀ j, ∀ g ∈ GlobalTheory.TameQuot.ineKer L (B j) l, ((V.pr g : GS Ω V.S') : (globOf r V).Γ) ∈ PL l (H.comap h.p)) ∧ h.p.ker ≤ (Subgroup.normalClosure (Set.range fun j => ((V.pr (τ j) : GS Ω V.S') : (globOf r V).Γ)) ⊔ PL l (H.comap h.p)).topologicalClosure := by
@@ -783,8 +766,7 @@ theorem UpperTheory.V.Pa.kerLe :
     · rw [Subgroup.zpowers_le]
       exact Subgroup.le_topologicalClosure N
         ((le_sup_left : _ ≤ N) (Subgroup.subset_normalClosure ⟨j, rfl⟩))
-    · intro x hx
-      exact Subgroup.le_topologicalClosure N ((le_sup_right : _ ≤ N) (h2 j x hx))
+    · exact fun x hx => Subgroup.le_topologicalClosure N ((le_sup_right : _ ≤ N) (h2 j x hx))
   have h4 : NS Ω V0.S' ≤ N.topologicalClosure.comap π := by
     refine Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal ?_) hc
     intro t ht
@@ -900,8 +882,7 @@ theorem UpperTheory.V.Pa.hEx :
         · rw [map_mul, Units.val_mul, map_mul, hεa, hεb, one_mul]
       one_mem' := by
         refine ⟨by simp, fun i => ?_, ?_⟩
-        · show r.chib i 1 = 1
-          exact map_one _
+        · exact map_one _
         · simp
       inv_mem' := by
         rintro a ⟨ha, hχa, hεa⟩
@@ -945,8 +926,7 @@ theorem UpperTheory.V.Pa.hEx :
     · show r.chib i (⟨a, ha⟩ * ⟨g, h⟩ * (⟨a, ha⟩)⁻¹) = 1
       rw [map_mul, map_mul, map_inv, mul_inv_cancel_comm]
       exact hχ i
-    · rw [map_mul, map_mul, map_inv, mul_inv_cancel_comm]
-      exact hε
+    · rwa [map_mul, map_mul, map_inv, mul_inv_cancel_comm]
   have hnorm : S.Normal := by
     refine ⟨fun g hg a => ?_⟩
     rw [hmem] at hg ⊢
@@ -965,8 +945,7 @@ theorem UpperTheory.V.Pa.hEx :
       refine ⟨hη, fun i => ?_, ?_⟩
       · rw [hx]
         exact chib_conj_eq_one_of_chib_eq_one_of_eps_eq_one F O n r _ hχ' (eps_residueField_eq_one_of_toZMod_eq_one F O _ hε') i
-      · rw [map_mul, map_mul, map_inv, mul_inv_cancel_comm]
-        exact hε
+      · rwa [map_mul, map_mul, map_inv, mul_inv_cancel_comm]
   exact ⟨⟨⟨S, hopen⟩, hnorm⟩, fun g => Iff.rfl⟩
 end -- clump:auto
 end -- clump:auto
@@ -1013,8 +992,7 @@ theorem UpperTheory.V.Pa.arPl : ArPl := by
       simp only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_preimage, Set.mem_singleton_iff,
         Units.val_eq_one]
     change IsOpen ((cycMod L Ω l N).ker : Set (G L Ω))
-    rw [e]
-    exact h1
+    rwa [e]
   have hSfin : s.S.Finite := hS ▸ V0.fin
   choose v w B σ hinj hP using fun N => chebFam L Ω (U N) q (fun j => (g j)⁻¹) s.S (hUo N) hSfin
   have hlw : ∀ N j, (l : 𝓞 L) ∉ (w N j).asIdeal := by
@@ -1038,8 +1016,7 @@ theorem UpperTheory.V.Pa.arPl : ArPl := by
       rfl
     rw [h1]
     have h2 := hsg j
-    rw [← hg j] at h2
-    exact h2
+    rwa [← hg j] at h2
   have hNq : ∀ N j, normV (w N j) ≡ 1 [MOD l ^ N] := by
     intro N j
     have hu := (hP N j).2.2.2.2.2
@@ -1069,8 +1046,7 @@ theorem UpperTheory.V.Pa.arPl : ArPl := by
     have eq : ρ (σ N j)⁻¹ * (ρ (g j))⁻¹ = (ρ (g j) * ρ (σ N j * g j) * (ρ (g j))⁻¹)⁻¹ := by
       simp only [map_mul, map_inv]
       group
-    rw [eq]
-    exact hi
+    rwa [eq]
   have htame : ∀ N j, ((((VN N).pr (τ N j)) ^ normV (w N j))⁻¹ *
       (((VN N).pr (σ N j)⁻¹)⁻¹ * (VN N).pr (τ N j) * (VN N).pr (σ N j)⁻¹)).1 ∈
       PL l (Subgroup.comap (hN N).p (H.toOpenSubgroup : Subgroup V0.frame.Γ)) := by
@@ -1084,8 +1060,7 @@ theorem UpperTheory.V.Pa.arPl : ArPl := by
         (VN N).pr (((⟨τ N j, hτD⟩ : Dec (B N j)) ^ normV (w N j))⁻¹ *
           ((⟨σ N j, hσD⟩ : Dec (B N j)) * ⟨τ N j, hτD⟩ * (⟨σ N j, hσD⟩ : Dec (B N j))⁻¹) : Dec (B N j)) := by
       simp only [Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_pow, map_mul, map_inv, map_pow, inv_inv]
-    rw [e]
-    exact hm
+    rwa [e]
   let T : TWGrp (globOf r V0) :=
     { q := q
       H := H

@@ -212,9 +212,7 @@ theorem jMt_rowsSame : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (
   subst e3
   have e4 : alg' = t.r.z.alg := by
     apply Algebra.algebra_ext
-    intro y
-    apply (w.D Z).what₂.embLL.injective
-    exact (alg_eq' y).trans (t.r.z.alg_eq y).symm
+    exact fun y => (w.D Z).what₂.embLL.injective ((alg_eq' y).trans (t.r.z.alg_eq y).symm)
   subst e4
   have e5 : R' = R3.Tr.real3 (a := ⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) (upL Z S' N h) (iK := t.r.z.alg) t.r.z.R := eq_of_heq hs.R
   subst e5
@@ -833,9 +831,7 @@ theorem exists_nonempty_nMore_upL (hL : _root_.UpperTheory.Zero.LLC.RecTExists) 
   subst e3
   have e4 : alg' = t.r.z.alg := by
     apply Algebra.algebra_ext
-    intro y
-    apply (w.D Z).what₂.embLL.injective
-    exact (alg_eq' y).trans (t.r.z.alg_eq y).symm
+    exact fun y => (w.D Z).what₂.embLL.injective ((alg_eq' y).trans (t.r.z.alg_eq y).symm)
   subst e4
   have e5 : R' = R3.Tr.real3 (a := ⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) (upL Z S' N h) (iK := t.r.z.alg) t.r.z.R := eq_of_heq hs.R
   subst e5
@@ -1180,9 +1176,7 @@ theorem _root_.GlobalTheory.T.geo_heq_geoHalf_of_same : ∀ (K : Ctx) (B : Base)
   subst e3
   have e4 : alg' = t.r.z.alg := by
     apply Algebra.algebra_ext
-    intro y
-    apply (w.D Z).what₂.embLL.injective
-    exact (alg_eq' y).trans (t.r.z.alg_eq y).symm
+    exact fun y => (w.D Z).what₂.embLL.injective ((alg_eq' y).trans (t.r.z.alg_eq y).symm)
   subst e4
   have e5 : R' = R3.Tr.real3 (a := ⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) (upL Z S' N h) (iK := t.r.z.alg) t.r.z.R := eq_of_heq hs.R
   subst e5

@@ -245,8 +245,7 @@ private theorem card_cls (h : ContAction ρ) (L : Submodule k (H1 ρ)) :
     ((B1 ρ).comap (Z1 ρ).subtype).toAddSubgroup (L : Set (H1 ρ)))).trans (Nat.card_prod _ _)
   have e3 : Nat.card ((B1 ρ).comap (Z1 ρ).subtype) = Nat.card (B1 ρ) :=
     Nat.card_congr (Submodule.comapSubtypeEquivOfLe (coboundaries_le_cocycles ρ h)).toEquiv
-  rw [e1, Set.ncard_image_of_injective _ Subtype.val_injective, ← e3]
-  exact e2
+  rwa [e1, Set.ncard_image_of_injective _ Subtype.val_injective, ← e3]
 
 omit [TopologicalSpace G] [TopologicalSpace M] [DiscreteTopology M] in
 private theorem card_coboundaries_mul_card_h0 : Nat.card (B1 ρ) * Nat.card (H0 ρ) = Nat.card M := by
@@ -282,8 +281,7 @@ private theorem ex_cls {n : ℕ} {G M : Type} [Group G] [TopologicalSpace G] [Ad
     have e' : y.1 - z ∈ B1 ρ := (Submodule.Quotient.eq ((B1 ρ).comap (Z1 ρ).subtype)).1 e
     have := N.sub_mem hy (h1 e')
     simpa using this
-  · intro hz
-    exact ⟨(Zl_iff ρ z).1 (h2 hz), ⟨z, _⟩, hz, rfl⟩
+  · exact fun hz => ⟨(Zl_iff ρ z).1 (h2 hz), ⟨z, _⟩, hz, rfl⟩
 
 private def Conc {R R' Γ M M' W : Type} [CommRing R] [CommRing R'] [Group Γ] [TopologicalSpace Γ] [AddCommGroup M] [Module R M]
     [AddCommGroup M'] [Module R' M'] [Fintype W] {D : W → Type} [∀ w, Group (D w)] [∀ w, TopologicalSpace (D w)]
@@ -662,8 +660,7 @@ theorem UpperTheory.V.Th.locCntBare :
     (Equiv.ofBijective _ h20).trans (LinearEquiv.congrRight inv).toEquiv
   haveI : Finite B := Subtype.finite
   have e4 : Nat.card (H2 σ) = Nat.card ρ'.invariants := by
-    rw [Nat.card_congr E, (dualZ (l ^ k) B).1]
-    exact e3
+    rwa [Nat.card_congr E, (dualZ (l ^ k) B).1]
   refine ⟨Finite.of_equiv _ EZ.symm, ?_⟩
   apply Nat.eq_of_mul_eq_mul_right (Nat.card_pos (α := H0 σ))
   rw [Nat.card_congr EZ, e2, e1, e4]
@@ -811,14 +808,12 @@ theorem UpperTheory.V.Th.presCnts :
   intro hC l _ Lc G q d a F Ω _ _ _ _ _ _ P hl hU
   have hmatch : ∀ (w : ArData.W Lc q) (g : a.D w),
       G.ε (a.ι w g) = cycZ F Ω l ((Dec (P.A w)).subtype (P.α w g)) := by
-    intro w g
-    exact (congrArg G.ε (P.ι_eq w g)).trans (P.e_ε _)
+    exact fun w g => (congrArg G.ε (P.ι_eq w g)).trans (P.e_ε _)
   refine Cnts.mk ?_ ?_ ?_ ?_
   · have key := gwCntBare hC.gw hC.lt hC.gf hC.lf l F Ω P.S G.Γ P.e G.ε (ArData.W Lc q) P.pl P.A
       a.D a.ι P.α d P.ip P.c hl P.above P.e_ε P.isOver P.ι_eq P.cc
     have hcw : a.cw = fun i => P.e ((toGS Ω P.S) (P.c i)) := funext P.cw_eq
-    rw [hcw]
-    exact key
+    rwa [hcw]
   · intro v
     have hv : (l : 𝓞 F) ∈ (P.pl (Sum.inl v) : HeightOneSpectrum (𝓞 F)).asIdeal := (P.pl_l _).2 ⟨v, rfl⟩
     have h1 := (locCntBare hC.lf hC.lt hC.le l F Ω (P.A (Sum.inl v)) _ (P.isOver (Sum.inl v))).1 hv
@@ -833,8 +828,7 @@ theorem UpperTheory.V.Th.presCnts :
       (P.isOver (Sum.inr (Sum.inr j)))).2 hn
     exact locCntCongr l (a.D (Sum.inr (Sum.inr j))) _ (P.α (Sum.inr (Sum.inr j))) _ _ _
       (hmatch (Sum.inr (Sum.inr j))) h0
-  · intro u
-    exact unrDev l _ _ (hU u)
+  · exact fun u => unrDev l _ _ (hU u)
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.CyclicReductionCohomology.PresCnts =====
@@ -1031,13 +1025,11 @@ theorem UpperTheory.V.Th.oneLevelO :
     exact fun y hy => ⟨hy.1, fun j => hy.2 _ rfl⟩
   · rw [pow_mul, ← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_const, ← Finset.prod_mul_distrib,
       ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]
-    refine Finset.prod_le_prod' fun v _ => ?_
-    exact le_trans (hloc v).2.2 (Nat.mul_le_mul_left _ (hZb v).2)
+    exact Finset.prod_le_prod' fun v _ => le_trans (hloc v).2.2 (Nat.mul_le_mul_left _ (hZb v).2)
   · rw [← Finset.card_univ, ← Finset.prod_const]
     refine Finset.prod_le_prod' fun u _ => ?_
     have := (hC.unr u m O _ (rep.comp (a.ι (.inr (.inl u)))) (hLCw _) (fun Y => Matrix.ext fun i j => hlD (Y i j)) (hu u)).2
-    rw [← Nat.card_coe_set_eq] at this
-    exact this
+    rwa [← Nat.card_coe_set_eq] at this
   · rw [← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]
     refine Finset.prod_le_prod' fun j _ => ?_
     have := (hC.locQ j k hk O _ _ (rep.comp (a.ι (.inr (.inr j)))) (rep'.comp (a.ι (.inr (.inr j)))) b (hLCw _)
@@ -1096,8 +1088,7 @@ theorem UpperTheory.V.Th.h0v0O :
     apply hN Z
     intro g hg
     have h1 := hZ ⟨g, hg⟩
-    rw [LinearMap.mem_ker, hΦ, sub_eq_zero] at h1
-    exact h1
+    rwa [LinearMap.mem_ker, hΦ, sub_eq_zero] at h1
   have hfin : Module.finrank O ↥(⨅ s, (Φ s).ker) = 0 := by
     rw [hker]
     exact finrank_bot O _
@@ -1140,8 +1131,7 @@ theorem UpperTheory.V.Th.h0v0O :
         _ = red m Y' := by rw [mul_assoc, (hinv g).1, mul_one]
   rw [hset]
   have h2 := hC m
-  rw [hfin, mul_zero, zero_add] at h2
-  exact h2
+  rwa [hfin, mul_zero, zero_add] at h2
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.CyclicReductionCohomology.RedSmul =====
@@ -1250,8 +1240,7 @@ theorem UpperTheory.V.Th.b1absO :
     refine ⟨?_, fun g => ?_⟩
     · have e1 := hr.2 Y
       have e2 : rep (T.GN N).frame.c Y = Y := hy _
-      rw [e2, one_smul] at e1
-      exact e1
+      rwa [e2, one_smul] at e1
     · obtain ⟨γ, hγ⟩ := (T.h N).surj g
       have hγm : γ ∈ (T.GN N).η.ker := by
         rw [MonoidHom.mem_ker, ← (T.h N).η, hγ]; exact g.2
@@ -1283,8 +1272,7 @@ open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateS
 private theorem coef_isCoef (l : ℕ) [hl : Fact l.Prime] (c : Coef l) : IsCoef l c.O := by
   obtain ⟨h1, h2, h3, -⟩ := UpperTheory.V.abelian₂.dvr_finite l c.O
   refine ⟨h1, h2, ?_⟩
-  rw [CharP.charP_iff_prime_eq_zero hl.out, ← map_natCast (residue c.O), residue_eq_zero_iff]
-  exact h3
+  rwa [CharP.charP_iff_prime_eq_zero hl.out, ← map_natCast (residue c.O), residue_eq_zero_iff]
 
 private theorem eps_ne {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
     (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 L)) (h : IsPlaceOver A w) (hw : ((l : ℕ) : 𝓞 L) ∈ w.asIdeal) :

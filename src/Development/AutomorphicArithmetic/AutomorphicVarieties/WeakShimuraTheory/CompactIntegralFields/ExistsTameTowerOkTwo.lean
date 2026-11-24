@@ -375,8 +375,7 @@ private theorem kx_cls (n : ℕ) {s : G ℚ Ω} (h : cycZ ℚ Ω l s = 1) : Chr.
   refine (Chr.clsFacts ℚ Ω (l ^ n)).2.2.1 s _ fun ζ hζ => ?_
   have h1 := cyclotomicCharacter.spec l (MulSemiringAction.toRingAut (Ω ≃ₐ[ℚ] Ω) Ω s) ζ hζ
   have h2 : cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (Ω ≃ₐ[ℚ] Ω) Ω s) = 1 := h
-  rw [h2, Units.val_one, map_one] at h1
-  exact h1
+  rwa [h2, Units.val_one, map_one] at h1
 
 variable {O : Type} [CommRing O] [IsDomain O] {N : ℕ} [NeZero N]
 
@@ -443,8 +442,7 @@ theorem UpperTheory.V.Ws.kapEx :
     have h3 : D.Psi g = D.ψ g := by
       rw [Raw.Psi, Chr.Psi, MonoidHom.mul_apply, zpow_natCast, MonoidHom.pow_apply, h2, one_pow, one_mul]
     refine (congrFacts Ω l c).2.2.2.1 _ 1 _ hnd (hψ ▸ kx_pow ψ h1 hk) (one_pow _) ?_
-    rw [← residue_eq_zero_iff, map_sub, Units.val_one, map_one, sub_eq_zero, ← h3]
-    exact hb
+    rwa [← residue_eq_zero_iff, map_sub, Units.val_one, map_one, sub_eq_zero, ← h3]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.FrobeniusFields.KxKapL =====
@@ -667,8 +665,7 @@ theorem UpperTheory.V.Ws.ok2A :
     · intro h
       apply hE.u_xi
       rw [show 4 = 2 * 2 by rfl, pow_mul, h, one_pow]
-    · have h3 := odd_pow_ne (hxord u) hE.u_xi (m := 3) (by decide)
-      simpa using h3
+    · simpa using odd_pow_ne (hxord u) hE.u_xi (m := 3) (by decide)
     · exact hE.u_xi
   · intro hg0 i j hij heq
     rw [hg0] at heq
@@ -814,10 +811,8 @@ theorem UpperTheory.V.Ws.two2 :
     rcases Int.units_eq_one_or (X.φ (resQ T.F g)) with h | h <;> rw [h]
     · simp
     · constructor
-      · intro h'
-        exact absurd (by simpa using h') hne
-      · intro h'
-        exact absurd h' (by decide)
+      · exact fun h' => absurd (by simpa using h') hne
+      · exact fun h' => absurd h' (by decide)
   have key : ∀ q ∈ D.S, ∀ A : ValuationSubring Ω, A.valuation (q : Ω) < 1 → ∀ g ∈ Dec (F := ℚ) A,
       Raw.bar D.Psi g = 1 → X.κ g = 1 → ∃ s : G T.F Ω, resQ T.F s = g := fun q hq A hA g hg h1 h2 => by
     have a : X.φ g = 1 := X.hφ.split q hq A hA hg
@@ -897,8 +892,7 @@ theorem UpperTheory.V.Ws.exists_tame_tower_ok_two :
   obtain ⟨a1, a2, a3, a4, a5⟩ := ok2A D hD X T hT a u t hE
   obtain ⟨c1, c2, c3, c4⟩ := ok2B D hD X T hT
   have ev : Even T.d := by
-    rw [Tower.d, IntermediateField.finrank_eq_fixingSubgroup_index, hT.1]
-    exact b4
+    rwa [Tower.d, IntermediateField.finrank_eq_fixingSubgroup_index, hT.1]
   exact ⟨T, e1, ⟨e1 ▸ hpr, ev, c1, e2 ▸ sp, a1, a2, a3, a4, c2, c3, c4, a5 (e4.trans hg0), UpperTheory.V.Keep.loc2 D hC X T hT⟩,
     two2 D hD X T hT k₀ dk rk hk, fun A hA g hg => hT.1 ▸ b5 A hA g hg⟩
 end -- clump:auto

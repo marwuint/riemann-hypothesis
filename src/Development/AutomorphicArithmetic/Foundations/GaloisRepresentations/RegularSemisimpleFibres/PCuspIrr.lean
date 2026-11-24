@@ -61,8 +61,7 @@ private theorem redK_mem_unipRad {s : ℕ} {d : Fin s → ℕ} (e : (Σ a, Fin (
   have h := CuspMax.mem_unipRad_iff_entries.1 hu i j hij
   by_cases hh : i = j
   · subst hh
-    have h1 := (redK_eq_iff ⟨g, hK⟩ i i 1).2 (by simp [h])
-    simpa using h1
+    simpa using (redK_eq_iff ⟨g, hK⟩ i i 1).2 (by simp [h])
   · rw [Matrix.one_apply_ne hh]
     exact (redK_eq_zero_iff ⟨g, hK⟩ i j).2 (by simp [h, Matrix.one_apply_ne hh])
 
@@ -84,18 +83,15 @@ private theorem irreducible_levelZero (π : IrrRep (GL (Fin n) k)) (ω : kˣ →
     intro W hW
     haveI : Nontrivial W.toSubmodule := by
       rw [Submodule.nontrivial_iff_ne_bot]
-      intro h
-      exact hW (Subrepresentation.toSubmodule_injective h)
+      exact fun h => hW (Subrepresentation.toSubmodule_injective h)
     let j : W.toSubmodule →ₗ[ℂ] π.V := (fixed π.ρ (KOne k (Fin n))).subtype ∘ₗ W.toSubmodule.subtype
     have hFτ : PositivityTheory.Rg.DzCount.FinCusp W.toRepresentation := by
       intro s d e hne w hw
       exact Subtype.ext (hF s d e hne w (fun u hu => congrArg Subtype.val (hw u hu)))
     have hj : PositivityTheory.Rg.DzCount.IsTypeMap W.toRepresentation π.ρ j := by
       refine ⟨?_, ?_⟩
-      · intro a c hac
-        exact Subtype.ext (Subtype.ext hac)
-      · intro g w
-        exact levelZero_apply π.ρ g w
+      · exact fun a c hac => Subtype.ext (Subtype.ext hac)
+      · exact fun g w => levelZero_apply π.ρ g w
     have hfix := PositivityTheory.Rg.DzCount.B.st6 k W.toSubmodule n W.toRepresentation hFτ π ω hω j hj
     apply Subrepresentation.toSubmodule_injective
     show W.toSubmodule = ⊤

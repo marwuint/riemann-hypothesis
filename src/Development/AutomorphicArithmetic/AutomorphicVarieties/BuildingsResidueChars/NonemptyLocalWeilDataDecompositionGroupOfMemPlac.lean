@@ -82,15 +82,13 @@ private theorem locAb_transport (l : ℕ) [Fact l.Prime] {G G' : Type} [Group G]
     have h1 := map_prim l Fe (x := QuotientGroup.mk' (commutator G).topologicalClosure g) hg
     have h2 := hFe g
     simp only [MulEquiv.coe_toMonoidHom] at h2
-    rw [h2] at h1
-    exact h1
+    rwa [h2] at h1
   have mu2 : ∀ g', g' ∈ muG l G' → e.symm g' ∈ muG l G := by
     intro g hg
     have h1 := map_prim l Fs (x := QuotientGroup.mk' (commutator G').topologicalClosure g) hg
     have h2 := hFs g
     simp only [MulEquiv.coe_toMonoidHom] at h2
-    rw [h2] at h1
-    exact h1
+    rwa [h2] at h1
   let bm : CommGroup.primaryComponent (TopologicalAbelianization G') l →*
       CommGroup.primaryComponent (TopologicalAbelianization G) l :=
     MonoidHom.codRestrict (Fs.comp (CommGroup.primaryComponent _ l).subtype) _
@@ -121,9 +119,7 @@ private theorem locAb_transport (l : ℕ) [Fact l.Prime] {G G' : Type} [Group G]
   · intro g hg
     show Fs ((A.b (e g)) : TopologicalAbelianization G') = _
     rw [A.b_mu _ (mu1 g hg)]
-    have h4 := hFs (e g)
-    simp only [MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply] at h4
-    exact h4
+    simpa only [MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply] using hFs (e g)
 
 open Formalism.BasicNotions.Loc in
 theorem UpperTheory.nonempty_localWeilData_decompositionGroup_of_mem_place :

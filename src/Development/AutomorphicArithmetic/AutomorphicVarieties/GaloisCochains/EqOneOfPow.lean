@@ -100,8 +100,7 @@ private theorem conj_mem_inertia_of_mem_inertia_smul {F Ω : Type} [Field F] [Nu
       rw [← map_inv₀]
       intro hm
       apply h
-      rw [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]
-      exact hm
+      rwa [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]
 
 private theorem eq_one_of_pow_coprime_in_pGroup {B : Type} [CommGroup B] {l : ℕ} (hl : l.Prime) (hB : IsPGroup l B)
     (y : B) (n : ℕ) (hn : ¬ l ∣ n) (hy : y ^ n = 1) : y = 1 := by
@@ -138,8 +137,7 @@ theorem UpperTheory.V.GC.cl :
   intro B _ _ hB χ hχo hχI g
   have hmemU : ∀ σ : G E Ω, π (UpperTheory.V.Base.galEmb F E Ω σ) ∈ Φ.del.ker := fun σ => by
     have := UpperTheory.V.Base.galEmb_mem F E Ω σ
-    rw [hgal] at this
-    exact this
+    rwa [hgal] at this
   let f : G E Ω →* Φ.G0 := (π.comp (UpperTheory.V.Base.galEmb F E Ω)).codRestrict Φ.del.ker hmemU
   let ψ : G E Ω →* B := (χ.comp f) ^ 2
   have key : ∀ (Av : ValuationSubring Ω) (τ : G F Ω), τ ∈ Ine Av → ∀ hτ : π τ ∈ Φ.del.ker, χ ⟨π τ, hτ⟩ = 1 := by
@@ -154,8 +152,7 @@ theorem UpperTheory.V.GC.cl :
       (fun x => hZ _ ((x.2).map (IsScalarTower.toAlgHom ℤ F Ω)))
     let P : Ideal (𝓞 F) := (IsLocalRing.maximalIdeal Av).comap φ
     have hP : ∀ x : 𝓞 F, x ∈ P ↔ Av.valuation (algebraMap F Ω x) < 1 := by
-      intro x
-      exact (Av.valuation_lt_one_iff (φ x))
+      exact fun x => Av.valuation_lt_one_iff (φ x)
     by_cases hPb : P = ⊥
     · have hall : ∀ y : Ω, y ∈ Av := by
         intro y
@@ -176,8 +173,7 @@ theorem UpperTheory.V.GC.cl :
           have hle : Av.valuation (m : Ω) ≤ 1 := (Av.valuation_le_one_iff _).2 (intCast_mem Av m)
           exact le_antisymm hle (not_lt.1 hnot)
         rw [← Av.valuation_le_one_iff] at h1 ⊢
-        rw [zsmul_eq_mul, map_mul, h2, one_mul] at h1
-        exact h1
+        rwa [zsmul_eq_mul, map_mul, h2, one_mul] at h1
       have hτ1 : τ = 1 := by
         ext x
         rw [mem_Ine] at hτA
@@ -217,8 +213,7 @@ theorem UpperTheory.V.GC.cl :
             apply Subtype.ext
             simp [hπτ]
           rw [this, map_mul, map_mul, map_inv, mul_comm (χ _), mul_inv_cancel_right]
-          have h := hχI (u, false) s hsI
-          simpa [UpperTheory.V.Fr.Frame.loc2] using h
+          simpa [UpperTheory.V.Fr.Frame.loc2] using hχI (u, false) s hsI
         · have ha : Φ.c⁻¹ * π σ ∈ Φ.del.ker := by
             rw [MonoidHom.mem_ker, map_mul, map_inv, hd, hL.del_c]
             rfl
@@ -230,8 +225,7 @@ theorem UpperTheory.V.GC.cl :
             group
           rw [this, map_mul, map_mul, map_inv, map_mul, map_mul, map_inv, mul_comm (χ _),
             mul_inv_cancel_right]
-          have h := hχI (u, true) s hsI
-          simpa [UpperTheory.V.Fr.Frame.loc2] using h
+          simpa [UpperTheory.V.Fr.Frame.loc2] using hχI (u, true) s hsI
       · haveI := hL.g.normal
         set n := K.index with hn
         have hK : τ ^ n ∈ K := K.pow_index_mem τ
@@ -298,5 +292,4 @@ theorem UpperTheory.V.GC.cl :
   rw [map_pow] at h1
   have h2 : ψ σ = χ g ^ 2 := by
     simp [ψ, hσ]
-  rw [h2, ← pow_mul] at h1
-  exact h1
+  rwa [h2, ← pow_mul] at h1

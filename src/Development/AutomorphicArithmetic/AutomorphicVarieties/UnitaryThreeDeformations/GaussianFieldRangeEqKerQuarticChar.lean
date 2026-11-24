@@ -56,12 +56,9 @@ private theorem prim4 {L : Type} [Field L] [CharZero L] {i : L} (hi : i * i = -1
   intro l hl hl4
   norm_num at hl4
   interval_cases l
-  · intro h1
-    exact hne (by linear_combination hi - (i + 1) * h1)
-  · intro h2
-    exact hne (by linear_combination hi - h2)
-  · intro h3
-    exact hne (by linear_combination (1 - i ^ 2 + i) * hi + (i - 1) * h3)
+  · exact fun h1 => hne (by linear_combination hi - (i + 1) * h1)
+  · exact fun h2 => hne (by linear_combination hi - h2)
+  · exact fun h3 => hne (by linear_combination (1 - i ^ 2 + i) * hi + (i - 1) * h3)
 
 private theorem adj_top {K : Type} [Field K] [NumberField K] (h : Module.finrank ℚ K = 2) {i : K} (hi : i * i = -1) :
     Algebra.adjoin ℚ {i} = ⊤ := by
@@ -147,8 +144,7 @@ theorem UpperTheory.V.UnitaryThreeInertia.gaussian_field_range_eq_ker_quartic_ch
       rw [MonoidHom.mem_ker, ← fix_iff Ω _ hprim σ, UpperTheory.V.Base.range_galEmb,
         UpperTheory.V.Base.mem_galOf]
       constructor
-      · intro h
-        exact h i
+      · exact fun h => h i
       · intro h x
         have hφ : (σ.toAlgHom).comp (IsScalarTower.toAlgHom ℚ K Ω) = IsScalarTower.toAlgHom ℚ K Ω := by
           apply AlgHom.ext_of_adjoin_eq_top hadj

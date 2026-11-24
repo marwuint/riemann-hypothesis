@@ -91,8 +91,7 @@ private theorem exists_lattice_basis_of_rational {M N : Type} [AddCommGroup M] [
       obtain ⟨m, u, hm, h⟩ := hs w
       refine ⟨⟨u, ⟨(m : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hm)⟩⟩, ?_⟩
       show (m : ℤ) • w = j u
-      rw [natCast_zsmul]
-      exact h
+      rwa [natCast_zsmul]
     · intro x1 x2 h
       exact ⟨1, by rw [one_smul, one_smul]; exact hj h⟩
   have hb : IsBaseChange ℚ jL := IsLocalizedModule.isBaseChange (nonZeroDivisors ℤ) ℚ jL
@@ -143,8 +142,7 @@ private theorem trivCore {A S : Type} [CommRing A] [Ring S] [Algebra A S] (σ : 
   have hU : σ y * B * y = algebraMap A S u := by
     have h3 := congrArg σ h
     rw [hm, hs, ha] at h3
-    rw [_root_.mul_assoc]
-    exact h3
+    rwa [_root_.mul_assoc]
   have hB : B = σ y' * algebraMap A S u * y' := by
     rw [← hU]
     calc B = (σ y' * σ y) * B * (y * y') := by rw [hσ, h₂, _root_.one_mul, _root_.mul_one]
@@ -336,8 +334,7 @@ private theorem isIntAf_of_pow_mul {p : ℕ} [Fact p.Prime] (q : ℚ) (r : ℕ) 
   have hq : v.1.valuation ℚ q ≤ 1 := by
     have h2 := congrArg (v.1.valuation ℚ) h
     rw [map_mul, hp, _root_.one_mul] at h2
-    rw [h2]
-    exact hc
+    rwa [h2]
   rw [IsDedekindDomain.HeightOneSpectrum.algebraMap_adicCompletion, Function.comp_apply,
     Algebra.algebraMap_self, RingHom.id_apply, IsDedekindDomain.HeightOneSpectrum.adicCompletion.valued_coe]
   exact hq
@@ -547,8 +544,7 @@ private theorem exists_unit_lim {nu : ℕ → ℤ}
       exact Nat.isCoprime_iff_coprime.1 h2
     · have e2 : (nu n : AfP p) = (((nu n % n).toNat : ℕ) : AfP p) + (n : AfP p) * ((nu n / n : ℤ) : AfP p) := by
         have h4 := congrArg (Int.cast : ℤ → AfP p) hdiv
-        rw [Int.cast_add, Int.cast_mul, ← h3, Int.cast_natCast] at h4
-        exact h4
+        rwa [Int.cast_add, Int.cast_mul, ← h3, Int.cast_natCast] at h4
       rw [e, e2, nsmul_eq_mul, nsmul_eq_mul, mul_add]; ring
   exact ⟨⟨c, c', hcc', by rw [mul_comm]; exact hcc'⟩, hcl⟩
 
@@ -634,8 +630,7 @@ theorem adCore_of : AdCore := by
     intro v w
     have h1 := key v w
     rw [hFv] at h1
-    rw [hy]
-    exact h1
+    rwa [hy]
   obtain ⟨t, ht⟩ := UpperTheory.exists_unit_triv_of_similitude_factor L β y y' y'y yy' s hs c hform
   have hrd : ∀ w, rd L ⟨y', y, y'y, yy'⟩ 1 w = A' ((1 : AfP p) ⊗ₜ[ℚ] T.symm w) := by
     intro w

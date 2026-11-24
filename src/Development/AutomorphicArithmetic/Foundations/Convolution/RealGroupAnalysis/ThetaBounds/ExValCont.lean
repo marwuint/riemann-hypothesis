@@ -86,8 +86,7 @@ private theorem ex_der (X : Lie E 2) : HasDerivAt (fun t => toL (ex X t).val) X 
   have h : HasDerivAt (fun t : ℝ => L (NormedSpace.exp (t • Matrix.of X)))
       (L (NormedSpace.exp ((0 : ℝ) • Matrix.of X) * Matrix.of X)) 0 :=
     L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_exp_smul_const (𝕂 := ℝ) (Matrix.of X) (0 : ℝ))
-  rw [zero_smul, NormedSpace.exp_zero, one_mul] at h
-  exact h
+  rwa [zero_smul, NormedSpace.exp_zero, one_mul] at h
 
 private theorem ex_ent (X : Lie E 2) (i j : Fin 2) :
     HasDerivAt (fun t => (ex X t).val i j) (X i j) 0 :=
@@ -136,5 +135,4 @@ end UpperTheory.ConvolutionTheory.R2.Ff
 
 theorem UpperTheory.ConvolutionTheory.R2.Ff.exPar :
     ∀ (E : Type) [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E], ExPar E := by
-  intro E _ _ _ X
-  exact ⟨ex_add X, ex_cont X, ex_der X, ex_det X, fun s t => ex_cen X s t⟩
+  exact fun E _ _ _ X => ⟨ex_add X, ex_cont X, ex_der X, ex_det X, fun s t => ex_cen X s t⟩

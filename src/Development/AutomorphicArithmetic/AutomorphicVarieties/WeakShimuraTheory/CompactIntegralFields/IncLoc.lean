@@ -296,8 +296,7 @@ theorem UpperTheory.V.Ws.X1.dualZero :
     obtain ⟨g, hg⟩ := hωw (wt i j)
     refine ⟨g, ?_⟩
     rw [hres.diag, hres.diag]
-    rw [rt_wt Φ hok.mul i j g, Units.val_mul, map_mul] at hg
-    exact hg
+    rwa [rt_wt Φ hok.mul i j g, Units.val_mul, map_mul] at hg
   have key : ∀ ht : Fin 4 → ℤ, Function.Injective ht → (∀ i j, ht i - ht j < 4) →
       (∀ g i j, ht i < ht j → c.r g i j = 0) → f = 0 := by
     intro ht hi hb hr
@@ -513,8 +512,7 @@ private theorem cyc_abs {A : Type} [CommGroup A] (l : ℕ) (hp : l.Prime)
       have d4 : j < l ^ j := Nat.lt_pow_self hp.one_lt
       have d5 : orderOf (QuotientGroup.mk' U s) ∣ l ^ a := hj ▸ pow_dvd_pow l (by omega)
       have d6 := orderOf_dvd_iff_pow_eq_one.1 d5
-      rw [← map_pow, ← MonoidHom.mem_ker, QuotientGroup.ker_mk'] at d6
-      exact d6
+      rwa [← map_pow, ← MonoidHom.mem_ker, QuotientGroup.ker_mk'] at d6
     obtain ⟨z, h1, h0⟩ : P (Nat.findGreatest P U.index) := Nat.findGreatest_spec (Nat.zero_le _) hP0
     refine ⟨z, ⟨_, h1⟩, ?_⟩
     rintro s ⟨c, hc⟩
@@ -629,9 +627,7 @@ private theorem sep {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGrou
   have hcomm : ∀ a b : G ⧸ N, a * b = b * a :=
     (Subgroup.Normal.quotient_commutative_iff_commutator_le.2 hcN).is_comm.comm
   letI : CommGroup (G ⧸ N) := { (inferInstance : Group (G ⧸ N)) with mul_comm := hcomm }
-  have hne : (Additive.ofMul (g : G ⧸ N)) ≠ 0 := by
-    intro e
-    exact hgN ((QuotientGroup.eq_one_iff g).1 e)
+  have hne : (Additive.ofMul (g : G ⧸ N)) ≠ 0 := fun e => hgN ((QuotientGroup.eq_one_iff g).1 e)
   obtain ⟨c, hc⟩ := CharacterModule.exists_character_apply_ne_zero_of_ne_zero hne
   haveI : DiscreteTopology (G ⧸ N) := QuotientGroup.discreteTopology hNo
   refine ⟨fun x => c (Additive.ofMul (x : G ⧸ N)), ?_, ?_, ?_, hc⟩
@@ -1079,15 +1075,13 @@ theorem UpperTheory.V.Ws.X1.muQuot :
     refine ⟨z, ?_⟩
     have hy := congrArg (fun f : R →ₐ[Λ] R => f y) hid
     simp only [AlgHom.comp_apply, AlgHom.id_apply] at hy
-    rw [← hz] at hy
-    exact hy
+    rwa [← hz] at hy
   · apply le_antisymm
     · intro x hx
       have hx' : π x = 0 := by
         rw [← hhg, AlgHom.comp_apply, RingHom.mem_ker.mp hx, map_zero]
       exact (Ideal.Quotient.eq_zero_iff_mem).mp hx'
-    · intro x hx
-      exact RingHom.mem_ker.mpr (hIg x hx)
+    · exact fun x hx => RingHom.mem_ker.mpr (hIg x hx)
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.AdjointCoefficients.MuQuot =====
@@ -1284,8 +1278,7 @@ private theorem cmp_zero {k : Type} [Field k] (p X : M4 k) (h : cmp p X = 0) : p
   refine LinearMap.ext fun w => ?_
   simp only [Matrix.toLin'_apply, map_zero, LinearMap.zero_apply]
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]
-  have h2 := congrArg Subtype.val (LinearMap.congr_fun h ⟨Matrix.mulVec p w, w, rfl⟩)
-  simpa [cmp] using h2
+  simpa [cmp] using congrArg Subtype.val (LinearMap.congr_fun h ⟨Matrix.mulVec p w, w, rfl⟩)
 
 end UpperTheory.V.Ws.X1
 
@@ -1347,8 +1340,7 @@ theorem UpperTheory.V.Ws.X1.ccDim :
       have e := LinearMap.mem_ker.mp hYk
       rw [LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero] at e
       have e2 := congrArg Subtype.val e
-      rw [adSp_val, hsi] at e2
-      exact e2
+      rwa [adSp_val, hsi] at e2
     have hcomm : g * Y = Y * g := by
       calc g * Y = g * Y * (g * g) := by rw [hg2, Matrix.mul_one]
         _ = (g * Y * g) * g := by simp only [Matrix.mul_assoc]
@@ -1357,25 +1349,20 @@ theorem UpperTheory.V.Ws.X1.ccDim :
       rw [hp, smul_mul_assoc, mul_smul_comm, add_mul, mul_add, Matrix.one_mul, Matrix.mul_one, hcomm]
     have hz : p * Y * p = 0 := cmp_zero p Y hY
     have hYp : Y * p = 0 := by
-      rw [hpY, Matrix.mul_assoc, hpp] at hz
-      exact hz
+      rwa [hpY, Matrix.mul_assoc, hpp] at hz
     have h0 : adj (0 : M4 k) = 0 := by simpa using adj_smul 0 0
     have hqY : q * Y = 0 := by
       have e := congrArg adj hYp
-      rw [adj_mul, hadjp, hYa, h0, Matrix.mul_neg, neg_eq_zero] at e
-      exact e
+      rwa [adj_mul, hadjp, hYa, h0, Matrix.mul_neg, neg_eq_zero] at e
     have hq' : q = 1 - p := eq_sub_of_add_eq' hpq
     have hYq : Y * q = 0 := by
       rw [hq'] at hqY ⊢
       rw [Matrix.mul_sub, Matrix.mul_one, ← hpY]
-      rw [Matrix.sub_mul, Matrix.one_mul] at hqY
-      exact hqY
+      rwa [Matrix.sub_mul, Matrix.one_mul] at hqY
     have hY0 : Y = 0 := by
       calc Y = Y * (p + q) := by rw [hpq, Matrix.mul_one]
         _ = 0 := by rw [Matrix.mul_add, hYp, hYq, add_zero]
-    apply Subtype.ext
-    apply Subtype.ext
-    exact hY0
+    exact Subtype.ext (Subtype.ext hY0)
   calc Module.finrank k K ≤ Module.finrank k (LinearMap.range p.mulVecLin →ₗ[k] LinearMap.range p.mulVecLin) :=
         LinearMap.finrank_le_finrank_of_injective hinj
     _ = p.rank * p.rank := by rw [Module.finrank_linearMap, Matrix.finrank_range_mulVecLin p]
@@ -1409,8 +1396,7 @@ private theorem inc_loc {l : ℕ} [Fact l.Prime] {c c' : Coef l} (h : c.O ≤ c'
     rw [e]
     exact fun x => Algebra.IsIntegral.isIntegral x
   haveI := hi.isLocalHom (Subalgebra.inclusion_injective h)
-  intro x hx
-  exact (residue_eq_zero_iff _).2 (map_nonunit (inc h) x hx)
+  exact fun x hx => (residue_eq_zero_iff _).2 (map_nonunit (inc h) x hx)
 
 private theorem count {O Γ Γb : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ]
     [TotallyDisconnectedSpace Γ] [Group Γb] [TopologicalSpace Γb] [IsTopologicalGroup Γb] [T2Space Γb]

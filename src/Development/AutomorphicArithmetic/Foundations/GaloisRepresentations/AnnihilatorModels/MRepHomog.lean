@@ -63,8 +63,7 @@ private lemma exists_algHom {κ B C : Type} [Field κ] [CommRing B] [CommRing C]
   obtain ⟨φ, rfl⟩ : ∃ φ, f = Spec.map φ := ⟨Spec.preimage f, (Spec.map_preimage f).symm⟩
   have hφ : φ.hom.comp (algebraMap κ B) = algebraMap κ C := by
     apply _root_.GlobalTheory.ZM.DenseFib.spMap_inj
-    rw [← _root_.GlobalTheory.spMap_comp_ring]
-    exact hf
+    rwa [← _root_.GlobalTheory.spMap_comp_ring]
   exact ⟨{ toRingHom := φ.hom, commutes' := fun r => RingHom.congr_fun hφ r }, rfl⟩
 
 private noncomputable def ptOf {κ B : Type} [Field κ] [CommRing B] [Algebra κ B] (ε : B →ₐ[κ] κ) :
@@ -101,9 +100,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.repHomog_of :
   refine ⟨?_, ?_⟩
   · refine Nat.card_congr (Equiv.ofBijective
       (fun ε => (⟨ptOf ε ≫ i, (hiff _ _).1 ⟨_, rfl⟩⟩ : { g // P (𝟙_ (Over (Sp κ))) g })) ⟨?_, ?_⟩)
-    · intro a b h
-      apply ptOf_inj
-      exact (cancel_mono i).1 (congrArg Subtype.val h)
+    · exact fun a b h => ptOf_inj ((cancel_mono i).1 (congrArg Subtype.val h))
     · rintro ⟨g, hg⟩
       obtain ⟨y, hy⟩ := (hiff _ _).2 hg
       obtain ⟨ε, rfl⟩ := ptOf_surj y
@@ -119,11 +116,9 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.repHomog_of :
       have hcP : P _ c := (hiff _ _).1 ⟨toUnit _ ≫ ptOf ε, by rw [hc, Category.assoc]⟩
       have hiP : P _ i := (hiff _ _).1 ⟨𝟙 _, Category.id_comp _⟩
       have hcinvP : P _ c⁻¹ := by
-        have h' := (hSub (algPt κ B)).2 1 c (hSub _).1 hcP
-        simpa using h'
+        simpa using (hSub (algPt κ B)).2 1 c (hSub _).1 hcP
       have hm : P _ (i * c) := by
-        have h' := (hSub (algPt κ B)).2 i c⁻¹ hiP hcinvP
-        simpa using h'
+        simpa using (hSub (algPt κ B)).2 i c⁻¹ hiP hcinvP
       have hm' : P _ (i * c⁻¹) := (hSub _).2 i c hiP hcP
       obtain ⟨s, hs⟩ := (hiff _ _).2 hm
       obtain ⟨s', hs'⟩ := (hiff _ _).2 hm'

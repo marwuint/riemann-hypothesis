@@ -95,9 +95,7 @@ variable {D : D7}
 def eInf (F : Type) [Field F] [NumberField F] : AF F :=
   ((1 : Ainf F), (0 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F))
 
-theorem one_sub_eInf_fst (F : Type) [Field F] [NumberField F] : (1 - eInf F).1 = 0 := by
-  show (1 : Ainf F) - 1 = 0
-  exact sub_self _
+theorem one_sub_eInf_fst (F : Type) [Field F] [NumberField F] : (1 - eInf F).1 = 0 := sub_self _
 
 theorem evI_sub_eInf (F : Type) [Field F] [NumberField F] : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (1 - eInf F) = 0 := by
   rw [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI, one_sub_eInf_fst, map_zero]
@@ -354,8 +352,7 @@ theorem GlobalTheory.PlaceProd.pure_of_finSupp : ∀ {F E : Type} [Field F] [Num
       have ha : (e * u) • (mat k - 1) = 0 := by
         apply h3 v (Finset.mem_singleton_self v)
         rw [he, GlobalTheory.ThK.LocalOps.liftV_one_mul]
-        intro u' hu'
-        exact GlobalTheory.LatVac.at_liftV v _ u' hu'
+        exact fun u' hu' => GlobalTheory.LatVac.at_liftV v _ u' hu'
       have hb : ((1 - e) * u) • (mat k - 1) = 0 := by
         set u' : AF F := (1 - e) * u with hu'def
         have hv' : evFin F v u' = 0 := by
@@ -740,8 +737,7 @@ theorem triple_map_comp_inverse_finite : GlobalTheory.Published.HoweDualityReal 
           congr 2
           funext v
           have := hM.fin.inv v (hd v)
-          rw [LinearMap.mem_ker, map_sub, sub_eq_zero] at this
-          exact this
+          rwa [LinearMap.mem_ker, map_sub, sub_eq_zero] at this
         · rfl
       | zero => simp
       | add x y _ _ hx hy =>
@@ -779,8 +775,7 @@ theorem triple_map_comp_inverse_finite : GlobalTheory.Published.HoweDualityReal 
           congr 2
           funext v
           have := hM.fin.inv' v (hd v)
-          rw [LinearMap.mem_ker, map_sub, sub_eq_zero] at this
-          exact this
+          rwa [LinearMap.mem_ker, map_sub, sub_eq_zero] at this
         · rfl
       | zero => simp
       | add x y _ _ hx hy =>

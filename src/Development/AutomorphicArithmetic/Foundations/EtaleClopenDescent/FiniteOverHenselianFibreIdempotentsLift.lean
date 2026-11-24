@@ -70,8 +70,7 @@ private lemma mem_mS_iff (S : Subalgebra A K) (s : S) : (s : K) ∈ mS S ↔ s �
     have hy' : y = s := Subtype.ext hys
     subst hy'
     exact hy
-  · intro h
-    exact ⟨s, h, rfl⟩
+  · exact fun h => ⟨s, h, rfl⟩
 
 private lemma exists_q {S : Type} [CommRing S] (I : Ideal S) (x : PrimeSpectrum S) (h : I ≤ x.asIdeal) :
     ∃ q : PrimeSpectrum (S ⧸ I), PrimeSpectrum.comap (Ideal.Quotient.mk I) q = x := by
@@ -103,19 +102,16 @@ private lemma restr_ex (B : Subalgebra A K) (t : K) (S : Subalgebra A K) (hS : S
     RingHom.ext fun _ => Subtype.ext rfl
   have hle : mI A S ≤ (PrimeSpectrum.comap (Subalgebra.inclusion hS).toRingHom Q).asIdeal := by
     show Ideal.map _ _ ≤ Ideal.comap _ Q.asIdeal
-    rw [Ideal.map_le_iff_le_comap, Ideal.comap_comap, hcomp, ← Ideal.map_le_iff_le_comap]
-    exact hQ
+    rwa [Ideal.map_le_iff_le_comap, Ideal.comap_comap, hcomp, ← Ideal.map_le_iff_le_comap]
   obtain ⟨q, hq⟩ := exists_q (mI A S) _ hle
   refine ⟨q, ?_, fun s => ?_⟩
   · rw [hq]
     intro s
     constructor
-    · intro hs
-      exact ⟨Subalgebra.inclusion hS s, hs, rfl⟩
+    · exact fun hs => ⟨Subalgebra.inclusion hS s, hs, rfl⟩
     · rintro ⟨d, hd, hds⟩
       have hd' : d = Subalgebra.inclusion hS s := Subtype.ext hds
-      rw [hd'] at hd
-      exact hd
+      rwa [hd'] at hd
   · rw [hq]
     rfl
 
@@ -141,8 +137,7 @@ private lemma pair_of_maps (B C : Subalgebra A K) (t : K) (hc : Charts B C t) {F
     have hcomp : (Subalgebra.inclusion h).toRingHom.comp (algebraMap A S) = algebraMap A (AdjoinInv B t) :=
       RingHom.ext fun _ => Subtype.ext rfl
     have h' := Ideal.mem_map_of_mem (Subalgebra.inclusion h).toRingHom hs
-    rw [Ideal.map_map, hcomp] at h'
-    exact h'
+    rwa [Ideal.map_map, hcomp] at h'
   have inn : ∀ {S : Subalgebra A K} (e : S) (q : PrimeSpectrum (S ⧸ mI A S)), e ∈ mI A S →
       e ∈ (PrimeSpectrum.comap (Ideal.Quotient.mk (mI A S)) q).asIdeal := by
     intro S e q he
@@ -156,18 +151,15 @@ private lemma pair_of_maps (B C : Subalgebra A K) (t : K) (hc : Charts B C t) {F
     rw [Ideal.eq_top_iff_one]
     have h0 : Ideal.Quotient.mk (mI A S) (e - 1) = 0 := Ideal.Quotient.eq_zero_iff_mem.2 he
     rw [map_sub, map_one, sub_eq_zero] at h0
-    rw [← h0]
-    exact hq
+    rwa [← h0]
   set a : AdjoinInv B t := Subalgebra.inclusion hBD eB with ha_def
   set b : AdjoinInv B t := Subalgebra.inclusion hCD eC with hb_def
   have ha : a * a - a ∈ mI A (AdjoinInv B t) := by
     have h' := hmap B hBD _ heB
-    rw [map_sub, map_mul] at h'
-    exact h'
+    rwa [map_sub, map_mul] at h'
   have hb : b * b - b ∈ mI A (AdjoinInv B t) := by
     have h' := hmap C hCD _ heC
-    rw [map_sub, map_mul] at h'
-    exact h'
+    rwa [map_sub, map_mul] at h'
   have hrad : a - b ∈ (mI A (AdjoinInv B t)).radical := by
     rw [Ideal.radical_eq_sInf, Submodule.mem_sInf]
     rintro P ⟨hPle, hP⟩
@@ -207,11 +199,9 @@ private lemma pair_of_maps (B C : Subalgebra A K) (t : K) (hc : Charts B C t) {F
     set x := Ideal.Quotient.mk (mI A (AdjoinInv B t)) a
     set y := Ideal.Quotient.mk (mI A (AdjoinInv B t)) b
     have hx : x * x = x := by
-      rw [← sub_eq_zero, ← map_mul, ← map_sub, Ideal.Quotient.eq_zero_iff_mem]
-      exact ha
+      rwa [← sub_eq_zero, ← map_mul, ← map_sub, Ideal.Quotient.eq_zero_iff_mem]
     have hy : y * y = y := by
-      rw [← sub_eq_zero, ← map_mul, ← map_sub, Ideal.Quotient.eq_zero_iff_mem]
-      exact hb
+      rwa [← sub_eq_zero, ← map_mul, ← map_sub, Ideal.Quotient.eq_zero_iff_mem]
     have h3 : (x - y) ^ 3 = x - y := by
       linear_combination (x + 1 - 3 * y) * hx + (3 * x - y - 1) * hy
     have hodd : ∀ k : ℕ, (x - y) ^ (2 * k + 1) = x - y := by
@@ -221,12 +211,10 @@ private lemma pair_of_maps (B C : Subalgebra A K) (t : K) (hc : Charts B C t) {F
       | succ k ih =>
         rw [show 2 * (k + 1) + 1 = (2 * k + 1) + 2 by ring, pow_add, ih, ← pow_succ', h3]
     have hzero : (x - y) ^ n = 0 := by
-      rw [← map_sub, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]
-      exact hn
+      rwa [← map_sub, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]
     have hv : x - y = 0 := by
       rw [← hodd n, show 2 * n + 1 = n + (n + 1) by ring, pow_add, hzero, zero_mul]
-    rw [← map_sub, Ideal.Quotient.eq_zero_iff_mem] at hv
-    exact hv
+    rwa [← map_sub, Ideal.Quotient.eq_zero_iff_mem] at hv
   refine ⟨(eB : K), (eC : K), ⟨eB.2, eC.2, ?_, ?_, ?_⟩, ?_, ?_⟩
   · exact (mem_mS_iff B (eB * eB - eB)).2 heB
   · exact (mem_mS_iff C (eC * eC - eC)).2 heC
@@ -275,8 +263,7 @@ private lemma g_apply {Z : Scheme.{0}} (p : Z ⟶ Spec (CommRingCat.of A)) {S : 
     (hg : g ≫ pullback.fst p (cpt A) = Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (mI A S))) ≫ j)
     (q : PrimeSpectrum (S ⧸ mI A S)) :
     (pullback.fst p (cpt A)).base (g.base q) =
-      j.base (PrimeSpectrum.comap (Ideal.Quotient.mk (mI A S)) q) := by
-  exact congrArg (fun h => h.base q) hg
+      j.base (PrimeSpectrum.comap (Ideal.Quotient.mk (mI A S)) q) := congrArg (fun h => h.base q) hg
 
 private lemma fibre_pt {Z : Scheme.{0}} (p : Z ⟶ Spec (CommRingCat.of A)) {S : Type} [CommRing S] [Algebra A S]
     (j : Spec (CommRingCat.of S) ⟶ Z) (hj : j ≫ p = Spec.map (CommRingCat.ofHom (algebraMap A S)))

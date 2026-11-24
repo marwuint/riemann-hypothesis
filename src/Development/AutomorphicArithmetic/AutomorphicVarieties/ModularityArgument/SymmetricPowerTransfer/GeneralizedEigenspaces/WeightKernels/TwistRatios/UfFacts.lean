@@ -78,10 +78,9 @@ theorem UpperTheory.V.Z.Sym.Ga.ufFacts :
   have hd := Ga.det_ne g
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
   · intro a b h
-    have h' := h
-    rw [Matrix.charpoly_fin_two] at h'
-    have e0 := congrArg (Polynomial.eval 0) h'
-    have e1 := congrArg (Polynomial.eval 1) h'
+    rw [Matrix.charpoly_fin_two] at h
+    have e0 := congrArg (Polynomial.eval 0) h
+    have e1 := congrArg (Polynomial.eval 1) h
     simp only [eval_add, eval_sub, eval_mul, eval_pow, eval_X, eval_C] at e0 e1
     have hdet : (g : Matrix (Fin 2) (Fin 2) k).det = a * b := by linear_combination e0
     have htr : (g : Matrix (Fin 2) (Fin 2) k).trace = a + b := by linear_combination e0 - e1
@@ -95,24 +94,17 @@ theorem UpperTheory.V.Z.Sym.Ga.ufFacts :
     rw [Ga.trace_inv, Ga.det_inv]
     field_simp
   · intro x
-    have hx : ((x⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) * (x : Matrix (Fin 2) (Fin 2) k) = 1 := by
-      rw [← Units.val_mul, inv_mul_cancel, Units.val_one]
     have ht : ((x * g * x⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k).trace = (g : Matrix (Fin 2) (Fin 2) k).trace := by
-      rw [Units.val_mul, Units.val_mul, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hx, Matrix.one_mul]
+      rw [Units.val_mul, Units.val_mul, Matrix.trace_mul_comm, ← Matrix.mul_assoc, Units.inv_mul x,
+        Matrix.one_mul]
     have hdt : ((x * g * x⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k).det = (g : Matrix (Fin 2) (Fin 2) k).det := by
-      rw [Units.val_mul, Units.val_mul, Matrix.det_mul, mul_comm, Matrix.det_mul, ← mul_assoc, ← Matrix.det_mul, hx,
-        Matrix.det_one, one_mul]
+      rw [Units.val_mul, Units.val_mul, Matrix.det_mul, mul_comm, Matrix.det_mul, ← mul_assoc,
+        ← Matrix.det_mul, Units.inv_mul x, Matrix.det_one, one_mul]
     simp only [Ga.uf, Ga.tr]
     rw [ht, hdt]
   · intro g' P μ h
     have hμ : (μ : k) ≠ 0 := μ.ne_zero
     have hP := Ga.det_ne P
-    have hPi : (P : Matrix (Fin 2) (Fin 2) k) * ((P⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) = 1 := by
-      rw [← Units.val_mul, mul_inv_cancel, Units.val_one]
-    have hPi' : ((P⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) * (P : Matrix (Fin 2) (Fin 2) k) = 1 := by
-      rw [← Units.val_mul, inv_mul_cancel, Units.val_one]
-    have hg : ((g⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k)ᵀ * (g : Matrix (Fin 2) (Fin 2) k)ᵀ = 1 := by
-      rw [← Matrix.transpose_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.transpose_one]
     have hform : (g' : Matrix (Fin 2) (Fin 2) k) = (μ : k) • (((P⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) *
         ((g⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k)ᵀ * (P : Matrix (Fin 2) (Fin 2) k)) := by
       have e := congrArg (fun M => ((P⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) *
@@ -120,19 +112,18 @@ theorem UpperTheory.V.Z.Sym.Ga.ufFacts :
       rw [Matrix.mul_smul] at e
       rw [← e]
       simp only [Matrix.mul_assoc]
-      rw [← Matrix.mul_assoc (((g⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k)ᵀ) ((g : Matrix (Fin 2) (Fin 2) k)ᵀ), hg,
-        Matrix.one_mul, ← Matrix.mul_assoc, hPi', Matrix.one_mul]
+      rw [← Matrix.mul_assoc (((g⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k)ᵀ)
+          ((g : Matrix (Fin 2) (Fin 2) k)ᵀ), ← Matrix.transpose_mul, Units.mul_inv g,
+        Matrix.transpose_one, Matrix.one_mul, ← Matrix.mul_assoc, Units.inv_mul P, Matrix.one_mul]
     have htr : (g' : Matrix (Fin 2) (Fin 2) k).trace =
         μ * ((g : Matrix (Fin 2) (Fin 2) k).trace / (g : Matrix (Fin 2) (Fin 2) k).det) := by
-      rw [hform, Matrix.trace_smul, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hPi, Matrix.one_mul,
-        Matrix.trace_transpose, Ga.trace_inv, smul_eq_mul]
+      rw [hform, Matrix.trace_smul, Matrix.trace_mul_comm, ← Matrix.mul_assoc, Units.mul_inv P,
+        Matrix.one_mul, Matrix.trace_transpose, Ga.trace_inv, smul_eq_mul]
     have hdt : (g' : Matrix (Fin 2) (Fin 2) k).det = μ ^ 2 / (g : Matrix (Fin 2) (Fin 2) k).det := by
       have e := congrArg Matrix.det h
       rw [Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_smul, Fintype.card_fin] at e
       field_simp
-      have : (P : Matrix (Fin 2) (Fin 2) k).det * ((g' : Matrix (Fin 2) (Fin 2) k).det * (g : Matrix (Fin 2) (Fin 2) k).det) =
-          (P : Matrix (Fin 2) (Fin 2) k).det * (μ : k) ^ 2 := by linear_combination e
-      exact mul_left_cancel₀ hP this
+      exact mul_left_cancel₀ hP (by linear_combination e)
     simp only [Ga.uf, Ga.tr]
     rw [htr, hdt]
     field_simp

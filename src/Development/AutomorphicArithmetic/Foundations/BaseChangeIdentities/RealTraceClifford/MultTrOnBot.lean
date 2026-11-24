@@ -121,13 +121,11 @@ private theorem isoPart_cm (F : Fin n → Fin n → Module.End ℂ V) (T : Set (
 private theorem parts_zero {S₁ S₂ : Submodule ℂ V} (hd : Disjoint S₁ S₂) {u v : V} (hu : u ∈ S₁)
     (hv : v ∈ S₂) (h : u + v = 0) : u = 0 ∧ v = 0 := by
   have hv' : v = -u := by
-    rw [← sub_eq_zero, sub_neg_eq_add, add_comm]
-    exact h
+    rwa [← sub_eq_zero, sub_neg_eq_add, add_comm]
   have hv1 : v ∈ S₁ := hv' ▸ S₁.neg_mem hu
   have h0 : v = 0 := (Submodule.disjoint_def.mp hd) v hv1 hv
   refine ⟨?_, h0⟩
-  rw [h0, add_zero] at h
-  exact h
+  rwa [h0, add_zero] at h
 
 private theorem wt_comp (F : Fin n → Fin n → Module.End ℂ V) {S₁ S₂ : Submodule ℂ V} (hd : Disjoint S₁ S₂)
     (s1 : Stb F S₁) (s2 : Stb F S₂) {μ : Wt n} {y₁ y₂ : V} (h₁ : y₁ ∈ S₁) (h₂ : y₂ ∈ S₂)
@@ -187,8 +185,7 @@ theorem UpperTheory.RealTr.isoSplit :
     have hm : x ∈ hw F ν ⊓ S₁ := Submodule.mem_inf.mpr ⟨hxk, hx1⟩
     rw [h] at hm
     exact hx0 ((Submodule.mem_bot ℂ).mp hm)
-  · intro B hB
-    exact ⟨⟨hB.1, isoPart_cm F _ S B hB⟩, ⟨hB.1, isoPart_cm F _ S B hB⟩⟩
+  · exact fun B hB => ⟨⟨hB.1, isoPart_cm F _ S B hB⟩, ⟨hB.1, isoPart_cm F _ S B hB⟩⟩
   · intro μ hμ
     rw [eq_bot_iff]
     intro y hy
@@ -232,8 +229,7 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 private theorem mult_trOn_bot {V : Type} [AddCommGroup V] [Module ℂ V] (L : V →ₗ[ℂ] V) :
-    trOn (⊥ : Submodule ℂ V) L = 0 := by
-  exact trOn_bot L
+    trOn (⊥ : Submodule ℂ V) L = 0 := trOn_bot L
 
 private theorem mult_iso {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     {F : Fin n → Fin n → Module.End ℂ V} (hF : UF F) {S₁ : Submodule ℂ V}
@@ -283,8 +279,7 @@ theorem UpperTheory.RealTr.mult :
   suffices H : ∀ k (S : Submodule ℂ V), Module.finrank ℂ S = k → FiniteDimensional ℂ S → Stb F S →
       ∀ B c, Cm F S B → IsCh F S B c → ∀ ν : Wt n, StrictAnti (ν + rhoV n) →
         cf (alt (rhoV n) * c) (ν + rhoV n) = trOn (hw F ν ⊓ S) B by
-    intro S hfin
-    exact H _ S rfl hfin
+    exact fun S hfin => H _ S rfl hfin
   intro k
   induction k using Nat.strong_induction_on with
   | _ k ih =>

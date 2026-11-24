@@ -92,21 +92,18 @@ private theorem UpperTheory.Reformulated.B.G8.eq_zero_of_aeval_eq_zero {K : Type
   have hG0 : aeval G (p.map f) = 0 := by
     have h1 := congrArg (AlgHom.mapMatrix (m := Fin n) (Algebra.ofId K L)) h0
     rw [map_zero, ← aeval_algHom_apply] at h1
-    rw [aeval_map_algebraMap]
-    exact h1
+    rwa [aeval_map_algebraMap]
   have hcard : G.charpoly.roots.toFinset.card = n := by
     rw [Multiset.toFinset_card_of_nodup (nodup_roots hG), ← (IsAlgClosed.splits G.charpoly).natDegree_eq_card_roots,
       Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]
   have hz : p.map f = 0 := by
     refine eq_zero_of_degree_lt_of_eval_finset_eq_zero G.charpoly.roots.toFinset ?_ ?_
-    · rw [hcard, degree_map]
-      exact hp
+    · rwa [hcard, degree_map]
     · intro x hx
       have hx' : x ∈ spectrum L G :=
         Matrix.mem_spectrum_of_isRoot_charpoly (isRoot_of_mem_roots (Multiset.mem_toFinset.mp hx))
       have h2 := spectrum.subset_polynomial_aeval G (p.map f) ⟨x, hx', rfl⟩
-      rw [hG0, spectrum.zero_eq] at h2
-      exact h2
+      rwa [hG0, spectrum.zero_eq] at h2
   exact (Polynomial.map_eq_zero_iff f.injective).mp hz
 
 open Polynomial in
@@ -136,13 +133,11 @@ private theorem UpperTheory.Reformulated.B.G8.exists_kry_field {K : Type} [Field
     refine Matrix.ext_iff_mulVec.mpr fun w => ?_
     have h1 := Module.mem_annihilator.mp hker (Module.AEval.of K (Fin n → K) g w)
     rw [← Module.AEval.of_aeval_smul, map_eq_zero_iff _ (LinearEquiv.injective _)] at h1
-    rw [Matrix.zero_mulVec]
-    exact h1
+    rwa [Matrix.zero_mulVec]
   have hp : p = 0 := UpperTheory.Reformulated.B.G8.eq_zero_of_aeval_eq_zero g hg p hdeg hp0
   apply hc
   ext j
-  have h1 := congrArg (fun q => q.coeff j) hp
-  simpa [p, finsetSum_coeff, coeff_X_pow, Fin.val_inj] using h1
+  simpa [p, finsetSum_coeff, coeff_X_pow, Fin.val_inj] using congrArg (fun q => q.coeff j) hp
 
 private theorem UpperTheory.Reformulated.B.G8.kry_map {R S : Type} [CommRing R] [CommRing S] {n : ℕ} (f : R →+* S)
     (g : Matrix (Fin n) (Fin n) R) (v : Fin n → R) :
@@ -211,8 +206,7 @@ private theorem kry_mulVec (g : Matrix (Fin n) (Fin n) R) (v c : Fin n → R) :
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 private theorem pol_coeff (p : R[X]) (h : p.degree < n) : pol (fun i : Fin n => p.coeff i) = p := by
-  simp only [pol]
-  exact sum_fin (fun i a => monomial i a) (by simp) h |>.trans (sum_monomial_eq p)
+  simpa only [pol] using sum_fin (fun i a => monomial i a) (by simp) h |>.trans (sum_monomial_eq p)
 
 private theorem aeval_mulVec [Nontrivial R] (g : Matrix (Fin n) (Fin n) R) (v : Fin n → R) (p : R[X]) :
     aeval g p *ᵥ v = kry g v *ᵥ fun i : Fin n => (p %ₘ g.charpoly).coeff i := by
@@ -224,8 +218,7 @@ private theorem mul_kry [Nontrivial R] (g : Matrix (Fin n) (Fin n) R) (v : Fin n
     g * kry g v = kry g v * Matrix.of fun i j : Fin n => ((X ^ ((j : ℕ) + 1) : R[X]) %ₘ g.charpoly).coeff i := by
   ext i j
   have := congrFun (aeval_mulVec g v (X ^ ((j : ℕ) + 1))) i
-  rw [map_pow, aeval_X, pow_succ', ← Matrix.mulVec_mulVec] at this
-  exact this
+  rwa [map_pow, aeval_X, pow_succ', ← Matrix.mulVec_mulVec] at this
 
 end
 

@@ -217,10 +217,8 @@ theorem UpperTheory.evenValuation_norm_compactUnits_of_split :
     · rw [phiK_int O hr hr' hne, phiK_quo hr hr' hsum, phiK_quo hr' hr hsum', phiK_inv, phiK_inv,
         inv_inv, inv_inv]
       refine ⟨?_, ?_⟩
-      · rw [mul_comm, e2]
-        exact i2
-      · rw [mul_comm]
-        exact i1
+      · rwa [mul_comm, e2]
+      · rwa [mul_comm]
   refine ⟨?_, ?_⟩
   · intro c hc
     obtain ⟨hc1, -⟩ := hc

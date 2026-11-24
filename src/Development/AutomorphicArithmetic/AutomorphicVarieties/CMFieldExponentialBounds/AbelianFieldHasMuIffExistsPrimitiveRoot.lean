@@ -113,8 +113,7 @@ theorem UpperTheory.V.abelianField_hasMu_iff_exists_primitiveRoot :
       have hka : A.ker a := (hfix τ a ha.symm).1 hτj
       have ha1 : a ≡ 1 [MOD l] := hmu a hka
       have hpow : (ζ ^ (N / l)) ^ a = (ζ ^ (N / l)) ^ 1 := by
-        rw [hfin.pow_eq_pow_iff_modEq, hord]
-        exact ha1
+        rwa [hfin.pow_eq_pow_iff_modEq, hord]
       rw [map_pow, ← ha, ← pow_mul, mul_comm, pow_mul, hpow, pow_one]
     obtain ⟨w, hw⟩ : ∃ w : L, j w = ζ ^ (N / l) := AlgHom.mem_fieldRange.1 hmem
     refine ⟨w, ?_⟩
@@ -144,8 +143,7 @@ theorem UpperTheory.V.abelianField_hasMu_iff_exists_primitiveRoot :
       have h1 := hiff.2 hka z
       rw [hτ _ hwN] at h1
       have h2 : (j z) ^ a = (j z) ^ 1 := by rw [pow_one]; exact h1
-      rw [hfin.pow_eq_pow_iff_modEq, hord] at h2
-      exact h2
+      rwa [hfin.pow_eq_pow_iff_modEq, hord] at h2
     have hlm : l ∣ A.m := by
       by_contra hnd
       have hcop : Nat.Coprime A.m l := Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hl).2 hnd)
@@ -156,8 +154,7 @@ theorem UpperTheory.V.abelianField_hasMu_iff_exists_primitiveRoot :
       have h2l : Nat.Coprime 2 l := (Nat.coprime_primes Nat.prime_two hl).2 (Ne.symm hl2)
       have hbl : Nat.Coprime b l := by
         unfold Nat.Coprime
-        rw [hb2.gcd_eq]
-        exact h2l
+        rwa [hb2.gcd_eq]
       have hbcop : Nat.Coprime b (A.m * l) := Nat.Coprime.mul_right hbm hbl
       have hmlN : A.m * l ∣ N := Nat.Coprime.mul_dvd_of_dvd_of_dvd hcop hdvd hlN
       obtain ⟨a, ha, hab⟩ := lift_coprime hmlN hbcop
@@ -174,5 +171,4 @@ theorem UpperTheory.V.abelianField_hasMu_iff_exists_primitiveRoot :
       obtain ⟨u, -, hu⟩ := hka
       exact (ZMod.isUnit_iff_coprime a A.m).1 ⟨u, hu⟩
     obtain ⟨a', ha', ha'a⟩ := lift_coprime hdvd hacop
-    have hka' := ker_congr A ha'a hka
-    exact (Nat.ModEq.of_dvd hlm ha'a).symm.trans (key a' ha' hka')
+    exact (Nat.ModEq.of_dvd hlm ha'a).symm.trans (key a' ha' (ker_congr A ha'a hka))

@@ -777,8 +777,7 @@ private theorem frob_pow {q : ℕ} {φ : G F Ω}
     induction j with
     | zero => simp
     | succ j ih => rw [pow_succ', mul_smul, hφ', ih, ← pow_mul, pow_succ]
-  rw [← map_pow, Ideal.Quotient.eq, mem_cen] at key
-  exact key
+  rwa [← map_pow, Ideal.Quotient.eq, mem_cen] at key
 
 private theorem dense (h : IsPlaceOver A v) (φ : Dec (F := F) A)
     (hφ : ∀ b : 𝓞 Ω, A.valuation (φ.1 b - b ^ Nat.card (𝓞 F ⧸ v.asIdeal)) < 1)
@@ -803,8 +802,7 @@ private theorem dense (h : IsPlaceOver A v) (φ : Dec (F := F) A)
     rw [← dec_lt A g.2, map_sub]
     have : g.1 ((g⁻¹ * σ).1 b) = σ.1 b := g.1.apply_symm_apply _
     exact (congrArg (fun y ↦ A.valuation (y - g.1 b) < 1) this).mpr (hσ b))
-  have h2 := mul_mem hσU (inv_mem h1)
-  simpa using h2
+  simpa using mul_mem hσU (inv_mem h1)
 
 private theorem levels (h : IsPlaceOver A v) (φ : Dec (F := F) A)
     (hφ : ∀ b : 𝓞 Ω, A.valuation (φ.1 b - b ^ Nat.card (𝓞 F ⧸ v.asIdeal)) < 1)
@@ -875,8 +873,7 @@ private theorem ine_normal : ((Ine (F := F) A).subgroupOf (Dec A)).Normal := by
     rw [ValuationSubring.valuation_le_one_iff] at hx ⊢
     exact ((mem_dec A).1 (inv_mem g.2) x).2 hx
   have h2 := (dec_lt A g.2 _).2 (ha.2 _ h1)
-  rw [map_sub, show g.1 (g.1⁻¹ x) = x from g.1.apply_symm_apply x] at h2
-  exact h2
+  rwa [map_sub, show g.1 (g.1⁻¹ x) = x from g.1.apply_symm_apply x] at h2
 
 end Fr
 

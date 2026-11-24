@@ -158,13 +158,10 @@ private theorem po (A : Type) [CommRing A] :
       (CommRingCat.ofHom (mapRingHom (Int.castRingHom A))) (CommRingCat.ofHom (C : A →+* A[X])) := by
   have w : CommRingCat.ofHom (C : ℤ →+* ℤ[X]) ≫ CommRingCat.ofHom (mapRingHom (Int.castRingHom A)) =
       CommRingCat.ofHom (Int.castRingHom A) ≫ CommRingCat.ofHom (C : A →+* A[X]) := by
-    apply CommRingCat.hom_ext
-    exact RingHom.ext_int _ _
+    exact CommRingCat.hom_ext (RingHom.ext_int _ _)
   refine ⟨⟨w⟩, ⟨PushoutCocone.IsColimit.mk _
     (fun s => CommRingCat.ofHom (eval₂RingHom s.inr.hom (s.inl.hom X))) ?_ ?_ ?_⟩⟩
-  · intro s
-    apply CommRingCat.hom_ext
-    exact Polynomial.ringHom_ext' (RingHom.ext_int _ _) (by simp)
+  · exact fun s => CommRingCat.hom_ext (Polynomial.ringHom_ext' (RingHom.ext_int _ _) (by simp))
   · intro s
     ext a
     simp
@@ -197,8 +194,7 @@ private theorem eqv_spec (q : ℕ) [NeZero q] (A : Type) [CommRing A] (hq : IsUn
   obtain ⟨u, hu, hc⟩ := line_iso A
   have h := _root_.GlobalTheory.T.homotopy_invariance_etale_alt q A hq i
   have h' : Eqv _ (sch.map u ≫ sch.map (prod.snd : Pbf.A1 ⨯ Spec (CommRingCat.of A) ⟶ Spec (CommRingCat.of A))) (tw q i) := by
-    rw [← Functor.map_comp, hc]
-    exact h
+    rwa [← Functor.map_comp, hc]
   exact eqv_left (_root_.GlobalTheory.EtC.eqv_of_isIso _ _) h'
 
 private theorem eqv_aff (q : ℕ) [NeZero q] (W : Scheme.{0}) [IsAffine W] (hq : IsUnit (q : Γ(W, ⊤))) (i : ℤ) :

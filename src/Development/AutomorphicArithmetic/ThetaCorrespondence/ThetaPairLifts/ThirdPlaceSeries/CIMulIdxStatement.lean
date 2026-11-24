@@ -165,14 +165,12 @@ theorem red_iff_local {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     by_cases hu : u = q.v
     · have := (GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D V β Λ hβ _).1 hS u
       rw [e, map_mul, hu, p2, one_mul] at this
-      rw [hu]
-      exact this
+      rwa [hu]
     · rw [p1 u hu]
       exact one_mem _
   have hSd : finE V (b⁻¹ * (g * c⁻¹) * b) ∈ St β := by
     have := mul_mem hS (inv_mem hSc)
-    rw [e, map_mul, mul_inv_cancel_right] at this
-    exact this
+    rwa [e, map_mul, mul_inv_cancel_right] at this
   have r1 : redFn β PP (finE V (b⁻¹ * g * b)) = redFn β PP (finE V (b⁻¹ * c * b)) := by
     rw [e, map_mul, redFn_mul hSd hSc, GlobalTheory.ChainOnto.RedOne.redFn_eq_one D V β _ PP hSd (hv ▸ p2), one_mul]
   have r2 : ∀ PP' : Pl D.host.E, (_root_.IsDedekindDomain.HeightOneSpectrum.under (𝓞 D.host.F) PP') ≠ q.v → redFn β PP' (finE V (b⁻¹ * c * b)) = 1 := fun PP' h =>
@@ -183,8 +181,7 @@ theorem red_iff_local {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
   · rw [r2 PP' (hg PP' h')]
     exact one_mem _
   · by_cases h'' : (_root_.IsDedekindDomain.HeightOneSpectrum.under (𝓞 D.host.F) PP') = q.v
-    · rw [hq PP' h' h'']
-      exact h
+    · rwa [hq PP' h' h'']
     · rw [r2 PP' h'']
       exact one_mem _
   · have : rTup β L (finE V (b⁻¹ * c * b)) = 1 := by
@@ -220,13 +217,11 @@ theorem moved_level {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ N : Globa
   · have e : (moved b (levG V β L) : Set (GA D V)) = (fun x => b * x * b⁻¹) '' (levG V β L : Set (GA D V)) := by
       ext g
       constructor
-      · intro hg
-        exact ⟨b⁻¹ * g * b, (mem_moved _ _ g).1 hg, by group⟩
+      · exact fun hg => ⟨b⁻¹ * g * b, (mem_moved _ _ g).1 hg, by group⟩
       · rintro ⟨k, hk, rfl⟩
         refine (mem_moved _ _ _).2 ?_
         have e2 : b⁻¹ * (b * k * b⁻¹) * b = k := by group
-        rw [e2]
-        exact hk
+        rwa [e2]
     rw [e]
     exact (GlobalTheory.ParahoricCompact.isCompact_levG V β L).image (by fun_prop)
   · have e : (((moved b (levG V β L)).subgroupOf (GfC V) : Subgroup (GfC V)) : Set (GfC V)) =
@@ -382,8 +377,7 @@ theorem GlobalTheory.LevIdx.vol_level_eq : ∀ (D : D7) (c : Comm D) (v : VCom c
       (fun i => ((F.Q i).reg.2.2 j (d i) (hd i)).1) μ U U' b hb hU hUc hUo hK hM ?_
     · have e : ∀ i, (F.Q i).idx j = (((F.Q i).T.lev j (d i) (hd i)).J).relIndex (GlobalTheory.SplitWeil.KO (F.Q i).k _) :=
         fun i => (F.Q i).idx_mid j (d i) (hd i)
-      simp only [e]
-      exact key
+      simpa only [e] using key
     · intro g
       rw [hU' g]
       refine and_congr_right fun _ => forall_congr' fun i => ⟨fun h x hx => h (d i) (hd i) x hx, fun h d' hd' x hx => ?_⟩
@@ -395,8 +389,7 @@ theorem GlobalTheory.LevIdx.vol_level_eq : ∀ (D : D7) (c : Comm D) (v : VCom c
       (fun i => (F.Q i).T.levTop.J) (fun i => (F.Q i).leT) hTo μ U U' b hb hU hUc hUo hK hM hU'
     have e : ∀ i, (F.Q i).idx D.R.m = ((F.Q i).T.levTop.J).relIndex (GlobalTheory.SplitWeil.KO (F.Q i).k _) :=
       fun i => by rw [← hs i]; exact (F.Q i).idx_top
-    simp only [e]
-    exact key
+    simpa only [e] using key
 
 end
 end -- clump:auto
@@ -491,12 +484,10 @@ theorem cI_mul_idx_alt : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi :
           have hd : J + ((F.Q i).s + 1 - J) = (F.Q i).s + 1 := by omega
           obtain ⟨x, hx⟩ := exists_mat (F.Q i).q ((F.Q i).FY J _ hd) g
           have := (loc i _ hd g hS x hx).2 (H i _ hd x hx)
-          rw [hi] at this
-          exact this
+          rwa [hi] at this
       have e1 := moved_set (f.g.b J) (levG (Yc D J) ((_root_.GlobalTheory.Fam.pk_z W).βY J) ((_root_.GlobalTheory.Fam.pk_z W).datYt t J (_root_.GlobalTheory.Fam.pk_z W).triv))
       have e2 := moved_set (f.g.b J) (levG (Yc D J) ((_root_.GlobalTheory.Fam.pk_z W).βY J) ((_root_.GlobalTheory.Fam.pk_z W).datYt W.P.A3.A.μ0 J (_root_.GlobalTheory.Fam.pk_z W).triv))
-      rw [e1, e2] at hA
-      exact hA
+      rwa [e1, e2] at hA
     · have hjm : j + 1 = D.R.m := by omega
       rw [hjm]
       have hb : f.g.bT ∈ GfC D.sp.X' := by rw [← hVT.bT.1]; exact hv.bT
@@ -521,12 +512,10 @@ theorem cI_mul_idx_alt : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi :
           obtain ⟨i, hi⟩ := pl.surjective ⟨PP, hPP⟩
           obtain ⟨x, hx⟩ := exists_mat (F.Q i).q (F.Q i).FT g
           have := (loc i g hS x hx).2 (H i x hx)
-          rw [hi] at this
-          exact this
+          rwa [hi] at this
       have e1 := moved_set f.g.bT (levG D.sp.X' (_root_.GlobalTheory.Fam.pk_z W).βX ((_root_.GlobalTheory.Fam.pk_z W).datXt t))
       have e2 := moved_set f.g.bT (levG D.sp.X' (_root_.GlobalTheory.Fam.pk_z W).βX ((_root_.GlobalTheory.Fam.pk_z W).datXt W.P.A3.A.μ0))
-      rw [e1, e2] at hA
-      exact hA
+      rwa [e1, e2] at hA
   show cIOf (_root_.GlobalTheory.Fam.pk_z W) (_root_.GlobalTheory.Fam.complexLevelStructure W) f.g t j * _ = cIOf (_root_.GlobalTheory.Fam.pk_z W) (_root_.GlobalTheory.Fam.complexLevelStructure W) f.g W.P.A3.A.μ0 j
   unfold cIOf
   rw [← key]

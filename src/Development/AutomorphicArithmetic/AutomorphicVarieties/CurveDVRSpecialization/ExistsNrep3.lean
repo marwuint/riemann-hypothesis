@@ -266,8 +266,7 @@ private theorem local_chars {G H O A : Type} [Group G] [TopologicalSpace G] [IsT
       Matrix.mul_one]
   have req : ∀ x y : A, x - y ∈ maximalIdeal A → residue A x = residue A y := by
     intro x y hxy
-    rw [← sub_eq_zero, ← map_sub, residue_eq_zero_iff]
-    exact hxy
+    rwa [← sub_eq_zero, ← map_sub, residue_eq_zero_iff]
   have hone : (1 : Matrix (Fin 3) (Fin 3) A).map (residue A) = 1 :=
     Matrix.map_one _ (map_zero _) (map_one _)
   have hmh : h.val.map (residue A) = 1 := by
@@ -276,8 +275,7 @@ private theorem local_chars {G H O A : Type} [Group G] [TopologicalSpace G] [IsT
     exact req _ _ (by simpa [Matrix.sub_apply] using hh a b)
   have hmhi : (h⁻¹ : GL (Fin 3) A).val.map (residue A) = 1 := by
     have e := congrArg (fun X : Matrix (Fin 3) (Fin 3) A => X.map (residue A)) hhh'
-    simp only [Matrix.map_mul, hmh, hone, Matrix.mul_one] at e
-    exact e
+    simpa only [Matrix.map_mul, hmh, hone, Matrix.mul_one] using e
   have hΨ : ∀ g i, UnitaryThreeInertia.psi Ψ i ((d g : D) : G) = UnitaryThreeInertia.psi Ψ i (φ g) := by
     intro g i
     unfold UnitaryThreeInertia.psi
@@ -292,8 +290,7 @@ private theorem local_chars {G H O A : Type} [Group G] [TopologicalSpace G] [IsT
     refine req _ _ ?_
     have e2 := hr.red ((d g : D) : G) i i
     have e3 : (r0 η Ψ ((d g : D) : G)).mat = ((tor O (Ψ ((d g : D) : G)) : GL (Fin 3) O) : Matrix (Fin 3) (Fin 3) O) := rfl
-    rw [Matrix.sub_apply, Matrix.map_apply, e3, tor_val, Matrix.diagonal_apply_eq] at e2
-    exact e2
+    rwa [Matrix.sub_apply, Matrix.map_apply, e3, tor_val, Matrix.diagonal_apply_eq] at e2
   refine ⟨ψ, fun g => ord_zero Tm (fun s => (r (φ s)).mat) hT P Q hPQ hQP hR g, ?_, hres, ?_⟩
   · intro i N
     have e : (fun g => Ideal.Quotient.mk (maximalIdeal A ^ N) (ψ i g : A)) =
@@ -308,8 +305,7 @@ private theorem local_chars {G H O A : Type} [Group G] [TopologicalSpace G] [IsT
     exact ((hc N).comp_continuous hφ).comp _
   · intro i g hg
     have hmem : d g ∈ I.subgroupOf D := by
-      rw [Subgroup.mem_subgroupOf]
-      exact hg
+      rwa [Subgroup.mem_subgroupOf]
     have e := htri.ine (d g) hmem (hd_eta g) i
     rw [hψ, hTm, e, ← hΨ]
     rfl
@@ -343,8 +339,7 @@ theorem UpperTheory.V.Pr.exists_nrep3 :
     have hs2 : s ∈ closure ((Subgroup.normalClosure
         {s : ↥(upl Ω L) | ∃ B' : ValuationSubring Ω, ¬B'.valuation (l : Ω) < 1 ∧ (s : G ℚ Ω) ∈ Ine B' ∧
           η s = 1 ∧ (barChar O Ψ) s = 1} : Subgroup ↥(upl Ω L)) : Set ↥(upl Ω L)) := by
-      rw [← Subgroup.topologicalClosure_coe]
-      exact hs
+      rwa [← Subgroup.topologicalClosure_coe]
     have hmat : (ru s).mat = 1 := by
       refine closure_minimal (fun t ht => ?_) hcl hs2
       have h1 : ru t = 1 := hN ht
@@ -464,8 +459,7 @@ theorem UpperTheory.V.Pr.exists_nrep3 :
   · intro i j N
     have h := (hc' N).comp_continuous (continuous_subtype_val : Continuous (fun g : Φ.G0 => (g : Φ.Γ)))
     exact h.comp (fun X => X i j)
-  · intro v i
-    exact hψ2 v i
+  · exact fun v i => hψ2 v i
   · intro g i
     obtain ⟨s, hs⟩ := k.p_surj (g : Φ.Γ)
     show residue A (ρr g i i) = _

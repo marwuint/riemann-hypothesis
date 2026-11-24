@@ -103,8 +103,7 @@ private theorem act_forall (σ : F ≃ₐ[L] F) (p : HeightOneSpectrum (𝓞 F) 
     obtain ⟨Q, rfl⟩ := (HeightOneSpectrum.equivOfRingEquiv
       (RingOfIntegers.mapRingEquiv σ.toRingEquiv)).surjective P
     exact h Q
-  · intro h P
-    exact h _
+  · exact fun h P => h _
 
 private theorem loc_iff (σ : F ≃ₐ[L] F) (b : 𝓞 L) (a : F) :
     (∀ P : HeightOneSpectrum (𝓞 F), algebraMap (𝓞 L) (𝓞 F) b ∉ P.asIdeal → P.valuation F (σ a) ≤ 1) ↔

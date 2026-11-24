@@ -85,9 +85,7 @@ theorem UpperTheory.Gal.TypesAndIwahori.finTri :
     exact hh _ _ (GlobalTheory.CompanionTheory.BlockIndex.stdBlocks_lt_of_lt d hd hba i j)
   refine ⟨hp, fun a => ?_⟩
   rw [Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_of_upperTriangular]
-  · apply Finset.prod_congr rfl
-    intro j _
-    exact leviProj_apply R (stdBlocks d hd) ⟨h, hp⟩ a j j
+  · exact Finset.prod_congr rfl (fun j _ => leviProj_apply R (stdBlocks d hd) ⟨h, hp⟩ a j j)
   · intro i j hij
     rw [leviProj_apply]
     apply hh
@@ -135,23 +133,20 @@ theorem UpperTheory.Gal.TypesAndIwahori.grpFacts :
         ext
         simp only [unitRes, Units.coe_map, Units.val_one]
         have hz : IsLocalRing.residue 𝒪[k] ((u : 𝒪[k]) - 1) = 0 := (IsLocalRing.residue_eq_zero_iff _).2 hu
-        rw [map_sub, map_one, sub_eq_zero] at hz
-        exact hz
+        rwa [map_sub, map_one, sub_eq_zero] at hz
       rw [hdiv, hr, map_one, map_one, div_one]
     have h0 : 0 ∉ S := by
       intro h
       apply key
       intro u
       have := h u (by simp)
-      rw [hdiv, div_eq_one] at this
-      exact this
+      rwa [hdiv, div_eq_one] at this
     apply le_antisymm (Nat.sInf_le h1)
     rw [Nat.one_le_iff_ne_zero]
     intro hz
     rcases Nat.sInf_eq_zero.1 hz with h | h
     · exact h0 h
-    · rw [h] at h1
-      exact h1
+    · rwa [h] at h1
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.IwahoriTypeSupport.GrpFacts =====
@@ -248,8 +243,7 @@ private theorem typeToIw_key (hF : UpperTheory.Gal.TypesAndIwahori.FinTri) {k : 
   obtain ⟨hp, hdet⟩ := hF 𝓀[k] N s d hd (redK k (Fin N) ⟨g, hg⟩) (fun i j hij => by
     rw [redK_eq_zero_iff]
     exact hlow i j hij)
-  refine ⟨mem_levelPre.2 ⟨hg, hp⟩, fun a => ?_⟩
-  exact hdet a
+  exact ⟨mem_levelPre.2 ⟨hg, hp⟩, fun a => hdet a⟩
 
 theorem UpperTheory.Gal.TypesAndIwahori.typeToIw :
     UpperTheory.Gal.TypesAndIwahori.FinTri → UpperTheory.Gal.TypesAndIwahori.TypeToIw := by

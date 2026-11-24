@@ -128,8 +128,7 @@ theorem vac_mono {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {LS : Lat S} {LT
 
 theorem eg_combAt {c : Comm D} {v : VCom c} (G : GLoc v) (j : ℕ) (hj : j ≤ G.s) : CombAt (· = G.q.v) (G.eg j) := by
   intro u hu a b
-  have h := (G.eg_is j (G.s - j) (by omega)).1 u hu a b
-  exact (GlobalTheory.FinPl.FrameLat.idem_iff G.q _).2 h
+  exact (GlobalTheory.FinPl.FrameLat.idem_iff G.q _).2 ((G.eg_is j (G.s - j) (by omega)).1 u hu a b)
 
 end GlobalTheory.FixedLevelIsolate
 
@@ -183,8 +182,7 @@ theorem om_Phi {s κ : ℕ} (S : SymData k s κ) (t : Type) [Fintype t] [Decidab
   have hx : x.1 ∈ (((withMu S μ hμ).T t).lev j (a + 1) hb).J := by rw [(e2 j (a + 1) hb).1]; exact x.2
   have L : ((withMu S μ hμ).T t).Laws := Chain.ofType_laws _ _ _ _ _
   have h1 := (L.1 j a H).1 ⟨x.1, hx⟩
-  rw [e1, (e2 j (a + 1) hb).2 x.1 hx x.2] at h1
-  exact h1
+  rwa [e1, (e2 j (a + 1) hb).2 x.1 hx x.2] at h1
 
 end Local
 
@@ -258,8 +256,7 @@ theorem om_phi {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNon
   obtain ⟨hJ, hl⟩ := h2 (j + 1) b hb
   have hx : x.1 ∈ (((withMu S μ hμ).T t).lev (j + 1) b hb).J := by rw [hJ]; exact x.2
   have := (hL.1 j b H).2 ⟨x.1, hx⟩
-  rw [h1, hl x.1 hx x.2, Units.val_inv_eq_inv_val] at this
-  exact this
+  rwa [h1, hl x.1 hx x.2, Units.val_inv_eq_inv_val] at this
 
 end GlobalTheory.SeeSaw.LocTarget
 end -- clump:auto
@@ -496,8 +493,7 @@ theorem GlobalTheory.RowLevel.Std.lift_laws : ∀ (D : D7) (c : Comm D) (v : VCo
   have hm : j + 1 < D.R.m := by omega
   have wBF : IsWeilDatumO c.ψ (c.V j) (c.V (j + 1)) (t.sBF j σ hσ).χV (t.sBF j σ hσ).χW (t.om j) := by
     have := (t.sBF j σ hσ).weil
-    rw [(ht.sBF j σ hσ).1] at this
-    exact this
+    rwa [(ht.sBF j σ hσ).1] at this
   have chBF : ∀ i, ∃ μ : ℕ → (G i).kˣ →* ℂˣ, (∀ l, IsTame (μ l)) ∧
       (∀ l (x : (G i).kˣ), valuation (G i).k (x : (G i).k) = 1 → μ l x = (G i).S.μ l x) ∧
       (ofSplit (G i).q).IsComp (t.sBF j σ hσ).χV⁻¹ (μ (j + 1)) ∧
@@ -510,8 +506,7 @@ theorem GlobalTheory.RowLevel.Std.lift_laws : ∀ (D : D7) (c : Comm D) (v : VCo
   have hm' : j + 1 + 1 < D.R.m := by omega
   have wFB : IsWeilDatumO c.ψ (c.V (j + 1)) (c.V (j + 1 + 1)) (t.sFB j σ' hσ).χV (t.sFB j σ' hσ).χW (t.om (j + 1)) := by
     have := (t.sFB j σ' hσ).weil
-    rw [(ht.sFB j σ' hσ).1] at this
-    exact this
+    rwa [(ht.sFB j σ' hσ).1] at this
   have chFB : ∀ i, ∃ μ : ℕ → (G i).kˣ →* ℂˣ, (∀ l, IsTame (μ l)) ∧
       (∀ l (x : (G i).kˣ), valuation (G i).k (x : (G i).k) = 1 → μ l x = (G i).S.μ l x) ∧
       (ofSplit (G i).q).IsComp (t.sFB j σ' hσ).χV⁻¹ (μ (j + 1 + 1)) ∧
@@ -945,8 +940,7 @@ theorem main_alt_alt : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : F
       obtain ⟨a, ha0, hga, hlaw⟩ := LL.1 k hk
       refine ⟨a, ha0, hlaw, fun hj2 => ?_, fun X x => third X x a hga⟩
       obtain ⟨a', -, hga', hlaw'⟩ := (LL.2.2 (by omega)).2 k hk
-      rw [uniq a a' hga hga']
-      exact hlaw'
+      rwa [uniq a a' hga hga']
     · obtain ⟨j₀, rfl⟩ : ∃ j₀, j = j₀ + 1 := ⟨2 * q, by omega⟩
       obtain ⟨σ, hσ⟩ : ∃ σ, j₀ + 2 * (σ + 1) + 2 = D.R.m := ⟨(D.R.m - j₀ - 4) / 2, by omega⟩
       have LL := GlobalTheory.RowLevel.Std.lift_laws D f.c v n G hc hv hGP (f.t t) ht hch j₀ (σ + 1) hσ
@@ -954,8 +948,7 @@ theorem main_alt_alt : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : F
       refine ⟨a, ha0, hlaw, fun hj2 => ?_, fun X x => third X x a hga⟩
       have LL' := GlobalTheory.RowLevel.Std.lift_laws D f.c v n G hc hv hGP (f.t t) ht hch (j₀ + 1 + 1) σ (by omega)
       obtain ⟨a', -, hga', hlaw'⟩ := LL'.2.1 k hk
-      rw [uniq a a' hga hga']
-      exact hlaw'
+      rwa [uniq a a' hga hga']
   · have hκf : κ ∈ GfC _ := GlobalTheory.LevelCut.mem_GfC_of_grpAt _ _ κ hκ.1
     have ho := _root_.GlobalTheory.RowLevel.top_lev_alt D L hT Gi Gl Kc Yd cX ex W u f hP hR v hv hV n G pl hGP hGR t w F ht hFP hQL hch κ hκ
     rw [hV.bT.1, rightTranslate_level_conj_acts_by_character_finite hθ _ _ _ _ X.2 x hκf ho.1, ho.2, one_smul]

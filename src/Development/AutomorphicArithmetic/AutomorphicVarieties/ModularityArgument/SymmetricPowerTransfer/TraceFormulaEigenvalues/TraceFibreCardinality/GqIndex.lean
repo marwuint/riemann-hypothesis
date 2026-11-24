@@ -130,8 +130,7 @@ private theorem fib_card (K : Subgroup H) (g : H) (y : Y) :
       obtain ⟨s, rfl⟩ := QuotientGroup.mk_surjective q
       rw [hf, QuotientGroup.eq] at hq
       refine ⟨(h * k0)⁻¹ * (g * s), ?_, ?_⟩
-      · have hm := K.mul_mem (K.inv_mem k0.2) (K.inv_mem hq)
-        simpa [mul_assoc] using hm
+      · simpa [mul_assoc] using K.mul_mem (K.inv_mem k0.2) (K.inv_mem hq)
       · rw [mul_smul, mul_smul, mem_stabilizer_iff.mp s.2]
   rw [hrange, ← Nat.card_coe_set_eq, Nat.card_range_of_injective hinj]
   rfl
@@ -143,8 +142,7 @@ private theorem w_conj (H₀ : Subgroup H) [hN : H₀.Normal] (g : H) (y : Y) :
     constructor
     · rintro ⟨a, ha, rfl⟩
       exact hN.conj_mem a ha g
-    · intro hx
-      exact ⟨g⁻¹ * x * g, by simpa using hN.conj_mem x hx g⁻¹, by simp [mul_assoc]⟩
+    · exact fun hx => ⟨g⁻¹ * x * g, by simpa using hN.conj_mem x hx g⁻¹, by simp [mul_assoc]⟩
   rw [stabilizer_smul_eq_stabilizer_map_conj]
   conv_lhs => rw [← hmap]
   exact Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj g).injective
@@ -166,8 +164,7 @@ private theorem gq_index (φ : H' →* H) (hφ : ∀ (a : H') (y : Y), a • y =
   have hgq : gq H₀ k = ∑ᶠ q, T q := rfl
   have hgq' : gq (H₀.comap φ) k = ∑ᶠ q', T' q' := rfl
   have mkH_smul : ∀ (h : H) (y : Y), Quotient.mk (orbitRel H Y) (h • y) = Quotient.mk (orbitRel H Y) y := by
-    intro h y
-    exact Quotient.sound (orbitRel_apply.mpr ⟨h, rfl⟩)
+    exact fun h y => Quotient.sound (orbitRel_apply.mpr ⟨h, rfl⟩)
   have mkH_of : ∀ a b : Y, Quotient.mk (orbitRel H' Y) a = Quotient.mk (orbitRel H' Y) b →
       Quotient.mk (orbitRel H Y) a = Quotient.mk (orbitRel H Y) b := by
     intro a b hab
@@ -211,17 +208,13 @@ private theorem gq_index (φ : H' →* H) (hφ : ∀ (a : H') (y : Y), a • y =
     rw [hl, mul_inv_rev, inv_inv, mul_smul]
   have hsuppT : Function.support T ⊆ ↑Q0 := by
     intro q hq
-    have hk0 : k q.out ≠ 0 := by
-      intro h
-      exact hq (by simp [T, h])
+    have hk0 : k q.out ≠ 0 := fun h => hq (by simp [T, h])
     obtain ⟨h, x, hx, hxq⟩ := hS0 _ hk0
     refine Finset.mem_coe.mpr (Finset.mem_image.mpr ⟨x, hx, ?_⟩)
     rw [← mkH_smul h x, ← hxq, Quotient.out_eq]
   have hsuppT' : Function.support T' ⊆ ↑Q0' := by
     intro q' hq'
-    have hk0 : k q'.out ≠ 0 := by
-      intro h
-      exact hq' (by simp [T', h])
+    have hk0 : k q'.out ≠ 0 := fun h => hq' (by simp [T', h])
     obtain ⟨h, x, hx, hxq⟩ := hS0 _ hk0
     have := inQ0' x hx h
     rw [← hxq, Quotient.out_eq] at this

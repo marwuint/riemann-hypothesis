@@ -144,8 +144,7 @@ theorem pProjOne_holds : ProjOne.{u} := by
       exact hb i
     intro d
     have hd : d ∈ S := hS ▸ Submodule.mem_top
-    rw [← mem_nilradical, ← hL]
-    exact hd
+    rwa [← mem_nilradical, ← hL]
   let Ψ := MonoidAlgebra.lift F (F × A) (FreeMonoid J) (FreeMonoid.lift gen)
   have hD : D ≤ Ψ.range := by
     apply Algebra.adjoin_le
@@ -163,12 +162,10 @@ theorem pProjOne_holds : ProjOne.{u} := by
     rw [← monoidAlgebra_lift_freeMonoid_eq_wop, ht'] at h1
     exact h1.symm
   refine ⟨coeff, ?_, ?_, ?_⟩
-  · rw [hwθ]
-    exact hzχ
+  · rwa [hwθ]
   · rw [hwT]
     unfold IsIdempotentElem
-    have h1 := congrArg (fun x : D => (x : F × A).2) hzid
-    simpa using h1
+    simpa using congrArg (fun x : D => (x : F × A).2) hzid
   · intro j
     let d : D := ⟨gen j, Algebra.subset_adjoin ⟨j, rfl⟩⟩
     obtain ⟨M, hM⟩ := hnil d
@@ -176,8 +173,7 @@ theorem pProjOne_holds : ProjOne.{u} := by
     have h2 : (d - algebraMap F D (θ j)) ^ (M + 1) * z = 0 := by
       have h3 : ((d - algebraMap F D (χ d)) * z) ^ (M + 1) = 0 := by
         rw [pow_succ, hM, zero_mul]
-      rw [mul_pow, hzid.pow_succ_eq] at h3
-      exact h3
+      rwa [mul_pow, hzid.pow_succ_eq] at h3
     have h4 := congrArg ((AlgHom.snd F F A).comp D.val) h2
     rw [hwT]
     simpa [d, gen] using h4

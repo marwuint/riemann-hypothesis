@@ -68,8 +68,7 @@ private theorem ex_core {B A : Type} [CommRing B] [CommRing A] [Algebra B A] (�
   have key : ∀ x ∈ Ideal.map (algebraMap B A) p, ∃ c ∈ p, GradedAlgebra.proj 𝒜 0 x = algebraMap B A c := by
     intro x hx
     have hx' : x ∈ (p • (⊤ : Submodule B A)) := by
-      rw [Ideal.smul_top_eq_map]
-      exact hx
+      rwa [Ideal.smul_top_eq_map]
     refine Submodule.smul_induction_on (p := fun x => ∃ c ∈ p, GradedAlgebra.proj 𝒜 0 x = algebraMap B A c)
       hx' ?_ ?_
     · intro b hb y _
@@ -131,8 +130,7 @@ private theorem one_le_td {B A : Type} [CommRing B] [CommRing A] [Algebra B A] (
       apply hik
       have he' : (i : ℤ) * α = (k : ℤ) * α := by simpa [nsmul_eq_mul] using he
       exact_mod_cast mul_right_cancel₀ hα he'
-    · intro hk
-      exact absurd (Finset.mem_range.2 (by omega)) hk
+    · exact fun hk => absurd (Finset.mem_range.2 (by omega)) hk
   have htr : Transcendental (B ⧸ η.comap (algebraMap B A)) (Ideal.Quotient.mk η a) := by
     rw [transcendental_iff]
     intro P hP
@@ -172,15 +170,12 @@ private theorem pair {B A : Type} [CommRing B] [CommRing A] [Algebra B A] (𝒜 
     · exact ha' (hξ.mem_of_pow_mem _ h)
     · exact hb' (hξ.mem_of_pow_mem _ h)
   have hxξ : x ∉ ξ.comap (algebraMap B A) := by
-    rw [Ideal.mem_comap, hx]
-    exact hc
+    rwa [Ideal.mem_comap, hx]
   have hxη : x ∉ η.comap (algebraMap B A) := fun hin => hxξ (hle hin)
   rw [Ideal.mem_comap, hx] at hxη
   constructor
-  · intro hin
-    exact hxη (Ideal.mul_mem_right _ _ (Ideal.pow_mem_of_mem _ hin _ hk0))
-  · intro hin
-    exact hxη (Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ hin _ hm0))
+  · exact fun hin => hxη (Ideal.mul_mem_right _ _ (Ideal.pow_mem_of_mem _ hin _ hk0))
+  · exact fun hin => hxη (Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ hin _ hm0))
 
 private theorem w_lt {n : ℕ} {i j : Fin n} (h : i < j) : w n j < w n i := by
   have : (i : ℕ) < j := h
@@ -193,9 +188,7 @@ theorem UpperTheory.V.Fr.frobenius_corner_lift_two_to_three :
   obtain ⟨hint, hgm, h0, -, -, -, hr⟩ := gr_A hF hn S
   letI : GradedAlgebra S.gr := { hgm, hint.chooseDecomposition with }
   have hinj : Function.Injective (algebraMap S.B S.A) := by
-    intro x y hxy
-    apply Subtype.ext
-    exact congrArg (fun z : S.A => (z : S.R)) hxy
+    exact fun x y hxy => Subtype.ext (congrArg (fun z : S.A => (z : S.R)) hxy)
   obtain ⟨η, hηp, hηh, hηc⟩ := ex_core S.gr h0 hinj p
   have hP := hTI.1.1
   have hM := hTI.1.2
@@ -215,10 +208,8 @@ theorem UpperTheory.V.Fr.frobenius_corner_lift_two_to_three :
       rintro _ ⟨⟨x, hxh⟩, hx, rfl⟩
       exact ⟨hx, hxh⟩
     · exact Ideal.span_le.2 fun x hx => hx.1
-  · intro h
-    exact hab.2 (h (Ideal.subset_span ⟨g, i, j, hji, rfl⟩))
-  · intro h
-    exact hab.1 (h (Ideal.subset_span ⟨g', i', j', hij', rfl⟩))
+  · exact fun h => hab.2 (h (Ideal.subset_span ⟨g, i, j, hji, rfl⟩))
+  · exact fun h => hab.1 (h (Ideal.subset_span ⟨g', i', j', hij', rfl⟩))
   · intro h3 h
     have hE := hTI.2 h3
     simp only [NRep.ee, Ideal.span_le, Set.not_subset] at hE

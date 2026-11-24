@@ -85,8 +85,7 @@ private lemma integrable_fib (μ : Measure G) [μ.IsHaarMeasure] (m : ℕ) (φ :
   simp only [Set.mem_pi, Set.mem_univ, forall_const, not_forall] at hy
   obtain ⟨i, hi⟩ := hy
   refine Finset.prod_eq_zero (Finset.mem_univ i.castSucc) ?_
-  simp only [fib, Fin.snoc_castSucc]
-  exact image_eq_zero_of_notMem_tsupport hi
+  simpa only [fib, Fin.snoc_castSucc] using image_eq_zero_of_notMem_tsupport hi
 
 private lemma push_tens (μ : Measure G) [μ.IsHaarMeasure] : ∀ (m : ℕ) (φ : Fin (m + 1) → G → ℂ),
     (∀ i, Continuous (φ i)) → (∀ i, HasCompactSupport (φ i)) →

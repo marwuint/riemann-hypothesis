@@ -64,8 +64,7 @@ private theorem eq_vQ {l : ℕ} (hl : l.Prime) (v : HeightOneSpectrum (𝓞 ℚ)
   symm
   apply Ideal.IsMaximal.eq_of_le (vQ hl).isMaximal v.isPrime.ne_top
   show Ideal.span {((l : ℕ) : 𝓞 ℚ)} ≤ v.asIdeal
-  rw [Ideal.span_le, Set.singleton_subset_iff]
-  exact h
+  rwa [Ideal.span_le, Set.singleton_subset_iff]
 
 private theorem exists_prime_mem (v : HeightOneSpectrum (𝓞 ℚ)) :
     ∃ p : ℕ, p.Prime ∧ ((p : ℕ) : 𝓞 ℚ) ∈ v.asIdeal := by
@@ -154,19 +153,15 @@ theorem UpperTheory.V.B3.placesQ :
       (hv : IsPlaceOver A v) : A.valuation (N : Ω) < 1 ↔ ((N : ℕ) : 𝓞 ℚ) ∈ v.asIdeal := by
     have h := hv (N : 𝓞 ℚ)
     have e : algebraMap ℚ Ω ((N : 𝓞 ℚ) : ℚ) = (N : Ω) := by simp
-    rw [← e]
-    exact h
+    rwa [← e]
   refine ⟨?_, ?_, ?_⟩
   · intro p hp
     obtain ⟨A, hA⟩ := exists_isPlaceOver (F := ℚ) Ω (vQ hp)
-    refine ⟨A, (hIff A (vQ hp) p hA).mpr ?_⟩
-    show ((p : ℕ) : 𝓞 ℚ) ∈ Ideal.span {((p : ℕ) : 𝓞 ℚ)}
-    exact Ideal.subset_span rfl
+    exact ⟨A, (hIff A (vQ hp) p hA).mpr (Ideal.subset_span rfl)⟩
   · intro B
     by_cases hB : B = ⊤
     · left
-      rw [hB]
-      exact hTop
+      rwa [hB]
     · right
       obtain ⟨v, hv⟩ := hOver B hB
       obtain ⟨p, hp, hpv⟩ := exists_prime_mem v

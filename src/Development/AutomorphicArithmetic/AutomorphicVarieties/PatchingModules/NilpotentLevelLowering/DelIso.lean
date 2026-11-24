@@ -179,14 +179,12 @@ theorem UpperTheory.V.AlgebraTools.iwQuot :
       rw [← hd] at e
       have : Units.map (IsLocalRing.residue 𝒪[k]).toMonoidHom d = F ⟨_, hg⟩ i := Units.ext e.symm
       show Units.map (IsLocalRing.residue 𝒪[k]).toMonoidHom d ∈ C
-      rw [this]
-      exact hc
+      rwa [this]
     · rintro ⟨_, ⟨d, hd, rfl⟩, e1⟩
       have e' : (d : 𝒪[k]) = (h : Matrix (Fin n) (Fin n) 𝒪[k]) i i := hinj e1
       rw [← e'] at e
       have : Units.map (IsLocalRing.residue 𝒪[k]).toMonoidHom d = F ⟨_, hg⟩ i := Units.ext e.symm
-      rw [← this]
-      exact hd
+      rwa [← this]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwIwQuot =====
@@ -266,8 +264,7 @@ private theorem di_cyc (l : ℕ) [Fact l.Prime] (G : Type) [CommGroup G] [Finite
     rw [Nat.card_zmod]
   refine ⟨MulEquiv.ofBijective Φ hbij, ?_⟩
   have h1 := hΦ 1
-  rw [Int.cast_one, zpow_one] at h1
-  exact h1
+  rwa [Int.cast_one, zpow_one] at h1
 
 private theorem di_pi {q n : ℕ} (G : Fin q → Type) [∀ j, Group (G j)] (H K : ∀ j, Subgroup (G j))
     (Z : Fin q → Type) [∀ j, Group (Z j)] (f : ∀ j, H j →* (Fin n → Z j)) (hs : ∀ j, Function.Surjective (f j))
@@ -297,8 +294,7 @@ private theorem di_pi {q n : ℕ} (G : Fin q → Type) [∀ j, Group (G j)] (H K
     · intro h j _
       refine (hk j ⟨_, (Subgroup.mem_pi _).1 g.2 j (Set.mem_univ _)⟩).1 (funext fun i => ?_)
       have := congrFun h (j, i)
-      rw [hΦ] at this
-      exact this
+      rwa [hΦ] at this
     · intro h
       funext p
       rw [hΦ]

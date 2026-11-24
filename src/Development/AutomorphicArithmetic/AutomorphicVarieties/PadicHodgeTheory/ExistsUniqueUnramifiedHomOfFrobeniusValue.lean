@@ -70,13 +70,11 @@ theorem UpperTheory.exists_unique_unramified_hom_of_frobenius_value :
   have hρ : ∀ g x, ρ g x = x := fun _ _ => rfl
   have hcont : ContAction ρ := by
     show Continuous fun p : Formalism.BasicNotions.Loc.GQ v × E => ρ p.1 p.2
-    simp only [hρ]
-    exact continuous_snd
+    simpa only [hρ] using continuous_snd
   have hI : ∀ g ∈ Iq v, ρ g = 1 := fun _ _ => rfl
   have hmem : ∀ c : Formalism.BasicNotions.Loc.GQ v → E,
       c ∈ Z1 ρ ↔ Continuous c ∧ ∀ g h, c (g * h) = c g + c h := by
-    intro c
-    exact Iff.rfl
+    exact fun c => Iff.rfl
   have hsurj : ∀ g : ↥(Dec (F := ℚ) (placeJ j)), ∃ x, iota j x = (g : G ℚ Ω) := by
     intro g
     have hg : (g : G ℚ Ω) ∈ (iota j).range := by
@@ -136,8 +134,7 @@ theorem UpperTheory.exists_unique_unramified_hom_of_frobenius_value :
         refine ⟨(hmem _).2 ⟨hu.comp hψ_cont, ?_⟩, ?_, ?_⟩
         · intro g h
           simp only [hψ_mul, hum]
-        · intro g hg
-          exact huI _ ((hIq g).1 hg)
+        · exact fun g hg => huI _ ((hIq g).1 hg)
         · have : ψ τ = σ := Subtype.ext hτ
           simp only [this, huσ]
       have h2 : (0 : Formalism.BasicNotions.Loc.GQ v → E) = c0 := by

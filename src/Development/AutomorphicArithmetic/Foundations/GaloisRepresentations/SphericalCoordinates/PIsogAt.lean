@@ -95,12 +95,10 @@ theorem existsUnique_linear_lift_of_hom :
   obtain ⟨U, hU, hpU, -⟩ := exists_isAffineOpen_mem_and_subset (x := (e' 0).left pt) (U := ⊤) (Set.mem_univ _)
   have h0 : ⊤ ≤ (e' 0).left ⁻¹ᵁ U := by
     intro q _
-    rw [hsub q]
-    exact hpU
+    rwa [hsub q]
   have hker' : (ex.ker : Set (Fin g → ℂ)) = Λ := Set.ext fun z ↦ hker z
   have hS0 : (0 : Additive (Over.mk y ⟶ G)) ∈ {a : Additive (Over.mk y ⟶ G) | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U} := by
-    rw [← map_zero ex]
-    exact h0
+    rwa [← map_zero ex]
   have hsep : ∀ a ∈ {a : Additive (Over.mk y ⟶ G) | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U},
       ∀ b ∈ {a : Additive (Over.mk y ⟶ G) | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U},
       (∀ s : Γ(G.left, U), valAt' (Additive.toMul a).left U s = valAt' (Additive.toMul b).left U s) → a = b := by
@@ -110,23 +108,19 @@ theorem existsUnique_linear_lift_of_hom :
         (valAt'_eq_evalPt _ U ha s).symm.trans ((h s).trans (valAt'_eq_evalPt _ U hb s))))
   have hSe : IsOpen {z : Fin g → ℂ | ⊤ ≤ (e' z).left ⁻¹ᵁ U} := by
     have := (he'.2.2.1 U 0).1
-    simp only [Set.mem_univ, true_and] at this
-    exact this
+    simpa only [Set.mem_univ, true_and] using this
   have hSG : IsOpen {z : Fin g → ℂ | ⊤ ≤ (β z).left ⁻¹ᵁ U} := by
     have := (hholG U 0).1
-    simp only [Set.mem_univ, true_and] at this
-    exact this
+    simpa only [Set.mem_univ, true_and] using this
   have hfe : ∀ s : Γ(G.left, U), DifferentiableOn ℂ (fun z ↦ valAt' (e' z).left U s) {z | ⊤ ≤ (e' z).left ⁻¹ᵁ U} := by
     intro s
     have := (he'.2.2.1 U s).2
-    simp only [Set.mem_univ, true_and] at this
-    exact this
+    simpa only [Set.mem_univ, true_and] using this
   have hfG : ∀ s : Γ(G.left, U), DifferentiableOn ℂ (fun z ↦ valAt' (β z).left U s)
       {z | ⊤ ≤ (β z).left ⁻¹ᵁ U} := by
     intro s
     have := (hholG U s).2
-    simp only [Set.mem_univ, true_and] at this
-    exact this
+    simpa only [Set.mem_univ, true_and] using this
   have hD : ∀ w : Fin g → ℂ, (∀ s : Γ(G.left, U), fderiv ℂ (fun z ↦ valAt' (e' z).left U s) 0 w = 0) → w = 0 := by
     intro w hw
     obtain ⟨v, hv, -⟩ := he'.2.2.2.1 w
@@ -334,9 +328,7 @@ theorem UpperTheory.Gal.W2.isogAt_of :
   have hE3 : UnifAt (gfam c.o hO hLo) (RingHom.id ℂ) ρ N D'' t'' P'' x (fun z => E' (H z)) :=
     GlobalTheory.T.uniformisationAt_transport_isometry D.O D.inv D.g ρ ℂ (RingHom.id ℂ) D.La (gfam c.o hO hLo) N D'' D'' t'' t'' P₁ P'' x E'
       (LinearEquiv.refl D.O D''.La) H.symm hN hE' hmark (fun _ => rfl) hper''
-  have hι : ∀ u, ∃ v, P₁ v = H (P u) := by
-    intro u
-    exact hHmem (P u) ⟨u, rfl⟩
+  have hι : ∀ u, ∃ v, P₁ v = H (P u) := fun u => hHmem (P u) ⟨u, rfl⟩
   choose fι hfι using hι
   have hPf : ∀ u, P'' (fι u) = P u := fun u => by
     rw [hP'', hfι, H.symm_apply_apply]

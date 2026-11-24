@@ -77,15 +77,11 @@ private theorem invG_snd (hg : BG ρ σ A) (p : b.G.obj A × c.G.obj A) : σ.g.a
 
 private theorem invD_eq (hd : BD ρ σ A) {x : a.D.obj A} {p : b.D.obj A × c.D.obj A}
     (h1 : ρ.d.app A x = p.1) (h2 : σ.d.app A x = p.2) : invD hd p = x := by
-  apply hd.1
-  refine (Equiv.ofBijective_apply_symm_apply _ hd p).trans ?_
-  exact Prod.ext h1.symm h2.symm
+  exact hd.1 ((Equiv.ofBijective_apply_symm_apply _ hd p).trans (Prod.ext h1.symm h2.symm))
 
 private theorem invG_eq (hg : BG ρ σ A) {x : a.G.obj A} {p : b.G.obj A × c.G.obj A}
     (h1 : ρ.g.app A x = p.1) (h2 : σ.g.app A x = p.2) : invG hg p = x := by
-  apply hg.1
-  refine (Equiv.ofBijective_apply_symm_apply _ hg p).trans ?_
-  exact Prod.ext h1.symm h2.symm
+  exact hg.1 ((Equiv.ofBijective_apply_symm_apply _ hg p).trans (Prod.ext h1.symm h2.symm))
 
 private noncomputable def lift (hd : BD ρ σ A) (hg : BG ρ σ A)
     {J : Type} [Category.{0} J] (y : J ⥤ Ob b A) (z : J ⥤ Ob c A) : J ⥤ Ob a A where

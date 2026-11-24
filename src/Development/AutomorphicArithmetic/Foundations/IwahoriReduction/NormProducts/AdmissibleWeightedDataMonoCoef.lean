@@ -358,8 +358,7 @@ theorem twist_clauses : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Alg
     · rw [← chiK_succ _ hr, sub_self, norm_zero]; exact norm_nonneg _
   · rcases eq_or_ne r 0 with rfl | hr
     · simp only [chiK_update_zero, mul_zero, zero_mul, sub_self, norm_zero]; exact norm_nonneg _
-    · simp only [chiK_update hr, hθ]
-      exact eta_shift hχ e hr s x
+    · simpa only [chiK_update hr, hθ] using eta_shift hχ e hr s x
   · have hz := cycZ_inertia hq hB hs
     have h1 : cycBar ℚ Ω l s = 1 := by rw [cycBar, MonoidHom.comp_apply, hz, map_one]
     have h2 : cycRes l Ω s = 1 := by
@@ -414,8 +413,7 @@ theorem shCoc_wsum_props : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [
     simp only [push]
     conv_lhs => rw [show (∑ i, cw i • Yx i r s y) = ∑ i, cw i • push (redL l r) (Yx i (r + 1)) s y from by
       simp only [← hP]]
-    simp only [push, Finset.smul_sum]
-    exact Finset.sum_comm
+    simpa only [push, Finset.smul_sum] using Finset.sum_comm
   · intro r y j
     simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
     exact continuous_finsetSum _ fun i _ => continuous_const.mul (hCont i r y j)
@@ -609,8 +607,7 @@ private theorem dn_rV (l L N M₀ : ℕ) [NeZero N] (h : M₀ = N * l ^ L) (hc :
   have := topT_step l L N M₀ h hc
   funext i
   fin_cases i
-  · simp only [dn, rV, Fin.zero_eta, Matrix.cons_val_zero, map_natCast]
-    exact this
+  · simpa only [dn, rV, Fin.zero_eta, Matrix.cons_val_zero, map_natCast] using this
   · simp only [dn, rV, Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_zero, map_natCast]
 
 private theorem lev_r {l N c d : ℕ} {g : SL(2, ℤ)} (H : Hyp l N c d g) (n r M₀ : ℕ) (hn : 1 ≤ n)
@@ -662,8 +659,7 @@ private theorem zeta_class_cohomology_compat (X : Tower Ω ε) (l : ℕ) [Fact l
   obtain ⟨β, hβ, hrel⟩ := sTopRel Ω ε X l n N M₀ _ w g lev hL c d ws hws lv _ _ ok _ _
     (ixU_rU l (r + n) N M₀ h x) (ixV_rV l (r + n) N M₀ h)
   have := sBridge Ω ε X l n N M₀ _ w g lev hL _ _ ok _ (hws.coc n M₀ lv) _ β hβ hrel _ (redMh l n r (N * N))
-  rw [kap X] at this
-  exact this
+  rwa [kap X] at this
 
 end UpperTheory.V.Z.Kato.Nb.one_le_level_alt
 
@@ -809,8 +805,7 @@ private theorem two_ne (l N M : ℕ) [Fact l.Prime] (hl : l ≠ 2) (h : Nat.Copr
     simpa [smul_eq_mul] using this
   have h2 : (2 : ZMod l) * (N : ZMod l) = 0 := by
     have := congrArg (ZMod.castHom hd (ZMod l)) h1
-    rw [map_mul, map_ofNat, map_zero, hx] at this
-    exact this
+    rwa [map_mul, map_ofNat, map_zero, hx] at this
   have h2' : (2 : ZMod l) ≠ 0 := by
     intro h2z
     have h3 : ((2 : ℕ) : ZMod l) = 0 := by exact_mod_cast h2z
@@ -857,8 +852,7 @@ private theorem bas (l L N M : ℕ) [Fact l.Prime] [NeZero M] (x : ZMod N) (h : 
     rw [ZMod.castHom_apply, ZMod.cast_eq_val]
   have hx1 : rx l L N M x 1 = 0 := by simp [rx]
   rw [hx1, ZMod.val_zero, cv, cv, castHom_rx_zero_eq_natCast l L N M x hd hL, castHom_ry_one_eq_natCast l L N M hd]
-  simp only [Nat.cast_zero, zero_mul, sub_zero]
-  exact mul_ne_zero hN hN
+  simpa only [Nat.cast_zero, zero_mul, sub_zero] using mul_ne_zero hN hN
 
 private theorem ix (l L N M : ℕ) [NeZero M] (x : ZMod N) (h : N * l ^ L = M) :
     (∀ i, ∃ j : ℤ, ixU l L N x i = toQ M (rx l L N M x) i + j) ∧ ∀ i, ∃ j : ℤ, ixV l L N i = toQ M (ry l L N M) i + j := by
@@ -946,8 +940,7 @@ private theorem brg (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n r N M₀ w c d
       Y0 X l n r N x c d w g := by
     rw [hred]
     rfl
-  rw [hκ, hpush] at hb
-  exact hb
+  rwa [hκ, hpush] at hb
 
 end UpperTheory.V.Z.Kato.Nb.NormOneIndex
 
@@ -988,10 +981,8 @@ theorem UpperTheory.V.Z.Kato.Nb.katoZetaElement_normCompatible_in_lTower :
   have lv1 : Lv c d (l * (N * l ^ (r + n))) :=
     ⟨Nat.mul_pos hl0 lv0.1, Nat.Coprime.mul_right cl lv0.2.1, Nat.Coprime.mul_right dl lv0.2.2⟩
   have hT0 : l ^ r ∣ topM l n r (N * N) := by
-    show l ^ r ∣ l ^ (r + n) * (N * N)
     exact dvd_mul_of_dvd_left (pow_dvd_pow l (Nat.le_add_right r n)) _
   have hT1 : l ^ r ∣ topM l (n + 1) r (N * N) := by
-    show l ^ r ∣ l ^ (r + (n + 1)) * (N * N)
     exact dvd_mul_of_dvd_left (pow_dvd_pow l (Nat.le_add_right r (n + 1))) _
   have hTT : topM l n r (N * N) ∣ topM l (n + 1) r (N * N) := ⟨l, by simp only [topM]; ring⟩
   have hT1eq : topM l (n + 1) r (N * N) = N * (l * (N * l ^ (r + n))) := by
@@ -1142,8 +1133,7 @@ private theorem UpperTheory.Kd.K4.pushforward_finsetSum {Γ : Type} [Group Γ] {
     (π : B → A) (S : Finset ι) (f : ι → Γ → B → M) :
     GlobalTheory.KA.push π (∑ i ∈ S, f i) = ∑ i ∈ S, GlobalTheory.KA.push π (f i) := by
   funext s y
-  simp only [GlobalTheory.KA.push, Finset.sum_apply]
-  exact Finset.sum_comm
+  simpa only [GlobalTheory.KA.push, Finset.sum_apply] using Finset.sum_comm
 
 private def UpperTheory.Kd.K4.unitsPowPrimeReduction (l r : ℕ) : (ZMod (l ^ (r + 1)))ˣ →* (ZMod (l ^ r))ˣ :=
   Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom
@@ -1492,8 +1482,7 @@ theorem top : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ �
     exact ⟨E0, fun s s' y hfix => hE0 s s' y hfix⟩
   · intro r s i
     have := hy r s i
-    rw [hη r] at this
-    exact this
+    rwa [hη r] at this
   · intro n
     obtain ⟨r₀, hr⟩ := hSp n
     refine ⟨r₀, fun r hr' s hs hc => ?_⟩

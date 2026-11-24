@@ -294,8 +294,7 @@ theorem exists_rep (t : Twist D Circle) (h : GA D (Vc D j)) : ∃ (γ : GQ (Vc D
   obtain ⟨h', ⟨hh', hs⟩, γ, k, e⟩ := GlobalTheory.SplitReps.exists_split_rep (Vc D j) hN₀ hK' hbad (finPt (Vc D j) h)
   obtain ⟨-, e', P, hP, hoff, hsupp⟩ := GlobalTheory.SplitReps.splitOffBad_of_suppSplit (Vc D j) (ρ.bad i) h' hh' hs
   refine ⟨γ, P, h', k, ⟨e', hP⟩, hoff, hh', ?_, e⟩
-  rw [idem_eq hP]
-  exact hsupp
+  rwa [idem_eq hP]
 
 theorem series_datum (hR : RatTwist hρ rd) {k Q ψ} (hψ : TwOK i k Q ψ) (hQ : ClsQ (D := D) Q) {s h P}
     (hd : ρ.IsDatum i j b s h P) :
@@ -334,8 +333,7 @@ theorem term_mem (hR : RatTwist hρ rd) {k Q ψ} (hψ : TwOK i k Q ψ) (hQ : Cls
   | smul a x _ hx =>
     obtain ⟨_, u, rfl⟩ := a
     have h2 := ek_smul_mem_range hρ rd (algebraMap (D.ntw.Ok i k) _ u) hx
-    rw [← map_smul] at h2
-    exact h2
+    rwa [← map_smul] at h2
 
 theorem sum_mem_range : ∀ (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (rd : Rd ρ D.nexp i j b) (T : CellTie hρ D.nexp rd), RatTwist hρ rd → (∀ (k : Fin 2) (z : ℂ), z ^ (D.host.g k * (D.host.g k - 1)) = 1 → z ∈ (embLL0 D).fieldRange) →
   ∀ k Q ψ, TwOK i k Q ψ → ClsQ (D := D) Q → ∀ f, ρ.sum i j b k Q ψ (T.rdV k Q ψ f) ∈ Set.range (rdK rd hρ k) := by
@@ -451,8 +449,7 @@ theorem conj_lat : ∀ (D : D7) (j : Fin D.R.m) (B : Base (Vc D j) (Wc D j)), B.
         obtain ⟨_, hw, rfl⟩ := Subring.mem_map.1 hz
         obtain ⟨b, hb, rfl⟩ := Subring.mem_map.1 hw
         simpa using hb
-      · intro hz
-        exact Subring.mem_map.2 ⟨τ z, Subring.mem_map.2 ⟨z, hz, rfl⟩, by simp⟩
+      · exact fun hz => Subring.mem_map.2 ⟨τ z, Subring.mem_map.2 ⟨z, hz, rfl⟩, by simp⟩
     ext F'
     constructor
     · rintro ⟨F, hF, rfl⟩
@@ -936,8 +933,7 @@ theorem classSum_princ {B : Base S T} (hB : B.Good) (hS : S.SigOK) {ψ : Twist D
     (fun y => series B.F ω ((princ B).vecFlat ψ) (((GlobalTheory.ClassRegroup.finEquiv S).symm y : GfC S) : GA D S) (F y) g)
     (fun γ y => (hinv g).1 γ y) (fun k hk y => (hinv g).2 k hk y)
   simp only [symm_finPt S (hC₀.fin _), inner_sum B ψ ω hF hκ hlaw (hC.fin _), one_mul] at key
-  simp only [Pi.smul_apply, smul_eq_mul, show (princ B).F = B.F from rfl]
-  exact key
+  simpa only [Pi.smul_apply, smul_eq_mul, show (princ B).F = B.F from rfl] using key
 
 theorem classSum_weil {B : Base S T} (hB : B.Good) {ψ : Twist D Circle} (hQ : B.admitted ψ.Q) {ω ω' : PairRep S T}
     (hω : B.IsWeil ψ.chi ω) (hω' : B.IsWeil ψ.chi ω') {I : Type} [Fintype I] (h : I → GA D S)
@@ -1601,8 +1597,7 @@ theorem exists_local_component_at_place_alt (hCo : GlobalTheory.Published.Discre
   have hω' := Z.good.weil (c.twI w) j (c.sd w) _ hg'
   have hcl' := Z.good.classes (c.twI w) j (c.sd w) _ hg' ha'
   have hcl : IsClassSystem (Vc D j) ((baseOf Z c w j).levJ (twVia Z.ρ ι)) (Z.ρ.rep (c.twI w) j (c.sd w) (twVia Z.ρ ε)) := by
-    rw [← _root_.GlobalTheory.ConjGen.levJ_eq (baseOf Z c w j) hcj.1]
-    exact hcl'
+    rwa [← _root_.GlobalTheory.ConjGen.levJ_eq (baseOf Z c w j) hcj.1]
   refine (GlobalTheory.T.thetaLift_twistLevelForm_eq_unit_mul_classSum D X j _ hB hBo _ _ hg ha (H.tup ι hι) _ hω _ _ hcl u).elim fun z hz => hz.elim fun a₀ hz => ?_
   obtain ⟨hz, ha₀, hth⟩ := hz
   refine (GlobalTheory.T.classSums_conjugate_twists_conjugate_expansions D X j _ hB _ _ hg hg' ha (_root_.GlobalTheory.T.exists_local_tuple_of_discrete_series_read hCo hCW hHM hP D X X0 Y S YS Z c w j H ι hι τ hfix _ hg' hcj) u cc κ hu hc hκ τ hfb hfd
@@ -1651,8 +1646,7 @@ theorem exists_basisAt_latAt_thetaAt_of_atPlace (hCo : GlobalTheory.Published.Di
       exact hinj e1 ▸ hy'
   have hb : BasisAt c w (j.1 + 1) e := fun b => by
     refine ⟨indep_of_read ε (rdE (Z.tie (c.twI w) j (c.sd w)) hε) ?_, top_unique ?_⟩
-    · simp only [he]
-      exact hind _ b (D.what₂.jMt_basis _ _ b).1
+    · simpa only [he] using hind _ b (D.what₂.jMt_basis _ _ b).1
     · rw [← span_latT, ← hL]
       refine Submodule.span_le.2 fun y hy => ?_
       refine (Submodule.span_le (p := (Submodule.span (KE c w) (Set.range fun i => e (b i))).restrictScalars (c.Oe w))).2 ?_ hy

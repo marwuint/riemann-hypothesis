@@ -98,8 +98,7 @@ private theorem comp_mem (P : ∀ w : Pl E, Subgroup (GL (Fin n) (w.adicCompleti
   obtain ⟨-, h1, h2, -, -⟩ := UpperTheory.ConvolutionTheory.Tf.locEmb E n w
   by_cases hw : w' = w
   · subst hw
-    rw [h1]
-    exact hg
+    rwa [h1]
   · rw [h2 w' hw]
     exact one_mem _
 

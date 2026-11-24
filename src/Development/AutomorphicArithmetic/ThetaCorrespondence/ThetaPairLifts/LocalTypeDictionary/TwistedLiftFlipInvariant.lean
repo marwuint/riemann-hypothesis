@@ -279,8 +279,7 @@ theorem setIntegral_fd_eq {D : D7} (V : HSp D) (μ : Measure (GA D V)) (hμ : μ
     (hf : ∀ γ ∈ GQ V, ∀ g, f (γ * g) = f g) : ∫ g in 𝓕, f g ∂μ = ∫ g in 𝓕', f g ∂μ := by
   haveI := hμ
   exact h1.setIntegral_eq h2 fun γ g => by
-    simp only [Subgroup.smul_def, smul_eq_mul]
-    exact hf γ γ.2 g
+    simpa only [Subgroup.smul_def, smul_eq_mul] using hf γ γ.2 g
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
@@ -295,8 +294,7 @@ theorem kerA_right_rat (W : G.Weil) {i : ℕ} (hi : i < D.R.m) {f : Sch G (.righ
   intro γ hγ g h
   have H := (GlobalTheory.thetaKO_continuous_and_rat_invariant W.ψ _ _ _ _ (W.om (.chi i 0))
     (W.om_is (.chi i 0) ⟨hi, Nat.zero_le _⟩) f hf).2 1 (Subgroup.one_mem _) γ hγ (negGA _ h) g
-  rw [one_mul] at H
-  exact H
+  rwa [one_mul] at H
 
 theorem liftA_right_eq (W : G.Weil) (M M' : Vol G) {i : ℕ} {K : Subgroup (GL (Fin (G.V (.grid i 0)).rank) (Lev.EAf D))}
     (h : M.IsAt (.grid i 0) K) (h' : M'.IsAt (.grid i 0) K) (f : Sch G (.right i 0)) (F : Fn G (.grid i 0))
@@ -330,8 +328,7 @@ theorem rowCore (W : G.Weil) (M₀ M : Vol G) (ρm : RealMatch W) (t : T) (ρ : 
   intro n
   induction n with
   | zero =>
-    intro _
-    exact ⟨trivial, hu, rfl⟩
+    exact fun _ => ⟨trivial, hu, rfl⟩
   | succ n ih =>
     intro hn
     obtain ⟨c, hc, e⟩ := ih (by omega)
@@ -427,8 +424,7 @@ theorem star_lift_isTypeAt (θ : InfFam D) (hHC : GlobalTheory.Published.HarishC
       funext g
       rw [hT' f' f (fun ρ => by simp [f']) g, map_smul, PiTensorProduct.lift.tprod, Pi.smul_apply, smul_eq_mul, star_mul']
     rw [e]
-    intro x
-    exact hasTypeAll_const_mul (star r) (typedBy_value θ hHC M' hT'' f' τ x)
+    exact fun x => hasTypeAll_const_mul (star r) (typedBy_value θ hHC M' hT'' f' τ x)
   | add a b ha hb =>
     intro x
     have e : (fun g => star (PiTensorProduct.lift T (a + b) (x * atTau θ V τ g))) =
@@ -580,8 +576,7 @@ theorem GlobalTheory.FlipStart.flipSequence_start_condition : _root_.GlobalTheor
     subst hd'
     rw [zip_given]
     refine (pathConv_comp ch.W M _ _ _ _ _).2 ⟨hc1, ?_⟩
-    rw [hc2]
-    exact hr1
+    rwa [hc2]
   · rw [liftT_single, zip_given]
     unfold givenPath
     rw [pathLift_comp, hc2, ← hr2, smul_smul, inv_mul_cancel₀ (Units.ne_zero z), one_smul]
@@ -1212,7 +1207,6 @@ theorem kerBig_norm_le_thetaKO : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : C
         add_mem' := fun ha hb => GlobalTheory.OrientedHeis.theta_add ha hb
         zero_mem' := GlobalTheory.OrientedHeis.theta_zero
         smul_mem' := fun c _ hg => GlobalTheory.OrientedHeis.theta_smul c hg }
-    show Φ ∈ U
     exact U.sum_mem fun d hdm => U.smul_mem _ (hth d hdm)
   · intro g u
     have key : ω' (negGA S u, GlobalTheory.SquareComm.blk A Bs (g, g₁)) Φ 0 = c (negGA S u) g g₁ * kerBig W Θ g g₁ u := by
@@ -1299,8 +1293,7 @@ theorem sq_le {n : Type} [Fintype n] [DecidableEq n] (M : Matrix n n ℂ) (x : n
     ∑ i, ‖(M *ᵥ x) i‖ ^ 2 ≤ ‖Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) M‖ ^ 2 * ∑ i, ‖x i‖ ^ 2 := by
   have h := (Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) M).le_opNorm (WithLp.toLp 2 x)
   have h2 := pow_le_pow_left₀ (norm_nonneg _) h 2
-  rw [mul_pow, EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq] at h2
-  exact h2
+  rwa [mul_pow, EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq] at h2
 
 theorem opNorm_blk {m n ι : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n] [Fintype ι] [DecidableEq ι]
     (e : m ⊕ n ≃ ι) (x : Matrix m m ℂ) (y : Matrix n n ℂ) :
@@ -1613,8 +1606,7 @@ theorem lift_eq_integral_kerBig : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : 
     have e : ∀ g, F g * kerBig W Θ g g₁ u = ∑ d ∈ Θ.support,
         Θ d * (W.kerA (.down t (i + 1) j) d.2 u g₁ * (W.kerA (.right i (j + 1)) d.1.2 g u * F g)) := by
       intro g
-      simp only [kerBig, Finsupp.sum, Finset.mul_sum]
-      exact Finset.sum_congr rfl fun d _ => by ring
+      simpa only [kerBig, Finsupp.sum, Finset.mul_sum] using Finset.sum_congr rfl fun d _ => by ring
     simp_rw [e]
     rw [integral_finsetSum _ fun d hd => ((hint d hd).const_mul _).const_mul _]
     simp only [integral_const_mul, Finsupp.sum]

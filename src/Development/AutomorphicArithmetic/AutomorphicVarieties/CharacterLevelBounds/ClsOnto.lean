@@ -164,8 +164,7 @@ private theorem cls_eq_of {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Al
     (h : σ ζ = ζ ^ (u : ZMod N).val) : cls k Ω N σ = u := by
   have h1 := cls_spec N σ ζ hζ.pow_eq_one
   rw [h1] at h
-  apply Units.ext
-  exact ZMod.val_injective N (hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h)
+  exact Units.ext (ZMod.val_injective N (hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h))
 
 private theorem aux (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N]
     (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {N} ℚ K] :
@@ -204,9 +203,7 @@ private theorem aux (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (
     have hχ : IsCyclotomicExtension.Rat.galEquivZMod N K χ = u := MulEquiv.apply_symm_apply _ u
     rw [hχ, map_pow]
   · intro l _ A hA
-    have hA' : A ≠ ⊤ := by
-      intro h
-      exact ((places K Ω l A).2.1 h).2 hA
+    have hA' : A ≠ ⊤ := fun h => ((places K Ω l A).2.1 h).2 hA
     obtain ⟨v, hv⟩ := (places K Ω l A).1 hA'
     have hvl := ((places K Ω l A).2.2.1 v hv).mp hA
     have h1 := UpperTheory.V.LDataCardLeFinrank.princ_le_ineImage (F := K) (Ω := Ω) (N := N) (K := K)
@@ -219,8 +216,7 @@ private theorem aux (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (
     rintro σ ⟨τ, hτ, rfl⟩
     refine ⟨?_, hker τ⟩
     have hI := (hfam.1 A).2
-    rw [← hI] at hτ
-    exact hτ
+    rwa [← hI] at hτ
 
 theorem UpperTheory.V.Chr.clsOnto :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N], Function.Surjective (cls ℚ Ω N) ∧

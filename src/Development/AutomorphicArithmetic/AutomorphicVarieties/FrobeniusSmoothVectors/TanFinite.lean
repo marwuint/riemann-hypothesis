@@ -67,8 +67,7 @@ private theorem hom_eq_res (g : R →ₐ[O] ResidueField O) (x : R) : g x = res 
   obtain ⟨a, ha⟩ := IsCO.res_surj (O := O) x
   have h1 : g (x - algebraMap O R a) = 0 := by
     have hm : x - algebraMap O R a ∈ RingHom.ker (g : R →+* ResidueField O) := by
-      rw [hker]
-      exact ha
+      rwa [hker]
     exact (RingHom.mem_ker).1 hm
   have h2 : res O R (x - algebraMap O R a) = 0 := (res_eq_zero_iff O R _).2 ha
   rw [map_sub, sub_eq_zero] at h1 h2
@@ -101,16 +100,14 @@ private theorem tan_finite : Module.Finite (ResidueField O) (Tan O R) := by
     | add a b _ _ ha hb => rw [map_add (f := _), ha, hb, add_zero]
     | smul c z hz ih =>
       have hz' : z ∈ maximalIdeal R := by
-        rw [← hs]
-        exact hz
+        rwa [← hs]
       rw [smul_eq_mul, tan_mul, ih, (res_eq_zero_iff O R z).2 hz', mul_zero, zero_mul, add_zero]
   apply Subtype.ext
   apply LinearMap.ext
   intro x
   obtain ⟨a, ha⟩ := IsCO.res_surj (O := O) x
   have h := hm _ ha
-  rw [map_sub, tan_alg, sub_zero] at h
-  exact h
+  rwa [map_sub, tan_alg, sub_zero] at h
 
 private noncomputable def tanEquiv : (R →ₐ[O] DualNumber (ResidueField O)) ≃ Tan O R where
   toFun f := ⟨{ toFun := fun x => (f x).snd
@@ -141,5 +138,4 @@ end
 
 theorem UpperTheory.V.Fr.pr_tan :
     ∀ (O : Type) [CommRing O] [IsLocalRing O], ∀ (R : Type) [CommRing R] [Algebra O R] [IsCO O R], Module.Finite (ResidueField O) (Tan O R) ∧ Nat.card (R →ₐ[O] (DualNumber (ResidueField O))) = Nat.card (Tan O R) := by
-  intro O _ _ R _ _ _
-  exact ⟨tan_finite, Nat.card_congr tanEquiv⟩
+  exact fun O _ _ R _ _ _ => ⟨tan_finite, Nat.card_congr tanEquiv⟩

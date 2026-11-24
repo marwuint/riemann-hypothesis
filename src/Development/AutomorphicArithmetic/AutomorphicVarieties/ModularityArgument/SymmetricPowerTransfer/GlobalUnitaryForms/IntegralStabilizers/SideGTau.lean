@@ -53,9 +53,7 @@ import Mathlib.Topology.Sheaves.Init
 open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Glob UpperTheory.V.Z.Sym.Loc
 
 private theorem theta_theta {K : Type} [Field K] (Δ : K) (x : U3 Δ) : theta Δ (theta Δ x) = x := by
-  apply Subtype.ext
-  refine Matrix.ext fun i j => ?_
-  exact star_star ((x : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) i j)
+  exact Subtype.ext (Matrix.ext fun i j => star_star ((x : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) i j))
 
 private theorem mul_theta_conj {K : Type} [Field K] (Δ : K) (δ x : U3 Δ) :
     (x⁻¹ * δ * theta Δ x) * theta Δ (x⁻¹ * δ * theta Δ x) = x⁻¹ * (δ * theta Δ δ) * x := by
@@ -98,9 +96,7 @@ theorem UpperTheory.V.Z.Sym.Glob.sideGTau :
     have m : (X - 1 : (Lsq K Δ)[X]).Monic := by
       simpa using Polynomial.monic_X_sub_C (1 : Lsq K Δ)
     have e1 := m.isRegular.left e
-    have e2 := congrArg (fun p => p.coeff 1) e1
-    simp [coeff_one, coeff_X_pow] at e2
-    exact e2
+    simpa [coeff_one, coeff_X_pow] using congrArg (fun p => p.coeff 1) e1
   · intro K K' _ _ f Δ δ δ' τ hd h
     unfold HasTau at h ⊢
     have e : ((δ' * theta (f Δ) δ' : U3 (f Δ)) : Matrix (Fin 3) (Fin 3) (Lsq K' (f Δ))) =

@@ -378,8 +378,7 @@ theorem galRep_rankTwo_alt : GlobalTheory.Published.AutomorphicFormsFiniteGL →
   have hmk : CG.mk π₀ = (P.cg.e a π).1 := hπ₀
   have hc₀ : π₀.IsCsd := by
     have h1 := (P.cg.csd a π).1 hc
-    rw [CGu.IsCsd, ← hmk] at h1
-    exact h1
+    rwa [CGu.IsCsd, ← hmk] at h1
   have hinf : ∀ τ, D.naut.infG π τ = (CG.mk π₀).infChar τ := fun τ => by
     rw [P.cg.inf, CGu.infChar, ← hmk]
   have hr₀ : (CG.mk π₀).IsRegAlg := (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by
@@ -992,8 +991,7 @@ theorem galois_twist_alt : GlobalTheory.Published.DeRhamPotSemistable → ∀ (h
   have p1 : ∀ w ∈ placesOver D.host.E (D.nd.l i), D.naut.IsdRW i χ w → (D.naut.IsdRW i (Formalism.MainNotions.SumRepresentations.At.twGL ρ (Matrix.GeneralLinearGroup.det.comp χ)) w ↔ D.naut.IsdRW i ρ w) := by
     intro w hw h
     rw [hdR w hw χ hχ] at h
-    rw [hdR w hw _ htc, hdR w hw ρ hρ]
-    rw [GlobalTheory.Pst.resDec, GlobalTheory.TwistGal.comp_twGL]
+    rw [hdR w hw _ htc, hdR w hw ρ hρ, GlobalTheory.Pst.resDec, GlobalTheory.TwistGal.comp_twGL]
     exact GlobalTheory.T.deRham_characterTwist_iff_localEmbedding (D.nd.l i) (D.loc (D.nd.l i)) (D.locA (D.nd.l i)) ⟨D.locT (D.nd.l i)⟩ D.host.E D.nd.Om _ (D.nd.O i) (D.nbr i w hw) a (GlobalTheory.Pst.resDec D.nd.plOm.1 ρ w) (GlobalTheory.Pst.resDec D.nd.plOm.1 χ w) (hρ.comp continuous_subtype_val) (hχ.comp continuous_subtype_val) h
   have p3 : ∀ τ (c : ℤ), (∀ w, InducesW D.nd i τ w → D.naut.IsdRW i ρ w ∧ D.naut.IsdRW i χ w) → D.naut.jumpsW i χ τ = {c} → D.naut.jumpsW i (Formalism.MainNotions.SumRepresentations.At.twGL ρ (Matrix.GeneralLinearGroup.det.comp χ)) τ = (D.naut.jumpsW i ρ τ).map (· + c) := by
     intro τ c h hc

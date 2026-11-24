@@ -81,9 +81,7 @@ private theorem exists_comp_sigma_eq_of_comp_eq_comp {Z Y W : Scheme.{0}} (s : Y
   have hfin := UpperTheory.Gal.G3.fibre_finite s Ω (x ≫ c)
   let f : Fin d → {y : UpperTheory.Gal.G3.sp Ω ⟶ Y // y ≫ s = x ≫ c} :=
     fun j => ⟨x ≫ σ j, by rw [Category.assoc, hσ]⟩
-  have hf : Function.Injective f := by
-    intro i j hij
-    exact hinj Ω x (congrArg Subtype.val hij)
+  have hf : Function.Injective f := fun i j hij => hinj Ω x (congrArg Subtype.val hij)
   have hb := hf.bijective_of_nat_card_le (by rw [hd Ω (x ≫ c), Nat.card_eq_fintype_card, Fintype.card_fin])
   obtain ⟨j, hj⟩ := hb.2 ⟨y, hy⟩
   exact ⟨j, congrArg Subtype.val hj⟩
@@ -126,8 +124,7 @@ theorem UpperTheory.Gal.G3.pGalClosD :
       intro Ω' _ x' i j hij
       haveI := UpperTheory.Gal.G3.epi_of_field x'
       have h1 : yy i = yy j := (cancel_epi x').1 hij
-      have h2 := Subtype.val_injective h1
-      exact Fin.cast_injective _ (e.symm.injective h2)
+      exact Fin.cast_injective _ (e.symm.injective (Subtype.val_injective h1))
     obtain ⟨w, ⟨hw, _⟩, _⟩ := huniv (UpperTheory.Gal.G3.sp Ω) x yy hyy hinj'
     refine ⟨w (IsLocalRing.closedPoint Ω), ?_⟩
     rw [← hx, ← hw]

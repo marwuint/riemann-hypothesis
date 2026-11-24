@@ -118,8 +118,7 @@ private theorem iso_alg {R : Type} [CommRing R] [Algebra ℂ R] [IsNoetherianRin
       have hex' : e x' = 0 := by
 
         simp [hx'Eq, map_sub, map_sum, map_smul, hg, (hmem x).mp hx]
-      rw [hL, hd, hex', map_zero, sub_zero, Ideal.Quotient.eq_zero_iff_mem] at h1
-      exact h1
+      rwa [hL, hd, hex', map_zero, sub_zero, Ideal.Quotient.eq_zero_iff_mem] at h1
     have hsum : ∑ j, c j • g j ∈ Ig :=
       Ideal.sum_mem _ fun j _ => Submodule.smul_of_tower_mem _ (c j) (Ideal.subset_span ⟨j, rfl⟩)
     have hx : x = ∑ j, c j • g j + x' := by
@@ -134,16 +133,14 @@ private theorem iso_alg {R : Type} [CommRing R] [Algebra ℂ R] [IsNoetherianRin
       rintro _ ⟨x, hx, rfl⟩
       obtain ⟨i, hi, q, hq, hiq⟩ := Submodule.mem_sup.mp (hle hx)
       refine ⟨q, ?_, ?_⟩
-      · rw [pow_two, ← Ideal.smul_eq_mul] at hq
-        exact hq
+      · rwa [pow_two, ← Ideal.smul_eq_mul] at hq
       · rw [Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, ← hiq]
         have : q - (i + q) = -i := by abel
         rw [this]
         exact Ig.neg_mem hi)
   refine ⟨r, ?_, ?_⟩
   · have h := (hmem _).mp hr1
-    rw [map_sub, map_one, sub_eq_zero] at h
-    exact h
+    rwa [map_sub, map_one, sub_eq_zero] at h
   · intro e' he' hr'
     have hIg : Ig ≤ RingHom.ker e' := Ideal.span_le.mpr (by
       rintro _ ⟨j, rfl⟩
@@ -157,8 +154,7 @@ private theorem iso_alg {R : Type} [CommRing R] [Algebra ℂ R] [IsNoetherianRin
       exact (mul_eq_zero.mp h3).resolve_left hr'
     ext x
     have h := hmk _ (hsub x)
-    rw [map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_eq_zero] at h
-    exact h
+    rwa [map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_eq_zero] at h
 
 private theorem ev_pull {Z Y : Scheme.{0}} {sZ : Z ⟶ Sp ℂ} {s' : Y ⟶ Sp ℂ} {c : Y ⟶ Z}
     {U : Z.Opens} {V : Y.Opens} (hV : V ≤ c ⁻¹ᵁ U) {y : CxPts s' (RingHom.id ℂ)}

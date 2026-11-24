@@ -188,10 +188,7 @@ private theorem exists_continuous_mulEquiv_of_map_embedding {G G' : Type} [Group
       map_one' := by ext; simp
       map_mul' := by intro a b; ext; simp }
   have hinj : Function.Injective f := by
-    intro a b hab
-    apply Subtype.ext
-    apply hφ.injective
-    exact congrArg Subtype.val hab
+    exact fun a b hab => Subtype.ext (hφ.injective (congrArg Subtype.val hab))
   have hsurj : Function.Surjective f := by
     rintro ⟨g, hg⟩
     rw [← h] at hg
@@ -419,8 +416,7 @@ private theorem qzTw_contAction {E Ω : Type} [Field E] [NumberField E] [Field �
   unfold ReciprocityTheory.Gal.ContAction
   rw [hq.continuous_iff]
   have := LDataCardLeFinrank.contAction_qzG (F := E) (Ω := Ω) (l := l) e
-  rw [← qzTw_comp_toGS_eq_qzG D e] at this
-  exact this
+  rwa [← qzTw_comp_toGS_eq_qzG D e] at this
 
 private theorem sha_exists_cocycle_lift_whole {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {l : ℕ} [Fact l.Prime] (D : LData E Ω l) (e : ℤ) (ρ' : Representation ℤ_[l] (G E Ω) (QZ l))

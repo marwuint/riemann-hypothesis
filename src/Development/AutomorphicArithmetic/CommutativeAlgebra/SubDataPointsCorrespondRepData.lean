@@ -151,8 +151,7 @@ private theorem eq_one_of_geom {Z B : Over S} [GrpObj B] [IsCommMonObj B] (hB : 
     simpa using this
   have key : g' = e := by
     apply Over.OverMorphism.ext
-    have h2 := (GlobalTheory.FinEt.comp_eq_comp_iff_range g' e (𝟙 Z.left)).2 hrange
-    simpa using h2
+    simpa using (GlobalTheory.FinEt.comp_eq_comp_iff_range g' e (𝟙 Z.left)).2 hrange
   rw [← hg', key, he]
 
 end UpperTheory.EvaluationPowerKernel
@@ -315,8 +314,7 @@ private theorem lbIso_of_pull {B : Over S} [GrpObj B] [IsCommMonObj B] (hB : IsA
     refine (cls_eq_zero_iff hM).2 ?_
     refine GlobalTheory.RigTorsTriv.triv_of_geometricFibres B.left A' hA' (Q₁.div Q₂) hM ?_ (n * n) hkB ?_ ?_
     · refine (cls_eq_zero_iff (pull_isLB hM _)).1 ?_
-      rw [cls_pull hM, e0]
-      exact ax1
+      rwa [cls_pull hM, e0]
     · refine (cls_eq_zero_iff (LB.isLB_linComb hM _ _)).1 ?_
       rw [cls_linComb hM]
       simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, one_smul]
@@ -402,8 +400,7 @@ private theorem UpperTheory.EvaluationPowerKernel.main :
   haveI := hm2'
   have hpT : IsUnit ((p : ℕ) : Γ(T, ⊤)) := by
     have e1 := hpR.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)
-    have e2 := e1.map (s.appTop).hom
-    simpa using e2
+    simpa using e1.map (s.appTop).hom
   have hc : IsUnit ((c : ℕ) : Γ(T, ⊤)) := by
     rw [hck, Nat.cast_pow]
     exact hpT.pow k
@@ -791,12 +788,10 @@ theorem exists_phi : ∀ (K : Type) [Field K] (A A' : AbVar K) (P : LB (A.X ⊗ 
       (snd A.X _ ≫ x) = 0}) (fun x => ⟨x.1, ?_⟩) ?_
     · have hx : x.1 ≫ ψ.hom = 1 := by
         have := x.2
-        rw [MonoidHom.mem_ker, ptMap_apply] at this
-        exact this
+        rwa [MonoidHom.mem_ker, ptMap_apply] at this
       rw [← hpull, hψ, AbDual.pull_evc, lift_fst, lift_snd_assoc, Category.assoc, hx, MonObj.comp_one]
       exact AbDual.evc_one_right hP.isLB hP.zero _
-    · intro x y h
-      exact Subtype.ext (Subtype.mk.inj h)
+    · exact fun x y h => Subtype.ext (Subtype.mk.inj h)
   exact ⟨hfin, GlobalTheory.T.surjective_of_isFinite_of_dim_eq_abelianVarietyHom K A A' ψ hdim.symm hfin⟩
 
 end GlobalTheory.AV.AbVar
@@ -851,8 +846,7 @@ theorem exists_isAdj : ∀ (K : Type) [Field K] (A B : AbVar K) (c : Pic A.X.lef
       CechPic.pull (lift a' t).left (AbVar.lam d (fst A.X B.X ≫ f.hom) (snd A.X B.X)) := by
     intro Y a a' t
     simp only [lam_eq, CechPic.pull_lam, lift_fst_assoc, lift_snd, MonObj.mul_comp]
-    simp only [← lam_eq]
-    exact GlobalTheory.T.abelianVarietyMumfordClass_mul_left K B d Y _ _ t
+    simpa only [← lam_eq] using GlobalTheory.T.abelianVarietyMumfordClass_mul_left K B d Y _ _ t
   have hzero : CechPic.pull (lift (𝟙 A.X) (1 : A.X ⟶ B.X)).left
       (AbVar.lam d (fst A.X B.X ≫ f.hom) (snd A.X B.X)) = 0 := by
     rw [lam_eq, CechPic.pull_lam, lift_snd, CechPic.lam_one_right]
@@ -922,8 +916,7 @@ private theorem hom_cancel :
     rw [GlobalTheory.AV.AbVar.zsmul_hom, hFG, zpow_natCast, div_pow, hfg, div_self']
   have h0 : (n : ℤ) • (F - G) = 0 :=
     by
-      apply Subtype.ext
-      exact key.trans (GlobalTheory.AV.AbVar.zero_hom A' B').symm
+      exact Subtype.ext (key.trans (GlobalTheory.AV.AbVar.zero_hom A' B').symm)
   have h1 := GlobalTheory.AV.AbVar.hom_torsionFree Ω A' B' n (F - G) (by exact_mod_cast hn.ne') h0
   have h2 : F = G := sub_eq_zero.mp h1
   exact congrArg GlobalTheory.AV.AbVar.Hom.hom h2
@@ -966,8 +959,7 @@ private theorem pic_eq_zero :
   let A' : GlobalTheory.AV.AbVar Ω := ⟨A, hA, dA, hsA⟩
   let B' : GlobalTheory.AV.AbVar Ω := ⟨B, hB, dB, hsB⟩
   refine eq_zero_of_zsmul_eq_zero A' B' β hadd hnorm (n : ℤ) (by exact_mod_cast hn.ne') ?_
-  rw [natCast_zsmul]
-  exact hnβ
+  rwa [natCast_zsmul]
 
 private theorem ker_pow :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (Ω : Type) [Field Ω] (σ : Sp Ω ⟶ Sp R) (o : Obj b N σ), ∃ e : ℕ, e.Coprime p ∧ ∀ (T : Over (Sp Ω)) (x : T ⟶ o.A), (∀ (Y : Over (Sp Ω)) (z : Y ⟶ T) (y : Y ⟶ o.A), GlobalTheory.BirigidPow.val o.isLB (z ≫ x) y = 0) → x ^ e = 1 := by
@@ -1103,10 +1095,8 @@ private theorem exists_adjoint :
     have e := GlobalTheory.AV.AbVar.AdjCalc.isAdj_pt hadj (Y := Y) y x
     have e' : (n : ℤ) • (2 • GlobalTheory.BirigidPow.val o₁.isLB (y ≫ κ) x) =
         2 • GlobalTheory.BirigidPow.val o₂.isLB y (x ≫ ν₀) := by
-      rw [← lam_dg o₁ (y ≫ κ) x, ← lam_dg o₂ y (x ≫ ν₀), hνdef]
-      exact e
-    rw [natCast_zsmul, smul_smul, mul_comm] at e'
-    exact e'
+      rwa [← lam_dg o₁ (y ≫ κ) x, ← lam_dg o₂ y (x ≫ ν₀), hνdef]
+    rwa [natCast_zsmul, smul_smul, mul_comm] at e'
   have H2 : ∀ (Y : Over (Sp Ω)) (y : Y ⟶ o₂.A) (x : Y ⟶ o₁.A),
       n • GlobalTheory.BirigidPow.val o₁.isLB (y ≫ κ) x = GlobalTheory.BirigidPow.val o₂.isLB y (x ≫ ν₀) :=
     cancel o₁ o₂ κ ν₀ 2 n two_pos H1

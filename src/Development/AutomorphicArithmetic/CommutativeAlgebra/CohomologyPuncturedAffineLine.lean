@@ -191,11 +191,9 @@ theorem UpperTheory.exists_fiber_pullback_square_of_open_immersions :
     intro s
     have hs : s.fst ≫ pullback.fst ι₁ ι₂ ≫ ι₁ ≫ p = s.snd ≫ cpt A := s.condition
     have hs1 : (s.fst ≫ pullback.fst ι₁ ι₂) ≫ ι₁ ≫ p = s.snd ≫ cpt A := by
-      rw [Category.assoc]
-      exact hs
+      rwa [Category.assoc]
     have hs2 : (s.fst ≫ pullback.snd ι₁ ι₂) ≫ ι₂ ≫ p = s.snd ≫ cpt A := by
-      rw [Category.assoc, ← Category.assoc (pullback.snd ι₁ ι₂), ← cond2, Category.assoc]
-      exact hs
+      rwa [Category.assoc, ← Category.assoc (pullback.snd ι₁ ι₂), ← cond2, Category.assoc]
     let x₁ := pullback.lift _ _ hs1
     let x₂ := pullback.lift _ _ hs2
     have hx : x₁ ≫ fibMap p ι₁ = x₂ ≫ fibMap p ι₂ := by
@@ -214,8 +212,7 @@ theorem UpperTheory.exists_fiber_pullback_square_of_open_immersions :
         rw [← hm1, Category.assoc, pullback.lift_snd]
       have e3 : m ≫ pullback.fst (fibMap p ι₁) (fibMap p ι₂) ≫ pullback.snd (ι₁ ≫ p) (cpt A) = s.snd := hm2
       have e4 : m ≫ pullback.snd (fibMap p ι₁) (fibMap p ι₂) ≫ pullback.snd (ι₂ ≫ p) (cpt A) = s.snd := by
-        rw [← m2 ι₂, ← pullback.condition_assoc, m2 ι₁]
-        exact e3
+        rwa [← m2 ι₂, ← pullback.condition_assoc, m2 ι₁]
       apply pullback.hom_ext
       · apply pullback.hom_ext
         · simp only [Category.assoc, pullback.lift_fst, x₁, e1]
@@ -247,8 +244,7 @@ private lemma split_of_units {A : Type} [CommRing A] [Nontrivial A] (q : ℕ) (�
   have hmon : ∀ a ∈ Finset.range q, (X - C (ζ ^ a) : A[X]).Monic := fun a _ => monic_X_sub_C _
   have hdvd : (∏ a ∈ Finset.range q, (X - C (ζ ^ a))) ∣ (X ^ q - 1 : A[X]) := by
     refine Finset.prod_dvd_of_coprime ?_ ?_
-    · intro i hi j hj hij
-      exact isCoprime_X_sub_C_of_isUnit_sub (hu i hi j hj hij)
+    · exact fun i hi j hj hij => isCoprime_X_sub_C_of_isUnit_sub (hu i hi j hj hij)
     · intro a _
       rw [dvd_iff_isRoot]
       show eval (ζ ^ a) (X ^ q - 1 : A[X]) = 0
@@ -291,13 +287,11 @@ theorem UpperTheory.exists_goodRoot_of_henselian_sepClosed_residue :
     simp only [Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_one] at h
     exact sub_eq_zero.1 h
   have hres : residue A ζ = residue A a0 := by
-    rw [← sub_eq_zero, ← map_sub, residue_eq_zero_iff]
-    exact hζ
+    rwa [← sub_eq_zero, ← map_sub, residue_eq_zero_iff]
   have hunits : ∀ i < q, ∀ j < q, i ≠ j → IsUnit (ζ ^ i - ζ ^ j) := by
     intro i hi j hj hij
     rw [← residue_ne_zero_iff_isUnit, map_sub, map_pow, map_pow, hres]
-    intro h
-    exact hij (hz.pow_inj hi hj (sub_eq_zero.1 h))
+    exact fun h => hij (hz.pow_inj hi hj (sub_eq_zero.1 h))
   refine ⟨ζ, hζq, ?_, ?_⟩
   · intro a b hab
     exact hunits a.val (ZMod.val_lt a) b.val (ZMod.val_lt b) (fun h => hab (ZMod.val_injective q h))
@@ -326,8 +320,7 @@ theorem UpperTheory.isAffine_isLocalizationAway_of_range_eq_basicOpen :
           ∀ y : Γ(U, ⊤), a.appTop.hom y = 0 → ∃ k : ℕ, t ^ k * y = 0 := by
   intro U W _ a _ t h
   have hr : Set.range a = Set.range (U.basicOpen t).ι := by
-    rw [Scheme.Opens.range_ι]
-    exact h
+    rwa [Scheme.Opens.range_ι]
   let χ := IsOpenImmersion.isoOfRangeEq a (U.basicOpen t).ι hr
   have hfac : χ.hom ≫ (U.basicOpen t).ι = a := IsOpenImmersion.isoOfRangeEq_hom_fac a _ hr
   haveI : IsAffine (U.basicOpen t) := (isAffineOpen_top U).basicOpen t
@@ -352,8 +345,7 @@ theorem UpperTheory.isAffine_isLocalizationAway_of_range_eq_basicOpen :
     have hk' : t ^ k = (m : Γ(U, ⊤)) := hk
     have hℓ' : χ.inv.appTop.hom x * algebraMap Γ(U, ⊤) Γ(U.basicOpen t, ⊤) (t ^ k) =
         algebraMap Γ(U, ⊤) Γ(U.basicOpen t, ⊤) ℓ := by
-      rw [hk']
-      exact hℓ
+      rwa [hk']
     refine ⟨k, ℓ, ?_⟩
     rw [happ, happ, ← hℓ']
     simp only [map_pow, map_mul, hr']
@@ -431,8 +423,7 @@ private theorem roots_sub (φ : B →+* D) (α : A →+* B) (h : φ.comp α = al
     simp
   rw [← hpm, Polynomial.eval_map]
   have := Polynomial.eval₂_hom (e : B →+* sub φ α h) a (p := p.map (e.symm : sub φ α h →+* B))
-  rw [ha, map_zero] at this
-  exact this
+  rwa [ha, map_zero] at this
 
 end UpperTheory.IntegralSubring
 
@@ -555,8 +546,7 @@ theorem UpperTheory.isIntegral_sections_of_integralHom_over_affine_chart :
     exact ((hpo.desc g1 g2 hw).hom y).2
   obtain ⟨p, hm, hp⟩ := hφi x
   refine ⟨p.map (φ.hom.codRestrict S hall), hm.map _, ?_⟩
-  rw [Polynomial.eval₂_map]
-  exact hp
+  rwa [Polynomial.eval₂_map]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.CommutativeAlgebra.IsIntegralSectionsOfIntegralHomOverAffineChart =====
@@ -628,8 +618,7 @@ private theorem mul_res :
     inferInstanceAs (CommRing Γ(projectiveSpace ℤ 1, stdOpen ℤ 1 0 ⊓ stdOpen ℤ 1 1))
   have h := ProjTwist.ratio_mul_ratio' (𝒜 := grading ℤ 1) (X_mem (A := ℤ) (n := 1) 0)
     (X_mem (A := ℤ) (n := 1) 1) (X_mem (A := ℤ) (n := 1) 0)
-  rw [ProjTwist.ratio_self, map_one] at h
-  rw [← chartHom_eq_ratio, ← chartHom_eq_ratio] at h
+  rw [ProjTwist.ratio_self, map_one, ← chartHom_eq_ratio, ← chartHom_eq_ratio] at h
   change resR (inf_le_right : stdOpen ℤ 1 0 ⊓ stdOpen ℤ 1 1 ≤ stdOpen ℤ 1 1)
       (chartHom (A := ℤ) (n := 1) 1 (MvPolynomial.X 0)) *
     resR (inf_le_left : stdOpen ℤ 1 0 ⊓ stdOpen ℤ 1 1 ≤ stdOpen ℤ 1 0)
@@ -652,8 +641,7 @@ theorem UpperTheory.projectiveLine_std_opens_basicOpen_generators :
     isAffineOpen_stdOpen (A := ℤ) (n := 1) 0, isAffineOpen_stdOpen (A := ℤ) (n := 1) 1,
     closure_chart 0 1 (by decide), closure_chart 1 0 (by decide),
     basicOpen_chartHom_X (A := ℤ) (n := 1) 0 1, ?_, ?_⟩
-  · refine (basicOpen_chartHom_X (A := ℤ) (n := 1) 1 0).trans ?_
-    exact inf_comm _ _
+  · exact (basicOpen_chartHom_X (A := ℤ) (n := 1) 1 0).trans (inf_comm _ _)
   · exact mul_res
 end -- clump:auto
 end -- clump:auto
@@ -700,8 +688,7 @@ private lemma range_fst_eq {P Z U V : Scheme.{0}} (g : Z ⟶ P) (O O' : P.Opens)
   ext x
   have hx : x ∈ (ι₁ ≫ g) ⁻¹ᵁ O := h trivial
   constructor
-  · intro hx'
-    exact ⟨trivial, hx, hx'⟩
+  · exact fun hx' => ⟨trivial, hx, hx'⟩
   · rintro ⟨-, -, hx'⟩
     exact hx'
 
@@ -825,8 +812,7 @@ theorem UpperTheory.roots_of_unity_eq_locallyConstant_powers_spectrum :
   obtain ⟨hq1, hunit, hsplit⟩ := hζ
   have notmem : ∀ (a b : ZMod q) (p : PrimeSpectrum S), a ≠ b →
       ζ ^ a.val - ζ ^ b.val ∉ p.asIdeal := by
-    intro a b p hab hmem
-    exact p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem (hunit a b hab))
+    exact fun a b p hab hmem => p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem (hunit a b hab))
   refine ⟨fun g => ?_, fun w hw => ?_, fun a b p h => ?_⟩
   · have hfib : ∀ a : ZMod q, ∃ e : S, IsIdempotentElem e ∧
         ∀ p : PrimeSpectrum S, (g p = a ↔ e ∉ p.asIdeal) := by
@@ -862,8 +848,7 @@ theorem UpperTheory.roots_of_unity_eq_locallyConstant_powers_spectrum :
       · simp [h1]
       · intro b _ hb
         simp [h0 b hb]
-      · intro h
-        exact absurd (Finset.mem_univ _) h
+      · exact fun h => absurd (Finset.mem_univ _) h
   · have hprod : ∏ a ∈ Finset.range q, (w - ζ ^ a) = 0 := by
       have := hsplit S (RingHom.id S) w
       simp only [RingHom.id_apply, hw, sub_self] at this
@@ -935,8 +920,7 @@ theorem UpperTheory.scheme_roots_of_unity_eq_locallyConstant_powers :
     rw [hb]
     have hx := hw (h x)
     change w - ζ ^ (g (h.symm (h x))).val ∈ (h x).asIdeal at hx
-    rw [h.symm_apply_apply] at hx
-    exact hx
+    rwa [h.symm_apply_apply] at hx
   · intro w hw
     obtain ⟨g, hg⟩ := h2 w hw
     refine ⟨LocallyConstant.comap ⟨h, h.continuous⟩ g, fun x => ?_⟩
@@ -945,8 +929,7 @@ theorem UpperTheory.scheme_roots_of_unity_eq_locallyConstant_powers :
   · intro a b x hx
     rw [hb] at hx
     exact h3 a b _ hx
-  · intro x
-    exact ⟨(X.toSpecΓ x).asIdeal, fun f => (hb x f).symm⟩
+  · exact fun x => ⟨(X.toSpecΓ x).asIdeal, fun f => (hb x f).symm⟩
 
 end
 end -- clump:auto
@@ -970,8 +953,7 @@ private abbrev st {A : Type} [CommRing A] {X : Scheme.{0}} (f : X ⟶ Spec (Comm
   ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ f.appTop).hom
 
 private theorem st_comp {A : Type} [CommRing A] {X Y : Scheme.{0}} (h : Y ⟶ X) (f : X ⟶ Spec (CommRingCat.of A)) (a : A) :
-    h.appTop.hom (st f a) = st (h ≫ f) a := by
-  exact appTop_comp_apply h f _
+    h.appTop.hom (st f a) = st (h ≫ f) a := appTop_comp_apply h f _
 
 private theorem goodRoot_map_ringHom {S S₂ : Type} [CommRing S] [CommRing S₂] (φ : S →+* S₂) {q : ℕ} {ζ : S}
     (h : GoodRoot q ζ) : GoodRoot q (φ ζ) := by
@@ -1047,15 +1029,13 @@ theorem UpperTheory.cohomology_punctured_affine_line : LateralTheory.E.StandardE
     intro y hy
     unfold mm at hy
     rw [Algebra.top_toSubmodule, Ideal.smul_top_eq_map] at hy
-    rw [← RingHom.mem_ker, hrker]
-    exact hy
+    rwa [← RingHom.mem_ker, hrker]
   have hmem : w' ^ q - 1 ∈ mm (⊤ : Subalgebra A Γ(pullback ι₁ ι₂, ⊤)) := by
     have hk : w' ^ q - 1 ∈ RingHom.ker r.appTop.hom := by
       rw [RingHom.mem_ker, RingHom.map_sub, map_pow, hwq, map_one, sub_self]
     rw [hrker] at hk
     unfold mm
-    rw [Algebra.top_toSubmodule, Ideal.smul_top_eq_map]
-    exact hk
+    rwa [Algebra.top_toSubmodule, Ideal.smul_top_eq_map]
   obtain ⟨u, hu, v, hv, huq, hvq, hwuv⟩ := UpperTheory.exists_near_root_of_unity_product_decomposition A Γ(pullback ι₁ ι₂, ⊤) T hTint hTB hTC q hq w' hmem
   have hu' : u ∈ (T.B : Set _) := hu
   rw [hB] at hu'
@@ -1076,12 +1056,10 @@ theorem UpperTheory.cohomology_punctured_affine_line : LateralTheory.E.StandardE
     (fun a ha => by rw [← RingHom.mem_ker, hFVker]; exact Ideal.mem_map_of_mem _ ha) _ hvq
   have hu1 : ((pullback.fst (ι₁ ≫ p) (cpt A)).appTop.hom u₀) ^ q = 1 := by
     have : e₁ = u₀ ^ q - 1 := hinj1 (by rw [he₁, map_sub, map_pow, map_one])
-    rw [this, map_sub, map_pow, map_one, sub_eq_zero] at he₁0
-    exact he₁0
+    rwa [this, map_sub, map_pow, map_one, sub_eq_zero] at he₁0
   have hv1 : ((pullback.fst (ι₂ ≫ p) (cpt A)).appTop.hom v₀) ^ q = 1 := by
     have : e₂ = v₀ ^ q - 1 := hinj2 (by rw [he₂, map_sub, map_pow, map_one])
-    rw [this, map_sub, map_pow, map_one, sub_eq_zero] at he₂0
-    exact he₂0
+    rwa [this, map_sub, map_pow, map_one, sub_eq_zero] at he₂0
   obtain ⟨a', ha'⟩ := (UpperTheory.scheme_roots_of_unity_eq_locallyConstant_powers _ q _ (goodRoot_map_ringHom (st (pullback.fst (ι₁ ≫ p) (cpt A) ≫ ι₁ ≫ p)) hζ)).2.1 _ hu1
   obtain ⟨b', hb'⟩ := (UpperTheory.scheme_roots_of_unity_eq_locallyConstant_powers _ q _ (goodRoot_map_ringHom (st (pullback.fst (ι₂ ≫ p) (cpt A) ≫ ι₂ ≫ p)) hζ)).2.1 _ hv1
   refine ⟨a', -b', ?_⟩

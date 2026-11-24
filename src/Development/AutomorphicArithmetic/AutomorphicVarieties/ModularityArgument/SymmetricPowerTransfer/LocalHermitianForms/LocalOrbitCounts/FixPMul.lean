@@ -58,8 +58,7 @@ private theorem fixP_mul {O K : Type} [CommRing O] [Field K] [Algebra O K] {τ :
     constructor
     · rintro ⟨a, ha, rfl⟩
       simpa using ha
-    · intro hz
-      exact ⟨_, hz, by simp⟩
+    · exact fun hz => ⟨_, hz, by simp⟩
   have hy : (y : Etau K τ)
       = algebraMap K _ (QuadraticAlgebra.norm (y : Etau K τ)) * star (↑y⁻¹ : Etau K τ) := by
     rw [algebraMap_norm_eq_mul_star, mul_assoc, ← star_mul, Units.inv_mul, star_one, mul_one]
@@ -87,12 +86,10 @@ private theorem fixP_mul {O K : Type} [CommRing O] [Field K] [Algebra O K] {τ :
     constructor
     · rintro H _ ⟨a, ha, rfl⟩
       have := H a ha
-      rw [key]
-      exact this
+      rwa [key]
     · intro H a ha
       have := H (↑y * a) ⟨a, ha, rfl⟩
-      rw [key] at this
-      exact this
+      rwa [key] at this
   · rintro _ ⟨a, ha, rfl⟩
     exact ⟨ω * a, hstab a ha, mul_left_comm _ _ _⟩
 
@@ -144,8 +141,7 @@ theorem UpperTheory.V.Z.Sym.Loc.pNorm : UpperTheory.V.Z.Sym.Loc.PNorm := by
     · exact absurd (e.mpr h1) h2
     · exact absurd (e.mp h3) h1
     · rfl
-  · intro S _
-    exact ⟨_, rfl, fun _ h => h⟩
+  · exact fun S _ => ⟨_, rfl, fun _ h => h⟩
   · intro S' _
     refine ⟨((↑y⁻¹ : Etau K τ) * ·) '' S', ?_, fun S h => ?_⟩
     · show S' = ((y : Etau K τ) * ·) '' (((↑y⁻¹ : Etau K τ) * ·) '' S')

@@ -260,8 +260,7 @@ private theorem rank_H1_baseChange_eq [CompactSpace G] [Finite V] :
     induction hy' using Submodule.span_induction with
     | mem x hx =>
       obtain ⟨z, hz, rfl⟩ := hx
-      intro hy
-      exact Submodule.subset_span ⟨Submodule.Quotient.mk ⟨z, hz⟩, rfl⟩
+      exact fun hy => Submodule.subset_span ⟨Submodule.Quotient.mk ⟨z, hz⟩, rfl⟩
     | zero => intro hy; exact zero_mem _
     | add x y hx' hy' hx hy =>
       intro _
@@ -308,10 +307,8 @@ private theorem trZ (e : W ≃ₗ[K] W') (ρ : Representation K G W) (ρ' : Repr
   simp only [Function.comp_apply]
   apply and_congr
   · constructor
-    · intro hl
-      exact IsLocallyConstant.desc _ _ hl e.injective
-    · intro hl
-      exact hl.comp e
+    · exact fun hl => IsLocallyConstant.desc _ _ hl e.injective
+    · exact fun hl => hl.comp e
   apply and_congr
   · apply forall_congr'
     intro s
@@ -476,8 +473,7 @@ theorem UpperTheory.V.Fr.ok_ext :
     simp
   have hker : (F.ext f).Ψ.ker = F.Ψ.ker := by
     ext g
-    simp only [MonoidHom.mem_ker]
-    exact ⟨hU1 _, fun h1 => by rw [hΨ, h1, map_one]⟩
+    simpa only [MonoidHom.mem_ker] using ⟨hU1 _, fun h1 => by rw [hΨ, h1, map_one]⟩
   haveI : CompactSpace F.G0 :=
     isCompact_iff_compactSpace.1 (Subgroup.isClosed_of_isOpen _ h.del_open).isCompact
   have hχ1 : ∀ g : F.Γ, ((F.ext f).Ψ⁻¹ * (F.ext f).delK k') g =
@@ -523,22 +519,19 @@ theorem UpperTheory.V.Fr.ok_ext :
       f2a := by
         obtain ⟨g, hg⟩ := h.f2a
         refine ⟨g, fun he => hg (hU1 _ ?_)⟩
-        rw [hom] at he
-        exact he
+        rwa [hom] at he
       f2b := by
         intro j hj
         obtain ⟨g, hg⟩ := h.f2b j hj
         refine ⟨g, fun he => hg (hU1 _ ?_)⟩
         rw [hom, hΨ] at he
-        rw [map_mul, map_zpow]
-        exact he
+        rwa [map_mul, map_zpow]
       f2c := by
         intro j hj
         obtain ⟨g, hg⟩ := h.f2c j hj
         refine ⟨g, fun he => hg (hU1 _ ?_)⟩
         erw [hom, hdel] at he
-        rw [map_mul, map_mul, map_zpow]
-        exact he
+        rwa [map_mul, map_mul, map_zpow]
       f3 := by
         intro v
         obtain ⟨g, hg⟩ := h.f3 v
@@ -550,8 +543,7 @@ theorem UpperTheory.V.Fr.ok_ext :
         refine h.f5 ⟨j, fun g => hU _ _ ?_⟩
         have hg := hj g
         rw [hom, hΨ] at hg
-        rw [map_zpow]
-        exact hg
+        rwa [map_zpow]
       Ψ_N := fun v g hg => by
         show Units.map (f : k →* k') (F.Ψ (F.loc v g)) = 1
         rw [h.Ψ_N v g hg, map_one]

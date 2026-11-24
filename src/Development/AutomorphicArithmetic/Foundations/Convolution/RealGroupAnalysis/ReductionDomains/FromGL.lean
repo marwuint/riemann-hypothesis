@@ -158,8 +158,7 @@ theorem UpperTheory.ConvolutionTheory.R2.M.fromGL :
   have hsK : s ∈ KK F := by
     rw [(M.kkCpt F).1]
     show gl s ∈ Reduction.maxCompact (K := F) (n := 2)
-    rw [hs]
-    exact hk'
+    rwa [hs]
   have hc : gl (g * s⁻¹) = b * dM t := by
     have hm : ∀ x y : G1 F, gl (x * y) = gl x * gl y := fun x y => map_mul _ x y
     have h1 : gl (g * s⁻¹) = gl g * (gl s)⁻¹ := by
@@ -180,8 +179,7 @@ theorem UpperTheory.ConvolutionTheory.R2.M.fromGL :
     rw [hv]; simp [dM, Matrix.mul_apply, Fin.sum_univ_two]
   have hdet2 : (b : Matrix (Fin 2) (Fin 2) (A F)) 0 0 * ((b : Matrix (Fin 2) (Fin 2) (A F)) 1 1 * (t : A F)) = 1 := by
     have h1 := (g * s⁻¹).det_coe
-    rw [Matrix.det_fin_two, e00, e01, e10, e11, mul_zero, sub_zero] at h1
-    exact h1
+    rwa [Matrix.det_fin_two, e00, e01, e10, e11, mul_zero, sub_zero] at h1
   let a : (A F)ˣ := (Reduction.isUnit_apply_self_of_mem_adelicBorel hb 0).unit
   have ha : (a : A F) = (b : Matrix (Fin 2) (Fin 2) (A F)) 0 0 := IsUnit.unit_spec _
   have hinv : ((a⁻¹ : (A F)ˣ) : A F) = (b : Matrix (Fin 2) (Fin 2) (A F)) 1 1 * (t : A F) :=

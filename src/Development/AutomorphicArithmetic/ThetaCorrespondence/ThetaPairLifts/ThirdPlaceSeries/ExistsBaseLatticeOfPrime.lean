@@ -249,8 +249,7 @@ theorem exists_frob_unit_and_hkF_zero_eq_of_built {hL : _root_.UpperTheory.Zero.
     (∃ u, IsFrobUnit D u) ∧
       ∀ i j s P x, 1 ≤ j → j ≤ D.R.m → P ∉ D.ntw.S0 i → IsSplitPl D.host P → D.nexp.hkF i j s 0 P x = x := by
   obtain ⟨D0, cf, jE, A, cg, au, rep, row, low, Pq, S, hl, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, rfl⟩ := b
-  have h := hkF_zero_of_sideB (D := D0) Bs h0
-  exact ⟨⟨Bs.cHk, Bs.cHk_del⟩, fun i j s P x => h i j s P x⟩
+  exact ⟨⟨Bs.cHk, Bs.cHk_del⟩, fun i j s P x => (hkF_zero_of_sideB (D := D0) Bs h0) i j s P x⟩
 end General
 section Rows
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt}
@@ -471,8 +470,7 @@ theorem exists_galois_character_crystalline_at_places (hL : _root_.UpperTheory.Z
     have e : (GeneralLinearGroup.scalar (Fin 1)).comp ((Matrix.GeneralLinearGroup.det.comp r).comp (Dec (F := E) A).subtype) =
         r.comp (Dec (F := E) A).subtype := by
       rw [← MonoidHom.comp_assoc, hsc]
-    rw [e]
-    exact hc
+    rwa [e]
 end G
 end GlobalTheory.HodgeOfTrue
 namespace GlobalTheory.GalAway
@@ -648,8 +646,7 @@ theorem comp_complexConj {E : Type} [Field E] [NumberField E] [IsCMField E] {l :
       ComplexEmbedding.conjugate (ι.toRingHom.comp τ) := by
   refine RingHom.ext fun x => ?_
   have := IsCMField.complexEmbedding_complexConj (K := E) (ι.toRingHom.comp τ) x
-  rw [ComplexEmbedding.conjugate_coe_eq]
-  exact this
+  rwa [ComplexEmbedding.conjugate_coe_eq]
 
 theorem sum_map_affine (M : Multiset ℂ) (u v : ℂ) :
     (M.map fun z => u + v * z).sum = (M.card : ℂ) * u + v * M.sum := by
@@ -775,8 +772,7 @@ theorem galHodge0_of_cgTrue (sw : _root_.UpperTheory.One.M.TrivialCondition) (hL
   have hmk : CG.mk π₀ = (C.e _ π).1 := hπ₀
   have hc₀ : π₀.IsCsd := by
     have h1 := (C.csd _ π).1 hc
-    rw [CGu.IsCsd, ← hmk] at h1
-    exact h1
+    rwa [CGu.IsCsd, ← hmk] at h1
   have hν := GlobalTheory.HeckeGal.Model.absPow_isAbsPow D.host.E s
   set ν := GlobalTheory.HeckeGal.Model.absPow D.host.E s
   have inf₁ : ∀ τ, (CG.mk (π₀.twist ν)).infChar τ = (D.naut.infG π τ).map (· + (s : ℂ)) := fun τ => by
@@ -859,8 +855,7 @@ theorem galHodge0_of_cgTrue (sw : _root_.UpperTheory.One.M.TrivialCondition) (hL
         obtain ⟨n, hn⟩ := hξ τ
         have e := ((ParLaws.hasInfChar_infChar (CG.mk π₀) τ).twist ξ).infChar_eq
         have e' : (CG.mk (π₀.twist ξ)).infChar τ = (D.naut.infG π τ).map (· + expo ξ τ) := by
-          rw [C.inf, CGu.infChar, ← hmk]
-          exact e
+          rwa [C.inf, CGu.infChar, ← hmk]
         rw [e']
         refine ⟨h1.map (add_left_injective _), fun z hz => ?_⟩
         obtain ⟨y, hy, rfl⟩ := Multiset.mem_map.1 hz
@@ -934,8 +929,7 @@ theorem sep_conj_g_alt (sw : _root_.UpperTheory.One.M.TrivialCondition) (hL : _r
   have hmk : CG.mk π₀ = (C.e _ π).1 := hπ₀
   have hc₀ : π₀.IsCsd := by
     have h1 := (C.csd _ π).1 hc
-    rw [CGu.IsCsd, ← hmk] at h1
-    exact h1
+    rwa [CGu.IsCsd, ← hmk] at h1
   have hpar : ∀ v, T.e v (D.naut.locG π v) = _root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (CG.mk π₀) (D.nd.plOm.2 v) := fun v => by
     rw [C.loc, hmk]
     rfl
@@ -951,8 +945,7 @@ theorem sep_conj_g_alt (sw : _root_.UpperTheory.One.M.TrivialCondition) (hL : _r
       UpperTheory.Zero.LLC.Good (cls (ParLaws.toRep τ)) := fun v τ hτ => by
     have g := _root_.UpperTheory.One.M.New.cgGood sw C _ π v
     have h1 : (CG.mk π₀).IsLoc v (Quotient.mk _ τ) := hτ
-    rw [← hmk, CG.IsLoc.unique _ a _ v _ _ h1.loc h1] at g
-    exact g
+    rwa [← hmk, CG.IsLoc.unique _ a _ v _ _ h1.loc h1] at g
   rw [_root_.GlobalTheory.CuspRep.ParLaws.local_parameter_eq_reciprocity_of_is_local_component hL hσ] at k
   rw [_root_.GlobalTheory.CuspRep.ParLaws.local_parameter_eq_reciprocity_of_is_local_component hL (ParLaws.isLocComp_flip hc₀ hσ)]
   let π₁ : IrrRep (GL (Fin a) (w.adicCompletion D.host.E)) :=
@@ -1722,10 +1715,8 @@ theorem exists_baseLattice_of_prime_alt : _root_.GlobalTheory.Mem.Top.Bl.HypAAlt
     ?_ ?_ has3 lv.1 lv.2
     (_root_.GlobalTheory.HeightCounting.Up.movable_prmR_nel_alt hL cDep)
     (second SExt.none) hMQ
-  · intro K B f T w Z Wt p0 t nch n xd c h
-    exact ⟨h.1.1⟩
-  · intro K B f T w Z Wt p0 t nch n xd c h
-    exact ⟨⟨h.1⟩, h.2.down⟩
+  · exact fun K B f T w Z Wt p0 t nch n xd c h => ⟨h.1.1⟩
+  · exact fun K B f T w Z Wt p0 t nch n xd c h => ⟨⟨h.1⟩, h.2.down⟩
 end GlobalTheory.Mem.Top.Bl
 end
 section

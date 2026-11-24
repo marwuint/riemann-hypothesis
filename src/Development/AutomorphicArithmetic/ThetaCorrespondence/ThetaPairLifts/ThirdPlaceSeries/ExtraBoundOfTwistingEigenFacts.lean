@@ -241,8 +241,7 @@ theorem mapSig_props : ∀ {G LL LL' : Type} [Group G] [Field LL] [Field LL'] (f
   · classical
     unfold mapSig
     exact Finset.card_image_le
-  · intro h1
-    exact (mem_mapSig f Sig 1).2 ⟨1, h1, MonoidHom.comp_one _⟩
+  · exact fun h1 => (mem_mapSig f Sig 1).2 ⟨1, h1, MonoidHom.comp_one _⟩
 
 end GlobalTheory.BaseCoef
 end -- clump:auto
@@ -278,8 +277,7 @@ theorem lattice_basis_exists : ∀ (l : ℕ) [Fact l.Prime] {G : Type} [Group G]
     have h2 := congrArg (fun y : ↥T.L.T => (y : T.V)) h1
     simp only [Submodule.coe_sum, Submodule.coe_smul] at h2
     conv_lhs => rw [← h2]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    exact (algebraMap_smul ↥LL.1 (e.repr ⟨x, hx⟩ i) (v i)).symm
+    exact Finset.sum_congr rfl fun i _ => (algebraMap_smul ↥LL.1 (e.repr ⟨x, hx⟩ i) (v i)).symm
   have hsp : ⊤ ≤ Submodule.span ↥LL.1 (Set.range v) := by
     rw [← T.L.span]
     refine Submodule.span_le.2 fun x hx => ?_
@@ -709,8 +707,7 @@ theorem liftF_descends : ∀ (l : ℕ) [Fact l.Prime] {G : Type} [Group G] [Topo
     (fun g x => ret_map (incl hL) r hr b₂ b₂ (T₂.ρ g) x) (retT hb₂)
     (ret_emb (incl hL) r hr h1 b₂) (fun x => ret_map (incl hL) r hr b₁ b₂ F.f x) e h
   · exact continuous_pi fun i => hincl.comp (IsModuleTopology.continuous_of_linearMap (b₂.coord i))
-  · intro x hx i
-    exact incl_integral hL (hb₂.2 x hx i)
+  · exact fun x hx i => incl_integral hL (hb₂.2 x hx i)
   · have hc : Continuous (b₁.equivFun.symm.toLinearMap) := IsModuleTopology.continuous_of_linearMap _
     exact hc.comp (continuous_pi fun i => hrc.comp (continuous_apply i))
 
@@ -825,8 +822,7 @@ theorem main : GlobalTheory.Published.BhattScholzeCrystallineLattices → Global
     ⟨c1, t1, hJ1⟩ ⟨c2, t2, hJ2⟩
   have horb := _root_.GlobalTheory.BK.maxPeriod_bounds l e a hlp (Nat.one_le_iff_ne_zero.2 (NeZero.ne a)) he Sig' N hS1 hS2 hS3 h2N
   rw [hS4] at hcore horb
-  refine ⟨horb.2.1, ?_⟩
-  exact liftF_of_le _ g hcore (Nat.mul_le_mul_right _ (by omega))
+  exact ⟨horb.2.1, liftF_of_le _ g hcore (Nat.mul_le_mul_right _ (by omega))⟩
 
 end GlobalTheory.TheoremTClosing
 end -- clump:auto

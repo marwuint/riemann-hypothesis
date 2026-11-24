@@ -229,13 +229,11 @@ theorem good_of_cover : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B]
   have hfin : ∀ i, IsFinite (pullback.fst (bc A B g (f i)) I.subschemeι ≫
       pullback.snd _ (f i ≫ g)) := fun i => by
     have h := (hG i).1
-    rw [e i, MorphismProperty.cancel_left_of_respectsIso @IsFinite.{0}] at h
-    exact h
+    rwa [e i, MorphismProperty.cancel_left_of_respectsIso @IsFinite.{0}] at h
   have hfl : ∀ i, Flat (pullback.fst (bc A B g (f i)) I.subschemeι ≫
       pullback.snd _ (f i ≫ g)) := fun i => by
     have h := (hG i).2.1
-    rw [e i, MorphismProperty.cancel_left_of_respectsIso @Flat.{0}] at h
-    exact h
+    rwa [e i, MorphismProperty.cancel_left_of_respectsIso @Flat.{0}] at h
   have : IsZariskiLocalAtTarget @Flat.{0} :=
     HasRingHomProperty.instIsZariskiLocalAtTarget (P := @Flat.{0})
   have : IsZariskiLocalAtTarget @IsFinite.{0} := inferInstance
@@ -312,8 +310,7 @@ theorem lift_map_eq {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {T T' Z
     pullback.lift (φ' ≫ pullback.fst _ _) (𝟙 Z) (by
         rw [Category.id_comp, Category.assoc, pullback.condition, Category.assoc]) := by
   apply pullback.hom_ext
-  · simp only [pullback.map, Category.assoc, pullback.lift_fst, Category.comp_id]
-    exact e1
+  · simpa only [pullback.map, Category.assoc, pullback.lift_fst, Category.comp_id] using e1
   · simp only [pullback.map, Category.assoc, pullback.lift_snd, Category.comp_id]
 
 theorem comap_eq_of_map_eq {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {r : ℕ}
@@ -336,8 +333,7 @@ theorem good_transport {A B : Type} [CommRing A] [CommRing B] [Algebra A B] {r :
   subst h
   have : pullback.map (str A B) g₀ (str A B) g₀ (𝟙 _) (𝟙 _) (𝟙 _) (by simp) (by simp) = 𝟙 _ := by
     ext <;> simp
-  rw [this, Scheme.IdealSheafData.comap_id]
-  exact hI
+  rwa [this, Scheme.IdealSheafData.comap_id]
 
 theorem isOpenImmersion_bc (A B : Type) [CommRing A] [CommRing B] [Algebra A B] {T T' : Scheme.{0}}
     (g : T ⟶ Spec (CommRingCat.of A)) (a : T' ⟶ T) [IsOpenImmersion a] :
@@ -510,8 +506,7 @@ theorem representing_qc_qs_loft : ∀ (A B : Type) [CommRing A] [CommRing B] [Al
         exact Set.image_subset_iff.1 this
       · have := (key _ (U.ι ⁻¹ᵁ W τ).ι).2 (by
           rw [Scheme.Opens.range_ι]; exact Set.image_preimage_subset _ _)
-        rw [Scheme.Opens.range_ι] at this
-        exact this
+        rwa [Scheme.Opens.range_ι] at this
     have : (U : Set H) ∩ W τ = U.ι '' V := by
       rw [hVeq, Set.image_preimage_eq_inter_range, Scheme.Opens.range_ι, Set.inter_comm]
     rw [this]
@@ -667,8 +662,7 @@ theorem exists_flat_ideal : ∀ (V K : Type) [CommRing V] [IsDomain V] [Valuatio
   · have : (algebraMap V (Γ(X, ⊤) ⧸ J)) =
         (Ideal.Quotient.mk J).comp (p.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom) :=
       rfl
-    rw [← this, RingHom.flat_algebraMap_iff]
-    exact hJf
+    rwa [← this, RingHom.flat_algebraMap_iff]
   · have hb : b.appTop.hom = e.toRingHom.comp
         (Algebra.TensorProduct.includeRight : Γ(X, ⊤) →ₐ[V] K ⊗[V] Γ(X, ⊤)).toRingHom := by
       ext x; exact (he x).symm
@@ -1228,8 +1222,7 @@ theorem isHilbRep_restrict_local : ∀ {S Z : Scheme.{0}} (z : Z ⟶ S) (r : ℕ
     · intro hc
       have h1 : c ≫ h ≫ W.ι = b ≫ W.ι := congrArg Sigma.fst hc
       have hf : c ≫ h = b := by
-        rw [← cancel_mono W.ι, Category.assoc]
-        exact h1
+        rwa [← cancel_mono W.ι, Category.assoc]
       refine ⟨hf, ?_⟩
       rw [HPt.map_eq_mk_iff c y h1] at hc
       have hc' : (u ≫ (restrictIso z W h).hom).ker.comap (bc z c (h ≫ W.ι) (b ≫ W.ι) h1) =
@@ -1413,10 +1406,8 @@ theorem HPt.exists_glue : ∀ {S Z : Scheme.{0}} (z : Z ⟶ S) (r : ℕ) (Y : Sc
     refine isFinFlatRk_of_cover _ 𝒰 r fun i => ⟨(I.comap (e i)).subscheme, _, _,
       (isPullback_comap I (e i)).flip.paste_vert (hP i), ?_⟩
     have := (x i).2.2
-    rw [← hI i] at this
-    exact this
-  refine ⟨⟨f, I, hfr⟩, fun i => ?_⟩
-  exact (HPt.map_eq_mk_iff (𝒰.f i) ⟨f, I, hfr⟩ (hf i) (x i).2).2 (hI i)
+    rwa [← hI i] at this
+  exact ⟨⟨f, I, hfr⟩, fun i => (HPt.map_eq_mk_iff (𝒰.f i) ⟨f, I, hfr⟩ (hf i) (x i).2).2 (hI i)⟩
 
 end GlobalTheory.HilbGlue
 end -- clump:auto
@@ -1451,8 +1442,7 @@ theorem isProper_of_represents_of_local_proper : ∀ {S Z : Scheme.{0}} (z : Z �
   choose W hsW T y π hπ hy hT using hloc
   refine IsZariskiLocalAtTarget.of_iSup_eq_top (P := @IsProper) W ?_ ?_
   · rw [eq_top_iff]
-    intro s _
-    exact TopologicalSpace.Opens.mem_iSup.mpr ⟨s, hsW s⟩
+    exact fun s _ => TopologicalSpace.Opens.mem_iSup.mpr ⟨s, hsW s⟩
   intro s
   set V : H.Opens := u.1 ⁻¹ᵁ W s
   have hx1 : (HPt.map V.ι u).1 = (u.1 ∣_ W s) ≫ (W s).ι := by

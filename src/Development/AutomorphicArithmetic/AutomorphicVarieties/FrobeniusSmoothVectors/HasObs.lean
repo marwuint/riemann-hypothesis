@@ -236,8 +236,7 @@ theorem UpperTheory.V.Fr.pr_cfix :
         2 * Module.finrank K (LinearMap.ker (GG.ad (m := n) (R := K) x - 1)) + n = n * n := by
   intro K _ n x h2 hx hr
   have hg : x.left * theta x.left = 1 := by
-    have h := congrArg SemidirectProduct.left hx
-    simpa [SemidirectProduct.mul_left, hr, sgnAct_neg_one] using h
+    simpa [SemidirectProduct.mul_left, hr, sgnAct_neg_one] using congrArg SemidirectProduct.left hx
   have hG : (x.left : Matrix (Fin n) (Fin n) K)
       = Jmat (R := K) n * (x.left : Matrix (Fin n) (Fin n) K)ᵀ * Jmat (R := K) n := by
     rw [← theta_inv_val, inv_eq_of_mul_eq_one_left hg]
@@ -306,8 +305,7 @@ theorem UpperTheory.V.Fr.pr_mazur :
     have hw0 : ob (∑ u, residue O (c u) • co u) = 0 := by
 
       rw [map_sum]
-      simp only [map_smul]
-      exact hc
+      simpa only [map_smul] using hc
     refine hob' _ hw0 A' p' p'' hcomp hp' ?_
     intro y hy
     obtain ⟨b, hb, hy'⟩ := hco y
@@ -427,12 +425,9 @@ theorem UpperTheory.V.Fr.pres :
       obtain ⟨_, _, hlc1, hlc2⟩ := pr_omk hF L.O' C' L.R p B D hm
       refine ⟨?_, ?_, ?_, ?_⟩
       · exact hlc1.comp (fun M => M.map (evK (RingHom.ker p) u))
-      · intro v
-        exact (hlc2 v).comp (fun M => M.map (evK (RingHom.ker p) u))
-      · intro s t r
-        exact borelProjection_isTwoCocycle hF L.O' C' L.R p B D u hm s t r
-      · intro v s t
-        exact pr_cocv hF L.O' C' L.R p B D u hm v s t
+      · exact fun v => (hlc2 v).comp (fun M => M.map (evK (RingHom.ker p) u))
+      · exact fun s t r => borelProjection_isTwoCocycle hF L.O' C' L.R p B D u hm s t r
+      · exact fun v s t => pr_cocv hF L.O' C' L.R p B D u hm v s t
     refine ⟨(Submodule.mkQ _).comp (LinearMap.codRestrict _ D.co hZ), ?_⟩
     intro u hu C'' _ _ _ q p'' hc hq hk
     refine pr_obs hF L.O' L.R L.ρ B hU hBo hBc hG.1 C' p D u hm ?_ C'' q p'' hc hq hk

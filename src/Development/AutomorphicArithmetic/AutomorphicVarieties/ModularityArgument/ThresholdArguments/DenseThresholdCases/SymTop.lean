@@ -204,9 +204,7 @@ private theorem fpd_ext {A k k₁ : Type} [CommRing A] [IsDomain A] [IsDiscreteV
   refine ⟨integralClosure A L, inferInstance, inferInstance, hdvr, algebraMap _ _,
     gL.codRestrict (integralClosure A L) hmem, fpd_complete (R := A), Module.finite_of_finite (ResidueField A),
     hinj, hl, fun a => ?_⟩
-  apply Subtype.ext
-  apply Subtype.ext
-  exact g.commutes a
+  exact Subtype.ext (Subtype.ext (g.commutes a))
 
 open IsLocalRing UpperTheory.V.Alg in
 private theorem fpd_cont {Γ A B : Type} [TopologicalSpace Γ] [CommRing A] [CommRing B] [IsLocalRing A] [IsLocalRing B]
@@ -355,8 +353,7 @@ private theorem char_eq {l : ℕ} [Fact l.Prime] {G A : Type} [Group G] [Topolog
       rw [hval]
       have hbx : b x = 1 := hx2
       simp only [Set.mem_setOf_eq, map_one, Units.val_one] at hx1
-      rw [hχg, hbx, inv_one, mul_one]
-      exact hx1
+      rwa [hχg, hbx, inv_one, mul_one]
     have hT' : ∀ g ∈ T, χ' g = 1 := by
       intro g hg
       rw [hval, hχg, hT g hg, mul_inv_cancel, Units.val_one, map_one]
@@ -364,15 +361,13 @@ private theorem char_eq {l : ℕ} [Fact l.Prime] {G A : Type} [Group G] [Topolog
     have := hcl S hp χ' hopen hT' g
     rw [← map_pow, hval] at this
     rw [← Ideal.Quotient.eq, map_one]
-    rw [map_pow, Units.val_pow_eq_pow_val] at this
-    exact this
+    rwa [map_pow, Units.val_pow_eq_pow_val] at this
   have hbot : ((χ g : Aˣ) : A) ^ h - 1 ∈ (⨅ N : ℕ, m ^ N) := Ideal.mem_iInf.2 (fun N => key N g)
   rw [Ideal.iInf_pow_eq_bot_of_isLocalRing m (Ideal.IsPrime.ne_top inferInstance), Ideal.mem_bot,
     sub_eq_zero] at hbot
   have h1 := UpperTheory.V.Pr.T.oneUnitTF l _ h h0 (hm1 g) hbot
   have h2 : χ g = 1 := Units.ext h1
-  rw [hχg, mul_inv_eq_one] at h2
-  exact h2
+  rwa [hχg, mul_inv_eq_one] at h2
 
 private theorem diag_eq {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ : ℕ}
     (hF : F.Ok C₀) {A : Type} [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A]
@@ -529,9 +524,7 @@ theorem finPtOf : FinPtOf := by
         show _ = ξ (S.inc ⟨_, hx⟩)
         rw [e2, map_list_prod, List.map_map]
         congr 1
-        apply List.map_congr_left
-        intro s _
-        exact hent _ _ _
+        exact List.map_congr_left (fun s _ => hent _ _ _)
       rw [e1, hval]
       show algebraMap (ResidueField O) A (res O S.R (L.map (fun s => S.ρ.r s.1 s.2.1 s.2.2)).prod) = 0
       rw [map_list_prod, List.map_map]
@@ -672,8 +665,7 @@ theorem modularity_linked_ends (hMod : _root_.UpperTheory.V.W.ModUAlt) (hLam : W
   intro Z hZ
   haveI : IsDiscreteValuationRing c₁.O := c₁.dvr
   have := dimOf c₁.O Λ.Λ R.B₀.B (Λ.toPair R.B₀.u : Λ.Λ →+* R.B₀.B) J _ hΛ hJ.ring.fin hJ.ring.tf Z hZ
-  rw [← hd] at this
-  exact this
+  rwa [← hd] at this
 end UpperTheory.V.Pr
 end
 end -- clump:auto

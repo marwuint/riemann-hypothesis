@@ -213,8 +213,7 @@ theorem UpperTheory.V.Z.Win.Gu.halfG :
   refine ⟨r, HT, ⟨hr.cont, hr.ss, fun w hg => hr.ht w fun A h rc hrc => ?_,
     fun w A h rc hrc => key w A h rc hrc ▸ hr.par w A h rc hrc⟩, fun τ => ?_⟩
   · have := hg A h rc hrc
-    simp only [key w A h rc hrc]
-    exact this
+    simpa only [key w A h rc hrc] using this
   · rw [hHT, hinf, Multiset.map_map]
     refine Multiset.map_congr rfl fun z _ => ?_
     simp only [Function.comp_apply, hsC]; ring
@@ -469,8 +468,7 @@ theorem UpperTheory.V.Z.Win.Gu.assemble_s (H : _root_.UpperTheory.V.Af.Hypothese
       (hUni E n π hπ w hw _ _ _ _ hτ (hsplit w hw))
     refine ⟨fun A h rc hrc => e A h rc hrc ▸ hpar w A h rc hrc, fun hp => hr.ht w fun A h rc hrc => ?_⟩
     have g := hPl E Ω A w h rc hrc n τ hp
-    rw [← e A h rc hrc] at g
-    exact g
+    rwa [← e A h rc hrc] at g
   · refine hPol E Ω l ι n r hr.cont hr.ss ?_
     filter_upwards [hev, (conjSrc_injective (IsCMField.complexConj E).toRingEquiv).tendsto_cofinite.eventually hev]
       with w ⟨hw, _⟩ ⟨hw', S, hS'⟩
@@ -546,8 +544,7 @@ private theorem rec_tw_diag {rc : IrrGL (k := w.adicCompletion E) → WD h} (H :
   have hsph : IsSpherical (ParLaws.toRep σ).ρ := by
     have := hB.1
     unfold IsSpherical IsSphericalFor
-    rw [GlobalTheory.SmGL.SphCompletion.KO_completion w n]
-    exact this
+    rwa [GlobalTheory.SmGL.SphCompletion.KO_completion w n]
   obtain ⟨α, hα⟩ := GlobalTheory.SatakeExists.main UpperTheory.Zero.LLC.Pr.bz (w.adicCompletion E) n
     ⟨_, σ.ρ, σ.smooth, σ.irred⟩ hsph
   refine ⟨α, hB.unique (_root_.GlobalTheory.LFun.SatBridge.hasSatGL_of_hasSatake E w n _ σ.ρ α hα), ?_⟩
@@ -874,8 +871,7 @@ private theorem rec_spehQuotT {E Ω : Type} [Field E] [NumberField E] [Field Ω]
   simp only [segSum]
   rw [List.map_flatMap, GlobalTheory.SpehRec.sumList_flatMap]
   congr 1
-  refine List.map_congr_left fun i _ => ?_
-  exact segSum_nu L.nu _ _
+  exact List.map_congr_left fun i _ => segSum_nu L.nu _ _
 theorem UpperTheory.V.Z.Win.Gu.spehT_alt :
     _root_.UpperTheory.V.Af.HypothesesH' → ExtraV → SpehT := by
   intro H _ E Ω _ _ _ _ _ _ a d P w ρ σ _ _ hP hu hS A h rc hrc

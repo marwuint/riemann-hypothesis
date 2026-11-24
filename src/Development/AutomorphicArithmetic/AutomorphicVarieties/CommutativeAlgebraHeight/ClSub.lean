@@ -79,8 +79,7 @@ private theorem exists_subalgebra_of_residue_constants (O : Type) [CommRing O] (
     rw [e]
     exact Ideal.add_mem _ ha hb
   · exact ⟨0, by simp⟩
-  · intro a
-    exact ⟨a, by simp⟩
+  · exact fun a => ⟨a, by simp⟩
 
 private theorem maximalIdeal_mem_residue_constant_subalgebra (O : Type) [CommRing O] (R : Type) [CommRing R] [Algebra O R]
     [IsLocalRing R] (S : Subalgebra O R)
@@ -152,8 +151,7 @@ private theorem residue_constant_subalgebra_mem_maximalIdeal_pow_iff (O : Type) 
   · intro hc
     have h1 : Ideal.map S.val.toRingHom (maximalIdeal S) ≤ maximalIdeal R := by
       rw [Ideal.map_le_iff_le_comap]
-      intro x hx
-      exact (residue_constant_subalgebra_mem_maximalIdeal_iff O R S hS x).1 hx
+      exact fun x hx => (residue_constant_subalgebra_mem_maximalIdeal_iff O R S hS x).1 hx
     have h2 := Ideal.mem_map_of_mem S.val.toRingHom hc
     rw [Ideal.map_pow] at h2
     exact Ideal.pow_right_mono h1 N h2
@@ -283,8 +281,7 @@ private theorem residue_constant_subalgebra_isNoetherian (O : Type) [CommRing O]
     · intro y hy j hj
       rw [smul_eq_mul]
       exact hJm j hj y hy
-    · intro x z hx hz
-      exact N.add_mem hx hz
+    · exact fun x z hx hz => N.add_mem hx hz
   obtain ⟨t, ht⟩ := hJfg
   let K : Submodule S R := Submodule.span S (t : Set R)
   have hKJ : ∀ x ∈ K, x ∈ J := by
@@ -294,20 +291,17 @@ private theorem residue_constant_subalgebra_isNoetherian (O : Type) [CommRing O]
   have hNK : N ≤ K := by
     intro x hx
     have := hNJ hx
-    rw [← ht] at this
-    exact this
+    rwa [← ht] at this
   have hLK : L' ≤ K := by
     intro x hx
     have := hLJ hx
-    rw [← ht] at this
-    exact this
+    rwa [← ht] at this
   haveI : Module.Finite S K := Module.Finite.iff_fg.2 ⟨t, rfl⟩
   let L0 : Submodule S K := L'.comap K.subtype
   let N0 : Submodule S K := N.comap K.subtype
   have hL0fg : L0.FG := by
     refine Submodule.fg_of_fg_map_injective K.subtype Subtype.val_injective ?_
-    rw [Submodule.map_comap_subtype, inf_eq_right.2 hLK]
-    exact hLfg
+    rwa [Submodule.map_comap_subtype, inf_eq_right.2 hLK]
   have tors : Module.IsTorsionBySet S (K ⧸ L0) (maximalIdeal S : Set S) := by
     intro p x
     induction p using Submodule.Quotient.induction_on with
@@ -321,8 +315,7 @@ private theorem residue_constant_subalgebra_isNoetherian (O : Type) [CommRing O]
     refine Submodule.fg_of_fg_map_of_fg_inf_ker L0.mkQ (IsNoetherian.noetherian _) ?_
     rw [Submodule.ker_mkQ, inf_eq_right.2]
     · exact hL0fg
-    · intro x hx
-      exact hLN hx
+    · exact fun x hx => hLN hx
   have e : Submodule.map K.subtype N0 = N := by
     rw [Submodule.map_comap_subtype, inf_eq_right.2 hNK]
   rw [← e]
@@ -354,8 +347,7 @@ private theorem isAdicComplete_residue_constant_subalgebra (O : Type) [CommRing 
       simpa using this)
     have h1 : (f 1 : R) - L ∈ maximalIdeal R := by
       have := hL 1
-      rw [smodEq_ideal_smul_univ_iff_sub_mem, pow_one] at this
-      exact this
+      rwa [smodEq_ideal_smul_univ_iff_sub_mem, pow_one] at this
     have hLS : L ∈ S := by
       have e : L = (f 1 : R) - ((f 1 : R) - L) := by ring
       rw [e]

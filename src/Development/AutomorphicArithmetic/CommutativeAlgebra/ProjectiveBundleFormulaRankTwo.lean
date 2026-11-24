@@ -195,8 +195,7 @@ theorem locRoot (q : ℕ) [NeZero q] {U : Scheme.{0}} (hq : IsUnit (q : Γ(U, �
   let a : P.obj (op W) := ULift.up (Additive.ofMul (v ^ q))
   let b : P.obj (op W) := ULift.up (Additive.ofMul (um k (um g u)))
   have hab : ((toSheafify Scheme.etaleTopology P).app (op W)).hom (a - b) = 0 := by
-    rw [map_sub, sub_eq_zero]
-    exact e1
+    rwa [map_sub, sub_eq_zero]
   refine loc_mono W _ _ ((GlobalTheory.T.etaleToSheafify_locally_bijective_and_lift ℤ P).2.1 W (a - b) hab) ?_
   intro Y m hm
   refine ⟨um m v, ?_⟩
@@ -223,8 +222,7 @@ theorem lineUnit_res {E : Spc} (L : E ⟶ ofCat (glCat 1)) {V U : Scheme.{0}} (g
   rw [h]
   have h2 : ∀ y : Sx (ofCat (glCat 1)) 1 U, glMat (y.res g) = Matrix.GeneralLinearGroup.map g.appTop.hom (glMat y) :=
     fun y => rfl
-  refine (congrArg _ (h2 _)).trans ?_
-  exact Matrix.GeneralLinearGroup.map_det _ _
+  exact (congrArg _ (h2 _)).trans (Matrix.GeneralLinearGroup.map_det _ _)
 
 theorem sub_res {E : Spc} {N : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E N U) (j l : ℕ) (h : j + l ≤ N) :
     (x.res g).sub j l h = (x.sub j l h).res g :=
@@ -730,8 +728,7 @@ theorem mv_main (q : ℕ) [NeZero q] {A B X : Spc} (f : A ⟶ X) (g : B ⟶ X) (
     rw [← hκc]
     rfl
   · exact (CohomologyClass.mk_neg ζ).trans (congrArg Neg.neg hζ)
-  · rw [← pull_pull, ← pull_pull]
-    exact hτ
+  · rwa [← pull_pull, ← pull_pull]
   · refine (hd V₁).trans ?_
     rw [← pull_eq f L w₁ hX h₁ Z hZ ζ hζC]
     exact (Cochain.comp_neg _ _ _).symm
@@ -978,8 +975,7 @@ theorem cup_one {E : Spc} (hE : Inv q E) {n i : ℤ} (x : Ht q E n i) (h1 : n + 
   have e := gc x (one q E) (by ring : n + 0 = 0 + n) (by ring : i + 0 = 0 + i)
   rw [show (n * 0).negOnePow = 1 by simp, one_smul, (_root_.GlobalTheory.EtC.CupGen.main q).1 E hE x] at e
   have e2 := congrArg (Ht.cast (by ring : 0 + n = n) (by ring : 0 + i = i)) e
-  rw [cast_cast, cast_cast] at e2
-  exact e2
+  rwa [cast_cast, cast_cast] at e2
 
 theorem cpow_one' {E : Spc} (hE : Inv q E) (ξ : Ht q E 2 1) (k : ℕ) (hk : k = 1) (hn : 2 = 2 * (k : ℤ)) (hi : 1 = (k : ℤ)) :
     cpow q ξ k = ξ.cast hn hi := by
@@ -1042,8 +1038,7 @@ theorem lh2 {E X : Spc} (hX : Inv q X) (π : X ⟶ E) (ξ : Ht q X 2 1)
       | ⟨0, _⟩ => a₀.cast (by simp) (by simp)
       | ⟨1, _⟩ => b₀.cast (by simp) (by simp), ?_⟩
     simp only
-    rw [e0]
-    rw [← hy]
+    rw [e0, ← hy]
     congr 1
     · change pull _ π _ _ (Ht.cast _ _ (Ht.cast _ _ a₀)) = _
       rw [cast_cast]

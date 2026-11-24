@@ -240,8 +240,7 @@ private theorem dc_same (N w : ℕ) (σ τ : SL(2, ℤ)) (hσ : σ ∈ Gamma0 N 
     have hd := congrArg (fun z : ℤ => (z : ZMod N)) B.2
     simp only [Matrix.det_fin_two] at hd
     push_cast at hd
-    rw [h0, mul_zero, sub_zero] at hd
-    exact hd
+    rwa [h0, mul_zero, sub_zero] at hd
   have hσ11 : (en σ⁻¹ 1 1 : ZMod N) = (en σ 0 0 : ZMod N) := by
     simp [en, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two]
   have hρ11 : (en ρ 1 1 : ZMod N) = 1 := by
@@ -249,8 +248,7 @@ private theorem dc_same (N w : ℕ) (σ τ : SL(2, ℤ)) (hσ : σ ∈ Gamma0 N 
     exact det1 σ hσ.1
   have hρ00 : (en ρ 0 0 : ZMod N) = 1 := by
     have := det1 ρ hρ0.1
-    rw [hρ11, mul_one] at this
-    exact this
+    rwa [hρ11, mul_one] at this
   have hρG : ρ ∈ Gam N l := ⟨(Gamma1_mem _ _).2 ⟨hρ00, hρ11, Gamma0_mem.1 hρ0.1⟩, hρ0.2⟩
   rw [hτ', ← dc_mul X l ρ σ b, dc_fix X l N w ρ hρG b hb]
 
@@ -324,8 +322,7 @@ theorem UpperTheory.V.Z.Kato.Nb.sDiamChar :
       ext
       simp [mul]), ?_⟩
   intro q u hq hd hu b hb
-  simp only [MonoidHom.mk'_apply, Units.val_mkOfMulEqOne]
-  exact formula q u hq hd hu b hb
+  simpa only [MonoidHom.mk'_apply, Units.val_mkOfMulEqOne] using formula q u hq hd hu b hb
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.EulerFactorBounds.DiamChar =====
@@ -350,8 +347,7 @@ theorem UpperTheory.V.Z.Kato.Nb.sEsFrob : UpperTheory.V.Z.Kato.Nb.SEsFrob := by
     simpa using h
   · have hl : ((l : ℕ) : 𝓞 ℚ) ∉ v.asIdeal := by
       rw [UpperTheory.V.Z.Kato.Nb.mem_place_iff]
-      intro hd
-      exact hql ((Nat.prime_dvd_prime_iff_eq hq Fact.out).mp hd)
+      exact fun hd => hql ((Nat.prime_dvd_prime_iff_eq hq Fact.out).mp hd)
     exact cycZ_of_isFrob hl hB ⟨hσ, hfr⟩
 end -- clump:auto
 end -- clump:auto
@@ -745,8 +741,7 @@ theorem commutator_sl2_zmod (m : ℕ) (hm : Nat.Coprime m 6) :
       decide
     rw [h]
     simp only [map_mul, map_inv]
-    refine mul_mem (mul_mem (inv_mem hT) ?_) (inv_mem hT)
-    exact Subgroup.Normal.conj_mem _ (inv_mem hT) _
+    exact mul_mem (mul_mem (inv_mem hT) (Subgroup.Normal.conj_mem _ (inv_mem hT) _)) (inv_mem hT)
   rw [eq_top_iff, ← Subgroup.map_top_of_surjective ρ hs, ← _root_.SpecialLinearGroup.SL2Z_generators,
     MonoidHom.map_closure, Subgroup.closure_le]
   rintro _ ⟨x, hx, rfl⟩
@@ -877,12 +872,10 @@ theorem glue : ∀ (k : ℕ) (G G₁ G₂ : Type) [Group G] [Group G₁] [Group 
   have hz0 : ρ₁ (π z) = 1 := z.2
   have hy1 : y ∈ π₁.ker := by
     have := congrArg ρ₁ hx'
-    rw [map_mul, hz0, mul_one, map_one] at this
-    exact this
+    rwa [map_mul, hz0, mul_one, map_one] at this
   have hz1 : z ∈ π₂.ker := by
     have := congrArg ρ₂ hx'
-    rw [map_mul, hy0, one_mul, map_one] at this
-    exact this
+    rwa [map_mul, hy0, one_mul, map_one] at this
   rw [← map_pow, Prod.pow_mk, q₁ y hy1 hy, q₂ z hz1 hz]
   exact map_one μ
 
@@ -1018,8 +1011,7 @@ theorem exists_cocycle {Q A : Type} [Group Q] [CommGroup A] (φ : Q →* MulAut 
     simpa using this
   refine ⟨fun q => C (s q), fun q q' => ?_, fun q => ?_⟩
   · have := hC (s q) (s q')
-    rw [hCs] at this
-    exact this
+    rwa [hCs] at this
   · have h : (s q).1.left = g q := rfl
     simp only [C, mul_pow, inv_pow, hχm, h, map_pow, hg q, inv_one, mul_one]
     rw [← pow_mul, ← pow_mul, mul_comm m 2]
@@ -1207,8 +1199,7 @@ theorem descent : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ 
   refine ⟨Units.map (levSub X (Ma * Mb)).subtype.toMonoidHom h, fun γ hγ => ?_⟩
   have e := congrArg Subtype.val (hh (ρ γ))
   have hw : ∀ w : levSub X (Ma * Mb), Lev X (Ma * Mb) (w : X.K) := fun w => w.2
-  rw [coe_levAct, hact γ hγ _ (hw _)] at e
-  exact e
+  rwa [coe_levAct, hact γ hγ _ (hw _)] at e
 
 end GlobalTheory.KZ.ES.CoprimeDescent
 end -- clump:auto
@@ -1356,8 +1347,7 @@ theorem UpperTheory.V.Z.Kato.Nb.sEsLev : UpperTheory.V.Z.Kato.Nb.SEsLev := by
     intro u u' h
 
     rw [hbu u, hbu u', ← Finset.sum_sub_distrib, map_sum]
-    refine Finset.sum_eq_zero fun i _ => ?_
-    exact api.2.2.2.2.1 _ _ _ (hsub _ _ _ _ _ _ (h 0) (h 1))
+    exact Finset.sum_eq_zero fun i _ => api.2.2.2.2.1 _ _ _ (hsub _ _ _ _ _ _ (h 0) (h 1))
   refine ⟨cong, ?_, ?_⟩
   · intro t u
     rw [hbu, hbu, Finset.smul_sum]
@@ -1458,8 +1448,7 @@ theorem UpperTheory.V.Z.Kato.Nb.sEsLev : UpperTheory.V.Z.Kato.Nb.SEsLev := by
         rw [map_zero]
         have h3 := (ev.2.1 (h ^ l ^ n) 1).mpr ⟨h, by simp⟩
         rw [h3, ev.2.2.2.1]
-      have h4 := (cls.2.1 _ _ _ _ r2 r3).1
-      simpa using h4
+      simpa using (cls.2.1 _ _ _ _ r2 r3).1
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.EulerFactorBounds.OfDesc =====
@@ -1827,8 +1816,7 @@ theorem UpperTheory.V.Z.Kato.Nb.sEuler :
         have h4 := congrArg (· * mat ρ σ) h3
         simp only [add_mul, sub_mul, smul_mul_assoc, one_mul, zero_mul, mat, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one,
           Units.val_one] at h4
-        rw [pow_two, mat, ← Units.val_mul, ← map_mul]
-        exact h4
+        rwa [pow_two, mat, ← Units.val_mul, ← map_mul]
       have hc0 : Continuous fun s => (χ₀ s : Qbar l) := by
         simp only [hχ]
         exact ((GlobalTheory.KZ.IwC.isLocallyConstant_cycMod 1).comp fun u : (ZMod (l ^ 1))ˣ => ψ (((u : ZMod (l ^ 1)).val : ℕ) : ZMod l)).continuous

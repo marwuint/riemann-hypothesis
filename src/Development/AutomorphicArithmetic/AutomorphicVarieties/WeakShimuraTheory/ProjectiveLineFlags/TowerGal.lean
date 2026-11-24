@@ -72,14 +72,12 @@ theorem UpperTheory.V.Ws.P1.towerGal :
     apply le_antisymm
     · rintro _ ⟨g, rfl⟩
       rw [Subgroup.mem_comap, IntermediateField.mem_fixingSubgroup_iff]
-      intro x hx
-      exact g.commutes ⟨x, hKL hx⟩
+      exact fun x hx => g.commutes ⟨x, hKL hx⟩
     · intro a ha
       rw [Subgroup.mem_comap] at ha
       have hF : resQ T.F a ∈ T.F.fixingSubgroup := by
         rw [IntermediateField.mem_fixingSubgroup_iff]
-        intro x hx
-        exact a.commutes ⟨x, hx⟩
+        exact fun x hx => a.commutes ⟨x, hx⟩
       have hL : resQ T.F a ∈ T.L.fixingSubgroup := by
         rw [T.hL, IntermediateField.fixingSubgroup_sup]
         exact ⟨hF, ha⟩
@@ -110,5 +108,4 @@ theorem UpperTheory.V.Ws.P1.towerGal :
     exact mul_eq_one_of_card_eq_two_of_ne_one (by convert hcard) _ _ ha hb
   · intro g
     exact ⟨by ext; rfl, rfl, rfl⟩
-  · intro A g
-    exact ⟨Iff.rfl, Iff.rfl⟩
+  · exact fun A g => ⟨Iff.rfl, Iff.rfl⟩

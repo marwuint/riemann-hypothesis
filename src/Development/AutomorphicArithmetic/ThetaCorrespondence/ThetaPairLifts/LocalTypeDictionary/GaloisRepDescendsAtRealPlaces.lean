@@ -262,8 +262,7 @@ theorem gaL_fix {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.hos
 
     simp only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
   rw [e2]
-  simp only [e1]
-  exact e3.symm
+  simpa only [e1] using e3.symm
 
 variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
@@ -272,8 +271,7 @@ theorem goodVt_of (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (u : (R.HV i t).H
     (h : ∀ l : (R.cV i).W →ₗ[ℂ] ℂ, gaL (Vc D i) (R.βV i) (R.datVt i t) R.eG (RealDat.eC (A := A) (sg0 D A))
       (fun x => l ((R.cV i).ext ((R.HV i t).e u) x)) = fun x => l ((R.cV i).ext ((R.HV i t).e u) x)) : GoodVt R i t u := by
   intro l
-  simp only [RealDat.extV, LinearMap.coe_comp, Function.comp_apply]
-  exact h l
+  simpa only [RealDat.extV, LinearMap.coe_comp, Function.comp_apply] using h l
 
 theorem good_adjoint (R : RealDat D A Ks) (F : Face D A) (hC : Core R F) (i : Fin D.R.m) (t : T)
     (x : (R.HW i (sg0 D A)).H) (hx : eH R i x = x) : GoodVt R i t (LinearMap.adjoint (R.thG i t) x) := by
@@ -339,8 +337,7 @@ theorem adj_single {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [
     {ok : Pl D.host.E → Prop} {h : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ H} (hn : NormalFam ok h) {P : Pl D.host.E}
     (hP : ok P) (d : List ℤ) : LinearMap.adjoint (h P (Finsupp.single d 1)) = h P (Finsupp.single (dualLab d) 1) := by
   have := hn.2 P hP (Finsupp.single d 1)
-  rw [Finsupp.mapRange_single, star_one, dualC, Finsupp.mapDomain_single] at this
-  exact this
+  rwa [Finsupp.mapRange_single, star_one, dualC, Finsupp.mapDomain_single] at this
 
 theorem NormalFam.normal {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
     {ok : Pl D.host.E → Prop} {h : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ H} (hn : NormalFam ok h) {P : Pl D.host.E}
@@ -568,8 +565,7 @@ theorem cuspKill_holds : ∀ D : D7, CuspKill D := by
   haveI : LocallyCompactSpace (NI W I) := hNc.locallyCompactSpace
   have hsub : Γ.subgroupOf (NI W I) = (GQ W).subgroupOf (NI W I) := by
     ext x
-    simp only [Subgroup.mem_subgroupOf]
-    exact ⟨fun h => hΓQ h, fun h => hNΓ ⟨x.2, h⟩⟩
+    simpa only [Subgroup.mem_subgroupOf] using ⟨fun h => hΓQ h, fun h => hNΓ ⟨x.2, h⟩⟩
   set κ : Measure (NI W I) := Measure.haar
   set 𝓝 : Set (NI W I) := GlobalTheory.AutomorphicL2Unitary.stdDom ((GQ W).subgroupOf (NI W I))
   have h𝓝Q : IsFundamentalDomain ((GQ W).subgroupOf (NI W I)) 𝓝 κ := GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom _ κ
@@ -706,8 +702,7 @@ theorem lagSwap_lagSwap (W : HSp D) (Y : Lag W) : lagSwap W (lagSwap W Y) = Y :=
   constructor
   · rintro ⟨_, ⟨z, hz, rfl⟩, rfl⟩
     exact hz
-  · intro hy
-    exact ⟨y.swap, ⟨y, hy, rfl⟩, rfl⟩
+  · exact fun hy => ⟨y.swap, ⟨y, hy, rfl⟩, rfl⟩
 
 theorem isLagFrame_lagSwap (W : HSp D) (Y : Lag W) (C : Matrix (Fin W.rank) (Fin W.rank) D.host.E ×
     Matrix (Fin W.rank) (Fin W.rank) D.host.E) (h : IsLagFrame W Y C) : IsLagFrame W (lagSwap W Y) (C.2, C.1) := by
@@ -1456,8 +1451,7 @@ theorem covolOne_map {a b c d : ℕ} (f : Mx D a b ≃+ Mx D c d) (hf : Continuo
   · let e : ratMx D a b → ratMx D c d := fun y => ⟨f y, (hΓ _).2 y.2⟩
     have he : Function.Bijective e := by
       constructor
-      · intro x y hxy
-        exact Subtype.ext (f.injective (congrArg Subtype.val hxy))
+      · exact fun x y hxy => Subtype.ext (f.injective (congrArg Subtype.val hxy))
       · intro x
         refine ⟨⟨f.symm x, (hΓ _).1 (by simpa using x.2)⟩, Subtype.ext ?_⟩
         simp [e]
@@ -1494,8 +1488,7 @@ theorem swapE_mem_iff (S : HSp D) (t : ℕ) (y : Mx D S.rank t) :
     have e : y = (swapE S t).symm (swapE S t y) := ((swapE S t).symm_apply_apply y).symm
     rw [e, swapE_symm_apply]
     exact ratMx_mul (rat_mem _) (ratMx_adj hy)
-  · intro hy
-    exact ratMx_mul (ratMx_adj hy) (rat_mem _)
+  · exact fun hy => ratMx_mul (ratMx_adj hy) (rat_mem _)
 
 theorem swapE_symm_mem_iff (S : HSp D) (t : ℕ) (x : Mx D t S.rank) :
     (swapE S t).symm x ∈ ratMx D S.rank t ↔ x ∈ ratMx D t S.rank := by
@@ -1541,8 +1534,7 @@ theorem res_dag_swap : ∀ (D : D7) (S T T' : HSp D) (t : ℕ) (ι : T'.V →ₗ
   refine ⟨fun μ 𝓖 h => ?_, fun μ' 𝓖' h => ?_⟩
   · obtain ⟨h1, h2⟩ := covolOne_map (swapE S t).symm (continuous_swapE_symm S t) (continuous_swapE S t)
       (swapE_symm_mem_iff S t) h
-    refine ⟨_, _, h1, key μ 𝓖 _ _ fun G => ?_⟩
-    exact (h2 fun y => G (swapE S t y)).trans (by simp)
+    exact ⟨_, _, h1, key μ 𝓖 _ _ fun G => (h2 fun y => G (swapE S t y)).trans (by simp)⟩
   · obtain ⟨h1, h2⟩ := covolOne_map (swapE S t) (continuous_swapE S t) (continuous_swapE_symm S t) (swapE_mem_iff S t) h
     exact ⟨_, _, h1, key _ _ μ' 𝓖' fun G => (h2 G).symm⟩
 
@@ -1652,8 +1644,7 @@ theorem mean_unip : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) 
       (GlobalTheory.PairLift.dag V W f) (hlawW.theta f hf)
     have h2 : GlobalTheory.PairLift.dag V W' (GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.resT V W W' ι I ν 𝓨 (om (1, n) f)) =
         GlobalTheory.PairLift.dag V W' (GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.resT V W W' ι I ν 𝓨 f) := by
-      rw [← he, ← he, ← hsw]
-      exact h1
+      rwa [← he, ← he, ← hsw]
     funext w
     have h3 := congrFun h2 (GlobalTheory.PairLift.adjO W' V w)
     simp only [GlobalTheory.PairLift.dag, hlaw.invol] at h3

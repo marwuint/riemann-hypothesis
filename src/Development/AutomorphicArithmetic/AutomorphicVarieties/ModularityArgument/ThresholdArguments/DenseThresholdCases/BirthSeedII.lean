@@ -130,8 +130,7 @@ private theorem sqrt_one {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) {d : (Qbar l)ˣ
   · exfalso
     have h3 : ‖(2 : Qbar l)‖ < 1 := by
       have h4 : ‖(d : Qbar l) - 1‖ < 1 := hc
-      rw [h2, show (-1 - 1 : Qbar l) = -2 by ring, norm_neg] at h4
-      exact h4
+      rwa [h2, show (-1 - 1 : Qbar l) = -2 by ring, norm_neg] at h4
     have h5 : ‖((2 : ℕ) : ℚ_[l])‖ = 1 := by
       rw [Padic.norm_natCast_eq_one_iff]
       exact (Nat.coprime_primes Fact.out Nat.prime_two).2 hl
@@ -169,8 +168,7 @@ theorem UpperTheory.induced_representation_constituent_vanishing :
     have h4 := (UpperTheory.V.Fr.sc_norm l c _).2.1 h3
     rw [Subalgebra.coe_sub, Subalgebra.coe_one] at h4
     unfold Cong
-    rw [Units.val_one]
-    exact h4
+    rwa [Units.val_one]
   have hth : D.th s = 1 := by simp [Raw.th, Raw.Psi, Chr.Psi, hal, hξ, hchi, hψ]
   have hup : up D.ξ s = 1 := by simp [up, hξ]
   have hδ : δ g = 1 := by
@@ -321,8 +319,7 @@ private theorem c_neg {a b : K} (ha : ‖a - b‖ < 1) : ‖-a - -b‖ < 1 := by
 
 private theorem c_norm {a x : K} (h : ‖a - x‖ < 1) (hx : ‖x‖ = 1) : ‖a‖ = 1 := by
   have := IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := a - x) (y := x) (by rw [hx]; exact h.ne)
-  rw [sub_add_cancel, hx, max_eq_right h.le] at this
-  exact this
+  rwa [sub_add_cancel, hx, max_eq_right h.le] at this
 
 private theorem c_mul {a b x y : K} (ha : ‖a - x‖ < 1) (hb : ‖b - y‖ < 1) (hx : ‖x‖ = 1) (hy : ‖y‖ = 1) :
     ‖a * b - x * y‖ < 1 := by
@@ -368,8 +365,7 @@ private theorem mem_range (F : IntermediateField ℚ Ω) (g : G ℚ Ω) : g ∈ 
   constructor
   · rintro ⟨h, rfl⟩
     rw [IntermediateField.mem_fixingSubgroup_iff]
-    intro x hx
-    exact h.commutes ⟨x, hx⟩
+    exact fun x hx => h.commutes ⟨x, hx⟩
   · intro hg
     rw [IntermediateField.mem_fixingSubgroup_iff] at hg
     exact ⟨{ g.toRingEquiv with commutes' := fun x => hg x.1 x.2 }, rfl⟩
@@ -574,8 +570,7 @@ theorem UpperTheory.induced_final_statement_alt :
     absurd ((hz x).1 h0) (by rw [hx]; exact lt_irrefl _)
   have heq : ∀ x y : c₁.O, ‖algebraMap c₁.O (Qbar l) x - algebraMap c₁.O (Qbar l) y‖ < 1 →
       residue c₁.O x = residue c₁.O y := fun x y hxy => by
-    rw [← sub_eq_zero, ← map_sub, hz, map_sub]
-    exact hxy
+    rwa [← sub_eq_zero, ← map_sub, hz, map_sub]
   have h0 : ∀ x : c₁.O, algebraMap c₁.O (Qbar l) x = 0 → x = 0 := fun x hx => hinj (by rw [hx, map_zero])
   have hV : Supp vV (Q.map (residue c₁.O)).r := fun g i j hij hw => (hz _).2 (hG.supp g i j hij hw)
   have hq : ∀ v, SuppM qQ ((Q.map (residue c₁.O)).n v) := fun v i j hij hw => by
@@ -611,8 +606,7 @@ theorem UpperTheory.induced_final_statement_alt :
   · intro v s hs i
     refine (fin_psi (residue c₁.O) Q v i s).trans (heq _ _ ?_)
     have h1 := hL.char v s hs i
-    rw [fin_psi (algebraMap c₁.O (Qbar l)) Q v i s] at h1
-    exact h1
+    rwa [fin_psi (algebraMap c₁.O (Qbar l)) Q v i s] at h1
   · exact fun g i j hij hw => hV g i j hij (fin_v _ hw)
   · rcases hG.ent with ⟨g, hg⟩ | ⟨⟨g, hg⟩, g', hg'⟩
     · exact Or.inl ⟨g, 1, 0, by decide, hne _ hg⟩
@@ -667,8 +661,7 @@ private theorem root_ex {a : Qbar l} (ha : ‖a - 1‖ < 1) {z : (Qbar l)ˣ} (hz
     have e : ((-Units.mk0 y hy0 : (Qbar l)ˣ) : Qbar l) - z = -(y - 1 + ((z : Qbar l) - ((-1 : (Qbar l)ˣ) : Qbar l))) := by
       rw [Units.val_neg, Units.val_neg, Units.val_mk0, Units.val_one]
       ring
-    rw [Cong, e]
-    exact this
+    rwa [Cong, e]
 end
 private theorem indEx (hP : MixOfP) :
   ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (c : Coef l) (D : Raw Ω c) (T : Tower D),
@@ -737,8 +730,7 @@ private theorem indEx (hP : MixOfP) :
       ring
     rw [Cong, e, norm_div, hα1, div_one]
     refine lt_add (by rw [norm_neg]; exact hmu _) ?_
-    rw [norm_neg, norm_mul, hc.unit, one_mul]
-    exact hαc
+    rwa [norm_neg, norm_mul, hc.unit, one_mul]
   · rw [hδ2, MonoidHom.comp_apply, MonoidHom.div_apply, div_mul_cancel]
 theorem UpperTheory.V.Z.Bc.seedII_of_p_alt :
     MixOfP → IndAutLP → _root_.UpperTheory.V.Ws.SeedIIAlt := by

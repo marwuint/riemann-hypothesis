@@ -197,12 +197,10 @@ private theorem mem_smul_top {A : Type} [CommRing A] (I : Ideal A) (n : ℕ) (z 
 theorem normAdic : NormAdic := by
   intro A _ I _ τ d hd hI a ha x y hx hτx hy
   have hunit : ∀ n : ℕ, ∀ z : A, itN τ d z - x ∈ I ^ (n + 1) → IsUnit (itN τ d z) := by
-    intro n z hz
-    exact unit_of_sub_mem I hx (Ideal.pow_le_self (Nat.succ_ne_zero n) hz)
+    exact fun n z hz => unit_of_sub_mem I hx (Ideal.pow_le_self (Nat.succ_ne_zero n) hz)
   have hstep : ∀ n : ℕ, ∀ z : A, itN τ d z - x ∈ I ^ (n + 1) →
       ∃ z', z' - z ∈ I ^ (n + 1) ∧ itN τ d z' - x ∈ I ^ (n + 1 + 1) := by
-    intro n z hz
-    exact step I τ d hd a ha x hτx (n + 1) (Nat.succ_ne_zero n) z (hunit n z hz) hz
+    exact fun n z hz => step I τ d hd a ha x hτx (n + 1) (Nat.succ_ne_zero n) z (hunit n z hz) hz
   choose! g hg1 hg2 using hstep
   let f : ℕ → A := fun k => Nat.rec (motive := fun _ => A) y (fun k z => g k z) k
   have hf0 : f 0 = y := rfl
@@ -227,8 +225,7 @@ theorem normAdic : NormAdic := by
         rw [← add_assoc]
         ring
       rw [e]
-      refine Ideal.sub_mem _ ih ?_
-      exact Ideal.pow_le_pow_right (by omega) (hfd (m + k))
+      exact Ideal.sub_mem _ ih (Ideal.pow_le_pow_right (by omega) (hfd (m + k)))
   obtain ⟨L, hL⟩ := IsPrecomplete.prec (I := I) (M := A) inferInstance (f := f) (by
     intro m n hmn
     rw [SModEq.sub_mem, mem_smul_top]
@@ -467,8 +464,7 @@ private theorem isNonarchimedeanLocalField_of_ringEquiv_of_isInducing {L M : Typ
       · rw [IsValuativeTopology.mem_nhds_iff, exists_image_add_valuation_lt_subset_iff]
         refine ⟨e c, by simpa using hc, fun w hw => ?_⟩
         refine ⟨x + e.symm w, h _ ?_, ?_⟩
-        · rw [hlt, RingEquiv.apply_symm_apply]
-          exact hw
+        · rwa [hlt, RingEquiv.apply_symm_apply]
         · rw [map_add (f := _), RingEquiv.apply_symm_apply]
       · obtain ⟨z', hz', hzz⟩ := hz
         rw [e.injective hzz] at hz'
@@ -484,8 +480,7 @@ private theorem isNonarchimedeanLocalField_of_ringEquiv_of_isInducing {L M : Typ
     · intro h
       apply h1
       have h' : valuation M (e.symm a) = valuation M 1 := by rw [h, map_one]
-      have h2 := le_antisymm ((hle _ _).1 h'.le) ((hle _ _).1 h'.ge)
-      simpa using h2
+      simpa using le_antisymm ((hle _ _).1 h'.le) ((hle _ _).1 h'.ge)
   exact ⟨⟩
 
 private theorem valuation_algEquiv_le_one_of_le_one {F L : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -506,13 +501,11 @@ private theorem valuation_algEquiv_le_one_of_le_one {F L : Type} [Field F] [Valu
   have heq := GroundTheory.LocalField.valuativeRel_unique F (L := L) (v₁ := ‹ValuativeRel L›)
     (t₁ := ‹TopologicalSpace L›) inferInstance h2 inferInstance hext
   have hx1 : y ≤ᵥ 1 := by
-    rw [Valuation.Compatible.vle_iff_le (v := valuation L), map_one]
-    exact hy
+    rwa [Valuation.Compatible.vle_iff_le (v := valuation L), map_one]
   have h3 : @ValuativeRel.vle L _ (ValuativeRel.ofValuation ((valuation L).comap (s : L →+* L))) y 1 :=
     cast (congrArg (fun V : ValuativeRel L => @ValuativeRel.vle L _ V y 1) heq) hx1
   have h4 : valuation L (s y) ≤ valuation L (s 1) := h3
-  rw [map_one, map_one] at h4
-  exact h4
+  rwa [map_one, map_one] at h4
 
 private theorem mem_int (s : K ≃ₐ[k] K) (x : 𝒪[K]) : s (x : K) ∈ 𝒪[K] := by
   exact (Valuation.mem_integer_iff _ _).2
@@ -827,8 +820,7 @@ private theorem normPoly_lemma_7 {R F₀ F₁ : Type} [CommRing R] [IsNoetherian
   have hof : ∀ (i : ℕ) (a : R), (⇑τ)^[i] (AdjoinRoot.of ψ a) = AdjoinRoot.of ψ ((((φ : R →+* R)) ^ i) a) := by
     intro i a
     have h1 := hτ i (C a)
-    rw [Polynomial.map_C, AdjoinRoot.mk_C, AdjoinRoot.mk_C] at h1
-    exact h1
+    rwa [Polynomial.map_C, AdjoinRoot.mk_C, AdjoinRoot.mk_C] at h1
   have hτI : ∀ x ∈ (IsLocalRing.maximalIdeal R).map (algebraMap R (AdjoinRoot ψ)),
       τ x ∈ (IsLocalRing.maximalIdeal R).map (algebraMap R (AdjoinRoot ψ)) := by
     have hle : (IsLocalRing.maximalIdeal R).map (algebraMap R (AdjoinRoot ψ)) ≤
@@ -984,8 +976,7 @@ private theorem map_aeval_matrix {R S : Type} [CommRing R] [CommRing S] (f : R �
     ext x i j
     simp [Matrix.algebraMap_matrix_apply, apply_ite f]
   rw [hc] at h
-  rw [aeval_def, aeval_def, eval₂_map]
-  exact h
+  rwa [aeval_def, aeval_def, eval₂_map]
 
 private theorem commute_aeval {R : Type} [CommRing R] {x A : Matrix (Fin n) (Fin n) R}
     (h : Commute x A) (p : R[X]) : Commute x (aeval A p) := by
@@ -1014,8 +1005,7 @@ variable {K : Type} [Field K] [ValuativeRel K]
 private theorem lifts_of_int (q : K[X]) (h : ∀ i, valuation K (q.coeff i) ≤ 1) :
     q ∈ Polynomial.lifts (algebraMap 𝒪[K] K) := by
   rw [Polynomial.lifts_iff_coeff_lifts]
-  intro i
-  exact ⟨⟨_, (Valuation.mem_integer_iff _ _).2 (h i)⟩, rfl⟩
+  exact fun i => ⟨⟨_, (Valuation.mem_integer_iff _ _).2 (h i)⟩, rfl⟩
 
 private theorem lift_aeval {n : ℕ} (Y : Matrix (Fin n) (Fin n) 𝒪[K]) {q : K[X]}
     (h : q ∈ Polynomial.lifts (algebraMap 𝒪[K] K)) :
@@ -1036,8 +1026,7 @@ theorem UpperTheory.Gal.InertialTypesAlt.L.goodDelta :
   have h0 : valuation k (G.charpoly.coeff 0) = 1 := by
     have e := Matrix.det_eq_sign_charpoly_coeff G
     have hv := hγ.2
-    rw [← hG, e, map_mul, map_pow, Valuation.map_neg, map_one, one_pow, one_mul] at hv
-    exact hv
+    rwa [← hG, e, map_mul, map_pow, Valuation.map_neg, map_one, one_pow, one_mul] at hv
   obtain ⟨p, hp, hdvd⟩ := UpperTheory.Gal.InertialTypesAlt.L.normPoly k K F₀ F₁ rk rK s sb h G.charpoly hmon hγ.1 h0
   set A : Matrix (Fin n) (Fin n) K := (incl K n γ : Matrix (Fin n) (Fin n) K) with hA
   have hAG : A = G.map (algebraMap k K) := rfl
@@ -1048,8 +1037,7 @@ theorem UpperTheory.Gal.InertialTypesAlt.L.goodDelta :
       rw [← Matrix.charpoly_map, ← hAG]
       exact Matrix.aeval_self_charpoly A
     have e := congrArg (aeval A) hq
-    rw [map_sub, aeval_X, map_mul, hz, zero_mul, sub_eq_zero] at e
-    exact e
+    rwa [map_sub, aeval_X, map_mul, hz, zero_mul, sub_eq_zero] at e
   have hAs : ∀ i, A.map ((s ^ i : K ≃ₐ[k] K) : K →+* K) = A := by
     intro i
     ext a b
@@ -1066,8 +1054,7 @@ theorem UpperTheory.Gal.InertialTypesAlt.L.goodDelta :
     exact Polynomial.map_id
   have hpr : aeval A (p * r) = A := by
     have e' := hprod
-    rw [he, Finset.prod_range_succ', hps0, mul_comm] at e'
-    exact e'
+    rwa [he, Finset.prod_range_succ', hps0, mul_comm] at e'
   have hδ1 : aeval A p * (aeval A r * (((incl K n γ)⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) = 1 := by
     rw [← mul_assoc, ← map_mul (aeval A), hpr]
     exact Units.mul_inv _
@@ -1082,8 +1069,7 @@ theorem UpperTheory.Gal.InertialTypesAlt.L.goodDelta :
         (List.ofFn fun j : Fin (Module.finrank k K) => ((galAct (s ^ (j : ℕ)) n δ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)).prod := by
       have e' := map_list_prod (Units.coeHom (Matrix (Fin n) (Fin n) K))
         (List.ofFn fun j : Fin (Module.finrank k K) => galAct (s ^ (j : ℕ)) n δ)
-      rw [List.map_ofFn] at e'
-      exact e'
+      rwa [List.map_ofFn] at e'
     have e2 : (List.ofFn fun j : Fin (Module.finrank k K) => aeval A (ps j)).prod =
         aeval A (List.ofFn fun j : Fin (Module.finrank k K) => ps j).prod := by
       have e' := map_list_prod (aeval A) (List.ofFn fun j : Fin (Module.finrank k K) => ps j)
@@ -1096,8 +1082,7 @@ theorem UpperTheory.Gal.InertialTypesAlt.L.goodDelta :
     rw [e1]
     simp only [hj]
     rw [e2, e3, hprod]
-  · intro x hx
-    exact Commute.units_val_iff.1 (commute_aeval (Commute.units_val_iff.2 hx) p)
+  · exact fun x hx => Commute.units_val_iff.1 (commute_aeval (Commute.units_val_iff.2 hx) p)
   · rintro g ⟨y, hy⟩
     have hB : (y : Matrix (Fin n) (Fin n) 𝒪[K]).map (algebraMap 𝒪[K] K) =
         ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * A * (g : Matrix (Fin n) (Fin n) K) :=

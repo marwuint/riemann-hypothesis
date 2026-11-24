@@ -54,9 +54,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 private theorem w_under {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (v : Plc (Lp L)) : (s.w v).under (𝓞 (Lp L)) = v := by
   ext x
-  have h1 := s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)
-  have h2 := s.hA v x
-  exact h1.symm.trans h2
+  exact (s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)
 
 private theorem mem_iff {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberField L] {w : Plc L} (j : W.Emb l w) (x : 𝓞 L) :
     x ∈ w.asIdeal ↔ ‖j.1 (algebraMap L _ (x : L))‖ < 1 := by
@@ -67,8 +65,7 @@ private theorem mem_iff {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberFie
       exact (w.valuation_lt_one_iff_mem (K := L) y).2 hy
     have h2 := (j.2.tendsto 0).comp (Valued.tendsto_zero_pow_of_v_lt_one h1)
     rw [map_zero] at h2
-    refine tendsto_pow_atTop_nhds_zero_iff_norm_lt_one.1 (h2.congr fun n => ?_)
-    exact map_pow j.1 _ n
+    exact tendsto_pow_atTop_nhds_zero_iff_norm_lt_one.1 (h2.congr fun n => map_pow j.1 _ n)
   rw [w.isMaximal.eq_of_le (GlobalTheory.EvExtend.placeOf _).isPrime.ne_top h, GlobalTheory.EvExtend.mem_placeOf]
   rfl
 
@@ -117,5 +114,4 @@ theorem UpperTheory.injective_infinitePlace_of_emb_at_split_places :
     rw [this]
   · refine (not_stable (UpperTheory.isSplitAt_of_decomposition_le_restriction_range L Ω (s.A v.1) v.1 (s.hA _) (s.split _ (Or.inl v.2)) _ (w_under s _)) fun x hx => ?_).elim
     rw [mem_iff j] at hx
-    rw [mem_iff j', ← e]
-    exact hx
+    rwa [mem_iff j', ← e]

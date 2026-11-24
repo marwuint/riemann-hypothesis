@@ -176,26 +176,22 @@ theorem UpperTheory.descent_of_integral_descent_truncation :
         haveI := hl
         haveI := hh
         exact ih m hm (l ≫ h ≫ p) ⟨l ≫ h, inferInstance, by simp [Category.assoc]⟩
-      · apply h0 n
-        exact ⟨fun m' _ => (hpb m').2, (hpb n).1⟩
+      · exact h0 n ⟨fun m' _ => (hpb m').2, (hpb n).1⟩
     exact transfer (ZMod q) (tw q i) u _ a' a hcomm ha ha' n hu
   have all : ∀ n, C n := by
     have key : ∀ k : ℕ, ∀ n : ℤ, n < k → C n := by
       intro k
       induction k with
       | zero =>
-        intro n hn X g _
-        exact neg n (by exact_mod_cast hn) g
+        exact fun n hn X g _ => neg n (by exact_mod_cast hn) g
       | succ k ihk =>
         intro n hn
         by_cases hn' : n < k
         · exact ihk n hn'
         · exact step n (fun m hm => ihk m (by push_cast at hn ⊢; omega))
-    intro n
-    exact key (n.toNat + 1) n (by omega)
+    exact fun n => key (n.toNat + 1) n (by omega)
   have hp : ∃ h : P ⟶ P, IsIntegralHom h ∧ p = h ≫ p := ⟨𝟙 P, inferInstance, by simp⟩
-  intro n
-  exact ⟨(all n p hp).2, (all (n + 1) p hp).1 n rfl⟩
+  exact fun n => ⟨(all n p hp).2, (all (n + 1) p hp).1 n rfl⟩
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.CommutativeAlgebra.DescentOfIntegralDescentTruncation =====

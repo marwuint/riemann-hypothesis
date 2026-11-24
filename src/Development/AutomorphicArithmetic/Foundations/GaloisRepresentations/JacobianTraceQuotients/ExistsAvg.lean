@@ -115,8 +115,7 @@ private theorem mean_add (T : Subgroup H) [T.FiniteIndex] (x y : V) :
 
 private theorem mean_smul (T : Subgroup H) [T.FiniteIndex] (c : ℂ) (x : V) :
     mean ρ T (c • x) = c • mean ρ T x := by
-  simp only [mean, map_smul, ← Finset.smul_sum]
-  exact smul_comm _ _ _
+  simpa only [mean, map_smul, ← Finset.smul_sum] using smul_comm _ _ _
 
 private theorem mean_act {T : Subgroup H} [T.FiniteIndex] [T.Normal] {v : V} (hv : ∀ t ∈ T, ρ t v = v)
     (h : H) : mean ρ T (ρ h v) = mean ρ T v := by
@@ -201,15 +200,12 @@ theorem UpperTheory.Gal.Join.avgEx :
   refine ⟨e, ⟨?_, ?_, ?_, ?_⟩, ?_⟩
   · intro v
     rw [GlobalTheory.Parabolic.mem_fixed]
-    intro g hg
-    exact he1 ⟨g, hg⟩ v
+    exact fun g hg => he1 ⟨g, hg⟩ v
   · intro v hv
     rw [GlobalTheory.Parabolic.mem_fixed] at hv
     exact hfix v hv
-  · intro g hg v
-    exact he2 ⟨g, hg⟩ v
-  · intro W _ _ p v hp
-    exact he3 W p v (fun h => hp h h.2)
+  · exact fun g hg v => he2 ⟨g, hg⟩ v
+  · exact fun W _ _ p v hp => he3 W p v (fun h => hp h h.2)
   · intro s A hA hs hsurj v
     have h1 : e (A (e v)) = A (e v) := by
       apply hfix

@@ -81,8 +81,7 @@ private theorem iSup_pres {T : Module.End A M} {P : ℕ → Module.End A M} {S :
     exact hS _ hy
   · simp
   · intro y z hy hz
-    simp only [map_add (f := _)]
-    exact Submodule.add_mem _ hy hz
+    simpa only [map_add (f := _)] using Submodule.add_mem _ hy hz
 
 end Gen
 
@@ -115,8 +114,7 @@ private theorem comm_ra (τ : X.Ub →* GL (Fin m) A) {g : Ga} {u : X.Ub} (h : C
 private theorem valIn_pres [IsLocalRing A] (g : Ga) (k : ℕ) {f : X.Fn A m} (hf : f ∈ X.valIn A m k) :
     R X A m g f ∈ X.valIn A m k := by
   simp only [Frame.valIn, Submodule.mem_pi, Set.mem_univ, true_implies] at hf ⊢
-  intro x i
-  exact hf _ i
+  exact fun x i => hf _ i
 
 variable [IsLocalRing A]
 
@@ -154,8 +152,7 @@ private theorem fix_pres (τ : X.Ub →* GL (Fin m) A) (U : Subgroup X.Ub) {g : 
   have ex : x * (g, 1) * ((u' : Ga), 1) = x * ((u : Ga), 1) * (g, 1) := by
     rw [e1]; ext <;> simp [mul_assoc]
   rw [Frame.ra_apply, ex, e2] at hfx
-  rw [Frame.ra_apply]
-  exact hfx
+  rwa [Frame.ra_apply]
 
 private theorem ord_pres (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ) (U : Subgroup X.Ub) {g : Ga}
     (hU : ∀ u ∈ U, ∃ u' ∈ U, (u' : Ga) = g⁻¹ * u * g ∧ τ u' = τ u) {f : X.Fn A m} (hf : f ∈ X.Ord τ θ U) :
@@ -177,8 +174,7 @@ private theorem tr_op {g : H.Ga} (hg : Norm H g) (i : H.Op) : Commute (trA H A g
   rcases i with x | x
   · change Commute (R H.X A H.m g) (sphOp ((H.X.ra (H.τA A)).comp (H.sec x.1)) (x.2 + 1))
     unfold sphOp dc
-    refine comm_finsum fun q => ?_
-    exact comm_ra H.X (H.τA A) (hg.sph x.1 x.1.2 _)
+    exact comm_finsum fun q => comm_ra H.X (H.τA A) (hg.sph x.1 x.1.2 _)
   · change Commute (R H.X A H.m g) (H.X.U A H.m _)
     exact comm_U H.X g _
 
@@ -210,9 +206,7 @@ private theorem tr_MK {g : H.Ga} (hg : Norm H g) (a : H.Op → c.O) (K : H.Lev) 
       rw [map_add (f := _)]
       exact Submodule.add_mem _ hy hz
   refine iSup_pres (fun n => ?_) hle h2'
-  refine Commute.pow_right ?_ n
-  refine (tr_op H A hg i).sub_right ?_
-  exact (Algebra.commutes _ _).symm
+  exact Commute.pow_right ((tr_op H A hg i).sub_right (Algebra.commutes _ _).symm) n
 
 private theorem tr_fix {g : H.Ga} (h : ∃ u ∈ H.UQ, (u : H.Ga) = g ∧ H.τ u = 1) (K : H.Lev) {f : H.X.Fn A H.m}
     (hf : f ∈ H.X.Ord (H.τA A) θ (H.lev K)) : trA H A g f = f := by
@@ -228,8 +222,7 @@ private theorem tr_fix {g : H.Ga} (h : ∃ u ∈ H.UQ, (u : H.Ga) = g ∧ H.τ u
   have hτ' : H.τA A u = 1 := by
     show Matrix.GeneralLinearGroup.map (algebraMap c.O A) (H.τ u) = 1
     rw [e2, map_one]
-  rw [hτ', Units.val_one, Matrix.one_mulVec, e1] at hx
-  exact hx
+  rwa [hτ', Units.val_one, Matrix.one_mulVec, e1] at hx
 
 end Set
 
@@ -257,11 +250,9 @@ theorem UpperTheory.V.Z.Desc.V0.eEx :
     intro f hf
     show opE ρ a f ∈ H.MK θ a₀ K
     rw [opE_eq]
-    refine Submodule.sum_mem _ fun g hg => ?_
-    exact zsmul_mem (hρM g (hE.supp g hg) f hf) _
+    exact Submodule.sum_mem _ fun g hg => zsmul_mem (hρM g (hE.supp g hg) f hf) _
   have hfixM : ∀ f ∈ H.MK θ a₀ K, f ∈ fixd ρ K₁ := by
-    intro f hf g hg
-    exact tr_fix H θ (hK.triv g hg) K (hMOrd f hf)
+    exact fun f hf g hg => tr_fix H θ (hK.triv g hg) K (hMOrd f hf)
   have hsq : ∀ f ∈ H.MK θ a₀ K, E (E f) = N • E f :=
     fun f hf => hE.sq A (H.X.Fn A H.m) ρ f (hfixM f hf)
   have hcomm : ∀ i f, E (H.op A i f) = H.op A i (E f) := by

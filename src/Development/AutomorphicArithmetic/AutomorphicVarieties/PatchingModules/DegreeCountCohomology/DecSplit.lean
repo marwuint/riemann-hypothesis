@@ -55,9 +55,7 @@ theorem UpperTheory.V.Pa.decSplit :
     ext x
     exact congrArg (fun f : G (Lp L) Ω => f x) h
   have hmap : ∀ g : Dec (F := L) A, resP L Ω (g : G L Ω) ∈ Dec (F := Lp L) A := by
-    intro g
-    have hg := mem_Dec.mp g.2
-    exact mem_Dec.mpr hg
+    exact fun g => mem_Dec.mpr (mem_Dec.mp g.2)
   let f : Dec (F := L) A →* Dec (F := Lp L) A :=
     { toFun := fun g => ⟨resP L Ω g, hmap g⟩
       map_one' := by ext1; exact map_one (resP L Ω)

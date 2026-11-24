@@ -101,8 +101,7 @@ theorem UpperTheory.V.Hi.ordLevel :
     exact hF g γ u (hVU hu) b hb h
   · have hfix : fixd (X.ra τ) U ≤ fixd (X.ra τ) V := by
       unfold fixd
-      intro f hf u hu
-      exact hf u (hVU hu)
+      exact fun f hf u hu => hf u (hVU hu)
     unfold Frame.Ord Frame.Sp
     apply le_antisymm
     · intro f hf
@@ -166,8 +165,7 @@ private theorem ordProj_higman {A G M : Type} [CommRing A] [Group G] [Fintype G]
   simp only [LinearMap.sum_apply, map_sum, hL]
   apply e.injective
 
-  simp only [map_sum, LinearEquiv.apply_symm_apply]
-  exact h' (e v)
+  simpa only [map_sum, LinearEquiv.apply_symm_apply] using h' (e v)
 
 private theorem ordProj_dc {A H M : Type} [CommRing A] [Group H] [AddCommGroup M] [Module A M]
     (ρ : Representation A H M) (U V : Subgroup H) [Fintype (U ⧸ V.subgroupOf U)] (v : M) (hv : v ∈ fixd ρ V) :
@@ -246,8 +244,7 @@ private theorem ordProj_chi (A : Type) [CommRing A] (U V : Subgroup X.Ub) (hVU :
     have h' : Quotient.mk (ordProj_rel X U) x = Quotient.mk (ordProj_rel X U) y := Quotient.sound h
     simp only [R, h']
   have hRout : ∀ x : Ga × Gp, ∃ γ, ∃ u ∈ U, ∃ b ∈ X.I.Iw 0, x = X.glob γ * R x * ((u : Ga), b) := by
-    intro x
-    exact Quotient.mk_out (s := ordProj_rel X U) x
+    exact fun x => Quotient.mk_out (s := ordProj_rel X U) x
   have uniq : ∀ (r : Ga × Gp) (γ γ' : Γ) (a a' : X.Ub), a ∈ U → a' ∈ U → ∀ b b' : Gp,
       b ∈ X.I.Iw 0 → b' ∈ X.I.Iw 0 →
       X.glob γ * r * ((a : Ga), b) = X.glob γ' * r * ((a' : Ga), b') → a = a' := by
@@ -292,8 +289,7 @@ private theorem ordProj_chi (A : Type) [CommRing A] (U V : Subgroup X.Ub) (hVU :
           hb0 hb2 (by
             rw [← h2, h0]
             ext <;> simp [mul_assoc])
-        rw [e]
-        exact hu2
+        rwa [e]
       · intro h
         refine ⟨γ0, _, h, b0, hb0, ?_⟩
         rw [h0]
@@ -342,8 +338,7 @@ private theorem ordProj_sp (hθ : X.I.ContChar θ) (U V : Subgroup X.Ub) [hn : (
     intro w hw
     have hmem : (u : X.Ub)⁻¹ * w * u ∈ V := by
       have h1 : (⟨w, hVU hw⟩ : U) ∈ V.subgroupOf U := by simpa [Subgroup.mem_subgroupOf] using hw
-      have h2 := hn.conj_mem _ h1 u⁻¹
-      simpa [Subgroup.mem_subgroupOf, mul_assoc] using h2
+      simpa [Subgroup.mem_subgroupOf, mul_assoc] using hn.conj_mem _ h1 u⁻¹
     have e : w * (u : X.Ub) = (u : X.Ub) * ((u : X.Ub)⁻¹ * w * u) := by group
     rw [← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, hf2 _ hmem]
   exact key
@@ -398,8 +393,7 @@ private theorem ordProj_mul (V : Subgroup X.Ub) (χ : Ga × Gp → A)
     funext g
     have e := congrFun (h3 t) g
     rw [hrp, Pi.smul_apply] at e
-    simp only [hrp, Pi.smul_apply, hI _ (hT _ t.2), e]
-    exact smul_comm _ _ _
+    simpa only [hrp, Pi.smul_apply, hI _ (hT _ t.2), e] using smul_comm _ _ _
   · intro k
     obtain ⟨c, hc⟩ := h4 k
     refine ⟨c, fun y hy g i => ?_⟩
@@ -476,8 +470,7 @@ private theorem ordProj_phi (hθ : X.I.ContChar θ) (U V : Subgroup X.Ub) [(V.su
     fun q => hJ q _ (le_sup_of_le_left (Finset.le_sup (Finset.mem_univ q)))
   have hb : (X.U A m X.I.z ^ n) (v : X.Fn A m) - v ∈ X.valIn A m k := by
     have h0 := hJ0 (Finset.univ.sup J ⊔ J0) le_sup_right
-    rw [← hn, he1 ⟨v, hOS v v.2⟩ v.2] at h0
-    exact h0
+    rwa [← hn, he1 ⟨v, hOS v v.2⟩ v.2] at h0
   have hexp : ((∑ q, ρ q ((e ∘ₗ Mχ) (ρ q⁻¹ v)) : X.Ord τ θ V) : X.Fn A m) - v
       = (∑ q, X.ra τ ((q.out : U) : X.Ub) (((e (Mχ (ρ q⁻¹ v)) : X.Ord τ θ V) : X.Fn A m)
           - (X.U A m X.I.z ^ n) ((Mχ (ρ q⁻¹ v) : X.Sp τ θ V) : X.Fn A m)))
@@ -533,11 +526,7 @@ theorem UpperTheory.V.Hi.ordProj :
   have hker : V.subgroupOf U ≤ σ.ker := by
     intro u hu
     rw [MonoidHom.mem_ker]
-    apply LinearMap.ext
-    intro f
-    apply Subtype.ext
-    show X.ra τ (u : X.Ub) (f : X.Fn A m) = f
-    exact hfixV f f.2 u (Subgroup.mem_subgroupOf.1 hu)
+    exact LinearMap.ext (fun f => Subtype.ext (hfixV f f.2 u (Subgroup.mem_subgroupOf.1 hu)))
   let ρ : Representation A (U ⧸ V.subgroupOf U) (X.Ord τ θ V) := QuotientGroup.lift (V.subgroupOf U) σ hker
   have hρ : ∀ (u : U) f, ((ρ (u : U ⧸ V.subgroupOf U) f : X.Ord τ θ V) : X.Fn A m) = X.ra τ u f :=
     fun u f => rfl

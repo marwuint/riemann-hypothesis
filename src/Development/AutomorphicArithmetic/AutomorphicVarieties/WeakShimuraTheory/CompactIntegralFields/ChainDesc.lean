@@ -81,10 +81,8 @@ private theorem cont_iff {Γ : Type} [TopologicalSpace Γ] (z : Γ → R) : Adic
   · intro h
     refine IsLocallyConstant.desc z (Ideal.Quotient.mk ((⊥ : Ideal R) ^ 1)) (h 1) ?_
     intro x y hxy
-    rw [Ideal.Quotient.eq, pow_one, Ideal.mem_bot, sub_eq_zero] at hxy
-    exact hxy
-  · intro h N
-    exact h.comp _
+    rwa [Ideal.Quotient.eq, pow_one, Ideal.mem_bot, sub_eq_zero] at hxy
+  · exact fun h N => h.comp _
 
 variable {ι Γ : Type} [Group Γ]
 
@@ -285,11 +283,9 @@ theorem UpperTheory.V.Ws.chainDesc :
     have hb := j_comp 𝔞 h
     refine ⟨Q, Q, hQ, hQ, ?_, ?_, Relation.ReflTransGen.refl⟩
     · apply isRes_of Φ _ (𝔞.j c') (𝔞.j c').injective
-      rw [hb, hQ]
-      exact hs
+      rwa [hb, hQ]
     · apply good_of Φ _ (𝔞.j c') (𝔞.j c').injective
-      rw [hb, hQ]
-      exact hg
+      rwa [hb, hQ]
   | tail _ hxy ih =>
     obtain ⟨hgy, P, hP, h0, h1⟩ := hxy
     have lp := ev_pd c (R := fun c' => (ResidueField c'.O)[X]) (fun c' => mapRingHom (𝔞.j c'))
@@ -312,8 +308,6 @@ theorem UpperTheory.V.Ws.chainDesc :
     refine ⟨s', Q.map (evalRingHom 1), hs', ?_, hr', hch.1, Relation.ReflTransGen.tail hch.2 ⟨?_, Q, ?_, hQ0, rfl⟩⟩
     · rw [map_map', e1, ← map_map', hQ, h1]
     · apply good_of Φ _ (𝔞.j c') (𝔞.j c').injective
-      rw [hb, map_map', e1, ← map_map', hQ, h1]
-      exact hgy
+      rwa [hb, map_map', e1, ← map_map', hQ, h1]
     · apply isRes_of Φ _ (mapRingHom (𝔞.j c')) (Polynomial.map_injective _ (𝔞.j c').injective)
-      rw [hC, hQ]
-      exact hP
+      rwa [hC, hQ]

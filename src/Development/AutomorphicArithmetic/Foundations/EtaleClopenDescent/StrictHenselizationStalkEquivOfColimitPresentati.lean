@@ -189,10 +189,8 @@ private theorem geo (hSH : SHExists) (hIE : IEComp) {A U : CommRingCat.{0}}
     rw [← e₂, Ideal.mem_comap] at hm
     refine (hfr₂ _).1 hm ?_
     have e4 : (pC A' ≫ h₀ ≫ f₂) = u₂ ≫ f₂ := by rw [← Category.assoc, e0]
-    rw [e4] at ha
-    exact ha
-  · rw [CommRingCat.hom_comp, ← Ideal.comap_comap, e3]
-    exact e₁
+    rwa [e4] at ha
+  · rwa [CommRingCat.hom_comp, ← Ideal.comap_comap, e3]
   · rw [← Category.assoc (pC A') h₀ f₂, e0, ← Category.assoc f u₂ f₂]
     have e5 : f ≫ u₂ = (pC A ≫ c) ≫ u₁ := hsq.w.symm
     rw [e5]
@@ -222,5 +220,4 @@ theorem UpperTheory.Cb.strictHenselization_stalk_equiv_of_colimit_presentation :
       have e' : (t ≫ pC A) ≫ c ≫ 𝟙 U ≫ o = (t ≫ f) ≫ pC A' ≫ h := by
         simp only [Category.id_comp, Category.assoc]
         rw [e]
-      rw [e']
-      exact hb
+      rwa [e']

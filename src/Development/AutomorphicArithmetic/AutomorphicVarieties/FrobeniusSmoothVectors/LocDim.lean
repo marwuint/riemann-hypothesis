@@ -131,8 +131,7 @@ private theorem precomplete_quot {R : Type} [CommRing R] (I K : Ideal R) [IsPrec
   have hd : ∀ n, ∃ d ∈ (I ^ n • ⊤ : Submodule R R), K.mkQ d = f (n + 1) - f n := by
     intro n
     have h := (hf (Nat.le_succ n)).symm
-    rw [SModEq.sub_mem, ← hmap] at h
-    exact h
+    rwa [SModEq.sub_mem, ← hmap] at h
   choose d hd hd' using hd
   obtain ⟨a, ha⟩ := K.mkQ_surjective (f 0)
   let g : ℕ → R := fun n => a + ∑ i ∈ Finset.range n, d i
@@ -209,14 +208,12 @@ theorem UpperTheory.V.CA.cpl_quot :
     · rw [RingHom.comp_assoc, hG, ← RingHom.cancel_right hπ, RingHom.comp_assoc, hg, ← RingHom.comp_assoc, hFb, hF]
     · rw [← Ideal.comap_comap]
       refine hGm.trans (Ideal.comap_mono ?_)
-      rw [hJ, Ideal.map_le_iff_le_comap, Ideal.comap_comap, hFb]
-      exact hFm
+      rwa [hJ, Ideal.map_le_iff_le_comap, Ideal.comap_comap, hFb]
   refine ⟨F, fun y => ?_, hF, le_antisymm (fun r hr => ?_) hKF⟩
   · obtain ⟨r, hr⟩ := Ideal.Quotient.mk_surjective (G y)
     refine ⟨r, ?_⟩
     have := RingHom.congr_fun h2 y
-    rw [RingHom.comp_apply, ← hr] at this
-    exact this
+    rwa [RingHom.comp_apply, ← hr] at this
   · rw [← Ideal.Quotient.eq_zero_iff_mem, ← h1, RingHom.comp_apply, (RingHom.mem_ker).1 hr, map_zero]
 end -- clump:auto
 end -- clump:auto
@@ -392,8 +389,7 @@ theorem UpperTheory.V.CA.c3d :
   haveI : IsNoetherianRing C := Algebra.FiniteType.isNoetherianRing B C
   have hcomapq : q.comap (algebraMap C R) = p := by
     have h := (c3a x hR).2.2.2.2 p q hq
-    rw [Ideal.minimalPrimes_eq_subsingleton_self] at h
-    exact h
+    rwa [Ideal.minimalPrimes_eq_subsingleton_self] at h
   refine ⟨le_antisymm ((c3c x hR).2 p q hcomapq.ge) ?_, hcomapq⟩
   obtain ⟨P0, _, _, f0, hcm, hf0⟩ := cl_cmquot O B hB
   haveI : IsNoetherianRing P0 := hcm.1
@@ -434,8 +430,7 @@ theorem UpperTheory.V.CA.c3d :
   have hptxt : pt ≤ xt := Ideal.comap_mono hpx
   have hdisj : Disjoint (xt.primeCompl : Set (MvPolynomial (Fin n) P0)) (pt : Set _) := by
     rw [Set.disjoint_left]
-    intro a ha hb
-    exact ha (hptxt hb)
+    exact fun a ha hb => ha (hptxt hb)
   set ps : Ideal (Localization.AtPrime xt) := pt.map (algebraMap _ (Localization.AtPrime xt)) with hps
   haveI : ps.IsPrime :=
     IsLocalization.isPrime_of_isPrime_disjoint xt.primeCompl _ pt inferInstance hdisj
@@ -496,8 +491,7 @@ theorem UpperTheory.V.CA.c3d :
       intro h
       apply s.2
       have h' : π s' ∈ x := h
-      rw [hs'] at h'
-      exact h'
+      rwa [hs'] at h'
     refine ⟨IsLocalization.mk' (Localization.AtPrime xt) r' ⟨s', hs'p⟩, ?_⟩
     rw [Localization.localRingHom_mk']
     congr 1
@@ -519,8 +513,7 @@ theorem UpperTheory.V.CA.c3d :
     exact fun a ha => hle ha
   have hfin := ringKrullDim_le_of_surjective _
     (Ideal.Quotient.lift_surjective_of_surjective ps hkerφ hφq)
-  rw [hiso, hdimeq]
-  exact hfin
+  rwa [hiso, hdimeq]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.KTypesBoundedFinite =====
@@ -621,8 +614,7 @@ private theorem dim_gen (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuatio
     obtain ⟨pD, hpDy, hpD, hlo⟩ := Ideal.exists_ideal_le_liesOver_of_le (p := η) (q := x) y hηx
     have hηD : pD.comap (algebraMap A D) = η := (Ideal.over_def pD η).symm
     have hmap : Ideal.map (algebraMap D R) pD ≤ maximalIdeal R := by
-      rw [Ideal.map_le_iff_le_comap, hyc]
-      exact hpDy
+      rwa [Ideal.map_le_iff_le_comap, hyc]
     obtain ⟨q, hq, -⟩ := Ideal.exists_minimalPrimes_le hmap
     obtain ⟨hqdim, hqc⟩ := UpperTheory.V.CA.c3d O y hB hyB hR pD hpDy q hq
     obtain ⟨t', ht'tr, ht'dim⟩ := UpperTheory.V.CA.c3b O y hB hyB pD hpDy
@@ -645,8 +637,7 @@ theorem UpperTheory.V.Fr.loc_dim :
   obtain ⟨-, hxM, hmx⟩ := loc_flat hOk hn S x L
   have hxB : x.comap (algebraMap S.B S.A) = maximalIdeal S.B := by
     refine le_antisymm (le_maximalIdeal (Ideal.comap_ne_top _ hxM.ne_top)) ?_
-    rw [hmB]
-    exact hmx
+    rwa [hmB]
   have hinj : Function.Injective (algebraMap O L.O') := by
     by_cases hK : RingHom.ker (algebraMap O L.O') = ⊥
     · exact (RingHom.injective_iff_ker_eq_bot _).mpr hK
@@ -664,9 +655,7 @@ theorem UpperTheory.V.Fr.loc_dim :
     obtain ⟨⟨r, hr⟩, hrz⟩ := (Submodule.mem_torsion_iff z).mp hz
     rw [Submodule.mem_bot]
     have hr0 : algebraMap O L.O' r ≠ 0 := by
-      intro h
-      apply nonZeroDivisors.ne_zero hr
-      exact hinj (by rw [h, map_zero])
+      exact fun h => nonZeroDivisors.ne_zero hr (hinj (by rw [h, map_zero]))
     change r • z = 0 at hrz
     rw [Algebra.smul_def] at hrz
     exact (mul_eq_zero.mp hrz).resolve_left hr0
@@ -695,13 +684,11 @@ theorem UpperTheory.V.Fr.loc_dim :
     exact (hcm (maximalIdeal L.R)).trans L.lies
   have key := dim_gen O hB x hxM hxB _ hy hR
   constructor
-  · intro P hP t ht
-    exact key.1 P hP (L.im P) (hcm P) t ht
+  · exact fun P hP t ht => key.1 P hP (L.im P) (hcm P) t ht
   · intro η hη hηx t ht
     obtain ⟨P, hP, hPη, hdim⟩ := key.2 η hη hηx t ht
     refine ⟨P, hP, ?_, hdim⟩
-    rw [← hcm P]
-    exact hPη
+    rwa [← hcm P]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.LocDim =====

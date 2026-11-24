@@ -111,8 +111,7 @@ theorem betaH_holds : BetaH := by
   have h₀mem : ∀ v ∈ LaHat D, h₀ v ∈ LaHat D := by
     intro v hv
     obtain ⟨v', hv', e⟩ := hκ v hv
-    rw [h₀app, ← map_nsmul, ← e, hinv]
-    exact hv'
+    rwa [h₀app, ← map_nsmul, ← e, hinv]
   have h₀u : ∀ v, u (h₀ v) = κ • v := by
     intro v
     rw [h₀app, map_nsmul, hinv']
@@ -444,8 +443,7 @@ private theorem int_of_sim (D : Datum p) (h₀ : Module.End (AfP p) (AfP p ⊗[�
   have hg : ∀ x y, g ∣ D.EF x y := by
     intro x y
     have h : D.EF x y ∈ I := Ideal.subset_span ⟨x, y, rfl⟩
-    rw [← hI, Ideal.mem_span_singleton] at h
-    exact h
+    rwa [← hI, Ideal.mem_span_singleton] at h
   have hg0 : g ≠ 0 := by
     intro h0
     obtain ⟨x, y, hxy⟩ := form_ne D
@@ -475,8 +473,7 @@ private theorem int_of_sim (D : Datum p) (h₀ : Module.End (AfP p) (AfP p ⊗[�
       (isUnit_iff_ne_zero.mpr (by exact_mod_cast hg0)).map _
     simpa using hq
   have hmt : mu = t := hu.mul_left_cancel (by rw [mul_comm (g : AfP p) mu, he])
-  rw [hmt]
-  exact ht
+  rwa [hmt]
 
 end UpperTheory.Gal.FiniteEtaleModels.SimilarityMultiplicityForm
 
@@ -496,8 +493,7 @@ theorem UpperTheory.Gal.FiniteEtaleModels.dictP_holds :
     have e : h₀ v = v' := by
       simp only [h₀, LinearMap.smul_apply]
       rw [← map_nsmul, ← he, hinv]
-    rw [e]
-    exact hv'
+    rwa [e]
   obtain ⟨f, hf⟩ := T.lattice_endomorphism_integral_approximation p D h₀ hint
   have hs0 := T.harrisTaylor_action_form_eq_similitude_mul p D G L h⁻¹
   have hone : ((h⁻¹ : G.GAf).val.2 : AfP p) * (h.val.2 : AfP p) = 1 := by simp
@@ -711,8 +707,7 @@ theorem UpperTheory.Gal.FiniteEtaleModels.levRe_holds :
   · intro c x
     dsimp only
     rw [h.congr (hR.lin c x), h2]
-  · intro x hx
-    exact h3 _ ((hR.ker x).mpr hx)
+  · exact fun x hx => h3 _ ((hR.ker x).mpr hx)
   · intro k _ _ x
     refine ⟨fun y hy => (hR.ker y).mp ((h4 k x).1 _ hy), ?_⟩
     intro g hg
@@ -943,8 +938,7 @@ theorem UpperTheory.Gal.FiniteEtaleModels.numSplit_holds :
   refine ⟨g, m₁, m₂, c, hgQ, hm₁, hm₂, ha, ?_⟩
   unfold IsGen at h₂ ⊢
   have hs : Ideal.span {(m₂ : A)} ≠ 0 := by
-    rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
-    exact hm₂0
+    rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
   apply mul_left_cancel₀ hs
   calc Ideal.span {(m₂ : A)} * ((Ideal.span {c} ⊔ Ideal.span {(g : A)}) * 𝔟₂)
       = (Ideal.span {(m₂ : A)} * Ideal.span {c} ⊔ Ideal.span {(m₂ : A)} * Ideal.span {(g : A)}) * 𝔟₂ := by
@@ -1152,15 +1146,13 @@ private theorem sys_ext_of_split {G : GDatum} {p : ℕ} {f : ℕ → G.La →+ G
         abel
       · have h := dvd_sub (dvd_trans (Int.natCast_dvd_natCast.2 hPd) (UP _ hnm)) (UP n hn)
         have e : u' (n * m) - u' n = (u' (n * m) - c') - (u' n - c') := by ring
-        rw [e]
-        exact h
+        rwa [e]
       · have h1 := dvd_trans (Int.natCast_dvd_natCast.2 hQd) (UQ _ hnm)
         rw [hQnm] at h1
         have h := dvd_sub (dvd_add h1 s2b) (UQ n hn)
         have e : u' (n * m) - u' n =
             (u' (n * m) - u (Q n * Q m)) + (u (Q n * Q m) - u (Q n)) - (u' n - u (Q n)) := by ring
-        rw [e]
-        exact h
+        rwa [e]
     · intro n hn _
       obtain ⟨s3a, s3b⟩ := s3 (Q n) (hQpos n hn) (hQp n hn)
       refine ⟨?_, fun x y => keyZ n hn _ ?_ ?_⟩
@@ -1210,8 +1202,7 @@ private theorem sys_ext_of_split {G : GDatum} {p : ℕ} {f : ℕ → G.La →+ G
   · intro n hn hnp x
     apply eq_of_dv
     have h1 := LQ n hn x
-    rw [hQn n hn hnp] at h1
-    exact h1
+    rwa [hQn n hn hnp] at h1
 
 end UpperTheory.Gal.FiniteEtaleModels
 
@@ -1225,27 +1216,19 @@ theorem UpperTheory.Gal.FiniteEtaleModels.sysExt_holds :
     (fun n => ((p ^ n.factorization p : ℕ) : ℤ) * Nat.gcdA (p ^ n.factorization p) (n / p ^ n.factorization p))
     (fun n => ((n / p ^ n.factorization p : ℕ) : ℤ) * Nat.gcdB (p ^ n.factorization p) (n / p ^ n.factorization p))
     ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_
-  · intro n _
-    exact Nat.ordProj_mul_ordCompl_eq_self n p
+  · exact fun n _ => Nat.ordProj_mul_ordCompl_eq_self n p
   · exact cop
   · intro n hn
     have h1 := Nat.gcd_eq_gcd_ab (p ^ n.factorization p) (n / p ^ n.factorization p)
     rw [Nat.Coprime.gcd_eq_one (cop n hn), Nat.cast_one] at h1
     exact h1.symm
-  · intro n _
-    exact dvd_mul_right _ _
-  · intro n _
-    exact dvd_mul_right _ _
-  · intro n hn
-    exact Nat.ordCompl_pos p hn.ne'
-  · intro n hn
-    exact (Nat.coprime_ordCompl hp hn.ne').symm
-  · intro n m hn hm
-    exact Nat.ordProj_mul p hn.ne' hm.ne'
-  · intro n m _ _
-    exact Nat.ordCompl_mul n m p
-  · intro n _
-    exact Nat.isCoprime_iff_coprime.2 (Nat.Coprime.pow_right _ hc'p)
+  · exact fun n _ => dvd_mul_right _ _
+  · exact fun n _ => dvd_mul_right _ _
+  · exact fun n hn => Nat.ordCompl_pos p hn.ne'
+  · exact fun n hn => (Nat.coprime_ordCompl hp hn.ne').symm
+  · exact fun n m hn hm => Nat.ordProj_mul p hn.ne' hm.ne'
+  · exact fun n m _ _ => Nat.ordCompl_mul n m p
+  · exact fun n _ => Nat.isCoprime_iff_coprime.2 (Nat.Coprime.pow_right _ hc'p)
   · intro n _ hnp
     have h0 : n.factorization p = 0 :=
       Nat.factorization_eq_zero_of_not_dvd ((Nat.Prime.coprime_iff_not_dvd hp).1 hnp.symm)
@@ -1384,8 +1367,7 @@ theorem UpperTheory.Gal.FiniteEtaleModels.trKer_holds :
   obtain ⟨v, hv, hav⟩ := (hev κ hκ0 hκc a 0).mp hψ
   have hin0 : inAf D 0 = 0 := by
     have := GlobalTheory.HeckeApprox.inAf_sub D 0 0
-    rw [_root_.sub_zero, _root_.sub_self] at this
-    exact this
+    rwa [_root_.sub_zero, _root_.sub_self] at this
   rw [hin0, _root_.zero_add] at hav
   have hinv : ∀ y, L.actG h⁻¹ (L.actG h y) = y := by
     intro y
@@ -1497,8 +1479,7 @@ theorem trPull : TrPull := by
       rfl
     · intro a a'
       simp only [Subgroup.coe_mul, transl_mul, Over.comp_left]
-    · intro a a' h
-      exact Subtype.ext (transl_injective h)
+    · exact fun a a' h => Subtype.ext (transl_injective h)
     · rintro ⟨h, x, rfl⟩
       simp only [hψ₁]
       apply hext
@@ -1754,8 +1735,7 @@ theorem stepA_of (hD : DictP) (hX : SysExt) (hE : TrEtaK) (hK : TrKer) (hG : Gal
     have t₃ : algebraMap (𝓞 D.F) D.O a₂ • y = m₂ • algebraMap (𝓞 D.F) D.O a • y := by
       rw [ea, map_mul, map_natCast, mul_smul, Nat.cast_smul_eq_nsmul]
     rw [hz, ← en₁] at t₁
-    rw [t₃, ← t₂]
-    exact t₁
+    rwa [t₃, ← t₂]
   obtain ⟨ψ', hm', b₁, b₂⟩ := hBk p D G L E gb h _ _ M₁ M₂ _ _ W.ψ W.trans κ hκp hκ
   have hdiv : κ ^ 2 / c = c' := by
     have hc0 : 0 < c := Nat.pos_of_mul_pos_right (hcc ▸ pow_pos hκ0 2)

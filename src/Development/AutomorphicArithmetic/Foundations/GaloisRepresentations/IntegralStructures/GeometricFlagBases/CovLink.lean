@@ -100,8 +100,7 @@ theorem UpperTheory.Gal.FiniteEtaleModels.crtMul_holds :
     rw [← MonObj.comp_mul, ← o.act.add, ← map_add (f := _), habe, map_one, o.act.one, Category.comp_id]
   have gen : ∀ (I : Ideal (𝓞 D.F)) (c : 𝓞 D.F), c ∈ I → ∀ y : D.La,
       algebraMap (𝓞 D.F) D.O c • y ∈ wSub D I 1 := by
-    intro I c hc y
-    exact Submodule.subset_span ⟨c, by simpa using hc, y, rfl⟩
+    exact fun I c hc y => Submodule.subset_span ⟨c, by simpa using hc, y, rfl⟩
   have mulsub : ∀ (I J : Ideal (𝓞 D.F)) (c : 𝓞 D.F), c ∈ I → ∀ y ∈ wSub D J 1,
       algebraMap (𝓞 D.F) D.O c • y ∈ wSub D (I * J) 1 := by
     intro I J c hc y hy
@@ -147,8 +146,7 @@ theorem UpperTheory.Gal.FiniteEtaleModels.crtMul_holds :
       simp only [MonObj.mul_comp, MonObj.one_comp, kill _ l₂ h2 _ _ _ hb, _root_.mul_one] at e1
       rw [← split (Over.homMk (U := Over.mk (x ≫ T.hom)) (V := T) x ≫ l₁ y), kill _ l₁ h1 _ _ _ ha, e1, _root_.one_mul]
     have hv : Over.homMk (U := Over.mk (x ≫ T.hom)) (V := T) x ≫ l₂ y = 1 := by
-      rw [hu, _root_.one_mul] at hy
-      exact hy
+      rwa [hu, _root_.one_mul] at hy
     have y1 := (h1.2.2.2 k x).1 y hu
     have y2 := (h2.2.2.2 k x).1 y hv
     have hsplit : y = algebraMap (𝓞 D.F) D.O a • y + algebraMap (𝓞 D.F) D.O b' • y := by
@@ -284,8 +282,7 @@ theorem exists_unique_quotAut {O M G : Type*} [Ring O] [AddCommGroup M] [Module 
     have h : L a = L (a - b) * L b := by rw [← hadd, sub_add_cancel]
     rw [Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, ← hker, h]
     constructor
-    · intro e
-      exact mul_right_cancel (e.trans (_root_.one_mul _).symm)
+    · exact fun e => mul_right_cancel (e.trans (_root_.one_mul _).symm)
     · intro e
       rw [e, _root_.one_mul]
   have eq := key hadd hker
@@ -309,8 +306,7 @@ theorem exists_unique_quotAut {O M G : Type*} [Ring O] [AddCommGroup M] [Module 
       intro q hq
       obtain ⟨y, rfl⟩ := W.mkQ_surjective q
       rw [hf, ← map_zero W.mkQ, ← eq, hz, (hker 0).2 W.zero_mem, hker'] at hq
-      rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
-      exact hq
+      rwa [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
     · intro q
       obtain ⟨a, rfl⟩ := W.mkQ_surjective q
       obtain ⟨y, hy⟩ := hsurj' a
@@ -390,8 +386,7 @@ theorem isEtLevOver_eq_of_mkQ_eq {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Typ
   have hm : z - z' ∈ wSub D w0 r := by
     rw [← Submodule.Quotient.mk_eq_zero]; simpa [sub_eq_zero] using hz
   have := h.1 z' (z - z')
-  rw [add_sub_cancel, h.2.2.1 _ hm, _root_.mul_one] at this
-  exact this
+  rwa [add_sub_cancel, h.2.2.1 _ hm, _root_.mul_one] at this
 
 theorem isEtLevOver_levAct (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ)
     (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s) (w0 : Ideal (𝓞 D.F)) (r : ℕ) (T : Over S)
@@ -504,8 +499,7 @@ theorem ptOf_mul (m : ObjMap o₁ o t) (g h : 𝟙_ (Over T) ⟶ o₁.A) :
   have e := ptOf_eq m (g * h)
   rw [ptOver_mul, ← ptOf_eq, ← ptOf_eq, ← comp_mul] at e
   ext
-  have e' := congrArg CommaMorphism.left e
-  simpa using e'
+  simpa using congrArg CommaMorphism.left e
 
 theorem ptOf_one (m : ObjMap o₁ o t) : ptOf m (1 : 𝟙_ (Over T) ⟶ o₁.A) = 1 := by
   have h := ptOf_mul m (1 : 𝟙_ (Over T) ⟶ o₁.A) 1
@@ -639,8 +633,7 @@ theorem UpperTheory.Gal.FiniteEtaleModels.finCover_holds :
       show (fg (a * c)).left = (fg a).left ≫ (fg c).left
       rw [← hfgeq (fg a ≫ fg c) (a * c) (fun y => by rw [Category.assoc, hfg, hfg, hcomp])]
       rfl
-    · intro a
-      exact Over.w (fg a)
+    · exact fun a => Over.w (fg a)
     · constructor
       intro x
       obtain ⟨k, _, _, a, ha⟩ := GlobalTheory.FinEt.exists_algClosed_point S x
@@ -784,14 +777,12 @@ theorem idealInd_holds : IdealInd := by
   | h1 hx =>
     rename_i x
     intro _ _
-    rw [Ideal.isUnit_iff.1 hx]
-    exact htop
+    rwa [Ideal.isUnit_iff.1 hx]
   | hpr i hp =>
     rename_i w
     intro _ hQ
     rcases Nat.eq_zero_or_pos i with rfl | hi
-    · rw [pow_zero, Ideal.one_eq_top]
-      exact htop
+    · rwa [pow_zero, Ideal.one_eq_top]
     · have hmax : w.IsMaximal :=
         (Ideal.isPrime_of_prime hp).isMaximal hp.ne_zero
       exact hpow w i hmax (hQ w hmax (Ideal.pow_le_self hi.ne'))
@@ -833,8 +824,7 @@ private lemma map_eq_zero_of_mem_max {p : ℕ} [Fact p.Prime] {O : Type} [CommRi
     exact (Fact.out : p.Prime).ne_zero (by exact_mod_cast hp)
   have hmax : (RingHom.ker β).IsMaximal := IsPrime.to_maximal_ideal hne
   have heq : RingHom.ker β = IsLocalRing.maximalIdeal O := IsLocalRing.eq_maximalIdeal hmax
-  rw [← heq] at hx
-  exact hx
+  rwa [← heq] at hx
 
 private lemma exists_map_ker {p : ℕ} [Fact p.Prime] {F : Type} [Field F] [NumberField F]
     (J : Ideal (𝓞 F)) (hJ : J.IsMaximal) (hp : (p : 𝓞 F) ∈ J) (hne : J ≠ ⊥)
@@ -845,8 +835,7 @@ private lemma exists_map_ker {p : ℕ} [Fact p.Prime] {F : Type} [Field F] [Numb
   have hpr : p.Prime := Fact.out
   haveI : CharP (𝓞 F ⧸ J) p := by
     rw [CharP.charP_iff_prime_eq_zero hpr]
-    rw [← map_natCast (Ideal.Quotient.mk J), Ideal.Quotient.eq_zero_iff_mem]
-    exact hp
+    rwa [← map_natCast (Ideal.Quotient.mk J), Ideal.Quotient.eq_zero_iff_mem]
   haveI : Finite (𝓞 F ⧸ J) := Ideal.finiteQuotientOfFreeOfNeBot J hne
   letI : Algebra (ZMod p) (𝓞 F ⧸ J) := ZMod.algebra _ p
   letI : Algebra (ZMod p) k := ZMod.algebra _ p
@@ -870,8 +859,7 @@ theorem UpperTheory.Gal.FiniteEtaleModels.placeOf_holds :
     have hm : b.t i0 (D.ω - (r : 𝓞 D.F)) ∈ IsLocalRing.maximalIdeal O :=
       htw i0 _ (hUw (sub_mem_uIdeal D r))
     have h0 := map_eq_zero_of_mem_max (p := p) β hm
-    rw [map_sub, map_intCast, map_sub, map_intCast, b.t_ω, sub_eq_zero] at h0
-    exact h0
+    rwa [map_sub, map_intCast, map_sub, map_intCast, b.t_ω, sub_eq_zero] at h0
   constructor
   · intro h
     obtain ⟨hne, hall⟩ := h
@@ -941,8 +929,7 @@ theorem UpperTheory.Gal.FiniteEtaleModels.placeOf_holds :
         have h2 : φ (D.ω - (r : 𝓞 D.F)) = 0 := by
           rw [← RingHom.mem_ker, hφ]
           exact hUw' (sub_mem_uIdeal D r)
-        rw [map_sub, map_intCast, sub_eq_zero] at h2
-        exact h2
+        rwa [map_sub, map_intCast, sub_eq_zero] at h2
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.FiniteEtaleModels.PPlaceOf =====
@@ -1072,8 +1059,7 @@ theorem UpperTheory.Gal.FiniteEtaleModels.ptAll_holds :
       exact ⟨l, (lev_pow o w e l).2 hl⟩
     · rintro 𝔟 𝔠 hbc ⟨l₁, h₁⟩ ⟨l₂, h₂⟩
       exact ⟨_, hC p D R b N S s o 𝔟 𝔠 hbc _ l₁ l₂ h₁ h₂⟩
-    · intro w hw hle
-      exact he.2 w hw (hw.isPrime.le_of_pow_le hle)
+    · exact fun w hw hle => he.2 w hw (hw.isPrime.le_of_pow_le hle)
   obtain ⟨l, hl⟩ := key
   exact ⟨l, (lev_pow o 𝔞 r l).1 hl⟩
 end -- clump:auto

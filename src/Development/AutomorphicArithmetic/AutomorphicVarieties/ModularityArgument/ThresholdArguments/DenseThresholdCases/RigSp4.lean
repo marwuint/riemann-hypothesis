@@ -331,8 +331,7 @@ theorem adjoint_vanishing_gsp4_rigid_point (hU : _root_.UpperTheory.V.Ws.Unramif
       rw [hcj, mul_inv_eq_one, mul_eq_left] at h1
       exact (DFunLike.congr_fun hρ g).trans h1
     · have h1 := hfl v
-      rw [← hρ] at h1
-      exact h1
+      rwa [← hρ] at h1
   have hirr₀ : U3.MatIrr ⊤ (W.mat ρ) := fun N hN => (_root_.UpperTheory.Reformulated.B.Qe4.irrIffSpan (W.mat ρ)).2 hfull' N fun g v hv => hN g trivial v hv
   have hfree : Free K.V.frame fun v => (Link.pt φ y).psi v := fun v : W.Vl l T.L => by
     have : IsGalois ℚ Ω := {}
@@ -346,8 +345,7 @@ theorem adjoint_vanishing_gsp4_rigid_point (hU : _root_.UpperTheory.V.Ws.Unramif
     have hdec : σ ∈ Dec (F := T.L) (K.s.A v) := by
       have hpow : resQ T.K (g ^ m) ∈ Dec (F := ℚ) (K.s.A v) :=
         (pow_mem hg m : g ^ m ∈ Dec (F := T.K) (K.s.A v))
-      rw [← hσ] at hpow
-      exact hpow
+      rwa [← hσ] at hpow
     let s : Dec (F := T.L) (K.s.A v) := ⟨σ, hdec⟩
     refine ⟨s, ?_, ?_⟩
     · have hcyc : cycZ ℚ Ω l (resQ T.K (g ^ m)) = 1 := by
@@ -485,8 +483,7 @@ theorem automorphic_of_gsp4_rigid_solvable_galois (H : _root_.UpperTheory.V.Af.H
   have hp : Af.IsPairing cc (r.toHomUnits.comp (Af.resG ℚ K Ω)) (θ.comp (Af.resG ℚ K Ω)) P := fun s s' h => by
     have h' : Af.resG ℚ K Ω s' = cc * Af.resG ℚ K Ω s * cc⁻¹ := h
     have h1 := hP (Af.resG ℚ K Ω s)
-    rw [← h'] at h1
-    exact h1
+    rwa [← h'] at h1
   exact (Z.Bc.solQ (_root_.UpperTheory.V.Z.Bc.solC_alt H H.cyc) ℚ K L Ω s2 ⟨inferInstance, Or.inr ⟨hK, inferInstance⟩⟩
     inferInstance inferInstance l ι 4 (by norm_num) (r.toHomUnits.comp (Af.resG ℚ K Ω)) θ
     (hr.comp (Af.continuous_restrictScalarsHom ℚ K Ω)) hirr hθ (auSign _) ⟨cc, _, hc, hp⟩).1 haut
@@ -628,8 +625,7 @@ private theorem bu_open {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
   exact h.preimage (Af.continuous_restrictScalarsHom ℚ L Ω)
 
 private theorem eq_of_ker {Γ Δ : Type} [Group Γ] [Group Δ] {f : Γ →* Δ} {a b : Γ} (h : a⁻¹ * b ∈ f.ker) : f a = f b := by
-  rw [MonoidHom.mem_ker, map_mul, map_inv, inv_mul_eq_one] at h
-  exact h
+  rwa [MonoidHom.mem_ker, map_mul, map_inv, inv_mul_eq_one] at h
 
 private theorem dec_of {Ω F F' : Type} [Field Ω] [Field F] [Field F'] [NumberField F] [NumberField F'] [Algebra F Ω] [Algebra F' Ω] {A : ValuationSubring Ω}
     {σ : G F Ω} {τ : G F' Ω} (h : ∀ x, τ x = σ x) (hσ : σ ∈ Dec (F := F) A) : τ ∈ Dec (F := F') A := by
@@ -676,15 +672,11 @@ theorem UpperTheory.V.Ws.Lk.setEx :
   have hSdec : ∀ q ∈ D.S, ∀ A : ValuationSubring Ω, A.valuation q < 1 →
       Dec (F := W.Lp T.L) A ≤ (W.resP T.L Ω).range := by
     intro q hq A hA σ hσ
-    apply (hφL σ).1
-    show resQ T.F (φ σ) ∈ T.K.fixingSubgroup
-    apply hT.split q hq A hA
-    exact dec_of (fun x => by simp [resQ, hφ]) hσ
+    exact (hφL σ).1 (hT.split q hq A hA (dec_of (fun x => by simp [resQ, hφ]) hσ))
   obtain ⟨s, hsA, hs0, hsfin, hsB, hsaway⟩ := mkSet l T.L Ω hG.l_odd hIne D.S hG.S_prime hG.l_mem hSdec
     (fun v => T.pl (e v)) he v B p hp hp2 hpS hpd hpv hnorm hB hBdec
   refine ⟨SetD.mk s e hsA hsfin hsaway ?_ ?_ ?_ (ccOf T s)⟩
-  · rw [hs0]
-    exact hsB
+  · rwa [hs0]
   · intro g hg i j
     rw [hs0] at hg
     obtain ⟨n, hn⟩ := hBpow g hg
@@ -705,8 +697,7 @@ theorem UpperTheory.V.Ws.Lk.setEx :
   · obtain ⟨d, hd, hdU⟩ := hBone
     refine ⟨d, by rw [hs0]; exact hd, ?_⟩
     have h4 : d⁻¹ * g0 ∈ (bu T.L D.om).ker := (Subgroup.mem_inf.1 hdU).2
-    rw [← bu_val, eq_of_ker h4, bu_val]
-    exact hg0om
+    rwa [← bu_val, eq_of_ker h4, bu_val]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.UnipotentIdempotents.EqOfKer =====
@@ -972,8 +963,7 @@ private theorem irr_L {D : Raw Ω c} (T : Tower D) (hT : T.Ok) (𝔞 : Amb l) (f
     refine Finset.sum_congr rfl fun i _ => ?_
     have h1 : residue 𝔞.V (r g i i) = residue 𝔞.V (𝔞.a c (D.r0 g i i)) := Ideal.Quotient.eq.2 (hr g i i)
     have h2 : D.r0 g i i = D.ps i g := Matrix.diagonal_apply_eq _ i
-    rw [h2] at h1
-    exact h1
+    rwa [h2] at h1
   · obtain ⟨g, hg, hne⟩ := dist_L T hT i j hij
     refine ⟨g, hg, fun h => hne ((𝔞.j c).injective ?_)⟩
     have h1 : 𝔞.red c (D.ps i g) = 𝔞.red c (D.ps j g) := congrArg Units.val h
@@ -1007,8 +997,7 @@ private theorem point (hC : CohomologyHyp) {D : Raw Ω c} (T : Tower D) (hF : T.
     refine ⟨Asm.pair_of f fi ?_, qc, rfl⟩
     rw [← RingHom.comp_assoc, fa]
     have : (𝔞.a c').comp (inc h) = 𝔞.a c := RingHom.ext fun x => 𝔞.compat c c' h x
-    rw [this]
-    exact hp
+    rwa [this]
   obtain ⟨f₀, hf₀⟩ := X.univ R _ _ rs lR
   refine ⟨c', h, X, f.comp (f₀ : X.A →+* R), a₁.trans b₁, ?_, ?_⟩
   · rw [RingHom.comp_assoc, AlgHom.comp_algebraMap, fa]
@@ -1130,8 +1119,7 @@ theorem UpperTheory.V.Z.Win.Dn.exists_cm_field_twist_h1 (hU : _root_.UpperTheory
         | zero => simp
         | add x y _ _ hx hy => rw [mul_add, add_mul]; exact add_mem hx hy
         | smul a x _ hx => rw [mul_smul_comm, smul_mul_assoc]; exact Submodule.smul_mem _ a hx
-      have hX := hspan ((v⁻¹ : (M4 F)ˣ) * X * v) (hirrₛ ▸ Submodule.mem_top)
-      simpa [mul_assoc] using hX
+      simpa [mul_assoc] using hspan ((v⁻¹ : (M4 F)ˣ) * X * v) (hirrₛ ▸ Submodule.mem_top)
     obtain ⟨u, hu⟩ := hconj
     refine irr_of_conj ⟨u⁻¹, fun g => ?_⟩ hi₁
     simp only [MonoidHom.comp_apply, hu, inv_inv, ← mul_assoc, Units.inv_mul, one_mul, Units.inv_mul_cancel_right]
@@ -1185,8 +1173,7 @@ theorem UpperTheory.V.Z.Win.Dn.exists_cm_field_twist_h1 (hU : _root_.UpperTheory
     have a4 : K.twc 0 g * K.twc 0 g' * θ.comp (resQ T.K) t * cycBar T.L Ω l g ^ 3 = 1 := by
       apply Units.ext
       simp only [Units.val_mul, Units.val_pow_eq_pow_val, K.twc_val, pow_zero, mul_one, Units.val_one]
-      rw [a2, a3]
-      exact a1
+      rwa [a2, a3]
     rw [eq_inv_of_mul_eq_one_left a4, ← zpow_natCast, ← zpow_neg]
     rfl
 end

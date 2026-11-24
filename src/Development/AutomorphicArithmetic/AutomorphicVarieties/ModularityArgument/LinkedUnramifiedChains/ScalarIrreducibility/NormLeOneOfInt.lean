@@ -128,8 +128,7 @@ theorem UpperTheory.digit_expansion_lattice :
       intro m n hmn
       have h := (SModEq.sub_mem.1 (hg hmn))
       refine SModEq.sub_mem.2 ?_
-      have h2 := hcoord _ h i
-      simpa using h2
+      simpa using hcoord _ h i
     choose L hL using hc
     refine ⟨L, fun n => ?_⟩
     refine SModEq.sub_mem.2 ?_
@@ -140,8 +139,7 @@ theorem UpperTheory.digit_expansion_lattice :
         ite_true]
     rw [hsum]
     refine Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul ?_ trivial
-    have h := SModEq.sub_mem.1 (hL i n)
-    simpa using h
+    simpa using SModEq.sub_mem.1 (hL i n)
   let v : E → S := fun e => ⟨e, hE e e.2⟩
   let f : (E → O) →ₗ[O] S := Fintype.linearCombination O v
   have hsurj : Function.Surjective f := by
@@ -282,14 +280,12 @@ private lemma integral_of_norm {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) (hx :
   have hc : ∀ n, ‖(minpoly ℚ_[l] x).coeff n‖ ≤ 1 := (spectralValue_le_one_iff hm).1 hx
   have hl : minpoly ℚ_[l] x ∈ lifts (algebraMap ℤ_[l] ℚ_[l]) := by
     rw [lifts_iff_coeff_lifts]
-    intro n
-    exact ⟨⟨_, hc n⟩, rfl⟩
+    exact fun n => ⟨⟨_, hc n⟩, rfl⟩
   obtain ⟨q, hq, -, hqm⟩ := lifts_and_degree_eq_and_monic hl hm
   refine ⟨q, hqm, ?_⟩
   have h0 := minpoly.aeval ℚ_[l] x
   rw [← hq, aeval_def, eval₂_map] at h0
-  rw [IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (PadicAlgCl l)]
-  exact h0
+  rwa [IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (PadicAlgCl l)]
 
 private lemma norm_of_integral {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l)
     (h : IsIntegral ℤ_[l] x) : ‖x‖ ≤ 1 := by
@@ -378,8 +374,7 @@ theorem UpperTheory.residue_hom_norm :
       have h0 : (p.reverse.map (algebraMap O R)).eval 0 = 1 := by
         rw [← Polynomial.coeff_zero_eq_eval_zero, Polynomial.coeff_map,
           Polynomial.coeff_zero_reverse, hp.leadingCoeff, map_one]
-      rw [h0, sub_zero, Polynomial.eval_map_algebraMap] at h
-      exact h
+      rwa [h0, sub_zero, Polynomial.eval_map_algebraMap] at h
     have hunit : IsUnit (Polynomial.aeval m p.reverse : R) := by
       by_contra hnu
       have h1 : (Polynomial.aeval m p.reverse : R) ∈ IsLocalRing.maximalIdeal R :=
@@ -433,8 +428,7 @@ theorem UpperTheory.Reformulated.B.CoPoint.coPt :
     refine ⟨P, hP, ?_⟩
     rw [RingHom.mem_ker]
     have h1 : Polynomial.aeval (y x) P = 0 := h0
-    rw [Polynomial.aeval_algHom_apply] at h1
-    exact h1
+    rwa [Polynomial.aeval_algHom_apply] at h1
   have hfin := UpperTheory.monic_ideal_completion hres (RingHom.ker y) hJ ϖ hϖ
   have hlt : ‖algebraMap c.O (Formalism.ConjugateSelfDual.Qbar l) ϖ‖ < 1 :=
     hm ϖ hϖ.not_isUnit

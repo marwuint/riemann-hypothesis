@@ -352,8 +352,7 @@ theorem UpperTheory.V.Ws.isClosed_zeroLocus_mvPolynomial_eval_adicContinuous :
       exact (ha i N).eventually_eq x
     filter_upwards [h1] with y hy
     refine Ideal.Quotient.eq.1 ?_
-    simp only [m, map_prod, map_pow]
-    exact Finset.prod_congr rfl fun i hi => by rw [hy i hi]
+    simpa only [m, map_prod, map_pow] using Finset.prod_congr rfl fun i hi => by rw [hy i hi]
   filter_upwards [hev] with y hy hy0
   apply hN
   have h0 : K.mkQ (m y) = 0 := (Submodule.Quotient.mk_eq_zero K).2 (by
@@ -473,8 +472,7 @@ theorem UpperTheory.V.Ws.h4 :
       (fun f => (isClosed_zeroLocus_mvPolynomial_eval_adicContinuous F.G₀ x.A x.Fb (Fin 4 × Fin 4) j hj (fun p s => W.mat x.ρ s p.1 p.2) (fun p => x.cont p.1 p.2) f).preimage
         continuous_subtype_val) hsp ⟨⟨_, hg⟩, a, hu, hfa⟩ (fun N _ h2 h3 => hnc N h2 h3) V hV σ
     refine ⟨y, hy, (Polynomial.separable_map (algebraMap x.Fr x.Fb)).1 ?_⟩
-    rw [← Matrix.charpoly_map]
-    exact hs
+    rwa [← Matrix.charpoly_map]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.CompactIntegralFields.H4 =====
@@ -510,8 +508,7 @@ theorem UpperTheory.V.Ws.P1.condA :
     simp [chi, e]
   refine ⟨⟨g', hgD⟩, ?_, ?_, ?_⟩
   · show K.V.pr g' ∈ K.V.frame.G'
-    rw [(hlev.2.1 g'), ← (hres g').2.1]
-    exact hscyc
+    rwa [(hlev.2.1 g'), ← (hres g').2.1]
   · have hc : K.r.chib i (K.V.pr g') = K.r.chib j (K.V.pr g') := by
       apply Units.ext
       rw [K.chib, K.chib, map_mul, map_mul, hk, hk]
@@ -555,8 +552,7 @@ private theorem eq_zero_of_smul_mul_eq_mul_of_isNilpotent_constantCoeff {K : Typ
   obtain ⟨m, hm⟩ := hN
   let cc := (PowerSeries.constantCoeff : PowerSeries K →+* K).mapMatrix (m := Fin n)
   have hm' : cc (N ^ m) = 0 := by
-    rw [map_pow]
-    exact hm
+    rwa [map_pow]
   have hdvd : ∀ i j, (PowerSeries.X : PowerSeries K) ∣ (N ^ m) i j := by
     intro i j
     rw [PowerSeries.X_dvd_iff]
@@ -680,8 +676,7 @@ theorem UpperTheory.V.Ws.P1.n4V0 :
     simp only [e, PowerSeries.algebraMap_apply, PowerSeries.constantCoeff_C, IsScalarTower.algebraMap_apply O (ResidueField O) x.K]
     rfl
   have hc : PowerSeries.constantCoeff c ≠ 0 := by
-    simp only [c, PowerSeries.constantCoeff_C]
-    exact (_root_.map_ne_zero _).mpr (Units.ne_zero _)
+    simpa only [c, PowerSeries.constantCoeff_C] using (_root_.map_ne_zero _).mpr (Units.ne_zero _)
   have hY0 := eq_zero_of_smul_mul_eq_mul_of_isNilpotent_constantCoeff A Y e c hnil he hc hY
   ext i j
   have h2 : Yf (i, j) = 0 := by
@@ -820,13 +815,11 @@ private theorem hermOrthExt_gram_entry_eq_single_and_frame_gram_eq_zero {R : Typ
 private theorem unit_aux {R : Type} [CommRing R] (e : Rˣ) (z : R) (h : z * (e : R) ^ 3 = 1) :
     ((e ^ (1 - ((4 : ℕ) : ℤ)) : Rˣ) : R) = z := by
   have h3 : ((1 : ℤ) - ((4 : ℕ) : ℤ)) = -3 := by norm_num
-  rw [h3, zpow_neg, zpow_ofNat]
-  rw [eq_comm]
+  rw [h3, zpow_neg, zpow_ofNat, eq_comm]
   exact Units.eq_inv_of_mul_eq_one_left (by simpa [mul_comm] using h)
 
 private theorem exists_gl4_form_mul_involution {R : Type} [CommRing R] (J : (M4 R)ˣ) (C : M4 R) (hC : C * C = 1) :
-    ∃ P : GL (Fin 4) R, (P : Matrix (Fin 4) (Fin 4) R) = (J : M4 R) * C := by
-  exact ⟨J * ⟨C, C, hC, hC⟩, rfl⟩
+    ∃ P : GL (Fin 4) R, (P : Matrix (Fin 4) (Fin 4) R) = (J : M4 R) * C := ⟨J * ⟨C, C, hC, hC⟩, rfl⟩
 
 theorem UpperTheory.V.Ws.P1.formEx :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), T.Fit → T.Deep → ∀ (c' : Coef l) (h : c.O ≤ c'.O) (K : Link T c' h) (R : Type) [CommRing R] [Algebra c'.O R] (Q : PD T.ι (G T.F Ω) R) (ρ : K.V.frame.G₀ →* GL (Fin 4) R), (T.fr ∅).IsPair ((algebraMap c'.O R).comp (inc h)) Q → K.IsRho ρ Q →
@@ -850,8 +843,7 @@ theorem UpperTheory.V.Ws.P1.formEx :
   have h4 := hermOrthExt_gram_entry_eq_single_and_frame_gram_eq_zero _ _ _ hC (algebraMap c'.O R (K.κ g)) (algebraMap c'.O R (K.κ g')) _
     (hG _ _ (hQ.mult (resLe T.F_le g)))
   rw [map_mul, map_mul, map_mul, map_pow, map_one, ← e4 c'.O R g] at hk
-  rw [e1 g g' hg, hρ g, hρ g', h3, unit_aux _ _ hk, hP]
-  exact h4
+  rwa [e1 g g' hg, hρ g, hρ g', h3, unit_aux _ _ hk, hP]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.ProjectiveLineFlags.FormEx =====
@@ -1120,8 +1112,7 @@ theorem UpperTheory.V.Ws.P1.psPair :
     intro b hb
     rw [Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff, PowerSeries.isUnit_iff_constantCoeff]
     have := hy b hb
-    intro hu
-    exact hu.ne_zero this
+    exact fun hu => hu.ne_zero this
   · have e : (X.P.map (y : X.A →+* PowerSeries k)).r g = (X.P.r g).map (y : X.A →+* PowerSeries k) := rfl
     have e2 : φ = j.comp (res c'.O X.B : X.B →+* ResidueField c'.O) := RingHom.ext fun b => (hj2 b).symm
     rw [e, Matrix.charpoly_map, ← X.cp_map, Polynomial.map_map, Polynomial.map_map]
@@ -1243,8 +1234,7 @@ theorem UpperTheory.V.Ws.P1.redPsi :
         fun g => algebraMap c'.O (PowerSeries k) ↑(K.κ g.1) * Q.ψ (K.e v) i (resLe T.F_le g.1) :=
       funext fun g => hψ v i g
     show AdicCont _ (fun g : Dec (K.s.A ↑(show W.Vl l T.L from v)) => ((ψ v i g : (PowerSeries k)ˣ) : PowerSeries k))
-    rw [e]
-    exact key
+    rwa [e]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.ProjectiveLineFlags.RedPsi =====
@@ -1502,8 +1492,7 @@ theorem UpperTheory.V.Ws.P1.irrL :
     have e : algebraMap c'.O x.K (inc h (chi D T.pr i (resQ T.L g))) =
         algebraMap c'.O x.K (inc h (chi D T.pr j (resQ T.L g))) := by
       have e1 := congrArg Units.val (DFunLike.congr_fun hij ⟨_, hg⟩)
-      rw [← (hres g).1]
-      exact e1
+      rwa [← (hres g).1]
     apply Units.ext
     apply (algebraMap (ResidueField c'.O) x.K).injective
     rw [K.chib, K.chib, htow, htow, map_mul, map_mul, e]

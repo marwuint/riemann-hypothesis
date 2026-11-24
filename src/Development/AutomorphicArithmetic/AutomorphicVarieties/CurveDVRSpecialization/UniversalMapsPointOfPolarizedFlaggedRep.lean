@@ -92,8 +92,7 @@ private theorem tr_single {n : ℕ} {A G K : Type} [CommRing A] [Group G] [CommR
     have hc' (y : MonoidAlgebra K G) : (GDet.ofRep ρ).chi y = (GDet.repAlg ρ K y).charpoly := by
       unfold GDet.chi
       change (GDet.repAlg ρ (Polynomial K) _).det = _
-      rw [← Polynomial.algebraMap_eq, map_sub, hs, hm, map_one]
-      rw [Matrix.charpoly]
+      rw [← Polynomial.algebraMap_eq, map_sub, hs, hm, map_one, Matrix.charpoly]
       congr 1
       ext i j
       by_cases h : i = j <;> simp [h]
@@ -255,8 +254,7 @@ private theorem main {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain 
   refine Exists.elim (of_form T.ok T.n23 C K hj (mat r) Q t χ Q.isUnit hQ hform ⟨?_, fun x => ?_⟩ ht0 hχ
     (fun v g => ?_)) fun ρ H => ?_
   · refine ac_desc (π_quot T.K) ?_
-    simp only [ht]
-    exact tt_cont T.K p
+    simpa only [ht] using tt_cont T.K p
   · obtain ⟨g, rfl⟩ := T.K.π_surj x
     rw [ht, tt_res T.K p hn]
   · obtain ⟨u, rfl⟩ := T.K.e.surjective v

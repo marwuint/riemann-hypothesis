@@ -89,23 +89,19 @@ theorem UpperTheory.V.Th.AnnihilatorQuotientFinite.closedSub :
       first
         | exact Ideal.pow_right_mono hn k h1
     have h3 : q (t - s) ∈ ((maximalIdeal O) ^ k • ⊤ : Submodule O (T ⧸ I)) := by
-      rw [Ideal.smul_top_eq_map, Ideal.map_pow]
-      exact h2
+      rwa [Ideal.smul_top_eq_map, Ideal.map_pow]
     have h4 : Sb.mkQ (q t) = Sb.mkQ (q (t - s)) := by
       rw [map_sub, map_sub, eq_comm, sub_eq_self]
       exact (Submodule.Quotient.mk_eq_zero Sb).mpr ⟨s, hs, rfl⟩
     have h5 := Submodule.mem_map_of_mem (f := Sb.mkQ) h3
     rw [Submodule.map_smul'', Submodule.map_top, Submodule.range_mkQ] at h5
-    rw [h4]
-    exact h5
+    rwa [h4]
   have hbot := Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (R := O) (M := (T ⧸ I) ⧸ Sb)
     (maximalIdeal O) (maximalIdeal.isMaximal O).ne_top
   have h0 : Sb.mkQ (q t) = 0 := by
     have hi : Sb.mkQ (q t) ∈ (⨅ i : ℕ, (maximalIdeal O) ^ i • ⊤ : Submodule O ((T ⧸ I) ⧸ Sb)) :=
       Submodule.mem_iInf _ |>.mpr hmem
-    rw [hbot] at hi
-    exact hi
+    rwa [hbot] at hi
   rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at h0
   obtain ⟨s, hs, hsq⟩ := h0
-  refine ⟨s, hs, ?_⟩
-  exact Ideal.Quotient.eq.mp hsq.symm
+  exact ⟨s, hs, Ideal.Quotient.eq.mp hsq.symm⟩

@@ -127,9 +127,7 @@ def SplitAlg.lift {A : Type} [CommRing A] [Algebra R A] (a : Fin n → A)
 
 theorem SplitAlg.lift_root {A : Type} [CommRing A] [Algebra R A] (a : Fin n → A)
     (h : ∏ i : Fin n, (X - C (a i)) = P.map (algebraMap R A)) (i : Fin n) :
-    SplitAlg.lift P n a h (SplitAlg.root P n i) = a i := by
-  show MvPolynomial.aeval a (MvPolynomial.X i) = a i
-  exact MvPolynomial.aeval_X a i
+    SplitAlg.lift P n a h (SplitAlg.root P n i) = a i := MvPolynomial.aeval_X a i
 
 theorem SplitAlg.hom_ext {A : Type} [CommRing A] [Algebra R A] {f g : SplitAlg P n →ₐ[R] A}
     (h : ∀ i, f (SplitAlg.root P n i) = g (SplitAlg.root P n i)) : f = g := by

@@ -44,8 +44,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 
 private theorem nat_place {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {A : ValuationSubring Ω}
     {v : W.Plc F} (h : IsPlaceOver A v) (n : ℕ) : A.valuation (n : Ω) < 1 ↔ (n : 𝓞 F) ∈ v.asIdeal := by
-  have key := h (n : 𝓞 F)
-  simpa using key
+  simpa using h (n : 𝓞 F)
 
 open scoped Pointwise in
 theorem UpperTheory.V.Ws.Lk.placesEq :

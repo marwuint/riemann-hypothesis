@@ -141,15 +141,13 @@ theorem UpperTheory.V.Kum.dinfNil :
   obtain ⟨O, hO, hOeq⟩ := isOpen_induced_iff.mp (hlc.isOpen_fiber 0)
   have h1O : (1 : G F Ω) ∈ O := by
     have h2 : (1 : cycU l U) ∈ Subtype.val ⁻¹' O := by
-      rw [hOeq]
-      exact h1
+      rwa [hOeq]
     exact h2
   obtain ⟨W, hW⟩ := ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hO h1O
   have hWker : ∀ (d : G F Ω) (hd : d ∈ cycU l U), d ∈ W.toSubgroup → φ ⟨d, hd⟩ = 0 := by
     intro d hd hdW
     have h2 : (⟨d, hd⟩ : cycU l U) ∈ Subtype.val ⁻¹' O := hW hdW
-    rw [hOeq] at h2
-    exact h2
+    rwa [hOeq] at h2
   have conj_val : ∀ (γ : G F Ω) (x : cycU l U),
       ((conjHom (cycU l U) γ x : cycU l U) : G F Ω) = γ⁻¹ * x * γ := fun _ _ => rfl
   have stabC : ∀ γ ∈ cycU l U, ∀ x, φ (conjHom (cycU l U) γ x) = φ x := by
@@ -164,8 +162,7 @@ theorem UpperTheory.V.Kum.dinfNil :
       mul_mem (conjHom (cycU l U) γ x).2 (inv_mem x.2)
     have hdW : γ⁻¹ * x * γ * (x : G F Ω)⁻¹ ∈ W.toSubgroup := by
       have h3 : (x : G F Ω) * γ * (x : G F Ω)⁻¹ ∈ W.toSubgroup := W.isNormal'.conj_mem γ hγ x
-      have h2 := mul_mem (inv_mem hγ) h3
-      simpa [mul_assoc] using h2
+      simpa [mul_assoc] using mul_mem (inv_mem hγ) h3
     have e : conjHom (cycU l U) γ x = ⟨_, hdC⟩ * x :=
       Subtype.ext (by simp only [conj_val, Subgroup.coe_mul, Subgroup.coe_mk]; group)
     rw [e, hadd, hWker _ hdC hdW, zero_add]
@@ -280,5 +277,4 @@ theorem UpperTheory.V.Kum.dinfNil :
       (Nat.sub_add_cancel (Nat.le_mul_of_pos_left k0 hqpos)).symm, pow_add, mul_smul, hk0, smul_zero]
   · have h2 := hmem
     change (Polynomial.aeval Tm (Polynomial.X ^ (q * k0))) φ = 0 at h2
-    rw [map_pow, Polynomial.aeval_X] at h2
-    exact h2
+    rwa [map_pow, Polynomial.aeval_X] at h2

@@ -93,8 +93,7 @@ private theorem basic_of_ne_zero {E : Type} [Field E] {a : ℕ} {M : Type} [AddC
       have key : ∀ Y : Fin (q + 1) → Herm E a, Y 0 = Z → ω Y = 0 := fun Y hY => by
         have h := DFunLike.congr_fun hc (Fin.tail Y)
         have e : Matrix.vecCons Z (Fin.tail Y) = Y := by rw [← hY]; exact Fin.cons_self_tail Y
-        rw [← e]
-        exact h
+        rwa [← e]
       by_cases hi0 : (0 : Fin (q + 1)) = i
       · exact key X (hi0 ▸ hi')
       · have h := ω.map_swap X hi0
@@ -352,13 +351,11 @@ theorem UpperTheory.V.Lit.Bor.levelOp :
     intro g
     by_cases ho : ∀ k', o ≠ .fin k'
     · have := LinearMap.congr_fun (hc o ho g).eq x
-      rw [Module.End.mul_apply, Module.End.mul_apply (π.op o), hx g, map_zero] at this
-      exact this
+      rwa [Module.End.mul_apply, Module.End.mul_apply (π.op o), hx g, map_zero] at this
     · push Not at ho
       obtain ⟨k, rfl⟩ := ho
       have := hx (g * k)
-      rw [map_mul] at this
-      exact this
+      rwa [map_mul] at this
   rcases π.irred (N.map π.V.subtype) (Submodule.map_subtype_le _ _) (by
     rintro o _ ⟨x, hx, rfl⟩
     exact ⟨_, hs o x hx, rfl⟩) with e | e
@@ -714,8 +711,7 @@ private theorem piHarm_abs (E : Type) [Field E] [NumberField E] [_root_.NumberFi
   have hcas : cas (shift B (-r)) e = cas (shift A r) e :=
     sub_eq_zero.1 (LinearMap.ext fun m => by rw [hc m, hc0, zero_smul]; rfl)
   have := absHarm E a n e he M _ _ hA hB hcom hcas H hH (by rw [hsum]; exact hadj) q ω (hinf q ω hω)
-  rw [hsum] at this
-  exact this
+  rwa [hsum] at this
 
 theorem UpperTheory.V.Lit.Bor.piHarm :
     UpperTheory.V.Lit.Bor.PiHarm := by

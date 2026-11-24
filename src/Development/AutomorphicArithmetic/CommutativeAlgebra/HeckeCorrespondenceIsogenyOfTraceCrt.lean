@@ -191,16 +191,14 @@ theorem UpperTheory.heckeCorrespondence_isogeny_of_trace_crt :
   have a1 : ∀ d : D.O, (T.M N').univ.act.act d ≫ e₁.hom = e₁.hom ≫ o₁.act.act d := by
     intro d
     apply Over.OverMorphism.ext
-    simp only [Over.comp_left, he₁]
-    exact n₁.act d
+    simpa only [Over.comp_left, he₁] using n₁.act d
   have a1' : ∀ d : D.O, o₁.act.act d ≫ e₁.inv = e₁.inv ≫ (T.M N').univ.act.act d := by
     intro d
     rw [Iso.comp_inv_eq, Category.assoc, a1, Iso.inv_hom_id_assoc]
   have a2 : ∀ d : D.O, W.o.act.act d ≫ e₂.hom = e₂.hom ≫ o₂.act.act d := by
     intro d
     apply Over.OverMorphism.ext
-    simp only [Over.comp_left, he₂]
-    exact n₂.act d
+    simpa only [Over.comp_left, he₂] using n₂.act d
   refine ⟨e₁.inv ≫ W.ψ ≫ e₂.hom, hsq, ?_, ?_⟩
   · refine ⟨⟨S.f * i, rfl⟩, inferInstance, ?_, ?_, ?_, ?_⟩
     · intro d
@@ -234,8 +232,7 @@ theorem UpperTheory.heckeCorrespondence_isogeny_of_trace_crt :
       rw [← hc]
       refine ⟨polMove (T.M N').univ.isLB W.o.isLB o₁.isLB o₂.isLB e₁ e₂ W.ψ (e₁.inv ≫ W.ψ ≫ e₂.hom) ?_
         (by rw [he₁]; exact n₁.sq) (by rw [he₂]; exact n₂.sq) n₁.pol n₂.pol c₀ hl⟩
-      rw [he₁, he₂]
-      exact hsq
+      rwa [he₁, he₂]
     · have hback : ∀ v ∈ LaHat D, ∃ v' ∈ LaHat D, (L.actG (h * u)) v' = (q ^ (S.f * i)) • v := by
         intro v hv
         obtain ⟨v'', hv'', hvv⟩ := hTj.back v hv
@@ -269,6 +266,4 @@ theorem UpperTheory.heckeCorrespondence_isogeny_of_trace_crt :
     · rw [S.std.m1, _root_.one_mul, ← hT2]
       refine Nat.card_congr (Equiv.subtypeEquiv
         ⟨fun g => g ≫ e₁.inv, fun g => g ≫ e₁.hom, fun g => by simp, fun g => by simp⟩ ?_)
-      intro g
-      refine and_congr (hker g) ?_
-      exact forall₂_congr fun a _ => hk g _
+      exact fun g => and_congr (hker g) (forall₂_congr fun a _ => hk g _)

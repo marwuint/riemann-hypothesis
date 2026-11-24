@@ -96,8 +96,7 @@ theorem UpperTheory.V.Fr.sc_cong :
   simp only [Units.val_pow_eq_pow_val, Units.coe_map, Units.val_one]
   rw [← sub_eq_zero]
   have h0 := (residue_eq_zero_iff _).2 hmem
-  rw [map_sub, map_pow, map_one] at h0
-  exact h0
+  rwa [map_sub, map_pow, map_one] at h0
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.ScCong =====
@@ -119,8 +118,7 @@ theorem UpperTheory.V.Fr.sc_disc :
   intro w hw
   obtain ⟨A, hA⟩ := ReciprocityTheory.Gal.exists_isPlaceOver (F := K) Ω w
   have hv : A.valuation (l : Ω) < 1 := by
-    have h := (hA (l : 𝓞 K)).2 hw
-    simpa only [map_natCast] using h
+    simpa only [map_natCast] using (hA (l : 𝓞 K)).2 hw
   have hI := hB A hv
   rw [← UpperTheory.V.CF.ineAbs ℚ K Ω A w hA, Subgroup.eq_bot_iff_forall]
   rintro _ ⟨σ, hσ, rfl⟩
@@ -287,8 +285,7 @@ theorem UpperTheory.V.Fr.sc_strip :
     rw [AlgEquiv.mul_apply, e, ← AlgEquiv.mul_apply, inv_mul_cancel]
     rfl
   have h2 : χ σ = 1 := hI hσ
-  rw [map_mul, map_inv, h2, inv_one, one_mul] at h1
-  exact h1
+  rwa [map_mul, map_inv, h2, inv_one, one_mul] at h1
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.ScStrip =====
@@ -379,8 +376,7 @@ theorem UpperTheory.V.Fr.sc_theta :
     constructor
     · intro h
       have h' : e (QuotientGroup.mk' (Hth Ω l w) s) = 1 := Subtype.ext h
-      rw [MulEquiv.map_eq_one_iff, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff] at h'
-      exact h'
+      rwa [MulEquiv.map_eq_one_iff, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff] at h'
     · intro h
       have h' : QuotientGroup.mk' (Hth Ω l w) s = 1 := (QuotientGroup.eq_one_iff s).mpr h
       rw [h', map_one]
@@ -557,8 +553,7 @@ theorem UpperTheory.V.Fr.seed_cl :
     · rw [hθker, hLgal]
       exact inf_le_left.trans hLth
     · rw [hχ, hφ, hG.even, (sc_om Ω l c.O).2 σ hG.cc, one_mul, ← inv_pow, inv_neg_one, map_pow, hT1]
-    · refine ⟨s0, hs0L, fun hc => hs0 ?_⟩
-      exact sc_cong l c (Ψ s0) _ (happ s0 ▸ hTa (Ψ s0) j s0) hc
+    · exact ⟨s0, hs0L, fun hc => hs0 (sc_cong l c (Ψ s0) _ (happ s0 ▸ hTa (Ψ s0) j s0) hc)⟩
   · intro heq
     apply hG.g4
     intro s hs

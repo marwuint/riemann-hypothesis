@@ -142,8 +142,7 @@ theorem GlobalTheory.killsMu_comp_of_sq_eq_one : ∀ {Ω : Type} [Field Ω] [Cha
   have ym : ψ (proj l N c : ZMod N) ^ m = 1 := by
     rw [← map_pow, ← Units.val_pow_eq_pow_val, hm, Units.val_one, map_one]
   have hcop : Nat.Coprime 2 m := by
-    refine Nat.Coprime.pow_right _ ?_
-    exact (Nat.coprime_primes Nat.prime_two Fact.out).2 (Ne.symm hl2)
+    exact Nat.Coprime.pow_right _ ((Nat.coprime_primes Nat.prime_two Fact.out).2 (Ne.symm hl2))
   rw [hval]
   have := (pow_gcd_eq_one).2 ⟨y2, ym⟩
   rwa [hcop.gcd_eq_one, pow_one] at this
@@ -285,8 +284,7 @@ theorem flag_block : U3.CohInp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsA
   obtain ⟨hnorm, hID, -⟩ := Chr.decCyc Ω l A hl.out hAl
   have hs₀' : (D.ΨQ s₀ : Qbar l) ^ 2 ≠ 1 := by
     have := (hu.map (algebraMap c.O (PadicAlgCl l))).ne_zero
-    rw [map_sub, map_pow, map_one, sub_ne_zero] at this
-    exact this
+    rwa [map_sub, map_pow, map_one, sub_ne_zero] at this
   set v : Fin 3 → Qbar l := ((M⁻¹ : GL (Fin 3) (Qbar l)) : Matrix (Fin 3) (Fin 3) (Qbar l)) *ᵥ Pi.single 0 1 with hv
   have hv0 : v ≠ 0 := fun h0 => by
     have := congrArg (fun x => ((M : Matrix (Fin 3) (Fin 3) (Qbar l)) *ᵥ x) 0) (hv.symm.trans h0)
@@ -389,8 +387,7 @@ theorem admissible_of_type_two_block : U3.CohInp → ∀ {Ω : Type} [Field Ω] 
     simp
   · obtain ⟨f, hf⟩ := hmod
     refine ⟨f, 1, 1, le_rfl, fun _ _ => rfl, ?_⟩
-    rw [mul_one]
-    exact hf
+    rwa [mul_one]
   · obtain ⟨h1, h2, h3, -⟩ := places ℚ Ω l A
     have hne : A ≠ ⊤ := fun ht => (h2 ht).2 hA
     obtain ⟨v, hv⟩ := h1 hne
@@ -565,8 +562,7 @@ theorem admissible_twist_by_det : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Fiel
   · obtain ⟨f, M, φ, hM, hφ, hf⟩ := h.modular
     refine ⟨f, M * N, φ * dt W, Nat.mul_pos hM hN,
       killsMu_mul (killsMu_dvd hφ (dvd_mul_right M N)) (killsMu_dvd hθN (dvd_mul_left N M)), ?_⟩
-    rw [tw_tw, mul_assoc, mul_assoc, ← pow_two, h.det2, mul_one]
-    exact hf
+    rwa [tw_tw, mul_assoc, mul_assoc, ← pow_two, h.det2, mul_one]
   · obtain ⟨A, χ, κ, hA, hχ, hfl, hine, hk⟩ := h.flag
     refine ⟨A, χ, fun i => κ i * (dt W).comp (Dec (F := ℚ) A).subtype, hA, hχ, flag_tw hfl, ?_, ?_⟩
     · rw [hdt]; exact hine

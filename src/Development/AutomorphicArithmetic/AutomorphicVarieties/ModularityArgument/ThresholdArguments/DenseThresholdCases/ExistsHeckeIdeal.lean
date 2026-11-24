@@ -185,8 +185,7 @@ theorem UpperTheory.V.Hi.heckeDeterminant_reduction_eq_residual_alt :
   funext j
   split_ifs with h
   · have h3 := (Alg.res_eq_zero_iff c.O T _).2 (hgen (.inl (⟨w, hw⟩, ⟨j - 1, h.2⟩)))
-    rw [map_sub, AlgHom.commutes, sub_eq_zero] at h3
-    exact h3
+    rwa [map_sub, AlgHom.commutes, sub_eq_zero] at h3
   · exact map_one _
 end
 end -- clump:auto
@@ -493,8 +492,7 @@ private theorem cd_glue {l : ℕ} [Fact l.Prime] (c : Coef l) {n : ℕ} {T Γ : 
   rw [hD x, MonoidAlgebra.mapRingHom_single, map_one, (AlgebraTools.Det.repApi (W.mat (r x.1 x.2))).2.1] at h1
   have h2 := congrArg (fun p => p.coeff k) (h1.symm.trans (hrf x.1 x.2 j).symm)
   simp only [Polynomial.coeff_map] at h2
-  rw [map_sub, sub_eq_zero]
-  exact h2
+  rwa [map_sub, sub_eq_zero]
 private theorem cd_pol {T : Type} [CommRing T] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (x : T →+* Qbar l) (n q : ℕ)
     (a : ℕ → T) (b : ℕ → ℂ) (h : ∀ j ≤ n, ι (x (a j)) = b j) (p : (Qbar l)[X]) (hp : p.map ι.toRingHom = Hi.heckePol n q b) :
     (Hi.heckePol n q a).map x = p := by
@@ -597,8 +595,7 @@ private theorem absH (hN : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureR
   have h2' : (fun v i => W.pushCh f.toRingHom (ψ₀ v i)) = ψ := funext fun v => funext fun i => h2 v i
   have hU' : H.IsMap θ a K D₀ ψ₀ f := by
     unfold HSet.IsMap
-    rw [h1, h2']
-    exact hU
+    rwa [h1, h2']
   exact ⟨RingHom.ker f, Or.inr ⟨hF, hCO, f, hne, hU',
     deformationRing_to_heckeAlgebra_surjective L Ω l n c _ hA A _ B (H.gen θ a K) D₀ ψ₀ f hU'.frob hU'.ψ_unif _ h3 hgen, h3, rfl⟩⟩
 theorem UpperTheory.V.Hi.exists_hecke_ideal :

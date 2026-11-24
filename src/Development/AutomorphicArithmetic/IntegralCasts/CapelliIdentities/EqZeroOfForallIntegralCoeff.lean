@@ -78,8 +78,7 @@ attribute [local instance] instMeasurableSpaceU2
 theorem aux3 : IsTopologicalGroup ↥(unitary (Matrix (Fin 2) (Fin 2) ℂ)) := by
   exact (inferInstance : IsTopologicalGroup (Matrix.unitaryGroup (Fin 2) ℂ))
 
-theorem aux4 : BorelSpace U2 := by
-  exact ⟨rfl⟩
+theorem aux4 : BorelSpace U2 := ⟨rfl⟩
 
 private theorem compact_unitary :
     CompactSpace (Matrix.unitaryGroup (Fin 2) ℂ) := by
@@ -92,11 +91,9 @@ private theorem compact_unitary :
   intro U hU i _ j _
   simpa using entry_norm_bound_of_unitary hU i j
 
-theorem aux5 : CompactSpace ↥(Matrix.unitaryGroup (Fin 2) ℂ) := by
-  exact compact_unitary
+theorem aux5 : CompactSpace ↥(Matrix.unitaryGroup (Fin 2) ℂ) := compact_unitary
 
-theorem aux6 : Nonempty U2 := by
-  exact ⟨1⟩
+theorem aux6 : Nonempty U2 := ⟨1⟩
 
 noncomputable def μK : MeasureTheory.Measure U2 := by
   letI : BorelSpace U2 := aux4

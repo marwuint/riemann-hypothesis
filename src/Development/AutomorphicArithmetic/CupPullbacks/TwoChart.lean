@@ -243,8 +243,7 @@ theorem isPullback_of_sx {P A B C : Spc} {a : P ⟶ A} {b : P ⟶ B} {f : A ⟶ 
   · exact NatTrans.congr_app (NatTrans.congr_app w n) T
   · rintro x y ⟨h1, h2⟩
     exact hinj n.unop.len T.unop x y h1 h2
-  · intro s t h
-    exact hex n.unop.len T.unop s t h
+  · exact fun s t h => hex n.unop.len T.unop s t h
 
 theorem prod_sx_ext {A B : Spc} {p : ℕ} {T : Scheme.{0}} {x y : Sx (A ⨯ B) p T}
     (h1 : x.map prod.fst = y.map prod.fst) (h2 : x.map prod.snd = y.map prod.snd) : x = y := by
@@ -266,8 +265,7 @@ theorem spc_mono {A B : Spc} (f : A ⟶ B)
   have : ∀ n, Mono (f.app n) := fun n => by
     have : ∀ T, Mono ((f.app n).app T) := fun T => by
       rw [mono_iff_injective]
-      intro x y e
-      exact h n.unop.len T.unop x y e
+      exact fun x y e => h n.unop.len T.unop x y e
     exact NatTrans.mono_of_mono_app _
   exact NatTrans.mono_of_mono_app _
 
@@ -316,9 +314,7 @@ theorem tri_w (E : Spc) (N : ℕ) : (prod.fst : E ⨯ Dv N ⟶ E) ≫ triv E N =
 theorem tri_pullback (E : Spc) (N : ℕ) :
     IsPullback (prod.fst : E ⨯ Dv N ⟶ E) (prod.snd ≫ Dv.toPGL N) (triv E N) (PGL.pr N) := by
   refine isPullback_of_sx (tri_w E N) ?_ ?_
-  · intro p T x y h1 h2
-    refine prod_sx_ext h1 (vx_ext fun k => ?_)
-    exact congrArg (fun z => vxP z k) h2
+  · exact fun p T x y h1 h2 => prod_sx_ext h1 (vx_ext fun k => congrArg (fun z => vxP z k) h2)
   · intro p T s t h
     have hp : ∀ i j : Fin (p + 1), ∃ u : Γ(T, ⊤)ˣ, (vxP t i).1 = (u : Γ(T, ⊤)) • (vxP t j).1 := by
       have key : ∀ i j : Fin (p + 1), i ≤ j → ∃ u : Γ(T, ⊤)ˣ, (vxP t i).1 = (u : Γ(T, ⊤)) • (vxP t j).1 := by
@@ -377,8 +373,7 @@ theorem UpperTheory.affineLine_hom_existsUnique_of_globalSection :
         (T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ)).appTop).hom Polynomial.X = a := by
       rw [comp_gamma]
       simp [φ]
-    rw [CommRingCat.hom_comp, RingHom.comp_apply] at h
-    exact h
+    rwa [CommRingCat.hom_comp, RingHom.comp_apply] at h
   · intro s hs
     suffices e : (Scheme.ΓSpecIso (CommRingCat.of (Polynomial ℤ))).inv ≫ s.appTop =
         CommRingCat.ofHom φ by
@@ -539,8 +534,7 @@ theorem UpperTheory.Reformulated.B.LocalQuotientHomExt.hom_ext :
         f = g := by
   intro q R _ f g h
   have hC : f.comp LaurentPolynomial.C = g.comp LaurentPolynomial.C := by
-    apply IsLocalization.ringHom_ext (Submonoid.powers (q : ℤ))
-    exact RingHom.ext_int _ _
+    exact IsLocalization.ringHom_ext (Submonoid.powers (q : ℤ)) (RingHom.ext_int _ _)
   have hCa : ∀ a, f (LaurentPolynomial.C a) = g (LaurentPolynomial.C a) :=
     fun a => RingHom.congr_fun hC a
   have hmul : ∀ m n : ℤ, (LaurentPolynomial.T m : UpperTheory.Reformulated.B.LocalQuotientHomExt.LqR q) * LaurentPolynomial.T n
@@ -614,8 +608,7 @@ theorem UpperTheory.multiplicativeGroup_hom_existsUnique_of_unit :
     simp only [φ, LaurentPolynomial.eval₂_T, zpow_one]
   refine ⟨T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ), ?_, ?_⟩
   · refine Units.ext ?_
-    rw [val_map_tq, sec_to]
-    exact hφ
+    rwa [val_map_tq, sec_to]
   · intro s hs
     refine sec_inj ?_
     rw [sec_to]
@@ -868,8 +861,7 @@ theorem gch_loc {p : ℕ} {U : Scheme.{0}} (y : Sx (E ⨯ Dv 2) p U) :
       ∃ z : Sx (WS E A1) p V, z.map (gch b) = y.res g := by
     intro b hb
     refine gch_sections b _ ?_
-    rw [map_res, vx_res]
-    exact hb
+    rwa [map_res, vx_res]
   rcases hP V g hg with h | h
   · exact Or.inl (key 0 h)
   · exact Or.inr (key 1 h)

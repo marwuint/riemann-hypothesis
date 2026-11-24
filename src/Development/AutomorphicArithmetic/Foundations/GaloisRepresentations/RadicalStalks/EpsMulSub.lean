@@ -86,8 +86,7 @@ private theorem eps_mul_sub {p : ℕ} (hp : p.Prime) {C : Type} [CommRing C] {w 
     simpa [map_mul] using h
   have hE : E * E = E := by
     have h := (key _).mp π.idem
-    rw [map_sub, map_mul, sub_eq_zero] at h
-    exact h
+    rwa [map_sub, map_mul, sub_eq_zero] at h
   obtain ⟨e, he⟩ := π.nil
   have hAE : A ^ e * E = 0 := by
     have h := (key _).mp he
@@ -102,8 +101,7 @@ private theorem eps_mul_sub {p : ℕ} (hp : p.Prime) {C : Type} [CommRing C] {w 
       push_cast
       ring
     have h := congrArg mk e2
-    rw [map_mul, map_add (f := _), hq, zero_sub, map_neg, cast_dvd _ hz, neg_zero] at h
-    exact h
+    rwa [map_mul, map_add (f := _), hq, zero_sub, map_neg, cast_dvd _ hz, neg_zero] at h
   have h1 : X = -S * X ^ 2 := by
     calc X = X * (S * Y) := by rw [hSY, _root_.mul_one]
       _ = S * (X * (X + Y)) - S * X ^ 2 := by ring
@@ -153,13 +151,11 @@ theorem UpperTheory.Gal.Ord.lie :
     intro c d h
     simp [UpperTheory.Gal.Ord.hom, map_add (f := _), LinearMap.add_apply]
   have hhom_int : ∀ (n : ℤ) (h : HdR o.A), hom o (n : 𝓞 D.F) h = (n : k) • h := by
-    intro n h
-    exact GlobalTheory.HTCount.crysAct_intCast o n h
+    exact fun n h => GlobalTheory.HTCount.crysAct_intCast o n h
   have hLc : ∀ (c : 𝓞 D.F) (h : HdR o.A), HL.toLie (OActN.toF D o.act) (hom o c h) =
       c • HL.toLie (OActN.toF D o.act) h := fun c h => HL.toLie_act _ c h
   have hρ : β b.ρ ^ 2 - (D.tr : k) * β b.ρ + (D.nm : k) = 0 := by
-    have h0 := congrArg β b.ρ_root
-    simpa using h0
+    simpa using congrArg β b.ρ_root
   obtain ⟨r, hr⟩ := D.split
   have hrk : ((r ^ 2 - D.tr * r + D.nm : ℤ) : k) = 0 := by
     obtain ⟨s, hs⟩ := hr
@@ -179,16 +175,14 @@ theorem UpperTheory.Gal.Ord.lie :
       · push_cast
         exact (sub_eq_zero.mp h0).symm
       · have e1 : (D.tr - r) ^ 2 - D.tr * (D.tr - r) + D.nm = r ^ 2 - D.tr * r + D.nm := by ring
-        rw [e1]
-        exact hr
+        rwa [e1]
   have hwz : D.ω - (z : 𝓞 D.F) ∈ w := by
     rw [← hw, RingHom.mem_ker, map_sub, map_intCast, RingHom.comp_apply, b.t_ω, hzk, sub_self]
   have hε := eps_mul_sub hpp π D.ω D.tr D.nm z (GlobalTheory.HTLieRho.omega_quad D) hz D.disc_p hwz
   have hp_zero : ∀ h, hom o (p : 𝓞 D.F) h = 0 := by
     intro h
     have h0 := hhom_int (p : ℤ) h
-    rw [Int.cast_natCast, Int.cast_natCast, hk, zero_smul] at h0
-    exact h0
+    rwa [Int.cast_natCast, Int.cast_natCast, hk, zero_smul] at h0
   have hεω : ∀ h, hom o π.ε (hom o D.ω h) = (β b.ρ) • hom o π.ε h := by
     intro h
     obtain ⟨y, hy⟩ := hε
@@ -198,8 +192,7 @@ theorem UpperTheory.Gal.Ord.lie :
     rw [← hhom_mul, e3, hhom_add, hhom_mul, hp_zero, hhom_mul, hhom_int, hzk, zero_add]
   have hτε : τ π.ε = 1 := by
     have h0 : π.ε - 1 ∈ RingHom.ker τ := hw ▸ π.one
-    rw [RingHom.mem_ker, map_sub, map_one, sub_eq_zero] at h0
-    exact h0
+    rwa [RingHom.mem_ker, map_sub, map_one, sub_eq_zero] at h0
   have hoff : ∀ j, j ≠ i → β (b.t j π.ε) = 0 := by
     intro j hj
     have hprime : (RingHom.ker (β.comp (b.t j))).IsPrime := RingHom.ker_isPrime _
@@ -319,9 +312,7 @@ theorem UpperTheory.Gal.Ord.lie :
       rw [e10, one_smul]
     refine ⟨h₀, ?_, ?_⟩
     · rw [← HL.ker_toLie (OActN.toF D o.act), LinearMap.mem_ker, hLε0]
-      intro h0
-      apply bs.ne_zero 0
-      exact Subtype.ext h0
+      exact fun h0 => bs.ne_zero 0 (Subtype.ext h0)
     · intro h
       have hv := hkey h
       have e7 := bs.sum_repr ⟨_, hv⟩

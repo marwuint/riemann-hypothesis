@@ -58,10 +58,7 @@ private theorem group_homology_long_exact (k G : Type) [CommRing k] [Group G] (A
         (v : groupHomology C (j + 1) →+ groupHomology A j), Function.Exact u v) := by
   have h0 : f ≫ g = 0 := by
     apply Rep.hom_ext
-    apply Representation.IntertwiningMap.ext
-    apply LinearMap.ext
-    intro x
-    exact hfg.apply_apply_eq_zero x
+    exact Representation.IntertwiningMap.ext (LinearMap.ext (fun x => hfg.apply_apply_eq_zero x))
   let X : ShortComplex (Rep k G) := ShortComplex.mk f g h0
   have hex : X.Exact := by
     rw [← ShortComplex.exact_map_iff_of_faithful X (forget₂ (Rep k G) (ModuleCat k))]
@@ -85,5 +82,4 @@ theorem UpperTheory.V.KH.les :
         Function.Exact u v) ∧
       (∃ (u : groupHomology B (j + 1) →+ groupHomology C (j + 1))
         (v : groupHomology C (j + 1) →+ groupHomology A j), Function.Exact u v) := by
-  intro G _ A B C f g hf hfg hg j
-  exact group_homology_long_exact ℤ G A B C f g hf hfg hg j
+  exact fun G _ A B C f g hf hfg hg j => group_homology_long_exact ℤ G A B C f g hf hfg hg j

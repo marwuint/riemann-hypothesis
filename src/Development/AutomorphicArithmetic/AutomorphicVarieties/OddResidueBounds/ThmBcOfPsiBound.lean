@@ -278,8 +278,7 @@ private theorem keyO (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Fiel
   haveI : Fintype ((E ≃ₐ[ℚ] E) →* Oˣ) := Fintype.ofFinite _
   have key := shaDecompSign ℚ E Ω l O D (e : ℤ) hl2 c ((-1) ^ (e + 1)) hc T (fun ψ h => hT ψ (by simpa using h))
   have hsgn : ((((-1) ^ (e + 1) : ℤˣ) : ℤ) : ℤ_[l]) = (-1) ^ (e + 1) := by simp
-  rw [hcE, hsgn] at key
-  exact key
+  rwa [hcE, hsgn] at key
 
 theorem UpperTheory.V.Odd.atPrime :
     PsiBound → ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (N : ℕ) [NeZero N] (ρ : (ZMod N)ˣ →* (E ≃ₐ[ℚ] E)), IsCycAct Ω N ρ → ∀ (l : ℕ) [Fact l.Prime] (D : LData E Ω l), l ≠ 2 → ¬ l ∣ Module.finrank ℚ E → ∀ e : ℕ, 1 ≤ e → minusLen D e ≠ ⊤ ∧ ∃ T : Finset (DirichletCharacter (PadicAlgCl l) N), (T : Set _) ⊆ charSet (PadicAlgCl l) (parE ρ (e + 1)) ∧ ((minusLen D e).toNat : ℝ) * Real.log l ≤ ∑ χ ∈ T, -Real.log ‖alN (e + 1) χ‖ := by
@@ -320,8 +319,7 @@ theorem UpperTheory.V.Odd.atPrime :
   · rw [Finset.coe_image]
     rintro _ ⟨ψ, hψ, rfl⟩
     exact ((UpperTheory.V.Odd.chiFacts E N ρ hsurj l O).2 ψ (e + 1)).1 (hpar ψ hψ)
-  · rw [Finset.sum_image (fun x _ y _ h => (UpperTheory.V.Odd.chiFacts E N ρ hsurj l O).1 h)]
-    exact hle
+  · rwa [Finset.sum_image (fun x _ y _ h => (UpperTheory.V.Odd.chiFacts E N ρ hsurj l O).1 h)]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.OddResidueBounds.AtPrime =====
@@ -415,8 +413,7 @@ theorem UpperTheory.V.Odd.deg :
   haveI : Fact l.Prime := ⟨hl⟩
   have hcard : l ∣ Nat.card (Gal(CyclotomicField N ℚ/ℚ) ⧸ F.fixingSubgroup) := by
     show l ∣ F.fixingSubgroup.index
-    rw [hindex]
-    exact hldvd
+    rwa [hindex]
   obtain ⟨x, hx⟩ := exists_prime_orderOf_dvd_card' l hcard
   obtain ⟨g, rfl⟩ := QuotientGroup.mk_surjective x
   have hxk : ((g : Gal(CyclotomicField N ℚ/ℚ) ⧸ F.fixingSubgroup)) ^ (2 ^ (e + 1) * M.deg) = 1 := by
@@ -526,8 +523,7 @@ private theorem above_card (F : Type) [Field F] [NumberField F] (l : ℕ) [hl : 
     rw [IsDedekindDomain.mem_primesOverFinset_iff hp0]
     have := p.isPrime
     refine ⟨p.isPrime, ⟨hmax.eq_of_le (Ideal.IsPrime.ne_top inferInstance) ?_⟩⟩
-    rw [Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, map_natCast]
-    exact hp'
+    rwa [Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, map_natCast]
   let f : Above F l → IsDedekindDomain.primesOverFinset (Ideal.span {(l : ℤ)}) (𝓞 F) := fun p => ⟨_, hm p⟩
   have hf : Function.Injective f := fun p q h =>
     Subtype.ext (HeightOneSpectrum.ext (congrArg Subtype.val h))
@@ -725,8 +721,7 @@ theorem UpperTheory.V.Odd.unrInj :
     let φ : G (Fn E Ω l 1) Ω → ZMod l := fun σ => eq1 (Function.invFun ι (w σ))
     have hφ : ∀ σ, ι (eq1.symm (φ σ)) = w σ := by
       intro σ
-      simp only [φ, RingEquiv.symm_apply_apply]
-      exact Function.invFun_eq (hwt σ)
+      simpa only [φ, RingEquiv.symm_apply_apply] using Function.invFun_eq (hwt σ)
     have hdet : ∀ σ (c : ZMod l), ι (eq1.symm c) = w σ → φ σ = c := by
       intro σ c h
       have h2 := hφ σ
@@ -743,8 +738,7 @@ theorem UpperTheory.V.Odd.unrInj :
       rw [hgal] at hm
       have hu : (cycZ E Ω l (galEmb E (Fn E Ω l 1) Ω a)) ^ (-e) ∈ KStar.TotallyRealRoots.princ l 1 :=
         Subgroup.zpow_mem (KStar.TotallyRealRoots.princ l 1) (Subgroup.mem_comap.1 hm.2) _
-      rw [h1, qzG_apply, unrInj_smul hu (by simpa using hz _), ← map_mul, ← map_mul] at hg
-      exact hg
+      rwa [h1, qzG_apply, unrInj_smul hu (by simpa using hz _), ← map_mul, ← map_mul] at hg
     have hz1 : (z : GS Ω (↑D.S : Set (HeightOneSpectrum (𝓞 E))) → QZ l) 1 = 0 := by
       have h := hzco 1 1
       rw [map_one, mul_one, Module.End.one_apply] at h
@@ -759,8 +753,7 @@ theorem UpperTheory.V.Odd.unrInj :
     · intro A hA g hg
       have hg' : galEmb E (Fn E Ω l 1) Ω g ∈ Ine A := by
         have h := ((galEmbFam E (Fn E Ω l 1) Ω l).1 A).2
-        rw [← h] at hg
-        exact hg
+        rwa [← h] at hg
       have h1 : toGS Ω (↑D.S : Set (HeightOneSpectrum (𝓞 E))) (galEmb E (Fn E Ω l 1) Ω g) = 1 := by
         by_cases htop : A = ⊤
         · have h := ((places E Ω l A).2.1 htop).1
@@ -1067,8 +1060,7 @@ private theorem bernoulli_denominator_bound {N M : ℕ} (k : ℕ) (Φ : ZMod M �
     _ = 16 * (N : ℝ) ^ (k + 1) * k.factorial * (4 ^ k / (2 * Real.pi) ^ k) := by ring
     _ ≤ 16 * (N : ℝ) ^ (k + 1) * k.factorial * 1 := by
         gcongr
-        rw [div_le_one hpi]
-        exact h4
+        rwa [div_le_one hpi]
     _ = _ := mul_one _
 
 theorem UpperTheory.V.Bern.b_denupper :
@@ -1219,8 +1211,7 @@ theorem UpperTheory.V.Bern.b_sumval :
     _ ≤ ∑ p ∈ M.natAbs.factorization.support,
           (M.natAbs.factorization p : ℝ) * Real.log p := by
         refine Finset.sum_le_sum_of_subset_of_nonneg ?_ fun p _ _ => ?_
-        · intro x hx
-          exact (Finset.mem_filter.mp hx).2
+        · exact fun x hx => (Finset.mem_filter.mp hx).2
         · exact mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg p)
 end -- clump:auto
 end -- clump:auto

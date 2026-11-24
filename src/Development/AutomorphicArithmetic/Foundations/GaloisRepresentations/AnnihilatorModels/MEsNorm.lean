@@ -203,8 +203,7 @@ theorem glue {Y₀ Y X : Scheme.{0}} (i : Y₀ ⟶ Y) (t₀ : Y₀ ⟶ X) [IsDom
   choose U hy t ht using h
   have hU : TopologicalSpace.IsOpenCover U := by
     rw [TopologicalSpace.IsOpenCover, eq_top_iff]
-    intro y _
-    exact TopologicalSpace.Opens.mem_iSup.mpr ⟨y, hy y⟩
+    exact fun y _ => TopologicalSpace.Opens.mem_iSup.mpr ⟨y, hy y⟩
   let 𝒰 := Y.openCoverOfIsOpenCover U hU
   have hc : ∀ x y, pullback.fst (𝒰.f x) (𝒰.f y) ≫ t x = pullback.snd (𝒰.f x) (𝒰.f y) ≫ t y := by
     intro x y
@@ -449,8 +448,7 @@ theorem finite_fibre_of_isFinite : ∀ (X Y₀ Y : Scheme.{0}) (s t : Y ⟶ X) (
         have h := Set.mem_range_self (f := Y.fromSpecResidueField e0)
           (spMap (algebraMap (Y.residueField e0) (PowerSeries (Y.residueField e0))) q)
         rw [Scheme.range_fromSpecResidueField] at h
-        rw [Scheme.Hom.comp_apply]
-        exact h
+        rwa [Scheme.Hom.comp_apply]
       exact ⟨PowerSeries (Y.residueField e0), inferInstance, inferInstance, inferInstance,
         spMap (algebraMap (Y.residueField e0) (PowerSeries (Y.residueField e0))) ≫
           Y.fromSpecResidueField e0, (hpt _).symm ▸ he0i, hpt _⟩
@@ -459,8 +457,7 @@ theorem finite_fibre_of_isFinite : ∀ (X Y₀ Y : Scheme.{0}) (s t : Y ⟶ X) (
       exact ⟨O, inferInstance, hO, hV, f, hf0 ▸ he0i, hf1⟩
   have hr : Set.range (spMap (algebraMap V (FractionRing V)) ≫ g) ⊆ Set.range i := by
     rintro _ ⟨q, rfl⟩
-    rw [Scheme.Hom.comp_apply, spMap_algebraMap_apply V (FractionRing V) q]
-    exact hg0
+    rwa [Scheme.Hom.comp_apply, spMap_algebraMap_apply V (FractionRing V) q]
   refine ⟨V, FractionRing V, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance,
     inferInstance, g ≫ s, g ≫ t, IsOpenImmersion.lift i _ hr, ?_, ?_, ?_, ?_⟩
   · exact (congrArg (· ≫ s) (IsOpenImmersion.lift_fac i _ hr)).symm.trans (Category.assoc _ _ _)
@@ -514,8 +511,7 @@ theorem exists_geomPt_closedPoint (V : Type) [CommRing V] [IsLocalRing V] (X : S
   have hx : x = y (IsLocalRing.closedPoint V) := by
     let q : Sp k := IsLocalRing.closedPoint k
     have e : (Spec.map σ ≫ X.fromSpecResidueField x) q = (spMap g₀ ≫ y) q := congrArg (fun g : Sp k ⟶ X => g q) h
-    rw [Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hπ, Scheme.fromSpecResidueField_apply] at e
-    exact e
+    rwa [Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hπ, Scheme.fromSpecResidueField_apply] at e
   subst hx
   exact ⟨k, inferInstance, inferInstance, σ.hom, spMap g₀, h.symm, hπ⟩
 
@@ -993,8 +989,7 @@ theorem finite_isogSource : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type
     obtain ⟨σ, hσ⟩ := exists_residueField_hom ζ hζ
     obtain ⟨ψ', hψ'⟩ := exists_isPIsog_scale hψ
     refine ⟨k, inferInstance, σ, υ, fun q => ?_, ?_⟩
-    · rw [Subsingleton.elim q (IsLocalRing.closedPoint k)]
-      exact hu
+    · rwa [Subsingleton.elim q (IsLocalRing.closedPoint k)]
     · rw [hσ]
       exact ⟨by rw [Category.assoc, hτ, hs], oz, scale ou e rfl, ψ', ⟨mz⟩, ⟨compMap (scaleMap mu e) mτ⟩, hψ'⟩
   choose k hk σ υ hυ hT using key
@@ -1158,8 +1153,7 @@ theorem extend_source : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [C
   refine ⟨z, ?_⟩
   obtain ⟨g, -, hg⟩ := M.rep (Sp K) (κ ≫ y ≫ M.s) o₁
   have e1 := hg (κ ≫ z) ⟨by rw [Category.assoc, hz], ⟨ESDual.compMap m'' mz⟩⟩
-  have e2 := hg (x ≫ s₀) ⟨by rw [Category.assoc, hb], ⟨ESDual.compMap m₁ ms₀⟩⟩
-  exact e1.trans e2.symm
+  exact e1.trans (hg (x ≫ s₀) ⟨by rw [Category.assoc, hb], ⟨ESDual.compMap m₁ ms₀⟩⟩).symm
 
 end GlobalTheory.ESValT
 end -- clump:auto
@@ -1335,8 +1329,7 @@ theorem existsUnique_of_openImmersion : ∀ (p : ℕ) [Fact p.Prime] (D : Datum 
   obtain ⟨a, ha⟩ := comp_map m₀ m
   obtain ⟨b, hb⟩ := comp_map m₂ m'
   refine ⟨y₀ ≫ i, ⟨by rw [Category.assoc, his, hy₀], a, b, ?_⟩, ?_⟩
-  · rw [ha, hb]
-    rw [Category.assoc, hsq, ← Category.assoc, hsq₀, Category.assoc]
+  · rw [ha, hb, Category.assoc, hsq, ← Category.assoc, hsq₀, Category.assoc]
   · rintro y ⟨hy, n₀, n₂, hsqn⟩
     obtain ⟨f₀, rfl⟩ := hfac S y hp
     obtain ⟨k₀, hk₀⟩ := GlobalTheory.HTSympCover.exists_objMap_cancel_φ n₀ m
@@ -1444,8 +1437,7 @@ theorem exists_finite_normal_model : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) 
   have hp : IsUnit ((p : ℕ) : Γ(Y₀, ⊤)) := by
     apply isUnit_of_basicOpen_eq_top
     have h := preimage_eq_top (M.X.basicOpen ((p : ℕ) : Γ(M.X, ⊤))) g
-    rw [Scheme.Hom.preimage_basicOpen, map_natCast] at h
-    exact h
+    rwa [Scheme.Hom.preimage_basicOpen, map_natCast] at h
   have hcop : ∀ m : ℕ, m.Coprime p → IsUnit ((m : ℕ) : Γ(Y₀, ⊤)) := by
     intro m hm
     have := (b.unit m hm).map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫

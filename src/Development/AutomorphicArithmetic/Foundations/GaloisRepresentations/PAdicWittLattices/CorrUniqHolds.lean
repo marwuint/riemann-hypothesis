@@ -801,8 +801,7 @@ theorem exists_local_subring : ∀ (k K : Type) [Field k] [Field K] [IsAlgClosed
     have hyT' : y ∈ locAt R 𝔪 := ⟨⟨m • y, hmR⟩, m, m.2, hmy.symm⟩
     refine ⟨⟨y, hyT'⟩, Subtype.ext ?_⟩
     change algebraMap (locAt R 𝔪) K (p.eval ⟨y, hyT'⟩) = 0
-    rw [← Polynomial.eval₂_at_apply (algebraMap (locAt R 𝔪) K), ← Polynomial.eval_map]
-    exact hy
+    rwa [← Polynomial.eval₂_at_apply (algebraMap (locAt R 𝔪) K), ← Polynomial.eval_map]
   · intro t
     obtain ⟨a, s, hs, hts⟩ := t.2
     obtain ⟨c, hc, hac⟩ := hres a
@@ -932,8 +931,7 @@ theorem integralClosure_maximal_residue_algClosed : ∀ (k K : Type) [Field k] [
     have hmem : algebraMap D A (d - ⟨φ c, hc⟩) ∈ 𝔪 := by
       rw [← Ideal.mem_comap]
       change d - ⟨φ c, hc⟩ ∈ Ideal.under D 𝔪
-      rw [h𝔪comap]
-      exact hdc
+      rwa [h𝔪comap]
     change Ideal.Quotient.mk 𝔪 (φA c) = Ideal.Quotient.mk 𝔪 (algebraMap D A d)
     symm
     rw [map_sub] at hmem
@@ -953,8 +951,7 @@ theorem integralClosure_maximal_residue_algClosed : ∀ (k K : Type) [Field k] [
       refine ⟨q, hqm, ?_⟩
       rw [Polynomial.eval₂_eq_eval_map]
       change Polynomial.eval _ (q.map ψ) = 0
-      rw [hq, ← Polynomial.eval₂_eq_eval_map]
-      exact hf
+      rwa [hq, ← Polynomial.eval₂_eq_eval_map]
     have h1 := IsAlgClosed.degree_eq_one_of_irreducible k (minpoly.irreducible hint)
     obtain ⟨c, hc⟩ := minpoly.mem_range_of_degree_eq_one k _ h1
     exact ⟨c, Ideal.Quotient.eq.mp hc.symm⟩
@@ -966,9 +963,7 @@ theorem integralClosure_maximal_residue_algClosed : ∀ (k K : Type) [Field k] [
   · intro x
     obtain ⟨d, hd, hint⟩ := hfrac x
     refine ⟨⟨(d : K), Subalgebra.algebraMap_mem A d⟩, ?_, hint⟩
-    intro h
-    apply hd
-    exact Subtype.ext (by simpa using congrArg Subtype.val h)
+    exact fun h => hd (Subtype.ext (by simpa using congrArg Subtype.val h))
   · intro x hx
     have hx' : IsIntegral A x := hx
     exact isIntegral_trans x hx'

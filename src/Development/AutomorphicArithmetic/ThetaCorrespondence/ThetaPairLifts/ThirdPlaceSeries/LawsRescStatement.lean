@@ -289,8 +289,7 @@ theorem prod_mul_inv_mem {G : Type} [Group G] (H : Subgroup G) : ∀ (n : ℕ) (
         intro x hx
         obtain ⟨k, rfl⟩ := List.mem_ofFn.1 hx
         exact hf0 _ (Fin.succ_ne_zero k)
-      rw [List.ofFn_succ, List.prod_cons, hc0 _ hP, mul_assoc, mul_inv_cancel, mul_one]
-      exact hP
+      rwa [List.ofFn_succ, List.prod_cons, hc0 _ hP, mul_assoc, mul_inv_cancel, mul_one]
     · intro hfk hck
       rw [List.ofFn_succ, List.prod_cons, mul_assoc]
       exact mul_mem (hfk 0 (Fin.succ_ne_zero k).symm)
@@ -343,8 +342,7 @@ theorem GlobalTheory.QSuppTwo.main : ∀ (D : D7) (c : Comm D) (v : VCom c) (t :
     have := hx i
     rw [(he i (F.eqv j α i)).2] at this
     have := Finsupp.mapDomain_support this
-    rw [Finset.mem_image] at this
-    exact this
+    rwa [Finset.mem_image] at this
   choose a ha hax using hpt
   refine ⟨a, fun i => ⟨Finset.mem_biUnion.2 ⟨F.eqv j α i, Finset.mem_univ _, ha i⟩, ?_⟩⟩
   have I := fun i => GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D (F.Q i).k (F.Q i).q (c.V j) _ ((F.Q i).FY j (2 * σ + 2 + 1) (by have := (F.Q i).hs; omega))
@@ -470,8 +468,7 @@ theorem exists_dual {y : WO S T} (hy : IsHalf (cA D p.e) y) : ∃ b, dual p FS F
   rw [Matrix.mul_assoc _ FS.β, FS.βγ, Matrix.mul_one, loc_gram_mul, Matrix.one_mul, Matrix.mul_assoc _ FT.β, FT.βγ,
     Matrix.mul_one, Matrix.mul_assoc, loc_gram_mul, Matrix.mul_one, Matrix.transpose_transpose]
   ext i j
-  simp only [Matrix.map_apply, p.ι_π, map_mul, cA_cA]
-  exact hy i j
+  simpa only [Matrix.map_apply, p.ι_π, map_mul, cA_cA] using hy i j
 
 theorem char_sympl {ψ : AddChar (AF D.host.F) ℂ} {ψk : AddChar k Circle} (h : p.IsChar ψ ψk) (t b : Matrix Y Y' k) :
     ψ (symplO S T (p.up FS FT t) (dual p FS FT b)) = pairing ψk t b := by
@@ -1079,8 +1076,7 @@ theorem off_mono {D : D7} {V : HSp D} {R R' : Pl D → Prop} (hR : ∀ p, R' p �
   have := h a b
   unfold idOff at this ⊢
   rw [Submodule.mem_iInf] at this ⊢
-  intro u
-  exact this ⟨u.1, hR u.1 u.2⟩
+  exact fun u => this ⟨u.1, hR u.1 u.2⟩
 
 
 open GlobalTheory.FinPl in
@@ -1112,8 +1108,7 @@ theorem prod_local : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTu
     rw [(key i').2.1] at hr
     exact at_le_off' _ (fun p hp hq => hne (hF.inj (hq.symm.trans hp))) hr
   have hcomm : Pairwise fun i i' => ∀ x y, Commute (gl i x) (gl i' y) := by
-    intro i i' hne x y
-    exact (key i).2.2.2.1 x _ (hoff i i' hne y)
+    exact fun i i' hne x y => (key i).2.2.2.1 x _ (hoff i i' hne y)
   have hmem : ∀ (H : Subgroup (GA D (c.V (j + 1)))) y, (∀ i, gl i (y i) ∈ H) →
       MonoidHom.noncommPiCoprod gl hcomm y ∈ H := by
     intro H y hy
