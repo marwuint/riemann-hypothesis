@@ -99,9 +99,7 @@ theorem continuous_tens [∀ v, FiniteDimensional ℂ (V v)] (hi : ∀ x y, ⟪t
     rw [e]
     convert hF.tendsto x using 2
     simp
-  have h3 := h2.sqrt
-  simp only [Real.sqrt_sq_eq_abs, abs_norm, Real.sqrt_zero] at h3
-  exact h3
+  simpa only [Real.sqrt_sq_eq_abs, abs_norm, Real.sqrt_zero] using h2.sqrt
 
 theorem tens_smul (hi : ∀ x y, ⟪tens x, tens y⟫_ℂ = ∏ v, ⟪x v, y v⟫_ℂ) (c : ι → ℂ) (x : ∀ v, V v) :
     tens (fun v => c v • x v) = (∏ v, c v) • tens x := by
@@ -127,8 +125,7 @@ theorem tens_update_inj [DecidableEq ι] (hi : ∀ x y, ⟪tens x, tens y⟫_ℂ
     (h : tens (Function.update ξ v a) = tens (Function.update ξ v b)) : a = b := by
   have hP : ∏ w ∈ Finset.univ.erase v, ⟪ξ w, ξ w⟫_ℂ ≠ 0 := by
     rw [Finset.prod_ne_zero_iff]
-    intro w hw
-    exact inner_self_ne_zero.mpr (hne w (Finset.ne_of_mem_erase hw))
+    exact fun w hw => inner_self_ne_zero.mpr (hne w (Finset.ne_of_mem_erase hw))
   have e : ∀ p q : V v, ⟪tens (Function.update ξ v p), tens (Function.update ξ v q)⟫_ℂ =
       ⟪p, q⟫_ℂ * ∏ w ∈ Finset.univ.erase v, ⟪ξ w, ξ w⟫_ℂ :=
     fun p q => inner_tens_update hi ξ v p q

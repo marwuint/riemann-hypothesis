@@ -140,8 +140,7 @@ theorem rootBranch (s k : ℕ) (hs : s ≠ 0) (u : ℂ) (hu : u ≠ 0) (F : ℂ 
       rw [integrableOn_image_iff_integrableOn_abs_det_fderiv_smul volume hA hderiv hinj]
       refine (hF.integrableOn (s := NthRootMeasurability.A s k)).congr_fun (fun z hz => ?_) hA
       simp only [hdet, hback z hz]
-    rw [himg, IntegrableOn, hnull] at h1
-    exact h1
+    rwa [himg, IntegrableOn, hnull] at h1
   · have h2 := integral_image_eq_integral_abs_det_fderiv_smul volume hA hderiv hinj
       (fun c => F (NthRootMeasurability.R s k (u * c)))
     rw [himg, hnull] at h2
@@ -194,8 +193,7 @@ theorem tendsto_eps (σ : ℂ) : Tendsto (fun x : ℂ => σ / (x + σ)) (cocompa
     (Homeomorph.addRight σ).map_cocompact.le
   have hinv : Tendsto Inv.inv (cocompact ℂ) (𝓝 (0 : ℂ)) :=
     Metric.cobounded_eq_cocompact (α := ℂ) ▸ tendsto_inv₀_cobounded
-  have h2 := (hinv.comp h).const_mul σ
-  simpa [div_eq_mul_inv] using h2
+  simpa [div_eq_mul_inv] using (hinv.comp h).const_mul σ
 
 theorem rhoR_eq_eventually (s : ℕ) (σ : ℂ) :
     ∀ᶠ x in cocompact ℂ, rhoR s σ x = (1 - σ / (x + σ)) ^ (((s - 1 : ℕ) : ℂ) * (s : ℂ)⁻¹) := by
@@ -253,8 +251,7 @@ theorem tendsto_shift (s : ℕ) (hs : 1 ≤ s) (σ : ℂ) :
     have hφ : HasDerivAt (fun e : ℂ => (1 - e) ^ a) (-a) 0 := by
       have h1 : HasDerivAt (fun e : ℂ => 1 - e) (-1) 0 := by
         simpa using (hasDerivAt_id (0 : ℂ)).const_sub 1
-      have h2 := h1.cpow_const (c := a) (by simp)
-      simpa using h2
+      simpa using h1.cpow_const (c := a) (by simp)
     have hslope := hasDerivAt_iff_tendsto_slope.mp hφ
     have hε : Tendsto (fun x : ℂ => σ / (x + σ)) (cocompact ℂ) (𝓝[≠] 0) := by
       refine tendsto_nhdsWithin_iff.mpr ⟨Formalism.FourierDecayAlt.P.PBK.tendsto_eps σ, ?_⟩

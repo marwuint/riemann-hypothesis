@@ -69,12 +69,10 @@ def conjSub (N : Subgroup G) (g : G) (h1 : ∀ x ∈ N, g * x * g⁻¹ ∈ N) (h
 
 theorem continuous_conjSub (N : Subgroup G) (g : G) (h1 : ∀ x ∈ N, g * x * g⁻¹ ∈ N)
     (h2 : ∀ x ∈ N, g⁻¹ * x * g ∈ N) : Continuous (conjSub N g h1 h2) := by
-  show Continuous fun x : N => (⟨g * x * g⁻¹, h1 x x.2⟩ : N)
   exact Continuous.subtype_mk ((continuous_const.mul continuous_subtype_val).mul continuous_const) _
 
 theorem continuous_conjSub_symm (N : Subgroup G) (g : G) (h1 : ∀ x ∈ N, g * x * g⁻¹ ∈ N)
     (h2 : ∀ x ∈ N, g⁻¹ * x * g ∈ N) : Continuous (conjSub N g h1 h2).symm := by
-  show Continuous fun x : N => (⟨g⁻¹ * x * g, h2 x x.2⟩ : N)
   exact Continuous.subtype_mk ((continuous_const.mul continuous_subtype_val).mul continuous_const) _
 
 variable [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
@@ -108,29 +106,25 @@ theorem genModOne_of (hHaar : GenHaarSub) : GenModOne := by
   obtain ⟨_, _, _, _, hfin, hpos⟩ := hHaar G N hN
   have hm : ∀ a : G, Measurable (fun x : G => a * x * a⁻¹) := fun a =>
     ((continuous_const.mul continuous_id).mul continuous_const).measurable
-  have hcomp : ∀ a b : G, (fun x : G => a * b * x * (a * b)⁻¹) =
-      (fun x : G => a * x * a⁻¹) ∘ (fun x : G => b * x * b⁻¹) := fun a b => by
-    funext x
-    simp only [Function.comp, mul_inv_rev, mul_assoc]
   have hmap : ∀ a b : G, (haarSub N hN).map (fun x => a * b * x * (a * b)⁻¹) =
       ((haarSub N hN).map (fun x => b * x * b⁻¹)).map (fun x => a * x * a⁻¹) := fun a b => by
-    rw [Measure.map_map (hm a) (hm b), hcomp]
+    rw [Measure.map_map (hm a) (hm b)]
+    congr 1
+    funext x
+    simp only [Function.comp, mul_inv_rev, mul_assoc]
   have hid : ∀ a : G, (haarSub N hN).map (fun x => a * a⁻¹ * x * (a * a⁻¹)⁻¹) = haarSub N hN :=
     fun a => by
-      simp only [mul_inv_cancel, one_mul, inv_one, mul_one]
-      exact Measure.map_id'
+      simpa only [mul_inv_cancel, one_mul, inv_one, mul_one] using Measure.map_id'
   have hsc : ∀ g ∈ H, ∃ c : ℝ≥0, (haarSub N hN).map (fun x => g * x * g⁻¹) = c • haarSub N hN :=
     fun g hg => conj_eq_smul N hN g (hnorm g hg) (fun x hx => by
       simpa using hnorm g⁻¹ (H.inv_mem hg) x hx)
   obtain ⟨k, hk, p, hp, σ, hσ, hkp, hσp, C, hC, hC1, hCk⟩ := hdec h hh
   have hCpos : 0 < haarSub N hN C :=
     lt_of_lt_of_le (hpos _ isOpen_interior hC1) (measure_mono interior_subset)
-  have hCfin : haarSub N hN C < ⊤ := hfin C hC
-  have key : ∀ a b : ℝ≥0∞, a * haarSub N hN C = b * haarSub N hN C → a = b := fun a b hab => by
-    first
-      | exact (ENNReal.mul_left_inj hCpos.ne' hCfin.ne).mp hab
-  have cancel : ∀ c d : ℝ≥0, c • haarSub N hN = d • haarSub N hN → c = d := fun c d hcd => by
-    have e := congrArg (fun μ : Measure G => μ C) hcd
+  have key : ∀ a b : ℝ≥0∞, a * haarSub N hN C = b * haarSub N hN C → a = b :=
+    fun _ _ => (ENNReal.mul_left_inj hCpos.ne' (hfin C hC).ne).mp
+  have cancel : ∀ c d : ℝ≥0, (c • haarSub N hN) C = (d • haarSub N hN) C → c = d := by
+    intro c d e
     simp only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at e
     exact_mod_cast key _ _ e
   have hk1 : (haarSub N hN).map (fun x => k * x * k⁻¹) = haarSub N hN := by
@@ -139,11 +133,7 @@ theorem genModOne_of (hHaar : GenHaarSub) : GenModOne := by
     have e1 : (haarSub N hN).map (fun x => k * x * k⁻¹) C = haarSub N hN C := by
       rw [Measure.map_apply (hm k) hC.measurableSet, hpre]
     rw [hck] at e1
-    have e3 : (ck : ℝ≥0∞) * haarSub N hN C = 1 * haarSub N hN C := by
-      simp only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at e1
-      rw [one_mul]
-      exact e1
-    have hck1 : ck = 1 := by exact_mod_cast key _ _ e3
+    have hck1 := cancel ck 1 (by rwa [one_smul])
     rw [hck, hck1, one_smul]
   have hp1 : (haarSub N hN).map (fun x => p * x * p⁻¹) = haarSub N hN := by
     obtain ⟨cp, hcp⟩ := hsc p hp
@@ -153,26 +143,18 @@ theorem genModOne_of (hHaar : GenHaarSub) : GenModOne := by
       have e := hid σ
       rw [hmap, hcs', Measure.map_smul _ (hm σ).aemeasurable, hcs, smul_smul] at e
       rw [e, one_smul]
-    have hss : cs' * cs = 1 := cancel _ _ e1
-    have hpinv : (fun x : G => p⁻¹ * x * p⁻¹⁻¹) =
-        (fun x : G => σ * p * σ⁻¹ * x * (σ * p * σ⁻¹)⁻¹) := by
-      rw [hσp]
+    have hss : cs' * cs = 1 := cancel _ _ (congrArg (· C) e1)
     have e2 : (haarSub N hN).map (fun x => p⁻¹ * x * p⁻¹⁻¹) = (cs' * cp * cs) • haarSub N hN := by
-      rw [hpinv, hmap (σ * p) σ⁻¹, hcs', Measure.map_smul _ (hm (σ * p)).aemeasurable,
+      rw [← hσp, hmap (σ * p) σ⁻¹, hcs', Measure.map_smul _ (hm (σ * p)).aemeasurable,
         hmap σ p, hcp, Measure.map_smul _ (hm σ).aemeasurable, hcs, smul_smul, smul_smul]
     have e3 : (cs' * cp * cs * cp) • haarSub N hN = (1 : ℝ≥0) • haarSub N hN := by
       have e := hid p
       rw [hmap p p⁻¹, e2, Measure.map_smul _ (hm p).aemeasurable, hcp, smul_smul] at e
       rw [e, one_smul]
     have hcp1 : cp = 1 := by
-      have h4 := cancel _ _ e3
-      have h5 : cp * cp = 1 := by
-        calc cp * cp = (cs' * cs) * (cp * cp) := by rw [hss, one_mul]
-          _ = cs' * cp * cs * cp := by ring
-          _ = 1 := h4
-      have h6 : (cp : ℝ) * cp = 1 := by exact_mod_cast h5
-      have h7 : (cp : ℝ) = 1 := by nlinarith [cp.2]
-      exact_mod_cast h7
+      have h4 := cancel _ _ (congrArg (· C) e3)
+      rw [mul_right_comm cs' cp cs, hss, one_mul] at h4
+      exact (pow_eq_one_iff_of_nonneg zero_le two_ne_zero).1 (by rwa [sq])
     rw [hcp, hcp1, one_smul]
   rw [hkp, hmap, hp1, hk1]
 

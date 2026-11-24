@@ -238,17 +238,14 @@ theorem cnt_gmap {h : V →ₗ⋆[K] V →ₗ[K] K} {g : V ≃ₗ[K] V} (hg : g 
   constructor
   · rintro ⟨y, rfl, hc, hy⟩
     refine ⟨e y, (hE y).symm, ?_, y, hy, (he y).symm⟩
-    rw [he, hg]
-    exact hc
+    rwa [he, hg]
   · rintro ⟨y', e', hc, w, hw, hwy⟩
     obtain ⟨y, rfl⟩ := e.surjective y'
     refine ⟨y, E.injective ?_, ?_, ?_⟩
     · rw [hE]; exact e'
-    · rw [he, hg] at hc
-      exact hc
+    · rwa [he, hg] at hc
     · rw [he] at hwy
-      rw [← g.injective hwy]
-      exact hw
+      rwa [← g.injective hwy]
 
 theorem form_right_mem {h : V →ₗ⋆[K] V →ₗ[K] K} {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     {A : Submodule (𝓞 K) V} (hA : locF 𝔭 A = A) (hAi : IsIntegralAt 𝔭 h A) {k : ℕ} {y z : V}
@@ -320,10 +317,8 @@ theorem cnt_sub (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} {𝔭 : Ide
     change _ ↔ (a : V) ∈ B
     constructor
     · rintro ⟨y, hy, e⟩
-      rw [smul_right_injective V hc0 e]
-      exact hy
-    · intro ha
-      exact ⟨a, ha, rfl⟩
+      rwa [smul_right_injective V hc0 e]
+    · exact fun ha => ⟨a, ha, rfl⟩
   let ψb : (↥A ⧸ B.submoduleOf A) →ₗ[𝓞 K] (↥B ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥B)) :=
     Submodule.liftQ _ ψ hker.ge
   have hψb : ∀ a : ↥A, ψb (Submodule.Quotient.mk a) = Submodule.Quotient.mk (m a) := fun a => rfl

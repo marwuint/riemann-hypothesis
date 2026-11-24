@@ -121,8 +121,7 @@ def embLin (R : RS p n') (k : ℕ) : (Fin k → R.W) →ₗ[R.W] (Fin k → R.Qq
   map_smul' := by intro c x; funext i; simp [emb, Algebra.smul_def]
 
 theorem embLin_inj : Function.Injective (embLin R k) := by
-  intro x y hxy
-  exact funext fun i => RS.injW R (congrFun hxy i)
+  exact fun x y hxy => funext fun i => RS.injW R (congrFun hxy i)
 
 theorem colSpan_one_eq : colSpan R.W (1 : Matrix (Fin k) (Fin k) R.Qq) = LinearMap.range (embLin R k) := by
   ext x
@@ -169,8 +168,7 @@ theorem baseEdge (j : Fin k) :
   have hE : ∀ x, emb (E x) = (x : Fin k → R.Qq) := by
     intro x
     have h2 := congrArg Subtype.val (e.apply_symm_apply (LinearEquiv.ofEq _ _ (colSpan_one_eq R) x))
-    rw [LinearEquiv.ofInjective_apply] at h2
-    exact h2
+    rwa [LinearEquiv.ofInjective_apply] at h2
   let ψ : colSpan R.W (1 : Matrix (Fin k) (Fin k) R.Qq) →ₗ[R.W] R.W ⧸ Ideal.span {(p : R.W)} :=
     (Ideal.span {(p : R.W)}).mkQ ∘ₗ LinearMap.proj j ∘ₗ E.toLinearMap
   have hψ : ∀ x, ψ x = (Submodule.Quotient.mk (E x j) : R.W ⧸ Ideal.span {(p : R.W)}) := fun x => rfl
@@ -186,10 +184,8 @@ theorem baseEdge (j : Fin k) :
     constructor
     · rintro ⟨y, hy, hyj⟩
       have hxy : E x = y := embLin_inj R ((hE x).trans hy)
-      rw [hxy]
-      exact hyj
-    · intro h
-      exact ⟨E x, (hE x).symm, h⟩
+      rwa [hxy]
+    · exact fun h => ⟨E x, (hE x).symm, h⟩
   refine ⟨⟨dj j (p : R.Qq), ?_, rfl⟩, ⟨1, by simp, rfl⟩, ?_, ?_, ?_⟩
   · rw [dj_det]
     exact isUnit_iff_ne_zero.2 (RS.pQ_ne R)

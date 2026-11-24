@@ -208,17 +208,14 @@ theorem ctsA_snd (i j : Fin I.n) : CtsA (bs I) (fun p : Co I × Co I => matOf I 
 theorem ctsA_mulE {f g : Co I × Co I → Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)}
     (hf : ∀ i j, CtsA (bs I) (fun p => f p i j)) (hg : ∀ i j, CtsA (bs I) (fun p => g p i j)) (i j : Fin I.n) :
     CtsA (bs I) (fun p => (f p * g p) i j) := by
-  simp only [Matrix.mul_apply]
-  exact ctsA_sum _ fun l _ => ctsA_mul (hf i l) (hg l j)
+  simpa only [Matrix.mul_apply] using ctsA_sum _ fun l _ => ctsA_mul (hf i l) (hg l j)
 
 theorem ctsA_constE (M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) (i j : Fin I.n) :
     CtsA (bs I) (fun _ : Co I × Co I => M i j) := ctsA_const _
 
 theorem ctsA_cTE {f : Co I × Co I → Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)}
     (hf : ∀ i j, CtsA (bs I) (fun p => f p i j)) (i j : Fin I.n) :
-    CtsA (bs I) (fun p => Formalism.UG.cT (sg I) (f p) i j) := by
-  show CtsA (bs I) (fun p => Algebra.TensorProduct.map I.cm.sig (AlgHom.id I.F (Af I.F)) (f p j i))
-  exact ctsA_map _ (hf j i)
+    CtsA (bs I) (fun p => Formalism.UG.cT (sg I) (f p) i j) := ctsA_map _ (hf j i)
 
 theorem isClosed_matEq {f g : Co I × Co I → Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)}
     (hf : ∀ i j, CtsA (bs I) (fun p => f p i j)) (hg : ∀ i j, CtsA (bs I) (fun p => g p i j)) :
@@ -371,13 +368,11 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 theorem intC_zero {b : Module.Basis ι F E} : IntC b (0 : E ⊗[F] Af F) := by
   intro k
-  simp only [map_zero, Pi.zero_apply]
-  exact ohat_zero
+  simpa only [map_zero, Pi.zero_apply] using ohat_zero
 
 theorem intC_neg {b : Module.Basis ι F E} {x : E ⊗[F] Af F} (hx : IntC b x) : IntC b (-x) := by
   intro k
-  simp only [map_neg, Pi.neg_apply]
-  exact ohat_neg (hx k)
+  simpa only [map_neg, Pi.neg_apply] using ohat_neg (hx k)
 
 theorem exists_upper (b : Module.Basis ι F E) (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG) :
     ∃ D : ℕ, 0 < D ∧ ∀ y ∈ lamAf (F := F) L, ∀ j, IntC b (D • y j) := by
@@ -393,8 +388,7 @@ theorem exists_upper (b : Module.Basis ι F E) (L : Submodule (𝓞 E) (Fin n �
     | zero =>
       intro j k
       unfold IntF
-      simp only [Pi.zero_apply, map_zero, Finsupp.coe_zero, mul_zero]
-      exact ohat_zero
+      simpa only [Pi.zero_apply, map_zero, Finsupp.coe_zero, mul_zero] using ohat_zero
     | add x z _ _ hx hz =>
       intro j k
       have h1 := hx j k

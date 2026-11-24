@@ -65,8 +65,7 @@ theorem instConj_of (hm : GenModOne) (hd : InstDecomp) (h4 : SubFacts) : InstCon
   have hmemH' : ∀ x, x ∈ H ↔ x ∈ H' := fun x => by
     rw [hmemH, ← hH', SetLike.mem_coe]
   refine hm I.Ginf N H hN ?_ ?_ h hh
-  · intro g hg x hx
-    exact (hmemN _).mpr (hnorm' g ((hmemH' g).mp hg) x ((hmemN x).mp hx))
+  · exact fun g hg x hx => (hmemN _).mpr (hnorm' g ((hmemH' g).mp hg) x ((hmemN x).mp hx))
   · intro g hg
     obtain ⟨k, hk, p, hp, σ, hσ, hkp, hσp, C, hC⟩ := hd I r e f z hfr g ((hmemH g).mp hg)
     exact ⟨k, (hmemH k).mpr hk, p, (hmemH p).mpr hp, σ, (hmemH σ).mpr hσ, hkp, hσp, C, hC⟩
@@ -86,14 +85,12 @@ theorem target_of (h1 : GenHaarSub) (h2 : GenSemi) (h3 : GenWeil) (h4 : SubFacts
     ((N : Set I.Ginf) * (H : Set I.Ginf)) hSmeas hSc hSinv hSpos hScpt
   refine ⟨haarSub N hN, haarSub H hH, ν, ?_, ?_, hν⟩
   · refine ⟨hNσ, hN0, ?_, ?_⟩
-    · rw [← hNset]
-      exact hNc
+    · rwa [← hNset]
     · intro s hs
       rw [← hNset] at hs
       exact hNinv s hs
   · refine ⟨hHσ, hH0, ?_, ?_⟩
-    · rw [show Set.range e ∪ Set.range f ∪ {z} = frameSet I e f z from rfl, ← hHset]
-      exact hHc
+    · rwa [show Set.range e ∪ Set.range f ∪ {z} = frameSet I e f z from rfl, ← hHset]
     · intro s hs
       rw [show Set.range e ∪ Set.range f ∪ {z} = frameSet I e f z from rfl, ← hHset] at hs
       exact hHinv s hs

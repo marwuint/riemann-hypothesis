@@ -308,8 +308,7 @@ theorem termBBne_iff_loc (Z : LocDat D) (hT : BBTie D Z) {u u' : D.what₂.Word}
         (fun a b hab => propext (hBF F0 t.lam hL P a b hab)) (hm.trans hxm.symm)
       simp only at e
       exact ⟨P, hP, e ▸ hbb⟩
-    · intro h
-      exact ⟨(Quot.out t.cls).1, ⟨(Quot.out t.cls).2, hxm⟩, h⟩
+    · exact fun h => ⟨(Quot.out t.cls).1, ⟨(Quot.out t.cls).2, hxm⟩, h⟩
   · exact hT u u' F0 t.lam (Quot.out t.cls).1 hL (Quot.out t.cls).2 (hMI _ _) p
 
 
@@ -333,15 +332,13 @@ theorem genIffLocBB_of (Z : LocDat D) (hT : BBTie D Z) (u u' : D.what₂.Word) (
   have hloc := fun p => termBBne_iff_loc Z hT hrows hBF (hMI F0) t p
   simp only [← hloc]
   constructor
-  · intro hg p
-    exact not_bbne_of_generic hrows hBF hg p
+  · exact fun hg p => not_bbne_of_generic hrows hBF hg p
   · intro h
     have hL := hrows.1 t.lam t.mem
     have hxm : mk t.lam (lf D F0) (PD D t.lam (lf D F0) u') (Quot.out t.cls) = t.cls := Quot.out_eq _
     refine ⟨(Quot.out t.cls).1, ⟨(Quot.out t.cls).2, hxm⟩, ?_⟩
     refine generic_of_not_BBneP (hMI F0 t.lam _) hL.2.1.2.2.1 hL.2.1.2.2.2 (Quot.out t.cls).2.2.1 ?_
-    intro P hP
-    exact h (below D P) ⟨(Quot.out t.cls).1, ⟨(Quot.out t.cls).2, hxm⟩, P, rfl, hP⟩
+    exact fun P hP => h (below D P) ⟨(Quot.out t.cls).1, ⟨(Quot.out t.cls).2, hxm⟩, P, rfl, hP⟩
 
 
 

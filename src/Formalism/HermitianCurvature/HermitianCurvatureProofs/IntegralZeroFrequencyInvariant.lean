@@ -67,9 +67,7 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B
 theorem semi : SeminormIneq := by
   intro V _ _ β hβ hnn x y
   obtain ⟨ba1, ba2, bs1, bs2⟩ := hβ
-  have hre : ∀ z, 0 ≤ (β z z).re := by
-    intro z
-    exact (hnn z).2
+  have hre : ∀ z, 0 ≤ (β z z).re := fun z => (hnn z).2
   have hexp : ∀ t : ℝ, (β (x + ((-t : ℝ) : ℂ) • y) (x + ((-t : ℝ) : ℂ) • y)).re =
       (β y y).re * (t * t) + (-(β x y + β y x).re) * t + (β x x).re := by
     intro t
@@ -128,8 +126,7 @@ theorem core (hsemi : SeminormIneq) (hpol : Polarisation) : FormCoreC := by
     have hsub : interior (s₂ ∩ U) ⊆ s₁ᶜ := by
       intro t ht hts
       have hmem : t ∈ s₁ ∩ s₂ := ⟨hts, (interior_subset ht).1⟩
-      rw [hemp] at hmem
-      exact hmem
+      rwa [hemp] at hmem
     have h0' : volume.restrict U s₁ᶜ = 0 := mem_ae_iff.mp hs₁
     have hle2 : volume.restrict U (interior (s₂ ∩ U)) ≤ volume.restrict U s₁ᶜ := measure_mono hsub
     rw [h0', Measure.restrict_apply isOpen_interior.measurableSet,
@@ -179,8 +176,7 @@ theorem fatou : FatouParam := by
     have hsub : interior (s₂ ∩ U) ⊆ s₁ᶜ := by
       intro t ht hts
       have hmem : t ∈ s₁ ∩ s₂ := ⟨hts, (interior_subset ht).1⟩
-      rw [hemp] at hmem
-      exact hmem
+      rwa [hemp] at hmem
     have h0' : volume.restrict U s₁ᶜ = 0 := mem_ae_iff.mp hs₁
     have hle2 : volume.restrict U (interior (s₂ ∩ U)) ≤ volume.restrict U s₁ᶜ := measure_mono hsub
     rw [h0', Measure.restrict_apply isOpen_interior.measurableSet,
@@ -211,9 +207,7 @@ theorem fatou : FatouParam := by
         filter_upwards [hpt] with q hq
         exact hq.liminf_eq.symm
     _ ≤ liminf (fun n => ∫⁻ q, ‖J (σ n) q‖ₑ ^ 2 ∂μ) atTop := by
-        apply lintegral_liminf_le'
-        intro n
-        exact ((hJm (σ n) (hσ n).2).enorm).pow_const 2
+        exact lintegral_liminf_le' (fun n => ((hJm (σ n) (hσ n).2).enorm).pow_const 2)
     _ = liminf (fun n => ENNReal.ofReal (c (σ n))) atTop := by
         simp only [hσeq]
     _ = ENNReal.ofReal (c τ) := hcT.liminf_eq
@@ -308,8 +302,7 @@ theorem decay (hibp : RegIBP) : TestDecay := by
       ∫ t, ‖(wh t : ℂ) - iteratedDeriv 2 (fun t : ℝ => (wh t : ℂ)) t‖ := by
     have h3 := congrArg norm key
     rw [norm_mul, Complex.norm_of_nonneg hpos.le] at h3
-    rw [mul_comm, ← h3]
-    exact hbound
+    rwa [mul_comm, ← h3]
   have hsq : (1 + |x|) ^ 2 ≤ 2 * (1 + x ^ 2) := by
     nlinarith [sq_abs x, abs_nonneg x, sq_nonneg (|x| - 1)]
   have hq : 0 < (1 + |x|) ^ 2 := by positivity

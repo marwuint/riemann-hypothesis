@@ -58,8 +58,7 @@ theorem int_comp {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) :
 
 theorem lamStar_anti {m : ℕ} (lam : Fin (m + 1) → ℤ) (hd : Antitone lam) : Antitone (lamStar lam) := by
   intro i j hij
-  simp only [lamStar, neg_le_neg_iff]
-  exact hd (Fin.rev_le_rev.2 hij)
+  simpa only [lamStar, neg_le_neg_iff] using hd (Fin.rev_le_rev.2 hij)
 
 theorem lamAt_odd {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (s : Fin n') (hs : ¬ Even s.val) :
     lamAt lam0 s = lamStar (lam0 s) := by
@@ -121,8 +120,7 @@ theorem descentLattice_eq_span_weyl {O Kf : Type} [CommRing O] [Field Kf] [Algeb
   · rw [Submodule.span_le]
     rintro _ ⟨f0, hf0, rfl⟩
     have h1 := rowAct_weyl_mem_descentLattice hinj m lam hlam g hg (map (Int.castRingHom O) f0) (map_mem_weyl le_rfl _ f0 hf0)
-    rw [MvPolynomial.map_map, int_comp] at h1
-    exact h1
+    rwa [MvPolynomial.map_map, int_comp] at h1
 
 theorem sub_rfl {k : ℕ} {R : Type} (h : k = k) (A : Matrix (Fin k) (Fin k) R) :
     A.submatrix (finCongr h) (finCongr h) = A := by
@@ -192,8 +190,7 @@ theorem map_gen {R : Type} [Field R] (φ : LL →+* R)
   refine Finset.prod_congr rfl fun v _ => ?_
   rw [MvPolynomial.map_rename, map_prod]
   congr 1
-  refine Finset.prod_congr rfl fun s _ => ?_
-  exact MvPolynomial.map_rename _ _ _
+  exact Finset.prod_congr rfl fun s _ => MvPolynomial.map_rename _ _ _
 
 theorem htupW_eq (hinj : Function.Injective (algebraMap O Kf)) (e : LL →+* Kf) (L : P.Tup)
     (HL : ∀ v (s : Fin (P.n' v)), extO O (P.ι v) (P.σ v) s.val (L v) = colSpan O ((nAt P h pos N v s).map e)) :
@@ -207,9 +204,7 @@ theorem htupW_eq (hinj : Function.Injective (algebraMap O Kf)) (e : LL →+* Kf)
     intro v s
     rw [HL v s, descentLattice_eq_span_weyl hinj P.m _ (lamAt_anti _ (P.dom v) s) _ (nAt_map_det P h pos N e v s)]
     congr 1
-    apply Set.image_congr
-    intro f0 _
-    exact (map_bl P h pos N e v s f0).symm
+    exact Set.image_congr (fun f0 _ => (map_bl P h pos N e v s f0).symm)
   let Tv : ∀ v, Set (MvPolynomial (Fin (P.n' v) × (Fin (P.m + 1) × Fin (P.m + 1))) Kf) := fun v =>
     {X | ∃ F : Fin (P.n' v) → MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) Kf,
       (∀ s, F s ∈ Tb v s) ∧ X = ∏ s, blockEmb Kf s (F s)}

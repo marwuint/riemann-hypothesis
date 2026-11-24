@@ -81,10 +81,8 @@ theorem mem_tubeS_mul_iff (H : Subgroup G) {V : Set G} (hV : ∀ a ∈ V, ∀ b 
       have := he
       rw [mul_assoc] at this
       simpa using mul_left_cancel this
-    rw [this]
-    exact hh'
-  · intro hS
-    exact ⟨a, ha, h0 * h, hS, by simp [mul_assoc]⟩
+    rwa [this]
+  · exact fun hS => ⟨a, ha, h0 * h, hS, by simp [mul_assoc]⟩
 
 theorem tube_meas (μ : Measure G) [μ.IsHaarMeasure] (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant]
     [SFinite ν] (h0 : ν univ ≠ 0) (hfin : ν univ ≠ ∞) {V : Set G}
@@ -222,9 +220,7 @@ theorem tube_bounds (μ : Measure G) [μ.IsHaarMeasure] (H : Subgroup G) (ν : M
     exact ENNReal.mul_pos (ENNReal.ofReal_pos.2 hde).ne' (ENNReal.mul_pos hLρ0.ne' hLs0.ne').ne'
   have hct : c ≠ ⊤ := ne_top_of_le_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hLst.ne) hS_hi
   have hc0 : c ≠ 0 := by
-    apply ne_of_gt
-    refine lt_of_lt_of_le ?_ hS_lo
-    exact ENNReal.mul_pos (ENNReal.ofReal_pos.2 hee).ne' hLs0.ne'
+    exact ne_of_gt (lt_of_lt_of_le (ENNReal.mul_pos (ENNReal.ofReal_pos.2 hee).ne' hLs0.ne') hS_lo)
   have hbt : b ≠ ⊤ := by
     intro hb'
     have : N * a = ⊤ := by rw [hid, hb', ENNReal.mul_top hc0]

@@ -111,42 +111,35 @@ theorem label_sum {large₂ : SizeData₂ D} {Y : Full X} {u : D.what₂.Word} {
     have e2 : k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ (-(Cs * D.R.k)) * k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ (Cp * D.R.k) = k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ ((Cp - Cs) * D.R.k) := by
       rw [← Real.rpow_add (by linarith)]; congr 1; ring
     have b1 : k2Del D j δ ^ (((j : ℝ) + 1) / 2) ≤ Hb large₂.sc.b C D.R.m D.R.f ^ (((j : ℝ) + 1) / 2) * k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ ((j : ℝ) + 1) := by
-      calc k2Del D j δ ^ (((j : ℝ) + 1) / 2) ≤ (Hb large₂.sc.b C D.R.m D.R.f * k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ 2) ^ (((j : ℝ) + 1) / 2) :=
-            Real.rpow_le_rpow hΔ0.le hΔle (by positivity)
-        _ = Hb large₂.sc.b C D.R.m D.R.f ^ (((j : ℝ) + 1) / 2) * (k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ 2) ^ (((j : ℝ) + 1) / 2) :=
-            Real.mul_rpow (hHb C).le (by positivity)
-        _ = Hb large₂.sc.b C D.R.m D.R.f ^ (((j : ℝ) + 1) / 2) * k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ ((j : ℝ) + 1) := by
-            rw [← Real.rpow_natCast (k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ) 2, ← Real.rpow_mul hS0]; congr 2; push_cast; ring
+      calc k2Del D j δ ^ (((j : ℝ) + 1) / 2) ≤ _ := Real.rpow_le_rpow hΔ0.le hΔle (by positivity)
+        _ = _ := Real.mul_rpow (hHb C).le (by positivity)
+        _ = Hb large₂.sc.b C D.R.m D.R.f ^ (((j : ℝ) + 1) / 2) *
+            k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ ((j : ℝ) + 1) := by
+            rw [← Real.rpow_natCast (k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ) 2,
+              ← Real.rpow_mul hS0]
+            congr 2
+            push_cast
+            ring
     have b2 : k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ ((j : ℝ) + 1) * k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ ((Cp - Cs) * D.R.k) ≤ k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ (-(3 * (D.R.rS : ℝ))) := by
       rw [← Real.rpow_add (by linarith)]
       apply Real.rpow_le_rpow_of_exponent_le hS
       nlinarith [mul_le_mul_of_nonneg_right hCs hk]
     calc k2a large₂ CH Cs C j δ * k2e large₂ CH Ch Cp j δ
-        = ((C / D.R.k) ^ ((j : ℝ) * ((D.R.k : ℝ) - 1 - j) * D.R.f) * Hb large₂.sc.b C D.R.m D.R.f ^ (C * (D.R.rS : ℝ) ^ 4) *
-        Hb large₂.sc.b Ch D.R.m D.R.f ^ (Ch * (D.R.rS : ℝ) ^ 4)) * (k2Del D j δ ^ (-(((D.R.k : ℝ) - 1 - j) / 2)) * k2Del D j δ ^ ((D.R.k : ℝ) / 2)) *
-            (k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ (-(Cs * D.R.k)) * k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ (Cp * D.R.k)) := by
-          unfold k2a k2e; ring
-      _ = ((C / D.R.k) ^ ((j : ℝ) * ((D.R.k : ℝ) - 1 - j) * D.R.f) * Hb large₂.sc.b C D.R.m D.R.f ^ (C * (D.R.rS : ℝ) ^ 4) *
-        Hb large₂.sc.b Ch D.R.m D.R.f ^ (Ch * (D.R.rS : ℝ) ^ 4)) * k2Del D j δ ^ (((j : ℝ) + 1) / 2) * k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ ((Cp - Cs) * D.R.k) := by rw [e1, e2]
-      _ ≤ ((C / D.R.k) ^ ((j : ℝ) * ((D.R.k : ℝ) - 1 - j) * D.R.f) * Hb large₂.sc.b C D.R.m D.R.f ^ (C * (D.R.rS : ℝ) ^ 4) *
-        Hb large₂.sc.b Ch D.R.m D.R.f ^ (Ch * (D.R.rS : ℝ) ^ 4)) * (Hb large₂.sc.b C D.R.m D.R.f ^ (((j : ℝ) + 1) / 2) * k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ ((j : ℝ) + 1)) * k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ ((Cp - Cs) * D.R.k) :=
-          mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left b1 hK0) (Real.rpow_nonneg hS0 _)
-      _ = (((C / D.R.k) ^ ((j : ℝ) * ((D.R.k : ℝ) - 1 - j) * D.R.f) * Hb large₂.sc.b C D.R.m D.R.f ^ (C * (D.R.rS : ℝ) ^ 4) *
-        Hb large₂.sc.b Ch D.R.m D.R.f ^ (Ch * (D.R.rS : ℝ) ^ 4)) * Hb large₂.sc.b C D.R.m D.R.f ^ (((j : ℝ) + 1) / 2)) *
-            (k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ ((j : ℝ) + 1) * k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ ((Cp - Cs) * D.R.k)) := by ring
-      _ ≤ (((C / D.R.k) ^ ((j : ℝ) * ((D.R.k : ℝ) - 1 - j) * D.R.f) * Hb large₂.sc.b C D.R.m D.R.f ^ (C * (D.R.rS : ℝ) ^ 4) *
-        Hb large₂.sc.b Ch D.R.m D.R.f ^ (Ch * (D.R.rS : ℝ) ^ 4)) * Hb large₂.sc.b C D.R.m D.R.f ^ (((j : ℝ) + 1) / 2)) * k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ (-(3 * (D.R.rS : ℝ))) :=
-          mul_le_mul_of_nonneg_left b2 hK
+        = ((C / D.R.k) ^ ((j : ℝ) * ((D.R.k : ℝ) - 1 - j) * D.R.f) *
+            Hb large₂.sc.b C D.R.m D.R.f ^ (C * (D.R.rS : ℝ) ^ 4) *
+            Hb large₂.sc.b Ch D.R.m D.R.f ^ (Ch * (D.R.rS : ℝ) ^ 4)) *
+          k2Del D j δ ^ (((j : ℝ) + 1) / 2) *
+          k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ ((Cp - Cs) * D.R.k) := by
+          unfold k2a k2e
+          rw [← e1, ← e2]
+          ring
+      _ ≤ _ := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left b1 hK0)
+          (Real.rpow_nonneg hS0 _)
+      _ ≤ _ := Eq.trans_le (by ring) (mul_le_mul_of_nonneg_left b2 hK)
   calc ∑ δ ∈ T, k2a large₂ CH Cs C j δ * k2e large₂ CH Ch Cp j δ
-      ≤ ∑ δ ∈ T, (((C / D.R.k) ^ ((j : ℝ) * ((D.R.k : ℝ) - 1 - j) * D.R.f) * Hb large₂.sc.b C D.R.m D.R.f ^ (C * (D.R.rS : ℝ) ^ 4) *
-        Hb large₂.sc.b Ch D.R.m D.R.f ^ (Ch * (D.R.rS : ℝ) ^ 4)) * Hb large₂.sc.b C D.R.m D.R.f ^ (((j : ℝ) + 1) / 2)) * k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ (-(3 * (D.R.rS : ℝ))) :=
-        Finset.sum_le_sum key
-    _ = (((C / D.R.k) ^ ((j : ℝ) * ((D.R.k : ℝ) - 1 - j) * D.R.f) * Hb large₂.sc.b C D.R.m D.R.f ^ (C * (D.R.rS : ℝ) ^ 4) *
-        Hb large₂.sc.b Ch D.R.m D.R.f ^ (Ch * (D.R.rS : ℝ) ^ 4)) * Hb large₂.sc.b C D.R.m D.R.f ^ (((j : ℝ) + 1) / 2)) * ∑ δ ∈ T, k2S D (large₂.sc.b ^ (CH * (D.R.m : ℝ))) j δ ^ (-(3 * (D.R.rS : ℝ))) :=
-        (Finset.mul_sum _ _ _).symm
-    _ ≤ (((C / D.R.k) ^ ((j : ℝ) * ((D.R.k : ℝ) - 1 - j) * D.R.f) * Hb large₂.sc.b C D.R.m D.R.f ^ (C * (D.R.rS : ℝ) ^ 4) *
-        Hb large₂.sc.b Ch D.R.m D.R.f ^ (Ch * (D.R.rS : ℝ) ^ 4)) * Hb large₂.sc.b C D.R.m D.R.f ^ (((j : ℝ) + 1) / 2)) * Hb large₂.sc.b Cc D.R.m D.R.f ^ (Cc * (D.R.rS : ℝ)) :=
-        mul_le_mul_of_nonneg_left (hcos T hTm) hK
+      ≤ _ := Finset.sum_le_sum key
+    _ = _ := (Finset.mul_sum _ _ _).symm
+    _ ≤ _ := mul_le_mul_of_nonneg_left (hcos T hTm) hK
     _ = k2A1 large₂ C Ch Cc j := by unfold k2A1; ring
 
 theorem rank_bound {large₂ : SizeData₂ D} {Y : Full X} {u : D.what₂.Word} {CH Cs C Ch Cp Cc : ℝ}

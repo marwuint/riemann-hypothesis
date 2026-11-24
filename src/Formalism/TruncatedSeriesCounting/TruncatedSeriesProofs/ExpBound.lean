@@ -127,33 +127,7 @@ theorem expBound_statement : ExpBound := by
   have hSv : (S : ℝ) / ((ℓ : ℝ) - 1) ≤ S / 10 :=
     div_le_div_of_nonneg_left (by positivity) (by norm_num) hd
   have hηv : 0 ≤ (η : ℝ) / ((ℓ : ℝ) - 1) := by positivity
-  have k1 : (2 * (a : ℝ) + 2 * (η : ℝ) + (S : ℝ)) / ((ℓ : ℝ) - 1) =
-      2 * ((a : ℝ) / ((ℓ : ℝ) - 1)) + 2 * ((η : ℝ) / ((ℓ : ℝ) - 1)) + (S : ℝ) / ((ℓ : ℝ) - 1) := by
-    ring
-  have k2 : (3 * (a : ℝ) + (S : ℝ) + 2 * (η : ℝ)) / ((ℓ : ℝ) - 1) =
-      3 * ((a : ℝ) / ((ℓ : ℝ) - 1)) + (S : ℝ) / ((ℓ : ℝ) - 1) + 2 * ((η : ℝ) / ((ℓ : ℝ) - 1)) := by
-    ring
-  have k3 : (H * (2 * (ℓ : ℝ) - 1) / ((ℓ : ℝ) - 1) ^ 2 + 3 + L + 1) / ((ℓ : ℝ) - 1) =
-      H * (2 * (ℓ : ℝ) - 1) / ((ℓ : ℝ) - 1) ^ 2 / ((ℓ : ℝ) - 1) + 4 * (1 / ((ℓ : ℝ) - 1)) +
-        L / ((ℓ : ℝ) - 1) := by
-    ring
-  have k4 : (((h / (ℓ - 1) : ℕ) : ℝ) + 1 + η) / ((ℓ : ℝ) - 1) =
-      ((h / (ℓ - 1) : ℕ) : ℝ) / ((ℓ : ℝ) - 1) + 1 / ((ℓ : ℝ) - 1) + (η : ℝ) / ((ℓ : ℝ) - 1) := by
-    ring
-  have k5 : H * (8 * (2 * (ℓ : ℝ) - 1) / ((ℓ : ℝ) - 1) ^ 3 + 8 / ((ℓ : ℝ) - 1) ^ 2 +
-      1 / ((ℓ : ℝ) * ((ℓ : ℝ) - 1))) =
-      8 * (H * ((2 * (ℓ : ℝ) - 1) / ((ℓ : ℝ) - 1) ^ 3)) + 8 * (H / ((ℓ : ℝ) - 1) ^ 2) +
-        H / ((ℓ : ℝ) * ((ℓ : ℝ) - 1)) := by
-    ring
-  have k6 : 2 * H / ((ℓ : ℝ) - 1) ^ 2 = 2 * (H / ((ℓ : ℝ) - 1) ^ 2) := by ring
-  have k7 : 32 * H / (ℓ : ℝ) ^ 2 = H * (32 / (ℓ : ℝ) ^ 2) := by ring
-  have k8 : 10 * (η : ℝ) / ((ℓ : ℝ) - 1) = 10 * ((η : ℝ) / ((ℓ : ℝ) - 1)) := by ring
-  rw [k1] at hs1
-  rw [k2] at hE
-  rw [k3] at hA
-  rw [k5] at hHc
-  rw [k6] at he2
-  rw [k4, k6, k7, k8]
+  simp only [div_eq_mul_inv] at *
   linarith
 
 end Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains

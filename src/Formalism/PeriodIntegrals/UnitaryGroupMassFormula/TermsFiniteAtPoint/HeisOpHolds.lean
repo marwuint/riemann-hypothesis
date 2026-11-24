@@ -266,17 +266,13 @@ theorem heisOp_holds : HeisOp := by
   · intro x hx
     have hx' : ∀ c, S.hT (F.fl.e c) x = 0 := by
       intro c
-      have hmem : F.fl.e c ∈ Xsp F := by
-        show F.fl.e c ∈ Submodule.span E (Set.range F.fl.e)
-        exact Submodule.subset_span ⟨c, rfl⟩
+      have hmem : F.fl.e c ∈ Xsp F := Submodule.subset_span ⟨c, rfl⟩
       simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hx
       exact hx _ hmem
     simp only [LinearEquiv.ofLinear_apply, LinearMap.add_apply, LinearMap.id_apply, add_sub_cancel_left]
     rw [nilF_apply]
     refine Submodule.sum_mem _ fun c _ => ?_
     rw [hx' c, zero_smul, zero_add]
-    refine Submodule.smul_mem _ _ ?_
-    show F.fl.e c ∈ Submodule.span E (Set.range F.fl.e)
-    exact Submodule.subset_span ⟨c, rfl⟩
+    exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)
 
 end PI.TermsAtPtFiniteW

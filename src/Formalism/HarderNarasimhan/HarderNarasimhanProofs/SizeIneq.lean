@@ -74,8 +74,7 @@ theorem sizeIneq_span_inf_ker (φ : V →ₗ[K] W) (A : Submodule (𝓞 K) V) :
   · rintro x ⟨hxS, hxk⟩
     obtain ⟨d, hd, hdx⟩ := _root_.Bl.general_b_fact_second''''''.goal1 A x hxS
     have hd' : algebraMap (𝓞 K) K d ≠ 0 := by
-      intro h0
-      exact hd (FaithfulSMul.algebraMap_injective (𝓞 K) K (by rw [h0, map_zero]))
+      exact fun h0 => hd (FaithfulSMul.algebraMap_injective (𝓞 K) K (by rw [h0, map_zero]))
     have hmem : d • x ∈ (A ⊓ (LinearMap.ker φ).restrictScalars (𝓞 K) : Submodule (𝓞 K) V) := by
       refine ⟨hdx, ?_⟩
       show φ (d • x) = 0
@@ -144,8 +143,7 @@ theorem sizeIneq_of (h1 : SizeMu) (h2 : HtImage) (h3 : PlLat) : SizeIneq := by
   have hdegI := (hMB.1 (muMax ρ' B)).1 le_rfl I hIB
   have hslI : slope ρ' I ≤ muMax ρ' B := by
     show Formalism.F.deg (zl ρ' I) / (Formalism.F.rk (zl ρ' I) : ℝ) ≤ _
-    rw [div_le_iff₀ (by exact_mod_cast hrkIpos)]
-    exact hdegI
+    rwa [div_le_iff₀ (by exact_mod_cast hrkIpos)]
   have hleI : leastSize b' X' B ≤ size b' X' I := by
     rw [hleast, hSI]
     exact Real.exp_le_exp.2 (by linarith)
@@ -153,8 +151,7 @@ theorem sizeIneq_of (h1 : SizeMu) (h2 : HtImage) (h3 : PlLat) : SizeIneq := by
   have hSBA := saturation_basic_properties (𝓞 K) V _ ρ A hAlat
   have hq := hSBA.2.2.2.2.2.2.2 A₀ hsat
   have hlt : rk ρ A₀ < rk ρ A := by
-    refine lt_of_le_of_ne hq.2.1 (fun h => hA₀ne ?_)
-    exact (hSBA.2.2.1 A₀ A hsat hsat.1 le_rfl h.symm).symm
+    exact lt_of_le_of_ne hq.2.1 (fun h => hA₀ne (hSBA.2.2.1 A₀ A hsat hsat.1 le_rfl h.symm).symm)
   have hMA := slope_characterization (𝓞 K) V _ ρ A hAlat hA0
   have hmin := (hMA.2.1 (muMin ρ A)).1 le_rfl A₀ hsat.1
   have hslQ : muMin ρ A ≤ Formalism.F.slope (Formalism.F.quot (zl ρ A) (zl ρ A₀)) := by
@@ -164,8 +161,7 @@ theorem sizeIneq_of (h1 : SizeMu) (h2 : HtImage) (h3 : PlLat) : SizeIneq := by
       have : (rk ρ A₀ : ℝ) < rk ρ A := by exact_mod_cast hlt
       linarith
     unfold Formalism.F.slope
-    rw [hr, le_div_iff₀ hrpos, hq.2.2]
-    exact hmin
+    rwa [hr, le_div_iff₀ hrpos, hq.2.2]
   have hQle : sizeQ b X A A₀ ≤ largestSize b X A := by
     rw [hlarge, hsQ A₀ hsat hA₀ne]
     exact Real.exp_le_exp.2 (by linarith)

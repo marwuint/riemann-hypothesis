@@ -69,8 +69,7 @@ theorem IsUTm.mul {A B : Matrix (Fin k) (Fin k) F} (hA : IsUTm A) (hB : IsUTm B)
       rcases lt_or_gt_of_ne hl with h | h
       · rw [hA.2 i l h, zero_mul]
       · rw [hB.2 l i h, mul_zero]
-    · intro h
-      exact absurd (Finset.mem_univ i) h
+    · exact fun h => absurd (Finset.mem_univ i) h
   · rw [Matrix.mul_apply]
     refine Finset.sum_eq_zero fun l _ => ?_
     rcases lt_or_ge l i with h | h
@@ -90,10 +89,8 @@ theorem superdiag_mul {A B : Matrix (Fin k) (Fin k) F} (hA : IsUTm A) (hB : IsUT
       rcases Nat.lt_or_gt_of_ne h1 with h | h
       · rw [hA.2 i c (Fin.lt_iff_val_lt_val.2 h), zero_mul]
       · rw [hB.2 c j (Fin.lt_iff_val_lt_val.2 (by omega)), mul_zero]
-    · intro h
-      exact absurd (Finset.mem_univ _) h
-    · intro h
-      exact absurd (Finset.mem_univ _) h
+    · exact fun h => absurd (Finset.mem_univ _) h
+    · exact fun h => absurd (Finset.mem_univ _) h
   unfold superdiag
   rw [← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl fun i _ => ?_
@@ -120,11 +117,9 @@ theorem IsUTm.inv_val (u : GL (Fin k) F) (h : IsUTm (u : Matrix (Fin k) (Fin k) 
     rcases lt_or_gt_of_ne hl with hh | hh
     · rw [h2 i l hh, zero_mul]
     · rw [h.2 l i hh, mul_zero]
-  · intro hh
-    exact absurd (Finset.mem_univ i) hh
+  · exact fun hh => absurd (Finset.mem_univ i) hh
 
 theorem isUni_mul {x y : GL (Fin k) F} (hx : IsUni k x) (hy : IsUni k y) : IsUni k (x * y) := by
-  show IsUTm ((x : Matrix (Fin k) (Fin k) F) * (y : Matrix (Fin k) (Fin k) F))
   exact IsUTm.mul hx hy
 
 theorem isUni_inv {x : GL (Fin k) F} (hx : IsUni k x) : IsUni k x⁻¹ := IsUTm.inv_val x hx
@@ -169,8 +164,7 @@ theorem sgnM_mul_self : sgnM (F := F) k * sgnM k = 1 := by
 
 def sgn (k : ℕ) : GL (Fin k) F := ⟨sgnM k, sgnM k, sgnM_mul_self, sgnM_mul_self⟩
 
-theorem sgn_mul_self : sgn (F := F) k * sgn k = 1 := by
-  exact Units.ext sgnM_mul_self
+theorem sgn_mul_self : sgn (F := F) k * sgn k = 1 := Units.ext sgnM_mul_self
 
 theorem sgn_conj_apply (A : Matrix (Fin k) (Fin k) F) (i j : Fin k) :
     (sgnM (F := F) k * A * sgnM (F := F) k) i j = (-1 : F) ^ (i : ℕ) * A i j * (-1 : F) ^ (j : ℕ) := by
@@ -197,7 +191,6 @@ theorem superdiag_sgn_conj (A : Matrix (Fin k) (Fin k) F) :
   · rw [neg_zero]
 
 theorem isUni_sgn_conj {u : GL (Fin k) F} (h : IsUni k u) : IsUni k (sgn k * u * sgn k) := by
-  show IsUTm (sgnM (F := F) k * (u : Matrix (Fin k) (Fin k) F) * sgnM k)
   exact isUTm_sgn_conj h
 
 theorem psiU_sgn_conj (ψ₀ : AddChar F ℂ) (u : GL (Fin k) F) :

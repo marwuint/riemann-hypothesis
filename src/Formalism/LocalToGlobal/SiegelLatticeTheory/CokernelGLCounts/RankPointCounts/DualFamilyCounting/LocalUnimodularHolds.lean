@@ -140,8 +140,7 @@ theorem exists_isom_move' (hs : h.IsSymm) {x y : V} (hxy : h x x = h y y)
     show v ∈ W ↔ τl v ∈ W
     rw [hτ]
     constructor
-    · intro hv
-      exact W.sub_mem hv (W.smul_mem _ hzW)
+    · exact fun hv => W.sub_mem hv (W.smul_mem _ hzW)
     · intro hv
       have := W.add_mem hv (W.smul_mem (b⁻¹ * h z v) hzW)
       rwa [sub_add_cancel] at this
@@ -175,8 +174,7 @@ theorem exists_isom_map_of_eq_norm (hs : h.IsSymm) (h2 : (2 : K) ≠ 0) {x y : V
       ∀ W : Submodule K V, x ∈ W → y ∈ W → ∀ v, v ∈ W ↔ τ v ∈ W := by
   by_cases hb : h x x - h y x = 0
   · have hxy' : h x x = h (-y) (-y) := by
-      simp only [map_neg, LinearMap.neg_apply, neg_neg]
-      exact hxy
+      simpa only [map_neg, LinearMap.neg_apply, neg_neg] using hxy
     have hyx : h y x = h x x := by linear_combination -hb
     have hb' : h x x - h (-y) x ≠ 0 := by
       simp only [map_neg, LinearMap.neg_apply, sub_neg_eq_add]
@@ -270,8 +268,7 @@ theorem sd_main' [FiniteDimensional K V] (hS : IsHermSemilocal S) (hπ : IsUnif 
     obtain ⟨X, hXN, hXx⟩ := IsSD.exists_norm' hS hπ hs hN hφx hxu (hφ' x x)
     have hx0 : h x x ≠ 0 := hxu.1
     have hXu : IsUnitIn S (h X X) := by
-      rw [hXx]
-      exact hxu
+      rwa [hXx]
     obtain ⟨φ₁, hφ₁, hφ₁x, hφ₁W, hφ₁v⟩ := exists_prep' hs h2 hφ hW hx (hN.le X hXN) hXx.symm hx0
     have hr' : finrank K (cutW h W₁ x) ≤ n := by
       have hlt : finrank K (cutW h W₁ x) < finrank K W₁ := by
@@ -279,8 +276,7 @@ theorem sd_main' [FiniteDimensional K V] (hS : IsHermSemilocal S) (hπ : IsUnif 
         rw [lt_iff_le_and_ne]
         refine ⟨fun v hv => (mem_cutW.1 hv).1, fun heq => ?_⟩
         have hxc : x ∈ cutW h W₁ x := by
-          rw [heq]
-          exact hx
+          rwa [heq]
         exact hx0 (mem_cutW.1 hxc).2
       omega
     obtain ⟨g, hg, hgv, hgM⟩ := ih (cutW h W₁ x) (cutW h W₂ X) (cutM h M x) (cutM h N X) φ₁ hr'
@@ -315,8 +311,7 @@ theorem sd_main' [FiniteDimensional K V] (hS : IsHermSemilocal S) (hπ : IsUnif 
       have hq := proj_mem hN.toIsLatIn hXN hXu hv
       rw [hxvX, hXx] at hq
       have hq' : g (v - (h x v * (h x x)⁻¹) • x) ∈ cutM h N X := by
-        rw [map_sub, map_smul, hgx]
-        exact hq
+        rwa [map_sub, map_smul, hgx]
       have hp := (hgM _).2 hq'
       rw [hdec v]
       exact M.add_mem (AddSubgroup.mem_inf.1 hp).1 (hM.smul_mem _ ha x hxM)

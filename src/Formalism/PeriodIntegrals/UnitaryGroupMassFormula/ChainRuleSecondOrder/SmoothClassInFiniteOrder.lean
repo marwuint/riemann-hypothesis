@@ -184,8 +184,7 @@ theorem expand {N : ℕ} (e : Fin N → B.Mat k r) (c : Fin N → B.Mat k r → 
           D b X (ev ks xs f) g' = (∑ i, c i X • D b (e i) (ev ks xs f)) g' := by
         intro g' hg'
         rw [Finset.sum_apply]
-        simp only [Pi.smul_apply]
-        exact D_letter hh hg' he hX.1 (hc X hX.1)
+        simpa only [Pi.smul_apply] using D_letter hh hg' he hX.1 (hc X hX.1)
       have step1 : Φ (ev (b :: ks) (X :: xs) f) g = ∑ i, c i X • Φ (D b (e i) (ev ks xs f)) g := by
         show Φ (D b X (ev ks xs f)) g = _
         rw [hΦ.1 _ _ hexp g hg]
@@ -260,9 +259,7 @@ theorem basis_exists (k r : ℕ) : ∃ (N : ℕ) (e : Fin N → B.Mat k r) (c : 
   · intro X hX i
     show |(if h : B.inLie k r X then bs.repr ⟨X, h⟩ i * s i else 0)| ≤ K
     rw [dite_eq_left hX.1, abs_mul, abs_of_pos (hs0 i)]
-    have hXn : ‖(⟨X, hX.1⟩ : lieSub k r)‖ ≤ 1 := by
-      show ‖X‖ ≤ 1
-      exact (Matrix.norm_le_iff zero_le_one).2 hX.2
+    have hXn : ‖(⟨X, hX.1⟩ : lieSub k r)‖ ≤ 1 := (Matrix.norm_le_iff zero_le_one).2 hX.2
     have hrep : |bs.repr ⟨X, hX.1⟩ i| ≤ C i := by
       rw [← Module.Basis.coord_apply, ← Real.norm_eq_abs]
       calc ‖bs.coord i ⟨X, hX.1⟩‖ ≤ C i * ‖(⟨X, hX.1⟩ : lieSub k r)‖ := hC i _

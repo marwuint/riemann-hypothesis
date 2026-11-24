@@ -221,7 +221,6 @@ theorem amplitude_transport : Formalism.MainNotions.S.Pv.LemmaJ.AmpTransport := 
     intro x hx hR
     apply hx
     have hxU : Matrix.of x ∈ UH (Hpk D.R.k D.R.rS) := hR.1.1
-    show n'⁻¹ * Matrix.of x * n' ∈ UH (Hpk D.R.k D.R.rS)
     exact hUH.2.1 _ (hUH.2.1 _ hn'inv _ hxU) _ hn'U
   have hνUH : ∀ᵐ x ∂νR, Matrix.of x ∈ UH (Hpk D.R.k D.R.rS) :=
     ae_iff.2 (quot_meas_not_mem_UH_eq_zero hG hS0 hSc hq)
@@ -234,24 +233,21 @@ theorem amplitude_transport : Formalism.MainNotions.S.Pv.LemmaJ.AmpTransport := 
   have h1W : ∀ z : Fin (2 * D.R.rS + D.R.k + 1) → ℂ,
       (1 : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ) ∈
         UWset D.R.k D.R.rS z := by
-    intro z
-    exact ⟨hUH.1, fun a => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩
+    exact fun z => ⟨hUH.1, fun a => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩
   have hΦ : ∀ g ∈ UH (Hpk D.R.k D.R.rS), A.Φ (n * g) = psiS D W.z n • A.Φ g := by
     intro g hg
     have h2 := hA.2.2.1.2.2.1 1 (h1W W.z) n hn (A.σ g A.v0)
       (Formalism.MainNotions.LowestKTypeMultiplicity.smooth_orbit hσ hv0 hg)
     rw [one_mul, hπ1, ContinuousLinearMap.one_apply] at h2
     simp only [LocS.Φ]
-    rw [hσ.1.2 n hnU g hg, ContinuousLinearMap.comp_apply]
-    exact h2
+    rwa [hσ.1.2 n hnU g hg, ContinuousLinearMap.comp_apply]
   have hΦ' : ∀ g ∈ UH (Hpk D.R.k D.R.rS), A.Φ' (n' * g) = psiS D W.z' n' • A.Φ' g := by
     intro g hg
     have h2 := hA.2.2.2.1.2.2.1 1 (h1W W.z') n' hn' (A.σ g A.v0)
       (Formalism.MainNotions.LowestKTypeMultiplicity.smooth_orbit hσ hv0 hg)
     rw [one_mul, hπ'1, ContinuousLinearMap.one_apply] at h2
     simp only [LocS.Φ']
-    rw [hσ.1.2 n' hn'U g hg, ContinuousLinearMap.comp_apply]
-    exact h2
+    rwa [hσ.1.2 n' hn'U g hg, ContinuousLinearMap.comp_apply]
   set K : W.Wq →L[ℂ] W.Wp := ((A.cN : ℂ))⁻¹ • ∫ x, (innerSL ℂ (A.Φ' (Matrix.of x))).smulRight
     (A.Φ (g₀ * (n' * Matrix.of x))) ∂νR with hKdef
   have hL : A.J νR (n * g₀ * n') = psiS D W.z n • K := by
@@ -263,8 +259,7 @@ theorem amplitude_transport : Formalism.MainNotions.S.Pv.LemmaJ.AmpTransport := 
     rw [Matrix.mul_assoc, Matrix.mul_assoc, hΦ _ (hUH.2.1 _ hg₀ _ (hUH.2.1 _ hn'U _ hx))]
     have h := smulRight_smul_smul (1 : ℂ) (psiS D W.z n) (A.Φ' (Matrix.of x))
       (A.Φ (g₀ * (n' * Matrix.of x)))
-    rw [one_smul, star_one, one_mul] at h
-    exact h
+    rwa [one_smul, star_one, one_mul] at h
   have hR : A.J (ENNReal.ofReal θ' • νR.map (fun x => fun i j => (n' * Matrix.of x) i j)) g₀ =
       ((θ' : ℂ) * star (psiS D W.z' n')) • K := by
     simp only [LocS.J, ampJ, hKdef]
@@ -281,8 +276,7 @@ theorem amplitude_transport : Formalism.MainNotions.S.Pv.LemmaJ.AmpTransport := 
       rw [hΦ' _ hx]
       have h := smulRight_smul_smul (psiS D W.z' n') (1 : ℂ) (A.Φ' (Matrix.of x))
         (A.Φ (g₀ * (n' * Matrix.of x)))
-      rw [one_smul, mul_one] at h
-      exact h
+      rwa [one_smul, mul_one] at h
     rw [hI, ← Complex.coe_smul]
     simp only [smul_smul]
     congr 1

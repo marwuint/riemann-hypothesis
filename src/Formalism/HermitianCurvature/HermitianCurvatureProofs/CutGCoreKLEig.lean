@@ -135,19 +135,14 @@ theorem lie_eigenvalue_holds : KLEig := by
     · exact contDiffOn_const.congr (fun q hq' => Set.indicator_of_mem hq' _)
     · intro q hq'
       rw [hφdef, Set.indicator_of_mem hq']
-      have hst := hcs.2 q.2 ζ hq'.2 hζ'
-      intro p hp
-      exact hE p (hst ▸ hp)
-    · intro q hq'
-      exact Set.indicator_of_notMem hq' _
+      exact fun p hp => hE p ((hcs.2 q.2 ζ hq'.2 hζ') ▸ hp)
+    · exact fun q hq' => Set.indicator_of_notMem hq' _
   have hbase : NF.RadBase P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' :=
     ⟨by omega, hz, hz', hT, hT', hcs.1, Bs.π_rep, Bs.π'_rep, Bs.π_cont, Bs.π'_cont⟩
   obtain ⟨Φ, hΦ, hΦr⟩ := Formalism.FourierDecayAlt.P.radical_reduction_surjective Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hbase φ hφ
   set g := NF.muZ P.k P.r Bs.μsec ζ with hgdef
   have hval : Φ c0 g = E := by
-    have h1 := congrFun hΦr (c0, ζ)
-    simp only [NF.radR, Set.indicator_of_mem hq, hφdef] at h1
-    exact h1
+    simpa only [NF.radR, Set.indicator_of_mem hq, hφdef] using congrFun hΦr (c0, ζ)
   have hx : (c0, g) ∈ Q.DomR P.k P.r Bs.z Bs.z' := Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hz hz' hcs.1 hq
   set Φ' : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π' := ⟨Φ, hΦ⟩ with hΦ'def
   let qq : MA.Qp P.r P.TT := ⟨(c0, ζ), ⟨fun _ => one_ne_zero, hζ⟩⟩

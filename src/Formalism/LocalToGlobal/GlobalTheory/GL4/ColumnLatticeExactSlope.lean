@@ -307,8 +307,7 @@ theorem hermitianForm_self_eq_norm_sq (b : Basis ι K V) (X : InfinitePlace K �
   unfold Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.cnorm
   rw [Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)]
   push_cast
-  refine Finset.sum_congr rfl fun i _ => ?_
-  exact Complex.conj_mul' _
+  exact Finset.sum_congr rfl fun i _ => Complex.conj_mul' _
 
 end Maj
 
@@ -579,8 +578,7 @@ theorem exists_nat_mul_mem_span_finset {j : ℕ} (e : Fin j → ι → K) (s : F
     show (∏ w : s, m w) • z ∈ Submodule.span (𝓞 K) (Set.range e)
     rw [← Finset.prod_erase_mul _ _ (Finset.mem_univ (⟨z, hz⟩ : s)), mul_smul]
     exact Submodule.smul_of_tower_mem _ _ (hmz ⟨z, hz⟩)
-  intro x hx
-  exact hle hx
+  exact fun x hx => hle hx
 
 end W4scale
 
@@ -676,8 +674,7 @@ theorem baseChangeMap_mem_span_field {j : ℕ} (e : Fin j → ι → F) (m : ι 
         simp only [Set.mem_setOf_eq, _root_.Formalism.HermiteSiegelSlopes.baseChangeMap_map_add] at *
         exact Submodule.add_mem _ ha hb
       zero_mem' := by
-        simp only [Set.mem_setOf_eq, bcMap_zero]
-        exact Submodule.zero_mem _
+        simpa only [Set.mem_setOf_eq, bcMap_zero] using Submodule.zero_mem _
       smul_mem' := fun c {x} hx => by
         simp only [Set.mem_setOf_eq, baseChangeMap_smul_field] at *
         exact Submodule.smul_mem _ _ hx }
@@ -706,10 +703,8 @@ theorem exists_linearIndependent_spanning (M : Submodule (𝓞 F) (ι → F)) [F
     constructor
     · rintro ⟨a, rfl⟩
       exact (eqv.symm a).2
-    · intro hz
-      exact ⟨eqv ⟨z, hz⟩, by simp⟩
-  rw [hr]
-  exact hx'
+    · exact fun hz => ⟨eqv ⟨z, hz⟩, by simp⟩
+  rwa [hr]
 
 end W5
 

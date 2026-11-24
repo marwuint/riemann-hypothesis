@@ -99,7 +99,6 @@ theorem cz_add (F : Fin d → PS R 2 d) (hF : ∀ i, constantCoeff (F i) = 0) {n
     fin_cases j
     · exact ha k
     · exact hb k
-  show constantCoeff (ev ![a, b] (F i)) = 0
   exact cz_ev_lemma_2 ![a, b] h (F i) (hF i)
 
 theorem cz_comp1 (φ : Pt R 1 d) (hφ : ∀ i, constantCoeff (φ i) = 0) {n : ℕ} (a : Pt R n d)
@@ -108,7 +107,6 @@ theorem cz_comp1 (φ : Pt R 1 d) (hφ : ∀ i, constantCoeff (φ i) = 0) {n : �
     intro j k
     fin_cases j
     exact ha k
-  show constantCoeff (ev ![a] (φ i)) = 0
   exact cz_ev_lemma_2 ![a] h (φ i) (hφ i)
 
 theorem mp_add (F : Fin d → PS R 2 d) {n : ℕ} (a b : Pt R n d)

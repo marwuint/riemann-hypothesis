@@ -87,9 +87,7 @@ theorem ms_rkK_pos (b : Basis ι K V) {L : Submodule (𝓞 K) V} (hL : L ≠ ⊥
   obtain ⟨x, hxL, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hL
   unfold Formalism.HN.rkK
   rw [Module.finrank_pos_iff_exists_ne_zero]
-  refine ⟨⟨x, Submodule.subset_span hxL⟩, ?_⟩
-  intro h
-  exact hx0 (congrArg Subtype.val h)
+  exact ⟨⟨x, Submodule.subset_span hxL⟩, fun h => hx0 (congrArg Subtype.val h)⟩
 
 theorem ms_nPl_pos : 0 < nPl K := by
   unfold Formalism.HN.nPl
@@ -116,8 +114,7 @@ theorem ms_htQ_bot (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     constructor
     · rintro ⟨y, hy, rfl⟩
       exact hy
-    · intro hx
-      exact ⟨x, hx, rfl⟩
+    · exact fun hx => ⟨x, hx, rfl⟩
   unfold Formalism.HN.htQ Formalism.HN.ht
   rw [ms_rkK_bot, hz, hq]
   simp only [Nat.cast_zero, sub_zero]
@@ -187,8 +184,7 @@ theorem map_slope_mu : MapMu := by
     exact (Submodule.mem_bot _).2 (hinj hxA A.zero_mem (by rw [hx0, map_zero]))
   have hrkI : rkK (A.map (φ.restrictScalars (𝓞 K))) = rkK A := by
     have h := sizeIneq_rk φ A
-    rw [hker, ms_rkK_bot, add_zero] at h
-    exact h
+    rwa [hker, ms_rkK_bot, add_zero] at h
   obtain ⟨-, hht⟩ := height_image_formula K V ι W κ b X b' X' hX hX' φ A hA
   rw [hker, ms_htQ_bot, hrkI] at hht
   set I := A.map (φ.restrictScalars (𝓞 K)) with hI
@@ -231,8 +227,7 @@ theorem map_slope_mu : MapMu := by
       rw [Real.log_pow, Real.log_pow]
       push_cast
       ring
-    rw [h2] at h1
-    exact h1
+    rwa [h2] at h1
   rw [ms_mu_eq b X hX hA hA0, ms_mu_eq b' X' hX' hB hB0, hrk]
   unfold htMap
   have hf : (0 : ℝ) < nPl K := by exact_mod_cast ms_nPl_pos
@@ -310,15 +305,13 @@ theorem scale_sandwich_bound : ScaleSandwich := by
     rw [hht1] at this
     linarith
   · have := map_slope_mu K V ι V ι b X b X hX hX φ A B hA hBfg hA0 hinj.injOn hmap hrk
-    rw [hht] at this
-    exact this
+    rwa [hht] at this
   · have := ((slope_inequality_mean K V ι V ι b X b X hX hX LinearMap.id B hBfg
       (by rw [hmapid]; exact hB0)).2 A hA (by rw [hmapid]; exact hBA)).2 Function.injective_id.injOn
     rw [hht1] at this
     linarith
   · have := ((slope_inequality_mean K V ι V ι b X b X hX hX φ A hA hmap0).2 B hBfg hmap).2 hinj.injOn
-    rw [hht] at this
-    exact this
+    rwa [hht] at this
 
 theorem levelCompare_statement : LevelCompare := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX R R' h hR hR'0 hh hle hhR

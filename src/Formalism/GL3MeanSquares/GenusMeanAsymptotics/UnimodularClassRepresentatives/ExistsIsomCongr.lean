@@ -92,8 +92,7 @@ theorem laurent_adjoin_eq_of_image_eq {h : V →ₗ⋆[K] V →ₗ[K] K} (han : 
     rwa [map_smul, smul_eq_mul] at this
   have h2 : h z z = l * h (Y z) z := by
     have := congrArg (fun t => h t z) hz
-    simp only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, hm] at this
-    exact this
+    simpa only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, hm] using this
   have h3 := hY z z
   have h4 : h z (Y z) = 0 := by linear_combination (-(h z (Y z))) * hl - h1 + h2 + l * h3
   rw [h1, h4, mul_zero]
@@ -136,10 +135,8 @@ theorem exists_cayley [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K}
     linear_combination (l + star l) * hY a b
   · intro z
     rw [← heS, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, heT]
-  · intro z
-    exact ⟨eS.symm z, by rw [← heS, LinearEquiv.apply_symm_apply]⟩
-  · intro z
-    exact ⟨eT.symm z, by rw [← heT, LinearEquiv.apply_symm_apply]⟩
+  · exact fun z => ⟨eS.symm z, by rw [← heS, LinearEquiv.apply_symm_apply]⟩
+  · exact fun z => ⟨eT.symm z, by rw [← heT, LinearEquiv.apply_symm_apply]⟩
 
 end Alg
 
@@ -277,8 +274,7 @@ theorem core (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K
     have h1 := InI.mul hp (InI.int hp θ₀) (InI.mul hp (InI.int hp e) hinv)
     have h2 : κ e * (δ * κ e)⁻¹ = δ⁻¹ := by
       rw [mul_inv, mul_comm δ⁻¹, ← mul_assoc, mul_inv_cancel₀ he0, one_mul]
-    rw [h2] at h1
-    exact h1
+    rwa [h2] at h1
   have hls0 : InI 𝔭 0 (star l) := InI.conj hF hl0
   set d : V := y - x with hd
   have hy : y = x + d := by simp [hd]
@@ -368,8 +364,7 @@ theorem core (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K
   · intro z hz
     obtain ⟨z', hz'⟩ := hs2 z
     have hz'' : z' - (-l) • Y z' = z := by
-      rw [neg_smul, sub_neg_eq_add]
-      exact hz'
+      rwa [neg_smul, sub_neg_eq_add]
     have hz'L := WCB.mem_of_resolvent h𝔭 hF hA hz₀L hw1 hθ1 (InI.neg hl0) hz hz''
     have hgs : g.symm z = z' - star l • Y z' := by
       rw [LinearEquiv.symm_apply_eq, hgz, hz']
@@ -454,8 +449,7 @@ theorem exists_isom_congr (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (
   refine ⟨hgI, le_antisymm ?_ ?_⟩
   · rintro _ ⟨z, hz, rfl⟩
     exact hL z hz
-  · intro z hz
-    exact Submodule.mem_map.2 ⟨g.symm z, hLs z hz, by simp⟩
+  · exact fun z hz => Submodule.mem_map.2 ⟨g.symm z, hLs z hz, by simp⟩
 
 end Formalism.HermitianLattices.Ext.L3
 end -- clump:auto

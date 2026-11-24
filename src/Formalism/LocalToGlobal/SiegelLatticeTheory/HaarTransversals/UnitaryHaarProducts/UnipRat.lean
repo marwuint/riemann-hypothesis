@@ -170,12 +170,10 @@ theorem cay_neg_mul {N : ℕ} {Z : Matrix ι ι K} (hN : ((⅟2 : K) • Z) ^ N 
   rw [cay_eq hN', cay_eq hN, smul_neg]
   have h1 : geo N (-((⅟2 : K) • Z)) * (1 + (⅟2 : K) • Z) = 1 := by
     have := geom_sum_mul_neg (-((⅟2 : K) • Z)) N
-    rw [sub_neg_eq_add, neg_pow, hN, mul_zero, sub_zero] at this
-    exact this
+    rwa [sub_neg_eq_add, neg_pow, hN, mul_zero, sub_zero] at this
   have h2 : (1 - (⅟2 : K) • Z) * geo N ((⅟2 : K) • Z) = 1 := by
     have := mul_neg_geom_sum ((⅟2 : K) • Z) N
-    rw [hN, sub_zero] at this
-    exact this
+    rwa [hN, sub_zero] at this
   calc (1 + -((⅟2 : K) • Z)) * geo N (-((⅟2 : K) • Z)) * ((1 + (⅟2 : K) • Z) * geo N ((⅟2 : K) • Z))
       = (1 - (⅟2 : K) • Z) * (geo N (-((⅟2 : K) • Z)) * (1 + (⅟2 : K) • Z)) * geo N ((⅟2 : K) • Z) := by
         rw [← sub_eq_add_neg]
@@ -229,8 +227,7 @@ theorem gE_mul' {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (h
     gE X Y * gE X (-Y) = 1 := by
   have hY' : InPat (lvk X) k (-Y) := fun i j h => by rw [Matrix.neg_apply, hY i j h, neg_zero]
   have := gE_mul X hk hY'
-  rw [neg_neg] at this
-  exact this
+  rwa [neg_neg] at this
 
 theorem cT_eq (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) : Formalism.UG.cT (starRingEnd X.B.I.E) M = Mᴴ := by
   ext i j
@@ -334,8 +331,7 @@ theorem gA_ninf {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (h
   have hM := Mv_gA X hk v hY hYs
   unfold Mv at hM
   rw [hM]
-  intro i j h
-  exact hk' i j (by omega)
+  exact fun i j h => hk' i j (by omega)
 
 end RatEl
 

@@ -185,7 +185,6 @@ theorem LocB_sig_eOf (a : Af I.F) : Formalism.UG.sigR I.cm.sig (Af I.F) (eOf I a
   simp [Formalism.UG.sigR, eOf, Algebra.TensorProduct.map_tmul]
 
 theorem LocB_eOf_mem (a : Af I.F) (ha : a ∈ Formalism.UG.intAd I.F) : eOf I a ∈ Formalism.MainNotions.S.IntAf I.F I.E := by
-  show eOf I a ∈ Formalism.UG.tensInt (F := I.F) (Af I.F) (Formalism.UG.intOE I.E) (Formalism.UG.intAd I.F)
   exact Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)
 
 
@@ -251,9 +250,7 @@ theorem LocB_Kset (a : Af I.F) (ha : a * a = a) (hi : a ∈ Formalism.UG.intAd I
     intro w hw y hy
     rw [LocB_fmat I a ha, LocB_locM_mulVec]
     exact I.Lf.add_mem hy (LocB_smul_mem I _ a hi (I.Lf.sub_mem ((hw y).mp hy) hy))
-  have hxinv : x⁻¹ ∈ I.Kset := by
-    show ((x⁻¹ : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf
-    exact (Formalism.UG.stabGL I.Lf).inv_mem hx
+  have hxinv : x⁻¹ ∈ I.Kset := (Formalism.UG.stabGL I.Lf).inv_mem hx
   have hl1 : locG I a 1 = 1 := LocB_ext I _ _ (by
     rw [LocB_fmat I a ha, LocB_fmat_one, Loc_locM_one])
   show ∀ y, y ∈ I.Lf ↔ I.fmat (locG I a x) *ᵥ y ∈ I.Lf

@@ -111,8 +111,7 @@ theorem duU_sum_single1 (a : Fin (r + 1)) (x : M.R) (f : Fin (r + 1) → F) :
   · simp
   · intro b _ hb
     simp [Pi.single_eq_of_ne hb]
-  · intro h
-    exact absurd (Finset.mem_univ a) h
+  · exact fun h => absurd (Finset.mem_univ a) h
 
 theorem duU_sum_single2 (a : Fin (r + 1)) (x : M.R) (f : Fin (r + 1) → F) :
     ∑ b, (ph2 g (((Pi.single a x : Fin (r + 1) → M.R) b : M.R) : E) - ph1 g (((Pi.single a x : Fin (r + 1) → M.R) b : M.R) : E)) / (g.q : F) * f b =
@@ -121,8 +120,7 @@ theorem duU_sum_single2 (a : Fin (r + 1)) (x : M.R) (f : Fin (r + 1) → F) :
   · simp
   · intro b _ hb
     simp [Pi.single_eq_of_ne hb]
-  · intro h
-    exact absurd (Finset.mem_univ a) h
+  · exact fun h => absurd (Finset.mem_univ a) h
 
 private theorem ph1_mem_integers_of_mem_O {y : E} (hy : y ∈ M.L.O) : ph1 g y ∈ 𝒪[F] := by
   have hidem : (g.e.symm (1, 0) : E) * g.e.symm (1, 0) = g.e.symm (1, 0) := by
@@ -140,9 +138,7 @@ private theorem ph1_mem_integers_of_mem_O {y : E} (hy : y ∈ M.L.O) : ph1 g y �
 theorem duU_c_int (hs : M.split = some g) (c : Ix r → E)
     (h : ∀ l : Fin (r + 1) → M.R, ∑ i, ((iota1 hs l i : M.L.O) : E) * c i ∈ M.L.O) :
     ∀ i, ph1 g (c i) ∈ 𝒪[F] := by
-  have hq : (g.q : F) ≠ 0 := by
-    intro h0
-    exact g.q_irr.ne_zero (Subtype.ext h0)
+  have hq : (g.q : F) ≠ 0 := fun h0 => g.q_irr.ne_zero (Subtype.ext h0)
   intro i
   rcases i with a | a
   · have h1 := ph1_mem_integers_of_mem_O (g := g) (h (Pi.single a 1))

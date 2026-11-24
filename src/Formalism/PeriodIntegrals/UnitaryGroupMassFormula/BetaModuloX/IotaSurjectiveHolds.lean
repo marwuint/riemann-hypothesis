@@ -90,8 +90,7 @@ theorem riesz [FiniteDimensional E V] (h : V →ₗ⋆[E] V →ₗ[E] E) (hs : h
     induction hu using Submodule.span_induction with
     | mem x hx =>
       obtain ⟨j, rfl⟩ := hx
-      intro _
-      exact hwb j
+      exact fun _ => hwb j
     | zero =>
       intro huL
       have : (⟨0, huL⟩ : Λ) = 0 := rfl
@@ -124,8 +123,7 @@ theorem exists_retract (Λ : Submodule (𝓞 E) V) (hΛ : Λ.FG) (X : Submodule 
     obtain ⟨y₁, rfl⟩ := N.mkQ_surjective q₁
     obtain ⟨y₂, rfl⟩ := N.mkQ_surjective q₂
     have hq' : N.mkQ (r • (y₁ - y₂)) = 0 := by
-      rw [map_smul, map_sub, smul_sub, sub_eq_zero]
-      exact hq
+      rwa [map_smul, map_sub, smul_sub, sub_eq_zero]
     rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at hq'
     rw [Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]
     have hmem : ((r • (y₁ - y₂) : Λ) : V) ∈ X := hq'
@@ -146,11 +144,9 @@ theorem exists_retract (Λ : Submodule (𝓞 E) V) (hΛ : Λ.FG) (X : Submodule 
       simp only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq] at this
       simp only [ρ, LinearMap.sub_apply, LinearMap.id_coe, id_eq, LinearMap.coe_comp,
         Function.comp_apply, map_sub, this, sub_self]
-    rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at h0
-    exact h0
+    rwa [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at h0
   · have h0 : N.mkQ y = 0 := by
-      rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
-      exact hy
+      rwa [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
     simp [ρ, h0]
 
 end Copied
@@ -281,8 +277,7 @@ theorem glob_div (Λ : Submodule (𝓞 E) S.V) (hU : Formalism.HermitianLattices
   obtain ⟨s, hs, hse⟩ := h1
   refine ⟨s * t, fun hst => (P.isPrime.mem_or_mem hst).elim hs ht, ?_⟩
   rw [← algebraMap_smul E t e, LinearMap.map_smul, algebraMap_smul] at hse
-  rw [mul_smul]
-  exact hse
+  rwa [mul_smul]
 
 theorem iota_gen (Λ : Submodule (𝓞 E) S.V) (hL : Submodule.IsLattice E Λ)
     (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) (g : ℕ) (hg : g ≠ 0) {T T' : E} (F : LFlag S r T) (F' : LFlag S r T')
@@ -320,8 +315,7 @@ theorem iota_gen (Λ : Submodule (𝓞 E) S.V) (hL : Submodule.IsLattice E Λ)
     have hmem : (algebraMap (𝓞 E) E d) • x ∈ Submodule.span E (Λ : Set S.V) := by
       rw [algebraMap_smul]; exact Submodule.subset_span hx
     have := (Submodule.span E (Λ : Set S.V)).smul_mem (algebraMap (𝓞 E) E d)⁻¹ hmem
-    rw [smul_smul, inv_mul_cancel₀ hdE, one_smul] at this
-    exact this
+    rwa [smul_smul, inv_mul_cancel₀ hdE, one_smul] at this
   obtain ⟨ρ, hρX, hρid⟩ := exists_retract Λ hL.fg (Xsp F)
   let f : Λ →ₗ[𝓞 E] E := LinearMap.mulLeft (𝓞 E) (((g : 𝓞 E) : E)⁻¹) ∘ₗ
     (S.hT w).restrictScalars (𝓞 E) ∘ₗ Λ.subtype ∘ₗ ρ

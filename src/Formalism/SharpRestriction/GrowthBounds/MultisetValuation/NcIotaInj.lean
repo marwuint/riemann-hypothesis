@@ -71,8 +71,7 @@ theorem nc_iota_inj : Function.Injective (nc_iota Y u w hg t0) := by
   have hn := nc_n_eq X Y hT hL u w hg t0 ht0
   intro s s' hss
   have hs := lt_of_lt_of_eq s.isLt hn
-  have hs' := lt_of_lt_of_eq s'.isLt hn
-  exact Fin.ext (nsmul_injOn_Iio_addOrderOf hs hs' (add_left_cancel hss))
+  exact Fin.ext (nsmul_injOn_Iio_addOrderOf hs (lt_of_lt_of_eq s'.isLt hn) (add_left_cancel hss))
 
 include hL ht0 in
 theorem nc_topsOn : Formalism.MainNotions.G.topsOn X (D.what₂.places.resChar w) t0 =
@@ -111,8 +110,7 @@ theorem nc_topsOn : Formalism.MainNotions.G.topsOn X (D.what₂.places.resChar w
       rw [hn]; exact Nat.mod_lt _ hpos
     refine ⟨⟨_, hlt⟩, ?_, ?_⟩
     · rw [((h t0 ht0).2 _).2.1]
-      simp only [mod_addOrderOf_nsmul, hi]
-      exact htT
+      simpa only [mod_addOrderOf_nsmul, hi] using htT
     · simp only [nc_iota, mod_addOrderOf_nsmul, hi]
   · rintro ⟨s, hs, rfl⟩
     refine ⟨((h t0 ht0).2 s).2.1.1 hs, ?_⟩
@@ -156,10 +154,8 @@ theorem nc_isV (s : Fin ((D.gat u w hg).P.n' (Y.vOf u w hg t0))) :
   constructor
   · rintro ⟨i, hi, hev, heq⟩
     have hi' := nsmul_injOn_Iio_addOrderOf hi hs (add_left_cancel heq)
-    rw [← hi']
-    exact hev
-  · intro hev
-    exact ⟨s.val, hs, hev, rfl⟩
+    rwa [← hi']
+  · exact fun hev => ⟨s.val, hs, hev, rfl⟩
 
 end Orbit
 

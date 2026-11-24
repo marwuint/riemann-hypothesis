@@ -266,8 +266,7 @@ def mtwCoord (lam : ι → DomWeight n) (i : VVIdx lam) : Pol ℂ ι n →ₗ[�
 theorem mtwCoord_spec (lam : ι → DomWeight n) (i : VVIdx lam) (F : VV ℂ lam) :
     mtwCoord lam i (F : Pol ℂ ι n) = (bVV ℂ lam).repr F i := by
   have h := LinearMap.congr_fun (LinearMap.exists_extend ((bVV ℂ lam).coord i)).choose_spec F
-  rw [LinearMap.comp_apply, Module.Basis.coord_apply] at h
-  exact h
+  rwa [LinearMap.comp_apply, Module.Basis.coord_apply] at h
 
 def mtwCoef (lam : ι → DomWeight n) (i j : VVIdx lam) : MvPolynomial (ι × Fin n × Fin n) ℂ :=
   mtwCf (mtwCoord lam i) (mtwUniv (bVVfun ℂ lam j))
@@ -426,14 +425,12 @@ private theorem lpMinor_complex_eq (s r m : ℕ) (hr : s ≤ r) (hm : s ≤ m) :
     ext p q
     simp [Matrix.mvPolynomialX]
   rw [he]
-  intro h0
-  exact hX ((MvPolynomial.rename_injective _ hinj) (h0.trans (map_zero _).symm))
+  exact fun h0 => hX ((MvPolynomial.rename_injective _ hinj) (h0.trans (map_zero _).symm))
 
 private theorem hw_complex_eq (m : ℕ) (ν : Fin m → ℕ) : Formalism.GradedWeylDivisibility.hw ℂ (r := m) (le_refl m) ν ≠ 0 := by
   unfold Formalism.GradedWeylDivisibility.hw
   rw [Finset.prod_ne_zero_iff]
-  intro s _
-  exact pow_ne_zero _ (lpMinor_complex_eq _ _ _ _ _)
+  exact fun s _ => pow_ne_zero _ (lpMinor_complex_eq _ _ _ _ _)
 
 theorem mtwHw_ne (lam : ι → DomWeight n) : mtwHw lam ≠ 0 := by
   intro h
@@ -572,8 +569,7 @@ theorem twistPolynomial_eval_point (emb : ι → L →+* ℂ) (hinj : Function.I
     split_ifs
     · rw [map_pow, detPolynomial_eval, mtw_evPt_other (emb τ₀) (emb τ) B h1 h2, Matrix.det_one, one_pow]
     · rw [map_pow, detPolynomial_eval, mtw_evPt_other (emb τ₀) _ B h3 h4, Matrix.det_one, one_pow]
-  · intro h
-    exact absurd (Finset.mem_univ τ₀) h
+  · exact fun h => absurd (Finset.mem_univ τ₀) h
 
 theorem tenWt_hwAt (emb : ι → L →+* ℂ) (hinj : Function.Injective emb)
     (hcm : ∀ τ τ', emb τ ≠ ComplexEmbedding.conjugate (emb τ')) (lam : ι → DomWeight n)
@@ -619,8 +615,7 @@ theorem tenWt_hwAt (emb : ι → L →+* ℂ) (hinj : Function.Injective emb)
     have hsum : (∑ j, ((bVV ℂ lam).repr (mtwHw lam) j) • bVVfun ℂ lam j) = (mtwHw lam : Pol ℂ ι n) := by
       have := congrArg Subtype.val ((bVV ℂ lam).sum_repr (mtwHw lam))
       rw [Submodule.coe_sum] at this
-      simp only [Submodule.coe_smul, bVV_coe] at this
-      exact this
+      simpa only [Submodule.coe_smul, bVV_coe] using this
     funext i
     simp only [Matrix.mulVec, dotProduct, Matrix.of_apply, eval_tensorCoeff, twistPolynomial_eval_point emb hinj hcm lam τ₀ B, hM,
       Pi.smul_apply, smul_eq_mul]

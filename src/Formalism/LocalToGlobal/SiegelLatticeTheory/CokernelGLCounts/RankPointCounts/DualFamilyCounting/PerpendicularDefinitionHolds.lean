@@ -124,10 +124,7 @@ theorem eq_zero_of_orth (hG : GZ T T' (ZhatL (lf D F0) F') ≠ 0)
 
 theorem fam_li (hG : GZ T T' (ZhatL (lf D F0) F') ≠ 0) : LinearIndependent D.host.E (fam F0 F') := by
   rw [Fintype.linearIndependent_iff]
-  intro c hc
-  have h0 := eq_zero_of_orth F0 F' hG c (fun a => by rw [hc, map_zero])
-  intro i
-  exact congrFun h0 i
+  exact fun c hc => fun i => congrFun (eq_zero_of_orth F0 F' hG c (fun a => by rw [hc, map_zero])) i
 
 theorem mem_orthK {U : Submodule D.host.E (VS D).V} {x : (VS D).V} :
     x ∈ orthK (VS D).hT U ↔ ∀ u ∈ U, (VS D).hT u x = 0 := by
@@ -166,8 +163,7 @@ theorem isCompl (hG : GZ T T' (ZhatL (lf D F0) F') ≠ 0) :
           simp [mul_smul, ← Finset.smul_sum, mul_add] }
     have hinj : Function.Injective Φ := by
       rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
-      intro c hc
-      exact eq_zero_of_orth F0 F' hG c (fun a => congrFun hc a)
+      exact fun c hc => eq_zero_of_orth F0 F' hG c (fun a => congrFun hc a)
     obtain ⟨c, hc⟩ := (LinearMap.injective_iff_surjective.mp hinj) (fun a => (VS D).hT (fam F0 F' a) v)
     have hu : ∑ i, c i • fam F0 F' i ∈ UPair D F0 F' := by
       rw [upair_eq]

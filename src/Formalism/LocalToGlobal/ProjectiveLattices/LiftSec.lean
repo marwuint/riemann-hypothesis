@@ -84,10 +84,7 @@ theorem hasse_frac_succ_mem {u : WeightFamilies.Wt D j} {m : ℕ} {g : Rp X la N
   · rw [mul_comm, ← frac_apply]
     exact frac_mem_Hfr X la w (hasseRp_mem_Vw X la hg β)
   · have h12 : q.1 + q.2 = β := mem_antidiagonal.1 (mem_of_mem_erase hq')
-    have hne : q.1 ≠ 0 := by
-      intro h
-      apply ne_of_mem_erase hq'
-      exact Prod.ext h (by rw [← h12, h, zero_add])
+    have hne : q.1 ≠ 0 := fun h => ne_of_mem_erase hq' (Prod.ext h (by rw [← h12, h, zero_add]))
     have hlt : Finsupp.degree q.2 < n := by
       rw [← hn, ← h12, map_add (f := _)]
       have : Finsupp.degree q.1 ≠ 0 := fun h => hne ((Finsupp.degree_eq_zero_iff _).1 h)
@@ -183,13 +180,9 @@ theorem hd_mul_e' (β : Idx D j G.N →₀ ℕ) (r : M.Λ) : M.hd β (r * M.e') 
   · rw [M.hd_zero]
   · intro q hq hne
     have h12 := mem_antidiagonal.1 hq
-    have h2 : q.2 ≠ 0 := by
-      intro h
-      apply hne
-      exact Prod.ext (by rw [← h12, h, add_zero]) h
+    have h2 : q.2 ≠ 0 := fun h => hne (Prod.ext (by rw [← h12, h, add_zero]) h)
     rw [M.e'_hd _ h2, mul_zero]
-  · intro h
-    exact absurd (mem_antidiagonal.2 (add_zero β)) h
+  · exact fun h => absurd (mem_antidiagonal.2 (add_zero β)) h
 
 theorem step5 {r : M.Λ} (hr : r ∈ M.RG) (x : Lw (xplus X E hM) la G.w) {n : ℕ} (hx : M.ι x - r * M.e' ∈ M.I ^ n)
     (β : Idx D j G.N →₀ ℕ) (hβ : Finsupp.degree β < n) (ζ : PtsG G la) :

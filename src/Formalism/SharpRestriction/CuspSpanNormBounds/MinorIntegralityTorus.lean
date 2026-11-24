@@ -99,8 +99,7 @@ theorem prod_cm {K : Type*} [Field K] [NumberField K] (Φ : Set (K →+* ℂ))
     constructor
     · intro hσ
       refine ⟨(starRingEnd ℂ).comp σ, ?_, cc σ⟩
-      rw [hΦ, cc]
-      exact hσ
+      rwa [hΦ, cc]
     · rintro ⟨τ, hτ, rfl⟩
       exact (hΦ τ).1 hτ
   rw [← Finset.prod_mul_prod_compl (Finset.univ.filter (· ∈ Φ)), hc, Finset.prod_image hinj,
@@ -121,8 +120,7 @@ theorem NormLB_holds : Formalism.MainNotions.KTwoMinorIntegrality.NormLB := by
       simp only [Finset.mem_filter, Finset.mem_univ, true_and]
       exact (hemb.2 _).2 (D.eTau τ).2
     · intro τ₁ _ τ₂ _ h
-      have h' := hemb.1.1 h
-      exact D.eTau.injective (Subtype.ext h')
+      exact D.eTau.injective (Subtype.ext (hemb.1.1 h))
     · intro σ hσ
       simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hσ
       obtain ⟨g, rfl⟩ := hemb.1.2 σ
@@ -154,8 +152,7 @@ section Fr
 variable (D : D7)
 
 theorem ddS_ideal_ne : (Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F)) :
-    Ideal (𝓞 D.host.E)) ≠ ⊥ := by
-  exact Ideal.map_ne_bot_of_ne_bot differentIdeal_ne_bot
+    Ideal (𝓞 D.host.E)) ≠ ⊥ := Ideal.map_ne_bot_of_ne_bot differentIdeal_ne_bot
 
 theorem e_mem_XS {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (a : Fin D.R.rS) : F0.e a ∈ XS D F0 := by
   unfold XS ddS

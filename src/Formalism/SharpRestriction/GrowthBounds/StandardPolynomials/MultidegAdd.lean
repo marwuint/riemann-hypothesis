@@ -118,8 +118,7 @@ theorem tail_of_ssg {e : ℕ} (he : e ∈ Finset.Ico 1 n) {τ : RHH O X} (h : τ
       · simp
       · intro b _ hb
         simp [hb]
-      · intro h'
-        exact absurd he h'
+      · exact fun h' => absurd he h'
     show InWj w ((w ^ e) • τ - ∑ ε ∈ Finset.Ico 1 n, (w ^ ε) • (if ε = e then τ else 0)) n
     rw [hs, sub_self]
     exact (wjSub w n).zero_mem
@@ -218,8 +217,7 @@ theorem TCls.pow {w : O} {d : X.TT × Bool → ℕ} {o c : ℕ} {P : RHH O X} (h
     have e1 : (fun l => (u + 1) * d l) = (fun l => u * d l + d l) := by
       funext l
       ring
-    rw [e1, show (u + 1) * o = u * o + o by ring, show (u + 1) * c = u * c + c by ring]
-    exact h
+    rwa [e1, show (u + 1) * o = u * o + o by ring, show (u + 1) * c = u * c + c by ring]
 
 theorem TCls.prod {w : O} {κ : Type} (s : Finset κ) (d : κ → X.TT × Bool → ℕ) (o c : κ → ℕ) (P : κ → RHH O X)
     (hP : ∀ a ∈ s, TCls w (d a) (o a) (c a) (P a)) :
@@ -233,9 +231,7 @@ theorem TCls.prod {w : O} {κ : Type} (s : Finset κ) (d : κ → X.TT × Bool �
     rw [Finset.prod_insert ha]
     have h1 := hP a (Finset.mem_insert_self a s)
     have h2 := ih (fun b hb => hP b (Finset.mem_insert_of_mem hb))
-    have h := h1.mul h2
-    simp only [Finset.sum_insert ha]
-    exact h
+    simpa only [Finset.sum_insert ha] using h1.mul h2
 
 end Cls
 
@@ -330,16 +326,14 @@ theorem FacSys.liftable (hw : w ≠ 0) (F : FacSys C0 Cde CE1 CE2 X O w mm n o �
     intro u
     have h1 := inWj_prod (w := w) Finset.univ (fun a => F.sg a ^ u a) (fun a => u a * 0)
       (fun a _ => inWj_pow ((inA_iff_wj w).1 (F.fac a).sgInt) (u a))
-    have h2 := inWj_mul ((inA_iff_wj w).1 F.rigInt) h1
-    simpa using h2
+    simpa using inWj_mul ((inA_iff_wj w).1 F.rigInt) h1
   refine ⟨C ((wK ^ o)⁻¹) * Ftot, ⟨?_, ?_, fun g' hg' hne => ?_⟩, ?_⟩
   · rw [← smul_eq_C_mul]
     exact Submodule.smul_mem _ _ F.total
   · rw [← mul_assoc, ← C_mul, map_pow, mul_inv_cancel₀ (pow_ne_zero _ hK), C_1, one_mul, inA_iff_wj w]
     have h1 := inWj_prod (w := w) Finset.univ (fun a => F.f a ^ F.mult a) (fun a => F.mult a * 0)
       (fun a _ => inWj_pow ((inA_iff_wj w).1 (F.fac a).inA) (F.mult a))
-    have h2 := inWj_mul ((inA_iff_wj w).1 F.rigA) h1
-    simpa using h2
+    simpa using inWj_mul ((inA_iff_wj w).1 F.rigA) h1
   · unfold InWjRg
     rw [map_mul, MvPolynomial.algHom_C, MvPolynomial.algebraMap_eq]
     exact inWj_div hw (F.clean g' hg' hne)
@@ -366,8 +360,7 @@ theorem FacSys.liftable (hw : w ≠ 0) (F : FacSys C0 Cde CE1 CE2 X O w mm n o �
     have h4 : ∏ a, (t a + F.sg a) ^ F.mult a =
         ∑ u ∈ Fintype.piFinset (fun a => Finset.range (F.mult a + 1)),
           ∏ a, (t a ^ u a * F.sg a ^ (F.mult a - u a) * ((F.mult a).choose (u a) : RHH O X)) := by
-      simp only [add_pow]
-      exact Finset.prod_univ_sum _ _
+      simpa only [add_pow] using Finset.prod_univ_sum _ _
     have h0mem : (fun _ => 0 : F.κ → ℕ) ∈ Fintype.piFinset (fun a => Finset.range (F.mult a + 1)) := by
       simp [Fintype.mem_piFinset]
     have h5 : lift1 X O w (C ((wK ^ o)⁻¹) * Ftot) - σ =

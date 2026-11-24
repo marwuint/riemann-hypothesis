@@ -68,8 +68,7 @@ theorem finrank_cutW_lt {W : Submodule K V} {x : V} (hx : x ∈ W) (hxx : h x x 
   apply Submodule.finrank_lt_finrank_of_lt
   refine lt_of_le_of_ne inf_le_left fun heq => hxx ?_
   have hmem : x ∈ W ⊓ LinearMap.ker (h x) := by
-    rw [heq]
-    exact hx
+    rwa [heq]
   exact LinearMap.mem_ker.mp (Submodule.mem_inf.mp hmem).2
 
 theorem sd_main (hS : IsHermSemilocal S) (hπ : IsUnif S π) (hs : h.IsSymm)
@@ -121,8 +120,7 @@ theorem exists_orth_transfer (hd : ∀ x, h x x = 0 → x = 0) {W₁ W₂ : Subm
     exact fun h0 => hz₁0 (hd z₁ h0)
   have hb0 : ψ ξ ≠ 0 := fun h0 => hξ0 (ψ.injective (h0.trans (map_zero ψ).symm))
   have hab : h (ψ z₁) (ψ ξ) = 0 := by
-    rw [hψ]
-    exact hzξ
+    rwa [hψ]
   by_cases h0 : h z₂ (ψ z₁) = 0
   · exact ⟨ψ z₁, ha, fun ha0 => haa (by simp [ha0]), h0⟩
   · refine ⟨(h z₂ (ψ ξ)) • ψ z₁ - (h z₂ (ψ z₁)) • ψ ξ,
@@ -138,9 +136,7 @@ theorem exists_orth_transfer (hd : ∀ x, h x x = 0 → x = 0) {W₁ W₂ : Subm
       ring
 
 theorem IsASD.z_ne {W : Submodule K V} {M : AddSubgroup V} {z : V} (hM : IsASD S π h W M z) :
-    z ≠ 0 := by
-  intro hz
-  exact hM.z_norm_ne (by simp [hz])
+    z ≠ 0 := fun hz => hM.z_norm_ne (by simp [hz])
 
 theorem IsASD.mem_iff_of_line (hπ : IsUnif S π) {W : Submodule K V} {M : AddSubgroup V} {z : V}
     (hM : IsASD S π h W M z) (hline : ¬ ∃ ξ ∈ W, ξ ≠ 0 ∧ h z ξ = 0) :
@@ -188,8 +184,7 @@ theorem asd_base (hS : IsHermSemilocal S) (hπ : IsUnif S π) (hs : h.IsSymm)
     have e : star (l * b) * (l * b) = star l * l := by
       rw [star_mul']
       linear_combination (star l * l) * hb
-    rw [e]
-    exact hNl'
+    rwa [e]
   obtain ⟨ψ, hψ, hψz, hψfix⟩ := exists_isom_scale hs hζ₂ hb
   have hgz : ψ (φ z₁) = (l * b) • z₂ := by rw [hl, map_smul, hψz, smul_smul]
   refine ⟨ψ * φ, mul_mem hψ hφ, fun v hv => ?_, fun v => ?_⟩

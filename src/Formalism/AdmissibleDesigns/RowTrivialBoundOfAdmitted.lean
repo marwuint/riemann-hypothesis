@@ -91,8 +91,7 @@ theorem tb_pos {e t cB ℓ : ℕ} {I : Subgroup G} {J : (K →ₐ[Qp] LL) → Se
   have hzl : IsLocallyConstant (z : Dw → M) := by
     have h := hloc ψ hψe
     have hf : (z : Dw → M) = fun g : Dw => ψ (yY r χ E (g : GG)) := funext hz
-    rw [hf]
-    exact h
+    rwa [hf]
   have h1 := trC_hf hTB het Y hY Cd hψ ψ hψe (z : Dw → M) hz
   have h2 := trC_mem_Z1D Cd heG z hzl ((PD.p : O) ^ cB)
   obtain ⟨x, hx⟩ := (hTB.2 e het Cd.Ce.V Cd.Ce.ρ Cd.Ce.L Cd.Ce.cont Cd.Ce.mat).1 he ⟨h2, h1⟩
@@ -117,8 +116,7 @@ theorem tb_zero {e t cB ℓ : ℕ} {I : Subgroup G} {J : (K →ₐ[Qp] LL) → S
   have hzl : IsLocallyConstant (z : Dw → M) := by
     have h := hloc ψ hψe
     have hf : (z : Dw → M) = fun g : Dw => ψ (yY r χ E (g : GG)) := funext hz
-    rw [hf]
-    exact h
+    rwa [hf]
   refine ⟨hzl, ?_⟩
   have h1 := trC_hf hTB het Y hY Cd hψ ψ hψe (z : Dw → M) hz
   have h2 := trC_mem_Z1D Cd heG z hzl ((PD.p : O) ^ cB)
@@ -138,8 +136,7 @@ section Cls
 variable {O Γ M : Type} [CommRing O] [Group Γ] [AddCommGroup M] [Module O M] (ρ : Representation O Γ M)
 
 theorem mkQ_eq_zero_of (z : coZ1s ρ) (h : (z : Γ → M) ∈ coB1 ρ) :
-    (Submodule.mkQ _ z : H1z ρ) = 0 := by
-  exact (Submodule.Quotient.mk_eq_zero _).mpr h
+    (Submodule.mkQ _ z : H1z ρ) = 0 := (Submodule.Quotient.mk_eq_zero _).mpr h
 
 theorem mem_unramified_of_coboundary (I : Subgroup Γ) (z : coZ1s ρ) (m : M) (hm : ∀ g ∈ I, (z : Γ → M) g = ρ g m - m) :
     (Submodule.mkQ _ z : H1z ρ) ∈ unrH1 ρ I := by
@@ -213,8 +210,7 @@ theorem eW_inert {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver 
     (g : Dw i dc (idx i dc w)) (hg : g ∈ (Ine (F := D.host.E) (Aw i dc (idx i dc w))).subgroupOf (Dw i dc (idx i dc w))) :
     eW i dc hw g ∈ Br.inert D.nbr i w hw := by
   have hmem : w ∈ plSet i dc := by
-    simp only [plSet, Finset.mem_union]
-    exact Or.inl ((dc.cover w).2 hw)
+    simpa only [plSet, Finset.mem_union] using Or.inl ((dc.cover w).2 hw)
   have hA : Aw i dc (idx i dc w) = D.nd.plOm.1 w := by
     unfold Aw
     rw [plOf_idx i dc hmem]
@@ -223,8 +219,7 @@ theorem eW_inert {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver 
   simp only [Subgroup.mem_comap, Subgroup.mem_subgroupOf, Br.iota]
   have hx : ((Br.ι (D.nbr i w hw) (eW i dc hw g)) : GE D.nd) = (g : GE D.nd) := by
     simp [Br.ι, eW]
-  rw [hx]
-  exact hg
+  rwa [hx]
 
 
 

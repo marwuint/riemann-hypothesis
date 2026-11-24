@@ -71,8 +71,7 @@ private lemma phiA_apply_eq_phi0_pred (W : LocWach PD LL O v n) (a : LetA O n) (
 private lemma gammaA_phiA_comm (W : LocWach PD LL O v n) (g : W.Gam) (a : LetA O n) :
     W.γA g (W.φA a) = W.φA (W.γA g a) := by
   funext i
-  simp only [gammaA_apply_eq_gamma0, phiA_apply_eq_phi0_pred]
-  exact (W.γ₀_comm g (a (i - 1))).symm
+  simpa only [gammaA_apply_eq_gamma0, phiA_apply_eq_phi0_pred] using (W.γ₀_comm g (a (i - 1))).symm
 
 theorem γA_φpow (W : LocWach PD LL O v n) (g : W.Gam) (t : ℕ) (a : LetA O n) :
     W.γA g ((W.φA ^ t) a) = (W.φA ^ t) (W.γA g a) := by
@@ -137,9 +136,7 @@ private lemma pi0_mem_AΔ (W : LocWach PD LL O v n) (hR : RingP W) : W.π₀ ∈
   exact h1
 
 private lemma ps_mem_AΔ' (W : LocWach PD LL O v n) (hR : RingP W) (s : ℕ) : ps W s ∈ W.AΔ := by
-  have hq : qA W ∈ W.AΔ := by
-    show W.π₀ + ((PD.p : ℕ) : LetA O n) ∈ W.AΔ
-    exact add_mem (pi0_mem_AΔ W hR) (natCast_mem _ _)
+  have hq : qA W ∈ W.AΔ := add_mem (pi0_mem_AΔ W hR) (natCast_mem _ _)
   exact phiA_pow_mem_AΔ W s hq
 
 private lemma mem_AΔ_of_ps_mul_mem_AΔ [IsDomain O] (W : LocWach PD LL O v n) (hR : RingP W) (s : ℕ)
@@ -202,8 +199,7 @@ theorem psStable_of [IsDomain O] [NeZero n] (W : LocWach PD LL O v n) (hR : Ring
   intro t
   obtain ⟨U, hU⟩ := isUnit_one_add_mul_pi0 W hR (w : LetA O n)
   have hUm : (U : LetA O n) ∈ W.AΔ := by
-    rw [hU]
-    exact hu
+    rwa [hU]
   refine ⟨(W.φA ^ t) (U : LetA O n), phiA_pow_mem_AΔ W t hUm, (W.φA ^ t) (↑U⁻¹ : LetA O n),
     phiA_pow_mem_AΔ W t (mem_AΔ_of_mul_eq_one W hUm U.mul_inv), ?_, ?_⟩
   · rw [← map_mul, U.mul_inv, map_one]

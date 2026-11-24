@@ -92,8 +92,7 @@ theorem smooth_oneProd {G : Matrix (Fin n) (Fin n) ℂ} {π : Matrix (Fin n) (Fi
   induction d with
   | zero =>
     intro Y _ t
-    simp only [oneProd, List.ofFn_zero, List.prod_nil, hπ.1]
-    exact ⟨hw, one_mem_UH G⟩
+    simpa only [oneProd, List.ofFn_zero, List.prod_nil, hπ.1] using ⟨hw, one_mem_UH G⟩
   | succ d ih =>
     intro Y hY t
     have e : oneProd Y t = NormedSpace.exp (t 0 • Y 0) * oneProd (fun i => Y i.succ) (fun i => t i.succ) := by
@@ -122,19 +121,15 @@ theorem append_line {N d : ℕ} (r : Fin N → ℝ) (t : Fin d → ℝ) (i : Fin
 theorem contDiff_append_left {N d : ℕ} (t : Fin d → ℝ) : ContDiff ℝ ∞ (fun r : Fin N → ℝ => Fin.append r t) := by
   refine contDiff_pi.2 fun j => ?_
   refine Fin.addCases (fun j => ?_) (fun j => ?_) j
-  · simp only [Fin.append_left]
-    exact contDiff_apply ℝ (fun _ => ℝ) j
-  · simp only [Fin.append_right]
-    exact contDiff_const
+  · simpa only [Fin.append_left] using contDiff_apply ℝ (fun _ => ℝ) j
+  · simpa only [Fin.append_right] using contDiff_const
 
 theorem continuous_append_right {N d : ℕ} (r : Fin N → ℝ) :
     Continuous (fun t : Fin d → ℝ => Fin.append r t) := by
   refine continuous_pi fun j => ?_
   refine Fin.addCases (fun j => ?_) (fun j => ?_) j
-  · simp only [Fin.append_left]
-    exact continuous_const
-  · simp only [Fin.append_right]
-    exact continuous_apply j
+  · simpa only [Fin.append_left] using continuous_const
+  · simpa only [Fin.append_right] using continuous_apply j
 
 variable {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
 
@@ -151,8 +146,7 @@ theorem pd_append {N d : ℕ} (f : (Fin (N + d) → ℝ) → E) (hf : Differenti
     have hl : HasDerivAt (fun s : ℝ => r + s • (Pi.single i 1 : Fin N → ℝ)) (Pi.single i 1) 0 := by
       simpa using ((hasDerivAt_id (0 : ℝ)).smul_const (Pi.single i 1 : Fin N → ℝ)).const_add r
     have h3 := (hg (r + (0 : ℝ) • (Pi.single i 1 : Fin N → ℝ))).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hl
-    rw [zero_smul, add_zero] at h3
-    exact h3
+    rwa [zero_smul, add_zero] at h3
   have h2 : HasDerivAt (fun s : ℝ => Fin.append (r + s • (Pi.single i 1 : Fin N → ℝ)) t)
       (Pi.single (Fin.castAdd d i) 1) 0 := by
     simp only [append_line]
@@ -165,7 +159,6 @@ private theorem pds_contDiff_lemma {N : ℕ} (L : List (Fin N)) (f : (Fin N → 
   induction L with
   | nil => exact hf
   | cons a L ih =>
-    show ContDiff ℝ ∞ (fun p => fderiv ℝ (OrbStPf.pds L f) p (Pi.single a 1))
     exact (contDiff_infty_iff_fderiv.1 ih).2.clm_apply contDiff_const
 
 theorem pds_append {N d : ℕ} (L : List (Fin N)) (f : (Fin (N + d) → ℝ) → E) (hf : ContDiff ℝ ∞ f)

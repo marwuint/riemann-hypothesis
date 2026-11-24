@@ -67,12 +67,10 @@ theorem mem_orth' {U : Submodule E S.V} {v : S.V} : v ∈ orth S U ↔ ∀ x ∈
   simp only [Submodule.mem_iInf, LinearMap.mem_ker]
 
 theorem orth_anti' {U U' : Submodule E S.V} (h : U ≤ U') {v : S.V} (hv : v ∈ orth S U') :
-    v ∈ orth S U := by
-  exact mem_orth'.mpr fun x hx => mem_orth'.mp hv x (h hx)
+    v ∈ orth S U := mem_orth'.mpr fun x hx => mem_orth'.mp hv x (h hx)
 
 theorem isom_apply {φ : S.V ≃ₗ[E] S.V} (hφ : φ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (a b : S.V) :
-    S.hT (φ a) (φ b) = S.hT a b := by
-  exact hφ a b
+    S.hT (φ a) (φ b) = S.hT a b := hφ a b
 
 theorem isom_symm {φ : S.V ≃ₗ[E] S.V} (hφ : φ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (a b : S.V) :
     S.hT (φ.symm a) (φ.symm b) = S.hT a b := by
@@ -115,8 +113,7 @@ theorem aut_symm_mem {φ : S.V ≃ₗ[E] S.V} (h : IsAutLam S Λ φ) {v : S.V} (
   have hsu : φ.symm v = u := by
     rw [← huv]
     simp
-  rw [hsu]
-  exact hu
+  rwa [hsu]
 
 theorem aut_trans {φ ψ : S.V ≃ₗ[E] S.V} (hφ : IsAutLam S Λ φ) (hψ : IsAutLam S Λ ψ) :
     IsAutLam S Λ (φ.trans ψ) := by
@@ -211,8 +208,7 @@ theorem nl_X (hn : n ∈ NLam Λ G) {v : S.V} (hv : v ∈ Xsp G) : n v - v ∈ X
   rwa [Xa_ge G le_rfl] at h2
 
 theorem nl_X_mem (hn : n ∈ NLam Λ G) {v : S.V} (hv : v ∈ Xsp G) : n v ∈ Xsp G := by
-  have h := add_mem (nl_X hn hv) hv
-  simpa using h
+  simpa using add_mem (nl_X hn hv) hv
 
 theorem nl_map_X (hn : n ∈ NLam Λ G) : (Xsp G).map (n : S.V →ₗ[E] S.V) = Xsp G := by
   apply le_antisymm
@@ -226,8 +222,7 @@ theorem nl_map_X (hn : n ∈ NLam Λ G) : (Xsp G).map (n : S.V →ₗ[E] S.V) = 
     have hinj : Function.Injective f := by
       intro a b hab
       apply Subtype.ext
-      have h := congrArg Subtype.val hab
-      simpa [f] using h
+      simpa [f] using congrArg Subtype.val hab
     obtain ⟨u, hu⟩ := (LinearMap.injective_iff_surjective.mp hinj) ⟨v, hv⟩
     exact ⟨u, u.2, congrArg Subtype.val hu⟩
 
@@ -428,17 +423,14 @@ theorem nzF_symm_sub (h : DC Λ F y y' n m) : n.symm F.zt - F.zt ∈ XLam Λ F :
 
 theorem uue_symm (h : DC Λ F y y' n m) {v : S.V} (hv : v ∈ UUE Λ F y') : n.symm v ∈ UUE Λ F y := by
   refine uue_map (n.symm : S.V →ₗ[E] S.V) ?_ ?_ ?_ ?_ hv
-  · intro w hw
-    exact uue_of (uu_A (nl_symm_XLam h.hn hw))
+  · exact fun w hw => uue_of (uu_A (nl_symm_XLam h.hn hw))
   · simpa using add_mem (uue_of uu_B) (uue_of (uu_A (nzF_symm_sub h)))
-  · intro w hw
-    exact uue_of (uu_C ((mem_XLam' h).mp hw))
+  · exact fun w hw => uue_of (uu_C ((mem_XLam' h).mp hw))
   · simpa [h.hzt] using add_mem (uue_of uu_D) (uue_of (uu_C (mz_sub h)))
 
 theorem uue_fwd (h : DC Λ F y y' n m) {v : S.V} (hv : v ∈ UUE Λ F y) : n v ∈ UUE Λ F y' := by
   refine uue_map (n : S.V →ₗ[E] S.V) ?_ ?_ ?_ ?_ hv
-  · intro w hw
-    exact uue_of (uu_A (nl_XLam h.hn hw))
+  · exact fun w hw => uue_of (uu_A (nl_XLam h.hn hw))
   · have e : (n : S.V →ₗ[E] S.V) F.zt = F.zt + (n F.zt - F.zt) := by simp
     rw [e]
     exact add_mem (uue_of uu_B) (uue_of (uu_A (nzF_sub h)))
@@ -586,8 +578,7 @@ theorem scalRel_move (Λ : Submodule (𝓞 E) S.V) (hΛ : Submodule.IsFullLattic
       rw [hb']; simp only [map_sub, LinearEquiv.symm_apply_apply]; abel
     rw [e, Submodule.add_mem_iff_left _ (sub_mem d1 d2)]
   · show k - finrank E (Th Λ F x y' β') = 1
-    rw [hTh]
-    exact hs0
+    rwa [hTh]
   · intro y1 hy1 Y2 hY2 y1' hy1' Y2'' hY2'' h1 h2 al al'
     have hy2 := (mem_YL h Y2).mp hY2
     have hy2'' := (mem_YL' h Y2'').mp hY2''

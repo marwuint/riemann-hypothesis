@@ -121,8 +121,7 @@ private theorem powerSeries_rescale_smul (a c : C) (f : PowerSeries C) :
 private theorem alongCv_rescale_eq_rescale_alongCv {σ : Type} [Finite σ] {γ : σ → PowerSeries C}
     (hγ : ∀ i, PowerSeries.constantCoeff (γ i) = 0) (a : C) (f : MvPowerSeries σ C) :
     alongCv (fun i => PowerSeries.rescale a (γ i)) f = PowerSeries.rescale a (alongCv γ f) := by
-  simp only [PowerSeries.rescale_eq_subst]
-  exact alongCv_repar hγ (by simp) f
+  simpa only [PowerSeries.rescale_eq_subst] using alongCv_repar hγ (by simp) f
 
 private theorem tyS_neg_eq_rescale_neg_one_of_odd {l : ℕ} (hl : Odd l) (a : ℕ → C) :
     tyS l (fun s => -a s) = PowerSeries.rescale (-1) (tyS l a) := by
@@ -146,12 +145,10 @@ private theorem isCv_rescale_neg_one (V : VF C) {σ : Type} {γ : σ → PowerSe
   · have h2 := (h i).2 n
     rw [PowerSeries.coeff_rescale]
     rcases neg_one_pow_eq_or C n with e | e
-    · rw [e, one_mul]
-      exact h2
+    · rwa [e, one_mul]
     · rw [e, neg_one_mul]
       unfold VF.Ge at h2 ⊢
-      rw [V.v.map_neg]
-      exact h2
+      rwa [V.v.map_neg]
 
 theorem neg_mem (V : VF C) (g : Fin 2) (hodd : V.l ≠ 2) (x : ℕ → I g ⊕ JJ I g → C) (hx : x ∈ X.TySet V g) :
     -x ∈ X.TySet V g := by
@@ -182,8 +179,7 @@ theorem sum_mem (V : VF C) (g : Fin 2) (h0 : (0 : ℕ → I g ⊕ JJ I g → C) 
   revert hf
   refine Finset.induction_on s ?_ ?_
   · intro _
-    rw [Finset.sum_empty]
-    exact h0
+    rwa [Finset.sum_empty]
   · intro a s ha ih hf
     rw [Finset.sum_insert ha]
     exact hadd _ _ (hf a (Finset.mem_insert_self a s)) (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))

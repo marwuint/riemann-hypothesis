@@ -158,15 +158,13 @@ theorem st_triv (e e' : Fin r → Fin n → ℂ) (s : Matrix (Fin n) (Fin n) ℂ
           have := zero_of_perp_left ε e e' ha' (hD' a ha') hx fun b => by
             have hb := (IH (Fin.castLE ha' b) b.2).2
             rw [hsub, hJ_sub_left, ← hb, hU, hb, sub_self]
-          rw [hsub, sub_eq_zero] at this
-          exact this
+          rwa [hsub, sub_eq_zero] at this
         · have hx := h1' c
           rw [hca] at hx
           have := zero_of_perp_right ε e e' ha' (hD' a ha') hx fun b => by
             have hb := (IH (Fin.castLE ha' b) b.2).1
             rw [hsub, hJ_sub_right, ← hb, hU, hb, sub_self]
-          rw [hsub, sub_eq_zero] at this
-          exact this
+          rwa [hsub, sub_eq_zero] at this
   have hfix : ∀ c : Fin r, s *ᵥ e c = e c ∧ s *ᵥ e' c = e' c := fun c => step r le_rfl c c.2
 
   ext i j
@@ -180,8 +178,7 @@ theorem st_triv (e e' : Fin r → Fin n → ℂ) (s : Matrix (Fin n) (Fin n) ℂ
     have h0 : spanLt e 0 = ⊥ := by
       unfold spanLt
       simp
-    rw [h0, Submodule.mem_bot, hsub, sub_eq_zero] at hy
-    exact hy
+    rwa [h0, Submodule.mem_bot, hsub, sub_eq_zero] at hy
   · let M : Matrix (Fin r) (Fin r) ℂ := fun b c => hJ ε (e b) (e' c)
     have hMdet : M.det ≠ 0 := hD r le_rfl hr
     let lam : Fin r → ℂ := M⁻¹ *ᵥ fun b => hJ ε (e b) y
@@ -204,7 +201,6 @@ theorem st_triv (e e' : Fin r → Fin n → ℂ) (s : Matrix (Fin n) (Fin n) ℂ
     have hw0 := zero_of_perp_left ε e e' le_rfl (hD' r le_rfl) hw fun b => by
       have hb := (hfix (Fin.castLE le_rfl b)).2
       rw [hsub, hJ_sub_left, ← hb, hU, hb, sub_self]
-    rw [hsub, sub_eq_zero] at hw0
-    exact hw0
+    rwa [hsub, sub_eq_zero] at hw0
 
 end Formalism.L2.SG.RealObj.HermitianBlockSpans

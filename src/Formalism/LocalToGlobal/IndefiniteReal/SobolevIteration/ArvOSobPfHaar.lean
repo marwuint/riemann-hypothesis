@@ -131,8 +131,7 @@ theorem isCompact_Kg {G s : Matrix (Fin n) (Fin n) ℂ} (hs : IsCartanInv G s) :
       Set.range F := by
     ext u
     constructor
-    · intro hu
-      exact ⟨⟨u.1, hu⟩, Units.ext rfl⟩
+    · exact fun hu => ⟨⟨u.1, hu⟩, Units.ext rfl⟩
     · rintro ⟨k, rfl⟩
       exact k.2
   rw [he]

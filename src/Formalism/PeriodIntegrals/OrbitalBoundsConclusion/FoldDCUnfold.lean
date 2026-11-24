@@ -80,26 +80,14 @@ theorem pointwise_of (h1 : TransIndep.{u}) (h3 : DCTrans.{u})
   have key : ∀ δ : D, ∑' δ' : D', h ((δ' : G) * x) =
       ∑' r : R, ∑' t : E (r : G), h ((r : G)⁻¹ * ((t : G) * (δ : G) * x)) := by
     intro δ
-    have hδ : (δ : G) ∈ Γ := hD.1 δ.2
     have h1' : ∑' η : Set.range (fun q : (Σ r : R, E (r : G)) => (q.1 : G)⁻¹ * (q.2 : G)),
         h ((η : G) * (δ : G) * x) = ∑' η : D', h ((η : G) * x) :=
-      h1 G Γ S' _ D' hT hD' (δ : G) hδ (fun y => h (y * x))
+      h1 G Γ S' _ D' hT hD' (δ : G) (hD.1 δ.2) (fun y => h (y * x))
         (fun s hs y => by rw [mul_assoc]; exact hh s hs (y * x))
-    have h2' : ∑' η : Set.range (fun q : (Σ r : R, E (r : G)) => (q.1 : G)⁻¹ * (q.2 : G)),
-        h ((η : G) * (δ : G) * x) =
-        ∑' q : (Σ r : R, E (r : G)), h ((q.1 : G)⁻¹ * (q.2 : G) * (δ : G) * x) :=
-      tsum_range (fun η : G => h (η * (δ : G) * x)) hinj
-    rw [← h1', h2', ENNReal.tsum_sigma']
+    rw [← h1', tsum_range (fun η : G => h (η * (δ : G) * x)) hinj, ENNReal.tsum_sigma']
     refine tsum_congr fun r => tsum_congr fun t => ?_
     simp only [mul_assoc]
-  have hg' : ∀ r : R, ∀ t : E (r : G), ∀ δ : D,
-      g ((t : G) * (δ : G) * x) = g ((δ : G) * x) := by
-    intro r t δ
-    have ht : (t : G) ∈ S := (hE r r.2).1 t.2
-    rw [mul_assoc]
-    exact hg _ ht _
-  calc (∑' δ : D, g ((δ : G) * x)) * (∑' δ' : D', h ((δ' : G) * x))
-      = ∑' δ : D, g ((δ : G) * x) * ∑' δ' : D', h ((δ' : G) * x) := ENNReal.tsum_mul_right.symm
+  calc _ = ∑' δ : D, g ((δ : G) * x) * ∑' δ' : D', h ((δ' : G) * x) := ENNReal.tsum_mul_right.symm
     _ = ∑' δ : D, ∑' r : R, ∑' t : E (r : G),
           g ((t : G) * (δ : G) * x) * h ((r : G)⁻¹ * ((t : G) * (δ : G) * x)) := by
         refine tsum_congr fun δ => ?_
@@ -107,7 +95,7 @@ theorem pointwise_of (h1 : TransIndep.{u}) (h3 : DCTrans.{u})
         refine tsum_congr fun r => ?_
         rw [← ENNReal.tsum_mul_left]
         refine tsum_congr fun t => ?_
-        rw [hg' r t δ]
+        rw [mul_assoc, hg _ ((hE r r.2).1 t.2)]
     _ = ∑' r : R, ∑' t : E (r : G), ∑' δ : D,
           g ((t : G) * (δ : G) * x) * h ((r : G)⁻¹ * ((t : G) * (δ : G) * x)) := by
         rw [ENNReal.tsum_comm]

@@ -88,7 +88,6 @@ private theorem norm_sq_eq_sum_norm_inner_stdBasis_sq {E : Type} [NormedAddCommG
 
 theorem hsA_eq (A : V' →L[ℂ] V) :
     hsA A = ∑ j, ∑ i, ‖⟪stdOrthonormalBasis ℂ V i, A (stdOrthonormalBasis ℂ V' j)⟫_ℂ‖ ^ 2 := by
-  show ∑ j, ‖A (stdOrthonormalBasis ℂ V' j)‖ ^ 2 = _
   exact Finset.sum_congr rfl fun j _ => norm_sq_eq_sum_norm_inner_stdBasis_sq _
 
 theorem hsA_sand (σ : G → (HH →L[ℂ] HH)) (Y : V →L[ℂ] HH) (Y' : V' →L[ℂ] HH) (γ : G) :
@@ -149,8 +148,7 @@ theorem lintegral_hsA_sand {μ : Measure G} {σ : G → (HH →L[ℂ] HH)} {d : 
         (∑ j, ‖Y' (stdOrthonormalBasis ℂ V' j)‖ ^ 2) / d := by
     rw [integral_finsetSum _ fun j _ => integrable_finsetSum _ fun i _ => (hterm j i).1]
     rw [Finset.sum_congr rfl fun j _ => hrow j]
-    simp only [Finset.sum_mul_sum, Finset.sum_div]
-    exact Finset.sum_comm
+    simpa only [Finset.sum_mul_sum, Finset.sum_div] using Finset.sum_comm
   simp_rw [hsA_sand]
   rw [← ofReal_integral_eq_lintegral_ofReal hInt
     (ae_of_all _ fun γ => Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun i _ => sq_nonneg _), hval]
@@ -274,8 +272,7 @@ private theorem inner_kG_apply_eq (σ : G → (HH →L[ℂ] HH)) (d : ℝ) (w : 
   ring
 
 private theorem integrable_apply_of_integrable_clm {α : Type*} [MeasurableSpace α] {m : Measure α} {F : α → (V' →L[ℂ] V)}
-    (hF : Integrable F m) (b : V') : Integrable (fun x => F x b) m := by
-  exact hF.apply_continuousLinearMap b
+    (hF : Integrable F m) (b : V') : Integrable (fun x => F x b) m := hF.apply_continuousLinearMap b
 
 private theorem integrable_inner_apply_of_integrable_clm {α : Type*} [MeasurableSpace α] {m : Measure α} {F : α → (V' →L[ℂ] V)}
     (hF : Integrable F m) (a : V) (b : V') : Integrable (fun x => ⟪a, F x b⟫_ℂ) m := by
@@ -283,8 +280,7 @@ private theorem integrable_inner_apply_of_integrable_clm {α : Type*} [Measurabl
 
 private theorem inner_integral_clm_apply_eq_integral {α : Type*} [MeasurableSpace α] {m : Measure α} {F : α → (V' →L[ℂ] V)}
     (hF : Integrable F m) (a : V) (b : V') : ⟪a, (∫ x, F x ∂m) b⟫_ℂ = ∫ x, ⟪a, F x b⟫_ℂ ∂m := by
-  have happ : (∫ x, F x ∂m) b = ∫ x, F x b ∂m := by
-    exact ContinuousLinearMap.integral_apply hF b
+  have happ : (∫ x, F x ∂m) b = ∫ x, F x b ∂m := ContinuousLinearMap.integral_apply hF b
   rw [happ]
   exact (integral_inner (integrable_apply_of_integrable_clm hF b) a).symm
 

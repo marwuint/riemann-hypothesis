@@ -69,8 +69,7 @@ theorem orthOrthQ (U : Submodule E S.V) : orth S (orth S U) = U := by
   apply Submodule.eq_of_le_of_finrank_le
   · intro u hu
     rw [memOrthQ]
-    intro x hx
-    exact hTCommQ.mp ((memOrthQ.mp hx) u hu)
+    exact fun x hx => hTCommQ.mp ((memOrthQ.mp hx) u hu)
   · have h1 := PI.UnitaryGroupMassFormula.BetaLUniq.finrank_orth_add S U
     have h2 := PI.UnitaryGroupMassFormula.BetaLUniq.finrank_orth_add S (orth S U)
     omega
@@ -83,19 +82,15 @@ theorem XflagTopQ {r : ℕ} {T : E} (F : LFlag S r T) : Xflag F r = Xsp F := by
   ext i
   simp
 
-theorem XspLeXplusQ {r : ℕ} {T : E} (F : LFlag S r T) : Xsp F ≤ Xplus F := by
-  show F.fl.X ≤ F.fl.X ⊔ Submodule.span E {F.fl.z}
-  exact le_sup_left
+theorem XspLeXplusQ {r : ℕ} {T : E} (F : LFlag S r T) : Xsp F ≤ Xplus F := le_sup_left
 
 theorem zMemXplusQ {r : ℕ} {T : E} (F : LFlag S r T) : F.fl.z ∈ Xplus F := by
-  show F.fl.z ∈ F.fl.X ⊔ Submodule.span E {F.fl.z}
   exact Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)
 
 theorem memOrthXplusQ {r : ℕ} {T : E} (F : LFlag S r T) {v : S.V} :
     v ∈ orth S (Xplus F) ↔ v ∈ orth S (Xsp F) ∧ S.hT F.fl.z v = 0 := by
   constructor
-  · intro h
-    exact ⟨orthAntiQ (XspLeXplusQ F) h, memOrthQ.mp h _ (zMemXplusQ F)⟩
+  · exact fun h => ⟨orthAntiQ (XspLeXplusQ F) h, memOrthQ.mp h _ (zMemXplusQ F)⟩
   · rintro ⟨h1, h2⟩
     rw [memOrthQ]
     intro x hx
@@ -122,8 +117,7 @@ theorem XflagSymmQ (h : ∀ j, (Xflag F' j).map (β : S.V →ₗ[E] S.V) = Xflag
   constructor
   · rintro ⟨y, ⟨w, hw, rfl⟩, rfl⟩
     simpa using hw
-  · intro hx
-    exact Submodule.mem_map.mpr ⟨β x, Submodule.mem_map_of_mem hx, by simp⟩
+  · exact fun hx => Submodule.mem_map.mpr ⟨β x, Submodule.mem_map_of_mem hx, by simp⟩
 
 theorem isomSymmQ (hi : β ∈ Formalism.HermitianLatticesTheory.isom S.hT) : β.symm ∈ Formalism.HermitianLatticesTheory.isom S.hT := by
   show ∀ x y, S.hT (β.symm x) (β.symm y) = S.hT x y
@@ -146,8 +140,7 @@ theorem mapOrthXQ (hi : β ∈ Formalism.HermitianLatticesTheory.isom S.hT)
   have h0 := hx (β.symm y) (mapXQ (XflagSymmQ h) hy)
   have e : S.hT (β (β.symm y)) (β x) = S.hT (β.symm y) x := hi (β.symm y) x
   rw [LinearEquiv.apply_symm_apply] at e
-  rw [e]
-  exact h0
+  rwa [e]
 
 theorem mapOrthXplusQ (hi : β ∈ Formalism.HermitianLatticesTheory.isom S.hT)
     (h : ∀ j, (Xflag F' j).map (β : S.V →ₗ[E] S.V) = Xflag F'' j) (hz : β F'.fl.z = F''.fl.z)
@@ -195,7 +188,6 @@ theorem lrepMapQ (hA : IsAutLam S Λ β) (h : ∀ j, (Xflag F' j).map (β : S.V 
     {x : S.V} (hx : x ∈ Lrep Λ F') : β x ∈ Lrep Λ F'' := by
   have hx1 : x ∈ Λ := hx.1
   have hx2 : x ∈ orth S (Xsp F') := hx.2
-  show β x ∈ Λ ⊓ toO S (orth S (Xsp F''))
   exact Submodule.mem_inf.mpr ⟨fwdMemQ hA hx1, mapOrthXQ hA.1 h hx2⟩
 
 end Maps
@@ -215,15 +207,13 @@ theorem iotaSymmQ (hA : IsAutLam S Λ β) (hX : ∀ j, (Xflag F' j).map (β : S.
 theorem iotaTransQ (hA : IsAutLam S Λ β) (hX : ∀ j, (Xflag F' j).map (β : S.V →ₗ[E] S.V) = Xflag F'' j)
     (hI1 : IotaCompat Λ F F' F'' β g) (hI2 : IotaCompat Λ F F'' F''' γ g) :
     IotaCompat Λ F F' F''' (β.trans γ) g := by
-  intro x hx l hl
-  exact (hI1 x hx l hl).trans (hI2 (β x) (lrepMapQ hA hX hx) l hl)
+  exact fun x hx l hl => (hI1 x hx l hl).trans (hI2 (β x) (lrepMapQ hA hX hx) l hl)
 
 theorem pairReflQ : IsPair Λ F F' F' (LinearEquiv.refl E S.V) g := by
   refine ⟨⟨?_, gmapOfQ (fun x hx => hx) (fun x hx => hx)⟩, fun j => by simp, rfl, ?_⟩
   · intro x y
     rfl
-  · intro x _ l _
-    exact Iff.rfl
+  · exact fun x _ l _ => Iff.rfl
 
 theorem pairSymmQ (hP : IsPair Λ F F' F'' β g) : IsPair Λ F F'' F' β.symm g :=
   ⟨autSymmQ hP.1, XflagSymmQ hP.2.1, by rw [← hP.2.2.1, LinearEquiv.symm_apply_apply],
@@ -498,8 +488,7 @@ theorem relTransQ (hΛ : Submodule.IsFullLattice E Λ) (hdim : finrank E S.V = k
       Submodule.mem_inf.mpr ⟨ylift'MemQ hP1.1.1 hP1.2.1 hTh1'' hy1',
         mapOrthXplusQ hP1.1.1 hP1.2.1 hP1.2.2.1 hy1'b⟩
     have a := hS1 y1 hy1 y1 hy2 y1' hy1' (β y1') hy2' (by simp) (by simp) al al'
-    have b := hS2 y1 hy2 y3 hy3 (β y1') hy2' y3' hy3' h13 h31 al al'
-    exact a.trans b
+    exact a.trans (hS2 y1 hy2 y3 hy3 (β y1') hy2' y3' hy3' h13 h31 al al')
 
 end Rel
 

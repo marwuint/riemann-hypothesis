@@ -64,7 +64,6 @@ section Adele
 variable (F : Type) [Field F] [NumberField F]
 
 theorem continuous_norm_inf : Continuous fun y : InfiniteAdeleRing F => ‖y‖ := by
-  show Continuous fun y : InfiniteAdeleRing F => ∏ v, ‖y v‖ ^ v.mult
   exact continuous_finsetProd _ fun v _ => ((continuous_apply v).norm).pow _
 
 def nbhdA : Set (AF F) := {x | ‖x.1‖ < 1 ∧ x.2 ∈ PI.AdCpctDenWork.intAd F}
@@ -79,8 +78,7 @@ theorem eq_zero_of_mem_nbhdA (f : F) (hf : algebraMap F (AF F) f ∈ nbhdA F) : 
     intro v
     rw [← valuedAdicCompletion_eq_valuation', ← mem_adicCompletionIntegers]
     have h3 : (algebraMap F (FiniteAdeleRing (𝓞 F) F) f) v ∈ v.adicCompletionIntegers F := h2 v
-    rw [FiniteAdeleRing.algebraMap_apply] at h3
-    exact h3
+    rwa [FiniteAdeleRing.algebraMap_apply] at h3
   obtain ⟨r, hr⟩ := mem_integers_of_valuation_le_one (R := 𝓞 F) (K := F) _ hint
   have h4 : ‖algebraMap F (InfiniteAdeleRing F) f‖ < 1 := h1
   rw [InfiniteAdeleRing.coe_norm_eq_abs_norm] at h4
@@ -123,8 +121,7 @@ theorem exists_nbhd_tens : ∃ U : Set (AF F ⊗[F] E), IsOpen U ∧ (0 : AF F �
   refine ⟨⋂ i, (B.coord i) ⁻¹' nbhdA F, ?_, ?_, ?_⟩
   · exact isOpen_iInter_of_finite fun i =>
       (isOpen_nbhdA F).preimage (IsModuleTopology.continuous_of_linearMap (B.coord i))
-  · simp only [Set.mem_iInter, Set.mem_preimage, map_zero]
-    exact fun _ => zero_mem_nbhdA F
+  · simpa only [Set.mem_iInter, Set.mem_preimage, map_zero] using fun _ => zero_mem_nbhdA F
   · intro e he
     simp only [Set.mem_iInter, Set.mem_preimage] at he
     have hc : ∀ i, b.repr e i = 0 := by
@@ -190,15 +187,13 @@ theorem discHA_of (hT : TensTop) : DiscHA := by
         rw [← hδ, ← hγ] at h
         have h' : inclR (F := F) (AF F) ((δ : Matrix (Fin M) (Fin M) E) i j -
             (γ : Matrix (Fin M) (Fin M) E) i j) ∈ U := by
-          rw [map_sub]
-          exact h
+          rwa [map_sub]
         exact sub_eq_zero.1 (hUe _ h')
       have hm : δ = γ := Units.ext (Matrix.ext hent)
       apply Subtype.ext
       apply Subtype.ext
       rw [← hδ, ← hγ, hm]
     · rintro rfl i j
-      simp only [sub_self]
-      exact hU0
+      simpa only [sub_self] using hU0
 
 end PI.VolSemiDirect.W

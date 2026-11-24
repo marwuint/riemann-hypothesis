@@ -103,8 +103,7 @@ theorem base_linkage_nonempty : LinkBaseNe := by
   subst h0
   have h1 : B.L.ω₁ ∈ B.L.lattice.toAddSubgroup := B.L.ω₁_mem_lattice
   rw [B.lat, lamOf_zero, AddSubgroup.mem_bot] at h1
-  have h2 := B.L.indep.ne_zero 0
-  exact h2 (by simpa using h1)
+  exact (B.L.indep.ne_zero 0) (by simpa using h1)
 
 end Formalism.L2.Ker.Cd.IntegralLatticeDensity
 
@@ -217,8 +216,7 @@ theorem reix_pow {n : Type} [Fintype n] (Λ : AddSubgroup (n → ℂ)) :
   constructor
   · rintro ⟨u, hu, rfl⟩ a
     exact hu (e4.symm a).1 (e4.symm a).2
-  · intro hz
-    exact ⟨(reix n).symm z, fun i j => hz (e4 (i, j)), (reix n).apply_symm_apply z⟩
+  · exact fun hz => ⟨(reix n).symm z, fun i j => hz (e4 (i, j)), (reix n).apply_symm_apply z⟩
 
 theorem reix_isom (L : PeriodPair) (n : Type) [Fintype n] [DecidableEq n] :
     IsIsom (formV (Formalism.L2.Th1.F.area L) n 2 2) (matH (blk4 (hOne L n)))
@@ -231,8 +229,7 @@ theorem reix_isom (L : PeriodPair) (n : Type) [Fintype n] [DecidableEq n] :
   rw [Fintype.sum_prod_type, Finset.sum_comm]
   refine Finset.sum_congr rfl fun τ _ => ?_
   have := Equiv.sum_comp e4.symm (fun p : Fin 2 × Fin 2 => x τ p.1 p.2 * conj (y τ p.1 p.2))
-  rw [Fintype.sum_prod_type] at this
-  exact this
+  rwa [Fintype.sum_prod_type] at this
 
 variable {D : Car} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ}
 
@@ -306,8 +303,7 @@ theorem int_mem_inverse_half_different {x : D.host.E} (hx : IsIntegral ℤ x) : 
   have h2 : ((⟨x, hx⟩ : 𝓞 D.host.E) • (1 : D.host.E)) ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) :=
     Submodule.smul_mem _ _ h1
   have e : ((⟨x, hx⟩ : 𝓞 D.host.E) • (1 : D.host.E)) = x := by rw [Algebra.smul_def, mul_one]; rfl
-  rw [e] at h2
-  exact h2
+  rwa [e] at h2
 
 theorem exists_nat_clearing_order_denominators (D : Car) : ∃ k : ℕ, 0 < k ∧ ∀ a ∈ D.host.AA0, IsIntegral ℤ ((k : D.host.E) * a) := by
   obtain ⟨k, hk, h⟩ := FL.exists_int_clearing_order_denominators D
@@ -363,8 +359,7 @@ theorem betaSemi (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetri
   rintro _ ⟨z, hz, rfl⟩
   refine ⟨cmTheta 1 D.host.d • z, fun a => ?_, map_smul B.gC _ z⟩
   have := lamMM_smul (AR.om D) (hz a)
-  rw [← theta_eq] at this
-  exact this
+  rwa [← theta_eq] at this
 
 theorem up : ∃ N : ℕ, 0 < N ∧
     ∀ x ∈ imgLat (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (pow4 B.lamM),

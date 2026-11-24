@@ -57,8 +57,7 @@ namespace Formalism.HN
 
 private lemma finSup_mem_zl {R V E : Type*} [Ring R] [AddCommGroup V] [Module R V]
     [NormedAddCommGroup E] [InnerProductSpace ℝ E] (ρ : V →+ E) (N : Submodule R V) (x : E) :
-    x ∈ zl ρ N ↔ ∃ y ∈ N, ρ y = x := by
-  exact Iff.rfl
+    x ∈ zl ρ N ↔ ∃ y ∈ N, ρ y = x := Iff.rfl
 
 theorem finite_supremum_slopes : FinSup := by
   intro R V E _ _ _ _ _ _ ρ L S hL hS
@@ -87,8 +86,7 @@ theorem finite_supremum_slopes : FinSup := by
     intro x hx
     have hxL : x ∈ zl ρ L := hmono _ _ B.2 hx
     have hm : (⟨x, hxL⟩ : zl ρ L) ∈ g B := hx
-    rw [← heq] at hm
-    exact hm
+    rwa [← heq] at hm
   haveI : WellFoundedGT (Set.Iic L) := hg.wellFoundedGT
   have hcompact : ∀ s : Set (Set.Iic L), ∃ t : Finset (Set.Iic L),
       ↑t ⊆ s ∧ sSup s = t.sup id := by

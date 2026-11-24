@@ -93,8 +93,7 @@ theorem framepf_Q_at (hs : W.s = 1) (c : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoo
   refine ⟨by simp, ?_⟩
   have h1 : PowerSeries.coeff 1 (PowerSeries.X * u) = PowerSeries.coeff 0 u :=
     PowerSeries.coeff_succ_X_mul 0 u
-  rw [h1, PowerSeries.coeff_zero_eq_constantCoeff_apply]
-  exact hu0
+  rwa [h1, PowerSeries.coeff_zero_eq_constantCoeff_apply]
 
 end Local
 
@@ -110,19 +109,13 @@ theorem framepf_pt_prim (D : D7) (HW : HWOf D.loc) {l : ℕ} [Fact l.Prime] {K L
     refine (le_sup_right : IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ 1) = 1} ≤ _) ?_
     apply IntermediateField.subset_adjoin
     show (D.loc l).ζQ 1 ^ (l ^ 1) = 1
-    rw [pow_one]
-    exact hpow
+    rwa [pow_one]
   set y : Ks K 1 := ⟨_, hmem⟩ with hydef
   have hyζ : τs y = ζ := hroot y rfl
   have hy1 : y ^ l = 1 := by
     apply Subtype.ext
-    rw [SubmonoidClass.coe_pow, OneMemClass.coe_one]
-    exact hpow
-  have hy2 : y ≠ 1 := by
-    intro h
-    apply (D.loc l).ζQ_one
-    have h' := congrArg Subtype.val h
-    exact h'
+    rwa [SubmonoidClass.coe_pow, OneMemClass.coe_one]
+  have hy2 : y ≠ 1 := fun h => (D.loc l).ζQ_one (congrArg Subtype.val h)
   have hprim : IsPrimitiveRoot y l := by
     have ho := orderOf_eq_prime hy1 hy2
     have h0 := IsPrimitiveRoot.orderOf y

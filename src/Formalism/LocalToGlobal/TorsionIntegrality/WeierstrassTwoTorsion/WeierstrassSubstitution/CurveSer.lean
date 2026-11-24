@@ -102,8 +102,7 @@ theorem wSer_eq : wSer W = X ^ 3 * wU W := by
     unfold wU
     rw [coeff_mk, hv]
     simp [coeff_X_pow_mul']
-  rw [hu]
-  exact hv
+  rwa [hu]
 
 theorem wU_cc : constantCoeff (wU W) = 1 := by
   have hfix := (wSer_fixed W).2
@@ -113,15 +112,13 @@ theorem wU_cc : constantCoeff (wU W) = 1 := by
       + C W.a₆ * (X ^ 3 * wU W) ^ 3
       = X ^ 3 * (1 + X * (C W.a₁ * wU W + C W.a₂ * X * wU W + C W.a₃ * X ^ 2 * wU W ^ 2
         + C W.a₄ * X ^ 3 * wU W ^ 2 + C W.a₆ * X ^ 5 * wU W ^ 3)) := by ring
-  have h3 := congrArg (coeff 3) (hfix.trans e)
-  simpa [coeff_X_pow_mul'] using h3
+  simpa [coeff_X_pow_mul'] using congrArg (coeff 3) (hfix.trans e)
 
 theorem wU_mul_xS : wU W * xS W = 1 := PowerSeries.mul_invOfUnit (wU W) 1 (by rw [wU_cc W, Units.val_one])
 
 theorem xS_cc : constantCoeff (xS W) = 1 := by
   have h := congrArg constantCoeff (wU_mul_xS W)
-  rw [map_mul, wU_cc W, one_mul, map_one] at h
-  exact h
+  rwa [map_mul, wU_cc W, one_mul, map_one] at h
 
 theorem yS_cc : constantCoeff (yS W) = -1 := by
   unfold yS
@@ -135,8 +132,7 @@ theorem fw_mul_om : fw W * om W = 1 := PowerSeries.mul_invOfUnit (fw W) 1 (by rw
 
 theorem om_cc : constantCoeff (om W) = 1 := by
   have h := congrArg constantCoeff (fw_mul_om W)
-  rw [map_mul, fw_cc W, one_mul, map_one] at h
-  exact h
+  rwa [map_mul, fw_cc W, one_mul, map_one] at h
 
 theorem fw_eq : fw W = 1 - C W.a₁ * X - C W.a₂ * X ^ 2
     - X ^ 3 * (2 * C W.a₃ * wU W + 2 * C W.a₄ * X * wU W + 3 * C W.a₆ * wU W * wSer W) := by
@@ -250,13 +246,11 @@ open CurveSer
 
 theorem w_series_spec : WSerSpec.{u} := by
   unfold WSerSpec
-  intro R _ W
-  exact ⟨wSer_fixed W, fun w hw => wSer_unique W hw⟩
+  exact fun R _ W => ⟨wSer_fixed W, fun w hw => wSer_unique W hw⟩
 
 theorem w_series_factorization : WSerFactor.{u} := by
   unfold WSerFactor
-  intro R _ W
-  exact ⟨wSer_eq W, wU_cc W, wU_mul_xS W, xS_cc W, yS_cc W⟩
+  exact fun R _ W => ⟨wSer_eq W, wU_cc W, wU_mul_xS W, xS_cc W, yS_cc W⟩
 
 theorem invariant_differential_units : UnitSpec.{u} := by
   unfold UnitSpec

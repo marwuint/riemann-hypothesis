@@ -95,10 +95,8 @@ theorem pderiv_upG_same (g : Fin 2) (k : I g) (F : MvPowerSeries (I g) C) :
   · rw [MvPowerSeries.pderiv_X_self, mul_one]
   · intro c _ hc
     rw [MvPowerSeries.pderiv_X_of_ne, mul_zero]
-    intro h
-    exact hc (eq_of_heq (Sigma.mk.inj h).2)
-  · intro h
-    exact absurd (Finset.mem_univ k) h
+    exact fun h => hc (eq_of_heq (Sigma.mk.inj h).2)
+  · exact fun h => absurd (Finset.mem_univ k) h
 
 theorem pderiv_upG_ne (g g' : Fin 2) (h : g' ≠ g) (k : I g) (F : MvPowerSeries (I g') C) :
     MvPowerSeries.pderiv (R := C) (⟨g, k⟩ : WV I) (upG g' F) = 0 := by
@@ -106,8 +104,7 @@ theorem pderiv_upG_ne (g g' : Fin 2) (h : g' ≠ g) (k : I g) (F : MvPowerSeries
   rw [Formalism.G.LogCR.pderiv_subst (fun _ => MvPowerSeries.constantCoeff_X _)]
   refine Finset.sum_eq_zero fun c _ => ?_
   rw [MvPowerSeries.pderiv_X_of_ne, mul_zero]
-  intro he
-  exact h (Sigma.mk.inj he).1
+  exact fun he => h (Sigma.mk.inj he).1
 
 end RowTiePCEqDer
 
@@ -123,10 +120,8 @@ theorem pderiv_uncurry (f : PS C 1 dd) (i : Fin dd) :
   · rw [show (((0 : Fin 1), i) : Fin 1 × Fin dd).2 = i from rfl, MvPowerSeries.pderiv_X_self, mul_one]
   · intro q _ hq
     rw [MvPowerSeries.pderiv_X_of_ne, mul_zero]
-    intro h
-    exact hq (Prod.ext (Subsingleton.elim _ _) h)
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+    exact fun h => hq (Prod.ext (Subsingleton.elim _ _) h)
+  · exact fun h => absurd (Finset.mem_univ _) h
 
 theorem uncurry_linear_combination (r : Fin dd → C) (f : Fin dd → PS C 1 dd) :
     un1 (∑ i, MvPowerSeries.C (r i) * f i) = ∑ i, MvPowerSeries.C (r i) * un1 (f i) := by
@@ -159,8 +154,7 @@ theorem pderiv_lin {κ : Type} [Fintype κ] (X : RawChart C d I κ) (g : Fin 2) 
   · rw [Derivation.map_smul, MvPowerSeries.pderiv_X_self, MvPowerSeries.smul_eq_C_mul, mul_one]
   · intro c _ hc
     rw [Derivation.map_smul, MvPowerSeries.pderiv_X_of_ne hc, smul_zero]
-  · intro h
-    exact absurd (Finset.mem_univ k) h
+  · exact fun h => absurd (Finset.mem_univ k) h
 
 end RowTiePCEqDer
 

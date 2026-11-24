@@ -110,13 +110,11 @@ theorem hp_sum_right {C : Submodule ℂ A} {ip : A → A → ℂ} (hp : Petersso
     (s : Finset ι) (w : ι → C) : ip x (∑ i ∈ s, (w i : A)) = ∑ i ∈ s, ip x (w i) := by
   classical
   refine Finset.induction_on s ?_ ?_
-  · simp only [Finset.sum_empty]
-    exact hp_zero_right hp x
+  · simpa only [Finset.sum_empty] using hp_zero_right hp x
   · intro a s ha ih
     rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]
     have h := hp_add_right hp x (w a) (∑ i ∈ s, w i)
-    rw [Submodule.coe_sum] at h
-    exact h
+    rwa [Submodule.coe_sum] at h
 
 end Indep
 
@@ -155,9 +153,7 @@ theorem isotIn_iso {A : Type} [AddCommGroup A] [Module ℂ A] (ρ : Formalism.AU
       rw [hT h (T.symm f) ⟨_, π.stable h _ (T.symm f).2⟩ rfl, LinearEquiv.apply_symm_apply]
     exact T.symm_apply_eq.2 key.symm
   · refine isotIn_le_of_intw ρ C (T : π.S →ₗ[ℂ] π'.S) ?_ (LinearMap.range_eq_top.2 T.surjective)
-    intro h f
-    apply Subtype.ext
-    exact hT h f ⟨_, π.stable h _ f.2⟩ rfl
+    exact fun h f => Subtype.ext (hT h f ⟨_, π.stable h _ f.2⟩ rfl)
 
 variable {Y W : Formalism.BasicNotions.TH.HSp D} {SpY SpW : D.what₂.Tau → SPar}
 variable (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))

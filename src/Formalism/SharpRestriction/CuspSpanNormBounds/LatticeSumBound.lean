@@ -127,8 +127,7 @@ lemma wt_tail (R : ℝ) (hR : 1 ≤ R) (N : ℕ) (hN : 2 * R ≤ N) (j : ℕ) :
   have h := max_div_rpow_le_two_mul_inv_sqrt_sub (2 * R) ((N : ℝ) + ((j + 1 : ℕ) : ℝ)) hc (by push_cast; linarith)
     (by push_cast; linarith)
   unfold wt
-  rw [e1, e2]
-  exact h
+  rwa [e1, e2]
 
 lemma sum_wt_le (R : ℝ) (hR : 1 ≤ R) (T : Finset ℕ) : ∑ m ∈ T, wt R m ≤ 9 * R := by
   obtain ⟨N, hN, hN'⟩ : ∃ N : ℕ, 2 * R ≤ (N : ℝ) ∧ (N : ℝ) < 2 * R + 1 :=
@@ -287,8 +286,7 @@ theorem latSum (ι : Type) [Fintype ι] (P : Finset (ι → ℂ)) (R : ℝ) (hR 
       ∏ i, wt R (cell p i).1.natAbs * wt R (cell p i).2.natAbs := by
     intro p
     apply Finset.prod_le_prod₀
-    · intro i _
-      exact Real.rpow_nonneg (le_trans zero_le_one (le_max_left _ _)) _
+    · exact fun i _ => Real.rpow_nonneg (le_trans zero_le_one (le_max_left _ _)) _
     · intro i _
       calc (max 1 (‖p i‖ / R)) ^ (-(3 : ℝ))
           ≤ (max 1 (|(p i).re| / R)) ^ (-(3 / 2 : ℝ)) * (max 1 (|(p i).im| / R)) ^ (-(3 / 2 : ℝ)) :=
@@ -323,8 +321,7 @@ theorem latSum (ι : Type) [Fintype ι] (P : Finset (ι → ℂ)) (R : ℝ) (hR 
           apply Finset.sum_le_sum_of_subset_of_nonneg
           · intro x hx
             exact Finset.mem_product.mpr ⟨Finset.mem_image_of_mem _ hx, Finset.mem_image_of_mem _ hx⟩
-          · intro x _ _
-            exact hf0 x
+          · exact fun x _ _ => hf0 x
       _ = (∑ a ∈ S.image Prod.fst, wt R a.natAbs) * (∑ b ∈ S.image Prod.snd, wt R b.natAbs) := by
           rw [Finset.sum_product, Finset.sum_mul_sum]
       _ ≤ (18 * R) * (18 * R) :=
@@ -337,19 +334,15 @@ theorem latSum (ι : Type) [Fintype ι] (P : Finset (ι → ℂ)) (R : ℝ) (hR 
         rw [Finset.sum_image hinj]
     _ ≤ ∑ c ∈ Fintype.piFinset (fun _ : ι => S), ∏ i, wt R (c i).1.natAbs * wt R (c i).2.natAbs := by
         apply Finset.sum_le_sum_of_subset_of_nonneg
-        · intro c hc
-          exact Fintype.mem_piFinset.mpr (fun i => hS c hc i)
-        · intro c _ _
-          exact Finset.prod_nonneg (fun i _ => hf0 _)
+        · exact fun c hc => Fintype.mem_piFinset.mpr (fun i => hS c hc i)
+        · exact fun c _ _ => Finset.prod_nonneg (fun i _ => hf0 _)
     _ = ∏ _i : ι, ∑ x ∈ S, wt R x.1.natAbs * wt R x.2.natAbs :=
         (Finset.prod_univ_sum (fun _ : ι => S)
           (fun _ x => wt R x.1.natAbs * wt R x.2.natAbs)).symm
     _ ≤ ∏ _i : ι, ((18 * R) * (18 * R)) := by
         apply Finset.prod_le_prod₀
-        · intro i _
-          exact Finset.sum_nonneg (fun x _ => hf0 x)
-        · intro i _
-          exact hSf
+        · exact fun i _ => Finset.sum_nonneg (fun x _ => hf0 x)
+        · exact fun i _ => hSf
     _ = (18 * R) ^ (2 * Fintype.card ι) := by
         rw [Finset.prod_const, Finset.card_univ, pow_mul, sq]
     _ ≤ (64 * R) ^ (2 * Fintype.card ι) := pow_le_pow_left₀ (by linarith) (by linarith) _

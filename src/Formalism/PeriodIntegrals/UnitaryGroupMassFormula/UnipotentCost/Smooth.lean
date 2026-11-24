@@ -73,8 +73,7 @@ lemma sm_mul {ι κ μ : Type*} [Fintype ι] [Fintype κ] [Fintype μ] {F : X �
     (hF : ContDiffAt ℝ n F x₀) (hG : ContDiffAt ℝ n G x₀) : ContDiffAt ℝ n (fun x => F x * G x) x₀ := by
   rw [sm_iff] at hF hG ⊢
   intro i j
-  simp only [Matrix.mul_apply]
-  exact ContDiffAt.sum fun l _ => (hF i l).mul (hG l j)
+  simpa only [Matrix.mul_apply] using ContDiffAt.sum fun l _ => (hF i l).mul (hG l j)
 
 lemma sm_conjT {ι κ : Type*} [Fintype ι] [Fintype κ] {F : X → Matrix ι κ ℂ} (hF : ContDiffAt ℝ n F x₀) :
     ContDiffAt ℝ n (fun x => (F x)ᴴ) x₀ := by
@@ -157,8 +156,7 @@ variable {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] {n : WithTop ℕ
 lemma sm_of {s : ℕ} (Z : G.Mat s) : ContDiffAt ℝ n (fun Z' : G.Mat s => Matrix.of Z') Z := by
   rw [sm_iff]
   intro i j
-  simp only [Matrix.of_apply]
-  exact (contDiff_apply_apply ℝ i j).contDiffAt
+  simpa only [Matrix.of_apply] using (contDiff_apply_apply ℝ i j).contDiffAt
 
 lemma mMap_sm {k j ρ : ℕ} {M : X → Matrix (Fin j) (Fin j) ℂ} (hM : ContDiffAt ℝ n M x₀)
     (hdet : (M x₀).det ≠ 0) (γ : B.Mat k ρ) : ContDiffAt ℝ n (fun x => mMap k j ρ (M x) γ) x₀ := by
@@ -213,8 +211,7 @@ theorem zSmooth : ZSmooth := by
   refine hcomp.congr_of_eventuallyEq ?_
   have hdet : ∀ᶠ Z' in 𝓝 Z, G.detM Z' ≠ 0 := by
     have hc : ContinuousAt (fun Z' : G.Mat s => G.detM Z') Z := by
-      simp only [G.detM]
-      exact (sm_det (n := 0) (sm_of Z)).continuousAt
+      simpa only [G.detM] using (sm_det (n := 0) (sm_of Z)).continuousAt
     exact hc.eventually_ne hZ
   have hU' : ∀ᶠ Z' in 𝓝 Z, gaXi k ρ σ d ξ Z' γ ∈ U :=
     hsm.continuousAt.preimage_mem_nhds (hU.mem_nhds hgU)

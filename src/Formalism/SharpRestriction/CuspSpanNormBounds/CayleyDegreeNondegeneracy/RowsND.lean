@@ -289,14 +289,10 @@ theorem rows_nd_prod (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch �
       2 * (q : ℝ) / ((D.R.rS : ℝ) + 1) / 2 ≤ -(12 * ((D.R.rS : ℝ) + 1) ^ 2) := by
     have e : 2 * (q : ℝ) / ((D.R.rS : ℝ) + 1) / 2 = (q : ℝ) / ((D.R.rS : ℝ) + 1) := by ring
     rw [e]; linarith
-  have n2 := rows_num_pair (P := rows_P D large₂ c Ch) (σ₁ := sizeZ D large₂.sc.b Ch x) (σ₂ := sizeZ D large₂.sc.b Ch y)
-    (h₁ := HHZ D large₂.sc.b c x) (h₂ := HHZ D large₂.sc.b c y)
-    (cr := c * (D.R.rS : ℝ) ^ 2) (Γ := GamS D large₂) (a2 := C2 * (D.R.m : ℝ) ^ 2)
-    (dq := 2 * (q : ℝ) / ((D.R.rS : ℝ) + 1)) (E1 := pairCountExponent D c s) (F6 := (c * s * D.R.f) ^ (6 * s * D.R.f))
-    (XiH := XiS D u (HHZ D large₂.sc.b c x * HHZ D large₂.sc.b c y) c s) (XiP := XiS D u (rows_P D large₂ c Ch ^ 2) c s)
-    (ck := c * D.R.k) (e := 12 * ((D.R.rS : ℝ) + 1) ^ 2) (l₁ := rows_l D large₂ c C2 Ch q x) (l₂ := rows_l D large₂ c C2 Ch q y)
-    hP1 sx1 sy1 hx1 hy1 cx cy (by positivity) hGam0.le (pairCountExponent_nonneg D hc s) (by positivity)
-    (rows_XiS_nonneg D u hh0 hc s) hXi rfl rfl he
+  have n2 := rows_num_pair (F6 := (c * s * D.R.f) ^ (6 * s * D.R.f))
+    (l₁ := rows_l D large₂ c C2 Ch q x) (l₂ := rows_l D large₂ c C2 Ch q y) hP1 sx1 sy1 hx1 hy1
+    cx cy (by positivity) hGam0.le
+    (pairCountExponent_nonneg D hc s) (by positivity) (rows_XiS_nonneg D u hh0 hc s) hXi rfl rfl he
   have hA0 : 0 ≤ (2 / gg D) ^ ((s - 1) * D.R.k * D.R.f) *
       ((D.R.k : ℝ) * D.host.v / (Real.exp 1 * Real.pi)) ^ (D.R.k * D.R.f) := by
     have hpi := Real.pi_pos
@@ -308,18 +304,8 @@ theorem rows_nd_prod (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch �
       = wordSublatticeTripleBound D large₂ u c x y s (rows_DeZ D u u' s x y) * rows_al D large₂ u u' c C2 Ch δ q x *
           rows_al D large₂ u u' c C2 Ch δ q y := by ring
     _ ≤ _ := n1
-    _ = (2 / gg D) ^ ((s - 1) * D.R.k * D.R.f) *
-          ((D.R.k : ℝ) * D.host.v / (Real.exp 1 * Real.pi)) ^ (D.R.k * D.R.f) *
-          (XiS D u (HHZ D large₂.sc.b c x * HHZ D large₂.sc.b c y) c s *
-            ((HHZ D large₂.sc.b c x * HHZ D large₂.sc.b c y) ^ pairCountExponent D c s * (c * s * D.R.f) ^ (6 * s * D.R.f)) *
-            Real.sqrt (rows_l D large₂ c C2 Ch q x * rows_l D large₂ c C2 Ch q y)) * ((1 + δ) * rDD D u') := by ring
-    _ ≤ (2 / gg D) ^ ((s - 1) * D.R.k * D.R.f) *
-          ((D.R.k : ℝ) * D.host.v / (Real.exp 1 * Real.pi)) ^ (D.R.k * D.R.f) *
-          (XiS D u (rows_P D large₂ c Ch ^ 2) c s * ((rows_P D large₂ c Ch ^ pairCountExponent D c s) ^ 2 *
-            (rows_P D large₂ c Ch ^ (c * (D.R.rS : ℝ) ^ 2)) ^ 2 * (c * s * D.R.f) ^ (6 * s * D.R.f) * GamS D large₂) *
-            (sizeZ D large₂.sc.b Ch x ^ (-(12 * ((D.R.rS : ℝ) + 1) ^ 2)) *
-              sizeZ D large₂.sc.b Ch y ^ (-(12 * ((D.R.rS : ℝ) + 1) ^ 2)))) * ((1 + δ) * rDD D u') :=
-        mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left n2 hA0) hτ0
+    _ ≤ _ := Eq.trans_le (by ring)
+      (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left n2 hA0) hτ0)
     _ = _ := by unfold rows_R; ring
 
 theorem rows_nd_size (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q) (𝒵 : Finset (GramM D))

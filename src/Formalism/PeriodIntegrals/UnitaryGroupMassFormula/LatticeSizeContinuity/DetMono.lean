@@ -94,49 +94,25 @@ theorem exists_congr_one {n : ℕ} (G : Matrix (Fin n) (Fin n) ℂ) (hG : G.PosD
     ∃ y : Matrix (Fin n) (Fin n) ℂ, IsUnit y.det ∧ yᴴ * G * y = 1 := by
   classical
   obtain ⟨U, μ, hUU, hμ, hG'⟩ := exists_unitary_diagonal_pos_of_posDef G hG
-  have hr : ∀ i, Real.sqrt (μ i) * (Real.sqrt (μ i))⁻¹ = 1 := fun i =>
-    mul_inv_cancel₀ (Real.sqrt_pos.mpr (hμ i)).ne'
-  have hr2 : ∀ i, (Real.sqrt (μ i))⁻¹ * μ i * (Real.sqrt (μ i))⁻¹ = 1 := by
-    intro i
-    have hs : Real.sqrt (μ i) ≠ 0 := (Real.sqrt_pos.mpr (hμ i)).ne'
-    have hsq : Real.sqrt (μ i) * Real.sqrt (μ i) = μ i := Real.mul_self_sqrt (hμ i).le
-    calc (Real.sqrt (μ i))⁻¹ * μ i * (Real.sqrt (μ i))⁻¹
-        = (Real.sqrt (μ i))⁻¹ * (Real.sqrt (μ i) * Real.sqrt (μ i)) * (Real.sqrt (μ i))⁻¹ := by
-          rw [hsq]
-      _ = 1 := by rw [← mul_assoc, inv_mul_cancel₀ hs, one_mul, mul_inv_cancel₀ hs]
   let d : Fin n → ℂ := fun i => (((Real.sqrt (μ i))⁻¹ : ℝ) : ℂ)
   let e : Fin n → ℂ := fun i => ((Real.sqrt (μ i) : ℝ) : ℂ)
-  have hde : ∀ i, e i * d i = 1 := by
-    intro i
-    show ((Real.sqrt (μ i) : ℝ) : ℂ) * (((Real.sqrt (μ i))⁻¹ : ℝ) : ℂ) = 1
-    rw [← Complex.ofReal_mul, hr i, Complex.ofReal_one]
-  have hdd : ∀ i, d i * (μ i : ℂ) * d i = 1 := by
-    intro i
-    show (((Real.sqrt (μ i))⁻¹ : ℝ) : ℂ) * (μ i : ℂ) * (((Real.sqrt (μ i))⁻¹ : ℝ) : ℂ) = 1
-    rw [← Complex.ofReal_mul, ← Complex.ofReal_mul, hr2 i, Complex.ofReal_one]
-  have hdH : (diagonal d)ᴴ = diagonal d := by
-    rw [Matrix.diagonal_conjTranspose]
-    congr 1
-    funext i
-    simp [d]
+  have hde : ∀ i, e i * d i = 1 := fun i => by
+    simp only [e, d, ← Complex.ofReal_mul, mul_inv_cancel₀ (Real.sqrt_pos.mpr (hμ i)).ne',
+      Complex.ofReal_one]
+  have hdd : ∀ i, d i * ((μ i : ℂ) * d i) = 1 := fun i => by
+    have hm : (μ i : ℂ) = e i * e i := by
+      simp only [e]
+      exact_mod_cast (Real.mul_self_sqrt (hμ i).le).symm
+    rw [hm]
+    linear_combination (e i * d i + 1) * hde i
+  have hdH : (diagonal d)ᴴ = diagonal d := by simp [d]
+  have key (M : Matrix (Fin n) (Fin n) ℂ) : Uᴴ * (U * M) = M := by
+    rw [← Matrix.mul_assoc, hUU, Matrix.one_mul]
   refine ⟨U * diagonal d, ?_, ?_⟩
-  · have h : diagonal e * Uᴴ * (U * diagonal d) = 1 := by
-      calc diagonal e * Uᴴ * (U * diagonal d) = diagonal e * (Uᴴ * U) * diagonal d := by
-            simp only [Matrix.mul_assoc]
-        _ = 1 := by
-          rw [hUU, Matrix.mul_one, Matrix.diagonal_mul_diagonal]
-          simp only [hde]
-          exact Matrix.diagonal_one
-    exact Matrix.isUnit_det_of_left_inverse h
+  · refine Matrix.isUnit_det_of_left_inverse (B := diagonal e * Uᴴ) ?_
+    simp only [Matrix.mul_assoc, key, Matrix.diagonal_mul_diagonal, hde, Matrix.diagonal_one]
   · rw [Matrix.conjTranspose_mul, hdH, hG']
-    calc diagonal d * Uᴴ * (U * diagonal (fun i => (μ i : ℂ)) * Uᴴ) * (U * diagonal d)
-        = diagonal d * (Uᴴ * U) * diagonal (fun i => (μ i : ℂ)) * (Uᴴ * U) * diagonal d := by
-          simp only [Matrix.mul_assoc]
-      _ = 1 := by
-        rw [hUU, Matrix.mul_one, Matrix.mul_one, Matrix.diagonal_mul_diagonal,
-          Matrix.diagonal_mul_diagonal]
-        simp only [hdd]
-        exact Matrix.diagonal_one
+    simp only [Matrix.mul_assoc, key, Matrix.diagonal_mul_diagonal, hdd, Matrix.diagonal_one]
 
 end PI.UnitaryGroupMassFormula.HermDefON
 end -- clump:auto

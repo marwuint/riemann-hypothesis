@@ -176,8 +176,7 @@ theorem baseChangeSpace_holds : BaseChangeSpace := by
       rw [SetLike.mem_coe, bc_VV_eq K lam] at hF
       have := bc_map_mem_span j _ hF
       rw [← bc_gen_bid] at this
-      rw [SetLike.mem_coe, bc_VV_eq K' lam]
-      exact this
+      rwa [SetLike.mem_coe, bc_VV_eq K' lam]
     · rw [bc_VV_eq K' lam, bc_gen_bid j]
       refine Submodule.span_mono (Set.image_mono ?_)
       rw [bc_VV_eq K lam]
@@ -382,8 +381,7 @@ theorem bc_exists_above (w : HeightOneSpectrum (𝓞 K)) : ∃ w' : HeightOneSpe
     rw [Ideal.mem_comap, Ideal.mem_bot] at hx
     rw [Ideal.mem_bot]
     exact bc_bcO_injective j (by rw [map_zero]; exact hx)
-  · apply HeightOneSpectrum.ext
-    exact hQw
+  · exact HeightOneSpectrum.ext hQw
 
 end Places
 
@@ -487,8 +485,7 @@ theorem bc_transLat (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K ι
     have h3 := key _ hsx
     rw [LinearMap.map_smul_of_tower] at h3
     have h4 := (smul_mem_localized_iff w' _ hs _).1 h3
-    rw [← polyAction_mul, mul_inv_cancel, polyAction_one₂] at h4
-    exact h4
+    rwa [← polyAction_mul, mul_inv_cancel, polyAction_one₂] at h4
 
 end LocBC
 
@@ -734,8 +731,7 @@ theorem bc_polOfVV_comap (lam : ι → DomWeight n) (N : Submodule (𝓞 K) (Pol
   constructor
   · rintro ⟨x, hx, rfl⟩
     exact hx
-  · intro hF
-    exact ⟨⟨F, hN F hF⟩, hF, rfl⟩
+  · exact fun hF => ⟨⟨F, hN F hF⟩, hF, rfl⟩
 
 theorem usage₁₁ (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) : delP lam M ≤ nabP lam M :=
   transLat_mono lam (delStd_le_nabStd K lam) M
@@ -793,8 +789,7 @@ theorem nabDelDescentAt_of (hd : NabDelDescent) (htl : TauLatLattice) (hdl : Dua
   exact ⟨h1, h2, h3, h4⟩
 
 theorem baseChangeDualFrame_holds : BaseChangeDualFr := by
-  intro K K' _ _ _ _ j n M hM
-  exact du_dualFr_tl latticeBasisExists_holds j M hM
+  exact fun K K' _ _ _ _ j n M hM => du_dualFr_tl latticeBasisExists_holds j M hM
 
 theorem nablaDeltaBaseChange_holds : NabDelBaseChange :=
   nabDelBaseChange_of nablaIndependence_holds deltaIndependence_holds nablaDeltaLocal_holds

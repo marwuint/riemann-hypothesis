@@ -85,8 +85,7 @@ theorem LocIdx_A_le (hK : X.LevelSubgroupCharacter) (hL : X.LevelSubgroupNormali
   have hKf : tf X.B.I hb x ∈ Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) :=
     (Bridge_mem_Kf_iff X.B.I hb x).2 (hL.2.1 x hx)
   have hv := (Subgroup.mem_iInf.1 hKf) p.1
-  rw [MonoidHom.comp_apply, Bridge_tfHom_apply]
-  exact hv
+  rwa [MonoidHom.comp_apply, Bridge_tfHom_apply]
 
 theorem LocIdx_g_ne : X.B.g ≠ 0 := by
   rw [X.g_eq]
@@ -112,16 +111,14 @@ theorem LocIdx_main (hK : X.LevelSubgroupCharacter) (hL : X.LevelSubgroupNormali
     intro y hy
     have hy' := LocIdx_A_le X hb hK hL p y hy
     show y ∈ (K : Set (HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J))
-    rw [hKeq]
-    exact hy'
+    rwa [hKeq]
   obtain ⟨-, -, -, -, hgo⟩ := MassDataIdxK.stK_gen p.1 X.B.I.cm.sig X.B.I.J X.B.I.L X.B.I.L_span X.B.I.L_fg X.B.g
     (LocIdx_g_ne X)
   have h1 : (1 : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J) ∈
       Kgv X.B.I.cm.sig X.B.I.J (lamS X) X.B.g p.1 := by
     refine ⟨?_, fun y _ => ⟨0, Submodule.zero_mem _, ?_⟩⟩
     · have h1K := K.one_mem
-      rw [← SetLike.mem_coe, hKeq] at h1K
-      exact h1K
+      rwa [← SetLike.mem_coe, hKeq] at h1K
     · rw [smul_zero]
       show Matrix.mulVec ((1 : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) - 1) y = 0
       rw [sub_self, Matrix.zero_mulVec]
@@ -165,7 +162,6 @@ theorem locPosAll : LocPosAll := by
   rw [← LocIdx_Asub_coe X hb hK p]
   refine ⟨hAo.measure_pos (X.measG.μGv p.1) ⟨1, (LocIdx_Asub X hb hK p).one_mem⟩,
     lt_of_le_of_lt (measure_mono (SetLike.coe_subset_coe.2 hle)) hKc.measure_lt_top, ?_⟩
-  simp only [lIdx, hkv, LocIdx_KppvS X hb hK p]
-  exact hidx
+  simpa only [lIdx, hkv, LocIdx_KppvS X hb hK p] using hidx
 
 end PI.MassDataKppVolLemmas

@@ -75,9 +75,7 @@ theorem kc_below_smul (σ : H.E ≃ₐ[ℚ] H.E) (hσ : H.gal σ ∈ φ.Psi) (P 
     rw [map_inv]
     exact inv_mem hσ
   have e : σ⁻¹ • algebraMap (𝓞 H.K) (𝓞 H.E) a = algebraMap (𝓞 H.K) (𝓞 H.E) a := by
-    apply NumberField.RingOfIntegers.ext
-    show σ⁻¹ ((a : H.K) : H.E) = ((a : H.K) : H.E)
-    exact kc_fixK H σ⁻¹ hσ' (a : H.K)
+    exact NumberField.RingOfIntegers.ext (kc_fixK H σ⁻¹ hσ' (a : H.K))
   rw [e]
 
 private theorem liesOver_span_of_natCast_mem_prime {M : Type} [Field M] [NumberField M] (P : Ideal (𝓞 M)) [hP : P.IsPrime] (p : ℕ)
@@ -100,8 +98,7 @@ theorem kc_exists_prime {M : Type} [Field M] [NumberField M] (P : Ideal (𝓞 M)
   have hpm := Nat.minFac_prime hn1
   obtain ⟨k, hk⟩ := Nat.minFac_dvd n
   have hm' : (n.minFac : 𝓞 M) * (k : 𝓞 M) ∈ P := by
-    rw [← Nat.cast_mul, ← hk]
-    exact hm
+    rwa [← Nat.cast_mul, ← hk]
   rcases hP.mem_or_mem hm' with h | h
   · exact ⟨n.minFac, hpm, Nat.minFac_dvd n, liesOver_span_of_natCast_mem_prime P _ hpm h⟩
   · have hk0 : k ≠ 0 := by
@@ -206,8 +203,7 @@ theorem principal : ∃ 𝔟 : Ideal (𝓞 H.E), differentIdeal (𝓞 H.K) (𝓞
       ¬ WellOrderingRel (kcBelow H P) (kcBelow H (H.conj • P))
     rw [hf, hcc]
     constructor
-    · intro h1 h2
-      exact asymm h1 h2
+    · exact fun h1 h2 => asymm h1 h2
     · intro h1
       rcases trichotomous_of WellOrderingRel (kcBelow H P) (kcBelow H (H.conj • P)) with h | h | h
       · exact absurd h h1
@@ -215,10 +211,8 @@ theorem principal : ∃ 𝔟 : Ideal (𝓞 H.E), differentIdeal (𝓞 H.K) (𝓞
       · exact h
   obtain ⟨B, hB, -, hBtop, hinv, -⟩ := kc_pairing _ hD0 f hfD p hp
   refine ⟨B, ?_, ?_, fun σ hσ => ?_⟩
-  · rw [← hf]
-    exact hB
-  · rw [← hf]
-    exact hBtop
+  · rwa [← hf]
+  · rwa [← hf]
   · obtain ⟨g, hg⟩ : ∃ g : Ideal (𝓞 H.E) ≃* Ideal (𝓞 H.E), ∀ I, g I = σ • I :=
       ⟨(MulSemiringAction.toRingEquiv _ (Ideal (𝓞 H.E)) σ).toMulEquiv, fun _ => rfl⟩
     rw [← hg]

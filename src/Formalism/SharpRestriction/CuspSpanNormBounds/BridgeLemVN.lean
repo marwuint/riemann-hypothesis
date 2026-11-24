@@ -139,11 +139,7 @@ theorem exists_unitF {u : K} (hu0 : u ≠ 0) (hu : u ∈ (1 : Submodule (𝓞 K)
   let y : cmF K := ⟨u⁻¹, (mem_cmF_iff K _).2 hs'⟩
   let t0 : 𝓞 (cmF K) := ⟨x, intF x hu⟩
   let t1 : 𝓞 (cmF K) := ⟨y, intF y hu'⟩
-  have hxy : t0 * t1 = 1 := by
-    apply RingOfIntegers.ext
-    apply Subtype.ext
-    show u * u⁻¹ = 1
-    exact mul_inv_cancel₀ hu0
+  have hxy : t0 * t1 = 1 := RingOfIntegers.ext (Subtype.ext (mul_inv_cancel₀ hu0))
   exact ⟨⟨t0, t1, hxy, by rw [mul_comm]; exact hxy⟩, rfl⟩
 
 def iota (K : Type) [Field K] [NumberField K] [StarRing K] : (𝓞 (cmF K))ˣ →* K :=
@@ -162,8 +158,7 @@ theorem gmap_smul {b : K} (hb : b ≠ 0) (N : Submodule (𝓞 K) K) :
     refine ⟨b⁻¹ * y, by rw [← hs]; exact hy, ?_⟩
     rw [← mul_assoc, mul_inv_cancel₀ hb, one_mul]
   · rintro ⟨n, hn, rfl⟩
-    rw [hs, ← mul_assoc, inv_mul_cancel₀ hb, one_mul]
-    exact hn
+    rwa [hs, ← mul_assoc, inv_mul_cancel₀ hb, one_mul]
 
 theorem gmap_one (N : Submodule (𝓞 K) K) : gmap (1 : K ≃ₗ[K] K) N = N := by
   ext y
@@ -259,7 +254,6 @@ theorem units_square_index : UnitsSquareIndex := by
     apply Multiplicative.toAdd.injective
     funext i
     rw [sq]
-    show Multiplicative.toAdd a i + Multiplicative.toAdd a i = 0
     exact CharTwo.add_self_eq_zero _
   have hker : θ.ker = S ⊔ torsion F := by
     apply le_antisymm
@@ -362,8 +356,7 @@ theorem fixF (K : Type) [Field K] [NumberField K] [StarRing K] :
     ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap (cmF K) K) := by
   intro a
   constructor
-  · intro h
-    exact ⟨⟨a, (mem_cmF_iff K a).2 h⟩, rfl⟩
+  · exact fun h => ⟨⟨a, (mem_cmF_iff K a).2 h⟩, rfl⟩
   · rintro ⟨x, rfl⟩
     exact star_coe_cmF K x
 
@@ -457,8 +450,7 @@ theorem card_classReps_le (hK : IsCMUnram K) (h : K →ₗ⋆[K] K →ₗ[K] K) 
     have hg : g ∈ isom h := by
       refine (mem_isom_iff h1 g).2 ?_
       show star (b • (1 : K)) * (b • (1 : K)) = 1
-      rw [smul_eq_mul, mul_one]
-      exact hb
+      rwa [smul_eq_mul, mul_one]
     obtain ⟨w, hw⟩ := exists_unitK v
     have hwinv : algebraMap (𝓞 K) K ((w⁻¹ : (𝓞 K)ˣ) : 𝓞 K) = ν⁻¹ := by
       rw [hνdef, ← hw]

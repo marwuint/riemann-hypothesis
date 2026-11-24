@@ -90,8 +90,7 @@ theorem hWb_sepR (y : WbQ D F0) (hy : ∀ x, hWb D F0 x y = 0) : y = 0 := by
     rw [← perpS_eq_orth] at hx
     have h3 := hy (Submodule.Quotient.mk ⟨x, hx⟩)
     rwa [hWb_mk] at h3
-  rw [PI.ScalarPairDr.W.orth_orth] at h2
-  exact h2
+  rwa [PI.ScalarPairDr.W.orth_orth] at h2
 
 theorem hWb_eq_of (x y : WbQ D F0) (h : ∀ a, hWb D F0 a x = hWb D F0 a y) : x = y := by
   refine sub_eq_zero.1 (hWb_sepR D F0 (x - y) (fun a => ?_))
@@ -328,8 +327,7 @@ theorem exists_sE (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hL : Submodule.IsFu
       have : (y i : (VS D).V) = (a i : (VS D).V) := rfl
       rw [this, sub_sub_cancel_left]
       exact F0.X.neg_mem (hρX (y i))
-    intro b
-    exact LinearMap.congr_fun hlin b
+    exact fun b => LinearMap.congr_fun hlin b
   refine ⟨sE, hsE, ?_⟩
   intro m hm
   obtain ⟨b, hbΛ, rfl⟩ := (mem_Mof D F0 Λ m).1 hm
@@ -435,19 +433,14 @@ theorem lift (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hL : Submodule.IsLattice
     simpa using hm'
   have hisom : ∀ x y, hWb D F0 (σ x) (σ y) = hWb D F0 x y := hσi
   refine ⟨gE hsE hu σ, ⟨?_, ?_, ?_⟩, ?_, ?_⟩
-  · intro x y
-    exact gF_isom hsE hu σ hisom x y
+  · exact fun x y => gF_isom hsE hu σ hisom x y
   · intro j
     ext v
     constructor
     · rintro ⟨w, hw, rfl⟩
       show gF D F0 sE u σ w ∈ F0.Xa j
-      rw [gF_X hu σ (Xa_le_X j hw)]
-      exact hw
-    · intro hv
-      refine ⟨v, hv, ?_⟩
-      show gF D F0 sE u σ v = v
-      exact gF_X hu σ (Xa_le_X j hv)
+      rwa [gF_X hu σ (Xa_le_X j hw)]
+    · exact fun hv => ⟨v, hv, gF_X hu σ (Xa_le_X j hv)⟩
   · exact quotient_lift_fixes_anisotropic hsE hu σ hσz
   · apply le_antisymm
     · rintro _ ⟨l, hl, rfl⟩
@@ -456,10 +449,8 @@ theorem lift (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hL : Submodule.IsLattice
       refine ⟨(gE hsE hu σ).symm l, ?_, ?_⟩
       · rw [gE_symm_apply]
         exact gF_lam hu Λ hU hsEM hMu σ.symm hσM2 hl
-      · show gE hsE hu σ ((gE hsE hu σ).symm l) = l
-        exact LinearEquiv.apply_symm_apply _ l
-  · intro x hx
-    exact (gF_perp_mk hsE hu σ x hx).symm
+      · exact LinearEquiv.apply_symm_apply _ l
+  · exact fun x hx => (gF_perp_mk hsE hu σ x hx).symm
 
 end Lift
 
@@ -495,15 +486,13 @@ theorem stabilizer_maps_orthogonal {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (h�
     (hy : y ∈ perpS (VS D) F0.X) : γ y ∈ perpS (VS D) F0.X := by
   intro x hx
   have h := hy (γ.symm x) (stabilizer_symm_maps_isotropic hγ hx)
-  rw [← hγ.1 (γ.symm x) y, LinearEquiv.apply_symm_apply] at h
-  exact h
+  rwa [← hγ.1 (γ.symm x) y, LinearEquiv.apply_symm_apply] at h
 
 theorem stabilizer_symm_maps_orthogonal {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) {y : (VS D).V}
     (hy : y ∈ perpS (VS D) F0.X) : γ.symm y ∈ perpS (VS D) F0.X := by
   intro x hx
   have h := hy (γ x) (stabilizer_maps_isotropic hγ hx)
-  rw [← LinearEquiv.apply_symm_apply γ y, hγ.1] at h
-  exact h
+  rwa [← LinearEquiv.apply_symm_apply γ y, hγ.1] at h
 
 def indL (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hp : ∀ y ∈ perpS (VS D) F0.X, γ y ∈ perpS (VS D) F0.X)
     (hX : ∀ x ∈ F0.X, γ x ∈ F0.X) : WbQ D F0 →ₗ[D.host.E] WbQ D F0 :=
@@ -546,8 +535,7 @@ theorem autLz_sub (Λ : Submodule (𝓞 D.host.E) (VS D).V) (φ : WbQ D F0 → W
     exact hγ.1 _ _
   · rw [zbar, indE_mk]
     congr 1
-    apply Subtype.ext
-    exact hγ.2.2
+    exact Subtype.ext hγ.2.2
   · apply le_antisymm
     · rintro _ ⟨m, hm, rfl⟩
       obtain ⟨b, hbΛ, rfl⟩ := (mem_Mof D F0 Λ m).1 hm

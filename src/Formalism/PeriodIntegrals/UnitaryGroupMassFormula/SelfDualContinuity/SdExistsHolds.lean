@@ -95,8 +95,7 @@ theorem dualAt_of_equiv {V V' : Type} [AddCommGroup V] [TopologicalSpace V] [Add
       ext x
       simp only [AddSubgroup.coe_comap, Set.mem_preimage, Set.mem_image, SetLike.mem_coe]
       constructor
-      · intro hx
-        exact ⟨e x, hx, e.symm_apply_apply x⟩
+      · exact fun hx => ⟨e x, hx, e.symm_apply_apply x⟩
       · rintro ⟨y, hy, rfl⟩
         simpa using hy
     rw [h1]
@@ -142,13 +141,10 @@ theorem reTup_apply (ι : Type) [Fintype ι] (x : ι → Fv F v ⊗[F] E) (p : F
 
 theorem continuous_reTup (ι : Type) [Fintype ι] : Continuous (reTup (E := E) v ι) := by
   refine continuous_pi fun p => continuous_pi fun k => ?_
-  simp only [reTup_apply]
-  exact continuous_apply _
+  simpa only [reTup_apply] using continuous_apply _
 
 theorem continuous_reTup_symm (ι : Type) [Fintype ι] : Continuous (reTup (E := E) v ι).symm := by
-  refine continuous_pi fun i => ?_
-  show Continuous fun X : Fin (Fintype.card ι) → Fin 1 → Fv F v ⊗[F] E => X (Fintype.equivFin ι i) 0
-  exact (continuous_apply 0).comp (continuous_apply _)
+  exact continuous_pi fun i => (continuous_apply 0).comp (continuous_apply _)
 
 theorem sigR_id (z : Fv F v ⊗[F] E) : sigR (Fv F v) (AlgHom.id F E) z = z := by
   first

@@ -82,13 +82,11 @@ theorem h_right_zero {ι : Type} {v : ι → V} {w : V} (hw : ∀ i, H.h w (v i)
 private theorem h_fintype_sum_smul_left {ι : Type} [Fintype ι] (v : ι → V) (c : ι → E) (y : V) :
     H.h (∑ j, c j • v j) y = ∑ j, c j * H.h (v j) y := by
   have h1 := map_sum (hL H y) (fun j => c j • v j) Finset.univ
-  simp only [map_smul, smul_eq_mul, hL_apply] at h1
-  exact h1
+  simpa only [map_smul, smul_eq_mul, hL_apply] using h1
 
 private theorem h_sum_smul_eq_gram_mulVec {ι : Type} [Fintype ι] (v : ι → V) (c : ι → E) (i : ι) :
     H.h (∑ j, c j • v j) (v i) = (H.gram v *ᵥ c) i := by
   rw [h_fintype_sum_smul_left]
-  show ∑ j, c j * H.h (v j) (v i) = ∑ j, H.h (v j) (v i) * c j
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 theorem eq_zero_of_orth {ι : Type} [Fintype ι] [DecidableEq ι] {v : ι → V} (hN : GramInv H v) {z : V}
@@ -106,8 +104,7 @@ theorem eq_zero_of_orth {ι : Type} [Fintype ι] [DecidableEq ι] {v : ι → V}
 
 private theorem h_sub_left' (x y z : V) : H.h (x - y) z = H.h x z - H.h y z := by
   have h1 := (hL H z).map_sub x y
-  rw [hL_apply, hL_apply, hL_apply] at h1
-  exact h1
+  rwa [hL_apply, hL_apply, hL_apply] at h1
 
 theorem decomp {ι : Type} [Fintype ι] [DecidableEq ι] {v : ι → V} (hN : GramInv H v) {Λ : Submodule M.L.O V}
     (hI : ∀ x ∈ Λ, ∀ y ∈ Λ, H.h x y ∈ M.L.O) (hv : ∀ i, v i ∈ Λ) {x : V} (hx : x ∈ Λ) :
@@ -117,8 +114,7 @@ theorem decomp {ι : Type} [Fintype ι] [DecidableEq ι] {v : ι → V} (hN : Gr
     first
       | exact mul_eq_one_comm.1 hNG
   refine ⟨N *ᵥ fun k => H.h x (v k), fun j => ?_, fun i => ?_⟩
-  · show ∑ k, N j k * H.h x (v k) ∈ M.L.O
-    exact sum_mem fun k _ => mul_mem (hNO j k) (hI x hx (v k) (hv k))
+  · exact sum_mem fun k _ => mul_mem (hNO j k) (hI x hx (v k) (hv k))
   · rw [h_sub_left', h_sum_smul_eq_gram_mulVec v _ i, Matrix.mulVec_mulVec, hGN, Matrix.one_mulVec]
     exact sub_self _
 
@@ -137,10 +133,7 @@ theorem le_of_Lset {r : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] {v : ι �
   intro x hx
   obtain ⟨c, hcO, hc⟩ := decomp hN hI1 hv1 hx
   have hs2 : ∑ j, c j • v j ∈ Λ₂ := comb_mem_lat hv2 hcO
-  have hperp : x - ∑ j, c j • v j ∈ H.perp (H.X f) := by
-    show ∀ z ∈ H.X f, H.h (x - ∑ j, c j • v j) z = 0
-    intro z hz
-    exact h_right_zero hc (hX hz)
+  have hperp : x - ∑ j, c j • v j ∈ H.perp (H.X f) := fun z hz => h_right_zero hc (hX hz)
   have hx0 : x - ∑ j, c j • v j ∈ Λ₁ := Λ₁.sub_mem hx (comb_mem_lat hv1 hcO)
   have hmem : H.mkW f ⟨x - ∑ j, c j • v j, hperp⟩ ∈ H.Lset Λ₁ f :=
     ⟨⟨x - ∑ j, c j • v j, hperp⟩, hx0, rfl⟩

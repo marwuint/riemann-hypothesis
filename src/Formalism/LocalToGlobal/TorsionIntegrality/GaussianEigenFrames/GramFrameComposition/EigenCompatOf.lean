@@ -86,8 +86,7 @@ lemma nadd {x y : K} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : ‖x + y‖ ≤
 
 omit [IsUltrametricDist K] in
 lemma nneg {x : K} (hx : ‖x‖ ≤ 1) : ‖-x‖ ≤ 1 := by
-  rw [norm_neg]
-  exact hx
+  rwa [norm_neg]
 
 lemma nsub {x y : K} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : ‖x - y‖ ≤ 1 := by
   rw [sub_eq_add_neg]
@@ -142,8 +141,7 @@ lemma gamma_inj {K : Type} [Field K] (ι : ℂ ≃+* K) {Wt : Type} [Fintype Wt]
     rw [show g.symm (fun w => ι.symm (u w)) w' =
       (g.symm : (Wt → ℂ) →ₗ[ℂ] (Wt → ℂ)) (fun w => ι.symm (u w)) w' from rfl, lin_apply]
     exact h' w'
-  have h2 := congrArg (fun f => f w) (g.symm.injective (hz.trans (map_zero g.symm).symm))
-  simpa using h2
+  simpa using congrArg (fun f => f w) (g.symm.injective (hz.trans (map_zero g.symm).symm))
 
 def cf {K : Type} [Field K] (ι : ℂ ≃+* K) (L : PeriodPair) {n : Type} [Fintype n] (h : Matrix n n ℂ) (y : n → ℂ) (i : n) : K :=
   ι (((Formalism.L2.Th1.F.area L : ℝ) : ℂ) * ∑ i', h i i' * conj (y i'))
@@ -264,8 +262,7 @@ theorem EigenCompat_of (hB : GramBasic) : EigenCompat := by
     · simp [B1]
   have hC : ∀ x, ‖C x‖ ≤ 1 := by
     rintro (j | k)
-    · simp only [C, Sum.elim_inl, norm_neg, norm_mul]
-      exact mul_le_one₀ hχ' (norm_nonneg _) (hBn j)
+    · simpa only [C, Sum.elim_inl, norm_neg, norm_mul] using mul_le_one₀ hχ' (norm_nonneg _) (hBn j)
     · exact hBn k
   obtain ⟨-, -, h3, -⟩ := hB a b c d ha hd lam hlam hcm n h Λ g hg p ι hp (J ⊕ J) v2 hv2 B1 C hB1 hC
   have hCz : ∀ i, ∑ x, C x * ι (v2 x i) = 0 := by

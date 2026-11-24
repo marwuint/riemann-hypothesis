@@ -181,17 +181,12 @@ theorem splitIso_gen [TopologicalSpace R1] [TopologicalSpace R2] :
       ⇑e = fun g => (haMap σ J (AlgHom.fst F R1 R2) g, haMap σ J (AlgHom.snd F R1 R2) g) := by
   let f : HA (R1 × R2) σ J →* HA R1 σ J × HA R2 σ J :=
     MonoidHom.prod (haMap σ J (AlgHom.fst F R1 R2)) (haMap σ J (AlgHom.snd F R1 R2))
-  have hl : ∀ g, unsplit σ J R1 R2 (f g) = g := by
-    intro g
-    apply HA_ext σ J
-    exact mix_split R1 R2 _
+  have hl : ∀ g, unsplit σ J R1 R2 (f g) = g := fun g => HA_ext σ J (mix_split R1 R2 _)
   have hr : ∀ p, f (unsplit σ J R1 R2 p) = p := by
     intro p
     refine Prod.ext ?_ ?_
-    · apply HA_ext σ J
-      exact mixMatrix_map_first R1 R2 _ _
-    · apply HA_ext σ J
-      exact mixMatrix_map_second R1 R2 _ _
+    · exact HA_ext σ J (mixMatrix_map_first R1 R2 _ _)
+    · exact HA_ext σ J (mixMatrix_map_second R1 R2 _ _)
   let e0 : HA (R1 × R2) σ J ≃* HA R1 σ J × HA R2 σ J :=
     MulEquiv.mk ⟨⇑f, unsplit σ J R1 R2, hl, hr⟩ f.map_mul
   have c1 : Continuous e0 :=

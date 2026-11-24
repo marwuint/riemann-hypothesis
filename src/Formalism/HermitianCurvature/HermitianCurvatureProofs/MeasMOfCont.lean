@@ -98,10 +98,8 @@ theorem measM_nEich (z : Fin (2 * r + k + 1) → ℂ) {ξ : X → Fin r → ℂ}
   have hxi : Continuous fun ξ : Fin r → ℂ => C2.xiV k r ξ := by
     refine continuous_pi fun i => ?_
     by_cases h : i.val < r
-    · simp only [C2.xiV, h, ↓reduceDIte]
-      exact continuous_apply _
-    · simp only [C2.xiV, h, ↓reduceDIte]
-      exact continuous_const
+    · simpa only [C2.xiV, h, ↓reduceDIte] using continuous_apply _
+    · simpa only [C2.xiV, h, ↓reduceDIte] using continuous_const
   have hc : Continuous fun ξ : Fin r → ℂ => (C2.nEich k r z ξ : Matrix _ _ ℂ) := by
     unfold C2.nEich
     have h1 : Continuous fun ξ : Fin r → ℂ => vecMulVec (C2.xiV k r ξ) (star (Hpk k r *ᵥ z)) :=
@@ -116,8 +114,7 @@ theorem measM_nEich (z : Fin (2 * r + k + 1) → ℂ) {ξ : X → Fin r → ℂ}
 theorem measM_submatrix_castSucc {A : X → Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hA : MeasM A) :
     MeasM (fun x => (A x).submatrix Fin.castSucc Fin.castSucc) := by
   rw [measM_iff] at hA ⊢
-  intro i j
-  exact hA _ _
+  exact fun i j => hA _ _
 
 theorem measM_mX {A : X → Matrix (Fin r) (Fin r) ℂ} (hA : MeasM A) : MeasM (fun x => C2.mX k r (A x)) := by
   have hinv : MeasM fun x => ((A x)ᴴ)⁻¹ := measM_inv (measM_star hA)

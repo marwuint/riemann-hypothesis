@@ -164,10 +164,8 @@ theorem fix_of_ez {c : (VS D).V ≃ₗ[D.host.E] (VS D).V} (he : ∀ a, c ((X.Fu
   intro a
   unfold Formalism.MainNotions.S.FlagG.fvec
   refine Fin.lastCases ?_ (fun i => ?_) a
-  · simp only [Fin.snoc_last]
-    exact hz
-  · simp only [Fin.snoc_castSucc]
-    exact he i
+  · simpa only [Fin.snoc_last] using hz
+  · simpa only [Fin.snoc_castSucc] using he i
 
 theorem iotaKer_core (hN : Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u' Y.hK) (hIR : Formalism.L2.SG.Pf.SatGramRep.IotaRepC)
     (s₁ s₂ t₁ t₂ : TT Y u u') (n₁ n₂ m₁ m₂ c₁ c₂ : (VS D).V ≃ₗ[D.host.E] (VS D).V)
@@ -208,8 +206,7 @@ theorem iotaKer_core (hN : Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u' Y.hK) (h
     apply Subtype.ext
     show levi Y.TR (colD ((Y.cs u').h ((Y.cs u').base q.1)) (iotaF X u' γ₁.1 * (Y.cs u').h ((Y.cs u').base q.1))) =
       levi Y.TR (colD ((Y.cs u').h ((Y.cs u').base q.1)) (iotaF X u' γ₂.1 * (Y.cs u').h ((Y.cs u').base q.1)))
-    rw [← Formalism.L2.SG.Pf.Act.aK_eq, ← Formalism.L2.SG.Pf.Act.aK_eq]
-    exact hlev
+    rwa [← Formalism.L2.SG.Pf.Act.aK_eq, ← Formalism.L2.SG.Pf.Act.aK_eq]
   subst hγ
   intro x hx
   rw [mem_orth_iff] at hx
@@ -221,9 +218,7 @@ theorem iotaKer_core (hN : Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u' Y.hK) (h
   have e3 : (c₂ * c₁⁻¹) x - x = (c₂ (c₁⁻¹ x) - (Formalism.L2.SG.Pf.Act.isoG γ₁.1)⁻¹ (c₁⁻¹ x)) -
       (c₁ (c₁⁻¹ x) - (Formalism.L2.SG.Pf.Act.isoG γ₁.1)⁻¹ (c₁⁻¹ x)) := by
     simp only [LinearEquiv.mul_apply]
-    have : c₁ (c₁⁻¹ x) = x := by
-      show c₁ (c₁.symm x) = x
-      exact c₁.apply_symm_apply x
+    have : c₁ (c₁⁻¹ x) = x := c₁.apply_symm_apply x
     rw [this]; abel
   rw [e3]
   exact sub_mem d₂ d₁

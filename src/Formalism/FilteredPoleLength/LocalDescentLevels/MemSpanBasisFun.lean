@@ -161,14 +161,12 @@ theorem levels (N' M₁ N₁ Z Zm : Submodule O V) (AA AA' N₁' : Submodule O W
       (fun x hx => ⟨Submodule.inclusion hYN x, hx, rfl⟩)
     obtain ⟨y, hy, hyx⟩ := Submodule.mem_map.1 x.2
     have hxy : Submodule.inclusion hYN x = y := Subtype.ext hyx.symm
-    rw [LinearMap.comp_apply, hxy]
-    exact hy
+    rwa [LinearMap.comp_apply, hxy]
   have s3 : ql Y' (N₁ ⊔ Z) ≤ ql Zm Z := by
     have hsub : Y' ≤ Zm ⊔ (N₁ ⊔ Z) := by
       rintro _ ⟨y, hy, rfl⟩
       have hy' : ρ y ∈ (N₁.comap N'.subtype).map ρ := by
-        rw [himg]
-        exact hy
+        rwa [himg]
       obtain ⟨z, hz, hzy⟩ := Submodule.mem_map.1 hy'
       have hk : y - z ∈ LinearMap.ker ρ := by
         rw [LinearMap.mem_ker, map_sub, hzy, sub_self]
@@ -290,11 +288,9 @@ theorem quotientLength : QuotientLength := by
   dsimp only
   have hq := quot_core (K := K) ϖ hϖ n c N hN X e be th hX hth a a' ha hdet
   have hva : IsDiscreteValuationRing.addVal O a ≠ ⊤ := by
-    rw [Ne, IsDiscreteValuationRing.addVal_eq_top_iff]
-    exact ha
+    rwa [Ne, IsDiscreteValuationRing.addVal_eq_top_iff]
   have hva' : IsDiscreteValuationRing.addVal O a' ≠ ⊤ := by
-    rw [Ne, IsDiscreteValuationRing.addVal_eq_top_iff]
-    exact ha'
+    rwa [Ne, IsDiscreteValuationRing.addVal_eq_top_iff]
   lift IsDiscreteValuationRing.addVal O a to ℕ using hva with A hA
   lift IsDiscreteValuationRing.addVal O a' to ℕ using hva' with A' hA'
   have hfin : ql X ((X ⊓ N.restrictScalars O) ⊔

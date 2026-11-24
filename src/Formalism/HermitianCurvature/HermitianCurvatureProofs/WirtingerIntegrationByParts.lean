@@ -284,8 +284,7 @@ theorem holo_contDiffOn {d : ℕ} {F : Type*} [NormedAddCommGroup F] [NormedSpac
   | succ n ih =>
     have h : ((n + 1 : ℕ) : WithTop ℕ∞) = (n : WithTop ℕ∞) + 1 := by push_cast; rfl
     rw [h, contDiffOn_succ_iff_fderiv_of_isOpen hΩ]
-    refine ⟨hg, fun h => ?_, ih (hol_differentiableOn_fderiv hΩ hg)⟩
-    exact absurd h (by simp)
+    exact ⟨hg, fun h => (absurd h (by simp)), ih (hol_differentiableOn_fderiv hΩ hg)⟩
 
 theorem wir_integrable {d : ℕ} {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
     {φ : (Fin d → ℂ) → ℂ} {a : (Fin d → ℂ) → V} {Ω : Set (Fin d → ℂ)} (hΩ : IsOpen Ω) (hφ : ContinuousOn φ Ω)
@@ -318,8 +317,7 @@ theorem wir_hasLineDerivAt {d : ℕ} (β t : ℂ) {g : (Fin d → ℂ) → ℂ} 
     have := congrFun e x
     rw [this]
     simp
-  rw [e, ev]
-  exact h5
+  rwa [e, ev]
 
 theorem wir_dir {d : ℕ} (β t : ℂ) {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → ℂ} (hΩ : IsOpen Ω)
     (hg : DifferentiableOn ℂ g Ω) {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]
@@ -498,8 +496,7 @@ theorem Bd.inv {f : E → ℝ} {s : Set E} {x : E} {n : ℕ} {κ P : ℝ}
     simp only [Pi.smul_apply, smul_eq_mul, Set.mem_compl_iff, Set.mem_singleton_iff]
     exact mul_ne_zero (inv_ne_zero h0.ne') (hne y hy)
   have hone : (N0⁻¹ • f) x = 1 := by
-    simp only [Pi.smul_apply, smul_eq_mul]
-    exact inv_mul_cancel₀ h0.ne'
+    simpa only [Pi.smul_apply, smul_eq_mul] using inv_mul_cancel₀ h0.ne'
   have hC : ∀ i, i ≤ j → ‖iteratedFDerivWithin ℝ i (Inv.inv : ℝ → ℝ) {0}ᶜ ((N0⁻¹ • f) x)‖ ≤ (j.factorial : ℝ) := by
     intro i hi
     rw [hone, gen_norm_iter_inv_one]
@@ -580,8 +577,7 @@ theorem bkb_sq_le {d : ℕ} (L : (Fin d → ℂ) →L[ℂ] ℂ) :
   have h2 : (∑ l, ‖L (Pi.single l 1)‖) ^ 2 ≤ ((Finset.univ : Finset (Fin d)).card : ℝ) * ∑ l, ‖L (Pi.single l 1)‖ ^ 2 :=
     sq_sum_le_card_mul_sum_sq
   simp only [Finset.card_univ, Fintype.card_fin] at h2
-  simp only [Complex.normSq_eq_norm_sq]
-  exact (pow_le_pow_left₀ (norm_nonneg _) h1 2).trans h2
+  simpa only [Complex.normSq_eq_norm_sq] using (pow_le_pow_left₀ (norm_nonneg _) h1 2).trans h2
 
 theorem bkb_N_pos {d : ℕ} {L : (Fin d → ℂ) →L[ℂ] ℂ} (hL : L ≠ 0) :
     0 < ∑ l, Complex.normSq (L (Pi.single l 1)) := by
@@ -612,8 +608,7 @@ theorem bkb_u_contDiffOn {d : ℕ} {Ω : Set (Fin d → ℂ)} {g : (Fin d → �
     ContDiffOn ℂ n (fun x => fderiv ℂ g x (Pi.single k 1)) Ω := by
   have h := holo_contDiffOn hΩ hg (n + 1)
   have h' : ContDiffOn ℂ ((n : WithTop ℕ∞) + 1) g Ω := by exact_mod_cast h
-  have h2 := ((contDiffOn_succ_iff_fderiv_of_isOpen hΩ).mp h').2.2
-  exact h2.clm_apply contDiffOn_const
+  exact (((contDiffOn_succ_iff_fderiv_of_isOpen hΩ).mp h').2.2).clm_apply contDiffOn_const
 
 theorem bkb_cu_contDiffOn {d : ℕ} {Ω : Set (Fin d → ℂ)} {g : (Fin d → ℂ) → ℂ} (hΩ : IsOpen Ω)
     (hg : DifferentiableOn ℂ g Ω) (k : Fin d) (n : ℕ) :

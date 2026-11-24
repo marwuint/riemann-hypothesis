@@ -143,8 +143,7 @@ theorem lrfc_tau_iota (l : Fin r × Fin r × (Fin r × Fin n)) (F : MvPolynomial
       simp only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom]
       simp only [lrfc_tau, lrfc_iota, rowGen, aeval_X, map_X, Polynomial.coe_eval₂RingHom]
       split_ifs
-      · simp
-        exact mul_comm _ _
+      · simpa using mul_comm _ _
       · simp
   exact congrArg (fun φ => φ F) h
 
@@ -201,8 +200,7 @@ theorem lrfc_coeffT_Phi (L : List (Fin r × Fin r × (Fin r × Fin n)))
     have hw : (w.map (·.2.2)).Nodup := hL'.sublist (List.sublist_append_left _ _)
     have hv : v ∉ w.map (·.2.2) := by
       rw [List.nodup_append] at hL'
-      intro h
-      exact hL'.2.2 v h v (by simp) rfl
+      exact fun h => hL'.2.2 v h v (by simp) rfl
 
     rw [lrfc_Phi_append_single, lrfc_tau_iota, Polynomial.eval₂_eq_sum, Polynomial.sum_def,
     map_sum, lrfc_coeffT_sum]
@@ -506,8 +504,7 @@ theorem lrf_unique (m e : Fin r × Fin n →₀ ℕ) (hm : LowerTri m) (he : Low
   classical
   have hlow : ∀ (a : Fin r) (s : Fin n), s.val < a.val → m (a, s) = e (a, s) := by
     intro a s h
-    have h1 := DFunLike.congr_fun hoff (a, s)
-    simpa [lrf_off, Finsupp.filter_apply, h] using h1
+    simpa [lrf_off, Finsupp.filter_apply, h] using DFunLike.congr_fun hoff (a, s)
   have hne : ∀ (a : Fin r) (s : Fin n), a.val ≠ s.val → m (a, s) = e (a, s) := by
     intro a s h
     rcases lt_or_gt_of_ne h with h' | h'
@@ -519,8 +516,7 @@ theorem lrf_unique (m e : Fin r × Fin n →₀ ℕ) (hm : LowerTri m) (he : Low
     rw [← Finset.add_sum_erase _ _ (Finset.mem_univ a), ← Finset.add_sum_erase _ (fun a => e (a, s)) (Finset.mem_univ a)] at h1
     have h2 : ∑ x ∈ Finset.univ.erase a, m (x, s) = ∑ x ∈ Finset.univ.erase a, e (x, s) := by
       refine Finset.sum_congr rfl fun x hx => hne x s ?_
-      intro hxs
-      exact (Finset.ne_of_mem_erase hx) (Fin.ext (by omega))
+      exact fun hxs => (Finset.ne_of_mem_erase hx) (Fin.ext (by omega))
     omega
   · exact hne a s h
 

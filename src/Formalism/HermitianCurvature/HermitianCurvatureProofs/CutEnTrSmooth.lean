@@ -77,17 +77,14 @@ theorem wq_contDiff (k r : ℕ) (TT : ℝ) : ContDiff ℝ ∞ (fun x : MA.E r =>
   unfold MA.wq
   apply ContDiff.mul
   · apply contDiff_prod
-    intro l _
-    exact (hn.comp ((contDiff_apply ℝ (fun _ => ℂ) l).comp contDiff_fst)).pow _
+    exact fun l _ => (hn.comp ((contDiff_apply ℝ (fun _ => ℂ) l).comp contDiff_fst)).pow _
   · exact ((hn.comp contDiff_snd).sub contDiff_const).pow _
 
 theorem wq_pos {k r : ℕ} {TT : ℝ} {x : MA.E r} (hx : x ∈ MA.Qset r TT) : 0 < MA.wq k x TT := by
   obtain ⟨h1, h2⟩ := hx
   unfold MA.wq
   apply mul_pos
-  · apply Finset.prod_pos
-    intro l _
-    exact pow_pos (Complex.normSq_pos.mpr (h1 l)) _
+  · exact Finset.prod_pos (fun l _ => pow_pos (Complex.normSq_pos.mpr (h1 l)) _)
   · exact pow_pos (by linarith) _
 
 theorem trace_smoothness : TrSmooth := by
@@ -99,8 +96,7 @@ theorem trace_smoothness : TrSmooth := by
     refine ⟨hq.1, ?_⟩
     have h2 : (D.parOf S v).TT < Complex.normSq q.2 := hq.2
     have h3 : (D.parOf S v).TT = (D.parOf S v).T * (D.parOf S v).T' := rfl
-    rw [h3, ← hTz, ← hTz'] at h2
-    exact h2
+    rwa [h3, ← hTz, ← hTz'] at h2
   have hgq : ∀ q ∈ MA.Qset (D.parOf S v).r (D.parOf S v).TT,
       B.gq (T v).base q ∈ Q.Glev S.G.k S.G.r 0 ∩ OmP S T v := fun q hq =>
     om_sub' (Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom (T v).base (hsub q hq))

@@ -171,17 +171,14 @@ theorem HinfG_coe (u : D.what₂.Word) : (HinfG X u : Set X.B.I.Ginf) =
     rcases hx with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hx
     · exact he a
     · exact hp a
-    · rw [Set.mem_singleton_iff.1 hx]
-      exact hz
+    · rwa [Set.mem_singleton_iff.1 hx]
   · intro h
     exact ⟨fun a => h _ (Or.inl (Or.inl ⟨a, rfl⟩)), fun a => h _ (Or.inl (Or.inr ⟨a, rfl⟩)), h _ (Or.inr rfl)⟩
 
 theorem NinfG_closed (u : D.what₂.Word) : IsClosed (NinfG X u : Set X.B.I.Ginf) := by
-  show IsClosed (Set.univ.pi fun v => (NGv X u v : Set (Formalism.REAL.UJ (X.B.I.ε v))))
   exact isClosed_set_pi fun v _ => NilradicalHermitianFrames.NH.NG_closed _ _ _
 
 theorem HinfG_closed (u : D.what₂.Word) : IsClosed (HinfG X u : Set X.B.I.Ginf) := by
-  show IsClosed (Set.univ.pi fun v => (HGv X u v : Set (Formalism.REAL.UJ (X.B.I.ε v))))
   exact isClosed_set_pi fun v _ => NilradicalHermitianFrames.NH.HG_closed _ _ _ _
 
 theorem muN_eq (u : D.what₂.Word) : ∃ κ : ℝ≥0∞, κ ≠ 0 ∧ κ ≠ ∞ ∧ X.muN u = κ • Measure.pi (muNv X u) := by
@@ -193,12 +190,10 @@ theorem muN_eq (u : D.what₂.Word) : ∃ κ : ℝ≥0∞, κ ≠ 0 ∧ κ ≠ �
   have hi' : ∀ h ∈ NinfG X u, (X.muN u).map (fun x => h * x) = X.muN u := by
     intro h hh
     apply hi
-    rw [← NinfG_coe]
-    exact hh
+    rwa [← NinfG_coe]
   refine PiM.uniq_on_closed (NinfG X u) (NinfG_closed X u) (X.muN u) (Measure.pi (muNv X u)) hc' ?_ hi' ?_ h0
     (PiM.pi_ne_zero _ fun v => (hv v).1.2.1)
-  · show Measure.pi (muNv X u) (Set.univ.pi fun v => (NGv X u v : Set (Formalism.REAL.UJ (X.B.I.ε v))))ᶜ = 0
-    exact PiM.pi_conc _ _ fun v => (hv v).1.2.2.1
+  · exact PiM.pi_conc _ _ fun v => (hv v).1.2.2.1
   · intro g hg
     exact PiM.pi_map_mul_left _ g fun v => (hv v).1.2.2.2 (g v) ((Subgroup.mem_pi _).mp hg v (Set.mem_univ v))
 
@@ -211,12 +206,10 @@ theorem muH_eq (u : D.what₂.Word) : ∃ κ : ℝ≥0∞, κ ≠ 0 ∧ κ ≠ �
   have hi' : ∀ h ∈ HinfG X u, (X.muH u).map (fun x => h * x) = X.muH u := by
     intro h hh
     apply hi
-    rw [← HinfG_coe]
-    exact hh
+    rwa [← HinfG_coe]
   refine PiM.uniq_on_closed (HinfG X u) (HinfG_closed X u) (X.muH u) (Measure.pi (muHv X u)) hc' ?_ hi' ?_ h0
     (PiM.pi_ne_zero _ fun v => (hv v).1.2.1)
-  · show Measure.pi (muHv X u) (Set.univ.pi fun v => (HGv X u v : Set (Formalism.REAL.UJ (X.B.I.ε v))))ᶜ = 0
-    exact PiM.pi_conc _ _ fun v => (hv v).1.2.2.1
+  · exact PiM.pi_conc _ _ fun v => (hv v).1.2.2.1
   · intro g hg
     exact PiM.pi_map_mul_left _ g fun v => (hv v).1.2.2.2 (g v) ((Subgroup.mem_pi _).mp hg v (Set.mem_univ v))
 

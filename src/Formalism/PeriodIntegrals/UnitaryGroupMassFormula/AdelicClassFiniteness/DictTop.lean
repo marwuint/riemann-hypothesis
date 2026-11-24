@@ -177,8 +177,7 @@ theorem mInj_of (hG : MGen) : MInj := by
   show z ∈ I.Lf ↔ I.fmat (x⁻¹ * y) *ᵥ z ∈ I.Lf
   rw [dictTop_fmat_mul, ← Matrix.mulVec_mulVec]
   constructor
-  · intro hz
-    exact dictTop_into hG I x y h z hz
+  · exact fun hz => dictTop_into hG I x y h z hz
   · intro hz
     have h2 := dictTop_into hG I y x h.symm _ hz
     simp only [Matrix.mulVec_mulVec] at h2
@@ -206,8 +205,7 @@ theorem lattice_m_equiv : MEquiv := by
         (Formalism.UG.cT (starRingEnd I.E) (γ : Matrix (Fin I.n) (Fin I.n) I.E)).map
           (Formalism.UG.inclE (F := I.F) (Af I.F)) := by
       ext i j
-      simp only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]
-      exact sigR_inclE' I _
+      simpa only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply] using sigR_inclE' I _
     rw [hc, ← Matrix.map_mul, ← Matrix.map_mul, hg]
   let c : I.Gf := ⟨_, hmem⟩
   have hfc : I.fmat c =
@@ -220,12 +218,10 @@ theorem lattice_m_equiv : MEquiv := by
   · intro hv
     refine ⟨((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ v, ?_, ?_⟩
     · show I.fmat x⁻¹ *ᵥ iv I (((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ v) ∈ I.Lf
-      rw [← K, hfc, dictTop_map_mulVec, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
-      exact hv
+      rwa [← K, hfc, dictTop_map_mulVec, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
     · rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
   · rintro ⟨w, hw, rfl⟩
     show I.fmat (c * x)⁻¹ *ᵥ iv I ((γ : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ w) ∈ I.Lf
-    rw [← dictTop_map_mulVec, ← hfc, K]
-    exact hw
+    rwa [← dictTop_map_mulVec, ← hfc, K]
 
 end PIW.AdelClassFin

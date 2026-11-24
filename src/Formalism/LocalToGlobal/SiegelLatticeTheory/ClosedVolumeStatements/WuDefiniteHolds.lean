@@ -106,8 +106,7 @@ theorem σA_ιA (e : I.E) : σA I (ιA I e) = ιA I (starRingEnd I.E e) := by
 theorem cT_map {p q : Type} (M : Matrix p q I.E) :
     cT (σA I) (M.map (ιA I)) = (cT (starRingEnd I.E) M).map (ιA I) := by
   ext i j
-  simp only [cT, Matrix.transpose_apply, Matrix.map_apply]
-  exact σA_ιA _
+  simpa only [cT, Matrix.transpose_apply, Matrix.map_apply] using σA_ιA _
 
 theorem cT_one' {p : Type} [DecidableEq p] {A : Type} [CommRing A] (σ : A →+* A) :
     cT σ (1 : Matrix p p A) = 1 := by
@@ -295,8 +294,7 @@ theorem Frame.twoPow_mul_twoPow (y₁ y₂ : Matrix (Fin fr.k) (Fin fr.k) (AA I)
   rw [← Matrix.mul_assoc fr.BiA fr.BA, fr.BiA_BA, Matrix.one_mul]
 
 theorem Frame.P_one : fr.P 1 = 1 := by
-  simp only [Frame.P, Frame.D, Matrix.fromBlocks_one, Matrix.mul_one]
-  exact fr.BA_BiA
+  simpa only [Frame.P, Frame.D, Matrix.fromBlocks_one, Matrix.mul_one] using fr.BA_BiA
 
 def Frame.Phom : UPts I.cm.sig fr.J' (Formalism.MainNotions.S.Af I.F) →* Matrix (Fin I.n) (Fin I.n) (AA I) where
   toFun y := fr.P ((y : GL (Fin fr.k) (AA I)) : Matrix (Fin fr.k) (Fin fr.k) (AA I))
@@ -554,8 +552,7 @@ theorem fr_sup (hS : DefiniteCompl I S) : Submodule.span I.E S ⊔ frW I S = ⊤
     have hexp : ∑ k, b.repr ⟨s, Submodule.subset_span hs⟩ k • (b k : Fin I.n → I.E) = s := by
       have := congrArg Subtype.val (b.sum_repr ⟨s, Submodule.subset_span hs⟩)
       rw [Submodule.coe_sum] at this
-      simp only [Submodule.coe_smul] at this
-      exact this
+      simpa only [Submodule.coe_smul] using this
     rw [← hexp, fr_hform_sum_left]
     simp [_root_.Formalism.UG.P.csDual_hform_smul_left, hy']
   have hrn := LinearMap.finrank_range_add_finrank_ker T
@@ -591,8 +588,7 @@ theorem frameExists : FrameExists := by
     have h1 : bb.toMatrix e *ᵥ s = bb.repr s := by
       have := e.toMatrix_mulVec_repr bb s
       have he : ⇑(e.repr s) = s := by funext i; simp [e]
-      rw [he] at this
-      exact this
+      rwa [he] at this
     rw [h1]
     have hs' : s = Submodule.prodEquivOfIsCompl _ _ hc (⟨s, Submodule.subset_span hs⟩, 0) := by simp
     rw [hs', Basis.map_repr, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply,
@@ -630,8 +626,7 @@ variable {R : Type} [CommRing R] (S : Subring R) {n : ℕ}
 theorem lvA_mulVec_int {ι κ : Type} [Fintype κ] (M : Matrix ι κ R) (hM : ∀ i j, M i j ∈ S)
     (v : κ → R) (hv : ∀ i, v i ∈ S) : ∀ i, (M *ᵥ v) i ∈ S := by
   intro i
-  simp only [Matrix.mulVec, dotProduct]
-  exact S.sum_mem fun j _ => S.mul_mem (hM i j) (hv j)
+  simpa only [Matrix.mulVec, dotProduct] using S.sum_mem fun j _ => S.mul_mem (hM i j) (hv j)
 
 theorem lvA_key {ι : Type} [Fintype ι] [DecidableEq ι] (LA : Submodule S (Fin n → R))
     (c₁ c₂ c g : R)
@@ -753,8 +748,7 @@ theorem lvB_lat_up (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) :
     | zero => intro i; simp
     | add x y _ _ hx hy =>
       intro i
-      simp only [Pi.add_apply, map_add (f := _), mul_add]
-      exact add_mem (hx i) (hy i)
+      simpa only [Pi.add_apply, map_add (f := _), mul_add] using add_mem (hx i) (hy i)
     | smul a x _ hx =>
       intro i
       simp only [Pi.smul_apply]
@@ -768,8 +762,7 @@ theorem lvB_lat_up (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) :
   | zero => intro i; simp
   | add x y _ _ hx hy =>
     intro i
-    simp only [Pi.add_apply, mul_add]
-    exact add_mem (hx i) (hy i)
+    simpa only [Pi.add_apply, mul_add] using add_mem (hx i) (hy i)
   | smul r y _ hy =>
     intro i
     simp only [Pi.smul_apply, Subring.smul_def, smul_eq_mul]
@@ -999,7 +992,6 @@ namespace PI.UnitaryGroupMassFormula.InHHClassFin
 theorem sigConj : SigConj := by
   intro I τ
   ext a
-  show τ (star a) = starRingEnd ℂ (τ a)
   exact I.cm.cmUnram.2.1 τ a
 
 end PI.UnitaryGroupMassFormula.InHHClassFin

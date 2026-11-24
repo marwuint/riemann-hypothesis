@@ -127,12 +127,9 @@ theorem cut_adjoin' (L' : Submodule (𝓞 K) V') : S.cut (S.adjoin L') = L' := b
   constructor
   · rintro ⟨r, b, hb, he⟩
     have h0 : (0 : K) • S.x₀ + S.ι a = (algebraMap (𝓞 K) K r) • S.x₀ + S.ι b := by
-      rw [zero_smul, zero_add]
-      exact he
-    rw [(S.comb_eq_iff.mp h0).2]
-    exact hb
-  · intro ha
-    exact ⟨0, a, ha, by simp⟩
+      rwa [zero_smul, zero_add]
+    rwa [(S.comb_eq_iff.mp h0).2]
+  · exact fun ha => ⟨0, a, ha, by simp⟩
 
 theorem adjoin_cut' (h1 : h S.x₀ S.x₀ = 1) {L : Submodule (𝓞 K) V}
     (hL : Formalism.HermitianLatticesTheory.IsIntegralLat h L) (hx : S.x₀ ∈ L) : S.adjoin (S.cut L) = L := by
@@ -180,14 +177,12 @@ theorem isLattice_adjoin_iff' (L' : Submodule (𝓞 K) V') :
     have hFG : (L'.map (S.ι.restrictScalars (𝓞 K))).FG :=
       hL.fg.of_le (by unfold VecSplit.adjoin; exact le_sup_right)
     refine ⟨Submodule.fg_of_fg_map_injective (S.ι.restrictScalars (𝓞 K)) S.inj hFG, ?_⟩
-    intro s hs hli
-    exact (LinearIndependent.iff_fractionRing _ _).mp hli
+    exact fun s hs hli => (LinearIndependent.iff_fractionRing _ _).mp hli
   · intro hL
     refine ⟨?_, ?_⟩
     · unfold VecSplit.adjoin
       exact (Submodule.fg_span_singleton _).sup (hL.fg.map _)
-    · intro s hs hli
-      exact (LinearIndependent.iff_fractionRing _ _).mp hli
+    · exact fun s hs hli => (LinearIndependent.iff_fractionRing _ _).mp hli
 theorem isIntegralLat_adjoin_iff' (hs : h.IsSymm) (h1 : h S.x₀ S.x₀ = 1) (L' : Submodule (𝓞 K) V') :
     Formalism.HermitianLatticesTheory.IsIntegralLat h (S.adjoin L') ↔ Formalism.HermitianLatticesTheory.IsIntegralLat h' L' := by
   unfold Formalism.HermitianLatticesTheory.IsIntegralLat

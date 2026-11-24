@@ -473,14 +473,11 @@ theorem Hm_fix (y : VA X.B.I) (hy : PWl X u y = 0) : Hm X u G *ᵥ y = y := by
   first
   | simp [Hf, hy]
 
-theorem Hm_e (a : Fin D.R.rS) : Hm X u G *ᵥ eA X a = eA X a := by
-  exact Hm_fix _ (PW_e X u a)
+theorem Hm_e (a : Fin D.R.rS) : Hm X u G *ᵥ eA X a = eA X a := Hm_fix _ (PW_e X u a)
 
-theorem Hm_f (a : Fin D.R.rS) : Hm X u G *ᵥ fA X a = fA X a := by
-  exact Hm_fix _ (PW_f X u a)
+theorem Hm_f (a : Fin D.R.rS) : Hm X u G *ᵥ fA X a = fA X a := Hm_fix _ (PW_f X u a)
 
-theorem levi_fixes_z : Hm X u G *ᵥ zA X u = zA X u := by
-  exact Hm_fix _ (levi_projection_z_zero X u)
+theorem levi_fixes_z : Hm X u G *ᵥ zA X u = zA X u := Hm_fix _ (levi_projection_z_zero X u)
 
 theorem SA.hA_H (h : SA (u := u) G G') (x y : VA X.B.I) :
     hA X.B.I (Hm X u G *ᵥ x) (Hm X u G *ᵥ y) = hA X.B.I x y := by
@@ -506,8 +503,7 @@ theorem SA.hA_H (h : SA (u := u) G G') (x y : VA X.B.I) :
     have ex : PWl X u (G *ᵥ PWl X u x) + ((G *ᵥ PWl X u x) - PWl X u (G *ᵥ PWl X u x)) = (G *ᵥ PWl X u x) := by abel
     have ey : PWl X u (G *ᵥ PWl X u y) + ((G *ᵥ PWl X u y) - PWl X u (G *ᵥ PWl X u y)) = (G *ᵥ PWl X u y) := by abel
     rw [← ex, ← ey] at h0
-    simp only [hA_add_left_lemma_4, hA_add_right_lemma_2, z1, z2, z3, add_zero] at h0
-    exact h0
+    simpa only [hA_add_left_lemma_4, hA_add_right_lemma_2, z1, z2, z3, add_zero] using h0
   rw [hA_sub_PW_self X u (Hm X u G *ᵥ x) (Hm X u G *ᵥ y), hRH, hRH, hPH, hPH, core, ← hA_sub_PW_self X u x y]
 
 theorem Hl_comp (h : SA (u := u) G G') (h' : SA (u := u) G' G) : (Hl X u G).comp (Hl X u G') = LinearMap.id := by
@@ -623,8 +619,7 @@ theorem finLevi_holds : Formalism.L2.SG.Pf.FinLevi X u := by
   group
 
 theorem finLeviC_holds : Formalism.L2.SG.Pf.FinLeviC := by
-  intro D X u
-  exact finLevi_holds X u
+  exact fun D X u => finLevi_holds X u
 
 end Final
 

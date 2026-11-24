@@ -119,17 +119,13 @@ theorem coreExt_of (W : LocWach PD LL O v n) (E : EtTie W RA RW inclR φR gR πA
       have hyT : y0 ∈ T.L.T := hsat y0 (by rw [hy0]; exact (p0 b).2)
       exact ⟨⟨y0, hyT⟩, Subtype.ext hy0⟩
     have hι'inj : Function.Injective ι' := by
-      intro a b hab
-      exact Subtype.ext (hιinj (congrArg Subtype.val hab))
+      exact fun a b hab => Subtype.ext (hιinj (congrArg Subtype.val hab))
     let e := LinearEquiv.ofInjective ι' hι'inj
     let cr := p0.codRestrict (LinearMap.range ι') hrange
     let r : ↥Tp.L.T →ₗ[O] ↥T.L.T := e.symm.toLinearMap ∘ₗ cr
     have hr : ∀ a, r (ι' a) = a := by
       intro a
-      have hπι : π' (ι' a) = 0 := by
-        apply Subtype.ext
-        show π.f (ι.f (a : T.V)) = 0
-        exact (hex _).2 ⟨a, rfl⟩
+      have hπι : π' (ι' a) = 0 := Subtype.ext ((hex _).2 ⟨a, rfl⟩)
       have hcr : cr (ι' a) = e a := by
         apply Subtype.ext
         simp only [cr, p0, LinearMap.codRestrict_apply, LinearMap.sub_apply, LinearMap.id_apply,
@@ -161,8 +157,7 @@ theorem coreExt_of (W : LocWach PD LL O v n) (E : EtTie W RA RW inclR φR gR πA
     have h0 := pull_cocycle W ι hinj W.gam _ y z hy' hz'
     simp only [LocWach.divisibleCocycles, herrCocycles, LinearMap.mem_ker, LinearMap.coprod_apply, LinearMap.sub_apply,
       LinearMap.neg_apply, LinearMap.id_apply]
-    rw [← sub_eq_add_neg]
-    exact h0
+    rwa [← sub_eq_add_neg]
   refine ⟨y, z, hcoc, ?_, ?_, ?_⟩
   · have hy2 : W.Q ^ Formalism.MainNotions.DeltaInvariantLattices.mx Mi • y ∈ W.N T := hy
     have hn : n ≠ 0 := by

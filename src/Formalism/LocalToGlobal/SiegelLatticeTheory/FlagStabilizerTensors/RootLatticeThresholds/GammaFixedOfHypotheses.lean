@@ -239,14 +239,8 @@ theorem card_gl_div_unipotent (K : Type) [Field K] [Fintype K] (k : ℕ) :
     refine Nat.card_congr (Equiv.subtypeEquivRight fun x => ?_)
     show Formalism.L2.SG.GGMirabolic.IsUni k x ↔ Formalism.DoubleCosetMeasures.IsUpUni (x : Matrix (Fin k) (Fin k) K)
     constructor
-    · intro h
-      refine ⟨?_, h.1⟩
-      intro i j hij
-      exact h.2 i j hij
-    · intro h
-      refine ⟨h.2, ?_⟩
-      intro i j hij
-      exact h.1 hij
+    · exact fun h => ⟨fun i j hij => h.2 i j hij, h.1⟩
+    · exact fun h => ⟨h.2, fun i j hij => h.1 hij⟩
   have hG := Formalism.FourierDecayAlt.P.gamma_factor_product K k
   have hq : 1 ≤ Fintype.card K := Fintype.card_pos
   have hpos : 0 < Nat.card (Formalism.DoubleCosetMeasures.upUniG K k) := Nat.card_pos

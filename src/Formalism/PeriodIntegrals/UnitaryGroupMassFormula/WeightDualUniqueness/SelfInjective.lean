@@ -82,13 +82,11 @@ variable {ρa ρb}
 theorem flip_injective [ρb.IsIrreducible] (B : Va →ₗ[ℂ] Vb →ₗ[ℂ] ℂ) (hB : Inv ρa ρb B) (h0 : B ≠ 0) :
     Function.Injective B.flip := by
   rcases IsSimpleOrder.eq_bot_or_eq_top (rKer ρa ρb B hB) with h | h
-  · have hk : LinearMap.ker B.flip = ⊥ := by
-      exact (congrArg Subrepresentation.toSubmodule h).trans rfl
+  · have hk : LinearMap.ker B.flip = ⊥ := (congrArg Subrepresentation.toSubmodule h).trans rfl
     exact LinearMap.ker_eq_bot.mp hk
   · exfalso
     apply h0
-    have hk : LinearMap.ker B.flip = ⊤ := by
-      exact (congrArg Subrepresentation.toSubmodule h).trans rfl
+    have hk : LinearMap.ker B.flip = ⊤ := (congrArg Subrepresentation.toSubmodule h).trans rfl
     ext x y
     have hy : y ∈ LinearMap.ker B.flip := by rw [hk]; trivial
     rw [LinearMap.mem_ker] at hy
@@ -97,13 +95,11 @@ theorem flip_injective [ρb.IsIrreducible] (B : Va →ₗ[ℂ] Vb →ₗ[ℂ] �
 theorem self_injective [ρa.IsIrreducible] (B : Va →ₗ[ℂ] Vb →ₗ[ℂ] ℂ) (hB : Inv ρa ρb B) (h0 : B ≠ 0) :
     Function.Injective B := by
   rcases IsSimpleOrder.eq_bot_or_eq_top (lKer ρa ρb B hB) with h | h
-  · have hk : LinearMap.ker B = ⊥ := by
-      exact (congrArg Subrepresentation.toSubmodule h).trans rfl
+  · have hk : LinearMap.ker B = ⊥ := (congrArg Subrepresentation.toSubmodule h).trans rfl
     exact LinearMap.ker_eq_bot.mp hk
   · exfalso
     apply h0
-    have hk : LinearMap.ker B = ⊤ := by
-      exact (congrArg Subrepresentation.toSubmodule h).trans rfl
+    have hk : LinearMap.ker B = ⊤ := (congrArg Subrepresentation.toSubmodule h).trans rfl
     ext x y
     have hx : x ∈ LinearMap.ker B := by rw [hk]; trivial
     rw [LinearMap.mem_ker] at hx
@@ -130,8 +126,7 @@ theorem phi_equiv [FiniteDimensional ℂ Va] [FiniteDimensional ℂ Vb] [ρa.IsI
     phi B hB h0 (ρb g y) x = phi B hB h0 y (ρa g⁻¹ x) := by
   rw [phi_apply, phi_apply]
   have h1 := hB g (ρa g⁻¹ x) y
-  rw [Representation.self_inv_apply] at h1
-  exact h1
+  rwa [Representation.self_inv_apply] at h1
 
 theorem dual_unique {Vc : Type*} [AddCommGroup Vc] [Module ℂ Vc] {ρc : Representation ℂ G Vc}
     [FiniteDimensional ℂ Va] [FiniteDimensional ℂ Vb] [FiniteDimensional ℂ Vc]

@@ -90,8 +90,7 @@ theorem analyticAt_U {ι : Type} [Fintype ι] {N N' : ℕ} (A : ℝ)
   · have hshift : AnalyticAt ℂ (fun z : ι → Fin N' → Fin N → ℂ => z + x) c :=
       analyticAt_id.add analyticAt_const
     exact (hG (c + x) (Set.mem_univ _)).comp (f := fun z => z + x) hshift
-  · refine AnalyticAt.cexp' ?_
-    exact (analyticAt_const.mul (analyticAt_Hf_left A x c)).sub analyticAt_const
+  · exact AnalyticAt.cexp' ((analyticAt_const.mul (analyticAt_Hf_left A x c)).sub analyticAt_const)
 
 theorem iopEntire : IopEntire := by
   intro ι _ N N' d A La₁ La₂ G hG c _
@@ -114,8 +113,7 @@ theorem iopEntire : IopEntire := by
       rw [finsum_eq_sum_of_fintype]
     rw [hfun]
     refine analyticAt_const.mul ?_
-    refine Finset.analyticAt_fun_sum _ (fun q _ => ?_)
-    exact analyticAt_const.mul (analyticAt_U A _ G hG c)
+    exact Finset.analyticAt_fun_sum _ (fun q _ => analyticAt_const.mul (analyticAt_U A _ G hG c))
 
 def blockL (n : Type) [Fintype n] (N N' : ℕ) (i : Fin N') (j : Fin N) :
     (n → Fin N' → Fin N → ℂ) →L[ℂ] (n → ℂ) :=

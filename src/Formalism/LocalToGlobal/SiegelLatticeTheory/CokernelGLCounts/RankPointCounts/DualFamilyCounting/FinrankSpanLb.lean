@@ -76,8 +76,7 @@ theorem ker_phi : LinearMap.ker (phi X) = Wb X := by
   ext y
   rw [LinearMap.mem_ker, mem_Wb, phi_apply]
   constructor
-  · intro h c
-    exact ⟨congrFun (congrArg Prod.fst h) c, congrFun (congrArg Prod.snd h) c⟩
+  · exact fun h c => ⟨congrFun (congrArg Prod.fst h) c, congrFun (congrArg Prod.snd h) c⟩
   · intro h
     refine Prod.ext (funext fun c => (h c).1) (funext fun c => (h c).2)
 
@@ -102,8 +101,7 @@ theorem finrank_Wb : Module.finrank D.host.E (Wb X) = D.R.k + 1 := by
 
 theorem span_Lb_le : Submodule.span D.host.E (X.Lb : Set (VS D).V) ≤ Wb X := by
   rw [Submodule.span_le]
-  intro x hx
-  exact (mem_Wb X).2 fun c => X.Lb_perp x hx c
+  exact fun x hx => (mem_Wb X).2 fun c => X.Lb_perp x hx c
 
 theorem span_Lb : Submodule.span D.host.E (X.Lb : Set (VS D).V) = Wb X := by
   refine le_antisymm (span_Lb_le X) fun y hy => ?_
@@ -162,10 +160,8 @@ theorem span_Lb : Submodule.span D.host.E (X.Lb : Set (VS D).V) = Wb X := by
     intro c
     have := (hy' c).1
 
-    simp [map_add (f := _), map_sum, map_smul, X.ef, X.ee, (hlW c).1, Finset.sum_ite_eq] at this
-    exact this
-  simp only [hα, hβ, zero_smul, Finset.sum_const_zero, zero_add, add_zero]
-  exact hl
+    simpa [map_add (f := _), map_sum, map_smul, X.ef, X.ee, (hlW c).1, Finset.sum_ite_eq] using this
+  simpa only [hα, hβ, zero_smul, Finset.sum_const_zero, zero_add, add_zero] using hl
 
 theorem finrank_span_Lb : Module.finrank D.host.E (Submodule.span D.host.E (X.Lb : Set (VS D).V)) = D.R.k + 1 := by
   rw [span_Lb, finrank_Wb]

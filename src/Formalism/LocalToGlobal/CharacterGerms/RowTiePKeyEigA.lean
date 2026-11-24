@@ -85,8 +85,7 @@ theorem MT.smul (c : C) (h : MT V A B) : MT V (fun k => c • A k) (c • B) :=
 
 theorem MT.mul (h : MT V A B) (h' : MT V A' B') : MT V (fun k => A k * A' k) (B * B') := by
   intro i j
-  simp only [Matrix.mul_apply]
-  exact Tends.sum Finset.univ (fun l _ => (h i l).mul (h' l j))
+  simpa only [Matrix.mul_apply] using Tends.sum Finset.univ (fun l _ => (h i l).mul (h' l j))
 
 theorem MT.pow (h : MT V A B) (m : ℕ) : MT V (fun k => A k ^ m) (B ^ m) := by
   induction m with
@@ -168,8 +167,7 @@ theorem P_idem : K.P * K.P = K.P := by
       AddValuation.map_mul]
     have h2 : (((k + 1 : ℕ) : ℝ) : WithTop ℝ) ≤ V.v (((V.l ^ (k + 1) : ℕ) : C)) := by
       have := ge_lpow (V := V) (k + 1)
-      rw [Nat.cast_pow]
-      exact this
+      rwa [Nat.cast_pow]
     have h3 : ((0 : ℝ) : WithTop ℝ) ≤ V.v (K.ρ (z k) i j) := K.ρ_int _ i j
     have h4r : w ≤ ((k + 1 : ℕ) : ℝ) :=
       (Nat.le_ceil w).trans (by exact_mod_cast (by omega : ⌈w⌉₊ ≤ k + 1))

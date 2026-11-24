@@ -175,8 +175,7 @@ theorem nu_pos (hρ : 0 < ρ) (r : ℝ) (hr : 0 < r) : 0 < C.nu ρ μ (closedBal
   have hUo : IsOpen (C.mat ⁻¹' W) := hWo.preimage C.emb.continuous
   have hU1 : (1 : G) ∈ C.mat ⁻¹' W := by
     show C.mat 1 ∈ W
-    rw [map_one]
-    exact hW1
+    rwa [map_one]
   have hsub : C.mat ⁻¹' W ⊆ C.expG '' (closedBall 0 r ∩ ball 0 ρ) := by
     intro g hg
     obtain ⟨he, hn⟩ := hWsub hg
@@ -185,11 +184,9 @@ theorem nu_pos (hρ : 0 < ρ) (r : ℝ) (hr : 0 < r) : 0 < C.nu ρ μ (closedBal
     refine ⟨⟨logA (𝔸 := 𝔸) (C.mat g), hZV⟩, ⟨?_, ?_⟩, ?_⟩
     · rw [mem_closedBall_zero_iff]
       exact le_of_lt (lt_of_lt_of_le hn (min_le_left _ _))
-    · rw [mem_ball_zero_iff]
-      exact hZρ
+    · rwa [mem_ball_zero_iff]
     · apply C.emb.injective
-      rw [C.mat_expG]
-      exact he
+      rwa [C.mat_expG]
   rw [C.nu_apply hR μ measurableSet_closedBall]
   exact lt_of_lt_of_le (hUo.measure_pos μ ⟨1, hU1⟩) (measure_mono hsub)
 
@@ -209,8 +206,7 @@ theorem nu_qinv (hρ : 0 < ρ) (ε : ℝ) (hε0 : 0 < ε) (hε1 : ε < 1) : ∃ 
     apply measure_mono
     rintro _ ⟨_, ⟨Y, ⟨hY1, hY2⟩, rfl⟩, rfl⟩
     have hW : ‖(Y : 𝔸) - X‖ ≤ (1 - ε) * r := by
-      rw [mem_closedBall_iff_norm] at hY1
-      exact hY1
+      rwa [mem_closedBall_iff_norm] at hY1
     have hW0 : 0 ≤ ‖(Y : 𝔸) - X‖ := norm_nonneg _
     have hWk : ‖(Y : 𝔸) - X‖ < κ := by nlinarith
     obtain ⟨⟨he, hn⟩, -⟩ := hd X ((Y : 𝔸) - X) (by linarith) hWk
@@ -227,20 +223,16 @@ theorem nu_qinv (hρ : 0 < ρ) (ε : ℝ) (hε0 : 0 < ε) (hε1 : ε < 1) : ∃ 
       rw [hmul, C.mat_expG, C.mat_expG, he, Submodule.coe_neg]
     have hZV := (hR _ hZρ).2 ⟨_, hex.symm⟩
     refine ⟨⟨_, hZV⟩, ⟨?_, ?_⟩, ?_⟩
-    · rw [mem_closedBall_zero_iff]
-      exact hZn
-    · rw [mem_ball_zero_iff]
-      exact hZρ
+    · rwa [mem_closedBall_zero_iff]
+    · rwa [mem_ball_zero_iff]
     · apply C.emb.injective
-      rw [C.mat_expG]
-      exact hex
+      rwa [C.mat_expG]
   · rw [C.nu_apply hR μ measurableSet_closedBall, C.nu_apply hR μ measurableSet_closedBall,
       ← measure_smul μ (C.expG X)]
     apply measure_mono
     rintro _ ⟨_, ⟨Z, ⟨hZ1, hZ2⟩, rfl⟩, rfl⟩
     have hZ : ‖(Z : 𝔸)‖ ≤ r := by
-      rw [mem_closedBall_zero_iff] at hZ1
-      exact hZ1
+      rwa [mem_closedBall_zero_iff] at hZ1
     have hZ0 : 0 ≤ ‖(Z : 𝔸)‖ := norm_nonneg _
     obtain ⟨-, ⟨he, hn⟩⟩ := hd X Z (by linarith) (by linarith)
     have h1 := norm_sub_norm_le (F2 ((X : 𝔸), (Z : 𝔸)) - X) (Z : 𝔸)
@@ -257,13 +249,10 @@ theorem nu_qinv (hρ : 0 < ρ) (ε : ℝ) (hε0 : 0 < ε) (hε1 : ε < 1) : ∃ 
       rw [hmul, C.mat_expG, C.mat_expG, he]
     have hYV := (hR _ hYρ).2 ⟨_, hex.symm⟩
     refine ⟨⟨_, hYV⟩, ⟨?_, ?_⟩, ?_⟩
-    · rw [mem_closedBall_iff_norm]
-      exact hYX
-    · rw [mem_ball_zero_iff]
-      exact hYρ
+    · rwa [mem_closedBall_iff_norm]
+    · rwa [mem_ball_zero_iff]
     · apply C.emb.injective
-      rw [C.mat_expG]
-      exact hex
+      rwa [C.mat_expG]
 
 theorem exists_density (lam : Measure V) [lam.IsAddHaarMeasure] :
     ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧ ∀ S : ℝ → Set V, (∀ r, MeasurableSet (S r)) →

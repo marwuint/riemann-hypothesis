@@ -79,15 +79,11 @@ theorem isLattice_gmap_of_flag_isometry {T : D.host.E} (F0 : FlagG (VS D) D.R.rS
     · intro h
       have h' : σ.symm x ∈ F0.X := h
       have := hX _ h'
-      have e : σ.symm x = x := by
-        apply σ.symm.injective
-        exact this
-      rw [e] at h
-      exact h
+      have e : σ.symm x = x := σ.symm.injective this
+      rwa [e] at h
     · intro h
       have h' : x ∈ F0.X := h
-      rw [hX x h']
-      exact h
+      rwa [hX x h']
   have hgO : gmap σ (toO (hS D) (orth (hS D) F0.X)) = toO (hS D) (orth (hS D) F0.X) := by
     ext y
     rw [isomAct_mem_gmap]
@@ -111,12 +107,10 @@ theorem isLattice_gmap_of_flag_isometry {T : D.host.E} (F0 : FlagG (VS D) D.R.rS
     · intro h
       have h' : σ.symm x ∈ F0.X := h.2
       have e : σ.symm x = x := σ.symm.injective (hX _ h')
-      rw [e] at h
-      exact h
+      rwa [e] at h
     · intro h
       have h' : x ∈ F0.X := h.2
-      rw [hX x h']
-      exact h
+      rwa [hX x h']
   have hLsub : Lsub (gmap σ Λ) (lf D F0) = gmap σ (Lsub Λ (lf D F0)) := by
     unfold Lsub Lrep
     rw [gmap_inf_cayley_degree_nondegeneracy, gmap_sup_cayley_degree_nondegeneracy, gmap_inf_cayley_degree_nondegeneracy]
@@ -144,8 +138,7 @@ theorem isLattice_gmap_of_flag_isometry {T : D.host.E} (F0 : FlagG (VS D) D.R.rS
     exact hConv.1
   · rw [hLsub, isomAct_mem_gmap, map_smul] at hc
     change c • σ.symm F0.z ∈ _ at hc
-    rw [hz] at hc
-    exact hc
+    rwa [hz] at hc
 
 variable (D)
 

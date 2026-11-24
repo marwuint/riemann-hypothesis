@@ -111,17 +111,14 @@ theorem not_sq_cyc (K : Type*) [Field K] [NumberField K] (N : ℕ) [NeZero N]
   have hint : IsIntegral ℤ x := by
     refine ⟨X ^ 2 - C ((p * m : ℤ)), monic_X_pow_sub_C _ two_ne_zero, ?_⟩
     rw [eval₂_sub, eval₂_X_pow, eval₂_C, hx, eq_intCast, sub_self]
-  refine not_sq_in_cyclotomic_ring K N p hpN m hm ⟨x, hint⟩ ?_
-  apply RingOfIntegers.ext
-  exact hx
+  exact not_sq_in_cyclotomic_ring K N p hpN m hm ⟨x, hint⟩ (RingOfIntegers.ext hx)
 
 section Signs
 
 variable {L : Type} [Field L] [NumberField L]
 
 theorem pm_of_sq {x : L} {c : ℕ} (hx : x ^ 2 = -(c : L)) (σ : Gal(L/ℚ)) :
-    σ x = x ∨ σ x = -x := by
-  exact sq_eq_sq_iff_eq_or_eq_neg.mp (by rw [← map_pow, hx, map_neg, map_natCast])
+    σ x = x ∨ σ x = -x := sq_eq_sq_iff_eq_or_eq_neg.mp (by rw [← map_pow, hx, map_neg, map_natCast])
 
 theorem ne_zero_of_sq {x : L} {c : ℕ} (hc : c ≠ 0) (hx : x ^ 2 = -(c : L)) : x ≠ 0 := by
   rintro rfl

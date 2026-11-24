@@ -90,11 +90,7 @@ theorem rmul_haar (ν : Measure (Mt k r)) (hH : IsHaarOn (UWb k r) ν) (p : Mat 
   · rw [Ne, Measure.map_eq_zero_iff (rmulM_meas p).aemeasurable]; exact h0
   · have hms : MeasurableSet {x : Mt k r | Matrix.of x ∉ UWb k r} := amb_closed.isOpen_compl.measurableSet
     rw [Measure.map_apply (rmulM_meas p) hms]
-    refine measure_mono_null (fun x hx => ?_) hc
-    intro hxm
-    apply hx
-    show Matrix.of x * p ∈ UWb k r
-    exact uwb_mul hxm hp
+    exact measure_mono_null (fun x hx => (fun hxm => hx (uwb_mul hxm hp))) hc
   · intro s hs
     rw [Measure.map_map (lmulM_cont s).measurable (rmulM_meas p), lr_comm,
       ← Measure.map_map (rmulM_meas p) (lmulM_cont s).measurable, hl s hs]

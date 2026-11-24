@@ -96,8 +96,7 @@ theorem gradNPf_fΔ (s' : ℕ) (w : (LetA O n)ˣ) (π' f : LetA O n)
   apply Formalism.MainNotions.LiftingTheory.lifta_reg W π' _ _ hu
   have h1 : W.γA δ (W.γA W.gam π') = W.γA W.gam π' := by
     rw [_root_.Formalism.MainNotions.LiftingTheory.gammaA_comm, hπΔ δ hδ]
-  rw [hf, map_mul, hπΔ δ hδ] at h1
-  exact h1
+  rwa [hf, map_mul, hπΔ δ hδ] at h1
 
 theorem gradNPf_expand (π' a : LetA O n) (hπ0 : ∀ i, PowerSeries.constantCoeff (π' i) = 0)
     (F : ZMod n → PowerSeries O) (hF : ∀ i, a i = PowerSeries.subst (π' i) (F i))
@@ -158,8 +157,7 @@ theorem exists_gam_pi_factor (T : LocLat G Qp LL O) (e s' : ℕ) (hs : 1 ≤ s')
     refine ⟨((w₀ : LetA O n) * ((w⁻¹ : (LetA O n)ˣ) : LetA O n)) • x', (W.N T).smul_mem _ hx'.1, ?_⟩
     have hπ₀ : π'₀ = ((w₀ : LetA O n) * ((w⁻¹ : (LetA O n)ˣ) : LetA O n)) * π' := by
       rw [hw₀, hw, mul_assoc, ← mul_assoc ((w⁻¹ : (LetA O n)ˣ) : LetA O n), Units.inv_mul, one_mul]
-    rw [smul_smul, mul_comm π', ← hπ₀]
-    exact hxe
+    rwa [smul_smul, mul_comm π', ← hπ₀]
 
 end Local
 
@@ -199,13 +197,11 @@ theorem gradNPf_hyps (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     exact ⟨fun h => ⟨⟨y, h⟩, rfl⟩, fun ⟨a, ha⟩ => ha ▸ a.2⟩
   have hlv : (D.loc l).v LL (l : ↥LL.1) = 1 := (D.loc l).v_l LL
   have hlO : (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 (l : ↥(OL LL))) = 1 := by
-    rw [map_natCast]
-    exact hlv
+    rwa [map_natCast]
   have hxv : (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1
       ((((HW l).W K 1 LL hG).χΓ ((HW l).W K 1 LL hG).gam : (↥(OL LL))ˣ) : ↥(OL LL)) - 1) = 1 := by
     have := ((HW l).W K 1 LL hG).gam_gen
-    rw [hs1, Nat.cast_one] at this
-    exact this
+    rwa [hs1, Nat.cast_one] at this
   obtain ⟨u, hu, hxu⟩ := gradNPf_sub_one ((D.loc l).v LL) (algebraMap ↥(OL LL) ↥LL.1) hι hRv
     (l : ↥(OL LL)) _ hlO hxv
   have hsl : ¬ l ∣ sK l K := by

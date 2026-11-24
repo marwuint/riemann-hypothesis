@@ -81,9 +81,7 @@ theorem card_eq_card_quotient_pow_of_ideal_smul_eq_zero {M : Type} [AddCommGroup
     (hM : ∀ p ∈ Q.asIdeal, ∀ x : M, p • x = 0) : ∃ m, Nat.card M = Nat.card (𝓞 E ⧸ Q.asIdeal) ^ m := by
   haveI : Q.asIdeal.IsMaximal := Q.isMaximal
   letI : Field (𝓞 E ⧸ Q.asIdeal) := Ideal.Quotient.field Q.asIdeal
-  have htor : Module.IsTorsionBySet (𝓞 E) M (Q.asIdeal : Set (𝓞 E)) := by
-    intro x a
-    exact hM a.1 a.2 x
+  have htor : Module.IsTorsionBySet (𝓞 E) M (Q.asIdeal : Set (𝓞 E)) := fun x a => hM a.1 a.2 x
   letI : Module (𝓞 E ⧸ Q.asIdeal) M := htor.module
   haveI : Module.Finite (𝓞 E ⧸ Q.asIdeal) M := Module.Finite.of_finite
   refine ⟨Module.finrank (𝓞 E ⧸ Q.asIdeal) M, ?_⟩
@@ -415,11 +413,9 @@ theorem ideal_sq_smul_le {P : HeightOneSpectrum (𝓞 E)} {N M B : Submodule (�
     rw [Submodule.mul_smul, Submodule.smul_le]
     intro a ha y hy
     refine Submodule.smul_induction_on (p := fun y => a • y ∈ N) hy ?_ ?_
-    · intro r hr x hx
-      exact hPM a ha r hr x hx
+    · exact fun r hr x hx => hPM a ha r hr x hx
     · intro x y hx hy
-      simp only [smul_add]
-      exact N.add_mem hx hy
+      simpa only [smul_add] using N.add_mem hx hy
   exact le_trans hMN hB
 
 theorem card_paths_eq_submodulePairs (P : HeightOneSpectrum (𝓞 E)) (hne : conjPrime₂ P ≠ P)
@@ -507,8 +503,7 @@ theorem card_paths_eq_submodulePairs (P : HeightOneSpectrum (𝓞 E)) (hne : con
         rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, hB', Submodule.mem_comap, map_smul]
         exact hY1 (Submodule.smul_mem_smul hp Submodule.mem_top)
     have hcardB : Nat.card (N ⧸ B') = Nat.card (𝓞 E ⧸ (conjPrime₂ P).asIdeal) ^ i := by
-      rw [← Nat.card_congr (Submodule.quotientQuotientEquivQuotient C' B' hC'B').toEquiv, hYB]
-      exact hY3
+      rwa [← Nat.card_congr (Submodule.quotientQuotientEquivQuotient C' B' hC'B').toEquiv, hYB]
     obtain ⟨ψ⟩ := wmp_quot_equiv_of_card (conjPrime₂ P) (N ⧸ B') hkillB hcardB
     let φ : N →ₗ[𝓞 E] (Fin i → 𝓞 E ⧸ (conjPrime₂ P).asIdeal) := (ψ : (N ⧸ B') →ₗ[𝓞 E] _) ∘ₗ B'.mkQ
     have hφ : Function.Surjective φ := ψ.surjective.comp (Submodule.mkQ_surjective B')
@@ -544,10 +539,8 @@ theorem card_paths_eq_submodulePairs (P : HeightOneSpectrum (𝓞 E)) (hne : con
       rw [Submodule.smul_le]
       intro p hp x hx
       refine conj_smul_dual_mem hu hPbar ?_ ?_
-      · rw [mem_conjP, cO_cO]
-        exact hp
-      · rw [show dual (hStd E n) M = M from f.2.uni]
-        exact hx
+      · rwa [mem_conjP, cO_cO]
+      · rwa [show dual (hStd E n) M = M from f.2.uni]
 
     have hkill' : ∀ p ∈ (conjPrime₂ P).asIdeal, ∀ z : N' ⧸ (M ⊓ N').comap N'.subtype, p • z = 0 := by
       intro p hp z
@@ -558,11 +551,9 @@ theorem card_paths_eq_submodulePairs (P : HeightOneSpectrum (𝓞 E)) (hne : con
     have hcard' : Nat.card (N' ⧸ (M ⊓ N').comap N'.subtype) = Nat.card (𝓞 E ⧸ (conjPrime₂ P).asIdeal) ^ j := by
       obtain ⟨c1, c2⟩ := card_quotient_relIndex (N := N) hCB
       have hBNi : B.toAddSubgroup.relIndex N.toAddSubgroup = Nat.card (𝓞 E ⧸ (conjPrime₂ P).asIdeal) ^ i := by
-        rw [← wmp_card_quot, hB'eq]
-        exact hcardB
+        rwa [← wmp_card_quot, hB'eq]
       have hYc : Nat.card ((B.comap N.subtype).map C'.mkQ) = Nat.card (𝓞 E ⧸ (conjPrime₂ P).asIdeal) ^ j := by
-        rw [hB'eq, hYB]
-        exact hY4
+        rwa [hB'eq, hYB]
       have hmul := AddSubgroup.relIndex_mul_relIndex (H := (M ⊓ N).toAddSubgroup) (K := B.toAddSubgroup)
         (L := N.toAddSubgroup) (fun x hx => hCB hx) (fun x hx => hBN hx)
       rw [hYc, hBNi] at c2
@@ -661,8 +652,7 @@ theorem topNeighbour_inf_eq (Q : HeightOneSpectrum (𝓞 E)) {N Z : Submodule (�
     exact Nat.card_congr (ρ.quotKerEquivOfSurjective hρs).toEquiv
   have c2 : Nat.card (N ⧸ (Z ⊓ N).comap N.subtype) = Nat.card (Fin n → 𝓞 E ⧸ (conjPrime₂ Q).asIdeal) :=
     Nat.card_congr e.toEquiv
-  rw [← c2] at c1
-  rw [wmp_card_quot, wmp_card_quot] at c1
+  rw [← c2, wmp_card_quot, wmp_card_quot] at c1
   rw [wmp_card_quot] at hpos
   have hm := AddSubgroup.relIndex_mul_relIndex ((conjPrime₂ Q).asIdeal • N).toAddSubgroup
     (Z ⊓ N).toAddSubgroup N.toAddSubgroup ((Submodule.toAddSubgroup_le _ _).mpr hle)
@@ -690,8 +680,7 @@ theorem dual_ideal_smul_le (Q : HeightOneSpectrum (𝓞 E)) {Z H : Submodule (�
   refine Submodule.smul_le.mpr fun r hr x hx => ?_
   have hr' : cO E r ∈ Q.asIdeal := Ideal.mem_comap.mp hr
   have hx' := (mem_dual_smul Q.asIdeal Z x).mp (hd hx) (cO E r) hr'
-  rw [cO_cO, show dual (hStd E n) Z = Z from huZ] at hx'
-  exact hx'
+  rwa [cO_cO, show dual (hStd E n) Z = Z from huZ] at hx'
 
 theorem neighbour_conj_of_topNeighbour (Q : HeightOneSpectrum (𝓞 E)) (hne : conjPrime₂ Q ≠ Q) {N Z H : Submodule (𝓞 E) (Sp E n)} {j : ℕ} (hj : j ≤ n)
     (hN : Submodule.IsLattice E N) (hZl : Submodule.IsLattice E Z) (hHl : Submodule.IsLattice E H)
@@ -702,8 +691,7 @@ theorem neighbour_conj_of_topNeighbour (Q : HeightOneSpectrum (𝓞 E)) (hne : c
   have hQbH := dual_ideal_smul_le Q huZ huH hQZ
   unfold IsHeckeNbr
   refine ⟨hQbH, ?_, ?_⟩
-  · rw [conjIdeal_asIdeal, conjugatePrime_conjugatePrime]
-    exact hQZ
+  · rwa [conjIdeal_asIdeal, conjugatePrime_conjugatePrime]
   · rw [conjIdeal_asIdeal, conjugatePrime_conjugatePrime]
     have hinf := topNeighbour_inf_eq Q hN huN hZ
     haveI : Finite (𝓞 E ⧸ Q.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot Q.asIdeal Q.ne_bot
@@ -734,8 +722,7 @@ theorem neighbour_conj_of_topNeighbour (Q : HeightOneSpectrum (𝓞 E)) (hne : c
       · exact le_inf (le_inf hQbN_Z hQbN_H) (le_inf hQbN_N hQbN_H)
     have hcop : Q.asIdeal ⊔ (conjPrime₂ Q).asIdeal = ⊤ := by
       refine Ideal.IsMaximal.coprime_of_ne Q.isMaximal (conjPrime₂ Q).isMaximal ?_
-      intro h
-      exact hne (IsDedekindDomain.HeightOneSpectrum.ext h.symm)
+      exact fun h => hne (IsDedekindDomain.HeightOneSpectrum.ext h.symm)
     have hsup : (Z ⊓ H) ⊔ (N ⊓ H) = H := by
       refine le_antisymm (sup_le inf_le_right inf_le_right) ?_
       intro x hx
@@ -925,10 +912,8 @@ theorem pathCount_conj_symm
         exact he.1
       · rw [heckeSet_conj_eq_topNeighbour P hne hST hSG hj (decoratedNeighbourAtPrime P e), topNeighbour_conj_involutive P hne hST hSG]
         exact he.2
-    · intro e _
-      exact topNeighbour_involutive_conj P hne hST hSG e
-    · intro e _
-      exact topNeighbour_conj_involutive P hne hST hSG e
+    · exact fun e _ => topNeighbour_involutive_conj P hne hST hSG e
+    · exact fun e _ => topNeighbour_conj_involutive P hne hST hSG e
   have hR : decorationPathCount (conjPrime₂ P).asIdeal P.asIdeal j i d f =
       decorationPathCount P.asIdeal P.asIdeal (n - j) i (decoratedNeighbourAtPrime (conjPrime₂ P) d) f := by
     unfold decorationPathCount

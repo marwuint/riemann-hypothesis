@@ -160,8 +160,7 @@ theorem param_left {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Formali
 
 theorem lint_rmul {μ : Measure (Formalism.QuantumDeterminants.Mt k r)} {a : Mx k r} (hμ : μ.map (B.rmulF a) = μ)
     {G : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞} (hG : Measurable G) :
-    ∫⁻ x, G (B.rmulF a x) ∂μ = ∫⁻ x, G x ∂μ := by
-  exact lintegral_comp_eq_of_map_eq hμ hG
+    ∫⁻ x, G (B.rmulF a x) ∂μ = ∫⁻ x, G x ∂μ := lintegral_comp_eq_of_map_eq hμ hG
 
 theorem lint_conj {μ : Measure (Formalism.QuantumDeterminants.Mt k r)} {a : Mx k r} (hμ : μ.map (Formalism.QuantumDeterminants.conjM a) = μ)
     {G : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞} (hG : Measurable G) :
@@ -179,24 +178,25 @@ theorem param_right {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Formal
   have hinv : h0⁻¹⁻¹ = h0 := Matrix.nonsing_inv_nonsing_inv _ (Matrix.isUnit_det_of_right_inverse h1)
   have hconj : μN.map (Formalism.QuantumDeterminants.conjM h0⁻¹) = μN :=
     Formalism.FourierDecayAlt.P.b2_conjInvRaw_proof k r z μN hz hT hN _ hi
+  have hmeas : ∀ {α : Type} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+      (g : α → Formalism.QuantumDeterminants.Mt k r), (∀ i j, Continuous fun a => g a i j) →
+      Measurable fun a => F (g a) :=
+    fun g hg => hF.comp (continuous_pi fun i => continuous_pi (hg i)).measurable
   have hm1 : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r =>
       F (fun i j => (Matrix.of p.1 * Matrix.of p.2 * (h0 * n0)) i j)) :=
-    (hF.comp (by
-        refine continuous_pi fun i => continuous_pi fun j => ?_
+    hmeas _ fun i j => by
         simp only [Matrix.mul_apply, Matrix.of_apply]
-        fun_prop : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2 * (h0 * n0)) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)
+        fun_prop
   have hm2 : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r =>
       F (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j)) :=
-    (hF.comp (by
-        refine continuous_pi fun i => continuous_pi fun j => ?_
+    hmeas _ fun i j => by
         simp only [Matrix.mul_apply, Matrix.of_apply]
-        fun_prop : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)
+        fun_prop
   have hm3 : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r =>
       F (fun i j => (Matrix.of p.1 * h0 * Matrix.of p.2) i j)) :=
-    (hF.comp (by
-        refine continuous_pi fun i => continuous_pi fun j => ?_
+    hmeas _ fun i j => by
         simp only [Matrix.mul_apply, Matrix.of_apply]
-        fun_prop : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of p.1 * h0 * Matrix.of p.2) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)
+        fun_prop
 
   have inner : ∀ x : Formalism.QuantumDeterminants.Mt k r,
       ∫⁻ y, F (fun i j => (Matrix.of x * Matrix.of y * (h0 * n0)) i j) ∂μN =
@@ -204,16 +204,14 @@ theorem param_right {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Formal
     intro x
     have hG1 : Measurable (fun w : Formalism.QuantumDeterminants.Mt k r =>
         F (fun i j => (Matrix.of x * h0 * Matrix.of w * n0) i j)) :=
-      (hF.comp (by
-        refine continuous_pi fun i => continuous_pi fun j => ?_
+      hmeas _ fun i j => by
         simp only [Matrix.mul_apply, Matrix.of_apply]
-        fun_prop : Continuous (fun w : Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of x * h0 * Matrix.of w * n0) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)
+        fun_prop
     have hG2 : Measurable (fun w : Formalism.QuantumDeterminants.Mt k r =>
         F (fun i j => (Matrix.of x * h0 * Matrix.of w) i j)) :=
-      (hF.comp (by
-        refine continuous_pi fun i => continuous_pi fun j => ?_
+      hmeas _ fun i j => by
         simp only [Matrix.mul_apply, Matrix.of_apply]
-        fun_prop : Continuous (fun w : Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of x * h0 * Matrix.of w) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)
+        fun_prop
     have e1 : ∀ y : Formalism.QuantumDeterminants.Mt k r, Matrix.of x * Matrix.of y * (h0 * n0) =
         Matrix.of x * h0 * Matrix.of (Formalism.QuantumDeterminants.conjM h0⁻¹ y) * n0 := by
       intro y
@@ -239,10 +237,9 @@ theorem param_right {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Formal
 
   refine MeasureTheory.lintegral_congr fun y => ?_
   have hG3 : Measurable (fun w : Formalism.QuantumDeterminants.Mt k r => F (fun i j => (Matrix.of w * Matrix.of y) i j)) :=
-    (hF.comp (by
-        refine continuous_pi fun i => continuous_pi fun j => ?_
+    hmeas _ fun i j => by
         simp only [Matrix.mul_apply, Matrix.of_apply]
-        fun_prop : Continuous (fun w : Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of w * Matrix.of y) i j : Formalism.QuantumDeterminants.Mt k r))).measurable)
+        fun_prop
   have e3 : ∀ x : Formalism.QuantumDeterminants.Mt k r, Matrix.of x * h0 * Matrix.of y =
       Matrix.of (B.rmulF h0 x) * Matrix.of y := fun x => rfl
   simp_rw [e3]
@@ -309,8 +306,7 @@ theorem measurable_lambda_integrand {e0 : Mx k r → ℂ} (he0 : Continuous e0) 
     (hX : Measurable X) (hY : Measurable Y) (hP : Measurable P) :
     Measurable (fun t => ‖e0 ((Matrix.of (X t))⁻¹ * (Matrix.of (P t).1 * Matrix.of (P t).2) *
       Matrix.of (Y t))‖ₑ) := by
-  have M := meas_matmul (meas_matmul (meas_inv hX) (meas_hn hP)) hY
-  exact measurable_enorm_composition he0 M
+  exact measurable_enorm_composition he0 (meas_matmul (meas_matmul (meas_inv hX) (meas_hn hP)) hY)
 
 theorem meas_lam {e0 : Mx k r → ℂ} (he0 : Continuous e0) (γ : Mx k r)
     (μp μq : Measure (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r)) [SFinite μp] [SFinite μq] :
@@ -319,8 +315,7 @@ theorem meas_lam {e0 : Mx k r → ℂ} (he0 : Continuous e0) (γ : Mx k r)
   have m4 := meas_lam_int he0 γ (α := ((Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r) × (Formalism.QuantumDeterminants.Mt k r ×
       Formalism.QuantumDeterminants.Mt k r)) × (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r))
     (measurable_fst.fst.fst) (measurable_fst.fst.snd) measurable_fst.snd measurable_snd
-  have m3 := m4.lintegral_prod_right' (ν := μq)
-  exact m3.lintegral_prod_right' (ν := μp)
+  exact (m4.lintegral_prod_right' (ν := μq)).lintegral_prod_right' (ν := μp)
 
 theorem measurable_lambda_integral {e0 : Mx k r → ℂ} (he0 : Continuous e0)
     (μp : Measure (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r)) [SFinite μp] :

@@ -75,15 +75,12 @@ theorem box_fundT (g : ∀ q, α q) :
       ∀ p, h p < k + 1 → Φ x p = Φ x' p := by
     intro k x x' hxx p hp
     have e1 : ∀ q, h q < h p → x q = x' q := fun q hq => hxx q (by omega)
-    have h1 : τ p x = τ p x' := hτ p x x' e1
-    have h2 : B p x g = B p x' g := hBd p x x' g g fun q hq => ⟨e1 q hq, rfl⟩
-    show τ p x + ((hFd p (τ p x + g p + B p x g)).exists.choose : α p) =
-      τ p x' + ((hFd p (τ p x' + g p + B p x' g)).exists.choose : α p)
-    rw [h1, h2]
+    simp only [Φ, c]
+    rw [hτ p x x' e1, hBd p x x' g g fun q hq => ⟨e1 q hq, rfl⟩]
   have hit : ∀ (n : ℕ) p, h p < n → Φ (Φ^[n] 0) p = (Φ^[n] 0) p := by
     intro n
     induction n with
-    | zero => intro p hp; exact absurd hp (Nat.not_lt_zero _)
+    | zero => simp
     | succ k ih =>
       intro p hp
       rw [Function.iterate_succ_apply']
@@ -94,44 +91,39 @@ theorem box_fundT (g : ∀ q, α q) :
     have step : ∀ (n : ℕ) p, h p < n → x p = y p := by
       intro n
       induction n with
-      | zero => intro p hp; exact absurd hp (Nat.not_lt_zero _)
+      | zero => simp
       | succ k ih =>
         intro p hp
         have e1 : ∀ q, h q < h p → x q = y q := fun q hq => ih q (by omega)
         have ht : τ p x = τ p y := hτ p x y e1
         have hb : B p x g = B p y g := hBd p x y g g fun q hq => ⟨e1 q hq, rfl⟩
         have hx2' : ((⟨x p - τ p x, hx1 p⟩ : A p) : α p) + (τ p x + g p + B p x g) ∈ F p := by
-          have hm : x p + g p + B p x g ∈ F p := hx2 p
           rw [show ((⟨x p - τ p x, hx1 p⟩ : A p) : α p) = x p - τ p x from rfl,
             show x p - τ p x + (τ p x + g p + B p x g) = x p + g p + B p x g by abel]
-          exact hm
+          exact hx2 p
         have hy2' : ((⟨y p - τ p y, hy1 p⟩ : A p) : α p) + (τ p x + g p + B p x g) ∈ F p := by
-          have hm : y p + g p + B p y g ∈ F p := hy2 p
           rw [ht, hb, show ((⟨y p - τ p y, hy1 p⟩ : A p) : α p) = y p - τ p y from rfl,
             show y p - τ p y + (τ p y + g p + B p y g) = y p + g p + B p y g by abel]
-          exact hm
+          exact hy2 p
         have h3 : x p - τ p x = y p - τ p y :=
           congrArg Subtype.val ((hFd p _).unique hx2' hy2')
         rw [ht] at h3
         exact sub_left_injective h3
-    funext p
-    exact step _ p (Nat.lt_succ_self _)
-  have hfix : ∀ p, τ p (Φ^[Finset.univ.sup h + 1] 0) + (c (Φ^[Finset.univ.sup h + 1] 0) p : α p) =
-      (Φ^[Finset.univ.sup h + 1] 0) p :=
-    fun p => hit _ p (Nat.lt_succ_of_le (Finset.le_sup (Finset.mem_univ p)))
-  have hsol : (∀ p, (Φ^[Finset.univ.sup h + 1] 0) p - τ p (Φ^[Finset.univ.sup h + 1] 0) ∈ A p) ∧
-      ∀ p, mlaw B (Φ^[Finset.univ.sup h + 1] 0) g p ∈ F p := by
+    exact funext fun p => step _ p (Nat.lt_succ_self _)
+  have key : ∀ x : ∀ q, α q, (∀ p, τ p x + (c x p : α p) = x p) →
+      (∀ p, x p - τ p x ∈ A p) ∧ ∀ p, mlaw B x g p ∈ F p := by
+    intro x hx
     constructor
     · intro p
-      rw [← hfix p, add_sub_cancel_left]
+      rw [← hx p, add_sub_cancel_left]
       exact (c _ p).2
     · intro p
-      show (Φ^[Finset.univ.sup h + 1] 0) p + g p + B p (Φ^[Finset.univ.sup h + 1] 0) g ∈ F p
-      rw [← hfix p]
-      rw [show τ p (Φ^[Finset.univ.sup h + 1] 0) + (c (Φ^[Finset.univ.sup h + 1] 0) p : α p) + g p +
-          B p (Φ^[Finset.univ.sup h + 1] 0) g = (c (Φ^[Finset.univ.sup h + 1] 0) p : α p) +
-          (τ p (Φ^[Finset.univ.sup h + 1] 0) + g p + B p (Φ^[Finset.univ.sup h + 1] 0) g) by abel]
+      show x p + g p + B p x g ∈ F p
+      rw [← hx p, show τ p x + (c x p : α p) + g p + B p x g =
+        (c x p : α p) + (τ p x + g p + B p x g) by abel]
       exact hc _ p
+  have hsol := key (Φ^[Finset.univ.sup h + 1] 0)
+    fun p => hit _ p (Nat.lt_succ_of_le (Finset.le_sup (Finset.mem_univ p)))
   exact ⟨_, hsol, fun y hy => uniq y _ hy hsol⟩
 
 end TriT

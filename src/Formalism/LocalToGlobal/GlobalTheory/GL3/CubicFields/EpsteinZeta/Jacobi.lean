@@ -111,9 +111,7 @@ theorem jac_eisG (a z : ℂ) (ha : a ≠ 0) (hz : 0 < z.im) (k : ℕ) (hk : k �
       mul_ne_zero ha (fun h => v.2 (hinj (by simpa using h)))⟩
   have hf : Function.Bijective f := by
     constructor
-    · intro v w h
-      have h1 := congrArg Subtype.val h
-      exact Subtype.ext (hinj (mul_left_cancel₀ ha h1))
+    · exact fun v w h => Subtype.ext (hinj (mul_left_cancel₀ ha (congrArg Subtype.val h)))
     · rintro ⟨w, hw, hw0⟩
       obtain ⟨v, rfl⟩ := (jac_mem_closure a z w).mp hw
       refine ⟨⟨v, fun hv => hw0 (by simp [hv])⟩, rfl⟩
@@ -126,8 +124,7 @@ theorem jac_eisG (a z : ℂ) (ha : a ≠ 0) (hz : 0 < z.im) (k : ℕ) (hk : k �
     apply hv
     subst hv0
     have hk2 : ((2 * k : ℕ) : ℤ) ≠ 0 := by exact_mod_cast (by omega : 2 * k ≠ 0)
-    simp [EisensteinSeries.eisSummand]
-    exact zero_zpow _ (by omega)
+    simpa [EisensteinSeries.eisSummand] using zero_zpow _ (by omega)
   rw [← tsum_subtype_eq_of_support_subset hsupp, ← tsum_mul_left]
   refine tsum_congr fun v => ?_
   simp only [Equiv.ofBijective_apply, f, EisensteinSeries.eisSummand]
@@ -172,7 +169,6 @@ theorem discr_closure_pair (a b : ℂ) (hab : 0 < (b / a).im) :
     rintro rfl
     simp at hab
   have h := jac_discr a (b / a) ha hab
-  rw [show a * (b / a) = b by field_simp] at h
-  exact h
+  rwa [show a * (b / a) = b by field_simp] at h
 
 end Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5

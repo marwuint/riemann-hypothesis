@@ -74,8 +74,7 @@ theorem splitsCompl_down (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   have hPQ : P = Q.comap (algebraMap (𝓞 F) (𝓞 E)) := hQl.over
   have hgQ : ((g : ℕ) : 𝓞 E) ∈ Q := by
     have h1 : algebraMap (𝓞 F) (𝓞 E) ((g : ℕ) : 𝓞 F) ∈ Q := by
-      rw [← Ideal.mem_comap, ← hPQ]
-      exact hgP
+      rwa [← Ideal.mem_comap, ← hPQ]
     simpa using h1
   obtain ⟨hN, hsq⟩ := h Q hQ hgQ
   refine ⟨?_, ?_⟩
@@ -120,8 +119,7 @@ theorem card_primesOver {g : ℕ} (hg : g.Prime) (h : SplitsCompl K g) :
   rw [← Ideal.sum_ramification_inertia (𝓞 K) ℚ K (span_ne_bot hg), Finset.card_eq_sum_ones]
   refine Finset.sum_congr rfl fun P hP => ?_
   have hP' : P ∈ (Ideal.span {(g : ℤ)}).primesOver (𝓞 K) := by
-    rw [← IsDedekindDomain.coe_primesOverFinset (span_ne_bot hg)]
-    exact hP
+    rwa [← IsDedekindDomain.coe_primesOverFinset (span_ne_bot hg)]
   obtain ⟨hPp, hPl⟩ := hP'
   have hgP : ((g : ℕ) : 𝓞 K) ∈ P := by
     have h1 : (g : ℤ) ∈ P.under ℤ := hPl.over ▸ Ideal.mem_span_singleton_self _
@@ -201,8 +199,7 @@ section Record
 
 variable (D : D7)
 
-theorem finrank_hostF_eq : Module.finrank ℚ D.host.F = D.R.f := by
-  exact D.host.der.finrank_F
+theorem finrank_hostF_eq : Module.finrank ℚ D.host.F = D.R.f := D.host.der.finrank_F
 
 theorem typedPl_eq : typedPl D = plOver D.host.F (D.host.g 0) ∪ plOver D.host.F (D.host.g 1) := rfl
 

@@ -142,9 +142,7 @@ theorem coefS_aesm {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1
   have h := (ds_rep hds).2.2.2 w
   have hc : ContinuousOn (fun p : Mt k r × Mt k r => ⟪v, σ (Matrix.of p.1 * Matrix.of p.2) w⟫_ℂ)
       {p : Mt k r × Mt k r | Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r} := by
-    refine continuousOn_const.inner (h.comp hm.continuousOn ?_)
-    intro p hp
-    exact hGr.1 _ hp.1.1 _ hp.2.1
+    exact continuousOn_const.inner (h.comp hm.continuousOn (fun p hp => hGr.1 _ hp.1.1 _ hp.2.1))
   have hc' := hc.aestronglyMeasurable (μ := μW.prod μN) (measurableSet_S z)
   rwa [Measure.restrict_eq_self_of_ae_mem
     (s := {p : Mt k r × Mt k r | Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r}) hM1] at hc'
@@ -280,8 +278,7 @@ theorem muS_ne_zero {μG μS ν : Measure (Mt k r)} (hG0 : μG ≠ 0) (hq : IsQu
   intro h0
   subst h0
   apply hG0
-  have h1 := hq (fun _ => 1) measurable_const
-  simpa using h1
+  simpa using hq (fun _ => 1) measurable_const
 
 theorem sfinite_quot {μG μS ν : Measure (Mt k r)} [SigmaFinite μG] [SFinite μS] (hG0 : μG ≠ 0)
     (hq : IsQuotMeas μG μS ν) : SFinite ν := by
@@ -354,8 +351,7 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions
 
 variable {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
 
-theorem star_inner (x y : Wp) : star ⟪x, y⟫_ℂ = ⟪y, x⟫_ℂ := by
-  exact inner_conj_symm y x
+theorem star_inner (x y : Wp) : star ⟪x, y⟫_ℂ = ⟪y, x⟫_ℂ := inner_conj_symm y x
 
 variable [FiniteDimensional ℂ Wp]
 

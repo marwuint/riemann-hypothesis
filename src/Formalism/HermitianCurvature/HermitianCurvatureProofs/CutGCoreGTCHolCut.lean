@@ -107,8 +107,7 @@ theorem sphere_sub_ann (P : M.Par) {R : ℝ} (hR0 : 0 < R) (hR : P.TT < R ^ 2) :
   intro w hw
   have h : ‖w‖ = R := by simpa using hw
   show P.TT < Complex.normSq w
-  rw [Complex.normSq_eq_norm_sq, h]
-  exact hR
+  rwa [Complex.normSq_eq_norm_sq, h]
 
 theorem trR_congr {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq)
@@ -125,7 +124,6 @@ theorem tt_nonneg_of_hyp {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpa
     {X : Q.ActualOps P.k P.r Bs.z Bs.z' Bs.π Bs.π'} {d : Q.NFData P (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'))}
     (h : GTHyp P Bs X d) : 0 ≤ P.TT := by
   have hOK := h.1.1
-  show (0 : ℝ) ≤ P.T * P.T'
   exact (mul_pos hOK.T_pos hOK.T'_pos).le
 
 theorem gauge_rel (hRef : GTCRef) (hPR : GTCPhaseRel) (hU : GTCConnUniq) (hCP : GTCConnPhase)
@@ -150,8 +148,7 @@ theorem gauge_rel (hRef : GTCRef) (hPR : GTCPhaseRel) (hU : GTCConnUniq) (hCP : 
   have hConn1' : ConnF P Bs d e (fun ρ ζ => A0 ρ ζ + star (u ρ ζ) * NF.dZ (u ρ) ζ)
       (fun ρ ζ => B0 ρ ζ - star (u ρ ζ) * NF.dZb (u ρ) ζ) := by
     unfold ConnF at hConn1 ⊢
-    rw [← htr]
-    exact hConn1
+    rwa [← htr]
   have hA := hU Wp Wq P Bs X d hyp e he A B _ _ hAB hAB1 hConn hConn1'
   refine ⟨A0, u, fun ρ => (hAB0 ρ).1, hu, fun ρ => ?_, hcurv, hhol, hA⟩
   exact ((hAB1 ρ).1.sub (hAB0 ρ).1).congr (fun ζ _ => by ring)

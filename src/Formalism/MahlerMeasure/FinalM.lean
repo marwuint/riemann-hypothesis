@@ -83,23 +83,17 @@ theorem altVand (B : ℕ) : ∀ z l : ℕ,
             (-1 : ℚ) ^ (j + 1) * (B.choose (j + 1) : ℚ) *
                 ((z + 1 + B + (m + 1 - (j + 1))).choose (m + 1 - (j + 1)) : ℚ) -
               (-1 : ℚ) ^ j * (B.choose j : ℚ) * ((z + 1 + B + (m - j)).choose (m - j) : ℚ) := by
-        intro j hj
-        have hjm : j ≤ m := Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)
-        have e1 : z + (B + 1) + (m + 1 - (j + 1)) = z + 1 + B + (m - j) := by omega
-        have e2 : m + 1 - (j + 1) = m - j := by omega
-        have e3 : z + 1 + B + (m + 1 - (j + 1)) = z + 1 + B + (m - j) := by omega
-        rw [e1, e3, e2, Nat.choose_succ_succ', Nat.cast_add, pow_succ]
+        intro j _
+        rw [Nat.add_sub_add_right, show z + (B + 1) = z + 1 + B by omega, Nat.choose_succ_succ',
+          Nat.cast_add, pow_succ]
         ring
       rw [Finset.sum_congr rfl key, Finset.sum_sub_distrib, h2]
       simp only [pow_zero, one_mul, Nat.choose_zero_right, Nat.cast_one, Nat.sub_zero] at h1 ⊢
       rw [show z + (B + 1) + (m + 1) = z + 1 + B + (m + 1) by omega]
       have hp : ((z + 1 + (m + 1)).choose (m + 1) : ℚ) =
           ((z + 1 + m).choose m : ℚ) + ((z + (m + 1)).choose (m + 1) : ℚ) := by
-        have e1 : (z + 1 + (m + 1)).choose (m + 1) = (z + 1 + m + 1).choose (m + 1) := by
-          rw [show z + 1 + (m + 1) = z + 1 + m + 1 by omega]
-        have e2 : (z + (m + 1)).choose (m + 1) = (z + 1 + m).choose (m + 1) := by
-          rw [show z + (m + 1) = z + 1 + m by omega]
-        rw [e1, e2, Nat.choose_succ_succ']
+        rw [show z + 1 + (m + 1) = z + 1 + m + 1 by omega, show z + (m + 1) = z + 1 + m by omega,
+          Nat.choose_succ_succ']
         push_cast
         ring
       linear_combination h1 + hp

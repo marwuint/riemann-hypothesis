@@ -88,8 +88,7 @@ theorem sum_le_sum_shift (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (h
     have hle : (Ideal.absNorm (Ideal.span {n}) : ℝ) ≤ (Ideal.absNorm (Ideal.span {n + y}) : ℝ) := by
       rw [absNorm_eq_prod_of_mem hK hF hnb, absNorm_eq_prod_of_mem hK hF hny]
       apply Finset.prod_le_prod₀
-      · intro w _
-        exact (hb w).1.le
+      · exact fun w _ => (hb w).1.le
       · intro w _
         rw [map_add (f := _)]
         linarith [hy0 w]
@@ -171,8 +170,7 @@ private theorem tendsto_scaled_of_interleaved_tendsto (D : ℕ) {u v : ℕ → �
     hs.comp (tendsto_add_atTop_nat 1)
   have ht : Tendsto (fun j : ℕ => ((((j + 1 + 1 : ℕ) : ℝ) ^ 2) ^ D) /
       ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D)) atTop (𝓝 1) := by
-    have h := hs1.inv₀ one_ne_zero
-    simpa only [inv_div, inv_one] using h
+    simpa only [inv_div, inv_one] using hs1.inv₀ one_ne_zero
   have hv2 : Tendsto (fun j : ℕ => ((((j + 1 + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹ * v (j + 1 + 1))
       atTop (𝓝 L) :=
     (hv.comp (tendsto_add_atTop_nat 1)).comp (tendsto_add_atTop_nat 1)
@@ -183,25 +181,19 @@ private theorem tendsto_scaled_of_interleaved_tendsto (D : ℕ) {u v : ℕ → �
       ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D) *
       (((((j + 1 + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹ * v (j + 1 + 1))) atTop (𝓝 L) := by
     simpa only [one_mul] using ht.mul hv2
-  have hup1 : ∀ᶠ j in atTop, u (j + 1) ≤ v (j + 1 + 1) := (tendsto_add_atTop_nat 1).eventually hup
   rw [← tendsto_add_atTop_iff_nat 1]
   refine tendsto_of_tendsto_of_tendsto_of_le_of_le' lowT upT ?_ ?_
   · filter_upwards [hlo, eventually_ge_atTop 1] with j hj hj1
     have hj0 : ((j : ℝ) ^ 2) ^ D ≠ 0 :=
       pow_ne_zero _ (pow_ne_zero _ (Nat.cast_ne_zero.2 (by omega)))
-    have hpos : 0 ≤ ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹ := by positivity
-    calc (((j : ℝ) ^ 2) ^ D) / ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D) * ((((j : ℝ) ^ 2) ^ D)⁻¹ * v j)
-        = ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹ * v j := by
+    calc _ = ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹ * v j := by
           rw [div_mul_eq_mul_div, ← mul_assoc, mul_inv_cancel₀ hj0, one_mul, div_eq_inv_mul]
-      _ ≤ ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹ * u (j + 1) := mul_le_mul_of_nonneg_left hj hpos
-  · filter_upwards [hup1] with j hj
-    have hpos : 0 ≤ ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹ := by positivity
-    have h0 : ((((j + 1 + 1 : ℕ) : ℝ) ^ 2) ^ D) ≠ 0 :=
-      pow_ne_zero _ (pow_ne_zero _ (Nat.cast_ne_zero.2 (Nat.succ_ne_zero _)))
-    calc ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹ * u (j + 1)
-        ≤ ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹ * v (j + 1 + 1) := mul_le_mul_of_nonneg_left hj hpos
-      _ = ((((j + 1 + 1 : ℕ) : ℝ) ^ 2) ^ D) / ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D) *
-          (((((j + 1 + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹ * v (j + 1 + 1)) := by
+      _ ≤ _ := mul_le_mul_of_nonneg_left hj (by positivity)
+  · filter_upwards [(tendsto_add_atTop_nat 1).eventually hup] with j hj
+    have h0 : ((((j + 1 + 1 : ℕ) : ℝ) ^ 2) ^ D) ≠ 0 := by positivity
+    calc _ ≤ ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹ * v (j + 1 + 1) :=
+          mul_le_mul_of_nonneg_left hj (by positivity)
+      _ = _ := by
           rw [div_mul_eq_mul_div, ← mul_assoc, mul_inv_cancel₀ h0, one_mul, div_eq_inv_mul]
 
 theorem tendsto_sum_coset (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {m : ℕ} (hm : 1 ≤ m)
@@ -223,8 +215,7 @@ theorem tendsto_sum_coset (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (
       have h2 : (0 : ℝ) ≤ j := Nat.cast_nonneg j
       push_cast
       nlinarith
-    · intro n hn
-      exact hyI n hn
+    · exact fun n hn => hyI n hn
   · filter_upwards [eventually_ge_atTop j0] with j hj
     have hRj : R ≤ (j : ℝ) := le_trans hj0 (by exact_mod_cast hj)
     refine sum_le_sum_shift hK hF m (A := (I : Set (𝓞 F))) (B := {n | n - x₀ ∈ I})
@@ -234,7 +225,6 @@ theorem tendsto_sum_coset (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (
       have h2 : (0 : ℝ) ≤ j := Nat.cast_nonneg j
       push_cast
       nlinarith
-    · intro n hn
-      exact hy'I n hn
+    · exact fun n hn => hy'I n hn
 
 end Formalism.HermitianLattices.Ext.L3.BoxSum

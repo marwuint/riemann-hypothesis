@@ -83,14 +83,10 @@ theorem bInt_bound (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (hσ : 
   set m := Matrix.of p.2 with mdef
   set N := N1H k r
   have hN : 0 ≤ N := nilradical_half_sum_nonneg
-  have hmg : m * g ∈ Gr k r := gr_mul hm hg
-  have hy : h * (m * g) ∈ Gr k r := gr_mul hh hmg
-  have hhm : h * m ∈ Gr k r := gr_mul hh hm
+  have hy : h * (m * g) ∈ Gr k r := gr_mul hh (gr_mul hm hg)
   have hσeq : σ (h * m) (σ g w) = σ (h * (m * g)) w := by
-    rw [← mul_assoc, sigma_mul hσ hhm hg]
-  have hpsi : ‖star (psiGen k r z c m)‖ = 1 := by
-    rw [norm_star]
-    exact psiGen_norm z c m
+    rw [← mul_assoc, sigma_mul hσ (gr_mul hh hm) hg]
+  have hpsi : ‖star (psiGen k r z c m)‖ = 1 := (norm_star _).trans (psiGen_norm z c m)
   have hnorm : ‖bInt z c σ π w' ξ (σ g w) p‖ = ‖⟪w', σ (h * (m * g)) w⟫_ℂ‖ * ‖ξ‖ := by
     simp only [bInt]
     rw [norm_smul, norm_mul, hpsi, ← hdef, ← mdef, hσeq, hπ, mul_one]
@@ -101,42 +97,33 @@ theorem bInt_bound (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (hσ : 
   have hCφ0 : 0 ≤ Cφ := le_trans (mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (opn_nonneg _) _))
     (hCφ 1 gr_one)
   have hA : ‖⟪w', σ y w⟫_ℂ‖ ≤ Cφ * opn y ^ (-N) := by
-    have h1 := hCφ y hy
-    have hpow : 0 < opn y ^ N := Real.rpow_pos_of_pos hypos _
-    rw [Real.rpow_neg (le_of_lt hypos), ← div_eq_mul_inv, le_div_iff₀ hpow]
-    exact h1
+    rw [Real.rpow_neg hypos.le, ← div_eq_mul_inv, le_div_iff₀ (Real.rpow_pos_of_pos hypos _)]
+    exact hCφ y hy
   have hinvh : h⁻¹ * y = m * g := by
     simp only [y]
     rw [← mul_assoc, Matrix.nonsing_inv_mul h (gr_isUnit hh), one_mul]
   have hmle : opn m ≤ Kw * (opn (Hpk k r) * opn (Hpk k r) * opn g) * opn y := by
-    have e1 : opn m ≤ opn (m * g) * opn g⁻¹ := opn_le_mul_inv m hg
     have e2 : opn (m * g) ≤ opn h⁻¹ * opn y := by
       rw [← hinvh]
       exact opn_mul _ _
-    have e3 : opn g⁻¹ ≤ opn (Hpk k r) * opn (Hpk k r) * opn g := opn_inv_le hg
-    have e4 : opn h⁻¹ * opn y ≤ Kw * opn y := mul_le_mul_of_nonneg_right hhinv (le_of_lt hypos)
-    calc opn m ≤ opn (m * g) * opn g⁻¹ := e1
-      _ ≤ (Kw * opn y) * (opn (Hpk k r) * opn (Hpk k r) * opn g) := by
-        apply mul_le_mul (e2.trans e4) e3 (opn_nonneg _)
-        exact mul_nonneg hKw0 (le_of_lt hypos)
+    calc opn m ≤ opn (m * g) * opn g⁻¹ := opn_le_mul_inv m hg
+      _ ≤ (Kw * opn y) * (opn (Hpk k r) * opn (Hpk k r) * opn g) :=
+        mul_le_mul (e2.trans (mul_le_mul_of_nonneg_right hhinv hypos.le)) (opn_inv_le hg)
+          (opn_nonneg _) (mul_nonneg hKw0 hypos.le)
       _ = Kw * (opn (Hpk k r) * opn (Hpk k r) * opn g) * opn y := by ring
   have hB0 : 0 ≤ Kw * (opn (Hpk k r) * opn (Hpk k r) * opn g) :=
     mul_nonneg hKw0 (mul_nonneg (mul_nonneg (opn_nonneg _) (opn_nonneg _)) (opn_nonneg _))
   have hyN : opn y ^ (-N) ≤ (Kw * (opn (Hpk k r) * opn (Hpk k r) * opn g)) ^ N * opn m ^ (-N) := by
     have hp : opn m ^ N ≤ (Kw * (opn (Hpk k r) * opn (Hpk k r) * opn g)) ^ N * opn y ^ N := by
-      rw [← Real.mul_rpow hB0 (le_of_lt hypos)]
-      exact Real.rpow_le_rpow (le_of_lt hmpos) hmle hN
-    have hmN : 0 < opn m ^ N := Real.rpow_pos_of_pos hmpos _
-    have hyN' : 0 < opn y ^ N := Real.rpow_pos_of_pos hypos _
-    rw [Real.rpow_neg (le_of_lt hypos), Real.rpow_neg (le_of_lt hmpos), ← div_eq_mul_inv,
-      inv_le_iff_one_le_mul₀' hyN', mul_div_assoc', le_div_iff₀ hmN, one_mul]
+      rw [← Real.mul_rpow hB0 hypos.le]
+      exact Real.rpow_le_rpow hmpos.le hmle hN
+    rw [Real.rpow_neg hypos.le, Real.rpow_neg hmpos.le, ← div_eq_mul_inv,
+      inv_le_iff_one_le_mul₀' (Real.rpow_pos_of_pos hypos _), mul_div_assoc',
+      le_div_iff₀ (Real.rpow_pos_of_pos hmpos _), one_mul]
     linarith [hp]
-  calc ‖⟪w', σ y w⟫_ℂ‖ * ‖ξ‖ ≤ (Cφ * opn y ^ (-N)) * ‖ξ‖ :=
-        mul_le_mul_of_nonneg_right hA (norm_nonneg _)
-    _ ≤ (Cφ * ((Kw * (opn (Hpk k r) * opn (Hpk k r) * opn g)) ^ N * opn m ^ (-N))) * ‖ξ‖ := by
-        apply mul_le_mul_of_nonneg_right _ (norm_nonneg _)
-        exact mul_le_mul_of_nonneg_left hyN hCφ0
-    _ = Cφ * (Kw * (opn (Hpk k r) * opn (Hpk k r) * opn g)) ^ N * ‖ξ‖ * opn m ^ (-N) := by ring
+  have hfin := mul_le_mul_of_nonneg_right (hA.trans (mul_le_mul_of_nonneg_left hyN hCφ0))
+    (norm_nonneg ξ)
+  exact hfin.trans_eq (by ring)
 
 end Bound
 

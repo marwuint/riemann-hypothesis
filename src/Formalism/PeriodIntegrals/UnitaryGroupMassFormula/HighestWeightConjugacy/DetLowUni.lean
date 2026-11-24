@@ -83,17 +83,14 @@ theorem exists_LU : ∀ (n : ℕ) (g : Matrix (Fin n) (Fin n) ℂ),
   intro n
   induction n with
   | zero =>
-    intro g _
-    exact ⟨1, g, ⟨fun i => i.elim0, fun i => i.elim0⟩, fun i => i.elim0, by simp⟩
+    exact fun g _ => ⟨1, g, ⟨fun i => i.elim0, fun i => i.elim0⟩, fun i => i.elim0, by simp⟩
   | succ n ih =>
     intro g hg
     let A : Matrix (Fin n) (Fin n) ℂ := g.submatrix Fin.castSucc Fin.castSucc
     have hAk : ∀ k (hk : k < n), (A.submatrix (Fin.castLE hk.le) (Fin.castLE hk.le)).det ≠ 0 := by
-      intro k hk
-      exact hg k (Nat.lt_succ_of_lt hk)
+      exact fun k hk => hg k (Nat.lt_succ_of_lt hk)
     obtain ⟨L', U', hL', hU', hLU⟩ := ih A hAk
-    have hdetA : A.det ≠ 0 := by
-      exact hg n (Nat.lt_succ_self n)
+    have hdetA : A.det ≠ 0 := hg n (Nat.lt_succ_self n)
     have hdL : L'.det = 1 := det_lowUni hL'
     have hdU : U'.det ≠ 0 := by
       intro h0; apply hdetA; rw [hLU, Matrix.det_mul, h0, mul_zero]

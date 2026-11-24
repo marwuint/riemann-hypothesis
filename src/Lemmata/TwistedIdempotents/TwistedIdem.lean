@@ -44,8 +44,7 @@ private lemma core {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] [Finit
   have hscal : ∀ h : G, ∃ μ : ℂ, ∀ x ∈ W, (P * ρ h * P) x = μ • x := by
     intro h
     have hBW : ∀ x ∈ W, (P * ρ h * P) x ∈ W := fun x _ => by
-      simp only [Module.End.mul_apply]
-      exact hPW _
+      simpa only [Module.End.mul_apply] using hPW _
     have : Nontrivial W := Submodule.nontrivial_iff_ne_bot.mpr hW
     obtain ⟨μ, hμ⟩ := Module.End.exists_eigenvalue ((P * ρ h * P).restrict hBW)
     obtain ⟨w, hwv⟩ := hμ.exists_hasEigenvector
@@ -53,10 +52,7 @@ private lemma core {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] [Finit
     have hw2 : (P * ρ h * P) (w : V) = μ • (w : V) := by
       have := congrArg Subtype.val hw1
       simpa [LinearMap.restrict_apply] using this
-    have hw0 : (w : V) ≠ 0 := by
-      intro h0
-      apply hwv.2
-      exact Subtype.ext h0
+    have hw0 : (w : V) ≠ 0 := fun h0 => hwv.2 (Subtype.ext h0)
     have key := cyc ρ hirr (w : V) hw0 ((P * ρ h * P).eigenspace μ) P (by
       intro g
       rw [Module.End.mem_eigenspace_iff, hB g w w.2]

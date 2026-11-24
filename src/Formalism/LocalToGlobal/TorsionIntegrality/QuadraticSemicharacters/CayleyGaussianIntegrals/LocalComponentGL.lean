@@ -55,8 +55,7 @@ theorem InterClass_of (h : SemiHom) : InterClass := by
   intro V _ _ H hH Λ₁ Λ₂ α hα F hF x hx y hy hy1 z
   have hF' : ∀ w ∈ Λ₁, ∀ v, α w * opU H w F v = F v := hF
   have hfun : (fun v => α y * opU H y F v) = F := funext fun v => hF' y hy1 v
-  have e := h V H hH Λ₂ α hα x hx y hy F z
-  exact e.symm.trans (congrArg (fun G => α x * opU H x G z) hfun)
+  exact (h V H hH Λ₂ α hα x hx y hy F z).symm.trans (congrArg (fun G => α x * opU H x G z) hfun)
 
 section Reps
 
@@ -84,8 +83,7 @@ theorem repClass_bijective {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} (hS : Is
     exact ⟨⟨x, hxS⟩, (quotient_addSubgroupOf_mk_eq_mk_iff_sub_mem (Λ₁ := Λ₁) (⟨x, hS.1 x hxS⟩ : Λ₂) ⟨y, hy⟩).2 hyx⟩
 
 private theorem quotient_addSubgroupOf_mk_out {Λ₁ Λ₂ : AddSubgroup V} (c : Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) :
-    (QuotientAddGroup.mk (Quotient.out c) : Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) = c := by
-  exact Quotient.out_eq c
+    (QuotientAddGroup.mk (Quotient.out c) : Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) = c := Quotient.out_eq c
 
 private theorem sub_quotient_out_mem_of_mk_eq {Λ₁ Λ₂ : AddSubgroup V} (c : Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) (y : Λ₂)
     (hc : (QuotientAddGroup.mk y : Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) = c) :
@@ -107,8 +105,7 @@ theorem reps_translate {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} [DecidableEq
     have hab : a - b ∈ Λ₁ := by
       have e : (y + a) - (y + b) = a - b := by abel
       have hxx' : (y + a) - (y + b) ∈ Λ₁ := hxx
-      rw [e] at hxx'
-      exact hxx'
+      rwa [e] at hxx'
     exact congrArg (fun t => y + t) (hS.2.1 a ha b hb hab)
   · intro w hw
     obtain ⟨a, ha, hwa⟩ := hS.2.2 (w - y) (Λ₂.sub_mem hw hy)
@@ -140,10 +137,8 @@ theorem cosetRepsExist : RepsExist := by
         Finset.mem_image.2 ⟨_, Finset.mem_univ _, rfl⟩, ?_⟩
       exact sub_quotient_out_mem_of_mk_eq _ ⟨y, hy⟩ rfl
   · have h1 := Nat.card_eq_of_bijective _ (repClass_bijective hS)
-    have h2 : Nat.card S = S.card := by
-      exact Nat.card_eq_finsetCard S
-    rw [h2] at h1
-    exact h1
+    have h2 : Nat.card S = S.card := Nat.card_eq_finsetCard S
+    rwa [h2] at h1
 
 theorem InterReps_of (h : SemiHom) : InterReps := by
   intro V _ _ H hH Λ₁ Λ₂ α hα F hF S hS z
@@ -161,8 +156,7 @@ theorem InterReps_of (h : SemiHom) : InterReps := by
   have h2 := hcl ((Quotient.out (repClass hS s) : Λ₂) : V) (Quotient.out (repClass hS s)).2
     ((s : V) - ((Quotient.out (repClass hS s) : Λ₂) : V))
     (Λ₂.sub_mem (hS.1 s s.2) (Quotient.out (repClass hS s)).2) hmem z
-  rw [show ∀ a b : V, a + (b - a) = b from fun a b => by abel] at h2
-  exact h2
+  rwa [show ∀ a b : V, a + (b - a) = b from fun a b => by abel] at h2
 
 private theorem semiChar_mul_opU_const_mul_sumU {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ)
     (S : Finset V) (F : V → ℂ) (k : ℂ) (y z : V) :
@@ -195,8 +189,7 @@ theorem InterFixed_of (h : SemiHom) : InterFixed := by
         congr 1
         unfold sumU
         rw [Finset.sum_image]
-        intro a _ b _ hab
-        exact add_left_cancel hab
+        exact fun a _ b _ hab => add_left_cancel hab
     _ = inter H α Λ₁ Λ₂ F z := (hrep _ (reps_translate hS hy) z).symm
 
 theorem InterTh_of (h : SemiHom) (ha : OpUAnalytic) : InterTh := by
@@ -209,8 +202,7 @@ theorem InterTh_of (h : SemiHom) (ha : OpUAnalytic) : InterTh := by
     intro T
     refine Finset.induction_on T ?_ ?_
     · intro w _
-      simp only [Finset.sum_empty]
-      exact analyticAt_const
+      simpa only [Finset.sum_empty] using analyticAt_const
     · intro a T haT ih w hw
       simp only [Finset.sum_insert haT]
       exact (analyticAt_const.mul (ha V H a F hF'.1 w hw)).add (ih w hw)
@@ -222,8 +214,7 @@ theorem InterTh_of (h : SemiHom) (ha : OpUAnalytic) : InterTh := by
     inter H α Λ₁ Λ₂ F ∈ fixedBy H α Λ₂
   refine ⟨?_, InterFixed_of h V H hH Λ₁ Λ₂ α hα hne F hF'.2⟩
   rw [hG]
-  intro w hw
-  exact analyticAt_const.mul (hsum S w hw)
+  exact fun w hw => analyticAt_const.mul (hsum S w hw)
 
 theorem ThIsom_of (h : OpUIsom) : ThIsom := by
   intro V W _ _ _ _ _ _ H H' g hiso Λ α' G
@@ -249,8 +240,7 @@ theorem ThIsom_of (h : OpUIsom) : ThIsom := by
     have e := h V W H H' (g : V →ₗ[ℂ] W) hiso x G z
     have m : (g : V →ₗ[ℂ] W) x ∈ imgLat (g : V →ₗ[ℂ] W) Λ :=
       AddSubgroup.mem_map_of_mem (g : V →ₗ[ℂ] W).toAddMonoidHom hx
-    have h3 := hinv _ m (g z)
-    exact (congrArg (fun t => α' (g x) * t) e).trans h3
+    exact (congrArg (fun t => α' (g x) * t) e).trans (hinv _ m (g z))
   · intro hG
     have hG' : AnalyticOnNhd ℂ (fun v => G (g v)) Set.univ ∧
         (fun v => G (g v)) ∈ fixedBy H (fun v => α' (g v)) Λ := hG
@@ -260,8 +250,7 @@ theorem ThIsom_of (h : OpUIsom) : ThIsom := by
     refine ⟨fun w _ => ?_, ?_⟩
     · have h3 := (hG'.1 (g.symm w) (Set.mem_univ _)).comp (hgsA w)
       have e : ((fun v => G (g v)) ∘ fun w => g.symm w) = G := funext fun w => by simp
-      rw [e] at h3
-      exact h3
+      rwa [e] at h3
     · show ∀ x ∈ imgLat (g : V →ₗ[ℂ] W) Λ, ∀ z, α' x * opU H' x G z = G z
       intro x hx z
       have hx' : x ∈ Λ.map (g : V →ₗ[ℂ] W).toAddMonoidHom := hx

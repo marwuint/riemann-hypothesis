@@ -159,8 +159,7 @@ theorem nabla_eq_dual_weyl_holds : NablaEqDualWeyl := by
         by_contra h
         exact hcol (colSums ℚ r n ν P hP e (mem_support_iff.mpr h)))
     refine ⟨Q', (dualWeylIntRat r n ν Q').2 ?_, hQ'.symm⟩
-    rw [← we_intQ_apply, ← hQ']
-    exact hP
+    rwa [← we_intQ_apply, ← hQ']
 
 section Double
 
@@ -204,12 +203,10 @@ theorem we_cut_inj {S S' : Submodule ℤ (MvPolynomial (Fin r × Fin n) ℚ)} (h
   constructor
   · intro hx
     have h1 : (⟨x, hS x hx⟩ : dualWeyl ℚ r n ν) ∈ weCut r n ν S := hx
-    rw [h] at h1
-    exact h1
+    rwa [h] at h1
   · intro hx
     have h1 : (⟨x, hS' x hx⟩ : dualWeyl ℚ r n ν) ∈ weCut r n ν S' := hx
-    rw [← h] at h1
-    exact h1
+    rwa [← h] at h1
 
 theorem we_cut_bDual (S : Submodule ℤ (MvPolynomial (Fin r × Fin n) ℚ)) (hS : ∀ x ∈ S, x ∈ dualWeyl ℚ r n ν) :
     weCut r n ν (bDual r n hn ν S) = Formalism.HermitianLatticesTheory.dual (weForm hn ν) (weCut r n ν S) := by
@@ -265,8 +262,7 @@ theorem we_weyl_lattice (hν : Antitone ν) :
     constructor
     · rintro ⟨y, hy, rfl⟩
       exact hy
-    · intro hx
-      exact ⟨⟨x, we_weyl_le hn ν hν x hx⟩, hx, rfl⟩
+    · exact fun hx => ⟨⟨x, we_weyl_le hn ν hν x hx⟩, hx, rfl⟩
   refine { toIsLattice := Submodule.IsLattice.of_fg ℚ ?_, span_eq_top := ?_ }
   · refine Submodule.fg_of_fg_map_injective ((dualWeyl ℚ r n ν).subtype.restrictScalars ℤ)
       (dualWeyl ℚ r n ν).injective_subtype ?_

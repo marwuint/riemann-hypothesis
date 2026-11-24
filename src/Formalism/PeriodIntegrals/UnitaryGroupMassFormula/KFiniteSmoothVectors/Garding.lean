@@ -72,8 +72,7 @@ def mMeas (n : ℕ) : MeasurableSpace (Matrix (Fin n) (Fin n) ℂ) := borel _
 
 attribute [local instance] mMeas
 
-lemma mBorel (n : ℕ) : BorelSpace (Matrix (Fin n) (Fin n) ℂ) := by
-  exact ⟨rfl⟩
+lemma mBorel (n : ℕ) : BorelSpace (Matrix (Fin n) (Fin n) ℂ) := ⟨rfl⟩
 
 attribute [local instance] mBorel
 
@@ -102,8 +101,7 @@ lemma contDiff_mat_mul {f g : E → Matrix (Fin n) (Fin n) ℂ} (hf : ContDiff �
     (hg : ContDiff ℝ N g) : ContDiff ℝ N (fun x => f x * g x) := by
   rw [contDiff_mat_iff] at hf hg ⊢
   intro i j
-  simp only [Matrix.mul_apply]
-  exact ContDiff.sum fun k _ => (hf i k).mul (hg k j)
+  simpa only [Matrix.mul_apply] using ContDiff.sum fun k _ => (hf i k).mul (hg k j)
 
 lemma contDiff_mat_conjT {f : E → Matrix (Fin n) (Fin n) ℂ} (hf : ContDiff ℝ N f) :
     ContDiff ℝ N (fun x => (f x)ᴴ) := by
@@ -125,11 +123,9 @@ lemma umat_measEmb (ε : Fin n → Bool) :
     MeasurableEmbedding (umat : UJ ε → Matrix (Fin n) (Fin n) ℂ) := by
   exact (umat_closedEmb ε).measurableEmbedding
 
-lemma umat_mem (h : UJ ε) : umat h ∈ UJset ε := by
-  exact h.2
+lemma umat_mem (h : UJ ε) : umat h ∈ UJset ε := h.2
 
-lemma umat_inv (γ : UJ ε) : umat γ⁻¹ = Jm ε * (umat γ)ᴴ * Jm ε := by
-  exact coeMatrix_inv_eq ε γ
+lemma umat_inv (γ : UJ ε) : umat γ⁻¹ = Jm ε * (umat γ)ᴴ * Jm ε := coeMatrix_inv_eq ε γ
 
 lemma umat_mul_inv (γ : UJ ε) : umat γ * umat γ⁻¹ = 1 := by
   exact Units.mul_inv (γ : (Matrix (Fin n) (Fin n) ℂ)ˣ)

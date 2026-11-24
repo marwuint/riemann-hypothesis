@@ -125,8 +125,7 @@ theorem isEndoZ_map {e : PowerSeries K} {ι : Type} [Fintype ι] {neg : ι → �
   obtain ⟨h1, h2, h3⟩ := h
   refine ⟨h1, fun P => ?_, ?_⟩
   · have := second_log_derivative_map φ (h2 P)
-    simp only [map_sub, map_mul, map_ofNat, map_wpShift] at this
-    exact this
+    simpa only [map_sub, map_mul, map_ofNat, map_wpShift] using this
   · have := congrArg (PowerSeries.map φ) h3
     simpa [map_rescale] using this
 
@@ -245,8 +244,7 @@ theorem cdata {dK : ℕ} (L : PeriodPair) (hmod : dK % 4 = 3) (hCM : Formalism.L
       push_cast
       rw [← hprod]
       ring
-    rw [e]
-    exact h1
+    rwa [e]
   · intro P
     have e : (neg P : ℂ) = -(P : ℂ) + ((⟨_, hneg P⟩ : L.lattice) : ℂ) := by
       simp
@@ -301,8 +299,7 @@ theorem curveNorm {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K]
     (logSer (shortW g2 g3)) (expSer (shortW g2 g3)) _ (xS (shortW g2 g3)) _ ι neg xP _ _ al albar
     hLP hPh hXW hA h2inv hR (by rw [hs, hb2]; simp)
   have h' := (_root_.Formalism.L2.Th1.C.simeq_iff_congruence K Unit _ _).2 h
-  rw [MvPowerSeries.smul_eq_C_mul] at h'
-  exact h'
+  rwa [MvPowerSeries.smul_eq_C_mul] at h'
 
 theorem wpReg_eq {K : Type} [Field K] [CharZero K] (g2 g3 : K) :
     wpReg (shortW g2 g3) = Formalism.L2.Th1.F.pOf g2 g3 := by
@@ -381,8 +378,7 @@ theorem NRDense_of (hSq : SqrtKur) : NRDense := by
     refine ⟨⟨_, hx⟩, ⟨_, hy⟩ / 2, rfl, ?_, hxn, ?_⟩
     · push_cast
       rfl
-    · rw [norm_div, h2, div_one]
-      exact hyn
+    · rwa [norm_div, h2, div_one]
   choose xP yP hxP hyP hxn hyn using hpts
   have hb2 : (shortW g2 g3).b₂ = 0 := (Formalism.L2.Th1.A.shortInv (MaximalUnramifiedExtension l) g2 g3).1
   have hEq : ∀ P, (shortW g2 g3).toAffine.Equation (xP P) (yP P) := by
@@ -426,8 +422,7 @@ theorem NRDense_of (hSq : SqrtKur) : NRDense := by
       rw [hb2, zero_div, add_zero]
       exact hxP P
     have e2 : (MaximalUnramifiedExtension l).subtype α = (ι : ℂ →+* ℂ_[l]) ((m : ℂ) + (n : ℂ) * omegaK dK) := hα
-    rw [hmapE, e1, e2]
-    exact h
+    rwa [hmapE, e1, e2]
   have hEC := CurveNormEndomorphisms.endoCurve_of_endoZ (MaximalUnramifiedExtension l).subtype (shortW g2 g3) hEq hneg hZ
   obtain ⟨hw, hσw⟩ := hSq dK hsq hmod l h5 hin ι
   obtain ⟨w, hwc⟩ : ∃ w : MaximalUnramifiedExtension l, (w : ℂ_[l]) = ι (omegaK dK) := ⟨⟨_, hw⟩, rfl⟩
@@ -449,8 +444,7 @@ theorem NRDense_of (hSq : SqrtKur) : NRDense := by
     simp only [map_mul, map_add (f := _), map_sub, map_intCast, map_natCast, map_one] at h
     rw [hσα, hαw, Fintype.card_coe]
     push_cast
-    rw [hwc]
-    exact h
+    rwa [hwc]
   have hal : ‖α‖ = 1 := by
     have h1 : ‖α * σ α‖ = 1 := by
       rw [hNK, Fintype.card_coe]

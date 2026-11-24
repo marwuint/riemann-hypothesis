@@ -84,8 +84,7 @@ theorem norm_herm_idem_le (R : Matrix ι ι ℂ) (h1 : R.IsHermitian) (h2 : R * 
   have h3 : @inner ℂ _ _ y y = @inner ℂ _ _ z y := by
     have h4 := hs z y
     rw [hy, hTT z] at h4
-    rw [hy]
-    exact h4
+    rwa [hy]
   have h5 : ‖y‖ ^ 2 ≤ ‖z‖ * ‖y‖ := by
     have h6 := re_inner_le_norm (𝕜 := ℂ) z y
     have h7 : RCLike.re (@inner ℂ _ _ y y) = ‖y‖ ^ 2 := inner_self_eq_norm_sq y
@@ -126,8 +125,7 @@ theorem frameMat_herm (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι �
     unfold Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.fcoord Formalism.HermitianLatticesTheory.vecAt at h
     rw [← hUdef] at h
     simp only [hcol, hcolM] at h
-    rw [Matrix.mul_apply, Matrix.mul_apply]
-    exact h
+    rwa [Matrix.mul_apply, Matrix.mul_apply]
   have hUHu : IsUnit U.conjTranspose.det := by
     rw [Matrix.det_conjTranspose]
     exact hUu.star
@@ -177,8 +175,7 @@ theorem opNormAt_le (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ
   have h2 : (g • (1 - LinearMap.toMatrix b b e)).map v.embedding =
       g • (1 - (LinearMap.toMatrix b b e).map v.embedding) := by
     have h3 := map_nsmul (v.embedding.mapMatrix) g (1 - LinearMap.toMatrix b b e)
-    rw [map_sub, map_one] at h3
-    exact h3
+    rwa [map_sub, map_one] at h3
   have hmat : (X v)⁻¹ * (LinearMap.toMatrix b b ((g : K) • (LinearMap.id - e))).map v.embedding * X v =
       g • (1 - F) := by
     rw [h1, h2, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hXinv, hF]
@@ -237,10 +234,8 @@ theorem rk_add (b : Basis ι K V) (e : V →ₗ[K] V) (g : ℕ) (N : Submodule (
       rintro _ ⟨x, hx, rfl⟩
       have h1 : (g : K) • e x ∈ S := hNS _ (hint x hx)
       have h2 := S.smul_mem ((g : K)⁻¹) h1
-      rw [hinv] at h2
-      exact h2
-    intro x hx
-    exact hle ⟨x, hx, rfl⟩
+      rwa [hinv] at h2
+    exact fun x hx => hle ⟨x, hx, rfl⟩
   have hA : Submodule.span K ((N ⊓ (LinearMap.range e).restrictScalars (𝓞 K) : Submodule (𝓞 K) V) : Set V) =
       S.map e := by
     apply le_antisymm
@@ -257,8 +252,7 @@ theorem rk_add (b : Basis ι K V) (e : V →ₗ[K] V) (g : ℕ) (N : Submodule (
       have h3 : (g : K) • e x ∈ Submodule.span K ((N ⊓ (LinearMap.range e).restrictScalars (𝓞 K) :
           Submodule (𝓞 K) V) : Set V) := Submodule.subset_span h1
       have h2 := Submodule.smul_mem _ ((g : K)⁻¹) h3
-      rw [hinv] at h2
-      exact h2
+      rwa [hinv] at h2
   have hB : Submodule.span K ((N ⊓ (LinearMap.ker e).restrictScalars (𝓞 K) : Submodule (𝓞 K) V) : Set V) =
       S.map (LinearMap.id - e : V →ₗ[K] V) := by
     apply le_antisymm
@@ -275,8 +269,7 @@ theorem rk_add (b : Basis ι K V) (e : V →ₗ[K] V) (g : ℕ) (N : Submodule (
       have h3 : (g : K) • (x - e x) ∈ Submodule.span K ((N ⊓ (LinearMap.ker e).restrictScalars (𝓞 K) :
           Submodule (𝓞 K) V) : Set V) := Submodule.subset_span h1
       have h2 := Submodule.smul_mem _ ((g : K)⁻¹) h3
-      rw [hinv] at h2
-      exact h2
+      rwa [hinv] at h2
   have hsup : S.map e ⊔ S.map (LinearMap.id - e : V →ₗ[K] V) = S := by
     apply le_antisymm
     · apply sup_le
@@ -289,8 +282,7 @@ theorem rk_add (b : Basis ι K V) (e : V →ₗ[K] V) (g : ℕ) (N : Submodule (
         Submodule.add_mem_sup ⟨x, hx, rfl⟩ ⟨x, hx, rfl⟩
       have h2 : e x + (LinearMap.id - e : V →ₗ[K] V) x = x := by
         simp
-      rw [h2] at h1
-      exact h1
+      rwa [h2] at h1
   have hinf : S.map e ⊓ S.map (LinearMap.id - e : V →ₗ[K] V) = ⊥ := by
     rw [eq_bot_iff]
     rintro y ⟨⟨a, ha, hay⟩, ⟨c, hc, hcy⟩⟩
@@ -493,8 +485,7 @@ theorem good_bad_split : GoodBadCut := by
     have h4 : -Real.log (ht b X N) ≤ -Real.log (ht b X Ng) + -Real.log (ht b X Nb) +
         (nPl K : ℝ) * (2 * (rkK I : ℝ) * Real.log g) := by linarith
     have h5 := div_le_div_of_nonneg_right h4 hf.le
-    rw [add_div, add_div, mul_div_cancel_left₀ _ hf.ne'] at h5
-    exact h5
+    rwa [add_div, add_div, mul_div_cancel_left₀ _ hf.ne'] at h5
   · intro M hM hNM
     by_cases hb : Nb = ⊥
     · rw [hb, rkK_bot]; simp
@@ -509,8 +500,7 @@ theorem good_bad_split : GoodBadCut := by
         exact_mod_cast Nat.pos_of_ne_zero hr0
       have hs : slope (Formalism.HermitianLatticesTheory.realize b X) Nb ≤ muMax (Formalism.HermitianLatticesTheory.realize b X) M := by
         change deg (Formalism.HermitianLatticesTheory.realize b X) Nb / (rk (Formalism.HermitianLatticesTheory.realize b X) Nb : ℝ) ≤ _
-        rw [div_le_iff₀ hrpos]
-        exact hmax
+        rwa [div_le_iff₀ hrpos]
       refine mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)
       unfold muDef muMaxDef
       linarith

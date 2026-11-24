@@ -115,8 +115,7 @@ theorem core {c : ℕ} (hc : Nat.Coprime c X.B.g)
           (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.f0 b - incl X.B.I (X.fR b)) := by
       rw [← smul_sub, sub_sub_cancel]
     rw [h]; exact sub_mem (sm X.B.I hcI (X.vectorsInLattice.1 b).2) (hmLL (hfc b))
-  have hsig : starRingEnd X.B.I.E = (X.B.I.cm.sig : X.B.I.E →+* X.B.I.E) := by
-    exact RingHom.ext fun _ => rfl
+  have hsig : starRingEnd X.B.I.E = (X.B.I.cm.sig : X.B.I.E →+* X.B.I.E) := RingHom.ext fun _ => rfl
   have hpair (a b : Fin D.R.rS) :
       hA X.B.I (incl X.B.I (X.eR a)) (incl X.B.I (X.fR b)) = if a = b then 1 else 0 := by
     rw [hA_incl, hsig]
@@ -147,8 +146,7 @@ theorem core {c : ℕ} (hc : Nat.Coprime c X.B.g)
     have hsum : Finsupp.linearCombination (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (fun b => incl X.B.I (X.eR b)) l =
         ∑ b, l b • incl X.B.I (X.eR b) := by
       rw [Finsupp.linearCombination_apply, Finsupp.sum_fintype]
-      intro i
-      exact zero_smul _ _
+      exact fun i => zero_smul _ _
     rw [hsum] at hdw ⊢
     have hcoef (b : Fin D.R.rS) :
         ((c * d : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * l b ∈ IntAf X.B.I.F X.B.I.E := by
@@ -322,8 +320,7 @@ theorem nLevel_holds : NLevel := by
     (hA_fmat X.B.I (X.xu u)) (fun a => (X.xu_fix u a).1) hN.1 (incl X.B.I (X.zR u)) hN.2.1 hN.2.2 hzc
   refine ⟨hκK, ?_⟩
   unfold K2cong
-  simp only [hT]
-  exact hcore
+  simpa only [hT] using hcore
 
 end MassDataMassesW.NLev
 end -- clump:auto

@@ -88,8 +88,7 @@ theorem coe_mem_push {X : Submodule K V} {L : Submodule (𝓞 K) ↥X} {x : ↥X
   constructor
   · rintro ⟨y, hy, e⟩
     rwa [← Subtype.ext e]
-  · intro hx
-    exact ⟨x, hx, rfl⟩
+  · exact fun hx => ⟨x, hx, rfl⟩
 
 theorem push_le (X : Submodule K V) (L : Submodule (𝓞 K) ↥X) : ∀ v ∈ push X L, v ∈ X := by
   rintro v ⟨x, -, rfl⟩
@@ -101,8 +100,7 @@ theorem push_pull {X : Submodule K V} {L : Submodule (𝓞 K) V} (hL : ∀ v ∈
   constructor
   · rintro ⟨x, hx, rfl⟩
     exact hx
-  · intro hv
-    exact ⟨⟨v, hL v hv⟩, hv, rfl⟩
+  · exact fun hv => ⟨⟨v, hL v hv⟩, hv, rfl⟩
 
 theorem push_injective (X : Submodule K V) : Function.Injective (push X) :=
   Submodule.map_injective_of_injective (incl_injective X)
@@ -134,8 +132,7 @@ theorem push_locF (X : Submodule K V) {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime
   · rintro ⟨t, ht, hy⟩
     have hv : v ∈ X := mem_of_smul_mem (K := K) hp ht (push_le X L _ hy)
     refine ⟨⟨v, hv⟩, (LocF.mem_locF_iff hp L _).2 ⟨t, ht, ?_⟩, rfl⟩
-    rw [← coe_mem_push (X := X)]
-    exact hy
+    rwa [← coe_mem_push (X := X)]
 
 theorem push_span (X : Submodule K V) (s : Set ↥X) :
     push X (Submodule.span (𝓞 K) s) = Submodule.span (𝓞 K) (((↑) : ↥X → V) '' s) :=
@@ -162,8 +159,7 @@ theorem isLatIn_push_iff_isLattice {X : Submodule K V} (L : Submodule (𝓞 K) �
 theorem isIntegralLat_push {h : V →ₗ⋆[K] V →ₗ[K] K} {X : Submodule K V} (L : Submodule (𝓞 K) ↥X) :
     Formalism.HermitianLatticesTheory.IsIntegralLat h (push X L) ↔ Formalism.HermitianLatticesTheory.IsIntegralLat (formOn h X) L := by
   constructor
-  · intro H x hx y hy
-    exact H _ (coe_mem_push.mpr hx) _ (coe_mem_push.mpr hy)
+  · exact fun H x hx y hy => H _ (coe_mem_push.mpr hx) _ (coe_mem_push.mpr hy)
   · rintro H _ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩
     exact H x hx y hy
 
@@ -241,8 +237,7 @@ theorem map_orthK {g : V ≃ₗ[K] V} (hg : g ∈ isomFix h U) :
   constructor
   · rintro ⟨y, hy, rfl⟩
     exact apply_mem_orthK hg hy
-  · intro hx
-    exact ⟨g.symm x, apply_mem_orthK ((isomFix h U).inv_mem hg) hx, g.apply_symm_apply x⟩
+  · exact fun hx => ⟨g.symm x, apply_mem_orthK ((isomFix h U).inv_mem hg) hx, g.apply_symm_apply x⟩
 
 def restr {g : V ≃ₗ[K] V} (hg : g ∈ isomFix h U) : ↥(orthK h U) ≃ₗ[K] ↥(orthK h U) :=
   g.ofSubmodules (orthK h U) (orthK h U) (map_orthK hg)
@@ -267,9 +262,7 @@ theorem restr_extId (hs : h.IsSymm) (hc : IsCompl U (orthK h U))
     {g : ↥(orthK h U) ≃ₗ[K] ↥(orthK h U)} (hg : g ∈ Formalism.HermitianLatticesTheory.isom (formOn h (orthK h U))) :
     restr (extId_mem hs hc hg) = g := by
   apply LinearEquiv.ext
-  intro w
-  apply Subtype.ext
-  exact (restr_apply _ w).trans (extension_identity_of_mem_compl hc g w)
+  exact fun w => Subtype.ext ((restr_apply _ w).trans (extension_identity_of_mem_compl hc g w))
 
 theorem gmap_push {g : V ≃ₗ[K] V} (hg : g ∈ isomFix h U) (L : Submodule (𝓞 K) ↥(orthK h U)) :
     Formalism.HermitianLatticesTheory.gmap g (push (orthK h U) L) = push (orthK h U) (Formalism.HermitianLatticesTheory.gmap (restr hg) L) := by

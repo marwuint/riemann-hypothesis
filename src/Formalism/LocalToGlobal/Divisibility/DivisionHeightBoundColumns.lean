@@ -75,12 +75,9 @@ theorem trF_nbFun (a : GLG (E := X.E) (n := n) (SG := SG)) (P : Ideal (𝓞 X.E)
   · intro e he
     have : g • (g⁻¹ • e) ∈ (g • d).heckeNb P i := by rwa [smul_inv_smul]
     exact (DecoSet.smul_mem_heckeNb_iff g).1 this
-  · intro e he
-    exact (DecoSet.smul_mem_heckeNb_iff g).2 he
-  · intro e _
-    exact smul_inv_smul g e
-  · intro e _
-    exact inv_smul_smul g e
+  · exact fun e he => (DecoSet.smul_mem_heckeNb_iff g).2 he
+  · exact fun e _ => smul_inv_smul g e
+  · exact fun e _ => inv_smul_smul g e
   · intro e _
     rw [smul_inv_smul]
 
@@ -255,12 +252,10 @@ theorem heckeCSD_zero (P : offSub ST SG SG' S0) : heckeCSD S h c SG S0 (P, 0) = 
     | (erw [Col.heckeFam_zero]; ext x; simp [LinearEquiv.conj_apply])
 
 theorem heckeCSD_comm (hc : Col.HeckeComm c S0) : Col.PairComm (heckeCSD S h c SG S0) := by
-  intro x y
-  exact conjE_commute _ (hc _ _)
+  exact fun x y => conjE_commute _ (hc _ _)
 
 theorem heckeCSD_split (hs : Col.HeckeFieldsIn c S0) : Col.SplitOver (heckeCSD S h c SG S0) := by
-  intro x
-  exact conjE_iSup_maxGen (S.res h) _ (hs _)
+  exact fun x => conjE_iSup_maxGen (S.res h) _ (hs _)
 
 end Gen
 

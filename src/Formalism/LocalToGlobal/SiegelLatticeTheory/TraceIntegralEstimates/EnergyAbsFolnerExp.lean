@@ -125,8 +125,7 @@ theorem gvec_norm {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {w : HH} (
   have key : ∑ i, ‖⟪W x, stdOrthonormalBasis ℂ V i⟫_ℂ‖ ^ 2 = ‖W x‖ ^ 2 := by
     exact (stdOrthonormalBasis ℂ V).sum_sq_norm_inner_left (W x)
   have hs : ‖gvec σ w W x‖ ^ 2 = ‖W x‖ ^ 2 := by
-    rw [← key]
-    rw [PiLp.norm_sq_eq_of_L2]
+    rw [← key, PiLp.norm_sq_eq_of_L2]
     exact Finset.sum_congr rfl fun i _ => by simp [gvec, norm_smul, hn]
   nlinarith [norm_nonneg (gvec σ w W x), norm_nonneg (W x)]
 
@@ -134,8 +133,7 @@ theorem gvec_inner (σ : G → (HH →L[ℂ] HH)) (w : HH) (W : G → V) (x y : 
     ⟪gvec σ w W x, gvec σ w W y⟫_ℂ = ⟪W y, W x⟫_ℂ * ⟪σ x w, σ y w⟫_ℂ := by
   have hb : ∑ i, ⟪W y, stdOrthonormalBasis ℂ V i⟫_ℂ * ⟪stdOrthonormalBasis ℂ V i, W x⟫_ℂ = ⟪W y, W x⟫_ℂ := by
     exact (stdOrthonormalBasis ℂ V).sum_inner_mul_inner (W y) (W x)
-  rw [← hb, Finset.sum_mul]
-  rw [PiLp.inner_apply]
+  rw [← hb, Finset.sum_mul, PiLp.inner_apply]
   refine Finset.sum_congr rfl fun i _ => ?_
   simp only [gvec, PiLp.toLp_apply, inner_smul_left, inner_smul_right, inner_conj_symm]
   ring
@@ -149,7 +147,6 @@ theorem Fk_continuous {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : H
   have h2 : Continuous fun x => W (a x) := hWc.comp ha
   have h3 : Continuous fun x => σ (a x) w := (hσc w).comp ha
   have h4 : Continuous fun x => σ (c x * b x) w := (hσc w).comp hcb
-  show Continuous fun x => ⟪W (c x * b x), W (a x)⟫_ℂ * ⟪σ (a x) w, σ (c x * b x) w⟫_ℂ
   exact (h1.inner h2).mul (h3.inner h4)
 
 theorem Fk_bound {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {w : HH} (hw : ‖w‖ = 1) {S : Set G}

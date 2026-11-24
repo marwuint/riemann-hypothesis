@@ -63,10 +63,8 @@ def gaChi (x : ℝ) : ℝ := Real.smoothTransition (2 * x - 1)
 theorem isCut0_gaChi : C6.IsCut0 gaChi := by
   refine ⟨?_, ⟨1 / 2, by norm_num, fun x hx => ?_⟩, fun x hx => ?_⟩
   · exact Real.smoothTransition.contDiff.comp ((contDiff_const.mul contDiff_id).sub contDiff_const)
-  · show Real.smoothTransition (2 * x - 1) = 0
-    exact Real.smoothTransition.zero_of_nonpos (by linarith)
-  · show Real.smoothTransition (2 * x - 1) = 1
-    exact Real.smoothTransition.one_of_one_le (by linarith)
+  · exact Real.smoothTransition.zero_of_nonpos (by linarith)
+  · exact Real.smoothTransition.one_of_one_le (by linarith)
 
 def GACutGraded : Prop :=
   ∃ Cg : ℝ, 0 ≤ Cg ∧ ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
@@ -179,10 +177,8 @@ theorem jAGroupAdj_of_leaves (hCut : GACutGraded) (hComm : GAJComm) (hPair : GAP
     le_trans (mul_le_mul_of_nonneg_right (le_max_right _ _) hr1) hBg
   have hBg0 : 0 ≤ Bg := le_trans (mul_nonneg (le_max_of_le_left hCg₁) hr1) hBg
   have hχ0 : ∀ x, x < 1 / 2 → gaChi x = 0 := fun x hx => by
-    show Real.smoothTransition (2 * x - 1) = 0
     exact Real.smoothTransition.zero_of_nonpos (by linarith)
   have hχ1 : ∀ x, 1 ≤ x → gaChi x = 1 := fun x hx => by
-    show Real.smoothTransition (2 * x - 1) = 1
     exact Real.smoothTransition.one_of_one_le (by linarith)
 
   have hrep : ∀ (J : GFn S v) (t : ℝ), 0 < t →
@@ -249,8 +245,7 @@ theorem jAGroupAdj_of_leaves (hCut : GACutGraded) (hComm : GAJComm) (hPair : GAP
     refine ⟨Cb, fun u w hu hw hl g hg hG => ?_⟩
     have h := hCb u w hu hw hl g hg hG
     have e : d + Bg * ((B.opOrder Θ + 5 : ℕ) : ℝ) = d + Bg * ((B.opOrder Θ : ℝ) + 5) := by push_cast; ring
-    rw [e] at h
-    exact h
+    rwa [e] at h
   have hcc : ∀ F : GFn S v, CCg S v (B.AB S.G.k S.G.r + Cc * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r ^ 2 +
           6 * (S.G.r : ℝ) * ((B.opOrder Θ : ℝ) + 5) + d + 2 * Bg * ((B.opOrder Θ : ℝ) + 5)) Bg F →
       B.InCC (B.AB S.G.k S.G.r + (d + Bg * ((B.opOrder Θ : ℝ) + 5))) (B.opOrder Θ + 5) F := by
@@ -297,8 +292,7 @@ theorem jAGroupAdj_of_leaves (hCut : GACutGraded) (hComm : GAJComm) (hPair : GAP
       · push Not at hG
         exact (hiii x hx (show GfP S T v (B.gq (T v).base x) ∈ Set.Ioi (ε / 2) by
           simp only [Set.mem_Ioi]; linarith)).2)
-  rw [hL, hR]
-  exact hβ
+  rwa [hL, hR]
 
 end
 

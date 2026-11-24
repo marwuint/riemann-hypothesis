@@ -139,8 +139,7 @@ theorem orthogonal_complement_place_split {P E : Type*} [Fintype P] [NormedAddCo
     · rintro ⟨⟨hxS, hxT⟩, hxv⟩
       refine ⟨⟨hxS, hxv⟩, ?_⟩
       rw [Submodule.mem_orthogonal]
-      intro u hu
-      exact (Submodule.mem_orthogonal T x).1 hxT u hu.1
+      exact fun u hu => (Submodule.mem_orthogonal T x).1 hxT u hu.1
     · rintro ⟨⟨hxS, hxv⟩, hx⟩
       refine ⟨⟨hxS, ?_⟩, hxv⟩
       rw [Submodule.mem_orthogonal]
@@ -160,10 +159,8 @@ theorem orthogonal_complement_place_split {P E : Type*} [Fintype P] [NormedAddCo
       have h0 : inner ℝ t (∑ u, f u) = 0 := (Submodule.mem_orthogonal T _).1 hxT t ht.1
       rw [inner_sum, Finset.sum_eq_single w] at h0
       · exact h0
-      · intro u _ hu
-        exact hEv w u (Ne.symm hu) t ht.2 (f u) (hf u).2
-      · intro h
-        exact absurd (Finset.mem_univ w) h
+      · exact fun u _ hu => hEv w u (Ne.symm hu) t ht.2 (f u) (hf u).2
+      · exact fun h => absurd (Finset.mem_univ w) h
     · exact iSup_le fun w => inf_le_left
   · have h := Submodule.finrank_add_inf_finrank_orthogonal (inf_le_inf_right (Ev v) hTS)
     rw [key v, inf_comm (S ⊓ Ev v)]
@@ -269,8 +266,7 @@ theorem htImage_norm_placePart {P ι : Type*} [Fintype P] [Fintype ι] {v : P}
     apply Finset.sum_eq_zero
     intro q _
     simp [hy (w, q) hw]
-  · intro h
-    exact absurd (Finset.mem_univ v) h
+  · exact fun h => absurd (Finset.mem_univ v) h
 
 theorem htImage_map_norm {P ι κ : Type*} [Fintype P] [Fintype ι] [Fintype κ] [DecidableEq ι]
     (M : P → Matrix κ ι ℂ) {v : P} {y : EuclideanSpace ℝ (P × ι × Fin 2)} (hy : y ∈ placePart v) :
@@ -304,8 +300,7 @@ theorem htImage_realize_eq_zero (b : Basis ι K V) (X : InfinitePlace K → Matr
     rwa [Matrix.mul_nonsing_inv _ (hX v), Matrix.one_mulVec] at h3
   apply b.repr.injective
   ext i
-  have h4 := congrFun h2 i
-  simpa [Formalism.HermitianLatticesTheory.vecAt] using h4
+  simpa [Formalism.HermitianLatticesTheory.vecAt] using congrFun h2 i
 
 def htImageMat (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (b' : Basis κ K W)
     (X' : InfinitePlace K → Matrix κ κ ℂ) (φ : V →ₗ[K] W) (v : InfinitePlace K) :

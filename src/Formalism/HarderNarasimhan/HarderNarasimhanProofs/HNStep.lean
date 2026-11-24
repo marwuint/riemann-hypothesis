@@ -132,14 +132,11 @@ theorem hnStep_of (h1 : DegSupermod.{u, v, w}) (h2 : MuChar.{u, v, w}) (h3 : Rat
       exact ⟨hF'L, hsatimg⟩
     have hrk : rk ρ F' = rk ρ F := by
       show Formalism.F.rk (zl ρ F') = Formalism.F.rk (zl ρ F)
-      rw [himg]
-      exact hrkimg
+      rwa [himg]
     by_cases hF'0 : F' = ⊥
     · have hF0 : F = ⊥ := by
-        rw [eq_bot_iff, ← hF'0]
-        exact hFF'
-      rw [hF0]
-      exact hbot
+        rwa [eq_bot_iff, ← hF'0]
+      rwa [hF0]
     · have PF' : ∀ N ≤ F', g N ≤ g F' := by
         intro M hM
         have hML : M ≤ L := hM.trans hF'L
@@ -155,8 +152,7 @@ theorem hnStep_of (h1 : DegSupermod.{u, v, w}) (h2 : MuChar.{u, v, w}) (h3 : Rat
           linarith
         linarith
       have hmem := memS F' hF'L hF'0 ((charP F' hF'L hF'0).mpr PF')
-      rw [le_antisymm hmem hFF'] at hF'sat
-      exact hF'sat
+      rwa [le_antisymm hmem hFF'] at hF'sat
   refine ⟨Fsat, fun hF0 => (charP F FL hF0).mpr PF, memS, ?_⟩
   intro N hFN hNL
   refine not_le.mp fun hcon => ?_
@@ -196,7 +192,6 @@ theorem hnStep_of (h1 : DegSupermod.{u, v, w}) (h2 : MuChar.{u, v, w}) (h3 : Rat
         linarith [mul_sub θ (rk ρ N₀ : ℝ) (rk ρ F)]
     linarith
   have hN₀0 : N₀ ≠ ⊥ := ne_bot_of_gt hFN₀
-  have hle := memS N₀ hN₀L hN₀0 ((charP N₀ hN₀L hN₀0).mpr PN₀)
-  exact absurd (le_antisymm hle hFN₀.le) hFN₀.ne'
+  exact absurd (le_antisymm (memS N₀ hN₀L hN₀0 ((charP N₀ hN₀L hN₀0).mpr PN₀)) hFN₀.le) hFN₀.ne'
 
 end Formalism.HN

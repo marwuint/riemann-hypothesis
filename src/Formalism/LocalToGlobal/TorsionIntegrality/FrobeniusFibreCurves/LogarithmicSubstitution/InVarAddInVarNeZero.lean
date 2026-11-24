@@ -256,25 +256,18 @@ theorem par_eq (hA : AddSgStar) (hD : PhODef) {g2 g3 s2 c0 : K} {P l i ep : Powe
   have hl0 : PowerSeries.constantCoeff l = 0 := hF.2.2.1
   have hl1 : PowerSeries.coeff 1 l = 1 := hF.2.2.2.1
   have hF0 : MvPowerSeries.constantCoeff F = 0 := hF.1
-  have hD0 : MvPowerSeries.constantCoeff (Formalism.L2.Th1.B.FI F i) = 0 := constantCoeff_FI hF hi
+  have hD0 := constantCoeff_FI hF hi
   obtain ⟨hψ0, e⟩ := hD K s2 P l hl0 hl1
   have hAd := hA K g2 g3 s2 P hP
-  have hL0c : MvPowerSeries.constantCoeff (Formalism.InvariantFactorPaths.G7.at1 0 l : MvPowerSeries (Fin 2) K) = 0 :=
-    constantCoeff_inVar 0 hl0
-  have hL1c : MvPowerSeries.constantCoeff (Formalism.InvariantFactorPaths.G7.at1 1 l : MvPowerSeries (Fin 2) K) = 0 :=
-    constantCoeff_inVar 1 hl0
-  have hb : MvPowerSeries.HasSubst ![(Formalism.InvariantFactorPaths.G7.at1 0 l : MvPowerSeries (Fin 2) K), Formalism.InvariantFactorPaths.G7.at1 1 l] :=
-    MvPowerSeries.hasSubst_of_constantCoeff_zero (constantCoeff_vec_pair_eq_zero hL0c hL1c)
-  have hb0 : (![(Formalism.InvariantFactorPaths.G7.at1 0 l : MvPowerSeries (Fin 2) K), Formalism.InvariantFactorPaths.G7.at1 1 l] : Fin 2 → MvPowerSeries (Fin 2) K) 0 =
-      Formalism.InvariantFactorPaths.G7.at1 0 l := rfl
-  have hb1 : (![(Formalism.InvariantFactorPaths.G7.at1 0 l : MvPowerSeries (Fin 2) K), Formalism.InvariantFactorPaths.G7.at1 1 l] : Fin 2 → MvPowerSeries (Fin 2) K) 1 =
-      Formalism.InvariantFactorPaths.G7.at1 1 l := rfl
+  have hL0c := constantCoeff_inVar (0 : Fin 2) hl0
+  have hL1c := constantCoeff_inVar (1 : Fin 2) hl0
+  have hb := MvPowerSeries.hasSubst_of_constantCoeff_zero (constantCoeff_vec_pair_eq_zero hL0c hL1c)
   have KE := congrArg
     (fun φ => MvPowerSeries.subst ![(Formalism.InvariantFactorPaths.G7.at1 0 l : MvPowerSeries (Fin 2) K), Formalism.InvariantFactorPaths.G7.at1 1 l] φ) hAd
   simp only [MvPowerSeries.subst_mul hb, MvPowerSeries.subst_pow hb, MvPowerSeries.subst_X hb,
     subst_atS (Formalism.L2.Th1.B.sgStar s2 P) hb, subst_atD (Formalism.L2.Th1.B.sgStar s2 P) hb,
     subst_inVar (Formalism.L2.Th1.B.sgStar s2 P) 0 hb, subst_inVar (Formalism.L2.Th1.B.sgStar s2 P) 1 hb,
-    subst_wpDiff P hb, hb0, hb1] at KE
+    subst_wpDiff P hb, Matrix.cons_val_zero, Matrix.cons_val_one] at KE
   have sF := value_at hl0 hψ0 e hF0
   have sD := value_at hl0 hψ0 e hD0
   have s0 : PowerSeries.subst (Formalism.InvariantFactorPaths.G7.at1 0 l : MvPowerSeries (Fin 2) K) (Formalism.L2.Th1.B.sgStar s2 P) =
@@ -295,8 +288,7 @@ theorem par_eq (hA : AddSgStar) (hD : PhODef) {g2 g3 s2 c0 : K} {P l i ep : Powe
   have hN : (Formalism.InvariantFactorPaths.G7.at1 0 l : MvPowerSeries (Fin 2) K) ^ 2 * Formalism.InvariantFactorPaths.G7.at1 1 l ^ 2 * F * Formalism.L2.Th1.B.FI F i ≠ 0 :=
     mul_ne_zero (mul_ne_zero (mul_ne_zero (pow_ne_zero 2 hL0) (pow_ne_zero 2 hL1)) hFne) hDne
   have hEE := addition_identity_products_eq_neg_c_mul_sq
-    (L0 := (Formalism.InvariantFactorPaths.G7.at1 0 l : MvPowerSeries (Fin 2) K)) (L1 := Formalism.InvariantFactorPaths.G7.at1 1 l)
-    (X0 := MvPowerSeries.X 0) (X1 := MvPowerSeries.X 1) (F := F) (D := Formalism.L2.Th1.B.FI F i) (c := c)
+    (X0 := MvPowerSeries.X 0) (X1 := MvPowerSeries.X 1) (c := c)
     (EF := Formalism.L2.Th1.B.fExp (-PowerSeries.subst F (Formalism.L2.Th1.B.phO s2 P l)))
     (ED := Formalism.L2.Th1.B.fExp (-PowerSeries.subst (Formalism.L2.Th1.B.FI F i) (Formalism.L2.Th1.B.phO s2 P l)))
     (E0 := Formalism.L2.Th1.B.fExp (-Formalism.InvariantFactorPaths.G7.at1 0 (Formalism.L2.Th1.B.phO s2 P l)))
@@ -306,15 +298,10 @@ theorem par_eq (hA : AddSgStar) (hD : PhODef) {g2 g3 s2 c0 : K} {P l i ep : Powe
     (ep0 := Formalism.InvariantFactorPaths.G7.at1 0 ep) (ep1 := Formalism.InvariantFactorPaths.G7.at1 1 ep) (c0 := MvPowerSeries.C c0)
     hN (by linear_combination KE) (by linear_combination C0) (by linear_combination C1)
     (by linear_combination hc)
-  have hA0 : MvPowerSeries.constantCoeff (PowerSeries.subst F (Formalism.L2.Th1.B.phO s2 P l)) = 0 :=
-    PowerSeries.constantCoeff_subst_eq_zero hF0 _ hψ0
-  have hB0 : MvPowerSeries.constantCoeff
-      (PowerSeries.subst (Formalism.L2.Th1.B.FI F i) (Formalism.L2.Th1.B.phO s2 P l)) = 0 :=
-    PowerSeries.constantCoeff_subst_eq_zero hD0 _ hψ0
-  have ha0 : MvPowerSeries.constantCoeff
-      (Formalism.InvariantFactorPaths.G7.at1 0 (Formalism.L2.Th1.B.phO s2 P l) : MvPowerSeries (Fin 2) K) = 0 := constantCoeff_inVar 0 hψ0
-  have ha1 : MvPowerSeries.constantCoeff
-      (Formalism.InvariantFactorPaths.G7.at1 1 (Formalism.L2.Th1.B.phO s2 P l) : MvPowerSeries (Fin 2) K) = 0 := constantCoeff_inVar 1 hψ0
+  have hA0 := PowerSeries.constantCoeff_subst_eq_zero hF0 _ hψ0
+  have hB0 := PowerSeries.constantCoeff_subst_eq_zero hD0 _ hψ0
+  have ha0 := constantCoeff_inVar (0 : Fin 2) hψ0
+  have ha1 := constantCoeff_inVar (1 : Fin 2) hψ0
   have m0 := fExp_mul_neg ha0
   have m1 := fExp_mul_neg ha1
   have hc' : -c = Formalism.L2.Th1.B.fExp (-PowerSeries.subst F (Formalism.L2.Th1.B.phO s2 P l)) *
@@ -341,14 +328,9 @@ theorem par_eq (hA : AddSgStar) (hD : PhODef) {g2 g3 s2 c0 : K} {P l i ep : Powe
     rw [Formalism.L2.Th1.B.fExp_add, Formalism.L2.Th1.B.fExp_add, Formalism.L2.Th1.B.fExp_add, Formalism.L2.Th1.B.fExp_add, Formalism.L2.Th1.B.fExp_add]
     · ring
     all_goals simp [hA0, hB0, ha0, ha1]
-  have hlog : Formalism.L2.Th1.B.fLog (-c) = -PowerSeries.subst F (Formalism.L2.Th1.B.phO s2 P l) +
-        -PowerSeries.subst (Formalism.L2.Th1.B.FI F i) (Formalism.L2.Th1.B.phO s2 P l) +
-        (Formalism.InvariantFactorPaths.G7.at1 0 (Formalism.L2.Th1.B.phO s2 P l) + Formalism.InvariantFactorPaths.G7.at1 0 (Formalism.L2.Th1.B.phO s2 P l)) +
-        (Formalism.InvariantFactorPaths.G7.at1 1 (Formalism.L2.Th1.B.phO s2 P l) + Formalism.InvariantFactorPaths.G7.at1 1 (Formalism.L2.Th1.B.phO s2 P l)) := by
-    rw [hc', hprod]
-    exact Formalism.L2.Th1.B.fLog_fExp (by simp [hA0, hB0, ha0, ha1])
-  rw [Formalism.L2.Th1.B.par, hlog]
-  ring
+  rw [Formalism.L2.Th1.B.par, hc', hprod, Formalism.L2.Th1.B.fLog_fExp]
+  · ring
+  · simp [hA0, hB0, ha0, ha1]
 
 end Norm
 

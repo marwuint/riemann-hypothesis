@@ -89,8 +89,7 @@ theorem norm_u_of (C : WeierstrassCurve.VariableChange ℂ_[p]) (h : ‖((C.u⁻
     ‖((C.u : ℂ_[p]ˣ) : ℂ_[p])‖ = 1 := by
   have h1 : ‖((C.u : ℂ_[p]ˣ) : ℂ_[p])‖ * ‖((C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p])‖ = 1 := by
     rw [← norm_mul, Units.mul_inv, norm_one]
-  rw [h, mul_one] at h1
-  exact h1
+  rwa [h, mul_one] at h1
 
 theorem vc_params (h5 : 5 ≤ p) (W0 : WeierstrassCurve ℂ_[p]) (h01 : W0.a₁ = 0) (h02 : W0.a₂ = 0) (h03 : W0.a₃ = 0)
     (hΔ0 : ‖W0.Δ‖ = 1) (C : WeierstrassCurve.VariableChange ℂ_[p]) (i1 : ‖(C • W0).a₁‖ ≤ 1)
@@ -109,14 +108,12 @@ theorem vc_params (h5 : 5 ≤ p) (W0 : WeierstrassCurve ℂ_[p]) (h01 : W0.a₁ 
   have ht : ‖C.t‖ ≤ 1 := by
     have h := i3
     simp only [WeierstrassCurve.variableChange_a₃, h03, h01, mul_zero, zero_add] at h
-    rw [norm_mul, norm_pow, hv, one_pow, one_mul, norm_mul, h2, one_mul] at h
-    exact h
+    rwa [norm_mul, norm_pow, hv, one_pow, one_mul, norm_mul, h2, one_mul] at h
   have hr : ‖C.r‖ ≤ 1 := by
     have ha2 : ‖3 * C.r - C.s ^ 2‖ ≤ 1 := by
       have h := i2
       simp only [WeierstrassCurve.variableChange_a₂, h02, h01, mul_zero, sub_zero, zero_add] at h
-      rw [norm_mul, norm_pow, hv, one_pow, one_mul] at h
-      exact h
+      rwa [norm_mul, norm_pow, hv, one_pow, one_mul] at h
 
     have h3r : ‖3 * C.r‖ ≤ 1 := by
       have e : 3 * C.r = (3 * C.r - C.s ^ 2) + C.s ^ 2 := by ring

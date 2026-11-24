@@ -82,13 +82,11 @@ theorem fd_sub (μ : Measure G) (R : Set G) (hR : μ Rᶜ = 0) (A B : Subgroup G
     refine ⟨((Quotient.out q : A) : G)⁻¹ * a, ⟨⟨A.mul_mem (A.inv_mem (Quotient.out q).2) ha, hqB⟩, ?_⟩, ?_⟩
     · refine Set.mem_iUnion.mpr ⟨q, ?_⟩
       show ((Quotient.out q : A) : G) * (((Quotient.out q : A) : G)⁻¹ * a * r) ∈ KA
-      rw [mul_assoc, mul_inv_cancel_left]
-      exact har
+      rwa [mul_assoc, mul_inv_cancel_left]
     · rintro s' ⟨⟨hs'A, hs'B⟩, hs'K⟩
       obtain ⟨q', hq'⟩ := Set.mem_iUnion.mp hs'K
       have hq'' : ((Quotient.out q' : A) : G) * s' * r ∈ KA := by
-        rw [mul_assoc]
-        exact hq'
+        rwa [mul_assoc]
       have e1 : ((Quotient.out q' : A) : G) * s' = a :=
         hau _ ⟨A.mul_mem (Quotient.out q').2 hs'A, hq''⟩
       have e2 : q' = q := by
@@ -97,8 +95,7 @@ theorem fd_sub (μ : Measure G) (R : Set G) (hR : μ Rᶜ = 0) (A B : Subgroup G
         rw [Subgroup.mem_subgroupOf]
         have e3 : ((((Quotient.out q' : A))⁻¹ * ⟨a, ha⟩ : A) : G) = s' :=
           (eq_inv_mul_of_mul_eq e1).symm
-        rw [e3]
-        exact hs'B
+        rwa [e3]
       subst e2
       exact eq_inv_mul_of_mul_eq e1
   · have hdisj : Pairwise (fun q q' : A ⧸ B.subgroupOf A =>
@@ -111,8 +108,7 @@ theorem fd_sub (μ : Measure G) (R : Set G) (hR : μ Rᶜ = 0) (A B : Subgroup G
       apply hne
       have e := (hKAu x hxR).unique ⟨(Quotient.out q).2, hx.1⟩ ⟨(Quotient.out q').2, hx.2⟩
       have e' := congrArg (fun z : A => (z : A ⧸ B.subgroupOf A)) (Subtype.ext e : Quotient.out q = Quotient.out q')
-      simp only [hmk] at e'
-      exact e'
+      simpa only [hmk] using e'
     have hmeas : ∀ q : A ⧸ B.subgroupOf A,
         μ ((fun x => ((Quotient.out q : A) : G) * x) ⁻¹' KA) = μ KA := by
       intro q
@@ -160,13 +156,11 @@ theorem covol_commens (μ : Measure G) (R : Set G) (hR : μ Rᶜ = 0) (A B : Sub
       have k1 : (g : G)⁻¹ * y ∈ K := by
         rw [← e1]
         show (g : G)⁻¹ * ((g : G) * x1) ∈ K
-        rw [inv_mul_cancel_left]
-        exact hx1
+        rwa [inv_mul_cancel_left]
       have k2 : (h : G)⁻¹ * y ∈ K := by
         rw [← e2]
         show (h : G)⁻¹ * ((h : G) * x2) ∈ K
-        rw [inv_mul_cancel_left]
-        exact hx2
+        rwa [inv_mul_cancel_left]
       have e := (hu y hyR).unique ⟨(A ⊓ B).inv_mem g.2, k1⟩ ⟨(A ⊓ B).inv_mem h.2, k2⟩
       exact Subtype.ext (inv_injective e)
   have key : μ K1 = μ K2 := (mkfd K1 hK1m hK1u).measure_eq (mkfd K2 hK2m hK2u)

@@ -118,9 +118,8 @@ theorem sum_lw_vw_natCast_le (T : Finset (HeightOneSpectrum (𝓞 K))) (n : ℕ)
   classical
   have hd0 : (0 : ℝ) < (finrank ℚ K : ℝ) := by exact_mod_cast Module.finrank_pos
   have hn0 : ((n : ℕ) : 𝓞 K) ≠ 0 := by exact_mod_cast hn
-  have hI0 : (Ideal.span {((n : ℕ) : 𝓞 K)} : Ideal (𝓞 K)) ≠ 0 := by
-    rw [ne_eq, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
-    exact hn0
+  have hI0 : (Ideal.span {((n : ℕ) : 𝓞 K)} : Ideal (𝓞 K)) ≠ 0 := fun h =>
+    hn0 (Ideal.span_singleton_eq_bot.1 h)
 
   obtain ⟨e, he⟩ : ∃ e : HeightOneSpectrum (𝓞 K) → ℕ, ∀ w, e w =
       (Associates.mk w.asIdeal).count (Associates.mk (Ideal.span {((n : ℕ) : 𝓞 K)})).factors :=
@@ -128,12 +127,8 @@ theorem sum_lw_vw_natCast_le (T : Finset (HeightOneSpectrum (𝓞 K))) (n : ℕ)
   have hv : ∀ w, vw w (n : K) = (e w : ℤ) := by
     intro w
     have h := vw_coe_eq_count_factors_span_of_ne_zero w _ hn0
-    rw [he w]
-    have hc : (((n : ℕ) : 𝓞 K) : K) = (n : K) := by
-      first
-        | (push_cast; rfl)
-    rw [hc] at h
-    exact h
+    push_cast at h
+    rwa [he w]
 
   have hdiv : ∀ w : HeightOneSpectrum (𝓞 K),
       w.asIdeal ^ e w ∣ Ideal.span {((n : ℕ) : 𝓞 K)} := by
@@ -144,36 +139,20 @@ theorem sum_lw_vw_natCast_le (T : Finset (HeightOneSpectrum (𝓞 K))) (n : ℕ)
   have hdvd : ∏ w ∈ T, w.asIdeal ^ e w ∣ Ideal.span {((n : ℕ) : 𝓞 K)} := by
     apply Finset.prod_dvd_of_coprime
     · intro a _ b _ hab
-      show IsCoprime (a.asIdeal ^ e a) (b.asIdeal ^ e b)
       apply IsCoprime.pow
       rw [Ideal.isCoprime_iff_sup_eq]
       exact Ideal.IsMaximal.coprime_of_ne a.isMaximal b.isMaximal
         (fun h => hab (HeightOneSpectrum.ext h))
-    · intro w _
-      exact hdiv w
-  have hP0 : Ideal.absNorm (∏ w ∈ T, w.asIdeal ^ e w) ≠ 0 := by
-    rw [ne_eq, Ideal.absNorm_eq_zero_iff, ← Ideal.zero_eq_bot]
-    intro h
-    rw [h, zero_dvd_iff] at hdvd
-    exact hI0 hdvd
-  have hle : Ideal.absNorm (∏ w ∈ T, w.asIdeal ^ e w) ≤
-      Ideal.absNorm (Ideal.span {((n : ℕ) : 𝓞 K)} : Ideal (𝓞 K)) := by
-    apply Nat.le_of_dvd
-    · apply Nat.pos_of_ne_zero
-      rw [ne_eq, Ideal.absNorm_eq_zero_iff, ← Ideal.zero_eq_bot]
-      exact hI0
-    · exact Ideal.absNorm_dvd_absNorm_of_le (Ideal.le_of_dvd hdvd)
+    · exact fun w _ => hdiv w
+  have hN0 := mt Ideal.absNorm_eq_zero_iff.1 hI0
+  have hdvdN := Ideal.absNorm_dvd_absNorm_of_le (Ideal.le_of_dvd hdvd)
+  have hP0 := ne_zero_of_dvd_ne_zero hN0 hdvdN
+  have hle := Nat.le_of_dvd (Nat.pos_of_ne_zero hN0) hdvdN
   have hnormI : Ideal.absNorm (Ideal.span {((n : ℕ) : 𝓞 K)} : Ideal (𝓞 K)) =
       n ^ finrank ℚ K := by
     rw [Ideal.absNorm_span_singleton, ← map_natCast (algebraMap ℤ (𝓞 K)) n,
       Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank]
     simp [Int.natAbs_pow]
-  have hNw : ∀ w : HeightOneSpectrum (𝓞 K), (Ideal.absNorm w.asIdeal : ℝ) ≠ 0 := by
-    intro w
-    have : Ideal.absNorm w.asIdeal ≠ 0 := by
-      rw [ne_eq, Ideal.absNorm_eq_zero_iff]
-      exact w.ne_bot
-    exact_mod_cast this
   have hlog : Real.log (Ideal.absNorm (∏ w ∈ T, w.asIdeal ^ e w) : ℝ) =
       ∑ w ∈ T, (e w : ℝ) * Real.log (Ideal.absNorm w.asIdeal : ℝ) := by
     rw [map_prod, Nat.cast_prod, Real.log_prod]
@@ -181,13 +160,11 @@ theorem sum_lw_vw_natCast_le (T : Finset (HeightOneSpectrum (𝓞 K))) (n : ℕ)
       rw [map_pow, Nat.cast_pow, Real.log_pow]
     · intro w _
       rw [map_pow, Nat.cast_pow]
-      exact pow_ne_zero _ (hNw w)
+      exact pow_ne_zero _ (Nat.cast_ne_zero.2 (mt Ideal.absNorm_eq_zero_iff.1 w.ne_bot))
   have hlogle : ∑ w ∈ T, (e w : ℝ) * Real.log (Ideal.absNorm w.asIdeal : ℝ) ≤
       (finrank ℚ K : ℝ) * Real.log (n : ℝ) := by
     rw [← hlog, ← Real.log_pow, ← Nat.cast_pow, ← hnormI]
-    apply Real.log_le_log
-    · exact_mod_cast Nat.pos_of_ne_zero hP0
-    · exact_mod_cast hle
+    exact Real.log_le_log (by exact_mod_cast Nat.pos_of_ne_zero hP0) (by exact_mod_cast hle)
   have hsum : ∑ w ∈ T, lw w * (vw w (n : K) : ℝ) =
       (∑ w ∈ T, (e w : ℝ) * Real.log (Ideal.absNorm w.asIdeal : ℝ)) / (finrank ℚ K : ℝ) := by
     rw [Finset.sum_div]
@@ -196,8 +173,7 @@ theorem sum_lw_vw_natCast_le (T : Finset (HeightOneSpectrum (𝓞 K))) (n : ℕ)
     unfold lw
     push_cast
     ring
-  rw [hsum, div_le_iff₀ hd0, mul_comm (Real.log (n : ℝ))]
-  exact hlogle
+  rwa [hsum, div_le_iff₀ hd0, mul_comm (Real.log (n : ℝ))]
 
 end SlopeTestRemainingChoices
 

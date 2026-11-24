@@ -77,8 +77,7 @@ theorem univLinkPf_cocycle {T : LocLat G Qp LL O} {y z : W.DD T} (h : (y, z) ∈
   have h1 := ((Formalism.MainNotions.LiftingTheory.lifta_mem_Z1DΔ W T y z).mp h).1
   try simp only [herrCocycles, LinearMap.mem_ker] at h1
   simp only [LinearMap.coprod_apply, LinearMap.sub_apply, LinearMap.neg_apply, LinearMap.id_apply] at h1
-  rw [← sub_eq_zero, sub_eq_add_neg]
-  exact h1
+  rwa [← sub_eq_zero, sub_eq_add_neg]
 
 theorem univLinkPf_cocycleΔ {T : LocLat G Qp LL O} {y z : W.DD T} (h : (y, z) ∈ W.wachCocyclesDelta T) :
     ∀ δ ∈ W.DelF, W.γD T δ y = y ∧ W.γD T δ z = z := ((Formalism.MainNotions.LiftingTheory.lifta_mem_Z1DΔ W T y z).mp h).2
@@ -89,8 +88,7 @@ theorem univLinkPf_mem_Z1DΔ {T : LocLat G Qp LL O} (y z : W.DD T) (hy : ∀ δ 
   refine (Formalism.MainNotions.LiftingTheory.lifta_mem_Z1DΔ W T y z).mpr ⟨?_, fun δ hδ => ⟨hy δ hδ, hz δ hδ⟩⟩
   try simp only [herrCocycles, LinearMap.mem_ker]
   simp only [LinearMap.coprod_apply, LinearMap.sub_apply, LinearMap.neg_apply, LinearMap.id_apply]
-  rw [← sub_eq_add_neg, sub_eq_zero]
-  exact h
+  rwa [← sub_eq_add_neg, sub_eq_zero]
 
 section Map
 
@@ -142,8 +140,7 @@ theorem univLinkPf_map_LamPS (h1 : IsCrys PD T₁.ρ) (h2 : IsCrys PD T₂.ρ) (
   · rw [Submodule.restrictScalars_mem, Submodule.mem_comap] at hA ⊢
     have hφ := univLinkPf_map_φspan W F h1 h2 (c - 1) hA
     simp only [Formalism.MainNotions.DeltaInvariantLattices.smulA, LinearMap.smul_apply, LinearMap.id_apply] at hφ ⊢
-    rw [hsm] at hφ
-    exact hφ
+    rwa [hsm] at hφ
   · rw [letS, LinearMap.mem_ker] at hC ⊢
     simp only [LinearMap.restrictScalars_apply, LinearMap.sub_apply, LinearMap.smul_apply,
       LinearMap.id_apply] at hC ⊢
@@ -155,8 +152,7 @@ theorem univLinkPf_map_InvS (h1 : IsCrys PD T₁.ρ) (h2 : IsCrys PD T₂.ρ) (�
   refine ⟨univLinkPf_map_LamPS W F h1 h2 Eπ h' c hx.1, ?_⟩
   have hP := univLinkPf_map_PiNS W F h1 h2 π' k hx.2
   simp only [LinearMap.sub_apply, LinearMap.id_apply] at hP ⊢
-  rw [map_sub, W.map_γ] at hP
-  exact hP
+  rwa [map_sub, W.map_γ] at hP
 
 theorem univLinkPf_map_Z1DΔ {y z : W.DD T₁} (h : (y, z) ∈ W.wachCocyclesDelta T₁) :
     (W.map F y, W.map F z) ∈ W.wachCocyclesDelta T₂ := by
@@ -207,8 +203,7 @@ theorem univLinkPf_basis [StrongRankCondition O] (Pt : ZMod n → LL → (K →�
         IIrest W T Pt π' Eπ h' c S) =
         Submodule.mkQ _ (∑ i, b.repr (Submodule.Quotient.mk x) i • xb i) from rfl]
 
-    simp only [map_sum, map_smul, Submodule.mkQ_apply, hxb]
-    exact (b.sum_repr _).symm
+    simpa only [map_sum, map_smul, Submodule.mkQ_apply, hxb] using (b.sum_repr _).symm
   rw [Submodule.Quotient.eq] at h
   simpa using h
 

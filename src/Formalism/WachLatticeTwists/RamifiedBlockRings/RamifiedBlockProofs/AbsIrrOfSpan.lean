@@ -194,8 +194,7 @@ theorem vccBaseChange : StatVccBaseChange := by
     refine le_iInf₂ fun c' hc' => ?_
     have hc'span : (c' : X → O') ∈ Submodule.span O' (φ '' (T : Set (X → O))) := by
       have h1 : (c' : X → O') ∈ (T' : Set (X → O')) := c'.2
-      rw [hT'] at h1
-      exact h1
+      rwa [hT'] at h1
     obtain ⟨g, hg, hgeq⟩ := hdec _ hc'span
     have hgZ : ∀ j, (⟨g j, hg j⟩ : T) ∈ ccIdeal T Z := by
       intro j
@@ -255,9 +254,7 @@ theorem bcLocal : StatBcLocal := by
     induction hf using Algebra.adjoin_induction with
     | mem f hf =>
       obtain ⟨f0, hf0, rfl⟩ := hf
-      have h := resConst O X T hT f0 hf0 x y
-      have h2 := congrArg (IsLocalRing.ResidueField.map (algebraMap O O')) h
-      exact h2
+      exact congrArg (IsLocalRing.ResidueField.map (algebraMap O O')) (resConst O X T hT f0 hf0 x y)
     | algebraMap c => rfl
     | add f g _ _ hf hg => simp only [Pi.add_apply, map_add (f := _), hf, hg]
     | mul f g _ _ hf hg => simp only [Pi.mul_apply, map_mul, hf, hg]
@@ -409,8 +406,7 @@ theorem sep_ext {O : Type} [CommRing O] [IsDomain O] {F : Type} [Field F] (f : O
     (h : (P.map (algebraMap O (FractionRing O))).Separable) : (P.map f).Separable := by
   have hκ : (IsFractionRing.lift hf : FractionRing O →+* F).comp (algebraMap O (FractionRing O)) = f :=
     RingHom.ext (IsFractionRing.lift_algebraMap hf)
-  rw [← hκ, ← Polynomial.map_map, Polynomial.separable_map]
-  exact h
+  rwa [← hκ, ← Polynomial.map_map, Polynomial.separable_map]
 
 
 theorem stageC : StatStageC := by
@@ -519,8 +515,7 @@ theorem stageC : StatStageC := by
       (hmm _ _ _ (congrFun heBB x)) (hmm _ _ _ heX0) (hmm _ _ _ hX0e) hrk
     rw [hX0]
     exact h3 (hpoly ▸ hsep') (hpoly ▸ hspl x)
-  · intro Z
-    exact vccBaseChange O O' e he X T (bcT O' T) (bcSpan O O' X T) Z π
+  · exact fun Z => vccBaseChange O O' e he X T (bcT O' T) (bcSpan O O' X T) Z π
 
 theorem deltaO_eq {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X d G : Type}
     [Fintype d] [DecidableEq d] [Group G] {t : ℕ} {bl : d → Fin (t + 1)} {T : Subalgebra O (X → O)}

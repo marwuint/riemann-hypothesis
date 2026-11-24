@@ -59,8 +59,7 @@ namespace Formalism.LatticeBaseChangeAlt
 open Finset MeasureTheory Filter Topology Set
 
 private theorem pow_le_pow_left_of_nonneg {x y : ℝ} (hx : 0 ≤ x) (hxy : x ≤ y) (n : ℕ) :
-    x ^ n ≤ y ^ n := by
-  exact pow_le_pow_left₀ hx hxy n
+    x ^ n ≤ y ^ n := pow_le_pow_left₀ hx hxy n
 
 theorem ballVolume : BallVolume := by
   intro D rr hr
@@ -73,8 +72,7 @@ theorem ballVolume : BallVolume := by
       have hz : ‖z‖ = 0 := by
         rw [EuclideanSpace.norm_eq]
         simp
-      rw [hz]
-      exact hr
+      rwa [hz]
     have hpar : parallelepiped (EuclideanSpace.basisFun (Fin 0) ℝ) = Set.univ := by
       ext z
       simp only [Set.mem_univ, iff_true]
@@ -141,8 +139,7 @@ private theorem gaussian_tail_pow_mul_exp_le {g : ℕ} {R0 s t : ℝ} (hR0 : 0 <
     have h3 : (1 + v) ^ g ≤ E := by
       have hexp : (1 + v) ^ g ≤ (Real.exp v) ^ g :=
         pow_le_pow_left_of_nonneg (by linarith) (by linarith [Real.add_one_le_exp v]) g
-      have hnat : (Real.exp v) ^ g = Real.exp (g * v) := by
-        exact (Real.exp_natCast_mul g v).symm
+      have hnat : (Real.exp v) ^ g = Real.exp (g * v) := (Real.exp_natCast_mul g v).symm
       have hle : Real.exp (g * v) ≤ E := by
         rw [hE]
         apply Real.exp_le_exp.mpr
@@ -214,7 +211,6 @@ theorem gaussian_tail_bound : GaussianTailBound := by
     nlinarith [mul_le_mul_of_nonneg_right c2 hfM, mul_nonneg hBM hfM]
   have hnn : ∀ i, 0 ≤ Real.exp (-(h i) ^ 2 / 16) := fun i => (Real.exp_pos _).le
   have hsm : Summable (fun i => Real.exp (-(h i) ^ 2 / 16)) := summable_of_sum_le hnn hsum
-  refine ⟨hsm, ?_⟩
-  exact Real.tsum_le_of_sum_le hnn hsum
+  exact ⟨hsm, Real.tsum_le_of_sum_le hnn hsum⟩
 
 end Formalism.LatticeBaseChangeAlt

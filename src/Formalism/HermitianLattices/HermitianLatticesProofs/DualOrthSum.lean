@@ -85,36 +85,27 @@ theorem dualOrthSum : DualOrthSum := by
   apply le_antisymm
   · intro x hx
     rw [_root_.Formalism.HermitianLatticesTheory.dualBasic_mem_dual] at hx
-    have htop : x ∈ V₁ ⊔ V₂ := by
-      rw [hc.sup_eq_top]
-      exact Submodule.mem_top
+    have htop : x ∈ V₁ ⊔ V₂ := hc.sup_eq_top.ge Submodule.mem_top
     obtain ⟨x₁, hx₁, x₂, hx₂, rfl⟩ := Submodule.mem_sup.mp htop
     refine Submodule.mem_sup.mpr ⟨x₁, Submodule.mem_inf.mpr ⟨?_, hx₁⟩,
       x₂, Submodule.mem_inf.mpr ⟨?_, hx₂⟩, rfl⟩
-    · rw [_root_.Formalism.HermitianLatticesTheory.dualBasic_mem_dual]
+    all_goals
+      rw [_root_.Formalism.HermitianLatticesTheory.dualBasic_mem_dual]
       intro y hy
-      have e : h y x₂ = 0 := h12 y (hL₁ hy) x₂ hx₂
-      have hm := hx y (Submodule.mem_sup_left hy)
-      rwa [map_add, e, add_zero] at hm
-    · rw [_root_.Formalism.HermitianLatticesTheory.dualBasic_mem_dual]
-      intro y hy
-      have e : h y x₁ = 0 := h21 y (hL₂ hy) x₁ hx₁
-      have hm := hx y (Submodule.mem_sup_right hy)
-      rwa [map_add, e, zero_add] at hm
-  · refine sup_le ?_ ?_
-    · intro x hx
+    · have hm := hx y (Submodule.mem_sup_left hy)
+      rwa [map_add, h12 y (hL₁ hy) x₂ hx₂, add_zero] at hm
+    · have hm := hx y (Submodule.mem_sup_right hy)
+      rwa [map_add, h21 y (hL₂ hy) x₁ hx₁, zero_add] at hm
+  · refine sup_le ?_ ?_ <;> intro x hx
+    all_goals
       obtain ⟨hxd, hxV⟩ := Submodule.mem_inf.mp hx
       rw [_root_.Formalism.HermitianLatticesTheory.dualBasic_mem_dual] at hxd ⊢
       intro y hy
       obtain ⟨y₁, hy₁, y₂, hy₂, rfl⟩ := Submodule.mem_sup.mp hy
-      rw [map_add (f := _), LinearMap.add_apply, h21 y₂ (hL₂ hy₂) x hxV, add_zero]
+      rw [map_add (f := _), LinearMap.add_apply]
+    · rw [h21 y₂ (hL₂ hy₂) x hxV, add_zero]
       exact hxd y₁ hy₁
-    · intro x hx
-      obtain ⟨hxd, hxV⟩ := Submodule.mem_inf.mp hx
-      rw [_root_.Formalism.HermitianLatticesTheory.dualBasic_mem_dual] at hxd ⊢
-      intro y hy
-      obtain ⟨y₁, hy₁, y₂, hy₂, rfl⟩ := Submodule.mem_sup.mp hy
-      rw [map_add (f := _), LinearMap.add_apply, h12 y₁ (hL₁ hy₁) x hxV, zero_add]
+    · rw [h12 y₁ (hL₁ hy₁) x hxV, zero_add]
       exact hxd y₂ hy₂
 
 end Formalism.HermitianLatticesTheory

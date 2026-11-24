@@ -85,8 +85,7 @@ theorem isId_rat {u : D.what₂.Word} {what₂ : Finset (Submodule (𝓞 D.host.
       show (X.Fu u).e a = _
       rw [X.Fu_e u]
     have e3 : Xflag (lf D (X.Fu u)) a.val = Submodule.span D.host.E ((X.Fu u).e '' {i | i.1 < a.1}) := rfl
-    rw [e1, e2, e3, X.Fu_e u] at h
-    exact h
+    rwa [e1, e2, e3, X.Fu_e u] at h
   · have h := hS.2
     have e1 : t.frame.fl.z = t.lin (X.zu u) := by
       rw [hfr]
@@ -96,8 +95,7 @@ theorem isId_rat {u : D.what₂.Word} {what₂ : Finset (Submodule (𝓞 D.host.
       show (X.Fu u).z = _
       rw [X.flagZVector u]
     have e3 : Xsp (lf D (X.Fu u)) = Submodule.span D.host.E (Set.range (X.Fu u).e) := rfl
-    rw [e1, e2, e3, X.Fu_e u] at h
-    exact h
+    rwa [e1, e2, e3, X.Fu_e u] at h
 
 theorem pt_srat {u : D.what₂.Word} {x : X.B.I.GA} {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hx : RatLink X x n)
     (he : ∀ a : Fin D.R.rS, n (X.eX a) - X.eX a ∈ Submodule.span D.host.E (X.eX '' {i | i.1 < a.1}))
@@ -110,15 +108,13 @@ theorem pt_srat {u : D.what₂.Word} {x : X.B.I.GA} {n : (VS D).V ≃ₗ[D.host.
     have := crd_span' X (he a)
     rw [Set.image_image] at this
     show _ *ᵥ X.crd (X.eX a) ∈ _
-    rw [mcrd X h3]
-    exact this
+    rwa [mcrd X h3]
   have hZ : ((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) - 1) *ᵥ X.zR u ∈
       Submodule.span X.B.I.E (Set.range X.eR) := by
     have := crd_span' X hz
     rw [← Set.range_comp] at this
     show _ *ᵥ X.crd (X.zu u) ∈ _
-    rw [mcrd X h3]
-    exact this
+    rwa [mcrd X h3]
   have transfer {R : Type} [CommRing R] (j : X.B.I.E →+* R)
       (ι : (Fin X.B.I.n → X.B.I.E) →+ (Fin X.B.I.n → R))
       (hs : ∀ c x, ι (c • x) = j c • ι x)
@@ -256,15 +252,13 @@ theorem idMeetKeyC_holds : IdMeetKeyC := by
   have hη1 : ηg = 1 := hNeat ((Y.cs u).h ρ) ηg hmem
   have hη1' : η = 1 := by
     have := congrArg Subtype.val hη1
-    rw [hηg] at this
-    exact this
+    rwa [hηg] at this
   have hsν : t.pt = ν := by rw [hνη, hη1', mul_one]
   have hsN := nilradical_rational_lattice D X Y u ρ t.pt (Formalism.L2.SG.Closed.level_subgroup_properties X)
     (by rw [hsν]; exact hνG) (by rw [hsν]; exact hν1) (by rw [hsν]; exact hν2) hg
   obtain ⟨x, n, hx, hx1, hn⟩ := hsN
   refine ⟨rfl, ?_⟩
   have hl : t.lin = n := lin_eq_of_fst X t.rep.2.1 hx hx1
-  rw [hl]
-  exact hn
+  rwa [hl]
 
 end Formalism.L2.SG.Pf.IdMeet

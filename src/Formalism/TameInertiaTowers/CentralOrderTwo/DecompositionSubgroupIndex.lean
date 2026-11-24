@@ -205,14 +205,12 @@ theorem sgn_eq_one_iff {L : Type} [Field L] [Algebra ℚ L] (σ : Gal(L/ℚ)) (x
 theorem decomposition_subgroup_index (n : ℕ) : (D2 n).index = 2 := by
   rw [D2, Subgroup.index_ker, MonoidHom.range_eq_top.mpr, Subgroup.card_top,
     Nat.card_eq_fintype_card, Fintype.card_units_int]
-  intro u
-  exact ⟨(1, 1, u), rfl⟩
+  exact fun u => ⟨(1, 1, u), rfl⟩
 
 theorem inertia_subgroup_index (n : ℕ) : (I2 n).index = 4 := by
   rw [I2, Subgroup.index_ker, MonoidHom.range_eq_top.mpr, Subgroup.card_top, Nat.card_prod,
     Nat.card_eq_fintype_card, Fintype.card_units_int]
-  intro u
-  exact ⟨(1, u), rfl⟩
+  exact fun u => ⟨(1, u), rfl⟩
 
 theorem two_isPrime : (span {(2 : ℤ)}).IsPrime := by
   rw [Ideal.span_singleton_prime two_ne_zero]
@@ -416,9 +414,7 @@ theorem layerEFGTwo_of (hG : LayerGalois) (hR : LayerReal) : LayerEFGTwo := by
     have hfx : τ⁻¹ • (algebraMap S (𝓞 L) x) = algebraMap S (𝓞 L) x := by
       apply RingOfIntegers.coe_injective
       show τ⁻¹ ((algebraMap S (𝓞 L) x : 𝓞 L) : L) = ((algebraMap S (𝓞 L) x : 𝓞 L) : L)
-      have hmem : ((algebraMap S (𝓞 L) x : 𝓞 L) : L) ∈ K := by
-        show ((x : K) : L) ∈ K
-        exact (x : K).2
+      have hmem : ((algebraMap S (𝓞 L) x : 𝓞 L) : L) ∈ K := (x : K).2
       have h1 := hτK _ hmem
       calc τ⁻¹ ((algebraMap S (𝓞 L) x : 𝓞 L) : L)
           = τ⁻¹ (τ ((algebraMap S (𝓞 L) x : 𝓞 L) : L)) := by rw [h1]

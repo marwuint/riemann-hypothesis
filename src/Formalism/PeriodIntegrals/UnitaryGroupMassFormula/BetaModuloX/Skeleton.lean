@@ -93,10 +93,7 @@ theorem aut_inv {Λ : Submodule (𝓞 E) S.V} {β : S.V ≃ₗ[E] S.V} (h : IsAu
     rw [← mem_aut_iff h]
     show β (β.symm y) ∈ Λ
     simpa using hy
-  · intro hx
-    refine ⟨β x, (mem_aut_iff h x).2 hx, ?_⟩
-    show β.symm (β x) = x
-    exact β.symm_apply_apply x
+  · exact fun hx => ⟨β x, (mem_aut_iff h x).2 hx, β.symm_apply_apply x⟩
 
 theorem aut_mul {Λ : Submodule (𝓞 E) S.V} {β β' : S.V ≃ₗ[E] S.V} (h : IsAutLam S Λ β) (h' : IsAutLam S Λ β') :
     IsAutLam S Λ (β * β') := by
@@ -105,7 +102,6 @@ theorem aut_mul {Λ : Submodule (𝓞 E) S.V} {β β' : S.V ≃ₗ[E] S.V} (h : 
   ext x
   constructor
   · rintro ⟨y, hy, rfl⟩
-    show β (β' y) ∈ Λ
     exact (mem_aut_iff h _).2 ((mem_aut_iff h' _).2 hy)
   · intro hx
     refine ⟨β'.symm (β.symm x), ?_, ?_⟩

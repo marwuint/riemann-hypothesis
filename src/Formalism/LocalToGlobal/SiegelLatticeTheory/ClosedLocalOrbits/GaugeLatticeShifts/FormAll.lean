@@ -104,8 +104,7 @@ theorem fd_meas_eq (μR : Measure G) (R : Set G) (hR : μR Rᶜ = 0) (Γ0 : Subg
   have hpre : (fun x => (s : G) * x) ⁻¹' (K ∩ (fun x => ((s : G))⁻¹ * x) ⁻¹' A) =
       A ∩ (fun x => (s : G) * x) ⁻¹' K := by
     ext x
-    simp only [Set.mem_preimage, Set.mem_inter_iff, inv_mul_cancel_left]
-    exact and_comm
+    simpa only [Set.mem_preimage, Set.mem_inter_iff, inv_mul_cancel_left] using and_comm
   rw [← hpre, ← Measure.map_apply (measurable_const_mul _) hB, hinv s s.2]
 
 def invSigma {G : Type*} [Group G] (m0 : MeasurableSpace G) (R : Set G) : MeasurableSpace G where
@@ -120,9 +119,7 @@ theorem integral_eq_of_inv {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V
     (hfi : ∀ r ∈ R, ∀ x, f (r * x) = f x)
     (hmeas : ∀ B, MeasurableSet B → (∀ r ∈ R, (fun x => r * x) ⁻¹' B = B) → μ B = μ' B) :
     ∫ x, f x ∂μ = ∫ x, f x ∂μ' := by
-  have hm : invSigma ‹MeasurableSpace G› R ≤ ‹MeasurableSpace G› := by
-    intro B hB
-    exact And.left hB
+  have hm : invSigma ‹MeasurableSpace G› R ≤ ‹MeasurableSpace G› := fun B hB => And.left hB
   have hfm : Measurable[invSigma ‹MeasurableSpace G› R] f := by
     intro B hB
     exact (⟨hf hB, fun r hr => by ext x; simp [hfi r hr x]⟩ :
@@ -172,8 +169,7 @@ theorem formAllC_holds : FormAllC := by
     refine ⟨nLamNinf_holds D X u _ x n hxn hn, ?_⟩
     have hrep : RatLink X t.pt t.lin := t.rep.2.1
     have h2 := ratLink_mul X (ratLink_mul X (ratLink_inv X hrep) hxn) hrep
-    have h3 := nLamNinf_holds D X u' _ _ _ h2 hn'
-    simpa [Prod.fst_mul, Prod.fst_inv] using h3
+    simpa [Prod.fst_mul, Prod.fst_inv] using nLamNinf_holds D X u' _ _ _ h2 hn'
   have hμinv : ∀ s ∈ Γ0, μR.map (fun x => s * x) = μR := fun s hs => hH.2.2.2 s (hΓR s hs)
 
   have hsec : ∀ x, μR ((fun s => s * x) ⁻¹' FundOf t) = μR K := by

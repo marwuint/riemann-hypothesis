@@ -81,13 +81,11 @@ lemma inv_glev {g : Mx k r} (hg : g ∈ Glev k r i) : g⁻¹ = Hpk k r * gᴴ * 
 
 private lemma contDiff_mulVec_apply_of_contDiff {M : Mx k r → Mx k r} (hM : ∀ a b, ContDiff ℝ ∞ (fun g => M g a b))
     (v : (Fin (2 * r + k + 1) → ℂ)) (p : Fin (2 * r + k + 1)) : ContDiff ℝ ∞ (fun g => (M g *ᵥ v) p) := by
-  simp only [Matrix.mulVec, dotProduct]
-  exact ContDiff.sum fun q _ => (hM p q).mul contDiff_const
+  simpa only [Matrix.mulVec, dotProduct] using ContDiff.sum fun q _ => (hM p q).mul contDiff_const
 
 private lemma contDiff_mul_left_apply (H : Mx k r) (a b : Fin (2 * r + k + 1)) :
     ContDiff ℝ ∞ (fun g : Mx k r => (H * g) a b) := by
-  simp only [Matrix.mul_apply]
-  exact ContDiff.sum fun c _ => contDiff_const.mul (entry_cd c b)
+  simpa only [Matrix.mul_apply] using ContDiff.sum fun c _ => contDiff_const.mul (entry_cd c b)
 
 private lemma contDiff_hpk_conjTranspose_hpk_apply (a b : Fin (2 * r + k + 1)) :
     ContDiff ℝ ∞ (fun g : Mx k r => (Hpk k r * gᴴ * Hpk k r) a b) := by
@@ -225,8 +223,7 @@ lemma one_mem_Nlev : (1 : Mx k r) ∈ Nlev k r i := by
 
 private lemma mul_mem_Slev_of_mem_UWset_of_mem_Nlev {z : (Fin (2 * r + k + 1) → ℂ)} {h m : Mx k r} (hh : h ∈ UWset k r z)
     (hm : m ∈ Nlev k r i) : h * m ∈ Slev k r z i := by
-  simp only [Slev, Set.mem_setOf_eq]
-  exact ⟨h, hh, m, hm, rfl⟩
+  simpa only [Slev, Set.mem_setOf_eq] using ⟨h, hh, m, hm, rfl⟩
 
 theorem qnTPres_of (hT : TInvariant) : TPreservesFF := by
   intro Wp Wq _ _ _ _ k r z z' π π' i D Y p q hz hz' hDom J hJ

@@ -97,8 +97,7 @@ variable {F : Type} [NormedField F] [IsUltrametricDist F]
 
 theorem norm_int_le (m : ℤ) : ‖(m : F)‖ ≤ 1 := by
   apply Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.norm_le_one_of_int
-  have h := isIntegral_algebraMap (R := ℤ) (A := F) (x := m)
-  simpa using h
+  simpa using isIntegral_algebraMap (R := ℤ) (A := F) (x := m)
 
 theorem norm_add_eq_sub {x y : F} (h : ‖x‖ ≠ ‖y‖) : ‖x + y‖ = ‖x - y‖ := by
   have h' : ‖x‖ ≠ ‖-y‖ := by rwa [norm_neg]
@@ -219,8 +218,7 @@ theorem core_rat [CharZero F] (p d : ℕ) [Fact p.Prime] (hd : d.Prime) (hJ : ja
   have e2 : (a : F) - b * r =
       (((a.num * b.den : ℤ) : F) - ((b.num * a.den : ℤ) : F) * r) / ((a.den : F) * (b.den : F)) := by
     have := e (-r)
-    rw [mul_neg, ← sub_eq_add_neg, mul_neg, ← sub_eq_add_neg] at this
-    exact this
+    rwa [mul_neg, ← sub_eq_add_neg, mul_neg, ← sub_eq_add_neg] at this
   rw [e r, e2, norm_div, norm_div, core_int p d hd hJ h1 hlt hp0 r hr]
 
 end Core
@@ -235,8 +233,7 @@ theorem K_repr (k : H.K) : ∃ a b : ℚ, (k : H.E) = (a : H.E) + (b : H.E) * H.
   have hβ := _root_.Formalism.BasicNotions.Examples₂.bE_sq H
   refine K_induction H (p := fun x => ∃ a b : ℚ, x = (a : H.E) + (b : H.E) * H.sqd) ?_ ?_ ?_ ?_ ?_ k
   · exact ⟨0, 1, by simp⟩
-  · intro r
-    exact ⟨r, 0, by simp⟩
+  · exact fun r => ⟨r, 0, by simp⟩
   · rintro x y ⟨a, b, rfl⟩ ⟨a', b', rfl⟩
     exact ⟨a + a', b + b', by push_cast; ring⟩
   · rintro x ⟨a, b, rfl⟩
@@ -250,8 +247,7 @@ theorem K_repr (k : H.K) : ∃ a b : ℚ, (k : H.E) = (a : H.E) + (b : H.E) * H.
         have h1 : a ^ 2 = 0 := by nlinarith [sq_nonneg a, mul_nonneg hd.le (sq_nonneg b)]
         have h2 : (H.d : ℚ) * b ^ 2 = 0 := by nlinarith [sq_nonneg a, mul_nonneg hd.le (sq_nonneg b)]
         refine ⟨by simpa using h1, ?_⟩
-        have h3 := (mul_eq_zero.1 h2).resolve_left hd.ne'
-        simpa using h3
+        simpa using (mul_eq_zero.1 h2).resolve_left hd.ne'
       have hNE : (a : H.E) ^ 2 + (H.d : H.E) * (b : H.E) ^ 2 ≠ 0 := by exact_mod_cast hN
       refine ⟨a / (a ^ 2 + (H.d : ℚ) * b ^ 2), -b / (a ^ 2 + (H.d : ℚ) * b ^ 2), ?_⟩
       apply inv_eq_of_mul_eq_one_right
@@ -274,8 +270,7 @@ variable {D : D7}
 theorem norm_int_unit (p : ℕ) [Fact p.Prime] (m : ℤ) (h : ¬ (p : ℤ) ∣ m) : ‖(m : ℂ_[p])‖ = 1 := by
   have hc : Nat.Coprime m.natAbs p := by
     rw [Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd Fact.out]
-    intro hd
-    exact h (Int.natCast_dvd.2 hd)
+    exact fun hd => h (Int.natCast_dvd.2 hd)
   have h1 := Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.norm_nat_coprime p hc
   have h2 : ‖(m : ℂ_[p])‖ = ‖((m.natAbs : ℕ) : ℂ_[p])‖ := by
     rcases Int.natAbs_eq m with e | e
@@ -334,8 +329,7 @@ theorem mem_stdLat' {m : Type} {L : PeriodPair} {x : m → ℂ} : x ∈ stdLat L
   simp [stdLat, AddSubgroup.mem_pi]
 
 theorem area_ne (L : PeriodPair) : ((Formalism.L2.Th1.F.area L : ℝ) : ℂ) ≠ 0 := by
-  have h : 0 < Formalism.L2.Th1.F.area L := by
-    exact Formalism.L2.Th1.F.PeriodAreaSignLemmas.area_pos L
+  have h : 0 < Formalism.L2.Th1.F.area L := Formalism.L2.Th1.F.PeriodAreaSignLemmas.area_pos L
   exact_mod_cast h.ne'
 
 theorem unitary_det_gen (L : PeriodPair) {m : Type} [Fintype m] [DecidableEq m] (u : (m → ℂ) ≃ₗ[ℂ] (m → ℂ))
@@ -372,8 +366,7 @@ theorem unitary_det_gen (L : PeriodPair) {m : Type} [Fintype m] [DecidableEq m] 
     · simp
   have hd' := congrArg Matrix.det hUU
   rw [Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_one, hU, LinearMap.det_toMatrix'] at hd'
-  rw [mul_comm]
-  exact hd'
+  rwa [mul_comm]
 
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
 
@@ -567,8 +560,7 @@ theorem good_unif {p : ℕ} (hp : p.Prime) (Lt : AddSubgroup V) [hfin : Module.F
         exact mul_smul_mem Lt (hk2 y) r
       | zero => simp only [ZeroMemClass.coe_zero, map_zero, smul_zero]; exact Lt.zero_mem
       | add y z _ _ h1 h2 =>
-        simp only [AddSubgroup.coe_add, map_add (f := _), smul_add]
-        exact Lt.add_mem h1 h2
+        simpa only [AddSubgroup.coe_add, map_add (f := _), smul_add] using Lt.add_mem h1 h2
       | smul n y _ h1 =>
         have e : ((n • y : Lt) : V) = n • (y : V) := rfl
         rw [e, map_zsmul, smul_comm]
@@ -589,8 +581,7 @@ theorem int_of_stab (L : PeriodPair) (c : ℂ) (h : ∀ ω ∈ L.lattice, c * ω
   intro h0
   have h1 : L.ω₁ ∈ L.lattice := L.ω₁_mem_lattice
   rw [h0, Submodule.mem_bot] at h1
-  have h2 := L.indep.ne_zero 0
-  exact h2 (by simpa using h1)
+  exact (L.indep.ne_zero 0) (by simpa using h1)
 
 theorem int_det {p : ℕ} (hp : p.Prime) (L : PeriodPair) (T : (m → ℂ) →ₗ[ℂ] (m → ℂ))
     (hT : ∀ x ∈ stdLat L m, Good p (stdLat L m) T x) : ∃ k : ℕ, ¬ p ∣ k ∧ IsIntegral ℤ ((k : ℂ) * LinearMap.det T) := by
@@ -623,8 +614,7 @@ theorem int_det {p : ℕ} (hp : p.Prime) (L : PeriodPair) (T : (m → ℂ) →�
   refine ⟨k ^ Fintype.card m, fun h => hk (hp.dvd_of_dvd_pow h), ?_⟩
   have h3 := IsIntegral.det hent
   rw [Matrix.det_smul, LinearMap.det_toMatrix'] at h3
-  rw [Nat.cast_pow]
-  exact h3
+  rwa [Nat.cast_pow]
 
 end Det
 
@@ -704,8 +694,7 @@ theorem good_stdLat_comp_extC (p : ℕ) [hp : Fact p.Prime] (γ : IsoK D) (hγ :
     · exact h2 h
     · exact hp.out.one_lt.ne' (Nat.dvd_one.1 (hs ▸ Nat.dvd_gcd h dvd_rfl))
   · rw [← e1, map_smul, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul] at hz3
-    rw [Nat.cast_mul]
-    exact hz3
+    rwa [Nat.cast_mul]
 
 theorem good_lat (p : ℕ) [hp : Fact p.Prime] (γ : IsoK D) (hγ : γ.AtP p) :
     ∀ z ∈ pow4 B.lamM, Good p (stdLat B.L (Ix D))
@@ -731,8 +720,7 @@ theorem good_lat (p : ℕ) [hp : Fact p.Prime] (γ : IsoK D) (hγ : γ.AtP p) :
     rw [SO.mem_iff]
     have e2 : D.host.φ₀ (((o : D.host.K) : D.host.E)) = (s : ℂ) * fK D (γ.g y i) := by
       have : fK D (algebraMap (𝓞 D.host.K) D.host.K o) = fK D ((s : D.host.K) * γ.g y i) := by rw [ho]
-      rw [map_mul, map_natCast] at this
-      exact this
+      rwa [map_mul, map_natCast] at this
     rw [e2] at h1
     simp only [Pi.smul_apply, smul_eq_mul, vec]
     convert h1 using 1
@@ -782,8 +770,7 @@ theorem good_alt_ter (hsd : IsSelfDual (Formalism.L2.Th1.H.stdH B.L (Ix D)) B.la
   have e4 : (extC D ((B.γ₀.g.symm.trans γ.g) : (Ix D → D.host.K) →ₗ[D.host.K] (Ix D → D.host.K)) ∘ₗ (B.gC : (Ix D → ℂ) →ₗ[ℂ] (Ix D → ℂ))) z'
       = extC D ((B.γ₀.g.symm.trans γ.g) : (Ix D → D.host.K) →ₗ[D.host.K] (Ix D → D.host.K)) z := by
     rw [← e1]; rfl
-  rw [e4, e3, map_smul, smul_smul, ← Nat.cast_mul] at hmem
-  exact hmem
+  rwa [e4, e3, map_smul, smul_smul, ← Nat.cast_mul] at hmem
 
 theorem det_compare (hsd : IsSelfDual (Formalism.L2.Th1.H.stdH B.L (Fin 4 × D.what₂.Tau)) B.latA) (p : ℕ) [hp : Fact p.Prime] (ι : ℂ ≃+* ℂ_[p])
     (γ : IsoK D) (hγ : γ.AtP p)
@@ -886,8 +873,7 @@ theorem detRel_unitary (γ γ₀ : IsoK D) :
         f (T (Pi.single i 1) w) * conj (f (T (Pi.single j 1) w)) := by
       intro w
       simp only [Matrix.transpose_apply, Matrix.map_apply, RingHom.mapMatrix_apply, hM, LinearMap.toMatrix'_apply]
-    rw [Finset.sum_congr rfl fun w _ => e1 w, h, Matrix.one_apply]
-    rw [Finset.sum_eq_single i]
+    rw [Finset.sum_congr rfl fun w _ => e1 w, h, Matrix.one_apply, Finset.sum_eq_single i]
     · by_cases hij : i = j
       · subst hij; simp
       · simp [hij]
@@ -898,8 +884,7 @@ theorem detRel_unitary (γ γ₀ : IsoK D) :
   rw [Matrix.det_mul, Matrix.det_transpose, Matrix.det_one] at h4
   have h5 : ((f.mapMatrix M).map (starRingEnd ℂ)).det = conj ((f.mapMatrix M).det) := by
     rw [RingHom.map_det]; rfl
-  rw [h5, ← hdet] at h4
-  exact h4
+  rwa [h5, ← hdet] at h4
 
 theorem exists_conj (a : 𝓞 D.host.K) :
     ∃ b : 𝓞 D.host.K, ((b : D.host.K) : D.host.E) = D.host.conj ((a : D.host.K) : D.host.E) := by
@@ -1310,8 +1295,7 @@ theorem kappa_norm {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) :
 
 theorem kappa_norm_split {p : ℕ} [hp : Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) (hs : SplitK D p) :
     ‖ι k.kappa‖ = ‖ι (k.rt p)‖ ^ (-(k.yP p)) := by
-  rw [kappa_norm]
-  rw [finprod_eq_single _ (⟨p, hp.out, hs⟩ : {q : ℕ // q.Prime ∧ SplitK D q})]
+  rw [kappa_norm, finprod_eq_single _ (⟨p, hp.out, hs⟩ : {q : ℕ // q.Prime ∧ SplitK D q})]
   intro q hq
   rw [rt_unit k ι q q.2.1 q.2.2 (fun h => hq (Subtype.ext h)), one_zpow]
 

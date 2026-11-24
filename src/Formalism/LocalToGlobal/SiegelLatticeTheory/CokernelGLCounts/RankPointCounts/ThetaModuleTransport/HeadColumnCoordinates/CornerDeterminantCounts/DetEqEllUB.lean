@@ -187,8 +187,7 @@ theorem headCols_le_ker_ell (hY : ∀ a b : Fin r, Y.Z a b = Z.Z a.castSucc b.ca
   · simp [hal]
   · intro b _ hb
     simp [Pi.single_eq_of_ne hb]
-  · intro h
-    exact absurd (Finset.mem_univ a) h
+  · exact fun h => absurd (Finset.mem_univ a) h
 
 theorem headCols_le_ker_pi (hY : ∀ a b : Fin r, Y.Z a b = Z.Z a.castSucc b.castSucc) :
     headCols Z.Z ≤ LinearMap.ker (piRawU Y) := by
@@ -321,8 +320,7 @@ private theorem mk_extL_mulVec_eq_neg_sum_smul_eCl (hY' : ∀ a b : Fin r, Y.Z a
     (Submodule.Quotient.mk_eq_zero _).mpr (mulVec_mem_headColsU _ _ (extL_last w))
   rw [h1, Submodule.Quotient.mk_add, Submodule.Quotient.mk_smul] at h2
   unfold eCl
-  rw [neg_smul, eq_neg_iff_add_eq_zero]
-  exact h2
+  rwa [neg_smul, eq_neg_iff_add_eq_zero]
 
 private theorem mk_eq_mk_extL_add_last_smul_eCl (Z : M.Mat (r + 1)) (v : Fin (r + 1) → M.R) :
     (Submodule.Quotient.mk v : MbMod Z.Z) =
@@ -337,8 +335,7 @@ private theorem mk_eq_mk_extL_add_last_smul_eCl (Z : M.Mat (r + 1)) (v : Fin (r 
 
 theorem det_unit_r (Y : M.Mat r) : IsUnit ((Y.Z.det : M.R) : E) := by
   have h := Y.unit
-  rw [← RingHom.mapMatrix_apply, ← RingHom.map_det] at h
-  exact h
+  rwa [← RingHom.mapMatrix_apply, ← RingHom.map_det] at h
 
 include hY hal in
 theorem det_smul_mk (v : Fin (r + 1) → M.R) :
@@ -432,14 +429,12 @@ theorem map_sigU (ψ : M.Cok Y₁ ≃ₗ[M.R] M.Cok Y₂) (hl : ∀ v, M.linQ Y�
   constructor
   · rintro ⟨q, hq, rfl⟩
     rw [mem_range_PhiU hY₁ hal₁] at hq
-    simp only [LinearEquiv.coe_coe, sigU_apply, hl]
-    exact hq
+    simpa only [LinearEquiv.coe_coe, sigU_apply, hl] using hq
   · intro hp
     refine ⟨(ψ.symm p.1, p.2), ?_, ?_⟩
     · rw [mem_range_PhiU hY₁ hal₁]
       dsimp only
-      rw [← hl (ψ.symm p.1), LinearEquiv.apply_symm_apply]
-      exact hp
+      rwa [← hl (ψ.symm p.1), LinearEquiv.apply_symm_apply]
     · rw [LinearEquiv.coe_coe, sigU_apply]
       dsimp only
       rw [LinearEquiv.apply_symm_apply]

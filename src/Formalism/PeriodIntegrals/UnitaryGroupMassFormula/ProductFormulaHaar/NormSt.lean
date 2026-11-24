@@ -99,8 +99,7 @@ private theorem exists_valuation_sub_algebraMap_le {R K : Type*} [CommRing R] [I
   obtain ⟨x, rfl⟩ := Ideal.mem_span_singleton'.1 hy
   refine ⟨x, ?_⟩
   have hzle : v.intValuation z ≤ v.intValuation (c * a) := by
-    rw [intValuation_le_iff_mem_maxPowDividing v z _ hca, hN]
-    exact hz
+    rwa [intValuation_le_iff_mem_maxPowDividing v z _ hca, hN]
   have hsub : algebraMap R K b / algebraMap R K c - algebraMap R K x =
       algebraMap R K z / algebraMap R K c := by
     rw [← hyz, map_add (f := _), map_mul, add_div, mul_div_assoc, div_self hcK, mul_one,
@@ -123,8 +122,7 @@ theorem card_quotient_eq_absNorm : CardStep := by
     intro x y
     rw [← hv x y]
     exact (Valuation.Compatible.vle_iff_le (v := ValuativeRel.valuation K) (ι x) (ι y)).symm
-  have haF : (a : F) ≠ 0 := by
-    exact (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).2 ha
+  have haF : (a : F) ≠ 0 := (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).2 ha
   have htK : (t : K) ≠ 0 := by
     rw [ht]
     exact (map_ne_zero ι).2 haF
@@ -152,8 +150,7 @@ theorem card_quotient_eq_absNorm : CardStep := by
     intro q
     obtain ⟨s, rfl⟩ := Ideal.Quotient.mk_surjective q
     have hU : IsOpen {y : K | (ValuativeRel.valuation K) (y - s) ≤ (ValuativeRel.valuation K) t} := by
-      have hB := isOpen_setOf_valuation_le_of_ne_zero htK
-      exact hB.preimage (continuous_sub_right (s : K))
+      exact (isOpen_setOf_valuation_le_of_ne_zero htK).preimage (continuous_sub_right (s : K))
     obtain ⟨f, hf⟩ := hι.exists_mem_open hU ⟨(s : K), by simp⟩
     have hf' : (ValuativeRel.valuation K) (ι f - s) ≤ (ValuativeRel.valuation K) t := hf
     have hfK : (ValuativeRel.valuation K) (ι f) ≤ 1 := by
@@ -170,8 +167,7 @@ theorem card_quotient_eq_absNorm : CardStep := by
     have h3 : (ValuativeRel.valuation K) (ι (algebraMap (𝓞 F) F x) - ι f) ≤ (ValuativeRel.valuation K) t := by
       rw [← map_sub, ht]
       show (ValuativeRel.valuation K) (ι (algebraMap (𝓞 F) F x - f)) ≤ (ValuativeRel.valuation K) (ι (algebraMap (𝓞 F) F a))
-      rw [hcomp, ← neg_sub, Valuation.map_neg]
-      exact hx
+      rwa [hcomp, ← neg_sub, Valuation.map_neg]
     have h4 : ι (algebraMap (𝓞 F) F x) - (s : K) =
         (ι (algebraMap (𝓞 F) F x) - ι f) + (ι f - s) := by ring
     show (ValuativeRel.valuation K) (ι (algebraMap (𝓞 F) F x) - (s : K)) ≤ (ValuativeRel.valuation K) t
@@ -290,8 +286,7 @@ section
 variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   [MeasurableSpace K] [BorelSpace K]
 
-theorem isOpen_integers : IsOpen ((𝒪[K] : Subring K) : Set K) := by
-  exact Valuation.isOpen_integer
+theorem isOpen_integers : IsOpen ((𝒪[K] : Subring K) : Set K) := Valuation.isOpen_integer
 
 theorem isCompact_integers : IsCompact ((𝒪[K] : Subring K) : Set K) := by
   exact isCompact_iff_compactSpace.mpr (inferInstanceAs (CompactSpace 𝒪[K]))
@@ -323,7 +318,6 @@ theorem comap_isAddLeftInvariant (μ : Measure K) [μ.IsAddLeftInvariant] :
     ext y
     constructor
     · rintro ⟨x, hx, rfl⟩
-      show (g : K) + x ∈ Subtype.val '' s
       exact ⟨g + x, hx, rfl⟩
     · rintro ⟨z, hz, hzy⟩
       have hy : y ∈ 𝒪[K] := by
@@ -336,8 +330,7 @@ theorem comap_isAddLeftInvariant (μ : Measure K) [μ.IsAddLeftInvariant] :
         apply Subtype.ext
         rw [hzy]
         try rfl
-      rw [hgz]
-      exact hz
+      rwa [hgz]
   rw [hset, measure_preimage_add]
 
 end
@@ -357,21 +350,17 @@ private theorem index_span_mul_distribHaarChar_eq_one {K : Type} [Field K] [Valu
   have hsub : u • ((𝒪[K] : Subring K) : Set K) ⊆ ((𝒪[K] : Subring K) : Set K) := by
     rintro x ⟨s, hs, rfl⟩
     have h1 : (t : K) * s ∈ ((𝒪[K] : Subring K) : Set K) := (𝒪[K]).mul_mem t.2 hs
-    rw [← hsmul] at h1
-    exact h1
+    rwa [← hsmul] at h1
   have hrange : u • ((𝒪[K] : Subring K) : Set K) ⊆ Set.range (Subtype.val : 𝒪[K] → K) := by
-    intro x hx
-    exact ⟨⟨x, hsub hx⟩, rfl⟩
-  have hR : Set.range (Subtype.val : 𝒪[K] → K) = ((𝒪[K] : Subring K) : Set K) := by
-    exact Subtype.range_coe
+    exact fun x hx => ⟨⟨x, hsub hx⟩, rfl⟩
+  have hR : Set.range (Subtype.val : 𝒪[K] → K) = ((𝒪[K] : Subring K) : Set K) := Subtype.range_coe
   have hmem : ∀ y : 𝒪[K], y ∈ Ideal.span {t} ↔ (y : K) ∈ u • ((𝒪[K] : Subring K) : Set K) := by
     intro y
     rw [Ideal.mem_span_singleton', Set.mem_smul_set]
     constructor
     · rintro ⟨a, rfl⟩
       refine ⟨(a : K), a.2, ?_⟩
-      rw [hsmul]
-      rw [mul_comm]
+      rw [hsmul, mul_comm]
       rfl
     · rintro ⟨s, hs, hy⟩
       refine ⟨⟨s, hs⟩, ?_⟩

@@ -166,8 +166,7 @@ variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 theorem gp_exp_mem (τ : D.what₂.Tau) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) (t : ℝ) :
     NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) := by
   have hl : (t • X)ᴴ * gramAt D V τ + gramAt D V τ * (t • X) = 0 := by
-    have h := CCRuleCW.lie_smul (gramAt D V τ) X hX t
-    simpa only [Complex.coe_smul] using h
+    simpa only [Complex.coe_smul] using CCRuleCW.lie_smul (gramAt D V τ) X hX t
   exact CCRuleCW.exp_mem_UH (gramAt D V τ) (t • X) hl
 
 theorem gp_rep_norm (M : DSModel V S) (τ : D.what₂.Tau) {a : Matrix (Fin V.rank) (Fin V.rank) ℂ}
@@ -239,8 +238,7 @@ theorem gp_sv_smul {M : DSModel V S} {τ : D.what₂.Tau} (c : ℂ) {v : M.H τ}
 
 theorem gp_sv_zero {M : DSModel V S} {τ : D.what₂.Tau} : SmoothVec (lieAt V τ) (M.rep τ) (0 : M.H τ) := by
   intro k Xs hXs
-  simp only [map_zero]
-  exact contDiff_const
+  simpa only [map_zero] using contDiff_const
 
 theorem gp_sv_of_mem {M : DSModel V S} {τ : D.what₂.Tau} {w : M.H τ} (hw : w ∈ M.sm τ) :
     SmoothVec (lieAt V τ) (M.rep τ) w := by
@@ -273,8 +271,7 @@ theorem gp_snoc_hasDerivAt {k : ℕ} (t : Fin k → ℝ) (s : ℝ) :
   intro i
   induction i using Fin.lastCases with
   | last =>
-    simp only [Fin.snoc_last, Pi.single_eq_same]
-    exact hasDerivAt_id' s
+    simpa only [Fin.snoc_last, Pi.single_eq_same] using hasDerivAt_id' s
   | cast j =>
     simp only [Fin.snoc_castSucc]
     rw [Pi.single_eq_of_ne (Fin.castSucc_lt_last j).ne]
@@ -560,8 +557,7 @@ theorem gvPair_of_orbitDerivCont (hK : OrbitDerivCont) : GvPair := by
     have h1 := (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin L.length => M.H τ) i).integral_comp_comm hint
     rw [hT]
     simp only
-    rw [gp_foldr_gvT hK M τ hΦ.continuous hΦc hsw (L.get i) (hL _ (List.get_mem L i))]
-    exact h1
+    rwa [gp_foldr_gvT hK M τ hΦ.continuous hΦc hsw (L.get i) (hL _ (List.get_mem L i))]
   rw [hg _ (gvT_smooth M τ hΦ hΦc w)]
   show g (T (gvT M τ Φ w)) = _
   rw [e1, ← g.integral_comp_comm hint]
@@ -652,8 +648,7 @@ theorem gp_foldr_sum {M : DSModel V S} {τ : D.what₂.Tau} (l : List (Matrix (F
   classical
   refine Finset.induction_on s ?_ ?_
   · simp only [Finset.sum_empty]
-    have h0 := gp_foldr_smul (M := M) (τ := τ) (0 : ℂ) l hl (v := 0) gp_sv_zero
-    simpa using h0
+    simpa using gp_foldr_smul (M := M) (τ := τ) (0 : ℂ) l hl (v := 0) gp_sv_zero
   · intro a s ha ih
     rw [Finset.sum_insert ha, Finset.sum_insert ha,
       gp_foldr_add l hl (gp_sv_smul _ (hx a)) (gp_sv_sum s c x hx), gp_foldr_smul _ l hl (hx a), ih]

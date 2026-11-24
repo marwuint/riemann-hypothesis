@@ -230,8 +230,7 @@ theorem exists_sec {𝔮 : Ideal R} (h : IsRel 𝒜 𝔮) {d : Deg k} (hd : 0 �
       (F := Finset.univ) (fun i _ => SetLike.pow_mem_graded _ (hτ i))
     have h3 : ∑ i, (d i).toNat • (e i : Deg k) = d := by
       ext j
-      simp [e, Finset.sum_apply, Pi.single_apply]
-      exact hd j
+      simpa [e, Finset.sum_apply, Pi.single_apply] using hd j
     rwa [h3] at h2
   · intro hc
     obtain ⟨i, _, hi⟩ := (h.prime.prod_mem_iff).mp hc
@@ -320,8 +319,7 @@ theorem dev_reduce (hGr : RuleGr) (hIrr : RuleIrr) (hIso : RuleIso) (hShift : Ru
           fun x => Subtype.ext ((Submodule.mem_bot _).mp x.2)
         exact hx x
       filter_upwards [h1] with m hm
-      rw [hm]
-      exact h0
+      rwa [hm]
     | succ i ih =>
       intro hi
       obtain ⟨hp, hh, hle, ⟨ses⟩⟩ := hstep i hi
@@ -336,14 +334,12 @@ theorem dev_reduce (hGr : RuleGr) (hIrr : RuleIrr) (hIso : RuleIso) (hShift : Ru
         · have hz := chi_ev_zero ts _ (hIrr k X _ g0
             ⟨1, by rw [pow_one]; exact hrel.trans (le_ann_quo X.𝒜 (𝔮 i))⟩)
           filter_upwards [hz] with m hm
-          rw [hm]
-          exact h0
+          rwa [hm]
         · exact H (𝔮 i) ⟨hp, hh, hrel⟩ hle
       filter_upwards [hs, ih (Nat.le_of_succ_le hi), ev_shift (d i) hq] with m a b c
       rw [a]
       refine hadd _ _ b ?_
-      rw [hShift]
-      exact c
+      rwa [hShift]
   filter_upwards [key t le_rfl] with m hm
   rwa [hIso k X ts _ _ (isoTop F (N t) hNt) m] at hm
 

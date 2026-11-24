@@ -78,10 +78,8 @@ theorem countBase_of (hT : AutTie D X.B X.pl) {large₂ : SizeData₂ D} {n0 : �
     intro v
     have he := hT.eps_eq v
     constructor
-    · simp only [AutInst.pAt, he]
-      exact card_cast hn (fun a => epsS D.R a = true)
-    · simp only [AutInst.qAt, he]
-      exact card_cast hn (fun a => epsS D.R a = false)
+    · simpa only [AutInst.pAt, he] using card_cast hn (fun a => epsS D.R a = true)
+    · simpa only [AutInst.qAt, he] using card_cast hn (fun a => epsS D.R a = false)
   refine ⟨large₂.sc.b, C * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * Real.log (large₂.sc.b * D.host.rdE), fun k => ?_,
     fun v a c hac => ?_, ?_, ?_, ?_, ?_⟩
   · refine ⟨by rw [hn]; exact p2, ⟨_, _, hq, ?_⟩, p11, ?_, hc_X X hT, ?_, ?_, ?_, D.host.g_prime _, ?_, splits_X X _⟩
@@ -105,8 +103,7 @@ theorem countBase_of (hT : AutTie D X.B X.pl) {large₂ : SizeData₂ D} {n0 : �
   · rw [hf, hn]; exact p10
   · rw [hf, hn]; exact p12
   · have h := Formalism.MainNotions.BridgeLemma.Dstar_pos D
-    rw [hT.Dstar_eq] at h
-    exact h
+    rwa [hT.Dstar_eq] at h
 
 section Fam
 

@@ -132,41 +132,35 @@ theorem dnk_char (T : Forms0 D u) (v : (D.mem u).A.vT) (c c1 : (D.mem u).C.cls 0
     y ∈ Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (mulLat (γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (Lk T.atT 0 (Nat.zero_le _) v c1)) ↔
       ∃ s : 𝓞 D.host.E, s ∉ T.atT.Pv v ∧ ∃ h : s • y ∈ Lk T.atT 0 (Nat.zero_le _) v c,
         g (T.lv0.prk v c ⟨_, h⟩) = 0 := by
-  have memP : ∀ (L : Submodule (𝓞 D.host.E) (Fin (D.R.N 0) → D.host.E)) (z : Fin (D.R.N 0) → D.host.E),
-      z ∈ Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) L ↔ ∃ s ∈ (T.atT.Pv v).primeCompl, s • z ∈ L := fun _ _ => Iff.rfl
-  have memM : ∀ (M : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (L : Submodule (𝓞 D.host.E) (Fin (D.R.N 0) → D.host.E)) (z : Fin (D.R.N 0) → D.host.E),
+  have memM : ∀ (M : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) L z,
       z ∈ mulLat M L ↔ ∃ x ∈ L, M *ᵥ x = z := fun _ _ _ => Iff.rfl
-  have hsm : ∀ (M : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (t : 𝓞 D.host.E) (x : Fin (D.R.N 0) → D.host.E), M *ᵥ (t • x) = t • (M *ᵥ x) :=
-    fun M t x => Matrix.mulVec_smul M t x
-  have hPc : ∀ {a b : 𝓞 D.host.E}, a ∈ (T.atT.Pv v).primeCompl → b ∈ (T.atT.Pv v).primeCompl →
-      a * b ∈ (T.atT.Pv v).primeCompl := fun ha hb => Submonoid.mul_mem _ ha hb
   constructor
   · intro hy
-    obtain ⟨s, hs, hsy⟩ := (memP _ _).mp hy
+    obtain ⟨s, hs, hsy⟩ := hy
     obtain ⟨x, hx, hxy⟩ := (memM _ _ _).mp hsy
     have hxd : x ∈ Ld D u 0 (Nat.zero_le _) c1 := dnk_lk_le T v c1 hx
     have h1 : (γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ x ∈ Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (clsCrd D u 0 (Nat.zero_le _) c) := by
       rw [← hl]
-      exact (memP _ _).mpr ⟨1, Submonoid.one_mem _, by rw [one_smul]; exact (memM _ _ _).mpr ⟨x, hxd, rfl⟩⟩
-    obtain ⟨t, ht, htx⟩ := (memP _ _).mp h1
+      exact ⟨1, Submonoid.one_mem _, by rw [one_smul]; exact ⟨x, hxd, rfl⟩⟩
+    obtain ⟨t, ht, htx⟩ := h1
     have htx' : (γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ (t • x) ∈ Lk T.atT 0 (Nat.zero_le _) v c := by
-      rw [hsm]; exact Submodule.mem_sup_left htx
+      rw [Matrix.mulVec_smul]; exact Submodule.mem_sup_left htx
     have hfx : (D.fm u).fv 0 v c1 (T.lv0.pr v c1 ⟨t • x, Submodule.smul_mem _ t hxd⟩) = 0 :=
       (T.lv0.fv_ker v c1 _).mpr (Submodule.smul_mem _ t hx)
     have hmem : (t * s) • y ∈ Lk T.atT 0 (Nat.zero_le _) v c := by
-      rw [mul_smul, ← hxy, ← hsm]; exact htx'
-    refine ⟨t * s, Ideal.mem_primeCompl_iff.mp (hPc ht hs), hmem, ?_⟩
+      rw [mul_smul, ← hxy, ← Matrix.mulVec_smul]; exact htx'
+    refine ⟨t * s, Ideal.mem_primeCompl_iff.mp (Submonoid.mul_mem _ ht hs), hmem, ?_⟩
     have e : (⟨(t * s) • y, hmem⟩ : ↥(Lk T.atT 0 (Nat.zero_le _) v c)) = ⟨_, htx'⟩ := by
       apply Subtype.ext
       show (t * s) • y = (γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ (t • x)
-      rw [mul_smul, ← hxy, hsm]
+      rw [mul_smul, ← hxy, Matrix.mulVec_smul]
     rw [e]
     exact (hfun ⟨t • x, Submodule.smul_mem _ t hxd⟩ htx').symm.trans hfx
   · rintro ⟨s, hs, hsy, hg⟩
     have h1 : s • y ∈ Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (clsCrd D u 0 (Nat.zero_le _) c) :=
-      dnk_lk_locP T v c ((memP _ _).mpr ⟨1, Submonoid.one_mem _, by rw [one_smul]; exact hsy⟩)
+      dnk_lk_locP T v c ⟨1, Submonoid.one_mem _, by rw [one_smul]; exact hsy⟩
     rw [← hl] at h1
-    obtain ⟨t, ht, htm⟩ := (memP _ _).mp h1
+    obtain ⟨t, ht, htm⟩ := h1
     obtain ⟨x, hx, hxe⟩ := (memM _ _ _).mp htm
     have hxk : (γ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ x ∈ Lk T.atT 0 (Nat.zero_le _) v c := by
       rw [hxe]; exact Submodule.smul_mem _ t hsy
@@ -174,7 +168,7 @@ theorem dnk_char (T : Forms0 D u) (v : (D.mem u).A.vT) (c c1 : (D.mem u).C.cls 0
     have e : (⟨_, hxk⟩ : ↥(Lk T.atT 0 (Nat.zero_le _) v c)) = t • ⟨s • y, hsy⟩ := Subtype.ext hxe
     rw [e, T.lv0.prk_smul, map_smul, hg, smul_zero] at hf
     have hxk1 : x ∈ Lk T.atT 0 (Nat.zero_le _) v c1 := (T.lv0.fv_ker v c1 ⟨x, hx⟩).mp hf
-    exact (memP _ _).mpr ⟨t * s, hPc ht (Ideal.mem_primeCompl_iff.mpr hs),
+    exact ⟨t * s, Submonoid.mul_mem _ ht (Ideal.mem_primeCompl_iff.mpr hs),
       (memM _ _ _).mpr ⟨x, hxk1, by rw [hxe, mul_smul]⟩⟩
 
 

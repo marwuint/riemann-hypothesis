@@ -83,8 +83,7 @@ private theorem mem_locR_of_unimod_lemma {h : V →ₗ⋆[K] V →ₗ[K] K} {L :
     h x y ∈ Formalism.HermitianLatticesTheory.locR (K := K) p := by
   have hu' : Formalism.HermitianLatticesTheory.dualAt h p (Formalism.HermitianLatticesTheory.loc (K := K) p L) = Formalism.HermitianLatticesTheory.loc (K := K) p L := hu
   have hy2 : y ∈ Formalism.HermitianLatticesTheory.dualAt h p (Formalism.HermitianLatticesTheory.loc (K := K) p L) := by
-    rw [hu']
-    exact hy
+    rwa [hu']
   simp only [Formalism.HermitianLatticesTheory.dualAt, Submodule.mem_iInf, Submodule.mem_comap,
     LinearMap.restrictScalars_apply] at hy2
   exact hy2 x hx
@@ -105,12 +104,9 @@ theorem isSelfDualMod_loc {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (�
     unfold Formalism.HermitianLatticesTheory.IsUnimodularAt at hu
     rw [hu]
   refine ⟨?_, ?_, ?_, ?_⟩
-  · intro a ha m hm
-    exact smul_mem_loc hp ha hm
-  · intro x hx y hy
-    exact (hu' y).mp hy x hx
-  · intro x hx
-    exact (hu' x).mpr hx
+  · exact fun a ha m hm => smul_mem_loc hp ha hm
+  · exact fun x hx y hy => (hu' y).mp hy x hx
+  · exact fun x hx => (hu' x).mpr hx
   · intro x
     obtain ⟨n, hn, hnx⟩ := _root_.Bl.general_b_fact_second'''''.goal1 L hL x
     refine ⟨(n : K), by exact_mod_cast hn, ?_⟩
@@ -144,8 +140,7 @@ theorem gmap_loc_eq_of_frame {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (
       rintro _ ⟨i, rfl⟩
       exact hge i
     have h1 := hN hsx
-    rw [Submodule.mem_comap, map_smul ((g : V →ₗ[K] V).restrictScalars (𝓞 K)) s x] at h1
-    exact h1
+    rwa [Submodule.mem_comap, map_smul ((g : V →ₗ[K] V).restrictScalars (𝓞 K)) s x] at h1
   · intro y hy
     have hz : g.symm y ∈ Submodule.span K (Set.range e) := by
       rw [hspan]

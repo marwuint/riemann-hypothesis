@@ -75,8 +75,7 @@ theorem smulS_eq_sum {m : ℤ} {f : ℤ → V} (hf : LB m f) (g : PowerSeries LL
   rw [hf (k - j) (by omega), smul_zero]
 
 theorem LB_mono {m m' : ℤ} {f : ℤ → V} (hf : LB m f) (h : m' ≤ m) : LB m' f := by
-  intro k hk
-  exact hf k (lt_of_lt_of_le hk h)
+  exact fun k hk => hf k (lt_of_lt_of_le hk h)
 
 theorem LB_smulS {m : ℤ} {f : ℤ → V} (hf : LB m f) (g : PowerSeries LL) : LB m (smulS g f) := by
   intro k hk
@@ -124,8 +123,7 @@ theorem smulS_smul {m : ℤ} {f : ℤ → V} (hf : LB m f) (g : PowerSeries LL) 
   rw [Pi.smul_apply, smulS_eq_sum (LB_smul hf c) g k N hN,
     smulS_eq_sum hf g k N hN, Finset.smul_sum]
   refine Finset.sum_congr rfl fun j _ => ?_
-  simp only [Pi.smul_apply]
-  exact smul_comm _ _ _
+  simpa only [Pi.smul_apply] using smul_comm _ _ _
 
 private theorem smulS_C_eq_smul_of_LB {m : ℤ} {f : ℤ → V} (hf : LB m f) (c : LL) :
     smulS (PowerSeries.C c) f = c • f := by
@@ -135,8 +133,7 @@ private theorem smulS_C_eq_smul_of_LB {m : ℤ} {f : ℤ → V} (hf : LB m f) (c
   · simp
   · intro j _ hj
     simp [PowerSeries.coeff_C, hj]
-  · intro h0
-    exact absurd (Finset.mem_range.mpr (Nat.succ_pos N)) h0
+  · exact fun h0 => absurd (Finset.mem_range.mpr (Nat.succ_pos N)) h0
 
 theorem smulS_one {m : ℤ} {f : ℤ → V} (hf : LB m f) : smulS (1 : PowerSeries LL) f = f := by
   first
@@ -152,8 +149,7 @@ theorem smulS_X_pow {m : ℤ} {f : ℤ → V} (hf : LB m f) (K : ℕ) :
   · simp [PowerSeries.coeff_X_pow]
   · intro j _ hj
     simp [PowerSeries.coeff_X_pow, hj]
-  · intro hK
-    exact absurd (Finset.mem_range.mpr (by omega)) hK
+  · exact fun hK => absurd (Finset.mem_range.mpr (by omega)) hK
 
 theorem smulS_mul {m : ℤ} {f : ℤ → V} (hf : LB m f) (g h : PowerSeries LL) :
     smulS (g * h) f = smulS g (smulS h f) := by

@@ -110,8 +110,7 @@ theorem qlen_mono_left {X' X : Submodule R W} (h : X' ≤ X) (Y : Submodule R W)
     rw [LinearMap.mem_ker] at hy
     dsimp only [f] at hy
     rw [Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero] at hy
-    rw [Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]
-    exact hy
+    rwa [Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]
 
 theorem qlen_le_of_sup {X' X Y : Submodule R W} (h : X' ≤ X) (hs : X ≤ X' ⊔ (X ⊓ Y)) :
     qlen X Y ≤ qlen X' Y := by
@@ -176,8 +175,7 @@ theorem mem_sc_inv {a : K} (ha : a ≠ 0) (X : Submodule (𝓞 K) Z) (x : Z) :
   constructor
   · rintro ⟨y, hy, rfl⟩
     simpa [smul_smul, ha] using hy
-  · intro h
-    exact ⟨a • x, h, by simp [smul_smul, ha]⟩
+  · exact fun h => ⟨a • x, h, by simp [smul_smul, ha]⟩
 
 theorem localization_sc (p : Ideal (𝓞 K)) [p.IsPrime] {a : K} (ha : a ≠ 0) (X : Submodule (𝓞 K) Z) :
     localization₂ p (sc a X) = sc a (localization₂ p X) := by
@@ -205,8 +203,7 @@ theorem localization_cut (p : Ideal (𝓞 K)) [p.IsPrime] (W : Submodule K Z) (X
   · rintro x ⟨s, hs, hx⟩
     have hs0 := algebraMap_ne_zero_of_notMem p hs
     have hx' : (algebraMap (𝓞 K) K s) • x ∈ W := by
-      rw [algebraMap_smul]
-      exact hx
+      rwa [algebraMap_smul]
     have := W.smul_mem (algebraMap (𝓞 K) K s)⁻¹ hx'
     rwa [smul_smul, inv_mul_cancel₀ hs0, one_smul] at this
   · exact locBasic_le_locS _ _
@@ -237,8 +234,7 @@ theorem split_of_snf (N NB : Submodule O Z) (a : O) (ha : a ≠ 0)
     rw [map_sum] at this
     simpa using this.symm
   have haK : algebraMap O K a ≠ 0 := by
-    rw [Ne, FaithfulSMul.algebraMap_eq_zero_iff]
-    exact ha
+    rwa [Ne, FaithfulSMul.algebraMap_eq_zero_iff]
   refine ⟨Submodule.span K (v '' {j | ¬ good j}), ?_, ?_⟩
   · intro x hxN
     refine ⟨∑ j with ¬ good j, (snf.bM.repr ⟨x, hxN⟩ j) • v j, ?_,
@@ -288,8 +284,7 @@ theorem split_of_snf (N NB : Submodule O Z) (a : O) (ha : a ≠ 0)
         obtain ⟨u, hu⟩ := (ValuationRing.dvd_total (snf.a i) a).resolve_left hnd
         have hzi : snf.bM.repr (m : N) (snf.f i) = snf.a i * snf.bN.repr m i := by
           have := snf.repr_apply_embedding_eq_repr_smul m (i := i)
-          rw [map_smul, Finsupp.smul_apply, smul_eq_mul] at this
-          exact this
+          rwa [map_smul, Finsupp.smul_apply, smul_eq_mul] at this
         refine ⟨u * snf.bN.repr m i, ?_⟩
         have h4 := hco (snf.f i)
         rw [hzi, hu, map_mul, map_mul, mul_assoc] at h4

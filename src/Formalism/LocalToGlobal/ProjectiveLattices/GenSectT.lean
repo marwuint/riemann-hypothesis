@@ -30,8 +30,7 @@ theorem psi_kt (x : Fin m → Ω) (j₀ : Fin m) (q : KT K D m) :
 
 theorem algKTR_apply (q : KT K D m) :
     algebraMap (KTf K D m) (RS K Ω D m) (algebraMap (KT K D m) (KTf K D m) q) =
-      algebraMap (ΩT Ω D m) (RS K Ω D m) (ktToΩ K Ω D m q) := by
-  exact IsLocalization.map_eq _ _
+      algebraMap (ΩT Ω D m) (RS K Ω D m) (ktToΩ K Ω D m q) := IsLocalization.map_eq _ _
 
 def Phi (x : Fin m → Ω) (j₀ : Fin m) (hinj : ∀ q : KT K D m, q ≠ 0 → aeval (gs x j₀) q ≠ 0) :
     RS K Ω D m →+* FractionRing (CT Ω D j₀) :=
@@ -230,10 +229,8 @@ theorem quotient_generic_section_field [CharZero K] (hfg : (⊤ : IntermediateFi
     ext r
     simp only [RingHom.mem_ker]
     constructor
-    · intro h
-      exact congrArg Subtype.val h
-    · intro h
-      exact Subtype.ext h
+    · exact fun h => congrArg Subtype.val h
+    · exact fun h => Subtype.ext h
   refine ⟨E, inferInstance, inferInstance, ?_, ⟨(Ideal.quotientEquivAlgOfEq (KTf K D m) hker.symm).trans
     (Ideal.quotientKerAlgEquivOfSurjective hg)⟩⟩
   exact FiniteDimensional.of_injective
@@ -439,10 +436,8 @@ theorem s1 [CharZero K] (hfg : (⊤ : IntermediateField K Ω).FG) (htr : Algebra
       ext r
       simp only [RingHom.mem_ker]
       constructor
-      · intro h
-        exact congrArg Subtype.val h
-      · intro h
-        exact Subtype.ext h
+      · exact fun h => congrArg Subtype.val h
+      · exact fun h => Subtype.ext h
     refine ⟨E, inferInstance, inferInstance, ?_, ⟨(Ideal.quotientEquivAlgOfEq (KTf K D m) hker.symm).trans
       (Ideal.quotientKerAlgEquivOfSurjective hg)⟩⟩
     exact FiniteDimensional.of_injective
@@ -688,8 +683,7 @@ theorem s1T [CharZero K] (hfg : (⊤ : IntermediateField K Ω).FG) (htr : Algebr
       refine ⟨n + 1, ?_⟩
       rw [mul_pow]
       linear_combination (-(b * (1 - b * y) ^ n)) * h
-    have h0 := hBred.eq_zero _ hnil
-    exact ⟨y, by linear_combination h0⟩
+    exact ⟨y, by linear_combination (hBred.eq_zero _ hnil)⟩
   refine ⟨fun c hc => ?_⟩
   obtain ⟨k, hk⟩ := hc
   obtain ⟨b, rfl⟩ := hsurj c

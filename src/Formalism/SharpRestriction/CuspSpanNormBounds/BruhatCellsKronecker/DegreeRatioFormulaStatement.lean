@@ -162,8 +162,7 @@ theorem szaData_LBound (D : D7) (u : D.what₂.Word) : (szaData D u).LBound := b
   refine ⟨h.2.1, ?_⟩
   have h2 := h.2.2
   rw [sza_fDeg_host] at h2
-  rw [szaData_f]
-  exact h2
+  rwa [szaData_f]
 
 theorem szaData_MassRatios (D : D7) (u : D.what₂.Word) (hM : LocalBesselAndTopKernel.FamilySchurFormalDegree D) : (szaData D u).MassRatios := by
   intro M hk _
@@ -454,8 +453,7 @@ theorem level_ratio_bound (D : D7) (C0 C1 : ℝ) (hD : StandingNumericalData D C
     have h1 := (hwin u).2
     have h2 := (hwin u').1
     rw [D.GamP_eq u] at h1
-    rw [D.GamP_eq u'] at h2
-    rw [div_le_iff₀ (by linarith)] at h2
+    rw [D.GamP_eq u', div_le_iff₀ (by linarith)] at h2
     calc (D.duS u : ℝ) ≤ (D.mem D.u₀).A.GamP ^ (-2 : ℤ) * D.what₂.Dstar * C0 := h1
       _ ≤ ((D.duS u' : ℝ) * C0) * C0 := mul_le_mul_of_nonneg_right h2 (by linarith)
       _ = C0 ^ 2 * (D.duS u' : ℝ) := by ring
@@ -540,8 +538,7 @@ theorem level_ratio_bound (D : D7) (C0 C1 : ℝ) (hD : StandingNumericalData D C
       have : 0 < C0 := by linarith
       positivity
     exact (pow_le_pow_iff_left₀ (sza_Tr_pos D u).le hpos (by omega)).1 hmain
-  rw [div_le_iff₀ (sza_Tr_pos D u')]
-  exact hle
+  rwa [div_le_iff₀ (sza_Tr_pos D u')]
 
 theorem level_ratio_bound_mono {D : D7} {C2 C2' : ℝ} (h : LocalBesselAndTopKernel.kernel_index_full_lattice D C2) (hC : C2 ≤ C2') : LocalBesselAndTopKernel.kernel_index_full_lattice D C2' := by
   exact fun u u' => (h u u').trans hC
@@ -577,8 +574,7 @@ theorem sza_stMassL (D : D7) : UnitaryVolumeMass.stMassL D := by
   intro M hM
   have h := (Formalism.HermitianLattices.GlobalBoundRefinements.log_l_value_field_bound D.host.E D.sp.cm.cmUnram M hM).2.2
   rw [sza_fDeg_host] at h
-  rw [sza_zeta M hM]
-  exact h
+  rwa [sza_zeta M hM]
 
 theorem mass_two_bound_single_holds (D : D7) : LocalBesselAndTopKernel.GL5LogLValueBoundByZeta D := by
   exact fun i hi => sza_stMassL D i (by omega)

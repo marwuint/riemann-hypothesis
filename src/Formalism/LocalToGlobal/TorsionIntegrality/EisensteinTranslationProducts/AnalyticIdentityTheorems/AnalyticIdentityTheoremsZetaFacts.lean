@@ -133,8 +133,7 @@ lemma differentiableOn_zetaExcept (L : PeriodPair) (l₀ : ℂ) :
   refine differentiableOn_of_hasSumLocallyUniformlyOn' (hasSumLU_zetaExcept L l₀).hasSumLocallyUniformlyOn (fun l => ?_)
     L.isOpen_compl_lattice_sdiff
   by_cases h : (l : ℂ) = l₀
-  · simp only [h, ↓reduceIte]
-    exact differentiableOn_const 0
+  · simpa only [h, ↓reduceIte] using differentiableOn_const 0
   · simp only [h, ↓reduceIte]
     intro z hz
     have hzl : z - l ≠ 0 := by
@@ -154,10 +153,7 @@ lemma zetaExcept_zero_add (L : PeriodPair) (z : ℂ) : zetaExcept L 0 z + 1 / z 
   by_cases hl : l = 0
   · subst hl
     simp
-  · have hl' : (l : ℂ) ≠ 0 := by
-      intro h
-      apply hl
-      exact Subtype.ext h
+  · have hl' : (l : ℂ) ≠ 0 := fun h => hl (Subtype.ext h)
     simp [hl, hl']
 
 lemma zetaExcept_zero_zero (L : PeriodPair) : zetaExcept L 0 0 = 0 := by
@@ -229,8 +225,7 @@ end AnalyticIdentityTheoremsZetaFacts
 open AnalyticIdentityTheoremsZetaFacts
 
 theorem zeta_summable : ZetaSummable := by
-  intro L z
-  exact (hasSumLU_wZeta L).hasSum.summable
+  exact fun L z => (hasSumLU_wZeta L).hasSum.summable
 
 theorem zeta_has_deriv : ZetaHasDeriv := by
   intro L z hz

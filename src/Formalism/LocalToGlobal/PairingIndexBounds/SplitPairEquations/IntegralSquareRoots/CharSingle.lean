@@ -95,8 +95,7 @@ theorem Copies.mem_img (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁)
     constructor
     · rintro ⟨y, hy, rfl⟩
       simpa using hy
-    · intro hz
-      exact ⟨d.symm z, hz, by simp⟩
+    · exact fun hz => ⟨d.symm z, hz, by simp⟩
   rw [key, c.lat]
   apply forall_congr'
   intro i
@@ -111,8 +110,7 @@ theorem Copies.form_single (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae
   · simp
   · intro i _ hi
     simp [Pi.single_eq_of_ne hi]
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+  · exact fun h => absurd (Finset.mem_univ _) h
 
 theorem Copies.single_mem (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁) (i₀ : ι) {x : V₁} (hx : x ∈ Λ₁) :
     e.symm (Pi.single i₀ x) ∈ Λ := by
@@ -131,8 +129,7 @@ theorem Copies.char_single (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae
   · simp
   · intro i _ hi
     rw [Pi.single_eq_of_ne hi, h0]
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+  · exact fun h => absurd (Finset.mem_univ _) h
 
 theorem Copies.unitaryData₁ (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁) (i₀ : ι) (hU : UnitaryData H Λ α δ Ae)
     (hH₁ : IsHerm H₁) (hP₁ : IsPosDef H₁) (hI₁ : IsIsom H₁ H₁ (δ₁ : V₁ →ₗ[ℂ] V₁)) (hA₁ : ∀ x, Ae₁ x = x - δ₁.symm x)
@@ -179,8 +176,7 @@ theorem Copies.unitaryData₁ (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁
         obtain ⟨m, hm⟩ := hx (e y i₀) ((c.lat y).1 hy i₀)
         refine ⟨m, ?_⟩
         simp only [altE] at hm ⊢
-        rw [c.form_single]
-        exact hm
+        rwa [c.form_single]
       have h1 := (c.lat _).1 hv i₀
       rwa [hs] at h1
     · intro hx y hy
@@ -190,8 +186,7 @@ theorem Copies.unitaryData₁ (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁
       obtain ⟨m, hm⟩ := h1 _ (c.single_mem i₀ hy)
       refine ⟨m, ?_⟩
       simp only [altE] at hm ⊢
-      rw [hform] at hm
-      exact hm
+      rwa [hform] at hm
   · intro x hx
     rw [← c.char_single h0 i₀ hx]
     exact hU.semi.1 _ (c.single_mem i₀ hx)

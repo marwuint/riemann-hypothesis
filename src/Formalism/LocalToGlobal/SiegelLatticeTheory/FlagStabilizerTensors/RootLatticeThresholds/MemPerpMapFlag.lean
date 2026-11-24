@@ -102,8 +102,7 @@ theorem RowRepsIso_holds (D : D7) : Formalism.L2.SG.TermTieOf.RowRepsIso D := by
   · intro Λ hΛ
     have h0 : IsRowLat D F0 (Formalism.HermitianLatticesTheory.gmap β⁻¹ Λ) := by
       have h := Formalism.L2.SG.TermTieOf.rowLat_map hL β⁻¹ (inv_mem hβ) (Formalism.L2.SG.Saturated.mapFlag β hβ F0) Λ hΛ
-      rw [mapFlag_inv] at h
-      exact h
+      rwa [mapFlag_inv] at h
     obtain ⟨M, ⟨hM, γ, hγ, hγM⟩, hU⟩ := huniq _ h0
     refine ⟨Formalism.HermitianLatticesTheory.gmap β M, ⟨Finset.mem_image_of_mem _ hM, β * γ * β⁻¹, stabF_conj β hβ F0 hγ, ?_⟩, ?_⟩
     · rw [_root_.Formalism.ThetaLiftIndependence.LatticeLiftIndependence.gmap_mul, _root_.Formalism.ThetaLiftIndependence.LatticeLiftIndependence.gmap_mul, _root_.Formalism.HermitianLatticesTheory.genusBasic_gmap_inv, hγM, gmap_gmap_inv]
@@ -188,9 +187,7 @@ theorem autLz_fwd {Λ : Submodule (𝓞 D.host.E) (VS D).V} {φ : WbQ D F0 → W
     have hy0 : β.symm x.1 ∈ perpS (VS D) F0.X := (mem_perp_mapFlag β hβ F0).1 x.2
     have hy1 : γ (β.symm x.1) ∈ perpS (VS D) F0.X := by
       have h := (mem_perp_mapFlag β hβ F0).1 hx
-      have key : β.symm ((β * γ * β⁻¹) x.1) = γ (β.symm x.1) := by
-        show β.symm (β (γ (β.symm x.1))) = _
-        exact β.symm_apply_apply _
+      have key : β.symm ((β * γ * β⁻¹) x.1) = γ (β.symm x.1) := β.symm_apply_apply _
       rwa [key] at h
     have e1 : (wbEquiv β hβ F0).symm (Submodule.Quotient.mk x) = Submodule.Quotient.mk ⟨β.symm x.1, hy0⟩ := by
       rw [Equiv.symm_apply_eq, wbEquiv_mk]
@@ -209,8 +206,7 @@ theorem autLz_bwd {Λ : Submodule (𝓞 D.host.E) (VS D).V}
   · rw [_root_.Formalism.ThetaLiftIndependence.LatticeLiftIndependence.gmap_mul, _root_.Formalism.ThetaLiftIndependence.LatticeLiftIndependence.gmap_mul, hΛ, _root_.Formalism.HermitianLatticesTheory.genusBasic_gmap_inv]
   · intro x hx
     have hx1 : γ (β x.1) ∈ perpS (VS D) (Formalism.L2.SG.Saturated.mapFlag β hβ F0).X := by
-      rw [mem_perp_mapFlag β hβ F0]
-      exact hx
+      rwa [mem_perp_mapFlag β hβ F0]
     simp only [Function.comp_apply]
     rw [wbEquiv_mk, Equiv.symm_apply_eq, hψ (perpEq β hβ F0 x) hx1, wbEquiv_mk]
     congr 1

@@ -227,8 +227,7 @@ variable {F' F F'' : GMod B R k} (S : SES F' F F'') (s : R) (d : Deg k)
 
 theorem f_gr' : ∀ m, ∀ x ∈ F'.gr m, S.f x ∈ F.gr m := by
   intro m x hx
-  rw [S.f_gr] at hx
-  exact hx
+  rwa [S.f_gr] at hx
 
 theorem g_gr' : ∀ m, ∀ x ∈ F.gr m, S.g x ∈ F''.gr m := by
   intro m x hx
@@ -277,8 +276,7 @@ theorem delta_gr (hs : ∀ m, ∀ x ∈ F.gr m, s • x ∈ F.gr (d + m)) :
   rwa [add_sub_cancel] at this
 
 theorem annMap_f_inj : Function.Injective (annMap S.f s d) := by
-  intro x y hxy
-  exact Subtype.ext (S.inj (congrArg Subtype.val hxy))
+  exact fun x y hxy => Subtype.ext (S.inj (congrArg Subtype.val hxy))
 
 theorem exact_ann : Function.Exact (annMap S.f s d) (annMap S.g s d) := by
   intro x
@@ -341,13 +339,11 @@ theorem ann_le_right : F.Ann ≤ F''.Ann := by
 theorem ann_le_ann (G : GMod B R k) : G.Ann ≤ (G.ann s d).Ann := by
   intro a ha
   rw [GMod.Ann, Module.mem_annihilator] at ha ⊢
-  intro x
-  exact Subtype.ext (ha x.1)
+  exact fun x => Subtype.ext (ha x.1)
 
 theorem mem_ann_ann (G : GMod B R k) : s ∈ (G.ann s d).Ann := by
   rw [GMod.Ann, Module.mem_annihilator]
-  intro x
-  exact Subtype.ext x.2
+  exact fun x => Subtype.ext x.2
 
 theorem ann_le_quot (G : GMod B R k) : G.Ann ≤ (G.quot s).Ann := by
   intro a ha
@@ -388,8 +384,7 @@ theorem length_add (m : Deg k) :
     (LinearMap.restrict (S.f.restrictScalars B) (p := F'.gr m) (q := F.gr m) (f_gr' S m))
     (LinearMap.restrict (S.g.restrictScalars B) (p := F.gr m) (q := F''.gr m) (g_gr' S m))
     ?_ ?_ ?_
-  · intro x y hxy
-    exact Subtype.ext (S.inj (congrArg Subtype.val hxy))
+  · exact fun x y hxy => Subtype.ext (S.inj (congrArg Subtype.val hxy))
   · rintro ⟨x, hx⟩
     rw [S.g_gr] at hx
     obtain ⟨y, hy, hyx⟩ := hx

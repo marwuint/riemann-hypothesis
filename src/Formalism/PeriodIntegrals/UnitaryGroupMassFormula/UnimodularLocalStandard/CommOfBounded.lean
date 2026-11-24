@@ -163,8 +163,7 @@ lemma kappa_ne (L : PeriodPair) (hlam : lam ≠ 0) : kappa L lam ≠ 0 := by
     rw [area_eq]
     exact Complex.ofReal_ne_zero.mpr (abs_ne_zero.mpr (detD_ne L))
   have hc : conj lam ≠ 0 := by rwa [Ne, map_eq_zero]
-  simp only [kappa]
-  exact mul_ne_zero (mul_ne_zero hlam hc) (inv_ne_zero harea)
+  simpa only [kappa] using mul_ne_zero (mul_ne_zero hlam hc) (inv_ne_zero harea)
 
 lemma stdH_kappa (L : PeriodPair) (hlam : lam ≠ 0) (x y : m → ℂ) :
     stdH L m x y = kappa L lam * ∑ i, (x i / lam) * conj (y i / lam) := by
@@ -224,8 +223,7 @@ lemma bounded_map (φ : (m → ℂ) →ₗ[ℂ] (m → ℂ))
   intro s hs
   have hs' := (mem_stdLat_iff _ s).1 hs
   choose p q hpq using fun i => (lattice_iff _ _).1 (hs' i)
-  have hs_sum : s = ∑ i, Pi.single i (s i) := by
-    exact (Finset.univ_sum_single s).symm
+  have hs_sum : s = ∑ i, Pi.single i (s i) := (Finset.univ_sum_single s).symm
 
   rw [hs_sum, map_sum, Finset.smul_sum]
   refine sum_mem fun i _ => ?_

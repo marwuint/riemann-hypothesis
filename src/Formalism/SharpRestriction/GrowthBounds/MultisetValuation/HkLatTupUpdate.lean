@@ -107,11 +107,8 @@ theorem up_fin_gen (p n' r k : ℕ) (hfin : Finite (W ⧸ Ideal.span {(p : W)}))
     refine ⟨?_, ?_⟩
     · rintro _ ⟨x, hx, rfl⟩
       exact hA1.2.2.2.1 x hx
-    · intro x hx
-      exact ⟨x, hA1.2.2.1 hx, rfl⟩
-  · apply Set.Finite.subset Set.finite_empty
-    intro A1 h
-    exact (hA h.1).elim
+    · exact fun x hx => ⟨x, hA1.2.2.1 hx, rfl⟩
+  · exact Set.Finite.subset Set.finite_empty (fun A1 h => (hA h.1).elim)
 
 theorem count_fun (hC : CountLoc) (p n' : ℕ) [IsDomain W] [IsDiscreteValuationRing W] (h1 : IsFractionRing W Qq)
     (h2 : Irreducible (p : W)) (h3 : Nat.card (W ⧸ Ideal.span {(p : W)}) = p ^ n') (N N' g i : ℕ) (hN : N' = N + g)
@@ -130,8 +127,7 @@ theorem count_fun (hC : CountLoc) (p n' : ℕ) [IsDomain W] [IsDiscreteValuation
     rw [Finset.sum_boole]
     congr 1
     rw [← Nat.card_eq_fintype_card.trans (Fintype.card_coe (S.filter Pp))]
-    apply Nat.card_congr
-    exact Equiv.subtypeEquivRight fun Z => by rw [Finset.mem_filter, hS]
+    exact Nat.card_congr (Equiv.subtypeEquivRight fun Z => by rw [Finset.mem_filter, hS])
   have := hC p n' W Qq h1 h2 h3 N N' g i hN A B hA hB x
   convert congrArg (fun n : ℕ => (n : ℚ)) this using 1
   · exact e1 N' SB _ _ hSB
@@ -187,10 +183,8 @@ theorem latTup_smul (C : Level P) (γ : C.Γ) (L : P.Tup) : P.IsLatTup (C.smul �
   · intro h u
     have h1 : IsLattice (P.W u) ((L u).map (nt_phi (P.W u) (C.act u γ))) := h u
     have h2 := nt_lat_map (C.act u γ)⁻¹ _ h1
-    rw [nt_map_inv] at h2
-    exact h2
-  · intro h u
-    exact nt_lat_map (C.act u γ) (L u) (h u)
+    rwa [nt_map_inv] at h2
+  · exact fun h u => nt_lat_map (C.act u γ) (L u) (h u)
 
 end PlacesLevel
 

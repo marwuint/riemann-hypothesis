@@ -117,8 +117,7 @@ theorem det_blocks (r : ℕ) (Z W : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (a b :
       (W.map C)).det = P.det * (W.map C).det - C a * C b * P.adjugate (Fin.last r) (Fin.last r) *
         (W.map C).adjugate (Fin.last r) (Fin.last r) := by
     apply hinj
-    rw [RingHom.map_det, RingHom.mapMatrix_apply, fromBlocks_map, single_map, single_map]
-    rw [key]
+    rw [RingHom.map_det, RingHom.mapMatrix_apply, fromBlocks_map, single_map, single_map, key]
     simp only [map_sub, map_mul, RingHom.map_det, RingHom.mapMatrix_apply]
     congr 3
     · exact (congrFun (congrFun (RingHom.map_adjugate φ P) _) _).symm
@@ -141,8 +140,7 @@ theorem det_blocks (r : ℕ) (Z W : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (a b :
     rw [← hPψ]; exact congrFun (congrFun (RingHom.map_adjugate ψ P) _) _
   have e2 : ψ ((W.map C).adjugate (Fin.last r) (Fin.last r)) = W.adjugate (Fin.last r) (Fin.last r) := by
     have e := congrFun (congrFun (RingHom.map_adjugate ψ (W.map C)) (Fin.last r)) (Fin.last r)
-    rw [RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, hWψ] at e
-    exact e
+    rwa [RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, hWψ] at e
   rw [e1, e2]
   simp [ψ]
 
@@ -335,8 +333,7 @@ theorem mem_unipotent_fixer_of {Λ : Submodule (𝓞 D.host.E) (VS D).V} {k : (V
     (hz : k F0.z = F0.z) : k ∈ N0 F0 Λ := by
   refine ⟨⟨⟨hiso, ?_⟩, fun j x hx => ?_, fun x hx => hperp x ((mem_orth_iff _ x).1 hx)⟩, he, hz⟩
   · apply SetLike.coe_injective
-    rw [Formalism.HermitianLatticesTheory.gmap, Submodule.map_coe]
-    exact hΛ
+    rwa [Formalism.HermitianLatticesTheory.gmap, Submodule.map_coe]
   · rw [fix_X F0 he x (Xa_le_X F0 _ hx), sub_self]; exact Submodule.zero_mem _
 
 theorem unipotent_lattice_fixer_props {Λ : Submodule (𝓞 D.host.E) (VS D).V} {k : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hk : k ∈ N0 F0 Λ) :
@@ -473,14 +470,12 @@ theorem uniqC_holds : UniqC Zd u u' F0 what₂ := by
       have := gz_atMat hZ (D.mem u).A.T (D.mem u').A.T
       intro h0
       apply hG'
-      rw [← this]
-      exact h0
+      rwa [← this]
     have hM : (Matrix.of fun j i => (VS D).hT (v j) (v i)).det ≠ 0 := by
       rw [hGa, detGa']
       refine mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) ?_
       have hZ' : Formalism.MainNotions.S.Zhat F0 F'₂.fl = Z := hS.1
-      rw [hZ']
-      exact hGZ
+      rwa [hZ']
     have hX : F0.X ≤ Submodule.span D.host.E (Set.range v) := by
       apply Submodule.span_mono
       rintro _ ⟨a, rfl⟩
@@ -503,8 +498,7 @@ theorem uniqC_holds : UniqC Zd u u' F0 what₂ := by
           exact moves_fvec (n := k) ⟨hke, hkz⟩ i
     have h2 : (m : (VS D).V → (VS D).V) '' Λ₂ = γ.lam := by
       rw [← heq, show ⇑(n.trans k) = ⇑k ∘ ⇑n from rfl, Set.image_comp, hnΛ, hΛk]
-    apply SetLike.coe_injective
-    exact Set.image_injective.2 m.injective (h2.trans hmΛ.symm)
+    exact SetLike.coe_injective (Set.image_injective.2 m.injective (h2.trans hmΛ.symm))
 
 end Main
 

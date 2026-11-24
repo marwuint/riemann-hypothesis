@@ -89,12 +89,8 @@ lemma chase_Q_smulA (W : WachMod B M D) (b : A) {x : D} (hx : W.QInv x) : W.QInv
   show B.Q ^ M • (b • x) ∈ W.N
   rw [smul_comm (B.Q ^ M) b x]
   exact W.N.smul_mem b hx
-lemma chase_Q_N (W : WachMod B M D) {x : D} (hx : x ∈ W.N) : W.QInv x := by
-  show B.Q ^ M • x ∈ W.N
-  exact W.N.smul_mem _ hx
-lemma chase_Q_φ (W : WachMod B M D) {x : D} (hx : x ∈ W.N) : W.QInv (W.φ x) := by
-  show B.Q ^ M • W.φ x ∈ W.N
-  exact W.φ_N x hx
+lemma chase_Q_N (W : WachMod B M D) {x : D} (hx : x ∈ W.N) : W.QInv x := W.N.smul_mem _ hx
+lemma chase_Q_φ (W : WachMod B M D) {x : D} (hx : x ∈ W.N) : W.QInv (W.φ x) := W.φ_N x hx
 
 lemma WachMod_d1_smul (W : WachMod B M D) (r : O) (y z : D) :
     W.d1 (r • y) (r • z) = r • W.d1 y z := by
@@ -176,8 +172,7 @@ theorem cocycleLiftOfExact_holds : DiagramChase₂ := by
     intro w h
     show B.Q ^ M • w ∈ W₀.N
     apply S.sat
-    rw [map_smul]
-    exact h
+    rwa [map_smul]
   intro y z hyz
   obtain ⟨k, y₁, z₁, hc₁, x, hx, hpy₁, hpz₁⟩ := hR y z hyz
   obtain ⟨⟨hQy, n, hn, rfl⟩, hd⟩ := hyz
@@ -187,8 +182,7 @@ theorem cocycleLiftOfExact_holds : DiagramChase₂ := by
   obtain ⟨yt, hyt⟩ : ∃ t, B.Q ^ M • t = a := (chase_qpow_bij W₁ M).2 a
   have hQyt : W₁.QInv yt := by
     show B.Q ^ M • yt ∈ W₁.N
-    rw [hyt]
-    exact ha
+    rwa [hyt]
   have hpyt : S.π.f yt = ((B.p : O) ^ e) • y := by
     apply (chase_qpow_bij W₂ M).1
     show B.Q ^ M • S.π.f yt = B.Q ^ M • (((B.p : O) ^ e) • y)

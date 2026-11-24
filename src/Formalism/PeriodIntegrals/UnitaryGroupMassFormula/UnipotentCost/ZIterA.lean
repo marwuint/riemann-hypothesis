@@ -123,15 +123,12 @@ section words
 variable {V I : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [Fintype I]
 
 theorem norm_smulRightL_le (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] :
-    ‖StrongDual.smulRightL ℝ V E‖ ≤ 1 := by
-  exact ContinuousLinearMap.norm_smulRightL_le
+    ‖StrongDual.smulRightL ℝ V E‖ ≤ 1 := ContinuousLinearMap.norm_smulRightL_le
 
-private theorem one_le_pow_of_one_le_real {x : ℝ} (hx : 1 ≤ x) (n : ℕ) : 1 ≤ x ^ n := by
-  exact one_le_pow₀ hx
+private theorem one_le_pow_of_one_le_real {x : ℝ} (hx : 1 ≤ x) (n : ℕ) : 1 ≤ x ^ n := one_le_pow₀ hx
 
 private theorem pow_le_pow_right_of_one_le {x : ℝ} (hx : 1 ≤ x) {m n : ℕ} (h : m ≤ n) :
-    x ^ m ≤ x ^ n := by
-  exact pow_le_pow_right₀ hx h
+    x ^ m ≤ x ^ n := pow_le_pow_right₀ hx h
 
 private theorem mul_pow_mul_le_mul_pow_succ {Kc R β lam M : ℝ} {b j : ℕ} (hj : j ≤ b) (hKc : 0 ≤ Kc)
     (hR : 1 ≤ R) (hβ : 0 ≤ β) (hlam : 1 ≤ lam) (hM : 1 ≤ M) :
@@ -178,11 +175,8 @@ theorem iter_words (q : ℕ) (Kc : ℝ) (hKc : 0 ≤ Kc) : ∃ C : ℝ, 1 ≤ C 
   intro α E _ _ Cls Dop Γ U c z₀ M lam hU hz₀ hM hlam hdown hDop hsmooth hderiv hc hcb
   have hM0 : (0 : ℝ) ≤ M := by linarith
   have hlam0 : (0 : ℝ) ≤ lam := by linarith
-  have hmono : ∀ a b (H : α → E), a ≤ b → Cls b H → Cls a H := by
-    intro a b H hab
-    induction hab with
-    | refl => exact id
-    | step _ ih => exact fun h => ih (hdown _ _ h)
+  have hmono : ∀ a b (H : α → E), a ≤ b → Cls b H → Cls a H := fun a b H hab =>
+    Nat.le_induction id (fun n _ ih h => ih (hdown n H h)) b hab
   have key : ∀ b, b ≤ q → ∀ (H : α → E) (β : ℝ), Cls b H →
       (∀ w : List I, w.length ≤ b → ‖w.foldr Dop H (Γ z₀)‖ ≤ β * lam ^ w.length) →
       ‖iteratedFDeriv ℝ b (fun z => H (Γ z)) z₀‖ ≤ R ^ b * β * (lam * M) ^ b := by
@@ -193,8 +187,7 @@ theorem iter_words (q : ℕ) (Kc : ℝ) (hKc : 0 ≤ Kc) : ∃ C : ℝ, 1 ≤ C 
     have hβ0 : ‖H (Γ z₀)‖ ≤ β := by simpa using hw [] (Nat.zero_le _)
     have hβ : 0 ≤ β := (norm_nonneg _).trans hβ0
     rcases b with _ | b
-    · simp only [norm_iteratedFDeriv_zero, pow_zero, one_mul, mul_one]
-      exact hβ0
+    · simpa only [norm_iteratedFDeriv_zero, pow_zero, one_mul, mul_one] using hβ0
     · obtain ⟨T, hT⟩ : ∃ T : ℝ, T = Kc * R ^ b * β * (lam * M) ^ (b + 1) := ⟨_, rfl⟩
       have hG : ∀ i, ContDiffOn ℝ b (fun z => Dop i H (Γ z)) U := fun i z hz =>
         (hsmooth b (Dop i H) (hDop b H i hH) z hz).contDiffWithinAt
@@ -210,41 +203,31 @@ theorem iter_words (q : ℕ) (Kc : ℝ) (hKc : 0 ≤ Kc) : ∃ C : ℝ, 1 ≤ C 
           (fun z => StrongDual.smulRightL ℝ V E (c i z) (Dop i H (Γ z))) U z₀‖ ≤
             2 ^ b * T := by
         intro i
-        refine ((StrongDual.smulRightL ℝ V E).norm_iteratedFDerivWithin_le_of_bilinear
-          (hc i b) (hG i) hU.uniqueDiffOn hz₀ le_rfl).trans ?_
-        have hsum : ∑ j ∈ Finset.range (b + 1), (b.choose j : ℝ) *
-            ‖iteratedFDerivWithin ℝ j (c i) U z₀‖ *
-            ‖iteratedFDerivWithin ℝ (b - j) (fun z => Dop i H (Γ z)) U z₀‖ ≤
-              ∑ j ∈ Finset.range (b + 1), (b.choose j : ℝ) * T := by
-          refine Finset.sum_le_sum fun j hj => ?_
-          have hj' := Finset.mem_range.1 hj
-          rw [mul_assoc]
-          refine mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)
-          have hcj : ‖iteratedFDerivWithin ℝ j (c i) U z₀‖ ≤ Kc * M ^ (j + 1) := by
-            rw [iteratedFDerivWithin_of_isOpen j hU hz₀]
-            exact hcb i j (by omega)
-          have hGj : ‖iteratedFDerivWithin ℝ (b - j) (fun z => Dop i H (Γ z)) U z₀‖ ≤
-              R ^ (b - j) * (β * lam) * (lam * M) ^ (b - j) := by
-            rw [iteratedFDerivWithin_of_isOpen (b - j) hU hz₀]
-            refine ih (b - j) (by omega) (by omega) (Dop i H) (β * lam)
-              (hmono _ _ _ (Nat.sub_le b j) (hDop b H i hH)) fun w hw' => ?_
-            have h := hw (w ++ [i]) (by rw [List.length_append, List.length_singleton]; omega)
-            simp only [List.foldr_append, List.foldr_cons, List.foldr_nil, List.length_append,
-              List.length_singleton] at h
-            calc _ ≤ β * lam ^ (w.length + 1) := h
-              _ = β * lam * lam ^ w.length := by ring
-          calc ‖iteratedFDerivWithin ℝ j (c i) U z₀‖ *
-                ‖iteratedFDerivWithin ℝ (b - j) (fun z => Dop i H (Γ z)) U z₀‖
-              ≤ (Kc * M ^ (j + 1)) * (R ^ (b - j) * (β * lam) * (lam * M) ^ (b - j)) :=
-                mul_le_mul hcj hGj (norm_nonneg _) (mul_nonneg hKc (pow_nonneg hM0 _))
-            _ ≤ T := by
-                rw [hT]
-                exact mul_pow_mul_le_mul_pow_succ (by omega) hKc hR hβ hlam hM
-        calc _ ≤ 1 * ∑ j ∈ Finset.range (b + 1), (b.choose j : ℝ) * T :=
-              mul_le_mul (norm_smulRightL_le E) hsum
-                (Finset.sum_nonneg fun j _ => by positivity) zero_le_one
+        refine ((StrongDual.smulRightL ℝ V E).norm_iteratedFDerivWithin_le_of_bilinear_of_le_one
+          (hc i b) (hG i) hU.uniqueDiffOn hz₀ le_rfl (norm_smulRightL_le E)).trans ?_
+        calc _ ≤ ∑ j ∈ Finset.range (b + 1), (b.choose j : ℝ) * T := by
+              refine Finset.sum_le_sum fun j hj => ?_
+              have hj' := Finset.mem_range.1 hj
+              rw [mul_assoc]
+              refine mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)
+              have hcj : ‖iteratedFDerivWithin ℝ j (c i) U z₀‖ ≤ Kc * M ^ (j + 1) := by
+                rw [iteratedFDerivWithin_of_isOpen j hU hz₀]
+                exact hcb i j (by omega)
+              have hGj : ‖iteratedFDerivWithin ℝ (b - j) (fun z => Dop i H (Γ z)) U z₀‖ ≤
+                  R ^ (b - j) * (β * lam) * (lam * M) ^ (b - j) := by
+                rw [iteratedFDerivWithin_of_isOpen (b - j) hU hz₀]
+                refine ih (b - j) (by omega) (by omega) (Dop i H) (β * lam)
+                  (hmono _ _ _ (Nat.sub_le b j) (hDop b H i hH)) fun w hw' => ?_
+                have h := hw (w ++ [i]) (by rw [List.length_append, List.length_singleton]; omega)
+                simp only [List.foldr_append, List.foldr_cons, List.foldr_nil, List.length_append,
+                  List.length_singleton] at h
+                exact h.trans_eq (by ring)
+              refine (mul_le_mul hcj hGj (norm_nonneg _)
+                (mul_nonneg hKc (pow_nonneg hM0 _))).trans ?_
+              rw [hT]
+              exact mul_pow_mul_le_mul_pow_succ (by omega) hKc hR hβ hlam hM
           _ = 2 ^ b * T := by
-              rw [one_mul, ← Finset.sum_mul]
+              rw [← Finset.sum_mul]
               congr 1
               exact_mod_cast Nat.sum_range_choose b
       have hN : (Fintype.card I : ℝ) * Kc * 2 ^ b ≤ R := by
@@ -253,16 +236,10 @@ theorem iter_words (q : ℕ) (Kc : ℝ) (hKc : 0 ≤ Kc) : ∃ C : ℝ, 1 ≤ C 
           _ ≤ R := by
               rw [hRdef, add_mul, one_mul]
               exact le_add_of_nonneg_right (pow_nonneg (by norm_num) q)
-      have hX : 0 ≤ R ^ b * β * (lam * M) ^ (b + 1) :=
-        mul_nonneg (mul_nonneg (pow_nonneg hR0 _) hβ) (pow_nonneg (mul_nonneg hlam0 hM0) _)
-      calc ‖iteratedFDeriv ℝ (b + 1) (fun z => H (Γ z)) z₀‖
-          = ‖iteratedFDerivWithin ℝ b
+      calc _ = ‖iteratedFDerivWithin ℝ b
               (∑ i, fun z => StrongDual.smulRightL ℝ V E (c i z) (Dop i H (Γ z)))
               U z₀‖ := by
-            rw [← norm_iteratedFDeriv_fderiv,
-              ← (iteratedFDerivWithin_of_isOpen b hU hz₀ :
-                iteratedFDerivWithin ℝ b (fderiv ℝ (fun z => H (Γ z))) U z₀ =
-                  iteratedFDeriv ℝ b (fderiv ℝ (fun z => H (Γ z))) z₀),
+            rw [← norm_iteratedFDeriv_fderiv, ← iteratedFDerivWithin_of_isOpen b hU hz₀,
               iteratedFDerivWithin_congr heq hz₀]
         _ = ‖∑ i, iteratedFDerivWithin ℝ b
               (fun z => StrongDual.smulRightL ℝ V E (c i z) (Dop i H (Γ z))) U z₀‖ := by
@@ -275,16 +252,12 @@ theorem iter_words (q : ℕ) (Kc : ℝ) (hKc : 0 ≤ Kc) : ∃ C : ℝ, 1 ≤ C 
             rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
         _ = ((Fintype.card I : ℝ) * Kc * 2 ^ b) * (R ^ b * β * (lam * M) ^ (b + 1)) := by
             rw [hT]; ring
-        _ ≤ R * (R ^ b * β * (lam * M) ^ (b + 1)) := mul_le_mul_of_nonneg_right hN hX
+        _ ≤ R * (R ^ b * β * (lam * M) ^ (b + 1)) := by gcongr
         _ = R ^ (b + 1) * β * (lam * M) ^ (b + 1) := by ring
   intro b hb H β hH hw
   have h0 : ‖H (Γ z₀)‖ ≤ β := by simpa using hw [] (Nat.zero_le _)
   have hβ : 0 ≤ β := (norm_nonneg _).trans h0
-  calc _ ≤ R ^ b * β * (lam * M) ^ b := key b hb H β hH hw
-    _ ≤ R ^ q * β * (lam * M) ^ b :=
-        mul_le_mul_of_nonneg_right
-          (mul_le_mul_of_nonneg_right (pow_le_pow_right_of_one_le hR hb) hβ)
-          (pow_nonneg (mul_nonneg hlam0 hM0) _)
+  exact (key b hb H β hH hw).trans (by gcongr)
 
 end words
 

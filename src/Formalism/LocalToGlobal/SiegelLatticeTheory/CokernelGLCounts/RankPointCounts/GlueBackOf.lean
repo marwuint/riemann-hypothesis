@@ -107,8 +107,7 @@ theorem glueBack_of (M : Model F E) (r n : ℕ) (hM : M.OK) (hC : CorrIso M r n)
   have keyN : ∀ (x : V) (hx : x ∈ H.W0 t₁.f t₁.f'), x ∈ t₁.abelian₂ ↔ (ψ ⟨x, hx⟩ : V) ∈ N₂ := by
     intro x hx
     constructor
-    · intro h
-      exact (memN _).2 ⟨⟨x, (memL _ _).2 ⟨h, hx⟩⟩, rfl⟩
+    · exact fun h => (memN _).2 ⟨⟨x, (memL _ _).2 ⟨h, hx⟩⟩, rfl⟩
     · intro h
       obtain ⟨y, hy⟩ := (memN _).1 h
       rw [hg] at hy
@@ -196,8 +195,7 @@ theorem glueBack_of (M : Model F E) (r n : ℕ) (hM : M.OK) (hC : CorrIso M r n)
   have hspan : Submodule.span E (N₂ : Set V) = H.W0 t₀.f t₀.f' := by
     apply le_antisymm
     · rw [Submodule.span_le]
-      intro v hv
-      exact hle hv
+      exact fun v hv => hle hv
     · intro v hv
       have hu : ((ψ.symm ⟨v, hv⟩ : H.W0 t₁.f t₁.f') : V) ∈ Submodule.span E (ThL H t₁ : Set V) := by
         rw [hS1]
@@ -207,8 +205,7 @@ theorem glueBack_of (M : Model F E) (r n : ℕ) (hM : M.OK) (hC : CorrIso M r n)
         intro x hx
         induction hx using Submodule.span_induction with
         | mem x hx =>
-          intro h
-          exact Submodule.subset_span ((keyN x h).1 ((memL _ _).1 hx).1)
+          exact fun h => Submodule.subset_span ((keyN x h).1 ((memL _ _).1 hx).1)
         | zero =>
           intro h
           have h0 : (⟨0, h⟩ : H.W0 t₁.f t₁.f') = 0 := rfl
@@ -217,24 +214,20 @@ theorem glueBack_of (M : Model F E) (r n : ℕ) (hM : M.OK) (hC : CorrIso M r n)
         | add x y hx hy ihx ihy =>
           intro h
           have hx' : x ∈ H.W0 t₁.f t₁.f' := by
-            rw [← hS1]
-            exact hx
+            rwa [← hS1]
           have hy' : y ∈ H.W0 t₁.f t₁.f' := by
-            rw [← hS1]
-            exact hy
+            rwa [← hS1]
           have h0 : (⟨x + y, h⟩ : H.W0 t₁.f t₁.f') = ⟨x, hx'⟩ + ⟨y, hy'⟩ := rfl
           rw [h0, map_add (f := _), Submodule.coe_add]
           exact Submodule.add_mem _ (ihx hx') (ihy hy')
         | smul a x hx ihx =>
           intro h
           have hx' : x ∈ H.W0 t₁.f t₁.f' := by
-            rw [← hS1]
-            exact hx
+            rwa [← hS1]
           have h0 : (⟨a • x, h⟩ : H.W0 t₁.f t₁.f') = a • ⟨x, hx'⟩ := rfl
           rw [h0, map_smul, Submodule.coe_smul]
           exact Submodule.smul_mem _ a (ihx hx')
-      have h4 := main _ hu (ψ.symm ⟨v, hv⟩).2
-      simpa using h4
+      simpa using main _ hu (ψ.symm ⟨v, hv⟩).2
   have hint : ∀ x ∈ N₂, ∀ y ∈ N₂, H.h x y ∈ M.L.O := by
     intro x hx y hy
     obtain ⟨a, rfl⟩ := (memN x).1 hx
@@ -278,10 +271,8 @@ theorem glueBack_of (M : Model F E) (r n : ℕ) (hM : M.OK) (hC : CorrIso M r n)
     obtain ⟨hn₁, rfl⟩ := (hψC n₁ n₂).1 hc
     rw [keyN n₁ hn₁, ← hcap]
     constructor
-    · intro h
-      exact (Submodule.mem_inf.1 h).1
-    · intro h
-      exact Submodule.mem_inf.2 ⟨h, (ψ _).2⟩
+    · exact fun h => (Submodule.mem_inf.1 h).1
+    · exact fun h => Submodule.mem_inf.2 ⟨h, (ψ _).2⟩
   refine ⟨Λ, hgen, hthc, ?_⟩
   intro m₁ m₂
   obtain ⟨w, hw⟩ := surj m₁
@@ -293,20 +284,17 @@ theorem glueBack_of (M : Model F E) (r n : ℕ) (hM : M.OK) (hC : CorrIso M r n)
       rw [← h, LinearEquiv.symm_apply_apply, hw, hκ]
     · intro h
       have h2 : κ (η₁ (θ.symm (ddMk H t₀ m₂))) = κ (η₁ (ddMk H t₁ m₁)) := by
-        rw [hw, hκ]
-        exact h
+        rwa [hw, hκ]
       have h3 := η₁.injective (κ.injective h2)
       rw [← h3, LinearEquiv.apply_symm_apply]
   refine step.trans ((hη m₂ (e w)).trans ?_)
   constructor
-  · intro h
-    exact ⟨w, e w, (hψC _ _).2 ⟨((memS _ _ _).1 w.2).1, rfl⟩, hmw, h⟩
+  · exact fun h => ⟨w, e w, (hψC _ _).2 ⟨((memS _ _ _).1 w.2).1, rfl⟩, hmw, h⟩
   · rintro ⟨n₁, n₂, hc, h1, h2⟩
     obtain ⟨hn₁, rfl⟩ := (hψC n₁ n₂).1 hc
     have hd : n₁ - w ∈ H.W0 t₁.f t₁.f' := Submodule.sub_mem _ hn₁ ((memS _ _ _).1 w.2).1
     have hdL : n₁ - w ∈ t₁.abelian₂ := by
-      have h4 := t₁.abelian₂.sub_mem h1 hmw
-      simpa using h4
+      simpa using t₁.abelian₂.sub_mem h1 hmw
     have h3 : (ψ ⟨n₁ - w, hd⟩ : V) ∈ Λ := by
       have h5 := (keyN _ hd).1 hdL
       rw [← hcap] at h5

@@ -216,8 +216,7 @@ theorem index_product_formula : IdxPi := by
     rw [← hπ]
     simp
   have hπ'0 : conj π ≠ 0 := by
-    rw [ne_eq, map_eq_zero]
-    exact hπ0
+    rwa [ne_eq, map_eq_zero]
   have hr1 : π / conj π * (conj π / π) = 1 := by field_simp
   have hr2 : π / conj π * conj π = π := div_mul_cancel₀ _ hπ'0
   have hr3 : conj π / π * π = conj π := div_mul_cancel₀ _ hπ0
@@ -231,8 +230,7 @@ theorem index_product_formula : IdxPi := by
       obtain ⟨a, ha, rfl⟩ := Finset.mem_image.1 hx
       obtain ⟨w, hw, rfl⟩ := SC.mem_cLat.1 (hA1 a ha)
       show (π / conj π) • ((conj π / π) • w) ∈ Λ
-      rw [smul_smul, hr1, one_smul]
-      exact hw
+      rwa [smul_smul, hr1, one_smul]
     · intro x hx y hy hxy
       obtain ⟨a, ha, rfl⟩ := Finset.mem_image.1 hx
       obtain ⟨b, hb, rfl⟩ := Finset.mem_image.1 hy
@@ -274,8 +272,7 @@ theorem linear_substitution_diagonal : LinSubDiag := by
     · simp [MvPowerSeries.smul_eq_C_mul]
     · intro b _ hb
       simp [Ne.symm hb]
-    · intro hi
-      exact absurd (Finset.mem_univ i) hi
+    · exact fun hi => absurd (Finset.mem_univ i) hi
   unfold linSub
   rw [h, ← MvPowerSeries.rescale_eq_subst, MvPowerSeries.coeff_rescale]
 

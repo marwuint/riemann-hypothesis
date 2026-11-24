@@ -139,8 +139,7 @@ theorem gmap_inf_sub {g : V ≃ₗ[K] V} (X : Submodule K V) (h1 : ∀ x ∈ X, 
   constructor
   · rintro ⟨y, hy, rfl⟩
     exact h1 y hy
-  · intro hx
-    exact ⟨g.symm x, h2 x hx, g.apply_symm_apply x⟩
+  · exact fun hx => ⟨g.symm x, h2 x hx, g.apply_symm_apply x⟩
 
 theorem gmap_cutW {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g : V ≃ₗ[K] V}
     (hg : g ∈ isomFix h U) (Λ : Submodule (𝓞 K) V) :
@@ -155,8 +154,7 @@ theorem gmap_cutU {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g : V 
     Formalism.HermitianLatticesTheory.gmap g (Λ ⊓ U.restrictScalars (𝓞 K)) =
       Formalism.HermitianLatticesTheory.gmap g Λ ⊓ U.restrictScalars (𝓞 K) := by
   refine gmap_inf_sub _ (fun x hx => by rw [hg.2 x hx]; exact hx) (fun x hx => ?_) Λ
-  rw [g.symm_apply_eq.mpr (hg.2 x hx).symm]
-  exact hx
+  rwa [g.symm_apply_eq.mpr (hg.2 x hx).symm]
 
 theorem gmap_eq_self {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g : V ≃ₗ[K] V}
     (hg : g ∈ isomFix h U) {M : Submodule (𝓞 K) V} (hM : ∀ x ∈ M, x ∈ U) :
@@ -168,10 +166,8 @@ theorem gmap_eq_self {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g :
     have e2 : g y = y := hg.2 y (hM y hy)
     rw [← e]
     change g y ∈ M
-    rw [e2]
-    exact hy
-  · intro hx
-    exact ⟨x, hx, hg.2 x (hM x hx)⟩
+    rwa [e2]
+  · exact fun hx => ⟨x, hx, hg.2 x (hM x hx)⟩
 
 theorem cut_isLatIn {Λ : Submodule (𝓞 K) V} (hΛ : Submodule.IsFullLattice K Λ) (X : Submodule K V) :
     IsLatIn X (Λ ⊓ X.restrictScalars (𝓞 K)) := by
@@ -352,8 +348,7 @@ theorem glueMass_of (h1 : JordanExists) (h2 : JordanInv) (h6 : GlueLoc) (h8 : Gl
   have hfibfin : ∀ u ∈ B, {x | x ∈ GlueSet h U M ∧ π x = u}.Finite := by
     intro u hu
     have hc : Nat.card {x // x ∈ GlueSet h U M ∧ π x = u} ≠ 0 := by
-      rw [hfibcard u hu.1 hu.2]
-      exact hN
+      rwa [hfibcard u hu.1 hu.2]
     exact Set.finite_coe_iff.mp (Nat.finite_of_card_ne_zero hc)
   obtain ⟨sX, hsX1, hsX2⟩ := OrbSum.exists_reps_of_cover (G := isomFix h U) (GlueSet h U M) hA
     (⋃ u ∈ (sY : Set (Submodule (𝓞 K) V)), {x | x ∈ GlueSet h U M ∧ π x = u})

@@ -90,8 +90,7 @@ theorem piV_mem_KgX (x : X.B.I.Gf) (hx : x ∈ X.B.I.Kg X.B.g) (p : TypX X) :
   have huL : u ∈ X.B.I.Lf := PI.FinKW.memLocFrom_of PI.FinKW.local_vector_injective X.B.I u fun w => by
     by_cases hw : w = p.1
     · subst hw
-      rw [huv]
-      exact hy
+      rwa [huv]
     · rw [huw w hw]
       exact zero_mem _
   obtain ⟨z, hzL, hz⟩ := hx.2 u huL
@@ -100,8 +99,7 @@ theorem piV_mem_KgX (x : X.B.I.Gf) (hx : x ∈ X.B.I.Kg X.B.g) (p : TypX X) :
   have e := congrArg (PI.FinKW.vecV X.B.I p.1) hz
   rw [Matrix.sub_mulVec, Matrix.one_mulVec, _root_.MassDataIdxSteps.imA_vecV_sub, hfx, PI.FinKW.vecV_mulVec, huv, Nat.cast_smul_eq_nsmul,
     vecV_nsmul] at e
-  rw [Matrix.sub_mulVec, Matrix.one_mulVec, Nat.cast_smul_eq_nsmul, smul_smul, ← hc]
-  exact e
+  rwa [Matrix.sub_mulVec, Matrix.one_mulVec, Nat.cast_smul_eq_nsmul, smul_smul, ← hc]
 
 end Loc
 
@@ -143,8 +141,7 @@ theorem reduction_map_surjective : RhoSurj := by
     have e : KvS X p = K := by
       have e : (K : Set _) = Kv X.B.I.cm.sig X.B.I.J (lamS X) p.1 := hKs
       rw [KvS, ← e, Subgroup.closure_eq]
-    rw [e]
-    exact hKs
+    rwa [e]
   choose ρ hρ hker using fun p : TypX X => Formalism.L2.SG.Pf.MassDataX.stRed_holds X p (KvS X p) (hK p)
   let ψ : KsetSub X.B.I →* ∀ p : TypX X, GL (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (ZMod (gOf p)) :=
     (MonoidHom.pi fun p => (ρ p).comp (Pi.evalMonoidHom (fun p => KvS X p) p)).comp (phiK X hb)
@@ -163,11 +160,9 @@ theorem reduction_map_surjective : RhoSurj := by
     have hg := (rhoX_eq_one_iff X _).1 h1
     have h2 : ψ (ι (x⁻¹ * y)) = 1 := by
       funext p
-      show ρ p (phiK X hb (ι (x⁻¹ * y)) p) = 1
       exact (hker p _).2 (RhoSurjW.piV_mem_KgX X hb _ hg p)
     have h3 : ι (x⁻¹ * y) = (ι x)⁻¹ * ι y := rfl
-    rw [h3, map_mul, map_inv, inv_mul_eq_one] at h2
-    exact h2
+    rwa [h3, map_mul, map_inv, inv_mul_eq_one] at h2
   have : ∀ k : Fin 2, NeZero (D.host.g k) := fun k => ⟨(D.host.g_prime k).ne_zero⟩
   let f : (rhoX X).range → (∀ p : TypX X, GL (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (ZMod (gOf p))) :=
     fun r => ψ (ι (MonoidHom.mem_range.1 r.2).choose)

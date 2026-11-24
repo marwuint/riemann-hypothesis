@@ -173,8 +173,7 @@ def KapInj : Prop :=
   ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), Set.InjOn (kap X u) (X.NinfU u)
 
 theorem coordMeas_of (h : KapInj) : CoordMeas := by
-  intro D X u
-  exact ⟨kap_measurable X u, (ninfU_closed X u).measurableSet, h D X u⟩
+  exact fun D X u => ⟨kap_measurable X u, (ninfU_closed X u).measurableSet, h D X u⟩
 
 def HaarUnique : Prop :=
   ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (μ ν : Measure X.B.I.Ginf),
@@ -221,10 +220,8 @@ theorem covolN_of_four (hInj : KapInj) (hU : HaarUnique) (hL : LebHaar) (hC : Co
     ext s
     constructor
     · rintro ⟨⟨t, ht, hts⟩, hs⟩
-      rw [← hinj ht.2 hs hts]
-      exact ht
-    · intro hs
-      exact Set.mem_inter (Set.mem_image_of_mem _ hs) hs.2
+      rwa [← hinj ht.2 hs hts]
+    · exact fun hs => Set.mem_inter (Set.mem_image_of_mem _ hs) hs.2
   have h2 := measure_inter_eq_of_compl_null μ hμ.2.2.1 (kap X u ⁻¹' (kap X u '' (FdN ∩ X.NinfU u)))
   rw [hpre] at h2
   have h3 : μ.map (kap X u) (kap X u '' (FdN ∩ X.NinfU u)) = μ (FdN ∩ X.NinfU u) := by

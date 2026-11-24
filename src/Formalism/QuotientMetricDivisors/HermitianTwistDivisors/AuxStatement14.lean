@@ -107,8 +107,7 @@ theorem span_comap_eq_top [IsDomain R] [IsFractionRing R K] (E : W →ₗ[K] V)
   rw [algebraMap_smul K]
   apply Submodule.subset_span
   change E (a • z) ∈ A
-  rw [LinearMap.map_smul_of_tower]
-  exact haz
+  rwa [LinearMap.map_smul_of_tower]
 
 theorem dual_comap [IsDedekindDomain R] [IsFractionRing R K] [FiniteDimensional K V]
     [FiniteDimensional K W] (hV : V →ₗ⋆[K] V →ₗ[K] K) (hVs : hV.IsSymm) (hVn : hV.Nondegenerate)
@@ -163,8 +162,7 @@ theorem orth_eq {n d : ℕ} {H : Matrix (Fin n) (Fin n) K} (hH : Hᴴ = H)
     H * E = Prᴴ * (Eᴴ * H * E) := by
   have h2 : Eᴴ * H = Eᴴ * H * (E * Pr) := by
     have h := hO.2
-    rw [Matrix.mul_sub, Matrix.mul_one, sub_eq_zero] at h
-    exact h
+    rwa [Matrix.mul_sub, Matrix.mul_one, sub_eq_zero] at h
   have h3 := congrArg Matrix.conjTranspose h2
   simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hH] at h3
   rw [h3]
@@ -186,8 +184,7 @@ theorem E_inj {n d : ℕ} {H : Matrix (Fin n) (Fin n) K}
     Function.Injective (Matrix.mulVecLin E) := by
   intro x y hxy
   have h := congrArg (Matrix.mulVec Pr) hxy
-  simp only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hO.1, Matrix.one_mulVec] at h
-  exact h
+  simpa only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hO.1, Matrix.one_mulVec] using h
 
 theorem Pr_surj {n d : ℕ} {H : Matrix (Fin n) (Fin n) K}
     {E : Matrix (Fin n) (Fin d) K} {Pr : Matrix (Fin d) (Fin n) K} (hO : IsOrthProj H E Pr) :
@@ -208,8 +205,7 @@ theorem isOrthProj_unique {n d : ℕ} {H : Matrix (Fin n) (Fin n) K} {E : Matrix
     Pr = (Eᴴ * H * E)⁻¹ * (Eᴴ * H) := by
   have h2 : Eᴴ * H = Eᴴ * H * E * Pr := by
     have h := hO.2
-    rw [Matrix.mul_sub, Matrix.mul_one, sub_eq_zero, ← Matrix.mul_assoc (Eᴴ * H) E Pr] at h
-    exact h
+    rwa [Matrix.mul_sub, Matrix.mul_one, sub_eq_zero, ← Matrix.mul_assoc (Eᴴ * H) E Pr] at h
   calc Pr = (Eᴴ * H * E)⁻¹ * (Eᴴ * H * E) * Pr := by rw [Matrix.nonsing_inv_mul _ hZ, Matrix.one_mul]
     _ = (Eᴴ * H * E)⁻¹ * (Eᴴ * H) := by rw [Matrix.mul_assoc (Eᴴ * H * E)⁻¹ (Eᴴ * H * E) Pr, ← h2]
 
@@ -275,8 +271,7 @@ theorem loc_smLat_le {D : ℕ} (a : K) (p : Ideal (𝓞 K)) {L L' : Submodule (�
   · have hyloc : a⁻¹ • x ∈ Formalism.HermitianLatticesTheory.loc (K := K) p L := by
       show ∃ s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p, s • a⁻¹ • x ∈ L
       refine ⟨s, hs, ?_⟩
-      rw [smul_comm, ← hya, smul_smul, inv_mul_cancel₀ ha, one_smul]
-      exact hy
+      rwa [smul_comm, ← hya, smul_smul, inv_mul_cancel₀ ha, one_smul]
     have hty : ∃ t ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p, t • a⁻¹ • x ∈ L' := h hyloc
     obtain ⟨t, ht, htL⟩ := hty
     refine ⟨t, ht, (mem_smLat a L' _).mpr ⟨t • a⁻¹ • x, htL, ?_⟩⟩
@@ -339,8 +334,7 @@ theorem exponent_index_local : ExpIndexLoc := by
     refine ⟨t * s, w.asIdeal.primeCompl.mul_mem ht hs, Submodule.mem_inf.mpr ⟨?_, ?_⟩⟩
     · rw [mul_smul]
       exact Submodule.smul_mem _ t hsx
-    · rw [mul_smul, ← hyx, show ((a : K)) • y = a • y from algebraMap_smul K a y]
-      exact htB
+    · rwa [mul_smul, ← hyx, show ((a : K)) • y = a • y from algebraMap_smul K a y]
   have hz : Formalism.HermitianLatticesTheory.locLen w.asIdeal (smLat (a : K) A) (smLat (a : K) A ⊓ B) = 0 := by
     unfold Formalism.HermitianLatticesTheory.locLen
     have hsub : Subsingleton (↥(Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (smLat (a : K) A)) ⧸
@@ -380,8 +374,7 @@ theorem mem_cutLat {n d : ℕ} (E : Matrix (Fin n) (Fin d) K) (A : Submodule (�
     (z : Fin d → K) : z ∈ cutLat E A ↔ E.mulVec z ∈ A := Iff.rfl
 
 theorem mem_matLat {n d : ℕ} (P : Matrix (Fin d) (Fin n) K) (A : Submodule (𝓞 K) (Fin n → K))
-    (z : Fin d → K) : z ∈ matLat P A ↔ ∃ x ∈ A, P.mulVec x = z := by
-  exact Iff.rfl
+    (z : Fin d → K) : z ∈ matLat P A ↔ ∃ x ∈ A, P.mulVec x = z := Iff.rfl
 
 theorem mulVec_osmul {n d : ℕ} (E : Matrix (Fin n) (Fin d) K) (r : 𝓞 K) (z : Fin d → K) :
     E.mulVec (r • z) = r • E.mulVec z := Matrix.mulVec_smul E r z
@@ -393,8 +386,7 @@ theorem cut_isLattice {n d : ℕ} (E : Matrix (Fin n) (Fin d) K)
   · have hN : IsNoetherian (𝓞 K) A := isNoetherian_of_fg_of_noetherian A hA.fg
     apply Submodule.fg_of_fg_map_injective ((Matrix.mulVecLin E).restrictScalars (𝓞 K)) hE
     exact isNoetherian_submodule.mp hN _ (Submodule.map_comap_le _ _)
-  · intro s hs hli
-    exact (LinearIndependent.iff_fractionRing _ _).mp hli
+  · exact fun s hs hli => (LinearIndependent.iff_fractionRing _ _).mp hli
 
 theorem cut_isFullLattice {n d : ℕ} (E : Matrix (Fin n) (Fin d) K)
     (hE : Function.Injective (Matrix.mulVecLin E)) (A : Submodule (𝓞 K) (Fin n → K))
@@ -417,8 +409,7 @@ theorem ValuationLatticeDual : BoundsIVGen := by
     map_isFullLattice Pr.mulVecLin (Pr_surj hO) A hA
   have hC := cut_isFullLattice E (E_inj hO) A hA
   have hCT : cutLat E A ≤ matLat Pr A := by
-    intro z hz
-    exact (mem_matLat _ _ _).mpr ⟨E.mulVec z, hz, by simp [Matrix.mulVec_mulVec, hO.1]⟩
+    exact fun z hz => (mem_matLat _ _ _).mpr ⟨E.mulVec z, hz, by simp [Matrix.mulVec_mulVec, hO.1]⟩
   refine ⟨hT, hC, hCT, ?_⟩
   have hTh : Submodule.IsFullLattice K (Formalism.HermitianLatticesTheory.dual (hform (Eᴴ * H * E)) (matLat Pr A)) :=
     (Formalism.HermitianLatticesTheory.dualLattice (𝓞 K) K (Fin d → K) _ hsZ hnZ hstar _ hT).1
@@ -525,8 +516,7 @@ def avg : V →ₗ[K] invSub ρ :=
 theorem avg_coe (v : V) : ((avg ρ v : invSub ρ) : V) = ((Fintype.card Γ : K)⁻¹) • ∑ δ, ρ δ v := by
   simp only [avg, LinearMap.codRestrict_apply, LinearMap.smul_apply, LinearMap.sum_apply]
 
-theorem card_ne : (Fintype.card Γ : K) ≠ 0 := by
-  exact Nat.cast_ne_zero.mpr Fintype.card_ne_zero
+theorem card_ne : (Fintype.card Γ : K) ≠ 0 := Nat.cast_ne_zero.mpr Fintype.card_ne_zero
 
 theorem inv_dual [FiniteDimensional K V] (pair : V →ₗ⋆[K] V →ₗ[K] K) (hs : pair.IsSymm)
     (hn : pair.Nondegenerate) (hiso : ∀ γ x y, pair (ρ γ x) (ρ γ y) = pair x y)

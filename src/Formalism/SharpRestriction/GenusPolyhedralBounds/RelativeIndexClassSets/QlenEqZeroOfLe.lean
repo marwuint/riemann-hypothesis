@@ -81,10 +81,7 @@ theorem length_comap_eq {O V W : Type} [CommRing O] [AddCommGroup V] [Module O V
   let g0 : ↥(A.comap f) →ₗ[O] ↥A := f.restrict (fun x hx => hx)
   have hg : Function.Bijective g0 := by
     constructor
-    · intro x y hxy
-      apply Subtype.ext
-      apply hf
-      exact congrArg Subtype.val hxy
+    · exact fun x y hxy => Subtype.ext (hf (congrArg Subtype.val hxy))
     · rintro ⟨y, hy⟩
       obtain ⟨x, rfl⟩ := hA hy
       exact ⟨⟨x, hy⟩, rfl⟩
@@ -121,7 +118,6 @@ theorem qlen_eq_inW (X : PJ D B P j) (ka : WeightFamilies.Wt D j) (la : HeightOn
   refine length_comap_eq ((WL X ka la).subtype.restrictScalars (X.Ol la)) ?_ (N ⊓ X.ofK la V')
     (N' ⊓ X.ofK la V') ?_
   · exact Subtype.val_injective
-  · intro x hx
-    exact ⟨⟨x, hV' hx.2⟩, rfl⟩
+  · exact fun x hx => ⟨⟨x, hV' hx.2⟩, rfl⟩
 
 end Formalism.MainNotions.Gaps.T0

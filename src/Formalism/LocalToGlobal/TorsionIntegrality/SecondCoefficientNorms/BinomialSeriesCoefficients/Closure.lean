@@ -260,8 +260,7 @@ theorem addDefect_add_right (h1 : F1 R l linv ph) {x y y' : MvPowerSeries σ K} 
     (hy : IsPt R y) (hy' : IsPt R y') :
     LG R (be0 l linv ph x (fadd l linv y y') - (be0 l linv ph x y + be0 l linv ph x y')) := by
   have := h1 σ y y' x hy hy' hx
-  rw [Pts.addDefect_comm ph _ x, Pts.addDefect_comm ph y x, Pts.addDefect_comm ph y' x] at this
-  exact this
+  rwa [Pts.addDefect_comm ph _ x, Pts.addDefect_comm ph y x, Pts.addDefect_comm ph y' x] at this
 
 theorem zLin_natCast (h : Frame R l linv ph) (h1 : F1 R l linv ph) {x y : MvPowerSeries σ K}
     (hx : IsPt R x) (hy : IsPt R y) (n : ℕ) :

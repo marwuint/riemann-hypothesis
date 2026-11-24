@@ -135,8 +135,7 @@ theorem localization_map₄ (p : Ideal R) [p.IsPrime] (φ : V →ₗ[K] V') (A :
   · rintro ⟨s, hs, y, hy, hyx⟩
     have hs0 : algebraMap R K s ≠ 0 := idxRules_alg_ne (fun h => hs (h ▸ p.zero_mem))
     refine ⟨(algebraMap R K s)⁻¹ • y, ⟨s, hs, ?_⟩, ?_⟩
-    · rw [← algebraMap_smul K s, smul_smul, mul_inv_cancel₀ hs0, one_smul]
-      exact hy
+    · rwa [← algebraMap_smul K s, smul_smul, mul_inv_cancel₀ hs0, one_smul]
     · have h1 : φ y = s • x := hyx
       change φ ((algebraMap R K s)⁻¹ • y) = x
       rw [map_smul, h1, ← algebraMap_smul K s, smul_smul, inv_mul_cancel₀ hs0, one_smul]
@@ -156,9 +155,7 @@ theorem idxRules_len_map (f : V →ₗ[R] V') (hf : Function.Injective f) (X Y :
     obtain ⟨x, hx, hxz⟩ := hz
     have hxy : x = y := hf (hxz.trans hyz.symm)
     subst hxy
-    refine ⟨⟨x, hx⟩, hy, ?_⟩
-    apply Subtype.ext
-    exact hxz
+    exact ⟨⟨x, hx⟩, hy, Subtype.ext hxz⟩
 
 theorem idxRules_lidx_map (p : Ideal R) [p.IsPrime] (φ : V →ₗ[K] V') (hφ : Function.Injective φ)
     (A B : Submodule R V) :
@@ -185,8 +182,7 @@ theorem idxRules_scG_lat {a : K} (ha : a ≠ 0) {W : Submodule K V} {A : Submodu
   rw [idxRules_span_map, hA.2, Submodule.map_smul _ _ a ha, Submodule.map_id]
 
 theorem idxRules_smul_inj {a : K} (ha : a ≠ 0) :
-    Function.Injective (a • (LinearMap.id : V →ₗ[K] V)) := by
-  exact smul_right_injective V ha
+    Function.Injective (a • (LinearMap.id : V →ₗ[K] V)) := smul_right_injective V ha
 
 theorem idxRules_scG_map (a : K) (φ : V →ₗ[K] V') (A : Submodule R V) :
     scG a (A.map (φ.restrictScalars R)) = (scG a A).map (φ.restrictScalars R) := by

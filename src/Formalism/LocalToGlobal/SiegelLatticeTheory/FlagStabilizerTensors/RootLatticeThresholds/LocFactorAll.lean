@@ -91,8 +91,7 @@ theorem weil_bruhat [MeasurableMul G] {μG μS ν : Measure G} (K : Set G) (hK :
       rw [hinv s hs x]
     rw [lintegral_congr_ae hae, lintegral_const_mul _ (show Measurable fun s => β (s * x) from hβm.comp (measurable_mul_const x)), hβ1 x, mul_one]
   rw [hW (fun x => F x * β x) (hF.mul hβm)]
-  refine lintegral_congr fun x => ?_
-  exact (key x).symm
+  exact lintegral_congr fun x => (key x).symm
 
 end Weil
 
@@ -182,8 +181,7 @@ theorem exists_const_l2SG_transport_eq_mul_lintegral {n : ℕ} (hn : n = 2 * r +
     · rw [hμSU, he.comap_apply]
       refine measure_mono_null ?_ hSB.2.2.1
       rintro _ ⟨x, hx, rfl⟩
-      intro hxS
-      exact hx ((hd x).1 hxS)
+      exact fun hxS => hx ((hd x).1 hxS)
     · intro s hs
       have key : (μSU.map (fun x => s * x)).map e = μSU.map e := by
         rw [Measure.map_map he.measurable (measurable_const_mul s)]
@@ -208,9 +206,7 @@ theorem exists_const_l2SG_transport_eq_mul_lintegral {n : ℕ} (hn : n = 2 * r +
       rw [he.lintegral_map]; simp only [hFte]
     rw [e1, hQB Ft hFt]
     set I : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞ := fun y => ∫⁻ s, Ft (fun i j => (Matrix.of s * Matrix.of y) i j) ∂μSB with hIdef
-    have hIm : Measurable I := by
-      show Measurable fun y => ∫⁻ s, (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => Ft (WlocSk.mulP p)) (s, y) ∂μSB
-      exact Measurable.lintegral_prod_left' (hFt.comp hmulP)
+    have hIm : Measurable I := Measurable.lintegral_prod_left' (hFt.comp hmulP)
     have hI0 : ∀ y, y ∉ Set.range e → I y = 0 := by
       intro y hy
       apply (lintegral_eq_zero_iff' ((hFt.comp hmulP).comp (measurable_id.prodMk measurable_const)).aemeasurable).2

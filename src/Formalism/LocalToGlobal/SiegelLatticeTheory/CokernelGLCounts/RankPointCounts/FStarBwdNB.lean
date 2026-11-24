@@ -75,8 +75,7 @@ private theorem inv_smul_apply_smul_eq_of_smul_mem {W : Type*} [AddCommGroup W] 
   have h1 : (b : E) • f ⟨a • u, hau⟩ = (a : E) • f ⟨b • u, hbu⟩ := by
     rw [← oSmulW, ← oSmulW, ← map_smul, ← map_smul]
     congr 1
-    apply Subtype.ext
-    exact smul_comm b a u
+    exact Subtype.ext (smul_comm b a u)
   calc ((a : E))⁻¹ • f ⟨a • u, hau⟩ = (((a : E))⁻¹ * ((b : E))⁻¹) • ((b : E) • f ⟨a • u, hau⟩) := by
         rw [smul_smul, mul_assoc, inv_mul_cancel₀ hb', mul_one]
     _ = (((a : E))⁻¹ * ((b : E))⁻¹) • ((a : E) • f ⟨b • u, hbu⟩) := by rw [h1]
@@ -131,16 +130,14 @@ theorem ext_lat {W : Type*} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [I
     have hsub : (⟨(q * d x.1 x.2) • (((algebraMap (𝓞 E) E p / algebraMap (𝓞 E) E q) • x : U) : S.V), hmem⟩ : P) =
         p • ⟨d x.1 x.2 • x.1, hdP x.1 x.2⟩ := by
       apply Subtype.ext
-      simp only [Submodule.coe_smul]
-      exact hcq
+      simpa only [Submodule.coe_smul] using hcq
     rw [hsub, map_smul, oSmulW (o := p), smul_smul, smul_smul, hal, hal]
     congr 1
     push_cast
     field_simp
   · intro x hx
     have h1 : (1 : 𝓞 E) • x ∈ P := by
-      rw [one_smul]
-      exact hx
+      rwa [one_smul]
     refine (inv_smul_apply_smul_eq_of_smul_mem S P f x _ 1 (hd0 _ _) one_ne_zero (hdP _ _) h1).trans ?_
     have h2 : (⟨(1 : 𝓞 E) • x, h1⟩ : P) = ⟨x, hx⟩ := Subtype.ext (one_smul _ x)
     rw [h2]
@@ -183,8 +180,7 @@ theorem dual_sum (Λ : Submodule (𝓞 E) S.V) (hΛ : Submodule.IsLattice E Λ) 
     intro x hx
     have hxP : x ∈ P := (hs ▸ Submodule.span_le.mpr hsP) hx
     change IsIntegral ℤ (((a : 𝓞 E) : E) * S.hT x u) at hxP
-    rw [oSmul, map_smul, smul_eq_mul]
-    exact hxP
+    rwa [oSmul, map_smul, smul_eq_mul]
   obtain ⟨π, hπ, hπU⟩ := retract S Λ hΛ.fg U
   let g : Λ →ₗ[𝓞 E] E := ((S.hT v).restrictScalars (𝓞 E)) ∘ₗ π
   obtain ⟨G, hG⟩ := ext_top S (W := E) Λ (fun u => hfull u) g

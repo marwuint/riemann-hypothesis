@@ -61,17 +61,9 @@ theorem thr_of_budget (k r : ℕ) (N A₀ : ℝ) (hk : 2 ≤ k) (hN : 0 ≤ N)
   set n : ℝ := 2 * (r : ℝ) + k + 1 with hn
   have hcast : ((2 * r + k + 1 : ℕ) : ℝ) = n := by rw [hn]; push_cast; ring
   rw [hcast, lt_div_iff₀ (by positivity)]
-  have hn1 : (1 : ℝ) ≤ n := by rw [hn]; linarith
-  have hR1 : (1 : ℝ) ≤ (r : ℝ) + 1 := by linarith
-  have h4 : (r : ℝ) + 1 ≤ ((r : ℝ) + 1) ^ 4 := by
-    have : (1 : ℝ) ≤ ((r : ℝ) + 1) ^ 3 := one_le_pow₀ hR1
-    calc (r : ℝ) + 1 = ((r : ℝ) + 1) * 1 := by ring
-      _ ≤ ((r : ℝ) + 1) * ((r : ℝ) + 1) ^ 3 := by gcongr
-      _ = ((r : ℝ) + 1) ^ 4 := by ring
-  have h3 : n ^ 2 ≤ n ^ 3 := by
-    calc n ^ 2 = n ^ 2 * 1 := by ring
-      _ ≤ n ^ 2 * n := by gcongr
-      _ = n ^ 3 := by ring
+  have hn1 : (1 : ℝ) ≤ n := by linarith
+  have h4 : (r : ℝ) + 1 ≤ ((r : ℝ) + 1) ^ 4 := le_self_pow₀ (by linarith) (by norm_num)
+  have h3 : n ^ 2 ≤ n ^ 3 := pow_le_pow_right₀ hn1 (by norm_num)
   have hNn : 0 ≤ N * n ^ 2 := by positivity
   have hstep : 100 * ((r : ℝ) + 1) * n ^ 2 ≤ A₀ := by
     calc 100 * ((r : ℝ) + 1) * n ^ 2 ≤ 100 * ((r : ℝ) + 1) ^ 4 * (N * n ^ 2 + n ^ 3) := by
@@ -80,12 +72,9 @@ theorem thr_of_budget (k r : ℕ) (N A₀ : ℝ) (hk : 2 ≤ k) (hN : 0 ≤ N)
               _ ≤ ((r : ℝ) + 1) ^ 4 * (N * n ^ 2 + n ^ 3) := by gcongr; linarith
           linarith
       _ ≤ A₀ := hA
-  have hrn : (r : ℝ) * n ≤ ((r : ℝ) + 1) * n ^ 2 := by
-    have : (r : ℝ) ≤ (r : ℝ) + 1 := by linarith
-    calc (r : ℝ) * n ≤ ((r : ℝ) + 1) * n := by gcongr
-      _ = ((r : ℝ) + 1) * n * 1 := by ring
-      _ ≤ ((r : ℝ) + 1) * n * n := by gcongr
-      _ = ((r : ℝ) + 1) * n ^ 2 := by ring
+  have hrn : (r : ℝ) * n ≤ ((r : ℝ) + 1) * n ^ 2 :=
+    (mul_le_mul_of_nonneg_right (by linarith) (by linarith)).trans
+      (mul_le_mul_of_nonneg_left (le_self_pow₀ hn1 (by norm_num)) (by positivity))
   have hpos : 0 < ((r : ℝ) + 1) * n ^ 2 := by positivity
   nlinarith
 

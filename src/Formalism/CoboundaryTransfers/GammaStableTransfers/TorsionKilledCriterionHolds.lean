@@ -135,22 +135,16 @@ lemma δ_QInv (W : WachMod B M D) (δ : D →ₗ[O] D) (h2 : ∀ y, B.X • δ y
     ∀ y, W.QInv y → W.QInv (δ y) := by
   intro y hy
   obtain ⟨y', hy', hyy⟩ := W.γ_QN y hy
-  have h3 : δ y = y' := by
-    have h := W.X_inj (δ y - y') (by rw [smul_sub, h2, hyy, sub_self])
-    exact sub_eq_zero.mp h
+  have h3 : δ y = y' := sub_eq_zero.mp (W.X_inj (δ y - y') (by rw [smul_sub, h2, hyy, sub_self]))
   show B.Q ^ M • δ y ∈ W.N
-  rw [h3]
-  exact hy'
+  rwa [h3]
 
 lemma δ_N (W : WachMod B M D) (δ : D →ₗ[O] D) (h2 : ∀ y, B.X • δ y = W.γ y - y) :
     ∀ n ∈ W.N, δ n ∈ W.N := by
   intro n hn
   obtain ⟨x', hx', hxx⟩ := W.γ_N n hn
-  have h3 : δ n = x' := by
-    have h := W.X_inj (δ n - x') (by rw [smul_sub, h2, hxx, sub_self])
-    exact sub_eq_zero.mp h
-  rw [h3]
-  exact hx'
+  have h3 : δ n = x' := sub_eq_zero.mp (W.X_inj (δ n - x') (by rw [smul_sub, h2, hxx, sub_self]))
+  rwa [h3]
 
 lemma claim_key (W : WachMod B M D) (δ : D →ₗ[O] D) (R : Polynomial O) (a k : ℕ) (cΓ : O)
     (h1 : B.PhiX k) (h1' : M ≤ k * (a + 1))

@@ -93,8 +93,7 @@ theorem stab_perpS {β : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hβ : β ∈ stabF
     (hx : x ∈ perpS (VS D) (X.Fu u).X) : β x ∈ perpS (VS D) (X.Fu u).X := by
   intro w hw
   have hw' : w ∈ (X.Fu u).X.map (β : (VS D).V →ₗ[D.host.E] (VS D).V) := by
-    rw [map_X_eq_of_mem_stabF hβ]
-    exact hw
+    rwa [map_X_eq_of_mem_stabF hβ]
   obtain ⟨w', hw'X, rfl⟩ := hw'
   exact (hβ.1 w' x).trans (hx w' hw'X)
 
@@ -250,9 +249,7 @@ theorem gf_eq {x x' : X.B.I.Gf} (h : ∀ y : (VS D).V,
     rw [hc] at hj
     simp only [Matrix.mulVec_single_one] at hj
     exact hj
-  apply Subtype.ext
-  apply Units.ext
-  exact hm
+  exact Subtype.ext (Units.ext hm)
 
 variable {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} (cs : ColSys X u what₂)
 

@@ -105,15 +105,12 @@ theorem int_of_move {Lb : Submodule (𝓞 E) (Fin n → E)} (B B' : GL (Fin n) E
   · intro a b
     obtain ⟨x, hx, hxt⟩ := (hb (((bc (piE v φ) B : GL (Fin n) (v.adicCompletion F)) :
       Matrix (Fin n) (Fin n) (v.adicCompletion F)) *ᵥ Pi.single b 1)).2 (fun a => by
-        show ((((bc (piE v φ) B)⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) *ᵥ
-          (((bc (piE v φ) B : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) *ᵥ
-            Pi.single b 1)) a ∈ _
-        rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
+        rw [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]
         exact single_intO v b a)
     have hx' : (u : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) *ᵥ x ∈
         latS (F := F) (v.adicCompletion F) (intV E v) (latB B') := by
       refine (hu _).2 ?_
-      rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
+      rw [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]
       exact hx
     have h3 := (fst_latB v φ halg B' _).1 ⟨_, hx', fun a => rfl⟩ a
     rw [fst_mulVec', (funext hxt : (fun a => (φ (x a)).1) = _)] at h3
@@ -123,10 +120,7 @@ theorem int_of_move {Lb : Submodule (𝓞 E) (Fin n → E)} (B B' : GL (Fin n) E
   · intro a b
     obtain ⟨x, hx, hxt⟩ := (fst_latB v φ halg B' (((bc (piE v φ) B' : GL (Fin n) (v.adicCompletion F)) :
       Matrix (Fin n) (Fin n) (v.adicCompletion F)) *ᵥ Pi.single b 1)).2 (fun a => by
-        show ((((bc (piE v φ) B')⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) *ᵥ
-          (((bc (piE v φ) B' : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) *ᵥ
-            Pi.single b 1)) a ∈ _
-        rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
+        rw [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]
         exact single_intO v b a)
     have hx' := (hu x).1 hx
     have h3 := (hb _).1 ⟨_, hx', fun a => rfl⟩ a

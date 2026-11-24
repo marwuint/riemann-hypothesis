@@ -84,8 +84,7 @@ theorem sum_powerset_fin_succ {n : ℕ} (f : Finset (Fin (n + 1)) → ℤ) :
     · exact Or.inl h
     · exact Or.inr ⟨j, h.symm⟩
   have h0 : (0 : Fin (n + 1)) ∉ (univ : Finset (Fin n)).image Fin.succ := by
-    simp only [mem_image, mem_univ, true_and, not_exists]
-    exact fun j => Fin.succ_ne_zero j
+    simpa only [mem_image, mem_univ, true_and, not_exists] using fun j => Fin.succ_ne_zero j
   have hinj : Function.Injective (fun J : Finset (Fin n) => J.image Fin.succ) :=
     Finset.image_injective (Fin.succ_injective n)
   rw [hu, Finset.sum_powerset_insert h0, Finset.powerset_image,
@@ -136,8 +135,7 @@ theorem hdiff_cons (d : Deg k) (s : R) (ts : List (Deg k × R)) (F : GMod B R k)
     rfl
   have h0 : ∀ J : Finset (Fin ts.length), (0 : Fin (ts.length + 1)) ∉ J.image Fin.succ :=
     fun J => by
-      simp only [mem_image, not_exists, not_and]
-      exact fun j _ => Fin.succ_ne_zero j
+      simpa only [mem_image, not_exists, not_and] using fun j _ => Fin.succ_ne_zero j
   congr 1
   · refine Finset.sum_congr rfl fun J _ => ?_
     rw [hsum, Finset.card_image_of_injective _ (Fin.succ_injective _)]
@@ -218,9 +216,7 @@ theorem ruleSmall : RuleSmall := by
   intro k X ts
   induction ts with
   | nil =>
-    intro F _ _ _
-    refine Eventually.of_forall fun m => ?_
-    exact (hdiff_nil F m).symm
+    exact fun F _ _ _ => Eventually.of_forall fun m => (hdiff_nil F m).symm
   | cons p ts ih =>
     obtain ⟨d, s⟩ := p
     intro F hV hF hA

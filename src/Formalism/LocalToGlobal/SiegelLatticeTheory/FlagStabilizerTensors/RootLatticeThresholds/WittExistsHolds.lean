@@ -104,8 +104,7 @@ theorem flag_witt {T' : D.host.E} (hT : T ≠ 0) (hTT : T = T') (F : FlagG (VS D
     intro i
     simp [f, Module.Basis.repr_self, Finsupp.linearCombination_single]
   have hbv : ∀ i, ((b i : U) : (VS D).V) = F.fvec i := by
-    intro i
-    exact congrArg Subtype.val (Module.Basis.span_apply hind i)
+    exact fun i => congrArg Subtype.val (Module.Basis.span_apply hind i)
   have hinj : Function.Injective f := by
     have h2 : Function.Injective (Finsupp.linearCombination D.host.E F'.fvec) := hind'
     exact h2.comp b.repr.injective
@@ -122,13 +121,10 @@ theorem flag_witt {T' : D.host.E} (hT : T ≠ 0) (hTT : T = T') (F : FlagG (VS D
   have hgi : ∀ i, g (F.fvec i) = F'.fvec i := by
     intro i
     have h := hgf (b i)
-    rw [hbv, hfb] at h
-    exact h
+    rwa [hbv, hfb] at h
   refine ⟨g, hg, fun a => ?_, ?_⟩
-  · have h := hgi (Fin.castSucc a)
-    simpa only [FlagG.fvec, Fin.snoc_castSucc] using h
-  · have h := hgi (Fin.last _)
-    simpa only [FlagG.fvec, Fin.snoc_last] using h
+  · simpa only [FlagG.fvec, Fin.snoc_castSucc] using hgi (Fin.castSucc a)
+  · simpa only [FlagG.fvec, Fin.snoc_last] using hgi (Fin.last _)
 
 end Flag
 
@@ -138,10 +134,8 @@ theorem WittExists_holds (D : D7) (X : HidaSetting D) : Formalism.L2.SG.TermTieO
   choose δ hδ he hz using fun u => flag_witt (hT u) rfl (X.Fu u) (Formalism.MainNotions.S.Inh.tie_flag0 D u)
   refine ⟨{ δ := δ, isom := hδ, e_eq := fun u a => ?_, z_eq := fun u => ?_ }⟩
   · have h := he u a
-    rw [X.Fu_e u] at h
-    exact h
+    rwa [X.Fu_e u] at h
   · have h := hz u
-    rw [X.flagZVector u] at h
-    exact h
+    rwa [X.flagZVector u] at h
 
 end Formalism.L2.SG.Pf.WittFlags

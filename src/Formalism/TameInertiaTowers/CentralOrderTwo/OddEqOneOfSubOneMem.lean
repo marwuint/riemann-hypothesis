@@ -83,8 +83,7 @@ theorem odd_natCast_not_mem {L : Type} [Field L] [NumberField L] (p : ℕ)
   exact hpm (by exact_mod_cast h')
 
 theorem odd_two_pow_not_dvd (r n : ℕ) (hr : r.Prime) (hr2 : r ≠ 2) : ¬ r ∣ 2 ^ n := by
-  intro h
-  exact hr2 ((Nat.prime_dvd_prime_iff_eq hr Nat.prime_two).mp (hr.dvd_of_dvd_pow h))
+  exact fun h => hr2 ((Nat.prime_dvd_prime_iff_eq hr Nat.prime_two).mp (hr.dvd_of_dvd_pow h))
 
 theorem odd_coe_smul {L : Type} [Field L] [NumberField L] (σ : Gal(L/ℚ)) (X : 𝓞 L) :
     ((σ • X : 𝓞 L) : L) = σ (X : L) := rfl
@@ -142,8 +141,7 @@ theorem odd_frob_sgn {L : Type} [Field L] [NumberField L] (p : ℕ) [Fact p.Prim
   have hF : ∀ y : 𝓞 L, σ • y - y ^ p ∈ P := by
     intro y
     have := H y
-    rw [odd_card_under p P] at this
-    exact this
+    rwa [odd_card_under p P] at this
   obtain ⟨A, hAcoe, hA2⟩ := odd_lift x c hx
   have hσA := odd_smul_lift σ x c hx A hAcoe
   have hAnot : A ∉ P := by
@@ -349,45 +347,36 @@ theorem odd_mem_Id (n : ℕ) (g : GalL n) : g ∈ Id n ↔ g = 1 ∨ g = (1, 1, 
 
 theorem layerInertiaTame_of (hG : LayerGalois) : LayerInertiaTame := by
   intro n q d hn hqd L _ _ ζ a b h
+  obtain ⟨_, -, -, hbij⟩ := hG n q d hn hqd L ζ a b h
   obtain ⟨hq, hd, hqd', hq2, hd2⟩ := hqd
-  obtain ⟨hGal, -, -, hbij⟩ := hG n q d hn ⟨hq, hd, hqd', hq2, hd2⟩ L ζ a b h
-  have : IsGalois ℚ L := hGal
   have ha : a ^ 2 = ((-(q : ℤ) : ℤ) : L) := by rw [h.2.1]; push_cast; rfl
   have hb : b ^ 2 = ((-(d : ℤ) : ℤ) : L) := by rw [h.2.2.1]; push_cast; rfl
   have h1 : galMap h.1 a b 1 = 1 := by simp [galMap, sgn]
   refine ⟨fun P _ _ σ => ?_, fun P _ _ σ => ?_⟩
   · have : Fact q.Prime := ⟨hq⟩
     have hfwd : ∀ τ : Gal(L/ℚ), (∀ x : 𝓞 L, τ • x - x ∈ P) →
-        galMap h.1 a b τ = 1 ∨ galMap h.1 a b τ = (1, -1, 1) := by
-      intro τ hτ
+        galMap h.1 a b τ = 1 ∨ galMap h.1 a b τ = (1, -1, 1) := fun τ hτ => by
       have c1 := odd_cyc_inertia h.1 q hq hq2 P τ hτ
       have c3 := odd_sgn_inertia q hq hq2 P τ hτ b d hb
         (fun hdv => hqd' ((Nat.prime_dvd_prime_iff_eq hq hd).mp hdv))
-      rcases Int.units_eq_one_or (sgn τ a) with c2 | c2
-      · left; simp only [galMap, c1, c2, c3]; rfl
-      · right; simp only [galMap, c1, c2, c3]
+      rcases Int.units_eq_one_or (sgn τ a) with c2 | c2 <;> simp [galMap, c1, c2, c3]
     rw [odd_mem_Iq]
-    refine ⟨hfwd σ, fun hσ => ?_⟩
-    rcases hσ with hσ | hσ
-    · have : σ = 1 := hbij.1 (hσ.trans h1.symm)
-      simp [this]
+    refine ⟨hfwd σ, ?_⟩
+    rintro (hσ | hσ)
+    · simp [hbij.1 (hσ.trans h1.symm)]
     · exact odd_inertia_back (galMap h.1 a b) hbij.1 h1 _ q P hfwd
         (odd_ram_ne_one q hq P a ha) σ hσ
   · have : Fact d.Prime := ⟨hd⟩
     have hfwd : ∀ τ : Gal(L/ℚ), (∀ x : 𝓞 L, τ • x - x ∈ P) →
-        galMap h.1 a b τ = 1 ∨ galMap h.1 a b τ = (1, 1, -1) := by
-      intro τ hτ
+        galMap h.1 a b τ = 1 ∨ galMap h.1 a b τ = (1, 1, -1) := fun τ hτ => by
       have c1 := odd_cyc_inertia h.1 d hd hd2 P τ hτ
       have c2 := odd_sgn_inertia d hd hd2 P τ hτ a q ha
         (fun hdv => hqd' ((Nat.prime_dvd_prime_iff_eq hd hq).mp hdv).symm)
-      rcases Int.units_eq_one_or (sgn τ b) with c3 | c3
-      · left; simp only [galMap, c1, c2, c3]; rfl
-      · right; simp only [galMap, c1, c2, c3]
+      rcases Int.units_eq_one_or (sgn τ b) with c3 | c3 <;> simp [galMap, c1, c2, c3]
     rw [odd_mem_Id]
-    refine ⟨hfwd σ, fun hσ => ?_⟩
-    rcases hσ with hσ | hσ
-    · have : σ = 1 := hbij.1 (hσ.trans h1.symm)
-      simp [this]
+    refine ⟨hfwd σ, ?_⟩
+    rintro (hσ | hσ)
+    · simp [hbij.1 (hσ.trans h1.symm)]
     · exact odd_inertia_back (galMap h.1 a b) hbij.1 h1 _ d P hfwd
         (odd_ram_ne_one d hd P b hb) σ hσ
 

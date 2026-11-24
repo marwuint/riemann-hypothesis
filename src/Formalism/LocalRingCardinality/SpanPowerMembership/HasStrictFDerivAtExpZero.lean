@@ -64,8 +64,7 @@ variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpac
 
 theorem hasStrictFDerivAt_exp_zero_alt : HasStrictFDerivAt (exp : 𝔸 → 𝔸)
     ((ContinuousLinearEquiv.refl ℝ 𝔸 : 𝔸 ≃L[ℝ] 𝔸) : 𝔸 →L[ℝ] 𝔸) 0 := by
-  have h := hasStrictFDerivAt_exp_zero (𝕂 := ℝ) (𝔸 := 𝔸)
-  exact h
+  exact hasStrictFDerivAt_exp_zero (𝕂 := ℝ) (𝔸 := 𝔸)
 
 
 variable (𝔸) in
@@ -75,18 +74,15 @@ theorem logA_exp : ∀ᶠ X in 𝓝 (0 : 𝔸), logA (𝔸 := 𝔸) (exp X) = X 
 
 theorem exp_logA : ∀ᶠ h in 𝓝 (1 : 𝔸), exp (logA (𝔸 := 𝔸) h) = h := by
   have h := (hasStrictFDerivAt_exp_zero_alt (𝔸 := 𝔸)).eventually_right_inverse
-  rw [exp_zero] at h
-  exact h
+  rwa [exp_zero] at h
 
 theorem logA_one : logA (𝔸 := 𝔸) (1 : 𝔸) = 0 := by
   have h := (hasStrictFDerivAt_exp_zero_alt (𝔸 := 𝔸)).localInverse_apply_image
-  rw [exp_zero] at h
-  exact h
+  rwa [exp_zero] at h
 
 theorem hasStrict_logA : HasStrictFDerivAt (logA (𝔸 := 𝔸)) (ContinuousLinearMap.id ℝ 𝔸) (1 : 𝔸) := by
   have h := (hasStrictFDerivAt_exp_zero_alt (𝔸 := 𝔸)).to_localInverse
-  rw [exp_zero] at h
-  exact h
+  rwa [exp_zero] at h
 
 theorem exp_cont : Continuous (exp : 𝔸 → 𝔸) := by
   letI : NormedAlgebra ℚ 𝔸 := NormedAlgebra.restrictScalars ℚ ℝ 𝔸
@@ -106,8 +102,7 @@ theorem hasStrict_exp_comp (L : 𝔸 × 𝔸 →L[ℝ] 𝔸) :
       ((ContinuousLinearEquiv.refl ℝ 𝔸 : 𝔸 ≃L[ℝ] 𝔸) : 𝔸 →L[ℝ] 𝔸) (L 0) := by
     rw [map_zero]
     exact hasStrictFDerivAt_exp_zero_alt
-  have h := h0.comp (0 : 𝔸 × 𝔸) L.hasStrictFDerivAt
-  simpa using h
+  simpa using h0.comp (0 : 𝔸 × 𝔸) L.hasStrictFDerivAt
 
 theorem hasStrict_mul (L M : 𝔸 × 𝔸 →L[ℝ] 𝔸) :
     HasStrictFDerivAt (fun p : 𝔸 × 𝔸 => logA (𝔸 := 𝔸) (exp (L p) * exp (M p))) (L + M) (0 : 𝔸 × 𝔸) := by
@@ -115,11 +110,9 @@ theorem hasStrict_mul (L M : 𝔸 × 𝔸 →L[ℝ] 𝔸) :
   simp only [map_zero, exp_zero, one_smul, MulOpposite.op_one] at hprod
   have hlog : HasStrictFDerivAt (logA (𝔸 := 𝔸)) (ContinuousLinearMap.id ℝ 𝔸)
       (((fun p : 𝔸 × 𝔸 => exp (L p)) * fun p : 𝔸 × 𝔸 => exp (M p)) 0) := by
-    simp only [Pi.mul_apply, map_zero, exp_zero, mul_one]
-    exact hasStrict_logA
+    simpa only [Pi.mul_apply, map_zero, exp_zero, mul_one] using hasStrict_logA
   have h := hlog.comp (0 : 𝔸 × 𝔸) hprod
-  rw [ContinuousLinearMap.id_comp, add_comm] at h
-  exact h
+  rwa [ContinuousLinearMap.id_comp, add_comm] at h
 
 theorem hasStrictFDerivAt_translateLog : HasStrictFDerivAt (F1 (𝔸 := 𝔸)) (ContinuousLinearMap.snd ℝ 𝔸 𝔸) 0 := by
   have h := hasStrict_mul (𝔸 := 𝔸) (-ContinuousLinearMap.fst ℝ 𝔸 𝔸)
@@ -129,8 +122,7 @@ theorem hasStrictFDerivAt_translateLog : HasStrictFDerivAt (F1 (𝔸 := 𝔸)) (
       exp ((ContinuousLinearMap.fst ℝ 𝔸 𝔸 + ContinuousLinearMap.snd ℝ 𝔸 𝔸) p)) := by
     funext p
     simp [F1]
-  rw [hf]
-  exact h
+  rwa [hf]
 
 theorem hasStrictFDerivAt_productLog : HasStrictFDerivAt (F2 (𝔸 := 𝔸))
     (ContinuousLinearMap.fst ℝ 𝔸 𝔸 + ContinuousLinearMap.snd ℝ 𝔸 𝔸) 0 := hasStrict_mul (ContinuousLinearMap.fst ℝ 𝔸 𝔸) (ContinuousLinearMap.snd ℝ 𝔸 𝔸)
@@ -152,13 +144,11 @@ theorem strict_est {F : 𝔸 × 𝔸 → 𝔸} {F' : 𝔸 × 𝔸 →L[ℝ] 𝔸
     rw [dist_eq_norm]
     have e : ((X, Y), (X, (0 : 𝔸))) - ((0 : 𝔸 × 𝔸), (0 : 𝔸 × 𝔸)) = ((X, Y), (X, 0)) := by simp
     rw [e, Prod.norm_def, Prod.norm_def, Prod.norm_def]
-    simp only [norm_zero]
-    exact max_lt (max_lt hX hY) (max_lt hX hδ)
+    simpa only [norm_zero] using max_lt (max_lt hX hY) (max_lt hX hδ)
   have h1 := hq hd
   beta_reduce at h1
   have e2 : ((X, Y) - (X, 0) : 𝔸 × 𝔸) = (0, Y) := by simp
-  rw [e2, Prod.norm_def, norm_zero, max_eq_right (norm_nonneg _)] at h1
-  exact h1
+  rwa [e2, Prod.norm_def, norm_zero, max_eq_right (norm_nonneg _)] at h1
 
 theorem distortion {ε : ℝ} (hε : 0 < ε) : ∃ δ > 0, ∀ X Y : 𝔸, ‖X‖ < δ → ‖Y‖ < δ →
     (exp (F1 (X, Y)) = exp (-X) * exp (X + Y) ∧ ‖F1 (X, Y) - Y‖ ≤ ε * ‖Y‖) ∧
@@ -199,8 +189,7 @@ theorem distortion {ε : ℝ} (hε : 0 < ε) : ∃ δ > 0, ∀ X Y : 𝔸, ‖X�
     simpa using h
   · have h := h3 X Y hX3 hY3
     have hz : F2 (X, (0 : 𝔸)) = X := by
-      simp only [F2, exp_zero, mul_one]
-      exact k3
+      simpa only [F2, exp_zero, mul_one] using k3
     rw [hz] at h
     simpa using h
 

@@ -168,8 +168,7 @@ theorem stable_rank_one_infinite_adeles (F : Type) [Field F] [NumberField F] :
   stable_rank_one_pi_field
 
 theorem stable_rank_one_adeles : Cj.AdeleStableRankOne := by
-  intro F _ _
-  exact sr1_prod (stable_rank_one_infinite_adeles F) (stable_rank_one_finite_adeles F)
+  exact fun F _ _ => sr1_prod (stable_rank_one_infinite_adeles F) (stable_rank_one_finite_adeles F)
 
 end PI.VolSemiDirect.W.SR
 end -- clump:auto

@@ -78,16 +78,13 @@ private theorem rel_iff_forall_apply {A : Pr V} {A' : Pr V'} :
     Rel T A A' ↔ ∀ v, A'.1 (T v) = T (A.1 v) ∧ A'.2.unop (T v) = T (A.2.unop v) := by
   unfold Rel
   constructor
-  · intro h v
-    exact ⟨LinearMap.congr_fun h.1 v, LinearMap.congr_fun h.2 v⟩
-  · intro h
-    exact ⟨LinearMap.ext fun v => (h v).1, LinearMap.ext fun v => (h v).2⟩
+  · exact fun h v => ⟨LinearMap.congr_fun h.1 v, LinearMap.congr_fun h.2 v⟩
+  · exact fun h => ⟨LinearMap.ext fun v => (h v).1, LinearMap.ext fun v => (h v).2⟩
 
 theorem rel_mk {X : Module.End ℂ V} {Xs : Module.End ℂ V} {X' Xs' : Module.End ℂ V'}
     (h1 : ∀ v, X' (T v) = T (X v)) (h2 : ∀ v, Xs' (T v) = T (Xs v)) : Rel T (mkP X Xs) (mkP X' Xs') := by
   rw [rel_iff_forall_apply]
-  intro v
-  exact ⟨h1 v, h2 v⟩
+  exact fun v => ⟨h1 v, h2 v⟩
 
 theorem rel_add {A B : Pr V} {A' B' : Pr V'} (hA : Rel T A A') (hB : Rel T B B') : Rel T (A + B) (A' + B') := by
   rw [rel_iff_forall_apply] at *
@@ -109,8 +106,7 @@ theorem rel_neg {A : Pr V} {A' : Pr V'} (hA : Rel T A A') : Rel T (-A) (-A') := 
 
 theorem rel_zero : Rel T (0 : Pr V) (0 : Pr V') := by
   rw [rel_iff_forall_apply]
-  intro v
-  exact ⟨(map_zero T).symm, (map_zero T).symm⟩
+  exact fun v => ⟨(map_zero T).symm, (map_zero T).symm⟩
 
 theorem rel_mul {A B : Pr V} {A' B' : Pr V'} (hA : Rel T A A') (hB : Rel T B B') : Rel T (A * B) (A' * B') := by
   rw [rel_iff_forall_apply] at *
@@ -132,8 +128,7 @@ theorem rel_algebraMap (s : ℂ) : Rel T (algebraMap ℂ (Pr V) s) (algebraMap �
 
 theorem rel_one : Rel T (1 : Pr V) (1 : Pr V') := by
   rw [rel_iff_forall_apply]
-  intro v
-  exact ⟨rfl, rfl⟩
+  exact fun v => ⟨rfl, rfl⟩
 
 theorem rel_smul (s : ℂ) {A : Pr V} {A' : Pr V'} (hA : Rel T A A') : Rel T (s • A) (s • A') := by
   rw [Algebra.smul_def, Algebra.smul_def]
@@ -141,8 +136,7 @@ theorem rel_smul (s : ℂ) {A : Pr V} {A' : Pr V'} (hA : Rel T A A') : Rel T (s 
 
 theorem rel_star {A : Pr V} {A' : Pr V'} (hA : Rel T A A') : Rel T (star A) (star A') := by
   rw [rel_iff_forall_apply] at *
-  intro v
-  exact ⟨(hA v).2, (hA v).1⟩
+  exact fun v => ⟨(hA v).2, (hA v).1⟩
 
 theorem rel_sum {ι : Type*} (s : Finset ι) {A : ι → Pr V} {A' : ι → Pr V'} (h : ∀ i ∈ s, Rel T (A i) (A' i)) :
     Rel T (∑ i ∈ s, A i) (∑ i ∈ s, A' i) := by
@@ -159,13 +153,10 @@ def MRel (T : V →ₗ[ℂ] V') (M : Matrix (Fin 2) (Fin 2) (Pr V)) (M' : Matrix
 theorem mrel_mul {M N : Matrix (Fin 2) (Fin 2) (Pr V)} {M' N' : Matrix (Fin 2) (Fin 2) (Pr V')}
     (hM : MRel T M M') (hN : MRel T N N') : MRel T (M * N) (M' * N') := by
   intro a b
-  simp only [Matrix.mul_apply]
-  exact rel_sum _ (fun c _ => rel_mul (hM a c) (hN c b))
+  simpa only [Matrix.mul_apply] using rel_sum _ (fun c _ => rel_mul (hM a c) (hN c b))
 
 theorem mrel_conjTranspose {M : Matrix (Fin 2) (Fin 2) (Pr V)} {M' : Matrix (Fin 2) (Fin 2) (Pr V')}
-    (hM : MRel T M M') : MRel T Mᴴ M'ᴴ := by
-  intro a b
-  exact rel_star (hM b a)
+    (hM : MRel T M M') : MRel T Mᴴ M'ᴴ := fun a b => rel_star (hM b a)
 
 theorem mrel_one : MRel T (1 : Matrix (Fin 2) (Fin 2) (Pr V)) 1 := by
   intro a b
@@ -175,9 +166,7 @@ theorem mrel_one : MRel T (1 : Matrix (Fin 2) (Fin 2) (Pr V)) 1 := by
   · exact rel_zero
 
 theorem mrel_smul (s : ℂ) {M : Matrix (Fin 2) (Fin 2) (Pr V)} {M' : Matrix (Fin 2) (Fin 2) (Pr V')}
-    (hM : MRel T M M') : MRel T (s • M) (s • M') := by
-  intro a b
-  exact rel_smul s (hM a b)
+    (hM : MRel T M M') : MRel T (s • M) (s • M') := fun a b => rel_smul s (hM a b)
 
 theorem mrel_Tm (Y : ℂ) {p c ci : Pr V} {p' c' ci' : Pr V'} (hp : Rel T p p') (hc : Rel T c c') (hci : Rel T ci ci') :
     MRel T (Formalism.YangianSpanCharacter.T.Tm Y p c ci) (Formalism.YangianSpanCharacter.T.Tm Y p' c' ci') := by
@@ -331,8 +320,7 @@ def BRel (T : V →ₗ[ℂ] V') (M : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V
   ∀ i j, ARel T (M i j) (M' i j)
 
 theorem arel_neg {M : Wd.SlopeTestRemainingChoices S (Pr V)} {M' : Wd.SlopeTestRemainingChoices S (Pr V')} (hM : ARel T M M') : ARel T (-M) (-M') := by
-  intro x y
-  exact rel_neg (hM x y)
+  exact fun x y => rel_neg (hM x y)
 
 theorem arel_sub {M N : Wd.SlopeTestRemainingChoices S (Pr V)} {M' N' : Wd.SlopeTestRemainingChoices S (Pr V')} (hM : ARel T M M') (hN : ARel T N N') :
     ARel T (M - N) (M' - N') := by
@@ -354,19 +342,15 @@ theorem arel_one : ARel T (1 : Wd.SlopeTestRemainingChoices S (Pr V)) 1 := by
 theorem arel_mul {M N : Wd.SlopeTestRemainingChoices S (Pr V)} {M' N' : Wd.SlopeTestRemainingChoices S (Pr V')} (hM : ARel T M M') (hN : ARel T N N') :
     ARel T (M * N) (M' * N') := by
   intro x y
-  simp only [Matrix.mul_apply]
-  exact rel_sum _ (fun c _ => rel_mul (hM x c) (hN c y))
+  simpa only [Matrix.mul_apply] using rel_sum _ (fun c _ => rel_mul (hM x c) (hN c y))
 
 theorem arel_smul (s : ℂ) {M : Wd.SlopeTestRemainingChoices S (Pr V)} {M' : Wd.SlopeTestRemainingChoices S (Pr V')} (hM : ARel T M M') :
-    ARel T (s • M) (s • M') := by
-  intro x y
-  exact rel_smul s (hM x y)
+    ARel T (s • M) (s • M') := fun x y => rel_smul s (hM x y)
 
 theorem arel_sum {ι : Type*} (s : Finset ι) {M : ι → Wd.SlopeTestRemainingChoices S (Pr V)} {M' : ι → Wd.SlopeTestRemainingChoices S (Pr V')}
     (h : ∀ i ∈ s, ARel T (M i) (M' i)) : ARel T (∑ i ∈ s, M i) (∑ i ∈ s, M' i) := by
   intro x y
-  simp only [Matrix.sum_apply]
-  exact rel_sum s (fun i hi => h i hi x y)
+  simpa only [Matrix.sum_apply] using rel_sum s (fun i hi => h i hi x y)
 
 theorem arel_io {a : Pr V} {a' : Pr V'} (h : Rel T a a') : ARel T (Wd.io (S := S) a) (Wd.io a') := by
   intro x y
@@ -389,9 +373,7 @@ theorem brel_sub {M N : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))} {M' N' : 
   exact arel_sub (hM i j) (hN i j)
 
 theorem brel_smul (s : ℂ) {M : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))} {M' : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V'))} (hM : BRel T M M') :
-    BRel T (s • M) (s • M') := by
-  intro i j
-  exact arel_smul s (hM i j)
+    BRel T (s • M) (s • M') := fun i j => arel_smul s (hM i j)
 
 theorem brel_one : BRel T (1 : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))) 1 := by
   intro i j
@@ -403,13 +385,10 @@ theorem brel_one : BRel T (1 : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))) 1 
 theorem brel_mul {M N : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))} {M' N' : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V'))} (hM : BRel T M M')
     (hN : BRel T N N') : BRel T (M * N) (M' * N') := by
   intro i j
-  simp only [Matrix.mul_apply]
-  exact arel_sum _ (fun c _ => arel_mul (hM i c) (hN c j))
+  simpa only [Matrix.mul_apply] using arel_sum _ (fun c _ => arel_mul (hM i c) (hN c j))
 
 theorem brel_transpose {M : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V))} {M' : Wd.M2 (Wd.SlopeTestRemainingChoices S (Pr V'))} (hM : BRel T M M') :
-    BRel T Mᵀ M'ᵀ := by
-  intro i j
-  exact hM j i
+    BRel T Mᵀ M'ᵀ := fun i j => hM j i
 
 theorem brel_lift0 {M : Wd.M2 (Pr V)} {M' : Wd.M2 (Pr V')} (hM : MRel T M M') :
     BRel T (Wd.lift0 (S := S) M) (Wd.lift0 M') := fun i j => arel_io (hM i j)
@@ -467,8 +446,7 @@ theorem act_tr {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [
     T (∑ b, (M a b).1 (x b)) = ∑ b, (M' a b).1 (T (x b)) := by
 
   rw [map_sum]
-  refine Finset.sum_congr rfl (fun b _ => ?_)
-  exact (LinearMap.congr_fun (hM a b).1 (x b)).symm
+  exact Finset.sum_congr rfl (fun b _ => (LinearMap.congr_fun (hM a b).1 (x b)).symm)
 
 theorem one_val (ρ : ℕ) : ((1 : Fin (1 + ρ + 1)) : ℕ) = 1 := by
   rw [Fin.val_one']
@@ -527,8 +505,7 @@ theorem form_tr {t : ℂ} (ht : t ≠ 0) {μ : Measure (Mt k (1 + ρ))} {μs : M
   rw [prod_cf, glue_cf, hc]
   congr 1
   refine Finset.sum_congr rfl fun a _ => ?_
-  rw [pairAt_tr ht hmap]
-  rw [glue_zero 0 c₀]
+  rw [pairAt_tr ht hmap, glue_zero 0 c₀]
 
 end form
 

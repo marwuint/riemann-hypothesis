@@ -120,27 +120,20 @@ theorem sDecomp_holds : SDecomp := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · have he : X.SinfU u = ⋂ v, (fun s : X.B.I.Ginf => s v) ⁻¹' (SGv v : Set _) := by
       ext s
-      simp only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]
-      exact hS s
+      simpa only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe] using hS s
     rw [he]
     exact isClosed_iInter fun v => (UnitaryIsometries.RI.SG_closed _ _ _).preimage (continuous_apply v)
   · exact (hS 1).2 fun v => (SGv v).one_mem
-  · intro a ha b hb
-    exact (hS _).2 fun v => (SGv v).mul_mem ((hS a).1 ha v) ((hS b).1 hb v)
-  · intro a ha
-    exact (hS _).2 fun v => (SGv v).inv_mem ((hS a).1 ha v)
+  · exact fun a ha b hb => (hS _).2 fun v => (SGv v).mul_mem ((hS a).1 ha v) ((hS b).1 hb v)
+  · exact fun a ha => (hS _).2 fun v => (SGv v).inv_mem ((hS a).1 ha v)
   · exact (hN 1).2 fun v => (NGv v).one_mem
-  · intro a ha b hb
-    exact (hN _).2 fun v => (NGv v).mul_mem ((hN a).1 ha v) ((hN b).1 hb v)
-  · intro a ha
-    exact (hN _).2 fun v => (NGv v).inv_mem ((hN a).1 ha v)
+  · exact fun a ha b hb => (hN _).2 fun v => (NGv v).mul_mem ((hN a).1 ha v) ((hN b).1 hb v)
+  · exact fun a ha => (hN _).2 fun v => (NGv v).inv_mem ((hN a).1 ha v)
   · rw [Hu_eq_pi]
     exact isCompact_univ_pi fun v => NilradicalHermitianFrames.NH.HG_compact (Fw v) (hdim v)
   · exact (hH 1).2 fun v => (HGv v).one_mem
-  · intro a ha b hb
-    exact (hH _).2 fun v => (HGv v).mul_mem ((hH a).1 ha v) ((hH b).1 hb v)
-  · intro a ha
-    exact (hH _).2 fun v => (HGv v).inv_mem ((hH a).1 ha v)
+  · exact fun a ha b hb => (hH _).2 fun v => (HGv v).mul_mem ((hH a).1 ha v) ((hH b).1 hb v)
+  · exact fun a ha => (hH _).2 fun v => (HGv v).inv_mem ((hH a).1 ha v)
   · intro h hh n hn
     exact (hN _).2 fun v => NilradicalHermitianFrames.NH.conj_mem _ _ _ _ ((hH h).1 hh v) ((hN n).1 hn v)
   · intro n hn h hh

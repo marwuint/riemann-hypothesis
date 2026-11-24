@@ -67,9 +67,7 @@ variable {B : Type} [CommRing B] [IsLocalRing B]
 
 theorem length_ne_top_of_max {M : Type} [AddCommGroup M] [Module B M] [Module.Finite B M]
     (h : ∀ b ∈ maximalIdeal B, ∀ y : M, b • y = 0) : Module.length B M ≠ ⊤ := by
-  have hM : Module.IsTorsionBySet B M (maximalIdeal B : Set B) := by
-    intro y b
-    exact h b.1 b.2 y
+  have hM : Module.IsTorsionBySet B M (maximalIdeal B : Set B) := fun y b => h b.1 b.2 y
   let : Module (B ⧸ maximalIdeal B) M := hM.module
   have : IsScalarTower B (B ⧸ maximalIdeal B) M := hM.isScalarTower
   let : Field (B ⧸ maximalIdeal B) := Ideal.Quotient.field _
@@ -140,8 +138,7 @@ theorem deg_induction {P : Deg k → Prop} (h0 : P 0)
         funext i
         exact (Finset.sum_eq_zero_iff_of_nonneg (fun i _ => hm i)).1 (by simpa using hsum) i
           (Finset.mem_univ i)
-      rw [this]
-      exact h0
+      rwa [this]
     | succ n ih =>
       intro m hm hsum
       have hex : ∃ i, 0 < m i := by
@@ -158,8 +155,7 @@ theorem deg_induction {P : Deg k → Prop} (h0 : P 0)
         · subst hj
           simp only [e, Pi.zero_apply, Pi.sub_apply, Pi.single_eq_same]
           omega
-        · simp only [e, Pi.zero_apply, Pi.sub_apply, Pi.single_eq_of_ne hj, sub_zero]
-          exact hm j
+        · simpa only [e, Pi.zero_apply, Pi.sub_apply, Pi.single_eq_of_ne hj, sub_zero] using hm j
       have h2 : ∑ j, (m - e i) j = (n : ℤ) := by
         have h3 : ∑ j, (e i : Deg k) j = 1 := by
           simp [e, Finset.sum_pi_single']
@@ -196,10 +192,8 @@ theorem Std.span_add_e [IsLocalRing B] (h : Std 𝒜) (m : Deg k) (i : Fin k) (h
   rw [Ideal.span_le, h.gen m i hm]
   intro x hx
   refine Submodule.mul_induction_on hx ?_ ?_
-  · intro a ha b hb
-    exact Ideal.mul_mem_mul (Ideal.subset_span ha) (Ideal.subset_span hb)
-  · intro a b ha hb
-    exact Ideal.add_mem _ ha hb
+  · exact fun a ha b hb => Ideal.mul_mem_mul (Ideal.subset_span ha) (Ideal.subset_span hb)
+  · exact fun a b ha hb => Ideal.add_mem _ ha hb
 
 theorem Std.span_add_sum [IsLocalRing B] (h : Std 𝒜) (S : Finset (Fin k)) :
     ∀ m, 0 ≤ m → Ideal.span (𝒜 (m + ∑ i ∈ S, e i) : Set R) ≤
@@ -237,8 +231,7 @@ theorem Std.mem_irr_pow [IsLocalRing B] (h : Std 𝒜) (N : ℕ) (n : Deg k)
     (hn : ∀ i, (N : ℤ) ≤ n i) {a : R} (ha : a ∈ 𝒜 n) : a ∈ Irr 𝒜 ^ N := by
   have h0 : 0 ≤ n - N • ∑ i, e i := by
     intro i
-    rw [sum_e]
-    rw [Pi.zero_apply, Pi.sub_apply, Pi.smul_apply, nsmul_eq_mul, mul_one]
+    rw [sum_e, Pi.zero_apply, Pi.sub_apply, Pi.smul_apply, nsmul_eq_mul, mul_one]
     exact sub_nonneg.2 (hn i)
   have h1 := h.span_le_irr_pow N _ h0
   rw [sub_add_cancel] at h1
@@ -271,8 +264,7 @@ theorem eq_of_le_of_iSup_eq_top {ι M : Type} [AddCommGroup M] [Module B M]
   have h4 : y = 0 := by
     have := (hind i).le_bot ⟨h3, h2⟩
     simpa using this
-  rw [h4, add_zero]
-  exact hg
+  rwa [h4, add_zero]
 
 theorem GMod.IsGr.exists_gens {F : GMod B R k} (hF : F.IsGr 𝒜) :
     ∃ T : Finset F.M, (∀ x ∈ T, ∃ m, x ∈ F.gr m) ∧ Submodule.span R (T : Set F.M) = ⊤ := by
@@ -283,11 +275,9 @@ theorem GMod.IsGr.exists_gens {F : GMod B R k} (hF : F.IsGr 𝒜) :
       rw [hF.internal.submodule_iSup_eq_top]; trivial
     refine Submodule.iSup_induction _
       (motive := fun y => y ∈ Submodule.span R {x : F.M | ∃ m, x ∈ F.gr m}) hy ?_ ?_ ?_
-    · intro m x hx
-      exact Submodule.subset_span ⟨m, hx⟩
+    · exact fun m x hx => Submodule.subset_span ⟨m, hx⟩
     · exact zero_mem _
-    · intro a b ha hb
-      exact add_mem ha hb
+    · exact fun a b ha hb => add_mem ha hb
   have hfg : (Submodule.span R {x : F.M | ∃ m, x ∈ F.gr m}).FG := by
     rw [htop]; exact hF.fin.fg_top
   obtain ⟨T, hT, hspan⟩ := (Submodule.fg_span_iff_fg_span_finset_subset _).1 hfg
@@ -302,8 +292,7 @@ theorem genPiece_le {F : GMod B R k} {T : Finset F.M} {dg : F.M → Deg k} {m : 
     genPiece 𝒜 F T dg m ≤ W := by
   refine iSup₂_le fun x hx => ?_
   rw [Submodule.map_le_iff_le_comap]
-  intro a ha
-  exact h x hx a ha
+  exact fun a ha => h x hx a ha
 
 theorem mem_genPiece {F : GMod B R k} {T : Finset F.M} {dg : F.M → Deg k} {m : Deg k}
     {x : F.M} (hx : x ∈ T) {a : R} (ha : a ∈ 𝒜 (m - dg x)) : a • x ∈ genPiece 𝒜 F T dg m :=
@@ -336,8 +325,7 @@ theorem GMod.IsGr.genPiece_eq {F : GMod B R k} (hF : F.IsGr 𝒜) (h𝒜 : ⨆ d
     have hall : ∀ a : R, a • y ∈ ⨆ m, genPiece 𝒜 F T dg m := by
       refine Submodule.span_induction
         (p := fun y _ => ∀ a : R, a • y ∈ ⨆ m, genPiece 𝒜 F T dg m) ?_ ?_ ?_ ?_ hy
-      · intro x hx a
-        exact key x hx a
+      · exact fun x hx a => key x hx a
       · intro a
         rw [smul_zero]; exact zero_mem _
       · intro x y _ _ hx hy a

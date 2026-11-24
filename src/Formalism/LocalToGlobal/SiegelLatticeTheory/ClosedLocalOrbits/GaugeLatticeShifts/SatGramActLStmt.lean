@@ -130,8 +130,7 @@ theorem fix_xflag {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) (j
     rw [Submodule.span_le]
     rintro _ ⟨i, -, rfl⟩
     simpa [LinearMap.mem_eqLocus] using fix_e hβ i
-  have h2 := hle hx
-  simpa [LinearMap.mem_eqLocus] using h2
+  simpa [LinearMap.mem_eqLocus] using hle hx
 
 theorem fix_xsp {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) : ∀ x ∈ Xsp F, β x = x := by
   intro x hx
@@ -141,8 +140,7 @@ theorem fix_xsp {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) : �
     rw [Submodule.span_le]
     rintro _ ⟨i, rfl⟩
     simpa [LinearMap.mem_eqLocus] using fix_e hβ i
-  have h2 := hle hx
-  simpa [LinearMap.mem_eqLocus] using h2
+  simpa [LinearMap.mem_eqLocus] using hle hx
 
 theorem inv_fix {β : S.V ≃ₗ[E] S.V} {x : S.V} (h : β x = x) : β⁻¹ x = x := by
   calc β⁻¹ x = β⁻¹ (β x) := by rw [h]
@@ -183,16 +181,13 @@ theorem nlam_conj {β n : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) 
     have hfix : β (n x - x) = n x - x := fix_xflag hβ j _ hd
     have hc : (β * n * β⁻¹) x - x = β (n x - x) := by
       rw [LinearEquiv.mul_apply, LinearEquiv.mul_apply, hxi, map_sub, hx1]
-    rw [hc, hfix]
-    exact hd
+    rwa [hc, hfix]
   · intro x hx
     have hiso : ∀ a b, S.hT (β a) (β b) = S.hT a b := hBi
     have hxo : ∀ v ∈ Xsp F, S.hT v x = 0 := by
       intro v hv
       unfold orth at hx
-      have h1 := (Submodule.mem_iInf _).1 hx v
-      have h2 := (Submodule.mem_iInf _).1 h1 hv
-      exact LinearMap.mem_ker.1 h2
+      exact LinearMap.mem_ker.1 ((Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hx v) hv)
     have hβy : β (β⁻¹ x) = x := by
       rw [← LinearEquiv.mul_apply, mul_inv_cancel]
       rfl
@@ -210,8 +205,7 @@ theorem nlam_conj {β n : S.V ≃ₗ[E] S.V} (hβ : β ∈ Saturated.AutF Λ F) 
     have hfix : β (n (β⁻¹ x) - β⁻¹ x) = n (β⁻¹ x) - β⁻¹ x := fix_xsp hβ _ hd
     have hc : (β * n * β⁻¹) x - x = β (n (β⁻¹ x) - β⁻¹ x) := by
       rw [LinearEquiv.mul_apply, LinearEquiv.mul_apply, map_sub, hβy]
-    rw [hc, hfix]
-    exact hd
+    rwa [hc, hfix]
 
 end NC
 

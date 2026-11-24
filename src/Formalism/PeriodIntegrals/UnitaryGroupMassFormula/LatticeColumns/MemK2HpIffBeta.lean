@@ -93,17 +93,14 @@ theorem loc_of_InAt (X : HidaSetting D) (p : TypX X) (w : VA X.B.I) (h : InAt X.
           ∃ t ∈ MassDataIdxSteps.OEp X p, ∃ s ∈ (∅ : Set (Fin X.B.I.n → Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)),
             w = t • s} = ∅ := by
         ext w; simp
-      rw [hs, Submodule.span_empty, Submodule.mem_bot] at ha
-      exact ha
-    rw [← e, ha0, zero_add]
-    exact hb
+      rwa [hs, Submodule.span_empty, Submodule.mem_bot] at ha
+    rwa [← e, ha0, zero_add]
   rw [MassDataIdxSteps.imA_vecV_smul, map_natCast, Nat.cast_smul_eq_nsmul,
     ← Nat.cast_smul_eq_nsmul (p.1.adicCompletionIntegers X.B.I.F)] at h3
   obtain ⟨u0, hu0⟩ := isUnit_natCast_of_not_mem p.1 c (coprime_not_mem X p c hc)
   have h4 := Submodule.smul_mem (gLam X p) ((u0⁻¹ : (p.1.adicCompletionIntegers X.B.I.F)ˣ) :
     p.1.adicCompletionIntegers X.B.I.F) h3
-  rw [← hu0, smul_smul, Units.inv_mul, one_smul] at h4
-  exact h4
+  rwa [← hu0, smul_smul, Units.inv_mul, one_smul] at h4
 
 theorem kloc_gLam (X : HidaSetting D) (p : TypX X)
     (M : GL (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E))
@@ -194,8 +191,7 @@ theorem cong_head (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Wo
       exact h1.symm
     have hYt : (Y : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) *ᵥ t = t := by
       have := hfix (Fin.castAdd D.R.rS (Fin.castSucc a))
-      rw [tupH, Fin.append_left, F0, Fin.snoc_castSucc] at this
-      exact this
+      rwa [tupH, Fin.append_left, F0, Fin.snoc_castSucc] at this
     have hMt : ((A⁻¹ * Y * A : GL (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) *ᵥ t = t := by
       rw [Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hAt, hYt, hinv t hAt]
     have hst : PI.FinKW.vecV X.B.I p.1 (X.e0 a) - t ∈ gLam X p := by
@@ -222,8 +218,7 @@ theorem cong_head (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Wo
         ratV (F := X.B.I.F) (Fv X.B.I.F p.1) (crdOf X.B.I X.ιE X.bas (X.zu u)) =
         ratV (F := X.B.I.F) (Fv X.B.I.F p.1) (crdOf X.B.I X.ιE X.bas (X.zu u)) := by
       have := hfix (Fin.castAdd D.R.rS (Fin.last D.R.rS))
-      rw [tupH, Fin.append_left, F0, Fin.snoc_last] at this
-      exact this
+      rwa [tupH, Fin.append_left, F0, Fin.snoc_last] at this
     have hMt : ((A⁻¹ * Y * A : GL (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) *ᵥ t = t := by
       rw [Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hz, hYz, ← hz,
         Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
@@ -231,8 +226,7 @@ theorem cong_head (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Wo
       have h0 := loc_of_InAt X p _ (X.xu_z u)
       rw [MassDataIdxSteps.imA_vecV_sub] at h0
       have h1 := neg_mem h0
-      rw [neg_sub] at h1
-      exact h1
+      rwa [neg_sub] at h1
     rw [hM]
     exact Submodule.mem_sup_right (kill_of_fix X p _ hMK _ t hMt hst)
 
@@ -248,9 +242,7 @@ theorem mem_K2Hp_iff_beta (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.L
   rw [mem_K2Hp_iff_cong X hb hK hL u p x]
   obtain ⟨h1, h2⟩ := cong_head X hb u p x
   constructor
-  · intro h
-    exact h.2.2
-  · intro h
-    exact ⟨h1, h2, h⟩
+  · exact fun h => h.2.2
+  · exact fun h => ⟨h1, h2, h⟩
 
 end PIW.MassDataColumns

@@ -107,100 +107,70 @@ lemma place_bound (hV : VandPlace) (ε x C₀ : ℝ) (hε : 0 < ε) (hx : 1 ≤ 
   set L := x ^ ε with hLdef
   have hx0 : 0 < x := by linarith
   have hL1 : 1 ≤ L := Real.one_le_rpow hx hε.le
-  have hk0 : (0 : ℝ) < k := by exact_mod_cast (by omega : 0 < k)
   have hk2 : (2 : ℝ) ≤ k := by exact_mod_cast hk
+  have hk0 : (0 : ℝ) < k := by linarith
   have hlogx : Real.log x ≤ L / ε := by
     have h1 := Real.add_one_le_exp (Real.log x * ε)
     rw [← Real.rpow_def_of_pos hx0] at h1
     rw [le_div_iff₀ hε]; linarith
   have hlogk : Real.log k ≤ C₀ * (L / ε) := by
-    have h1 : Real.log k ≤ Real.log (x ^ C₀) := Real.log_le_log hk0 hkx
+    have h1 := Real.log_le_log hk0 hkx
     rw [Real.log_rpow hx0] at h1
     nlinarith [mul_le_mul_of_nonneg_left hlogx hC₀]
-  have hexp0 : 0 < Real.exp L := Real.exp_pos L
-  have hxe : 0 < x * Real.exp L := mul_pos hx0 hexp0
+  have hexp0 := Real.exp_pos L
+  have hxe := mul_pos hx0 hexp0
   have hlog8a : Real.log (8 * (x * Real.exp L)) ≤ 7 + L / ε + L := by
     rw [Real.log_mul (by norm_num) hxe.ne', Real.log_mul hx0.ne' hexp0.ne', Real.log_exp]
-    have : Real.log 8 ≤ 8 - 1 := Real.log_le_sub_one_of_pos (by norm_num)
-    linarith
+    linarith [Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 8)]
   have hlog2 : Real.log 2 ≤ 1 := by
-    have := Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 2); linarith
+    linarith [Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2)]
   have hΔk : (8 : ℝ) ≤ k * (4 * Δ) := by nlinarith
   have hb0x : 8 * x ≤ b 0 := by
     have := (le_div_iff₀ hx0).mp hb0; nlinarith
   have hb0' : 1 ≤ b 0 := by nlinarith
-  have hbmono : ∀ j, j < m → b 0 ≤ b j := by
-    intro j
-    induction j with
-    | zero => intro _; exact le_refl _
-    | succ n ih =>
-      intro hn
-      have h1 := (hbb n hn).2
-      have h2 := ih (by omega)
-      linarith
-  have hbpos : ∀ j, j < m → 0 < b j := fun j hj => by linarith [hbmono j hj]
-  have hwpos : ∀ j, j < m → 0 < w j := fun j hj => by linarith [hbpos j hj, (hbw j hj).1]
-  have hwstep : ∀ j, j + 1 < m → w j ≤ w (j + 1) := by
-    intro j hj
-    have h1 := (hbb j hj).1
-    have h2 := (hbw (j + 1) hj).1
-    linarith
-  have hwmono : ∀ i j, i ≤ j → j < m → w i ≤ w j := by
+  have hbmono : ∀ i j, i ≤ j → j < m → b i ≤ b j := by
     intro i j hij
     induction j, hij using Nat.le_induction with
     | base => intro _; exact le_refl _
     | succ n hn ih =>
       intro h
-      exact le_trans (ih (by omega)) (hwstep n h)
-  have hwtop' : ∀ j, j < m → w j ≤ 2 * Real.exp L := fun j hj =>
-    le_trans (hwmono j (m - 1) (by omega) (by omega)) hwtop
+      linarith [(hbb n h).2, ih (by omega)]
+  have hbpos : ∀ j, j < m → 0 < b j := fun j hj => by linarith [hbmono 0 j (Nat.zero_le _) hj]
+  have hwpos : ∀ j, j < m → 0 < w j := fun j hj => by linarith [hbpos j hj, (hbw j hj).1]
   have hlogtop : Real.log (2 * Real.exp L) = Real.log 2 + L := by
     rw [Real.log_mul (by norm_num) hexp0.ne', Real.log_exp]
-  have hlogb : ∀ j, j < m → Real.log (b j) ≤ 1 + L := by
-    intro j hj
-    have h1 : Real.log (b j) ≤ Real.log (2 * Real.exp L) :=
-      Real.log_le_log (hbpos j hj) (le_trans (hbw j hj).1.le (hwtop' j hj))
-    linarith
+  have hlg : ∀ y, 0 < y → y ≤ 2 * Real.exp L → Real.log y ≤ 1 + L := fun y hy h => by
+    linarith [Real.log_le_log hy h]
+  have hlogb : ∀ j, j < m → Real.log (b j) ≤ 1 + L := fun j hj => by
+    have h1 := hbmono j (m - 1) (by omega) (by omega)
+    have h2 := (hbw (m - 1) (by omega)).1
+    exact hlg _ (hbpos j hj) (by linarith)
   have hsumb : ∑ j ∈ range m, Real.log (b j) ≤ m * (1 + L) := by
     have := Finset.sum_le_sum (fun j hj => hlogb j (Finset.mem_range.mp hj))
     simp only [Finset.sum_const, Finset.card_range, nsmul_eq_mul] at this
     linarith
-  have htele : ∀ n, 1 ≤ n → n ≤ m →
-      ∑ j ∈ range n, (Real.log (w j) - Real.log (b j)) ≤ Real.log (w (n - 1)) - Real.log (b 0) := by
-    intro n hn
-    induction n, hn using Nat.le_induction with
-    | base => intro _; simp
-    | succ n hn ih =>
+  have htele : ∀ n, n < m →
+      ∑ j ∈ range (n + 1), Real.log (w j) - ∑ j ∈ range (n + 1), Real.log (b j)
+        ≤ Real.log (w n) - Real.log (b 0) := by
+    intro n
+    induction n with
+    | zero => intro _; simp
+    | succ n ih =>
       intro h
-      rw [Finset.sum_range_succ]
-      have h1 := ih (by omega)
-      have h2 : Real.log (w (n - 1)) ≤ Real.log (b n) := by
-        have h3 := (hbb (n - 1) (by omega)).1
-        rw [show n - 1 + 1 = n by omega] at h3
-        exact Real.log_le_log (hwpos (n - 1) (by omega)) h3.le
-      simp only [Nat.add_sub_cancel]
-      linarith
-  have htel := htele m hm le_rfl
-  have hwlast : Real.log (w (m - 1)) ≤ 1 + L := by
-    have h1 : Real.log (w (m - 1)) ≤ Real.log (2 * Real.exp L) :=
-      Real.log_le_log (hwpos (m - 1) (by omega)) hwtop
-    linarith
-  have hlb0 : 0 ≤ Real.log (b 0) := Real.log_nonneg hb0'
-  have hsplit : ∑ j ∈ range m, Real.log (w j) = ∑ j ∈ range m, Real.log (b j)
-      + ∑ j ∈ range m, (Real.log (w j) - Real.log (b j)) := by
-    rw [Finset.sum_sub_distrib]; ring
+      rw [Finset.sum_range_succ _ (n + 1), Finset.sum_range_succ _ (n + 1)]
+      linarith [ih (by omega), Real.log_le_log (hwpos n (by omega)) (hbb n h).1.le]
+  have htel := htele (m - 1) (by omega)
+  rw [Nat.sub_add_cancel hm] at htel
+  have hwlast := hlg _ (hwpos (m - 1) (by omega)) hwtop
   have hkA : (k : ℝ) * (L / ε) * 2 + 2 * k * (C₀ * (L / ε)) = k * L * ((2 + 2 * C₀) / ε) := by
     field_simp
-  have hm0 : (1 : ℝ) ≤ m := by exact_mod_cast hm
-  have hkL : (k : ℝ) * 1 ≤ k * L := mul_le_mul_of_nonneg_left hL1 hk0.le
-  have hmL : (m : ℝ) * 1 ≤ m * L := mul_le_mul_of_nonneg_left hL1 (by linarith)
-  have e1 : (k : ℝ) * Real.log (8 * (x * Real.exp L)) ≤ k * (7 + L / ε + L) :=
-    mul_le_mul_of_nonneg_left hlog8a hk0.le
-  have e2 : (k : ℝ) * Real.log k ≤ k * (C₀ * (L / ε)) := mul_le_mul_of_nonneg_left hlogk hk0.le
-  have e3 : (k : ℝ) * ∑ j ∈ range m, (Real.log (w j) - Real.log (b j)) ≤ k * (1 + L) := by
-    apply mul_le_mul_of_nonneg_left _ hk0.le; linarith
+  have hkL := mul_le_mul_of_nonneg_left hL1 hk0.le
+  have hmL := mul_le_mul_of_nonneg_left hL1 (Nat.cast_nonneg m)
+  have e1 := mul_le_mul_of_nonneg_left hlog8a hk0.le
+  have e2 := mul_le_mul_of_nonneg_left hlogk hk0.le
+  have hdiff := htel.trans (sub_le_sub hwlast (Real.log_nonneg hb0'))
+  have e3 := mul_le_mul_of_nonneg_left hdiff hk0.le
   refine ⟨hu, hl, hwpos, ?_⟩
-  rw [hsplit]
   linarith
 
 theorem logRatioLowerBound_of_logVandermondeGap (hV : VandPlace) : LogRatioLowerBound := by

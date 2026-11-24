@@ -67,8 +67,7 @@ def seg (w₀ x : ℂ) (t : ℝ) : ℂ := w₀ + (t : ℂ) * (x - w₀)
 
 theorem seg_mem (hc : Convex ℝ S) (hw₀ : w₀ ∈ S) {x : ℂ} (hx : x ∈ S) {t : ℝ} (ht : t ∈ Icc (0 : ℝ) 1) :
     seg w₀ x t ∈ S := by
-  have h := hc.add_smul_sub_mem hw₀ hx ht
-  simpa [seg, Complex.real_smul] using h
+  simpa [seg, Complex.real_smul] using hc.add_smul_sub_mem hw₀ hx ht
 
 theorem seg_one (w₀ x : ℂ) : seg w₀ x 1 = x := by
   simp [seg]
@@ -78,8 +77,7 @@ theorem continuous_seg : Continuous fun p : ℂ × ℝ => seg w₀ p.1 p.2 := by
   fun_prop
 
 theorem hasDerivAt_seg (x : ℂ) (t : ℝ) : HasDerivAt (fun s : ℝ => seg w₀ x s) (x - w₀) t := by
-  have h := ((hasDerivAt_id t).ofReal_comp.mul_const (x - w₀)).const_add w₀
-  simpa [seg] using h
+  simpa [seg] using ((hasDerivAt_id t).ofReal_comp.mul_const (x - w₀)).const_add w₀
 
 theorem hasFDerivAt_seg (x : ℂ) (t : ℝ) :
     HasFDerivAt (fun y : ℂ => seg w₀ y t) ((t : ℂ) • ContinuousLinearMap.id ℝ ℂ) x := by
@@ -88,8 +86,7 @@ theorem hasFDerivAt_seg (x : ℂ) (t : ℝ) :
   have hf : (fun y : ℂ => seg w₀ y t) = fun y => w₀ + ((t : ℂ) • fun x => id x - w₀) y := by
     funext y
     simp [seg, smul_eq_mul]
-  rw [hf]
-  exact h2
+  rwa [hf]
 
 theorem prim_eq (ω : ℂ → ℂ →L[ℝ] ℝ) (w₀ w : ℂ) :
     prim ω w₀ w = ∫ t in (0 : ℝ)..1, ω (seg w₀ w t) (w - w₀) := rfl
@@ -153,8 +150,7 @@ theorem hasFDerivAt_prim (hS : IsOpen S) (hc : Convex ℝ S) (hw₀ : w₀ ∈ S
         simp only [hF']
         congr 2
         ext h'
-        simp only [ContinuousLinearMap.flip_apply]
-        exact hsym _ hs h' (w - w₀)
+        simpa only [ContinuousLinearMap.flip_apply] using hsym _ hs h' (w - w₀)
       rw [intervalIntegral.integral_congr hEq]
       have hd : ∀ t ∈ uIcc (0 : ℝ) 1, HasDerivAt (fun s : ℝ => s • ω (seg w₀ w s))
           (ω (seg w₀ w t) + t • fderiv ℝ ω (seg w₀ w t) (w - w₀)) t := by
@@ -171,8 +167,7 @@ theorem hasFDerivAt_prim (hS : IsOpen S) (hc : Convex ℝ S) (hw₀ : w₀ ∈ S
         exact (hωseg w hwc).add (continuousOn_id.smul ((hDseg w hwc).clm_apply continuousOn_const))
       rw [intervalIntegral.integral_eq_sub_of_hasDerivAt hd (hcd.intervalIntegrable)]
       simp [seg_one]
-    rw [← hint]
-    exact hLeib
+    rwa [← hint]
   · filter_upwards [ball_mem_nhds w hδ'0] with x hx
     have hxc : x ∈ closedBall w δ' := ball_subset_closedBall hx
     rw [hIoc]

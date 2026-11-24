@@ -71,8 +71,7 @@ theorem continuity_of_sobolev_chart (h4 : SobChart) (h5 : FoldCont) : Cont1 := b
     exact (pi_norm_lt_iff hη).2 fun i => by rw [Real.norm_eq_abs]; exact ht i
   have h1 := hηc t htn
   beta_reduce at h1
-  rw [dist_eq_norm, h0] at h1
-  exact h1
+  rwa [dist_eq_norm, h0] at h1
 
 theorem one_mem_KAt {n : ℕ} (G s : Matrix (Fin n) (Fin n) ℂ) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ KAt G s := by
   simp [KAt, Formalism.QuantumDeterminants.UH]
@@ -159,9 +158,7 @@ theorem sobApprox_of (h8a : HaarExists) (h8b : PolyKernel) (h8c : AvgSmooth) (h8
     · rw [Set.indicator_of_mem hkU]
       have h1 : ‖dL π l (π (Matrix.of k) w)‖ ≤ B := hB l hl (Matrix.of k) hk
       have h2 : ‖dL π l w‖ ≤ B := by
-        have h := hB l hl 1 (one_mem_KAt G s)
-        simp only [hπ1, one_apply_eq_self] at h
-        exact h
+        simpa only [hπ1, one_apply_eq_self] using hB l hl 1 (one_mem_KAt G s)
       have h3 : ‖dL π l (π (Matrix.of k) w) - dL π l w‖ ≤ 2 * B := by
         calc _ ≤ ‖dL π l (π (Matrix.of k) w)‖ + ‖dL π l w‖ := norm_sub_le _ _
           _ ≤ 2 * B := by linarith

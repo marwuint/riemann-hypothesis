@@ -88,16 +88,14 @@ theorem colKerChiC : StatColKerChiC := by
     intro φ l a
     have h := hval φ (colGenJ 0 l 0 (Pi.single a (1 - e₁)) 0)
       (Submodule.subset_span (Or.inl (Or.inl (Or.inr ⟨l, a, rfl⟩))))
-    rw [map_sigRel, sub_smul, one_smul, he₁, sub_zero] at h
-    exact h
+    rwa [map_sigRel, sub_smul, one_smul, he₁, sub_zero] at h
   have hσ0 : ∀ (φ : ColNNJ r χ E e₁ δ D j Kc k0 →ₗ[A] (d → KO O)) l,
       φ (q (fSig0 l)) ∈ LinearMap.ker (DistribSMul.toLinearMap O (d → KO O) δO) := by
     intro φ l
     have h := hval φ (colGenJ 0 l 0 0 (algebraMap T' A δ - E))
       (Submodule.subset_span (Or.inl (Or.inr ⟨l, rfl⟩)))
     rw [map_sig0Rel, sub_smul, hδ, hE, sub_zero] at h
-    rw [LinearMap.mem_ker, DistribSMul.toLinearMap_apply]
-    exact h
+    rwa [LinearMap.mem_ker, DistribSMul.toLinearMap_apply]
   have hν : ∀ φ ∈ K, ∀ l, φ (q (fNu l)) ∈
       LinearMap.ker (colDO (O := O) (M := d → KO O) r χ (D l)) := by
     intro φ hφ l
@@ -109,8 +107,7 @@ theorem colKerChiC : StatColKerChiC := by
     simp only [LinearMap.comp_apply, hKY φ hφ, hσ φ, zero_add, hb, neg_smul, mul_smul, hE,
       smul_zero, neg_zero, add_zero, Finset.sum_const_zero] at h
     show ((((χ g)⁻¹ : T'ˣ) : T') • r g) • φ (q (fNu l)) - φ (q (fNu l)) = 0
-    rw [sub_smul, one_smul] at h
-    exact h
+    rwa [sub_smul, one_smul] at h
   let evK : ColNNJ r χ E e₁ δ D j Kc k0 → (K →ₗ[O] (d → KO O)) := fun x => evalO x ∘ₗ K.subtype
   let Φ : K →ₗ[O] ((l : ι) → LinearMap.ker (colDO (O := O) (M := d → KO O) r χ (D l)) ×
       LinearMap.ker (DistribSMul.toLinearMap O (d → KO O) δO)) :=
@@ -151,16 +148,14 @@ theorem colKerChiOne : StatColKerChiOne := by
     intro φ l a
     have h := hval φ (colGenJ 0 l 0 (Pi.single a (1 - e₁)) 0)
       (Submodule.subset_span (Or.inl (Or.inl (Or.inr ⟨l, a, rfl⟩))))
-    rw [map_sigRel, sub_smul, one_smul, he₁, sub_zero] at h
-    exact h
+    rwa [map_sigRel, sub_smul, one_smul, he₁, sub_zero] at h
   have hν : ∀ (φ : ColNNJ r χ E e₁ δ D j Kc k0 →ₗ[A] (d → KO O)) l,
       φ (q (fNu l)) ∈ LinearMap.ker (DistribSMul.toLinearMap O (d → KO O) δO) := by
     intro φ l
     have h := hval φ (colGenJ 0 l E 0 0)
       (Submodule.subset_span (Or.inl (Or.inl (Or.inl ⟨l, rfl⟩))))
     rw [map_nuRel, hE] at h
-    rw [LinearMap.mem_ker, DistribSMul.toLinearMap_apply]
-    exact h
+    rwa [LinearMap.mem_ker, DistribSMul.toLinearMap_apply]
   have hσ0 : ∀ φ ∈ K, ∀ l, φ (q (fSig0 l)) ∈ LinearMap.ker
       (DistribSMul.toLinearMap O (d → KO O) ((ℓ : O) ^ e' l * δO * δO)) := by
     intro φ hφ l

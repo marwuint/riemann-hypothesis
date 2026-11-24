@@ -85,9 +85,7 @@ theorem isUnit_VA_iff (a : VA L) : IsUnit a ↔ Valued.v (a : L) = 1 := by
       exact zero_ne_one h
     have hinv : (a : L)⁻¹ ∈ VA L := by
       rw [mem_VA, map_inv₀, h, inv_one]
-    refine IsUnit.of_mul_eq_one (⟨(a : L)⁻¹, hinv⟩ : VA L) ?_
-    apply Subtype.ext
-    exact mul_inv_cancel₀ ha0
+    exact IsUnit.of_mul_eq_one (⟨(a : L)⁻¹, hinv⟩ : VA L) (Subtype.ext (mul_inv_cancel₀ ha0))
 
 theorem mem_max_VA_iff (a : VA L) : a ∈ IsLocalRing.maximalIdeal (VA L) ↔ Valued.v (a : L) < 1 := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_VA_iff]
@@ -103,8 +101,7 @@ def sigA : VA L →+* VA L :=
 theorem sigA_coe (x : VA L) : ((sigA σ hv x : VA L) : L) = σ x := rfl
 
 theorem sigA_inv (hσ : ∀ x, σ (σ x) = x) (x : VA L) : sigA σ hv (sigA σ hv x) = x := by
-  apply Subtype.ext
-  exact hσ x
+  exact Subtype.ext (hσ x)
 
 instance sigA_local : IsLocalHom (sigA σ hv) where
   map_nonunit a ha := by
@@ -138,8 +135,7 @@ private theorem valuation_two_eq_one_of_unramInv_odd {ϖ : L} {σ : L →+* L} {
   have h2Q : (2 : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).integer ⧸
       IsLocalRing.maximalIdeal (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring) = 0 := by
     have h := Ideal.Quotient.eq_zero_iff_mem.2 hmem
-    rw [map_ofNat] at h
-    exact h
+    rwa [map_ofNat] at h
   have hc0 := Nat.cast_card_eq_zero ((Valued.v : Valuation L (WithZero (Multiplicative ℤ))).integer ⧸
       IsLocalRing.maximalIdeal (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring)
   rw [← Nat.card_eq_fintype_card, hcard] at hc0
@@ -163,8 +159,7 @@ theorem two_unit_VA {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : Formalism.UG.IsUnr
     | exact_mod_cast valuation_two_eq_one_of_unramInv_odd hU hq
 
 theorem two_val {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : Formalism.UG.IsUnramInv ϖ σ q) (hq : Odd q) :
-    Valued.v (2 : L) = 1 := by
-  exact valuation_two_eq_one_of_unramInv_odd hU hq
+    Valued.v (2 : L) = 1 := valuation_two_eq_one_of_unramInv_odd hU hq
 
 theorem normSurj [CompleteSpace L] (hF : FinNormSurj) (hS : HenselSqrt) {ϖ : L} {σ : L →+* L} {q : ℕ}
     (hU : Formalism.UG.IsUnramInv ϖ σ q) (hq : Odd q) (c : VA L) (hcσ : sigA σ hU.2.1 c = c) (hc : IsUnit c) :
@@ -213,8 +208,7 @@ theorem normSurj [CompleteSpace L] (hF : FinNormSurj) (hS : HenselSqrt) {ϖ : L}
     have h1 : (c : L) * (σ (y : L) * (y : L))⁻¹ - 1 =
         -(σ (y : L) * (y : L) - c) * (σ (y : L) * (y : L))⁻¹ := by
       rw [neg_sub, sub_mul, mul_inv_cancel₀ ha0]
-    rw [h1, map_mul, map_inv₀, hav, inv_one, mul_one, Valuation.map_neg]
-    exact hdiff'
+    rwa [h1, map_mul, map_inv₀, hav, inv_one, mul_one, Valuation.map_neg]
   have h2v : Valued.v (2 : L) = 1 := _root_.Formalism.IndefR.LocBrg.valuation_two_eq_one_of_unramInv_odd hU hq
   obtain ⟨s, hss, hs1⟩ := hS L h2v _ hu1
   have hσc : σ (c : L) = c := congrArg Subtype.val hcσ
@@ -229,8 +223,7 @@ theorem normSurj [CompleteSpace L] (hF : FinNormSurj) (hS : HenselSqrt) {ϖ : L}
       have h1 : σ s * σ s = s * s := by rw [← map_mul, hss, hσu]
       linear_combination h1
     have hσs1 : Valued.v (σ s - 1) < 1 := by
-      rw [← map_one σ, ← map_sub, hv]
-      exact hs1
+      rwa [← map_one σ, ← map_sub, hv]
     have hsmall : Valued.v ((σ s - 1) + (s - 1)) < 1 :=
       lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt hσs1 hs1)
     have hsum : Valued.v (σ s + s) = 1 := by

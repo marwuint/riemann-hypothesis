@@ -76,8 +76,7 @@ theorem exists_smul_mem {A : Submodule (𝓞 K) V} {x : V} (hx : x ∈ Submodule
   obtain ⟨t, ht⟩ := multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 K)) K
     (A : Set V) x hx
   refine ⟨t, nonZeroDivisors.coe_ne_zero t, ?_⟩
-  rw [Submodule.span_eq] at ht
-  exact ht
+  rwa [Submodule.span_eq] at ht
 
 theorem mem_span_of_smul_mem {A : Submodule (𝓞 K) V} {x : V} {d : 𝓞 K} (hd : d ≠ 0)
     (hx : d • x ∈ A) : x ∈ Submodule.span K (A : Set V) := by
@@ -92,8 +91,7 @@ theorem span_cut {A : Submodule (𝓞 K) V} (hA : Submodule.span K (A : Set V) =
     (p : V →ₗ[K] V) : Submodule.span K (cut A p : Set V) = LinearMap.range p := by
   apply le_antisymm
   · rw [Submodule.span_le]
-    intro a ha
-    exact ha.2
+    exact fun a ha => ha.2
   · intro u hu
     obtain ⟨d, hd, hdu⟩ := exists_smul_mem (A := A) (x := u) (by rw [hA]; trivial)
     refine mem_span_of_smul_mem hd ⟨hdu, ?_⟩
@@ -261,8 +259,7 @@ theorem sandwich (hE : IdemE) (hP : IdemP) (hτ : IsGood τ) (ρ : Representatio
     unfold eGood
     rw [LinearMap.sum_apply, Finset.sum_eq_single s]
     · exact LinearMap.congr_fun (he s) a
-    · intro t _ hts
-      exact LinearMap.congr_fun (ho t s hts) a
+    · exact fun t _ hts => LinearMap.congr_fun (ho t s hts) a
     · simp
   refine ⟨fun s a ha => ⟨ha.1, ?_⟩, fun a ha => ?_, fun s a ha => ?_⟩
   · obtain ⟨z, hz⟩ := ha.2
@@ -284,8 +281,7 @@ theorem sandwich (hE : IdemE) (hP : IdemP) (hτ : IsGood τ) (ρ : Representatio
 
         rw [LinearMap.sum_apply, map_sum, Finset.sum_eq_single s]
         · exact LinearMap.congr_fun (he s) z
-        · intro t _ hts
-          exact LinearMap.congr_fun (ho s t hts.symm) z
+        · exact fun t _ hts => LinearMap.congr_fun (ho s t hts.symm) z
         · simp
       rw [← hz, LinearMap.comp_apply, h2, h3]
     have : (Fintype.card G : 𝓞 K) • a = ∑ s, (Fintype.card G : 𝓞 K) • eS (τ s) ρ a := by

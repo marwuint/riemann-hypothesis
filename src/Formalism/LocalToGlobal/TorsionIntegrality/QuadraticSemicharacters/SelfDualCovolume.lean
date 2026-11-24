@@ -86,8 +86,7 @@ theorem img_neg (Λ : AddSubgroup V) : imgLat ((LinearEquiv.neg ℂ : V ≃ₗ[�
   constructor
   · rintro ⟨y, hy, rfl⟩
     exact Λ.neg_mem hy
-  · intro hx
-    exact ⟨-x, Λ.neg_mem hx, neg_neg x⟩
+  · exact fun hx => ⟨-x, Λ.neg_mem hx, neg_neg x⟩
 
 theorem relIdx_self (Λ : AddSubgroup V) : relIdx Λ Λ = 1 := AddSubgroup.relIndex_self Λ
 
@@ -116,8 +115,7 @@ theorem inter_self {H : Sesq V} {Λ : AddSubgroup V} {α : V → ℂ} (hH : IsHe
       exact Λ.zero_mem
     · intro x hx y hy _
       rw [Finset.mem_singleton.mp hx, Finset.mem_singleton.mp hy]
-    · intro y hy
-      exact ⟨0, Finset.mem_singleton_self 0, by simpa using hy⟩
+    · exact fun y hy => ⟨0, Finset.mem_singleton_self 0, by simpa using hy⟩
   rw [interReps V H hH Λ Λ α hα F hF {0} hS z, relIdx_self, sumU, Finset.sum_singleton,
     hF 0 Λ.zero_mem z]
   simp
@@ -132,8 +130,7 @@ theorem SelfDualCovolume_proof : SelfDualCovolume := by
   obtain ⟨S, hS⟩ := (repsExist V _ _ (UC.latA_idx_ne hL hU)).1
   have hD' : IsAddFundamentalDomain
       (Λ ⊓ imgLat ((LinearEquiv.neg ℂ : V ≃ₗ[ℂ] V) : V →ₗ[ℂ] V) Λ : AddSubgroup V) D μ := by
-    rw [UC.img_neg, inf_idem]
-    exact hD
+    rwa [UC.img_neg, inf_idem]
   obtain ⟨c, hc, hval⟩ := UC.const_value μ hL hU hLine hD' hb hS
   have hcard := UC.sqrt_card hL hU hS
   have hphi := UC.norm_sum_phi hU hS
@@ -188,8 +185,7 @@ theorem UnitaryConstant_proof : UnitaryConstant := by
   rw [hc θ hθ]
   congr 1
   rw [gaussC, hcard]
-  rw [hD'm, hidx, hie, hcov] at hval
-  rw [← hcov] at hval
+  rw [hD'm, hidx, hie, hcov, ← hcov] at hval
   obtain ⟨n, hn⟩ : ∃ n : ℝ, n = (relIdx (imgLat (δ : V →ₗ[ℂ] V) Λ) Λ : ℝ) := ⟨_, rfl⟩
   rw [← hn] at hval ⊢
   have hnpos : 0 < n := by

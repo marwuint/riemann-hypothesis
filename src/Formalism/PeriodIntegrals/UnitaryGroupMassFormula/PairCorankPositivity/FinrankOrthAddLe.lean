@@ -64,9 +64,7 @@ theorem finrank_orth_add_le (S : HSpace E) {ι : Type} [Fintype ι] (u : ι → 
     intro v hv
     rw [LinearMap.mem_ker]
     funext i
-    have h1 := (Submodule.mem_iInf _).1 hv (u i)
-    have h2 := (Submodule.mem_iInf _).1 h1 (hU i)
-    exact h2
+    exact (Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hv (u i)) (hU i)
   have hrange : LinearMap.range Φ = ⊤ := by
     by_contra hne
     obtain ⟨f, hf0, hfle⟩ :=
@@ -78,8 +76,7 @@ theorem finrank_orth_add_le (S : HSpace E) {ι : Type} [Fintype ι] (u : ι → 
       have h1 : f (Φ v) = 0 := hfle (LinearMap.mem_range_self Φ v)
       rw [LinearMap.pi_apply_eq_sum_univ f (Φ v)] at h1
 
-      rw [hw, map_sum, LinearMap.sum_apply]
-      rw [← h1]
+      rw [hw, map_sum, LinearMap.sum_apply, ← h1]
       refine Finset.sum_congr rfl fun i _ => ?_
       rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, star_star, smul_eq_mul,
         smul_eq_mul, mul_comm]

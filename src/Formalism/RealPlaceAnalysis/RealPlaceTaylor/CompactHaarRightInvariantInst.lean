@@ -78,24 +78,16 @@ theorem group_exponential_facts : ExpGFacts := by
   have hE : ∀ t : ℝ, toM (expG ε X t) = NormedSpace.exp ((t : ℂ) • X) := fun t => toM_expG ε X t hX
   have hcont : Continuous (fun t : ℝ => expG ε X t) := by
     have hcU : Continuous (fun t : ℝ => ((expG ε X t : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ)) := by
-      rw [Units.continuous_iff]
-      refine ⟨?_, ?_⟩
-      · have h1 : (Units.val ∘ fun t : ℝ => ((expG ε X t : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ)) =
-            fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) := funext hE
-        rw [h1]
-        exact continuous_exp_real_smul X
-      · have h2 : (fun t : ℝ => ((((expG ε X t : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ :
-            (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) =
-            fun t : ℝ => NormedSpace.exp (((-t : ℝ) : ℂ) • X) := by
-          funext t
-          apply Units.inv_eq_of_mul_eq_one_right
-          show toM (expG ε X t) * _ = 1
-          rw [hE, ← Matrix.exp_add_of_commute _ _
-            (((Commute.refl X).smul_left ((t : ℝ) : ℂ)).smul_right (((-t : ℝ)) : ℂ)), ← add_smul]
-          push_cast
-          rw [add_neg_cancel, zero_smul, NormedSpace.exp_zero]
-        rw [h2]
-        exact (continuous_exp_real_smul X).comp continuous_neg
+      refine Units.continuous_iff.2 ⟨?_, ?_⟩
+      · exact (continuous_exp_real_smul X).congr fun t => (hE t).symm
+      · refine ((continuous_exp_real_smul X).comp continuous_neg).congr fun t => ?_
+        symm
+        apply Units.inv_eq_of_mul_eq_one_right
+        show toM (expG ε X t) * NormedSpace.exp (((-t : ℝ) : ℂ) • X) = 1
+        rw [hE, ← Matrix.exp_add_of_commute _ _
+          (((Commute.refl X).smul_left ((t : ℝ) : ℂ)).smul_right (((-t : ℝ)) : ℂ)), ← add_smul]
+        push_cast
+        rw [add_neg_cancel, zero_smul, NormedSpace.exp_zero]
     exact continuous_induced_rng.2 hcU
   refine ⟨?_, ?_, hcont, ?_⟩
   · apply toM_injective'
@@ -115,11 +107,7 @@ theorem group_exponential_facts : ExpGFacts := by
       intro t
       unfold expK
       rw [dite_eq_left hK]
-    refine ⟨hk, ?_⟩
-    apply continuous_induced_rng.2
-    have h3 : (Subtype.val ∘ fun t : ℝ => expK ε X t) = fun t : ℝ => expG ε X t := funext hk
-    rw [h3]
-    exact hcont
+    exact ⟨hk, continuous_induced_rng.2 (hcont.congr fun t => (hk t).symm)⟩
 
 lemma compact_haar_probability (n : ℕ) (ε : Fin n → Bool) : IsProbabilityMeasure (muK ε) := by
   unfold muK
@@ -239,8 +227,6 @@ theorem compact_integration_by_parts : KByParts := by
   have h2 : HasDerivAt (fun _ : ℝ => ∫ k, F k ∂(muK ε)) (∫ k, D (k * expK ε Z 0) ∂(muK ε)) 0 := by
     rw [← hconst]
     exact key.2
-  have h3 := h2.unique (hasDerivAt_const (0 : ℝ) (∫ k, F k ∂(muK ε)))
-  simp only [hzero, mul_one] at h3
-  exact h3
+  simpa only [hzero, mul_one] using h2.unique (hasDerivAt_const (0 : ℝ) (∫ k, F k ∂(muK ε)))
 
 end Formalism.REAL

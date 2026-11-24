@@ -313,45 +313,43 @@ theorem selmer_inequality_of_inputs [IsNoetherian Dd.R' Dd.R']
     (fun l => KHf.Ff i dc Dd.r Dd.χ (iLM (D.nd.O i) _ (Dd.ρk 0).toRingHom) l) κz (FS i r π dc g0 eB e₁ s Dd hD hc)
     (QS.Vo i) (QS.VS i) (QS.Io i) (QS.IS i) (FirstSummandSubmodule (D.nd.O i) Dd.e₁) ({a // RepresentationBoundsCohomology.blk D.R a = 0} → D.nd.O i)
     (rho1 i Dd) (rho2 i Dd) (FirstSummandSubmodule (D.nd.O i) Dd.e₁).subtype (piS i Dd hT hrk) (gamM (Dd.ρk 0)) (lamS i Dd hT hrk)
-    (KLat.VT (O := D.nd.O i) (RepresentationBoundsCohomology.blk D.R)) (KLat.VT (O := D.nd.O i) (RepresentationBoundsCohomology.blk D.R)) (DatS i r π dc g0 eB e₁ s Dd hD hc) (uDS i r π dc g0 eB e₁ s Dd hD hc) (huDS i r π dc g0 eB e₁ s Dd hD hc) (vDS i r π dc g0 eB e₁ s Dd hD hc) (hpDS i r π dc g0 eB e₁ s Dd hD hc hT hrk) (heDS i r π dc g0 eB e₁ s Dd hD hc hT hrk)
+    _ _ (DatS i r π dc g0 eB e₁ s Dd hD hc) (uDS i r π dc g0 eB e₁ s Dd hD hc)
+    (huDS i r π dc g0 eB e₁ s Dd hD hc) (vDS i r π dc g0 eB e₁ s Dd hD hc)
+    (hpDS i r π dc g0 eB e₁ s Dd hD hc hT hrk) (heDS i r π dc g0 eB e₁ s Dd hD hc hT hrk)
     (FsS i r π dc g0 eB e₁ s Dd hD hc) (Hf₁S i r π dc g0 eB e₁ s Dd hD) (QS.I i dc) (QS.γQ i dc) (QS.ζ i dc Dd) (QS.ζO i dc) (QS.nQ i dc)
     u (D.nd.s0 i) (Topo.yU i u0) (HfWS i r π dc g0 eB e₁ s Dd hD hc) (Hf₂S i r π dc g0 eB e₁ s Dd hD hc)
     (LeftId (D.nd.O i) Dd.e₁) (incl _ Dd.e₁) (eveS i Dd hT hrk) (fun a => rfl)
     (LeftId (D.nd.O i) Dd.E) (incl _ Dd.E) (evES i Dd hT) (hevES i Dd hT)
     (fun l => KHf.Hfe₁ i dc Dd.r Dd.χ (Pe := LeftId (D.nd.O i) Dd.e₁) l)
     (fun l => KHf.Hfe₁ i dc Dd.r Dd.χ (Pe := LeftId (D.nd.O i) Dd.E) l) (fun l => KHf.HfE₂ i dc Dd.δO l) uz
-  have hrows : ∀ w ∈ rowsN i dc, FS i r π dc g0 eB e₁ s Dd hD hc 0 w = (((HfWS i r π dc g0 eB e₁ s Dd hD hc w).restrictScalars (D.nd.O i)).map (DatS i r π dc g0 eB e₁ s Dd hD hc w).q).map
-      (kRow (DatS i r π dc g0 eB e₁ s Dd hD hc w) _ (uDS i r π dc g0 eB e₁ s Dd hD hc w) (huDS i r π dc g0 eB e₁ s Dd hD hc w)) := by
-    intro w hw
-    exact ite_eq_left hw
-  have hc1_val : (QS.c1 (D := D) : ℕ) = 1 := rfl
   have hF1 := FS_pos i r π dc g0 eB e₁ s Dd hD hc QS.c1 (Fin.ne_of_val_ne Nat.one_ne_zero)
   have hdisplay := H t1 t2 t3 t4 t5 (inc_cont (O := D.nd.O i) Dd.e₁) t6 t7 t8 t9 t10 t11 hA.2.2.1 hA.2.2.2.2.1 hA.2.2.2.2.2.1
     hA.2.2.2.2.2.2.1 hUz hUnr hL1 hL2 (fun x' hx => ⟨hG6 x' hx, hLx x' hx⟩) hRho
     (fun w hw => ⟨(t12 w hw).1, (t12 w hw).2, (hL w).1, (hL w).2.1, (hL w).2.2.1, (hL w).2.2.2, hBKa w hw,
-      hrows w hw, rfl,
-      KHf.im_le_Fs i dc (KLat.VT (O := D.nd.O i) (RepresentationBoundsCohomology.blk D.R)) (KLat.VT (O := D.nd.O i) (RepresentationBoundsCohomology.blk D.R)) (DatS i r π dc g0 eB e₁ s Dd hD hc) w (rho1 i Dd) (piS i Dd hT hrk) (vDS i r π dc g0 eB e₁ s Dd hD hc w) (hpDS i r π dc g0 eB e₁ s Dd hD hc hT hrk w)
+      ite_eq_left hw, rfl,
+      KHf.im_le_Fs i dc _ _ _ w (rho1 i Dd) (piS i Dd hT hrk) _
+        (hpDS i r π dc g0 eB e₁ s Dd hD hc hT hrk w)
         (heDS i r π dc g0 eB e₁ s Dd hD hc hT hrk w)⟩)
     (fun c hc2 => ⟨H0.kernel_length_higher_columns dc hN hD c hc2,
       fun w hw => by
         have hc_pos : 1 ≤ (c : ℕ) := Nat.le_trans (Nat.le_succ 1) hc2
-        have hc0 : c ≠ 0 := Fin.ne_of_val_ne (Nat.ne_of_gt hc_pos)
-        have hc1 : (c : ℕ) ≠ 1 := Nat.ne_of_gt hc2
         refine ⟨?_, le_rfl, hTB c hc_pos w hw⟩
-        exact (FS_pos i r π dc g0 eB e₁ s Dd hD hc c hc0 w).trans
-          ((ite_eq_right (hRQ w hw)).trans ((ite_eq_left hw).trans (ite_eq_right hc1))),
+        exact (FS_pos i r π dc g0 eB e₁ s Dd hD hc c
+          (Fin.ne_of_val_ne (Nat.ne_of_gt hc_pos)) w).trans
+          ((ite_eq_right (hRQ w hw)).trans
+            ((ite_eq_left hw).trans (ite_eq_right (Nat.ne_of_gt hc2)))),
       hChi c hc2⟩)
     ⟨hU1.1, hU1.2, fun l => by
         refine le_of_eq ((hF1 (colIdx i dc l)).trans ?_).symm
         by_cases hq : colIdx i dc l ∈ qsN i dc
         · exact ite_eq_left hq
-        · exact (ite_eq_right hq).trans ((ite_eq_right (hCR l)).trans (ite_eq_left hc1_val)),
+        · exact (ite_eq_right hq).trans ((ite_eq_right (hCR l)).trans (ite_eq_left rfl)),
       fun w hw => by
         refine ⟨?_, le_rfl, hTB QS.c1 le_rfl w hw⟩
-        exact (hF1 w).trans ((ite_eq_right (hRQ w hw)).trans ((ite_eq_left hw).trans (ite_eq_left hc1_val))),
+        exact (hF1 w).trans
+          ((ite_eq_right (hRQ w hw)).trans ((ite_eq_left hw).trans (ite_eq_left rfl))),
       hLoc1, hCover⟩
-  exact ⟨rowLenS i r π dc g0 eB e₁ s Dd hD hc hT hrk, H0.h0d i dc Dd, IsDiscreteValuationRing.addVal (D.nd.O i) Dd.δO,
-    Fintype.card {a // RepresentationBoundsCohomology.blk D.R a = 0}, hdisplay.2.1, card_first_block (D := D),
+  exact ⟨_, H0.h0d i dc Dd, _, _, hdisplay.2.1, card_first_block (D := D),
     hdisplay.1, hTie,
     H0.invariants_display_match i r ρ π dc g0 eB e₁ s Dd hD hN⟩
 

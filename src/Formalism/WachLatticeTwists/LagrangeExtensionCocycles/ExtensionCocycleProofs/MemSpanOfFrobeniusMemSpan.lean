@@ -60,8 +60,7 @@ private theorem assoc_prod_lemma {O : Type} [CommMonoid O] (s : Finset ℤ) (f :
   classical
   revert h
   refine Finset.induction_on s ?_ ?_
-  · intro _
-    exact ⟨1, by simp⟩
+  · exact fun _ => ⟨1, by simp⟩
   · intro b s hb ih h
     rw [Finset.prod_insert hb, Finset.sum_insert hb, pow_add]
     exact (h b (Finset.mem_insert_self b s)).mul_mul
@@ -80,8 +79,7 @@ private theorem prod_dvd_lemma_2 {O : Type} [CommRing O] [IsDomain O] (S : Finse
     obtain ⟨a, ha, rfl⟩ := Multiset.mem_map.1 hx
     exact (mem_roots h0).2 (hr a ha)
   have h1 := (Multiset.prod_X_sub_C_dvd_iff_le_roots h0 (S.val.map c)).2 hle
-  rw [Multiset.map_map] at h1
-  exact h1
+  rwa [Multiset.map_map] at h1
 
 theorem lagrange_annihilation : StatLagrange := by
   intro ℓ _ O _ _ S₁ S₂ c sg hdisj hassoc
@@ -223,8 +221,7 @@ theorem unit_lemma_case_b_holds : StatWB := by
   have h' : n₁ = ((ℓ : ℤ_[ℓ]) ^ eWB ℓ H s) • n := h
   have e : ((ℓ : ℤ_[ℓ]) ^ eWB ℓ H s) • n = ((ℓ : A) ^ eWB ℓ H s) • n := by
     rw [← algebraMap_smul A ((ℓ : ℤ_[ℓ]) ^ eWB ℓ H s) n, map_pow, map_natCast]
-  rw [← e, ← h']
-  exact hn₁
+  rwa [← e, ← h']
 
 theorem add_mul_pow_exists {A : Type} [CommRing A] (a X t : A) (k : ℕ) :
     ∃ t', (a + X * t) ^ k = a ^ k + X * t' := by
@@ -283,8 +280,7 @@ theorem mem_span_of_frobenius_mem_span : StatDescent := by
           (∏ k ∈ Finset.Ioc (i + 1) s, ((G.u : ℤ_[ℓ]) ^ k - 1)) * ((G.u : ℤ_[ℓ]) ^ (i + 1) - 1) := by
         rw [← Finset.prod_Ioc_consecutive _ (by omega : i ≤ i + 1) (by omega : i + 1 ≤ s),
           Nat.Ioc_succ_singleton, Finset.prod_singleton, mul_comm]
-      rw [h3]
-      exact h2
+      rwa [h3]
   exact key (s - j) j (by omega)
 
 end Formalism.RepresentationBoundsCohomology.N2

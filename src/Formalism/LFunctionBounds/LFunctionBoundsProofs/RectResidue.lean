@@ -72,38 +72,29 @@ theorem rectRes_log_sub_log_neg_of_im_neg {z : ℂ} (h : z.im < 0) :
 
 theorem rectRes_hasDerivAt_horiz (c : ℂ) (t : ℝ) :
     HasDerivAt (fun x : ℝ => (x : ℂ) + c) 1 t := by
-  have h := (Complex.ofRealCLM.hasDerivAt (x := t)).add_const c
-  simpa using h
+  simpa using (Complex.ofRealCLM.hasDerivAt (x := t)).add_const c
 
 theorem rectRes_hasDerivAt_vert (c : ℂ) (t : ℝ) :
     HasDerivAt (fun y : ℝ => c + (y : ℂ) * I) I t := by
-  have h := ((Complex.ofRealCLM.hasDerivAt (x := t)).mul_const I).const_add c
-  simpa using h
+  simpa using ((Complex.ofRealCLM.hasDerivAt (x := t)).mul_const I).const_add c
 
 theorem rectInt_inv_sub (p : ℂ) (x0 x1 y0 y1 : ℝ) (h1 : x0 < p.re) (h2 : p.re < x1)
     (h3 : y0 < p.im) (h4 : p.im < y1) :
     rectInt (fun w => 1 / (w - p)) x0 x1 y0 y1 = 2 * (Real.pi : ℂ) * I := by
-  have E1 : ∫ x in x0..x1, 1 / ((x : ℂ) + (y0 : ℂ) * I - p) =
-      log ((x1 : ℂ) + (y0 : ℂ) * I - p) - log ((x0 : ℂ) + (y0 : ℂ) * I - p) := by
-    have h := rectRes_ftc_log (γ := fun x : ℝ => (x : ℂ) + ((y0 : ℂ) * I - p)) (d := 1)
+  have E : ∀ y : ℝ, y ≠ p.im → ∫ x in x0..x1, 1 / ((x : ℂ) + (y : ℂ) * I - p) =
+      log ((x1 : ℂ) + (y : ℂ) * I - p) - log ((x0 : ℂ) + (y : ℂ) * I - p) := by
+    intro y hy
+    have h := rectRes_ftc_log (γ := fun x : ℝ => (x : ℂ) + ((y : ℂ) * I - p)) (d := 1)
       (a := x0) (b := x1) (fun t => rectRes_hasDerivAt_horiz _ t)
-      (fun t _ => Complex.mem_slitPlane_iff.2 (Or.inr (by intro h'; simp at h'; linarith)))
-    simpa only [add_sub_assoc] using h
-  have E2 : ∫ x in x0..x1, 1 / ((x : ℂ) + (y1 : ℂ) * I - p) =
-      log ((x1 : ℂ) + (y1 : ℂ) * I - p) - log ((x0 : ℂ) + (y1 : ℂ) * I - p) := by
-    have h := rectRes_ftc_log (γ := fun x : ℝ => (x : ℂ) + ((y1 : ℂ) * I - p)) (d := 1)
-      (a := x0) (b := x1) (fun t => rectRes_hasDerivAt_horiz _ t)
-      (fun t _ => Complex.mem_slitPlane_iff.2 (Or.inr (by intro h'; simp at h'; linarith)))
+      (fun t _ => Complex.mem_slitPlane_iff.2
+        (Or.inr (by intro h'; simp at h'; exact hy (by linarith))))
     simpa only [add_sub_assoc] using h
   have E3 : I * ∫ y in y0..y1, 1 / ((x1 : ℂ) + (y : ℂ) * I - p) =
       log ((x1 : ℂ) + (y1 : ℂ) * I - p) - log ((x1 : ℂ) + (y0 : ℂ) * I - p) := by
     have h := rectRes_ftc_log (γ := fun y : ℝ => ((x1 : ℂ) - p) + (y : ℂ) * I) (d := I)
       (a := y0) (b := y1) (fun t => rectRes_hasDerivAt_vert _ t)
       (fun t _ => Complex.mem_slitPlane_iff.2 (Or.inl (by simp <;> linarith)))
-    rw [← intervalIntegral.integral_const_mul]
-    have e1 : (x1 : ℂ) + (y1 : ℂ) * I - p = ((x1 : ℂ) - p) + (y1 : ℂ) * I := by ring
-    have e0 : (x1 : ℂ) + (y0 : ℂ) * I - p = ((x1 : ℂ) - p) + (y0 : ℂ) * I := by ring
-    rw [e1, e0, ← h]
+    rw [← intervalIntegral.integral_const_mul, add_sub_right_comm, add_sub_right_comm, ← h]
     refine intervalIntegral.integral_congr (fun y _ => ?_)
     show I * (1 / ((x1 : ℂ) + (y : ℂ) * I - p)) = I / (((x1 : ℂ) - p) + (y : ℂ) * I)
     rw [mul_one_div]
@@ -114,10 +105,7 @@ theorem rectInt_inv_sub (p : ℂ) (x0 x1 y0 y1 : ℝ) (h1 : x0 < p.re) (h2 : p.r
     have h := rectRes_ftc_log (γ := fun y : ℝ => -(((x0 : ℂ) - p) + (y : ℂ) * I)) (d := -I)
       (a := y0) (b := y1) (fun t => (rectRes_hasDerivAt_vert _ t).neg)
       (fun t _ => Complex.mem_slitPlane_iff.2 (Or.inl (by simp <;> linarith)))
-    rw [← intervalIntegral.integral_const_mul]
-    have e1 : (x0 : ℂ) + (y1 : ℂ) * I - p = ((x0 : ℂ) - p) + (y1 : ℂ) * I := by ring
-    have e0 : (x0 : ℂ) + (y0 : ℂ) * I - p = ((x0 : ℂ) - p) + (y0 : ℂ) * I := by ring
-    rw [e1, e0, ← h]
+    rw [← intervalIntegral.integral_const_mul, add_sub_right_comm, add_sub_right_comm, ← h]
     refine intervalIntegral.integral_congr (fun y _ => ?_)
     show I * (1 / ((x0 : ℂ) + (y : ℂ) * I - p)) = -I / -(((x0 : ℂ) - p) + (y : ℂ) * I)
     rw [neg_div_neg_eq, mul_one_div]
@@ -129,7 +117,7 @@ theorem rectInt_inv_sub (p : ℂ) (x0 x1 y0 y1 : ℝ) (h1 : x0 < p.re) (h2 : p.r
     (by simp <;> linarith)
   unfold rectInt
   beta_reduce
-  rw [E1, E2, E3, E4]
+  rw [E y0 h3.ne, E y1 h4.ne', E3, E4]
   linear_combination P1 - P0
 
 theorem rectRes_edge (g G : ℂ → ℂ) (P : Finset ℂ) (b : ℂ → ℂ) (γ : ℝ → ℂ) (a c : ℝ)
@@ -156,8 +144,7 @@ theorem rectRes_edge (g G : ℂ → ℂ) (P : Finset ℂ) (b : ℂ → ℂ) (γ 
     _ = (∫ t in a..c, G (γ t)) + ∑ p ∈ P, b p * ∫ t in a..c, 1 / (γ t - p) := by
         rw [intervalIntegral.integral_finsetSum]
         · simp_rw [intervalIntegral.integral_const_mul]
-        · intro p hp
-          exact ((hcont p hp).intervalIntegrable).const_mul (b p)
+        · exact fun p hp => ((hcont p hp).intervalIntegrable).const_mul (b p)
 
 theorem rectRes_sum_combo (P : Finset ℂ) (b A B C D : ℂ → ℂ) :
     ∑ p ∈ P, b p * (A p - B p + I * C p - I * D p) =
@@ -176,8 +163,7 @@ theorem rectangle_residue : RectResidue := by
       = 0 := by
     have h := Complex.integral_boundary_rect_eq_zero_of_differentiableOn G ⟨x0, y0⟩ ⟨x1, y1⟩
       (hGd.mono hsub)
-    simp only [smul_eq_mul] at h
-    exact h
+    simpa only [smul_eq_mul] using h
   have eB := rectRes_edge g G P b (fun x : ℝ => (x : ℂ) + (y0 : ℂ) * I) x0 x1
     (Complex.continuous_ofReal.add continuous_const)
     (hGc.comp (Complex.continuous_ofReal.add continuous_const).continuousOn

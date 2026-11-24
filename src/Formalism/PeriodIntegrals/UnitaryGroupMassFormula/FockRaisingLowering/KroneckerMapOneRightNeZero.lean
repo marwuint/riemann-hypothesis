@@ -126,16 +126,10 @@ theorem kroneckerProperties : MatStep := by
     conjR_isPC, conjR_isPC, ?_, ?_⟩
   · rintro Z hZ ⟨a, b⟩ ⟨a', b'⟩ h
     obtain ⟨hz, rfl⟩ := kroneckerMap_one_right_ne_zero Z h
-    have hs : FockH1Action.sameBlock a a' := by
-      by_contra hn
-      exact hz (hZ a a' hn)
-    exact (linePos_left a a' b).2 hs
+    exact (linePos_left a a' b).2 (Classical.byContradiction fun hn => hz (hZ a a' hn))
   · rintro Z hZ ⟨a, b⟩ ⟨a', b'⟩ h
     obtain ⟨hz, rfl⟩ := kroneckerMap_one_left_ne_zero Z h
-    have hs : FockH1Action.sameBlock b b' := by
-      by_contra hn
-      exact hz (hZ b b' hn)
-    exact (linePos_right a b b').2 hs
+    exact (linePos_right a b b').2 (Classical.byContradiction fun hn => hz (hZ b b' hn))
   · rintro Z hZ ⟨a, b⟩ ⟨a', b'⟩ h heq
     obtain ⟨hz, rfl⟩ := kroneckerMap_one_right_ne_zero Z h
     exact hz (hZ a a' ((linePos_left a a' b).1 heq))
@@ -148,21 +142,17 @@ theorem kroneckerProperties : MatStep := by
     · subst hb
       have hn : ¬ FockH1Action.sameBlock a' a := fun hs => by
         have := (linePos_left a a' b).2 (sameBlock_symm hs)
-        rw [h1, h2] at this
-        simp at this
+        simp [h1, h2] at this
       simp [conjR_apply_of_not Z hn]
-    · have hb' : ¬ b' = b := fun e => hb e.symm
-      simp [hb, hb']
+    · simp [hb, Ne.symm hb]
   · rintro Z ⟨a, b⟩ ⟨a', b'⟩ h1 h2
     simp only [Matrix.kroneckerMap_apply, Matrix.one_apply]
     by_cases ha : a = a'
     · subst ha
       have hn : ¬ FockH1Action.sameBlock b' b := fun hs => by
         have := (linePos_right a b b').2 (sameBlock_symm hs)
-        rw [h1, h2] at this
-        simp at this
+        simp [h1, h2] at this
       simp [conjR_apply_of_not Z hn]
-    · have ha' : ¬ a' = a := fun e => ha e.symm
-      simp [ha, ha']
+    · simp [ha, Ne.symm ha]
 
 end FockRL

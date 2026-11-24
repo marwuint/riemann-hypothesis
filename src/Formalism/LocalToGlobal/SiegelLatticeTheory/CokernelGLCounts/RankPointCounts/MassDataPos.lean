@@ -228,9 +228,7 @@ theorem quotVolPosC_of {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (Y 
   obtain ⟨hN, hH⟩ := Formalism.L2.SG.Closed.VolPosC_holds D X Y u hK2
   obtain ⟨hN', hH'⟩ := Formalism.L2.SG.Closed.VolPosC_holds D X Y u' hK2
   refine ⟨hH, hH', ?_, ?_⟩
-  · show 0 < ((X.muN u) (Y.FN u)).toReal
-    exact pos_of_mul_pos_right hN hV.le
-  · show 0 < ((X.muN u') (Y.FN u')).toReal
-    exact pos_of_mul_pos_right hN' hV.le
+  · exact pos_of_mul_pos_right hN hV.le
+  · exact pos_of_mul_pos_right hN' hV.le
 
 end Formalism.L2.SG.Pf.MassDataPos

@@ -163,8 +163,7 @@ theorem lin_repr {σ ι : Type*} [Fintype σ] [Fintype ι] (k : ι → K) (e : �
   · simp
   · intro y _ hy
     simp [hy]
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+  · exact fun h => absurd (Finset.mem_univ _) h
 
 theorem subst_lin {σ τ ι : Type*} [Fintype ι] {a : σ → MvPowerSeries τ K} (ha : MvPowerSeries.HasSubst a)
     (k : ι → K) (f : ι → MvPowerSeries σ K) :
@@ -188,13 +187,10 @@ theorem dual' (i i' : Fin (n' / 2)) :
   have h1 : A * Bm = 1 := by
     refine Matrix.ext fun r r' => ?_
     rw [Matrix.mul_apply, Matrix.one_apply, ← B.dual r r']
-    apply Finset.sum_congr rfl
-    intro i _
-    exact (iterate_map_mul (sigW p) _ _ _).symm
+    exact Finset.sum_congr rfl (fun i _ => (iterate_map_mul (sigW p) _ _ _).symm)
   have h2 : Bm * A = 1 := mul_eq_one_comm.1 h1
   have h3 := congrFun (congrFun h2 i) i'
-  rw [Matrix.mul_apply, Matrix.one_apply] at h3
-  exact h3
+  rwa [Matrix.mul_apply, Matrix.one_apply] at h3
 
 theorem dualS (he : Even n') (s s' : Fin n') (hp : s.val % 2 = s'.val % 2) :
     ∑ r, (sigW p)^[s.val] (B.omS r) * (sigW p)^[s'.val] (B.om r) = if s = s' then 1 else 0 := by
@@ -364,8 +360,7 @@ theorem sum_parity {M : Type*} [AddCommMonoid M] {n' : ℕ} (he : Even n') (ε :
   obtain ⟨h, rfl⟩ := he
   refine Finset.sum_bij' (fun s _ => (⟨s.val / 2, by have := s.isLt; omega⟩ : Fin ((h + h) / 2)))
     (fun i _ => (⟨ε + 2 * i.val, by have := i.isLt; omega⟩ : Fin (h + h))) ?_ ?_ ?_ ?_ ?_
-  · intro s _
-    exact Finset.mem_univ _
+  · exact fun s _ => Finset.mem_univ _
   · intro i _
     rw [Finset.mem_filter, hP]
     exact ⟨Finset.mem_univ _, by show (ε + 2 * i.val) % 2 = ε; omega⟩
@@ -390,8 +385,7 @@ theorem dualT {n' : ℕ} (B : OmBasis p n') (he : Even n') (ε : ℕ) (hε : ε 
   rw [sum_parity he ε hε P hP (fun n => (sigW p)^[n] (B.om r) * (sigW p)^[n] (B.omS r'))]
   have h0 := congrArg ((sigW p)^[ε]) (B.dual r r')
 
-  rw [← RingHom.coe_pow, map_sum] at h0
-  rw [apply_ite (⇑((sigW p) ^ ε)), map_one, map_zero] at h0
+  rw [← RingHom.coe_pow, map_sum, apply_ite (⇑((sigW p) ^ ε)), map_one, map_zero] at h0
   rw [← h0]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [RingHom.coe_pow, ← Function.iterate_add_apply, iterate_map_mul]
@@ -413,8 +407,7 @@ theorem bc_same (v : X.Pl) (s : Fin (X.G.P.n' v)) (ab ab' : Fin (NN X.G.P.m X.t 
       simp only [Sigma.mk.injEq, heq_eq_eq, Prod.mk.injEq, true_and] at h
       exact hy h.symm
     simp [this]
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+  · exact fun h => absurd (Finset.mem_univ _) h
 
 theorem bc_ne (z z' : X.ZA j) (h : (⟨z.1, z.2.1⟩ : Σ v : X.Pl, Fin (X.G.P.n' v)) ≠ ⟨z'.1, z'.2.1⟩) :
     bc Kc φ z z' = 0 := by

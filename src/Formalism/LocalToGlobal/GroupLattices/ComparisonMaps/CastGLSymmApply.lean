@@ -151,8 +151,7 @@ theorem stab_iff (i : ClassSet H K') (g : Gp) (γ : G)
       have e : X.j g * ((X.j g)⁻¹ * ((y i)⁻¹ * γ * y i) * X.j g) * (X.j g)⁻¹ =
           (y i)⁻¹ * γ * y i := by group
       rwa [e] at h2
-    · intro h
-      exact K'.mul_mem (K'.mul_mem (K'.inv_mem hjg) h) hjg
+    · exact fun h => K'.mul_mem (K'.mul_mem (K'.inv_mem hjg) h) hjg
   rw [h1]
   simp only [map_mul, map_inv, X.pr_j, hp, inv_one, one_mul, mul_assoc]
 
@@ -253,14 +252,12 @@ theorem toF_symm_stab (I : LocId L p nV W Qq) {m : ℕ} (hk : m + 1 = R.k) (v : 
       intro a b
       rw [castGL_symm_apply, bcE_symm_apply]
       have := I.completion_integers_iff v ((I.eQ v).symm ((M : Matrix (Fin R.k) (Fin R.k) _) (Fin.cast hk a) (Fin.cast hk b)))
-      rw [RingEquiv.apply_symm_apply] at this
-      exact this
+      rwa [RingEquiv.apply_symm_apply] at this
     constructor
     · intro h a b
       have := (h1 (Fin.cast hk.symm a) (Fin.cast hk.symm b)).1 (h _ _)
       simpa using this
-    · intro h a b
-      exact (h1 a b).2 (h _ _)
+    · exact fun h a b => (h1 a b).2 (h _ _)
   have e : (frV I v)⁻¹ * X⁻¹ * frV I v = ((frV I v)⁻¹ * X * frV I v)⁻¹ := by group
   rw [key, e, key]
 

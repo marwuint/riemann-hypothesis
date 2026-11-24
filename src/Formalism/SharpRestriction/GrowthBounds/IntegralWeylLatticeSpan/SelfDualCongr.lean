@@ -142,8 +142,7 @@ theorem gramW_gen (S : StepLevel F E σ J T f bad) (A : LocAt F E n G) (hW : Loc
     refine (IsUnit.mul ?_ hJ).mul ((Matrix.isUnit_iff_isUnit_det _).1 B'.isUnit)
     have h0 := (Matrix.isUnit_iff_isUnit_det _).1 (bc (σ : E →+* E) B').isUnit
     show IsUnit (((bc (σ : E →+* E) B' : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)ᵀ).det
-    rw [Matrix.det_transpose]
-    exact h0
+    rwa [Matrix.det_transpose]
   have key : ∀ x : E, inclE (F := F) ((A.pl v).1.adicCompletion F) x ∈ intV E (A.pl v).1 →
       A.iw v x ∈ Set.range (algebraMap (G.P.W v) (G.P.Qq v)) := by
     intro x hx
@@ -173,8 +172,7 @@ theorem frlat_re {k : ℕ} (hk : k = n) (v : HeightOneSpectrum (𝓞 F))
     constructor
     · rintro ⟨y, hy, rfl⟩; exact hy
     · intro hx; exact ⟨x, hx, rfl⟩
-  rw [e1, reGL_rfl]
-  exact h
+  rwa [e1, reGL_rfl]
 
 end Gen
 
@@ -206,8 +204,7 @@ theorem lcInt_of_cls {u : D.what₂.Word} {i : ℕ} {hi : i ≤ D.R.m} (K : ClsT
   apply Submodule.subset_span
   intro x' hx'
   have hglob : ∀ z ∈ clsCrd D u i hi c, z ∈ Formalism.UG.CS.globLat (K.y c).1 K.lev.Lb := by
-    intro z hz
-    exact (K.y_lat c _).1 (Submodule.subset_span ⟨z, hz, rfl⟩)
+    exact fun z hz => (K.y_lat c _).1 (Submodule.subset_span ⟨z, hz, rfl⟩)
   have hm : ∀ a ∈ K.lev.Lb, ∀ b ∈ K.lev.Lb,
       IsIntegral ℤ (((1 : ℤ) : D.host.E) * Formalism.UG.hform (sigD D : D.host.E →+* D.host.E) (gramN D i hi) a b) := by
     intro a ha b hb
@@ -225,8 +222,7 @@ theorem hle_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) (c
       x ∈ dualSet (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)) (clsCrd D u 0 (Nat.zero_le _) c) := by
   intro x hx
   have h := lcInt_of_cls (T u).cls0 c hx
-  rw [← SetLike.mem_coe, Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwG_Ld_coe] at h
-  exact h
+  rwa [← SetLike.mem_coe, Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwG_Ld_coe] at h
 
 
 

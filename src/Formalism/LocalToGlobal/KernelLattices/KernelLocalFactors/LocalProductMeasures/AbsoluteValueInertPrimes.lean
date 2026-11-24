@@ -67,8 +67,7 @@ theorem ab_one_mul {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : OneAt P a) (
   have e : a * b - 1 = a * (b - 1) + (a - 1) := by ring
   rw [e]
   refine lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt ?_ ha)
-  rw [map_mul, ab_one_val ha, one_mul]
-  exact hb
+  rwa [map_mul, ab_one_val ha, one_mul]
 
 theorem ab_one_inv {P : HeightOneSpectrum (𝓞 E)} {a : E} (ha : OneAt P a) : OneAt P a⁻¹ := by
   have h1 := ab_one_val ha
@@ -78,8 +77,7 @@ theorem ab_one_inv {P : HeightOneSpectrum (𝓞 E)} {a : E} (ha : OneAt P a) : O
     exact zero_ne_one h1
   unfold OneAt
   have e : a⁻¹ - 1 = -(a - 1) * a⁻¹ := by field_simp; ring
-  rw [e, map_mul, Valuation.map_neg, map_inv₀, h1, inv_one, mul_one]
-  exact ha
+  rwa [e, map_mul, Valuation.map_neg, map_inv₀, h1, inv_one, mul_one]
 
 theorem ab_one_div {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : OneAt P a) (hb : OneAt P b) : OneAt P (a / b) := by
   rw [div_eq_mul_inv]
@@ -88,8 +86,7 @@ theorem ab_one_div {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : OneAt P a) (
 theorem ab_one_of_mem {P : HeightOneSpectrum (𝓞 E)} {b : 𝓞 E} (h : b - 1 ∈ P.asIdeal) : OneAt P (b : E) := by
   unfold OneAt
   have : P.valuation E (algebraMap (𝓞 E) E (b - 1)) < 1 := (P.valuation_lt_one_iff_mem (K := E) (b - 1)).2 h
-  rw [map_sub, map_one] at this
-  exact this
+  rwa [map_sub, map_one] at this
 
 theorem ab_int_exp (P : HeightOneSpectrum (𝓞 E)) {r : 𝓞 E} (hr : r ≠ 0) : ∃ k : ℕ, P.intValuation r = WithZero.exp (-(k : ℤ)) :=
   ⟨_, P.intValuation_if_neg hr⟩
@@ -189,8 +186,7 @@ theorem ab_pow_conj (P : HeightOneSpectrum (𝓞 E)) (k : ℕ) {r : 𝓞 E} (h :
   have h1 : P.asIdeal.map (cO E) ≤ (conjPrime₂ P).asIdeal := by
     rw [Ideal.map_le_iff_le_comap]
     intro p hp
-    rw [Ideal.mem_comap, mem_conjP, cO_cO]
-    exact hp
+    rwa [Ideal.mem_comap, mem_conjP, cO_cO]
   have h2 : cO E r ∈ (P.asIdeal ^ k).map (cO E) := Ideal.mem_map_of_mem _ h
   rw [Ideal.map_pow] at h2
   exact Ideal.pow_right_mono h1 k h2
@@ -216,8 +212,7 @@ theorem ab_val_star (P : HeightOneSpectrum (𝓞 E)) (a : E) : (conjPrime₂ P).
 theorem ab_one_star {P : HeightOneSpectrum (𝓞 E)} {a : E} (h : OneAt P a) : OneAt (conjPrime₂ P) (star a) := by
   unfold OneAt at *
   have e : star a - 1 = star (a - 1) := by rw [star_sub, star_one]
-  rw [e, ab_val_star]
-  exact h
+  rwa [e, ab_val_star]
 
 theorem ab_one_star' {P : HeightOneSpectrum (𝓞 E)} {a : E} (h : OneAt (conjPrime₂ P) a) : OneAt P (star a) := by
   have := ab_one_star h
@@ -248,9 +243,7 @@ theorem ab_norm_int (hX : X.Ok) (a : 𝓞 X.E) : ∃ k : 𝓞 X.F, algebraMap (�
       rw [hk]
       exact RingOfIntegers.isIntegral_coe _
     exact (isIntegral_algebraMap_iff ).1 h2
-  refine ⟨⟨k, hint⟩, ?_⟩
-  apply RingOfIntegers.ext
-  exact hk
+  exact ⟨⟨k, hint⟩, RingOfIntegers.ext hk⟩
 
 theorem local_factor_over_two : OverTwo := by
   intro X hX P P' h
@@ -263,10 +256,8 @@ theorem local_factor_over_two : OverTwo := by
     by_cases c1 : s1 ∈ (conjPrime₂ P).asIdeal
     · by_cases c2 : s2 ∈ P.asIdeal
       · refine ⟨s1 + s2, Ideal.add_mem _ hs1 hs2, ?_, ?_⟩
-        · intro hm
-          exact hs1' ((Ideal.add_mem_iff_left _ c2).1 hm)
-        · intro hm
-          exact hs2' ((Ideal.add_mem_iff_right _ c1).1 hm)
+        · exact fun hm => hs1' ((Ideal.add_mem_iff_left _ c2).1 hm)
+        · exact fun hm => hs2' ((Ideal.add_mem_iff_right _ c1).1 hm)
       · exact ⟨s2, hs2, c2, hs2'⟩
     · exact ⟨s1, hs1, hs1', c1⟩
   obtain ⟨k, hk⟩ := ab_norm_int X hX a
@@ -384,8 +375,7 @@ theorem absolute_value_inert_primes : AbsInert := by
     rw [← WithZero.exp_add, ← WithZero.exp_zero]
     congr 1
     simp
-  rw [map_mul, map_zpow, hL.trivF v _, one_zpow, mul_one] at h1
-  exact h1
+  rwa [map_mul, map_zpow, hL.trivF v _, one_zpow, mul_one] at h1
 
 end Main
 

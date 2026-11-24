@@ -93,8 +93,7 @@ theorem torsFreeT : TorsFreeT := by
     rw [algebraMap_smul]
     exact h.2
   have h3 := (finiteCocycles PD ρ).smul_mem (algebraMap O LL a)⁻¹ h2
-  rw [inv_smul_smul₀ ha] at h3
-  exact h3
+  rwa [inv_smul_smul₀ ha] at h3
 
 theorem cocyclesFunctorial_holds : CocyclesFunctorial := by
   intro G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ V V' _ _ _ _ _ _ _ _ ρ ρ'
@@ -142,8 +141,7 @@ theorem colZero_iff_galois [TopologicalSpace V] [ContinuousAdd V] [ContinuousCon
   unfold LatHom.col LatHom.LiftF
   rw [Module.length_eq_zero_iff, Submodule.Quotient.subsingleton_iff,
     Submodule.comap_subtype_eq_top]
-  simp only [pow_zero, one_smul]
-  exact ⟨fun h c hc => h hc, fun h c hc => h c hc⟩
+  simpa only [pow_zero, one_smul] using ⟨fun h c hc => h hc, fun h c hc => h c hc⟩
 
 theorem imF_le_galois [TopologicalSpace V] [IsTopologicalAddGroup V] [ContinuousConstSMul LL V]
     [TopologicalSpace V'] [IsTopologicalAddGroup V'] [ContinuousConstSMul LL V']
@@ -152,9 +150,7 @@ theorem imF_le_galois [TopologicalSpace V] [IsTopologicalAddGroup V] [Continuous
   refine sup_le (Submodule.map_le_iff_le_comap.mpr fun c hc => F.post_Z1fT PD c hc) ?_
   rintro c ⟨x, hx, rfl⟩
   have hf : cob ρ' x ∈ finiteCocycles PD ρ' := coboundaryMap_mem_finiteCocycles hcont x
-  refine ⟨⟨hf.1, ?_⟩, hf⟩
-  intro g _
-  exact L'.T.sub_mem (L'.stable g x hx) hx
+  exact ⟨⟨hf.1, fun g _ => L'.T.sub_mem (L'.stable g x hx) hx⟩, hf⟩
 
 end ImGalois
 

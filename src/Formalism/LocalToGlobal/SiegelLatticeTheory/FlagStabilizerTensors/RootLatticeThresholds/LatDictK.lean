@@ -82,8 +82,7 @@ theorem dict_K (a b : X.B.I.Gf) (S : Set (VS D).V)
     rw [e]
     exact (ha _).symm.trans (hb _)
   obtain ⟨k, hk, hkeq⟩ := PIW.AdelClassFin.lattice_map_injective X.B.I a b hL
-  rw [hkeq, ← mul_assoc, inv_mul_cancel, one_mul]
-  exact hk
+  rwa [hkeq, ← mul_assoc, inv_mul_cancel, one_mul]
 
 end DictK
 
@@ -156,13 +155,11 @@ theorem termK {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) 
         · rintro ⟨z, hz, hzy⟩
           have : t.lin.symm y = z := by rw [← hzy]; simp
           rw [this]; exact hz
-        · intro h
-          exact ⟨t.lin.symm y, h, by simp⟩
+        · exact fun h => ⟨t.lin.symm y, h, by simp⟩
       have hlat : ∀ w, w ∈ t.lam' ↔ X.B.I.fmat ((cs'.h (cs'.base t.lam') : X.B.I.Gf) * X.xu u')⁻¹ *ᵥ
           incl X.B.I (X.crd w) ∈ X.B.I.Lf := fun w => by
         have := cs'.lat_eq (cs'.base t.lam') w
-        rw [hb1] at this
-        exact this
+        rwa [hb1] at this
       rw [e1, hlat, show (t.pt.2 * ((cs'.h (cs'.base t.lam') : X.B.I.Gf) * X.xu u'))⁻¹ =
           ((cs'.h (cs'.base t.lam') : X.B.I.Gf) * X.xu u')⁻¹ * t.pt.2⁻¹ from _root_.mul_inv_rev _ _,
         fmatK_mul, ← mulVec_mulVec, ratLink_incl_inv X hRL']
@@ -170,8 +167,7 @@ theorem termK {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) 
       ((cs.h (cs.base t.lam) : X.B.I.Gf) * X.xu u)⁻¹ *
         (t.pt.2 * ((cs'.h (cs'.base t.lam') : X.B.I.Gf) * X.xu u')) := by
     simp only [kOf, mul_assoc]
-  rw [e]
-  exact key
+  rwa [e]
 
 end DictKMain2
 
@@ -215,8 +211,7 @@ theorem modGAt : Formalism.L2.SG.NormCut.ModGAt X := by
   have hg : X.B.g = gS D := X.g_eq
   obtain ⟨m, hm0, hm⟩ := PIW.AdelClassFin.lattice_denominator X.B.I (X.B.I.fmat g1⁻¹ *ᵥ incl X.B.I (X.crd v))
   have hmv : m • v ∈ Λ := by
-    rw [hΛ, crd_nsmul, incl_nsmul, mulVec_smul]
-    exact hm
+    rwa [hΛ, crd_nsmul, incl_nsmul, mulVec_smul]
   obtain ⟨c, d, hmcd, hcop, hdg⟩ := nat_split X.B.g m hm0
   have hcv : c • v ∈ Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ := by
     apply mem_of_loc

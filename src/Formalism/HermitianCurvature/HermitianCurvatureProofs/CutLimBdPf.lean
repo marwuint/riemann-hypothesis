@@ -97,12 +97,10 @@ theorem good_finsum {T : (B.Mat k r → E) → B.Mat k r → E} (hT : Qx2.Good k
     intro x hx
     have h0 := hT.lin (fun _ => 0) (fun _ => 0) (-1) hz hz x hx
     simp only [smul_zero, add_zero] at h0
-    rw [neg_one_smul, add_neg_cancel] at h0
-    exact h0
+    rwa [neg_one_smul, add_neg_cancel] at h0
   induction s using Finset.induction_on with
   | empty =>
-    simp only [Finset.sum_empty]
-    exact ⟨hz, hT0⟩
+    simpa only [Finset.sum_empty] using ⟨hz, hT0⟩
   | @insert i s hi ih =>
     have e : (fun y => ∑ j ∈ insert i s, c j • h j y) = (fun y => (∑ j ∈ s, c j • h j y) + c i • h i y) := by
       funext y
@@ -255,10 +253,8 @@ theorem limBd_of_eigStr (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.
     rw [beta_sum_left p.T.base hA d h hcc hSum]
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [beta_sum_right p.T.base hA h hcc (hcc i), Finset.sum_eq_single i]
-    · intro j _ hji
-      exact horth i j (Ne.symm hji)
-    · intro hi
-      exact absurd (Finset.mem_univ i) hi
+    · exact fun j _ hji => horth i j (Ne.symm hji)
+    · exact fun hi => absurd (Finset.mem_univ i) hi
   rw [hRR, hBF, hexp, hexp]
   have hcn : ∀ i, ‖c i‖ ≤ TBB.normC nn w := by
     intro i

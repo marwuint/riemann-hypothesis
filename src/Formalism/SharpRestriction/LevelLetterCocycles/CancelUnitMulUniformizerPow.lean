@@ -75,8 +75,7 @@ def GoodZ (T : LocLat G Qp LL O) (c : ZMod n) (j y M σ : ℕ) (Z τ : W.DD T) :
       (Formalism.MainNotions.ArcLiftingSetup.lA W ^ κ' • (Formalism.MainNotions.ArcLiftingSetup.lA W ^ κ • τ - Formalism.MainNotions.ArcLiftingSetup.lA W ^ σ • ((W.φD T) ^ j) S))
 
 theorem good_iff (T : LocLat G Qp LL O) (c : ZMod n) (j y M σ : ℕ) (w τ : W.DD T) :
-    Good W T c j y M σ w τ ↔ GoodZ W T c j y M σ (W.γ T w - w) τ := by
-  exact Iff.rfl
+    Good W T c j y M σ w τ ↔ GoodZ W T c j y M σ (W.γ T w - w) τ := Iff.rfl
 
 theorem goodZ_map {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (hT : IsCrys PD T.ρ)
     (hT' : IsCrys PD T'.ρ) (c : ZMod n) (j y M σ : ℕ)
@@ -263,8 +262,7 @@ theorem uniformizer_isUnit_etale (hw : ∃ w : (LetA O n)ˣ, W.π₀ = (w : LetA
 theorem cancel_unit_mul_uniformizer_pow (hu : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) (T : LocLat G Qp LL O) (k : ℕ)
     {x : W.DD T} (h : W.π₀ ^ k • x = 0) : x = 0 := by
   have h2 : (algebraMap (LetA O n) W.EE W.π₀ ^ k) • x = 0 := by
-    rw [← map_pow, algebraMap_smul]
-    exact h
+    rwa [← map_pow, algebraMap_smul]
   exact ((hu.pow k).smul_eq_zero).mp h2
 
 theorem win_ext (A : ArcP n) {T₂ Y : LocLat G Qp LL O} {ι : LatHom T₂.L Y.L} {π : LatHom Y.L W.one.L}
@@ -312,12 +310,10 @@ theorem letE_of_Nl {T : LocLat G Qp LL O} {c : ZMod n} {x : W.DD T} (hx : x ∈ 
 theorem N_of_Nl {T : LocLat G Qp LL O} {c : ZMod n} {x : W.DD T} (hx : x ∈ W.Nl T c) : x ∈ W.N T := by
   unfold Formalism.BasicNotions.LocWach.Nl at hx
   obtain ⟨y, hy, rfl⟩ := Submodule.mem_map.mp hx
-  simp only [LinearMap.smul_apply, LinearMap.id_apply]
-  exact Submodule.smul_mem _ _ hy
+  simpa only [LinearMap.smul_apply, LinearMap.id_apply] using Submodule.smul_mem _ _ hy
 
 theorem γD_Nl {T : LocLat G Qp LL O} {c : ZMod n} (g : W.Gam) {x : W.DD T} (hx : x ∈ W.Nl T c) :
-    W.γD T g x ∈ W.Nl T c := by
-  exact Formalism.MainNotions.LiftingTheory.gammaD_mem_letter W T g c x hx
+    W.γD T g x ∈ W.Nl T c := Formalism.MainNotions.LiftingTheory.gammaD_mem_letter W T g c x hx
 
 theorem finrank_one_lat [IsDomain O] (hinj : Function.Injective (algebraMap O LL)) :
     Module.finrank O ↥W.one.L.T = 1 := by
@@ -459,8 +455,7 @@ theorem pp_pull [NeZero n] [IsDomain O] (hinj : Function.Injective (algebraMap O
     PhiPowers.φD_pow_letter W Y c y (Relay2.InNΔi_letter W Y c hy) e'
   rw [← hyl, smul_smul, hθ, zero_smul, sub_zero] at h₂
   have hxv : (W.φA ^ e') g • x = v := inj _ _ (by rw [Relay2.mapA_smul]; exact h₂)
-  rw [hxv]
-  exact hv
+  rwa [hxv]
 
 theorem cutData_of [NeZero n] [IsDomain O] (hinj : Function.Injective (algebraMap O LL))
     (hO2 : ∀ x : LL, 0 ≤ v x → ∃ o : O, algebraMap O LL o = x)
@@ -555,8 +550,7 @@ theorem cutData_of [NeZero n] [IsDomain O] (hinj : Function.Injective (algebraMa
       exact Relay2.Pp_smul W T₂ c e' hu'Δ _ h2
     obtain ⟨y, hy, hyz⟩ := hSP hCA T₂ c e' 1 _ hT₂c (Submonoid.one_mem _) hf' z hfx
       ⟨rr, lA W ^ rr • z, h1, (one_smul _ _).symm⟩
-    rw [hyz, one_smul]
-    exact hy
+    rwa [hyz, one_smul]
 
   have hloc : ∀ c : ZMod n, ∃ (x : W.DD Y) (u' τ m : W.DD T₂), c ∈ A.cuts →
       (Formalism.MainNotions.LiftingTheory.InNΔi W Y c x ∧
@@ -623,8 +617,7 @@ theorem cutData_of [NeZero n] [IsDomain O] (hinj : Function.Injective (algebraMa
 
     have hGY : Relay2.Good W Y c A.j (2 * A.G₀) (A.M PD.p) (A.σ PD.p) x (W.map ι τ) := by
       have := Relay2.goodZ_map W ι hT₂c hY c A.j _ _ _ hG
-      rw [hu'x] at this
-      exact this
+      rwa [hu'x] at this
     have hτY : InFP W Y c A.j W.π₀ (W.map ι τ) := Relay2.inMultiple_map W ι hT₂c hY c A.j _ hτ
     have hx''i : Formalism.MainNotions.LiftingTheory.InNΔi W Y c x'' := Relay2.InNΔi_of W Y c hx''N hx''c
     have hTrY := Relay2.mkTr W hinj hO2 h9 hH hTr hCA Y hY A hM c ⟨x'', hx''i, hx''⟩ hτY hGY

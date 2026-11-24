@@ -177,8 +177,7 @@ theorem sizeMu_of (h1 : PlLat) : SizeMu := by
       obtain ⟨-, hrkR, -⟩ := h1 K V ι b X hX R hRfg
       have hpos : (0 : ℝ) < rk ρ R := by rw [hrkR, hnf]; push_cast; positivity
       show deg ρ R / (rk ρ R : ℝ) ≤ _
-      rw [div_le_iff₀ hpos]
-      exact h
+      rwa [div_le_iff₀ hpos]
     unfold leastSize
     apply IsLeast.csInf_eq
     refine ⟨⟨N, hNs.1, hN0, ?_⟩, ?_⟩
@@ -200,8 +199,7 @@ theorem sizeMu_of (h1 : PlLat) : SizeMu := by
     rw [hset]
     refine (Antitone.map_csInf_of_continuousAt (f := fun s => Real.exp (c - s)) ?_ ?_ ?_ ?_).symm
     · exact (Real.continuous_exp.comp (continuous_const.sub continuous_id)).continuousAt
-    · intro a a' haa
-      exact Real.exp_le_exp.2 (by linarith)
+    · exact fun a a' haa => Real.exp_le_exp.2 (by linarith)
     · exact ⟨_, ⊥, hSB.2.2.2.2.2.1, fun h => hL0 h.symm, rfl⟩
     · refine ⟨muMin ρ L, ?_⟩
       rintro t ⟨S, hS, hSL, rfl⟩
@@ -209,8 +207,7 @@ theorem sizeMu_of (h1 : PlLat) : SizeMu := by
       obtain ⟨hqrk, hSle, hqdeg⟩ := hSB.2.2.2.2.2.2.2 S hS
       have hlt : (rk ρ S : ℝ) < rk ρ L := by exact_mod_cast hlt_of S hS hSL
       show _ ≤ Formalism.F.deg _ / (Formalism.F.rk _ : ℝ)
-      rw [hqrk, hqdeg, Nat.cast_sub hSle, le_div_iff₀ (by linarith)]
-      exact h
+      rwa [hqrk, hqdeg, Nat.cast_sub hSle, le_div_iff₀ (by linarith)]
   ·
     intro L' hLL' hL'fg hrk'
     obtain ⟨hlat', hrkL', -⟩ := h1 K V ι b X hX L' hL'fg
@@ -220,7 +217,6 @@ theorem sizeMu_of (h1 : PlLat) : SizeMu := by
     exact _root_.Formalism.F.covol_anti_same_rank _ (zl ρ L) (zl ρ L') hlat'.2 (_root_.Formalism.HN.satBasic_zl_mono ρ hLL')
       (by show rk ρ L = rk ρ L'; rw [hrkL, hrkL', hrk'])
 
-theorem size_maximal_slope : SizeMu := by
-  exact sizeMu_of place_lattice_structure
+theorem size_maximal_slope : SizeMu := sizeMu_of place_lattice_structure
 
 end Formalism.HN

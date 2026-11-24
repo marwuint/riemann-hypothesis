@@ -412,20 +412,14 @@ theorem step (hU : PsUnitE W) (hC : PsCoprime W) (hG : LevGrad W) (hS : PsStable
   set ρn := ∏ t ∈ Finset.range ell, r t ^ (α t).toNat
   set ρd := ∏ t ∈ Finset.range ell, r' t ^ (-(α t)).toNat
   set ΓA := W.γA W.gam ^ (PD.p ^ ell)
-  have haev : Polynomial.aeval ((W.γE W.gam).toLinearMap : Module.End O W.EE) (Polynomial.X ^ (PD.p ^ ell) - Polynomial.C c) f =
-      (W.γE W.gam ^ (PD.p ^ ell)) f - ιE cA * f := by
-    rw [map_sub, Polynomial.aeval_X_pow, Polynomial.aeval_C, LinearMap.sub_apply, toLin_pow_apply,
-      Module.algebraMap_end_apply, smul_eq_ι]
   have key : ιE (denI W ell α) * ((W.γE W.gam ^ (PD.p ^ ell)) f - ιE cA * f) =
       ιE (letE a * numI W ell α * (ρd * ρn * ΓA u - cA * u)) := by
     rw [mul_sub, htr, mul_left_comm (ιE (denI W ell α)) (ιE cA) f, hfu', ← map_mul, ← map_sub]; congr 1; ring
 
-  have hps := ps_mem W hπ
-  have hl := lA_mem W
   have hGs := hG ell s hs
   have cong_t : ∀ t, t ≠ s → Cong W s (r t) 1 ∧ Cong W s (r' t) 1 := by
     intro t hts
-    obtain ⟨h1, hh1, e1⟩ := hGs.1 (ps W t) (hps t)
+    obtain ⟨h1, hh1, e1⟩ := hGs.1 (ps W t) (ps_mem W hπ t)
     rw [hσ t] at e1
     obtain ⟨κ, x, hx, y, hy, e2⟩ := hC s t (Ne.symm hts)
     have E3 : lA W ^ κ * (r t - 1) = ps W s * (x * (r t - 1) + y * h1) := by
@@ -447,47 +441,46 @@ theorem step (hU : PsUnitE W) (hC : PsCoprime W) (hG : LevGrad W) (hS : PsStable
     rw [hσ s] at e2
     have E4 : r s - χA = ps W s * h2 :=
       cancel_ps W hU s (by linear_combination e2)
-    refine ⟨⟨0, h2, hh2, by rw [pow_zero, one_mul]; exact E4⟩,
+    refine ⟨⟨0, h2, hh2, by simpa using E4⟩,
       ⟨0, -(r' s) * χiA * h2, Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Subalgebra.neg_mem _ (hr' s)) hχim) hh2, ?_⟩⟩
     rw [pow_zero, one_mul]
     linear_combination (-(r' s) * χiA) * E4 + χiA * hrr s - r' s * hχ
-  have hms : s ∈ Finset.range ell := Finset.mem_range.2 hs
-  have congN : Cong W s ρn (χA ^ (α s).toNat) := by
-    have h0 : Cong W s (∏ t ∈ (Finset.range ell).erase s, r t ^ (α t).toNat)
-        (∏ t ∈ (Finset.range ell).erase s, (1 : LetA O n) ^ (α t).toNat) :=
-      cong_prod W _ _ _ (fun t => Subalgebra.pow_mem _ (hr t) _) (fun t => Subalgebra.pow_mem _ (Subalgebra.one_mem _) _)
-        fun t ht => cong_pow W (hr t) (Subalgebra.one_mem _) (cong_t t (Finset.ne_of_mem_erase ht)).1 _
-    have := cong_mul W (Subalgebra.pow_mem _ (hr s) _) (Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (Subalgebra.one_mem _) _)
-      (cong_pow W (hr s) hχm cong_s.1 (α s).toNat) h0
-    have e := Finset.mul_prod_erase (Finset.range ell) (fun t => r t ^ (α t).toNat) hms
-    rw [e] at this
+  have congP : ∀ (ρ : ℕ → LetA O n) (e : ℕ → ℕ) (χ : LetA O n), (∀ t, ρ t ∈ W.AΔ) → χ ∈ W.AΔ →
+      (∀ t, t ≠ s → Cong W s (ρ t) 1) → Cong W s (ρ s) χ →
+      Cong W s (∏ t ∈ Finset.range ell, ρ t ^ e t) (χ ^ e s) := by
+    intro ρ e χ hρ hχ h1 h2
+    have h0 : Cong W s (∏ t ∈ (Finset.range ell).erase s, ρ t ^ e t)
+        (∏ t ∈ (Finset.range ell).erase s, (1 : LetA O n) ^ e t) :=
+      cong_prod W _ _ _ (fun t => Subalgebra.pow_mem _ (hρ t) _)
+        (fun t => Subalgebra.pow_mem _ (Subalgebra.one_mem _) _)
+        fun t ht => cong_pow W (hρ t) (Subalgebra.one_mem _) (h1 t (Finset.ne_of_mem_erase ht)) _
+    have := cong_mul W (Subalgebra.pow_mem _ (hρ s) _)
+      (Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (Subalgebra.one_mem _) _)
+      (cong_pow W (hρ s) hχ h2 (e s)) h0
+    rw [Finset.mul_prod_erase (Finset.range ell) (fun t => ρ t ^ e t)
+      (Finset.mem_range.2 hs)] at this
     exact cong_of_eq W this (by simp)
-  have congD : Cong W s ρd (χiA ^ (-(α s)).toNat) := by
-    have h0 : Cong W s (∏ t ∈ (Finset.range ell).erase s, r' t ^ (-(α t)).toNat)
-        (∏ t ∈ (Finset.range ell).erase s, (1 : LetA O n) ^ (-(α t)).toNat) :=
-      cong_prod W _ _ _ (fun t => Subalgebra.pow_mem _ (hr' t) _) (fun t => Subalgebra.pow_mem _ (Subalgebra.one_mem _) _)
-        fun t ht => cong_pow W (hr' t) (Subalgebra.one_mem _) (cong_t t (Finset.ne_of_mem_erase ht)).2 _
-    have := cong_mul W (Subalgebra.pow_mem _ (hr' s) _) (Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (Subalgebra.one_mem _) _)
-      (cong_pow W (hr' s) hχim cong_s.2 (-(α s)).toNat) h0
-    have e := Finset.mul_prod_erase (Finset.range ell) (fun t => r' t ^ (-(α t)).toNat) hms
-    rw [e] at this
-    exact cong_of_eq W this (by simp)
-  have hρn : ρn ∈ W.AΔ := Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (hr t) _
   have hρd : ρd ∈ W.AΔ := Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (hr' t) _
   have congU : Cong W s (ΓA u) u := by
     obtain ⟨h, hh, e⟩ := hGs.1 u hu
-    exact ⟨0, h, hh, by rw [pow_zero, one_mul]; exact e⟩
-  have congAll : Cong W s (ρd * ρn * ΓA u) (cA * u) := by
-    have h1 := cong_mul W hρd (Subalgebra.pow_mem _ hχm _) congD congN
-    have h2 := cong_mul W (Subalgebra.mul_mem _ hρd hρn) hu h1 congU
+    exact ⟨0, h, hh, by rwa [pow_zero, one_mul]⟩
+  obtain ⟨κ, h, hh, eh⟩ : Cong W s (ρd * ρn * ΓA u) (cA * u) := by
+    have h1 := cong_mul W hρd (Subalgebra.pow_mem _ hχm _)
+      (congP r' (fun t => (-(α t)).toNat) χiA hr' hχim (fun t ht => (cong_t t ht).2) cong_s.2)
+      (congP r (fun t => (α t).toNat) χA hr hχm (fun t ht => (cong_t t ht).1) cong_s.1)
+    have h2 := cong_mul W (Subalgebra.mul_mem _ hρd
+      (Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (hr t) _)) hu h1 congU
     refine cong_of_eq W h2 ?_
-    have : χiA ^ (-(α s)).toNat * χA ^ (α s).toNat = cA := by
-      simp only [χiA, χA, cA, hc, ← map_pow, ← map_mul]
-      rw [chi_pow_eq]
-    rw [this]
-  obtain ⟨κ, h, hh, eh⟩ := congAll
+    congr 1
+    simp only [χiA, χA, cA, hc, ← map_pow, ← map_mul]
+    rw [chi_pow_eq]
   refine ⟨κ, ?_⟩
-  rw [haev]
+  rw [map_sub, Polynomial.aeval_X_pow, Polynomial.aeval_C, LinearMap.sub_apply, toLin_pow_apply,
+    Module.algebraMap_end_apply, smul_eq_ι]
+  refine ⟨h, hh, ?_⟩
+  show ιE (denI W ell (Function.update α s (α s + 1))) *
+      (lE W κ * ((W.γE W.gam ^ (PD.p ^ ell)) f - ιE cA * f)) =
+    ιE (letE a * numI W ell (Function.update α s (α s + 1)) * h)
   obtain ⟨R, hR1, hR2⟩ := prod_update (ps W) (fun z : ℤ => z.toNat) ell α hs (α s + 1)
   obtain ⟨R', hR1', hR2'⟩ := prod_update (ps W) (fun z : ℤ => (-z).toNat) ell α hs (α s + 1)
   rcases le_or_gt 0 (α s) with hpos | hneg
@@ -495,9 +488,6 @@ theorem step (hU : PsUnitE W) (hC : PsCoprime W) (hG : LevGrad W) (hS : PsStable
     have t1 : (α s + 1).toNat = (α s).toNat + 1 := by omega
     have t2 : (-(α s + 1)).toNat = 0 := by omega
     have t3 : (-(α s)).toNat = 0 := by omega
-    refine ⟨h, hh, ?_⟩
-    show ιE (denI W ell (Function.update α s (α s + 1))) * (lE W κ * ((W.γE W.gam ^ (PD.p ^ ell)) f - ιE cA * f)) =
-      ιE (letE a * numI W ell (Function.update α s (α s + 1)) * h)
     have hnum : numI W ell (Function.update α s (α s + 1)) = numI W ell α * ps W s := by
       simp only [numI]; rw [hR1, hR2, t1, pow_succ]; ring
     have hden : denI W ell (Function.update α s (α s + 1)) = denI W ell α := by
@@ -509,9 +499,6 @@ theorem step (hU : PsUnitE W) (hC : PsCoprime W) (hG : LevGrad W) (hS : PsStable
     have t1 : (α s + 1).toNat = 0 := by omega
     have t0 : (α s).toNat = 0 := by omega
     have t2 : (-(α s)).toNat = (-(α s + 1)).toNat + 1 := by omega
-    refine ⟨h, hh, ?_⟩
-    show ιE (denI W ell (Function.update α s (α s + 1))) * (lE W κ * ((W.γE W.gam ^ (PD.p ^ ell)) f - ιE cA * f)) =
-      ιE (letE a * numI W ell (Function.update α s (α s + 1)) * h)
     have hnum : numI W ell (Function.update α s (α s + 1)) = numI W ell α := by
       simp only [numI]; rw [hR1, hR2, t1, t0]
     have hden : denI W ell α = ps W s * denI W ell (Function.update α s (α s + 1)) := by

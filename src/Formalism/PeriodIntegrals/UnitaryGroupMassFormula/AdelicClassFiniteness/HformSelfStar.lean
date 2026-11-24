@@ -146,8 +146,7 @@ theorem hform_smul {m : ℕ} (J : Matrix (Fin m) (Fin m) E) (c c' : E) (x y : Fi
 theorem hform_self_star {m : ℕ} (J : Matrix (Fin m) (Fin m) E) (hJ : IsHerm (starRingEnd E) J)
     (x : Fin m → E) : star (hform (starRingEnd E) J x x) = hform (starRingEnd E) J x x := by
   have hij : ∀ i j, star (J j i) = J i j := fun i j => by
-    have h1 := congrFun (congrFun hJ i) j
-    simpa [cT, starRingEnd_apply] using h1
+    simpa [cT, starRingEnd_apply] using congrFun (congrFun hJ i) j
   simp only [hform, starRingEnd_apply, star_sum, star_mul', star_star, hij]
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
@@ -160,10 +159,8 @@ theorem hl_zero : HL E 0 := by
   have hv : v = 0 := funext fun i => Fin.elim0 i
   subst hv
   constructor
-  · intro _
-    exact ⟨0, Submodule.zero_mem _, funext fun i => Fin.elim0 i⟩
-  · intro _
-    exact Submodule.zero_mem _
+  · exact fun _ => ⟨0, Submodule.zero_mem _, funext fun i => Fin.elim0 i⟩
+  · exact fun _ => Submodule.zero_mem _
 
 end Lemmas
 
@@ -187,8 +184,7 @@ theorem hl_step (hS : PartShort) (hU : PartUnits) (hI : PartIso) (hP : PartSplit
   obtain ⟨x, hx, hx0, hxC⟩ := hC p hp
   by_cases hiso0 : hform (starRingEnd E) p.1 x x = 0
   · refine Or.inr ?_
-    simp only [SplitSet, Set.mem_setOf_eq]
-    exact ⟨hp, hiso p hp x hx hx0 hiso0⟩
+    simpa only [SplitSet, Set.mem_setOf_eq] using ⟨hp, hiso p hp x hx hx0 hiso0⟩
   · refine Or.inl ?_
     have hint : hform (starRingEnd E) p.1 x x ∈ (algebraMap (𝓞 E) E).range := hp.2.2.2.2.1 x hx x hx
     obtain ⟨u, r, hr, hur⟩ := hRu _ hint (hform_self_star p.1 hp.1 x) hiso0 hxC

@@ -99,8 +99,7 @@ theorem mem_imgLat' [Module ℂ V] (g : V ≃ₗ[ℂ] V) (Λ : AddSubgroup V) (y
   constructor
   · rintro ⟨x, hx, rfl⟩
     simpa using hx
-  · intro h
-    exact ⟨g.symm y, h, by simp⟩
+  · exact fun h => ⟨g.symm y, h, by simp⟩
 
 end Reps
 
@@ -411,8 +410,7 @@ theorem stdLat_prod (L : PeriodPair) : stdLat L M' = prodSub e (stdLat L M) := b
   rw [mem_prodSub]
   simp only [stdLat, AddSubgroup.mem_pi, Set.mem_univ, true_implies, sl]
   constructor
-  · intro h i m
-    exact h _
+  · exact fun h i m => h _
   · intro h m'
     have := h (e m').2 (e m').1
     simpa using this
@@ -475,14 +473,8 @@ theorem img_prod (g : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ)) (Λ
   rw [mem_imgLat', mem_prodSub]
   simp only [mem_imgLat']
   constructor
-  · intro h i
-    show ∀ a, _
-    intro a
-    exact h a i
-  · intro h a
-    show ∀ i, _
-    intro i
-    exact h i a
+  · exact fun h i => fun a => h a i
+  · exact fun h a => fun i => h i a
 
 end Pow
 
@@ -525,8 +517,7 @@ theorem local_norm_power : LocNormPow := by
     rw [sl_powEquiv, sl_powEquiv]
     exact hiso _ _
   · rw [stdLat_prod (eP n I), img_prod, relIdx_prod _ hidx1]
-    intro hd
-    exact hp ((Fact.out : p.Prime).dvd_of_dvd_pow hd)
+    exact fun hd => hp ((Fact.out : p.Prime).dvd_of_dvd_pow hd)
   · rw [stdLat_prod (eP n I), img_prod, relIdx_prod _ hidx]
     exact pow_ne_zero _ hidx
   · rw [map_pow, norm_pow]

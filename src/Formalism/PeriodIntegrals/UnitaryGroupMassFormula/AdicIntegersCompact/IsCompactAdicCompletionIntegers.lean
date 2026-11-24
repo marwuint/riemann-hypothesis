@@ -68,8 +68,7 @@ theorem valued_algebraMap (k : F) :
     Valued.v (algebraMap F (v.adicCompletion F) k) = v.valuation F k :=
   IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v k
 
-theorem denseRange : DenseRange (algebraMap F (v.adicCompletion F)) := by
-  exact denseRange_algebraMap F v
+theorem denseRange : DenseRange (algebraMap F (v.adicCompletion F)) := denseRange_algebraMap F v
 
 theorem exists_close (x : v.adicCompletion F) (hx : Valued.v x ≤ 1) :
     ∃ a : 𝓞 F, Valued.v (x - algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F a)) < 1 := by
@@ -77,9 +76,7 @@ theorem exists_close (x : v.adicCompletion F) (hx : Valued.v x ≤ 1) :
 
 theorem mem_maximalIdeal_iff (x : Valued.integer (v.adicCompletion F)) :
     x ∈ IsLocalRing.maximalIdeal (Valued.integer (v.adicCompletion F)) ↔
-      Valued.v (x : v.adicCompletion F) < 1 := by
-  show ¬IsUnit x ↔ _
-  exact Valuation.Integer.not_isUnit_iff_valuation_lt_one
+      Valued.v (x : v.adicCompletion F) < 1 := Valuation.Integer.not_isUnit_iff_valuation_lt_one
 
 noncomputable def toInt : 𝓞 F →+* Valued.integer (v.adicCompletion F) :=
   ((algebraMap F (v.adicCompletion F)).comp (algebraMap (𝓞 F) F)).codRestrict
@@ -101,8 +98,7 @@ theorem resHom_surjective : Function.Surjective (resHom v) := by
   rw [RingHom.comp_apply, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, mem_maximalIdeal_iff]
   have e : ((toInt v a - x : Valued.integer (v.adicCompletion F)) : v.adicCompletion F) =
       algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F a) - x := rfl
-  rw [e, Valuation.map_sub_swap]
-  exact ha
+  rwa [e, Valuation.map_sub_swap]
 
 theorem resHom_eq_zero (a : 𝓞 F) (ha : a ∈ v.asIdeal) : resHom v a = 0 := by
   unfold resHom
@@ -144,7 +140,6 @@ theorem main : Formalism.L2.Props.IntAdelesCompactOpen := by
     fun w => Valued.isOpen_valuationSubring _
   refine ⟨RestrictedProduct.isOpen_forall_mem hO, ?_⟩
   have h := isCompact_range (RestrictedProduct.isOpenEmbedding_structureMap hO).continuous
-  rw [RestrictedProduct.range_structureMap] at h
-  exact h
+  rwa [RestrictedProduct.range_structureMap] at h
 
 end PI.IntAdCpctOpenWork

@@ -87,8 +87,7 @@ theorem fixed_int (y : 𝓞 I.E) (hy : star (y : I.E) = y) :
   let c : 𝓞 I.F := ⟨a, (mem_integralClosure_iff _ _).mpr hi'⟩
   refine ⟨c, ?_⟩
   apply NumberField.RingOfIntegers.ext
-  rw [coe_alg]
-  exact ha
+  rwa [coe_alg]
 
 def cj (P : HeightOneSpectrum (𝓞 I.E)) : HeightOneSpectrum (𝓞 I.E) where
   asIdeal := P.asIdeal.comap (sg I)
@@ -137,11 +136,7 @@ theorem cj_ne (g : ℕ) (hg : 1 ≤ g) (hS : PI.ScRefExists.Sk.SplitG I g) (P : 
     have h1 : cj I x.1 = P := congrArg Subtype.val h
     rw [← cj_cj I x.1, h1, hfix]
   have hcxx : cj I x.1 = x.1 := congrArg Subtype.val (hxu cx hcx)
-  have hne : P.asIdeal ≠ x.1.asIdeal := by
-    intro h
-    apply hx
-    apply Subtype.ext
-    exact (HeightOneSpectrum.ext h).symm
+  have hne : P.asIdeal ≠ x.1.asIdeal := fun h => hx (Subtype.ext (HeightOneSpectrum.ext h).symm)
   have hnle : ¬ P.asIdeal ≤ x.1.asIdeal := fun h =>
     hne (P.isMaximal.eq_of_le x.1.isPrime.ne_top h)
   obtain ⟨θ, hθP, hθx⟩ := SetLike.not_le_iff_exists.mp hnle

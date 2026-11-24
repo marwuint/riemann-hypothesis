@@ -312,8 +312,7 @@ theorem rr_cont_of_meas' [SigmaFinite μ] [IsLocallyFiniteMeasure μ] (hμ : μ 
         exact (ha'.add hb').congr fun h => (map_add (π h) a b).symm
       zero_mem' := by
         show Tendsto (fun h => π h 0) (𝓝 1) (𝓝 0)
-        simp only [map_zero]
-        exact tendsto_const_nhds
+        simpa only [map_zero] using tendsto_const_nhds
       smul_mem' := fun c {w} hw => by
         have hw' : Tendsto (fun h => π h w) (𝓝 1) (𝓝 w) := hw
         exact (hw'.const_smul c).congr fun h => (map_smul (π h) c w).symm }

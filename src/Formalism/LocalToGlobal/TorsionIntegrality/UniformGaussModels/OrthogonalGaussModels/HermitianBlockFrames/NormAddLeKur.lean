@@ -100,11 +100,9 @@ def φ : ℚ_[l] →+* MaximalUnramifiedExtension l := (algebraMap ℚ_[l] ℂ_[
 
 def ψ : ℤ_[l] →+* MaximalUnramifiedExtension l := (φ l).comp PadicInt.Coe.ringHom
 
-theorem norm_φ (x : ℚ_[l]) : ‖φ l x‖ = ‖x‖ := by
-  exact norm_alg_lemma l x
+theorem norm_φ (x : ℚ_[l]) : ‖φ l x‖ = ‖x‖ := norm_alg_lemma l x
 
-theorem norm_ψ (x : ℤ_[l]) : ‖ψ l x‖ = ‖x‖ := by
-  exact norm_φ l (x : ℚ_[l])
+theorem norm_ψ (x : ℤ_[l]) : ‖ψ l x‖ = ‖x‖ := norm_φ l (x : ℚ_[l])
 
 theorem norm_ψ_le (x : ℤ_[l]) : ‖ψ l x‖ ≤ 1 := by
   rw [norm_ψ]
@@ -141,8 +139,7 @@ theorem norm_eq_one_iff (z : ℤ_[l]) : ‖z‖ = 1 ↔ PadicInt.toZMod z ≠ 0 
   · intro h h'
     rw [h] at h'
     exact lt_irrefl _ h'
-  · intro h
-    exact le_antisymm z.norm_le_one (not_lt.1 h)
+  · exact fun h => le_antisymm z.norm_le_one (not_lt.1 h)
 
 theorem toZMod_natCast (k : ℕ) : PadicInt.toZMod (k : ℤ_[l]) = (k : ZMod l) := by
   exact map_natCast PadicInt.toZMod k
@@ -210,8 +207,7 @@ theorem exists_norm (h5 : 5 ≤ l) (dK : ℕ) (hld : ¬ l ∣ dK) (a : ℤ_[l]) 
         rw [map_mul, toZMod_natCast]
         linear_combination (-(dK : ZMod l)) * hxy)
     have hdu : IsUnit (dK : ℤ_[l]) := by
-      rw [PadicInt.isUnit_iff, norm_eq_one_iff l, toZMod_natCast]
-      exact hd
+      rwa [PadicInt.isUnit_iff, norm_eq_one_iff l, toZMod_natCast]
     obtain ⟨u, hu⟩ := hdu
     have key : (u : ℤ_[l]) * ↑u⁻¹ = 1 := u.mul_inv
     rw [← hu] at hw
@@ -261,7 +257,6 @@ def OO (dK : ℕ) (δ : MaximalUnramifiedExtension l) (hδ : δ ^ 2 = -(dK : Max
     exact ⟨-a, -b, by simp only [map_neg]; ring⟩
 
 theorem norm_add_le_Kur (x y : MaximalUnramifiedExtension l) : ‖x + y‖ ≤ max ‖x‖ ‖y‖ := by
-  show ‖(x : ℂ_[l]) + y‖ ≤ max ‖(x : ℂ_[l])‖ ‖(y : ℂ_[l])‖
   exact IsUltrametricDist.norm_add_le_max _ _
 
 theorem norm_δ_le {dK : ℕ} {δ : MaximalUnramifiedExtension l} (hδ : δ ^ 2 = -(dK : MaximalUnramifiedExtension l)) : ‖δ‖ ≤ 1 := by

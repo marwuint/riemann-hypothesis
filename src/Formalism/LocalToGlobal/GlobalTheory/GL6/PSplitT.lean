@@ -187,15 +187,13 @@ theorem split_idempotent_of_square_root (σ : E →ₐ[F] E) (v : HeightOneSpect
   have hm := mem_maximal_ideal_completion_iff (K := F) v
   have hab' : algebraMap (𝓞 F) (v.adicCompletionIntegers F) b * algebraMap (𝓞 F) (v.adicCompletionIntegers F) b -
       algebraMap (𝓞 F) (v.adicCompletionIntegers F) a ∈ maximalIdeal (v.adicCompletionIntegers F) := by
-    rw [← map_mul, ← map_sub, hm]
-    exact hab
+    rwa [← map_mul, ← map_sub, hm]
   have h2b : (2 : 𝓞 F) * b ∉ v.asIdeal := fun h => (v.isPrime.mem_or_mem h).elim h2 hb
   have hu : IsUnit (2 * algebraMap (𝓞 F) (v.adicCompletionIntegers F) b) := by
     rw [← notMem_maximalIdeal]
     have : (2 : v.adicCompletionIntegers F) * algebraMap (𝓞 F) (v.adicCompletionIntegers F) b =
         algebraMap (𝓞 F) (v.adicCompletionIntegers F) (2 * b) := by rw [map_mul, map_ofNat]
-    rw [this, hm]
-    exact h2b
+    rwa [this, hm]
   obtain ⟨r, hr, hrb⟩ := hensel_sqrt_completion_integers v _ _ hab' hu
   have hur : IsUnit (2 * r) := by
     rw [← notMem_maximalIdeal]
@@ -258,8 +256,7 @@ theorem forms_involution_eq_host_conj (x : D.host.E) : sigD D x = D.host.conj x 
   letI := D.host.cmStar
   exact bridge_star_holds D.R D.host x
 
-theorem host_conj_involutive (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
-  exact D.host.conj_conj x
+theorem host_conj_involutive (x : D.host.E) : D.host.conj (D.host.conj x) = x := D.host.conj_conj x
 
 
 
@@ -310,8 +307,7 @@ theorem splitAtT_of_tied (A : AtTTied u) : SplitAtT A := by
     show algebraMap D.host.F D.host.E (a : D.host.F) = (α : D.host.E) * α
     rw [had, ha0]
   have hbv : b ∉ (A.eV v).1.asIdeal := by
-    rw [hmem, hb, hresα, neg_eq_zero]
-    exact hres_pb
+    rwa [hmem, hb, hresα, neg_eq_zero]
   have h2v : (2 : 𝓞 D.host.F) ∉ (A.eV v).1.asIdeal := by
     rw [hmem, map_ofNat]
     exact two_ne_zero_odd_prime_field hT hcard (D.T_ne_two u)

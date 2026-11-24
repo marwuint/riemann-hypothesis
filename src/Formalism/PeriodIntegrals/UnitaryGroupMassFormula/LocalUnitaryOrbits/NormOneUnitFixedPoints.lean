@@ -86,8 +86,7 @@ theorem unitNormLoc_norm_add_eq_left {K : Type} [NormedField K] [IsUltrametricDi
 
 theorem unitNormLoc_norm_two_le {K : Type} [NormedField K] [IsUltrametricDist K] : ‖(2 : K)‖ ≤ 1 := by
   have h := IsUltrametricDist.norm_add_le_max (1 : K) 1
-  rw [one_add_one_eq_two, norm_one, max_self] at h
-  exact h
+  rwa [one_add_one_eq_two, norm_one, max_self] at h
 
 theorem unitNormLoc_add_lt {K : Type} [NormedField K] [IsUltrametricDist K] {x y : K} {r : ℝ}
     (hx : ‖x‖ < r) (hy : ‖y‖ < r) : ‖x + y‖ < r := (IsUltrametricDist.norm_add_le_max x y).trans_lt (max_lt hx hy)
@@ -528,8 +527,7 @@ theorem normOne_of (hRes : PI.OmLocU.Red.ResAlg σ J ψ v) : PI.OmLocU.Orb.NormO
   have hε'1 : ¬ Valued.v ε' < 1 := by
     intro hlt
     apply sc_mul_ne_one v hε' hlt (hU ▸ hu0 : sc (E := E) v ε ∈ OEv (E := E) v)
-    rw [← hU', ← hU, mul_comm]
-    exact huu'
+    rwa [← hU', ← hU, mul_comm]
 
   haveI : v.asIdeal.IsMaximal := v.isMaximal
   letI : Field (𝓞 F ⧸ v.asIdeal) := Ideal.Quotient.field v.asIdeal
@@ -538,8 +536,7 @@ theorem normOne_of (hRes : PI.OmLocU.Red.ResAlg σ J ψ v) : PI.OmLocU.Orb.NormO
     intro h0
     apply hDv
     have h1 : redR v (tO ^ 2 - 4 * mO) = 0 := by
-      rw [map_sub, map_mul, map_pow, map_ofNat]
-      exact h0
+      rwa [map_sub, map_mul, map_pow, map_ofNat]
     have h2 := (redR_eq_zero v _).1 h1
     rwa [hDc] at h2
   obtain ⟨xb, yb, hxy⟩ := _root_.Bl.general_b_fact_left.goal1 (redR v tO) (redR v mO) (redR v eO) hDk
@@ -551,12 +548,10 @@ theorem normOne_of (hRes : PI.OmLocU.Red.ResAlg σ J ψ v) : PI.OmLocU.Orb.NormO
     rw [map_sub, map_add (f := _), map_add (f := _), map_mul, map_mul, map_mul, map_pow, map_pow]
     have ex : redR v xO = xb := by
       show red v (xO : Fv F v) = xb
-      rw [hxO]
-      exact hx0r
+      rwa [hxO]
     have ey : redR v yO = yb := by
       show red v (yO : Fv F v) = yb
-      rw [hyO]
-      exact hy0r
+      rwa [hyO]
     rw [ex, ey, hxy, sub_self]
   have hrc : ((xO ^ 2 + tO * xO * yO + mO * yO ^ 2 - eO : v.adicCompletionIntegers F) : Fv F v) =
       x0 ^ 2 + t * x0 * y0 + m * y0 ^ 2 - ε' := by
@@ -581,8 +576,7 @@ theorem normOne_of (hRes : PI.OmLocU.Red.ResAlg σ J ψ v) : PI.OmLocU.Orb.NormO
       sc (E := E) v y * sc (E := E) v y * sc (E := E) v m = sc (E := E) v (x ^ 2 + t * x * y + m * y ^ 2) := by
     simp only [sc_eq, map_add (f := _), map_mul, map_pow]
     ring
-  rw [e1, hT, hM, e2, hq, ← hU', mul_comm]
-  exact huu'
+  rwa [e1, hT, hM, e2, hq, ← hU', mul_comm]
 
 end PI.OmLocU.NormOneUnitFixedPoints
 end -- clump:auto

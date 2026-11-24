@@ -71,11 +71,9 @@ theorem Ent.add {M N : Matrix m n K} (hM : Ent S M) (hN : Ent S N) : Ent S (M + 
 theorem Ent.sub {M N : Matrix m n K} (hM : Ent S M) (hN : Ent S N) : Ent S (M - N) := by
   exact fun i j => S.sub_mem (hM i j) (hN i j)
 
-theorem Ent.neg {M : Matrix m n K} (hM : Ent S M) : Ent S (-M) := by
-  exact fun i j => S.neg_mem (hM i j)
+theorem Ent.neg {M : Matrix m n K} (hM : Ent S M) : Ent S (-M) := fun i j => S.neg_mem (hM i j)
 
-theorem Ent.zero : Ent S (0 : Matrix m n K) := by
-  exact fun _ _ => S.zero_mem
+theorem Ent.zero : Ent S (0 : Matrix m n K) := fun _ _ => S.zero_mem
 
 theorem Ent.smul {a : K} (ha : a ∈ S) {M : Matrix m n K} (hM : Ent S M) : Ent S (a • M) := by
   exact fun i j => S.mul_mem ha (hM i j)
@@ -115,10 +113,8 @@ theorem Ent.adjugate [Fintype n] [DecidableEq n] {M : Matrix n n K} (hM : Ent S 
   have h := RingHom.map_adjugate S.subtype M₀
   rw [RingHom.mapMatrix_apply, RingHom.mapMatrix_apply] at h
   rw [← h]
-  intro i j
-  exact (M₀.adjugate i j).2
+  exact fun i j => (M₀.adjugate i j).2
 
-theorem pow_mem {ϖ : K} (hS : IsLocUnif S ϖ) (k : ℕ) : ϖ ^ k ∈ S := by
-  exact S.pow_mem hS.mem k
+theorem pow_mem {ϖ : K} (hS : IsLocUnif S ϖ) (k : ℕ) : ϖ ^ k ∈ S := S.pow_mem hS.mem k
 
 end Formalism.HermitianLattices.Ext.L3.HU

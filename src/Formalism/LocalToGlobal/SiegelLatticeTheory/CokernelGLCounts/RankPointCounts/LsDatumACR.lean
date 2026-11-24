@@ -122,8 +122,7 @@ theorem claimR_side (t₁ t₂ : Term V M r) (Λ₂ : Submodule M.L.O V)
     refine ⟨span_frames_le_MM H t ha, fun μ hμ => ?_⟩
     have hμU : μ ∈ Submodule.span E (Set.range (H.MMfam t)) := Submodule.span_le_restrictScalars M.L.O E _ hμ
     have h1 : H.h (a + b) μ ∈ M.L.O := (hsd.2.2 _).1 hab μ (hMM hμ)
-    rw [H.h_add_left, hermitian_W0_span_zero H t hb hμU, add_zero] at h1
-    exact h1
+    rwa [H.h_add_left, hermitian_W0_span_zero H t hb hμU, add_zero] at h1
   have hdec : ∀ (U W : Submodule E V), IsCompl U W → ∀ x : V, ∃ a ∈ U, ∃ b ∈ W, a + b = x := by
     intro U W hUW x
     have hx : x ∈ U ⊔ W := by rw [hUW.sup_eq_top]; exact Submodule.mem_top
@@ -169,13 +168,11 @@ theorem claimR_side (t₁ t₂ : Term V M r) (Λ₂ : Submodule M.L.O V)
       have e4 : H.mkW g₂ ⟨a, hap⟩ = H.mkW g₂ ⟨u', hu'p⟩ := by
         have := e3
         rw [mkW_sub H a u' hap hu'p, mkW_sub H (ψ n₁ : V) b (hW₂ (ψ n₁).2) (hW₂ hb)] at this
-        rw [mkW_congr H (hW₂ (ψ n₁).2) (hW₂ hb) hbψ.symm, sub_self, sub_eq_zero] at this
-        exact this
+        rwa [mkW_congr H (hW₂ (ψ n₁).2) (hW₂ hb) hbψ.symm, sub_self, sub_eq_zero] at this
       have hθu : θ (ddMk H t₁ u₁) = ddMk H t₂ ⟨a, haMM⟩ :=
         (hθ u₁ ⟨a, haMM⟩).2 ⟨n₁, hn₁, by rw [← hbψ, hab]; exact hx₂Λ⟩
       refine ⟨⟨a, haMM⟩, hap, ?_⟩
-      simp only [Prod.mk.injEq]
-      exact ⟨hθu, hχu.trans e4.symm⟩
+      simpa only [Prod.mk.injEq] using ⟨hθu, hχu.trans e4.symm⟩
     · rintro _ ⟨u₂, hu₂, rfl⟩
       obtain ⟨m₁, hm₁⟩ := hθs u₂
       obtain ⟨n₁, hn₁, hx₂Λ⟩ := (hθ m₁ u₂).1 hm₁
@@ -212,8 +209,7 @@ theorem claimR_side (t₁ t₂ : Term V M r) (Λ₂ : Submodule M.L.O V)
       have hθa : θ (ddMk H t₁ ⟨a₁, ha₁MM⟩) = ddMk H t₂ u₂ :=
         (hθ ⟨a₁, ha₁MM⟩ u₂).2 ⟨⟨b₁, hb₁⟩, by rw [hab₁]; exact hx₁Λ, by rw [hψeq]; exact hx₂Λ⟩
       refine ⟨(ddMk H t₁ ⟨a₁, ha₁MM⟩, H.mkW g₁ ⟨a₁, ha₁p⟩), ⟨⟨a₁, ha₁MM⟩, ha₁p, rfl⟩, ?_⟩
-      simp only [Prod.mk.injEq]
-      exact ⟨hθa, hχu.trans e4.symm⟩
+      simpa only [Prod.mk.injEq] using ⟨hθa, hχu.trans e4.symm⟩
   · intro hG
     apply Set.Subset.antisymm
     · rintro _ ⟨_, ⟨x₁, hx₁Λ, rfl⟩, rfl⟩

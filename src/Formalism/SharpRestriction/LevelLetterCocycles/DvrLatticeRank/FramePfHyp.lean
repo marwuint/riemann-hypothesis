@@ -97,8 +97,7 @@ theorem framepf_hyp_local (e s' : ℕ) (hs : 1 ≤ s') (π' : LetA O n) (E : ZMo
   have hS := PowerSeries.HasSubst.of_constantCoeff_zero' (hπ0 (c - 1))
   have hγc : W.γ₀ W.gam (π' (c - 1)) = PowerSeries.subst (π' (c - 1)) (PowerSeries.X * Fs (c - 1)) := by
     have h : (W.γA W.gam π') (c - 1) = (π' * f) (c - 1) := congrFun hf (c - 1)
-    rw [PowerSeries.subst_mul hS, PowerSeries.subst_X hS, ← hFs (c - 1)]
-    exact h
+    rwa [PowerSeries.subst_mul hS, PowerSeries.subst_X hS, ← hFs (c - 1)]
   have hcc : PowerSeries.constantCoeff (Fs (c - 1)) = ((W.χΓ W.gam : Oˣ) : O) ^ s' := by
     rw [← framepf_hyp_cc_subst (π' (c - 1)) (Fs (c - 1)) (hπ0 (c - 1)), ← hFs (c - 1)]
     exact gradNPf_cc_f W s' w π' f hw hf (c - 1)
@@ -146,12 +145,10 @@ theorem framepf_hyp_arith (D : D7) (HW : HWOf D.loc) (l : ℕ) [hpf : Fact l.Pri
     exact ⟨fun h => ⟨⟨y, h⟩, rfl⟩, fun ⟨a, ha⟩ => ha ▸ a.2⟩
   have hlv : (D.loc l).v LL (l : ↥LL.1) = 1 := (D.loc l).v_l LL
   have hlO : (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 (l : ↥(OL LL))) = 1 := by
-    rw [map_natCast]
-    exact hlv
+    rwa [map_natCast]
   have hxv : (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 ((((HW l).W K 1 LL hG).χΓ ((HW l).W K 1 LL hG).gam : (↥(OL LL))ˣ) : ↥(OL LL)) - 1) = 1 := by
     have := ((HW l).W K 1 LL hG).gam_gen
-    rw [hs1, Nat.cast_one] at this
-    exact this
+    rwa [hs1, Nat.cast_one] at this
   obtain ⟨u, hu, hxu⟩ := gradNPf_sub_one ((D.loc l).v LL) (algebraMap ↥(OL LL) ↥LL.1) hι hRv
     (l : ↥(OL LL)) _ hlO hxv
   have hsl : ¬ l ∣ sK l K := by
@@ -177,8 +174,7 @@ theorem framepf_hyp_arith (D : D7) (HW : HWOf D.loc) (l : ℕ) [hpf : Fact l.Pri
       rcases Nat.eq_zero_or_pos (MK l K h') with h0 | h0
       · rw [h0]; simp
       · congr 1; omega
-    rw [hσ, ← hI]
-    exact ha
+    rwa [hσ, ← hI]
 
 
 

@@ -86,8 +86,7 @@ theorem AH_stab {Λ : Submodule (𝓞 D.host.E) (VS D).V} {γ : (VS D).V ≃ₗ[
     rw [X.Fu_e u]
     exact he a
   · show γ (X.Fu u).z = (X.Fu u).z
-    rw [X.flagZVector u]
-    exact hz
+    rwa [X.flagZVector u]
 
 def indA (Λ : Submodule (𝓞 D.host.E) (VS D).V) (γ : ↥(AH X u Λ)) : WbQ D (X.Fu u) → WbQ D (X.Fu u) :=
   ind (X.Fu u) (AH_stab X u γ.2)
@@ -129,8 +128,7 @@ theorem indA_inj (Λ : Submodule (𝓞 D.host.E) (VS D).V) : Function.Injective 
   change Submodule.Quotient.mk _ = Submodule.Quotient.mk _ at hq
   rw [Submodule.Quotient.eq] at hq
   have hd : γ.1 (prV X y) - γ'.1 (prV X y) ∈ Xs X := by
-    rw [← fuX X u]
-    exact hq
+    rwa [← fuX X u]
   have h0 := prV_Xs X hd
   rw [map_sub, prV_of_fix X γ.1 hi he hf, prV_of_fix X γ'.1 hi' he' hf', sub_eq_zero] at h0
   calc γ.1 y = γ.1 (y - prV X y) + γ.1 (prV X y) := by rw [← map_add (f := _), sub_add_cancel]
@@ -144,12 +142,10 @@ theorem mem_lat_gmap (h : Hfin X u) {γ0 : (VS D).V ≃ₗ[D.host.E] (VS D).V}
   constructor
   · intro y hy
     rw [← lat_coe] at hy ⊢
-    rw [SetLike.mem_coe, ← hΛ, mem_gmap, LinearEquiv.symm_apply_apply]
-    exact hy
+    rwa [SetLike.mem_coe, ← hΛ, mem_gmap, LinearEquiv.symm_apply_apply]
   · intro y hy
     rw [← lat_coe] at hy ⊢
-    rw [SetLike.mem_coe, ← hΛ, mem_gmap] at hy
-    exact hy
+    rwa [SetLike.mem_coe, ← hΛ, mem_gmap] at hy
 
 theorem autLz_range (h : Hfin X u) : autLz D (X.Fu u) (lat X u h) = Set.range (indA X u (lat X u h)) := by
   ext φ

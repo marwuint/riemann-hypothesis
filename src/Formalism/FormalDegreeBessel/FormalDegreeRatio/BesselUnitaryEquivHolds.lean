@@ -130,31 +130,20 @@ theorem bessel_unitary_equiv_holds : BesselUEquiv := by
   let Φ : (Mt k r × Mt k r) × (Mt k r × Mt k r) ≃ᵐ (Mt k r × Mt k r) × (Mt k r × Mt k r) :=
     ((lmulE h₀ hu₀).prodCongr (conjE h₀ hu₀)).prodCongr
       ((lmulE h₀'⁻¹ hui₀').prodCongr (conjE h₀'⁻¹ hui₀'))
-  have hΦe : MeasurableEmbedding (Prod.map (Prod.map (lmulM h₀) (conjM h₀))
-      (Prod.map (lmulM h₀'⁻¹) (conjM h₀'⁻¹)) :
-        (Mt k r × Mt k r) × (Mt k r × Mt k r) → (Mt k r × Mt k r) × (Mt k r × Mt k r)) :=
-    Φ.measurableEmbedding
-  have hΦ : MeasurePreserving (Prod.map (Prod.map (lmulM h₀) (conjM h₀))
-      (Prod.map (lmulM h₀'⁻¹) (conjM h₀'⁻¹)) :
-        (Mt k r × Mt k r) × (Mt k r × Mt k r) → (Mt k r × Mt k r) × (Mt k r × Mt k r))
-      ((μW.prod μN).prod (μW'.prod μN)) ((μW.prod μN).prod (μW'.prod μN)) := by
-    refine MeasurePreserving.prod (MeasurePreserving.prod ?_ ?_) (MeasurePreserving.prod ?_ ?_)
-    · exact ⟨(lmulE h₀ hu₀).measurable, hWl h₀ hh₀⟩
-    · exact ⟨(conjE h₀ hu₀).measurable, hNc h₀ (Or.inl hh₀)⟩
-    · exact ⟨(lmulE h₀'⁻¹ hui₀').measurable, hW'l _ hi₀'⟩
-    · exact ⟨(conjE h₀'⁻¹ hui₀').measurable, hNc _ (Or.inr hi₀')⟩
+  have hΦ := MeasurePreserving.prod
+    (MeasurePreserving.prod ⟨(lmulE h₀ hu₀).measurable, hWl h₀ hh₀⟩
+      ⟨(conjE h₀ hu₀).measurable, hNc h₀ (Or.inl hh₀)⟩)
+    (MeasurePreserving.prod ⟨(lmulE h₀'⁻¹ hui₀').measurable, hW'l _ hi₀'⟩
+      ⟨(conjE h₀'⁻¹ hui₀').measurable, hNc _ (Or.inr hi₀')⟩)
 
-  have aW : ∀ᵐ x ∂μW, Matrix.of x ∈ UWset k r z := ae_iff.2 hW
-  have aW' : ∀ᵐ x ∂μW', Matrix.of x ∈ UWset k r z' := ae_iff.2 hW'
-  have aN : ∀ᵐ x ∂μN, Matrix.of x ∈ Nset k r := ae_iff.2 hN
   have q11 : ∀ᵐ p ∂((μW.prod μN).prod (μW'.prod μN)), Matrix.of p.1.1 ∈ UWset k r z :=
-    (Measure.quasiMeasurePreserving_fst.comp Measure.quasiMeasurePreserving_fst).ae aW
+    (Measure.quasiMeasurePreserving_fst.comp Measure.quasiMeasurePreserving_fst).ae (ae_iff.2 hW)
   have q12 : ∀ᵐ p ∂((μW.prod μN).prod (μW'.prod μN)), Matrix.of p.1.2 ∈ Nset k r :=
-    (Measure.quasiMeasurePreserving_snd.comp Measure.quasiMeasurePreserving_fst).ae aN
+    (Measure.quasiMeasurePreserving_snd.comp Measure.quasiMeasurePreserving_fst).ae (ae_iff.2 hN)
   have q21 : ∀ᵐ p ∂((μW.prod μN).prod (μW'.prod μN)), Matrix.of p.2.1 ∈ UWset k r z' :=
-    (Measure.quasiMeasurePreserving_fst.comp Measure.quasiMeasurePreserving_snd).ae aW'
+    (Measure.quasiMeasurePreserving_fst.comp Measure.quasiMeasurePreserving_snd).ae (ae_iff.2 hW')
   have q22 : ∀ᵐ p ∂((μW.prod μN).prod (μW'.prod μN)), Matrix.of p.2.2 ∈ Nset k r :=
-    (Measure.quasiMeasurePreserving_snd.comp Measure.quasiMeasurePreserving_snd).ae aN
+    (Measure.quasiMeasurePreserving_snd.comp Measure.quasiMeasurePreserving_snd).ae (ae_iff.2 hN)
 
   let e₂ : Wp ≃L[ℂ] Wp := ContinuousLinearEquiv.equivOfInverse (π h₀) (π h₀⁻¹)
     (fun x => rep_inv hπ hi₀ hh₀ (Matrix.nonsing_inv_mul _ hu₀) x)
@@ -167,14 +156,14 @@ theorem bessel_unitary_equiv_holds : BesselUEquiv := by
     intro X; ext y; rfl
   rw [← hL]
   unfold besselJ
-  refine integral_transfer _ hΦ hΦe L _ _ ?_
+  refine integral_transfer _ hΦ Φ.measurableEmbedding L _ _ ?_
   filter_upwards [q11, q12, q21, q22] with p hK hM hK' hM'
   obtain ⟨⟨a, b⟩, ⟨a', b'⟩⟩ := p
   rw [hL]
-  set K : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := Matrix.of a
-  set M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := Matrix.of b
-  set K' : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := Matrix.of a'
-  set M' : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := Matrix.of b'
+  set K := Matrix.of a
+  set M := Matrix.of b
+  set K' := Matrix.of a'
+  set M' := Matrix.of b'
   have ep : psi k r z c (h₀ * M * h₀⁻¹) = psi k r z c M := by
     unfold psi; rw [(unitary_weyl_normal_holds k r z hz h₀ hh₀ M hM).2]
   have ep' : psi k r z' c (h₀'⁻¹ * M' * h₀'⁻¹⁻¹) = psi k r z' c M' := by

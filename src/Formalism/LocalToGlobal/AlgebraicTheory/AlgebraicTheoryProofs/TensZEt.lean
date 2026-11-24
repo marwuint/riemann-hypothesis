@@ -103,9 +103,7 @@ theorem img_smul_mem {n : Type} [Fintype n] (Λ : AddSubgroup (n → ℂ))
   obtain ⟨z, hz, rfl⟩ := hy
   have hz' : ∀ a, Formalism.L2.Th1.H.slice a z ∈ Λ := hz
   refine ⟨α • z, ?_, ?_⟩
-  · show ∀ a, Formalism.L2.Th1.H.slice a (α • z) ∈ Λ
-    intro a
-    exact hΛ _ (hz' a)
+  · exact fun a => hΛ _ (hz' a)
   · simp [map_smul]
 
 theorem idx_coord_mem (L : PeriodPair) {m : Type} (Λb : AddSubgroup (m → ℂ)) (v : m → ℂ) (hv : v ∈ Λb) (w : m) :
@@ -114,8 +112,7 @@ theorem idx_coord_mem (L : PeriodPair) {m : Type} (Λb : AddSubgroup (m → ℂ)
   rw [AddSubgroup.mem_addSubgroupOf] at h
   have h2 : (relIdx (stdLat L m) Λb) • v ∈ stdLat L m := by
     simpa [relIdx, AddSubgroup.relIndex] using h
-  have h3 := (AddSubgroup.mem_pi _).mp h2 w (Set.mem_univ _)
-  simpa [nsmul_eq_mul] using h3
+  simpa [nsmul_eq_mul] using (AddSubgroup.mem_pi _).mp h2 w (Set.mem_univ _)
 
 end TensorIntegralTorsion
 
@@ -126,8 +123,7 @@ theorem tensor_integral_torsion : TensZEt := by
   intro a₀ b₀ c₀ dK ha hdK lam hlam hOK n _ _ h Λ hSD hSt θ hθ p _ ι g₁ ε hIso hp hidx2 hε hT t αq M hαq hM hαt hMt
   have hidx1 : relIdx (stdLat (cmL a₀ b₀ dK ha hdK lam hlam) (Fin 4 × n))
       (imgLat (g₁ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)) ≠ 0 := by
-    intro h0
-    exact hp (h0 ▸ dvd_zero p)
+    exact fun h0 => hp (h0 ▸ dvd_zero p)
   have hStd := stdDataCm a₀ b₀ c₀ dK ha hdK lam hlam hOK.1 hOK.2.1 hOK.2.2.1 n h Λ g₁ hIso hSD hSt hidx1 hidx2
   obtain ⟨S, hS⟩ := (cosetRepsExist _ _ _ hidx1).1
   have hΛα : ∀ x ∈ Λ, αq • x ∈ Λ := fun x hx => qint_smul_mem Λ b₀ dK (odd_b hOK) hSt αq hαq x hx

@@ -56,8 +56,7 @@ open Classical ValuativeRel
 theorem isIntegral_iff_mem_integer (F : Type) [Field F] [ValuativeRel F] (a : F) :
     IsIntegral 𝒪[F] a ↔ a ∈ 𝒪[F] := by
   constructor
-  · intro h
-    exact (Valuation.integer.integers _).mem_of_integral h
+  · exact fun h => (Valuation.integer.integers _).mem_of_integral h
   · intro h
     have e : a = algebraMap 𝒪[F] F ⟨a, h⟩ := rfl
     rw [e]
@@ -68,11 +67,9 @@ theorem integral_split_count : OSplit := by
   rw [L.O_def]
   have key : IsIntegral 𝒪[F] x ↔ IsIntegral 𝒪[F] (e x) := by
     constructor
+    · exact fun h => h.map ((e : E →ₐ[F] F × F).restrictScalars 𝒪[F])
     · intro h
-      exact h.map ((e : E →ₐ[F] F × F).restrictScalars 𝒪[F])
-    · intro h
-      have h' := h.map ((e.symm : F × F →ₐ[F] E).restrictScalars 𝒪[F])
-      simpa using h'
+      simpa using h.map ((e.symm : F × F →ₐ[F] E).restrictScalars 𝒪[F])
   rw [key]
   constructor
   · intro h

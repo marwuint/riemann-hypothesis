@@ -158,8 +158,7 @@ private theorem gap_lemma_2 (hV : F.Valid L₁ N₁) (J : ℤ) : ∀ k, k < r �
   intro k
   induction k with
   | zero =>
-    intro _ x h1 h2 _
-    exact absurd h2 (not_lt.mpr h1)
+    exact fun _ x h1 h2 _ => absurd h2 (not_lt.mpr h1)
   | succ k ih =>
     intro hk x h1 h2 hx
     rcases lt_trichotomy x (F.fr J k) with h3 | h3 | h3
@@ -222,8 +221,7 @@ private theorem countTlt_lemma_5 (hV : F.Valid L₁ N₁) (J : ℤ) (i' : ℕ) (
       exact ⟨hy, not_le.mp fun h' => h ⟨hy, h'⟩⟩
     · rintro ⟨hy, h⟩
       exact ⟨hy, fun h' => absurd h'.2 (not_le.mpr h)⟩
-  rw [hs] at e
-  exact e
+  rwa [hs] at e
 
 theorem idx_w (hV : F.Valid L₁ N₁) (i : Fin (segN F j)) (i' : ℕ) (hi' : i' < r) (h : segE F j i = F.fr (j - 1) i') :
     i.val = i' := by
@@ -236,8 +234,7 @@ theorem idx_tau (hV : F.Valid L₁ N₁) (i : Fin (segN F j)) (i' : ℕ) (hi' : 
   have h1 := idx_card F j i
   rw [h] at h1
   have h2 := countTlt_lemma_5 hV j i' hi'
-  rw [h1] at h2
-  exact h2
+  rwa [h1] at h2
 
 theorem r_le_segN (hV : F.Valid L₁ N₁) (j : ℤ) : r ≤ segN F j := by
   have hr0 : 0 < r := Nat.pos_of_ne_zero (NeZero.ne r)
@@ -336,8 +333,7 @@ theorem card_fin_range (N a b : ℕ) (hb : b ≤ N) :
     constructor
     · rintro ⟨i, hi, rfl⟩
       exact hi
-    · intro hy
-      exact ⟨⟨y, by omega⟩, hy, rfl⟩
+    · exact fun hy => ⟨⟨y, by omega⟩, hy, rfl⟩
   rw [← Finset.card_map Fin.valEmbedding, hm, Nat.card_Ico]
 
 theorem card_LLset (hV : F.Valid L₁ N₁) (j : ℤ) : (F.LLset j).card = segN F j - r - r := by

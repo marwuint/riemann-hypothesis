@@ -290,18 +290,12 @@ theorem cloud_bound_of_prop_and_weyl_dimension (hP : CloudLowerBoundWeyl) (hW : 
     exact h
   have hN := gaussianNumber_prime_pow_pos R (mm + 1 + 1) (by omega)
   have hVL : (dimV R.Kf lam0 : ℝ) = ∏ s : TT, (weylDim (mm + 2) (lamAt lam0 s.val) : ℝ) := by
-    have := congrArg (Rat.cast : ℚ → ℝ) (dimV_tops hW R mm TT lam0 hdom hz)
-    push_cast at this
-    exact this
+    exact_mod_cast dimV_tops hW R mm TT lam0 hdom hz
   have hVf : (dimV R.Kf (flatW (mm + 1) A B) : ℝ) = ∏ s : TT, (dimHar (mm + 1) (A s) (B s) : ℝ) := by
-    have := congrArg (Rat.cast : ℚ → ℝ) (dimV_flat hW R mm A B)
-    push_cast at this
-    exact this
+    exact_mod_cast dimV_flat hW R mm A B
   have hVf2 : (dimV R.Kf (flatW (mm + 1) (fun s => A s + 2 * ccl) (fun s => B s + 2 * ccl)) : ℝ) =
       ∏ s : TT, (dimHar (mm + 1) (A s + 2 * ccl) (B s + 2 * ccl) : ℝ) := by
-    have := congrArg (Rat.cast : ℚ → ℝ) (dimV_flat hW R mm (fun s => A s + 2 * ccl) (fun s => B s + 2 * ccl))
-    push_cast at this
-    exact this
+    exact_mod_cast dimV_flat hW R mm (fun s => A s + 2 * ccl) (fun s => B s + 2 * ccl)
   have hCl : dimCl TT lam0 = ∏ s : TT, (weylDim mm (cloudAt lam0 s.val) : ℝ) := by
     unfold dimCl
     push_cast
@@ -309,35 +303,21 @@ theorem cloud_bound_of_prop_and_weyl_dimension (hP : CloudLowerBoundWeyl) (hW : 
   set E : ℝ := (1 + t0) ^ ((2 * mm + 1) * TT.card) with hEdef
   have hc0 : ∀ s : TT, 0 ≤ (weylDim mm (cloudAt lam0 s.val) : ℝ) * (dimHar (mm + 1) (A s) (B s) : ℝ) :=
     fun s => mul_nonneg (hF s).1.le (Nat.cast_nonneg _)
-  have P1 : (∏ s : TT, (weylDim mm (cloudAt lam0 s.val) : ℝ)) * ∏ s : TT, (dimHar (mm + 1) (A s) (B s) : ℝ) ≤
-      ∏ s : TT, (weylDim (mm + 2) (lamAt lam0 s.val) : ℝ) := by
-    rw [← Finset.prod_mul_distrib]
-    exact Finset.prod_le_prod₀ (fun s _ => hc0 s) (fun s _ => (hF s).2.1)
   have P2 : ∏ s : TT, (weylDim (mm + 2) (lamAt lam0 s.val) : ℝ) ≤
       E * ((∏ s : TT, (weylDim mm (cloudAt lam0 s.val) : ℝ)) * ∏ s : TT, (dimHar (mm + 1) (A s) (B s) : ℝ)) := by
-    calc ∏ s : TT, (weylDim (mm + 2) (lamAt lam0 s.val) : ℝ)
-        ≤ ∏ s : TT, ((1 + t0) ^ (2 * mm + 1) *
-            ((weylDim mm (cloudAt lam0 s.val) : ℝ) * (dimHar (mm + 1) (A s) (B s) : ℝ))) :=
-          Finset.prod_le_prod₀ (fun s _ => (hc0 s).trans (hF s).2.1) (fun s _ => (hF s).2.2)
-      _ = E * ((∏ s : TT, (weylDim mm (cloudAt lam0 s.val) : ℝ)) * ∏ s : TT, (dimHar (mm + 1) (A s) (B s) : ℝ)) := by
-          rw [Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ,
-            Fintype.card_coe, ← pow_mul]
+    refine (Finset.prod_le_prod₀ (fun s _ => (hc0 s).trans (hF s).2.1)
+      (fun s _ => (hF s).2.2)).trans_eq ?_
+    rw [Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ,
+      Fintype.card_coe, ← pow_mul]
   have P3 : ∏ s : TT, (dimHar (mm + 1) (A s + 2 * ccl) (B s + 2 * ccl) : ℝ) ≤
       E * ∏ s : TT, (dimHar (mm + 1) (A s) (B s) : ℝ) := by
-    calc ∏ s : TT, (dimHar (mm + 1) (A s + 2 * ccl) (B s + 2 * ccl) : ℝ)
-        ≤ ∏ s : TT, ((1 + t0) ^ (2 * mm + 1) * (dimHar (mm + 1) (A s) (B s) : ℝ)) :=
-          Finset.prod_le_prod₀ (fun s _ => Nat.cast_nonneg _) (fun s _ => hG s)
-      _ = E * ∏ s : TT, (dimHar (mm + 1) (A s) (B s) : ℝ) := by
-          rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_coe, ← pow_mul]
+    refine (Finset.prod_le_prod₀ (fun s _ => Nat.cast_nonneg _) (fun s _ => hG s)).trans_eq ?_
+    rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_coe, ← pow_mul]
   have hx : (((2 * mm + 1) * TT.card : ℕ) : ℝ) * t0 ≤ ep := by
     rw [hepdef, ht0def]
     push_cast
     have hcd : (0 : ℝ) ≤ (TT.card : ℝ) * ccl := by positivity
-    have e1 : ((2 * (mm : ℝ) + 1) * TT.card) * (6 * ccl / b') = (6 * (2 * (mm : ℝ) + 1) * (TT.card * ccl)) / b' := by
-      ring
-    have e2 : 12 * (TT.card : ℝ) * ((mm : ℝ) + 1 + 1) * ccl / b' = (12 * ((mm : ℝ) + 2) * (TT.card * ccl)) / b' := by
-      ring
-    rw [e1, e2]
+    rw [mul_div_assoc']
     exact div_le_div_of_nonneg_right (by nlinarith) hb'.le
   have hEx := one_add_pow_le_exp_mul t0 ht0 ((2 * mm + 1) * TT.card)
   have hE1 : (1 - ep) * E ≤ 1 :=
@@ -345,9 +325,7 @@ theorem cloud_bound_of_prop_and_weyl_dimension (hP : CloudLowerBoundWeyl) (hW : 
   have hE2 : E ≤ 2 := by
     have := one_sub_mul_exp_le_one_of_le _ (1 / 9) (hx.trans hsmall)
     nlinarith
-  have hClnn : 0 ≤ dimCl TT lam0 := by
-    rw [hCl]
-    exact Finset.prod_nonneg fun s _ => (hF s).1.le
+  have hClnn : 0 ≤ dimCl TT lam0 := hCl ▸ Finset.prod_nonneg fun s _ => (hF s).1.le
   have hVfnn : (0 : ℝ) ≤ ∏ s : TT, (dimHar (mm + 1) (A s) (B s) : ℝ) :=
     Finset.prod_nonneg fun s _ => Nat.cast_nonneg _
   have hCV : 0 ≤ (∏ s : TT, (weylDim mm (cloudAt lam0 s.val) : ℝ)) * ∏ s : TT, (dimHar (mm + 1) (A s) (B s) : ℝ) :=
@@ -355,13 +333,15 @@ theorem cloud_bound_of_prop_and_weyl_dimension (hP : CloudLowerBoundWeyl) (hW : 
   have a1 : dimCl TT lam0 * dL R (flatW (mm + 1) A B) ≤ dL R lam0 := by
     unfold dL
     rw [hCl, hVL, hVf, ← mul_div_assoc]
-    exact div_le_div_of_nonneg_right P1 hN.le
+    refine div_le_div_of_nonneg_right ?_ hN.le
+    rw [← Finset.prod_mul_distrib]
+    exact Finset.prod_le_prod₀ (fun s _ => hc0 s) (fun s _ => (hF s).2.1)
   have a2 : (1 - ep) * dL R lam0 ≤ dimCl TT lam0 * dL R (flatW (mm + 1) A B) := by
     unfold dL
     rw [hCl, hVL, hVf, ← mul_div_assoc, ← mul_div_assoc]
     refine div_le_div_of_nonneg_right ?_ hN.le
-    have h1e : 0 ≤ 1 - ep := by linarith
-    nlinarith [mul_le_mul_of_nonneg_left P2 h1e, mul_le_mul_of_nonneg_right hE1 hCV]
+    nlinarith [mul_le_mul_of_nonneg_left P2 (by linarith : 0 ≤ 1 - ep),
+      mul_le_mul_of_nonneg_right hE1 hCV]
   have a3 : dL R (flatW (mm + 1) (fun s => A s + 2 * ccl) (fun s => B s + 2 * ccl)) ≤
       2 * dL R (flatW (mm + 1) A B) := by
     unfold dL

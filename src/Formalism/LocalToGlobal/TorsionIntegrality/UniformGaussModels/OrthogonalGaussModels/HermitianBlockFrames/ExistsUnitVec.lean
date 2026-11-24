@@ -71,17 +71,14 @@ theorem IntV_smul {x : ι → K} {c : K} (hc : c ∈ S.O) (hx : S.IntV x) : S.In
 
 theorem cv_add (x y : ι → K) : S.cv (x + y) = S.cv x + S.cv y := by
   funext k
-  show S.σ (x k + y k) = S.σ (x k) + S.σ (y k)
   exact map_add _ _ _
 
 theorem cv_sub (x y : ι → K) : S.cv (x - y) = S.cv x - S.cv y := by
   funext k
-  show S.σ (x k - y k) = S.σ (x k) - S.σ (y k)
   exact map_sub _ _ _
 
 theorem cv_smul (c : K) (x : ι → K) : S.cv (c • x) = S.σ c • S.cv x := by
   funext k
-  show S.σ (c * x k) = S.σ c * S.σ (x k)
   exact map_mul _ _ _
 
 theorem cv_single (j : ι) (t : K) : S.cv (Pi.single j t) = Pi.single j (S.σ t) := by
@@ -115,8 +112,7 @@ private theorem mulVec_single_apply_hermitian_block_frames (Γ : Matrix ι ι K)
   · rw [Pi.single_eq_same]
   · intro k _ hk
     rw [Pi.single_eq_of_ne hk, mul_zero]
-  · intro h
-    exact absurd (Finset.mem_univ j) h
+  · exact fun h => absurd (Finset.mem_univ j) h
 
 theorem hf_single (Γ : Matrix ι ι K) (i j : ι) (s t : K) :
     S.hf Γ (Pi.single i s) (Pi.single j t) = S.σ s * (Γ i j * t) := by
@@ -127,8 +123,7 @@ theorem hf_single (Γ : Matrix ι ι K) (i j : ι) (s t : K) :
   · rw [Pi.single_eq_same]
   · intro k _ hk
     rw [Pi.single_eq_of_ne hk, zero_mul]
-  · intro h
-    exact absurd (Finset.mem_univ i) h
+  · exact fun h => absurd (Finset.mem_univ i) h
 
 theorem exists_not_NU {Γ : Matrix ι ι K} (hΓ : S.IntM Γ) (hU : S.UM Γ) (h0 : Γ ≠ 0) :
     ∃ i j, ¬ S.NU (Γ i j) := by
@@ -162,8 +157,7 @@ theorem exists_not_NU {Γ : Matrix ι ι K} (hΓ : S.IntM Γ) (hU : S.UM Γ) (h0
   apply hN
   refine ⟨(Γ *ᵥ x') i, S.IntV_mulVec hΓ hx' i, ?_⟩
   have h1 := congrFun heq i
-  rw [Pi.smul_apply, smul_eq_mul, mulVec_single_apply_hermitian_block_frames, mul_one] at h1
-  exact h1
+  rwa [Pi.smul_apply, smul_eq_mul, mulVec_single_apply_hermitian_block_frames, mul_one] at h1
 
 theorem exists_unit_vec {Γ : Matrix ι ι K} (hΓ : S.IntM Γ) (hH : S.Herm Γ) (hU : S.UM Γ) (h0 : Γ ≠ 0) :
     ∃ (a : ι → K) (i : ι), S.IntV a ∧ ¬ S.NU (a i) ∧ S.hf Γ a a = 1 := by

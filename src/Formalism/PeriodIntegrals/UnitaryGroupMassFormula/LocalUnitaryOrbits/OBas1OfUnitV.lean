@@ -94,12 +94,10 @@ theorem det_red {K : Type} [CommRing K] (π : OR (E := E) v →+* K) {a : ℕ}
     rfl
   have hm : Ts.det * ⟨w, hw⟩ = 1 := by
     apply Subtype.ext
-    rw [Subring.coe_mul, hdet]
-    exact hd
+    rwa [Subring.coe_mul, hdet]
   have hu : IsUnit Ts.det := ⟨⟨Ts.det, ⟨w, hw⟩, hm, by rw [mul_comm]; exact hm⟩, rfl⟩
   have := hu.map π
-  rw [RingHom.map_det] at this
-  exact this
+  rwa [RingHom.map_det] at this
 
 theorem redU_of (hU : Orb.UnitV σ J ψ v Λ) (hR : ResAlg σ J ψ v) (a : ℕ) (Y : TupV (E := E) v n a) :
     RedU σ J ψ v Λ a Y := by
@@ -122,15 +120,13 @@ theorem redU_of (hU : Orb.UnitV σ J ψ v Λ) (hR : ResAlg σ J ψ v) (a : ℕ) 
       by_cases h : i = j
       · subst h; simp
       · simp [h, Ne.symm h]
-    · intro i j
-      exact (hπ.2.2 _ _ (hconj i j)).symm
+    · exact fun i j => (hπ.2.2 _ _ (hconj i j)).symm
   · refine Or.inr ⟨hη, 1, fun i j => π ⟨_, hT i j⟩, ?_, by simp, ?_, det_red v π _ hT hw hd,
       card_cls σ J v Λ hcm hJ hG.2.2.1 he he1 (RingEquiv.prodComm (R := k) (S := k)).toRingHom π hπ _ hT⟩
     · intro i j
       by_cases h : i = j
       · subst h; ext <;> simp
       · ext <;> simp [h, Ne.symm h]
-    · intro i j
-      exact (hπ.2.2 _ _ (hconj i j)).symm
+    · exact fun i j => (hπ.2.2 _ _ (hconj i j)).symm
 
 end PI.OmLocU.Red

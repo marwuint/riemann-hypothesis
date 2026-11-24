@@ -79,9 +79,7 @@ theorem isInternal_comap (f : P →ₗ[B] M) (hf : Function.Injective f)
     have h1 : DirectSum.map φ y = DirectSum.map φ y' :=
       (Decomposition.isInternal ℳ).injective (by rw [key, key, h])
     refine (DirectSum.map_injective φ).2 (fun m a b hab => ?_) h1
-    apply Subtype.ext
-    apply hf
-    exact congrArg Subtype.val hab
+    exact Subtype.ext (hf (congrArg Subtype.val hab))
   · intro x
     choose g hg using hN
     refine ⟨∑ m ∈ (decompose ℳ (f x)).support,
@@ -124,8 +122,7 @@ theorem isInternal_map (g : M →ₗ[B] P) (hg : Function.Surjective g)
     rw [h2] at h3
     refine DFinsupp.ext (fun m => ?_)
     rw [DirectSum.map_apply]
-    apply Subtype.ext
-    exact h3 m
+    exact Subtype.ext (h3 m)
   · intro p
     obtain ⟨x, rfl⟩ := hg p
     refine ⟨DirectSum.map φ (decompose ℳ x), ?_⟩
@@ -149,8 +146,7 @@ theorem Std.isNoetherianRing [IsLocalRing B] [GradedAlgebra 𝒜] (h : Std 𝒜)
   have hS1 : ∀ i, 𝒜 (e i) ≤ Subalgebra.toSubmodule S := by
     intro i
     rw [← hG i, Submodule.span_le]
-    intro x hx
-    exact Algebra.subset_adjoin (Set.mem_iUnion.2 ⟨i, hx⟩)
+    exact fun x hx => Algebra.subset_adjoin (Set.mem_iUnion.2 ⟨i, hx⟩)
   have hS : ∀ (n : ℕ) (m : Deg k), 0 ≤ m → ∑ i, m i = (n : ℤ) →
       𝒜 m ≤ Subalgebra.toSubmodule S := by
     intro n
@@ -185,8 +181,7 @@ theorem Std.isNoetherianRing [IsLocalRing B] [GradedAlgebra 𝒜] (h : Std 𝒜)
       have hdec : 𝒜 m = 𝒜 (m - e i) * 𝒜 (e i) := by
         rw [← h.gen (m - e i) i hm', sub_add_cancel]
       rw [hdec, Submodule.mul_le]
-      intro a ha b hb
-      exact S.mul_mem (ih _ hm' hs' ha) (hS1 i hb)
+      exact fun a ha b hb => S.mul_mem (ih _ hm' hs' ha) (hS1 i hb)
   have hall : ∀ x : R, x ∈ S := by
     intro x
     induction x using DirectSum.Decomposition.inductionOn 𝒜 with
@@ -247,8 +242,7 @@ theorem comp_mem_of_isHomSub
     · rw [decompose_of_mem_ne F.gr hn hnm]; exact N.zero_mem
   | zero => simp
   | add x y _ _ hx hy =>
-    simp only [decompose_add, DirectSum.add_apply, Submodule.coe_add]
-    exact N.add_mem (hx m) (hy m)
+    simpa only [decompose_add, DirectSum.add_apply, Submodule.coe_add] using N.add_mem (hx m) (hy m)
   | smul a x _ hx =>
     induction a using DirectSum.Decomposition.inductionOn 𝒜 generalizing m with
     | zero => simp
@@ -307,8 +301,7 @@ theorem shift_isGr (hF : F.IsGr 𝒜) (d : Deg k) : (F.shift d).IsGr 𝒜 := by
   refine ⟨?_, ?_, hF.fin⟩
   · intro d' m a x ha hx
     have := hF.smul_mem ha (show x ∈ F.gr (m - d) from hx)
-    rw [← add_sub_assoc] at this
-    exact this
+    rwa [← add_sub_assoc] at this
   · have h := (DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top F.gr).1 hF.internal
     refine (DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top
       (fun m => F.gr (m - d))).2 ⟨?_, ?_⟩

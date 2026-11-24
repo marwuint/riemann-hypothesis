@@ -169,8 +169,7 @@ theorem lq_open (hQ : QOpen q) : IsOpen {x : UAd hc n | (x : GL (Fin n) 𝒜) �
     rw [e, mul_assoc]
   have hnh : (((levUQ hc n ST SG Q H q).subgroupOf (UAd hc n) : Subgroup (UAd hc n)) : Set (UAd hc n)) ∈ nhds (1 : UAd hc n) := by
     refine Filter.mem_of_superset ((hWo.preimage continuous_subtype_val).mem_nhds hW1) ?_
-    intro x hx
-    exact hsub x.1 x.2 hx
+    exact fun x hx => hsub x.1 x.2 hx
   exact Subgroup.isOpen_of_mem_nhds _ hnh
 
 theorem lq_compact (hQ : QOpen q) : IsCompact (levUQ hc n ST SG Q H q : Set (GL (Fin n) 𝒜)) := by
@@ -181,8 +180,7 @@ theorem lq_compact (hQ : QOpen q) : IsCompact (levUQ hc n ST SG Q H q : Set (GL 
       Subtype.val '' (((levUQ hc n ST SG Q H q).subgroupOf (UAd hc n) : Subgroup (UAd hc n)) : Set (UAd hc n)) := by
     ext u
     constructor
-    · intro hu
-      exact ⟨⟨u, hUA hu⟩, hu, rfl⟩
+    · exact fun hu => ⟨⟨u, hUA hu⟩, hu, rfl⟩
     · rintro ⟨x, hx, rfl⟩
       exact hx
   have hclosed : IsClosed (levUQ hc n ST SG Q H q : Set (GL (Fin n) 𝒜)) := by
@@ -203,10 +201,8 @@ variable (q : QLoc hc n Q Θ)
 theorem qUloc_of_not (v : HeightOneSpectrum (𝓞 F)) (hv : ∀ P : Q, qv F P.1 ≠ v) :
     qUloc ST q (Subgroup.pi Set.univ Hw) v = levLoc hc n ST SG (Subgroup.pi Set.univ Hw) v := by
   apply le_antisymm
-  · intro x hx
-    exact ((mem_qUloc q _ v x).1 hx).1
-  · intro x hx
-    exact (mem_qUloc q _ v x).2 ⟨hx, fun P h => absurd h (hv P)⟩
+  · exact fun x hx => ((mem_qUloc q _ v x).1 hx).1
+  · exact fun x hx => (mem_qUloc q _ v x).2 ⟨hx, fun P h => absurd h (hv P)⟩
 
 theorem levUQ_eq_prod (x : GL (Fin n) 𝒜) :
     x ∈ levUQ hc n ST SG Q (Subgroup.pi Set.univ Hw) q ↔

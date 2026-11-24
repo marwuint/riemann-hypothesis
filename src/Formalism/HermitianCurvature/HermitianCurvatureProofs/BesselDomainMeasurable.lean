@@ -265,10 +265,8 @@ lemma adM_cont (D : RealPlaceData k r Wp Wq) (x : Bool × Mat k r) :
       continuousAt_matrix_inv _ (by rw [← hu]; exact NormedRing.inverse_continuousAt u)
     exact (hc.comp hs.continuousAt).continuousWithinAt
   cases b
-  · show ContinuousOn (fun p => (sR p)⁻¹ * X * sR p) {p | D.inSS p}
-    exact ((hinvOn _ hcR fun p hp => JFxDs2.sR_mem hp).mul continuousOn_const).mul hcR.continuousOn
-  · show ContinuousOn (fun p => (sL p)⁻¹ * X * sL p) {p | D.inSS p}
-    exact ((hinvOn _ hcL fun p hp => JFxDs2.sL_mem hp).mul continuousOn_const).mul hcL.continuousOn
+  · exact ((hinvOn _ hcR fun p hp => JFxDs2.sR_mem hp).mul continuousOn_const).mul hcR.continuousOn
+  · exact ((hinvOn _ hcL fun p hp => JFxDs2.sL_mem hp).mul continuousOn_const).mul hcL.continuousOn
 
 lemma cont_sum {α : Type*} (S : Set (SS k r)) (f : α → SS k r → ℝ) :
     ∀ l : List α, (∀ x ∈ l, ContinuousOn (f x) S) → ContinuousOn (fun p => (l.map (fun x => f x p)).sum) S := by
@@ -361,8 +359,7 @@ theorem bessel_domain_measurable : JFxDs2.JDomMeas := by
       have e0 : (fun p => W ((lr u v).map (adM p)) F (sgs p g) - W ((lr u v).map (adM p₀)) F (sgs p g)) p₀ = 0 :=
         sub_self _
       unfold ContinuousWithinAt
-      rw [e0]
-      exact hd
+      rwa [e0]
     refine (hdc.add hsec).congr (fun p _ => ?_) ?_
     · simp
     · simp

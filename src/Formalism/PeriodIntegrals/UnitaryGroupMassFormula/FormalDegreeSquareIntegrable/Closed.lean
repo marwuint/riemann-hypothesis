@@ -167,8 +167,7 @@ lemma sa_scalar (hirr : Irr π) (A : H →L[ℂ] H) (hA : IsSelfAdjoint A)
       ext v
       have h1 : v ∈ S := by rw [hS]; exact Submodule.mem_top
       exact h1
-  obtain ⟨r, hr⟩ : (spectrum ℝ A).Nonempty := by
-    exact ContinuousFunctionalCalculus.spectrum_nonempty A hA
+  obtain ⟨r, hr⟩ : (spectrum ℝ A).Nonempty := ContinuousFunctionalCalculus.spectrum_nonempty A hA
   refine ⟨r, ?_⟩
   have heq : Set.EqOn (fun x : ℝ => x) (fun _ => r) (spectrum ℝ A) := by
     intro x hx
@@ -256,8 +255,7 @@ theorem continuous_toL2Map [CompleteSpace H] (c : H →ₗ[ℂ] (X → ℂ))
   rw [hxv]
   have h2 : Tendsto (fun i => c (u (ns i)) x) atTop (𝓝 (c v x)) :=
     ((hcont x).tendsto v).comp (hu.comp hns.tendsto_atTop)
-  refine tendsto_nhds_unique hx (h2.congr fun i => ?_)
-  exact (hxa (ns i)).symm
+  exact tendsto_nhds_unique hx (h2.congr fun i => (hxa (ns i)).symm)
 
 end
 
@@ -323,7 +321,6 @@ end Orth
 theorem stOrthOf : StOrthOf := by
   intro hSchur hBdd G _ _ _ _ _ _ _ μ _ _ _ H _ _ _ _ π hiso hcont hirr hL2
   have hcv : ∀ (w : H) (g : G), Continuous fun v => cfL π w v g := fun w g => by
-    show Continuous fun v => ⟪w, π g v⟫_ℂ
     exact continuous_const.inner (π g).continuous
   choose T hT using fun w : H => hBdd G H μ (cfL π w) (hcv w) (fun v => hL2 v w)
   let B : H → H → H → H → ℂ := fun v w v' w' => ∫ g, cf π v w g * star (cf π v' w' g) ∂μ
@@ -363,8 +360,7 @@ theorem stOrthOf : StOrthOf := by
   have hcfinv : ∀ v w g, cf π v w g = star (cf π w v g⁻¹) := by
     intro v w g
     have e := pi_inv π hiso g⁻¹ v w
-    rw [inv_inv] at e
-    exact e
+    rwa [inv_inv] at e
   have hBsymm : ∀ v w v' w', B v w v' w' = conj (B w v w' v') := by
     intro v w v' w'
     show ∫ g, cf π v w g * star (cf π v' w' g) ∂μ = conj (∫ g, cf π w v g * star (cf π w' v' g) ∂μ)

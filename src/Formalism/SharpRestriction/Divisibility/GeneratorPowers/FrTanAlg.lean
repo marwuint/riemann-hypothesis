@@ -141,8 +141,7 @@ private theorem dvd_lemma_3 {κ : Type} [Fintype κ] (l : κ → S) (hl : Functi
     obtain ⟨σ, -, rfl⟩ := Multiset.mem_map.mp hx
     exact (Polynomial.mem_roots hf).mpr (hr σ)
   have h := (Multiset.prod_X_sub_C_dvd_iff_le_roots hf _).mpr hs
-  rw [Multiset.map_map] at h
-  exact h
+  rwa [Multiset.map_map] at h
 
 private theorem annih_lemma_4 (χ : ι → (E →+* S)) (hχ : Function.Injective χ)
     (hcard : Fintype.card ι = Module.finrank ℚ E) (ρ : 𝓞 E →+* Module.End S M) (θ : 𝓞 E)
@@ -157,8 +156,7 @@ private theorem annih_lemma_4 (χ : ι → (E →+* S)) (hχ : Function.Injectiv
     exact minpoly.aeval ℤ (θ : E)
   have hqT : aeval (ρ θ) (minpoly ℤ (θ : E)) = 0 := by
     have h := Polynomial.aeval_algHom_apply ρ.toIntAlgHom θ (minpoly ℤ (θ : E))
-    rw [hq0, map_zero] at h
-    exact h
+    rwa [hq0, map_zero] at h
   have hlinj : Function.Injective (fun σ => χ σ (θ : E)) :=
     fun σ τ h => hχ (eqchi_lemma_2 (θ : E) hθ (χ σ) (χ τ) h)
   have hqS0 : (minpoly ℤ (θ : E)).map (algebraMap ℤ S) ≠ 0 := (hqm.map _).ne_zero
@@ -166,8 +164,7 @@ private theorem annih_lemma_4 (χ : ι → (E →+* S)) (hχ : Function.Injectiv
     intro σ
     rw [Polynomial.eval_map_algebraMap]
     have h := Polynomial.aeval_algHom_apply (χ σ).toIntAlgHom (θ : E) (minpoly ℤ (θ : E))
-    rw [minpoly.aeval, map_zero] at h
-    exact h
+    rwa [minpoly.aeval, map_zero] at h
   have hdvd := dvd_lemma_3 (fun σ => χ σ (θ : E)) hlinj _ hqS0 hroot
   have hPm : (∏ σ, (X - C (χ σ (θ : E)))).Monic := monic_prod_of_monic _ _ fun σ _ => monic_X_sub_C _
   have hPdeg : (∏ σ, (X - C (χ σ (θ : E)))).natDegree = Fintype.card ι := by
@@ -177,11 +174,9 @@ private theorem annih_lemma_4 (χ : ι → (E →+* S)) (hχ : Function.Injectiv
     rw [hqm.natDegree_map, hcard]
     have h1 := minpoly.isIntegrallyClosed_eq_field_fractions' ℚ hint
     have h2 := minpoly.natDegree_le (A := ℚ) (θ : E)
-    rw [h1, hqm.natDegree_map] at h2
-    exact h2
+    rwa [h1, hqm.natDegree_map] at h2
   have heq := Polynomial.eq_of_monic_of_dvd_of_natDegree_le hPm (hqm.map _) hdvd (by rw [hPdeg]; exact hqdeg)
-  rw [← heq, Polynomial.aeval_map_algebraMap]
-  exact hqT
+  rwa [← heq, Polynomial.aeval_map_algebraMap]
 
 private theorem eig_lemma_5 (χ' : E →+* S) (ρ : 𝓞 E →+* Module.End S M) (θ : 𝓞 E)
     (hθ : IntermediateField.adjoin ℚ {(θ : E)} = ⊤) (v : M) (hv : ρ θ v = χ' (θ : E) • v) (a : 𝓞 E) :

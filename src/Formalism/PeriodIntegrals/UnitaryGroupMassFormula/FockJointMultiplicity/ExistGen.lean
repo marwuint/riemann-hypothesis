@@ -121,8 +121,7 @@ theorem deriv_det_eq_zero {n : Type*} [Fintype n] [DecidableEq n] (D : Derivatio
     rw [this]
     simpa using Matrix.det_updateCol_smul M i (0 : A) 0
   · have : (fun k => D (M k i)) = c • (fun k => M k i') := funext fun k => by simp [hc k]
-    rw [this, Matrix.det_updateCol_smul]
-    rw [Matrix.det_zero_of_column_eq hne.symm]
+    rw [this, Matrix.det_updateCol_smul, Matrix.det_zero_of_column_eq hne.symm]
     · simp
     · intro k
       simp [Matrix.updateCol_self, Matrix.updateCol_ne hne]
@@ -163,14 +162,11 @@ theorem minorPolynomial_isWeightedHomogeneous {k : ℕ} (g : Fin k → Fin k →
     rw [← map_intCast (C : R →+* MvPolynomial σ R)]
     exact isWeightedHomogeneous_C _ _
   have := h0.mul hp
-  rw [zero_add] at this
-  exact this
+  rwa [zero_add] at this
 
 theorem pderiv_eq_zero_of_supported {S : Set σ} {f : MvPolynomial σ R} (hf : f ∈ supported R S)
     {v : σ} (hv : v ∉ S) : pderiv v f = 0 := by
-  apply pderiv_eq_zero_of_notMem_vars
-  intro h
-  exact hv ((mem_supported.1 hf) h)
+  exact pderiv_eq_zero_of_notMem_vars (fun h => hv ((mem_supported.1 hf) h))
 
 end Minor
 

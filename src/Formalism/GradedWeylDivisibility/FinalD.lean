@@ -316,14 +316,12 @@ theorem nabla_twist_mem : NablaLTwMem := by
   · rintro ⟨G, hG, rfl⟩
     rw [Submodule.mem_comap] at hG
     change g.det ^ lam (Fin.last m) • rowAct K g (g.det ^ (-(lam (Fin.last m))) • G) ∈ _
-    rw [map_smul, smul_smul, ← zpow_add₀ hd, add_neg_cancel, zpow_zero, one_smul]
-    exact hG
+    rwa [map_smul, smul_smul, ← zpow_add₀ hd, add_neg_cancel, zpow_zero, one_smul]
   · intro hF
     refine ⟨g.det ^ (lam (Fin.last m)) • F, ?_, ?_⟩
     · rw [Submodule.mem_comap]
       change rowAct K g (g.det ^ (lam (Fin.last m)) • F) ∈ _
-      rw [map_smul]
-      exact hF
+      rwa [map_smul]
     · change g.det ^ (-(lam (Fin.last m))) • g.det ^ (lam (Fin.last m)) • F = F
       rw [smul_smul, ← zpow_add₀ hd, neg_add_cancel, zpow_zero, one_smul]
 
@@ -411,13 +409,11 @@ theorem semistandard_basis : SSBasis := by
     (column_lex_bideterminant R k n (K m) (sz m) (hsz m) (I m) (hmono m)).2
   have hmem : ∀ m, b m ∈ dualWeyl R k n ν := fun m => by
     have := bidetMem R k n (K m) (sz m) (hsz m) (I m)
-    rw [hshape m] at this
-    exact this
+    rwa [hshape m] at this
   refine ⟨b, ⟨?_, ?_, ?_⟩, fun m => ⟨hdeg m, hlc m, K m, sz m, hsz m, I m, hshape m, hmono m, rfl⟩⟩
   ·
     refine ldbasis_linearIndependent (colLex k n) b ?_ hlc
-    intro m m' h
-    exact Subtype.ext ((hdeg m).symm.trans (h.trans (hdeg m')))
+    exact fun m m' h => Subtype.ext ((hdeg m).symm.trans (h.trans (hdeg m')))
   ·
     apply le_antisymm
     · rw [Submodule.span_le]
@@ -425,8 +421,7 @@ theorem semistandard_basis : SSBasis := by
       exact hmem m
     · suffices key : ∀ d : (colLex k n).syn, ∀ f ∈ dualWeyl R k n ν,
           (colLex k n).toSyn ((colLex k n).degree f) = d → f ∈ Submodule.span R (Set.range b) by
-        intro f hf
-        exact key _ f hf rfl
+        exact fun f hf => key _ f hf rfl
       intro d
       induction d using WellFoundedLT.induction with
       | _ d ih =>

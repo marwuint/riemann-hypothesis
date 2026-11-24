@@ -78,8 +78,7 @@ theorem map_scale (s : ℂ) (hs : s ≠ 0) :
   have hpos : 0 < Complex.normSq s := Complex.normSq_pos.mpr hs
   have h := Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure ℂ)
     (f := LinearMap.mulLeft ℝ s) (by rw [hdet]; exact hpos.ne')
-  rw [hdet, abs_of_pos (inv_pos.mpr hpos)] at h
-  exact h
+  rwa [hdet, abs_of_pos (inv_pos.mpr hpos)] at h
 
 theorem reindex_mp {ι κ : Type*} [Fintype ι] [Fintype κ] (e : ι ≃ κ) :
     MeasurePreserving (fun (y : κ → ℂ) (i : ι) => y (e i)) volume volume := by
@@ -87,10 +86,8 @@ theorem reindex_mp {ι κ : Type*} [Fintype ι] [Fintype κ] (e : ι ≃ κ) :
   have hf : (⇑(MeasurableEquiv.piCongrLeft (fun _ : ι => ℂ) e.symm)) =
       fun (y : κ → ℂ) (i : ι) => y (e i) := by
     funext y i
-    have h1 := MeasurableEquiv.piCongrLeft_apply_apply e.symm (β := fun _ : ι => ℂ) y (e i)
-    simpa using h1
-  rw [hf] at h
-  exact h
+    simpa using MeasurableEquiv.piCongrLeft_apply_apply e.symm (β := fun _ : ι => ℂ) y (e i)
+  rwa [hf] at h
 
 theorem pi_reindex_scale {ι κ : Type*} [Fintype ι] [Fintype κ] (e : ι ≃ κ)
     (a : ℝ≥0∞) (ha : a ≠ ⊤) (s : ι → ℂ) (hs : ∀ i, s i ≠ 0) :

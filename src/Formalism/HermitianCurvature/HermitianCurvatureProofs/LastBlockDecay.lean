@@ -193,12 +193,7 @@ theorem tendsto_dil (f : ℂ → E) (hf : MemLp f 2 volume) (ζ : ℂ) (hζ : ζ
   have hf' : MemLp f (ENNReal.ofReal 2) volume := by simpa using hf
   obtain ⟨g, hgs, hfg, hgc, hgm⟩ :=
     hf'.exists_hasCompactSupport_integral_rpow_sub_le two_pos (ε := ε / 12) (by positivity)
-  have hfg' : ∫ z, ‖f z - g z‖ ^ 2 ≤ ε / 12 := by
-    have e : (fun z => ‖f z - g z‖ ^ (2 : ℝ)) = fun z => ‖f z - g z‖ ^ 2 := by
-      funext z
-      exact Real.rpow_two _
-    rw [e] at hfg
-    exact hfg
+  simp only [Real.rpow_two] at hfg
   have hgm2 : MemLp g 2 volume := by simpa using hgm
   have hT := tendsto_dil_cpt g hgc hgs ζ hζ
   rw [Metric.tendsto_nhds] at hT
@@ -217,10 +212,7 @@ theorem tendsto_dil (f : ℂ → E) (hf : MemLp f 2 volume) (ζ : ℂ) (hζ : ζ
   have iL := integrable_sq_of_memLp ((memLp_dil hf ρ hρ0).sub (memLp_dil hf ζ hζ))
   have hA := integral_norm_dil_sq (fun w => f w - g w) ρ hρ0
   have hC := integral_norm_dil_sq (fun w => g w - f w) ζ hζ
-  have hgf : ∫ z, ‖g z - f z‖ ^ 2 = ∫ z, ‖f z - g z‖ ^ 2 := by
-    congr 1
-    funext z
-    rw [norm_sub_rev]
+  have hgf : ∫ z, ‖g z - f z‖ ^ 2 = ∫ z, ‖f z - g z‖ ^ 2 := by simp only [norm_sub_rev]
   have hmono : ∫ z, ‖‖ρ‖ • f (ρ * z) - ‖ζ‖ • f (ζ * z)‖ ^ 2 ≤
       ∫ z, 3 * (‖‖ρ‖ • (f (ρ * z) - g (ρ * z))‖ ^ 2 +
         ‖‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)‖ ^ 2 + ‖‖ζ‖ • (g (ζ * z) - f (ζ * z))‖ ^ 2) := by
@@ -232,16 +224,10 @@ theorem tendsto_dil (f : ℂ → E) (hf : MemLp f 2 volume) (ζ : ℂ) (hζ : ζ
     simp only
     rw [e]
     exact h3 _ _ _
-  have hs1 : ∫ z, (‖‖ρ‖ • (f (ρ * z) - g (ρ * z))‖ ^ 2 +
-        ‖‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)‖ ^ 2 + ‖‖ζ‖ • (g (ζ * z) - f (ζ * z))‖ ^ 2) =
-      (∫ z, (‖‖ρ‖ • (f (ρ * z) - g (ρ * z))‖ ^ 2 + ‖‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)‖ ^ 2)) +
-        ∫ z, ‖‖ζ‖ • (g (ζ * z) - f (ζ * z))‖ ^ 2 :=
-    integral_add (iA.add iB) iC
-  have hs2 : ∫ z, (‖‖ρ‖ • (f (ρ * z) - g (ρ * z))‖ ^ 2 + ‖‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)‖ ^ 2) =
-      (∫ z, ‖‖ρ‖ • (f (ρ * z) - g (ρ * z))‖ ^ 2) + ∫ z, ‖‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)‖ ^ 2 :=
-    integral_add iA iB
-  rw [integral_const_mul, hs1, hs2] at hmono
-  rw [hA, hC, hgf] at hmono
+  have hs1 := integral_add (iA.add iB) iC
+  have hs2 := integral_add iA iB
+  simp only [Pi.add_apply, Pi.sub_apply] at hs1 hs2
+  rw [integral_const_mul, hs1, hs2, hA, hC, hgf] at hmono
   linarith
 
 theorem tendsto_inner_dil {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (b c : ℂ → H)

@@ -60,9 +60,7 @@ theorem fmat_one : I.fmat 1 = 1 := rfl
 theorem fmat_inv_mul (x : I.Gf) : I.fmat x⁻¹ * I.fmat x = 1 := by
   rw [← fmat_mul I, inv_mul_cancel, fmat_one I]
 
-theorem K_one : (1 : I.Gf) ∈ I.Kset := by
-  show ((1 : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf
-  exact (Formalism.UG.stabGL I.Lf).one_mem
+theorem K_one : (1 : I.Gf) ∈ I.Kset := (Formalism.UG.stabGL I.Lf).one_mem
 theorem K_mv {x : I.Gf} (hx : x ∈ I.Kset) {y : VA I} (hy : y ∈ I.Lf) : I.fmat x *ᵥ y ∈ I.Lf := by
   have h : ∀ v, v ∈ I.Lf ↔ I.fmat x *ᵥ v ∈ I.Lf := hx
   exact (h y).1 hy
@@ -101,8 +99,7 @@ theorem mv_mem (M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) (g : ℕ) 
   have h : Submodule.span (IntAf I.F I.E) S ⊔ mL I g ≤ N.comap (mvO I M) := by
     refine sup_le ?_ ?_
     · rw [Submodule.span_le]
-      intro s hs
-      exact hS s hs
+      exact fun s hs => hS s hs
     · unfold Formalism.L2.SG.HidaSetting.mL
       rw [Submodule.span_le]
       rintro _ ⟨y, hy, rfl⟩
@@ -135,9 +132,7 @@ theorem sigA_sigA (a : I.E ⊗[I.F] Af I.F) : sigA I (sigA I a) = a := by
   | add x y hx hy => rw [map_add (f := _), map_add (f := _), hx, hy]
 
 theorem sigA_inclE (a : I.E) : sigA I (Formalism.UG.inclE (F := I.F) (Af I.F) a) =
-    Formalism.UG.inclE (F := I.F) (Af I.F) (star a) := by
-  show sigA I (a ⊗ₜ[I.F] (1 : Af I.F)) = star a ⊗ₜ[I.F] (1 : Af I.F)
-  exact sigA_tmul I a 1
+    Formalism.UG.inclE (F := I.F) (Af I.F) (star a) := sigA_tmul I a 1
 
 theorem star_intOE {a : I.E} (ha : a ∈ Formalism.UG.intOE I.E) : star a ∈ Formalism.UG.intOE I.E := by
   obtain ⟨x, rfl⟩ := ha
@@ -222,8 +217,7 @@ end Gen
 section Cong
 
 theorem lt_sub {r : ℕ} {p q : ℕ} (h : p ≤ q) : {c : Fin r | c.1 < p} ⊆ {c | c.1 < q} := by
-  intro c hc
-  exact lt_of_lt_of_le hc h
+  exact fun c hc => lt_of_lt_of_le hc h
 
 variable (I : AutInst) (g : ℕ) {r k : ℕ} (e0 : Fin r → VA I) (z0 : VA I) (bw : Fin k → VA I)
 

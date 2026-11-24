@@ -85,8 +85,7 @@ theorem mem_idl (E : Type) [Field E] [NumberField E] (g : ℕ) (k ν : ℤ) (t :
   constructor
   · rintro ⟨z, hz, rfl⟩
     rwa [mul_div_cancel_left₀ _ hg']
-  · intro h
-    exact ⟨_, h, by field_simp⟩
+  · exact fun h => ⟨_, h, by field_simp⟩
 
 theorem trace_conj (E : Type) [Field E] [NumberField E] [IsCMField E] (x : E) :
     Algebra.trace ℚ E (complexConj E x) = Algebra.trace ℚ E x :=
@@ -135,8 +134,7 @@ theorem exists_theta (E : Type) [Field E] [NumberField E] [IsCMField E]
         ← Algebra.algebraMap_intTrace (A := 𝓞 F)]
       have := ha (algebraMap (𝓞 F) F (Algebra.intTrace (𝓞 F) (𝓞 E) z))
         ((FractionalIdeal.mem_coeIdeal _).2 ⟨_, ⟨z, rfl⟩, rfl⟩)
-      rw [FractionalIdeal.mem_one_iff] at this
-      exact this
+      rwa [FractionalIdeal.mem_one_iff] at this
     rw [hdual, FractionalIdeal.mem_one_iff] at hmem
     obtain ⟨z, hz⟩ := hmem
     have hint : IsIntegral ℤ a := by
@@ -225,8 +223,7 @@ theorem traceDualGe : Formalism.FourierDecayAlt.S6.DualSupset := by
   have e : Algebra.trace ℚ E ((x + complexConj E x) * (θ : E)) = Algebra.trace ℚ E x := by
     rw [add_mul, map_add (f := _), ← trace_conj E (complexConj E x * (θ : E)), map_mul (complexConj E),
       complexConj_apply_apply, ← map_add, ← mul_add, hθ, mul_one]
-  rw [e] at hz
-  exact hz
+  rwa [e] at hz
 
 end Formalism.FourierDecayAlt.P
 end -- clump:auto

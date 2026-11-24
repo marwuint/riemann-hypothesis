@@ -76,27 +76,23 @@ instance : DecidableEq φ.A := inferInstanceAs (DecidableEq (Idx φ.ord))
 
 def A.val {φ : Frame} (t : φ.A) : ℕ := Fin.val (n := φ.ord) t
 
-theorem A.val_lt {φ : Frame} (t : φ.A) : t.val < φ.ord := by
-  exact Fin.is_lt (n := φ.ord) t
+theorem A.val_lt {φ : Frame} (t : φ.A) : t.val < φ.ord := Fin.is_lt (n := φ.ord) t
 
 theorem A.val_injective (φ : Frame) : Function.Injective (A.val : φ.A → ℕ) := by
   exact fun s t h => Fin.ext h
 
 def A.ofVal {φ : Frame} (u : ℕ) (hu : u < φ.ord) : φ.A := (⟨u, hu⟩ : Fin φ.ord)
 
-theorem card_A : Fintype.card φ.A = φ.ord := by
-  exact Fintype.card_fin φ.ord
+theorem card_A : Fintype.card φ.A = φ.ord := Fintype.card_fin φ.ord
 
 theorem natCard_A : Nat.card φ.A = φ.ord := by
   rw [Nat.card_eq_fintype_card, card_A]
 
-theorem ord_pos : 0 < φ.ord := by
-  exact Fin.pos (n := φ.ord) (0 : φ.A)
+theorem ord_pos : 0 < φ.ord := Fin.pos (n := φ.ord) (0 : φ.A)
 
 def h : φ.A →+ Additive (HGrp φ.e) := φ.h0
 
-theorem h_surj : Function.Surjective φ.h := by
-  exact φ.projection_surjective_field
+theorem h_surj : Function.Surjective φ.h := φ.projection_surjective_field
 
 def a0 : φ.A := φ.gen0
 
@@ -146,8 +142,7 @@ def chC : φ.GG →* ℂˣ := (Units.map (Int.castRingHom ℂ).toMonoidHom).comp
 
 def Psi : Subgroup φ.GG := φ.chD.ker
 
-theorem mem_Psi_iff {φ : Frame} (g : φ.GG) : g ∈ φ.Psi ↔ g.1.2 = 1 := by
-  exact MonoidHom.mem_ker (f := φ.chD)
+theorem mem_Psi_iff {φ : Frame} (g : φ.GG) : g ∈ φ.Psi ↔ g.1.2 = 1 := MonoidHom.mem_ker (f := φ.chD)
 
 def placeOf {φ : Frame} (g : φ.GG) : φ.GG := if g.1.2 = 1 then g else φ.cc * g
 
@@ -165,8 +160,7 @@ theorem iota_zero : φ.iota 0 = 1 := rfl
 
 @[simp] theorem iota_iotaInv (a : φ.MA) : φ.iota (φ.iotaInv a) = a := rfl
 
-theorem iota_bijective : Function.Bijective φ.iota := by
-  exact Multiplicative.ofAdd.bijective
+theorem iota_bijective : Function.Bijective φ.iota := Multiplicative.ofAdd.bijective
 
 theorem natCard_GG : Nat.card φ.GG = 4 * φ.ord := by
   show Nat.card (G0 × φ.MA) = _

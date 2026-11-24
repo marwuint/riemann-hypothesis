@@ -93,8 +93,7 @@ theorem regulator_bound_for_x : StatRegX := by
     have h0 : B.X • (z - m') = 0 := by rw [smul_sub, he, sub_self]
     have hz : z - m' = 0 := W.X_inj _ h0
     rw [sub_eq_zero] at hz
-    rw [hz]
-    exact hm'
+    rwa [hz]
   suffices h : ∀ j : ℕ, B.Q ^ j • y ∈ W.N → y ∈ W.N from h M hy'
   intro j
   induction j with
@@ -103,8 +102,7 @@ theorem regulator_bound_for_x : StatRegX := by
     intro h
     apply ih
     apply key
-    · rw [smul_smul, ← pow_succ']
-      exact h
+    · rwa [smul_smul, ← pow_succ']
     · rw [smul_comm]
       exact W.N.smul_mem _ hX
 
@@ -120,8 +118,7 @@ theorem regulator_bound_for_l : StatRegL := by
     have h0 : (ℓ : ℤ_[ℓ]) • (z - m') = 0 := by rw [smul_sub, he, sub_self]
     have hz : z - m' = 0 := htor _ h0
     rw [sub_eq_zero] at hz
-    rw [hz]
-    exact hm'
+    rwa [hz]
   suffices h : ∀ j : ℕ, B.Q ^ j • y ∈ W.N → y ∈ W.N from h M hy'
   intro j
   induction j with
@@ -130,8 +127,7 @@ theorem regulator_bound_for_l : StatRegL := by
     intro h
     apply ih
     apply key
-    · rw [smul_smul, ← pow_succ']
-      exact h
+    · rwa [smul_smul, ← pow_succ']
     · rw [smul_comm]
       exact W.N.smul_mem _ hX
 
@@ -198,8 +194,7 @@ theorem rational_points_map_surjective : StatRatSurj := by
   have hd₁ : W₁.γ y₁ - y₁ - (W₁.φ z₁ - z₁) = 0 := hd₁'r
   have hQ₁ : B.Q ^ M • y₁ ∈ W₁.N := hQ₁'
   have hd₁' : W₂.γ (S.π.f y₁) - S.π.f y₁ - (W₂.φ (S.π.f z₁) - S.π.f z₁) = 0 := by
-    have h := congrArg S.π.f hd₁
-    simpa [map_sub, S.π.γ_comm, S.π.φ_comm] using h
+    simpa [map_sub, S.π.γ_comm, S.π.φ_comm] using congrArg S.π.f hd₁
   obtain ⟨c, hc⟩ : ∃ c : ℤ_[ℓ], c = (ℓ : ℤ_[ℓ]) ^ (e₁ + k) := ⟨_, rfl⟩
   have hcP : W₂.Cocycle (S.π.f y₁ - c • y) (S.π.f z₁ - c • z) := by
     unfold WachMod.Cocycle WachMod.C1 WachMod.QInv WachMod.XN WachMod.d1

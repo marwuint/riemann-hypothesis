@@ -212,9 +212,7 @@ theorem sum_ldeg_le (p : ℕ) (hp : 0 < p) (ζ : D.EM) (h : D.GoodE p ζ) :
       + ldeg ζ (Sum.inr (Sum.inr (Sum.inr t)))) ≤ D.dT t := by
     intro t
     have h1 := ht t
-    have hP : 0 < D.P p t := by
-      show 0 < p ^ D.g t
-      exact Nat.pow_pos hp
+    have hP : 0 < D.P p t := Nat.pow_pos hp
     have h2 : ldeg ζ (D.mw t) ≤ D.P p t * ldeg ζ (D.mw t) := Nat.le_mul_of_pos_left _ hP
     show ldeg ζ (D.mlab t) + (ldeg ζ (D.mw t) + ldeg ζ (D.mtp t)) ≤ D.dT t
     omega
@@ -227,8 +225,7 @@ end TwistData
 
 theorem Aset_sum {L : Type} [DecidableEq L] {r : ℕ} (sg : L → Bool) (S : Finset L) (n : ℤ) {ι : Type}
     (s : Finset ι) (f : ι → MvPolynomial (L × Fin r) K) (h : ∀ i ∈ s, f i ∈ Aset sg S n) :
-    ∑ i ∈ s, f i ∈ Aset sg S n := by
-  exact valS_sum_le sg S s f n h
+    ∑ i ∈ s, f i ∈ Aset sg S n := valS_sum_le sg S s f n h
 
 theorem Aset_smul {L : Type} [DecidableEq L] {r : ℕ} (sg : L → Bool) (S : Finset L) (n : ℤ) (a : K)
     {F : MvPolynomial (L × Fin r) K} (h : F ∈ Aset sg S n) : a • F ∈ Aset sg S n := by
@@ -257,8 +254,7 @@ theorem stepP_of [CharZero K] (v : AddValuation K (WithTop ℚ)) (p : ℕ) (C0 :
       (fun ζ => Pr (fun i => ldeg ζ i) (monomial ζ 1)), fun ζ => ?_⟩
     have e := (MvPolynomial.basisMonomials (D.ML × Fin D.r) K).constr_basis K
       (fun ζ => Pr (fun i => ldeg ζ i) (monomial ζ 1)) ζ
-    rw [MvPolynomial.coe_basisMonomials] at e
-    exact e
+    rwa [MvPolynomial.coe_basisMonomials] at e
   have hmono : ∀ (ζ : D.EM) (c : K), monomial ζ c = c • (monomial ζ 1 : MvPolynomial (D.ML × Fin D.r) K) := by
     intro ζ c
     rw [MvPolynomial.smul_monomial, smul_eq_mul, mul_one]

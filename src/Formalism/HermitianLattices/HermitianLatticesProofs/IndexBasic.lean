@@ -171,8 +171,7 @@ theorem indexBasic_len_add (N Mm P : Submodule R W) (hNM : N ≤ Mm) (hMP : Mm �
       rw [LinearMap.mem_ker] at hy
       dsimp only [f] at hy
       rw [Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero] at hy
-      rw [Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]
-      exact hy
+      rwa [Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]
   · intro z
     induction z using Submodule.Quotient.induction_on with
     | H x => exact ⟨Submodule.Quotient.mk x, rfl⟩
@@ -382,8 +381,7 @@ theorem indexBasic :
     have hle : A ≤ dual h A := by
       intro x hx
       rw [dualBasic_mem_dual]
-      intro y hy
-      exact hI y hy x hx
+      exact fun y hy => hI y hy x hx
     have hDfg : (dual h A).FG := by
       obtain ⟨F, hF, hDF⟩ := indexBasic_dual_le_fg h hnd A hA.span_eq_top
       exact hF.of_le hDF
@@ -401,8 +399,7 @@ theorem indexBasic :
         · intro x hx
           have h1 : (Submodule.Quotient.mk ⟨x, hx⟩ : ↥(localization₂ p (dual h A)) ⧸
               (localization₂ p A).comap (localization₂ p (dual h A)).subtype) = 0 := Subsingleton.elim _ _
-          rw [Submodule.Quotient.mk_eq_zero] at h1
-          exact h1
+          rwa [Submodule.Quotient.mk_eq_zero] at h1
         · exact locBasic_locS_mono _ hle
       · exact absurd htop hDfin
     · intro heq
@@ -411,8 +408,7 @@ theorem indexBasic :
       have htop' : (localization₂ p A).comap (localization₂ p (dual h A)).subtype = ⊤ := by
         rw [eq_top_iff]
         rintro ⟨x, hx⟩ -
-        rw [heq] at hx
-        exact hx
+        rwa [heq] at hx
       rw [htop']
       infer_instance
 

@@ -218,11 +218,9 @@ def ioT (a b : Fin n) (φ : IOPt ε → E) : IOPt ε → E := fun g => EabV ε a
 
 lemma ioT_rep {F : Matrix (Fin n) (Fin n) ℂ → E} {φ : IOPt ε → E} (h : IORep F φ) (a b : Fin n) :
     IORep (EabV ε a b F) (ioT ε a b φ) := by
-  intro g hg
-  exact io_eab_congr (fun g' hg' => (h g' hg').trans (ioExt_at hg').symm) a b hg
+  exact fun g hg => io_eab_congr (fun g' hg' => (h g' hg').trans (ioExt_at hg').symm) a b hg
 
 lemma ioT_mem {φ : IOPt ε → E} (hφ : φ ∈ ioS ε E) (a b : Fin n) : ioT ε a b φ ∈ ioS ε E := by
-  show SmoothOnGV ε (ioExt ε (ioT ε a b φ))
   exact io_smooth_congr (fun g hg => (ioExt_at (φ := ioT ε a b φ) hg).symm) (io_eab_smooth hφ a b)
 
 lemma ioT_add {φ ψ : IOPt ε → E} (hφ : φ ∈ ioS ε E) (hψ : ψ ∈ ioS ε E) (a b : Fin n) :
@@ -254,13 +252,11 @@ lemma ioE_rep {F : Matrix (Fin n) (Fin n) ℂ → E} {x : ioS ε E} (h : IORep F
   ioT_rep h a b
 
 lemma io_rep_ext (x : ioS ε E) : IORep (ioExt ε x.1) x.1 := by
-  intro g hg
-  exact ioExt_at hg
+  exact fun g hg => ioExt_at hg
 
 lemma io_rep_mk {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : SmoothOnGV ε f) :
     ∃ x : ioS ε E, IORep f x.1 := by
   refine ⟨⟨fun g => f g.1, ?_⟩, fun g hg => rfl⟩
-  show SmoothOnGV ε (ioExt ε (fun g : IOPt ε => f g.1))
   exact io_smooth_congr (fun g hg => (ioExt_at (φ := fun g : IOPt ε => f g.1) hg).symm) hf
 
 lemma io_rep_sum {ι : Type*} [Fintype ι] (c : ι → ℂ) {F : ι → Matrix (Fin n) (Fin n) ℂ → E}
@@ -286,8 +282,7 @@ lemma io_foldr_rep (l : List (ℂ × Fin n × Fin n)) {F : Matrix (Fin n) (Fin n
       ((l.map fun p => Tm (ioE ε E) p.1 p.2.1 p.2.2).prod x).1 := by
   induction l with
   | nil =>
-    simp only [List.map_nil, List.foldr_nil, List.prod_nil, Module.End.one_apply]
-    exact h
+    simpa only [List.map_nil, List.foldr_nil, List.prod_nil, Module.End.one_apply] using h
   | cons p l ih =>
     simp only [List.map_cons, List.foldr_cons, List.prod_cons, Module.End.mul_apply]
     exact io_Tm_rep ih _ _ _

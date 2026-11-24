@@ -122,12 +122,10 @@ theorem rlt_isCompact_intAd : IsCompact (Formalism.UG.intAd F : Set (FiniteAdele
         (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite) := by
     ext a
     constructor
-    · intro ha
-      exact ⟨fun v => ⟨a v, ha v⟩, rfl⟩
+    · exact fun ha => ⟨fun v => ⟨a v, ha v⟩, rfl⟩
     · rintro ⟨b, rfl⟩ v
       exact (b v).2
-  rw [hset]
-  exact h
+  rwa [hset]
 
 end LocalCompact
 
@@ -388,8 +386,7 @@ theorem rlt_open_of_le (U : Subgroup (GL (Fin n) 𝒜)) (hU : K1 hc n ST SG ≤ 
     ring
   have hnh : ((U.subgroupOf (UAd hc n) : Subgroup (UAd hc n)) : Set (UAd hc n)) ∈ 𝓝 (1 : UAd hc n) := by
     refine Filter.mem_of_superset ((hWo.preimage continuous_subtype_val).mem_nhds hW1) ?_
-    intro x hx
-    exact hsub x.1 x.2 hx
+    exact fun x hx => hsub x.1 x.2 hx
   exact Subgroup.isOpen_of_mem_nhds _ hnh
 
 theorem rlt_compact_of_le (U : Subgroup (GL (Fin n) 𝒜)) (hU : K1 hc n ST SG ≤ U) (hUA : U ≤ UAd hc n)
@@ -400,8 +397,7 @@ theorem rlt_compact_of_le (U : Subgroup (GL (Fin n) 𝒜)) (hU : K1 hc n ST SG �
       Subtype.val '' ((U.subgroupOf (UAd hc n) : Subgroup (UAd hc n)) : Set (UAd hc n)) := by
     ext u
     constructor
-    · intro hu
-      exact ⟨⟨u, hUA hu⟩, hu, rfl⟩
+    · exact fun hu => ⟨⟨u, hUA hu⟩, hu, rfl⟩
     · rintro ⟨x, hx, rfl⟩
       exact hx
   have hclosed : IsClosed (U : Set (GL (Fin n) 𝒜)) := by

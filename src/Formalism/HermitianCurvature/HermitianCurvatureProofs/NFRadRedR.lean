@@ -127,36 +127,24 @@ private lemma rep_exp_smul_eq_exp_dOp {Wp : Type} [NormedAddCommGroup Wp] [Norme
     have h1 : HasDerivAt (fun u => f s * f (u - s)) (f s * A) s := HasDerivAt.comp_sub_const s s h2
     refine h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun u => ?_)
     show f u = f s * f (u - s)
-    rw [← hmul]
-    congr 1
-    ring
+    rw [← hmul, add_sub_cancel]
   have hg : ∀ s, HasDerivAt (fun u => f u * NormedSpace.exp (u • -A)) 0 s := by
     intro s
     have := (hd s).mul (hasDerivAt_exp_smul_const (-A) s)
-    have hcomm : Commute A (NormedSpace.exp (s • -A)) :=
-      ((Commute.refl A).neg_right.smul_right s).exp_right
-    have h0' : f s * A * NormedSpace.exp (s • -A) + f s * (NormedSpace.exp (s • -A) * -A) = 0 := by
-      rw [mul_assoc, hcomm.eq, mul_neg, mul_neg, add_neg_cancel]
-    exact this.congr_deriv h0'
+    refine this.congr_deriv ?_
+    rw [mul_assoc, ((Commute.refl A).neg_right.smul_right s).exp_right.eq, mul_neg, mul_neg,
+      add_neg_cancel]
   have hconst : ∀ s, f s * NormedSpace.exp (s • -A) = 1 := by
     intro s
-    have hdiff : Differentiable ℝ (fun u => f u * NormedSpace.exp (u • -A)) := fun u => (hg u).differentiableAt
-    have := is_const_of_deriv_eq_zero hdiff (fun u => (hg u).deriv) s 0
-    rw [this]
+    rw [is_const_of_deriv_eq_zero (fun u => (hg u).differentiableAt) (fun u => (hg u).deriv) s 0]
     simp only [hf, zero_smul, Complex.ofReal_zero, NormedSpace.exp_zero, mul_one, hπ.1]
   have hk : ∀ s, HasDerivAt (fun u : ℝ => NormedSpace.exp (u • -A) * NormedSpace.exp (u • A)) 0 s := by
     intro s
     have := (hasDerivAt_exp_smul_const (-A) s).mul (hasDerivAt_exp_smul_const A s)
-    have hcomm2 : Commute A (NormedSpace.exp (s • A)) := ((Commute.refl A).smul_right s).exp_right
-    have h0' : NormedSpace.exp (s • -A) * -A * NormedSpace.exp (s • A) +
-        NormedSpace.exp (s • -A) * (NormedSpace.exp (s • A) * A) = 0 := by
-      rw [mul_assoc, neg_mul, hcomm2.eq, mul_neg, neg_add_cancel]
-    exact this.congr_deriv h0'
+    refine this.congr_deriv ?_
+    rw [mul_assoc, neg_mul, ((Commute.refl A).smul_right s).exp_right.eq, mul_neg, neg_add_cancel]
   have hinv : NormedSpace.exp (t • -A) * NormedSpace.exp (t • A) = 1 := by
-    have hdiff : Differentiable ℝ (fun u : ℝ => NormedSpace.exp (u • -A) * NormedSpace.exp (u • A)) :=
-      fun u => (hk u).differentiableAt
-    have := is_const_of_deriv_eq_zero hdiff (fun u => (hk u).deriv) t 0
-    rw [this]
+    rw [is_const_of_deriv_eq_zero (fun u => (hk u).differentiableAt) (fun u => (hk u).deriv) t 0]
     simp only [zero_smul, NormedSpace.exp_zero, mul_one]
   calc f t = f t * (NormedSpace.exp (t • -A) * NormedSpace.exp (t • A)) := by rw [hinv, mul_one]
     _ = NormedSpace.exp (t • A) := by rw [← mul_assoc, hconst t, one_mul]

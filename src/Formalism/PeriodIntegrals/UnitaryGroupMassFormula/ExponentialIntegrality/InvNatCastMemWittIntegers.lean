@@ -80,26 +80,18 @@ theorem inv_natCast_mem_wittIntegers (p : ℕ) [hp : Fact p.Prime] (u : ℕ) (hu
   set y : ℂ_[p] := (u : ℂ_[p]) * (a : ℂ_[p]) with hy
   have h1y : 1 - y = (p : ℂ_[p]) * (b : ℂ_[p]) := by
     have := congrArg (fun z : ℤ => (z : ℂ_[p])) hb
-    simp only [Int.cast_one, Int.cast_add, Int.cast_mul, Int.cast_natCast] at this
+    push_cast at this
     rw [hy, this]
     ring
   have hlt : ‖1 - y‖ < 1 := by
     rw [h1y, norm_mul, norm_p]
-    have hp1 : (1 : ℝ) < p := by exact_mod_cast hp.out.one_lt
-    calc (p : ℝ)⁻¹ * ‖(b : ℂ_[p])‖ ≤ (p : ℝ)⁻¹ * 1 :=
-          mul_le_mul_of_nonneg_left (norm_intCast_le_one p b) (by positivity)
-      _ < 1 := by rw [mul_one]; exact inv_lt_one_of_one_lt₀ hp1
-  have hyW : y ∈ Wp p := mul_mem (natCast_mem _ u) (intCast_mem _ a)
-  have hyinv := inv_mem_of_norm_sub_lt p hyW hlt
-  have hy0 : y ≠ 0 := by
-    intro h0
-    rw [h0, sub_zero, norm_one] at hlt
-    exact lt_irrefl _ hlt
+    exact (mul_le_of_le_one_right (by positivity) (norm_intCast_le_one p b)).trans_lt
+      (inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.out.one_lt))
+  have hyinv := inv_mem_of_norm_sub_lt p (mul_mem (natCast_mem _ u) (intCast_mem _ a)) hlt
+  have hy0 : y ≠ 0 := fun h0 => by simp [h0] at hlt
   have ha0 : (a : ℂ_[p]) ≠ 0 := fun h0 => hy0 (by rw [hy, h0, mul_zero])
-  have hu0 : (u : ℂ_[p]) ≠ 0 := fun h0 => hy0 (by rw [hy, h0, zero_mul])
   have : ((u : ℂ_[p]))⁻¹ = (a : ℂ_[p]) * y⁻¹ := by
-    rw [hy]
-    field_simp
+    rw [hy, mul_inv_rev, mul_inv_cancel_left₀ ha0]
   rw [this]
   exact mul_mem (intCast_mem _ a) hyinv
 

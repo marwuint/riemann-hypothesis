@@ -81,13 +81,11 @@ theorem polish_of_lcsc (Y : Type) [TopologicalSpace Y] [LocallyCompactSpace Y] [
             apply closure_mono
             rintro _ ⟨hz, ⟨z, rfl⟩⟩
             refine ⟨z, hVK ?_, rfl⟩
-            rw [← hUV]
-            exact hz
+            rwa [← hUV]
         _ = ((↑) : Y → UniformSpace.Completion Y) '' K := hcl.closure_eq
         _ ⊆ range ((↑) : Y → UniformSpace.Completion Y) := image_subset_range _ _
     · show y ∈ ((↑) : Y → UniformSpace.Completion Y) ⁻¹' U
-      rw [hUV]
-      exact hyV
+      rwa [hUV]
   have : PolishSpace (range ((↑) : Y → UniformSpace.Completion Y)) := hopen.polishSpace
   exact hemb.toHomeomorph.isClosedEmbedding.polishSpace
 
@@ -196,8 +194,7 @@ theorem modChar_eq_one (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant]
     ext h
     simp
   have hdisj : Pairwise (Function.onFun Disjoint fun m : ℤ => {h : H | ⌊Real.log (D h) / t⌋ = m}) := by
-    intro i j hij
-    exact Set.disjoint_left.2 (fun h hi hj => hij (hi.symm.trans hj))
+    exact fun i j hij => Set.disjoint_left.2 (fun h hi hj => hij (hi.symm.trans hj))
   have hmeas : ∀ m : ℤ, MeasurableSet {h : H | ⌊Real.log (D h) / t⌋ = m} := fun m =>
     (Int.measurable_floor.comp ((Real.measurable_log.comp hDm).div_const t))
       (measurableSet_singleton m)
@@ -229,8 +226,7 @@ theorem avg_mul_mem (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant] (f
   haveI : MeasurableMul H := by
     first
     | infer_instance
-  have e := lintegral_mul_left_eq_self (μ := ν) (fun h : H => f (g * (h : G))) k
-  simpa [mul_assoc] using e
+  simpa [mul_assoc] using lintegral_mul_left_eq_self (μ := ν) (fun h : H => f (g * (h : G))) k
 
 theorem avg_out (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant] (f : G → ℝ≥0∞) (g : G) :
     ∫⁻ h, f ((g : G ⧸ H).out * (h : G)) ∂ν = ∫⁻ h, f (g * (h : G)) ∂ν := by
@@ -308,9 +304,7 @@ theorem unfold_stab (x0 : X) (hc : Continuous fun g : G => g • x0) (μ : Measu
         rw [← Set.image_preimage_eq Aᶜ QuotientGroup.mk_surjective]
         exact hAc'.analyticSet_image hqc.measurable
       exact h1.measurableSet_of_compl h2
-    · refine MeasurableSpace.generateFrom_le ?_
-      intro U hU
-      exact (hU.preimage hqc).measurableSet
+    · exact MeasurableSpace.generateFrom_le (fun U hU => (hU.preimage hqc).measurableSet)
   have hπ : MeasurableEmbedding (fun q : G ⧸ MulAction.stabilizer G x0 => q.out • x0) :=
     (orb_cont x0 hc).measurableEmbedding (orb_inj x0)
   have hmk : Measurable (QuotientGroup.mk : G → G ⧸ MulAction.stabilizer G x0) := by

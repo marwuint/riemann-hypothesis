@@ -126,12 +126,10 @@ theorem tq_decomp {m : ℕ} (b : Fin m → 𝓞 E) (hb : Submodule.span ℤ (Set
   | mem x hx =>
     rcases hx with ⟨⟨x, ⟨e, rfl⟩⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩
     · exact tq_tmul b hb e S₂.one_mem
-    · have h1 := tq_tmul (F := F) b hb (1 : 𝓞 E) hy
-      simpa using h1
+    · simpa using tq_tmul (F := F) b hb (1 : 𝓞 E) hy
   | zero => exact tq_zero b
   | one =>
-    have h1 := tq_tmul (F := F) b hb (1 : 𝓞 E) (S₂.one_mem)
-    simpa [Algebra.TensorProduct.one_def] using h1
+    simpa [Algebra.TensorProduct.one_def] using tq_tmul (F := F) b hb (1 : 𝓞 E) (S₂.one_mem)
   | add x y _ _ hx hy => exact tq_add b hx hy
   | neg x _ hx => exact tq_neg b hx
   | mul x y _ _ hx hy => exact tq_mul b hb hx hy
@@ -378,10 +376,8 @@ theorem levelLattice_dual_eq_self (K : ClsPTied (D := D) u) : Comp.dl (sigD D) (
     ext y
     constructor
     · intro hy
-      have h := K.lev.Lb_dual y hy
-      simpa using h
-    · intro hy
-      exact K.lev.Lb_int y hy
+      simpa using K.lev.Lb_dual y hy
+    · exact fun hy => K.lev.Lb_int y hy
   unfold Comp.dl
   rw [hS, Submodule.span_eq]
 
@@ -389,10 +385,8 @@ theorem classLattice_eq_globalLattice (K : ClsPTied (D := D) u) (c : (D.fm u).cl
     K.lat c = Formalism.UG.CS.globLat (K.y c).1 K.lev.Lb := by
   ext x
   constructor
-  · intro hx
-    exact (K.y_lat c _).1 (latS_of_mem _ x hx)
-  · intro hx
-    exact latLocGlob _ _ _ (K.lat c) (K.lat_fin c) x ((K.y_lat c _).2 hx)
+  · exact fun hx => (K.y_lat c _).1 (latS_of_mem _ x hx)
+  · exact fun hx => latLocGlob _ _ _ (K.lat c) (K.lat_fin c) x ((K.y_lat c _).2 hx)
 
 theorem selfDualP_of_formsTiedSym {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i} (Tf : FormsTiedSym D u Ch chOf) :
     SelfDualP Tf := by

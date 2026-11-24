@@ -152,8 +152,7 @@ theorem gen_triv (σ : E →ₐ[F] E) (J : Matrix (Fin k) (Fin k) E)
       have h1 := adelstabT_mem (afsplit_IE_int v _ (hz v))
       rw [afsplit_decomp, afsplitEps, Algebra.TensorProduct.one_def, afsplitIE_tmul, trace_mul] at h1
       have h2 := h1 v
-      rw [afsplit_mul_apply, afsplitI_self, one_mul] at h2
-      exact h2
+      rwa [afsplit_mul_apply, afsplitI_self, one_mul] at h2
 
     have trace_expand : ∀ (β : Module.Basis (Fin (Module.finrank F E)) F E) (z : 𝒜),
         z = ∑ i, ((Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) β i) ⊗ₜ[F]
@@ -193,8 +192,7 @@ theorem gen_triv (σ : E →ₐ[F] E) (J : Matrix (Fin k) (Fin k) E)
       have ht : adelstabT (F := F) (E := E) ((β i ⊗ₜ[F] (1 : 𝔸)) * z) ∈ intAd F := by
         refine trace_integral _ fun v => ?_
         rw [map_mul]
-        refine mul_mem ?_ (hz v)
-        exact Subring.subset_closure (Or.inl ⟨⟨β i, ⟨⟨β i, hβ i⟩, rfl⟩⟩, rfl⟩)
+        exact mul_mem (Subring.subset_closure (Or.inl ⟨⟨β i, ⟨⟨β i, hβ i⟩, rfl⟩⟩, rfl⟩)) (hz v)
       have h1 : inclE (F := F) 𝔸 (m₂ : E) * ((Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) β i ⊗ₜ[F]
           adelstabT (F := F) (E := E) ((β i ⊗ₜ[F] (1 : 𝔸)) * z)) =
           algebraMap (𝓞 E) E ⟨_, hi₂ i⟩ ⊗ₜ[F] adelstabT (F := F) (E := E) ((β i ⊗ₜ[F] (1 : 𝔸)) * z) := by
@@ -242,8 +240,7 @@ theorem gen_triv (σ : E →ₐ[F] E) (J : Matrix (Fin k) (Fin k) E)
         exact Subgroup.mem_subgroupOf.2 (hpowU m)⟩
   obtain ⟨m₁, m₂, hne12, heq⟩ := Finite.exists_ne_map_eq_of_infinite f
   have hpow : bc (inclE (F := F) 𝔸) γ ^ m₁ = bc (inclE (F := F) 𝔸) γ ^ m₂ := by
-    have e := congrArg (fun s => ((s.1 : UPts σ J 𝔸) : GL (Fin k) 𝒜)) heq
-    exact e
+    exact congrArg (fun s => ((s.1 : UPts σ J 𝔸) : GL (Fin k) 𝒜)) heq
 
   obtain ⟨N, hN0, hyN⟩ : ∃ N : ℕ, 0 < N ∧ bc (inclE (F := F) 𝔸) γ ^ N = 1 := by
     rcases Nat.lt_or_gt_of_ne hne12 with hlt | hlt
@@ -268,8 +265,7 @@ theorem gen_triv (σ : E →ₐ[F] E) (J : Matrix (Fin k) (Fin k) E)
       (γ ^ (g 0 ^ a)) ?_ m hg0m ?_
     · rw [map_pow]
       exact hpowU _
-    · rw [map_pow, ← pow_mul, ← hNam]
-      exact hyN
+    · rwa [map_pow, ← pow_mul, ← hNam]
   have hcop : Nat.Coprime (g 0 ^ a) (g 1) :=
     Nat.Coprime.pow_left a ((Nat.coprime_primes (hg 0) (hg 1)).mpr hne)
   refine gen_coprime U (g 1) (hg 1) (v 1) (hv 1) (ρ 1) (h 1) (hUg 1) (x : GL (Fin k) 𝒜) γ hγ

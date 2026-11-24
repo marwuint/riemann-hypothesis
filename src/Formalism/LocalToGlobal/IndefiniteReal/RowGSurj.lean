@@ -131,8 +131,7 @@ theorem aniso {v0 : InfinitePlace K} (hv0 : IsConjAt v0) {H : Matrix (Fin n) (Fi
     intro h0
     apply hne
     funext i
-    have hi := congrFun h0 i
-    simpa using hi
+    simpa using congrFun h0 i
   have key : star (fun i => v0.embedding (x i)) ⬝ᵥ (H.map v0.embedding) *ᵥ (fun i => v0.embedding (x i)) =
       v0.embedding (star x ⬝ᵥ H *ᵥ x) := by
 
@@ -323,8 +322,7 @@ theorem sub_toF : ∀ f ∈ B.Mt ⟨X, P, ψ⟩, ∃ f' ∈ B.Mt (Lvl.full X),
   rw [Matrix.mulVecLin_apply] at hf'
   refine ⟨f', ?_, ?_⟩
   · show B.vE (Lvl.full X) *ᵥ f' ∈ B.S.nabLat
-    rw [hf']
-    exact hfN
+    rwa [hf']
   · rw [toF_eq, toF_eq]
     refine congrArg B.S.basis.equivFun.symm ?_
     have h0 := isPr_Phi B hv0 hOk (Lvl.full X) hX Z f'
@@ -401,8 +399,7 @@ theorem avg_toF [Fintype P] : ∀ f ∈ B.Mt (Lvl.full X), ∃ f' ∈ B.Mt ⟨X,
   rw [Matrix.mulVecLin_apply] at hfb
   refine ⟨fb, ?_, ?_⟩
   · show B.vE ⟨X, P, ψ⟩ *ᵥ fb ∈ B.S.nabLat
-    rw [hfb]
-    exact hMuN
+    rwa [hfb]
   · have h0 := isPr_Phi B hv0 hOk (Lvl.full X) hX Z f
     have h1 := (isPr_e B hv0 hOk hX Z hZ P ψ h0).smul (Nat.card P : K)
     rw [← Matrix.smul_mulVec, ← Matrix.smul_mulVec, ← hM] at h1
@@ -445,8 +442,7 @@ theorem glue_lattice {D : ℕ} {T : Type} [Finite T] (t0 : T) (μ : HeightOneSpe
     exact Formalism.HermitianLatticesTheory.locBasic_locS_mono _ (le_iSup L (μ w)) ((hGmem x).mp hx w)
   have hNfg : (⨆ t, L t).FG := Submodule.fg_iSup L fun t => Submodule.IsLattice.fg (self := hL t)
   refine ⟨Submodule.FG.of_le hNfg hle, ?_⟩
-  intro s hs hli
-  exact (LinearIndependent.iff_fractionRing _ _).mp hli
+  exact fun s hs hli => (LinearIndependent.iff_fractionRing _ _).mp hli
 end Glue
 
 theorem cpt_sum_smul {K : Type} [Field K] (σ : K →+* ℂ) {n : ℕ} {ι : Type} (s : Finset ι) (c : ι → K)
@@ -580,8 +576,7 @@ theorem sub_g (t : T) (P : Subgroup G) (ψ : P →* Kˣ)
     ⟨_, (exponent_index_lattice.mem_matLat _ _ _).mpr ⟨f', hf', rfl⟩, he.symm⟩
   obtain ⟨z, hz, hze⟩ := hex
   have e : J *ᵥ ((I.A.fam.R t).Pq (I.A.fam.lvl P ψ) (I.X.Z t) *ᵥ f) = z := toRg_inj hH t (by rw [hJ, hze])
-  rw [e]
-  exact hz
+  rwa [e]
 
 theorem avg_g (hρ : I.PRho) (t : T) (P : Subgroup G) (ψ : P →* Kˣ)
     (J : Matrix (Fin ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).dQ t))

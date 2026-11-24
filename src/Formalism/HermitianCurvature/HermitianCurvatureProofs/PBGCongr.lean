@@ -133,8 +133,7 @@ theorem opG_add {T T' : D.Op (B.Mat k ρ → V)} (h : OpG T) (h' : OpG T') : OpG
   rw [h f f₂ hf g hg, h' f f₂ hf g hg]
 
 theorem opG_mul {T T' : D.Op (B.Mat k ρ → V)} (h : OpG T) (h' : OpG T') : OpG (T * T') := by
-  intro f f₂ hf g hg
-  exact h _ _ (h' f f₂ hf) g hg
+  exact fun f f₂ hf g hg => h _ _ (h' f f₂ hf) g hg
 
 theorem opG_cOp (c : ℂ) : OpG (D.cOp c : D.Op (B.Mat k ρ → V)) := by
   intro f f₂ hf g hg
@@ -157,8 +156,7 @@ variable {S : Type} [Fintype S] [DecidableEq S]
 def SlopeTestChoicesGrowth (M : Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V))) : Prop := ∀ a b, OpG (M a b)
 
 theorem matrix_good_mul {M N : Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V))} (hM : SlopeTestChoicesGrowth M) (hN : SlopeTestChoicesGrowth N) : SlopeTestChoicesGrowth (M * N) := by
-  intro a b
-  exact opG_sum _ _ fun c _ => opG_mul (hM a c) (hN c b)
+  exact fun a b => opG_sum _ _ fun c _ => opG_mul (hM a c) (hN c b)
 
 theorem matrix_good_one : SlopeTestChoicesGrowth (1 : Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V))) := by
   intro a b
@@ -174,8 +172,7 @@ theorem matrix_good_sum {ι : Type*} (s : Finset ι) (M : ι → Wd.SlopeTestRem
   exact opG_sum _ _ fun i hi => h i hi a b
 
 theorem matrix_good_scalar_map (M : Wd.SlopeTestRemainingChoices S ℂ) : SlopeTestChoicesGrowth (M.map D.cOp : Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V))) := by
-  intro a b
-  exact opG_cOp _
+  exact fun a b => opG_cOp _
 
 theorem matrix_good_diagonal (T : D.Op (B.Mat k ρ → V)) (hT : OpG T) :
     SlopeTestChoicesGrowth (Matrix.diagonal fun _ : Wd.Ix S => T) := by
@@ -193,12 +190,10 @@ theorem entrywise_good_mul {M N : Wd.M2 (Wd.SlopeTestRemainingChoices S (D.Op (B
   exact matrix_good_sum _ _ fun r _ => matrix_good_mul (hM p r) (hN r q)
 
 theorem entrywise_good_scalar (M : Wd.M2 (Wd.SlopeTestRemainingChoices S ℂ)) : EntrywiseGood (D.scal M : Wd.M2 (Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V)))) := by
-  intro p q a b
-  exact opG_cOp _
+  exact fun p q a b => opG_cOp _
 
 theorem entrywise_good_transpose {M : Wd.M2 (Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V)))} (hM : EntrywiseGood M) : EntrywiseGood M.transpose := by
-  intro p q
-  exact hM q p
+  exact fun p q => hM q p
 
 theorem entrywise_good_transfer_word (QQ : ℂ → Wd.M2 (D.Op (B.Mat k ρ → V))) (hQ : ∀ Y p q, OpG (QQ Y p q)) :
     ∀ (w : List (Wd.Letter ℂ S)) (Y : ℂ), EntrywiseGood (D.TTop QQ w Y)

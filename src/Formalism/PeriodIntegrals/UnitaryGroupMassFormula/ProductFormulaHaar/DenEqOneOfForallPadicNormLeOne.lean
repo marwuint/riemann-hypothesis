@@ -78,8 +78,7 @@ private theorem padicNorm_le_one_iff_not_dvd_den {q : ℕ} [Fact q.Prime] (r : �
 theorem padicNorm_le_one_of_den_pow {q l : ℕ} [hq : Fact q.Prime] (hl : l.Prime) (hne : l ≠ q)
     {a : ℚ} {n : ℕ} (ha : a.den = l ^ n) : padicNorm q a ≤ 1 := by
   rw [padicNorm_le_one_iff_not_dvd_den, ha]
-  intro h
-  exact hne ((Nat.prime_dvd_prime_iff_eq hq.out hl).1 (hq.out.dvd_of_dvd_pow h)).symm
+  exact fun h => hne ((Nat.prime_dvd_prime_iff_eq hq.out hl).1 (hq.out.dvd_of_dvd_pow h)).symm
 
 theorem den_eq_one_of_forall_padicNorm_le_one {r : ℚ}
     (h : ∀ q : ℕ, q.Prime → padicNorm q r ≤ 1) : r.den = 1 := by
@@ -97,8 +96,7 @@ theorem padicNorm_add_le_one {q : ℕ} [Fact q.Prime] {a b : ℚ} (ha : padicNor
     (hb : padicNorm q b ≤ 1) : padicNorm q (a + b) ≤ 1 := le_trans padicNorm.nonarchimedean (max_le ha hb)
 
 theorem padicNorm_sub_le_one {q : ℕ} [Fact q.Prime] {a b : ℚ} (ha : padicNorm q a ≤ 1)
-    (hb : padicNorm q b ≤ 1) : padicNorm q (a - b) ≤ 1 := by
-  exact le_trans padicNorm.sub (max_le ha hb)
+    (hb : padicNorm q b ≤ 1) : padicNorm q (a - b) ≤ 1 := le_trans padicNorm.sub (max_le ha hb)
 
 theorem den_sub_sum_eq_one {ι : Type*} (ℓ : ι → ℕ) (hℓ : ∀ i, (ℓ i).Prime) (a : ι → ℚ)
     (ha : ∀ i, ∃ n : ℕ, (a i).den = ℓ i ^ n) (fib : ℕ → Finset ι)
@@ -193,13 +191,11 @@ theorem den_eq_one_of_norm_le_one {l : ℕ} [hl : Fact l.Prime] {a : ℚ} {n : �
     have e : (a : ℚ_[l]) = T + -(T - (a : ℚ_[l])) := by ring
     rw [e]
     refine le_trans (Padic.nonarchimedean _ _) (max_le hT ?_)
-    rw [norm_neg]
-    exact hTa
+    rwa [norm_neg]
   have h2 : padicNorm l a ≤ 1 := by
     have e : ‖((a : ℚ) : ℚ_[l])‖ = _ := Padic.eq_padicNorm a
     have h' : ((padicNorm l a : ℚ) : ℝ) ≤ 1 := by
-      rw [← e]
-      exact h1
+      rwa [← e]
     exact_mod_cast h'
   have h3 := (padicNorm_le_one_iff_not_dvd_den a).1 h2
   rw [ha] at h3 ⊢

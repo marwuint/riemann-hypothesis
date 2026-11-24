@@ -112,13 +112,10 @@ theorem exists_localZeroExpansion_with_order (f : ℂ → ℂ) (z₀ : ℂ) (r M
     have h1 := hZb ρ hρ
     rw [mem_closedBall, dist_eq_norm] at h1
     have h2 : ‖z₀ - ρ‖ ≤ r / 3 := by
-      rw [norm_sub_rev]
-      exact h1
+      rwa [norm_sub_rev]
     exact pow_le_pow_left₀ (norm_nonneg _) h2 _
-  have hcl : closure (ball z₀ r) = closedBall z₀ r := by
-    exact closure_ball z₀ hr.ne'
-  have hfr : frontier (ball z₀ r) = sphere z₀ r := by
-    exact frontier_ball z₀ hr.ne'
+  have hcl : closure (ball z₀ r) = closedBall z₀ r := closure_ball z₀ hr.ne'
+  have hfr : frontier (ball z₀ r) = sphere z₀ r := frontier_ball z₀ hr.ne'
   have h2pos : (0 : ℝ) < 2 ^ (∑ ρ ∈ Z, m ρ) := by positivity
   have hmax : ∀ z ∈ closedBall z₀ r, ‖h z‖ * 2 ^ (∑ ρ ∈ Z, m ρ) ≤ M * ‖h z₀‖ := by
     have hd : DiffContOnCl ℂ h (ball z₀ r) := DifferentiableOn.diffContOnCl (by rw [hcl]; exact hhd)
@@ -141,8 +138,7 @@ theorem exists_localZeroExpansion_with_order (f : ℂ → ℂ) (z₀ : ℂ) (r M
           _ ≤ M * ((r / 3) ^ (∑ ρ ∈ Z, m ρ) * ‖h z₀‖) :=
             mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hup (norm_nonneg _)) (by linarith)
           _ = (r / 3) ^ (∑ ρ ∈ Z, m ρ) * (M * ‖h z₀‖) := by ring
-      have key2 := le_of_mul_le_mul_left key hA
-      exact (le_div_iff₀ h2pos).mpr key2
+      exact (le_div_iff₀ h2pos).mpr (le_of_mul_le_mul_left key hA)
     exact (le_div_iff₀ h2pos).mp hc
   have hh0z₀ : h z₀ ≠ 0 := hh0 z₀ (mem_closedBall_self hr3.le)
   have h2M : (2 : ℝ) ^ (∑ ρ ∈ Z, m ρ) ≤ M := by
@@ -155,8 +151,7 @@ theorem exists_localZeroExpansion_with_order (f : ℂ → ℂ) (z₀ : ℂ) (r M
       rw [← Real.log_pow]
       exact Real.log_le_log (by positivity) h2M
     exact (le_div_iff₀ hl2).mpr h1
-  have hone : (1 : ℝ) ≤ 2 ^ (∑ ρ ∈ Z, m ρ) := by
-    exact one_le_pow₀ (by norm_num)
+  have hone : (1 : ℝ) ≤ 2 ^ (∑ ρ ∈ Z, m ρ) := one_le_pow₀ (by norm_num)
   have hbB : ∀ z ∈ closedBall z₀ (r / 3), ‖h z‖ ≤ M * ‖h z₀‖ := by
     intro z hz
     have hzr : z ∈ closedBall z₀ r := closedBall_subset_closedBall (by linarith) hz

@@ -153,8 +153,7 @@ theorem hecke_act_mem : Formalism.UG.HeckeActMem := by
   rw [hre]
   have hsupp : (Function.support fun y : G ⧸ K => f y.out • φ (g * y.out)).Finite :=
     hfin.subset fun y hy => by
-      intro h0
-      exact hy (by simp [h0])
+      exact fun h0 => hy (by simp [h0])
   exact (map_finsum (ρ γ) hsupp).symm
 
 private theorem finite_support_left_translate_of_biinvariant {k : Type} [CommRing k] (K : Subgroup G) (f : G → k)
@@ -167,49 +166,37 @@ private theorem finite_support_left_translate_of_biinvariant {k : Type} [CommRin
   obtain ⟨κ, hκ⟩ := out_smul K a x
   rw [hκ]
   have e : f (a * x.out * ↑κ) = f (a * x.out) := by simpa using hbi 1 κ (a * x.out)
-  rw [e]
-  exact hx
+  rwa [e]
 
 theorem hecke_act_mul : Formalism.UG.HeckeActMul := by
   intro G _ Γ K k _ W _ _ ρ hK f₁ hf₁ f₂ hf₂ φ hφ
   have hbi₂ : ∀ (a b : K) (g : G), f₂ (↑a * g * ↑b) = f₂ g :=
     (show IsBiInv K f₂ ∧ FinDosetSupp K f₂ from hf₂).1
   have hfin₁ := finite_supp K hK f₁ hf₁
-  have hfin₂ := finite_supp K hK f₂ hf₂
   funext g
   simp only [hAct, conv]
   have hA : ∀ y : G ⧸ K, ∑ᶠ z : G ⧸ K, f₂ z.out • φ (g * y.out * z.out) =
-      ∑ᶠ x : G ⧸ K, f₂ (y.out⁻¹ * x.out) • φ (g * x.out) := by
-    intro y
-    have := finsum_out_mul K y.out (fun h => f₂ (y.out⁻¹ * h) • φ (g * h)) (by
+      ∑ᶠ x : G ⧸ K, f₂ (y.out⁻¹ * x.out) • φ (g * x.out) := fun y => by
+    simpa [mul_assoc] using finsum_out_mul K y.out (fun h => f₂ (y.out⁻¹ * h) • φ (g * h)) (by
       intro h c
       show f₂ (y.out⁻¹ * (h * ↑c)) • φ (g * (h * ↑c)) = f₂ (y.out⁻¹ * h) • φ (g * h)
       rw [(by simp [mul_assoc] : y.out⁻¹ * (h * ↑c) = ↑(1 : K) * (y.out⁻¹ * h) * ↑c), hbi₂,
         (by rw [mul_assoc] : g * (h * ↑c) = g * h * ↑c), amf_right hφ])
-    simpa [mul_assoc] using this
   simp_rw [hA]
-  set A := hfin₁.toFinset with hAdef
-  have hB : ∀ y : G ⧸ K, {x : G ⧸ K | f₂ (y.out⁻¹ * x.out) ≠ 0}.Finite :=
-    fun y => finite_support_left_translate_of_biinvariant K f₂ hbi₂ hfin₂ y.out⁻¹
-  have hX : (⋃ y ∈ A, {x : G ⧸ K | f₂ (y.out⁻¹ * x.out) ≠ 0}).Finite :=
-    A.finite_toSet.biUnion fun y _ => hB y
-  set X := hX.toFinset with hXdef
+  set A := hfin₁.toFinset
+  set X := (A.finite_toSet.biUnion fun y _ => finite_support_left_translate_of_biinvariant K f₂
+    hbi₂ (finite_supp K hK f₂ hf₂) y.out⁻¹).toFinset
   have hAsub : ∀ y : G ⧸ K, f₁ y.out ≠ 0 → y ∈ A := fun y hy => hfin₁.mem_toFinset.2 hy
-  have hXsub : ∀ y x : G ⧸ K, f₁ y.out ≠ 0 → f₂ (y.out⁻¹ * x.out) ≠ 0 → x ∈ X := by
-    intro y x h1 h2
-    rw [hX.mem_toFinset]
-    exact Set.mem_biUnion (Finset.mem_coe.2 (hAsub y h1)) h2
+  have hXsub : ∀ y x : G ⧸ K, f₁ y.out ≠ 0 → f₂ (y.out⁻¹ * x.out) ≠ 0 → x ∈ X :=
+    fun y x h1 h2 => (Set.Finite.mem_toFinset _).2
+      (Set.mem_biUnion (Finset.mem_coe.2 (hAsub y h1)) h2)
   have hL : ∀ x : G ⧸ K, ∑ᶠ y : G ⧸ K, f₁ y.out * f₂ (y.out⁻¹ * x.out) =
-      ∑ y ∈ A, f₁ y.out * f₂ (y.out⁻¹ * x.out) := by
-    intro x
-    apply finsum_eq_sum_of_support_subset
-    intro y hy
-    exact hAsub y (left_ne_zero_of_mul hy)
+      ∑ y ∈ A, f₁ y.out * f₂ (y.out⁻¹ * x.out) :=
+    fun x => finsum_eq_sum_of_support_subset _ fun y hy => hAsub y (left_ne_zero_of_mul hy)
   simp_rw [hL]
   have eL : ∑ᶠ x : G ⧸ K, (∑ y ∈ A, f₁ y.out * f₂ (y.out⁻¹ * x.out)) • φ (g * x.out) =
       ∑ x ∈ X, (∑ y ∈ A, f₁ y.out * f₂ (y.out⁻¹ * x.out)) • φ (g * x.out) := by
-    apply finsum_eq_sum_of_support_subset
-    intro x hx
+    refine finsum_eq_sum_of_support_subset _ fun x hx => ?_
     obtain ⟨y, -, hy⟩ := Finset.exists_ne_zero_of_sum_ne_zero (left_ne_zero_of_smul hx)
     exact hXsub y x (left_ne_zero_of_mul hy) (right_ne_zero_of_mul hy)
   have eR : ∑ᶠ y : G ⧸ K, f₁ y.out • ∑ᶠ x : G ⧸ K, f₂ (y.out⁻¹ * x.out) • φ (g * x.out) =

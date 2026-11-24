@@ -89,8 +89,7 @@ theorem trace_eq_add (σ : E →ₐ[F] E) (hinv : ∀ y, σ (σ y) = y) (hnt : �
   have huniv : (Finset.univ : Finset (E ≃ₐ[F] E)) = {1, σ'} := by
     symm
     apply Finset.eq_of_subset_of_card_le (Finset.subset_univ _)
-    rw [Finset.card_pair hne, Finset.card_univ, ← Nat.card_eq_fintype_card]
-    exact hle
+    rwa [Finset.card_pair hne, Finset.card_univ, ← Nat.card_eq_fintype_card]
   haveI hgal : IsGalois F E := by
     apply IsGalois.of_card_aut_eq_finrank
     rw [hfin]
@@ -111,8 +110,7 @@ theorem oev_smul' {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F) {x : Fv F
   exact Submodule.smul_mem _ (⟨c, hc⟩ : v.adicCompletionIntegers F) hx
 
 theorem one_mem : (1 : Fv F v ⊗[F] E) ∈ OEv (E := E) v := by
-  have h := inclR_mem' v (1 : 𝓞 E)
-  simpa using h
+  simpa using inclR_mem' v (1 : 𝓞 E)
 
 theorem int_mem (r : 𝓞 F) : algebraMap F (Fv F v) (r : F) ∈ v.adicCompletionIntegers F := by
   have h := v.coe_mem_adicCompletionIntegers (K := F) r
@@ -149,8 +147,7 @@ theorem trace_mem {x : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) :
     have hint : IsIntegral ℤ (Algebra.trace F E (a : E)) := Algebra.isIntegral_trace a.2
     have h2 := int_mem v (⟨_, hint⟩ : 𝓞 F)
     show Algebra.trace _ _ ((1 : Fv F v) ⊗ₜ (a : E)) ∈ _
-    rw [ht]
-    exact h2
+    rwa [ht]
   have hx' : x ∈ Submodule.span (v.adicCompletionIntegers F)
       ((fun x : 𝓞 E => inclR (F := F) (Fv F v) (x : E)) '' Set.univ) := hx
   clear hx

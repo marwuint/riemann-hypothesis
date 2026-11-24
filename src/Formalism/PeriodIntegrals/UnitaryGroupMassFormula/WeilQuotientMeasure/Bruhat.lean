@@ -131,11 +131,10 @@ theorem stepBruhat : StepBruhat := by
   have hUK : ∀ n, U n ⊆ (fun x => d n * x) '' K0 := fun n => Set.image_mono interior_subset
   have hcov : ∀ g : G, ∃ n, g ∈ U n := by
     intro g
-    have ho : IsOpen ((fun x => g * x) '' (interior K0)⁻¹) :=
-      isOpenMap_mul_left g _ isOpen_interior.inv
     have h1' : (1 : G) ∈ (interior K0)⁻¹ := by
       rw [Set.mem_inv, inv_one]; exact mem_interior_iff_mem_nhds.2 h1
-    obtain ⟨n, hn⟩ := hd.exists_mem_open ho ⟨g, 1, h1', mul_one g⟩
+    obtain ⟨n, hn⟩ := hd.exists_mem_open (isOpenMap_mul_left g _ isOpen_interior.inv)
+      ⟨g, 1, h1', mul_one g⟩
     obtain ⟨z, hz, hzn⟩ := hn
     simp only at hzn
     refine ⟨n, ?_⟩
@@ -159,16 +158,10 @@ theorem stepBruhat : StepBruhat := by
     rw [OneMemClass.coe_one, mul_one]; exact hg
   have hAfin : ∀ n g, A n g < ⊤ := fun n g => by
     rw [hAeq]
-    have hKc : IsCompact ((fun x => d n * x) '' K0) := hK0.image (continuous_const_mul (d n))
-    have hpre : ∀ S : Set G, (fun x => g * x) ⁻¹' S = (fun x => g⁻¹ * x) '' S := fun S => by
-      rw [Set.image_mul_left, inv_inv]
-    have hc2 : IsCompact ((fun x => g * x) ⁻¹' ((fun x => d n * x) '' K0)) := by
-      rw [hpre]; exact hKc.image (continuous_const_mul g⁻¹)
-    have hc3 : IsCompact (Subtype.val ⁻¹' ((fun x => g * x) ⁻¹' ((fun x => d n * x) '' K0)) :
-        Set H) := hH.isClosedEmbedding_subtypeVal.isCompact_preimage hc2
-    refine lt_of_le_of_lt (measure_mono ?_) hc3.measure_lt_top
-    intro h hh
-    exact hUK n hh
+    exact lt_of_le_of_lt (measure_mono fun h hh => hUK n hh)
+      (hH.isClosedEmbedding_subtypeVal.isCompact_preimage
+        ((Homeomorph.mulLeft g).isCompact_preimage.2
+          (hK0.image (continuous_const_mul (d n))))).measure_lt_top
   have hex : ∀ g, ∃ n, 0 < A n g := fun g => (hcov g).imp fun n hn => hApos n g hn
   let n₀ : G → ℕ := fun g => Nat.find (hex g)
   have hspec : ∀ g, 0 < A (n₀ g) g := fun g => Nat.find_spec (hex g)
@@ -176,19 +169,11 @@ theorem stepBruhat : StepBruhat := by
   have hn₀inv : ∀ g (k : H), n₀ (g * k) = n₀ g := fun g k =>
     le_antisymm (hmin _ _ (by rw [hAinv]; exact hspec g))
       (hmin _ _ (by rw [← hAinv _ g k]; exact hspec _))
-  have hn₀m : Measurable n₀ :=
-    measurable_find hex fun k => measurableSet_lt measurable_const (hAm k)
   let b : G → ℝ≥0∞ := fun g => (U (n₀ g)).indicator 1 g
-  have hbm : Measurable b := by
-    intro t ht
-    have e : b ⁻¹' t = ⋃ n, (n₀ ⁻¹' {n}) ∩ ((U n).indicator (1 : G → ℝ≥0∞)) ⁻¹' t := by
-      ext g
-      dsimp only [b]
-      simp only [Set.mem_preimage, Set.mem_iUnion, Set.mem_inter_iff, Set.mem_singleton_iff,
-        exists_eq_left']
-    rw [e]
-    exact MeasurableSet.iUnion fun n => (hn₀m (measurableSet_singleton n)).inter
-      ((measurable_one.indicator (hUo n).measurableSet) ht)
+  have hbm : Measurable b :=
+    Measurable.find (f := fun n => (U n).indicator (1 : G → ℝ≥0∞))
+      (fun n => measurable_one.indicator (hUo n).measurableSet)
+      (fun n => measurableSet_lt measurable_const (hAm n)) hex
   let a : G → ℝ≥0∞ := fun g => ∫⁻ h, b (g * (h : G)) ∂ν
   have ham : Measurable a := measurable_avg ν hbm
   have hainv : ∀ g (k : H), a (g * k) = a g := fun g k => avg_mul_right ν b g k

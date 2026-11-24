@@ -89,43 +89,25 @@ lemma norm_sum_Ioc_le (f : ℕ → ℂ) (hf : ∀ n, ‖f n‖ ≤ Λ n) {y Y : 
       ‖f n * ((y * (Y / n - 1) : ℝ) : ℂ)‖ ≤ (Y - y) * Real.log Y := by
     intro n hn
     rw [Finset.mem_Ioc] at hn
-    have hn1 : y < (n : ℝ) := by
-      have := Nat.lt_floor_add_one y
-      have h2 : ((⌊y⌋₊ : ℕ) : ℝ) + 1 ≤ n := by exact_mod_cast hn.1
-      linarith
-    have hn2 : (n : ℝ) ≤ Y := by
-      have := Nat.floor_le (show 0 ≤ Y by linarith)
-      have h2 : (n : ℝ) ≤ (⌊Y⌋₊ : ℝ) := by exact_mod_cast hn.2
-      linarith
+    have hn1 : y < (n : ℝ) := (Nat.floor_lt (by linarith)).1 hn.1
+    have hn2 : (n : ℝ) ≤ Y := (Nat.le_floor_iff (by linarith)).1 hn.2
     have hnpos : (0:ℝ) < n := by linarith
     rw [norm_mul, Complex.norm_real, Real.norm_eq_abs]
     have hA : 0 ≤ y * (Y / n - 1) := by
       apply mul_nonneg (by linarith)
       rw [sub_nonneg, le_div_iff₀ hnpos]; linarith
     have hB : y * (Y / n - 1) ≤ Y - y := by
-      have e : y * (Y / n - 1) = (Y - n) * (y / n) := by field_simp
-      rw [e]
-      have h3 : y / n ≤ 1 := by rw [div_le_one hnpos]; linarith
-      have h4 : 0 ≤ Y - n := by linarith
-      nlinarith
+      rw [show y * (Y / n - 1) = (Y - n) * (y / n) by field_simp]
+      exact (mul_le_of_le_one_right (by linarith) ((div_le_one hnpos).2 hn1.le)).trans (by linarith)
     rw [abs_of_nonneg hA]
     have hf' : ‖f n‖ ≤ Real.log Y :=
-      calc ‖f n‖ ≤ Λ n := hf n
-        _ ≤ Real.log n := vonMangoldt_le_log
-        _ ≤ Real.log Y := Real.log_le_log hnpos hn2
-    calc ‖f n‖ * (y * (Y / n - 1)) ≤ Real.log Y * (Y - y) :=
-          mul_le_mul hf' hB hA (Real.log_nonneg hY1)
-      _ = (Y - y) * Real.log Y := by ring
-  calc _ ≤ ∑ n ∈ Ioc ⌊y⌋₊ ⌊Y⌋₊, ‖f n * ((y * (Y / n - 1) : ℝ) : ℂ)‖ := norm_sum_le _ _
-    _ ≤ ∑ n ∈ Ioc ⌊y⌋₊ ⌊Y⌋₊, (Y - y) * Real.log Y := Finset.sum_le_sum hterm
-    _ = ((Ioc ⌊y⌋₊ ⌊Y⌋₊).card : ℝ) * ((Y - y) * Real.log Y) := by
-          rw [Finset.sum_const, nsmul_eq_mul]
-    _ ≤ (Y - y + 1) * ((Y - y) * Real.log Y) := by
-      apply mul_le_mul_of_nonneg_right _ (mul_nonneg (by linarith) (Real.log_nonneg hY1))
-      rw [Nat.card_Ioc, Nat.cast_sub (Nat.floor_mono hyY)]
-      have h1 := Nat.floor_le (show 0 ≤ Y by linarith)
-      have h2 := Nat.lt_floor_add_one y
-      linarith
+      (hf n).trans (vonMangoldt_le_log.trans (Real.log_le_log hnpos hn2))
+    exact (mul_le_mul hf' hB hA (Real.log_nonneg hY1)).trans_eq (mul_comm _ _)
+  refine (norm_sum_le _ _).trans ((Finset.sum_le_card_nsmul _ _ _ hterm).trans ?_)
+  rw [nsmul_eq_mul]
+  apply mul_le_mul_of_nonneg_right _ (mul_nonneg (by linarith) (Real.log_nonneg hY1))
+  rw [Nat.card_Ioc, Nat.cast_sub (Nat.floor_mono hyY)]
+  linarith [Nat.floor_le (show 0 ≤ Y by linarith), Nat.lt_floor_add_one y]
 
 lemma norm_weightedSum_sub_le (f : ℕ → ℂ) (hf : ∀ n, ‖f n‖ ≤ Λ n) {y Y : ℝ} (hy : 1 ≤ y) (hyY : y ≤ Y) :
     ‖((y : ℂ) * weightedPartialSumUpTo f Y - (Y : ℂ) * weightedPartialSumUpTo f y) - ((Y - y : ℝ) : ℂ) * partialSumUpTo f y‖

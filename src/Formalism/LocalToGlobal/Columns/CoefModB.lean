@@ -180,8 +180,7 @@ theorem pb_blockAct_one_tr (F : Pol K ι n) :
     · simp
     · intro b _ hb
       rw [Matrix.one_apply_ne' hb, map_zero, zero_mul]
-    · intro h
-      exact absurd (Finset.mem_univ _) h
+    · exact fun h => absurd (Finset.mem_univ _) h
   rw [h]
   rfl
 
@@ -230,11 +229,9 @@ theorem pairingBNondegenerate_holds : PairBNondeg := by
   show (∀ x, (∀ y, pairBK lam x y = 0) → x = 0) ∧ (∀ y, (∀ x, pairBK lam x y = 0) → y = 0)
   refine ⟨fun x hx => (And.left h) x fun y => ?_, fun y hy => (And.right h) y fun x => ?_⟩
   · have hxy := hx y
-    rw [pairBK_apply, ← pairP_trivial] at hxy
-    exact hxy
+    rwa [pairBK_apply, ← pairP_trivial] at hxy
   · have hxy := hy x
-    rw [pairBK_apply, ← pairP_trivial] at hxy
-    exact hxy
+    rwa [pairBK_apply, ← pairP_trivial] at hxy
 
 theorem pb_extNormB_ne (K : Type) [Field K] [CharZero K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) :
     extNormB K lam ≠ 0 := by
@@ -247,8 +244,7 @@ theorem pairingBExtremal_holds : PairBExtremal := by
   intro K _ _ ι _ n lam B
   rw [pairingBInvariantK_holds K ι n lam B]
   have h := @pairingExtremal_holds K _ starRingOfComm _ ι _ n lam (fun _ => 1) 1 (fun τ => by simp)
-  rw [_root_.Formalism.L2.DIV.polyAction_one₂, pairP_trivial] at h
-  exact h
+  rwa [_root_.Formalism.L2.DIV.polyAction_one₂, pairP_trivial] at h
 
 section Star
 

@@ -110,16 +110,11 @@ theorem stepA {w : HeightOneSpectrum (𝓞 I.E)} {p : ℕ} (hp : p.Prime) (hcard
     ∀ y ∈ I.Lf, (I.fmat x - 1) *ᵥ y ∈ Lq I w := by
   haveI : Fact (1 < p) := ⟨hp.one_lt⟩
   have H0 : ∀ m ∈ wLat0 I w, (fun i => Formalism.UG.inclE (F := I.F) (Af I.F) (m i)) ∈ Lq I w := by
-    intro m hm
-    show _ ∈ Submodule.span _ _
-    exact Submodule.subset_span ⟨⟨m, hm⟩, rfl⟩
+    exact fun m hm => Submodule.subset_span ⟨⟨m, hm⟩, rfl⟩
   have G0 : ∀ l ∈ I.L, (fun i => Formalism.UG.inclE (F := I.F) (Af I.F) (l i)) ∈ I.Lf := by
-    intro l hl
-    show _ ∈ Submodule.span _ _
-    exact Submodule.subset_span ⟨⟨l, hl⟩, rfl⟩
+    exact fun l hl => Submodule.subset_span ⟨⟨l, hl⟩, rfl⟩
   have hstab : ∀ z, z ∈ I.Lf ↔ I.fmat x *ᵥ z ∈ I.Lf := hx
   have hint : ∀ a : 𝓞 I.E, Formalism.UG.inclE (F := I.F) (Af I.F) (a : I.E) ∈ IntAf I.F I.E := fun a => by
-    show _ ∈ Subring.closure _
     exact Subring.subset_closure (Or.inl ⟨⟨(a : I.E), a, rfl⟩, rfl⟩)
   have H1 : ∀ a ∈ w.asIdeal, ∀ z ∈ I.Lf, Formalism.UG.inclE (F := I.F) (Af I.F) (a : I.E) • z ∈ Lq I w := by
     intro a ha z hz
@@ -182,11 +177,9 @@ theorem stepA {w : HeightOneSpectrum (𝓞 I.E)} {p : ℕ} (hp : p.Prime) (hcard
       · simp [ZMod.val_one]
       · intro j _ hjk
         simp [Matrix.one_apply_ne hjk]
-      · intro h
-        exact absurd (Finset.mem_univ k) h
+      · exact fun h => absurd (Finset.mem_univ k) h
     rw [hsum] at hk
-    rw [Matrix.sub_mulVec, Matrix.one_mulVec]
-    exact hk
+    rwa [Matrix.sub_mulVec, Matrix.one_mulVec]
   intro y hy
   unfold AutInst.Lf lamAf at hy
   induction hy using Submodule.span_induction with
@@ -235,13 +228,11 @@ theorem mem_wc (w : HeightOneSpectrum (𝓞 I.E)) (a : 𝓞 I.E) : a ∈ (wc I w
   exact Iff.rfl
 
 theorem sig_mem_wc {w : HeightOneSpectrum (𝓞 I.E)} {a : 𝓞 I.E} (ha : a ∈ w.asIdeal) : sigO I a ∈ (wc I w).asIdeal := by
-  rw [mem_wc, sigO_sigO]
-  exact ha
+  rwa [mem_wc, sigO_sigO]
 
 theorem natCast_mem_wc {w : HeightOneSpectrum (𝓞 I.E)} {p : ℕ} (h : (p : 𝓞 I.E) ∈ w.asIdeal) :
     (p : 𝓞 I.E) ∈ (wc I w).asIdeal := by
-  rw [mem_wc, map_natCast]
-  exact h
+  rwa [mem_wc, map_natCast]
 
 theorem hform_wLat0 {w : HeightOneSpectrum (𝓞 I.E)} {u : Fin I.n → I.E} (hu : u ∈ wLat0 I w) {v : Fin I.n → I.E}
     (hv : v ∈ I.L) : ∃ c ∈ (wc I w).asIdeal, Formalism.UG.hform (starRingEnd I.E) I.J u v = (c : I.E) := by
@@ -297,7 +288,6 @@ theorem hform_wLat0_right {w : HeightOneSpectrum (𝓞 I.E)} {l : Fin I.n → I.
 abbrev iE (a : 𝓞 I.E) : I.E ⊗[I.F] Af I.F := Formalism.UG.inclE (F := I.F) (Af I.F) (a : I.E)
 
 theorem iE_int (a : 𝓞 I.E) : iE I a ∈ IntAf I.F I.E := by
-  show _ ∈ Subring.closure _
   exact Subring.subset_closure (Or.inl ⟨⟨(a : I.E), a, rfl⟩, rfl⟩)
 
 theorem hhat_sub_right (y z z' : Fin I.n → I.E ⊗[I.F] Af I.F) : hhat I y (z - z') = hhat I y z - hhat I y z' := by
@@ -340,14 +330,10 @@ theorem hhat_Lq {w : HeightOneSpectrum (𝓞 I.E)} {t β : 𝓞 I.E}
     fun y z z' => by simp only [hhat, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
   have hsl : ∀ (r : IntAf I.F I.E) (y z : Fin I.n → I.E ⊗[I.F] Af I.F),
       hhat I (r • y) z = Formalism.UG.sigR I.cm.sig (Af I.F) r * hhat I y z := by
-    intro r y z
-    show Formalism.UG.hform _ _ ((r : I.E ⊗[I.F] Af I.F) • y) z = _ * Formalism.UG.hform _ _ y z
-    exact _root_.Formalism.UG.P.csDual_hform_smul_left _ _ _ _ _
+    exact fun r y z => _root_.Formalism.UG.P.csDual_hform_smul_left _ _ _ _ _
   have hsr : ∀ (r : IntAf I.F I.E) (y z : Fin I.n → I.E ⊗[I.F] Af I.F),
       hhat I y (r • z) = r * hhat I y z := by
-    intro r y z
-    show Formalism.UG.hform _ _ y ((r : I.E ⊗[I.F] Af I.F) • z) = _ * Formalism.UG.hform _ _ y z
-    exact hform_smul_right _ _ _ _ _
+    exact fun r y z => hform_smul_right _ _ _ _ _
   have Q0 : ∃ s ∈ IntAf I.F I.E, iE I β * 0 = iE I t * s := ⟨0, zero_mem _, by simp⟩
   have Qadd : ∀ a b, (∃ s ∈ IntAf I.F I.E, iE I β * a = iE I t * s) →
       (∃ s ∈ IntAf I.F I.E, iE I β * b = iE I t * s) → ∃ s ∈ IntAf I.F I.E, iE I β * (a + b) = iE I t * s := by
@@ -427,8 +413,7 @@ theorem stepB {w : HeightOneSpectrum (𝓞 I.E)} {x : I.Gf} (hx : x ∈ I.Kset)
   have hz' : c • (iE I β • z) ∈ I.Lf := by
     refine dual_hat_lattice I _ fun u hu => ?_
     obtain ⟨s, hs, e⟩ := hint u hu
-    rw [DictLat.hhat_smul_right, DictLat.hhat_smul_right, e, ← mul_assoc, hct, one_mul]
-    exact hs
+    rwa [DictLat.hhat_smul_right, DictLat.hhat_smul_right, e, ← mul_assoc, hct, one_mul]
   have hβz : iE I β • z ∈ Lq I (wc I w) := by
     have e : iE I β • z = iE I t • (c • (iE I β • z)) := by
       rw [smul_smul, mul_comm, hct, one_smul]
@@ -454,11 +439,9 @@ theorem mem_span_of_all {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.P
     have h' := congrArg (algebraMap (𝓞 E) E) h
     simpa using h')
   have hI : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ ⊥ := by
-    rw [Ne, Ideal.span_singleton_eq_bot]
-    exact hp0
+    rwa [Ne, Ideal.span_singleton_eq_bot]
   have hJ : Ideal.span {a} ≠ ⊥ := by
-    rw [Ne, Ideal.span_singleton_eq_bot]
-    exact ha0
+    rwa [Ne, Ideal.span_singleton_eq_bot]
   have hdvd : Ideal.span {((p : ℕ) : 𝓞 E)} ∣ Ideal.span {a} := by
     rw [UniqueFactorizationMonoid.dvd_iff_normalizedFactors_le_normalizedFactors hI hJ, Multiset.le_iff_count]
     intro P
@@ -471,8 +454,7 @@ theorem mem_span_of_all {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.P
       haveI := hPp
       have h1 : (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {((p : ℕ) : 𝓞 E)})).count P = 1 := by
         apply Ideal.count_normalizedFactors_eq
-        · rw [pow_one]
-          exact hle
+        · rwa [pow_one]
         · rw [Ideal.span_singleton_le_iff_mem]
           exact hun P hmax hpP
       rw [h1, Multiset.one_le_count_iff_mem, Ideal.mem_normalizedFactors_iff hJ]

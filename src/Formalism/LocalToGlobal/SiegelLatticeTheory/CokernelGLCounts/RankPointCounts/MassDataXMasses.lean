@@ -103,8 +103,7 @@ theorem swV_mem_span (T : Set (Fin I.n → I.E ⊗[I.F] Af I.F)) (v : Fin I.n �
   · intro h
     obtain ⟨w, hw, hwv⟩ := Submodule.mem_map.mp h
     rwa [swV_injective I hwv] at hw
-  · intro hv
-    exact Submodule.mem_map.mpr ⟨v, hv, rfl⟩
+  · exact fun hv => Submodule.mem_map.mpr ⟨v, hv, rfl⟩
 
 theorem sigR_swap (t : I.E ⊗[I.F] Af I.F) :
     sigR (Af I.F) I.cm.sig (swapE I t) = swapE I (Formalism.UG.sigR I.cm.sig (Af I.F) t) := by
@@ -125,8 +124,7 @@ theorem hR_swV (x y : Fin I.n → I.E ⊗[I.F] Af I.F) :
 
 theorem ratV_swV (w : Fin I.n → I.E) : ratV (F := I.F) (Af I.F) w = swV I (incl I w) := by
   funext i
-  simp only [ratV, swV_apply, incl]
-  exact (swapE_inclE_eq I (w i)).symm
+  simpa only [ratV, swV_apply, incl] using (swapE_inclE_eq I (w i)).symm
 
 end Swap
 
@@ -166,8 +164,7 @@ theorem nfinU_of_tf {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D
   refine ⟨fun a => ?_, ?_, fun w hw => ?_⟩
   · rw [← hspan, hsub]
     have h1 := hU a
-    rw [ratV_swV] at h1
-    exact h1
+    rwa [ratV_swV] at h1
   · rw [← Set.image_univ, ← hspan, hsub]
     exact hP _ (hperp _ fun a => Formalism.L2.SG.Pf.SlabNDensePf.adelicHermitian_hyperbolicE_anisotropic_eq_zero (X := X) (u := u) a)
   · rw [← Set.image_univ, ← hspan, hsub]
@@ -184,8 +181,7 @@ theorem strongApproxN_holds : MassDataMassesW.StrongApproxN := by
   have hxf' : tf X.B.I hb p.2 ∈ Nsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u) := by
     have e2 : haMap X.B.I.cm.sig X.B.I.J (sndA X.B.I.F) (toHA X.B.I hb p) = finHA X hb p.2 :=
       congrArg Prod.snd hsp
-    rw [e2] at hxf
-    exact hxf
+    rwa [e2] at hxf
   have hy : p.2 ∈ X.NfinU u := nfinU_of_tf X hb u p.2 hxf'
   have h1K : (1 : X.B.I.Gf) ∈ X.B.I.Kset :=
     (Formalism.L2.SG.Closed.level_subgroup_properties X).2.1 1 (_root_.Formalism.L2.SG.Pf.level_subgroup_character_unitary X).1
@@ -193,8 +189,7 @@ theorem strongApproxN_holds : MassDataMassesW.StrongApproxN := by
     (Formalism.L2.SG.Pf.kset_open X.B.I).preimage (continuous_inv.mul continuous_const)
   have hyU : p.2 ∈ {w : X.B.I.Gf | w⁻¹ * p.2 ∈ X.B.I.Kset} := by
     show p.2⁻¹ * p.2 ∈ X.B.I.Kset
-    rw [inv_mul_cancel]
-    exact h1K
+    rwa [inv_mul_cancel]
   obtain ⟨ν, hνGF, hν1, hν2, hνU⟩ := Formalism.L2.SG.Pf.SlabNDensePf.nilradical_strong_approximation D X u p.2 hy _ hUo hyU
   have hB := (MassDataMassesW.nRatBridge_holds X hb u ν).2 ⟨hνGF, hν1, hν2⟩
   refine ⟨(toHA X.B.I hb ν)⁻¹, Subgroup.inv_mem _ hB.1, Subgroup.inv_mem _ hB.2, ?_⟩

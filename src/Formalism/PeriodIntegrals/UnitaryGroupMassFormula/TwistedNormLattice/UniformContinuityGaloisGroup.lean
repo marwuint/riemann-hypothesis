@@ -62,14 +62,11 @@ theorem one_notMem' : (1 : 𝓞 E) ∉ P.asIdeal :=
 theorem mul_notMem' {s t : 𝓞 E} (hs : s ∉ P.asIdeal) (ht : t ∉ P.asIdeal) : s * t ∉ P.asIdeal :=
   fun h => (P.isPrime.mem_or_mem h).elim hs ht
 
-theorem intAt_zero : IntAt P (0 : E) := by
-  exact ⟨0, 1, PI.TwNormLat.W.one_notMem' P, by simp⟩
+theorem intAt_zero : IntAt P (0 : E) := ⟨0, 1, PI.TwNormLat.W.one_notMem' P, by simp⟩
 
-theorem intAt_one : IntAt P (1 : E) := by
-  exact ⟨1, 1, PI.TwNormLat.W.one_notMem' P, by simp⟩
+theorem intAt_one : IntAt P (1 : E) := ⟨1, 1, PI.TwNormLat.W.one_notMem' P, by simp⟩
 
-theorem intAt_natCast (k : ℕ) : IntAt P (k : E) := by
-  exact ⟨k, 1, PI.TwNormLat.W.one_notMem' P, by simp⟩
+theorem intAt_natCast (k : ℕ) : IntAt P (k : E) := ⟨k, 1, PI.TwNormLat.W.one_notMem' P, by simp⟩
 
 theorem intAt_add {a b : E} (ha : IntAt P a) (hb : IntAt P b) : IntAt P (a + b) := by
   obtain ⟨r, s, hs, h⟩ := ha
@@ -107,7 +104,6 @@ theorem intAt_pow {a : E} (ha : IntAt P a) (k : ℕ) : IntAt P (a ^ k) := by
 abbrev qE : E := ((Ideal.absNorm P.asIdeal : ℕ) : E)
 
 theorem qE_ne_zero (hp : (Ideal.absNorm P.asIdeal).Prime) : qE P ≠ 0 := by
-  show ((Ideal.absNorm P.asIdeal : ℕ) : E) ≠ 0
   exact Nat.cast_ne_zero.mpr hp.ne_zero
 
 theorem uniform_continuity_galois_group (hq : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {r : 𝓞 E} (hr : r ∈ P.asIdeal) :
@@ -141,8 +137,7 @@ theorem unit_of_not_div (hp : (Ideal.absNorm P.asIdeal).Prime)
     refine ⟨t, s * s', PI.TwNormLat.W.mul_notMem' P hs hs', ?_⟩
     have hq0 := PI.TwNormLat.W.qE_ne_zero P hp
     have ht' : algebraMap (𝓞 E) E t * qE P = algebraMap (𝓞 E) E s' * algebraMap (𝓞 E) E r := by
-      have e := congrArg (algebraMap (𝓞 E) E) ht
-      simpa using e
+      simpa using congrArg (algebraMap (𝓞 E) E) ht
     rw [map_mul, mul_div_assoc', div_eq_iff hq0, ht', ← h]
     ring
   · refine ⟨s, r, hr, ?_⟩

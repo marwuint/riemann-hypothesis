@@ -113,8 +113,7 @@ private theorem measure_toLin_diagonal_update_image (b : Basis ι K E) (μ : Mea
     rw [Matrix.det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ i)]
     simp
   have hdet : (Matrix.diagonal (Function.update (1 : ι → K) i a)).det ≠ 0 := by
-    rw [hdetv]
-    exact ha
+    rwa [hdetv]
   rw [hdetv, modF_of_ne ha, ENNReal.ofReal_coe_nnreal]
   have h := image_eq_of_box b μ (equivOfDet b _ hdet) 1 (fun _ => by simp) _
     (by rw [coe_equivOfDet]; exact hscale i a ha) S
@@ -173,10 +172,8 @@ theorem image_toLin (b : Basis ι K E) (μ : Measure E) [μ.IsAddHaarMeasure]
     refine measure_toLin_diagonal_image b μ hscale D (fun i => ?_) S
     rw [Matrix.det_diagonal] at hD
     exact Finset.prod_ne_zero_iff.1 hD i (Finset.mem_univ i)
-  · intro t S
-    exact measure_toLin_transvection_image b μ htrans t S
-  · intro A B _ _ hA hB S
-    exact measure_toLin_mul_image_of_forall b μ A B hA hB S
+  · exact fun t S => measure_toLin_transvection_image b μ htrans t S
+  · exact fun A B _ _ hA hB S => measure_toLin_mul_image_of_forall b μ A B hA hB S
 
 end PI.ProdFormulaE.HaarBox
 
@@ -204,7 +201,6 @@ theorem haarAlg_of
     rw [hdet]
     exact (hy.map (Algebra.norm K)).ne_zero
   have h := image_toLin b μ (hscale K A _ b μ) (htrans K A _ b) M hdet0 S
-  rw [hdet, hM, Matrix.toLin_toMatrix] at h
-  exact h
+  rwa [hdet, hM, Matrix.toLin_toMatrix] at h
 
 end PI.ProdFormulaE.HaarAlgP

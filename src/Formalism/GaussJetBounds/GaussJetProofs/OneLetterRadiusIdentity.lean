@@ -178,35 +178,24 @@ theorem dualRadiiInequalities : ThmARadii := by
   have hL0 : (0 : ℝ) < l := by linarith
   refine ⟨?_, ?_, ?_, ?_⟩
   · intro s s' α β τ τ' hτ hτ' hodd heq
-    rcases le_total β α with h | h
-    · obtain ⟨i, rfl⟩ := Nat.exists_eq_add_of_le h
-      have hi := odd_of_odd_add_add_self hodd
-      have hs := cancel_lemma heq
-      have hD := hdual s i hi
-      rw [hs] at hD
-      have hb : (1 : ℝ) ≤ (l : ℝ) ^ β := one_le_pow₀ hL
-      calc (1 : ℝ) ≤ (l : ℝ) ^ β := hb
-        _ = (l : ℝ) ^ β * 1 := (mul_one _).symm
-        _ ≤ (l : ℝ) ^ β * ((l : ℝ) ^ i * sig s + sig s') := mul_le_mul_of_nonneg_left hD (by positivity)
-        _ = (l : ℝ) ^ β * (l : ℝ) ^ i * sig s + (l : ℝ) ^ β * sig s' := by ring
-        _ ≤ (l : ℝ) ^ β * (l : ℝ) ^ i * τ + (l : ℝ) ^ β * τ' :=
-          add_le_add (mul_le_mul_of_nonneg_left hτ (by positivity))
-            (mul_le_mul_of_nonneg_left hτ' (by positivity))
-        _ = (l : ℝ) ^ (β + i) * τ + (l : ℝ) ^ β * τ' := by rw [pow_add]
-    · obtain ⟨i, rfl⟩ := Nat.exists_eq_add_of_le h
-      have hi := odd_of_odd_self_add_add hodd
-      have hs := cancel_lemma heq.symm
-      have hD := hdual s' i hi
-      rw [hs] at hD
-      have hb : (1 : ℝ) ≤ (l : ℝ) ^ α := one_le_pow₀ hL
-      calc (1 : ℝ) ≤ (l : ℝ) ^ α := hb
-        _ = (l : ℝ) ^ α * 1 := (mul_one _).symm
-        _ ≤ (l : ℝ) ^ α * ((l : ℝ) ^ i * sig s' + sig s) := mul_le_mul_of_nonneg_left hD (by positivity)
-        _ = (l : ℝ) ^ α * sig s + (l : ℝ) ^ α * (l : ℝ) ^ i * sig s' := by ring
-        _ ≤ (l : ℝ) ^ α * τ + (l : ℝ) ^ α * (l : ℝ) ^ i * τ' :=
-          add_le_add (mul_le_mul_of_nonneg_left hτ (by positivity))
-            (mul_le_mul_of_nonneg_left hτ' (by positivity))
-        _ = (l : ℝ) ^ α * τ + (l : ℝ) ^ (α + i) * τ' := by rw [pow_add]
+    wlog h : β ≤ α generalizing s s' α β τ τ'
+    · have := this s' s β α τ' τ hτ' hτ (by rwa [add_comm]) heq.symm (not_le.1 h).le
+      linarith
+    obtain ⟨i, rfl⟩ := Nat.exists_eq_add_of_le h
+    have hi := odd_of_odd_add_add_self hodd
+    have hs := cancel_lemma heq
+    have hD := hdual s i hi
+    rw [hs] at hD
+    have hb : (1 : ℝ) ≤ (l : ℝ) ^ β := one_le_pow₀ hL
+    calc (1 : ℝ) ≤ (l : ℝ) ^ β := hb
+      _ = (l : ℝ) ^ β * 1 := (mul_one _).symm
+      _ ≤ (l : ℝ) ^ β * ((l : ℝ) ^ i * sig s + sig s') :=
+        mul_le_mul_of_nonneg_left hD (by positivity)
+      _ = (l : ℝ) ^ β * (l : ℝ) ^ i * sig s + (l : ℝ) ^ β * sig s' := by ring
+      _ ≤ (l : ℝ) ^ β * (l : ℝ) ^ i * τ + (l : ℝ) ^ β * τ' :=
+        add_le_add (mul_le_mul_of_nonneg_left hτ (by positivity))
+          (mul_le_mul_of_nonneg_left hτ' (by positivity))
+      _ = (l : ℝ) ^ (β + i) * τ + (l : ℝ) ^ β * τ' := by rw [pow_add]
   · intro s β j τ _ hτ
     have hb : (1 : ℝ) ≤ (l : ℝ) ^ β := one_le_pow₀ hL
     have h1 := mul_le_mul_of_nonneg_left hτ (by positivity : (0 : ℝ) ≤ (l : ℝ) ^ β)
@@ -222,37 +211,24 @@ theorem dualRadiiInequalities : ThmARadii := by
     rw [pow_add]
     linarith
   · intro s hs s' hs' α β hodd heq
-    rcases le_total β α with h | h
-    · obtain ⟨i, rfl⟩ := Nat.exists_eq_add_of_le h
-      have hi := odd_of_odd_add_add_self hodd
-      have hss := cancel_lemma heq
-      obtain ⟨e, he, hei⟩ := exists_dTop_eq_le_of_odd_of_mem (TT := TT) hi (hss ▸ hs')
-      have hε := hT s hs e he
-      have hpe : (0 : ℝ) < (l : ℝ) ^ e := by positivity
-      have hei' : (l : ℝ) ^ e ≤ (l : ℝ) ^ i := pow_le_pow_right₀ hL hei
-      have h1 : (l : ℝ) ^ (β + i) * ((l : ℝ) ^ e)⁻¹ ≤ (l : ℝ) ^ (β + i) * eps s :=
-        mul_le_mul_of_nonneg_left hε (by positivity)
-      have h2 : (l : ℝ) ^ β ≤ (l : ℝ) ^ (β + i) * ((l : ℝ) ^ e)⁻¹ := by
-        rw [pow_add, mul_assoc, le_mul_iff_one_le_right (by positivity), le_mul_inv_iff₀ hpe, one_mul]
-        exact hei'
-      have hb : (1 : ℝ) ≤ (l : ℝ) ^ β := one_le_pow₀ hL
-      have h3 : 0 ≤ (l : ℝ) ^ β * eps s' := mul_nonneg (by positivity) (heps s')
+    wlog h : β ≤ α generalizing s s' α β
+    · have := this s' hs' s hs β α (by rwa [add_comm]) heq.symm (not_le.1 h).le
       linarith
-    · obtain ⟨i, rfl⟩ := Nat.exists_eq_add_of_le h
-      have hi := odd_of_odd_self_add_add hodd
-      have hss := cancel_lemma heq.symm
-      obtain ⟨e, he, hei⟩ := exists_dTop_eq_le_of_odd_of_mem (TT := TT) hi (hss ▸ hs)
-      have hε := hT s' hs' e he
-      have hpe : (0 : ℝ) < (l : ℝ) ^ e := by positivity
-      have hei' : (l : ℝ) ^ e ≤ (l : ℝ) ^ i := pow_le_pow_right₀ hL hei
-      have h1 : (l : ℝ) ^ (α + i) * ((l : ℝ) ^ e)⁻¹ ≤ (l : ℝ) ^ (α + i) * eps s' :=
-        mul_le_mul_of_nonneg_left hε (by positivity)
-      have h2 : (l : ℝ) ^ α ≤ (l : ℝ) ^ (α + i) * ((l : ℝ) ^ e)⁻¹ := by
-        rw [pow_add, mul_assoc, le_mul_iff_one_le_right (by positivity), le_mul_inv_iff₀ hpe, one_mul]
-        exact hei'
-      have hb : (1 : ℝ) ≤ (l : ℝ) ^ α := one_le_pow₀ hL
-      have h3 : 0 ≤ (l : ℝ) ^ α * eps s := mul_nonneg (by positivity) (heps s)
-      linarith
+    obtain ⟨i, rfl⟩ := Nat.exists_eq_add_of_le h
+    have hi := odd_of_odd_add_add_self hodd
+    have hss := cancel_lemma heq
+    obtain ⟨e, he, hei⟩ := exists_dTop_eq_le_of_odd_of_mem (TT := TT) hi (hss ▸ hs')
+    have hε := hT s hs e he
+    have hpe : (0 : ℝ) < (l : ℝ) ^ e := by positivity
+    have hei' : (l : ℝ) ^ e ≤ (l : ℝ) ^ i := pow_le_pow_right₀ hL hei
+    have h1 : (l : ℝ) ^ (β + i) * ((l : ℝ) ^ e)⁻¹ ≤ (l : ℝ) ^ (β + i) * eps s :=
+      mul_le_mul_of_nonneg_left hε (by positivity)
+    have h2 : (l : ℝ) ^ β ≤ (l : ℝ) ^ (β + i) * ((l : ℝ) ^ e)⁻¹ := by
+      rw [pow_add, mul_assoc, le_mul_iff_one_le_right (by positivity), le_mul_inv_iff₀ hpe, one_mul]
+      exact hei'
+    have hb : (1 : ℝ) ≤ (l : ℝ) ^ β := one_le_pow₀ hL
+    have h3 : 0 ≤ (l : ℝ) ^ β * eps s' := mul_nonneg (by positivity) (heps s')
+    linarith
 
 theorem oneLetterRadiusIdentity : OneLetterRadius := by
   unfold OneLetterRadius

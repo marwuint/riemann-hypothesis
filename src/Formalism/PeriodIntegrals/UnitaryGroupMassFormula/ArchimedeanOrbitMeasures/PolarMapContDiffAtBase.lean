@@ -177,8 +177,7 @@ theorem exists_local_solution_contDiffAt {V : Type} [AddCommGroup V] [Topologica
     filter_upwards [ht] with y hy
     rw [hFt] at hy
     exact e.injective hy
-  · rw [hfun]
-    exact hGd
+  · rwa [hfun]
   · rw [hfun]
     convert hGf using 1
     ext1 w
@@ -246,7 +245,6 @@ theorem square_chart_c1_local {F E : Type} [Field F] [NumberField F] [Field E] [
       _ = c (Tm * Ti) := (hcmul Tm Ti).symm
       _ = 1 := by rw [hTTi, hc1]
   have hcont_c : Continuous c := by
-    show Continuous fun P : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) => (P.map (sigR (Ainf F) σ))ᵀ
     exact (continuous_id.matrix_map (continuous_sigRP (Ainf F) σ)).matrix_transpose
   set Bq : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) → Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) →
       Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) := fun h k => c (Ti * h) * Tm * (Ti * k) with hBq
@@ -292,14 +290,12 @@ theorem square_chart_c1_local {F E : Type} [Field F] [NumberField F] [Field E] [
     have h2 : Lq h + Lq h = 0 := by
       have e1 := congrArg c hT''
       rw [hcadd, hP, hLL, hTh] at e1
-      have e2 := add_left_cancel (hT''.trans e1.symm)
-      exact eq_neg_iff_add_eq_zero.mp e2
+      exact eq_neg_iff_add_eq_zero.mp (add_left_cancel (hT''.trans e1.symm))
     have h0 : Lq h = 0 := by
       calc Lq h = ((1 / 2 : F) * 2) • Lq h := by norm_num
         _ = (1 / 2 : F) • (Lq h + Lq h) := by rw [mul_smul, two_smul]
         _ = 0 := by rw [h2, smul_zero]
-    rw [h0, add_zero] at hT''
-    exact hT''
+    rwa [h0, add_zero] at hT''
   · intro η μ' _ _ eH eM heH heM
     have hHs : ∀ x y, eH.symm (x + y) = eH.symm x + eH.symm y := by
       intro x y; apply eH.injective; rw [heH]; simp
@@ -510,8 +506,7 @@ theorem tupJac_of_pieces {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ 
   · have hid : (ContinuousLinearMap.id ℝ (EuclideanSpace ℝ ι × EuclideanSpace ℝ η)).det = 1 := by
       rw [ContinuousLinearMap.det, ContinuousLinearMap.coe_id, LinearMap.det_id]
     simp only []
-    rw [hbase, hid, abs_one, mul_one, div_div]
-    exact harith
+    rwa [hbase, hid, abs_one, mul_one, div_div]
 
 def TupPieces : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ) hT μinf νinf
     fibInf, PushHyp X u' ψ hT μinf νinf fibInf → ∃ Ω a, IsChart X u' hT Ω a ∧

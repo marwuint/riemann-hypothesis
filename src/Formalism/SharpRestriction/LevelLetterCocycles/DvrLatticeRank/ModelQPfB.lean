@@ -91,8 +91,7 @@ theorem phibN_div (p : ℕ) (hp : p.Prime) [Nontrivial O] [IsAdicComplete (Ideal
     intro c hc
     have hmem : c - 1 ∈ I := by
       rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, hc, map_one, sub_self]
-    have hj := (Ideal.mem_jacobson_bot.1 (hjac hmem)) 1
-    simpa using hj
+    simpa using (Ideal.mem_jacobson_bot.1 (hjac hmem)) 1
   have hdiv : (((1 + PowerSeries.X) ^ p - 1) ^ N : PowerSeries O).IsWeierstrassDivisorAt I := by
     show IsUnit _
     rw [hmap, PowerSeries.order_X_pow, ENat.toNat_coe]
@@ -126,16 +125,12 @@ theorem avg_mem (u : Oˣ) (x : LetA O n) : avg W u x ∈ W.AΔ := by
   rw [map_smul, map_sum]
   congr 1
   refine Finset.sum_nbij' (fun δ => δ' * δ) (fun δ => δ'⁻¹ * δ) ?_ ?_ ?_ ?_ ?_
-  · intro a ha
-    exact _root_.Formalism.MainNotions.LiftingTheory.delta_mul_mem W hδ' ha
+  · exact fun a ha => _root_.Formalism.MainNotions.LiftingTheory.delta_mul_mem W hδ' ha
   · intro a ha
     exact _root_.Formalism.MainNotions.LiftingTheory.delta_mul_mem W (_root_.Formalism.MainNotions.LiftingTheory.delta_inv_mem_alt W hδ') ha
-  · intro a _
-    exact inv_mul_cancel_left δ' a
-  · intro a _
-    exact mul_inv_cancel_left δ' a
-  · intro a _
-    exact (_root_.Formalism.MainNotions.LiftingTheory.tr_γA_mul W δ' a x).symm
+  · exact fun a _ => inv_mul_cancel_left δ' a
+  · exact fun a _ => mul_inv_cancel_left δ' a
+  · exact fun a _ => (_root_.Formalism.MainNotions.LiftingTheory.tr_γA_mul W δ' a x).symm
 
 theorem avg_self (u : Oˣ) (hu : (u : O) = (W.DelF.card : ℕ)) {x : LetA O n} (hx : x ∈ W.AΔ) :
     avg W u x = x := by
@@ -159,8 +154,7 @@ theorem avg_mul_left (u : Oˣ) {y : LetA O n} (hy : y ∈ W.AΔ) (x : LetA O n) 
 theorem avg_sum (u : Oˣ) {ι : Type} (s : Finset ι) (f : ι → LetA O n) :
     avg W u (∑ i ∈ s, f i) = ∑ i ∈ s, avg W u (f i) := by
 
-  simp only [avg, map_sum, Finset.smul_sum]
-  exact Finset.sum_comm
+  simpa only [avg, map_sum, Finset.smul_sum] using Finset.sum_comm
 
 theorem div_at (hp : PD.p.Prime) [Nontrivial O] [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O]
     (s' h' : ℕ) (π' Eπ : LetA O n) (w₁ w₂ : (LetA O n)ˣ) (hπ : π' = w₁ * (letπ : LetA O n) ^ s') (hq : W.q = w₂ * Eπ)

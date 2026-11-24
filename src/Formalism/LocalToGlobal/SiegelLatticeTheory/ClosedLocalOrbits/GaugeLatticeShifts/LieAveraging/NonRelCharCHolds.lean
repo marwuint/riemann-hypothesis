@@ -68,8 +68,7 @@ theorem nxt_map {V W : Type} (g : V → W) (e : Fin r → V) (z : V) (a : Fin r)
   split_ifs <;> rfl
 
 theorem mem_map_iff (γ : S.V ≃ₗ[E] S.V) (p : Submodule E S.V) (y : S.V) :
-    y ∈ p.map (γ : S.V →ₗ[E] S.V) ↔ γ.symm y ∈ p := by
-  exact Submodule.mem_map_equiv p
+    y ∈ p.map (γ : S.V →ₗ[E] S.V) ↔ γ.symm y ∈ p := Submodule.mem_map_equiv p
 
 end Gen
 
@@ -163,8 +162,7 @@ theorem nonRelCharC_holds : NonRelCharC := by
     apply hne
     have := trace_zero X h0
     unfold FlagG.dpsi
-    rw [map_sub, sub_eq_zero] at this
-    exact this
+    rwa [map_sub, sub_eq_zero] at this
   have hδs : star δ = δ := by rw [hδ, star_add, star_star, add_comm]
   set N := Fintype.card (InfinitePlace X.B.I.F) with hN
   have hNpos : 0 < N := Fintype.card_pos
@@ -213,8 +211,7 @@ theorem nonRelCharC_holds : NonRelCharC := by
         intro w hw
         rw [hF', _root_.Formalism.L2.SG.Pf.x_mapFlag, mem_map_iff] at hw
         have := horth (X.Fu u') y hy _ hw
-        rw [← hisoF (t.lin.symm w) y, LinearEquiv.apply_symm_apply] at this
-        exact this
+        rwa [← hisoF (t.lin.symm w) y, LinearEquiv.apply_symm_apply] at this
       have h2 := nexp_perp (s := s) hY2 h1
       rw [hF', _root_.Formalism.L2.SG.Pf.x_mapFlag, mem_map_iff] at h2
       rw [hsub]; exact h2

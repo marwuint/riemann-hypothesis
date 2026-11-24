@@ -298,8 +298,7 @@ theorem ns_differentiableOn (m : ℕ) (D' : ℂ) {r d : ℝ} (hr : 0 ≤ r) :
   have hp : DifferentiableAt ℂ (fun x : Fin (m + 1) → ℂ => ∏ k, x k) x := by fun_prop
   have hs : DifferentiableAt ℂ (fun x : Fin (m + 1) → ℂ => ∑ k, x k) x := by fun_prop
   have hd : DifferentiableAt ℂ (fun x : Fin (m + 1) → ℂ => D' / ∏ k, x k) x := by
-    simp only [div_eq_mul_inv]
-    exact (hp.fun_inv hne).const_mul D'
+    simpa only [div_eq_mul_inv] using (hp.fun_inv hne).const_mul D'
   exact hs.fun_add hd
 
 theorem ns_vpow {τ ε e : ℝ} (hτ : 0 ≤ τ) (n : ℕ) (hn : (n : ℝ) = e) :
@@ -522,8 +521,7 @@ theorem _root_.Formalism.FourierDecayAlt.P.nonstationary_estimate_of_parts : For
         have h1 := measure_mono (μ := muPi β (Fin (m + 1))) hball
         rw [ns_muPi_closedBall β _ _ (by positivity)] at h1
         have h2 := ENNReal.toReal_mono ENNReal.ofReal_ne_top h1
-        rw [ENNReal.toReal_ofReal (by positivity), Fintype.card_fin] at h2
-        exact h2
+        rwa [ENNReal.toReal_ofReal (by positivity), Fintype.card_fin] at h2
       refine hmain.trans ?_
       rw [hBd]
       have hX : 0 ≤ (‖t‖ * P / cg) ^ q := by positivity

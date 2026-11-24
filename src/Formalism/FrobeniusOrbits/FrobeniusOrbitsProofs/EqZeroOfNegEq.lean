@@ -88,12 +88,10 @@ theorem gs_sq {p : ℕ} [Fact p.Prime] (hp4 : p % 4 = 3) {x : K} (hx : IsPrimiti
   have h1 : chi p K ≠ 1 := by
     intro h
     have h0 := chi_neg_one (K := K) hp4
-    have h2 : (1 : MulChar (ZMod p) K) (-1) = 1 := by
-      exact MulChar.one_apply isUnit_one.neg
+    have h2 : (1 : MulChar (ZMod p) K) (-1) = 1 := MulChar.one_apply isUnit_one.neg
     rw [h, h2] at h0
     norm_num at h0
-  have h2 : (chi p K).IsQuadratic := by
-    exact (quadraticChar_isQuadratic (ZMod p)).comp _
+  have h2 : (chi p K).IsQuadratic := (quadraticChar_isQuadratic (ZMod p)).comp _
   have h3 : (AddChar.zmodChar p hx.pow_eq_one).IsPrimitive := by
     exact AddChar.zmodChar_primitive_of_primitive_root p hx
   unfold gs
@@ -122,8 +120,7 @@ theorem pow_mod_of {K : Type*} [Monoid K] {w : K} {N : ℕ} (hw : w ^ N = 1) (a 
 theorem splits_of_dvd {L K : Type*} [Field L] [Field K] [Algebra ℚ L] [Algebra ℚ K] (x : L)
     (f : ℚ[X]) (hf : f ≠ 0) (hx : aeval x f = 0) (hs : (f.map (algebraMap ℚ K)).Splits) :
     IsIntegral ℚ x ∧ ((minpoly ℚ x).map (algebraMap ℚ K)).Splits := by
-  have hi : IsIntegral ℚ x := by
-    exact IsAlgebraic.isIntegral ⟨f, hf, hx⟩
+  have hi : IsIntegral ℚ x := IsAlgebraic.isIntegral ⟨f, hf, hx⟩
   refine ⟨hi, ?_⟩
   have hd : (minpoly ℚ x).map (algebraMap ℚ K) ∣ f.map (algebraMap ℚ K) :=
     Polynomial.map_dvd _ (minpoly.dvd ℚ x hx)
@@ -152,8 +149,7 @@ theorem prim_pow {N m : ℕ} [NeZero N] (hm : m ∣ N) : IsPrimitiveRoot (z N ^ 
   exact (z_spec N).pow (Nat.pos_of_ne_zero hN) (Nat.div_mul_cancel hm).symm
 
 theorem sqrt_exists {p : ℕ} [Fact p.Prime] (hp4 : p % 4 = 3) {N : ℕ} [NeZero N] (hp : p ∣ N) :
-    ∃ g : Cyc N, g ^ 2 = -(p : Cyc N) := by
-  exact ⟨_, gs_sq hp4 (prim_pow hp)⟩
+    ∃ g : Cyc N, g ^ 2 = -(p : Cyc N) := ⟨_, gs_sq hp4 (prim_pow hp)⟩
 
 theorem top_adjoin (m : ℕ) [NeZero m] : IntermediateField.adjoin ℚ ({z m} : Set (Cyc m)) = ⊤ := by
   exact IntermediateField.adjoin_eq_top_of_algebra ℚ _

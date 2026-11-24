@@ -80,8 +80,7 @@ theorem massDataIndices_of (hA : MeasAAll) (hB : MeasBAll) :
         (X.measG.μGv p.1 (KppX X hb p)).toReal
     have h1 : (muP X p (KvX X p)).toReal = (i : ℝ) * (muP X p (KppX X hb p)).toReal := by
       rw [hμi, ENNReal.toReal_mul, ENNReal.toReal_natCast]
-    rw [← hi, mul_div_assoc, div_self hi0, mul_one]
-    exact h1
+    rwa [← hi, mul_div_assoc, div_self hi0, mul_one]
   · show (X.measG.μGv p.1 (KnatX X u p)).toReal / (X.measG.μGv p.1 (KvX X p)).toReal =
       (glkC D.R.k (gOf p) : ℝ) * (nnC D.R.rS D.R.k (gOf p) : ℝ) / (ggC D.R.rS D.R.k (gOf p) : ℝ)
     have h1 : (muP X p (KvX X p)).toReal = (j : ℝ) * (muP X p (KnatX X u p)).toReal := by
@@ -117,12 +116,9 @@ theorem massDataIndices_of_locAll (hL : LocAll) :
       (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf) (u u' : D.what₂.Word)
       (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E) (L : Formalism.L2.SG.TypedSets.LocIn (Formalism.L2.SG.TypedSets.TypX X))
       (A : Formalism.L2.SG.TypedSets.AnIn), Formalism.L2.SG.TypedSets.InIndicesAt X hb hK FdN FdN' u u' X0 L A := by
-  have hH : HaarIdx := by
-    exact haarIdx
-  have hR : RedIdx := by
-    exact redIdx
-  intro D X
-  exact massDataIndices_of_haarIdx_redIdx_locAll hH hR hL X
+  have hH : HaarIdx := haarIdx
+  have hR : RedIdx := redIdx
+  exact fun D X => massDataIndices_of_haarIdx_redIdx_locAll hH hR hL X
 
 def LocOpen : Prop :=
   ∀ {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (_hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf)

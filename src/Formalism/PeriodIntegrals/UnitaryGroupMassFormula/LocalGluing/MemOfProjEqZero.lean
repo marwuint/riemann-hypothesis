@@ -100,8 +100,7 @@ theorem pair_of (hR : Riesz) (hS : Scale) (hO : PI.LocHerm.LocOProj) : Pair := b
     have hxB := sub_proj_mem hAB x
     have h1 : H.h x y = H.h (A.projectionOnto B hAB x : V) y := by
       have e2 := H.h_add_left (A.projectionOnto B hAB x : V) (x - (A.projectionOnto B hAB x : V)) y
-      rw [add_sub_cancel, (orth y hyA _ hxB).2, add_zero] at e2
-      exact e2
+      rwa [add_sub_cancel, (orth y hyA _ hxB).2, add_zero] at e2
     rw [← h1]
     exact (hL.2.2 x).1 hx y hy
   · intro hyp
@@ -118,8 +117,7 @@ theorem pair_of (hR : Riesz) (hS : Scale) (hO : PI.LocHerm.LocOProj) : Pair := b
     have hsp : ∀ p : P, pB (s p : V) = p := by
       intro p
       have := congrArg Subtype.val (LinearMap.congr_fun hs p)
-      rw [← hπv]
-      exact this
+      rwa [← hπv]
     let Q : Submodule M.L.O V := LinearMap.range (abelian₂.subtype ∘ₗ s)
     let W : Submodule E V := Submodule.span E (Q : Set V)
     have hsW : ∀ p : P, (s p : V) ∈ W := fun p => Submodule.subset_span ⟨p, rfl⟩
@@ -139,8 +137,7 @@ theorem pair_of (hR : Riesz) (hS : Scale) (hO : PI.LocHerm.LocOProj) : Pair := b
         have hp' : (s p : V) = algebraMap F E r • w := hp
         have hpA : algebraMap F E r • w ∈ A := A.smul_mem _ hwA
         have h0 : (p : V) = 0 := by
-          rw [← hsp p, hp', pB_apply]
-          rw [Submodule.projectionOnto_apply_eq_zero_iff hAB.symm |>.2 hpA]
+          rw [← hsp p, hp', pB_apply, Submodule.projectionOnto_apply_eq_zero_iff hAB.symm |>.2 hpA]
           rfl
         have hp0 : p = 0 := Subtype.ext h0
         have hrw0 : algebraMap F E r • w = 0 := by rw [← hp', hp0, map_zero]; rfl
@@ -181,8 +178,7 @@ theorem pair_of (hR : Riesz) (hS : Scale) (hO : PI.LocHerm.LocOProj) : Pair := b
       have hxB := sub_proj_mem hAB x
       have e1 : H.h a x = H.h a (A.projectionOnto B hAB x : V) := by
         have e2 := h_add_right H a (A.projectionOnto B hAB x : V) (x - (A.projectionOnto B hAB x : V))
-        rw [add_sub_cancel, (orth a ha _ hxB).1, add_zero] at e2
-        exact e2
+        rwa [add_sub_cancel, (orth a ha _ hxB).1, add_zero] at e2
       rw [hz, h_sub_right, ← e1, hx a, hfA a ha, sub_self]
     have hz0 : z = 0 := by
       refine H.nondeg z (fun v => ?_)

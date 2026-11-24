@@ -212,8 +212,7 @@ theorem xx_span_MGen0 (th o : ℤ → ℝ) {xi : SegRing O r K} (hxi : xi ∈ XX
       exact ⟨hc.1, hc.2.1⟩
     · intro i hi
       have hc := (hC (eL F j i) (md_eL_mem F j i) hi).2.2
-      rw [md_val_tr F j {y | y < eL F j i} {y | y < i} (fun i' => md_eL_lt F j i' i)] at hc
-      exact hc
+      rwa [md_val_tr F j {y | y < eL F j i} {y | y < i} (fun i' => md_eL_lt F j i' i)] at hc
     · show plnm F j O K _ = _
       unfold plnm plEmb nmEmb
       rw [map_mul, rename_rename, rename_rename, rename_rename, rename_rename]
@@ -247,8 +246,7 @@ theorem seg_SyS (hW1 : GeneratorSpanInclusion) (hW2 : GeneratorImageIsSymbol) (j
   exact SyS_of_span X hW2 j h2
 
 theorem w_ne : algebraMap O (KK O) X.S.w ≠ 0 := by
-  intro h
-  exact X.S.w_irr.ne_zero ((IsFractionRing.injective O (KK O)) (by rw [h, map_zero]))
+  exact fun h => X.S.w_irr.ne_zero ((IsFractionRing.injective O (KK O)) (by rw [h, map_zero]))
 
 theorem sb_surj (T : PP) : ∃ F0 : PP, X.sb F0 = T := by
   let inv : PP →ₐ[KK O] PP := aeval fun v =>
@@ -345,8 +343,7 @@ theorem exists_pol_family_of_mem_gen_of_vsDeg_le (D : Formalism.BasicNotions.D7)
         intro v hv
         by_contra hvT
         have hA0 : (∏ j ∈ Finset.range X.Fr.J, phSeg O K p X.Fr (j : ℤ) (x j)) ≠ 0 := by
-          intro h0
-          exact hP0 (by rw [hPe, h0, zero_mul])
+          exact fun h0 => hP0 (by rw [hPe, h0, zero_mul])
         obtain ⟨m1, hm1⟩ := MvPolynomial.support_nonempty.2 hA0
         have hmem : m1 + l ∈ P.support := by
           rw [mem_support_iff, hPe, coeff_mul_monomial, mul_one]
@@ -399,8 +396,7 @@ theorem exists_pol_family_of_mem_gen_of_vsDeg_le (D : Formalism.BasicNotions.D7)
     split_ifs at hm with h1
     · exact (hasMultideg_iff_weighted_homog _ _).1 hmdT hm
     · exact absurd rfl hm
-  · simp only [hFs]
-    exact sum_comp_range _ Tt T hwtT
+  · simpa only [hFs] using sum_comp_range _ Tt T hwtT
 
 end Ctx
 
@@ -520,8 +516,7 @@ theorem spdeg {C : ℝ} (hC : 30 ≤ C) {p n' m r : ℕ} [Fact p.Prime] [NeZero 
     push_cast
     ring
   have hlog : 1 ≤ Real.logb p a := by
-    rw [Real.le_logb_iff_rpow_le (by linarith) (by linarith), Real.rpow_one]
-    exact hpa
+    rwa [Real.le_logb_iff_rpow_le (by linarith) (by linarith), Real.rpow_one]
   have hkD : ((m + 1 : ℕ) : ℝ) ≤ Dp := by
     refine le_trans ?_ h10
     have c1 : (1 : ℝ) ≤ C * (TT.card : ℝ) := one_le_mul_of_one_le_of_one_le (by linarith) hNR
@@ -684,10 +679,8 @@ theorem sources_realisable_holds (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cde
   · intro s
     unfold dT
     rw [hTT]
-  · intro t ht
-    exact spdeg hC H hF t ht
-  · intro t ht
-    exact eSP_off hF _ _ _ t ht
+  · exact fun t ht => spdeg hC H hF t ht
+  · exact fun t ht => eSP_off hF _ _ _ t ht
 
 end Formalism.MainNotions.Pf14
 end -- clump:auto

@@ -100,8 +100,7 @@ theorem continuous_tens (h : IsTensAbs σ σs tens) : Continuous tens := by
   simp_rw [hnorm]
   have h2 : Tendsto (fun x => Real.sqrt (F x)) (𝓝 x0) (𝓝 (Real.sqrt (F x0))) :=
     (Real.continuous_sqrt.comp hFc).tendsto x0
-  rw [hF0, Real.sqrt_zero] at h2
-  exact h2
+  rwa [hF0, Real.sqrt_zero] at h2
 
 theorem tens_unit (hσ : ∀ v, IsUnitRep (σ v)) (h : IsTensAbs σ σs tens) (g : ∀ v, G v) (a : Hs) (x : ∀ v, H v) :
     ⟪σs g (tens x), σs g a⟫_ℂ = ⟪tens x, a⟫_ℂ := by
@@ -233,8 +232,7 @@ theorem SP_swap {a b a' b' : Hs} (h : SP m σs D a b a' b') : SP m σs D a' b' a
     ring
   rw [e]
   refine ⟨integrable_conj' h.1, ?_⟩
-  rw [integral_conj, h.2]
-  rw [map_div₀, map_mul, Complex.conj_ofReal, inner_conj_symm, inner_conj_symm]
+  rw [integral_conj, h.2, map_div₀, map_mul, Complex.conj_ofReal, inner_conj_symm, inner_conj_symm]
 
 theorem SP_zero_a (b a' b' : Hs) : SP m σs D 0 b a' b' := by
   unfold SP
@@ -260,8 +258,7 @@ theorem SP_smul_a (c : ℂ) {a b a' b' : Hs} (h : SP m σs D a b a' b') : SP m �
     rw [map_smul, inner_smul_right, mul_assoc]
   rw [e]
   refine ⟨h.1.const_mul c, ?_⟩
-  rw [integral_const_mul]
-  rw [h.2, inner_smul_right]
+  rw [integral_const_mul, h.2, inner_smul_right]
   ring
 
 theorem SP_zero_b (a a' b' : Hs) : SP m σs D a 0 a' b' := by
@@ -288,8 +285,7 @@ theorem SP_smul_b (c : ℂ) {a b a' b' : Hs} (h : SP m σs D a b a' b') : SP m �
     rw [inner_smul_left, mul_assoc]
   rw [e]
   refine ⟨h.1.const_mul _, ?_⟩
-  rw [integral_const_mul]
-  rw [h.2, inner_smul_left]
+  rw [integral_const_mul, h.2, inner_smul_left]
   ring
 
 private theorem mem_span_of_closed_lemma {P : Hs → Prop} (h0 : P 0) (hadd : ∀ x y, P x → P y → P (x + y))
@@ -338,8 +334,7 @@ theorem SP_span {E : Set Hs} (h : ∀ a ∈ E, ∀ b ∈ E, ∀ a' ∈ E, ∀ b'
       (fun x y hx hy a ha b hb => SP_add_b (hx a ha b hb) (hy a ha b hb))
       (fun c x hx a ha b hb => SP_smul_b c (hx a ha b hb))
       (fun b' hb' => s3 a' ha' b' hb')
-  intro a ha b hb a' ha' b' hb'
-  exact SP_swap (s4 a' ha' b' hb' a ha b hb)
+  exact fun a ha b hb a' ha' b' hb' => SP_swap (s4 a' ha' b' hb' a ha b hb)
 
 end Gen
 
@@ -390,8 +385,7 @@ theorem enorm_sq_eq (z : ℂ) : ‖z‖ₑ ^ 2 = ENNReal.ofReal (‖z‖ ^ 2) :=
   rw [ENNReal.ofReal_pow (norm_nonneg z), ofReal_norm]
 
 private theorem aestronglyMeasurable_norm_sq {u : X → ℂ} (hu : AEStronglyMeasurable u μ) :
-    AEStronglyMeasurable (fun x => ‖u x‖ ^ 2) μ := by
-  exact hu.norm.pow 2
+    AEStronglyMeasurable (fun x => ‖u x‖ ^ 2) μ := hu.norm.pow 2
 
 theorem memLp_two_of_lintegral {u : X → ℂ} (hu : AEStronglyMeasurable u μ) (h : ∫⁻ x, ‖u x‖ₑ ^ 2 ∂μ < ⊤) :
     MemLp u 2 μ := by
@@ -399,8 +393,7 @@ theorem memLp_two_of_lintegral {u : X → ℂ} (hu : AEStronglyMeasurable u μ) 
   have e : ∀ x, ‖‖u x‖ ^ 2‖ₑ = ‖u x‖ₑ ^ 2 := fun x => by
     rw [Real.enorm_of_nonneg (by positivity), enorm_sq_eq]
   rw [hasFiniteIntegral_iff_enorm]
-  simp only [e]
-  exact h
+  simpa only [e] using h
 
 theorem lintegral_sq_eq {u : X → ℂ} (hu : MemLp u 2 μ) :
     ∫ x, ‖u x‖ ^ 2 ∂μ = (∫⁻ x, ‖u x‖ₑ ^ 2 ∂μ).toReal := by
@@ -524,8 +517,7 @@ theorem limit_memLp_and_integral_eq (f : ℕ → X → ℂ) (F g : X → ℂ) (h
           ≤ (G + 1) / δ * (δ ^ 2 / (2 * (G + 1))) := mul_le_mul_of_nonneg_left hA ht.le
         _ = δ / 2 := by field_simp
     have h2 : G / ((G + 1) / δ) < δ := by
-      rw [div_div_eq_mul_div]
-      rw [div_lt_iff₀ hc]
+      rw [div_div_eq_mul_div, div_lt_iff₀ hc]
       nlinarith
     linarith
   exact tendsto_nhds_unique hlim hL
@@ -559,9 +551,7 @@ variable {K : Type} [TopologicalSpace K] [MeasurableSpace K] [OpensMeasurableSpa
 def coeff (σs : K → (Hs →L[ℂ] Hs)) (a b : Hs) (x : K) : ℂ := ⟪b, σs x a⟫_ℂ
 
 theorem continuous_coeff (hstr : ∀ a : Hs, Continuous (fun x => σs x a)) (a b : Hs) :
-    Continuous (coeff σs a b) := by
-  show Continuous fun x => ⟪b, σs x a⟫_ℂ
-  exact continuous_const.inner (hstr a)
+    Continuous (coeff σs a b) := continuous_const.inner (hstr a)
 
 theorem norm_sq_of_mul_conj (z : ℂ) : ‖z * conj z‖ = ‖z‖ ^ 2 := by
   rw [norm_mul, Complex.norm_conj, sq]
@@ -591,9 +581,7 @@ private theorem integral_norm_sq_coeff_eq_of_SP {a b : Hs} (h : SP m σs D a b a
   have e1 : (fun x => ⟪b, σs x a⟫_ℂ * conj ⟪b, σs x a⟫_ℂ) =
       fun x => ((‖coeff σs a b x‖ ^ 2 : ℝ) : ℂ) :=
     funext fun x => mul_conj_eq_ofReal_norm_sq_complex _
-  rw [e1] at h2
-  rw [integral_complex_ofReal] at h2
-  rw [inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K] at h2
+  rw [e1, integral_complex_ofReal, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K] at h2
   have h3 : ((∫ x, ‖coeff σs a b x‖ ^ 2 ∂m : ℝ) : ℂ) = ((‖a‖ ^ 2 * ‖b‖ ^ 2 / D : ℝ) : ℂ) := by
     rw [h2]
     simp only [Complex.ofReal_div, Complex.ofReal_mul, Complex.ofReal_pow]
@@ -631,8 +619,7 @@ theorem small_of_close (c : ℝ) (hc : 0 ≤ c) (hD : 0 < D) (ε : ℝ≥0∞) (
   have h3 : t ^ 2 ≤ t := by nlinarith
   have h6 : t ^ 2 * c ≤ t * c := mul_le_mul_of_nonneg_right h3 hc
   have h7 : t ^ 2 * c ≤ ε.toReal * D := by nlinarith
-  have h8 : t ^ 2 * c / D ≤ ε.toReal * D / D := by
-    exact div_le_div_of_nonneg_right h7 hD.le
+  have h8 : t ^ 2 * c / D ≤ ε.toReal * D / D := div_le_div_of_nonneg_right h7 hD.le
   rwa [mul_div_cancel_right₀ _ hD.ne'] at h8
 
 theorem SP_of_dense_a (hstr : ∀ a : Hs, Continuous (fun x => σs x a)) (hD : 0 < D) (Sp : Submodule ℂ Hs)
@@ -647,7 +634,6 @@ theorem SP_of_dense_a (hstr : ∀ a : Hs, Continuous (fun x => σs x a)) (hD : 0
   have hpt : ∀ x, Tendsto (fun n => coeff σs (u n) b x) atTop (𝓝 (coeff σs a b x)) := by
     intro x
     have hσ : Tendsto (fun n => σs x (u n)) atTop (𝓝 (σs x a)) := ((σs x).continuous.tendsto a).comp hu
-    show Tendsto (fun n => ⟪b, σs x (u n)⟫_ℂ) atTop (𝓝 ⟪b, σs x a⟫_ℂ)
     exact tendsto_const_nhds.inner hσ
   have hC : ∀ ε : ℝ≥0∞, 0 < ε → ∃ N, ∀ n ≥ N, ∀ k ≥ N,
       ∫⁻ x, ‖coeff σs (u k) b x - coeff σs (u n) b x‖ₑ ^ 2 ∂m ≤ ε := by
@@ -670,8 +656,7 @@ theorem SP_of_dense_a (hstr : ∀ a : Hs, Continuous (fun x => σs x a)) (hD : 0
       obtain ⟨-, he⟩ := hA _ (hu_mem n)
       exact he
     rw [e]
-    have hin : Tendsto (fun n => ⟪a', u n⟫_ℂ) atTop (𝓝 ⟪a', a⟫_ℂ) := by
-      exact tendsto_const_nhds.inner hu
+    have hin : Tendsto (fun n => ⟪a', u n⟫_ℂ) atTop (𝓝 ⟪a', a⟫_ℂ) := tendsto_const_nhds.inner hu
     exact (hin.mul_const _).div_const _
   obtain ⟨hM, hI, hE⟩ := limit_memLp_and_integral_eq (fun n => coeff σs (u n) b)
     (coeff σs a b) (coeff σs a' b') hf2 hFm hg hpt hC hL
@@ -687,9 +672,7 @@ theorem SP_of_dense_b (hstr : ∀ a : Hs, Continuous (fun x => σs x a)) (hD : 0
   have hFm : AEStronglyMeasurable (coeff σs a b) m :=
     (continuous_coeff hstr a b).aestronglyMeasurable
   have hpt : ∀ x, Tendsto (fun n => coeff σs a (u n) x) atTop (𝓝 (coeff σs a b x)) := by
-    intro x
-    show Tendsto (fun n => ⟪u n, σs x a⟫_ℂ) atTop (𝓝 ⟪b, σs x a⟫_ℂ)
-    exact hu.inner tendsto_const_nhds
+    exact fun x => hu.inner tendsto_const_nhds
   have hC : ∀ ε : ℝ≥0∞, 0 < ε → ∃ N, ∀ n ≥ N, ∀ k ≥ N,
       ∫⁻ x, ‖coeff σs a (u k) x - coeff σs a (u n) x‖ₑ ^ 2 ∂m ≤ ε := by
     intro ε hε
@@ -712,8 +695,7 @@ theorem SP_of_dense_b (hstr : ∀ a : Hs, Continuous (fun x => σs x a)) (hD : 0
       obtain ⟨-, he⟩ := hB _ (hu_mem n)
       exact he
     rw [e]
-    have hin : Tendsto (fun n => ⟪u n, b'⟫_ℂ) atTop (𝓝 ⟪b, b'⟫_ℂ) := by
-      exact hu.inner tendsto_const_nhds
+    have hin : Tendsto (fun n => ⟪u n, b'⟫_ℂ) atTop (𝓝 ⟪b, b'⟫_ℂ) := hu.inner tendsto_const_nhds
     exact (hin.const_mul _).div_const _
   obtain ⟨hM, hI, hE⟩ := limit_memLp_and_integral_eq (fun n => coeff σs a (u n))
     (coeff σs a b) (coeff σs a' b') hf2 hFm hg hpt hC hL
@@ -816,8 +798,7 @@ theorem unitRep_of_URepOn {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} 
   · intro x a b
     let Li : H →ₗᵢ[ℂ] H := { toLinearMap := (σ (uMat x)).toLinearMap, norm_map' := hnorm _ (hmem x) }
     exact Li.inner_map_map a b
-  · intro a
-    exact (hcont a).comp_continuous (Units.continuous_val.comp continuous_subtype_val) hmem
+  · exact fun a => (hcont a).comp_continuous (Units.continuous_val.comp continuous_subtype_val) hmem
 
 theorem isSchur_of_isFdeg {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {d : ℝ}
     (h : IsFdeg (Formalism.REAL.muG ε) σ d) : IsSchur (Formalism.REAL.muG ε) (fun g : Formalism.REAL.UJ ε => σ (uMat g)) d :=
@@ -843,8 +824,7 @@ theorem stepSchurG_holds : Formalism.L2.SG.RealObj.EnergyInst.StepSchurG := by
       rw [h0, norm_zero] at this
       exact zero_ne_one this
     have he : X.dv v = d := fdegOf_eq' hd hw0
-    rw [he]
-    exact hd
+    rwa [he]
   have hT : IsTensAbs (fun v (g : Formalism.REAL.UJ (X.B.I.ε v)) => X.B.σ v (uMat g)) X.B.σs X.B.tens :=
     X.B.tens_spec
   refine ⟨isUnitRep_tens hU hT, ?_, ?_, ?_⟩

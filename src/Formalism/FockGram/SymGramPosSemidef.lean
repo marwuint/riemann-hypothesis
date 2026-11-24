@@ -72,8 +72,7 @@ private theorem mem_hdual_span_iff_forall_pairing_mem_range {S K V ι : Type} [C
   simp only [hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply,
     Submodule.mem_one, Set.mem_range]
   constructor
-  · intro h i
-    exact h _ (Submodule.subset_span ⟨i, rfl⟩)
+  · exact fun h i => h _ (Submodule.subset_span ⟨i, rfl⟩)
   · intro h y hy
     induction hy using Submodule.span_induction with
     | mem y hy =>
@@ -114,8 +113,7 @@ private theorem isUnit_algebraNorm_int_iff_isUnit {S : Type} [CommRing S] [Modul
   · intro hu
     obtain ⟨y, hy⟩ := ((Module.End.isUnit_iff _).1 hu).2 1
     exact isUnit_iff_exists_inv.2 ⟨y, by simpa using hy⟩
-  · intro hu
-    exact hu.map (Algebra.lmul ℤ S)
+  · exact fun hu => hu.map (Algebra.lmul ℤ S)
 
 theorem hermDual_of (h : SubIndexNorm) : HermDual := by
   intro S K V ι _ _ _ _ _ _ _ _ _ _ B b hinj hstar
@@ -123,8 +121,7 @@ theorem hermDual_of (h : SubIndexNorm) : HermDual := by
   have part1 : Submodule.span S (Set.range b) ≤ hdual B (Submodule.span S (Set.range b)) ↔
       ∀ i j, B (b i) (b j) ∈ Set.range (algebraMap S K) := by
     constructor
-    · intro hle i j
-      exact (hL _).1 (hle (Submodule.subset_span ⟨j, rfl⟩)) i
+    · exact fun hle i j => (hL _).1 (hle (Submodule.subset_span ⟨j, rfl⟩)) i
     · intro hG
       rw [Submodule.span_le]
       rintro _ ⟨j, rfl⟩
@@ -137,8 +134,7 @@ theorem hermDual_of (h : SubIndexNorm) : HermDual := by
   rw [← hLdef] at hLle ⊢
   rw [← hMdef] at hLle ⊢
   have hmemM : ∀ x, x ∈ M ↔ ∀ i, B (b i) x ∈ Set.range (algebraMap S K) := by
-    rw [hMdef, hLdef]
-    exact hL
+    rwa [hMdef, hLdef]
   obtain ⟨G, hG⟩ : ∃ G : Matrix ι ι K, G = Matrix.of fun i j => B (b i) (b j) := ⟨_, rfl⟩
   have hGij : ∀ i j, G i j = B (b i) (b j) := fun i j => by rw [hG]; rfl
   have hGdet : G.det = algebraMap S K GS.det := by
@@ -189,8 +185,7 @@ theorem hermDual_of (h : SubIndexNorm) : HermDual := by
     have e : (⟨x, hx⟩ : M) = ∑ k, s k • dM k := by
       apply Subtype.ext
       rw [Submodule.coe_sum]
-      simp only [Submodule.coe_smul, hdM']
-      exact hxe
+      simpa only [Submodule.coe_smul, hdM'] using hxe
     rw [e]
     exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)
   obtain ⟨bD, hbD⟩ : ∃ bD : Basis ι S M, ∀ k, bD k = dM k :=
@@ -205,8 +200,7 @@ theorem hermDual_of (h : SubIndexNorm) : HermDual := by
       have e := congrArg Subtype.val hg
       rw [Submodule.coe_sum] at e
       simpa [Submodule.coe_smul, hbM', algebraMap_smul] using e
-    have e := Fintype.linearIndependent_iff.1 b.linearIndependent _ hg' j
-    exact hinj (by rw [e, map_zero])
+    exact hinj (by rw [(Fintype.linearIndependent_iff.1 b.linearIndependent _ hg' j), map_zero])
   obtain ⟨bN, hbN⟩ : ∃ bN : Basis ι S (Submodule.span S (Set.range bM)), ∀ j, (bN j : M) = bM j :=
     ⟨Basis.span hliB, fun j => congrArg Subtype.val (Basis.span_apply hliB j)⟩
   have key := h S M ι bD (Submodule.span S (Set.range bM)) bN
@@ -232,8 +226,7 @@ theorem hermDual_of (h : SubIndexNorm) : HermDual := by
       exact hbM' j
     rw [← e, Submodule.mem_map]
     constructor
-    · intro hx
-      exact ⟨x, hx, rfl⟩
+    · exact fun hx => ⟨x, hx, rfl⟩
     · rintro ⟨y, hy, hyx⟩
       rwa [← Subtype.ext hyx]
   have hidx : L.toAddSubgroup.relIndex M.toAddSubgroup = (Algebra.norm ℤ GS.det).natAbs := by

@@ -142,8 +142,7 @@ private theorem finrank_add_finrank_orth_le (U : Submodule E S.V) :
       intro i
       have := (Fintype.linearIndependent_iff.1 hli) (fun i => star (c i)) hu i
       simpa using this
-    apply hf0
-    exact LinearMap.ext fun w => by simp [hfw, hc0]
+    exact hf0 (LinearMap.ext fun w => by simp [hfw, hc0])
   have := LinearMap.finrank_range_add_finrank_ker ψ
   rw [hrange, finrank_top, Module.finrank_fin_fun, hker] at this
   omega
@@ -162,8 +161,7 @@ private theorem finrank_sup_span_singleton_of_not_mem' (A : Submodule E S.V) {w 
     apply hw
     have := A.smul_mem c⁻¹ hu.1
     rwa [smul_smul, inv_mul_cancel₀ hc, one_smul] at this
-  rw [hinf, finrank_bot, add_zero, finrank_span_singleton hw0] at this
-  exact this
+  rwa [hinf, finrank_bot, add_zero, finrank_span_singleton hw0] at this
 
 theorem line (F : FlagG S r T) (hT : T ≠ 0) (H : Submodule E S.V) (hXH : ∀ x ∈ F.X, ∀ h ∈ H, S.hT x h = 0)
     (hzH : ∀ h ∈ H, S.hT F.z h = 0) (hdisj : ∀ x ∈ F.X, x ∈ H → x = 0)
@@ -191,8 +189,7 @@ theorem line (F : FlagG S r T) (hT : T ≠ 0) (H : Submodule E S.V) (hXH : ∀ x
     have := Submodule.finrank_sup_add_finrank_inf_eq F.X H
     have hinf : F.X ⊓ H = ⊥ := by
       rw [eq_bot_iff]; intro x hx; rw [Submodule.mem_bot]; exact hdisj x hx.1 hx.2
-    rw [hinf, finrank_bot, add_zero, hXr] at this
-    exact this
+    rwa [hinf, finrank_bot, add_zero, hXr] at this
   have hU : F.X ⊔ Submodule.span E {F.z} ⊔ H = (F.X ⊔ H) ⊔ Submodule.span E {F.z} :=
     sup_right_comm _ _ _
   have hU_fin : finrank E ↥(F.X ⊔ Submodule.span E {F.z} ⊔ H) = r + finrank E H + 1 := by
@@ -215,8 +212,7 @@ theorem line (F : FlagG S r T) (hT : T ≠ 0) (H : Submodule E S.V) (hXH : ∀ x
     rw [_root_.Formalism.L2.SG.NGCut.NormalVectorPairings.hT_swap, ((mem_Qsp F H).1 hy0).1 x hx, star_zero]
   have h2 : c * S.hT y0 y0 = 0 := by
     have := hvy
-    simp only [brS, map_add (f := _), map_smul, smul_eq_mul, h1, zero_add] at this
-    exact this
+    simpa only [brS, map_add (f := _), map_smul, smul_eq_mul, h1, zero_add] using this
   have hc : c = 0 := by
     rcases mul_eq_zero.1 h2 with h | h
     · exact h

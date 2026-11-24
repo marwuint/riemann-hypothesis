@@ -74,8 +74,7 @@ theorem right (h : IsQuadFn φ b) (x y z : M) : b x (y + z) = b x y * b x z := b
   rw [h.symm x (y + z), h.left, h.symm y x, h.symm z x]
 
 theorem phi_zero (h : IsQuadFn φ b) : φ 0 = 1 := by
-  have h0 := h.sq 0 (0 : M)
-  simpa using h0
+  simpa using h.sq 0 (0 : M)
 
 theorem b_zero_left (h : IsQuadFn φ b) (y : M) : b 0 y = 1 := by
   rw [h.b_eq, zero_add, h.phi_zero, one_mul, div_self (h.ne y)]
@@ -191,8 +190,7 @@ theorem pow4 (h : IsQuadFn φ b) :
     simp only [Pi.add_apply, h.left, Finset.prod_mul_distrib]
   · intro k v
     simp only [Pi.smul_apply, h.sq, Finset.prod_pow]
-  · intro v
-    exact Finset.prod_ne_zero_iff.2 fun i _ => h.ne _
+  · exact fun v => Finset.prod_ne_zero_iff.2 fun i _ => h.ne _
   · intro v hv
     funext i
     apply h.nondeg
@@ -202,8 +200,7 @@ theorem pow4 (h : IsQuadFn φ b) :
     · simpa using h1
     · intro j _ hj
       rw [Pi.single_eq_of_ne hj, h.b_zero_right]
-    · intro hi
-      exact absurd (Finset.mem_univ i) hi
+    · exact fun hi => absurd (Finset.mem_univ i) hi
 
 end IsQuadFn
 

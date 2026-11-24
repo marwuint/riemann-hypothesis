@@ -169,8 +169,7 @@ theorem isCompact_Ohat : IsCompact (Ohat F) := by
   have h := isCompact_range (RestrictedProduct.isEmbedding_structureMap (𝓕 := Filter.cofinite)
     (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F)
     (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F)))).continuous
-  rw [RestrictedProduct.range_structureMap] at h
-  exact h
+  rwa [RestrictedProduct.range_structureMap] at h
 
 end Ohat
 
@@ -238,15 +237,12 @@ theorem mem_latHat_Bint_iff (x : Fin n → Af F ⊗[F] E) :
     x ∈ latHat (F := F) (Bint (F := F) (E := E) n) ↔ ∀ i k, crd (Af F) (x i) k ∈ Ohat F := by
   constructor
   · intro hx i k v
-    have h := crd_mem_of_latLoc v (hx v) i k
-    simp only [pv, crd_tens] at h
-    exact h
+    simpa only [pv, crd_tens] using crd_mem_of_latLoc v (hx v) i k
   · intro hx v
     set Btv := Algebra.TensorProduct.basis (Fv F v) (Module.finBasis F E)
     have hc : ∀ i k, crd (Fv F v) (pv v x i) k ∈ v.adicCompletionIntegers F := by
       intro i k
-      simp only [pv, crd_tens]
-      exact hx i k v
+      simpa only [pv, crd_tens] using hx i k v
     rw [← Finset.univ_sum_single (pv v x)]
     refine Submodule.sum_mem _ fun i _ => ?_
     have e1 : pv v x i = ∑ k, crd (Fv F v) (pv v x i) k • Btv k := (Btv.sum_equivFun (pv v x i)).symm

@@ -75,24 +75,19 @@ variable {F : Type} [Field F] [NumberField F]
 def IntF (f : F) : Prop := algebraMap F (FiniteAdeleRing (𝓞 F) F) f ∈ Ohat F
 
 theorem ohat_mul {a c : FiniteAdeleRing (𝓞 F) F} (ha : a ∈ Ohat F) (hc : c ∈ Ohat F) : a * c ∈ Ohat F := by
-  intro v
-  exact mul_mem (ha v) (hc v)
+  exact fun v => mul_mem (ha v) (hc v)
 
 theorem ohat_add {a c : FiniteAdeleRing (𝓞 F) F} (ha : a ∈ Ohat F) (hc : c ∈ Ohat F) : a + c ∈ Ohat F := by
-  intro v
-  exact add_mem (ha v) (hc v)
+  exact fun v => add_mem (ha v) (hc v)
 
 theorem ohat_neg {a : FiniteAdeleRing (𝓞 F) F} (ha : a ∈ Ohat F) : -a ∈ Ohat F := by
-  intro v
-  exact neg_mem (ha v)
+  exact fun v => neg_mem (ha v)
 
 theorem ohat_zero : (0 : FiniteAdeleRing (𝓞 F) F) ∈ Ohat F := by
-  intro v
-  exact (v.adicCompletionIntegers F).zero_mem
+  exact fun v => (v.adicCompletionIntegers F).zero_mem
 
 theorem ohat_one : (1 : FiniteAdeleRing (𝓞 F) F) ∈ Ohat F := by
-  intro v
-  exact (v.adicCompletionIntegers F).one_mem
+  exact fun v => (v.adicCompletionIntegers F).one_mem
 
 theorem ohat_sum {κ : Type*} (s : Finset κ) {f : κ → FiniteAdeleRing (𝓞 F) F} (hf : ∀ i ∈ s, f i ∈ Ohat F) :
     ∑ i ∈ s, f i ∈ Ohat F := by
@@ -116,8 +111,7 @@ theorem ohat_zsmul {a : FiniteAdeleRing (𝓞 F) F} (ha : a ∈ Ohat F) (m : ℤ
 
 theorem intF_of_int (a : 𝓞 F) : IntF (algebraMap (𝓞 F) F a) := by
   unfold IntF Ohat
-  intro v
-  exact IsDedekindDomain.HeightOneSpectrum.coe_algebraMap_mem (𝓞 F) F v a
+  exact fun v => IsDedekindDomain.HeightOneSpectrum.coe_algebraMap_mem (𝓞 F) F v a
 
 theorem exists_den_fin {κ : Type} [Fintype κ] (f : κ → F) :
     ∃ m : ℕ, 0 < m ∧ ∀ i, IntF ((m : F) * f i) := by

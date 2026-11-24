@@ -76,8 +76,7 @@ theorem sqSign_eq_jacobi {q p : ℕ} (hq : q.Prime) (hp : p.Prime) (hq4 : q % 4 
     exact v.ne_zero
   have hq0 : ((q : ℤ) : ZMod p) ≠ 0 := by
     rw [Int.cast_natCast, Ne, ZMod.natCast_eq_zero_iff]
-    intro hd
-    exact hpq ((Nat.prime_dvd_prime_iff_eq hp hq).1 hd)
+    exact fun hd => hpq ((Nat.prime_dvd_prime_iff_eq hp hq).1 hd)
   have hpodd : p % 2 = 1 := Nat.odd_iff.1 (hp.odd_of_ne_two hp2)
   have key : legendreSym p (-(q : ℤ)) = legendreSym q p := by
     rw [show (-(q : ℤ)) = -1 * q by ring, legendreSym.mul, legendreSym.at_neg_one hp2,
@@ -93,8 +92,7 @@ theorem sqSign_eq_jacobi {q p : ℕ} (hq : q.Prime) (hp : p.Prime) (hq4 : q % 4 
   rw [← jacobiSym.legendreSym.to_jacobiSym, key]
   unfold sqSign
   split_ifs with h
-  · rw [Units.val_one, eq_comm, legendreSym.eq_one_iff q hp0, Int.cast_natCast, ← hv]
-    exact h
+  · rwa [Units.val_one, eq_comm, legendreSym.eq_one_iff q hp0, Int.cast_natCast, ← hv]
   · rw [Units.val_neg, Units.val_one, eq_comm, legendreSym.eq_neg_one_iff q, Int.cast_natCast, ← hv]
     exact h
 

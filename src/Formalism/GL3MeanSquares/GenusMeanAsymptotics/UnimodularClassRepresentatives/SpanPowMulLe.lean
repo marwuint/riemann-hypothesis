@@ -156,11 +156,7 @@ theorem InP.mem_SP {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {k : ℕ} {a : K} (ha 
 theorem InP.conj (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : K} (ha : InP 𝔭 k a) :
     InP 𝔭 k (star a) := by
   obtain ⟨t, ht, z, hz, e⟩ := ha
-  have hι : ∀ c : 𝓞 F, conjO K (ι c) = ι c := by
-    intro c
-    apply RingOfIntegers.ext
-    show star (algebraMap F K (c : F)) = algebraMap F K (c : F)
-    exact (hF _).mpr ⟨_, rfl⟩
+  have hι : ∀ c : 𝓞 F, conjO K (ι c) = ι c := fun c => RingOfIntegers.ext ((hF _).mpr ⟨_, rfl⟩)
   have hι' : (conjO K).comp (algebraMap (𝓞 F) (𝓞 K)) = algebraMap (𝓞 F) (𝓞 K) := RingHom.ext hι
   refine ⟨t, ht, conjO K z, ?_, ?_⟩
   · have h1 : conjO K z ∈ (extP K 𝔭 ^ k).map (conjO K) := Ideal.mem_map_of_mem _ hz

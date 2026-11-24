@@ -85,8 +85,7 @@ theorem scal_e_notMem (F : FlagG S r T) (a : Fin r) : F.e a ∉ F.Xa a.val := by
   have h1 := geo_coefX F a 1 0 (Submodule.zero_mem _)
   have h2 := geo_coefX F a 0 (F.e a) h
   rw [one_smul, add_zero] at h1
-  rw [zero_smul, zero_add] at h2
-  rw [h1] at h2
+  rw [zero_smul, zero_add, h1] at h2
   exact one_ne_zero h2
 
 theorem scal_xv_skew (x v : S.V) : xv S x v ∈ LieU S := by
@@ -223,16 +222,14 @@ theorem scal_step (K : Type) [Field K] [Algebra K E] (F F' : FlagG S r T)
           exact geo_e_mem_Xa F' _ _ (Nat.lt_succ_of_le hp)))
     have hγ : S.hT v (F'.fvec i.succ) = cs i.succ * S.hT v (F.fvec i.succ) := by
       have hd := hv _ (hcs i.succ)
-      rw [map_sub, map_smul, smul_eq_mul, sub_eq_zero] at hd
-      exact hd
+      rwa [map_sub, map_smul, smul_eq_mul, sub_eq_zero] at hd
     have hR : Algebra.trace K E (F.ell (xv S (F.e i) v)) = Algebra.trace K E (F'.ell (xv S (F.e i) v)) :=
       hrel _ ⟨mF, mF'⟩
     have hR' := congrArg (algebraMap K E) hR
     rw [htr, htr, eF, eF', hγ, mul_one] at hR'
     have e2 : cs i.succ * S.hT v (F.fvec i.succ) * (cs i.castSucc)⁻¹ =
         (cs i.succ * (cs i.castSucc)⁻¹) * S.hT v (F.fvec i.succ) := by ring
-    rw [e2] at hR'
-    exact hR'
+    rwa [e2] at hR'
   obtain ⟨v0, hv0, hk0⟩ := scal_exists_v (F.Xa (i.val + 1)) (F.fvec i.succ) (hfn i)
   have hρ : cs i.succ * (cs i.castSucc)⁻¹ = 1 := by
     apply scal_alg
@@ -241,8 +238,7 @@ theorem scal_step (K : Type) [Field K] [Algebra K E] (F F' : FlagG S r T)
       rw [map_smulₛₗ, LinearMap.smul_apply, hv0 x hx, smul_zero])
     have e : S.hT (star (κ / S.hT v0 (F.fvec i.succ)) • v0) (F.fvec i.succ) = κ := by
       rw [map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, star_star, smul_eq_mul, div_mul_cancel₀ _ hk0]
-    rw [e] at h
-    exact h
+    rwa [e] at h
   field_simp at hρ
   exact hρ
 
@@ -261,8 +257,7 @@ theorem id_scal : EqualFlagsScalar := by
       obtain ⟨x, hx, y, hy, hxy⟩ := Submodule.mem_sup.1 hz
       obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hy
       refine ⟨c, ?_⟩
-      rw [← hxy, add_sub_cancel_right, Fin.val_last, ← tie_X_eq_Xa]
-      exact hx
+      rwa [← hxy, add_sub_cancel_right, Fin.val_last, ← tie_X_eq_Xa]
     · rw [geo_fvec_cast, geo_fvec_cast]
       exact scal_Xa_succ F a _ (by rw [← hXa]; exact geo_e_mem_Xa F' a _ (Nat.lt_succ_self _))
   choose cs hcs using h1
@@ -287,8 +282,7 @@ theorem id_scal : EqualFlagsScalar := by
   have hc : ∀ p, cs p = cs (Fin.last r) := fun p => (hall p).trans (hall _).symm
   have hzc : F'.z - cs (Fin.last r) • F.z ∈ F.X := by
     have := hcs (Fin.last r)
-    rw [geo_fvec_last, geo_fvec_last, Fin.val_last, ← tie_X_eq_Xa] at this
-    exact this
+    rwa [geo_fvec_last, geo_fvec_last, Fin.val_last, ← tie_X_eq_Xa] at this
   refine ⟨cs (Fin.last r), ?_, fun a => ?_, hzc⟩
   · set c := cs (Fin.last r) with hcdef
     set x := F'.z - c • F.z with hx
@@ -305,8 +299,7 @@ theorem id_scal : EqualFlagsScalar := by
     have : (c * star c) * T = 1 * T := by linear_combination -hn
     exact mul_right_cancel₀ hT0 this
   · have := hcs a.castSucc
-    rw [geo_fvec_cast, geo_fvec_cast, hc] at this
-    exact this
+    rwa [geo_fvec_cast, geo_fvec_cast, hc] at this
 
 end Formalism.MainNotions.BridgeLemma
 

@@ -64,13 +64,10 @@ theorem afsplit_mem_stdLat (S : Subring A) (x : n → A) :
     obtain ⟨y, hy⟩ := LinearMap.mem_range.mp ((Submodule.mem_pi.mp h) i (Set.mem_univ i))
     rw [← hy]
     exact y.2
-  · intro h
-    exact Submodule.mem_pi.mpr fun i _ => LinearMap.mem_range.mpr ⟨⟨x i, h i⟩, rfl⟩
+  · exact fun h => Submodule.mem_pi.mpr fun i _ => LinearMap.mem_range.mpr ⟨⟨x i, h i⟩, rfl⟩
 
 theorem afsplit_mulVec_mem (S : Subring A) (M : Matrix n n A) (hM : ∀ i j, M i j ∈ S) (x : n → A)
-    (hx : ∀ i, x i ∈ S) (i : n) : (M *ᵥ x) i ∈ S := by
-  show ∑ j, M i j * x j ∈ S
-  exact sum_mem fun j _ => mul_mem (hM i j) (hx j)
+    (hx : ∀ i, x i ∈ S) (i : n) : (M *ᵥ x) i ∈ S := sum_mem fun j _ => mul_mem (hM i j) (hx j)
 
 theorem afsplit_stab_iff (S : Subring A) (g : GL n A) :
     g ∈ stabGL (stdLat (n := n) (A := A) S) ↔
@@ -145,9 +142,7 @@ private lemma IE_tmul_lemma_10 (a : E) (b : v.adicCompletion F) :
   rw [LinearMap.lTensor_tmul]
   try rfl
 
-private lemma eps_eq_lemma_2 : afsplitEps E v = (1 : E) ⊗ₜ[F] afsplitF v 1 := by
-  show afsplitIE v ((1 : E) ⊗ₜ[F] (1 : v.adicCompletion F)) = _
-  exact IE_tmul_lemma_10 v 1 1
+private lemma eps_eq_lemma_2 : afsplitEps E v = (1 : E) ⊗ₜ[F] afsplitF v 1 := IE_tmul_lemma_10 v 1 1
 
 private lemma prV_IE_lemma (x : E ⊗[F] v.adicCompletion F) : prV (E := E) v (afsplitIE v x) = x := by
   induction x using TensorProduct.induction_on with
@@ -179,8 +174,7 @@ private lemma F_int_lemma_9 (y : v.adicCompletion F) (hy : y ∈ v.adicCompletio
   intro w
   by_cases h : w = v
   · subst h
-    rw [afsplitF_self]
-    exact hy
+    rwa [afsplitF_self]
   · rw [afsplitF_ne v w h]
     exact zero_mem _
 
@@ -432,8 +426,7 @@ theorem afsplitE_snd_eq_one (g : UPts σ J 𝔸ᶠ[F]) :
     rw [afsplit_coe_bc_prV]
     rw [← C_map_ne_lemma_15 v w hw (1 : Matrix n n (E ⊗[F] v.adicCompletion F)) ((g : GL n (E ⊗[F] 𝔸ᶠ[F])) : Matrix n n (E ⊗[F] 𝔸ᶠ[F]))]
     have h' : afsplitC v (1 : Matrix n n (E ⊗[F] v.adicCompletion F)) ((g : GL n (E ⊗[F] 𝔸ᶠ[F])) : Matrix n n (E ⊗[F] 𝔸ᶠ[F])) = 1 := by
-      have h3 := congrArg (fun M : GL n (E ⊗[F] 𝔸ᶠ[F]) => (M : Matrix n n (E ⊗[F] 𝔸ᶠ[F]))) h
-      exact h3
+      exact congrArg (fun M : GL n (E ⊗[F] 𝔸ᶠ[F]) => (M : Matrix n n (E ⊗[F] 𝔸ᶠ[F]))) h
     rw [h', Matrix.map_one _ (map_zero _) (map_one _), Units.val_one]
   · intro h
     apply Units.ext

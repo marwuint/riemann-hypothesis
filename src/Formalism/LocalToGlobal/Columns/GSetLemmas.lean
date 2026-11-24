@@ -93,8 +93,7 @@ theorem mem_intOf_iff (N : S.D → Submodule (𝓞 K) S.V)
     (hN : ∀ (g : S.G) (d : S.D), N (g • d) = (N d).map ((S.ρ g).restrictScalars (𝓞 K))) (s : S.Sec)
     (φ : S.EqFun) : φ ∈ S.intOf N ↔ ∀ c, (φ : S.D → S.V) (s.rep c) ∈ N (s.rep c) := by
   constructor
-  · intro hφ c
-    exact hφ (s.rep c)
+  · exact fun hφ c => hφ (s.rep c)
   · intro hφ d
     have e := s.mv_smul d
     rw [← e, φ.2, hN]
@@ -140,8 +139,7 @@ theorem map_intNab (h : S.Ok) (s : S.Sec) :
     exact (S.coordOf_mem_nabLat h s φ).mpr hφ
   · intro hx
     refine Submodule.mem_map.mpr ⟨(S.coordOf h s).symm x, ?_, ?_⟩
-    · rw [← S.coordOf_mem_nabLat h s, LinearEquiv.apply_symm_apply]
-      exact hx
+    · rwa [← S.coordOf_mem_nabLat h s, LinearEquiv.apply_symm_apply]
     · simp
 
 theorem map_intDel (h : S.Ok) (s : S.Sec) :
@@ -154,8 +152,7 @@ theorem map_intDel (h : S.Ok) (s : S.Sec) :
     exact (S.coordOf_mem_delLat h s φ).mpr hφ
   · intro hx
     refine Submodule.mem_map.mpr ⟨(S.coordOf h s).symm x, ?_, ?_⟩
-    · rw [← S.coordOf_mem_delLat h s, LinearEquiv.apply_symm_apply]
-      exact hx
+    · rwa [← S.coordOf_mem_delLat h s, LinearEquiv.apply_symm_apply]
     · simp
 
 theorem finiteDimensional_EqFun (h : S.Ok) : FiniteDimensional K S.EqFun := by
@@ -258,8 +255,7 @@ theorem iso_onForms_mem_integral_iff (N : S.D → Submodule (𝓞 K) S.V) (N' : 
     rw [Equiv.symm_apply_apply, hc] at h1
     obtain ⟨y, hy, hxy⟩ := Submodule.mem_map.mp h1
     have hy' : y = (φ : S.D → S.V) d := e.eV.injective hxy
-    rw [← hy']
-    exact hy
+    rwa [← hy']
   · intro hφ d'
     show e.eV ((φ : S.D → S.V) (e.eD.symm d')) ∈ N' d'
     have h2 := hc (e.eD.symm d')

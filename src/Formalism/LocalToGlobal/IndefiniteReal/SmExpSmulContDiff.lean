@@ -63,8 +63,7 @@ variable {n : ℕ}
 
 lemma sm_exp_smul_contDiff (X : Matrix (Fin n) (Fin n) ℂ) :
     ContDiff ℝ ∞ (fun s : ℝ => NormedSpace.exp (s • X)) := by
-  have h := PI.BesselDerivW.exp_contDiff X
-  simpa only [Complex.coe_smul] using h
+  simpa only [Complex.coe_smul] using PI.BesselDerivW.exp_contDiff X
 
 lemma sm_prod_exp_contDiff : ∀ (k : ℕ) (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ),
     ContDiff ℝ ∞ (fun t : Fin k → ℝ => (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod)

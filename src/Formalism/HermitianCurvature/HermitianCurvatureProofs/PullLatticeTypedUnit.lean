@@ -70,8 +70,7 @@ theorem mem_idl_shift (E : Type) [Field E] [NumberField E] [IsCMField E] (g : �
   simp only [S6.zsub, Submodule.restrictScalars_mem, FractionalIdeal.mem_coe, key,
     FractionalIdeal.mem_singleton_mul]
   constructor
-  · intro hy
-    exact ⟨y, hy, rfl⟩
+  · exact fun hy => ⟨y, hy, rfl⟩
   · rintro ⟨z, hz, hzy⟩
     rwa [mul_left_cancel₀ (pow_ne_zero 2 hg0) hzy]
 
@@ -103,8 +102,7 @@ private lemma unit_mul_mem_iff' {M : Type} [CommRing M] (R : Subring M) (c : Mˣ
   · intro h
     have h' := R.mul_mem hci h
     rwa [Units.inv_mul_cancel_left] at h'
-  · intro h
-    exact R.mul_mem hc h
+  · exact fun h => R.mul_mem hc h
 
 private lemma mul_unit_mul_mem_iff {M : Type} [CommRing M] (R : Subring M) (c : Mˣ) (hc : (c : M) ∈ R)
     (hci : ((c⁻¹ : Mˣ) : M) ∈ R) (x y : M) : x * (c : M) * y ∈ R ↔ x * y ∈ R := by
@@ -185,8 +183,7 @@ private lemma isPSD_comp_of_isPSD_image {X Y : Type} {inst : DecidableEq Y} (F :
     rw [(Finset.mem_filter.1 hx).2, (Finset.mem_filter.1 hy).2]
   have hk' := hk (fun p => ∑ x ∈ F.filter (fun x => η x = p), a x)
   beta_reduce at hk' ⊢
-  rw [key]
-  exact hk'
+  rwa [key]
 
 
 open Classical in
@@ -204,8 +201,7 @@ theorem top_unit_heads : Formalism.FourierDecayAlt.J.TopUnitHeads := by
     constructor
     · intro h
       simpa using R.add_mem h hτ
-    · intro h
-      exact R.sub_mem h hτ
+    · exact fun h => R.sub_mem h hτ
   have hpull := isPSD_comp_of_isPSD_image F η _ h7
   have hF : A5.IsPSD F (fun h h' => (if t ∈ (topSys R ψ σ u τ₀ η Θ).L then (1 : ℂ) else 0) -
       (topSys R ψ σ u τ₀ η Θ).N t t h h') := by
@@ -222,8 +218,7 @@ theorem top_unit_heads : Formalism.FourierDecayAlt.J.TopUnitHeads := by
       simp only [hN, h1, hmem]
     have hp := hpull a
     beta_reduce at hp ⊢
-    rw [e]
-    exact hp
+    rwa [e]
   exact ((hAg α F _).1.trans (hAg α F _).2.symm).2 hF
 
 theorem diagonal_phase_conj : Formalism.FourierDecayAlt.J.DiagPhase := by
@@ -268,8 +263,7 @@ theorem block_diagonal_psd : Formalism.FourierDecayAlt.J.BlockDiagPSD := by
       · simp [h, Ne.symm h]
     · intro b _ hb'
       simp [Ne.symm hb']
-    · intro h
-      exact absurd (Finset.mem_image_of_mem c x.2) h
+    · exact fun h => absurd (Finset.mem_image_of_mem c x.2) h
   beta_reduce
   rw [hsum]
   exact Matrix.posSemidef_sum _ fun b _ => (hb b).mul_mul_conjTranspose_same (Q b)

@@ -212,8 +212,7 @@ theorem re_thC (ρ : D.what₂.Tau) (c : AE D) :
     simp only [Complex.conj_im] at this
     linarith
   rw [him]
-  simp only [mul_zero, zero_mul, sub_zero, add_zero]
-  exact ofReal_re_gW D _ _
+  simpa only [mul_zero, zero_mul, sub_zero, add_zero] using ofReal_re_gW D _ _
 
 theorem psi_of_snd {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (y : AF D.host.F)
     (hy : sndA D.host.F y = 0) :
@@ -305,9 +304,7 @@ theorem compAt_Lb (u : V D m n) (ρ : D.what₂.Tau) : compAt (Eqv.thetaC D) ρ 
   simp [compAt, Lb_apply, thC_emb]
 
 theorem continuous_Lb : Continuous (Lb D m n) := by
-  refine continuous_matrix fun i j => ?_
-  show Continuous fun u : V D m n => emb (D := D) fun ρ => u ρ i j
-  exact continuous_emb.comp (by fun_prop)
+  exact continuous_matrix fun i j => continuous_emb.comp (by fun_prop)
 
 def sigH (D : D7) (m n : ℕ) : Mx D m n →+ V D m n where
   toFun c ρ i j := Eqv.thetaC D ρ (infPart D (c i j))
@@ -349,8 +346,7 @@ theorem line_eq (τ : D.what₂.Tau) (z : Matrix (Fin m) (Fin n) ℂ) (L : ℝ �
     (hL : IsLineAt (Eqv.thetaC D) τ z L) (t : ℝ) : L t = Lb D m n (t • sg τ z) := by
   have hfin : ∀ i j, finPart D (L t i j) = 0 := fun i j => by
     have := congrFun (congrFun (hL.2.1 t) i) j
-    rw [Matrix.map_apply, Matrix.zero_apply] at this
-    exact this
+    rwa [Matrix.map_apply, Matrix.zero_apply] at this
   rw [← Lb_sigH (L t) hfin]
   congr 1
   funext ρ i j
@@ -606,8 +602,7 @@ theorem hasDerivAt_heis (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (x : WO
     have hl : HasDerivAt (fun t : ℝ => t • v) v 0 := by
       simpa using (hasDerivAt_id (0 : ℝ)).smul_const v
     have hG : HasFDerivAt (G f x) (fderiv ℝ (G f x) 0) ((fun t : ℝ => t • v) 0) := by
-      simp only [zero_smul]
-      exact hd.hasFDerivAt
+      simpa only [zero_smul] using hd.hasFDerivAt
     exact hG.comp_hasDerivAt (0 : ℝ) hl
   have h3 : HasDerivAt (fun t : ℝ => Complex.exp ((t : ℂ) * (-(Real.pi : ℂ) * Complex.I * (phR S T x v : ℂ))) *
       G f x (t • v)) _ 0 := h1.mul h2
@@ -623,16 +618,14 @@ theorem dRho_eq (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ : D.wha
     dRho (heisO ψ S T) (Eqv.thetaC D) τ z f x =
       -(Real.pi : ℂ) * Complex.I * (phR S T x (sg τ z) : ℂ) * f x + fderiv ℝ (G f x) 0 (sg τ z) := by
   show deriv (fun t : ℝ => heisO ψ S T (lineAt (Eqv.thetaC D) τ z t) f x) 0 = _
-  simp only [lineAt_eq hLine]
-  exact (hasDerivAt_heis hψ x hd _).deriv
+  simpa only [lineAt_eq hLine] using (hasDerivAt_heis hψ x hd _).deriv
 
 theorem hasDerivAt_dRho (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (x : WO S T) (hd : DifferentiableAt ℝ (G f x) 0) :
     HasDerivAt (fun t : ℝ => heisO ψ S T (lineAt (Eqv.thetaC D) τ z t) f x)
       (dRho (heisO ψ S T) (Eqv.thetaC D) τ z f x) 0 := by
   rw [dRho_eq hψ hLine τ z x hd]
-  simp only [lineAt_eq hLine]
-  exact hasDerivAt_heis hψ x hd _
+  simpa only [lineAt_eq hLine] using hasDerivAt_heis hψ x hd _
 
 theorem cont_cA : Continuous (cA D) := by
   let l : AE D →ₗ[AF D.host.F] AE D :=
@@ -723,8 +716,7 @@ theorem continuous_DG (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (hf : IsT
     have hc : HasFDerivAt (fun u => (ψ (symplOH S T x0 (b x)))⁻¹ * G f x0 (sg0 x + u))
         ((ψ (symplOH S T x0 (b x)))⁻¹ • fderiv ℝ (G f x0) (sg0 x)) 0 := by
       have hd : HasFDerivAt (G f x0) (fderiv ℝ (G f x0) (sg0 x)) ((fun u : V D T.rank S.rank => sg0 x + u) 0) := by
-        simp only [add_zero]
-        exact hasFDerivAt_G hf x0 _
+        simpa only [add_zero] using hasFDerivAt_G hf x0 _
       have := (hd.comp (0 : V D T.rank S.rank) ((hasFDerivAt_id (0 : V D T.rank S.rank)).const_add (sg0 x))).const_mul
         (ψ (symplOH S T x0 (b x)))⁻¹
       simpa [Function.comp_def] using this
@@ -794,8 +786,7 @@ theorem dRho_chart (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ : D.
   congr 1
   rw [G_shift]
   have hd : HasFDerivAt (G f w) (fderiv ℝ (G f w) a) ((fun u : V D T.rank S.rank => a + u) 0) := by
-    simp only [add_zero]
-    exact hasFDerivAt_G hf w _
+    simpa only [add_zero] using hasFDerivAt_G hf w _
   have hc : HasFDerivAt (fun u => G f w (a + u)) (fderiv ℝ (G f w) a) 0 := by
     have := hd.comp (0 : V D T.rank S.rank) ((hasFDerivAt_id (0 : V D T.rank S.rank)).const_add a)
     simpa [Function.comp_def] using this

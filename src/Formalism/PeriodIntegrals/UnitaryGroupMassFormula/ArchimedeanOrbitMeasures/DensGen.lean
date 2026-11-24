@@ -227,8 +227,7 @@ private theorem measure_eq_sqrt_abs_det_smul_volume_of_inversion (ν : Measure W
     have h2 : Φ (-0) = 1 := by simp [Φ, h0]
     rw [h2] at key
     have := congrArg Complex.re key
-    simp only [Complex.smul_re, Complex.one_re, smul_eq_mul, mul_one] at this
-    exact this
+    simpa only [Complex.smul_re, Complex.one_re, smul_eq_mul, mul_one] using this
   have hdpos : 0 < |LinearMap.det A| := abs_pos.mpr hdet
   have hsq : (s : ℝ) ^ 2 = |LinearMap.det A| := by
     rw [abs_inv] at hreal

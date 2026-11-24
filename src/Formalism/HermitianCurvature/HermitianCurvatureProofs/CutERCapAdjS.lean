@@ -100,8 +100,7 @@ theorem level_zero_set_eq_group : Q.Glev k r 0 = B.GV k r := by
     and_true]
 
 theorem haar0 {μ : Measure (Mt k r)} (h : B.IsHaarOn (B.GV k r) μ) : B.IsHaarOn (Q.Glev k r 0) μ := by
-  rw [level_zero_set_eq_group]
-  exact h
+  rwa [level_zero_set_eq_group]
 
 theorem lie0 {X : B.Mat k r} (hX : B.inLie k r X) : Q.inLieLev k r 0 X := by
   exact ⟨hX, fun a ha => absurd ha (Nat.not_lt_zero _)⟩

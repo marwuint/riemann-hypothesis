@@ -167,26 +167,22 @@ theorem comm_fns_D {x : A} (hx : x ∈ L.fns) :
 theorem p_Dr (l) : L.p l * L.Dr = L.Dr * (L.p l + algebraMap ℂ A 1) := by
   have h := ofFn_shift (L.p l) r L.c (fun m => if l = m then 1 else 0) (fun m => by
     rw [L.p_c]; split_ifs <;> simp [mul_add])
-  rw [show (∑ m : Fin r, if l = m then (1:ℂ) else 0) = 1 by simp] at h
-  exact h
+  rwa [show (∑ m : Fin r, if l = m then (1:ℂ) else 0) = 1 by simp] at h
 
 theorem p_Dri (l) : L.p l * L.Dri = L.Dri * (L.p l + algebraMap ℂ A (-1)) := by
   have h := ofFn_shift (L.p l) r L.ci (fun m => if l = m then -1 else 0) (fun m => by
     rw [L.p_ci]; split_ifs <;> simp [mul_add, sub_eq_add_neg])
-  rw [show (∑ m : Fin r, if l = m then (-1:ℂ) else 0) = -1 by simp] at h
-  exact h
+  rwa [show (∑ m : Fin r, if l = m then (-1:ℂ) else 0) = -1 by simp] at h
 
 theorem pb_Drb (l) : L.pb l * L.Drb = L.Drb * (L.pb l + algebraMap ℂ A 1) := by
   have h := ofFn_shift (L.pb l) r L.cb (fun m => if l = m then 1 else 0) (fun m => by
     rw [L.pb_cb]; split_ifs <;> simp [mul_add])
-  rw [show (∑ m : Fin r, if l = m then (1:ℂ) else 0) = 1 by simp] at h
-  exact h
+  rwa [show (∑ m : Fin r, if l = m then (1:ℂ) else 0) = 1 by simp] at h
 
 theorem pb_Drbi (l) : L.pb l * L.Drbi = L.Drbi * (L.pb l + algebraMap ℂ A (-1)) := by
   have h := ofFn_shift (L.pb l) r L.cbi (fun m => if l = m then -1 else 0) (fun m => by
     rw [L.pb_cbi]; split_ifs <;> simp [mul_add, sub_eq_add_neg])
-  rw [show (∑ m : Fin r, if l = m then (-1:ℂ) else 0) = -1 by simp] at h
-  exact h
+  rwa [show (∑ m : Fin r, if l = m then (-1:ℂ) else 0) = -1 by simp] at h
 
 theorem leftCorrection_intertwine {h : A} (hn : Commute L.nab h) (hz : Commute L.ζb h) (hg : Commute L.GGi h) (Y : ℂ) :
     L.l0 Y * h = h * L.l0 Y := by

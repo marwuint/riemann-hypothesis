@@ -65,10 +65,8 @@ theorem levelPrimeClauses_of_second (D : D7) (h : ∀ u, product_first_zeroth_pa
     push_cast at h1'
     rw [h1']
     ring
-  · rw [show (LocalQuadraticParts.MuH D u).mu = (D.fm u).ramLat.mu from s1]
-    exact h2
-  · rw [show (LocalQuadraticParts.MuH D u).muMax = (D.fm u).ramLat.muMax from s2]
-    exact h3
+  · rwa [show (LocalQuadraticParts.MuH D u).mu = (D.fm u).ramLat.mu from s1]
+  · rwa [show (LocalQuadraticParts.MuH D u).muMax = (D.fm u).ramLat.muMax from s2]
 
 theorem sum_lwP_e_le (D : D7) (p : ℕ) (hp : p.Prime) (S : Finset D.what₂.places.Pl)
     (hS : ∀ w ∈ S, D.what₂.places.resChar w = p) :
@@ -85,8 +83,7 @@ theorem sum_lwP_e_le (D : D7) (p : ℕ) (hp : p.Prime) (S : Finset D.what₂.pla
     obtain ⟨w, hw, rfl⟩ := Finset.mem_map.1 hv
     rw [hT]
     have := resChar_mem D w
-    rw [hS w hw] at this
-    exact this
+    rwa [hS w hw] at this
   rw [h1, ← sum_lw_e p hp T hT]
   exact Finset.sum_le_sum_of_subset_of_nonneg hsub
     (fun v _ _ => mul_nonneg (lw_nonneg v) (Nat.cast_nonneg _))
@@ -122,8 +119,7 @@ theorem levelPrime_summary_of_fifth (D : D7) (L : SizeData₂ D) (C C1 : ℝ) (h
     refine ⟨s, hs, ?_⟩
     rw [pow_zero, Ideal.one_eq_top, Submodule.top_smul]
     show (D.nuIn u).restrictScalars (NumberField.RingOfIntegers D.what₂.LL) (s • x) ∈ ((D.fm u).lat 0).L
-    rw [map_smul]
-    exact hsx
+    rwa [map_smul]
   · intro F hFT
     have hx0 : 0 < L.sc.x := lt_trans zero_lt_one L.sc.one_lt_alt
     have ha : 0 < L.sc.a := mul_pos hx0 (Real.exp_pos _)

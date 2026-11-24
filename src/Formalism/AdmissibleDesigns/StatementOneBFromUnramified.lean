@@ -120,8 +120,7 @@ theorem qpow_of_tw (hW : WildTriv) (D : D7) (i : D.nd.Loc) :
     rw [D.ntw.pD_eq, D.ntw.twOf_l] at h'
     exact hS ((D.nd.S_def i v).2 ⟨Or.inr (Or.inr h'), hl⟩)
   have hl' : v ∉ placesOver D.host.E (D.ntw.l (D.ntw.twOf i)) := by
-    rw [D.ntw.twOf_l]
-    exact hl
+    rwa [D.ntw.twOf_l]
   have hchi : ∀ h ∈ Ine (F := D.host.E) (D.nd.plOm.1 v), D.nd.chi i 1 h = D.ntw.psiL i h := by
     intro h hh
     have h1 := D.ntw.twistCharacterFamily_unramified (D.ntw.twOf i) (D.nd.j i) (D.ntw.twSide i) v hl' hgk hpd (D.nd.plOm.1 v)
@@ -154,8 +153,7 @@ theorem qpow_of_tw (hW : WildTriv) (D : D7) (i : D.nd.Loc) :
     rw [pow_zero]
     exact hW D.host.E D.nd.Om (D.nd.l i) Fact.out v (D.nd.plOm.1 v) (D.nd.plOm.2 v) hl (D.nd.O i)ˣ
       (D.ntw.psiL i) (D.ntw.psiL_open i) (D.ntw.psiL_ord i) σ hσ
-  have hT := (D.nd.restN_tameGenerator_generates i v (Or.inr hv)).2 hg
-  exact closure_minimal hgen hclosed hT
+  exact closure_minimal hgen hclosed ((D.nd.restN_tameGenerator_generates i v (Or.inr hv)).2 hg)
 
 end Formalism.MainNotions.N
 
@@ -209,8 +207,7 @@ theorem projection_equivariant (g : GG) (m : ↥(Ymod r χ E) × O) : j1 r χ E 
 
 def jK : MK (O := O) (↥(Ymod r χ E) × O) →ₗ[O] MK (O := O) A := liftK (mkK ∘ₗ j1 r χ E)
 
-theorem jK_mk (m : ↥(Ymod r χ E) × O) : jK r χ E (mkK m) = mkK (j1 r χ E m) := by
-  exact liftK_mkK _ m
+theorem jK_mk (m : ↥(Ymod r χ E) × O) : jK r χ E (mkK m) = mkK (j1 r χ E m) := liftK_mkK _ m
 
 theorem jK_equiv (g : GG) (v : MK (O := O) (↥(Ymod r χ E) × O)) :
     jK r χ E (locRep (ytRep O r χ E) g v) = locRep (lRep O r χ) g (jK r χ E v) := by
@@ -257,12 +254,10 @@ theorem embY_of [NoZeroSMulDivisors O A] {ιx : Type} {k mA : ℕ} (Ms : ιx →
       simp only [LinearMap.comp_apply, locRep_mkK, liftK_mkK]
       all_goals rfl
   have hpY : ∀ g v, pY e ↥(Ymod r χ E) (ytVG (e := e) r χ E Dw eG g v) = pY e ↥(Ymod r χ E) v := by
-    intro g v
-    exact congrArg (eLin e) (LinearMap.congr_fun (hsnd ((eG.symm g : Dw) : GG)) v)
+    exact fun g v => congrArg (eLin e) (LinearMap.congr_fun (hsnd ((eG.symm g : Dw) : GG)) v)
   have hjK : ∀ g v, trL e (jK r χ E) (ytVG (e := e) r χ E Dw eG g v) =
       aVG (e := e) r χ Dw eG g (trL e (jK r χ E) v) := by
-    intro g v
-    exact jK_equiv r χ E ((eG.symm g : Dw) : GG) v
+    exact fun g v => jK_equiv r χ E ((eG.symm g : Dw) : GG) v
 
   have hker : ∀ v : MK (O := O) (↥(Ymod r χ E) × O), jK r χ E v = 0 →
       liftK (V := FractionRing O) (Algebra.linearMap O (FractionRing O) ∘ₗ LinearMap.snd O ↥(Ymod r χ E) O) v = 0 →
@@ -294,8 +289,7 @@ theorem embY_of [NoZeroSMulDivisors O A] {ιx : Type} {k mA : ℕ} (Ms : ιx →
     rw [hm, map_zero] at hs
     have hu := (Module.End.isUnit_iff _).1 (isUnit_end (V := MK (O := O) (↥(Ymod r χ E) × O)) s)
     apply hu.1
-    rw [Module.algebraMap_end_apply, map_zero]
-    exact hs
+    rwa [Module.algebraMap_end_apply, map_zero]
   constructor
   · refine (injective_iff_map_eq_zero _).2 fun v hv => ?_
     rw [embY_apply] at hv
@@ -307,8 +301,7 @@ theorem embY_of [NoZeroSMulDivisors O A] {ιx : Type} {k mA : ℕ} (Ms : ιx →
       apply hφA
       rw [map_zero]
       funext a
-      have h0 := congrFun hv a.succ
-      simpa only [Fin.cons_succ, Pi.zero_apply] using h0
+      simpa only [Fin.cons_succ, Pi.zero_apply] using congrFun hv a.succ
     have hp' : e (liftK (V := FractionRing O)
         (Algebra.linearMap O (FractionRing O) ∘ₗ LinearMap.snd O ↥(Ymod r χ E) O) v) = 0 := hp
     exact hker v hj ((map_eq_zero_iff e e.injective).1 hp')
@@ -413,8 +406,7 @@ theorem lineW_of (hD : TruncatedSeriesCountingIdentities.SemisimpleDecomposition
   · intro h0
     apply hu₀
     funext j
-    have h1 := congrFun h0 j
-    simpa using h1
+    simpa using congrFun h0 j
   · rw [msW_entry i r hw π g]
     funext j
     have h2 := RingHom.map_mulVec (eS i hw).toRingHom
@@ -693,12 +685,10 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
 theorem rowMat_S (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) :
     KRow.RowMat i dc (KLat.VT (O := D.nd.O i) (RepresentationBoundsCohomology.blk D.R)) (KLat.VT (O := D.nd.O i) (RepresentationBoundsCohomology.blk D.R))
       (St.DatS i r π dc g0 eB e₁ s Dd hD hc) ρ π := by
-  intro n _ hn
-  exact rowMat_at (hD := hD) (hN := hN) (n := n) (hn := hn) ..
+  exact fun n _ hn => rowMat_at (hD := hD) (hN := hN) (n := n) (hn := hn) ..
 
 theorem orbC_S : ∀ n ∈ K.rowsN i dc, KHf.OrbC i dc (n := n) (St.DatS i r π dc g0 eB e₁ s Dd hD hc n).ρT' := by
-  intro n _
-  exact orbC_dat n
+  exact fun n _ => orbC_dat n
 
 variable (hT : Dd.Top (D.nd.T i) (RepresentationBoundsCohomology.one_le_letterBlockLength D.R))
   (hrk : ((Dd.ρk 0 Dd.e₁).map (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)))).rank = 1)
@@ -1376,8 +1366,7 @@ theorem eW_inert' {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver
   have hA : Aw i dc (idx i dc w) = D.nd.plOm.1 w := by
     unfold Aw
     rw [plOf_idx i dc (mem_plSet i dc hw)]
-  rw [hA]
-  exact hh
+  rwa [hA]
 
 end Cyc
 
@@ -1401,8 +1390,7 @@ theorem sE_cont (c' : Fin D.R.t) :
   have he : (fun g : GE D.nd => sE i (((Fin.succ c' : Fin (D.R.t + 1)) : ℕ) - 1) g) =
       fun g => (((D.nd.chi i 1 g)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) * ((D.nd.chi i ((c' : ℕ) + 1) g : (D.nd.O i)ˣ) : D.nd.O i) :=
     funext fun g => (chi_ratio (i := i) c' g).symm
-  rw [he]
-  exact h
+  rwa [he]
 
 theorem epsL_cont {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i)) (c' : Fin D.R.t) :
     Continuous fun h => (algebraMap (Br.Ow (D.nbr i w hw)) (Br.LLw (D.nbr i w hw)) (epsL i dc hw h)) ^
@@ -1621,8 +1609,7 @@ theorem wildTriv_holds : Formalism.MainNotions.N.WildTriv := by
     rintro rfl
     exact hv hpv
   have hval : A.valuation ((p : ℕ) : Ω) < 1 := by
-    have h := (hA (p : 𝓞 E)).mpr hpv
-    simpa [map_natCast] using h
+    simpa [map_natCast] using (hA (p : 𝓞 E)).mpr hpv
   obtain ⟨k, hk⟩ := Formalism.MainNotions.N.KillingConditions.WildPf.wildProP E Ω A p hpp hval σ hσ φ.ker hker
   obtain ⟨n, hn⟩ := htors σ
   have h1 : φ σ ^ (p ^ k) = 1 := by

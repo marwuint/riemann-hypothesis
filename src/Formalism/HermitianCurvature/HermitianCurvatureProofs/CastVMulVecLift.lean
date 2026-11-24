@@ -77,22 +77,19 @@ theorem frame_lift_cast {i r' n m : ℕ} (hn : i + r' = n) (vs : List (Fin (2 * 
     (Bs : Fin m → Fin (2 * r' + k + 1) → ℂ) (h : IsFrameOf k r' vs Bs) :
     IsFrameOf k n (vs.map fun v => D.castV hn (liftVec k i r' v)) (fun c => D.castV hn (liftVec k i r' (Bs c))) := by
   subst hn
-  simp only [JCTx5.castV_rfl]
-  exact frame_lift_list vs Bs h
+  simpa only [JCTx5.castV_rfl] using frame_lift_list vs Bs h
 
 theorem capRep_lift_cast {Wp : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] {i r' n m : ℕ} (hn : i + r' = n)
     (π0 : Mx k n → (Wp →L[ℂ] Wp)) (Bs : Fin m → Fin (2 * r' + k + 1) → ℂ) (w : ℂ) (v : Wp) :
     capRep k n π0 (fun c => D.castV hn (liftVec k i r' (Bs c))) w v =
       capRep k r' (fun y => π0 (D.castM hn (ιLev k i r' y))) Bs w v := by
   subst hn
-  simp only [JCTx5.castV_rfl, JCTx5.castM_rfl]
-  exact JCTx5.capRep_lift π0 Bs w v
+  simpa only [JCTx5.castV_rfl, JCTx5.castM_rfl] using JCTx5.capRep_lift π0 Bs w v
 
 theorem castV_mulVec_lift {i r' n : ℕ} (hn : i + r' = n) (M : B.Mat k r') (v : Fin (2 * r' + k + 1) → ℂ) :
     D.castM hn (ιLev k i r' M) *ᵥ D.castV hn (liftVec k i r' v) = D.castV hn (liftVec k i r' (M *ᵥ v)) := by
   subst hn
-  simp only [JCTx5.castV_rfl, JCTx5.castM_rfl]
-  exact PIQnLT.mulVec_liftVec M v
+  simpa only [JCTx5.castV_rfl, JCTx5.castM_rfl] using PIQnLT.mulVec_liftVec M v
 
 end lift
 
@@ -119,8 +116,7 @@ theorem tp_eigen_lev {P : M.Par} (p : KB.Pl P Wp Wq) (ν'r : Fin (2 * (P.r - P.r
   rw [capRep_lift_cast hn] at h
   have hπ : (fun y => p.T.base.π (D.castM hn (ιLev P.k P.r (P.r - P.r) y))) = (p.T.bs P.r).π :=
     funext fun y => (p.T.π_lev P.r le_rfl y).symm
-  rw [hπ] at h
-  exact h
+  rwa [hπ] at h
 
 theorem aeval_intertwine (V : Wq →L[ℂ] Wp) (R : Module.End ℂ Wq) (Lf : Module.End ℂ Wp)
     (h : ∀ v, V (R v) = Lf (V v)) (p : Polynomial ℂ) : ∀ v, V (Polynomial.aeval R p v) = Polynomial.aeval Lf p (V v) := by

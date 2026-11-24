@@ -101,8 +101,7 @@ theorem okp_zp (u : ℤ_[p]) : (zc u, zc u) ∈ OKp D lam := by
 theorem pow_dvd_of_norm (t : ℤ) (e : ℕ) (h : ‖(t : ℂ_[p])‖ ≤ ‖(p : ℂ_[p])‖ ^ e) : ((p : ℤ) ^ e) ∣ t := by
   rw [norm_int_cp, _root_.PI.OkpW.norm_p_cp] at h
   apply PadicInt.norm_int_le_pow_iff_dvd.1
-  rw [zpow_neg, zpow_natCast, ← inv_pow]
-  exact h
+  rwa [zpow_neg, zpow_natCast, ← inv_pow]
 
 theorem isAlg (k : D.host.K) : IsAlgebraic ℤ k :=
   (IsFractionRing.isAlgebraic_iff ℤ ℚ D.host.K).2 (Algebra.IsAlgebraic.isAlgebraic k)
@@ -197,8 +196,7 @@ theorem keyInt (k : D.host.K) (h1 : ‖tauK D lam k‖ ≤ 1) (h2 : ‖tauKc D l
     · monicity!
     · simp only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_pow,
         Polynomial.eval₂_X, Polynomial.eval₂_C]
-      simp only [eq_intCast]
-      exact hK
+      simpa only [eq_intCast] using hK
   obtain ⟨u, hu⟩ : ∃ u : ℤ_[p], zc u * (n' : ℂ_[p]) = 1 := by
     have h1 : ‖(n' : ℤ_[p])‖ = 1 := by
       simpa using norm_int_zp_eq_one (p := p) (n' : ℤ) (by exact_mod_cast hn')
@@ -215,8 +213,7 @@ theorem keyInt (k : D.host.K) (h1 : ‖tauK D lam k‖ ≤ 1) (h2 : ‖tauKc D l
     show tauKc D lam ((n' : D.host.K) * k) = _
     rw [tauKc_mul, tauKc_nat]
   have hm' := okp_mul D lam _ _ (okp_zp D lam u) (okp_range D lam c'')
-  rw [Prod.mk_mul_mk, e1, e2, ← mul_assoc, ← mul_assoc, hu, one_mul, one_mul] at hm'
-  exact hm'
+  rwa [Prod.mk_mul_mk, e1, e2, ← mul_assoc, ← mul_assoc, hu, one_mul, one_mul] at hm'
 
 theorem conv (σ : ℂ_[p] →+* ℂ_[p]) (hσ : IsConjP D lam σ) (x : ℂ_[p])
     (hx : x ∈ closure (Set.range fun k : D.host.K => lamC lam (D.host.φ₀ (k : D.host.E)))) (hx1 : ‖x‖ ≤ 1) :
@@ -386,8 +383,7 @@ theorem entries {r : ℕ} (A A' : Matrix (Fin r) (Fin r) ℂ_[p])
     rw [map_mul, map_natCast] at h1
     have hc1 : ‖tauE D lam ((c : D.host.K) : D.host.E)‖ ≤ 1 := by
       have := (okp_norm_le D lam _ (okp_range D lam c)).1
-      rw [tauE_apply]
-      exact this
+      rwa [tauE_apply]
     have hs1 : ‖(s : ℂ_[p])‖ = 1 := by
       have hnd : ¬ (p : ℤ) ∣ (s : ℤ) := by
         intro h
@@ -409,8 +405,7 @@ theorem entries {r : ℕ} (A A' : Matrix (Fin r) (Fin r) ℂ_[p])
     intro i j
     rw [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]
     exact mul_mem hdinv (hadjR i j)
-  intro i j
-  exact (memR _).1 (mulR _ _ (mulR _ _ hA'R hQR) hBR i j)
+  exact fun i j => (memR _).1 (mulR _ _ (mulR _ _ hA'R hQR) hBR i j)
 
 theorem atLogV_change {N N' r : ℕ} (Λ : AddSubgroup ℂ) (C : WeierstrassCurve.VariableChange ℂ_[p])
     (wq : PowerSeries ℂ_[p]) (v v' : Fin r → (D.what₂.Tau × Fin N' × Fin N → ℂ_[p]))
@@ -488,8 +483,7 @@ theorem locInv_core (hU : UnitSubstLoc) (D : D7) (cc : Ideal (𝓞 D.host.K)) (�
   have hM : ∀ i j, M i j ∈ OKp D lam := fun i j => conv D lam σ hσ _ (hPe j i).1 (hPe j i).2
   have hrow : ∀ j j', ∑ i, P j i * σ (P j' i) = if j = j' then 1 else 0 := by
     intro j j'
-    have h := congrFun (congrFun hPu j) j'
-    simpa [Matrix.mul_apply, Matrix.one_apply] using h
+    simpa [Matrix.mul_apply, Matrix.one_apply] using congrFun (congrFun hPu j) j'
   have hMu : ∀ j j', ∑ i, M i j * (M i j').swap = if j = j' then 1 else 0 := by
     intro j j'
     have e1 : (∑ i, M i j * (M i j').swap).1 = ∑ i, P j i * σ (P j' i) := by

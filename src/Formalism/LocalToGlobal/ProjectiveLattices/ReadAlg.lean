@@ -101,8 +101,7 @@ theorem eq_zero_of_pts {M : Type} [Field M] [IsAlgClosed M] [Algebra K M] (p : T
         @_root_.Algebra.IsIntegral.isAlgebraic, @_root_.inferInstance])
     have h0 := h (ι.comp (Ideal.Quotient.mkₐ K J))
     have h1 : ι (Ideal.Quotient.mk J a) = ι 0 := by
-      rw [map_zero]
-      exact h0
+      rwa [map_zero]
     exact Ideal.Quotient.eq_zero_iff_mem.1 (ι.toRingHom.injective h1)
   rw [hjac] at ha
   exact (Submodule.mem_bot _).1 ha
@@ -141,7 +140,6 @@ theorem linIndep_alg_pts [CharZero K] {Kb : Type} [Field Kb] [IsAlgClosed Kb] [A
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [map_mul, ← hu i, AlgHom.liftNormal_commutes]
     congr 1
-    show φ (a i) = G (Ge.symm (φ (a i)))
     exact (Ge.apply_symm_apply (φ (a i))).symm
 
   have htr : ∀ lam : L, ∀ i, Algebra.trace K L (lam * u i) = 0 := by
@@ -161,8 +159,7 @@ theorem linIndep_alg_pts [CharZero K] {Kb : Type} [Field Kb] [IsAlgClosed Kb] [A
       calc ∑ i, g (lam * u i) * φ (a i) = g lam * ∑ i, g (u i) * φ (a i) := by
             rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun i _ => ?_; rw [map_mul, mul_assoc]
         _ = 0 := by rw [this, mul_zero]
-    have h0 := eq_zero_of_pts p _ hpt
-    exact fun i => (Fintype.linearIndependent_iff.1 ha _ h0) i
+    exact fun i => (Fintype.linearIndependent_iff.1 ha _ (eq_zero_of_pts p _ hpt)) i
   funext i
   have hz : u i = 0 := by
     refine (traceForm_nondegenerate K L).1 (u i) fun lam => ?_

@@ -77,8 +77,7 @@ theorem nonneg_of_isIntegral {y : F} (hy : IsIntegral ℤ y) : 0 ≤ v y := by
 
   let w := AddValuation.toValuation v
   have h1 : IsIntegral w.integer y := IsIntegral.tower_top hy
-  have h2 := (Valuation.integer.integers w).mem_of_integral h1
-  exact h2
+  exact (Valuation.integer.integers w).mem_of_integral h1
 
 theorem withTop_add_pos {x y : WithTop ℤ} (hx : 0 ≤ x) (hy : 0 < y) : 0 < x + y := by
   induction x using WithTop.recTopCoe with
@@ -321,8 +320,7 @@ theorem heckeStd_of_plain (T : NormalizedLocalCompatibility D M) (hP : HeckeStdP
     have hCpoly : tC.charpoly = (T.B.hL j w v k).charpoly.map D.what₂.embLL :=
       NCov.charpoly_transport_basis D.what₂.embLL (D.what₂.jMt (D.what₂.muTw w) j) b hjb.1 hjb.2 _ _ fun a => by
         have e := bC.constr_basis ℂ (fun a => D.what₂.jMt (D.what₂.muTw w) j (T.B.hL j w v k (b a))) a
-        simp only [bC, Module.Basis.mk_apply] at e
-        exact e
+        simpa only [bC, Module.Basis.mk_apply] using e
     have htN0 : NG.tN Mw.J s ϖ k (0 : GAf D.host.E D.R.nV → Mw.wt.W) = 0 := by
       have := Plin (0 : GAf D.host.E D.R.nV → Mw.wt.W) (Submodule.zero_mem _) 0 (Submodule.zero_mem _) 1
       rw [one_smul, add_zero, one_smul] at this
@@ -332,8 +330,7 @@ theorem heckeStd_of_plain (T : NormalizedLocalCompatibility D M) (hP : HeckeStdP
         map_add' := fun y y' => by
           have := Plin (Mw.real y) (hTS y) (Mw.real y') (hTS y') 1
           rw [one_smul, one_smul] at this
-          simp only [map_add (f := _)]
-          exact this
+          simpa only [map_add (f := _)] using this
         map_smul' := fun c y => by
           have := Plin (Mw.real y) (hTS y) 0 (Submodule.zero_mem _) c
           rw [add_zero, htN0, add_zero] at this
@@ -347,8 +344,7 @@ theorem heckeStd_of_plain (T : NormalizedLocalCompatibility D M) (hP : HeckeStdP
           Mw.real ((bC.constr ℂ fun a => D.what₂.jMt (D.what₂.muTw w) j (T.B.hL j w v k (b a))) (bC a))
         rw [e, hba]
         exact (hd (b a)).symm
-      intro y
-      exact LinearMap.congr_fun hLt y
+      exact fun y => LinearMap.congr_fun hLt y
     have hl := D.what₂.places.resChar_prime w
     have hnotA := not_above hvk s hc
     have hroots : ∀ μ' ∈ tC.charpoly.roots, μ' ∈ NCov.intPrimeTo ℂ hl := by

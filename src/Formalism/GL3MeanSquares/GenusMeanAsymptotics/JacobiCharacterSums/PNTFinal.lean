@@ -144,8 +144,7 @@ private theorem range_facts {δ ℓ C₀ X : ℝ} (hδ : 0 < δ) (hℓ : 1 ≤ �
       have h3 := mul_le_mul_of_nonneg_right hδC (by linarith : (0 : ℝ) ≤ Real.log (ℓ + 2))
       linarith
     have h2 : ℓ + 2 ≤ Real.exp (δ * u / 4) := by
-      rw [← Real.log_le_iff_le_exp (by linarith)]
-      exact h1
+      rwa [← Real.log_le_iff_le_exp (by linarith)]
     calc ℓ * F ≤ Real.exp (δ * u / 4) * F := mul_le_mul_of_nonneg_right (by linarith) hF0.le
       _ = 1 := hFE
   have huF : u * F ≤ 4 / δ := by
@@ -285,8 +284,7 @@ theorem pnt_progressions_relative_weak_holds : Formalism.HermitianLattices.Ext.L
         rw [div_le_div_iff₀ hℓ0 (by positivity)]
         nlinarith
       linarith
-    · intro h
-      exact absurd h (by simp)
+    · exact fun h => absurd h (by simp)
     · intro X b hX2 hX hb
       have hX0 : 0 < X := by linarith
       obtain ⟨hL, -, -, -⟩ := range_facts hδ hℓ hC1 hC2 hC3 hX0 hX
@@ -360,8 +358,7 @@ theorem pnt_progressions_relative_weak_holds : Formalism.HermitianLattices.Ext.L
       · rintro p hp'
         obtain rfl : (χ₁, β₁) = p := Option.some.inj hp'
         exact hp
-      · intro h
-        exact absurd h (by simp)
+      · exact fun h => absurd h (by simp)
       · intro X b hX2 hX hb
         obtain ⟨-, hX4, -, -⟩ := range_facts hδ hℓ hC1 hC2 hC3 (by linarith) hX
         refine key X b ((χ₁ (b : ZMod M)).re * liX (X ^ β₁)) hX2 hX hb ?_
@@ -370,8 +367,7 @@ theorem pnt_progressions_relative_weak_holds : Formalism.HermitianLattices.Ext.L
         rw [abs_mul]
         exact (mul_le_of_le_one_left (abs_nonneg _) h1).trans (hsmall χ₁ β₁ X hX4 hp)
     · refine ⟨none, ?_, ?_, ?_⟩
-      · intro p hp
-        exact absurd hp (by simp)
+      · exact fun p hp => absurd hp (by simp)
       · intro _ χ₁ β₁ h
         exact hex ⟨(χ₁, β₁), h⟩
       · intro X b hX2 hX hb
@@ -379,8 +375,7 @@ theorem pnt_progressions_relative_weak_holds : Formalism.HermitianLattices.Ext.L
           rw [abs_zero]
           exact mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) (Real.log_nonneg (by linarith)))
             (Real.exp_pos _).le) (liX_upper hX2).1)
-        rw [sub_zero] at h0
-        exact h0
+        rwa [sub_zero] at h0
 
 end Formalism.HermitianLattices.Ext.PrimesInProgressions
 end -- clump:auto

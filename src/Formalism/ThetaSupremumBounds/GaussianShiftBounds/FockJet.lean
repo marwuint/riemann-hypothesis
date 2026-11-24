@@ -305,23 +305,14 @@ theorem fjPolydisc {κ : Type} [Fintype κ] (F : (κ → ℂ) → ℂ) (c : (κ 
     (hs : ∀ u, HasSum (fun e => c e * mono u e) (F u)) (e : κ → ℕ) (N : ℕ) :
     ∫ u : κ → ℂ, fjChiP N u * (F u * mono (cj u) e * (Real.exp (-(nsq u)) : ℂ)) =
       c e * ∫ u : κ → ℂ, fjChiP N u * (mono u e * mono (cj u) e * (Real.exp (-(nsq u)) : ℂ)) := by
-  have hI : ∀ n : κ → ℕ, ∫ u : κ → ℂ, fjChiP N u *
+  have hI (n : κ → ℕ) : ∫ u : κ → ℂ, fjChiP N u *
       (c n * mono u n * mono (cj u) e * (Real.exp (-(nsq u)) : ℂ)) =
       c n * ∫ u : κ → ℂ, fjChiP N u *
         (mono u n * mono (cj u) e * (Real.exp (-(nsq u)) : ℂ)) := by
-    intro n
     rw [← integral_const_mul]
     congr 1
     funext u
     ring
-  have h1 : Integrable fun u : κ → ℂ =>
-      (1 : ℂ) * mono (cj u) e * (Real.exp (-(nsq u)) : ℂ) :=
-    fjIntegrable (fun _ => 1) 1 continuous_const
-      (fun u => by
-        simp only [norm_one, one_mul]
-        exact Real.one_le_exp (div_nonneg (nsq_nonneg_gaussian_shift_bounds u) two_pos.le)) e
-  have hsN : Summable fun n : κ → ℕ => ‖c n * mono (fun _ : κ => (N : ℂ)) n‖ :=
-    summable_norm_iff.mpr (hs _).summable
   have hsum : HasSum (fun n : κ → ℕ => ∫ u : κ → ℂ, fjChiP N u *
       (c n * mono u n * mono (cj u) e * (Real.exp (-(nsq u)) : ℂ)))
       (∫ u : κ → ℂ, fjChiP N u *
@@ -330,27 +321,26 @@ theorem fjPolydisc {κ : Type} [Fintype κ] (F : (κ → ℂ) → ℂ) (c : (κ 
       (fun n u => ‖c n * mono (fun _ : κ => (N : ℂ)) n‖ *
         ‖(1 : ℂ) * mono (cj u) e * (Real.exp (-(nsq u)) : ℂ)‖)
       (fun n => ?_) (fun n => Filter.Eventually.of_forall fun u => ?_)
-      (Filter.Eventually.of_forall fun u => hsN.mul_right _) ?_
+      (Filter.Eventually.of_forall fun u =>
+        (summable_norm_iff.mpr (hs _).summable).mul_right _) ?_
       (Filter.Eventually.of_forall fun u => ?_)
     · exact (measurable_productCutoff N).aestronglyMeasurable.mul
         ((((continuous_const.mul (continuous_mono' n)).mul
           (continuous_mono_cj e)).mul continuous_exp_neg_nsq).aestronglyMeasurable)
-    · show ‖fjChiP N u *
-          (c n * mono u n * mono (cj u) e * (Real.exp (-(nsq u)) : ℂ))‖ ≤
-        ‖c n * mono (fun _ : κ => (N : ℂ)) n‖ *
-          ‖(1 : ℂ) * mono (cj u) e * (Real.exp (-(nsq u)) : ℂ)‖
-      have hre : fjChiP N u *
+    · have hre : fjChiP N u *
           (c n * mono u n * mono (cj u) e * (Real.exp (-(nsq u)) : ℂ)) =
           c n * (fjChiP N u * mono u n) *
             ((1 : ℂ) * mono (cj u) e * (Real.exp (-(nsq u)) : ℂ)) := by ring
       have hb := fjMono_cut N n u
-      rw [norm_mul] at hb
       rw [hre]
-      simp only [norm_mul]
+      simp only [norm_mul] at hb ⊢
       exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hb (norm_nonneg _))
         (by positivity)
     · simp_rw [tsum_mul_right]
-      exact h1.norm.const_mul _
+      exact (fjIntegrable (fun _ => 1) 1 continuous_const (fun u => by
+        simp only [norm_one, one_mul]
+        exact Real.one_le_exp (div_nonneg (nsq_nonneg_gaussian_shift_bounds u) two_pos.le))
+          e).norm.const_mul _
     · exact (((hs u).mul_right _).mul_right _).mul_left _
   rw [← hI e]
   exact hsum.unique (hasSum_single e fun n hn => (hI n).trans (by

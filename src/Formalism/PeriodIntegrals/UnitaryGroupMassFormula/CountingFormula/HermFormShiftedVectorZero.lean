@@ -114,8 +114,7 @@ theorem stabF_map_perp {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ s
   apply le_antisymm
   · rintro _ ⟨y, hy, rfl⟩
     exact stabF_mem_perp hγ hy
-  · intro y hy
-    exact Submodule.mem_map.2 ⟨γ.symm y, stabF_symm_mem_perp hγ hy, by simp⟩
+  · exact fun y hy => Submodule.mem_map.2 ⟨γ.symm y, stabF_symm_mem_perp hγ hy, by simp⟩
 
 def gPerp {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) :
     perpS (VS D) F0.X ≃ₗ[D.host.E] perpS (VS D) F0.X :=
@@ -150,8 +149,7 @@ theorem gWb_isom {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D
   intro x y
   induction x using Submodule.Quotient.induction_on with | H a => ?_
   induction y using Submodule.Quotient.induction_on with | H b => ?_
-  rw [gWb_mk, gWb_mk]
-  rw [hWb_mk, hWb_mk, gPerp_apply, gPerp_apply]
+  rw [gWb_mk, gWb_mk, hWb_mk, hWb_mk, gPerp_apply, gPerp_apply]
   exact stabF_isom hγ a.1 b.1
 
 theorem gWb_zbar {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) :
@@ -184,8 +182,7 @@ theorem gWb_Mof {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D 
     obtain ⟨d, hd, hdc⟩ := hc
     have hdp : d ∈ perpS (VS D) F0.X := by
       have e : d = γ.symm c.1 := by
-        have h := congrArg γ.symm hdc
-        simpa using h
+        simpa using congrArg γ.symm hdc
       rw [e]
       exact stabF_symm_mem_perp hγ c.2
     refine ⟨Submodule.Quotient.mk ⟨d, hdp⟩, ⟨⟨d, hdp⟩, hd, rfl⟩, ?_⟩
@@ -504,8 +501,7 @@ theorem gL_X {x : (VS D).V} (hx : x ∈ F0.X) : gL σ hf hf' x = x := by
   have hp : pL hf x = 0 := by
     rw [pL_apply, Submodule.Quotient.mk_eq_zero]
     show x - ycL F0 f x ∈ F0.X
-    rw [yc_of_perp (X_le_perp F0 hx), sub_zero]
-    exact hx
+    rwa [yc_of_perp (X_le_perp F0 hx), sub_zero]
   rw [gL_apply, hp, map_zero, map_zero, yc_of_perp (X_le_perp F0 hx), yc_of_perp (X_le_perp F0 hx), sub_zero,
     xc_of_X hf hx, add_zero, add_zero]
 
@@ -660,8 +656,7 @@ theorem gL_onto {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} {f f' : Fin D.R.rS
     have h1 : (σ : WbQ D F0 →ₗ[D.host.E] WbQ D F0)
         (Submodule.Quotient.mk ⟨w.1 - xcL F0 f w.1, mem_perp_of F0 hu0e⟩) =
         Submodule.Quotient.mk ⟨u, mem_perp_of F0 hue⟩ := by
-      rw [← hmk]
-      exact hmσ
+      rwa [← hmk]
     rw [h1, iotaL_of_perpf hs'.1 _ huf]
   have hxΛ' : x ∈ Λ := (hX x hxX).2 hxΛ
   refine ⟨x + (w.1 - xcL F0 f w.1) + ycL F0 f y,
@@ -715,13 +710,11 @@ theorem rowClassBack_of (hS : RowSplitF) : RowClassBack := by
     constructor
     · rintro ⟨v, hv, rfl⟩
       have := gL_maps hs hs' hu hu' hX σ hM v hv
-      rw [LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, hco]
-      exact this
+      rwa [LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, hco]
     · intro hv'
       obtain ⟨v, hv, hgv⟩ := gL_onto hs hs' hu hu' hX σ hM v' hv'
       refine ⟨v, hv, ?_⟩
-      rw [LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, hco]
-      exact hgv
+      rwa [LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, hco]
 
 theorem rowClass_of_split (hS : RowSplitF) : RowClass := rowClass_of (rowClassBack_of hS)
 

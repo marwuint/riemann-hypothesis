@@ -71,12 +71,10 @@ theorem cM_cM {m n : Type} (A : Matrix m n ℂ) : cM (cM A) = A := by
 
 theorem cM_mul {m n o : Type} [Fintype n] (A : Matrix m n ℂ) (B : Matrix n o ℂ) :
     cM (A * B) = cM A * cM B := by
-  simp only [cM]
-  exact Matrix.map_mul
+  simpa only [cM] using Matrix.map_mul
 
 theorem cM_transpose {m n : Type} (A : Matrix m n ℂ) : cM Aᵀ = (cM A)ᵀ := by
-  simp only [cM]
-  exact Matrix.transpose_map
+  simpa only [cM] using Matrix.transpose_map
 
 theorem cM_add {m n : Type} (A B : Matrix m n ℂ) : cM (A + B) = cM A + cM B := by
   ext i j
@@ -165,8 +163,7 @@ theorem iso_F (X : Data E r) (cu : CuspFD X ρ) (τ : E →+* ℂ) :
   unfold ReciprocityTheory.ChartRestriction.G.FD.herm at h
 
   simp only [map_sum, map_mul, map_zero, emb_cc'] at h
-  rw [Finset.sum_comm]
-  exact h
+  rwa [Finset.sum_comm]
 
 theorem skew_beta (X : Data E r) (cu : CuspFD X ρ) (hb : ∀ k, IsSkew (zBas X cu k)) (τ : E →+* ℂ)
     (t : Fin (nZ X ρ) → ℝ) :
@@ -213,12 +210,10 @@ theorem zAct_mem_dom (X : Data E r) (cu : CuspFD X ρ) (hb : ∀ k, IsSkew (zBas
     rw [Matrix.det_mul]
     exact mul_ne_zero hD hdet
   · have := hpos i
-    rw [← hG] at this
-    exact this
+    rwa [← hG] at this
 
 theorem orbDom_of_latZ {Comp : Type} (X : Comp → Data E r) (h : LatZ X ρ) : OrbDom X ρ := by
-  intro cu t x hx
-  exact zAct_mem_dom (X cu.1) cu.2 (fun k => zBas_skew _ _ (h cu) k) t x hx
+  exact fun cu t x hx => zAct_mem_dom (X cu.1) cu.2 (fun k => zBas_skew _ _ (h cu) k) t x hx
 
 theorem rdOrbInt_of_latZ {Comp K : Type} [Field K] (σ : K →+* ℂ) {C : Type} [AddCommGroup C]
     [Module K C] (X : Comp → Data E r) (rd : C →ₛₗ[σ] (∀ c, Frame (X c).Ψ r → ℂ))

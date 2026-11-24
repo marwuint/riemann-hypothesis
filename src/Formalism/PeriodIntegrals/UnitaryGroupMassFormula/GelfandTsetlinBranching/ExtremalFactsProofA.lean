@@ -98,8 +98,7 @@ theorem rowAct_lpMinor_A (n : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (hM : ∀ i 
     · intro b _ hb
       have hbs : s ≤ b.val := by
         by_contra hlt
-        apply hb
-        exact Finset.mem_map.mpr ⟨⟨b.val, by omega⟩, Finset.mem_univ _, Fin.ext (by simp)⟩
+        exact hb (Finset.mem_map.mpr ⟨⟨b.val, by omega⟩, Finset.mem_univ _, Fin.ext (by simp)⟩)
       simp only
       rw [hM _ _ (by rw [Fin.lt_def]; simp; omega), map_zero, zero_mul]
   have hL : (Matrix.of fun p b : Fin s => (C (M (Fin.castLE hs p) (Fin.castLE hs b)) :
@@ -123,8 +122,7 @@ theorem det_unitri_A (n : ℕ) (g : GL (Fin n) ℂ) (hl : ∀ i j, j < i → g i
   ext
   rw [Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_of_isUpperTriangular]
   · simp [hd]
-  · intro i j hij
-    exact hl i j hij
+  · exact fun i j hij => hl i j hij
 
 theorem extremalFacts_proof_A : ExtremalFacts := by
   intro n mu
@@ -134,11 +132,9 @@ theorem extremalFacts_proof_A : ExtremalFacts := by
     rw [det_unitri_A n g hl hd, one_zpow, Units.val_one, one_smul]
     apply rowAct_hw_A
     · intro i j hij
-      simp only [Matrix.transpose_apply]
-      exact hl j i hij
+      simpa only [Matrix.transpose_apply] using hl j i hij
     · intro i
-      simp only [Matrix.transpose_apply]
-      exact hd i
+      simpa only [Matrix.transpose_apply] using hd i
   · intro t
     unfold sqAct detPow extremal
     have hdiag : ((diagGL ℂ n t : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ).transpose =

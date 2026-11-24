@@ -142,8 +142,7 @@ theorem norm_nonunit {y : O} (hy : ¬ IsUnit y) : ‖i (algebraMap O Kf y)‖ < 
     exact absurd h2.symm (ne_of_lt (norm_p_lt_one (p := p)))
   have hy1 : ϖ ∣ y := by
     have : y ∈ IsLocalRing.maximalIdeal O := (IsLocalRing.mem_maximalIdeal y).2 hy
-    rw [hϖ.maximalIdeal_eq, Ideal.mem_span_singleton] at this
-    exact this
+    rwa [hϖ.maximalIdeal_eq, Ideal.mem_span_singleton] at this
   obtain ⟨z, rfl⟩ := hy1
   rw [map_mul, map_mul, norm_mul]
   exact lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) (hi z)) hϖ1

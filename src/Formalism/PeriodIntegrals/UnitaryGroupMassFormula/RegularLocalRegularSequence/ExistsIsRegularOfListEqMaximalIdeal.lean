@@ -71,8 +71,7 @@ theorem isWeaklyRegular_cons_of_quotient {A : Type u} [CommRing A] {x : A}
   rw [e.isWeaklyRegular_congr]
   refine (isWeaklyRegular_map_algebraMap_iff (A ⧸ Ideal.span ({x} : Set A))
     (A ⧸ Ideal.span ({x} : Set A)) ys).mp ?_
-  rw [Ideal.Quotient.algebraMap_eq]
-  exact hys
+  rwa [Ideal.Quotient.algebraMap_eq]
 
 theorem exists_list_of_spanFinrank_eq :
     ∀ (n : ℕ) (A : Type u) [CommRing A] [IsRegularLocalRing A],
@@ -116,9 +115,7 @@ theorem exists_list_of_spanFinrank_eq :
         (Ideal.Quotient.mk (Ideal.span ({x} : Set A))) = ys' := by
       rw [List.map_map]
       conv_rhs => rw [← List.map_id ys']
-      apply List.map_congr_left
-      intro a _
-      exact Function.surjInv_eq hsurj a
+      exact List.map_congr_left (fun a _ => Function.surjInv_eq hsurj a)
     generalize hL : ys'.map (Function.surjInv hsurj) = L at hmap
     have hcomap : Ideal.comap (Ideal.Quotient.mk (Ideal.span ({x} : Set A)))
         (maximalIdeal (A ⧸ Ideal.span ({x} : Set A))) = maximalIdeal A := by
@@ -136,8 +133,7 @@ theorem exists_list_of_spanFinrank_eq :
     have hxreg : IsSMulRegular A x := fun a b hab => mul_left_cancel₀ hx0 hab
     refine ⟨x :: L, hofl, by rw [← hL]; simp [hys'2], ?_⟩
     refine isWeaklyRegular_cons_of_quotient hxreg _ ?_
-    rw [hmap]
-    exact hys'3
+    rwa [hmap]
 
 theorem exists_isRegular_ofList_eq_maximalIdeal (A : Type u) [CommRing A]
     [IsRegularLocalRing A] :

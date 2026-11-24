@@ -84,8 +84,7 @@ theorem toOsK_h : toOsK (xplus X E hM) la G.w (M.h : ↥(Frac0 (xplus X E hM) la
     rw [← f.map_one, ← f.map_sub]
     exact Ideal.mem_map_of_mem f M.h_one
   have h2 := (toOsK_eq_zero_iff (xplus X E hM) la G.w _).2 h1
-  rw [map_sub, map_one, sub_eq_zero] at h2
-  exact h2
+  rwa [map_sub, map_one, sub_eq_zero] at h2
 
 theorem fractionToIntegralSection_smul_eq (b : ↥(Frac0 (xplus X E hM) la G.w)) (n : ↥(HK (xplus X E hM) la G.w wF)) :
     toA0K (xplus X E hM) la G.w wF (b • n) = toOsK (xplus X E hM) la G.w b • toA0K (xplus X E hM) la G.w wF n := by
@@ -138,8 +137,7 @@ theorem JH_mem (z : ↥(HK (xplus X E hM) la G.w wF)) (hz : z ∈ Jid (xplus X E
       intro n
       obtain ⟨m, a, ha, he⟩ := hx ((c • n : ↥(HK (xplus X E hM) la G.w wF)))
       refine ⟨m, a, ha, ?_⟩
-      rw [smul_eq_mul, mul_comm, mul_smul]
-      exact he
+      rwa [smul_eq_mul, mul_comm, mul_smul]
   refine Submodule.smul_induction_on hz (fun r hr n _ => key r hr n) ?_
   rintro x y ⟨m, a, ha, he⟩ ⟨m', a', ha', he'⟩
   refine ⟨m + m', M.h ^ m' * a + M.h ^ m * a', Ideal.add_mem _ (Ideal.mul_mem_left _ _ ha)
@@ -171,14 +169,12 @@ theorem isGen (M : CurveModel G la g0) : IsGen (OsK (xplus X E hM) la G.w) (resF
       rw [he0] at this
       simp only [coe_smul', coe_toHK0, SubmonoidClass.coe_pow] at this
       simp only [MulMemClass.coe_mul, SubmonoidClass.coe_pow]
-      rw [mul_assoc]
-      exact this
+      rwa [mul_assoc]
     have hJ : ((M.h ^ m' * a : ↥M.A') : ↥(Frac0 (xplus X E hM) la G.w)) ∈ Jid (xplus X E hM) la G.w := by
       rw [hinj, ← M.map_JA]; exact Ideal.mem_map_of_mem _ ha'
     have h0 := (toOsK_eq_zero_iff (xplus X E hM) la G.w _).2 hJ
     rw [MulMemClass.coe_mul, SubmonoidClass.coe_pow, map_mul, map_pow, M.toOsK_h, one_pow, one_mul] at h0
-    rw [← hta]
-    exact h0
+    rwa [← hta]
   · intro n
     obtain ⟨x, rfl⟩ := reductionMap_surjective (xplus X E hM) la G.w wF n
     obtain ⟨m, a, ha⟩ := M.base_form_local x

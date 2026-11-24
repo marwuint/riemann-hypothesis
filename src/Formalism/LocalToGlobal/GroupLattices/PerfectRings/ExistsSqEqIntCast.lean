@@ -83,8 +83,7 @@ def jW : WQ p n →+* W2 p n := WittVector.map (algebraMap (F1 p n) (F2 p n))
 private theorem card_wittVector_quot_p_eq_card_field (k : Type) [Field k] [CharP k p] [PerfectRing k p] :
     Nat.card (WittVector p k ⧸ Ideal.span {(p : WittVector p k)}) = Nat.card k := by
   have hsurj : Function.Surjective (WittVector.constantCoeff : WittVector p k →+* k) := by
-    intro r
-    exact ⟨WittVector.teichmuller p r, WittVector.teichmuller_coeff_zero p r⟩
+    exact fun r => ⟨WittVector.teichmuller p r, WittVector.teichmuller_coeff_zero p r⟩
   have hker : RingHom.ker (WittVector.constantCoeff : WittVector p k →+* k) =
       Ideal.span {(p : WittVector p k)} := by
     ext x
@@ -192,11 +191,9 @@ theorem precomplete_pi {R : Type*} [CommRing R] (π : R) [IsPrecomplete (Ideal.s
       refine Submodule.smul_induction_on (p := fun v : Fin d → R => ∀ i, v i ∈ Ideal.span {π} ^ m)
         hv ?_ ?_
       · intro r hr w _ i
-        simp only [Pi.smul_apply, smul_eq_mul]
-        exact Ideal.mul_mem_right _ _ hr
+        simpa only [Pi.smul_apply, smul_eq_mul] using Ideal.mul_mem_right _ _ hr
       · intro x y hx hy i
-        simp only [Pi.add_apply]
-        exact Ideal.add_mem _ (hx i) (hy i)
+        simpa only [Pi.add_apply] using Ideal.add_mem _ (hx i) (hy i)
     · intro hv
       have hsum : v = ∑ i, v i • Pi.single i (1 : R) := by
         ext j
@@ -330,11 +327,9 @@ private theorem mem_span_pow_smul_top_pi_iff {R : Type*} [CommRing R] (π : R) (
     refine Submodule.smul_induction_on (p := fun v : Fin d → R => ∀ i, v i ∈ Ideal.span {π} ^ m)
       hv ?_ ?_
     · intro r hr w _ i
-      simp only [Pi.smul_apply, smul_eq_mul]
-      exact Ideal.mul_mem_right _ _ hr
+      simpa only [Pi.smul_apply, smul_eq_mul] using Ideal.mul_mem_right _ _ hr
     · intro x y hx hy i
-      simp only [Pi.add_apply]
-      exact Ideal.add_mem _ (hx i) (hy i)
+      simpa only [Pi.add_apply] using Ideal.add_mem _ (hx i) (hy i)
   · intro hv
     have hsum : v = ∑ i, v i • Pi.single i (1 : R) := by
       ext j
@@ -421,16 +416,14 @@ theorem jW_finite : (jW p n).Finite := by
     rw [SModEq.sub_mem, mem_span_pow_smul_top_pi_iff] at h1
     have h2 : ∀ j, ∃ t, t * (p : WQ p n) ^ N = s N j - L j := fun j => by
       have := h1 j
-      rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton'] at this
-      exact this
+      rwa [Ideal.span_singleton_pow, Ideal.mem_span_singleton'] at this
     choose tt htt using h2
     have h3 : ∀ j, jW p n (L j) = jW p n (s N j) - (p : W2 p n) ^ N * jW p n (tt j) := by
       intro j
       have : L j = s N j - (p : WQ p n) ^ N * tt j := by rw [mul_comm, htt j]; ring
       rw [this, map_sub, hjW]
     have hx : w = ∑ j, jW p n (s N j) * e j + (p : W2 p n) ^ N * Rm^[N] w := by
-      simp only [hsdef]
-      exact expand w N
+      simpa only [hsdef] using expand w N
     have key : w - ∑ j, jW p n (L j) * e j =
         (∑ j, jW p n (tt j) * e j + Rm^[N] w) * (p : W2 p n) ^ N := by
       conv_lhs => rw [hx]
@@ -503,8 +496,7 @@ theorem exists_sq_eq_intCast_of_not_dvd_of_ne_two (hp2 : p ≠ 2) (z : ℤ) (hz 
     rw [ne_eq, CharP.intCast_eq_zero_iff (F2 p n) p]; exact hz
   have hc : (z : W2 p n).coeff 0 = r * r := by
     have : WittVector.constantCoeff (z : W2 p n) = ((z : ℤ) : F2 p n) := map_intCast _ _
-    rw [← hr, map_intCast]
-    exact this
+    rwa [← hr, map_intCast]
   have hr0 : r ≠ 0 := by
     rintro rfl
     apply hz0
@@ -512,8 +504,7 @@ theorem exists_sq_eq_intCast_of_not_dvd_of_ne_two (hp2 : p ≠ 2) (z : ℤ) (hz 
   have h2 : (2 : F2 p n) ≠ 0 := by
     have : ((2 : ℕ) : F2 p n) ≠ 0 := by
       rw [ne_eq, CharP.cast_eq_zero_iff (F2 p n) p]
-      intro hdvd
-      exact hp2 ((Nat.prime_dvd_prime_iff_eq hp.out Nat.prime_two).mp hdvd)
+      exact fun hdvd => hp2 ((Nat.prime_dvd_prime_iff_eq hp.out Nat.prime_two).mp hdvd)
     simpa using this
   exact sq_lift p n _ r hc hr0 h2
 

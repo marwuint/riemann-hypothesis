@@ -96,8 +96,7 @@ private theorem prO_eq_self_of_mem {X Y : Submodule K V} (hc : IsCompl X Y) {x :
     prO hc x = x := by
   have h0 : prO hc.symm x = 0 := prO_eq_zero_of_mem_compl hc.symm hx
   have e := prO_add hc x
-  rw [h0, add_zero] at e
-  exact e
+  rwa [h0, add_zero] at e
 
 theorem prO_mem (hc' : IsCompl U (orthK h U)) (x : V) : prO hc' x ∈ U := prO_mem' hc' x
 
@@ -107,8 +106,7 @@ theorem orth_projection_of_mem_compl {hc' : IsCompl U (orthK h U)} {x : V} (hx :
   exact prO_eq_zero_of_mem_compl hc' hx
 
 theorem orth_projection_symm_of_mem {hc' : IsCompl U (orthK h U)} {x : V} (hx : x ∈ orthK h U) :
-    prO hc'.symm x = x := by
-  exact prO_eq_self_of_mem hc'.symm hx
+    prO hc'.symm x = x := prO_eq_self_of_mem hc'.symm hx
 
 theorem prO_symm_of_mem_U {hc' : IsCompl U (orthK h U)} {x : V} (hx : x ∈ U) : prO hc'.symm x = 0 := by
   exact prO_eq_zero_of_mem_compl hc'.symm hx
@@ -182,8 +180,7 @@ theorem h_WU (hs : h.IsSymm) {x y : V} (hx : x ∈ orthK h U) (hy : y ∈ U) : h
 
 theorem prO_of_mem_U {hc' : IsCompl U (orthK h U)} {x : V} (hx : x ∈ U) : prO hc' x = x := by
   have e := prO_add hc' x
-  rw [prO_symm_of_mem_U (hc' := hc') hx, add_zero] at e
-  exact e
+  rwa [prO_symm_of_mem_U (hc' := hc') hx, add_zero] at e
 
 theorem split (hs : h.IsSymm) (hc' : IsCompl U (orthK h U)) (x y : V) :
     h x y = h (prO hc' x) (prO hc' y) + h (prO hc'.symm x) (prO hc'.symm y) := by

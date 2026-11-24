@@ -160,7 +160,6 @@ theorem differentiable_opU (L : PeriodPair) (s : ℂ) {θ : ℂ → ℂ} (h : Di
 
 theorem differentiable_evenTheta (L : PeriodPair) (t : ℂ) : Differentiable ℂ (th0 L t) := by
   have hs : Differentiable ℂ (sgStar L) := (Formalism.L2.Th1.F.sgStarBasic L).1
-  show Differentiable ℂ fun z => opU L t (sgStar L) z / opU L t (sgStar L) 0
   exact (differentiable_opU L t hs).div_const _
 
 theorem taylor0_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) (ω₀ s : ℂ) :
@@ -223,8 +222,7 @@ theorem ne_zero_of_norm {l : ℕ} [Fact l.Prime] {ε : MaximalUnramifiedExtensio
   exact one_ne_zero h0
 
 theorem symm_ne_zero {l : ℕ} [Fact l.Prime] (ι : ℂ ≃+* ℂ_[l]) {ε : MaximalUnramifiedExtension l} (hε : ‖ε‖ = 1) :
-    ι.symm (ε : ℂ_[l]) ≠ 0 := by
-  exact (map_ne_zero ι.symm).mpr (ne_zero_of_norm hε)
+    ι.symm (ε : ℂ_[l]) ≠ 0 := (map_ne_zero ι.symm).mpr (ne_zero_of_norm hε)
 
 end AlgebraicValuationTrichotomy
 
@@ -268,11 +266,9 @@ theorem lubin_tate_transfer_integral : TransIntLT := by
     rw [hS, map_mul, map_inv₀, map_pow, hιe, ns]
     field_simp
   have hω' : ι.symm (ε : ℂ_[l]) * ω₀ ∈ (Formalism.L2.Th1.F.scalePair L _ he0).lattice := by
-    rw [hlat, ← mul_assoc, inv_mul_cancel₀ he0, one_mul]
-    exact hω
+    rwa [hlat, ← mul_assoc, inv_mul_cancel₀ he0, one_mul]
   have hω2' : ι.symm (ε : ℂ_[l]) * ω₀ / 2 ∉ (Formalism.L2.Th1.F.scalePair L _ he0).lattice := by
-    rw [hlat, mul_div_assoc, ← mul_assoc, inv_mul_cancel₀ he0, one_mul]
-    exact hω2
+    rwa [hlat, mul_div_assoc, ← mul_assoc, inv_mul_cancel₀ he0, one_mul]
   have hs' : (N : ℂ) * (ι.symm (ε : ℂ_[l]) * s) ∈ (Formalism.L2.Th1.F.scalePair L _ he0).lattice := by
     rw [hlat]
     convert hs using 1
@@ -302,8 +298,7 @@ theorem lubin_tate_transfer_integral : TransIntLT := by
     have h1 := Formalism.L2.Th1.C.mvExp_add hc hc'
     rw [add_neg_cancel, Formalism.L2.Th1.C.mvExp_zero] at h1
     exact h1.symm
-  rw [← mul_assoc, key, one_mul]
-  exact hV
+  rwa [← mul_assoc, key, one_mul]
 
 theorem local_kappa_shape_of_transfer_integrality (hT : TransIntLT) : uniformGaussModelConditionReformulated₂ := by
   intro l _ hl L ι g2 g3 ε s2 hN hg2 hg3 hD hε hθ ω₀ hω hω2 n _ _ h Λ α β g hS hidx e he θ hθ' htens

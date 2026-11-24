@@ -168,15 +168,13 @@ theorem fin_VK : FiniteDimensional K (VK K k ν) := by
   obtain ⟨b, hb, -⟩ := sSBasis K k k ν
   have : Finite ↥(ssIdx k k ν) := (sSIdxFinite k k ν).to_subtype
   have h := FiniteDimensional.span_of_finite K (Set.finite_range b)
-  rw [hb.2.1] at h
-  exact h
+  rwa [hb.2.1] at h
 
 theorem span_top_of {I : Type} (f : I → VK K k ν)
     (hf : Submodule.span K (Set.range fun i => (f i : PK K k)) = dualWeyl K k k ν) :
     Submodule.span K (Set.range f) = ⊤ := by
   rw [← comap_span_coe (O := K) (Kf := K) (dualWeyl K k k ν) f, hf, eq_top_iff]
-  intro x _
-  exact x.2
+  exact fun x _ => x.2
 
 theorem isGLRep : IsGLRep (EV K k ν) := by
   have := fin_VK (K := K) (k := k) (ν := ν)
@@ -404,8 +402,7 @@ theorem nabla_mem [CharZero (KK O)] (hν : Antitone ν) (x0 : MvPolynomial (Fin 
     apply Subtype.ext
     rw [Submodule.coe_sub, Submodule.coe_smul, hwu, hzeq, ← lclosedeq_applyWord_map]
     rfl
-  rw [e]
-  exact hz
+  rwa [e]
 
 end Lat
 
@@ -492,8 +489,7 @@ end Set
 
 theorem modelSandwichG_of_places (D : Formalism.BasicNotions.D7) (hpos : Formalism.MainNotions.G.Inhab.GatHasPlaces D) :
     Formalism.MainNotions.G.Joints.ModelSandwichG D := by
-  intro u w hg m lam hlam
-  exact sandwich D ((D.gat u w hg).P.setting ⟨0, hpos u w hg⟩) m lam hlam
+  exact fun u w hg m lam hlam => sandwich D ((D.gat u w hg).P.setting ⟨0, hpos u w hg⟩) m lam hlam
 
 theorem modelSandwichG_of_ties (D : Formalism.BasicNotions.D7) (hT : Formalism.BasicNotions.GatTies D) :
     Formalism.MainNotions.G.Joints.ModelSandwichG D := by

@@ -101,8 +101,7 @@ theorem genusBasic_sigma_mem (hinj : Function.Injective (algebraMap R K))
     obtain ⟨hx1, hx2⟩ := hx
     refine Submonoid.subset_closure (Set.mem_setOf.2 ⟨hx2 _ (locBasic_sigma_spec hinj hstar x), fun t ht => ?_⟩)
     have e : t = x := hinj (by rw [ht, locBasic_sigma_spec, star_star])
-    rw [e]
-    exact hx1
+    rwa [e]
   | one => rw [map_one]; exact Submonoid.one_mem _
   | mul x y _ _ hx hy => rw [map_mul]; exact Submonoid.mul_mem _ hx hy
 
@@ -210,12 +209,10 @@ theorem genusBasic_dual_le (hinj : Function.Injective (algebraMap R K))
     have h1 := hz _ hsv
     rw [genusBasic_hsmul_left hinj hstar] at h1
     have hiso : h (g v) z = h v (g.symm z) := by
-      have e := hg v (g.symm z)
-      simpa using e
+      simpa using hg v (g.symm z)
     refine locBasic_mem_locS.2 ⟨locBasic_sigma hinj hstar s,
       genusBasic_sigma_mem hinj hstar p s hs, ?_⟩
-    rw [Algebra.smul_def, ← hiso]
-    exact h1
+    rwa [Algebra.smul_def, ← hiso]
   rwa [show dual h L = L from hL] at hmem
 
 end SlopeTestRemainingChoices
@@ -226,12 +223,10 @@ theorem genusBasic : GenusBasic := by
   have hint_of : ∀ L : Submodule R V, IsUnimodular h L → IsIntegralLat h L := by
     intro L hL x hx y hy
     have hy' : y ∈ dual h L := by
-      rw [show dual h L = L from hL]
-      exact hy
+      rwa [show dual h L = L from hL]
     exact (dualBasic_mem_dual h L y).1 hy' x hx
   have hle_dual : ∀ L : Submodule R V, IsIntegralLat h L → L ≤ dual h L := by
-    intro L hL y hy
-    exact (dualBasic_mem_dual h L y).2 fun x hx => hL x hx y hy
+    exact fun L hL y hy => (dualBasic_mem_dual h L y).2 fun x hx => hL x hx y hy
   refine ⟨⟨fun L p hp => ⟨1, (isom h).one_mem, by rw [genusBasic_gmap_one]⟩,
     fun {L M} hLM => genusBasic_symm h L M hLM, fun {L M N} h1 h2 p hp => ?_⟩, ?_, ?_⟩
   · obtain ⟨g₁, hg₁, e₁⟩ := h1 p hp

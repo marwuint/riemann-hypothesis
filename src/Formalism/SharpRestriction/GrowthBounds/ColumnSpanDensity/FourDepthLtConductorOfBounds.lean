@@ -163,8 +163,7 @@ theorem logs_of {K : Cst} {CH : ℝ} {X : Dat} (B : Base K CH X) :
   · exact Real.logb_nonneg hp1 ha1
   · have h1 : Real.logb X.p (X.a : ℝ) ≤ Real.logb X.p (X.ar ^ 2) :=
       Real.logb_le_logb_of_le hp1 (by linarith) (by linarith [B.haa1])
-    rw [e2] at h1
-    exact h1
+    rwa [e2] at h1
 
 theorem D0_eq_numSeg_mul_add (K : Cst) (X : Dat) :
     X.D0 K = (numSeg X.TT : ℝ) * (K.CA * X.Y ^ 2 * (X.N₁ : ℝ) ^ 2 * X.k ^ 2 * lgA X.p X.a X.m +
@@ -194,22 +193,19 @@ theorem dle_of {K : Cst} (hK : K.Pos) {CH : ℝ} (hCH : K.TLP ≤ CH) {X : Dat} 
     have : (0 : ℝ) ≤ ((X.m : ℝ) + 2) * lgA X.p X.a X.m := by positivity
     have h5 := (Nat.ceil_lt_add_one this).le
     have e : X.k + 1 = (X.m : ℝ) + 2 := by unfold Dat.k; ring
-    rw [e]
-    exact h5
+    rwa [e]
   have hk1 : (X.kap1c : ℝ) ≤ (X.k - 1) ^ 2 * lgA X.p X.a X.m + 1 := by
     unfold Dat.kap1c
     have : (0 : ℝ) ≤ kappaOneExponent X.p X.a X.m := by unfold kappaOneExponent; positivity
     have h5 := (Nat.ceil_lt_add_one this).le
     have e : (X.k - 1) ^ 2 * lgA X.p X.a X.m = kappaOneExponent X.p X.a X.m := by unfold Dat.k kappaOneExponent; ring
-    rw [e]
-    exact h5
+    rwa [e]
   have := dle_abs K.CA CH X.N (numSeg X.TT) X.N₁ X.k X.Y (Real.logb X.p X.ar) (lgA X.p X.a X.m)
     (Real.logb X.p X.a) X.u0c X.kap1c X.Dp hK.2.2.1
     (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hCH) B.hN2 (by positivity) B.hns B.hN1 B.sq_level_le_degree B.hNk
     B.hk5 B.hY B.hL1 hlg0 h2 h3 h4 hu hk1 hD
   unfold Dat.D1
-  rw [D0_eq_numSeg_mul_add]
-  exact this
+  rwa [D0_eq_numSeg_mul_add]
 
 theorem four_depth_lt_conductor_of_bounds {K : Cst} {X : Dat} (hd : 2 * X.D1 K + X.N * X.kap1c ≤ X.Dp) (hc : 8 * (X.Dp + 1) ≤ X.cStar) :
     4 * X.D1 K < X.c4 := by

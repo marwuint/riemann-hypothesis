@@ -59,11 +59,9 @@ theorem monicOf_injective {K : Type} [Field K] {N : ℕ} : Function.Injective (m
 
 variable {R : Ranks} {H : Host R}
 
-theorem neZero_g (k : Fin 2) : NeZero (H.g k) := by
-  exact ⟨(H.g_prime k).ne_zero⟩
+theorem neZero_g (k : Fin 2) : NeZero (H.g k) := ⟨(H.g_prime k).ne_zero⟩
 
-theorem fact_g (k : Fin 2) : Fact (H.g k).Prime := by
-  exact ⟨H.g_prime k⟩
+theorem fact_g (k : Fin 2) : Fact (H.g k).Prime := ⟨H.g_prime k⟩
 
 attribute [local instance] neZero_g fact_g Classical.propDecidable
 
@@ -99,10 +97,8 @@ include hidem horth in
 theorem seriesIdempotent_idem : e0F N es * e0F N es = e0F N es := by
   unfold e0F
   apply eSum_idem
-  · intro i x
-    exact hidem i.1 (monicOf x)
-  · intro i x y hxy
-    exact horth i.1 _ _ (fun h => hxy (monicOf_injective h))
+  · exact fun i x => hidem i.1 (monicOf x)
+  · exact fun i x y hxy => horth i.1 _ _ (fun h => hxy (monicOf_injective h))
 
 
 variable {N}
@@ -118,8 +114,7 @@ theorem e0_eq {A : NAut N} (X : NTypes A) : X.e0 = e0F N X.eSer := by
 theorem idempotent_mem_center {A : NAut N} (X : NTypes A) :
     X.e0 ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g N)) := by
   rw [e0_eq X, Subalgebra.mem_center_iff]
-  intro b
-  exact (seriesIdempotent_central N X.eSer X.eSer_central b).symm
+  exact fun b => (seriesIdempotent_central N X.eSer X.eSer_central b).symm
 
 theorem idempotent_sum {A : NAut N} (X : NTypes A) : X.e0 * X.e0 = X.e0 := by
   rw [e0_eq X]

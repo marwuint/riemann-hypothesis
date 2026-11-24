@@ -291,31 +291,6 @@ private theorem norm_mulVec_apply_le_frame_bound {ε : Fin (2 * r + k + 1) → B
   have n2 : 0 ≤ ∑ a, ‖hJ ε (e a) x‖ := Finset.sum_nonneg fun _ _ => norm_nonneg _
   have n3 : 0 ≤ ‖hJ ε z0 x‖ := norm_nonneg _
   have n4 : 0 ≤ Real.sqrt (∑ b, Complex.normSq (hJ ε (wf b) x)) := Real.sqrt_nonneg _
-  have hcf : ∀ a, ‖hJ ε (f a) (G *ᵥ x)‖ ≤ ∑ a, ‖hJ ε (f a) x‖ + ∑ a, ‖hJ ε (e a) x‖ + ‖hJ ε z0 x‖ +
-      Real.sqrt (∑ b, Complex.normSq (hJ ε (wf b) x)) := fun a => by
-    rw [hinv _ (hf a)]
-    have := Finset.single_le_sum (fun a _ => norm_nonneg (hJ ε (f a) x)) (Finset.mem_univ a)
-    linarith
-  have hce : ∀ a, ‖hJ ε (e a) (G *ᵥ x)‖ ≤ ∑ a, ‖hJ ε (f a) x‖ + ∑ a, ‖hJ ε (e a) x‖ + ‖hJ ε z0 x‖ +
-      Real.sqrt (∑ b, Complex.normSq (hJ ε (wf b) x)) := fun a => by
-    rw [hinv _ (he a)]
-    have := Finset.single_le_sum (fun a _ => norm_nonneg (hJ ε (e a) x)) (Finset.mem_univ a)
-    linarith
-  have hcz : ‖hJ ε z0 (G *ᵥ x)‖ ≤ ∑ a, ‖hJ ε (f a) x‖ + ∑ a, ‖hJ ε (e a) x‖ + ‖hJ ε z0 x‖ +
-      Real.sqrt (∑ b, Complex.normSq (hJ ε (wf b) x)) := by
-    rw [hinv _ hz0]
-    linarith
-  have hcw : ∀ b, ‖hJ ε (wf b) (G *ᵥ x)‖ ≤ ∑ a, ‖hJ ε (f a) x‖ + ∑ a, ‖hJ ε (e a) x‖ + ‖hJ ε z0 x‖ +
-      Real.sqrt (∑ b, Complex.normSq (hJ ε (wf b) x)) := fun b => by
-    have h1 : ‖hJ ε (wf b) (G *ᵥ x)‖ ≤ Real.sqrt (∑ b, Complex.normSq (hJ ε (wf b) x)) := by
-      rw [← hWr]
-      calc ‖hJ ε (wf b) (G *ᵥ x)‖ = Real.sqrt (‖hJ ε (wf b) (G *ᵥ x)‖ ^ 2) :=
-            (Real.sqrt_sq (norm_nonneg _)).symm
-        _ = Real.sqrt (Complex.normSq (hJ ε (wf b) (G *ᵥ x))) := by rw [Complex.normSq_eq_norm_sq]
-        _ ≤ _ := Real.sqrt_le_sqrt
-            (Finset.single_le_sum (fun b _ => Complex.normSq_nonneg (hJ ε (wf b) (G *ᵥ x)))
-              (Finset.mem_univ b))
-    linarith
   have hd := congrFun (eq_frame_expansion_of_isFrameJ hF (G *ᵥ x)) i
   simp only [Finset.sum_apply, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at hd
   rw [hd]
@@ -327,15 +302,31 @@ private theorem norm_mulVec_apply_le_frame_bound {ε : Fin (2 * r + k + 1) → B
   refine add_le_add (add_le_add (add_le_add ?_ ?_) ?_) ?_
   · refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun a _ => ?_)
     rw [norm_mul]
-    exact mul_le_mul_of_nonneg_right (hcf a) (norm_nonneg (e a i))
+    refine mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)
+    rw [hinv _ (hf a)]
+    have := Finset.single_le_sum (fun a _ => norm_nonneg (hJ ε (f a) x)) (Finset.mem_univ a)
+    linarith
   · refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun a _ => ?_)
     rw [norm_mul]
-    exact mul_le_mul_of_nonneg_right (hce a) (norm_nonneg (f a i))
+    refine mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)
+    rw [hinv _ (he a)]
+    have := Finset.single_le_sum (fun a _ => norm_nonneg (hJ ε (e a) x)) (Finset.mem_univ a)
+    linarith
   · rw [norm_mul]
-    exact mul_le_mul_of_nonneg_right hcz (norm_nonneg (z0 i))
+    refine mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)
+    rw [hinv _ hz0]
+    linarith
   · refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun b _ => ?_)
     rw [norm_mul]
-    exact mul_le_mul_of_nonneg_right (hcw b) (norm_nonneg (wf b i))
+    refine mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)
+    have h1 : ‖hJ ε (wf b) (G *ᵥ x)‖ ≤
+        Real.sqrt (∑ b, Complex.normSq (hJ ε (wf b) x)) := by
+      rw [← hWr]
+      refine Real.le_sqrt_of_sq_le ?_
+      rw [← Complex.normSq_eq_norm_sq]
+      exact Finset.single_le_sum (fun b _ => Complex.normSq_nonneg (hJ ε (wf b) (G *ᵥ x)))
+        (Finset.mem_univ b)
+    linarith
 
 private theorem exists_entry_bound_of_fixes_frame {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
     {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {z0 : Fin (2 * r + k + 1) → ℂ} (hF : IsFrameJ ε e f wf z0) :

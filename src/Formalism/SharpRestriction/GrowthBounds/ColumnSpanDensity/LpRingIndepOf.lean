@@ -201,8 +201,7 @@ theorem mapSub_colSpan (g : Matrix (Fin k) (Fin k) F₁) :
 theorem isLattice_mapSub {L : Submodule R₁ (Fin k → F₁)} (h : IsLattice R₁ L) : IsLattice R₂ (mapSub J L) := by
   obtain ⟨g, hg, rfl⟩ := h
   refine ⟨g.map J.φF, ?_, mapSub_colSpan J g⟩
-  have : (g.map J.φF).det = J.φF g.det := by
-    exact (RingHom.map_det (J.φF : F₁ →+* F₂) g).symm
+  have : (g.map J.φF).det = J.φF g.det := (RingHom.map_det (J.φF : F₁ →+* F₂) g).symm
   rw [this]
   exact hg.map J.φF
 
@@ -388,8 +387,7 @@ theorem img1 (s : ℕ) {k : ℕ} (L : Submodule R₁.W (Fin k → R₁.Qq)) :
   simp only [Set.mem_image, SetLike.mem_coe]
   constructor
   · rintro ⟨v, hv, rfl⟩
-    refine ⟨fun i => I.φQ (v i), (map_mem_mapSub I.JW L v).2 hv, ?_⟩
-    exact (twist_tr I s v).symm
+    exact ⟨fun i => I.φQ (v i), (map_mem_mapSub I.JW L v).2 hv, (twist_tr I s v).symm⟩
   · rintro ⟨u, hu, rfl⟩
     refine ⟨fun i => I.φQ.symm (u i), (mem_mapSub I.JW L u).1 hu, ?_⟩
     show (fun i => I.φK (twistVec R₁.ι R₁.σ s (fun i => I.φQ.symm (u i)) i)) = _
@@ -638,8 +636,7 @@ theorem HLpoly_tr (L : Submodule R₁.W (Fin (m + 1) → R₁.Qq))
     (hP : P ∈ Hten R₁.O lam0 (fun s => extO R₁.O R₁.ι R₁.σ s.val L)) :
     I.JO.pm P ∈ Hten R₂.O lam0 (fun s => extO R₂.O R₂.ι R₂.σ s.val (mapSub I.JW L)) := by
   have h := Hten_tr (I := I) (lam0 := lam0) (Λ := fun s => extO R₁.O R₁.ι R₁.σ s.val L) (P := P) hP
-  simp only [extO_tr] at h
-  exact h
+  simpa only [extO_tr] using h
 
 theorem HLepoly_tr (e : Edge R₁.W R₁.Qq (m + 1))
     (P : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) R₁.Kf)
@@ -647,16 +644,14 @@ theorem HLepoly_tr (e : Edge R₁.W R₁.Qq (m + 1))
     I.JO.pm P ∈ Hten R₂.O lam0
       (fun s => LeAt p R₂.ι R₂.σ R₂.w s.val ⟨mapSub I.JW e.src, mapSub I.JW e.tgt⟩) := by
   have h := Hten_tr (I := I) (lam0 := lam0) (Λ := fun s => LeAt p R₁.ι R₁.σ R₁.w s.val e) (P := P) hP
-  simp only [LeAt_tr] at h
-  exact h
+  simpa only [LeAt_tr] using h
 
 end
 
 theorem restHLTransport : RestHLTransport := by
   intro p n' R₁ R₂ I m lam0
   have hΨ : ∀ (c : R₁.Kf) (v : Vsp R₁.Kf lam0), PsiV I lam0 (c • v) = I.φK c • PsiV I lam0 v := by
-    intro c v
-    exact Subtype.ext (map_smul' _ c v.1)
+    exact fun c v => Subtype.ext (map_smul' _ c v.1)
   refine ⟨mapSubEquiv I.JW, PsiV I lam0, hΨ, fun L => isLattice_mapSub_iff I.JW L, fun r e => ?_, fun L x => ?_,
     fun e x => ?_, ?_⟩
   · constructor
@@ -672,26 +667,22 @@ theorem restHLTransport : RestHLTransport := by
           Edge R₁.W R₁.Qq (m + 1)) := h2
       rwa [h5] at h6
   · constructor
-    · intro hx
-      exact HLpoly_tr I lam0 L x.1 hx
+    · exact fun hx => HLpoly_tr I lam0 L x.1 hx
     · intro hx
       have h2 := HLpoly_tr I.symm lam0 (mapSub I.JW L) (PsiV I lam0 x).1 hx
       have h3 : mapSub I.symm.JW (mapSub I.JW L) = L := mapSub_symm I.JW L
       rw [h3] at h2
       have h4 : I.symm.JO.pm ((PsiV I lam0 x : Vsp R₂.Kf lam0) : MvPolynomial _ R₂.Kf) = x.1 := pm_symm I x.1
-      rw [h4] at h2
-      exact h2
+      rwa [h4] at h2
   · constructor
-    · intro hx
-      exact HLepoly_tr I lam0 e x.1 hx
+    · exact fun hx => HLepoly_tr I lam0 e x.1 hx
     · intro hx
       have h2 := HLepoly_tr I.symm lam0 ⟨mapSub I.JW e.src, mapSub I.JW e.tgt⟩ (PsiV I lam0 x).1 hx
       have h3 : mapSub I.symm.JW (mapSub I.JW e.src) = e.src := mapSub_symm I.JW _
       have h3' : mapSub I.symm.JW (mapSub I.JW e.tgt) = e.tgt := mapSub_symm I.JW _
       simp only [h3, h3'] at h2
       have h4 : I.symm.JO.pm ((PsiV I lam0 x : Vsp R₂.Kf lam0) : MvPolynomial _ R₂.Kf) = x.1 := pm_symm I x.1
-      rw [h4] at h2
-      exact h2
+      rwa [h4] at h2
   · unfold dimV Module.finrank
     rw [rank_eq_of_equiv_equiv I.φK (PsiV I lam0) I.φK.bijective hΨ]
 

@@ -124,25 +124,21 @@ theorem classMapPf_local (π' Eπ : LetA O n) (h' M : ℕ) (c : ZMod n)
       abel
     have hw0 : W.γD T W.gamK m - m - (pr.1.2 - pr'.1.2) = 0 := by
       obtain ⟨x0, _, hu0⟩ := hF.2 0 (Submodule.zero_mem _)
-      have a1 := hu0 _ ⟨hwP, hφw⟩
-      have a2 := hu0 0 ⟨Submodule.zero_mem _, by simp⟩
-      exact a1.trans a2.symm
+      exact (hu0 _ ⟨hwP, hφw⟩).trans (hu0 0 ⟨Submodule.zero_mem _, by simp⟩).symm
     have hk := hker (pr - pr') ⟨m, fun δ hδ => hPiD m hmP δ hδ, by
       refine Prod.ext ?_ ?_ <;>
         simp only [Submodule.coe_sub, Prod.fst_sub, Prod.snd_sub, hm, sub_eq_zero.mp hw0]⟩
     have hsub : W.clK T (pr - pr') = W.clK T pr - W.clK T pr' := by
       first
         | exact map_sub (W.clK T) pr pr'
-    rw [hsub, sub_eq_zero] at hk
-    exact hk
+    rwa [hsub, sub_eq_zero] at hk
   · have h1 := hf pr hy hz
     obtain ⟨κ0, hκ0, hκeq⟩ := Submodule.mem_map.mp h1
     exact ⟨κ0.1, Submodule.mem_comap.mp hκ0, κ0.2, hκeq⟩
 
 theorem classMapPf_φspan (S : Submodule (LetA O n) (W.DD T)) (hS : S ≤ W.N T) :
     ∀ u ∈ Formalism.MainNotions.DeltaInvariantLattices.φspan W T S, ∃ k : ℕ, W.Q ^ k • u ∈ W.N T := by
-  have hφN : ∀ x ∈ W.N T, ∃ k : ℕ, W.Q ^ k • W.φD T x ∈ W.N T := by
-    exact W.N_φ T
+  have hφN : ∀ x ∈ W.N T, ∃ k : ℕ, W.Q ^ k • W.φD T x ∈ W.N T := W.N_φ T
   intro u hu
   induction hu using Submodule.span_induction with
   | mem x hx =>
@@ -173,8 +169,7 @@ theorem classMapPf_of (π' : LetA O n) (E : ZMod n → Polynomial O) (e s' h' M 
     show (W.φA ^ (W.s - 1)) W.q = W.q
     rw [hs1]
     first | rfl
-  have hNγ : ∀ x ∈ W.N T, W.γD T W.gam x ∈ W.N T := by
-    exact fun x hx => W.N_Γ T W.gam x hx
+  have hNγ : ∀ x ∈ W.N T, W.γD T W.gam x ∈ W.N T := fun x hx => W.N_Γ T W.gam x hx
   have hsm : ∀ (a : LetA O n) (y : W.DD T), W.γD T W.gam (a • y) = letγ (W.γ₀ W.gam) a • W.γD T W.gam y := by
     intro a y
     rw [← algebraMap_smul W.EE a y, W.γD_smul, W.γE_ext, algebraMap_smul]
@@ -230,8 +225,7 @@ theorem classMapPf_of (π' : LetA O n) (E : ZMod n → Polynomial O) (e s' h' M 
     rw [smul_smul, smul_smul, ← hcoef] at hmem
     have e0 : (W.φA ^ 0) W.Q = W.q := by rw [pow_zero]; exact hQ
     have hJ : ((Multiset.replicate (h' + k) 0).map fun j => (W.φA ^ j) W.Q).prod • pr.1.1 ∈ W.N T := by
-      simp only [Multiset.map_replicate, Multiset.prod_replicate, e0]
-      exact hmem
+      simpa only [Multiset.map_replicate, Multiset.prod_replicate, e0] using hmem
     have hz' : pr.1.2 ∈ Formalism.MainNotions.DeltaInvariantLattices.aN W T letπ := by
       obtain ⟨hza, _⟩ := Submodule.mem_inf.mp
         (show pr.1.2 ∈ (Formalism.MainNotions.DeltaInvariantLattices.aN W T (π' ^ M)).restrictScalars O ⊓ DelS W T from hz)

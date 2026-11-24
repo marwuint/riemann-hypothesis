@@ -87,8 +87,7 @@ theorem isLattice_between {W : Type} [AddCommGroup W] [Module E W] [Module (𝓞
     exact smul_right_injective W (by exact_mod_cast hT : ((T : ℕ) : E) ≠ 0) h1
   have hmap : B.map f ≤ A := by
     rintro _ ⟨x, hx, rfl⟩
-    have h1 := hTB x hx
-    simpa only [f, LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul] using h1
+    simpa only [f, LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul] using hTB x hx
   haveI : IsNoetherian (𝓞 E) A := isNoetherian_of_fg_of_noetherian A hA.fg
   have hmfg : (B.map f).FG := by
     have h1 := IsNoetherian.noetherian ((B.map f).comap A.subtype)
@@ -101,8 +100,7 @@ theorem isLattice_between {W : Type} [AddCommGroup W] [Module E W] [Module (𝓞
   have hgs : g '' s ⊆ A := by
     rintro _ ⟨x, hx, rfl⟩
     have hxB : x ∈ B := hs hx
-    have hmul := hTB x hxB
-    simpa [g, LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul] using hmul
+    simpa [g, LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul] using hTB x hxB
   have hli' : LinearIndepOn (𝓞 E) id (g '' s) := by
     apply LinearIndepOn.image (f := g.restrictScalars (𝓞 E)) hli
     simp [LinearMap.ker_eq_bot.mpr hg]
@@ -148,8 +146,7 @@ theorem class_lattice_le_dual (K : ClsTied u i hi) (c : (D.mem u).C.cls i) : cls
   apply Submodule.subset_span
   intro x' hx'
   have hglob : ∀ z ∈ clsCrd D u i hi c, z ∈ Formalism.UG.CS.globLat (K.y c).1 K.lev.Lb := by
-    intro z hz
-    exact (K.y_lat c _).1 (Submodule.subset_span ⟨z, hz, rfl⟩)
+    exact fun z hz => (K.y_lat c _).1 (Submodule.subset_span ⟨z, hz, rfl⟩)
   have hm : ∀ a ∈ K.lev.Lb, ∀ b ∈ K.lev.Lb,
       IsIntegral ℤ (((1 : ℤ) : D.host.E) * Formalism.UG.hform (sigD D : D.host.E →+* D.host.E) (gramN D i hi) a b) := by
     intro a ha b hb
@@ -204,8 +201,7 @@ theorem dual_class_lattice_eq_global (K : ClsTied u i hi) (c : (D.mem u).C.cls i
     have h2 := Formalism.L2.GlobalTheoryTheory.Comp.glob_mono (K.y c).1 hle1
     rwa [Formalism.L2.GlobalTheoryTheory.Comp.glob_inv_glob hLd] at h2
   · have h := Formalism.L2.GlobalTheoryTheory.Comp.glob_dl_le (sigD D) (gramN D i hi) K.lev.Lb (K.y c).1 hg
-    rw [← hc] at h
-    exact h
+    rwa [← hc] at h
 
 
 

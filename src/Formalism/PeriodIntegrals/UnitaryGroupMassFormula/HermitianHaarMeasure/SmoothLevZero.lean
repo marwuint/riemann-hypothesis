@@ -82,18 +82,15 @@ theorem pr_conj (f h : β → ℂ) : pr μ ι h f = star (pr μ ι f h) := by
   simp [mul_comm]
 
 theorem pr_smul_left (c : ℂ) (f h : β → ℂ) : pr μ ι (c • f) h = c * pr μ ι f h := by
-  simp only [pr, Pi.smul_apply, smul_eq_mul, mul_assoc]
-  exact integral_const_mul c _
+  simpa only [pr, Pi.smul_apply, smul_eq_mul, mul_assoc] using integral_const_mul c _
 
 theorem pr_add_left (hI : IntOn μ ι 𝓕) {f f' h : β → ℂ} (hf : f ∈ 𝓕) (hf' : f' ∈ 𝓕) (hh : h ∈ 𝓕) :
     pr μ ι (f + f') h = pr μ ι f h + pr μ ι f' h := by
-  simp only [pr, Pi.add_apply, add_mul]
-  exact integral_add (hI f hf h hh) (hI f' hf' h hh)
+  simpa only [pr, Pi.add_apply, add_mul] using integral_add (hI f hf h hh) (hI f' hf' h hh)
 
 theorem pr_sub_left (hI : IntOn μ ι 𝓕) {f f' h : β → ℂ} (hf : f ∈ 𝓕) (hf' : f' ∈ 𝓕) (hh : h ∈ 𝓕) :
     pr μ ι (f - f') h = pr μ ι f h - pr μ ι f' h := by
-  simp only [pr, Pi.sub_apply, sub_mul]
-  exact integral_sub (hI f hf h hh) (hI f' hf' h hh)
+  simpa only [pr, Pi.sub_apply, sub_mul] using integral_sub (hI f hf h hh) (hI f' hf' h hh)
 
 def N (hI : IntOn μ ι 𝓕) : Submodule ℂ 𝓕 where
   carrier := {f | ∀ h ∈ 𝓕, pr μ ι f.1 h = 0}
@@ -319,9 +316,7 @@ include hG in
 theorem mk'_eq_of_eqOn {f h : β → ℂ} (hf : f ∈ 𝓕) (hh : h ∈ 𝓕) (he : ∀ g ∈ G, f g = h g) :
     mk' hI f = mk' hI h := by
   rw [← sub_eq_zero, ← mk'_sub hI hf hh, mk'_of hI (𝓕.sub_mem hf hh), Submodule.Quotient.mk_eq_zero]
-  show ∀ k ∈ 𝓕, pr μ ι (f - h) k = 0
-  intro k _
-  exact pr_vanish G hG (fun g hg => by simp [he g hg]) k
+  exact fun k _ => pr_vanish G hG (fun g hg => by simp [he g hg]) k
 
 structure AdjOp (Φ Φ' : (β → ℂ) → (β → ℂ)) : Prop where
   mem : ∀ f ∈ 𝓕, Φ f ∈ 𝓕
@@ -483,8 +478,7 @@ theorem repOn_sum {γ : Type*} (s : Finset γ) {T : γ → A hI} {Φ : γ → (�
   revert h
   refine Finset.induction_on s ?_ ?_
   · intro _
-    simp only [Finset.sum_empty]
-    exact repOn_zero hI
+    simpa only [Finset.sum_empty] using repOn_zero hI
   · intro a s ha ih h
     simp only [Finset.sum_insert ha]
     exact repOn_add hI (h a (Finset.mem_insert_self a s))
@@ -501,8 +495,7 @@ theorem repOn_list (t : ℕ) (F : Fin t → A hI) (Φ : Fin t → (β → ℂ) �
     RepOn hI (List.ofFn F).prod (fun f => (List.ofFn Φ).foldr (fun T h => T h) f) := by
   induction t with
   | zero =>
-    simp only [List.ofFn_zero, List.prod_nil, List.foldr_nil]
-    exact repOn_one hI
+    simpa only [List.ofFn_zero, List.prod_nil, List.foldr_nil] using repOn_one hI
   | succ t ih =>
     simp only [List.ofFn_succ, List.prod_cons, List.foldr_cons]
     exact repOn_mul hI (h 0) (ih (fun i => F i.succ) (fun i => Φ i.succ) (fun i => h i.succ))

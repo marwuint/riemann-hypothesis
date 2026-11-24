@@ -77,13 +77,11 @@ def sglFun (w : HeightOneSpectrum (𝓞 F)) (a : w.adicCompletion F) : FiniteAde
 
 theorem sgl_same (w : HeightOneSpectrum (𝓞 F)) (a : w.adicCompletion F) : evalV F w (sglFun F w a) = a := by
   classical
-  show (Pi.single w a : (v : HeightOneSpectrum (𝓞 F)) → v.adicCompletion F) w = a
   exact Pi.single_eq_same w a
 
 theorem sgl_ne (w : HeightOneSpectrum (𝓞 F)) (a : w.adicCompletion F) {v : HeightOneSpectrum (𝓞 F)} (h : v ≠ w) :
     evalV F v (sglFun F w a) = 0 := by
   classical
-  show (Pi.single w a : (u : HeightOneSpectrum (𝓞 F)) → u.adicCompletion F) v = 0
   exact Pi.single_eq_of_ne h a
 
 def sgl (w : HeightOneSpectrum (𝓞 F)) : w.adicCompletion F →ₗ[F] FiniteAdeleRing (𝓞 F) F where
@@ -265,8 +263,7 @@ theorem sec_mem_UPts (σE : E →ₐ[F] E) (J : Matrix n n E) {X : GL n (E ⊗[F
         mapE F E w (Y * J.map (inclE (F := F) (w.adicCompletion F)) * Z) := by
     intro Y Z
     rw [mapE_mul, mapE_mul, ← hJ, Matrix.mul_smul, ← Matrix.smul_mul, eps_smul_mapE]
-  rw [hc, sec_val]
-  rw [Matrix.add_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, hmid, hX', ← hJ]
+  rw [hc, sec_val, Matrix.add_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, hmid, hX', ← hJ]
   simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, smul_smul, compl_idem _ (epsW_idem F E w)]
   have h1 : (1 - epsW F E w) • (J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) * mapE F E w (X : Matrix n n _)) = 0 := by
     rw [← Matrix.mul_smul, compl_smul_mapE, Matrix.mul_zero]

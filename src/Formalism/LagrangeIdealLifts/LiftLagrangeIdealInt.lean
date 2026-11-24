@@ -89,8 +89,7 @@ theorem uGraded_of (h : GradedStep) : UGraded := by
   intro ℓ _ A _ _ B M D _ _ _ _ W K
   induction K with
   | zero =>
-    intro n hn
-    exact ⟨0, W.N.zero_mem, n, hn, by simp⟩
+    exact fun n hn => ⟨0, W.N.zero_mem, n, hn, by simp⟩
   | succ K ih =>
     intro n hn
     obtain ⟨x, hx, n', hn', he⟩ := ih n hn
@@ -119,8 +118,7 @@ theorem X_pow_inj {D : Type} [AddCommGroup D] [Module A D] [Module ℤ_[ℓ] D]
   | succ k ih =>
     apply ih
     apply W.X_inj
-    rw [← mul_smul, ← pow_succ']
-    exact h
+    rwa [← mul_smul, ← pow_succ']
 
 theorem aeval_mul_X {D : Type} [AddCommGroup D] [Module ℤ_[ℓ] D] (g : D →ₗ[ℤ_[ℓ]] D)
     (p : Polynomial ℤ_[ℓ]) : Polynomial.aeval g (p * Polynomial.X) = Polynomial.aeval g p * g := by
@@ -299,8 +297,7 @@ theorem lagrangian_ideal_holds : LagrangeIdeal := by
     · intro a₀ _ hne
       rw [eval_mul, eval_prod, Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨Ne.symm hne, ha⟩)
         (by simp), mul_zero]
-    · intro h
-      exact absurd ha h
+    · exact fun h => absurd ha h
   obtain ⟨k, hk⟩ := hQ
   have hC : C (ℓ ^ N) = F * ∏ b ∈ S₂, (X - C (c b)) - (∏ a ∈ S₁, (X - C (c a))) * k := by
     rw [← hk]
@@ -600,8 +597,7 @@ lemma uc_lift_qinv (S : SES W₀ W₁ W₂) {e : ℕ} (hK : CokerKilled S e) {y 
   obtain ⟨y₁, hy₁⟩ := (uc_bij W₁ M).2 n₁
   refine ⟨y₁, ?_, ?_⟩
   · show B.Q ^ M • y₁ ∈ W₁.N
-    rw [show B.Q ^ M • y₁ = n₁ from hy₁]
-    exact hn₁
+    rwa [show B.Q ^ M • y₁ = n₁ from hy₁]
   · apply (uc_bij W₂ M).1
     show B.Q ^ M • S.π.f y₁ = B.Q ^ M • (((ℓ : ℤ_[ℓ]) ^ e) • y)
     rw [← map_smul, show B.Q ^ M • y₁ = n₁ from hy₁, he, ← algebraMap_smul A ((ℓ : ℤ_[ℓ]) ^ e) (B.Q ^ M • y),
@@ -613,15 +609,13 @@ lemma uc_pull_qinv (S : SES W₀ W₁ W₂) {y : D₁} (hy : W₁.QInv y) (h0 : 
   refine ⟨y₀, ?_, rfl⟩
   unfold WD.QInv at *
   apply S.sat
-  rw [map_smul]
-  exact hy
+  rwa [map_smul]
 
 lemma uc_pull_xn (S : SES W₀ W₁ W₂) {m : D₁} (hm : m ∈ W₁.N) (h0 : S.π.f (B.X • m) = 0) :
     ∃ m₀ ∈ W₀.N, S.ι.f (B.X • m₀) = B.X • m := by
   have h1 : S.π.f m = 0 := by
     apply W₂.X_inj
-    rw [← map_smul]
-    exact h0
+    rwa [← map_smul]
   obtain ⟨m₀, rfl⟩ := (S.exact m).mp h1
   exact ⟨m₀, S.sat m₀ hm, map_smul _ _ _⟩
 
@@ -766,8 +760,7 @@ theorem aeval_pres {R E : Type} [CommRing R] [AddCommGroup E] [Module R E] (f : 
     apply S.smul_mem
     induction n with
     | zero =>
-      rw [pow_zero, Module.End.one_apply]
-      exact hy
+      rwa [pow_zero, Module.End.one_apply]
     | succ n ih =>
       rw [pow_succ', Module.End.mul_apply]
       exact hf _ ih

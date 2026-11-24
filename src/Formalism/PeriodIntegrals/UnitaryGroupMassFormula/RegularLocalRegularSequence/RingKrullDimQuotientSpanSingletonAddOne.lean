@@ -156,8 +156,7 @@ theorem spanFinrank_maximalIdeal_quotient_succ_le (R : Type*) [CommRing R] [IsLo
   omega
 
 private theorem natCast_withBot_enat_le_iff {a b : ℕ} :
-    ((a : ℕ) : WithBot ℕ∞) ≤ ((b : ℕ) : WithBot ℕ∞) ↔ a ≤ b := by
-  exact Nat.cast_le
+    ((a : ℕ) : WithBot ℕ∞) ≤ ((b : ℕ) : WithBot ℕ∞) ↔ a ≤ b := Nat.cast_le
 
 theorem eq_natCast_and_add_one_eq_of_le {a : WithBot ℕ∞} {d n : ℕ}
     (h1 : ((n : ℕ) : WithBot ℕ∞) ≤ a + 1) (h2 : a ≤ ((d : ℕ) : WithBot ℕ∞)) (h3 : d + 1 ≤ n) :
@@ -225,12 +224,10 @@ theorem spanFinrank_quotient_eq_and_ringKrullDim_add_one (R : Type*) [CommRing R
   exact ⟨e1.symm, e2.trans hreg⟩
 
 theorem isPrime_of_mem_minimalPrimes {R : Type*} [CommRing R] {p : Ideal R}
-    (hp : p ∈ minimalPrimes R) : p.IsPrime := by
-  exact Ideal.IsMinimalPrime.isPrime hp
+    (hp : p ∈ minimalPrimes R) : p.IsPrime := Ideal.IsMinimalPrime.isPrime hp
 
 theorem le_of_le_of_mem_minimalPrimes {R : Type*} [CommRing R] {p q : Ideal R}
-    (hp : p ∈ minimalPrimes R) (hq : q.IsPrime) (hle : q ≤ p) : p ≤ q := by
-  exact hp.2 ⟨hq, bot_le⟩ hle
+    (hp : p ∈ minimalPrimes R) (hq : q.IsPrime) (hle : q ≤ p) : p ≤ q := hp.2 ⟨hq, bot_le⟩ hle
 
 theorem isDomain_of_maximalIdeal_eq_bot (R : Type*) [CommRing R] [IsLocalRing R]
     (h : maximalIdeal R = ⊥) : IsDomain R := by
@@ -250,8 +247,7 @@ theorem maximalIdeal_eq_bot_of_le_sq (R : Type*) [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] (h : maximalIdeal R ≤ maximalIdeal R ^ 2) : maximalIdeal R = ⊥ := by
   apply Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (maximalIdeal R) (maximalIdeal R)
     (IsNoetherian.noetherian _)
-  · rw [pow_two] at h
-    exact h
+  · rwa [pow_two] at h
   · exact (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge
 
 theorem exists_mem_maximalIdeal_notMem_sq_notMem_minimalPrimes (R : Type*) [CommRing R]
@@ -259,8 +255,7 @@ theorem exists_mem_maximalIdeal_notMem_sq_notMem_minimalPrimes (R : Type*) [Comm
     (hmin : ¬ ∃ p ∈ minimalPrimes R, maximalIdeal R ≤ p) :
     ∃ x, x ∈ maximalIdeal R ∧ x ∉ maximalIdeal R ^ 2 ∧ ∀ p ∈ minimalPrimes R, x ∉ p := by
   classical
-  have hfin : (minimalPrimes R).Finite := by
-    exact minimalPrimes.finite_of_isNoetherianRing R
+  have hfin : (minimalPrimes R).Finite := minimalPrimes.finite_of_isNoetherianRing R
   have hprime : ∀ i ∈ insert (maximalIdeal R ^ 2) hfin.toFinset, i ≠ maximalIdeal R ^ 2 →
       i ≠ maximalIdeal R ^ 2 → (id i).IsPrime := by
     intro i hi hne _
@@ -293,8 +288,7 @@ theorem quotient_span_singleton {R : Type*} [CommRing R]
   exact { spanFinrank_maximalIdeal := h7.1 }
 
 private theorem natCast_withBot_enat_eq_iff {a b : ℕ} :
-    ((a : ℕ) : WithBot ℕ∞) = ((b : ℕ) : WithBot ℕ∞) ↔ a = b := by
-  exact Nat.cast_inj
+    ((a : ℕ) : WithBot ℕ∞) = ((b : ℕ) : WithBot ℕ∞) ↔ a = b := Nat.cast_inj
 
 private theorem isDomain_of_isPrime_bot {R : Type*} [CommRing R] [Nontrivial R]
     (h : (⊥ : Ideal R).IsPrime) : IsDomain R := by
@@ -360,8 +354,7 @@ theorem isDomain_of_forall_spanFinrank_lt (R : Type u) [CommRing R]
     have ha : a ∈ p := (hpP.mem_or_mem hz).resolve_right hxp'
     have hs : x * a ∈ Ideal.span ({x} : Set R) • p :=
       Submodule.smul_mem_smul (Ideal.mem_span_singleton_self x) ha
-    rw [mul_comm a x]
-    exact hs
+    rwa [mul_comm a x]
   have hjac : Ideal.span ({x} : Set R) ≤ Ideal.jacobson ⊥ := by
     rw [IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]
     exact Ideal.span_le.mpr (Set.singleton_subset_iff.mpr hx)
@@ -376,11 +369,9 @@ theorem isDomain_of_spanFinrank_le :
   intro n
   induction n with
   | zero =>
-    intro R _ _ h
-    exact isDomain_of_forall_spanFinrank_lt R (fun S _ _ hS => absurd hS (by omega))
+    exact fun R _ _ h => isDomain_of_forall_spanFinrank_lt R (fun S _ _ hS => absurd hS (by omega))
   | succ n ih =>
-    intro R _ _ h
-    exact isDomain_of_forall_spanFinrank_lt R (fun S _ _ hS => ih S (by omega))
+    exact fun R _ _ h => isDomain_of_forall_spanFinrank_lt R (fun S _ _ hS => ih S (by omega))
 
 theorem isDomain (R : Type*) [CommRing R]
     [IsRegularLocalRing R] : IsDomain R := by

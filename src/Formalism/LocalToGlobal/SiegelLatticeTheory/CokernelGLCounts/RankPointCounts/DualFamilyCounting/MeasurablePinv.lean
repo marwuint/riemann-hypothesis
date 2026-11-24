@@ -91,21 +91,18 @@ theorem fib2 (Γ : AddSubgroup (V × V)) [Countable Γ] (A₁ A₂ : AddSubgroup
     obtain ⟨a₂, ha₂, hu₂⟩ := hd₂ (s + y)
     have hmem : ((a₁ : V), s + (a₂ : V)) ∈ Γ := by
       have h2 : ((0 : V), (a₂ : V)) ∈ Γ := (hA₂ _).1 a₂.2
-      have h3 := Γ.add_mem hs h2
-      simpa using h3
+      simpa using Γ.add_mem hs h2
     refine ⟨⟨_, hmem⟩, ?_, ?_⟩
     · show (a₁ : V) + x ∈ F₁ ∧ s + (a₂ : V) + y ∈ F₂
       refine ⟨ha₁, ?_⟩
       have e : s + (a₂ : V) + y = (a₂ : V) + (s + y) := by abel
-      rw [e]
-      exact ha₂
+      rwa [e]
     · rintro ⟨⟨g₁, g₂⟩, hg⟩ hgK
       change g₁ + x ∈ F₁ ∧ g₂ + y ∈ F₂ at hgK
       have hg₁ : g₁ ∈ A₁ := (hA₁ g₁).2 ⟨g₂, hg⟩
       have e₁ : g₁ = (a₁ : V) := congrArg Subtype.val (hu₁ ⟨g₁, hg₁⟩ hgK.1)
       have hd : ((0 : V), g₂ - s) ∈ Γ := by
-        have h3 := Γ.sub_mem hg hs
-        simpa [e₁] using h3
+        simpa [e₁] using Γ.sub_mem hg hs
       have hg₂ : g₂ - s ∈ A₂ := (hA₂ _).2 hd
       have e₂ : g₂ - s = (a₂ : V) := by
         refine congrArg Subtype.val (hu₂ ⟨g₂ - s, hg₂⟩ ?_)
@@ -251,8 +248,7 @@ theorem realIdealBlock (𝔞 : (FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)
     · rintro ⟨y, hy, hyz⟩
       refine ⟨y, hy, ?_⟩
       have e : Pmap X (mixedEmbedding D.host.F y) = Pmap X z := by
-        rw [Pmap_emb]
-        exact hyz
+        rwa [Pmap_emb]
       have e2 := congrArg (Pinv X) e
       rwa [Pinv_Pmap, Pinv_Pmap] at e2
   have hPinv_add : ∀ u w, Pinv X (u + w) = Pinv X u + Pinv X w := by
@@ -270,8 +266,7 @@ theorem realIdealBlock (𝔞 : (FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)
       exact a.2
     refine ⟨⟨Pinv X a, hl⟩, ?_, ?_⟩
     · show Pmap X (Pinv X a + z) ∈ S
-      rw [Pmap_add, Pmap_Pinv]
-      exact ha
+      rwa [Pmap_add, Pmap_Pinv]
     · rintro ⟨l, hl'⟩ hlS
       change Pmap X (l + z) ∈ S at hlS
       rw [Pmap_add] at hlS
@@ -288,14 +283,12 @@ theorem realIdealBlock (𝔞 : (FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)
     have ha : Pmap X l ∈ reLat X 𝔞 := (hmem l).1 l.2
     refine ⟨⟨Pmap X l, ha⟩, ?_, ?_⟩
     · show Pinv X (Pmap X l + v) ∈ T
-      rw [hPinv_add, Pinv_Pmap]
-      exact hl
+      rwa [hPinv_add, Pinv_Pmap]
     · rintro ⟨a, ha'⟩ haT
       change Pinv X (a + v) ∈ T at haT
       rw [hPinv_add] at haT
       have hl2 : Pinv X a ∈ Submodule.span ℤ (Set.range b) := by
-        rw [hmem, Pmap_Pinv]
-        exact ha'
+        rwa [hmem, Pmap_Pinv]
       have e := hu ⟨Pinv X a, hl2⟩ haT
       apply Subtype.ext
       show a = Pmap X l

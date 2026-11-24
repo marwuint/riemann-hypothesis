@@ -339,8 +339,7 @@ theorem exists_gen : ∃ a : D.R, ∀ x : D.R, D.p2 x = 1 ↔ x ∈ Subgroup.zpo
   refine ⟨g.1, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩
   · obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp (hg ⟨x, hx⟩)
     refine Subgroup.mem_zpowers_iff.mpr ⟨k, ?_⟩
-    have h3 := congrArg Subtype.val hk
-    simpa using h3
+    simpa using congrArg Subtype.val hk
   · obtain ⟨k, rfl⟩ := Subgroup.mem_zpowers_iff.mp hx
     rw [map_zpow, MonoidHom.mem_ker.mp g.2, one_zpow]
 
@@ -357,8 +356,7 @@ theorem hA_ker (k : ℤ) (hk : D.hA (k • Additive.ofMul D.gen) = 0) : k • Ad
   have h2 : D.p2 (D.gen ^ k) = 1 := by
     rw [map_zpow, (D.gen_spec D.gen).mpr (Subgroup.mem_zpowers _), one_zpow]
   have h1 : D.p1 (D.gen ^ k) = 1 := by
-    rw [← ofMul_eq_zero]
-    exact hk
+    rwa [← ofMul_eq_zero]
   rw [ofMul_eq_zero]
   exact D.eq_one_of h1 h2
 
@@ -525,8 +523,7 @@ theorem art_snd_one (u : (ZMod (D.m * q * d))ˣ) (hu : (u : ZMod (D.m * q * d)).
   have h1 : ZMod.unitsMap (D.m_dvd q d) u = 1 := by
     apply Units.ext
     rw [D7.unitsMap_val, Units.val_one]
-    have h2 := (ZMod.natCast_eq_natCast_iff _ _ _).mpr hu
-    simpa using h2
+    simpa using (ZMod.natCast_eq_natCast_iff _ _ _).mpr hu
   rw [art_snd, h1, map_one, one_mul]
 
 theorem art_eq_one (u : (ZMod (D.m * q * d))ˣ) (h1 : (D.art hH u).1.1 = 1) (h2 : (D.art hH u).1.2 = 1)
@@ -542,8 +539,7 @@ theorem eta_one (u : (ZMod (D.m * q * d))ˣ) (hu : (u : ZMod (D.m * q * d)).val 
   have h1 : ZMod.unitsMap (D.m_dvd q d) u = 1 := by
     apply Units.ext
     rw [D7.unitsMap_val, Units.val_one]
-    have h2 := (ZMod.natCast_eq_natCast_iff _ _ _).mpr hu
-    simpa using h2
+    simpa using (ZMod.natCast_eq_natCast_iff _ _ _).mpr hu
   rw [h1, map_one]
 
 variable (hc : Nat.Coprime D.m (q * d))

@@ -119,8 +119,7 @@ theorem formGSD_good (hX : X.Ok) (C : CoefPk X n (DecoSet (E := X.E) (n := n) (S
       refine Finite.of_injective (fun a : MulAction.stabilizer (formGSD C Λ).G d =>
         (⟨FormG.incl Λ a.1, a.2⟩ :
           MulAction.stabilizer (UF X.E n × GLG (E := X.E) (n := n) (SG := SG)) d)) ?_
-      intro a b hab
-      exact Subtype.ext (FormG.incl_injective Λ (congrArg Subtype.val hab))
+      exact fun a b hab => Subtype.ext (FormG.incl_injective Λ (congrArg Subtype.val hab))
     · intro g d
       obtain ⟨m, hm, hc⟩ := Λ.chr_root g.2
       exact (hE.nab_smul (FormG.incl Λ g) d).trans (map_root_smul _ _ hm hc).symm
@@ -146,13 +145,11 @@ theorem formGSD_good (hX : X.Ok) (C : CoefPk X n (DecoSet (E := X.E) (n := n) (S
   · intro d y hy
     rw [Nat.cast_one, one_smul]
     have : y ∈ Formalism.HermitianLatticesTheory.dual C.pair (C.Nab d) := hy
-    rw [hC.dual d] at this
-    exact this
+    rwa [hC.dual d] at this
   · intro d y hy
     rw [Nat.cast_one, one_smul]
     show y ∈ Formalism.HermitianLatticesTheory.dual C.pair (C.Nab d)
-    rw [hC.dual d]
-    exact hy
+    rwa [hC.dual d]
 
 end Pk
 
@@ -210,8 +207,7 @@ theorem rf_hform_one (x y : Sp X.E n) : Formalism.UG.hform (starRingEnd X.E) (1 
     rfl
   · intro j _ hj
     rw [Matrix.one_apply_ne hj.symm, mul_zero, zero_mul]
-  · intro h
-    exact absurd (Finset.mem_univ i) h
+  · exact fun h => absurd (Finset.mem_univ i) h
 
 theorem rf_hdualFr_tauLat (hX : X.Ok) {N : Submodule (𝓞 X.E) (Sp X.E n)} (hl : Submodule.IsFullLattice X.E N)
     (hu : IsUnimodular (hStd X.E n) N) (τ : X.Tau) :
@@ -223,8 +219,7 @@ theorem rf_hdualFr_tauLat (hX : X.Ok) {N : Submodule (𝓞 X.E) (Sp X.E n)} (hl 
       refine forall₂_congr fun x _ => ?_
       rw [rf_hform_one, Submodule.mem_one]
       rfl)
-  rw [rf_gramK_one] at h
-  exact h
+  rwa [rf_gramK_one] at h
 
 theorem squarePk_dualP (hX : X.Ok) (hl : ∀ d, Submodule.IsFullLattice X.E (L d))
     (hu : ∀ d, IsUnimodular (hStd X.E n) (L d)) : (squarePk X lam L).DualP := by

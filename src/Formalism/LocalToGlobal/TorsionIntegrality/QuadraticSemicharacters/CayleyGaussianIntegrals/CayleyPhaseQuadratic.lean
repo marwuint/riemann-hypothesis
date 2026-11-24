@@ -218,8 +218,7 @@ theorem ud_radical (h : UnitaryData H Λ α δ Ae) {x : V} (hx : x ∈ Λ)
         linear_combination -hn
       exact_mod_cast h3
     have hsd : dualLat H Λ = Λ := h.selfDual
-    rw [hsd] at hd
-    exact hd
+    rwa [hsd] at hd
   have hc := h.cay (Ae.symm x)
   rw [LinearEquiv.apply_symm_apply] at hc
   have hw : δ.symm (Ae.symm x) ∈ Λ := by
@@ -258,8 +257,7 @@ theorem ud_phi_latA (h : UnitaryData H Λ α δ Ae) {w : V} (hw : w ∈ Λ) (hy 
     have hE : altE H (δ w - w) w = -altE H w (δ w) := by
       have i2 := congrArg Complex.im (h.herm w (δ w))
       simp only [altE, map_sub, LinearMap.sub_apply, Complex.sub_im, h0, sub_zero]
-      simp only [Complex.conj_im] at i2
-      exact i2
+      simpa only [Complex.conj_im] using i2
     rw [hE] at e1
     have hα : α w ^ 2 = 1 := by
       rcases h.semi.1 w hw with h' | h' <;> rw [h'] <;> norm_num
@@ -383,41 +381,25 @@ theorem bQ_mk (h : UnitaryData H Λ α δ Ae) (x y : Λ) :
 theorem ud_isQuadFn (h : UnitaryData H Λ α δ Ae) : IsQuadFn (phiQ H Λ α δ Ae) (bQ H Λ δ Ae) := by
   constructor
   · intro c d
-    induction c using QuotientAddGroup.induction_on with
-    | H x =>
-      induction d using QuotientAddGroup.induction_on with
-      | H y =>
-        rw [← QuotientAddGroup.mk_add, phiQ_mk h, phiQ_mk h, phiQ_mk h, bQ_mk h]
-        exact ud_phi_add h x.2 y.2
+    refine QuotientAddGroup.induction_on c fun x => QuotientAddGroup.induction_on d fun y => ?_
+    rw [← QuotientAddGroup.mk_add, phiQ_mk h, phiQ_mk h, phiQ_mk h, bQ_mk h]
+    exact ud_phi_add h x.2 y.2
   · intro c d e
-    induction c using QuotientAddGroup.induction_on with
-    | H x =>
-      induction d using QuotientAddGroup.induction_on with
-      | H y =>
-        induction e using QuotientAddGroup.induction_on with
-        | H z =>
-          rw [← QuotientAddGroup.mk_add, bQ_mk h, bQ_mk h, bQ_mk h]
-          exact bC_add_left _ _ _
+    refine QuotientAddGroup.induction_on c fun x => QuotientAddGroup.induction_on d fun y =>
+      QuotientAddGroup.induction_on e fun z => ?_
+    rw [← QuotientAddGroup.mk_add, bQ_mk h, bQ_mk h, bQ_mk h]
+    exact bC_add_left _ _ _
   · intro k c
-    induction c using QuotientAddGroup.induction_on with
-    | H x =>
-      rw [← QuotientAddGroup.mk_nsmul, phiQ_mk h, phiQ_mk h]
-      exact ud_phi_nsmul h x.2 k
+    refine QuotientAddGroup.induction_on c fun x => ?_
+    rw [← QuotientAddGroup.mk_nsmul, phiQ_mk h, phiQ_mk h]
+    exact ud_phi_nsmul h x.2 k
   · intro c
-    induction c using QuotientAddGroup.induction_on with
-    | H x =>
-      rw [phiQ_mk h]
-      intro h0
-      have := ud_norm h x.2
-      rw [h0, norm_zero] at this
-      exact zero_ne_one this
-  · intro c hc
-    induction c using QuotientAddGroup.induction_on with
-    | H x =>
-      rw [QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]
-      refine ud_radical h x.2 fun x' hx' => ?_
-      have := hc (QuotientAddGroup.mk (⟨x', hx'⟩ : Λ))
-      rwa [bQ_mk h] at this
+    refine QuotientAddGroup.induction_on c fun x => ?_
+    rw [phiQ_mk h]
+    exact norm_ne_zero_iff.1 (ud_norm h x.2 ▸ one_ne_zero)
+  · refine fun c => QuotientAddGroup.induction_on c fun x hc => ?_
+    rw [QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]
+    exact ud_radical h x.2 fun x' hx' => (bQ_mk h x ⟨x', hx'⟩).symm.trans (hc _)
 
 end Phi
 
@@ -441,8 +423,7 @@ theorem UnitaryGauss_of (hG : GaussEighth) : UnitaryGauss := by
       have e : (a.1 : V) - b.1 = -(((-(⟨a.1, hSΛ a.1 a.2⟩ : Λ) + ⟨b.1, hSΛ b.1 b.2⟩ : Λ)) : V) := by
         push_cast
         abel
-      rw [e]
-      exact h2
+      rwa [e]
     · intro q
       obtain ⟨y, rfl⟩ := QuotientAddGroup.mk_surjective q
       obtain ⟨x, hx, hyx⟩ := hSsurj y.1 y.2
@@ -453,8 +434,7 @@ theorem UnitaryGauss_of (hG : GaussEighth) : UnitaryGauss := by
         push_cast
         abel
       have h3 : ((-(⟨x, hSΛ x hx⟩ : Λ) + y : Λ) : V) ∈ latA Λ δ Ae := by
-        rw [e]
-        exact hyx
+        rwa [e]
       exact h3
   letI : Fintype (Λ ⧸ (latA Λ δ Ae).addSubgroupOf Λ) := Fintype.ofBijective f hf
   have hsum : ∑ x ∈ S, phiC H α Ae x = ∑ q : Λ ⧸ (latA Λ δ Ae).addSubgroupOf Λ, phiQ H Λ α δ Ae q := by

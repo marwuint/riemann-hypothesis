@@ -74,8 +74,7 @@ def entSub (𝒜 : StarSubalgebra ℂ A) : Subalgebra ℂ (SlopeTestRemainingCho
 
 variable {𝒜 : StarSubalgebra ℂ A}
 
-theorem mem_entSub {M : SlopeTestRemainingChoices S A} : M ∈ entSub 𝒜 ↔ ∀ i j, M i j ∈ 𝒜 := by
-  exact Iff.rfl
+theorem mem_entSub {M : SlopeTestRemainingChoices S A} : M ∈ entSub 𝒜 ↔ ∀ i j, M i j ∈ 𝒜 := Iff.rfl
 
 theorem star_mem_entSub {M : SlopeTestRemainingChoices S A} (h : M ∈ entSub 𝒜) : star M ∈ entSub 𝒜 := by
   rw [mem_entSub] at h ⊢
@@ -134,12 +133,10 @@ theorem eval_two_sub {M N : M2 (SlopeTestRemainingChoices S A)} (hM : E2 𝒜 M)
   exact sub_mem (hM i j) (hN i j)
 
 theorem permutation_entries_mem (a : S) : E2 𝒜 (P0 a : M2 (SlopeTestRemainingChoices S A)) := by
-  intro i j
-  exact eU_mem a j i
+  exact fun i j => eU_mem a j i
 
 theorem permutation_left_entries_mem (a : S) : E2 𝒜 (Q0 a : M2 (SlopeTestRemainingChoices S A)) := by
-  intro i j
-  exact eU_mem a i j
+  exact fun i j => eU_mem a i j
 
 theorem reflection_entries_mem (a : S) (D : ℂ) : E2 𝒜 (Rh0 (K := ℂ) a D : M2 (SlopeTestRemainingChoices S A)) := by
   unfold Rh0
@@ -204,12 +201,9 @@ theorem scal_mem (a : ℂ) : (a • (1 : SlopeTestRemainingChoices S A)) ∈ ent
 
 theorem cl_start (L : LevelData A r) (st : Start A) (hg : Gens 𝒜 L st) : Cl 𝒜 st (st.frame : FrameData S A) := by
   refine ⟨(entSub 𝒜).one_mem, (entSub 𝒜).one_mem, (entSub 𝒜).one_mem, (entSub 𝒜).one_mem, ?_, ?_, ?_⟩
-  · intro Y hY i j
-    exact io_mem (hg.2.1 Y hY i j)
-  · intro Y hY
-    exact io_mem (hg.2.2.1 Y hY)
-  · intro Y hYs hY
-    exact io_mem (hg.2.2.2 Y hYs hY)
+  · exact fun Y hY i j => io_mem (hg.2.1 Y hY i j)
+  · exact fun Y hY => io_mem (hg.2.2.1 Y hY)
+  · exact fun Y hYs hY => io_mem (hg.2.2.2 Y hYs hY)
 
 theorem cl_plus (L : LevelData A r) (st : Start A) (f : FrameData S A) (hf : IsFrame L f) (hC : Cl 𝒜 st f)
     (hz : ∀ g ∈ zfns L, g ∈ 𝒜) (a : S) {Ya : ℂ} (hY : star Ya = Ya) (hYs : Ya ∈ st.inv) (hY1s : Ya + 1 ∈ st.inv)
@@ -228,8 +222,7 @@ theorem cl_plus (L : LevelData A r) (st : Start A) (f : FrameData S A) (hf : IsF
       ((entSub 𝒜).smul_mem (hC.2.2.2.2.2.2 (Ya + 1) hY1s hY1) _) h0m h0m (hC.2.2.2.2.2.1 Ya hY)))
   · exact (entSub 𝒜).mul_mem hC.2.2.2.1 (ins_mem a (entries_mem_of_four
       ((entSub 𝒜).smul_mem (hC.2.2.2.2.2.1 (Ya + 1) hY1) _) h0m h0m (hC.2.2.2.2.2.2 Ya hYs hY)))
-  · intro Y hYr
-    exact entries_mem_mul (hC.2.2.2.2.1 Y hYr) (reflection_entries_mem a (Y - Ya))
+  · exact fun Y hYr => entries_mem_mul (hC.2.2.2.2.1 Y hYr) (reflection_entries_mem a (Y - Ya))
   · intro Y hYr
     exact (entSub 𝒜).mul_mem (hC.2.2.2.2.2.1 Y hYr) (ins_mem a (entries_mem_of_four (scal_mem _) h0m h0m h1m))
   · intro Y hYs' hYr

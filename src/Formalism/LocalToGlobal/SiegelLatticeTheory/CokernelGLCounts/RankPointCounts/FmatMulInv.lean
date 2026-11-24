@@ -83,8 +83,7 @@ theorem uj_map_iff {A B : Type} [CommRing A] [CommRing B] {m : Type} [Fintype m]
   constructor
   · intro h
     rw [h]
-  · intro h
-    exact Matrix.map_injective φ.injective h
+  · exact fun h => Matrix.map_injective φ.injective h
 
 end General
 
@@ -122,8 +121,7 @@ theorem mem_upts_iff (g : GL (Fin I.n) (I.E ⊗[I.F] Formalism.MainNotions.S.Af 
       Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (Formalism.MainNotions.S.Af I.F) I.J := by
     ext i j
     simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR, c_inclE]
-  rw [hJ] at h
-  exact h
+  rwa [hJ] at h
 
 theorem upts_map : (Formalism.UG.UPts I.cm.sig I.J (Formalism.MainNotions.S.Af I.F)).map (psi0 I).toMonoidHom =
     HR (Formalism.MainNotions.S.Af I.F) I.cm.sig I.J := by
@@ -241,8 +239,7 @@ theorem mem_hsub_iff (x : X.B.I.Gf) :
   simp only [linear_adelic_action_fixed_iff]
   change (∀ y ∈ fixSet X u, _) ↔ _
   constructor
-  · intro hx b
-    exact hx _ (tupH_mem X u b)
+  · exact fun hx b => hx _ (tupH_mem X u b)
   · intro hx y hy
     obtain ⟨b, rfl⟩ := mem_tupH X u y hy
     exact hx b
@@ -274,8 +271,7 @@ def kR : Subgroup (Hfin X u) :=
     (Hsub (Formalism.MainNotions.S.Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))).comap (psiH X u).toMonoidHom
 
 theorem massH_eq : massH X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) (frameOf X u) =
-    massCl (gamR X u) (kR X u) := by
-  exact (massCl_comap (psiH X u) _ _).symm
+    massCl (gamR X u) (kR X u) := (massCl_comap (psiH X u) _ _).symm
 
 theorem mem_gamR_iff (h : Hfin X u) : h ∈ gamR X u ↔
     ∃ M : GL (Fin X.B.I.n) X.B.I.E, M ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J ∧
@@ -308,10 +304,8 @@ theorem mem_gamR_iff (h : Hfin X u) : h ∈ gamR X u ↔
       (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.S.Af X.B.I.F)) := rfl
   rw [Units.ext_iff, hbc, coe_psi0_eq_map_cE, ← hmap]
   constructor
-  · intro hM
-    exact (Matrix.map_injective (cE X.B.I).injective hM).symm
-  · intro hM
-    exact congrArg (fun N => N.map (cE X.B.I)) hM.symm
+  · exact fun hM => (Matrix.map_injective (cE X.B.I).injective hM).symm
+  · exact fun hM => congrArg (fun N => N.map (cE X.B.I)) hM.symm
 
 theorem mem_kR_iff (h : Hfin X u) : h ∈ kR X u ↔ (h : X.B.I.Gf) ∈ X.B.I.Kset := by
   rw [kset_iff]
@@ -397,8 +391,7 @@ theorem mem_gmap (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Λ : Submodule (𝓞
   constructor
   · rintro ⟨x, hx, rfl⟩
     simpa using hx
-  · intro hy
-    exact ⟨γ.symm y, hy, by simp⟩
+  · exact fun hy => ⟨γ.symm y, hy, by simp⟩
 
 theorem lat_act (g h k : Hfin X u) (M : GL (Fin X.B.I.n) X.B.I.E)
     (hM : X.B.I.fmat (g : X.B.I.Gf) = (M : Matrix _ _ _).map (Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F)))

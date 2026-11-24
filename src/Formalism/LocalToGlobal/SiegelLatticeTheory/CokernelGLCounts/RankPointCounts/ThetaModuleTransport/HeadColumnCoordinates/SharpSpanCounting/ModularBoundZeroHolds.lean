@@ -131,8 +131,7 @@ theorem headCols_le_range (Z : M.Mat (r + 1)) :
     rw [Submodule.span_le]
     rintro _ ⟨a, rfl⟩
     exact ⟨Pi.single a.castSucc 1, (col_eq_mulVec Z.Z a.castSucc).symm⟩
-  intro x hx
-  exact h hx
+  exact fun x hx => h hx
 
 def ell (Z : M.Mat (r + 1)) : MbMod Z.Z →ₗ[M.R] E :=
   (headCols Z.Z).liftQ (ellRaw Z) (headCols_le_ker Z)
@@ -176,8 +175,7 @@ theorem ell_e (Z : M.Mat (r + 1)) (hD : headDet M Z.Z = 0) : ell Z (eCl Z.Z) = 0
   have h2 : (Z.Z.map M.R.subtype).adjugate (Fin.last r) (Fin.last r) = 0 := by
     rw [Matrix.adjugate_fin_succ_eq_det_submatrix, Fin.succAbove_last, hD, mul_zero]
   rw [h1, Matrix.inv_def]
-  simp [Matrix.mulVec, dotProduct, Pi.single_apply]
-  exact mul_eq_zero_of_right _ h2
+  simpa [Matrix.mulVec, dotProduct, Pi.single_apply] using mul_eq_zero_of_right _ h2
 
 theorem lam_piC (Z : M.Mat (r + 1)) (m : MbMod Z.Z) :
     M.lam Z (piC Z m) = M.Rsub.mkQ (ell Z m) := by
@@ -205,8 +203,7 @@ theorem Phi_inj (Z : M.Mat (r + 1)) : Function.Injective (Phi Z) := by
   rw [Submodule.Quotient.mk_eq_zero]
   apply mulVec_mem_headCols
   have h3 : ((w (Fin.last r) : M.R) : E) = 0 := by
-    rw [← ellRaw_mulVec]
-    exact h2
+    rwa [← ellRaw_mulVec]
   exact Subtype.ext h3
 
 theorem mem_range_Phi (Z : M.Mat (r + 1)) (p : M.Cok Z × E) :
@@ -235,8 +232,7 @@ theorem ePhi_coe (Z : M.Mat (r + 1)) (m : MbMod Z.Z) : (ePhi Z m : M.Cok Z × E)
 
 theorem det_unit (Z : M.Mat (r + 1)) : IsUnit ((Z.Z.det : M.R) : E) := by
   have h := Z.unit
-  rw [← RingHom.mapMatrix_apply, ← RingHom.map_det] at h
-  exact h
+  rwa [← RingHom.mapMatrix_apply, ← RingHom.map_det] at h
 
 theorem det_smul_mk (Z : M.Mat (r + 1)) (v : Fin (r + 1) → M.R) :
     Z.Z.det • (Submodule.Quotient.mk v : MbMod Z.Z) =
@@ -314,14 +310,12 @@ theorem map_sig (ψ : M.Cok Z₁ ≃ₗ[M.R] M.Cok Z₂) (hl : ∀ v, M.lam Z₂
   constructor
   · rintro ⟨q, hq, rfl⟩
     rw [mem_range_Phi] at hq
-    simp only [LinearEquiv.coe_coe, sig_apply, hl]
-    exact hq
+    simpa only [LinearEquiv.coe_coe, sig_apply, hl] using hq
   · intro hp
     refine ⟨(ψ.symm p.1, p.2), ?_, ?_⟩
     · rw [mem_range_Phi]
       dsimp only
-      rw [← hl (ψ.symm p.1), LinearEquiv.apply_symm_apply]
-      exact hp
+      rwa [← hl (ψ.symm p.1), LinearEquiv.apply_symm_apply]
     · rw [LinearEquiv.coe_coe, sig_apply]
       dsimp only
       rw [LinearEquiv.apply_symm_apply]
@@ -364,8 +358,7 @@ def isoEquiv (hD₁ : headDet M Z₁.Z = 0) (hD₂ : headDet M Z₂.Z = 0) :
 
 theorem modularBoundZero_holds (M : Model F E) (r : ℕ) : Mbe0 M r := by
   unfold Mbe0
-  intro Z₁ Z₂ hD₁ hD₂
-  exact Nat.card_congr (isoEquiv hD₁ hD₂)
+  exact fun Z₁ Z₂ hD₁ hD₂ => Nat.card_congr (isoEquiv hD₁ hD₂)
 
 end Mod
 

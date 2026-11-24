@@ -189,29 +189,16 @@ theorem sum_dif_le (hq : ∀ i, 2 ≤ q i) {R : ι → ℕ → ℝ}
     have hc : 0 ≤ 8 * ((j : ℝ) + 2) ^ 2 := by positivity
     have e : (q i ^ 2)⁻¹ * (8 * ((j : ℝ) + 2) ^ 2 * (1 / 2 : ℝ) ^ j) * q i ^ (j + 1) =
         8 * ((j : ℝ) + 2) ^ 2 * (q i / 2) ^ j / q i := by
-      have h2 : (q i ^ 2)⁻¹ * q i ^ (j + 1) = q i ^ j / q i := by
-        rw [pow_succ (q i) j, sq]
-        first
-          | (field_simp; ring)
-          | field_simp
-      calc (q i ^ 2)⁻¹ * (8 * ((j : ℝ) + 2) ^ 2 * (1 / 2 : ℝ) ^ j) * q i ^ (j + 1)
-          = 8 * ((j : ℝ) + 2) ^ 2 * (1 / 2 : ℝ) ^ j * ((q i ^ 2)⁻¹ * q i ^ (j + 1)) := by ring
-        _ = 8 * ((j : ℝ) + 2) ^ 2 * ((1 / 2 : ℝ) ^ j * q i ^ j) / q i := by rw [h2]; ring
-        _ = 8 * ((j : ℝ) + 2) ^ 2 * (q i / 2) ^ j / q i := by rw [← mul_pow]; ring_nf
+      field_simp
+      ring
     rw [e]
     calc |R i (j + 1) - R i j| ≤ 8 * ((j : ℝ) + 2) ^ 2 / q i := hRb i j
-      _ ≤ 8 * ((j : ℝ) + 2) ^ 2 * (q i / 2) ^ j / q i := by
-        first
-          | exact div_le_div_of_nonneg_right (le_mul_of_one_le_right hc hx) hq0.le
-  calc ∑ j ∈ range J, |R i (j + 1) - R i j| / q i ^ (j + 1)
-      ≤ ∑ j ∈ range J, (q i ^ 2)⁻¹ * (8 * ((j : ℝ) + 2) ^ 2 * (1 / 2 : ℝ) ^ j) :=
-        Finset.sum_le_sum hterm
-    _ = (q i ^ 2)⁻¹ * ∑ j ∈ range J, 8 * ((j : ℝ) + 2) ^ 2 * (1 / 2 : ℝ) ^ j := by
-        rw [Finset.mul_sum]
-    _ ≤ (q i ^ 2)⁻¹ * cGeom := by
-        apply mul_le_mul_of_nonneg_left _ (by positivity)
-        exact summable_sq_geom.sum_le_tsum _ (fun j _ => by positivity)
-    _ = cGeom * (q i ^ 2)⁻¹ := mul_comm _ _
+      _ ≤ 8 * ((j : ℝ) + 2) ^ 2 * (q i / 2) ^ j / q i :=
+        div_le_div_of_nonneg_right (le_mul_of_one_le_right hc hx) hq0.le
+  refine (Finset.sum_le_sum hterm).trans ?_
+  rw [← Finset.mul_sum, mul_comm cGeom]
+  exact mul_le_mul_of_nonneg_left (summable_sq_geom.sum_le_tsum _ fun j _ => by positivity)
+    (by positivity)
 
 theorem summable_dif (hq : ∀ i, 2 ≤ q i) (hsum : Summable fun i => (q i ^ 2)⁻¹) {R : ι → ℕ → ℝ}
     (hRb : ∀ i j, |R i (j + 1) - R i j| ≤ 8 * ((j : ℝ) + 2) ^ 2 / q i) :

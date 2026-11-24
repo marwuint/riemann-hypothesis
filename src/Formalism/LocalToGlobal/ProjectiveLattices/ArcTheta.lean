@@ -120,9 +120,7 @@ theorem frame_of_gen (Xo : Moduli Dw l) {S : Type} [CommRing S] (x : Sp S ⟶ Xo
     have hle : ∀ j, m1.φ ⁻¹ᵁ Xo.univ.t.PP.L.U j ≤ g0 ⁻¹ᵁ (PPx x).U (fun _ => j) := by
       intro j y hy
       have e : (g0 ≫ (snd (Over.mk x) Xo.univ.t.G).left) y ∈ Xo.univ.t.PP.L.U j := by
-        rw [g0F]
-        exact hy
-      show g0.base y ∈ (⋂ k : Fin 1, ((snd (Over.mk x) Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U j : Set _)))
+        rwa [g0F]
       exact Set.mem_iInter.2 fun _ => e
     have mm : ∀ (y : t'.G.left) j, m1.φ y ∈ Xo.univ.t.PP.L.U j → g0 y ∈ (PPx x).U (fun _ => j) :=
       fun y j hj => hle j hj
@@ -159,8 +157,7 @@ theorem frame_of_gen (Xo : Moduli Dw l) {S : Type} [CommRing S] (x : Sp S ⟶ Xo
         exact e
       have eR1 : gs (𝟙 _) y _ (scal x a (fun _ => j)) = cst (fst (Over.mk x) Xo.univ.t.G).left y a := by
         have := gs_constFn (fst (Over.mk x) Xo.univ.t.G).left ((PPx x).U (fun _ => j)) (𝟙 _) y hy a
-        rw [Category.id_comp] at this
-        exact this
+        rwa [Category.id_comp] at this
       have eR2 : gs (𝟙 _) y ((PPx x).U (fun _ => j)) ((thfPull1 Xo.univ.t.PP.L h hF s1).f (fun _ => j)) =
           (gw w1 h y j k).val * gs h y _ (σ'.f k) := by
         have := gs_appLE h _ _ (chart_le_pullback_open Xo.univ.t.PP.L h hF (fun _ => j)) (𝟙 _) y hy (s1.f (fun _ => j))
@@ -182,13 +179,11 @@ theorem frame_of_gen (Xo : Moduli Dw l) {S : Type} [CommRing S] (x : Sp S ⟶ Xo
       have e1 := hσ'' _ (𝟙 _) y j k hj hy
       have c1 : gs g0 y _ (scal x b (fun _ => j)) = cst t'.G.hom y b := by
         have := gs_constFn (fst (Over.mk x) Xo.univ.t.G).left ((PPx x).U (fun _ => j)) g0 y (mm y j hj) b
-        rw [g0S] at this
-        exact this
+        rwa [g0S] at this
       have c2 : gs g0 y ((PPx x).U (fun _ => j)) ((thfPull1 Xo.univ.t.PP.L h hF s1).f (fun _ => j)) =
           gs (𝟙 _) y _ (s1.f (fun _ => j)) := by
         have := gs_appLE h _ _ (chart_le_pullback_open Xo.univ.t.PP.L h hF (fun _ => j)) g0 y (mm y j hj) (s1.f (fun _ => j))
-        rw [hgh0] at this
-        exact this
+        rwa [hgh0] at this
       have e2 : gs (𝟙 _) y _ ((g0.appLE _ _ (hle j)).hom (s''.f (fun _ => j))) =
           cst t'.G.hom y b * ((gw w1 (𝟙 _) y j k).val * gs (𝟙 _) y _ (σ'.f k)) := by
         rw [gs_appLE g0 _ _ (hle j) (𝟙 _) y (show y ∈ m1.φ ⁻¹ᵁ Xo.univ.t.PP.L.U j from hj), Category.id_comp,

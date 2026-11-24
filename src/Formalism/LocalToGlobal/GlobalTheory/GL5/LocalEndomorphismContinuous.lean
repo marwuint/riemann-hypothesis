@@ -175,8 +175,7 @@ theorem pow_subset_nhds (I : Ideal R) (hI : (⨅ n : ℕ, I ^ n) = ⊥) (V : Set
     rintro ⟨hxW, hx⟩
     have hx0 : x ∈ (⨅ n : ℕ, I ^ n : Ideal R) := by
       rw [Submodule.mem_iInf]
-      intro n
-      exact Set.mem_iInter.mp hx n
+      exact fun n => Set.mem_iInter.mp hx n
     rw [hI, Ideal.mem_bot] at hx0
     exact hxW (by rw [hx0]; exact hW0)
   have hdir : Directed (· ⊇ ·) (fun n : ℕ => ((I ^ n : Ideal R) : Set R)) := by
@@ -368,15 +367,12 @@ theorem isProGrp_transfer {G₁ G₂ : Type} [Group G₁] [TopologicalSpace G₁
       left_inv := fun x => Subtype.ext (h3 x.1 x.2)
       right_inv := fun p => Subtype.ext (h2 p p.2).2
       map_mul' := fun x y => Subtype.ext (map_mul θ x.1 y.1) }
-  have hec : Continuous (e.symm : P → Uw) := by
-    show Continuous (fun p : P => (⟨ψ p, (h2 p p.2).1⟩ : Uw))
-    exact (hψ.comp continuous_subtype_val).subtype_mk _
+  have hec : Continuous (e.symm : P → Uw) := (hψ.comp continuous_subtype_val).subtype_mk _
   refine ⟨?_, fun N hN hNn => ?_⟩
   · have hs : (Uw : Set G₁) = ψ '' (P : Set G₂) := by
       ext x
       constructor
-      · intro hx
-        exact ⟨θ x, h1 x hx, h3 x hx⟩
+      · exact fun hx => ⟨θ x, h1 x hx, h3 x hx⟩
       · rintro ⟨p, hp, rfl⟩
         exact (h2 p hp).1
     rw [hs]

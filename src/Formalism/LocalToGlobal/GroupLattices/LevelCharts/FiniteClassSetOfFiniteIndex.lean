@@ -88,8 +88,7 @@ theorem gram_det_unit (hc : CMData F E) (S : HSpace E) : IsUnit S.gram.det := by
     have hx : S.hT.flip (∑ j, v j • S.frame j) = 0 :=
       S.frame.ext (fun i => by simpa using hrow i)
     simpa using LinearMap.congr_fun hx x
-  have hv' := (Fintype.linearIndependent_iff.mp S.frame.linearIndependent) v hzero
-  exact hv0 (funext hv')
+  exact hv0 (funext ((Fintype.linearIndependent_iff.mp S.frame.linearIndependent) v hzero))
 
 theorem sig_conj (hc : CMData F E) (τ : E →+* ℂ) : τ.comp (hc.sig : E →+* E) = (starRingEnd ℂ).comp τ := by
   ext a
@@ -122,8 +121,7 @@ theorem gram_totDef (hc : CMData F E) (S : HSpace E) (hs : S.SigOK) (hd : S.IsDe
   unfold IsDefiniteAt
   obtain ⟨τ, hτ⟩ := exists_above hc ι
   have hJ : ∀ i j, star (S.gram i j) = S.gram j i := fun i j => by
-    have hH := gram_herm hc S
-    exact congrFun (congrFun hH j) i
+    exact congrFun (congrFun (gram_herm hc S) j) i
   have hfix : ∀ x : Fin S.rank → E,
       star (hform (hc.sig : E →+* E) S.gram x x) = hform (hc.sig : E →+* E) S.gram x x := by
     intro x
@@ -206,8 +204,7 @@ theorem gram_totDef (hc : CMData F E) (S : HSpace E) (hs : S.SigOK) (hd : S.IsDe
     refine ⟨a, ha, ?_⟩
     have hS : HasSignature (S.gram.map τ) S.rank 0 := by
       have h := hs τ
-      rw [hsig] at h
-      exact h
+      rwa [hsig] at h
     obtain ⟨Z, hZ, hZeq⟩ := hconj _ _ hS _ (hyne x hx)
     rw [hZeq, hJpq] at hι
     have hu : (fun b => Z (Sum.inl b)) ≠ 0 := by
@@ -229,8 +226,7 @@ theorem gram_totDef (hc : CMData F E) (S : HSpace E) (hs : S.SigOK) (hd : S.IsDe
     refine ⟨a, ha, ?_⟩
     have hS : HasSignature (S.gram.map τ) 0 S.rank := by
       have h := hs τ
-      rw [hsig] at h
-      exact h
+      rwa [hsig] at h
     obtain ⟨Z, hZ, hZeq⟩ := hconj _ _ hS _ (hyne x hx)
     rw [hZeq, hJpq] at hι
     have hu : (fun b => Z (Sum.inr b)) ≠ 0 := by

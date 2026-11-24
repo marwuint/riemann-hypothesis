@@ -107,8 +107,7 @@ theorem quotientClass_surjective (q : WbQ D F0) : ∃ w c, q = quotientClass D u
   obtain ⟨w, c, h⟩ := exists_decomp_orth_isotropic D u hT F0 he hz x.1 ((mem_perpS_iff_mem_orth D u F0 _).1 x.2)
   refine ⟨w, c, ?_⟩
   unfold quotientClass
-  rw [Submodule.Quotient.eq]
-  exact h
+  rwa [Submodule.Quotient.eq]
 
 include hT hz in
 theorem quotientClass_injective_left {w w' : (D.sp.X 0).V} {c c' : D.host.E} (h : quotientClass D u F0 he w c = quotientClass D u F0 he w' c') :
@@ -131,8 +130,7 @@ theorem quotientClass_injective_left {w w' : (D.sp.X 0).V} {c c' : D.host.E} (h 
     refine ⟨⟨_, rfl⟩, ?_⟩
     have e : D.sp.iXY 0 (w - w') = D.sp.iXY 0 w + c • F0.z - (D.sp.iXY 0 w' + c • F0.z) := by
       rw [map_sub]; abel
-    rw [e]
-    exact h'
+    rwa [e]
   rw [(Formalism.MainNotions.WHyp_Wsp D u hT (lf D F0) he hz).2.1, Submodule.mem_bot] at h2
   exact sub_eq_zero.1 (embedding_W_injective D (by rw [h2, map_zero]))
 
@@ -166,8 +164,7 @@ theorem gmap_latticeWithZ_of_induced (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (
     have h1 := hind (γ.symm w)
     rw [LinearEquiv.apply_symm_apply] at h1
     have h2 : σ.symm (σ (D.sp.iXY 0 (γ.symm w)) - D.sp.iXY 0 w) ∈ F0.X := by
-      rw [← Submodule.mem_map_equiv, hX]
-      exact h1
+      rwa [← Submodule.mem_map_equiv, hX]
     have hzs : σ.symm F0.z = F0.z := by
       rw [LinearEquiv.symm_apply_eq]
       exact hσ.2.2.symm
@@ -270,8 +267,7 @@ theorem gluing_count_of_gluing_number (h : GluingNumber D u) : GluingCount D u :
   have h1 := h hTp hT3 hsp F0 he hz Λ hΛ M hM
   refine ⟨Set.finite_of_ncard_ne_zero ?_, h1⟩
   have h2 : (Tu D u - 1) ^ D.R.f ≠ 0 := pow_ne_zero _ (by omega)
-  intro h0
-  exact h2 (h1.symm.trans h0)
+  exact fun h0 => h2 (h1.symm.trans h0)
 
 theorem gluing_mass_of_lift_and_number (hpos : IsPosDef (D.sp.X 0).hT)
     (hlat : ForPrimeFlagLattice D u fun F0 Λ => Submodule.IsLattice D.host.E (L0X D Λ (lf D F0)))

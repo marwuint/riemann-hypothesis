@@ -235,20 +235,14 @@ lemma hasDerivAt_invpow' {c : ℝ → ℂ} {c' : ℂ} (hc : HasDerivAt c c' 0) {
 
 lemma hasDerivAt_polyD (X g : Mat k r) (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) :
     HasDerivAt (fun t => Dmin k r z z' (crv (false, X) g t) l) (eval (vars g) (dP X (qDl z z' l))) 0 := by
-  have h := hasDerivAt_poly X g (qDl (k := k) z z' l)
-  simp only [qDl_eval] at h
-  exact h
+  simpa only [qDl_eval] using hasDerivAt_poly X g (qDl (k := k) z z' l)
 
 lemma hasDerivAt_polyDb (X g : Mat k r) (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) :
     HasDerivAt (fun t => star (Dmin k r z z' (crv (false, X) g t) l)) (eval (vars g) (dP X (qDbl z z' l))) 0 := by
-  have h := hasDerivAt_poly X g (qDbl (k := k) z z' l)
-  simp only [qDbl_eval] at h
-  exact h
+  simpa only [qDbl_eval] using hasDerivAt_poly X g (qDbl (k := k) z z' l)
 
 lemma hasDerivAt_polyG (X g : Mat k r) (z z' : Fin (2 * r + k + 1) → ℂ) :
     HasDerivAt (fun t => ((Gf k r z z' (crv (false, X) g t) : ℝ) : ℂ)) (eval (vars g) (dP X (qGf z z'))) 0 := by
-  have h := hasDerivAt_poly X g (qGf (k := k) z z')
-  simp only [qGf_eval] at h
-  exact h
+  simpa only [qGf_eval] using hasDerivAt_poly X g (qGf (k := k) z z')
 
 end Formalism.FourierDecayAlt.P.MinorPolynomials

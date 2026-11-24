@@ -135,10 +135,8 @@ theorem chiM_spec [mF : MeasurableSpace (ι → F)] [hB : BorelSpace (ι → F)]
     constructor
     · rintro ⟨x, hx, rfl⟩
       have : (phiM M hM).symm ((phiM M hM) x) = x := (phiM M hM).symm_apply_apply x
-      rw [show M *ᵥ x = (phiM M hM) x from rfl, this]
-      exact hx
-    · intro hy
-      exact ⟨(phiM M hM).symm y, hy, (phiM M hM).apply_symm_apply y⟩
+      rwa [show M *ᵥ x = (phiM M hM) x from rfl, this]
+    · exact fun hy => ⟨(phiM M hM).symm y, hy, (phiM M hM).apply_symm_apply y⟩
   have key := addEquivAddHaarChar_smul_preimage ν (X := S) (phiM M hM).symm
   rw [addEquivAddHaarChar_symm, ENNReal.smul_def, smul_eq_mul] at key
   rw [himg, e, ← key, ← mul_assoc, ← ENNReal.coe_mul,

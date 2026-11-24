@@ -194,8 +194,7 @@ variable [Invertible (2 : K)]
 theorem star_half : star (⅟2 : K) = ⅟2 := by
   have h2 : (2 : K) * star (⅟2 : K) = 1 := by
     have := congrArg star (invOf_mul_self (2 : K))
-    rw [star_mul, star_one, star_ofNat] at this
-    exact this
+    rwa [star_mul, star_one, star_ofNat] at this
   exact (invOf_eq_right_inv h2).symm
 
 theorem half_add_half (M : Matrix ι ι K) : (⅟2 : K) • M + (⅟2 : K) • M = M := by
@@ -332,12 +331,10 @@ theorem cay_unitary {J : Matrix ι ι K} {N : ℕ} {Z : Matrix ι ι K} (hZ : Z�
   have h2 : geo N (-Y) * (1 + Y) = 1 := by
     unfold geo
     have := geom_sum_mul_neg (-Y) N
-    rw [sub_neg_eq_add, hN', sub_zero] at this
-    exact this
+    rwa [sub_neg_eq_add, hN', sub_zero] at this
   have hS1 : geo N Y = 1 + Y * geo N Y := by
     have := h1
-    rw [Matrix.sub_mul, Matrix.one_mul, sub_eq_iff_eq_add] at this
-    exact this
+    rwa [Matrix.sub_mul, Matrix.one_mul, sub_eq_iff_eq_add] at this
   have hC : cay N Z = 1 + Z * geo N Y := by
     rw [hYdef]
     rfl

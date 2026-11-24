@@ -81,7 +81,6 @@ theorem one_add_inv {ϖ : Fv F v} (hϖ : IsUnif v ϖ) {x : Fv F v ⊗[F] E} (hx 
     unfold IsUnif at hϖ
     rw [IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, hϖ, ← WithZero.coe_one,
       WithZero.coe_le_coe]
-    show Multiplicative.ofAdd (-1 : ℤ) ≤ Multiplicative.ofAdd 0
     exact Multiplicative.ofAdd_le.mpr (by norm_num)
   have hsc : ∀ z : Fv F v ⊗[F] E,
       sc (E := E) v ϖ * z = (⟨ϖ, hϖi⟩ : v.adicCompletionIntegers F) • z := by
@@ -133,7 +132,6 @@ theorem one_add_inv {ϖ : Fv F v} (hϖ : IsUnif v ϖ) {x : Fv F v ⊗[F] E} (hx 
       rw [hϖ] at hmul
       have hlt : (↑(Multiplicative.ofAdd (-1 : ℤ)) : WithZero (Multiplicative ℤ)) < 1 := by
         rw [← WithZero.coe_one, WithZero.coe_lt_coe]
-        show Multiplicative.ofAdd (-1 : ℤ) < Multiplicative.ofAdd 0
         exact Multiplicative.ofAdd_lt.mpr (by norm_num)
       have hcon : (1 : WithZero (Multiplicative ℤ)) ≤ ↑(Multiplicative.ofAdd (-1 : ℤ)) := by
         calc (1 : WithZero (Multiplicative ℤ)) = _ := hmul.symm
@@ -167,22 +165,14 @@ theorem det_sub_mem {a : ℕ} {ϖ : Fv F v} (hint : ϖ ∈ v.adicCompletionInteg
     (hB : ∀ i j, B i j ∈ OEv (E := E) v) (hAB : ∀ i j, A i j - B i j ∈ PO (E := E) v ϖ) :
     A.det - B.det ∈ PO (E := E) v ϖ := by
   have hsc : sc (E := E) v ϖ ∈ OEv (E := E) v := by
-    have h1 := oEv_one (E := E) v
-    unfold OEv at h1 ⊢
-    have h2 := Submodule.smul_mem _ (⟨ϖ, hint⟩ : v.adicCompletionIntegers F) h1
-    convert h2 using 1
-    simp [sc, Algebra.smul_def, Algebra.TensorProduct.one_def]
+    simpa using sc_mul_mem_oEv (E := E) v hint (oEv_one (E := E) v)
   let A' : Matrix (Fin a) (Fin a) (oEvR (E := E) v) := fun i j => ⟨A i j, hA i j⟩
   let B' : Matrix (Fin a) (Fin a) (oEvR (E := E) v) := fun i j => ⟨B i j, hB i j⟩
   let s : oEvR (E := E) v := ⟨sc (E := E) v ϖ, hsc⟩
-  have hdA : ((A'.det : oEvR (E := E) v) : Fv F v ⊗[F] E) = A.det := by
-    calc ((A'.det : oEvR (E := E) v) : Fv F v ⊗[F] E) = (oEvR (E := E) v).subtype A'.det := rfl
-      _ = ((oEvR (E := E) v).subtype.mapMatrix A').det := RingHom.map_det _ _
-      _ = A.det := rfl
-  have hdB : ((B'.det : oEvR (E := E) v) : Fv F v ⊗[F] E) = B.det := by
-    calc ((B'.det : oEvR (E := E) v) : Fv F v ⊗[F] E) = (oEvR (E := E) v).subtype B'.det := rfl
-      _ = ((oEvR (E := E) v).subtype.mapMatrix B').det := RingHom.map_det _ _
-      _ = B.det := rfl
+  have hdA : ((A'.det : oEvR (E := E) v) : Fv F v ⊗[F] E) = A.det :=
+    RingHom.map_det (oEvR (E := E) v).subtype A'
+  have hdB : ((B'.det : oEvR (E := E) v) : Fv F v ⊗[F] E) = B.det :=
+    RingHom.map_det (oEvR (E := E) v).subtype B'
   have hmem : A'.det - B'.det ∈ Ideal.span {s} := by
     rw [← Ideal.Quotient.eq, RingHom.map_det, RingHom.map_det]
     congr 1
@@ -194,15 +184,9 @@ theorem det_sub_mem {a : ℕ} {ϖ : Fv F v} (hint : ϖ ∈ v.adicCompletionInteg
     show c * sc (E := E) v ϖ = A i j - B i j
     rw [hceq, mul_comm]
   obtain ⟨b, hb⟩ := Ideal.mem_span_singleton'.mp hmem
-  show ∃ c ∈ OEv (E := E) v, A.det - B.det = sc (E := E) v ϖ * c
   refine ⟨b, b.2, ?_⟩
   rw [← hdA, ← hdB]
-  calc ((A'.det : oEvR (E := E) v) : Fv F v ⊗[F] E) - B'.det
-      = ((A'.det - B'.det : oEvR (E := E) v) : Fv F v ⊗[F] E) := rfl
-    _ = ((b * s : oEvR (E := E) v) : Fv F v ⊗[F] E) := by rw [hb]
-    _ = sc (E := E) v ϖ * b := by
-      show (b : Fv F v ⊗[F] E) * sc (E := E) v ϖ = _
-      exact mul_comm _ _
+  exact (congrArg Subtype.val hb.symm).trans (mul_comm (b : Fv F v ⊗[F] E) s)
 
 theorem gramInvO_holds (a : ℕ) (Y : TupV (E := E) v n a) : GramInvO σ J v Λ ψ a Y := by
   intro hG ϖ hϖ y hy hd
@@ -213,7 +197,6 @@ theorem gramInvO_holds (a : ℕ) (Y : TupV (E := E) v n a) : GramInvO σ J v Λ 
     unfold IsUnif at hϖ
     rw [IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, hϖ, ← WithZero.coe_one,
       WithZero.coe_le_coe]
-    show Multiplicative.ofAdd (-1 : ℤ) ≤ Multiplicative.ofAdd 0
     exact Multiplicative.ofAdd_le.mpr (by norm_num)
   have hsc : sc (E := E) v ϖ ∈ OEv (E := E) v := by
     have h1 := oEv_one (E := E) v

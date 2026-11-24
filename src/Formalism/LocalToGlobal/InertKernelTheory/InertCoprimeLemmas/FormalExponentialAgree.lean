@@ -105,12 +105,10 @@ theorem formal_equivalence_agree : SimeqAgree := by
   constructor
   · rintro ⟨h0, h1⟩
     refine ⟨h0, ?_⟩
-    rw [← expMv_eq_mvExp h0]
-    exact h1
+    rwa [← expMv_eq_mvExp h0]
   · rintro ⟨h0, h1⟩
     refine ⟨h0, ?_⟩
-    rw [← expMv_eq_mvExp h0] at h1
-    exact h1
+    rwa [← expMv_eq_mvExp h0] at h1
 
 theorem dX_eq (f : PowerSeries ℂ_[p]) : dX f = PowerSeries.derivative f := by
   ext n
@@ -118,8 +116,7 @@ theorem dX_eq (f : PowerSeries ℂ_[p]) : dX f = PowerSeries.derivative f := by
 
 theorem isWq_C {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     wq = 1 + C W.a₁ * X * wq + C W.a₂ * X ^ 2 * wq + C W.a₃ * X ^ 3 * wq ^ 2 +
-      C W.a₄ * X ^ 4 * wq ^ 2 + C W.a₆ * X ^ 6 * wq ^ 3 := by
-  exact h
+      C W.a₄ * X ^ 4 * wq ^ 2 + C W.a₆ * X ^ 6 * wq ^ 3 := h
 
 theorem wSer_of_isWq {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     Formalism.L2.Th1.A.wSer W = X ^ 3 * wq := by
@@ -130,8 +127,7 @@ theorem wSer_of_isWq {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (
 
 theorem cc_wq {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     constantCoeff wq = 1 := by
-  have h1 := congrArg constantCoeff (isWq_C h)
-  simpa using h1
+  simpa using congrArg constantCoeff (isWq_C h)
 
 theorem omegaW_eq {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     omegaW W wq = Formalism.L2.Th1.A.om W := by
@@ -225,8 +221,7 @@ theorem formal_phase_agree : PhAgree := by
   have he := ePhi1_eq g s2 hOk hR
   have h0 := (_root_.Formalism.L2.Th1.B.Crv.curve_sigma_function_holds ℂ_[p] g.W s2).1
   have hn : MvPowerSeries.constantCoeff (-(Formalism.L2.Th1.B.phW g.W s2) : MvPowerSeries Unit ℂ_[p]) = 0 := by
-    rw [map_neg, neg_eq_zero]
-    exact h0
+    rwa [map_neg, neg_eq_zero]
   have h1 := Formalism.L2.Th1.B.constantCoeff_fExp hn
   show -logMv (ePhi1 g.lam g.abelian₂ g.C g.wq) = _
   rw [he, show logMv (Formalism.L2.Th1.B.fExp (-(Formalism.L2.Th1.B.phW g.W s2))) =

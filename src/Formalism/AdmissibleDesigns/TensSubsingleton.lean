@@ -281,31 +281,26 @@ theorem crys_sum : ∀ (m : ℕ) (xs : Fin m → ι), IsCrys PD (sumRep Ms xs) �
       · show (Fin.cons 0 (fun a : Fin m => (Ms (xs a.succ) g).mulVec (x a)) : Fin (m + 1) → Fin k → LL) 0 =
             (Ms (xs 0) g).mulVec ((Fin.cons 0 x : Fin (m + 1) → Fin k → LL) 0)
         rw [Fin.cons_zero, Fin.cons_zero, Matrix.mulVec_zero]
-      · show (Fin.cons 0 (fun a : Fin m => (Ms (xs a.succ) g).mulVec (x a)) : Fin (m + 1) → Fin k → LL) j.succ =
-            (Ms (xs j.succ) g).mulVec ((Fin.cons 0 x : Fin (m + 1) → Fin k → LL) j.succ)
-        rw [Fin.cons_succ, Fin.cons_succ]
-    have eqπ : ∀ (g : G) (x : Fin (m + 1) → Fin k → LL), LinearMap.proj (R := LL) (φ := fun _ : Fin (m + 1) => Fin k → LL) 0
-        ((sumG (Qp := Qp) (O := O) Ms hMc xs).ρ g x) = (matG (Qp := Qp) (O := O) Ms hMc (xs 0)).ρ g (LinearMap.proj (R := LL) (φ := fun _ : Fin (m + 1) => Fin k → LL) 0 x) := fun g x => rfl
-    have hsurj : Function.Surjective (LinearMap.proj (R := LL) (φ := fun _ : Fin (m + 1) => Fin k → LL) 0) :=
-      fun v => ⟨consV (LL := LL) m v, proj_consV m v⟩
+      · rfl
     have hsplit : ∃ s : (Fin k → LL) →ₗ[LL] (Fin (m + 1) → Fin k → LL),
         (∀ (g : G) (x : Fin k → LL), s ((matG (Qp := Qp) (O := O) Ms hMc (xs 0)).ρ g x) = (sumG (Qp := Qp) (O := O) Ms hMc xs).ρ g (s x)) ∧
         ∀ x, LinearMap.proj (R := LL) (φ := fun _ : Fin (m + 1) => Fin k → LL) 0 (s x) = x := by
       refine ⟨consV (LL := LL) m, fun g x => ?_, proj_consV m⟩
       funext a
       refine Fin.cases ?_ (fun j => ?_) a
-      · show (Fin.cons ((Ms (xs 0) g).mulVec x) 0 : Fin (m + 1) → Fin k → LL) 0 =
-            (Ms (xs 0) g).mulVec ((Fin.cons x 0 : Fin (m + 1) → Fin k → LL) 0)
-        rw [Fin.cons_zero, Fin.cons_zero]
+      · rfl
       · show (Fin.cons ((Ms (xs 0) g).mulVec x) 0 : Fin (m + 1) → Fin k → LL) j.succ =
             (Ms (xs j.succ) g).mulVec ((Fin.cons x 0 : Fin (m + 1) → Fin k → LL) j.succ)
         rw [Fin.cons_succ, Fin.cons_succ, Pi.zero_apply, Matrix.mulVec_zero]
-    obtain ⟨hF1, hF2⟩ := hF.1 (sumG (Qp := Qp) (O := O) Ms hMc (fun a : Fin m => xs a.succ)) (sumG (Qp := Qp) (O := O) Ms hMc xs) (matG (Qp := Qp) (O := O) Ms hMc (xs 0))
-      (consZ (LL := LL) m) (LinearMap.proj (R := LL) (φ := fun _ : Fin (m + 1) => Fin k → LL) 0) eqι eqπ (consZ_inj m) hsurj (range_consZ m)
+    obtain ⟨hF1, hF2⟩ := hF.1 (sumG Ms hMc fun a : Fin m => xs a.succ) (sumG Ms hMc xs)
+      (matG Ms hMc (xs 0)) (consZ (LL := LL) m)
+      (LinearMap.proj (R := LL) (φ := fun _ : Fin (m + 1) => Fin k → LL) 0) eqι (fun g x => rfl)
+      (consZ_inj m) (fun v => ⟨consV (LL := LL) m v, proj_consV m v⟩) (range_consZ m)
     have hcrys : IsCrys PD (sumRep Ms xs) := hF2 hsplit ht1 (hMs (xs 0))
     refine ⟨hcrys, fun τ a hj => ?_⟩
     obtain ⟨_, _, hmult⟩ := hF1 hcrys
-    haveI : FiniteDimensional LL ↥(DdR PD (sumRep Ms xs)) := fd_of_crys PD hF (sumG (Qp := Qp) (O := O) Ms hMc xs) hcrys
+    haveI : FiniteDimensional LL ↥(DdR PD (sumRep Ms xs)) :=
+      fd_of_crys PD hF (sumG Ms hMc xs) hcrys
     have hpos := mult_pos PD (sumRep Ms xs) τ a hj
     have hm : multV PD (sumRep Ms xs) τ a =
         multV PD (sumRep Ms (fun a : Fin m => xs a.succ)) τ a + multV PD (matRep (Ms (xs 0))) τ a := hmult τ a

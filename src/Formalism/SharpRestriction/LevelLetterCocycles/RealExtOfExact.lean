@@ -114,8 +114,7 @@ theorem γ_sec {e : W.DD W.one} (hB : UnitBasis W e) {E : W.DD Y} (g : W.Gam)
   congr 1
   apply coef_unique
   have h1 := congrArg (W.γD W.one g) (coef_spec hB x)
-  rw [W.γD_smul, he] at h1
-  exact h1
+  rwa [W.γD_smul, he] at h1
 
 structure ExtIn (e : W.DD W.one) (ι : LatHom T.L Y.L) (π : LatHom Y.L W.one.L) (E : W.DD Y) :
     Prop where
@@ -172,8 +171,7 @@ theorem toY_bij (hB : UnitBasis W e) (X : ExtIn e ι π E) (C : Coord W I T) (C�
       (toY_coe hB X C C₀ i (a, b)).symm.trans (congrArg Subtype.val hp)
     have hb : C₀.t i b = 0 := by
       have h2 := congrArg (W.map π) h0
-      rw [map_add (f := _), hπι, map_sec hB π X.πE, zero_add, map_zero] at h2
-      exact h2
+      rwa [map_add (f := _), hπι, map_sec hB π X.πE, zero_add, map_zero] at h2
     have hb0 : b = 0 := coord_eq_zero_of_t_eq_zero C₀ i b hb
     rw [hb, map_zero, add_zero] at h0
     have ha : C.t i a = 0 := X.inj (h0.trans (map_zero _).symm)
@@ -267,8 +265,7 @@ private theorem letE_smul_tot_eq_t {T' : LocLat G Qp LL O} (C : Coord W I T') (y
   · exact C.t_letter i (y i)
   · intro j _ hj
     rw [← C.t_letter j (y j), smul_smul, letE_mul_letE_eq_zero_of_ne i j (Ne.symm hj), zero_smul]
-  · intro h
-    exact absurd (Finset.mem_univ i) h
+  · exact fun h => absurd (Finset.mem_univ i) h
 
 private theorem coord_t_sub {T' : LocLat G Qp LL O} (C : Coord W I T') (i : ZMod n) (a b : C.V) :
     C.t i (a - b) = C.t i a - C.t i b := by
@@ -373,8 +370,7 @@ theorem unitBasis_of (hU : UnitGen W e) (hcr : IsCrys PD W.one.ρ) : UnitBasis W
     simp only [g, LinearMap.comp_apply, LinearEquiv.coe_coe, hψ, Algebra.linearMap_apply, map_one]
   have hLe : hb.lift g e = 1 := by
     have h4 := hb.lift_eq g ⟨e, he⟩
-    rw [hg] at h4
-    exact h4
+    rwa [hg] at h4
   have hL : ∀ ε : W.EE, hb.lift g (ε • e) = ε := by
     intro ε
     rw [map_smul, hLe, smul_eq_mul, mul_one]

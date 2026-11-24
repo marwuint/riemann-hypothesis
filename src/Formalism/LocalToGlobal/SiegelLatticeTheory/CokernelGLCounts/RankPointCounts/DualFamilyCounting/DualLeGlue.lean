@@ -130,8 +130,7 @@ theorem glue_inf_U (hG₀ : Good hc M T 𝔭 Λ₀) (hd₀ : dualF h 𝔭 Λ₀ 
     exact Submodule.mem_inf.2 ⟨hxΛ, hxU⟩
   · intro hx
     have hxΛU : x ∈ Λ₀ ⊓ U.restrictScalars (𝓞 K) := by
-      rw [hG₀.cU]
-      exact hx
+      rwa [hG₀.cU]
     obtain ⟨hxΛ, hxU⟩ := Submodule.mem_inf.1 hxΛU
     have hxU' : x ∈ U := hxU
     have hps : prO hc.symm x = 0 := prO_symm_of_mem_U (hc' := hc) hxU'
@@ -151,8 +150,7 @@ theorem glue_inf_orthK_eq_locF (hG₀ : Good hc M T 𝔭 Λ₀) :
     have hyc : (c : V) = y := by
       rw [hcy]
       have e := prO_add hc y
-      rw [hU, hx0, zero_add] at e
-      exact e
+      rwa [hU, hx0, zero_add] at e
     have hyW : y ∈ orthK h U := by
       rw [← hyc, hcy]
       first
@@ -165,12 +163,10 @@ theorem glue_inf_orthK_eq_locF (hG₀ : Good hc M T 𝔭 Λ₀) :
         (Submodule.mem_comap.2 (by rw [Submodule.subtype_apply, hyc]; exact hyT))
     rw [hc0, map_zero] at hP
     have hb' := Submodule.mem_comap.1 ((Submodule.Quotient.mk_eq_zero _).1 hP)
-    rw [Submodule.subtype_apply, hxb] at hb'
-    exact hb'
+    rwa [Submodule.subtype_apply, hxb] at hb'
   · intro hx
     have hxΛW : x ∈ Λ₀ ⊓ (orthK h U).restrictScalars (𝓞 K) := by
-      rw [hG₀.cW]
-      exact hx
+      rwa [hG₀.cW]
     obtain ⟨hxΛ, hxW⟩ := Submodule.mem_inf.1 hxΛW
     have hxW' : x ∈ orthK h U := hxW
     have hps : prO hc.symm x = x := orth_projection_symm_of_mem (hc' := hc) hxW'
@@ -194,8 +190,7 @@ theorem glue_int (hs : h.IsSymm) (hd₀ : dualF h 𝔭 Λ₀ = Λ₀) (hP : FP P
   rw [hy]
   have h1 : h ya yb ∈ locF 𝔭 (1 : Submodule (𝓞 K) K) := by
     have hmemd : yb ∈ dualF h 𝔭 Λ₀ := by
-      rw [hd₀]
-      exact hyb
+      rwa [hd₀]
     exact hmemd ya hya
   have h2 := hP ca cb ba bb hPa hPb
   have e : h ya yb - h ca cb + h ba bb = h ya yb + (h ba bb - h ca cb) := by ring

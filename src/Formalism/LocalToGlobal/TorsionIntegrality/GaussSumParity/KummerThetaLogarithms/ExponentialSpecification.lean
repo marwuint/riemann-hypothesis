@@ -166,8 +166,7 @@ theorem ip_lgF (l : ℕ) (σ : K →+* K) (hl : 2 ≤ l) (hlK : (l : K) ≠ 0) :
   have h2 : (lgF K l : MvPowerSeries Unit K) - MvPowerSeries.C ((l : K)⁻¹) *
       frobVar (l ^ 2) (lgF K l : MvPowerSeries Unit K) = (PowerSeries.X : PowerSeries K) := by
     have h := lgF_funEq (K := K) l hl hlK
-    rw [PowerSeries.smul_eq_C_mul] at h
-    exact h
+    rwa [PowerSeries.smul_eq_C_mul] at h
   rw [h1, h2]
   exact integral_X
 
@@ -189,8 +188,7 @@ theorem exponential_specification : ExpSpec := by
   refine ⟨hc, h1, ?_, ?_⟩
   · rw [expF_eq l hl]
     exact PowerSeries.subst_substInvOfIsUnit_left _ h0 _
-  · intro ex hex h
-    exact inj l hl ex _ hex hc (h.trans h1.symm)
+  · exact fun ex hex h => inj l hl ex _ hex hc (h.trans h1.symm)
 
 theorem teichmuller_sigma : TeichSigma := by
   intro K _ _ _ l d σ hU hd ζ hζ
@@ -215,8 +213,7 @@ theorem teichmuller_sigma : TeichSigma := by
   refine root_eq_of_norm_lt hN ?_ ?_ ?_
   · rw [← map_pow, hζ, map_one]
   · rw [← pow_mul, mul_comm, pow_mul, hζ, one_pow]
-  · refine lt_of_le_of_lt (hσ ζ nζ.le) ?_
-    exact inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt)
+  · exact lt_of_le_of_lt (hσ ζ nζ.le) (inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt))
 
 theorem MulSpec_of : ExpSpec → IPLemma → IPClosure → MulSpec := by
   intro hE hL hC K _ _ _ l σ hU c
@@ -262,7 +259,6 @@ theorem BetaHypOfF_of : TeichSigma → BetaHypOfF := by
     rw [this, pow_succ, hζ, one_mul]
   have h := hF2 ζ nζ.le hσσ (PowerSeries.C ζ * PowerSeries.X)
     (PowerSeries.C (ζ ^ l) * PowerSeries.X) (isMul_root hl hζ) (by rw [hσ]; exact isMul_root hl hζl)
-  rw [at_variable_C_mul_X, at_variable_C_mul_X] at h
-  exact h
+  rwa [at_variable_C_mul_X, at_variable_C_mul_X] at h
 
 end Formalism.L2.Th1.D

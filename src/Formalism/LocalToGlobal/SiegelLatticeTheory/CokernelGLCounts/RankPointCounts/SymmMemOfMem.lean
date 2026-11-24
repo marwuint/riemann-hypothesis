@@ -63,10 +63,7 @@ theorem symm_mem_of_mem (s : (VS D).V ≃ₗ[D.host.E] (VS D).V) (U : Submodule 
   let f : U →ₗ[D.host.E] U :=
     (s : (VS D).V →ₗ[D.host.E] (VS D).V).restrict (p := U) (q := U) (fun y hy => h y hy)
   have hinj : Function.Injective f := by
-    intro a b hab
-    apply Subtype.ext
-    apply s.injective
-    exact congrArg Subtype.val hab
+    exact fun a b hab => Subtype.ext (s.injective (congrArg Subtype.val hab))
   obtain ⟨y, hy⟩ := (LinearMap.injective_iff_surjective.mp hinj) ⟨x, hx⟩
   have hyx : s y.1 = x := congrArg Subtype.val hy
   rw [← hyx, LinearEquiv.symm_apply_apply]
@@ -78,8 +75,7 @@ theorem Xflag_mono (j : ℕ) : Xflag F j ≤ Xflag F (j + 1) := by
 theorem Xflag_le_X (j : ℕ) : Xflag F j ≤ Xsp F := by
   exact PI.DCRelEquiv.UnitaryGroupMassFormula.Xflag_le_X F j
 
-theorem X_eq_Xflag : Xsp F = Xflag F D.R.rS := by
-  exact (Formalism.L2.SG.Pf.xflag_r F).symm
+theorem X_eq_Xflag : Xsp F = Xflag F D.R.rS := (Formalism.L2.SG.Pf.xflag_r F).symm
 
 theorem flag_pres {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : ∀ j, ∀ x ∈ Xflag F (j + 1), s x - x ∈ Xflag F j)
     (j : ℕ) : ∀ x ∈ Xflag F j, s x ∈ Xflag F j := by
@@ -124,8 +120,7 @@ theorem SRat_inv {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : s ∈ SRat F) : 
   refine ⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).inv_mem hs.1, flag_inv F hs.2.1, ?_⟩
   have h1 := symm_mem_of_mem s (Xsp F) (X_pres F hs.2.1) _ hs.2.2
   have h2 := Submodule.neg_mem _ h1
-  rw [map_sub, LinearEquiv.symm_apply_apply, neg_sub] at h2
-  exact h2
+  rwa [map_sub, LinearEquiv.symm_apply_apply, neg_sub] at h2
 
 theorem SRat_mul {s t : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : s ∈ SRat F) (ht : t ∈ SRat F) : s * t ∈ SRat F := by
   simp only [SRat, Set.mem_setOf_eq] at hs ht ⊢
@@ -158,8 +153,7 @@ theorem NRat_inv {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) : 
   intro x hx
   have hy := symm_mem_of_mem n (orth (VS D) (Xsp F)) hO x hx
   have h2 := Submodule.neg_mem _ (hn.2.2 _ hy)
-  rw [LinearEquiv.apply_symm_apply, neg_sub] at h2
-  exact h2
+  rwa [LinearEquiv.apply_symm_apply, neg_sub] at h2
 
 theorem NRat_mul {n m : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) (hm : m ∈ NRat F) : n * m ∈ NRat F := by
   simp only [NRat, Set.mem_setOf_eq] at hn hm ⊢

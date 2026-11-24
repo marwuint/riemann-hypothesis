@@ -76,8 +76,7 @@ theorem inv_smul_ne {n : ℕ} (k : ℂ) (hk : k ≠ 0) (A : Matrix (Fin n) (Fin 
     rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hk, one_smul, Matrix.nonsing_inv_mul _ h]
   · have h' : ¬ IsUnit (k • A).det := by
       rw [Matrix.det_smul]
-      intro hu
-      exact h (isUnit_of_mul_isUnit_right hu)
+      exact fun hu => h (isUnit_of_mul_isUnit_right hu)
     rw [Matrix.nonsing_inv_apply_not_isUnit _ h, Matrix.nonsing_inv_apply_not_isUnit _ h', smul_zero]
 
 theorem unitary_inv {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (hA : IsUnit A.det)
@@ -437,8 +436,7 @@ theorem block_preserves_stable_subspace (B : BlockDat K G Pl0) (ℓ ℓ' : Lvl K
     LinearEquiv.symm_apply_apply]
   unfold CSD.gaOp
   rw [LinearMap.sum_apply]
-  simp only [LinearMap.smul_apply]
-  exact Z.sum_mem fun t _ => Z.smul_mem _ (hZ t hu')
+  simpa only [LinearMap.smul_apply] using Z.sum_mem fun t _ => Z.smul_mem _ (hZ t hu')
 
 theorem blk_range (B : BlockDat K G Pl0) (ℓ ℓ' : Lvl K G) (Z : Submodule K B.S.Forms)
     (hZ : ∀ g, Z ≤ Z.comap (B.r g)) (T : Matrix (Fin (B.nV ℓ')) (Fin (B.nV ℓ)) K) (a : MonoidAlgebra K G)
@@ -651,8 +649,7 @@ theorem blk_invK (B : BlockDat K G Pl0) {v0 : InfinitePlace K} (hv0 : IsConjAt v
     have h2 := congrArg (· * B.zE ⟨X, ⊥, 1⟩ Z) hvR
     simp only [Matrix.mul_assoc] at h2
     simp only [Matrix.mulVec_mulVec, Matrix.mul_assoc] at h1 ⊢
-    rw [h2]
-    exact h1
+    rwa [h2]
   exact ⟨_, _, hvR, hRR, _root_.Formalism.IndefR.CxPass.BlockMetrics.orthPr_mul_eq_mul_orthPr_of_adjoint _ _ _ rfl hPg _ _ hadj W hW ρ hzρ⟩
 
 theorem quot_transfer (hq : QuotThrough) (B : BlockDat K G Pl0) {v0 : InfinitePlace K} (hv0 : IsConjAt v0) {s : ℕ} (h : B.Ok s)
@@ -779,13 +776,11 @@ theorem exists_toF_act (B : BlockDat K G Pl0) {v0 : InfinitePlace K} (hv0 : IsCo
   have h1 : B.toF ⟨X, ⊥, 1⟩ Z x ∈ B.goodF X := by
     have : B.zE ⟨X, ⊥, 1⟩ Z *ᵥ x ∈ B.inV0 ⟨X, ⊥, 1⟩ (B.goodF X) := by
       rw [B.good_part_coordinates_good_eq_top ⟨X, ⊥, 1⟩ hv0 hX]; trivial
-    rw [B.mem_goodPart_iff] at this
-    exact this
+    rwa [B.mem_goodPart_iff] at this
   have h2 : B.r g (B.toF ⟨X, ⊥, 1⟩ Z x) ∈ B.goodF X := (B.goodF_stable hv0 hrow hX).2 g h1
   have h3 : B.toF ⟨X, ⊥, 1⟩ Z x ∈ Z := by
     have := B.zE_mem ⟨X, ⊥, 1⟩ Z x
-    rw [BlockDat.Z0, B.mem_goodPart_iff] at this
-    exact this
+    rwa [BlockDat.Z0, B.mem_goodPart_iff] at this
   have h4 : B.r g (B.toF ⟨X, ⊥, 1⟩ Z x) ∈ Z := hZg g h3
   obtain ⟨u, hu⟩ := B.exists_vE_of_fix ⟨X, ⊥, 1⟩ ((B.mem_goodF hv0 hX _).1 h2)
   have hu0 : u ∈ B.Z0 ⟨X, ⊥, 1⟩ Z := by rw [BlockDat.Z0, B.mem_goodPart_iff, hu]; exact h4
@@ -909,8 +904,7 @@ theorem majorant_at_base_eq_inner {s : ℕ} (h : I.Hyp s) (x y : Fin I.Sg.D → 
   have e := majorant_at_base_eq_scaled_inner (prin I.X) I.cg false (wf_g h) h.h2g.1 (show (0 : ℝ) < 1 by norm_num) h.h4pos.1
     (fun j p v => h.h4pos.2.1 j _ p v) x y
   have e1 : (prin I.X).nP false = 1 := rfl
-  rw [e1, inv_one, Complex.ofReal_one, one_mul] at e
-  exact e
+  rwa [e1, inv_one, Complex.ofReal_one, one_mul] at e
 
 variable {I} in
 theorem majorant_at_base_eq_inner_of_package {s : ℕ} (h : I.Hyp s) (b : Bool) (x y : Fin (I.Sb b).D → K) :
@@ -978,8 +972,7 @@ theorem pUni_core (hI : InvS (K := K) (G := G) (Pl0 := Pl0)) (hρ : I.PRho) : I.
 theorem pMet_of (hJt : I.PJt) (hJ : I.PJ) : I.PMet := by
   exact I.pMet_core transferS_holds (fun X c hc v x y => BlockMetrics.majAt_scaleFrame X c hc v x y) hJt hJ
 
-theorem pUni_of (_hJt : I.PJt) (hρ : I.PRho) : I.PUni := by
-  exact I.pUni_core invS_holds hρ
+theorem pUni_of (_hJt : I.PJt) (hρ : I.PRho) : I.PUni := I.pUni_core invS_holds hρ
 
 end In
 
@@ -1111,8 +1104,7 @@ theorem majorant_at_base_eq_inner {s : ℕ} (h : I.Hyp s) (x y : Fin I.Sg.D → 
   have e := majorant_at_base_eq_scaled_inner (prin I.X) I.cg false (wf_g h) h.h2g.1 (show (0 : ℝ) < 1 by norm_num) h.h4pos.1
     (fun j p v => h.h4pos.2.1 j _ p v) x y
   have e1 : (prin I.X).nP false = 1 := rfl
-  rw [e1, inv_one, Complex.ofReal_one, one_mul] at e
-  exact e
+  rwa [e1, inv_one, Complex.ofReal_one, one_mul] at e
 
 variable {I} in
 theorem majorant_at_base_eq_inner_of_package {s : ℕ} (h : I.Hyp s) (b : Bool) (x y : Fin (I.Sb b).D → K) :

@@ -191,8 +191,7 @@ theorem dLR_comp (hL : SliceLeft) (hR : SliceRight) (v : List (B.Mat k ρ)) (F :
   intro u
   induction u with
   | nil =>
-    simp only [B.dLR, List.foldr_nil, List.map_nil]
-    exact rw_comp hR v F
+    simpa only [B.dLR, List.foldr_nil, List.map_nil] using rw_comp hR v F
   | cons Y u ih =>
     simp only [B.dLR] at ih
     simp only [B.dLR, List.foldr_cons, List.map_cons]
@@ -240,8 +239,7 @@ lemma sc_entry {k r : ℕ} (X : B.Mat k r) (a b : Fin (2 * r + k + 1)) : ‖sc X
   have hp := lsz_pos X
   have h := entry_le_lsz X a b
   have e : sc X a b = (((lsz X)⁻¹ : ℝ) : ℂ) * X a b := rfl
-  rw [e, norm_mul, Complex.norm_of_nonneg (inv_nonneg.2 hp.le), inv_mul_le_iff₀ hp, mul_one]
-  exact h
+  rwa [e, norm_mul, Complex.norm_of_nonneg (inv_nonneg.2 hp.le), inv_mul_le_iff₀ hp, mul_one]
 
 lemma sc_inLieP {k j ρ : ℕ} {X : B.Mat k (j + ρ)} (hX : inLieP k j ρ X) : inLieP k j ρ (sc X) := by
   obtain ⟨h1, h2⟩ := hX
@@ -536,8 +534,7 @@ lemma fderiv_apply_lin {f' : B.Mat k r → E} {U : Set (B.Mat k r)} (hU : IsOpen
     (h1.differentiableOn one_ne_zero).differentiableAt (hU.mem_nhds hg)
   have hA : DifferentiableAt ℝ (fun y => A y) g := A.differentiableAt
   refine ⟨hd.clm_apply hA, fun V => ?_⟩
-  have key := (hd.hasFDerivAt.clm_apply A.hasFDerivAt).fderiv
-  exact (congrArg (fun L => L V) key).trans rfl
+  exact (congrArg (fun L => L V) ((hd.hasFDerivAt.clm_apply A.hasFDerivAt).fderiv)).trans rfl
 
 lemma swap1 {X Y : B.Mat k r} (hX : B.inLie k r X) (hY : B.inLie k r Y) {h : B.Mat k r → E}
     (hh : B.CkOn 2 (B.GV k r) h) {g : B.Mat k r} (hg : g ∈ B.GV k r) :
@@ -1311,8 +1308,7 @@ lemma phi_rep (hSZ : SliceZ) (ξ : Xi k p s ρ σ) {Z : G.Mat s} (hZ : G.detM Z 
       Rn k (p + s) ρ ξ.1.2) := by
   have hZu : IsUnit (Matrix.of Z).det := isUnit_iff_ne_zero.mpr hZ
   have := hSZ k p s ρ σ d ξ Z ((Matrix.of Z)⁻¹ * Matrix.of Z') γ
-  rw [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hZu, Matrix.one_mul] at this
-  exact this
+  rwa [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hZu, Matrix.one_mul] at this
 
 lemma U_inv_mul {p s : ℕ} (b : Fin p → Fin s → ℂ) :
     (blk2 (1 : Matrix (Fin p) (Fin p) ℂ) (Matrix.of b) 0 (1 : Matrix (Fin s) (Fin s) ℂ))⁻¹ *

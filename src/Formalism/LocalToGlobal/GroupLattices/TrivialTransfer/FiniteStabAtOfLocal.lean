@@ -82,8 +82,7 @@ theorem T_int (z : 𝒜) (hz : ∀ v, prV (E := E) v z ∈ SV E v) :
   have h1 := adelstabT_mem (afsplit_IE_int v _ (hz v))
   rw [afsplit_decomp, afsplitEps, Algebra.TensorProduct.one_def, afsplitIE_tmul, T_mul] at h1
   have h2 := h1 v
-  rw [afsplit_mul_apply, afsplitI_self, one_mul] at h2
-  exact h2
+  rwa [afsplit_mul_apply, afsplitI_self, one_mul] at h2
 
 theorem expand {ι : Type} [Fintype ι] [DecidableEq ι] (β : Module.Basis ι F E) (z : 𝒜) :
     z = ∑ i, ((Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) β i) ⊗ₜ[F]
@@ -122,8 +121,7 @@ theorem exists_den : ∃ d : ℤ, d ≠ 0 ∧ ∀ z : 𝒜, (∀ v, prV (E := E)
   have ht : adelstabT (F := F) (E := E) ((β i ⊗ₜ[F] (1 : 𝔸)) * z) ∈ intAd F := by
     refine T_int _ fun v => ?_
     rw [map_mul]
-    refine mul_mem ?_ (hz v)
-    exact Subring.subset_closure (Or.inl ⟨⟨β i, ⟨⟨β i, hβ i⟩, rfl⟩⟩, rfl⟩)
+    exact mul_mem (Subring.subset_closure (Or.inl ⟨⟨β i, ⟨⟨β i, hβ i⟩, rfl⟩⟩, rfl⟩)) (hz v)
   have h1 : inclE (F := F) 𝔸 (m₂ : E) * ((Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) β i ⊗ₜ[F]
       adelstabT (F := F) (E := E) ((β i ⊗ₜ[F] (1 : 𝔸)) * z)) =
       algebraMap (𝓞 E) E ⟨_, hi₂ i⟩ ⊗ₜ[F] adelstabT (F := F) (E := E) ((β i ⊗ₜ[F] (1 : 𝔸)) * z) := by
@@ -202,8 +200,7 @@ theorem loc_upper (Λ : Submodule (𝓞 E) (n → E)) (m : ℤ) (hm : ∀ x ∈ 
     exact incl_int v _ (hm x hx i)
   | zero => simp
   | add a b _ _ ha hb =>
-    simp only [Pi.add_apply, mul_add]
-    exact add_mem ha hb
+    simpa only [Pi.add_apply, mul_add] using add_mem ha hb
   | smul s a _ ha =>
     simp only [Pi.smul_apply, Subring.smul_def, smul_eq_mul]
     rw [mul_left_comm]
@@ -221,8 +218,7 @@ theorem loc_lower (Λ : Submodule (𝓞 E) (n → E)) (m : ℤ) (hm : ∀ k, (Pi
     · intro k _ hk
       show y k * inclE (F := F) (v.adicCompletion F) ((Pi.single k (m : E) : n → E) i) = 0
       rw [Pi.single_eq_of_ne (Ne.symm hk), map_zero, mul_zero]
-    · intro h
-      exact absurd (Finset.mem_univ i) h
+    · exact fun h => absurd (Finset.mem_univ i) h
   rw [key]
   exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hm k, rfl⟩)
 

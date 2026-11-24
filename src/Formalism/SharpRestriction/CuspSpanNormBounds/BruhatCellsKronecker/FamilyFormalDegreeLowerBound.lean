@@ -65,10 +65,8 @@ private theorem szh_sf_inner_lemma (N : ℕ) (a : Fin N) :
     rw [Finset.prod_congr rfl e, ← Nat.cast_prod, Finset.prod_range_add_one_eq_factorial]
   · intro b hb
     simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hb
-    simp only [Finset.mem_Ico]
-    exact ⟨hb, b.2⟩
-  · intro x _ y _ hxy
-    exact Fin.ext hxy
+    simpa only [Finset.mem_Ico] using ⟨hb, b.2⟩
+  · exact fun x _ y _ hxy => Fin.ext hxy
   · intro j hj
     simp only [Finset.coe_Ico, Set.mem_Ico] at hj
     refine ⟨⟨j, hj.2⟩, ?_, rfl⟩
@@ -187,11 +185,9 @@ theorem szh_gap (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) (τ : 
     have hab' : (a : ℕ) < b := hab
     have hbo := b.2
     have hb1 : ¬ (b : ℕ) < D.R.k - 1 := by
-      intro h1
-      exact he (by rw [szh_eps_cloud D a (by omega), szh_eps_cloud D b h1])
+      exact fun h1 => he (by rw [szh_eps_cloud D a (by omega), szh_eps_cloud D b h1])
     have hb2 : (b : ℕ) ≠ D.R.k - 1 := by
-      intro h2
-      exact he (by rw [szh_eps_cloud D a (by omega), szh_eps_first D b h2])
+      exact fun h2 => he (by rw [szh_eps_cloud D a (by omega), szh_eps_first D b h2])
     have hac : a ≤ (⟨(b : ℕ) - 1, by omega⟩ : Fin (2 * D.R.rS + D.R.k + 1)) := by
       show (a : ℕ) ≤ (b : ℕ) - 1
       omega

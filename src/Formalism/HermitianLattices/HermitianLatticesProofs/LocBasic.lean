@@ -58,8 +58,7 @@ theorem locBasic_mem_locS {S : Submonoid R} {L : Submodule R W} {x : W} :
     x ∈ locS S L ↔ ∃ s ∈ S, s • x ∈ L := Iff.rfl
 
 theorem locBasic_le_locS (S : Submonoid R) (L : Submodule R W) : L ≤ locS S L := by
-  intro x hx
-  exact locBasic_mem_locS.mpr ⟨1, S.one_mem, by rwa [one_smul]⟩
+  exact fun x hx => locBasic_mem_locS.mpr ⟨1, S.one_mem, by rwa [one_smul]⟩
 
 theorem locBasic_locS_mono (S : Submonoid R) {L M : Submodule R W} (h : L ≤ M) :
     locS S L ≤ locS S M := by
@@ -172,8 +171,7 @@ theorem locBasic_conj_eq (hinj : Function.Injective (algebraMap R K))
     rw [Ideal.span_le]
     rintro r ⟨s, hs, hrs⟩
     have e : r = locBasic_sigma hinj hstar s := hinj (by rw [hrs, hσ])
-    rw [SetLike.mem_coe, Ideal.mem_comap, e, hσσ]
-    exact hs
+    rwa [SetLike.mem_coe, Ideal.mem_comap, e, hσσ]
   · intro r hr
     unfold conjIdeal
     apply Ideal.subset_span
@@ -196,10 +194,8 @@ theorem locBasic : LocBasic := by
   unfold loc localization₂
   have hne : ∀ (p : Ideal R), p.IsPrime → ∀ s ∈ hcompl (K := K) p, algebraMap R K s ≠ 0 := by
     intro p hp s hs h0
-    haveI := hp
     apply locBasic_hcompl_not_mem (K := K) p s hs
-    rw [← map_zero (algebraMap R K)] at h0
-    rw [hinj h0]
+    rw [hinj (h0.trans (map_zero _).symm)]
     exact p.zero_mem
   have hnm : ∀ (p : Ideal R), p.IsMaximal → ∀ s ∈ hcompl (K := K) p, s ∉ p := by
     intro p hp s hs
@@ -207,50 +203,39 @@ theorem locBasic : LocBasic := by
     exact locBasic_hcompl_not_mem (K := K) p s hs
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
   · intro p hp L M
-    haveI := hp
     exact ⟨locBasic_le_locS _ L, fun h => locBasic_locS_mono _ h, locBasic_locS_idem _ L,
       locBasic_locS_inf _ L M, locBasic_locS_sup (K := K) _ (hne p hp) L M⟩
   · intro L
-    apply le_antisymm
-    · intro x hx
-      simp only [Submodule.mem_iInf] at hx
-      exact locBasic_lg (fun p => hcompl (K := K) p) hnm L x hx
-    · exact le_iInf₂ fun p _ => locBasic_le_locS _ L
+    refine le_antisymm (fun x hx => ?_) (le_iInf₂ fun p _ => locBasic_le_locS _ L)
+    simp only [Submodule.mem_iInf] at hx
+    exact locBasic_lg (fun p => hcompl (K := K) p) hnm L x hx
   · intro L M h x hx
     exact locBasic_lg (fun p => hcompl (K := K) p) hnm M x
       (fun p hp => h p hp (locBasic_le_locS _ L hx))
-  · intro p _ L
-    exact locBasic_locS_le_of_le (locBasic_hcompl_le (K := K) p) L
+  · exact fun p _ L => locBasic_locS_le_of_le (locBasic_hcompl_le (K := K) p) L
   · intro hstar p _
     have hc := locBasic_conj_eq hinj hstar p
     haveI hpc : (conjIdeal (K := K) p).IsPrime := by
       rw [hc]
       exact Ideal.comap_isPrime _ _
-    refine ⟨hpc, fun L => ?_⟩
-    apply le_antisymm
+    refine ⟨hpc, fun L => le_antisymm ?_ fun x hx => ?_⟩
     · exact le_inf (locBasic_locS_le_of_le (locBasic_hcompl_le (K := K) p) L)
         (locBasic_locS_le_of_le (locBasic_hcompl_le_conj hinj hstar p) L)
-    · intro x hx
-      obtain ⟨s, hs, hsx⟩ := locBasic_mem_locS.mp (Submodule.mem_inf.mp hx).1
+    · obtain ⟨s, hs, hsx⟩ := locBasic_mem_locS.mp (Submodule.mem_inf.mp hx).1
       obtain ⟨t, ht, htx⟩ := locBasic_mem_locS.mp (Submodule.mem_inf.mp hx).2
       have hs' : s ∉ p := Ideal.mem_primeCompl_iff.mp hs
-      have ht' : locBasic_sigma hinj hstar t ∉ p := by
-        have h1 := Ideal.mem_primeCompl_iff.mp ht
-        rwa [hc, Ideal.mem_comap] at h1
+      have ht' : locBasic_sigma hinj hstar t ∉ p := fun h =>
+        Ideal.mem_primeCompl_iff.mp ht (by rwa [hc, Ideal.mem_comap])
       have key : ∀ u, u • x ∈ L → u ∉ p → locBasic_sigma hinj hstar u ∉ p →
-          x ∈ locS (hcompl (K := K) p) L := by
-        intro u hux hu1 hu2
-        refine locBasic_mem_locS.mpr ⟨u, locBasic_mem_hcompl (K := K) p u hu1 ?_, hux⟩
-        rw [hc, Ideal.mem_comap]
-        exact hu2
+          x ∈ locS (hcompl (K := K) p) L := fun u hux hu1 hu2 =>
+        locBasic_mem_locS.mpr
+          ⟨u, locBasic_mem_hcompl (K := K) p u hu1 (by rwa [hc, Ideal.mem_comap]), hux⟩
       by_cases h1 : locBasic_sigma hinj hstar s ∈ p
       · by_cases h2 : t ∈ p
         · refine key (s + t) (by rw [add_smul]; exact L.add_mem hsx htx) ?_ ?_
-          · intro h
-            exact hs' (by simpa using p.sub_mem h h2)
+          · exact fun h => hs' (by simpa using p.sub_mem h h2)
           · rw [map_add (f := _)]
-            intro h
-            exact ht' (by simpa using p.sub_mem h h1)
+            exact fun h => ht' (by simpa using p.sub_mem h h1)
         · exact key t htx h2 ht'
       · exact key s hsx hs' h1
 

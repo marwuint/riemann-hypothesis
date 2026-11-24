@@ -288,15 +288,13 @@ private theorem exists_eq_add_mul_of_finrank_eq_two' (hr : finrank K L = 2) {x :
       simp only [zero_smul, add_zero] at hst
       refine ⟨?_, rfl⟩
       have h0 : algebraMap K L s = 0 := by
-        rw [Algebra.algebraMap_eq_smul_one]
-        exact hst
+        rwa [Algebra.algebraMap_eq_smul_one]
       exact (algebraMap K L).injective (by rw [h0, map_zero])
     · exfalso
       apply hx
       refine ⟨-(s / t), ?_⟩
       have h2 : t • x = -(s • (1 : L)) := by
-        rw [← sub_eq_zero, sub_neg_eq_add, add_comm]
-        exact hst
+        rwa [← sub_eq_zero, sub_neg_eq_add, add_comm]
       have h3 : x = t⁻¹ • (t • x) := by
         rw [smul_smul, inv_mul_cancel₀ ht, one_smul]
       rw [Algebra.algebraMap_eq_smul_one, h3, h2, smul_neg, smul_smul, neg_smul, div_eq_inv_mul]
@@ -327,8 +325,7 @@ theorem dichotomy (hr : finrank K L = 2) (hred : IsReduced L) :
       have hsq : (x - algebraMap K L r) ^ 2 = 0 := by
         have h' := hfac
         rw [← hrs] at h'
-        rw [sq]
-        exact h'
+        rwa [sq]
       have hz : x - algebraMap K L r = 0 := hred.eq_zero _ ⟨2, hsq⟩
       exact hx ⟨r, (sub_eq_zero.mp hz).symm⟩
     · right
@@ -535,8 +532,7 @@ theorem mem_C_iff (x : L) : x ∈ (1 : FractionalIdeal (nonZeroDivisors C) L) �
   constructor
   · rintro ⟨y, rfl⟩
     exact y.2
-  · intro hx
-    exact ⟨⟨x, hx⟩, rfl⟩
+  · exact fun hx => ⟨⟨x, hx⟩, rfl⟩
 
 theorem selfDual_field
     (hU : ∀ x : C, x * x ∈ Ideal.map (algebraMap 𝒪[K] C) 𝓂[K] →
@@ -652,8 +648,7 @@ private theorem integralClosure_selfDual
     constructor
     · rintro ⟨y, rfl⟩
       exact y.2
-    · intro hz
-      exact ⟨⟨z, hz⟩, rfl⟩
+    · exact fun hz => ⟨⟨z, hz⟩, rfl⟩
   have hrange (z : K) : z ∈ (algebraMap 𝒪[K] K).range ↔ z ∈ 𝒪[K] :=
     ⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun hz => ⟨⟨z, hz⟩, rfl⟩⟩
   rw [← hmem x, ← hdual, FractionalIdeal.mem_dual one_ne_zero]
@@ -699,8 +694,7 @@ theorem field_version (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     intro z hz
     rw [hmem] at hz ⊢
     exact hU ϖ hϖ z ((hOC z).2 z.2) hz
-  have key := integralClosure_selfDual K L hU' x
-  simpa only [hOC] using key
+  simpa only [hOC] using integralClosure_selfDual K L hU' x
 
 theorem quadraticSelfDual : PI.LocDualGen.W.EpSelfDual := by
   intro K _ _ _ L _ _ hK hC _ hr hred O hO hU x
@@ -709,8 +703,7 @@ theorem quadraticSelfDual : PI.LocDualGen.W.EpSelfDual := by
   rcases PI.LocDualGen.EpC.dichotomy hr hred with hF | ⟨e, he, h0, h1⟩
   · letI : Field L := hF.toField
     exact field_version K L hr O hO hU x
-  · have key := PI.LocDualGen.EpS.selfDual_split hr e he h0 h1 x
-    simpa only [hO] using key
+  · simpa only [hO] using PI.LocDualGen.EpS.selfDual_split hr e he h0 h1 x
 
 end PI.LocDualGen.EpG
 end -- clump:auto
@@ -786,8 +779,7 @@ private theorem small_lemma_5 (hcont : Continuous (algebraMap ℚ_[l] K)) (y : K
   have h2 : Filter.Tendsto (fun k : ℕ => algebraMap ℚ_[l] K ((l : ℚ_[l]) ^ k) * y)
       Filter.atTop (nhds 0) := by
     have := ((hcont.tendsto 0).comp h1).mul_const y
-    rw [map_zero, zero_mul] at this
-    exact this
+    rwa [map_zero, zero_mul] at this
   have h3 : (𝒪[K] : Set K) ∈ nhds (0 : K) := (isOpen_lemma_2 (K := K)).mem_nhds (zero_mem _)
   exact Filter.eventually_atTop.1 (h2.eventually_mem h3)
 
@@ -809,8 +801,7 @@ private theorem bound_lemma_8 (hcont : Continuous (algebraMap ℚ_[l] K)) :
   let b := B.isUnitSMul (w := fun i => (l : ℚ_[l]) ^ N i)
     (fun i => (isUnit_iff_ne_zero.2 hl0).pow _)
   have hb : ∀ i, b i ∈ 𝒪[K] := fun i => by
-    simp only [b, Module.Basis.isUnitSMul_apply, Algebra.smul_def]
-    exact hN i (N i) le_rfl
+    simpa only [b, Module.Basis.isUnitSMul_apply, Algebra.smul_def] using hN i (N i) le_rfl
   let D := (Algebra.traceForm ℚ_[l] K).dualBasis hnd b
   choose N' hN' using fun i => small_lemma_5 l hcont (D i)
   refine ⟨Finset.univ.sup N', fun x hx => ?_⟩
@@ -921,8 +912,7 @@ private theorem main_lemma_9 {K : Type} [Field K] [ValuativeRel K] [TopologicalS
   · intro ha b
     have h := mul_mem_dual₂ l hPg ⟨a, ha⟩ b
     have e : a * (b : K) * g = g * a * (b : K) := by ring
-    rw [e]
-    exact h
+    rwa [e]
 
 theorem existsDifferentGenerator : FpDual := by
   intro K _ _ _ l _ _ hK _ hcont hfin
@@ -988,8 +978,7 @@ theorem exists_pow_mul_mem (huni : Irreducible ((l : ℕ) : 𝒪[K])) (x : K) :
   by_cases hx : x ∈ 𝒪[K]
   · exact ⟨0, by simpa using hx⟩
   have hx1 : 1 < valuation K x := by
-    rw [Valuation.mem_integer_iff, not_le] at hx
-    exact hx
+    rwa [Valuation.mem_integer_iff, not_le] at hx
   have hx0 : x ≠ 0 := by
     intro h
     rw [h, map_zero] at hx1
@@ -1106,8 +1095,7 @@ theorem exists_trace_unit (hcont : Continuous (algebraMap ℚ_[l] K))
   rw [trace_eq K l hcont huni] at hlt
   have hnu : (∑ i, coef K l hcont huni (x * blift K l i) i) ∈ maximalIdeal ℤ_[l] :=
     (mem_maximalIdeal _).mpr (PadicInt.mem_nonunits.mpr hlt)
-  rw [← PadicInt.ker_toZMod] at hnu
-  exact hnu
+  rwa [← PadicInt.ker_toZMod] at hnu
 
 end Main
 
@@ -1121,8 +1109,7 @@ theorem unramified_dual_generator : PI.LocDualGen.W.FpDualUnram := by
   · intro H
     by_contra ha
     have ha1 : 1 < valuation K a := by
-      rw [Valuation.mem_integer_iff, not_le] at ha
-      exact ha
+      rwa [Valuation.mem_integer_iff, not_le] at ha
     have ha0 : a ≠ 0 := by
       intro h
       rw [h, map_zero] at ha1
@@ -1158,8 +1145,7 @@ theorem unramified_dual_generator : PI.LocDualGen.W.FpDualUnram := by
     have hlpos : 0 < ‖(l : ℚ_[l])‖ := norm_pos_iff.mpr (by exact_mod_cast (Fact.out : l.Prime).ne_zero)
     rw [inv_mul_le_iff₀ hlpos, mul_one] at h1
     exact hz (lt_of_le_of_lt h1 Padic.norm_p_lt_one)
-  · intro ha b
-    exact trace_int K l hcont huni ⟨a * b, mul_mem ha b.2⟩
+  · exact fun ha b => trace_int K l hcont huni ⟨a * b, mul_mem ha b.2⟩
 
 end PI.LocDualGen.FpU
 end -- clump:auto
@@ -1234,8 +1220,7 @@ theorem key_bound [Nontrivial V] [Module.Finite K V] {θ : V} {d : K}
           algebraMap K V (b ^ 2 * d) := by
         rw [map_mul, map_pow, ← hθ]; ring
       have hrx : aeval (algebraMap K V a + algebraMap K V b * θ) r = 0 := by
-        rw [← key _ (hQx _ hx1), e]
-        exact hp
+        rwa [← key _ (hQx _ hx1), e]
       rw [hr] at hrx
       simp only [map_add (f := _), map_mul, aeval_X, aeval_C] at hrx
       have hw : r.coeff 1 = 0 := by
@@ -1535,13 +1520,11 @@ theorem irr {g : ℕ} (hg0 : g ≠ 0) (hin : ((g : ℕ) : 𝓞 F) ∈ p.asIdeal)
     have h := (vF_lt A ((g : ℕ) : F) 1).mpr (by
       rw [map_one, natVal]
       exact (p.intValuation_lt_one_iff_mem _).mpr hin)
-    simp only [map_one] at h
-    exact h
+    simpa only [map_one] using h
   have hcoe : (((g : ℕ) : 𝒪[A.Fp]) : A.Fp) = A.ιF ((g : ℕ) : F) := by simp
   have hgne : A.ιF ((g : ℕ) : F) ≠ 0 := (map_ne_zero A.ιF).mpr (Nat.cast_ne_zero.mpr hg0)
   refine ⟨?_, ?_⟩
-  · rw [Valuation.Integer.not_isUnit_iff_valuation_lt_one, hcoe]
-    exact hlt
+  · rwa [Valuation.Integer.not_isUnit_iff_valuation_lt_one, hcoe]
   · intro a b hab
     by_contra hcon
     rw [not_or] at hcon
@@ -1551,8 +1534,7 @@ theorem irr {g : ℕ} (hg0 : g ≠ 0) (hin : ((g : ℕ) : 𝓞 F) ∈ p.asIdeal)
       rw [← hcoe, hab]
       norm_cast
     have hab0 : (a : A.Fp) * (b : A.Fp) ≠ 0 := by
-      rw [hab']
-      exact hgne
+      rwa [hab']
     have ha0 : (a : A.Fp) ≠ 0 := left_ne_zero_of_mul hab0
     have hva : ValuativeRel.valuation A.Fp (a : A.Fp) ≠ 0 :=
       (ValuativeRel.valuation A.Fp).ne_zero_iff.mpr ha0
@@ -1562,8 +1544,7 @@ theorem irr {g : ℕ} (hg0 : g ≠ 0) (hin : ((g : ℕ) : 𝓞 F) ∈ p.asIdeal)
         simp only [map_one]
         rw [hx]
         exact ha)
-      simp only [map_one] at h
-      exact h
+      simpa only [map_one] using h
     have hle : ValuativeRel.valuation A.Fp (a : A.Fp) ≤
         ValuativeRel.valuation A.Fp (A.ιF ((g : ℕ) : F)) := by
       rw [← hx, vF A]
@@ -1661,8 +1642,7 @@ theorem LocHaarC_holds : Formalism.L2.SG.Pf.LocCP.LocHaarC := by
   have hR : Formalism.L2.SG.Pf.LocCP.RR p = PI.LocHaarRR.RR (D.s.atP p) := by
     unfold Formalism.L2.SG.Pf.LocCP.RR PI.LocHaarRR.RR
     cases (D.s.atP p).split <;> rfl
-  rw [hR]
-  exact h3
+  rwa [hR]
 
 theorem PinHostC_holds : Formalism.L2.SG.Pf.LocCP.PinHostC :=
   fun D hT p i hi => prime_quotient_unit _ _ _ _ (D.s.atP p) D.host.g D.host.g_prime D.host.g_ne i hi

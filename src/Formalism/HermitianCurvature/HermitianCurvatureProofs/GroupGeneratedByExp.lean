@@ -218,9 +218,7 @@ theorem trotter_product_formula : Qr.Trotter := by
   intro 𝔸 _ _ _ X Y
   exact GroupGeneratedByExp.trotter X Y
 
-theorem trotter_product_matrices : Qr.TrotterMx := by
-  intro N X Y
-  exact GroupGeneratedByExp.trotterMx N X Y
+theorem trotter_product_matrices : Qr.TrotterMx := fun N X Y => GroupGeneratedByExp.trotterMx N X Y
 
 theorem representation_exp : Qr.PiExp := by
   intro W _ _ _ k r z π hπ X hX t
@@ -240,7 +238,6 @@ theorem representation_exp : Qr.PiExp := by
     rw [h, h0']
     exact ContinuousLinearMap.id_comp A
   have h := GroupGeneratedByExp.group_eq_exp _ A h0 hA t
-  rw [hAd]
-  exact h
+  rwa [hAd]
 
 end Formalism.FourierDecayAlt.P

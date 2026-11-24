@@ -109,8 +109,7 @@ theorem symm_mem_of_maps {K V : Type*} [Field K] [AddCommGroup V] [Module K V] [
   have hsurj : Function.Surjective f := LinearMap.injective_iff_surjective.mp hinj
   obtain ⟨y, hy⟩ := hsurj ⟨x, hx⟩
   have hy' : n y.1 = x := by
-    have h1 := congrArg Subtype.val hy
-    simpa [f] using h1
+    simpa [f] using congrArg Subtype.val hy
   rw [← hy', LinearEquiv.symm_apply_apply]
   exact y.2
 
@@ -127,8 +126,7 @@ theorem Xflag_mono (F : LFlag S r T) (j : ℕ) : Xflag F j ≤ Xflag F (j + 1) :
   omega
 
 theorem Xflag_le_X (F : LFlag S r T) (j : ℕ) : Xflag F j ≤ Xsp F := by
-  simp only [Xflag, Xsp, FlagG.Xa, FlagG.X]
-  exact Submodule.span_mono (Set.image_subset_range _ _)
+  simpa only [Xflag, Xsp, FlagG.Xa, FlagG.X] using Submodule.span_mono (Set.image_subset_range _ _)
 
 theorem e_mem_Xflag (F : LFlag S r T) (i : Fin r) : F.fl.e i ∈ Xflag F (i.1 + 1) := by
   simp only [Xflag, FlagG.Xa]
@@ -141,8 +139,7 @@ theorem mem_orth_iff {U : Submodule E S.V} {y : S.V} : y ∈ orth S U ↔ ∀ x 
   simp [orth, Submodule.mem_iInf, LinearMap.mem_ker]
 
 theorem isom_app {g : S.V ≃ₗ[E] S.V} (h : g ∈ Formalism.HermitianLatticesTheory.isom S.hT) (x y : S.V) :
-    S.hT (g x) (g y) = S.hT x y := by
-  exact (show ∀ x y, S.hT (g x) (g y) = S.hT x y from h) x y
+    S.hT (g x) (g y) = S.hT x y := (show ∀ x y, S.hT (g x) (g y) = S.hT x y from h) x y
 
 theorem gmap_mul' (n m : S.V ≃ₗ[E] S.V) (L : Submodule (𝓞 E) S.V) :
     Formalism.HermitianLatticesTheory.gmap (n * m) L = Formalism.HermitianLatticesTheory.gmap n (Formalism.HermitianLatticesTheory.gmap m L) := by
@@ -184,8 +181,7 @@ theorem nlam_maps_X {F : LFlag S r T} {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam �
     rw [Submodule.span_le]
     rintro _ ⟨i, rfl⟩
     exact Xflag_le_X F (i.1 + 1) (nlam_maps_Xflag hn i.1 _ (e_mem_Xflag F i))
-  intro x hx
-  exact hle hx
+  exact fun x hx => hle hx
 
 theorem nlam_inv {F : LFlag S r T} {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F) : n⁻¹ ∈ NLam Λ F := by
   obtain ⟨hA, hF, hO⟩ := id hn
@@ -198,8 +194,7 @@ theorem nlam_inv {F : LFlag S r T} {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F
     have h1 := hF j _ hy
     rw [LinearEquiv.apply_symm_apply] at h1
     have h2 := neg_mem h1
-    rw [neg_sub] at h2
-    exact h2
+    rwa [neg_sub] at h2
   · intro x hx
     have hy : n.symm x ∈ orth S (Xsp F) := by
       rw [mem_orth_iff] at hx ⊢
@@ -210,8 +205,7 @@ theorem nlam_inv {F : LFlag S r T} {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F
     have h1 := hO _ hy
     rw [LinearEquiv.apply_symm_apply] at h1
     have h2 := neg_mem h1
-    rw [neg_sub] at h2
-    exact h2
+    rwa [neg_sub] at h2
 
 theorem nlam_mul {F : LFlag S r T} {n m : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F) (hm : m ∈ NLam Λ F) :
     n * m ∈ NLam Λ F := by
@@ -264,8 +258,7 @@ theorem orth_mem_transport {F₁ F₂ : LFlag S r T} {g : S.V ≃ₗ[E] S.V}
   · intro h w hw
     rw [← isom_app hg w (g.symm v), LinearEquiv.apply_symm_apply]
     apply h
-    rw [Xsp_mem_transport hfr, LinearEquiv.symm_apply_apply]
-    exact hw
+    rwa [Xsp_mem_transport hfr, LinearEquiv.symm_apply_apply]
   · intro h x hx
     have hx' := (Xsp_mem_transport hfr x).mp hx
     have h1 := h _ hx'
@@ -284,16 +277,14 @@ theorem conj_cond (g x : S.V ≃ₗ[E] S.V) (A₁ B₁ A₂ B₂ : Submodule E S
     have e : (g⁻¹ * x * g) w - w = g.symm (x (g w) - g w) := by
       show g.symm (x (g w)) - w = g.symm (x (g w) - g w)
       rw [map_sub, LinearEquiv.symm_apply_apply]
-    rw [e]
-    exact h1
+    rwa [e]
   · intro h v hv
     have h1 := h _ ((hA v).mp hv)
     rw [hB]
     have e : (g⁻¹ * x * g) (g.symm v) - g.symm v = g.symm (x v - v) := by
       show g.symm (x (g (g.symm v))) - g.symm v = g.symm (x v - v)
       rw [LinearEquiv.apply_symm_apply, map_sub]
-    rw [e] at h1
-    exact h1
+    rwa [e] at h1
 
 end Gen
 
@@ -302,8 +293,7 @@ theorem nLamConj_holds : NLamConj := by
   obtain ⟨hgi, -⟩ := id hg
   have hA : IsAutLam S Λ x ↔ IsAutLam S Λ (g⁻¹ * x * g) := by
     constructor
-    · intro hx
-      exact autLam_mul (autLam_mul (autLam_inv hg) hx) hg
+    · exact fun hx => autLam_mul (autLam_mul (autLam_inv hg) hx) hg
     · intro hx
       have e : x = g * (g⁻¹ * x * g) * g⁻¹ := by group
       rw [e]
@@ -316,21 +306,14 @@ theorem nLamConj_holds : NLamConj := by
 
 theorem dCRelEquivAll_holds : DCRelEquivAll := by
   intro E _ _ _ S r T T' Λ F
-  have hC := nLamConj_holds
-  unfold NLamConj at hC
   refine ⟨fun F₁ => ?_, fun {F₁ F₂} h => ?_, fun {F₁ F₂ F₃} h₁ h₂ => ?_⟩
   · unfold DCRel
     exact ⟨1, one_mem_NLam (Λ := Λ) F, 1, one_mem_NLam (Λ := Λ) F₁, fun a => rfl, rfl⟩
   · obtain ⟨n, hn, m, hm, hfr, hz⟩ := h
-    obtain ⟨hnA, -, -⟩ := id hn
-    obtain ⟨hmA, -, -⟩ := id hm
-    have hg : IsAutLam S Λ (n * m) := autLam_mul hnA hmA
-    have hfr' : ∀ a, frame F₂ a = (n * m) (frame F₁ a) := fun a => hfr a
-    have hm' : n * m⁻¹ * n⁻¹ ∈ NLam Λ F₂ := by
-      rw [hC E S r T' Λ F₁ F₂ (n * m) hg hfr' (n * m⁻¹ * n⁻¹)]
-      have e : (n * m)⁻¹ * (n * m⁻¹ * n⁻¹) * (n * m) = m⁻¹ := by group
-      rw [e]
-      exact nlam_inv hm
+    have e : (n * m)⁻¹ * (n * m⁻¹ * n⁻¹) * (n * m) = m⁻¹ := by group
+    have hm' : n * m⁻¹ * n⁻¹ ∈ NLam Λ F₂ :=
+      (nLamConj_holds E S r T' Λ F₁ F₂ (n * m) (autLam_mul hn.1 hm.1) hfr (n * m⁻¹ * n⁻¹)).mpr
+        (e.symm ▸ nlam_inv hm)
     unfold DCRel
     refine ⟨n⁻¹, nlam_inv hn, n * m⁻¹ * n⁻¹, hm', fun a => ?_, ?_⟩
     · rw [hfr a]
@@ -341,12 +324,8 @@ theorem dCRelEquivAll_holds : DCRelEquivAll := by
       simp only [LinearEquiv.symm_apply_apply]
   · obtain ⟨n₁, hn₁, m₁, hm₁, hfr₁, hz₁⟩ := h₁
     obtain ⟨n₂, hn₂, m₂, hm₂, hfr₂, hz₂⟩ := h₂
-    obtain ⟨hnA, -, -⟩ := id hn₁
-    obtain ⟨hmA, -, -⟩ := id hm₁
-    have hg : IsAutLam S Λ (n₁ * m₁) := autLam_mul hnA hmA
-    have hfr' : ∀ a, frame F₂ a = (n₁ * m₁) (frame F₁ a) := fun a => hfr₁ a
-    have hm'' : (n₁ * m₁)⁻¹ * m₂ * (n₁ * m₁) ∈ NLam Λ F₁ :=
-      (hC E S r T' Λ F₁ F₂ (n₁ * m₁) hg hfr' m₂).mp hm₂
+    have hm'' :=
+      (nLamConj_holds E S r T' Λ F₁ F₂ (n₁ * m₁) (autLam_mul hn₁.1 hm₁.1) hfr₁ m₂).mp hm₂
     unfold DCRel
     refine ⟨n₂ * n₁, nlam_mul hn₂ hn₁, m₁ * ((n₁ * m₁)⁻¹ * m₂ * (n₁ * m₁)), nlam_mul hm₁ hm'',
       fun a => ?_, ?_⟩

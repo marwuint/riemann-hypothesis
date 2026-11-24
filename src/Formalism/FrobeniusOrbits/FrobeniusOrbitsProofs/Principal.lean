@@ -99,8 +99,7 @@ theorem inertia_trivial (hH : HostHyp q d) (h : IsLayer (e + 2) q d ζ a b)
     · exact (galE_eq_one_iff hqd h σ').mp h1
     · exfalso
       have hm := galE_restrict_mem_Psi (e := e) σ
-      rw [mem_Psi_iff] at hm
-      rw [← hσ', h1] at hm
+      rw [mem_Psi_iff, ← hσ', h1] at hm
       exact Inertia.neg_one_ne_one' hm
   · have : Fact p.Prime := ⟨hp⟩
     exact ((hostFrob_of hostGalois hostGalSpec e q d hqd L ζ a b h p hp2 hpq hpd P).2.2 σ').mp hin
@@ -185,8 +184,7 @@ theorem mem_dual_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (y : (h
     intro t
     rw [isIntegral_algebraMap_iff ]
     constructor
-    · intro ht
-      exact ⟨⟨t, ht⟩, rfl⟩
+    · exact fun ht => ⟨⟨t, ht⟩, rfl⟩
     · rintro ⟨s, rfl⟩
       exact s.isIntegral_coe
   rw [FractionalIdeal.mem_dual (one_ne ζ a b)]
@@ -196,8 +194,7 @@ theorem mem_dual_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (y : (h
       rw [FractionalIdeal.mem_one_iff]
       exact ⟨x, rfl⟩
     have h2 := hy _ hx
-    rw [Algebra.traceForm_apply, ← hint, htr] at h2
-    exact h2
+    rwa [Algebra.traceForm_apply, ← hint, htr] at h2
   · intro hy w hw
     rw [FractionalIdeal.mem_one_iff] at hw
     obtain ⟨x, rfl⟩ := hw
@@ -217,15 +214,13 @@ theorem mem_diff_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (z : �
     constructor
     · rintro ⟨w', rfl⟩
       exact w'.isIntegral_coe
-    · intro hw
-      exact ⟨⟨w, hw⟩, rfl⟩
+    · exact fun hw => ⟨⟨w, hw⟩, rfl⟩
   have hz : z ∈ differentIdeal (𝓞 (KinE ζ a b)) (𝓞 (hostE ζ a b)) ↔
       (z : hostE ζ a b) ∈ ((differentIdeal (𝓞 (KinE ζ a b)) (𝓞 (hostE ζ a b)) :
         FractionalIdeal (𝓞 (hostE ζ a b))⁰ (hostE ζ a b))) := by
     rw [FractionalIdeal.mem_coeIdeal]
     constructor
-    · intro hz
-      exact ⟨z, hz, rfl⟩
+    · exact fun hz => ⟨z, hz, rfl⟩
     · rintro ⟨z', hz', he⟩
       have he' : z' = z := IsFractionRing.injective (𝓞 (hostE ζ a b)) (hostE ζ a b) he
       rwa [he'] at hz'
@@ -238,10 +233,8 @@ theorem mem_diff_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (z : �
   | rw [coeIdeal_differentIdeal (𝓞 (KinE ζ a b)) (KinE ζ a b) (hostE ζ a b) (𝓞 (hostE ζ a b))]
   rw [FractionalIdeal.mem_inv_iff hd0]
   constructor
-  · intro hmem y hy
-    exact (key _).mp (hmem y ((mem_dual_iff hqd h y).mpr hy))
-  · intro hmem y hy
-    exact (key _).mpr (hmem y ((mem_dual_iff hqd h y).mp hy))
+  · exact fun hmem y hy => (key _).mp (hmem y ((mem_dual_iff hqd h y).mpr hy))
+  · exact fun hmem y hy => (key _).mpr (hmem y ((mem_dual_iff hqd h y).mp hy))
 
 private theorem coe_powerSeries_smul_eq_smul (σ : (hostE ζ a b) ≃ₐ[ℚ] (hostE ζ a b)) (z : 𝓞 (hostE ζ a b)) :
     ((σ • z : 𝓞 (hostE ζ a b)) : hostE ζ a b) = σ (z : hostE ζ a b) := by
@@ -269,8 +262,7 @@ theorem diff_smul_mem (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (σ : 
     ((σ : (hostE ζ a b) →+* (hostE ζ a b)).toIntAlgHom)
   have e : σ (z : hostE ζ a b) * y = σ ((z : hostE ζ a b) * σ.symm y) := by
     rw [map_mul, AlgEquiv.apply_symm_apply]
-  rw [coe_powerSeries_smul_eq_smul, e]
-  exact h1
+  rwa [coe_powerSeries_smul_eq_smul, e]
 
 theorem diff_smul_le (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (σ : (hostE ζ a b) ≃ₐ[ℚ] (hostE ζ a b))
     (hc : ∀ (τ : (hostE ζ a b) ≃ₐ[KinE ζ a b] (hostE ζ a b)) (x : (hostE ζ a b)), σ (τ x) = τ (σ x)) :

@@ -98,8 +98,7 @@ theorem ell_not_mem_sq (p : PlF D)
       valuation (D.s.atP p).Fp ((D.s.atP p).ιF (algebraMap (𝓞 D.host.F) D.host.F π)) ^ 2 := by
     have h1 := (vle_iff p _ _).2 hvl
     simp only [map_natCast, map_pow] at h1
-    rw [sg.q_eq]
-    exact h1
+    rwa [sg.q_eq]
   have hxmem : (D.s.atP p).ιF (algebraMap (𝓞 D.host.F) D.host.F π) ∈ 𝒪[(D.s.atP p).Fp] :=
     (Valuation.mem_integer_iff _ _).2 hxlt.le
   have hI := Valuation.integer.integers (valuation (D.s.atP p).Fp)
@@ -107,15 +106,13 @@ theorem ell_not_mem_sq (p : PlF D)
     apply hI.dvd_of_le
     change valuation _ (sg.q : (D.s.atP p).Fp) ≤
       valuation _ (((D.s.atP p).ιF (algebraMap (𝓞 D.host.F) D.host.F π)) ^ 2)
-    rw [map_pow]
-    exact hq
+    rwa [map_pow]
   obtain ⟨c, hc⟩ := hdvd
   have hsplit : sg.q = (⟨_, hxmem⟩ : 𝒪[(D.s.atP p).Fp]) * ((⟨_, hxmem⟩ : 𝒪[(D.s.atP p).Fp]) * c) := by
     rw [hc]
     ring
   rcases sg.q_irr.isUnit_or_isUnit hsplit with hu | hu
-  · have h1 := hI.isUnit_iff_valuation_eq_one.1 hu
-    exact (ne_of_lt hxlt) h1
+  · exact (ne_of_lt hxlt) (hI.isUnit_iff_valuation_eq_one.1 hu)
   · have h1 := hI.isUnit_iff_valuation_eq_one.1 hu
     have h2 : valuation (D.s.atP p).Fp
         ((D.s.atP p).ιF (algebraMap (𝓞 D.host.F) D.host.F π) * (c : (D.s.atP p).Fp)) = 1 := h1
@@ -178,8 +175,7 @@ theorem different_lattice_index : DiffG := by
       obtain ⟨n, hn⟩ := ht b
       rw [Algebra.traceForm_apply]
       exact RingHom.mem_range.2 ⟨n, by simpa using hn.symm⟩
-    have h3 := (Submodule.mem_div_iff_forall_mul_mem.1 h1) t h2
-    exact Submodule.mem_one.1 h3
+    exact Submodule.mem_one.1 ((Submodule.mem_div_iff_forall_mul_mem.1 h1) t h2)
   obtain ⟨b, hb⟩ := hdt
   have hv := val_one_of_notMem (D := D) p d hdp
   have hb1 : valuation (D.s.atP p).Fp ((D.s.atP p).ιF (algebraMap (𝓞 D.host.F) D.host.F b)) ≤ 1 := by

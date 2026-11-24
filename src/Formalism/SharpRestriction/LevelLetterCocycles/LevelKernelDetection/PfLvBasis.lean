@@ -118,8 +118,7 @@ theorem lvBasis_expand (hBasis : Module.Basis (Fin r) (PowerSeries O) ↥((latOf
   obtain ⟨z, hz⟩ := C.t_surj i w hwl hwΔ
   have hzN : z ∈ (latOf C).N i := by
     show C.t i z ∈ W.N T
-    rw [hz]
-    exact hw
+    rwa [hz]
   refine ⟨fun l => hBasis.repr ⟨z, hzN⟩ l, ?_⟩
   have hz' : ∑ l, hBasis.repr ⟨z, hzN⟩ l • e l = z := by
     have h := congrArg Subtype.val (hBasis.sum_repr ⟨z, hzN⟩)
@@ -197,8 +196,7 @@ theorem lvBasis_kernel {π' : LetA O n} (hP3 : Formalism.MainNotions.DeltaInvari
   obtain ⟨αy, hαy, -⟩ := huniq y hyN
   obtain ⟨αw, -, huw⟩ := huniq _ hwN
   have hw1 : ∑ k, o k • C.t i (e k) = ∑ j, (∑ k, o k • β k j) • b j := by
-    simp only [hβ, Finset.smul_sum, ← smul_assoc, Finset.sum_smul]
-    exact Finset.sum_comm
+    simpa only [hβ, Finset.smul_sum, ← smul_assoc, Finset.sum_smul] using Finset.sum_comm
   have hw2 : ∑ k, o k • C.t i (e k) = ∑ j, ((letπ : LetA O n) * αy j) • b j := by
     rw [← hy', hαy, Finset.smul_sum]
     simp only [smul_smul]
@@ -224,8 +222,7 @@ theorem lvBasis_kernel {π' : LetA O n} (hP3 : Formalism.MainNotions.DeltaInvari
       intro l' δ hδ
       have hA : ∀ δ ∈ W.DelF, W.γA δ (∑ j, β k j * (baseIdOf hR).d (g j l')) =
           ∑ j, β k j * (baseIdOf hR).d (g j l') := hc l'
-      have h := congrFun (hA δ hδ) i
-      simpa [LocWach.γA, letγ] using h
+      simpa [LocWach.γA, letγ] using congrFun (hA δ hδ) i
     choose h hh using fun l' => ιOf_full hR _ (hinv l')
     have hx : C.t i (e k) = C.t i (∑ l', h l' • e l') := by
       rw [lvBasis_t_sum]
@@ -237,8 +234,7 @@ theorem lvBasis_kernel {π' : LetA O n} (hP3 : Formalism.MainNotions.DeltaInvari
       rfl
     have he : hBasis k = ∑ l', h l' • hBasis l' := by
       apply Subtype.ext
-      simp only [Submodule.coe_sum, Submodule.coe_smul, hBasis_e]
-      exact C.t_inj i hx
+      simpa only [Submodule.coe_sum, Submodule.coe_smul, hBasis_e] using C.t_inj i hx
     have hrep := congrArg (fun z => hBasis.repr z l) he
     simp only [hBasis.repr_self, hBasis.repr_sum_self] at hrep
     have hcc : PowerSeries.constantCoeff ((∑ j, β k j * (baseIdOf hR).d (g j l)) i) =
@@ -255,8 +251,7 @@ theorem lvBasis_kernel {π' : LetA O n} (hP3 : Formalism.MainNotions.DeltaInvari
     _ = ∑ k, o k * ∑ j, PowerSeries.constantCoeff (β k j i) * PowerSeries.constantCoeff (g j l) := by
         simp only [hid]
     _ = ∑ j, (∑ k, o k * PowerSeries.constantCoeff (β k j i)) * PowerSeries.constantCoeff (g j l) := by
-        simp only [Finset.mul_sum, Finset.sum_mul, mul_assoc]
-        exact Finset.sum_comm
+        simpa only [Finset.mul_sum, Finset.sum_mul, mul_assoc] using Finset.sum_comm
     _ = 0 := by simp [hcoef]
 
 theorem lvBasis_cmp_ind {π' : LetA O n} (hP3 : Formalism.MainNotions.DeltaInvariantLattices.p3 W T) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T π')

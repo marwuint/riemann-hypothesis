@@ -86,8 +86,7 @@ theorem latSum_tower (A B C : Submodule (𝓞 E) H) (hCB : C ≤ B) (hBA : B ≤
   have hinj : Function.Injective φ := by
     rintro ⟨z, t⟩ ⟨z', t'⟩ h
     have h1 : ((lrep A B z : H) + (lrep B C t : H)) - ((lrep A B z' : H) + (lrep B C t' : H)) ∈ C := by
-      have h0 := (Submodule.Quotient.eq _).1 h
-      simpa using h0
+      simpa using (Submodule.Quotient.eq _).1 h
     have hz : z = z' := by
       rw [← mk_lrep A B z, ← mk_lrep A B z', Submodule.Quotient.eq]
       show ((lrep A B z - lrep A B z' : ↥A) : H) ∈ B
@@ -105,8 +104,7 @@ theorem latSum_tower (A B C : Submodule (𝓞 E) H) (hCB : C ≤ B) (hBA : B ≤
           ((lrep A B z : H) + (lrep B C t : H)) - ((lrep A B z : H) + (lrep B C t' : H)) := by
         push_cast
         abel
-      rw [e]
-      exact h1
+      rwa [e]
     rw [ht]
   have hsurj : Function.Surjective φ := by
     intro w
@@ -121,8 +119,7 @@ theorem latSum_tower (A B C : Submodule (𝓞 E) H) (hCB : C ≤ B) (hBA : B ≤
     show (lrep A B (Submodule.Quotient.mk a) : H) + (lrep B C (Submodule.Quotient.mk ⟨_, hb⟩) : H) - (a : H) ∈ C
     have e : (lrep A B (Submodule.Quotient.mk a) : H) + (lrep B C (Submodule.Quotient.mk ⟨_, hb⟩) : H) - (a : H) =
         (lrep B C (Submodule.Quotient.mk ⟨_, hb⟩) : H) - ((a : H) - (lrep A B (Submodule.Quotient.mk a) : H)) := by abel
-    rw [e]
-    exact h2
+    rwa [e]
   have hG : ∀ a : ↥A, F (lrep A C (Submodule.Quotient.mk a) : H) = F a := by
     intro a
     have h := hF (a : H) _ (lrep_mk_sub A C a)
@@ -135,8 +132,7 @@ theorem latSum_tower (A B C : Submodule (𝓞 E) H) (hCB : C ≤ B) (hBA : B ≤
   let _ := Fintype.ofFinite (↥B ⧸ C.comap B.subtype)
   simp only [latSum_eq, finsum_eq_sum_of_fintype]
   rw [← (Function.Bijective.sum_comp ⟨hinj, hsurj⟩ fun w => F (lrep A C w : H)), Fintype.sum_prod_type]
-  refine Finset.sum_congr rfl fun z _ => Finset.sum_congr rfl fun t _ => ?_
-  exact hG _
+  exact Finset.sum_congr rfl fun z _ => Finset.sum_congr rfl fun t _ => hG _
 
 theorem latSum_mul_left {R : Type} [NonUnitalNonAssocSemiring R] (A B : Submodule (𝓞 E) H) [Finite (↥A ⧸ B.comap A.subtype)] (r : R) (F : H → R) :
     latSum A B (fun x => r * F x) = r * latSum A B F := by

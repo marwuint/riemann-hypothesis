@@ -148,8 +148,7 @@ private theorem exists_linearIndependent_extension_fin (N : ℕ) (d k : ℕ) (hd
       ext
       simp only [Fin.coe_cast, Fin.coe_natAdd, Fin.val_succ]
       omega
-    simp only [e, Fin.cons_succ]
-    exact hsv i
+    simpa only [e, Fin.cons_succ] using hsv i
 
 theorem tjcosets_extend [Finite 𝔽] (n j : ℕ) (w : Fin (n - j) → Fin n → 𝔽)
     (hw : LinearIndependent 𝔽 w) :
@@ -189,8 +188,7 @@ theorem tjcosets_orbit_gl [Finite 𝔽] (n j : ℕ) :
   · rintro ⟨g, rfl⟩
     rw [GL_smul_standard_tuple]
     exact GL_columns_linearIndependent n j g
-  · intro hw
-    exact tjcosets_exists_smul n j w hw
+  · exact fun hw => tjcosets_exists_smul n j w hw
 
 theorem tjcosets_idx_sub (n j : ℕ) (b : Fin n) (hb : j ≤ (b : ℕ)) :
     tjcosets_idx n j ⟨b - j, by omega⟩ = b := by
@@ -233,8 +231,7 @@ theorem tjcosets_orbit_par [Finite 𝔽] (n j : ℕ) :
       rw [tjcosets_idx_sub n j b hb] at h1
       simpa [Matrix.col] using h1.trans (hz ⟨b - j, by omega⟩ a ha)
     refine ⟨⟨g, hgP⟩, ?_⟩
-    rw [Subgroup.smul_def]
-    exact hg
+    rwa [Subgroup.smul_def]
 
 def tjcosets_ext (n j : ℕ) : (Fin (n - j) → 𝔽) →ₗ[𝔽] (Fin n → 𝔽) where
   toFun u a := if h : j ≤ (a : ℕ) then u ⟨a - j, by omega⟩ else 0
@@ -292,14 +289,12 @@ theorem tjcosets_ff_count [Fintype 𝔽] (n j : ℕ) (hj : j ≤ n) :
       ∏ i : Fin (n - j), (Fintype.card 𝔽 ^ n - Fintype.card 𝔽 ^ (i : ℕ)) := by
     have h := card_linearIndependent (K := 𝔽) (V := Fin n → 𝔽) hk
     rw [Module.finrank_fin_fun] at h
-    rw [tjcosets_orbit_gl, ← Nat.card_coe_set_eq]
-    exact h
+    rwa [tjcosets_orbit_gl, ← Nat.card_coe_set_eq]
   have cP : (MulAction.orbit (tjcosets_par (𝔽 := 𝔽) n j) (standardBasisTuple n j : TjcosetsFr (n - j) n 𝔽)).ncard =
       ∏ i : Fin (n - j), (Fintype.card 𝔽 ^ (n - j) - Fintype.card 𝔽 ^ (i : ℕ)) := by
     have h := card_linearIndependent (K := 𝔽) (V := Fin (n - j) → 𝔽) hk'
     rw [Module.finrank_fin_fun] at h
-    rw [tjcosets_orbit_par, ← Nat.card_coe_set_eq, Nat.card_congr (tjcosets_equiv (𝔽 := 𝔽) n j)]
-    exact h
+    rwa [tjcosets_orbit_par, ← Nat.card_coe_set_eq, Nat.card_congr (tjcosets_equiv (𝔽 := 𝔽) n j)]
   have hstab : (MulAction.stabilizer (GL (Fin n) 𝔽) (standardBasisTuple n j : TjcosetsFr (n - j) n 𝔽)).relIndex
       (tjcosets_par n j) =
       (MulAction.orbit (tjcosets_par (𝔽 := 𝔽) n j) (standardBasisTuple n j : TjcosetsFr (n - j) n 𝔽)).ncard := by
@@ -307,8 +302,7 @@ theorem tjcosets_ff_count [Fintype 𝔽] (n j : ℕ) (hj : j ≤ n) :
     congr 1
   have hmul := Subgroup.relIndex_mul_index (tjcosets_stab_le_par (𝔽 := 𝔽) n j)
   rw [MulAction.index_stabilizer, cGL, hstab, cP] at hmul
-  rw [mul_comm]
-  exact hmul
+  rwa [mul_comm]
 
 end FF
 

@@ -70,12 +70,8 @@ theorem B_zero_left (hBs : ∀ (c : Fv F v) x y, B (c • x) y = c * B x y) (y :
 theorem haar_smul_preimage (μ0 : Measure V) [μ0.IsAddHaarMeasure] (a : Fv F v) (ha : a ≠ 0) :
     ∃ c : ℝ≥0∞, ∀ S, MeasurableSet S → μ0 ((fun y : V => a • y) ⁻¹' S) = c * μ0 S := by
   let e : V ≃+ V := (LinearEquiv.smulOfNeZero (Fv F v) V a ha).toAddEquiv
-  have he : Continuous e := by
-    show Continuous fun y : V => a • y
-    exact continuous_const_smul a
-  have hes : Continuous e.symm := by
-    show Continuous fun y : V => a⁻¹ • y
-    exact continuous_const_smul a⁻¹
+  have he : Continuous e := continuous_const_smul a
+  have hes : Continuous e.symm := continuous_const_smul a⁻¹
   haveI := AddEquiv.isAddHaarMeasure_map μ0 e he hes
   refine ⟨(Measure.addHaarScalarFactor (μ0.map e) μ0 : ℝ≥0∞), fun S hS => ?_⟩
   have hmap : μ0.map e = Measure.addHaarScalarFactor (μ0.map e) μ0 • μ0 :=
@@ -125,8 +121,7 @@ theorem exists_selfDual_measure (ψ0 : Fv F v → ℂ) (hψc : Continuous ψ0) (
     have hyx := hy x hx
     show ψ0 (B x y') = 1
     have e1 : y' = y + (y' - y) := by abel
-    rw [e1, hBsym, hBa, hψa, hBsym y, hBsym (y' - y)]
-    rw [show ψ0 (B x y) = 1 from hyx, hq, one_mul]
+    rw [e1, hBsym, hBa, hψa, hBsym y, hBsym (y' - y), show ψ0 (B x y) = 1 from hyx, hq, one_mul]
   have hNcl : IsClosed (ann χ (L : Set V)) := isClosed_ann χ hχc L
   have hNc0 : IsCompact (ann χ (L : Set V)) := by
     obtain ⟨y0, hy0⟩ := hnt

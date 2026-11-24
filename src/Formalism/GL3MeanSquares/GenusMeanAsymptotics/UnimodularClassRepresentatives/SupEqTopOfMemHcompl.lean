@@ -115,8 +115,7 @@ theorem exists_orth_basis (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (
   set b0 : Fin (finrank K V) → V := fun i => algebraMap (𝓞 K) K (s i) • x i with hb0
   have hb0L : ∀ i, b0 i ∈ L := by
     intro i
-    simp only [hb0, algebraMap_smul]
-    exact hsL i
+    simpa only [hb0, algebraMap_smul] using hsL i
   have hbb : ∀ i j, h (b0 i) (b0 j) =
       star (algebraMap (𝓞 K) K (s i)) * algebraMap (𝓞 K) K (s j) * h (x i) (x j) := by
     intro i j
@@ -149,8 +148,7 @@ theorem exists_orth_basis (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (
       exact (mul_eq_zero.1 this).resolve_right (hunit i).1
     · intro j _ hji
       rw [map_smul, horth i j (Ne.symm hji), smul_zero]
-    · intro hi'
-      exact absurd hi hi'
+    · exact fun hi' => absurd hi hi'
   have htop : ⊤ ≤ Submodule.span K (Set.range b0) :=
     (Submodule.eq_top_of_finrank_eq (by rw [finrank_span_eq_card hli, Fintype.card_fin])).ge
   let b := Basis.mk hli htop
@@ -176,8 +174,7 @@ theorem exists_orth_basis (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (
           · rw [map_smul, smul_eq_mul, hb]
           · intro j _ hji
             rw [map_smul, hb, horth i j (Ne.symm hji), smul_zero]
-          · intro hi
-            exact absurd (Finset.mem_univ i) hi
+          · exact fun hi => absurd (Finset.mem_univ i) hi
         have key : u i • (b.repr (t • y) i • b i) = a • b0 i := by
           rw [← algebraMap_smul K (u i), smul_smul, hu i, mul_comm, ← hrep, ← ha, algebraMap_smul, hb]
         rw [key]
@@ -195,7 +192,6 @@ theorem exists_orth_basis (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (
     have h1 : algebraMap (𝓞 K) K (conjO K (u i)) = star (algebraMap (𝓞 K) K (u i)) := rfl
     rw [h1, hu i, ← starRingEnd_apply]
     exact hs.eq (b0 i) (b0 i)
-  · intro i
-    exact sup_eq_top_of_mem_hcompl hK hF hP (huP i)
+  · exact fun i => sup_eq_top_of_mem_hcompl hK hF hP (huP i)
 
 end Formalism.HermitianLattices.Ext.L3.OrthogonalBases

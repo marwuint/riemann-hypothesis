@@ -72,10 +72,8 @@ theorem fourth_power_standard_lattice (L : PeriodPair) (n : Type) [Fintype n] : 
   ext z
   rw [mem_stdLat]
   constructor
-  · intro hz w
-    exact (mem_stdLat L n _).1 (hz w.1) w.2
-  · intro hz a
-    exact (mem_stdLat L n _).2 fun i => hz (a, i)
+  · exact fun hz w => (mem_stdLat L n _).1 (hz w.1) w.2
+  · exact fun hz a => (mem_stdLat L n _).2 fun i => hz (a, i)
 
 theorem relIdx_ne_zero_of_fg {V : Type} [AddCommGroup V] [Module ℂ V] (M M' : AddSubgroup V) [AddGroup.FG M]
     (N : ℕ) (hN : 0 < N) (h : ∀ x ∈ M, N • x ∈ M') : relIdx M' M ≠ 0 := by
@@ -205,8 +203,7 @@ theorem smulU_ne (m : Type) [Nonempty m] :
   intro h
   have h1 : (fun _ => (1 : ℂ)) ∈ stdLat L7 m := by
     rw [mem_stdLat]
-    intro _
-    exact cayleyGaussianIntegrals_one_fact
+    exact fun _ => cayleyGaussianIntegrals_one_fact
   have h2 : smulU m (fun _ => (1 : ℂ)) ∈ stdLat L7 m := by
     rw [← h]; exact ⟨_, h1, rfl⟩
   obtain ⟨i⟩ := ‹Nonempty m›
@@ -235,8 +232,7 @@ theorem stdData_seven :
     _ _ _ (gU n) (gU_isom n) (_root_.Formalism.L2.Th1.H.StdSelfDual_proof L7 n) (fun x hx => th_stable_std hx)
     (by rw [fourth_power_standard_lattice]; exact idxU₁ _) (by rw [fourth_power_standard_lattice]; exact idxU₂ _)
   have e : (1 : ℂ) * ((1 : ℕ) : ℂ) = 1 := by norm_num
-  rw [e] at h
-  exact h
+  rwa [e] at h
 
 theorem seven_nontrivial [Nonempty n] :
     imgLat (gU n : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 (stdLat L7 n)) ≠ stdLat L7 (Fin 4 × n) := by

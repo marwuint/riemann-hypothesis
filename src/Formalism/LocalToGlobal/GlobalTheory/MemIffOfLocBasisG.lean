@@ -138,8 +138,7 @@ private theorem map_subtype_mem_wO_of_mem_weyl {n : ℕ} (ν : Fin n → ℕ) (p
   | smul c x _ hx =>
     have h := Submodule.smul_mem (wO O n ν) c hx
     rw [Subring.smul_def, MvPolynomial.smul_eq_C_mul] at h
-    rw [MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C]
-    exact h
+    rwa [MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C]
 
 theorem wO_stable [IsLocalRing O] {n : ℕ} (ν : Fin n → ℕ) (g : Matrix (Fin n) (Fin n) O) (hg : IsUnit g.det)
     {f : MvPolynomial (Fin n × Fin n) K} (hf : f ∈ wO O n ν) : rowAct K (g.map O.subtype) f ∈ wO O n ν := by
@@ -155,8 +154,7 @@ theorem wO_stable [IsLocalRing O] {n : ℕ} (ν : Fin n → ℕ) (g : Matrix (Fi
     have hw1 := Formalism.UG.P.wlocal_map_weyl (Int.castRingHom O) le_rfl ν h hh
     have hst := _root_.Formalism.UG.P.wlocal_local O n n le_rfl ν (Matrix.nonsingInvUnit g hg)⁻¹ _ hw1
     unfold Formalism.UG.dwAct at hst
-    rw [inv_inv] at hst
-    exact hst
+    rwa [inv_inv] at hst
   | zero =>
     rw [map_zero]
     exact Submodule.zero_mem _
@@ -174,8 +172,7 @@ theorem prod_mem_prod' {R A ι : Type*} [CommSemiring R] [CommSemiring A] [Algeb
   classical
   induction s using Finset.induction_on with
   | empty =>
-    simp only [Finset.prod_empty]
-    exact Submodule.mem_one.2 ⟨1, map_one _⟩
+    simpa only [Finset.prod_empty] using Submodule.mem_one.2 ⟨1, map_one _⟩
   | @insert a s ha ih =>
     rw [Finset.prod_insert ha, Finset.prod_insert ha]
     exact Submodule.mul_mem_mul (hx a (Finset.mem_insert_self a s))
@@ -250,8 +247,7 @@ theorem ten_mem {F : Tau → MvPolynomial (Fin n × Fin n) LL}
       (1 : LL) • Formalism.MainNotions.flipTwoThree.ten (fun τ => MvPolynomial.map (Int.castRingHom LL) (h τ)) := by
     rw [one_smul]
     unfold Formalism.MainNotions.flipTwoThree.ten
-    refine Finset.prod_congr rfl (fun τ _ => ?_)
-    exact (hgh τ).symm
+    exact Finset.prod_congr rfl (fun τ _ => (hgh τ).symm)
   rw [e]
   show _ ∈ Formalism.MainNotions.flipTwoThree.IntSpanAtG Pl w lam
   unfold Formalism.MainNotions.flipTwoThree.IntSpanAtG
@@ -292,8 +288,7 @@ theorem actAll_mem_intSpanAtG (k : Tau → Matrix (Fin n) (Fin n) (intW Pl w))
       show subAll (fun τ => (k τ).map (intW Pl w).subtype) (Formalism.MainNotions.flipTwoThree.ten _) = _
       unfold Formalism.MainNotions.flipTwoThree.ten
       rw [map_prod]
-      refine Finset.prod_congr rfl (fun τ _ => ?_)
-      exact subAll_rename _ τ _
+      exact Finset.prod_congr rfl (fun τ _ => subAll_rename _ τ _)
     rw [e]
     exact (isO Pl w lam).smul_mem ⟨_, hc⟩ ((isO Pl w lam).smul_mem ⟨r, hr⟩ hT)
   | zero =>
@@ -393,8 +388,7 @@ theorem exists_change_inv (γ γ' : Matrix (Fin n) (Fin n) LL) (h : LocBasisG Pl
       rw [Matrix.map_mul, ← Matrix.mul_assoc, ← hk2, ← hk, Matrix.mul_one]
     have h2 := congrArg (fun M => γ⁻¹ * M) h1
     simp only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ h.1, Matrix.one_mul] at h2
-    apply Matrix.map_injective Subtype.val_injective
-    exact h2.trans (Matrix.map_one _ rfl rfl).symm
+    exact Matrix.map_injective Subtype.val_injective (h2.trans (Matrix.map_one _ rfl rfl).symm)
   refine ⟨k, IsUnit.of_mul_eq_one k2.det ?_, ?_⟩
   · rw [mul_comm, ← Matrix.det_mul, hkk, Matrix.det_one]
   · calc γ'⁻¹ = γ'⁻¹ * (γ * γ⁻¹) := by rw [Matrix.mul_nonsing_inv _ h.1, Matrix.mul_one]

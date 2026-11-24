@@ -82,14 +82,12 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteD
 theorem fst_splR_symm (y : (Ainf F ⊗[F] E) × (Af F ⊗[F] E)) :
     tensMap (E := E) (fstA F) (splR.symm y) = y.1 := by
   have h := congrArg Prod.fst (splR.apply_symm_apply y)
-  rw [splR_apply, splT_apply] at h
-  exact h
+  rwa [splR_apply, splT_apply] at h
 
 theorem snd_splR_symm (y : (Ainf F ⊗[F] E) × (Af F ⊗[F] E)) :
     tensMap (E := E) (sndA F) (splR.symm y) = y.2 := by
   have h := congrArg Prod.snd (splR.apply_symm_apply y)
-  rw [splR_apply, splT_apply] at h
-  exact h
+  rwa [splR_apply, splT_apply] at h
 
 def glM (a : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) (b : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) :
     Matrix (Fin n) (Fin n) (AF F ⊗[F] E) :=

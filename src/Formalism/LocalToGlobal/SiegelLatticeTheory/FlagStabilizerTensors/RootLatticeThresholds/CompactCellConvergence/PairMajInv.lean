@@ -208,8 +208,7 @@ theorem pair_bound (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin (
         K * (Formalism.FourierDecayAlt.B.gN (Matrix.of x.1.2 * Matrix.of x.1.1) ^ (-(b / (2 * (5 * (r + 1) ^ 2 : ℕ)))) *
           Formalism.FourierDecayAlt.B.gN (Matrix.of x.2.2 * Matrix.of x.2.1) ^ (-(b / (2 * (5 * (r + 1) ^ 2 : ℕ))))) := by
   classical
-  have hγ : γ ∈ UH (Hpk k r) := hpos.1
-  have hγu : IsUnit γ.det := PIQnLT.isUnit_det_of_UH γ hγ
+  have hγu : IsUnit γ.det := PIQnLT.isUnit_det_of_UH γ hpos.1
   obtain ⟨C, hC1, -⟩ := PI.PolynomialProperness.polyProper5 k r L.z L.z' γ hstd hpos hmono
   have hT0 : (0 : ℝ) ≤ T := le_trans zero_le_one hT
   have gnn : ∀ g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, 0 ≤ Formalism.FourierDecayAlt.B.gN g :=
@@ -224,16 +223,14 @@ theorem pair_bound (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin (
   refine ⟨(max ((T + Formalism.FourierDecayAlt.B.gN γ⁻¹ * T * Formalism.FourierDecayAlt.B.gN γ + 1) * C) 1) ^
       (b / ((5 * (r + 1) ^ 2 : ℕ) : ℝ)), Real.rpow_pos_of_pos hKc _, ?_⟩
   intro x hx hET
-  obtain ⟨y, ⟨⟨hyN, hyN'⟩, hyT⟩, hyS⟩ := hET
+  obtain ⟨y, ⟨⟨hyN, hmN⟩, hyT⟩, hyS⟩ := hET
   obtain ⟨hP12, hP22, hP11, hP21⟩ := hx
-  have hyU : Matrix.of y ∈ UH (Hpk k r) := hyN.1
-  have hyu : IsUnit (Matrix.of y).det := PIQnLT.isUnit_det_of_UH _ hyU
-  rw [uh_inv_eq hyU, ← sg_eq L.z L.z' hstd.2.1 γ] at hyS
+  have hyu : IsUnit (Matrix.of y).det := PIQnLT.isUnit_det_of_UH _ hyN.1
+  rw [uh_inv_eq hyN.1, ← sg_eq L.z L.z' hstd.2.1 γ] at hyS
   have hσ : (Matrix.of y)⁻¹ * Matrix.of x.1.2 * Matrix.of x.1.1 ∈ Sg k r L.z L.z' γ := by
     obtain ⟨n0, hn0, v, hv, hv', h, hh, he⟩ := hyS
     exact ⟨n0, hn0, v, hv, hv', h * Matrix.of x.1.1, Formalism.QuantumDeterminants.WeylGroupFacts.uw_mul hh hP11,
       by rw [he]; simp only [Matrix.mul_assoc]⟩
-  have hmN : γ⁻¹ * Matrix.of y * γ ∈ Nset k r := hyN'
   have hP21u : IsUnit (Matrix.of x.2.1).det := PIQnLT.isUnit_det_of_UH _ hP21.1
   have hs : (γ⁻¹ * Matrix.of y * γ)⁻¹ * Matrix.of x.2.2 * Matrix.of x.2.1 ∈ Sset k r L.z' := by
     have hmn : (γ⁻¹ * Matrix.of y * γ)⁻¹ * Matrix.of x.2.2 ∈ Nset k r :=
@@ -246,8 +243,6 @@ theorem pair_bound (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin (
       exact Formalism.QuantumDeterminants.WeylGroupFacts.conj_col (Formalism.QuantumDeterminants.WeylGroupFacts.uw_block hw) (Formalism.QuantumDeterminants.WeylGroupFacts.uw_block hP21)
         (Matrix.nonsing_inv_mul _ hP21u) ((Formalism.QuantumDeterminants.WeylGroupFacts.nset_iff _).1 hmn).2
     · simp only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hP21u]
-  have hb1 := hC1 _ hσ _ hs
-  have hmu : IsUnit (γ⁻¹ * Matrix.of y * γ).det := PIQnLT.isUnit_det_of_UH _ hmN.1
   have hMeq : (Matrix.of x.1.1)⁻¹ * (Matrix.of x.1.2)⁻¹ * γ * Matrix.of x.2.2 * Matrix.of x.2.1 =
       ((Matrix.of y)⁻¹ * Matrix.of x.1.2 * Matrix.of x.1.1)⁻¹ * γ *
         ((γ⁻¹ * Matrix.of y * γ)⁻¹ * Matrix.of x.2.2 * Matrix.of x.2.1) := by
@@ -267,50 +262,44 @@ theorem pair_bound (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin (
     have e : Matrix.of x.2.2 * Matrix.of x.2.1 =
         (γ⁻¹ * Matrix.of y * γ) * ((γ⁻¹ * Matrix.of y * γ)⁻¹ * Matrix.of x.2.2 * Matrix.of x.2.1) := by
       rw [Matrix.mul_assoc ((γ⁻¹ * Matrix.of y * γ)⁻¹), ← Matrix.mul_assoc,
-        Matrix.mul_nonsing_inv _ hmu, Matrix.one_mul]
+        Matrix.mul_nonsing_inv _ (PIQnLT.isUnit_det_of_UH _ hmN.1), Matrix.one_mul]
     have hm : Formalism.FourierDecayAlt.B.gN (γ⁻¹ * Matrix.of y * γ) ≤ Formalism.FourierDecayAlt.B.gN γ⁻¹ * T * Formalism.FourierDecayAlt.B.gN γ := by
-      calc Formalism.FourierDecayAlt.B.gN (γ⁻¹ * Matrix.of y * γ)
-          ≤ Formalism.FourierDecayAlt.B.gN (γ⁻¹ * Matrix.of y) * Formalism.FourierDecayAlt.B.gN γ := gmul _ _
-        _ ≤ (Formalism.FourierDecayAlt.B.gN γ⁻¹ * Formalism.FourierDecayAlt.B.gN (Matrix.of y)) * Formalism.FourierDecayAlt.B.gN γ :=
-          mul_le_mul_of_nonneg_right (gmul _ _) (gnn _)
-        _ ≤ Formalism.FourierDecayAlt.B.gN γ⁻¹ * T * Formalism.FourierDecayAlt.B.gN γ :=
-          mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hyT (gnn _)) (gnn _)
+      calc _ ≤ _ := gmul (γ⁻¹ * Matrix.of y) γ
+        _ ≤ _ := mul_le_mul_of_nonneg_right (gmul _ _) (gnn _)
+        _ ≤ _ := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hyT (gnn _)) (gnn _)
     rw [e]
     exact le_trans (gmul _ _) (mul_le_mul_of_nonneg_right hm (gnn _))
-  have hUH12 : Matrix.of x.1.2 * Matrix.of x.1.1 ∈ UH (Hpk k r) :=
-    Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hP12.1 hP11.1
-  have hUH22 : Matrix.of x.2.2 * Matrix.of x.2.1 ∈ UH (Hpk k r) :=
-    Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hP22.1 hP21.1
-  have hUHM : (Matrix.of x.1.1)⁻¹ * (Matrix.of x.1.2)⁻¹ * γ * Matrix.of x.2.2 * Matrix.of x.2.1 ∈ UH (Hpk k r) :=
-    Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul
-      (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hP11.1) (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hP12.1)) hγ)
-      hP22.1) hP21.1
-  have hsum : Formalism.FourierDecayAlt.B.gN (Matrix.of x.1.2 * Matrix.of x.1.1) + Formalism.FourierDecayAlt.B.gN (Matrix.of x.2.2 * Matrix.of x.2.1) ≤
-      max ((T + Formalism.FourierDecayAlt.B.gN γ⁻¹ * T * Formalism.FourierDecayAlt.B.gN γ + 1) * C) 1 *
-        Formalism.FourierDecayAlt.B.gN ((Matrix.of x.1.1)⁻¹ * (Matrix.of x.1.2)⁻¹ * γ * Matrix.of x.2.2 * Matrix.of x.2.1) ^
-          (5 * (r + 1) ^ 2) := by
-    rw [hMeq]
-    have hpow : 0 ≤ Formalism.FourierDecayAlt.B.gN (((Matrix.of y)⁻¹ * Matrix.of x.1.2 * Matrix.of x.1.1)⁻¹ * γ *
-        ((γ⁻¹ * Matrix.of y * γ)⁻¹ * Matrix.of x.2.2 * Matrix.of x.2.1)) ^ (5 * (r + 1) ^ 2) :=
-      pow_nonneg (gnn _) _
-    have hσn := gnn ((Matrix.of y)⁻¹ * Matrix.of x.1.2 * Matrix.of x.1.1)
-    have hsn := gnn ((γ⁻¹ * Matrix.of y * γ)⁻¹ * Matrix.of x.2.2 * Matrix.of x.2.1)
-    calc _ ≤ T * Formalism.FourierDecayAlt.B.gN ((Matrix.of y)⁻¹ * Matrix.of x.1.2 * Matrix.of x.1.1) +
-          (Formalism.FourierDecayAlt.B.gN γ⁻¹ * T * Formalism.FourierDecayAlt.B.gN γ) *
-            Formalism.FourierDecayAlt.B.gN ((γ⁻¹ * Matrix.of y * γ)⁻¹ * Matrix.of x.2.2 * Matrix.of x.2.1) := add_le_add hX hY
-      _ ≤ (T + Formalism.FourierDecayAlt.B.gN γ⁻¹ * T * Formalism.FourierDecayAlt.B.gN γ + 1) *
-          (Formalism.FourierDecayAlt.B.gN ((Matrix.of y)⁻¹ * Matrix.of x.1.2 * Matrix.of x.1.1) +
-            Formalism.FourierDecayAlt.B.gN ((γ⁻¹ * Matrix.of y * γ)⁻¹ * Matrix.of x.2.2 * Matrix.of x.2.1)) := by
-          nlinarith [mul_nonneg c1nn hσn, mul_nonneg hT0 hsn]
-      _ ≤ (T + Formalism.FourierDecayAlt.B.gN γ⁻¹ * T * Formalism.FourierDecayAlt.B.gN γ + 1) * (C * _) :=
-          mul_le_mul_of_nonneg_left hb1 (by linarith)
-      _ = ((T + Formalism.FourierDecayAlt.B.gN γ⁻¹ * T * Formalism.FourierDecayAlt.B.gN γ + 1) * C) * _ := by ring
-      _ ≤ _ := mul_le_mul_of_nonneg_right (le_max_left _ _) hpow
   have hE : 0 < 5 * (r + 1) ^ 2 := by positivity
-  have key := key_bound (PI.PolynomialProperness.GN.gN_ge_one hUH12) (PI.PolynomialProperness.GN.gN_ge_one hUH22)
-    (PI.PolynomialProperness.GN.gN_ge_one hUHM) hKc hE hb hsum
   unfold Formalism.MainNotions.S.Pv.AmpDD.pairMaj
-  exact key
+  refine key_bound
+    (PI.PolynomialProperness.GN.gN_ge_one
+      (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hP12.1 hP11.1))
+    (PI.PolynomialProperness.GN.gN_ge_one
+      (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hP22.1 hP21.1))
+    (PI.PolynomialProperness.GN.gN_ge_one
+      (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul
+        (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul
+          (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul
+            (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul
+              (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hP11.1)
+              (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hP12.1)) hpos.1)
+          hP22.1) hP21.1))
+    hKc hE hb ?_
+  rw [hMeq]
+  have hσn := gnn ((Matrix.of y)⁻¹ * Matrix.of x.1.2 * Matrix.of x.1.1)
+  have hsn := gnn ((γ⁻¹ * Matrix.of y * γ)⁻¹ * Matrix.of x.2.2 * Matrix.of x.2.1)
+  calc _ ≤ _ := add_le_add hX hY
+    _ ≤ (T + Formalism.FourierDecayAlt.B.gN γ⁻¹ * T * Formalism.FourierDecayAlt.B.gN γ + 1) *
+        (Formalism.FourierDecayAlt.B.gN ((Matrix.of y)⁻¹ * Matrix.of x.1.2 * Matrix.of x.1.1) +
+          Formalism.FourierDecayAlt.B.gN
+            ((γ⁻¹ * Matrix.of y * γ)⁻¹ * Matrix.of x.2.2 * Matrix.of x.2.1)) := by
+        nlinarith [mul_nonneg c1nn hσn, mul_nonneg hT0 hsn]
+    _ ≤ (T + Formalism.FourierDecayAlt.B.gN γ⁻¹ * T * Formalism.FourierDecayAlt.B.gN γ + 1) *
+          (C * _) :=
+        mul_le_mul_of_nonneg_left (hC1 _ hσ _ hs) (by linarith)
+    _ = ((T + Formalism.FourierDecayAlt.B.gN γ⁻¹ * T * Formalism.FourierDecayAlt.B.gN γ + 1) * C) *
+          _ := by ring
+    _ ≤ _ := mul_le_mul_of_nonneg_right (le_max_left _ _) (pow_nonneg (gnn _) _)
 
 end Formalism.MainNotions.S.Pv.AmpDDPf.CC
 end -- clump:auto

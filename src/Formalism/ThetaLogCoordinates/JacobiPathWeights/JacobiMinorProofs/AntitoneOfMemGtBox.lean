@@ -76,8 +76,7 @@ lemma mem_stripsUp {n : ℕ} (μ ν : Fin n → ℤ) (b : ℕ) : ν ∈ stripsUp
   simp only [Finset.mem_Icc]
   constructor
   · exact fun h => h.2
-  · intro h
-    exact ⟨fun i => ⟨h.1 i, by linarith [sub_le_sum_sub ν μ h.1 i, h.2.2]⟩, h⟩
+  · exact fun h => ⟨fun i => ⟨h.1 i, by linarith [sub_le_sum_sub ν μ h.1 i, h.2.2]⟩, h⟩
 
 lemma mem_stripsDown {n : ℕ} (μ ν : Fin n → ℤ) (b : ℕ) : ν ∈ stripsDown μ b ↔ HStrip μ ν b := by
   letI : DecidablePred (fun ν => HStrip μ ν b) := fun ν => by
@@ -218,8 +217,7 @@ lemma Lo_succ_le_iff {n : ℕ} (μ : Fin (n + 1) → ℤ) (κ l : Fin n → ℤ)
 lemma strip2_iff {n : ℕ} (μ ν : Fin (n + 1) → ℤ) :
     (∀ m m' : Fin (n + 1), m.val + 1 = m'.val → ν m' ≤ μ m) ↔ ∀ i : Fin n, ν i.succ ≤ μ i.castSucc := by
   constructor
-  · intro h i
-    exact h i.castSucc i.succ (by simp only [Fin.val_succ, Fin.coe_castSucc])
+  · exact fun h i => h i.castSucc i.succ (by simp only [Fin.val_succ, Fin.coe_castSucc])
   · intro h m m' hm
     have hlt : m.val < n := by have := m'.isLt; omega
     obtain ⟨i, rfl⟩ : ∃ i : Fin n, m = i.castSucc := ⟨⟨m.val, hlt⟩, Fin.ext rfl⟩
@@ -342,8 +340,7 @@ theorem up (n : ℕ) : ∀ (μ : Fin n → ℤ) (b : ℕ), Antitone μ →
         ext ν
         rw [mem_stripsUp, Finset.mem_singleton]
         constructor
-        · intro _
-          exact Subsingleton.elim _ _
+        · exact fun _ => Subsingleton.elim _ _
         · rintro rfl
           unfold HStrip
           simp
@@ -362,8 +359,7 @@ theorem up (n : ℕ) : ∀ (μ : Fin n → ℤ) (b : ℕ), Antitone μ →
     have e : ∀ κ ∈ gtBox μ, ∑ l ∈ sLe κ b, dGT n l = dGT n κ * (n + b).choose b := by
       intro κ hκ
       rw [sum_sLe, ← hockey n b, Finset.mul_sum]
-      refine Finset.sum_congr rfl (fun c _ => ?_)
-      exact ih κ c (antitone_of_mem_gtBox hμ hκ)
+      exact Finset.sum_congr rfl (fun c _ => ih κ c (antitone_of_mem_gtBox hμ hκ))
     rw [Finset.sum_congr rfl e, ← Finset.sum_mul, show n + 1 + b - 1 = n + b by omega]
 
 def star {n : ℕ} (μ : Fin n → ℤ) : Fin n → ℤ := fun i => -μ (Fin.rev i)
@@ -374,8 +370,7 @@ lemma star_star {n : ℕ} (μ : Fin n → ℤ) : star (star μ) = μ := by
 
 lemma antitone_star {n : ℕ} {μ : Fin n → ℤ} (hμ : Antitone μ) : Antitone (star μ) := by
   intro i j hij
-  simp only [star, neg_le_neg_iff]
-  exact hμ (Fin.rev_le_rev.mpr hij)
+  simpa only [star, neg_le_neg_iff] using hμ (Fin.rev_le_rev.mpr hij)
 
 lemma sum_star {n : ℕ} (μ : Fin n → ℤ) : ∑ i, star μ i = -∑ i, μ i := by
   simp only [star, Finset.sum_neg_distrib]
@@ -407,8 +402,7 @@ lemma HStrip_star {n : ℕ} {μ ν : Fin n → ℤ} {b : ℕ} (h : HStrip μ ν 
   unfold HStrip at h ⊢
   obtain ⟨h1, h2, h3⟩ := h
   refine ⟨fun m => ?_, fun m m' hm => ?_, ?_⟩
-  · simp only [star]
-    exact neg_le_neg (h1 _)
+  · simpa only [star] using neg_le_neg (h1 _)
   · simp only [star]
     apply neg_le_neg
     apply h2

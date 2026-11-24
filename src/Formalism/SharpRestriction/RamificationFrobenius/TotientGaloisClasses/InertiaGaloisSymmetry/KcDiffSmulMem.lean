@@ -85,8 +85,7 @@ private theorem mem_one_fractionalIdeal_iff_isIntegral (t : H.E) : t ∈ (1 : Fr
   constructor
   · rintro ⟨y, rfl⟩
     exact NumberField.RingOfIntegers.isIntegral_coe y
-  · intro h
-    exact ⟨⟨t, h⟩, rfl⟩
+  · exact fun h => ⟨⟨t, h⟩, rfl⟩
 
 private theorem isIntegral_algEquiv_apply_iff (σ : H.E ≃ₐ[ℚ] H.E) (t : H.E) : IsIntegral ℤ (σ t) ↔ IsIntegral ℤ t :=
   isIntegral_algEquiv (σ.restrictScalars ℤ)
@@ -104,8 +103,7 @@ theorem kc_mem_dual_iff (y : H.E) :
     · rintro ⟨a, ha⟩
       rw [← ha]
       exact NumberField.RingOfIntegers.isIntegral_coe a
-    · intro h
-      exact ⟨⟨_, h⟩, rfl⟩
+    · exact fun h => ⟨⟨_, h⟩, rfl⟩
   constructor
   · intro h x
     rw [← key]
@@ -128,8 +126,7 @@ theorem kc_mem_diff_iff (z : 𝓞 H.E) :
       (z : H.E) ∈ ((differentIdeal (𝓞 H.K) (𝓞 H.E) : Ideal (𝓞 H.E)) : FractionalIdeal (𝓞 H.E)⁰ H.E) := by
     rw [FractionalIdeal.mem_coeIdeal]
     constructor
-    · intro h
-      exact ⟨z, h, rfl⟩
+    · exact fun h => ⟨z, h, rfl⟩
     · rintro ⟨w, hw, e⟩
       have : w = z := NumberField.RingOfIntegers.ext e
       rwa [← this]
@@ -150,8 +147,7 @@ theorem kc_dual_smul (σ : H.E ≃ₐ[ℚ] H.E)
     rw [kc_sum_comm H σ hc]
     refine Finset.sum_congr rfl fun τ _ => ?_
     rw [map_mul σ, hx']
-  rw [e, isIntegral_algEquiv_apply_iff]
-  exact hx
+  rwa [e, isIntegral_algEquiv_apply_iff]
 
 theorem kc_diff_smul_mem (σ : H.E ≃ₐ[ℚ] H.E)
     (hc : ∀ (τ : H.E ≃ₐ[H.K] H.E) (x : H.E), σ (τ x) = τ (σ x)) (z : 𝓞 H.E)
@@ -162,8 +158,7 @@ theorem kc_diff_smul_mem (σ : H.E ≃ₐ[ℚ] H.E)
   have h1 := hz (σ.symm y) hy'
   rw [← isIntegral_algEquiv_apply_iff H σ, map_mul, AlgEquiv.apply_symm_apply] at h1
   have e : ((σ • z : 𝓞 H.E) : H.E) = σ (z : H.E) := rfl
-  rw [e]
-  exact h1
+  rwa [e]
 
 theorem kc_diff_smul_le (σ : H.E ≃ₐ[ℚ] H.E)
     (hc : ∀ (τ : H.E ≃ₐ[H.K] H.E) (x : H.E), σ (τ x) = τ (σ x)) :
@@ -202,8 +197,7 @@ theorem kc_mem_inv_smul (σ : H.E ≃ₐ[ℚ] H.E) (B : Ideal (𝓞 H.E))
     rw [FractionalIdeal.mem_coeIdeal] at hw
     obtain ⟨b, hb, rfl⟩ := hw
     have hb' : σ • b ∈ σ • B := by
-      rw [Ideal.mem_pointwise_smul_iff_inv_smul_mem, inv_smul_smul]
-      exact hb
+      rwa [Ideal.mem_pointwise_smul_iff_inv_smul_mem, inv_smul_smul]
     have := h (algebraMap (𝓞 H.E) H.E (σ • b)) (by rw [FractionalIdeal.mem_coeIdeal]; exact ⟨σ • b, hb', rfl⟩)
     rw [_root_.Formalism.HC.Der.mem_one_fractionalIdeal_iff_isIntegral] at this ⊢
     rw [show algebraMap (𝓞 H.E) H.E (σ • b) = σ (algebraMap (𝓞 H.E) H.E b) from rfl, ← map_mul,
@@ -218,8 +212,7 @@ theorem kc_mem_inv_smul (σ : H.E ≃ₐ[ℚ] H.E) (B : Ideal (𝓞 H.E))
     have e : σ (algebraMap (𝓞 H.E) H.E (σ⁻¹ • b)) = algebraMap (𝓞 H.E) H.E b := by
       show σ (σ⁻¹ (b : H.E)) = b
       rw [AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply]
-    rw [← _root_.Formalism.HC.Der.isIntegral_algEquiv_apply_iff H σ, map_mul, e] at this
-    exact this
+    rwa [← _root_.Formalism.HC.Der.isIntegral_algEquiv_apply_iff H σ, map_mul, e] at this
 
 theorem unimodular : ∀ 𝔟 : Ideal (𝓞 H.E), differentIdeal (𝓞 H.K) (𝓞 H.E) = 𝔟 * (H.conj • 𝔟) → ∀ x : H.E,
     x ∈ ((𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 H.E)) H.E)⁻¹) ↔

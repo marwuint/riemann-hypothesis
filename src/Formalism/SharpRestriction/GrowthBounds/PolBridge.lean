@@ -111,8 +111,7 @@ theorem ycond_stable (LL : ChainLetters N) (j : ℕ) (M : WithTop ℤ) :
       (YCond K (r := r) LL j M).comap
         (glAct K (⟨LL.vec⟩ : Letters (Fin N)) {i : Fin N | (i : ℕ) < j} c d) := by
     unfold YCond
-    refine sSup_le fun T hT y hy => ?_
-    exact Submodule.mem_comap.2 (le_sSup hT (hT.2 c d y hy))
+    exact sSup_le fun T hT y hy => Submodule.mem_comap.2 (le_sSup hT (hT.2 c d y hy))
   exact key hx
 
 theorem glAct_mem_gens (Lt : Letters (Fin N)) (S : Set (Fin N)) (c d : Fin r) :
@@ -233,8 +232,7 @@ theorem ycond_top (LL : ChainLetters N) (j : ℕ) : YCond K (r := r) LL j ⊤ = 
   refine ⟨?_, ?_⟩
   · intro x _
     simp
-  · intro c d x _
-    exact Submodule.mem_top
+  · exact fun c d x _ => Submodule.mem_top
 
 theorem map_mem_Pol_iff {O : Type} [CommRing O] [IsDomain O] (f : O →+* K) (hf : Function.Injective f)
     (d : Fin N → ℕ) (G : MvPolynomial (Fin N × Fin r) O) :
@@ -297,8 +295,7 @@ theorem combined_weight_of_nested_sets (D : Formalism.BasicNotions.D7) (X : Form
         have hzero : (0 : Fin X.r) = ⟨0, Nat.pos_of_ne_zero X.hm⟩ := Fin.ext (by simp)
         simp only [WithTop.coe_le_coe, ← hzero]
     constructor
-    · intro h k hk
-      exact (hthreshold k hk).2 fun mu hmu => (h mu hmu).2 k hk
+    · exact fun h k hk => (hthreshold k hk).2 fun mu hmu => (h mu hmu).2 k hk
     · intro h mu hmu
       refine ⟨?_, fun k hk => ?_⟩
       · by_contra hdom
@@ -314,13 +311,11 @@ theorem combined_weight_of_nested_sets (D : Formalism.BasicNotions.D7) (X : Form
     intro G
     constructor
     · rintro ⟨hPol, hI⟩
-      refine ⟨hPol, fun k => ?_⟩
-      exact (hcond ⟨J k, Nat.lt_succ_of_le (hJ k)⟩ _).1 (hI _ ⟨k, rfl⟩) k rfl
+      exact ⟨hPol, fun k => (hcond ⟨J k, Nat.lt_succ_of_le (hJ k)⟩ _).1 (hI _ ⟨k, rfl⟩) k rfl⟩
     · rintro ⟨hPol, hY⟩
       refine ⟨hPol, fun i hi => ?_⟩
       rw [hcond]
-      intro k _
-      exact hY k
+      exact fun k _ => hY k
   have hY : ∀ F, F ∈ YjtZ X.O (r := X.r) LL J M ↔
       ∃ G ∈ Formalism.MainNotions.CovariantDegrees.nestLat X.O N X.r Lt LL.deg pi Ix, MvPolynomial.map (algebraMap X.O (KK X.O)) G = F := by
     intro F

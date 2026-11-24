@@ -130,8 +130,7 @@ theorem eig_rat (h : BlockHyp B ℓ v0 s) (hH : B.OkH) (C : (B.Pl × ℕ → K) 
     intro a
     have hza : z a ∈ Z := by rw [← hspan]; exact Submodule.subset_span ⟨a, rfl⟩
     have := hza.2
-    rw [← hrange'] at this
-    exact this
+    rwa [← hrange'] at this
   choose x hx using hzr
   refine subHasRat_of_span (B.inV0 ℓ (Col.eigSum B.op C)) (Set.range x) ?_ ?_
   · apply Submodule.map_injective_of_injective (f := (B.vE ℓ).mulVecLin) hinj'
@@ -180,8 +179,7 @@ def linF (N : I → Matrix (Fin n) (Fin n) ℂ) : I → Module.End ℂ (Fin n �
 theorem linF_commute {M M' : Matrix (Fin n) (Fin n) ℂ} (h : M * M' = M' * M) :
     Commute (Matrix.toLin' M) (Matrix.toLin' M') := by
   have h2 := congrArg Matrix.toLin' h
-  rw [Matrix.toLin'_mul, Matrix.toLin'_mul] at h2
-  exact h2
+  rwa [Matrix.toLin'_mul, Matrix.toLin'_mul] at h2
 
 variable (N : I → Matrix (Fin n) (Fin n) ℂ) (A : Matrix (Fin n) (Fin n) ℂ)
 
@@ -286,8 +284,7 @@ private theorem dotProduct_mulVec_eigSum_eq_zero_of_disjoint (hA : A.PosDef) (ad
     rw [LinearMap.mem_ker, LinearMap.flip_apply]
     exact stepA a ha x' hx'
   have h := hle hx
-  rw [LinearMap.mem_ker, LinearMap.flip_apply, hform_eq_lemma] at h
-  exact h
+  rwa [LinearMap.mem_ker, LinearMap.flip_apply, hform_eq_lemma] at h
 
 theorem cx_proj_adj (hA : A.PosDef) (adj : ∀ i, ∃ i', A * N i = (N i')ᴴ * A)
     (hc : Col.PairComm (linF N)) (hs : Col.SplitOver (linF N)) (C : (I → ℂ) → Prop) :
@@ -427,8 +424,7 @@ theorem eigSum_le_comap_of {k V W I : Type} [Field k] [AddCommGroup V] [Module k
     obtain ⟨m, hm⟩ := (Module.End.mem_maxGenEigenspace _ _ _).mp (hv i)
     exact (Module.End.mem_maxGenEigenspace _ _ _).mpr ⟨m, by rw [← key, hm, map_zero]⟩
   simp only [Col.eigSum]
-  refine iSup₂_le fun x hx => (hat x).trans (Submodule.comap_mono ?_)
-  exact le_iSup₂_of_le x hx le_rfl
+  exact iSup₂_le fun x hx => (hat x).trans (Submodule.comap_mono (le_iSup₂_of_le x hx le_rfl))
 
 variable {K : Type} [Field K] {I : Type} {N' : ℕ}
 
@@ -630,8 +626,7 @@ theorem HZ_unit (h : BlockHyp B ℓ v0 s) : IsUnit ((B.zE ℓ Z)ᴴ * B.HV ℓ *
       intro h2
       apply hc0
       funext i
-      have h3 := congrFun h2 i
-      simpa using h3
+      simpa using congrFun h2 i
     have h4 := (h.ok.hpos v0).dotProduct_mulVec_pos hne
     rw [h1] at h4
     exact lt_irrefl _ h4

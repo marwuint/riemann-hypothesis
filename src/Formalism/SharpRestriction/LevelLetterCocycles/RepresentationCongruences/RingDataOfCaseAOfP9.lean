@@ -107,8 +107,7 @@ theorem dvd_of_res {ϖ : O} (hϖ : Irreducible ϖ) {h : PowerSeries O}
     have hk : IsLocalRing.residue O (PowerSeries.coeff k h) = 0 := by
       have := congrArg (PowerSeries.coeff k) h0
       simpa [PowerSeries.coeff_map] using this
-    rw [IsLocalRing.residue_eq_zero_iff, hmax, Ideal.mem_span_singleton] at hk
-    exact hk
+    rwa [IsLocalRing.residue_eq_zero_iff, hmax, Ideal.mem_span_singleton] at hk
   choose c hc using hc
   refine ⟨PowerSeries.mk c, ?_⟩
   ext k
@@ -130,8 +129,7 @@ theorem peel {ϖ : O} (hϖ : Irreducible ϖ) {g : PowerSeries O} (hg : g.map (Is
     simpa using congrArg PowerSeries.constantCoeff h0
   induction N with
   | zero =>
-    intro z y h
-    exact ⟨y, by simpa using h⟩
+    exact fun z y h => ⟨y, by simpa using h⟩
   | succ N ih =>
     intro z y h
     have hd : C ϖ ∣ g * y := ⟨C ϖ ^ N * z, by rw [← h]; ring⟩
@@ -265,10 +263,8 @@ theorem sat_A_core (hR : RD W) (hp0 : ((PD.p : ℕ) : O) ≠ 0) {f z y : LetA O 
       exact ⟨k₁ * k₂, Nat.mul_pos hk₁ hk₂, by
         rw [mul_pow, inv_pow, pow_mul, h₁, one_pow, inv_one, one_mul, mul_comm k₁ k₂, pow_mul, h₂,
           one_pow]⟩
-    · intro a _
-      exact inv_mul_cancel_left δ' a
-    · intro a _
-      exact mul_inv_cancel_left δ' a
+    · exact fun a _ => inv_mul_cancel_left δ' a
+    · exact fun a _ => mul_inv_cancel_left δ' a
     · intro a _
       simp only [map_mul, AlgHom.mul_apply]
   have hπ₀ : W.π₀ ∈ W.AΔ := by
@@ -300,8 +296,7 @@ theorem sat_A_core (hR : RD W) (hp0 : ((PD.p : ℕ) : O) ≠ 0) {f z y : LetA O 
       exact (memΔ _).1 (W.AΔ.mul_mem hfΔ hy) δ hδ
     rw [map_mul, map_pow] at h1
     rw [lA] at h1 ⊢
-    rw [map_natCast] at h1
-    exact h1
+    rwa [map_natCast] at h1
   have hfne : ∀ i, f i ≠ 0 := fun i h0 => dist_piPs hR hf i (by rw [h0, map_zero])
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
   obtain ⟨e, u, hu⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hp0 hϖ
@@ -325,8 +320,7 @@ theorem sat_A_core (hR : RD W) (hp0 : ((PD.p : ℕ) : O) ≠ 0) {f z y : LetA O 
   intro δ hδ
   have hfy : f * W.γA δ t = f * t := by
     have h2 := hzΔ δ hδ
-    rw [hzt, map_mul, (memΔ _).1 hfΔ δ hδ] at h2
-    exact h2
+    rwa [hzt, map_mul, (memΔ _).1 hfΔ δ hδ] at h2
   funext i
   exact mul_left_cancel₀ (hfne i) (congrFun hfy i)
 

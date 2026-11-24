@@ -99,8 +99,7 @@ theorem mem_S_of_val (T : Forms0 D u) {w : D.what₂.places.Pl} (hw : OverT D u 
   by_cases hw' : w' = w
   · subst hw'
     have hB' : IsLocBasis (D.mem u).A.T (Ld D u 0 (Nat.zero_le _) c : Set _) B := by
-      rw [LocalLatticeBases.bwG_Ld_coe, ← hw]
-      exact hB
+      rwa [LocalLatticeBases.bwG_Ld_coe, ← hw]
     obtain ⟨Q, hQ, hyQ⟩ := hy c B hB'
     refine ⟨_, LocalLatticeBases.bwG_intSpan_smul D w' _ _ (LocalLatticeBases.bwG_int_mem D w' t) hQ, fun z => ?_⟩
     rw [← algebraMap_smul D.what₂.LL t y, LinearMap.map_smulₛₗ, Pi.smul_apply, Pi.smul_apply, hyQ z,
@@ -132,8 +131,7 @@ theorem val_of_mem_S (T : Forms0 D u) {w : D.what₂.places.Pl} (hw : OverT D u 
   obtain ⟨t, ht, htx⟩ := (D.mem_locW_iff w _ x).1 hx
   have hB2 : IsLocBasis (D.what₂.places.resChar w)
       (dualSet (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)) (clsCrd D u 0 (Nat.zero_le _) c)) B := by
-    rw [show D.what₂.places.resChar w = (D.mem u).A.T from hw, ← LocalLatticeBases.bwG_Ld_coe]
-    exact hB
+    rwa [show D.what₂.places.resChar w = (D.mem u).A.T from hw, ← LocalLatticeBases.bwG_Ld_coe]
   obtain ⟨P, hP, hxP⟩ := (T.val0.lat (t • x)).1 htx w c B hB2
   have ht0 : algebraMap (𝓞 D.what₂.LL) D.what₂.LL t ≠ 0 := by
     intro h
@@ -273,9 +271,7 @@ theorem upValInt0_of (T : Forms0 D u) (hI : UpIncInt0 T) : UpValInt0 T := by
       (D.fm u).upT 0 v c y ((D.fm u).emb 0 x ((D.fm u).up 0 v c y))) := by
     refine valSc_sum T w c _ _ fun y hy => ?_
     have hy1 : (D.fm u).fv 0 v c y = 1 := (Finset.mem_filter.1 hy).2
-    refine hI w hw hs v c y hy1 _ ?_
-    intro B₁ B₁' hB₁ hB₁'
-    exact hx _ B₁ B₁' hB₁ hB₁'
+    exact hI w hw hs v c y hy1 _ (fun B₁ B₁' hB₁ hB₁' => hx _ B₁ B₁' hB₁ hB₁')
   obtain ⟨P, hP, hPe⟩ := hsum B hB
   refine ⟨P, hP, fun z => ?_⟩
   rw [uop_apply]
@@ -288,9 +284,7 @@ theorem dnValInt0_of (T : Forms0 D u) (hI : DnIncInt0 T) : DnValInt0 T := by
       (D.fm u).dnT 0 v c g ((D.fm u).emb 0 x ((D.fm u).dn 0 v c g))) := by
     refine valBc_sum T w v c _ _ fun g hg => ?_
     have hg1 : g ((D.fm u).te 0 v c) = 1 := (Finset.mem_filter.1 hg).2
-    refine hI w hw hs v c g hg1 _ ?_
-    intro B₁ hB₁
-    exact hx _ B₁ hB₁
+    exact hI w hw hs v c g hg1 _ (fun B₁ hB₁ => hx _ B₁ hB₁)
   obtain ⟨P, hP, hPe⟩ := hsum B B' hB hB'
   refine ⟨P, hP, fun z => ?_⟩
   rw [dop_apply]

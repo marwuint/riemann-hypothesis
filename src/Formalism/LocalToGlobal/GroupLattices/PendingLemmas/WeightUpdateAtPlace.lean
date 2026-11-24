@@ -89,14 +89,12 @@ def orbS : Setoid P.Tup where
 
 def can (L : P.Tup) : P.Tup := (Quotient.mk (orbS C) L).out
 
-theorem can_rel (L : P.Tup) : ∃ γ : C.Γ, L = C.smul γ (can C L) := by
-  exact Quotient.mk_out (s := orbS C) L
+theorem can_rel (L : P.Tup) : ∃ γ : C.Γ, L = C.smul γ (can C L) := Quotient.mk_out (s := orbS C) L
 
 theorem can_eq {L L' : P.Tup} (h : ∃ γ : C.Γ, L' = C.smul γ L) : can C L = can C L' := by
   simpa [can] using congrArg Quotient.out (Quotient.sound (s := orbS C) h)
 
-theorem can_can (L : P.Tup) : can C (can C L) = can C L := by
-  exact can_eq C (can_rel C L)
+theorem can_can (L : P.Tup) : can C (can C L) = can C L := can_eq C (can_rel C L)
 
 private theorem isLatTup_smul_of_isLatTup (γ : C.Γ) {L : P.Tup} (hL : P.IsLatTup L) : P.IsLatTup (C.smul γ L) := by
   intro v
@@ -260,8 +258,7 @@ theorem update_eq_update_iff {ι : Type} [DecidableEq ι] {β : ι → Type} (u0
     Function.update A u0 b = Function.update B u0 b ↔ ∀ u, u ≠ u0 → A u = B u := by
   constructor
   · intro h u hu
-    have h1 := congrFun h u
-    simpa [hu] using h1
+    simpa [hu] using congrFun h u
   · intro h
     funext u
     by_cases hu : u = u0
@@ -274,8 +271,7 @@ section OverSys
 variable {p : ℕ} [Fact p.Prime] (X : Sys p)
 
 theorem stab_fin (h : FinStab X.Lv) : ∀ j (La : X.Lt j), (X.Pj j).IsLatTup La.2 → 0 < X.stab j La := by
-  intro j La hLa
-  exact Nat.card_pos_iff.2 ⟨Nonempty.intro ⟨1, lsmul_one _ _⟩, h j La.1 La.2 hLa⟩
+  exact fun j La hLa => Nat.card_pos_iff.2 ⟨Nonempty.intro ⟨1, lsmul_one _ _⟩, h j La.1 La.2 hLa⟩
 
 def Aw (_v : X.Pl) (j : ℕ) : Type := X.Lt j × X.Lt (j + 1)
 

@@ -81,11 +81,9 @@ variable {n : Type} [Fintype n] [DecidableEq n]
 
 def matK (A : Matrix n n O) : Matrix n n (FractionRing O) := A.map (algebraMap O (FractionRing O))
 
-theorem matK_mul (A B : Matrix n n O) : matK (A * B) = matK A * matK B := by
-  exact Matrix.map_mul
+theorem matK_mul (A B : Matrix n n O) : matK (A * B) = matK A * matK B := Matrix.map_mul
 
-theorem matK_one : matK (1 : Matrix n n O) = 1 := by
-  exact Matrix.map_one _ (map_zero _) (map_one _)
+theorem matK_one : matK (1 : Matrix n n O) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
 theorem matK_transpose (A : Matrix n n O) : matK Aᵀ = (matK A)ᵀ := rfl
 
@@ -244,8 +242,7 @@ theorem vMap_bij : Function.Bijective (vMap (O := O) (n := n)) := by
   constructor
   · intro y y' h
     funext a
-    have h' := congrFun (congrArg Subtype.val h) a
-    exact IsFractionRing.injective O (FractionRing O) h'
+    exact IsFractionRing.injective O (FractionRing O) (congrFun (congrArg Subtype.val h) a)
   · rintro ⟨f, hf⟩
     have h : ∀ a, ∃ y : O, algebraMap O (FractionRing O) y = f a := by
       intro a
@@ -696,8 +693,7 @@ def modT (w : ℕ) : Module (FractionRing O) (H1 (Dat r χ bl ρk ε Aw hK hε h
 
 theorem towerT (w : ℕ) :
     @IsScalarTower O (FractionRing O) (H1 (Dat r χ bl ρk ε Aw hK hε hM w).ρT) _
-      (modT r χ bl ρk ε Aw hK hε hM w).toSMul _ := by
-  exact isScalarTower_H1 _ _ _
+      (modT r χ bl ρk ε Aw hK hε hM w).toSMul _ := isScalarTower_H1 _ _ _
 
 theorem repV'_smul {Γ : Type} [Group Γ] {n : Type} [Fintype n] [DecidableEq n] (ε' : Γ →* Oˣ)
     (M : Γ →* Matrix n n O) (g : Γ) (c : FractionRing O) (v : n → FractionRing O) :
@@ -709,8 +705,7 @@ def modT' (w : ℕ) : Module (FractionRing O) (H1 (Dat r χ bl ρk ε Aw hK hε 
 
 theorem towerT' (w : ℕ) :
     @IsScalarTower O (FractionRing O) (H1 (Dat r χ bl ρk ε Aw hK hε hM w).ρT') _
-      (modT' r χ bl ρk ε Aw hK hε hM w).toSMul _ := by
-  exact isScalarTower_H1 _ _ _
+      (modT' r χ bl ρk ε Aw hK hε hM w).toSMul _ := isScalarTower_H1 _ _ _
 
 end Clauses
 

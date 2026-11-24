@@ -126,8 +126,7 @@ theorem mem_L_of_dual (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT 
     simp
   have hxΛ : x ∈ Λ := by
     unfold Formalism.HermitianLatticesTheory.IsUnimodular at hU
-    rw [hU] at hxd
-    exact hxd
+    rwa [hU] at hxd
   rw [hΛ] at hxΛ
   obtain ⟨x12, hx12, x2, hx2, hxeq⟩ := Submodule.mem_sup.mp hxΛ
   obtain ⟨x1, hx1, xL, hxL', rfl⟩ := Submodule.mem_sup.mp hx12
@@ -149,8 +148,7 @@ theorem mem_L_of_dual (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT 
   have h20 : x2 = 0 := by
     rw [coef_of_span f e hef hx2']
     simp [he2]
-  rw [← hxeq, h10, h20, zero_add, add_zero]
-  exact hxL'
+  rwa [← hxeq, h10, h20, zero_add, add_zero]
 
 theorem exists_partner (z : S.V) (hzL : z ∈ L) (hzz : S.hT z z ≠ 0)
     (hint : ∀ x ∈ L, ∀ y ∈ L, ∃ o : 𝓞 E, (o : E) = S.hT x y)
@@ -159,8 +157,7 @@ theorem exists_partner (z : S.V) (hzL : z ∈ L) (hzz : S.hT z z ≠ 0)
     ∃ σ ∈ L, S.hT σ z = 1 := by
   classical
   have hstar : ∀ o : 𝓞 E, ∃ o' : 𝓞 E, (o' : E) = star (o : E) := by
-    intro o
-    exact ⟨⟨star (o : E), (o.2).map (starRingEnd E).toIntAlgHom⟩, rfl⟩
+    exact fun o => ⟨⟨star (o : E), (o.2).map (starRingEnd E).toIntAlgHom⟩, rfl⟩
   have hsmul : ∀ (c : 𝓞 E) (y : S.V), c • y = (c : E) • y := fun c y => (algebraMap_smul E c y).symm
   let J : Ideal (𝓞 E) :=
     { carrier := {o | ∃ σ ∈ L, (o : E) = S.hT σ z}
@@ -203,8 +200,7 @@ theorem exists_partner (z : S.V) (hzL : z ∈ L) (hzz : S.hT z z ≠ 0)
   have h1J : (1 : E) ∈ (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) := h1 (FractionalIdeal.one_mem_one _)
   obtain ⟨j, ⟨σ, hσ, hj⟩, hj1⟩ := (FractionalIdeal.mem_coeIdeal _).mp h1J
   refine ⟨σ, hσ, ?_⟩
-  rw [← hj]
-  exact hj1
+  rwa [← hj]
 
 end Gen
 

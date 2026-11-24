@@ -162,8 +162,7 @@ theorem rowsSum_of_val (vR : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ℝ)
   rcases hp : DataInst.ptOfList (D.R.rS + 1) p with _ | w
   · have h0 : DataInst.rowVec (vR) κ nc ρ p = 0 := by
       simp [DataInst.rowVec, hp]
-    rw [h0, norm_zero, zero_mul]
-    exact hS0
+    rwa [h0, norm_zero, zero_mul]
 
   have hA' : ∀ t, A p t ↔ (DataInst.Elig t ∧ κ t = ρ ∧ t.atPt w) := by
     intro t
@@ -197,14 +196,12 @@ theorem rowsSum_of_val (vR : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ℝ)
   · have hV : V = 0 := by
       have : RealObj.unscaledOperatorAtPointRepresentative X u u' 1 i0 i0' νq w = 0 := by simp [RealObj.unscaledOperatorAtPointRepresentative, hreal]
       simp only [V, this, map_zero, norm_zero]
-    rw [hV, mul_zero, mul_zero]
-    exact hgS0
+    rwa [hV, mul_zero, mul_zero]
 
   by_cases hne : Nonempty Sw
   swap
   · haveI : IsEmpty Sw := not_nonempty_iff.1 hne
-    rw [tsum_empty, norm_zero, zero_div, zero_mul]
-    exact hgS0
+    rwa [tsum_empty, norm_zero, zero_div, zero_mul]
   obtain ⟨t0⟩ := hne
   have hNC : N ≤ C' * |Dn| :=
     (hC p w hp hreal ⟨t0.1, t0.2.1.2, t0.2.2.2⟩).trans
@@ -259,8 +256,7 @@ theorem rowsSum_of_val (vR : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ℝ)
         _ = ‖∑' t : Sw, f t‖ * (C' * V) * |Dn| := by ring
   refine hlhs.trans ?_
   rcases (mul_nonneg hC'0 (norm_nonneg _) : 0 ≤ C' * V).eq_or_lt with hK | hK
-  · rw [← hK, mul_zero]
-    exact hgS0
+  · rwa [← hK, mul_zero]
   · have hfb : ∀ t : Sw, ‖f t‖ ≤ g t.1 / (C' * V) := fun t => by
       rw [le_div_iff₀ hK]; exact hterm t
     have hsn : Summable (fun t : Sw => ‖f t‖) :=

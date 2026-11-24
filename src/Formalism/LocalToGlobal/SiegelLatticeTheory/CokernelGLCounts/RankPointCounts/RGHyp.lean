@@ -112,11 +112,9 @@ theorem RGHyp.trF {t₁ t₂ : Term V M r} {Λ₂ : Submodule M.L.O V} {ψ : ↥
     have e1 : (u' : V) - a = (u' + ψ n) - (a + b) := by
       rw [hbψ]
       abel
-    rw [e1]
-    exact hX
+    rwa [e1]
   show Submodule.Quotient.mk _ = Submodule.Quotient.mk _
-  rw [Submodule.Quotient.eq, Submodule.mem_comap]
-  exact hua
+  rwa [Submodule.Quotient.eq, Submodule.mem_comap]
 
 theorem RGHyp.trF' {t₁ t₂ : Term V M r} {Λ₂ : Submodule M.L.O V} {ψ : ↥(H.W0 t₁.f t₁.f') ≃ₗ[E] ↥(H.W0 t₂.f t₂.f')}
     {θ : DDt H t₁ ≃ₗ[M.L.O] DDt H t₂} {φ : H.Wb t₁.f ≃ₗ[E] H.Wb t₂.f} {φ' : H.Wb t₁.f' ≃ₗ[E] H.Wb t₂.f'}
@@ -151,11 +149,9 @@ theorem RGHyp.trF' {t₁ t₂ : Term V M r} {Λ₂ : Submodule M.L.O V} {ψ : �
     have e1 : (u' : V) - a = (u' + ψ n) - (a + b) := by
       rw [hbψ]
       abel
-    rw [e1]
-    exact hX
+    rwa [e1]
   show Submodule.Quotient.mk _ = Submodule.Quotient.mk _
-  rw [Submodule.Quotient.eq, Submodule.mem_comap]
-  exact hua
+  rwa [Submodule.Quotient.eq, Submodule.mem_comap]
 
 end RG3
 

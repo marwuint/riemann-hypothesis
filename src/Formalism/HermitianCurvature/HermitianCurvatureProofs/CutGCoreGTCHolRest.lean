@@ -111,8 +111,7 @@ theorem isOpen_annT (TT : ℝ) : IsOpen (AnnT TT) := isOpen_lt continuous_const 
 
 theorem circleMap_mem_annT {TT R : ℝ} (hR : TT < R ^ 2) (θ : ℝ) : circleMap 0 R θ ∈ AnnT TT := by
   show TT < Complex.normSq (circleMap 0 R θ)
-  rw [Complex.normSq_eq_norm_sq, norm_circleMap_zero, sq_abs]
-  exact hR
+  rwa [Complex.normSq_eq_norm_sq, norm_circleMap_zero, sq_abs]
 
 theorem re_conj_fderiv {TT : ℝ} {u : ℂ → ℂ} (hu : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) u (AnnT TT))
     (h1 : ∀ ζ ∈ AnnT TT, ‖u ζ‖ = 1) {ζ : ℂ} (hζ : ζ ∈ AnnT TT) (h : ℂ) :
@@ -204,8 +203,7 @@ theorem winding {TT : ℝ} {u : ℂ → ℂ} (hu : ContDiffOn ℝ ((⊤ : ℕ∞
       have h6 := hconst
       simp only [hG0, neg_zero, Complex.exp_zero, mul_one] at h6
       rw [hv2] at h6
-      rw [mul_one]
-      exact h6
+      rwa [mul_one]
     exact mul_left_cancel₀ hv0 h5
   obtain ⟨n, hn⟩ := Complex.exp_eq_one_iff.1 hE
   refine ⟨-n, ?_⟩
@@ -277,8 +275,7 @@ theorem curv_alg (u0 p q s11 sii : ℂ) (hn : u0 * star u0 = 1) (ha : (star u0 *
 
 theorem hasFDerivAt_star {u : ℂ → ℂ} {ζ : ℂ} (hd : DifferentiableAt ℝ u ζ) :
     HasFDerivAt (fun w => star (u w)) (Complex.conjCLE.toContinuousLinearMap.comp (fderiv ℝ u ζ)) ζ := by
-  refine hd.hasFDerivAt.star.congr_fderiv ?_
-  exact ContinuousLinearMap.ext fun v => rfl
+  exact hd.hasFDerivAt.star.congr_fderiv (ContinuousLinearMap.ext fun v => rfl)
 
 theorem curv_unit {TT : ℝ} {u : ℂ → ℂ} (hu : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) u (AnnT TT))
     (h1 : ∀ ζ ∈ AnnT TT, ‖u ζ‖ = 1) {ζ : ℂ} (hζ : ζ ∈ AnnT TT) :
@@ -307,8 +304,7 @@ theorem curv_unit {TT : ℝ} {u : ℂ → ℂ} (hu : ContDiffOn ℝ ((⊤ : ℕ�
     have h0 : HasFDerivAt (Complex.reCLM ∘ fun w => star (u w) * fderiv ℝ u w k) (0 : ℂ →L[ℝ] ℝ) ζ := by
       apply (hasFDerivAt_const (0 : ℝ) ζ).congr_of_eventuallyEq
       filter_upwards [hn] with w hw
-      simp only [Function.comp_apply, Complex.reCLM_apply]
-      exact re_conj_fderiv hu h1 hw k
+      simpa only [Function.comp_apply, Complex.reCLM_apply] using re_conj_fderiv hu h1 hw k
     have he := congrArg (fun L : ℂ →L[ℝ] ℝ => L k) (hre.unique h0)
     simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_smul',
       Pi.smul_apply, ContinuousLinearMap.flip_apply, ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply,
@@ -371,8 +367,7 @@ private theorem contDiffOn_ann_of_wirt_fnZ_eq (P : M.Par) {u : ℂ → ℂ} (w :
   let ι : ℂ → MA.E P.r := fun ζ => ((fun _ => (1 : ℂ)), ζ)
   have hι : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) ι := contDiff_const.prodMk contDiff_id
   have hmap : Set.MapsTo ι (Ann P) (MA.Qset P.r P.TT) := fun ζ hζ => ⟨fun _ => one_ne_zero, hζ⟩
-  refine (hs.comp hι.contDiffOn hmap).congr fun ζ hζ => ?_
-  exact (hF ⟨ι ζ, hmap hζ⟩).symm
+  exact (hs.comp hι.contDiffOn hmap).congr fun ζ hζ => (hF ⟨ι ζ, hmap hζ⟩).symm
 
 theorem dZ_smooth (P : M.Par) {u : ℂ → ℂ} (hu : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) u (Ann P)) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (NF.dZ u) (Ann P) ∧
@@ -447,8 +442,7 @@ namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 noncomputable section
 
 theorem phase_holomorphy_holds : GTCPhHol := by
-  intro TT u hu h1 R _ hR
-  exact Ph.hol_unit (TT := TT) hu (fun ζ hζ => h1 ζ hζ) hR
+  exact fun TT u hu h1 R _ hR => Ph.hol_unit (TT := TT) hu (fun ζ hζ => h1 ζ hζ) hR
 
 theorem phase_curvature_holds : GTCPhCurv := by
   intro TT u hu h1 ζ hζ

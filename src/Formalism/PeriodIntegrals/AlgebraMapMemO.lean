@@ -98,11 +98,9 @@ theorem cj_mem_O (L : LocE F E) (x : E) (h : x ∈ L.O) : L.cj x ∈ L.O := by
   refine ⟨p, hp, ?_⟩
   have hc : L.cj.toRingEquiv.toRingHom.comp (algebraMap 𝒪[F] E) = algebraMap 𝒪[F] E := by
     ext r
-    show L.cj (algebraMap F E (r : F)) = algebraMap F E (r : F)
     exact L.cj.commutes _
   have h2 := congrArg L.cj.toRingEquiv.toRingHom he
-  rw [Polynomial.hom_eval₂, map_zero, hc] at h2
-  exact h2
+  rwa [Polynomial.hom_eval₂, map_zero, hc] at h2
 
 end Top
 
@@ -122,8 +120,7 @@ theorem exists_scale (a : F) : ∃ r : 𝒪[F], (r : F) ≠ 0 ∧ (r : F) * a �
   · exact ⟨1, by simp, by simpa using ha⟩
   · have ha0 : a ≠ 0 := fun h0 => ha (h0 ▸ zero_mem _)
     refine ⟨⟨a⁻¹, inv_mem_OF a ha⟩, ?_, ?_⟩
-    · show a⁻¹ ≠ 0
-      exact inv_ne_zero ha0
+    · exact inv_ne_zero ha0
     · show a⁻¹ * a ∈ 𝒪[F]
       rw [inv_mul_cancel₀ ha0]
       exact one_mem _
@@ -160,10 +157,7 @@ theorem exists_theta : ∃ θ ∈ L.O, L.cj θ = -θ ∧ ∃ D : 𝒪[F], (D : F
   have hc0 : L.cj (x - L.cj x) = -(x - L.cj x) := by
     rw [map_sub, L.cj_cj]
     ring
-  have hθ0ne : x - L.cj x ≠ 0 := by
-    intro h0
-    apply hx
-    exact (sub_eq_zero.mp h0).symm
+  have hθ0ne : x - L.cj x ≠ 0 := fun h0 => hx (sub_eq_zero.mp h0).symm
   obtain ⟨D0, hD0⟩ := (L.cj_fix ((x - L.cj x) * (x - L.cj x))).1 (by rw [map_mul, hc0, neg_mul_neg])
   have hD0ne : D0 ≠ 0 := by
     rintro rfl
@@ -178,8 +172,7 @@ theorem exists_theta : ∃ θ ∈ L.O, L.cj θ = -θ ∧ ∃ D : 𝒪[F], (D : F
     rw [e, e0, map_zero, map_neg, map_mul, map_mul]
     linear_combination (-(algebraMap F E r) ^ 2) * hD0
   · rw [map_mul, L.cj.commutes, hc0, mul_neg]
-  · show (r : F) * ((r : F) * D0) ≠ 0
-    exact mul_ne_zero hr0 (mul_ne_zero hr0 hD0ne)
+  · exact mul_ne_zero hr0 (mul_ne_zero hr0 hD0ne)
   · show _ = algebraMap F E ((r : F) * ((r : F) * D0))
     rw [map_mul, map_mul, hD0]
     ring

@@ -61,8 +61,7 @@ def gB (L : SizeData₂ D) (p : ℕ) : ℝ :=
 theorem gB_nonneg (L : SizeData₂ D) (p : ℕ) : 0 ≤ gB L p := by
   have hx : 0 ≤ L.sc.x := le_of_lt (lt_trans zero_lt_one L.sc.one_lt_alt)
   have ha : 0 ≤ L.sc.a := by
-    simp only [Scale.a, Scale.b]
-    exact mul_nonneg hx (Real.exp_pos _).le
+    simpa only [Scale.a, Scale.b] using mul_nonneg hx (Real.exp_pos _).le
   unfold gB
   split_ifs
   · have hm : (0 : ℝ) ≤ (D.R.m : ℝ) := Nat.cast_nonneg _
@@ -172,12 +171,10 @@ theorem logX_le (hN : SizeN L) (hK : SizeK L) :
   have hx0 : 0 < L.sc.x := lt_trans zero_lt_one hx1
   have hnpos : 0 < (D.R.n : ℝ) := lt_of_lt_of_le (Real.rpow_pos_of_pos hx0 _) hn1
   have hX'1 : 1 ≤ L.sc.X' := by
-    simp only [Scale.X']
-    exact Real.one_le_exp (Real.rpow_nonneg hx0.le _)
+    simpa only [Scale.X'] using Real.one_le_exp (Real.rpow_nonneg hx0.le _)
   have hX'0 : 0 < L.sc.X' := lt_of_lt_of_le zero_lt_one hX'1
   have ha : 0 < L.sc.a := by
-    simp only [Scale.a, Scale.b]
-    exact mul_pos hx0 (Real.exp_pos _)
+    simpa only [Scale.a, Scale.b] using mul_pos hx0 (Real.exp_pos _)
   have hXeq : L.sc.X'' D.R.n = L.sc.x * D.R.n * L.sc.X' := by
     simp only [Scale.X'', Scale.w'', Scale.b']
     field_simp [ha.ne', hX'0.ne', hx0.ne', hnpos.ne']
@@ -240,11 +237,9 @@ theorem ga_le_pol (P : ParameterChoice' D L) (X : Inst D L) (K : Consts) (hK : K
   have he := L.sc.eps_pos
   have hx0 : 0 < L.sc.x := lt_trans zero_lt_one hx1
   have hb : 0 < L.sc.b := by
-    simp only [Scale.b]
-    exact Real.exp_pos _
+    simpa only [Scale.b] using Real.exp_pos _
   have hδ : L.sc.delta1 ≤ 1 := by
-    simp only [Scale.delta1]
-    exact Real.rpow_le_one_of_one_le_of_nonpos hx1.le (by linarith)
+    simpa only [Scale.delta1] using Real.rpow_le_one_of_one_le_of_nonpos hx1.le (by linarith)
   have hn0 : (0 : ℝ) ≤ (D.R.n : ℝ) := Nat.cast_nonneg _
   have hm0 : (0 : ℝ) ≤ (D.R.m : ℝ) := Nat.cast_nonneg _
   have hk0 : (0 : ℝ) ≤ (D.R.k : ℝ) := Nat.cast_nonneg _
@@ -262,8 +257,7 @@ theorem ga_le_pol (P : ParameterChoice' D L) (X : Inst D L) (K : Consts) (hK : K
     have q3 := mul_le_mul_of_nonneg_right hn2 hx0.le
     linarith
   have hL0 : 0 ≤ L.sc.L := by
-    simp only [Scale.L]
-    exact Real.rpow_nonneg hx0.le _
+    simpa only [Scale.L] using Real.rpow_nonneg hx0.le _
   have hf : (0 : ℝ) ≤ (D.R.f : ℝ) := by positivity
   have ht : (0 : ℝ) ≤ (D.R.t : ℝ) := by positivity
   have hNm : (0 : ℝ) ≤ (D.R.N D.R.m : ℝ) := by positivity

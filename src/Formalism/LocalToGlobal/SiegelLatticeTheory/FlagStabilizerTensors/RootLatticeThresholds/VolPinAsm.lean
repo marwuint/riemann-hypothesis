@@ -136,8 +136,7 @@ private theorem isHaarOnSet_conj {I : Formalism.MainNotions.S.AutInst} {S : Set 
   · haveI := hσ
     rw [he]
     exact e.sigmaFinite_map
-  · intro h'
-    exact h0 ((Measure.map_eq_zero_iff hm.aemeasurable).mp h')
+  · exact fun h' => h0 ((Measure.map_eq_zero_iff hm.aemeasurable).mp h')
   · rw [he, e.map_apply]
     convert hS using 2
     ext y
@@ -188,8 +187,7 @@ theorem gval_of_normRep (t : TT Y u u') (w : Point D.host.E (D.R.rS + 1))
     rw [← hmk]
     first
     | exact Formalism.L2.SG.TermDef.Gt_mk hGF _
-  rw [e] at hG
-  exact hG
+  rwa [e] at hG
 
 private theorem relIndex_map_of_injective' {G G' : Type*} [Group G] [Group G'] (f : G →* G')
     (hf : Function.Injective f) (H K : Subgroup G) : (H.map f).relIndex (K.map f) = H.relIndex K := by
@@ -233,8 +231,7 @@ private theorem H_affine_combination_eq_of_quadratic_relation (t : TT Y u u') (w
     have h2 := rset_mul t hx hr
     show c⁻¹ * (x * r) * c ∈ Rs
     have e : c⁻¹ * (x * r) * c = (c⁻¹ * x * c) * (c⁻¹ * r * c) := by group
-    rw [e]
-    exact h2
+    rwa [e]
   haveI : Countable A := Set.Countable.to_subtype (s := (A : Set X.B.I.Ginf))
     (by rw [hA, Subgroup.coe_map]; exact (Set.to_countable _).image _)
   haveI : Countable B := Set.Countable.to_subtype (s := (B : Set X.B.I.Ginf))
@@ -249,16 +246,14 @@ private theorem H_affine_combination_eq_of_quadratic_relation (t : TT Y u u') (w
       exact Subgroup.mem_map.mpr ⟨β, Subgroup.mem_subgroupOf.mpr hβ, hβe⟩
     · show c⁻¹ * (c * s0 * c⁻¹ * r) * c ∈ K
       have e : c⁻¹ * (c * s0 * c⁻¹ * r) * c = s0 * (c⁻¹ * r * c) := by group
-      rw [e]
-      exact hs0K
+      rwa [e]
     · rintro x ⟨hx, hxK⟩
       obtain ⟨β, hβ, rfl⟩ := Subgroup.mem_map.mp hx
       obtain ⟨r1, hr1, hr1e⟩ := (hDict.2.2.1 (Φ β)).mp ⟨β, Subgroup.mem_subgroupOf.mp hβ, rfl⟩
       have hr1s : r1 = s0 := by
         refine huniq r1 ⟨hr1, ?_⟩
         have e : r1 * (c⁻¹ * r * c) = c⁻¹ * (Φ β * r) * c := by rw [hr1e]; group
-        rw [e]
-        exact hxK
+        rwa [e]
       rw [hr1e, hr1s]
   have hBA : B.relIndex A = (Formalism.L2.SG.PairVal.stabAut D u u' (X.Fu u) (Y.what₂ u) t.toTerm F' L).relIndex
       (Formalism.L2.SG.PairVal.stabInt D u u' Y.δ Y.M w) := by
@@ -307,7 +302,6 @@ theorem volume_generic_odd_of (hD : DictC) (hC : CovolOne3C)
     refine (Subgroup.closure_le _).mpr ?_
     intro a ha
     obtain ⟨h1, b, hb, hwb, -⟩ := ha
-    show a ∈ Formalism.L2.SG.Pf.StabilizerIndexVolumes.StSet (ptMat w)
     exact ⟨h1, b, hb, hwb⟩
   obtain ⟨hf1, hf2⟩ := hFin D X Y u u' hP Y.agree t.toTerm w F' L U hrel hgen hN hGv
   exact H_affine_combination_eq_of_quadratic_relation t w F' L γw s c Φ hDict _ (pinned_haar t w γw s s' μw hs hs' hdec hμw) KA hKA hKAu hKA1

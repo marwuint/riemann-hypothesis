@@ -99,12 +99,10 @@ private theorem not_pow_dvd_mul_of_not_pow_dvd_of_not_pow_dvd (hpr : Prime P) (i
       · have h2 : P * P ^ (i + j + 1) ∣ P * (A1 * B) := by
           rw [← pow_succ', ← mul_assoc]
           have e : i + j + 1 + 1 = i + 1 + j + 1 := by omega
-          rw [e]
-          exact h
+          rwa [e]
         exact (mul_dvd_mul_iff_left hpr.ne_zero).mp h2
     · apply hB
-      have h3 := hpr.pow_dvd_of_dvd_mul_left (i + 1 + j + 1) hPA h
-      exact dvd_trans (pow_dvd_pow P (by omega)) h3
+      exact dvd_trans (pow_dvd_pow P (by omega)) (hpr.pow_dvd_of_dvd_mul_left (i + 1 + j + 1) hPA h)
 
 theorem mul_notMem (hP : P.IsPrime) (hP0 : P ≠ ⊥) {a b : R} {i j : ℕ} (ha : a ∉ P ^ (i + 1))
     (hb : b ∉ P ^ (j + 1)) : a * b ∉ P ^ (i + j + 1) := by
@@ -142,8 +140,7 @@ theorem exists_fill (hP : P.IsPrime) (hP0 : P ≠ ⊥) {g : R} {c k : ℕ} (hg :
   obtain ⟨y, hy, z, hz, hyz⟩ := Submodule.mem_sup.mp h
   obtain ⟨r, hr, rfl⟩ := Ideal.mem_span_singleton_mul.mp hy
   refine ⟨r, hr, ?_⟩
-  rw [← hyz, add_sub_cancel_left]
-  exact hz
+  rwa [← hyz, add_sub_cancel_left]
 
 end DedekindLFunctions
 
@@ -172,8 +169,7 @@ theorem mem_pow_iff (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a : 𝓞 F) : ι a ∈ ex
   · intro ha
     rw [← h]
     exact Ideal.mem_comap.mpr ha
-  · intro ha
-    exact Ideal.mem_map_of_mem _ ha
+  · exact fun ha => Ideal.mem_map_of_mem _ ha
 
 private theorem coe_iota_eq_algebraMap_coe (a : 𝓞 F) : ((ι a : 𝓞 K) : K) = algebraMap F K (a : F) := by
   first
@@ -212,8 +208,7 @@ theorem exists_fillO {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d : 𝓞 
   obtain ⟨y, hy, z, hz, hyz⟩ := Submodule.mem_sup.mp (h2 hs)
   obtain ⟨r, hr, rfl⟩ := Ideal.mem_span_singleton_mul.mp hy
   refine ⟨r, hr, ?_⟩
-  rw [← hyz, add_sub_cancel_left]
-  exact hz
+  rwa [← hyz, add_sub_cancel_left]
 
 theorem mem_of_mul_mem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d : 𝓞 F} {v j : ℕ}
     (hd : d ∉ 𝔭 ^ (v + 1)) {z : 𝓞 K} (hz : ι d * z ∈ extP K 𝔭 ^ (v + j)) : z ∈ extP K 𝔭 ^ j := by
@@ -234,8 +229,7 @@ theorem mem_of_mul_mem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d : �
   have hle : extP K 𝔭 ^ m * Ideal.span {z} ≤ extP K 𝔭 ^ (v + j) := by
     rw [← hS, Ideal.sup_mul]
     refine sup_le ?_ (by first | exact Ideal.mul_le_left)
-    rw [Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_le_iff_mem]
-    exact hz
+    rwa [Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_le_iff_mem]
   have hdiv : extP K 𝔭 ^ m * extP K 𝔭 ^ (v + j - m) ∣ extP K 𝔭 ^ m * Ideal.span {z} := by
     rw [← pow_add, show m + (v + j - m) = v + j by omega]
     exact Ideal.dvd_iff_le.mpr hle
@@ -256,8 +250,7 @@ private theorem exists_iota_eq_of_star_coe_eq (hF : IsFixF K F) (w : 𝓞 K) (hw
     first
     | exact hfi
     | simpa [integralClosure] using hfi⟩, ?_⟩
-  apply RingOfIntegers.ext
-  exact (coe_iota_eq_algebraMap_coe _).trans hf
+  exact RingOfIntegers.ext ((coe_iota_eq_algebraMap_coe _).trans hf)
 
 theorem exists_tr (hF : IsFixF K F) (z : 𝓞 K) : ∃ a : 𝓞 F, ι a = z + conjO K z := by
   apply exists_iota_eq_of_star_coe_eq hF
@@ -274,8 +267,7 @@ theorem ι_inj : Function.Injective (ι) := by
   have h1 : a - b ∈ Ideal.comap ι (⊥ : Ideal (𝓞 K)) := by
     rw [Ideal.mem_comap, map_sub, hab, sub_self]
     exact Ideal.zero_mem _
-  rw [h, Ideal.mem_bot, sub_eq_zero] at h1
-  exact h1
+  rwa [h, Ideal.mem_bot, sub_eq_zero] at h1
 
 def trf (hF : IsFixF K F) (z : 𝓞 K) : 𝓞 F := Classical.choose (exists_tr hF z)
 
@@ -313,8 +305,7 @@ theorem exists_theta (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : 
   obtain ⟨θ, t, ht, hθt⟩ := hK.2.2 P hPmax
   have htc : t = conjO K θ := by
     apply RingOfIntegers.ext
-    rw [_root_.Formalism.HermitianLattices.Ext.L3.conjO_coe]
-    exact ht
+    rwa [_root_.Formalism.HermitianLattices.Ext.L3.conjO_coe]
   subst htc
   refine ⟨θ, ?_⟩
   have hδc : ((θ - conjO K θ : 𝓞 K) : K) = (θ : K) - star (θ : K) := by

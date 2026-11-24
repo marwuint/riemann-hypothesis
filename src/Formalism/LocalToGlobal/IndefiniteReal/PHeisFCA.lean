@@ -150,25 +150,15 @@ def F0 : Set (AdeleRing (𝓞 F) F) := {x | x.1 ∈ Pinf F ∧ x.2 ∈ Ohat F}
 
 theorem ad_exU (x : AdeleRing (𝓞 F) F) : ∃! q : F, algebraMap F (AdeleRing (𝓞 F) F) q + x ∈ F0 F := by
   have hOa : ∀ a : 𝓞 F, algebraMap F (FiniteAdeleRing (𝓞 F) F) (a : F) ∈ Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.intAd F := by
-    intro a
-    show ∀ v : HeightOneSpectrum (𝓞 F), (algebraMap F (FiniteAdeleRing (𝓞 F) F) (a : F)) v ∈ v.adicCompletionIntegers F
-    intro v
-    rw [HeightOneSpectrum.mem_adicCompletionIntegers]
-    have e : (algebraMap F (FiniteAdeleRing (𝓞 F) F) (a : F)) v = ((a : F) : v.adicCompletion F) := rfl
-    rw [e, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
-    first
-    | exact HeightOneSpectrum.valuation_le_one v a
+    intro a v
+    exact (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (a : F)).trans_le
+      (HeightOneSpectrum.valuation_le_one v a)
   have hint : ∀ q : F, algebraMap F (FiniteAdeleRing (𝓞 F) F) q ∈ Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.intAd F →
       ∃ a : 𝓞 F, (a : F) = q := by
     intro q hq
-    have hr := HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 F) (K := F) q (by
-      intro v
-      have h1 : (algebraMap F (FiniteAdeleRing (𝓞 F) F) q) v ∈ v.adicCompletionIntegers F := hq v
-      rw [HeightOneSpectrum.mem_adicCompletionIntegers] at h1
-      have h2 : Valued.v ((q : v.adicCompletion F)) ≤ 1 := h1
-      rwa [HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] at h2)
-    obtain ⟨a, ha⟩ := hr
-    first | exact ⟨a, ha⟩
+    obtain ⟨a, ha⟩ := HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 F) (K := F) q
+      fun v => (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v q).symm.trans_le (hq v)
+    exact ⟨a, ha⟩
   obtain ⟨u, hu⟩ : ∃ u : F, x.2 - algebraMap F (FiniteAdeleRing (𝓞 F) F) u ∈ Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.intAd F := by
     first
     | exact Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.exists_sub_mem_intAd x.2
@@ -177,34 +167,27 @@ theorem ad_exU (x : AdeleRing (𝓞 F) F) : ∃! q : F, algebraMap F (AdeleRing 
   · simp only [F0, Set.mem_setOf_eq]
     constructor
     · change algebraMap F (InfiniteAdeleRing F) (-u + (a : F)) + x.1 ∈ Pinf F
-      have e : algebraMap F (InfiniteAdeleRing F) (-u + (a : F)) + x.1 =
-          algebraMap F (InfiniteAdeleRing F) (a : F) + (algebraMap F (InfiniteAdeleRing F) (-u) + x.1) := by
-        rw [map_add (f := _)]; abel
-      rw [e]; exact ha
+      convert ha using 1
+      rw [map_add (f := _)]
+      abel
     · change algebraMap F (FiniteAdeleRing (𝓞 F) F) (-u + (a : F)) + x.2 ∈ Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.intAd F
-      have e : algebraMap F (FiniteAdeleRing (𝓞 F) F) (-u + (a : F)) + x.2 =
-          (x.2 - algebraMap F (FiniteAdeleRing (𝓞 F) F) u) + algebraMap F (FiniteAdeleRing (𝓞 F) F) (a : F) := by
-        rw [map_add (f := _), map_neg]; abel
-      rw [e]; exact add_mem hu (hOa a)
+      convert add_mem hu (hOa a) using 1
+      rw [map_add (f := _), map_neg]
+      abel
   · intro q hq
-    simp only [F0, Set.mem_setOf_eq] at hq
     obtain ⟨h1, h2⟩ := hq
     have h2' : algebraMap F (FiniteAdeleRing (𝓞 F) F) q + x.2 ∈ Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.intAd F := h2
     have h1' : algebraMap F (InfiniteAdeleRing F) q + x.1 ∈ Pinf F := h1
     have h3 : algebraMap F (FiniteAdeleRing (𝓞 F) F) (q + u) ∈ Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.intAd F := by
-      have h4 := sub_mem h2' hu
-      have e : algebraMap F (FiniteAdeleRing (𝓞 F) F) (q + u) =
-          algebraMap F (FiniteAdeleRing (𝓞 F) F) q + x.2 - (x.2 - algebraMap F (FiniteAdeleRing (𝓞 F) F) u) := by
-        rw [map_add (f := _)]; abel
-      rw [e]; exact h4
+      convert sub_mem h2' hu using 1
+      rw [map_add (f := _)]
+      abel
     obtain ⟨b, hb⟩ := hint (q + u) h3
     have h5 : algebraMap F (InfiniteAdeleRing F) (b : F) + (algebraMap F (InfiniteAdeleRing F) (-u) + x.1) ∈ Pinf F := by
-      have e : algebraMap F (InfiniteAdeleRing F) (b : F) + (algebraMap F (InfiniteAdeleRing F) (-u) + x.1) =
-          algebraMap F (InfiniteAdeleRing F) q + x.1 := by
-        rw [hb, map_add (f := _), map_neg]; abel
-      rw [e]; exact h1'
-    have hba : b = a := hauniq b h5
-    rw [hba] at hb
+      convert h1' using 1
+      rw [hb, map_add (f := _), map_neg]
+      abel
+    rw [hauniq b h5] at hb
     rw [hb]; ring
 
 theorem fundamental_set_subset_compact : ∃ K : Set (AdeleRing (𝓞 F) F), IsCompact K ∧ F0 F ⊆ K := by

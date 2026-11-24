@@ -119,65 +119,47 @@ theorem kc_pairing {S : Type*} [CommRing S] [IsDedekindDomain S] (D : Ideal S) (
   have hpF : ∀ P ∈ F, (p (f P) ↔ ¬ p P) := fun P hP => hp P (hFdef ▸ hP)
   have hinv : ∀ g : Ideal S ≃* Ideal S, g D = D → F.map g = F := by
     intro g hg
-    have := kc_nf_map D hD0 g
-    rw [hg] at this
-    rw [hFdef]
-    exact this.symm
+    rw [hFdef, ← kc_nf_map D hD0 g, hg]
   have hFprod : F.prod = D := by rw [hFdef]; exact prod_normalizedFactors_ideal_eq_self hD0
   have hmap : (F.filter p).map f = F.filter (fun P => ¬ p P) := by
     have e1 : F.filter (fun P => ¬ p P) = (F.map f).filter (fun P => ¬ p P) := by
       rw [hinv f hfD]
-    have e2 : (F.map f).filter (fun P => ¬ p P) = (F.filter (fun P => ¬ p (f P))).map f := by
-      rw [Multiset.filter_map]
-      rfl
+    have e2 : (F.map f).filter (fun P => ¬ p P) = (F.filter (fun P => ¬ p (f P))).map f :=
+      Multiset.filter_map ..
     have e3 : F.filter (fun P => ¬ p (f P)) = F.filter p :=
       Multiset.filter_congr (fun P hP => by rw [hpF P hP]; exact not_not)
     rw [e1, e2, e3]
   have hsplit : D = (F.filter p).prod * f (F.filter p).prod := by
     rw [map_multiset_prod, hmap, Multiset.prod_filter_mul_prod_filter_not, hFprod]
-  have hB0 : (F.filter p).prod ≠ ⊥ := by
-    intro h
-    apply hD0
-    rw [hsplit, h, Ideal.bot_mul]
+  have hB0 : (F.filter p).prod ≠ ⊥ := fun h => hD0 (by rw [hsplit, h, Ideal.bot_mul])
   have hprime_ne : ∀ {P J : Ideal S}, J ≠ ⊥ → P.IsPrime → P ∣ J → Prime P := by
     intro P J hJ hP hPJ
     refine Ideal.prime_of_isPrime ?_ hP
     rintro rfl
     exact hJ (zero_dvd_iff.mp hPJ)
-  have hsupp : ∀ P : Ideal S, P.IsPrime → P ∣ (F.filter p).prod → p P := by
-    intro P hP hdvd
-    have hm := mem_of_prime_dvd_multiset_prod (fun Q hQ => hFp Q (Multiset.mem_of_mem_filter hQ))
-      (hprime_ne hB0 hP hdvd) hdvd
-    exact (Multiset.mem_filter.mp hm).2
+  have hsupp : ∀ P : Ideal S, P.IsPrime → P ∣ (F.filter p).prod → p P := fun P hP hdvd =>
+    (Multiset.mem_filter.mp (mem_of_prime_dvd_multiset_prod
+      (fun Q hQ => hFp Q (Multiset.mem_of_mem_filter hQ)) (hprime_ne hB0 hP hdvd) hdvd)).2
   refine ⟨(F.filter p).prod, hsplit, hsupp, ?_, ?_, ?_⟩
   · by_contra hne
     obtain ⟨M, hM, hle⟩ := Ideal.exists_le_maximal _ hne
     have hM1 : M ∣ (F.filter p).prod := Ideal.dvd_iff_le.mpr (le_sup_left.trans hle)
     have hM2 : M ∣ f (F.filter p).prod := Ideal.dvd_iff_le.mpr (le_sup_right.trans hle)
-    have hpM := hsupp M hM.isPrime hM1
     rw [map_multiset_prod, hmap] at hM2
     have hm := mem_of_prime_dvd_multiset_prod (fun Q hQ => hFp Q (Multiset.mem_of_mem_filter hQ))
       (hprime_ne hB0 hM.isPrime hM1) hM2
-    exact (Multiset.mem_filter.mp hm).2 hpM
+    exact (Multiset.mem_filter.mp hm).2 (hsupp M hM.isPrime hM1)
   · intro g hgD hgp
-    have e1 : (F.map g).filter p = (F.filter (fun P => p (g P))).map g := by
-      rw [Multiset.filter_map]
-      rfl
-    have e2 : F.filter (fun P => p (g P)) = F.filter p :=
+    have e2 : F.filter (p ∘ g) = F.filter p :=
       Multiset.filter_congr (fun P hP => hgp P (hFdef ▸ hP))
-    rw [map_multiset_prod, ← e2, ← e1, hinv g hgD, e2]
+    rw [map_multiset_prod, ← e2, ← Multiset.filter_map, hinv g hgD, e2]
   · intro B' hB' hsupp'
-    have hB'0 : B' ≠ ⊥ := by
-      intro h; apply hD0; rw [hB', h, Ideal.bot_mul]
-    have hfB'0 : f B' ≠ ⊥ := by
-      intro h; apply hD0; rw [hB', h, Ideal.mul_bot]
-    have hB'0' : B' ≠ 0 := by rw [Ideal.zero_eq_bot]; exact hB'0
-    have hfB'0' : f B' ≠ 0 := by rw [Ideal.zero_eq_bot]; exact hfB'0
+    have hB'0 : B' ≠ ⊥ := fun h => hD0 (by rw [hB', h, Ideal.bot_mul])
+    have hfB'0 : f B' ≠ ⊥ := fun h => hD0 (by rw [hB', h, Ideal.mul_bot])
     have hF' : F = normalizedFactors B' + (normalizedFactors B').map f := by
-      rw [hFdef, hB', normalizedFactors_mul hB'0' hfB'0', kc_nf_map B' hB'0 f]
-    have hpB' : ∀ Q ∈ normalizedFactors B', p Q := by
-      intro Q hQ
-      exact hsupp' Q (Ideal.isPrime_of_prime (prime_of_normalized_factor Q hQ))
+      rw [hFdef, hB', normalizedFactors_mul hB'0 hfB'0, kc_nf_map B' hB'0 f]
+    have hpB' : ∀ Q ∈ normalizedFactors B', p Q := fun Q hQ =>
+      hsupp' Q (Ideal.isPrime_of_prime (prime_of_normalized_factor Q hQ))
         (dvd_of_mem_normalizedFactors hQ)
     have hfilt : F.filter p = normalizedFactors B' := by
       rw [hF', Multiset.filter_add, Multiset.filter_eq_self.mpr hpB',

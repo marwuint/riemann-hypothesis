@@ -108,8 +108,7 @@ theorem ocbPhi_unitV (σ : K →+* ℂ) (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ)
       exact not_isUnit_zero
     rw [dite_eq_right hnu, dite_eq_left hx, map_zero]
   · have hu : IsUnit (redP P a) := isUnit_iff_ne_zero.mpr hx
-    rw [dite_eq_left hu, dite_eq_right hx]
-    rw [show hu.unit = Units.mk0 _ hx from Units.ext rfl]
+    rw [dite_eq_left hu, dite_eq_right hx, show hu.unit = Units.mk0 _ hx from Units.ext rfl]
     rfl
 
 theorem ocbPhiGS_supp (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {k₀ m t j n' c' c n : ℕ}
@@ -125,8 +124,7 @@ theorem ocbPhiGS_supp (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (
   · have hp := ocbPhi_fPos_lt hk hl
     have hp' := ocbPhi_fPos_lt hk' hs
     have e := hc.1 (LocE.fPos k₀ c n l) (LocE.fPos k₀ (c + 1) n' s) hp (by omega)
-    rw [ocbBEnt_entB, ocbPhi_fIdx_fPos hk hl, ocbPhi_fIdx_fPos hk' hs] at e
-    exact e
+    rwa [ocbBEnt_entB, ocbPhi_fIdx_fPos hk hl, ocbPhi_fIdx_fPos hk' hs] at e
   · exact absurd rfl h
 
 theorem ocbPhiGS_red (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (σ : K →+* ℂ)
@@ -159,8 +157,7 @@ theorem ocbPhiGS_red (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) 
   have hz : ∀ x : E, IntAt P x → (redP P x = 0 ↔ IntAt P (x / (q : E))) := by
     intro x hx
     constructor
-    · intro h0
-      exact ciIntAt_div hq hu hx h0
+    · exact fun h0 => ciIntAt_div hq hu hx h0
     · intro hb
       have e : x = (q : E) * (x / (q : E)) := by
         field_simp

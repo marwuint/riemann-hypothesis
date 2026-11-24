@@ -100,9 +100,7 @@ theorem hTop_pol (x : X.TT) : hTop O X x ∈ Pol (KK O) (ι := X.TT × Bool) (X.
     simp only [pow_one]
   rw [e]
   refine Submodule.sum_mem _ (fun a _ => ?_)
-  have h := X_true_mul_X_false_pow_mem_Pol (O := O) x a 1
-  simp only [one_mul] at h
-  exact h
+  simpa only [one_mul] using X_true_mul_X_false_pow_mem_Pol (O := O) x a 1
 
 theorem hTop_nd (x : X.TT) : IsWeightedHomogeneous (wN X) (hTop O X x) 1 := by
   rw [hTop_eq]
@@ -213,8 +211,7 @@ theorem softH (S : UniformizedDVR X.p O) (hS : S.SqP) (x : X.TT) (e : ℕ) :
 theorem softHseg (S : UniformizedDVR X.p O) (hS : S.SqP) (C0 CE1 CE2 : ℝ) (j : Fin (numSeg X.TT)) (i : Fin (segS X.TT j)) :
     SoftOK S.w (hTop O X (topOdd X j i) ^ ((X.seg C0 CE1 CE2 j).P X.p i)) ((X.seg C0 CE1 CE2 j).P X.p i)
       (EhatT O X (topOdd X j i) ((X.seg C0 CE1 CE2 j).P X.p i))
-      (fun l => (X.seg C0 CE1 CE2 j).P X.p i * dgH (topOdd X j i) l) := by
-  exact softH S hS (topOdd X j i) _
+      (fun l => (X.seg C0 CE1 CE2 j).P X.p i * dgH (topOdd X j i) l) := softH S hS (topOdd X j i) _
 
 end H
 

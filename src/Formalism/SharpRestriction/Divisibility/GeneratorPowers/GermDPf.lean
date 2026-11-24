@@ -198,20 +198,17 @@ theorem germSt_holds : GermSt := by
     have hm1 : (ρT x0 d m).left y ∈ LB.wchart t.PP.L (fun _ : Fin 1 => (x (m + 1)).left) (fun _ => i) := by
       refine Set.mem_iInter.2 fun _ => ?_
       show (x (m + 1)).left ((ρT x0 d m).left y) ∈ (t.PP.L.U i : Set t.G.left)
-      rw [app_eq _ _ _ hρx]
-      exact hi
+      rwa [app_eq _ _ _ hρx]
     have mem0 : (𝟙 _ ≫ (ptSecT t.G (x m)).left) y ∈ (LPow t.G t.PP.L (k : ℤ) (jOG x0 d m 1)).U (fun _ => i) := by
       refine Set.mem_iInter.2 fun _ => ?_
       show (snd (jOG x0 d m 1) t.G).left ((𝟙 _ ≫ (ptSecT t.G (x m)).left) y) ∈ (t.PP.L.U i : Set t.G.left)
-      rw [app_eq _ _ _ hps0]
-      exact hi
+      rwa [app_eq _ _ _ hps0]
     have mem1 : ((ρT x0 d m).left ≫ (ptSecT t.G (x (m + 1))).left) y ∈
         (LPow t.G t.PP.L (k : ℤ) (jOG x0 d (m + 1) 1)).U (fun _ => i) := by
       refine Set.mem_iInter.2 fun _ => ?_
       show (snd (jOG x0 d (m + 1) 1) t.G).left (((ρT x0 d m).left ≫ (ptSecT t.G (x (m + 1))).left) y) ∈
         (t.PP.L.U i : Set t.G.left)
-      rw [app_eq _ _ _ hps1]
-      exact hi
+      rwa [app_eq _ _ _ hps1]
     have e0 := value_stalk t.G t.PP.L hL (k : ℤ) (hv m) (𝟙 _) y (fun _ => i) hm
     have e1 := value_stalk t.G t.PP.L hL (k : ℤ) (hv (m + 1)) (ρT x0 d m).left y (fun _ => i) hm1
     have l0 := pullSec_stalk t.G t.PP.L (k : ℤ) (hF' m) (𝟙 _ ≫ (ptSecT t.G (x m)).left) y (fun _ => i) mem0

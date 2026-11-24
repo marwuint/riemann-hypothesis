@@ -192,10 +192,8 @@ theorem inertia_conductor : InertiaConductor H := by
   have : NeZero N := ⟨hN⟩
   rw [trivial_on_inertia_iff]
   constructor
-  · intro h hpc
-    exact Nat.not_dvd_ordCompl hp hN (hpc.trans h)
-  · intro h
-    exact Nat.dvd_ordCompl_of_dvd_not_dvd (DirichletCharacter.conductor_dvd_level _) h
+  · exact fun h hpc => Nat.not_dvd_ordCompl hp hN (hpc.trans h)
+  · exact fun h => Nat.dvd_ordCompl_of_dvd_not_dvd (DirichletCharacter.conductor_dvd_level _) h
 
 lemma cosetMean_of_trivial (I : AddSubgroup (E0 × H)) (h : E0 × H) (ψ : AddChar (E0 × H) ℂ)
     (hI : ∀ x ∈ I, ψ x = 1) : cosetMean I h ψ = ψ h := by
@@ -223,8 +221,7 @@ lemma cosetMean_of_nontrivial (I : AddSubgroup (E0 × H)) (h : E0 × H) (ψ : Ad
       · intro x hx
         simp only [mem_filter, mem_univ, true_and] at hx ⊢
         exact I.add_mem hy hx
-      · intro a _ b _ hab
-        exact add_left_cancel hab
+      · exact fun a _ b _ hab => add_left_cancel hab
       · intro b hb
         simp only [mem_filter, mem_univ, true_and] at hb
         exact ⟨-y + b, by simpa using I.add_mem (I.neg_mem hy) hb, by simp⟩
@@ -272,8 +269,7 @@ lemma cosetMean_eq_primitive {N : ℕ} [NeZero N] (q1 d : ℕ) (r : (ZMod N)ˣ �
       exact h ((inertia_conductor N q1 d r ψ p (NeZero.ne N) hp).2 hpc)
     rw [MulChar.map_nonunit, zero_pow hi]
     rw [ZMod.isUnit_iff_coprime]
-    intro hcop
-    exact hp.one_lt.ne' (Nat.Coprime.eq_one_of_dvd hcop hpc)
+    exact fun hcop => hp.one_lt.ne' (Nat.Coprime.eq_one_of_dvd hcop hpc)
 
 theorem primitive_value_primitive : PrimValPrimitive H := by
   intro N q1 d r ψ n hN hn

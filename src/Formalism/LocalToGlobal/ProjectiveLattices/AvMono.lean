@@ -165,12 +165,10 @@ theorem exists_adjoin_eq_top [Module.Finite A B] [Finite (ResidueField A)]
   haveI : Finite (ResidueField B) := IsLocalRing.ResidueField.finite_of_finite (R := A) ‹_›
   obtain ⟨γ, hγ⟩ := adjoin_residue_gen (A := A) (B := B)
   obtain ⟨α0, rfl⟩ := IsLocalRing.residue_surjective γ
-  have hint : IsIntegral (ResidueField A) (residue B α0) := IsIntegral.of_finite _ _
-  have hsep : (minpoly (ResidueField A) (residue B α0)).Separable :=
-    PerfectField.separable_of_irreducible (minpoly.irreducible hint)
-  have hq0 : aeval (residue B α0) (minpoly (ResidueField A) (residue B α0)) = 0 := minpoly.aeval _ _
-  have hq' : aeval (residue B α0) (derivative (minpoly (ResidueField A) (residue B α0))) ≠ 0 :=
-    hsep.aeval_derivative_ne_zero hq0
+  have hint := IsIntegral.of_finite (ResidueField A) (residue B α0)
+  have hsep := PerfectField.separable_of_irreducible (minpoly.irreducible hint)
+  have hq0 := minpoly.aeval (ResidueField A) (residue B α0)
+  have hq' := hsep.aeval_derivative_ne_zero hq0
   obtain ⟨P, hP⟩ := Polynomial.map_surjective (residue A) IsLocalRing.residue_surjective
     (minpoly (ResidueField A) (residue B α0))
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible B
@@ -178,10 +176,9 @@ theorem exists_adjoin_eq_top [Module.Finite A B] [Finite (ResidueField A)]
   have hm : aeval α0 P ∈ maximalIdeal B := by
     rw [← IsLocalRing.residue_eq_zero_iff, residue_aeval, hP, hq0]
   have hd : IsUnit (aeval α0 (derivative P)) := by
-    by_contra hnu
-    have h3 : aeval α0 (derivative P) ∈ maximalIdeal B := (IsLocalRing.mem_maximalIdeal _).mpr hnu
-    rw [← IsLocalRing.residue_eq_zero_iff, residue_aeval, ← Polynomial.derivative_map, hP] at h3
-    exact hq' h3
+    rw [← IsLocalRing.notMem_maximalIdeal, ← IsLocalRing.residue_eq_zero_iff, residue_aeval,
+      ← Polynomial.derivative_map, hP]
+    exact hq'
   by_cases h2 : aeval α0 P ∈ Ideal.span {π ^ 2}
   · refine ⟨α0 + π, adjoin_eq_top_of_gen hinj (α0 + π) ?_ P ?_⟩
     · have hr : residue B π = 0 :=
@@ -194,23 +191,17 @@ theorem exists_adjoin_eq_top [Module.Finite A B] [Finite (ResidueField A)]
         rw [← Polynomial.derivative_map, hk, ← ht]
         ring
       have hv : IsUnit (aeval α0 (derivative P) + π * (t + k)) := by
-        by_contra hnu
-        have h1 : aeval α0 (derivative P) + π * (t + k) ∈ maximalIdeal B :=
-          (IsLocalRing.mem_maximalIdeal _).mpr hnu
+        refine IsLocalRing.notMem_maximalIdeal.1 fun h1 => ?_
         have h3 : π * (t + k) ∈ maximalIdeal B := by
           rw [hmax]; exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self π)
-        have h4 : aeval α0 (derivative P) ∈ maximalIdeal B := by
-          simpa using Ideal.sub_mem _ h1 h3
-        exact (IsLocalRing.mem_maximalIdeal _).mp h4 hd
+        exact IsLocalRing.notMem_maximalIdeal.2 hd (by simpa using Ideal.sub_mem _ h1 h3)
       rw [e]
       exact (irreducible_mul_isUnit hv).mpr hπ
   · refine ⟨α0, adjoin_eq_top_of_gen hinj α0 hγ P ?_⟩
     rw [hmax] at hm
     obtain ⟨w, hw⟩ := Ideal.mem_span_singleton'.mp hm
     have hwu : IsUnit w := by
-      by_contra hnu
-      apply h2
-      have h5 : w ∈ maximalIdeal B := (IsLocalRing.mem_maximalIdeal _).mpr hnu
+      refine IsLocalRing.notMem_maximalIdeal.1 fun h5 => h2 ?_
       rw [hmax, Ideal.mem_span_singleton'] at h5
       obtain ⟨v, hv⟩ := h5
       rw [Ideal.mem_span_singleton']

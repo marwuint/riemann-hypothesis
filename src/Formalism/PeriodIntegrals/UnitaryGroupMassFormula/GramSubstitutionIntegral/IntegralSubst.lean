@@ -99,8 +99,7 @@ theorem sSum {σ ι : Type*} (s : Finset ι) {f g : ι → MvPowerSeries σ ℂ_
     Simeq (∑ i ∈ s, f i) (∑ i ∈ s, g i) := by
   induction s using Finset.induction_on with
   | empty =>
-    simp only [Finset.sum_empty]
-    exact sRefl 0
+    simpa only [Finset.sum_empty] using sRefl 0
   | @insert a s ha ih =>
     rw [Finset.sum_insert ha, Finset.sum_insert ha]
     exact sAdd (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))

@@ -148,8 +148,7 @@ theorem hQ_trace_pos {T' : ℕ} (F' : LFlag S r ((T' : ℕ) : E)) (hT : 0 < T')
   have hb : (b : S.V) ∉ Xsp F' := by
     intro hbX
     apply hq
-    rw [Submodule.Quotient.mk_eq_zero]
-    exact hbX
+    rwa [Submodule.Quotient.mk_eq_zero]
   rw [hQ_mk]
   have hp : ∀ σ : E →ₐ[ℚ] ℂ, 0 < (σ (hV F' (2 / ((T' : ℕ) : E)) b b)).re := fun σ =>
     hV_pos F' hT hτ hpos b b.2 hb σ.toRingHom
@@ -158,8 +157,7 @@ theorem hQ_trace_pos {T' : ℕ} (F' : LFlag S r ((T' : ℕ) : E)) (hT : 0 < T')
     (trace_eq_sum_embeddings (K := ℚ) (L := E) (E := ℂ) (x := hV F' (2 / ((T' : ℕ) : E)) b b))
   rw [Complex.re_sum] at hre
   have hsum := Finset.sum_pos (fun σ _ => hp σ) (Finset.univ_nonempty (α := E →ₐ[ℚ] ℂ))
-  rw [← hre, eq_ratCast, Complex.ratCast_re, Rat.cast_pos] at hsum
-  exact hsum
+  rwa [← hre, eq_ratCast, Complex.ratCast_re, Rat.cast_pos] at hsum
 
 end Q2
 
@@ -307,8 +305,7 @@ theorem γQ_Lb {T' : E} (F' : LFlag S r T') (Λ : Submodule (𝓞 E) S.V) (γ : 
   · intro q hq
     obtain ⟨a, ha, rfl⟩ := (mem_Lb F' Λ).1 hq
     have h1 : (a : S.V) ∈ Λ.map ((γ : S.V →ₗ[E] S.V).restrictScalars (𝓞 E)) := by
-      rw [hA2]
-      exact ha
+      rwa [hA2]
     obtain ⟨b, hb, hba⟩ := Submodule.mem_map.1 h1
     have hba' : γ b = (a : S.V) := hba
     have hbU : b ∈ Uo F' := (hU b).1 (by rw [hba']; exact a.2)
@@ -317,8 +314,7 @@ theorem γQ_Lb {T' : E} (F' : LFlag S r T') (Λ : Submodule (𝓞 E) S.V) (γ : 
     rw [γQ_mk]
     congr 1
     ext
-    rw [γU_coe]
-    exact hba'
+    rwa [γU_coe]
 
 theorem gmap_mul' {T' : E} (F' : LFlag S r T') (a b : Qt F' ≃ₗ[E] Qt F') (L : Submodule (𝓞 E) (Qt F')) :
     Formalism.HermitianLatticesTheory.gmap (a * b) L = Formalism.HermitianLatticesTheory.gmap a (Formalism.HermitianLatticesTheory.gmap b L) := by
@@ -431,8 +427,7 @@ theorem mink_fix (L : Submodule (𝓞 E) Q) (hL : L.FG) (φ : Q →ₗ[E] Q) (h�
   have hA1 := Formalism.HermitianLatticeCounting.P.finite_order_congruence _ n (g : ℤ) A B (by exact_mod_cast hg) hn hAn hAB
   have hψ1 : ψ = 1 := by
     apply (LinearMap.toMatrixAlgEquiv b).injective
-    rw [map_one]
-    exact hA1
+    rwa [map_one]
   intro x hx
   have := congrArg (fun f : L →ₗ[ℤ] L => ((f ⟨x, hx⟩ : L) : Q)) hψ1
   simpa [hψ] using this
@@ -488,8 +483,7 @@ theorem mod_lattice_absolute_value : ModXAbs := by
     · intro h
       rw [← hXγ] at h
       obtain ⟨w', hw', he⟩ := h
-      rw [← γ.injective he]
-      exact hw'
+      rwa [← γ.injective he]
     · intro h
       rw [← hXγ]
       exact ⟨w, h, rfl⟩
@@ -544,8 +538,7 @@ theorem mod_lattice_absolute_value : ModXAbs := by
       have e : (g • l : S.V) = ((g : ℕ) : E) • l := (Nat.cast_smul_eq_nsmul E g l).symm
       rw [e, hgl]
       abel
-    rw [hco]
-    exact hξX
+    rwa [hco]
   have hLb := Lb_lattice F' Λ hΛ
   have hfg : (Lb F' Λ).FG := by
     first | exact hLb.toIsLattice.fg
@@ -565,12 +558,10 @@ theorem mod_lattice_absolute_value : ModXAbs := by
           exact Submodule.mem_top
         | obtain ⟨a, rfl⟩ := Submodule.Quotient.mk_surjective (Pk F') q
           exact Submodule.smul_mem _ _ (Submodule.subset_span hmem))
-    rw [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hq
-    exact hq
+    rwa [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hq
   have h := hall (Submodule.Quotient.mk ⟨v, hv⟩)
   change Submodule.Quotient.mk (γU F' γ hU ⟨v, hv⟩) = Submodule.Quotient.mk (p := Pk F') ⟨v, hv⟩ at h
-  rw [Submodule.Quotient.eq] at h
-  exact h
+  rwa [Submodule.Quotient.eq] at h
 
 end MX
 

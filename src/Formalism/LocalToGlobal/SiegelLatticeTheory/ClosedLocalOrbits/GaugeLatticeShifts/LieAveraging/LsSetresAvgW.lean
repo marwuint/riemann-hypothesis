@@ -83,8 +83,7 @@ theorem isFD_of_strict {Γ α : Type*} [Group Γ] [MulAction Γ α] [MeasurableS
   rintro y ⟨a, ha, rfl⟩ ⟨b, hb, hba⟩
   have hmem : (h⁻¹ * g) • a ∈ S := by
     have hba' : h • b = g • a := hba
-    rw [mul_smul, ← hba', inv_smul_smul]
-    exact hb
+    rwa [mul_smul, ← hba', inv_smul_smul]
   have e := huniq a ha _ hmem
   rw [inv_mul_eq_one] at e
   exact hgh e.symm
@@ -132,8 +131,7 @@ theorem exists_fd (R Γ : Subgroup G) (hR : IsClosed (R : Set G)) (hΓR : Γ ≤
         by_cases hk : (s : G) * x ∈ K
         · exact Or.inr (h s s.2 hk)
         · exact Or.inl hk
-      · intro h s hs hk
-        exact (h ⟨s, hs⟩).resolve_left (fun hc => hc hk)
+      · exact fun h s hs hk => (h ⟨s, hs⟩).resolve_left (fun hc => hc hk)
     rw [e]
     refine MeasurableSet.iInter fun s => ?_
     refine MeasurableSet.union ?_ ?_
@@ -245,8 +243,7 @@ theorem avg_core (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G
     · filter_upwards [hae] with x hx
       obtain ⟨s, hs, h⟩ := hDc x hx
       exact ⟨⟨s, hs⟩, h⟩
-    · intro x hx g hg
-      exact Subtype.ext (hDu x hx g g.2 hg)
+    · exact fun x hx g hg => Subtype.ext (hDu x hx g g.2 hg)
   have hD0 : ν D ≠ 0 := fd_ne_zero hDfd hνuniv
   have hDtop : ν D ≠ ∞ := (lt_of_le_of_lt (measure_mono hDK) (hνK K hK)).ne
 
@@ -323,8 +320,7 @@ theorem avg_core (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G
     · filter_upwards [haei] with x hx
       obtain ⟨s, hs, h⟩ := hDc x hx
       exact ⟨⟨s, hs⟩, h⟩
-    · intro x hx g hg
-      exact Subtype.ext (hDu x hx g g.2 hg)
+    · exact fun x hx g hg => Subtype.ext (hDu x hx g g.2 hg)
   set κ := νi D with hκ
   have hκ0 : κ ≠ 0 := fd_ne_zero hDfdi hνiuniv
   have hκtop : κ ≠ ∞ := by
@@ -344,8 +340,7 @@ theorem avg_core (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G
         rw [mul_assoc] at hg'
         exact Subtype.ext (hΩu (y * x) hy g g.2 hg')
     have := hfd.measure_eq hDfdi
-    rw [hνiapp _ ((measurable_mul_const x) hΩm)] at this
-    exact this
+    rwa [hνiapp _ ((measurable_mul_const x) hΩm)] at this
 
   have : MeasurableConstSMul Γ (G × G) :=
     ⟨fun c => (measurable_const_mul (c : G)).prodMap (measurable_const_mul (c : G))⟩
@@ -373,8 +368,7 @@ theorem avg_core (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G
     refine isFD_of_strict _ (MeasurableSet.univ.prod hΩm) (Filter.Eventually.of_forall fun p => ?_) ?_
     · obtain ⟨s, hs, h⟩ := hΩc p.2
       exact ⟨⟨s, hs⟩, ⟨trivial, h⟩⟩
-    · intro p hp g hg
-      exact Subtype.ext (hΩu p.2 hp.2 g g.2 hg.2)
+    · exact fun p hp g hg => Subtype.ext (hΩu p.2 hp.2 g g.2 hg.2)
   have hFD2 : IsFundamentalDomain Γ (D ×ˢ univ) (ν.prod μ) := by
     have hnull : (ν.prod μ) {p : G × G | ¬ p.1 ∈ R} = 0 := by
       have : {p : G × G | ¬ p.1 ∈ R} = (R : Set G)ᶜ ×ˢ univ := by ext p; simp
@@ -384,8 +378,7 @@ theorem avg_core (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G
     · filter_upwards [hae2] with p hp
       obtain ⟨s, hs, h⟩ := hDc p.1 hp
       exact ⟨⟨s, hs⟩, ⟨h, trivial⟩⟩
-    · intro p hp g hg
-      exact Subtype.ext (hDu p.1 hp.1 g g.2 hg.1)
+    · exact fun p hp g hg => Subtype.ext (hDu p.1 hp.1 g g.2 hg.1)
   have hEq := hFD1.setIntegral_eq hFD2 (f := H) hHinv
 
   have hSy : ∀ y, MeasurableSet {r : G | r⁻¹ * y ∈ Ω} := fun y => (measurable_inv.mul_const y) hΩm

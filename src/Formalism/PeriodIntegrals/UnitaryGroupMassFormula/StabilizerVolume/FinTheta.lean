@@ -201,8 +201,7 @@ theorem continuous_piW_inf (w : InfinitePlace F) :
   continuous_apply w
 
 theorem norm_piW_algebraMap (w : InfinitePlace F) (x : F) : ‖piW F w (algebraMap F (AF F) x)‖ = w x := by
-  rw [AlgHom.commutes]
-  rw [AbsoluteValue.Completion.algebraMap_def, AbsoluteValue.Completion.norm_coe]
+  rw [AlgHom.commutes, AbsoluteValue.Completion.algebraMap_def, AbsoluteValue.Completion.norm_coe]
   simp [WithAbs.algebraMap_right_apply]
   rfl
 
@@ -399,8 +398,7 @@ theorem finite_of_adm {M a : ℕ} (Φ : (Fin a → Fin M → AF F ⊗[F] E) → 
     intro i j k
     rw [← norm_le_one_iff_mem]
     have := hv i j k
-    rw [← hcV] at this
-    exact this
+    rwa [← hcV] at this
   have hfin : (Function.mulSupport fun v => Φv v (projV v (projFin (Y X)))).Finite :=
     (Filter.eventually_cofinite.1 hone).subset fun v hv => hv
   have hall : ∀ v, Φv v (projV v (projFin (Y X))) ≠ 0 := by
@@ -425,14 +423,12 @@ theorem finite_of_adm {M a : ℕ} (Φ : (Fin a → Fin M → AF F ⊗[F] E) → 
       j k
     have hmem := subset_tsupport _ (hall v)
     have := hBv v (projV v (projFin (Y X))) hmem i j' q
-    rw [RingHom.id_apply, hcV] at this
-    exact this
+    rwa [RingHom.id_apply, hcV] at this
   ·
     intro v hv
     have hvS : v ∉ {v | ¬ (Φv v = (latV b v).indicator 1 ∧
         (∀ i j p, ‖piV F v (crd b (AF F) (m i j) p)‖ ≤ 1) ∧ (∀ p q k, ‖piV F v (cst p q k)‖ ≤ 1))} := by
-      intro h
-      exact hv ((Set.Finite.mem_toFinset _).2 h)
+      exact fun h => hv ((Set.Finite.mem_toFinset _).2 h)
     simp only [Set.mem_ofPred_eq, not_not] at hvS
     obtain ⟨hΦv, hm1, hc1⟩ := hvS
     have hL : projV v (projFin (Y X)) ∈ latV b v := by
@@ -445,8 +441,7 @@ theorem finite_of_adm {M a : ℕ} (Φ : (Fin a → Fin M → AF F ⊗[F] E) → 
     have := hL i j' q
     rw [← norm_le_one_iff_mem] at this
     show ‖piV F v (crd b (AF F) (Y X i j') q)‖ ≤ 1
-    rw [← hcV]
-    exact this
+    rwa [← hcV]
   ·
     intro w
     rw [← norm_piW_algebraMap, hx]
@@ -459,8 +454,7 @@ theorem finite_of_adm {M a : ℕ} (Φ : (Fin a → Fin M → AF F ⊗[F] E) → 
       j k
     have hmem := subset_tsupport _ hne_inf
     have := hBw w (projInf (Y X)) hmem i j' q
-    rw [hcI] at this
-    exact this
+    rwa [hcI] at this
 
 end Main
 

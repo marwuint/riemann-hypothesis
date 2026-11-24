@@ -83,8 +83,7 @@ theorem inJ_of_fixed {p : Ideal (𝓞 K)} (hp : p.IsPrime) {a : K} (ha : a ∈ l
     rw [star_div₀, ← algebraMap_conjO, ← algebraMap_conjO] at e1
     have e2 : algebraMap (𝓞 K) K (conjO K r) * algebraMap (𝓞 K) K s =
         algebraMap (𝓞 K) K r * algebraMap (𝓞 K) K (conjO K s) := by
-      rw [div_eq_div_iff hcs0 hs0] at e1
-      exact e1
+      rwa [div_eq_div_iff hcs0 hs0] at e1
     simpa [map_mul] using e2
   refine ⟨r, s, hs, ?_, ?_, rfl⟩
   · by_contra hrp
@@ -204,8 +203,7 @@ theorem exists_unit_norm {p : Ideal (𝓞 K)} (hK : Formalism.HermitianLatticesT
     apply hM.dual
     intro u hu
     have := hdiv _ ⟨u, hu, rfl⟩
-    rw [map_smul, smul_eq_mul, mul_comm]
-    exact this
+    rwa [map_smul, smul_eq_mul, mul_comm]
   have hxy : h w₀ (α⁻¹ • m) = 1 := by
     rw [map_smul, smul_eq_mul, hα, inv_mul_cancel₀ hα0]
   have hyx : h (α⁻¹ • m) w₀ = 1 := by rw [← hsym, hxy, star_one]
@@ -268,8 +266,7 @@ theorem exists_norm_eq {p : Ideal (𝓞 K)} (hK : Formalism.HermitianLatticesThe
     apply hM.dual
     intro u hu
     have := hdiv _ ⟨u, hu, rfl⟩
-    rw [map_smul, smul_eq_mul, mul_comm]
-    exact this
+    rwa [map_smul, smul_eq_mul, mul_comm]
   have hyw : h (α⁻¹ • e) w₀ = 1 := by
     rw [map_smulₛₗ, LinearMap.smul_apply, ← hsym w₀ e, hα, starRingEnd_apply, smul_eq_mul,
       ← star_mul', inv_mul_cancel₀ hα0, star_one]
@@ -306,7 +303,6 @@ theorem exists_norm_eq {p : Ideal (𝓞 K)} (hK : Formalism.HermitianLatticesThe
   refine ⟨c • (a • w₀) + d • (α⁻¹ • e), M.add_mem (hM.smul_mem _ hc _ hwM) (hM.smul_mem _ hd _ hyM), ?_⟩
   rw [h'app] at hcd
   have := congrArg (fun u => a * u) hcd
-  rw [← mul_assoc, mul_inv_cancel₀ ha0, one_mul, mul_one] at this
-  exact this
+  rwa [← mul_assoc, mul_inv_cancel₀ ha0, one_mul, mul_one] at this
 
 end Formalism.L2.SG.Pf.LatDictZ.Z0.SGA

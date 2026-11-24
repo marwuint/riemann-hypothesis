@@ -86,8 +86,7 @@ theorem gmap_inv_of {Λ : Submodule (𝓞 E) S.V} {g : S.V ≃ₗ[E] S.V} (h : F
     have hy' : y ∈ Formalism.HermitianLatticesTheory.gmap g Λ := by rw [h]; exact hy
     simp only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe] at hy'
     obtain ⟨z, hz, rfl⟩ := hy'
-    rw [hinv]
-    exact hz
+    rwa [hinv]
   · intro hx
     refine ⟨g x, ?_, hinv x⟩
     rw [← h]
@@ -123,14 +122,12 @@ theorem frame_apply (s : TT Y u u') (a : Fin (D.R.rS + 1)) : frame s.frame a = s
 theorem stabF_of_fix {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) {c : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hc : c ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) (hfix : ∀ a, c (F0.fvec a) = F0.fvec a) : c ∈ stabF D F0 := by
   have he : ∀ i, c (F0.e i) = F0.e i := fun i => by
-    have h1 := hfix i.castSucc
-    simpa only [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc] using h1
+    simpa only [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc] using hfix i.castSucc
   refine ⟨hc, fun j => ?_, ?_⟩
   · unfold Formalism.MainNotions.S.FlagG.Xa
     rw [Submodule.map_span, Set.image_image]
     simp only [LinearEquiv.coe_coe, he]
-  · have h1 := hfix (Fin.last _)
-    simpa only [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_last] using h1
+  · simpa only [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_last] using hfix (Fin.last _)
 
 theorem fib_dec {s s' : TT Y u u'} (h : s.toTerm = s'.toTerm) :
     s.lam = s'.lam ∧ ∃ n ∈ NLam s.lam (lf D (X.Fu u)), ∃ ν ∈ NLam s.lam' (lf D (X.Fu u')),
@@ -166,8 +163,7 @@ theorem fib_dec {s s' : TT Y u u'} (h : s.toTerm = s'.toTerm) :
 
   have hm' : m ∈ NLam (Formalism.HermitianLatticesTheory.gmap s.lin s.lam')
       (Formalism.L2.SG.Saturated.mapL s.lin (lin_isom s) (lf D (X.Fu u'))) := by
-    rw [lin_gmap, h1, ← frame_eq]
-    exact hm
+    rwa [lin_gmap, h1, ← frame_eq]
   have hν : s.lin⁻¹ * m * s.lin ∈ NLam s.lam' (lf D (X.Fu u')) :=
     (Formalism.L2.SG.Pf.mem_NLam_map _ _ _ _ _).1 hm'
   have hback : Formalism.HermitianLatticesTheory.gmap s.lin⁻¹ s.lam = s.lam' := by
@@ -198,9 +194,7 @@ theorem lam'_eq {s s' : TT Y u u'} (h : s.toTerm = s'.toTerm) : s.lam' = s'.lam'
     exact Submodule.map_id _
   have hR := Y.rowsOK u'
   obtain ⟨Λ0, -, huniq⟩ := hR.2 s.lam' (hR.1 _ s.mem')
-  have e1 := huniq s.lam' ⟨s.mem', 1, hone, hg1⟩
-  have e2 := huniq s'.lam' ⟨s'.mem', c, hstab, hgc⟩
-  exact e1.trans e2.symm
+  exact (huniq s.lam' ⟨s.mem', 1, hone, hg1⟩).trans (huniq s'.lam' ⟨s'.mem', c, hstab, hgc⟩).symm
 
 theorem gterm_eq {s s' : TT Y u u'} (hl : s.lam = s'.lam) (hl' : s.lam' = s'.lam')
     (h : ∃ n ∈ NLam s.lam (lf D (X.Fu u)), ∃ n' ∈ NLam s.lam' (lf D (X.Fu u')), s'.lin = n * s.lin * n') : s = s' := by

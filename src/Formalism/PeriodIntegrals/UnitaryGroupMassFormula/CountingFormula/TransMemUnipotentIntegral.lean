@@ -62,7 +62,6 @@ theorem fix_X_of {D : Formalism.BasicNotions.D7} {T : D.host.E} (F0 : FlagG (VS 
   simpa [LinearMap.mem_eqLocus] using hle hx
 
 theorem Xa_le_X {D : Formalism.BasicNotions.D7} {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (k : ℕ) : F0.Xa k ≤ F0.X := by
-  show Submodule.span _ _ ≤ Submodule.span _ _
   exact Submodule.span_mono (Set.image_subset_range _ _)
 
 theorem mem_orth_iff {D : Formalism.BasicNotions.D7} (U : Submodule D.host.E (VS D).V) (y : (VS D).V) :
@@ -102,8 +101,7 @@ theorem refl_mem_unipotentIntegral {D : Formalism.BasicNotions.D7} {T : D.host.E
     constructor
     · rintro ⟨y, hy, rfl⟩
       exact hy
-    · intro hx
-      exact ⟨x, hx, rfl⟩
+    · exact fun hx => ⟨x, hx, rfl⟩
   · simp
   · simp
 
@@ -121,15 +119,12 @@ theorem symm_mem_unipotentIntegral {D : Formalism.BasicNotions.D7} {T : D.host.E
     · rintro ⟨y, hy, rfl⟩
       obtain ⟨w, hw, rfl⟩ := gmap_surj Λ n hΛ hy
       show n.symm (n w) ∈ Λ
-      rw [LinearEquiv.symm_apply_apply]
-      exact hw
-    · intro hx
-      exact ⟨n x, gmap_mem Λ n hΛ hx, n.symm_apply_apply x⟩
+      rwa [LinearEquiv.symm_apply_apply]
+    · exact fun hx => ⟨n x, gmap_mem Λ n hΛ hx, n.symm_apply_apply x⟩
   · rw [hfix x (Xa_le_X F0 (j + 1) hx), sub_self]
     exact Submodule.zero_mem _
   · have hy : n.symm x ∈ orth (VS D) F0.X := by
-      rw [orth_map_of F0 n hi' he, LinearEquiv.apply_symm_apply]
-      exact hx
+      rwa [orth_map_of F0 n hi' he, LinearEquiv.apply_symm_apply]
     have e := horth (n.symm x) hy
     rw [LinearEquiv.apply_symm_apply] at e
     have e' : n.symm x - x = -(x - n.symm x) := by abel

@@ -146,8 +146,7 @@ theorem mem_range_hEmbGL_iff (M : GL (Idx r k) A) :
 
     have hrM : ∀ s, ¬ IsW s → ∀ t, Mm s t = (1 : Matrix (Idx r k) (Idx r k) A) s t := by
       intro s hs t
-      have e := eq_hEmb_of Mm Nm hNM hc hr
-      exact (congrFun (congrFun e s) t).trans (hEmb_row_frame _ s hs t)
+      exact (congrFun (congrFun (eq_hEmb_of Mm Nm hNM hc hr) s) t).trans (hEmb_row_frame _ s hs t)
     have eM := eq_hEmb_of Mm Nm hNM hc hr
     have eN := eq_hEmb_of Nm Mm hMN hcN hrM
     let B : Matrix (Fin k) (Fin k) A := fun i j => Mm (wI i) (wI j)
@@ -258,8 +257,7 @@ theorem frame_fix_iff (g1 Q : GL (Idx r k) K) (g2 J1 : Matrix (Idx r k) (Idx r k
       · intro h; rw [h]
       · intro h
         have := congrArg (fun v => J1ᵀ⁻¹ *ᵥ v) h
-        simp only [hJJ] at this
-        exact this
+        simpa only [hJJ] using this
     rw [step1]
     set u : Idx r k → K := Pi.single (dl s) 1 with hu
     have hw : J1ᵀ *ᵥ y2 s = Qiᵀ *ᵥ (l s • u) := by rw [← hy2 s hs, hTT']
@@ -403,13 +401,11 @@ theorem forall_frame_iff (P : Frame E n r) (Φ : (Fin n → E) → Prop) :
       | last =>
         have h := H (Sum.inr (Sum.inl (Sum.inr ()))) (not_isWeightIndex_inr ())
         unfold tupH F0
-        rw [Fin.append_left, Fin.snoc_last]
-        exact h
+        rwa [Fin.append_left, Fin.snoc_last]
       | cast a =>
         have h := H (Sum.inl a) (not_isW_inl a)
         unfold tupH F0
-        rw [Fin.append_left, Fin.snoc_castSucc]
-        exact h
+        rwa [Fin.append_left, Fin.snoc_castSucc]
     | right c =>
       have h := H (Sum.inr (Sum.inr (Fin.rev c))) (not_isW_f _)
       unfold tupH
@@ -419,17 +415,14 @@ theorem forall_frame_iff (P : Frame E n r) (Φ : (Fin n → E) → Prop) :
     rcases s with a | ((i | u) | c)
     · have h := H (Fin.castAdd r (Fin.castSucc a))
       unfold tupH F0 at h
-      rw [Fin.append_left, Fin.snoc_castSucc] at h
-      exact h
+      rwa [Fin.append_left, Fin.snoc_castSucc] at h
     · exact absurd ⟨i, rfl⟩ hs
     · have h := H (Fin.castAdd r (Fin.last r))
       unfold tupH F0 at h
-      rw [Fin.append_left, Fin.snoc_last] at h
-      exact h
+      rwa [Fin.append_left, Fin.snoc_last] at h
     · have h := H (Fin.natAdd (r + 1) (Fin.rev c))
       unfold tupH at h
-      rw [Fin.append_right] at h
-      exact h
+      rwa [Fin.append_right] at h
 
 end Pos
 
@@ -469,8 +462,7 @@ theorem mem_range_hEmbGL_map (ι : O →+* K) (hι : Function.Injective ι) (M :
         ext i j
         have h := congrFun (congrFun hN (wI i)) (wI j)
         rw [Matrix.map_apply, hEmb_wI_wI] at h
-        simp only [Matrix.map_apply, Matrix.of_apply]
-        exact h
+        simpa only [Matrix.map_apply, Matrix.of_apply] using h
       ext s t
       apply hι
       have h1 := congrFun (congrFun (hEmb_map' (r := r) ι

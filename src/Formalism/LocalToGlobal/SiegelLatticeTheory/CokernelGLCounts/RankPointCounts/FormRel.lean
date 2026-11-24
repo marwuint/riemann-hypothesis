@@ -147,16 +147,14 @@ theorem formNGC_of_rel (h : FormRelC) : Formalism.L2.SG.NGVanish.FormNGC := by
   intro Cg cb Cw cT CT C0
   obtain ⟨C'₀, Cl₀, hC⟩ := h Cg cb Cw cT CT C0
   refine ⟨C'₀, Cl₀, fun C' Cl h1 h2 D large₂ X Y u u' hx ν hν t ht hv => ?_⟩
-  have hnz : t ∈ (Y.tO u u').nzSet := by
-    exact ht.1
+  have hnz : t ∈ (Y.tO u u').nzSet := ht.1
   exact hC C' Cl h1 h2 D large₂ X Y u u' hx ν hν t hnz hv
 
 theorem formGC_of_rel (h : FormRelC) : Formalism.L2.SG.Pf.MainEqVanish.FormGC := by
   intro Cg cb Cw cT CT C0
   obtain ⟨C'₀, Cl₀, hC⟩ := h Cg cb Cw cT CT C0
   refine ⟨C'₀, Cl₀, fun C' Cl h1 h2 D large₂ X Y u hx ν hν t ht hv => ?_⟩
-  have hnz : t ∈ (Y.tO u u).nzSet := by
-    exact ht.1
+  have hnz : t ∈ (Y.tO u u).nzSet := ht.1
   exact hC C' Cl h1 h2 D large₂ X Y u u hx ν hν t hnz hv
 
 end Formalism.L2.SG.Pf

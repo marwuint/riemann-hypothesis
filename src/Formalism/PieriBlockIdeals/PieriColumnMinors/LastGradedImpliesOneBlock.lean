@@ -98,8 +98,7 @@ theorem depth2Dual : Depth2Dual := by
     rw [Nat.cast_sub (hl _), Nat.cast_sub (hm _)]
     simp only [Fin.revPerm_apply]
     ring
-  · intro hξ a b hab
-    exact neg_le_neg (hξ (Fin.rev_le_rev.mpr hab))
+  · exact fun hξ a b hab => neg_le_neg (hξ (Fin.rev_le_rev.mpr hab))
 
 theorem dominance_of_nabla_weight (r : ℕ) (ν μ : Fin r → ℕ) (hν : Antitone ν) (x : MvPolynomial (Fin r × Fin r) ℤ)
     (hx : x ∈ nablaWt r ν μ) (hne : x ≠ 0) :
@@ -111,8 +110,7 @@ theorem dominance_of_nabla_weight (r : ℕ) (ν μ : Fin r → ℕ) (hν : Antit
   have h2 : ∀ a : Fin r, rowNu (r := r) ν a = ν a := fun a => by
     unfold rowNu
     rw [dite_eq_left a.isLt]
-  simp only [h1, h2] at hdom
-  exact hdom
+  simpa only [h1, h2] using hdom
 
 theorem exp_le_of_nonzero_weight_vectors (l r : ℕ) (ν μ : Fin r → ℕ) (e : ℕ) (hl : l.Prime)
     (H : ∀ x ∈ nablaWt r ν μ, x ≠ 0 → ExpLe l r ν μ e) : ExpLe l r ν μ e := by
@@ -212,8 +210,7 @@ theorem exponent_bound_peel_one_row (hD : BranchingBoundLastGradedOneRow) (l n :
     (restriction_antitone n lam fun a b hab hb => ha a b hab (by omega))
     (fun b => ⟨ha b.val n (le_of_lt b.isLt) (by omega), ha 0 b.val (Nat.zero_le _) (by have := b.isLt; omega)⟩)
     (fun a b hab => hξ hab) I e (fun μ2 h2 => hE μ2 ?_) μ hμ
-  rw [depth2Levi] at h2
-  exact h2
+  rwa [depth2Levi] at h2
 
 theorem peelRows : PeelRows := by
   intro hD l n s h lam ξ hl ha hh hξ I e hE
@@ -272,7 +269,6 @@ theorem applicationSteps : ApplicationSteps := by
   have s1 := peelRows hP1 l (k + j + t) q h lam (varpi (k + j)) hl ha hh (varpi_antitone _) I _ s2
   have e : q * ((h - 1) / (l - 1)) + blockCost l (k + j) t I lam + j * ((h - 1) / (l - 1)) + ecl =
       ecl + j * ((h - 1) / (l - 1)) + blockCost l (k + j) t I lam + q * ((h - 1) / (l - 1)) := by ring
-  rw [e]
-  exact s1
+  rwa [e]
 
 end Formalism.CohomologicalDescent.LD

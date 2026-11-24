@@ -73,8 +73,7 @@ theorem eval₂_mul_homog {R S σ : Type*} [CommSemiring R] [CommSemiring S] (f 
   rw [MvPolynomial.eval₂_eq, MvPolynomial.eval₂_eq, Finset.mul_sum]
   refine Finset.sum_congr rfl fun m hm => ?_
   have hdeg : ∑ i ∈ m.support, m i = k := by
-    have h := hP (MvPolynomial.mem_support_iff.1 hm)
-    simpa [Finsupp.weight_apply, Finsupp.sum] using h
+    simpa [Finsupp.weight_apply, Finsupp.sum] using hP (MvPolynomial.mem_support_iff.1 hm)
   simp only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]
   ring
 
@@ -154,8 +153,7 @@ theorem exists_indep_ratios {K κ : Type*} [Field K] [Field κ] [Algebra K κ] {
   obtain ⟨n, hn⟩ := ENat.ne_top_iff_exists.mp hfin
   have hineq : (D + 1) * N ≤ n + ((D + 1) * (N - 1) + 1) := by
     have := h5.trans (h1.trans (h2.trans (add_le_add le_rfl h3)))
-    rw [← hn, ← Nat.cast_add, Nat.cast_le] at this
-    exact this
+    rwa [← hn, ← Nat.cast_add, Nat.cast_le] at this
   have hN : (D + 1) * N = (D + 1) * (N - 1) + (D + 1) := by
     obtain ⟨N', rfl⟩ : ∃ N', N = N' + 1 := ⟨N - 1, by have := a.2; omega⟩
     simp only [Nat.add_sub_cancel]
@@ -233,8 +231,7 @@ theorem countCore {K κ Ω : Type*} [Field K] [Field κ] [Field Ω] [Algebra K �
       | some e => rfl
     have hw : AlgebraicIndependent K w := by
       apply AlgebraicIndependent.of_comp (IntermediateField.val _)
-      rw [hcomp]
-      exact hI
+      rwa [hcomp]
     have hcard := hw.lift_cardinalMk_le_trdeg.trans (Cardinal.lift_le.mpr htr)
     simp [Cardinal.mk_fintype, Fintype.card_option, hscard] at hcard
   have halg : IsAlgebraic (Algebra.adjoin K (Set.range (ρ ∘ f))) (aeval ρ P) := by
@@ -250,8 +247,7 @@ theorem countCore {K κ Ω : Type*} [Field K] [Field κ] [Field Ω] [Algebra K �
     intro hc
     have hdec : Polynomial.X * p.divX = p := by
       have h0 := Polynomial.X_mul_divX_add p
-      rw [hc, map_zero, add_zero] at h0
-      exact h0
+      rwa [hc, map_zero, add_zero] at h0
     have hd0 : p.divX ≠ 0 := by
       intro h
       rw [h, mul_zero] at hdec

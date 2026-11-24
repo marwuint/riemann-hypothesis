@@ -88,8 +88,7 @@ theorem latSpanS_le {r : ℕ} (aa : Fin r → FractionalIdeal (nonZeroDivisors (
 theorem crd_mem_L {y : (VS D).V} (hy : y ∈ (VS D).L0) : crd X y ∈ X.B.I.L := by
   rw [X.L_eq]
   simp only [crd, crdOf, RingEquiv.apply_symm_apply]
-  rw [X.bas.sum_repr y]
-  exact hy
+  rwa [X.bas.sum_repr y]
 
 theorem L_crd {x : Fin X.B.I.n → X.B.I.E} (hx : x ∈ X.B.I.L) : ∃ y ∈ (VS D).L0, x = crd X y := by
   refine ⟨_, (X.L_eq x).1 hx, ?_⟩
@@ -114,12 +113,10 @@ theorem adapted (w : D.what₂.Word) :
   refine ⟨?_, ?_, ?_⟩
   · rintro _ ⟨y, hy, rfl⟩
     have h := crd_mem_span X (latSpanS_le _ _ hy)
-    rw [← Set.range_comp] at h
-    exact h
+    rwa [← Set.range_comp] at h
   · rintro _ ⟨y, hy, rfl⟩
     have h := crd_mem_span X (latSpanS_le _ _ hy)
-    rw [← Set.range_comp] at h
-    exact h
+    rwa [← Set.range_comp] at h
   · rintro _ ⟨y, hy, rfl⟩ a
     have h := X.Lb_perp y hy a
     constructor

@@ -79,9 +79,7 @@ theorem levi_mul' (K : Type) [Field K] [Fintype K] [DecidableEq K] {ι : Type} [
 
 theorem levi_one' (K : Type) [Field K] [Fintype K] [DecidableEq K] {ι : Type} [Fintype ι] [DecidableEq ι]
     {s : ℕ} (b : ι → Fin s) (c : Fin s) : levi K b c 1 = 1 := by
-  apply Units.ext
-  show blk K b c (((1 : parab K b) : GL ι K) : Matrix ι ι K) = 1
-  exact Matrix.submatrix_one _ Subtype.val_injective
+  exact Units.ext (Matrix.submatrix_one _ Subtype.val_injective)
 
 def inflRep (K : Type) [Field K] [Fintype K] [DecidableEq K] {ι : Type} [Fintype ι] [DecidableEq ι]
     {s : ℕ} (b : ι → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K)) :
@@ -103,13 +101,11 @@ theorem mem_inv_linHom_iff {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ
     ext x
     have := congrArg (fun φ : V →ₗ[ℂ] W => φ (ρV g x)) (h g)
     simp only [Representation.linHom_apply, LinearMap.comp_apply, Representation.inv_self_apply] at this
-    simp only [LinearMap.comp_apply]
-    exact this.symm
+    simpa only [LinearMap.comp_apply] using this.symm
   · intro h g
     ext x
     have := congrArg (fun φ : V →ₗ[ℂ] W => φ (ρV g⁻¹ x)) (h g)
     simp only [LinearMap.comp_apply, Representation.self_inv_apply] at this
-    simp only [Representation.linHom_apply, LinearMap.comp_apply]
-    exact this.symm
+    simpa only [Representation.linHom_apply, LinearMap.comp_apply] using this.symm
 
 end PI.SerBridgeGLW

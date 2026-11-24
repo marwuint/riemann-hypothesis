@@ -123,8 +123,7 @@ structure OkOp (B : BlockDat K G Pl0) (op : I → Module.End K B.S.Forms) : Prop
 variable {op : I → Module.End K B.S.Forms}
 
 theorem equivFun_oM (i : I) (f : B.S.Forms) :
-    B.S.basis.equivFun (op i f) = (oM B op i).mulVec (B.S.basis.equivFun f) := by
-  exact equivFun_end (op i) f
+    B.S.basis.equivFun (op i f) = (oM B op i).mulVec (B.S.basis.equivFun f) := equivFun_end (op i) f
 
 theorem oM_comm (hc : Col.PairComm op) (i j : I) : oM B op i * oM B op j = oM B op j * oM B op i := by
   simp only [oM]
@@ -172,8 +171,7 @@ private theorem eigSum_prod_nat_eq_eigSum (C : (I → K) → Prop) :
 theorem eig_ratG (h : BlockHyp B ℓ v0 s) (hO : OkOp B op) (C : (I → K) → Prop) :
     SubHasRatBasis (B.inV0 ℓ (Col.eigSum op C)) := by
   have h1 := eig_rat (blockHyp_of_okOp h hO) (okH_of_okOp hO) (fun y => C (fun i => y (i, 0)))
-  rw [eigSum_prod_nat_eq_eigSum] at h1
-  exact h1
+  rwa [eigSum_prod_nat_eq_eigSum] at h1
 
 def tVg (B : BlockDat K G Pl0) (ℓ : Lvl K G) (op : I → Module.End K B.S.Forms) (i : I) : Matrix (Fin (B.nV ℓ)) (Fin (B.nV ℓ)) K :=
   B.vPr ℓ * oM B op i * B.vE ℓ
@@ -201,14 +199,12 @@ theorem part_orthg (h : BlockHyp B ℓ v0 s) (hO : OkOp B op) (hZ : ∀ i, Z ≤
   have hA : ((B.HV ℓ).map v.embedding).PosDef := BlockDat.lf_HV_pos h v
   have hc : Col.PairComm (linF fun i => (tVg B ℓ op i).map v.embedding) := fun i j => by
     refine linF_commute ?_
-    have e := congrArg (fun M => M.map v.embedding) (tVg_comm h hO i j)
-    simpa only [Matrix.map_mul] using e
+    simpa only [Matrix.map_mul] using congrArg (fun M => M.map v.embedding) (tVg_comm h hO i j)
   have hs : Col.SplitOver (linF fun i => (tVg B ℓ op i).map v.embedding) := fun i =>
     Module.End.iSup_maxGenEigenspace_eq_top _
   have hcf : Col.PairComm (linF fun i => (oM B op i).map v.embedding) := fun i j => by
     refine linF_commute ?_
-    have e := congrArg (fun M => M.map v.embedding) (oM_comm hO.comm i j)
-    simpa only [Matrix.map_mul] using e
+    simpa only [Matrix.map_mul] using congrArg (fun M => M.map v.embedding) (oM_comm hO.comm i j)
   have hvv : B.vPr ℓ * B.vE ℓ = 1 := (BlockDat.lf_v_proj h).1.1
 
   have key : ∀ {D : (I → K) → Prop} {w : Fin (B.dZ ℓ Z) → K},
@@ -234,8 +230,7 @@ theorem part_orthg (h : BlockHyp B ℓ v0 s) (hO : OkOp B op) (hZ : ∀ i, Z ≤
         fun a => v.embedding ((B.vE ℓ *ᵥ (B.zE ℓ Z *ᵥ w)) a) := by
       ext a
       exact (RingHom.map_mulVec _ _ _ _).symm
-    rw [e]
-    exact h2
+    rwa [e]
   have hx' := key hx
   have hy' := key hy
   have hCC : ∀ y, (fun y => ∃ x, C' x ∧ y = fun i => v.embedding (x i)) y →
@@ -245,16 +240,14 @@ theorem part_orthg (h : BlockHyp B ℓ v0 s) (hO : OkOp B op) (hZ : ∀ i, Z ≤
     exact hSS x' hx1 (hxe ▸ hx2)
   have hPN : ∀ i, (B.Pq ℓ Z).map v.embedding * (tVg B ℓ op i).map v.embedding =
       (B.Pq ℓ Z * tVg B ℓ op i * B.zE ℓ Z).map v.embedding * (B.Pq ℓ Z).map v.embedding := fun i => by
-    have e := congrArg (fun M => M.map v.embedding) (Pq_tVg h hO hZ i)
-    simpa only [Matrix.map_mul] using e
+    simpa only [Matrix.map_mul] using congrArg (fun M => M.map v.embedding) (Pq_tVg h hO hZ i)
   have hPz : B.Pq ℓ Z * B.zE ℓ Z = 1 := (pq_orth (Z := Z) h).1
   have hPu : ∀ w : Fin (B.dZ ℓ Z) → K,
       (B.Pq ℓ Z).map v.embedding *ᵥ (fun a => v.embedding ((B.zE ℓ Z *ᵥ w) a)) = fun a => v.embedding (w a) := by
     intro w
     ext a
     have e := (RingHom.map_mulVec v.embedding (B.Pq ℓ Z) (B.zE ℓ Z *ᵥ w) a).symm
-    rw [Matrix.mulVec_mulVec, hPz, Matrix.one_mulVec] at e
-    exact e
+    rwa [Matrix.mulVec_mulVec, hPz, Matrix.one_mulVec] at e
   have hq : IsQuotMetric (B.Pq ℓ Z) (B.HV ℓ) (B.XQ ℓ Z) := BlockDat.XQ_quot h.conj h.ok h.irr
   have hvx : ∀ w : Fin (B.dZ ℓ Z) → K,
       Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin (B.dZ ℓ Z))) v w = fun a => v.embedding (w a) := fun w => by
@@ -265,8 +258,7 @@ theorem part_orthg (h : BlockHyp B ℓ v0 s) (hO : OkOp B op) (hZ : ∀ i, Z ≤
       ((B.Pq ℓ Z).map v.embedding)ᴴ).det
   · have e := cx_quot_orth (hA := hA) (adj := adjCg h hO v.embedding) (hPN := hPN) (hR := hR) (hc := hc)
       (hs := hs) (hCC := hCC) (hu := hx') (hu' := hy')
-    rw [hPu, hPu] at e
-    exact e
+    rwa [hPu, hPu] at e
   · rw [Matrix.nonsing_inv_apply_not_isUnit _ hR]
     simp
 

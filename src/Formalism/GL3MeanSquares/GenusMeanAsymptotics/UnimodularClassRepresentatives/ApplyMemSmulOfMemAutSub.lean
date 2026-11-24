@@ -169,10 +169,8 @@ theorem orbCount_eq_relIndex (h : V →ₗ⋆[K] V →ₗ[K] K) (A B : Submodule
     ext g
     rw [MulAction.mem_stabilizer_iff, Subgroup.mem_subgroupOf]
     constructor
-    · intro hg
-      exact ⟨g.2.1, hg⟩
-    · intro hg
-      exact hg.2
+    · exact fun hg => ⟨g.2.1, hg⟩
+    · exact fun hg => hg.2
   rw [Subgroup.relIndex, ← hst, Subgroup.index_eq_card,
     ← Nat.card_congr (MulAction.orbitEquivQuotientStabilizer _ B)]
   unfold orbCount
@@ -239,7 +237,6 @@ theorem relIndex_autSub_ne_zero (h : V →ₗ⋆[K] V →ₗ[K] K) {M₁ M₂ : 
     change _ = (a : V ≃ₗ[K] V).symm _ - (a : V ≃ₗ[K] V).symm _
     rw [LinearEquiv.symm_apply_apply]
     rfl
-  rw [h2]
-  exact h1
+  rwa [h2]
 
 end Formalism.HermitianLattices.Ext.L3.LIOrb

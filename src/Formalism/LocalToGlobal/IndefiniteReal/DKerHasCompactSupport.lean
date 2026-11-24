@@ -122,8 +122,7 @@ theorem expS_hasDerivAt (Z : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
     rw [hasDerivAt_pi]
     intro i
     rw [hasDerivAt_pi]
-    intro j
-    exact expS_entry_hasDerivAt Z t i j
+    exact fun j => expS_entry_hasDerivAt Z t i j
   exact this
 
 theorem expS_continuous (Z : Matrix (Fin n) (Fin n) ℂ) :
@@ -158,8 +157,7 @@ theorem tau_expS_gv {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hτ :
   have e2 : Jm ε * (umat (⟨expU Z t, expS_mem Z hZ t⟩ : UJ ε))ᴴ * Jm ε = NormedSpace.exp (t • -Z) := by
     rw [← Gard.umat_inv]
     rfl
-  rw [e2] at e
-  exact e
+  rwa [e2] at e
 
 def dKer (Z : Matrix (Fin n) (Fin n) ℂ) (Φ : Matrix (Fin n) (Fin n) ℂ → ℂ) : Matrix (Fin n) (Fin n) ℂ → ℂ :=
   fun m => fderiv ℝ Φ m (-Z * m)
@@ -242,8 +240,7 @@ theorem kerBound {Φ : Matrix (Fin n) (Fin n) ℂ → ℂ} (hΦ : ContDiff ℝ �
       rintro _ ⟨t, ht, rfl⟩
       exact hvan h hh t ht
     simp only [him, csSup_singleton]
-  · intro h t ht
-    exact le_csSup (isCompact_Icc.image (hfc h)).bddAbove (mem_image_of_mem _ ht)
+  · exact fun h t ht => le_csSup (isCompact_Icc.image (hfc h)).bddAbove (mem_image_of_mem _ ht)
 
 theorem hasDerivAt_tau_gv {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hτ : IsURepOn (UJset ε) τ)
     {Φ : Matrix (Fin n) (Fin n) ℂ → ℂ} (hΦ : ContDiff ℝ ∞ Φ) (hΦc : HasCompactSupport Φ)
@@ -261,8 +258,7 @@ theorem hasDerivAt_tau_gv {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} 
   have hFi : Integrable (fun h : UJ ε => Φ (NormedSpace.exp ((0 : ℝ) • -Z) * umat h) • τ (umat h) x)
       (muG ε) := by
     rw [e0]
-    simp only [Matrix.one_mul]
-    exact gvS_integrable hτ hΦ.continuous hΦc x
+    simpa only [Matrix.one_mul] using gvS_integrable hτ hΦ.continuous hΦc x
   have hF'm : AEStronglyMeasurable (fun h : UJ ε =>
       fderiv ℝ Φ (NormedSpace.exp ((0 : ℝ) • -Z) * umat h) (NormedSpace.exp ((0 : ℝ) • -Z) * -Z * umat h) •
         τ (umat h) x) (muG ε) :=
@@ -292,8 +288,7 @@ theorem hasDerivAt_tau_gv {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} 
     rw [e0]
     simp only [Matrix.one_mul]
     rfl
-  rw [e1, ← e2]
-  exact hD
+  rwa [e1, ← e2]
 
 end Gen
 
@@ -395,8 +390,7 @@ theorem sum_gvT_le (M : DSModel V S) (τ : D.what₂.Tau) {Φ : Matrix (Fin V.ra
   intro L
   induction L with
   | nil =>
-    intro _
-    exact ⟨0, fun w => by simp⟩
+    exact fun _ => ⟨0, fun w => by simp⟩
   | cons l L ih =>
     intro hL
     obtain ⟨c1, h1⟩ := foldr_gvT_le M τ hΦ hΦc l (hL l List.mem_cons_self)

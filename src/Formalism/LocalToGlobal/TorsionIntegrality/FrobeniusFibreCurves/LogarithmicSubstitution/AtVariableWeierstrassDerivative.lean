@@ -90,8 +90,7 @@ theorem subst_wOf_mul (e1 : K) (P : PowerSeries K) {l : PowerSeries K}
   have := congrArg (subst l) (wOf_mul e1 P)
   rw [← coe_substAlgHom hs] at this
   simp only [map_sub, map_mul, map_add (f := _), map_one, map_pow] at this
-  rw [coe_substAlgHom hs, subst_X hs, subst_C] at this
-  exact this
+  rwa [coe_substAlgHom hs, subst_X hs, subst_C] at this
 
 theorem subst_dz_wOf (e1 : K) (P : PowerSeries K) {l : PowerSeries K}
     (hl : constantCoeff l = 0) :
@@ -101,8 +100,7 @@ theorem subst_dz_wOf (e1 : K) (P : PowerSeries K) {l : PowerSeries K}
   have := congrArg (subst l) (dz_wOf e1 P)
   rw [← coe_substAlgHom hs] at this
   simp only [map_sub, map_mul, map_add (f := _), map_one, map_pow, map_neg, map_ofNat] at this
-  rw [coe_substAlgHom hs, subst_X hs, subst_C] at this
-  exact this
+  rwa [coe_substAlgHom hs, subst_X hs, subst_C] at this
 
 theorem wl_mul_g {c0 xT : K} {P l ep : PowerSeries K} (hl : constantCoeff l = 0) (hl0 : l ≠ 0)
     (hcv : X ^ 2 * (1 + l ^ 2 * subst l P) = l ^ 2 * (ep + C c0 * X ^ 2)) :
@@ -189,8 +187,7 @@ theorem at_variable_weierstrass_derivative {ι : Type} (x : ι) {W W' th : Power
   have := congrArg (PowerSeries.subst (MvPowerSeries.X x : MvPowerSeries ι K)) h
   rw [← PowerSeries.coe_substAlgHom hs] at this
   simp only [map_sub, map_mul, map_ofNat] at this
-  rw [PowerSeries.coe_substAlgHom hs, PowerSeries.subst_X hs, PowerSeries.subst_C] at this
-  exact this
+  rwa [PowerSeries.coe_substAlgHom hs, PowerSeries.subst_X hs, PowerSeries.subst_C] at this
 
 theorem hsL {l : PowerSeries K} (hl : PowerSeries.constantCoeff l = 0) :
     MvPowerSeries.HasSubst (![at1 (0 : Fin 2) l, at1 1 l] : Fin 2 → MvPowerSeries (Fin 2) K) := by
@@ -244,8 +241,7 @@ theorem wadd_law {kap : K} {w l : PowerSeries K} {F : MvPowerSeries (Fin 2) K}
   rw [← MvPowerSeries.coe_substAlgHom hb] at e
   simp only [map_sub, map_mul, map_one, map_pow, map_add (f := _), map_ofNat] at e
   rw [MvPowerSeries.coe_substAlgHom hb, MvPowerSeries.subst_C] at e
-  simp only [subst_log_at_variable _ _ hl, sub_atS _ hl hF hFl] at e
-  exact e
+  simpa only [subst_log_at_variable _ _ hl, sub_atS _ hl hF hFl] using e
 
 theorem alg_core {R : Type} [CommRing R] [NoZeroDivisors R] (h4' : (4 : R) ≠ 0)
     {a b c Wa Wb Va Vb ta tb ga gb WF gF Fv d : R}

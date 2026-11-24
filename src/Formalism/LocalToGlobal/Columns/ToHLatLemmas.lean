@@ -266,8 +266,7 @@ theorem csd_hasRatBasis {K : Type} [Field K] [NumberField K] [StarRing K] (S : C
     apply le_antisymm
     · rintro _ ⟨f, rfl⟩
       exact hmem f
-    · intro f hf
-      exact ⟨f, hfix f hf⟩
+    · exact fun f hf => ⟨f, hfix f hf⟩
   have hspan : Submodule.span K (P '' Set.range B) = S.Forms := by
     rw [← Submodule.map_span, B.span_eq, Submodule.map_top, hrange]
   have hrat : ∀ t ∈ P '' Set.range B, S.IsRat t := by

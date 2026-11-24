@@ -63,8 +63,7 @@ theorem isomAct_mem_gmap (g : V ≃ₗ[K] V) (L : Submodule R V) (x : V) :
   constructor
   · rintro ⟨y, hy, rfl⟩
     simpa using hy
-  · intro hx
-    exact ⟨g.symm x, hx, by simp⟩
+  · exact fun hx => ⟨g.symm x, hx, by simp⟩
 
 theorem isomAct_smul (g : V ≃ₗ[K] V) (s : R) (x : V) : g (s • x) = s • g x := by
   exact map_smul ((g : V →ₗ[K] V).restrictScalars R) s x
@@ -104,17 +103,15 @@ end SlopeTestRemainingChoices
 theorem isomAct : IsomAct := by
   intro R K V _ _ _ _ _ _ _ _ h g hg L
   have iso : ∀ x y, h (g x) (g y) = h x y := hg
+  have hmem : ∀ z ∈ L, g z ∈ gmap g L := fun z hz =>
+    (isomAct_mem_gmap g L _).2 (by simpa using hz)
   have hdual : dual h (gmap g L) = gmap g (dual h L) := by
     ext x
     rw [isomAct_mem_gmap, isomAct_mem_dual, isomAct_mem_dual]
     constructor
     · intro H z hz
-      have hz' : g z ∈ gmap g L := by
-        rw [isomAct_mem_gmap]
-        simpa using hz
-      have e := H (g z) hz'
       rw [← iso z (g.symm x)]
-      simpa using e
+      simpa using H (g z) (hmem z hz)
     · intro H y hy
       rw [isomAct_mem_gmap] at hy
       have e := H _ hy
@@ -126,38 +123,22 @@ theorem isomAct : IsomAct := by
     simp only [isomAct_mem_gmap, isomAct_mem_locS, isomAct_smul]
   have hint_r : IsIntegralLat h (gmap g L) ↔ IsIntegralLat h L := by
     unfold IsIntegralLat
-    constructor
-    · intro H x hx y hy
-      have hx' : g x ∈ gmap g L := by
-        rw [isomAct_mem_gmap]
-        simpa using hx
-      have hy' : g y ∈ gmap g L := by
-        rw [isomAct_mem_gmap]
-        simpa using hy
-      rw [← iso x y]
-      exact H _ hx' _ hy'
-    · intro H x hx y hy
-      rw [isomAct_mem_gmap] at hx hy
+    refine ⟨fun H x hx y hy => ?_, fun H x hx y hy => ?_⟩
+    · rw [← iso x y]
+      exact H _ (hmem x hx) _ (hmem y hy)
+    · rw [isomAct_mem_gmap] at hx hy
       have e := H _ hx _ hy
       rw [← iso (g.symm x) (g.symm y)] at e
       simpa using e
   have hunim : IsUnimodular h (gmap g L) ↔ IsUnimodular h L := by
     unfold IsUnimodular
     rw [hdual]
-    constructor
-    · intro H
-      have e := congrArg (gmap (R := R) g.symm) H
-      simp only [isomAct_gmap_symm] at e
-      exact e
-    · intro H
-      rw [H]
+    refine ⟨fun H => ?_, fun H => by rw [H]⟩
+    simpa only [isomAct_gmap_symm] using congrArg (gmap (R := R) g.symm) H
   have hlat : Submodule.IsLattice K (gmap g L) ↔ Submodule.IsLattice K L := by
-    constructor
-    · intro H
-      have e := isomAct_lattice g.symm (gmap g L) H
-      rwa [isomAct_gmap_symm] at e
-    · intro H
-      exact isomAct_lattice g L H
+    refine ⟨fun H => ?_, isomAct_lattice g L⟩
+    have e := isomAct_lattice g.symm (gmap g L) H
+    rwa [isomAct_gmap_symm] at e
   refine ⟨hdual, ?_, hint_r, hunim, hlat⟩
   intro p
   unfold loc

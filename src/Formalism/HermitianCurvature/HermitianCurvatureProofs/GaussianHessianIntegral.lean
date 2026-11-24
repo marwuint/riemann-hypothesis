@@ -82,8 +82,7 @@ theorem exists_takagi_vector (T : E →ₗ⋆[ℂ] E) (hT : ∀ x y, ⟪T x, y�
   obtain ⟨x, hx⟩ := hμ.exists_hasEigenvector
   have hx0 : (x : E) ≠ 0 := by simpa using hx.2
   have hAx : T (T x) = μ • (x : E) := by
-    have h := congrArg Subtype.val hx.apply_eq_smul
-    simpa [A] using h
+    simpa [A] using congrArg Subtype.val hx.apply_eq_smul
   have hnx : 0 < ‖(x : E)‖ := norm_pos_iff.2 hx0
   have h1 : conj μ * ((‖(x:E)‖ : ℂ) ^ 2) = ((‖T x‖ : ℂ) ^ 2) := by
     have h : ⟪T (T x), (x:E)⟫_ℂ = ⟪T x, T x⟫_ℂ := hT _ _
@@ -95,8 +94,7 @@ theorem exists_takagi_vector (T : E →ₗ⋆[ℂ] E) (hT : ∀ x y, ⟪T x, y�
     have hxc : ((‖(x:E)‖ : ℂ)) ≠ 0 := by exact_mod_cast hnx.ne'
     have h2 : conj μ = (σ : ℂ) ^ 2 := by
       rw [hσ]; push_cast; field_simp; exact h1
-    have h3 := congrArg conj h2
-    simpa using h3
+    simpa using congrArg conj h2
   have key : ∀ w ∈ S, w ≠ 0 → T w = (σ : ℂ) • w →
       ∃ v ∈ S, ∃ σ : ℝ, 0 ≤ σ ∧ ‖v‖ = 1 ∧ T v = (σ : ℂ) • v := by
     intro w hw hw0 hTw
@@ -246,8 +244,7 @@ theorem map_mul_vol (α : ℂ) (hα : α ≠ 0) :
     rfl
   have h := Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure ℂ)
     (f := LinearMap.mulLeft ℝ α) (by rw [hdet]; positivity)
-  rw [hdet, abs_of_nonneg (by positivity)] at h
-  exact h
+  rwa [hdet, abs_of_nonneg (by positivity)] at h
 
 theorem integral_comp_mul (α : ℂ) (hα : α ≠ 0) (G : ℂ → ℂ) :
     ∫ ξ : ℂ, G (α * ξ) = ((‖α‖ ^ 2)⁻¹ : ℝ) • ∫ η : ℂ, G η := by
@@ -398,8 +395,7 @@ theorem unitary_mp (d : ℕ) (β : ℂ) (hβ : β ≠ 0) (W : Matrix (Fin d) (Fi
     (f := (Matrix.toLin' W).restrictScalars ℝ) (by rw [hdet]; exact one_ne_zero)
   rw [hdet] at h
   simp only [inv_one, abs_one, ENNReal.ofReal_one, one_smul] at h
-  refine ⟨?_, h⟩
-  exact (Continuous.matrix_mulVec continuous_const continuous_id).measurable
+  exact ⟨(Continuous.matrix_mulVec continuous_const continuous_id).measurable, h⟩
 
 theorem sum_normSq_unitary {d : ℕ} {U : Matrix (Fin d) (Fin d) ℂ}
     (hU : U ∈ Matrix.unitaryGroup (Fin d) ℂ) (x : Fin d → ℂ) :
@@ -407,8 +403,7 @@ theorem sum_normSq_unitary {d : ℕ} {U : Matrix (Fin d) (Fin d) ℂ}
   have key : ∀ y : Fin d → ℂ, ((∑ k, ‖y k‖ ^ 2 : ℝ) : ℂ) = star y ⬝ᵥ y := by
     intro y
     simp only [dotProduct, Pi.star_apply, Complex.ofReal_sum, Complex.ofReal_pow]
-    refine Finset.sum_congr rfl fun k _ => ?_
-    exact (Complex.conj_mul' (y k)).symm
+    exact Finset.sum_congr rfl fun k _ => (Complex.conj_mul' (y k)).symm
   have h : star (U *ᵥ x) ⬝ᵥ (U *ᵥ x) = star x ⬝ᵥ x := by
     rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec]
     have : Uᴴ * U = 1 := Matrix.mem_unitaryGroup_iff'.1 hU

@@ -83,8 +83,7 @@ theorem linear_map_ext_on_weights {E : GLOps n (KK O) V} {F : Finset (Fin n → 
     exact h nu hnu x hx
   ext x
   have hx : x ∈ LinearMap.ker (A - B) := hle (hF (Submodule.mem_top : x ∈ (⊤ : Submodule (KK O) V)))
-  rw [LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero] at hx
-  exact hx
+  rwa [LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero] at hx
 
 theorem exists_integral_weight_projection [CharZero (KK O)] (E : GLOps n (KK O) V) (mu : Fin n → ℤ) (F : Finset (Fin n → ℤ)) :
     ∃ (P : Module.End (KK O) V) (g : (Fin n → ℤ) → ℤ), g mu = 1 ∧ (∀ nu ∈ F, nu ≠ mu → g nu = 0) ∧
@@ -111,8 +110,7 @@ theorem exists_integral_weight_projection [CharZero (KK O)] (E : GLOps n (KK O) 
         rw [Module.End.mul_apply, hP nu x hx, map_smul, hT nu x hx, smul_smul]
         push_cast
         rw [mul_comm]
-      · intro M hM x hx
-        exact hTM M hM _ (hPM M hM x hx)
+      · exact fun M hM x hx => hTM M hM _ (hPM M hM x hx)
 
 theorem exists_integral_weight_projections [CharZero (KK O)] (E : GLOps n (KK O) V) (F : Finset (Fin n → ℤ)) :
     ∃ P : (Fin n → ℤ) → Module.End (KK O) V,
@@ -142,8 +140,7 @@ private theorem diagonal_apply_of_mem_weightSp {E : GLOps n (KK O) V} {mu : Fin 
     (a : Fin n) : E a a x = ((mu a : ℤ) : KK O) • x := by
   rw [weightSp, Submodule.mem_iInf] at hx
   have h := LinearMap.mem_ker.1 (hx a)
-  rw [LinearMap.sub_apply, sub_eq_zero, LinearMap.smul_apply] at h
-  exact h
+  rwa [LinearMap.sub_apply, sub_eq_zero, LinearMap.smul_apply] at h
 
 theorem diagonal_weight_projection_comm {E : GLOps n (KK O) V} {F : Finset (Fin n → ℤ)}
     (hF : (⊤ : Submodule (KK O) V) ≤ ⨆ nu ∈ F, weightSp E nu) {P : (Fin n → ℤ) → Module.End (KK O) V}
@@ -214,8 +211,7 @@ theorem adjoint_end_isGLRep [CharZero (KK O)] [FiniteDimensional (KK O) V] {E : 
       noncomm_ring
     rw [key, hr]
     by_cases h1 : b = c <;> by_cases h2 : d = a <;> simp [h1, h2, adjointEndAction_apply] <;> noncomm_ring
-  · intro x
-    exact ⟨⊤, inferInstance, Submodule.mem_top, fun _ _ _ _ => Submodule.mem_top⟩
+  · exact fun x => ⟨⊤, inferInstance, Submodule.mem_top, fun _ _ _ _ => Submodule.mem_top⟩
   · obtain ⟨F, hF⟩ := findim_exists_finite_weights E hE.2.2
     obtain ⟨P, -, h1, h0⟩ := exists_integral_weight_projections (O := O) E F
     rw [eq_top_iff]

@@ -91,8 +91,7 @@ theorem asIdeal_plMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) :
   constructor
   · intro hy
     refine ⟨(RingOfIntegers.mapRingEquiv j).symm y, ?_, RingEquiv.apply_symm_apply _ _⟩
-    rw [← mem_plMap j w, RingEquiv.apply_symm_apply]
-    exact hy
+    rwa [← mem_plMap j w, RingEquiv.apply_symm_apply]
   · rintro ⟨x, hx, rfl⟩
     exact (mem_plMap j w x).2 hx
 
@@ -102,8 +101,7 @@ theorem mem_plMap_pow (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (n : ℕ)
   constructor
   · rintro ⟨y, hy, hxy⟩
     rwa [(RingOfIntegers.mapRingEquiv j).injective hxy] at hy
-  · intro hx
-    exact ⟨x, hx, rfl⟩
+  · exact fun hx => ⟨x, hx, rfl⟩
 
 theorem eq_of_forall_le_exp {a b : WithZero (Multiplicative ℤ)} (ha : a ≠ 0) (hb : b ≠ 0) (ha1 : a ≤ 1)
     (hb1 : b ≤ 1) (h : ∀ n : ℕ, a ≤ WithZero.exp (-(n : ℤ)) ↔ b ≤ WithZero.exp (-(n : ℤ))) : a = b := by
@@ -155,8 +153,7 @@ theorem continuous_withVal {R S : Type} [Field R] [Field S] {v : Valuation R (Wi
   have e0 : Valued.v (WithVal.toVal v x0) = v x0 := WithVal.valued_toVal _ _
   rw [e0, hx0] at hx1
   show Valued.v.restrict (f x) < γ.val
-  rw [Valuation.restrict_lt_iff_lt_embedding, hf]
-  exact hx1
+  rwa [Valuation.restrict_lt_iff_lt_embedding, hf]
 
 theorem continuous_congrVal (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) :
     Continuous (WithVal.congr (w.valuation E) ((plMap j w).valuation L) j) :=
@@ -338,8 +335,7 @@ theorem idMap_diag (j : E ≃+* L) (k : Eˣ) : idMap j (diagUnits E k) = diagUni
   · ext1 v
     show (compEquiv j.symm v).symm (algebraMap E _ (k : E)) = algebraMap L _ (j k)
     have h := compEquiv_symm_algebraMap j.symm v (j (k : E))
-    rw [RingEquiv.symm_apply_apply] at h
-    exact h
+    rwa [RingEquiv.symm_apply_apply] at h
 
 def locMap (j : E ≃+* L) (v : HeightOneSpectrum (𝓞 L)) :
     ((plMap j.symm v).adicCompletion E)ˣ →* (v.adicCompletion L)ˣ :=
@@ -371,15 +367,13 @@ theorem isUnitAt_locMap (j : E ≃+* L) (v : HeightOneSpectrum (𝓞 L)) (x : ((
 theorem locMap_surjective (j : E ≃+* L) (v : HeightOneSpectrum (𝓞 L)) : Function.Surjective (locMap j v) := by
   intro y
   refine ⟨Units.map (compEquiv j.symm v).toMonoidHom y, ?_⟩
-  apply Units.ext
-  exact (compEquiv j.symm v).symm_apply_apply (y : v.adicCompletion L)
+  exact Units.ext ((compEquiv j.symm v).symm_apply_apply (y : v.adicCompletion L))
 
 theorem locMap_atFin (j : E ≃+* L) (v : HeightOneSpectrum (𝓞 L)) (k : Eˣ) :
     locMap j v (atFin (plMap j.symm v) k) = atFin v (Units.map j.toMonoidHom k) := by
   apply Units.ext
   have h := compEquiv_symm_algebraMap j.symm v (j (k : E))
-  rw [RingEquiv.symm_apply_apply] at h
-  exact h
+  rwa [RingEquiv.symm_apply_apply] at h
 
 def transport (j : E ≃+* L) : HChar L →* HChar E where
   toFun χ := ⟨χ.1.comp (idMap j), χ.2.1.comp (continuous_idMap j), fun k => by

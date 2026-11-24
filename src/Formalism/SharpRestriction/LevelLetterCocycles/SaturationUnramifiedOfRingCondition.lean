@@ -106,8 +106,7 @@ theorem p_pow_cancel {p : ℕ} (hO : ∀ c : O, ((p : ℕ) : O) * c = 0 → c = 
   | succ k ih =>
     apply ih
     apply p_cancel hO
-    rw [← mul_assoc, ← mul_assoc, ← pow_succ']
-    exact h
+    rwa [← mul_assoc, ← mul_assoc, ← pow_succ']
 
 theorem dvd_of_X_pow {p : ℕ} {m : ℕ} {a c : LetA O n}
     (h : ((p : ℕ) : LetA O n) * c = letπ ^ m * a) : ∃ a' : LetA O n, a = ((p : ℕ) : LetA O n) * a' := by
@@ -243,8 +242,7 @@ theorem sat_basis (W : LocWach PD LL O v n) (hO : ∀ c : O, ((PD.p : ℕ) : O) 
   have hca : ∀ j, ((PD.p : ℕ) : LetA O n) ^ k * c j = f' * f * a j := by
     intro j
     have q1 := huq (fun j => ((PD.p : ℕ) : LetA O n) ^ k * c j) e1
-    have q2 := huq (fun j => f' * f * a j) e2
-    exact congrFun (q1.trans q2.symm) j
+    exact congrFun (q1.trans (huq (fun j => f' * f * a j) e2).symm) j
   have hdiv : ∀ j, ∃ a' : LetA O n, a j = ((PD.p : ℕ) : LetA O n) ^ k * a' :=
     fun j => dvd_of_UPi hO (UPi.mul hf' hf) k (a j) (c j) (hca j)
   choose a' ha' using hdiv
@@ -369,8 +367,7 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 theorem saturation_general_of_ring_condition (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F) : SaturationArcLifting D HW F := by
-  intro l _ K LL hG _ _
-  exact SatW.satCore_of _ (fun a b hab => Subtype.ext hab) (h9 l K 1 LL hG)
+  exact fun l _ K LL hG _ _ => SatW.satCore_of _ (fun a b hab => Subtype.ext hab) (h9 l K 1 LL hG)
 
 theorem saturation_unramified_of_ring_condition (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F) : SaturationEtale D HW F := by

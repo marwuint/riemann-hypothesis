@@ -107,17 +107,14 @@ theorem valuation_bound_add {x y : Y.Kc} {g : ℝ} (hy0 : y ≠ 0) (h : x / y �
 
 theorem geC_add {x y : Y.Kc} {g : ℝ} (hx : Y.geC x g) (hy : Y.geC y g) : Y.geC (x + y) g := by
   by_cases hy0 : y = 0
-  · rw [hy0, add_zero]
-    exact hx
+  · rwa [hy0, add_zero]
   by_cases hx0 : x = 0
-  · rw [hx0, zero_add]
-    exact hy
+  · rwa [hx0, zero_add]
   rcases Y.Oc_val (x / y) with h | h
   · exact valuation_bound_add Y hy0 h hy
   · rw [add_comm]
     refine valuation_bound_add Y hx0 ?_ hx
-    rw [inv_div] at h
-    exact h
+    rwa [inv_div] at h
 
 def geCgrp (g : ℝ) : AddSubgroup Y.Kc where
   carrier := {x | Y.geC x g}
@@ -140,8 +137,7 @@ theorem RK_val (x : X.G.Kf) : x ∈ RK X ∨ x⁻¹ ∈ RK X := by
 
 theorem zpow_mem_RK {a : X.G.Kf} (h1 : a ∈ RK X) (h2 : a⁻¹ ∈ RK X) (z : ℤ) : a ^ z ∈ RK X := by
   rcases z with n | n
-  · simp only [Int.ofNat_eq_coe, zpow_natCast]
-    exact pow_mem h1 n
+  · simpa only [Int.ofNat_eq_coe, zpow_natCast] using pow_mem h1 n
   · rw [zpow_negSucc, ← inv_pow]
     exact pow_mem h2 _
 
@@ -186,8 +182,7 @@ theorem p_eq : ∃ u : X.G.Kf, u ∈ RK X ∧ u⁻¹ ∈ RK X ∧ u ≠ 0 ∧ (p
   refine ⟨algebraMap X.G.O X.G.Kf u, ⟨u, rfl⟩, ⟨↑u⁻¹, map_units_inv (algebraMap X.G.O X.G.Kf) u⟩,
     (u.isUnit.map (algebraMap X.G.O X.G.Kf)).ne_zero, ?_⟩
   have h := congrArg (algebraMap X.G.O X.G.Kf) hu
-  rw [map_mul, map_pow, map_natCast] at h
-  exact h
+  rwa [map_mul, map_pow, map_natCast] at h
 
 include Y in
 theorem eO_zero_of_vpK_zero (h0 : vpK X = 0) : X.eO = 0 := by

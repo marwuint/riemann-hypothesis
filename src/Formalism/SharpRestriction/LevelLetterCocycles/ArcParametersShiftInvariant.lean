@@ -62,8 +62,7 @@ theorem mem_shC {cuts : Finset (ZMod n)} {c : ZMod n} : c ∈ shC a cuts ↔ c -
   constructor
   · rintro ⟨x, hx, rfl⟩
     simpa using hx
-  · intro h
-    exact ⟨c - a, h, sub_add_cancel c a⟩
+  · exact fun h => ⟨c - a, h, sub_add_cancel c a⟩
 
 theorem ellMax_sh (cuts : Finset (ZMod n)) (arcLen : ZMod n → ℕ) :
     ellMax (shC a cuts) (sh a arcLen) = ellMax cuts arcLen := by
@@ -79,8 +78,7 @@ theorem cutsOK_sh {j : ℕ} {ty : ZMod n → LT} {cuts : Finset (ZMod n)} {arcLe
   refine ⟨hne.image _, hj, fun c hc ↦ ?_, fun c hc ↦ h4 _ ((mem_shC a).1 hc), fun c hc k hk1 hkj ↦ ?_⟩
   · obtain ⟨e1, e2, e3, e4⟩ := h3 _ ((mem_shC a).1 hc)
     refine ⟨e1, e2, (mem_shC a).2 ?_, fun d hd1 hd2 hmem ↦ e4 d hd1 hd2 ?_⟩
-    · rw [sub_right_comm]
-      exact e3
+    · rwa [sub_right_comm]
     · have hm := (mem_shC a).1 hmem
       rwa [sub_right_comm] at hm
   · show ty (c + (k : ZMod n) - a) = LT.thin
@@ -107,8 +105,7 @@ theorem wordOK_sh {l a₀ : ℕ} {ty : ZMod n → LT} {cuts : Finset (ZMod n)} {
   intro c hc s₀ s₁ hs hs1 b₀ b₁
   have h' := h _ ((mem_shC a).1 hc) s₀ s₁ hs hs1 b₀ b₁
   simp only [sh]
-  rw [sub_right_comm c (s₁ : ZMod n) a, sub_right_comm c (s₀ : ZMod n) a]
-  exact h'
+  rwa [sub_right_comm c (s₁ : ZMod n) a, sub_right_comm c (s₀ : ZMod n) a]
 
 theorem sizesOK_sh {g S h : ℕ} {ty : ZMod n → LT} (H : SizesOK g S h ty) :
     SizesOK g S h (sh a ty) := fun i ↦ H (i - a)
@@ -120,8 +117,7 @@ theorem Hmax_sh (H : ZMod n → ℕ) : Hmax n (sh a H) = Hmax n H := by
   apply le_antisymm
   · exact Finset.sup_le fun i _ ↦ Finset.le_sup (f := H) (Finset.mem_univ (i - a))
   · refine Finset.sup_le fun i _ ↦ ?_
-    have hle := Finset.le_sup (f := sh a H) (Finset.mem_univ (i + a))
-    simpa [sh] using hle
+    simpa [sh] using Finset.le_sup (f := sh a H) (Finset.mem_univ (i + a))
 
 theorem sBd_sh (l : ℕ) (H : ZMod n → ℕ) (i : ZMod n) : sBd l n (sh a H) i = sBd l n H (i - a) := by
   unfold sBd
@@ -202,9 +198,7 @@ theorem thmELiftAt_rot (emb : ZMod n → (K₀ →ₐ[Qp] LL)) (a : ZMod n)
     · have he : emb = (fun i ↦ emb (i + a)) ∘ (fun i ↦ i - a) := funext fun i ↦ by simp
       rw [he]
       exact e4.comp (Equiv.subRight a).bijective
-    · have e := e5 (i - a)
-      simp only [sub_add_cancel, show i - a + 1 + a = i + 1 by ring] at e
-      exact e
+    · simpa only [sub_add_cancel, show i - a + 1 + a = i + 1 by ring] using e5 (i - a)
   have hW : WordOK PD.p (initialExponentBound PD.p n j (gPar Gp S η) h (sh a Mb₁ + sh a hb₁) (sh a Mb₂ + sh a hb₂)
       (shC a cuts) (sh a arcLen)) (sh a ty) (shC a cuts) (sh a arcLen) := by
     rw [show sh a Mb₁ + sh a hb₁ = sh a (Mb₁ + hb₁) from rfl,

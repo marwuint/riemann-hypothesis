@@ -68,12 +68,8 @@ theorem matrix_data (L : PeriodPair) (α : ℂ) (h : MulStable L α) :
   obtain ⟨b, d, hbd⟩ := PeriodPair.mem_lattice.1 (h _ L.ω₂_mem_lattice)
   refine ⟨a, b, c, d, hac.symm, hbd.symm, ?_⟩
   have hind := LinearIndependent.pair_iff.1 L.indep
-  have hω1 : L.ω₁ ≠ 0 := by
-    intro h0
-    exact one_ne_zero (hind 1 0 (by simp [h0])).1
-  have hω2 : L.ω₂ ≠ 0 := by
-    intro h0
-    exact one_ne_zero (hind 0 1 (by simp [h0])).2
+  have hω1 : L.ω₁ ≠ 0 := fun h0 => one_ne_zero (hind 1 0 (by simp [h0])).1
+  have hω2 : L.ω₂ ≠ 0 := fun h0 => one_ne_zero (hind 0 1 (by simp [h0])).2
   have e1 : (α - a) * L.ω₁ = c * L.ω₂ := by linear_combination -hac
   have e2 : (α - d) * L.ω₂ = b * L.ω₁ := by linear_combination -hbd
   have hq : α ^ 2 - ((a + d : ℤ) : ℂ) * α + ((a * d - b * c : ℤ) : ℂ) = 0 := by

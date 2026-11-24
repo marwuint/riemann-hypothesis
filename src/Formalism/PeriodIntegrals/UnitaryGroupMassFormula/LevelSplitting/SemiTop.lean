@@ -110,10 +110,8 @@ def bwdM (s : Ssub R σ J P) : Nsub R σ J P × Hsub R σ J P :=
 theorem continuous_bwdM : Continuous (bwdM R hσσ hJ hP) := by
   have hpi := continuous_piG (R := R) hσσ hJ hP
   refine Continuous.prodMk ?_ ?_
-  · apply continuous_induced_rng.2
-    exact continuous_subtype_val.mul hpi.inv
-  · apply continuous_induced_rng.2
-    exact hpi
+  · exact continuous_induced_rng.2 (continuous_subtype_val.mul hpi.inv)
+  · exact continuous_induced_rng.2 hpi
 
 theorem bwd_fwd : Function.LeftInverse (bwdM R hσσ hJ hP) (fwdM R hP) := by
   rintro ⟨n, h⟩
@@ -129,9 +127,7 @@ theorem bwd_fwd : Function.LeftInverse (bwdM R hσσ hJ hP) (fwdM R hP) := by
   · exact key
 
 theorem fwd_bwd : Function.RightInverse (bwdM R hσσ hJ hP) (fwdM R hP) := by
-  intro s
-  apply Subtype.ext
-  exact inv_mul_cancel_right _ _
+  exact fun s => Subtype.ext (inv_mul_cancel_right _ _)
 
 
 variable (R) in

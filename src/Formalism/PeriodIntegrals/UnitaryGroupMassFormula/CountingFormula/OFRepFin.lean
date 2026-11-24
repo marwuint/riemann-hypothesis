@@ -97,16 +97,14 @@ theorem finite_level_index : FinK := by
     intro x hx b
     have h := hx.2.1 (Fin.last _) b
     simp only [brS, FlagG.fvec, Fin.snoc_last, hFz] at h
-    rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply] at h
-    exact h
+    rwa [LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply] at h
   have pW_sub : ∀ v v' : (VS D).V, pW D (v - v') = pW D v - pW D v' := by
     intro v v'
     simp only [pW, map_sub, sub_smul, Finset.sum_sub_distrib, sub_div]
     abel
   refine Set.Finite.of_injOn (f := fun x => (pWf D x, alM D x * R)) (t := Wf ×ˢ Af) ?_ ?_
     (hWf.prod hAf)
-  · intro x hx
-    exact ⟨hx.2.1, hx.2.2⟩
+  · exact fun x hx => ⟨hx.2.1, hx.2.2⟩
   intro x hx x' hx' hxx'
   obtain ⟨hp, hal⟩ := Prod.mk.inj hxx'
   obtain ⟨Δ, hΔ⟩ : ∃ Δ, Δ = alM D x - alM D x' := ⟨_, rfl⟩
@@ -175,9 +173,7 @@ theorem finite_level_index : FinK := by
     simp only [Matrix.zero_apply, zero_smul, Finset.sum_const_zero] at h
     exact sub_eq_zero.mp h
   refine Prod.ext (funext fun i => ?_) ?_
-  · have h := hfr (Fin.castSucc i)
-    simpa [fr] using h
-  · have h := hfr (Fin.last _)
-    simpa [fr] using h
+  · simpa [fr] using hfr (Fin.castSucc i)
+  · simpa [fr] using hfr (Fin.last _)
 
 end PI.UnitaryGroupMassFormula.CntFormula

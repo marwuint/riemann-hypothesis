@@ -183,8 +183,7 @@ def gP (P : Ideal (𝓞 E)) (hP : IE (E := E) v ≤ P) : 𝓞 F ⧸ v.asIdeal �
   Ideal.quotientMap P (algebraMap (𝓞 F) (𝓞 E)) (Ideal.map_le_iff_le_comap.1 hP)
 
 theorem bij_of_card {A B : Type} [Finite A] [Finite B] (f : A → B) (hf : Function.Injective f)
-    (hc : Nat.card A = Nat.card B) : Function.Bijective f := by
-  exact hf.bijective_of_nat_card_le hc.ge
+    (hc : Nat.card A = Nat.card B) : Function.Bijective f := hf.bijective_of_nat_card_le hc.ge
 
 theorem qProd_holds : QProd σ J ψ v := by
   intro hS hU hnp

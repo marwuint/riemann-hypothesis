@@ -253,8 +253,7 @@ theorem fr_zf (a : Fin D.R.rS) : hJ (X.B.I.ε v) (zV X u v) (fV X v a) = 0 := by
 def fam : Fin D.R.rS ⊕ (Fin D.R.rS ⊕ (Fin D.R.k ⊕ Unit)) → Fin X.B.I.n → ℂ :=
   Sum.elim (eV X v) (Sum.elim (fV X v) (Sum.elim (X.wfr u v) fun _ => zV X u v))
 
-theorem T_ne : (((D.mem u).A.T : ℕ) : ℂ) ≠ 0 := by
-  exact Nat.cast_ne_zero.mpr (D.mem u).A.T_prime.ne_zero
+theorem T_ne : (((D.mem u).A.T : ℕ) : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (D.mem u).A.T_prime.ne_zero
 
 theorem fam_li : LinearIndependent ℂ (fam X u v) := by
   rw [Fintype.linearIndependent_iff]
@@ -263,12 +262,9 @@ theorem fam_li : LinearIndependent ℂ (fam X u v) := by
     intro y
     rw [← _root_.Formalism.L2.SG.Pf.hJ_sum_right', hc, hJzr]
   rintro (a | a | j | ⟨⟩)
-  · have h := key (fV X v a)
-    simpa [Fintype.sum_sum_type, fam, fr_fe, fr_ff, fr_fw, fr_fz] using h
-  · have h := key (eV X v a)
-    simpa [Fintype.sum_sum_type, fam, fr_ee, fr_ef, fr_ew, fr_ez] using h
-  · have h := key (X.wfr u v j)
-    simpa [Fintype.sum_sum_type, fam, fr_we, fr_wf, fr_ww, fr_wz] using h
+  · simpa [Fintype.sum_sum_type, fam, fr_fe, fr_ff, fr_fw, fr_fz] using key (fV X v a)
+  · simpa [Fintype.sum_sum_type, fam, fr_ee, fr_ef, fr_ew, fr_ez] using key (eV X v a)
+  · simpa [Fintype.sum_sum_type, fam, fr_we, fr_wf, fr_ww, fr_wz] using key (X.wfr u v j)
   · have h := key (zV X u v)
     simp [Fintype.sum_sum_type, fam, fr_ze, fr_zf, fr_zw, frame_z_z_eq_neg_t] at h
     rcases h with h | h

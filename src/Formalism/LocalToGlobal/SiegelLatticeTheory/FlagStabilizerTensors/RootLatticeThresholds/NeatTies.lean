@@ -85,9 +85,7 @@ theorem cd_haar_scaling : PI.CdHaarScale := by
     rw [tie_set e h1 h2 A, ← Measure.map_apply hp hA, key P Q e h1 h2]
     conv_rhs => rw [hν]
     rw [ENNReal.smul_def]
-  · refine ⟨1, one_pos, ?_⟩
-    intro P Q e h1 h2
-    exact absurd ⟨P, Q, e, h1, h2⟩ hex
+  · exact ⟨1, one_pos, (fun P Q e h1 h2 => absurd ⟨P, Q, e, h1, h2⟩ hex)⟩
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Formalism.PeriodIntegrals.OrbitalBoundsConclusion.CdHaarScale =====
@@ -119,9 +117,7 @@ theorem sharp_bij_of_neat (u : D.what₂.Word) (hN : Formalism.L2.SG.PoincareInH
     refine ⟨fun ρ ρ' h => ?_, fun c => ?_⟩
     · obtain ⟨a, ⟨γ, rfl⟩, κ, hκ, hab⟩ := (@DoubleCoset.eq _ _ _ _ _ _).1 h
       obtain ⟨ρ0, _, huniq⟩ := Y.colReps u ((Y.cs u).h ρ')
-      have h1 := huniq ρ ⟨γ, ⟨κ, hκ⟩, hab⟩
-      have h2 := huniq ρ' ⟨1, 1, by simp⟩
-      exact h1.trans h2.symm
+      exact (huniq ρ ⟨γ, ⟨κ, hκ⟩, hab⟩).trans (huniq ρ' ⟨1, 1, by simp⟩).symm
     · induction c using Quotient.inductionOn' with
       | h g =>
         obtain ⟨ρ, ⟨γ, κ, hg⟩, _⟩ := Y.colReps u g

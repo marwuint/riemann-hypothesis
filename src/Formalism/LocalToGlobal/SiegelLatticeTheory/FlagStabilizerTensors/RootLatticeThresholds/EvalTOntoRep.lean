@@ -67,30 +67,25 @@ theorem eq_zero_of_ae (ψ : X.B.I.GA → ℂ) (hc : Continuous ψ) (hinv : ∀ �
   have hfm : MeasurableSet X.B.fund := X.B.fund_spec.1
   have h1 : X.B.I.muA X.B.μf (N ∩ X.B.fund) = 0 := by
     have h0' : ∀ᵐ y ∂(X.B.I.muA X.B.μf), y ∈ X.B.fund → ψ y = 0 := by
-      rw [← ae_restrict_iff' hfm]
-      exact h0
+      rwa [← ae_restrict_iff' hfm]
     rw [ae_iff] at h0'
     refine measure_mono_null (fun y hy => ?_) h0'
-    simp only [Set.mem_setOf_eq, Classical.not_imp]
-    exact ⟨hy.2, hy.1⟩
+    simpa only [Set.mem_setOf_eq, Classical.not_imp] using ⟨hy.2, hy.1⟩
   have hsub : N ⊆ ⋃ γ : rr_GF X.B.I, (fun y => (γ : X.B.I.GA) * y) ⁻¹' (N ∩ X.B.fund) := by
     intro y hy
     obtain ⟨γ, hγ, hγy⟩ := X.B.fund_spec.2.1 y
     refine Set.mem_iUnion.2 ⟨⟨γ, hγ⟩, ?_⟩
     refine ⟨?_, hγy⟩
     show ψ (γ * y) ≠ 0
-    rw [hinv γ hγ y]
-    exact hy
+    rwa [hinv γ hγ y]
   have h2 : X.B.I.muA X.B.μf N = 0 := by
     refine measure_mono_null hsub (measure_iUnion_null fun γ => ?_)
-    rw [measure_preimage_mul]
-    exact h1
+    rwa [measure_preimage_mul]
   have h3 : N = ∅ := (hN.measure_eq_zero_iff (X.B.I.muA X.B.μf)).1 h2
   funext y
   by_contra hne
   have : y ∈ N := hne
-  rw [h3] at this
-  exact this
+  rwa [h3] at this
 
 theorem contRep_unique {f : L2X X} {φ φ' : X.B.I.GA → ℂ} (h : IsContRep X f φ) (h' : IsContRep X f φ') : φ = φ' := by
   have e := eq_zero_of_ae X (fun y => φ y - φ' y) (h.1.sub h'.1)

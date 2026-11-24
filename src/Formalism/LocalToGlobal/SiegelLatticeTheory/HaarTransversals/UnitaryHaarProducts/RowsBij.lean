@@ -77,8 +77,7 @@ theorem map_lin_of_inner (ψ : E → F) (C : ℂ) (h : ∀ y y', ⟪ψ y, ψ y'�
     simp only [inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right, h]
     simp only [inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]
     ring
-  rw [inner_self_eq_zero, sub_sub, sub_eq_zero] at key
-  exact key
+  rwa [inner_self_eq_zero, sub_sub, sub_eq_zero] at key
 
 theorem map_zero_of_inner (ψ : E → F) (C : ℂ) (h : ∀ y y', ⟪ψ y, ψ y'⟫_ℂ = C * ⟪y, y'⟫_ℂ) :
     ψ 0 = 0 := by
@@ -151,8 +150,7 @@ theorem tens_continuous (tens : (∀ i, H i) → Hs) (htin : ∀ x y, ⟪tens x,
   have hval : Real.sqrt (RCLike.re ((∏ i, ⟪x0 i, x0 i⟫_ℂ) - (∏ i, ⟪x0 i, x0 i⟫_ℂ) - (∏ i, ⟪x0 i, x0 i⟫_ℂ) +
       ∏ i, ⟪x0 i, x0 i⟫_ℂ)) = 0 := by simp
   simp only [Function.comp_apply] at h0
-  rw [hval] at h0
-  exact h0
+  rwa [hval] at h0
 
 theorem tens_mem_of (tens : (∀ i, H i) → Hs) (htin : ∀ x y, ⟪tens x, tens y⟫_ℂ = ∏ i, ⟪x i, y i⟫_ℂ)
     (M : Submodule ℂ Hs) (hM : IsClosed (M : Set Hs)) (A : ∀ i, Set (H i))
@@ -162,8 +160,7 @@ theorem tens_mem_of (tens : (∀ i, H i) → Hs) (htin : ∀ x y, ⟪tens x, ten
   have key : ∀ S : Finset ι, ∀ x : ∀ i, H i, (∀ i, i ∉ S → x i ∈ A i) → tens x ∈ M := by
     intro S
     refine Finset.induction_on S ?_ ?_
-    · intro x hx
-      exact h0 x fun i => hx i (by simp)
+    · exact fun x hx => h0 x fun i => hx i (by simp)
     · intro j S hj ih x hx
       let L := slice tens htin x j
       have hL : ∀ y, L y = tens (Function.update x j y) := fun y => rfl
@@ -183,10 +180,8 @@ theorem tens_mem_of (tens : (∀ i, H i) → Hs) (htin : ∀ x y, ⟪tens x, ten
       have htop : (⊤ : Submodule ℂ (H j)) ≤ P := by
         rw [← hA j]
         exact Submodule.topologicalClosure_minimal _ (Submodule.span_le.mpr hAP) hPc
-      have hxj := htop (Submodule.mem_top : x j ∈ ⊤)
-      simpa [P, hL, Submodule.mem_comap] using hxj
-  intro x
-  exact key Finset.univ x (fun i hi => absurd (Finset.mem_univ i) hi)
+      simpa [P, hL, Submodule.mem_comap] using htop (Submodule.mem_top : x j ∈ ⊤)
+  exact fun x => key Finset.univ x (fun i hi => absurd (Finset.mem_univ i) hi)
 
 end Tens
 
@@ -358,8 +353,7 @@ theorem glob_schur (σ : ∀ v, Matrix (Fin I.n) (Fin I.n) ℂ → (H v →L[ℂ
   let Λ : Hs → ℂ := fun u => ∫ g, phInf I σ w dv g * ⟪u, F g⟫_ℂ ∂(muInf I)
   have hadd : ∀ a b, Λ (a + b) = Λ a + Λ b := by
     intro a b
-    simp only [Λ, inner_add_left, mul_add]
-    exact integral_add (hint a) (hint b)
+    simpa only [Λ, inner_add_left, mul_add] using integral_add (hint a) (hint b)
   have hsmul : ∀ (c : ℂ) a, Λ (c • a) = (starRingEnd ℂ) c * Λ a := by
     intro c a
     simp only [Λ, inner_smul_left]

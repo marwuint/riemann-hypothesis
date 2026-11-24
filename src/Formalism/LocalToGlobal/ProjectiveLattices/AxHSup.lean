@@ -105,8 +105,7 @@ theorem nrmC_valC_le (hcx : ValAtCx h yP) {a : (E →+* ℂ) × ℕ → ℕ} {n 
     unfold nrmC ptNorm
     rw [hc, hcx Z P a n f hS]
     simp only [exZ_wtZ, zpow_neg, zpow_natCast, inv_pow] <;> rfl
-  rw [heq]
-  exact hle
+  rwa [heq]
 
 theorem log_supN_le (hfn : FnNe Xo c fn) (hPT : PTNe Xo c) (hcx : ValAtCx h yP) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
     {f : Rul Xo c} (hS : f ∈ sec Xo c a n) (hB : SupBdd Xo c fn a n f) (hN : NZSome h f) (σ : c.F →+* ℂ) :
@@ -117,8 +116,7 @@ theorem log_supN_le (hfn : FnNe Xo c fn) (hPT : PTNe Xo c) (hcx : ValAtCx h yP) 
     rintro ⟨Z, P, hP⟩
     have hσ : sgOf P = σ := hP
     have key := nrmC_valC_le (h := h) (yP := yP) hcx hS hB Z P
-    rw [hσ] at key
-    exact key
+    rwa [hσ] at key
   obtain ⟨Z0, hZ0⟩ := hN
   obtain ⟨P0, hP0⟩ := hPT Z0 σ
   have hpos : 0 < nrmC fn (yP Z0) (wtZ a n) (valC h a n f Z0) P0 := by
@@ -129,9 +127,7 @@ theorem log_supN_le (hfn : FnNe Xo c fn) (hPT : PTNe Xo c) (hcx : ValAtCx h yP) 
     rw [hc]
     apply mul_pos
     · exact norm_pos_iff.mpr ((map_ne_zero P0).mpr hZ0)
-    · apply Finset.prod_pos
-      intro i _
-      exact zpow_pos (abs_pos.mpr (hfn _ _ i)) _
+    · exact Finset.prod_pos (fun i _ => zpow_pos (abs_pos.mpr (hfn _ _ i)) _)
   have hne : Nonempty (Σ Z : Comp Xo c, PT (Ω := Om Z) σ) := ⟨⟨Z0, P0, hP0⟩⟩
   have hB' : BddAbove (Set.range fun p : (Σ Z : Comp Xo c, PT (Ω := Om Z) σ) =>
       nrmC fn (yP p.1) (wtZ a n) (valC h a n f p.1) p.2) := ⟨_, Set.forall_mem_range.mpr hbd⟩

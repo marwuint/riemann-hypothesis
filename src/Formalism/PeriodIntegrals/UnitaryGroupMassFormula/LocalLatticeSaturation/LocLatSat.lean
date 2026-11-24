@@ -115,14 +115,11 @@ theorem step (Λ : Submodule R (Fin n → K)) (f : (Fin n → K) →ₗ[K] K)
       intro v hv
       have hmem : f v ∈ (I : Submodule R K) :=
         Submodule.mem_map_of_mem (f := f.restrictScalars R) hv
-      rw [hI0, FractionalIdeal.coe_zero, Submodule.mem_bot] at hmem
-      exact hmem
+      rwa [hI0, FractionalIdeal.coe_zero, Submodule.mem_bot] at hmem
     have he : Λ ⊓ (LinearMap.ker f).restrictScalars R = Λ := by
       refine inf_eq_left.mpr (fun v hv' => ?_)
-      simp only [Submodule.restrictScalars_mem, LinearMap.mem_ker]
-      exact hv v hv'
-    rw [he]
-    exact hx
+      simpa only [Submodule.restrictScalars_mem, LinearMap.mem_ker] using hv v hv'
+    rwa [he]
   · have hmul : I * I⁻¹ = 1 := mul_inv_cancel₀ hI0
     have hmul' : I⁻¹ * I = 1 := by rw [mul_comm]; exact hmul
     set M := latG φ O (Λ ⊓ (LinearMap.ker f).restrictScalars R) with hMdef
@@ -158,8 +155,7 @@ theorem step (Λ : Submodule R (Fin n → K)) (f : (Fin n → K) →ₗ[K] K)
             have hw : bcG φ (r1 • v - r2 • lam) = φ (a * b) • bcG φ v - (fP φ f (bcG φ v) * φ b) • bcG φ lam := by
               rw [bcG_sub, bcG_smulR, bcG_smulR, hr1, hr2, baseChange_apply_baseChange, map_mul, map_mul, mul_comm (φ b)]
             rw [← hw]
-            apply Submodule.subset_span
-            exact ⟨r1 • v - r2 • lam, ⟨hwΛ, hwk⟩, rfl⟩
+            exact Submodule.subset_span ⟨r1 • v - r2 • lam, ⟨hwΛ, hwk⟩, rfl⟩
           | zero => simpa using M.zero_mem
           | add y z _ _ hy hz =>
             have e : φ (a * b) • (y + z) - (fP φ f (y + z) * φ b) • bcG φ lam =
@@ -180,8 +176,7 @@ theorem step (Λ : Submodule R (Fin n → K)) (f : (Fin n → K) →ₗ[K] K)
         have := hgen x hx
         rwa [h0, zero_mul, zero_smul, sub_zero] at this
       · intro t1 t2 h1 h2
-        simp only [map_add (f := _), add_smul]
-        exact M.add_mem h1 h2
+        simpa only [map_add (f := _), add_smul] using M.add_mem h1 h2
     have h1 : (1 : K) ∈ (I : Submodule R K) * ((I⁻¹ : FractionalIdeal R⁰ K) : Submodule R K) := by
       rw [← FractionalIdeal.coe_mul, hmul]
       exact FractionalIdeal.one_mem_one _
@@ -227,8 +222,7 @@ theorem steps {ι : Type*} [DecidableEq ι] (g : ι → (Fin n → K) →ₗ[K] 
           (LinearMap.ker (g a)).restrictScalars R := by
       rw [Finset.iInf_insert]
       exact (inf_left_comm _ _ _).trans (inf_comm _ _)
-    rw [e]
-    exact hs
+    rwa [e]
 
 theorem sat (Λ : Submodule R (Fin n → K)) (hΛ : Λ.FG) (W : Submodule K (Fin n → K)) :
     (latG φ O (Λ ⊓ W.restrictScalars R) : Set (Fin n → S)) =
@@ -251,8 +245,7 @@ theorem sat (Λ : Submodule R (Fin n → K)) (hΛ : Λ.FG) (W : Submodule K (Fin
     haveI : Fintype (Module.Basis.ofVectorSpaceIndex K W.dualAnnihilator) := Fintype.ofFinite _
     let g : Module.Basis.ofVectorSpaceIndex K W.dualAnnihilator → (Fin n → K) →ₗ[K] K := fun i => (b i : Module.Dual K _)
     have hg : ∀ i w, w ∈ W → g i w = 0 := by
-      intro i w hw
-      exact (Submodule.mem_dualAnnihilator _).mp (b i).2 w hw
+      exact fun i w hw => (Submodule.mem_dualAnnihilator _).mp (b i).2 w hw
     have h0 : ∀ i ∈ (Finset.univ : Finset _), fP φ (g i) x = 0 := by
       intro i _
       have hle : Submodule.span S (bcG φ '' (W : Set (Fin n → K))) ≤ LinearMap.ker (fP φ (g i)) := by
@@ -276,8 +269,7 @@ theorem sat (Λ : Submodule R (Fin n → K)) (hΛ : Λ.FG) (W : Submodule K (Fin
       have e := congrArg (fun d : W.dualAnnihilator => (d : Module.Dual K (Fin n → K)) v)
         (b.sum_repr ⟨ψ, hψ⟩)
       simp only at e
-      rw [← e]
-      rw [Submodule.coe_sum, LinearMap.sum_apply]
+      rw [← e, Submodule.coe_sum, LinearMap.sum_apply]
       refine Finset.sum_eq_zero (fun i _ => ?_)
       rw [Submodule.coe_smul, LinearMap.smul_apply, hv2, smul_zero]
     exact Submodule.span_mono (Set.image_mono hle2) hs
