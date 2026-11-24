@@ -174,8 +174,7 @@ theorem flowInv : ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (Hm : 
       (fun τ => (x₀ τ : Mt n)) hBase
     suffices hXz : X z = fun τ => ((1 + (((-z.im : ℝ) : ℂ) * Complex.I) • vecMulVec (e τ) (star (e τ) ᵥ* Hm τ)) * u' τ * x₀ τ * b τ : Mt n) by
       show X z ∈ frDoms Hm q
-      rw [hXz]
-      exact hmem
+      rwa [hXz]
     funext τ
     have hfac := (hbf τ).2.1
     have hsplit := one_sub_sub_smul_vecMulVec_eq_mul_of_isotropic (he τ) (((-z.im : ℝ) : ℂ) * Complex.I) (z.re : ℂ)
@@ -217,8 +216,7 @@ theorem flowInv : ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (Hm : 
       push_cast
       simp only [neg_mul, neg_smul, sub_eq_add_neg]
     show P (X ((s : ℂ) * Complex.I)) = P (X 0)
-    rw [eX, eX0]
-    exact h1
+    rwa [eX, eX0]
   have hEq := hfV.eqOn_of_preconnected_of_frequently_eq analyticOnNhd_const
     isPreconnected_connectedComponentIn (mem_connectedComponentIn (hHU h0)) hfreq
   have ht' : (t : ℂ) ∈ {z : ℂ | 0 ≤ z.re} := by simpa using ht
@@ -396,8 +394,7 @@ theorem zCusp_of_rapidDecay : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.wh
       exact (hL v hv).2 τ
     · exact (haut.cont.comp ((continuous_subtype_val.mul continuous_const).mul continuous_const)).measurable.aestronglyMeasurable
   have key := holFn_eq_zero hx (iso_tau hξ) hf (fun m hm v hv => ?_) (fun k => ?_) _ (hUG u)
-  · simp only [hLa u hu, mul_assoc] at key
-    exact key
+  · simpa only [hLa u hu, mul_assoc] using key
   · obtain ⟨z₀, hz₀, hz₁, hz₂⟩ := hlift m hm
     have hm' : m = fun τ => archM V (θ τ) z₀ := funext fun τ => (hz₂ τ).symm
     have hmU : m ∈ UG (gramAt D V) := hm' ▸ hUG z₀

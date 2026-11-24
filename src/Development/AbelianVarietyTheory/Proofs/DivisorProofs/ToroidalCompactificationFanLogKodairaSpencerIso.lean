@@ -252,8 +252,7 @@ theorem exists_factor {X : Scheme.{0}} (U W : X.affineOpens) (h : W.1 ≤ U.1) {
     ⟨IsOpenImmersion.lift (GlobalTheory.LogKS.chart W) _ hr', IsOpenImmersion.lift_fac _ _ _⟩
   refine ⟨(Spec.preimage ψ).hom, ?_⟩
   have hfac : spMap (Spec.preimage ψ).hom ≫ GlobalTheory.LogKS.chart W = spMap φ ≫ GlobalTheory.LogKS.chart U := by
-    simp only [spMap, CommRingCat.ofHom_hom, Spec.map_preimage]
-    exact hψ
+    simpa only [spMap, CommRingCat.ofHom_hom, Spec.map_preimage] using hψ
   rw [← chart_res' U W h, ← Category.assoc, _root_.GlobalTheory.spMap_comp_ring] at hfac
   have h2 := Spec.map_inj.1 ((cancel_mono (GlobalTheory.LogKS.chart U)).1 hfac)
   simpa using (congrArg CommRingCat.Hom.hom h2).symm
@@ -271,8 +270,7 @@ theorem isKS_of_inf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
   · rw [hsup, hW, inf_assoc, inf_idem]
   · have e : ∀ r : Γ(X, U.1), (t.G.hom.appLE U.1 (Wc i) h).hom r =
         (t.G.hom.appLE W.1 (Wc i) (hWW i)).hom ((X.presheaf.map (homOfLE hWU).op).hom r) := by
-      intro r
-      exact (congrArg (fun k => k.hom r) (t.G.hom.map_appLE (hWW i) (homOfLE hWU).op)).symm
+      exact fun r => (congrArg (fun k => k.hom r) (t.G.hom.map_appLE (hWW i) (homOfLE hWU).op)).symm
     rw [e, e, hcomp i (hWW i), hD]
   · have hr : ∀ z, (spMap φ ≫ GlobalTheory.LogKS.chart U) z ∈ W.1 := by
       intro z
@@ -595,8 +593,7 @@ theorem isKS_transport : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
       le_inf ((m.φ.preimage_mono (hO.trans inf_le_left)).trans (hpi i).le)
         ((m.φ.preimage_mono (hO.trans inf_le_right)).trans (hpi i').le)
     have hO'' : ⊤ ≤ g₀' ⁻¹ᵁ (m.φ ⁻¹ᵁ O) := by
-      rw [← Scheme.Hom.comp_preimage, hg₀'φ]
-      exact hO'
+      rwa [← Scheme.Hom.comp_preimage, hg₀'φ]
     have key := htest i i' (m.φ ⁻¹ᵁ O) hOi ((m.φ.app O).hom f) S φS' g₀' w' hg₀' hO'' hw'T
     rw [← hg₀'φ, GlobalTheory.CechKS.valR_comp_app, map_sub, hd₂ i O (hO.trans inf_le_left),
       hd₂ i' O (hO.trans inf_le_right), key]
@@ -707,8 +704,7 @@ theorem isAffineOpen_inf_interior : ∀ (E : Type) [Field E] [NumberField E] [Is
         have hW : z ∈ W.1 := Y.X.basicOpen_le _ hz
         refine ⟨hW, by_contra fun hV ↦ ?_⟩
         have : z ∈ (Scheme.IdealSheafData.vanishingIdeal V.compl).support := by
-          rw [← SetLike.mem_coe, Scheme.IdealSheafData.coe_support_vanishingIdeal]
-          exact hV
+          rwa [← SetLike.mem_coe, Scheme.IdealSheafData.coe_support_vanishingIdeal]
         rw [Scheme.IdealSheafData.mem_support_iff_of_mem hW, hI, Scheme.zeroLocus_span,
           Scheme.zeroLocus_singleton] at this
         exact this hz
@@ -1000,8 +996,7 @@ theorem finrank_fibre : ∀ {R M : Type} [CommRing R] [AddCommGroup M] [Module R
   intro R M _ _ _ f d ϕ hϕ m hm hf
   letI := Ideal.Quotient.field m
   have hu : IsUnit (algebraMap R (R ⧸ m) f) := by
-    rw [isUnit_iff_ne_zero, Ne, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]
-    exact hf
+    rwa [isUnit_iff_ne_zero, Ne, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]
   letI : Algebra (Localization.Away f) (R ⧸ m) := (IsLocalization.Away.lift f hu).toAlgebra
   haveI : IsScalarTower R (Localization.Away f) (R ⧸ m) := IsScalarTower.of_algebraMap_eq fun r => by
     rw [RingHom.algebraMap_toAlgebra, IsLocalization.Away.lift, IsLocalization.lift_eq]
@@ -1041,8 +1036,7 @@ theorem GlobalTheory.LogDerProj.main : ∀ (E : Type) [Field E] [NumberField E] 
     obtain ⟨f, W, hW, m, t, b, hxW, hWf, -⟩ := key
     have hq : f ∉ q.asIdeal := by
       have : q ∈ hU.fromSpec ⁻¹ᵁ Y.X.basicOpen f := by rw [← hWf]; exact hxW
-      rw [hU.fromSpec_preimage_basicOpen] at this
-      exact this
+      rwa [hU.fromSpec_preimage_basicOpen] at this
     letI : Algebra Γ(Y.X, U.1) Γ(Y.X, W.1) := (Y.X.presheaf.map (homOfLE hW).op).hom.toAlgebra
     have hloc : ∀ (V : Y.X.Opens) (hV : V ≤ U.1), V = Y.X.basicOpen f →
         letI := (Y.X.presheaf.map (homOfLE hV).op).hom.toAlgebra; IsLocalization.Away f Γ(Y.X, V) := by

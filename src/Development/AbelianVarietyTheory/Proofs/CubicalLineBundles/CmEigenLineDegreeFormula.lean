@@ -548,8 +548,7 @@ theorem single_mem_span_iff_of_selfDual : ∀ (O R K La I : Type) [CommRing O] [
       exact ⟨_, hh a b⟩
     | zero => simp
     | add u w _ _ hu hw =>
-      simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib]
-      exact add_mem hu hw
+      simpa only [Pi.add_apply, add_mul, Finset.sum_add_distrib] using add_mem hu hw
     | smul r u _ hu =>
       have : ∑ j, (r • u) j * dv b j = algebraMap R K r * ∑ j, u j * dv b j := by
         rw [Finset.mul_sum]
@@ -564,8 +563,7 @@ theorem single_mem_span_iff_of_selfDual : ∀ (O R K La I : Type) [CommRing O] [
       induction hv using Submodule.span_induction with
       | mem v hv =>
         obtain ⟨a, rfl⟩ := hv
-        simp only [← hh]
-        exact hev a
+        simpa only [← hh] using hev a
       | zero => simp
       | add u w _ _ hu hw =>
         simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib, add_smul]
@@ -938,8 +936,7 @@ theorem degSt : CMCurve → ThetaUnifAV → Out.Laws → HomExtDvr → DegSt := 
   intro E _ _ _ H _ χ hχ K _ _ ρ T hsp hρ htype F h hh τ hτ
   obtain ⟨σ⟩ : Nonempty (K →+* ℂ) := ⟨(IsAlgClosed.lift : K →ₐ[ℚ] ℂ).toRingHom⟩
   have hρc : σ (ρ : K) ^ 2 = -(H.d : ℂ) := by
-    have e := congrArg (fun a : 𝓞 K => σ (a : K)) hρ
-    simpa using e
+    simpa using congrArg (fun a : 𝓞 K => σ (a : K)) hρ
   obtain ⟨M, _, ω, C, x, hωρ, hprin, hper, hx⟩ := _root_.GlobalTheory.CM.EllExists.exists_ell hC hU hL hX E H χ hχ (σ (ρ : K)) hρc
   obtain ⟨k, _, j, i, hj, hi⟩ := exists_compositum K σ M
 
@@ -949,8 +946,7 @@ theorem degSt : CMCurve → ThetaUnifAV → Out.Laws → HomExtDvr → DegSt := 
       (algebraMap M ℂ).comp (algebraMap (𝓞 M) M) := RingHom.ext fun a => hi (a : M)
   have hprin' : C'.IsPrincipalAt ((algebraMap k ℂ).comp (algebraMap (𝓞 k) k)) := by
     apply hCm.2.1
-    rw [hemb]
-    exact hprin
+    rwa [hemb]
   have hper' : C'.HasPeriod x := hasPeriod_of_ellMap hB E H M k i ω _ C C' φC x hCC' hper
 
   obtain ⟨T', mT, -⟩ := PAT.exists_pullback E H _ _ (spMap (RingOfIntegers.mapRingHom j)) T
@@ -987,8 +983,7 @@ theorem degSt : CMCurve → ThetaUnifAV → Out.Laws → HomExtDvr → DegSt := 
 
   have h2 : 2 * τ H.w0 = 1 + ρ := by
     have e := congrArg τ H.two_weight_eq_one_add_root
-    rw [map_mul, map_add (f := _), map_one, map_ofNat, hτ] at e
-    exact e
+    rwa [map_mul, map_add (f := _), map_one, map_ofNat, hτ] at e
   have two : (2 : 𝓞 k) ≠ 0 := two_ne_zero
   have h3 : (2 : 𝓞 k) * RingOfIntegers.mapRingHom j (τ H.w0) = 2 * RingOfIntegers.mapRingHom i ω := by
     have e := congrArg (RingOfIntegers.mapRingHom j) h2

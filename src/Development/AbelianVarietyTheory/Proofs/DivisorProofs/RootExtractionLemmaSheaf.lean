@@ -89,8 +89,7 @@ theorem powRow_int_root [IsAlgClosed C] (v : AddValuation C (WithTop ℝ)) {N : 
     (y : C) (hy : IsIntV v y) : ∃ x, x ^ N = y ∧ IsIntV v x := by
   obtain ⟨x, hx⟩ := IsAlgClosed.exists_pow_nat_eq y hN
   refine ⟨x, hx, powRow_nonneg_of_nsmul hN.ne' ?_⟩
-  rw [← AddValuation.map_pow, hx]
-  exact hy
+  rwa [← AddValuation.map_pow, hx]
 
 theorem powRow_int_of_le (v : AddValuation C (WithTop ℝ)) {a b : C} (hb : b ≠ 0)
     (h : v b ≤ v (a * b)) : IsIntV v a := by
@@ -119,8 +118,7 @@ theorem powRow_exists [IsAlgClosed C] (v : AddValuation C (WithTop ℝ)) {V : Ty
   intro m
   induction m with
   | zero =>
-    intro z _
-    exact ⟨1, fun w => w.elim0, by simp, fun w => w.elim0⟩
+    exact fun z _ => ⟨1, fun w => w.elim0, by simp, fun w => w.elim0⟩
   | succ m ih =>
     intro z hz
     by_cases hli : LinearIndependent C z
@@ -192,8 +190,7 @@ theorem powRow_exists [IsAlgClosed C] (v : AddValuation C (WithTop ℝ)) {V : Ty
           | x =>
             rw [Fin.insertNth_apply_same]; unfold IsIntV; rw [AddValuation.map_zero]; exact le_top
           | p k => rw [Fin.insertNth_apply_succAbove]; exact hx'int w' k
-      · rw [Matrix.det_succ_column A u0]
-        rw [Fintype.sum_eq_single (Fin.last m)]
+      · rw [Matrix.det_succ_column A u0, Fintype.sum_eq_single (Fin.last m)]
         · have hsub : A.submatrix (Fin.last m).succAbove u0.succAbove = x' := by
             ext w' k
             simp only [Matrix.submatrix_apply, Fin.succAbove_last]
@@ -220,8 +217,7 @@ theorem powRow_exists [IsAlgClosed C] (v : AddValuation C (WithTop ℝ)) {V : Ty
           exact hx'k w' (by simpa using hw)
 
 theorem powRow_matrix : ∀ (C : Type) [Field C] [IsAlgClosed C] (v : AddValuation C (WithTop ℝ)) (V : Type) [AddCommGroup V] [Module C V] (N : ℕ), 0 < N → ∀ (j m : ℕ) (z : Fin m → V), Module.finrank C (Submodule.span C (Set.range z)) ≤ j → ∃ x : Matrix (Fin m) (Fin m) C, (∀ w u, IsIntV v (x w u)) ∧ v x.det = 0 ∧ ∀ w : Fin m, j ≤ w.val → ∑ u, (x w u) ^ N • z u = 0 := by
-  intro C _ _ v V _ _ N hN j m z hz
-  exact powRow_exists v N hN j m z hz
+  exact fun C _ _ v V _ _ N hN j m z hz => powRow_exists v N hN j m z hz
 
 end
 
@@ -253,8 +249,7 @@ theorem root_statement : RootStatement := by
       Finset.sum_const_zero]
 
   · rw [(h6 w).2.2.1 n, map_sum]
-    simp only [map_smul]
-    exact hxk w hw
+    simpa only [map_smul] using hxk w hw
 
 end GlobalTheory.RootTrick
 end -- clump:auto

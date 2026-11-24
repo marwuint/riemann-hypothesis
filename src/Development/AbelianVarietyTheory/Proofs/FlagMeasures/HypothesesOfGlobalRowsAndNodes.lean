@@ -139,8 +139,7 @@ theorem gaps_exceed :
     rw [ht, ← Real.rpow_natCast, ← Real.rpow_mul hx0]; congr 1; push_cast; ring
   have hDelE : Del ≤ Real.exp t := by
     have := h.Del_hi
-    rw [Real.log_le_iff_le_exp hDelpos] at this
-    exact this
+    rwa [Real.log_le_iff_le_exp hDelpos] at this
   have hc2 : C * k * m ^ 4 + r * m ^ 10 < Real.sqrt (bx x eps) := by
     rw [Real.lt_sqrt hSpos.le]
     have e1 : (C * k * m ^ 4 + r * m ^ 10) ^ 2 < (4 * Real.exp t) ^ 2 := by
@@ -231,12 +230,8 @@ theorem rankNums_rootDisc :
   have hx0 : 0 < x := by linarith
   set X : ℝ := x ^ (eps / 2) with hXdef
   have hXM : M ≤ X := by
-    have h1 : (M ^ (2 / eps)) ^ (eps / 2) ≤ x ^ (eps / 2) :=
-      Real.rpow_le_rpow (Real.rpow_nonneg hM0 _) hxM (by linarith)
-    rw [← Real.rpow_mul hM0] at h1
-    have h2 : 2 / eps * (eps / 2) = 1 := by field_simp
-    rw [h2, Real.rpow_one] at h1
-    exact h1
+    have h1 := Real.rpow_le_rpow (Real.rpow_nonneg hM0 (2 / eps)) hxM (by linarith : 0 ≤ eps / 2)
+    rwa [← Real.rpow_mul hM0, show 2 / eps * (eps / 2) = 1 by field_simp, Real.rpow_one] at h1
   have hYX : x ^ eps = X * X := by
     rw [hXdef, ← Real.rpow_add hx0]; ring_nf
   have hX3 : 3 ≤ X := le_trans hM3 hXM
@@ -245,8 +240,7 @@ theorem rankNums_rootDisc :
   have hm4 : x ≤ m ^ 4 := by
     have h1 : (x ^ ((1 : ℝ) / 4)) ^ 4 = x := by
       rw [← Real.rpow_natCast, ← Real.rpow_mul hx0.le]; norm_num
-    calc x = (x ^ ((1 : ℝ) / 4)) ^ 4 := h1.symm
-      _ ≤ m ^ 4 := pow_le_pow_left₀ (Real.rpow_nonneg hx0.le _) h.m_lo 4
+    exact h1.ge.trans (pow_le_pow_left₀ (Real.rpow_nonneg hx0.le _) h.m_lo 4)
   have hf : x ≤ f := le_trans hm4 h.mf
   have hf1 : 1 ≤ f := le_trans hx1 hf
   have hm0 : 0 ≤ m := by linarith
@@ -254,30 +248,19 @@ theorem rankNums_rootDisc :
   have hm3 : 1 ≤ m ^ 3 := one_le_pow₀ hm1
   have hm4' : 1 ≤ m ^ 4 := one_le_pow₀ hm1
   have hk : X * (m ^ 5 * f * (X * X)) ≤ k := by
-    have := h.k_lo; rw [hYX] at this; exact this
+    have := h.k_lo
+    rwa [hYX] at this
   have hlrd : lrd ≤ X := h.lrd_hi
   have hlog2 : 0 ≤ Real.log 2 := Real.log_nonneg (by norm_num)
   have hlrd0 : 0 ≤ lrd := le_trans hlog2 h.lrd_lo
   have hX0 : 0 ≤ X := by linarith
   have hXX : X ≤ X * X := by nlinarith
-
-  have hA : C ≤ m ^ 4 * f * (X * X) := by
-    have h1 : 1 ≤ m ^ 4 * f := by nlinarith
-    calc C ≤ X * X := le_trans hXC hXX
-      _ = 1 * (X * X) := by ring
-      _ ≤ m ^ 4 * f * (X * X) := mul_le_mul_of_nonneg_right h1 (by positivity)
-
-  have hB : C ≤ m ^ 2 * f := by
-    calc C ≤ x := hxC
-      _ ≤ f := hf
-      _ = 1 * f := by ring
-      _ ≤ m ^ 2 * f := mul_le_mul_of_nonneg_right hm2 (by linarith)
+  have hA : C ≤ m ^ 4 * f * (X * X) :=
+    (hXC.trans hXX).trans (le_mul_of_one_le_left (by positivity) (by nlinarith))
+  have hB : C ≤ m ^ 2 * f := (hxC.trans hf).trans (le_mul_of_one_le_left (by linarith) hm2)
   have hkX : X ≤ k := by
-    have h1 : 1 ≤ m ^ 5 * f * (X * X) := by
-      have : 1 ≤ m ^ 5 := one_le_pow₀ hm1
-      have : 1 ≤ X * X := by nlinarith
-      have : 1 ≤ m ^ 5 * f := by nlinarith
-      nlinarith
+    refine (le_mul_of_one_le_right hX0 ?_).trans hk
+    refine one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_pow₀ hm1) hf1) ?_
     nlinarith
   have hk0 : 0 < k := by linarith
   refine ⟨?_, ?_, ?_⟩
@@ -285,28 +268,20 @@ theorem rankNums_rootDisc :
           apply mul_le_mul_of_nonneg_left _ hC.le
           apply mul_le_mul_of_nonneg_left _ hm0
           linarith
-      _ = (m * X) * C := by ring
-      _ ≤ (m * X) * (m ^ 4 * f * (X * X)) := mul_le_mul_of_nonneg_left hA (by positivity)
+      _ ≤ m ^ 4 * f * (X * X) * (m * X) := mul_le_mul_of_nonneg_right hA (by positivity)
       _ = X * (m ^ 5 * f * (X * X)) := by ring
       _ ≤ k := hk
-  · have hlogk : 1 ≤ Real.log k := by
-      rw [Real.le_log_iff_exp_le hk0]
-      have := Real.exp_one_lt_d9
-      linarith
-    have hl2 : 1 ≤ Real.log k ^ 2 := one_le_pow₀ hlogk
+  · have hlogk : 1 ≤ Real.log k :=
+      (Real.le_log_iff_exp_le hk0).2 (by linarith [Real.exp_one_lt_d9])
     rw [hYX]
     calc C * (m ^ 3 * (X * X) * lrd) ≤ C * (m ^ 3 * (X * X) * X) := by
           apply mul_le_mul_of_nonneg_left _ hC.le
           apply mul_le_mul_of_nonneg_left hlrd (by positivity)
-      _ = (m ^ 3 * (X * X) * X) * C := by ring
-      _ ≤ (m ^ 3 * (X * X) * X) * (m ^ 2 * f) := mul_le_mul_of_nonneg_left hB (by positivity)
+      _ ≤ m ^ 2 * f * (m ^ 3 * (X * X) * X) := mul_le_mul_of_nonneg_right hB (by positivity)
       _ = X * (m ^ 5 * f * (X * X)) := by ring
-      _ ≤ k := hk
-      _ = k * 1 := by ring
-      _ ≤ k * Real.log k ^ 2 := mul_le_mul_of_nonneg_left hl2 hk0.le
+      _ ≤ k * Real.log k ^ 2 := hk.trans (le_mul_of_one_le_right hk0.le (one_le_pow₀ hlogk))
   · rw [hYX, le_div_iff₀ hC]
-    calc lrd * C ≤ X * C := mul_le_mul_of_nonneg_right hlrd hC.le
-      _ ≤ X * X := mul_le_mul_of_nonneg_left hXC hX0
+    exact mul_le_mul hlrd hXC hC.le hX0
 
 end GlobalTheory.Diag.PG
 end -- clump:auto
@@ -375,8 +350,7 @@ theorem standingHypotheses_of_glob0_nodes_Tr_bounds : ∀ eps CD : ℝ, 0 < eps 
     (G.g_win 0).1, (G.g_win 0).2, (G.g_win 1).1, (G.g_win 1).2, ?_, ?_, ?_, ?_, d7 hClD, ?_, ?_, hT, a5, hCl⟩
   · intro τ j h1 h2
     exact le_trans d2 (hbj τ j h1 h2).1
-  · rw [hv, Real.log_div (by linarith) (by norm_num)]
-    exact c1
+  · rwa [hv, Real.log_div (by linarith) (by norm_num)]
   · intro τ j h1 h2
     rw [Real.rpow_two]
     exact ⟨le_trans d3 (hbj τ j h1 h2).1, (hbj τ j h1 h2).2⟩
@@ -386,8 +360,7 @@ theorem standingHypotheses_of_glob0_nodes_Tr_bounds : ∀ eps CD : ℝ, 0 < eps 
     have b := bOne_succ τ (D.R.m - 1) (by omega)
     rw [← e'] at b
     have b0 : bOne D τ 1 = (((D.hc τ).b ⟨0, by omega⟩ : ℚ) : ℝ) := bOne_succ τ 0 (by omega)
-    rw [b, b0]
-    exact a
+    rwa [b, b0]
   · intro u τ
     have e1 : uOne D u τ 1 = uFirst D τ := by
       rw [show (1 : ℕ) = 0 + 1 from rfl, uOne_succ u τ 0 k_pos, D.hcW_first u τ k_pos]

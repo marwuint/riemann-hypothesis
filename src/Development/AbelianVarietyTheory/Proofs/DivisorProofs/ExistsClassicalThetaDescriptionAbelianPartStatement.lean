@@ -335,8 +335,7 @@ theorem top_le_of_red {X : Scheme.{0}} (p : Sp (DualNumber ℂ) ⟶ X) (U : X.Op
     haveI := prime_subsingleton
     exact Subsingleton.elim (α := PrimeSpectrum (DualNumber ℂ)) _ _
   have := h (show IsLocalRing.closedPoint ℂ ∈ (⊤ : (Sp ℂ).Opens) from trivial)
-  rw [hy]
-  exact this
+  rwa [hy]
 
 theorem tf_hom (R : Type) [CommRing R] [IsDomain R] [Algebra (FractionRing R) ℂ] :
     (TF (R := R) ℂ).hom = spMap ((algebraMap (FractionRing R) ℂ).comp (algebraMap R (FractionRing R))) := by
@@ -396,8 +395,7 @@ theorem isD_iff_isDiff : ∀ (R : Type) [CommRing R] [IsDomain R] [Algebra (Frac
     have h1 : ⊤ ≤ b'.left ⁻¹ᵁ (ψ ⁻¹ᵁ U) := by
       apply top_le_of_red
       rw [hred]
-      rw [hpt] at h0
-      exact h0
+      rwa [hpt] at h0
     have hs := hI (ψ ⁻¹ᵁ U) h1 ((ψ.app U).hom f)
     rw [valB] at hs
     simp only [hb, hpt, _root_.GlobalTheory.Points.valR_comp, valF_eq_valAt', _root_.GlobalTheory.KS.VertField.valAt'_comp]
@@ -677,12 +675,10 @@ theorem exists_ab_geo_of_nf : AllC fun {R} _ _ {D} _ {N} ν => ∀ (y : KeyIn R)
     rw [MulEquiv.apply_symm_apply, he']
   refine ⟨d, ⟨fun i z => frW w u i z, GlobalTheory.T.holomorphic_functionValues_classicalUniformisation R D N ν _ d x u φ hφ hE, fun i => ?_, fun i j z h => ?_, fun z => ?_,
     fun bb hbb => ?_⟩, rfl, ?_⟩
-  · simp only [hE]
-    exact frW_hol D.P.isLB hw u i
+  · simpa only [hE] using frW_hol D.P.isLB hw u i
   · rw [hE] at h ⊢
     exact frW_compat hw u i j z ((le_preimage_inf _ _ _).1 h).1 ((le_preimage_inf _ _ _).1 h).2
   · rw [hE]
-    show (frW w u (ν.J ((u.ex z).left ≫ φ)) z / ν.rg) * ν.rg = _
     exact div_mul_cancel₀ _ hrgne
   · obtain ⟨b', hb't, hb'⟩ := GlobalTheory.T.dualPointOverOrigin_lifts_tangentVector_uniformised R D x φ hφ he bb hbb
     obtain ⟨W', hW', -⟩ := eu_gen x _ hg u b' hb't
@@ -698,8 +694,7 @@ theorem exists_ab_geo_of_nf : AllC fun {R} _ _ {D} _ {N} ν => ∀ (y : KeyIn R)
     rw [GlobalTheory.T.holomorphic_uniformization_complex_base_change R D N ν _ d x u φ hφ hE _ bb (x.basis.1 _) hb' W']
     obtain ⟨W0, -, huniq⟩ := eu_gen x _ hg u _ (x.basis.1 (i.cast hg.symm))
     constructor
-    · intro h
-      exact (huniq _ h).trans (huniq _ (hdiff i)).symm
+    · exact fun h => (huniq _ h).trans (huniq _ (hdiff i)).symm
     · rintro rfl
       exact hdiff i
 
@@ -985,12 +980,10 @@ variable {P P' P'' : Type} [CommRing P] [Algebra ℂ P] [CommRing P'] [Algebra �
 
 theorem specMap_comp₃ (f : P →ₐ[ℂ] P') (g : P' →ₐ[ℂ] P'') :
     mapP (R := R) g ≫ mapP f = mapP (g.comp f) := by
-  apply Over.OverMorphism.ext
-  exact _root_.GlobalTheory.spMap_comp_ring _ _
+  exact Over.OverMorphism.ext (_root_.GlobalTheory.spMap_comp_ring _ _)
 
 theorem specMap_id₃ : mapP (R := R) (AlgHom.id ℂ P) = 𝟙 _ := by
-  apply Over.OverMorphism.ext
-  exact _root_.GlobalTheory.LevelFibre.spMap_id' _
+  exact Over.OverMorphism.ext (_root_.GlobalTheory.LevelFibre.spMap_id' _)
 
 theorem specMap_comp_toTF (f : P →ₐ[ℂ] P') : mapP (R := R) f ≫ toTF P = toTF P' := by
   apply Over.OverMorphism.ext
@@ -1000,8 +993,7 @@ theorem specMap_comp_toTF (f : P →ₐ[ℂ] P') : mapP (R := R) f ≫ toTF P = 
   exact RingHom.ext fun x => f.commutes x
 
 theorem homF_mapP (a : P' →ₐ[ℂ] ℂ) (f : P →ₐ[ℂ] P') : homF (R := R) a ≫ mapP f = homF (a.comp f) := by
-  apply Over.OverMorphism.ext
-  exact _root_.GlobalTheory.spMap_comp_ring _ _
+  exact Over.OverMorphism.ext (_root_.GlobalTheory.spMap_comp_ring _ _)
 
 theorem homF_toTF (a : P →ₐ[ℂ] ℂ) : homF (R := R) a ≫ toTF P = 𝟙 _ := by
   apply Over.OverMorphism.ext
@@ -1083,8 +1075,7 @@ theorem val_comb {x y : TP R (DualNumber ℂ) ⟶ G} (hx : IsT x) (hy : IsT y) (
     rw [hx, hy, _root_.mul_one]
   have hred : spMap (Chart.jetAug ℂ (Fin 2) 1).toRingHom ≫ (L P).left = x0 G := by
     have := congrArg CommaMorphism.left (homF_L (Chart.jetAug ℂ (Fin 2) 1) P)
-    rw [hP] at this
-    exact this
+    rwa [hP] at this
   have hPU : ⊤ ≤ (L P).left ⁻¹ᵁ U := fun p _ => by
     obtain ⟨q, rfl⟩ := UnifLieBasis.spMap_jetAug_surjective p
     rw [← hred] at h0

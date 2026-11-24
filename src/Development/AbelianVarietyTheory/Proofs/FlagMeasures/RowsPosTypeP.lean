@@ -249,8 +249,7 @@ theorem fr_indep (F : FlagD H r) : LinearIndependent K F.e := by
     · exact h
     · exact absurd (neg_eq_zero.1 h) F.hT
   have hc' : ∑ a : Fin r, c a.castSucc • F.e a.castSucc = 0 := by
-    rw [Fin.sum_univ_castSucc, hz, zero_smul, add_zero] at hc
-    exact hc
+    rwa [Fin.sum_univ_castSucc, hz, zero_smul, add_zero] at hc
   have hcs := Fintype.linearIndependent_iff.1 F.indep (fun a => c a.castSucc) hc'
   intro i
   induction i using Fin.lastCases with
@@ -336,9 +335,7 @@ theorem exists_emb [FiniteDimensional K V] (F : FlagD H r) (τ₀ : K →+* ℂ)
   set W := Y ⊓ frPerp F with hW
   have hsup : F.X ⊔ W = frPerp F := by
     rw [hW, ← sup_inf_assoc_of_le Y (X_le_frPerp F), hY.sup_eq_top, top_inf_eq]
-  have hinf : F.X ⊓ W = ⊥ := by
-    refine eq_bot_iff.2 fun x hx => ?_
-    exact hY.inf_eq_bot ▸ ⟨hx.1, hx.2.1⟩
+  have hinf : F.X ⊓ W = ⊥ := eq_bot_iff.2 fun x hx => hY.inf_eq_bot ▸ ⟨hx.1, hx.2.1⟩
   have hpos : ∀ (σ : K →+* ℂ) (x : W), x ≠ 0 → 0 < (σ (H.B x x)).re := by
     intro σ x hx
     refine hP σ x ((mem_frPerp F _).1 x.2.2) fun hxX => hx ?_
@@ -476,8 +473,7 @@ theorem mem_gmap (s : V ≃ₗ[K] V) (M : Submodule (𝓞 K) V) (y : V) :
   constructor
   · rintro ⟨x, hx, rfl⟩
     simpa using hx
-  · intro h
-    exact ⟨s.symm y, h, by simp⟩
+  · exact fun h => ⟨s.symm y, h, by simp⟩
 
 theorem mem_pmap (s : V ≃ₗ[K] V) (Γ : Submodule (𝓞 K) (V × V)) (p : V × V) :
     p ∈ pmap s Γ ↔ (s.symm p.1, s.symm p.2) ∈ Γ := by
@@ -1363,7 +1359,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace PairsPf
 
 theorem massC_nonneg {D : D7} {X : HidaSetting D} (Y : Full X) (u : D.what₂.Word) : 0 ≤ massC Y u := by
-  show 0 ≤ ∑ Λ ∈ Y.what₂ u, wRow D (X.Fu u) Λ
   exact Finset.sum_nonneg fun Λ _ => inv_nonneg.mpr (Nat.cast_nonneg _)
 
 theorem datBd_nonneg (K : Type) [Field K] [NumberField K] [StarRing K] (k r : ℕ) (Del Db NT x : ℝ) (hD : 0 ≤ Del)

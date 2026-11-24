@@ -139,8 +139,7 @@ theorem GlobalTheory.SpreadPoint.exists_away : ∀ (B : Type) [CommRing B] (X : 
     pullback.lift f₀ (spMap σ) (by rw [hf₀, hcomp])
   obtain ⟨a, ha, H⟩ := GlobalTheory.UPoinc.LocSpread.exists_hom hσ (𝟙 (Sp R)) q' hP u₀ (by simp [u₀, q'])
   have ha' : a ∉ 𝔭 := by
-    intro h
-    exact (IsLocalization.AtPrime.isUnit_to_map_iff (Localization.AtPrime 𝔭) 𝔭 a).1 ha h
+    exact fun h => (IsLocalization.AtPrime.isUnit_to_map_iff (Localization.AtPrime 𝔭) 𝔭 a).1 ha h
   let g := algebraMap R (Localization.Away a)
   obtain ⟨u, hu, hu₀⟩ := H (Localization.Away a) g (IsLocalization.Away.algebraMap_isUnit a) (Sp (Localization.Away a))
     (spMap g) (𝟙 _) (by simp)
@@ -334,8 +333,7 @@ theorem exists_isPullback_lift {X₀ X₁ T₀ T₁ T₂ : Scheme.{0}} {f₀ : X
   refine ⟨pullback.lift π₁ (f₁ ≫ u) (by rw [Category.assoc, hp.w]), pullback.lift_fst _ _ _,
     pullback.lift_snd _ _ _, ?_⟩
   refine IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback _ _)
-  rw [pullback.lift_fst]
-  exact hp
+  rwa [pullback.lift_fst]
 
 end GlobalTheory.IsoSpread
 
@@ -765,8 +763,7 @@ theorem siegPB_spread_subring : ∀ (g n : ℕ) (B : Type) [CommRing B] (ζ : B)
     s₁ d₁ φ₁ φ₁₂ χ₂ hφ₁.1 hs₁ hw₁ hχ, fun a => ?_⟩
   have := hF₄ R₁ hR'1 (hsub F₄ (by intro x; simp only [Finset.mem_union]; tauto)) s₁ d₁ φ₁
     (by rw [e2]; exact gm) hl₁ a
-  rw [e2] at this
-  exact this
+  rwa [e2] at this
 
 end GlobalTheory.SiegSpreadCore
 end -- clump:auto
@@ -968,8 +965,7 @@ theorem classify_noetherian : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n →
   refine ⟨Sp (Localization.Away r), j, cV, IsOpenImmersion.of_isLocalization r, ?_, hcV, f, hf, hfu⟩
   have hu : Set.range j = (PrimeSpectrum.basicOpen r : Set (PrimeSpectrum R)) :=
     PrimeSpectrum.localization_away_comap_range (Localization.Away r) r
-  rw [hu]
-  exact hr
+  rwa [hu]
 
 end GlobalTheory.SiegelNoeth
 end -- clump:auto
@@ -1117,8 +1113,7 @@ theorem adj_of_lbIso {S : Scheme.{0}} {A : Over S} [GrpObj A] {O : Type} [Ring O
   have ha := (GlobalTheory.CechPic.cls_eq_iff (pull_isLB hP _) (pull_isLB hP _)).2 (h a)
   have he := (GlobalTheory.CechPic.cls_eq_iff hP hQ).2 e
   refine (GlobalTheory.CechPic.cls_eq_iff (pull_isLB hQ _) (pull_isLB hQ _)).1 ?_
-  rw [GlobalTheory.CechPic.cls_pull hQ, GlobalTheory.CechPic.cls_pull hQ, ← he]
-  exact ha
+  rwa [GlobalTheory.CechPic.cls_pull hQ, GlobalTheory.CechPic.cls_pull hQ, ← he]
 
 theorem exists_rep : ∀ (h' M : ℕ), 1 ≤ h' → 3 ≤ M → Odd M → ∀ (O : Type) [Ring O] (bar : O → O) (r : ℕ) (eO : Fin r → O) (W : Matrix (Fin r) (Fin r) ℤ) (d₀ : ℕ), (∀ a b, bar (a + b) = bar a + bar b) → Submodule.span ℤ (Set.range eO) = ⊤ → ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → 0 < d₀ → ∑ i, ∑ j, W i j • (eO j * bar (eO i)) = (d₀ : O) → ∃ (H : Scheme.{0}) (sH : H ⟶ Sp (cycAway M)) (zH : SiegPre h' M (zetaAway M) sH) (actH : O → (zH.A ⟶ zH.A)), zH.Principal ∧ IsRAct zH.A actH ∧ Adj zH.A zH.P bar actH ∧ IsQProjOver sH ∧ IsLocallyNoetherian H ∧ ∀ (S : Scheme.{0}) (t : S ⟶ Sp (cycAway M)) (z : SiegPre h' M (zetaAway M) t) (act : O → (z.A ⟶ z.A)), z.Principal → IsRAct z.A act → Adj z.A z.P bar act → ∃! g : S ⟶ H, g ≫ sH = t ∧ ActPB z act zH actH g := by
   intro h' M hh hM hodd O _ bar r eO W d₀ hbar hspan hW hd hsum

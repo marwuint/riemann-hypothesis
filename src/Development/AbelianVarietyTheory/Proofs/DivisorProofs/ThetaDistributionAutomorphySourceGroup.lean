@@ -308,8 +308,7 @@ theorem cartan_tr {k : ℕ} {G G' s : Matrix (Fin k) (Fin k) ℂ} (hG : G'ᵀ * 
   have e2 : sᵀᴴ * sᵀᴴ = 1 := by rw [← Matrix.conjTranspose_mul, e1, Matrix.conjTranspose_one]
   have e3 : sᵀ * G'ᵀ * sᵀᴴ = G'ᵀ := by
     have := congrArg Matrix.transpose h2
-    rw [Matrix.transpose_mul, Matrix.transpose_mul, ← Matrix.mul_assoc] at this
-    exact this
+    rwa [Matrix.transpose_mul, Matrix.transpose_mul, ← Matrix.mul_assoc] at this
   refine ⟨e1, ?_, ?_⟩
   · have e4 : sᵀᴴ * G * sᵀ * G'ᵀ = 1 := by
       rw [← e3]
@@ -409,8 +408,7 @@ theorem automorphy_source : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStd
   have := GlobalTheory.T.thetaDistribution_invariant_rationalTarget D ψ hψ (dualSp T ΛT hT) (dualSp S ΛS hS) θ hθ _ _ (dualSp_selfDual T ΛT hT)
     (dualSp_selfDual S ΛS hS) η hη _ _ (swap_fin ψ S T ΛS ΛT hS hT hf) (swap_inf ψ S T ΛS ΛT hS hT hθ hi) γ' hγ' _
     (theta_trF' ψ S T ΛS ΛT hS hT hth)
-  rw [swapOm_apply, swapOm_apply, map_one] at this
-  exact this
+  rwa [swapOm_apply, swapOm_apply, map_one] at this
 
 end GlobalTheory.DualSwap
 

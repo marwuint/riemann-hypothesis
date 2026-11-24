@@ -89,8 +89,7 @@ theorem exists_nat_mem (c : Fv F v) (hc : c ≠ 0) :
   have : Finite (O ⧸ H) := AddSubgroup.instFiniteQuotientOfSeparatelyContinuousAddOfCompactSpace H'
   have hne : H.index ≠ 0 := AddSubgroup.index_ne_zero_of_finite
   refine ⟨H.index, Nat.pos_of_ne_zero hne, ?_⟩
-  have hm := H.nsmul_index_mem (1 : O)
-  simpa [H, S] using hm
+  simpa [H, S] using H.nsmul_index_mem (1 : O)
 
 theorem exists_finite_residues (n : ℕ) (hn : 0 < n) :
     ∃ R : Set (Fv F v), R.Finite ∧ ∀ y ∈ v.adicCompletionIntegers F,
@@ -143,8 +142,7 @@ theorem exists_pair_of_annihilator : ∀ {F : Type} [Field F] [NumberField F] (v
   have ψ1 : ∀ x : Fv F v, x ∈ O → ψk x = 1 := fun x hx => by
     simpa using (hψ x).2 hx 1 O.one_mem
   have dotO : ∀ u w : κ → Fv F v, (∀ i, u i ∈ O) → (∀ i, w i ∈ O) → u ⬝ᵥ w ∈ O := by
-    intro u w hu hw
-    exact O.toSubring.sum_mem fun i _ => O.toSubring.mul_mem (hu i) (hw i)
+    exact fun u w hu hw => O.toSubring.sum_mem fun i _ => O.toSubring.mul_mem (hu i) (hw i)
   let L₀ : AddSubgroup (κ → Fv F v) := AddSubgroup.pi Set.univ (fun _ => O.toSubring.toAddSubgroup)
   have hL₀ : ∀ x, x ∈ L₀ ↔ ∀ i, x i ∈ O := fun x => by
     simp [L₀, AddSubgroup.mem_pi]
@@ -187,8 +185,7 @@ theorem exists_pair_of_annihilator : ∀ {F : Type} [Field F] [NumberField F] (v
   have hmem : η ∈ P := by
     refine GlobalTheory.DualTransfer.mem_of_double_annihilator (fun x y => ψk (x ⬝ᵥ y)) bich ⊤ ⊤ L₀ L₀ P
       le_top le_top le_top ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ N hN ?_ ?_ η trivial ?_ ?_
-    · intro u hu y hy
-      exact ψ1 _ (dotO _ _ ((hL₀ u).1 hu) ((hL₀ y).1 hy))
+    · exact fun u hu y hy => ψ1 _ (dotO _ _ ((hL₀ u).1 hu) ((hL₀ y).1 hy))
     · intro x _ h
       refine (hL₀ x).2 fun i => (hψ _).1 fun t ht => ?_
       have := h (Pi.single i t) ((hL₀ _).2 (hsingle i t ht))

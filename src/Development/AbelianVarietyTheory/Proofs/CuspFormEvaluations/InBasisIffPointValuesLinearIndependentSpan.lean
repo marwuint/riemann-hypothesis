@@ -95,8 +95,7 @@ theorem SameLin.indep_mod {W : Q → Prop} {f : Q → V} {g : Q → V'} (h : Sam
     rintro _ ⟨i, rfl⟩
     refine ((h κ (fun i => b (φ i)) (fun i => hb _)).2 (b i) (hb i)).1 ?_
     have : f (b i) ∈ Submodule.span K (Set.range fun i => f (b i)) := Submodule.subset_span ⟨i, rfl⟩
-    rw [← hsp] at this
-    exact this
+    rwa [← hsp] at this
   obtain ⟨d, hd⟩ := (Submodule.mem_span_range_iff_exists_fun K').1 (h3 hc)
   have h4 := Fintype.linearIndependent_iff.1 h2 (Sum.elim c (-d)) (by
     rw [Fintype.sum_sum_type]
@@ -195,8 +194,7 @@ theorem exists_family (u : WeightFamilies.Wt D j) (m : ℕ) :
     · refine iSup₂_le fun α hα => ?_
       rintro _ ⟨v, hv, rfl⟩
       refine mon_mul_mem (fun i => sec X la w i.succ) (fun l => emb X la N (X.inc _ (e l))) hα ?_
-      rw [Vw_eq_span_image X la N _ he, ← Set.range_comp] at hv
-      exact hv
+      rwa [Vw_eq_span_image X la N _ he, ← Set.range_comp] at hv
   · simp only [map_mul, secPoly, (h1 _).2.1, (h2 _).2]
     apply le_antisymm
     · rw [Submodule.span_le]
@@ -209,8 +207,7 @@ theorem exists_family (u : WeightFamilies.Wt D j) (m : ℕ) :
       refine mon_mul_mem (fun i => R.s w t i.succ) (fun l => R.ev (X.inc _ (e l))) hα ?_
       have := h7 _ (Set.range e)
       rw [he, Submodule.top_coe] at this
-      rw [this, Rdg.sp, ← Set.range_comp] at hf
-      exact hf
+      rwa [this, Rdg.sp, ← Set.range_comp] at hf
 
 theorem indep_transfer (hg : R.Generic t) (u : WeightFamilies.Wt D j) {n : ℕ} (θ : Fin n → B.Cusp j u) (m : ℕ) :
     (∀ c : Fin n → Kp X la N, sec X la w 0 ^ (m + 1) * ∑ i, c i • emb X la N (X.inc u (θ i)) ∈ Mon X la w u 1 m →
@@ -227,8 +224,7 @@ theorem indep_transfer (hg : R.Generic t) (u : WeightFamilies.Wt D j) {n : ℕ} 
   have i2 := hs.symm.indep_mod _ b ha hb
   rw [e1, e2] at i1 i2
   simp only [map_mul, map_pow, secPoly, (h1 _).1, (h1 _).2.1, (h2 _).1, (h2 _).2] at i1 i2
-  simp only [Finset.mul_sum, mul_smul_comm]
-  exact ⟨i1, i2⟩
+  simpa only [Finset.mul_sum, mul_smul_comm] using ⟨i1, i2⟩
 
 theorem mem_transfer (hg : R.Generic t) (u : WeightFamilies.Wt D j) {n : ℕ} (θ : Fin n → B.Cusp j u) (k m : ℕ) (F : X.Forms)
     (hF : OfWt X (addL u wL k) (MvPolynomial.C F : MvPolynomial (Idx D j N) X.Forms)) :
@@ -247,8 +243,7 @@ theorem mem_transfer (hg : R.Generic t) (u : WeightFamilies.Wt D j) {n : ℕ} (�
   have i1 := hs.mem_mod _ _ b (ofWt_pow_mul X R la w t u k (m + 1) _ hF) ha hb
   rw [e1, e2] at i1
   simp only [map_mul, map_pow, secPoly, (h1 _).1, (h1 _).2.1, (h2 _).1, (h2 _).2] at i1
-  simp only [mul_sub, Finset.mul_sum, mul_smul_comm]
-  exact i1
+  simpa only [mul_sub, Finset.mul_sum, mul_smul_comm] using i1
 
 theorem indep_iff (u : WeightFamilies.Wt D j) {n : ℕ} (θ : Fin n → B.Cusp j u) :
     LinearIndependent (Kp X la N) (fun i => rho0 X la w u ⟨emb X la N (X.inc u (θ i)), emb_mem_Vw X la N u _⟩) ↔
@@ -270,8 +265,7 @@ theorem indep_iff (u : WeightFamilies.Wt D j) {n : ℕ} (θ : Fin n → B.Cusp j
     · rintro ⟨m, h⟩
       exact ⟨Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (emb_mem_Vw X la N u _), m + 1, by omega, h⟩
   constructor
-  · intro h m c hc
-    exact h c ((key c).2 ⟨m, hc⟩)
+  · exact fun h m c hc => h c ((key c).2 ⟨m, hc⟩)
   · intro h c hc
     obtain ⟨m, hm⟩ := (key c).1 hc
     exact h m c hm

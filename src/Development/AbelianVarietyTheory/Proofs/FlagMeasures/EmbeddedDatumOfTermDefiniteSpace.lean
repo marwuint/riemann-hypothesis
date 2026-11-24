@@ -86,8 +86,7 @@ theorem exists_proj (hS : S = C ⊔ I) (hd : C ⊓ I = ⊥) : ∃ p : V →ₗ[K
       subst hw0
       rw [add_zero] at hxI ⊢
       have hcCI : c ∈ C ⊓ I := Submodule.mem_inf.2 ⟨hc, hxI⟩
-      rw [hd] at hcCI
-      exact hcCI
+      rwa [hd] at hcCI
     · rw [codisjoint_iff, sup_right_comm, ← hS]
       exact hW.sup_eq_top
   have hI0 : ∀ x ∈ I, (C ⊔ W).projection I hc x = 0 := fun x hx =>
@@ -98,8 +97,7 @@ theorem exists_proj (hS : S = C ⊔ I) (hd : C ⊓ I = ⊥) : ∃ p : V →ₗ[K
   intro x hx
   rw [hS] at hx
   obtain ⟨c, hc', i, hi, rfl⟩ := Submodule.mem_sup.1 hx
-  rw [map_add (f := _), hC1 c hc', hI0 i hi, add_zero]
-  exact hc'
+  rwa [map_add (f := _), hC1 c hc', hI0 i hi, add_zero]
 
 theorem genBy_latIn (hS : S = C ⊔ I) (hd : C ⊓ I = ⊥) {A B : Submodule (𝓞 K) V} {e : ℕ}
     (hB : rs (𝓞 K) I ≤ B) (hA : A ≤ rs (𝓞 K) S) (h : GenBy A B e) : GenBy (latIn C A) (latIn C B) e := by
@@ -144,8 +142,7 @@ theorem genBy_latIn (hS : S = C ⊔ I) (hd : C ⊓ I = ⊥) {A B : Submodule (�
     exact Submodule.add_mem_sup hpb hz
   · rw [sup_le_iff]
     constructor
-    · intro x hx
-      exact Submodule.mem_sup_left hx
+    · exact fun x hx => Submodule.mem_sup_left hx
     · rw [Submodule.span_le]
       intro z hz
       have hz' : (z : V) ∈ t.image p := Finset.mem_subtype.1 hz
@@ -218,10 +215,8 @@ theorem isModIso_latIn (hS : S = C ⊔ I) (H : HermSpace K V) (H' : HermSpace K 
     have hi0 : (i, (0 : V)) ∈ Γ := h2 (Submodule.mem_prod.2 ⟨hIL' hi, Submodule.zero_mem _⟩)
     show (c, (y : V)) ∈ Γ
     simpa using Γ.sub_mem hy' hi0
-  · intro y hy
-    exact (mem_smulLat_latIn hg y).2 (h5 (y : V) hy)
-  · intro y hy
-    exact (mem_smulLat_latIn hg y).2 (h6 (y : V) hy)
+  · exact fun y hy => (mem_smulLat_latIn hg y).2 (h5 (y : V) hy)
+  · exact fun y hy => (mem_smulLat_latIn hg y).2 (h6 (y : V) hy)
   · rintro ⟨p1, p2⟩ hp ⟨q1, q2⟩ hq
     obtain ⟨t, ht⟩ := h7 _ hp _ hq
     exact ⟨t, by simpa [hH] using ht⟩
@@ -250,8 +245,7 @@ theorem dual_latIn (hS : S = C ⊔ I) (H : HermSpace K V) (H' : HermSpace K C)
     have hiy : H.B i y = 0 := by rw [← H.herm, ho y (hMS y hy) i hi, star_zero]
     rw [hiy]
     exact Submodule.zero_mem _
-  · intro x hx
-    exact ((memD x).1 hx).1
+  · exact fun x hx => ((memD x).1 hx).1
   · ext y
     change (y : V) ∈ dual H M ↔ _
     rw [memD, memR]
@@ -267,8 +261,7 @@ theorem dual_latIn (hS : S = C ⊔ I) (H : HermSpace K V) (H' : HermSpace K C)
       have hcM : c ∈ M := by simpa using M.sub_mem hx (hIM hi)
       have h1 := hy ⟨c, hc⟩ hcM
       rw [hH] at h1
-      rw [map_add (f := _), ho _ (hCS y.2) i hi, add_zero]
-      exact h1
+      rwa [map_add (f := _), ho _ (hCS y.2) i hi, add_zero]
 
 theorem intLat_latIn (hS : S = C ⊔ I) (hd : C ⊓ I = ⊥) (H : HermSpace K V) (H' : HermSpace K C)
     (hH : ∀ x y, H'.B x y = H.B x y) (ho : ∀ y ∈ S, ∀ i ∈ I, H.B y i = 0) {M : Submodule (𝓞 K) V}
@@ -289,7 +282,6 @@ theorem intLat_latIn (hS : S = C ⊔ I) (hd : C ⊓ I = ⊥) (H : HermSpace K V)
     rw [LinearMap.flip_apply, hH]
     exact hi _ hy _ hx
   · have h1 : GlobalTheory.HermLat.idx M (dual H M) = 1 := by
-      show (dual H M).toAddSubgroup.relIndex M.toAddSubgroup = 1
       exact AddSubgroup.relIndex_eq_one.2 ((Submodule.toAddSubgroup_le _ _).2 hMD)
     unfold GlobalTheory.Mass.discN
     rw [← hDeq, ← idx_eq, idx_latIn p hpC hpI hID hDS hIM]
@@ -348,8 +340,7 @@ private theorem apply_mem_one_of_mem_flagPairDefinitePartLattice {H : HermSpace 
   have a3 : H.B u v = 0 := flag_X_isotropic F u hu v hv
   have a4 : H.B u m = 0 := by
     have h' := a2
-    rw [map_add (H.B u) m v, a3, add_zero] at h'
-    exact h'
+    rwa [map_add (H.B u) m v, a3, add_zero] at h'
   rw [map_add (H.B (l + u)) m v, a1, add_zero, map_add H.B l u, LinearMap.add_apply, a4, add_zero]
   exact hΛ l hl m hm
 
@@ -422,12 +413,10 @@ theorem exists_equiv (X : Submodule K V) (e : W →ₗ[K] V) (c : C →ₗ[K] V)
   let q := X.mkQ
   have ie : Function.Injective (q ∘ₗ e) := by
     rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
-    intro w hw
-    exact he w ((Submodule.Quotient.mk_eq_zero X).1 hw)
+    exact fun w hw => he w ((Submodule.Quotient.mk_eq_zero X).1 hw)
   have ic : Function.Injective (q ∘ₗ c) := by
     rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
-    intro y hy
-    exact hc y ((Submodule.Quotient.mk_eq_zero X).1 hy)
+    exact fun y hy => hc y ((Submodule.Quotient.mk_eq_zero X).1 hy)
   have hr : LinearMap.range (q ∘ₗ e) = LinearMap.range (q ∘ₗ c) := by
     apply le_antisymm
     · rintro _ ⟨w, rfl⟩
@@ -459,8 +448,7 @@ theorem pre_eq_map (φ : W ≃ₗ[K] C) (M : Submodule (𝓞 K) C) :
   simp only [pre, Submodule.mem_comap, Submodule.mem_map, LinearMap.restrictScalars_apply,
     LinearEquiv.coe_coe]
   constructor
-  · intro h
-    exact ⟨φ y, h, φ.symm_apply_apply y⟩
+  · exact fun h => ⟨φ y, h, φ.symm_apply_apply y⟩
   · rintro ⟨m, hm, rfl⟩
     simpa using hm
 
@@ -549,10 +537,8 @@ theorem isDat_pre (φ : W ≃ₗ[K] C) {HW : HermSpace K W} {H' : HermSpace K C}
     have hab := hint _ ha _ hb
     simp only [LinearMap.flip_apply, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe] at hab ⊢
     rwa [← hφ]
-  · rw [discN_pre_of_isometry φ hφ, discN_pre_of_isometry φ hφ]
-    exact hdisc
-  · intro p hp
-    exact m1 hp
+  · rwa [discN_pre_of_isometry φ hφ, discN_pre_of_isometry φ hφ]
+  · exact fun p hp => m1 hp
   · intro p hp
     obtain ⟨h1, h2⟩ := Submodule.mem_prod.1 hp
     exact m2 (Submodule.mem_prod.2 ⟨(mem_smulLat_pre φ _ _ _).1 h1, (mem_smulLat_pre φ _ _ _).1 h2⟩)
@@ -575,8 +561,7 @@ theorem isDat_pre (φ : W ≃ₗ[K] C) {HW : HermSpace K W} {H' : HermSpace K C}
   · intro p hp q hq
     obtain ⟨s, hs⟩ := m7 (φ p.1, φ p.2) hp (φ q.1, φ q.2) hq
     refine ⟨s, ?_⟩
-    rw [← hφ, ← hφ]
-    exact hs
+    rwa [← hφ, ← hφ]
   · rw [hfix]
     exact (idxN_pre φ L (fixLat Γ)).trans hidx
   · refine ⟨t.image φ.symm, Finset.card_image_le.trans (ht.trans hj), ?_⟩
@@ -777,8 +762,7 @@ theorem isDat_datOf : ∀ (K V W : Type) [Field K] [NumberField K] [StarRing K] 
     have h0 : (0 : ℝ) ≤ N.gI g Λ := Nat.cast_nonneg _
     nlinarith
   · intro τ x hx
-    have hpos := hH'PD τ (φ x) ((LinearEquiv.map_ne_zero_iff φ).2 hx)
-    simpa [LinearMap.flip_apply, hφ] using hpos
+    simpa [LinearMap.flip_apply, hφ] using hH'PD τ (φ x) ((LinearEquiv.map_ne_zero_iff φ).2 hx)
   · rw [φ.finrank_eq]
     exact hrank
 

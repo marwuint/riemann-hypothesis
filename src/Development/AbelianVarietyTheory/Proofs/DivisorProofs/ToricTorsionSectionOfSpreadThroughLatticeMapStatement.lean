@@ -98,8 +98,7 @@ theorem torAt_of_closedPoint : ∀ (B : Scheme.{0}) (H : Over B) [GrpObj H] (V :
     rw [MonoidHom.pow_apply, hτV', ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hu, one_zpow]; rfl
   have hval : ∀ (L : Type) [Field L] (f : V →+* L) (n : ℤ), f ((u ^ n : Vˣ) : V) = f u ^ n := fun L _ f n => by
     have := congrArg Units.val (map_zpow (Units.map (f : V →* L)) u n)
-    rw [Units.val_zpow_eq_zpow_val] at this
-    exact this
+    rwa [Units.val_zpow_eq_zpow_val] at this
   let a : V →+* F := (algebraMap (FractionRing V) F).comp (algebraMap V (FractionRing V))
   have ha : spMap a = spMap (algebraMap (FractionRing V) F) ≫ jK V := GlobalTheory.ToricTorsionSec.spMap_comp _ _
   have hainj : Function.Injective a :=
@@ -164,8 +163,7 @@ theorem torAt_of_closedPoint : ∀ (B : Scheme.{0}) (H : Over B) [GrpObj H] (V :
     rw [he (f q), s4 F a τF hτF q (f q) rfl hqy hqt hq,
       s2 V F (RingHom.id V) a a τV hτV τF hτF rfl (fun χ => rfl), ← hσs, hex]
     rfl
-  refine ⟨τF, q, fun χ => ?_, hqy, hqt, hxq ▸ hq⟩
-  exact hval F a (c χ)
+  exact ⟨τF, q, fun χ => (hval F a (c χ)), hqy, hqt, hxq ▸ hq⟩
 
 end GlobalTheory.Poinc.Sep.Spz
 end -- clump:auto
@@ -237,7 +235,6 @@ theorem GlobalTheory.ToricTorsionClosedPt.main : ∀ (B : Scheme.{0}) (H : Over 
   have hσ₁G : σ₁ ≫ G.hom = 𝟙 _ := hβ.1.lift_snd _ _ _
   have hsVG : sV.left ≫ G.hom = 𝟙 _ := by
     rw [Over.w sV]
-    show Spec.map (CommRingCat.ofHom (RingHom.id V)) = _
     exact Spec.map_id _
 
   let a : V →+* F := (algebraMap (FractionRing V) F).comp (algebraMap V (FractionRing V))
@@ -264,8 +261,7 @@ theorem GlobalTheory.ToricTorsionClosedPt.main : ∀ (B : Scheme.{0}) (H : Over 
       have r : spMap a ≫ sV.left ≫ β = x.left ≫ genMap U ≫ β := by
         rw [← Category.assoc, ← e2, ← e4, Category.assoc]
       rw [Category.assoc, Category.assoc, l, r]
-    · simp only [Category.assoc]
-      exact congrArg (spMap a ≫ ·) (hσ₁G.trans hsVG.symm)
+    · simpa only [Category.assoc] using congrArg (spMap a ≫ ·) (hσ₁G.trans hsVG.symm)
   have hτk : τ ^ k = 1 := powk τ (b w) (by rw [← map_pow, hw, map_one]) hτ
   have e2' := s2 V κ (RingHom.id V) b b τV hτV τ hτk (RingHom.comp_id b).symm (fun χ => by
     rw [mapv b χ]; exact hτ (Multiplicative.toAdd χ))
@@ -324,8 +320,7 @@ theorem range_sub {W κ : Type} [CommRing W] [IsLocalRing W] [Field κ] {B : Sch
     ⟨closedPoint κ, comap_closedPoint c⟩
   have hx : x ⤳ spMap c p := by
     have := specializes_closedPoint (R := W) x
-    rw [← hp] at this
-    exact this
+    rwa [← hp] at this
   refine (hx.map ψ.continuous).mem_open Wo.isOpen ?_
   rw [← Scheme.Hom.comp_apply, e, Scheme.Hom.comp_apply]
   have := Set.mem_range_self (f := Wo.ι) (y p)

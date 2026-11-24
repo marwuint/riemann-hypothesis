@@ -96,15 +96,13 @@ lemma fam_mem {R : Type} [Ring R] [Module R V] (t : Term V M r) (A : Submodule R
   cases M.split with
   | none =>
     simp only [Sum.forall, Sum.elim_inl, Sum.elim_inr, inv_one, map_one, one_smul]
-    refine and_congr_right fun h => forall_congr' fun b => ?_
-    exact (A.sub_mem_iff_left (h b)).symm
+    exact and_congr_right fun h => forall_congr' fun b => (A.sub_mem_iff_left (h b)).symm
   | some g => simp only [Sum.forall, Sum.elim_inl, Sum.elim_inr]
 
 lemma th_ne (S : Frames M.L r k) : S.th ≠ 0 := by
   unfold Frames.th
   split_ifs
-  · intro h
-    exact S.ϖ_irr.ne_zero (Subtype.ext h)
+  · exact fun h => S.ϖ_irr.ne_zero (Subtype.ext h)
   · exact one_ne_zero
 
 lemma lat_span (t : Term V M r) :
@@ -132,8 +130,7 @@ lemma map_span (t : Term V M r) (A : Submodule E S.V) :
 lemma ME_le (S : Frames M.L r k) (A : Submodule E S.V) :
     S.ME ≤ A ↔ (∀ b, S.f b ∈ A) ∧ ∀ b, S.f' b ∈ A := by
   unfold Frames.ME Frames.spanTo
-  have h : {i : Fin (r + 1) | (i : ℕ) < r + 1} = Set.univ := by
-    exact Set.eq_univ_of_forall fun i => i.2
+  have h : {i : Fin (r + 1) | (i : ℕ) < r + 1} = Set.univ := Set.eq_univ_of_forall fun i => i.2
   rw [sup_le_iff, Submodule.span_le, Submodule.span_le, h, Set.image_univ, Set.image_univ,
     Set.range_subset_iff, Set.range_subset_iff]
   rfl

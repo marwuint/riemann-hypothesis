@@ -115,8 +115,7 @@ theorem evc_comp_of_same {S : Scheme.{0}} {A T T₀ Y : Over S} {N : LB (A ⊗ T
   rw [same_iff hN hN₀, Category.comp_id] at hs
   have := congrArg (CechPic.pull (lift (fst A Y) (snd A Y ≫ y)).left) hs
   rw [pull_evc, pull_evc] at this
-  simp only [lift_fst, lift_snd, lift_snd_assoc, Category.assoc] at this
-  exact this
+  simpa only [lift_fst, lift_snd, lift_snd_assoc, Category.assoc] using this
 
 theorem chartAt_of_finiteType : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ (U : Over (Sp R)) (M : LB (A ⊗ U).left), Fam A M → (∀ (T : Over (Sp R)) [IsAffine T.left], LocallyOfFiniteType T.hom → ∀ (N : LB (A ⊗ T).left), Fam A N → ChartAt A M N) → ∀ (T : Over (Sp R)) [IsAffine T.left] (N : LB (A ⊗ T).left), Fam A N → ChartAt A M N := by
   intro R _ _ A _ hA U M hM hfin T _ N hN
@@ -341,8 +340,7 @@ theorem quotientMap_pow_bijective_of_retraction (φ : A →+* B) [IsLocalHom φ]
       intro b hb
       obtain ⟨c, hc⟩ := Ideal.Quotient.mk_surjective (ψ b)
       rw [Ideal.mem_comap, ← hc]
-      refine Ideal.mem_map_of_mem _ fun hu => hb ?_
-      exact IsUnit.of_map ψ _ (hc ▸ hu.map _)
+      exact Ideal.mem_map_of_mem _ fun hu => hb (IsUnit.of_map ψ _ (hc ▸ hu.map _))
     have h2 := pow_le_comap_pow_of_le h1 (n + 1) hx
     rwa [Ideal.mem_comap, ← Ideal.map_pow, Ideal.map_quotient_self, hψφ, Ideal.mem_bot] at h2
   · obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective y
@@ -559,8 +557,7 @@ theorem exists_same_of_local (hA : IsAbelianScheme A) {T U Y : Over S} {N : LB (
     have h₂ := same_comp hN.isLB hM.isLB (hs q) b
     rw [← Category.assoc, hab, Category.assoc] at h₁
     rw [same_iff hN.isLB hM.isLB] at h₁ h₂
-    have h := hI P _ _ ((same_iff hM.isLB hM.isLB _ _).2 (h₁.symm.trans h₂))
-    exact congrArg (·.left) h
+    exact congrArg (·.left) (hI P _ _ ((same_iff hM.isLB hM.isLB _ _).2 (h₁.symm.trans h₂)))
   have hg : ∀ p, (z p).left ≫ 𝒰.glueMorphisms (fun p ↦ (u p).left) hc = (u p).left :=
     𝒰.ι_glueMorphisms _ hc
   let g : Y ⟶ U := Over.homMk (𝒰.glueMorphisms (fun p ↦ (u p).left) hc) (𝒰.hom_ext _ _ fun (p : Y.left) ↦
@@ -575,8 +572,7 @@ theorem fam_ev {T Y : Over S} {N : LB (A ⊗ T).left} (h : Fam A N) (y : Y ⟶ T
     Fam A (ev N (fst A Y) (snd A Y ≫ y)) := by
   have hM : (AbDual.ev N (fst A Y) (snd A Y ≫ y)).IsLB := pull_isLB h.isLB _
   refine ⟨hM, (isAdditive_iff hM).2 fun Z a a' t ↦ ?_⟩
-  simp only [evc_ev h.isLB, lift_fst, lift_snd_assoc]
-  exact (isAdditive_iff h.isLB).1 h.add _ _ _ _
+  simpa only [evc_ev h.isLB, lift_fst, lift_snd_assoc] using (isAdditive_iff h.isLB).1 h.add _ _ _ _
 
 end GlobalTheory.DualCon.Zar
 
@@ -968,8 +964,7 @@ theorem fibInj {B S' U : Over S} [IsFinite S'.hom] [Surjective S'.hom] {b : B �
     · exact (cls_eq_iff hN.isLB (pull_isLB hP.fam.isLB _)).1 (k u)
     · exact (cls_eq_iff hN.isLB (pull_isLB hP.fam.isLB _)).1
         (((same_iff hM.isLB hM.isLB u u').1 huu).trans (k u'))
-  have e' := congrArg (· ≫ fst U S') ((cancel_mono j).1 e)
-  simpa only [lift_fst] using e'
+  simpa only [lift_fst] using congrArg (· ≫ fst U S') ((cancel_mono j).1 e)
 
 theorem exists_point {B S' U : Over S} {P : LB (A ⊗ B).left} (hP : P.IsLB) {M : LB (A ⊗ U).left} (hM : M.IsLB)
     {j : U ⊗ S' ⟶ B} [IsOpenImmersion j.left] (h : Same A M P (fst U S') j) {K : Type} [Field K]

@@ -68,15 +68,13 @@ theorem hasVal_transport {Q : Pair k n} {R : Pair k n₂} (G : Matrix n₂ n k) 
     have h2 := Pair.mem_ker.1 ((hker _).1 (Pair.mem_ker.2 h1))
     rw [hGe] at h2
     have h3 := h2.add (he.smul r)
-    rw [sub_add_cancel, zero_add, mul_one, hr] at h3
-    exact h3
+    rwa [sub_add_cancel, zero_add, mul_one, hr] at h3
   · intro hy
     have h1 := hy.sub (he.smul r)
     rw [mul_one, hr, sub_self, ← hGe] at h1
     have h2 := Pair.mem_ker.1 ((hker _).2 (Pair.mem_ker.2 h1))
     have h3 := h2.add (hs.smul r)
-    rw [sub_add_cancel, zero_add, hsr] at h3
-    exact h3
+    rwa [sub_add_cancel, zero_add, hsr] at h3
 
 theorem maps_transport {Q : Pair k n₂} {R : Pair k n} {n₁ : Type} [Fintype n₁] [DecidableEq n₁]
     (P : Pair k n₁) (G : Matrix n n₂ k) (s : 𝓀[k]ˣ)
@@ -136,8 +134,7 @@ theorem overAll_of_extFun_eq (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (α 
     unfold Over at hov ⊢
     obtain ⟨h1, h2, h3, -, h5⟩ := hov
     refine ⟨h1, h2, h3, hSB i, ?_⟩
-    rw [← h i]
-    exact h5
+    rwa [← h i]
 
 end Lists
 
@@ -174,12 +171,10 @@ theorem isLattice_of_lastKer {m : Type} [Fintype m] [DecidableEq m] {Q : Pair k 
   obtain ⟨a, ha, hax⟩ := GlobalTheory.GoodLat.exists_smul_mem Q.ker hx
   have hmem : a • x ∈ Q.ker.comap (f.restrictScalars 𝒪[k]) := by
     change (f.restrictScalars 𝒪[k]) (a • x) ∈ Q.ker
-    rw [map_smul]
-    exact hax
+    rwa [map_smul]
   have hspan := Submodule.subset_span (R := k) hmem
   have ha' : algebraMap 𝒪[k] k a ≠ 0 := by
-    intro hzero
-    exact ha (IsFractionRing.injective 𝒪[k] k (hzero.trans (map_zero _).symm))
+    exact fun hzero => ha (IsFractionRing.injective 𝒪[k] k (hzero.trans (map_zero _).symm))
   rw [← algebraMap_smul k a x] at hspan
   simpa only [inv_smul_smul₀ ha'] using
     (Submodule.span k (Q.ker.comap (f.restrictScalars 𝒪[k]) : Set (m → k))).smul_mem

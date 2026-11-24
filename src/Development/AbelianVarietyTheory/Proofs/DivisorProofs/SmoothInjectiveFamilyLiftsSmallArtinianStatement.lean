@@ -355,8 +355,7 @@ theorem hasRep_field : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianSc
   obtain ⟨B, b, P, hR, hG, -⟩ := hAF
   have h2 := h ⟨B, b, P, hR, hG⟩
   have e : (𝟙_ (Over (Sp K))).hom ≫ s = s := Category.id_comp s
-  rw [e] at h2
-  exact h2
+  rwa [e] at h2
 
 end GlobalTheory.DualCon.FieldRep
 end -- clump:auto
@@ -423,14 +422,12 @@ theorem repChart : ∀ (S : Scheme.{0}) (A B S' U : Over S) [GrpObj A] (b : B �
   have eY : ∀ (Y : Over S) (y : Y ⟶ T), evc hN' (fst A Y) (snd A Y ≫ y) = evc hP' (fst A Y) (snd A Y ≫ y ≫ x) := by
     intro Y y
     have e := congrArg (CechPic.pull (lift (fst A Y) (snd A Y ≫ y)).left) ex
-    rw [pull_evc, lift_fst, lift_snd_assoc] at e
-    exact e
+    rwa [pull_evc, lift_fst, lift_snd_assoc] at e
   have eV : ∀ (Y : Over S) (v : Y ⟶ U ⊗ S'), evc hM' (fst A Y) (snd A Y ≫ v ≫ fst U S') =
       evc hP' (fst A Y) (snd A Y ≫ v ≫ φ) := by
     intro Y v
     have e := congrArg (CechPic.pull (lift (fst A Y) (snd A Y ≫ v)).left) eφ
-    rw [pull_evc, pull_evc, lift_fst, lift_snd_assoc, lift_snd_assoc] at e
-    exact e
+    rwa [pull_evc, pull_evc, lift_fst, lift_snd_assoc, lift_snd_assoc] at e
   have uniq : ∀ (Y : Over S) (y : Y ⟶ T) (x₁ x₂ : Y ⟶ B), x₁ ≫ b = y ≫ t → x₂ ≫ b = y ≫ t →
       evc hP' (fst A Y) (snd A Y ≫ x₁) = evc hN' (fst A Y) (snd A Y ≫ y) →
       evc hP' (fst A Y) (snd A Y ≫ x₂) = evc hN' (fst A Y) (snd A Y ≫ y) → x₁ = x₂ := by
@@ -456,8 +453,7 @@ theorem repChart : ∀ (S : Scheme.{0}) (A B S' U : Over S) [GrpObj A] (b : B �
     intro z
     have e := congrArg (fun q : Y ⟶ B ↦ q.left z) hvx
     simp only [Over.comp_left, Scheme.Hom.comp_apply] at e
-    simp only [Scheme.Hom.mem_preimage, Scheme.Hom.mem_opensRange]
-    exact ⟨_, e⟩
+    simpa only [Scheme.Hom.mem_preimage, Scheme.Hom.mem_opensRange] using ⟨_, e⟩
   · intro h
     have hr : Set.range (y.left ≫ x.left) ⊆ Set.range φ.left := by
       rintro _ ⟨z, rfl⟩
@@ -560,8 +556,7 @@ theorem liftsAlong_span_singleton : ∀ (R : Type) [CommRing R] (A : Over (Sp R)
         Over.mk (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (Ideal.span {t}))) ≫ y ≫ T.hom) ⟶ T) := by
     ext1; rfl
   have h₁ : Same A (ev N (fst A Y) (snd A Y ≫ yy)) M (ptMap (y ≫ T.hom) (Ideal.Quotient.mk (Ideal.span {t}))) u₀ := by
-    rw [calc5 T U Y _ N M yy _ u₀ hN.isLB hM.isLB, key]
-    exact h₀
+    rwa [calc5 T U Y _ N M yy _ u₀ hN.isLB hM.isLB, key]
   obtain ⟨u, hu⟩ := hSL B t ht hkill (y ≫ T.hom) _ hN' u₀ h₁
   refine ⟨u, ?_⟩
   have := (calc5 T U Y Y N M yy (𝟙 _) u hN.isLB hM.isLB).1 hu
@@ -968,8 +963,7 @@ theorem milnor_of_ring_square : ∀ (P C₁ C₂ C₀ : Type) [CommRing P] [Comm
       have h1' : p₁ x = p₁ y := h1
       have h2' : p₂ x = p₂ y := h2
       exact sub_eq_zero.mp (hinj _ (by rw [map_sub, h1', sub_self]) (by rw [map_sub, h2', sub_self]))
-    · intro a b hab
-      exact hsurj a b hab
+    · exact fun a b hab => hsurj a b hab
   refine ⟨inferInstance, inferInstance, inferInstance, IsClosedImmersion.spec_of_surjective _ hq₂, ?_, ?_⟩
   · simp only [spMap, ← Spec.map_comp, hwc]
   · refine IsPullback.of_iso H (Scheme.ΓSpecIso _).symm (Scheme.ΓSpecIso _).symm (Scheme.ΓSpecIso _).symm
@@ -1090,8 +1084,7 @@ theorem smallExt_fibre_ring : ∀ (C : Type) [CommRing C] [IsLocalRing C] (e : C
     have := range_comap_of_surjective _ σ hsurj
     have hx : x ∈ PrimeSpectrum.zeroLocus (RingHom.ker σ : Set P) := fun a ha ↦
       @nilradical_le_prime _ _ x.asIdeal x.isPrime _ (hker ha)
-    rw [← this] at hx
-    exact hx
+    rwa [← this] at hx
   · refine GlobalTheory.T.affineMilnorSquare_of_cartesian_ring_square _ _ _ _ _ _ _ _ ?_ ?_ ?_ Ideal.Quotient.mk_surjective
     · refine RingHom.ext fun x ↦ ?_
       refine (Ideal.Quotient.eq.2 ?_).symm
@@ -1116,10 +1109,8 @@ theorem smallExt_fibre_ring : ∀ (C : Type) [CommRing C] [IsLocalRing C] (e : C
       ring
   · refine GlobalTheory.T.affineMilnorSquare_of_cartesian_ring_square _ _ _ _ _ _ _ _ ?_ ?_ ?_ (fun x ↦ ⟨TrivSqZeroExt.inl x, rfl⟩)
     · exact RingHom.ext fun x ↦ x.2
-    · intro x h1 h2
-      exact Subtype.ext (Prod.ext h1 h2)
-    · intro a b hab
-      exact ⟨⟨(a, b), hab⟩, rfl, rfl⟩
+    · exact fun x h1 h2 => Subtype.ext (Prod.ext h1 h2)
+    · exact fun a b hab => ⟨⟨(a, b), hab⟩, rfl, rfl⟩
 
 end GlobalTheory.DualOpen
 end -- clump:auto
@@ -1344,8 +1335,7 @@ theorem exists_lift (U S : Scheme.{0}) (p : U ⟶ S) [Smooth p] (C : Type) [Comm
     rw [hW.range_fromSpec]
     rintro _ ⟨z, rfl⟩
     have h1 : s (IsLocalRing.closedPoint C) ∈ W := by
-      rw [← hmap, ← Scheme.Hom.comp_apply, ← hw, Scheme.Hom.comp_apply]
-      exact hxW
+      rwa [← hmap, ← Scheme.Hom.comp_apply, ← hw, Scheme.Hom.comp_apply]
     exact ((IsLocalRing.specializes_closedPoint z).map s.continuous).mem_open W.2 h1
   have hu₀V : Set.range u₀ ⊆ Set.range hV.fromSpec := by
     rw [hV.range_fromSpec]
@@ -1424,8 +1414,7 @@ theorem smallLift_of_tanLift : ∀ (S : Scheme.{0}) [IsAffine S] (A : Over S) [G
   by_cases h0 : e = 0
   · have hb : Function.Bijective (Ideal.Quotient.mk (Ideal.span {e})) := by
       refine ⟨?_, Ideal.Quotient.mk_surjective⟩
-      rw [RingHom.injective_iff_ker_eq_bot, Ideal.mk_ker, Ideal.span_singleton_eq_bot]
-      exact h0
+      rwa [RingHom.injective_iff_ker_eq_bot, Ideal.mk_ker, Ideal.span_singleton_eq_bot]
     have : IsIso (CommRingCat.ofHom (Ideal.Quotient.mk (Ideal.span {e}))) :=
       (RingEquiv.ofBijective _ hb).toCommRingCatIso.isIso_hom
     have : IsIso (ptMap s (Ideal.Quotient.mk (Ideal.span {e}))).left :=

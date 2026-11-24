@@ -186,8 +186,7 @@ theorem le_preimage_of_fst {Y : Scheme.{0}} {B : Type} [CommRing B] {n : ℕ} {x
     exact ⟨fun hc ↦ by simpa using add_mem hn hc, fun hc ↦ by simpa using sub_mem hc hn⟩
   obtain ⟨q, rfl⟩ := hs p
   have := h (Set.mem_univ q)
-  rw [← hw] at this
-  exact this
+  rwa [← hw] at this
 
 theorem exists_glue {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (e : A →+* B) (d : Fin n → (A →+* DualNumber B))
     (hd : ∀ a f, (d a f).fst = e f) : ∃ q : A →+* TrivSqZeroExt B (Fin n → B),
@@ -361,8 +360,7 @@ theorem fst_comp_tangent_eq_one : ∀ {E : Type} [Field E] [NumberField E] [IsCM
     have e3 : (TrivSqZeroExt.fstHom K K K).toRingHom.comp (algebraMap K (DualNumber K)) = RingHom.id K := by
       ext a; simp
     rw [e3, CommRingCat.ofHom_id, Spec.map_id]
-  refine hm.1.hom_ext (hG1.trans hA1.symm) (hA2.trans ?_)
-  exact (Over.w (1 : Over.mk (𝟙 (Sp K)) ⟶ A)).symm
+  exact hm.1.hom_ext (hG1.trans hA1.symm) (hA2.trans (Over.w (1 : Over.mk (𝟙 (Sp K)) ⟶ A)).symm)
 
 theorem fst_comp_transl_eq : ∀ {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {B : Type} [CommRing B] (φ : K →+* B)
     (x : Sp B ⟶ A.left) (v : epsR K ⟶ A)
@@ -401,8 +399,7 @@ theorem fst_comp_transl_eq : ∀ {K : Type} [Field K] {A : Over (Sp K)} [GrpObj 
       ext a; simp
     rw [this, CommRingCat.ofHom_id, Spec.map_id]
     exact Category.id_comp x
-  rw [← hw]
-  exact h2
+  rwa [← hw]
 
 theorem top_le_preimage_of_fst : ∀ {B : Type} [CommRing B] {Z : Scheme.{0}} (z : Sp (DualNumber B) ⟶ Z) (V : Z.Opens),
     ⊤ ≤ (spMap (TrivSqZeroExt.fstHom B B B).toRingHom ≫ z) ⁻¹ᵁ V → ⊤ ≤ z ⁻¹ᵁ V := by
@@ -428,8 +425,7 @@ theorem top_le_preimage_of_fst : ∀ {B : Type} [CommRing B] {Z : Scheme.{0}} (z
       exact p.asIdeal.sub_mem h1 hn
   have := h (Set.mem_univ ((spMap (algebraMap B (DualNumber B))) p))
   show z p ∈ V
-  rw [← hp]
-  exact this
+  rwa [← hp]
 
 theorem comp_hom_of_isTransl {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {B : Type} [CommRing B] (φ : K →+* B)
     (x : Sp B ⟶ A.left) (v : epsR K ⟶ A) (w : Sp (DualNumber B) ⟶ A.left) (hw : IsTransl φ x v w) :
@@ -668,8 +664,7 @@ theorem valR_sub_eq_eps_mul_of_affine : ∀ {K : Type} [Field K] {A : Over (Sp K
     rfl)
   have b1 : spMap (p1 ε) ≫ spMap j = l₂ ≫ A'.hom := by rw [spc, hl₂, hja]
   have b2 : spMap (p2 ε) ≫ spMap j = (spMap (dualMap (mkE ε)) ≫ S ≫ i) ≫ A'.hom := by
-    rw [Category.assoc, Category.assoc, hi, ← Category.assoc S, hS, ← Category.assoc, spc, spc]
-    rw [hjb]
+    rw [Category.assoc, Category.assoc, hi, ← Category.assoc S, hS, ← Category.assoc, spc, spc, hjb]
     exact (spc (TrivSqZeroExt.fstHom K K K).toRingHom
       ((dualMap (mkE ε)).comp ((algebraMap B (DualNumber B)).comp (baseMap K B)))).symm
   have b3 : spMap (sg hε) ≫ spMap j = l₁ ≫ A'.hom := by
@@ -896,8 +891,7 @@ theorem isCechKS_of_isKS : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
       rw [hι.1.w]
       exact ⟨hU (Set.mem_univ (A.hom.base a)), hV (Set.mem_univ (A.hom.base a))⟩
     have h2 : ι.base a ∈ ⨆ k, W₀ k := by
-      rw [hcov]
-      exact h1
+      rwa [hcov]
     obtain ⟨k, hk⟩ := TopologicalSpace.Opens.mem_iSup.1 h2
     obtain ⟨Ω, hΩB, haΩ, hΩk⟩ := TopologicalSpace.Opens.isBasis_iff_nbhd.1 t.G.left.isBasis_affineOpens hk
     have h3 : a ∈ ⨆ p, M.U p := by

@@ -116,8 +116,7 @@ theorem sval_eq_secRatio_mul {φ : K → (H ⟶ X)} {ε : K → ℤ} (a b : LB.S
   have hc := hJ.mem φ r
   have hm : r z ∈ nonzeroLocus a ⊓ (LB.LinComb L φ ε).U (fun k => J (r ≫ φ k)) := ⟨ha, hc⟩
   have e := congrArg (gs r z _) (secRatio_spec a b (fun k => J (r ≫ φ k)))
-  rw [gs_mul r z _ hm, gs_res r z _ hm, gs_res r z _ hm, gs_res r z _ hm] at e
-  exact e
+  rwa [gs_mul r z _ hm, gs_res r z _ hm, gs_res r z _ hm, gs_res r z _ hm] at e
 
 theorem pullRatio_ι_comp {R : Type} [CommRing R] {M : ℕ} (P : H ⟶ PSpace R M) {U : H.Opens} {i : Fin (M + 1)}
     (hi : U ≤ P ⁻¹ᵁ chart R M i) (r : Z ⟶ H) (W : Z.Opens) (hW : W ≤ r ⁻¹ᵁ U)
@@ -319,13 +318,11 @@ theorem eq_of_germRatioAgree : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocal
   have hv : ∀ j, secGerm (x ≫ u ≫ p) pt (s j) (fun _ => J ((x ≫ u ≫ p) ≫ 𝟙 _)) = c.val * sval (τ j) y.left pt J' := by
     intro j
     have := hc (α j) (b j) (τ j) (F j) (s j) (hαb j).2 (hF j) (hs j 0)
-    rw [hg1, Category.assoc] at this
-    exact this
+    rwa [hg1, Category.assoc] at this
   have hv' : ∀ j, secGerm (x ≫ u' ≫ p) pt (s j) (fun _ => J ((x ≫ u' ≫ p) ≫ 𝟙 _)) = c'.val * sval (τ j) y'.left pt J' := by
     intro j
     have := hc' (α j) (b j) (τ j) (F j) (s j) (hαb j).2 (hF j) (hs j 0)
-    rw [hg1', Category.assoc] at this
-    exact this
+    rwa [hg1', Category.assoc] at this
   have hi : (x ≫ u ≫ p) pt ∈ secChart U.LG.L i := by
     rw [Scheme.Hom.comp_apply, hx]; exact hzi
   have hi'' : (x ≫ u' ≫ p) pt ∈ secChart U.LG.L i'' := by
@@ -465,9 +462,7 @@ theorem eq_of_agree_on_generators (R : Type) [CommRing R] (X W : Scheme.{0}) (sm
   ext x
   have ea := congrArg (fun f => f.hom (N.topIso.hom.hom x)) (app_restrict_eq X W N a' ha)
   have eb := congrArg (fun f => f.hom (N.topIso.hom.hom x)) (app_restrict_eq X W N b' hb)
-  have key := ea.symm.trans ((hφ _).trans eb)
-  simp only [CommRingCat.comp_apply, Iso.hom_inv_id_apply] at key
-  exact key
+  simpa only [CommRingCat.comp_apply, Iso.hom_inv_id_apply] using ea.symm.trans ((hφ _).trans eb)
 
 end GlobalTheory
 end -- clump:auto
@@ -496,8 +491,7 @@ theorem GlobalTheory.Mum.FibreGerm.secGerm_eq_secRatio_mul : ∀ (R : Type) [Com
       (fun _ => J ((fstG (maximalIdeal R) 0 G).left ≫ 𝟙 _)) = c.val * sval (τ l) ψ.left z J' := by
     intro l
     have := hc (α l) (b l) (τ l) (F l) (s l) (hT l) (hL l) (hE l)
-    rw [Category.id_comp] at this
-    exact this
+    rwa [Category.id_comp] at this
   obtain ⟨a, ha⟩ := exists_unit_secGerm k (fstG (maximalIdeal R) 0 G).left z hi
     (hJ.mem (fun _ : Fin 1 => 𝟙 G.left) (fstG (maximalIdeal R) 0 G).left)
   let jt : Fin 1 → D.toPre.P.L.ι := fun _ => J' (ψ.left ≫ Y.q.left)
@@ -592,8 +586,7 @@ theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : Deg
   have e3 : k' ≫ ψ = Over.homMk (pullback.fst Y.H.hom (thick R (maximalIdeal R) 0)) rfl := (Y.Φ T₀).injective e2
   have e4 : χ ≫ ψ.left = pullback.fst Y.H.hom (thick R (maximalIdeal R) 0) := congrArg (·.left) e3
   have e5 : χ ≫ G₀.hom = pullback.snd Y.H.hom (thick R (maximalIdeal R) 0) := by
-    rw [← cancel_mono (thick R (maximalIdeal R) 0), Category.assoc, ← pullback.condition]
-    exact hc
+    rwa [← cancel_mono (thick R (maximalIdeal R) 0), Category.assoc, ← pullback.condition]
   have e6 : χ ≫ ψ' = 𝟙 _ := by
     apply pullback.hom_ext
     · rw [Category.assoc, hψ', e4, Category.id_comp]
@@ -669,8 +662,7 @@ theorem exists_affineOpen_fraction_pullRatio : ∀ (R : Type) [CommRing R] (N : 
   refine ⟨φ ⁻¹ᵁ (PSpace R N).basicOpen h, hWc, hyh, ?_, hWa, ?_⟩
   · intro z hz
     have : φ z ∈ U' := (hhO hz).1
-    rw [← Set.mem_preimage, hU] at this
-    exact this
+    rwa [← Set.mem_preimage, hU] at this
   · intro g
     obtain ⟨a, rfl⟩ := hsurj g
     have hloc := (isAffineOpen_chart R N i).isLocalization_basicOpen h
@@ -880,8 +872,7 @@ theorem locGen_anySec_gen {R : Type} [CommRing R] (q : X ⟶ Spec (CommRingCat.o
   have hwV : w ∈ V := by
     refine ⟨hw, (Scheme.mem_basicOpen X _ w hw).2 ?_⟩
     have e : secGerm p w s₀ i = _ := gs_eq p w (secChart L i) hw (s₀.f i)
-    rw [e] at hs
-    exact hs
+    rwa [e] at hs
   obtain ⟨h, hhV, hwh⟩ := hN₁.exists_basicOpen_le ⟨w, hwV⟩ hwN
   have hNN₁ : X.basicOpen h ≤ N₁ := X.basicOpen_le h
   have hNi : X.basicOpen h ≤ p ⁻¹ᵁ secChart L i := hhV.trans inf_le_left
@@ -889,8 +880,7 @@ theorem locGen_anySec_gen {R : Type} [CommRing R] (q : X ⟶ Spec (CommRingCat.o
   have hsN : ∀ y ∈ X.basicOpen h, IsUnit (secGerm p y s₀ i) := fun y hy => by
     have := (Scheme.mem_basicOpen _ _ _ (hNi hy)).1 (hNs hy)
     have e : secGerm p y s₀ i = _ := gs_eq p y (secChart L i) (hNi hy) (s₀.f i)
-    rw [e]
-    exact this
+    rwa [e]
   have hu₀ : IsUnit (GlobalTheory.AbLaw.rs X hNi ((p.app (secChart L i)).hom (s₀.f i))) :=
     isUnit_of_gs _ fun y hy => by rw [gs_rs_app p hNi hy (s₀.f i)]; exact hsN y hy
   obtain ⟨r, hr_def⟩ : ∃ r : Fin n → Γ(X, X.basicOpen h), r = fun l =>
@@ -1034,8 +1024,7 @@ theorem pushout_inl_surjective_and_ker {A B C D : CommRingCat.{0}} {f : A ⟶ B}
     refine ⟨b, ?_⟩
     have := congr($(h2).hom d)
     change lift.hom ((po.desc mk ψ hψ).hom d) = d at this
-    rw [← hb] at this
-    exact this
+    rwa [← hb] at this
   · have := congr($(h1).hom b)
     change (po.desc mk ψ hψ).hom (i.hom b) = Ideal.Quotient.mk I b at this
     rw [(RingHom.mem_ker).1 hb, map_zero] at this
@@ -1335,8 +1324,7 @@ theorem GlobalTheory.Mum.ratio_gen_mod_of_closedFibre : ∀ (R : Type) [CommRing
       rw [Ideal.map_eq_bot_iff_le_ker]
       intro x hx
       exact RingHom.mem_ker.2 (GlobalTheory.ClosedFibre.cst_eq_zero R (maximalIdeal R) e G _ x hx)
-    rw [h0] at h1
-    exact h1
+    rwa [h0] at h1
   refine ⟨P, Q, ?_, ?_⟩
   · have hQ' : IsUnit ((jm.app _).hom (MvPolynomial.eval₂
         (GlobalTheory.AbLaw.cst (pe ≫ G.hom) ((thickObj R (maximalIdeal R) e G).left.basicOpen F)) r Q)) := by

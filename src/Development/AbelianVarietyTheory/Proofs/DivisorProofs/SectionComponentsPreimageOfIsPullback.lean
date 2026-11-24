@@ -69,8 +69,7 @@ theorem geometricallyConnected_of_smooth_of_section :
     ∀ (k : Type) [Field k] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of k))
       (e : Spec (CommRingCat.of k) ⟶ X),
       Smooth f → e ≫ f = 𝟙 _ → ConnectedSpace X → GeometricallyConnected f := by
-  intro k _ X f e _ he _
-  exact GlobalTheory.RatPointConn.of_section f e he
+  exact fun k _ X f e _ he _ => GlobalTheory.RatPointConn.of_section f e he
 
 end GlobalTheory
 end -- clump:auto
@@ -173,8 +172,7 @@ theorem sectionComponents_preimage_of_isPullback :
       (Spec.map (p.residueFieldMap (f' x'))) := by
     refine IsPullback.of_right ?_ (pullback.lift_snd _ _ _) hY
     have h1 : r ≫ pullback.fst _ _ = pullback.fst _ _ ≫ q := pullback.lift_fst _ _ _
-    rw [h1, ← hsq]
-    exact hbig
+    rwa [h1, ← hsq]
   have hsec : eY ≫ pullback.snd _ _ = 𝟙 _ := pullback.lift_snd _ _ _
   have hsec' : eY' ≫ pullback.snd _ _ = 𝟙 _ := pullback.lift_snd _ _ _
   have hcomm : eY' ≫ r = Spec.map (p.residueFieldMap (f' x')) ≫ eY := by

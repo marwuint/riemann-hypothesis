@@ -93,8 +93,7 @@ theorem eq_zero_of_points {X : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFiniteTy
   by_contra hne
   have hne' : ((X.basicOpen h : X.Opens) : Set X).Nonempty := by
     rw [Set.nonempty_iff_ne_empty]
-    intro h0
-    exact hne (TopologicalSpace.Opens.ext h0)
+    exact fun h0 => hne (TopologicalSpace.Opens.ext h0)
   obtain ⟨x, hx, hxc⟩ := (dense_closedPoints p).inter_open_nonempty _ (X.basicOpen h).isOpen hne'
   have e : ⊤ ≤ (pointOfClosedPoint p x hxc) ⁻¹ᵁ W := by
     intro a _
@@ -103,8 +102,7 @@ theorem eq_zero_of_points {X : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFiniteTy
   have h1 := H _ (pointOfClosedPoint_comp p x hxc) e
   have h2 : ((pointOfClosedPoint p x hxc).appLE W ⊤ e).hom h = 0 := by
     apply (Scheme.ΓSpecIso (CommRingCat.of ℂ)).commRingCatIsoToRingEquiv.injective
-    rw [map_zero]
-    exact h1
+    rwa [map_zero]
   have h3 := Scheme.basicOpen_appLE (pointOfClosedPoint p x hxc) ⊤ W e h
   have h4 : (IsLocalRing.closedPoint ℂ : Spec (CommRingCat.of ℂ)) ∈
       (Spec (CommRingCat.of ℂ)).basicOpen (((pointOfClosedPoint p x hxc).appLE W ⊤ e).hom h) := by
@@ -113,10 +111,8 @@ theorem eq_zero_of_points {X : Scheme.{0}} (p : X ⟶ Sp ℂ) [LocallyOfFiniteTy
       refine ⟨trivial, ?_⟩
       change pointOfClosedPoint p x hxc _ ∈ X.basicOpen h
       exact (pointOfClosedPoint_apply p x hxc _).symm ▸ hx
-    rw [← h3] at h5
-    exact h5
-  rw [h2, Scheme.basicOpen_zero] at h4
-  exact h4
+    rwa [← h3] at h5
+  rwa [h2, Scheme.basicOpen_zero] at h4
 
 theorem lift_toSpecΓ {X : Scheme.{0}} {R : CommRingCat.{0}} (W : X.Opens) (x : Spec R ⟶ X)
     (x' : Spec R ⟶ W) (hx : x' ≫ W.ι = x) (e : ⊤ ≤ x ⁻¹ᵁ W) :
@@ -137,8 +133,7 @@ theorem range_subset {X T : Scheme.{0}} (W : X.Opens) (x : T ⟶ X) (e : ⊤ ≤
 theorem top_le_of_lift {X T : Scheme.{0}} (W : X.Opens) (x : T ⟶ X) (x' : T ⟶ W)
     (hx : x' ≫ W.ι = x) : ⊤ ≤ x ⁻¹ᵁ W := by
   subst hx
-  intro t _
-  exact (x'.base t).2
+  exact fun t _ => (x'.base t).2
 
 noncomputable def ev {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (W : X.Opens) (e : ⊤ ≤ x ⁻¹ᵁ W) :
     Γ(X, W) ⟶ CommRingCat.of ℂ :=
@@ -383,8 +378,7 @@ lemma isThetaFn_comp {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
 lemma le_preimage_lbPow {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (L : LB X) (k : ℕ) (j : PUnit → L.ι) :
     ⊤ ≤ x ⁻¹ᵁ (lbPow L k).U j ↔ ⊤ ≤ x ⁻¹ᵁ L.U (j PUnit.unit) := by
   refine (le_preimage_wchart x L (fun _ : PUnit => 𝟙 X) j).trans ?_
-  simp only [Category.comp_id]
-  exact ⟨fun h => h _, fun h _ => h⟩
+  simpa only [Category.comp_id] using ⟨fun h => h _, fun h _ => h⟩
 
 lemma exists_quot [LocallyOfFiniteType A.hom] {k : ℕ} {s t : (lbPow L k).Sec}
     {θ ϑ : (Fin g → ℂ) → ℂ} (hs : u.IsFnPow k s θ) (ht : u.IsFnPow k t ϑ) (j : (lbPow L k).ι) :

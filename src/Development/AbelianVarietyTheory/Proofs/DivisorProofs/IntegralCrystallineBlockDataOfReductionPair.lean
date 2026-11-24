@@ -476,8 +476,7 @@ theorem lift_core (π : Representation k Γ V) (S : Submodule k V) (hS : Stab π
       obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hb
       refine Submodule.mem_sup.2 ⟨z - c • x, ?_, c • x,
         Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x), sub_add_cancel _ _⟩
-      rw [Submodule.mem_comap, map_sub, map_smul, ← hab, add_sub_cancel_right]
-      exact ha
+      rwa [Submodule.mem_comap, map_sub, map_smul, ← hab, add_sub_cancel_right]
     · rw [Submodule.mem_comap, map_sub, map_smul]
       exact hy4 g
 
@@ -512,8 +511,7 @@ theorem ss_of_compl (σ : Representation k Γ V)
   refine ⟨⟨W', fun g v hv => h1 g v hv⟩, ?_⟩
   rw [isCompl_iff, disjoint_iff, codisjoint_iff,
     ← Subrepresentation.toSubmodule_injective.eq_iff, ← Subrepresentation.toSubmodule_injective.eq_iff]
-  rw [isCompl_iff, disjoint_iff, codisjoint_iff] at h2
-  exact h2
+  rwa [isCompl_iff, disjoint_iff, codisjoint_iff] at h2
 
 theorem ss_of_min (σ : Representation k Γ V) (h : ∀ W, Stab σ W → W = ⊥ ∨ W = ⊤) :
     IsSemisimpleModule (MonoidAlgebra k Γ) σ.asModule := by
@@ -599,8 +597,7 @@ theorem bn_step [FiniteDimensional k V] {A : Type} [AddCommGroup A] [Module k A]
     have := LinearMap.congr_fun (he g) (x, 0)
     have h0 : ((subRep π S hS).prod sQ) g (x, 0) = (subRep π S hS g x, 0) :=
       Prod.ext rfl (map_zero (sQ g))
-    rw [LinearMap.comp_apply, h0] at this
-    exact this
+    rwa [LinearMap.comp_apply, h0] at this
   have h2 : LinearMap.snd k A B ∘ₗ j = 0 := by
     refine hδ3 (subRep π S hS) _ (fun g x => congrArg Prod.snd (hj g x)) fun s φ hφ => ?_
     rcases hsimple (LinearMap.ker φ) (fun g x hx => by
@@ -817,8 +814,7 @@ theorem integral_flag_lift_of_residue : ∀ (O Γ : Type) [CommRing O] [IsDomain
         rw [show algebraMap O k = f from IsLocalRing.ResidueField.algebraMap_eq O]
         exact add_sub_cancel_right _ _
       · refine sup_le (hMmono (Fin.castSucc_le_succ _)) ?_
-        rw [Submodule.span_le, Set.singleton_subset_iff]
-        exact hxb
+        rwa [Submodule.span_le, Set.singleton_subset_iff]
     · intro g
       rw [hM, map_sub, hπmul]
       convert hchi g using 2
@@ -869,8 +865,7 @@ theorem liftInt_spec (x : PadicAlgCl l) (hx : x ∈ LL.1 ∧ ‖x‖ ≤ 1) :
     ((LL.1.val.toRingHom).comp ((OL LL).val.toRingHom)) (liftInt LL x hx) = x := rfl
 
 theorem incl_injective : Function.Injective ((LL.1.val.toRingHom).comp ((OL LL).val.toRingHom)) := by
-  intro a b h
-  exact Subtype.ext (Subtype.ext h)
+  exact fun a b h => Subtype.ext (Subtype.ext h)
 
 end GlobalTheory.IntDescend
 
@@ -897,8 +892,7 @@ theorem descend : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (Γ : Type) [Grou
     exact lift_units _ hinj f hr
   · intro χ hχ
     refine lift_units _ (incl_injective LL) χ ?_
-    intro g
-    exact ⟨liftInt LL _ ⟨(hχ g).1, (hχ g).2.le⟩, liftInt_spec LL _ _⟩
+    exact fun g => ⟨liftInt LL _ ⟨(hχ g).1, (hχ g).2.le⟩, liftInt_spec LL _ _⟩
 
 end GlobalTheory.IntDescend
 end -- clump:auto
@@ -974,8 +968,7 @@ theorem integralBlock_of_blockPair : ∀ (E Ω : Type) [Field E] [NumberField E]
       simp only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, hψv, Units.val_mul]
       rw [hcp, hcp]
     have h := hcong g m
-    rw [← e] at h
-    exact h
+    rwa [← e] at h
   obtain ⟨R, M, rs, hM0, hML, hMm, hMs, hrs, hline⟩ := GlobalTheory.integral_flag_lift_of_residue ↥(OL LL) (G E Ω) n a t r' ρ' ψ ϖ hϖ hat hc _root_.GlobalTheory.CharFlag.main
   refine ⟨LL, r', ψ, ϖ, R, M, rs, hζ, hτ, ?_, fun s => ?_, hϖ, hM0, hML, hMm, hMs, hrs, hline⟩
   · have : (Matrix.GeneralLinearGroup.map (GlobalTheory.WachBlock.ofOL l LL)).comp r' = (MulAut.conj A⁻¹).toMonoidHom.comp r := hr'

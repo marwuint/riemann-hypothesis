@@ -85,8 +85,7 @@ theorem linearIndependent_toCotangent {R : Type} [CommRing R] [IsLocalRing R] [I
     apply Submodule.map_injective_of_injective (IsLocalRing.maximalIdeal R).injective_subtype
     rw [Submodule.map_span, Submodule.map_subtype_top, ← Set.range_comp]
     exact hrsp.1
-  rw [← IsLocalRing.CotangentSpace.span_image_eq_top_iff] at hsp
-  rw [← Set.range_comp] at hsp
+  rw [← IsLocalRing.CotangentSpace.span_image_eq_top_iff, ← Set.range_comp] at hsp
   exact hsp.ge
 
 
@@ -144,8 +143,7 @@ theorem exists_frame_of_rsp : ∀ (k : Type) [Field k] [CharZero k] (Y : Scheme.
       rw [KaehlerDifferential.map_D, ← algebraMap_smul (X.presheaf.stalk y) (a j l),
         TensorProduct.tmul_smul, ← algebraMap_smul (IsLocalRing.ResidueField (X.presheaf.stalk y))]
       rfl
-    rw [key]
-    exact hw
+    rwa [key]
 
   obtain ⟨e, he, hdet⟩ := _root_.GlobalTheory.extend_linearIndependent_rows_by_standard_basis ab hab
   let z : Fin n → Γ(X, U) := Function.extend e z₀ x
@@ -154,8 +152,7 @@ theorem exists_frame_of_rsp : ∀ (k : Type) [Field k] [CharZero k] (Y : Scheme.
   have hdz (i : Fin n) : dFun (algX p U) (z i) = ∑ l, c i l • dFun (algX p U) (x l) := by
     by_cases hi : ∃ j, e j = i
     · obtain ⟨j, rfl⟩ := hi
-      simp only [z, c, Matrix.of_apply, he.extend_apply]
-      exact ha j
+      simpa only [z, c, Matrix.of_apply, he.extend_apply] using ha j
     · simp only [z, c, Matrix.of_apply, Function.extend_apply' _ _ _ hi]
       simp [Pi.single_apply]
   have hform : dOn p z = c.det • dOn p x := dForm_eq_det_smul z x c hdz
@@ -178,8 +175,7 @@ theorem exists_frame_of_rsp : ∀ (k : Type) [Field k] [CharZero k] (Y : Scheme.
   have hyW : y ∈ X.basicOpen c.det := (X.mem_basicOpen c.det y hyU).2 hunit
   have hWU : X.basicOpen c.det ≤ U := X.basicOpen_le _
   refine ⟨X.basicOpen c.det, hWU.trans hUO, hyW, fun i => resG X hWU (z i), ⟨e, he⟩, fun j => ?_, ?_⟩
-  · simp only [z, z₀, Function.Embedding.coeFn_mk, he.extend_apply]
-    exact resG_resG _ _ _
+  · simpa only [z, z₀, Function.Embedding.coeFn_mk, he.extend_apply] using resG_resG _ _ _
   · have hx : IsFrame (dOn p x) := ⟨hU, isFreeGen_dForm x b hb⟩
     have h1 := hx.res (hU.basicOpen c.det) hWU
     refine ⟨hU.basicOpen c.det, ?_⟩

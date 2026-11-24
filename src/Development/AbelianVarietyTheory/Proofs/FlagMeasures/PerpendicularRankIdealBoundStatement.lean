@@ -106,13 +106,11 @@ theorem span_inf_eq {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGrou
     Submodule.span K (↑(L ⊓ Submodule.restrictScalars (RingOfIntegers K) T) : Set V) = T := by
   apply le_antisymm
   · rw [Submodule.span_le]
-    intro x hx
-    exact (Submodule.mem_inf.mp hx).2
+    exact fun x hx => (Submodule.mem_inf.mp hx).2
   · intro v hv
     obtain ⟨d, hd, h⟩ := exists_smul_mem L hL v
     have hd' : algebraMap (RingOfIntegers K) K d ≠ 0 := by
-      intro h0
-      exact hd ((map_eq_zero_iff _ (IsFractionRing.injective (RingOfIntegers K) K)).mp h0)
+      exact fun h0 => hd ((map_eq_zero_iff _ (IsFractionRing.injective (RingOfIntegers K) K)).mp h0)
     have hdT : d • v ∈ Submodule.restrictScalars (RingOfIntegers K) T := by
       rw [← algebraMap_smul K d v]
       exact T.smul_mem _ hv
@@ -204,8 +202,7 @@ theorem exists_ideal_smul_le {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (A 
   obtain ⟨I, h1, h2, h3⟩ := exists_ann (K := K) _ (A ⧸ B.comap A.subtype) rfl
   refine ⟨I, h1, h2, Submodule.smul_le.2 fun r hr x hx => ?_⟩
   have := h3 r hr (Submodule.Quotient.mk ⟨x, hx⟩)
-  rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero] at this
-  exact this
+  rwa [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero] at this
 
 theorem absNorm_map_equiv (e : 𝓞 K ≃+* 𝓞 K) (J : Ideal (𝓞 K)) :
     Ideal.absNorm (J.map e) = Ideal.absNorm J := by
@@ -236,8 +233,7 @@ theorem mem_perp (h : V →ₗ⋆[K] V →ₗ[K] K) (P : Submodule (𝓞 K) V) (
     | zero => simp
     | add a b _ _ ha hb => simp [ha, hb]
     | smul c a _ ha => simp [ha]
-  · intro H p hp
-    exact H p (Submodule.subset_span hp)
+  · exact fun H p hp => H p (Submodule.subset_span hp)
 
 omit [NumberField K] [IsScalarTower (𝓞 K) K V] in
 theorem isCompl_perp (h : V →ₗ⋆[K] V →ₗ[K] K) (ha : ∀ x, h x x = 0 → x = 0) (P : Submodule (𝓞 K) V) :
@@ -246,8 +242,7 @@ theorem isCompl_perp (h : V →ₗ⋆[K] V →ₗ[K] K) (ha : ∀ x, h x x = 0 �
   set T := (⨅ p ∈ P, LinearMap.ker (h p) : Submodule K V) with hT
   have hd : Disjoint A T := by
     rw [Submodule.disjoint_def]
-    intro x hx hx'
-    exact ha x ((mem_perp h P x).1 hx' x hx)
+    exact fun x hx hx' => ha x ((mem_perp h P x).1 hx' x hx)
   let b := Module.finBasis K A
   let f : V →ₗ[K] (Fin (finrank K A) → K) := LinearMap.pi fun i => h (b i : V)
   have hk : LinearMap.ker f ≤ T := by
@@ -313,8 +308,7 @@ theorem key (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm) (hn : h.Nondegene
       have hbt : b • t ∈ L ⊓ T.restrictScalars (𝓞 K) := by
         refine ⟨?_, (T.restrictScalars (𝓞 K)).smul_mem b ht⟩
         have := L.sub_mem (L.smul_mem b hz) hbm.1
-        rw [smul_add, add_sub_cancel_left] at this
-        exact this
+        rwa [smul_add, add_sub_cancel_left] at this
       rw [smul_add, map_add (f := _), LinearMap.add_apply, (hT x).1 hxT _ hbm.2, zero_add]
       exact (mem_dual h _ x).1 hx1 _ hbt
     · intro a b ha hb
@@ -333,8 +327,7 @@ theorem key (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm) (hn : h.Nondegene
     exact Submodule.smul_mono le_rfl h1 this
   have := main _ hay
   rw [← algebraMap_smul K a, LinearMap.map_smulₛₗ₂] at this
-  rw [← algebraMap_smul K _ x, map_smul]
-  exact this
+  rwa [← algebraMap_smul K _ x, map_smul]
 
 end General
 

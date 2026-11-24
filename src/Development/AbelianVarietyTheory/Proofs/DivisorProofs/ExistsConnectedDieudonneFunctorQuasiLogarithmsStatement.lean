@@ -824,8 +824,7 @@ theorem GlobalTheory.Katz.rig_pull_natural_semi : ∀ (p : ℕ) (k k' : Type) [C
   have hu : (fun n => ∑ i, w i • dUnit (R := k) (c.x n i)) ∈ G.omegaSub := (_root_.GlobalTheory.OmegaCoord.omega_coord p k d G c).1 w
   rw [hρ t w ⟨_, hz⟩ ⟨_, hu⟩ (fun _ => rfl) (fun _ => rfl), SemiHom.rig_mk]
   have hev : ∀ n, c'.ev₂ n (pull2 φ (MvPowerSeries.map σ t)) = (s.app n).two (c.ev₂ n t) := by
-    intro n
-    exact GlobalTheory.Katz.semiHom_ev₂_pull2 p k k' σ d e G G' c c' s φ hφ n t
+    exact fun n => GlobalTheory.Katz.semiHom_ev₂_pull2 p k k' σ d e G G' c c' s φ hφ n t
   refine hρ' _ _ _ _ (fun n => ?_) (fun n => ?_)
   · rw [SemiHom.cocycles_val, hev n]
   · rw [SemiHom.omega_val]
@@ -836,8 +835,7 @@ theorem GlobalTheory.Katz.rig_pull_natural_semi : ∀ (p : ℕ) (k k' : Type) [C
     have hd : ∀ i, dUnit (R := k') (s.app n (c.x n i)) = ∑ l, lin (φ i) l • dUnit (R := k') (c'.x n l) := fun i => by
       rw [← hφ n i]
       exact (_root_.GlobalTheory.Katz.counit_dUnit_evA k' e (G'.A n) (c'.x n) (c'.nil n) (c'.aug n) (φ i)).2
-    simp only [hd, Finset.smul_sum, smul_smul, pullLin, Finset.sum_smul]
-    exact Finset.sum_comm
+    simpa only [hd, Finset.smul_sum, smul_smul, pullLin, Finset.sum_smul] using Finset.sum_comm
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigidifiedExtensionPresentationNaturalSemilinear =====
@@ -874,8 +872,7 @@ theorem GlobalTheory.Katz.isRigOf_rigMk : ∀ (p : ℕ) (k : Type) [CommRing k] 
     obtain ⟨s, hs, -⟩ := hpres z.1 (fun n => (z.2 n).2)
     obtain ⟨w, hw, -⟩ := hom.2 u
     have hz : (fun n => c.ev₂ n s) = z.1 := funext hs
-    refine ⟨s, w, (hcoc s).2 (hz ▸ z.2), ?_⟩
-    exact hρ s w z u (fun n => (hs n).symm) hw
+    exact ⟨s, w, (hcoc s).2 (hz ▸ z.2), hρ s w z u (fun n => (hs n).symm) hw⟩
   · intro s w hs
     let z : G.cocycles := ⟨fun n => c.ev₂ n s, (hcoc s).1 hs⟩
     let u : G.omega := ⟨fun n => ∑ i, w i • dUnit (R := k) (c.x n i), hom.1 w⟩
@@ -1200,8 +1197,7 @@ theorem chartPull_comp {k k' k'' : Type} [Field k] [CharP k p] [PerfectRing k p]
   have hF := (_root_.GlobalTheory.Katz.quasiLog_map p k k'' (τ.comp σ) d μ hμ hσμ f.1 f.2).1
   have key := (GlobalTheory.Katz.PullQuasiLog.main p k'' e d (fun i => MvPowerSeries.map (τ.comp σ) (μ i)) hσμ _ hF).2.1
     e' φt ψ (h3t.1) hψ0
-  rw [hgu, hgt, hgs, map_subst_lift p τ φs h3s.1, MvPowerSeries.map_map, ← frMap_comp]
-  exact key
+  rwa [hgu, hgt, hgs, map_subst_lift p τ φs h3s.1, MvPowerSeries.map_map, ← frMap_comp]
 
 end Chart
 
@@ -1319,8 +1315,7 @@ theorem isChartPull_comp {k k' k'' : Type} [Field k] [CharP k p] [PerfectRing k 
   obtain ⟨mu, hmu⟩ := chartPull_exists c c'' hμ hκ hc hc'' u
   have e : (mu : Mod p hμ → Mod p hκ) = fun x => mt (ms x) :=
     funext (chartPull_comp c c' c'' hμ hν hκ s t u hu ms mt mu hs ht hmu)
-  rw [← e]
-  exact hmu
+  rwa [← e]
 
 theorem exists_base_isConn_katz : ∀ (p : ℕ) [Fact p.Prime],
     ∃ B : GlobalTheory.Dieu.Base p (fun _ _ G => G.IsConn), B.Katz := by

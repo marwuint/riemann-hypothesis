@@ -286,8 +286,7 @@ theorem normSq_theta_modGrowth_big : GlobalTheory.Published.WeilSiegelFormulaUni
       exact (hcont g).aestronglyMeasurable
     refine (memLp_two_iff_integrable_sq_norm hm).2 ?_
     refine (hint (io A (g, g))).norm.congr (Filter.Eventually.of_forall fun q => ?_)
-    simp only [GlobalTheory.AutomorphicL2Unitary.descend]
-    exact (knorm g _).symm
+    simpa only [GlobalTheory.AutomorphicL2Unitary.descend] using (knorm g _).symm
   refine ⟨hL2, ?_⟩
 
   have hI : HasIwasawa D.sp.cm.sig (dblSp A).gram (Khat A a) :=
@@ -318,8 +317,7 @@ theorem normSq_theta_modGrowth_big : GlobalTheory.Published.WeilSiegelFormulaUni
     intro x
     have e := hv.eisCont_eq
     have := hC₁ (sZero A B) (Metric.mem_ball_self hr) x
-    rw [e] at this
-    exact this
+    rwa [e] at this
   have hC₁0 : 0 ≤ C₁ := by
     have h1 := (norm_nonneg _).trans (hE 1)
     exact nonneg_of_mul_nonneg_left h1 (pow_pos (GlobalTheory.Grow.height_pos _ _) _)
@@ -455,8 +453,7 @@ theorem innerProduct_convergent : GlobalTheory.Published.CuspRapidDecay → Glob
         swSec A B omh ν 𝓕 (delta A B Φ₁ Φ₂) (io A (g, 1)) *
           starRingEnd ℂ (GlobalTheory.Eis.petCoef A m (fun x => conj (u₁ x)) (fun x => conj (u₂ x)) g) :=
       funext fun g => (hpt g).symm
-    rw [e]
-    exact hZc
+    rwa [e]
   have hZ : GlobalTheory.Eis.dblInt A χB⁻¹ m (GlobalTheory.Eis.eis A (swSec A B omh ν 𝓕 (delta A B Φ₁ Φ₂)))
       (fun x => conj (u₁ x)) (fun x => conj (u₂ x)) = ∫ g, wcoef om ν 𝓕 Φ₁ Φ₂ g * rcoef m u₁ u₂ g ∂m := by
     rw [hZe]
@@ -884,8 +881,7 @@ theorem continuous_l2_weil_action_ptAt : ∀ {D : D7} {G : Type} [Group G] [Fint
   have e : ∀ g : GA D (Wc D i), l2 μ 𝓧 (ω (1, g) (ptAt R i σ BW f Q₁)) (ptAt R i σ BW f Q₂) =
       GlobalTheory.RawLift.thetaIP μ 𝓧 (ptAt R i σ BW f Q₂) (ω (1, g) (ptAt R i σ BW f Q₁)) := fun g => by
     rw [← GlobalTheory.RawLift.FockCoef.thetaInner_star, GlobalTheory.RawLift.GoodModulus.thetaInner_eq_star_l2, star_star]
-  simp only [e]
-  exact GlobalTheory.RawLift.FockCoef.continuous_coef hom hc (hpt Q₂) (hpt Q₁)
+  simpa only [e] using GlobalTheory.RawLift.FockCoef.continuous_coef hom hc (hpt Q₂) (hpt Q₁)
 
 end GlobalTheory.LiftCoefCont
 
@@ -1281,8 +1277,7 @@ theorem value_laws (hP : GlobalTheory.Published.CuspRapidDecay) {θ : D.what₂.
     refine ⟨(hT.aut v).cont, GlobalTheory.CuspDecay.bounded_of_cuspForm hP hθ (hT.aut v) (hT.cusp v), fun k hk g => ?_⟩
     rw [hT.lev v k hk g, hχ k hk, one_mul]
   | zero =>
-    intro v
-    exact ⟨continuous_const, ⟨0, fun g => by simp⟩, fun k _ g => by simp⟩
+    exact fun v => ⟨continuous_const, ⟨0, fun g => by simp⟩, fun k _ g => by simp⟩
   | add U U' _ _ h h' =>
     intro v
     obtain ⟨c1, ⟨C1, b1⟩, i1⟩ := h v
@@ -1611,8 +1606,7 @@ theorem innerProductFormulaC_of_convergent : GlobalTheory.Published.CuspRapidDec
     have hI : ∫ g, l2 μ 𝓧 (ω (1, g) φ₁) φ₂ *
         conj (GlobalTheory.Cusp.petersson (Wc D i) (R.νW i) (rTr (Wc D i) g F₁) F₂) ∂(R.νW i) = ∫ g, Z g ∂(R.νW i) :=
       integral_congr_ae (ae_of_all _ hZeq)
-    rw [hpV, hvol, hI, hdis] at hEq
-    exact hEq
+    rwa [hpV, hvol, hI, hdis] at hEq
 
 end GlobalTheory.IPFConv
 end -- clump:auto

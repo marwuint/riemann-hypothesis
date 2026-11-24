@@ -89,22 +89,18 @@ theorem comm_offI {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W}
   have e1 : mat x.1 * (u • w) = u • w := by
     have : mat x.1 * (u • w) - u • w = (u • (mat x.1 - 1)) * w := by
       rw [Matrix.smul_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_smul, smul_sub]
-    rw [h1, Matrix.zero_mul, sub_eq_zero] at this
-    exact this
+    rwa [h1, Matrix.zero_mul, sub_eq_zero] at this
   have e2 : (u • w) * (mat x.2)ᵀ = u • w := by
     have : (u • w) * (mat x.2)ᵀ - u • w = w * (u • (mat x.2 - 1))ᵀ := by
       rw [Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.transpose_sub, Matrix.transpose_one,
         Matrix.mul_sub, Matrix.mul_one, smul_sub]
-    rw [h2, Matrix.transpose_zero, Matrix.mul_zero, sub_eq_zero] at this
-    exact this
+    rwa [h2, Matrix.transpose_zero, Matrix.mul_zero, sub_eq_zero] at this
   have hact : GlobalTheory.WeilM.actAB (cA σ) x (u • w) = u • w := by
     simp only [GlobalTheory.WeilM.actAB]
     have := e1
     simp only [mat] at this e2
     rw [this, e2]
-  have h3 := hW.impl x (u • w) Φ hΦ
-  simp only [GlobalTheory.WeilM.Darboux.rho, he, hact] at h3
-  exact h3
+  simpa only [GlobalTheory.WeilM.Darboux.rho, he, hact] using hW.impl x (u • w) Φ hΦ
 
 theorem schr_trans' (ψ : AddChar (AF F) ℂ) {κ : Type} [Fintype κ] (w : κ → AF F) (Φ : (κ → AF F) → ℂ) :
     GlobalTheory.WeilM.schr ψ (w, 0) Φ = fun y => Φ (y + w) := by
@@ -151,9 +147,7 @@ theorem exists_op_of_UAt {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   funext y
   set T0 := om x with hT0
   set u : AF F := ((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F)) with hudef
-  have hu : evI F u = 0 := by
-    show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : InfiniteAdeleRing F) = 0
-    exact map_zero _
+  have hu : evI F u = 0 := map_zero _
   set p : Fin n × Fin d → AF F := liftI (fun i => evI F (y i)) with hpdef
   have hyp : y + u • (-y) = p := by
     funext i
@@ -198,8 +192,7 @@ theorem exists_op_of_UAt {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   rw [map_sub, Pi.sub_apply, sub_eq_zero] at h0
   have htr : T0 (fun w => Φ₀ (w + u • (-y))) = fun w => T0 Φ₀ (w + u • (-y)) := by
     have h := hcomm u hu (-y) 0 Φ₀ hm₀
-    rw [smul_zero, schr_trans', schr_trans'] at h
-    exact h
+    rwa [smul_zero, schr_trans', schr_trans'] at h
   have h2 : T0 Φ₂ y = (r y / R 0) * T0 Φ₀ p := by
     rw [hΦ₂, map_smul, htr, Pi.smul_apply, smul_eq_mul, hyp]
   show T0 Φ₁ y = tens (evI F) (⇑(Tf f)) r y

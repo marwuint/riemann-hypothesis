@@ -129,8 +129,7 @@ theorem psi_finBasis_linearIndependent (G : HTGroup p) (w : InfinitePlace G.F) :
       Θ.toLinearMap ∘ (Algebra.TensorProduct.basis ℂ (Module.finBasis G.F G.C)) := by
     funext s
     simp only [Function.comp_apply, Algebra.TensorProduct.basis_apply, AlgHom.toLinearMap_apply, hΘ]
-  rw [e]
-  exact h2
+  rwa [e]
 
 def psiAll (G : HTGroup p) : G.C →ₗ[ℚ] (InfinitePlace G.F → Fin G.n → Fin G.n → ℂ) where
   toFun c := fun w i l => G.psi w c i l
@@ -171,10 +170,8 @@ theorem psiAll_towerBasis_linearIndependent (G : HTGroup p) :
   have hs : ∀ s, (fun i => r (i, s)) = 0 := by
     intro s
     apply real_comb_integralBasis_eq_zero
-    intro w
-    exact Fintype.linearIndependent_iff.mp (psi_finBasis_linearIndependent G w) _ (hw w) s
-  intro b
-  exact congrFun (hs b.2) b.1
+    exact fun w => Fintype.linearIndependent_iff.mp (psi_finBasis_linearIndependent G w) _ (hw w) s
+  exact fun b => congrFun (hs b.2) b.1
 
 theorem psiAll_liftBaseChange_injective (G : HTGroup p) :
     Function.Injective ((psiAll G).liftBaseChange ℝ) := by
@@ -202,8 +199,7 @@ theorem psi_linearIndependent_real : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p
       (psiAll G).liftBaseChange ℝ ∘ (fun j => (1 : ℝ) ⊗ₜ[ℚ] e j) := by
     funext j
     simp [LinearMap.liftBaseChange_tmul, psiAll]
-  rw [e2]
-  exact h2
+  rwa [e2]
 
 end GlobalTheory.LKCx
 end -- clump:auto
@@ -245,8 +241,7 @@ theorem finite_of_bounded_image_closure_finset :
   have hMY : Y ⊆ (M : Set V) := by
     intro y hy
     have := hY hy
-    rw [← Submodule.span_int_eq_addSubgroupClosure] at this
-    exact this
+    rwa [← Submodule.span_int_eq_addSubgroupClosure] at this
   haveI : Module.Finite ℤ M := Module.Finite.span_of_finite ℤ S.finite_toSet
   haveI : Module.IsTorsionFree ℤ V := .trans_faithfulSMul ℤ ℚ V
   haveI : Module.Free ℤ M := Module.free_of_finite_type_torsion_free'

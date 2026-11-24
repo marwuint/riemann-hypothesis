@@ -206,8 +206,7 @@ theorem _root_.GlobalTheory.UnRep.exists_inverse_one_add_preserving_hat : ∀ (F
       | mem x hx =>
         obtain ⟨b, hb, y, hyL, rfl⟩ := hx
         have hyT : y ∈ Submodule.span ℤ (T : Set (Fin n → E)) := by
-          rw [hT]
-          exact hyL
+          rwa [hT]
         clear hyL
         induction hyT using Submodule.span_induction with
         | mem y hy =>
@@ -239,10 +238,7 @@ theorem _root_.GlobalTheory.UnRep.exists_inverse_one_add_preserving_hat : ∀ (F
       | add x y _ _ hx hy => exact add_mem hx hy
       | neg x _ hx => exact neg_mem hx
 
-  have hNe : ∀ v, (N • e) v ∈ v.adicCompletionIntegers F := by
-    intro v
-    show N • e v ∈ _
-    exact nsmul_mem (he v) N
+  have hNe : ∀ v, (N • e) v ∈ v.adicCompletionIntegers F := fun v => nsmul_mem (he v) N
   set a' : A := ⟨N • e, hNe⟩ with ha'
   have hjac : a' ∈ Ideal.jacobson (⊥ : Ideal A) := by
     apply _root_.GlobalTheory.UnRep.Nakayama.mem_jacobson
@@ -325,8 +321,7 @@ theorem _root_.GlobalTheory.UnRep.exists_inverse_one_add_preserving_hat : ∀ (F
         exact R.smul_mem _ hx }
   have hLV : Submodule.span E (L : Set (Fin n → E)) ≤ V := by
     rw [Submodule.span_le]
-    intro x hx
-    exact hR _ (one_tmul_mem_hat hx)
+    exact fun x hx => hR _ (one_tmul_mem_hat hx)
   have hsingle : ∀ i, (Pi.single i (1 : _root_.GlobalTheory.AdLat.RA F E) : Fin n → _) ∈ R := by
     intro i
     have hi : (Pi.single i (1 : E) : Fin n → E) ∈ V := by
@@ -340,8 +335,7 @@ theorem _root_.GlobalTheory.UnRep.exists_inverse_one_add_preserving_hat : ∀ (F
       · subst hj
         simp [Algebra.TensorProduct.one_def]
       · simp [hj]
-    rw [← h1]
-    exact hi
+    rwa [← h1]
   choose w hw using hsingle
   have hW : (1 + M) * Matrix.of (fun r i ↦ w i r) = 1 := by
     ext r i
@@ -355,5 +349,4 @@ theorem _root_.GlobalTheory.UnRep.exists_inverse_one_add_preserving_hat : ∀ (F
   intro z hz
   obtain ⟨y, hy, rfl⟩ := hsurj z hz
   have hW' : Matrix.of (fun r i ↦ w i r) * (1 + M) = 1 := mul_eq_one_comm.mp hW
-  rw [Matrix.mulVec_mulVec, hW', Matrix.one_mulVec]
-  exact hy
+  rwa [Matrix.mulVec_mulVec, hW', Matrix.one_mulVec]

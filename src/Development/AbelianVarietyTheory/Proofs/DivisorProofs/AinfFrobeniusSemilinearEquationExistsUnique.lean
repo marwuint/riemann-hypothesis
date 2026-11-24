@@ -141,8 +141,7 @@ theorem frobSemilinear_iterate_eq_zero : ∀ (p : ℕ) [Fact p.Prime] (S : Type)
   refine ⟨N * m, fun z => ?_⟩
   funext i
   have h := hall m z i
-  rw [hm, Ideal.zero_eq_bot, Ideal.mem_bot] at h
-  exact h
+  rwa [hm, Ideal.zero_eq_bot, Ideal.mem_bot] at h
 
 end GlobalTheory
 end -- clump:auto
@@ -252,8 +251,7 @@ theorem perfection_frobenius_solve : ∀ (p : ℕ) [Fact p.Prime] (S : Type) [Co
     intro n
     have h1 := congrFun (perfLevelOp_coeff p S Q n x) i
     have hx : (fun i => Perfection.coeff S p n (x i)) = z n := rfl
-    rw [hx, hz n] at h1
-    exact h1
+    rwa [hx, hz n] at h1
   · intro y hy
     funext k
     apply Perfection.ext
@@ -348,8 +346,7 @@ lemma inj_step
     exact Matrix.mulVec_zero _
   have hx0 := (hU 0).unique hx h0
   have hd : ∀ k, ∃ w, v k = (p : WittVector p R) * w := by
-    intro k
-    exact (p_dvd_iff (v k)).2 (congrFun hx0 k)
+    exact fun k => (p_dvd_iff (v k)).2 (congrFun hx0 k)
   choose w hw using hd
   refine ⟨w, funext fun k => by simp [hw k], ?_⟩
   have h1 : F M ((p : WittVector p R) ^ 1 • w) = 0 := by
@@ -371,8 +368,7 @@ lemma inj
     | succ n ih =>
       intro v hv k
       obtain ⟨w, rfl, hw⟩ := inj_step hU v hv
-      simp only [Pi.smul_apply, smul_eq_mul, pow_succ']
-      exact mul_dvd_mul_left _ (ih w hw k)
+      simpa only [Pi.smul_apply, smul_eq_mul, pow_succ'] using mul_dvd_mul_left _ (ih w hw k)
   funext k
   refine IsHausdorff.haus (I := Ideal.span {(p : WittVector p R)}) inferInstance (v k) fun n => ?_
   rw [smod_iff, sub_zero]
@@ -568,8 +564,7 @@ theorem key (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p :
   rw [e2, h2]
   apply coeff_nil
   have := hN j i
-  rw [WittVector.mk_fontaineTheta] at this
-  exact this
+  rwa [WittVector.mk_fontaineTheta] at this
 
 theorem frobenius_mu_eq (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
     (ε : PreTilt O p) :

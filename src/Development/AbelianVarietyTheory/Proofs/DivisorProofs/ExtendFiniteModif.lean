@@ -454,9 +454,7 @@ theorem exists_mul_isIntegralElem_of_forall_discreteValuationSubring :
   let Cp := Localization.AtPrime p
   haveI : IsNoetherianRing Cp := IsLocalization.isNoetherianRing p.primeCompl Cp inferInstance
   have hunit : ∀ y : p.primeCompl, IsUnit (algebraMap C L y) := fun y => by
-    refine isUnit_iff_ne_zero.2 ((map_ne_zero_iff _ hinj).2 ?_)
-    intro h0
-    exact y.2 (h0 ▸ p.zero_mem)
+    exact isUnit_iff_ne_zero.2 ((map_ne_zero_iff _ hinj).2 (fun h0 => y.2 (h0 ▸ p.zero_mem)))
   letI : Algebra Cp L := (IsLocalization.lift (M := p.primeCompl) (S := Cp) hunit).toAlgebra
   haveI : IsScalarTower C Cp L :=
     IsScalarTower.of_algebraMap_eq fun x => (IsLocalization.lift_eq hunit x).symm
@@ -1062,8 +1060,7 @@ theorem regular_quotient (c : B) (p : Ideal A)
   rw [← hb] at h ⊢
   rw [Ideal.Quotient.eq_zero_iff_mem]
   apply hc
-  rw [← Ideal.Quotient.eq_zero_iff_mem]
-  exact h
+  rwa [← Ideal.Quotient.eq_zero_iff_mem]
 
 variable [IsNoetherianRing A] [IsLocalRing B] [Module.Flat A B]
 
@@ -1196,8 +1193,7 @@ theorem regular_mod_fibre (p₀ p : Ideal C) [p₀.IsPrime] [p.IsPrime]
   · refine Ideal.comap_mono ?_
     refine (Ideal.comap_mono (IsLocalRing.le_maximalIdeal hQp.ne_top)).trans ?_
     exact (Localization.AtPrime.under_maximalIdeal).le
-  · rw [Ideal.comap_comap, ← IsScalarTower.algebraMap_eq, ← Ideal.map_le_iff_le_comap]
-    exact hQ
+  · rwa [Ideal.comap_comap, ← IsScalarTower.algebraMap_eq, ← Ideal.map_le_iff_le_comap]
 
 theorem isIntegral_tensor_of_fibre [IsNoetherianRing A] {K : Type} [CommRing K] [Algebra A K]
     (p₀ p : Ideal C) [p₀.IsPrime] [p.IsPrime]
@@ -1441,8 +1437,7 @@ theorem exists_fibre_generic {X S : Scheme.{0}} (f : X ⟶ S) [GeometricallyIrre
     ∃ ζ : X, f ζ = y ∧ ∀ z, f z = y → ζ ⤳ z := by
   refine ⟨f.fiberι y (genericPoint (f.fiber y)), ?_, ?_⟩
   · have : f.fiberι y (genericPoint (f.fiber y)) ∈ Set.range (f.fiberι y) := ⟨_, rfl⟩
-    rw [Scheme.Hom.range_fiberι] at this
-    exact this
+    rwa [Scheme.Hom.range_fiberι] at this
   · intro z hz
     obtain ⟨z', rfl⟩ : z ∈ Set.range (f.fiberι y) := by rw [Scheme.Hom.range_fiberι]; exact hz
     exact (genericPoint_specializes z').map (f.fiberι y).continuous

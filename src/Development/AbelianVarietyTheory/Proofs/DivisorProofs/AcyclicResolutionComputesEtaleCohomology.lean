@@ -392,14 +392,11 @@ theorem lift_of_ext_one_subsingleton : ∀ (R : Type) [CommRing R] (G : Shv R) (
   rw [CohomologyClass.mk_eq_zero_iff] at hdiff
   have hv := GlobalTheory.AcycResLevel.cocycle0_v_eq_zero G S.X₃ _ hdiff
   have hv' : β.1.v 0 0 (add_zero 0) ≫ (resMap R S.g).f 0 = e.hom ≫ f ≫ resι R S.X₃ := by
-    have h := hv
-    simp [zcomp, a3, Cochain.comp_zero_cochain_v, sub_eq_zero] at h
-    exact h
+    simpa [zcomp, a3, Cochain.comp_zero_cochain_v, sub_eq_zero] using hv
   have hb : β.1.v 0 0 (add_zero 0) ≫ (res R S.X₂).d 0 1 = 0 := by
     have h := congrArg (fun c => c.v 0 1 (by simp)) (Cocycle.δ_eq_zero β 1)
     rw [δ_v 0 1 rfl _ 0 1 (by simp) 0 1 (by simp) (by simp)] at h
-    rw [hsd, zero_comp, smul_zero, add_zero, Cochain.zero_v] at h
-    exact h
+    rwa [hsd, zero_comp, smul_zero, add_zero, Cochain.zero_v] at h
   obtain ⟨g', hg'⟩ := GlobalTheory.AcycResLevel.res_lift S.X₂ (e.inv ≫ β.1.v 0 0 (add_zero 0))
     (by rw [Category.assoc, hb, comp_zero])
   refine ⟨g', ?_⟩
@@ -466,8 +463,7 @@ theorem GlobalTheory.EtC.subsingleton_cohomologyClass_sgl_of_acyclic : ∀ (R : 
   have hZ : ∀ k, ∀ i : ℤ, 0 < i → Subsingleton (CohomologyClass (sgl G) (res R (M.cycles k)) i) := by
     intro k
     rcases le_or_gt k a with hk | hk
-    · intro i _
-      exact GlobalTheory.AcycResLevel.ext_subsingleton_of_isZero R G _ (hZ0 k hk) i
+    · exact fun i _ => GlobalTheory.AcycResLevel.ext_subsingleton_of_isZero R G _ (hZ0 k hk) i
     · exact hge k hk.le
   refine GlobalTheory.AcycResLevel.subsingleton_of_lifts R G M n fun f hf => ?_
   obtain ⟨h, hS⟩ := GlobalTheory.AcycResLevel.cycles_shortExact R M (n - 1) n (by omega) (hM n)
@@ -511,8 +507,7 @@ theorem coneBij {R : Type} [CommRing R] (K : Cx R) {I J : Cx R} (f : I ⟶ J)
     intro x hx
     obtain ⟨y, rfl⟩ := (h3 x).1 hx
     rw [(h m).elim y 0, map_zero]
-  · intro y
-    exact (h1 y).1 ((h (m + 1)).elim _ _)
+  · exact fun y => (h1 y).1 ((h (m + 1)).elim _ _)
 
 theorem subOfIso {R : Type} [CommRing R] {A B : Shv R} (e : A ≅ B) (M : Cx R) (n : ℤ)
     (h : Subsingleton (CohomologyClass (sgl B) M n)) : Subsingleton (CohomologyClass (sgl A) M n) := by
@@ -556,8 +551,7 @@ theorem GlobalTheory.EtC.acycRes_computes : ∀ (R : Type) [CommRing R] (F : Shv
   apply GlobalTheory.T.sheafCohomologyClass_subsingleton_of_acyclic_boundedBelow R _ _ (-1) (_root_.GlobalTheory.EtC.mappingCone_acyclic R u)
   intro t i hi
   apply _root_.GlobalTheory.cone_terms_ext_subsingleton R _ u hinj _ t i hi
-  intro t' i' hi'
-  exact discFree _ _ _ (hC t' _ i' hi')
+  exact fun t' i' hi' => discFree _ _ _ (hC t' _ i' hi')
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.AcyclicResolutionComputesEtaleCohomology =====

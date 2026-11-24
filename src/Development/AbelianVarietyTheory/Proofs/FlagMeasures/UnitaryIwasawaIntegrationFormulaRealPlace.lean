@@ -251,8 +251,7 @@ theorem measurePreserving_of_sum_sq_eq : ∀ (k a b : ℕ), k = a + b → ∀ Q 
   have h2 := PiLp.volume_preserving_toLp (Fin k)
   have h3 := PiLp.volume_preserving_ofLp (Fin a ⊕ Fin b)
   have h4 := volume_measurePreserving_sumPiEquivProdPi (fun _ : Fin a ⊕ Fin b => ℝ)
-  have h := h4.comp (h3.comp (h1.comp h2))
-  exact h
+  exact h4.comp (h3.comp (h1.comp h2))
 
 end GlobalTheory.IwConst
 end -- clump:auto
@@ -477,8 +476,7 @@ theorem vol_ell_three (a b : ℕ) :
     measurableSet_le (by fun_prop) measurable_const
   rw [Measure.volume_eq_prod, Measure.prod_apply hm, Measure.prod_apply hm',
     ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
-  refine lintegral_congr fun x => ?_
-  exact vol_scale a (∑ i, x.1 i ^ 2 + ∑ i, x.2 i ^ 2)
+  exact lintegral_congr fun x => vol_scale a (∑ i, x.1 i ^ 2 + ∑ i, x.2 i ^ 2)
 
 theorem vol_shear {G Z : Type} [MeasurableSpace G] [AddCommGroup G] [MeasurableAdd₂ G] [MeasurableSpace Z]
     (μ : Measure G) [μ.IsAddRightInvariant] [SFinite μ] (ν : Measure Z) [SFinite ν] (f : Z → G)
@@ -487,8 +485,7 @@ theorem vol_shear {G Z : Type} [MeasurableSpace G] [AddCommGroup G] [MeasurableA
   have hm : MeasurableSet {p : G × Z | (p.1 + f p.2, p.2) ∈ s} :=
     (show Measurable fun p : G × Z => (p.1 + f p.2, p.2) by fun_prop) hs
   rw [Measure.prod_apply_symm hm, Measure.prod_apply_symm hs]
-  refine lintegral_congr fun z => ?_
-  exact measure_preimage_add_right μ (f z) ((fun x => (x, z)) ⁻¹' s)
+  exact lintegral_congr fun z => measure_preimage_add_right μ (f z) ((fun x => (x, z)) ⁻¹' s)
 
 theorem volume_sheared_balls (a b c : ℕ) (ι : (Fin c → ℝ) →ₗ[ℝ] (Fin b → ℝ)) :
     volume {v : (Fin a → ℝ) × (Fin b → ℝ) × ((Fin a → ℝ) × (Fin c → ℝ)) |
@@ -610,8 +607,7 @@ theorem inG_conjTranspose {X : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.REAL.i
   rw [conjTranspose_conjTranspose]
   have e := congrArg (fun M => Formalism.REAL.Jm ε * M * Formalism.REAL.Jm ε) h
   simp only [mul_add, add_mul, mul_assoc, hJ, hJ', mul_one, mul_zero, zero_mul] at e
-  rw [add_comm]
-  exact e
+  rwa [add_comm]
 
 theorem comm_of_maxK {g : Formalism.REAL.UJ ε} (hg : g ∈ maxK ε) :
     uMat g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * uMat g := by
@@ -661,8 +657,7 @@ theorem lieRel : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → �
           simp only [Set.mem_ofPred_eq, conjTranspose_add] at *
           exact add_mem hA hB
         zero_mem' := by
-          simp only [Set.mem_ofPred_eq, conjTranspose_zero]
-          exact zero_mem _
+          simpa only [Set.mem_ofPred_eq, conjTranspose_zero] using zero_mem _
         smul_mem' := fun c Y hY => by
           simp only [Set.mem_ofPred_eq] at *
           rw [conjTranspose_smul, star_trivial]
@@ -809,11 +804,9 @@ theorem right_inv_eq_smul_left_inv :
 
   have hS : MeasurableSet {p : G × G | p.1 * p.2 ∈ A} := measurable_mul hA
   have hμae : ∀ᵐ g ∂μ, g ∈ K := by
-    rw [ae_iff]
-    exact hμK
+    rwa [ae_iff]
   have hνae : ∀ᵐ g ∂ν, g ∈ K := by
-    rw [ae_iff]
-    exact hνK
+    rwa [ae_iff]
   have h1 : (ν.prod μ) {p : G × G | p.1 * p.2 ∈ A} = ν Set.univ * μ A := by
     rw [Measure.prod_apply hS]
     have hc : ∀ᵐ h ∂ν, μ (Prod.mk h ⁻¹' {p : G × G | p.1 * p.2 ∈ A}) = μ A := by
@@ -877,8 +870,7 @@ theorem re_trace_eq_zero_of_max (X u : Matrix (Fin n) (Fin n) ℂ)
     simp only [hφ, zero_smul, NormedSpace.exp_zero, Matrix.one_mul]
     have := h t
     rwa [GlobalTheory.IwTangent.coe_smul_eq] at this
-  have h0 := hmax.hasDerivAt_eq_zero hf
-  simpa [hφ, NormedSpace.exp_zero] using h0
+  simpa [hφ, NormedSpace.exp_zero] using hmax.hasDerivAt_eq_zero hf
 
 theorem maxK_mul {ε : Fin n → Bool} {g h : Formalism.REAL.UJ ε} (hg : g ∈ maxK ε) (hh : h ∈ maxK ε) : g * h ∈ maxK ε := by
   have hg' : (uMat g)ᴴ * uMat g = 1 := hg
@@ -959,9 +951,7 @@ theorem isClosed_stab {a : ℕ} (W : Fin (a + 1) → Submodule ℂ (Fin n → �
 theorem mem_flagM_of_keeps {a : ℕ} (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)) {l : Formalism.REAL.UJ ε}
     (hl : l ∈ maxK ε) (h : ∀ i, ∀ y ∈ W i, uMat l *ᵥ y ∈ W i) : l ∈ flagM ε W := by
   have hl' : (uMat l)ᴴ * uMat l = 1 := hl
-  show ∀ i, ∀ y ∈ W i, uMat l *ᵥ y ∈ W i ∧ (uMat l)ᴴ *ᵥ y ∈ W i
-  intro i y hy
-  exact ⟨h i y hy, GlobalTheory.FlagLeviGroup.inv_keeps hl' (W i) (h i) y hy⟩
+  exact fun i y hy => ⟨h i y hy, GlobalTheory.FlagLeviGroup.inv_keeps hl' (W i) (h i) y hy⟩
 
 private theorem exists_unit_valuation_le_subset_nhds {G : Type} [Group G] [TopologicalSpace G] {f : G → ℝ}
     (hf : Continuous f) (h0 : ∀ g, 0 ≤ f g) (h1 : ∀ g, f g = 0 ↔ g = 1) (hB : IsCompact {g | f g ≤ 1})
@@ -1002,20 +992,17 @@ theorem close_of_compact {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
       have hopen : IsOpen {x : G | f (k⁻¹ * x) < t} := isOpen_lt hc continuous_const
       have hmem : k ∈ {x : G | f (k⁻¹ * x) < t} := by
         show f (k⁻¹ * k) < t
-        rw [inv_mul_cancel, (h1 1).2 rfl]
-        exact ht
+        rwa [inv_mul_cancel, (h1 1).2 rfl]
       have hev : ∀ᶠ z : ℝ × G in nhds ((0 : ℝ), k), z.2 ∈ {x : G | f (k⁻¹ * x) < t} :=
         (continuous_snd.tendsto ((0 : ℝ), k)).eventually_mem (hopen.mem_nhds hmem)
       filter_upwards [hev] with z hz
-      intro p _ _
-      exact ⟨k⁻¹, hkL, hz⟩
+      exact fun p _ _ => ⟨k⁻¹, hkL, hz⟩
     ·
       have hcont : Continuous (fun q : G × G => q.1 * q.2⁻¹) := continuous_fst.mul continuous_snd.inv
       have hopen : IsOpen ((fun q : G × G => q.1 * q.2⁻¹) ⁻¹' Pᶜ) := hP.isOpen_compl.preimage hcont
       have hmem : ((1 : G), k) ∈ (fun q : G × G => q.1 * q.2⁻¹) ⁻¹' Pᶜ := by
         show (1 : G) * k⁻¹ ∈ Pᶜ
-        rw [one_mul]
-        exact hkP
+        rwa [one_mul]
       obtain ⟨O, V, hO, hV, h1O, hkV, hOV⟩ := isOpen_prod_iff.1 hopen 1 k hmem
       obtain ⟨ρ, hρ, hρO⟩ := exists_unit_valuation_le_subset_nhds hf h0 h1 hB hO h1O
       have e1 : ∀ᶠ z : ℝ × G in nhds ((0 : ℝ), k), z.1 < ρ :=
@@ -1038,9 +1025,7 @@ theorem close_of_compact {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
 theorem nrm_uMat_eq_zero (g : Formalism.REAL.UJ ε) : nrm (uMat g - 1) = 0 ↔ g = 1 := by
   rw [nrm_eq_zero, sub_eq_zero]
   constructor
-  · intro h
-    apply Subtype.ext
-    exact Units.ext h
+  · exact fun h => Subtype.ext (Units.ext h)
   · rintro rfl
     exact GlobalTheory.FlagLeviGroup.uMat_one
 
@@ -1130,8 +1115,7 @@ theorem slab_squeeze : ∀ (n : ℕ) (ε : Fin n → Bool) (S : Set (Formalism.R
         rw [hmul]
         exact le_trans (nrm_add_le _ _) (by linarith [nrm_add_le (uMat l - 1) (uMat k - 1)])
       have hat : nrm (uMat l - 1) < t := by nlinarith
-      have hprod : nrm (uMat l - 1) * nrm (uMat k - 1) ≤ t * t := by
-        exact mul_le_mul hat.le hk.le hs0 ht0.le
+      have hprod : nrm (uMat l - 1) * nrm (uMat k - 1) ≤ t * t := mul_le_mul hat.le hk.le hs0 ht0.le
       nlinarith
     ·
       have hc : crd E (uMat (l * k) - 1) = crd E (uMat l - 1) + crd E ((uMat l - 1) * (uMat k - 1)) := by
@@ -1358,8 +1342,7 @@ private theorem map_mul_right_eq_of_isGaugeSub {n : ℕ} {ε : Fin n → Bool} (
     have hpre : ⇑(MeasurableEquiv.mulRight l) ⁻¹' (↑H)ᶜ = (↑H : Set (Formalism.REAL.UJ ε))ᶜ := by
       ext g
       simp [H.mul_mem_cancel_right hlH]
-    rw [hpre, hH]
-    exact h0
+    rwa [hpre, hH]
   · intro s hs
     rw [Measure.map_map (measurable_const_mul s) (measurable_mul_const l),
       show ((fun g => s * g) ∘ fun g => g * l) = (fun g => g * l) ∘ (fun g => s * g) by
@@ -1383,8 +1366,7 @@ private theorem lintegral_lintegral_mul_const {G : Type} [MeasurableSpace G] (μ
     (F : G → G → G → ENNReal) {β : ENNReal} (hβ : β ≠ ⊤) :
     ∫⁻ u, ∫⁻ m, δ m * ∫⁻ k, F u m k * β ∂μK ∂μM ∂μN = β * ∫⁻ u, ∫⁻ m, δ m * ∫⁻ k, F u m k ∂μK ∂μM ∂μN := by
   have h := triple_const μN μM μK δ F (V := 1) ENNReal.one_ne_top hβ
-  rw [one_smul, one_mul] at h
-  exact h
+  rwa [one_smul, one_mul] at h
 
 private theorem lintegral_indicator_mul_right {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (ν : Measure G)
     {s : Set G} (hs : MeasurableSet s) (k : G) :
@@ -1482,15 +1464,13 @@ theorem iwasawa_constant : ∀ (n : ℕ) (ε : Fin n → Bool) (p q : ℕ), (uni
       refine triple_mono hN.1 hM.1 hμ0'.1 _ (fun u hu m hm k hk => ?_)
       by_cases hmem : u * m * k ∈ hsBall ε r
       · rw [Set.indicator_of_mem hmem, lintegral_indicator_mul_right νL (measurableSet_slab ε EL ρ r) k]
-        simp only [Pi.one_apply, one_mul]
-        exact (hr u hu m hm k hk hmem).1
+        simpa only [Pi.one_apply, one_mul] using (hr u hu m hm k hk hmem).1
       · simp [hmem]
     · rw [← lintegral_lintegral_mul_const _ _ _ _ _ (hBtop _)]
       refine triple_mono hN.1 hM.1 hμ0'.1 _ (fun u hu m hm k hk => ?_)
       by_cases hmem : u * m * k ∈ hsBall ε r
       · rw [Set.indicator_of_mem hmem, lintegral_indicator_mul_right νL (measurableSet_slab ε EL ρ r) k]
-        simp only [Pi.one_apply, one_mul]
-        exact (hr u hu m hm k hk hmem).2
+        simpa only [Pi.one_apply, one_mul] using (hr u hu m hm k hk hmem).2
       · simp [hmem]
 
   have hf : Tendsto (fun r : ℝ => ENNReal.ofReal c * Formalism.REAL.muG ε (hsBall ε r) / ENNReal.ofReal (r ^ (n ^ 2)))

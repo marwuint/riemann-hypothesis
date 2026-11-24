@@ -202,8 +202,7 @@ theorem exists_ne_zero_mem_H (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegra
   obtain ⟨f, -, hrange, -, hloc⟩ := RepDict.rep_dict k X p P _ _ _ hN
   have hmem : f u ∈ P.H ((e : ℤ) * c + a) b := by
     have : f u ∈ Set.range f := Set.mem_range_self u
-    rw [hrange] at this
-    exact this
+    rwa [hrange] at this
   obtain ⟨i, hi⟩ : ∃ i, genericPoint X ∈ P.L.B.U i :=
     Opens.mem_iSup.1 (P.L.isLB.cover.ge (Opens.mem_top _))
   obtain ⟨j, hj⟩ : ∃ j, genericPoint X ∈ P.A.B.U j :=
@@ -234,14 +233,12 @@ theorem exists_linearIndependent_of_frac {K : Type} [Field K] (F : Subfield K) [
     rw [Algebra.adjoin_eq_span, Algebra.top_toSubmodule] at this
     have hc : (Submonoid.closure (R : Set K) : Set K) = (R : Set K) := by
       exact congrArg (fun s : Submonoid K => (s : Set K)) (Submonoid.closure_eq R.toSubmonoid)
-    rw [hc] at this
-    exact this
+    rwa [hc] at this
   obtain ⟨s, hsR, hsspan, hli⟩ := exists_linearIndependent F (R : Set K)
   rw [hspan] at hsspan
   let B : Module.Basis s F K := Module.Basis.mk hli (by rw [Subtype.range_coe, hsspan])
   let E : s ≃ Fin (Module.finrank F K) := B.indexEquiv (Module.finBasis F K)
-  refine ⟨fun i => (E.symm i : K), fun i => hsR (E.symm i).2, ?_⟩
-  exact hli.comp _ E.symm.injective
+  exact ⟨fun i => (E.symm i : K), fun i => hsR (E.symm i).2, hli.comp _ E.symm.injective⟩
 
 end GlobalTheory.HSAmp.FBasis
 
@@ -263,15 +260,13 @@ theorem exists_linearIndependent_mem_H : ∀ (k : Type) [CommRing k] (X : Scheme
     have e0 : P.loc 0 0 (β i) i' j = β i := by simp [Pair.loc]
     rw [e0]
     refine (hreg (β i)).2 (hβR i) z ?_
-    rw [← SetLike.mem_coe, hUe]
-    exact hz
+    rwa [← SetLike.mem_coe, hUe]
   obtain ⟨c₂, hc₂⟩ := (Filter.eventually_all.2 hext).exists
   refine ⟨c₁ + c₂, fun i => γ * x 0 ^ c₂ * β i, fun i => ?_, ?_⟩
   · have h := (NuMul.mul_mem_H_and_nu_mul k X p P _ _ _ _ γ (x 0 ^ c₂ * β i) hγ (hc₂ i)).1
     have e1 : (e : ℤ) * c₁ + a + ((e : ℤ) * c₂ + 0) = (e : ℤ) * ((c₁ + c₂ : ℕ) : ℤ) + a := by
       push_cast; ring
-    rw [e1, add_zero, ← mul_assoc] at h
-    exact h
+    rwa [e1, add_zero, ← mul_assoc] at h
   · have ht : γ * x 0 ^ c₂ ≠ 0 := mul_ne_zero hγ0 (pow_ne_zero _ (hne 0))
     exact hβ.map' (LinearMap.mulLeft (ratF x) (γ * x 0 ^ c₂))
       (LinearMap.ker_eq_bot.2 (mul_right_injective₀ ht))

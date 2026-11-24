@@ -151,8 +151,7 @@ theorem pointWithZeroSecondCoord_left {D : Type} [CommRing D] [Algebra R D] (x :
 omit [GrpObj A] in
 theorem pointWithZeroSecondCoord_mem_chart_of_restricted (P : LB (A ⊗ B).left) {D : Type} [CommRing D] [Algebra R D] {x : Pt A D} {c : P.ι}
     (h : ⊤ ≤ x.left ⁻¹ᵁ chartsA P c) : ⊤ ≤ (pt0 B x).left ⁻¹ᵁ P.U c := by
-  rw [pointWithZeroSecondCoord_left, Scheme.Hom.comp_preimage]
-  exact h
+  rwa [pointWithZeroSecondCoord_left, Scheme.Hom.comp_preimage]
 
 omit [GrpObj A] in
 theorem ptV_mem (P : LB (A ⊗ B).left) {v : epsR R ⟶ B} (hv : IsTangent v) {D : Type} [CommRing D]
@@ -891,8 +890,7 @@ theorem bval (hv : IsTangent v) (β : Form (B.hom ≫ 𝟙 _)) (s : trivAt (pt0 
     (cB m₂ v x hv) rfl rfl (fun r ↦ by
       change i.φ r = r
       exact hi r)
-  rw [k1, k2]
-  rw [add_sub_add_right_eq_sub, ← map_sub]
+  rw [k1, k2, add_sub_add_right_eq_sub, ← map_sub]
   have vm := (SqExt.dual R).val_map E (EpsWeil.epsMap R D) (Algebra.ofId R D)
     (fun c ↦ (epsMap_fst c).symm) (fun b ↦ epsMap_inl b) v.left (pt_w v) (yV v D) (yV_w v D) rfl β
   calc _ = E.val (yV v D) (yV_w v D) β.1 := rfl
@@ -1273,13 +1271,11 @@ theorem GlobalTheory.PtExt.exists_chernRep_contr_of_orth : GlobalTheory.Publishe
   obtain ⟨a₁, b₁, ha₁, hb₁, hsum⟩ := L.2 n a b fun x hx y hy ↦ (hab x y).symm.trans (horth x hx y hy)
   have eα : ∀ k, ∃ α : Form (A.hom ≫ 𝟙 _), Form.cl _ α = (a₁ k).1 := fun k ↦ by
     have h := ha₁ k
-    rw [PrimitiveSubmodule, Submodule.mem_comap, hodgeFiltration_eq_range] at h
-    exact h
+    rwa [PrimitiveSubmodule, Submodule.mem_comap, hodgeFiltration_eq_range] at h
   choose α hα using eα
   have eβ : ∀ k, ∃ β : Form (B.hom ≫ 𝟙 _), Form.cl _ β = (b₁ k).1 := fun k ↦ by
     have h := hb₁ k
-    rw [PrimitiveSubmodule, Submodule.mem_comap, hodgeFiltration_eq_range] at h
-    exact h
+    rwa [PrimitiveSubmodule, Submodule.mem_comap, hodgeFiltration_eq_range] at h
   choose β hβ using eβ
   choose b' hb' using fun k ↦ CatCoh.H1.mk_surjective (O (dp0 R) (B.hom ≫ 𝟙 _)) (b k).1
   choose a' ha' using fun k ↦ CatCoh.H1.mk_surjective (O (dp0 R) (A.hom ≫ 𝟙 _)) (a k - a₁ k).1

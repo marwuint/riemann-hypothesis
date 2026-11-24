@@ -152,8 +152,7 @@ theorem norm_psi_coord : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o'
     rw [norm_mul, norm_one] at hn
     nlinarith [norm_nonneg (algebraMap (FractionRing u.V) (PadicAlgCl p) (algebraMap u.V (FractionRing u.V) (v : u.V))),
       norm_nonneg (algebraMap (FractionRing u.V) (PadicAlgCl p) (algebraMap u.V (FractionRing u.V) ((v⁻¹ : u.Vˣ) : u.V)))]
-  rw [map_mul, map_mul, norm_mul, unit_norm w, _root_.one_mul, hev] at hq
-  exact hq
+  rwa [map_mul, map_mul, norm_mul, unit_norm w, _root_.one_mul, hev] at hq
 
 end GlobalTheory.Poinc.TestAtPt
 end -- clump:auto
@@ -494,9 +493,7 @@ theorem exists_uTest_isBC : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra
     have hw := hCen.2 ⟨genericPoint (Sp (PadicAlgCl p)), rfl⟩
     have e2 : (spMap ((OO p).subtype.comp i)).base (genericPoint (Sp (PadicAlgCl p))) = genericPoint (Sp V) := by
       rw [genericPoint_eq_bot_of_affine, genericPoint_eq_bot_of_affine]
-      apply PrimeSpectrum.ext
-      show Ideal.comap ((OO p).subtype.comp i) ⊥ = ⊥
-      exact Ideal.comap_bot_of_injective _ hinj
+      exact PrimeSpectrum.ext (Ideal.comap_bot_of_injective _ hinj)
     have e3 : gPt p ≫ y = spMap ((OO p).subtype.comp i) ≫ spMap ev₀ ≫ spMap j ≫ M.Z.fromSpecStalk x := by
       rw [← hev, hevi]
       simp only [gPt, spMap, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
@@ -514,7 +511,6 @@ theorem exists_uTest_isBC : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra
   have hgenV : (jK V).base (genericPoint (Sp (FractionRing V))) = genericPoint (Sp V) := by
     rw [genericPoint_eq_bot_of_affine, genericPoint_eq_bot_of_affine]
     apply PrimeSpectrum.ext
-    show Ideal.comap (algebraMap V (FractionRing V)) ⊥ = ⊥
     exact Ideal.comap_bot_of_injective _ (IsFractionRing.injective V (FractionRing V))
   have hrange : Set.range (jK V ≫ spMap ev₀ ≫ spMap j ≫ M.Z.fromSpecStalk x).base ⊆ Set.range U₀.ι.base := by
     rintro _ ⟨w, rfl⟩
@@ -831,8 +827,7 @@ theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalT
     subst hEq
     have hρl : ρ.left = spMap fK := by
       have e₂ := Over.w ρ
-      rw [← Category.comp_id ρ.left]
-      exact e₂
+      rwa [← Category.comp_id ρ.left]
     show xF.left ≫ (U'.gen.inv.left ≫ pullback.fst G'.hom (jK V)) ≫ bc.hom.left ≫ pullback.fst G.hom (specOf ev₀) = _
     rw [← Category.assoc, hxF, Over.comp_left, Category.assoc, e₂, hTF, Category.id_comp, hρl, Over.comp_left]
     simp only [ξ, ← Category.assoc]
@@ -939,8 +934,7 @@ theorem torsion_section_label : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Alg
     have hr : Set.range e0 ⊆ Set.range W.ι := by
       rw [Scheme.Opens.range_ι]
       rintro _ ⟨w, rfl⟩
-      rw [he0]
-      exact hgW
+      rwa [he0]
     let eg : Sp K ⟶ W.toScheme := IsOpenImmersion.lift W.ι e0 hr
     have heg : eg ≫ W.ι = e0 := IsOpenImmersion.lift_fac _ _ _
     haveI : IsDominant eg := isDominant_of_generic W eg (fun w => by rw [← Scheme.Hom.comp_apply, heg, he0])
@@ -1053,8 +1047,7 @@ theorem val_gPt_of_stalk : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o 
   intro o Ω _ _ _ M x R _ _ j _ p _ y ev hy c
   have hsp : ∀ w, (spMap j ≫ M.Z.fromSpecStalk x) w ⤳ x := fun w => by
     have : M.Z.fromSpecStalk x (spMap j w) ∈ Set.range (M.Z.fromSpecStalk x) := ⟨_, rfl⟩
-    rw [Scheme.range_fromSpecStalk] at this
-    exact this
+    rwa [Scheme.range_fromSpecStalk] at this
   obtain ⟨U, hx, f, hf⟩ := M.Z.presheaf.germ_exist ((M.stalkEquiv x).symm c)
   have hc : c = ⟨valF M.pt U f, RatModel.valF_mem_O hx f⟩ := by
     rw [← RatModel.stalkEquiv_germ hx, hf, RingEquiv.apply_symm_apply]
@@ -1167,8 +1160,7 @@ theorem exists_label : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' �
   have h2 := hb p y ev hCen hy y₀ hAt (x'.left ≫ t) (by
     rw [Category.assoc, ht2, ← hring]
     simpa only [Category.assoc] using congrArg (· ≫ gm) key)
-  rw [Category.assoc, ht1] at h2
-  exact h2
+  rwa [Category.assoc, ht1] at h2
 
 end GlobalTheory.Poinc.ToricLabel
 end -- clump:auto

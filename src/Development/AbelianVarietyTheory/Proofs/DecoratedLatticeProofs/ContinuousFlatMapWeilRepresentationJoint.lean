@@ -84,9 +84,7 @@ theorem flatAt_om_continuous : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V 
     have hf : Continuous fun q : (GA D V × GA D W) × Mx D V₀.rank σ × WO V₀ W₀ =>
         ((q.1, ((rat x : Mx D W.rank ρ) ⬝ u.1.1, q.2.1, q.2.2)) :
           (GA D V × GA D W) × Mx D W.rank ρ × Mx D V₀.rank σ × WO V₀ W₀) := by fun_prop
-    have h2 := hmix.comp hf
-    simp only [Function.comp_def] at h2
-    exact h2
+    simpa only [Function.comp_def] using hmix.comp hf
 
   have hcu : ∀ q : (GA D V × GA D W) × Mx D V₀.rank σ × WO V₀ W₀, Continuous fun u : UX D ρ =>
       flatFun ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 (rat x) q.2.1 (om q.1 Φ) q.2.2 u := by
@@ -97,9 +95,7 @@ theorem flatAt_om_continuous : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V 
         ((q.1, ((rat x : Mx D W.rank ρ) ⬝ u.1.1, q.2.1, q.2.2)) :
           (GA D V × GA D W) × Mx D W.rank ρ × Mx D V₀.rank σ × WO V₀ W₀) :=
       continuous_const.prodMk (hxu.prodMk continuous_const)
-    have h2 := hmix.comp hf
-    simp only [Function.comp_def] at h2
-    exact h2
+    simpa only [Function.comp_def] using hmix.comp hf
   haveI : SecondCountableTopology (AE D) := (Formalism.IndefR.Eqv.ae_facts D).2.2.2.1
   haveI : ∀ m n : ℕ, SecondCountableTopology (Mx D m n) := fun m n =>
     inferInstanceAs (SecondCountableTopology (Fin m → Fin n → AE D))

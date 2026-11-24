@@ -169,8 +169,7 @@ theorem exists_smooth_average_eq_of_mem_lowKSub : ∀ (n : ℕ) (ε : Fin n → 
   have hF0g : HasCompactSupport (fun g : Formalism.REAL.UJ ε => F0 (fun i j => umat g i j)) := by
     have hfun : (fun g : Formalism.REAL.UJ ε => F0 (fun i j => umat g i j)) = fun g => α (umat g) :=
       funext fun g => (hF0e g).symm
-    rw [hfun]
-    exact hαc
+    rwa [hfun]
   have hbase : ∫ g, F0 (fun i j => umat g i j) • σ (umat g) w ∂(muG ε) = w := by
     refine ext_inner_left ℂ fun v => ?_
     rw [← integral_inner (hint F0 hF0d hF0c hF0g) v]

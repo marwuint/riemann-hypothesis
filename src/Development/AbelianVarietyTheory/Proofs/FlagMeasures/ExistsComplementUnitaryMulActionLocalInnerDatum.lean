@@ -135,8 +135,7 @@ lemma mem_map_wMap {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : FixesFrame 
   · rintro ⟨u, hu, rfl⟩
     show wMap hg.symm (wMap hg u) ∈ L
     rw [wMap_symm_wMap]; exact hu
-  · intro h
-    exact ⟨_, h, wMap_wMap_symm hg w⟩
+  · exact fun h => ⟨_, h, wMap_wMap_symm hg w⟩
 
 def InU (P : FPair H r) (g : V ≃ₗ[E] V) : Prop := FixesFrame H P.A.f g ∧ FixesFrame H P.B.f g
 
@@ -168,8 +167,7 @@ lemma isInner_map (Fr : FrameD H r) {g : V ≃ₗ[E] V} (hg : FixesFrame H Fr.f 
       have h1 := h _ hy
       have h2 := hg.symm.1 x y
       simp only at h1
-      rw [h2] at h1
-      exact h1
+      rwa [h2] at h1
     · intro h y hy
       have hy' : H.mkW Fr.f ⟨g y, hg.mem_perp y.2⟩ ∈ L.map ((wMap hg).restrictScalars M.L.O) := by
         rw [mem_map_wMap, wMap_symm_of_eq hg rfl]; exact hy
@@ -184,8 +182,7 @@ lemma isInner_map (Fr : FrameD H r) {g : V ≃ₗ[E] V} (hg : FixesFrame H Fr.f 
     refine hprim c ⟨g.symm y, hg.symm.mem_perp y.2⟩ ?_ ?_
     · rw [← wMap_mk]; exact hy
     · have h3 := congrArg (wMap hg.symm) heq
-      rw [LinearMap.map_smul, wMap_mk, wMap_mk, mkW_congr (y := xz) hz] at h3
-      exact h3
+      rwa [LinearMap.map_smul, wMap_mk, wMap_mk, mkW_congr (y := xz) hz] at h3
 
 def act {P : FPair H r} {g : V ≃ₗ[E] V} (hg : InU P g) (d : Datum P) : Datum P where
   L := d.L.map ((wMap hg.1).restrictScalars M.L.O)
@@ -282,7 +279,6 @@ theorem exists_mulAction : ∀ {F : Type} [Field F] [ValuativeRel F] [Topologica
     have : g' = g := Subtype.ext he
     subst this
     exact MulAction.mem_stabilizer_iff.1 hg'
-  · intro h
-    exact ⟨g, MulAction.mem_stabilizer_iff.2 h, rfl⟩
+  · exact fun h => ⟨g, MulAction.mem_stabilizer_iff.2 h, rfl⟩
 
 end GlobalTheory.InnerDatumAct

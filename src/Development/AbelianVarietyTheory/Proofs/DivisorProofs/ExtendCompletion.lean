@@ -246,8 +246,7 @@ theorem exists_isLocalHom_adicCompletion_extend (O : Type) [CommRing O] [IsLocal
     apply hn m
     have := c.2 hle
     rw [SModEq.sub_mem] at this
-    have h2 := neg_mem this
-    simpa using h2
+    simpa using neg_mem this
   have hev : ∀ a, IsAdicComplete.liftRingHom (maximalIdeal V) f hf (algebraMap O _ a) = ψ a := by
     intro a
     refine congrFun (IsHausdorff.funext' (maximalIdeal V)
@@ -344,8 +343,7 @@ theorem stalk_noetherian_and_finite_image :
       induction hr using Algebra.adjoin_induction with
       | mem y hy =>
         apply IntermediateField.subset_adjoin
-        simp only [Finset.coe_image]
-        exact Set.mem_image_of_mem f hy
+        simpa only [Finset.coe_image] using Set.mem_image_of_mem f hy
       | algebraMap n =>
         have : f (algebraMap ℤ Γ(X, U) n) = (n : PadicAlgCl p) := by simp
         rw [this]; exact K.intCast_mem n
@@ -447,8 +445,7 @@ theorem extend_completion : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra
   refine ⟨GlobalTheory.IndefiniteRowSideFullHecke.UniformityLowerBounds.intRing K, inferInstance, inferInstance, hdvr, ev₀, i, hcpl, ?_, hil, ?_, ?_, ?_⟩
   · refine ⟨fun r hr => ?_⟩
     have h1 := hev'l.map_nonunit _ hr
-    have h2 := h1.map e.toRingHom
-    simpa using h2
+    simpa using h1.map e.toRingHom
   · intro a b hab
     have h := congrArg Subtype.val hab
     exact Subtype.ext ((algebraMap K (PadicAlgCl p)).injective h)

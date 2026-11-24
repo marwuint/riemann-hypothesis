@@ -209,13 +209,11 @@ theorem ring_step {A A₀ B C B₀ C₀ : CommRingCat.{0}} (ψ : A ⟶ A₀) (β
     refine ⟨b, ?_⟩
     have h0 : πC (c - φ b) = 0 := by rw [map_sub, hw₀, hy, sub_self]
     have h1 : c - φ b ∈ RingHom.ker πC.hom := h0
-    rw [hkC] at h1
-    exact h1
+    rwa [hkC] at h1
   have hi : Function.Injective φA := by
     refine injective_of_flat_of_ker_le_map φA (RingHom.ker ψ.hom) hn hs fun b hb ↦ ?_
     have h0 : πB b = 0 := hφ₀.1 (by rw [← hw₀, show φ b = 0 from hb, map_zero, map_zero])
-    rw [← RingHom.mem_ker, hkB] at h0
-    exact h0
+    rwa [← RingHom.mem_ker, hkB] at h0
   exact (ConcreteCategory.isIso_iff_bijective φ).mpr ⟨hi, hs⟩
 
 theorem affine_case (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀)

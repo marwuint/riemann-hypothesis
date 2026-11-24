@@ -61,8 +61,7 @@ theorem proj (h : IsFrame ε ε₀ B B₀) (u : ∀ i, Fin (j i) → ℂ) (k : F
   · rw [Matrix.mulVec_mulVec, h.1 k, Matrix.one_mulVec]
   · intro l _ hl
     rw [Matrix.mulVec_mulVec, h.2.1 k l (Ne.symm hl), Matrix.zero_mulVec]
-  · intro hk
-    exact absurd (Finset.mem_univ k) hk
+  · exact fun hk => absurd (Finset.mem_univ k) hk
 
 theorem col_mem (hW : SpansFlag B W) (i : Fin a) (v : Fin (j i) → ℂ) : B i *ᵥ v ∈ W i.succ := by
   classical
@@ -76,8 +75,7 @@ theorem col_mem (hW : SpansFlag B W) (i : Fin a) (v : Fin (j i) → ℂ) : B i *
     · rw [Pi.single_eq_same]
     · intro l _ hl
       rw [Pi.single_eq_of_ne (M := fun l => Fin (j l) → ℂ) hl, Matrix.mulVec_zero]
-    · intro hi
-      exact absurd (Finset.mem_univ i) hi
+    · exact fun hi => absurd (Finset.mem_univ i) hi
 
 theorem upper (h : IsFrame ε ε₀ B B₀) (hW : SpansFlag B W) {M : Matrix (Fin n) (Fin n) ℂ}
     (hM : ∀ k, ∀ y ∈ W k, M *ᵥ y ∈ W k) {i k : Fin a} (hik : i < k) : (B k)ᴴ * M * B i = 0 := by
@@ -116,8 +114,7 @@ theorem diag (h : IsFrame ε ε₀ B B₀) (hW : SpansFlag B W) {M : Matrix (Fin
         simpa [Matrix.conjTranspose_mul, Matrix.mul_assoc] using this
       rw [e', Matrix.mul_zero]
     · rw [upper h hW hM hgt, Matrix.mul_zero]
-  · intro hi
-    exact absurd (Finset.mem_univ i) hi
+  · exact fun hi => absurd (Finset.mem_univ i) hi
 
 theorem lev_keeps (h : IsFrame ε ε₀ B B₀) (hW : SpansFlag B W) (x : ∀ i, Matrix (Fin (j i)) (Fin (j i)) ℂ)
     (g : Matrix (Fin n₀) (Fin n₀) ℂ) (k : Fin (a + 1)) (y : Fin n → ℂ) (hy : y ∈ W k) :

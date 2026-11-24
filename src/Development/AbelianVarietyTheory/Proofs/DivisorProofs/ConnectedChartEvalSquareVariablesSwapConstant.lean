@@ -65,41 +65,38 @@ theorem main : ∀ (p : ℕ) (k : Type) [CommRing k] (d : ℕ) (G : PDivGroup p 
   intro p k _ d G c n
   have hX : ∀ t, c.ev₂ n (X t) = c.x₂ n t := fun t => _root_.GlobalTheory.Katz.evA_X _ _ _ _ _ t
   have hN : ∀ t, IsNilpotent (c.ev₂ n (X t)) := fun t => by rw [hX]; exact c.nil₂ n t
+  have E₁ := (_root_.GlobalTheory.evA_subst_and_map k (Fin d) (G.A n ⊗[k] G.A n)).1
+    (Fin d ⊕ Fin d) (c.ev₂ n) hN
+  have E₂ := (_root_.GlobalTheory.evA_subst_and_map k (Fin d) (G.A n)).2 (G.A n ⊗[k] G.A n)
   refine ⟨fun f => ?_, fun f => ?_, fun s => ?_, fun s => ?_⟩
-  · have hy : ∀ i, IsNilpotent (c.x n i ⊗ₜ[k] (1 : G.A n)) := fun i => c.nil₂ n (Sum.inl i)
-    have e1 := (_root_.GlobalTheory.evA_subst_and_map k (Fin d) (G.A n ⊗[k] G.A n)).1 (Fin d ⊕ Fin d) (c.ev₂ n) hN
+  · have hy := fun i => c.nil₂ n (Sum.inl i)
+    have e1 := E₁
       (fun i => X (Sum.inl i)) (fun i => constantCoeff_X _) _ hy (fun i => hX _) f
-    have e2 := (_root_.GlobalTheory.evA_subst_and_map k (Fin d) (G.A n)).2 (G.A n ⊗[k] G.A n)
+    have e2 := E₂
       Algebra.TensorProduct.includeLeft (c.x n) (c.nil n) _ hy (fun i => rfl) f
     unfold inL; rw [e1, ← e2]; rfl
-  · have hy : ∀ i, IsNilpotent ((1 : G.A n) ⊗ₜ[k] c.x n i) := fun i => c.nil₂ n (Sum.inr i)
-    have e1 := (_root_.GlobalTheory.evA_subst_and_map k (Fin d) (G.A n ⊗[k] G.A n)).1 (Fin d ⊕ Fin d) (c.ev₂ n) hN
+  · have hy := fun i => c.nil₂ n (Sum.inr i)
+    have e1 := E₁
       (fun i => X (Sum.inr i)) (fun i => constantCoeff_X _) _ hy (fun i => hX _) f
-    have e2 := (_root_.GlobalTheory.evA_subst_and_map k (Fin d) (G.A n)).2 (G.A n ⊗[k] G.A n)
+    have e2 := E₂
       Algebra.TensorProduct.includeRight (c.x n) (c.nil n) _ hy (fun i => rfl) f
     unfold inR; rw [e1, ← e2]; rfl
-  · let g : G.A n ⊗[k] G.A n →ₐ[k] G.A n ⊗[k] G.A n :=
-      (Algebra.TensorProduct.comm k (G.A n) (G.A n)).toAlgHom
+  · let g := (Algebra.TensorProduct.comm k (G.A n) (G.A n)).toAlgHom
     have hy : ∀ i, IsNilpotent (g (c.x₂ n i)) := fun i => (c.nil₂ n i).map g
     have e1 := (_root_.GlobalTheory.evA_subst_and_map k (Fin d ⊕ Fin d) (G.A n ⊗[k] G.A n)).1 (Fin d ⊕ Fin d) (c.ev₂ n) hN
       (Sum.elim (fun i => X (Sum.inr i)) (fun i => X (Sum.inl i)))
       (fun i => by cases i <;> exact constantCoeff_X _) _ hy
-      (fun i => by
-        cases i with
-        | inl i => rw [Sum.elim_inl, hX]; simp [g, Chart.x₂]
-        | inr i => rw [Sum.elim_inr, hX]; simp [g, Chart.x₂]) s
+      (fun i => by rcases i with i | i <;> simp [g, Chart.x₂, hX]) s
     have e2 := (_root_.GlobalTheory.evA_subst_and_map k (Fin d ⊕ Fin d) (G.A n ⊗[k] G.A n)).2 (G.A n ⊗[k] G.A n)
       g (c.x₂ n) (c.nil₂ n) _ hy (fun i => rfl) s
     unfold Katz.swap at2
     rw [e1, ← e2]; rfl
-  · let L : G.A n ⊗[k] G.A n →ₐ[k] k := Algebra.TensorProduct.lift (Bialgebra.counitAlgHom k (G.A n))
+  · let L := Algebra.TensorProduct.lift (Bialgebra.counitAlgHom k (G.A n))
       (Bialgebra.counitAlgHom k (G.A n)) (fun _ _ => Commute.all _ _)
     have e2 := (_root_.GlobalTheory.evA_subst_and_map k (Fin d ⊕ Fin d) (G.A n ⊗[k] G.A n)).2 k
       L (c.x₂ n) (c.nil₂ n) (fun _ => (0 : k)) (fun _ => IsNilpotent.zero)
       (fun i => by
-        cases i with
-        | inl i => simp [L, Chart.x₂, Bialgebra.counitAlgHom_apply, c.aug n i]
-        | inr i => simp [L, Chart.x₂, Bialgebra.counitAlgHom_apply, c.aug n i]) s
+        rcases i with i | i <;> simp [L, Chart.x₂, Bialgebra.counitAlgHom_apply, c.aug n i]) s
     change L (c.ev₂ n s) = _
     unfold Chart.ev₂; rw [e2, evA_zero]
 

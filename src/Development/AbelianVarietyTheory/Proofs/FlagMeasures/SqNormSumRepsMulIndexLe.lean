@@ -128,8 +128,7 @@ theorem sq_norm_sum_reps_mul_index_le {M : Type*} [AddCommGroup M] (P Q : AddSub
     refine ⟨w, hwR, ?_⟩
     rw [QuotientAddGroup.eq]
     have e : -w + u = u - w := by abel
-    rw [e]
-    exact hw
+    rwa [e]
   have hinj : ∀ w ∈ R, ∀ w' ∈ R, (w : M ⧸ P) = w' → w = w' := by
     intro w hw w' hw' h
     rw [QuotientAddGroup.eq] at h
@@ -166,9 +165,7 @@ theorem sq_norm_sum_reps_mul_index_le {M : Type*} [AddCommGroup M] (P Q : AddSub
       (by rw [QuotientAddGroup.ker_mk']; exact hPQ)
   have hi1 : ∀ a ∈ R, ((a : M ⧸ P)) ∈ (Finset.univ : Finset (M ⧸ P)) :=
     fun _ _ => Finset.mem_univ _
-  have hi2 : Set.InjOn (fun a : M => (a : M ⧸ P)) R := by
-    intro w hw w' hw' h
-    exact hinj w hw w' hw' h
+  have hi2 : Set.InjOn (fun a : M => (a : M ⧸ P)) R := fun w hw w' hw' h => hinj w hw w' hw' h
   have hi3 : Set.SurjOn (fun a : M => (a : M ⧸ P)) R (↑(Finset.univ : Finset (M ⧸ P)) : Set (M ⧸ P)) := by
     intro x _
     obtain ⟨w, hw, rfl⟩ := hsurj x
@@ -178,8 +175,7 @@ theorem sq_norm_sum_reps_mul_index_le {M : Type*} [AddCommGroup M] (P Q : AddSub
   have hcard : R.card = Fintype.card (M ⧸ P) := by
     rw [← Finset.card_univ]
     exact Finset.card_nbij (fun a : M => (a : M ⧸ P)) hi1 hi2 hi3
-  rw [hsum, hcard, ← hidx]
-  exact h1
+  rwa [hsum, hcard, ← hidx]
 
 theorem mul_conj_eq {A : Type*} [AddCommGroup A] (ψ : AddChar A ℂ) (h : ∀ x, ‖ψ x‖ = 1) (x y : A) :
     ψ x * conj (ψ y) = ψ (x - y) := by

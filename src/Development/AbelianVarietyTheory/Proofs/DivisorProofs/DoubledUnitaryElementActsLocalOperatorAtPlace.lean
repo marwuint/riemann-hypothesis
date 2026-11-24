@@ -88,8 +88,7 @@ theorem acts_of_comm {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype �
       ∀ Φ ∈ GlobalTheory.WeilM.schA F κ, T (fun y => Φ (y + u • p)) = fun y => T Φ (y + u • p) := by
     intro u hu p Φ hΦ
     have h := hcomm u hu p 0 Φ hΦ
-    rw [smul_zero, schr_trans', schr_trans'] at h
-    exact h
+    rwa [smul_zero, schr_trans', schr_trans'] at h
   obtain ⟨R, hR0, hR⟩ := GlobalTheory.T.exists_complementary_adelicSchwartz_restFunction κ v
   refine ⟨(R 0)⁻¹ • fun t => T (tens (evFin F v) φ R) (fun i => GlobalTheory.LatVac.liftV v (t i)), ?_, ?_⟩
   · exact (GlobalTheory.WeilM.SB _).smul_mem (R 0)⁻¹ (GlobalTheory.T.adelicSchwartz_restrict_finitePlace_mem_schwartzBruhat v _ (hkeep _ (hR φ hφ).2))
@@ -164,11 +163,8 @@ theorem dbl_acts : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
         Matrix.mul_sub, Matrix.mul_one, smul_sub]
     rw [h2'] at this
     simp only [Matrix.transpose_zero, Matrix.mul_zero, sub_eq_zero] at this
-    rw [hs1]
-    exact this
-  have h3 := hS.impl p (u • w) Φ hΦ
-  simp only [Darboux.rho, he, e2] at h3
-  exact h3
+    rwa [hs1]
+  simpa only [Darboux.rho, he, e2] using hS.impl p (u • w) Φ hΦ
 
 end GlobalTheory.DblActs
 

@@ -87,8 +87,7 @@ theorem res_fsec {q : ℕ} {i : ℤ} {V U : Scheme.{0}} (g : V ⟶ U) (f : Prim 
 theorem res_twGen {q : ℕ} (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)) :
     Sec.res g (twGen i ζ) = twGen i (ζ.map g.appTop.hom) := by
   have := res_fsec (i := i) g (Finsupp.single ζ 1)
-  rw [Finsupp.mapDomain_single] at this
-  exact this
+  rwa [Finsupp.mapDomain_single] at this
 
 theorem fsec_single {q : ℕ} [NeZero q] (i : ℤ) {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) (b : ULift.{1} (ZMod q)) :
     fsec q i (Finsupp.single ζ b) = b.down.val • twGen i ζ := by
@@ -176,8 +175,7 @@ theorem loc_mult {q : ℕ} [NeZero q] (i : ℤ) (U : Scheme.{0}) (ζ : Prim q Γ
   refine loc_mono (fsec_loc_mult i (ζ.map g.appTop.hom) f) fun W k h => ?_
   obtain ⟨c, hc⟩ := h
   refine ⟨c, ?_⟩
-  rw [res_comp, ← hx', ← prim_map_comp]
-  exact hc
+  rwa [res_comp, ← hx', ← prim_map_comp]
 
 theorem loc_gen {q : ℕ} [NeZero q] (i : ℤ) (U : Scheme.{0}) (y : Sec (tw q i) U) :
     Loc U fun V g => Sec.res g y = 0 ∨ ∃ (ζ : Prim q Γ(V, ⊤)) (c : ℕ), Sec.res g y = c • twGen i ζ := by
@@ -195,14 +193,12 @@ theorem loc_gen {q : ℕ} [NeZero q] (i : ℤ) (U : Scheme.{0}) (y : Sec (tw q i
     refine loc_mono (fsec_loc_mult i ζ f) fun W k h => ?_
     obtain ⟨c, hc⟩ := h
     refine Or.inr ⟨ζ.map k.appTop.hom, c, ?_⟩
-    rw [res_comp, ← hx']
-    exact hc
+    rwa [res_comp, ← hx']
 
 theorem dvd_of_smul_eq_zero {q : ℕ} [NeZero q] (i : ℤ) (U : Scheme.{0}) [Nonempty U] (ζ : Prim q Γ(U, ⊤)) (c : ℕ)
     (h : c • twGen i ζ = 0) : q ∣ c := by
   have h0 : fsec q i (c • Finsupp.single ζ 1) = 0 := by
-    rw [fsec_nsmul]
-    exact h
+    rwa [fsec_nsmul]
   have hl := (GlobalTheory.EtC.toSheafify_loc_bij_lift (ZMod q) (twP q i)).2.1 U _ h0
   rw [GlobalTheory.EtC.loc_iff_etale_affine_points] at hl
   · obtain ⟨x⟩ := ‹Nonempty U›

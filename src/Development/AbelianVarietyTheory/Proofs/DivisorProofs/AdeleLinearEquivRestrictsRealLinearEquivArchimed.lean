@@ -61,29 +61,24 @@ theorem infPart_infE (z : κ → mixedEmbedding.mixedSpace F) : infPart (infE F 
 
 theorem infE_infPart (w : κ → AdeleRing (𝓞 F) F) (h : ∀ i, (w i).2 = 0) : infE F (infPart w) = w := by
   funext i
-  refine Prod.ext ?_ (h i).symm
-  exact RingEquiv.symm_apply_apply _ _
+  exact Prod.ext (RingEquiv.symm_apply_apply _ _) (h i).symm
 
 def eInf : AdeleRing (𝓞 F) F := ((1 : InfiniteAdeleRing F), (0 : FiniteAdeleRing (𝓞 F) F))
 
 theorem eInf_smul_snd (w : κ → AdeleRing (𝓞 F) F) (i : κ) : ((eInf (F := F) • w) i).2 = 0 := by
-  show (0 : FiniteAdeleRing (𝓞 F) F) * (w i).2 = 0
   exact zero_mul _
 
 theorem eInf_smul_infE (z : κ → mixedEmbedding.mixedSpace F) : eInf (F := F) • infE F z = infE F z := by
   funext i
   refine Prod.ext ?_ ?_
-  · show (1 : InfiniteAdeleRing F) * _ = _
-    exact one_mul _
-  · show (0 : FiniteAdeleRing (𝓞 F) F) * 0 = 0
-    exact zero_mul _
+  · exact one_mul _
+  · exact zero_mul _
 
 theorem infE_add (z z' : κ → mixedEmbedding.mixedSpace F) : infE F (z + z') = infE F z + infE F z' := by
   funext i
   refine Prod.ext ?_ ?_
   · exact map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _ _
-  · show (0 : FiniteAdeleRing (𝓞 F) F) = 0 + 0
-    exact (add_zero _).symm
+  · exact (add_zero _).symm
 
 theorem infPart_add (w w' : κ → AdeleRing (𝓞 F) F) : infPart (w + w') = infPart w + infPart w' := by
   funext i
@@ -99,8 +94,7 @@ theorem infE_smul (t : ℝ) (z : κ → mixedEmbedding.mixedSpace F) : infE F (t
       (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (t • (1 : mixedEmbedding.mixedSpace F)) *
         (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (z i)
     rw [← map_mul, smul_mul_assoc, one_mul]
-  · show (0 : FiniteAdeleRing (𝓞 F) F) = 0 * 0
-    exact (zero_mul _).symm
+  · exact (zero_mul _).symm
 
 theorem infPart_smul (t : ℝ) (w : κ → AdeleRing (𝓞 F) F) : infPart (rAd (F := F) t • w) = t • infPart w := by
   funext i

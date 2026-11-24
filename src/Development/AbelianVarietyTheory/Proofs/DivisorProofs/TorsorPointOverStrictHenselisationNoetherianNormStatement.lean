@@ -405,10 +405,8 @@ theorem _root_.GlobalTheory.EnlargeBaseChange.fits_baseChange : ∀ (T O : Type)
     exact RingHom.congr_fun key y
   · rw [← RingHom.comp_assoc, hjA'comp, hgv]
   · rw [hjA'comp]
-  · intro Z _ u v huv'
-    exact exists_ringHom_tensor_of_comp_eq Z u v huv'
-  · intro Z _ w₁ w₂ h₁ h₂
-    exact tensorProduct_ringHom_ext_of_comp_eq w₁ w₂ h₁ h₂
+  · exact fun Z _ u v huv' => exists_ringHom_tensor_of_comp_eq Z u v huv'
+  · exact fun Z _ w₁ w₂ h₁ h₂ => tensorProduct_ringHom_ext_of_comp_eq w₁ w₂ h₁ h₂
 
 end GlobalTheory.EnlargeBaseChange
 end -- clump:auto
@@ -864,8 +862,7 @@ theorem enlarge_retract : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRin
     refine IsLocalization.ringHom_ext QA'.primeCompl (RingHom.ext fun y => ?_)
     have h1 := RingHom.congr_fun hag' y
     simp only [RingHom.comp_apply] at h1 ⊢
-    rw [← RingHom.comp_apply ρ' (algebraMap EA' (Localization.AtPrime QA')), hρσ]
-    exact h1
+    rwa [← RingHom.comp_apply ρ' (algebraMap EA' (Localization.AtPrime QA')), hρσ]
   have hmod : ∀ x : Localization.AtPrime QA', algebraMap T O (i₁ (ρ' x)) - jA' x ∈ I := by
     intro x
     have := RingHom.congr_fun hagR x
@@ -915,14 +912,12 @@ theorem enlarge_retract : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRin
   let ιb : A₁ →ₐ[Polynomial A₁] (Localization.AtPrime QA' ⧸ J) :=
     AlgHom.mk ((Ideal.Quotient.mk J).comp (algebraMap A₁ (Localization.AtPrime QA'))) hιc
   have hcomp : ρb.comp ιb = AlgHom.id (Polynomial A₁) A₁ := by
-    refine AlgHom.ext fun a => ?_
-    exact RingHom.congr_fun hρA a
+    exact AlgHom.ext fun a => RingHom.congr_fun hρA a
   have hkb := ker_eq_bot_of_section (Polynomial A₁) (Localization.AtPrime QA' ⧸ J) A₁ ρb ιb hcomp
   have hker : RingHom.ker ρ' = J := by
     refine le_antisymm (fun x hx => ?_) hJle
     have h1 : Ideal.Quotient.mk J x ∈ RingHom.ker ρb := hx
-    rw [hkb, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem] at h1
-    exact h1
+    rwa [hkb, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem] at h1
   exact ⟨A₁, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, i₁,
     EA', inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, QA', inferInstance, jA', ψA',
     DA', inferInstance, inferInstance, actA', hF', ⟨ρ', ⟨hρA, hker, hmod⟩, trivial⟩, β, h, hβ, hh⟩

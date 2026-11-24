@@ -331,8 +331,7 @@ theorem split_of_trace (E : Type) [Field E] [NumberField E] [StarRing E] (w : �
       have horth : star x ⬝ᵥ (J *ᵥ y) = 0 := by
         rw [← form_star hJ y x]
         simp [y, hz']
-      simp only [Matrix.mulVec_smul, dotProduct_smul, horth, smul_zero]
-      exact ⟨0, map_zero _⟩
+      simpa only [Matrix.mulVec_smul, dotProduct_smul, horth, smul_zero] using ⟨0, map_zero _⟩
     let i : E →ₗ[𝓞 E] Λ :=
       ((LinearMap.toSpanSingleton E _ y).restrictScalars (𝓞 E)).codRestrict Λ hline
     let : Module.Finite (𝓞 E) Λ := Module.Finite.iff_fg.mpr hΛ.fg
@@ -507,8 +506,7 @@ theorem exists_isAdapted : ∀ (I I₀ : AutInst) (e : I₀.E ≃+* I.E) (p q a 
       have : Submodule.span I.E (Λ i : Set (Fin (j i) → I.E)) ≤ W.comap (Ti i).mulVecLin :=
         Submodule.span_le.2 fun t ht => Submodule.subset_span (hone i t ht)
       rw [← hT]
-      have hsp := Submodule.IsFullLattice.span_eq_top (self := hΛ i)
-      exact this (hsp ▸ Submodule.mem_top)
+      exact this ((Submodule.IsFullLattice.span_eq_top (self := hΛ i)) ▸ Submodule.mem_top)
     · obtain ⟨u, -, rfl⟩ := (hlast z).1 hz
       exact ⟨u, rfl⟩
   have hdim : Module.finrank I.E W = Fintype.card κ := by
@@ -644,8 +642,7 @@ theorem exists_isSatFlag : ∀ (I : AutInst) (a : ℕ) (j : Fin a → ℕ) (B : 
   · rw [hS.2.2.1]
     exact (GlobalTheory.FlagIso.flag_isotropic I x).1
   · have e : sizesAt I x.2 S x.1 = τ := funext fun i => (hS.2.2.2.2.1 i).2.2.2
-    rw [e]
-    exact hτ
+    rwa [e]
 
 end GlobalTheory.FlagSat
 end -- clump:auto
@@ -889,13 +886,11 @@ theorem ratIso_eq (I : AutInst) (γ : GL (Fin I.n) I.E) (Λ N : Submodule (𝓞 
   have hWle : (Submodule.span I.E (N : Set (Fin I.n → I.E))).map
       (Matrix.toLin' (γ : Matrix (Fin I.n) (Fin I.n) I.E)) ≤ Submodule.span I.E (N : Set (Fin I.n → I.E)) := by
     rw [Submodule.map_le_iff_le_comap, Submodule.span_le]
-    intro y hy
-    exact h y hy
+    exact fun y hy => h y hy
   have hW : (Submodule.span I.E (N : Set (Fin I.n → I.E))).map
       (Matrix.toLin' (γ : Matrix (Fin I.n) (Fin I.n) I.E)) = Submodule.span I.E (N : Set (Fin I.n → I.E)) := by
     refine Submodule.eq_of_le_of_finrank_eq hWle ?_
-    have e := LinearEquiv.finrank_map_eq (ratEquiv I γ) (Submodule.span I.E (N : Set (Fin I.n → I.E)))
-    exact e
+    exact LinearEquiv.finrank_map_eq (ratEquiv I γ) (Submodule.span I.E (N : Set (Fin I.n → I.E)))
   apply le_antisymm
   · rintro _ ⟨y, hy, rfl⟩
     simp only [LinearMap.restrictScalars_apply, Matrix.toLin'_apply]
@@ -944,8 +939,7 @@ theorem sizesAt_mul : ∀ (I : AutInst) (xf : I.Gf) (a : ℕ) (j : Fin a → ℕ
   have key := sizeQ_eq (bas I) (frm I (g, xf)) (frm I (γ * g, xf)) (ratIso I c)
     (fun N => by rw [← hax]; exact zl_ratIso I (g, xf) (γ, 1) c hcond N) (rkK_ratIso I c)
     (S i.succ) (S i.castSucc)
-  rw [hfix, hfix] at key
-  exact key
+  rwa [hfix, hfix] at key
 
 end GlobalTheory.FlagSizeInv
 end -- clump:auto
@@ -1799,8 +1793,7 @@ theorem eq_one_of_fst (I : AutInst) (x : I.GA) (hx : x ∈ I.GFset) (h : x.1 = 1
   have h7 : (γ : Matrix (Fin I.n) (Fin I.n) I.E) = 1 := by
     refine Matrix.map_injective (I.φ v).injective ?_
     show _ = (1 : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v)
-    rw [Matrix.map_one _ (map_zero _) (map_one _)]
-    exact h4
+    rwa [Matrix.map_one _ (map_zero _) (map_one _)]
   rw [h7, Matrix.map_one _ (map_zero _) (map_one _)] at h2
   exact Prod.ext h (Subtype.ext (Units.ext h2))
 
@@ -1826,8 +1819,7 @@ theorem sum_latGroup_le (I : AutInst) (Γ : Subgroup I.GA) (hΓ : (Γ : Set I.GA
   rw [hΓ, hK] at key
   rw [ENNReal.tsum_mul_left, gaugeVol, mul_div_assoc]
   gcongr
-  rw [ENNReal.le_div_iff_mul_le (Or.inl h0) (Or.inl ht), mul_comm]
-  exact key
+  rwa [ENNReal.le_div_iff_mul_le (Or.inl h0) (Or.inl ht), mul_comm]
 
 theorem unfoldBound : UnfoldBound := by
   intro I I₀ p q a j _ hj hq hp hsame hsig hsig₀ c μf _ _ c₀ μ₀ _ _ hc hc₀ B hB hBs
@@ -1898,8 +1890,7 @@ theorem unfoldBound : UnfoldBound := by
   refine le_trans ?_ (ENNReal.tsum_le_tsum loc)
   rw [ENNReal.tsum_mul_left, mul_div_assoc]
   gcongr
-  rw [ENNReal.div_le_iff h0 ht, mul_comm]
-  exact key
+  rwa [ENNReal.div_le_iff h0 ht, mul_comm]
 
 end GlobalTheory.FlagUnfold
 end -- clump:auto

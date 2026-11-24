@@ -136,8 +136,7 @@ theorem integral_openOff_insert : ∀ (D : D7) (A : HSp D) (L : Lat A), IsSelfDu
       proj D.sp.cm.sig A.gram v x ∈ stabLoc D.sp.cm.sig A.gram L v := by
     intro x
     constructor
-    · intro h
-      exact ⟨fun u hu => h u (fun hu' => hu ((hS' u).2 (Or.inr hu'))), h v hv⟩
+    · exact fun h => ⟨fun u hu => h u (fun hu' => hu ((hS' u).2 (Or.inr hu'))), h v hv⟩
     · rintro ⟨h1, h2⟩ u hu
       by_cases e : u = v
       · subst e; exact h2
@@ -155,9 +154,7 @@ theorem integral_openOff_insert : ∀ (D : D7) (A : HSp D) (L : Lat A), IsSelfDu
     rw [← eH]
     refine Subgroup.isOpen_mono (H₁ := levelOpen D.sp.cm.sig A.gram L) ?_ (isOpen_levelOpen _ _ L)
     intro g hg
-    simp only [H, Subgroup.mem_iInf, Subgroup.mem_comap]
-    intro u _
-    exact (mem_levelOpen.1 hg) u
+    simpa only [H, Subgroup.mem_iInf, Subgroup.mem_comap] using fun u _ => (mem_levelOpen.1 hg) u
   have hUm : MeasurableSet (openOff A L Sf) := (isOpen_off Sf).measurableSet
   have hVm : MeasurableSet (openOff A L S') := (isOpen_off S').measurableSet
   have hKo : IsOpen (stabLoc D.sp.cm.sig A.gram L v : Set (Gv A v)) := isOpen_stabLoc _ _ L v
@@ -186,8 +183,7 @@ theorem integral_openOff_insert : ∀ (D : D7) (A : HSp D) (L : Lat A), IsSelfDu
     have h := integral_map_equiv (μ := μ) (MeasurableEquiv.mulRight k)
       (fun y => F (x' * emb D.sp.cm.sig A.gram v y))
     have hm' : Measure.map (MeasurableEquiv.mulRight k) μ = μ := hright k hkK
-    rw [hm'] at h
-    exact h
+    rwa [hm'] at h
   rw [setIntegral_congr_fun hUm step1]
 
   have hec : Continuous (emb D.sp.cm.sig A.gram v) := continuous_emb _ _ v
@@ -381,8 +377,7 @@ theorem setIntegral_openOff_union : GlobalTheory.Published.CuspRapidDecay → �
     have hφk : φ (ioAt A v (proj D.sp.cm.sig A.gram v x)) = 1 := by
       have := hφ.2.1 (ioAt A v (proj D.sp.cm.sig A.gram v x))
         ((ioH_mem_KFin (gram_hdbl A)).2 ⟨hk, one_mem _⟩) 1
-      rw [one_mul, hφ.2.2] at this
-      exact this
+      rwa [one_mul, hφ.2.2] at this
     have hr : rcoef m u₁ u₂ x = rcoef m u₁ u₂ x' := by
       have : rTr A x u₁ = rTr A x' u₁ := funext fun g => by
         simp only [rTr]

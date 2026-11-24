@@ -65,8 +65,7 @@ theorem exists_int_exponent_cyclotomic {Ω : Type} [Field Ω] [Algebra ℚ Ω] [
   obtain ⟨e, he⟩ := rootsOfUnity.integer_power_of_ringEquiv M s.toRingEquiv
   have hs : ∀ ζ : Ω, IsPrimitiveRoot ζ M → s ζ = ζ ^ e := by
     intro ζ hζ
-    have h := he hζ.toRootsOfUnity
-    simpa [Units.val_zpow_eq_zpow_val] using h
+    simpa [Units.val_zpow_eq_zpow_val] using he hζ.toRootsOfUnity
   refine ⟨e, hs, ?_⟩
   obtain ⟨k, hk⟩ := hd
   obtain ⟨ζ, hζ⟩ := HasEnoughRootsOfUnity.exists_primitiveRoot Ω M
@@ -77,20 +76,17 @@ theorem exists_int_exponent_cyclotomic {Ω : Type} [Field Ω] [Algebra ℚ Ω] [
   have hpow : (ζ ^ k) ^ (l ^ n) = 1 := hη.pow_eq_one
   have hspec := cyclotomicCharacter.spec (L := Ω) l s.toRingEquiv (ζ ^ k) hpow
   have heq : (ζ ^ k) ^ e = (ζ ^ k) ^ (((cyclotomicCharacter Ω l s.toRingEquiv).val.toZModPow n).val : ℤ) := by
-    rw [← hsη, zpow_natCast]
-    exact hspec
+    rwa [← hsη, zpow_natCast]
   have hdvd : ((l ^ n : ℕ) : ℤ) ∣ e - (((cyclotomicCharacter Ω l s.toRingEquiv).val.toZModPow n).val : ℤ) := by
     rw [← hη.zpow_eq_one_iff_dvd, zpow_sub₀ (hη.ne_zero (NeZero.ne _)), heq, div_self]
     exact zpow_ne_zero _ (pow_ne_zero _ (hζ.ne_zero (NeZero.ne _)))
   have hz : (PadicInt.toZModPow n : ℤ_[l] →+* ZMod (l ^ n)) ((e : ℤ_[l]) - c) = 0 := by
-    rw [map_sub, map_intCast, hc]
-    rw [sub_eq_zero]
+    rw [map_sub, map_intCast, hc, sub_eq_zero]
     have := (ZMod.intCast_zmod_eq_zero_iff_dvd _ (l ^ n)).mpr hdvd
     rw [Int.cast_sub, sub_eq_zero] at this
     rw [this]
     simp
   have hmem : (e : ℤ_[l]) - c ∈ RingHom.ker (PadicInt.toZModPow n : ℤ_[l] →+* ZMod (l ^ n)) := hz
-  rw [PadicInt.ker_toZModPow, ← Ideal.span_singleton_pow] at hmem
-  exact hmem
+  rwa [PadicInt.ker_toZModPow, ← Ideal.span_singleton_pow] at hmem
 
 end GlobalTheory.KZ

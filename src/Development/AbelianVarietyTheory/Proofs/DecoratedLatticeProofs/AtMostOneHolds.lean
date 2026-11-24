@@ -257,8 +257,7 @@ private theorem sub_y0_mem_box_of_psi_ne_zero (hP : S.Pattern t)
   rcases r with a | τ
   · have h1 := hgJ.2 a b' (not_freeIx_col t S.ρ a)
     have hga : g.val a b' = (S.ϖ : k) * y i := by
-      rw [hg]
-      exact hv
+      rwa [hg]
     rw [hga] at h1
     have h1' : (1 : Matrix (Ix (Fin κ ⊕ Fin (s + 1)) t s) (Ix (Fin κ ⊕ Fin (s + 1)) t s) k) a b' =
         (1 : Matrix (XIx (Fin κ) t (s + 1)) (XIx (Fin κ) t (s + 1)) k) i (Sum.inl (Sum.inr 0)) := by
@@ -603,11 +602,9 @@ theorem isLattice_stdLat_and_act : ∀ (k : Type) [Field k] [ValuativeRel k] [To
     refine Submodule.fg_pi fun _ => ?_
     rw [Submodule.one_eq_span]
     exact Submodule.fg_span_singleton _
-  · intro s hs hli
-    exact (LinearIndependent.iff_fractionRing _ _).mp hli
+  · exact fun s hs hli => (LinearIndependent.iff_fractionRing _ _).mp hli
   · exact hL.fg.map _
-  · intro s hs hli
-    exact (LinearIndependent.iff_fractionRing _ _).mp hli
+  · exact fun s hs hli => (LinearIndependent.iff_fractionRing _ _).mp hli
 
 end GlobalTheory.RootEx.UnfoldShape
 end -- clump:auto
@@ -824,9 +821,7 @@ theorem oneClass (hc : 1 ≤ c) {ϖ : 𝒪[k]} (hϖ : Irreducible ϖ) {ψ : AddC
     obtain ⟨δ, hδ, hδ1⟩ := ValuativeRel.IsNontrivial.exists_lt_one (R := k)
     have hγpos : 0 < γ := zero_lt_iff.mpr hγ
     obtain ⟨a, ha⟩ := ValuativeRel.valuation_surjective (γ * δ)
-    have ha0 : a ≠ 0 := by
-      intro e
-      exact (mul_ne_zero hγ hδ.ne') (by simpa [e] using ha.symm)
+    have ha0 : a ≠ 0 := fun e => (mul_ne_zero hγ hδ.ne') (by simpa [e] using ha.symm)
     have haq : Ψ (x + a • B) = Ψ x := by
       have hav : valuation k a < γ := by
         simpa only [ha, mul_one] using mul_lt_mul_of_pos_left hδ1 hγpos
@@ -1017,8 +1012,7 @@ theorem oneClass_symChain (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
       exact mul_lt_one_of_nonneg_of_lt_one_left zero_le h1 (hy _ _)) 1 h (act_one _) hf
   refine ⟨r, hr, u, mem_stabLat_iff.2 ?_, hh⟩
   change act u (chainLat p _ _) = chainLat p _ _ at hu
-  rw [e, act_latOf] at hu
-  exact hu
+  rwa [e, act_latOf] at hu
 
 end GlobalTheory.SymChain.LatClass
 end -- clump:auto
@@ -1076,8 +1070,7 @@ theorem mul_embX_inl {w : GL (n ⊕ Fin c) k} (hw : w ∈ fixX k n c) (g : GL n 
       ((1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) * (fromBlocks g.val 0 0 1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k))
         r (.inl x) := by
     simp only [Matrix.mul_apply, Fintype.sum_sum_type, hw r, fromBlocks_apply₂₁, Matrix.zero_apply, mul_zero]
-  rw [Matrix.one_mul] at this
-  exact this
+  rwa [Matrix.one_mul] at this
 
 theorem embX_inr (g : GL n k) (r : n ⊕ Fin c) (i : Fin c) :
     (embX c g).val r (.inr i) = (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r (.inr i) := by

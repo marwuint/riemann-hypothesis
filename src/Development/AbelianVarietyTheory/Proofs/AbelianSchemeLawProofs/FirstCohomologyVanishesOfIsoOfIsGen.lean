@@ -83,8 +83,7 @@ theorem pb_of_eq_id (g : X ⟶ X) (hg : g = 𝟙 X) {U W : X.Opens} (h : W ≤ g
 theorem le_of_comp_id {f : X ⟶ Y} {e : Y ⟶ X} (hfe : f ≫ e = 𝟙 X) {U W : X.Opens} {V : Y.Opens}
     (h : W ≤ f ⁻¹ᵁ V) (h' : V ≤ e ⁻¹ᵁ U) : W ≤ U := by
   have : W ≤ (f ≫ e) ⁻¹ᵁ U := fun _ hy => h' (h hy)
-  rw [hfe] at this
-  exact this
+  rwa [hfe] at this
 
 theorem pb_pb {f : X ⟶ Y} {e : Y ⟶ X} (hfe : f ≫ e = 𝟙 X) {U W : X.Opens} {V : Y.Opens}
     (h : W ≤ f ⁻¹ᵁ V) (h' : V ≤ e ⁻¹ᵁ U) (x : Γ(X, U)) :
@@ -133,8 +132,7 @@ theorem firstCohomologyVanishes_pull_of_isIso (e : Y ⟶ X) [IsIso e] (M : LB X)
   have h := congrArg (pb e (le_pre_inf e (inf_le_left.trans (hb a)) (inf_le_right.trans (hb b)) :
     V a ⊓ V b ≤ e ⁻¹ᵁ (inv e ⁻¹ᵁ V a ⊓ inv e ⁻¹ᵁ V b))) (hψ a b)
   simp only [map_sub, map_mul, pb_rs, pb_pb h2, rs_self] at h
-  simp only [pull_g, rs_pb]
-  exact h
+  simpa only [pull_g, rs_pb] using h
 
 def wu {N M : LB X} (w : LB.Iso M N) (i : N.ι) (k : M.ι) : Γ(X, N.U i ⊓ M.U k)ˣ := w.s (i, k)
 
@@ -156,14 +154,12 @@ theorem iso_rel {N M : LB X} (w : LB.Iso M N) (hw : w.IsGen) (i j : N.ι) (k l :
   rw [mul_right_comm, eq_mul_inv_iff_mul_eq] at h
   have h' := congrArg (fun u => rs X (le_inf (le_inf hi hk) (le_inf hj hl) :
     W ≤ N.U i ⊓ M.U k ⊓ (N.U j ⊓ M.U l)) (Units.val u)) h
-  simp only [Units.val_mul, map_mul, val_res, rs_rs] at h'
-  exact h'
+  simpa only [Units.val_mul, map_mul, val_res, rs_rs] using h'
 
 theorem rs_g_self {M : LB X} (hM : M.IsLB) (k : M.ι) {W : X.Opens} (h : W ≤ M.U k ⊓ M.U k) :
     rs X h (M.g k k).val = 1 := by
   have h' := congrArg (fun u => rs X (h.trans inf_le_left : W ≤ M.U k) (Units.val u)) (hM.g_self k)
-  simp only [val_res, rs_rs, Units.val_one, map_one] at h'
-  exact h'
+  simpa only [val_res, rs_rs, Units.val_one, map_one] using h'
 
 theorem rs_inv_mul {U W : X.Opens} (h : W ≤ U) (u : Γ(X, U)ˣ) :
     rs X h (u⁻¹).val * rs X h u.val = 1 := by
@@ -251,8 +247,7 @@ theorem firstCohomologyVanishes_of_iso_of_isGen {N M : LB X} (hN : ⨆ i, N.U i 
     rs X (inf_le_left : V a ⊓ V b ⊓ N.U i ≤ V a ⊓ V b) _
   rw [← hs, ← hs] at h
   simp only [rs_rs] at h
-  simp only [map_sub, map_mul, rs_rs]
-  exact h
+  simpa only [map_sub, map_mul, rs_rs] using h
 
 end H1Iso
 

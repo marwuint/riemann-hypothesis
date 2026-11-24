@@ -216,8 +216,7 @@ private theorem exists_unitary_hom_extending_of_dense_isometric {G : Type} [Grou
     intro A B h
     ext x
     refine hdr.induction_on (p := fun x => A x = B x) x (isClosed_eq A.continuous B.continuous) ?_
-    intro f
-    exact h f f.2
+    exact fun f => h f f.2
   have hEmul : ∀ g g', E (g * g') = (E g).comp (E g') := fun g g' =>
     heq _ _ fun f hf => by
       rw [ContinuousLinearMap.comp_apply, hE _ f hf, hE _ f hf, hE _ _ (hmem g' f hf), hmul g g' f hf]
@@ -372,15 +371,13 @@ theorem _root_.GlobalTheory.FockRep.exists_unitary_osc : ∀ (p q : ℕ) (H : Ty
     have h := hcont ↥G id (_root_.GlobalTheory.RealWeil.UnitaryOsc.continuous_kL.comp hmc)
       ((_root_.GlobalTheory.RealWeil.UnitaryOsc.continuous_dP S).comp hmc) f hf
     have e1 : (fun g : ↥G => ω g f) = fun g => Ω (id g) f := funext fun g => hω g f hf
-    rw [e1]
-    exact h
+    rwa [e1]
   refine ⟨ω, fun v => ?_, fun g z v => ?_, fun A hA g v => ?_, fun g h12 h21 v hv => ?_⟩
   · refine continuous_of_uniform_approx_of_continuous fun u hu => ?_
     obtain ⟨ε, hε, hεu⟩ := Metric.mem_uniformity_dist.1 hu
     obtain ⟨f, hf, hvf⟩ := hD.exists_dist_lt v hε
     refine ⟨fun g => ω g f, hcontD f hf, fun g => hεu ?_⟩
-    rw [LinearIsometryEquiv.dist_map]
-    exact hvf
+    rwa [LinearIsometryEquiv.dist_map]
   · obtain ⟨x, rfl⟩ := (_root_.GlobalTheory.RealWeil.UnitaryOsc.crd (Fin p ⊕ Fin q)).surjective z
     rw [← hke g x]
     change ω g (ρE x v) = ρE (k g x) (ω g v)
@@ -424,8 +421,7 @@ theorem _root_.GlobalTheory.FockRep.exists_unitary_osc : ∀ (p q : ℕ) (H : Ty
     have hiso : ∀ x, ‖k g x‖ = ‖x‖ := _root_.GlobalTheory.RealWeil.UnitaryOsc.norm_kL hgu
     have hP1 : ∫ u, _root_.GlobalTheory.RealWeil.gau u • ρE (k 1 u) v = v := by
       simp only [map_one, ContinuousLinearMap.one_apply]
-      rw [← _root_.GlobalTheory.RealWeil.proj_apply hρE]
-      exact hPv
+      rwa [← _root_.GlobalTheory.RealWeil.proj_apply hρE]
     have h3 := hvac 1 g hiso v hsm_v hP1
     simp only [one_mul, inv_one, mul_one] at h3
     rw [hω g v hsm_v, h3]

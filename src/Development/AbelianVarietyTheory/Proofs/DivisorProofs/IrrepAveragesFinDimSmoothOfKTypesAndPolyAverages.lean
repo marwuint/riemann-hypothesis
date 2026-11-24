@@ -131,8 +131,7 @@ theorem finDimStable_isSumOfKTypes : SumTypes := by
     simpa using this
   have hz0 : z ∈ T := ⟨hzS, hz⟩
   rw [hT, Submodule.mem_bot] at hz0
-  rw [hz0, add_zero]
-  exact hy
+  rwa [hz0, add_zero]
 
 end GlobalTheory.PsCo.PcEF
 end -- clump:auto
@@ -168,8 +167,7 @@ theorem polyAverages_finiteWeightStableSubspace : PolyAvg := by
   have hφs : ∀ m ∈ Kset ε, ∃ g, φ g = m := by
     intro m hm
     have : m ∈ Set.range (fun k : Formalism.REAL.KG ε => Formalism.REAL.toMK k) := by
-      rw [Formalism.REAL.range_toMK]
-      exact hm
+      rwa [Formalism.REAL.range_toMK]
     obtain ⟨g, hg⟩ := this
     exact ⟨g, hg⟩
   have hinUJ : ∀ g, φ g ∈ UJset ε := fun g => smd_inUJ_of_Kset (hφK g)
@@ -187,8 +185,7 @@ theorem polyAverages_finiteWeightStableSubspace : PolyAvg := by
   let Xu : H → MvPolynomial (EntIdx n) ℂ →ₗ[ℂ] H := fun u =>
     { toFun := fun Q => ∫ k, eval (entVar (φ k)) Q • σ (φ k) u ∂(muK ε)
       map_add' := fun Q R => by
-        simp only [map_add (f := _), add_smul]
-        exact integral_add (hint Q u) (hint R u)
+        simpa only [map_add (f := _), add_smul] using integral_add (hint Q u) (hint R u)
       map_smul' := fun c Q => by
         simp only [smul_eval, mul_smul, RingHom.id_apply]
         exact integral_smul c _ }
@@ -230,8 +227,7 @@ theorem polyAverages_finiteWeightStableSubspace : PolyAvg := by
     rw [SetLike.mem_coe, mem_restrictTotalDegree] at hQ
     rw [mem_restrictTotalDegree]
     exact (totalDegree_bind_le_of_linear _ (trF_totalDegree _) Q).trans hQ
-  · intro P hP
-    exact Submodule.mem_map_of_mem ((mem_restrictTotalDegree _ _ P).2 hP)
+  · exact fun P hP => Submodule.mem_map_of_mem ((mem_restrictTotalDegree _ _ P).2 hP)
   · rintro μ s ⟨Q, hQ, rfl⟩ hs0 hsw
     by_contra hμ
     rw [SetLike.mem_coe, mem_restrictTotalDegree] at hQ
@@ -243,8 +239,7 @@ theorem polyAverages_finiteWeightStableSubspace : PolyAvg := by
       rw [← map_smul, smul_monomial, smul_eq_mul, mul_one]
     have horth : ∀ m ∈ Q.support, inner ℂ (Xu u Q) (Xu u (monomial m 1)) = 0 := by
       intro m hm
-      refine kfin_wt_orth hσ hsw (hmono u m) fun h => hμ ?_
-      exact ⟨m, (le_totalDegree hm).trans hQ, h.symm⟩
+      exact kfin_wt_orth hσ hsw (hmono u m) fun h => hμ ⟨m, (le_totalDegree hm).trans hQ, h.symm⟩
     apply hs0
     rw [← inner_self_eq_zero (𝕜 := ℂ)]
     calc inner ℂ (Xu u Q) (Xu u Q) = inner ℂ (Xu u Q) (∑ m ∈ Q.support, AddMonoidAlgebra.coeff Q m • Xu u (monomial m 1)) := by

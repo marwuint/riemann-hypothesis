@@ -127,8 +127,7 @@ theorem exists_isH : ∀ (K V W : Type) [Field K] [NumberField K] [StarRing K] [
     intro a
     have h1 : N.F'.e a - G.e a ∈ G.X := AdaptInv.xa_mono G (Nat.lt_succ_iff.mp a.isLt) (hSG a)
     have h2 := perpX G hw _ h1
-    rw [map_sub, LinearMap.sub_apply, hw a, sub_zero] at h2
-    exact h2
+    rwa [map_sub, LinearMap.sub_apply, hw a, sub_zero] at h2
   have hEperp : ∀ u : W, ∀ a, H.B (F.e a) (e u) = 0 := fun u =>
     (hE.2 (e u)).2 (Submodule.mem_sup_left (LinearMap.mem_range_self e u))
   have hEX : ∀ u : W, ∀ x ∈ F.X, H.B x (e u) = 0 := fun u => perpX F (hEperp u)

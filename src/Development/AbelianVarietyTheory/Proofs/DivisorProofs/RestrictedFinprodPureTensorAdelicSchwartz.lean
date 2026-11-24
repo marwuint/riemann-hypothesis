@@ -77,7 +77,6 @@ theorem rest_evI_finprod : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) 
         SB (κ → FiniteAdeleRing (𝓞 F) F) :=
       ⟨GlobalTheory.WeilM.isLocallyConstant_finprod_evalV φ hφ hcof,
         GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ hφ hcof⟩
-    show _ ∈ Submodule.span ℂ _
     exact Submodule.subset_span ⟨f, _, hg, rfl⟩
 
 end GlobalTheory.RestPure

@@ -85,9 +85,7 @@ theorem summable_lattice {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
       (((Module.finrank ℤ L + 1).factorial : ℝ) * Real.exp ((R + 1) ^ 2 / (4 * c)))
   refine Summable.of_norm_bounded_eventually hmaj ?_
   have hfin : {z : L | (z : V) = x}.Finite := by
-    apply Set.Subsingleton.finite
-    intro a ha b hb
-    exact Subtype.ext (ha.trans hb.symm)
+    exact Set.Subsingleton.finite (fun a ha b hb => Subtype.ext (ha.trans hb.symm))
   filter_upwards [hfin.compl_mem_cofinite] with z hz
   have hne : (z : V) ≠ x := hz
   have hpos : 0 < ‖(z : V) - x‖ := norm_pos_iff.mpr (sub_ne_zero.mpr hne)
@@ -157,8 +155,7 @@ theorem summable_gaussian_coset : ∀ (G V : Type) [AddCommGroup G] [NormedAddCo
       congr 1
       abel
     rw [h1, sub_self] at h2
-    have h3 := hinj _ (Γ.sub_mem s.1.2 t.1.2) h2
-    exact Subtype.ext (Subtype.ext (sub_eq_zero.mp h3))
+    exact Subtype.ext (Subtype.ext (sub_eq_zero.mp (hinj _ (Γ.sub_mem s.1.2 t.1.2) h2)))
   let F : Γ → ℝ := fun g => Set.indicator (U : Set G)
     (fun _ => Real.exp (-c * ‖p g + y‖ ^ 2 + R * ‖p g + y‖)) ((g : G) + w)
   show Summable F

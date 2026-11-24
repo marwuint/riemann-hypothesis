@@ -156,8 +156,7 @@ theorem exists_compact_keep_cols {n r : ℕ} (σ : A →+* A) (f : A →+* ℂ) 
   refine ⟨b * k1 * b⁻¹, ?_, ?_, ?_⟩
   · have hk1' : k1 ∈ UJ σ (cT σ b.1 * J * b.1) := by rw [hb]; exact hk1D
     have := conj_mem_UJ σ b⁻¹ hk1'
-    rw [cT_inv_cancel, inv_inv] at this
-    exact this
+    rwa [cT_inv_cancel, inv_inv] at this
   · convert hk1one using 1
     group
 
@@ -187,8 +186,7 @@ theorem exists_compact_keep_cols {n r : ℕ} (σ : A →+* A) (f : A →+* ℂ) 
     have e1 : (H * Y).map f = H.map f * X' := Matrix.map_mul
     have e2 : (Y * β'.map F.symm).map f = X' * β' := by rw [Matrix.map_mul, hβf]
     apply hfinj
-    rw [e1, e2]
-    exact hHX
+    rwa [e1, e2]
   have hgk : g * (b * k1 * b⁻¹)⁻¹ = b * (h0 * k1⁻¹) * b⁻¹ := by
     rw [hh0def]; group
   rw [hgk, Units.val_mul, Units.val_mul]

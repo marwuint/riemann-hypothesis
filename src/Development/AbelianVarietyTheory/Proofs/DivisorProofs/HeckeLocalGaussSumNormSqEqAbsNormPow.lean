@@ -89,8 +89,7 @@ theorem exists_int_witness {E : Type} [Field E] [NumberField E] (χ : HChar E) (
     rw [h, map_zero] at hyv
     exact zero_ne_one hyv
   refine ⟨y, Units.mk0 (y : E) hy0, rfl, ?_, ?_, ?_⟩
-  · rw [← HeightOneSpectrum.valuation_eq_one_iff_notMem (K := E)]
-    exact hyv
+  · rwa [← HeightOneSpectrum.valuation_eq_one_iff_notMem (K := E)]
   · rw [← HeightOneSpectrum.intValuation_le_pow_iff_mem, ← HeightOneSpectrum.valuation_of_algebraMap (K := E),
       ← _root_.Formalism.UG.P.levelaf_valued_algebraMap]
     have e : algebraMap E (w.adicCompletion E) ((algebraMap (𝓞 E) E) (y - 1)) =
@@ -116,11 +115,9 @@ theorem exists_int_witness {E : Type} [Field E] [NumberField E] (χ : HChar E) (
         rw [show (x : w.adicCompletion E) * (algebraMap E (w.adicCompletion E) (y : E))⁻¹ - 1 =
             ((x : w.adicCompletion E) - algebraMap E (w.adicCompletion E) (y : E)) *
               (algebraMap E (w.adicCompletion E) (y : E))⁻¹ by field_simp]
-        rw [map_mul, map_inv₀, hyv', inv_one, mul_one]
-        exact hy
+        rwa [map_mul, map_inv₀, hyv', inv_one, mul_one]
     rw [map_mul, map_inv, mul_inv_eq_one] at h1
-    rw [h1]
-    exact hχ
+    rwa [h1]
 
 end GlobalTheory.GaussModulus
 
@@ -211,8 +208,7 @@ theorem locK_congr {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ} (h�
     · rw [IsUnitAt, e, hval, map_div₀, hx1, hy1, div_one]
     · rw [e, ← map_one (algebraMap E (w.adicCompletion E)), ← map_sub, hval, div_sub_one hy0, map_div₀, hy1, div_one]
       exact valuation_sub_le h
-  rw [map_mul, map_inv, map_mul, map_inv, mul_inv_eq_one] at h1
-  exact h1
+  rwa [map_mul, map_inv, map_mul, map_inv, mul_inv_eq_one] at h1
 
 theorem gaussSumAt_normSq (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (a : ℕ) (c : Eˣ) (ha : a ≠ 0) (hE : ExpAt χ w a)
     (hu : IsUnitary χ) (hc : w.valuation E (c : E) = WithZero.exp (-((a + diffExp w : ℕ) : ℤ))) :

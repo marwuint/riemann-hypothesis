@@ -101,19 +101,14 @@ theorem leviStep_of_steps (hR : RankOne) (hE : EmbExists) (hM : EmbMem) (hT : Em
   have hLR := hL L σ n β hv
   refine hR (GU σ n) (rootU σ γ) (KU σ n) (radU σ Fin.val) (radU σ β) (ι.comp (rootU σ γ).subtype) c Q d h t t'
     hh.1 (P.finite_supp (KU σ n) (P.isCommensurated_integral_unitary_of_unramified hU n) h hh) ?_ ?_ ?_ ?_ ?_ ?_ hQ ?_ ?_ ?_ ?_
-  · intro u hu i j hij
-    exact hu i j (hD.2.2.1 hij)
-  · intro a
-    exact (hMem a).2.2 a.2.1
+  · exact fun u hu i j hij => hu i j (hD.2.2.1 hij)
+  · exact fun a => (hMem a).2.2 a.2.1
   · intro u hu
     obtain ⟨a, ha, u', hu', e1⟩ := hS L σ n r e β γ ι hD hι u hu
     exact ⟨⟨a, ha⟩, u', hu', e1⟩
-  · intro a u' hu'
-    exact (hLR _ ((hMem a).2.1 a.2.2) u' hu').2
-  · intro a u' hu'
-    exact (hLR _ ((hMem a).2.1 a.2.2) u' hu').1
-  · intro a ha
-    exact (hMem _).1.2 ((hCon a a.2).2.2.1 ((hMem a).1.1 ha))
+  · exact fun a u' hu' => (hLR _ ((hMem a).2.1 a.2.2) u' hu').2
+  · exact fun a u' hu' => (hLR _ ((hMem a).2.1 a.2.2) u' hu').1
+  · exact fun a ha => (hMem _).1.2 ((hCon a a.2).2.2.1 ((hMem a).1.1 ha))
   · rw [hcomap, ← Subgroup.relIndex_map_map_of_injective _ _ (rootU σ γ).subtype_injective,
       Subgroup.map_subgroupOf_eq_of_le inf_le_right, ← hidx s₀ hs₀, Subgroup.map_map]
     congr 1
@@ -122,8 +117,7 @@ theorem leviStep_of_steps (hR : RankOne) (hE : EmbExists) (hM : EmbMem) (hT : Em
   · intro a
     obtain ⟨j, hj⟩ := (hCon a a.2).2.2.2
     refine ⟨j, (hMem _).1.2 ?_⟩
-    rw [← hcn] at hj
-    exact hj
+    rwa [← hcn] at hj
   · intro a
     have e1 := hJ L ϖ σ r γ b (fun i => B' (e i)) d s₀ s' a h0 hd hs₀ hs' a.2.2
     show t' * ι a * t'⁻¹ = ι ((c ^ d) a : rootU σ γ)

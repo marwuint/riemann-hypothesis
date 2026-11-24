@@ -131,8 +131,7 @@ theorem negDef_of_signature {n q : ℕ} {G : Matrix (Fin n) (Fin n) ℂ} (h : Fo
       have hP' : star P.1 * G.reindex e e * P.1 = Formalism.UG.Jpq 0 q := hP
       rw [e1, Matrix.mul_neg, Matrix.neg_mul, hP', h1, neg_neg]
     rw [this]; exact Matrix.PosDef.one
-  have h3 := ((Matrix.IsUnit.posDef_star_left_conjugate_iff P.isUnit).1 h2).submatrix e.injective
-  simpa using h3
+  simpa using ((Matrix.IsUnit.posDef_star_left_conjugate_iff P.isUnit).1 h2).submatrix e.injective
 
 theorem exists_bound_definite {n : ℕ} {G : Matrix (Fin n) (Fin n) ℂ} (hG : G.PosDef ∨ (-G).PosDef) :
     ∃ R : ℝ, ∀ g : Matrix (Fin n) (Fin n) ℂ, gᴴ * G * g = G → ∀ i j, ‖g i j‖ ≤ R := by
@@ -296,9 +295,7 @@ theorem integral_eq_classSum : ∀ {D : D7} (V : HSp D) (n : ℕ) (ι : Formalis
       refine ⟨⟨γ, (Bridge.mem_stab _).2 ?_⟩, ?_⟩
       · rw [hγ, ← map_inv Ψ, ← map_mul Ψ, ← map_mul Ψ]
         exact (hJΨ _).1 hy2
-      · apply Subtype.ext
-        apply hΨi
-        exact (hre _).trans hγ
+      · exact Subtype.ext (hΨi ((hre _).trans hγ))
   refine ⟨hfin, ?_, ?_⟩
   · have h1 : MemLp (GlobalTheory.AutomorphicL2Unitary.lift (GQ V) (GlobalTheory.AutomorphicL2Unitary.descend (GQ V) Φ)) 1 (μ.restrict 𝓕) := by
       rw [hL.lift_descend]; exact memLp_one_iff_integrable.2 hIO

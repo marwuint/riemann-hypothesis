@@ -71,8 +71,7 @@ theorem norm_natCast_lt_one_of_dvd (F : Type) [Field F] [NumberField F]
     rw [map_natCast]
     rw [show (((c : F)) : v.adicCompletion F) = algebraMap F (v.adicCompletion F) (c : F) from rfl,
       map_natCast]
-  rw [e, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
-  exact hval
+  rwa [e, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
 
 theorem exists_nat_scaled_subset (F : Type) [Field F] [NumberField F]
     (U : Set (FiniteAdeleRing (𝓞 F) F)) (hU : U ∈ 𝓝 (0 : FiniteAdeleRing (𝓞 F) F)) :
@@ -87,8 +86,7 @@ theorem exists_nat_scaled_subset (F : Type) [Field F] [NumberField F]
       (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F)
       (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) cofinite)
       (𝓝 (fun v => ⟨0, zero_mem (v.adicCompletionIntegers F)⟩)) := by
-    rw [← RestrictedProduct.nhds_eq_map_structureMap hAopen]
-    exact hU
+    rwa [← RestrictedProduct.nhds_eq_map_structureMap hAopen]
   have hU2 : (RestrictedProduct.structureMap
       (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F)
       (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) cofinite) ⁻¹'
@@ -110,8 +108,7 @@ theorem exists_nat_scaled_subset (F : Type) [Field F] [NumberField F]
   set c : ℕ := ∏ v ∈ hI.toFinset, Ideal.absNorm v.asIdeal with hcdef
   have hc0 : c ≠ 0 := by
     rw [hcdef, Finset.prod_ne_zero_iff]
-    intro v _
-    exact (lt_trans zero_lt_one (NumberField.HeightOneSpectrum.one_lt_absNorm v)).ne'
+    exact fun v _ => (lt_trans zero_lt_one (NumberField.HeightOneSpectrum.one_lt_absNorm v)).ne'
   have hcv : ∀ v ∈ I, ‖(c : v.adicCompletion F)‖ < 1 := fun v hv =>
     norm_natCast_lt_one_of_dvd F v c (Finset.dvd_prod_of_mem _ (hI.mem_toFinset.2 hv))
   have hev : ∀ v ∈ I, ∀ᶠ k in atTop, ‖(c : v.adicCompletion F)‖ ^ k < ε v := fun v hv =>
@@ -180,7 +177,6 @@ theorem exists_scaledInt_subset_of_mem_nhds : ∀ (F : Type) [Field F] [NumberFi
   choose N hN0 hN using fun i => exists_nat_scaled_subset F (t i) (ht' i)
   have hP : (∏ i, N i) ≠ 0 := Finset.prod_ne_zero_iff.2 fun i _ => hN0 i
   refine ⟨((∏ i, N i : ℕ) : F), Nat.cast_ne_zero.2 hP, fun z hz => hIt ?_⟩
-  intro i _
-  exact hN i _ hP (Finset.dvd_prod_of_mem _ (Finset.mem_univ i)) (z i) (fun v => hz i v)
+  exact fun i _ => hN i _ hP (Finset.dvd_prod_of_mem _ (Finset.mem_univ i)) (z i) (fun v => hz i v)
 
 end GlobalTheory.EvAdm

@@ -265,8 +265,7 @@ theorem exists_allMaps : ∀ (D : D7) (θ : D.what₂.Tau → (TensorProduct D.h
     obtain ⟨q1, q2⟩ := p4 y [(τ, X)] (by simpa using hX)
     simp only [List.foldr_cons, List.foldr_nil] at q1 q2
     refine (uniq _ _ q1 ?_).symm
-    rw [coe_update, hw, ← (hsmM y).2 τ X hX]
-    exact q2
+    rwa [coe_update, hw, ← (hsmM y).2 τ X hX]
   obtain ⟨N, L, hL, hgr⟩ := GlobalTheory.T.sobolev_bound_for_smooth_vectors D θ V hθ μ 𝓕 ρ hp hρ U hU
   have hEq : GlobalTheory.RepSmooth.IsEquiv θ T := by
     intro τ g hg y z hz
@@ -405,8 +404,7 @@ theorem exists_complete_dense {X K : Type} [NormedAddCommGroup K] [InnerProductS
     have hv : v ∈ Submodule.span ℂ (Set.range u) := hu ▸ Submodule.mem_top
     have hm := Submodule.mem_map_of_mem
       (f := (UniformSpace.Completion.toComplₗᵢ (𝕜 := ℂ) (E := V)).toLinearMap) hv
-    rw [Submodule.map_span, ← Set.range_comp] at hm
-    exact hm
+    rwa [Submodule.map_span, ← Set.range_comp] at hm
 
 end GlobalTheory.HilbTensorExists
 end -- clump:auto
@@ -439,8 +437,7 @@ theorem exists_extend {ι H K : Type} [NormedAddCommGroup H] [InnerProductSpace 
     (he : Dense (Submodule.span ℂ (Set.range e) : Set H)) (c : ℂ) (h : ∀ i j, ⟪f i, f j⟫_ℂ = c * ⟪e i, e j⟫_ℂ) :
     ∃ A : H →L[ℂ] K, ∀ i, A (e i) = f i := by
   have hd : DenseRange (Finsupp.linearCombination ℂ e) := by
-    rw [← Finsupp.range_linearCombination] at he
-    exact he
+    rwa [← Finsupp.range_linearCombination] at he
   have hn : ∀ x : ι →₀ ℂ, ‖Finsupp.linearCombination ℂ f x‖ ≤ √‖c‖ * ‖Finsupp.linearCombination ℂ e x‖ := by
     intro x
     have h1 : ⟪Finsupp.linearCombination ℂ f x, Finsupp.linearCombination ℂ f x⟫_ℂ =

@@ -75,8 +75,7 @@ private theorem norm_add_smul_single_sub_le_of_hasDerivAt_bound {k : ℕ} (φ : 
       simp only [Function.comp_apply]
       congr 1
       rw [sub_smul]; abel
-    rw [hf]
-    exact h1
+    rwa [hf]
   have h := Convex.norm_image_sub_le_of_norm_hasDerivWithin_le (s := Set.univ)
     (f := fun u : ℝ => φ (t + u • e)) (f' := fun s => φ' i (t + s • e))
     (fun s _ => (hder s).hasDerivWithinAt) (fun s _ => hB i _) convex_univ (Set.mem_univ 0) (Set.mem_univ a)
@@ -149,8 +148,7 @@ theorem continuous_mixedSpace_symm : Continuous (InfiniteAdeleRing.ringEquiv_mix
         fun y => (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm y v) = fun y => y.1 ⟨v, hv⟩ := by
       funext y
       have h0 := congrArg (fun z => z.1 ⟨v, hv⟩) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)
-      rw [Function.comp_apply]
-      exact h0
+      rwa [Function.comp_apply]
     rw [h]
     exact (continuous_apply _).comp continuous_fst
   · have hc : v.IsComplex := InfinitePlace.not_isReal_iff_isComplex.1 hv
@@ -160,8 +158,7 @@ theorem continuous_mixedSpace_symm : Continuous (InfiniteAdeleRing.ringEquiv_mix
         fun y => (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm y v) = fun y => y.2 ⟨v, hc⟩ := by
       funext y
       have h0 := congrArg (fun z => z.2 ⟨v, hc⟩) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)
-      rw [Function.comp_apply]
-      exact h0
+      rwa [Function.comp_apply]
     rw [h]
     exact (continuous_apply _).comp continuous_snd
 
@@ -195,8 +192,7 @@ def lineR {N : ℕ} (v : Fin N → mixedEmbedding.mixedSpace F) : ℝ →+ VA F 
 
 theorem isRealLine_lineR {N : ℕ} (v : Fin N → mixedEmbedding.mixedSpace F) : IsRealLine (lineR v) := by
   refine ⟨?_, fun t => ⟨fin_embR (t • v), ?_⟩⟩
-  · show Continuous fun s : ℝ => ((embR (s • v), 0) : VA F N)
-    exact (continuous_embR.comp (continuous_id.smul continuous_const)).prodMk continuous_const
+  · exact (continuous_embR.comp (continuous_id.smul continuous_const)).prodMk continuous_const
   · funext l
     first
     | rfl
@@ -252,8 +248,7 @@ theorem schwartz_invV_realTranslate : ∀ (F : Type) [Field F] [NumberField F] (
     obtain ⟨C, hC⟩ := hdec g hg x n
     refine ⟨‖(L.symm : E →L[ℝ] (Fin (Module.finrank ℝ E) → ℝ))‖ ^ n * C, fun s => ?_⟩
     have hs : ‖s‖ ≤ ‖(L.symm : E →L[ℝ] (Fin (Module.finrank ℝ E) → ℝ))‖ * ‖L s‖ := by
-      have h := (L.symm : E →L[ℝ] (Fin (Module.finrank ℝ E) → ℝ)).le_opNorm (L s)
-      simpa using h
+      simpa using (L.symm : E →L[ℝ] (Fin (Module.finrank ℝ E) → ℝ)).le_opNorm (L s)
     calc ‖s‖ ^ n * ‖invV ψ ν 𝓓 g (x + embR (L s))‖
         ≤ (‖(L.symm : E →L[ℝ] (Fin (Module.finrank ℝ E) → ℝ))‖ * ‖L s‖) ^ n *
             ‖invV ψ ν 𝓓 g (x + embR (L s))‖ := by gcongr

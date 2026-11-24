@@ -141,7 +141,6 @@ theorem ratPt {D : D7} (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) {n : ℕ}
     have := bc_mem_UJ' (incA D) (D.sp.cm.sig : D.host.E →+* D.host.E) (sigR (AF D.host.F) D.sp.cm.sig) (fun x => ?_) 1 hγ
     · rw [hG']
       have e1 : (1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (incA D) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
-      show Formalism.UG.bc (incA D) γ₀ ∈ Formalism.UG.UJ _ ((1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map _)
       exact this
     · show sigR (AF D.host.F) D.sp.cm.sig (1 ⊗ₜ x) = _
       simp [sigR]
@@ -180,13 +179,11 @@ theorem ext_finM_emb : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : T
   refine ⟨?_, ?_⟩
   · have h3 := congrArg (fun M => Matrix.map M (toEAf (I.rec7 l Z))) e1
     simp only [Matrix.map_mul, Matrix.map_map] at h3
-    rw [hy, ← hinc]
-    exact h3
+    rwa [hy, ← hinc]
   · funext i
     have h3 := congrArg (toEAf (I.rec7 l Z)) (congrFun e2 i)
     rw [RingHom.map_mulVec] at h3
-    rw [← hinc]
-    exact h3
+    rwa [← hinc]
 
 theorem top_lev_chi : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (Ch₀ : ℕ → Type) (A : TwDat I l Z u a Ch₀), A.Is → ∀ (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (K : ClassesAtPrimes (D := (I.rec7 l Z)) (u := u) (I.fm l u a) bad), I.ReadsP a K.lev.Lb K.lev.U K.lev.chi (fun c => (K.y c).1) K.lat (fun c s => (K.stabI c s).1) → ∀ c (g : TC.GA B (B.R.N B.R.m)), IsExt (I.rec7 l Z) (TC.z0 X u) (Formalism.UG.inclE (F := (I.rec7 l Z).host.F) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)) (K.y c).1.1 g.1 → ∃ κ : (A.K B.R.m le_rfl (A.chOf B.R.m ((I.perIn u a).tilC c))).lev.U, (show TC.GA B (B.R.N B.R.m) from κ.1) = (show TC.GA B (B.R.N B.R.m) from ((A.K B.R.m le_rfl (A.chOf B.R.m ((I.perIn u a).tilC c))).y ⟨(I.perIn u a).tilC c, rfl⟩).1)⁻¹ * (ratAd B.host.F ((I.stp u a B.R.m).mv (I.perIn u a).b0 ((I.perIn u a).tilPt c)).1)⁻¹ * g ∧ (((A.K B.R.m le_rfl (A.chOf B.R.m ((I.perIn u a).tilC c))).lev.chi κ : ℂˣ) : ℂ) = B.embLL (((I.stp u a B.R.m).chr (I.perIn u a).b0 ((I.stp u a B.R.m).mv (I.perIn u a).b0 ((I.perIn u a).tilPt c)) : B.LLˣ) : B.LL) := by
   intro B X I hOk hPins l Z u a Ch₀ A hA bad K hRP c g hg
@@ -222,14 +219,12 @@ theorem top_lev_chi : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC
     have e : Y * (Y⁻¹ * (ratAd B.host.F g₀.1)⁻¹ * g) * A.kb B.R.m (A.chOf B.R.m ((I.perIn u a).tilC c)) =
         ratAd B.host.F g₀.1⁻¹ * (g * A.kb B.R.m (A.chOf B.R.m ((I.perIn u a).tilC c))) := by
       rw [hr]; group
-    rw [e]
-    exact h2
+    rwa [e]
   have hcos := GlobalTheory.Mem.Col2.ChEx.cos_of_neT I (u := u) (a := a) (i := B.R.m) (by omega)
     ((I.stp u a B.R.m).act (I.perIn u a).b0 κ' ((I.stp u a B.R.m).rep ((I.perIn u a).tilC c)))
     ((I.stp u a B.R.m).rep ((I.perIn u a).tilC c))
   have hxU := (R.lev ((I.perIn u a).tilC c) (Y⁻¹ * (ratAd B.host.F g₀.1)⁻¹ * g) _ hpt).2 ⟨κ', hgam1, rfl, hcos⟩
-  refine ⟨⟨_, hxU⟩, rfl, ?_⟩
-  exact R.chr ((I.perIn u a).tilC c) ⟨_, hxU⟩ κ' hgam1 hpt
+  exact ⟨⟨_, hxU⟩, rfl, (R.chr ((I.perIn u a).tilC c) ⟨_, hxU⟩ κ' hgam1 hpt)⟩
 
 end GlobalTheory.AdForm.EvzDecomp
 

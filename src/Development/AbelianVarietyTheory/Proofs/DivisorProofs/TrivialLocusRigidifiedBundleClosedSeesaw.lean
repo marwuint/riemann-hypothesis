@@ -173,15 +173,13 @@ theorem exists_pow_mul_app_eq_zero_near_of_represented : ∀ (S : Scheme.{0}) (�
     have e := congrArg (fun φ => φ.hom cV) (p.naturality (homOfLE (inf_le_left : V ⊓ S.basicOpen s ≤ V)).op)
     simp only [CommRingCat.hom_comp, RingHom.comp_apply] at e
     refine e.symm.trans ?_
-    rw [hres]
-    exact h1
+    rwa [hres]
   have hO : Z.basicOpen ((p.app V).hom sV) = p ⁻¹ᵁ (V ⊓ S.basicOpen s) := by
     rw [← Scheme.preimage_basicOpen, Scheme.basicOpen_res]
   obtain ⟨n, hn⟩ := exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isCompact Z hcpt
     ((p.app V).hom cV) ((p.app V).hom sV) (key _ hO _)
   have hpa : (p.app V).hom ((S.presheaf.map (homOfLE hV).op).hom (s ^ n * c)) = 0 := by
-    rw [map_mul, map_pow, map_mul, map_pow]
-    exact hn
+    rwa [map_mul, map_pow, map_mul, map_pow]
   have hia := (app_comp_ι_eq_zero_iff U i V' _).1 hpa
   refine ⟨n, fun T t ht => ?_⟩
   have ht' : Φ _ ((t ∣_ U) ≫ U.ι) := by
@@ -241,8 +239,7 @@ theorem killIdeal_map_basicOpen {S : Scheme.{0}} (Φ : ∀ (T : Scheme.{0}), (T 
   · rw [Ideal.map_le_iff_le_comap]
     intro b hb
     rw [Ideal.mem_comap, mem_killIdeal]
-    intro T t ht
-    exact app_res_eq_zero t _ b ((mem_killIdeal Φ).1 hb T t ht)
+    exact fun T t ht => app_res_eq_zero t _ b ((mem_killIdeal Φ).1 hb T t ht)
   · intro a ha
     obtain ⟨c, m, rfl⟩ := IsLocalization.exists_mk'_eq (Submonoid.powers f) a
     have hc : algebraMap Γ(S, W) Γ(S, S.basicOpen f) c ∈ killIdeal Φ (S.basicOpen f) := by
@@ -269,9 +266,7 @@ theorem GlobalTheory.closedSubscheme_glue : ∀ (S : Scheme.{0}) (Φ : ∀ (T : 
       ∃ z : T ⟶ J.subscheme, z ≫ J.subschemeι = t := by
     intro T t ht
     have hle : J ≤ t.ker := by
-      refine Scheme.IdealSheafData.le_ofIdeals_iff.mpr ?_
-      intro W b hb
-      exact (mem_killIdeal Φ).1 hb T t ht
+      exact Scheme.IdealSheafData.le_ofIdeals_iff.mpr (fun W b hb => (mem_killIdeal Φ).1 hb T t ht)
     exact ⟨t.toImage ≫ Scheme.IdealSheafData.inclusion hle, by simp⟩
   have hZ : Φ J.subscheme J.subschemeι := by
     apply hloc
@@ -292,8 +287,7 @@ theorem GlobalTheory.closedSubscheme_glue : ∀ (S : Scheme.{0}) (Φ : ∀ (T : 
       rw [← hz]
       show (z.app (i ⁻¹ᵁ W)).hom ((i.app W).hom a) = 0
       rw [RingHom.mem_ker.1 ha, map_zero]
-    have h2 := (J.ker_subschemeι_app ⟨U.ι ''ᵁ W, W.2.image_of_isOpenImmersion _⟩).ge hmem
-    exact h2
+    exact (J.ker_subschemeι_app ⟨U.ι ''ᵁ W, W.2.image_of_isOpenImmersion _⟩).ge hmem
   refine ⟨J.subscheme, J.subschemeι, inferInstance, fun T t => ⟨hfac T t, ?_⟩⟩
   rintro ⟨z, rfl⟩
   exact hstab _ _ _ _ hZ

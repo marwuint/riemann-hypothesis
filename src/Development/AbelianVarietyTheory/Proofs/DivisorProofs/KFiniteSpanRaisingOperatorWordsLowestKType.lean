@@ -157,14 +157,10 @@ theorem kfin_span_raising_words_lowK : ∀ (n : ℕ) (ε : Fin n → Bool) (H : 
     ∃ x ∈ L, y = (l.map fun p : Fin n × Fin n => E p.1 p.2).prod x} with hS
   have hstab : ∀ a b, ∀ x ∈ S, E a b x ∈ S := fun a b x hx =>
     _root_.GlobalTheory.HolDS.raisingSpan_stable n ε D E hK.gl L hKS hkill a b x hx
-  have hLS : L ≤ S := by
-    intro x hx
-    apply Submodule.subset_span
-    exact ⟨[], by simp, x, hx, by simp⟩
+  have hLS : L ≤ S := fun x hx => Submodule.subset_span ⟨[], by simp, x, hx, by simp⟩
   rcases _root_.GlobalTheory.KFinIrr.kMod_irred n ε H σ D E hDS.1 hDS.2.2.1 hDS.2.2.2.1 hK S hstab with h | h
   · exfalso
-    apply hne
-    exact le_bot_iff.mp (h ▸ hLS)
+    exact hne (le_bot_iff.mp (h ▸ hLS))
   · exact h
 
 end GlobalTheory

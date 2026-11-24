@@ -107,8 +107,7 @@ theorem finite_appTop_restrict {Y Z : Scheme.{0}} (π : Y ⟶ Z) [IsProper π] [
   have h3 : (e ≫ (π ∣_ V).appTop).hom.Finite := by
     have he : e ≫ (π ∣_ V).appTop = (Scheme.ΓSpecIso (.of Γ(Z, V))).inv ≫ f.appTop := by
       simp only [e, f, Scheme.Hom.comp_appTop, Category.assoc]
-    rw [he]
-    exact h2
+    rwa [he]
   have h4 : (π ∣_ V).appTop = inv e ≫ (e ≫ (π ∣_ V).appTop) := by rw [IsIso.inv_hom_id_assoc]
   rw [h4, CommRingCat.hom_comp]
   exact RingHom.Finite.comp h3
@@ -171,8 +170,7 @@ theorem bijective_appTop_restrict : ∀ (Y Z : Scheme.{0}) (π : Y ⟶ Z) [IsPro
       IsIso.hom_inv_id_assoc]
     exact TopCat.Presheaf.germ_stalkSpecializes _ _ (Inseparable.of_eq hy).specializes'
   have := congrArg (fun g => g.hom a) key
-  rw [← h1] at this
-  exact this
+  rwa [← h1] at this
 
 end GlobalTheory.ZariskiSections
 end -- clump:auto
@@ -236,8 +234,7 @@ theorem isPreconnected_closedFibre (O : Type) [CommRing O] [IsNoetherianRing O] 
   let ι : ∀ n, pullback f (thick O (maximalIdeal O) n) ⟶ Y := fun n => pullback.fst _ _
   have hTn : ∀ n, Set.range (ι n) = f ⁻¹' {closedPoint O} := fun n => by
     have h := Scheme.Pullback.range_fst f (thick O (maximalIdeal O) n)
-    rw [range_thick] at h
-    exact h
+    rwa [range_thick] at h
   refine isPreconnected_closed_iff.2 fun A B hA hB hcov ⟨u, hu, huA⟩ ⟨u', hu', hu'B⟩ => ?_
   by_contra hcon
   have hdis : ∀ y, y ∈ f ⁻¹' {closedPoint O} → y ∈ A → y ∈ B → False :=
@@ -261,8 +258,7 @@ theorem isPreconnected_closedFibre (O : Type) [CommRing O] [IsNoetherianRing O] 
     refine GlobalTheory.AlgConn.hom_ext_of_twoπ_of_basicOpen O _ _ _ ?_ ?_
     · refine (Category.assoc _ _ _).trans ?_
       refine (congrArg (thickMap O (maximalIdeal O) n (Over.mk f) ≫ ·) (hhp (n + 1))).trans ?_
-      refine (Category.assoc _ _ _).symm.trans ?_
-      exact (congrArg (· ≫ f) (htr n)).trans (hhp n).symm
+      exact (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ f) (htr n)).trans (hhp n).symm)
     · refine TopologicalSpace.Opens.ext ?_
       refine Eq.trans ?_ (hhU n).symm
       refine Eq.trans (congrArg (thickMap O (maximalIdeal O) n (Over.mk f) ⁻¹' ·) (hhU (n + 1))) ?_

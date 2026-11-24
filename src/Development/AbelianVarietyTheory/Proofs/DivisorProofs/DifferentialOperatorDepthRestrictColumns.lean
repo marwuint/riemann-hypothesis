@@ -134,8 +134,8 @@ theorem depth_rename (κ : Type) [Fintype κ] [DecidableEq κ] (d : κ → ℕ)
     obtain rfl := e.injective h1
     rw [heq_eq_eq] at h2
     rw [h2]
-  have hjt : Function.Injective (fun x : (Σ b : κ', ι (e b)) => (⟨e x.1, x.2⟩ : Σ b, ι b)) := hinj ι
-  have hjv : Function.Injective (fun x : (Σ b : κ', Fin (d (e b))) => (⟨e x.1, x.2⟩ : Σ b, Fin (d b))) := hinj (fun b => Fin (d b))
+  have hjt := hinj ι
+  have hjv := hinj (fun b => Fin (d b))
   have hcc : ∀ {σ τ : Type} (j : τ → σ) (s : σ),
       constantCoeff (Function.extend j (X : τ → MvPowerSeries τ C) 0 s) = 0 := by
     intro σ τ j s
@@ -177,34 +177,26 @@ theorem depth_rename (κ : Type) [Fintype κ] [DecidableEq κ] (d : κ → ℕ)
     rintro ⟨b, k⟩
     by_cases hb : ∃ b', e b' = b
     · obtain ⟨b', rfl⟩ := hb
-      have h1 : Function.extend (fun x : (Σ b : κ', Fin (d (e b))) => (⟨e x.1, x.2⟩ : Σ b, Fin (d b))) (X : (Σ b : κ', Fin (d (e b))) → MvPowerSeries (Σ b : κ', Fin (d (e b))) C) 0 ⟨e b', k⟩ = X ⟨b', k⟩ := hjv.extend_apply _ _ ⟨b', k⟩
-      have h2 : ∀ a, Function.extend (fun x : (Σ b : κ', ι (e b)) => (⟨e x.1, x.2⟩ : Σ b, ι b)) (X : (Σ b : κ', ι (e b)) → MvPowerSeries (Σ b : κ', ι (e b)) C) 0 ⟨e b', a⟩ = X ⟨b', a⟩ :=
-        fun a => hjt.extend_apply _ _ ⟨b', a⟩
-      rw [h1, subst_X hA']
+      rw [hjv.extend_apply _ _ ⟨b', k⟩, subst_X hA']
       simp only [expAlong]
       rw [subst_comp_subst_apply (hin (e b')) hRt]
       congr 1
       funext e'
       rw [subst_sum_smul_X hRt]
-      simp only [h2]
-    · have h1 : Function.extend (fun x : (Σ b : κ', Fin (d (e b))) => (⟨e x.1, x.2⟩ : Σ b, Fin (d b))) (X : (Σ b : κ', Fin (d (e b))) → MvPowerSeries (Σ b : κ', Fin (d (e b))) C) 0 ⟨b, k⟩ = 0 :=
-        Function.extend_apply' _ _ _ (by
-          rintro ⟨⟨b', k'⟩, h⟩
-          exact hb ⟨b', congrArg Sigma.fst h⟩)
-      have h2 : ∀ a, Function.extend (fun x : (Σ b : κ', ι (e b)) => (⟨e x.1, x.2⟩ : Σ b, ι b)) (X : (Σ b : κ', ι (e b)) → MvPowerSeries (Σ b : κ', ι (e b)) C) 0 ⟨b, a⟩ = 0 := fun a =>
-        Function.extend_apply' _ _ _ (by
+      simp only [hjt.extend_apply _ _ ⟨b', _⟩]
+    · have hz : ∀ (β : κ → Type) (a : β b),
+          Function.extend (fun x : (Σ b : κ', β (e b)) => (⟨e x.1, x.2⟩ : Σ b, β b))
+            (X : (Σ b : κ', β (e b)) → MvPowerSeries (Σ b : κ', β (e b)) C) 0 ⟨b, a⟩ = 0 :=
+        fun β a => Function.extend_apply' _ _ _ (by
           rintro ⟨⟨b', a'⟩, h⟩
           exact hb ⟨b', congrArg Sigma.fst h⟩)
-      rw [h1, ← coe_substAlgHom hA', map_zero]
+      rw [hz (fun b => Fin (d b)) k, ← coe_substAlgHom hA', map_zero]
       simp only [expAlong]
       rw [subst_comp_subst_apply (hin b) hRt]
-      have h3 : (fun e' : Fin (d b) => subst (Function.extend (fun x : (Σ b : κ', ι (e b)) => (⟨e x.1, x.2⟩ : Σ b, ι b)) (X : (Σ b : κ', ι (e b)) → MvPowerSeries (Σ b : κ', ι (e b)) C) 0)
-          (∑ a, u b a e' • (X ⟨b, a⟩ : MvPowerSeries (Σ b, ι b) C))) = 0 := by
-        funext e'
-        rw [subst_sum_smul_X hRt]
-        simp [h2]
-      rw [h3]
-      exact subst_zero_of_constantCoeff _ (hE b k)
+      convert subst_zero_of_constantCoeff _ (hE b k) using 2
+      funext e'
+      rw [subst_sum_smul_X hRt]
+      simp [hz ι]
   have K : ∀ f : MvPowerSeries (Σ b, Fin (d b)) C,
       derivAt0 (MvPolynomial.rename (fun x : (Σ b : κ', ι (e b)) => (⟨e x.1, x.2⟩ : Σ b, ι b)) P) (subst (expAlong G u) f) =
         derivAt0 P (subst (expAlong (fun b => G (e b)) (fun b => u (e b))) (subst (Function.extend (fun x : (Σ b : κ', Fin (d (e b))) => (⟨e x.1, x.2⟩ : Σ b, Fin (d b))) (X : (Σ b : κ', Fin (d (e b))) → MvPowerSeries (Σ b : κ', Fin (d (e b))) C) 0) f)) := by
@@ -240,7 +232,7 @@ theorem depth_rename (κ : Type) [Fintype κ] [DecidableEq κ] (d : κ → ℕ)
     dsimp only
     rw [K f, hfg]
   · refine le_iInf fun f => ?_
-    refine (iInf_le _ ⟨subst (Function.extend (fun x : (Σ b : κ', Fin (d (e b))) => (⟨e x.1, x.2⟩ : Σ b, Fin (d b))) (X : (Σ b : κ', Fin (d (e b))) → MvPowerSeries (Σ b : κ', Fin (d (e b))) C) 0) f.1, Rint f.1 f.2⟩).trans_eq ?_
+    refine (iInf_le _ ⟨_, Rint f.1 f.2⟩).trans_eq ?_
     dsimp only
     rw [K f.1]
 

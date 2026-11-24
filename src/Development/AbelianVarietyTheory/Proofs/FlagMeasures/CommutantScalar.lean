@@ -65,8 +65,7 @@ theorem ext_vec (hd : Dense (Submodule.span ℂ (Set.range tens) : Set Hs)) {u u
   have key : (innerSL ℂ (u - u') : Hs →L[ℂ] ℂ) = 0 := by
     refine ContinuousLinearMap.ext_on hd ?_
     rintro _ ⟨y, rfl⟩
-    rw [innerSL_apply_apply, zero_apply]
-    rw [inner_eq_zero_symm, inner_sub_right, h y, sub_self]
+    rw [innerSL_apply_apply, zero_apply, inner_eq_zero_symm, inner_sub_right, h y, sub_self]
   have h0 : ⟪u - u', u - u'⟫_ℂ = 0 := by
     have := congrArg (fun L : Hs →L[ℂ] ℂ => L (u - u')) key
     simpa only [innerSL_apply_apply, zero_apply] using this

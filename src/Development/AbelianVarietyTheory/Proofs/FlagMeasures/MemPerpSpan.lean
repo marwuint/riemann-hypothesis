@@ -179,17 +179,13 @@ theorem mem_lat (hAp : ∀ x ∈ A, ∀ j, hf L Hm x (e j) = 0) (x : Fin n → E
     x ∈ lat L Hm e es A ↔
       (∀ j, hf L Hm x (es j) ∈ L.O) ∧ (∀ j, hf L Hm x (e j) ∈ L.O) ∧ pr L Hm e es x ∈ A := by
   have hite : ∀ (p : Prop) [Decidable p], (if p then (1 : E) else 0) ∈ L.O := fun p _ => by
-    split_ifs
-    exacts [L.O.one_mem, L.O.zero_mem]
+    split_ifs <;> simp
   constructor
   · let P : Submodule L.O (Fin n → E) :=
       { carrier := {x | (∀ j, hf L Hm x (es j) ∈ L.O) ∧ (∀ j, hf L Hm x (e j) ∈ L.O) ∧
           pr L Hm e es x ∈ A}
         zero_mem' := by
-          refine ⟨fun j => ?_, fun j => ?_, ?_⟩
-          · rw [hf_zero_l]; exact L.O.zero_mem
-          · rw [hf_zero_l]; exact L.O.zero_mem
-          · simp [pr, hf_zero_l]
+          refine ⟨fun j => ?_, fun j => ?_, ?_⟩ <;> simp [pr, hf_zero_l]
         add_mem' := by
           rintro a b ⟨h1, h2, h3⟩ ⟨k1, k2, k3⟩
           refine ⟨fun j => ?_, fun j => ?_, ?_⟩
@@ -207,22 +203,14 @@ theorem mem_lat (hAp : ∀ x ∈ A, ∀ j, hf L Hm x (e j) = 0) (x : Fin n → E
       refine sup_le (sup_le ?_ ?_) ?_
       · rw [Submodule.span_le]
         rintro _ ⟨i, rfl⟩
-        refine ⟨fun j => ?_, fun j => ?_, ?_⟩
-        · rw [hes]; exact hite _
-        · rw [hee]; exact L.O.zero_mem
-        · simp [pr, hes, hee]
+        refine ⟨fun j => ?_, fun j => ?_, ?_⟩ <;> simp [pr, hes, hee, hite]
       · rintro x ⟨hx, hx'⟩
         have hx2 := (mem_perp_span L Hm es x).1 hx'
-        refine ⟨fun j => ?_, fun j => ?_, ?_⟩
-        · rw [hx2]; exact L.O.zero_mem
-        · rw [hAp x hx]; exact L.O.zero_mem
-        · simpa [pr, hx2, hAp x hx] using hx
+        refine ⟨fun j => ?_, fun j => ?_, ?_⟩ <;> simp [pr, hx2, hAp x hx]
+        exact hx
       · rw [Submodule.span_le]
         rintro _ ⟨i, rfl⟩
-        refine ⟨fun j => ?_, fun j => ?_, ?_⟩
-        · rw [hss]; exact L.O.zero_mem
-        · rw [hse hH hes]; exact hite _
-        · simp [pr, hss, hse hH hes]
+        refine ⟨fun j => ?_, fun j => ?_, ?_⟩ <;> simp [pr, hss, hse hH hes, hite]
     exact fun h => this h
   · rintro ⟨h1, h2, h3⟩
     have hx : x = ∑ j, hf L Hm x (es j) • e j + pr L Hm e es x + ∑ j, hf L Hm x (e j) • es j := by

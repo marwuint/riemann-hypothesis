@@ -102,8 +102,7 @@ private lemma isFiniteLength_of_nonZeroDivisor_smul_eq_zero {A X : Type*} [CommR
       exact (Submodule.liftQ_apply _ _ 1).trans (one_smul A _)
     · intro j _ hj
       simp [hj]
-    · intro h
-      exact absurd (Finset.mem_univ i) h
+    · exact fun h => absurd (Finset.mem_univ i) h
   have hQ : IsFiniteLength A (A ⧸ Ideal.span {c}) := isFiniteLength_quotient_span_singleton A hc
   rw [isFiniteLength_iff_isNoetherian_isArtinian] at hQ ⊢
   obtain ⟨-, hQa⟩ := hQ
@@ -142,8 +141,7 @@ private lemma length_quotient_smul_univ_eq_finrank_mul {A M : Type*} [CommRing A
       obtain ⟨n, hn, he⟩ := Submodule.mem_smul_pointwise_iff_exists _ _ _ |>.1 h
       have := hM (n - m) (by rw [smul_sub, he, sub_self])
       rwa [sub_eq_zero.1 this] at hn
-    · intro h
-      exact Submodule.smul_mem_pointwise_smul _ _ _ h
+    · exact fun h => Submodule.smul_mem_pointwise_smul _ _ _ h
   have hle1 : a • N ≤ N := by
     rw [← Submodule.ideal_span_singleton_smul]; exact Submodule.smul_le_right
   have hle2 : a • N ≤ a • (⊤ : Submodule A M) := by
@@ -173,10 +171,8 @@ private lemma length_quotient_smul_univ_eq_finrank_mul {A M : Type*} [CommRing A
     constructor
     · rintro ⟨n, hn, he⟩
       have : a • n = a • m := congrArg Subtype.val he
-      rw [← hM (n - m) (by rw [smul_sub, this, sub_self]) |> sub_eq_zero.1]
-      exact hn
-    · intro h
-      exact ⟨m, h, rfl⟩
+      rwa [← hM (n - m) (by rw [smul_sub, this, sub_self]) |> sub_eq_zero.1]
+    · exact fun h => ⟨m, h, rfl⟩
   have hβ : Module.length A (N ⧸ LinearMap.ker ((a • N).mkQ ∘ₗ N.subtype)) =
       Module.finrank A M * Module.length A (A ⧸ Ideal.span {a}) := by
     have hker : LinearMap.ker ((a • N).mkQ ∘ₗ N.subtype) = a • (⊤ : Submodule A N) := by
@@ -258,8 +254,7 @@ theorem _root_.GlobalTheory.finsum_ord_mul_inertiaDeg_eq_finrank_mul_ord (A B : 
   have hne : (Module.finrank A B : ℕ∞) * Ring.ord A a ≠ ⊤ :=
     WithTop.mul_ne_top (ENat.coe_ne_top _) hordA
   have hfinA : IsFiniteLength A (B ⧸ Ideal.span {b}) := by
-    rw [← Module.length_ne_top_iff, h1]
-    exact hne
+    rwa [← Module.length_ne_top_iff, h1]
   have hfinB : IsFiniteLength B (B ⧸ Ideal.span {b}) := by
     rw [isFiniteLength_iff_isNoetherian_isArtinian] at hfinA ⊢
     exact ⟨inferInstance, isArtinian_of_tower A hfinA.2⟩

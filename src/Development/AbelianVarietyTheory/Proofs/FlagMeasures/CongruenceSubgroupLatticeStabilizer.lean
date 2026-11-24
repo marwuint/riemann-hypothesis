@@ -67,8 +67,7 @@ theorem exists_pow_smul_mem {E : Type} [CommRing E] {V : Type} [AddCommGroup V] 
   have hv : v ∈ Submodule.span E (Λ' : Set V) := hsp ▸ Submodule.mem_top
   induction hv using Submodule.span_induction with
   | mem x hx =>
-    refine ⟨0, fun b _ => ?_⟩
-    exact Λ'.smul_mem (⟨p ^ b, O.pow_mem hp b⟩ : O) hx
+    exact ⟨0, fun b _ => Λ'.smul_mem (⟨p ^ b, O.pow_mem hp b⟩ : O) hx⟩
   | zero => exact ⟨0, fun b _ => by rw [smul_zero]; exact Λ'.zero_mem⟩
   | add x y _ _ hx hy =>
     obtain ⟨a, ha⟩ := hx
@@ -142,9 +141,7 @@ theorem mem_stab_iff (Λ : Submodule O V) (g : V ≃ₗ[E] V) :
     constructor
     · rintro ⟨w, hw, rfl⟩
       exact (h w).2 hw
-    · intro hv
-      refine ⟨g.symm v, (h _).1 (by simpa using hv), ?_⟩
-      exact g.apply_symm_apply v
+    · exact fun hv => ⟨g.symm v, (h _).1 (by simpa using hv), g.apply_symm_apply v⟩
 
 theorem smul_mem_of (Λ : Submodule O V) {c : E} (hc : c ∈ O) {v : V} (hv : v ∈ Λ) : c • v ∈ Λ :=
   Λ.smul_mem ⟨c, hc⟩ hv
@@ -294,8 +291,7 @@ theorem exists_pow_mul_mem (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) 
   obtain ⟨a, u, rfl⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy hϖ
   refine ⟨a, (L.O_def _).2 ?_⟩
   have h := hi.smul (u⁻¹ : (𝒪[F])ˣ).1
-  rw [smul_smul, ← mul_assoc, Units.inv_mul, one_mul, Algebra.smul_def, map_pow] at h
-  exact h
+  rwa [smul_smul, ← mul_assoc, Units.inv_mul, one_mul, Algebra.smul_def, map_pow] at h
 
 end GlobalTheory.HL.CongFin
 

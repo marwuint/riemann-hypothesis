@@ -89,16 +89,14 @@ theorem dim_localization_add_trdeg (K A : Type) [Field K] [CommRing A] [Algebra 
       obtain ⟨s, hs⟩ := Ideal.Quotient.mk_surjective (t : B)
       refine ⟨⟨a, ⟨s, fun h => t.2 (hs ▸ (hmem s).2 h)⟩⟩, ?_⟩
       simp only [IsScalarTower.algebraMap_apply A B L]
-      rw [Ideal.Quotient.algebraMap_eq, hs]
-      exact hz
+      rwa [Ideal.Quotient.algebraMap_eq, hs]
     · intro x y hxy
       rw [IsScalarTower.algebraMap_apply A B L, IsScalarTower.algebraMap_apply A B L] at hxy
       obtain ⟨t, ht⟩ := (IsLocalization.eq_iff_exists P.primeCompl L).1 hxy
       obtain ⟨u, hu⟩ := Ideal.Quotient.mk_surjective (t : B)
       have hup : u ∉ p := fun h => t.2 (hu ▸ (hmem u).2 h)
       have h1 : u * (x - y) ∈ q := by
-        rw [← Ideal.Quotient.eq_zero_iff_mem, map_mul, map_sub, hu, mul_sub, sub_eq_zero]
-        exact ht
+        rwa [← Ideal.Quotient.eq_zero_iff_mem, map_mul, map_sub, hu, mul_sub, sub_eq_zero]
       obtain ⟨v, hv⟩ := (IsLocalization.map_eq_zero_iff p.primeCompl _ _).1 ((hq _).1 h1)
       refine ⟨⟨(v : A) * u, p.primeCompl.mul_mem v.2 hup⟩, ?_⟩
       simp only
@@ -146,8 +144,7 @@ theorem exists_isOpen_forall_le_of_minimal (A : Type) [CommRing A] [IsNoetherian
     obtain ⟨q'', hq'', hle⟩ := Ideal.exists_minimalPrimes_le (bot_le : (⊥ : Ideal A) ≤ r.asIdeal)
     by_cases h : q'' = q.asIdeal
     · show q.asIdeal ≤ r.asIdeal
-      rw [← h]
-      exact hle
+      rwa [← h]
     · exact absurd ((PrimeSpectrum.mem_zeroLocus _ _).2 hle) (hr q'' ⟨hq'', h⟩)
 
 theorem trdeg_residueField_of_isOpenImmersion (K : Type) [Field K] {Y S : Scheme.{0}} (h : Y ⟶ S)
@@ -320,11 +317,8 @@ theorem ringKrullDim_stalk_eq_of_isTaut {E : Type} [Field E] [NumberField E] [Is
     have h2 : (τS ≫ Scheme.stalkClosedPointTo ξ) ≫ CommRingCat.ofHom (algebraMap R (FractionRing R)) =
         CommRingCat.ofHom C.b ≫ CommRingCat.ofHom (algebraMap R (FractionRing R)) := by
       apply Spec.map_injective
-      rw [Spec.map_comp (τS ≫ Scheme.stalkClosedPointTo ξ), Spec.map_comp (CommRingCat.ofHom C.b)]
-      exact hgen
-    refine RingHom.ext fun a => ?_
-    apply IsFractionRing.injective R (FractionRing R)
-    exact congr($(h2).hom a)
+      rwa [Spec.map_comp (τS ≫ Scheme.stalkClosedPointTo ξ), Spec.map_comp (CommRingCat.ofHom C.b)]
+    exact RingHom.ext fun a => IsFractionRing.injective R (FractionRing R) (congr($(h2).hom a))
 
   have hκ : Spec.preimage (S.fromSpecResidueField x ≫ π ≫ zs) = τS ≫ S.residue x := by
     apply Spec.map_injective

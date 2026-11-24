@@ -269,8 +269,7 @@ theorem stepPt_add {n n' : Type} {c : ℕ} (x₀ : Matrix n n' k) (e : StepVar n
     simp
 
 theorem ch_add {n n' : Type} {c : ℕ} (X Y : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) : ch (X + Y) = ch X + ch Y := by
-  simp only [ch, Matrix.add_apply]
-  exact Finset.sum_add_distrib
+  simpa only [ch, Matrix.add_apply] using Finset.sum_add_distrib
 
 theorem frame_mul {a c b a' c' b' : ℕ} (h : a + c = b) (h' : a' + c' = b') (g : GL (Fin b) k) (g' : GL (Fin b') k)
     (X : Matrix (Fin a ⊕ Fin c) (Fin a' ⊕ Fin c') k) :
@@ -294,8 +293,7 @@ def Shift.vars (Y : Shift G) : Vars G := fun j rs => Y j rs.1.1 rs.1.2
 
 theorem stepPt_shift (x : ColArgs G) (e : Vars G) (Y : Shift G)
     (hY : ∀ j r s, ¬ Free ((G.m - 2 - j.val) / 2 + 1) (r, s) → Y j r s = 0) (j : Fin (G.m - 1)) :
-    stepPt (x j) ((e + Y.vars) j) = stepPt (x j) (e j) + Y j := by
-  exact stepPt_add (x j) (e j) (Y j) (hY j)
+    stepPt (x j) ((e + Y.vars) j) = stepPt (x j) (e j) + Y j := stepPt_add (x j) (e j) (Y j) (hY j)
 
 private lemma colVar_add_shift_eq_of_not_free (x : ColArgs G) (e : Vars G) (Y : Shift G)
     (hY : ∀ j r s, ¬ Free ((G.m - 2 - j.val) / 2 + 1) (r, s) → Y j r s = 0) (j : Fin (G.m - 1))
@@ -395,8 +393,7 @@ theorem moved_shift (hs : 1 ≤ G.s) (hT : G.IsTensor ϖ e (oppositePath G.m) T)
   | ex i j' =>
     have h0 : (fill hs x y (v + Y.vars) - fill hs x y v) (.ex i j') = 0 := by
       simp [fill]
-    simp only [Grid.moveArgs, h0, Matrix.mul_zero, Matrix.zero_mul]
-    exact zero_mem _
+    simpa only [Grid.moveArgs, h0, Matrix.mul_zero, Matrix.zero_mul] using zero_mem _
   | theta i j' =>
     by_cases hi : i = G.m
     · subst hi
@@ -416,12 +413,10 @@ theorem moved_shift (hs : 1 ≤ G.s) (hT : G.IsTensor ϖ e (oppositePath G.m) T)
       · have h0 : (fill hs x y (v + Y.vars) - fill hs x y v) (.theta G.m j') = 0 := by
           rw [Pi.sub_apply, fill_theta, fill_theta]
           simp only [downMap, dite_eq_right hj, sub_self]
-        simp only [Grid.moveArgs, h0, Matrix.mul_zero, Matrix.zero_mul]
-        exact zero_mem _
+        simpa only [Grid.moveArgs, h0, Matrix.mul_zero, Matrix.zero_mul] using zero_mem _
     · have h0 : (fill hs x y (v + Y.vars) - fill hs x y v) (.theta i j') = 0 := by
         simp [fill, hi]
-      simp only [Grid.moveArgs, h0, Matrix.mul_zero, Matrix.zero_mul]
-      exact zero_mem _
+      simpa only [Grid.moveArgs, h0, Matrix.mul_zero, Matrix.zero_mul] using zero_mem _
 
 variable [MeasurableSpace k] [BorelSpace k] {ψ : AddChar k Circle} {ν : Measure k}
 
@@ -462,12 +457,9 @@ theorem psi_shift [ν.IsAddHaarMeasure] (hs : 1 ≤ G.s) (hT : G.IsTensor ϖ e (
   unfold flatTensor at h
   have h1 : ((ψ (-s) : Circle) : ℂ) = 1 := by
     refine mul_right_cancel₀ h ?_
-    rw [one_mul]
-    exact hint
-  have h2 : ψ (-s) = 1 := by
-    exact Circle.coe_eq_one.mp h1
-  rw [AddChar.map_neg_eq_inv, inv_eq_one] at h2
-  exact h2
+    rwa [one_mul]
+  have h2 : ψ (-s) = 1 := Circle.coe_eq_one.mp h1
+  rwa [AddChar.map_neg_eq_inv, inv_eq_one] at h2
 
 theorem step_form [ν.IsAddHaarMeasure] (hs : 1 ≤ G.s) (hψ : HasConductor ψ 1)
     (hT : G.IsTensor ϖ e (oppositePath G.m) T) (g : G.VertexGroup)
@@ -593,8 +585,7 @@ theorem step_form [ν.IsAddHaarMeasure] (hs : 1 ≤ G.s) (hψ : HasConductor ψ 
     rw [map_mul, map_inv₀, Units.val_one, map_one] at key
     have hpos : 0 < valuation k (((ϖ ^ (e * (i.val + 1)) : kˣ) : k)) := zero_lt_iff.mpr ((map_ne_zero _).mpr hd)
     have hfin := (mul_inv_le_iff₀ hpos).mp key
-    rw [one_mul] at hfin
-    exact hfin
+    rwa [one_mul] at hfin
 
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] in
@@ -657,8 +648,7 @@ theorem oneCoset_of_isTensor [ν.IsAddHaarMeasure] (hs : 1 ≤ G.s) {J : G.Level
       have hg' : (Reps.through hs J (stair G ϖ e)).elt β (G.m, n + 1) =
           (frameGL (tgt_eq hs ⟨n, hn1⟩)).symm r * stair G ϖ e (n + 1) * (frameGL (tgt_eq hs ⟨n, hn1⟩)).symm w := by
         apply (frameGL (tgt_eq hs ⟨n, hn1⟩)).injective
-        rw [map_mul, map_mul, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]
-        exact hrw
+        rwa [map_mul, map_mul, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]
       have hr' : (frameGL (tgt_eq hs ⟨n, hn1⟩)).symm r ∈ rowR hs (j := n + 1) (by omega) :=
         mem_rowR hs (by omega) (tgt_eq hs ⟨n, hn1⟩) (by rw [MulEquiv.apply_symm_apply]; exact hr)
       have hw' : (frameGL (tgt_eq hs ⟨n, hn1⟩)).symm w ∈ KO k _ :=
@@ -689,8 +679,7 @@ theorem oneCoset {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
     [ν.IsAddHaarMeasure] (J : G.Level) (T : G.Args → ℂ) (ϖ : kˣ) (e : ℕ) :
     Even G.m → IsUnif ϖ → HasConductor ψ 1 → G.IsTensor ϖ e (oppositePath G.m) T →
       (∀ j, 0 < j → j < G.m → J (G.m, j) = KO k _) → OneCoset hs ψ ν J T ϖ e := by
-  intro _ _ hψ hT hJ
-  exact OneCosetProof.oneCoset_of_isTensor hs hψ hT hJ
+  exact fun _ _ hψ hT hJ => OneCosetProof.oneCoset_of_isTensor hs hψ hT hJ
 
 end GlobalTheory.FunObj
 end -- clump:auto

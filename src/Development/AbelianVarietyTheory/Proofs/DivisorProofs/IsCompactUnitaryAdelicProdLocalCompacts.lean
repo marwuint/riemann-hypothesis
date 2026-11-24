@@ -74,18 +74,15 @@ theorem isCompact_box (K : ∀ v : AwayP p, Set (Qv v)) (hK : ∀ v, IsCompact (
     constructor
     · rintro ⟨y, hy, rfl⟩ v -
       exact hy v
-    · intro hx
-      exact ⟨⟨x, fun v hv => hv (hx v trivial)⟩, fun v => hx v trivial, rfl⟩
+    · exact fun hx => ⟨⟨x, fun v hv => hv (hx v trivial)⟩, fun v => hx v trivial, rfl⟩
   have h2 := h1.image (RestrictedProduct.continuous_inclusion hS)
   have e : {a : AfP p | ∀ v, AfP.eval v a ∈ K v} = RestrictedProduct.inclusion _ _ hS '' {x : P | ∀ v, x v ∈ K v} := by
     ext a
     constructor
-    · intro ha
-      exact ⟨⟨(LevelExists.rp a).1, fun v hv => hv (ha v)⟩, ha, rfl⟩
+    · exact fun ha => ⟨⟨(LevelExists.rp a).1, fun v hv => hv (ha v)⟩, ha, rfl⟩
     · rintro ⟨y, hy, rfl⟩
       exact hy
-  rw [e]
-  exact h2
+  rwa [e]
 
 end GlobalTheory.OrbFinAf.CompactOrbitVectors
 
@@ -121,8 +118,7 @@ theorem tv_eq (v : AwayP p) (y : AfP p ⊗[ℚ] G.C) :
   apply (basV G v).equivFun.injective
   rw [LinearEquiv.apply_symm_apply]
   funext i
-  simp only [Module.Basis.equivFun_apply]
-  exact repr_tv G v y i
+  simpa only [Module.Basis.equivFun_apply] using repr_tv G v y i
 
 theorem continuous_tv (v : AwayP p) :
     @Continuous _ _ (moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)) (moduleTopology (Qv v) (Qv v ⊗[ℚ] G.C)) (tv G v) := by

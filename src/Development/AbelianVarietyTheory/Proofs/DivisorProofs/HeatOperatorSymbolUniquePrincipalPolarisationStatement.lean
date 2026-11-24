@@ -331,8 +331,7 @@ theorem GlobalTheory.UnifGenPoint.main : ∀ (E : Type) [Field E] [NumberField E
       obtain ⟨b, hbW, hgb⟩ := hVa.exists_basicOpen_le (V := W) ⟨genericPoint t.G.left, hgV, hgs⟩ hgV
       have hb : b ≠ 0 := by
         rintro rfl
-        rw [Scheme.basicOpen_zero] at hgb
-        exact hgb
+        rwa [Scheme.basicOpen_zero] at hgb
       have hv : valR x' V b ≠ 0 := fun h => hb (hinj V b hV h)
       obtain ⟨hV', hval⟩ := GlobalTheory.ZH.CrdCalc.valR_spMap (algebraMap Ω L) x' V hV
       have hu : IsUnit (valR u V b) := by
@@ -1115,8 +1114,7 @@ theorem valR_of_isValue : ∀ (X : Scheme.{0}) (L : LB X), L.IsLB → ∀ (Ω : 
     simp [GlobalTheory.ZH.CrdCalc.valHom, Scheme.Hom.appLE]
   rw [a1, a2, a3]
   have h' := congrArg (stalkClosedPointIso (CommRingCat.of Ω)).hom.hom h
-  rw [map_mul, hω, Units.val_pow_eq_pow_val, map_pow] at h'
-  exact h'
+  rwa [map_mul, hω, Units.val_pow_eq_pow_val, map_pow] at h'
 
 end GlobalTheory.HeatV
 end -- clump:auto
@@ -1273,10 +1271,8 @@ theorem vs_iff_generic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     have e5 : valR (ξ ≫ P.U.gen.inv.left) ⊤ (scal (pullback.snd t.G.hom (jK R) ≫ jK R) r) =
         algebraMap Ω (FractionRing Ω) (φ r) := by
       have := GlobalTheory.ZH.FormCount.valR_scal ((algebraMap Ω (FractionRing Ω)).comp φ) (ξ ≫ P.U.gen.inv.left) _ hq ⊤ le_top r
-      rw [htop] at this
-      exact this
-    rw [v5, e1, e5, e3] at e2
-    rw [map_mul, map_pow] at e2
+      rwa [htop] at this
+    rw [v5, e1, e5, e3, map_mul, map_pow] at e2
     rw [_root_.mul_pow, inv_pow]
     field_simp
     linear_combination e2
@@ -1491,8 +1487,7 @@ theorem GlobalTheory.HeatSym.vertical_symbol_zero : ∀ (E : Type) [Field E] [Nu
   obtain ⟨ρ, hρ⟩ := (hVS (3 * k) _ (by omega)).1 h3
   refine ⟨ρ, ?_⟩
   rintro b c rfl rfl
-  simp only [hδ₁, hδL']
-  exact mul_left_cancel₀ (pow_ne_zero _ hq) hρ
+  simpa only [hδ₁, hδL'] using mul_left_cancel₀ (pow_ne_zero _ hq) hρ
 end -- clump:auto
 end -- clump:auto
 end -- clump:auto

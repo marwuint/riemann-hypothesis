@@ -74,10 +74,8 @@ theorem differentiableAt_prod {E K : Type} [NormedAddCommGroup E] [NormedSpace �
 private theorem preimage_eq_univ_iff_forall_mem {W : Scheme.{0}} (x : Sp ℂ ⟶ W) (U : W.Opens) :
     ⊤ ≤ x ⁻¹ᵁ U ↔ ∀ p, x p ∈ U := by
   constructor
-  · intro h p
-    exact h (show p ∈ (⊤ : (Sp ℂ).Opens) from trivial)
-  · intro h p _
-    exact h p
+  · exact fun h p => h (show p ∈ (⊤ : (Sp ℂ).Opens) from trivial)
+  · exact fun h p _ => h p
 
 section LC
 
@@ -88,16 +86,13 @@ theorem top_le_wchart_iff (φ : K → (Y ⟶ X)) (j : K → L.ι) (x : Sp ℂ �
   simp only [preimage_eq_univ_iff_forall_mem]
   unfold LB.wchart
   constructor
-  · intro h k p
-    exact Set.mem_iInter.1 (h p) k
-  · intro h p
-    exact Set.mem_iInter.2 fun k => h k p
+  · exact fun h k p => Set.mem_iInter.1 (h p) k
+  · exact fun h p => Set.mem_iInter.2 fun k => h k p
 
 theorem top_le_inf {x : Sp ℂ ⟶ Y} {U V : Y.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ x ⁻¹ᵁ V) :
     ⊤ ≤ x ⁻¹ᵁ (U ⊓ V) := by
   rw [preimage_eq_univ_iff_forall_mem] at h h' ⊢
-  intro p
-  exact TopologicalSpace.Opens.mem_inf.2 ⟨h p, h' p⟩
+  exact fun p => TopologicalSpace.Opens.mem_inf.2 ⟨h p, h' p⟩
 
 theorem val_prod (x : Sp ℂ ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (u : K → Γ(Y, U)ˣ) :
     valAt' x U (∏ k, u k).val = ∏ k, valAt' x U (u k).val := by
@@ -125,8 +120,7 @@ private theorem valAt'_pullU_eq_valAt'_comp {W V : Scheme.{0}} (x : Sp ℂ ⟶ V
 private theorem valAt'_unit_zpow' {W : Scheme.{0}} (x : Sp ℂ ⟶ W) (U : W.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (u : Γ(W, U)ˣ)
     (n : ℤ) : valAt' x U (u ^ n).val = valAt' x U u.val ^ n := by
   have e := congrArg Units.val (map_zpow (Units.map (valHom x U h).toMonoidHom) u n)
-  rw [Units.coe_map, Units.val_zpow_eq_zpow_val, Units.coe_map] at e
-  exact e
+  rwa [Units.coe_map, Units.val_zpow_eq_zpow_val, Units.coe_map] at e
 
 theorem val_linComb_g (φ : K → (Y ⟶ X)) (ε : K → ℤ) (p : Sp ℂ ⟶ Y) (j j' : K → L.ι)
     (h : ⊤ ≤ p ⁻¹ᵁ (LB.wchart L φ j ⊓ LB.wchart L φ j')) :
@@ -178,8 +172,7 @@ theorem top_le_chart {q : Sp ℂ ⟶ Z} {p : K → Fin g → ℂ} (hq : ∀ k, q
 
 theorem prod_fr_ne {q : Sp ℂ ⟶ Z} {p : K → Fin g → ℂ} (hq : ∀ k, q ≫ φ k = (Φ.e (p k)).left) {j : K → L.L.ι}
     (hj : ⊤ ≤ q ⁻¹ᵁ LB.wchart L.L φ j) : ∏ k, Φ.fr (j k) (p k) ^ ε k ≠ 0 := by
-  refine Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ ?_
-  exact Φ.fr_ne _ _ (top_le_chart Φ φ hq hj k)
+  exact Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (Φ.fr_ne _ _ (top_le_chart Φ φ hq hj k))
 
 theorem genRd_of_chart (ht : t.IsGen) {q : Sp ℂ ⟶ Z} {p : K → Fin g → ℂ} (hq : ∀ k, q ≫ φ k = (Φ.e (p k)).left)
     {j' : K → L.L.ι} (hj' : ⊤ ≤ q ⁻¹ᵁ LB.wchart L.L φ j') :

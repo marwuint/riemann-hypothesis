@@ -69,8 +69,7 @@ theorem strict_eq (hL : IsLat ρ L) (θ : ℝ) :
   refine ⟨θ₀, hθ₀, fun θ' h1 h2 => le_antisymm ?_ ?_⟩
   · rw [hsup]
     unfold hnStep
-    refine Finset.sup_le fun N hN => ?_
-    exact le_sSup ⟨(ht hN).1, (ht hN).2.1, h2.trans (hle N hN)⟩
+    exact Finset.sup_le fun N hN => le_sSup ⟨(ht hN).1, (ht hN).2.1, h2.trans (hle N hN)⟩
   · unfold hnStep
     exact sSup_le_sSup fun N hN => ⟨hN.1, hN.2.1, lt_of_lt_of_le h1 hN.2.2⟩
 
@@ -95,8 +94,7 @@ theorem quot_slope_lt (hL : IsLat ρ L) (θ : ℝ) {N : Submodule R V} (h1 : hnS
   have hlt : (rk ρ (hnStep ρ L θ) : ℝ) < rk ρ N := by exact_mod_cast lt_of_le_of_ne hrkle hne
   have key := hmax N h1 h2
   unfold Formalism.F.slope
-  rw [hrk, hdeg, Nat.cast_sub hrkle, div_lt_iff₀ (by linarith)]
-  exact key
+  rwa [hrk, hdeg, Nat.cast_sub hrkle, div_lt_iff₀ (by linarith)]
 
 theorem step_eq_bot (hL : IsLat ρ L) (h0 : L ≠ ⊥) (θ : ℝ) : hnStep ρ L θ = ⊥ ↔ muMax ρ L < θ := by
   obtain ⟨hsat, hmin, hcont, -⟩ := hnStep_spec R V E ρ L hL θ
@@ -115,8 +113,7 @@ theorem step_eq_bot (hL : IsLat ρ L) (h0 : L ≠ ⊥) (θ : ℝ) : hnStep ρ L 
       exact_mod_cast Nat.pos_of_ne_zero this
     have hdegN : deg ρ N = muMax ρ L * rk ρ N := by
       have e : slope ρ N = deg ρ N / rk ρ N := rfl
-      rw [e, div_eq_iff hrkpos.ne'] at hNslope
-      exact hNslope
+      rwa [e, div_eq_iff hrkpos.ne'] at hNslope
     have hmm : muMax ρ L ≤ muMin ρ N := (hminN _).2 fun S hS => by
       have := hdegL S (hS.trans hNL)
       rw [mul_sub, ← hdegN]
@@ -255,7 +252,6 @@ theorem steps : ∀ (I : AutInst) (x : I.GA) (t : ℝ), 0 < t → IsSat (Formali
         have hm : muMax ρ L < θ₀ := (step_eq_bot hLlat hL0 θ₀).1 hb
         have := (step_eq_bot hLlat hL0 _).1 ((hsame _ h1 hm.le).trans hb)
         exact lt_irrefl _ this
-      · intro h
-        exact (step_eq_bot hLlat hL0 θ₀).2 (by linarith)
+      · exact fun h => (step_eq_bot hLlat hL0 θ₀).2 (by linarith)
 
 end GlobalTheory.CountSteps

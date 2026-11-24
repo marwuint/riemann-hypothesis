@@ -291,8 +291,7 @@ theorem bridge_fix (D : D7) (g : GA D (D.sp.Y 0)) (x : Fin (Formalism.L2.SG.Inst
   rw [hfin, forall_congr' hinf]
   change ((hmat (Formalism.L2.SG.InstExistsPf.instOf D) g *ᵥ fun k => incA D (x k)) = fun k => incA D (x k)) ↔ _
   constructor
-  · intro h
-    exact ⟨fun v i => by rw [congrFun h i], fun i => by rw [congrFun h i]⟩
+  · exact fun h => ⟨fun v i => by rw [congrFun h i], fun i => by rw [congrFun h i]⟩
   · rintro ⟨h1, h2⟩
     funext i
     have := Formalism.L2.SG.Pf.TT_ext (Formalism.L2.SG.InstExistsPf.instOf D)
@@ -322,11 +321,9 @@ theorem transport_fix (D : D7) (I : AutInst) (ιE : I.E ≃+* D.host.E) (hId : �
   · intro H
     refine ⟨fun v p hp => ?_, fun p hp => ?_⟩
     · have := (H p hp).1 v
-      rw [hv p] at this
-      exact this
+      rwa [hv p] at this
     · have := (H p hp).2
-      rw [hv p] at this
-      exact this
+      rwa [hv p] at this
 
 theorem fix_smul {S : HSp D} (g : GA D S) {c : D.host.E} (hc : c ≠ 0) (y : Fin S.rank → D.host.E) :
     (mt S g *ᵥ (fun k => incA D ((c • y) k)) = fun k => incA D ((c • y) k)) ↔
@@ -395,20 +392,17 @@ theorem range_embA_eq_H : ∀ (D : D7) (X : HidaSetting D) (h : X.B.I = Formalis
       ((mt (D.sp.Y 0) g *ᵥ fun k => incA D (X.ιE (X.eR a (Fin.cast (rank_eq X h) k)))) =
         fun k => incA D (X.ιE (X.eR a (Fin.cast (rank_eq X h) k)))) := fun a => by
     have := fix_smul g (hsc a) (GlobalTheory.Core.SBesEx.cY X h (X.eX a))
-    rw [← hE a] at this
-    exact this
+    rwa [← hE a] at this
   have hB : ∀ a, ((mt (D.sp.Y 0) g *ᵥ fun k => incA D (d.e' k a)) = fun k => incA D (d.e' k a)) ↔
       ((mt (D.sp.Y 0) g *ᵥ fun k => incA D (X.ιE (X.fR a (Fin.cast (rank_eq X h) k)))) =
         fun k => incA D (X.ιE (X.fR a (Fin.cast (rank_eq X h) k)))) := fun a => by
     have := fix_smul g (inv_ne_zero (star_ne_zero.2 (hsc a))) (GlobalTheory.Core.SBesEx.cY X h (X.fY a))
-    rw [← hE' a] at this
-    exact this
+    rwa [← hE' a] at this
   have hC : ((mt (D.sp.Y 0) g *ᵥ fun k => incA D ((d.i₀ *ᵥ vecB o ζ) k)) = fun k => incA D ((d.i₀ *ᵥ vecB o ζ) k)) ↔
       ((mt (D.sp.Y 0) g *ᵥ fun k => incA D (X.ιE (X.zR u (Fin.cast (rank_eq X h) k)))) =
         fun k => incA D (X.ιE (X.zR u (Fin.cast (rank_eq X h) k)))) := by
     have := fix_smul g ht (GlobalTheory.Core.SBesEx.cY X h (X.zu u))
-    rw [← hz] at this
-    exact this
+    rwa [← hz] at this
   simp only [hA, hB, hC]
   constructor
   · rintro ⟨h1, h2, h3⟩ p hp

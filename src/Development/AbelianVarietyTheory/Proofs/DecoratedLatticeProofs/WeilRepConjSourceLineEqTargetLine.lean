@@ -101,8 +101,7 @@ theorem isThetaFunO_tr (S : HSp D) {ψ : AddChar (AF D.host.F) ℂ} {f : WO S V 
     have e : ratW V' S γ = I.phi S (ratW V S (I.Q * γ)) := by
       rw [IsoMat.phi_ratW, ← Matrix.mul_assoc, I.PQ, Matrix.one_mul]
     rw [e, ← map_add (f := _), I.symplOH_phi]
-    simp only [IsoMat.trW, AddEquiv.symm_apply_apply]
-    exact hf.quasi _ _
+    simpa only [IsoMat.trW, AddEquiv.symm_apply_apply] using hf.quasi _ _
   · obtain ⟨U, hU, e⟩ := hf.level
     refine ⟨U.map (I.phi S).toAddMonoidHom, ?_, ?_⟩
     · have e : ((U.map (I.phi S).toAddMonoidHom : AddSubgroup (WO S V')) : Set (WO S V')) = (I.phi S).symm ⁻¹' U := by
@@ -111,8 +110,7 @@ theorem isThetaFunO_tr (S : HSp D) {ψ : AddChar (AF D.host.F) ℂ} {f : WO S V 
         constructor
         · rintro ⟨u, hu, rfl⟩
           simpa using hu
-        · intro hw
-          exact ⟨_, hw, by simp⟩
+        · exact fun hw => ⟨_, hw, by simp⟩
       rw [e]
       exact hU.preimage (I.continuous_phi_symm S)
     · rintro _ ⟨u, hu, rfl⟩ h0
@@ -159,8 +157,7 @@ theorem isWeilDatumO_tr (S : HSp D) {ψ : AddChar (AF D.host.F) ℂ} {χ χ' : (
     have e1 : (mt V (I.kap.symm k)).det = (mt V' k).det := det_conj_rect I.rank_eq.symm I.aP_aQ (mt V' k)
     have hdet : IsDetAt e V (I.kap.symm k) y := by
       unfold IsDetAt at hy ⊢
-      rw [e1]
-      exact hy
+      rwa [e1]
     obtain ⟨r, hr, H⟩ := h.om_split e he g (I.kap.symm k) hg hsupp x y hx hdet
     refine ⟨r, hr, fun ℓ hℓ f hf => ?_⟩
     have hinv : ∀ u : WO S V, (∀ i j, cA D e * u i j = u i j) → ∀ f, IsThetaFunO ψ S V f →
@@ -171,8 +168,7 @@ theorem isWeilDatumO_tr (S : HSp D) {ψ : AddChar (AF D.host.F) ℂ} {χ χ' : (
       exact hℓ _ (fun i j => entries_fix' _ hu I.aP i j) _ (isThetaFunO_tr I S hf)
     have := H (ℓ ∘ₗ I.trL S) hinv _ (hT f hf)
     have e1 : (ℓ ∘ₗ I.trL S) (I.symm.trW S f) = ℓ f := congrArg ℓ (I.symm.trW_symm_trW S f)
-    rw [e1] at this
-    exact this
+    rwa [e1] at this
 
 end GlobalTheory.ConjLine
 

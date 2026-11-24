@@ -71,8 +71,7 @@ theorem eq_of_values {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {x x' 
   ext1
   refine RingHom.ext fun f => ?_
   have := e f
-  rw [valAt', valAt', dite_eq_left h, dite_eq_left h'] at this
-  exact this
+  rwa [valAt', valAt', dite_eq_left h, dite_eq_left h'] at this
 
 theorem fderiv_eq_zero_of_origin {w : Fin g → ℂ}
     (hw : ∀ (U : A.left.Opens) (f : Γ(A.left, U)), ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U →
@@ -83,14 +82,12 @@ theorem fderiv_eq_zero_of_origin {w : Fin g → ℂ}
   have hτ : ∀ v, u.ex v ≫ τ = u.ex (z + v) := fun v => by
     rw [u.ex_add, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit, toUnit_unit, Category.id_comp]
   have h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ (τ.left ⁻¹ᵁ U) := by
-    rw [← Scheme.Hom.comp_preimage, ← Over.comp_left, hτ, add_zero]
-    exact h
+    rwa [← Scheme.Hom.comp_preimage, ← Over.comp_left, hτ, add_zero]
   have e : (fun v => valAt' (u.ex v).left (τ.left ⁻¹ᵁ U) ((τ.left.app U).hom f)) =
       fun v => valAt' (u.ex (z + v)).left U f := funext fun v => by
     rw [valAt'_comp, ← Over.comp_left, hτ]
   have := hw _ ((τ.left.app U).hom f) h0
-  rw [e, fderiv_comp_add_left (f := fun z => valAt' (u.ex z).left U f), add_zero] at this
-  exact this
+  rwa [e, fderiv_comp_add_left (f := fun z => valAt' (u.ex z).left U f), add_zero] at this
 
 theorem eq_zero_of_fderiv_eq_zero (w : Fin g → ℂ)
     (hw : ∀ (U : A.left.Opens) (f : Γ(A.left, U)), ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U →
@@ -113,8 +110,7 @@ theorem eq_zero_of_fderiv_eq_zero (w : Fin g → ℂ)
     intro f t ht
     have h1 := ((u.hol U f).2.differentiableAt ((u.hol U f).1.mem_nhds (hB ht).1)).hasFDerivAt
     have h2 := h1.comp_hasDerivAt t ((hasDerivAt_id t).smul_const w)
-    rw [one_smul, fderiv_eq_zero_of_origin u hw _ U f (hB ht).1] at h2
-    exact h2
+    rwa [one_smul, fderiv_eq_zero_of_origin u hw _ U f (hB ht).1] at h2
   have he : u.ex (((ε / 2 : ℝ) : ℂ) • w) = u.ex ((0 : ℂ) • w) := by
     refine Over.OverMorphism.ext (eq_of_values hU (hB ht).1 (hB (Metric.mem_ball_self hε)).1 fun f => ?_)
     exact Metric.isOpen_ball.is_const_of_deriv_eq_zero (convex_ball (0 : ℂ) ε).isPreconnected

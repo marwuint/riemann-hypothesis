@@ -81,8 +81,7 @@ private lemma exists_maximal_unram_subalgebra (π : W) (h0 : _root_.GlobalTheory
     have hd : Directed (· ≤ ·) (fun R : c => (R : Subalgebra W Ω)) := hchain.directed
     have hmem : ∀ x ∈ ⨆ R : c, (R : Subalgebra W Ω), ∃ R : c, x ∈ (R : Subalgebra W Ω) := fun x hx => by
       have : x ∈ (↑(⨆ R : c, (R : Subalgebra W Ω)) : Set Ω) := hx
-      rw [Subalgebra.coe_iSup_of_directed hd, Set.mem_iUnion] at this
-      exact this
+      rwa [Subalgebra.coe_iSup_of_directed hd, Set.mem_iUnion] at this
     refine ⟨⨆ R : c, (R : Subalgebra W Ω), ⟨fun x hx => ?_, fun hx => ?_, fun x hx hx0 => ?_⟩,
       fun R hR => le_iSup (fun R : c => (R : Subalgebra W Ω)) ⟨R, hR⟩⟩
     · obtain ⟨R, hR⟩ := hmem x hx
@@ -205,8 +204,7 @@ private lemma eq_pow_mul_unit_of_mem_adjoin [IsLocalRing W] {π : W}
   have hπM : algebraMap W M π ∈ RingHom.ker φ := hker ▸ Ideal.subset_span rfl
   have hπC : ¬ IsUnit (C (algebraMap W M π)) := by
     rw [Polynomial.isUnit_C]
-    intro hu
-    exact (RingHom.ker_ne_top φ) (Ideal.eq_top_of_isUnit_mem _ hπM hu)
+    exact fun hu => (RingHom.ker_ne_top φ) (Ideal.eq_top_of_isUnit_mem _ hπM hu)
   obtain ⟨n, g1, hndvd, hgeq⟩ := WfDvdMonoid.max_power_factor' hg0 hπC
   have hmap1 : g1.map φ ≠ 0 := by
     intro h0
@@ -218,9 +216,7 @@ private lemma eq_pow_mul_unit_of_mem_adjoin [IsLocalRing W] {π : W}
   have hg1ne : g1 ≠ 0 := by
     rintro rfl
     exact hg0 (by rw [hgeq, mul_zero])
-  have hpne : (C (algebraMap W M π)) ^ n ≠ 0 := by
-    intro h
-    exact hg0 (by rw [hgeq, h, zero_mul])
+  have hpne : (C (algebraMap W M π)) ^ n ≠ 0 := fun h => hg0 (by rw [hgeq, h, zero_mul])
   have hdeg1 : g1.natDegree ≤ g.natDegree := by
     rw [hgeq, natDegree_mul hpne hg1ne]; omega
   have hndvdp : ¬ f.map φ ∣ g1.map φ := by
@@ -294,8 +290,7 @@ theorem _root_.GlobalTheory.ClosedResidueExt.exists_unramified_ext (W : Type) [C
   haveI hint : Algebra.IsIntegral W M :=
     ⟨fun x => (isIntegral_algHom_iff M.val Subtype.val_injective).1 (hM.1 x x.2)⟩
   refine ⟨M, inferInstance, inferInstance, inferInstance, inferInstance, ?_, hint, hirrM, ?_⟩
-  · intro a b hab
-    exact hinj (congrArg Subtype.val hab)
+  · exact fun a b hab => hinj (congrArg Subtype.val hab)
   refine IsAlgClosed.of_exists_root _ fun p hpm hpirr => ?_
   obtain ⟨q, hq⟩ := Polynomial.map_surjective (IsLocalRing.residue M) IsLocalRing.residue_surjective p
   obtain ⟨f, hfp, hfnat, hfm⟩ := Polynomial.lifts_and_natDegree_eq_and_monic

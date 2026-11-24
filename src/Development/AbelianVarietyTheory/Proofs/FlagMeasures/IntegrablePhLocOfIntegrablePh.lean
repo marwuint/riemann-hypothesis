@@ -77,9 +77,7 @@ theorem integrable_of_integrable_prod {ι : Type} [Fintype ι] {E : ι → Type}
     (integral_fintype_prod_eq_prod (μ := μ) (fun j (y : E j) => ‖f j y‖)).trans
       (Finset.prod_eq_zero (Finset.mem_univ i) (integral_undef hn))
   have hnorm : Integrable (fun x : ∀ j, E j => ∏ j, ‖f j (x j)‖) (Measure.pi μ) := by
-    have h' := h.norm
-    simp only [norm_prod] at h'
-    exact h'
+    simpa only [norm_prod] using h.norm
   have hae := (integral_eq_zero_iff_of_nonneg
     (fun x => Finset.prod_nonneg fun j _ => norm_nonneg (f j (x j))) hnorm).1 hprod
   have hbox : Measure.pi μ (Set.univ.pi fun j => {y | f j y ≠ 0}) = 0 := by
@@ -89,9 +87,7 @@ theorem integrable_of_integrable_prod {ι : Type} [Fintype ι] {E : ι → Type}
     simp only [Set.mem_ofPred_eq, Pi.zero_apply]
     exact Finset.prod_ne_zero_iff.2 fun j _ => norm_ne_zero_iff.2 (hx j)
   rw [Measure.pi_pi] at hbox
-  refine (Finset.prod_ne_zero_iff.2 fun j _ => ?_) hbox
-  intro hz
-  exact h0 j (ae_iff.2 (by simpa using hz))
+  exact (Finset.prod_ne_zero_iff.2 fun j _ => (fun hz => h0 j (ae_iff.2 (by simpa using hz)))) hbox
 
 theorem integrable_of_integrable_prod_of_continuous {ι : Type} [Fintype ι] {E : ι → Type}
     [∀ i, TopologicalSpace (E i)] {mE : ∀ i, MeasurableSpace (E i)} [∀ i, OpensMeasurableSpace (E i)]

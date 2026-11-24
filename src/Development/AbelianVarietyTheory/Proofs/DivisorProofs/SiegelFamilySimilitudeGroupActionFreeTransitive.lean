@@ -177,8 +177,7 @@ theorem pow_section {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {φ : A'.
     (hφ : IsGrpPullback A' A f φ) (x' : 𝟙_ (Over S') ⟶ A') (x : 𝟙_ (Over S) ⟶ A)
     (e : x'.left ≫ φ = f ≫ x.left) (k : ℕ) : (x' ^ k).left ≫ φ = f ≫ (x ^ k).left := by
   have e₁ : x' = SiegelPull.secPull hφ x := by
-    refine push_injective hφ _ (Over.OverMorphism.ext ?_)
-    exact e.trans (SiegelPull.secPull_left hφ x).symm
+    exact push_injective hφ _ (Over.OverMorphism.ext (e.trans (SiegelPull.secPull_left hφ x).symm))
   have e₂ : x' ^ k = SiegelPull.secPull hφ (x ^ k) := push_injective hφ _ (by
     rw [map_pow, e₁, push_secPull', push_secPull', MonObj.comp_pow])
   rw [e₂, SiegelPull.secPull_left]
@@ -235,8 +234,7 @@ theorem similitude_bij_mod (h N m : ℕ) (T : (Fin h ⊕ Fin h → ℤ) →ₗ[�
     · intro ha
       refine ⟨fun i => a i / N, funext fun i => ?_⟩
       have hd : (N : ℤ) ∣ a i := (ZMod.intCast_zmod_eq_zero_iff_dvd (a i) N).1 (congrFun ha i)
-      simp only [Pi.smul_apply, nsmul_eq_mul]
-      exact (Int.mul_ediv_cancel' hd).symm
+      simpa only [Pi.smul_apply, nsmul_eq_mul] using (Int.mul_ediv_cancel' hd).symm
     · rintro ⟨b, rfl⟩
       funext i
       simp [red]
@@ -410,8 +408,7 @@ theorem part_two (h N : ℕ) (B : Type) [CommRing B] (b : TBase B N) (hN : Odd N
       have := (Pi.basisFun ℤ (Fin h ⊕ Fin h)).constr_basis ℤ a' i
       rw [Pi.basisFun_apply] at this
       exact this.symm
-    intro a
-    exact congrArg Additive.toMul (DFunLike.congr_fun hext a)
+    exact fun a => congrArg Additive.toMul (DFunLike.congr_fun hext a)
   have hdiag : LBIso C'.diag (C.diag.pull φ) :=
     GlobalTheory.SiegelDescent.lbIso_square C'.isLB C.isLB hP
       (GlobalTheory.SiegelDescent.lift_square (T := C'.A) (T₀ := C.A) (τ := φ) (a := 𝟙 _) (b := 𝟙 _) (a₀ := 𝟙 _)
@@ -445,8 +442,7 @@ theorem part_two (h N : ℕ) (B : Type) [CommRing B] (b : TBase B N) (hN : Odd N
       simp only [hψ, p, Over.comp_left] at this
       have ht : (toUnit Tx).left = x := (Category.comp_id _).symm.trans (Over.w (toUnit Tx))
       rw [ht] at this
-      rw [hψ₀]
-      exact this
+      rwa [hψ₀]
 
 end GlobalTheory.SimilitudeLevel
 

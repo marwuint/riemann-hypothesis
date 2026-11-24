@@ -108,8 +108,7 @@ theorem flow {d : ℕ} (A : Matrix (Fin d) (Fin d) ℂ) (a : ℝ → (Fin d → 
     simp only [hh, hc, sub_self, zero_smul, NormedSpace.exp_zero, Matrix.one_mulVec]
     exact (form_eq_sum (a 1) x).symm
   have h0 : h 0 = a 0 (NormedSpace.exp A *ᵥ x) := by
-    simp only [hh, hc, sub_zero, one_smul]
-    exact (form_eq_sum (a 0) _).symm
+    simpa only [hh, hc, sub_zero, one_smul] using (form_eq_sum (a 0) _).symm
   rw [← h1, ← h0, hconst]
 
 theorem hasSum_exp_mulVec {d : ℕ} (A : Matrix (Fin d) (Fin d) ℂ) (φ : (Fin d → ℂ) →ₗ[ℂ] ℂ) (x : Fin d → ℂ) :
@@ -159,8 +158,7 @@ theorem hasSum_emb (v : V) (hv : v ∈ N) (l : V →ₗ[ℂ] ℂ) :
     HasSum (fun n : ℕ => ((n.factorial : ℂ))⁻¹ * l ((L ^ n) v))
       (l (emb N (NormedSpace.exp (mat L N hN) *ᵥ crd N ⟨v, hv⟩))) := by
   have h := hasSum_exp_mulVec (mat L N hN) (l ∘ₗ emb N) (crd N ⟨v, hv⟩)
-  simp only [LinearMap.comp_apply, emb_pow_mulVec, emb_crd] at h
-  exact h
+  simpa only [LinearMap.comp_apply, emb_pow_mulVec, emb_crd] using h
 
 end Sub
 
@@ -175,8 +173,7 @@ theorem exists_isExp {V : Type} [AddCommGroup V] [Module ℂ V] (L : Module.End 
   refine ⟨{ toFun := U0, map_add' := fun v w => ?_, map_smul' := fun c v => ?_ }, fun v l => hU0 v l⟩
   · refine eq_of_forms fun l => (hU0 (v + w) l).unique ?_
     have := (hU0 v l).add (hU0 w l)
-    simp only [map_add (f := _), mul_add]
-    exact this
+    simpa only [map_add (f := _), mul_add] using this
   · refine eq_of_forms fun l => (hU0 (c • v) l).unique ?_
     have := (hU0 v l).mul_left c
     have e : ∀ n : ℕ, c * (((n.factorial : ℂ))⁻¹ * l ((L ^ n) v)) = ((n.factorial : ℂ))⁻¹ * l ((L ^ n) (c • v)) :=
@@ -248,8 +245,7 @@ theorem expAct_fock : ∀ (F : Type) [Field F] [NumberField F] (κ V : Type) [Fi
       (GlobalTheory.WeilM.pureA F (Φ (emb N (NormedSpace.exp (mat L N hN) *ᵥ crd N ⟨T, hT⟩))) g)) = _
     rw [← hUT, ofAdd_zero, map_one, Module.End.one_apply]
     rfl
-  rw [← l1, ← l0]
-  exact hf
+  rwa [← l1, ← l0]
 
 end GlobalTheory.ExpAct
 

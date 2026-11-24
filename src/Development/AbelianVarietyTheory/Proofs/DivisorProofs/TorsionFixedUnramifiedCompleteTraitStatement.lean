@@ -216,8 +216,7 @@ theorem exists_unram (hL : MulNSt) {V F : Type} [CommRing V] [IsDomain V] [IsDis
     have hΦ' := (hΦ.bijective_of_nat_card_le (c₂.trans c₁.symm).le).2
     obtain ⟨x, hx⟩ := hΦ' ⟨z, hz⟩
     obtain ⟨u, hu⟩ := factor_range j' h3 (l (Sum.inl x))
-    refine ⟨u, hu.trans ?_⟩
-    exact congr((($hx).1).left)
+    exact ⟨u, hu.trans (congr((($hx).1).left))⟩
   · obtain ⟨u, hu⟩ := factor_range j' h3 (l (Sum.inr i))
     refine ⟨u, ?_⟩
     rw [← Category.assoc, hu, Category.assoc, hl', ← Category.assoc, ← GlobalTheory.TorsionUnram.spMap_comp', h4]
@@ -232,8 +231,7 @@ theorem spMap_eq_of_subring {V F : Type} [CommRing V] [Field F] (iV : V →+* F)
   obtain ⟨ψ, rfl⟩ := Spec.map_surjective a
   have e : ψ ≫ CommRingCat.ofHom T₁.subtype = CommRingCat.ofHom iV := by
     apply Spec.map_injective
-    rw [Spec.map_comp]
-    exact ha
+    rwa [Spec.map_comp]
   have e' : ψ = CommRingCat.ofHom f₁ := by
     ext v
     show ((ψ.hom v : T₁) : F) = (f₁ v : F)
@@ -251,8 +249,7 @@ theorem pow_b {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Fi
     | succ i ih =>
       intro hi
       have e := (hadd ⟨i, by omega⟩).1
-      rw [pow_succ, ← ih (by omega), Hom.mul_def]
-      exact e
+      rwa [pow_succ, ← ih (by omega), Hom.mul_def]
   rw [← hiota.1, ← hlast]
   exact (key k (by omega)).symm
 
@@ -337,8 +334,7 @@ theorem divPts_unram : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (
     refine ⟨Over.homMk (spMap T₁.subtype ≫ u) hover, mem _ ⟨u, rfl⟩, ?_⟩
     rw [pow_eq_comp_mulA]
     refine Over.OverMorphism.ext ?_
-    simp only [Over.comp_left, Over.homMk_left, Category.assoc, C]
-    exact hu
+    simpa only [Over.comp_left, Over.homMk_left, Category.assoc, C] using hu
   choose β hβH hβk using hβ
   let S : AddSubgroup D.X :=
     { carrier := {y | ∃ w ∈ Φ.range, w ^ k = C y}
@@ -460,8 +456,7 @@ theorem fixed_of_classes_fixed : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
   have heq : f q = x₀ := ((hfi p q).2 (hQ p q hpq)).symm.trans hp
   have s₂ : spMap σ.toRingHom ≫ jFK (R := R) (AlgebraicClosure (FractionRing V)) =
       jFK (R := R) (AlgebraicClosure (FractionRing V)) := by
-    refine (spMap_comp _ _).symm.trans ?_
-    exact congrArg spMap hσf
+    exact (spMap_comp _ _).symm.trans (congrArg spMap hσf)
   have wx₀ : x₀.left ≫ A.A.hom = jFK (R := R) (AlgebraicClosure (FractionRing V)) := Over.w x₀
   let x' : TFK (R := R) (AlgebraicClosure (FractionRing V)) ⟶ A.A :=
     Over.homMk (spMap σ.toRingHom ≫ x₀.left) (by rw [Category.assoc, wx₀, s₂]; rfl)
@@ -978,8 +973,7 @@ theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type
       add_mem' := fun {χ χ'} (h : w _ = 1) (h' : w _ = 1) => by
         show w _ = 1
         have e := congrArg w (charVal_add g hJ χ χ')
-        rw [map_mul, map_mul, hth, h, h', _root_.mul_one, _root_.mul_one] at e
-        exact e
+        rwa [map_mul, map_mul, hth, h, h', _root_.mul_one, _root_.mul_one] at e
       neg_mem' := fun {χ} (h : w _ = 1) => by
         show w _ = 1
         have e := congrArg w (charVal_add g hJ χ (-χ))
@@ -1090,8 +1084,7 @@ theorem qk_fixed_of_unram : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRin
       ⟨fun h e => h (e.map f), fun h e => h (isUnit_of_map_unit f r e)⟩)
     rw [e]
     show (spMap φ) ((spMap f) (closedPoint T₁)) ∈ W
-    rw [e']
-    exact hcl
+    rwa [e']
   choose J₀ h₀ using fun x : D.toPre.P.A.left => exists_chart D.toPre.P.isLB x
   have := D.toPre.P.isAb.proper
   have : D.toPre.P.A.left.IsSeparated := ⟨by rw [← terminal.comp_from D.toPre.P.A.hom]; infer_instance⟩

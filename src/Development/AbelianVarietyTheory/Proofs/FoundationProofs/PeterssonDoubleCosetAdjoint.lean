@@ -130,8 +130,7 @@ theorem abstract_double_coset_adjoint : ∀ (G X Γ ι κ : Type) [Group G] [Mea
   have hwQ0 : ∀ j γ x, 0 ≤ wQ j γ x := fun _ _ _ => hρ0 _
   have hwP1 : ∀ i x, HasSum (fun γ => wP i γ x) 1 := fun i x => hρ1 (β i • x)
   have hwQ1 : ∀ j y, HasSum (fun γ => wQ j γ y) 1 := fun j y => by
-    have h := (Equiv.inv Γ).hasSum_iff.2 (hρ1 ((α j)⁻¹ • y))
-    simpa [Function.comp_def, map_inv] using h
+    simpa [Function.comp_def, map_inv] using (Equiv.inv Γ).hasSum_iff.2 (hρ1 ((α j)⁻¹ • y))
 
   have hpt : ∀ (q : κ × Γ) (x : X),
       wQ q.1 q.2 ((α q.1 * φ q.2) • x) • FQ q.1 ((α q.1 * φ q.2) • x) =
@@ -165,8 +164,7 @@ theorem abstract_double_coset_adjoint : ∀ (G X Γ ι κ : Type) [Group G] [Mea
   have hsa : Summable a := by
     rw [summable_prod_of_nonneg ha0]
     refine ⟨fun γ => Summable.of_finite, ?_⟩
-    simp only [tsum_fintype]
-    exact summable_sum fun i _ => (haP i).summable
+    simpa only [tsum_fintype] using summable_sum fun i _ => (haP i).summable
   have hst : Summable t :=
     Summable.of_norm_bounded hsa fun p => norm_integral_le_integral_norm _
 
@@ -183,8 +181,7 @@ theorem abstract_double_coset_adjoint : ∀ (G X Γ ι κ : Type) [Group G] [Mea
     have hemb := (MeasurableEquiv.smul (α q.1 * φ q.2) : X ≃ᵐ X).measurableEmbedding
     rw [← (measurePreserving_smul (α q.1 * φ q.2) μ).integrable_comp_emb hemb]
     have := (hPpart (e.symm q).2).1 (e.symm q).1
-    rw [← hcv q] at this
-    exact this
+    rwa [← hcv q] at this
   have hsb : Summable fun q => a (e.symm q) := e.symm.summable_iff.2 hsa
   obtain ⟨hfib, -⟩ := (summable_prod_of_nonneg fun q => ha0 (e.symm q)).1 hsb
   have hsQ : ∀ j, Summable fun γ => ∫ y, ‖wQ j γ y • FQ j y‖ ∂μ := fun j => by
@@ -305,8 +302,7 @@ lemma K_right (k L N : ℕ) (ε : DirichletCharacter ℂ N) (h f : ℍ → ℂ) 
   have hc : conj (ch ε (γ 1 1)) = ch ε (γ 0 0) := by
     have h1 : conj (ch ε (γ 1 1)) = (ch ε (γ 1 1))⁻¹ := by
       have := MulChar.star_apply' ε ((γ 1 1 : ℤ) : ZMod N)
-      rw [MulChar.inv_apply_eq_inv'] at this
-      exact this
+      rwa [MulChar.inv_apply_eq_inv'] at this
     rw [h1]; exact (eq_inv_of_mul_eq_one_left hu).symm
   have hj' : conj j ≠ 0 := by simpa using hj
   simp only [K, e1, e2, e3', e4, map_mul, map_pow, hc, div_pow, mul_pow]
@@ -410,8 +406,7 @@ theorem GlobalTheory.EisM.pet_hsum_adjoint : ∀ (k L N q : ℕ) (ε : Dirichlet
   unfold pet hsum
   refine Eq.trans ?_ (key.trans ?_)
   · refine integral_congr_ae (Eventually.of_forall fun x => ?_)
-    simp only [K, Finset.mul_sum, Finset.sum_mul]
-    exact Finset.sum_congr rfl fun i _ => by ring
+    simpa only [K, Finset.mul_sum, Finset.sum_mul] using Finset.sum_congr rfl fun i _ => by ring
   · refine integral_congr_ae (Eventually.of_forall fun x => ?_)
 
     simp only [map_sum, Finset.mul_sum, Finset.sum_mul]

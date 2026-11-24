@@ -228,8 +228,7 @@ theorem eq_zero_of_rec {q : ℕ} (hq : 2 ≤ q) {E : F[X] → ℂ} (h1 : E 1 = 0
         have hdeg := h1.natDegree_mul h2
         rw [h3, h] at hdeg
         rw [ih x.2.natDegree (by omega) x.2 rfl h2, mul_zero]
-      · intro hx
-        exact absurd (by simp [hP]) hx
+      · exact fun hx => absurd (by simp [hP]) hx
     have h2 := hE P hP
     rw [key, h] at h2
     have h3 : ((q : ℂ) ^ n - 1) * E P = 0 := by linear_combination h2
@@ -325,8 +324,7 @@ theorem charpoly_mulLeft_root (D : F[X]) (hD : D.Monic) [FiniteDimensional F (Ad
   have h2 : minpoly F (AdjoinRoot.root D) = D := by
     rw [AdjoinRoot.minpoly_root hD.ne_zero, hD.leadingCoeff]; simp
   rw [h2] at h
-  rw [← LinearMap.charpoly_toMatrix _ (AdjoinRoot.powerBasis' hD).basis]
-  exact h
+  rwa [← LinearMap.charpoly_toMatrix _ (AdjoinRoot.powerBasis' hD).basis]
 
 theorem map_mk {V : Type} [AddCommGroup V] [Module F V] (D : F[X]) (f : AdjoinRoot D →ₗ[F] V)
     (g : Module.End F V) (h : ∀ a, f (AdjoinRoot.root D * a) = g (f a)) (p : F[X]) :
@@ -573,8 +571,7 @@ theorem mu_one (F : Type) [Field F] : mu (1 : F[X]) = 1 := by
         apply (LinearMap.charpoly_monic g).natDegree_eq_zero.1
         rw [LinearMap.charpoly_natDegree]
         simp
-      simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
-      exact ⟨fun _ => hg, fun _ => hc⟩
+      simpa only [Set.mem_setOf_eq, Set.mem_singleton_iff] using ⟨fun _ => hg, fun _ => hc⟩
     unfold mass
     rw [h1, h2, finsum_mem_singleton]
     simp
@@ -623,8 +620,7 @@ theorem finite_pairs {F : Type} [Field F] (P : F[X]) (hP : P ≠ 0) :
     {x : F[X] × F[X] | x.1.Monic ∧ x.2.Monic ∧ x.1 * x.2 = P}.Finite := by
   classical
   have hfin : {g : F[X] | g.Monic ∧ g ∣ P}.Finite := by
-    have h := Polynomial.fintypeSubtypeMonicDvd P hP
-    exact @Finite.of_fintype _ h
+    exact @Finite.of_fintype _ (Polynomial.fintypeSubtypeMonicDvd P hP)
   refine (hfin.prod hfin).subset ?_
   rintro ⟨D, E⟩ ⟨hD, hE, h⟩
   exact ⟨⟨hD, Dvd.intro _ h⟩, ⟨hE, Dvd.intro_left _ h⟩⟩
@@ -706,8 +702,7 @@ theorem mass_psi_eq_glCard_mul_mangoldt_div :
         fun g => s (LinearMap.charpoly g) := by
       funext g
       exact (_root_.GlobalTheory.CuspGL.charpoly_eq_finsum_psi F _ s g).symm
-    rw [← h]
-    rw [h2, mass_comp_charpoly_eq_mul, mu, mul_div_assoc]
+    rw [← h, h2, mass_comp_charpoly_eq_mul, mu, mul_div_assoc]
   have hc := _root_.GlobalTheory.CuspGL.ConvCancel.conv_cancel F _ _ mu hmu1 (fun Q hQ => (hmul Q hQ).symm.trans (hlog Q hQ)) P hP
   have hV := _root_.GlobalTheory.CuspGL.mass_eq_mass_pi_of_invariant F V (fun V _ _ _ => psi s V) hiso P hdeg
   have hg : glCard F P.natDegree ≠ 0 := by

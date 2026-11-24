@@ -491,8 +491,7 @@ theorem appLinear_top_bijective {O : Type} [CommRing O] (F G : (Sp O).Modules) [
         map_smul' := fun a s => f.map_smul
           ((Sp O).presheaf.map (TopologicalSpace.Opens.leTop ⊤).op ((Scheme.ΓSpecIso (.of O)).inv a)) s }
     obtain ⟨φ, hφ⟩ := h.2 (ConcreteCategory.ofHom (C := ModuleCat (CommRingCat.of O)) g)
-    refine ⟨φ, LinearMap.ext fun s => ?_⟩
-    exact congr($hφ s)
+    exact ⟨φ, LinearMap.ext fun s => congr($hφ s)⟩
 
 section Main
 
@@ -772,8 +771,7 @@ theorem cotMap_ptM_rhoM (D : Der A.hom (unitSec A) (pushO O M)) (hD : VanD O M A
     (le_preimage_of_comp (zeroSec_deformM D hD)).2 le_rfl
   change (rhoM O M).app _ ((cotMap (ptM D hD) (zeroSec_ptM D hD)).app (unitSec A ⁻¹ᵁ W)
     (d (sec_hom η[A]) le_rfl f)) = _
-  rw [cotMap_d (ptM D hD) (zeroSec_ptM D hD) _ hW' le_rfl f]
-  rw [rhoM_d]
+  rw [cotMap_d (ptM D hD) (zeroSec_ptM D hD) _ hW' le_rfl f, rhoM_d]
   have e : (omegaHomEquiv A (pushO O M) ((omegaHomEquiv A (pushO O M)).symm D)).app
       (le_refl (unitSec A ⁻¹ᵁ W)) f = D.app le_rfl f := by rw [Equiv.apply_symm_apply]
   rw [omegaHomEquiv_app] at e
@@ -1331,8 +1329,7 @@ theorem kappa_injective : Function.Injective (kappa O M) := by
   have h1 : (toTsze O M y).snd = 0 := by
     change (AugCot.lift _ (sndFn O M) (sndFn_der O M)) (((isChart O M).augCotEquiv
       (sec_hom _)).symm ((isChart O M).augCotEquiv (sec_hom _) _)) = 0 at hx
-    rw [LinearEquiv.symm_apply_apply, AugCot.lift_toCotangent] at hx
-    exact hx
+    rwa [LinearEquiv.symm_apply_apply, AugCot.lift_toCotangent] at hx
   have h2 : (toTsze O M y).fst = 0 := by
     rw [← toO_sec]
     have : (isChart O M).aug (sec_hom _) y = 0 := y.2
@@ -1406,8 +1403,7 @@ theorem preimage_le_of_zeroSec (z : TM O M ⟶ A) (h : zeroSec O M ≫ z = η[A]
   have h₁ : s ∈ (sec (zeroSec O M) ≫ (TM O M).hom) ⁻¹ᵁ U := ht
   rw [sec_hom] at h₁
   have h₂ := hU h₁
-  rw [← show sec (zeroSec O M) ≫ z.left = unitSec A from congrArg (·.left) h] at h₂
-  exact h₂
+  rwa [← show sec (zeroSec O M) ≫ z.left = unitSec A from congrArg (·.left) h] at h₂
 
 end GlobalTheory.SqZeroPt
 
@@ -1569,8 +1565,7 @@ theorem left_eq (v₁ v₂ : TM R M ⟶ A) (h₁ : zeroSec R M ≫ v₁ = η[A])
   obtain ⟨z₀, _, hu⟩ := GlobalTheory.T.spec_trivSqZeroExt_isPushout R B M (baseMap R B M) (baseMap_isSum R B M) A.left
     (show Sp R ⟶ A.left from η[A].left) (spMap (baseMap R B M) ≫ v₁.left) (fst_baseMap_left A v₁ h₁)
   have a₁ := hu v₁.left ⟨congrArg Over.Hom.left h₁, rfl⟩
-  have a₂ := hu v₂.left ⟨congrArg Over.Hom.left h₂, e.symm⟩
-  exact Over.OverMorphism.ext (a₁.trans a₂.symm)
+  exact Over.OverMorphism.ext (a₁.trans (hu v₂.left ⟨congrArg Over.Hom.left h₂, e.symm⟩).symm)
 
 theorem lifts_baseMap (v : TM R M ⟶ A) (h : zeroSec R M ≫ v = η[A]) :
     Lifts A.hom (unitPt A B) (spMap (baseMap R B M) ≫ v.left) := by

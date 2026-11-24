@@ -361,9 +361,7 @@ theorem torsion_sec_over_second : ∀ (k : Type) [Field k] {S : Scheme.{0}} (G' 
     rw [Category.assoc, h₂.1.w, ← Category.assoc, Over.w y]
   let ψ : (T ⟶ G') → (Over.mk (T.hom ≫ g₂) ⟶ G) := fun y => Over.homMk (y.left ≫ φ₂) (hsq y)
   have ψmul : ∀ a b, ψ (a * b) = ψ a * ψ b := by
-    intro a b
-    apply Over.OverMorphism.ext
-    exact (h₂.2 T a b (ψ a) (ψ b) rfl rfl).symm
+    exact fun a b => Over.OverMorphism.ext (h₂.2 T a b (ψ a) (ψ b) rfl rfl).symm
   let Ψ : (T ⟶ G') →* (Over.mk (T.hom ≫ g₂) ⟶ G) := MonoidHom.mk' ψ ψmul
   have Ψinj : ∀ a b : T ⟶ G', Ψ a = Ψ b → a = b := by
     intro a b hab'
@@ -397,8 +395,7 @@ theorem torsion_sec_over_second : ∀ (k : Type) [Field k] {S : Scheme.{0}} (G' 
       rw [← h1, Category.assoc, Category.assoc, hx₁, ← Category.assoc, hg, Category.assoc, hx'φ]
     · rw [Category.assoc, Category.assoc, Over.w x, Over.w x']
   have key := GlobalTheory.T.eq_of_nsmul_eq_of_eq_closedPoint_dualNumbers k G' hab n hn x x' (by rw [hx, hx'n]) hb
-  rw [key]
-  exact hx'φ
+  rwa [key]
 
 end GlobalTheory.UCanon
 end -- clump:auto
@@ -638,8 +635,7 @@ theorem const_on_base : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {
   have hc : ∀ y, (C.P.D.toPre.c (Cn.e.symm y)).left ≫ hD.e.hom.left ≫ pullback.fst Cn.L.D.P.A.hom (specOf (Cn.ψ.comp MvPolynomial.C)) =
       specOf (Cn.ψ.comp MvPolynomial.C) ≫ (Cn.L.D.c (l.M' • y)).left := fun y => by
     have := hD.c_pr (Cn.e.symm y)
-    rw [hxe, LinearEquiv.apply_symm_apply] at this
-    exact this
+    rwa [hxe, LinearEquiv.apply_symm_apply] at this
   obtain ⟨x, hx₁, hx₂, hx₀⟩ := GlobalTheory.T.dualNumber_points_pulledBack_object_from_base Cn.L k (ρ.comp (Cn.ψ.comp MvPolynomial.C)) o' m₁ m₂ l.M' hn agree'
     (fun y => c' (Cn.e.symm y) ≫ io.inv)
     (fun y => by rw [Category.assoc, hinv, (hc' _).1])
@@ -1004,8 +1000,7 @@ theorem exists_unit : ∀ (A : Type) [CommRing A] (B' : Over (Sp A)) [GrpObj B']
   have k₁ := gm_pull p B'.hom zz ⊤ trivial a
   rw [hp] at k₁
   have key : gm p zz ⊤ s = gm (𝟙 _) zz ⊤ a := by
-    rw [← ha]
-    exact k₁
+    rwa [← ha]
   have hs' := hs (Sp A) p zz (J₀ (p ≫ π₁ ≫ β)) (J (p ≫ π₁)) (J (p ≫ π₂)) (hJ₀ _) (hJ _) (hJ _)
   rw [hua, ← key, show p ≫ π₂ ≫ β = p ≫ π₁ ≫ β by rw [hβ], hs']
   exact (inv_mul_cancel_right _ _).symm
@@ -1314,8 +1309,7 @@ theorem snd_eq_zero_of_isConstAlong : ∀ {E : Type} [Field E] [NumberField E] [
   have := (div_eq_zero_iff.1 hLj).resolve_right (by
     have := GlobalTheory.TautRigid.fst_ne_zero (Units.map ρ.toMonoidHom (u j))
     rwa [Units.coe_map] at this)
-  rw [← hu]
-  exact this
+  rwa [← hu]
 
 end GlobalTheory.TorRigid
 end -- clump:auto

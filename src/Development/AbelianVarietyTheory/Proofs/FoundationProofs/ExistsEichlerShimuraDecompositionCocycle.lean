@@ -248,8 +248,7 @@ theorem eq_zero_of_rightDefect_eq_zero (Γ : Subgroup G) (ρ : G → E →ₗ[�
   have hw : ∀ x, u (x * t) = ρ t (u x) := by
     intro x
     have hx := congrFun hΦ x
-    rw [rightDefect_apply, Pi.zero_apply, sub_eq_zero] at hx
-    exact hx
+    rwa [rightDefect_apply, Pi.zero_apply, sub_eq_zero] at hx
   let H : Subgroup G :=
     { carrier := {g | ∀ x, u (x * g) = ρ g (u x)}
       mul_mem' := by
@@ -279,8 +278,7 @@ theorem eq_zero_of_rightDefect_eq_zero (Γ : Subgroup G) (ρ : G → E →ₗ[�
   funext g
   have hg : g ∈ H := hle (Subgroup.mem_top g)
   have h1g := (show ∀ x, u (x * g) = ρ g (u x) from hg) 1
-  rw [one_mul, hu1, map_zero] at h1g
-  exact h1g
+  rwa [one_mul, hu1, map_zero] at h1g
 
 theorem finrank_extn_le {G : Type} [Group G] {E : Type} [AddCommGroup E] [Module ℂ E]
     (Γ : Subgroup G) (ρ : G → E →ₗ[ℂ] E) (s t : G)
@@ -420,8 +418,7 @@ theorem finrank_cocyc_add_twInv_le_extn {G : Type} [Group G] {E : Type} [AddComm
       show f.1 γ - f.1 1 = 0
       rw [this, sub_self])
   have hi : Function.Injective i := by
-    intro a b hab
-    exact Submodule.inclusion_injective _ (congrArg Subtype.val hab)
+    exact fun a b hab => Submodule.inclusion_injective _ (congrArg Subtype.val hab)
   have := LinearMap.finrank_le_finrank_of_injective hi
   omega
 
@@ -497,8 +494,7 @@ theorem finrank_relThree_add_finrank_twInv_le :
         rw [hP]
         exact Φ.2.2 x)
     refine LinearMap.finrank_le_finrank_of_injective (f := ι) ?_
-    intro a b hab
-    exact Submodule.inclusion_injective hle (congrArg Subtype.val hab)
+    exact fun a b hab => Submodule.inclusion_injective hle (congrArg Subtype.val hab)
   have hrk := LinearMap.finrank_range_add_finrank_ker P
   rw [hsurj, finrank_top] at hrk
   omega
@@ -597,8 +593,7 @@ theorem finrank_twInv_mul_of_free {G : Type} [Group G] {E : Type} [AddCommGroup 
         rw [hγ, mul_assoc _ c.out, inv_mul_cancel_right, one_mul]
       have h3 : d = c := by
         have := congrArg (Quotient.mk s) h2
-        rw [hmk 1 Γ.one_mem, hmk γ h1, Quotient.out_eq, Quotient.out_eq] at this
-        exact this
+        rwa [hmk 1 Γ.one_mem, hmk γ h1, Quotient.out_eq, Quotient.out_eq] at this
       subst h3
       have h4 := free_mod_eq Γ g m hm hg hfree _ _ _ Γ.one_mem h1 _ _ h2
       rw [Nat.mod_eq_of_lt j.2, Nat.mod_eq_of_lt i.2] at h4
@@ -613,10 +608,8 @@ theorem finrank_twInv_mul_of_free {G : Type} [Group G] {E : Type} [AddCommGroup 
         dsimp only
         rw [← pow_eq_pow_mod k hg]
         have : x * ((Quotient.mk s x).out * g ^ k)⁻¹ = γ := by
-          rw [mul_inv_eq_iff_eq_mul, ← mul_assoc]
-          exact hx
-        rw [this]
-        exact hγ
+          rwa [mul_inv_eq_iff_eq_mul, ← mul_assoc]
+        rwa [this]
   have hcard : Nat.card R * m = Γ.index := by
     have h1 := Nat.card_congr (Equiv.ofBijective F hF)
     rw [Nat.card_prod, Nat.card_eq_fintype_card (α := Fin m), Fintype.card_fin,

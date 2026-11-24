@@ -77,8 +77,7 @@ lemma slMk_mem_lev {N l : ℕ} {a b c d : ℤ} (h : a * d - b * c = 1) (ha : (a 
 
 private lemma sl2_entry_det_eq_one (g : SL(2, ℤ)) : mat g 0 0 * mat g 1 1 - mat g 0 1 * mat g 1 0 = 1 := by
   have h := g.2
-  rw [Matrix.det_fin_two] at h
-  exact h
+  rwa [Matrix.det_fin_two] at h
 
 private lemma det_and_entries_mul_dg_mul_mod {N l : ℕ} (p : ℕ) (A B : Matrix (Fin 2) (Fin 2) ℤ)
     (hA : A 0 0 * A 1 1 - A 0 1 * A 1 0 = 1) (hB : B 0 0 * B 1 1 - B 0 1 * B 1 0 = 1)
@@ -169,11 +168,9 @@ lemma upper_mem (N l p j : ℕ) :
 lemma upper_rel {p i j : ℕ} (hi : i < p) (hj : j < p) (k : Matrix (Fin 2) (Fin 2) ℤ)
     (h : !![1, (i : ℤ); 0, (p : ℤ)] = k * !![1, (j : ℤ); 0, (p : ℤ)]) : i = j := by
   have e00 : (1 : ℤ) = k 0 0 := by
-    have e := congrFun (congrFun h 0) 0
-    simpa [Matrix.mul_apply, Fin.sum_univ_two] using e
+    simpa [Matrix.mul_apply, Fin.sum_univ_two] using congrFun (congrFun h 0) 0
   have e01 : (i : ℤ) = k 0 0 * j + k 0 1 * p := by
-    have e := congrFun (congrFun h 0) 1
-    simpa [Matrix.mul_apply, Fin.sum_univ_two] using e
+    simpa [Matrix.mul_apply, Fin.sum_univ_two] using congrFun (congrFun h 0) 1
   have hi' : (i : ℤ) < p := by exact_mod_cast hi
   have hj' : (j : ℤ) < p := by exact_mod_cast hj
   have hi0 : (0 : ℤ) ≤ i := by positivity
@@ -302,8 +299,7 @@ lemma diag_mem {N l q : ℕ} (hq : q.Prime) (hqNl : ¬ q ∣ N * l) (hqN : IsUni
   have hnN : ((n : ℤ) : ZMod N) = 0 := by rw [hn]; push_cast; simp
   have hnl : ((n : ℤ) : ZMod l) = 0 := by rw [hn]; push_cast; simp
   have hnq : ((n : ℤ) : ZMod q) ≠ 0 := by
-    rw [hn, Int.cast_natCast, Ne, CharP.cast_eq_zero_iff (ZMod q) q]
-    exact hqNl
+    rwa [hn, Int.cast_natCast, Ne, CharP.cast_eq_zero_iff (ZMod q) q]
   have hqq : ((q : ℕ) : ZMod q) = 0 := ZMod.natCast_self q
   have hdetM : (mat σ 0 0 * q + mat σ 0 1 * n) * mat σ 1 1 - mat σ 0 1 * (mat σ 1 0 * q + mat σ 1 1 * n) = q := by
     linear_combination (q : ℤ) * hσd
@@ -401,8 +397,7 @@ theorem ul_reps {N l : ℕ} (hl : l.Prime) (hlN : ¬ l ∣ N) : IsDCReps (Lev N 
   have hx := mul_dg_mul_entry_ne_zero_mod_prime l (mat γ₁) (mat γ₂) (sl2_entry_det_eq_one γ₁) (sl2_entry_det_eq_one γ₂) h₁.2.2.2 h₂.2.2.2
   obtain ⟨j, hj, γ, hγ, hM⟩ := exists_upper hl hlN' _ hdet ha hc hcl (fun h => hx h.1)
   refine ⟨⟨j, hj⟩, ⟨⟨γ, hγ⟩, hM⟩, fun i' ⟨γ', hγ'⟩ => ?_⟩
-  have h2 := cancel_left γ' γ (hγ'.symm.trans hM)
-  exact Fin.ext (upper_rel i'.2 hj _ h2)
+  exact Fin.ext (upper_rel i'.2 hj _ (cancel_left γ' γ (hγ'.symm.trans hM)))
 
 lemma diam_conj {N l : ℕ} {d : ZMod N} {σ : SL(2, ℤ)} (hσ : IsDiam N l d σ) (γ : SL(2, ℤ))
     (hγ : γ ∈ Lev N l) : σ * γ * σ⁻¹ ∈ Lev N l := by

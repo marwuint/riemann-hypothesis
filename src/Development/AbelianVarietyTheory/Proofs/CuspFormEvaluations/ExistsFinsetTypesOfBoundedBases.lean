@@ -195,8 +195,7 @@ theorem herm_smul_left (G : Matrix (Fin r) (Fin r) E) (c : E) (x y : Fin r → E
 
 theorem herm_eq_dotProduct (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     herm G x y = (x ᵥ* G) ⬝ᵥ fun b => cc (y b) := by
-  simp only [herm, vecMul, dotProduct, Finset.sum_mul]
-  exact Finset.sum_comm
+  simpa only [herm, vecMul, dotProduct, Finset.sum_mul] using Finset.sum_comm
 
 noncomputable def gramOf (G : Matrix (Fin r) (Fin r) E) (v : Fin r → Fin r → E) :
     Matrix (Fin r) (Fin r) E :=
@@ -218,8 +217,7 @@ theorem det_of_ne_zero {v : Fin r → Fin r → E} (hv : LinearIndependent E v) 
 theorem det_gramOf_ne_zero {G : Matrix (Fin r) (Fin r) E} (hG : G.det ≠ 0)
     {v : Fin r → Fin r → E} (hv : LinearIndependent E v) : (gramOf G v).det ≠ 0 := by
   rw [gramOf_eq, det_mul, det_mul, det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
-  refine mul_ne_zero (mul_ne_zero (det_of_ne_zero hv) hG) ?_
-  exact (map_ne_zero _).2 (det_of_ne_zero hv)
+  exact mul_ne_zero (mul_ne_zero (det_of_ne_zero hv) hG) ((map_ne_zero _).2 (det_of_ne_zero hv))
 
 omit [NumberField E] [IsCMField E] in
 theorem vecMul_of (c : Fin r → E) (v : Fin r → Fin r → E) :
@@ -420,8 +418,7 @@ theorem exists_finset_boundedBasis_of_gram (X : DataX E r) {B : ℝ} (hB : 0 ≤
     exact mul_le_mul_of_nonneg_left (hu.2.2 σ i k) (by positivity)
   have : Finite ((Fin r → 𝓞 E) ⧸ LinearMap.range N.vecMulLinear) := by
     refine Nat.finite_of_card_ne_zero ?_
-    rw [hcard, Int.natAbs_ne_zero, Algebra.norm_ne_zero_iff]
-    exact hN0
+    rwa [hcard, Int.natAbs_ne_zero, Algebra.norm_ne_zero_iff]
   obtain ⟨x, hx⟩ := exists_generators_mod_smul hN0 r X.Λ _ (pairing_injective X hu.1 hu.2.1)
   obtain ⟨V, hV, hV'⟩ := exists_finset_representatives S fun v j =>
     (LinearMap.range N.vecMulLinear).mkQ (pairing X v.1 v.2.1.1 (x j))

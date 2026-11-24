@@ -133,8 +133,7 @@ theorem le_comap_of_mem_range {φ : CommRingCat.of R ⟶ CommRingCat.of B}
     show Ideal.Quotient.mk (I ^ (0 + 1)) a ∈ y.asIdeal
     rw [Ideal.Quotient.eq_zero_iff_mem.2 (by simpa using ha)]
     exact zero_mem _
-  rw [hy] at h1
-  exact h1
+  rwa [hy] at h1
 
 def lev (φ : CommRingCat.of R ⟶ CommRingCat.of B) (hI : I ≤ (maximalIdeal B).comap φ.hom) (e : ℕ) :
     Sp (B ⧸ maximalIdeal B ^ (e + 1)) ⟶ Sp (R ⧸ I ^ (e + 1)) :=
@@ -482,8 +481,7 @@ theorem exists_monHom_extension_of_field : ∀ (K : Type) [Field K] (H G V : Ove
     rw [Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]
   refine ⟨?_, ?_⟩
   · rw [e1 H, e1 G, hone]
-  · have h := hmul _ (fst H H) (snd H H)
-    simpa [Hom.mul_def] using h
+  · simpa [Hom.mul_def] using hmul _ (fst H H) (snd H H)
 
 end GlobalTheory.GenericHomField
 end -- clump:auto
@@ -890,8 +888,7 @@ theorem veryAmpleAlong_field (hA : AmpleSt) (K : Type) [Field K] (P : PolAV (Sp 
     have hm : (𝟙 P.A.left) a ∈ nonzeroLocus (t i) ⊓ (lbPow P.L 4).U (fun _ => c 0) := ⟨le1 ha, hc'⟩
     have e := congrArg (gs (𝟙 P.A.left) a _) (hr j (fun _ => c 0))
     rw [gs_res _ a _ hm, gs_mul _ a _ hm, gs_res _ a _ hm, gs_res _ a _ hm] at e
-    rw [key, key, gs_res _ a le1 ha]
-    exact e
+    rwa [key, key, gs_res _ a le1 ha]
   · have hρ : ∀ f, resG P.A.left le1 (resG P.A.left le2 f) = f := fun f => fn_ext fun x hx => by
       rw [gs_res _ x le1 hx, gs_res _ x le2 (le1 hx)]
     have hcl : Subring.closure (Set.range (constFn P.A.hom (nonzeroLocus (t i))) ∪ Set.range r) ≤
@@ -1303,11 +1300,9 @@ theorem exists_formal_pair {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] 
   let q' : Over.mk (q ≫ (G ⊗ G).hom) ⟶ G ⊗ G := Over.homMk q rfl
   refine ⟨Over.mk (q ≫ (G ⊗ G).hom), q' ≫ fst G G, q' ≫ snd G G, Φ, ⟨closedPoint B⟩, ?_, hΦ,
     fun x k k' s₁ s₂ t₁ t₂ h => secRatioEq_of_levels hL fun e => ?_⟩
-  · rw [lift_comp_fst_snd]
-    exact hq
+  · rwa [lift_comp_fst_snd]
   · obtain ⟨r, h1, h2⟩ := hr x e
-    have h3 := (h e).comp r
-    exact h1 ▸ h2 ▸ h3
+    exact h1 ▸ h2 ▸ ((h e).comp r)
 
 theorem exists_generic_hom : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∀ b, FormalEnd U.toUnifPre a h' b → ∀ (N : ℕ) (S : ∀ k : ℕ, H0 U.LG.L k → H0 U.LG.L (N * k)), 1 ≤ N → (∀ (k e : ℕ) (s₁ s₂ : H0 U.LG.L k), SecRatioEq U.LG.L ((b e).left ≫ (fstG (maximalIdeal R) e G).left) (fstG (maximalIdeal R) e G).left s₁ s₂ (S k s₁) (S k s₂)) → (∀ k : ℕ, 3 ≤ k → ∃ s₀ : H0 U.LG.L k, SecCoNonzero U.LG.L ((b 0).left ≫ (fstG (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left s₀ (S k s₀)) → ∃ φ : (Over.pullback (jK R)).obj G ⟶ (Over.pullback (jK R)).obj G, IsMonHom φ ∧ (∀ (k : ℕ) (s₁ s₂ : H0 U.LG.L k), SecRatioEq U.LG.L (φ.left ≫ pullback.fst G.hom (jK R)) (pullback.fst G.hom (jK R)) s₁ s₂ (S k s₁) (S k s₂)) := by
   intro R _ _ _ hR D A G _ _ hG U a a' h h' _ b hb N S _ hS hnd
@@ -1392,8 +1387,7 @@ theorem exists_generic_hom : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRi
   have e' : (w ≫ F.map x₁).left ≫ φ.left ≫ π = w.left ≫ (F.map (Φ x₁)).left ≫ π := by
     rw [← Category.assoc, ← Over.comp_left, e, Over.comp_left, Category.assoc]
   have h3 := (hratK x₁ k s₁ s₂).comp w.left
-  rw [← e', ← Category.assoc w.left] at h3
-  exact h3
+  rwa [← e', ← Category.assoc w.left] at h3
 
 end GlobalTheory.Mum.GenericRatio
 end -- clump:auto

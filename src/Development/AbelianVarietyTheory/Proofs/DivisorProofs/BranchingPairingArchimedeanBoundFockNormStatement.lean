@@ -87,8 +87,7 @@ variable {ι : Type} [Fintype ι] {m : ℕ} (w : ι → DomWeight m)
 theorem pairK_one (x y : VV ℂ w) :
     pairK w (fun _ => (1 : Matrix (Fin m) (Fin m) ℂ)) x y = pairBK w (GlobalTheory.BranchNorm.cV w x) y := by
   have h := GlobalTheory.BranchNorm.pairK_eq w (1 : ι → GL (Fin m) ℂ) x y
-  rw [map_one] at h
-  exact h
+  rwa [map_one] at h
 
 theorem pairK_cs (x y : VV ℂ w) :
     ‖pairK w (fun _ => (1 : Matrix (Fin m) (Fin m) ℂ)) x y‖ ^ 2 ≤
@@ -97,8 +96,7 @@ theorem pairK_cs (x y : VV ℂ w) :
   have hG : ∀ _ : ι, (1 : Matrix (Fin m) (Fin m) ℂ).PosDef := fun _ => Matrix.PosDef.one
   rw [← GlobalTheory.CoefModel.inner_toHilb w hG, ← GlobalTheory.CoefModel.inner_toHilb w hG, ← GlobalTheory.CoefModel.inner_toHilb w hG]
   have h := inner_mul_inner_self_le (𝕜 := ℂ) (GlobalTheory.CoefModel.toHilb w hG x) (GlobalTheory.CoefModel.toHilb w hG y)
-  rw [norm_inner_symm (GlobalTheory.CoefModel.toHilb w hG y), ← sq] at h
-  exact h
+  rwa [norm_inner_symm (GlobalTheory.CoefModel.toHilb w hG y), ← sq] at h
 
 theorem pairBK_sq_le : ∀ {ι : Type} [Fintype ι] {m : ℕ} (w : ι → DomWeight m) (x y : VV ℂ w),
     ‖pairBK w x y‖ ^ 2 ≤ (pairK w (fun _ => (1 : Matrix (Fin m) (Fin m) ℂ)) x x).re *
@@ -238,8 +236,7 @@ theorem funEquiv_symm_mapVV {K ι : Type} [Field K] [CharZero K] [Fintype ι] {n
     rwa [LinearEquiv.apply_symm_apply] at this
   have h2 := GlobalTheory.BrRat.isFunForm_map φ σ h1
   have h3 := (isFunForm_iff_eq σ _ _).1 h2
-  rw [LinearEquiv.symm_apply_eq]
-  exact h3
+  rwa [LinearEquiv.symm_apply_eq]
 
 theorem brPair_mapVV : ∀ {K ι : Type} [Field K] [CharZero K] [Fintype ι] {n N : ℕ} (φ : K →+* ℂ) (σ : ι → DomWeight n) (hN : N = n + 1)
     (Λ : ι → DomWeight N) (u : VV K Λ) (v : VV K fun τ => (σ τ).dual),
@@ -415,8 +412,7 @@ def extVec (σ : ι → DomWeight n) : VV ℂ σ :=
 theorem pairBK_extVec (σ : ι → DomWeight n) : pairBK σ (extVec σ) (extVec σ) = 1 := by
   have h := pairingBExtremal_holds ℂ ι n σ 1
   rw [map_one, polyAction_one₂] at h
-  rw [pairBK_apply]
-  exact h
+  rwa [pairBK_apply]
 
 theorem pairBK_funEquiv_extVec (σ : ι → DomWeight n) :
     pairBK (fun τ => (σ τ).dual) (funEquiv σ (extVec σ)) (funEquiv σ (extVec σ)) = 1 := by
@@ -486,8 +482,7 @@ theorem pairK_one_eq (σ : ι → DomWeight n) (x y : VV ℂ σ) :
       pairBK σ (GlobalTheory.CoefModel.mapVV (starRingEnd ℂ) σ x) y := by
   have h := pairP_eq_pairB σ (1 : ι → GL (Fin n) ℂ) x.1 y.1
   rw [polyAction_one₂] at h
-  rw [pairK_apply, pairBK_apply, GlobalTheory.CoefModel.mapVV_coe]
-  exact h
+  rwa [pairK_apply, pairBK_apply, GlobalTheory.CoefModel.mapVV_coe]
 
 theorem pairK_funEquiv (σ : ι → DomWeight n) (a b : VV ℂ σ) :
     pairK (fun τ => (σ τ).dual) (fun _ => (1 : Matrix (Fin n) (Fin n) ℂ)) (funEquiv σ a) (funEquiv σ b) =

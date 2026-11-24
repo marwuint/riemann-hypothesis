@@ -110,18 +110,8 @@ theorem cube_pic (M : GlobalTheory.UU.CP B) (x y z : B ⟶ B) :
     (show _ = x * (y * (z * 1)) from rfl).trans
       ((congrArg (x * ·) (congrArg (y * ·) (mul_one z))).trans (mul_assoc x y z).symm)
   rw [e0, e1, e2, e3, e4, e5, e6, e7] at h2
-  have c0 : (∅ : Finset (Fin 3)).card = 0 := rfl
-  have c1 : ({0} : Finset (Fin 3)).card = 1 := rfl
-  have c2 : ({1} : Finset (Fin 3)).card = 1 := rfl
-  have c3 : ({2} : Finset (Fin 3)).card = 1 := rfl
-  have c4 : ({0, 1} : Finset (Fin 3)).card = 2 := rfl
-  have c5 : ({0, 2} : Finset (Fin 3)).card = 2 := rfl
-  have c6 : ({1, 2} : Finset (Fin 3)).card = 2 := rfl
-  have c7 : ({0, 1, 2} : Finset (Fin 3)).card = 3 := rfl
-  rw [c0, c1, c2, c3, c4, c5, c6, c7] at h2
   norm_num at h2
-  rw [← sub_eq_zero]
-  rw [← h2]
+  rw [← sub_eq_zero, ← h2]
   abel
 
 end GlobalTheory.CubeThm

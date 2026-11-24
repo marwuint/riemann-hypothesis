@@ -140,9 +140,7 @@ theorem mem_of_local (Z : LocDat D) (Γ : LV D) (hΓ : Submodule.IsLattice D.hos
   have hbc := endP_latP Z p Q Γ (h p)
   rw [hmap, lattice₂, Submodule.bot_coe, Set.image_singleton, map_zero, Submodule.span_zero_singleton,
     Submodule.mem_bot, bcP_endP, ← map_zero (baseChange₂ D p)] at hbc
-  have hQx : Q x = 0 := by
-    refine (VS D).frame.ext_elem fun i => (D.s.atP p).ιE.injective ?_
-    exact congrFun hbc i
+  have hQx : Q x = 0 := (VS D).frame.ext_elem fun i => (D.s.atP p).ιE.injective (congrFun hbc i)
   obtain ⟨y, hy, _, ⟨z, _, rfl⟩, rfl⟩ := Submodule.mem_sup.1 hx
   change Q (y + Q z) = 0 at hQx
   rw [map_add, hQX y (Submodule.subset_span hy), hQQ, zero_add] at hQx
@@ -240,14 +238,12 @@ theorem lsub_le (Z : LocDat D) {T : D.host.E} (G : LFlag (D.sp.Y 0) D.R.rS T)
   have hQab : Q a + Q b = Q (l + x) := by
     have := congrArg Q hab
     simp only [LinearMap.restrictScalars_apply, map_add (f := _), hQQ] at this
-    rw [map_add Q l x]
-    exact this
+    rwa [map_add Q l x]
   have h2 : Q (l + x - (a + b)) = 0 := by
     rw [map_sub Q, map_add Q a b, hQab, sub_self]
   have hc : l + x - (a + b) ∈ Xsp G := by
     have h1 := hQv (l + x - (a + b))
-    rw [h2, sub_zero] at h1
-    exact h1
+    rwa [h2, sub_zero] at h1
   have hco : a + b ∈ orth (VS D) (Xsp G) := by
     have : a + b = (l + x) - (l + x - (a + b)) := by abel
     rw [this]

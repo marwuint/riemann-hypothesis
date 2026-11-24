@@ -154,8 +154,7 @@ theorem mem_smul_top_of_tmul_eq_zero {R R₀ M : Type} [CommRing R] [CommRing R�
     have : f.symm (1 : R₀) = Ideal.Quotient.mk _ 1 := by rw [map_one, map_one]
     change TensorProduct.quotTensorEquivQuotSMul M (RingHom.ker π) (f.symm 1 ⊗ₜ[R] x) = _
     rw [this, TensorProduct.quotTensorEquivQuotSMul_mk_tmul, one_smul]
-  rw [h, map_zero, eq_comm, Submodule.Quotient.mk_eq_zero] at h1
-  exact h1
+  rwa [h, map_zero, eq_comm, Submodule.Quotient.mk_eq_zero] at h1
 
 theorem full_and_isCompl : CrystallineSmoothLift → AbelianHodgeDeRham → ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (g : ℕ) (A₀ : Over (Sp R₀)) [GrpObj A₀] (A' : Over (Sp R)) [GrpObj A'] (i' : A₀.left ⟶ A'.left) (h' : IsGrpPullback A₀ A' (spMap π) i'), IsAbelianScheme A' → SmoothOfRelativeDimension g A'.hom → ∀ S : Sys I π A₀.hom, S.Presents A'.hom i' → S.Full hI ∧ ∃ N, IsCompl (S.K hI) N := by
   intro H HD R R₀ _ _ I hI π hπ hk g A₀ _ A' _ i' h' hA hg S hS
@@ -183,8 +182,7 @@ theorem full_and_isCompl : CrystallineSmoothLift → AbelianHodgeDeRham → ∀ 
   refine ⟨?_, exists_isCompl_ker_of_projective (S.r hI) hr⟩
   intro z hz
   have hz0 : S.redO.pullbackOneCocycle z = 0 := by
-    refine Subtype.ext (funext fun U ↦ funext fun V ↦ funext fun a ↦ ?_)
-    exact (S.ker V _).2 (hz U V a)
+    exact Subtype.ext (funext fun U ↦ funext fun V ↦ funext fun a ↦ ((S.ker V _).2 (hz U V a)))
   have h0 : S.redO.pull1 (H1.mk _ z) = 0 := by
     rw [CoefMap.pullCohomologyOne_class, hz0, map_zero]
   set x := e.symm (H1.mk _ z) with hxdef
@@ -390,8 +388,7 @@ theorem exists_eq_dualAnnihilator [Projective R C] [Module.Finite R C]
   refine ⟨G.dualCoannihilator, ⟨_, hKL⟩, le_antisymm ?_ ?_⟩
   · intro g hg
     rw [mem_dualAnnihilator]
-    intro k hk
-    exact (mem_dualCoannihilator _).mp hk g hg
+    exact fun k hk => (mem_dualCoannihilator _).mp hk g hg
   · intro φ hφ
     rw [mem_dualAnnihilator] at hφ
     have h0 : H.projection G hGH.symm φ = 0 := by
@@ -572,12 +569,10 @@ theorem admissible_classification : CrystallineSmoothLift → AbelianHodgeDeRham
     intro c
     rw [← key]
     constructor
-    · intro h
-      exact mT.pullback1_mem_hodgeFiltration h
+    · exact fun h => mT.pullback1_mem_hodgeFiltration h
     · intro h
       have := mT'.pullback1_mem_hodgeFiltration h
-      rw [back] at this
-      exact this
+      rwa [back] at this
   have ρker : ∀ c, ρ c = 0 ↔ c ∈ RingHom.ker π • (⊤ : Submodule R (primDR A')) := by
     intro c
     rw [hk, ← mem_smul_top_equiv Φ, ← rk, ← key, map_eq_zero_iff _ inj, Submodule.coe_eq_zero]
@@ -613,13 +608,11 @@ theorem admissible_classification : CrystallineSmoothLift → AbelianHodgeDeRham
     ext d
     simp only [Submodule.mem_comap, Submodule.mem_dualAnnihilator]
     constructor
-    · intro H c hc
-      exact H _ hc
+    · exact fun H c hc => H _ hc
     · intro H p hp
       have e : (liftMor (divided₂ hI) h').pull (Ψ.symm p) = p := Ψ.apply_symm_apply p
       have hm : Φ (Ψ.symm p) ∈ K := by
-        rw [hΦ, Ψ.apply_symm_apply]
-        exact hp
+        rwa [hΦ, Ψ.apply_symm_apply]
       have := H (Ψ.symm p) hm
       rwa [crysToDR_apply, e] at this
   have eqiff : ∀ (K : Submodule R (Cr hI π A₀.hom)) (F : Submodule R (HdR A')),
@@ -1219,8 +1212,7 @@ theorem exists_sys_of_summand : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀]
     change r • m.1 U V a = 0
     rw [Algebra.smul_def]
     have := Ideal.mul_mem_mul (Ideal.mem_map_of_mem (algebraMap R (S'.F.obj V)) hrI) (hm U V a)
-    rw [← sq, map_sq hI, Ideal.zero_eq_bot, Ideal.mem_bot] at this
-    exact this
+    rwa [← sq, map_sq hI, Ideal.zero_eq_bot, Ideal.mem_bot] at this
   have trans' := GlobalTheory.T.locIso_transport_cochains_in_ideal R R₀ I hI π hπ hk X₀ s₀
   have hq : ∀ w, ∃ m ∈ S'.cocyclesInIdealExtensions, CatCoh.H1.mk S'.F m = v w := by
     intro w
@@ -1384,8 +1376,7 @@ theorem const_of_isAbelianScheme : ∀ (R : Type) [CommRing R] [IsNoetherianRing
   have hc : ∀ (U V : A.left.affineOpens) (h : V.1 ≤ U.1),
       A.left.presheaf.map (homOfLE h).op (g (op U)) = g (op V) := by
     intro U V h
-    have e := congrFun (congrFun (congrFun hg (op U)) (op V)) (homOfLE h).op
-    exact (sub_eq_zero.1 e).symm
+    exact (sub_eq_zero.1 (congrFun (congrFun (congrFun hg (op U)) (op V)) (homOfLE h).op)).symm
   obtain ⟨t, ht, -⟩ := A.left.sheaf.existsUnique_gluing' (fun U : A.left.affineOpens ↦ U.1) ⊤
     (fun _ ↦ homOfLE le_top) (iSup_affineOpens_eq_top A.left).ge (fun U ↦ g (op U)) (by
       intro U V
@@ -1459,8 +1450,7 @@ theorem good_of_isAbelianScheme : CrystallineSmoothLift → AbelianHodgeDeRham �
     have h2 : c ∈ F1 A.hom := by
       change toH1O A.hom c = 0
       apply cmpO_injective R A.left A.hom
-      rw [← structureSheaf_comparison_comm, hc, map_zero]
-      exact h1
+      rwa [← structureSheaf_comparison_comm, hc, map_zero]
     rw [hodgeFiltration_eq_range] at h2
     obtain ⟨f, rfl⟩ := h2
     refine ⟨f, ?_⟩
@@ -1531,8 +1521,7 @@ theorem hodgeFiltration_lift_map_eq_crystalline_kernel (H : CrystallineSmoothLif
   · rintro ⟨c', hc', e'⟩
     rw [← hb.1 e']
     exact (key c').2 hc'
-  · intro hx
-    exact ⟨c, (key c).1 hx, rfl⟩
+  · exact fun hx => ⟨c, (key c).1 hx, rfl⟩
 
 theorem hodgeFiltration_lift_eq_comap_systemFiltration (H : CrystallineSmoothLift) (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R)
     (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (A₀ : Over (Sp R₀))

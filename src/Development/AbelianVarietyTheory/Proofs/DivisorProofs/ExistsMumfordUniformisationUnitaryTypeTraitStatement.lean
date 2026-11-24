@@ -231,8 +231,7 @@ theorem exists_compatible_roots_through (K : Type) [Field K] [IsAlgClosed K] [Ch
   have hg := h3 A hA (IntermediateField.AdjoinSimple.gen ℚ (ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta A)) rfl
   rw [hg]
   have : f pb.gen = ω := pb.lift_gen ω hroot
-  rw [IntermediateField.adjoin.powerBasis_gen] at this
-  exact this
+  rwa [IntermediateField.adjoin.powerBasis_gen] at this
 
 end GlobalTheory.RootSystem
 end -- clump:auto
@@ -337,10 +336,8 @@ theorem exists_tate : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
     show ((Units.map (e : AlgebraicClosure (FractionRing T.V) →+* F).toMonoidHom (I₀.ζ l.A) : Fˣ) : F) = _
     rw [hI₀, Units.coe_map, hζA z hz, hg]
     exact e.commutes _
-  · intro a q hq
-    exact GlobalTheory.LiftExt.equiv_of_base hB _ he (base (pA a) _ (hpA a)) q hq
-  · intro a q hq
-    exact GlobalTheory.LiftExt.equiv_of_base hB _ he (base (pM a) _ (hpM a)) q hq
+  · exact fun a q hq => GlobalTheory.LiftExt.equiv_of_base hB _ he (base (pA a) _ (hpA a)) q hq
+  · exact fun a q hq => GlobalTheory.LiftExt.equiv_of_base hB _ he (base (pM a) _ (hpM a)) q hq
 
 end GlobalTheory.TraitTate
 end -- clump:auto
@@ -400,8 +397,7 @@ theorem exists_ext_dvd_rational : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLo
         (GlobalTheory.QValPull.main T₁ T' g D₁.toPre D'.toPre hD π ϖ e ig hπ hϖ hass y _ (hQ₁ _))
     rw [ReciprocityTheory.ChartRestriction.G.DVR.QForm.bOf, hq, hq, hq]
     exact dvd_sub (dvd_sub (hNe.mul_right _) (hNe.mul_right _)) (hNe.mul_right _)
-  · intro k hk
-    exact rat D'.toPre hD D'.tau_bimult k hk
+  · exact fun k hk => rat D'.toPre hD D'.tau_bimult k hk
 
 end GlobalTheory.TraitInputExt
 end -- clump:auto
@@ -628,8 +624,7 @@ theorem mem_of_forall_prime {F : Type} [Field F] [CharZero F] [Algebra.IsAlgebra
   have hx' : IsIntegral O x := by
     obtain ⟨P, hP, hP0⟩ := hx
     refine ⟨P.map g, hP.map g, ?_⟩
-    rw [Polynomial.eval₂_map]
-    exact hP0
+    rwa [Polynomial.eval₂_map]
   obtain ⟨y, hy⟩ := IsIntegrallyClosed.isIntegral_iff.1 hx'
   rw [← hy]
   exact y.2
@@ -693,8 +688,7 @@ theorem exists_place_finite_ext : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLo
   refine ⟨p, hp, W, hW, ⟨l', c, hg' p hp⟩, V, inferInstance, inferInstance, inferInstance, algebraMap R V,
     e.symm.toRingHom.comp g, ⟨hV, hVc, charZero_of_injective_algebraMap hinj⟩, hinj,
     RingHom.finite_algebraMap.2 hfin, hloc, ?_⟩
-  intro a b h
-  exact Subtype.ext (jF.injective (congrArg Subtype.val (e.symm.injective h)))
+  exact fun a b h => Subtype.ext (jF.injective (congrArg Subtype.val (e.symm.injective h)))
 
 end GlobalTheory.TraitPlace
 end -- clump:auto

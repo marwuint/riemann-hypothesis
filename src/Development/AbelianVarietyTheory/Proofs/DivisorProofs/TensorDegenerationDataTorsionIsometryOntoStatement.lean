@@ -313,8 +313,7 @@ theorem gtRelV_npow_of_tensFacts {F : Type} [Field F] {N N' : NumD F} {r : ℕ} 
       rw [add_zero] at this
       simpa using this
     have e1 : (1 : Fin r → N.Gt) = fun j => N.io (e 0 j) := funext fun j => by rw [he0, N.io_zero]; rfl
-    rw [pow_zero, pow_zero, e1, ← N'.io_zero]
-    exact h0
+    rwa [pow_zero, pow_zero, e1, ← N'.io_zero]
   | succ k ih =>
     rw [pow_succ, pow_succ]
     exact GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W φ e wv hf _ _ _ _ ih h
@@ -432,8 +431,7 @@ theorem gtRelV_pow {F : Type} [Field F] {N N' : NumD F} {r : ℕ} {W : Matrix (F
       rw [add_zero] at this
       exact (add_eq_left.1 this.symm)
     simp only [e0, NumD.io_zero] at h0
-    rw [pow_zero, pow_zero]
-    exact h0
+    rwa [pow_zero, pow_zero]
   | succ k ih =>
     rw [pow_succ, pow_succ]
     exact GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W φ e wv h _ _ _ _ ih hv
@@ -540,8 +538,7 @@ theorem left_sum {r : ℕ} (x : Fin r → Γ) (χ : Fin r → N.X) (hx : ∀ k, 
     simp [s, Prod.fst_prod]
   have c₂ : (∏ k, s k ^ n k).1.2.toAdd = ∑ k, n k • χ k := by
     simp [s, Prod.snd_prod, toAdd_prod]
-  rw [← c₁, ← c₂]
-  exact h
+  rwa [← c₁, ← c₂]
 
 include hs hc in
 theorem right_sum {r : ℕ} (y : Fin r → Γ) (g : Fin r → N.Gt) (hy : ∀ k, ev (y k) = (g k).b) (n : Fin r → ℤ)
@@ -567,8 +564,7 @@ theorem right_sum {r : ℕ} (y : Fin r → Γ) (g : Fin r → N.Gt) (hy : ∀ k,
     simp [s, Prod.fst_prod]
   have c₂ : (∏ k, s k ^ n k).1.2 = ∏ k, g k ^ n k := by
     simp [s, Prod.snd_prod]
-  rw [← c₁, ← c₂]
-  exact h
+  rwa [← c₁, ← c₂]
 
 include hs hc in
 theorem quad_mul {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (a y : Fin r → Γ) (χ : Fin r → N.X) (g : Fin r → N.Gt)
@@ -1207,8 +1203,7 @@ theorem GlobalTheory.Mum.TensAct.qkAct_tens : ∀ (R : Type) [CommRing R] [IsDom
       rw [hey i, husy i, io_sum]
       simp only [Pi.pow_apply, ts, ← Finset.prod_pow]
       refine Finset.prod_congr rfl fun j _ => ?_
-      rw [← (qs j).2]
-      rw [← zpow_natCast, ← zpow_natCast ((qs j).1.2), ← zpow_mul, ← zpow_mul, mul_comm]
+      rw [← (qs j).2, ← zpow_natCast, ← zpow_natCast ((qs j).1.2), ← zpow_mul, ← zpow_mul, mul_comm]
     rw [e1] at hpow
     exact GlobalTheory.T.tensorTorusValueCorrespondence_unique_point F N N' W _ _ _ hF _ _ _ hpow hio
   let tv : N'.QT n := ⟨(Multiplicative.ofAdd y'', w'), by rw [NumD.mem_QT]; exact hwn⟩
@@ -1253,8 +1248,7 @@ theorem GlobalTheory.Mum.TensAct.qkAct_tens : ∀ (R : Type) [CommRing R] [IsDom
       change TensTor.chi T ν ν' q1.1.1.toAdd = TensTor.chi T ν ν' (y'' + n • z')
       rw [hs]
       funext i
-      rw [Pi.add_apply, Pi.smul_apply]
-      rw [hrel1.1 i, hz1 i, hey i, hz']
+      rw [Pi.add_apply, Pi.smul_apply, hrel1.1 i, hz1 i, hey i, hz']
     · have hm := GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W _ _ _ hF _ _ _ _ hw' (GlobalTheory.T.tensorTorusValueCorrespondence_period F N N' W _ _ _ hF z')
       have e2 : ts * (fun j => N.io (TensTor.chi T ν ν' z' j)) = fun j => (qs1 j).1.2 := funext fun i => by
         rw [Pi.mul_apply, hz2 i, hts i, hz']
@@ -1501,8 +1495,7 @@ theorem rel_pow (h : TensFacts W φ e wv) {v' : N'.Gt} {vs : Fin r → N.Gt} (hv
     have h0 := GlobalTheory.T.tensorTorusValueCorrespondence_period F N N' W φ e wv h 0
     have e0 : ∀ j, e 0 j = 0 := fun j => by simpa using comp_nsmul h 0 0 j
     simp only [e0, NumD.io_zero] at h0
-    rw [pow_zero, pow_zero]
-    exact h0
+    rwa [pow_zero, pow_zero]
   | succ k ih =>
     rw [pow_succ, pow_succ]
     exact GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W φ e wv h _ _ _ _ ih hv
@@ -1518,8 +1511,7 @@ theorem tower_val (h : TensFacts W φ e wv) {n m : ℕ} {p' : N'.QT (n * m)} {ps
   · refine GlobalTheory.T.tensorTorusValueCorrespondence_unique_point F N N' W φ e wv h _ _ _ ht.2 ?_
     have := GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W φ e wv h _ _ _ _ (rel_pow h hp.2 m) (GlobalTheory.T.tensorTorusValueCorrespondence_period F N N' W φ e wv h z')
     have e1 : (fun j => (ts j).1.2) = (fun j => (ps j).1.2) ^ m * fun j => N.io (e z' j) := funext hz2
-    rw [e1]
-    exact this
+    rwa [e1]
 
 end Values
 
@@ -1654,8 +1646,7 @@ theorem tk_tens (W : Matrix (Fin r) (Fin r) ℤ) (φ : N'.A → Fin r → N.A) (
       U (x * y) * U (x * u) * U (y * u) * U 1 := by
     intro x y u
     apply Units.ext
-    simp only [Units.val_mul, ← hU]
-    exact hcube x y u
+    simpa only [Units.val_mul, ← hU] using hcube x y u
   have hA := cube_prod W φ U hφ hcU k p'.1.2.b q'.1.2.b
   simp only [hp.2.1, hq.2.1] at hA
   have hG := hq.2.2 p'.1.1.toAdd
@@ -1710,8 +1701,7 @@ theorem wp_eq_prod : ∀ (F : Type) [Field F] (N N' : NumD F) {r : ℕ} (W : Mat
     simp only [div_zpow, Finset.prod_div_distrib]
   rw [hR]
   simp only [hper]
-  rw [hD]
-  rw [NumD.wp]
+  rw [hD, NumD.wp]
   apply Additive.ofMul.injective
   have h1' := congrArg Additive.ofMul h1
   have h2' := congrArg Additive.ofMul h2

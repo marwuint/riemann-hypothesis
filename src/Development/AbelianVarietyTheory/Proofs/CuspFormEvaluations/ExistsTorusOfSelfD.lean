@@ -100,8 +100,7 @@ theorem perf {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (hs : IsSympl X 
   obtain ⟨ψ, hψ⟩ := LinearMap.exists_extend ψ0
   let u := (LinearMap.BilinForm.toDual (EFBil X) hnd).symm ψ
   have hu : ∀ y, EF X u y = ψ y := by
-    intro y
-    exact LinearMap.BilinForm.apply_toDual_symm_apply (hB := hnd) ψ y
+    exact fun y => LinearMap.BilinForm.apply_toDual_symm_apply (hB := hnd) ψ y
   have hext : (ψ.restrictScalars ℤ).comp f =
       (Int.castAddHom ℚ).toIntLinearMap.comp φ.toIntLinearMap := by
     refine bZ.ext fun i => ?_
@@ -114,8 +113,7 @@ theorem perf {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (hs : IsSympl X 
   have hval : ∀ v : L, ψ (v : Fin r → E) = ((φ v : ℤ) : ℚ) := fun v => LinearMap.congr_fun hext v
   refine ⟨u, ?_, fun v => ((hu v).trans (hval v)).symm⟩
   rw [hL.2 u]
-  intro y hy
-  exact ⟨φ ⟨y, hy⟩, (hu y).trans (hval ⟨y, hy⟩)⟩
+  exact fun y hy => ⟨φ ⟨y, hy⟩, (hu y).trans (hval ⟨y, hy⟩)⟩
 
 private theorem exists_int_ne_zero_smul_mem_of_span_eq_univ {L L' : Lt E r} (hfg : L.FG)
     (hsp : Submodule.span E (L' : Set (Fin r → E)) = ⊤) :
@@ -131,8 +129,7 @@ private theorem exists_int_ne_zero_smul_mem_of_span_eq_univ {L L' : Lt E r} (hfg
     exact h.symm
   rw [hcE, mul_smul]
   have h := L'.smul_mem c (hNL u hu)
-  rw [← algebraMap_smul E c] at h
-  exact h
+  rwa [← algebraMap_smul E c] at h
 
 theorem exists_basis_of_full {x : Frame X.Ψ r} (ho : X.IsOrtho x) {L : Lt E r} (hfg : L.FG)
     (hsp : Submodule.span E (L : Set (Fin r → E)) = ⊤) :
@@ -207,8 +204,7 @@ theorem GlobalTheory.Dict.exists_torus_of_selfD : ∀ (E : Type) [Field E] [Numb
   have coe_smul_mem_lemma_2 : ∀ (c : 𝓞 E) {w : Fin r → E}, w ∈ L → (c : E) • w ∈ L := by
     intro c w hw
     have h := L.smul_mem c hw
-    rw [← algebraMap_smul E c w] at h
-    exact h
+    rwa [← algebraMap_smul E c w] at h
   obtain ⟨b, hb⟩ := exists_basis_of_full ho hL.1 hspL
 
   have hint : ∀ u ∈ L, ∀ v ∈ L, ∃ k : ℤ, EF X u v = k := fun u hu => (hL.2 u).1 hu
@@ -286,8 +282,7 @@ theorem GlobalTheory.Dict.exists_torus_of_selfD : ∀ (E : Type) [Field E] [Numb
     refine (hb ga).trans ⟨fun ⟨v, hv, h⟩ => ⟨v, hv, ?_⟩, fun ⟨v, hv, h⟩ => ⟨v, hv, ?_⟩⟩
     · exact h.symm.trans (hψ v).symm
     · exact (hψ v).symm.trans h.symm
-  · intro a u
-    exact (hψ _).trans ((scaled_smul X x a u).trans (congrArg (I2.act a) (hψ u).symm))
+  · exact fun a u => (hψ _).trans ((scaled_smul X x a u).trans (congrArg (I2.act a) (hψ u).symm))
   · intro ga hga
     obtain ⟨u, hu, rfl⟩ := (hb ga).1 hga
     obtain ⟨k, hk⟩ := hint u hu _ (coe_smul_mem_lemma_2 w hu)

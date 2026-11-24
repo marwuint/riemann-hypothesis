@@ -116,22 +116,12 @@ theorem siegel_eq_levi_nC : ∀ (D : D7) (A : HSp D) (p : siegel A), ∃ (a : GL
     ⟨_, siegel_mt_jX A (inv_mem hp)⟩
   have e1 : α ⬝ α' = 1 := by
     have h : (dblDec A).jX = (dblDec A).jX ⬝ (α ⬝ α') := by
-      calc (dblDec A).jX = mt (dblSp A) (p * p⁻¹) ⬝ (dblDec A).jX := by
-            rw [mul_inv_cancel, GlobalTheory.MixModel.mt_one, Matrix.one_mul]
-        _ = mt (dblSp A) p ⬝ (mt (dblSp A) p⁻¹ ⬝ (dblDec A).jX) := by
-            rw [GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc]
-        _ = (dblDec A).jX ⬝ (α ⬝ α') := by rw [hα', ← Matrix.mul_assoc, hα, Matrix.mul_assoc]
+      rw [← Matrix.mul_assoc, ← hα, Matrix.mul_assoc, ← hα', ← Matrix.mul_assoc,
+        ← GlobalTheory.MixModel.mt_mul, mul_inv_cancel, GlobalTheory.MixModel.mt_one,
+        Matrix.one_mul]
     have h2 := congrArg (HMul.hMul (dblDec A).pX) h
     rwa [← Matrix.mul_assoc, (dblDec A).pX_jX, Matrix.one_mul, eq_comm] at h2
-  have e2 : α' ⬝ α = 1 := by
-    have h : (dblDec A).jX = (dblDec A).jX ⬝ (α' ⬝ α) := by
-      calc (dblDec A).jX = mt (dblSp A) (p⁻¹ * p) ⬝ (dblDec A).jX := by
-            rw [inv_mul_cancel, GlobalTheory.MixModel.mt_one, Matrix.one_mul]
-        _ = mt (dblSp A) p⁻¹ ⬝ (mt (dblSp A) p ⬝ (dblDec A).jX) := by
-            rw [GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc]
-        _ = (dblDec A).jX ⬝ (α' ⬝ α) := by rw [hα, ← Matrix.mul_assoc, hα', Matrix.mul_assoc]
-    have h2 := congrArg (HMul.hMul (dblDec A).pX) h
-    rwa [← Matrix.mul_assoc, (dblDec A).pX_jX, Matrix.one_mul, eq_comm] at h2
+  have e2 : α' ⬝ α = 1 := mul_eq_one_comm.1 e1
   have u := GlobalTheory.MixModel.mt_unitary (dblSp A) p
 
   have h1 : adj α ⬝ ((dblDec A).pY ⬝ (mt (dblSp A) p ⬝ (dblDec A).jY)) = 1 := by

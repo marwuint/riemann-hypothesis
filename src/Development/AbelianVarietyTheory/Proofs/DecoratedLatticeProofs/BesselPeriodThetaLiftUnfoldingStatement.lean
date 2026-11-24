@@ -150,8 +150,7 @@ theorem besPer_lift_eq_integral_kerBF : ∀ (D : D7), Descent D → ∀ (ψ : Ad
   rw [← hR] at h𝓑'
   set Th : GA D B.V → ℂ := fun n => star (psiBes ψ B.d 1 (vecB B.o B.ζ) n) with hThd
   have hn : ∀ n, ‖Th n‖ ≤ 1 := fun n => by
-    simp only [hThd, norm_star, psiBes, psiE]
-    exact (s.weil.std.1.2.1 _).le
+    simpa only [hThd, norm_star, psiBes, psiE] using (s.weil.std.1.2.1 _).le
   have hfl : ∀ p, fl ψ B.d J.W s.vS s.vT s.vU Th (rat J.d.e) (s.om p Φ) = flatBF s (s.om p Φ) 0 := fun p => by
     rw [← hx]
     exact GlobalTheory.T.flagUnipotentUnfolding_besselFourierJacobi_eq D ψ ρ B J s _ (s.weil.om_pres p Φ hΦ)
@@ -163,8 +162,7 @@ theorem besPer_lift_eq_integral_kerBF : ∀ (D : D7), Descent D → ∀ (ψ : Ad
     have := (GlobalTheory.T.unfold_over_flagUnipotent_thetaLift D hD ψ B.V B.V₀ J.W ρ B.d s.χV s.χW s.om om' s.weil hom' s.vS B.vN s.vT s.vU s.vW J.d.e Th
       hb hTh G (s.om (g, 1) Φ) hG (s.weil.om_pres _ Φ hΦ) 𝓑 h𝓑').2
     simp only [hom, hfl] at this
-    simp only [Step.lift, liftS_mul]
-    exact this
+    simpa only [Step.lift, liftS_mul] using this
 
   obtain ⟨i1, i2, i3⟩ := GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D B.A
   obtain ⟨j1, j2, j3⟩ := GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D J.W
@@ -185,8 +183,7 @@ theorem besPer_lift_eq_integral_kerBF : ∀ (D : D7), Descent D → ∀ (ψ : Ad
     have h4 := h2.comp h3
     simp only [Function.comp_def] at h4
     have h5 : Continuous fun p : GA D B.A × GA D J.W => flatBF s (s.om (embA B.d B.o p.1, p.2) Φ) 0 := by
-      simp only [flatBF, flat]
-      exact h4
+      simpa only [flatBF, flat] using h4
     exact (hφ.2.comp continuous_fst).mul ((hG.2.1.comp continuous_snd).mul h5)
   have hinv := (GlobalTheory.T.unfoldedBesselJacobiKernel_laws D ψ ρ B J s om' hom' φ G Φ hφ hG hΦ).2.2.1
   obtain ⟨C, A, hC⟩ := GlobalTheory.T.unfolded_besselJacobi_integral_abs_le D ψ B.V B.V₀ J.W ρ B.d s.χV s.χW s.om om' s.weil hom' s.vS s.vT s.vU s.vW J.d.e
@@ -355,10 +352,8 @@ theorem unfBF_of_parts
     funext h
     refine ((hsem (fun g => kerBF s φ G Φ (g * h)) (hmeas h)).2 (hcpt D ρ J _ hcont hinv h)).trans ?_
     simp only [JacLev.perAll, fjAll]
-    refine congrArg _ (funext fun h' => congrArg _ (funext fun n => ?_))
-    exact hval h h' n
-  rw [hfun, ← hper] at key
-  exact key
+    exact congrArg _ (funext fun h' => congrArg _ (funext fun n => hval h h' n))
+  rwa [hfun, ← hper] at key
 
 theorem unfBF : ∀ D : D7, Descent D → UnfBF D :=
   unfBF_of_parts GlobalTheory.T.fourierJacobi_invariant_function_integrable GlobalTheory.T.besselPeriod_thetaLift_eq_integral_kernel

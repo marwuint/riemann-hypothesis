@@ -519,8 +519,7 @@ theorem agree_Wk (N : Near π G) (V : (N.U ⊗ N.U).left.Opens) (m : V.toScheme 
   have e2 : a' ≫ mT N V m hm = c' ≫ mT N V m hm := by
     refine (cancel_mono (Desc.emb N p hp).left).1 ?_
     simp only [Category.assoc]
-    rw [← h, ← Category.assoc, ea, ← Category.assoc, ec, Category.assoc, Category.assoc]
-    exact e0
+    rwa [← h, ← Category.assoc, ea, ← Category.assoc, ec, Category.assoc, Category.assoc]
   simp only [Over.comp_left]
   rw [← Category.assoc, ← ea, Category.assoc, h', ← Category.assoc, e2, Category.assoc, ← h', ← Category.assoc, ec,
     Category.assoc]
@@ -681,8 +680,7 @@ theorem isOpenImmersion_emb (N : Near π G) (p : pullback π π ⟶ S) (hp : p �
   have h₂ : IsPullback (Desc.toS N p hp) (Desc.embL N p hp) N.u (pullback.fst G.hom p) := by
     refine IsPullback.of_bot (v₂₁ := pullback.snd G.hom p) (v₂₂ := G.hom) (h₃₁ := p) ?_ (pullback.lift_fst _ _ _).symm
       (IsPullback.of_hasPullback _ _)
-    rw [N.u_over, Desc.embL, pullback.lift_snd]
-    exact h₁
+    rwa [N.u_over, Desc.embL, pullback.lift_snd]
   exact MorphismProperty.of_isPullback (P := @IsOpenImmersion) h₂ N.isOpen
 
 theorem surjective_of_closedFibre [GrpObj G] [Surjective π] (N : Near π G) (V : (N.U ⊗ N.U).left.Opens)
@@ -805,8 +803,7 @@ theorem exists_factor [GrpObj G] [Surjective π] (N : Near π G) (hN : N.Law) :
     · rw [h₂, Category.assoc m', Desc.toS, pullback.lift_snd, ← Category.assoc m', pullback.lift_snd]
   apply pullback.hom_ext
   · refine (Category.assoc _ _ _).trans ((congrArg (m' ≫ ·) (pullback.lift_fst _ _ _)).trans ?_)
-    rw [← Category.assoc, ← e₁, h₃]
-    exact hmul
+    rwa [← Category.assoc, ← e₁, h₃]
   · refine (Category.assoc _ _ _).trans ((congrArg (m' ≫ ·) (pullback.lift_snd _ _ _)).trans ?_)
     refine (pullback.lift_snd _ _ _).trans ?_
     exact ((Category.assoc _ _ _).trans (congrArg (W.ι ≫ ·) (Over.w (Desc.sum N p hp)))).symm
@@ -837,13 +834,11 @@ theorem emb_comp_of_sum_comp : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocal
     rw [hm]; infer_instance
   have s₆ : Smooth m := smooth_of_comp_mono m (Desc.emb N p hp).left
   have s₇ : Surjective (m ≫ (Desc.UT N).hom) := by
-    rw [← Over.w (Desc.emb N p hp), ← Category.assoc, hm, Category.assoc, Over.w]
-    exact hW
+    rwa [← Over.w (Desc.emb N p hp), ← Category.assoc, hm, Category.assoc, Over.w]
   have hirr : ∀ t, IsPreirreducible ((Desc.UT N).hom ⁻¹' {t}) := fun t => by
     have := (isPreirreducible_fibre ((Over.pullback p).obj G).hom t).preimage
       (Desc.emb N p hp).left.isOpenEmbedding
-    rw [← Over.w (Desc.emb N p hp)]
-    exact this
+    rwa [← Over.w (Desc.emb N p hp)]
   ext1
   refine eq_of_smooth_comp (Desc.UT N).hom hirr m ((Over.pullback p').obj G).hom _ _
     ((Over.w _).trans (Over.w _).symm) ?_
@@ -1112,16 +1107,12 @@ theorem exists_datum : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R],
     rw [← cancel_epi (Desc.sum N _ h1).left, reassoc_of% hf, hg, Category.comp_id]
   have hgf : g ≫ f = 𝟙 _ := by
     rw [← cancel_epi (Desc.sum N _ h2).left, reassoc_of% hg, hf, Category.comp_id]
-  have hs : Desc.sum N _ h1 ≫ Over.homMk f wf = Desc.sum N _ h2 := by
-    apply Over.OverMorphism.ext
-    exact hf
+  have hs : Desc.sum N _ h1 ≫ Over.homMk f wf = Desc.sum N _ h2 := Over.OverMorphism.ext hf
   have he := GlobalTheory.T.nearOpenEmbedding_comp_of_sumMap_comp R hA S π hP hS hI G' hG N hL _ _ h1 h2 (Over.homMk f wf) hs
   have hm := GlobalTheory.T.isMonHom_of_sumMap_comp_fixing_nearOpen R hA S π hP hS hI G' hG N _ _ h1 h2 (Over.homMk f wf) hs he
   refine ⟨⟨Over.homMk f wf, Over.homMk g wg, ?_, ?_⟩, hm, ?_⟩
-  · apply Over.OverMorphism.ext
-    exact hfg
-  · apply Over.OverMorphism.ext
-    exact hgf
+  · exact Over.OverMorphism.ext hfg
+  · exact Over.OverMorphism.ext hgf
   · intro T a x hx
     have hfix : Desc.embL N _ h1 ≫ f = Desc.embL N _ h2 := congrArg (fun k => k.left) he
     exact pt_of_fix N f hfix T a x hx

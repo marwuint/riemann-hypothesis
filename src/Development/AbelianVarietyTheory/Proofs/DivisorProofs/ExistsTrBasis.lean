@@ -159,8 +159,7 @@ theorem locModel_fracField_algEquiv : ∀ {K κ : Type} [Field K] [Field κ] [Al
   have hφc : ∀ a : ℂ, φ (algebraMap ℂ K a) = algebraMap ℂ κ a := by
     intro a
     have := hφ ⟨algebraMap ℂ K a, hR.const_mem a⟩
-    rw [← hc a (hR.const_mem a)]
-    exact this
+    rwa [← hc a (hR.const_mem a)]
   let ψ : K →ₐ[ℂ] κ := { φ with commutes' := hφc }
   have hbij : Function.Bijective ψ := by
     refine ⟨ψ.toRingHom.injective, fun f => ?_⟩
@@ -178,8 +177,7 @@ theorem locModel_fracField_algEquiv : ∀ {K κ : Type} [Field K] [Field κ] [Al
     change φ (a : K) = π a at ha
     change φ (b : K) = π b at hb2
     rw [ha, hb2, div_eq_iff hb, e]
-  refine ⟨AlgEquiv.ofBijective ψ hbij, fun r => ?_⟩
-  exact hφ r
+  exact ⟨AlgEquiv.ofBijective ψ hbij, fun r => hφ r⟩
 
 end GlobalTheory
 end -- clump:auto
@@ -350,8 +348,7 @@ theorem exists_mul_ker_mem_span_trBasis_diff :
       obtain ⟨⟨a, u⟩, e⟩ := @IsLocalization.surj _ _ _ _ _ _ hs y
       have hu : IsUnit ((u : Algebra.adjoin ℂ (s : Set O)) : O) := u.2
       have hu0 : (((u : Algebra.adjoin ℂ (s : Set O)) : O) : κ) ≠ 0 := by
-        intro h0
-        exact hu.ne_zero (Subtype.ext h0)
+        exact fun h0 => hu.ne_zero (Subtype.ext h0)
       have e' : (y : κ) * (((u : Algebra.adjoin ℂ (s : Set O)) : O) : κ) =
           ((a : O) : κ) := congrArg Subtype.val e
       rw [← eq_div_iff hu0] at e'
@@ -384,8 +381,7 @@ theorem exists_mul_ker_mem_span_trBasis_diff :
     exact graphDiff_mem_of_isAlgebraic ρ _ le_sup_right _ hK a
   obtain ⟨r, hr1, hr⟩ := Submodule.exists_sub_one_mem_and_smul_le_of_fg_of_le_sup hfg le_rfl hle
   refine ⟨r, ?_, fun a ha => ?_⟩
-  · rw [hJ, RingHom.mem_ker, map_sub, map_one, sub_eq_zero] at hr1
-    exact hr1
+  · rwa [hJ, RingHom.mem_ker, map_sub, map_one, sub_eq_zero] at hr1
   · have := hr (Submodule.smul_mem_pointwise_smul a r J ha)
     rwa [smul_eq_mul] at this
 
@@ -437,15 +433,12 @@ theorem trdeg_tensorProduct_eq {k K L : Type} [Field k] [Field K] [Field L] [Alg
       | algebraMap r =>
         have : (1 : K) ⊗ₜ[k] (algebraMap k L r) = algebraMap K (K ⊗[k] L) (algebraMap k K r) := by
           rw [← Algebra.TensorProduct.algebraMap_apply', IsScalarTower.algebraMap_apply k K (K ⊗[k] L)]
-        simp only [this]
-        exact S.algebraMap_mem _
+        simpa only [this] using S.algebraMap_mem _
       | add x y hx hy ihx ihy =>
-        simp only [TensorProduct.tmul_add]
-        exact S.add_mem ihx ihy
+        simpa only [TensorProduct.tmul_add] using S.add_mem ihx ihy
       | mul x y hx hy ihx ihy =>
         have : (1 : K) ⊗ₜ[k] (x * y) = ((1 : K) ⊗ₜ[k] x) * ((1 : K) ⊗ₜ[k] y) := by simp
-        simp only [this]
-        exact S.mul_mem ihx ihy
+        simpa only [this] using S.mul_mem ihx ihy
     let g : L →+* K ⊗[k] L := (Algebra.TensorProduct.includeRight (R := k) (A := K) (B := L)).toRingHom
     let f : T →+* S := (g.comp T.val.toRingHom).codRestrict S hmem
     have hf : Function.Injective f := by
@@ -583,8 +576,7 @@ theorem ringKrullDim_loc (σ : K →ₐ[ℂ] κ') (n : ℕ) (x : Fin n → K)
       IsUnit ((Algebra.TensorProduct.productMap σ (AlgHom.id ℂ κ')).toRingHom (y : K ⊗[ℂ] κ')) := by
     intro y
     rw [isUnit_iff_ne_zero]
-    intro h
-    exact y.2 (RingHom.mem_ker.mpr h)
+    exact fun h => y.2 (RingHom.mem_ker.mpr h)
   letI : Algebra ↥(loc L σ) κ' := (IsLocalization.lift hg).toAlgebra
   haveI : IsScalarTower ℂ ↥(loc L σ) κ' := IsScalarTower.of_algebraMap_eq fun c =>
     ((IsLocalization.lift_eq hg (algebraMap ℂ (K ⊗[ℂ] κ') c)).trans
@@ -599,8 +591,7 @@ theorem ringKrullDim_loc (σ : K →ₐ[ℂ] κ') (n : ℕ) (x : Fin n → K)
     rwa [toAlgebra_algebraMap] at hx
   have hK : Algebra.trdeg ℂ K = n := by
     rw [← hx'.cardinalMk_eq_trdeg, Cardinal.mk_fin]
-  have hfin : Algebra.trdeg ℂ κ' < Cardinal.aleph0 := by
-    exact trdeg_lt_aleph0 ℂ κ'
+  have hfin : Algebra.trdeg ℂ κ' < Cardinal.aleph0 := trdeg_lt_aleph0 ℂ κ'
   have hm : Algebra.trdeg ℂ κ' = ((Algebra.trdeg ℂ κ').toNat : Cardinal) :=
     (Cardinal.cast_toNat_of_lt_aleph0 hfin).symm
   haveI : FaithfulSMul ℂ K :=

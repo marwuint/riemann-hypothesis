@@ -99,8 +99,7 @@ theorem exists_basis_dFun {k : Type} [CommRing k] {Y : Scheme.{0}} (p : Y ⟶ Sp
     (Scheme.ΓSpecIso (CommRingCat.of k)).symm.commRingCatIsoToRingEquiv
     (h t t.2 Γ(Y, Y.basicOpen (t : Γ(Y, V))))
   have h₂ : (algX p (Y.basicOpen (t : Γ(Y, V)))).IsStandardSmoothOfRelativeDimension D := by
-    rw [← resG_comp_algX p (Y.basicOpen_le (t : Γ(Y, V)))]
-    exact h₁
+    rwa [← resG_comp_algX p (Y.basicOpen_le (t : Γ(Y, V)))]
   letI := (algX p (Y.basicOpen (t : Γ(Y, V)))).toAlgebra
   haveI : Algebra.IsStandardSmoothOfRelativeDimension D k Γ(Y, Y.basicOpen (t : Γ(Y, V))) := h₂
   obtain ⟨ι, σ, _, _, P, hP⟩ :=
@@ -139,8 +138,7 @@ theorem linearIndependent_tmul_D {k A : Type} [CommRing k] [CommRing A] [IsLocal
     LinearEquiv.coe_coe, c]
     rw [Ideal.Cotangent.equivOfEq_toCotangent, KaehlerDifferential.kerCotangentToTensor_toCotangent]
     rfl
-  rw [key] at this
-  exact this
+  rwa [key] at this
 
 
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX) in
@@ -234,8 +232,7 @@ theorem exists_adapted_frame : ∀ {X : Scheme.{0}} {p : X ⟶ Sp ℂ} {n : ℕ}
       rw [KaehlerDifferential.map_D, ← algebraMap_smul (X.presheaf.stalk y) (a j l),
         TensorProduct.tmul_smul, ← algebraMap_smul (IsLocalRing.ResidueField (X.presheaf.stalk y))]
       rfl
-    rw [key]
-    exact hw
+    rwa [key]
 
   obtain ⟨e, he, hdet⟩ := _root_.GlobalTheory.extend_linearIndependent_rows_by_standard_basis ab hab
   let z : Fin n → Γ(X, U) := Function.extend e z₀ x
@@ -244,8 +241,7 @@ theorem exists_adapted_frame : ∀ {X : Scheme.{0}} {p : X ⟶ Sp ℂ} {n : ℕ}
   have hdz (i : Fin n) : dFun (algX p U) (z i) = ∑ l, c i l • dFun (algX p U) (x l) := by
     by_cases hi : ∃ j, e j = i
     · obtain ⟨j, rfl⟩ := hi
-      simp only [z, c, Matrix.of_apply, he.extend_apply]
-      exact ha j
+      simpa only [z, c, Matrix.of_apply, he.extend_apply] using ha j
     · simp only [z, c, Matrix.of_apply, Function.extend_apply' _ _ _ hi]
       simp [Pi.single_apply]
   have hform : dOn p z = c.det • dOn p x := dForm_eq_det_smul z x c hdz
@@ -269,8 +265,7 @@ theorem exists_adapted_frame : ∀ {X : Scheme.{0}} {p : X ⟶ Sp ℂ} {n : ℕ}
   have hWU : X.basicOpen c.det ≤ U := X.basicOpen_le _
   refine ⟨X.basicOpen c.det, hyW, fun i => resG X hWU (z i), e, he, fun j => ?_, ?_⟩
   · rw [germ_resG]
-    simp only [z, he.extend_apply]
-    exact hz₀ j
+    simpa only [z, he.extend_apply] using hz₀ j
   · have hx : IsFrame (dOn p x) := ⟨hU, isFreeGen_dForm x b hb⟩
     have h1 := hx.res (hU.basicOpen c.det) hWU
     refine ⟨hU.basicOpen c.det, ?_⟩

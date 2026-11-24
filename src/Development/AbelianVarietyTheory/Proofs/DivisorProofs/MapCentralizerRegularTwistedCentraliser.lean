@@ -133,13 +133,11 @@ theorem map_centralizer_carry : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (r 
   intro p _ G r γ δ z hr hγ hN
   set δ' := z * δ * (sigG G r z)⁻¹ with hδ'
   have hN' : nrmG (sigG G r) r δ' = inclG G r γ := by
-    have h := (_root_.GlobalTheory.nrm_exact p G).1 r γ δ z hr hN
-    simpa [IsNrm] using h
+    simpa [IsNrm] using (_root_.GlobalTheory.nrm_exact p G).1 r γ δ z hr hN
   obtain ⟨hit, hfix, hinj, hrange⟩ := _root_.GlobalTheory.LKMid.SigIter.main p G r hr
   have hδc : Commute δ' (inclG G r γ) := by
     have h2 := (_root_.GlobalTheory.LKMid.nrmG_twConj (sigG G r) r δ' 1).2
-    rw [hN', hfix, hit] at h2
-    exact h2
+    rwa [hN', hfix, hit] at h2
   have memT : ∀ h, h ∈ GlobalTheory.BCT.twCent (sigG G r) δ' ↔ ∃ g ∈ Subgroup.centralizer {γ}, inclG G r g = h := by
     intro h
     constructor

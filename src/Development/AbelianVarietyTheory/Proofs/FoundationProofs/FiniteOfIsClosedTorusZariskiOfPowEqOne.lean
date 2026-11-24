@@ -95,9 +95,7 @@ theorem exists_isOpen_inter_closure_subset_of_isConstructible {f : Y → Z} (hf 
   rw [Set.preimage_comp, ← hS] at h1
   have hd : Dense ((↑) ⁻¹' S : Set (closure S)) := by
     rw [Subtype.dense_iff]
-    refine closure_mono ?_
-    intro y hy
-    exact ⟨⟨y, subset_closure hy⟩, hy, rfl⟩
+    exact closure_mono (fun y hy => ⟨⟨y, subset_closure hy⟩, hy, rfl⟩)
   have h2 := dense_interior_of_interior_frontier_eq_empty hd h1
   obtain ⟨V, hV, hVe⟩ := isOpen_induced_iff.1
     (isOpen_interior (s := ((↑) ⁻¹' S : Set (closure S))))
@@ -106,8 +104,7 @@ theorem exists_isOpen_inter_closure_subset_of_isConstructible {f : Y → Z} (hf 
     have : (⟨y, hyS⟩ : closure S) ∈ interior ((↑) ⁻¹' S : Set (closure S)) := hVe ▸ hyV
     exact interior_subset (s := ((↑) ⁻¹' S : Set (closure S))) this
   · refine Set.Subset.antisymm (closure_minimal Set.inter_subset_right isClosed_closure) ?_
-    rw [Subtype.dense_iff, ← hVe, Subtype.image_preimage_coe, Set.inter_comm] at h2
-    exact h2
+    rwa [Subtype.dense_iff, ← hVe, Subtype.image_preimage_coe, Set.inter_comm] at h2
 
 variable {G : Type*} [Group G] [TopologicalSpace G] [SeparatelyContinuousMul G] [ContinuousInv G]
 
@@ -154,8 +151,7 @@ theorem sum_eq_zero_of_factorsThrough_characters {R : Type*} [CommRing R] [IsDom
   have hfac : Function.FactorsThrough c χ := fun x y h => hc x y h
   have h1 : Finsupp.linearCombination R (Function.extend χ c 0) (Finsupp.mapDomain χ f) = 0 := by
     rw [h0, map_zero]
-  rw [Finsupp.linearCombination_mapDomain, hfac.extend_comp, Finsupp.linearCombination_apply] at h1
-  exact h1
+  rwa [Finsupp.linearCombination_mapDomain, hfac.extend_comp, Finsupp.linearCombination_apply] at h1
 
 end Characters
 
@@ -253,8 +249,7 @@ theorem finite_setOf_pow_eq_one_torus [Module.Finite ℤ X] {m : ℕ} (hm : m �
   let φ : {s : Multiplicative X →* Rˣ | s ^ m = 1} → (T → rootsOfUnity m R) := fun s x =>
     ⟨s.1 x, by simpa using DFunLike.congr_fun (show s.1 ^ m = 1 from s.2) x.1⟩
   refine Finite.of_injective φ fun s t h => Subtype.ext ?_
-  refine MonoidHom.eq_of_eqOn_dense hT fun x hx => ?_
-  exact congrArg Subtype.val (congrFun h ⟨x, hx⟩)
+  exact MonoidHom.eq_of_eqOn_dense hT fun x hx => congrArg Subtype.val (congrFun h ⟨x, hx⟩)
 
 theorem exists_zpow_eq_one_of_isClosed_torusZariski [Module.Finite ℤ X] {n : ℕ} [NeZero n]
     [HasEnoughRootsOfUnity R n] {H : Subgroup (Multiplicative X →* Rˣ)}
@@ -301,8 +296,7 @@ theorem exists_zpow_eq_one_of_isClosed_torusZariski [Module.Finite ℤ X] {n : �
     (I := Ideal.span {(n : ℤ)}) (N := K) (N' := ⊤) (P := ⊤) Module.Finite.fg_top le_rfl hN
   refine ⟨r, Ideal.mem_span_singleton.1 hr, fun s hs => MonoidHom.ext fun y => ?_⟩
   have := (hK _).1 (hrK (Submodule.smul_mem_pointwise_smul y.toAdd r ⊤ trivial)) s hs
-  rw [ofAdd_zsmul, map_zpow] at this
-  exact this
+  rwa [ofAdd_zsmul, map_zpow] at this
 
 theorem finite_of_isClosed_torusZariski_of_pow_eq_one [Module.Finite ℤ X] {n : ℕ} (h2 : 2 ≤ n)
     [HasEnoughRootsOfUnity R n] {H : Subgroup (Multiplicative X →* Rˣ)}

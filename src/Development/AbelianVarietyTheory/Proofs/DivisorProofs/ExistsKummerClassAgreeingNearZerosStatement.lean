@@ -236,8 +236,7 @@ theorem isField_localization (B : Type) [CommRing B] [IsDedekindDomain B] (f : B
     rw [Ring.krullDimLE_zero_iff]
     intro I hI
     obtain ⟨m, hm, -⟩ := Ideal.exists_le_maximal (⊥ : Ideal (Localization S)) bot_ne_top
-    rw [hbot I hI, ← hbot m hm.isPrime]
-    exact hm
+    rwa [hbot I hI, ← hbot m hm.isPrime]
   exact Ring.KrullDimLE.isField_of_isDomain
 
 end GlobalTheory.PicLoc
@@ -460,8 +459,7 @@ theorem kill_of_loc : B1 → ∀ (q : ℕ) (A : Type) [CommRing A] (M : Submonoi
   have hψ' : ((diag M).map f).hom = ψ := by
     show trans M f.le = ψ
     exact ext_away (by rw [hψ]; exact trans_comp M f.le)
-  rw [← hψ']
-  exact hk
+  rwa [← hψ']
 
 end GlobalTheory.EtC.AwayCont
 end -- clump:auto
@@ -660,14 +658,11 @@ theorem exists_kummer_on_finer_nbhd : ∀ (q : ℕ) [NeZero q] (k B : Type) [Fie
   subst e3
   rw [pull_spMap_comp, pull_spMap_comp, hw]
   have hψy := hψ ψ hψc
-  rw [map_add (pull _ (spMap ψ) _ _)]
-  rw [hψy, zero_add]
-  rw [pull_kum_gU hnat q ψ hqm₁]
+  rw [map_add (pull _ (spMap ψ) _ _), hψy, zero_add, pull_kum_gU hnat q ψ hqm₁]
   have key : pull _ (spMap χ) _ _ (kum q (gU _ (Units.map ψ.toMonoidHom (Units.map β.toMonoidHom v)))) =
       kum q (gU _ (Units.map χ.toMonoidHom (Units.map ψ.toMonoidHom (Units.map β.toMonoidHom v)))) :=
     pull_kum_gU hnat q χ hqm₂ _
-  refine key.trans ?_
-  exact congrArg (kum q) (congrArg (gU _) (Units.ext rfl))
+  exact key.trans (congrArg (kum q) (congrArg (gU _) (Units.ext rfl)))
 
 end GlobalTheory.EtC.KummerLoc
 

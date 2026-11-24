@@ -174,8 +174,7 @@ theorem _root_.GlobalTheory.FrameTransport.exists_frConj_eq : ∀ {D : D7} (V : 
   have hfr' : Formalism.UG.cT (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) P.val * V.gram.map (inclEAf D) * P.val = 1 := by
     have := congrArg (fun X => X.map (inclEAf D)) hfr
     simp only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at this
-    rw [cT_map_inclEAf] at this
-    exact this
+    rwa [cT_map_inclEAf] at this
   have hN : Formalism.UG.cT (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) N.val * N.val = 1 := by
     have hNv : N.val = (P⁻¹).val * M.val * P.val := by simp only [N, Units.val_mul]
     rw [hNv]
@@ -273,7 +272,6 @@ theorem frConj_ratG : ∀ {D : D7} (V : HSp D) (fr : GL (Fin V.rank) D.host.E),
     exact hg.trans h1.symm
   have hu' : γ₀ᴴ * γ₀ = 1 := by
     have : γ₀ᴴ = (γ₀.map D.host.conj).transpose := Matrix.ext fun i j => by
-      show star (γ₀ j i) = D.host.conj (γ₀ j i)
       exact Formalism.MainNotions.GlobalTheoryTheory.jnt_sig_eq_conj D (γ₀ j i)
     rw [this, hu]
 
@@ -542,8 +540,7 @@ theorem intOf_smul_mem (Λ : Submodule (𝓞 E) (Fin n → E))
   refine Submodule.span_induction
     (p := fun z _ => intOf (F := F) b • z ∈ Formalism.L2.Herm.hatL (F := F) (𝔪 • Λ)) ?_ ?_ ?_ ?_ hz
   · rintro _ ⟨x, hx, rfl⟩
-    refine Submodule.subset_span ⟨b • x, Submodule.smul_mem_smul hb hx, ?_⟩
-    exact incl_smul b x
+    exact Submodule.subset_span ⟨b • x, Submodule.smul_mem_smul hb hx, incl_smul b x⟩
   · rw [smul_zero]; exact Submodule.zero_mem _
   · intro a c _ _ ha hc
     rw [smul_add]; exact Submodule.add_mem _ ha hc
@@ -686,7 +683,6 @@ theorem colMul_mem_of_span {A : Type} [CommRing A] (S : Subring A) {ι : Type} (
   | smul r a _ ha =>
     have : (fun i => c i * (r • a)) = r • (fun i => c i * a) := by
       funext i
-      show c i * ((r : A) * a) = (r : A) * (c i * a)
       exact mul_left_comm _ _ _
     rw [this]; exact M.smul_mem r ha
 
@@ -891,8 +887,7 @@ theorem frConj_cong {n : ℕ} (fr : GL (Fin n) D.host.E) (𝔪 : Ideal (𝓞 D.h
   show (∑ j, ((Formalism.UG.bc (adSwap D) k).val - 1) i j * ((Formalism.UG.bc (inclEAf D) fr)⁻¹.val *ᵥ y) j) ∈ _
   refine Submodule.sum_mem _ fun j _ => ?_
   have h4 := mul_mem_spanIncl 𝔪 _ _ (adSwap_hatId 𝔪 _ (hk i j)) (_root_.GlobalTheory.FrameTransport.hatL_colLat_coord_int fr y hy j)
-  rw [bc_adSwap_sub_one_apply k i j]
-  exact h4
+  rwa [bc_adSwap_sub_one_apply k i j]
 
 
 
@@ -962,8 +957,7 @@ theorem exists_surj_cls {D : D7} (V : HSp D) (fr : GL (Fin V.rank) D.host.E)
       have hU : uf * frConj fr k.1 * uf⁻¹ ∈ UA D.sp.cm V.gram :=
         mul_mem (mul_mem hufU (_root_.GlobalTheory.FrameTransport.frConj_mem_UA V fr hfr k)) (inv_mem hufU)
       exact hK (_root_.GlobalTheory.FrameTransport.Cong.conj_mem_congLev V fr uf Λ hu 𝔪 k hk.1 hk.2 hU)
-    intro c hc
-    exact hle hc
+    exact fun c hc => hle hc
   refine ⟨fun q => DoubleCoset.mk (ratFin V) (K.comap (finG V)) (φ (Quotient.out q)), ?_⟩
   intro p
   obtain ⟨x, rfl⟩ : ∃ x, DoubleCoset.mk (ratFin V) (K.comap (finG V)) x = p := ⟨Quotient.out p, DoubleCoset.out_eq' p⟩

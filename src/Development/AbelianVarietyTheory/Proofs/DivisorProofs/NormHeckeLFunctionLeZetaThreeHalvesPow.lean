@@ -101,10 +101,8 @@ theorem card_filter_ratPrime_le (u : Finset (HeightOneSpectrum (𝓞 E))) (p : �
   · intro x hx
     simp only [Finset.coe_filter] at hx
     have := mem_primesOverFinset_ratPrime x
-    rw [hx.2] at this
-    exact this
-  · intro x _ y _ hxy
-    exact HeightOneSpectrum.ext hxy
+    rwa [hx.2] at this
+  · exact fun x _ y _ hxy => HeightOneSpectrum.ext hxy
 
 def fac (x : ℝ) : ℝ := (1 - x ^ (-(3 / 2 : ℝ)))⁻¹
 
@@ -205,9 +203,7 @@ theorem prod_fac_absNorm_le (F : Finset (HeightOneSpectrum (𝓞 E))) :
   · exact pow_nonneg (le_trans zero_le_one (one_le_fac (by exact_mod_cast p.2.two_le))) _
   · refine pow_le_pow_right₀ (one_le_fac (by exact_mod_cast p.2.two_le)) ?_
     have : (F.filter fun v => g v = p) = F.filter fun v => ratPrime v = (p : ℕ) := by
-      apply Finset.filter_congr
-      intro v _
-      exact Subtype.ext_iff
+      exact Finset.filter_congr (fun v _ => Subtype.ext_iff)
     rw [this]
     exact card_filter_ratPrime_le F p p.2
   · rw [Finset.prod_pow]

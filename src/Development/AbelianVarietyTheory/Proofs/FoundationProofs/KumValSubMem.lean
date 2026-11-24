@@ -248,8 +248,7 @@ theorem main : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∃ c : ℕ, ∀ (Ω : 
       exact γ.symm_apply_apply ζ'
     have h2 : s (γ y) = γ y := by
       have h3 := congrArg γ (hyfix _ h1)
-      rw [inv_inv, AlgEquiv.mul_apply, AlgEquiv.mul_apply, mul_inv_apply] at h3
-      exact h3
+      rwa [inv_inv, AlgEquiv.mul_apply, AlgEquiv.mul_apply, mul_inv_apply] at h3
     have h4 := congrArg s hweq
     rw [map_mul, map_pow, map_natCast, map_sub, map_sub, h2, hyfix s ((hHmem s).2 ⟨hs, hsζ⟩),
       hofix s hs (hHc s hsζ), ← hweq] at h4
@@ -732,8 +731,7 @@ theorem apply_eq_pow (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra �
   have h2 : (cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G ℚ Ω) Ω s)).val.toZModPow n =
       ((cycMod ℚ Ω l n s : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) := by
     simp [cycMod, cycZ]
-  rw [h2] at h1
-  exact h1
+  rwa [h2] at h1
 
 theorem exists_Ine_apply_eq (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     (A : ValuationSubring Ω) (hA : A.valuation (l : Ω) < 1) (n : ℕ) {z μ : Ω} (hz : IsPrimitiveRoot z (l ^ n))
@@ -751,8 +749,7 @@ theorem cyclotomic_dvd : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Al
   classical
   have hA : A.valuation (l : Ω) < 1 := by
     obtain ⟨v, hv, hl⟩ := hO
-    have h1 := (hv ((l : ℕ) : 𝓞 ℚ)).2 hl
-    simpa using h1
+    simpa using (hv ((l : ℕ) : 𝓞 ℚ)).2 hl
   have hpos : 0 < l ^ n := pow_pos (Fact.out : l.Prime).pos n
   let f : fixA A →+* Ω := A.subtype.comp (fixA A).subtype
   have hf : Function.Injective f := Subtype.val_injective.comp Subtype.val_injective
@@ -771,8 +768,7 @@ theorem cyclotomic_dvd : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Al
   rw [← Polynomial.map_dvd_map f hf (Polynomial.cyclotomic.monic _ _), Polynomial.map_cyclotomic,
     Polynomial.cyclotomic_eq_prod_X_sub_primitiveRoots hz]
   refine Finset.prod_dvd_of_coprime ?_ ?_
-  · intro a _ b _ hab
-    exact Polynomial.isCoprime_X_sub_C_of_isUnit_sub (sub_ne_zero.2 hab).isUnit
+  · exact fun a _ b _ hab => Polynomial.isCoprime_X_sub_C_of_isUnit_sub (sub_ne_zero.2 hab).isUnit
   · intro μ hμ
     exact Polynomial.dvd_iff_isRoot.2 (hroot μ hμ)
 
@@ -820,12 +816,10 @@ theorem exists_der_one (z : S) (μ : M)
     intro f
     have h1 : e (Function.invFun e (e f)) = e f := Function.invFun_eq ⟨f, rfl⟩
     have h2 := hwd (Function.invFun e (e f) - f) (by rw [map_sub]; exact sub_eq_zero.2 h1)
-    rw [derivative_sub, map_sub, sub_smul, sub_eq_zero] at h2
-    exact h2
+    rwa [derivative_sub, map_sub, sub_smul, sub_eq_zero] at h2
   have hm : ∀ x ∈ Algebra.adjoin R {z}, ∃ f : R[X], aeval z f = x := by
     intro x hx
-    rw [Algebra.adjoin_singleton_eq_range_aeval] at hx
-    exact hx
+    rwa [Algebra.adjoin_singleton_eq_range_aeval] at hx
   refine ⟨D, ⟨?_, ?_, ?_⟩, ?_⟩
   · intro x hx y hy
     obtain ⟨f, rfl⟩ := hm x hx
@@ -1128,8 +1122,7 @@ theorem transp_rel : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (A : ValuationS
   have key := hT ⊤ (by simp) (by simp) (TwDiff A τ) D hD
   simp only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one] at key
   change τ a • dA A (τ b) + τ (-a') • dA A (τ b') = (0 : KaehlerDifferential (fixA A) A) at key
-  rw [map_neg, hτc, hτd, hτc', hτd', neg_smul, ← sub_eq_add_neg, sub_eq_zero] at key
-  exact key
+  rwa [map_neg, hτc, hτd, hτc', hτd', neg_smul, ← sub_eq_add_neg, sub_eq_zero] at key
 
 end GlobalTheory.RecOne
 end -- clump:auto
@@ -1318,8 +1311,7 @@ theorem kummer_eq_dlog_one : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∃ c : �
     rw [Polynomial.eval_map, Polynomial.eval_map]
     have h := Polynomial.hom_eval₂ R φ (s : Ω →+* Ω) x
     have e : (s : Ω →+* Ω).comp φ = φ := RingHom.ext fun a => a.2 s hs
-    rw [e] at h
-    exact h
+    rwa [e] at h
   rw [Polynomial.derivative_map]
   set u := (Q.map φ).eval ζ with hudef
   set p := ((Polynomial.derivative Q).map φ).eval ζ with hpdef

@@ -95,8 +95,7 @@ theorem exists_unif (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (
   refine ⟨ϖ, hϖ.ne_zero, ?_⟩
   set w := Valued.v (e (algebraMap K.O K.E ϖ)) with hw
   have hE : algebraMap K.O K.E ϖ ≠ 0 := by
-    intro h0
-    exact hϖ.ne_zero (IsFractionRing.injective K.O K.E (by simpa using h0))
+    exact fun h0 => hϖ.ne_zero (IsFractionRing.injective K.O K.E (by simpa using h0))
   have w0 : w ≠ 0 := by
     rw [hw, Valuation.ne_zero_iff]
     exact (map_ne_zero e).2 hE
@@ -111,8 +110,7 @@ theorem exists_unif (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (
     rw [map_mul, hu, map_one, mul_inv_cancel₀ hE]
   have wlt : w < 1 := lt_of_le_of_ne w1 wne
   have hlog : w.log < 0 := by
-    rw [← WithZero.exp_lt_exp, WithZero.exp_log w0, WithZero.exp_zero]
-    exact wlt
+    rwa [← WithZero.exp_lt_exp, WithZero.exp_log w0, WithZero.exp_zero]
   rw [← WithZero.exp_log w0, WithZero.exp_le_exp]
   omega
 
@@ -131,8 +129,7 @@ theorem GlobalTheory.IntMatBound.isIntegral_iff_bounded : ∀ (K : UQ) {L : Type
     refine ⟨m, fun k i j => ?_⟩
     have hle : Submodule.span K.O (s : Set (Matrix (Fin n) (Fin n) K.E)) ≤ boundSub K e he n m := by
       rw [Submodule.span_le]
-      intro X hX i j
-      exact (hf ⟨⟨X, hX⟩, i, j⟩).trans (WithZero.exp_le_exp.2 (hm ⟨_, rfl⟩))
+      exact fun X hX i j => (hf ⟨⟨X, hX⟩, i, j⟩).trans (WithZero.exp_le_exp.2 (hm ⟨_, rfl⟩))
     have hk : M ^ k ∈ Submodule.span K.O (s : Set (Matrix (Fin n) (Fin n) K.E)) := by
       rw [hs]
       exact Subalgebra.pow_mem _ (Algebra.self_mem_adjoin_singleton K.O M) k
@@ -140,8 +137,7 @@ theorem GlobalTheory.IntMatBound.isIntegral_iff_bounded : ∀ (K : UQ) {L : Type
   · rintro ⟨m, hm⟩
     obtain ⟨ϖ, hϖ0, hϖ⟩ := exists_unif K e he
     have hE : algebraMap K.O K.E ϖ ≠ 0 := by
-      intro h0
-      exact hϖ0 (IsFractionRing.injective K.O K.E (by simpa using h0))
+      exact fun h0 => hϖ0 (IsFractionRing.injective K.O K.E (by simpa using h0))
     set N := m.toNat with hN
     set y : K.E := (algebraMap K.O K.E ϖ)⁻¹ ^ N with hy
     set S : Submodule K.O (Matrix (Fin n) (Fin n) K.E) :=

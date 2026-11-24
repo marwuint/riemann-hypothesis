@@ -290,14 +290,14 @@ private theorem shrink {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (π : Y 
   have hUU₀ : X.basicOpen a ≤ U₀ := X.basicOpen_le _
   have hUa : IsAffineOpen (X.basicOpen a) := hU₀.basicOpen _
   have hxU : genericPoint X ∈ X.basicOpen a := by
-    have hne : X.basicOpen a ≠ ⊥ := fun h => ha ((basicOpen_eq_bot_iff _).1 h)
-    obtain ⟨z, hz⟩ := (TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hne
+    obtain ⟨z, hz⟩ := (TopologicalSpace.Opens.ne_bot_iff_nonempty _).1
+      fun h => ha ((basicOpen_eq_bot_iff _).1 h)
     exact ((genericPoint_spec X).mem_open_set_iff (X.basicOpen a).isOpen).2 ⟨z, trivial, hz⟩
   set U : X.Opens := X.basicOpen a with hU_def
   set V : Y.Opens := Y.basicOpen (π.appLE U₀ V₀ hVle a) with hV_def
   have hVV₀ : V ≤ V₀ := Y.basicOpen_le _
   have hVe : V = V₀ ⊓ π ⁻¹ᵁ U := Scheme.basicOpen_appLE π V₀ U₀ hVle _
-  have hVU : V ≤ π ⁻¹ᵁ U := by rw [hVe]; exact inf_le_right
+  have hVU : V ≤ π ⁻¹ᵁ U := hVe.trans_le inf_le_right
   have hVa : IsAffineOpen V := hV₀.basicOpen _
   have hyV : genericPoint Y ∈ V := by
     rw [hVe]; exact ⟨hyV₀, show π (genericPoint Y) ∈ U from hg ▸ hxU⟩
@@ -314,15 +314,9 @@ private theorem shrink {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (π : Y 
   have hlB : IsLocalization.Away (algebraMap Γ(X, U₀) Γ(Y, V₀) a) Γ(Y, V) :=
     hV₀.isLocalization_of_eq_basicOpen _ (homOfLE hVV₀) rfl
   obtain ⟨hfin, hP⟩ := H Γ(X, U) Γ(Y, V) hlA hlB
-  have hpre : π ⁻¹ᵁ U = V := preimage_eq_of_finite π hUa hVa hyV hVU hfin
-  have key : ∀ (W : Y.Opens) (hW : W ≤ π ⁻¹ᵁ U), W = π ⁻¹ᵁ U →
-      (letI := (π.appLE U W hW).hom.toAlgebra
-       Module.Finite Γ(X, U) Γ(Y, W) ∧ P Γ(X, U) Γ(Y, W)) →
-      (letI := (π.appLE U (π ⁻¹ᵁ U) le_rfl).hom.toAlgebra
-       Module.Finite Γ(X, U) Γ(Y, π ⁻¹ᵁ U) ∧ P Γ(X, U) Γ(Y, π ⁻¹ᵁ U)) := by
-    rintro W hW rfl h1
-    exact h1
-  exact ⟨U, hUa, hxU, hpre ▸ hVa, key V hVU hpre.symm ⟨hfin, hP⟩⟩
+  clear_value V
+  obtain rfl := preimage_eq_of_finite π hUa hVa hyV hVU hfin
+  exact ⟨U, hUa, hxU, hVa, hfin, hP⟩
 
 end GlobalTheory.GenFinEt
 

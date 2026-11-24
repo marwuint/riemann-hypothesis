@@ -210,8 +210,7 @@ theorem natCast_mem_of_under_eq {D : D7} (w : Pl D.host.E) {v : Pl D.host.F} (h 
     (hn : (n : 𝓞 D.host.F) ∈ v.asIdeal) : (n : 𝓞 D.host.E) ∈ w.asIdeal := by
   subst h
   have : (n : 𝓞 D.host.F) ∈ w.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) := hn
-  rw [Ideal.mem_comap, map_natCast] at this
-  exact this
+  rwa [Ideal.mem_comap, map_natCast] at this
 
 theorem exists_std_primes : ∀ (D : D7) (T : Type) (L : LevCh D T) (sc : Consts) (G : GridData L sc) (U : Set T), U.Finite →
     ∃ S : Finset ℕ, (∀ q ∈ S, q.Prime) ∧ ∀ w : Pl D.host.E, Off S w → w.under (𝓞 D.host.F) ∉ G.pl.S0 ∧
@@ -569,8 +568,7 @@ theorem exists_rep_std : ∀ (D : D7) (V : HSp D) (fr : GL (Fin V.rank) D.host.E
     exact GlobalTheory.HLatMove.bc_map_bc_inclR _ _
   have ef : finHom V x = finHom V γ.1 * finHom V h * finHom V k0 := by
     have := congrArg Subtype.val e
-    rw [← hk0e] at this
-    exact this
+    rwa [← hk0e] at this
   refine ⟨γE, h, k0, hU, hh, ⟨P, e0, he0, hsupp, fun w hw q hq hqw => hP w hw ?_⟩, hk0, hk0s, ?_⟩
   · obtain ⟨m, hm'⟩ := Finset.dvd_prod_of_mem (fun q : ℕ => q) hq
     rw [hm', Nat.cast_mul]
@@ -782,8 +780,7 @@ theorem crd_emb (d : HermitianOrthogonalExtensionData A B 1 1) : crd d * emb d =
   rw [cT_mul, cT_mul, gram_herm, cT_cT] at h
   have h0 : cT σ (0 : Matrix (Fin A.rank) (Fin 1) D.host.E) = 0 := by
     ext i j; simp [cT]
-  rw [h0, ← Matrix.mul_assoc] at h
-  exact h
+  rwa [h0, ← Matrix.mul_assoc] at h
 
 theorem split (d : HermitianOrthogonalExtensionData A B 1 1) : emb d * prj d + d.a * crd d = 1 := by
   have e : Fin A.rank ⊕ Fin 1 ≃ Fin B.rank := finSumFinEquiv.trans (finCongr d.rank)
@@ -914,10 +911,8 @@ theorem mem_hat_sum (QM : Q * M = 1) (Qa : Q * a = 0) (CM : C * M = 0) (Ca : C *
       rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, sp, Matrix.one_mulVec]
     rw [e]
     refine add_mem (hat_mulVec _ ?_ h1) (hat_mulVec _ ?_ h2)
-    · intro y hy
-      exact (hs _).2 ⟨y, hy, 0, zero_mem _, by simp⟩
-    · intro u hu
-      exact (hs _).2 ⟨0, zero_mem _, u, hu, by simp⟩
+    · exact fun y hy => (hs _).2 ⟨y, hy, 0, zero_mem _, by simp⟩
+    · exact fun u hu => (hs _).2 ⟨0, zero_mem _, u, hu, by simp⟩
 
 theorem hat_transport (QM : Q * M = 1) (Qa : Q * a = 0) (CM : C * M = 0) (Ca : C * a = 1)
     (sp : M.map ιf * Q.map ιf + a.map ιf * C.map ιf = 1) {Λ₀ Λ : Submodule (𝓞 E) (Fin k → E)}
@@ -1161,11 +1156,9 @@ theorem defNode_isV {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridD
   · obtain ⟨hi, rfl⟩ := hX
     rcases i with _ | i
     · have h := colY_isV D T L μ0 hL D.R.m le_rfl
-      rw [Nat.sub_self, Nat.zero_div] at h
-      exact h
+      rwa [Nat.sub_self, Nat.zero_div] at h
     · have h := G.isV (X := .grid (i + 1) D.R.m) ⟨hi, le_rfl⟩ (fun j h => by cases h)
-      simp only [Node.neg, Nat.sub_self, Nat.zero_div] at h
-      exact h
+      simpa only [Node.neg, Nat.sub_self, Nat.zero_div] using h
   · exact absurd hX id
   · exact G.isV (X := .top j) hX (fun j' h => by cases h)
 

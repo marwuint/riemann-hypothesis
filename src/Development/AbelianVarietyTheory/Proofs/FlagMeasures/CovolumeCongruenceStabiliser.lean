@@ -665,9 +665,7 @@ theorem fil_mul {n m : ℕ} {x y : Matrix (Fin N) (Fin N) K} (hx : x ∈ fil K N
   · rw [hy k j (by omega), mul_zero]
 
 theorem fil_mono {n m : ℕ} (h : n ≤ m) {x : Matrix (Fin N) (Fin N) K} (hx : x ∈ fil K N m) :
-    x ∈ fil K N n := by
-  intro i j hij
-  exact hx i j (by omega)
+    x ∈ fil K N n := fun i j hij => hx i j (by omega)
 
 theorem eq_zero_of_fil {n : ℕ} (h : N ≤ n) {x : Matrix (Fin N) (Fin N) K} (hx : x ∈ fil K N n) :
     x = 0 := by
@@ -677,8 +675,7 @@ theorem eq_zero_of_fil {n : ℕ} (h : N ≤ n) {x : Matrix (Fin N) (Fin N) K} (h
 
 theorem strUp_iff {x : Matrix (Fin N) (Fin N) K} : StrUp x ↔ x ∈ fil K N 1 := by
   constructor
-  · intro h i j hij
-    exact h i j (Fin.le_iff_val_le_val.mpr (by omega))
+  · exact fun h i j hij => h i j (Fin.le_iff_val_le_val.mpr (by omega))
   · intro h i j hij
     exact h i j (by have := Fin.le_iff_val_le_val.mp hij; omega)
 
@@ -841,8 +838,7 @@ theorem ent_div {I : Ideal (𝓞 K)} {c : ℕ} {x : Matrix (Fin N) (Fin N) K}
     Ideal.mem_span_singleton_mul.mp (ho i j)
   choose w hw ew using h2
   refine ⟨fun i j => ((w i j : 𝓞 K) : K), ?_, ?_⟩
-  · show ∀ i j, ∃ o ∈ I, ((o : 𝓞 K) : K) = ((w i j : 𝓞 K) : K)
-    exact fun i j => ⟨w i j, hw i j, rfl⟩
+  · exact fun i j => ⟨w i j, hw i j, rfl⟩
   · ext i j
     show x i j = c • ((w i j : 𝓞 K) : K)
     rw [nsmul_eq_mul, ← eo, ← ew]
@@ -1058,8 +1054,7 @@ theorem fund_sub {E : Type} [AddCommGroup E] [MeasurableSpace E] [MeasurableAdd 
         ≤ ∑ c : Quotient s, μ ((fun x => ((c.out : Λ) : E) + x) ⁻¹' Ω) :=
           measure_iUnion_fintype_le _ _
       _ = ∑ _c : Quotient s, μ Ω := by
-          refine Finset.sum_congr rfl fun c _ => ?_
-          exact measure_preimage_add μ _ Ω
+          exact Finset.sum_congr rfl fun c _ => measure_preimage_add μ _ Ω
       _ = (Fintype.card (Quotient s) : ℝ≥0∞) * μ Ω := by
           rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
       _ ≤ (Nat.card Q : ℝ≥0∞) * μ Ω := by
@@ -1263,10 +1258,8 @@ theorem discrete_lattice {K : Type} [Field K] [NumberField K] {ι : Type} [Finty
     constructor
     · intro h
       have hc0 : c = 0 := congrArg Subtype.val h
-      rw [hc0, norm_zero]
-      exact hδ
-    · intro h
-      exact Subtype.ext (key c hc h)
+      rwa [hc0, norm_zero]
+    · exact fun h => Subtype.ext (key c hc h)
   rw [hset]
   exact Metric.isOpen_ball.preimage continuous_subtype_val
 
@@ -1395,8 +1388,7 @@ theorem covolume_congruence_stabiliser : ∀ (K : Type) [Field K] [NumberField K
     obtain ⟨hst, hI', -⟩ := hgrp.1 X₁ hX₁ hX₁J
     refine ⟨expT X₁, hst, hI', ?_⟩
     have h := hconv x hx X₁ hX₁ hX₁c
-    simp only [h] at hxΩ
-    exact hxΩ
+    simpa only [h] using hxΩ
 
 end GlobalTheory.LoopV.Cov
 end -- clump:auto

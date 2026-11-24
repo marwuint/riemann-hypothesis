@@ -63,8 +63,7 @@ theorem Emb.range_closed (R : Type) [CommRing R] [IsLocalRing R] (S : Scheme.{0}
     have hx : ∀ w, (x ≫ π) w = closedPoint R := by
       intro w
       simp only [x, x0, Scheme.Hom.comp_apply]
-      rw [Scheme.fromSpecResidueField_apply]
-      exact hg
+      rwa [Scheme.fromSpecResidueField_apply]
     obtain ⟨κ, hκ⟩ := spMap_factor_residueField_of_closedPoint R Ω (x ≫ π) hx
     obtain ⟨Ω', _, io, e, l, -, hl1, hl2⟩ := E.fib Ω x κ hκ
     let w : Sp Ω' ⟶ pullback G'.hom (spMap io ≫ x) :=
@@ -75,8 +74,7 @@ theorem Emb.range_closed (R : Type) [CommRing R] [IsLocalRing R] (S : Scheme.{0}
       exact Scheme.fromSpecResidueField_apply _ _
     have hlw : l (w w0) = g := by
       apply E.H.ι.isOpenEmbedding.injective
-      rw [← Scheme.Hom.comp_apply, hl1, ← hp]
-      exact hw
+      rwa [← Scheme.Hom.comp_apply, hl1, ← hp]
     refine ⟨pullback.fst E.Y.hom (spMap (io.comp κ)) (e.hom.left (w w0)), ?_⟩
     rw [← hlw, ← Scheme.Hom.comp_apply, hl2]
     simp only [Scheme.Hom.comp_apply]
@@ -87,8 +85,7 @@ theorem Emb.range_closed (R : Type) [CommRing R] [IsLocalRing R] (S : Scheme.{0}
     have hx : ∀ w, (x ≫ π) w = closedPoint R := by
       intro w
       simp only [x, Scheme.Hom.comp_apply]
-      rw [Scheme.fromSpecResidueField_apply]
-      exact hs
+      rwa [Scheme.fromSpecResidueField_apply]
     obtain ⟨κ, hκ⟩ := spMap_factor_residueField_of_closedPoint R Ω (x ≫ π) hx
     obtain ⟨Ω', _, io, e, l, -, hl1, hl2⟩ := E.fib Ω x κ hκ
     obtain ⟨w', hw'⟩ := (pullback.fst E.Y.hom (spMap (io.comp κ))).surjective y
@@ -101,8 +98,7 @@ theorem Emb.range_closed (R : Type) [CommRing R] [IsLocalRing R] (S : Scheme.{0}
     · rw [← Scheme.Hom.comp_apply l E.H.ι, hl1,
         ← Scheme.Hom.comp_apply (pullback.fst G'.hom (spMap io ≫ x)) G'.hom, pullback.condition]
       simp only [Scheme.Hom.comp_apply, x]
-      rw [Scheme.fromSpecResidueField_apply]
-      exact hs
+      rwa [Scheme.fromSpecResidueField_apply]
     · rw [← Scheme.Hom.comp_apply, hl2]
       simp only [Scheme.Hom.comp_apply]
       rw [hew, hw']

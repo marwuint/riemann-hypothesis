@@ -146,10 +146,8 @@ theorem exists_comm [IsAlgClosed k] {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin
           (by rw [← Units.val_mul, ← map_mul]; exact hcon _ (Subgroup.mul_mem _ hφ hψ))
         rw [Matrix.mulVec_mulVec]
         congr 1
-        rw [sub_mul, one_mul, sub_eq_zero] at h0
-        exact h0
-      rw [h, Submodule.mem_bot, Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero] at this
-      exact this
+        rwa [sub_mul, one_mul, sub_eq_zero] at h0
+      rwa [h, Submodule.mem_bot, Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero] at this
     · intro w
       rw [h]
       trivial
@@ -197,10 +195,8 @@ theorem main (l : ℕ) [Fact (Nat.Prime l)] (Ω : Type) [Field Ω] [Algebra ℚ 
   refine exists_comm W (GlobalTheory.Ord2.H0g W) ?_ ?_
   · intro s hs
     have h1 : GlobalTheory.Ord2.dt W s = 1 := hs.2
-    have h2 := congrArg Units.val h1
-    exact h2
-  · intro V hV
-    exact h.irr.2.2 V le_top (fun g v hv => hV g g.2 v hv)
+    exact congrArg Units.val h1
+  · exact fun V hV => h.irr.2.2 V le_top (fun g v hv => hV g g.2 v hv)
 
 end GlobalTheory.CommutingExistence
 

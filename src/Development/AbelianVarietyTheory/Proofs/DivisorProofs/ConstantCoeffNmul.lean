@@ -123,16 +123,13 @@ theorem defect_succ (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B)
   have hU : ∀ j, constantCoeff (up Q (nmul μ n) j) = 0 := by
     intro j
     simp only [up]
-    rw [← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply,
-      constantCoeff_nmul hμ n j, map_zero]
+    rw [constantCoeff_map, constantCoeff_nmul hμ n j, map_zero]
   have hE : ∀ j, constantCoeff (Sum.elim (up Q (nmul μ n)) (fun i => (X i : MvPowerSeries (Fin d) Q)) j) = 0 := by
-    rintro (j | j)
-    · exact hU j
-    · simp
+    rintro (j | j) <;> simp [hU]
   have hM : ∀ j, constantCoeff (up Q μ j) = 0 := by
     intro j
     simp only [up]
-    rw [← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, hμ j, map_zero]
+    rw [constantCoeff_map, hμ j, map_zero]
   have hsE := hasSubst_of_constantCoeff_zero hE
   have hsM := hasSubst_of_constantCoeff_zero hM
   have hsL : HasSubst (fun i => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) Q)) :=
@@ -146,19 +143,13 @@ theorem defect_succ (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B)
       = subst (up Q (nmul μ n)) f := by
     unfold inL
     rw [subst_comp_subst_apply hsL hsE]
-    congr 1; funext j; rw [subst_X hsE]; rfl
+    simp only [subst_X hsE, Sum.elim_inl]
   have e3 : subst (Sum.elim (up Q (nmul μ n)) fun i => (X i : MvPowerSeries (Fin d) Q)) (inR f) = f := by
     unfold inR
     rw [subst_comp_subst_apply hsR hsE]
-    have : (fun j => subst (Sum.elim (up Q (nmul μ n)) fun i => (X i : MvPowerSeries (Fin d) Q))
-        (X (Sum.inr j) : MvPowerSeries (Fin d ⊕ Fin d) Q)) = fun j => X j := by
-      funext j; rw [subst_X hsE]; rfl
-    rw [this, subst_self]; rfl
-  have hc : subst (Sum.elim (up Q (nmul μ n)) fun i => (X i : MvPowerSeries (Fin d) Q)) (cob1 (up Q μ) f)
-      = subst (up Q (nmul μ (n + 1))) f - subst (up Q (nmul μ n)) f - f := by
-    unfold cob1
-    rw [← coe_substAlgHom hsE, map_sub, map_sub, coe_substAlgHom, e1, e2, e3]
-  rw [hc]
+    simp only [subst_X hsE, Sum.elim_inr, subst_self, id_eq]
+  unfold cob1
+  rw [← coe_substAlgHom hsE, map_sub, map_sub, coe_substAlgHom, e1, e2, e3]
   unfold defect
   push_cast
   rw [add_smul, one_smul]

@@ -87,8 +87,7 @@ theorem isSmoothRealFam_prod {k : ℕ} {u : Fin k → P → GAd σ J} (hu : ∀ 
   induction k with
   | zero => simpa using isSmoothRealFam_one
   | succ k ih =>
-    simp only [List.ofFn_succ, List.prod_cons]
-    exact (hu 0).mul (ih fun i => hu i.succ)
+    simpa only [List.ofFn_succ, List.prod_cons] using (hu 0).mul (ih fun i => hu i.succ)
 
 
 omit [NumberField E] in
@@ -200,13 +199,11 @@ theorem isSmoothRealFam_oneP (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matri
   have e : oneP θ V τ X = fun t => embArch _ _ _ (x t) := funext fun t => by
     rw [oneP, ← hx, atTau_archEquiv hθ V _ rfl]
   have h := isSmoothRealFam_embArch (isCMExt_host D) (embOverOf D τ) (x := x) fun i j => by
-    simp only [archMat_eq_archEquiv _ (isCMExt_host D), hx]
-    exact contDiff_exp_smul_entry X i j
+    simpa only [archMat_eq_archEquiv _ (isCMExt_host D), hx] using contDiff_exp_smul_entry X i j
   refine ⟨e ▸ h.1, e ▸ h.2, ?_⟩
   have h1 := atTau_archEquiv hθ V (embOverOf D τ) rfl 1
   rw [map_one, map_one] at h1
-  rw [oneP, zero_smul, NormedSpace.exp_zero]
-  exact h1
+  rwa [oneP, zero_smul, NormedSpace.exp_zero]
 
 theorem ccGA_smooth_and_Rder_mem (D : D7) (V : HSp D)
     (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ) (f : GA D V → ℂ)

@@ -264,8 +264,7 @@ theorem exists_push_sections : ∀ (F : Type) [Field F] [CharZero F] (Y : Scheme
   have e3 := C.val_mul (H0.restr le_top J) (H0.pull M.σ hT (Ψ g)) t z hz ha' hb' hc'
   rw [hΨ g, val_restr z _ le_top hz le_top] at e3
   have e4 := val_pull M.σ hT z (C.b t) hz hb' le_top hb'' (Ψ g)
-  rw [e1, e2, e3, ← e4, Units.val_mk0]
-  rw [div_mul_eq_mul_div, eq_div_iff (mul_ne_zero hJv.ne_zero hT1)]
+  rw [e1, e2, e3, ← e4, Units.val_mk0, div_mul_eq_mul_div, eq_div_iff (mul_ne_zero hJv.ne_zero hT1)]
   ring
 
 end GlobalTheory.ModifCanon
@@ -435,8 +434,7 @@ theorem exists_dvd_of_effCartier [Fintype ι] {Y' : Scheme.{0}} [IsIntegral Y'] 
     have hU0 : genericPoint Y' ∈ U0.1 := Y'.basicOpen_le t hA'
     have : Nontrivial Γ(Y', U0.1) := (fnOf U0.1 hU0).domain_nontrivial
     rw [hFdef, fnOf_resG]
-    intro h
-    exact nonZeroDivisors.ne_zero hf0 (fnOf_injective _ hU0 (h.trans (map_zero _).symm))
+    exact fun h => nonZeroDivisors.ne_zero hf0 (fnOf_injective _ hU0 (h.trans (map_zero _).symm))
   have key : ∀ x ∈ Ideal.map (s.appLE W (Y'.basicOpen t) hAW).hom (idealOn w W),
       ∃ C : ι → Y'.functionField, φ x = ∑ j, w' j * C j ∧ ∀ i j, ∃ r : Γ(Y', Y'.basicOpen t),
         w' i * C j = φ F * φ r := by
@@ -556,8 +554,7 @@ theorem GlobalTheory.CompHS.exists_modif_map_of_open : GlobalTheory.Published.Pr
   obtain ⟨g, hg1, hg2⟩ := hext Y' s hη (hC Y' s hη hEC)
   obtain ⟨r, hr'⟩ := GlobalTheory.exists_lift_closedImmersion_of_dense i g _ hdense fun x hx => by
     refine ⟨(s ∣_ U ≫ r₀) ⟨x, hx⟩, ?_⟩
-    have e := congrArg (fun f : (s ⁻¹ᵁ U).toScheme ⟶ PSpace F N => f ⟨x, hx⟩) hg2
-    exact e.symm
+    exact (congrArg (fun f : (s ⁻¹ᵁ U).toScheme ⟶ PSpace F N => f ⟨x, hx⟩) hg2).symm
   refine ⟨M, r, hY', ?_, ?_⟩
   · show r ≫ t = s ≫ p
     rw [← hit, ← Category.assoc, hr', hg1]
@@ -687,8 +684,7 @@ theorem exists_resolved_modification : GlobalTheory.Published.Principalisation �
   let O : V.Opens := (ℓ ≫ q) ⁻¹ᵁ UW
   have hvO : ∀ j o, v j o ∈ O := fun j o => by
     show (ℓ ≫ q) (v j o) ∈ UW
-    rw [← Scheme.Hom.comp_apply, hWgen j o]
-    exact hηUW
+    rwa [← Scheme.Hom.comp_apply, hWgen j o]
   let U : X.Opens := i ''ᵁ O
   have hUi : Set.range U.ι ⊆ Set.range i := by
     rw [Scheme.Opens.range_ι]
@@ -701,8 +697,7 @@ theorem exists_resolved_modification : GlobalTheory.Published.Principalisation �
     rintro _ ⟨x, rfl⟩
     have hx : i (e x) ∈ U := by rw [← Scheme.Hom.comp_apply, he]; exact x.2
     obtain ⟨y, hy, hyx⟩ := hx
-    rw [i.isOpenEmbedding.injective hyx] at hy
-    exact hy
+    rwa [i.isOpenEmbedding.injective hyx] at hy
   let c : U.toScheme ⟶ UW.toScheme := IsOpenImmersion.lift UW.ι (e ≫ ℓ ≫ q) hc
   have hcf : c ≫ UW.ι = e ≫ ℓ ≫ q := IsOpenImmersion.lift_fac _ _ _
   let b : UW.toScheme ⟶ W' := inv (s ∣_ UW) ≫ (s ⁻¹ᵁ UW).ι
@@ -722,8 +717,7 @@ theorem exists_resolved_modification : GlobalTheory.Published.Principalisation �
   have hσ : r ≫ pullback.fst q s ≫ φ = M.σ := by
     refine ext_of_isDominant_of_isSeparated sX ?_ M.opn.ι ?_
     · simp only [Category.assoc]
-      rw [← hw, pullback.condition_assoc]
-      exact hrt
+      rwa [← hw, pullback.condition_assoc]
     · rw [reassoc_of% hrM]
       simp only [r₀, pullback.lift_fst_assoc, Category.assoc]
       rw [hℓi, he, morphismRestrict_ι]
@@ -824,8 +818,7 @@ theorem lineBundleGlobalSectionsDim_le_of_injective_section_mul [IsLocallyNoethe
   obtain ⟨i⟩ := nonempty_twist_twist_iso_of_cls_eq (structureModule X) hA hB hN e
   have := Twist.isQuasicoherent_twist (F := structureModule X) hA
   have : Mono (Twist.secHom (twist (structureModule X) A) s) := by
-    rw [mono_secHom_iff _ hB, Twist.assPoints_twist hA, ← mono_cutHom_iff _ hB]
-    exact hs
+    rwa [mono_secHom_iff _ hB, Twist.assPoints_twist hA, ← mono_cutHom_iff _ hB]
   exact LinearMap.finrank_le_finrank_of_injective
     (cohOn.map_zero_injective_of_mono k ⊤ (Twist.secHom (twist (structureModule X) A) s ≫ i.hom))
 
@@ -986,8 +979,7 @@ theorem isolated_in_fibre_of_etale_restrict :
     have hmem : y' ∈ u ∩ (f ∣_ U) ⁻¹' {(f ∣_ U) z'} := by
       refine ⟨hy'u, ?_⟩
       have h1 := morphismRestrict_base_coe f U y'
-      have h2 := morphismRestrict_base_coe f U z'
-      exact Subtype.ext (h1.trans (hy.trans h2.symm))
+      exact Subtype.ext (h1.trans (hy.trans (morphismRestrict_base_coe f U z').symm))
     rw [huz] at hmem
     exact congrArg Subtype.val hmem
 
@@ -1471,8 +1463,7 @@ theorem separate_numberField (hK : GlobalTheory.Published.NadelVanishingAndNonKl
     rw [cls_pull hB, cls_pull hN, cls_pull hN', hBc, map_add (f := _), map_nsmul, ← pull_comp, ← pull_comp, hf₁]
   have hpt : ∀ (Y : Scheme.{0}) (y : Sp ℂ ⟶ Y) (O : Y.Opens), y s₀ ∈ O → ⊤ ≤ y ⁻¹ᵁ O := by
     intro Y y O hs t _
-    rw [Subsingleton.elim t s₀]
-    exact hs
+    rwa [Subsingleton.elim t s₀]
   have hkM : ∀ j, ⊤ ≤ (zC j ≫ πM) ⁻¹ᵁ (tens K.bundle B).U (k j) := fun j => by rw [hz₁]; exact hk j
   have hk₁ : ∀ j, ⊤ ≤ zC j ⁻¹ᵁ (tens (K.bundle.pull πM) (B.pull πM)).U (pIdx _ πM (k j).1, pIdx B πM (k j).2) :=
     fun j => hpt _ _ _ ⟨mem_pIdx.2 (hkM j trivial).1, mem_pIdx.2 (hkM j trivial).2⟩

@@ -163,8 +163,7 @@ theorem perp_lattice (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm) (hn : h.
     refine ⟨?_, ?_⟩
     · refine Submodule.fg_of_fg_map_injective (ι.restrictScalars (𝓞 K)) hinj ?_
       exact Submodule.FG.of_le hL.fg (Submodule.map_comap_le _ _)
-    · intro s hs hli
-      exact (LinearIndependent.iff_fractionRing _ _).mp hli
+    · exact fun s hs hli => (LinearIndependent.iff_fractionRing _ _).mp hli
   have hle1 : Λ.comap (ι.restrictScalars (𝓞 K)) ≤ L := fun w hw =>
     (hmem w).2 ⟨0, X.zero_mem, by rw [add_zero]; exact hw⟩
   letI : Submodule.IsLattice K Λ := hL
@@ -177,8 +176,7 @@ theorem perp_lattice (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm) (hn : h.
       IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2
     have hmem' : (s : 𝓞 K) • w ∈ Λ.comap (ι.restrictScalars (𝓞 K)) := by
       change ι ((s : 𝓞 K) • w) ∈ Λ
-      rw [← algebraMap_smul K, map_smul, algebraMap_smul]
-      exact hs
+      rwa [← algebraMap_smul K, map_smul, algebraMap_smul]
     have : (s : 𝓞 K) • w ∈ Submodule.span K ((Λ.comap (ι.restrictScalars (𝓞 K)) : Submodule (𝓞 K) W) : Set W) := Submodule.subset_span hmem'
     rw [← algebraMap_smul K] at this
     exact (Submodule.smul_mem_iff _ hs0).1 this
@@ -190,8 +188,7 @@ theorem perp_lattice (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm) (hn : h.
     refine ⟨?_, ?_⟩
     · refine Submodule.FG.of_le (dualLattice (𝓞 K) K W hW hsW hnW hst _ hL1full).1.fg fun w hw => ?_
       exact (dualBasic_mem_dual _ _ _).2 fun y hy => hI y (hle1 hy) w hw
-    · intro s hs hli
-      exact (LinearIndependent.iff_fractionRing _ _).mp hli
+    · exact fun s hs hli => (LinearIndependent.iff_fractionRing _ _).mp hli
   letI : Submodule.IsLattice K L := hLat
   letI : Submodule.IsFullLattice K (Λ.comap (ι.restrictScalars (𝓞 K))) := hL1full
   refine ⟨Submodule.IsFullLattice.of_le K hle1, hI, ?_⟩

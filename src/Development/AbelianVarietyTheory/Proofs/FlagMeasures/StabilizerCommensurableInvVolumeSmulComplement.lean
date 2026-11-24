@@ -76,8 +76,7 @@ theorem mem_smul_iff {n : ℕ} (g : (Fin n → E) ≃ₗ[E] (Fin n → E)) (A : 
   constructor
   · rintro ⟨y, hy, rfl⟩
     simpa [LinearEquiv.smul_def] using hy
-  · intro h
-    exact ⟨_, h, by simp [LinearEquiv.smul_def]⟩
+  · exact fun h => ⟨_, h, by simp [LinearEquiv.smul_def]⟩
 
 theorem smul_eq_iff {n : ℕ} (g : (Fin n → E) ≃ₗ[E] (Fin n → E)) (A : Submodule L.O (Fin n → E)) :
     g • A = A ↔ ∀ x, g x ∈ A ↔ x ∈ A := by
@@ -247,8 +246,7 @@ theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [I
       obtain ⟨y, hy, -, hyx⟩ := (hA x).1 hx
       refine ⟨y, hy, ?_⟩
       have := hP0 _ (X_le S hyx)
-      rw [map_sub, sub_eq_zero, hP1 x hw] at this
-      exact this
+      rwa [map_sub, sub_eq_zero, hP1 x hw] at this
     · rw [eq_top_iff, ← hc.sup_eq_top]
       refine sup_le (sup_le ?_ ?_) fun w hw => ?_
       · refine Submodule.span_mono ?_
@@ -273,8 +271,7 @@ theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [I
       rw [Submodule.smul_sup']
       congr 1
       · rw [smul_eq_iff] at h1 ⊢
-        intro x
-        exact and_congr (h1 x) (perp_iff hh.1 (complementGroup_fixes_frameSpan S hh) x)
+        exact fun x => and_congr (h1 x) (perp_iff hh.1 (complementGroup_fixes_frameSpan S hh) x)
       · rw [smul_eq_iff]
         intro x
         have hsub : ∀ z ∈ Submodule.span L.O (Set.range S.f ∪ Set.range S.f'), h z = z := fun z hz =>
@@ -320,8 +317,7 @@ theorem Frames.stab_commensurable_invVol_smul : ∀ {F : Type} [Field F] [Valuat
     have hfix : S.H0 = fixG L S.Hm (Submodule.span E (Set.range x)) := by rw [hspan]; exact hH0
     have hh' : h ∈ fixG L S.Hm (Submodule.span E (Set.range x)) := hfix ▸ hh
     have key := _root_.GlobalTheory.HL.Unimod.unimodular L S.Hm S.herm (2 * r + 2) x hdet Λs Λ hstd hΛ h hh'
-    rw [hK, hfix]
-    exact key
+    rwa [hK, hfix]
   · intro d Λ hT
     have hΛ : IsLat L Λ := (_root_.GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT).1.1
     obtain ⟨hlo, Λ₂, hΛ₂, hhi⟩ := _root_.GlobalTheory.HL.DatumStab.main L r k S d Λ hT

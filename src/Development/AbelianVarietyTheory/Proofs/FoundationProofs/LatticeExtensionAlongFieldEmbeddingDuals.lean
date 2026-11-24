@@ -63,8 +63,7 @@ theorem mem_one_iff {K : Type} [Field K] (x : K) : x ∈ (1 : Submodule (𝓞 K)
   constructor
   · rintro ⟨y, rfl⟩
     exact y.isIntegral_coe
-  · intro h
-    exact ⟨⟨x, h⟩, rfl⟩
+  · exact fun h => ⟨⟨x, h⟩, rfl⟩
 
 theorem mem_range_iff {K : Type} [Field K] (x : K) : x ∈ (algebraMap (𝓞 K) K).range ↔ IsIntegral ℤ x := by
   rw [← mem_one_iff, Submodule.mem_one]
@@ -242,8 +241,7 @@ theorem tauLatDual : TauLatDual := by
       obtain ⟨u, hu, rfl⟩ := hz
       have := integral_map (emb τ) ((mem_range_iff _).1 ((hL' y).1 hy u hu))
       rw [hform_eq, map_dot, map_mulVec] at this
-      rw [hstar]
-      exact this
+      rwa [hstar]
     | zero => simpa using isIntegral_zero
     | add u w _ _ hu hw => rw [star_add, add_dotProduct]; exact hu.add hw
     | smul c u _ hu =>
@@ -298,8 +296,7 @@ theorem roundLat : RoundLat := by
       have := integral_map cE ((mem_range_iff _).1 ((hL' y).1 hy u hu))
       rw [hform', hc] at this
       have := integral_map (emb τ) this
-      rw [map_dot, map_mulVec] at this
-      exact this
+      rwa [map_dot, map_mulVec] at this
     | zero => simpa using isIntegral_zero
     | add u w _ _ hu hw => rw [dotProduct_add]; exact hu.add hw
     | smul c u _ hu =>

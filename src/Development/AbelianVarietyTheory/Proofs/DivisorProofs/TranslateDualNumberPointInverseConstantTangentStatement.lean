@@ -76,15 +76,12 @@ theorem isTangent_iff_reduction_eq_one {S : Type} [CommRing S] {A : Over (Sp S)}
     rw [Hom.one_def, Over.comp_left]
     have : (CartesianMonoidalCategory.toUnit (Over.mk (spMap (algebraMap S S)))).left = 𝟙 (Sp S) := by
       have h := Over.w (CartesianMonoidalCategory.toUnit (Over.mk (spMap (algebraMap S S))))
-      refine (Category.comp_id _).symm.trans (h.trans ?_)
-      exact Spec.map_id _
+      exact (Category.comp_id _).symm.trans (h.trans (Spec.map_id _))
     rw [this]
     exact Category.id_comp _
   constructor
-  · intro h
-    exact Over.OverMorphism.ext (h.trans h1.symm)
-  · intro h
-    exact (congrArg Over.Hom.left h).trans h1
+  · exact fun h => Over.OverMorphism.ext (h.trans h1.symm)
+  · exact fun h => (congrArg Over.Hom.left h).trans h1
 
 theorem translate_const (hC : CrystallineSmoothLift) (hH : AbelianHodgeDeRham) (S : Type) [CommRing S]
     (A : Over (Sp S)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A)
@@ -97,8 +94,7 @@ theorem translate_const (hC : CrystallineSmoothLift) (hH : AbelianHodgeDeRham) (
   · rw [isTangent_iff_reduction_eq_one, MonObj.comp_mul, GrpObj.comp_inv, mul_inv_eq_one]
     exact ⟨fun h ↦ Over.OverMorphism.ext h, fun h ↦ congrArg Over.Hom.left h⟩
   · have h := tanVal_mul_all hC hH S A g hA hg f (y * c⁻¹) c
-    rw [inv_mul_cancel_right, tanVal_const_point c p hc f, add_zero] at h
-    exact h
+    rwa [inv_mul_cancel_right, tanVal_const_point c p hc f, add_zero] at h
 
 end GlobalTheory.TanAdd
 end -- clump:auto

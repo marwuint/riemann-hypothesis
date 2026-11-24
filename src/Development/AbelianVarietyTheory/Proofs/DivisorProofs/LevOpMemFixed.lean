@@ -67,8 +67,7 @@ theorem finite_supp [TopologicalSpace G] [IsTopologicalGroup G] (H : Subgroup G)
   have hc : IsCompact ((QuotientGroup.mk : G → G ⧸ H) '' tsupport f) :=
     hf.isCompact.image QuotientGroup.continuous_mk
   refine hc.finite_of_discrete.subset ?_
-  intro q hq
-  exact ⟨q.out, subset_tsupport f hq, QuotientGroup.out_eq' q⟩
+  exact fun q hq => ⟨q.out, subset_tsupport f hq, QuotientGroup.out_eq' q⟩
 
 theorem levOp_apply (ρ : Representation ℂ G V) (K H : Subgroup G) (f : G → ℂ) (A : V →ₗ[ℂ] V) (v : V)
     (hs : {q : G ⧸ H | f q.out ≠ 0}.Finite) :
@@ -81,8 +80,7 @@ theorem levOp_apply (ρ : Representation ℂ G V) (K H : Subgroup G) (f : G → 
   · simpa using this
   · intro q hq
     simp only [Function.mem_support, ne_eq, Set.mem_setOf_eq] at hq ⊢
-    intro h0
-    exact hq (by rw [h0, zero_smul])
+    exact fun h0 => hq (by rw [h0, zero_smul])
 
 theorem A_mem_fixed (ρ : Representation ℂ G V) (θ : G →* G) (hθ : ∀ g, θ (θ g) = g) (A : V →ₗ[ℂ] V)
     (hA : ∀ g, A ∘ₗ ρ g = ρ (θ g) ∘ₗ A) (H : Subgroup G) (hH : ∀ k ∈ H, θ k ∈ H) (w : V)
@@ -110,8 +108,7 @@ theorem levOp_mem_fixed [TopologicalSpace G] [IsTopologicalGroup G] (ρ : Repres
     refine hs.subset ?_
     intro q hq
     simp only [Function.mem_support, ne_eq, Set.mem_setOf_eq, hFdef] at hq ⊢
-    intro h0
-    exact hq (by rw [h0, zero_smul])
+    exact fun h0 => hq (by rw [h0, zero_smul])
   rw [map_smul]
   congr 1
   change ρ k (∑ᶠ q : G ⧸ H, F q.out) = ∑ᶠ q : G ⧸ H, F q.out
@@ -174,15 +171,13 @@ theorem levOp_le [TopologicalSpace G] [IsTopologicalGroup G] (ρ : Representatio
     simp only [hFdef, (hf.2 _ (j.out).2 q.out).2, map_mul, Module.End.mul_apply]
   set S : G ⧸ K' → V := fun q => ∑ᶠ j : K' ⧸ K''.subgroupOf K', f q.out • ρ q.out (ρ (j.out : G) u) with hSdef
   have hL : ∑ᶠ r : G ⧸ K'', F r.out = ∑ᶠ q, S q := by
-    rw [← finsum_comp_equiv e.symm]
-    rw [finsum_curry]
+    rw [← finsum_comp_equiv e.symm, finsum_curry]
     · simp only [he, hSdef]
     · refine (hs'.prod (Set.finite_univ (α := K' ⧸ K''.subgroupOf K'))).subset ?_
       rintro ⟨q, j⟩ hp
       simp only [Function.mem_support, ne_eq, he] at hp
       simp only [Set.mem_prod, Set.mem_setOf_eq, Set.mem_univ, and_true]
-      intro h0
-      exact hp (by rw [h0, zero_smul])
+      exact fun h0 => hp (by rw [h0, zero_smul])
   have hR : ∀ q : G ⧸ K', f q.out • ρ q.out (((K''.relIndex K' : ℕ) : ℂ)⁻¹ •
       ∑ᶠ j : K' ⧸ K''.subgroupOf K', ρ (j.out : G) u) = ((K''.relIndex K' : ℕ) : ℂ)⁻¹ • S q := by
     intro q

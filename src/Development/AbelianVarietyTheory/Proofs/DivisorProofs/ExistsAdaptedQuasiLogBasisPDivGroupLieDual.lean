@@ -354,8 +354,7 @@ theorem dual_eq_smul_of_forall_dvd :
     rw [← hc, map_smul, hc, smul_eq_mul]
     ring
   · ext w
-    simp only [LinearMap.smul_apply, LinearMap.coe_mk, AddHom.coe_mk, smul_eq_mul]
-    exact hc w
+    simpa only [LinearMap.smul_apply, LinearMap.coe_mk, AddHom.coe_mk, smul_eq_mul] using hc w
 
 end GlobalTheory
 end -- clump:auto
@@ -624,8 +623,7 @@ theorem exists_unique_dual_of_compatible_mod_pow :
     intro w
     choose x hx using fun n => Ideal.Quotient.mk_surjective (u n w)
     have step : ∀ n, x n - x (n + 1) ∈ Ideal.span {a ^ n} := by
-      intro n
-      exact Ideal.Quotient.eq.mp ((hx n).trans (hu n w (x (n + 1)) (hx (n + 1)).symm))
+      exact fun n => Ideal.Quotient.eq.mp ((hx n).trans (hu n w (x (n + 1)) (hx (n + 1)).symm))
     have cauchy : ∀ m n, m ≤ n → x m - x n ∈ Ideal.span {a ^ m} := by
       intro m n hmn
       induction n, hmn using Nat.le_induction with
@@ -658,8 +656,7 @@ theorem exists_unique_dual_of_compatible_mod_pow :
     rw [RingHom.id_apply, smul_eq_mul, map_mul, map_smul, ← hf w n, Algebra.smul_def,
       Ideal.Quotient.algebraMap_eq]
   · exact fun n w => hf w n
-  · intro l hl
-    exact LinearMap.ext fun w => huniq w (l w) fun n => hl n w
+  · exact fun l hl => LinearMap.ext fun w => huniq w (l w) fun n => hl n w
 
 end GlobalTheory.PDiv
 end -- clump:auto
@@ -743,8 +740,7 @@ theorem QLog.Chart.existsUnique_isLie : ∀ (p : ℕ) [Fact p.Prime] (O E : Type
     have : t = s n := hinj (ht.trans (hs n).symm)
     subst this
     exact hl n w φ hφ
-  · intro l' hl'
-    exact huniq l' fun n w φ hφ => hl'.2 n w φ (s n) hφ (hs n)
+  · exact fun l' hl' => huniq l' fun n w φ hφ => hl'.2 n w φ (s n) hφ (hs n)
 
 end GlobalTheory
 end -- clump:auto
@@ -801,8 +797,7 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.QLog
 
 theorem exists_isLie_add_smul : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d), ∀ (E : Type) [CommRing E] [Algebra O E], IsFrame p E (RingHom.id O) → ∀ l : G.dual.Lie, ∃ (f : MvPowerSeries (Fin d) E) (l' l'' : G.dual.Lie), QL c.μ ⊤ f ∧ c.IsLie f l' ∧ l = l' + (p : O) • l'' := by
-  intro p _ C _ _ _ v O _ _ _ _ _ _ G d c E _ _ hE l
-  exact lie_surj_mod_p p O E hE G d c l
+  exact fun p _ C _ _ _ v O _ _ _ _ _ _ G d c E _ _ hE l => lie_surj_mod_p p O E hE G d c l
 
 end GlobalTheory.QLog
 end -- clump:auto
@@ -859,8 +854,7 @@ theorem constantCoeff_subst_of_zero' {σ τ R : Type} [CommRing R] [Finite σ]
     constantCoeff (subst a f) = constantCoeff f := by
   have ha : HasSubst a := hasSubst_of_constantCoeff_zero ha0
   have h := constantCoeff_subst_eq_zero ha ha0 (f := f - C (constantCoeff f)) (by simp)
-  rw [subst_sub ha, subst_C, map_sub, constantCoeff_C, sub_eq_zero] at h
-  exact h
+  rwa [subst_sub ha, subst_C, map_sub, constantCoeff_C, sub_eq_zero] at h
 
 theorem constantCoeff_formalGroupLawCoboundaryOne_eq_zero {R : Type} [CommRing R] {d : ℕ}
     {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (h : ∀ i, constantCoeff (μ i) = 0)
@@ -1004,8 +998,7 @@ theorem GlobalTheory.QLog.exists_int_log_of_isLie_p_smul : ∀ (p : ℕ) [Fact p
     simp
   · have hsub : f - map (algebraMap O E) t - g = (f - map (algebraMap O E) t) + (-1 : E) • g := by
       rw [neg_one_smul, ← sub_eq_add_neg]
-    rw [hsub, formalCoboundary_add hμ, formalCoboundary_smul hμ, hgcob, smul_zero, add_zero]
-    exact ht
+    rwa [hsub, formalCoboundary_add hμ, formalCoboundary_smul hμ, hgcob, smul_zero, add_zero]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntLogOfIsLiePSmul =====
@@ -1579,8 +1572,7 @@ theorem adapted_basis : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlg
   have hL : ∀ i, c.IsLie (e i) (L i) := by
     rintro (i | j)
     · obtain ⟨l, hl, -⟩ := _root_.GlobalTheory.QLogTangent.main p C v O hv G d c E hE _ (hQ (Sum.inl i))
-      rw [isLie_log hv c hE hl (hcob i)] at hl
-      exact hl
+      rwa [isLie_log hv c hE hl (hcob i)] at hl
     · exact hlie j
   have huniq : ∀ b : Fin d ⊕ Fin (Module.finrank O G.dual.Lie) → O, In (⊤ : Ideal O) (comb b e) → b = 0 := by
     intro b hb

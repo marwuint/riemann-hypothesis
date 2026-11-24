@@ -86,11 +86,8 @@ theorem essEtaleLocal_le_of_directed :
   have hrange : ∀ a, φ a ∈ V M := by
     have hle : (⊤ : Subalgebra R A) ≤ (V M).comap φ := by
       rw [← hs]
-      refine Algebra.adjoin_le ?_
-      intro a ha
-      exact hmono (hM _ (Finset.mem_image_of_mem f ha)) (hf a)
-    intro a
-    exact hle Algebra.mem_top
+      exact Algebra.adjoin_le (fun a ha => hmono (hM _ (Finset.mem_image_of_mem f ha)) (hf a))
+    exact fun a => hle Algebra.mem_top
   refine ⟨M, fun w hw => ?_⟩
   obtain ⟨⟨a, t⟩, hat⟩ := IsLocalization.mk'_surjective q.primeCompl (e.symm ⟨w, hw⟩)
   set y : T := ((e (IsLocalization.mk' L (1 : A) t) : W) : T) with hy
@@ -100,8 +97,7 @@ theorem essEtaleLocal_le_of_directed :
       rw [IsLocalization.mul_mk'_eq_mk'_of_mul, mul_one, IsLocalization.mk'_self']
     have h2 : ((e (algebraMap A L t * IsLocalization.mk' L (1:A) t) : W) : T) = 1 := by
       rw [h1, map_one]; rfl
-    rw [map_mul, Subalgebra.coe_mul] at h2
-    exact h2
+    rwa [map_mul, Subalgebra.coe_mul] at h2
   obtain ⟨z, hzV, hz⟩ := hloc M (φ t) (hrange t) y hyU hxy
   have hzy : z = y := by
     calc z = (y * φ t) * z := by rw [mul_comm y, hxy, one_mul]
@@ -200,8 +196,7 @@ theorem spread_out : ∀ (T A : Type) [CommRing T] [CommRing A] [Algebra T A]
   have hφ : ι₀.comp ψ₀ = φ.comp π := by
     apply MvPolynomial.algHom_ext
     intro i
-    simp only [AlgHom.comp_apply, ψ₀, MvPolynomial.aeval_X]
-    exact hι0 i
+    simpa only [AlgHom.comp_apply, ψ₀, MvPolynomial.aeval_X] using hι0 i
   have hzero : ∀ g : G, ι₀ (ψ₀ g) = 0 := by
     intro g
     have hg : (g : MvPolynomial (Fin n) T) ∈ RingHom.ker π.toRingHom := by
@@ -302,8 +297,7 @@ theorem factor_away : ∀ (R A B : Type) [CommRing R] [CommRing A] [CommRing B] 
   have h1 := congrArg (fun h => h ((1 : B) ⊗ₜ[R] a)) hι
   simp only [AlgHom.comp_apply, φ', Algebra.TensorProduct.lift_tmul, map_one, one_mul] at h1
   simp only [AlgHom.comp_apply, AlgHom.restrictScalars_apply, Algebra.TensorProduct.includeRight_apply]
-  rw [hext]
-  exact h1
+  rwa [hext]
 
 end FactorAway
 end GlobalTheory
@@ -406,8 +400,7 @@ theorem ann_of_directed_essEtale : ∀ (R B : Type) [CommRing R] [CommRing B] [A
   have hinj := RingHom.FaithfullyFlat.injective (RingHom.faithfullyFlat_algebraMap_iff.mpr this)
   have h0 : algebraMap (C k) (Localization.AtPrime Qk) ⟨c, hck⟩ = 0 := by
     rw [IsLocalization.map_eq_zero_iff Qk.primeCompl]
-    refine ⟨⟨⟨t, htk⟩, ht⟩, ?_⟩
-    exact Subtype.ext htc
+    exact ⟨⟨⟨t, htk⟩, ht⟩, Subtype.ext htc⟩
   have h1 : algebraMap (C i) (Localization.AtPrime Qi) ⟨c, hc⟩ = 0 := by
     apply hinj
     rw [map_zero]
@@ -458,8 +451,7 @@ theorem etale_adjoin_baseChange_image (R S B : Type) [CommRing R] [CommRing S] [
       rfl
     have : Function.Injective (LinearMap.rTensor B₀ ι.toLinearMap) :=
       Module.Flat.rTensor_preserves_injective_linearMap _ (fun a b hab => Subtype.ext hab)
-    rw [← hl] at this
-    exact this
+    rwa [← hl] at this
   have hΨ : Function.Injective Ψ := e.symm.injective.comp hΦ
   have htmul : ∀ (s : S') (b : B₀), Ψ (s ⊗ₜ b) = algebraMap S B s * e.symm (1 ⊗ₜ b) := by
     intro s b

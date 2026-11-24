@@ -256,8 +256,7 @@ theorem isItW_smul {V W : HSp D} {S S' : D.what₂.Tau → SPar} {θ : InfFam D}
       map_smul, h.eqK τ g hg φ φ' hφ v]
   · intro τ X hX φ φ' hφ v w
     have := (h.eqg τ X hX φ φ' hφ v w).const_mul c
-    simp only [LinearMap.smul_apply, map_smul, smul_eq_mul]
-    exact this
+    simpa only [LinearMap.smul_apply, map_smul, smul_eq_mul] using this
   · intro τ g hg φ φ' v v' hφ hv
     rw [LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.smul_apply,
       h.invK τ g hg φ φ' v v' hφ hv]
@@ -770,8 +769,7 @@ theorem xiR_mem (hL : R.toLevCh.Is A.μ0) (hF : R.IsFam) {χ xi Q xiR} (h : TwLe
   obtain ⟨n, hn, ho⟩ := h.xi_fin
   obtain ⟨a, k, hk, hx, hm⟩ := TypeValues.exists_lift_mem χ _ (T ∪ T.image conjPrime₂) h.xi_tame
     (TypeValues.inf_eq_one _ hn ho) hu hv (Finset.mem_union_left _ (hQ PP hPP)) x
-  rw [h.xiR PP hPP a k x hk hx]
-  exact hm
+  rwa [h.xiR PP hPP a k x hk hx]
 
 
 variable (R V) in
@@ -1301,8 +1299,7 @@ theorem exists_mem_smaller : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Lev
   have e : (⟨finHom V h, h, rfl⟩ : Bridge.Gf V)⁻¹ * (finHom V).rangeRestrict k = (finHom V).rangeRestrict (h⁻¹ * k) := by
     apply Subtype.ext
     exact ((MonoidHom.map_mul (finHom V) _ _).trans (congrArg (· * finHom V k) (MonoidHom.map_inv (finHom V) h))).symm
-  rw [e]
-  exact B
+  rwa [e]
 
 end GlobalTheory.SmallerParahoric
 
@@ -1624,8 +1621,7 @@ theorem sideReal_moreLevel : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (V : 
   have hred_surj : Function.Surjective red' :=
     surj_restrict hQle B.act_tie.red B.act_tie.red_surj B.act_tie.red_ker (_root_.GlobalTheory.SmallerParahoric.exists_mem_smaller D V β Λ hSD' L Q' xq hQ hdisj)
   have hred_ker : ∀ q : (levEnv V β L').Q, red' q = 1 ↔ (q : Bridge.Gf V) ∈ (levEnv V β L').J := by
-    intro q
-    exact (B.act_tie.red_ker ⟨q, hQle q.2⟩).trans ⟨fun h => hker _ q.2 h, fun h => hJle h⟩
+    exact fun q => (B.act_tie.red_ker ⟨q, hQle q.2⟩).trans ⟨fun h => hker _ q.2 h, fun h => hJle h⟩
 
   let up : ok' × ℕ → ok × ℕ := fun i => (⟨i.1, hok i.1.2⟩, i.2)
   have hoffI : ∀ i : ok' × ℕ, ∀ PP, PP ∈ L.Pg ∨ PP ∈ Q' → PP ≠ pl i.1 ∧ ¬ Formalism.IndefR.Lev.IsConjPl PP (pl i.1) :=

@@ -137,8 +137,7 @@ theorem mulVec_mem_of_rep_eq_one {Λ Λ' : Submodule (𝓞 E) (Fin r → E)} {n 
   have hn' : (n : E) ≠ 0 := by exact_mod_cast hn.ne'
   have hy' : (n : E) • y = ((g : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).mulVec x - x := by
     apply smul_right_injective _ hn'
-    simp only [smul_smul, smul_sub, ← pow_two]
-    exact hyx
+    simpa only [smul_smul, smul_sub, ← pow_two] using hyx
   have : ((g : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).mulVec x = x + (n : E) • y := by
     rw [hy']; abel
   rw [this]
@@ -294,10 +293,8 @@ theorem mem_map_moveLin (δ : GL (Fin r) E) (L : Submodule (𝓞 E) (Fin r → E
       ((δ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).mulVec y ∈ L := by
   constructor
   · rintro ⟨x, hx, rfl⟩
-    rw [moveLin_apply, inv_mulVec_mulVec]
-    exact hx
-  · intro h
-    exact ⟨_, h, by rw [moveLin_apply, mulVec_inv_mulVec]⟩
+    rwa [moveLin_apply, inv_mulVec_mulVec]
+  · exact fun h => ⟨_, h, by rw [moveLin_apply, mulVec_inv_mulVec]⟩
 
 omit [IsCMField E] in
 theorem span_map_moveLin (δ : GL (Fin r) E) (L : Submodule (𝓞 E) (Fin r → E))
@@ -308,8 +305,7 @@ theorem span_map_moveLin (δ : GL (Fin r) E) (L : Submodule (𝓞 E) (Fin r → 
   have : ((L.map (moveLin δ) : Submodule (𝓞 E) (Fin r → E)) : Set (Fin r → E)) =
       (δ : Matrix (Fin r) (Fin r) E).mulVecLin '' (L : Set (Fin r → E)) := by
     rw [Submodule.map_coe]; rfl
-  rw [this, ← Submodule.map_span, hL, Submodule.map_top, LinearMap.range_eq_top]
-  exact hsurj
+  rwa [this, ← Submodule.map_span, hL, Submodule.map_top, LinearMap.range_eq_top]
 
 theorem isUStab_conj (X₂ X : Data E r) (δ : GL (Fin r) E) (hG : X₂.Gm = X.Gm)
     (hδ : ∀ v w, herm X₂.Gm ((δ : Matrix (Fin r) (Fin r) E).mulVec v)

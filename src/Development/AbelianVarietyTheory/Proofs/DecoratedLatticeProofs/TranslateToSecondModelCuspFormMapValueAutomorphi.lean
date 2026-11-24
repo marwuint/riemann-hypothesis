@@ -92,15 +92,11 @@ theorem exists_fundamentalDomain_measure_eq (I : AutInst) (μf : Measure I.Gf) [
       exact g.2)⟩
   have he : Function.Bijective e := by
     constructor
-    · intro a b hab
-      apply Subtype.ext
-      apply T.symm.injective
-      exact congrArg Subtype.val hab
+    · exact fun a b hab => Subtype.ext (T.symm.injective (congrArg Subtype.val hab))
     · intro h
       have hm : T h.1 ∈ I.GFset := (hT h.1).1 h.2
       rw [← hΓ] at hm
-      refine ⟨⟨T h.1, hm⟩, Subtype.ext ?_⟩
-      exact T.symm_apply_apply _
+      exact ⟨⟨T h.1, hm⟩, Subtype.ext (T.symm_apply_apply _)⟩
   have hsc : ∀ g : Γ, Function.Semiconj T (fun x : HA (AF I.F) I.cm.sig I.J => e g • x) (fun y : I.GA => (g : I.GA) * y) := by
     intro g x
     show T ((T.symm (g : I.GA)) * x) = (g : I.GA) * T x

@@ -110,8 +110,7 @@ theorem isCompact_intAfP (p : ℕ) : IsCompact (intAfP p : Set (AfP p)) := by
   have hset : (intAfP p : Set (AfP p)) = Set.range f := by
     ext x
     constructor
-    · intro hx
-      exact ⟨fun w => ⟨(rp x).1 w, hx w⟩, rfl⟩
+    · exact fun hx => ⟨fun w => ⟨(rp x).1 w, hx w⟩, rfl⟩
     · rintro ⟨g, rfl⟩ w
       exact (g w).2
   rw [hset]

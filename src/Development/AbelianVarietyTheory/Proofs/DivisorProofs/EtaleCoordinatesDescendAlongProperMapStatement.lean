@@ -174,8 +174,7 @@ theorem exists_etale_spec {A B C : Type} [CommRing A] [CommRing B] [CommRing C] 
   let j := Spec.map (CommRingCat.ofHom (algebraMap (C ⊗[A] B) (Localization.Away f)))
   have hj : Set.range j ⊆ Set.range W.ι := by
     rw [Scheme.Opens.range_ι]
-    refine subset_trans ?_ hf
-    exact (PrimeSpectrum.localization_away_comap_range (Localization.Away f) f).le
+    exact subset_trans (PrimeSpectrum.localization_away_comap_range (Localization.Away f) f).le hf
   have h1 : Etale (IsOpenImmersion.lift W.ι j hj ≫ W.ι ≫
       Spec.map (CommRingCat.ofHom (algebraMap C (C ⊗[A] B)))) := inferInstance
   rw [IsOpenImmersion.lift_fac_assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq,
@@ -442,8 +441,7 @@ theorem exists_finite_piece {X S : Scheme.{0}} (f : X ⟶ S) [LocallyOfFiniteTyp
   let p' : Spec (.of (R ⊗[Γ(S, U)] Γ(X, V))) := ⟨P', ‹_›⟩
   obtain ⟨z, hz⟩ : p' ∈ Set.range l := by rw [hl]; exact heP'
   refine ⟨Spec (.of R), Spec.map φ ≫ hU.fromSpec, _, l ≫ g, z, inferInstance, inferInstance, ?_, ?_, ?_⟩
-  · rw [Category.assoc, hg, ← Spec.map_comp, IsFinite.SpecMap_iff]
-    exact hfin
+  · rwa [Category.assoc, hg, ← Spec.map_comp, IsFinite.SpecMap_iff]
   · rw [Category.assoc, Scheme.Hom.comp_apply, hz, hgf, Scheme.Hom.comp_apply]
     exact (congrArg hV.fromSpec (PrimeSpectrum.ext hP' :
       Spec.map (CommRingCat.ofHom Algebra.TensorProduct.includeRight.toRingHom) p' =
@@ -453,8 +451,7 @@ theorem exists_finite_piece {X S : Scheme.{0}} (f : X ⟶ S) [LocallyOfFiniteTyp
     apply l.isOpenEmbedding.injective
     rw [hz]
     have h1 : l w ∈ ((PrimeSpectrum.basicOpen e : TopologicalSpace.Opens (PrimeSpectrum _)) : Set (PrimeSpectrum _)) := hl ▸ Set.mem_range_self w
-    refine PrimeSpectrum.ext (huniq _ (l w).isPrime ⟨?_⟩ h1)
-    exact hP'P.over.trans congr(($hw).1).symm
+    exact PrimeSpectrum.ext (huniq _ (l w).isPrime ⟨hP'P.over.trans congr(($hw).1).symm⟩ h1)
 
 theorem exists_factor_of_isPreimmersion {A X : Scheme.{0}} (j : A ⟶ X) [IsPreimmersion j]
     {Ω : Type} [Field Ω] (w : Spec (.of Ω) ⟶ X) (h : ∀ s, w s ∈ Set.range j) :
@@ -516,8 +513,7 @@ theorem quasiFiniteAt_of_isolated {H X : Scheme.{0}} (φ : H ⟶ X) [LocallyOfFi
   ext ⟨w, hw⟩
   simp only [Set.mem_preimage, Set.mem_singleton_iff]
   constructor
-  · intro h
-    exact Subtype.ext (hO w h hw)
+  · exact fun h => Subtype.ext (hO w h hw)
   · intro h
     have : w = z := congrArg Subtype.val h
     exact this ▸ hzO
@@ -791,8 +787,7 @@ theorem isIso_app_of_flat {X Y S T : Scheme.{0}} {p : X ⟶ S} {f : T ⟶ S} {g 
       exact @IsIso.comp_isIso _ _ _ _ _ _ _ (hp (W.1.ι ''ᵁ ⊤)) (by rw [eqToHom_op]; exact Functor.map_isIso _ _)
     refine GlobalTheory.ProperFunctions.isIso_appTop_of_isPullback (p := p ∣_ W.1) (f := f.resLE W.1 V.1 hVW)
       (g := H2.lift _ _ hw) (IsPullback.of_right ?_ (H2.lift_snd _ _ _) H2)
-    rw [H2.lift_fst, Scheme.Hom.resLE_comp_ι]
-    exact H1
+    rwa [H2.lift_fst, Scheme.Hom.resLE_comp_ι]
 
 theorem preconnectedSpace_of_surjective_appTop {Z T : Scheme.{0}} (r : Z ⟶ T) [PreconnectedSpace T]
     (hr : Function.Bijective r.appTop.hom) : PreconnectedSpace Z := by
@@ -817,8 +812,7 @@ theorem preconnectedSpace_of_surjective_appTop {Z T : Scheme.{0}} (r : Z ⟶ T) 
         exact (TopologicalSpace.Opens.mem_sup.mp this).resolve_left hx
       · intro hx hx'
         have : x ∈ T.basicOpen e ⊓ T.basicOpen (1 - e) := ⟨hx', hx⟩
-        rw [h1] at this
-        exact this
+        rwa [h1] at this
     rw [this]
     exact (T.basicOpen (1 - e)).2
   have h3 : s = r ⁻¹' (T.basicOpen e : Set T) := by
@@ -871,8 +865,7 @@ theorem isIso_finite_piece : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRi
   have Hm : IsPullback m s₂ (pullback.fst α π) h := by
     refine IsPullback.of_right (h₁₂ := pullback.snd α π) (v₁₃ := π) (h₂₂ := α) ?_ (pullback.lift_fst _ _ _)
       (IsPullback.of_hasPullback α π).flip
-    rw [pullback.lift_snd]
-    exact HS
+    rwa [pullback.lift_snd]
   let x₁ := pullback.fst a (pullback.fst τ h)
   let x₂ := pullback.snd a (pullback.fst τ h)
   have HX : IsPullback x₁ x₂ a (pullback.fst τ h) := .of_hasPullback _ _
@@ -883,8 +876,7 @@ theorem isIso_finite_piece : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRi
   have hn2 : n ≫ s₂ = x₂ ≫ pullback.snd τ h := pullback.lift_snd _ _ _
   have Hn : IsPullback x₁ n c m := by
     refine IsPullback.of_bot (v₂₁ := s₂) (v₂₂ := pullback.fst α π) (h₃₁ := h) ?_ ?_ Hm
-    · rw [hn2, hc1]
-      exact HX'
+    · rwa [hn2, hc1]
     · apply pullback.hom_ext
       · rw [Category.assoc, Category.assoc, hc1, pullback.lift_fst, HX'.w, ← hn2, Category.assoc]
       · rw [Category.assoc, Category.assoc, hc2, pullback.lift_snd, hn1]
@@ -1116,8 +1108,7 @@ theorem exists_isIso_restrict {X Y U : Scheme.{0}} (f : X ⟶ Y) (q : Y ⟶ U) [
     refine ⟨⟨s, ?_⟩, ?_⟩
     · show q (f s) ∈ W
       rw [hs]; exact hW
-    · apply Subtype.ext
-      exact (morphismRestrict_base_coe _ _ _).trans hs
+    · exact Subtype.ext ((morphismRestrict_base_coe _ _ _).trans hs)
 
 theorem exists_isIso_restrict' {X Y U : Scheme.{0}} (f : X ⟶ Y) (q : Y ⟶ U) [UniversallyClosed f]
     [UniversallyClosed q] (x : U) (V : U.Opens) (hx : x ∈ V) [Etale (f ∣_ (q ⁻¹ᵁ V))]
@@ -1204,8 +1195,7 @@ theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase
       P1.of_iso (asIso (f ∣_ (pullback.fst U.hom π ⁻¹ᵁ W))).symm (Iso.refl _) (Iso.refl _) (Iso.refl _)
         (by simp) (by simp only [Iso.symm_hom, asIso_inv, IsIso.inv_hom_id_assoc, Iso.refl_hom, Category.comp_id])
         (by simp) (by simp)
-    rw [morphismRestrict_ι_assoc, hf2, ← morphismRestrict_comp] at P0
-    exact P0
+    rwa [morphismRestrict_ι_assoc, hf2, ← morphismRestrict_comp] at P0
 
 end GlobalTheory.Mum.EtalePull
 end -- clump:auto
@@ -1522,8 +1512,7 @@ theorem isolated_in_coordinate_fibre : ∀ (R : Type) [CommRing R] [IsDomain R] 
         refine ⟨hp, ?_⟩
         show F (c p) = τ x
         rw [← Scheme.Hom.comp_apply, hF, hc1, Scheme.Hom.comp_apply, hτu]
-      rw [← hW] at this
-      exact this
+      rwa [← hW] at this
     · exact absurd ⟨p, hp, rfl⟩ hu
 
 end GlobalTheory.Mum

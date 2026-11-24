@@ -117,8 +117,7 @@ theorem map_mem {n : S.GLV} (hn : n ∈ S.Nof g) (j : ℕ) {x : S.V} (hx : x ∈
     rintro _ ⟨i, hi, rfl⟩
     have h1 := (S.spanTo g j).add_mem (spanTo_mono S g (le_of_lt hi) (sub_mem hg hn i))
       (self_mem S g hi)
-    rw [sub_add_cancel] at h1
-    exact h1
+    rwa [sub_add_cancel] at h1
   exact this hx
 
 theorem map_mem_iff {n : S.GLV} (hn : n ∈ S.Nof g) (j : ℕ) (x : S.V) :
@@ -212,13 +211,11 @@ theorem term_basic : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace
     · refine Submodule.span_le.2 ?_
       rintro _ ⟨b, rfl⟩
       have := (m b).2
-      rw [spanTo_top] at this
-      exact this
+      rwa [spanTo_top] at this
     · refine Submodule.span_le.2 ?_
       rintro _ ⟨b, rfl⟩
       have := (m' b).2
-      rw [spanTo_top] at this
-      exact this
+      rwa [spanTo_top] at this
   · rintro p ⟨A, A', hi, hi', -, -, -, h1, h2⟩ a b
     refine (hSD.2 _).2 ?_ _ ?_
     · rw [h1]

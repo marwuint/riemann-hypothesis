@@ -125,8 +125,7 @@ theorem pull_one_prod_of_lift : GlobalTheory.Published.GrothendieckDeformation �
     rw [z₁, map_zero, Category.comp_id, MonObj.comp_one] at this
     exact this.symm
   have h₂' : Triv (ev (P.pull m) (𝟙 A) (1 : A ⟶ A)) := by
-    rw [triv_ev_iff hP', hev, MonObj.one_comp]
-    exact z₂
+    rwa [triv_ev_iff hP', hev, MonObj.one_comp]
   have sq : l ≫ m = m₀ ≫ l := by
     apply left_ext
     · rw [Category.assoc, Category.assoc, hm, hm₀, lift_left_fst, hl.1, lift_left_fst_assoc]
@@ -202,11 +201,9 @@ theorem symm_of_lift : GlobalTheory.Published.GrothendieckDeformation → Global
   obtain ⟨l₁, l₂⟩ := hl
   have hs : (P.pull (lift (snd A A) (fst A A)).left).IsLB := pull_isLB hP _
   have h₁' : Triv (ev (swap P) (1 : A ⟶ A) (𝟙 A)) := by
-    rw [triv_ev_iff hs, evc_swap hP hs, ← triv_ev_iff hP]
-    exact h₂
+    rwa [triv_ev_iff hs, evc_swap hP hs, ← triv_ev_iff hP]
   have h₂' : Triv (ev (swap P) (𝟙 A) (1 : A ⟶ A)) := by
-    rw [triv_ev_iff hs, evc_swap hP hs, ← triv_ev_iff hP]
-    exact h₁
+    rwa [triv_ev_iff hs, evc_swap hP hs, ← triv_ev_iff hP]
   have sq : l ≫ (lift (snd A A) (fst A A)).left = (lift (snd A₀ A₀) (fst A₀ A₀)).left ≫ l := by
     apply left_ext
     · rw [Category.assoc, Category.assoc, lift_left_fst, l₂, l₁, lift_left_fst_assoc]
@@ -633,8 +630,7 @@ theorem ker_pow_eq_one_of_lift : ∀ (C C₀ : Type) [CommRing C] [IsLocalRing C
       intro m
       induction m with
       | zero =>
-        simp only [pow_zero]
-        exact one_left_comp hi (s := T₀.hom) rfl
+        simpa only [pow_zero] using one_left_comp hi (s := T₀.hom) rfl
       | succ m ih =>
         rw [pow_succ, pow_succ]
         exact mul_left_comp hi (s := T₀.hom) rfl ih hz₀
@@ -772,8 +768,7 @@ theorem relAmple_of_pow_eq_bot : ∀ (n : ℕ) (R R₀ : Type) [CommRing R] [Com
     have hpb : IsPullback β₀ X₀.hom X₁.hom (spMap π₁) := by
       refine IsPullback.of_right (h₁₂ := pullback.fst X.hom f) (h₂₂ := f) (v₁₃ := X.hom) ?_
         (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback X.hom f)
-      rw [hβ₀, ← hcomp]
-      exact hβ
+      rwa [hβ₀, ← hcomp]
     have hX₁ : LocallyOfFiniteType X₁.hom :=
       inferInstanceAs (LocallyOfFiniteType (pullback.snd X.hom f))
     let L₁ : LB X₁.left := L.pull (pullback.fst X.hom f)
@@ -856,8 +851,7 @@ theorem gen_left {S : Scheme.{0}} {A : Over S} [GrpObj A] (P : LB (A ⊗ A).left
     (∃ t : ((P.pull (lift (fst A A ≫ u) (snd A A)).left).pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) ∧
     (∃ t : ((P.pull (lift (fst A A ≫ u) (snd A A)).left).pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) := by
   refine ⟨gen_pull_pull hP _ _ ?_, gen_pull_pull hP _ _ ?_⟩
-  · rw [← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd, MonObj.one_comp]
-    exact h₁
+  · rwa [← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd, MonObj.one_comp]
   · have e : lift (𝟙 A) (1 : A ⟶ A) ≫ lift (fst A A ≫ u) (snd A A) = u ≫ lift (𝟙 A) (1 : A ⟶ A) := by
       rw [comp_lift, lift_fst_assoc, lift_snd, comp_lift, Category.id_comp, Category.comp_id, MonObj.comp_one]
     rw [← Over.comp_left, e, Over.comp_left]

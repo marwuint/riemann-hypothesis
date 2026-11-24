@@ -295,8 +295,7 @@ theorem gram_det_index_sublattice (U V ι κ : Type) [AddCommGroup U] [NormedAdd
             refine Finset.sum_congr rfl fun j _ => ?_
             rw [← h4 j, Matrix.mul_apply]; rfl
         _ = ∑ k, Am.adjugate i k • v (e k) := by
-            simp only [Finset.sum_smul, ← hA, Finset.smul_sum, mul_smul]
-            exact Finset.sum_comm
+            simpa only [Finset.sum_smul, ← hA, Finset.smul_sum, mul_smul] using Finset.sum_comm
     have hmem : Am.det • u i ∈ Submodule.span ℤ (Set.range v) := by
       rw [hkey]
       exact Submodule.sum_mem _ fun k _ =>
@@ -364,8 +363,7 @@ theorem linearIndependent_vecMul_of_span_rat :
         by_cases hj : j = i
         · subst hj; simp
         · simp [hj]
-      rw [h'] at this
-      exact this
+      rwa [h'] at this
     have hr : r ∈ Submodule.span ℝ (Set.range τ) := by rw [hτ]; trivial
     exact hle hr
   have h3 : ∀ y : Fin n → R, y ∈ V := by
@@ -382,8 +380,7 @@ theorem linearIndependent_vecMul_of_span_rat :
       simp [φ, Matrix.vecMul_vecMul]
     have hm : φ (y ᵥ* (g⁻¹).1) ∈ V.map φ := Submodule.mem_map_of_mem (h3 _)
     rw [hV, Submodule.map_span, ← Set.range_comp] at hm
-    rw [hy]
-    exact hm
+    rwa [hy]
   · rw [hcard, Module.finrank_pi_fintype, ← hrk]
     simp [mul_comm]
 
@@ -462,9 +459,7 @@ theorem totallyComplex_span_embeddings_and_finrank :
       { toFun := fun x w => x.2 ⟨w, IsTotallyComplex.isComplex w⟩
         map_add' := fun x y => rfl
         map_smul' := fun c x => rfl }
-    have hf : Function.Surjective f := by
-      intro y
-      exact ⟨(0, fun w => y w.1), rfl⟩
+    have hf : Function.Surjective f := fun y => ⟨(0, fun w => y w.1), rfl⟩
     have hcomp : ∀ x : E, f (mixedEmbedding E x) = Pi.ringHom (fun w : InfinitePlace E => w.embedding) x := by
       intro x
       funext w
@@ -480,8 +475,7 @@ theorem totallyComplex_span_embeddings_and_finrank :
         Set.range (Pi.ringHom fun w : InfinitePlace E => w.embedding) := by
       rw [← Set.range_comp]
       exact congrArg Set.range (funext hcomp)
-    rw [← himg, ← Submodule.map_span, hspan, Submodule.map_top, LinearMap.range_eq_top]
-    exact hf
+    rwa [← himg, ← Submodule.map_span, hspan, Submodule.map_top, LinearMap.range_eq_top]
   · rw [Module.finrank_pi_fintype]
     simp only [Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, smul_eq_mul]
     rw [IsTotallyComplex.finrank, card_eq_nrRealPlaces_add_nrComplexPlaces,
@@ -582,8 +576,7 @@ theorem red_inf (E : Type) [Field E] [NumberField E] (R : Type) [NormedCommRing 
     exact congrArg Units.val (mul_inv_cancel_left (dg s fun i => l i + 1) (bc τ δ * g)).symm
   have h2 : ∀ i, (fun k => τ (w i k)) ᵥ* g.1 = (2 : ℝ) ^ (l i + 1) • c.1 i := fun i => funext fun k => by
     have := congrFun (congrFun h1 i) k
-    rw [diagonal_mul, hδ, ← Algebra.smul_def] at this
-    exact this
+    rwa [diagonal_mul, hδ, ← Algebra.smul_def] at this
   have h3 : ∀ i j, ‖c.1 i j‖ ≤ ‖ε.symm.toContinuousLinearMap‖ := fun i j => by
     have h4 := (hl i).2
     rw [hφ, h2, map_smul, norm_smul, Real.norm_of_nonneg (by positivity), mul_le_iff_le_one_right (by positivity)] at h4

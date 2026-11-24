@@ -174,8 +174,7 @@ theorem integratedOperator_isStarProjection_and_sandwich :
     rw [map_one, hm1, one_smul] at h
     show P * P = P
     ext v
-    have hv := DFunLike.congr_fun h v
-    simpa using hv
+    simpa using DFunLike.congr_fun h v
   exact ⟨⟨hidem, hsa⟩, hsand⟩
 
 end GlobalTheory
@@ -433,13 +432,11 @@ theorem sigmaFinite_and_isInvInvariant_of_continuous_integrable :
     refine Measure.sigmaFinite_of_countable
       (hTc.image fun g : G => (fun y => g⁻¹ * y) ⁻¹' {x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ}) ?_ ?_
     · rintro _ ⟨g, -, rfl⟩
-      rw [measure_preimage_mul]
-      exact hUfin
+      rwa [measure_preimage_mul]
     · rw [Set.sUnion_image, hT]
       refine Set.eq_univ_of_forall fun x => Set.mem_iUnion.2 ⟨x, ?_⟩
       show x⁻¹ * x ∈ {x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ}
-      rw [inv_mul_cancel]
-      exact h1U
+      rwa [inv_mul_cancel]
 
   have key : μ.inv = μ := by
     open Pointwise in
@@ -544,8 +541,7 @@ theorem projAbs_holds : ProjAbs := by
     rw [hP.2]
     simp only [e]
     have := h3 w (ContinuousLinearMap.adjoint io x)
-    rw [hww, one_mul, ContinuousLinearMap.adjoint_inner_left] at this
-    exact this
+    rwa [hww, one_mul, ContinuousLinearMap.adjoint_inner_left] at this
 
 end GlobalTheory.Dec
 end -- clump:auto
@@ -677,8 +673,7 @@ theorem abstract_count {G H L : Type} [NormedAddCommGroup H] [InnerProductSpace 
     exact huniq A hA _ hmem (by rw [hAw, hval])
   refine ⟨⟨?_, ?_, rfl⟩, hfix, hex, ?_⟩
   · ext y
-    simp only [ContinuousLinearMap.comp_apply]
-    exact hQQ y
+    simpa only [ContinuousLinearMap.comp_apply] using hQQ y
   · intro x y
     simp only [ContinuousLinearMap.comp_apply]
     rw [hPs, hEs, ← hPE]

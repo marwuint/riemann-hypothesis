@@ -194,13 +194,11 @@ lemma coaction_free [Mono i] [Module.Finite R Λ] :
     have h₁ : φ'.comp includeLeft = ψ'.comp (includeLeft : B →ₐ[R] B ⊗[R] Λ) := by
       ext b
       have := hm (b ⊗ₜ 1)
-      rw [productMap_left_apply] at this
-      exact this
+      rwa [productMap_left_apply] at this
     have h₂ : φ'.comp ρ = ψ'.comp ρ := by
       ext b
       have := hm (1 ⊗ₜ b)
-      rw [productMap_right_apply] at this
-      exact this
+      rwa [productMap_right_apply] at this
     have h₃ := specHom_comp_coaction i v ρ hρ φ'
     rw [h₂, h₁, specHom_comp_coaction i v ρ hρ ψ', mul_left_inj, cancel_mono] at h₃
     have h₄ := specHom_injective h₃
@@ -243,12 +241,10 @@ lemma isPushout_equalizer {T : Type} [CommRing T] [Algebra R T] (α β : B →�
   refine ⟨CommRingCat.ofHom d, ?_, ?_, fun {m} hm₁ hm₂ ↦ ?_⟩
   · ext b
     have := hd (1 ⊗ₜ b)
-    rw [productMap_right_apply, productMap_right_apply] at this
-    exact this
+    rwa [productMap_right_apply, productMap_right_apply] at this
   · ext b
     have := hd (b ⊗ₜ 1)
-    rw [productMap_left_apply, productMap_left_apply] at this
-    exact this
+    rwa [productMap_left_apply, productMap_left_apply] at this
   · ext t
     obtain ⟨z, rfl⟩ := h₁ t
     refine Eq.trans ?_ (hd z).symm

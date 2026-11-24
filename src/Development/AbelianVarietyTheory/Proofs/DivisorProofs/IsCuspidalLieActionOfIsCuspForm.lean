@@ -126,7 +126,6 @@ theorem chart_cont_bound {r : ℕ} {φ : Sm E a} (hφ : IsAutForm φ) (g : GA E 
   choose q hq using fun p => hcov (x p)
   have hx : x = (fun p => algebraMap E (Ad E) (q p)) + fun p => x p - algebraMap E (Ad E) (q p) := by
     funext p
-    show x p = algebraMap E (Ad E) (q p) + (x p - algebraMap E (Ad E) (q p))
     exact (add_sub_cancel _ _).symm
   have hx' : ((fun p => x p - algebraMap E (Ad E) (q p)), y) ∈ (Set.univ.pi fun _ : BlockIx a r => K) ×ˢ S :=
     ⟨fun p _ => hq p, hy⟩
@@ -170,16 +169,14 @@ theorem isCuspidal_lie (X : Lie E a) (φ : Sm E a) (hφ : IsCuspForm φ) : IsCus
     have hd := ((contDiffAt_chart φ.2 (unip x * g) (hballT t ht)).differentiableAt (by simp)).hasFDerivAt
     have hl : HasDerivAt ℓ X t := by
       have := ((hasDerivAt_id t).smul_const X).const_add (oneL E a)
-      rw [one_smul] at this
-      exact this
+      rwa [one_smul] at this
     exact hd.comp_hasDerivAt t hl
   have heq : (fun t => ∫ x in 𝓕, chart φ.1 (unip x * g) (ℓ t) ∂μ) =ᶠ[𝓝 0] fun _ => 0 := by
     filter_upwards [ball_mem_nhds (0:ℝ) hε] with t ht
     have hu : IsUnit (Matrix.of (ℓ t)) := hballT t ht
     have e : ∀ x : BlockIx a r → Ad E, chart φ.1 (unip x * g) (ℓ t) = φ.1 (unip x * (g * infGL E a hu.unit)) := fun x => by
       rw [chart, dite_eq_left hu, mul_assoc]
-    simp only [e]
-    exact hφ.2 r h0 h1 μ 𝓕 hμ hF _
+    simpa only [e] using hφ.2 r h0 h1 μ 𝓕 hμ hF _
   have h2 := key.2.unique ((hasDerivAt_const (0:ℝ) (0:ℂ)).congr_of_eventuallyEq heq)
   have e0 : ℓ 0 = oneL E a := by simp [ℓ]
   simp only [e0] at h2

@@ -130,8 +130,7 @@ theorem exists_compatible_maps_mod_pow_maximalIdeal_base : ∀ (R : Type) [CommR
     refine (hR' e).trans ?_
     rw [Ideal.map_le_iff_le_comap]
     intro r hr
-    simp only [Ideal.mem_comap, ← IsScalarTower.algebraMap_apply]
-    exact Ideal.mem_map_of_mem _ hr
+    simpa only [Ideal.mem_comap, ← IsScalarTower.algebraMap_apply] using Ideal.mem_map_of_mem _ hr
   have hJ : ∀ e : ℕ, (maximalIdeal R ^ (e + 1 + 1)).map (algebraMap R C') ≤
       (maximalIdeal R ^ (e + 1)).map (algebraMap R C') :=
     fun e => Ideal.map_mono (Ideal.pow_le_pow_right (Nat.le_succ _))
@@ -165,8 +164,7 @@ theorem exists_compatible_maps_mod_pow_maximalIdeal_base : ∀ (R : Type) [CommR
         ((maximalIdeal R ^ (e + 1)).map (algebraMap R C')).comap (actC σ) := by
       rw [Ideal.map_le_iff_le_comap]
       intro r hr
-      simp only [Ideal.mem_comap, AlgEquiv.commutes]
-      exact Ideal.mem_map_of_mem _ hr
+      simpa only [Ideal.mem_comap, AlgEquiv.commutes] using Ideal.mem_map_of_mem _ hr
     have hσ : actC σ y - actC σ y' ∈ (maximalIdeal R ^ (e + 1)).map (algebraMap R C') := by
       rw [← map_sub]; exact hst hd
     rw [Ideal.Quotient.eq.2 hσ, hi, ← hinv (N * (e + 1)) σ x y' hy', Ideal.Quotient.factorₐ_apply_mk]
@@ -194,8 +192,7 @@ theorem exists_compatible_maps_mod_pow_maximalIdeal_base : ∀ (R : Type) [CommR
       rw [RingHom.mem_ker, AlgHom.comp_apply] at ht
       obtain ⟨c, hc⟩ := Ideal.Quotient.mk_surjective (L' t)
       have hcJ : c ∈ (maximalIdeal R ^ (e + 1)).map (algebraMap R C') := by
-        rw [← Ideal.Quotient.eq_zero_iff_mem, ← Ideal.Quotient.factorₐ_apply_mk R (hle e), hc]
-        exact ht
+        rwa [← Ideal.Quotient.eq_zero_iff_mem, ← Ideal.Quotient.factorₐ_apply_mk R (hle e), hc]
       have hsub : (maximalIdeal R ^ (e + 1)).map (algebraMap R C') ≤
           (((maximalIdeal R ^ (e + 1)).map (algebraMap R (TensorProduct R O R'))).map L').comap
             (Ideal.Quotient.mk ((maximalIdeal R' ^ (N * (e + 1) + 1)).map (algebraMap R' C'))) := by
@@ -217,8 +214,7 @@ theorem exists_compatible_maps_mod_pow_maximalIdeal_base : ∀ (R : Type) [CommR
         refine (hR' e).trans ?_
         rw [Ideal.map_le_iff_le_comap]
         intro r hr
-        simp only [Ideal.mem_comap, AlgHom.commutes]
-        exact Ideal.mem_map_of_mem _ hr
+        simpa only [Ideal.mem_comap, AlgHom.commutes] using Ideal.mem_map_of_mem _ hr
       simpa using Ideal.add_mem _ (hKK hdiff) ht'K
     · rw [Ideal.map_le_iff_le_comap]
       intro r hr
@@ -588,8 +584,7 @@ theorem exists_invariant_maps_of_affine_open : ∀ (R : Type) [CommRing R] (R' :
     have hr : Set.range (je e ≫ φ e) ⊆ Set.range k := by
       rintro _ ⟨z, rfl⟩
       have h1 : je e z ∈ (je e).opensRange := ⟨z, rfl⟩
-      rw [hjer, ← hopen, ← hkW] at h1
-      exact h1
+      rwa [hjer, ← hopen, ← hkW] at h1
     obtain ⟨f, hf⟩ := Spec.map_surjective (IsOpenImmersion.lift k (je e ≫ φ e) hr)
     have hf' : Spec.map f ≫ k = je e ≫ φ e := by rw [hf]; exact IsOpenImmersion.lift_fac _ _ _
     have hc : CommRingCat.ofHom (algebraMap R O) ≫ f =
@@ -601,10 +596,8 @@ theorem exists_invariant_maps_of_affine_open : ∀ (R : Type) [CommRing R] (R' :
       simp only [thick, spMap, ← Spec.map_comp]
       congr 1
       ext r
-      simp
-      exact (IsScalarTower.algebraMap_apply _ _ _ _).symm
-    refine ⟨{ f.hom with commutes' := fun r => congrArg (fun g => g.hom r) hc }, ?_⟩
-    exact hf'
+      simpa using (IsScalarTower.algebraMap_apply _ _ _ _).symm
+    exact ⟨{ f.hom with commutes' := fun r => congrArg (fun g => g.hom r) hc }, hf'⟩
   choose i hi using hi
   refine ⟨O, inferInstance, inferInstance, i, hOsm, ?_, ?_, ?_⟩
   · intro e x y hxy

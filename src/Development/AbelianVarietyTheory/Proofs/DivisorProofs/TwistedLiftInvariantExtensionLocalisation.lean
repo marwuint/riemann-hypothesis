@@ -97,8 +97,7 @@ theorem twisted_lift_to_localisation (A B A₂ : Type) [CommRing A] [IsLocalRing
     refine ⟨?_, ?_, ?_⟩
     · rintro ⟨s, hs⟩
       have : s ∉ q := hs
-      rw [hfq, not_not] at this
-      exact this
+      rwa [hfq, not_not] at this
     · intro z
       obtain ⟨b, s, hs, h⟩ := hsurj z
       have hs' : s ∈ q.primeCompl := by
@@ -119,8 +118,7 @@ theorem twisted_lift_to_localisation (A B A₂ : Type) [CommRing A] [IsLocalRing
   have hunits : ∀ y : q.primeCompl, IsUnit (β' y) := by
     rintro ⟨s, hs⟩
     have : s ∉ q := hs
-    rw [hβ'q, not_not] at this
-    exact this
+    rwa [hβ'q, not_not] at this
   have hcomp : (IsLocalization.lift hunits).comp f = β' :=
     IsLocalization.lift_comp (M := q.primeCompl) (S := A₂) hunits
   refine ⟨IsLocalization.lift hunits, ?_, ?_⟩
@@ -128,8 +126,7 @@ theorem twisted_lift_to_localisation (A B A₂ : Type) [CommRing A] [IsLocalRing
     obtain ⟨b, s, hs, h⟩ := hsurj x
     have hsq : IsUnit (β' s) := by
       have : s ∉ q := by rw [hfq, not_not]; exact hs
-      rw [hβ'q, not_not] at this
-      exact this
+      rwa [hβ'q, not_not] at this
     have hb : IsUnit (β' b) := by
       have h2 := congrArg (IsLocalization.lift hunits) h
       rw [map_mul, ← RingHom.comp_apply, ← RingHom.comp_apply, hcomp] at h2
@@ -137,8 +134,7 @@ theorem twisted_lift_to_localisation (A B A₂ : Type) [CommRing A] [IsLocalRing
       exact hx.mul hsq
     have hfb : IsUnit (f b) := by
       have : b ∉ q := by rw [hβ'q, not_not]; exact hb
-      rw [hfq, not_not] at this
-      exact this
+      rwa [hfq, not_not] at this
     rw [← h] at hfb
     exact isUnit_of_mul_isUnit_left hfb
   · rw [← RingHom.comp_assoc, hcomp, hβ'A]

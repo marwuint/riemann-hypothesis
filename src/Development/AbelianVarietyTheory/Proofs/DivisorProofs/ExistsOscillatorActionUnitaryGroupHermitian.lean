@@ -189,8 +189,7 @@ private theorem differentiable_gaussian_mul_orbit_line {J : V ≃ₗᵢ[ℝ] V} 
         (0 : ℂ →L[ℝ] ℂ) 0 := by
       have h1 := ((hasStrictFDerivAt_norm_sq (0 : ℂ)).hasFDerivAt.const_mul
         (Real.pi / 2 * ‖u‖ ^ 2))
-      have h2 := ofRealCLM.hasFDerivAt.comp (0 : ℂ) h1
-      simpa [Function.comp_def] using h2
+      simpa [Function.comp_def] using ofRealCLM.hasFDerivAt.comp (0 : ℂ) h1
     have hg : HasFDerivAt (fun ζ => ρ (_root_.GlobalTheory.RealWeil.Vacuum.line J u ζ) f)
         (D.comp (_root_.GlobalTheory.RealWeil.Vacuum.line J u)) 0 := by
       have hD0 : HasFDerivAt (fun v => ρ v f) D (_root_.GlobalTheory.RealWeil.Vacuum.line J u 0) := by
@@ -219,8 +218,7 @@ private theorem differentiable_gaussian_mul_orbit_line {J : V ≃ₗᵢ[ℝ] V} 
     simp_rw [hshift ζ]
     have hψd : DifferentiableAt ℂ ψ 0 := hψ0.differentiableAt
     fun_prop
-  have h4 := hd.comp (f := fun y => y - ζ) ζ (differentiableAt_id.sub_const ζ)
-  simpa [Function.comp_def] using h4
+  simpa [Function.comp_def] using hd.comp (f := fun y => y - ζ) ζ (differentiableAt_id.sub_const ζ)
 
 open MeasureTheory Complex in
 open scoped RealInnerProductSpace ContDiff Real ComplexOrder in
@@ -521,8 +519,7 @@ theorem exists_osc_involution (H : Matrix ι ι ℂ) (h1 : Hᴴ = H) (h2 : H * H
   refine ⟨fun g => Ω (φ g), isOsc_comp (crd ι) φ (fun g v => crd_kL _ v) hΩ, fun g hg f hf => ?_,
     fun hmc f hf => ?_, fun s g hs hpos hsg f hf hD => ?_⟩
   · have : φ g = 1 := Subtype.ext (Units.ext hg)
-    simp only [this]
-    exact hΩ.2.2.2.1 f ((sm_comp_iff _ _ _).2 hf)
+    simpa only [this] using hΩ.2.2.2.1 f ((sm_comp_iff _ _ _).2 hf)
   · exact hc G φ (continuous_kL.comp hmc) ((continuous_dP H).comp hmc) f ((sm_comp_iff _ _ _).2 hf)
   · obtain ⟨a, ha, has⟩ := GlobalTheory.cartanInvolution_conj_of_posDef ι H s h1 h2 hs hpos
     have hdet : a.det ≠ 0 := by
@@ -544,8 +541,7 @@ theorem exists_osc_involution (H : Matrix ι ι ℂ) (h1 : Hᴴ = H) (h2 : H * H
     have hiso : (g₀.1 : Matrix ι ι ℂ)ᴴ * g₀.1 = 1 := by
       have e : (g₀.1 : Matrix ι ι ℂ)ᴴ * H * g₀.1 = H := g₀.2
       rw [mul_assoc, hcomm, ← mul_assoc] at e
-      have e' := congrArg (· * H) e
-      simpa only [mul_assoc, h2, mul_one] using e'
+      simpa only [mul_assoc, h2, mul_one] using congrArg (· * H) e
     let E : EuclideanSpace ℂ ι →L[ℝ] (ι → ℂ) := (crd ι : EuclideanSpace ℂ ι →L[ℝ] (ι → ℂ)) ∘L kU H a'
     have hE : ∀ z, E z = (u : Matrix ι ι ℂ) *ᵥ crd ι z := fun z => crd_kL _ z
     have hvac := GlobalTheory.RealWeil.proj_eq_self_of_annihilated (EuclideanSpace ℂ ι) B (cplx H h1 h2) _ hJ (hρ'.twist (kU H a') (hom a')) f
@@ -556,12 +552,10 @@ theorem exists_osc_involution (H : Matrix ι ι ℂ) (h1 : Hᴴ = H) (h2 : H * H
           rw [hE, hE, crd_cplx, mulVec_smul, mulVec_mulVec, mulVec_mulVec, has]
         rw [e3] at e2
         have e4 := hD (E z)
-        rw [← e1, ← e2] at e4
-        exact e4
+        rwa [← e1, ← e2] at e4
     have key := hv a' g₀ (norm_kL hiso) f ((sm_comp_iff _ _ _).2 hf) hvac
     have e : a' * g₀ * a'⁻¹ = φ g := by simp only [g₀]; group
-    rw [e, detPlus_conj₂ hdet has hg₀] at key
-    exact key
+    rwa [e, detPlus_conj₂ hdet has hg₀] at key
 
 theorem exists_osc : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (H : Matrix ι ι ℂ), Hᴴ = H → H.det ≠ 0 → ∀ (B : Type) [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] (ρ : (ι → ℂ) → B →L[ℂ] B), IsHeis (fun x y => (star y ⬝ᵥ H *ᵥ x).im) ρ → ∀ (G : Type) [Group G] (m : G →* Matrix ι ι ℂ), (∀ g, (m g)ᴴ * H * m g = H) → ∃ Ω : G → B → B, IsOsc ρ (fun g v => m g *ᵥ v) Ω ∧ (∀ g, m g = 1 → ∀ f, Sm ρ f → Ω g f = f) ∧ (∀ [TopologicalSpace G], Continuous m → ∀ f, Sm ρ f → Continuous fun g => Ω g f) ∧ ∀ (s : Matrix ι ι ℂ) (g : G), s * s = 1 → (H * s).PosDef → s * m g = m g * s → ∀ f, Sm ρ f → (∀ z, fderiv ℝ (fun v => ρ v f) 0 z + I • fderiv ℝ (fun v => ρ v f) 0 (I • s *ᵥ z) = 0) → Ω g f = dP s (m g) • f := by
   intro ι _ _ H h1 h2 B _ _ _ ρ hρ G _ m hm
@@ -604,8 +598,7 @@ theorem exists_osc : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (H : Matrix �
       have e : s₀ * (u.1 * s * (u⁻¹).1) = (u⁻¹).1ᴴ * (u.1ᴴ * s₀ * u.1 * s) * (u⁻¹).1 := by
         calc _ = (u.1 * (u⁻¹).1)ᴴ * (s₀ * (u.1 * s * (u⁻¹).1)) := by simp
           _ = _ := by simp only [mul_assoc, conjTranspose_mul]
-      rw [e]
-      exact this
+      rwa [e]
     have key := hv (u.1 * s * (u⁻¹).1) g
       (by simp only [mul_assoc, Units.inv_mul_cancel_left]; rw [← mul_assoc s, hs, one_mul, Units.mul_inv]) hpos'
       (by simp only [hm', mul_assoc, Units.inv_mul_cancel_left]; rw [← mul_assoc s, hsg, mul_assoc]) f

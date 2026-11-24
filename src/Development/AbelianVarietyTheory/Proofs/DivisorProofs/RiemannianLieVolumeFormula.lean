@@ -127,8 +127,7 @@ theorem rankOne_mulVec (G : Matrix (Fin r) (Fin r) E) (x y v : Fin r → E) :
   simp only [rankOne, mulVec, dotProduct, of_apply, herm, Pi.smul_apply, smul_eq_mul]
   rw [Finset.sum_mul]
   refine Finset.sum_congr rfl fun b _ => ?_
-  simp only [Finset.mul_sum, Finset.sum_mul]
-  exact Finset.sum_congr rfl fun k _ => by ring
+  simpa only [Finset.mul_sum, Finset.sum_mul] using Finset.sum_congr rfl fun k _ => by ring
 
 theorem trace_rankOne (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     (rankOne G x y).trace = herm G x y := by
@@ -1231,8 +1230,7 @@ theorem volume_eq_sqrt_gram {ι W : Type} [Fintype ι] [DecidableEq ι] [NormedA
     rw [OrthonormalBasis.addHaar_eq_volume, OrthonormalBasis.addHaar_eq_volume]
   rw [ho, det_gram_eq_sq o, abs_sq, Real.sqrt_sq_eq_abs, ← Measure.addHaar_parallelepiped]
   have := Measure.addHaarMeasure_unique o.toBasis.addHaar b.parallelepiped
-  rw [← Module.Basis.addHaar_def] at this
-  exact this
+  rwa [← Module.Basis.addHaar_def] at this
 
 theorem volume_eq_sqrt_gram_map {ι κ W : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
     [NormedAddCommGroup W]
@@ -1269,8 +1267,7 @@ theorem volume_eq_sqrt_gram_map {ι κ W : Type} [Fintype ι] [DecidableEq ι] [
         intro p
         rw [Module.Basis.ofEquivFun_repr_apply]
         simp [u]
-      simp only [hr]
-      exact ⟨fun h t i => h (i, t), fun h p => h _ _⟩
+      simpa only [hr] using ⟨fun h t i => h (i, t), fun h p => h _ _⟩
     rw [this]
     simp only [volume_pi_pi, Real.volume_Icc]
     simp
@@ -1439,8 +1436,7 @@ theorem riemLie_eq_smul_formLie (E : Type) [Field E] [NumberField E] [IsCMField 
     choose c hc using fun τ => (Submodule.mem_span_range_iff_exists_fun ℝ).1 (hspan τ)
     refine ⟨c, funext fun τ => ?_⟩
     have h1 := coordMap_apply X.Ψ e c τ
-    rw [hc τ] at h1
-    exact h1
+    rwa [hc τ] at h1
   have hin : ∀ c, coordMap X.Ψ e c ∈ realLie X.Ψ G := by
     intro c
     refine (mem_realLie_iff X.Ψ G _).2 fun τ => ?_

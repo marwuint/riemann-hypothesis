@@ -101,8 +101,7 @@ theorem isUnit_map_of_ne_zero {o R : Type} [CommRing o] [IsDedekindDomain o] [Al
   letI := Ideal.Quotient.field m
   haveI : CharZero (R ⧸ m) := charZero_of_inj_zero fun n hn => by
     by_contra h0
-    have hu := (hR n (by exact_mod_cast h0)).map (Ideal.Quotient.mk m)
-    exact hu.ne_zero (by simpa using hn)
+    exact ((hR n (by exact_mod_cast h0)).map (Ideal.Quotient.mk m)).ne_zero (by simpa using hn)
   have hk := ker_eq_bot_of_charZero ((Ideal.Quotient.mk m).comp φ)
   have : a ∈ RingHom.ker ((Ideal.Quotient.mk m).comp φ) := Ideal.Quotient.eq_zero_iff_mem.2 ham
   rw [hk] at this
@@ -126,8 +125,7 @@ theorem exists_affine_chart_ratHull_lift : ∀ (E : Type) [Field E] [NumberField
     obtain ⟨x, hx⟩ := hw
     have : C.iF x ∈ (pullback.fst C.z (spMap C.b) :) ⁻¹' V := hVe ▸ ⟨x, rfl⟩
     show X.π w ∈ V
-    rw [← hx]
-    exact this
+    rwa [← hx]
   obtain ⟨U, hU, hwU, hUV⟩ := exists_isAffineOpen_mem_and_subset (X := X.M.Z) hwV
   have hne : ((U : X.M.Z.Opens) : Set X.M.Z).Nonempty := ⟨w, hwU⟩
   let φ : Γ(X.M.Z, U) ⟶ CommRingCat.of (ratHull (X.M.ringOn U)) :=
@@ -267,8 +265,7 @@ theorem GlobalTheory.UPoinc.exists_rechart_wit : ∀ (E : Type) [Field E] [Numbe
         spMap (Subalgebra.inclusion (ratHull_mono h₁)).toRingHom ≫ u₀ = u' := by
       rw [← Category.assoc, ← Spec.map_comp]
       rfl
-    rw [e1, e2] at h2
-    exact h2
+    rwa [e1, e2] at h2
   obtain ⟨G, _, α, β, hα, hβ, hLG⟩ := hUO
   have wβ : wi.β ≫ Xo.univ.t.G.hom = (wi.G.hom ≫ spMap (ratHull (X.M.ringOn U)).val.toRingHom) ≫ u' ≫ pullback.fst _ _ := by
     rw [wi.hβ.1.w, ← hu']
@@ -337,8 +334,7 @@ theorem GlobalTheory.UPoinc.exists_rechart_wit : ∀ (E : Type) [Field E] [Numbe
     obtain ⟨w0, h₁, h₂⟩ := hw0 x
     refine ⟨w0 ≫ inv e, ?_, ?_⟩
     · rw [← hea, Category.assoc, IsIso.inv_hom_id_assoc, h₁]
-    · rw [← hea', Category.assoc, IsIso.inv_hom_id_assoc]
-      exact h₂
+    · rwa [← hea', Category.assoc, IsIso.inv_hom_id_assoc]
   obtain ⟨c₀, hc, hthm, hevm, ρ', ⟨hS₁, G', _, α', β', hα', hβ', hL', m', hm', hm₁', hpt'⟩, hi₀⟩ :=
     GlobalTheory.ThetaExtend.exists_real_rechart hL X.S X.ρ (X.M.ringOn U) fg frac P' P₀ a a' pt' th b ha ha' hl hl' hg hyp hadd hbij hweil
       hw0 hth hb Q hQ
@@ -539,8 +535,7 @@ theorem exists_pull_univ {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   refine ⟨e.hom.left ≫ m₂.cm.F, ((isGrpPullback_of_iso e).comp m₂.cart).congr (Category.id_comp _) rfl, ?_, fun a => ?_⟩
   · have hext : LBIso (T.t.PP.L.pull (pullback.fst T.t.G.hom (jK T.V))) (T.P.A.L.pull T.P.U.gen.hom.left) := by
       obtain ⟨w, hw⟩ := T.P.U.ext
-      have hb := T.P.bundle
-      exact LBIso.symm (hb ▸ ⟨w, hw⟩)
+      exact LBIso.symm (T.P.bundle ▸ ⟨w, hw⟩)
     have s1 := GlobalTheory.TripleTheta.lbIso_inv T.P.U.gen hext
     have s2 := (GlobalTheory.GenSpread.lbIso_pull_pull T.t.PP.isLB (a := pullback.fst T.t.G.hom (jK T.V))
       T.P.U.gen.inv.left rfl).symm
@@ -552,8 +547,7 @@ theorem exists_pull_univ {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   · letI := H.starRing
     have h0 := T.P.lin.ext a
     have h1 : T.P.oA.act a ≫ T.P.U.gen.inv = T.P.U.gen.inv ≫ (Over.pullback (jK T.V)).map (T.t.act.act a) := by
-      rw [Iso.comp_inv_eq, Category.assoc, eq_comm, Iso.inv_comp_eq]
-      exact h0
+      rwa [Iso.comp_inv_eq, Category.assoc, eq_comm, Iso.inv_comp_eq]
     have h2 : ((Over.pullback (jK T.V)).map (T.t.act.act a)).left ≫ pullback.fst T.t.G.hom (jK T.V) =
         pullback.fst T.t.G.hom (jK T.V) ≫ (T.t.act.act a).left := pullback.lift_fst _ _ _
     have h3 : (T.P.oA.act a).left ≫ e.hom.left = e.hom.left ≫ (tK.act.act a).left := by

@@ -58,9 +58,7 @@ namespace GlobalTheory.AnnCompactStd
 variable {F : Type} [Field F] [NumberField F]
 
 theorem pairA_zero_add (a b : Af F) : pairA F 0 (a + b) = pairA F 0 a + pairA F 0 b := by
-  refine Prod.ext ?_ rfl
-  show (0 : Ainf F) = 0 + 0
-  exact (add_zero 0).symm
+  exact Prod.ext (add_zero 0).symm rfl
 
 theorem exists_psi_fin_trivial {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) :
     ∃ d : 𝓞 F, d ≠ 0 ∧ ∀ y ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 F) F,
@@ -68,9 +66,7 @@ theorem exists_psi_fin_trivial {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) :
   let χ : AddChar (FiniteAdeleRing (𝓞 F) F) Circle :=
     { toFun := fun y => ⟨ψ (pairA F 0 y), mem_sphere_zero_iff_norm.2 (GlobalTheory.StdCharFromIsStd.norm_psi_fin hψ y)⟩
       map_zero_eq_one' := by
-        apply Subtype.ext
-        show ψ (pairA F 0 0) = 1
-        exact AddChar.map_zero_eq_one ψ
+        exact Subtype.ext (AddChar.map_zero_eq_one ψ)
       map_add_eq_mul' := fun a b => by
         apply Subtype.ext
         show ψ (pairA F 0 (a + b)) = ψ (pairA F 0 a) * ψ (pairA F 0 b)
@@ -78,9 +74,7 @@ theorem exists_psi_fin_trivial {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) :
   have hχ : Continuous χ :=
     Continuous.subtype_mk (hψ.1.comp (continuous_const.prodMk continuous_id)) _
   obtain ⟨d, hd0, hd⟩ := GroundTheory.Global.exists_forall_finiteChar_mul_eq_one χ hχ
-  refine ⟨d, hd0, fun y hy => ?_⟩
-  have h := congrArg (fun z : Circle => (z : ℂ)) (hd y hy)
-  exact h
+  exact ⟨d, hd0, fun y hy => congrArg (fun z : Circle => (z : ℂ)) (hd y hy)⟩
 
 end GlobalTheory.AnnCompactStd
 

@@ -157,28 +157,22 @@ theorem seminorm_perpVector_le {p : ℕ} (ν : RingSeminorm R) (h1 : ν 1 ≤ 1)
     | zero => simp
     | succ n =>
       have h := seminorm_sum_le μ Finset.univ
-        (fun a => ∑ a', ((pairingMatrix ε e').adjugate a a' * ε a g) • e' a')
-        (C := ((n + 1 : ℕ) : ℝ) * (n ! * C ^ n * C * r)) (by
-          intro a _
-          have h' := seminorm_sum_le μ Finset.univ
-            (fun a' => ((pairingMatrix ε e').adjugate a a' * ε a g) • e' a')
-            (C := n ! * C ^ n * C * r) (by
-              intro a' _
-              have hadj := ringSeminorm_adjugate_le ν h1 (pairingMatrix ε e') (C := C)
-                (fun i j => he j i) a a'
-              have hm : ν ((pairingMatrix ε e').adjugate a a' * ε a g) ≤ n ! * C ^ n * C :=
-                (map_mul_le_mul ν _ _).trans
-                  (mul_le_mul hadj (hg a) (apply_nonneg ν _) ((apply_nonneg ν _).trans hadj))
-              exact (hsmul _ _).trans
-                (mul_le_mul hm (he' a') (apply_nonneg μ _) ((apply_nonneg ν _).trans hm)))
-          rwa [Finset.card_univ, Fintype.card_fin] at h')
-      rw [Finset.card_univ, Fintype.card_fin] at h
+        (fun x : Fin (n + 1) × Fin (n + 1) =>
+          ((pairingMatrix ε e').adjugate x.1 x.2 * ε x.1 g) • e' x.2)
+        (C := n ! * C ^ n * C * r) (by
+          intro x _
+          have hadj := ringSeminorm_adjugate_le ν h1 (pairingMatrix ε e') (C := C)
+            (fun i j => he j i) x.1 x.2
+          have hm := (map_mul_le_mul ν _ _).trans
+            (mul_le_mul hadj (hg x.1) (apply_nonneg ν _) ((apply_nonneg ν _).trans hadj))
+          exact (hsmul _ _).trans
+            (mul_le_mul hm (he' x.2) (apply_nonneg μ _) ((apply_nonneg ν _).trans hm)))
+      rw [Finset.card_univ, Fintype.card_prod, Fintype.card_fin, Fintype.sum_prod_type] at h
       refine h.trans (le_of_eq ?_)
       rw [Nat.factorial_succ]; push_cast; ring
-  have hsub := map_sub_le_add μ ((pairingMatrix ε e').det • g)
-    (∑ a, ∑ a', ((pairingMatrix ε e').adjugate a a' * ε a g) • e' a')
   rw [perpVector, Nat.factorial_succ]
   push_cast
+  refine (map_sub_le_add μ _ _).trans ?_
   linarith
 
 end Size

@@ -91,8 +91,7 @@ theorem IsOpp.symm (h : IsOpp D Z Z') : IsOpp D Z' Z := by
 theorem IsOpp.eq_zero (h : IsOpp D Z Z') {b : D.La} (hb : b ∈ Z') (h0 : b ∈ perp D Z) : b = 0 := by
   obtain ⟨c, -, hu⟩ := h.2.2.1 0
   have h1 := hu ⟨b, hb⟩ fun a => by rw [_root_.GlobalTheory.SimLift.form_skew, h0 _ a.2]; simp
-  have h2 := hu 0 fun a => by simp
-  exact congrArg Subtype.val (h1.trans h2.symm)
+  exact congrArg Subtype.val (h1.trans (hu 0 fun a => by simp).symm)
 
 theorem IsOpp.exists_sub_mem_perp (h : IsOpp D Z Z') (a : D.La) : ∃ b ∈ Z', a - b ∈ perp D Z := by
   obtain ⟨b, hb, -⟩ := h.2.2.1 ((D.EF.flip a).toAddMonoidHom.comp Z.subtype.toAddMonoidHom)
@@ -160,8 +159,7 @@ theorem exists_skew_solve (hd : ∀ φ : Z →+ ℤ, ∃! b : Z', ∀ a : Z, D.E
             map_smul' := fun x b => (hu _ _ fun a => ?_).symm }, fun a b => ?_⟩
   · simp [hc]
   · have h1 := hc b (H.bar x • a)
-    rw [Submodule.coe_smul, D.adj, bar_bar, smul_comm, hadj, bar_bar] at h1
-    exact h1
+    rwa [Submodule.coe_smul, D.adj, bar_bar, smul_comm, hadj, bar_bar] at h1
   · show D.EF a (c b) + D.EF (c a) b = _
     rw [_root_.GlobalTheory.SimLift.form_skew D (c a), hc, hc, ← hβ]
     have h2 := hadj (H.bar H.w0) a b
@@ -179,8 +177,7 @@ theorem IsOpp.exists_rank_one (h : IsOpp D Z Z') {m : D.La} (hm : m ∈ perp D Z
     fun ℓ => (z ℓ).2, hz, fun c ℓ => congrArg Subtype.val (hu _ (H.bar c • z ℓ) fun x => ?_).symm, fun ℓ => ?_⟩
   · simp [hz]
   · have := hz ℓ (c • x)
-    rw [Submodule.coe_smul, D.adj, ℓ.map_smul] at this
-    exact this
+    rwa [Submodule.coe_smul, D.adj, ℓ.map_smul] at this
   · refine h.shear _ (fun b => ?_) fun b b' => ?_
     · simpa using (perp D Z).smul_mem (ℓ b) (add_mem hm.1 (h.1 (z ℓ).2))
     · have e1 : D.EF b b' = 0 := h.2.1 b.2 _ b'.2
@@ -191,8 +188,7 @@ theorem IsOpp.exists_rank_one (h : IsOpp D Z Z') {m : D.La} (hm : m ∈ perp D Z
         h.1 (Z.smul_mem c (z ℓ).2) _ (Z.smul_mem c' (z ℓ).2)
       have e5 : ∀ (c : 𝓞 E) (x : Z'), D.EF x (c • z ℓ) = θ (H.bar c * ℓ x) := fun c x => by
         have := hz ℓ (H.bar c • x)
-        rw [Submodule.coe_smul, D.adj, bar_bar, ℓ.map_smul] at this
-        exact this
+        rwa [Submodule.coe_smul, D.adj, bar_bar, ℓ.map_smul] at this
       have e6 : D.EF (ℓ b • m) (ℓ b' • m) = D.EF ((H.bar (ℓ b') * ℓ b) • m) m := by
         rw [mul_smul, D.adj (H.bar (ℓ b')), bar_bar]
       have e7 := hθ (H.bar (ℓ b') * ℓ b)

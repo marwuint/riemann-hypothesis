@@ -110,9 +110,7 @@ theorem isotE_sub_eigenpart : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0
     obtain ⟨⟨x0, hx0S, hx0ne, hx0T⟩, hE2, -⟩ := hEig
     have hx0fix : ∀ κ, (PW i0).ψ κ ∈ hyp (Wc D i0) P → Formalism.L2.NG.rt D.host.E n κ x0 = x0 := by
       intro κ hκ
-      have e0 := hx0T κ (levW.1 _ hκ).1
-      simp only [(levW.1 _ hκ).2, one_smul] at e0
-      exact e0
+      simpa only [(levW.1 _ hκ).2, one_smul] using hx0T κ (levW.1 _ hκ).1
     have haeq : a = c P d := by
       have e1 := ha x0 hx0S hx0fix
       rw [hE2 P d _ ((levW.2.1 SF d _).2 ⟨(hoff SF hSF P).2 hP, hB'⟩) x0 hx0S hx0T] at e1
@@ -138,12 +136,10 @@ theorem isotE_sub_eigenpart : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0
       rw [postOn_apply]
       funext g
       have := GlobalTheory.Hk3.OpsRows.mult_lev (goodPart_le _ _ _ _ _ hUT) v k (levY.1 k hk).1 g
-      rw [(levY.1 k hk).2, one_mul] at this
-      exact this
+      rwa [(levY.1 k hk).2, one_mul] at this
     have hU2 := GlobalTheory.IsotSph.hecke_eq_smul_of_isot hF PY hPY R.θ (R.MY 0) (principalLevelFrame.FinTyp.conjT π) P d _ _ hB hvec _ hUi.2 hfixU
     apply hi
-    rw [hOps P hP, map_smul, GlobalTheory.Hk3.OpsRows.hk_single]
-    exact hU2
+    rwa [hOps P hP, map_smul, GlobalTheory.Hk3.OpsRows.hk_single]
   refine ⟨x, hIn c x fun P d hP hd => ?_, rfl⟩
   by_cases hx0 : x = 0
   · subst hx0

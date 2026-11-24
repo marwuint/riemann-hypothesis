@@ -98,8 +98,7 @@ theorem eq_of_germ_eq {W : X.Opens} {s s' : Γ(X, W)}
     s = s' := by
   by_cases hW : genericPoint X ∈ W
   · exact germ_injective_of_isIntegral X (genericPoint X) hW (h hW)
-  · refine TopCat.Presheaf.section_ext X.sheaf W s s' fun x hx => ?_
-    exact (hW (genericPoint_mem hx)).elim
+  · exact TopCat.Presheaf.section_ext X.sheaf W s s' fun x hx => (hW (genericPoint_mem hx)).elim
 
 theorem res_inf_injective {D : X.Opens} (hD : genericPoint X ∈ D) (W : X.Opens) :
     Function.Injective (X.presheaf.map (homOfLE (inf_le_left : W ⊓ D ≤ W)).op) := by
@@ -163,8 +162,7 @@ theorem primeIdealOf_eq_span {U : X.Opens} (hU : IsAffineOpen U) (h : η ∈ U) 
     have hsp' := hsp.map hU.isoSpec.hom.continuous
     rw [← PrimeSpectrum.le_iff_specializes] at hsp'
     change (hU.primeIdealOf ⟨η, h⟩).asIdeal ≤ (hU.primeIdealOf y).asIdeal at hsp'
-    rw [hy] at hsp'
-    exact hsp'
+    rwa [hy] at hsp'
   · rw [Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, mem_primeIdealOf_iff hU ⟨η, h⟩,
       Scheme.basicOpen_res]
     exact fun hm => hηt hm.2
@@ -227,9 +225,7 @@ private theorem exists_section_restrict_eq_of_germ_eq {V : X.Opens} (hV : IsAffi
     exact hq.symm
   have : IsScalarTower Γ(X, V) Γ(X, X.basicOpen (X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op t))
       X.functionField := by
-    apply IsScalarTower.of_algebraMap_eq
-    intro a
-    exact (germ_res (X.basicOpen_le _) hY a).symm
+    exact IsScalarTower.of_algebraMap_eq (fun a => (germ_res (X.basicOpen_le _) hY a).symm)
   have : FaithfulSMul Γ(X, V) X.functionField :=
     (faithfulSMul_iff_algebraMap_injective _ _).mpr (X.germToFunctionField_injective V)
   have : IsScalarTower Γ(X, V) (X.presheaf.stalk η) X.functionField :=
@@ -365,8 +361,7 @@ theorem germ_eq_mul_germ {D : X.Opens} {r : ∀ a, Γ(X, U a ⊓ D)}
         X.presheaf.germ _ x hb (r b) := by
   have hx : x ∈ U a ⊓ U b ⊓ D := ⟨⟨ha.1, hb.1⟩, ha.2⟩
   have h := congrArg (X.presheaf.germ _ x hx) (hr a b)
-  rw [map_mul, germ_res, germ_res, germ_res] at h
-  exact h
+  rwa [map_mul, germ_res, germ_res, germ_res] at h
 
 theorem compatible_of_res_eq {D : X.Opens} (hD : genericPoint X ∈ D) {r : ∀ a, Γ(X, U a ⊓ D)}
     (hr : ∀ a b, X.presheaf.map (homOfLE (inf_le_inf_right D inf_le_left)).op (r a) =

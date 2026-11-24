@@ -487,12 +487,9 @@ theorem monomials_eq {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T :
     (φ.symm (e₂.symm c)) (e₂.symm c) hχ u hun (TF (R := V) F) p₁.g.b z J J₀ hJ hJ₀
   rw [← hA.1] at a₄
   rw [hχ] at a₁
-  have hk : k₁ = k₂ := by
-    apply gm_unitOn_inj z
-    exact cancel_four a₁ a₂ a₃ a₄
+  have hk : k₁ = k₂ := gm_unitOn_inj z (cancel_four a₁ a₂ a₃ a₄)
   have := congrArg Units.val hk
-  rw [hk₁, hk₂, hχ, e₂.apply_symm_apply] at this
-  exact this
+  rwa [hk₁, hk₂, hχ, e₂.apply_symm_apply] at this
 
 theorem torsion_fixed {W R V : Type} [CommRing W] [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] {B : Over (Sp W)} [GrpObj B]
     {n : ℕ} (hn : 1 ≤ n) (hB : ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ Sp W) (p : Over.mk x ⟶ B), p ^ n = 1 →
@@ -827,8 +824,7 @@ theorem mem_subfield_of_zpow_mem {K : Type} [Field K] (k₀ : Subfield K) [IsAlg
     · rw [h2, zpow_neg, zpow_natCast] at h
       simpa using k₀.inv_mem h
   have hint : IsIntegral k₀ (u : K) := by
-    apply IsIntegral.of_pow (Int.natAbs_pos.mpr hm)
-    exact isIntegral_algebraMap (R := k₀) (x := ⟨_, h1⟩)
+    exact IsIntegral.of_pow (Int.natAbs_pos.mpr hm) (isIntegral_algebraMap (R := k₀) (x := ⟨_, h1⟩))
   obtain ⟨y, hy⟩ := minpoly.mem_range_of_degree_eq_one k₀ (u : K)
     (IsAlgClosed.degree_eq_one_of_irreducible k₀ (minpoly.irreducible hint))
   rw [← hy]
@@ -1030,8 +1026,7 @@ theorem exists_lbIso {K : Type} [Field K] (k₀ : Subfield K) (B₀ : Over (Sp k
   have a₄ := LBIso.trans (P hM₀ _) (P (P hM₀ _) _) (P (P (P hM₁ _) _) _) (SepBModel.lbIso_two hM₀ π₀ e.hom.left) a₃
   have a₅ := LBIso.trans (P hM₀ _) (P (P (P hM₁ _) _) _) (P (P hM₁ _) _) a₄
     (SepBModel.lbIso_two (P hM₁ κ₀) π₀ e.hom.left).symm
-  rw [he] at a₅
-  exact a₅
+  rwa [he] at a₅
 
 theorem exists_unit {B' B₀ A B₁ : Scheme.{0}} {π₀ : B' ⟶ B₀} {π₁ : B' ⟶ A} {β : A ⟶ B₁} {κ₀ : B₀ ⟶ B₁}
     (hκ₀ : π₀ ≫ κ₀ = π₁ ≫ β) {L : LB A} {M₀ : LB B₀} {M₁ : LB B₁} (hL : L.IsLB) (hM₀ : M₀.IsLB) (hM₁ : M₁.IsLB)

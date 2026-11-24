@@ -230,8 +230,7 @@ theorem redE_surjective (A : Type) [CommRing A] : Function.Surjective (redE A) :
     have h0 : x.fst = 0 := hx
     have h2 : x * x = 0 := by ext <;> simp [h0]
     exact ((show PrimeSpectrum (DualNumber A) from y).2.mem_or_mem (h2 ▸ Ideal.zero_mem _)).elim id id
-  rw [← h] at hy
-  exact hy
+  rwa [← h] at hy
 
 theorem top_le_of_redE {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp (DualNumber A) ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ (redE A ≫ x) ⁻¹ᵁ U) : ⊤ ≤ x ⁻¹ᵁ U := fun y _ => by
@@ -738,8 +737,7 @@ theorem top_le_of_redE {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp (DualNum
       change algebraMap A (DualNumber A) ((TrivSqZeroExt.fstHom A A A).toRingHom t) ∈ z.asIdeal
       rw [e]; exact z.asIdeal.sub_mem h1 hn
   have := h (show w ∈ (⊤ : (Sp A).Opens) from trivial)
-  rw [← hw]
-  exact this
+  rwa [← hw]
 
 theorem sep_unique {C : Type} [Field C] (S : ValuationSubring C) {X Y : Scheme.{0}} (p : X ⟶ Y) [IsSeparated p]
     (x₁ x₂ : Sp S ⟶ X) (h₁ : x₁ ≫ p = x₂ ≫ p) (h : spMap S.subtype ≫ x₁ = spMap S.subtype ≫ x₂) : x₁ = x₂ := by
@@ -817,8 +815,7 @@ theorem sE_norm_le_one_of_pull : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDis
     have heq : x₀ = spMap toS ≫ redE V ≫ Q ≫ D.toPre.famφB β i :=
       sep_unique S D.toPre.P.A.hom _ _ (spMap_subtype_cancel S _ _ (by simp only [← Category.assoc] at hxy ⊢; rw [hxy])) hxy
     apply top_le_of_redE
-    rw [← Category.assoc, redE_dual, Category.assoc, ← heq]
-    exact hU
+    rwa [← Category.assoc, redE_dual, Category.assoc, ← heq]
 
   have hj : ∀ i, ν.J (redE C ≫ r ≫ D.toPre.famφ C β i) =
       ν.J (redE C ≫ spMap (dualMap (toF V C)) ≫ Q ≫ D.toPre.famφB β i) := by
@@ -830,8 +827,7 @@ theorem sE_norm_le_one_of_pull : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDis
     show (spMap (dualMap toS) ≫ Q).base z ∈ ⋂ k, (D.toPre.famφB β k).base ⁻¹' (D.toPre.P.L.U (j k) : Set _)
     refine Set.mem_iInter.2 fun i => ?_
     have := hpt i (show z ∈ (⊤ : (Sp (DualNumber S)).Opens) from trivial)
-    rw [← hj i] at this
-    exact this
+    rwa [← hj i] at this
   obtain ⟨hrB0, hval⟩ := GlobalTheory.ZH.CrdCalc.valR_spMap (dualMap S.subtype) (spMap (dualMap toS) ≫ Q) _ hQ'
   have hrq : spMap (dualMap S.subtype) ≫ spMap (dualMap toS) ≫ Q = r ≫ (D.toPre.prB C).left := by
     rw [← Category.assoc, dualMap_comp, htoS, hr]
@@ -841,7 +837,6 @@ theorem sE_norm_le_one_of_pull : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDis
     intro z hz
     have h' : (r ≫ (D.toPre.prB C).left).base z ∈
         ⋂ k, (D.toPre.famφB β k).base ⁻¹' (D.toPre.P.L.U (j k) : Set _) := hrB0 hz
-    show r.base z ∈ ⋂ k, ((D.toPre.prB C).left ≫ D.toPre.famφB β k).base ⁻¹' (D.toPre.P.L.U (j k) : Set _)
     exact Set.mem_iInter.2 fun k => Set.mem_iInter.1 h' k
   have hWeq : LB.wchart D.toPre.P.L (D.toPre.famφ C β) j =
       LB.wchart D.toPre.P.L (fun k => (D.toPre.prB C).left ≫ D.toPre.famφB β k) j :=
@@ -873,7 +868,6 @@ theorem sE_norm_le_one_of_pull : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDis
         (D.toPre.prB C).left ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.famφB β) j := by
       intro z hz
       have h' : z ∈ ⋂ k, ((D.toPre.prB C).left ≫ D.toPre.famφB β k).base ⁻¹' (D.toPre.P.L.U (j k) : Set _) := hz.2
-      show (D.toPre.prB C).left.base z ∈ ⋂ k, (D.toPre.famφB β k).base ⁻¹' (D.toPre.P.L.U (j k) : Set _)
       exact Set.mem_iInter.2 fun k => Set.mem_iInter.1 h' k
     refine Eq.trans (GlobalTheory.ZH.CrdCalc.valR_res r inf_le_left hW (σF.f j)).symm ?_
     refine Eq.trans ?_ (GlobalTheory.ZH.CrdCalc.valR_res r hle2 hW _)
@@ -938,12 +932,10 @@ theorem trF_dualPoint_of_isPull : ∀ (V : Type) [CommRing V] [IsDomain V] (D : 
   refine ⟨?_, Over.w _, ?_⟩
   · have h1 : lift e gm.b ≫ DegPre.trF D C mu ≫ DegPre.prB D C = k ≫ padd D.P.A gm₀.b (toUnit _ ≫ D.c mu) := by
       simp only [DegPre.trF, DegPre.prB, lift_snd, padd, comp_lift_assoc, hb, comp_toUnit_assoc]
-    have h2 := congrArg CommaMorphism.left h1
-    simpa [k] using h2
+    simpa [k] using congrArg CommaMorphism.left h1
   · have h1 : lift e gm.b ≫ DegPre.trF D C mu ≫ fst _ _ = e := by
       simp [DegPre.trF]
-    have h2 := congrArg CommaMorphism.left h1
-    simpa [he] using h2
+    simpa [he] using congrArg CommaMorphism.left h1
 
 end GlobalTheory.MBLow
 

@@ -177,8 +177,7 @@ theorem isImage_embA {I : AutInst} (D : Sib I) {x u : Fin I.n → I.E} {A : Matr
 
 theorem inclE_injective (I : AutInst) :
     Function.Injective (Formalism.UG.inclE (F := I.F) (E := I.E) (Af I.F)) := by
-  have hnf : ¬ IsField (𝓞 I.F) := by
-    exact NumberField.RingOfIntegers.not_isField I.F
+  have hnf : ¬ IsField (𝓞 I.F) := NumberField.RingOfIntegers.not_isField I.F
   obtain ⟨p, hp0, hpp⟩ := Ring.not_isField_iff_exists_prime.mp hnf
   let v : IsDedekindDomain.HeightOneSpectrum (𝓞 I.F) := ⟨p, hpp, hp0⟩
   have : Nontrivial (Af I.F) :=
@@ -202,8 +201,7 @@ theorem image_rational_eq_stab : ∀ (I : AutInst) (D : Sib I) (s : Bool) (x : F
     ext i j
     have hij := congrFun (congrFun hh i) j
     simp only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply] at hij
-    rw [Matrix.conjTranspose_apply]
-    exact hij
+    rwa [Matrix.conjTranspose_apply]
   have hβ0 : star x ⬝ᵥ (I.J *ᵥ x) ≠ 0 := by
     rw [hβ]; cases s <;> simp [GlobalTheory.GaussMean.sgn]
   obtain ⟨u, A', hA'A, hA'x, huA, hux, hres, hAJx⟩ :=
@@ -217,13 +215,11 @@ theorem image_rational_eq_stab : ∀ (I : AutInst) (D : Sib I) (s : Bool) (x : F
     have hj := hjv ⟨γ, hγ⟩
     refine ⟨⟨(j ⟨γ, hγ⟩ : GL (Fin I.n) I.E), (j ⟨γ, hγ⟩).2, ?_⟩, (hf g.2).1⟩
     change IsImage I _ _
-    rw [hj]
-    exact hIm
+    rwa [hj]
   · rintro ⟨⟨δ, hδ, hy1, hy2⟩, hyx⟩
     have h3 : (fun i => Formalism.UG.inclE (F := I.F) (Af I.F) (((δ : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ x) i)) =
         fun i => Formalism.UG.inclE (F := I.F) (Af I.F) (x i) := by
-      rw [← GlobalTheory.Proof.rational_unipotentRadical_mem_adelic.map_mulVec_incl, ← hy2]
-      exact hyx
+      rwa [← GlobalTheory.Proof.rational_unipotentRadical_mem_adelic.map_mulVec_incl, ← hy2]
     have hδx : (δ : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ x = x := by
       funext i
       exact inclE_injective I (congrFun h3 i)

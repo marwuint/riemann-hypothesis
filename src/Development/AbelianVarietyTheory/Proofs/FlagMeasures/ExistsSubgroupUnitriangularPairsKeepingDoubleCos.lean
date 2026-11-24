@@ -77,13 +77,11 @@ theorem orth_iff {β : GV D} (hi : β ∈ Formalism.HermitianLatticesTheory.isom
 theorem lrep_iff {T1 T2 : D.host.E} {F1 : LFlag (D.sp.Y 0) D.R.rS T1} {G1 : LFlag (D.sp.Y 0) D.R.rS T2} {β : GV D}
     {Λ : LV D} (hi : β ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) (hΛ : ∀ x, β x ∈ Λ ↔ x ∈ Λ)
     (hX : ∀ x, β x ∈ Xsp G1 ↔ x ∈ Xsp F1) (x : (VS D).V) : β x ∈ Lrep Λ G1 ↔ x ∈ Lrep Λ F1 := by
-  show (β x ∈ Λ ∧ β x ∈ orth (VS D) (Xsp G1)) ↔ (x ∈ Λ ∧ x ∈ orth (VS D) (Xsp F1))
   exact and_congr (hΛ x) (orth_iff hi hX x)
 
 theorem xlam_iff {T1 T2 : D.host.E} {F1 : LFlag (D.sp.Y 0) D.R.rS T1} {G1 : LFlag (D.sp.Y 0) D.R.rS T2} {β : GV D}
     {Λ : LV D} (hΛ : ∀ x, β x ∈ Λ ↔ x ∈ Λ)
     (hX : ∀ x, β x ∈ Xsp G1 ↔ x ∈ Xsp F1) (x : (VS D).V) : β x ∈ XLam Λ G1 ↔ x ∈ XLam Λ F1 := by
-  show (β x ∈ Λ ∧ β x ∈ Xsp G1) ↔ (x ∈ Λ ∧ x ∈ Xsp F1)
   exact and_congr (hΛ x) (hX x)
 
 theorem ngx_iff {T T1 : D.host.E} {F : LFlag (D.sp.Y 0) D.R.rS T} {F1 : LFlag (D.sp.Y 0) D.R.rS T1}
@@ -189,8 +187,7 @@ variable {D : D7} {T T' : D.host.E} (F : LFlag (D.sp.Y 0) D.R.rS T) (F0' : FlagG
 theorem keyEq_refl (γ : GV D) : KeyEq F (lf D F0') Λ γ γ := by
   refine ⟨⟨1, one_mem_nrat F, 1, one_mem_nrat _, by group⟩, ?_⟩
   rw [mul_inv_cancel]
-  intro x' _ l _
-  exact Iff.rfl
+  exact fun x' _ l _ => Iff.rfl
 
 variable {F F0' Λ}
 
@@ -333,7 +330,6 @@ theorem keyEq_right {Λ' : LV D} {γ m : GV D} (hγ : γ ∈ Formalism.Hermitian
   have hw : γ (m (γ.symm x') - γ.symm x') ∈ NgX Λ (gS D) F (mapLF γ (lf D F0')) := by
     apply Submodule.mem_sup_right
     refine ⟨(mem_iff_of_gmap hγΛ _).2 (Λ'.sub_mem ((mem_iff_of_gmap hm.1.2 _).2 hyΛ) hyΛ), ?_⟩
-    show _ ∈ Xsp (mapLF γ (lf D F0'))
     exact (hU _).2 (hm.2.2 _ hyo)
   have e : (γ * m * γ⁻¹) x' = x' + γ (m (γ.symm x') - γ.symm x') := by
     show γ (m (γ.symm x')) = _; rw [map_sub]; simp
@@ -411,14 +407,12 @@ theorem keyStab_subgroup : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' :
         (hS _ h₂ _ h₂').1 k
       have e1 : a₁⁻¹ * (a₁ * t.lin * a₁'⁻¹) * a₁'⁻¹⁻¹ = t.lin := by group
       have e2 : a₁⁻¹ * (a₂ * t.lin * a₂'⁻¹) * a₁'⁻¹⁻¹ = a₁⁻¹ * a₂ * t.lin * (a₁'⁻¹ * a₂')⁻¹ := by group
-      rw [e1, e2] at k'
-      exact k'
+      rwa [e1, e2] at k'
     · intro hk
       obtain ⟨-, -, k⟩ := hk
       have k0 : KeyEq (lf D (X.Fu u)) (lf D (X.Fu u')) t.lam t.lin (a₁⁻¹ * a₂ * t.lin * (a₁'⁻¹ * a₂')⁻¹) := k
       have k' := keyEq_transport h₁ h₁' hγ (hS _ hm _ hm').1 k0
       have e2 : a₁ * (a₁⁻¹ * a₂ * t.lin * (a₁'⁻¹ * a₂')⁻¹) * a₁'⁻¹ = a₂ * t.lin * a₂'⁻¹ := by group
-      rw [e2] at k'
-      exact k'
+      rwa [e2] at k'
 
 end GlobalTheory.KeyGroup

@@ -77,8 +77,7 @@ theorem skew_of_mem_lieOf {N : ℕ} (H X : Matrix (Fin N) (Fin N) ℂ) (h : X �
               (NormedSpace.exp ((t : ℂ) • Xᴴ) * H * NormedSpace.exp ((t : ℂ) • X)) := by
             simp only [mul_assoc]
         _ = NormedSpace.exp (-((t : ℂ) • Xᴴ)) * H := by rw [ht]
-    rw [← smul_neg, Complex.coe_smul, Complex.coe_smul] at e2
-    exact e2
+    rwa [← smul_neg, Complex.coe_smul, Complex.coe_smul] at e2
   have d1 : HasDerivAt (fun t : ℝ => H * NormedSpace.exp (t • X))
       (H * (NormedSpace.exp ((0 : ℝ) • X) * X)) 0 :=
     (hasDerivAt_exp_smul_const X (0 : ℝ)).const_mul H
@@ -94,8 +93,7 @@ theorem skew_of_mem_lieOf {N : ℕ} (H X : Matrix (Fin N) (Fin N) ℂ) (h : X �
 private theorem conjTranspose_exp_mul_mul_exp_eq_of_skew {N : ℕ} (H X : Matrix (Fin N) (Fin N) ℂ) (h : Xᴴ * H + H * X = 0)
     (t : ℝ) : (NormedSpace.exp ((t : ℂ) • X))ᴴ * H * NormedSpace.exp ((t : ℂ) • X) = H := by
   have hx : H * X = -(Xᴴ * H) := by
-    rw [← sub_eq_zero, sub_neg_eq_add, add_comm]
-    exact h
+    rwa [← sub_eq_zero, sub_neg_eq_add, add_comm]
   have hs : SemiconjBy H ((t : ℂ) • X) (-((t : ℂ) • Xᴴ)) := by
     unfold SemiconjBy
     rw [mul_smul_comm, hx, smul_neg, neg_mul, smul_mul_assoc]
@@ -107,13 +105,10 @@ private theorem conjTranspose_exp_mul_mul_exp_eq_of_skew {N : ℕ} (H X : Matrix
   have _ : CompleteSpace (Matrix (Fin N) (Fin N) ℂ) := FiniteDimensional.complete ℂ _
   have := hs.exp_neg_mul_mul_exp_eq_self
   rw [neg_neg] at this
-  rw [hc]
-  exact this
+  rwa [hc]
 
 theorem mem_lieOf_of_skew {N : ℕ} (H X : Matrix (Fin N) (Fin N) ℂ) (h : Xᴴ * H + H * X = 0) :
-    X ∈ lieOf (UH H) := by
-  intro t
-  exact conjTranspose_exp_mul_mul_exp_eq_of_skew H X h t
+    X ∈ lieOf (UH H) := fun t => conjTranspose_exp_mul_mul_exp_eq_of_skew H X h t
 
 private theorem unrealify_equiv_symm_realifyFun {m : ℕ} (X : Matrix (Fin m) (Fin m) ℂ) :
     unrealify ((WithLp.equiv 2 _).symm (realifyFun X)) = X := by
@@ -152,8 +147,7 @@ theorem mem_lieE_UH (m : ℕ) (H : Matrix (Fin m) (Fin m) ℂ) (x : EuclideanSpa
     induction hx using Submodule.span_induction with
     | mem y hy =>
       obtain ⟨X, hX, rfl⟩ := hy
-      rw [unrealify_equiv_symm_realifyFun]
-      exact hX
+      rwa [unrealify_equiv_symm_realifyFun]
     | zero => simp [unrealify_map_zero]
     | add y z _ _ hy hz =>
       rw [unrealify_map_add, Matrix.conjTranspose_add, add_mul, mul_add]
@@ -168,12 +162,10 @@ theorem mem_lieE_UH (m : ℕ) (H : Matrix (Fin m) (Fin m) ℂ) (x : EuclideanSpa
     unfold lieE
     apply Submodule.subset_span
     refine ⟨unrealify x, ?_, equiv_symm_realifyFun_unrealify_eq x⟩
-    rw [hL]
-    exact hx
+    rwa [hL]
 
 theorem mem_lieE_UH_of_sq : ∀ (m : ℕ) (H : Matrix (Fin m) (Fin m) ℂ) (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)),
     H * H = 1 → (x ∈ lieE (UH H) ↔ (unrealify x)ᴴ * H + H * unrealify x = 0) := by
-  intro m H x _
-  exact mem_lieE_UH m H x
+  exact fun m H x _ => mem_lieE_UH m H x
 
 end GlobalTheory.TubeLie

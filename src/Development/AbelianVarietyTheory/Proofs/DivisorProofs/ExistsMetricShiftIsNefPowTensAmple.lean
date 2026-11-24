@@ -198,8 +198,7 @@ theorem exists_extension (hc : CharZero Γ(X, ⊤)) {U : X.Opens} (t : Γ(XK, j 
       exact (rs_rs _ _ _).trans (rs_rs _ _ _).symm)
   refine ⟨s, XK.sheaf.eq_of_locally_eq' (fun x : U => j ⁻¹ᵁ V x.1 x.2) (j ⁻¹ᵁ U)
     (fun x => homOfLE fun _ hy => hV x.1 x.2 hy) ?_ _ _ fun x => ?_⟩
-  · intro y hy
-    exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨j y, hy⟩, hx _ hy⟩
+  · exact fun y hy => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨j y, hy⟩, hx _ hy⟩
   · exact (app_rs j (hV x.1 x.2) s).symm.trans ((congrArg _ (hs x)).trans (hb x.1 x.2))
 
 theorem exists_sec [CompactSpace X] (hc0 : CharZero Γ(X, ⊤)) (B : LB X) (hB : B.IsLB)
@@ -470,8 +469,7 @@ theorem fibre_isProjOver_and_dim_le : ∀ (k : Type) [CommRing k] (W : Scheme.{0
       ⟨genericPoint W, trivial, fun ⟨z, hz⟩ => hne z hz, genericPoint_specializes x⟩
     have hW : topologicalKrullDim (Set.univ : Set W) ≤ 2 := by
       have := topologicalKrullDim_subspace_le W Set.univ
-      rw [hq.dim_eq] at this
-      exact this
+      rwa [hq.dim_eq] at this
     have heq : topologicalKrullDim (Set.range (pullback.fst f g)) =
         topologicalKrullDim ↥(pullback (C := Scheme.{0}) f g) :=
       GlobalTheory.topologicalKrullDim_eq_of_isEmbedding hemb.isEmbedding rfl
@@ -538,8 +536,7 @@ theorem cechLB_X_noZSMulDivisors : ∀ {X : Scheme.{0}} [AlgebraicGeometry.IsInt
     rw [map_zsmul, map_zero, zsmul_eq_mul] at hi
     exact intCast_mul_eq_zero_of_isIntegral hc _ hm hi
   funext s
-  refine key _ (x s) ?_
-  exact congrFun hx s
+  exact key _ (x s) (congrFun hx s)
 
 end GlobalTheory.CechPic
 end -- clump:auto
@@ -727,8 +724,7 @@ theorem natCard_homology_of_shortExact_mul : ∀ (p : ℕ) (C G : CochainComplex
     intro k
     have := (HomologicalComplex.homologyFunctor (ModuleCat.{0} ℤ) (ComplexShape.up ℕ) k).map_zsmul
       (f := 𝟙 C) (r := (p : ℤ))
-    rw [CategoryTheory.Functor.map_id] at this
-    exact this
+    rwa [CategoryTheory.Functor.map_id] at this
   have hmul : ∀ k, (HomologicalComplex.homologyMap ((p : ℤ) • 𝟙 C) k).hom
       = (p : ℤ) • (LinearMap.id : C.homology k →ₗ[ℤ] C.homology k) := by
     intro k
@@ -849,8 +845,7 @@ lemma oneZ_tmul_surjective (p : ℕ) (M : ModuleCat.{0} ℤ) :
       (fun b c => TensorProduct.add_tmul b c m)) k (oneZ p)
     refine ⟨_, (h1.trans h2.symm).trans (congrArg (fun x => x ⊗ₜ[ℤ] m) ?_)⟩
     show (k • (1 : ZMod p) : ZMod p) = a
-    rw [zsmul_one]
-    exact hk
+    rwa [zsmul_one]
   | add x y hx hy =>
     obtain ⟨u, hu⟩ := hx
     obtain ⟨v, hv⟩ := hy
@@ -1251,8 +1246,7 @@ theorem chi_fibres_LB {X Xp Xq : Scheme.{0}} [IsIntegral X] [CompactSpace X]
   rw [chi_def, chi_def]
   have hp := fun n => hdim_fibre (Int.castRingHom (ZMod p)) f fp πp Hp Dc hc hD' M hM n
   have hq := fun n => hdim_fibre (Int.castRingHom ℚ) f fq πq Hq Dc hc hD' M hM n
-  simp only [hp, hq]
-  exact altSum (cechLB f M Dc) p hinj hfin' m hz
+  simpa only [hp, hq] using altSum (cechLB f M Dc) p hinj hfin' m hz
 
 theorem chi_structureModule_eq {X X' : Scheme.{0}} (F : Type) [Field F] [Algebra F Γ(X', ⊤)]
     (π : X' ⟶ X) : chi F (structureModule X') = chi F (toMod ((LB.triv X).pull π)) := by
@@ -1438,8 +1432,7 @@ theorem GlobalTheory.GenNef.isNef_ratFibre : ∀ (k : Type) [CommRing k] (X : Sc
   have h0 := NefGeneric.ratDeg_nonneg k W (w ≫ p) (L.pull w rfl) hW
     (ArInt.nefFib_pull k X W p (w ≫ p) hX.isProjOver hW.isProjOver w rfl L hL)
   change 0 ≤ ratDeg (w ≫ p) (L.B.pull w) at h0
-  rw [e] at h0
-  exact h0
+  rwa [e] at h0
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNefRationalFibreOfNefFiniteFieldFibres =====

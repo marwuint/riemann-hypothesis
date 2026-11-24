@@ -102,16 +102,12 @@ theorem _root_.GlobalTheory.HilbFam.exists_eq_split_of_hasLevel (F : Type) [Fiel
   let Cf : FractionalIdeal (𝓞 F)⁰ F := ⟨C0, FractionalIdeal.isFractional_of_le_one C0 hC0⟩
   have hBne : Bf ≠ 0 := by
     intro h
-    have hmem : (N : F) ∈ Bf := by
-      show (N : F) ∈ B0
-      exact ⟨_, hsingle 0, by simp⟩
+    have hmem : (N : F) ∈ Bf := ⟨_, hsingle 0, by simp⟩
     rw [h] at hmem
     exact hN0 ((FractionalIdeal.mem_zero_iff _).1 hmem)
   have hCne : Cf ≠ 0 := by
     intro h
-    have hmem : (N : F) ∈ Cf := by
-      show Pi.single 1 (N : F) ∈ L
-      exact hsingle 1
+    have hmem : (N : F) ∈ Cf := hsingle 1
     rw [h] at hmem
     exact hN0 ((FractionalIdeal.mem_zero_iff _).1 hmem)
   have key : ∀ t ∈ (Bf : Submodule (𝓞 F) F) * ((Bf⁻¹ : FractionalIdeal (𝓞 F)⁰ F) : Submodule (𝓞 F) F),

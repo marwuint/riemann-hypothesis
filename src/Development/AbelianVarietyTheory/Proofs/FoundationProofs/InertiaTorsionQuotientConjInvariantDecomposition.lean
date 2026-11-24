@@ -130,8 +130,7 @@ theorem eq_zero_of_wild (l : ℕ) [Fact l.Prime] (n : ℕ) (B : ValuationSubring
   have hm0 : m • F σ = 0 := by
     rw [← map_pow_eq B F hadd hσI m]
     have : (⟨σ ^ m, pow_mem hσI m⟩ : Ine (F := ℚ) B) ∈ Subtype.val ⁻¹' t := hsub hτ
-    rw [hte] at this
-    exact this
+    rwa [hte] at this
   have hc : Nat.Coprime (l ^ n) m := ((Nat.Prime.coprime_iff_not_dvd hl).mpr hm).pow_left n
   have hd : addOrderOf (F σ) ∣ Nat.gcd (l ^ n) m :=
     Nat.dvd_gcd (addOrderOf_dvd_of_nsmul_eq_zero (htor _)) (addOrderOf_dvd_of_nsmul_eq_zero hm0)
@@ -197,8 +196,7 @@ theorem prime_normV (v : Pl) : (normV v).Prime := by
     obtain ⟨n, rfl⟩ := Rat.ringOfIntegersEquiv.symm.surjective x
     exact ⟨(n : ZMod _), by simp⟩
   have hb := Nat.card_eq_of_bijective _ ⟨RingHom.injective _, hs⟩
-  rw [normV, ← hb, Nat.card_zmod]
-  exact hp
+  rwa [normV, ← hb, Nat.card_zmod]
 
 theorem not_mem_of_dvd (l : ℕ) [Fact l.Prime] {n : ℕ} {w : Pl} (hn : 1 ≤ n) (hdiv : l ^ n ∣ normV w - 1) :
     ((l : ℕ) : 𝓞 ℚ) ∉ w.asIdeal := by
@@ -300,8 +298,7 @@ theorem cycZ_toZModPow_of_mem_Dec {l : ℕ} [Fact l.Prime] {n : ℕ} {w : Pl} {B
       | succ i ih => rw [pow_succ, pow_mul, ih, hyp]
     rw [hσ] at hfix
     have := sub_eq_zero.2 hfix
-    rw [← map_sub, IsLocalRing.residue_eq_zero_iff, B.valuation_lt_one_iff] at this
-    exact this
+    rwa [← map_sub, IsLocalRing.residue_eq_zero_iff, B.valuation_lt_one_iff] at this
   rw [hgζ] at hlt
   have heq : ζ ^ m = ζ ^ 1 := by
     refine eq_of_pow_eq_one B (not_valuation_lt_one_of_isPlaceOver hl hB n) ?_ ?_ (by simpa using hlt)
@@ -371,8 +368,7 @@ theorem conj_invariant : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Al
   have hFlc : IsLocallyConstant (fun s : Ine (F := ℚ) B => F s) :=
     IsLocallyConstant.prodMk hlc (htlc.comp_continuous continuous_subtype_val)
   have hFadd : ∀ s ∈ Ine (F := ℚ) B, ∀ s' ∈ Ine (F := ℚ) B, F (s * s') = F s + F s' := by
-    intro s hs s' hs'
-    exact Prod.ext (hadd s hs s' hs') (htadd s hs s' hs')
+    exact fun s hs s' hs' => Prod.ext (hadd s hs s' hs') (htadd s hs s' hs')
   have hFtor : ∀ x : M × ZMod (l ^ n), l ^ n • x = 0 := by
     intro x
     refine Prod.ext (htor x.1) ?_

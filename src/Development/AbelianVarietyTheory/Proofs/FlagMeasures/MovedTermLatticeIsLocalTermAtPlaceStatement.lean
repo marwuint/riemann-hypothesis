@@ -123,7 +123,6 @@ theorem coeff_dvd {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace 
     | last => simpa [frame, FlagG.fvec] using hz_o
     | cast i => simpa [frame, FlagG.fvec] using horth _ (fun k => F.fl.e_iso k i)
   have heX : ∀ i, F.fl.e i ∈ Xsp F := fun i => by
-    show F.fl.e i ∈ Submodule.span E (Set.range F.fl.e)
     exact Submodule.subset_span ⟨i, rfl⟩
   have hxdec : ∑ a, ((c a : 𝓞 E) : E) • frame F a =
       ∑ i : Fin r, ((c i.castSucc : 𝓞 E) : E) • F.fl.e i + ((c (Fin.last r) : 𝓞 E) : E) • F.fl.z := by
@@ -156,12 +155,10 @@ theorem coeff_dvd {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace 
         show l ∈ orth S (Xsp F)
         rw [hlE]
         exact Submodule.smul_mem _ _ (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (hf_o a))
-      · show _ ∈ Xsp F
-        exact neg_mem (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (heX i))
+      · exact neg_mem (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (heX i))
       · rw [hlx]
         abel
-    · show _ ∈ orth S (Xsp F)
-      exact Submodule.smul_mem _ _ hz_o
+    · exact Submodule.smul_mem _ _ hz_o
   obtain ⟨o, ho⟩ := hFC.2 _ hzL
   induction a using Fin.lastCases with
   | last =>
@@ -180,8 +177,7 @@ theorem coeff_dvd {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace 
       refine Submodule.mem_inf.2 ⟨?_, ?_⟩
       · rw [hyl]
         exact Submodule.sub_mem _ hlΛ (Submodule.smul_mem _ _ hz)
-      · show y ∈ Xsp F
-        exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (heX i)
+      · exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (heX i)
     have hyloc : y ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (XLam Λ F) :=
       ⟨1, Submonoid.one_mem _, by rw [one_smul]; exact hyX⟩
     rw [hloc] at hyloc
@@ -213,8 +209,7 @@ theorem wit_sub_dvd {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpac
         Finset.sum_sub_distrib]
       abel
     rw [heq]
-    intro P hP
-    exact sub_mem (h'.2.2 b P hP) (h.2.2 b P hP)
+    exact fun P hP => sub_mem (h'.2.2 b P hP) (h.2.2 b P hP)
   exact coeff_dvd Λ hg0 F hz hFC (fun c => (ξ - ξ') c b) hM a
 
 theorem witness_congr : ∀ (D : D7) (Z : LocDat D) (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (Λ : Submodule (𝓞 D.host.E) (VS D).V) (F' : LFlag (D.sp.Y 0) D.R.rS (((D.mem u').A.T : ℕ) : D.host.E)), IsRowLat D F0 Λ → Formalism.L2.SG.TermDef.PD D Λ (lf D F0) u' F' → ∀ ξ ξ' : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E), AdmWit Λ (gS D) (lf D F0) F' ξ → AdmWit Λ (gS D) (lf D F0) F' ξ' → ∀ (p : PlF D) (a b : Fin (D.R.rS + 1)), (D.s.atP p).ιE (((ξ * ξ'⁻¹) a b : 𝓞 D.host.E) : D.host.E) - (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep) a b ∈ Submodule.span (Z.M p).L.O {algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Formalism.MainNotions.S.LocNG.theta (Z.M p))} := by
@@ -262,8 +257,7 @@ theorem witness_congr : ∀ (D : D7) (Z : LocDat D) (u u' : D.what₂.Word) (F0 
   | some gM =>
     cases hD : (D.s.atP p).split with
     | none =>
-      intro h
-      exact h.elim
+      exact fun h => h.elim
     | some sg =>
       rintro ⟨-, hq⟩
       have hl := (D.s_split p).1 (by rw [hD]; rfl)
@@ -360,9 +354,7 @@ theorem exists_ext_unitary : ∀ (D : D7) (Z : LocDat D) (p : PlF D) (ρ : (VS D
   have hC : ∀ a y, (locH Z p).h (g (baseChange₂ D p a)) (g y) = (locH Z p).h (baseChange₂ D p a) y := by
     intro a y
     rw [(locH Z p).h_herm (g y) (g (baseChange₂ D p a)), (locH Z p).h_herm y (baseChange₂ D p a), hB]
-  refine ⟨g, hext, ?_⟩
-  intro x y
-  exact form_ext_left Z p g y (g y) (fun a => hC a y) x
+  exact ⟨g, hext, fun x y => form_ext_left Z p g y (g y) (fun a => hC a y) x⟩
 
 end GlobalTheory.LocOver
 end -- clump:auto
@@ -431,11 +423,9 @@ theorem leadMinorE_unitri_both {E : Type} [Field E] {N : ℕ} (Z U U' : Matrix (
         have hj := j.isLt
         rw [hz' b (Fin.castLE h j) (by rw [Fin.lt_def, Fin.val_castLE]; omega), mul_zero]
     have t1 : (U.submatrix (Fin.castLE h) (Fin.castLE h)).BlockTriangular id := by
-      intro a b hab
-      exact (hU (Fin.castLE h a) (Fin.castLE h b)).1 hab
+      exact fun a b hab => (hU (Fin.castLE h a) (Fin.castLE h b)).1 hab
     have t2 : (U'.submatrix (Fin.castLE h) (Fin.castLE h)).BlockTriangular id := by
-      intro a b hab
-      exact (hU' (Fin.castLE h a) (Fin.castLE h b)).1 hab
+      exact fun a b hab => (hU' (Fin.castLE h a) (Fin.castLE h b)).1 hab
     have d1 : (U.submatrix (Fin.castLE h) (Fin.castLE h)).det = 1 := by
       rw [Matrix.det_of_upperTriangular t1]
       exact Finset.prod_eq_one (fun a _ => (hU (Fin.castLE h a) (Fin.castLE h a)).2 rfl)
@@ -573,8 +563,7 @@ theorem step {D : D7} {Z : LocDat D} {T T' : D.host.E} {F0 : LFlag (D.sp.Y 0) D.
       algebraMap ((placesOf Z).loc p).Fp ((placesOf Z).loc p).Ep ((G.c p).val ^ (D.R.rS - (b : ℕ))) • m (gl b) =
       m (gl b) := by
     rw [smul_smul, frFac_mul_c c p b, one_smul]
-  rw [h2, h5]
-  exact h6
+  rwa [h2, h5]
 
 theorem scaled_coord : ∀ (D : D7) (Z : LocDat D) {T T' : D.host.E} (F0 : LFlag (D.sp.Y 0) D.R.rS T) (F0' : LFlag (D.sp.Y 0) D.R.rS T') (FP : ∀ p : PlF D, Formalism.MainNotions.S.LocNG.FPair (locH Z p) D.R.rS) (G : GFrames (placesOf Z) D.R.rS D.R.k) (c : GCoord Z F0 F0' FP G) (p : PlF D) (N : G.GLV) (m : (G.S p).GLV), (placesOf Z).Ext p N m → ∀ B : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E, ((∀ b, N (G.f b) = ∑ a, B a b • G.f a) → ∀ b, (c.c p).e (scaled Z p (fun b => ∑ a, B a b • frame F0 a) b) = m ((G.S p).f b)) ∧ ((∀ b, N (G.f' b) = ∑ a, B a b • G.f' a) → ∀ b, (c.c p).e (scaled Z p (fun b => ∑ a, B a b • frame F0' a) b) = m ((G.S p).f' b)) := by
   intro D Z T T' F0 F0' FP G c p N m hm B

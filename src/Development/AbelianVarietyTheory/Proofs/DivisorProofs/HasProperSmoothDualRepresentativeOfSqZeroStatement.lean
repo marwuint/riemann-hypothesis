@@ -215,8 +215,7 @@ theorem appLE_comp_spMap_hom (R C : Type) [CommRing R] [CommRing C] (σ : R →+
   have k1 := congr($(Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom σ)).hom r)
   have k2 := congr($(Scheme.Hom.comp_appLE s (spMap σ) ⊤ U le_top).hom
     ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r))
-  refine k2.trans ?_
-  exact (congrArg (s.appLE ⊤ U le_top).hom k1).symm
+  exact k2.trans (congrArg (s.appLE ⊤ U le_top).hom k1).symm
 
 theorem isThick_of_isPullback_quotient : ∀ (R C : Type) [CommRing R] [CommRing C] (σ : R →+* C) (J : Ideal R),
     J ^ 2 = ⊥ → ∀ (X X₀ : Scheme.{0}) (s : X ⟶ Sp C) (s₀ : X₀ ⟶ Sp (R ⧸ J)) (i : X₀ ⟶ X),
@@ -690,8 +689,7 @@ theorem cocycle_of_sqZero : ∀ (R : Type) [CommRing R] (I : Ideal R), I ^ 2 = �
         U n t t'' (a ≫ b) * n.α t'' (z _ _ _ (n.G.map a) (n.G.map b)) := by
     intro n t t' t'' a b
     have h := congrArg (n.α t'') (hz_eq (n.G.map a) (n.G.map b))
-    simp only [map_mul, map_add (f := _), n.naturality, ← Functor.map_comp] at h
-    exact h
+    simpa only [map_mul, map_add (f := _), n.naturality, ← Functor.map_comp] using h
   have hd : d1 F' f = (n₀.pullbackTwoCocycle ⟨z, hz2⟩).1 - (n₁.pullbackTwoCocycle ⟨z, hz2⟩).1 - (n₂.pullbackTwoCocycle ⟨z, hz2⟩).1 := by
     funext t t' t'' a b
     simp only [d1_apply, Pi.sub_apply, CoefMap.pullCocycleTwo_apply]
@@ -1056,8 +1054,7 @@ theorem primI_of_ext : ∀ (R : Type) [CommRing R] (I : Ideal R), ∃ (R₁ : Ty
     have key : (mp F χ).toLinearMap.lTensor I (y _ _ _ φ ψ) + y _ _ _ (φ ≫ ψ) χ =
         y _ _ _ φ (ψ ≫ χ) + y _ _ _ ψ χ := by
       apply tau_injective I (F.obj t''') (hF t''')
-      simp only [map_add (f := _), tau_nat, hy]
-      exact z.2 φ ψ χ
+      simpa only [map_add (f := _), tau_nat, hy] using z.2 φ ψ χ
     have := congrArg (iota I _) key
     simp only [map_add (f := _), ← iota_nat] at this
     exact this
@@ -1189,8 +1186,7 @@ theorem app_appLE {i : X₀ ⟶ X} {i' : Y₀ ⟶ Y} {φ : Y ⟶ X} {ψ : Y₀ �
   simp only [CommRingCat.hom_comp, RingHom.comp_apply] at e2
   rw [e2, Scheme.Hom.comp_appLE, CommRingCat.hom_comp, RingHom.comp_apply, hc]
   have e3 := congrArg (fun q ↦ q.hom c) (Scheme.Hom.map_appLE ψ (U := i ⁻¹ᵁ U) (U' := V₀) hle' (homOfLE hV).op)
-  simp only [CommRingCat.hom_comp, RingHom.comp_apply] at e3
-  exact e3
+  simpa only [CommRingCat.hom_comp, RingHom.comp_apply] using e3
 
 theorem map_res_val {U V V' : X.Opens} (h : V ≤ U) (h' : V' ≤ V) (a : Γ(X, U)ˣ) :
     (X.presheaf.map (homOfLE h').op).hom (res h a).val = (res (h'.trans h) a).val := by
@@ -1444,8 +1440,7 @@ theorem lift_mdef (hi : IsThick I s i) (hL : L.IsLB) {u : C1 (smallG i L ⋙ OAf
       (i.app t''.unop.1.1.1).hom ((X.presheaf.map (homOfLE hb).op).hom x * y - z) = 0 := by
     intro x y z hx hy hz
     rw [map_sub, map_mul, app_presheaf_map, hx, hy, hz, sub_eq_zero]
-    simp only [res, Units.coe_map, MonoidHom.coe_coe, presheaf_map_map]
-    exact hc
+    simpa only [res, Units.coe_map, MonoidHom.coe_coe, presheaf_map_map] using hc
   exact k _ _ _ (hu t t' a) (hu t' t'' b) (hu t t'' (a ≫ b))
 
 theorem isLiftOfTransitionUnits_of_ideal_cochain_change (hi : IsThick I s i) {u : C1 (smallG i L ⋙ OAff s)} (hu : IsLift s i L u)
@@ -1565,8 +1560,7 @@ theorem exists_fam {S : Scheme.{0}} {A U T : Over S} [GrpObj A] [IsLocallyNoethe
   obtain ⟨t', rfl⟩ := hp K s t
   refine (isAdditive_iff (pull_isLB hM _)).2 fun Y a a' y ↦ ?_
   simp only [evc_ev hM, lift_fst, lift_snd_assoc]
-  simp only [← Category.assoc, key]
-  exact (isAdditive_iff hN).1 ha Y a a' _
+  simpa only [← Category.assoc, key] using (isAdditive_iff hN).1 ha Y a a' _
 
 theorem hasRep_of_sqZero : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ J : Ideal R, J ^ 2 = ⊥ → HasRep A g (Over.mk (spMap (Ideal.Quotient.mk J))) → HasRep A g (𝟙_ _) := by
   intro R _ _ A _ g hA hg J hJ ⟨B, b, P, hP, hb⟩

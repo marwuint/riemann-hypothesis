@@ -158,8 +158,7 @@ theorem locE_exists_coords [CharZero F] (L : LocE F E) :
       rw [map_mul, map_mul, ← hdd, map_ofNat]
       linear_combination d * hp - d * hc
     have hb' : p.2 = 0 := by
-      have h2 := (map_eq_zero_iff _ hinjA).mp hb
-      simpa [hD0] using h2
+      simpa [hD0] using (map_eq_zero_iff _ hinjA).mp hb
     have ha : p.1 = 0 := by
       rw [hb', map_zero, zero_mul, add_zero] at hp
       exact (map_eq_zero_iff _ hinjA).mp hp
@@ -250,22 +249,19 @@ theorem mem_R_split (M : Model F E) (g : SplitG M.L) (hg : M.split = some g) (x 
   constructor
   · rintro ⟨y, hy, hyx⟩
     refine ⟨y.1, y.2, ?_, ?_⟩
-    · rw [← Ideal.mem_span_singleton, ← Ideal.Quotient.eq]
-      exact hy
+    · rwa [← Ideal.mem_span_singleton, ← Ideal.Quotient.eq]
     · exact hyx.symm
   · rintro ⟨a, b, hab, hx⟩
     refine ⟨(a, b), ?_, ?_⟩
     · show Ideal.Quotient.mk _ a = Ideal.Quotient.mk _ b
-      rw [Ideal.Quotient.eq, Ideal.mem_span_singleton]
-      exact hab
+      rwa [Ideal.Quotient.eq, Ideal.mem_span_singleton]
     · exact hx.symm
 
 theorem R_le_O (M : Model F E) : M.R ≤ M.L.O := by
   intro x hx
   cases hs : M.split with
   | none =>
-    simp only [Model.R, hs] at hx
-    exact hx
+    simpa only [Model.R, hs] using hx
   | some g =>
     obtain ⟨a, b, -, hx'⟩ := (mem_R_split M g hs x).mp hx
     rw [M.L.O_def]

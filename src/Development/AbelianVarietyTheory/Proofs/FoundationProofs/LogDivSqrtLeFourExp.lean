@@ -59,19 +59,16 @@ theorem badBound_tail (eps C : ℝ) (he : 0 < eps) :
   set K : ℝ := 1 + Real.log 612 + 3 * |C| / (eps / 7) with hK
   have hK0 : 0 ≤ K := by positivity
   filter_upwards [Filter.eventually_ge_atTop (1 : ℝ),
-    Filter.eventually_ge_atTop (K ^ (1 / (eps / 6 - eps / 7)))] with x hx1 hxK
+    Filter.eventually_ge_atTop (K ^ (eps / 6 - eps / 7)⁻¹)] with x hx1 hxK
   have hx0 : 0 < x := by linarith
   have hlog : 0 ≤ Real.log x := Real.log_nonneg hx1
   have hxb : 1 ≤ x ^ (eps / 7) := Real.one_le_rpow hx1 hb.le
   have hl : Real.log x ≤ x ^ (eps / 7) / (eps / 7) := Real.log_le_rpow_div hx0.le hb
-  have hd : K ≤ x ^ (eps / 6 - eps / 7) := by
-    calc K = (K ^ (1 / (eps / 6 - eps / 7))) ^ (eps / 6 - eps / 7) := by
-          rw [← Real.rpow_mul hK0, one_div_mul_cancel hab.ne', Real.rpow_one]
-      _ ≤ x ^ (eps / 6 - eps / 7) := Real.rpow_le_rpow (Real.rpow_nonneg hK0 _) hxK hab.le
+  have hd : K ≤ x ^ (eps / 6 - eps / 7) := (Real.rpow_inv_le_iff_of_pos hK0 hx0.le hab).1 hxK
   have hsplit : x ^ (eps / 6) = x ^ (eps / 6 - eps / 7) * x ^ (eps / 7) := by
     rw [← Real.rpow_add hx0]; ring_nf
   have hpow : (x ^ C) ^ 3 = Real.exp (3 * (Real.log x * C)) := by
-    rw [Real.rpow_def_of_pos hx0, ← Real.exp_nat_mul]; norm_num
+    rw [Real.rpow_def_of_pos hx0, ← Real.exp_natCast_mul]; norm_num
   rw [hpow, show (612 : ℝ) = Real.exp (Real.log 612) from (Real.exp_log (by norm_num)).symm,
     ← Real.exp_add, ← Real.exp_add, Real.exp_le_exp]
   have hC1 : Real.log x * C ≤ Real.log x * |C| := mul_le_mul_of_nonneg_left (le_abs_self C) hlog
@@ -80,12 +77,10 @@ theorem badBound_tail (eps C : ℝ) (he : 0 < eps) :
   have hKx : K * x ^ (eps / 7) ≤ x ^ (eps / 6) := by
     rw [hsplit]; exact mul_le_mul_of_nonneg_right hd (by positivity)
   have hl612 : Real.log 612 ≤ Real.log 612 * x ^ (eps / 7) := le_mul_of_one_le_right h612 hxb
-  have h3 : 3 * (Real.log x * C) ≤ 3 * |C| / (eps / 7) * x ^ (eps / 7) := by
-    calc 3 * (Real.log x * C) ≤ 3 * (x ^ (eps / 7) / (eps / 7) * |C|) := by linarith
-      _ = 3 * |C| / (eps / 7) * x ^ (eps / 7) := by ring
-  have h4 : (1 + Real.log 612 + 3 * |C| / (eps / 7)) * x ^ (eps / 7) =
-      x ^ (eps / 7) + Real.log 612 * x ^ (eps / 7) + 3 * |C| / (eps / 7) * x ^ (eps / 7) := by ring
-  rw [hK, h4] at hKx
+  have h4 : K * x ^ (eps / 7) =
+      x ^ (eps / 7) + Real.log 612 * x ^ (eps / 7) + 3 * (x ^ (eps / 7) / (eps / 7) * |C|) := by
+    rw [hK]
+    ring
   linarith
 
 theorem log_div_sqrt_le_four_exp {g u : ℝ} (hg : Real.exp (4 * u) ≤ g) :

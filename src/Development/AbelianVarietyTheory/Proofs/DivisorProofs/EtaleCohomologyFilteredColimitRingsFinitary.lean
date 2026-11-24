@@ -153,8 +153,7 @@ theorem widePushout_finiteType_int {J : Type} [Finite J] [Nonempty J] (A B : Com
   have hB' : ∀ b : B, b ∈ Subring.closure (s : Set B) := by
     intro b
     have hb : b ∈ Algebra.adjoin ℤ (s : Set B) := hs ▸ Algebra.mem_top
-    rw [Algebra.adjoin_int] at hb
-    exact hb
+    rwa [Algebra.adjoin_int] at hb
   have hmem : ∀ (j : J) (b : B), (WidePushout.ι (fun _ : J => g) j).hom b ∈ S := by
     intro j b
     have hle : (Subring.closure (s : Set B)).map (WidePushout.ι (fun _ : J => g) j).hom ≤ S := by
@@ -193,8 +192,7 @@ end GlobalTheory
 
 theorem GlobalTheory.cechConerve_obj_finiteType_int : ∀ (A B : CommRingCat.{0}) (g : A ⟶ B), Algebra.FiniteType ℤ B →
     ∀ k : SimplexCategory, Algebra.FiniteType ℤ ((Arrow.mk g).cechConerve.obj k) := by
-  intro A B g hB k
-  exact GlobalTheory.widePushout_finiteType_int (J := Fin (k.len + 1)) A B g hB
+  exact fun A B g hB k => GlobalTheory.widePushout_finiteType_int (J := Fin (k.len + 1)) A B g hB
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechConerveObjFiniteTypeInt =====
@@ -455,8 +453,7 @@ theorem altM_d {T : Type 1} [Category.{0} T] {X Y : CosimplicialObject T} (g : X
     (n m : ℕ) (w : (altC X F).X n) :
     (altC Y F).d n m ((altM g F).f n w) = (altM g F).f m ((altC X F).d n m w) := by
   have h := ConcreteCategory.congr_hom ((altM g F).comm n m) w
-  rw [ConcreteCategory.comp_apply, ConcreteCategory.comp_apply] at h
-  exact h
+  rwa [ConcreteCategory.comp_apply, ConcreteCategory.comp_apply] at h
 
 theorem altM_comp {T : Type 1} [Category.{0} T] {X Y Z : CosimplicialObject T} (g : X ⟶ Y) (h : Y ⟶ Z)
     (F : T ⥤ AddCommGrpCat.{1}) (n : ℕ) (w : (altC X F).X n) :
@@ -656,9 +653,7 @@ theorem wExact_of_finiteType_iso (N M : CommRingCat.{0} ⥤ AddCommGrpCat.{1}) (
   refine GlobalTheory.EtC.WExactColim.wExact_colimit CommRingCat.{0} N hN J (D ⋙ Arrow.leftFunc)
     (D ⋙ CosimplicialObject.cechConerve) (coAugNat D) (Arrow.leftFunc.mapCocone (Cocone.mk (Arrow.mk g) ι))
     (CosimplicialObject.cechConerve.mapCocone (Cocone.mk (Arrow.mk g) ι)) (coAug g) hU (fun k => hX k) ?_ ?_
-  · intro j
-    have h := (CosimplicialObject.augmentedCechConerve.map (ι.app j)).w
-    exact h.symm
+  · exact fun j => ((CosimplicialObject.augmentedCechConerve.map (ι.app j)).w).symm
   · intro j
     obtain ⟨hj, hl, hr⟩ := hD j
     refine (GlobalTheory.EtC.wExact_congr CommRingCat.{0} _ _ (coAug (D.obj j).hom) N M ε (hε _ hl) (fun k => hε _ ?_)).2
@@ -709,13 +704,11 @@ theorem finiteType_int_hom_filteredColimit :
     have h1 : Algebra.FinitePresentation ℤ A := Algebra.FinitePresentation.of_finiteType.mp hA
     have e : f.hom.toAlgebra = (inferInstance : Algebra ℤ A) := Subsingleton.elim _ _
     unfold RingHom.FinitePresentation
-    rw [e]
-    exact h1
+    rwa [e]
   have hft : f.hom.FiniteType := by
     have e : f.hom.toAlgebra = (inferInstance : Algebra ℤ A) := Subsingleton.elim _ _
     unfold RingHom.FiniteType
-    rw [e]
-    exact hA
+    rwa [e]
   have hR : ∀ {X : CommRingCat.{0}} (u v : R ⟶ X), u = v := by
     intro X u v
     ext1
@@ -1091,8 +1084,7 @@ theorem locSurj_of_iso_on_finiteType : ∀ (N M : CommRingCat.{0} ⥤ AbCx) (ε 
     clear_value c0 z0
     refine ⟨A, 𝟙 A, etFF_id A, (N.map (κ.app j)).f 0 c0, 0, ?_, ?_⟩
     · have := ConcreteCategory.congr_hom ((N.map (κ.app j)).comm 0 (0 + 1)) c0
-      rw [ConcreteCategory.comp_apply, ConcreteCategory.comp_apply, hdc0, map_zero] at this
-      exact this
+      rwa [ConcreteCategory.comp_apply, ConcreteCategory.comp_apply, hdc0, map_zero] at this
     · have h1 := ConcreteCategory.congr_hom (congrArg (fun h => h.f 0) (ε.naturality (κ.app j))) c0
       simp only [HomologicalComplex.comp_f, ConcreteCategory.comp_apply] at h1
       have h1' : (ε.app A).f 0 ((N.map (κ.app j)).f 0 c0) = (M.map (κ.app j)).f 0 ((ε.app (D.obj j)).f 0 c0) := h1
@@ -1230,8 +1222,7 @@ theorem main : ∀ (R : Type) [CommRing R] (F : Shv R), ∃ ι : F.obj ⋙ forge
       have h2 : pull R (sch.map f.unop) F 0 (cE U.unop c) =
           CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains R).map (sch.map f.unop))) c (zero_add 0)) := rfl
       rw [hc, AddEquiv.apply_symm_apply] at h2
-      rw [h2] at h1
-      exact h1
+      rwa [h2] at h1
     rw [hφ, hφ, ← key, AddEquiv.symm_apply_apply]
     rfl
   · intro a b hab

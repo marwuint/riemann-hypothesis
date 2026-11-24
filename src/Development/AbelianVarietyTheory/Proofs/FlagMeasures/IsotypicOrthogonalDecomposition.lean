@@ -132,8 +132,7 @@ theorem selfAdjoint_eq_algebraMap_of_commute_irreducible {G H : Type} [NormedAdd
       ext v
       have hv : v ∈ S := hS ▸ Submodule.mem_top
       have hv' : cfc k A v = 0 := hv
-      rw [ContinuousLinearMap.zero_apply]
-      exact hv'
+      rwa [ContinuousLinearMap.zero_apply]
   refine ⟨r, ?_⟩
   calc A = cfc (fun x : ℝ => x) A := (cfc_id' ℝ A).symm
     _ = cfc (fun _ : ℝ => r) A := cfc_congr (fun s hs => hsub s hs)
@@ -165,8 +164,7 @@ theorem schur_unitary_irreducible (G H : Type) [Group G] [NormedAddCommGroup H]
   have hcS : ∀ g, Commute (star T) (π g) := by
     intro g
     have h1 := (hcT g⁻¹).star_star
-    rw [hstar, inv_inv] at h1
-    exact h1
+    rwa [hstar, inv_inv] at h1
   have hre : ∀ g, Commute (realPart T : H →L[ℂ] H) (π g) := by
     intro g
     rw [realPart_apply_coe]
@@ -227,8 +225,7 @@ theorem inner_intertwiners (σ : G →* (H →L[ℂ] H)) (hσ : ∀ g u, ‖σ g
     rw [ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply, hSin]
     have h1 : T v = R g (T (σ g⁻¹ v)) := by
       have := congrArg (fun F : H →L[ℂ] L => F (σ g⁻¹ v)) (hT g)
-      simp only [ContinuousLinearMap.comp_apply, hinv] at this
-      exact this
+      simpa only [ContinuousLinearMap.comp_apply, hinv] using this
     have h2 : T' (σ g x) = R g (T' x) := by
       have := congrArg (fun F : H →L[ℂ] L => F x) (hT' g)
       simpa only [ContinuousLinearMap.comp_apply] using this
@@ -269,8 +266,7 @@ theorem exists_frame (V : Submodule ℂ (H →L[ℂ] L)) [FiniteDimensional ℂ 
   have he : ∀ x, (((LinearEquiv.ofInjective Φ hinj).symm x : V) : H →L[ℂ] L) w = (x : L) := by
     intro x
     have h1 := congrArg Subtype.val ((LinearEquiv.ofInjective Φ hinj).apply_symm_apply x)
-    rw [LinearEquiv.ofInjective_apply] at h1
-    exact h1
+    rwa [LinearEquiv.ofInjective_apply] at h1
   have hin : ∀ i j u u', ⟪(((LinearEquiv.ofInjective Φ hinj).symm (b i) : V) : H →L[ℂ] L) u,
       (((LinearEquiv.ofInjective Φ hinj).symm (b j) : V) : H →L[ℂ] L) u'⟫_ℂ
       = (if i = j then 1 else 0) * ⟪u, u'⟫_ℂ := by

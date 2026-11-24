@@ -144,11 +144,9 @@ private lemma lintegral_inv_eq_of_mul_invariant {n : ℕ} (U : Set (Matrix (Fin 
           dsimp only
           rw [hleft _ hb h hh]
       _ = ∫⁻ b, ∫⁻ a, g b * h (Matrix.of.symm (Matrix.of b * Matrix.of a)) ∂μR ∂μR := by
-          refine lintegral_congr fun b => ?_
-          exact (lintegral_const_mul _ (hmh b)).symm
+          exact lintegral_congr fun b => (lintegral_const_mul _ (hmh b)).symm
       _ = ∫⁻ a, ∫⁻ b, g b * h (Matrix.of.symm (Matrix.of b * Matrix.of a)) ∂μR ∂μR := by
-          refine lintegral_lintegral_swap ?_
-          exact ((hg.comp measurable_fst).mul (hh.comp hm)).aemeasurable
+          exact lintegral_lintegral_swap ((hg.comp measurable_fst).mul (hh.comp hm)).aemeasurable
       _ = ∫⁻ a, ∫⁻ b, g (Matrix.of.symm (Matrix.of b * (Matrix.of a)⁻¹)) * h b ∂μR ∂μR := by
           refine lintegral_congr_ae (hU.mono fun a ha => ?_)
           have hua := hUu _ ha
@@ -162,8 +160,7 @@ private lemma lintegral_inv_eq_of_mul_invariant {n : ℕ} (U : Set (Matrix (Fin 
             intro b
             rw [Equiv.apply_symm_apply, Matrix.mul_nonsing_inv_cancel_right _ _ hua]
             rfl
-          simp only [e] at this
-          exact this
+          simpa only [e] using this
       _ = ∫⁻ b, ∫⁻ a, g (Matrix.of.symm (Matrix.of b * (Matrix.of a)⁻¹)) * h b ∂μR ∂μR := by
           refine lintegral_lintegral_swap ?_
           exact ((hg.comp (measurable_of_symm_mul

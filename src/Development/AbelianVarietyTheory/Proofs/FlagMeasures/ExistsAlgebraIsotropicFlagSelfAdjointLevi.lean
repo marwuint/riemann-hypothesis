@@ -216,13 +216,11 @@ theorem keeps_iff_comm (W : Submodule ℂ (Fin n → ℂ)) (P : Matrix (Fin n) (
     have a1 : P * X * P = X * P := by
       apply Matrix.ext_of_mulVec_single
       intro i
-      simp only [← Matrix.mulVec_mulVec]
-      exact h2 _ (h _ (h1 _)).1
+      simpa only [← Matrix.mulVec_mulVec] using h2 _ (h _ (h1 _)).1
     have a2 : P * Xᴴ * P = Xᴴ * P := by
       apply Matrix.ext_of_mulVec_single
       intro i
-      simp only [← Matrix.mulVec_mulVec]
-      exact h2 _ (h _ (h1 _)).2
+      simpa only [← Matrix.mulVec_mulVec] using h2 _ (h _ (h1 _)).2
     have a3 := congrArg Matrix.conjTranspose a2
     simp only [Matrix.conjTranspose_mul, h0, Matrix.conjTranspose_conjTranspose, ← mul_assoc] at a3
     rw [← a1, a3]
@@ -270,8 +268,7 @@ theorem finrank_skew_commutant (ε : Fin n → Bool) {a : ℕ} (j : Fin a → �
       (∀ i, X * u i = u i * X) ∧ ∀ i, X * (J * u i * J) = J * u i * J * X := by
     intro X
     constructor
-    · intro h
-      exact ⟨fun i => h (some (Sum.inl i)), fun i => h (some (Sum.inr i))⟩
+    · exact fun h => ⟨fun i => h (some (Sum.inl i)), fun i => h (some (Sum.inr i))⟩
     · intro h
       have h' : ∀ k, X * e k = e k * X := by
         rintro (i | i)
@@ -338,8 +335,7 @@ theorem exists_levi_algebra : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j :
     intro i k hik
     apply Matrix.ext_of_mulVec_single
     intro l
-    simp only [← Matrix.mulVec_mulVec]
-    exact h2 _ _ (hmono hik (h1 _ _))
+    simpa only [← Matrix.mulVec_mulVec] using h2 _ _ (hmono hik (h1 _ _))
   have hPP' : ∀ i k, i ≤ k → P i * P k = P i := by
     intro i k hik
     have := congrArg Matrix.conjTranspose (hPP i k hik)

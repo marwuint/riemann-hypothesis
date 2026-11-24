@@ -61,9 +61,7 @@ theorem movesLocal_supp_iff {D : D7} (S : HSp D) (L : Lat S) (hL : Submodule.IsL
     have h := hy i
     simp only [idAt, Submodule.mem_inf] at h ⊢
     refine ⟨h.1, ?_⟩
-    simp only [Submodule.mem_iInf]
-    intro w
-    exact absurd trivial w.2
+    simpa only [Submodule.mem_iInf] using fun w => absurd trivial w.2
   rw [hT, hV]
   constructor
   · rintro ⟨_, h⟩
@@ -102,9 +100,7 @@ theorem movesLocal : ∀ (D : D7) (S : HSp D) (L : GlobalTheory.FinPl.Lat S), Is
       have h' := hy i
       simp only [idAt, Submodule.mem_inf] at h' ⊢
       refine ⟨h'.1, ?_⟩
-      simp only [Submodule.mem_iInf]
-      intro w
-      exact absurd trivial w.2
+      simpa only [Submodule.mem_iInf] using fun w => absurd trivial w.2
     rw [← movesLocal_supp_iff S L hL.1 v y hy, ← movesLocal_supp_iff S L hL.1 v _ (hmv _ y hy)]
     exact h y hyT
   · intro h y hy

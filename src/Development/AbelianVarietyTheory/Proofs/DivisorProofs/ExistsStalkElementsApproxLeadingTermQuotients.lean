@@ -190,8 +190,7 @@ theorem isMonomial_pull {R W : Type} [CommRing R] [IsDomain R] [CommRing W] [IsD
     push_cast
     rw [Finset.mul_sum]
     exact Finset.sum_congr rfl fun k _ => by ring
-  · rw [Fin.prod_univ_one, Matrix.cons_val_zero, Matrix.cons_val_zero, mul_comm, hv]
-    exact hc'
+  · rwa [Fin.prod_univ_one, Matrix.cons_val_zero, Matrix.cons_val_zero, mul_comm, hv]
 
 theorem exists_trait : ∀ {o : Type} [CommRing o] {ζ : o} {g n : ℕ} (F : SFam g n ζ) (S : Scheme.{0}) (j : F.X ⟶ S)
     (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (Q : Data V) (ξ : Sp V ⟶ S), UnifOver F j ξ Q →
@@ -356,8 +355,7 @@ theorem idlAlong_monomial : ∀ {o : Type} [CommRing o] {ζ : o} {g n : ℕ} (F 
     exact (hs k).pow_pow
   have hmap : (idlAlong J x).map σ = (Ideal.span {∏ k, s k ^ b k}).map σ := by
     rw [hid, Ideal.map_span, Set.image_singleton, map_prod]
-    simp only [map_pow]
-    exact (Ideal.span_singleton_eq_span_singleton.2 hassoc).symm
+    simpa only [map_pow] using (Ideal.span_singleton_eq_span_singleton.2 hassoc).symm
   rw [← Ideal.comap_map_of_bijective σ hσ (I := idlAlong J x), hmap, Ideal.comap_map_of_bijective σ hσ]
 
 end GlobalTheory.Poinc.Arith
@@ -465,8 +463,7 @@ theorem dvd_of_map_dvd_of_finite (A B : Type) [CommRing A] [IsDomain A] [IsInteg
   set y : K := algebraMap A K c / algebraMap A K a with hy
   have hιKy : iK y = algebraMap B L x := by
     rw [hy, map_div₀, hιK, hιK]
-    simp only [gL, RingHom.comp_apply, hx, map_mul]
-    exact mul_div_cancel_left₀ _ hρa
+    simpa only [gL, RingHom.comp_apply, hx, map_mul] using mul_div_cancel_left₀ _ hρa
   have hint : IsIntegral A y := by
     refine ⟨p, hpm, ?_⟩
     apply iK.injective
@@ -582,8 +579,7 @@ theorem isIso_morphismRestrict_of_isNormal : ∀ {S T : Scheme.{0}} [IsLocallyNo
   let W' : V → V.toScheme.Opens := fun x => V.ι ⁻¹ᵁ W x
   have hcov : iSup W' = ⊤ := by
     rw [eq_top_iff]
-    intro y _
-    exact TopologicalSpace.Opens.mem_iSup.2 ⟨y, hxW y⟩
+    exact fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hxW y⟩
   refine IsZariskiLocalAtTarget.of_iSup_eq_top (P := MorphismProperty.isomorphisms Scheme) W' hcov
     fun x => ?_
   have h1 : IsIso (ν ∣_ W x ∣_ ((W x).ι ⁻¹ᵁ V)) := inferInstance
@@ -693,16 +689,14 @@ theorem exists_normalisation_cover : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤
     have hv : Set.range v ⊆ ((π ⁻¹ᵁ Vi : S.Opens) : Set S) := by
       rintro _ ⟨w, rfl⟩
       have := hr ⟨w, rfl⟩
-      rw [huv] at this
-      exact this
+      rwa [huv] at this
     have hm : Mono ((π ⁻¹ᵁ Vi).ι ≫ π) := by
       rw [← morphismRestrict_ι]; infer_instance
     rw [← Scheme.Opens.range_ι] at hu hv
     rw [← IsOpenImmersion.lift_fac _ u hu, ← IsOpenImmersion.lift_fac _ v hv]
     congr 1
     rw [← cancel_mono ((π ⁻¹ᵁ Vi).ι ≫ π)]
-    simp only [← Category.assoc, IsOpenImmersion.lift_fac]
-    exact huv
+    simpa only [← Category.assoc, IsOpenImmersion.lift_fac] using huv
   let U : X₁.M.Z.Opens := X₁.π ⁻¹ᵁ Vi
   have hUne : (U : Set X₁.M.Z).Nonempty := by
     refine ⟨X₁.M.pt (show Sp X₁.Ω₁ from IsLocalRing.closedPoint X₁.Ω₁), ?_⟩
@@ -814,8 +808,7 @@ theorem exists_normalisation_cover : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤
       · rw [Category.assoc, pullback.lift_fst, Category.assoc, pullback.lift_fst]
         apply monoV
         · rw [Category.assoc, hc, ← Category.assoc, hy, Category.assoc, Category.assoc, hab]
-        · rw [Category.assoc, hc, ← Category.assoc, hy, Category.assoc]
-          exact hgen
+        · rwa [Category.assoc, hc, ← Category.assoc, hy, Category.assoc]
       · rw [Category.assoc, pullback.lift_snd, Category.assoc, pullback.lift_snd, hy]
     obtain ⟨ξ, ⟨-, hξ⟩, -⟩ := GlobalTheory.existsUnique_lift_spec_of_isLocalization (R := R) (R' := FractionRing R)
       (nonZeroDivisors R) le_rfl j.fromNormalization (y ≫ j.toNormalization) d
@@ -929,8 +922,7 @@ theorem mem_of_isIntegralElem {O : Type} [CommRing O] (hk : IsAlgClosed k₀) (�
   have h₁ : IsIntegral k₀ z := by
     obtain ⟨P, hP, hPz⟩ := hz
     refine ⟨P.map (θ.codRestrict k₀ hθ), hP.map _, ?_⟩
-    rw [Polynomial.eval₂_map]
-    exact hPz
+    rwa [Polynomial.eval₂_map]
   obtain ⟨w, hw⟩ := minpoly.mem_range_of_degree_eq_one k₀ z
     (IsAlgClosed.degree_eq_one_of_irreducible k₀ (minpoly.irreducible h₁))
   exact hw ▸ w.2
@@ -1010,8 +1002,7 @@ theorem mem_of_map_mem {R S : Type} [CommRing R] [IsDomain R] [IsDiscreteValuati
   have : IsLocalHom (algebraMap R S) := ‹IsLocalHom f›
   have : Module.Flat R S := inferInstance
   have : Module.FaithfullyFlat R S := Module.FaithfullyFlat.of_flat_of_isLocalHom
-  rw [← Ideal.comap_map_eq_self_of_faithfullyFlat (B := S) I]
-  exact h
+  rwa [← Ideal.comap_map_eq_self_of_faithfullyFlat (B := S) I]
 
 theorem effCartier_pow {X : Scheme.{0}} {I : X.IdealSheafData} (h : FinalTheorems.EffCartier I) (k : ℕ) : FinalTheorems.EffCartier (I ^ k) := by
   intro x
@@ -1066,9 +1057,7 @@ theorem exists_reg_open {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M 
     exact ⟨U, f, (genericPoint_specializes hU.some).mem_open U.isOpen hU.some_mem, hf⟩
   · intro w hw a ha
     rw [← hs] at ha
-    refine (Algebra.adjoin_le (S := M.O w) ?_) ha
-    intro x hx
-    exact Set.mem_iInter₂.1 hw x hx
+    exact (Algebra.adjoin_le (S := M.O w) (fun x hx => Set.mem_iInter₂.1 hw x hx)) ha
 
 theorem exists_mem_of_ordGe {g n : ℕ} {F : SFam g n (zetaAway n)} {Z : Scheme.{0}} {i : F.X ⟶ Z} [IsOpenImmersion i]
     {W : Matrix (Fin 8) (Fin 8) ℤ} {φ : InvFun ℤ} {d : ℕ} {J : Z.IdealSheafData} (hval : ValOn F i φ J d) {N₁ : ℕ}

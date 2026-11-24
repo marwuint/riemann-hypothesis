@@ -146,8 +146,7 @@ theorem card_fibre_orbit (p : A → B) (hp : ∀ (g : G) a, p (g • a) = g • 
     constructor
     · rintro ⟨⟨g, rfl⟩, hg⟩
       refine ⟨⟨g, ?_⟩, rfl⟩
-      rw [MulAction.mem_stabilizer_iff, ← hp]
-      exact hg
+      rwa [MulAction.mem_stabilizer_iff, ← hp]
     · rintro ⟨h, rfl⟩
       refine ⟨⟨(h : G), rfl⟩, ?_⟩
       rw [Subgroup.smul_def, hp]
@@ -285,10 +284,8 @@ theorem mem_gmap {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module
   simp only [Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]
   constructor
   · rintro ⟨y, hy, hxy⟩
-    rw [γ.injective hxy] at hy
-    exact hy
-  · intro hx
-    exact ⟨x, hx, rfl⟩
+    rwa [γ.injective hxy] at hy
+  · exact fun hx => ⟨x, hx, rfl⟩
 
 theorem hT_swap {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E) {x y : S.V}
     (h : S.hT x y = 0) : S.hT y x = 0 := S.herm.eq_iff.1 h
@@ -302,8 +299,7 @@ theorem mem_orth {U : Submodule D.host.E (hS D).V} {v : (hS D).V} :
 theorem mem_orthX {v : (hS D).V} : v ∈ orth (hS D) F0.X ↔ ∀ a, (hS D).hT (F0.e a) v = 0 := by
   rw [mem_orth D]
   constructor
-  · intro h a
-    exact h _ (Submodule.subset_span ⟨a, rfl⟩)
+  · exact fun h a => h _ (Submodule.subset_span ⟨a, rfl⟩)
   · intro h x hx
     have hle : F0.X ≤ LinearMap.ker ((hS D).hT.flip v) :=
       Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; simpa using h a)
@@ -367,8 +363,7 @@ theorem stab_X {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F
     rw [← h] at hx
     obtain ⟨y, hy, hyx⟩ := Submodule.mem_map.1 hx
     have hyx' : y = x := γ.injective (by simpa using hyx)
-    rw [← hyx']
-    exact hy
+    rwa [← hyx']
   · intro hx
     rw [← h]
     exact Submodule.mem_map_of_mem hx
@@ -465,8 +460,7 @@ theorem rowLat_gmap {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stab
     apply hprim c
     have h1 : γ (c • F0.z) = c • F0.z := by rw [map_smul, hz]
     apply (Lsub_gmap hγ Λ).1
-    rw [h1]
-    exact hc
+    rwa [h1]
 
 end Geometry
 
@@ -961,8 +955,7 @@ theorem rows_sum (D : D7) (u : D.what₂.Word) (hp : (Tu D u).Prime) (h3 : 3 ≤
       obtain ⟨γ₁, hγ₁, hγ₁e, hind₁⟩ := exists_ext he hz' hT0 g₁.2
       have hrow₁ : IsRowLat D F0 Λ₁ := hrows.1 Λ₁ hΛ₁s
       have hL : latL D F0 (Formalism.HermitianLatticesTheory.gmap γ₁ Λ₁) = latL D F0 Λ' := by
-        rw [latL_gmap hγ₁ hind₁]
-        exact hg₁
+        rwa [latL_gmap hγ₁ hind₁]
       have hLs := Lsub_eq_of_latL he hz' hT0 hL
       obtain ⟨n, hn, -, hnΛ⟩ := hlift _ _ (rowLat_gmap hγ₁ hγ₁e hrow₁) hΛ' hLs
       exact ⟨n * γ₁, mul_mem_stabF D F0 hn hγ₁, by rw [GlobalTheory.RowMassCompare.gmap_mul', hnΛ]⟩
@@ -1007,8 +1000,7 @@ theorem rows_sum (D : D7) (u : D.what₂.Word) (hp : (Tu D u).Prime) (h3 : 3 ≤
           left_inv := fun _ => rfl
           right_inv := fun _ => rfl }
     rw [e]
-  rw [Finset.sum_congr rfl hL, Finset.sum_congr rfl hR]
-  exact key
+  rwa [Finset.sum_congr rfl hL, Finset.sum_congr rfl hR]
 
 theorem mean_rows_eq_mean_genus : ∀ (D : D7) (u : D.what₂.Word), (Tu D u).Prime → 3 ≤ Tu D u → SplitsCompletely (E := D.host.E) (Tu D u) → ∀ F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E), F0.e = D.sp.hypE → F0.z = D.zmOf u → ∀ what₂ : Finset (LatV D), IsRowReps D F0 what₂ → ∀ Λ₀ : LatV D, IsRowLat D F0 Λ₀ → ∀ reps : Finset (LatW D), Formalism.ThetaLiftIndependence.IsClassReps (D.sp.X 0).hT (L0X D Λ₀ (lf D F0)) reps → ∀ N : LatW D → ℕ∞, (∀ γ ∈ Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT, ∀ L, N (Formalism.HermitianLatticesTheory.gmap γ L) = N L) → (∑ Λ ∈ what₂, ENNReal.ofReal (wRow D F0 Λ) * (N (L0X D Λ (lf D F0)) : ℝ≥0∞)) * ENNReal.ofReal (Formalism.HermitianLatticesTheory.mass (D.sp.X 0).hT (L0X D Λ₀ (lf D F0))) = (∑ Λ ∈ what₂, ENNReal.ofReal (wRow D F0 Λ)) * ∑ L' ∈ reps, ENNReal.ofReal ((Nat.card (Formalism.ThetaLiftIndependence.autL (D.sp.X 0).hT L') : ℝ))⁻¹ * (N L' : ℝ≥0∞) := by
   intro D u hp h3 hs F0 he hz what₂ hrows Λ₀ hΛ₀ reps hreps N hN

@@ -158,30 +158,26 @@ theorem archDir_transport : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
       ((κ → AF F) × (κ → AF F)) →ₗ[AF F] ((κ → AF F) × (κ → AF F)) := fun p =>
     co.e.toLinearMap ∘ₗ mulMulT (S := AF F) (((p⁻¹).1 : GL (Fin m) (AE F E)) : Matrix (Fin m) (Fin m) (AE F E))
       (((p⁻¹).2 : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) ∘ₗ co.e.symm.toLinearMap
-  have hL : ∀ p x, L p x = co.e (actAB (_root_.Algebra.TensorProduct.map (_root_.AlgHom.id (AF F) (AF F)) σ) p⁻¹ (co.e.symm x)) := fun p x => rfl
   have hfix : ∀ p h, eInf F • L p (GlobalTheory.WeilL2Words.archPair F h) = L p (GlobalTheory.WeilL2Words.archPair F h) := by
     intro p h
     conv_rhs => rw [archPair_eInf h, map_smul]
-  have hact : ∀ (p : UG (_root_.Algebra.TensorProduct.map (_root_.AlgHom.id (AF F) (AF F)) σ) ((_root_.Matrix.map · (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (AF F))) JA) × UG (_root_.Algebra.TensorProduct.map (_root_.AlgHom.id (AF F) (AF F)) σ) ((_root_.Matrix.map · (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (AF F))) JB)) (x : Matrix (Fin m) (Fin n) (AE F E)), actAB (_root_.Algebra.TensorProduct.map (_root_.AlgHom.id (AF F) (AF F)) σ) p (actAB (_root_.Algebra.TensorProduct.map (_root_.AlgHom.id (AF F) (AF F)) σ) p⁻¹ x) = x := by
-    intro p x
-    have h1 : ((p.1 : GL (Fin m) (AE F E)) : Matrix (Fin m) (Fin m) (AE F E)) *
-        (((p⁻¹).1 : GL (Fin m) (AE F E)) : Matrix (Fin m) (Fin m) (AE F E)) = 1 := by
-      rw [Prod.fst_inv, Subgroup.coe_inv, Units.mul_inv]
-    have h2 : (((p⁻¹).2 : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E))ᵀ *
-        ((p.2 : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E))ᵀ = 1 := by
-      rw [← Matrix.transpose_mul, Prod.snd_inv, Subgroup.coe_inv, Units.mul_inv, Matrix.transpose_one]
-    simp only [actAB, Matrix.mul_assoc]
-    rw [h2, Matrix.mul_one, ← Matrix.mul_assoc, h1, Matrix.one_mul]
-  refine ⟨fun p => { toFun := fun h => archParts (L p (GlobalTheory.WeilL2Words.archPair F h)), map_add' := ?_, map_smul' := ?_ },
-    ?_, ?_⟩
-  · intro h h'
-    rw [archPair_add, map_add (f := _), archParts_add]
-  · intro t h
-    rw [RingHom.id_apply, archPair_smul, map_smul, archParts_smul]
+  refine ⟨fun p =>
+    { toFun := fun h => archParts (L p (GlobalTheory.WeilL2Words.archPair F h))
+      map_add' := fun h h' => by rw [archPair_add, map_add (f := _), archParts_add]
+      map_smul' := fun t h => by
+        rw [RingHom.id_apply, archPair_smul, map_smul, archParts_smul] }, ?_, ?_⟩
   · intro p h φ hφ
-    have key := hom p (actAB (_root_.Algebra.TensorProduct.map (_root_.AlgHom.id (AF F) (AF F)) σ) p⁻¹ (co.e.symm (GlobalTheory.WeilL2Words.archPair F h))) φ hφ
+    have hact : ∀ x, actAB _ p (actAB _ p⁻¹ x) = x := fun x => by
+      have h1 : (p.1 : GL (Fin m) (AE F E)).1 * ((p⁻¹).1 : GL (Fin m) (AE F E)).1 = 1 := by
+        rw [Prod.fst_inv, Subgroup.coe_inv, Units.mul_inv]
+      have h2 : (((p⁻¹).2 : GL (Fin n) (AE F E)).1)ᵀ * ((p.2 : GL (Fin n) (AE F E)).1)ᵀ = 1 := by
+        rw [← Matrix.transpose_mul, Prod.snd_inv, Subgroup.coe_inv, Units.mul_inv,
+          Matrix.transpose_one]
+      simp only [actAB, Matrix.mul_assoc]
+      rw [h2, Matrix.mul_one, ← Matrix.mul_assoc, h1, Matrix.one_mul]
+    have key := hom p (actAB _ p⁻¹ (co.e.symm (GlobalTheory.WeilL2Words.archPair F h))) φ hφ
     show om p (schr ψ (GlobalTheory.WeilL2Words.archPair F (archParts (L p (GlobalTheory.WeilL2Words.archPair F h)))) φ) = _
-    rw [archPair_archParts (hfix p h), hL]
+    rw [archPair_archParts (hfix p h)]
     simp only [Darboux.rho] at key
     rw [hact, LinearEquiv.apply_symm_apply] at key
     exact key

@@ -90,7 +90,6 @@ theorem pull_gen_lam_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocal
   let m := (lift (snd ((Over.pullback (jK R)).obj G) T ≫ x ≫ (Over.pullback (jK R)).map inc)
     (fst ((Over.pullback (jK R)).obj G) T ≫ (Over.pullback (jK R)).map inc ≫ (Over.pullback (jK R)).map (oG.act F.f))).left
   have E₄ := Geo.Tor.LBIso.chartPull (Geo.Tor.chartPullPull _ m m rfl) (Geo.Tor.chartPullPull _ m m rfl) E₃
-  obtain ⟨t, ht⟩ := ht
   let φl := (lift (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f) : G2 G ⟶ G2 G').left
   let ψl := (lift (snd ((Over.pullback (jK R)).obj G) T ≫ x) (fst ((Over.pullback (jK R)).obj G) T) : ((Over.pullback (jK R)).obj G) ⊗ T ⟶ G2 ((Over.pullback (jK R)).obj G)).left
   let χl := (lift (snd ((Over.pullback (jK R)).obj G) T ≫ (x ≫ ((Over.pullback (jK R)).map inc) ≫ U'.gen.hom)) (fst ((Over.pullback (jK R)).obj G) T ≫ (((Over.pullback (jK R)).map inc) ≫ U'.gen.hom) ≫ oA.act F.f) :
@@ -102,58 +101,44 @@ theorem pull_gen_lam_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocal
   have hgen : ((Over.pullback (jK R)).map (oG.act F.f)).left ≫ U'.gen.hom.left = U'.gen.hom.left ≫ (oA.act F.f).left :=
     congrArg Over.Hom.left (hlin.ext F.f)
   have hφ1 : φl ≫ (fst G' G').left = (fst G G).left ≫ inc.left := by
-    simpa only [Over.comp_left] using congrArg Over.Hom.left (lift_fst (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f))
+    exact congrArg Over.Hom.left (lift_fst _ _)
   have hφ2 : φl ≫ (snd G' G').left = (snd G G).left ≫ inc.left ≫ (oG.act F.f).left := by
-    simpa only [Over.comp_left] using congrArg Over.Hom.left (lift_snd (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f))
+    exact congrArg Over.Hom.left (lift_snd _ _)
   have hψ1 : ψl ≫ (fst ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R)).obj G)).left = (snd ((Over.pullback (jK R)).obj G) T).left ≫ x.left := by
-    simpa only [Over.comp_left] using congrArg Over.Hom.left (lift_fst (snd ((Over.pullback (jK R)).obj G) T ≫ x) (fst ((Over.pullback (jK R)).obj G) T))
+    exact congrArg Over.Hom.left (lift_fst _ _)
   have hψ2 : ψl ≫ (snd ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R)).obj G)).left = (fst ((Over.pullback (jK R)).obj G) T).left := by
-    simpa only [Over.comp_left] using congrArg Over.Hom.left (lift_snd (snd ((Over.pullback (jK R)).obj G) T ≫ x) (fst ((Over.pullback (jK R)).obj G) T))
+    simpa only [Over.comp_left] using congrArg Over.Hom.left (lift_snd _ _)
   have hm1 : m ≫ (fst ((Over.pullback (jK R)).obj G') ((Over.pullback (jK R)).obj G')).left = (snd ((Over.pullback (jK R)).obj G) T).left ≫ x.left ≫ ((Over.pullback (jK R)).map inc).left := by
-    simpa only [Over.comp_left] using congrArg Over.Hom.left (lift_fst (snd ((Over.pullback (jK R)).obj G) T ≫ x ≫ ((Over.pullback (jK R)).map inc)) (fst ((Over.pullback (jK R)).obj G) T ≫ ((Over.pullback (jK R)).map inc) ≫ ((Over.pullback (jK R)).map (oG.act F.f))))
+    exact congrArg Over.Hom.left (lift_fst _ _)
   have hm2 : m ≫ (snd ((Over.pullback (jK R)).obj G') ((Over.pullback (jK R)).obj G')).left = (fst ((Over.pullback (jK R)).obj G) T).left ≫ ((Over.pullback (jK R)).map inc).left ≫ ((Over.pullback (jK R)).map (oG.act F.f)).left := by
-    simpa only [Over.comp_left] using congrArg Over.Hom.left (lift_snd (snd ((Over.pullback (jK R)).obj G) T ≫ x ≫ ((Over.pullback (jK R)).map inc)) (fst ((Over.pullback (jK R)).obj G) T ≫ ((Over.pullback (jK R)).map inc) ≫ ((Over.pullback (jK R)).map (oG.act F.f))))
+    exact congrArg Over.Hom.left (lift_snd _ _)
   have hχ1 : χl ≫ (fst A'.A A'.A).left = (snd ((Over.pullback (jK R)).obj G) T).left ≫ x.left ≫ ((Over.pullback (jK R)).map inc).left ≫ U'.gen.hom.left := by
-    simpa only [Over.comp_left] using congrArg Over.Hom.left (lift_fst (snd ((Over.pullback (jK R)).obj G) T ≫ (x ≫ ((Over.pullback (jK R)).map inc) ≫ U'.gen.hom)) (fst ((Over.pullback (jK R)).obj G) T ≫ (((Over.pullback (jK R)).map inc) ≫ U'.gen.hom) ≫ oA.act F.f))
+    exact congrArg Over.Hom.left (lift_fst _ _)
   have hχ2 : χl ≫ (snd A'.A A'.A).left = (fst ((Over.pullback (jK R)).obj G) T).left ≫ ((Over.pullback (jK R)).map inc).left ≫ U'.gen.hom.left ≫ (oA.act F.f).left := by
-    have := congrArg Over.Hom.left (lift_snd (snd ((Over.pullback (jK R)).obj G) T ≫ (x ≫ ((Over.pullback (jK R)).map inc) ≫ U'.gen.hom)) (fst ((Over.pullback (jK R)).obj G) T ≫ (((Over.pullback (jK R)).map inc) ≫ U'.gen.hom) ≫ oA.act F.f))
-    simp only [Over.comp_left, Category.assoc] at this
-    exact this
+    refine (congrArg Over.Hom.left (lift_snd _ _)).trans ?_
+    simp only [Over.comp_left, Category.assoc]
   have eq1 : ψl ≫ κ₀ ≫ φl = m ≫ β₂ ≫ 𝟙 _ := by
-    apply left_tensor_ext
-    · simp only [Category.assoc, Category.comp_id]
-      rw [hφ1, reassoc_of% hκ.1]
-      rw [reassoc_of% hψ1]
-      rw [hβ₂.1]
-      rw [reassoc_of% hm1]
+    apply left_tensor_ext <;> simp only [Category.assoc, Category.comp_id]
+    · rw [hφ1, reassoc_of% hκ.1, reassoc_of% hψ1, hβ₂.1, reassoc_of% hm1]
       simp only [hinc']
-    · simp only [Category.assoc, Category.comp_id]
-      rw [hφ2, reassoc_of% hκ.2]
-      rw [reassoc_of% hψ2]
-      rw [hβ₂.2]
-      rw [reassoc_of% hm2]
+    · rw [hφ2, reassoc_of% hκ.2, reassoc_of% hψ2, hβ₂.2, reassoc_of% hm2]
       simp only [hf']
       rw [reassoc_of% hinc']
   have eq2 : m ≫ γ₂ ≫ 𝟙 _ = χl := by
-    apply left_tensor_ext
-    · simp only [Category.assoc, Category.comp_id]
-      rw [hγ₂.1]
-      rw [reassoc_of% hm1, hχ1]
-    · simp only [Category.assoc, Category.comp_id]
-      rw [hγ₂.2]
-      rw [reassoc_of% hm2, hχ2, hgen]
+    apply left_tensor_ext <;> simp only [Category.assoc, Category.comp_id]
+    · rw [hγ₂.1, reassoc_of% hm1, hχ1]
+    · rw [hγ₂.2, reassoc_of% hm2, hχ2, hgen]
   have hP1 := LB.isLB_pull (LB.isLB_pull (LB.isLB_pull hQ φl) κ₀) ψl
   have hP2 := LB.isLB_pull (LB.isLB_pull hQ (κ₀ ≫ φl)) ψl
   have g₀ := GlobalTheory.CM.PairingIso.exists_gen_of_lbIso hP1 hP2
     (Geo.Tor.LBIso.chartPull (Geo.Tor.chartPullPull _ ψl ψl rfl) (Geo.Tor.chartPullPull _ ψl ψl rfl)
-      (_root_.GlobalTheory.SiegelPullComp.iso_pull_pull hQ φl κ₀)) ⟨t, ht⟩
+      (_root_.GlobalTheory.SiegelPullComp.iso_pull_pull hQ φl κ₀)) ht
   have g₁ := (exists_gen_pull_pull_iff hQ (κ₀ ≫ φl) ψl).1 g₀
   rw [eq1] at g₁
   have g₂ := (exists_gen_pull_pull_iff hQ (β₂ ≫ 𝟙 _) m).2 g₁
   have g₃ := GlobalTheory.CM.PairingIso.exists_gen_of_lbIso (LB.isLB_pull (LB.isLB_pull hQ _) _)
     (LB.isLB_pull (LB.isLB_pull hQA _) _) E₄ g₂
   have g₄ := (exists_gen_pull_pull_iff hQA (γ₂ ≫ 𝟙 _) m).1 g₃
-  rw [eq2] at g₄
-  exact g₄
+  rwa [eq2] at g₄
 
 end GlobalTheory.Mum

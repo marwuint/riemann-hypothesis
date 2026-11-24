@@ -180,8 +180,7 @@ theorem mem_levG_iff {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) {J : Matri
     have : finGLHom V hn g = κ.1 := Units.ext hκ.symm
     rw [this]
     exact κ.2
-  · intro h
-    exact ⟨⟨_, h⟩, rfl⟩
+  · exact fun h => ⟨⟨_, h⟩, rfl⟩
 
 theorem finM_apply {D : D7} (V : HSp D) (g : GA D V) (i j : Fin V.rank) :
     finM V rfl g i j = (swapL D.host.F D.host.E).symm ((finHom V g).1 i j) := rfl
@@ -231,8 +230,7 @@ theorem isCompact_levG {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) {T f : �
   refine hK.of_isClosed_subset hcl fun k hk => hKe k fun i j => ?_
   obtain ⟨κ, hκ⟩ := hk
   refine Set.mem_iUnion.2 ⟨(i, j), κ.1, κ.2, ?_⟩
-  simp only [hκ, finM_apply]
-  exact LinearEquiv.apply_symm_apply _ _
+  simpa only [hκ, finM_apply] using LinearEquiv.apply_symm_apply _ _
 
 theorem finGLHom_mem_ratPts {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) {γ : GA D V} (hγ : γ ∈ GQ V) :
     finGLHom V hn γ ∈ ratPts (sigD D) (V.gram.reindex (finCongr hn) (finCongr hn)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) := by
@@ -281,8 +279,7 @@ theorem existsUnique_class {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) {T f
       refine ⟨γ, hγ, (γ * h c)⁻¹ * x, (mem_levG_iff V hn S _).2 ?_, (mul_inv_cancel_left _ _).symm⟩
       simp only [map_mul, map_inv, hh', eγ, e', inv_mul_cancel_left]
       exact Subgroup.mem_subgroupOf.1 hb
-  simp only [key]
-  exact hy.existsUnique _
+  simpa only [key] using hy.existsUnique _
 
 theorem integral_eq_classSum : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (n : ℕ) (hn : V.rank = n) (J : Matrix (Fin n) (Fin n) D.host.E), J = V.gram.reindex (finCongr hn) (finCongr hn) → ∀ (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 D.host.F))) (S : StepLevel D.host.F D.host.E (sigD D) J T f bad) (cl : Type) (yc : cl → UPts (sigD D) J (FiniteAdeleRing (𝓞 D.host.F) D.host.F)), Function.Bijective (fun c => (Quotient.mk'' (yc c) : Cls S)) → V.SigOK → (∀ τ, (gramAt D V τ).PosDef) → ∀ [Fintype cl] (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), μ.IsHaarMeasure → IsFundamentalDomain (GQ V) 𝓕 μ → ∀ h : cl → GA D V, (∀ c, h c ∈ GfC V ∧ finM V hn (h c) = (yc c).1.1) → ∃ (vol : ℝ) (ν : Measure (GinfC V)), 0 < vol ∧ ν.IsHaarMeasure ∧ ν Set.univ = 1 ∧ ∀ Φ : GA D V → ℂ, Continuous Φ → (∀ γ ∈ GQ V, ∀ x, Φ (γ * x) = Φ x) → (∀ k ∈ GfC V, (∃ κ : S.U, κ.1.1 = finM V hn k) → ∀ x, Φ (x * k) = Φ x) → ∫ x in 𝓕, Φ x ∂μ = (vol : ℂ) * ∑ c, ((Nat.card {γ : GQ V // ∃ κ : S.U, finM V hn γ.1 * (yc c).1.1 = (yc c).1.1 * κ.1.1} : ℕ) : ℂ)⁻¹ * ∫ k, Φ (h c * k.1) ∂ν := by
   intro D θ hθ V n hn J hJ T f bad S cl yc hbij hSig hPD _ μ 𝓕 hμ h𝓕 h hh
@@ -297,9 +294,7 @@ theorem integral_eq_classSum : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀
   haveI : μ.IsMulRightInvariant := GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D V μ hμ
   have hKo := isOpen_levG V hn S
   have hKc := isCompact_levG V hn S hPD
-  have hGK : GinfC V ≤ levG V hn S := by
-    intro k hk
-    exact ⟨1, (finM_eq_one_of_mem_GinfC V hn hk).symm⟩
+  have hGK : GinfC V ≤ levG V hn S := fun k hk => ⟨1, (finM_eq_one_of_mem_GinfC V hn hk).symm⟩
   haveI : CompactSpace (GinfC V) :=
     isCompact_iff_compactSpace.mp (hKc.of_isClosed_subset (GlobalTheory.Ker.CongTop.isClosed_GinfC V) hGK)
   haveI : (GinfC V).Normal := inferInstanceAs ((finHom V).ker.Normal)

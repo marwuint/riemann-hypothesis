@@ -244,8 +244,7 @@ theorem evc_ker_one {P : LB (A ⊗ B).left} (hP : P.IsLB) (hA : IsAdditive P) (T
 theorem evc_ker_inv {P : LB (A ⊗ B).left} (hP : P.IsLB) (hA : IsAdditive P) {T : Over S} (x : T ⟶ A)
     (hx : evc hP (fst T B ≫ x) (snd T B) = 0) : evc hP (fst T B ≫ x⁻¹) (snd T B) = 0 := by
   have e := evc_ker_one hP hA T
-  rw [← mul_inv_cancel x, MonObj.comp_mul, (isAdditive_iff hP).1 hA, hx, zero_add] at e
-  exact e
+  rwa [← mul_inv_cancel x, MonObj.comp_mul, (isAdditive_iff hP).1 hA, hx, zero_add] at e
 
 end GlobalTheory.DualKernel
 
@@ -342,8 +341,7 @@ theorem memKL_of_triv_ev_left : ∀ (K : Type) [Field K] [IsAlgClosed K] (A B : 
   have hx0 : lam (cls L hL) (fst T A ≫ x) (snd T A) = 0 := by
     have e₁ := congrArg (CechPic.pull (lift (fst T A) (snd T A ≫ φ)).left) ((triv_ev_iff hD.isLB _ _).1 hx)
     rw [pull_evc, map_zero, lift_fst_assoc, lift_snd] at e₁
-    rw [← e, evc, hc, pull_evc, lift_fst, lift_snd_assoc]
-    exact e₁
+    rwa [← e, evc, hc, pull_evc, lift_fst, lift_snd_assoc]
   have hD' : (Out.translDiff A L x).IsLB := LB.isLB_linComb hL _ _
   intro p
   obtain ⟨V, hV, hc'⟩ := exists_pull_eq_zero
@@ -556,8 +554,7 @@ theorem germ_gen {X X' Y : Scheme.{0}} {L : LB X} {F : X' ⟶ X} (τ : LB.Gen (L
     rw [Fintype.prod_unique, zpow_one]
     exact (gm_res g y _ hp _).trans (gm_pull g F y (L.U i ⊓ L.U i') ⟨hi, hi'⟩ _)
   have := congrArg (gm g y ((L.pull F).U (fun _ => i) ⊓ (L.pull F).U (fun _ => i'))) (hτ (fun _ => i) (fun _ => i'))
-  rw [map_mul, gm_res g y _ hp, gm_res g y _ hp, e] at this
-  exact this
+  rwa [map_mul, gm_res g y _ hp, gm_res g y _ hp, e] at this
 
 end GlobalTheory.DescNormU
 
@@ -610,8 +607,7 @@ theorem normalise : ∀ (K : Type) [Field K] (A A' B : Over (Sp K)) [GrpObj A] [
       have k3 := _root_.GlobalTheory.ConstFam.gm_comp_stalkMap (rhoZ q) (pullback.fst (q ▷ B).left (q ▷ B).left) z (P.U i ⊓ P.U i') ⟨hz1, hz1'⟩ (P.g i i')
       have k4 := _root_.GlobalTheory.ConstFam.gm_comp_stalkMap (rhoZ q) (pullback.snd (q ▷ B).left (q ▷ B).left) z (P.U j' ⊓ P.U j) ⟨hz2', hz2⟩ (P.g j' j)
       rw [Category.comp_id] at k1 k2
-      rw [k1, k2, k3, k4]
-      exact e
+      rwa [k1, k2, k3, k4]
     have t1 := germ_gen τ hτ (pullback.fst (q ▷ B).left (q ▷ B).left ≫ (fst A B).left) z i i'
       (by rw [pt_eq (a_s q) z]; exact hz1) (by rw [pt_eq (a_s q) z]; exact hz1')
     have t2 := germ_gen τ hτ (pullback.snd (q ▷ B).left (q ▷ B).left ≫ (fst A B).left) z j j'
@@ -822,8 +818,7 @@ theorem rhoW_appTop (hB : IsAbelianScheme B) (D : Γ(Triple (q ▷ B).left, ⊤)
       _ = F := by rw [hsnd x, Scheme.Hom.id_appTop]; rfl
   have h1 : D = F := by
     have h := key (beta q)
-    rw [sec_beta] at h
-    exact h
+    rwa [sec_beta] at h
   have h0 := key 1
   rw [sec_one] at h0
   exact h0.trans h1.symm
@@ -1048,8 +1043,7 @@ theorem descend_torsor : ∀ (K : Type) [Field K] [IsAlgClosed K] (A A' B N : Ov
     obtain ⟨n, rfl⟩ : ∃ n : T ⟶ N, x = n ≫ i := ⟨_, hx'⟩
     rw [triv_ev_iff hP]
     have z := congrArg (CechPic.pull (lift (fst T B ≫ n) (snd T B)).left) ((triv_ev_iff hP _ _).1 hN)
-    rw [pull_evc, map_zero, lift_fst_assoc, lift_snd, Category.assoc] at z
-    exact z
+    rwa [pull_evc, map_zero, lift_fst_assoc, lift_snd, Category.assoc] at z
   obtain ⟨φ, hc, hco⟩ := GlobalTheory.T.exists_descentDatum_additive_lineBundle_isogeny K A A' B q P hA hA' hB hq hfin hflat hsurj hP hadd hzero hker
   obtain ⟨P₀, hP₀, hiso⟩ := GlobalTheory.T.exists_lineBundle_descent_finiteFlat _ _ (q ▷ B).left P hP φ hc hco
   refine ⟨P₀, hP₀, (cls_eq_iff (pull_isLB hP₀ _) hP).1 ?_⟩
@@ -1134,8 +1128,7 @@ theorem descends : ∀ (K : Type) [Field K] [IsAlgClosed K] (A A' B N : Over (Sp
   have key : ∀ (Y : Over (Sp K)) (a : Y ⟶ A) (b : Y ⟶ B), evc hP₀ (a ≫ q) b = evc hD.isLB a b := by
     intro Y a b
     have c := congrArg (CechPic.pull (lift a b).left) ((cls_eq_iff (pull_isLB hP₀ _) hD.isLB).2 e)
-    rw [cls_ev hP₀, pull_evc, lift_fst_assoc, lift_snd] at c
-    exact c
+    rwa [cls_ev hP₀, pull_evc, lift_fst_assoc, lift_snd] at c
   let φ : Fin 2 → ((A' ⊗ B).left ⟶ (A' ⊗ B).left) :=
     ![(lift (fst A' B) (snd A' B)).left, (lift (fst A' B) (1 : A' ⊗ B ⟶ B)).left]
   have hP' : (LB.LinComb P₀ φ ![1, -1]).IsLB := LB.isLB_linComb hP₀ _ _

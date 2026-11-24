@@ -89,8 +89,7 @@ theorem latA_le_of_latV_le {S : HSp D} {L L' : Lat S} {P : Pl D → Prop} (h : l
       fun i => ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) * (pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x i)) := by
     funext i
     simp only [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
-  rw [SetLike.mem_coe, key]
-  exact hm
+  rwa [SetLike.mem_coe, key]
 
 theorem latA_congr {S : HSp D} {L L' : Lat S} {P : Pl D → Prop} (h : latV S L P = latV S L' P) :
     latA S L P = latA S L' P :=
@@ -108,27 +107,23 @@ theorem monoAt_congr {S S₀ : HSp D} {ρ : ℕ} {d : HypDec S S₀ ρ} {L L' : 
     (e : latV S L (· = v) = latV S L' (· = v)) (e₀ : latV S₀ L₀ (· = v) = latV S₀ L₀' (· = v)) (H : MonoAt d L L₀ v) :
     MonoAt d L' L₀' v := by
   unfold MonoAt at H ⊢
-  rw [← e, ← e₀]
-  exact H
+  rwa [← e, ← e₀]
 
 theorem orthAt_congr {S A B : HSp D} {o : OrthDec S A B} {L L' : Lat S} {LA : Lat A} {LB : Lat B} {v : Pl D}
     (e : latV S L (· = v) = latV S L' (· = v)) (H : OrthAt o L LA LB v) : OrthAt o L' LA LB v := by
   unfold OrthAt at H ⊢
-  rw [← e]
-  exact H
+  rwa [← e]
 
 theorem primAt_congr {ψ : AddChar (AF D.host.F) ℂ} {S S₀ : HSp D} {ρ : ℕ} {d : HypDec S S₀ ρ} {L L' : Lat S} {v : Pl D}
     (e : latV S L (· = v) = latV S L' (· = v)) (H : PrimAt ψ d L v) : PrimAt ψ d L' v := by
   unfold PrimAt at H ⊢
-  rw [← e]
-  exact H
+  rwa [← e]
 
 theorem colsAt_congr {V V₀ W : HSp D} {ρ : ℕ} {d : HypDec V V₀ ρ} {x : Mx D W.rank ρ} {LV LV' : Lat V} {LW LW' : Lat W}
     {v : Pl D} (e : latV V LV (· = v) = latV V LV' (· = v)) (eW : latV W LW (· = v) = latV W LW' (· = v))
     (H : ColsAt d x LV LW v) : ColsAt d x LV' LW' v := by
   unfold ColsAt at H ⊢
-  rw [← e, ← latA_congr eW]
-  exact H
+  rwa [← e, ← latA_congr eW]
 
 end GlobalTheory.LocCongr
 

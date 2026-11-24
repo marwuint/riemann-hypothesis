@@ -211,8 +211,7 @@ theorem exists_genAt_mul : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsInteg
   obtain ⟨e, -, hrange, hnu, -⟩ := RepDict.rep_dict k X p P 0 c (P.A.pow c) hrep
   have hmem : ∀ i, e (s i) ∈ P.H 0 c := fun i => by
     have : e (s i) ∈ Set.range e := ⟨s i, rfl⟩
-    rw [hrange] at this
-    exact this
+    rwa [hrange] at this
   have hne : ∀ (σ : k →+* ℂ) (y : CxPts p σ), ∃ i, P.nu 0 c σ y (e (s i)) ≠ 0 := by
     intro σ y
     obtain ⟨i, hi⟩ := exists_mem_ptsIn hs y
@@ -228,8 +227,7 @@ theorem exists_genAt_mul : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsInteg
   · obtain ⟨h1, -⟩ := NuPow.pow_mem_H_and_nu_pow k X p P 0 c (e (s i)) (hmem i) j
     have e1 : (j : ℤ) * 0 = 0 := by ring
     have e2 : (j : ℤ) * c = ((c * j : ℕ) : ℤ) := by push_cast; ring
-    rw [e1, e2] at h1
-    exact h1
+    rwa [e1, e2] at h1
   · obtain ⟨i, hi⟩ := hne σ y
     obtain ⟨-, h2⟩ := NuPow.pow_mem_H_and_nu_pow k X p P 0 c (e (s i)) (hmem i) j
     have e1 : (j : ℤ) * 0 = 0 := by ring
@@ -547,8 +545,7 @@ theorem lowerBound_along_div : GlobalTheory.Published.ArCalc → AmpleHS → ∀
   have hSP : ((P.L.pow n).tens P.A).SemiPos D := (hLs.pow n).tens hAs
   have hRep : P.Rep (n : ℤ) 1 ((P.L.pow n).tens P.A) := by
     have h1 := Pair.rep_pow k X p P 1 0 P.L n (Pair.rep_base k X p P).1
-    have h2 := Pair.rep_tens k X p P _ _ 0 1 _ _ h1 (Pair.rep_base k X p P).2.1
-    simpa using h2
+    simpa using Pair.rep_tens k X p P _ _ 0 1 _ _ h1 (Pair.rep_base k X p P).2.1
   refine lowerBound_along_residues (D + 1) n (fun M => P.lc M ((M / n : ℕ) - c) 1) (α / (D + 1).factorial) hn
     (fun r hr ε' hε' => ?_) ε hε
   filter_upwards [_root_.GlobalTheory.HSNef.lc_one_eventually_ge hHS k X p D hX P n 1 r (-(c : ℤ)) _ α hRep hAmp hSP hα ε' hε'] with q hq
@@ -1391,8 +1388,7 @@ theorem levi_pull_nonneg {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ S
   have e : (fun v => ((φ.pull π hπ).φ i (c.e.symm v) : ℂ)) =ᶠ[𝓝 (c.e y)] g ∘ F := by
     filter_upwards [hU.mem_nhds hyU] with v hv
     have := Weight.pull_φ φ π hπ i (c.e.symm v)
-    simp only [g, hFdef, Function.comp_apply, c0.e.left_inv hv.2]
-    exact congrArg _ this
+    simpa only [g, hFdef, Function.comp_apply, c0.e.left_inv hv.2] using congrArg _ this
   rw [ReciprocityTheory.L2DbarEstimates.leviV_congr e,
     ReciprocityTheory.ChartRestriction.G.AR.Up.RGF.gc_leviV_comp D' D g F U hU _ hyU hF hg ξ, hFy]
   exact hSP (i PUnit.unit) c0 (m y) ⟨h0, him⟩ _
@@ -1409,8 +1405,7 @@ theorem semiPos_pull_of_etale : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) [
   have hW : ((π ⁻¹ᵁ U : Y.Opens) : Set Y).Nonempty := by
     refine ⟨V.ι v', ?_⟩
     show π (V.ι v') ∈ Tᶜ
-    rw [← Scheme.Hom.comp_apply, hv']
-    exact hηT
+    rwa [← Scheme.Hom.comp_apply, hv']
   intro σ
   have hσ : Function.Injective σ := by
     rw [RingHom.injective_iff_ker_eq_bot]

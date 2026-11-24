@@ -70,8 +70,7 @@ theorem isAdditive_swap_iff {P : LB (A ⊗ B).left} (hP : P.IsLB) : IsAdditive (
     ∀ (Y : Over S) (a : Y ⟶ A) (b b' : Y ⟶ B), evc hP a (b * b') = evc hP a b + evc hP a b' := by
   have hs : (swap P).IsLB := pull_isLB hP _
   rw [isAdditive_iff hs]
-  simp only [evc_swap hP hs]
-  exact ⟨fun h Y a b b' ↦ h Y b b' a, fun h Y b b' a ↦ h Y a b b'⟩
+  simpa only [evc_swap hP hs] using ⟨fun h Y a b b' ↦ h Y b b' a, fun h Y b b' a ↦ h Y a b b'⟩
 
 
 omit [GrpObj B] in
@@ -113,8 +112,7 @@ theorem exists_hom {Q : LB (A ⊗ D).left} (h : IsDual A D Q) (h' : IsAdditive (
   refine ⟨x, ⟨?_, ?_⟩, e⟩
   · have e₁ := k (1 : 𝟙_ (Over S) ⟶ B) 1
     rw [_root_.mul_one] at e₁
-    have e₂ := left_eq_mul.1 e₁
-    simpa [Hom.one_def] using e₂
+    simpa [Hom.one_def] using left_eq_mul.1 e₁
   · have e₁ := k (fst B B) (snd B B)
     rw [Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp] at e₁
     rw [e₁]
@@ -124,10 +122,8 @@ theorem additive_ev {Q : LB (A ⊗ D).left} (hQ : Q.IsLB) (a₁ : IsAdditive Q) 
     [IsMonHom x] : IsAdditive (ev Q (fst A B) (snd A B ≫ x)) ∧ IsAdditive (swap (ev Q (fst A B) (snd A B ≫ x))) := by
   have hP : (ev Q (fst A B) (snd A B ≫ x)).IsLB := pull_isLB hQ _
   refine ⟨(isAdditive_iff hP).2 fun Y a a' t ↦ ?_, (isAdditive_swap_iff hP).2 fun Y a b b' ↦ ?_⟩
-  · simp only [evc_of_cls hQ hP rfl]
-    exact (isAdditive_iff hQ).1 a₁ _ _ _ _
-  · simp only [evc_of_cls hQ hP rfl, MonObj.mul_comp]
-    exact (isAdditive_swap_iff hQ).1 a₂ _ _ _ _
+  · simpa only [evc_of_cls hQ hP rfl] using (isAdditive_iff hQ).1 a₁ _ _ _ _
+  · simpa only [evc_of_cls hQ hP rfl, MonObj.mul_comp] using (isAdditive_swap_iff hQ).1 a₂ _ _ _ _
 
 theorem additive_pull {S' : Scheme.{0}} {b : S' ⟶ S} {A' B' : Over S'} [GrpObj A'] [GrpObj B']
     {f : A'.left ⟶ A.left} {g : B'.left ⟶ B.left} {l : (A' ⊗ B').left ⟶ (A ⊗ B).left}
@@ -282,8 +278,7 @@ theorem lift_unique_of_additive (HG : GrothendieckMessing.LiftHom κ π) (HD : D
     have : (liftPt kd B₀.hom _ w : B₀ ⟶ D₀) = x₀ := dual_ext q₀ <|
       (pull_evc_eq l₁ l₂ m₁ m₂ q.isLB q₀.isLB (x' := (liftPt kd B₀.hom _ w : B₀ ⟶ D₀)) ey).symm.trans
         (hy.trans e₀)
-    rw [← this]
-    exact ey
+    rwa [← this]
   obtain rfl : x = x' := HG.unique k hB hg' kd hD gD x₀
     (red x (by rw [← ex, ← cls_pull hP l (pull_isLB hP l)]; exact (cls_eq_iff _ _).2 e))
     (red x' (by rw [← ex', ← cls_pull hP' l hP₀]))

@@ -268,11 +268,8 @@ theorem map_eq_self_of_normalises_lattice {B : Type} [Group B] [TopologicalSpace
   have h' : IsFundamentalDomain Λ (φ ⁻¹' D) ν := by
     refine hD.preimage_of_equiv hq (e := fun g : Λ => (⟨φ.symm g, h2 g g.2⟩ : Λ)) ?_ ?_
     · constructor
-      · intro a b hab
-        apply Subtype.ext
-        exact φ.symm.injective (congrArg Subtype.val hab)
-      · intro a
-        exact ⟨⟨φ a, h1 a a.2⟩, Subtype.ext (φ.symm_apply_apply a)⟩
+      · exact fun a b hab => Subtype.ext (φ.symm.injective (congrArg Subtype.val hab))
+      · exact fun a => ⟨⟨φ a, h1 a a.2⟩, Subtype.ext (φ.symm_apply_apply a)⟩
     · intro g x
       simp [Subgroup.smul_def]
   have hm : ν (φ ⁻¹' D) = ν D := h'.measure_eq hD
@@ -336,8 +333,7 @@ namespace GlobalTheory.ResLine
 theorem countable_subgroupOf_of_countable {G : Type} [Group G] (Λ M : Subgroup G) [Countable Λ] :
     Countable (Λ.subgroupOf M) := by
   refine Function.Injective.countable (f := fun δ : Λ.subgroupOf M => (⟨δ.1.1, δ.2⟩ : Λ)) ?_
-  intro a b h
-  exact Subtype.ext (Subtype.ext (congrArg (fun l : Λ => (l : G)) h))
+  exact fun a b h => Subtype.ext (Subtype.ext (congrArg (fun l : Λ => (l : G)) h))
 
 theorem tsum_split_lattice {G : Type} [Group G] (N M Λ : Subgroup G) (disj : ∀ g ∈ N, g ∈ M → g = 1)
     (dec : ∀ γ ∈ Λ, ∃ u ∈ N, ∃ m ∈ M, u ∈ Λ ∧ m ∈ Λ ∧ γ = u * m) (f : G → ℝ≥0∞) :
@@ -430,8 +426,7 @@ theorem countable_subgroupOf {G : Type} [Group G] (Λ N : Subgroup G) [Countable
     Countable (Λ.subgroupOf N) := by
   refine Function.Injective.countable
     (f := fun x : Λ.subgroupOf N => (⟨x.1.1, Subgroup.mem_subgroupOf.1 x.2⟩ : Λ)) ?_
-  intro x y h
-  exact Subtype.ext (Subtype.ext (congrArg (fun z : Λ => (z : G)) h))
+  exact fun x y h => Subtype.ext (Subtype.ext (congrArg (fun z : Λ => (z : G)) h))
 
 theorem right_of_closed {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
@@ -478,8 +473,7 @@ theorem average_lower : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopolog
   swap
   · rw [Set.indicator_of_notMem hm]
     exact bot_le
-  rw [Set.indicator_of_mem hm]
-  rw [← lintegral_indicator_one hVN.measurableSet]
+  rw [Set.indicator_of_mem hm, ← lintegral_indicator_one hVN.measurableSet]
   refine lintegral_mono fun u => ?_
   by_cases hu : u ∈ ((↑) ⁻¹' V : Set N)
   swap

@@ -171,8 +171,7 @@ theorem sum_sup {D : Submodule R M} {x : M} {P : Ideal R} [Fintype (R ⧸ P)] (h
           have hq : q1 = q2 := by
             have hm : (Quotient.out q1 - Quotient.out q2 : R) • x ∈ D := by
               have e : (Quotient.out q1 : R) • x - (Quotient.out q2 : R) • x = d2 - d1 := by
-                rw [sub_eq_sub_iff_add_eq_add, add_comm]
-                exact heq'
+                rwa [sub_eq_sub_iff_add_eq_add, add_comm]
               rw [sub_smul, e]
               exact D.sub_mem h2 h1
             rw [← hout q1, ← hout q2]
@@ -199,8 +198,7 @@ theorem sum_sup {D : Submodule R M} {x : M} {P : Ideal R} [Fintype (R ⧸ P)] (h
 
 theorem card_sup {D : Submodule R M} {x : M} {P : Ideal R} [Fintype (R ⧸ P)] (hP : ∀ r, r • x ∈ D ↔ r ∈ P) :
     (pts (D ⊔ Submodule.span R {x})).card = Fintype.card (R ⧸ P) * (pts D).card := by
-  have h := sum_sup hP (fun _ => (1 : ℕ))
-  simpa [Finset.sum_const, Finset.card_univ] using h
+  simpa [Finset.sum_const, Finset.card_univ] using sum_sup hP (fun _ => (1 : ℕ))
 
 variable {σ : R →+* R} {β : M → M → ℂ}
 
@@ -286,10 +284,8 @@ private theorem exists_mem_not_mem_annihilator_maximal_of_lt {C B : Submodule R 
     have e : (1 - s * r) • x = c := by
       rw [sub_smul, one_smul, mul_smul, sub_eq_iff_eq_add]
       exact hcz.symm
-    rw [e]
-    exact hc
-  have h3 := J.add_mem (hIJ h2) (J.mul_mem_left s hrJ)
-  simpa using h3
+    rwa [e]
+  simpa using J.add_mem (hIJ h2) (J.mul_mem_left s hrJ)
 
 private theorem sum_pts_eq_sum_pts_orth {w : R} (hσ : ∀ r, σ (σ r) = r) (hw : w + σ w = 1)
     (hadd : ∀ x y z, β (x + y) z = β x z * β y z) (hsym : ∀ x y, β x y = β y x)
@@ -507,8 +503,7 @@ theorem gauss_fin {w : R} (hσ : ∀ r, σ (σ r) = r) (hw : w + σ w = 1) {lam 
     have hrad' : ∀ y ∈ N', y ∈ C ↔ ∀ z ∈ N', β y z = 1 := by
       intro y hy
       constructor
-      · intro hyC z hz
-        exact hC1 y hyC z (hN'B hz)
+      · exact fun hyC z hz => hC1 y hyC z (hN'B hz)
       · intro h
         refine (hrad y (hN'B hy)).mpr fun b hb => ?_
         rw [← hsupB] at hb
@@ -775,8 +770,7 @@ theorem finite_det_smul_sub_one {K ι : Type} [Field K] [Fintype ι] [DecidableE
     exact zero_ne_one this
   refine (Polynomial.finite_setOfPred_isRoot h0).subset fun t ht => ?_
   have e : M.charpolyRev.eval t = (1 - t • M).det := by
-    rw [Matrix.charpolyRev, ← Polynomial.coe_evalRingHom, RingHom.map_det]
-    rw [map_sub, map_one]
+    rw [Matrix.charpolyRev, ← Polynomial.coe_evalRingHom, RingHom.map_det, map_sub, map_one]
     congr 2
     ext i j
     simp only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, Polynomial.eval_mul,
@@ -840,8 +834,7 @@ theorem IsRat.unitary {V : HSp D} {g : GA D V} {a} (h : IsRat V g a) : aᴴ * V.
   rw [show Formalism.L2.Theta.mt V g = _ from h] at e
   refine Matrix.map_injective (incA_inj (D := D)) ?_
   show (aᴴ * V.gram * a).map (incA D) = V.gram.map (incA D)
-  rw [Matrix.map_mul, Matrix.map_mul]
-  exact e
+  rwa [Matrix.map_mul, Matrix.map_mul]
 
 theorem exists_of_unitary (V : HSp D) {a : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (h : aᴴ * V.gram * a = V.gram) :
     ∃ g ∈ GQ V, IsRat V g a := by
@@ -952,8 +945,7 @@ theorem rat_induction (V : HSp D) (P : GA D V → Prop) (h1 : P 1) (hm : ∀ g �
       (ih g₂ (fun q hq => hl q (List.mem_cons_of_mem _ hq)) r2)
     rw [← Matrix.mulVec_transpose]
     have e : (fun b => D.host.conj (p.1 b)) = star p.1 := funext fun b => hc _
-    rw [← e]
-    exact r1
+    rwa [← e]
 
 section Operators
 

@@ -179,8 +179,7 @@ theorem exists_continuous_div {X : Type*} [TopologicalSpace X] (f : X → ℤ_[l
     rfl
   have h2 : Continuous fun x => (a : ℚ_[l])⁻¹ * (f x : ℚ_[l]) :=
     continuous_const.mul (continuous_subtype_val.comp hf)
-  rw [← e] at h2
-  exact h2
+  rwa [← e] at h2
 
 theorem exists_continuous_lift {X : Type*} [TopologicalSpace X] (r : ℕ) (f : X → ZMod (l ^ r))
     (hf : Continuous f) :
@@ -270,8 +269,7 @@ theorem exists_dTwo_eq (χ : Γ → ℤ_[l])
       funext n
       simp only [dTwo]
       ring
-    rw [e]
-    exact this
+    rwa [e]
   have h2 : ∀ N, ∑ n ∈ Finset.range N, (l : ℤ_[l]) ^ n * dTwo χ (u n) p
       = c p - (l : ℤ_[l]) ^ N * (s N).1 p := by
     intro N
@@ -421,8 +419,7 @@ theorem _root_.GlobalTheory.natCard_coker_ker_mod_pow : ∀ (l : ℕ) [Fact l.Pr
       rw [Subtype.ext_iff, ZeroMemClass.coe_zero, hkX]
       simp [LinearMap.lsmul_apply]
     have h := natCard_quotient_ker_of_surjective ψ hψ
-    rw [hker] at h
-    exact h
+    rwa [hker] at h
 
 end GlobalTheory
 end -- clump:auto
@@ -717,8 +714,7 @@ theorem qz_torsion_zmod_embedding (l : ℕ) [Fact l.Prime] :
     · rw [injective_iff_map_eq_zero]
       intro y hy
       obtain ⟨x, rfl⟩ := hs y
-      rw [hι, he, qzTor_key] at hy
-      exact hy
+      rwa [hι, he, qzTor_key] at hy
     · obtain ⟨q, rfl⟩ := qzTor_mk_surj l a
       rw [qzTor_smul_mk, qzTor_mk_eq_zero] at ha
       obtain ⟨z, hz⟩ := ha
@@ -967,8 +963,7 @@ theorem reduction_h2_eq_zero_iff [ContinuousMul Γ] (ρ : Representation ℤ_[l]
         (Submodule.Quotient.mk_eq_zero _).1 hz
       obtain ⟨w, hw, hb⟩ := _root_.GlobalTheory.padicInt_two_cocycle_eq_pow_smul_of_reduction_coboundary l Γ ρ hρ r ρr h z.1 z.2 hz'
       refine ⟨Submodule.Quotient.mk ⟨w, hw⟩, ?_⟩
-      rw [← Submodule.Quotient.mk_smul, eq_comm, Submodule.Quotient.eq]
-      exact hb
+      rwa [← Submodule.Quotient.mk_smul, eq_comm, Submodule.Quotient.eq]
   · rintro ⟨y, rfl⟩
     induction y using Submodule.Quotient.induction_on with
     | H z =>
@@ -1066,8 +1061,7 @@ theorem exists_iota {Γ : Type} [Group Γ] (χ : Γ →* ℤ_[l]ˣ) (e : ℤ) (r
   have hlin : ∀ (φ : TDual (ZMod (l ^ r)) (ZMod (l ^ r))) (m : ZMod (l ^ r)), φ m = m * φ 1 :=
     fun φ m => by
       have := LinearMap.map_smul (show ZMod (l ^ r) →ₗ[ZMod (l ^ r)] ZMod (l ^ r) from φ) m 1
-      rw [smul_eq_mul, mul_one, smul_eq_mul] at this
-      exact this
+      rwa [smul_eq_mul, mul_one, smul_eq_mul] at this
   have hev : Function.Bijective ev := by
     refine ⟨fun φ ψ h => LinearMap.ext fun m => ?_, fun y => ⟨y • TDual.mk LinearMap.id, ?_⟩⟩
     · change φ m = ψ m

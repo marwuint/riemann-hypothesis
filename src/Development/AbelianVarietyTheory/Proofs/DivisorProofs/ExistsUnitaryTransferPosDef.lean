@@ -100,8 +100,7 @@ theorem parts_ext {a b : Formalism.L2.Theta.AE D} (h1 : infPart D a = infPart D 
   obtain ⟨e, he, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E
   have he1 : ∀ z, (e z).1 = infPart D z := fun z => (he z).1
   have he2 : ∀ z, (e z).2 = finPart D z := fun z => (he z).2
-  apply e.injective
-  exact Prod.ext (by rw [he1, he1, h1]) (by rw [he2, he2, h2])
+  exact e.injective (Prod.ext (by rw [he1, he1, h1]) (by rw [he2, he2, h2]))
 
 theorem map_one_apply {A B n : Type} [CommRing A] [CommRing B] [DecidableEq n] (φ : A →+* B) (i j : n) :
     φ ((1 : Matrix n n A) i j) = (1 : Matrix n n B) i j := by
@@ -174,8 +173,7 @@ theorem supp_iff_loc [IsCMField D.host.E] {n : ℕ} {P : HeightOneSpectrum (𝓞
     refine Units.ext (Matrix.ext fun i j => ?_)
     have := congrArg (fun m => GlobalTheory.LFun.finAdEquiv D.host.F D.host.E (m i j) u) k
     simp only [Matrix.smul_apply, smul_eq_mul] at this
-    rw [ev, (comp_of_isPrimeIdem h u).2 hu, zero_mul, key, eq_comm, sub_eq_zero] at this
-    exact this
+    rwa [ev, (comp_of_isPrimeIdem h u).2 hu, zero_mul, key, eq_comm, sub_eq_zero] at this
   · intro k
     refine Matrix.ext fun i j => (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).injective
       (FiniteAdeleRing.ext _ fun u => ?_)
@@ -187,8 +185,7 @@ theorem supp_iff_loc [IsCMField D.host.E] {n : ℕ} {P : HeightOneSpectrum (𝓞
 theorem finMat_mul (V : HSp D) (g h : Formalism.L2.Theta.GA D V) :
     finMat D.sp.cm.sig V.gram (g * h) = finMat D.sp.cm.sig V.gram g * finMat D.sp.cm.sig V.gram h := by
   have := congrArg Units.val ((finHom V).map_mul g h)
-  rw [Units.val_mul] at this
-  exact this
+  rwa [Units.val_mul] at this
 
 theorem finMat_one (V : HSp D) : finMat D.sp.cm.sig V.gram (1 : Formalism.L2.Theta.GA D V) = 1 :=
   congrArg Units.val (finHom V).map_one
@@ -294,8 +291,7 @@ theorem exists_mat {A C : Matrix (Fin n) (Fin n) K}
   choose z hz ez using fun j => h _ (h1 j)
   refine ⟨Matrix.of fun i j => z j i, fun i j => hz j i, Matrix.ext fun i j => ?_⟩
   have := congrFun (ez j) i
-  rw [Matrix.mulVec_single_one] at this
-  exact this
+  rwa [Matrix.mulVec_single_one] at this
 
 theorem mulVec_mem {A : Matrix (Fin n) (Fin n) K} (hA : ∀ i j, A i j ∈ O) {z : Fin n → K} (hz : ∀ i, z i ∈ O) (i : Fin n) :
     (A *ᵥ z) i ∈ O :=
@@ -308,8 +304,7 @@ theorem exists_GLint {g g' : Matrix (Fin n) (Fin n) K} (hg : ∀ i j, g i j ∈ 
   have e : G * G' = 1 := by
     apply Matrix.map_injective (f := O.subtype) O.subtype_injective
     change (G * G').map O.subtype = (1 : Matrix (Fin n) (Fin n) O).map O.subtype
-    rw [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
-    exact h
+    rwa [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
   exact ⟨_, ⟨⟨G, G', e, mul_eq_one_comm.1 e⟩, rfl⟩, rfl⟩
 
 theorem entry_mem {a : GL (Fin n) K} (ha : a ∈ GLint (Fin n) O) (i j : Fin n) :
@@ -960,8 +955,7 @@ theorem doubleCoset_of_hasDiv : ∀ (D : D7) [IsCMField D.host.E] (n : ℕ) (P :
     refine ⟨φ.symm a, ⟨(φ.symm a).2, by rw [hc]; exact a.2⟩, φ.symm b, ⟨(φ.symm b).2, by rw [hc]; exact b.2⟩, ?_⟩
     have h : (⟨y, hy⟩ : locU n P) = φ.symm a * ⟨x, hx⟩ * φ.symm b := by
       apply φ.injective
-      rw [map_mul, map_mul, φ.apply_symm_apply, φ.apply_symm_apply, hφ, hφ]
-      exact e
+      rwa [map_mul, map_mul, φ.apply_symm_apply, φ.apply_symm_apply, hφ, hφ]
     exact congrArg Subtype.val h
   · obtain ⟨s, ϖ, q, hs, hU⟩ := GlobalTheory.InertPlaceConj.exists_conj_isUnramInv D.host.E P
       (GlobalTheory.ToricDistribution.host_unram P) hs

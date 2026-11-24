@@ -131,8 +131,7 @@ theorem eq_of_shear : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R �
   have hh₀ : h₀ ≫ lift (fst A₀ A₀) μ = lift f₀ f₀ := by
     apply CartesianMonoidalCategory.hom_ext
     · simp [h₀]
-    · simp only [h₀, Category.assoc, lift_snd]
-      exact lift_comp_one_right _ _
+    · simpa only [h₀, Category.assoc, lift_snd] using lift_comp_one_right _ _
   obtain ⟨gu, hgu_def⟩ : ∃ g, g = lift f f' ≫ inv (lift (fst X X) m) := ⟨_, rfl⟩
   obtain ⟨gv, hgv_def⟩ : ∃ g, g = lift f f ≫ inv (lift (fst X X) m) := ⟨_, rfl⟩
   have eu : gu.left ≫ (lift (fst X X) m).left = (lift f f').left := by
@@ -320,8 +319,7 @@ theorem exists_grpObj_isAbelianScheme : ∀ (R R₀ : Type) [CommRing R] [CommRi
   have hτ : jA ≫ τ = jA := by
     rw [hτd, comp_lift_assoc, Category.comp_id, hjE]
     have h := ptm A₀ 1 (𝟙 A₀)
-    rw [hj, _root_.one_mul, hj] at h
-    exact h
+    rwa [hj, _root_.one_mul, hj] at h
   have τiso : IsIso τ := by
     refine GlobalTheory.T.isIso_of_flat_pullback_reduction R R₀ π hπ hN X X A₀ A₀ i i hi hi inferInstance τ (𝟙 A₀) ?_ inferInstance
     have h := congrArg (fun g => g.left) hτ
@@ -338,9 +336,7 @@ theorem exists_grpObj_isAbelianScheme : ∀ (R R₀ : Type) [CommRing R] [CommRi
   have hLm₁ : L ≫ m₁ = (Over.map (spMap π)).map μ[A₀] ≫ jA := by
     rw [hm₁d, ← Category.assoc, hLm, Category.assoc, hjτ]
   have hm₁ : l ≫ m₁.left = (μ[A₀]).left ≫ i := by
-    have h := congrArg (fun g => g.left) hLm₁
-    simp only [Over.comp_left, Over.map_map_left, hL, hjl] at h
-    exact h
+    simpa only [Over.comp_left, Over.map_map_left, hL, hjl] using congrArg (fun g => g.left) hLm₁
   have one_mul₁ : lift (toUnit X ≫ E) (𝟙 X) ≫ m₁ = 𝟙 X := by
     rw [hm₁d, ← Category.assoc, ← hτd, IsIso.hom_inv_id]
   have hEE : lift E E ≫ m₁ = E := by
@@ -364,9 +360,7 @@ theorem exists_grpObj_isAbelianScheme : ∀ (R R₀ : Type) [CommRing R] [CommRi
     rw [comp_lift, hLm₁, hLfst, ← pt]
   have σiso : IsIso (lift (fst X X) m₁) := by
     refine GlobalTheory.T.isIso_of_flat_pullback_reduction R R₀ π hπ hN (X ⊗ X) (X ⊗ X) (A₀ ⊗ A₀) (A₀ ⊗ A₀) l l hl₂ hl₂ inferInstance _ _ ?_ σ₀iso
-    have h := congrArg (fun g => g.left) hLσ
-    simp only [Over.comp_left, Over.map_map_left, hL] at h
-    exact h
+    simpa only [Over.comp_left, Over.map_map_left, hL] using congrArg (fun g => g.left) hLσ
   have toLeft : ∀ {P Q : Over (Sp R)} (a : Q ⟶ P) (f f' : P ⟶ X), a ≫ f = a ≫ f' → a.left ≫ f.left = a.left ≫ f'.left :=
     fun a f f' h => by simpa only [Over.comp_left] using congrArg (fun g => g.left) h
   have EXT := GlobalTheory.T.eq_of_shear_automorphism_lift_nilpotent R R₀ π hπ hN A₀ X i hi l hl1 hl2 m₁ hm₁ σiso
@@ -378,8 +372,7 @@ theorem exists_grpObj_isAbelianScheme : ∀ (R R₀ : Type) [CommRing R] [CommRi
       apply toLeft
       rw [comp_lift_assoc, Category.comp_id, hjE]
       have h := ptm₁ A₀ (𝟙 A₀) 1
-      rw [hj, _root_.mul_one, hj] at h
-      exact h
+      rwa [hj, _root_.mul_one, hj] at h
     · rw [← hEl]
       apply toLeft
       simp only [comp_lift_assoc, Category.comp_id, comp_toUnit_assoc, hEu, Category.id_comp, hEE]

@@ -96,8 +96,7 @@ theorem exists_surj_localization_mvPolynomial_of_essFiniteType :
     congr 1
     ext x
     constructor
-    · intro hx
-      exact ⟨σ.equivFin ⟨x, hx⟩, by simp [y]⟩
+    · exact fun hx => ⟨σ.equivFin ⟨x, hx⟩, by simp [y]⟩
     · rintro ⟨i, rfl⟩
       exact (σ.equivFin.symm i).2
   let P : Ideal (MvPolynomial (Fin σ.card) Λ) := (maximalIdeal R).comap φ₀
@@ -185,9 +184,7 @@ theorem derivation_extend_mvPolynomial :
   intro B τ _ D
   refine ⟨Derivation.mk' (coeffDerivAddHom D).toIntLinearMap
     (fun a b => by simpa [smul_eq_mul] using coeffDerivAddHom_mul D a b), ?_, ?_⟩
-  · intro x
-    show coeffDerivAddHom D (MvPolynomial.monomial 0 x) = MvPolynomial.monomial 0 (D x)
-    exact coeffDerivAddHom_monomial D 0 x
+  · exact fun x => coeffDerivAddHom_monomial D 0 x
   · intro t
     show coeffDerivAddHom D (MvPolynomial.monomial (Finsupp.single t 1) 1) = 0
     rw [coeffDerivAddHom_monomial, Derivation.map_one_eq_zero, map_zero]
@@ -257,8 +254,7 @@ theorem exists_generic_jacobian_data_iterated : ∀ (Λ : Type) [CommRing Λ] [I
   refine ⟨h, fun j => e (f j), s, e g, hg, hf, fun x hxQ => ?_, ?_⟩
   · have h4 := hx (e.symm x) (by simpa [Ideal.mem_comap] using hxQ)
     have h5 := Ideal.mem_map_of_mem e h4
-    rw [Ideal.map_span, ← Set.range_comp, map_mul, AlgEquiv.apply_symm_apply] at h5
-    exact h5
+    rwa [Ideal.map_span, ← Set.range_comp, map_mul, AlgEquiv.apply_symm_apply] at h5
   · intro hmem
     apply hdet
     rw [Ideal.mem_comap, AlgEquiv.map_det]
@@ -382,8 +378,7 @@ theorem regular_fibre_of_jacobian : ∀ (S T K : Type) [CommRing S] [CommRing T]
         Ideal.mem_map_of_mem _ (hgQ x hx)
       rw [map_mul] at hm
       exact (Ideal.unit_mul_mem_iff_mem _ hu).mp hm
-  rw [← heq]
-  exact hreg
+  rwa [← heq]
 
 end GlobalTheory
 end -- clump:auto
@@ -527,8 +522,7 @@ theorem isRegularRing_adicCompletion_tensor_of_mvPolynomial :
   have hC : ∀ a : Λ, algebraMap S₀ K (MvPolynomial.C a) = 0 → a = 0 := by
     intro a ha
     apply hinj a
-    rw [IsScalarTower.algebraMap_apply Λ S₀ R a]
-    exact ha
+    rwa [IsScalarTower.algebraMap_apply Λ S₀ R a]
   have hD : ∀ s : Fin n, ∃ D : Derivation ℤ B B, ∀ x,
       D (algebraMap S₀ B x) = algebraMap S₀ B (MvPolynomial.pderiv s x) := fun s =>
     _root_.GlobalTheory.derivation_extend_completion_localization_atPrime S₀ P ((MvPolynomial.pderiv s).restrictScalars ℤ)
@@ -577,8 +571,7 @@ theorem formalFibre_isRegularRing_of_essFiniteType :
     intro a ha
     apply hK a
     have h1 : algebraMap R₀ K (algebraMap Λ R₀ a) = algebraMap R K (φ (algebraMap Λ R₀ a)) := rfl
-    rw [h1, φ.commutes] at ha
-    exact ha
+    rwa [h1, φ.commutes] at ha
   have hreg := _root_.GlobalTheory.isRegularRing_adicCompletion_tensor_of_mvPolynomial Λ n P K hK₀
   obtain ⟨e⟩ := _root_.GlobalTheory.adicCompletion_tensor_quotient_ringEquiv R₀ R K hsurj
   exact IsRegularRing.of_ringEquiv e.symm
@@ -616,8 +609,7 @@ theorem formalFibre_isRegularRing_of_essFiniteType_int :
       have := hu.map (algebraMap R K); rw [hpK] at this; exact not_isUnit_zero this
     let I : Ideal R := Ideal.span {((p : ℕ) : R)}
     haveI : CharP (R ⧸ I) p := CharP.quotient R p hnu
-    have hI : I ≠ ⊤ := by
-      exact fun h => hnu (Ideal.span_singleton_eq_top.mp h)
+    have hI : I ≠ ⊤ := fun h => hnu (Ideal.span_singleton_eq_top.mp h)
     haveI : Nontrivial (R ⧸ I) := Ideal.Quotient.nontrivial_iff.mpr hI
     haveI : IsLocalRing (R ⧸ I) :=
       IsLocalRing.of_surjective' (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective

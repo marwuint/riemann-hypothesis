@@ -541,8 +541,7 @@ theorem isUnit_fnOn_le {R₀ : Type} [CommRing R₀] (f r : R₀) (N : ℕ) (hr 
     rw [Scheme.homOfLE_ι]
     exact (Category.comp_id _).symm.trans (congrArg (W.ι ≫ ·) (Spec.map_id _).symm)) r
   have := (isUnit_fnOn f r N hr).map ((Sp R₀).homOfLE hle).appTop.hom
-  rw [e] at this
-  exact this
+  rwa [e] at this
 
 theorem gm_mono {R₀ K : Type} [CommRing R₀] [Field K] (W : (Sp R₀).Opens) (α : R₀ →+* K) {Z : Scheme.{0}}
     (t : Z ⟶ W.toScheme) (s : Z ⟶ Sp K) (h : t ≫ W.ι = s ≫ spMap α) {I : Type} [Fintype I] (a : I → R₀)
@@ -808,8 +807,7 @@ theorem act_comm_noeth : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R
       (hI ▸ IsLocalRing.maximalIdeal_le_jacobson ⊥) G').2 G _ _ fun e => ?_
     obtain ⟨h, hf, ⟨hp, ht⟩, -⟩ := H e
     obtain rfl : h = ((Over.pullback (thick R I e)).map φ).left := by
-      rw [← cancel_mono (pullback.fst G.hom (thick R I e)), P, eφ]
-      exact hf
+      rwa [← cancel_mono (pullback.fst G.hom (thick R I e)), P, eφ]
     have hq : (Over.pullback (thick R I e)).map φ ≫ (U.gt e).q =
         (U'.gt e).q ≫ (Over.pullback (thick R I e)).map ψ := by
       refine Over.OverMorphism.ext ?_
@@ -1254,8 +1252,7 @@ theorem qkPt_rational : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {
       rw [v χ y J hJ, v' χ y J hJ, v'' χ y J hJ, b, b', C.s01, C.s12]
       exact tau_mul (𝟙 (TF (R := R) F)) hJ hB x x' χ
   have hi : ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (x : P.D.toPre.X), GtPtF.IsIota x (mkIota F x) := by
-    intro F _ _ x
-    exact (exists_iota (F := F) hB x).choose_spec
+    exact fun F _ _ x => (exists_iota (F := F) hB x).choose_spec
   have hn : ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (p : QkPt P.D.toPre F l.M'), l.M' • p.g = mkIota F p.y := by
     intro F _ _ p
     obtain ⟨h, h₁, h₂⟩ := p.eq
@@ -1463,8 +1460,7 @@ theorem torsRat_away_iff : ∀ (R : Type) [CommRing R] [IsDomain R] (f : R) [IsD
     have hyw : y.left ≫ G'.hom = jK (Localization.Away f) := Over.w y
     refine ⟨Over.homMk (spMap j ≫ y.left ≫ π) ?_, ?_⟩
     · show (spMap j ≫ y.left ≫ π) ≫ G.hom = jK R
-      rw [Category.assoc, Category.assoc, hπ.1.w, ← Category.assoc y.left, hyw]
-      exact hsq
+      rwa [Category.assoc, Category.assoc, hπ.1.w, ← Category.assoc y.left, hyw]
     · show x.left = spMap κ ≫ spMap j ≫ y.left ≫ π
       have h1 : x'.left ≫ π = x.left :=
         (GlobalTheory.ObjPull.pushEquiv_symm_left hπ T (e0 ≫ x)).trans (Category.id_comp _)

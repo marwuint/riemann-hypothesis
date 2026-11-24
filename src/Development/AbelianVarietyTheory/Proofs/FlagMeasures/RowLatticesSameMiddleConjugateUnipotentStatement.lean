@@ -85,8 +85,7 @@ theorem rowsLift_map_eq (U : Submodule E S.V) (n : S.V ≃ₗ[E] S.V) (hn : ∀ 
   constructor
   · rintro ⟨x, hx, rfl⟩
     rwa [hn x hx]
-  · intro hy
-    exact ⟨y, hy, hn y hy⟩
+  · exact fun hy => ⟨y, hy, hn y hy⟩
 
 theorem rowsLift_Lsub_gmap (F : LFlag S r T) (Λ : Submodule (𝓞 E) S.V) (n : S.V ≃ₗ[E] S.V)
     (hi : n ∈ Formalism.HermitianLatticesTheory.isom S.hT) (hn : ∀ x ∈ Xsp F, n x = x)
@@ -127,8 +126,7 @@ theorem rowsLift_cancel (X W : Submodule E S.V) (hXW : ∀ x ∈ X, x ∈ W → 
   have hxW : x ∈ W := by
     have h2 : b + x - b ∈ W := W.sub_mem (Submodule.mem_inf.mp hy).2 (Submodule.mem_inf.mp hb).2
     simpa using h2
-  rw [hXW x hx hxW, add_zero]
-  exact hb
+  rwa [hXW x hx hxW, add_zero]
 
 end Generic
 
@@ -156,11 +154,9 @@ theorem rowsLift_fixX {D : D7} {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T}
   obtain ⟨-, hfr, -⟩ := hn
   have he : ∀ a, n (F0.e a) = F0.e a := by
     intro a
-    have h := hfr (Fin.castSucc a)
-    simpa [frame, FlagG.fvec, lf] using h
+    simpa [frame, FlagG.fvec, lf] using hfr (Fin.castSucc a)
   have hz : n F0.z = F0.z := by
-    have h := hfr (Fin.last _)
-    simpa [frame, FlagG.fvec, lf] using h
+    simpa [frame, FlagG.fvec, lf] using hfr (Fin.last _)
   refine ⟨he, hz, ?_⟩
   intro x hx
   rw [FlagG.X, ← Set.image_univ] at hx

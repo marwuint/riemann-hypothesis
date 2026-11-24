@@ -402,8 +402,7 @@ theorem isoFrame_keep : ∀ (D : D7) (V : HSp D), ∀ γ ∈ GQ (dblSp V), ∀ �
     have h4a : δ₀ *ᵥ (C *ᵥ v) = leviMat finSumFinEquiv γi *ᵥ (leviMat finSumFinEquiv X *ᵥ (K *ᵥ v)) := by
       funext i
       have := congrFun h3 (finSumFinEquiv (.inl i))
-      rw [pairVec_inl, pairVec_inl] at this
-      exact this
+      rwa [pairVec_inl, pairVec_inl] at this
     have h4b : diagSnd γi *ᵥ (leviMat finSumFinEquiv X *ᵥ (K *ᵥ v)) = 0 := by
       funext i
       have := congrFun h3 (finSumFinEquiv (.inr i))
@@ -487,8 +486,7 @@ theorem norm : ∀ (D : D7) (V : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin 
   intro D V r C δ hδ δ₀ hδ₀ G hG hC
   obtain ⟨g, hg, e1, e2⟩ := exists_rat V hδ
   have hg0 : (g : Matrix (Fin V.rank) (Fin V.rank) D.host.E) = δ₀ := by
-    apply Matrix.map_injective (GlobalTheory.FrameStab.incA_injective D)
-    exact e1.symm.trans hδ₀
+    exact Matrix.map_injective (GlobalTheory.FrameStab.incA_injective D) (e1.symm.trans hδ₀)
   obtain ⟨σ, hσ⟩ : ∃ σ : D.host.E →+* D.host.E, σ = (D.sp.cm.sig : D.host.E →+* D.host.E) := ⟨_, rfl⟩
   obtain ⟨J, hJ⟩ : ∃ J, J = V.gram := ⟨_, rfl⟩
   obtain ⟨P, hP⟩ : ∃ P : Matrix (Fin r) (Fin V.rank) D.host.E, P = Formalism.UG.cT σ C * J := ⟨_, rfl⟩
@@ -560,8 +558,7 @@ theorem norm : ∀ (D : D7) (V : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin 
       show (mt V (δ * m * δ⁻¹) - 1) *ᵥ (fun i => incA D (x i)) = C.map (incA D) *ᵥ (G.map (incA D) *ᵥ a)
       rw [GlobalTheory.FrameStab.mt_conj_sub_one, ← Matrix.mulVec_mulVec, hxi, ← Matrix.mulVec_mulVec, ha,
         Matrix.mulVec_mulVec, hΔ, ← Matrix.map_mul, hC, Matrix.map_mul, Matrix.mulVec_mulVec]
-  intro n hn
-  exact key hn
+  exact fun n hn => key hn
 
 end GlobalTheory.FrameNorm
 end -- clump:auto
@@ -863,8 +860,7 @@ theorem isNeg_mul_io_iff {x : GA D (dblSp V)} {γ₁ γ₂ : GA D V} (h₁ : γ�
     IsNeg V (x * io V (γ₁, γ₂)) ↔ IsNeg V x := by
   refine ⟨isNeg_mul_io h₁ h₂, fun h => isNeg_mul_io ((GQ V).inv_mem h₁) ((GQ V).inv_mem h₂) ?_⟩
   have e : ((γ₁, γ₂) * (γ₁⁻¹, γ₂⁻¹) : GA D V × GA D V) = 1 := by ext <;> simp
-  rw [mul_assoc, ← map_mul, e, map_one, mul_one]
-  exact h
+  rwa [mul_assoc, ← map_mul, e, map_one, mul_one]
 
 theorem exists_out_rmul (q : SiegelCosets V) (g : GQ (dblSp V)) : ∃ p ∈ siegelQ V,
     (((rmul _ g q).out : GQ (dblSp V)) : GA D (dblSp V)) = p * (q.out : GQ (dblSp V)) * g := by
@@ -1190,8 +1186,7 @@ theorem open_orbit : ∀ (D : D7) (V : HSp D) (a : GL (Fin V.rank) (AE D)), IsMa
       ∑' δ : GQ V, ∫ x, T δ x ∂(m.restrict 𝓕).prod (m.restrict 𝓕) := by
     rw [← integral_tsum (fun δ => (hTc δ).aestronglyMeasurable) hbd]
     congr 1; funext x
-    simp only [hTdef, hEdef, dblIntegrand, mul_assoc]
-    exact tsum_mul_right.symm
+    simpa only [hTdef, hEdef, dblIntegrand, mul_assoc] using tsum_mul_right.symm
   have S5 : ∀ δ : GQ V, ∫ x, T δ x ∂(m.restrict 𝓕).prod (m.restrict 𝓕) =
       ∫ x₂ in 𝓕, ∫ x₁ in 𝓕, T δ (x₁, x₂) ∂m ∂m := fun δ => integral_prod_symm _ (hTint δ)
   have S6 : ∑' δ : GQ V, ∫ x₂ in 𝓕, ∫ x₁ in 𝓕, T δ (x₁, x₂) ∂m ∂m =

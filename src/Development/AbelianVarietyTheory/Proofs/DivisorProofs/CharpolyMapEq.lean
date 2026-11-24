@@ -299,9 +299,7 @@ theorem isIso_of_isIsog_of_omegaMap_surjective : ∀ (p : ℕ) [Fact p.Prime] (k
       have e : π₁ ≫ i₁ ≫ q ≫ r₁ = q ≫ r₁ :=
         proj_comp_eq_of_comp_eq_zero (q ≫ r₁) π₀ i₀ π₁ i₁ hG
           (by rw [← Category.assoc]; exact (z hG₀ hH₁).1 _)
-      have e' := congrArg (dualHom G H₁) e
-      simp only [dualHom_comp, Category.assoc] at e'
-      exact e'
+      simpa only [dualHom_comp, Category.assoc] using congrArg (dualHom G H₁) e
     have hs' : Function.Surjective (omegaMap H₁.dual G₁.dual (dualHom G₁ H₁ (i₁ ≫ q ≫ r₁))) := by
       rw [hdb]
       exact omegaMap_corner_surjective (dualHom G H q) hsd (dualHom H H₁ r₁) (dualHom H₁ H j₁)
@@ -532,8 +530,7 @@ theorem exists_step {X Y : PDivGroup p k} (f : X ⟶ Y) (hω : ¬ Function.Surje
   rw [e1, ← e2] at h0
   have hsub := Module.finrank_zero_iff.1 h0
   rw [← LinearMap.range_eq_top, eq_top_iff]
-  intro x _
-  exact (Submodule.Quotient.mk_eq_zero _).1 (Subsingleton.elim _ _)
+  exact fun x _ => (Submodule.Quotient.mk_eq_zero _).1 (Subsingleton.elim _ _)
 
 
 omit [PerfectRing k p] in
@@ -864,8 +861,7 @@ theorem eq_one_of_coprime {A B : AbVar K} (f : A ⟶ B) (hf : IsIsogeny f) (m : 
   have hy1 : ((x ≫ q.hom) ≫ i.hom) ≫ (prodFst B A).hom = 1 := by
     have := congrArg Hom.hom h1
     simp only [comp_hom] at this
-    rw [Category.assoc, Category.assoc, this]
-    exact hx
+    rwa [Category.assoc, Category.assoc, this]
   have hy2 : ((x ≫ q.hom) ≫ i.hom) ≫ (prodSnd B A).hom = 1 := by
     have := congrArg Hom.hom h2
     simp only [comp_hom] at this
@@ -1059,9 +1055,7 @@ theorem end_isogeny_algebra_finrank_le : ∀ (K : Type) [Field K] (A : AbVar K),
   haveI : Module.Finite ℤ (End A) := Module.Finite.equiv e.symm
   haveI : Module.Free ℤ (End A) := Module.Free.of_equiv e.symm
   refine ⟨inferInstance, ?_⟩
-  rw [Module.finrank_baseChange]
-  rw [e.finrank_eq]
-  exact hrk
+  rwa [Module.finrank_baseChange, e.finrank_eq]
 
 end GlobalTheory.AV.AbVar
 end -- clump:auto
@@ -1135,8 +1129,7 @@ theorem toEnd0_injective_and_fraction : ∀ (K : Type) [Field K] (A : AbVar K),
     apply End.addEquiv.injective
     apply GlobalTheory.T.abVar_hom_eq_zero_of_nsmul_eq_zero K A A (c : ℤ) _ hc0
     have hh := congrArg (End.addEquiv (X := A)) h1
-    rw [map_zsmul, map_zero] at hh
-    exact hh
+    rwa [map_zsmul, map_zero] at hh
   · obtain ⟨⟨m, c⟩, hc⟩ := IsLocalizedModule.surj (nonZeroDivisors ℤ) (TensorProduct.mk ℤ ℚ (End A) 1) x
     have hc0 : (c : ℤ) ≠ 0 := nonZeroDivisors.coe_ne_zero c
     simp only [Submonoid.smul_def] at hc

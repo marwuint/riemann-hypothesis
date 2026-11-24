@@ -145,8 +145,7 @@ theorem exists_algHom_lift_of_etale_of_isLocalRing {R A S : Type*} [CommRing R] 
   have hψ' : (Ideal.Quotient.mkₐ R J).comp ψ' = φ' := by
     apply P.hom_ext
     change Ideal.Quotient.mkₐ R J (P.lift x hmx (P.equivRing P.x)) = _
-    rw [StandardEtalePresentation.equivRing_x, StandardEtalePair.lift_X, hxx']
-    exact hx₀
+    rwa [StandardEtalePresentation.equivRing_x, StandardEtalePair.lift_X, hxx']
   refine ⟨ψ'.comp (IsScalarTower.toAlgHom R A _), fun a ↦ ?_⟩
   rw [← hφ', ← hψ']
   rfl
@@ -207,8 +206,7 @@ theorem exists_idempotent_notMem_iff_of_henselian (R : Type*) {S : Type*} [CommR
     have := hlies n hn
     have : n.comap τ = P' :=
       Ideal.eq_of_comap_eq_comap_of_bijective_residueFieldMap hbij _ _ (by rw [hcomap, hP'q])
-    rw [← this] at heP'
-    exact heP'
+    rwa [← this] at heP'
 
 theorem mem_jacobson_bot_of_forall_isMaximal {S : Type*} [CommRing S] {x : S}
     (h : ∀ n : Ideal S, n.IsMaximal → x ∈ n) : x ∈ (⊥ : Ideal S).jacobson := by
@@ -311,8 +309,7 @@ theorem henselianRing_of_finite (R : Type*) {S : Type*} [CommRing R]
         ← eval_map_algebraMap]
       exact sub_dvd_eval_sub _ _ _
     have hp0 : ∀ p : S[X], (aeval x p - algebraMap S T (p.eval a₀)) * e₀ ∈ JT := fun p ↦ by
-      obtain ⟨c, hc⟩ : x - algebraMap S T a₀ ∣ aeval x p - algebraMap S T (p.eval a₀) := by
-        exact hdvd p a₀
+      obtain ⟨c, hc⟩ : x - algebraMap S T a₀ ∣ aeval x p - algebraMap S T (p.eval a₀) := hdvd p a₀
       rw [hc, mul_right_comm]
       exact Ideal.mul_mem_right _ _ hx0
     have he₀ : IsIdempotentElem (Ideal.Quotient.mk JT e₀) := by
@@ -349,8 +346,7 @@ theorem henselianRing_of_finite (R : Type*) {S : Type*} [CommRing R]
     have hlJ : ∀ y ∈ JT, l y ∈ J := fun y hy ↦ by
       have := Submodule.mem_map_of_mem (f := l) (hJT y hy)
       rw [Submodule.map_smul''] at this
-      have h2 := Submodule.smul_mono (le_refl J) (le_top (a := (⊤ : Submodule S T).map l)) this
-      simpa using h2
+      simpa using Submodule.smul_mono (le_refl J) (le_top (a := (⊤ : Submodule S T).map l)) this
     have hl0 : l e₀ = 1 := by
       simp only [e₀, map_smul, l, LinearMap.comp_apply, x]
       rw [AdjoinRoot.aeval_eq, AdjoinRoot.modByMonicHom_mk, (modByMonic_eq_self_iff hf).2 hdeg]
@@ -360,8 +356,7 @@ theorem henselianRing_of_finite (R : Type*) {S : Type*} [CommRing R]
       rw [map_sub, hl0] at this
       simpa using Ideal.mem_jacobson_bot.1 (hJ this) 1
     refine ⟨a, ?_, ?_⟩
-    · obtain ⟨c, hc⟩ : x - algebraMap S T a ∣ aeval x f - algebraMap S T (f.eval a) := by
-        exact hdvd f a
+    · obtain ⟨c, hc⟩ : x - algebraMap S T a ∣ aeval x f - algebraMap S T (f.eval a) := hdvd f a
       rw [AdjoinRoot.aeval_eq, AdjoinRoot.mk_self] at hc
       have : f.eval a • e = 0 := by
         rw [Algebra.smul_def]

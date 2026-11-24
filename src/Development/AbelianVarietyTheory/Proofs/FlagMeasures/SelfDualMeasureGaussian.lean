@@ -209,8 +209,7 @@ theorem selfDual_map {V V' : Type} [AddCommGroup V] [TopologicalSpace V] [Measur
     rw [hemb.integral_map]
     simp only [hχ]
   have hint' : Integrable (fun y => ∫ x, Φ (T x) * χ x y ∂μ) μ := by
-    rw [← hin, ← hme.integrable_map_iff]
-    exact hint
+    rwa [← hin, ← hme.integrable_map_iff]
   have hc : Continuous (fun x => Φ (T x)) := hΦc.comp T.continuous
   have hs : HasCompactSupport (fun x => Φ (T x)) := hΦs.comp_homeomorph T.toHomeomorph
   have key := h.2 (fun x => Φ (T x)) hc hs hint' (T.symm z)
@@ -408,8 +407,7 @@ private theorem exists_coord_homeomorph_tensor (I : AutInst) (θ : InfinitePlace
     funext v
     change θ v (B.equivFun.symm (fun k => a.symm (fun v' => t k v' (w v')))) = w v
     rw [hsum, LinearEquiv.apply_symm_apply]
-    simp only [a.apply_symm_apply]
-    exact ht' v (w v)
+    simpa only [a.apply_symm_apply] using ht' v (w v)
   · refine continuous_pi fun v => ?_
     have : (fun z => θ v z) = fun z => ∑ k, ((a (B.equivFun z k) v : ℝ) : ℂ) * I.φ v (b k) :=
       funext fun z => hsum z v
@@ -439,12 +437,10 @@ theorem exists_coord_space : ∀ (I : AutInst) (θ : InfinitePlace I.F → (Ainf
     funext o i
     have ho : o = 0 := Subsingleton.elim o 0
     subst ho
-    simp only [hinv]
-    exact Ψ.symm_apply_apply (X 0 i)
+    simpa only [hinv] using Ψ.symm_apply_apply (X 0 i)
   · intro Y
     funext v
-    simp only [Ψ.apply_symm_apply]
-    exact hinv' v (Y v)
+    simpa only [Ψ.apply_symm_apply] using hinv' v (Y v)
   · intro X Y
     funext v
     change (I.P v)⁻¹ *ᵥ _ = (I.P v)⁻¹ *ᵥ _ + (I.P v)⁻¹ *ᵥ _
@@ -684,8 +680,7 @@ theorem density_at_sign : ∀ (I : AutInst) (θ : InfinitePlace I.F → (Ainf I.
         simp only [Set.mem_preimage, Set.mem_image]
         constructor
         · rintro ⟨t, ht, hts⟩
-          rw [← hq X, ← hts, a.apply_symm_apply]
-          exact ht
+          rwa [← hq X, ← hts, a.apply_symm_apply]
         · intro hX
           refine ⟨_, hX, ?_⟩
           rw [← hq X, a.symm_apply_apply]
@@ -703,8 +698,7 @@ theorem density_at_sign : ∀ (I : AutInst) (θ : InfinitePlace I.F → (Ainf I.
         constructor
         · rintro ⟨t, ht, rfl⟩
           rwa [a.apply_symm_apply]
-        · intro hx
-          exact ⟨a x, hx, a.symm_apply_apply x⟩
+        · exact fun hx => ⟨a x, hx, a.symm_apply_apply x⟩
       rw [hpre]
       have h1 := hame.setIntegral_map (μ := νi) (fun t => Fi (a.symm t)) S
       simp only [a.symm_apply_apply] at h1

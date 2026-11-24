@@ -241,8 +241,7 @@ theorem good_partFull_eq_killed : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau �
         ⟨R.subtype (· ∈ GfC V), Finset.subtype_map_of_mem hf⟩
       have := (alg_sum M B (fun γ => γ) (fun _ => 1) _ T).1 (hk _ ⟨Q, d, B, hR, rfl⟩) v x
       simp only [one_mul] at this
-      rw [Finset.sum_map]
-      exact this
+      rwa [Finset.sum_map]
 
 end GlobalTheory.CuspMult.CutFull
 
@@ -372,8 +371,7 @@ theorem unitary_relation_labels_of_W_eigenvector (h : Core R F) (hS : SchurAll R
   rw [evC_single _ _ _ hwd] at h1
   rw [evC_single _ _ _ hw] at h2
   refine star_eq_of_normal hN hQ (dualLab d) h0 h1 ?_
-  rw [_root_.GlobalTheory.SphLabelOps.dualLab_dualLab]
-  exact h2
+  rwa [_root_.GlobalTheory.SphLabelOps.dualLab_dualLab]
 
 theorem good_Y (h : Core R F) {Q : Pl D.host.E} (hQ : Good R A.μ0 Q) (c : ℕ) :
     (((((D.host.g 0 * D.host.g 1) ^ c : ℕ)) : 𝓞 D.host.E)) ∉ Q.asIdeal := by
@@ -461,8 +459,7 @@ theorem killed_union_comp {H H' X ι κ : Type} [Group H] [Group H'] [AddCommGro
       ext y
       simp
     have := hk _ ⟨Q, d, B'.map Φ.symm.toEquiv.toEmbedding, (hI _ _ _).2 (by rw [hm]; exact hB'), rfl⟩
-    rw [alg_comp, hm] at this
-    exact this
+    rwa [alg_comp, hm] at this
   · rintro hk x ⟨Q, d, B, hB, rfl⟩
     rw [alg_comp]
     exact hk _ ⟨Q, d, _, (hI _ _ _).1 hB, rfl⟩

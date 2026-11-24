@@ -57,9 +57,7 @@ namespace GlobalTheory.Mum.ExpandNonzero
 open ReciprocityTheory.ChartRestriction.G.Semi
 
 theorem mem_wchart {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X))
-    (j : K → L.ι) (y : Y) : y ∈ LB.wchart L φ j ↔ ∀ k, (φ k).base y ∈ L.U (j k) := by
-  show y ∈ ⋂ k, (φ k).base ⁻¹' (L.U (j k) : Set X) ↔ _
-  exact Set.mem_iInter
+    (j : K → L.ι) (y : Y) : y ∈ LB.wchart L φ j ↔ ∀ k, (φ k).base y ∈ L.U (j k) := Set.mem_iInter
 
 theorem sec_mem_basicOpen {X : Scheme.{0}} {L : LB X} (s : LB.Sec L) (i j : L.ι) {x : X}
     (hx : x ∈ X.basicOpen (s.f j)) (hi : x ∈ L.U i) : x ∈ X.basicOpen (s.f i) := by
@@ -101,8 +99,7 @@ theorem nonzero_of_expandsAt_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [Is
   have h0S : (0 : D.toPre.X) ∈ S := by
     by_contra h
     have h' := hS 0 h j
-    rw [h', Scheme.basicOpen_zero] at hj
-    exact hj
+    rwa [h', Scheme.basicOpen_zero] at hj
   have key := hE (fun _ => idx (U.gt 0).pG.left, fun _ => iL) (fun _ => iL)
     (fun α i => idx ((U.gt 0).pG.left ≫ D.toPre.famφB α i))
     (fun α i => idx (D.toPre.Oφ (U.gt 0).pG α i)) rfl (by
@@ -115,15 +112,13 @@ theorem nonzero_of_expandsAt_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [Is
     refine ⟨⟨⟨?_, ?_⟩, ?_⟩, ?_⟩
     · exact (mem_wchart _ _ _ y).2 fun _ => hidx _
     · exact (mem_wchart _ _ _ y).2 fun _ => hiL
-    · show (fstG (maximalIdeal R) 0 G).left.base y ∈ LB.wchart _ _ _
-      exact (mem_wchart _ _ _ _).2 fun _ => hiL
+    · exact (mem_wchart _ _ _ _).2 fun _ => hiL
     · refine Finset.inf_induction
         (p := fun V : (thickObj R (maximalIdeal R) 0 G).left.Opens => y ∈ V)
         (show y ∈ (⊤ : (thickObj R (maximalIdeal R) 0 G).left.Opens) from trivial)
         (fun a ha b hb => TopologicalSpace.Opens.mem_inf.2 ⟨ha, hb⟩) fun α _ =>
           TopologicalSpace.Opens.mem_inf.2 ⟨?_, ?_⟩
-      · show (U.gt 0).pG.left.base y ∈ LB.wchart _ _ _
-        exact (mem_wchart _ _ _ _).2 fun i => hidx ((U.gt 0).pG.left ≫ D.toPre.famφB α i)
+      · exact (mem_wchart _ _ _ _).2 fun i => hidx ((U.gt 0).pG.left ≫ D.toPre.famφB α i)
       · exact (mem_wchart _ _ _ y).2 fun i => hidx _
 
   have hf0 : y ∈ (thickObj R (maximalIdeal R) 0 G).left.basicOpen

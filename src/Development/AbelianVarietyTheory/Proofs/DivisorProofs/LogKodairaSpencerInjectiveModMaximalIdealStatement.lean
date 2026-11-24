@@ -564,8 +564,7 @@ theorem unit_eq_of_germ_eq : ∀ (k : Type) [Field k] (z : Sp (DualNumber k)) (u
     refine TopCat.Presheaf.section_ext (Sp (DualNumber k)).sheaf ⊤ _ _ fun x hx => ?_
     obtain rfl : x = z := Subsingleton.elim _ _
     have := congrArg Units.val h
-    rw [gm_val _ x ⊤ hx, gm_val _ x ⊤ hx] at this
-    exact this
+    rwa [gm_val _ x ⊤ hx, gm_val _ x ⊤ hx] at this
   exact Units.ext
     ((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (DualNumber k))).inv).1 h1)
 
@@ -1083,16 +1082,14 @@ theorem isClosed_of_isMaximal {X : Scheme.{0}} [JacobsonSpace X] {U : X.Opens} (
     by_contra hc
     refine h f hf ?_
     have h₁ : hU.primeIdealOf ⟨x, hx⟩ ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen f := by
-      rw [hU.fromSpec_preimage_basicOpen]
-      exact hc
+      rwa [hU.fromSpec_preimage_basicOpen]
     have h₂ : hU.fromSpec (hU.primeIdealOf ⟨x, hx⟩) ∈ X.basicOpen f := h₁
     rwa [e] at h₂
   have hmax : (hU.primeIdealOf ⟨x, hx⟩).asIdeal.IsMaximal :=
     hm.eq_of_le (hU.primeIdealOf ⟨x, hx⟩).isPrime.ne_top hle ▸ hm
   have hc := (PrimeSpectrum.isClosed_singleton_iff_isMaximal _).2 hmax
   have h₃ : hU.primeIdealOf ⟨x, hx⟩ ∈ hU.fromSpec ⁻¹' closedPoints X := by
-    rw [hU.fromSpec.isOpenEmbedding.preimage_closedPoints]
-    exact hc
+    rwa [hU.fromSpec.isOpenEmbedding.preimage_closedPoints]
   have h₄ : IsClosed ({hU.fromSpec (hU.primeIdealOf ⟨x, hx⟩)} : Set X) := h₃
   rwa [e] at h₄
 
@@ -1104,10 +1101,8 @@ theorem exists_closed_boundary_point : ∀ (E : Type) [Field E] [NumberField E] 
   have hc := isClosed_of_isMaximal U.2 hm hU h
   obtain ⟨x', rfl⟩ := (genι Y).homeomorph.surjective x
   refine ⟨x', rfl, mem_genBd_iff.2 fun h' => hx ?_, ?_⟩
-  · rw [← coe_interior] at h'
-    exact h'
-  · rw [← (genι Y).homeomorph.isClosed_image, Set.image_singleton]
-    exact hc
+  · rwa [← coe_interior] at h'
+  · rwa [← (genι Y).homeomorph.isClosed_image, Set.image_singleton]
 
 end GlobalTheory.BoundaryPoint
 end -- clump:auto
@@ -1176,8 +1171,7 @@ theorem prime_X {σ k : Type} [CommRing k] [IsDomain k] (s : σ) : Prime (MvPowe
   · intro h
     have := h.map (MvPowerSeries.constantCoeff (σ := σ) (R := k))
     simp at this
-  · rw [key, map_mul, mul_eq_zero, ← key, ← key] at h
-    exact h
+  · rwa [key, map_mul, mul_eq_zero, ← key, ← key] at h
 
 theorem exists_log_of_dvd {R ι : Type} [CommRing R] [IsDomain R] [Algebra ℤ R] [Fintype ι] (I : Ideal R) (δ : Derivation ℤ R R)
     (h0 : ∀ r, δ r ∈ I) (T a : ι → R) (hT : ∀ i, Prime (T i)) (ha : ∀ i, a i ∈ I) (hδ : ∀ i, δ (T i) = a i * T i)
@@ -1439,8 +1433,7 @@ theorem mem_smul_top_of_chart {K : Type} [Field K] [CharZero K] {X : Scheme.{0}}
       have hs : (I.support : Set X) = Z := by
         rw [hIdef, Scheme.IdealSheafData.coe_support_vanishingIdeal]
       change χ q ∈ (Z : Set X)
-      rw [← hs]
-      exact hq
+      rwa [← hs]
     obtain ⟨N, hN⟩ := hrad
     have hdvd := Ideal.mem_span_singleton.1 hN
     refine ⟨ne_zero_of_dvd_ne_zero (pow_ne_zero N (Finset.prod_ne_zero_iff.2 fun j _ => (hT j).ne_zero)) hdvd,
@@ -1469,8 +1462,7 @@ theorem GlobalTheory.LogBack.mem_smul_top_of_vanish : ∀ (E : Type) [Field E] [
   refine GlobalTheory.LogBack.mem_smul_top_of_chart Y.s Dw.dim (interior Y).compl (snc_gen_iff.1 hsnc) U D m hm (ξ ≫ genι Y)
     hxU hxm (bdParam k m' d) a (fun i => GlobalTheory.LogBack.prime_X _) (fun q hq => (hbd q).1 ?_) DR hD hT
     (fun r => (residue_eq_zero_iff _).1 (h0 r)) (fun i => (residue_eq_zero_iff _).1 (ha i))
-  rw [mem_genBd_iff, ← coe_interior]
-  exact hq
+  rwa [mem_genBd_iff, ← coe_interior]
 end -- clump:auto
 end -- clump:auto
 end -- clump:auto
@@ -1548,8 +1540,7 @@ theorem logKS_inj_mod_boundary : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
   obtain ⟨k, _, m', d, ξ, t, P, gam, hξ, hEt, hId, hBd, hSAB, hMon, hPart, hRig⟩ := h3
   have hxU' : ξ (closedPoint _) ∈ genι Y ⁻¹ᵁ U.1 := by
     show genι Y (ξ (closedPoint _)) ∈ U.1
-    rw [hξ, hx'x]
-    exact hxU
+    rwa [hξ, hx'x]
   have hU : ⊤ ≤ (ξ ≫ genι Y) ⁻¹ᵁ U.1 := _root_.GlobalTheory.GenDer.top_le_preimage_of_mem _ _ hxU'
   have h4 := GlobalTheory.ChartDer.logDer_extend_chartRing E H Dw l Xo c Y U D k m' d ξ hxU' hEt hId
   obtain ⟨DR, hDR0, hDRt⟩ := h4
@@ -1595,8 +1586,7 @@ theorem logKS_inj_mod_boundary : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
   have ha0 : ∀ i, residue _ (a i) = 0 := fun i => by
     rw [residue_eq_zero_iff_constantCoeff]
     have := congrFun hdir i
-    simp only [Pi.zero_apply, mul_eq_zero, Rat.cast_eq_zero, hc₀, false_or] at this
-    exact this
+    simpa only [Pi.zero_apply, mul_eq_zero, Rat.cast_eq_zero, hc₀, false_or] using this
   exact GlobalTheory.T.logVectorField_mem_maxIdeal_smul_of_vanishing E H Dw l Xo c Y hsm hsnc U D m hm x hxi hxU hxm k m' d ξ x' hξ hx'x hEt hId hBd hU DR a hDR ha
     hres ha0
 
@@ -1649,8 +1639,7 @@ theorem exists_point_vanishing_of_isMaximal {X : Scheme} (U : X.affineOpens) (m 
   let p : PrimeSpectrum Γ(X, U.1) := ⟨m, hm.isPrime⟩
   refine ⟨U.2.fromSpec p, ?_, ?_⟩
   · have h : U.2.fromSpec p ∈ Set.range U.2.fromSpec := ⟨p, rfl⟩
-    rw [U.2.range_fromSpec] at h
-    exact h
+    rwa [U.2.range_fromSpec] at h
   · intro f hf hx
     have h : p ∈ U.2.fromSpec ⁻¹ᵁ X.basicOpen f := hx
     rw [U.2.fromSpec_preimage_basicOpen] at h

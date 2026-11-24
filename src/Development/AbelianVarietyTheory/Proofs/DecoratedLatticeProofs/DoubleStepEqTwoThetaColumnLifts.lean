@@ -300,21 +300,17 @@ theorem weil_comm_sliceSum_target : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ
     have e1 : (fun u => ∫ w, (c₁ + c₂) w * Fs (k w) u ∂μ) =
         (fun u => ∫ w, c₁ w * Fs (k w) u ∂μ) + (fun u => ∫ w, c₂ w * Fs (k w) u ∂μ) := by
       funext u
-      simp only [Pi.add_apply, add_mul]
-      exact integral_add (intF _ h₁.1 u) (intF _ h₂.1 u)
+      simpa only [Pi.add_apply, add_mul] using integral_add (intF _ h₁.1 u) (intF _ h₂.1 u)
     rw [e1, map_add (f := _), Pi.add_apply, h₁.2, h₂.2]
-    simp only [Pi.add_apply, add_mul]
-    exact (integral_add (intG _ h₁.1) (intG _ h₂.1)).symm
+    simpa only [Pi.add_apply, add_mul] using (integral_add (intG _ h₁.1) (intG _ h₂.1)).symm
   have Psmul : ∀ (z : ℂ) c, P c → P (fun w => z * c w) := by
     intro z c h
     refine ⟨h.1.const_mul z, ?_⟩
     have e1 : (fun u => ∫ w, (z * c w) * Fs (k w) u ∂μ) = z • (fun u => ∫ w, c w * Fs (k w) u ∂μ) := by
       funext u
-      simp only [Pi.smul_apply, smul_eq_mul, mul_assoc]
-      exact integral_const_mul z _
+      simpa only [Pi.smul_apply, smul_eq_mul, mul_assoc] using integral_const_mul z _
     rw [e1, map_smul, Pi.smul_apply, smul_eq_mul, h.2]
-    simp only [mul_assoc]
-    exact (integral_const_mul z _).symm
+    simpa only [mul_assoc] using (integral_const_mul z _).symm
 
   have Ppos : ∀ b : Ω → ℝ, Measurable b → (∀ w, 0 ≤ b w) → Integrable b μ → P (fun w => (b w : ℂ)) := by
     intro b hbm hb0 hbi
@@ -374,8 +370,7 @@ theorem weil_comm_sliceSum_target : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ
     integral_congr_ae (hae.mono fun w hw => by simp only [hw])
   have := Pa''.2
   simp only [hFs] at this e1 e2 ⊢
-  rw [e1, e2]
-  exact this
+  rwa [e1, e2]
 
 end GlobalTheory.SliceSumTarget
 end -- clump:auto
@@ -512,8 +507,7 @@ theorem kernel_doubleStep : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : 
     have CU := GlobalTheory.T.weilDatum_preserves_thetaFundamentalDomainPairing D ψ J.W₀ B'.L s₂.χV χz omz' hoz' vL (h₁, 1) _ _ (hS₂ v) CL.1
     rw [CL.2 h₁] at CU
     simp only [thPair, star_star] at CU
-    rw [hGf, hHf]
-    exact CU
+    rwa [hGf, hHf]
 
   have hInner : ∀ v, oma (h₀, h₁) (fun u => contr l J.W₀ vL Ξ₁ Ξ₂ u v) 0 =
       ∫ w, b₁ w * F₂ ((B'.o.resT J.W₀).symm (v, id w)) ∂(vL.μ.restrict vL.𝓕) := by
@@ -524,16 +518,14 @@ theorem kernel_doubleStep : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : 
     rw [e, (_root_.GlobalTheory.WeilSuperpos.weil_comm_superpos D ψ B.V₀ B.A B.L J.W₀ B.o χA s₁.χW oma hoa F₁ hF₁ (WO J.W₀ B'.L) (vL.μ.restrict vL.𝓕)
       (l.κ J.W₀) (Gf v) (continuous_kappa l J.W₀).measurable (hGint v) (h₀, h₁)).2 0]
     refine integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)
-    simp only [hF₁s, hF₂s, id, hb₁d]
-    exact mul_comm _ _
+    simpa only [hF₁s, hF₂s, id, hb₁d] using mul_comm _ _
   have hOuter := (GlobalTheory.T.weilRep_commutes_slice_superposition_target D ψ B'.V₀ B'.A B'.L J.W₀ B'.o s₂.χV χA' omb hob F₂ hF₂ (WO J.W₀ B'.L)
     (vL.μ.restrict vL.𝓕) id b₁ measurable_id hb₁int (h₁, h₂)).2 0
   have e : (fun v => oma (h₀, h₁) (fun u => contr l J.W₀ vL Ξ₁ Ξ₂ u v) 0) =
       fun v => ∫ w, b₁ w * F₂ ((B'.o.resT J.W₀).symm (v, id w)) ∂(vL.μ.restrict vL.𝓕) := funext hInner
   rw [e, hOuter]
   refine integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)
-  simp only [hA, hB, hF₂s, id]
-  exact mul_comm _ _
+  simpa only [hA, hB, hF₂s, id] using mul_comm _ _
 
 end GlobalTheory.ContrKernel
 

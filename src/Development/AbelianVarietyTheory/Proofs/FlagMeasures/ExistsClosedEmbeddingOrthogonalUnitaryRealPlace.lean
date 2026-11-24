@@ -115,9 +115,7 @@ theorem exists_closedEmbedding_unitary_orthogonal (n m : ℕ) (ε : Fin n → Bo
       (j.comp (MulEquiv.subgroupCongr (realUJ_eq ε')).symm.toMonoidHom), fun g => hjmat _, ?_⟩
     intro h hh
     obtain ⟨g', hg'⟩ := hjrange ((MulEquiv.subgroupCongr (realUJ_eq ε)).symm h) hh
-    refine ⟨MulEquiv.subgroupCongr (realUJ_eq ε') g', ?_⟩
-    apply Subtype.ext
-    exact congrArg Subtype.val hg'
+    exact ⟨MulEquiv.subgroupCongr (realUJ_eq ε') g', Subtype.ext (congrArg Subtype.val hg')⟩
   have h0 : vecMulVec x₀ u * B = 0 := by
     ext i k
     have hk := congrFun huB k
@@ -147,8 +145,7 @@ theorem exists_closedEmbedding_unitary_orthogonal (n m : ℕ) (ε : Fin n → Bo
       vecMulVec x₀ u + B * (((g : GL (Fin m) ℂ)⁻¹ : GL (Fin m) ℂ) : Matrix (Fin m) (Fin m) ℂ) * A' := by
     intro g
     have h1 := hjj g⁻¹
-    rw [map_inv] at h1
-    exact h1
+    rwa [map_inv] at h1
   have hcont : Continuous jj := by
     refine continuous_induced_rng.2 ?_
     rw [Units.continuous_iff]
@@ -189,8 +186,7 @@ theorem exists_closedEmbedding_unitary_orthogonal (n m : ℕ) (ε : Fin n → Bo
     constructor
     · rintro ⟨g, rfl⟩
       exact hfix g
-    · intro hh
-      exact hrange h hh
+    · exact fun hh => hrange h hh
   have hclosed : IsClosed (Set.range jj) := by
     rw [hrng]
     exact isClosed_eq ((Units.continuous_val.comp continuous_subtype_val).matrix_mulVec continuous_const)

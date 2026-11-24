@@ -63,8 +63,7 @@ theorem isFreeGen_map {M N : Type} [AddCommGroup M] [Module A M] [AddCommGroup N
   · obtain ⟨a, rfl⟩ := hσ.2 b
     obtain ⟨a', rfl⟩ := hσ.2 b'
     have : F (a • ω) = F (a' • ω) := by
-      rw [F.map_smulₛₗ, F.map_smulₛₗ]
-      exact hb
+      rwa [F.map_smulₛₗ, F.map_smulₛₗ]
     exact congrArg σ (h.1 (hF.1 this))
   · obtain ⟨x, rfl⟩ := hF.2 y
     obtain ⟨a, rfl⟩ := h.2 x
@@ -218,8 +217,7 @@ theorem disc_place (E : Place c) {n : ℕ} (η : Forms c n) (φ : K →₀ ℚ) 
 theorem contains_place (E : Place c) (R : Subring K) :
     (place e he E).Contains (R.map e.toRingHom) ↔ E.Contains R := by
   constructor
-  · intro h f hf
-    exact (apply_mem_place e he E f).1 (h (e f) ⟨f, hf, rfl⟩)
+  · exact fun h f hf => (apply_mem_place e he E f).1 (h (e f) ⟨f, hf, rfl⟩)
   · rintro h _ ⟨f, hf, rfl⟩
     exact (apply_mem_place e he E f).2 (h f hf)
 
@@ -229,15 +227,12 @@ theorem isPrimeOf_place (E : Place c) (R : Subring K) :
   · obtain ⟨_, ⟨a, ha, rfl⟩, _, ⟨b, hb, rfl⟩, hb0, hord, hfb⟩ :=
       h (e f) ((apply_mem_place e he E f).2 hf)
     refine ⟨a, ha, b, hb, fun h0 => hb0 (by simp [h0]), ?_, ?_⟩
-    · rw [← ord_place e he E]
-      exact hord
+    · rwa [← ord_place e he E]
     · apply e.injective
-      rw [map_mul]
-      exact hfb
+      rwa [map_mul]
   · obtain ⟨a, ha, b, hb, hb0, hord, hfb⟩ := h (e.symm f') ((mem_place e he E f').1 hf')
     refine ⟨e a, ⟨a, ha, rfl⟩, e b, ⟨b, hb, rfl⟩, (map_ne_zero e).2 hb0, ?_, ?_⟩
-    · rw [ord_place]
-      exact hord
+    · rwa [ord_place]
     · rw [← hfb, map_mul, e.apply_symm_apply]
 
 theorem formMap_ne_zero_iff {n : ℕ} (η : Forms c n) :

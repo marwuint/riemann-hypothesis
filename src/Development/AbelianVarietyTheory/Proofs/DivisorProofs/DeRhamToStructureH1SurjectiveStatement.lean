@@ -246,11 +246,9 @@ theorem curvature_wellDefined_and_lift : ∀ (R : Type) [CommRing R] (C : Type) 
     rw [← hd T, ← hd' T]
     have h := he0 T
     change dOne R _ (ω T - ω' T - D R _ (b T)) = 0 at h
-    rw [map_sub, map_sub, dOne_D, sub_zero, sub_eq_zero] at h
-    exact h
+    rwa [map_sub, map_sub, dOne_D, sub_zero, sub_eq_zero] at h
   · refine ⟨Hyp1.mk F ⟨(f.1, ω), mem_cechDeRhamTotalCocyclesOne_iff.2 ⟨f.2, hω, fun T ↦ (hd T).trans (congrFun h0 T)⟩⟩, ?_⟩
-    rw [toO_mk]
-    exact hf
+    rwa [toO_mk]
 
 end GlobalTheory.AbCoh
 end -- clump:auto
@@ -438,8 +436,7 @@ theorem dRel_pull : ∀ (R R' : Type) [CommRing R] [CommRing R'] (X X' : Scheme.
     (_root_.GlobalTheory.CechDR.form_eq_zero_of_basis_cover s' (pairFst φ) (_root_.GlobalTheory.CechDR.pair_cover_affine φ s'))
     (_root_.GlobalTheory.CechDR.FormExt.glue_one_forms s' (pairFst φ) (_root_.GlobalTheory.CechDR.pair_cover_affine φ s')
       (_root_.GlobalTheory.CechDR.exists_pair_below_two φ s')) κ hκ θ' hθ'
-  refine ⟨f', g', θ, hf', hg', fun T T' a ↦ ?_⟩
-  exact sub_eq_iff_eq_add'.1 (hθ a)
+  exact ⟨f', g', θ, hf', hg', fun T T' a ↦ (sub_eq_iff_eq_add'.1 (hθ a))⟩
 
 end GlobalTheory
 end -- clump:auto
@@ -482,8 +479,7 @@ theorem dRel_of_frame_exists (R : Type) [CommRing R] (C : Type) [Category.{0} C]
     rw [Z1.comp f φ ψ, map_add (f := _), map_add (f := _), ← p1_D, fr.nat]⟩
   refine ⟨n, fun i ↦ GlobalTheory.CatCoh.H1.mk F (g i), fr.w, f, g, 0, rfl, fun _ ↦ rfl, ?_⟩
   intro T T' φ
-  simp only [Pi.zero_apply, map_zero, sub_zero, add_zero]
-  exact fr.sum T' _
+  simpa only [Pi.zero_apply, map_zero, sub_zero, add_zero] using fr.sum T' _
 
 end GlobalTheory.AbCoh
 end -- clump:auto
@@ -526,8 +522,7 @@ theorem exists_obRel_of_dRel : ∀ (R : Type) [CommRing R] (C : Type) [Category.
   have hcl : ∀ i, ∃ b : C0 F, d0 F b = (∑ k, l i (w k) • g k).1 := fun i ↦ by
     refine H1.mk_eq_zero.1 ?_
 
-    simp only [map_sum, map_smul, hg]
-    exact hy (l i)
+    simpa only [map_sum, map_smul, hg] using hy (l i)
   choose b hb using hcl
   have hb' : ∀ i ⦃T T' : C⦄ (φ : T ⟶ T'),
       b i T' - mp F φ (b i T) = ∑ k, l i (w k) • (g k).1 T T' φ := fun i T T' φ ↦ by
@@ -623,8 +618,7 @@ theorem sum_dRel_eq_zero (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g
   simp only [map_sum, map_smul] at this
   have f1 : ∀ k, pO1 a₁ (pO1 μ[A] (y k)) = y k := fun k ↦ (hax (y k)).2.2.1
   have f2 : ∀ k, pO1 a₁ (pO1 (snd A A) (y k)) = 0 := fun k ↦ (hax (y k)).2.1
-  simp only [f1, f2, smul_zero, Finset.sum_const_zero] at this
-  exact this
+  simpa only [f1, f2, smul_zero, Finset.sum_const_zero] using this
 
 theorem exists_obRel_abelian : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → ∀ x : HO1 A.hom, ∃ (m : ℕ) (u v : Fin m → GlobForm A.hom),

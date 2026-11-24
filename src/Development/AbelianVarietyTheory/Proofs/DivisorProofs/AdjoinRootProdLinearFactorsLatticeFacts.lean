@@ -155,19 +155,15 @@ theorem GlobalTheory.herbrand_lattice_facts : ∀ (C : Type) [Field C] (v : AddV
     · rintro ⟨x, hx, rfl⟩
       have hx' : lin a τ • x ∈ Fil := hx
       show lin a τ • Fil.mkQ x = 0
-      rw [← LinearMap.map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
-      exact hx'
+      rwa [← LinearMap.map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
     · intro hq
       have hq' : lin a τ • q = 0 := hq
       obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective Fil q
       refine ⟨x, ?_, rfl⟩
       show lin a τ • x ∈ Fil
-      rw [← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul]
-      exact hq'
+      rwa [← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul]
   · intro x hx
     have hx' : lin a τ • x = 0 := hx
     show lin a τ • x ∈ Fil
     rw [hx']; exact Fil.zero_mem
-  · intro x hx
-    show lin a τ • x ∈ Fil
-    exact Fil.smul_mem _ hx
+  · exact fun x hx => Fil.smul_mem _ hx

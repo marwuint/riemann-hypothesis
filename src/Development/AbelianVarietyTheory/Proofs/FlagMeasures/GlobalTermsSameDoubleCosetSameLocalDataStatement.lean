@@ -113,8 +113,7 @@ lemma good_inv {X : Submodule E V} {u : V ≃ₗ[E] V} (hX : X ≤ H.perp X) (hu
     rw [← this]
     exact hv _ (good_map_le H hX hu x hx)
   have := X.neg_mem (hu.2 _ hv')
-  rw [LinearEquiv.apply_symm_apply, neg_sub] at this
-  exact this
+  rwa [LinearEquiv.apply_symm_apply, neg_sub] at this
 
 lemma good_of_NU {r : ℕ} {f : Fin (r + 1) → V} {u : V ≃ₗ[E] V} (hu : u ∈ NU H f) :
     Good H (H.X f) u := ⟨hu.1, hu.2.2⟩
@@ -126,8 +125,7 @@ lemma NU_conj {r : ℕ} {f : Fin (r + 1) → V} {u k : V ≃ₗ[E] V} (hk : IsUn
   · change k (u (k.symm (k (f a.castSucc)))) - k (f a.castSucc) ∈ _
     rw [LinearEquiv.symm_apply_apply, ← map_sub]
     have := Submodule.mem_map_of_mem (f := (k : V →ₗ[E] V)) (h2 a)
-    rw [Submodule.map_span, Set.image_image] at this
-    exact this
+    rwa [Submodule.map_span, Set.image_image] at this
   · have hv' : k.symm v ∈ H.perp (H.X f) := by
       intro x hx
       rw [← hk (k.symm v) x, LinearEquiv.apply_symm_apply]
@@ -150,8 +148,7 @@ lemma N_map_X (hM : M.OK) {r : ℕ} (Fr : FrameD H r) (hT : Fr.T ≠ 0) {u : V �
   apply le_antisymm
   · rintro _ ⟨x, hx, rfl⟩
     exact good_map_le H hX g1 x hx
-  · intro x hx
-    exact ⟨u.symm x, good_map_le H hX g2 x hx, u.apply_symm_apply x⟩
+  · exact fun x hx => ⟨u.symm x, good_map_le H hX g2 x hx, u.apply_symm_apply x⟩
 
 lemma perp_map_iff {k : V ≃ₗ[E] V} (hk : IsUnitary H k) (S : Submodule E V) (v : V) :
     k v ∈ H.perp (S.map (k : V →ₗ[E] V)) ↔ v ∈ H.perp S := by
@@ -292,8 +289,7 @@ lemma isTerm_move {r : ℕ} {g : V ≃ₗ[E] V} (hg : IsUnitary H g) {t : Term V
   obtain ⟨h1, h2, h3, h4, h5, h6⟩ := ht
   have hZ : H.Zhat (move g t).f (move g t).f' = H.Zhat t.f t.f' := by
     ext a b
-    simp only [HermSp.Zhat, Matrix.of_apply, move]
-    exact hg _ _
+    simpa only [HermSp.Zhat, Matrix.of_apply, move] using hg _ _
   have hD : ∀ l, H.Dl (move g t).f (move g t).f' l = H.Dl t.f t.f' l := by
     intro l; unfold HermSp.Dl; rw [hZ]
   refine ⟨TermOver.img_selfDual H hg h1, TermOver.img_frame H hg h2, TermOver.img_frame H hg h3,
@@ -667,16 +663,13 @@ theorem over_same : ∀ (D : D7) (Z : LocDat D), ∀ (u u' : D.what₂.Word) (F0
   intro D Z u u' F0 Λ hΛ F₁ F₂ hP₁ hP₂ hG n hn m hm hgm hfr hio p P hP d hd
   have hOK : (Z.M p).OK := (Z.agree p).1
   have hfr' : ∀ a, frame F₂ a = n (m (frame F₁ a)) := fun a => by
-    have h := hfr a
-    simp only [LinearEquiv.mul_apply] at h
-    exact h
+    simpa only [LinearEquiv.mul_apply] using hfr a
   have hG₂ : Gval (lf D F0) F₂ ≠ 0 := by
     have hrel : DCRel (⊤ : Submodule (𝓞 D.host.E) (VS D).V) (lf D F0) F₁
         (⟨F₂.fl, n (m F₁.zt)⟩ : LFlag (D.sp.Y 0) D.R.rS (((D.mem u').A.T : ℕ) : D.host.E)) :=
       ⟨n, ⟨⟨hn.1, (Formalism.L2.SG.Pf.gmap_eq_iff n).2 fun x => by simp⟩, hn.2⟩,
         m, ⟨⟨hm.1, (Formalism.L2.SG.Pf.gmap_eq_iff m).2 fun x => by simp⟩, hm.2⟩, hfr', rfl⟩
-    have e := Formalism.L2.SG.Pf.gval_rel (lf D F0) hrel
-    exact fun h0 => hG (e.symm.trans h0)
+    exact fun h0 => hG ((Formalism.L2.SG.Pf.gval_rel (lf D F0) hrel).symm.trans h0)
   obtain ⟨hT₁, htri₁⟩ := GlobalTheory.LocOver.locU_isTerm D Z u u' F0 Λ hΛ F₁ hP₁ hG p
   obtain ⟨hT₂, htri₂⟩ := GlobalTheory.LocOver.locU_isTerm D Z u u' F0 Λ hΛ F₂ hP₂ hG₂ p
   have hnI : n ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT := hn.1
@@ -719,8 +712,7 @@ theorem over_same : ∀ (D : D7) (Z : LocDat D), ∀ (u u' : D.what₂.Word) (F0
   intro hs x' hx' x hx hx'p hxp
   have key := GlobalTheory.T.identificationCompat_passes_to_local_congruence D Z u u' F0 Λ hΛ F₁ F₂ hP₁ hP₂ (n * m) hnmI hgm hfr hio p (gn * gm) hext hs
     x' hx' x hx (by rw [hX₁]; exact hx'p) hxp
-  rw [cong_congr (locH Z p) _ _ hX₁.symm, cong_congr (locH Z p) _ _ hX₂.symm]
-  exact key
+  rwa [cong_congr (locH Z p) _ _ hX₁.symm, cong_congr (locH Z p) _ _ hX₂.symm]
 
 end GlobalTheory.LocSame
 end -- clump:auto

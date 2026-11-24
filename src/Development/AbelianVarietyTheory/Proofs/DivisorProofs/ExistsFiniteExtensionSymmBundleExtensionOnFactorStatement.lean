@@ -306,8 +306,7 @@ theorem exists_mul_eq_mul_sq_of_faithfullyFlat_of_map_isPrime : ∀ (O C : Type)
   have hunit : ∀ s ∉ p, IsUnit (φ s) := by
     intro s hs
     refine (IsLocalization.AtPrime.isUnit_to_map_iff R P (algebraMap O C s)).2 ?_
-    intro hm
-    exact hs (hcomap ▸ (Ideal.mem_comap.2 hm))
+    exact fun hm => hs (hcomap ▸ (Ideal.mem_comap.2 hm))
   have hπR : φ π ≠ 0 := fun h0 => hπ0 (hinj (by rw [h0, map_zero]))
   have hmax : maximalIdeal R = Ideal.span {φ π} := by
     apply le_antisymm
@@ -497,8 +496,7 @@ theorem cl_ne_zero_of_flat [IsIntegral X] (hL : L.IsLB) (s : L.Sec) (hs : ∃ i,
   have h := cl_ne_zero hL s hs (r z)
   rw [cl_eq s (𝟙 X) (r z) ha, Ne, Associates.mk_eq_zero] at h
   rw [cl_eq s r z ha, Ne, Associates.mk_eq_zero, gs_stalkMap r z _ ha]
-  intro e
-  exact h (zero_dvd_iff.1 (dvd_descend r z (by rw [e, map_zero])))
+  exact fun e => h (zero_dvd_iff.1 (dvd_descend r z (by rw [e, map_zero])))
 
 theorem exists_mul_of_dvd [IsIntegral X] (W : X.Opens) (a b : Γ(X, W)) (hb : ∀ x ∈ W, gs (𝟙 X) x W b ≠ 0)
     (h : ∀ x ∈ W, gs (𝟙 X) x W b ∣ gs (𝟙 X) x W a) : ∃ w : Γ(X, W), a = w * b := by
@@ -888,8 +886,7 @@ theorem exists_lb_of_localEq : ∀ (X Y : Scheme.{0}) (j : Y ⟶ X) (L : LB Y) (
       have := congrArg (fun u => res (hinf3 (V k) (V l) (V m)) (pullU O.ι _ u))
         (c_cocycle k l m)
       simp only [map_mul, resU_pullU_resU] at this
-      simp only [_root_.ReciprocityTheory.ChartRestriction.G.DVR.res_res']
-      exact this
+      simpa only [_root_.ReciprocityTheory.ChartRestriction.G.DVR.res_res'] using this
   refine ⟨O, N, hVO, hN, ?_⟩
   have hsq : pullback.fst O.ι j ≫ O.ι = pullback.snd O.ι j ≫ j := pullback.condition
   have hpt : ∀ x, O.ι.base ((pullback.fst O.ι j).base x) = j.base ((pullback.snd O.ι j).base x) :=
@@ -904,8 +901,7 @@ theorem exists_lb_of_localEq : ∀ (X Y : Scheme.{0}) (j : Y ⟶ X) (L : LB Y) (
     have h2 := LB.wchart_le N (fun _ => pullback.fst O.ι j) p.2 PUnit.unit hx.2
     refine ⟨?_, h1⟩
     show j.base ((pullback.snd O.ι j).base x) ∈ V (p.2 PUnit.unit)
-    rw [← hpt]
-    exact h2
+    rwa [← hpt]
   let w' : LB.Iso (N.pull (pullback.fst O.ι j)) (L.pull (pullback.snd O.ι j)) :=
     ⟨fun p => res (hle p) (pullU (pullback.snd O.ι j) _ (w (p.2 PUnit.unit) (p.1 PUnit.unit)))⟩
   refine ⟨w', fun p q => ?_⟩
@@ -999,9 +995,7 @@ theorem exists_res_eq {X : Scheme.{0}} {U : X.Opens} {x : X} (hx : x ∈ U) (s t
   refine ⟨W, iU.le, hxW, ?_⟩
   have h1 : iU = homOfLE iU.le := rfl
   have h2 : iV = homOfLE iU.le := Subsingleton.elim _ _
-  rw [h1] at e
-  rw [h2] at e
-  exact e
+  rwa [h1, h2] at e
 
 end GlobalTheory.Mum.SquareSpread
 
@@ -1532,8 +1526,7 @@ theorem two_smul_cls_eq_pull_diag_and_pull_sq : ∀ (R : Type) [CommRing R] [IsD
       rw [MonObj.pow_comp, MonObj.comp_pow, Category.id_comp, Category.comp_id]
     have h := congrArg (pull gen.hom.left) (DiagPic.pull_sq A)
     rw [← pull_comp, ← Over.comp_left, ← e, Over.comp_left, pull_comp, map_nsmul] at h
-    rw [hc']
-    exact h
+    rwa [hc']
 
 end GlobalTheory.Mum
 end -- clump:auto
@@ -1710,8 +1703,7 @@ theorem exists_odd_sec {X : Scheme.{0}} [Nonempty X] {L : LB X} (hL : GlobalTheo
   obtain ⟨θ, hθ⟩ := (ht (2 * t + 1) (by omega)).exists_mem (Classical.arbitrary X)
   obtain ⟨i, hi⟩ := TopologicalSpace.Opens.mem_iSup.1 hθ
   refine ⟨t, θ, i, fun e => ?_⟩
-  rw [e, Scheme.basicOpen_zero] at hi
-  exact hi
+  rwa [e, Scheme.basicOpen_zero] at hi
 
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (A : PolAV (Sp (FractionRing R))) (gen : ((Over.pullback (jK R)).obj G) ≅ A.A), IsMonHom gen.hom → ∀ PP : LB (G2 G).left, ExtLam G (A.L.pull gen.hom.left) PP → ∃ L₁ : LB G.left, L₁.IsLB ∧ LBIso (L₁.pull (pullback.fst G.hom (jK R))) (A.L.pull gen.hom.left) := by
   intro R _ _ _ hA G _ _ hG A gen hgen PP hext

@@ -174,8 +174,7 @@ theorem doubleCosetCount : DoubleCosetCount := by
   have key : ∀ c, Nat.card {d // π d = c} * Nat.card (stab Γ K (rep c)) = U.relIndex K := by
     intro c
     have := card_fiber_mul_card_stab Γ U K hUK hfree (rep c)
-    rw [hrep c] at this
-    exact this
+    rwa [hrep c] at this
   have : ∀ c, Finite {d // π d = c} := fun c =>
     Nat.finite_of_card_ne_zero fun h => hne (by rw [← key c, h, zero_mul])
   refine ⟨Finite.of_equiv _ (Equiv.sigmaFiberEquiv π), ?_⟩
@@ -230,8 +229,7 @@ theorem eq_one_of_red_eq_one {M : Matrix (Fin n) (Fin n) O}
       Ideal.Quotient.eq_zero_iff_mem.2 ((IsLocalRing.mem_maximalIdeal _).2 h)
     rw [this] at h3
     exact not_isUnit_zero h3
-  have h5 := (Matrix.isUnit_iff_isUnit_det _).2 h4
-  exact sub_eq_zero.1 (h5.mul_right_eq_zero.1 h1)
+  exact sub_eq_zero.1 (((Matrix.isUnit_iff_isUnit_det _).2 h4).mul_right_eq_zero.1 h1)
 
 theorem pow_prime_pow_eq_one {A : Type} [Ring A] {g r : ℕ} (hg : g.Prime) (h0 : (g : A) = 0)
     {a : A} (ha : (a - 1) ^ r = 0) : a ^ g ^ r = 1 := by
@@ -387,8 +385,7 @@ theorem isOfFinOrder_of_mem (L : ColLevel R F E sp gp C A clsLat)
   have h4 : IsOfFinOrder δ := by
     have := (Subgroup.subtype _).isOfFinOrder ((L.stabI c).isOfFinOrder
       (isOfFinOrder_of_finite s))
-    rw [hs] at this
-    exact this
+    rwa [hs] at this
   have h5 := (MulAut.conj a.1).toMonoidHom.isOfFinOrder
     ((bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F))).isOfFinOrder h4)
   rw [hδe, MulEquiv.coe_toMonoidHom, MulAut.conj_apply] at h5
@@ -478,8 +475,7 @@ theorem bc_inclE_injective (D : D7) :
   intro a b hab
   refine Units.ext (Matrix.ext fun i j => ?_)
   apply (inclE (F := D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)).injective
-  have h2 := congrArg (fun g : GL (Fin D.R.k) _ => g.val i j) hab
-  simpa [bc] using h2
+  simpa [bc] using congrArg (fun g : GL (Fin D.R.k) _ => g.val i j) hab
 
 theorem stabGroup_eq_map (D : D7) (Lv : LevelData D) (u : D.what₂.Word)
     (y : GlobalTheory.IndefiniteRowSideFullHecke.TrivialColumnStabiliser.GAf D) :
@@ -572,14 +568,12 @@ theorem exists_lattice (N : Submodule (𝓞 E) (Fin R.k → E)) (hfin : Module.F
     · intro h y hy
       have := h (sp.crd0.symm y) (by simpa using hy)
       simpa using this
-    · intro h y hy
-      exact h _ hy
+    · exact fun h y hy => h _ hy
   · ext y
     constructor
     · rintro ⟨x, hx, rfl⟩
       exact (hmem x).1 hx
-    · intro hy
-      exact ⟨sp.crd0.symm y, (hmem _).2 (by simpa using hy), by simp⟩
+    · exact fun hy => ⟨sp.crd0.symm y, (hmem _).2 (by simpa using hy), by simp⟩
 
 end Lattice
 
@@ -1030,8 +1024,7 @@ theorem map_residue_surjective (O : Type) [CommRing O] [IsLocalRing O] (n : ℕ)
       rw [RingHom.map_det, RingHom.mapMatrix_apply, hM]
       simpa [Matrix.GeneralLinearGroup.val_det_apply] using (Matrix.GeneralLinearGroup.det g).isUnit
     exact (isUnit_map_iff (IsLocalRing.residue O) _).1 h1
-  refine ⟨Matrix.GeneralLinearGroup.mk'' M hdet, Units.ext ?_⟩
-  exact hM
+  exact ⟨Matrix.GeneralLinearGroup.mk'' M hdet, Units.ext hM⟩
 
 variable {D : D7} {X : ThetaX D}
 
@@ -1059,8 +1052,7 @@ theorem relIndex_congPre (O K : Type) [CommRing O] [IsLocalRing O] [CommRing K] 
     intro g h e
     apply Units.ext
     ext a b
-    apply hι
-    exact congrArg (fun x : GL (Fin n) K => (x : Matrix (Fin n) (Fin n) K) a b) e
+    exact hι (congrArg (fun x : GL (Fin n) K => (x : Matrix (Fin n) (Fin n) K) a b) e)
   have hs : Function.Surjective (redGL (n := Fin n) (IsLocalRing.maximalIdeal O)) :=
     GlobalTheory.MeasTupleEq.map_residue_surjective O n
   unfold congPre
@@ -1149,8 +1141,7 @@ theorem mem_of_pow_eq {p e : ℕ} (he : 0 < e)
   have h2 : Valued.v (1 + (p : v.adicCompletion F) * x ^ l) = WithZero.exp (-(e : ℤ) + l * m) := by
     rw [← h1]
     apply Valuation.map_add_eq_of_lt_right
-    rw [h1, map_one, ← WithZero.exp_zero, WithZero.exp_lt_exp]
-    exact hpos
+    rwa [h1, map_one, ← WithZero.exp_zero, WithZero.exp_lt_exp]
   rw [← h, map_pow] at h2
   have hy0 : Valued.v y ≠ 0 := by
     intro h0
@@ -1347,8 +1338,7 @@ theorem mem_map_conj {K : Subgroup G} {γ g : G} :
   constructor
   · rintro ⟨x, hx, rfl⟩
     simpa [mul_assoc] using hx
-  · intro h
-    exact ⟨_, h, by simp [mul_assoc]⟩
+  · exact fun h => ⟨_, h, by simp [mul_assoc]⟩
 
 def pull (H : Subgroup G) (p : G →* G') (b : G') (X : Subgroup G') : Subgroup G :=
   H ⊓ X.comap ((MulAut.conj b⁻¹).toMonoidHom.comp p)
@@ -1367,8 +1357,7 @@ theorem relIndex_pull {H : Subgroup G} {p : G →* G'} (hs : ∀ y, ∃ g ∈ H,
     unfold Subgroup.relIndex
     congr 1
     ext g
-    simp only [Subgroup.mem_subgroupOf]
-    exact ⟨fun h => h.2, fun h => ⟨g.2.1, h⟩⟩
+    simpa only [Subgroup.mem_subgroupOf] using ⟨fun h => h.2, fun h => ⟨g.2.1, h⟩⟩
   rw [h1, Subgroup.relIndex_comap]
   congr 1
   ext y
@@ -1627,8 +1616,7 @@ theorem relIndex_level (hp : ∀ i, (gp i).Prime) (hne : gp 0 ≠ gp 1) {f : ℕ
       rw [relIndex_selfDual hN hN₀' v (hle v) (hle₀ v)]
       exact local_level_relIndex_at_level_prime_selfDual L v (hT.2 v hv) hv hφ]
   · rw [Finset.disjoint_left]
-    intro v h0 h1
-    exact not_mem_both (hp 0) (hp 1) hne v (by simpa using h0) (by simpa using h1)
+    exact fun v h0 h1 => not_mem_both (hp 0) (hp 1) hne v (by simpa using h0) (by simpa using h1)
   · rw [Finset.disjoint_left]
     intro v h0 h1
     rcases Finset.mem_union.1 h0 with h | h

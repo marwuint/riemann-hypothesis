@@ -95,9 +95,7 @@ theorem evC_ltr (g y : Matrix ι ι ℂ) (f : MvPolynomial (ι × ι) ℂ) : evC
 
 omit [Fintype ι] [DecidableEq ι] in
 theorem evC_ext {f f' : MvPolynomial (ι × ι) ℂ} (h : ∀ y, evC f y = evC f' y) : f = f' := by
-  apply MvPolynomial.funext
-  intro x
-  exact h (Matrix.of fun i j => x (i, j))
+  exact MvPolynomial.funext (fun x => h (Matrix.of fun i j => x (i, j)))
 
 theorem tpow_mul_complex (n : ℕ) (y z : Matrix ι ι ℂ) : tpow n (y * z) = tpow n y * tpow n z := by
   ext a b
@@ -123,16 +121,14 @@ theorem ltr_tensorForms : ∀ (ι : Type) [Fintype ι] [DecidableEq ι], (∀ (g
   refine ⟨evC_ltr, ?_, ?_, ?_⟩
   · intro Γ f
     constructor
-    · intro h g hg
-      exact evC_ext fun y => by rw [evC_ltr, h g hg]
+    · exact fun h g hg => evC_ext fun y => by rw [evC_ltr, h g hg]
     · intro h g hg y
       rw [← evC_ltr, h g hg]
   · intro g n f hf
     have := hf.aeval (S := ℂ) (n := 1)
       (fun ij : ι × ι => ∑ k, MvPolynomial.C (g ij.1 k) * MvPolynomial.X (k, ij.2)) (fun ij =>
         MvPolynomial.IsHomogeneous.sum _ _ _ fun k _ => MvPolynomial.isHomogeneous_C_mul_X _ _)
-    rw [one_mul] at this
-    exact this
+    rwa [one_mul] at this
   · intro n
     refine ⟨tensorForm n, evC_tensorForm n, ?_, ?_⟩
     · intro b l g

@@ -348,8 +348,7 @@ theorem ellCount_volume : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (A : Mat
       have h := bf_add_le hA hR hs hz h₀
       have e : x + (fun i => (z i : ℝ)) + -(x - c z₀) = c (z + z₀) := by
         ext i; simp [c]; ring
-      rw [e] at h
-      exact h
+      rwa [e] at h
     · rw [setLIntegral_const, volume_cube, mul_one]
   · change _ ≤ volume {x : ι → ℝ | bf A x x ≤ (R + s) ^ 2}
     rw [volume_eq_lintegral _ (measurableSet_ell A _)]
@@ -362,8 +361,7 @@ theorem ellCount_volume : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (A : Mat
       have h := bf_add_le hA hR hs hz h₀
       have e : c z + (x - c z₀) = x + fun i => (((z - z₀) i : ℤ) : ℝ) := by
         ext i; simp [c]; ring
-      rw [e] at h
-      exact h
+      rwa [e] at h
 
 end GlobalTheory.HSAmp
 end -- clump:auto
@@ -410,8 +408,7 @@ theorem volume_sumSq_ball_pos_lt_top (ι : Type) [Fintype ι] :
   · have ho : IsOpen {x : ι → ℝ | ∑ i, x i ^ 2 < 1} :=
       isOpen_lt (by fun_prop) continuous_const
     refine lt_of_lt_of_le (ho.measure_pos volume ⟨0, by simp⟩) (measure_mono ?_)
-    intro x hx
-    exact le_of_lt (a := ∑ i, x i ^ 2) hx
+    exact fun x hx => le_of_lt (a := ∑ i, x i ^ 2) hx
   · refine lt_of_le_of_lt (measure_mono ?_) (isCompact_closedBall (0 : ι → ℝ) 1).measure_lt_top
     intro x hx
     rw [mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]
@@ -937,8 +934,7 @@ theorem count_ball_gram : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegr
   have hsub1 : {z : Fin r → ℤ | ∑ i, ∑ j, A i j * (z i : ℝ) * (z j : ℝ) ≤ R1 ^ 2} ⊆ B := fun z hz => by
     refine hin z R hR.le ?_
     have hz' : ∑ i, ∑ j, A i j * (z i : ℝ) * (z j : ℝ) ≤ R1 ^ 2 := hz
-    rw [hR1d, div_pow, Real.sq_sqrt hM0.le] at hz'
-    exact hz'
+    rwa [hR1d, div_pow, Real.sq_sqrt hM0.le] at hz'
   have hsub2 : B ⊆ {z : Fin r → ℤ | ∑ i, ∑ j, A i j * (z i : ℝ) * (z j : ℝ) ≤ R2 ^ 2} := fun z hz => by
     show ∑ i, ∑ j, A i j * (z i : ℝ) * (z j : ℝ) ≤ R2 ^ 2
     rw [hR2d, mul_pow, Real.sq_sqrt hV0.le]

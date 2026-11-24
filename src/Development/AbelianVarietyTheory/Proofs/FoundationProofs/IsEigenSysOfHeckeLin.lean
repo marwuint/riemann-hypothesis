@@ -76,8 +76,7 @@ theorem div_of_component {R K : Type} [CommRing R] [Field K] {n : ℕ} (π : R �
   choose r hr er using hu
   choose r' hr' er' using hu'
   refine ⟨a.1.map s, fun z hz => ?_, fun y hy => ?_, fun y hy => ?_, fun z hz => ?_⟩
-  · simp only [hε, hv, hB]
-    exact hΛ' _ fun i => hI _ (hz i)
+  · simpa only [hε, hv, hB] using hΛ' _ fun i => hI _ (hz i)
   · refine ⟨_, fun i => hI' _ (hΛ y hy i), ?_⟩
     simp only [hε, hv, hB, hs, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
   · refine ⟨_, fun i => hI' _ (mul_mem (hr i) (hΛ y hy i)), ?_⟩
@@ -198,10 +197,8 @@ theorem mem_intAE_iff_compAt (z : Af D.host.F ⊗[D.host.F] D.host.E) :
   rw [GlobalTheory.IdemSupport.mem_intAE_iff]
   refine ⟨fun h => ?_, fun h => GlobalTheory.AdeleBaseChange.mem_int_of_map hι ?_⟩
   · have := GlobalTheory.AdeleBaseChange.map_mem_int hι h
-    rw [e] at this
-    exact this
-  · rw [e]
-    exact h
+    rwa [e] at this
+  · rwa [e]
 
 theorem comp_finAdEquiv (D : D7) :
     GlobalTheory.IdemSupport.Comp D ((toFinAd D.host.F D.host.E).comp (finPart D)) := by

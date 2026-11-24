@@ -90,8 +90,7 @@ theorem stab_conj_iff {R ι : Type} [CommRing R] [Fintype ι] [DecidableEq ι] (
     have hY : B.1 *ᵥ ((B⁻¹).1 *ᵥ Y) = Y := by
       rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
     have := h ((B⁻¹).1 *ᵥ Y)
-    rw [hB, hB, key, hY] at this
-    exact this
+    rwa [hB, hB, key, hY] at this
 
 theorem map_conj_of_eq_one {G H : Type} [Group G] [Group H] (f : G →* H) {g : G} (hg : f g = 1) (x : G) :
     f (g⁻¹ * x * g) = f x := by
@@ -357,8 +356,7 @@ theorem mem_latLoc_iff_of_latHat (F E : Type) [Field F] [NumberField F] [Field E
     have h2 : b.val *ᵥ ((b⁻¹).val *ᵥ y) = y := by
       rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
     have h3 := (GlobalTheory.AdelicU.mem_latHat_iff hL _).1 ((hb _).2 (h2 ▸ h1)) v
-    rw [hmul, hself, Matrix.mulVec_mulVec, map_inv, Units.inv_mul, Matrix.one_mulVec] at h3
-    exact h3
+    rwa [hmul, hself, Matrix.mulVec_mulVec, map_inv, Units.inv_mul, Matrix.one_mulVec] at h3
 
 end GlobalTheory.Core.LocFromGlob
 end -- clump:auto

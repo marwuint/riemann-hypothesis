@@ -264,8 +264,7 @@ lemma exists_poly {R L : Type} [CommRing R] [Algebra K R] [Field L] [Algebra K L
   have h1 : PrimeSpectrum.comap (aevalTower c x).toRingHom q ∈ Z := hq
   rw [hI] at h1
   have h2 : aevalTower c x a ∈ q.asIdeal := h1 ha
-  rw [Ideal.eq_bot_of_prime q.asIdeal] at h2
-  exact h2
+  rwa [Ideal.eq_bot_of_prime q.asIdeal] at h2
 
 lemma exists_good {R L : Type} [CommRing R] [Algebra K R] [Field L] [Algebra K L]
     {F G : sp K R[X] ⟶ B} (h : Glue F G) (V : B.left.Opens) (e : R →ₐ[K] L)
@@ -281,9 +280,7 @@ lemma exists_good {R L : Type} [CommRing R] [Algebra K R] [Field L] [Algebra K L
   let κ := q.asIdeal.ResidueField
   let π : A[X] →ₐ[K] κ := IsScalarTower.toAlgHom K A[X] κ
   let o : PrimeSpectrum κ := ⟨⊥, Ideal.isPrime_bot⟩
-  have hq : (spm π).left o = q := by
-    apply PrimeSpectrum.ext
-    exact Ideal.ker_algebraMap_residueField q.asIdeal
+  have hq : (spm π).left o = q := PrimeSpectrum.ext (Ideal.ker_algebraMap_residueField q.asIdeal)
   have h1 : (val F (π.comp (CAlgHom.comp c)) (π X)).left o =
       (val F (CAlgHom.comp c) (X : A[X])).left q := by
     rw [← spm_val]
@@ -369,8 +366,7 @@ lemma val_unit_eq [IsSeparated B.hom] [IsDomain R] {b b' : sp K L[X] ⟶ B} (h :
     rw [val_twist, AlgHom.comp_apply, hs, map_one, _root_.one_mul, mul_inv_cancel, Hom.one_def]
     have : (toUnit (sp K L[X])).left q = o := Subsingleton.elim (α := Spec (CommRingCat.of K)) _ _
     change η[B].left ((toUnit (sp K L[X])).left q) ∈ V
-    rw [this]
-    exact hoV
+    rwa [this]
   obtain ⟨g, hg1, hg2⟩ := exists_good hg V e he (h1 _ _ het) (h1 _ _ het')
   obtain ⟨g', hg1', hg2'⟩ := exists_good hg.symm V e he (h1 _ _ het') (h1 _ _ het)
   let E := FractionRing R
@@ -391,8 +387,7 @@ lemma val_unit_eq [IsSeparated B.hom] [IsDomain R] {b b' : sp K L[X] ⟶ B} (h :
   rw [val_val, val_val, hcomp, hcomp, aevalTower_X, aevalTower_X, val_twist, val_twist,
     mul_zero, mul_inv_cancel, _root_.mul_one, mul_inv_eq_one] at key
   apply point_ext c hc
-  rw [spm_val, spm_val, map_one]
-  exact key
+  rwa [spm_val, spm_val, map_one]
 
 end group
 

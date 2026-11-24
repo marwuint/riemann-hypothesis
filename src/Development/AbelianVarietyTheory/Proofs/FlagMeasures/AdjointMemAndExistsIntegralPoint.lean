@@ -168,8 +168,7 @@ private lemma inv_mul_map_inclE_of_mem_lf (I : AutInst) (xf : I.Gf) (δ : Matrix
     exact hx)
   have h2 := (hrec _).1 (hspan _ hu)
   rw [← hL] at h2
-  rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]
-  exact h2
+  rwa [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]
 
 theorem adj_mem_and_exists_latGroup : ∀ (I : AutInst) (xf : I.Gf), (∀ T : Matrix (Fin I.n) (Fin I.n) I.E, (∀ y ∈ lamX I (1, xf), T *ᵥ y ∈ lamX I (1, xf)) → ∀ y ∈ lamX I (1, xf), (I.J⁻¹ * Tᴴ * I.J) *ᵥ y ∈ lamX I (1, xf)) ∧ ∀ γ : Matrix (Fin I.n) (Fin I.n) I.E, γᴴ * I.J * γ = I.J → (∀ y ∈ lamX I (1, xf), γ *ᵥ y ∈ lamX I (1, xf)) → ∃ g ∈ latGroup I xf, ∀ v, uMat (g v) = (I.P v)⁻¹ * γ.map (I.φ v) * I.P v := by
   intro I xf
@@ -184,8 +183,7 @@ theorem adj_mem_and_exists_latGroup : ∀ (I : AutInst) (xf : I.Gf), (∀ T : Ma
   have hγu : (γu : Matrix (Fin I.n) (Fin I.n) I.E) = γ := rfl
   have hmemUJ : γu ∈ Formalism.UG.UJ (starRingEnd I.E) I.J := by
     show Formalism.UG.cT (starRingEnd I.E) (γu : Matrix (Fin I.n) (Fin I.n) I.E) * I.J * γu = I.J
-    rw [cT_eq, hγu]
-    exact hγJ
+    rwa [cT_eq, hγu]
   obtain ⟨a, ha1, ha2⟩ := exists_point I γu hmemUJ
   refine ⟨a.1, ⟨a, ⟨γu, hmemUJ, ha1, ha2⟩, rfl, ?_⟩, ha1⟩
   have hδγ : (I.J⁻¹ * γᴴ * I.J) * γ = 1 := by
@@ -195,8 +193,7 @@ theorem adj_mem_and_exists_latGroup : ∀ (I : AutInst) (xf : I.Gf), (∀ T : Ma
     rw [← Matrix.map_mul, hδγ]
     simp
   have ha2' : ((a.2 : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F))) : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) = γ.map (Formalism.UG.inclE (F := I.F) (Af I.F)) := by
-    rw [← hγu]
-    exact ha2
+    rwa [← hγu]
   set g : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F)) := (xf : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F))) with hg
   have hmat : (((xf⁻¹ * a.2 * xf : I.Gf) : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F))) : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) =
       ((g⁻¹ : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F))) : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) * γ.map (Formalism.UG.inclE (F := I.F) (Af I.F)) * (g : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) := by
@@ -214,8 +211,7 @@ theorem adj_mem_and_exists_latGroup : ∀ (I : AutInst) (xf : I.Gf), (∀ T : Ma
   show x ∈ I.Lf ↔ (((xf⁻¹ * a.2 * xf : I.Gf) : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F))) : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) *ᵥ x ∈ I.Lf
   rw [hmat]
   constructor
-  · intro hx
-    exact inv_mul_map_inclE_of_mem_lf I xf γ hγL x hx
+  · exact fun hx => inv_mul_map_inclE_of_mem_lf I xf γ hγL x hx
   · intro hx
     have h1 := inv_mul_map_inclE_of_mem_lf I xf (I.J⁻¹ * γᴴ * I.J) (adj_mem I (1, xf) γ hγL) _ hx
     rwa [Matrix.mulVec_mulVec, hprod, Matrix.one_mulVec] at h1

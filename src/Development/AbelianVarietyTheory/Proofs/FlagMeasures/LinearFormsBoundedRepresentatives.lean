@@ -86,8 +86,7 @@ theorem exists_retraction {E : Type} [Field E] [NumberField E] {V : Type} [AddCo
     intro a ha x hx
     have hx' : a • (x : V) ∈ M0 := hx
     have ha' : (algebraMap (𝓞 E) E a) ≠ 0 := by
-      intro h0
-      exact ha ((IsFractionRing.injective (𝓞 E) E) (by rw [h0, map_zero]))
+      exact fun h0 => ha ((IsFractionRing.injective (𝓞 E) E) (by rw [h0, map_zero]))
     have h1 : (algebraMap (𝓞 E) E a) • (x : V) ∈ Submodule.span E (M0 : Set V) := by
       rw [algebraMap_smul]
       exact Submodule.subset_span hx'
@@ -102,8 +101,7 @@ theorem exists_retraction {E : Type} [Field E] [NumberField E] {V : Type} [AddCo
     obtain ⟨x, rfl⟩ := N.mkQ_surjective q
     obtain ⟨a, ha⟩ := (Submodule.mem_torsion_iff _).1 hq
     have ha2 : N.mkQ ((a : 𝓞 E) • x) = 0 := by
-      rw [map_smul]
-      exact ha
+      rwa [map_smul]
     have hx : x ∈ N :=
       hsat a (nonZeroDivisors.ne_zero a.2) x ((Submodule.Quotient.mk_eq_zero N).1 ha2)
     exact (Submodule.Quotient.mk_eq_zero N).2 hx
@@ -270,11 +268,9 @@ theorem funIdx : ∀ (D : D7) (u u' : D.what₂.Word) (F0 : Fb D u) (Λ : LatV D
       Submodule.subset_span hmem
     have hspan' : (algebraMap (𝓞 D.host.E) D.host.E t) • w ∈
         Submodule.span D.host.E ((L0X D Λ (lf D F0)) : Set (D.sp.X 0).V) := by
-      rw [algebraMap_smul]
-      exact hspan
+      rwa [algebraMap_smul]
     have := (Submodule.span D.host.E ((L0X D Λ (lf D F0)) : Set (D.sp.X 0).V)).smul_mem (algebraMap (𝓞 D.host.E) D.host.E t)⁻¹ hspan'
-    rw [smul_smul, inv_mul_cancel₀ ht0, one_smul] at this
-    exact this
+    rwa [smul_smul, inv_mul_cancel₀ ht0, one_smul] at this
   obtain ⟨h1, h2, -⟩ := GlobalTheory.LoopC.DetCard.main D _ hlat.fg hpd hint
   obtain ⟨reps, hc, hr⟩ := exists_reps (D.sp.X 0) M0 _ hfull hM h1
   refine ⟨reps, ?_, hr⟩

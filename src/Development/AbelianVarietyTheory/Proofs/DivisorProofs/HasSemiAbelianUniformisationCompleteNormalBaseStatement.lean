@@ -149,7 +149,6 @@ theorem isoVal_isoFromPullId {L : LB X} {m : X' ⟶ X} (w : LB.Iso L' (L.pull m)
     (j : L.ι) (k : L'.ι) (hj : m (r z) ∈ L.U j) (hk : r z ∈ L'.U k) :
     isoVal (isoFromPullId w) r z j k = gv w r z (fun _ => j) k := by
   have hm : r z ∈ (L.pull m).U (fun _ => j) ⊓ (L'.pull (𝟙 X')).U (fun _ => k) := ⟨mem_pull.2 hj, mem_pull.2 hk⟩
-  show gm r z _ (res _ (w.s (fun _ => j, k))) = _
   exact gm_res r z _ hm _
 
 theorem isoFromPullId_isGen {L : LB X} {m : X' ⟶ X} {w : LB.Iso L' (L.pull m)} (hw : w.IsGen) :
@@ -162,8 +161,7 @@ theorem isoFromPullId_isGen {L : LB X} {m : X' ⟶ X} {w : LB.Iso L' (L.pull m)}
   have b := (isGen_iff w).1 hw Z r z j j' _ _ hj hj' ik ik'
   have c := (gm_pull_g L' (𝟙 X') r z k k' hk hk').trans
     (congrArg (fun f : Z ⟶ X' => gm f z _ (L'.g (k PUnit.unit) (k' PUnit.unit))) (Category.comp_id r))
-  refine a.trans (b.trans ?_)
-  exact congrArg₂ (fun s t => _ * s⁻¹ * t) c.symm a'.symm
+  exact a.trans (b.trans (congrArg₂ (fun s t => _ * s⁻¹ * t) c.symm a'.symm))
 
 end Move
 
@@ -1193,8 +1191,7 @@ theorem kill_of_lam_triv : ∀ (K : Type) [Field K] (P : PolAV (Sp K)) (O : Type
   have h1 : lam (cls P.L P.isLB) (fst T P.A ≫ y) ((snd T P.A ≫ oA.act e) ≫ oA.act f) = 0 := by
     have := congrArg (pull (lift (snd T P.A ≫ r) (fst T P.A)).left) h0
     rw [pull_lam, map_zero, lift_snd_assoc, lift_fst_assoc, Category.assoc, reassoc_of% hra] at this
-    rw [Category.assoc]
-    exact this
+    rwa [Category.assoc]
   have h2 := (lam_rosati_field K P O oA f _ _).trans h1
   have h3 := (lam_rosati_field K P O oA e _ (snd T P.A)).trans h2
   have hb : ((fst T P.A ≫ y) ≫ oA.act (star f)) ≫ oA.act (star e) = fst T P.A ≫ y ≫ oA.act (star e * star f) := by
@@ -1205,8 +1202,7 @@ theorem kill_of_lam_triv : ∀ (K : Type) [Field K] (P : PolAV (Sp K)) (O : Type
   have hg : ∃ t : ((abelian₂ P.A P.L).pull (lift (snd P.A T ≫ y ≫ oA.act (star e * star f)) (fst P.A T)).left).Gen,
       t.IsGen := by
     refine (cls_eq_zero_iff (pull_isLB (GlobalTheory.FullSiegel.isLB_lam P.isLB) _)).1 ?_
-    rw [GlobalTheory.FullSiegel.cls_lam_pull P.isLB]
-    exact h4
+    rwa [GlobalTheory.FullSiegel.cls_lam_pull P.isLB]
   exact (GlobalTheory.FullSiegel.eq_one_of_lam_triv P.isLB P.rigid P.ktriv T _ hg).trans (Hom.one_def ..)
 
 end GlobalTheory.Mum

@@ -126,8 +126,7 @@ theorem bop_comp {n m p q r s : ℕ} (α : ⦋p⦌ ⟶ ⦋n⦌) (β : ⦋q⦌ �
   have h := Free.single_comp_single ℤ (SimplexCategoryᵒᵖ × SimplexCategoryᵒᵖ)
     (show (op ⦋n⦌, op ⦋m⦌) ⟶ (op ⦋p⦌, op ⦋q⦌) from (α.op, β.op))
     (show (op ⦋p⦌, op ⦋q⦌) ⟶ (op ⦋r⦌, op ⦋s⦌) from (α'.op, β'.op)) 1 1
-  rw [mul_one] at h
-  exact h
+  rwa [mul_one] at h
 
 def coneHom {a b n : ℕ} (x : (op ⦋a⦌, op ⦋b⦌) ⟶ (op ⦋n⦌, op ⦋n⦌)) :
     (op ⦋a⦌, op ⦋b⦌) ⟶ (op ⦋n + 1⦌, op ⦋n + 1⦌) :=
@@ -139,8 +138,7 @@ def cone (a b n : ℕ) : (bo a b ⟶ bo n n) →+ (bo a b ⟶ bo (n + 1) (n + 1)
 def eps (a b : ℕ) : (bo a b ⟶ bo 0 0) →+ ℤ := Finsupp.liftAddHom (fun _ => AddMonoidHom.id ℤ)
 
 theorem cone_bop {a b n : ℕ} (α : ⦋n⦌ ⟶ ⦋a⦌) (β : ⦋n⦌ ⟶ ⦋b⦌) :
-    cone a b n (bop α β) = bop (cv α) (cv β) := by
-  exact Finsupp.mapDomain_single
+    cone a b n (bop α β) = bop (cv α) (cv β) := Finsupp.mapDomain_single
 
 theorem eps_bop {a b : ℕ} (α : ⦋0⦌ ⟶ ⦋a⦌) (β : ⦋0⦌ ⟶ ⦋b⦌) : eps a b (bop α β) = 1 := by
   exact Finsupp.liftAddHom_apply_single _ _ _
@@ -148,8 +146,7 @@ theorem eps_bop {a b : ℕ} (α : ⦋0⦌ ⟶ ⦋a⦌) (β : ⦋0⦌ ⟶ ⦋b⦌
 theorem single_eq {a b n p : ℕ} (x : (op ⦋a⦌, op ⦋b⦌) ⟶ (op ⦋n⦌, op ⦋p⦌)) (c : ℤ) :
     (Finsupp.single x c : bo a b ⟶ bo n p) = c • bop x.1.unop x.2.unop := by
   have h := map_zsmul (Finsupp.singleAddHom (M := ℤ) x) c (1 : ℤ)
-  rw [smul_eq_mul, mul_one] at h
-  exact h
+  rwa [smul_eq_mul, mul_one] at h
 
 theorem ind {a b n p : ℕ} (P : (bo a b ⟶ bo n p) → Prop) (h0 : P 0) (hadd : ∀ f g, P f → P g → P (f + g))
     (hs : ∀ (α : ⦋n⦌ ⟶ ⦋a⦌) (β : ⦋p⦌ ⟶ ⦋b⦌) (c : ℤ), P (c • bop α β)) (r : bo a b ⟶ bo n p) : P r :=

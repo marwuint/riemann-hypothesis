@@ -237,8 +237,7 @@ theorem law (hψ : IsCharAF D.host.F ψ) (h0 : d.j0 = 0)
   have h1 := psi_bt_rat d T hψ ξ₀ η₀
   have h2 := psi_bt_rat d T hψ ζ η₀
   simp only [symplO_bt, bt_add_left]
-  simp only [bt_add_right]
-  exact addChar_theta_law_rearrangement_identity ψ _ _ _ _ _ _ _ h1 h2
+  simpa only [bt_add_right] using addChar_theta_law_rearrangement_identity ψ _ _ _ _ _ _ _ h1 h2
 
 theorem level (hψ : IsCharAF D.host.F ψ) (h0 : d.j0 = 0) (hφ : GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat φ)
     (hf : ∀ w : WO S T, f w = ψ (-(bt d T (w ⬝ d.jX) (w ⬝ d.jY))) * ∑' ξ : Matrix (Fin T.rank) (Fin ρ) D.host.E,
@@ -364,8 +363,7 @@ theorem hasDerivAt_line {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (G
     G.differentiableAt.hasFDerivAt
   have h3 := h2.comp_hasDerivAt (0 : ℝ) h1
   simp only [zero_smul, add_zero] at h3
-  rw [SchwartzMap.lineDerivOp_apply_eq_fderiv]
-  exact h3
+  rwa [SchwartzMap.lineDerivOp_apply_eq_fderiv]
 
 theorem exists_schwartz_deriv (F : Type) [DivisionRing F] [CharZero F] [Module F X] (P : X → Prop)
     (hP : ∀ a b, P a → P b → P (a + b)) (φ : X → ℂ)
@@ -410,8 +408,7 @@ theorem exists_schwartz_deriv (F : Type) [DivisionRing F] [CharZero F] [Module F
         simp [e, hj_cs, Fin.castSucc_ne_last]
       have e2 : (j s + t • e) (Fin.last k) = t := by simp [e, hj_last]
       rw [hH, hL'apply, e1, e2, add_assoc]
-    rw [heq] at hd
-    exact hd
+    rwa [heq] at hd
   ·
     obtain ⟨u, hu, hu0⟩ : ∃ u, L' u = 0 ∧ u ≠ 0 := by
       rw [injective_iff_map_eq_zero] at hinj
@@ -436,16 +433,14 @@ theorem exists_schwartz_deriv (F : Type) [DivisionRing F] [CharZero F] [Module F
       · simpa [sub_eq_zero, Lv] using h1
       · simp only [AddMonoidHom.sub_apply, AddMonoidHom.comp_apply, AddMonoidHom.mk'_apply, Lv, v, smul_neg,
           smul_smul, mul_inv_cancel₀ ht0, one_smul, map_neg, sub_neg_eq_add]
-        rw [add_comm]
-        exact hu
+        rwa [add_comm]
     obtain ⟨G, hG⟩ := hφ k L ⟨hLc, hLP⟩ hi x
     refine ⟨LineDeriv.lineDerivOp v G, fun s => ?_⟩
     have hd := hasDerivAt_line G v s
     have heq : (fun t : ℝ => G (s + t • v)) = fun t => φ (x + L s + M t) := by
       funext t
       rw [hG, hMv, map_add (f := _), add_assoc]
-    rw [heq] at hd
-    exact hd
+    rwa [heq] at hd
 
 end General
 

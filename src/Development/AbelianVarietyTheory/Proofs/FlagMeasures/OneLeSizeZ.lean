@@ -119,8 +119,7 @@ theorem primInv_gmap_symm (γ : V ≃ₗ[K] V) (M : Submodule (𝓞 K) V) :
   · rintro ⟨y, ⟨z, hz, rfl⟩, rfl⟩
     change γ.symm (γ z) ∈ M
     rwa [γ.symm_apply_apply]
-  · intro hx
-    exact ⟨γ x, ⟨x, hx, rfl⟩, γ.symm_apply_apply x⟩
+  · exact fun hx => ⟨γ x, ⟨x, hx, rfl⟩, γ.symm_apply_apply x⟩
 
 theorem primInv_mem (h : V →ₗ⋆[K] V →ₗ[K] K) (γ : V ≃ₗ[K] V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom h)
     (L : Submodule (𝓞 K) V) (j de : ℕ) (M : Submodule (𝓞 K) V) (hM : M ∈ PrimSubs h L j de) :
@@ -136,8 +135,7 @@ theorem primInv_mem (h : V →ₗ⋆[K] V →ₗ[K] K) (γ : V ≃ₗ[K] V) (hγ
     rw [hspan, hres]
     unfold Formalism.HermitianLatticesTheory.gmap
     rw [← Submodule.map_inf ((γ : V →ₗ[K] V).restrictScalars (𝓞 K)) γ.injective, ← heq]
-  · rw [hspan, LinearEquiv.finrank_map_eq]
-    exact hrk
+  · rwa [hspan, LinearEquiv.finrank_map_eq]
   · rw [← hdet]
     exact GlobalTheory.T.latDetH_map_injective_isometry K V V h h (γ : V →ₗ[K] V) γ.injective (fun x y => hγ x y) M
 
@@ -408,8 +406,7 @@ theorem main : ∀ (D : D7) (T : D.host.E) (F : Fg D T) (H : Submodule D.host.E 
     refine ⟨M.comap (H.subtype.restrictScalars (𝓞 D.host.E)), ?_, ?_⟩
     · ext x
       constructor
-      · intro hx
-        exact ⟨⟨x, hM hx⟩, hx, rfl⟩
+      · exact fun hx => ⟨⟨x, hM hx⟩, hx, rfl⟩
       · rintro ⟨y, hy, rfl⟩
         exact hy
     · ext w
@@ -763,8 +760,7 @@ theorem exists_denominator_of_fg {V : Type} [AddCommGroup V] (B : V →ₗ[ℤ] 
     | smul c a _ ha =>
       obtain ⟨m, hm⟩ := ha
       exact ⟨c * m, by rw [zsmul_eq_mul, mul_left_comm, hm]; push_cast; ring⟩
-  intro x hx y hy
-  exact key _ (hs ▸ Submodule.apply_mem_map₂ B hx hy)
+  exact fun x hx y hy => key _ (hs ▸ Submodule.apply_mem_map₂ B hx hy)
 
 theorem isom_sub_mem_of_congr : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (U X : Submodule K V) (M : Submodule (𝓞 K) V) (γ : V ≃ₗ[K] V) (g : ℕ), h.IsSymm → X ≤ U → (∀ x ∈ X, ∀ y ∈ U, h x y = 0) → (∀ x ∈ U, x ∉ X → 0 < Algebra.trace ℚ K (h x x)) → M.FG → (∀ x ∈ M, x ∈ U) → γ ∈ Formalism.HermitianLatticesTheory.isom h → (∀ x ∈ X, γ x ∈ X) → 3 ≤ g → (∀ x ∈ M, ∃ y ∈ M, γ x - x - (g : K) • y ∈ X) → ∀ x ∈ M, γ x - x ∈ X := by
   intro K V _ _ _ _ _ _ _ _ h U X M γ g hs hXU hrad hpos hM hMU hγ hγX hg hcong
@@ -1206,12 +1202,10 @@ theorem Mlat_le_La_sup (E : Type) [Field E] [NumberField E] [StarRing E] (S : HS
     rwa [map_sub, show β a - β l' - (β a - x₂) = x₂ - β l' by abel] at this
   have m1 : S.hT F.fl.z x₂ = 0 := by
     have := hT_z_X F h12
-    rw [map_sub, hz1, zero_sub, neg_eq_zero] at this
-    exact this
+    rwa [map_sub, hz1, zero_sub, neg_eq_zero] at this
   have m2 : S.hT F''.fl.z x₂ = 0 := by
     have := hT_z_X F'' hβ12
-    rw [map_sub, ← hz, hβ.1 F'.fl.z a, hz1', zero_sub, neg_eq_zero, hz] at this
-    exact this
+    rwa [map_sub, ← hz, hβ.1 F'.fl.z a, hz1', zero_sub, neg_eq_zero, hz] at this
   have hmem : x₂ ∈ La Λ g F F'' := by
     refine Submodule.subset_span ⟨hx₂, Submodule.mem_inf.2 ⟨mem_Lsub_of hl k1, m1⟩,
       Submodule.mem_inf.2 ⟨mem_Lsub_of hβl k2, m2⟩, l, hl, k1, β l', hβl, k2, ?_⟩
@@ -1423,8 +1417,7 @@ theorem cnt_triples {α γ ι : Type} {E : α → α → Prop} (hE : Equivalence
     rintro _ ⟨p, hp, rfl⟩
     obtain ⟨i, hi, a1, a2⟩ := h p hp
     refine ⟨(c p.1, c p.2.1), ?_, ?_⟩
-    · simp only [Set.mem_iUnion]
-      exact ⟨i, hi, ⟨_, a1, rfl⟩, ⟨_, a2, rfl⟩⟩
+    · simpa only [Set.mem_iUnion] using ⟨i, hi, ⟨_, a1, rfl⟩, ⟨_, a2, rfl⟩⟩
     · ext q
       exact and_congr_right fun hq => (hR p hp q hq).symm
   have e2 := e1.trans (FrEqv.encard_biUnion_le' S _)
@@ -1716,11 +1709,9 @@ theorem main : ∀ Cg cb Cu cT CT C0 A Ad C₁ : ℝ, 0 ≤ C₁ → ∃ C₀ : 
       Submodule.subset_span hmem
     have hspan' : (algebraMap (𝓞 D.host.E) D.host.E t) • w ∈
         Submodule.span D.host.E ((L0X D Λ₀ (lf D F0)) : Set (D.sp.X 0).V) := by
-      rw [algebraMap_smul]
-      exact hspan
+      rwa [algebraMap_smul]
     have := (Submodule.span D.host.E ((L0X D Λ₀ (lf D F0)) : Set (D.sp.X 0).V)).smul_mem (algebraMap (𝓞 D.host.E) D.host.E t)⁻¹ hspan'
-    rw [smul_smul, inv_mul_cancel₀ ht0, one_smul] at this
-    exact this
+    rwa [smul_smul, inv_mul_cancel₀ ht0, one_smul] at this
   obtain ⟨⟨reps, hreps⟩, -, hmass⟩ := Formalism.HermitianLatticesTheory.final_massBasic _ _ (D.sp.X 0).hT (D.sp.X 0).herm
     (GlobalTheory.Mass.GenusOrb.trace_pos_of_PD _ hpos) _ hfull
   refine mean_le what₂ _ _ (fun d Λ => (cntPrim (D.sp.X 0).hT (L0X D Λ (lf D F0)) (D.R.k - s) d : ℝ≥0∞))

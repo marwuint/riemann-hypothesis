@@ -263,11 +263,7 @@ theorem exists_lintegral_eq_mul (μ ρ κ : Measure G) [SigmaFinite μ] [SFinite
     (ENNReal.div_pos_iff.2 ⟨hS0, hLt⟩).ne', ENNReal.div_ne_top hS1 hL0, fun φ hφ => ?_⟩
   have E : ρ T * ((∫⁻ g, φ g ∂μ) * ∫⁻ p, ∫⁻ k, S.indicator (1 : G → ENNReal) (p * k) ∂κ ∂ρ)
       = ρ T * (μ S * ∫⁻ p, ∫⁻ k, φ (p * k) ∂κ ∂ρ) := by
-    rw [← mul_assoc]
-    rw [mix _ hφ]
-    rw [← lintegral_mul_const _ (hLm _ hφ)]
-    rw [← mul_assoc]
-    rw [mix0]
+    rw [← mul_assoc, mix _ hφ, ← lintegral_mul_const _ (hLm _ hφ), ← mul_assoc, mix0]
     rw [← lintegral_mul_const _ (hLm _ hφ0)]
     refine lintegral_congr fun h => ?_
     obtain ⟨D, -, -, hD⟩ := key h

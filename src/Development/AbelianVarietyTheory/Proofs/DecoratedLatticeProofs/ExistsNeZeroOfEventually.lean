@@ -66,8 +66,7 @@ theorem exists_nat_mem_mul_integer (c : k) (hc : c ≠ 0) :
   have : Finite (𝒪[k] ⧸ H) := AddSubgroup.instFiniteQuotientOfSeparatelyContinuousAddOfCompactSpace H'
   have hne : H.index ≠ 0 := AddSubgroup.index_ne_zero_of_finite
   refine ⟨H.index, Nat.pos_of_ne_zero hne, ?_⟩
-  have hm := H.nsmul_index_mem (1 : 𝒪[k])
-  simpa [H, S] using hm
+  simpa [H, S] using H.nsmul_index_mem (1 : 𝒪[k])
 
 theorem exists_ne_zero_of_eventually {P : k → Prop} (h : ∀ᶠ s in nhds (0 : k), P s) :
     ∃ c : k, c ≠ 0 ∧ P c := by
@@ -96,10 +95,8 @@ theorem sb_lattice_bounds : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologic
   have hOpi : O = Set.univ.pi (fun _ : Y => Set.univ.pi (fun _ : Y' => (𝒪[k] : Set k))) := by
     ext u
     constructor
-    · intro h r _ q _
-      exact h r q
-    · intro h r q
-      exact h r (Set.mem_univ _) q (Set.mem_univ _)
+    · exact fun h r _ q _ => h r q
+    · exact fun h r q => h r (Set.mem_univ _) q (Set.mem_univ _)
   have hOc : IsCompact O := by
     rw [hOpi]
     exact isCompact_univ_pi (fun _ => isCompact_univ_pi
@@ -139,8 +136,7 @@ theorem sb_lattice_bounds : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologic
     intro u
     rw [smul_smul, ← hn', Nat.cast_smul_eq_nsmul]
   have hyO : ∀ u ∈ O, y • u ∈ O := fun u hu r q => by
-    simp only [Matrix.smul_apply, smul_eq_mul]
-    exact mul_mem hy (hu r q)
+    simpa only [Matrix.smul_apply, smul_eq_mul] using mul_mem hy (hu r q)
   refine ⟨n, hn, ?_, ?_⟩
   · intro u hu t
     rw [hsmul]
@@ -149,8 +145,7 @@ theorem sb_lattice_bounds : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologic
     · exact hc1 (t, y • u) ⟨ht, hu'⟩
     by_cases ht' : t + c • (y • u) ∈ tsupport Φ
     · have hneg : -(y • u) ∈ O := fun r q => by
-        simp only [Matrix.neg_apply]
-        exact neg_mem (hu' r q)
+        simpa only [Matrix.neg_apply] using neg_mem (hu' r q)
       have := hc1 (t + c • (y • u), -(y • u)) ⟨ht', hneg⟩
       simp only [smul_neg, add_neg_cancel_right] at this
       exact this.symm

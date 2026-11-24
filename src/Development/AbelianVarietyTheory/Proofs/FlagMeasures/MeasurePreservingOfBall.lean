@@ -109,8 +109,7 @@ theorem measurePreserving_of_ball (μ : Measure V) [μ.IsAddHaarMeasure] (ν : M
   refine ⟨e.continuous.measurable, ?_⟩
   have hpre : (e : V → W) ⁻¹' Metric.closedBall 0 1 = Metric.closedBall 0 1 := by
     ext x
-    simp only [Set.mem_preimage, mem_closedBall_zero_iff]
-    exact h x
+    simpa only [Set.mem_preimage, mem_closedBall_zero_iff] using h x
   have hk := Measure.isAddLeftInvariant_eq_smul (Measure.map e μ) ν
   set k := (Measure.map e μ).addHaarScalarFactor ν
   have hball : Measure.map e μ (Metric.closedBall 0 1) = ν (Metric.closedBall 0 1) := by
@@ -122,8 +121,7 @@ theorem measurePreserving_of_ball (μ : Measure V) [μ.IsAddHaarMeasure] (ν : M
   have hk1 : k = 1 := by
     rw [hk, Measure.smul_apply] at hball
     have : ((k : ENNReal)) * ν (Metric.closedBall 0 1) = 1 * ν (Metric.closedBall 0 1) := by
-      rw [one_mul]
-      exact hball
+      rwa [one_mul]
     have := (ENNReal.mul_left_inj h0 htop).mp this
     exact_mod_cast this
   rw [hk, hk1, one_smul]
@@ -303,8 +301,7 @@ theorem exists_idealLat (hE : IsTotallyComplex E) (a : FractionalIdeal (𝓞 E)�
           ((0 : {w : InfinitePlace E // w.IsReal} → ℝ), x)) ∘ MeasurableEquiv.piCongrLeft (fun _ => ℂ) σ := by
       funext z
       rw [he_apply, Function.comp_apply, hrel]
-    rw [hfun]
-    exact h
+    rwa [hfun]
 
   let I : (FractionalIdeal (𝓞 E)⁰ E)ˣ := Units.mk0 a ha
   refine ⟨(mixedEmbedding.idealLattice E I).comap ((e : (InfinitePlace E → ℂ) →ₗ[ℝ] _).restrictScalars ℤ),
@@ -347,10 +344,8 @@ theorem hasCov_vec (hE : IsTotallyComplex E) {j : ℕ} (c : Fin j → Fractional
   have he : MeasurePreserving e volume (volume : Measure (Fin j → InfinitePlace E → ℂ)) := by
     refine measurePreserving_of_ball _ _ e (fun x => ?_) ?_
     · change ‖fun i w => x w i‖ ≤ 1 ↔ ‖x‖ ≤ 1
-      simp only [pi_norm_le_iff_of_nonneg zero_le_one]
-      exact forall_comm
-    · simp only [closedBall_pi _ zero_le_one, volume_pi_pi, Pi.zero_apply]
-      exact Finset.prod_comm
+      simpa only [pi_norm_le_iff_of_nonneg zero_le_one] using forall_comm
+    · simpa only [closedBall_pi _ zero_le_one, volume_pi_pi, Pi.zero_apply] using Finset.prod_comm
   refine ⟨Submodule.comap ((e : (InfinitePlace E → Fin j → ℂ) →L[ℝ] _).toLinearMap.restrictScalars ℤ)
     (Submodule.pi Set.univ L), fun z => ?_, ?_⟩
   · simp only [Submodule.mem_comap, Submodule.mem_pi, Set.mem_univ, true_implies]
@@ -441,8 +436,7 @@ private theorem exists_matrix_fractionalIdeals_coords_of_fg : ∀ (j : ℕ) (Λ 
         have hyc : (Fin.cons 0 (τ y) : Fin (j + 1) → E) = y := by
           rw [← hy0']
           exact Fin.cons_self_tail y
-        rw [hyc]
-        exact hy
+        rwa [hyc]
       · intro h
         refine ⟨Fin.cons 0 u, ⟨h, by simp [π]⟩, ?_⟩
         ext i
@@ -661,8 +655,7 @@ theorem maps_iff {r s : ℕ} (Λ : Submodule (𝓞 E) (Fin r → E)) (Λ' : Subm
     rw [← FractionalIdeal.mem_coe]
     refine Submodule.sum_mem _ fun k _ => ?_
     rw [FractionalIdeal.mem_coe]
-    have h1 := (FractionalIdeal.mem_div_iff_of_ne_zero (hc' k)).mp (h i k) _ ((hΛ' y).mp hy k)
-    exact h1
+    exact (FractionalIdeal.mem_div_iff_of_ne_zero (hc' k)).mp (h i k) _ ((hΛ' y).mp hy k)
 
 private theorem homCovolume_eq_mul_pow (a b v Da Db : ℝ) (F r s : ℕ) (ha : a ≠ 0) (hb : b ≠ 0) (hv : v ≠ 0)
     (hDa : Da ≠ 0) (hDb : Db ≠ 0) :

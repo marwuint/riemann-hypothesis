@@ -79,8 +79,7 @@ namespace GlobalTheory.HeckeFamilyMatrices.SemisimpleLevelOne
 lemma lev_one (N : ℕ) : GlobalTheory.Hk.lev N 1 = CongruenceSubgroup.Gamma1 N := by
   ext γ
   simp only [GlobalTheory.Hk.lev, Subgroup.mem_inf, CongruenceSubgroup.Gamma0_mem, and_iff_left_iff_imp]
-  intro _
-  exact Subsingleton.elim _ _
+  exact fun _ => Subsingleton.elim _ _
 
 theorem tq_semisimple : ∀ (N k q : ℕ) (σ : SL(2, ℤ)), 5 ≤ N → 3 ≤ k → q.Prime → ¬ q ∣ N →
     IsDiam N 1 (q : ZMod N) σ →
@@ -241,8 +240,7 @@ theorem tq_eq (N : ℕ) (k : ℤ) (l : ℕ) (hl : 0 < l) (s : SL(2, ℤ)) (χ : 
     rw [e, _root_.GlobalTheory.SlashUpperTriangularMatrices.toGL_mul _ _ hsd hD, SlashAction.slash_mul, toGL_mat]
     have h2 : f ∣[k] (Matrix.SpecialLinearGroup.mapGL ℝ s) = χ (l : ZMod N) • f := by
       have := hf s hs1
-      rw [hs.2] at this
-      exact this
+      rwa [hs.2] at this
     rw [h2, slash_smul_toGL k _ (by rw [det_dg]; exact hl0)]
 
 theorem exists_diam (N l : ℕ) (h : Nat.Coprime l N) : ∃ s : SL(2, ℤ), IsDiam N 1 (l : ZMod N) s := by
@@ -358,8 +356,7 @@ theorem eigen_of_good (u : Module.End ℂ (ℍ → ℂ)) (α : ℂ) (G : ℍ →
     (h : (fun F => u F - α • F)^[n] G = 0) : u G = α • G := by
   obtain ⟨g, hg, hk⟩ := hG
   have hcop : IsCoprime (X - C α) g := by
-    rw [(Polynomial.irreducible_X_sub_C α).coprime_iff_not_dvd, Polynomial.dvd_iff_isRoot]
-    exact hg
+    rwa [(Polynomial.irreducible_X_sub_C α).coprime_iff_not_dvd, Polynomial.dvd_iff_isRoot]
   obtain ⟨s, t, hst⟩ := hcop.pow_left (m := n)
   have hlin : aeval u (X - C α) = u - α • 1 := by
     simp [Algebra.algebraMap_eq_smul_one]
@@ -503,8 +500,7 @@ theorem ul_oldSpace : ∀ (N l k : ℕ), 5 ≤ N → l.Prime → ¬ l ∣ N → 
       · apply good_of_quad u α μ _ hαc'
         rw [quad_apply, hvy, map_smul, hu1]
         module
-    · simp only [ZeroMemClass.coe_zero, map_zero]
-      exact ⟨good_zero u α, good_zero u α⟩
+    · simpa only [ZeroMemClass.coe_zero, map_zero] using ⟨good_zero u α, good_zero u α⟩
     · intro a b ha hb
       simp only [Submodule.coe_add, map_add (f := _)]
       exact ⟨good_add ha.1 hb.1, good_add ha.2 hb.2⟩
@@ -570,8 +566,7 @@ theorem cuspForm_of_chiInv : ∀ (N : ℕ) (k : ℤ) (χ : DirichletCharacter �
     have hA0 : A ∈ Gamma0 N := Gamma1_in_Gamma0 N hA
     have h11 : ((mat A 1 1 : ℤ) : ZMod N) = 1 := ((Gamma1_mem N A).1 hA).2.1
     have := hχ A hA0
-    rw [h11, map_one, one_smul, ModularForm.SL_slash] at this
-    exact this
+    rwa [h11, map_one, one_smul, ModularForm.SL_slash] at this
   · rintro _ ⟨γ, -, rfl⟩; exact ⟨γ, rfl⟩
 end GlobalTheory.HeckeFamilyMatrices
 end -- clump:auto

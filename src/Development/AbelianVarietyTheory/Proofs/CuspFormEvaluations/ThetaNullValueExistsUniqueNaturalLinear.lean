@@ -88,8 +88,7 @@ theorem exists_isNullVal (hL : Laws) {N : ℕ} (hN : Odd N) {S : Type} [CommRing
   have : toΓ S ((Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom v) = v := by
     unfold toΓ
     exact (Scheme.ΓSpecIso (CommRingCat.of S)).hom_inv_id_apply v
-  rw [this]
-  exact hv
+  rwa [this]
 
 open GlobalTheory.TranslExist in
 theorem isNullVal_unique (hL : Laws) {N : ℕ} (hN : Odd N) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S)
@@ -216,8 +215,7 @@ theorem baseChange {N : ℕ} {S T : Type} [CommRing S] [Algebra c.F S] [CommRing
   have hF := GlobalTheory.VVRank.isPullSec_pullS (A := Xo.univ.t.G) (L := Xo.univ.t.PP.L) ((N : ℤ) ^ 2) g F
   have hpg : p' = g ≫ p := by
     apply Over.OverMorphism.ext
-    rw [Over.comp_left, hg]
-    exact hp
+    rwa [Over.comp_left, hg]
   have hL : Xo.univ.t.PP.L.IsLB := Xo.univ.t.PP.isLB
   unfold IsNullVal
   refine ⟨GlobalTheory.VVRank.pullS Xo.univ.t.G ((N : ℤ) ^ 2) g F, ?_, ?_⟩
@@ -234,8 +232,7 @@ theorem baseChange {N : ℕ} {S T : Type} [CommRing S] [Algebra c.F S] [CommRing
       rw [hpg, hok']
   · have h1 := isValueAt_one_pull Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) Xo.univ.t.PP.rig g hF hV
     have e2 : g.left.appTop.hom (toΓ S w) = toΓ T (ψ w) := GlobalTheory.NabLinear.appTop_toΓ ψ.toRingHom w
-    rw [e2] at h1
-    exact h1
+    rwa [e2] at h1
 
 
 open GlobalTheory.ThetaValueWeight in
@@ -273,8 +270,7 @@ theorem nullValue_existsUnique_natural_linear : Laws → ∀ (E : Type) [Field E
     exact ⟨w, hw, fun w' hw' => GlobalTheory.EtaForm.Model.isNullVal_unique Xo c hL hN y p hp hw' hw⟩
   · intro S T _ _ _ _ ψ y z hm p p' hp w hw
     exact NullValue.baseChange ψ hm p p' hp hw
-  · intro S _ _ y y' t hb p p' hp w hw
-    exact NullValue.triangular hb p p' hp hw
+  · exact fun S _ _ y y' t hb p p' hp w hw => NullValue.triangular hb p p' hp hw
 
 end GlobalTheory
 end -- clump:auto

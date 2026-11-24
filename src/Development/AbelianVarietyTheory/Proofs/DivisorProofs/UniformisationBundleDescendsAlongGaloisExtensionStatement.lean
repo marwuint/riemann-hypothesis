@@ -168,8 +168,7 @@ theorem exists_gen_of_invariant {X Y Y' : Scheme.{0}} {K : Type} [Fintype K] {L 
         gs (act σ) z _ (res (le j) (u.s j)).val := by
       have := (gs_res (𝟙 Y') z h₁ hz (((act σ).app _).hom (res (le j) (u.s j)).val)).trans
         (gs_pull (𝟙 Y') (act σ) z _ hz' _)
-      rw [Category.id_comp] at this
-      exact this
+      rwa [Category.id_comp] at this
     rw [e₀, gs_unit (act σ) z _ hz', gs_unit (𝟙 Y') _ _ hz]
     choose I hI using fun χ : Y' ⟶ X => exists_chart hL (χ z)
     have c₁ := gen_trans hu (act σ) z (le j hz') (Good.mem hI _ (act σ))
@@ -418,8 +417,7 @@ theorem ctriv_of_pmaps {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K →
   rintro σ Z r _ z J J' rfl hJ hJ'
   refine hp σ Z r z _ _ (fun k => ?_) (fun k => hJ' (r ≫ φ k))
   have := hJ ((r ≫ H σ) ≫ φ k)
-  rw [← pt_eq (hc σ)]
-  exact this
+  rwa [← pt_eq (hc σ)]
 
 theorem ctriv_of_sec (θ : L.Sec) (hθ : ∀ σ, SecCarried L θ (F σ) (w σ)) (f : Y ⟶ X) (hf : ∀ y, f y ∈ secNz θ)
     (hR : ∀ σ Z r r', Rel σ Z r r' → r' ≫ f = (r ≫ f) ≫ F σ) : CTriv w Y Rel (fun _ _ g => g f) := by
@@ -772,8 +770,7 @@ theorem exists_carried_sec_off_closed : ∀ (R : Type) [CommRing R] [IsDomain R]
   refine ⟨s, hs, fun z k hz hk => hu z k (show β z ∈ V from hz ▸ hyV) hk, fun σ =>
     ⟨hd σ, bc σ, hbc σ, hP σ, hov σ, hcs (F σ) (w σ) (fun z hz => ?_) (hcar σ)⟩⟩
   show (F σ ≫ β) z ∈ V
-  rw [hFβ]
-  exact hz
+  rwa [hFβ]
 
 end GlobalTheory.Mum
 end -- clump:auto
@@ -843,8 +840,7 @@ theorem eq_pull_section {X S S' : Scheme.{0}} (p : X ⟶ S) (e : S ⟶ X) (he : 
   have h2 : e' ≫ pullback.snd p j = 𝟙 S' := pullback.lift_snd _ _ _
   have hc' : c = j.appTop.hom (e.appTop.hom u) := by
     have := congrArg e'.appTop.hom hc
-    rw [cmp, cmp, h1, h2, ← cmp, Scheme.Hom.id_appTop] at this
-    exact this
+    rwa [cmp, cmp, h1, h2, ← cmp, Scheme.Hom.id_appTop] at this
   apply hi
   rw [cmp, pullback.condition, ← cmp, ← hc', hc]
 
@@ -969,8 +965,7 @@ theorem exists_carried_frame_off_closed : ∀ (R : Type) [CommRing R] [IsDomain 
   intro z j k hz hfz hzk hfzj
   have h1 := hF₀ z j k hz (by rw [e]; exact hfz) hzk (by rw [e]; exact hfzj)
   rw [hg z j k hzk (by rw [e]; exact hfzj)] at h1
-  rw [e] at h1
-  exact h1
+  rwa [e] at h1
 
 end GlobalTheory.Mum
 end -- clump:auto
@@ -1229,8 +1224,7 @@ theorem exists_cp : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Ba
   obtain ⟨hLaws, -⟩ := GlobalTheory.firstFiveLaws
   obtain ⟨P, hP, -⟩ := GlobalTheory.UU.exists_cp_of_isSymmetric hLaws R A G hS gen hgen ⟨L, rig, hL, hrig⟩ c hsym
   refine ⟨P, ?_⟩
-  rw [hP]
-  exact hLi
+  rwa [hP]
 
 end GlobalTheory.GaloisPackageDescent
 end -- clump:auto

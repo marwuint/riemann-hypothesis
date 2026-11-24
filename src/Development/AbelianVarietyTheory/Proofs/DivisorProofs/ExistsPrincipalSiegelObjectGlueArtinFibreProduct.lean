@@ -158,8 +158,7 @@ theorem flat_quot_smul_top_of_surj_flat :
     constructor
     · rw [← LinearMap.ker_eq_bot]
       exact Submodule.ker_liftQ_eq_bot _ _ _ hkerg.le
-    · rw [← LinearMap.range_eq_top, Submodule.range_liftQ, LinearMap.range_eq_top]
-      exact hc
+    · rwa [← LinearMap.range_eq_top, Submodule.range_liftQ, LinearMap.range_eq_top]
   let e : (B ⧸ (K • ⊤ : Submodule P B)) ≃ₗ[P ⧸ K] B₁ :=
     LinearEquiv.ofBijective
       { toFun := e₀
@@ -588,8 +587,7 @@ theorem ker_eq_map_of_fibre : ∀ (P R₁ R₂ B B₁ B₂ : Type) [CommRing P] 
     rw [RingHom.mem_ker] at hx
     obtain ⟨z, hz, e, e'⟩ := claim _ (hker x hx)
     have h0 : x - z = 0 := hj _ (by rw [map_sub, hx, e, sub_zero]) (by rw [map_sub, e', sub_self])
-    rw [sub_eq_zero.mp h0]
-    exact hz
+    rwa [sub_eq_zero.mp h0]
   · rw [Ideal.map_le_iff_le_comap]
     intro p hp
     rw [Ideal.mem_comap, RingHom.mem_ker, w₁', (RingHom.mem_ker).mp hp, map_zero]
@@ -612,8 +610,7 @@ theorem isNilpotent_ker_of_fibre : ∀ (P R₁ R₂ R₀ : Type) [CommRing P] [C
     exact Ideal.pow_right_mono hle _ this
   rw [pow_succ, hn, Submodule.zero_eq_bot, Submodule.bot_mul] at h2
   have h3 : x ∈ RingHom.ker f₁ ⊓ RingHom.ker f₂ := ⟨h1, by simpa using h2⟩
-  rw [hj] at h3
-  exact h3
+  rwa [hj] at h3
 
 theorem mul_injective_of_flat : ∀ (P R₂ B B₂ : Type) [CommRing P] [CommRing R₂] [CommRing B] [CommRing B₂] [Algebra P B] (K₁ : Ideal P) (f₂ : P →+* R₂) (a₂ : R₂ →+* B₂) (c₂ : B →+* B₂), Function.Surjective f₂ → Function.Surjective c₂ → c₂.comp (algebraMap P B) = a₂.comp f₂ → RingHom.ker c₂ = (RingHom.ker f₂).map (algebraMap P B) → K₁ ⊓ RingHom.ker f₂ = ⊥ → a₂.Flat → Function.Injective (TensorProduct.lift ((LinearMap.lsmul P B).comp K₁.subtype)) := _root_.GlobalTheory.TorStep.mul_tensor_injective
 
@@ -1128,8 +1125,7 @@ theorem thickening_of_isPullback : ∀ (R₁ R₀ : CommRingCat.{0}) (g : R₁ �
       rw [hn, Ideal.zero_eq_bot, Ideal.mem_bot] at this
       rw [this]
       exact zero_mem _
-    rw [← range_comap_of_surjective _ g.hom hg] at hx
-    exact hx
+    rwa [← range_comap_of_surjective _ g.hom hg] at hx
   exact ⟨MorphismProperty.of_isPullback (P := @IsClosedImmersion) h.flip hc,
     MorphismProperty.of_isPullback (P := @Surjective) h.flip hs⟩
 
@@ -1268,8 +1264,7 @@ theorem locallyOfFinitePresentation_of_nilpotent_thickening :
     rw [hφ]; exact (IsPullback.of_hasPullback (Y.left.affineOpenCover.f i) j₁).paste_vert hpb
   have hfin := GlobalTheory.locallyOfFinitePresentation_specMap_of_isPullback_nilpotent f₁ hs hn φ _ _ hsq
     (MorphismProperty.comp_mem _ _ _ (locallyOfFinitePresentation_of_isOpenImmersion _) hY₁)
-  rw [hφ] at hfin
-  exact hfin
+  rwa [hφ] at hfin
 
 end GlobalTheory
 end -- clump:auto

@@ -628,8 +628,7 @@ theorem isUnit_of_unit_mul_comul_eq_tmul_self (K H : Type) [Field K] [CommRing H
       (Algebra.TensorProduct.map (Bialgebra.counitAlgHom K H) (AlgHom.id K H))
   have hφΔ : φ (Coalgebra.comul (R := K) u) = u := by
     have e := congrArg (TensorProduct.lid K H) (Coalgebra.rTensor_counit_comul (R := K) u)
-    rw [TensorProduct.lid_tmul, one_smul] at e
-    exact e
+    rwa [TensorProduct.lid_tmul, one_smul] at e
   have hφuu : φ (u ⊗ₜ[K] u) = Coalgebra.counit (R := K) u • u := by
     simp [φ]
   have hε : Coalgebra.counit (R := K) u ≠ 0 := by
@@ -840,8 +839,7 @@ theorem exists_coboundary : ∀ (K : Type) [Field K] [IsAlgClosed K] (N : Over (
   refine ⟨pullTop e.inv.left w, fun T x y => ?_⟩
   have hc : pullTop (lift x y).left c = pullTop (lift (x ≫ e.inv) (y ≫ e.inv)).left cG := by
     have h := hpull T (x ≫ e.inv) (y ≫ e.inv)
-    simp only [Category.assoc, e.inv_hom_id, Category.comp_id] at h
-    exact h
+    simpa only [Category.assoc, e.inv_hom_id, Category.comp_id] using h
   have hxy : (x * y) ≫ e.inv = (x ≫ e.inv) * (y ≫ e.inv) := by
     have h := hmul T (x ≫ e.inv) (y ≫ e.inv)
     simp only [Category.assoc, e.inv_hom_id, Category.comp_id] at h
@@ -1063,15 +1061,13 @@ theorem sq_symm_of_cocycle {G M : Type} [CommGroup G] [CommGroup M] (c : G → G
     have : a y 1 = a 1 1 := by
       have := congrArg (· - a y 1) h₂; simpa using this
     simp only [e]
-    rw [sub_eq_zero]
-    rw [← ‹a 1 1 = a 1 y›, ‹a y 1 = a 1 1›]
+    rw [sub_eq_zero, ← ‹a 1 1 = a 1 y›, ‹a y 1 = a 1 1›]
   have key : e x y + e x y = 0 := by
     rw [← emul, ← pow_two, h2, hone]
   apply Additive.ofMul.injective
   rw [ofMul_pow, ofMul_pow]
   change 2 • a x y = 2 • a y x
-  rw [← sub_eq_zero, ← smul_sub, two_nsmul]
-  exact key
+  rwa [← sub_eq_zero, ← smul_sub, two_nsmul]
 
 theorem isFinite_two {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (hf : IsFinite (sq A).left) :
     IsFinite (Two A).hom := by
@@ -1206,8 +1202,7 @@ theorem GlobalTheory.TwoTors.killsSq_of_triCocycle : ∀ (K : Type) [Field K] [I
     have e₃ : (1 : T ⟶ Two A)⁻¹ * (x * y) = x * y := by group
     have e₄ : (x * y)⁻¹ * (x * y * z) = z := by group
     have e₅ : x⁻¹ * (x * y * z) = y * z := by group
-    rw [e₁, e₂, e₃, e₄, e₅] at H
-    exact H
+    rwa [e₁, e₂, e₃, e₄, e₅] at H
   have hsym : ∀ (T : Over (Sp K)) (x y : T ⟶ Two A),
       GlobalTheory.CharKer.pullTop (lift x y).left (c ^ 2) = GlobalTheory.CharKer.pullTop (lift y x).left (c ^ 2) := by
     intro T x y
@@ -1220,8 +1215,7 @@ theorem GlobalTheory.TwoTors.killsSq_of_triCocycle : ∀ (K : Type) [Field K] [I
     simp only [map_pow]
     rw [← mul_pow, ← mul_pow, hcoc]
   obtain ⟨w, hw⟩ := GlobalTheory.T.symmetricTwoCocycle_finiteCommGroupScheme_coboundary K (Two A) (isFinite_two A hf) (c ^ 2) hcoc2 hsym
-  refine ⟨GlobalTheory.CharKer.pullTop (δ A).left w⁻¹, ?_⟩
-  exact killsSq_of A c w D hc hw
+  exact ⟨GlobalTheory.CharKer.pullTop (δ A).left w⁻¹, killsSq_of A c w D hc hw⟩
 end -- clump:auto
 end -- clump:auto
 end -- clump:auto

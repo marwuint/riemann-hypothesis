@@ -173,8 +173,7 @@ theorem coord_core {O R : Type} [CommRing O] [CommRing R] (S : Subring R) (o : O
       rw [map_nsmul, map_nsmul] at this
       rw [smul_sub]
       exact sub_eq_zero.2 this
-    rw [this]
-    exact ha'
+    rwa [this]
   · intro y a a'
     have hz : (y.map S.subtype) *ᵥ φ a - φ a' ∈ N := sub_mem (hN4 y _ (hmem a)) (hmem a')
     have he : ∀ i, ((y *ᵥ ρ a - ρ a') i : R) = t * ((y.map S.subtype) *ᵥ φ a - φ a') i := by
@@ -628,9 +627,7 @@ theorem exists_coord (l : Level H) (V : HSp D) {r : ℕ} (hr : V.rank = r) (β :
     (resI D.host.F l.Mb (half_ne_bot l)) (resI_oToS _ _) (resI_eq_zero_iff _ _) ρ hlin hsur (hker _ _ l.prod)
   refine ⟨φ, fun κ h a ha a' ha' => ?_⟩
   have h1 := hcong κ _ (Formalism.L2.DIV.frGL_pullFr β ⟨_, h⟩).symm a a'
-  have h2 := hφ (Formalism.L2.DIV.pullFr β ⟨_, h⟩).1 a ha a' ha'
-  have h3 := h1.trans h2
-  exact h3
+  exact h1.trans (hφ (Formalism.L2.DIV.pullFr β ⟨_, h⟩).1 a ha a' ha')
 
 end Dict
 
@@ -900,9 +897,7 @@ theorem not_isConjPl_of_le {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Ge
   rw [eq_top_iff, ← l.coprime]
   refine sup_le hw' (Ideal.map_le_iff_le_comap.2 fun a ha => ?_)
   obtain ⟨c', hc', e⟩ := h a (hw ha)
-  have : H.bar a = c' := by
-    apply RingOfIntegers.coe_injective
-    exact (H.bar_eq a).trans e.symm
+  have : H.bar a = c' := RingOfIntegers.coe_injective ((H.bar_eq a).trans e.symm)
   show H.bar a ∈ w'.asIdeal
   rw [this]; exact hc'
 
@@ -1155,8 +1150,7 @@ theorem ind_of_isLevLift (hι : LatEmb V ι) {γ : LevGrp Dw l} {κ : GA D V} (h
   have h0 := nsmul_mem_idl (l := l) hw
   rw [← e1, ι.map_smul, ι.map_smul, finVec_smul, finVec_smul, Matrix.mulVec_smul, ← smul_sub] at h0
   have h2 := add_mem (smul_mem_idl hm (sub_mem (stab_latGHat h1 (iota_mem hι a)) (iota_mem hι (liftLa γ a)))) h0
-  rw [← add_smul, ← iA_add, e, iA_one, one_smul] at h2
-  exact h2
+  rwa [← add_smul, ← iA_add, e, iA_one, one_smul] at h2
 
 theorem Ind.isLevLift (hι : LatEmb V ι) {γ : LevGrp Dw l} {κ : GA D V} (h : Ind V l ι γ κ) :
     IsLevLift l V ι γ κ := by
@@ -1258,8 +1252,7 @@ theorem map_eq_of_smul_eq {A T : Type} [CommRing A] [CommRing T] {n : ℕ} (S : 
   ext i j
   have h3 : p * y i j = p * Y i j := Subtype.ext (congrFun (congrFun h2 i) j)
   have h4 := congrArg ψ h3
-  rw [map_mul, map_mul, hp, one_mul, one_mul] at h4
-  exact h4
+  rwa [map_mul, map_mul, hp, one_mul, one_mul] at h4
 
 theorem map_eq_one_of_sub {R A T : Type} [CommRing R] [CommRing A] [CommRing T] (S : Subring A) (f : R →+* A)
     (ψ : S →+* T) {e : R} {p w x : S} (hp : (p : A) = f e) (hw : (w : A) * x = f (1 - e)) (hx : ψ x = 0) : ψ p = 1 := by
@@ -1401,8 +1394,7 @@ theorem exists_stab_lift (l : Level H) {V : HSp D} {β : GL (Fin V.rank) (EAf D)
   obtain ⟨u, hu⟩ := hdiv _ hY₀
   obtain ⟨Y, hY⟩ : ∃ Y, Y = Y₀.map (oToS D.host.F D.host.E) := ⟨_, rfl⟩
   have hu' : u * Y.det = p := by
-    rw [hY, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
-    exact hu
+    rwa [hY, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
   have hmm := conj_inv_part β p u Y hu' hpp
   rw [hp] at hmm
   obtain ⟨κ, hs, hκ⟩ := exists_unitary_part V he he' hinf _ _ hmm

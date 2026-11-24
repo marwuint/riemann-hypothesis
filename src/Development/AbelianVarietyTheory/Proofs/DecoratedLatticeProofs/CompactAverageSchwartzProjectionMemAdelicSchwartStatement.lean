@@ -212,8 +212,7 @@ theorem isLocallyConstant_comp [CompactSpace S] (ha : Continuous fun p : S × Y 
     (hb : Continuous fun p : S × Y => b p.1 p.2) (h : ∀ s y, b s (a s y) = y) (hg : g ∈ WeilM.SB Y) :
     IsLocallyConstant fun s y => g (a s y) := by
   have hg' : IsLocallyConstant g ∧ HasCompactSupport g := hg
-  have hcl : IsClosed (Function.support g) := by
-    exact (hg'.1.isOpen_fiber 0).isClosed_compl
+  have hcl : IsClosed (Function.support g) := (hg'.1.isOpen_fiber 0).isClosed_compl
   have hKc : IsCompact (Function.support g) := by
     have e : tsupport g = Function.support g := hcl.closure_eq
     rw [← e]
@@ -280,8 +279,7 @@ theorem integral_tensor {S V Y : Type} [TopologicalSpace S] [CompactSpace S] [No
       · intro g₁ _ hne
         exact Set.indicator_of_notMem (show s ∉ (fun s y => g (a s y)) ⁻¹' {g₁} from
           fun hs => hne hs.symm) _
-      · intro hn
-        exact absurd (hfin.mem_toFinset.2 ⟨s, rfl⟩) hn
+      · exact fun hn => absurd (hfin.mem_toFinset.2 ⟨s, rfl⟩) hn
     calc ∫ s, f (L s x) * g (a s y) ∂ν
         = ∫ s, ∑ g₁ ∈ hfin.toFinset,
             Set.indicator ((fun s y => g (a s y)) ⁻¹' {g₁}) (fun s => f (L s x) * g₁ y) s ∂ν :=
@@ -434,11 +432,9 @@ theorem integrable_and_projS_mem {θ : InfFam D} (hθ : IsInfFam θ) {T : HSp D}
         f (fun τ i j => ∑ c, compAt θ τ M i c * compAt θ τ x c j) *
           g (fun i j => ∑ c, M.map (finPart D) i c * finPart D (x c j)) := fun M x => by
       have e1 := fun τ => map_mul_entry ((θ τ).comp (infPart D)) M x
-      have e2 := map_mul_entry (finPart D) M x
-      exact congrArg₂ (· * ·) (congrArg f (funext e1)) (congrArg g e2)
+      exact congrArg₂ (· * ·) (congrArg f (funext e1)) (congrArg g (map_mul_entry (finPart D) M x))
     refine ⟨fun x => ?_, ?_⟩
-    · simp only [e]
-      exact hint (fun τ i j => compAt θ τ x i j) (fun i j => finPart D (x i j))
+    · simpa only [e] using hint (fun τ i j => compAt θ τ x i j) (fun i j => finPart D (x i j))
     · have e2 : projS ν (fun x : Mx D T.rank n => f (fun τ i j => compAt θ τ x i j) * g (fun i j => finPart D (x i j))) =
           ∑ g' ∈ t, fun x : Mx D T.rank n => F g' (fun τ i j => compAt θ τ x i j) * g' (fun i j => finPart D (x i j)) := by
         funext x

@@ -87,8 +87,7 @@ theorem _root_.GlobalTheory.TestLat.SumLat.isLattice_sumLat [Finite C] (lam : ι
     f.symm.toLinearMap ∘ₗ LinearMap.single K (fun _ : C => _root_.Formalism.L2.DIV.VV K lam) c
   have hval : ∀ c c' t, _root_.GlobalTheory.TestLat.valAt lam e c' (g c t) = (Pi.single c t : C → _root_.Formalism.L2.DIV.VV K lam) c' := by
     intro c c' t
-    have h := congrFun (f.apply_symm_apply (Pi.single c t : C → _root_.Formalism.L2.DIV.VV K lam)) c'
-    exact h
+    exact congrFun (f.apply_symm_apply (Pi.single c t : C → _root_.Formalism.L2.DIV.VV K lam)) c'
   have hsum : ∀ u, ∑ c, g c (_root_.GlobalTheory.TestLat.valAt lam e c u) = u := by
     intro u
     apply f.injective
@@ -115,14 +114,12 @@ theorem _root_.GlobalTheory.TestLat.SumLat.isLattice_sumLat [Finite C] (lam : ι
       rw [LinearMap.restrictScalars_apply, hval]
       by_cases hc : c' = c
       · subst hc
-        rw [Pi.single_eq_same]
-        exact ht
+        rwa [Pi.single_eq_same]
       · rw [Pi.single_eq_of_ne hc]
         exact zero_mem _
   rw [hP]
   refine ⟨Submodule.fg_iSup _ fun c => ((hT c).fg).map _, ?_⟩
-  intro s hs hli
-  exact (LinearIndependent.iff_fractionRing _ _).mp hli
+  exact fun s hs hli => (LinearIndependent.iff_fractionRing _ _).mp hli
 
 open NumberField IsDedekindDomain MvPolynomial in
 open scoped Matrix ComplexOrder in
@@ -173,8 +170,7 @@ theorem _root_.GlobalTheory.TestLat.SumLat.sumLat_lattice_dual : ∀ (K : Type) 
         rw [hy]
         by_cases hc : c' = c
         · subst hc
-          rw [Pi.single_eq_same]
-          exact hz
+          rwa [Pi.single_eq_same]
         · rw [Pi.single_eq_of_ne hc]
           exact zero_mem _
       have hsum := h y hyL

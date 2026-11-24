@@ -142,8 +142,7 @@ theorem mem_one_iff [NumberField E] (a : E) :
   constructor
   · rintro ⟨r, rfl⟩
     exact r.isIntegral_coe
-  · intro h
-    exact ⟨⟨a, h⟩, rfl⟩
+  · exact fun h => ⟨⟨a, h⟩, rfl⟩
 
 end DecoLatticeClasses
 
@@ -205,8 +204,7 @@ theorem exists_finset_decoSet_lattice_reps :
     ext x
     rw [mem_gmap, hm]
     rfl
-  rw [← e] at hL₀
-  exact hL₀
+  rwa [← e] at hL₀
 
 end GlobalTheory
 end -- clump:auto
@@ -245,8 +243,7 @@ theorem exists_span_quot {R N : Type} [CommRing R] [IsDomain R] [AddCommGroup N]
       Submodule.restrictScalars_top]
   have h2 := congrArg (Submodule.map (TensorProduct.quotTensorEquivQuotSMul N I).toLinearMap) h1
   rw [Submodule.map_span, Submodule.map_top, LinearEquiv.range] at h2
-  rw [Set.range_comp]
-  exact h2
+  rwa [Set.range_comp]
 
 theorem exists_determining {R N : Type} [CommRing R] [IsDomain R] [AddCommGroup N] [Module R N]
     [Module.Finite R N] [Module.Projective R N] (I : Ideal R) [Finite (R ⧸ I)] :
@@ -488,8 +485,7 @@ theorem fibre_bound_le {X : Fields} {Pr : Primes X} (hP : Pr.Ok) (u : Pr.Word) (
     rw [Finset.prod_congr rfl (fun P hP' => by rw [hP.vG_norm i P hP']), Finset.prod_const, hP.vG_card, ← pow_mul, mul_comm]
   have hd : Disjoint (Pr.vG 0) (Pr.vG 1) := by
     rw [Finset.disjoint_left]
-    intro w h0 h1
-    exact hP.g_ne ((hP.vG_norm 0 w h0).symm.trans (hP.vG_norm 1 w h1))
+    exact fun w h0 h1 => hP.g_ne ((hP.vG_norm 0 w h0).symm.trans (hP.vG_norm 1 w h1))
   have hU : ∏ w ∈ Pr.vGs, Ideal.absNorm w.asIdeal ^ (n * n) = Pr.g 0 ^ (X.f * (n * n)) * Pr.g 1 ^ (X.f * (n * n)) := by
     rw [← hg 0, ← hg 1, ← Finset.prod_union hd]
     unfold Primes.vGs
@@ -548,8 +544,7 @@ theorem card_orbits_le_exp {D : D7} {N : NumDatum} {X : Fields} {s : Seam D X} {
   have hrd : |(discr X.E : ℝ)| ^ ((1 : ℝ) / (Module.finrank ℚ X.E : ℝ)) = N.rd := by
     have e : X.E ≃ₐ[ℚ] D.host.E := s.iE.toRatAlgEquiv
     have h1 : D.host.rdE = N.rd := hrdeq.symm
-    rw [discr_eq_discr_of_algEquiv X.E e, e.toLinearEquiv.finrank_eq]
-    exact h1
+    rwa [discr_eq_discr_of_algEquiv X.E e, e.toLinearEquiv.finrank_eq]
   have hrd0 : 0 < N.rd := by
     rw [← hrd]
     exact Real.rpow_pos_of_pos (abs_pos.2 (by exact_mod_cast discr_ne_zero _)) _

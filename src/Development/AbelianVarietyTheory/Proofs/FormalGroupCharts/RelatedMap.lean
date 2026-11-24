@@ -123,31 +123,26 @@ theorem related_map {O : Type} [CommRing O] [StarRing O] {B B' : FB R d O} {φ �
   · have := congrArg (MvPowerSeries.map f) (h.law i)
     unfold transF at this ⊢
     rw [map_ev1 f (gp_addOf _ B.G.const _ _ (hc 0) (hc 1)), mapPoint_addOf f _ (hc 0) (hc 1), mc, mc] at this
-    rw [hF', hF]
-    exact this
+    rwa [hF', hF]
   · rw [hA', hA, h.act a, mapPoint_comp1 f φi (gp_comp1 _ _ (hBa a) hφ), mapPoint_comp1 f _ hφ]
   · have := congrArg (MvPowerSeries.map f) h.ph1
     rw [map_mul, map_mul, map_mul, map_ev2 f (gp_addOf _ B'.G.const _ _ (hp 0) (hp 1)) (hp 2),
       map_ev3 f (hc 0) (hc 1) (hc 2), map_ev2 f (hp 0) (hp 2), map_ev2 f (hp 1) (hp 2),
       mapPoint_addOf f _ (hp 0) (hp 1), mc, mc, mc, mapPoint_pt, mapPoint_pt, mapPoint_pt] at this
-    rw [hF', h1', h1]
-    exact this
+    rwa [hF', h1', h1]
   · have := congrArg (MvPowerSeries.map f) h.ph2
     rw [map_mul, map_mul, map_mul, map_ev2 f (hp 0) (gp_addOf _ B'.G.const _ _ (hp 1) (hp 2)),
       map_ev3 f (hc 0) (hc 1) (hc 2), map_ev2 f (hp 0) (hp 1), map_ev2 f (hp 0) (hp 2),
       mapPoint_addOf f _ (hp 1) (hp 2), mc, mc, mc, mapPoint_pt, mapPoint_pt, mapPoint_pt] at this
-    rw [hF', h2', h2]
-    exact this
+    rwa [hF', h2', h2]
   · have := congrArg (MvPowerSeries.map f) h.sy
     rw [map_mul, map_mul, map_ev2 f (hc 0) (hc 1), map_ev2 f (hp 1) (hp 0), mc, mc, mapPoint_pt, mapPoint_pt] at this
-    rw [hs', hs]
-    exact this
+    rwa [hs', hs]
   · have := congrArg (MvPowerSeries.map f) (h.ad a)
     rw [map_mul, map_mul, map_ev2 f (hc 0) (hc 1),
       map_ev2 f (hp 0) (gp_comp1 _ _ (hBa' _) (hp 1)),
       map_ev2 f (gp_comp1 _ _ (hBa' _) (hp 0)) (hp 1), mc, mc, mc, mc, mapPoint_pt, mapPoint_pt] at this
-    rw [hd', hd, hA', hA']
-    exact this
+    rwa [hd', hd, hA', hA']
 
 end Map
 

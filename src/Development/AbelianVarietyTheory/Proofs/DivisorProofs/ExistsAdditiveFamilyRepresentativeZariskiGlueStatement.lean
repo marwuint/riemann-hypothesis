@@ -80,8 +80,7 @@ theorem fam_pull {T Y : Over S} {N : LB (A ⊗ T).left} (hN : Fam A N) (y : Y �
   have hL : (ev N (fst A Y) (snd A Y ≫ y)).IsLB := pull_isLB hN.isLB _
   refine ⟨hL, (isAdditive_iff hL).2 fun Z a a' t => ?_⟩
   rw [evc_ev hN.isLB _ _ hL, evc_ev hN.isLB _ _ hL, evc_ev hN.isLB _ _ hL]
-  simp only [lift_fst, lift_snd_assoc]
-  exact (isAdditive_iff hN.isLB).1 hN.add Z a a' (t ≫ y)
+  simpa only [lift_fst, lift_snd_assoc] using (isAdditive_iff hN.isLB).1 hN.add Z a a' (t ≫ y)
 
 
 omit [GrpObj A] in
@@ -113,8 +112,7 @@ theorem isChart_of_rep (V : S.Opens) {B : Over S} (b : B ⟶ Over.mk V.ι) {P : 
       have e : (u.left ≫ b.left) ≫ V.ι = y.left ≫ T.hom := by
         rw [Over.w y, Category.assoc, hb, Over.w u]
       have hmem : (y.left ≫ T.hom) z ∈ Set.range V.ι := ⟨(u.left ≫ b.left) z, by rw [← e]; rfl⟩
-      rw [Scheme.Opens.range_ι] at hmem
-      exact hmem
+      rwa [Scheme.Opens.range_ι] at hmem
     · intro hz
       have hY : ∀ z, Y.hom z ∈ V := fun z => by
         rw [← Over.w y]
@@ -146,8 +144,7 @@ theorem zariski_glue : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianSc
       intro K _ _ s N hN
       obtain ⟨i, hi⟩ := hcov (s (default : Sp K))
       have hs : ∀ z : Sp K, s z ∈ V i := fun z => by
-        rw [Subsingleton.elim z default]
-        exact hi
+        rwa [Subsingleton.elim z default]
       obtain ⟨t⟩ := exists_hom_open (V i) (Over.mk s) hs
       obtain ⟨x, ⟨-, hx⟩, -⟩ := (hRi i).univ _ t N hN
       exact ⟨i, x, (same_id_iff hN.isLB (hRi i).fam.isLB x).2 hx⟩)
@@ -161,8 +158,7 @@ theorem zariski_glue : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianSc
   obtain ⟨e, he, -⟩ := _root_.GlobalTheory.DualCon.rep_unique S A _ _ _ (snd B (Over.mk (V i).ι)) _ (bi i) (Pi i) hR' (hRi i)
   haveI : IsIso e.hom.left := Functor.map_isIso (Over.forget _) e.hom
   have h2 := good_iso_comp e.hom.left (hGi i)
-  rw [← Over.comp_left, he] at h2
-  exact h2
+  rwa [← Over.comp_left, he] at h2
 
 end GlobalTheory.DualCon.ZarGlue
 end -- clump:auto

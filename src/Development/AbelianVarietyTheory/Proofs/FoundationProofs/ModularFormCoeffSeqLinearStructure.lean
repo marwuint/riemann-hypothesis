@@ -120,20 +120,17 @@ theorem qs_zero : qs (0 : ℕ → ℂ) = 0 := by
 
 theorem qs_add (a b : ℕ → ℂ) (ha : PolyB a) (hb : PolyB b) : qs (a + b) = qs a + qs b := by
   funext τ
-  simp only [qs, Pi.add_apply, add_mul]
-  exact (summ a ha τ).tsum_add (summ b hb τ)
+  simpa only [qs, Pi.add_apply, add_mul] using (summ a ha τ).tsum_add (summ b hb τ)
 
 theorem qs_smul (c : ℂ) (a : ℕ → ℂ) : qs (c • a) = c • qs a := by
   funext τ
-  simp only [qs, Pi.smul_apply, smul_eq_mul, mul_assoc]
-  exact tsum_mul_left
+  simpa only [qs, Pi.smul_apply, smul_eq_mul, mul_assoc] using tsum_mul_left
 
 theorem coprime_of_level (L : ℕ) (γ : SL(2, ℤ)) (h : (L : ℤ) ∣ γ 1 0) : IsCoprime (γ 1 1) (L : ℤ) := by
   obtain ⟨m, hm⟩ := h
   have hdet : γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 = 1 := by
     have := γ.2
-    rw [Matrix.det_fin_two] at this
-    exact this
+    rwa [Matrix.det_fin_two] at this
   refine ⟨γ 0 0, -(γ 0 1 * m), ?_⟩
   rw [hm] at hdet
   linear_combination hdet
@@ -145,8 +142,7 @@ theorem GlobalTheory.EisM.mf_linear : ∀ (k L : ℕ) (χ : ℤ → ℂ), (MF k 
   intro k L χ
   have lev : ∀ L' a, L ∣ L' → MF k L χ a → MF k L' χ a := by
     intro L' a hL ⟨hp, hi⟩
-    refine ⟨hp, fun γ hγ τ => hi γ ?_ τ⟩
-    exact dvd_trans (Int.natCast_dvd_natCast.mpr hL) hγ
+    exact ⟨hp, fun γ hγ τ => hi γ (dvd_trans (Int.natCast_dvd_natCast.mpr hL) hγ) τ⟩
   refine ⟨⟨polyB_zero, fun γ _ τ => by simp [qs_zero]⟩, ?_, ?_, ?_, lev, ?_⟩
   · intro a b ⟨ha, ia⟩ ⟨hb, ib⟩
     have e := qs_add a b ha hb

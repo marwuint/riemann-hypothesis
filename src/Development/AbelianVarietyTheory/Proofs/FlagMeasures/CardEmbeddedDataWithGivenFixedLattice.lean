@@ -75,12 +75,10 @@ theorem exists_fun_span (t : Finset V) {e : ℕ} (hc : t.card ≤ e) :
   · rintro _ ⟨i, rfl⟩
     by_cases hi : ∃ x, emb x = i
     · obtain ⟨x, rfl⟩ := hi
-      simp only [emb.injective.extend_apply]
-      exact Submodule.subset_span x.2
+      simpa only [emb.injective.extend_apply] using Submodule.subset_span x.2
     · simp only [Function.extend_apply' _ _ _ hi]
       simp
-  · intro x hx
-    exact ⟨emb ⟨x, hx⟩, by simp only [emb.injective.extend_apply]⟩
+  · exact fun x hx => ⟨emb ⟨x, hx⟩, by simp only [emb.injective.extend_apply]⟩
 
 theorem exists_gens_of_map [IsDedekindDomain R] (f : V →ₗ[R] W) (B : Submodule R V) (A : Submodule R W)
     (m : R) (hm : m ≠ 0) (T : Finset W) (hT : ∀ x ∈ T, m • x ∈ A)
@@ -190,8 +188,7 @@ theorem genBy_dual (h : V →ₗ⋆[K] V →ₗ[K] K) {X Y : Submodule (𝓞 K) 
       rw [Formalism.HermitianLatticesTheory.dualBasic_mem_dual] at hv
       refine ⟨(Formalism.HermitianLatticesTheory.dualBasic_mem_dual h X v).2 fun y hy => hv y ?_, fun s _ => hv _ (htY s)⟩
       rw [hY]; exact Submodule.mem_sup_left hy
-  rw [← this]
-  exact ht'
+  rwa [← this]
 
 omit [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 theorem flip_nondeg (H : HermSpace K V) : H.B.flip.Nondegenerate := by
@@ -208,8 +205,7 @@ theorem fixLat_isLattice {H : HermSpace K V} {g : 𝓞 K} (hg : g ≠ 0) {L' L :
     {Γ : Submodule (𝓞 K) (V × V)} (hL' : Submodule.IsLattice K L') (hL : Submodule.IsLattice K L)
     (hΓ : IsModIso H g L' L Γ) : Submodule.IsLattice K (fixLat Γ) := by
   refine ⟨hL.fg.of_le (fixLat_le hΓ).2, ?_⟩
-  intro s hs hli
-  exact (LinearIndependent.iff_fractionRing _ _).mp hli
+  exact fun s hs hli => (LinearIndependent.iff_fractionRing _ _).mp hli
 
 theorem fixLat_isFullLattice {H : HermSpace K V} {g : 𝓞 K} (hg : g ≠ 0)
     {L' L : Submodule (𝓞 K) V} {Γ : Submodule (𝓞 K) (V × V)}
@@ -314,8 +310,7 @@ theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommG
   have c5 : ∀ d ∈ S, ∀ i, ∃ y, (gen d.1 i, y) ∈ d.2 := by
     intro d hd i
     refine hd.1.2.2.1.2.2.1 _ ?_
-    rw [hgen' d.1 (c4 d hd)]
-    rw [← hgen' d.1 (c4 d hd)]
+    rw [hgen' d.1 (c4 d hd), ← hgen' d.1 (c4 d hd)]
     exact (hgen' d.1 (c4 d hd)).ge (Submodule.mem_sup_right (Submodule.subset_span ⟨i, rfl⟩))
   choose! ι hι using c5
   let Q : Set (V ⧸ L₀) := Ld.map L₀.mkQ

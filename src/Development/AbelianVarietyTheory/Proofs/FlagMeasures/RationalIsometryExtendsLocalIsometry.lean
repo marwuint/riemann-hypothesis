@@ -132,8 +132,7 @@ theorem exists_dual {r : ℕ} (e : Fin r → (VS D).V) (he : LinearIndependent D
       have h0 : f (φ y) = 0 := hle ⟨y, rfl⟩
       rw [LinearMap.pi_apply_eq_sum_univ] at h0
 
-      rw [map_sum, LinearMap.sum_apply]
-      rw [← h0]
+      rw [map_sum, LinearMap.sum_apply, ← h0]
       refine Finset.sum_congr rfl fun a _ => ?_
       rw [map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, star_star, smul_eq_mul, smul_eq_mul, mul_comm]
       rfl
@@ -154,8 +153,7 @@ theorem exists_dual {r : ℕ} (e : Fin r → (VS D).V) (he : LinearIndependent D
   choose es hes using hex
   refine ⟨es, fun a b => ?_⟩
   have := congrFun (hes b) a
-  simp only [φ, LinearMap.pi_apply, Pi.single_apply] at this
-  exact this
+  simpa only [φ, LinearMap.pi_apply, Pi.single_apply] using this
 
 end GlobalTheory.LocExt
 
@@ -188,8 +186,7 @@ theorem locEquiv_img (Z : LocDat D) (p : PlF D) (γ : (VS D).V ≃ₗ[D.host.E] 
   rw [Submodule.map_span]
   congr 1
   rw [Submodule.map_coe, Set.image_image, Set.image_image]
-  refine Set.image_congr fun x _ => ?_
-  exact locEquiv_ext p γ x
+  exact Set.image_congr fun x _ => locEquiv_ext p γ x
 
 end GlobalTheory.LocExt
 
@@ -216,8 +213,7 @@ theorem bcP_Xsp_mem (Z : LocDat D) (p : PlF D) {T : D.host.E} (F : LFlag (D.sp.Y
   refine Submodule.span_le.2 ?_ h
   rintro _ ⟨_, ⟨b, rfl⟩, rfl⟩
   have := baseChange_flagVector_mem_span Z p F Set.univ b (Set.mem_univ b)
-  rw [Set.image_univ] at this
-  exact this
+  rwa [Set.image_univ] at this
 
 theorem perp_le (Z : LocDat D) (p : PlF D) {T : D.host.E} (F : LFlag (D.sp.Y 0) D.R.rS T) {v : Vp D p}
     (hv : v ∈ (locH Z p).perp ((locH Z p).X (scaled Z p (frame F)))) :

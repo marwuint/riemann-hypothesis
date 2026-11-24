@@ -107,8 +107,7 @@ def postHom (K : Cx R) (F G : Shv R) (n : ℤ) : (F ⟶ G) →+ (HK R K F n →+
 
 theorem post_zsmul (K : Cx R) {F G : Shv R} (φ : F ⟶ G) (c : ℤ) (n : ℤ) (x : HK R K F n) :
     HK.post R K (c • φ) n x = c • HK.post R K φ n x := by
-  have h := map_zsmul (postHom K F G n) c φ
-  exact DFunLike.congr_fun h x
+  exact DFunLike.congr_fun (map_zsmul (postHom K F G n) c φ) x
 
 theorem pull_post {K L : Cx R} (f : L ⟶ K) {F G : Shv R} (φ : F ⟶ G) (n : ℤ) (x : HK R K F n) :
     HK.pull R f G n (HK.post R K φ n x) = HK.post R L φ n (HK.pull R f F n x) :=

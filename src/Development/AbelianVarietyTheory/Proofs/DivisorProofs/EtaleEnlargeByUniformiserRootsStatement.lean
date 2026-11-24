@@ -254,8 +254,7 @@ theorem exists_kummer_enlargement : ∀ (T : Type) [CommRing T] [IsDomain T] [Is
     have hr0 : (⊥ : Ideal A) < r := by
       refine bot_lt_iff_ne_bot.mpr fun h => ha ?_
       have : a ∈ r := har (Ideal.mem_span_singleton_self a)
-      rw [h, Ideal.mem_bot] at this
-      exact this
+      rwa [h, Ideal.mem_bot] at this
     have h1 := Ideal.height_add_one_le_of_lt_of_isPrime hr0
     have h2 := Ideal.height_add_one_le_of_lt_of_isPrime hlt'
     rw [hheight] at h2
@@ -390,9 +389,7 @@ theorem etale_away_of_isEtaleAt_off_submonoid :
   by_cases hd : Disjoint (I : Set C) (M.map (algebraMap R C) : Set C)
   · exfalso
     obtain ⟨Q, hQ, hIQ, hQd⟩ := Ideal.exists_le_prime_disjoint I (M.map (algebraMap R C)) hd
-    have hE : Algebra.IsEtaleAt R Q := by
-      refine hM Q fun m hm hmQ => ?_
-      exact Set.disjoint_left.1 hQd hmQ ⟨m, hm, rfl⟩
+    have hE : Algebra.IsEtaleAt R Q := hM Q fun m hm hmQ => Set.disjoint_left.1 hQd hmQ ⟨m, hm, rfl⟩
     have h1 : (⟨Q, hQ⟩ : PrimeSpectrum C) ∈ Algebra.etaleLocus R C := hE
     have h2 : (⟨Q, hQ⟩ : PrimeSpectrum C) ∈ (Algebra.etaleLocus R C)ᶜ := by
       rw [hI]; exact hIQ

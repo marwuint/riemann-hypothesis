@@ -132,8 +132,7 @@ theorem exists_eq_of_isIntegral_div (h : IsClo p Ω) (T : Tower p Ω) {n : ℕ} 
   have hzi' : IsIntegral (On p n) z := hzi.tower_top
   obtain ⟨w, hw⟩ := IsIntegrallyClosed.isIntegral_iff.1 hzi'
   refine ⟨w, ?_⟩
-  rw [← hφ, hw]
-  exact hz
+  rwa [← hφ, hw]
 
 end GlobalTheory.K5.TowerFix
 
@@ -303,8 +302,7 @@ theorem exists_trData_towerAlg : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field
   have htr : ∀ s, (tr s : Ω) = cosetTrace U (s : Ω) := fun s => rfl
   have hle : towerAlg T ≤ fixInt U := fun s hs g => towerAlg_fixed T hs (g : ↥(⨅ n, Gn T n))
   refine ⟨fixInt U, tr, n, a', b', ?_, ?_⟩
-  · intro s hs
-    exact hUfix _ (Finset.mem_image_of_mem _ hs)
+  · exact fun s hs => hUfix _ (Finset.mem_image_of_mem _ hs)
   refine
     { le := hle
       e_mem := Subalgebra.natCast_mem _ p
@@ -318,8 +316,7 @@ theorem exists_trData_towerAlg : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field
       sum := ?_ }
   · intro x hx
     apply _root_.GlobalTheory.K5.mem_towerAlg_of_fixed p Ω hclo T
-    intro g hg
-    exact (cosetTrace_fixed_props Ω v _ hvinv' U _ hx).1 ⟨g, hg⟩
+    exact fun g hg => (cosetTrace_fixed_props Ω v _ hvinv' U _ hx).1 ⟨g, hg⟩
   · intro x _ y _
     apply Subtype.ext
     simp only [htr, Subalgebra.coe_add, cosetTrace, smul_add, Finset.sum_add_distrib]

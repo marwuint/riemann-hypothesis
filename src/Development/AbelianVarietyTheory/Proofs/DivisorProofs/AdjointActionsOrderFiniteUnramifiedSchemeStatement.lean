@@ -309,8 +309,7 @@ theorem eqLocus_isClosedImmersion : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S]
     have hmem : ∀ y : A'.left, P (t (A'.hom y)) := by
       intro y
       have : t (A'.hom y) ∈ Set.range W.ι := ⟨z (A'.hom y), by rw [← hz, Scheme.Hom.comp_apply]⟩
-      rw [Scheme.Opens.range_ι] at this
-      exact this
+      rwa [Scheme.Opens.range_ι] at this
     choose V hVt hV using fun y => hloc _ (hmem y)
     have hw : φ' ≫ A.hom = A'.hom ≫ t := hp.1.w
     let U : A'.left → A'.left.Opens := fun y => φ' ⁻¹ᵁ (A.hom ⁻¹ᵁ V y)
@@ -641,8 +640,7 @@ theorem exists_baseChange_hom : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (G A : Ov
       exact _root_.left_eq_mul.mp h1
     refine ⟨?_, ?_⟩
     · simpa [Hom.one_def] using hone
-    · have h2 := mul (G' ⊗ G') (fst G' G') (snd G' G')
-      simpa [Hom.mul_def] using h2
+    · simpa [Hom.mul_def] using mul (G' ⊗ G') (fst G' G') (snd G' G')
   refine ⟨p', isMonHom_of_mul_comp p' fun T x y => ?_, hp'⟩
   apply Over.OverMorphism.ext
   apply hA.1.hom_ext
@@ -710,8 +708,7 @@ theorem exists_powPr_of_isGrpPullback : ∀ (S T : Scheme.{0}) (t : T ⟶ S) (A 
       exact _root_.left_eq_mul.mp h1
     refine ⟨?_, ?_⟩
     · simpa [Hom.one_def] using hone
-    · have h2 := mul (B' ⊗ B') (fst B' B') (snd B' B')
-      simpa [Hom.mul_def] using h2
+    · simpa [Hom.mul_def] using mul (B' ⊗ B') (fst B' B') (snd B' B')
   refine ⟨pr', fun u => ?_, hpr, fun X y => ?_⟩
   · refine isMonHom_of_mul_comp _ fun X x y => inj _ _ ?_
     have hm : pushPt hB.1.w (x * y) = pushPt hB.1.w x * pushPt hB.1.w y := map_mul (pushHom hB X) x y
@@ -821,8 +818,7 @@ theorem main : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (Q 
   rw [Fintype.sum_prod_type]
 
   simp only [← map_zsmul, ← map_sum, hsum]
-  rw [← nsmul_one, map_nsmul, natCast_zsmul]
-  rw [map_nsmul]
+  rw [← nsmul_one, map_nsmul, natCast_zsmul, map_nsmul]
   show d • pull (lift (𝟙 A) (act 1)).left (cls Q hQ) = _
   rw [hact.2.1]
 
@@ -882,8 +878,7 @@ theorem main : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (Q 
   rw [GlobalTheory.CechPic.cls_pull (LB.isLB_linComb hQL _ _), GlobalTheory.CechPic.cls_pull (pull_isLB (LB.isLB_linComb hQL _ _) _),
     GlobalTheory.CechPic.cls_pull (LB.isLB_linComb hQL _ _), GlobalTheory.CechPic.cls_linComb hQL, GlobalTheory.CechPic.cls_linComb hQL]
 
-  simp only [map_sum, map_zsmul, ← GlobalTheory.CechPic.pull_comp]
-  exact C'.symm
+  simpa only [map_sum, map_zsmul, ← GlobalTheory.CechPic.pull_comp] using C'.symm
 
 end GlobalTheory.ElRep
 end -- clump:auto
@@ -978,8 +973,7 @@ def prodPowHom {r : ℕ} (f : Fin r → (A ⟶ A)) : Multiplicative (Fin r → �
 theorem prodPow_sum {r : ℕ} (f : Fin r → (A ⟶ A)) {J : Type} (s : Finset J) (g : J → Fin r → ℤ) :
     prodPow f (∑ i ∈ s, g i) = ∏ i ∈ s, prodPow f (g i) := by
   have := map_prod (prodPowHom f) (fun i => Multiplicative.ofAdd (g i)) s
-  rw [← ofAdd_sum] at this
-  exact this
+  rwa [← ofAdd_sum] at this
 
 def precompHom (h : A ⟶ A) : (A ⟶ A) →* (A ⟶ A) :=
   MonoidHom.mk' (fun x => h ≫ x) (fun x y => MonObj.comp_mul h x y)
@@ -998,9 +992,7 @@ theorem prodPow_comp {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {
   haveI : IsMonHom (prodPow f d) := isMonHom_prodPow f hf d
   have h1 : prodPow f c ≫ prodPow f d = ∏ k, (f k ≫ prodPow f d) ^ c k := by
     have := map_prod (postcompHom (prodPow f d)) (fun k => f k ^ c k) Finset.univ
-    refine this.trans (Finset.prod_congr rfl fun k _ => ?_)
-    show (f k ^ c k) ≫ prodPow f d = _
-    exact GrpObj.zpow_comp (f k) (c k) (prodPow f d)
+    exact this.trans (Finset.prod_congr rfl fun k _ => GrpObj.zpow_comp (f k) (c k) (prodPow f d))
   have h2 : ∀ k, f k ≫ prodPow f d = ∏ l, prodPow f (cm k l) ^ d l := by
     intro k
     have := map_prod (precompHom (f k)) (fun l => f l ^ d l) Finset.univ
@@ -1307,7 +1299,6 @@ theorem adj_of_span : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj
     abel
   let F : O →+ Pic (A ⊗ A).left := AddMonoidHom.mk' f fadd
   have Fe : ∀ i, F (e i) = 0 := fun i => by
-    show f (e i) = 0
     exact sub_eq_zero.2 ((cls_eq_iff (pull_isLB hL _) (pull_isLB hL _)).2 (he i))
   have hker : Submodule.span ℤ (Set.range e) ≤ LinearMap.ker F.toIntLinearMap :=
     Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact Fe i)

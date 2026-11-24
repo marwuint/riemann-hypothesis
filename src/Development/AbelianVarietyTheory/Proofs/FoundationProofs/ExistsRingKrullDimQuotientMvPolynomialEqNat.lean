@@ -105,8 +105,7 @@ theorem exists_homogeneous_forall_notMem (s : Finset (Ideal A))
       exact (Finset.ne_of_mem_erase hq) (hinc p hp q (Finset.mem_of_mem_erase hq) hqp)
     obtain ⟨m, y, hy, hyJ, hyp⟩ := exists_homogeneous_notMem_of_not_le 𝒜 hH hnle
     refine ⟨n + m, by omega, x * y, SetLike.mul_mem_graded hx hy, ?_, ?_⟩
-    · intro h
-      exact ((hprime p hp).mem_or_mem h).elim hxp hyp
+    · exact fun h => ((hprime p hp).mem_or_mem h).elim hxp hyp
     · intro q hq hqp
       exact q.mul_mem_left _
         ((Finset.inf_le (f := id) (Finset.mem_erase.mpr ⟨hqp, hq⟩) : _ ≤ q) hyJ)
@@ -124,8 +123,7 @@ theorem exists_homogeneous_forall_notMem (s : Finset (Ideal A))
     have h2 : ∑ q ∈ Finset.univ.erase (⟨p, hp⟩ : s), g q ^ ((∏ p, n p) / n q) ∈ p := by
       refine p.sum_mem fun q hq => Ideal.pow_mem_of_mem _ ?_ _ (Nat.pos_of_ne_zero (hq0 q))
       refine hgq q p hp fun h => Finset.ne_of_mem_erase hq (Subtype.ext h.symm)
-    have h3 := (Submodule.add_mem_iff_left p h2).mp hmem
-    exact hgp ⟨p, hp⟩ ((hprime p hp).mem_of_pow_mem _ h3)
+    exact hgp ⟨p, hp⟩ ((hprime p hp).mem_of_pow_mem _ ((Submodule.add_mem_iff_left p h2).mp hmem))
 
 end Graded
 
@@ -142,8 +140,7 @@ theorem ringKrullDim_quotient_radical_sup_succ_le {A : Type*} [CommRing A] (J : 
     rw [← map_mul, Ideal.Quotient.eq_zero_iff_mem, ← Ideal.sInf_minimalPrimes,
       Ideal.mem_sInf] at hx
     rw [Ideal.Quotient.eq_zero_iff_mem, ← Ideal.sInf_minimalPrimes, Ideal.mem_sInf]
-    intro p hp
-    exact (hp.1.1.mem_or_mem (hx hp)).resolve_right (hf p hp)
+    exact fun p hp => (hp.1.1.mem_or_mem (hx hp)).resolve_right (hf p hp)
   · rw [Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]
     exact Ideal.mem_sup_right (Ideal.mem_span_singleton_self f)
 
@@ -154,8 +151,7 @@ variable {σ : Type*}
 theorem mem_idealOfVars_pow_of_isHomogeneous {R : Type*} [CommRing R] {p : MvPolynomial σ R}
     {d n : ℕ} (hp : p.IsHomogeneous d) (h : n ≤ d) : p ∈ idealOfVars σ R ^ n := by
   rw [mem_pow_idealOfVars_iff']
-  intro x hx
-  exact hp.coeff_eq_zero (by omega)
+  exact fun x hx => hp.coeff_eq_zero (by omega)
 
 theorem le_idealOfVars_of_isHomogeneous {k : Type*} [Field k] {J : Ideal (MvPolynomial σ k)}
     (hJ : J.IsHomogeneous (homogeneousSubmodule σ k)) (hJ' : J ≠ ⊤) : J ≤ idealOfVars σ k := by
@@ -260,8 +256,7 @@ theorem exists_forms_idealOfVars_le_radical (n : ℕ) :
         · rw [Ideal.span_singleton_le_iff_mem]
           exact ⟨e, Ideal.mem_sup_right (Ideal.subset_span ⟨0, rfl⟩)⟩
         · rw [Ideal.span_le, Set.range_subset_iff]
-          intro i
-          exact ⟨m, Ideal.mem_sup_right (Ideal.subset_span ⟨i.succ, rfl⟩)⟩
+          exact fun i => ⟨m, Ideal.mem_sup_right (Ideal.subset_span ⟨i.succ, rfl⟩)⟩
 
 end Poly
 

@@ -207,9 +207,7 @@ theorem vdbl_line : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
       exact hcb γ hγ i)
   have hφd0 : φd ≠ 0 := by
     obtain ⟨t, ht⟩ := Function.ne_iff.mp hv0
-    refine Function.ne_iff.mpr ⟨Sum.elim t t, ?_⟩
-    show φ₀ t * star (φ₀ t) ≠ 0
-    exact mul_ne_zero ht (star_ne_zero.mpr ht)
+    exact Function.ne_iff.mpr ⟨Sum.elim t t, mul_ne_zero ht (star_ne_zero.mpr ht)⟩
   obtain ⟨c', hc'⟩ := GlobalTheory.VacUniqInert.eq_smul_of_eigen (GlobalTheory.LatVac.psiAt B.ψ v)
     (fun i : Λ × Λ => GlobalTheory.LatVac.locCo dd v (Matrix.fromCols i.1.1ᵀ i.2.1ᵀ))
     (fun i => cf i.1.1 i.2.1) (fun u hu => by
@@ -1657,8 +1655,7 @@ theorem unip_mem : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
         (fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) 1 : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) =
       (fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) 1 : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) *
         ((1 : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E))
-    rw [Units.val_one, Matrix.mul_one]
-    exact key
+    rwa [Units.val_one, Matrix.mul_one]
   · have hNt : (antiCols (F := F) (E := E) d)ᵀ = fromCols (1 : Matrix (Fin d) (Fin d) (AE F E)) (-1) := by
       rw [antiCols, transpose_fromRows, transpose_one, transpose_neg, transpose_one]
     show (1 + ⅟(2 : AE F E) • M) = _
@@ -1880,8 +1877,7 @@ theorem vacV_fixed : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   obtain ⟨c, rfl⟩ := _root_.GlobalTheory.LatVacLine.vacuum_line F E σ B a a' G X om om' hT v (hT.base.inert v w hin).2.2
     (_root_.GlobalTheory.InertSelfDual.latAtV_selfDual F E σ B a a' G X om om' hT v w hin) θ hθ _ hSB hne hfix φ₁ hφ₁ hfix₁
   have hc := _root_.GlobalTheory.DblVacV.eigen_eq_one F E σ B a a' G X om om' hT v w hin hvT k hk c hact
-  rw [hc, one_smul] at hact
-  exact hact
+  rwa [hc, one_smul] at hact
 
 theorem vac_fixed_pair : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

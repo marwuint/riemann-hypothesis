@@ -108,8 +108,7 @@ theorem mul_le_self_iff (a b : WithZero (Multiplicative ℤ)) (ha : a ≠ 0) : a
   · intro h
     have : a⁻¹ * (a * b) ≤ a⁻¹ * a := by gcongr
     rwa [← mul_assoc, inv_mul_cancel₀ ha, one_mul] at this
-  · intro h
-    exact mul_le_of_le_one_right' h
+  · exact fun h => mul_le_of_le_one_right' h
 
 end GlobalTheory.TwLat.Lv
 
@@ -175,8 +174,7 @@ theorem level_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr 
         exact Finset.sum_congr rfl fun l _ => algebraMap_smul K.E (o l) _
       have := congrFun (sum_smul_col_inj e b g _ _ ho') i
       have hi := (hint (algebraMap K.O K.E (o i))).mp ⟨o i, rfl⟩
-      rw [this, RingEquiv.apply_symm_apply] at hi
-      exact hi
+      rwa [this, RingEquiv.apply_symm_apply] at hi
     · intro hYi y hy
       have hle : GlobalTheory.TwLat.lat e b g ≤ (GlobalTheory.TwLat.lat e b g).comap (LinearMap.mulLeft K.O B.g) := by
         rw [GlobalTheory.TwLat.lat, Submodule.span_le]
@@ -210,8 +208,7 @@ theorem level_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr 
       rintro ⟨u, hu⟩
       have h1 : c * ((u⁻¹ : (Ov E w)ˣ) : Ov E w) = 1 := by
         have := congrArg Subtype.val (Units.mul_inv u)
-        rw [hu] at this
-        exact this
+        rwa [hu] at this
       obtain ⟨o, ho⟩ := (hint (e.symm ((u⁻¹ : (Ov E w)ˣ) : Ov E w))).mpr (by
         rw [RingEquiv.apply_symm_apply]
         exact (mem_adicCompletionIntegers _ _ _).mp ((u⁻¹ : (Ov E w)ˣ) : Ov E w).2)

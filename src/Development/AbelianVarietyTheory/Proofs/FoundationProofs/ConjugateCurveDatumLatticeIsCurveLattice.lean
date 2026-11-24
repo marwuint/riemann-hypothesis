@@ -201,8 +201,7 @@ theorem mem_lamOf (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ z : ℂ) :
     | neg x _ hx =>
       obtain ⟨c, hc, rfl⟩ := hx
       exact ⟨-c, cc.neg_mem hc, by rw [map_neg, mul_neg]⟩
-  · intro hz
-    exact AddSubgroup.subset_closure hz
+  · exact fun hz => AddSubgroup.subset_closure hz
 
 theorem exists_not_int (D : D7) : ∃ s : 𝓞 D.host.K, ∀ a : ℤ, embK D s ≠ a := by
   have hb : D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E) := D.host.sqrtMinusD_sq
@@ -290,10 +289,8 @@ theorem galCurve_holds : ∀ D : D7, galCurve D := by
     have : (TaylorLogMetric.liftM M (g2 Λ)) ^ 3 - 27 * (TaylorLogMetric.liftM M (g3 Λ)) ^ 2 = 1 := by
       apply Subtype.ext
       unfold TaylorLogMetric.liftM
-      rw [dite_eq_left h2, dite_eq_left h3]
-      exact hdisc
-    have h := congrArg ρ this
-    simpa [map_ofNat] using h
+      rwa [dite_eq_left h2, dite_eq_left h3]
+    simpa [map_ofNat] using congrArg ρ this
   obtain ⟨L', hL2, hL3⟩ := (_root_.GlobalTheory.LatticeInvariants.invariants_dictionary L Λ hL).2.2.2.2.2.2 _ _ (by rw [hρ]; exact one_ne_zero)
   have hP := _root_.GlobalTheory.LatticeInvariants.invariants_dictionary L' L'.lattice.toAddSubgroup (fun z => Iff.rfl)
   have hspec : g2 (lamConj M ρ Λ) = ρ (TaylorLogMetric.liftM M (g2 Λ)) ∧ g3 (lamConj M ρ Λ) = ρ (TaylorLogMetric.liftM M (g3 Λ)) :=

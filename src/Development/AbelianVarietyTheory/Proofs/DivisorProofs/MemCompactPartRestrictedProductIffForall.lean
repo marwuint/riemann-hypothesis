@@ -123,8 +123,7 @@ theorem isCompact_setOf_forall_mem (hX : GlobalTheory.RestrMeas.IsRestrGroup (Gl
       intro v hv
       by_cases h : v = v₀
       · subst h; simp only [hC'def, Function.update_self]; exact subset_rfl
-      · simp only [hC'def, Function.update_of_ne h]
-        exact hCK v (by simp [h, hv])
+      · simpa only [hC'def, Function.update_of_ne h] using hCK v (by simp [h, hv])
     have hM' := ih C' hC' hC'K
     have hl : ∀ c : Y v₀, ∃ x : X, ∀ v, pf v x = Pi.mulSingle v₀ c v := by
       intro c
@@ -146,8 +145,7 @@ theorem isCompact_setOf_forall_mem (hX : GlobalTheory.RestrMeas.IsRestrGroup (Gl
     by_cases h : v = v₀
     · subst h
       simp only [Pi.mulSingle_eq_same, hC'def, Function.update_self]
-      rw [← hik, smul_eq_mul, inv_mul_cancel_left]
-      exact hk
+      rwa [← hik, smul_eq_mul, inv_mul_cancel_left]
     · simp only [Pi.mulSingle_eq_of_ne h, inv_one, one_mul, hC'def, Function.update_of_ne h]
       exact hz v
 

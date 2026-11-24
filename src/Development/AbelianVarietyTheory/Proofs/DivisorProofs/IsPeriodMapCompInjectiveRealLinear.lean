@@ -78,9 +78,7 @@ theorem isPeriod_comp_realLinear {O : Type} [Ring O] {bar : O → O} (D : PLat O
     exact DiscreteTopology.of_continuous_injective hf hi
   · have : Set.range (R.toAddMonoidHom.comp P₀) = R '' Set.range P₀ := by
       rw [← Set.range_comp]; rfl
-    rw [this, Submodule.span_image, h4, Submodule.map_top, LinearMap.range_eq_top]
-    exact hsurj
-  · intro x y
-    exact hE x y
+    rwa [this, Submodule.span_image, h4, Submodule.map_top, LinearMap.range_eq_top]
+  · exact fun x y => hE x y
 
 end GlobalTheory.PELU

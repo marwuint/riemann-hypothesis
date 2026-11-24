@@ -130,8 +130,7 @@ theorem eventually_mem {W : Opens ((I → ℂ) × (Fin g → ℂ))} {w : Fin g �
       (I → ℂ) × (Fin g → ℂ)) = (0, w) := by
     ext <;> simp
   change _ ∈ W
-  simp only [e]
-  exact hw
+  simpa only [e] using hw
 
 end GlobalTheory.AnPer.SliceTaylor
 
@@ -601,8 +600,7 @@ theorem taylor_sum_sub_value_eq_sum_sqZero : ∀ {I : Type} [Fintype I] [Decidab
       (fun z ↦ fderiv ℂ (f a) z (Pi.single i 1)) * n 0 i) n', ?_, ?_, fun a ↦ ?_⟩
     · intro j a
       refine Fin.cases ?_ (fun j ↦ ?_) j
-      · simp only [Fin.cons_zero]
-        exact Ideal.sum_mem _ fun i _ ↦ Ideal.mul_mem_left _ _ (hn _ _)
+      · simpa only [Fin.cons_zero] using Ideal.sum_mem _ fun i _ ↦ Ideal.mul_mem_left _ _ (hn _ _)
       · simpa only [Fin.cons_succ] using h1 j a
     · intro j a b
       refine Fin.cases ?_ (fun j ↦ ?_) j
@@ -1055,12 +1053,10 @@ theorem isNilpotent_comap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
   obtain ⟨m, hm⟩ := hI
   have h1 : (I.comap f) ^ m ≤ RingHom.ker f := by
     have := Ideal.le_comap_pow f (K := I) m
-    rw [hm] at this
-    exact this
+    rwa [hm] at this
   refine ⟨m + m, ?_⟩
   rw [pow_add, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]
-  intro r hr s hs
-  exact (Submodule.mem_bot _).2 (hf r s (h1 hr) (h1 hs))
+  exact fun r hr s hs => (Submodule.mem_bot _).2 (hf r s (h1 hr) (h1 hs))
 
 theorem isNilpotent_of_comap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
     (hf : Function.Surjective f) (I : Ideal B) (hI : IsNilpotent (I.comap f)) :
@@ -1474,8 +1470,7 @@ theorem main : ∀ {I : Type} [Fintype I] [DecidableEq I] {g : ℕ} {Λ : Type} 
   have hred : ∀ f, π' (PeriodFamily.taylor (N + M) (fun i => io (t i)) f) = f 0 := fun f => by
     have h1 : PeriodFamily.taylor (N + M) (fun i => io (t i)) f - algebraMap ℂ D' (f 0) ∈ RingHom.ker π' :=
       (Ideal.span_le.2 (by rintro _ ⟨i, rfl⟩; exact ht0 i)) ((taylor_formal_properties (N + M) _).2.2.2.2.2 f)
-    rw [RingHom.mem_ker, map_sub, sub_eq_zero, AlgHom.commutes] at h1
-    exact h1
+    rwa [RingHom.mem_ker, map_sub, sub_eq_zero, AlgHom.commutes] at h1
   obtain ⟨K₀, K, ν, hrich, hK₀, hK, hW, hν⟩ := ChartPair.exists_pair e₀ e (fun _ => 0) analyticOnNhd_const (fun _ _ => h0)
     LinearMap.id (AddMonoidHom.id Λ) fun l z _ => (hτ l z).symm
   obtain ⟨r₀, hr₀, -⟩ := exists_real_isFor e₀ hX₀ K₀ hK₀

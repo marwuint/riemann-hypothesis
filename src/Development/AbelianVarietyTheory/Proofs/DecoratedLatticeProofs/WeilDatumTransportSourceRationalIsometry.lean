@@ -132,15 +132,12 @@ theorem haar_pull {G H : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologi
   · let f : Λ → Γ := fun y => ⟨e.symm y, (hΓ _).1 (by simpa using y.2)⟩
     have hf : Function.Bijective f := by
       constructor
-      · intro a b hab
-        exact Subtype.ext (e.symm.injective (congrArg Subtype.val hab))
-      · intro x
-        exact ⟨⟨e x, (hΓ _).2 x.2⟩, Subtype.ext (by simp [f])⟩
+      · exact fun a b hab => Subtype.ext (e.symm.injective (congrArg Subtype.val hab))
+      · exact fun x => ⟨⟨e x, (hΓ _).2 x.2⟩, Subtype.ext (by simp [f])⟩
     refine h𝓕.preimage_of_equiv hmp'.quasiMeasurePreserving hf ?_
     intro y x
     simp [f, AddSubgroup.vadd_def]
-  · intro u
-    exact hmp.setLIntegral_comp_preimage_emb m.measurableEmbedding u 𝓕
+  · exact fun u => hmp.setLIntegral_comp_preimage_emb m.measurableEmbedding u 𝓕
 
 namespace Zero
 
@@ -269,8 +266,7 @@ theorem rat_iff (x : WO S T) : (eqv d T).symm x ∈ ratL T S₀ ↔ x ∈ ratL T
   · intro hx
     have := ratMx_mul hx (rat_mem d.q0)
     rwa [show rat d.q0 = d.p0 from rfl, Matrix.mul_assoc, witt_decomposition_zero_section_embed_eq_one, Matrix.mul_one] at this
-  · intro hx
-    exact ratMx_mul hx (rat_mem d.i₀)
+  · exact fun hx => ratMx_mul hx (rat_mem d.i₀)
 
 theorem isWeilDatumO_pull {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (H : IsWeilDatumO ψ S T χS χT om) : IsWeilDatumO ψ S₀ T χS χT (pull d om) := by
@@ -318,8 +314,7 @@ theorem isWeilDatumO_pull {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D 
       exact entries_fix_conj _ hg _ _ i j
     have hdet : IsDetAt e S (d.emb0 g) x := by
       unfold IsDetAt at hx ⊢
-      rw [unitaryMatrix_wittCoreEmbedding, det_conj_sq (rank_eq d) d.p0_j0 (mt S₀ g)]
-      exact hx
+      rwa [unitaryMatrix_wittCoreEmbedding, det_conj_sq (rank_eq d) d.p0_j0 (mt S₀ g)]
     obtain ⟨r, hr, Hs⟩ := H.om_split e he (d.emb0 g) h hsupp hh x y hdet hy
     refine ⟨r, hr, fun ℓ hℓ F hF => ?_⟩
     let ℓ' : (WO S T → ℂ) →ₗ[ℂ] ℂ := ℓ ∘ₗ LinearMap.funLeft ℂ ℂ (eqv d T)
@@ -335,8 +330,7 @@ theorem isWeilDatumO_pull {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D 
     have e1 : ℓ' (fun x => F ((eqv d T).symm x)) = ℓ F := by
       show ℓ (fun w => F ((eqv d T).symm (eqv d T w))) = ℓ F
       simp only [AddEquiv.symm_apply_apply]
-    rw [e1] at this
-    exact this
+    rwa [e1] at this
 
 end Zero
 

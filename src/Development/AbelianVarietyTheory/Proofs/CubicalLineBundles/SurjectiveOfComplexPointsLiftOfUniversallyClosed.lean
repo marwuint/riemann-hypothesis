@@ -102,11 +102,9 @@ variable {K : Type u} [Field K] [IsAlgClosed K] in
 theorem _root_.GlobalTheory.ComplexPoints.top_le_preimage_iff {L : Type u} [Field L] {X : Scheme.{u}}
     (x : Spec (.of L) ⟶ X) (U : X.Opens) (a : ↥(Spec (.of L))) : ⊤ ≤ x ⁻¹ᵁ U ↔ x a ∈ U := by
   constructor
-  · intro h
-    exact h (show a ∈ (⊤ : (Spec (.of L)).Opens) from trivial)
+  · exact fun h => h (show a ∈ (⊤ : (Spec (.of L)).Opens) from trivial)
   · intro h b _
-    rw [Subsingleton.elim b a]
-    exact h
+    rwa [Subsingleton.elim b a]
 
 
 set_option autoImplicit false in
@@ -121,8 +119,7 @@ theorem _root_.GlobalTheory.ComplexPoints.surjective_of_geomPoints_lift {A B S :
   by_contra hns
   have hne : (Set.range ψ)ᶜ.Nonempty := by
     rw [Set.nonempty_compl]
-    intro hr
-    exact hns (Set.range_eq_univ.mp hr)
+    exact fun hr => hns (Set.range_eq_univ.mp hr)
   have hP : (pullback.fst p t ⁻¹' (Set.range ψ)ᶜ).Nonempty := by
     obtain ⟨a, ha⟩ := hne
     obtain ⟨z, hz⟩ := (pullback.fst p t).surjective a
@@ -132,8 +129,7 @@ theorem _root_.GlobalTheory.ComplexPoints.surjective_of_geomPoints_lift {A B S :
   obtain ⟨w, hw⟩ := h (y ≫ pullback.fst p t) (by
     rw [Category.assoc, pullback.condition, ← Category.assoc, hy1, Category.id_comp])
   obtain ⟨a⟩ := (inferInstance : Nonempty (Spec (.of K)))
-  apply hy2 a
-  exact ⟨w a, by rw [← Scheme.Hom.comp_apply, hw, Scheme.Hom.comp_apply]⟩
+  exact hy2 a ⟨w a, by rw [← Scheme.Hom.comp_apply, hw, Scheme.Hom.comp_apply]⟩
 
 
 set_option autoImplicit false in

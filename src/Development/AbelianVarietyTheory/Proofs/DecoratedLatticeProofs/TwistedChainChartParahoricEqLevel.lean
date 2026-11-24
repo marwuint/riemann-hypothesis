@@ -102,9 +102,7 @@ theorem redFn_entry_eq_zero_iff {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {
     group
   have hx : Matrix.GeneralLinearGroup.map (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ) (Lev.finE V g) =
       Matrix.GeneralLinearGroup.map (rdA φ) (Formalism.L2.Theta.matHom V g) := by
-    refine Units.ext (Matrix.ext fun i j => ?_)
-    show GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ ((Lev.finE V g).val i j) = rdA φ ((Formalism.L2.Theta.matHom V g).val i j)
-    exact GlobalTheory.SplitProjChart.rdE_toEAf φ _
+    exact Units.ext (Matrix.ext fun i j => GlobalTheory.SplitProjChart.rdE_toEAf φ _)
   have hm : Matrix.GeneralLinearGroup.map (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ) (β⁻¹ * Lev.finE V g * β) = grpCo φ V (frCo φ β) g := by
     rw [MonoidHom.map_mul, MonoidHom.map_mul, MonoidHom.map_inv, hx]
     rfl
@@ -170,8 +168,7 @@ theorem GlobalTheory.chart_level_iff : ∀ (D : D7) (c : Com D) (w : Twist D), w
     · intro h u
       by_cases hu : u = v
       · subst hu
-        rw [GlobalTheory.AdelicU.proj_emb_self]
-        exact h
+        rwa [GlobalTheory.AdelicU.proj_emb_self]
       · rw [GlobalTheory.AdelicU.proj_emb_ne _ _ hu]
         exact one_mem _
   have hPc : PP ∈ c.Pg := by
@@ -182,8 +179,7 @@ theorem GlobalTheory.chart_level_iff : ∀ (D : D7) (c : Com D) (w : Twist D), w
     intro PP' hP' hne hS
     refine GlobalTheory.ChainOnto.RedOne.redFn_eq_one D s.V s.β _ PP' hS ?_
     have hu : (_root_.IsDedekindDomain.HeightOneSpectrum.under (𝓞 D.host.F) PP') ≠ v := by
-      intro h
-      exact hne (GlobalTheory.LevelPlaces.injOn_under D c hw.com hP' hPc (h.trans hv))
+      exact fun h => hne (GlobalTheory.LevelPlaces.injOn_under D c hw.com hP' hPc (h.trans hv))
     rw [he y]
     exact GlobalTheory.AdelicU.proj_emb_ne _ _ hu _
   have hred : Lev.finE s.V (ι y) ∈ St s.β → (redFn s.β PP (Lev.finE s.V (ι y)) ∈ blockTri (blk2 D.R.r) ↔

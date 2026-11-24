@@ -310,8 +310,7 @@ theorem exists_sec_nonzero_on_closed : ∀ (k : Type) [CommRing k] (X : Scheme.{
   rintro _ ⟨z, rfl⟩
   have hz : z ∈ nonzeroLocus (GlobalTheory.secPull u i) := by
     rw [hu, hσ', nonzeroLocus_secPow s (Nat.le_add_left 1 N₀), hs]; trivial
-  rw [nonzeroLocus_secPull] at hz
-  exact hz
+  rwa [nonzeroLocus_secPull] at hz
 
 end GlobalTheory.LiftAmple
 end -- clump:auto
@@ -671,8 +670,7 @@ theorem main : ∀ (T : Scheme.{0}) [IsAffine T] [AlgebraicGeometry.IsReduced T]
   obtain ⟨i, hi⟩ := Opens.mem_iSup.1 (hP.cover.ge (Opens.mem_top x))
   refine Opens.mem_iSup.2 ⟨i, ?_⟩
   change x ∈ T.basicOpen ((t.s i : Γ(T, (lbPow L n).U i)))
-  rw [Scheme.basicOpen_of_isUnit _ (t.s i).isUnit]
-  exact hi
+  rwa [Scheme.basicOpen_of_isUnit _ (t.s i).isUnit]
 
 end GlobalTheory.PowNowhereZero
 end -- clump:auto
@@ -705,8 +703,7 @@ theorem exists_pow_section_nonvanishing_on_closed : ∀ (k : Type) [CommRing k] 
   rw [hfu]
   intro x hx
   apply hu
-  rw [Scheme.IdealSheafData.range_subschemeι, Scheme.IdealSheafData.coe_support_vanishingIdeal]
-  exact hx
+  rwa [Scheme.IdealSheafData.range_subschemeι, Scheme.IdealSheafData.coe_support_vanishingIdeal]
 
 end GlobalTheory.HSAmp
 end -- clump:auto
@@ -750,8 +747,7 @@ theorem coheight_le_one {Y : Scheme.{0}} [IsLocallyNoetherian Y] {N : LB Y} (hN 
       rwa [hV.range_fromSpec] at this
     rw [hbo] at h1
     constructor
-    · intro hgQ hQ
-      exact (PrimeSpectrum.mem_basicOpen _ _).1 (h1.2 ⟨h2, hQ⟩) hgQ
+    · exact fun hgQ hQ => (PrimeSpectrum.mem_basicOpen _ _).1 (h1.2 ⟨h2, hQ⟩) hgQ
     · intro hQ
       by_contra hgQ
       exact hQ (h1.1 ((PrimeSpectrum.mem_basicOpen _ _).2 hgQ)).2
@@ -892,8 +888,7 @@ theorem dim_le_zero_of_fib_of_subset_affine : ∀ (k : Type) [CommRing k] (X : S
   have hrange : i '' Set.univ = C := by
     rw [← (genericPoint_spec Y).def, ← i.isClosedEmbedding.closure_image_eq, Set.image_singleton, hgen, hη.def]
   have htop : i ⁻¹ᵁ U = ⊤ := by
-    refine top_unique fun y _ => ?_
-    exact hCU (hrange ▸ Set.mem_image_of_mem i (Set.mem_univ y))
+    exact top_unique fun y _ => hCU (hrange ▸ Set.mem_image_of_mem i (Set.mem_univ y))
   have hV : IsAffineOpen (⊤ : Y.Opens) := htop ▸ hU.preimage i
   have hA := h.sub i
   have := hA.finite
@@ -1024,9 +1019,7 @@ theorem GlobalTheory.HSAmp.common_zero_of_le_dim : ∀ (k : Type) [CommRing k] (
       (h3.trans (Set.diff_subset.trans hCf)) h4 (fun j => hg j.succ)
     refine ⟨x, (h3 hxC').1, ?_⟩
     simp only [Set.mem_iUnion, not_exists] at hx ⊢
-    intro j
-    refine Fin.cases ?_ (fun j => hx j) j
-    exact (h3 hxC').2
+    exact fun j => Fin.cases (h3 hxC').2 (fun j => hx j) j
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonZeroAmpleSectionsVertical =====
@@ -1047,8 +1040,7 @@ theorem exists_sec_nonvanishing_finite : ∀ (k : Type) [CommRing k] (X : Scheme
   obtain ⟨n, hn, s, h₁, -, -⟩ := hA.exists_affine_finite_subset hS (U := ⊤) (Set.subset_univ _)
   obtain ⟨f, hf, e⟩ := (_root_.GlobalTheory.HSAmp.pow_sec_dict k X p P n).1 s
   refine ⟨n, hn, f, hf, ?_⟩
-  rw [e]
-  exact h₁
+  rwa [e]
 
 end GlobalTheory.HSAmp
 end -- clump:auto
@@ -1082,8 +1074,7 @@ theorem exists_finite_drop {T : Type} [TopologicalSpace T] [NoetherianSpace T] (
     hsub (hy ⟨Z, hZ⟩) (hS ⟨⟨Z, hZ⟩, rfl⟩)
   let f : ↥(Y \ U) → ↥((Subtype.val : Y → T) ⁻¹' Uᶜ) := fun x => ⟨⟨x.1, x.2.1⟩, x.2.2⟩
   have hf : IsInducing f := by
-    refine (IsInducing.subtypeVal.comp IsInducing.subtypeVal).of_comp_iff.1 ?_
-    exact IsInducing.subtypeVal
+    exact (IsInducing.subtypeVal.comp IsInducing.subtypeVal).of_comp_iff.1 IsInducing.subtypeVal
   have h2 := lt_of_le_of_lt hf.topologicalKrullDim_le h
   rw [Nat.cast_add, Nat.cast_one] at h2
   exact ENat.WithBot.lt_add_one_iff.1 h2
@@ -1160,8 +1151,7 @@ theorem isAlgebraic_of_finite (B : Type) [CommRing B] [IsDomain B] [CharZero B] 
     rintro _ ⟨Q, -, rfl⟩ n hn hQ
     have h1 : (n : S) ∈ Q.asIdeal := by
       have := hQ
-      rw [PrimeSpectrum.comap_asIdeal, Ideal.mem_comap, map_natCast] at this
-      exact this
+      rwa [PrimeSpectrum.comap_asIdeal, Ideal.mem_comap, map_natCast] at this
     have h2 : IsUnit (n : S) := by
       have : IsUnit (n : ℚ) := (Nat.cast_ne_zero.2 hn).isUnit
       simpa using this.map (algebraMap ℚ S)
@@ -1217,8 +1207,7 @@ theorem finite_primes (A : Type) [CommRing A] [Algebra.FiniteType ℤ A] (P : Pr
   have : Q ∈ Set.range (PrimeSpectrum.comap π) := hr ▸ h1
   obtain ⟨Q, rfl⟩ := this
   refine ⟨Q, ?_, rfl⟩
-  rw [PrimeSpectrum.comap_asIdeal, Ideal.mem_comap, map_natCast] at h2
-  exact h2
+  rwa [PrimeSpectrum.comap_asIdeal, Ideal.mem_comap, map_natCast] at h2
 
 theorem natCast_eq_zero_iff {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (Q : PrimeSpectrum Γ(X, U)) (n : ℕ) :
     (n : X.residueField (hU.fromSpec Q)) = 0 ↔ (n : Γ(X, U)) ∈ Q.asIdeal := by
@@ -1482,14 +1471,12 @@ theorem exists_cover (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p 
       · refine ⟨0, ?_⟩
         have := hnf.2.2.1 e' he'
         rw [mul_zero, ← c₁] at this
-        rw [Fin.cons_zero, this]
-        exact hzf
+        rwa [Fin.cons_zero, this]
       · obtain ⟨l, hl⟩ := hc z ⟨hz, hzf⟩
         refine ⟨l.succ, ?_⟩
         have := (_root_.GlobalTheory.HSAmp.nv_rules k X p P e' 0 (x l) (hx l)).2.2.1 e he
         rw [mul_zero, ← c₂] at this
-        rw [Fin.cons_succ, this]
-        exact hl
+        rwa [Fin.cons_succ, this]
 
 theorem exists_gens (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ)
     (hX : IsArithVar p D) (P : Pair p) (hP : IsAmpleLB P.L.B) :

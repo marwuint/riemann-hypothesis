@@ -167,9 +167,7 @@ theorem map_inv_entries {A R : Type} [CommRing A] [Ring R] {n : ℕ} (φ : A →
   have e2 : φ.mapMatrix (v : Matrix (Fin n) (Fin n) A) * φ.mapMatrix ((v⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) = 1 := by
     rw [← map_mul, Units.mul_inv, map_one]
   rw [← hM] at e2
-  have e := left_inv_eq_right_inv e1 e2
-  intro i j
-  exact congrArg (fun M => M i j) e
+  exact fun i j => congrArg (fun M => M i j) (left_inv_eq_right_inv e1 e2)
 
 end Entry
 

@@ -169,9 +169,7 @@ theorem weil_conjTarget (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) 
         rw [← (I.2 u f').1, hℓ u hu (cj id f') ((I.1 f').1.2 hf')]) (cj id f) ((thT f).1 hf)
     rw [cj_id_cj_id, ← conjTarget_apply om (g, h) f] at h1
     rw [splitFacO_inv]
-    have h2 := congrArg (starRingEnd ℂ) h1
-    simp only [map_mul, Complex.conj_conj, Complex.conj_ofReal] at h2
-    exact h2
+    simpa only [map_mul, Complex.conj_conj, Complex.conj_ofReal] using congrArg (starRingEnd ℂ) h1
 
 theorem weil_conjSource (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (om : Om S T) (hw : IsWeilDatumO ψ S T χS χT om) :
@@ -236,9 +234,7 @@ theorem weil_conjSource (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) 
         rw [← (I.2 u f').2, hℓ u hu (cj id f') ((I.1 f').2.2 hf')]) (cj id f) ((thS f).1 hf)
     rw [cj_id_cj_id, ← conjSource_apply om (g, h) f] at h1
     rw [splitFacO_inv]
-    have h2 := congrArg (starRingEnd ℂ) h1
-    simp only [map_mul, Complex.conj_conj, Complex.conj_ofReal] at h2
-    exact h2
+    simpa only [map_mul, Complex.conj_conj, Complex.conj_ofReal] using congrArg (starRingEnd ℂ) h1
 
 theorem conj_isWeilDatumO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (om : Om S T), IsWeilDatumO ψ S T χS χT om →

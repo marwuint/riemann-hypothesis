@@ -73,8 +73,7 @@ theorem qmp_mul (ν : Measure G) [SFinite ν] :
   have h1 : ∀ y : G, μ ((fun x => (x, y)) ⁻¹' ((fun p : G × G => p.2 * p.1) ⁻¹' s)) = 0 := by
     intro y
     change μ ((fun x => y * x) ⁻¹' s) = 0
-    rw [measure_preimage_mul]
-    exact h0
+    rwa [measure_preimage_mul]
   simp only [h1, lintegral_zero]
 
 theorem ae_ae_mul (ν : Measure G) [SFinite ν] {p : G → Prop} (hp : ∀ᵐ y ∂μ, p y) :
@@ -131,8 +130,7 @@ theorem setLIntegral_rep_le (hD : IsFundamentalDomain Γ D μ) (hDm : Measurable
   have hr1 : ∀ x, x ∈ D → Good Γ D x → ∀ γ : Γ, r ((γ : G) * x) = x := by
     intro x hxD hx γ
     rw [GlobalTheory.RightRegFund.rep_mul hr hx γ]
-    have h1 := GlobalTheory.RightRegFund.rep_eq hr hx (γ := 1) (by simpa using hxD)
-    simpa using h1
+    simpa using GlobalTheory.RightRegFund.rep_eq hr hx (γ := 1) (by simpa using hxD)
   calc ∫⁻ y in C, φ (r y) ∂μ = ∫⁻ y, C.indicator (fun y => φ (r y)) y ∂μ :=
         (lintegral_indicator hCm _).symm
     _ = ∑' γ : Γ, ∫⁻ x in D, C.indicator (fun y => φ (r y)) (γ • x) ∂μ := hD.lintegral_eq_tsum'' _
@@ -438,11 +436,9 @@ theorem cuspidal_closed_stable : ∀ B : RowsAut, ∃ S : Submodule ℂ (B.I.L2 
     constructor
     · intro h0
       filter_upwards [h0, h] with x h1 h2
-      rw [h2]
-      exact h1
+      rwa [h2]
     · intro h0
       filter_upwards [h0, h] with x h1 h2
-      rw [← h2]
-      exact h1
+      rwa [← h2]
 
 end GlobalTheory.CuspSubspace

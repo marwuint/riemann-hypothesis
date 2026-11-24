@@ -507,8 +507,7 @@ theorem GlobalTheory.Mum.exists_etale_coords_lift_immersion : ∀ (R : Type) [Co
   · intro T t w hw
     have hfst' : Y.left.homOfLE hWV ≫ u ≫ AffineSpace.map (Fin g) (spMap (residue R)) = (j ∣_ W) ≫ τ0 := by
       rw [← Category.assoc]; exact hfst
-    rw [Category.assoc, Category.assoc, IsPullback.isoPullback_hom_fst]
-    rw [hfst', ← Category.assoc]
+    rw [Category.assoc, Category.assoc, IsPullback.isoPullback_hom_fst, hfst', ← Category.assoc]
     congr 1
     rw [← cancel_mono W.ι, Category.assoc, morphismRestrict_ι, hw]
 end -- clump:auto
@@ -556,8 +555,7 @@ theorem exists_mem_fibre_of_geometric_lifting :
       (pullback h π).fromSpecResidueField w
   have ht : ∀ y, t y = w := by
     intro y
-    simp only [t, Scheme.Hom.comp_apply]
-    exact Scheme.fromSpecResidueField_apply _ _
+    simpa only [t, Scheme.Hom.comp_apply] using Scheme.fromSpecResidueField_apply _ _
   have hξ : ∀ y, (t ≫ pullback.fst h π) y = x := by
     intro y
     rw [Scheme.Hom.comp_apply, ht, hw]
@@ -645,8 +643,7 @@ theorem exists_open_etale_restrict_of_universallyClosed : ∀ (X P' T : Scheme.{
     choose U hwU hU using hcov
     refine IsZariskiLocalAtSource.of_iSup_eq_top (fun w => (X.homOfLE hle) ⁻¹ᵁ (U w)) ?_ fun w => ?_
     · rw [eq_top_iff]
-      intro w _
-      exact TopologicalSpace.Opens.mem_iSup.mpr ⟨w, hwU w⟩
+      exact fun w _ => TopologicalSpace.Opens.mem_iSup.mpr ⟨w, hwU w⟩
     · rw [← Category.assoc, ← Scheme.Hom.resLE_comp_ι (X.homOfLE hle) (le_refl ((X.homOfLE hle) ⁻¹ᵁ U w)), Category.assoc]
       haveI : IsOpenImmersion ((X.homOfLE hle).resLE (U w) ((X.homOfLE hle) ⁻¹ᵁ U w) le_rfl) := by
         have h2 : IsOpenImmersion ((X.homOfLE hle).resLE (U w) ((X.homOfLE hle) ⁻¹ᵁ U w) le_rfl ≫ (U w).ι) := by
@@ -860,8 +857,7 @@ theorem etale_chart_at_closed_point : ∀ (R : Type) [CommRing R] [IsDomain R] [
       rintro _ ⟨t, rfl⟩
       show a (p t) ∈ W
       have h3 : a (p t) = W.ι (ξ t) := by
-        have h4 := congrArg (fun f : Sp Ω ⟶ P' => f t) hp1
-        simpa [Scheme.Hom.comp_apply] using h4
+        simpa [Scheme.Hom.comp_apply] using congrArg (fun f : Sp Ω ⟶ P' => f t) hp1
       rw [h3]
       have h5 := Set.mem_range_self (f := W.ι) (ξ t)
       rwa [Scheme.Opens.range_ι] at h5
@@ -937,8 +933,7 @@ theorem isPullback_iSup_of_forall : ∀ (P' X T S : Scheme.{0}) (a : X ⟶ P') (
     constructor
     · rintro ⟨y, rfl⟩
       exact y.2
-    · intro hx
-      exact ⟨⟨⟨x, hle i hx⟩, hx⟩, rfl⟩
+    · exact fun hx => ⟨⟨⟨x, hle i hx⟩, hx⟩, rfl⟩
   have hpt : ∀ z, U.ι (pullback.fst (U.ι ≫ q) π (L z)) = a ((a ⁻¹ᵁ U).ι z) := by
     intro z
     have h := congr($(show L ≫ pullback.fst (U.ι ≫ q) π ≫ U.ι = (a ⁻¹ᵁ U).ι ≫ a by
@@ -976,8 +971,7 @@ theorem isPullback_iSup_of_forall : ∀ (P' X T S : Scheme.{0}) (a : X ⟶ P') (
       · rintro ⟨y, rfl⟩
         have hy := y.2
         change U.ι (pullback.fst (U.ι ≫ q) π (L y.1)) ∈ V i at hy
-        rw [hpt] at hy
-        exact hy
+        rwa [hpt] at hy
       · intro hx
         refine ⟨⟨⟨x, hle i hx⟩, ?_⟩, rfl⟩
         change U.ι (pullback.fst (U.ι ≫ q) π (L ⟨x, hle i hx⟩)) ∈ V i
@@ -1058,8 +1052,7 @@ theorem mem_of_closedPoints_closedFibre_mem : ∀ (R : Type) [CommRing R] [IsLoc
     exact hemb.isClosedMap _ hyc
   have hqy : q (e y) = c := by
     have : e y ∈ Set.range e := ⟨y, rfl⟩
-    rw [Scheme.Hom.range_fiberι] at this
-    exact this
+    rwa [Scheme.Hom.range_fiberι] at this
   exact hyZ.2 (hU _ hyc' hqy)
 
 end GlobalTheory.Mum
@@ -1193,8 +1186,7 @@ theorem exists_near : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], 
     infer_instance
   have hU0 : ∀ y : P', (b ≫ PSpace.str R E.N) y = closedPoint R → y ∈ U := by
     refine GlobalTheory.T.mem_of_closedPoints_closedFibre_mem' R P' (b ≫ PSpace.str R E.N) hlft U ?_
-    intro y hy1 hy2
-    exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨y, hy1, hy2⟩, hxV _⟩
+    exact fun y hy1 hy2 => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨y, hy1, hy2⟩, hxV _⟩
   have hsep : IsSeparated (U.ι ≫ b ≫ PSpace.str R E.N) := by
     have : IsProper (PSpace.str R E.N) := ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str R E.N
     infer_instance

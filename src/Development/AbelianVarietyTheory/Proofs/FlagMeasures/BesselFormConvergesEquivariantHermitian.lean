@@ -70,8 +70,7 @@ theorem continuousOn_inv : ContinuousOn (fun g : Mat k r => g⁻¹) (GG k r) := 
   rw [← hw]
   exact NormedRing.inverse_continuousAt w
 
-theorem continuous_of : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r)) := by
-  exact continuous_id
+theorem continuous_of : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r)) := continuous_id
 
 theorem integrable_opn {μ : Measure (Mt k r)} {a : ℝ} (hint : normInt μ a < ⊤) :
     Integrable (fun x : Mt k r => opn (Matrix.of x : Mat k r) ^ (-a)) μ := by
@@ -118,8 +117,7 @@ theorem coef_act_right {s t : Mat k r} (hs : s ∈ GG k r) (ht : t ∈ GG k r) (
     coef σ u (σ t v) s = coef σ u v (t⁻¹ * s) := by
   simp only [GlobalTheory.SgInf.coef, hσ.1.2 t⁻¹ hti s hs, ContinuousLinearMap.comp_apply]
   have h := GlobalTheory.SgInf.BeForm.inner_act hσ ht v (σ t⁻¹ (σ s u))
-  rw [GlobalTheory.SgInf.BeForm.act_inv hσ ht hti] at h
-  exact h
+  rwa [GlobalTheory.SgInf.BeForm.act_inv hσ ht hti] at h
 
 theorem star_coef {s : Mat k r} (hs : s ∈ GG k r) (hsi : s⁻¹ ∈ GG k r) (u v : H) :
     star (coef σ u v s) = coef σ v u s⁻¹ := by
@@ -151,7 +149,6 @@ theorem aesm_bint (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ) (hPc : C
     hPc.comp ((GlobalTheory.SgInf.BeForm.continuousOn_inv.mono hS.1).comp
       GlobalTheory.SgInf.BeForm.continuous_of.continuousOn (fun x hx => hx)) (fun x hx => hS.2.2.2.2 _ hx)
   have hcont : ContinuousOn (bint σ P u u') {x : Mt k r | (Matrix.of x : Mat k r) ∈ S} := by
-    show ContinuousOn (fun x : Mt k r => ⟪u', σ (Matrix.of x : Mat k r) u⟫_ℂ • P (Matrix.of x : Mat k r)⁻¹) _
     exact (ContinuousOn.inner (𝕜 := ℂ) continuousOn_const h1).smul h2
   have h3 := hcont.aestronglyMeasurable (μ := μ) hSm
   rwa [Measure.restrict_eq_self_of_ae_mem (s := {x : Mt k r | (Matrix.of x : Mat k r) ∈ S}) (GlobalTheory.SgInf.BeForm.ae_mem hμ)] at h3
@@ -205,7 +202,6 @@ theorem be_right (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ) (hP : IsU
   have hm : AEStronglyMeasurable (fun s => (bint σ P u u' s).comp (P t⁻¹)) μ :=
     ((ContinuousLinearMap.compL ℂ Wp Wp Wp).flip (P t⁻¹)).continuous.comp_aestronglyMeasurable hI.1
   have hTc : Continuous (lmulM t⁻¹ : Mt k r → Mt k r) := by
-    show Continuous (fun x : Mt k r => (t⁻¹ * Matrix.of x : Mat k r))
     exact continuous_const.matrix_mul GlobalTheory.SgInf.BeForm.continuous_of
   rw [← GlobalTheory.SgInf.BeForm.integral_comp_self hTc.measurable (hμ.2.2.2 _ hti) hm]
   refine integral_congr_ae ?_

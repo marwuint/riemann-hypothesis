@@ -273,8 +273,7 @@ theorem monoidHom_ext_basis {X K A : Type} [AddCommGroup X] [CommGroup A] (b : M
     (h : ∀ k, F (Multiplicative.ofAdd (b k)) = F' (Multiplicative.ofAdd (b k))) : F = F' := by
   have : (MonoidHom.toAdditiveRight F).toIntLinearMap = (MonoidHom.toAdditiveRight F').toIntLinearMap :=
     b.ext fun k => congrArg Additive.ofMul (h k)
-  refine MonoidHom.ext fun x => ?_
-  exact congrArg Additive.toMul (LinearMap.congr_fun this x.toAdd)
+  exact MonoidHom.ext fun x => congrArg Additive.toMul (LinearMap.congr_fun this x.toAdd)
 
 theorem inv_eq_div_mul_inv {A : Type} [CommGroup A] (a b : A) : a⁻¹ = b / a * b⁻¹ := by
   simp [div_eq_mul_inv]
@@ -363,8 +362,7 @@ theorem exists_isFrame (χ : X) : ∃ (O : RigLB B) (u : ∀ j, Γ(G.left, q.lef
       gm_pull_g L (eSec B) (𝟙 _) z j j' hz.1 hz.2, Category.id_comp]
     have := hg' (j PUnit.unit) (j' PUnit.unit) _ (eSec G) z (le j hz.1) (le j' hz.2)
     rw [eSec_comp] at this
-    refine Eq.trans ?_ (congrArg (· * _) this.symm)
-    exact inv_eq_div_mul_inv _ _
+    exact Eq.trans (inv_eq_div_mul_inv _ _) (congrArg (· * _) this.symm)
   exact ⟨⟨L, rig, hL, hgen⟩, fun a => a.2.1, fun a => a.2.2, hg',
     fun a z hz => hrig (fun _ => a) z (mem_pull.2 hz)⟩
 
@@ -505,8 +503,7 @@ theorem IsFrame.exists_gen_linComb {χ : X} {O : RigLB B}
         charGerm z (t I) (Multiplicative.ofAdd χ) * gm (g₂.left ≫ (ψ I).left) z _ (u (j I)) :=
       fun I => by
         have := h.1 (j I) Z (t I) (g₂ ≫ ψ I) z (hm j _ h₂ I)
-        rw [← hI] at this
-        exact this
+        rwa [← hI] at this
     refine (hf j _ _ z h₁).trans (Eq.trans ?_ (hf j _ _ z h₂).symm)
     rw [Finset.prod_congr rfl fun I _ => congrArg (·⁻¹ ^ ε I) (hc I)]
     exact prod_erase_one_perm_apply_eq_zero _ _ _ h1
@@ -596,11 +593,9 @@ theorem exists_gtDatum (u : ∀ χ j, Γ(G.left, q.left ⁻¹ᵁ (E.O χ).L.U j)
         ((gm_res (𝟙 _) y _ hy _).trans (hv j k _ (𝟙 _) y hy.1)))).symm)
     exact (div_mul_cancel _ _).symm
   · change q.left (((fst _ G ≫ i) * snd _ G).left y) ∈ E.chart j
-    rw [act_apply hk]
-    exact hy
+    rwa [act_apply hk]
   · have hy' : q.left (((fst _ G ≫ i) * snd _ G).left y) ∈ E.chart j := by
-      rw [act_apply hk]
-      exact hy
+      rwa [act_apply hk]
     refine ((gm_id_res_pull _ y _ hy _).trans (hv j k _ _ y hy')).trans (Eq.trans ?_
       ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_id_res_pull _ y _ hy _).trans
         (charGerm_eq y (fst _ G) (E.basis k)).symm)

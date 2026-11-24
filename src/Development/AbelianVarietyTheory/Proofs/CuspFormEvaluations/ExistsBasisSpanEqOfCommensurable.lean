@@ -200,8 +200,7 @@ theorem l2_comp_flat_symm_eq_l2 (X : PT E) (Y : GT (Fin n × Idx X.dim))
       Y.ptN2 q (F ∘ flat.symm) (w + γ) = Y.ptN2 q (F ∘ flat.symm) w := by
     intro γ hγ w
     have hγ' : ∀ k, flat.symm γ k ∈ X.L := by
-      rw [← hY, ContinuousLinearEquiv.apply_symm_apply]
-      exact hγ
+      rwa [← hY, ContinuousLinearEquiv.apply_symm_apply]
     have h := hper (flat.symm γ) hγ' (flat.symm w)
     rw [← hg, ← hg, map_add (f := _), ContinuousLinearEquiv.apply_symm_apply,
       ContinuousLinearEquiv.apply_symm_apply] at h
@@ -237,8 +236,7 @@ theorem comp_flat_symm_mem_sec_iff (X : PT E) (Y : GT (Fin n × Idx X.dim))
   constructor
   · intro hG
     refine ⟨?_, ?_⟩
-    · have h := hG.1.comp (flat (n := n) (ι := Idx X.dim)).differentiable
-      simpa [Function.comp_def] using h
+    · simpa [Function.comp_def] using hG.1.comp (flat (n := n) (ι := Idx X.dim)).differentiable
     · intro γ hγ v
       have h := hG.2 (flat γ) ((hY γ).2 hγ) (flat v)
       simp only [Function.comp, ← map_add (f := _), ContinuousLinearEquiv.symm_apply_apply, hka γ hγ,
@@ -248,8 +246,7 @@ theorem comp_flat_symm_mem_sec_iff (X : PT E) (Y : GT (Fin n × Idx X.dim))
     refine ⟨hF.1.comp (flat (n := n) (ι := Idx X.dim)).symm.differentiable, ?_⟩
     intro γ' hγ' w
     have hγ : ∀ k, flat.symm γ' k ∈ X.L := by
-      rw [← hY, ContinuousLinearEquiv.apply_symm_apply]
-      exact hγ'
+      rwa [← hY, ContinuousLinearEquiv.apply_symm_apply]
     have h := hF.2 _ hγ (flat.symm w)
     have hk := hka _ hγ
     rw [ContinuousLinearEquiv.apply_symm_apply] at hk
@@ -326,10 +323,8 @@ theorem exists_basis_tensorLat (hfg : Λ'.FG)
     constructor
     · rintro ⟨γ', hγ', h⟩
       have hγγ : γ' = γ := flat.injective h
-      rw [← hγγ]
-      exact hγ'
-    · intro h
-      exact ⟨γ, h, rfl⟩
+      rwa [← hγγ]
+    · exact fun h => ⟨γ, h, rfl⟩
   have hlatT : ∀ w, w ∈ lat (TiledBoundaries.bT X n) ↔ ∀ k, flat.symm w k ∈ X.L := by
     intro w
     rw [TiledBoundaries.mem_latT, flat_symm_eq_eT_symm]
@@ -383,8 +378,7 @@ theorem exists_tensorTorus (hfg : Λ'.FG)
     rw [h]
     show (HC γ0 (flat.symm (y : EuclideanSpace ℂ (Fin n × Idx X.dim)))).im = _
     rw [← Hf_flat, ContinuousLinearEquiv.apply_symm_apply]
-  · intro x _
-    exact norm_tensorEps w₀ _
+  · exact fun x _ => norm_tensorEps w₀ _
   · intro γ
     show tensorEps w₀ (flat.symm (flat γ)) = _
     rw [ContinuousLinearEquiv.symm_apply_apply]

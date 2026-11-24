@@ -131,8 +131,7 @@ theorem exists_thickLift (M : Modif (str₀ X Z) (U₀ X Z) (dimFlag Dw)) {K : T
   have hpt : ∀ a b : PrimeSpectrum (TrivSqZeroExt K (ι → K)), a = b := primeSpectrum_trivSqZeroExt_eq
   have hU : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ U₀ X Z := fun s _ => by
     have := ho (Set.mem_univ s)
-    rw [M.off_eq] at this
-    exact this
+    rwa [M.off_eq] at this
   have hb : ⊤ ≤ X.ptY W ⁻¹ᵁ (inc₀ X Z).opensRange :=
     le_preimage_of_reduction hpt (TrivSqZeroExt.fstHom c.F K (ι → K)).toRingHom _ _ (by
       rw [hred, ← hz]
@@ -465,8 +464,7 @@ theorem det_moved {Φ : Finset (E →+* ℂ)} (hΦ : IsHalf Φ) {t : Ix Dw → K
   have fN : ∀ (k : VIx Dw) (σ : E →+* ℂ) (i j : Fin (Dw.mult σ)),
       (g' σ * (Matrix.of fun i j => (Pi.single k.toF (1 : K) : FIx Dw → K) (some ⟨σ, i, j⟩)) * g σ) i j =
       ∑ a, ∑ b, g' σ i a * (Pi.single k.toF (1 : K) : FIx Dw → K) (some ⟨σ, a, b⟩) * g σ b j := fun k σ i j => by
-    simp only [Matrix.mul_apply, Matrix.of_apply, Finset.sum_mul]
-    exact Finset.sum_comm
+    simpa only [Matrix.mul_apply, Matrix.of_apply, Finset.sum_mul] using Finset.sum_comm
   rw [det_eq_prod_diag_of_height _ (fun k => (k.2.1 : ℤ) + k.2.2) eM,
     det_eq_prod_diag_of_height (m := VIx Dw) _ (fun k => (k.2.1.2 : ℤ) - k.2.1.1)]
   · rw [exOf_kap, ← prod_char_eq hΦ, Units.val_mul, Units.coe_prod, Units.coe_prod]
@@ -599,8 +597,7 @@ theorem exists_isDef_lift_dualNumber : ∀ {E : Type} [Field E] [NumberField E] 
   intro E _ _ _ H Dw l Xo c Y X Z M K _ _ z ho Q hz zw hw
   have hU : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ U₀ X Z := fun s _ => by
     have := ho (Set.mem_univ s)
-    rw [M.off_eq] at this
-    exact this
+    rwa [M.off_eq] at this
   have hwU : ⊤ ≤ (zw ≫ M.σ) ⁻¹ᵁ U₀ X Z :=
     le_preimage_of_dualNumber (TrivSqZeroExt.fstHom K K K).toRingHom _ _ (by rw [← Category.assoc, hw]; exact hU)
   have hF : ⊤ ≤ (zw ≫ toFlag M) ⁻¹ᵁ flagOpen X := hwU
@@ -755,8 +752,7 @@ theorem exists_tangent_matrix : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} (p 
     (Scheme.ΓSpecIso (CommRingCat.of k)).symm.commRingCatIsoToRingEquiv
     (h t t.2 Γ(Y, Y.basicOpen (t : Γ(Y, V))))
   have h₂ : (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p (Y.basicOpen (t : Γ(Y, V)))).IsStandardSmoothOfRelativeDimension D := by
-    rw [← resG_comp_algX p (Y.basicOpen_le (t : Γ(Y, V)))]
-    exact h₁
+    rwa [← resG_comp_algX p (Y.basicOpen_le (t : Γ(Y, V)))]
   obtain ⟨x, d, hl, hd⟩ := exists_coords_derivs h₂
   have hO : IsAffineOpen (Y.basicOpen (t : Γ(Y, V))) := IsAffineOpen.basicOpen hV _
   have hzO : ⊤ ≤ z ⁻¹ᵁ Y.basicOpen (t : Γ(Y, V)) := (GlobalTheory.Adelic.le_iff_ptOf_mem z _).2 hxt
@@ -909,8 +905,7 @@ theorem exists_dualLift {S : Type} [CommRing S] [Algebra c.F S] {Q : FrPt Xo c S
     (X.ptY_frMap hv).trans hz.symm
   have hU : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ U₀ X Z := fun s _ => by
     have := ho (Set.mem_univ s)
-    rw [M.off_eq] at this
-    exact this
+    rwa [M.off_eq] at this
   have hb : ⊤ ≤ X.ptY v ⁻¹ᵁ (inc₀ X Z).opensRange := le_preimage_of_fst _ _ (by
     rw [e]
     rintro s -
@@ -954,8 +949,7 @@ theorem exists_vertLift (k : X.F.J) (W : M.X.Opens) (hW : IsAffineOpen W)
   have hτk : ⊤ ≤ (tau hW ≫ toFlag M) ⁻¹ᵁ X.F.U k := fun x hx => tau_le hW (hle.trans inf_le_right) hx
   have hF : ⊤ ≤ (tau hW ≫ toFlag M) ⁻¹ᵁ flagOpen X := fun x hx => by
     have := hτo hx
-    rw [M.off_eq] at this
-    exact this
+    rwa [M.off_eq] at this
   obtain ⟨_, hch⟩ := exists_chartFr _ hF
   obtain ⟨Q₀, hQ₀⟩ := hch k hτk
   have e₀ : tau hW ≫ toFlag M = X.ptY Q₀ := GlobalTheory.FlagMod.FlagCover.eq_ptY hQ₀.lies
@@ -1152,8 +1146,7 @@ theorem exists_local (hP : GlobalTheory.Published.AbelianDeRham)
       X.F.ChartFr k _ (hkk ψ) Q := fun ψ => by
     have hF : ⊤ ≤ ((spMap ψ ≫ tau hW') ≫ toFlag M) ⁻¹ᵁ flagOpen X := fun s _ => by
       have := ho ψ (Set.mem_univ s)
-      rw [M.off_eq] at this
-      exact this
+      rwa [M.off_eq] at this
     obtain ⟨a, h⟩ := exists_chartFr _ hF
     exact ⟨a, h k (hkk ψ)⟩
   have hJ : ∀ {K : Type} [Field K] (ψ : Γ(M.X, W') →+* K), evalPt (spMap ψ ≫ tau hW') W' (hzW ψ) (M.K.jacobian i hW'i g) = ψ (M.K.jacobian i hW'i g) :=
@@ -1272,8 +1265,7 @@ theorem top_le_of_red {K : Type} [Field K] {T : Scheme.{0}} (φ : DualNumber K �
   obtain ⟨q⟩ : Nonempty (Sp K) := inferInstanceAs (Nonempty (PrimeSpectrum K))
   have e : p = spMap φ q := dual_pt_eq _ _
   have hq := h (Set.mem_univ q)
-  rw [e]
-  exact hq
+  rwa [e]
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {X : FlagCover Y} {Z : Comp Xo c}
@@ -1327,8 +1319,7 @@ theorem red_comp_eq {K : Type} [Field K] [Algebra c.F K] (z : Sp K ⟶ M.X) (ho 
     spMap (FlagTan.red c K).toRingHom ≫ zw = z := by
   have hx : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ U₀ X Z := fun p hp => by
     have := ho hp
-    rw [M.off_eq] at this
-    exact this
+    rwa [M.off_eq] at this
   have h1 : (spMap (FlagTan.red c K).toRingHom ≫ zw) ≫ M.σ = z ≫ M.σ := by
     rw [← cancel_mono (inc₀ X Z)]
     simp only [Category.assoc]
@@ -1440,8 +1431,7 @@ theorem isUnit_ger_of_ev {Z : Scheme.{0}} {V : Z.Opens} (a : Γ(Z, V)) (y : Z) (
   letI := Z.presheaf.algebra_section_stalk (⟨y, hyW⟩ : W)
   have := hW.isLocalization_stalk ⟨y, hyW⟩
   have hu := (IsLocalization.AtPrime.isUnit_to_map_iff (Z.presheaf.stalk y) p.asIdeal (resG Z hWV a)).2 hnm
-  rw [← ger_resG hWV y hyW]
-  exact hu
+  rwa [← ger_resG hWV y hyW]
 
 theorem canId_nonempty : GlobalTheory.Published.AbelianDeRham → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F))
@@ -1487,8 +1477,7 @@ theorem canId_nonempty : GlobalTheory.Published.AbelianDeRham → ∀ (E : Type)
     have e2 := ger_resG (inf_le_right : ksOpen M t.1 t.2 ⊓ ksOpen M t'.1 t'.2 ≤ _) y ⟨h, h'⟩ (a t')
     have e3 := ger_resG hle y ⟨h, h'⟩ ((LB.div M.K.bundle ((L₀ X Z (FlagTan.kap Dw)).pull M.σ)).g (t.1, flagIdx M _ t.2)
           (t'.1, flagIdx M _ t'.2)).val
-    rw [map_mul, e1, e2, e3] at this
-    exact this
+    rwa [map_mul, e1, e2, e3] at this
   obtain ⟨f, hf⟩ := H0.exists_of_germs (p := M.str) (O := M.off) hBLB
     (fun t : M.K.bundle.ι × X.F.J => ksOpen M t.1 t.2) (fun t => (t.1, flagIdx M _ t.2))
     (fun t => inf_le_left) (fun t => inf_le_right) cover a rule

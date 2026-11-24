@@ -124,8 +124,7 @@ theorem eval_idFrame_int {r n : ℕ} (F : MvPolynomial (Fin r × Fin n) ℤ) :
     unfold idFrame
     split_ifs <;> simp
 
-theorem fockQ_symm {σ : Type} (f g : MvPolynomial σ ℚ) : fockQ f g = fockQ g f := by
-  exact (fockQPos σ f g).1
+theorem fockQ_symm {σ : Type} (f g : MvPolynomial σ ℚ) : fockQ f g = fockQ g f := (fockQPos σ f g).1
 
 theorem fockQ_hw_pos {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) : 0 < fockQ (hw ℚ hn ν) (hw ℚ hn ν) := by
   exact (fockQPos _ (hw ℚ hn ν) (hw ℚ hn ν)).2 (hwNe ℚ r n hn ν)
@@ -224,8 +223,7 @@ theorem nablaEqDualWeylOf : NablaEqDualWeylOf := by
         rw [← _root_.Formalism.GradedWeylDivisibility.lccomp_weight_colW_apply e s, hwt]
     obtain ⟨Q', hQ'⟩ := hLT r n ν P hP hcoef
     refine ⟨Q', (dualWeylIntRat r n ν Q').mpr ?_, hQ'.symm⟩
-    rw [← intQ_apply, ← hQ']
-    exact hP
+    rwa [← intQ_apply, ← hQ']
 
 theorem dual_dual_of_isLattice {V : Type} [AddCommGroup V] [Module ℚ V] (B : LinearMap.BilinForm ℚ V)
     (hB : B.Nondegenerate) (hB' : B.IsSymm) (M : Submodule ℤ V) [M.IsFullLattice ℚ] :
@@ -271,8 +269,7 @@ def inV {r n : ℕ} (ν : Fin n → ℕ) (M : Submodule ℤ (MvPolynomial (Fin r
   M.comap ((dualWeyl ℚ r n ν).subtype.restrictScalars ℤ)
 
 theorem mem_inV {r n : ℕ} (ν : Fin n → ℕ) (M : Submodule ℤ (MvPolynomial (Fin r × Fin n) ℚ))
-    (x : dualWeyl ℚ r n ν) : x ∈ inV ν M ↔ x.1 ∈ M := by
-  exact Iff.rfl
+    (x : dualWeyl ℚ r n ν) : x ∈ inV ν M ↔ x.1 ∈ M := Iff.rfl
 
 theorem inV_bDual {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (M : Submodule ℤ (MvPolynomial (Fin r × Fin n) ℚ))
     (hM : ∀ Q ∈ M, Q ∈ dualWeyl ℚ r n ν) :
@@ -322,8 +319,7 @@ theorem weyl_isLattice {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (hν : An
         ((dualWeyl ℚ r n ν).subtype.restrictScalars ℤ) = (weyl ℤ r n hn ν).map (intQ r n) := by
       apply le_antisymm
       · exact Submodule.map_comap_le _ _
-      · intro P hP
-        exact ⟨⟨P, hsub P hP⟩, hP, rfl⟩
+      · exact fun P hP => ⟨⟨P, hsub P hP⟩, hP, rfl⟩
     rw [heq]
     exact hW.map _
   · have hsub := mem_dualWeyl_rat_of_mem_map_weyl hn ν hν
@@ -362,13 +358,11 @@ theorem weylEqDualNablaOf : WeylEqDualNablaOf := by
   · intro hP
     have h1 : (⟨P, hW P hP⟩ : dualWeyl ℚ r n ν) ∈ inV ν ((weyl ℤ r n hn ν).map (intQ r n)) :=
       (mem_inV _ _ _).mpr hP
-    rw [← key, mem_inV] at h1
-    exact h1
+    rwa [← key, mem_inV] at h1
   · intro hP
     have h1 : (⟨P, ((mem_bDual hn ν _ P).mp hP).1⟩ : dualWeyl ℚ r n ν) ∈
         inV ν (bDual r n hn ν ((dualWeyl ℤ r n ν).map (intQ r n))) := (mem_inV _ _ _).mpr hP
-    rw [key, mem_inV] at h1
-    exact h1
+    rwa [key, mem_inV] at h1
 
 theorem weyl_dualities : NablaEqDualWeylOf ∧ WeylEqDualNablaOf := by
   exact ⟨nablaEqDualWeylOf, weylEqDualNablaOf⟩

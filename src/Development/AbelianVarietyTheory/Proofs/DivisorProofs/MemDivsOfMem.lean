@@ -62,16 +62,13 @@ theorem mem_above_iff (hF : ∀ x : F, star (algebraMap F E x) = algebraMap F E 
     intro h
     apply hP
     ext x
-    have e : cO E x = x := by
-      apply RingOfIntegers.ext
-      exact congrArg (fun σ : E ≃ₐ[F] E => σ (x : E)) h
+    have e : cO E x = x := RingOfIntegers.ext (congrArg (fun σ : E ≃ₐ[F] E => σ (x : E)) h)
     rw [mem_conjP, e]
   rw [GlobalTheory.Mem.Chr.under_eq_iff_conjPl (starAlg hF) hr hc P Q, GlobalTheory.Mem.Chr.conjPl_iff_mem]
   refine or_congr Iff.rfl ⟨fun h => ?_, fun h => ?_⟩
   · ext y
     rw [mem_conjP]
-    refine (h (cO E y) y ?_).symm
-    exact (star_star (y : E)).symm
+    exact (h (cO E y) y (star_star (y : E)).symm).symm
   · subst h
     intro x y hxy
     have e : y = cO E x := RingOfIntegers.ext hxy
@@ -96,11 +93,9 @@ theorem mem_divs_of_mem {A : Type} [CommRing A] [IsDedekindDomain A] {a : A} (ha
   have hfin : {P : HeightOneSpectrum A | a ∈ P.asIdeal}.Finite := by
     have h1 := Ideal.finite_factors (I := Ideal.span {a}) (by
       rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]; exact ha)
-    refine h1.subset fun Q hQ => ?_
-    exact Ideal.dvd_span_singleton.2 hQ
+    exact h1.subset fun Q hQ => Ideal.dvd_span_singleton.2 hQ
   unfold divs
-  rw [dite_eq_left hfin, Set.Finite.mem_toFinset]
-  exact h
+  rwa [dite_eq_left hfin, Set.Finite.mem_toFinset]
 
 theorem g_notMem {X : Fields} {Pr : Primes X} (h : Pr.Ok) (P : HeightOneSpectrum (𝓞 X.E)) (h1 : P ∉ Pr.vGs)
     (h2 : conjPrime₂ P ∉ Pr.vGs) (i : Fin 2) : ((Pr.g i : ℕ) : 𝓞 X.E) ∉ P.asIdeal := by
@@ -119,8 +114,7 @@ theorem g_notMem {X : Fields} {Pr : Primes X} (h : Pr.Ok) (P : HeightOneSpectrum
   rcases P.isPrime.mem_or_mem hm with h3 | h3
   · refine h2 (hsub _ (mem_divs_of_mem hne ?_))
     show cO X.E (cO X.E (Pr.piG i)) ∈ P.asIdeal
-    rw [cO_cO]
-    exact h3
+    rwa [cO_cO]
   · exact h1 (hsub _ (mem_divs_of_mem hne h3))
 
 end GlobalTheory.MuConj

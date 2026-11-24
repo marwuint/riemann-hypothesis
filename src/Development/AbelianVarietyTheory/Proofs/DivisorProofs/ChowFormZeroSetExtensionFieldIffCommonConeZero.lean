@@ -79,8 +79,7 @@ theorem exists_common_zero {Ω τ : Type} [Field Ω] [IsAlgClosed Ω] [Finite τ
   by_contra h
   have he : zeroLocus Ω I = ∅ := by
     rw [Set.eq_empty_iff_forall_notMem]
-    intro y hy
-    exact h ⟨y, fun f hf => hy f hf⟩
+    exact fun y hy => h ⟨y, fun f hf => hy f hf⟩
   have h2 := MvPolynomial.vanishingIdeal_zeroLocus_eq_radical (K := Ω) I
   rw [he, MvPolynomial.vanishingIdeal_empty] at h2
   exact hI (Ideal.radical_eq_top.1 h2.symm)
@@ -136,8 +135,7 @@ theorem solvable_transfer (F σ τ : Type) [Field F] [Finite σ] [Finite τ]
     have hc : ∀ i, c i ∈ Set.range (MvPolynomial.map (σ := τ) (A.val : A →+* Ω)) := by
       intro i
       rw [MvPolynomial.mem_range_map_iff_coeffs_subset]
-      intro a ha
-      exact ⟨⟨a, Algebra.subset_adjoin (Or.inr (Set.mem_iUnion.2 ⟨i, ha⟩))⟩, rfl⟩
+      exact fun a ha => ⟨⟨a, Algebra.subset_adjoin (Or.inr (Set.mem_iUnion.2 ⟨i, ha⟩))⟩, rfl⟩
     choose c' hc' using hc
     have hid : ∑ i, c' i * partialEval uA (g' i) = 1 := by
       apply MvPolynomial.map_injective (A.val : A →+* Ω) Subtype.val_injective
@@ -162,9 +160,7 @@ theorem solvable_transfer (F σ τ : Type) [Field F] [Finite σ] [Finite τ]
       rw [map_mul, eval₂Hom_partialEval, hy _ (hg'J i), mul_zero]
   obtain ⟨y, hy⟩ := exists_common_zero _ hI
   refine ⟨y, fun g hg => ?_⟩
-  have h := hy _ (Ideal.mem_map_of_mem _ hg)
-  have h2 := eval₂Hom_partialEval (AlgHom.id F Ω) u y g
-  exact h2.symm.trans h
+  exact (eval₂Hom_partialEval (AlgHom.id F Ω) u y g).symm.trans (hy _ (Ideal.mem_map_of_mem _ hg))
 
 end GlobalTheory.PointTransfer
 end -- clump:auto
@@ -227,8 +223,7 @@ theorem exists_dual {Ω : Type} [Field Ω] {N : ℕ} {y : Fin N → Ω} (hy : y 
     exact inv_mul_cancel₀ hj
   · intro k _ hk
     rw [Pi.single_eq_of_ne hk, zero_mul]
-  · intro h
-    exact absurd (Finset.mem_univ j) h
+  · exact fun h => absurd (Finset.mem_univ j) h
 
 theorem ne_zero_of_dual {Ω : Type} [Field Ω] {N : ℕ} {y z : Fin N → Ω} (h : ∑ j, z j * y j = 1) :
     y ≠ 0 := by

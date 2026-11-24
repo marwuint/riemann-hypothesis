@@ -96,8 +96,7 @@ theorem mem_of_tmul_mem (v : HeightOneSpectrum (𝓞 F)) (t : v.adicCompletion F
           (Int.castRingHom _) = g.comp (algebraMap ℤ E) := RingHom.ext_int _ _
       have h3 := congrArg g hpe
       rw [Polynomial.hom_eval₂, map_zero] at h3
-      rw [hc]
-      exact h3
+      rwa [hc]
     · exact isIntegral_algebraMap (x := (⟨c, hc⟩ : v.adicCompletionIntegers F))
   have hi : IsIntegral (v.adicCompletionIntegers F) t := (isIntegral_algHom_iff ιO hinj).1 (hle ht)
   obtain ⟨b, rfl⟩ := IsIntegrallyClosed.isIntegral_iff.1 hi
@@ -202,8 +201,7 @@ theorem orth_mem_span_qFr : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word
     have : Q *ᵥ c = X.crd y := by rw [hc, Matrix.mulVec_mulVec, hQQi, Matrix.one_mulVec]
     rw [← this]
     funext i
-    simp only [Matrix.mulVec, dotProduct, hcol]
-    exact Finset.sum_congr rfl fun k _ => mul_comm _ _
+    simpa only [Matrix.mulVec, dotProduct, hcol] using Finset.sum_congr rfl fun k _ => mul_comm _ _
   rw [Fintype.sum_sum_type, Fintype.sum_sum_type, Fintype.sum_sum_type] at hy
   simp only [famQ, Sum.elim_inl, Sum.elim_inr, Fintype.univ_unit, Finset.sum_singleton] at hy
   have hqe : ∀ j b, (VS D).hT (X.eX b) (qFr wt j) = 0 := fun j b =>
@@ -493,10 +491,7 @@ theorem mlat_main (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D)
       let f : Mq wt →ₗ[𝓞 D.host.E] (VS D).L0 :=
         LinearMap.codRestrict (VS D).L0 ((φ.restrictScalars (𝓞 D.host.E)).comp (Mq wt).subtype) (fun x => x.2)
       refine Module.Finite.of_injective f ?_
-      intro a b hab
-      apply Subtype.ext
-      apply mlat_inj hW
-      exact congrArg Subtype.val hab
+      exact fun a b hab => Subtype.ext (mlat_inj hW (congrArg Subtype.val hab))
     · rw [eq_top_iff]
       intro y _
       have hspan : Submodule.span D.host.E ((VS D).L0 : Set (VS D).V) = ⊤ := by
@@ -520,8 +515,7 @@ theorem mlat_main (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D)
       rw [Submodule.span_eq, Submonoid.smul_def] at ht
       have htM : ((t : 𝓞 D.host.E)) • y ∈ Mq wt := by
         refine (hmem _).2 ?_
-        rw [← algebraMap_smul D.host.E (t : 𝓞 D.host.E) y, map_smul, algebraMap_smul]
-        exact ht
+        rwa [← algebraMap_smul D.host.E (t : 𝓞 D.host.E) y, map_smul, algebraMap_smul]
       have ht0 : algebraMap (𝓞 D.host.E) D.host.E t ≠ 0 :=
         (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 D.host.E) D.host.E)).2 (nonZeroDivisors.ne_zero t.2)
       have e : y = (algebraMap (𝓞 D.host.E) D.host.E t)⁻¹ • ((t : 𝓞 D.host.E) • y) := by
@@ -598,8 +592,7 @@ theorem mlat_main (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D)
   · obtain ⟨⟨b, hb⟩, hyM⟩ := hC y hy
     refine ⟨b, ?_⟩
     have : ((b : 𝓞 D.host.E) : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E b := rfl
-    rw [this, hb]
-    exact hyM
+    rwa [this, hb]
 
 end GlobalTheory.St.G
 end -- clump:auto

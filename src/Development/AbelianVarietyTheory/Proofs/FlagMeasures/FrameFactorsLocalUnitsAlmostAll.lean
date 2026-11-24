@@ -84,15 +84,13 @@ private theorem exists_nat_mul_mem_ringOfIntegers_of_fractionalIdeal {E : Type} 
   obtain ⟨b, hb, hint⟩ := J.isFractional
   have hb0 : b ≠ 0 := nonZeroDivisors.ne_zero hb
   refine ⟨Ideal.absNorm (Ideal.span {b}), ?_, ?_⟩
-  · rw [Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
-    exact hb0
+  · rwa [Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
   · intro y hy
     obtain ⟨c, hc⟩ := Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {b}))
     obtain ⟨z, hz⟩ := hint y hy
     refine ⟨c * z, ?_⟩
     have hz' : (z : E) = (b : E) * y := by
-      rw [Algebra.smul_def] at hz
-      exact hz
+      rwa [Algebra.smul_def] at hz
     have hN : ((Ideal.absNorm (Ideal.span {b}) : 𝓞 E) : E) = (Ideal.absNorm (Ideal.span {b}) : E) := by
       push_cast
       rfl
@@ -122,8 +120,7 @@ private theorem finite_setOf_not_isUnit_natCast_atP (D : D7) (N : ℕ) (hN : N �
     simp [map_inv₀, hv]
   rw [map_one] at hle
   have hint : (D.s.atP p).ιF ((N : D.host.F)⁻¹) ∈ Valuation.integer (ValuativeRel.valuation (D.s.atP p).Fp) := by
-    rw [Valuation.mem_integer_iff, ← (ValuativeRel.valuation _).vle_one_iff]
-    exact hle
+    rwa [Valuation.mem_integer_iff, ← (ValuativeRel.valuation _).vle_one_iff]
   have hNE : (N : D.host.E) ≠ 0 := by exact_mod_cast hN
   refine ⟨algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((D.s.atP p).ιF ((N : D.host.F)⁻¹)), ?_, ?_⟩
   · rw [(D.s.atP p).O_def]
@@ -176,5 +173,4 @@ theorem GlobalTheory.FrameFactorUnit.frFac_isUnitO_finite : ∀ (D : D7) (Z : Lo
     | smul r x _ hx =>
       rw [Subring.smul_def]
       exact mul_mem r.2 hx
-  show frFac Z.δ p a ∈ (Z.M p).L.O ∧ ∃ y ∈ (Z.M p).L.O, frFac Z.δ p a * y = 1
   exact ⟨hmem, _, hO ▸ hc, hinv⟩

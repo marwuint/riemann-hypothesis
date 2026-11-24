@@ -144,8 +144,7 @@ theorem comap_finE : K.comap (finE V) = levA V K ⊔ GinfC V := by
     rw [← mul_inv_cancel_left k' g]
     refine mul_mem (Subgroup.mem_sup_left ⟨k1, ?_⟩) (Subgroup.mem_sup_right ?_)
     · change bc (swapAE D) (finHom V k') ∈ K
-      rw [e]
-      exact hg
+      rwa [e]
     · change finHom V (k'⁻¹ * g) = 1
       rw [map_mul, map_inv, e, inv_mul_cancel]
   · change bc (swapAE D) (finHom V g) ∈ K
@@ -169,8 +168,7 @@ theorem nonempty_gam_equiv (c : Cl D.sp.cm V.gram K) :
       (RingHom.ext fun _ => rfl) V.gram γ.1 γ.2
   refine ⟨Equiv.ofBijective (fun x => ⟨⟨⟨_, hm x.1⟩, x.1.1, x.1.2, rfl⟩, ?_⟩) ⟨fun x y e => ?_, ?_⟩⟩
   · have h : Formalism.L2.DIV.conjIn _ _ _ x.1 ∈ K := x.2
-    rw [Formalism.L2.DIV.conjIn_apply] at h
-    exact h
+    rwa [Formalism.L2.DIV.conjIn_apply] at h
   · have e1 := congrArg (fun z => z.1.1.1.1) e
     exact Subtype.ext (Subtype.ext (Units.ext
       (Matrix.map_injective (inclE (F := D.host.F) (E := D.host.E) (Af D.host.F)).injective e1)))
@@ -178,8 +176,7 @@ theorem nonempty_gam_equiv (c : Cl D.sp.cm V.gram K) :
     obtain rfl : bc (inclE (F := D.host.F) (Af D.host.F)) u = g := e
     refine ⟨⟨⟨u, hu⟩, ?_⟩, rfl⟩
     change Formalism.L2.DIV.conjIn _ _ _ _ ∈ K
-    rw [Formalism.L2.DIV.conjIn_apply]
-    exact h
+    rwa [Formalism.L2.DIV.conjIn_apply]
 
 theorem classSumOK_iff : ClassSumOK V K ↔
     FiniteClasses (UQ D.sp.cm V.gram) (K.subgroupOf (UA D.sp.cm V.gram)) := by
@@ -273,8 +270,7 @@ theorem latStab_compact_open : IsCompact (latStab V : Set (HA (Af D.host.F) D.sp
       rwa [V.frame.sum_equivFun]
     · intro hv
       refine ⟨V.frame.equivFun.symm v, ?_, V.frame.equivFun.apply_symm_apply v⟩
-      rw [Module.Basis.equivFun_symm_apply]
-      exact hv
+      rwa [Module.Basis.equivFun_symm_apply]
   have hsp : Submodule.span D.host.E (L : Set (Fin V.rank → D.host.E)) = ⊤ := by
     obtain ⟨M, _, hm, hM⟩ := GlobalTheory.Mem.VolExists.exists_lattice V
     have : (L : Set (Fin V.rank → D.host.E)) = M := by

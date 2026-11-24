@@ -101,8 +101,7 @@ theorem gramProj_unitary {n r : ℕ} (P Q : Submodule ℂ (EuclideanSpace ℂ (F
       have hweq : w = WithLp.toLp 2 (κ *ᵥ (star κ *ᵥ WithLp.ofLp w)) := by
         rw [Matrix.mulVec_mulVec, hu', Matrix.one_mulVec]
       rw [hweq, ← WithLp.toLp_sub, ← Matrix.mulVec_sub, inner_unitary_mulVec_eq_inner κ hκ]
-      have hz := Submodule.starProjection_inner_eq_zero (WithLp.toLp 2 y) _ hw'
-      simpa [inner_sub_left] using hz
+      simpa [inner_sub_left] using Submodule.starProjection_inner_eq_zero (WithLp.toLp 2 y) _ hw'
   have hg : Matrix.gram ℂ (fun a => Q.starProjection (WithLp.toLp 2 (v a))) =
       Matrix.gram ℂ (fun a => P.starProjection (WithLp.toLp 2 (κ *ᵥ v a))) := by
     ext i j
@@ -232,8 +231,7 @@ theorem orth_N {n : Mat k r} (hn : n ∈ Nset k r) {z : Fin (2 * r + k + 1) → 
     (a : Fin (r + 1)) : herm (Hpk k r) w (M *ᵥ (n *ᵥ fvec k r z a)) = 0 := by
   have he : ∀ b : Fin r, herm (Hpk k r) w (M *ᵥ bvec (eI k r b)) = 0 := by
     intro b
-    have hb := h (Fin.castSucc b)
-    simpa [Formalism.QuantumDeterminants.fvec, b.isLt] using hb
+    simpa [Formalism.QuantumDeterminants.fvec, b.isLt] using h (Fin.castSucc b)
   by_cases ha : a.val < r
   · have hfa : fvec k r z a = bvec (eI k r ⟨a.val, ha⟩) := by simp [Formalism.QuantumDeterminants.fvec, ha]
     rw [hfa, N_e hn]
@@ -275,8 +273,7 @@ theorem N_H {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k
   intro a
   refine ⟨?_, ?_⟩
   · rw [key]
-    have h1 := orth_N hi₂ hz' w 1 (fun b => by simpa using (hw b).1) a
-    simpa using h1
+    simpa using orth_N hi₂ hz' w 1 (fun b => by simpa using (hw b).1) a
   · rw [key]
     have h3 : ∀ b, herm (Hpk k r) w ((n₂⁻¹ * γ⁻¹ * n₁⁻¹) *ᵥ fvec k r z b) = 0 := by
       intro b

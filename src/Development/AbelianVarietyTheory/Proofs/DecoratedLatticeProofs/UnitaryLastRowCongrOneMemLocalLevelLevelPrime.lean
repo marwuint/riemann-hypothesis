@@ -144,14 +144,7 @@ theorem mem_Uloc : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
       (x : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) =
       (1 : Matrix (Fin n) (Fin n) E).map (Formalism.UG.inclE (F := F) (v.adicCompletion F)) := hU
   rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one] at h0
-  have hMi : ((x⁻¹ : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) =
-      Formalism.UG.cT (Formalism.UG.sigR σ (v.adicCompletion F)) (x : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) := by
-    calc ((x⁻¹ : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F))
-        = (Formalism.UG.cT (Formalism.UG.sigR σ (v.adicCompletion F)) (x : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) *
-          (x : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F))) *
-          ((x⁻¹ : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) := by
-          rw [h0, Matrix.one_mul]
-      _ = _ := by rw [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]
+  have hMi := (left_inv_eq_right_inv h0 (Units.mul_inv x)).symm
   have hMient : ∀ a b, ((x⁻¹ : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) a b =
       Formalism.UG.sigR σ (v.adicCompletion F) ((x : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) b a) := by
     intro a b; rw [hMi]; rfl
@@ -174,11 +167,6 @@ theorem mem_Uloc : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
     congr 1
     refine Finset.sum_congr rfl fun k _ => ?_
     rw [Matrix.sub_apply, hcl k, mul_assoc]
-  have hMilastI : ∀ i, ∃ e ∈ Formalism.BasicNotions.intV E v,
-      ((x⁻¹ : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F))
-      (Formalism.L2.Col.lastIdx n) i - (1 : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) (Formalism.L2.Col.lastIdx n) i =
-      Formalism.UG.inclE (F := F) (v.adicCompletion F) (p : E) * e :=
-    fun i => ⟨_, neg_mem (sum_mem fun k _ => mul_mem (hc k) (hMiint k i)), hMilast i⟩
   have hs1 : ∀ a b, Formalism.UG.sigR σ (v.adicCompletion F) ((1 : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) a b) =
       (1 : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) b a := by
     intro a b
@@ -191,14 +179,15 @@ theorem mem_Uloc : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
         (-∑ k, c k * ((x⁻¹ : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) k i) := by
     intro i
     have h := congrArg (Formalism.UG.sigR σ (v.adicCompletion F)) (hMilast i)
-    rw [map_sub, map_mul, hMient, sigR_sigR σ hσ v, _root_.GlobalTheory.sigR_inclE_adic, ← hq, hs1] at h
-    exact h
+    rwa [map_sub, map_mul, hMient, sigR_sigR σ hσ v, _root_.GlobalTheory.sigR_inclE_adic, ← hq,
+      hs1] at h
 
   have h1 : x ∈ Formalism.UG.levelVL σ (1 : Matrix (Fin n) (Fin n) E) v S.Lb := by
     rw [hL]
     refine Subgroup.mem_inf.2 ⟨hU, fun y => ⟨fun hy => ?_, fun hy => ?_⟩⟩
     · exact mulVec_mem_dLat v p hp0 _ hint (fun j => ⟨c j, hc j, hcl j⟩) y hy
-    · have := mulVec_mem_dLat v p hp0 _ hMiint hMilastI _ hy
+    · have := mulVec_mem_dLat v p hp0 _ hMiint
+        (fun i => ⟨_, neg_mem (sum_mem fun k _ => mul_mem (hc k) (hMiint k i)), hMilast i⟩) _ hy
       rwa [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at this
 
   have h2 : ∀ y ∈ Formalism.UG.latS (F := F) (v.adicCompletion F) (Formalism.BasicNotions.intV E v)
@@ -227,30 +216,25 @@ theorem mem_Uloc : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
         obtain ⟨a, b, hab⟩ := hcop
         have hE : (a : E) * (p : E) + (b : E) * (q : E) = 1 := by
           exact_mod_cast congrArg (fun r : 𝓞 E => (r : E)) hab
-        have hab' : Formalism.UG.inclE (F := F) (v.adicCompletion F) (a : E) * Formalism.UG.inclE (F := F) (v.adicCompletion F) (p : E) +
-            Formalism.UG.inclE (F := F) (v.adicCompletion F) (b : E) * Formalism.UG.inclE (F := F) (v.adicCompletion F) (q : E) = 1 := by
-          have h := congrArg (Formalism.UG.inclE (F := F) (v.adicCompletion F)) hE
-          rwa [map_add, map_mul, map_mul, map_one] at h
+        have hab' := congrArg (Formalism.UG.inclE (F := F) (v.adicCompletion F)) hE
+        rw [map_add, map_mul, map_mul, map_one] at hab'
         have hDc := hcl (Formalism.L2.Col.lastIdx n)
         have hDd := hcol (Formalism.L2.Col.lastIdx n)
         rw [← Matrix.sub_apply] at hDc hDd
-        have e : Formalism.UG.inclE (F := F) (v.adicCompletion F) ((p : E)⁻¹) *
-            (((x : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) - 1) (Formalism.L2.Col.lastIdx n) (Formalism.L2.Col.lastIdx n) *
-              y (Formalism.L2.Col.lastIdx n)) =
-            (Formalism.UG.inclE (F := F) (v.adicCompletion F) (a : E) * Formalism.UG.sigR σ (v.adicCompletion F)
-              (-∑ k, c k * ((x⁻¹ : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) k
-                (Formalism.L2.Col.lastIdx n)) +
-             Formalism.UG.inclE (F := F) (v.adicCompletion F) (b : E) * c (Formalism.L2.Col.lastIdx n)) *
-            (Formalism.UG.inclE (F := F) (v.adicCompletion F) (q : E) * y (Formalism.L2.Col.lastIdx n)) := by
-          linear_combination (Formalism.UG.inclE (F := F) (v.adicCompletion F) ((p : E)⁻¹) * y (Formalism.L2.Col.lastIdx n) -
-              Formalism.UG.inclE (F := F) (v.adicCompletion F) (a : E) * y (Formalism.L2.Col.lastIdx n)) * hDc +
-            (c (Formalism.L2.Col.lastIdx n) * y (Formalism.L2.Col.lastIdx n)) * hPinv +
-            (Formalism.UG.inclE (F := F) (v.adicCompletion F) (a : E) * y (Formalism.L2.Col.lastIdx n)) * hDd -
-            (c (Formalism.L2.Col.lastIdx n) * y (Formalism.L2.Col.lastIdx n)) * hab'
-        rw [e]
-        exact mul_mem (add_mem (mul_mem (_root_.Formalism.MainNotions.Gaps.LG.fm_incl_mem v a)
-          (_root_.GlobalTheory.sigR_mem_intV_adic σ v (neg_mem (sum_mem fun k _ => mul_mem (hc k) (hMiint k _)))))
-          (mul_mem (_root_.Formalism.MainNotions.Gaps.LG.fm_incl_mem v b) (hc _))) hy2
+        convert mul_mem (add_mem (mul_mem (_root_.Formalism.MainNotions.Gaps.LG.fm_incl_mem v a)
+          (_root_.GlobalTheory.sigR_mem_intV_adic σ v
+            (neg_mem (sum_mem fun k _ => mul_mem (hc k) (hMiint k (Formalism.L2.Col.lastIdx n))))))
+          (mul_mem (_root_.Formalism.MainNotions.Gaps.LG.fm_incl_mem v b)
+            (hc (Formalism.L2.Col.lastIdx n)))) hy2 using 1
+        linear_combination
+          (Formalism.UG.inclE (F := F) (v.adicCompletion F) ((p : E)⁻¹) *
+              y (Formalism.L2.Col.lastIdx n) -
+            Formalism.UG.inclE (F := F) (v.adicCompletion F) (a : E) *
+              y (Formalism.L2.Col.lastIdx n)) * hDc +
+          (c (Formalism.L2.Col.lastIdx n) * y (Formalism.L2.Col.lastIdx n)) * hPinv +
+          (Formalism.UG.inclE (F := F) (v.adicCompletion F) (a : E) *
+              y (Formalism.L2.Col.lastIdx n)) * hDd -
+          (c (Formalism.L2.Col.lastIdx n) * y (Formalism.L2.Col.lastIdx n)) * hab'
       · rw [Matrix.sub_apply, hcl j, ← mul_assoc, ← mul_assoc, hPinv, one_mul]
         exact mul_mem (hc j) (hy1 j hj)
   exact GlobalTheory.uloc_of_triv_disc σ S v hv x h1 h2

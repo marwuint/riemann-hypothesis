@@ -104,18 +104,15 @@ theorem spm_surjective (g : sp A D ⟶ sp A C) : ∃ φ : C →ₐ[A] D, spm φ 
     exact Over.w g
   refine ⟨⟨φ.hom, fun a => congrArg
     (fun g : CommRingCat.of A ⟶ CommRingCat.of D => g.hom a) hw⟩, ?_⟩
-  apply Over.OverMorphism.ext
-  exact hφ
+  exact Over.OverMorphism.ext hφ
 
 theorem spm_left_surjective (π : C →ₐ[A] D) (hs : Function.Surjective π)
     (hn : ∀ x, π x = 0 → IsNilpotent x) : Function.Surjective (spm π).left := by
   have h := range_comap_of_surjective D π.toRingHom hs
   have h2 : PrimeSpectrum.zeroLocus (RingHom.ker π.toRingHom : Set C) = Set.univ := by
     rw [PrimeSpectrum.zeroLocus_eq_univ_iff]
-    intro x hx
-    exact hn x hx
-  rw [h2, Set.range_eq_univ] at h
-  exact h
+    exact fun x hx => hn x hx
+  rwa [h2, Set.range_eq_univ] at h
 
 end
 
@@ -203,8 +200,7 @@ theorem exists_pt {C D : Type} [CommRing C] [Algebra A C] [CommRing D] [Algebra 
       rw [← Over.w j, IsOpenImmersion.lift_fac_assoc, Over.w g]))
   refine ⟨φ, ?_⟩
   rw [hφ]
-  apply Over.OverMorphism.ext
-  exact IsOpenImmersion.lift_fac _ _ _
+  exact Over.OverMorphism.ext (IsOpenImmersion.lift_fac _ _ _)
 
 
 include hε in
@@ -273,8 +269,7 @@ theorem pullback_map_fst {S S' : Scheme.{0}} {p : S' ⟶ S} {Z : Over S'} {V W :
     (u ≫ (Over.pullback p).map f).left ≫ pullback.fst W.hom p =
       u.left ≫ pullback.fst V.hom p ≫ f.left := by
   rw [Over.comp_left]
-  refine (Category.assoc _ _ _).trans (congrArg (u.left ≫ ·) ?_)
-  exact pullback.lift_fst _ _ _
+  exact (Category.assoc _ _ _).trans (congrArg (u.left ≫ ·) (pullback.lift_fst _ _ _))
 
 theorem comp_eq_of_pullback_map_eq {S S' : Scheme.{0}} {p : S' ⟶ S} {Z V W : Over S}
     {f g : V ⟶ W} (h : (Over.pullback p).map f = (Over.pullback p).map g) (t : Z ⟶ V)
@@ -442,8 +437,7 @@ theorem exists_chart [IsLocalRing A] (B : Over (Spec (CommRingCat.of A))) [GrpOb
       rw [hρ, IsOpenImmersion.lift_fac_assoc, Over.w e]))
   refine ⟨R, inferInstance, inferInstance, j, hi, ε, ?_⟩
   rw [hε]
-  apply Over.OverMorphism.ext
-  exact IsOpenImmersion.lift_fac _ _ _
+  exact Over.OverMorphism.ext (IsOpenImmersion.lift_fac _ _ _)
 
 theorem isNilpotent_of_mem_map {C : Type} [CommRing C] [Algebra A C] {J : Ideal A}
     (hJ : IsNilpotent J) (k : ℕ) (x : C) (hx : x ∈ (J ^ (k + 1)).map (algebraMap A C)) :
@@ -462,8 +456,7 @@ theorem map_mem_map {C D : Type} [CommRing C] [Algebra A C] [CommRing D] [Algebr
     have := Submodule.mem_map_of_mem (f := r) h1
     rw [Submodule.map_smul''] at this
     exact Submodule.smul_mono le_rfl le_top this
-  rw [Ideal.smul_top_eq_map] at h2
-  exact h2
+  rwa [Ideal.smul_top_eq_map] at h2
 
 end TorusNil
 

@@ -127,8 +127,7 @@ theorem sq_unitary : ∀ {D : D7} {a d : ℕ} (x : Formalism.MainNotions.Standar
   have hU : ∀ {m : ℕ} (g : Formalism.MainNotions.StandardLatticesGL3.GA D m), cTA D ((g : GL (Fin m) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin m) (Fin m) (Formalism.MainNotions.StandardLatticesGL3.AE D)) * ((g : GL (Fin m) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin m) (Fin m) (Formalism.MainNotions.StandardLatticesGL3.AE D)) = 1 := fun g => by
     have h := g.2
     change Formalism.UG.cT _ _ * ((1 : Matrix _ _ D.host.E).map _) * _ = (1 : Matrix _ _ D.host.E).map _ at h
-    rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one] at h
-    exact h
+    rwa [Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one] at h
   set X : Matrix (Fin a) (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D) := ((x : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin a) (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)) with hX
   set V : Matrix (Fin a) (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D) := ((((x : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D))⁻¹ : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D))) : Matrix (Fin a) (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)) with hV
   set Y : Matrix (Fin d) (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D) := ((y : GL (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin d) (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) with hY
@@ -185,8 +184,7 @@ theorem sq_diff_int : ∀ {D : D7} (cc : Ideal (𝓞 D.host.K)) {a d : ℕ} (x :
     rw [div_eq_inv_mul, map_mul, e, mul_assoc]
   have e3 : Formalism.MainNotions.StandardLatticesGL3.inc D (M : D.host.E)⁻¹ * (M : Formalism.MainNotions.StandardLatticesGL3.AE D) = 1 := by
     rw [← map_natCast (Formalism.MainNotions.StandardLatticesGL3.inc D), ← map_mul, inv_mul_cancel₀ hM0, map_one]
-  rw [e2, e3, one_mul]
-  exact hs
+  rwa [e2, e3, one_mul]
 
 theorem qH_pt {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hC : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ) {a d : ℕ}
     (z : Matrix (Fin d) (Fin a) D.host.E) :
@@ -452,8 +450,7 @@ theorem exists_nsmul_kill_forms {ψ : AddChar (AF D.host.F) ℂ} (hc : Continuou
       refine Submodule.span_le.2 ?_ hsp
       rintro _ ⟨k, rfl⟩
       have h3 := h (i, k) α hα
-      rw [← smul_eq_mul, ← map_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one] at h3
-      exact h3
+      rwa [← smul_eq_mul, ← map_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one] at h3
     exact hb
   have h3 : ψ (g (Lev.swapAE D (finPart D a))) = 1 := h2
   rwa [hg, finIncl_finPart ha] at h3
@@ -723,11 +720,9 @@ theorem uComp {D : D7} (S T : HSp D) (hGS : HSpace.gram S = 1) (hGT : HSpace.gra
   constructor
   · have hw0 : w.map (infPart D) = 0 := by ext k l; exact hw k l
     have := congrFun (congrFun (key (infPart D)) i) j
-    rw [Matrix.map_apply, hw0, Matrix.mul_zero, Matrix.zero_mul] at this
-    exact this
+    rwa [Matrix.map_apply, hw0, Matrix.mul_zero, Matrix.zero_mul] at this
   · have := congrFun (congrFun (key (finQ D)) i) j
-    rw [Matrix.map_apply, eh, eg] at this
-    exact this
+    rwa [Matrix.map_apply, eh, eg] at this
 
 end GlobalTheory.MovedTrChar
 
@@ -771,11 +766,7 @@ theorem psi_sympl_moved_eq_one : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (
     have e2 := finPt_parts S T r z' i j
     apply recon_uniq
     · rw [hNv, map_mul, hv1, mul_zero, hu, Matrix.sub_apply, map_sub, hA0, e1.1, e2.1, sub_zero]
-    · rw [hNv, map_mul, hv2]
-      rw [hu, Matrix.sub_apply, map_sub]
-      rw [hA0, e1.2, e2.2]
-      rw [hmap]
-      rw [ent_smul]
+    · rw [hNv, map_mul, hv2, hu, Matrix.sub_apply, map_sub, hA0, e1.2, e2.2, hmap, ent_smul]
       rw [map_natCast]
       have h3 := hte i j
       rw [Matrix.sub_apply, Matrix.map_apply] at h3

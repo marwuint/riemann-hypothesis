@@ -139,16 +139,14 @@ theorem reflRep_apply {S T : HSp D} (om : WRep S T) (p : GA D S × GA D T) (f : 
 theorem weil_refl {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : WRep S T}
     (hw : IsWeilDatumO ψ S T χS χT om) : IsWeilDatumO ψ S T χS χT (reflRep om) := by
   refine ⟨hw.std, hw.hecS, hw.hecT, hw.resS, hw.resT, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · intro p f hf
-    exact theta_refl (hw.om_pres p _ (theta_refl hf))
+  · exact fun p f hf => theta_refl (hw.om_pres p _ (theta_refl hf))
   · intro g h w₀ f hf
     rw [reflRep_apply, reflRep_apply, heisO_refl, hw.om_heis _ _ _ _ (theta_refl hf), heisO_refl, actO_neg, neg_neg]
   · intro γ hγ γ' hγ' f hf
     rw [reflRep_apply]
     show om (γ, γ') (fun y => f (-y)) (-0) = f 0
     rw [neg_zero, hw.om_aut γ hγ γ' hγ' _ (theta_refl hf), neg_zero]
-  · intro f hf w
-    exact hw.om_cont _ (theta_refl hf) (-w)
+  · exact fun f hf w => hw.om_cont _ (theta_refl hf) (-w)
   · intro μ 𝓕 hμ h𝓕 p f hf
     haveI : BorelSpace (WO S T) := ⟨rfl⟩
     let dE : WO S T ≃+ WO S T := AddEquiv.neg _
@@ -221,8 +219,7 @@ theorem det_mul_conj {e : AE D} (he : IsSplitIdem D e) {V : HSp D} {g : GA D V} 
   rw [← conj_detAt hx] at h3
   have h4 : (Formalism.L2.Theta.mt V g).det * cA D (x : AE D) = x := h3.trans (Eq.symm hx)
   apply Units.ext
-  rw [Units.val_mul, detA_val, Units.coe_map]
-  exact h4
+  rwa [Units.val_mul, detA_val, Units.coe_map]
 
 theorem chi_det {χ : (AE D)ˣ →* Circle} {n : ℕ} (hR : ResEta D χ n) {e : AE D} (he : IsSplitIdem D e) {V : HSp D}
     {g : GA D V} (hg : SuppAt e V g) {x : (AE D)ˣ} (hx : IsDetAt e V g x) : χ (detA V g) = χ x * χ x := by
@@ -243,8 +240,7 @@ theorem weil_twist {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE
     (hH : IsHeckeChar D χT) (hR : ResEta D χT T.rank)
     (hw : IsWeilDatumO ψ S T χS χT⁻¹ om) : IsWeilDatumO ψ S T χS χT (twistRep χT om) := by
   refine ⟨hw.std, hw.hecS, hH, hw.resS, hR, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · intro p f hf
-    exact theta_smul (hw.om_pres p f hf) _
+  · exact fun p f hf => theta_smul (hw.om_pres p f hf) _
   · intro g h w₀ f hf
     rw [twistRep_apply, twistRep_apply, hw.om_heis _ _ _ _ hf]
     funext w

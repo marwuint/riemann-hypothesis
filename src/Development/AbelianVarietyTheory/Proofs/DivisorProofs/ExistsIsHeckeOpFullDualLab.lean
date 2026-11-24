@@ -97,19 +97,15 @@ theorem card_leftCosets_doubleCoset_inv_eq : ∀ {G : Type} [Group G] [Measurabl
     · simp only [measure_preimage_mul, Finset.sum_const, nsmul_eq_mul]
     · intro a ha b hb hab
       rw [Function.onFun, Set.disjoint_left]
-      intro x hxa hxb
-      exact hab ((hRu x (hA a ha x hxa)).unique ⟨ha, hxa⟩ ⟨hb, hxb⟩)
-    · intro b _
-      exact measurable_const_mul _ hJ
+      exact fun x hxa hxb => hab ((hRu x (hA a ha x hxa)).unique ⟨ha, hxa⟩ ⟨hb, hxb⟩)
+    · exact fun b _ => measurable_const_mul _ hJ
   have m2 : ν S = R'.card * ν J := by
     rw [e2, measure_biUnion_finset]
     · simp only [measure_preimage_mul_right, Finset.sum_const, nsmul_eq_mul]
     · intro a ha b hb hab
       rw [Function.onFun, Set.disjoint_left]
-      intro x hxa hxb
-      exact hab ((hBu x (hB a ha x hxa)).unique ⟨ha, hxa⟩ ⟨hb, hxb⟩)
-    · intro b _
-      exact measurable_mul_const _ hJ
+      exact fun x hxa hxb => hab ((hBu x (hB a ha x hxa)).unique ⟨ha, hxa⟩ ⟨hb, hxb⟩)
+    · exact fun b _ => measurable_mul_const _ hJ
   have := (ENNReal.mul_left_inj h0 htop).1 (m1.symm.trans m2)
   exact_mod_cast this
 

@@ -140,62 +140,49 @@ theorem two_torsion_unique {Λ : AddSubgroup ℂ} (h : IsLat Λ) (w : ℂ) (k : 
     (h2 : 2 * t ∈ Λ) (ha : w * t ∉ Λ) (hb : (1 - w) * t ∉ Λ)
     (h2' : 2 * t' ∈ Λ) (ha' : w * t' ∉ Λ) (hb' : (1 - w) * t' ∉ Λ)
     (hs : ∀ z ∈ Λ, w * z ∈ Λ) : t - t' ∈ Λ := by
-  have hk : ∀ u, 2 * u ∈ Λ → w * (1 - w) * u ∈ Λ := by
-    intro u hu
-    have := Λ.zsmul_mem hu k
-    rw [hw]; convert this using 1; rw [zsmul_eq_mul]; ring
+  have hk : ∀ u, 2 * u ∈ Λ → w * (1 - w) * u ∈ Λ := fun u hu => by
+    rw [hw]; convert Λ.zsmul_mem hu k using 1; rw [zsmul_eq_mul]; ring
   have hs' : ∀ z ∈ Λ, (1 - w) * z ∈ Λ := fun z hz => by
-    have := Λ.sub_mem hz (hs z hz); convert this using 1; ring
+    convert Λ.sub_mem hz (hs z hz) using 1; ring
 
   have four : ∀ a b u : ℂ, 2 * a ∈ Λ → 2 * b ∈ Λ → 2 * u ∈ Λ → a ∉ Λ → b ∉ Λ → a - b ∉ Λ →
       u ∈ Λ ∨ u - a ∈ Λ ∨ u - b ∈ Λ ∨ u - a - b ∈ Λ := by
     obtain ⟨w₁, w₂, hi, rfl⟩ := h
     intro a b u h1 h2 h3 ha hb hab
-    have red : ∀ (x : ℂ) (m n : ℤ), x = m * (w₁ / 2) + n * (w₂ / 2) → m % 2 = 0 → n % 2 = 0 →
+    have red : ∀ (x : ℂ) (m n : ℤ), m * w₁ + n * w₂ = 2 * x → m % 2 = 0 → n % 2 = 0 →
         x ∈ AddSubgroup.closure ({w₁, w₂} : Set ℂ) := by
       intro x m n hx hm hn
       obtain ⟨m', rfl⟩ : ∃ m', m = 2 * m' := ⟨m / 2, by omega⟩
       obtain ⟨n', rfl⟩ : ∃ n', n = 2 * n' := ⟨n / 2, by omega⟩
       rw [AddSubgroup.mem_closure_pair]
       refine ⟨m', n', ?_⟩
-      rw [hx]; simp only [zsmul_eq_mul]; push_cast; ring
+      simp only [zsmul_eq_mul]
+      push_cast at hx
+      linear_combination hx / 2
     rw [AddSubgroup.mem_closure_pair] at h1 h2 h3
     obtain ⟨a1, a2, ea⟩ := h1
     obtain ⟨b1, b2, eb⟩ := h2
     obtain ⟨u1, u2, eu⟩ := h3
     simp only [zsmul_eq_mul] at ea eb eu
-    have ra := red a a1 a2 (by linear_combination (-1 / 2 : ℂ) * ea)
-    have rb := red b b1 b2 (by linear_combination (-1 / 2 : ℂ) * eb)
-    have rab := red (a - b) (a1 - b1) (a2 - b2)
-      (by push_cast; linear_combination (-1 / 2 : ℂ) * ea + (1 / 2 : ℂ) * eb)
-    have r0 := red u u1 u2 (by linear_combination (-1 / 2 : ℂ) * eu)
-    have r1 := red (u - a) (u1 - a1) (u2 - a2)
-      (by push_cast; linear_combination (-1 / 2 : ℂ) * eu + (1 / 2 : ℂ) * ea)
-    have r2 := red (u - b) (u1 - b1) (u2 - b2)
-      (by push_cast; linear_combination (-1 / 2 : ℂ) * eu + (1 / 2 : ℂ) * eb)
+    have ra := red a a1 a2 ea
+    have rb := red b b1 b2 eb
+    have rab := red (a - b) (a1 - b1) (a2 - b2) (by push_cast; linear_combination ea - eb)
+    have r0 := red u u1 u2 eu
+    have r1 := red (u - a) (u1 - a1) (u2 - a2) (by push_cast; linear_combination eu - ea)
+    have r2 := red (u - b) (u1 - b1) (u2 - b2) (by push_cast; linear_combination eu - eb)
     have r3 := red (u - a - b) (u1 - a1 - b1) (u2 - a2 - b2)
-      (by push_cast; linear_combination (-1 / 2 : ℂ) * eu + (1 / 2 : ℂ) * ea + (1 / 2 : ℂ) * eb)
-    have na : ¬ (a1 % 2 = 0 ∧ a2 % 2 = 0) := fun h => ha (ra h.1 h.2)
-    have nb : ¬ (b1 % 2 = 0 ∧ b2 % 2 = 0) := fun h => hb (rb h.1 h.2)
-    have nab : ¬ ((a1 - b1) % 2 = 0 ∧ (a2 - b2) % 2 = 0) := fun h => hab (rab h.1 h.2)
-    have : (u1 % 2 = 0 ∧ u2 % 2 = 0) ∨ ((u1 - a1) % 2 = 0 ∧ (u2 - a2) % 2 = 0) ∨
-        ((u1 - b1) % 2 = 0 ∧ (u2 - b2) % 2 = 0) ∨
-        ((u1 - a1 - b1) % 2 = 0 ∧ (u2 - a2 - b2) % 2 = 0) := by omega
-    rcases this with h | h | h | h
-    · exact Or.inl (r0 h.1 h.2)
-    · exact Or.inr (Or.inl (r1 h.1 h.2))
-    · exact Or.inr (Or.inr (Or.inl (r2 h.1 h.2)))
-    · exact Or.inr (Or.inr (Or.inr (r3 h.1 h.2)))
+      (by push_cast; linear_combination eu - ea - eb)
+    clear red ea eb eu
+    grind
   have hkt := hk t h2
-  have hab : w * t - (1 - w) * t ∉ Λ := fun h => ha (by
-    have := Λ.add_mem (Λ.add_mem (hs _ h) hkt) hkt
-    convert this using 1; ring)
-  rcases four (w * t) ((1 - w) * t) t' (by have := hs _ h2; convert this using 1; ring)
-    (by have := hs' _ h2; convert this using 1; ring) h2' ha hb hab with h | h | h | h
+  have hab : w * t - (1 - w) * t ∉ Λ := fun h =>
+    ha (by convert Λ.add_mem (Λ.add_mem (hs _ h) hkt) hkt using 1; ring)
+  rcases four (w * t) ((1 - w) * t) t' (by convert hs _ h2 using 1; ring)
+    (by convert hs' _ h2 using 1; ring) h2' ha hb hab with h | h | h | h
   · exact absurd (hs _ h) ha'
-  · exact absurd (by have := Λ.add_mem (hs' _ h) hkt; convert this using 1; ring) hb'
-  · exact absurd (by have := Λ.add_mem (hs _ h) hkt; convert this using 1; ring) ha'
-  · have := Λ.neg_mem h; convert this using 1; ring
+  · exact absurd (by convert Λ.add_mem (hs' _ h) hkt using 1; ring) hb'
+  · exact absurd (by convert Λ.add_mem (hs _ h) hkt using 1; ring) ha'
+  · convert Λ.neg_mem h using 1; ring
 
 theorem area_conj (Λ : AddSubgroup ℂ) : area (Λ.map (starRingEnd ℂ).toAddMonoidHom) = area Λ := by
   unfold area

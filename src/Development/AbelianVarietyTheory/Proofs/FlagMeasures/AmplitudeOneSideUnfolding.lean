@@ -191,9 +191,7 @@ theorem one_piece : ∀ (k r : ℕ) {Wp : Type} [NormedAddCommGroup Wp] [InnerPr
               f (lmulM (Matrix.of h * Matrix.of n) x) *
                 (‖⟪w, π (Matrix.of h) (Φ (Matrix.of x))⟫_ℂ‖₊ : ℝ≥0∞) ^ 2 := by
           intro h hh n hn
-          have hs : Matrix.of h * Matrix.of n ∈ Sset k r z := by
-            show ∃ h' ∈ UWset k r z, ∃ m ∈ Nset k r, Matrix.of h * Matrix.of n = h' * m
-            exact ⟨_, hh, _, hn, rfl⟩
+          have hs : Matrix.of h * Matrix.of n ∈ Sset k r z := ⟨_, hh, _, hn, rfl⟩
           have hSQ : lmulM (Matrix.of h * Matrix.of n) x ∈ Q := (hQinv _ hs x hxg).2 hxQ
           have hSG : lmulM (Matrix.of h * Matrix.of n) x ∈ grp k r :=
             mul_mem_UH_Hpk' (mul_mem_UH_Hpk' hh.1 hn.1) hxg
@@ -253,9 +251,7 @@ theorem one_piece : ∀ (k r : ℕ) {Wp : Type} [NormedAddCommGroup Wp] [InnerPr
           _ = Vol * (Module.finrank ℂ Wp : ℝ≥0∞)⁻¹ * Q.indicator B x := by
               rw [hB, hw, ofReal_one_sq_mul_norm_sq_div _ _ hd, mul_assoc]
       · refine zero_case fun h hh n hn => ?_
-        have hs : Matrix.of h * Matrix.of n ∈ Sset k r z := by
-          show ∃ h' ∈ UWset k r z, ∃ m ∈ Nset k r, Matrix.of h * Matrix.of n = h' * m
-          exact ⟨_, hh, _, hn, rfl⟩
+        have hs : Matrix.of h * Matrix.of n ∈ Sset k r z := ⟨_, hh, _, hn, rfl⟩
         have hSQ : lmulM (Matrix.of h * Matrix.of n) x ∉ Q := fun h' => hxQ ((hQinv _ hs x hxg).1 h')
         rw [hFdef]
         simp only [Set.indicator_of_notMem hSQ]

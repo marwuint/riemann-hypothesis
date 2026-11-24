@@ -109,12 +109,10 @@ theorem exists_section (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing
   have key : ∀ j, (lift u (𝟙 X) ≫ w j).left pt ∈ O := by
     intro j
     have := Set.mem_iInter.1 (h3 ⟨pt, rfl⟩) j
-    rw [← hu] at this
-    exact this
+    rwa [← hu] at this
   refine ⟨a', fun i => ⟨?_, ?_⟩⟩
   · have := key (i, true)
-    simp only [w, MonObj.comp_mul, lift_snd_assoc, lift_fst, Category.id_comp] at this
-    exact this
+    simpa only [w, MonObj.comp_mul, lift_snd_assoc, lift_fst, Category.id_comp] using this
   · have := key (i, false)
     simp only [w, MonObj.comp_mul, GrpObj.comp_inv, lift_snd_assoc, lift_fst, Category.id_comp] at this
     exact this
@@ -129,8 +127,7 @@ theorem exists_ten (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
   let x : Sp Ω ⟶ Sp R := yy ≫ G.hom
   have hyy : ∀ p, yy p = y := fun p => by
     have : yy p ∈ Set.range (G.left.fromSpecResidueField y) := ⟨p, rfl⟩
-    rw [Scheme.range_fromSpecResidueField] at this
-    exact this
+    rwa [Scheme.range_fromSpecResidueField] at this
   have hx : ∀ p, x p = G.hom y := fun p => congrArg G.hom (hyy p)
   have hx' : closedPoint R ∉ Set.range x := by
     rintro ⟨p, hp⟩
@@ -209,7 +206,6 @@ theorem exists_gen_off_closed : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoca
     refine h2 (f'.left g) ?_
     rw [← Scheme.Hom.comp_apply, e, Scheme.Hom.comp_apply])
   have e : (β ⁻¹ᵁ V).ι ≫ (𝟙 G' : G' ⟶ G').left = (β ⁻¹ᵁ V).ι := by simp
-  rw [e] at this
-  exact this
+  rwa [e] at this
 
 end GlobalTheory.Mum.OffClosed

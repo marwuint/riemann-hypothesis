@@ -598,8 +598,7 @@ theorem exists_coord [IsLocalRing R] [IsIntegrallyClosed R] {xe : D₀.X ≃+ D.
     have e := ha' _ (toUnit (TK R)).left z J J' hJ hJ'
     have hu : toUnit (TK R) ≫ toUnit E = toUnit (TK R) := toUnit_unique _ _
     simp only [← Over.comp_left] at e
-    rw [comp_lift, comp_lift, ← Category.assoc, hu, Category.comp_id] at e
-    exact e
+    rwa [comp_lift, comp_lift, ← Category.assoc, hu, Category.comp_id] at e
   obtain ⟨u, hu⟩ := exists_unit_of_sq (R := R) a a' (unit_ext fun z _ => by
     obtain ⟨J, hJ⟩ := good_exists D.P.isLB (Z := (TK R).left) z
     obtain ⟨J', hJ'⟩ := good_exists D₀.P.isLB (Z := (TK R).left) z
@@ -851,8 +850,7 @@ theorem exists_translate_of_lam : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLo
       rw [cls_pull hΛ] at h
       change evc hN a (toUnit Y) = pull (lift a (toUnit Y)).left
         (evc hΛ (fst D.P.A (𝟙_ (Over (Sp R)))) (snd D.P.A (𝟙_ (Over (Sp R))) ≫ b)) at h
-      rw [pull_evc, lift_fst, lift_snd_assoc] at h
-      exact h
+      rwa [pull_evc, lift_fst, lift_snd_assoc] at h
     rw [← evN Y a (toUnit Y), h, e]
   refine ⟨b, ?_, ?_⟩
   ·
@@ -866,8 +864,7 @@ theorem exists_translate_of_lam : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLo
         rw [← key, ← key, GrpObj.inv_comp, ia, ia']
         simp only [Over.comp_left, pull_comp, sym₀, sym]
       have h₂ : lam c (a⁻¹ * a) (toUnit Y ≫ b) = 0 := by rw [inv_mul_cancel, lam_one_left]
-      rw [l₁, h₁] at h₂
-      exact h₂
+      rwa [l₁, h₁] at h₂
     have two : b * b = 1 := by
       refine hd.eq_one (b * b) ((triv_ev_iff hΛ _ _).2 ?_)
       have hs : snd D.P.A (𝟙_ (Over (Sp R))) = toUnit _ := toUnit_unique _ _
@@ -1007,13 +1004,11 @@ theorem abelianPart_iso_of_twoUnif : ∀ (R : Type) [CommRing R] [IsDomain R] [I
   have q₁ : ∀ e, (U.gt e).q = (U₂.gt e).q ≫ (Over.pullback (thick R (maximalIdeal R) e)).map b₁ := by
     intro e
     have := h₁ e
-    rw [CategoryTheory.Functor.map_id, Category.id_comp] at this
-    exact this
+    rwa [CategoryTheory.Functor.map_id, Category.id_comp] at this
   have q₂ : ∀ e, (U₂.gt e).q = (U.gt e).q ≫ (Over.pullback (thick R (maximalIdeal R) e)).map b₂ := by
     intro e
     have := h₂ e
-    rw [CategoryTheory.Functor.map_id, Category.id_comp] at this
-    exact this
+    rwa [CategoryTheory.Functor.map_id, Category.id_comp] at this
   have epi : ∀ {D' : DegData R (maximalIdeal R)} {A' : PolAV (Sp (FractionRing R))}
       (V : UnifPre (maximalIdeal R) D' A' G) (e : ℕ), Epi (V.gt e).q := by
     intro D' A' V e
@@ -1477,8 +1472,7 @@ theorem exists_red [IsAdicComplete I R] (g : GtPt D (𝟙_ (Over (Spec (CommRing
     simp only [Over.homMk_left]
     rw [hr, Category.assoc]
   have := (hy e).comp (xe ≫ (thickObj R I e G).hom)
-  rw [← hr, ← hxe'] at this
-  exact this
+  rwa [← hr, ← hxe'] at this
 
 end Lift
 

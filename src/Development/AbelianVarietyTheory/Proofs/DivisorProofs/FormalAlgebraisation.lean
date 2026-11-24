@@ -129,8 +129,7 @@ theorem gw_comp_of_rel : ∀ (X Y' Y : Scheme.{0}) (b' : Y' ⟶ X) (β : Y ⟶ Y
       (Scheme.Hom.stalkMap β z).hom ((Geo.Tor.gw w' (𝟙 _) (β z) k k' : (Y'.presheaf.stalk (β z))ˣ) :
         Y'.presheaf.stalk (β z)) :=
     gm_val_stalkMap β z _ hV _
-  rw [← hw', e₂] at e₁'
-  rw [e₃, ← _root_.mul_assoc, ← Units.val_mul] at e₁'
+  rw [← hw', e₂, e₃, ← _root_.mul_assoc, ← Units.val_mul] at e₁'
   exact Units.ext (hu.mul_left_inj.1 e₁')
 
 end GlobalTheory.FormalAlg
@@ -255,8 +254,7 @@ theorem lbIso_pw_pull_gw : ∀ (X Y : Scheme.{0}) (φ : Y ⟶ X) (A : LB X) (H :
     have e := congrArg (· ^ a) (hw p q)
     simp only [mul_zpow, ← map_zpow] at e
     exact e.trans (congrArg (· * res _ (w.s q ^ a)) (div_pull_pw_g A H φ a p q).symm)
-  · intro Z r z k k' _ _
-    exact map_zpow _ _ a
+  · exact fun Z r z k k' _ _ => map_zpow _ _ a
 
 end GlobalTheory.FormalAlg
 end -- clump:auto
@@ -724,8 +722,7 @@ theorem exists_compatible_of_lift (R : Type) [CommRing R] (I : Ideal R)
   refine ⟨n', fun e j => σ j e, fun e j => hσ j e, ?_⟩
   rintro (_ | e)
   · show VeryAmpleBy _ _ (fun j => σ j 0)
-    simp only [hσ0]
-    exact hs0
+    simpa only [hσ0] using hs0
   · obtain ⟨j₀, hj, w, hw, hr⟩ := tower I Y β hβ (fun e => GlobalTheory.AbLaw.pw (N e) c) v hL (fun e j => σ j e)
       (fun e j => hσ j e) e
     simp only [hσ0] at hr
@@ -787,8 +784,7 @@ theorem gw_chart {b : Y ⟶ X} {A : LB X} {N : LB Y} {p : ℤ} (w : LB.Iso (Glob
     (hl : r z ∈ N.U l) (hl' : r z ∈ N.U l') :
     gw w r z k l = gm (r ≫ b) z _ (A.g k k') * (gm r z _ (N.g l l') ^ p)⁻¹ * gw w r z k' l' := by
   have := (isGen_iff w).1 hw Z r z k k' l l' hk hk' hl hl'
-  rw [gm_pw_g] at this
-  exact this
+  rwa [gm_pw_g] at this
 
 theorem cross_alg {G : Type} [CommGroup G] (p q : ℤ) (a a' n u u' : G) :
     (a' * (n ^ q)⁻¹ * u') ^ p * ((a * (n ^ p)⁻¹ * u) ^ q)⁻¹ = a' ^ p * (a ^ q)⁻¹ * (u' ^ p * (u ^ q)⁻¹) := by
@@ -1013,8 +1009,7 @@ theorem generatorScheme_affine_finiteType : ∀ (B : Scheme.{0}) (N : LB B), N.I
         Pt.inverseBundleGeneratorPoint_ofChartUnits_sections (fun _ => hN) (p ≫ (N.U i).ι) (fun _ => i) hb (fun _ => t) () φ hy'
       refine Pt.ext_chart hbeq (fun _ => i) hA hB (fun k => ?_)
       cases k
-      refine f1.trans (f3.trans (f4.trans (Units.ext ?_))) |>.trans f2.symm
-      exact f5.trans hφt
+      exact f1.trans (f3.trans (f4.trans (Units.ext (f5.trans hφt)))) |>.trans f2.symm
     have : IsIso φ := ⟨⟨ψ₀, h1, h2⟩⟩
     rw [← hφp]
     exact ⟨inferInstance, inferInstance⟩

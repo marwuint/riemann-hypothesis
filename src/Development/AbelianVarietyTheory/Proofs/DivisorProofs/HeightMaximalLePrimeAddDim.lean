@@ -172,24 +172,7 @@ theorem exists_maximal_mvPolynomial_localization (N : ℕ) (p : Ideal ℤ) [p.Is
   haveI hP : 𝔑'.IsPrime := IsLocalization.isPrime_of_isPrime_disjoint W _ 𝔑 inferInstance hdisj
   have hcm : 𝔑'.comap (algebraMap (MvPolynomial (Fin N) ℤ) (MvPolynomial (Fin N) (Localization.AtPrime p))) = 𝔑 :=
     IsLocalization.under_map_of_isPrime_disjoint W _ inferInstance hdisj
-  haveI hM : 𝔑'.IsMaximal := by
-    refine ⟨⟨hP.ne_top, fun J hJ => ?_⟩⟩
-    by_contra hJt
-    have h1 : 𝔑 ≤ J.comap (algebraMap (MvPolynomial (Fin N) ℤ) (MvPolynomial (Fin N) (Localization.AtPrime p))) :=
-      hcm ▸ Ideal.comap_mono hJ.le
-    have h2 : J.comap (algebraMap (MvPolynomial (Fin N) ℤ) (MvPolynomial (Fin N) (Localization.AtPrime p))) ≠ ⊤ := by
-      intro h
-      apply hJt
-      rw [Ideal.eq_top_iff_one]
-      have : (1 : MvPolynomial (Fin N) ℤ) ∈ J.comap (algebraMap (MvPolynomial (Fin N) ℤ) (MvPolynomial (Fin N) (Localization.AtPrime p))) := h ▸ Submodule.mem_top
-      simpa using this
-    have h3 := (‹𝔑.IsMaximal›.eq_of_le h2 h1)
-    have h4 : J = 𝔑' := by
-      have h5 := IsLocalization.map_under W (MvPolynomial (Fin N) (Localization.AtPrime p)) J
-      change Ideal.map _ (J.comap (algebraMap (MvPolynomial (Fin N) ℤ) (MvPolynomial (Fin N) (Localization.AtPrime p)))) = J at h5
-      rw [← h3] at h5
-      exact h5.symm
-    exact hJ.ne' h4
+  haveI hM : 𝔑'.IsMaximal := IsLocalization.isMaximal_of_isMaximal_disjoint W _ 𝔑 hdisj
   refine ⟨𝔑', hM, ?_, ?_, IsLocalization.height_map_of_disjoint W 𝔑 hdisj⟩
   · haveI : (𝔑'.comap (MvPolynomial.C : Localization.AtPrime p →+* _)).IsPrime := Ideal.comap_isPrime _ _
     refine le_antisymm (IsLocalRing.le_maximalIdeal (Ideal.IsPrime.ne_top inferInstance)) ?_

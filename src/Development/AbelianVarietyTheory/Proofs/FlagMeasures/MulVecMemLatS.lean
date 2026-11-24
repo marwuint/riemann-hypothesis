@@ -268,15 +268,11 @@ theorem hat_comap : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
   refine ⟨(show Module.Finite (𝓞 E) L' ∧ Submodule.span E (L' : Set (Fin k → E)) = ⊤ from ⟨?_, ?_⟩), ?_⟩
   · let f : L' →ₗ[𝓞 E] L :=
       ((Q.mulVecLin.restrictScalars (𝓞 E)).domRestrict L').codRestrict L (fun y => y.2)
-    refine Module.Finite.of_injective f (fun y₁ y₂ h => ?_)
-    apply Subtype.ext
-    apply hQ
-    exact congrArg Subtype.val h
+    exact Module.Finite.of_injective f (fun y₁ y₂ h => Subtype.ext (hQ (congrArg Subtype.val h)))
   · refine eq_top_iff.2 (fun y _ => ?_)
     obtain ⟨a, ha⟩ := exists_smul_mem (K := E) L hLs (Q *ᵥ y)
     have hay : (a : 𝓞 E) • y ∈ L' := by
-      rw [hmem, Matrix.mulVec_smul]
-      exact ha
+      rwa [hmem, Matrix.mulVec_smul]
     have hne : algebraMap (𝓞 E) E a ≠ 0 := IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors a.2
     have hy : y = (algebraMap (𝓞 E) E a)⁻¹ • ((a : 𝓞 E) • y) := by
       rw [← algebraMap_smul E (a : 𝓞 E) y, smul_smul, inv_mul_cancel₀ hne, one_smul]
@@ -284,8 +280,7 @@ theorem hat_comap : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
     exact Submodule.smul_mem _ _ (Submodule.subset_span hay)
   · intro x
     constructor
-    · intro hx
-      exact mulVec_mem_latS (F := F) (Ad F) (OAd F E) Q L' L (fun y hy => hy) x hx
+    · exact fun hx => mulVec_mem_latS (F := F) (Ad F) (OAd F E) Q L' L (fun y hy => hy) x hx
     · intro hx
       obtain ⟨T, hT1, hT2⟩ := exists_retraction (O := 𝓞 E) (K := E) Q.mulVecLin hQ L hLs
       set R' := LinearMap.toMatrix' T with hR'

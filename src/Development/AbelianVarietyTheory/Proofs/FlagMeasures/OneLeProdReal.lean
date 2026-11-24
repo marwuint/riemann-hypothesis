@@ -246,7 +246,6 @@ theorem partners_le : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C : ℝ, ∀ (D : D7) (
   obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hTr, -, -⟩ := hS0
   obtain ⟨hr, -, -, hT3, hT3', -, -, hg0, hg1, -, -, -, -⟩ := hSt
   have hb : 1 ≤ large₂.sc.b := by
-    show 1 ≤ Real.exp (large₂.sc.x ^ large₂.sc.eps)
     exact Real.one_le_exp (Real.rpow_nonneg (by linarith [large₂.sc.one_lt_alt]) _)
   have hTu : ((Tu D u : ℕ) : ℝ) ≤ large₂.sc.b ^ (CT * (D.R.m : ℝ)) := (hTr u).2
   have hTu' : ((Tu D u' : ℕ) : ℝ) ≤ large₂.sc.b ^ (CT * (D.R.m : ℝ)) := (hTr u').2
@@ -291,8 +290,7 @@ theorem partners_le : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C : ℝ, ∀ (D : D7) (
       · exact (le_sup_left : (lf D F0).fl.X ≤ (lf D F0).fl.X ⊔ Submodule.span D.host.E {(lf D F0).fl.z}) hx2
       · rw [← hUUE]
         exact hx1
-    rw [hbot] at hx3
-    exact hx3
+    rwa [hbot] at hx3
   have hfinV := Formalism.MainNotions.finrank_hS D
   have horth := finrank_orth_le (lf D F0).fl F'.fl hG' hTne hTne'
   have hHpfin : finrank D.host.E (Hp Λ (lf D F0) F') + 2 * (D.R.rS + 1) ≤ finrank D.host.E (hS D).V := by

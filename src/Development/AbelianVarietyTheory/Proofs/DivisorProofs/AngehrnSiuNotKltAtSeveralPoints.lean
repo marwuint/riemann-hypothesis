@@ -340,8 +340,7 @@ theorem count_kernel_nonzero : ∀ {κ κ' : Type} [Field κ] [Field κ'] [Algeb
   refine ⟨b, hb0, fun i => ?_⟩
   have := congr_fun (LinearMap.mem_ker.mp hbker) i
   simp only [f, LinearMap.pi_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply, Pi.zero_apply] at this
-  rw [Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem, hg] at this
-  exact this
+  rwa [Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem, hg] at this
 
 end GlobalTheory
 end -- clump:auto
@@ -379,8 +378,7 @@ theorem exists_locModel_at_point :
   haveI hB : IsLocalization P.primeCompl B := Localization.subalgebra.isLocalization_ofField K _ hle
   let b : A →+* B := algebraMap A B
   have hu : ∀ y : P.primeCompl, IsUnit ((ε : A →+* ℂ) y) := fun y => by
-    refine isUnit_iff_ne_zero.2 fun h => y.2 ?_
-    exact RingHom.mem_ker.2 h
+    exact isUnit_iff_ne_zero.2 fun h => y.2 (RingHom.mem_ker.2 h)
   let ψ : B →+* ℂ := IsLocalization.lift hu
   have hψ : ∀ x, ψ (b x) = ε x := IsLocalization.lift_eq hu
   have hcK : ∀ z : ℂ, algebraMap ℂ K z = algebraMap A K (algebraMap ℂ A z) :=
@@ -453,8 +451,7 @@ theorem exists_residue_complex : ∀ {K : Type} [Field K] [Algebra ℂ K] (R : S
     exact this.symm
   let e := RingEquiv.ofBijective φ hφ
   refine ⟨e.symm.toRingHom.comp (IsLocalRing.residue R), fun a => ?_, fun r => ?_⟩
-  · show e.symm (φ a) = a
-    exact e.symm_apply_apply a
+  · exact e.symm_apply_apply a
   · rw [nonUnit_iff (R := R) r, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom,
       map_eq_zero_iff _ e.symm.injective, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal,
       mem_nonunits_iff]
@@ -522,9 +519,7 @@ theorem pair_step : ∀ {K L : Type} [Field K] [Field L] [Algebra ℂ K] [Algebr
     have h2 : Function.Injective (iR.toLinearMap.rTensor L) :=
       Module.Flat.rTensor_preserves_injective_linearMap _ Subtype.val_injective
     intro x y hxy
-    have ex := LinearMap.congr_fun e x
-    have ey := LinearMap.congr_fun e y
-    exact h1 (h2 (ex.symm.trans (hxy.trans ey)))
+    exact h1 (h2 ((LinearMap.congr_fun e x).symm.trans (hxy.trans (LinearMap.congr_fun e y))))
   haveI : IsDomain (K ⊗[ℂ] L) := GlobalTheory.TensorFields.isDomain_tensor_complex K L
   haveI : IsDomain (R ⊗[ℂ] S) := hinj.isDomain _
   haveI : Algebra.EssFiniteType S (S ⊗[ℂ] R) := Algebra.EssFiniteType.baseChange ℂ R S

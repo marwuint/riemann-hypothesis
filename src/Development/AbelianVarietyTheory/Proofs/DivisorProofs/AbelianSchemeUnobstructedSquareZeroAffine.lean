@@ -113,8 +113,7 @@ theorem pt_dual_le_of_fst : ∀ (R : Type) [CommRing R] (H : Over (Sp R)) (D : T
       have h0 : a.fst = 0 := ha
       ext <;> simp [h0]
   obtain ⟨y, rfl⟩ := hs x
-  have hy := h (show y ∈ (⊤ : (Sp D).Opens) from trivial)
-  simpa [Over.comp_left, PDiv.spOver_left] using hy
+  simpa [Over.comp_left, PDiv.spOver_left] using h (show y ∈ (⊤ : (Sp D).Opens) from trivial)
 
 end GlobalTheory.PtExt
 end -- clump:auto
@@ -237,8 +236,7 @@ theorem exists_transl_val : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpOb
   have hfst : dualProjection.toRingHom.comp ψ.toRingHom = τ.toRingHom := by
     apply GlobalTheory.CechKS.FormLocal.ringHom_ext_affPt (s := A.hom) U.unop.2
     change spMap _ ≫ affPt A.hom U.unop = spMap _ ≫ affPt A.hom U.unop
-    rw [Cris.spMap_comp, Category.assoc, hψ]
-    exact h3Left
+    rwa [Cris.spMap_comp, Category.assoc, hψ]
   refine ⟨ψ, fun b ↦ RingHom.congr_fun hfst b, fun w ↦ ?_⟩
   have hp : p.left = spMap φ.toRingHom ≫ affPt A.hom V.unop := by
     simp only [p, aV, Over.comp_left, GlobalTheory.DeRham.spOver, Over.homMk_left, AlgHom.toRingHom_eq_coe]
@@ -246,8 +244,7 @@ theorem exists_transl_val : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpOb
     have hι : (dualInclusion : T →+* DualNumber T) = algebraMap T (DualNumber T) := RingHom.ext fun _ ↦ rfl
     simp only [q, Over.comp_left, GlobalTheory.DeRham.spOver, Over.homMk_left, hι]
   have key := w.2 T V.unop U.unop φ ψ p q q'.left hp hq hψ.symm
-  rw [dVal_semiDerHom] at key
-  exact key
+  rwa [dVal_semiDerHom] at key
 
 end GlobalTheory.InvForm
 end -- clump:auto
@@ -328,8 +325,7 @@ theorem eq_zero_of_cover : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X �
   have hV0 : ∀ U ∈ t, w.1 (Opposite.op U) = 0 := fun U hU => by
     have : evForm s (Opposite.op (t.equivFin.symm (t.equivFin ⟨U, hU⟩)).1) w = 0 := hw _
     have e : t.equivFin.symm (t.equivFin ⟨U, hU⟩) = ⟨U, hU⟩ := Equiv.symm_apply_apply _ _
-    rw [e] at this
-    exact this
+    rwa [e] at this
   apply Subtype.ext
   funext W
   obtain ⟨W₀⟩ := W
@@ -359,8 +355,7 @@ theorem eq_zero_of_cover : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X �
     exact ⟨m, by simpa [I] using hm⟩
   have hI : I = ⊤ := by
     rw [← Ideal.radical_eq_top, eq_top_iff]
-    have h2 := Ideal.span_le.2 hrad
-    exact (show (⊤ : Ideal (Sec s W₀.1)) ≤ Ideal.span S from hS.ge).trans h2
+    exact (show (⊤ : Ideal (Sec s W₀.1)) ≤ Ideal.span S from hS.ge).trans (Ideal.span_le.2 hrad)
   have h1 : (1 : Sec s W₀.1) ∈ I := hI ▸ Submodule.mem_top
   simpa [I] using h1
 
@@ -494,8 +489,7 @@ theorem injective_baseChange {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A
   let F : InvForm A →ₗ[R] ((k : Fin n) → Ω[Sec A.hom (V k).unop.1⁄R]) := LinearMap.pi f
   have hF : Function.Injective F := by
     rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
-    intro w hw
-    exact Subtype.ext (hV w.1 fun k => congrFun hw k)
+    exact fun w hw => Subtype.ext (hV w.1 fun k => congrFun hw k)
   have hFB : Function.Injective (LinearMap.lTensor (Sec A.hom U.unop.1) F) :=
     Module.Flat.lTensor_preserves_injective_linearMap F hF
   have hk : ∀ (k : Fin n) (z : Sec A.hom U.unop.1 ⊗[R] InvForm A), TensorProduct.piRight R R (Sec A.hom U.unop.1) (fun k : Fin n => Ω[Sec A.hom (V k).unop.1⁄R])

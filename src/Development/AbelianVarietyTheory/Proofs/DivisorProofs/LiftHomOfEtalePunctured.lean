@@ -210,8 +210,7 @@ theorem existsUnique_lifts (hπ : Function.Surjective π) (hI : RingHom.ker π ^
     · intro h a s hs
       have := congrArg (fun f => f a) h
       simp only [AlgHom.comp_apply] at this
-      rw [htgt a s hs, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq] at this
-      exact this
+      rwa [htgt a s hs, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq] at this
   obtain ⟨α, hα, huniq⟩ := localLift R A g C hg J hJ tgt
   exact ⟨α, (key α).2 hα, fun β hβ => huniq β ((key β).1 hβ)⟩
 
@@ -396,8 +395,7 @@ theorem squareZeroLift : ∀ (R : Type) [CommRing R] [IsLocalRing R] (A : Type) 
     intro a
     have h := congrArg Subtype.val ((AlgEquiv.ofInjective (toAway S x) hinj).apply_symm_apply
       ⟨αx a, by obtain ⟨v, hv⟩ := glue a; exact ⟨v, hv.symm⟩⟩)
-    rw [AlgEquiv.ofInjective_apply] at h
-    exact h
+    rwa [AlgEquiv.ofInjective_apply] at h
 
   have hαzψ : ∀ a, αz a = toAway S z (ψ a) := by
     intro a
@@ -561,8 +559,7 @@ theorem isAdicComplete_of_le_maximalIdeal :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R],
       IsAdicComplete (maximalIdeal R) R → ∀ (I : Ideal R), I ≤ maximalIdeal R →
         IsAdicComplete I R := by
-  intro R _ _ _ hm I hI
-  exact isAdicComplete_of_le_of_isNoetherianRing R I (maximalIdeal R) hI hm
+  exact fun R _ _ _ hm I hI => isAdicComplete_of_le_of_isNoetherianRing R I (maximalIdeal R) hI hm
 
 end GlobalTheory
 end -- clump:auto
@@ -711,8 +708,7 @@ theorem liftHom_of_etale_punctured : ∀ (R : Type) [CommRing R] [IsRegularLocal
     rw [← hb]
     rfl
   rw [h2, h3, Ideal.Quotient.eq, pow_one] at h1
-  rw [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, ← hb, Ideal.Quotient.eq]
-  exact h1
+  rwa [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, ← hb, Ideal.Quotient.eq]
 
 end GlobalTheory.LiftHom
 end -- clump:auto

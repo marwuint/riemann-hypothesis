@@ -136,10 +136,7 @@ theorem exists_bilin_lift {X A Q : Type} [AddCommGroup X] [Module.Free ℤ X] [A
   let B' : X →ₗ[ℤ] X →ₗ[ℤ] A := b.constr ℤ fun i => b.constr ℤ fun j => s (B (b i) (b j))
   have e : B'.compr₂ π.toIntLinearMap = B := LinearMap.ext_basis b b fun i j => by
     simp [B', hs]
-  refine ⟨B', fun x => ?_⟩
-  have e1 := congrArg (fun C => C x x) e
-  have e2 := congrArg (fun C => C x) hB
-  exact e1.trans e2
+  exact ⟨B', fun x => (congrArg (fun C => C x x) e).trans (congrArg (fun C => C x) hB)⟩
 
 theorem exists_exact {X G : Type} [AddCommGroup X] [Module.Free ℤ X] [CommGroup G] (H : Subgroup G) (a : X → G)
     (hn : ∀ x, ∃ u ∈ H, a (-x) = u * a x)
@@ -258,8 +255,7 @@ theorem val_mem (P : PolAV (Spec (CommRingCat.of R))) (z : (TK R).left) {J : ((T
     val t (toUnit (TK R)).left z J ∈ unitsS z := by
   have := gm_mem z (𝟙 _) (LB.wchart P.L (fun _ : PUnit => c.left) (fun _ => J (jK R ≫ c.left)))
     (Set.mem_iInter.2 fun _ => hJ c.left (Over.w c)) (t.s (fun _ => J (jK R ≫ c.left)))
-  rw [Category.comp_id] at this
-  exact this
+  rwa [Category.comp_id] at this
 
 theorem scalar_tens {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ} (T : Tens D D' W)
     (ga : ∀ χ : D.X, LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1)))
@@ -303,8 +299,7 @@ theorem scalar_tens {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
       (LB.wchart D.P.L (tensφ T.pr) (fun k => J (D'.xK y ≫ tensφ T.pr k)) ⊓ D'.P.L.U (J' (D'.xK y)))
       ⟨Set.mem_iInter.2 fun k => ?_, iJ' _ (Over.w _)⟩ _
     have := iJ ((D'.c y).left ≫ tensφ T.pr k) (by rw [Category.assoc, hφ]; exact Over.w _)
-    rw [← Category.assoc] at this
-    exact this
+    rwa [← Category.assoc] at this
   rw [hψ'] at e
   simp only [eu, mul_zpow, Finset.prod_mul_distrib] at e
   obtain ⟨v, hv, ev'⟩ := mul_mem (mul_mem (inv_mem mg') mw)

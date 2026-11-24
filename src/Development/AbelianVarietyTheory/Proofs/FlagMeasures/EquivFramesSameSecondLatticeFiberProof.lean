@@ -82,8 +82,7 @@ theorem isom_of_B {n : S.V ≃ₗ[E] S.V} (h : ∀ x y, (spH S).B (n x) (n y) = 
     n ∈ Formalism.HermitianLatticesTheory.isom S.hT := by
   intro x y
   have h1 := h y x
-  rw [spH_B, spH_B] at h1
-  exact h1
+  rwa [spH_B, spH_B] at h1
 
 theorem gmap_eq_smul (n : S.V ≃ₗ[E] S.V) (Λ : Submodule (𝓞 E) S.V) : Formalism.HermitianLatticesTheory.gmap n Λ = n • Λ := by
   ext x
@@ -119,8 +118,7 @@ theorem nlam_of_inN (F : FlagG S r T) (hT : T ≠ 0) {n : S.V ≃ₗ[E] S.V} {Λ
       have h5 := (spH S).herm y (F.e a)
       rw [spH_B, hy' _ (Submodule.subset_span (Set.mem_range_self a)), star_zero] at h5
       exact h5.symm)
-    rw [frF_X] at h4
-    exact h4
+    rwa [frF_X] at h4
 
 end Bridge
 
@@ -154,8 +152,7 @@ end Obj
 
 theorem mem_line {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] {A : Submodule (𝓞 K) K} {v : V} {t : K} (ht : t ∈ A) :
-    t • v ∈ GlobalTheory.DegCnt.line A v := by
-  exact Submodule.mem_map.mpr ⟨t, ht, by simp⟩
+    t • v ∈ GlobalTheory.DegCnt.line A v := Submodule.mem_map.mpr ⟨t, ht, by simp⟩
 
 section Main
 variable {D : D7} {X : HidaSetting D}
@@ -211,8 +208,7 @@ theorem fibC : FibC := by
     rw [hg, mul_smul, mul_smul, hg₁, hnΛ', ← hg₂, inv_smul_smul]
   have hgmem : ∀ x ∈ t₁.lam', g x ∈ t₂.lam' := fun x hx => by
     have h := Submodule.smul_mem_pointwise_smul x g t₁.lam' hx
-    rw [hgl] at h
-    exact h
+    rwa [hgl] at h
 
   let G : Formalism.HermitianLatticeCounting.S6.FlagD (HV D) D.R.rS := mapD (F0 X u) g hgB
   have hSG : GlobalTheory.DegAsm.SameGr (F0 X u) G := by
@@ -220,8 +216,7 @@ theorem fibC : FibC := by
     have h := hnG a
     rw [Ft_e, Ft_e, Ft_Xa, Submodule.mem_map_equiv, map_sub, LinearEquiv.symm_apply_apply] at h
     show g ((F0 X u).e a) - (F0 X u).e a ∈ (F0 X u).Xa a.val
-    rw [hg]
-    exact h
+    rwa [hg]
 
   obtain ⟨N₁, hF₁, -, -, -, hd₁, -, hRef₁, -⟩ := _root_.GlobalTheory.IdNF.idNFC_holds D large₂ X Y u hStd t₁.lam' (Or.inl t₁.mem')
   obtain ⟨N₂, hF₂, -, -, -, hd₂, hTm₂, hRef₂, -⟩ := _root_.GlobalTheory.IdNF.idNFC_holds D large₂ X Y u hStd t₂.lam' (Or.inl t₂.mem')
@@ -252,8 +247,7 @@ theorem fibC : FibC := by
     intro a s hs
     refine ⟨he₂ a s hs, ?_⟩
     have h := hgmem _ (he₁ a s hs)
-    rw [map_smul] at h
-    exact h
+    rwa [map_smul] at h
   have hGz : G.z ∈ t₂.lam' := hgmem _ hz₁
 
   have hK := (_root_.GlobalTheory.TypeAsm.hostC D large₂ hStd).1
@@ -274,11 +268,9 @@ theorem fibC : FibC := by
       ⟨t₁.mem', 1, stab_of_fix u (one_mem _) (fun _ => rfl), gmap_one' _⟩
   refine ⟨hl.symm, n₀, g⁻¹ * m, nlam_of_inN (X.Fu u) (tu_ne D u) hnN hnΛ, hai, ?_, hafix, m⁻¹, ?_, ?_⟩
   · rw [gmap_eq_smul]
-    rw [hl] at hamap
-    exact hamap
+    rwa [hl] at hamap
   · have hmΛ' : m • t₁.lam' = t₁.lam' := by
-      rw [← hl]
-      exact hmΛ
+      rwa [← hl]
     exact GlobalTheory.LoopC.FrEqv.symm_mem_NLam (nlam_of_inN (X.Fu u) (tu_ne D u) hmN hmΛ')
   · rw [hg]
     group

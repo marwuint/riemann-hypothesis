@@ -99,8 +99,7 @@ theorem mem_one_iff (x : K) : x ∈ (1 : Submodule (𝓞 K) K) ↔ IsIntegral �
   constructor
   · rintro ⟨y, rfl⟩
     exact y.isIntegral_coe
-  · intro h
-    exact ⟨⟨x, h⟩, rfl⟩
+  · exact fun h => ⟨⟨x, h⟩, rfl⟩
 
 theorem star_mem_one {x : K} (h : x ∈ (1 : Submodule (𝓞 K) K)) : star x ∈ (1 : Submodule (𝓞 K) K) := by
   rw [mem_one_iff] at h ⊢
@@ -213,8 +212,7 @@ theorem isUnimodMod_quot (H : HermSpace K V) {L : Submodule (𝓞 K) V} (hU : Is
     obtain ⟨s, hs⟩ := exists_smul_mem hL v
     refine ⟨algebraMap (𝓞 K) K s, IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2, ?_,
       (perp H I).smul_mem _ hv⟩
-    rw [algebraMap_smul]
-    exact hs
+    rwa [algebraMap_smul]
   have hspan : Submodule.span K (((L ⊓ rs (𝓞 K) (perp H I)) ⊔ rs (𝓞 K) I : Submodule (𝓞 K) V) : Set V)
       = perp H I := by
     apply le_antisymm
@@ -269,7 +267,6 @@ theorem isUnimodMod_quot (H : HermSpace K V) {L : Submodule (𝓞 K) V} (hU : Is
     have h1 : H.B a d = 0 := (mem_perp_iff H I a).1 hap d hd
     have h2 : H.B b c = 0 := by rw [← H.herm, (mem_perp_iff H I c).1 hcp b hb, star_zero]
     have h3 : H.B b d = 0 := hI b hb d hd
-    simp only [map_add (f := _), LinearMap.add_apply, h1, h2, h3, add_zero]
-    exact hint a haL c hcL
+    simpa only [map_add (f := _), LinearMap.add_apply, h1, h2, h3, add_zero] using hint a haL c hcL
 
 end GlobalTheory.UnimodQuot

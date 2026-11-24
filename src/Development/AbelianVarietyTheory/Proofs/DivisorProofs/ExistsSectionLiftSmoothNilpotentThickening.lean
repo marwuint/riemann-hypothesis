@@ -191,12 +191,10 @@ theorem exists_basicOpen_cover_affine (S : Type) [CommRing S] (Y : Scheme.{0}) (
       constructor
       · rintro ⟨i, rfl⟩
         exact (F.equivFin.symm i).2
-      · intro hy
-        exact ⟨F.equivFin ⟨y, hy⟩, by simp⟩
+      · exact fun hy => ⟨F.equivFin ⟨y, hy⟩, by simp⟩
     rw [this, hF]
   · rw [eq_top_iff]
-    intro x _
-    exact hWs _ _ (spMap_away_mem_basicOpen _ x)
+    exact fun x _ => hWs _ _ (spMap_away_mem_basicOpen _ x)
 
 end GlobalTheory.SecGlue
 end -- clump:auto
@@ -240,8 +238,7 @@ theorem ker_awayMap_le {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+
   obtain ⟨⟨_, p, rfl⟩, hp⟩ := hx
   rw [IsLocalization.mk'_mem_map_algebraMap_iff]
   refine ⟨r ^ p, ⟨p, rfl⟩, ?_⟩
-  rw [RingHom.mem_ker, map_mul, map_pow]
-  exact hp
+  rwa [RingHom.mem_ker, map_mul, map_pow]
 
 theorem ker_awayMap_sq {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀)
     (h2 : RingHom.ker π ^ 2 = ⊥) (r : R) :
@@ -1256,8 +1253,7 @@ theorem exists_pair_lift_comb : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀]
         eP (chartHom V (spMap ρ ≫ ea) h2 x) := by
       rw [chartHom_spMap_comp V ρ ea heaV h2 x, heP]
       rfl
-    rw [e2]
-    exact h3
+    rwa [e2]
   obtain ⟨N₀, hN⟩ := _root_.GlobalTheory.SecGlue.exists_sqZero_extend_pow R Γ(X.left, V) (Localization.Away a) (RingHom.ker (Localization.awayMap π a)) hJ (algebraMap R (Localization.Away a) b) φ ψ hcond
   refine ⟨N₀, fun N hN' => ?_⟩
   obtain ⟨χ, hχJ, hχ⟩ := hN N hN'
@@ -1269,8 +1265,7 @@ theorem exists_pair_lift_comb : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀]
       ← spMap_comp']
     refine congrArg (fun f => spMap f ≫ hV.fromSpec) (RingHom.ext fun x => ?_)
     have := hχJ x
-    rw [RingHom.mem_ker, map_sub, sub_eq_zero] at this
-    exact this
+    rwa [RingHom.mem_ker, map_sub, sub_eq_zero] at this
   · refine ⟨h2, preimage_spMap_comp_eq_top ρ htop, fun i => by rw [Matrix.cons_val_fin_one]; exact hbV, fun x => ?_⟩
     simp only [Fin.sum_univ_one, Matrix.cons_val_zero]
     rw [chartHom_spMap_comp V ρ _ htop, chartHom_fromSpec hV _ htop, chartHom_spMap_comp V ρ ea heaV]
@@ -1406,8 +1401,7 @@ theorem exists_liftIn_unfolded : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀
     rw [hN] at this
     exact p.isPrime.mem_of_pow_mem N ((Ideal.mem_bot.1 this) ▸ p.asIdeal.zero_mem)
   obtain ⟨p₀, hp₀⟩ : p ∈ Set.range (PrimeSpectrum.comap π) := by
-    rw [_root_.range_comap_of_surjective (R := R) R₀ π hπ]
-    exact hker
+    rwa [_root_.range_comap_of_surjective (R := R) R₀ π hπ]
   obtain ⟨_, ⟨V, hV, rfl⟩, hxV, -⟩ :=
     X.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (g₀ p₀)) isOpen_univ
   obtain ⟨_, ⟨r, rfl⟩, hp₀r, hsub⟩ :=
@@ -1415,8 +1409,7 @@ theorem exists_liftIn_unfolded : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀
       (a := p₀) (u := {q : PrimeSpectrum R₀ | g₀ q ∈ V}) hxV (g₀ ⁻¹ᵁ V).isOpen
   obtain ⟨f, rfl⟩ := hπ r
   refine ⟨f, ?_, V, hV, ?_⟩
-  · rw [← hp₀]
-    exact hp₀r
+  · rwa [← hp₀]
   have hsurj := awayMap_surjective_of_surjective π hπ f
   have hnilL := isNilpotent_of_awayMap_eq_zero π hnil f
   have hc : (Localization.awayMap π f).comp (algebraMap R (Localization.Away f)) =
@@ -1490,8 +1483,7 @@ theorem lift_of_nilpotent_of_sqZero :
   induction n with
   | zero =>
     intro R R₀ _ _ π hπ hn
-    refine H R R₀ π hπ ?_
-    exact le_bot_iff.mp ((Ideal.pow_le_pow_right (Nat.zero_le 2)).trans hn.le)
+    exact H R R₀ π hπ (le_bot_iff.mp ((Ideal.pow_le_pow_right (Nat.zero_le 2)).trans hn.le))
   | succ n ih =>
     intro R R₀ _ _ π hπ hn X X₀ i hi hX e₀ he₀
     by_cases hn2 : n + 1 ≤ 2
@@ -1529,8 +1521,7 @@ theorem lift_of_nilpotent_of_sqZero :
     have hi' : IsPullback i' X₀.hom X'.hom (spMap π'') := by
       refine IsPullback.of_right (h₁₂ := pullback.fst X.hom (spMap q)) (h₂₂ := spMap q) (v₁₃ := X.hom) ?_ hi'2
         (IsPullback.of_hasPullback X.hom (spMap q))
-      rw [hi'1, ← hsp]
-      exact hi
+      rwa [hi'1, ← hsp]
     obtain ⟨e', he'1, he'2⟩ := ih (R ⧸ J) R₀ π'' hπ'' hn'' X' X₀ i' hi' hX' e₀ he₀
     obtain ⟨e, he1, he2⟩ := H R (R ⧸ J) q Ideal.Quotient.mk_surjective hJ2 X X'
       (pullback.fst X.hom (spMap q)) (IsPullback.of_hasPullback X.hom (spMap q)) hX e' he'1

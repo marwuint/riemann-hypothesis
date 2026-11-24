@@ -162,10 +162,6 @@ private theorem chiN_eq_of_fmat_mulVec_snoc {D : D7} (X : HidaSetting D) (κ : X
       (X.ιE.symm (∑ a : Fin D.R.rS, ((ξ a.castSucc a.succ : 𝓞 D.host.E) : D.host.E))))) := by
   have hg : X.B.g ≠ 0 := Formalism.L2.SG.Pf.modulus_g_ne_zero X
   obtain ⟨hfe, hfz, -, -⟩ := Formalism.L2.SG.Pf.reference_frame_congruences X
-  have hf0 : ∀ a, X.f0 a ∈ X.B.I.Lf := fun a => (X.vectorsInLattice.1 a).2
-  have hint : ∀ x : 𝓞 D.host.E,
-      Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (X.ιE.symm (x : D.host.E)) ∈ IntAf X.B.I.F X.B.I.E :=
-    fun x => Formalism.L2.SG.NormCut.inclE_int X x
   have hZ : ZMod' X.B.I X.B.g ((∑ a, hA X.B.I (X.f0 a) (X.B.I.fmat κ *ᵥ nxt X.e0 X.z0 a)) -
       Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)
         (X.ιE.symm (∑ a : Fin D.R.rS, ((ξ a.castSucc a.succ : 𝓞 D.host.E) : D.host.E))) - 0) := by
@@ -182,16 +178,13 @@ private theorem chiN_eq_of_fmat_mulVec_snoc {D : D7} (X : HidaSetting D) (κ : X
           Fin.ext (by simp only [Fin.val_succ, Fin.val_last]; omega)
         rw [hs, Fin.snoc_last]
     rw [hnxt]
-    have hw : ZMod' X.B.I X.B.g (hA X.B.I (X.f0 a) (X.B.I.fmat κ *ᵥ Fin.snoc (α := fun _ => VA X.B.I) X.e0 X.z0 a.succ -
-        ∑ c, Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (X.ιE.symm ((ξ c a.succ : 𝓞 D.host.E) : D.host.E)) •
-          Fin.snoc (α := fun _ => VA X.B.I) X.e0 X.z0 c)) :=
-      mL_Qs X.B.I X.B.g (hf0 a) (key a.succ)
+    have hw : ZMod' X.B.I X.B.g (hA X.B.I (X.f0 a) (_ - _)) :=
+      mL_Qs X.B.I X.B.g (X.vectorsInLattice.1 a).2 (key a.succ)
     rw [hA_sub_right] at hw
-    have hsum : hA X.B.I (X.f0 a) (∑ c, Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (X.ιE.symm ((ξ c a.succ : 𝓞 D.host.E) : D.host.E)) •
-          Fin.snoc (α := fun _ => VA X.B.I) X.e0 X.z0 c) =
-        ∑ c, Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (X.ιE.symm ((ξ c a.succ : 𝓞 D.host.E) : D.host.E)) *
-          hA X.B.I (X.f0 a) (Fin.snoc (α := fun _ => VA X.B.I) X.e0 X.z0 c) := by
-
+    have hsum : ∀ e : Fin (D.R.rS + 1) → X.B.I.E ⊗[X.B.I.F] Af X.B.I.F,
+        hA X.B.I (X.f0 a) (∑ c, e c • Fin.snoc (α := fun _ => VA X.B.I) X.e0 X.z0 c) =
+          ∑ c, e c * hA X.B.I (X.f0 a) (Fin.snoc (α := fun _ => VA X.B.I) X.e0 X.z0 c) := by
+      intro e
       rw [← hL_apply, map_sum]
       simp [hL_apply]
     rw [hsum] at hw
@@ -205,24 +198,23 @@ private theorem chiN_eq_of_fmat_mulVec_snoc {D : D7} (X : HidaSetting D) (κ : X
             (hA X.B.I (X.f0 a) (Fin.snoc (α := fun _ => VA X.B.I) X.e0 X.z0 c) - if c = a.castSucc then 1 else 0) := by
         simp [mul_sub, Finset.sum_sub_distrib]
       rw [he]
-      refine Z_sum X.B.I X.B.g _ _ (fun c _ => Z_smul X.B.I X.B.g (hint _) ?_)
+      refine Z_sum X.B.I X.B.g _ _
+        (fun c _ => Z_smul X.B.I X.B.g (Formalism.L2.SG.NormCut.inclE_int X _) ?_)
       refine Fin.lastCases ?_ (fun b => ?_) c
-      · have hne : (Fin.last D.R.rS) ≠ a.castSucc := (Fin.castSucc_lt_last a).ne'
-        simpa [hne] using hfz a
+      · simpa [(Fin.castSucc_lt_last a).ne'] using hfz a
       · by_cases hb : b = a
         · subst hb
           have h1 := (X.gramIntegral b b).2.2
           simp only at h1
           have h2 := Z_sig X.B.I X.B.g h1
           simpa [hA_symm X.B.I (X.e0 b) (X.f0 b), map_sub, map_one] using h2
-        · have hne : b.castSucc ≠ a.castSucc := fun h => hb (Fin.castSucc_injective _ h)
-          simpa [hne] using hfe a b (Ne.symm hb)
+        · simpa [hb] using hfe a b (Ne.symm hb)
     have := Z_add X.B.I X.B.g hw hrest
     convert this using 1
     ring
-  have hmul := psi_mul_of_Z X.B.I X.B.g X.psiEf_add X.psiEf_int hg hZ
   unfold chiN
-  rw [hmul, psi_Z X.B.I X.B.g X.psiEf_add X.psiEf_int hg (Z_zero X.B.I X.B.g), mul_one]
+  rw [psi_mul_of_Z X.B.I X.B.g X.psiEf_add X.psiEf_int hg hZ,
+    psi_Z X.B.I X.B.g X.psiEf_add X.psiEf_int hg (Z_zero X.B.I X.B.g), mul_one]
 
 theorem chiN_kOf_eq_inv_psiInf_sgUp : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → ∀ (t : TauC Y u u') (ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E)), AdmWit t.lam (gS D) (lf D (X.Fu u)) t.frame ξ → chiN X (kOf X u u' ((Y.cs u).h ((Y.cs u).base t.lam) : X.B.I.Gf) ((Y.cs u').h ((Y.cs u').base t.lam') : X.B.I.Gf) t.pt) = (Formalism.L2.SG.PairVal.psiInf (gS D) (Formalism.L2.SG.PairVal.sgUp (ξ.map (algebraMap (𝓞 D.host.E) D.host.E))))⁻¹ := by
   intro D X Y u u' hS t ξ hξ

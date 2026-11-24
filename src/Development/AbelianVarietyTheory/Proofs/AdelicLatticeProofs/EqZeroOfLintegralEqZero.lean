@@ -64,8 +64,7 @@ theorem taylor_bound {φ φ' φ'' : ℝ → ℂ} (h1 : ∀ s, HasDerivAt φ (φ'
     norm_image_sub_le_of_norm_deriv_le_segment' (fun s _ => (h2 s).hasDerivWithinAt) fun s _ => hC s
   have d : ∀ s : ℝ, HasDerivAt (fun s : ℝ => φ s - (s : ℂ) * φ' 0) (φ' s - φ' 0) s := fun s => by
     have := (h1 s).sub ((Complex.ofRealCLM.hasDerivAt (x := s)).mul_const (φ' 0))
-    rw [Complex.ofRealCLM_apply, Complex.ofReal_one, one_mul] at this
-    exact this
+    rwa [Complex.ofRealCLM_apply, Complex.ofReal_one, one_mul] at this
   have b := norm_image_sub_le_of_norm_deriv_le_segment' (C := C * t) (a := 0) (b := t)
     (fun s _ => (d s).hasDerivWithinAt) (fun s hs => (a s ⟨hs.1, hs.2.le⟩).trans
       (mul_le_mul_of_nonneg_left (by linarith [hs.2]) hC0)) t ⟨ht.le, le_rfl⟩
@@ -140,8 +139,7 @@ theorem theta_norm_periodic (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (hf
     ∀ γ ∈ ratL T S, ∀ w, ‖f (γ + w)‖ = ‖f w‖ := by
   rintro _ ⟨γ, rfl⟩ w
   have := congrArg norm (hf.quasi γ w)
-  rw [norm_mul, hψ.1.2.1, one_mul] at this
-  exact this
+  rwa [norm_mul, hψ.1.2.1, one_mul] at this
 
 theorem theta_bounded (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     ∃ C : ℝ, ∀ w, ‖f w‖ ≤ C := by
@@ -171,8 +169,7 @@ theorem quotient_bound (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) {L : ℝ 
     unfold heisO
     rw [norm_mul, hψ.1.2.1, one_mul]
     exact hC _) ht
-  rw [L.map_zero, heisO_zero, heisO_zero] at this
-  exact this
+  rwa [L.map_zero, heisO_zero, heisO_zero] at this
 
 variable {χS χT : (Formalism.L2.Theta.AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
 
@@ -204,8 +201,7 @@ theorem om_dLine (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) (g :
       have e1 := congrFun (h1 u hu h0) w
       unfold heisO at e1 ⊢
       rw [Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, mul_left_comm, e1]
-    · intro k L h1 h2 w
-      exact contDiff_const.mul (hf.smooth k L h1 h2 w)
+    · exact fun k L h1 h2 w => contDiff_const.mul (hf.smooth k L h1 h2 w)
   have hr := theta_sub (theta_smul_local (t : ℂ)⁻¹ (theta_sub (theta_heisO_real hθ hψ (hL.2 t) hf) hf))
     (theta_dLine hθ hψ hL hf)
   refine ⟨_, _, _, ?_, hom.om_unit μ 𝓕 hμ h𝓕 (g, h) _ hr, hC t ht, hC' t ht⟩

@@ -423,8 +423,7 @@ theorem ev_triple_kill : ∀ (R : Type) [CommRing R] (I : Ideal R), ∀ (Y : ∀
     have h2 : rs (Y e).left hW1 (rs (Y e).left (inf_le_left : C.D e m ⊓ C.D e i ≤ C.D e m) (C.ev e m F)) = 0 := by
       rw [h1, map_mul, rs_rs, ← rs_rs (inf_le_left.trans inf_le_left : C.D e i ⊓ C.D e j ⊓ C.D e l ≤ C.D e i) hW2, h0,
         map_zero, mul_zero]
-    rw [rs_rs] at h2
-    exact h2
+    rwa [rs_rs] at h2
   choose Lf hL using key
   refine ⟨Finset.univ.sup Lf, fun m => ?_⟩
   have hle : Lf m ≤ Finset.univ.sup Lf := Finset.le_sup (Finset.mem_univ m)
@@ -497,8 +496,7 @@ theorem ev_succ_C_mul_eq_zero : ∀ (R : Type) [CommRing R] (I : Ideal R), ∀ (
   have hbot : (I * I ^ (e + 1)).map (AbLaw.cst ((Y (e + 1)).hom ≫ thick R I (e + 1)) (C.D (e + 1) i)) = ⊥ := by
     refine le_bot_iff.1 (Ideal.map_le_iff_le_comap.2 fun r hr => ?_)
     rw [← pow_succ'] at hr
-    simp only [Ideal.mem_comap, Ideal.mem_bot]
-    exact cst_pow_eq_zero I (e + 1) (Y (e + 1)).hom _ hr
+    simpa only [Ideal.mem_comap, Ideal.mem_bot] using cst_pow_eq_zero I (e + 1) (Y (e + 1)).hom _ hr
   rw [hbot] at hm
   exact (Ideal.mem_bot).1 hm
 
@@ -918,15 +916,12 @@ theorem mul_eq_zero_of_mem (e : ℕ) (V : (Y e).left.Opens) {x y : Γ((Y e).left
   have h : x * y ∈ towerIdeal Y e (I ^ (e + 1)) V := by
     have h0 := Ideal.mul_mem_mul hx hy
     unfold towerIdeal at h0 ⊢
-    rw [← Ideal.map_mul, ← pow_succ'] at h0
-    exact h0
+    rwa [← Ideal.map_mul, ← pow_succ'] at h0
   have hb : towerIdeal Y e (I ^ (e + 1)) V = ⊥ := by
     unfold towerIdeal
     rw [Ideal.map_eq_bot_iff_le_ker]
-    intro a ha
-    exact cst_eq_zero e V ha
-  rw [hb] at h
-  exact h
+    exact fun a ha => cst_eq_zero e V ha
+  rwa [hb] at h
 
 theorem mul_eq_mul_of_sub_mem (e : ℕ) (V : (Y e).left.Opens) {x x' y : Γ((Y e).left, V)}
     (hx : x - x' ∈ towerIdeal Y e I V) (hy : y ∈ towerIdeal Y e (I ^ e) V) : x * y = x' * y := by
@@ -1331,9 +1326,7 @@ theorem lift_localUnits_of_thickening :
       rw [map_mul, gm_res _ z _ hz', gm_res _ z _ hz', gm_res _ z _ hz',
         hg z a b hz.1.2 hz.2.2]
       exact hu z a b hz.1 hz.2
-    have e' := congrArg Units.val e
-    simp only [Units.val_mul, GlobalTheory.LB.val_res] at e'
-    exact e'
+    simpa only [Units.val_mul, GlobalTheory.LB.val_res] using congrArg Units.val e
   obtain ⟨t, ht, -⟩ := SecOn.existsUnique_of_local hLp O hO hc (fun m _ => m) hU
     (fun m => (u m).val) hcomp
   obtain ⟨s, hs⟩ := secOn_pull_surjective_of_surjective R (R ⧸ J) (Ideal.Quotient.mk J)
@@ -1343,8 +1336,7 @@ theorem lift_localUnits_of_thickening :
     have e := ht m
     rw [← hs] at e
     erw [SecOn.coord_pull γ s (fun _ => m), GlobalTheory.LB.resG_appLE] at e
-    rw [Scheme.Hom.app_eq_appLE]
-    exact e
+    rwa [Scheme.Hom.app_eq_appLE]
   have hunit : ∀ m, IsUnit (GlobalTheory.LB.coord s m) := by
     intro m
     apply X.toRingedSpace.isUnit_of_isUnit_germ
@@ -1365,8 +1357,7 @@ theorem lift_localUnits_of_thickening :
     exact SecOn.compat s m m' hi hj hij
   have hxx : (𝟙 X) x ∈ D ⊓ L.U m ⊓ L.U m' := ⟨hx, hx'.2⟩
   have e' := congrArg (gm (𝟙 X) x _) e
-  rw [map_mul, gm_res _ x _ hxx, gm_res _ x _ hxx, gm_res _ x _ hxx] at e'
-  exact e'
+  rwa [map_mul, gm_res _ x _ hxx, gm_res _ x _ hxx, gm_res _ x _ hxx] at e'
 
 end GlobalTheory.FormalAlg
 end -- clump:auto

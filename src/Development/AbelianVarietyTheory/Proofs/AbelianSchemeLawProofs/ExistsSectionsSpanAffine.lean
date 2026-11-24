@@ -139,8 +139,7 @@ theorem fun_extend (φ : X' ⟶ X) [IsOpenImmersion φ] (f : Γ(X, ⊤))
     rs (X.basicOpen_le _) (rs (le_top : W ≤ ⊤) f) ^ N * z := e
   refine ⟨N, x, ?_⟩
   have := congrArg (pa φ hle) e
-  rw [map_mul, map_pow, rs_rs, pa_rs, pa_rs] at this
-  exact this
+  rwa [map_mul, map_pow, rs_rs, pa_rs, pa_rs] at this
 
 theorem fun_kill (φ : X' ⟶ X) [IsOpenImmersion φ] (f : Γ(X, ⊤))
     (hφ : φ.opensRange = X.basicOpen f) {W : X.Opens} (hW : IsCompact (W : Set X)) {W' : X'.Opens}
@@ -154,8 +153,7 @@ theorem fun_kill (φ : X' ⟶ X) [IsOpenImmersion φ] (f : Γ(X, ⊤))
   change rs (X.basicOpen_le _) x = 0
   apply (pa_bijective φ hle ((φ.preimage_mono (X.basicOpen_le _)).trans h')
     (by rw [hb, hφ]; exact inf_le_right)).1
-  rw [pa_rs, map_zero]
-  exact hx
+  rwa [pa_rs, map_zero]
 
 theorem pow_mul_zero_mono {R : Type} [CommRing R] {a x : R} {m n : ℕ} (h : a ^ m * x = 0)
     (hmn : m ≤ n) : a ^ n * x = 0 := by
@@ -209,8 +207,7 @@ theorem sec_kill [CompactSpace X] (φ : X' ⟶ X) [IsOpenImmersion φ] (f : Γ(X
     refine fun_kill φ f hφ (hW a).isCompact le_rfl le_rfl _ ?_
     have := congrArg (rs ((φ.preimage_mono (hWc a)).trans (h' (c a)))) (hs (c a))
     rw [rs_pa, map_zero] at this
-    rw [pa_rs]
-    exact this
+    rwa [pa_rs]
   choose n hn using this
   refine ⟨Finset.univ.sup n, fun j => ?_⟩
   refine eq_of_cover (fun a => M.U j ⊓ W a) (fun a => inf_le_left) (le_iSup_inf _ hc) _ _ fun a => ?_
@@ -380,8 +377,7 @@ theorem chart_ge (h : T' ⟶ T) (j : Fin 1 → L.ι) :
   intro y hy
   refine Set.mem_iInter.2 fun i => ?_
   have h1 : ((h ▷ A).left ≫ (snd T A).left) y ∈ (L.U (j i) : Set A.left) := Set.mem_iInter.1 hy i
-  rw [whisker_snd_left] at h1
-  exact h1
+  rwa [whisker_snd_left] at h1
 
 theorem pa_g (h : T' ⟶ T) (i j : Fin 1 → L.ι)
     (e : (LPow A L a T').U i ⊓ (LPow A L a T').U j ≤
@@ -451,8 +447,7 @@ theorem isPullback_whisker (h : T' ⟶ T) :
   have h2 : IsPullback (snd T' A).left (fst T' A).left A.hom T'.hom :=
     (IsPullback.of_hasPullback T'.hom A.hom).flip
   refine IsPullback.of_right ?_ (whisker_fst_left A h) h1
-  rw [whisker_snd_left, Over.w h]
-  exact h2
+  rwa [whisker_snd_left, Over.w h]
 
 omit [GrpObj A] in
 theorem whisker_open (h : T' ⟶ T) [IsOpenImmersion h.left] : IsOpenImmersion (h ▷ A).left :=
@@ -466,8 +461,7 @@ theorem whisker_range (h : T' ⟶ T) [IsOpenImmersion h.left] [IsOpenImmersion (
   have e : (T ⊗ A).left.basicOpen (pa (fst T A).left (V := ⊤) (le_pre_top _) r) =
       (fst T A).left ⁻¹ᵁ T.left.basicOpen r := by
     have := Scheme.basicOpen_appLE (fst T A).left ⊤ ⊤ (le_pre_top _) r
-    rw [top_inf_eq] at this
-    exact this
+    rwa [top_inf_eq] at this
   rw [e, ← hr]
   ext x
   constructor
@@ -497,8 +491,7 @@ theorem pull_kill [IsProper A.hom] [IsAffine T.left] (hL : L.IsLB) (h : T' ⟶ T
   have := hN j
   rw [rs_pa] at this
   change liftHom A _ (r ^ N) * s.1 j = 0
-  rw [map_pow]
-  exact this
+  rwa [map_pow]
 
 theorem pull_extend [IsProper A.hom] [IsAffine T.left] (hL : L.IsLB) (h : T' ⟶ T)
     [IsOpenImmersion h.left] (r : Γ(T.left, ⊤)) (hr : h.left.opensRange = T.left.basicOpen r)
@@ -563,8 +556,7 @@ theorem span_of_retract (e : T'' ⟶ T') (e' : T' ⟶ T'') (he : e' ≫ e = 𝟙
   refine eq_top_iff.2 fun σ _ => ?_
   have := map_mem_span (pull A L a e') _ (pull A L a e σ) (hb.ge trivial)
   rw [pull_pull, he, pull_id] at this
-  simp only [pull_pull] at this
-  exact this
+  simpa only [pull_pull] using this
 
 theorem exists_spec_retract {V : S.Opens} [IsAffine T'.left]
     (g : T' ⟶ overRes (T := baseOver S) V) :

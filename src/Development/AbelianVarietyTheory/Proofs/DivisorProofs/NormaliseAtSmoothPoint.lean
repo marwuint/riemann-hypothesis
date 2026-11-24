@@ -113,8 +113,7 @@ theorem linearIndependent_one_tmul_D {k A : Type} [CommRing k] [CommRing A] [IsL
       LinearMap.comp_apply, LinearEquiv.coe_coe, c]
     rw [Ideal.Cotangent.equivOfEq_toCotangent, kerCotangentToTensor_toCotangent]
     rfl
-  rw [key] at this
-  exact this
+  rwa [key] at this
 
 theorem span_one_tmul_D {k A : Type} [Field k] [CommRing A] [IsLocalRing A] [Algebra k A]
     (hres : Function.Surjective (algebraMap k (ResidueField A))) {r : ℕ} (τ : Fin r → A)
@@ -362,12 +361,8 @@ theorem main : ∀ {κ : Type} [inst : Field κ] (R : Subring κ) [IsNoetherianR
   let W : ValuationSubring κ := .ofSubring A.toSubring fun x => by
     simpa [IsLocalization.IsInteger] using ValuationRing.isInteger_or_isInteger A x
   refine ⟨W, hDVR, ?_, ?_, ?_, ?_⟩
-  · intro r
-    show (r : κ) ∈ A
-    exact (memA _).mpr ⟨r, 1, Q.primeCompl.one_mem, by simp⟩
-  · intro r hr
-    show (r : κ)⁻¹ ∈ A
-    exact (memA _).mpr ⟨1, r, hr, by simp⟩
+  · exact fun r => (memA _).mpr ⟨r, 1, Q.primeCompl.one_mem, by simp⟩
+  · exact fun r hr => (memA _).mpr ⟨1, r, hr, by simp⟩
   · intro r hrQ hr0 hmem
     change (r : κ)⁻¹ ∈ A at hmem
     obtain ⟨a, s, hs, hx⟩ := (memA _).mp hmem

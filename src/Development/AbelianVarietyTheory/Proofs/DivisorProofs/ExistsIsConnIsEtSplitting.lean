@@ -324,8 +324,7 @@ theorem exists_perfect_idempotent (p : ℕ) [Fact p.Prime] (k : Type) [Field k] 
     (AlgHom.ext fun a => ((_root_.GlobalTheory.PerfectProj.natural_idempotent_reduced p k (G.A n) (G.A n ⊗[k] G.A n) (π n) _ (hπ n)
       (_root_.GlobalTheory.tensorSquare_perfectProjection p k (G.A n) (π n) (hπ n))).1 (comulAlgHom k (G.A n)) a).symm)
   refine ⟨⟨b, fun n => ?_⟩, ?_, fun n a => (hπ n).1 a, fun n a => (nat n n).2.2 a⟩
-  · refine BialgHom.ext fun a => ?_
-    exact (nat (n + 1) n).1 (G.res n : G.A (n + 1) →ₐ[k] G.A n) a
+  · exact BialgHom.ext fun a => (nat (n + 1) n).1 (G.res n : G.A (n + 1) →ₐ[k] G.A n) a
   · exact Hom.ext (funext fun n => BialgHom.ext fun a => (nat n n).2.1 a)
 
 end GlobalTheory.PDivGroup
@@ -411,8 +410,7 @@ theorem exists_isConn_isEt_splitting :
   · obtain ⟨a, rfl⟩ := (c₀ n).1 x
     have ha : a ∈ augIdeal k (G.A n) := by
       have hx' : counit (R := k) (i₀.app n a) = 0 := hx
-      rw [CoalgHomClass.counit_comp_apply] at hx'
-      exact hx'
+      rwa [CoalgHomClass.counit_comp_apply] at hx'
     have hk : e.app n a ∈ RingHom.ker (i₀.app n) := by
       rw [(c₀ n).2]
       exact Ideal.mem_map_of_mem (e.app n : G.A n →ₐ[k] G.A n) ha

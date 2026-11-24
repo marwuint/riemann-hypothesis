@@ -83,8 +83,7 @@ theorem epsGen_spMap_eq {E : Type} [CommRing E] [Algebra R E] (e : Pt (epsR R) E
   · intro h
     have := p.asIdeal.sub_mem h (p.asIdeal.mul_mem_left u.snd hc)
     simpa using this
-  · intro h
-    exact p.asIdeal.add_mem h (p.asIdeal.mul_mem_left u.snd hc)
+  · exact fun h => p.asIdeal.add_mem h (p.asIdeal.mul_mem_left u.snd hc)
 
 theorem epsGen_mem {E : Type} [CommRing E] [Algebra R E] (e : Pt (epsR R) E) {Y : Scheme.{0}}
     (y : Sp (DualNumber E) ⟶ Y) (U : Y.Opens)
@@ -133,8 +132,7 @@ theorem exists_isPtGen_of_isEpsGen : ∀ (R : Type) [CommRing R] (A B : Over (Sp
     intro E _ _ x i h
     apply dualNumberPoint_preimage_top_of_reduction _ E (ptV (R := R) (D := E) v x).left (P.U i)
     have h1 : ⊤ ≤ (x ≫ AbDual.inl A B).left ⁻¹ᵁ P.U i := h
-    rw [← epsGen_red_ptV (R := R) (E := E) hv x] at h1
-    exact h1
+    rwa [← epsGen_red_ptV (R := R) (E := E) hv x] at h1
   have memA : ∀ (E : Type) [CommRing E] [Algebra R E] (z : Pt (A ⊗ epsR R) E) (i : P.ι),
       ⊤ ≤ (z ≫ CartesianMonoidalCategory.lift (fst A (epsR R)) (snd A (epsR R) ≫ v)).left ⁻¹ᵁ P.U i →
       ⊤ ≤ (z ≫ fst _ _).left ⁻¹ᵁ chartsA P i := by
@@ -143,12 +141,10 @@ theorem exists_isPtGen_of_isEpsGen : ∀ (R : Type) [CommRing R] (A B : Over (Sp
     have h2 := epsGen_mem (R := R) (E := E) (z ≫ snd A (epsR R)) _ _ h
     have h3 : ⊤ ≤ (spOver (TrivSqZeroExt.fstHom R E E) ≫
         ptV (R := R) (D := E) v (z ≫ fst A (epsR R))).left ⁻¹ᵁ P.U i := h2
-    rw [epsGen_red_ptV hv] at h3
-    exact h3
+    rwa [epsGen_red_ptV hv] at h3
   refine ⟨fun E _ _ z i ↦ epsEv (R := R) (E := E) (z ≫ snd A (epsR R))
     (T E (z ≫ fst A (epsR R)) i), ?_, ?_, ?_⟩
-  · intro E _ _ z i h
-    exact (T1 E (z ≫ fst _ _) i (memA E z i h)).map _
+  · exact fun E _ _ z i h => (T1 E (z ≫ fst _ _) i (memA E z i h)).map _
   · intro E _ _ E' _ _ ψ z i h
     have h' := memA E z i h
     simp only [Category.assoc]

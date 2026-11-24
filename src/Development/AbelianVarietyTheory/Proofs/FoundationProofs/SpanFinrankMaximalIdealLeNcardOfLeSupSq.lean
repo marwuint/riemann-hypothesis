@@ -193,8 +193,7 @@ theorem formallySmooth_of_isRegularLocalRing_of_surjective (R P S : Type*) [Comm
   have h₁ : x.1 ∈ maximalIdeal P ^ 2 := hk ▸ (Ideal.toCotangent_eq_zero _ _).mp h₁
   have h₂ := ker_inf_sq_le_of_isRegularLocalRing P _ hf ⟨x.2, h₁⟩
   have h₃ : x ∈ maximalIdeal P • (⊤ : Submodule P (RingHom.ker (algebraMap P S))) := by
-    rw [Submodule.mem_smul_top_iff]
-    exact h₂
+    rwa [Submodule.mem_smul_top_iff]
   refine Submodule.smul_induction_on h₃ (fun a ha y _ ↦ ?_) (fun a b ha hb ↦ ?_)
   · have : algebraMap P (ResidueField S) a = 0 := hk.ge ha
     rw [TensorProduct.mk_apply, ← TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, this,
@@ -355,8 +354,7 @@ theorem le_height_of_trdeg_quotient_eq {B : Type*} [CommRing B] (φ : A →+* B)
     (he : Algebra.trdeg V (A ⧸ p) = e) : (e : ℕ∞) ≤ x.height := by
   have : FaithfulSMul V (A ⧸ p) := by
     rw [faithfulSMul_iff_algebraMap_injective, injective_iff_map_eq_zero]
-    intro v hv
-    exact hp.le ((Ideal.Quotient.eq_zero_iff_mem (I := p)).mp hv)
+    exact fun v hv => hp.le ((Ideal.Quotient.eq_zero_iff_mem (I := p)).mp hv)
   have hq : (x.comap φ).IsMaximal := Ideal.comap_isMaximal_of_surjective φ hφ
   have hq' : ((x.comap φ).map (Ideal.Quotient.mk p)).IsPrime :=
     Ideal.isPrime_map_quotientMk_of_isPrime hpx
@@ -377,8 +375,7 @@ theorem le_height_of_trdeg_quotient_eq {B : Type*} [CommRing B] (φ : A →+* B)
     Ideal.Quotient.mk_surjective.comp Ideal.Quotient.mk_surjective
   have hkχ : RingHom.ker φ ≤ RingHom.ker χ := by
     rw [hker, Ideal.map_le_iff_le_comap]
-    intro v hv
-    exact Ideal.Quotient.eq_zero_iff_mem.mpr (hr.1.2 (Ideal.mem_map_of_mem _ hv))
+    exact fun v hv => Ideal.Quotient.eq_zero_iff_mem.mpr (hr.1.2 (Ideal.mem_map_of_mem _ hv))
   have hχq : RingHom.ker χ ≤ x.comap φ := fun a ha ↦
     (Ideal.mem_quotient_iff_mem hpx).mp (hrq (Ideal.Quotient.eq_zero_iff_mem.mp ha))
   let ψ : B →+* (A ⧸ p) ⧸ r := φ.liftOfSurjective hφ ⟨χ, hkχ⟩
@@ -390,8 +387,7 @@ theorem le_height_of_trdeg_quotient_eq {B : Type*} [CommRing B] (φ : A →+* B)
     obtain ⟨a, rfl⟩ := hφ b
     exact hχq (show χ a = 0 from hψφ a ▸ hb)
   have hcm : (x.map ψ).comap ψ = x := by
-    rw [Ideal.comap_map_of_surjective ψ hψ, sup_eq_left]
-    exact hψx
+    rwa [Ideal.comap_map_of_surjective ψ hψ, sup_eq_left]
   have : (x.map ψ).IsMaximal := by
     refine (Ideal.map_eq_top_or_isMaximal_of_surjective ψ hψ inferInstance).resolve_left fun h ↦ ?_
     rw [h, Ideal.comap_top] at hcm
@@ -437,8 +433,7 @@ theorem mem_minimalPrimes_genericFibre_of_flat [Module.Flat V A]
     exact (congrArg (· ∈ minimalPrimes A) h').mpr hp
   · have : FaithfulSMul V (A ⧸ p) := by
       rw [faithfulSMul_iff_algebraMap_injective, injective_iff_map_eq_zero]
-      intro v hv
-      exact hbot.le ((Ideal.Quotient.eq_zero_iff_mem (I := p)).mp hv)
+      exact fun v hv => hbot.le ((Ideal.Quotient.eq_zero_iff_mem (I := p)).mp hv)
     have hk := Algebra.TensorProduct.lTensor_ker (A := K) (Ideal.Quotient.mkₐ V p)
       Ideal.Quotient.mk_surjective
     rw [show RingHom.ker (Ideal.Quotient.mkₐ V p) = p from Ideal.mk_ker] at hk
@@ -486,8 +481,7 @@ theorem ker_includeRight_of_surjective (R : Type*) [CommRing R] [IsLocalRing R] 
   ext a
   rw [h₁, Ideal.mem_map_iff_of_surjective e.toRingEquiv.toRingHom e.surjective]
   constructor
-  · intro ha
-    exact ⟨1 ⊗ₜ a, h.le (by simpa [RingHom.mem_ker] using ha), by simp [e]⟩
+  · exact fun ha => ⟨1 ⊗ₜ a, h.le (by simpa [RingHom.mem_ker] using ha), by simp [e]⟩
   · rintro ⟨y, hy, rfl⟩
     obtain ⟨a, rfl⟩ := e.symm.surjective y
     simpa [e, RingHom.mem_ker] using h.ge hy
@@ -637,8 +631,7 @@ theorem exists_affine_chart_over {O : Type u} [CommRing O] {X : Scheme.{u}} (f :
   have hU : IsAffineOpen U := hU
   let φ := Spec.preimage (hU.fromSpec ≫ f)
   obtain ⟨q, hq⟩ : x ∈ Set.range hU.fromSpec := by
-    rw [hU.range_fromSpec]
-    exact hxU
+    rwa [hU.range_fromSpec]
   exact ⟨Γ(X, U), inferInstance, φ.hom.toAlgebra, hU.fromSpec, inferInstance, q, hq,
     (Spec.map_preimage _).symm⟩
 

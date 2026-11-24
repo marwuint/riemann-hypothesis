@@ -306,8 +306,7 @@ theorem exists_idem : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ 
       · exact h0
     obtain ⟨w, hw, h⟩ := exists_of_mk_eq D (Ideal.absNorm 𝔪) (ys * gs) (ys ^ (2 * (R (Ideal.absNorm 𝔪)).factorial))
       (by rw [map_pow]; exact hyg _ hN0)
-    have h' : y * g = y ^ (2 * (R (Ideal.absNorm 𝔪)).factorial) + (Ideal.absNorm 𝔪 : AE D) * w := by
-      exact h
+    have h' : y * g = y ^ (2 * (R (Ideal.absNorm 𝔪)).factorial) + (Ideal.absNorm 𝔪 : AE D) * w := h
     have hmem : (Ideal.absNorm 𝔪 : AE D) * w ∈ hatId D 𝔪 := by
       refine AddSubgroup.subset_closure ⟨(Ideal.absNorm 𝔪 : 𝓞 D.host.E), Ideal.absNorm_mem 𝔪, w, hw, ?_⟩
       congr 1
@@ -505,11 +504,9 @@ theorem exists_unitary_near {a : ℕ} (𝔪 : Ideal (𝓞 D.host.E)) (h𝔪 : �
   have hmem : kGL ∈ GA D a := by
     rw [PtsMem.mem_GA]
     show (((K.map (sgA D)).transpose).map (sgA D)).transpose * (K.map (sgA D)).transpose = 1
-    rw [ct_ct (sgA D) (VacMove.sgA_sgA D)]
-    exact hKK
+    rwa [ct_ct (sgA D) (VacMove.sgA_sgA D)]
   refine ⟨⟨kGL, hmem⟩, (mem_intG _).2 fun i j => ⟨?_, hKO i j⟩, fun i j => ?_⟩
-  · show sgA D (K j i) ∈ OhE D
-    exact VacMove.sgA_mem D (hKO j i)
+  · exact VacMove.sgA_mem D (hKO j i)
   · show (A - K) i j ∈ hatId D 𝔪
     have e2 : (A - K) i j = (1 - f) * A i j - sgA D f * sgA D (B j i) -
         e * (1 : Matrix (Fin a) (Fin a) (AE D)) i j := by
@@ -714,8 +711,7 @@ theorem om_cosetV_block : ∀ (D : D7) (δ t0 : ℂ), Crv D ⊤ δ → ∀ {a d 
   have hWT : Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ x₀) G ∈ TT D (tor0 D ⊤ δ) a d :=
     GlobalTheory.FinWeil.RatTransl.wd_mem_TT D h1 ⊤ δ hc a d _ _ hJT
   unfold cosetV
-  rw [← hx₀, ← hGdef]
-  rw [W.smul _ _ _ _ hWT, W.smul _ _ _ _ hWT]
+  rw [← hx₀, ← hGdef, W.smul _ _ _ _ hWT, W.smul _ _ _ _ hWT]
   change _ • W.Om 1 h (Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ x₀) G) = _ • _ • W.Om k 1 (Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ x₀) G)
   rw [hWh, hWk, hzw, smul_smul, smul_smul, smul_smul, smul_smul]
   congr 1
@@ -763,8 +759,7 @@ theorem sum_mul_right_eq {G M : Type} [Group G] [AddCommMonoid M] (H K : Subgrou
       have := hn g⁻¹ (inv_mem hg) _ h3
       simpa [mul_assoc] using this
     have u1 := hσu r1 (hR r1 h1) r1 ⟨h1, by simpa using K.one_mem⟩
-    have u2 := hσu r1 (hR r1 h1) r2 ⟨h2, by simpa using inv_mem h4⟩
-    exact u1.trans u2.symm
+    exact u1.trans (hσu r1 (hR r1 h1) r2 ⟨h2, by simpa using inv_mem h4⟩).symm
   · intro r' hr'
     have hx : r' * g⁻¹ ∈ H := mul_mem (hR r' hr') (inv_mem hg)
     obtain ⟨hr, hk⟩ := hσ _ hx

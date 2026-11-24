@@ -522,8 +522,7 @@ theorem skew_bijective : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.
     have hiso : IsCorrForm κ (spMap π) o₀.A o₀.A o₀.P (-φ.flip) := by
       obtain ⟨n, a, b, hc, hf⟩ := hswap
       exact ⟨n, a, b, (isChern_existsUnique_and_iso C _ κ _ _).2 _ _ hsw hP₀ hs _ hc, hf⟩
-    intro x y
-    exact LinearMap.congr_fun₂ (hφ.unique Cs hP₀ hiso) x y
+    exact fun x y => LinearMap.congr_fun₂ (hφ.unique Cs hP₀ hiso) x y
   refine ⟨skew, ?_⟩
 
   have HC := (GD C (RingHom.ker π) κ hκ C₀ π hπ rfl).1
@@ -1175,8 +1174,7 @@ theorem exists_summand : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.
     · show red _ ∈ Fil o₀.A
 
       rw [map_sub, map_sum]
-      simp only [hw]
-      exact hsum
+      simpa only [hw] using hsum
   obtain ⟨E, ⟨M, hEM⟩, hEF, hstab, hiso, hlieE⟩ := _root_.GlobalTheory.HTSummand.exists_lagrangian_lift_lie p D R b C (RingHom.ker π) hI2 tR
     (Crys (divided₂ hsq) (spMap π) o₀.A) (GlobalTheory.HTSummand.crysAct (divided₂ hsq) (spMap π) o₀.act) hprojF φ₀ hskew hbij hadj
     F hIF hFstab hFiso hFlagr ⟨E', M', hE'M', hE'F⟩ hFlie
@@ -1591,15 +1589,13 @@ theorem lift_ringHom_of_scheme_lift : ∀ (B : Type) [CommRing B] (X : Scheme.{0
         Spec.map (CommRingCat.ofHom φ₀) ≫ hV.fromSpec := by
       rw [← hx1, ← hyx, spMap, ← Category.assoc, ← Spec.map_comp]
       rfl
-    have h4 := Spec.map_injective ((cancel_mono hV.fromSpec).1 h3)
-    exact congrArg CommRingCat.Hom.hom h4
+    exact congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono hV.fromSpec).1 h3))
   · have h3 : Spec.map (CommRingCat.ofHom (φ.hom.comp (s.appLE U V e).hom)) ≫
         hU.fromSpec = Spec.map (CommRingCat.ofHom β) ≫ hU.fromSpec := by
       rw [← hx2, ← hyx, Category.assoc, ← hA, ← Category.assoc,
         ← Spec.map_comp]
       rfl
-    have h4 := Spec.map_injective ((cancel_mono hU.fromSpec).1 h3)
-    exact congrArg CommRingCat.Hom.hom h4
+    exact congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono hU.fromSpec).1 h3))
 
 end GlobalTheory
 end -- clump:auto
@@ -1789,8 +1785,7 @@ theorem smoothOfRelativeDimension_of_universal_tangent : ∀ (B : Type) [CommRin
       rintro _ ⟨y, rfl⟩
       have : x.base y ∈ Set.range (X.fromSpecResidueField p).base := ⟨_, (Scheme.Hom.comp_apply _ _ y).symm⟩
       rw [Scheme.range_fromSpecResidueField] at this
-      rw [Set.mem_singleton_iff.1 this]
-      exact hx
+      rwa [Set.mem_singleton_iff.1 this]
     obtain ⟨φ, ψ, h1, h2, h3⟩ := _root_.GlobalTheory.SchRing.deformation_on_sections B X s U V hU hV e d k x hr (H k x)
     have : Nontrivial Γ(X, V) := φ.domain_nontrivial
     have : Algebra.IsStandardSmooth Γ(Sp B, U) Γ(X, V) := Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth P.dimension

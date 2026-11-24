@@ -501,8 +501,7 @@ theorem quasiMeasurePreserving_skewConj : ∀ (D : D7) (ρ : ℕ) (lC : Measure 
   have hH : (lC.map (skewConj u.1.1)).IsAddHaarMeasure :=
     AddEquiv.isAddHaarMeasure_map lC (skewConjEquiv u.1) hc
       (continuous_skewConj_arg (u.1⁻¹).val)
-  refine ⟨hc.measurable.aemeasurable, ?_⟩
-  exact Measure.absolutelyContinuous_isAddHaarMeasure _ _
+  exact ⟨hc.measurable.aemeasurable, Measure.absolutelyContinuous_isAddHaarMeasure _ _⟩
 
 end GlobalTheory.Unf.SkewConjQmp
 end -- clump:auto
@@ -641,15 +640,13 @@ theorem isFundamentalDomain_three [mA.IsAddLeftInvariant] (ΓA : AddSubgroup A) 
       ae_iff.2 (null_last (mA := mA) (mB := mB) (ae_iff.1 hU.ae_covers))
     have h1 : ∀ᵐ p ∂(mA.prod (mB.prod ν)), ∀ u' : ΓU, ∃ g : ΓB, g +ᵥ β u'.1 p.2.1 ∈ 𝓕 := by
       rw [ae_all_iff]
-      intro u'
-      exact ae_iff.2 (null_mid (mA := mA) (ν := ν) (hβ u'.1) (ae_iff.1 hF.ae_covers))
+      exact fun u' => ae_iff.2 (null_mid (mA := mA) (ν := ν) (hβ u'.1) (ae_iff.1 hF.ae_covers))
     have h2 : ∀ᵐ p ∂(mA.prod (mB.prod ν)), ∀ (u' : ΓU) (b' : ΓB), ∃ g : ΓA,
         g +ᵥ (α u'.1 p.1 + κ b'.1 (β u'.1 p.2.1)) ∈ 𝓒 := by
       rw [ae_all_iff]
       intro u'
       rw [ae_all_iff]
-      intro b'
-      exact ae_iff.2 (hφ b'.1 u'.1 (ae_iff.1 hC.ae_covers))
+      exact fun b' => ae_iff.2 (hφ b'.1 u'.1 (ae_iff.1 hC.ae_covers))
     filter_upwards [h0, h1, h2] with p hp0 hp1 hp2
     obtain ⟨u', hu⟩ := hp0
     obtain ⟨b', hb⟩ := hp1 u'
@@ -1028,8 +1025,7 @@ theorem _root_.GlobalTheory.T.wittFlagUnipotentFixer_fundamentalDomain_layers : 
     refine ⟨⟨c, AddSubgroup.mem_addSubgroupOf.2 hr.2⟩, ⟨b, hr.1⟩, fun p => Subtype.ext ?_⟩
     rw [Subgroup.smul_def]
     have h := key c b p
-    rw [d.nC_mul_nB] at h
-    exact h
+    rwa [d.nC_mul_nB] at h
   · rintro ⟨c', hc'⟩ ⟨b', hb'⟩
     have hrad : d.nC c' * d.nB b' ∈ radX d := (mem_radX_iff _).2 ⟨b', c', d.nC_mul_nB b' c'⟩
     have hQ : d.nC c' * d.nB b' ∈ GQ V :=
@@ -1099,8 +1095,7 @@ theorem layers_integral : ∀ (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec V
     rw [hν]
     refine s1.trans (s6.trans (s4.trans ?_))
     rw [s3]
-    refine s5.trans ?_
-    exact lintegral_congr fun u => lintegral_congr fun b => hge (b, u)
+    exact s5.trans (lintegral_congr fun u => lintegral_congr fun b => hge (b, u))
 
 end GlobalTheory.Unf
 

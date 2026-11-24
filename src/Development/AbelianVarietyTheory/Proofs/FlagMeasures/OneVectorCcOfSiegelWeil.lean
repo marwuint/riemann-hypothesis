@@ -77,8 +77,7 @@ theorem selfDual_map (e : X ≃ₜ+ Y) {ν : Measure X} {χ : X → X → ℂ} {
     show Φ (e s) * χ' (e s) (e t) = Φ (e s) * χ s t
     rw [hχ]
   have hIΨ : Integrable (fun t => ∫ s, Φ (e s) * χ s t ∂ν) ν := by
-    have h0 := (integrable_map_equiv m _).mp hI
-    exact h0.congr (ae_of_all _ fun t => hinner t)
+    exact ((integrable_map_equiv m _).mp hI).congr (ae_of_all _ fun t => hinner t)
   have key := hF (fun s => Φ (e s)) (hc.comp e.continuous) (hs.comp_homeomorph e.toHomeomorph) hIΨ (e.symm z)
   rw [integral_map_equiv]
   calc ∫ t, (∫ x, Φ x * χ' x (m t) ∂(ν.map m)) * χ' (m t) z ∂ν
@@ -287,8 +286,7 @@ theorem hermOne_val (h : IsCMExt F E σ) (t : R) (a b : Fin 1) :
     (hermOne R h t).1 a b = algebraMap R (R ⊗[F] E) t := rfl
 
 theorem pair_hermOne (h : IsCMExt F E σ) (s t : R) : pairHerm R σ 1 (hermOne R h s) (hermOne R h t) = s * t := by
-  simp only [pairHerm, hermOne_val R h, Fin.sum_univ_one, ← map_mul]
-  exact half_trace R h (s * t)
+  simpa only [pairHerm, hermOne_val R h, Fin.sum_univ_one, ← map_mul] using half_trace R h (s * t)
 
 theorem gram_hermOne (h : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J)
     (X : Fin 1 → Fin M → R ⊗[F] E) : gramR R σ J X = (hermOne R h (qR R σ J (X 0))).1 := by
@@ -454,20 +452,17 @@ theorem oneVectorCc_of_siegelWeil (hP : HeckeCharacterZeroLocus.SiegelWeilU.Sieg
     G5' (fun v => (νv v).map (hermOne (Fv F v) h)) (fun v => sd_to_herm h (ψ := psiV F ψ v) (hνv v))
   refine ⟨fun s => ginf (hermOne (Ainf F) h s), fun v s => gv v (hermOne (Fv F v) h s), ?_, ?_, ?_, ?_⟩
   · exact dens_of_herm h hJ (fun s hs => hs) hdi
-  · intro v
-    exact dens_of_herm h hJ (fun s hs => isUnit_iff_ne_zero.mpr hs) (hdv v)
+  · exact fun v => dens_of_herm h hJ (fun s hs => isUnit_iff_ne_zero.mpr hs) (hdv v)
   · simpa only [hermOf_eq _ h] using hmul
   · have hS : {X : Fin 1 → Fin M → E | gramE σ J X = fun _ _ => algebraMap F E β} =
         {x | hE σ J (x 0) (x 0) = algebraMap F E β} := by
       ext X
       simp only [Set.mem_setOf_eq]
       constructor
-      · intro hX
-        exact congrFun (congrFun hX 0) 0
+      · exact fun hX => congrFun (congrFun hX 0) 0
       · intro hX
         funext a c
-        rw [Subsingleton.elim a 0, Subsingleton.elim c 0]
-        exact hX
+        rwa [Subsingleton.elim a 0, Subsingleton.elim c 0]
     rw [← hS]
     simpa only [hermOf_eq _ h] using hmean
 

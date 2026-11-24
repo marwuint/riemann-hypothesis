@@ -207,12 +207,9 @@ theorem haar_map {m : ℕ} {H H' A B : Matrix (Fin m) (Fin m) ℂ} (hAB : A * B 
   refine ⟨e.sigmaFinite_map, ?_, ?_, ?_⟩
   · intro h0
     apply hne
-    have h1 := congrArg (fun ν => ν.map e.symm) h0
-    simpa [Measure.map_map e.symm.measurable e.measurable] using h1
+    simpa [Measure.map_map e.symm.measurable e.measurable] using congrArg (fun ν => ν.map e.symm) h0
   · rw [e.map_apply]
-    refine measure_mono_null ?_ hnull
-    intro x hx
-    exact fun hxm => hx (mem_UH_conj hBA h hxm)
+    exact measure_mono_null (fun x hx => fun hxm => hx (mem_UH_conj hBA h hxm)) hnull
   · intro s hs
     have hcomm : PI.lmulQ s ∘ e = e ∘ PI.lmulQ (B * s * A) := by
       funext x
@@ -286,8 +283,7 @@ theorem strict_entry {m : ℕ} (V : Submodule ℝ (EE m)) (A B : Matrix (Fin m) 
       funext x
       simp only [Function.comp_apply, hU]
       rfl
-    rw [hf]
-    exact hall
+    rwa [hf]
   · simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.one_apply, hU]
     rfl
 
@@ -440,8 +436,7 @@ theorem cd_dens {n p q : ℕ} (ε : Fin n → Bool) (e : Fin p ⊕ Fin q ≃ Fin
   have hc0 : c0 = ENNReal.ofReal (volUn (p + q))⁻¹ :=
     hasDens_unique hK.2 (_root_.GlobalTheory.UnitaryVolume.hasDens_unitary (p + q) _ hK.1 hprob)
   have hM := _root_.GlobalTheory.OmegaFrobenius.hasDens_of_omegaDensity (p + q) ε p q e h1 h2 (cd.cd p q) c0 (cd.haar p q) hc1
-  rw [hc0] at hM
-  exact hM
+  rwa [hc0] at hM
 
 theorem umat_emb {n : ℕ} (ε : Fin n → Bool) :
     MeasurableEmbedding fun a : Formalism.REAL.UJ ε => (Matrix.of.symm (umat a) : PI.MtM n) := by
@@ -486,8 +481,7 @@ theorem schur_of_dens : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [Inner
     constructor
     · rintro ⟨a, ha, hag⟩
       show Matrix.of.symm (Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g)) ∈ B
-      rw [← hag]
-      exact ha
+      rwa [← hag]
     · intro hg
       have hmem : Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g) ∈ Set.range
           (fun a : Formalism.REAL.UJ ε => ((a : (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ˣ) :
@@ -497,8 +491,7 @@ theorem schur_of_dens : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [Inner
       obtain ⟨a, ha⟩ := hmem
       refine ⟨a, ?_, ha⟩
       show Matrix.of.symm (umat a) ∈ B
-      rw [show umat a = Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g) from ha]
-      exact hg
+      rwa [show umat a = Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g) from ha]
   have hcd := cd_dens ε e hpq h1 h2 cd
   rw [← hν] at hcd
   have hHk := Formalism.QuantumDeterminants.hpkFacts k r
@@ -521,8 +514,7 @@ theorem schur_of_dens : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [Inner
   obtain ⟨hI, hE⟩ := hFd v w v' w'
   rw [hμt]
   refine ⟨Integrable.smul_measure ?_ httop.ne, ?_⟩
-  · rw [hemb.integrable_map_iff]
-    exact hI
+  · rwa [hemb.integrable_map_iff]
   rw [integral_smul_measure, hemb.integral_map]
   refine (congrArg (fun z : ℂ => t.toReal • z) hE).trans ?_
   rw [htr, Complex.real_smul]

@@ -156,8 +156,7 @@ theorem pj_mem_L (aa : Fin r → FractionalIdeal (nonZeroDivisors (𝓞 E)) E) {
       exact L.zero_mem
     · intro l hl
       show pj e f l ∈ L
-      rw [pj_perp l (fun a => hLp l hl a)]
-      exact hl
+      rwa [pj_perp l (fun a => hLp l hl a)]
     · rw [latSpan, Submodule.span_le]
       rintro _ ⟨a, x, -, rfl⟩
       show pj e f (x • f a) ∈ L
@@ -227,8 +226,7 @@ theorem exists_adapt (Λ : LV D) (hΛ : IsRowLat D (X.Fu u) Λ) :
   have hXs : ∀ x ∈ Submodule.span D.host.E (Set.range (X.Fu u).e),
       δ.symm x ∈ Submodule.span D.host.E (Set.range (X.Fu u).e) := fun x hx => by
     change x ∈ (X.Fu u).X at hx
-    rw [← hXX, Submodule.mem_map_equiv] at hx
-    exact hx
+    rwa [← hXX, Submodule.mem_map_equiv] at hx
   have hlatΛ' : latSpan (aaS D) (X.Fu u).e ≤ Λ' := by
     rw [hsplit]; exact le_sup_left.trans le_sup_left
   have hXLam : ∀ x ∈ latSpan (aaS D) (X.Fu u).e, x ∈ XLam Λ' (lf D (X.Fu u)) := fun x hx =>
@@ -276,8 +274,7 @@ theorem eq_of_adapt (Λ : LV D) (hΛ : Λ ∈ Y.what₂ u) (Λ' : LV D) (hΛ' : 
     have h2 : σ ((X.Fu u).e b) - (X.Fu u).e b ∈ Xsp (lf D (X.Fu u)) := Xflag_le_X (lf D (X.Fu u)) _ h
     have h3 : σ ((X.Fu u).e b) - (X.Fu u).e b + (X.Fu u).e b ∈ Xsp (lf D (X.Fu u)) :=
       Submodule.add_mem _ h2 (Submodule.subset_span ⟨b, rfl⟩)
-    rw [sub_add_cancel] at h3
-    exact h3
+    rwa [sub_add_cancel] at h3
   have hX : ∀ x ∈ Submodule.span D.host.E (Set.range (X.Fu u).e),
       σ x ∈ Submodule.span D.host.E (Set.range (X.Fu u).e) := by
     have : Submodule.span D.host.E (Set.range (X.Fu u).e) ≤
@@ -292,8 +289,7 @@ theorem eq_of_adapt (Λ : LV D) (hΛ : Λ ∈ Y.what₂ u) (Λ' : LV D) (hΛ' : 
     exact Submodule.eq_of_le_of_finrank_eq hle (LinearEquiv.finrank_map_eq σ _)
   have hX' : ∀ x ∈ Submodule.span D.host.E (Set.range (X.Fu u).e),
       σ.symm x ∈ Submodule.span D.host.E (Set.range (X.Fu u).e) := fun x hx => by
-    rw [← hmap, Submodule.mem_map_equiv] at hx
-    exact hx
+    rwa [← hmap, Submodule.mem_map_equiv] at hx
   have hz : σ (X.Fu u).z - (X.Fu u).z ∈ Submodule.span D.host.E (Set.range (X.Fu u).e) := by
     have h := hσf (Fin.last _)
     rw [frame_last_sat] at h
@@ -326,8 +322,7 @@ theorem eq_of_adapt (Λ : LV D) (hΛ : Λ ∈ Y.what₂ u) (Λ' : LV D) (hΛ' : 
     · intro h
       have h1 : γ (γ.symm x) ∈ Λ := chg_mem hee hff hef hff' hef' (aaS D) hsplit hLp hsplit' hLp' hσΛ1 _ h
       rwa [LinearEquiv.apply_symm_apply] at h1
-    · intro h
-      exact chg_mem hee hff' hef' hff hef (aaS D) hsplit' hLp' hsplit hLp hσΛ2 _ h
+    · exact fun h => chg_mem hee hff' hef' hff hef (aaS D) hsplit' hLp' hsplit hLp hσΛ2 _ h
   have hone : (1 : GV D) ∈ stabF D (X.Fu u) := by
     refine ⟨one_mem _, fun j => ?_, rfl⟩
     rw [show ((1 : GV D) : (VS D).V →ₗ[D.host.E] (VS D).V) = LinearMap.id from rfl, Submodule.map_id]
@@ -360,8 +355,7 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.row_representatives_up_to_frame_adapted_isometry : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), (∀ Λ, IsRowLat D (X.Fu u) Λ → ∃ Λ' ∈ Y.what₂ u, ∃ σ, Adapt σ (lf D (X.Fu u)) (lf D (X.Fu u)) ∧ Formalism.HermitianLatticesTheory.gmap σ Λ' = Λ) ∧ ∀ Λ ∈ Y.what₂ u, ∀ Λ' ∈ Y.what₂ u, ∀ σ, Adapt σ (lf D (X.Fu u)) (lf D (X.Fu u)) → Formalism.HermitianLatticesTheory.gmap σ Λ' = Λ → Λ' = Λ := by
-  intro D X Y u u'
-  exact GlobalTheory.RowRep.rowReps D X Y u u'
+  exact fun D X Y u u' => GlobalTheory.RowRep.rowReps D X Y u u'
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowRepresentativesUpToFrameAdaptedIsometryStatement =====

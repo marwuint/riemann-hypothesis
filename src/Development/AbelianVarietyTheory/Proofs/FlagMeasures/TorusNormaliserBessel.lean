@@ -243,8 +243,7 @@ theorem haar_conj {t : MM k r} (ht : t ∈ GG k r) {S : Set (MM k r)} (hN : ∀ 
     PI.BesselPeriodGGP.IsHaarOn S (μ.map (conjE ht)) := by
   obtain ⟨h1, h2, h3, h4⟩ := hμ
   refine ⟨(conjE ht).sigmaFinite_map, ?_, ?_, fun s hs => ?_⟩
-  · intro h
-    exact h2 ((Measure.map_eq_zero_iff (conjE ht).measurable.aemeasurable).mp h)
+  · exact fun h => h2 ((Measure.map_eq_zero_iff (conjE ht).measurable.aemeasurable).mp h)
   · rw [MeasurableEquiv.map_apply]
     convert h3 using 2
     ext x

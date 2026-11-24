@@ -313,8 +313,7 @@ theorem sE_fam_eq_jet : AllC fun {R} _ _ {D} _ {N} ν => ∀ (g : ℕ) (d : AB N
   rw [jet_mul W (hh.mul_const _) d0, jet_mul W hh (differentiableAt_const _), jet_const,
     jet_mul W (((hφ 0).fun_mul (d0.fun_pow k)).fun_mul dc) (differentiableAt_const _), jet_const,
     jet_mul W ((hφ 0).fun_mul (d0.fun_pow k)) dc, jet_mul W (hφ 0) (d0.fun_pow k), jet_pow W d0, jet_add] at this
-  rw [e1]
-  exact this
+  rwa [e1]
 
 end GlobalTheory.MBLow.Cl
 
@@ -628,8 +627,7 @@ theorem value_and_fderiv_at_zero : ∀ {g : ℕ} (x y W : Fin g → ℂ) (fr : t
   have hPd := hasFDerivAt_prod_zpow_of_eq_one (Finset.univ : Finset thK.{0})
     (fun (I : thK.{0}) (z : Fin g → ℂ) => fr I (∑ i ∈ I.down, ![x, y, z] i)) _ thε 0
     (fun I _ => hc I) (fun I _ => hn I) hP0
-  rw [hF.fderiv_eq (𝕜 := ℂ), hPd.fderiv]
-  rw [ContinuousLinearMap.sum_apply, sum_thK]
+  rw [hF.fderiv_eq (𝕜 := ℂ), hPd.fderiv, ContinuousLinearMap.sum_apply, sum_thK]
   simp only [thI_down, vsum_empty, vsum_0, vsum_1, vsum_2, vsum_01, vsum_02, vsum_12, sum_univ_finThree_vecThree,
       thε_thI_empty, thε_thI_0, thε_thI_1, thε_thI_2, thε_thI_01, thε_thI_02, thε_thI_12,
       thetaCubeSign_full, add_zero, zero_add, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply,
@@ -821,15 +819,13 @@ theorem jet_geo : ∀ {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} [Algeb
     have := ν.good ((P3 0).left ≫ thφ D.P.A (x3 D.P.A) I) (Set.mem_univ p)
     rw [e3] at this
     change ((P3 0).left ≫ thφ D.P.A (x3 D.P.A) I).base p ∈ D.P.L.U (j0 I)
-    rw [e3]
-    exact this
+    rwa [e3]
   · intro z hz
     refine ⟨fun I p _ => ?_, ?_⟩
     · have hm : (ptB ν d z ≫ q.left).base p ∈ W0 := hz (Set.mem_univ p)
       rw [hpt] at hm
       have := LB.wchart_le D.P.L (thφ D.P.A (x3 D.P.A)) j0 I hm
-      rw [← e3 z I]
-      exact this
+      rwa [← e3 z I]
     · change valR (ptB ν d z) _ _ = valR _ _ _
       refine (valR_app (ptB ν d z) q.left W0 _).trans ?_
       rw [hpt]
@@ -982,8 +978,7 @@ theorem fst_vE_eq_one : ∀ {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} 
   have h : ⊤ ≤ (𝟙 (Sp (DualNumber ℂ))) ⁻¹ᵁ LB.wchart D.P.L (DegPre.gtφT D (TE R ℂ) gm.b χ)
       (fun k => ν.J (redE ℂ ≫ 𝟙 _ ≫ DegPre.gtφT D (TE R ℂ) gm.b χ k)) := by
     refine (GlobalTheory.KS.TangentAt.top_le_iff_dual _ _).2 ((GlobalTheory.ZH.CrdCalc.top_le_iff _ _).2 ?_)
-    rw [Category.comp_id]
-    exact hm
+    rwa [Category.comp_id]
   have e1 : valR (redE ℂ ≫ 𝟙 (Sp (DualNumber ℂ))) (LB.wchart D.P.L (DegPre.gtφT D (TE R ℂ) gm.b χ)
       (fun k => ν.J (redE ℂ ≫ 𝟙 _ ≫ DegPre.gtφT D (TE R ℂ) gm.b χ k)))
       ((gm.s χ).s fun k => ν.J (redE ℂ ≫ 𝟙 _ ≫ DegPre.gtφT D (TE R ℂ) gm.b χ k)).val = (vE (gm.s χ) (𝟙 _) ν.J).fst :=
@@ -1377,8 +1372,7 @@ theorem jet_family_deriv : AllC fun {R} _ _ {D} _ {N} ν => ∀ (g' r g : ℕ) (
     have h1 := _root_.GlobalTheory.MBLow.Cl.sE_fam_eq_jet R D hE hT N ν g' d.toAB G gm.b W hb hW k s f α _ _ hs (d.c_eq α) hφ hA
     have h2 := dual_mul (hne _) (hne _) h1 (hT' α _ rfl)
     rw [h0, join_zero] at h2
-    rw [fderiv_eq σ _ _ hφ hB, leftComponent_join, secondBlock_join, join_zero]
-    exact h2
+    rwa [fderiv_eq σ _ _ hφ hB, leftComponent_join, secondBlock_join, join_zero]
 
 end GlobalTheory.MBLow.Cl
 

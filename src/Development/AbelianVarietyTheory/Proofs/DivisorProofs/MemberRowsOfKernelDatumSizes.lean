@@ -238,8 +238,7 @@ theorem datFramed_of_gram_posDef {K : Type} [Field K] [NumberField K] [StarRing 
     unfold Formalism.HermitianLatticesTheory.vecAt
     funext i
     simp only [Pi.basisFun_repr, ← Basis.equivFun_apply, LinearEquiv.apply_symm_apply]
-  rw [h2]
-  exact h1
+  rwa [h2]
 
 theorem evGSD_datFramed : ∀ (X : Fields) (hX : X.Ok) (Pr : Primes X) (R : Ranks) (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (P : LevFam X.E X.K R.r Pr.vGs) (u : Pr.Word) (h : (evGSD W Ch sel mu P u).Ok), DatFramed (evGSD W Ch sel mu P u) h := by
   intro X _ Pr R W Ch sel Sg mu P u h
@@ -345,8 +344,7 @@ theorem posDef_sum_dep {ι γ : Type} {κ : γ → Type} [Fintype ι] [Fintype �
   have h1 := (hG c).dotProduct_mulVec_pos hc
   have h2 : star x ⬝ᵥ (((P c)ᴴ * G c * P c) *ᵥ x) = star (P c *ᵥ x) ⬝ᵥ (G c *ᵥ (P c *ᵥ x)) := by
     simp only [Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul]
-  rw [h2]
-  exact h1
+  rwa [h2]
 
 section Generic
 
@@ -482,8 +480,7 @@ theorem exists_cbData : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [_
         ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin ((Xc j.succ v)⁻¹ *
           (LinearMap.toMatrix (Pi.basisFun K (Fin (c j.castSucc))) (Pi.basisFun K (Fin (c j.succ)))
             (Matrix.mulVecLin (Kj j))).map v.embedding * Xc j.castSucc v))‖ := rfl
-    rw [e, hm] at key
-    exact key
+    rwa [e, hm] at key
   · intro j v
     show Real.log (Formalism.DimensionVariation.cbSq (Fintype.card Unit) (Fintype.card Unit) 1 1 (Real.exp (t j v))) ≤ t j v
     simp [Formalism.DimensionVariation.cbSq]
@@ -848,8 +845,7 @@ namespace GlobalTheory.DefRowsChain
 theorem sq_le_of (a b s : ℝ) (za zb : ℂ) (ha : ((a ^ 2 : ℝ) : ℂ) = za) (hb : ((b ^ 2 : ℝ) : ℂ) = zb)
     (hs : za.re ≤ Real.exp s * zb.re) : a ^ 2 ≤ Real.exp s * b ^ 2 := by
   subst ha hb
-  rw [Complex.ofReal_re, Complex.ofReal_re] at hs
-  exact hs
+  rwa [Complex.ofReal_re, Complex.ofReal_re] at hs
 
 def tOf {K : Type} [Field K] [NumberField K] [StarRing K] {J Pl : Type} [Fintype J] [Fintype Pl] [DecidableEq Pl] {R : RecNums J Pl}
     (hn : HtNums R (InfinitePlace K)) (n : ℕ) (no : J → ℕ) (j : Fin (n + 1)) (v : InfinitePlace K) : ℝ :=
@@ -874,8 +870,7 @@ theorem rowsBody_of_framed : ∀ (K : Type) [Field K] [NumberField K] [StarRing 
         simp only [Fin.ext_iff, Fin.val_last]
         omega
       rw [hs]
-      refine sq_le_of _ _ _ _ _ (T.cpl_norm v x) (T.metF Q.n le_rfl v x) ?_
-      exact h7.2 v _
+      exact sq_le_of _ _ _ _ _ (T.cpl_norm v x) (T.metF Q.n le_rfl v x) (h7.2 v _)
     | cast i =>
       intro v x
       have hs : tOf hn Q.n no (Fin.castSucc i) v = ∑ l ∈ Finset.univ.filter (fun l => no l = i.val), hn.sz l v := by
@@ -894,8 +889,7 @@ theorem rowsBody_of_framed : ∀ (K : Type) [Field K] [NumberField K] [StarRing 
   have e : Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin (ch.c (Fin.last ch.mm)))) (ch.X (Fin.last ch.mm)) v y ^ 2 =
       (Q.S₁.ipAt Q.hS₁ v (T.coL y) (T.coL y)).re := by
     have := congrArg Complex.re hm
-    rw [Complex.ofReal_re] at this
-    exact this
+    rwa [Complex.ofReal_re] at this
   rw [e]
   exact h8 v (T.coL y) F
 
@@ -1071,8 +1065,7 @@ theorem block_sum (B : ℕ) (hB : B < R.m) :
     rw [z1, l1]
     push_cast [ck]
     ring
-  rw [Finset.sum_eq_zero hzero, zero_add]
-  rw [e0', e0]
+  rw [Finset.sum_eq_zero hzero, zero_add, e0', e0]
   push_cast
   rw [z0, l0]
   push_cast [ck]
@@ -1147,8 +1140,7 @@ theorem dOne_le_place :
     intro i hi
     rw [Finset.mem_range] at hi
     have h2 := (hI ⟨i, hi⟩).1
-    rw [Br.aBr, ← ext_of (W.sgTrue τ), ← ext_of (W.lamTrue u R.m τ)] at h2
-    exact h2
+    rwa [Br.aBr, ← ext_of (W.sgTrue τ), ← ext_of (W.lamTrue u R.m τ)] at h2
   have hsingle := Finset.single_le_sum hnonneg (Finset.mem_range.2 (by omega : R.k - 2 < R.N R.m - 1))
   rw [← first_difference_eq_range_sum (N_m_succ R)] at hsingle
   have e2 : R.k - 2 + 1 = R.k - 1 := by omega
@@ -1574,8 +1566,7 @@ theorem lastSide_of_logT_le : ∀ (CY CT : ℝ) (N : NumDatum) (X : Fields) (Pr 
     exact (hbT t h2).2
   · rw [hR.logT]
     exact Real.log_nonneg (by exact_mod_cast hT)
-  · rw [hR.logT, hmR, hL]
-    exact hlogT
+  · rwa [hR.logT, hmR, hL]
 
 end GlobalTheory.ColRows.LastSideProof
 end -- clump:auto
@@ -1655,8 +1646,7 @@ theorem ofNum_reads : ∀ (N : NumDatum) (J : Type) [Fintype J] (eJ : J ≃ Fin 
     Reads N eJ δ T (RecNums.ofNum N eJ δ T Nc lam0 C0 ce Ch Sw C1 H) := by
   intro N J _ eJ δ T Nc lam0 C0 ce Ch Sw C1 H
   refine ⟨?_, ?_, rfl, ?_, ?_, ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩⟩
-  · intro z
-    exact N.mem_topsPl z
+  · exact fun z => N.mem_topsPl z
   · intro t _
     rfl
   · intro j z

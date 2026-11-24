@@ -274,12 +274,10 @@ theorem pi_muNl_eq_dnB_image : ∀ (D : D7) (X : HidaSetting D) (θ : ℝ) (C : 
     have key : ∀ (τ : D.what₂.Tau) (w : InfinitePlace X.B.I.F), vOf X τ = w → SigmaFinite (muNl C τ w) := by
       rintro τ w rfl
       exact sf_muNl C τ hθ
-    intro v
-    exact key (X.pl v) v (X.pl.symm_apply_apply v)
+    exact fun v => key (X.pl v) v (X.pl.symm_apply_apply v)
   obtain ⟨hemb, hmap⟩ := Formalism.L2.SG.Pf.AmpWinGlob.map_trInf C hsf hθ
   have h := congrArg (fun μ => μ (Formalism.L2.SG.LoopTerm.trInf C '' A)) hmap
-  rw [hemb.map_apply, Set.preimage_image_eq _ hemb.injective] at h
-  exact h
+  rwa [hemb.map_apply, Set.preimage_image_eq _ hemb.injective] at h
 
 end GlobalTheory
 end -- clump:auto
@@ -327,8 +325,7 @@ theorem muH_eq_pi : ∀ (D : D7) (X : HidaSetting D) (θ : ℝ) (C : Choice X θ
   have hloc : ∀ v, QPK.InvOn (muHl C u (X.pl v) v) (Formalism.L2.SG.Pf.WuDec.Hloc X u v) := by
     have h : ∀ τ w, vOf X τ = w → QPK.InvOn (muHl C u τ w) (Formalism.L2.SG.Pf.WuDec.Hloc X u w) := by
       rintro τ _ rfl; exact invOn_muHl C u τ
-    intro v
-    exact h (X.pl v) v (X.pl.symm_apply_apply v)
+    exact fun v => h (X.pl v) v (X.pl.symm_apply_apply v)
   haveI : ∀ v, SigmaFinite (muHl C u (X.pl v) v) := fun v => (hloc v).1
   obtain ⟨hσ, h0, hc, hi⟩ := X.muH_haar u
   haveI := hσ
@@ -393,8 +390,7 @@ theorem muN_eq_pi_muNl : ∀ (D : D7) (X : HidaSetting D) (θ : ℝ) (C : Choice
   refine PiM.uniq_on_closed (NinfG X u) (NinfG_closed X u) _ _ hc ?_ hi ?_ h0 ?_
   · rw [NinfG, Subgroup.coe_pi]
     exact PiM.pi_conc _ _ fun v => (hloc v).2.2.1
-  · intro g hg
-    exact PiM.pi_map_mul_left _ g fun v => (hloc v).2.2.2 (g v) (hg v (Set.mem_univ v))
+  · exact fun g hg => PiM.pi_map_mul_left _ g fun v => (hloc v).2.2.2 (g v) (hg v (Set.mem_univ v))
   · exact PiM.pi_ne_zero _ fun v => (hloc v).2.1
 
 end GlobalTheory.MuNPi
@@ -767,8 +763,7 @@ theorem isQuotMeas_smul {k r : ℕ} {μG μR ν : Measure (Mt k r)} {c : ℝ≥0
     (h : IsQuotMeas μG (c • μR) ν) : IsQuotMeas μG μR (c • ν) := by
   intro f hf
   rw [h f hf]
-  simp only [lintegral_smul_measure, smul_eq_mul]
-  exact lintegral_const_mul' _ _ hc
+  simpa only [lintegral_smul_measure, smul_eq_mul] using lintegral_const_mul' _ _ hc
 
 theorem equiv_N {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     {z : Fin (2 * r + k + 1) → ℂ} {ψ : Mat k r → ℂ} {π : Mat k r → (Wp →L[ℂ] Wp)} {Φ : Mat k r → Wp}
@@ -776,8 +771,7 @@ theorem equiv_N {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpa
     {x : Mat k r} (hx : x ∈ GG k r) : Φ (n * x) = ψ n • Φ x := by
   have h1 : (1 : Mat k r) ∈ UWset k r z := (isClosedSub_UWset (k := k) (r := r) z).2.2.1
   have e := hΦ 1 h1 n hn x hx
-  rw [hπ.1.1, one_mul, ContinuousLinearMap.one_apply] at e
-  exact e
+  rwa [hπ.1.1, one_mul, ContinuousLinearMap.one_apply] at e
 
 theorem amp_uniq : ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] (Wq : Type) [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] [CompleteSpace Wq] (z z' : Fin (2 * r + k + 1) → ℂ) (ψ ψ' : Mat k r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (π' : Mat k r → (Wq →L[ℂ] Wq)) (Φ : Mat k r → Wp) (Φ' : Mat k r → Wq) (cN : ℝ), inWb k r z → inWb k r z' → 0 < Tz k r z → 0 < Tz k r z' → IsURepOn (UWset k r z) π → IsURepOn (UWset k r z') π' → (∀ n ∈ Nset k r, ‖ψ n‖ = 1 ∧ ‖ψ' n‖ = 1) → IsSPsiEquiv z ψ π Φ → IsSPsiEquiv z' ψ' π' Φ' → ContinuousOn Φ (GG k r) → ContinuousOn Φ' (GG k r) → ∀ (γ : Mat k r) (μG μR ν ν' : Measure (Mt k r)) (t : ℝ), γ ∈ GG k r → (∀ ρ ∈ Rset k r γ, ψ (γ * ρ * γ⁻¹) = ψ' ρ) → IsHaarOn (GG k r) μG → IsHaarOn (Rset k r γ) μR → 0 < t → IsQuotMeas μG μR ν → IsQuotMeas μG (ENNReal.ofReal t • μR) ν' → ampJ ν cN Φ Φ' γ = (t : ℂ) • ampJ ν' cN Φ Φ' γ := by
   intro k r Wp _ _ _ _ Wq _ _ _ _ z z' ψ ψ' π π' Φ Φ' cN _ _ _ _ hπ hπ' hψ hΦ hΦ' hc hc' γ μG μR ν ν' t hγ
@@ -1585,8 +1579,7 @@ theorem relPt_dcoset (D : D7) {z z' : Fin (2 * D.R.rS + D.R.k + 1) → ℂ} (hz 
       _root_.GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul hV (upUni_sgn_conj hU0' hU1'), ?_⟩
     rw [zhatO_eq, he, hZ']
     simp only [Matrix.mul_assoc]
-  · rw [Formalism.QuantumDeterminants.gInv _ _ z z' hz hz' a ha a'⁻¹ (hinv' a' ha') γ]
-    exact hGf
+  · rwa [Formalism.QuantumDeterminants.gInv _ _ z z' hz hz' a ha a'⁻¹ (hinv' a' ha') γ]
 
 end GlobalTheory.RelPtLift
 
@@ -1735,8 +1728,7 @@ theorem stab_inv : ∀ (D : D7) (X : HidaSetting D) (θ : ℝ) (C : Choice X θ)
       simp only [← Matrix.mul_assoc, hQQi, Matrix.one_mul]
       rw [Matrix.mul_assoc, hQQi, Matrix.mul_one]
     have h := Formalism.L2.SG.Pf.psiTr C w τ _ (hmN w t ht)
-    rw [hback] at h
-    exact h
+    rwa [hback] at h
   set g := Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) γ with hg
   have hginv : g⁻¹ = C.Qi τ * uMat γ⁻¹ * C.Q τ := by
     apply Matrix.inv_eq_left_inv

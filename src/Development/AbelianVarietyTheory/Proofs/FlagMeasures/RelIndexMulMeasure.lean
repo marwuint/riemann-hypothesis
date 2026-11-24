@@ -139,14 +139,11 @@ theorem modK_algebraMap : ∀ {F : Type} [Field F] [ValuativeRel F] [Topological
         exact h2
       · intro hy
         have h2 := hsmul (((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) : F) y (u⁻¹ : (𝒪[F])ˣ).1.2 hy
-        rw [Units.smul_def, Units.val_inv_eq_inv_val, Units.val_mk0, ← hinv]
-        exact h2
+        rwa [Units.smul_def, Units.val_inv_eq_inv_val, Units.val_mk0, ← hinv]
     rw [hset]
     simp
 
-  have hϖ0 : (ϖ : F) ≠ 0 := by
-    intro h
-    exact hϖ.ne_zero (Subtype.ext h)
+  have hϖ0 : (ϖ : F) ≠ 0 := fun h => hϖ.ne_zero (Subtype.ext h)
   have hwO : algebraMap F E (ϖ : F) ∈ M.L.O := (GlobalTheory.UnramOrder.algebraMap_mem_iff M.L _).mpr ϖ.2
   have hI : Ideal.span {y : M.L.O | (y : E) = algebraMap F E ((ϖ : F) ^ 1)} =
       Ideal.span {(⟨algebraMap F E (ϖ : F), hwO⟩ : M.L.O)} := by
@@ -155,8 +152,7 @@ theorem modK_algebraMap : ∀ {F : Type} [Field F] [ValuativeRel F] [Topological
     simp [Subtype.ext_iff]
   have hcard : Nat.card (M.L.O ⧸ Ideal.span {(⟨algebraMap F E (ϖ : F), hwO⟩ : M.L.O)}) = resQ ϖ ^ 2 := by
     have h := (GlobalTheory.UnramOrder.order_facts M.L ϖ hϖ).2.2.2.2.2.1 1
-    rw [hI, mul_one] at h
-    exact h
+    rwa [hI, mul_one] at h
   have hfinj : Function.Injective (M.L.O.subtype.toAddMonoidHom) := Subtype.val_injective
   have hrange : (⊤ : AddSubgroup M.L.O).map M.L.O.subtype.toAddMonoidHom = M.L.O.toAddSubgroup := by
     ext z
@@ -204,15 +200,13 @@ theorem modK_algebraMap : ∀ {F : Type} [Field F] [ValuativeRel F] [Topological
       rw [ENNReal.coe_inv (by exact_mod_cast pow_ne_zero _ (by omega))]
       push_cast
       rfl
-    rw [hc]
-    rw [← key2, ← mul_assoc, ENNReal.inv_mul_cancel h0 hT, one_mul]
+    rw [hc, ← key2, ← mul_assoc, ENNReal.inv_mul_cancel h0 hT, one_mul]
 
   obtain ⟨u, hu⟩ := (GlobalTheory.UnramVal.vE_valuation M.L ϖ hϖ).2.2.2 x hx
   have hgx : Units.mk0 x hx = Units.mk0 (ϖ : F) hϖ0 ^ (vE M.L ϖ (algebraMap F E x)) *
       Units.mk0 ((u : 𝒪[F]) : F) (by simp) := by
     ext
-    rw [Units.val_mul, Units.val_zpow_eq_zpow_val, Units.val_mk0, Units.val_mk0, Units.val_mk0]
-    exact hu
+    rwa [Units.val_mul, Units.val_zpow_eq_zpow_val, Units.val_mk0, Units.val_mk0, Units.val_mk0]
   have himg : (fun y => algebraMap F E x * y) '' (M.R : Set E) = Units.mk0 x hx • (M.R : Set E) := by
     rw [← Set.image_smul]
     congr 1

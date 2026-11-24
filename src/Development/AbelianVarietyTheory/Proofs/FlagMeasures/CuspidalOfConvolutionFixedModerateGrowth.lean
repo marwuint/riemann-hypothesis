@@ -116,8 +116,7 @@ theorem inv_tau_pow_le (I : AutInst) (hn : 1 ≤ I.n) (x g : I.GA) (hg : g.2 ∈
   have h1 : tau1 I x * Real.exp (-(D / I.f)) ≤ tau1 I (x * g) := by
     have := Real.exp_le_exp.mpr hl
     rw [Real.exp_log hb, Real.exp_sub, Real.exp_log ha] at this
-    rw [Real.exp_neg, ← div_eq_mul_inv]
-    exact this
+    rwa [Real.exp_neg, ← div_eq_mul_inv]
   have h2 : (tau1 I (x * g))⁻¹ ≤ (tau1 I x)⁻¹ * Real.exp (D / I.f) := by
     have hpos : 0 < tau1 I x * Real.exp (-(D / I.f)) := mul_pos ha (Real.exp_pos _)
     calc (tau1 I (x * g))⁻¹ ≤ (tau1 I x * Real.exp (-(D / I.f)))⁻¹ := inv_anti₀ hpos h1
@@ -214,8 +213,7 @@ theorem reproducing_fixed : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) 
     unfold IsContRep
     refine ⟨hFc, fun γ hγ x => ?_, hyF⟩
     simp only [mul_assoc, hfinv γ hγ]
-  have hFeq := hext2 _ hcrF
-  exact ⟨⟨Φ, hΦint, hbound⟩, fun x => (congrFun hFeq x).symm⟩
+  exact ⟨⟨Φ, hΦint, hbound⟩, fun x => (congrFun (hext2 _ hcrF) x).symm⟩
 
 end GlobalTheory.ReproducingFixed
 end -- clump:auto
@@ -247,8 +245,7 @@ theorem isHaarSub_map_emb {H G : Type} [Group H] [TopologicalSpace H] [IsTopolog
   · refine ⟨fun K hK => ?_⟩
     rw [hme.map_apply]
     exact hfc.lt_top_of_isCompact (hι.isCompact_preimage hK)
-  · rw [hme.map_apply, Set.preimage_compl, hS, Set.preimage_image_eq _ hι.injective]
-    exact hnull
+  · rwa [hme.map_apply, Set.preimage_compl, hS, Set.preimage_image_eq _ hι.injective]
   · intro m hm
     rw [hS] at hm
     obtain ⟨k, hk, rfl⟩ := hm
@@ -375,8 +372,7 @@ theorem cusp_of_fixed : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h :
       rw [coe_nwSub]
       exact isClosed_NW _ _
     have hνv' : IsHaarSub ((nwSub (B.I.ε v) Wv : Subgroup (UJ (B.I.ε v))) : Set (UJ (B.I.ε v))) νv := by
-      rw [coe_nwSub]
-      exact hνv
+      rwa [coe_nwSub]
     have hemb' := isClosedEmbedding_incl B.I v
     obtain ⟨hNcl', hHs⟩ := isHaarSub_map_emb (incl B.I v) hemb' _ hNcl νv hνv'
     refine weilVanish B.I.GA (B.I.muA B.μf) _ _ hNcl' hHs (fun z => ∫ m, f (m * z) ∂ν)
@@ -388,8 +384,7 @@ theorem cusp_of_fixed : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h :
     · intro n hn z
       obtain ⟨k, hk, rfl⟩ := Subgroup.mem_map.mp hn
       have hk' : k ∈ NW (B.I.ε v) Wv := by
-        rw [← coe_nwSub]
-        exact hk
+        rwa [← coe_nwSub]
       have hkNA : incl B.I v k ∈ B.I.NA W := hemb k hk'
       have hsh := hinvN (fun m => f (m * z)) (fun γ hγ w => by
         show f (γ * w * z) = f (w * z)

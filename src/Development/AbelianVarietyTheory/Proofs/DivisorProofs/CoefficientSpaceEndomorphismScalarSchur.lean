@@ -217,8 +217,7 @@ theorem ten_hom {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ}
   have h := IsWeightedHomogeneous.prod Finset.univ (fun τ => blockEmb K τ (f τ)) _
     (fun τ _ => blockEmb_hom τ (f τ) (μ τ) (hf τ))
   have e : μ = ∑ τ, Pi.single τ (μ τ) := (Finset.univ_sum_single μ).symm
-  rw [e]
-  exact h
+  rwa [e]
 
 theorem extremal_hom (K : Type) [Field K] {n : ℕ} (l : DomWeight n) :
     IsWeightedHomogeneous (rowW n n) (extremal K n l) l.natW := by
@@ -259,8 +258,7 @@ theorem weight_line : ∀ (K : Type) [Field K] {ι : Type} [Fintype ι] {n : ℕ
             rwa [← congrFun he τ] at this
         choose c hc using hc
         refine Submodule.mem_span_singleton.2 ⟨∏ τ, c τ, ?_⟩
-        simp only [bVVfun, ten, hc, map_smul]
-        exact (Finset.prod_smul _ _ _).symm
+        simpa only [bVVfun, ten, hc, map_smul] using (Finset.prod_smul _ _ _).symm
       · rw [hi.weightedHomogeneousComponent_ne _ he]
         exact zero_mem _
     have h := key hG
@@ -403,8 +401,7 @@ theorem multilinear_mem_span_of_mem_span {K ι M N : Type} [Field K] [Fintype ι
     intro s
     induction s using Finset.induction_on with
     | empty =>
-      intro f _ h
-      exact Submodule.subset_span ⟨f, fun τ => h τ (Finset.notMem_empty τ), rfl⟩
+      exact fun f _ h => Submodule.subset_span ⟨f, fun τ => h τ (Finset.notMem_empty τ), rfl⟩
     | insert a s ha ih =>
       intro f h1 h2
       have hle : Submodule.span K (S a) ≤
@@ -424,13 +421,11 @@ theorem multilinear_mem_span_of_mem_span {K ι M N : Type} [Field K] [Fintype ι
         · intro τ hτs
           by_cases hτ : τ = a
           · subst hτ
-            rw [Function.update_self]
-            exact hx
+            rwa [Function.update_self]
           · rw [Function.update_of_ne hτ]
             exact h2 τ (by simp [hτ, hτs])
       have h := hle (h1 a)
-      rw [Submodule.mem_comap, MultilinearMap.toLinearMap_apply, Function.update_eq_self] at h
-      exact h
+      rwa [Submodule.mem_comap, MultilinearMap.toLinearMap_apply, Function.update_eq_self] at h
   exact key Finset.univ f hf (fun τ h => absurd (Finset.mem_univ τ) h)
 
 theorem coefSpace_le_span_pure_tensors (K : Type) [Field K] {ι : Type} [Fintype ι] {n : ℕ}

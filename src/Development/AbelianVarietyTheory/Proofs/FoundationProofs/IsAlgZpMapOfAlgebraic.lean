@@ -163,8 +163,7 @@ theorem _root_.GlobalTheory.T.exists_algebraicNumber_congr_mod_prime_pow :
     have hco : φ P.leadingCoeff = (Q.coeff P.natDegree : Ωl) + (p : Ωl) ^ N * φ (R.coeff P.natDegree) := by
       have := congrArg (fun (S : ℤ_[p][X]) => φ (S.coeff P.natDegree)) hQR
       simp only [coeff_add, coeff_C_mul, coeff_map, map_add (f := _), map_mul, eq_intCast, map_intCast] at this
-      rw [map_pow, map_natCast] at this
-      exact this
+      rwa [map_pow, map_natCast] at this
     have hvQ : v (Q.coeff P.natDegree : Ωl) = v (φ P.leadingCoeff) := by
       rw [eq_sub_of_add_eq hco.symm]
       exact Valuation.map_sub_eq_of_lt_left v ((hsmall _ (hφint _)).trans_lt hN')
@@ -221,8 +220,7 @@ theorem isClosed_setOf_algEquiv_apply_eq {K L : Type} [Field K] [Field L] [Algeb
     simp only [AlgEquiv.smul_def, hg₀]
   · have : {g : L ≃ₐ[K] L | g a = b} = ∅ := by
       ext g
-      simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
-      exact fun hg => h ⟨g, hg⟩
+      simpa only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false] using fun hg => h ⟨g, hg⟩
     rw [this]
     exact isClosed_empty
 
@@ -240,8 +238,7 @@ theorem exists_primitive_for_finset (k : Type) {Ω : Type} [Field k] [CharZero k
     intro z hz
     induction hz using IntermediateField.adjoin_induction with
     | mem x hx' =>
-      rw [Set.mem_singleton_iff.mp hx']
-      exact hx
+      rwa [Set.mem_singleton_iff.mp hx']
     | algebraMap q =>
       exact DFunLike.congr_fun hk q
     | add x y _ _ hx hy => simp [hx, hy]
@@ -335,8 +332,7 @@ theorem exists_algEquiv_apply_eq_of_fixes_preimage_base :
     rw [← eval₂_at_apply, ← eval_map, hM, hP, eval_map, ← aeval_def, minpoly.aeval, map_zero]
   have hMsx : M.eval (s x) = 0 := by
     have h := eval₂_at_apply (p := M) (s : Ω →+* Ω) x
-    rw [← eval_map, hMs, hMx, map_zero] at h
-    exact h
+    rwa [← eval_map, hMs, hMx, map_zero] at h
   have hroot : aeval (j (s x)) (minpoly K (j x)) = 0 := by
     rw [aeval_def, ← eval_map, ← hP, ← hM, eval_map, eval₂_at_apply, hMsx, map_zero]
   exact (isConjRoot_of_aeval_eq_zero hint hroot).symm.exists_algEquiv
@@ -850,8 +846,7 @@ theorem exists_cusp_embedding : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsA
     · rw [ValuationSubring.mem_nonunits_iff, ← map_one w.valuationSubring.valuation,
         ← w.isEquiv_valuation_valuationSubring.lt_iff_lt, map_one]
       change v (j0 (p : Ω)) < 1
-      rw [map_natCast]
-      exact hp
+      rwa [map_natCast]
     · rw [Valuation.mem_valuationSubring_iff]
       exact hv (j0 x)
   obtain ⟨B, hBp, hB⟩ := hBexists

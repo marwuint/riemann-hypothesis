@@ -73,8 +73,7 @@ theorem inUJ_map_conj {n : ℕ} (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n
     simp [Matrix.conjTranspose_apply]
   have h2 := congrArg (fun M : Matrix (Fin n) (Fin n) ℂ => M.map (starRingEnd ℂ)) hg
   simp only [Matrix.map_mul, hJ] at h2
-  rw [hH]
-  exact h2
+  rwa [hH]
 
 noncomputable def conjUJHom {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.UJ ε →* Formalism.REAL.UJ ε :=
   ((Units.map ((starRingEnd ℂ).mapMatrix (m := Fin n)).toMonoidHom).comp (Formalism.REAL.UJ ε).subtype).codRestrict
@@ -93,10 +92,8 @@ theorem conjUJHom_invol {n : ℕ} (ε : Fin n → Bool) (g : Formalism.REAL.UJ �
 
 theorem continuous_conjUJHom {n : ℕ} (ε : Fin n → Bool) : Continuous (conjUJHom ε) := by
   have hc : Continuous ((starRingEnd ℂ).mapMatrix (m := Fin n)).toMonoidHom := by
-    show Continuous fun M : Matrix (Fin n) (Fin n) ℂ => M.map (starRingEnd ℂ)
     exact Continuous.matrix_map continuous_id Complex.continuous_conj
-  have hu := Continuous.units_map _ hc
-  exact Continuous.subtype_mk (hu.comp continuous_subtype_val) _
+  exact Continuous.subtype_mk ((Continuous.units_map _ hc).comp continuous_subtype_val) _
 
 noncomputable def conjUJ {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.UJ ε ≃ₜ* Formalism.REAL.UJ ε where
   toFun := conjUJHom ε
@@ -121,8 +118,7 @@ theorem gauge_map_inner_comp {n : ℕ} (ε : Fin n → Bool) (C : Formalism.REAL
   have hf : (fun g => s * C g * s⁻¹) = ⇑(C.trans (innerAutTop s)) := by
     funext g
     rfl
-  rw [hf]
-  exact key
+  rwa [hf]
 
 theorem exists_conj_gauge_invariant : ∀ (n : ℕ) (ε : Fin n → Bool) (τ : ℂ →+* ℂ), (τ = RingHom.id ℂ ∨ τ = starRingEnd ℂ) → ∃ C : Formalism.REAL.UJ ε ≃ₜ* Formalism.REAL.UJ ε, (∀ g, uMat (C g) = (uMat g).map τ) ∧ ∀ (s : Formalism.REAL.UJ ε) (c : ℝ), IsGauge ε c → (ENNReal.ofReal c • Formalism.REAL.muG ε).map (fun g => s * C g * s⁻¹) = ENNReal.ofReal c • Formalism.REAL.muG ε := by
   intro n ε τ hτ

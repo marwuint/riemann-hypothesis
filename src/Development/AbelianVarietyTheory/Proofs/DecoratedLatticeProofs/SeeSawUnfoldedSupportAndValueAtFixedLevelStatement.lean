@@ -95,8 +95,7 @@ namespace GlobalTheory.LocMod.SuppFirst
 theorem ι_mul' {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) (x y : k) : p.ι (x * y) = p.ι x * p.ι y := by
   have h := p.ι_π (p.ι x * p.ι y)
-  rw [map_mul, p.π_ι, p.π_ι, ← mul_assoc, _root_.GlobalTheory.LocMod.Witness.e_ι] at h
-  exact h
+  rwa [map_mul, p.π_ι, p.π_ι, ← mul_assoc, _root_.GlobalTheory.LocMod.Witness.e_ι] at h
 
 theorem ι_one' {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) : p.ι 1 = p.e := by
@@ -570,14 +569,11 @@ theorem GlobalTheory.SeeSaw.prod_local_cells : ∀ {D : D7} {c : Comm D} {v : VC
   refine ⟨(List.ofFn r).prod, R.list_prod_mem ?_, Subgroup.list_prod_mem _ ?_, (List.ofFn u).prod,
     (hG.lev j' hj _).2 ⟨Subgroup.list_prod_mem _ ?_, ?_⟩, ?_⟩
   · rw [List.forall_mem_ofFn_iff]
-    intro i
-    exact hr i
+    exact fun i => hr i
   · rw [List.forall_mem_ofFn_iff]
-    intro i
-    exact mem_grpAt (G i).q (hrs i) (hP i)
+    exact fun i => mem_grpAt (G i).q (hrs i) (hP i)
   · rw [List.forall_mem_ofFn_iff]
-    intro i
-    exact mem_grpAt (G i).q (hus i) (hP i)
+    exact fun i => mem_grpAt (G i).q (hus i) (hP i)
   · intro i a ha y hy
     obtain rfl : a = b i := by have := hb i; omega
     have e : matAt (G i).q (c.V j') (List.ofFn u).prod = matAt (G i).q (c.V j') (u i) := by
@@ -728,15 +724,13 @@ theorem gsupp_of_local : ∀ (D : D7) (c : Comm D) (v : VCom c) (n : ℕ) (G : F
     obtain ⟨y, hy, hprod⟩ := GlobalTheory.T.ordered_prod_local_parts_separates_place G hG (j + 1) xs hxs i
     have hw : IsWeilDatumO c.ψ (c.V j) (c.V (j + 1)) (t.sBF j (σ + 1) h).χV (t.sBF j (σ + 1) h).χW (t.om j) := by
       have := (t.sBF j (σ + 1) h).weil
-      rw [(ht.sBF j (σ + 1) h).1] at this
-      exact this
+      rwa [(ht.sBF j (σ + 1) h).1] at this
     obtain ⟨hF', hcm⟩ := GlobalTheory.T.trivialAtPlace_comm_seeSawCombination_keeps_vacuum hc hv (G i) j hj _ _ (t.om j) hw F hF y hy
     refine GlobalTheory.T.seesaw_first_flatMap_support_at_level_place hc hv h1 t ht (G i) (hch i) j σ h _ hF' (xs i) (hxs i) ?_
     rw [hprod, hcomb] at hne
     have e : t.om j (1, xs i * y) = t.om j (1, xs i) * t.om j (1, y) := by
       rw [← map_mul, Prod.mk_mul_mk, one_mul]
-    rw [e, Module.End.mul_apply, hcm] at hne
-    exact hne
+    rwa [e, Module.End.mul_apply, hcm] at hne
   · obtain ⟨xs, hxs, rfl⟩ := GlobalTheory.T.seeSaw_fixedLevel_element_eq_prod_local_parts hc hv G hG (j + 1 + 1) x hx
     have hb : ∀ i, j + 1 + 1 + (2 * σ + 1) = (G i).s + 1 := fun i => by have := (G i).hs; omega
     refine GlobalTheory.T.seeSaw_prod_local_cells_distinct_places G hG (j + 1 + 1) (by omega) (besGrp (c.bes (j + 1 + 1) σ (idx_step h)).d (c.bes (j + 1 + 1) σ (idx_step h)).o)
@@ -746,15 +740,13 @@ theorem gsupp_of_local : ∀ (D : D7) (c : Comm D) (v : VCom c) (n : ℕ) (G : F
     obtain ⟨y, hy, hprod⟩ := GlobalTheory.T.ordered_prod_local_parts_separates_place G hG (j + 1 + 1) xs hxs i
     have hw : IsWeilDatumO c.ψ (c.V (j + 1)) (c.V (j + 1 + 1)) (t.sFB j σ h).χV (t.sFB j σ h).χW (t.om (j + 1)) := by
       have := (t.sFB j σ h).weil
-      rw [(ht.sFB j σ h).1] at this
-      exact this
+      rwa [(ht.sFB j σ h).1] at this
     obtain ⟨hF₂', hcm⟩ := GlobalTheory.T.trivialAtPlace_comm_seeSawCombination_keeps_vacuum hc hv (G i) (j + 1) hj2 _ _ (t.om (j + 1)) hw F₂ hF₂ y hy
     refine GlobalTheory.T.seeSaw_flatMap_contraction_support_at_level_place hc hv h2 t ht (G i) (hch i) j σ h F₁ hF₁ _ hF₂' (xs i) (hxs i) ?_
     rw [hprod, hcomb₁, hcomb₂] at hne
     have e : t.om (j + 1) (1, xs i * y) = t.om (j + 1) (1, xs i) * t.om (j + 1) (1, y) := by
       rw [← map_mul, Prod.mk_mul_mk, one_mul]
-    rw [e, Module.End.mul_apply, hcm] at hne
-    exact hne
+    rwa [e, Module.End.mul_apply, hcm] at hne
 
 end GlobalTheory.SeeSaw.GSuppAsm
 
@@ -833,8 +825,7 @@ theorem one_place : ∀ (D : D7) (c : Comm D) (v : VCom c) (G : GLoc v), c.Is �
   have g₂ := (G.eg_is (j + 1) _ b₂).2 T₂ m₂ O₂ ⟨_, (GModel.phi_sb G).1 (j + 1) _ b₂⟩ o₂ rfl
   have := key σ _ _ _ F s₁ s₂ (c.lnk j σ h) (c.vL j σ h) (G.cg j) (G.cg (j + 1)) (G.cg_mid j _ b₂) (G.cg_mid (j + 1) _ H)
     T₁ T₂ m₁ m₂ ⟨_, (GModel.phi_sb G).1 j _ b₁⟩ ⟨_, (GModel.phi_sb G).1 (j + 1) _ b₂⟩ O₁ O₂ rfl rfl o₁ o₂
-  rw [← e₁ O₁ o₁, ← e₂ O₂ o₂, ← g₁, ← g₂]
-  exact this
+  rwa [← e₁ O₁ o₁, ← e₂ O₂ o₂, ← g₁, ← g₂]
 
 theorem vac_foldr : ∀ (D : D7) (c : Comm D) (v : VCom c) (n : ℕ) (G : Fin n → GLoc v), c.Is → v.Is → GPin G → ∀ j, j + 1 + 1 ≤ D.R.m →
   ∀ (i : Fin n) (L : List (Fin n)), i ∉ L → ∀ Ψ, Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· ∈ v.gP) Ψ →

@@ -140,8 +140,7 @@ theorem pow_factor {n : ℕ} (hn : Odd n) (hm : ∀ y, fa y * fb (a * y) = ρ * 
   obtain ⟨k, hk⟩ := hn
   have h1 : ρ ^ (n * n) = 1 := by
     have := prod_pow hm hc n 1
-    rw [pc 1, pa 1, pb (a ^ n * 1), _root_.mul_one, _root_.mul_one] at this
-    exact this
+    rwa [pc 1, pa 1, pb (a ^ n * 1), _root_.mul_one, _root_.mul_one] at this
   have h2 : (ρ ^ 2) ^ n = 1 := by
     have := comm_pow hc n 1
     rw [pb (a * 1), pb 1, hp, _root_.mul_one, _root_.mul_one] at this
@@ -291,11 +290,9 @@ theorem trans_trivial (hL : L.IsLB) {θ : ThetaGrp A L k T} {n : ℕ}
       refine hn ?_
       have h2 : (fst T A ≫ θ.pt ^ n) * y = y := Over.OverMorphism.ext hq
       have h3 : fst T A ≫ θ.pt ^ n = 1 := mul_right_cancel (h2.trans (_root_.one_mul y).symm)
-      have h4 := congrArg (fun w => lift (𝟙 T) (1 : T ⟶ A) ≫ w) h3
-      simpa [MonObj.comp_one] using h4
+      simpa [MonObj.comp_one] using congrArg (fun w => lift (𝟙 T) (1 : T ⟶ A) ≫ w) h3
     · rw [hGe]; dsimp only; rw [hJn _ hq, gm_self hL _ z (hJ' _), one_zpow]
-  rw [q0, qn, inv_one, _root_.mul_one] at hprod
-  exact hprod
+  rwa [q0, qn, inv_one, _root_.mul_one] at hprod
 
 theorem tval_periodic (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB) {θ : ThetaGrp A L k T} {n : ℕ}
     (h : LB.Gen.Corr L _ _ _ _ (powGen A L k θ n) (LB.oneGen L)) (ξ : ThetaGrp A L k T) (σ : T' ⟶ T) {z : T'.left} {J}
@@ -423,9 +420,7 @@ namespace GlobalTheory
 theorem moduli_univ_symLift_mul : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (N : ℕ), Odd N → ∀ (T : Over Xo.X) (a b : T ⟶ Xo.univ.t.G) (Ua Ub Uab : ThetaGrp Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) T) (e : Γ(T.left, ⊤)ˣ), SymLift Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (N ^ 2) a Ua → SymLift Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (N ^ 2) b Ub → SymLift Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (N ^ 2) (a * b) Uab → WeilIs Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) a b e → ∃ r : Γ(T.left, ⊤)ˣ, r ^ 2 = e ∧ r ^ (N ^ 2) = 1 ∧ ∀ s s₁ s₂ s₃ : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) T), IsActOf Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) Ub s s₁ → IsActOf Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) Ua s₁ s₂ → IsActOf Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) Uab s s₃ → ∀ j, s₂.f j = liftFun Xo.univ.t.G _ (r : Γ(T.left, ⊤)) * s₃.f j := by
   intro hl E _ _ _ H Dw l Xo N hN T a b Ua Ub Uab e ha hb hab he
   have hP := GlobalTheory.moduli_univ_polAV E H Dw l Xo
-  have hL : Xo.univ.t.PP.L.IsLB := by
-    refine hP.2.2.2.2 (fun _ _ _ L _ => L.IsLB) fun P => ?_
-    exact P.isLB
+  have hL : Xo.univ.t.PP.L.IsLB := hP.2.2.2.2 (fun _ _ _ L _ => L.IsLB) fun P => P.isLB
   exact GlobalTheory.SymLiftMul.symLift_mul hl.globalFns hP.2.2.2.1 hL hN.pow ha hb hab he
 
 end GlobalTheory

@@ -86,8 +86,7 @@ lemma memLp_equiv {ε ε' : Fin n → Bool} (e : UJ ε' ≃ₜ* UJ ε) (F : UJ �
   change MemLp F p (muG ε) ↔ MemLp (F ∘ e) p (muG ε')
   rw [← hm, hc']
   constructor
-  · intro h
-    exact h.smul_measure hT
+  · exact fun h => h.smul_measure hT
   · intro h
     have h' := h.smul_measure (ENNReal.inv_ne_top.2 h0)
     rwa [smul_smul, ENNReal.inv_mul_cancel h0 hT, one_smul] at h'
@@ -145,8 +144,7 @@ lemma perm_UJ (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)) (g : Matrix (Fin n)
     g ∈ UJset (ε ∘ s) ↔ perm s g ∈ UJset ε := by
   simp only [UJset, Set.mem_ofPred_eq, inUJ]
   rw [perm_ct, perm_Jm ε s]
-  simp only [← map_mul]
-  exact (perm s).injective.eq_iff.symm
+  simpa only [← map_mul] using (perm s).injective.eq_iff.symm
 
 lemma perm_K (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)) (g : Matrix (Fin n) (Fin n) ℂ) :
     g ∈ Kset (ε ∘ s) ↔ perm s g ∈ Kset ε := by
@@ -187,9 +185,7 @@ def conj : Matrix (Fin n) (Fin n) ℂ →* Matrix (Fin n) (Fin n) ℂ where
   map_one' := FormF.map_star_one
   map_mul' := FormF.map_star_mul
 
-lemma conj_cont : Continuous (conj (n := n)) := by
-  show Continuous fun g : Matrix (Fin n) (Fin n) ℂ => g.map star
-  exact continuous_id.matrix_map continuous_star
+lemma conj_cont : Continuous (conj (n := n)) := continuous_id.matrix_map continuous_star
 
 theorem permGroup : ∀ (n : ℕ) (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)), (∀ g : Matrix (Fin n) (Fin n) ℂ, (g ∈ UJset (ε ∘ s) ↔ g.submatrix s.symm s.symm ∈ UJset ε) ∧ (g ∈ Kset (ε ∘ s) ↔ g.submatrix s.symm s.symm ∈ Kset ε) ∧ (inP (ε ∘ s) g ↔ inP ε (g.submatrix s.symm s.symm)) ∧ NormedSpace.exp (g.submatrix s.symm s.symm) = (NormedSpace.exp g).submatrix s.symm s.symm) ∧ ∀ (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (p : ENNReal), (MemLp (fun g : UJ ε => f (umat g)) p (muG ε) ↔ MemLp (fun g : UJ (ε ∘ s) => f ((umat g).submatrix s.symm s.symm)) p (muG (ε ∘ s))) ∧ (MemLp (fun g : UJ ε => f (umat g)) p (muG ε) ↔ MemLp (fun g : UJ ε => f ((umat g).map star)) p (muG ε)) := by
   intro n ε s
@@ -208,8 +204,7 @@ theorem permGroup : ∀ (n : ℕ) (ε : Fin n → Bool) (s : Equiv.Perm (Fin n))
       (hcont s.symm) (permM_symm s) (permM_symm' s) f p
     · rw [hpm]; exact (perm_UJ ε s g).1 hg
     · apply (perm_UJ ε s _).2
-      rw [← hpm, permM_symm']
-      exact hg
+      rwa [← hpm, permM_symm']
   · exact memLp_hom GlobalTheory.Dec.PermGroup.conj GlobalTheory.Dec.PermGroup.conj (fun g hg => FormF.UJ_star hg)
       (fun g hg => FormF.UJ_star hg) conj_cont conj_cont (fun g => FormF.map_star_star g)
       (fun g => FormF.map_star_star g) f p
@@ -257,8 +252,7 @@ lemma lt_iff {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)} (hs : ∀ a b, a < b
     · exact hab
     · exact absurd hlt (lt_irrefl _)
     · exact absurd (hs b a hab h.symm) (not_lt.mpr hlt.le)
-  · intro hab
-    exact hs a b hab h
+  · exact fun hab => hs a b hab h
 
 lemma mono_symm {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)} (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) :
     ∀ a b, a < b → (ε ∘ s) (s.symm a) = (ε ∘ s) (s.symm b) → s.symm a < s.symm b := by
@@ -335,8 +329,7 @@ lemma wt_perm {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)) {σ : Matrix (Fin n
   have key := h (θ ∘ s.symm) hmem
   have hsum : (∑ a, μ a * (θ ∘ s.symm) a) = ∑ a, (μ ∘ s) a * θ a :=
     Fintype.sum_equiv s.symm _ _ (fun a => by simp)
-  rw [← hsum]
-  exact key
+  rwa [← hsum]
 
 lemma stable_perm {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
     (S : Submodule ℂ H) :
@@ -346,8 +339,7 @@ lemma stable_perm {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)) (σ : Matrix (F
   · intro H' g hg v hv
     have := H' (g.submatrix s s) (GlobalTheory.Dec.FormF.K_perm s hg) v hv
     simpa [Matrix.submatrix_submatrix] using this
-  · intro H' g hg v hv
-    exact H' _ (PermK.K_back s hg) v hv
+  · exact fun H' g hg v hv => H' _ (PermK.K_back s hg) v hv
 
 lemma ktype_perm {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)} (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b)
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {μ : Fin n → ℝ} {S : Submodule ℂ H} (h : IsKTypeOf ε σ μ S) :
@@ -377,8 +369,7 @@ lemma sqIntIrr_perm {ε : Fin n → Bool} (s : Equiv.Perm (Fin n))
     beta_reduce
     rw [← Matrix.submatrix_mul_equiv _ _ _ s.symm _]
     exact hmul _ (PermK.UJ_back s ha) _ (PermK.UJ_back s hb)
-  · intro g hg w
-    exact hiso _ (PermK.UJ_back s hg) w
+  · exact fun g hg w => hiso _ (PermK.UJ_back s hg) w
   · intro w
     exact (hcont w).comp (continuous_id.matrix_submatrix _ _).continuousOn (fun g hg => PermK.UJ_back s hg)
   · intro S hS hst
@@ -401,8 +392,7 @@ private lemma eword_comp_perm_submatrix (ε : Fin n → Bool) (s : Equiv.Perm (F
     rw [ih]
     have h := GlobalTheory.Dec.FormF.Eab_perm (ε ∘ s) s.symm (s p.1) (s p.2)
       (Formalism.REAL.Eword ε (w.map fun p => (s p.1, s p.2)) f) g
-    rw [PermK.comp_symm, Equiv.symm_apply_apply, Equiv.symm_apply_apply] at h
-    exact h
+    rwa [PermK.comp_symm, Equiv.symm_apply_apply, Equiv.symm_apply_apply] at h
 
 private lemma gelf_comp_perm_submatrix (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (m : ℕ)
     (g : Matrix (Fin n) (Fin n) ℂ) :
@@ -426,13 +416,11 @@ private lemma smoothOnG_comp_perm_submatrix {ε : Fin n → Bool} (s : Equiv.Per
   have hL : ∀ x, L x = x.submatrix s.symm s.symm := fun x => rfl
   refine ⟨L ⁻¹' U, fun x => F (L x), hU.preimage L.continuous, ?_, ?_, ?_⟩
   · show L g₀ ∈ U
-    rw [hL]
-    exact hgU
+    rwa [hL]
   · exact hF.comp_continuousLinearMap L
   · intro x hx hxJ
     have hx' : x.submatrix s.symm s.symm ∈ U := by
-      rw [← hL]
-      exact hx
+      rwa [← hL]
     beta_reduce
     rw [hL]
     exact hfF _ hx' (PermK.UJ_back s hxJ)

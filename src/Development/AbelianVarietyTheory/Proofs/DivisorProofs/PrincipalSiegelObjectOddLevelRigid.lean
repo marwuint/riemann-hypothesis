@@ -191,8 +191,7 @@ theorem constSt : ConstSt := by
       have hm' : f z ∈ nonzeroLocus (s i) ⊓ (powOver A L ⊤ N).U (fun _ => J (f ≫ w)) := ⟨hi, hm⟩
       have := congrArg (gs f z _) (hr j (fun _ => J (f ≫ w)))
       rw [gs_mul f z _ hm', gs_res f z _ hm', gs_res f z _ hm', gs_res f z _ hm'] at this
-      rw [germPull_apply]
-      exact this
+      rwa [germPull_apply]
     choose σ hσ using fun a : Fin n =>
       exists_pull_monomial L hL w N (s i) (s j) t f ψ.left hf.symm z J hJ a (a.2.le.trans hnt)
     obtain ⟨c, hc, h0⟩ := hn _ _ hT (fun a => GlobalTheory.EffBound.tensSec ε (σ a))
@@ -325,8 +324,7 @@ theorem cube_pic_of_gen (L : LB B.left) (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (The
   have c7 : ({0, 1, 2} : Finset (Fin 3)).card = 3 := rfl
   rw [c0, c1, c2, c3, c4, c5, c6, c7] at h2
   norm_num at h2
-  rw [← sub_eq_zero]
-  rw [← h2]
+  rw [← sub_eq_zero, ← h2]
   abel
 
 end
@@ -644,13 +642,11 @@ theorem eq_of_sRelBy : ∀ (h n n' d' : ℕ) (B B' : Type) [CommRing B] [CommRin
       fun Ω _ _ x y hy => by
         have hy₁ : pushHom hp (Over.mk x) y ^ n = 1 := by rw [← map_pow, hy, map_one]
         have e₁ := eq_on_torsion b.ζ.isUnit c g _ l l' Ω (x ≫ j) _ hy₁
-        rw [← Category.assoc, ← Category.assoc]
-        exact e₁
+        rwa [← Category.assoc, ← Category.assoc]
     refine ⟨_, _, j, _, _, (default : PrimeSpectrum K), ?_, hp.1, ?_⟩
     · exact (Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply t _)
     · apply g'.1.hom_ext
-      · rw [Category.assoc, e]
-        exact e'
+      · rwa [Category.assoc, e]
       · rw [Category.assoc, Over.w]
   rw [← e, key, Over.id_left, Category.id_comp]
 

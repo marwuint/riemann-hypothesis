@@ -229,8 +229,7 @@ theorem series_theta_vacuum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ
   have hβ : ∀ (x : WO S T) (v : RW T S), ψ (symplOH S T x (iotaW σ T S v)) =
       Complex.exp (-(Real.pi * Complex.I) * (omO S T (piW θ T S x) v : ℝ)) := fun x v => by
     have e := GlobalTheory.T.stdCharacter_halfSymplecticForm_realPoint D θ ψ hθ hψ S T x (iotaW σ T S v) (Or.inr (hσ.real_iota T S v))
-    rw [hσ.pi_iota] at e
-    exact e
+    rwa [hσ.pi_iota] at e
   have fl : ∀ u ∈ latF S T ΛS ΛT, ∀ x : WO S T, phase ψ w u * (ψ (symplOH S T x u) *
       serO ψ θ σ S T sS sT ΛS ΛT w a (x + u)) = serO ψ θ σ S T sS sT ΛS ΛT w a x := fun u hu x =>
     series_inv_scalar (G := WO S T) (β := fun x y => ψ (symplOH S T x y)) hl hr hd hβ a u (piW_of_inf θ u.fin) _
@@ -296,8 +295,7 @@ theorem series_theta_vacuum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ
     rw [piW_of_inf θ h, map_zero, sub_zero] at e
     funext x
     have e2 := fl _ (nsmul_mem hl 2) x
-    rw [phase_two hA w hl, one_mul, ← e] at e2
-    exact e2
+    rwa [phase_two hA w hl, one_mul, ← e] at e2
   · exact ((smooth_iff_sm_and_real_lines D θ σ hσ T S).1 _).2 fs k L hL hL0 x
   · funext x
     let v : RW T S := Pi.single τ z

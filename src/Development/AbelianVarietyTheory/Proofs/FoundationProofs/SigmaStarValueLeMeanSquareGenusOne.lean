@@ -149,10 +149,8 @@ theorem sup_le_mean (Λ : AddSubgroup ℂ) (a v : ℝ) (F : Set ℂ) (g : ℂ �
     refine hF.preimage_of_equiv (f := φ) (e := fun y : Λ => (⟨φ.symm y, (hA _).2 (by simp)⟩ : A))
       ⟨hmp.measurable.aemeasurable, ?_⟩ ⟨?_, ?_⟩ ?_
     · rw [hmp.map_eq]; exact Measure.smul_absolutelyContinuous
-    · intro x y h
-      exact Subtype.ext (φ.symm.injective (congrArg Subtype.val h))
-    · intro x
-      exact ⟨⟨φ x, x.2⟩, Subtype.ext (by simp)⟩
+    · exact fun x y h => Subtype.ext (φ.symm.injective (congrArg Subtype.val h))
+    · exact fun x => ⟨⟨φ x, x.2⟩, Subtype.ext (by simp)⟩
     · intro y x
       show φ (φ.symm y + x) = (y : ℂ) + φ x
       simp
@@ -234,8 +232,7 @@ theorem lattice_sup (Λ : AddSubgroup ℂ)
     ENNReal.toReal_ofReal hpos.le, smul_eq_mul]
   intro γ z
   have := hper γ γ.2 z
-  rw [add_comm] at this
-  exact this
+  rwa [add_comm] at this
 
 theorem value_le_mean_square : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ t, ‖U1 (lamOf D cc δ) t (sgStar (lamOf D cc δ)) 0‖ ^ 2 ≤ 3 * (2 * D.host.rdE + 1) * nrm1Sq (lamOf D cc δ) (sgStar (lamOf D cc δ)) := by
   intro D hD cc δ hc t

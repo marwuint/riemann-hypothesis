@@ -301,8 +301,7 @@ theorem finite_residue [IsLocalHom f] {K : Type} [Field K] [Algebra (ResidueFiel
     obtain ⟨a, ha, c, hc, hcm, hca⟩ := hb r
     have h1 : ev c * ev r = ev a := by
       have := hker _ hca
-      rw [map_sub, map_mul, sub_eq_zero] at this
-      exact this
+      rwa [map_sub, map_mul, sub_eq_zero] at this
     have hc0 : ev c ≠ 0 := fun h0 => hcm (by rw [← hk]; exact RingHom.mem_ker.mpr h0)
     have h2 : ev r = ev a * (ev c)⁻¹ := by rw [← h1]; field_simp
     rw [hι, h2]
@@ -359,8 +358,7 @@ theorem exists_geomPoint {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}
   have hev0 : ∀ a ∈ maximalIdeal (S.presheaf.stalk (ξ (closedPoint R))), (ev.comp (Scheme.stalkClosedPointTo ξ).hom) a = 0 := fun a ha => by
     rw [← hcomap] at ha
     show ev ((Scheme.stalkClosedPointTo ξ).hom a) = 0
-    rw [← RingHom.mem_ker, hker]
-    exact ha
+    rwa [← RingHom.mem_ker, hker]
   let ψ : ResidueField (S.presheaf.stalk (ξ (closedPoint R))) →+* AlgebraicClosure (FractionRing (R ⧸ p.asIdeal)) := Ideal.Quotient.lift (maximalIdeal (S.presheaf.stalk (ξ (closedPoint R)))) (ev.comp (Scheme.stalkClosedPointTo ξ).hom) hev0
   letI alg : Algebra (ResidueField (S.presheaf.stalk (ξ (closedPoint R)))) (AlgebraicClosure (FractionRing (R ⧸ p.asIdeal))) := ψ.toAlgebra
   let k₀ : Subfield (AlgebraicClosure (FractionRing (R ⧸ p.asIdeal))) := (algebraicClosure (ResidueField (S.presheaf.stalk (ξ (closedPoint R)))) (AlgebraicClosure (FractionRing (R ⧸ p.asIdeal)))).toSubfield
@@ -414,8 +412,7 @@ theorem eq_spMap_of_injective {F R K : Type} [CommRing F] [CommRing R] [CommRing
   obtain ⟨g, rfl⟩ := Spec.map_surjective σ
   have h' : g ≫ CommRingCat.ofHom u = CommRingCat.ofHom b ≫ CommRingCat.ofHom u := by
     apply Spec.map_injective
-    rw [Spec.map_comp, Spec.map_comp]
-    exact h
+    rwa [Spec.map_comp, Spec.map_comp]
   show Spec.map g = Spec.map (CommRingCat.ofHom b)
   congr 1
   ext x
@@ -503,8 +500,7 @@ theorem quasiFinite_of_pointRigid {F R : Type} [CommRing F] [CommRing R] [IsLoca
       refine ⟨a, ha, c, hc, ?_, ?_⟩
       · rw [← residue_eq_zero_iff, hce]
         exact hyu.ne_zero
-      · rw [← residue_eq_zero_iff, map_sub, map_mul, hce, hae, mul_comm, sub_eq_zero]
-        exact hspec
+      · rwa [← residue_eq_zero_iff, map_sub, map_mul, hce, hae, mul_comm, sub_eq_zero]
     exact finite_residue (Scheme.stalkClosedPointTo ξ).hom ev hker hev (range_subset_stalk ξ σ b hb) hb'
       (fun g _ => h2 g)
 
@@ -629,8 +625,7 @@ theorem surjective_of_unique_injective_localHom : ∀ (B R : Type) [CommRing B] 
     have hfi : f.IsIntegral := by
       letI : Algebra R C := f.toAlgebra
       haveI : IsScalarTower B R C := IsScalarTower.of_algebraMap_eq' hcomm.symm
-      intro c
-      exact (integralClosure.isIntegral c).tower_top
+      exact fun c => (integralClosure.isIntegral c).tower_top
     exact ⟨f, hfinj, RingHom.IsIntegral.isLocalHom hfi hfinj, hcomm, fun r => rfl⟩
   choose f hfi hfl hfc hfv using key
   have hemb : ∀ σ τ : M →ₐ[K] Ω, σ = τ := by
@@ -744,8 +739,7 @@ theorem exists_fracMap {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDo
       CommRingCat.ofHom ψ ≫ CommRingCat.ofHom (algebraMap B (FractionRing B)) := by
     rw [← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, e0]
   have e2 := congrArg Spec.map e1
-  rw [Spec.map_comp, Spec.map_comp] at e2
-  exact e2
+  rwa [Spec.map_comp, Spec.map_comp] at e2
 
 theorem tautB_isEtaleCompletion : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), 1 ≤ Dw.p + Dw.q → IsPolFan H.bar (min Dw.p Dw.q) φ → NoSelfInt H.bar (min Dw.p Dw.q) φ → ∀ {Z : Scheme.{0}} (zs : Z ⟶ Sp c.F) (i : Xo.XF c ⟶ Z) (OZ : LB Z) (N d : ℕ) (J : Z.IdealSheafData) {S : Scheme.{0}} (π : S ⟶ Z) (j : Xo.XF c ⟶ S) [IsOpenImmersion j] (BD : EffCartierData S), GlobalTheory.UPoinc.UPoinOnX Xo c φ zs i OZ N d J π j BD → SepB Xo c φ j → ∀ {k : Type} [Field k] {m e : ℕ} (C : MonoFam Xo c φ (ChartRing k m e)), IsTautB C → ∀ ξ : Sp (ChartRing k m e) ⟶ S, C.y ≫ j = jK _ ≫ ξ → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom := by
   intro E _ _ _ H Dw l Xo c φ hpq hpf hns Z zs i OZ N d J S π j _ BD hU hSep k _ m e C hT ξ hξ
@@ -794,11 +788,9 @@ theorem tautB_isEtaleCompletion : ∀ {E : Type} [Field E] [NumberField E] [IsCM
       show Ideal.comap ψ P = Ideal.comap ψ (maximalIdeal (ChartRing k m e))
       rw [hc]
       refine le_antisymm ?_ (le_maximalIdeal (Ideal.comap_ne_top _ (maximalIdeal.isMaximal _).ne_top))
-      intro a ha
-      exact map_nonunit ψ a ha
+      exact fun a ha => map_nonunit ψ a ha
     have hP' : P = maximalIdeal (ChartRing k m e) := congrArg PrimeSpectrum.asIdeal hq
-    rw [hP']
-    exact hr
+    rwa [hP']
   have hinj : ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] [IsNoetherianRing R']
       [IsIntegrallyClosed R'] [CharZero R'], IsAdicComplete (maximalIdeal R') R' →
       ∀ f g : ChartRing k m e →+* R', Function.Injective f → Function.Injective g → IsLocalHom f → IsLocalHom g →

@@ -418,8 +418,7 @@ theorem fnT_iff {P : PolAV (Sp ℂ)} (u : HolUnif P.A P.L g) (k : ℕ) (t : LB.S
     exact h i z ((exAt_mem_chart_iff u basePt _ _ z).1 hj)
   · intro h i z hi
     have := h (fun _ => i) z ((exAt_mem_chart_iff u basePt _ _ z).2 hi)
-    rw [zpow_natCast] at this
-    exact this
+    rwa [zpow_natCast] at this
 
 variable {τ : Matrix (Fin g) (Fin g) ℂ} {a b : Fin g → ℂ}
 
@@ -615,8 +614,7 @@ theorem le_sec {A : Over (Sp ℂ)} (L : LB A.left) (k : ℤ) (i : L.ι) :
   intro p hp
   refine Set.mem_iInter.2 fun _ => ?_
   change ((sec A).left ≫ (snd (baseOver (Sp ℂ)) A).left) p ∈ L.U i
-  rw [sec_snd]
-  exact hp
+  rwa [sec_snd]
 
 theorem valR_epsLift : ∀ (g : ℕ) (P : PolAV (Sp ℂ)) (u : HolUnif P.A P.L g) (k : ℕ) (t : LB.Sec (LPow P.A P.L (k : ℤ) (baseOver (Sp ℂ)))) (f : (Fin g → ℂ) → ℂ) (v : epsR ℂ ⟶ P.A) (W : Fin g → ℂ) (i : P.L.ι), FnT u k t f → Differentiable ℂ f → IsTangent v → u.IsDiff W v → ⊤ ≤ (eSec P.A) ⁻¹ᵁ P.L.U i → valR (epsLift v) ((LPow P.A P.L (k : ℤ) (baseOver (Sp ℂ))).U fun _ => i) (t.f fun _ => i) = TrivSqZeroExt.inl (u.fr i 0 ^ k) * (TrivSqZeroExt.inl (f 0) + TrivSqZeroExt.inr (fderiv ℂ f 0 W + (k * fderiv ℂ (u.fr i) 0 W / u.fr i 0) * f 0)) := by
   intro g P u k t f v W i hf hd hv hW hi
@@ -748,8 +746,7 @@ theorem powerSectionFunctionInFrame_of_inverseImage {P : PolAV (Sp ℂ)} {g : �
       (LPow P.A P.L ((1 : ℕ) : ℤ) (baseOver (Sp ℂ))).U (fun _ => i) := fun p hp =>
     val_le P.A P.L (T := baseOver (Sp ℂ)) (u.ex z) (fun _ => i) (Set.mem_iInter.2 fun _ => hz hp)
   rw [H i (lpow_le P _ _ fun _ => i), pow_one, ← h i z hz, ← valR_eq_valAt']
-  refine (valR_appLE' _ _ _ _ _ hx _).trans ?_
-  exact congrArg (fun y => valR y (P.L.U i) (s.f i)) e
+  exact (valR_appLE' _ _ _ _ _ hx _).trans (congrArg (fun y => valR y (P.L.U i) (s.f i)) e)
 
 theorem eq_of_fnT {P : PolAV (Sp ℂ)} {g : ℕ} (u : HolUnif P.A P.L g) (k : ℕ)
     (t t' : LB.Sec (LPow P.A P.L (k : ℤ) (baseOver (Sp ℂ)))) (f) (h : FnT u k t f) (h' : FnT u k t' f) (j) :
@@ -765,15 +762,13 @@ theorem eq_of_fnT {P : PolAV (Sp ℂ)} {g : ℕ} (u : HolUnif P.A P.L g) (k : �
   have e : ptSecT P.A (T := baseOver (Sp ℂ)) (u.ex z) = x' := by
     apply CartesianMonoidalCategory.hom_ext
     · rw [ptSecT, lift_fst]
-      refine Over.OverMorphism.ext ?_
-      exact ((Category.comp_id _).symm.trans (Over.w (x' ≫ fst _ _))).symm
+      exact Over.OverMorphism.ext ((Category.comp_id _).symm.trans (Over.w (x' ≫ fst _ _))).symm
     · rw [ptSecT, lift_snd]; exact hz
   obtain rfl : (ptSecT P.A (T := baseOver (Sp ℂ)) (u.ex z)).left = x := congrArg (·.left) e
   have hz' : ⊤ ≤ (u.ex z).left ⁻¹ᵁ P.L.U i := by
     intro p hp
     have := lpow_le P _ (k : ℤ) (fun _ => i) (hi hp)
-    rw [← ptSecT_snd' P.A (T := baseOver (Sp ℂ)) (u.ex z)]
-    exact this
+    rwa [← ptSecT_snd' P.A (T := baseOver (Sp ℂ)) (u.ex z)]
   rw [← valR_eq_valAt', ← valR_eq_valAt']
   exact (h i z hz').trans (h' i z hz').symm
 
@@ -865,9 +860,7 @@ theorem thJet_of_normalForm : ∀ (g : ℕ) (x : KeyIn ℂ) (hg : x.P.g = g) (u 
     have h1 := GlobalTheory.T.sectionValue_tangentLift_eq_firstJet g x.P u (m ^ 2) (t i) _ (x.v (j.cast hg.symm)) (W j) i₀ hf (hd.const_mul c)
       (x.basis.1 _) (hdiff j) hi₀
     have h2 : u.fr i₀ 0 = valR (𝟙 (Sp ℂ)) ((x.P.L.pull (eSec x.P.A)).U fun _ => i₀) (x.rig.s fun _ => i₀).val := by
-      refine hrig (fun _ => i₀) ?_
-      intro q hq
-      exact Set.mem_iInter.2 fun _ => hi₀ hq
+      exact hrig (fun _ => i₀) (fun q hq => Set.mem_iInter.2 fun _ => hi₀ hq)
     refine h1.trans ?_
     rw [← h2, fderiv_const_mul (hd 0)]
     congr 3

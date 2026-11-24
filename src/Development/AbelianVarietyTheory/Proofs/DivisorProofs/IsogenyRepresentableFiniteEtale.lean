@@ -140,8 +140,7 @@ private theorem clopen_forall {S : Scheme.{0}} (X F : Over S) [IsFinite F.hom] [
         rfl
     apply hz
     have hmem := H T' t a ⟨q, rfl⟩
-    rw [hl, hq2] at hmem
-    exact hmem
+    rwa [hl, hq2] at hmem
   · intro H T' t a
     rintro _ ⟨y, rfl⟩
     by_contra hy
@@ -205,8 +204,7 @@ theorem UpperTheory.clopenCond_of_isClosed_subgroupLocus :
   · intro H
     refine ⟨?_, ?_⟩
     · have := (H T (𝟙 T)).1
-      rw [k0, Category.id_comp] at this
-      exact this
+      rwa [k0, Category.id_comp] at this
     · intro T' t c
       rintro _ ⟨y, rfl⟩
       change (lift (t ≫ h) c).left y ∈ Ws
@@ -247,13 +245,11 @@ theorem UpperTheory.clopenCond_of_isClosed_subgroupLocus :
             rw [pt]
             exact (hVw w).2)
         obtain ⟨y', hy'⟩ : y ∈ Set.range V.ι := by
-          rw [Scheme.Opens.range_ι]
-          exact hyV
+          rwa [Scheme.Opens.range_ι]
         have := hA ⟨y', rfl⟩
         rw [eq3, pt] at this
         change m3.left ((lift (t ≫ h) c).left y) ∈ (U : Set _)
-        rw [← pt, ← hy']
-        exact this
+        rwa [← pt, ← hy']
       · left
         exact hy
   · rintro ⟨H1, H2⟩ T' t
@@ -626,14 +622,12 @@ private theorem glue {C A₁ A₂ : Scheme.{0}} (j₁ : A₁ ⟶ C) (j₂ : A₂
     show j₁ a ∈ j₁ '' (V₁ : Set A₁) ∪ j₂ '' (V₂ : Set A₂) ↔ a ∈ V₁
     constructor
     · rintro (⟨a', ha', he⟩ | ⟨b, hb, he⟩)
-      · rw [← j₁.isOpenEmbedding.injective he]
-        exact ha'
+      · rwa [← j₁.isOpenEmbedding.injective he]
       · exfalso
         have hm : j₁ a ∈ Set.range j₁ := ⟨a, rfl⟩
         rw [hr] at hm
         exact hm ⟨b, he⟩
-    · intro ha
-      exact Or.inl ⟨a, ha, rfl⟩
+    · exact fun ha => Or.inl ⟨a, ha, rfl⟩
   · ext b
     show j₂ b ∈ j₁ '' (V₁ : Set A₁) ∪ j₂ '' (V₂ : Set A₂) ↔ b ∈ V₂
     constructor
@@ -642,10 +636,8 @@ private theorem glue {C A₁ A₂ : Scheme.{0}} (j₁ : A₁ ⟶ C) (j₂ : A₂
         have hm : j₂ b ∈ Set.range j₁ := ⟨a, he⟩
         rw [hr] at hm
         exact hm ⟨b, rfl⟩
-      · rw [← j₂.isOpenEmbedding.injective he]
-        exact hb'
-    · intro hb
-      exact Or.inr ⟨b, hb, rfl⟩
+      · rwa [← j₂.isOpenEmbedding.injective he]
+    · exact fun hb => Or.inr ⟨b, hb, rfl⟩
 
 end UpperTheory.ClopSum
 
@@ -696,10 +688,8 @@ theorem UpperTheory.exists_clopRep_of_disjoint_open_cover :
   refine ⟨lift y₁ y₂, ?_, ?_⟩
   · show ((lift y₁ y₂) ▷ G).left ⁻¹ᵁ U = V
     apply UpperTheory.ClopSum.opens_ext (T ◁ i₁).left (T ◁ i₂).left (rr T)
-    · rw [c1, lift_fst]
-      exact hy₁
-    · rw [c2, lift_snd]
-      exact hy₂
+    · rwa [c1, lift_fst]
+    · rwa [c2, lift_snd]
   · intro y hy
     have hy' : (y ▷ G).left ⁻¹ᵁ U = V := hy
     apply CartesianMonoidalCategory.hom_ext
@@ -1051,8 +1041,7 @@ private lemma exists_whisker {T T' G : Over S} (y : T' ⟶ T) (t : T'.left)
   obtain ⟨z, hz, -⟩ := Scheme.Pullback.exists_preimage_pullback
     (f := (fst T G).left) (g := y.left) x t h.symm
   refine ⟨(sq y).isoPullback.inv z, ?_⟩
-  rw [← Scheme.Hom.comp_apply, IsPullback.isoPullback_inv_fst]
-  exact hz
+  rwa [← Scheme.Hom.comp_apply, IsPullback.isoPullback_inv_fst]
 
 private lemma opens_ext {ι : Type} {T G : Over S} {A : ι → Over S} (j : ∀ i, A i ⟶ T)
     (hj : ∀ t : T.left, ∃ i a, (j i).left a = t) (V V' : (T ⊗ G).left.Opens)
@@ -1104,8 +1093,7 @@ private lemma preim_sumU (G : Over S) (Y : ℕ → Over S) (U : ∀ r, (Y r ⊗ 
     rw [fst_whisker, fst_whisker] at hfst
     obtain rfl := sumι_disj Y hfst
     rwa [← (sumι Y s ▷ G).left.isOpenEmbedding.injective hwz]
-  · intro hz
-    exact ⟨r, z, hz, rfl⟩
+  · exact fun hz => ⟨r, z, hz, rfl⟩
 
 private lemma sum_cover (G : Over S) (Y : ℕ → Over S) (x : (sumObj Y ⊗ G).left) :
     ∃ r, ∃ a : (Y r ⊗ G).left, (sumι Y r ▷ G).left a = x := by
@@ -1129,8 +1117,7 @@ private lemma isClosed_sumU (G : Over S) (Y : ℕ → Over S) (U : ∀ r, (Y r �
     · rintro ⟨r, a, ha, rfl⟩ hx
       refine ha ?_
       have : a ∈ (sumι Y r ▷ G).left ⁻¹ᵁ sumU G Y U := hx
-      rw [preim_sumU] at this
-      exact this
+      rwa [preim_sumU] at this
   rw [e]
   exact isOpen_iUnion fun r =>
     (sumι Y r ▷ G).left.isOpenEmbedding.isOpenMap _ (hU r).isOpen_compl
@@ -1397,8 +1384,7 @@ private theorem core {S : Scheme.{0}} [IsLocallyNoetherian S] (A G : Over S) [Gr
     intro T' t
     have hp := (hP T' (t ≫ i₀)).2 ((hsub T' (t ≫ i₀)).2 ⟨t, rfl⟩) T' (𝟙 T')
     simp only [Category.id_comp] at hp
-    simp only [hlift]
-    exact hp
+    simpa only [hlift] using hp
   refine ⟨Y, hYf, hYe, ?_⟩
   intro A₀ _ _ φ₀ hpb
   obtain ⟨H, instH, j, hjm, hjmono, hHf, hHe, hj⟩ :=
@@ -1427,8 +1413,7 @@ private theorem core {S : Scheme.{0}} [IsLocallyNoetherian S] (A G : Over S) [Gr
           ext
           rw [Over.comp_left, Over.comp_left, ha', hgA]
         exact (cancel_mono inc).1 e'
-      rw [← e]
-      exact hr
+      rwa [← e]
   refine ⟨H, instH, j, hjm, hjmono, hHf, hHe, ?_, ?_⟩
   · apply UpperTheory.SubRep.pull_ext hpb
     have e1 := UpperTheory.SubRep.pull_pow hpb (Over.mk (H.hom ≫ Y.hom)) H.hom rfl (g := j)
@@ -1501,8 +1486,7 @@ private theorem core {S : Scheme.{0}} [IsLocallyNoetherian S] (A G : Over S) [Gr
             (a := Over.homMk (g.left ≫ φ₁) w) rfl k
           have e2 := UpperTheory.SubRep.pull_one hpb1 (Over.mk (T'.hom ≫ x)) T'.hom rfl
           refine e1.symm.trans ?_
-          rw [htk]
-          exact e2
+          rwa [htk]
         obtain ⟨b, hb⟩ := htor _ _ ha₁k
         have hb' : g.left ≫ φ₁ = b.left ≫ inc.left := by
           rw [← Over.comp_left, hb]

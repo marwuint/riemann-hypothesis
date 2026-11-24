@@ -535,8 +535,7 @@ theorem eq_zero_of_stalkOf {S : Type} [CommRing S] (w : S) (h : ∀ z : Sp S, st
     apply TopCat.Presheaf.section_ext (Sp S).sheaf ⊤
     intro x hx
     exact (h x).trans (map_zero _).symm
-  have h2 := congrArg (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom h1
-  simpa using h2
+  simpa using congrArg (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom h1
 
 end GlobalTheory.Mum.OrigVan
 
@@ -778,9 +777,7 @@ theorem exists_unit_origin_sum : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
       have hu := (Units.isUnit ((val T.U.LG.rig (idW W) (cpt W) J') ^ k))
       rw [Units.val_pow_eq_pow_val] at hu
       have := hu.mul_right_cancel this
-      apply add_left_cancel (a := T.φ s)
-      apply stalkOf_injective (cpt W)
-      exact this
+      exact add_left_cancel (a := T.φ s) (stalkOf_injective (cpt W) this)
     have h0 : c 0 = 0 := by
       have hm : c 0 ∈ ⨅ n : ℕ, maximalIdeal W ^ n := Submodule.mem_iInf _ |>.2 fun n => by
         rcases n with _ | n
@@ -921,8 +918,7 @@ theorem GlobalTheory.Mum.UnitGen.value_unit_generic : ∀ (R : Type) [CommRing R
     have h1 : p ≫ T.G.hom = spMap (algebraMap W (FractionRing W)) := by
       rw [hp, Category.assoc, hu, Category.comp_id]
     have h2 := gs_pull p T.G.hom g ⊤ trivial ((Scheme.ΓSpecIso (CommRingCat.of W)).inv.hom a)
-    rw [h1, gs_spMap_top, Iso.inv_hom_id_apply] at h2
-    exact h2
+    rwa [h1, gs_spMap_top, Iso.inv_hom_id_apply] at h2
 
   have hrp : (jK W ≫ T.ξ) ≫ eSec C.G = p ≫ T.β := by rw [hp, Category.assoc, Category.assoc, hU]
   have hp'i₀ : p' g ∈ LB.wchart C.P.L.L (fun _ : Fin 1 => C.α) (fun _ => i₀) := Set.mem_iInter.2 fun _ => by
@@ -1039,8 +1035,7 @@ theorem exists_norm_const : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRin
       (fun e => e.elim) (fun e => e.elim)
     have e1 := h1 W T a σ hgen J hJ
     rw [hε J hJ, ← _root_.mul_assoc, ← map_mul] at e1
-    refine ⟨ε, stalkOf_injective (cpt W) (mul_right_cancel₀ ?_ e1)⟩
-    exact pow_ne_zero _ (Units.ne_zero _)
+    exact ⟨ε, stalkOf_injective (cpt W) (mul_right_cancel₀ (pow_ne_zero _ (Units.ne_zero _)) e1)⟩
   by_cases hx : x = 0
   · refine ⟨0, 1, one_ne_zero, fun W _ _ _ T a b ha hb hE => ?_⟩
     exfalso
@@ -1371,8 +1366,7 @@ theorem scal_cancel {W : Type} [CommRing W] [IsDomain W] {Y : Scheme.{0}} (f : Y
   have hreg := Module.Flat.isSMulRegular_of_nonZeroDivisors (M := Y.presheaf.stalk y) (mem_nonZeroDivisors_of_ne_zero he0)
   apply hreg
   simp only [Algebra.smul_def, RingHom.algebraMap_toAlgebra]
-  rw [← e1]
-  exact h
+  rwa [← e1]
 
 end GlobalTheory.Mum.CancelField
 

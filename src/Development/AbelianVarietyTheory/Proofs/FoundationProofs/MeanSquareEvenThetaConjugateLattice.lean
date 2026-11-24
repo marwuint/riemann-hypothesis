@@ -58,8 +58,7 @@ theorem mem_conj (Λ : AddSubgroup ℂ) (z : ℂ) :
   constructor
   · rintro ⟨y, hy, rfl⟩
     simpa using hy
-  · intro h
-    exact ⟨_, h, by simp⟩
+  · exact fun h => ⟨_, h, by simp⟩
 
 theorem area_conj (Λ : AddSubgroup ℂ) : area (Λ.map (starRingEnd ℂ).toAddMonoidHom) = area Λ := by
   unfold area
@@ -107,8 +106,7 @@ theorem sgStar_conj (Λ : AddSubgroup ℂ)
       ((starRingEnd ℂ) (deriv (sgStar Λ) ((starRingEnd ℂ) z))) z := by
     intro z
     have := (hd ((starRingEnd ℂ) z)).hasDerivAt.conj_conj
-    rw [Complex.conj_conj] at this
-    exact this
+    rwa [Complex.conj_conj] at this
   funext z
   have := huniq _ (fun z => (hder z).differentiableAt) (by
     intro ω hω z
@@ -175,10 +173,8 @@ theorem nrm1Sq_th0_map_conj_eq : ∀ (Λ : AddSubgroup ℂ), (∃ w₁ w₂ : �
     refine hF'.preimage_of_equiv (f := starRingEnd ℂ)
       (e := fun y => (⟨(starRingEnd ℂ) y, (mem_conj Λ _).1 y.2⟩ : Λ))
       hmp.quasiMeasurePreserving ⟨?_, ?_⟩ ?_
-    · intro x y h
-      exact Subtype.ext (star_injective (congrArg Subtype.val h))
-    · intro x
-      exact ⟨⟨(starRingEnd ℂ) x, (mem_conj Λ _).2 (by simp)⟩, Subtype.ext (by simp)⟩
+    · exact fun x y h => Subtype.ext (star_injective (congrArg Subtype.val h))
+    · exact fun x => ⟨⟨(starRingEnd ℂ) x, (mem_conj Λ _).2 (by simp)⟩, Subtype.ext (by simp)⟩
     · intro y x
       show (starRingEnd ℂ) ((starRingEnd ℂ) y + x) = (y : ℂ) + (starRingEnd ℂ) x
       simp

@@ -296,8 +296,7 @@ theorem GlobalTheory.kerClopen_geom : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj 
   generalize r ⟨q a, a, rfl⟩ = a₀
   intro hc this
   subst hc
-  rw [hP, hQ]
-  exact this
+  rwa [hP, hQ]
 end -- clump:auto
 end -- clump:auto
 end -- clump:auto
@@ -393,8 +392,7 @@ theorem onto_tors_iff : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [C
   let B := Module.Free.chooseBasis ℤ D.La
   let ev' : (Module.Free.ChooseBasisIndex ℤ D.La → ℤ) → (Over.mk y ⟶ o.A) := fun a => I.ev M (B.equivFun.symm a)
   have hadd' : ∀ a c, ev' (a + c) = ev' a * ev' c := fun a c => by
-    simp only [ev', map_add (f := _)]
-    exact I.add M _ _
+    simpa only [ev', map_add (f := _)] using I.add M _ _
   have hpow' : ∀ a, ev' a ^ M = 1 := fun a => (I.onto M hM hcop _).2 ⟨_, rfl⟩
   have hker' : ∀ a, ev' a = 1 ↔ ∃ c, a = M • c := fun a => by
     simp only [ev']
@@ -569,8 +567,7 @@ theorem weil_locus_clopen : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type
       · intro E β' z hβ' hz
         obtain rfl : β = β' := spMap_inj' (hβ.symm.trans hβ')
         obtain rfl : z = Units.map β.toMonoidHom ζu := Units.ext (hz.trans hzβ.symm)
-        rw [← hu, ← E]
-        exact hW'
+        rwa [← hu, ← E]
       · intro H
         exact GlobalTheory.CommutatorPairing.weilIs_unique hG o.ab hLB hW' (hu ▸ H β _ hβ hzβ)
   have e1 : ∀ a c, e (a + M • c) = e a := fun a c => by
@@ -713,8 +710,7 @@ theorem exists_sympLevScheme : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : T
       rw [← Category.assoc, lift_fst, hu]
     have hwτ : w.left ≫ τ = t₁' := by
       simp only [τ]
-      rw [← Category.assoc, ← Over.comp_left, lift_snd]
-      exact hg2
+      rwa [← Category.assoc, ← Over.comp_left, lift_snd]
     have hr : Set.range w.left ⊆ U := by
       rintro _ ⟨q, rfl⟩
       obtain ⟨k, _, _, x, hx⟩ := GlobalTheory.FinEt.exists_algClosed_point T.left q
@@ -938,8 +934,7 @@ theorem exists_injective_hom {n : ℕ} (hn : n ≠ 0) {V : Type} [CommRing V] [I
   have he : ∀ y, algebraMap V L (e.symm y) = y := fun y => congrArg Subtype.val (e.apply_symm_apply y)
   refine ⟨e.symm.toRingHom.comp (f₀.codRestrict _ hmem),
     e.symm.injective.comp (fun a b h => hf₀ (congrArg Subtype.val h)), hinj ?_⟩
-  rw [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, he]
-  exact hζ
+  rwa [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, he]
 
 end GlobalTheory.CycLift
 end -- clump:auto
@@ -1088,8 +1083,7 @@ theorem exists_sympCond_geom : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : T
           zpow_mul (I.ζ M) (M : ℤ), hζM, one_zpow, _root_.mul_one]
       rw [hK, ← map_zpow]
       exact _root_.GlobalTheory.ZH.TorusPerp.map_unitOn φ _
-    rw [e] at H
-    exact H
+    rwa [e] at H
 
 end GlobalTheory.HTSympCover
 end -- clump:auto
@@ -1419,8 +1413,7 @@ theorem reduceMod_eq_zero_iff {h : ℕ} (M : ℕ) (u : Fin h ⊕ Fin h → ℤ) 
     funext i
     have hi : ((u i : ℤ) : ZMod M) = 0 := congrFun hu i
     rw [ZMod.intCast_zmod_eq_zero_iff_dvd] at hi
-    simp only [Pi.smul_apply, nsmul_eq_mul]
-    exact (Int.mul_ediv_cancel' hi).symm
+    simpa only [Pi.smul_apply, nsmul_eq_mul] using (Int.mul_ediv_cancel' hi).symm
   · rintro ⟨c, rfl⟩
     funext i
     simp [reduceMod]
@@ -1500,8 +1493,7 @@ theorem sympCond_twist : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [
         rw [reduceMod_liftMod, (reduceMod_eq_zero_iff M u).2 hu, map_zero]
     · obtain ⟨u₀, hu₀⟩ := hS g' hg'
       refine ⟨liftMod (g.symm (reduceMod M u₀)), ?_⟩
-      rw [tw, reduceMod_liftMod, LinearEquiv.apply_symm_apply, per (reduceMod_liftMod _)]
-      exact hu₀
+      rwa [tw, reduceMod_liftMod, LinearEquiv.apply_symm_apply, per (reduceMod_liftMod _)]
     · rw [tw, tw]
       set u' := liftMod (g (reduceMod M u))
       set c' := liftMod (g (reduceMod M c))
@@ -1630,8 +1622,7 @@ theorem exists_galoisCover_of_geom {p : ℕ} [Fact p.Prime] {D : Datum p} {R : T
     show (r (a * c)).left = _
     rw [hrmul]
     rfl
-  · intro a
-    exact Over.w (r a)
+  · exact fun a => Over.w (r a)
   · refine ⟨fun pt => ?_⟩
     obtain ⟨k, _, _, x, hx⟩ := GlobalTheory.FinEt.exists_algClosed_point S pt
     obtain ⟨t₀, lv, hlv⟩ := geo k x

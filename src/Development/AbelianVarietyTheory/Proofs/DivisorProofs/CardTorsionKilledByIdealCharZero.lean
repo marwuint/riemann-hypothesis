@@ -128,8 +128,7 @@ theorem card_torsion_maximal (hdiv : ∀ c : 𝓞 F, c ≠ 0 → Function.Surjec
   have hq : 1 < Nat.card (𝓞 F ⧸ P) := by
     have hfin : Finite (𝓞 F ⧸ P) := by
       apply Nat.finite_of_card_ne_zero
-      rw [← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ne, Ideal.absNorm_eq_zero_iff]
-      exact hne
+      rwa [← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ne, Ideal.absNorm_eq_zero_iff]
     letI := Ideal.Quotient.field P
     exact Finite.one_lt_card
   have hTHfin : Finite (Submodule.torsionBySet (𝓞 F) M ((P ^ H : Ideal (𝓞 F)) : Set (𝓞 F))) := by
@@ -160,8 +159,7 @@ theorem card_torsion_ideal (hdiv : ∀ c : 𝓞 F, c ≠ 0 → Function.Surjecti
   refine UniqueFactorizationMonoid.induction_on_coprime
     (P := fun I : Ideal (𝓞 F) => I ≠ ⊥ → Nat.card (Submodule.torsionBySet (𝓞 F) M (I : Set (𝓞 F))) =
       Ideal.absNorm I ^ h) I ?_ ?_ ?_ ?_ hI
-  · intro h0
-    exact absurd rfl h0
+  · exact fun h0 => absurd rfl h0
   · intro u hu _
     rw [Ideal.isUnit_iff] at hu
     subst hu
@@ -212,8 +210,7 @@ theorem tan_eq_one_charZero (o : Obj b N s) (k : Type) [Field k] [CharZero k] (x
   set n := Ideal.absNorm (Ideal.span {c}) with hn
   obtain ⟨d, hd⟩ := Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {c}))
   have hn0 : n ≠ 0 := by
-    rw [hn, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
-    exact hc0
+    rwa [hn, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
   have h1 : L ((n : ℕ) : 𝓞 D.F) (Tan.mk v hmv) = 0 := by
     rw [← hd, map_mul, Module.End.mul_apply, hLu, map_zero]
   rw [map_natCast, Module.End.natCast_apply, ← Nat.cast_smul_eq_nsmul k] at h1
@@ -278,8 +275,7 @@ theorem card_killedBy_charZero : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R :
     intro c hc g
     set n := Ideal.absNorm (Ideal.span {c}) with hn
     have hn0 : 0 < n := by
-      rw [hn, Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
-      exact hc
+      rwa [hn, Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
     have hmem : ((n : ℕ) : 𝓞 D.F) ∈ Ideal.span {c} := Ideal.absNorm_mem _
     obtain ⟨c', hc'⟩ := Ideal.mem_span_singleton'.mp hmem
     obtain ⟨g', hg'⟩ := GlobalTheory.AbDivPt.exists_pow_eq_of_isAlgClosed S o.A o.ab k x n hn0 g.toMul
@@ -303,7 +299,6 @@ theorem card_killedBy_charZero : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R :
     exact congrArg Additive.ofMul (h c.1 c.2)
   · intro h c hc
     have := h ⟨c, hc⟩
-    rw [hsm] at this
-    exact this
+    rwa [hsm] at this
 
 end GlobalTheory.UPel.HT.ES.CharZeroCount

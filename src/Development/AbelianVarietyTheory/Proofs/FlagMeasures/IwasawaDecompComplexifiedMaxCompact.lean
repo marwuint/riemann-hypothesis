@@ -64,15 +64,12 @@ theorem diag_mul_lo {a b : Matrix (Fin n) (Fin n) ℂ} (ha : IsLo a) (hb : IsLo 
     rcases lt_or_gt_of_ne hk with h | h
     · rw [hb k i h, mul_zero]
     · rw [ha i k h, zero_mul]
-  · intro h
-    exact absurd (Finset.mem_univ i) h
+  · exact fun h => absurd (Finset.mem_univ i) h
 
 theorem lo_iff {a : Matrix (Fin n) (Fin n) ℂ} : IsLo a ↔ a.IsLowerTriangular := by
   constructor
-  · intro h i j hij
-    exact h i j (OrderDual.toDual_lt_toDual.mp hij)
-  · intro h i j hij
-    exact h (OrderDual.toDual_lt_toDual.mpr hij)
+  · exact fun h i j hij => h i j (OrderDual.toDual_lt_toDual.mp hij)
+  · exact fun h i j hij => h (OrderDual.toDual_lt_toDual.mpr hij)
 
 theorem lo_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : IsLo a) (hb : IsLo b) : IsLo (a * b) := by
   intro i j hij
@@ -280,12 +277,10 @@ theorem continuous_of_closed_graph {X Y : Type*} [TopologicalSpace X] [Topologic
   have e : f ⁻¹' C = Prod.fst '' ({p : X × Y | p.2 = f p.1} ∩ Prod.snd ⁻¹' C) := by
     ext x
     constructor
-    · intro hx
-      exact ⟨(x, f x), ⟨rfl, hx⟩, rfl⟩
+    · exact fun hx => ⟨(x, f x), ⟨rfl, hx⟩, rfl⟩
     · rintro ⟨p, ⟨hp, hpC⟩, rfl⟩
       show f p.1 ∈ C
-      rw [← (show p.2 = f p.1 from hp)]
-      exact hpC
+      rwa [← (show p.2 = f p.1 from hp)]
   rw [e]
   exact isClosedMap_fst_of_compactSpace _ (h.inter (hC.preimage continuous_snd))
 

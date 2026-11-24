@@ -67,8 +67,7 @@ theorem loc_iff {F : Shv R} {U : Scheme.{0}} (a : Sec F U) :
   constructor
   · rintro ⟨S, hS, h⟩
     exact GrothendieckTopology.superset_covering _ (fun V g hg => h V g hg) hS
-  · intro h
-    exact ⟨_, h, fun V g hg => hg⟩
+  · exact fun h => ⟨_, h, fun V g hg => hg⟩
 
 def supp (F : Shv R) (U : Scheme.{0}) : Submodule (ULift.{1} R) (Sec F U) where
   carrier := {a | sv Z hZ a ∈ Scheme.etaleTopology U}
@@ -101,8 +100,7 @@ theorem supp_res {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) {a : Sec F U} (ha 
     Sec.res g a ∈ supp Z hZ F V := by
   refine GrothendieckTopology.superset_covering _ (fun W f hf => ?_) (Scheme.etaleTopology.pullback_stable g (show sv Z hZ a ∈ Scheme.etaleTopology U from ha))
   change Z W ∨ Sec.res (f ≫ g) a = 0 at hf
-  rw [res_comp] at hf
-  exact hf
+  rwa [res_comp] at hf
 
 def suppP (F : Shv R) : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R) where
   obj U := ModuleCat.of _ (supp Z hZ F U.unop)
@@ -131,8 +129,7 @@ theorem suppT_isSheaf (F : Shv R) : Presieve.IsSheaf Scheme.etaleTopology (suppT
   have hf' : sv Z hZ (Sec.res f s) ∈ Scheme.etaleTopology V := hf
   refine Scheme.etaleTopology.superset_covering (fun W h hh => ?_) hf'
   change Z W ∨ Sec.res (h ≫ f) s = 0
-  rw [res_comp]
-  exact hh
+  rwa [res_comp]
 
 theorem sectionsWithSupport_isSheaf (F : Shv R) : Presheaf.IsSheaf Scheme.etaleTopology (suppP Z hZ F) := by
   rw [Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget _), isSheaf_iff_isSheaf_of_type]
@@ -198,13 +195,11 @@ def suppCxι (C : Cx R) : suppCx Z hZ C ⟶ C where
 theorem exists_supp_sub : ∀ (R : Type) [CommRing R] (C : Cx R) (Z : Scheme.{0} → Prop), (∀ (V U : Scheme.{0}) (_ : V ⟶ U), Z U → Z V) → ∃ (D : Cx R) (ι : D ⟶ C), (∀ n U, Function.Injective (Sec.map (ι.f n) (U := U))) ∧ ∀ n U (a : Sec (C.X n) U), (∃ b, Sec.map (ι.f n) b = a) ↔ Loc U fun V g => Z V ∨ Sec.res g a = 0 := by
   intro R _ C Z hZ
   refine ⟨suppCx Z hZ C, suppCxι Z hZ C, fun n U => ?_, fun n U a => ?_⟩
-  · intro b b' h
-    exact Subtype.ext (p := fun x => x ∈ supp Z hZ (C.X n) U) h
+  · exact fun b b' h => Subtype.ext (p := fun x => x ∈ supp Z hZ (C.X n) U) h
   · rw [loc_iff Z hZ]
     constructor
     · rintro ⟨b, rfl⟩
       exact (show ↥(supp Z hZ (C.X n) U) from b).2
-    · intro h
-      exact ⟨(⟨a, h⟩ : ↥(supp Z hZ (C.X n) U)), rfl⟩
+    · exact fun h => ⟨(⟨a, h⟩ : ↥(supp Z hZ (C.X n) U)), rfl⟩
 
 end GlobalTheory.EtC.SuppSub

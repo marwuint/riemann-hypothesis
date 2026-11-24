@@ -115,8 +115,7 @@ theorem exists_clopen_kerStableAt : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (
   intro p _ D R _ b N c Y s o B _ _ ψ ψ' hp ⟨e, he⟩ hB hq
   have hc : IsUnit (c : Γ(Y, ⊤)) := by
     have := (hp.pow e).map (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)
-    rw [← Nat.cast_pow, map_natCast, ← he] at this
-    exact this
+    rwa [← Nat.cast_pow, map_natCast, ← he] at this
   haveI : IsMonHom ψ := hq.1
   haveI : IsMonHom ψ' := hq.2.1
   haveI := D.finO
@@ -154,8 +153,7 @@ theorem exists_clopen_kerStableAt : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (
       rw [← hS]; exact Submodule.span_le.mpr hSk
     have ha : f a = 0 := htop Submodule.mem_top
     simpa [f] using ha
-  · intro h a _
-    exact (hW a Tb t).2 fun T σ hσ g _ hg => h T σ hσ g hg a
+  · exact fun h a _ => (hW a Tb t).2 fun T σ hσ g _ hg => h T σ hσ g hg a
 
 end GlobalTheory.UPel.HT.ES
 end -- clump:auto
@@ -278,8 +276,7 @@ theorem exists_oAct_desc : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type)
   intro p _ D R _ b N c Y s o B _ _ ψ ψ' hp ⟨e, he⟩ hB hq hst
   have hc : IsUnit (c : Γ(Y, ⊤)) := by
     have := (hp.pow e).map (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)
-    rw [← Nat.cast_pow, map_natCast, ← he] at this
-    exact this
+    rwa [← Nat.cast_pow, map_natCast, ← he] at this
   obtain ⟨hfin, het, hsurj⟩ := isFinite_etale_surjective_of_isQuasiInv Y o.A B c ψ ψ' o.ab hB hc hq
   haveI : Surjective ψ.left := hsurj
   haveI : Flat ψ.left := inferInstance
@@ -493,8 +490,7 @@ theorem lie_of_isQuasiInv : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type
   have hcY : IsUnit (((p ^ e : ℕ) : ℕ) : Γ(Y, ⊤)) := by
     have := (hp.pow e).map (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)
     rw [map_pow, map_natCast] at this
-    rw [Nat.cast_pow]
-    exact this
+    rwa [Nat.cast_pow]
   obtain ⟨-, hEt, -⟩ := isFinite_etale_surjective_of_isQuasiInv Y o.A B (p ^ e) ψ ψ' o.ab hB hcY hq
   haveI : IsMonHom ψ := hq.1
   haveI : Etale ψ.left := hEt
@@ -606,8 +602,7 @@ theorem pullPol_dual_hom : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type)
     triv_ev_iff o.isLB _ _
   rw [k, c]
   constructor
-  · intro z
-    exact hQ.eq_one (x ≫ h) ((triv_ev_iff hQ.isLB _ _).2 z)
+  · exact fun z => hQ.eq_one (x ≫ h) ((triv_ev_iff hQ.isLB _ _).2 z)
   · intro z
     rw [z, MonObj.comp_one]
     exact evc_one_right hQ.isLB hQ.zero _
@@ -646,8 +641,7 @@ theorem isMonHom_id_npow {Y : Scheme.{0}} (A : Over Y) [GrpObj A] [IsCommMonObj 
     IsMonHom ((𝟙 A) ^ n) := by
   have h := Grp.Hom.hom_hom_zpow (G := Grp.mk A) (H := Grp.mk A) (𝟙 _) (n : ℤ)
   have h' : IsMonHom ((𝟙 (Grp.mk A) : Grp.mk A ⟶ Grp.mk A) ^ (n : ℤ)).hom.hom := inferInstance
-  rw [h, zpow_natCast] at h'
-  exact h'
+  rwa [h, zpow_natCast] at h'
 
 theorem polKer_locus_clopen : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (c : ℕ) (Y : Scheme.{0}) (s : Y ⟶ Sp R) (o : Obj b N s) (B : Over Y) [GrpObj B] [IsCommMonObj B] (ψ : o.A ⟶ B) (ψ' : B ⟶ o.A), IsUnit ((p : ℕ) : R) → (∃ e : ℕ, c = p ^ e) → IsAbelianScheme B → IsQuasiInv c ψ ψ' → ∃ W : Set Y, IsOpen W ∧ IsClosed W ∧ ∀ (Tb : Scheme.{0}) (t : Tb ⟶ Y), Set.range t.base ⊆ W ↔ PolKerAt o ψ' c t := by
   intro p _ D R _ b N c Y s o B _ _ ψ ψ' hp ⟨e, hc⟩ hB hq
@@ -735,8 +729,7 @@ theorem kerStableAt_iff_pull : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : T
     have e := congrArg Over.Hom.left h2
     rw [one_left', Over.comp_left, Over.comp_left] at e
     simp only [Over.comp_left, Category.assoc]
-    rw [← hψ, ← Category.assoc (o₁.act.act a).left, m.act a, Category.assoc]
-    exact e
+    rwa [← hψ, ← Category.assoc (o₁.act.act a).left, m.act a, Category.assoc]
   · intro h T0 σ hσ g hg a
     have w : g.left ≫ o.A.hom = σ ≫ t := by rw [Over.w g, hσ]
     let g₁ : Over.mk σ ⟶ o₁.A := Over.homMk (m.cart.1.lift g.left σ w) (m.cart.1.lift_snd _ _ _)
@@ -1081,8 +1074,7 @@ theorem UpperTheory.Cb.polarization_descent_along_quasi_isogeny_compat :
   have hwc : w ^ c = πo ≫ x ^ e0 := by
     rw [← Category.comp_id w, ← MonObj.comp_pow]
     ext1
-    simp only [Over.comp_left, Over.homMk_left, w, πo]
-    exact hsq.symm
+    simpa only [Over.comp_left, Over.homMk_left, w, πo] using hsq.symm
   have hw3 : w ^ c ^ 3 = 1 := by
     rw [show c ^ 3 = c * c ^ 2 by ring, pow_mul, hwc, ← MonObj.comp_pow, hz2, MonObj.comp_one]
   have hppt : PullPolTriv o ψ' w := by

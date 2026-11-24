@@ -473,8 +473,7 @@ private theorem norm_natCast_le_one_kummer_theta_logarithms {A B : Type} [CommRi
 
 private theorem univ_le_preimage_inf_of_univ_le {Z X : Scheme.{0}} (y : Z ⟶ X) (U V : X.Opens) (h1 : ⊤ ≤ y ⁻¹ᵁ U) (h2 : ⊤ ≤ y ⁻¹ᵁ V) :
     ⊤ ≤ y ⁻¹ᵁ (U ⊓ V) := by
-  intro p hp
-  exact ⟨h1 hp, h2 hp⟩
+  exact fun p hp => ⟨h1 hp, h2 hp⟩
 
 private theorem alg_lemma_5 {S : Type} [CommRing S] {n : ℕ} (a b : Fin n → S) (Ps g1 g2 g T : S)
     (h : Ps * (g1 * g2) = T) : (∑ i, a i * (Ps * b i)) * (g1 * (g2 * g)) = T * ∑ i, a i * (b i * g) := by
@@ -1109,8 +1108,7 @@ theorem value_tangent : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (
     rw [← reassoc_of% e₂, ← Over.comp_left, Iso.hom_inv_id, Over.id_left, Category.comp_id]
   have e₄ : yG ≫ UnifPre.gFK (G := G) C = spMap (dualMap (toF R C)) ≫ y.left := by
     rw [UnifPre.gFK, ← Category.assoc, e₂']
-    simp only [Category.assoc]
-    exact hV.2
+    simpa only [Category.assoc] using hV.2
   have hfR : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ y.left = eSec G := hy
   have hjj : jFK (R := R) C ≫ jK R = spMap (toF R C) := sp_comp _ _
   have hη : eSec ((Over.pullback (jK R)).obj G) ≫ pullback.snd G.hom (jK R) = 𝟙 _ := Over.w η[(Over.pullback (jK R)).obj G]
@@ -1139,8 +1137,7 @@ theorem value_tangent : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (
     obtain rfl : z' = spMap (TrivSqZeroExt.fstHom C C C).toRingHom (IsLocalRing.closedPoint C) :=
       Subsingleton.elim (α := PrimeSpectrum (DualNumber C)) _ _
     have h := hi (show IsLocalRing.closedPoint C ∈ (⊤ : (Sp C).Opens) from trivial)
-    rw [← hx₁] at h
-    exact h
+    rwa [← hx₁] at h
   have m₂ : ⊤ ≤ (spMap (dualMap (toF R C)) ≫ y.left) ⁻¹ᵁ U.LG.L.U jG := GlobalTheory.FormalValue.top_le_comp hj _
   have hG₀ : (jFK (R := R) C ≫ jK R) ≫ eSec G =
       (spMap (toF R C) ≫ spMap (TrivSqZeroExt.fstHom R R R).toRingHom) ≫ y.left := by
@@ -1152,8 +1149,7 @@ theorem value_tangent : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (
     refine mem_pull.2 ?_
     have h := GlobalTheory.FormalValue.top_le_comp hj (spMap (TrivSqZeroExt.fstHom R R R).toRingHom)
       (show z' ∈ (⊤ : (Sp R).Opens) from trivial)
-    rw [hfR] at h
-    exact h
+    rwa [hfR] at h
   obtain ⟨JA, hJA, cJA⟩ := exists_good (Z := Sp (DualNumber C)) A.L A.isLB (IsLocalRing.closedPoint (DualNumber C))
     (fun _ : Unit => yA ≫ (snd (TFK (R := R) C) A.A).left) (fun _ => i₀) (fun _ _ _ => rfl) (fun _ => m₁ trivial)
   obtain ⟨JG, hJG, cJG⟩ := exists_good (Z := Sp (DualNumber C)) U.LG.L U.LG.isLB (IsLocalRing.closedPoint (DualNumber C))
@@ -1168,11 +1164,9 @@ theorem value_tangent : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (
     intro z' _
     refine ⟨mem_pull.2 ?_, mem_pull.2 ?_⟩
     · have h := m₂ (show z' ∈ (⊤ : (Sp (DualNumber C)).Opens) from trivial)
-      rw [← e₄] at h
-      exact h
+      rwa [← e₄] at h
     · have h := m₁ (show z' ∈ (⊤ : (Sp (DualNumber C)).Opens) from trivial)
-      rw [← e₂] at h
-      exact h
+      rwa [← e₂] at h
   have mp₀ : ⊤ ≤ (jFK (R := R) C ≫ eSec ((Over.pullback (jK R)).obj G)) ⁻¹ᵁ
       ((LB.div (U.LG.L.pull (pullback.fst G.hom (jK R))) (A.L.pull U.gen.hom.left)).U (fun _ => jG, fun _ => i₀)) := by
     rw [← e₅]; exact GlobalTheory.FormalValue.top_le_comp mp _
@@ -1213,8 +1207,7 @@ theorem value_tangent : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (
   have hr : valR (spMap (toF R C)) (LB.wchart U.LG.L (fun _ : PUnit.{1} => eSec G) (fun _ => jG))
       (U.LG.rig.s fun _ => jG).val = toF R C (GlobalTheory.MBLow.TanExp.rigVal U.LG jG) := by
     have := GlobalTheory.FormalValue.valR_spMap (toF R C) (𝟙 (Sp R)) _ m₅ (U.LG.rig.s fun _ => jG).val
-    rw [Category.comp_id] at this
-    exact this
+    rwa [Category.comp_id] at this
   rw [hr, ← hvfst] at n₂
 
   have h1 : ((hv.unit ^ k)⁻¹ : (DualNumber C)ˣ).val *
@@ -1371,19 +1364,15 @@ theorem ds_mul_left {f : Ix → DualNumber K} {s : DualNumber K} [TopologicalSpa
     (h : HasSum (fun a => (f a).fst) s.fst ∧ HasSum (fun a => (f a).snd) s.snd) :
     HasSum (fun a => (u * f a).fst) (u * s).fst ∧ HasSum (fun a => (u * f a).snd) (u * s).snd := by
   refine ⟨?_, ?_⟩
-  · simp only [TrivSqZeroExt.fst_mul]
-    exact h.1.mul_left _
-  · simp only [dn_snd_mul]
-    exact (h.2.mul_left _).add (h.1.mul_left _)
+  · simpa only [TrivSqZeroExt.fst_mul] using h.1.mul_left _
+  · simpa only [dn_snd_mul] using (h.2.mul_left _).add (h.1.mul_left _)
 
 theorem ds_sum {n : ℕ} [TopologicalSpace K] [IsTopologicalRing K] (f : Fin n → Ix → DualNumber K) (s : Fin n → DualNumber K)
     (h : ∀ i, HasSum (fun a => (f i a).fst) (s i).fst ∧ HasSum (fun a => (f i a).snd) (s i).snd) :
     HasSum (fun a => (∑ i, f i a).fst) (∑ i, s i).fst ∧ HasSum (fun a => (∑ i, f i a).snd) (∑ i, s i).snd := by
   refine ⟨?_, ?_⟩
-  · simp only [TrivSqZeroExt.fst_sum]
-    exact hasSum_sum fun i _ => (h i).1
-  · simp only [TrivSqZeroExt.snd_sum]
-    exact hasSum_sum fun i _ => (h i).2
+  · simpa only [TrivSqZeroExt.fst_sum] using hasSum_sum fun i _ => (h i).1
+  · simpa only [TrivSqZeroExt.snd_sum] using hasSum_sum fun i _ => (h i).2
 
 private theorem isChart_choose_and_symm_apply {B : Type} [CommRing B] [IsLocalRing B] {X : Scheme.{0}} (x : Sp B ⟶ X) (W : X.Opens)
     (h : x (IsLocalRing.closedPoint B) ∈ W) : ⊤ ≤ x ⁻¹ᵁ W := by

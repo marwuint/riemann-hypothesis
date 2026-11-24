@@ -156,8 +156,7 @@ theorem GlobalTheory.infPts_secondKind_chart : ∀ (F E : Type) [Field F] [Numbe
           hZ i, smul_zero]
       have hpres := GlobalTheory.SmoothForms.exp_mem_UH (X := t • Z i) hd hskew
       refine ⟨(archEquiv J hCM τ).symm ⟨u, show _ * _ * _ = _ from hu ▸ hpres⟩, ?_⟩
-      rw [GlobalTheory.Orb.archMat_eq_archEquiv J hCM, MulEquiv.apply_symm_apply]
-      exact hu
+      rwa [GlobalTheory.Orb.archMat_eq_archEquiv J hCM, MulEquiv.apply_symm_apply]
     choose y hy using hy
     have hS (g : GArch σ J w) :
         GlobalTheory.Orb.archMat σ J τ g ∈ {X : Matrix (Fin n) (Fin n) ℂ | Xᴴ * A * X = A} := by
@@ -183,8 +182,7 @@ theorem GlobalTheory.infPts_secondKind_chart : ∀ (F E : Type) [Field F] [Numbe
     congr 1
     apply hinj
     rw [map_list_prod, List.map_ofFn]
-    refine hg.trans (congrArg List.prod ?_)
-    exact List.ofFn_inj.2 (funext fun i => (hy i _).symm)
+    exact hg.trans (congrArg List.prod (List.ofFn_inj.2 (funext fun i => (hy i _).symm)))
   choose d η s hη hs he using hp
   have hproj : ∀ w, Tendsto (projArch σ J w) (𝓝[(infPts σ J : Set (GAd σ J))] 1) (𝓝 1) := fun w => by
     have := (continuous_projArch σ J w).tendsto 1

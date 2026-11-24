@@ -167,8 +167,7 @@ theorem left_smooth {H : Matrix (Fin n) (Fin n) ℂ} (hH : AAInvW.HInvol H)
   · obtain ⟨U, F, hU, hgU, hF, hfF⟩ := hf g hg
     have hd := left_hasDerivAt hH hU hgU hg hF hfF hX
     have e := hf' g hg _ hd
-    rw [e] at hd
-    exact hd
+    rwa [e] at hd
 
 end Smooth
 
@@ -180,8 +179,7 @@ theorem hInvol (k r : ℕ) : AAInvW.HInvol (Hpk k r) := by
   exact ⟨Formalism.QuantumDeterminants.GBasic.Hpk_herm k r, Formalism.QuantumDeterminants.GBasic.Hpk_sq k r⟩
 
 theorem exp_mem {X : Mat k r} (hX : InLieHpk k r X) (t : ℝ) :
-    NormedSpace.exp ((t : ℂ) • X) ∈ GG k r := by
-  exact AAInvW.ana_expt (hInvol k r) hX t
+    NormedSpace.exp ((t : ℂ) • X) ∈ GG k r := AAInvW.ana_expt (hInvol k r) hX t
 
 theorem sm_add {σ : Mat k r → (H →L[ℂ] H)} {v w : H} (hv : IsSmoothVec σ v) (hw : IsSmoothVec σ w) :
     IsSmoothVec σ (v + w) := by
@@ -201,8 +199,7 @@ theorem sm_smul {σ : Mat k r → (H →L[ℂ] H)} (a : ℂ) {v : H} (hv : IsSmo
 
 theorem sm_sub {σ : Mat k r → (H →L[ℂ] H)} {v w : H} (hv : IsSmoothVec σ v) (hw : IsSmoothVec σ w) :
     IsSmoothVec σ (v - w) := by
-  have h := sm_add hv (sm_smul (-1) hw)
-  simpa [sub_eq_add_neg] using h
+  simpa [sub_eq_add_neg] using sm_add hv (sm_smul (-1) hw)
 
 theorem sm_zero (σ : Mat k r → (H →L[ℂ] H)) : IsSmoothVec σ (0 : H) := by
   have h := GlobalTheory.EquivariantSubspace.smoothOnH_zero (E := H) (Hpk k r)
@@ -272,8 +269,7 @@ theorem dsigW_mem {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ
   induction W with
   | nil => intro u hu; exact hu
   | cons X W ih =>
-    intro u hu
-    exact sm_dsig hσ (ih (fun Y hY => hW Y (by simp [hY])) u hu) (hW X (by simp))
+    exact fun u hu => sm_dsig hσ (ih (fun Y hY => hW Y (by simp [hY])) u hu) (hW X (by simp))
 
 omit [CompleteSpace H] in
 theorem dsigW_append (σ : Mat k r → (H →L[ℂ] H)) (W : List (Mat k r)) (Y : Mat k r) (u : H) :
@@ -377,9 +373,7 @@ theorem dsigW_orbit_smooth {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (G
   | append_singleton W Y ih =>
     have hW' : ∀ X ∈ W, InLieHpk k r X := fun X hX => hW X (by simp [hX])
     have hY : InLieHpk k r Y := hW Y (by simp)
-    have h := (dsigW_orbit hσ hv W hW' (ih hW') Y hY).1
-    simp only [dsigW_append]
-    exact h
+    simpa only [dsigW_append] using (dsigW_orbit hσ hv W hW' (ih hW') Y hY).1
 
 end Rep
 

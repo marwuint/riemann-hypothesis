@@ -75,8 +75,7 @@ theorem lowers_succ_le {F : ℕ → Submodule R (Fin n → K)} (hF : Monotone F)
     lowers F (c + 1) ≤ lowers F c := by
   intro T hT
   rw [mem_lowers] at hT ⊢
-  intro b y hy
-  exact hT b y (hF (by omega) hy)
+  exact fun b y hy => hT b y (hF (by omega) hy)
 
 theorem lowers_anti {F : ℕ → Submodule R (Fin n → K)} (hF : Monotone F) : Antitone (lowers F) :=
   antitone_nat_of_succ_le (lowers_succ_le hF)
@@ -89,8 +88,7 @@ theorem lowers_mul {F : ℕ → Submodule R (Fin n → K)} {c c' : ℕ} {X Y : M
   apply hX b
   apply hY (b + c + 1)
   have e : b + c + 1 + c' + 1 = b + (c + c' + 1) + 1 := by omega
-  rw [e]
-  exact hy
+  rwa [e]
 
 theorem lowers_mul_zero {F : ℕ → Submodule R (Fin n → K)} {c : ℕ} {X Y : Matrix (Fin n) (Fin n) K}
     (hX : X ∈ lowers F c) (hY : Y ∈ lowers F 0) :
@@ -110,8 +108,7 @@ theorem lowers_eq_bot {F : ℕ → Submodule R (Fin n → K)} {m : ℕ} (h0 : F 
   have hzero : ∀ y ∈ (F m : Set (Fin n → K)), T *ᵥ y = 0 := by
     intro y hy
     have hy' : y ∈ F (0 + m + 1) := by
-      rw [hm (0 + m + 1) (by omega)]
-      exact hy
+      rwa [hm (0 + m + 1) (by omega)]
     have h := hT 0 y hy'
     rw [h0] at h
     exact (Submodule.mem_bot R).1 h
@@ -151,11 +148,9 @@ theorem lowers_adj [StarRing K] {J : Matrix (Fin n) (Fin n) K} (hJ : Jᴴ = J)
       · have hTx : T *ᵥ x ∈ F (m - (b + c + 1)) := by
           apply hT
           have e' : m - (b + c + 1) + c + 1 = m - b := by omega
-          rw [e']
-          exact hx
+          rwa [e']
         have hy' : y ∈ F (m - (m - (b + c + 1))) := by
-          rw [show m - (m - (b + c + 1)) = b + c + 1 by omega]
-          exact hy
+          rwa [show m - (m - (b + c + 1)) = b + c + 1 by omega]
         exact ((hdual _ (Nat.sub_le _ _) y).1 hy').2 _ hTx
       ·
         have hTx : T *ᵥ x ∈ F 0 := hT 0 x (hmono (by omega) hx)

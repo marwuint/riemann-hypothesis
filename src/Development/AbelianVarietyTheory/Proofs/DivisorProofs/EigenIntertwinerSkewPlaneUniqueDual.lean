@@ -98,8 +98,7 @@ theorem eq_of_pure_std (g g' : SInf F κ)
     rfl
   have e := congrFun h x
   unfold GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure at e
-  rw [hI, hP, mul_one, mul_one] at e
-  exact e
+  rwa [hI, hP, mul_one, mul_one] at e
 
 end GlobalTheory.ThK.EvUniqInf
 

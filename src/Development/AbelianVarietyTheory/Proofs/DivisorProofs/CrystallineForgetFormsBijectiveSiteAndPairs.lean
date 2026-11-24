@@ -465,8 +465,7 @@ theorem natAgree {T T' : Thick κ t} (φ : T ⟶ T') (ρ : DR R (ER T) → DR R 
       rw [SemiHom.mDR_ι, SemiHom.m1_D]; rfl
     have e3 : ρ' (he.mDR (ι1 (D R (ER T) c))) - ι1 (h.m1 ω) ∈ rel R T'.δ := by rw [k1]; exact e1
     have e4 := sub_mem e3 e2
-    rw [sub_sub_sub_cancel_right] at e4
-    exact e4
+    rwa [sub_sub_sub_cancel_right] at e4
 
 
 include hr in

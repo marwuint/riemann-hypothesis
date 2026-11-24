@@ -77,13 +77,11 @@ theorem compatibleForms_cocycles_differ_by_coboundary : ∀ (R R' : Type) [CommR
       have e := congrFun (congrFun (congrFun hg T) T') φ
       have e1 := congrFun (congrFun (congrFun hk (m.obj T)) (m.obj T')) (m.functor.map φ)
       have e2 := congrFun (congrFun (congrFun hk' T) T') φ
-      refine e.trans ?_
-      exact congrArg₂ (fun u v : T'.B ↦ u - v) e1.symm e2.symm
+      exact e.trans (congrArg₂ (fun u v : T'.B ↦ u - v) e1.symm e2.symm)
     · funext T
       rfl
   have h1 := hinj (h0.trans (map_zero (KK κ' t').fnMap.h1).symm)
-  rw [QuotientAddGroup.eq_zero_iff] at h1
-  exact h1
+  rwa [QuotientAddGroup.eq_zero_iff] at h1
 
 end GlobalTheory.PDForm
 end -- clump:auto
@@ -119,8 +117,7 @@ theorem cob_of_fn_cob {C : Type u} [Category.{0} C] (K : Cx C) (h : Function.Inj
     funext T T' T'' φ ψ
     exact he T T' T'' φ ψ
   have h1 : (QuotientAddGroup.mk ⟨z, hz⟩ : K.H2) = 0 := h (h0.trans (map_zero _).symm)
-  rw [QuotientAddGroup.eq_zero_iff] at h1
-  exact h1
+  rwa [QuotientAddGroup.eq_zero_iff] at h1
 
 theorem cob_of_class_eq : ∀ (R R' : Type) [CommRing R] [CommRing R'] (I : Ideal R) (I' : Ideal R') (κ : DividedPowers I) (κ' : DividedPowers I') (X X' : Scheme.{0}) (t : X ⟶ Sp R) (t' : X' ⟶ Sp R') (σ : R →+* R') (φ₀ : X' ⟶ X) (m : IsMor κ t κ' t' σ φ₀) (k : (KK κ t).Z2) (k' : (KK κ' t').Z2) (f : Z2 (O κ t)) (f' : Z2 (O κ' t')), k.1.1 = f.1 → k'.1.1 = f'.1 → H2.mk _ f' = m.pull2 (H2.mk _ f) → ∃ g, (KK κ' t').D1 g = (morMap m).p2 k.1 - k'.1 := by
   intro R R' _ _ I I' κ κ' X X' t t' σ φ₀ m k k' f f' hk hk' h
@@ -383,8 +380,7 @@ theorem cor_pull (Λ : Lift D) {σ : D.R →+* D'.R} {φ₀ : D'.X₀ ⟶ D.X₀
   unfold Cor
   refine ⟨fun p q r a b ↦ ?_, fun p q a ↦ ?_, fun p ↦ ?_⟩
   · rw [cechDeRhamPullbackTotalDegreeTwo_function_part]
-    refine (hθ r _).symm.trans ?_
-    exact congrArg (fun y ↦ (θ.app r).φ y) (hw.1 _ _ _ _ _).symm
+    exact (hθ r _).symm.trans (congrArg (fun y ↦ (θ.app r).φ y) (hw.1 _ _ _ _ _).symm)
   · rw [pullTot2_a]
     refine (movedDatum_compatibleOneFormClass (Λ := Λ) (Λ' := Λ') (hφ := hφ) (m := m) (θ := θ) (hθ := hθ) q _).symm.trans ?_
     exact congrArg _ (hw.2.1 _ _ _).symm
@@ -420,8 +416,7 @@ private theorem isPull2_aux_lemma (D D' : Data) (Λ : Lift D) (Λ' : Lift D') (�
   unfold IsPull2
   rw [pullHyp2_mk, pullHyp2_mk, Hyp2.mk_eq_mk]
   refine ⟨c, ?_⟩
-  rw [coe_pullZZ2, coe_pullZZ2]
-  exact h3
+  rwa [coe_pullZZ2, coe_pullZZ2]
 
 end Pairs
 
@@ -576,8 +571,7 @@ theorem main : (∀ (D D' : Data) (Λ : Lift D) (Λ' : Lift D') (σ : D.R →+* 
         (QuotientAddGroup.mk k)
       refine j.trans ?_
       have j2 := CxMap.cohomTwo_pullback_comp (morMap m) ((KK D'.κ D'.t).resMap (pairFst φ ⋙ Λ'.L)) (QuotientAddGroup.mk k)
-      refine j2.trans ?_
-      exact congrArg _ e1
+      exact j2.trans (congrArg _ e1)
     change (QuotientAddGroup.mk (((pairB Λ' φ m).pre θ).z2 k) : ((KK D'.κ D'.t).res (pairFst φ ⋙ Λ'.L)).H2) =
       QuotientAddGroup.mk (((KK D'.κ D'.t).resMap (pairFst φ ⋙ Λ'.L)).z2 k') at e2
     rw [QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf] at e2

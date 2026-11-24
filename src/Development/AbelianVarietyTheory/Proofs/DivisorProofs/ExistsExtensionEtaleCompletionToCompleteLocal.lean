@@ -189,8 +189,7 @@ theorem isNilpotent_ker {E C : Type} [CommRing E] [CommRing C] {I : Ideal E} {v 
   have : RingHom.ker w ≤ I.map (Ideal.Quotient.mk (I ^ (n + 1))) := fun x hx => by
     obtain ⟨x, rfl⟩ := Ideal.Quotient.mk_surjective x
     refine Ideal.mem_map_of_mem _ ?_
-    rw [← hv, RingHom.mem_ker, ← hw]
-    exact hx
+    rwa [← hv, RingHom.mem_ker, ← hw]
   refine ⟨n + 1, le_bot_iff.1 ((Ideal.pow_right_mono this _).trans ?_)⟩
   rw [← Ideal.map_pow, Ideal.map_quotient_self]
 
@@ -232,9 +231,7 @@ theorem exists_extension_of_surjective {O S : Type} [CommRing O] [IsLocalRing O]
     ⟨_, fun n x => IsAdicComplete.StrictMono.mk_liftRingHom m ha F hcomp x⟩
   refine ⟨b, ?_, ?_⟩
   · apply DFunLike.coe_injective
-    apply IsHausdorff.StrictMono.funext' m ha
-    intro n x
-    exact (hb n _).trans (hF1 n x)
+    exact IsHausdorff.StrictMono.funext' m ha (fun n x => (hb n _).trans (hF1 n x))
   · ext x
     rw [RingHom.comp_apply, ← hw 0, hb, hF2]
 

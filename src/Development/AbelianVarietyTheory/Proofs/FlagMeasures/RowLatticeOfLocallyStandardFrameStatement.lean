@@ -109,8 +109,7 @@ theorem exists_quad (L : Formalism.MainNotions.S.Loc.LocE F E) (d : E) : ∃ t n
     have h2 : aeval f f.charpoly = Algebra.lmul F E (aeval d f.charpoly) := by
       rw [hf, Polynomial.aeval_algHom_apply]
     rw [h2] at h1
-    have h3 := LinearMap.congr_fun h1 1
-    simpa using h3
+    simpa using LinearMap.congr_fun h1 1
   have hs := hmon.as_sum
   rw [hdeg] at hs
   rw [hs] at h0
@@ -291,8 +290,7 @@ theorem mkW_mem_of_mem_img : ∀ {F : Type} [Field F] [ValuativeRel F] [Topologi
     have e : (v : V) - w = -(u - v) + (u - Fr.prF u) := by rw [hw]; abel
     rw [e]
     exact Submodule.add_mem _ (Submodule.neg_mem _ h1) h2
-  rw [hvw]
-  exact hwL
+  rwa [hvw]
 
 section Local
 
@@ -313,8 +311,7 @@ theorem coef_mem_O (Fr : FrameD H r) (L : Submodule M.L.O (H.Wb Fr.f)) (hL : Fr.
     unfold HermSp.mkW
     rw [Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]
     show ((d • Fr.z + x) - d • (xz : V)) ∈ H.X Fr.f
-    rw [hxz, add_sub_cancel_left]
-    exact hx
+    rwa [hxz, add_sub_cancel_left]
   by_contra hd
   obtain ⟨s, hs, w, hw, hsw⟩ := exists_shift_inv M.L d hd
   have hyL : H.mkW Fr.f ((d + s) • xz) ∈ L := by
@@ -470,8 +467,7 @@ theorem sub_mem_X_of_mem_N (H : HermSp M V) {r : ℕ} (Fr : FrameD H r) {n : V �
       have e : g₂.symm (g₁.symm v) - v = (g₂.symm (g₁.symm v) - g₁.symm v) + (g₁.symm v - v) := by abel
       rw [e]; exact Submodule.add_mem _ (ih₂ _ hv1).2 b1
   | inv g _ ih =>
-    intro v hv
-    exact ⟨(ih v hv).2, (ih v hv).1⟩
+    exact fun v hv => ⟨(ih v hv).2, (ih v hv).1⟩
 
 theorem z_mem_LamStd (H : HermSp M V) {r : ℕ} (Fr : FrameD H r) {L : Submodule M.L.O (H.Wb Fr.f)}
     (hL : Fr.IsInner L) : Fr.z ∈ Fr.LamStd L := by
@@ -664,8 +660,7 @@ theorem change_X (F : FlagG H r T) (e' : Fin r → H.V) (x : H.V) (h : ∀ a, e'
   span_eq F e' h
 
 theorem mkflag : ∀ (D : D7) (T : D.host.E) (G : FlagG (VS D) D.R.rS T) (e' : Fin D.R.rS → (VS D).V) (x : (VS D).V), (∀ a, e' a - G.e a ∈ G.Xa a.val) → x ∈ G.X → ∃ G' : FlagG (VS D) D.R.rS T, G'.e = e' ∧ G'.z = G.z + x ∧ G'.X = G.X := by
-  intro D T G e' x h hx
-  exact ⟨change G e' x h hx, rfl, rfl, change_X G e' x h hx⟩
+  exact fun D T G e' x h hx => ⟨change G e' x h hx, rfl, rfl, change_X G e' x h hx⟩
 
 end GlobalTheory.MkFlag
 end -- clump:auto
@@ -960,18 +955,15 @@ theorem mem_gmap_inv (g : GV D) (Λ : LV D) (x : (VS D).V) : x ∈ Formalism.Her
   constructor
   · rintro ⟨y, hy, rfl⟩
     simpa using hy
-  · intro h
-    exact ⟨g x, h, by simp⟩
+  · exact fun h => ⟨g x, h, by simp⟩
 
 variable {T : D.host.E} {F0 G' : FlagG (VS D) D.R.rS T} {g : GV D}
 
 theorem e_eq (hfr : ∀ a, g (F0.fvec a) = G'.fvec a) (a : Fin D.R.rS) : g (F0.e a) = G'.e a := by
-  have h := hfr a.castSucc
-  simpa [FlagG.fvec, Fin.snoc_castSucc] using h
+  simpa [FlagG.fvec, Fin.snoc_castSucc] using hfr a.castSucc
 
 theorem z_eq (hfr : ∀ a, g (F0.fvec a) = G'.fvec a) : g F0.z = G'.z := by
-  have h := hfr (Fin.last _)
-  simpa [FlagG.fvec, Fin.snoc_last] using h
+  simpa [FlagG.fvec, Fin.snoc_last] using hfr (Fin.last _)
 
 theorem map_X (hfr : ∀ a, g (F0.fvec a) = G'.fvec a) :
     F0.X.map (g : (VS D).V →ₗ[D.host.E] (VS D).V) = G'.X := by
@@ -984,8 +976,7 @@ theorem map_X (hfr : ∀ a, g (F0.fvec a) = G'.fvec a) :
 theorem mem_X (hfr : ∀ a, g (F0.fvec a) = G'.fvec a) (v : (VS D).V) : v ∈ F0.X ↔ g v ∈ G'.X := by
   rw [← map_X hfr]
   constructor
-  · intro hv
-    exact ⟨v, hv, rfl⟩
+  · exact fun hv => ⟨v, hv, rfl⟩
   · rintro ⟨w, hw, hwv⟩
     have : w = v := g.injective hwv
     exact this ▸ hw
@@ -1021,8 +1012,7 @@ theorem mem_XS (hfr : ∀ a, g (F0.fvec a) = G'.fvec a) (v : (VS D).V) : v ∈ X
       simp [e_eq hfr a]
   rw [← hmap]
   constructor
-  · intro hv
-    exact ⟨v, hv, rfl⟩
+  · exact fun hv => ⟨v, hv, rfl⟩
   · rintro ⟨w, hw, hwv⟩
     have : w = v := g.injective hwv
     exact this ▸ hw
@@ -1073,8 +1063,7 @@ theorem rowLat_transport : ∀ (D : D7) (T : D.host.E) (F0 G' : FlagG (VS D) D.R
     rw [hU0]
   refine ⟨Formalism.MainNotions.BridgeRowsGenus.unimodular_mem_genus Formalism.L2.SG.Pf.Cnt.local_unimodular_holds D.sp.cm (VS D) _ hL' hU',
     hL', hU', ?_, ?_, ?_⟩
-  · rw [mem_gmap_inv, z_eq hfr]
-    exact hz
+  · rwa [mem_gmap_inv, z_eq hfr]
   · ext v
     change v ∈ Formalism.HermitianLatticesTheory.gmap g⁻¹ Λ ⊓ toO (VS D) F0.X ↔ v ∈ XS D F0
     rw [mem_XS hfr, ← hX]
@@ -1084,8 +1073,7 @@ theorem rowLat_transport : ∀ (D : D7) (T : D.host.E) (F0 G' : FlagG (VS D) D.R
   · intro c hc
     apply hprim c
     have := mem_Lsub hg hfr Λ _ hc
-    rw [map_smul, z_eq hfr] at this
-    exact this
+    rwa [map_smul, z_eq hfr] at this
 
 end GlobalTheory.RowLatTransport
 end -- clump:auto
@@ -1209,9 +1197,7 @@ theorem row_lattice_of_local_standard : ∀ (D : D7) (Tn : ℕ), Tn ≠ 0 → �
     have hxX : c • x ∈ (Xsp G : Submodule D.host.E (VS D).V) := Submodule.smul_mem _ c hx
     refine ⟨Submodule.mem_sup_right hxX, ?_⟩
     show c • x ∈ orth (VS D) (Xsp G)
-    simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker]
-    intro y hy
-    exact iso_X G.fl y hy _ hxX
+    simpa only [orth, Submodule.mem_iInf, LinearMap.mem_ker] using fun y hy => iso_X G.fl y hy _ hxX
   obtain ⟨h1, h2, h3, h4, h5, h6⟩ := hTr D _ F0 G' g hg hga Λ hΛ hu (hGz ▸ hzx) hX' hpr'
   refine ⟨g, ⟨hg, fun a => ?_⟩, h1, ⟨h2, h3, ⟨h4, rfl⟩, hC D _ F0 _ h5 h6⟩, h5⟩
   show g (F0.fvec a) - G.fl.fvec a ∈ G.fl.Xa a.val
@@ -1221,8 +1207,7 @@ theorem row_lattice_of_local_standard : ∀ (D : D7) (Tn : ℕ), Tn ≠ 0 → �
     simp only [FlagG.fvec, Fin.snoc_last, Fin.val_last, hGz, _root_.Formalism.MainNotions.BridgeLemma₂.partial_isotropic_top]
     simpa using hx
   | cast b =>
-    simp only [FlagG.fvec, Fin.snoc_castSucc, Fin.val_castSucc, hGe]
-    exact he' b
+    simpa only [FlagG.fvec, Fin.snoc_castSucc, Fin.val_castSucc, hGe] using he' b
 
 end GlobalTheory.RowLatAdapt
 end -- clump:auto

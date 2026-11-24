@@ -624,9 +624,7 @@ theorem exists_gram_inv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
   have hGo : RingHom.mapMatrix (m := Fin n) (Formalism.UG.intL L).subtype Go = G := by ext i j; rfl
   have e1 : Ho * Go = 1 := hinjM (by rw [map_mul, hHo, hGo, hHG, map_one])
   have e2 : Go * Ho = 1 := hinjM (by rw [map_mul, hHo, hGo, hGH, map_one])
-  refine ⟨⟨Ho, Go, e1, e2⟩, ?_⟩
-  apply Units.ext
-  exact hHo
+  exact ⟨⟨Ho, Go, e1, e2⟩, Units.ext hHo⟩
 
 end GlobalTheory.InertGram
 end -- clump:auto
@@ -1323,8 +1321,7 @@ theorem gram_skew_unimodular : ∀ (F E : Type) [Field F] [NumberField F] [Field
       · rw [Pi.single_eq_of_ne hki]; exact zero_mem _)
     have e : Pm *ᵥ Pi.single i 1 = fun k => Pm k i := by
       funext k; simp [Matrix.mulVec, dotProduct, Pi.single_apply]
-    rw [e] at h
-    exact h
+    rwa [e] at h
   have hGint : ∀ i j, G i j ∈ Formalism.UG.intL L := fun i j => by
     rw [hGe]; exact hsesq _ (hcol i) _ (hcol j)
   have hJskew : ∀ k l, σL (X.J.map φ k l) = -(X.J.map φ l k) := fun k l => by
@@ -1504,8 +1501,7 @@ theorem mem_KAt_of_frame : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
     · simp [hij]
   rw [hm]
   ext i j
-  simp only [Matrix.smul_apply, Matrix.map_apply, Matrix.zero_apply]
-  exact hsup _ u hu
+  simpa only [Matrix.smul_apply, Matrix.map_apply, Matrix.zero_apply] using hsup _ u hu
 
 end GlobalTheory.InertKatFrame
 end -- clump:auto

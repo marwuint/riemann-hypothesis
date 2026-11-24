@@ -100,12 +100,10 @@ theorem exists_intertwiner_span {G V : Type} [AddCommGroup G] [AddCommGroup V] [
       obtain ⟨r, hr, u, hu, hkt⟩ := hRL (k • t) (hΦk t ht)
       have hex : ∃ t', k • t' = r := ⟨t - k • u, by rw [smul_sub, smul_smul, hkt, add_sub_cancel_right]⟩
       refine ⟨s r, ?_, k • u, AddSubgroup.mem_map.2 ⟨u, hu, by simp⟩, ?_⟩
-      · simp only [Set.Finite.mem_toFinset, Set.mem_image]
-        exact ⟨r, hr, rfl⟩
+      · simpa only [Set.Finite.mem_toFinset, Set.mem_image] using ⟨r, hr, rfl⟩
       · apply tf k hk
         show k • t = k • (s r + k • u)
-        rw [smul_add, hs r hr hex, smul_smul]
-        exact hkt
+        rwa [smul_add, hs r hr hex, smul_smul]
   have key : ∀ Ψ ∈ waveSpan χ X Y L, (∀ x ∈ X, T (fun t => Ψ (t + x)) = ρ x (T Ψ)) ∧
       (∀ y ∈ Y, T (fun t => χ t y * Ψ t) = ρ y (T Ψ)) ∧
       T Ψ ∈ Submodule.span ℂ {v | ∃ x ∈ X, ∃ y ∈ Y, v = ρ x (ρ y f₀)} := by

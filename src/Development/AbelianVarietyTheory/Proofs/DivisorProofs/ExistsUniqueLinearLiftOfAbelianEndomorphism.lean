@@ -79,14 +79,12 @@ theorem existsUnique_linear_lift :
   obtain ⟨U, hU, hpU, -⟩ := exists_isAffineOpen_mem_and_subset (x := (e' 0).left pt) (U := ⊤) (Set.mem_univ _)
   have h0 : ⊤ ≤ (e' 0).left ⁻¹ᵁ U := by
     intro q _
-    rw [hsub q]
-    exact hpU
+    rwa [hsub q]
   have hker' : (ex.ker : Set (Fin g → ℂ)) = Λ := Set.ext fun z ↦ hker z
   have hholG : IsHolTo (Set.univ : Set (Fin g → ℂ)) (fun z ↦ (e z).left ≫ α.left) :=
     ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_comp he.2.2.1 α.left
   have hS0 : (0 : Additive (Over.mk y ⟶ G)) ∈ {a : Additive (Over.mk y ⟶ G) | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U} := by
-    rw [← map_zero ex]
-    exact h0
+    rwa [← map_zero ex]
   have hsep : ∀ a ∈ {a : Additive (Over.mk y ⟶ G) | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U},
       ∀ b ∈ {a : Additive (Over.mk y ⟶ G) | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U},
       (∀ s : Γ(G.left, U), valAt' (Additive.toMul a).left U s = valAt' (Additive.toMul b).left U s) → a = b := by
@@ -96,23 +94,19 @@ theorem existsUnique_linear_lift :
         (valAt'_eq_evalPt _ U ha s).symm.trans ((h s).trans (valAt'_eq_evalPt _ U hb s))))
   have hSe : IsOpen {z : Fin g → ℂ | ⊤ ≤ (e' z).left ⁻¹ᵁ U} := by
     have := (he'.2.2.1 U 0).1
-    simp only [Set.mem_univ, true_and] at this
-    exact this
+    simpa only [Set.mem_univ, true_and] using this
   have hSG : IsOpen {z : Fin g → ℂ | ⊤ ≤ ((e z).left ≫ α.left) ⁻¹ᵁ U} := by
     have := (hholG U 0).1
-    simp only [Set.mem_univ, true_and] at this
-    exact this
+    simpa only [Set.mem_univ, true_and] using this
   have hfe : ∀ s : Γ(G.left, U), DifferentiableOn ℂ (fun z ↦ valAt' (e' z).left U s) {z | ⊤ ≤ (e' z).left ⁻¹ᵁ U} := by
     intro s
     have := (he'.2.2.1 U s).2
-    simp only [Set.mem_univ, true_and] at this
-    exact this
+    simpa only [Set.mem_univ, true_and] using this
   have hfG : ∀ s : Γ(G.left, U), DifferentiableOn ℂ (fun z ↦ valAt' ((e z).left ≫ α.left) U s)
       {z | ⊤ ≤ ((e z).left ≫ α.left) ⁻¹ᵁ U} := by
     intro s
     have := (hholG U s).2
-    simp only [Set.mem_univ, true_and] at this
-    exact this
+    simpa only [Set.mem_univ, true_and] using this
   have hD : ∀ w : Fin g → ℂ, (∀ s : Γ(G.left, U), fderiv ℂ (fun z ↦ valAt' (e' z).left U s) 0 w = 0) → w = 0 := by
     intro w hw
     obtain ⟨v, hv, -⟩ := he'.2.2.2.1 w

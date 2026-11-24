@@ -110,8 +110,7 @@ private theorem detOn_le_one_of_unitary_of_invariant (U : Matrix (Fin n) (Fin n)
     refine hbox.of_isClosed_subset hcl ?_
     intro X hX
     simp only [Set.mem_pi, Set.mem_univ, true_implies, Metric.mem_closedBall, dist_zero_right]
-    intro i k
-    exact entry_norm_bound_of_unitary (Matrix.mem_unitaryGroup_iff'.2 hX) i k
+    exact fun i k => entry_norm_bound_of_unitary (Matrix.mem_unitaryGroup_iff'.2 hX) i k
   have hUg : U ∈ Matrix.unitaryGroup (Fin n) ℂ := Matrix.mem_unitaryGroup_iff'.2 hU
   have hpow : ∀ k : ℕ, (∀ y ∈ V, U ^ k *ᵥ y ∈ V) ∧ detOn (U ^ k) V = detOn U V ^ k := by
     intro k
@@ -171,8 +170,7 @@ theorem exists_ball {s : Set (Matrix (Fin n) (Fin n) ℂ)} (hs : s ∈ nhds 1) :
     ∃ t : ℝ, 0 < t ∧ ∀ X, nrm (X - 1) < t → X ∈ s := by
   obtain ⟨t, ht, hsub⟩ := Metric.mem_nhds_iff.mp hs
   refine ⟨t, ht, fun X hX => hsub ?_⟩
-  rw [Metric.mem_ball, dist_eq_norm, ← nrm_eq]
-  exact hX
+  rwa [Metric.mem_ball, dist_eq_norm, ← nrm_eq]
 
 theorem dlt_props : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), Measurable (dlt (ε := ε) j W) ∧ (∀ l ∈ maxK ε ∩ flagM ε W, ∀ m ∈ flagM ε W, dlt j W (m * l) = dlt j W m) ∧ ∀ η : ℝ, 0 < η → ∃ t : ℝ, 0 < t ∧ ∀ m ∈ flagM ε W, nrm (uMat m - 1) < t → dlt j W m ≤ ENNReal.ofReal (1 + η) ∧ 1 ≤ ENNReal.ofReal (1 + η) * dlt j W m := by
   intro n ε a j W

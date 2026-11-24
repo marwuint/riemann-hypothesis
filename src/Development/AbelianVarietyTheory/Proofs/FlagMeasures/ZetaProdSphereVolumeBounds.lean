@@ -78,24 +78,16 @@ theorem zeta_le (l K : ℕ) (hK : 0 < K) :
         rw [e, one_div_mul_one_div]
         apply one_div_le_one_div_of_le (by positivity)
         rw [pow_add]
-        apply mul_le_mul
-        · apply pow_le_pow_left₀ (by positivity)
-          linarith
-        · nlinarith
-        · positivity
-        · positivity
+        exact mul_le_mul (pow_le_pow_left₀ (by positivity) (by linarith) _) (by nlinarith)
+          (by positivity) (by positivity)
       nlinarith
-  apply Real.tsum_le_of_sum_range_le (fun m => by positivity)
-  intro n
+  refine Real.tsum_le_of_sum_range_le (fun m => by positivity) fun n => ?_
   have h2 : (∑ m ∈ Finset.range n, 1 / ((m : ℝ) + 1) ^ (l + 2)) ≤
-      ∑ m ∈ Finset.range (K + n), 1 / ((m : ℝ) + 1) ^ (l + 2) := by
-    apply Finset.sum_le_sum_of_subset_of_nonneg
-    · exact Finset.range_mono (by omega)
-    · intro i _ _
-      positivity
+      ∑ m ∈ Finset.range (K + n), 1 / ((m : ℝ) + 1) ^ (l + 2) :=
+    Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_mono (by omega))
+      (fun i _ _ => by positivity)
   have h3 : 0 ≤ 1 / ((K : ℝ) + 1) ^ l * (1 / ((K : ℝ) + n)) := by positivity
-  have := key n
-  nlinarith
+  linarith [key n]
 
 theorem zeta_nonneg (l : ℕ) : 0 ≤ ∑' m : ℕ, 1 / ((m : ℝ) + 1) ^ l :=
   tsum_nonneg (fun m => by positivity)

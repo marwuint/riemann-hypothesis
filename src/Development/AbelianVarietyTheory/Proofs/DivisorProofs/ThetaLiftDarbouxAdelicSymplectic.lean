@@ -339,8 +339,7 @@ theorem sq_scalar_character : ∀ (G G' M H : Type) [Group G] [TopologicalSpace 
     have := hA g v₀
     rw [h0, zero_smul] at this
     exact hv₀ ((ω g).map_eq_zero_iff.mp this)
-  · intro g g' a hg' ha
-    exact huniq g g' (L g) a (A g) hg' (hL g) ha (hA g)
+  · exact fun g g' a hg' ha => huniq g g' (L g) a (A g) hg' (hL g) ha (hA g)
 
 end GlobalTheory
 end -- clump:auto
@@ -418,8 +417,7 @@ theorem realRep (hMp : GlobalTheory.Published.RealMetaplecticRepresentation) {G 
   rcases isEmpty_or_nonempty l with hl | hl
   · refine ⟨1, fun _ => 1, fun _ _ => (mul_one _).symm, continuous_const, fun _ => one_ne_zero, fun g w f f₁ h => ?_,
       fun _ _ _ => rfl, fun L f => (continuous_const : Continuous fun _ : G => L f), fun γ _ _ X _ _ a ha L f => ?_⟩
-    · rw [Subsingleton.elim ((s g : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) w]
-      exact h
+    · rwa [Subsingleton.elim ((s g : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) w]
     · have h0 : a = 0 := ha.unique (hasDerivAt_const _ _)
       have hq : quad X f = 0 := by simp [quad]
       rw [h0, hq]
@@ -481,8 +479,7 @@ theorem realRep (hMp : GlobalTheory.Published.RealMetaplecticRepresentation) {G 
       exact (((h2 _).comp hδc).inner ((hc _).comp hγ)).div_const _
     have hχ0 : χ 0 = 1 := by
       rw [e2]
-      simp only [hδ0, hγ0, map_one, LinearIsometryEquiv.coe_one, id_eq]
-      exact div_self hin
+      simpa only [hδ0, hγ0, map_one, LinearIsometryEquiv.coe_one, id_eq] using div_self hin
     have hd := hasDerivAt_of_sq hχc.continuousAt hχ0 (a := b) (by
       simpa only [fun t => hη4 _ _ _ (hpr t) (hχ' t)] using hb)
     have hd2 := (metaplectic_schwartz_smooth h3 h4 h5).2.2 L X hX δ hδ0 hδX hδd f

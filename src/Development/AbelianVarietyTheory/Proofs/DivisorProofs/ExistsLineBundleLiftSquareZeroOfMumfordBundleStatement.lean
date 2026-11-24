@@ -330,15 +330,13 @@ theorem isCoc_of_isFrame : ∀ (X : Scheme.{0}) (C : Type) [Category.{0} C] (V :
     have h1 := hτ T T'' (a ≫ b) m
     have h2 := congrArg (res (inf_le_inf_right (L.U m) (hV b))) (hτ T T' a m)
     have h3 := hτ T' T'' b m
-    rw [res_res', map_mul, res_res', h3] at h2
-    rw [h1] at h2
+    rw [res_res', map_mul, res_res', h3, h1] at h2
     apply mul_right_cancel (b := τ T'' m)
     rw [h2, map_mul, res_res', ← _root_.mul_assoc]
   apply Units.ext
   refine X.sheaf.eq_of_locally_eq' (fun m => V T'' ⊓ L.U m) (V T'') (fun m => homOfLE inf_le_left) ?_ _ _ ?_
   · rw [← inf_iSup_eq, hL.cover, inf_top_eq]
-  · intro m
-    exact congrArg Units.val (key m)
+  · exact fun m => congrArg Units.val (key m)
 
 end GlobalTheory.LBObs.FrameCoc
 end -- clump:auto
@@ -507,8 +505,7 @@ theorem transition_units (X : Scheme.{0}) (C : Type) [Category.{0} C] (V : C →
     fun g T a b => (eq_mul_inv_iff_mul_eq).symm
   refine ⟨s, fun T a b => (key s T a b).2 ?_, fun g hg => ?_⟩
   · have := hs ⟨T, ⟨a⟩, ⟨b⟩⟩
-    rw [hw ⟨T, ⟨a⟩, ⟨b⟩⟩ a b] at this
-    exact this
+    rwa [hw ⟨T, ⟨a⟩, ⟨b⟩⟩ a b] at this
   · apply units_eq_of_local
     intro x hx
     obtain ⟨T, ⟨a⟩, ⟨b⟩, hxT, -⟩ := hB.2 T₁ T₂ x (V T₁ ⊓ V T₂) hx hx.1 hx.2
@@ -659,12 +656,10 @@ theorem isBas_of_preimage_eq (X X₀ : Scheme.{0}) (i : X₀ ⟶ X) [IsClosedImm
     exact htU hw
   have hmem : ∀ (t : C) (y : X₀), y ∈ V₀ t → i y ∈ V t := by
     intro t y hy
-    rw [← hV t] at hy
-    exact hy
+    rwa [← hV t] at hy
   have hmem' : ∀ (t : C) (y : X₀), i y ∈ V t → y ∈ V₀ t := by
     intro t y hy
-    rw [← hV t]
-    exact hy
+    rwa [← hV t]
   refine ⟨fun x U hx ↦ ?_, fun t₁ t₂ x U hx h₁ h₂ ↦ ?_⟩
   · obtain ⟨y, rfl⟩ := i.surjective x
     obtain ⟨t, hyt, htU⟩ := h.1 y (i ⁻¹ᵁ U) hx

@@ -68,11 +68,8 @@ theorem mem_max_iff (x : w.adicCompletionIntegers E) :
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
   have hx : Valued.v (x : w.adicCompletion E) ≤ 1 := x.2
   constructor
-  · intro hn
-    refine lt_of_le_of_ne hx fun h => hn ?_
-    exact (hI.isUnit_iff_valuation_eq_one (x := x)).2 h
-  · intro hlt hu
-    exact (ne_of_lt hlt) ((hI.isUnit_iff_valuation_eq_one (x := x)).1 hu)
+  · exact fun hn => lt_of_le_of_ne hx fun h => hn ((hI.isUnit_iff_valuation_eq_one (x := x)).2 h)
+  · exact fun hlt hu => (ne_of_lt hlt) ((hI.isUnit_iff_valuation_eq_one (x := x)).1 hu)
 
 private lemma mem_span_pow_iff_valuation_le_exp_neg_one_pow (p : w.adicCompletionIntegers E)
     (hp : Valued.v (p : w.adicCompletion E) = WithZero.exp (-1 : ℤ)) (n : ℕ)
@@ -240,8 +237,7 @@ theorem exists_uq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr 
   have hx₀A : Valued.v x₀ ≤ 1 := hx₀
   have hσx₀ : Valued.v (σ x₀) ≤ 1 := by
     show Valued.v (cj w x₀) ≤ 1
-    rw [hiso]
-    exact hx₀A
+    rwa [hiso]
   have hint : ∀ x : w.adicCompletionIntegers E, ∃ y : w.adicCompletionIntegers E,
       σ (algebraMap _ (w.adicCompletion E) x) = algebraMap _ (w.adicCompletion E) y := by
     intro x
@@ -256,8 +252,7 @@ theorem exists_uq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr 
     refine ⟨⟨x₀, hx₀A⟩, ⟨σ x₀, hσx₀⟩, rfl, fun hm => ?_⟩
     have h1 := (mem_max_iff w _).1 hm
     have h2 : Valued.v (x₀ - σ x₀) = 1 := by
-      rw [Valuation.map_sub_swap]
-      exact hx₀'
+      rwa [Valuation.map_sub_swap]
     push_cast at h1
     rw [h2] at h1
     exact lt_irrefl _ h1
@@ -275,8 +270,7 @@ theorem exists_uq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr 
     constructor
     · rintro ⟨a, rfl⟩
       exact a.2
-    · intro h
-      exact ⟨⟨x, h⟩, rfl⟩
+    · exact fun h => ⟨⟨x, h⟩, rfl⟩
   · intro x
     show -WithZero.log ((IsDiscreteValuationRing.maximalIdeal (w.adicCompletionIntegers E)).valuation
       (w.adicCompletion E) x) = ordL x

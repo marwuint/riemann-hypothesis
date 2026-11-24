@@ -60,8 +60,7 @@ variable {E : Type} [Field E] [NumberField E]
 theorem eq_exp_of_le {x : WithZero (Multiplicative ℤ)} {m : ℤ} (h : x ≤ WithZero.exp m) (h' : ¬ x ≤ WithZero.exp (m - 1)) :
     x = WithZero.exp m := by
   refine le_antisymm h (not_lt.1 fun h1 => h' ?_)
-  rw [← WithZero.lt_mul_exp_iff_le WithZero.exp_ne_zero, ← WithZero.exp_add, sub_add_cancel]
-  exact h1
+  rwa [← WithZero.lt_mul_exp_iff_le WithZero.exp_ne_zero, ← WithZero.exp_add, sub_add_cancel]
 
 theorem exists_int_cong (P : HeightOneSpectrum (𝓞 E)) (z : P.adicCompletion E) (hz : Valued.v z ≤ 1) :
     ∃ b : 𝓞 E, Valued.v (algebraMap E (Af E) (algebraMap (𝓞 E) E b) P - z) ≤ WithZero.exp (-((1 : ℕ) : ℤ)) := by
@@ -78,8 +77,7 @@ theorem exists_int_cong (P : HeightOneSpectrum (𝓞 E)) (z : P.adicCompletion E
   refine ⟨b, ?_⟩
   rw [← hval, map_sub] at hb
   have := Valuation.map_add_le _ hb.le hk'
-  rw [sub_add_sub_cancel] at this
-  exact this
+  rwa [sub_add_sub_cancel] at this
 
 def unitF (a : OF E) (ha : a ≠ 0) : (maximalRealSubfield E)ˣ :=
   Units.mk0 (a : maximalRealSubfield E) (fun h => ha (RingOfIntegers.ext h))
@@ -102,8 +100,7 @@ theorem loc_mul_loc {χ : HChar E} (hF : TrivOnF χ) {v : HeightOneSpectrum (OF 
     · exact hP'
   have h := hF.1 v (unitF a ha)
   unfold Formalism.L2.Host.HChar.resFin at h
-  rw [MonoidHom.finsetProd_apply, hS, Finset.prod_pair hne] at h
-  exact h
+  rwa [MonoidHom.finsetProd_apply, hS, Finset.prod_pair hne] at h
 
 theorem unrAt_and_val : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (χ : HChar E) (v : HeightOneSpectrum (OF E))
     (P P' : HeightOneSpectrum (𝓞 E)), TrivOnF χ → Splits v → Over P v → Over P' v → P ≠ P' → LevelLe χ P' 1 → UnrAt χ P →
@@ -126,8 +123,7 @@ theorem unrAt_and_val : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
     have h4 : Valued.v (iota a P' - u) ≤ WithZero.exp (-((1 : ℕ) : ℤ)) := by
       rw [map_sub (algebraMap (𝓞 E) E), map_sub (algebraMap E (Af E)), sub_coord] at h3
       have := Valuation.map_sub_le _ hb h3
-      rw [sub_sub_sub_cancel_left] at this
-      exact this
+      rwa [sub_sub_sub_cancel_left] at this
     have hlt : WithZero.exp (-((1 : ℕ) : ℤ)) < 1 := by
       rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; omega
     have h5 : Valued.v (iota a P') = 1 := by
@@ -143,8 +139,7 @@ theorem unrAt_and_val : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
       refine hlev _ ?_ ?_
       · show Valued.v ((locF P' a ha0 / u : (P'.adicCompletion E)ˣ) : P'.adicCompletion E) = 1
         rw [Units.val_div_eq_div_val, map_div₀, coe_locF, h5, hu1, div_one]
-      · rw [Units.val_div_eq_div_val, div_sub_one u.ne_zero, map_div₀, hu1, div_one, coe_locF]
-        exact h4
+      · rwa [Units.val_div_eq_div_val, div_sub_one u.ne_zero, map_div₀, hu1, div_one, coe_locF]
     rw [map_div, div_eq_one, h7] at h8
     exact h8.symm
   refine ⟨hun', ?_⟩

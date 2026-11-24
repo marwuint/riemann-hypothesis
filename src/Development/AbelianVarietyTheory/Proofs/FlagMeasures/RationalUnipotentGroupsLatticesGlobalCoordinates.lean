@@ -266,8 +266,7 @@ theorem mem_NU_iff_mem_Nof {P : LocNG.FPair H r} {S : Frames M.L r k} (c : WCoor
     constructor
     · intro h x y
       have := h (c.e x) (c.e y)
-      simp only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, hh] at this
-      exact this
+      simpa only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, hh] using this
     · intro h x y
       have h1 := hh (g (c.e.symm x)) (g (c.e.symm y))
       have h2 := hh (c.e.symm x) (c.e.symm y)
@@ -295,8 +294,7 @@ theorem mem_NU_iff_mem_Nof {P : LocNG.FPair H r} {S : Frames M.L r k} (c : WCoor
       rwa [hu] at this
     · intro h x hx
       have h1 := h (g.symm x) (bwd g f hfl r le_rfl x hx)
-      rw [← hu v (g.symm x), LinearEquiv.apply_symm_apply] at h1
-      exact h1
+      rwa [← hu v (g.symm x), LinearEquiv.apply_symm_apply] at h1
   · rintro ⟨hu, hj, -, hp⟩
     refine ⟨hu, fun a => (hj a).2 _ (Submodule.subset_span ⟨a.castSucc, ?_, rfl⟩), hp⟩
     show (a : ℕ) < (a : ℕ) + 1
@@ -440,8 +438,7 @@ theorem mem_nrat_of_ext : ∀ (D : D7) (Z : LocDat D) (p : PlF D) {T : D.host.E}
         ((fun b : Fin D.R.rS => scaled Z p (frame F) b.castSucc) '' Set.univ) := by
       rw [Set.image_univ]; exact h2
     have h4 := mem_of_baseChange_mem_span p _ (span_scaled_le Z p F Set.univ h3)
-    rw [Set.image_univ] at h4
-    exact h4
+    rwa [Set.image_univ] at h4
 
 end GlobalTheory.LocReflect
 end -- clump:auto
@@ -487,8 +484,7 @@ theorem isUpUni_mul {N : ℕ} {K : Type} [inst : Field K] {A B : Matrix (Fin N) 
       rcases lt_or_gt_of_ne hk with h | h
       · rw [(hA i k).1 h, zero_mul]
       · rw [(hB k i).1 h, mul_zero]
-    · intro h
-      exact absurd (Finset.mem_univ i) h
+    · exact fun h => absurd (Finset.mem_univ i) h
 
 end GlobalTheory.UpperUnipotentMulFlagMeasures
 end -- clump:auto
@@ -634,8 +630,7 @@ theorem orth_iff {β : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hi : β ∈ Formalis
   · intro h x hx
     have hx' : β.symm x ∈ U := (hU _).1 (by rw [LinearEquiv.apply_symm_apply]; exact hx)
     have h' := h _ hx'
-    rw [← hiso, LinearEquiv.apply_symm_apply] at h'
-    exact h'
+    rwa [← hiso, LinearEquiv.apply_symm_apply] at h'
 
 private lemma frame_mem_Xflag {T0 : D.host.E} (F0 : LFlag (D.sp.Y 0) D.R.rS T0) (j : ℕ)
     (a : Fin (D.R.rS + 1)) (ha : a.1 < j) (hr : a.1 < D.R.rS) : frame F0 a ∈ Xflag F0 j := by
@@ -676,10 +671,8 @@ theorem mem_Xflag_iff {T T0 : D.host.E} (F : LFlag (D.sp.Y 0) D.R.rS T) (F0 : LF
     σ x ∈ Xflag F0 j ↔ x ∈ Xflag F j := by
   have hle : (Xflag F j).map (σ : (VS D).V →ₗ[D.host.E] (VS D).V) ≤ Xflag F0 j := by
     rw [Submodule.map_le_iff_le_comap]
-    intro y hy
-    exact map_Xflag_le F F0 σ U hU hf j y hy
+    exact fun y hy => map_Xflag_le F F0 σ U hU hf j y hy
   have hfin : FiniteDimensional D.host.E (Xflag F0 j) := by
-    show FiniteDimensional D.host.E (Submodule.span D.host.E (F0.fl.e '' {i | i.1 < j}))
     exact FiniteDimensional.span_of_finite D.host.E ((Set.toFinite _).image _)
   have heq : (Xflag F j).map (σ : (VS D).V →ₗ[D.host.E] (VS D).V) = Xflag F0 j := by
     refine Submodule.eq_of_le_of_finrank_le hle ?_
@@ -689,8 +682,7 @@ theorem mem_Xflag_iff {T T0 : D.host.E} (F : LFlag (D.sp.Y 0) D.R.rS T) (F0 : LF
     rw [← heq, Submodule.mem_map] at h
     obtain ⟨y, hy, hyx⟩ := h
     have hyx' : y = x := σ.injective hyx
-    rw [hyx'] at hy
-    exact hy
+    rwa [hyx'] at hy
   · exact map_Xflag_le F F0 σ U hU hf j x
 
 theorem nrat_conj_iff : ∀ (D : D7) {T : D.host.E} (F F0 : LFlag (D.sp.Y 0) D.R.rS T)
@@ -729,12 +721,10 @@ theorem nrat_conj_iff : ∀ (D : D7) {T : D.host.E} (F F0 : LFlag (D.sp.Y 0) D.R
       exact mul_mem (mul_mem (inv_mem hσ) h1) hσ
     · intro j x hx
       have h' := h2 j (σ x) ((hX _ x).2 hx)
-      rw [hc, hsub, hX] at h'
-      exact h'
+      rwa [hc, hsub, hX] at h'
     · intro x hx
       have h' := h3 (σ x) ((hO x).2 hx)
-      rw [hc, hsub, hS] at h'
-      exact h'
+      rwa [hc, hsub, hS] at h'
 
 end GlobalTheory.FlagMove
 end -- clump:auto

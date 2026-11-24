@@ -212,21 +212,18 @@ theorem fibre_finite_isClosed_of_affine_finite {X Y : Scheme.{0}} (f : Y ⟶ X) 
     rw [hy]; exact hxV
   have hres : ∀ (y : Y) (hy : f.base y = x),
       (f ∣_ V) (⟨y, hmemU y hy⟩ : (f ⁻¹ᵁ V).toScheme) = (⟨x, hxV⟩ : V.toScheme) := by
-    intro y hy
-    exact Subtype.ext ((morphismRestrict_base_coe f V _).trans hy)
+    exact fun y hy => Subtype.ext ((morphismRestrict_base_coe f V _).trans hy)
   refine ⟨?_, ?_⟩
   · refine (((f ∣_ V).finite_preimage_singleton (⟨x, hxV⟩ : V.toScheme)).image
       (f ⁻¹ᵁ V).ι.base).subset ?_
-    intro y hy
-    exact ⟨⟨y, hmemU y hy⟩, hres y hy, rfl⟩
+    exact fun y hy => ⟨⟨y, hmemU y hy⟩, hres y hy, rfl⟩
   · intro y hy
     rw [← closure_subset_iff_isClosed]
     intro z hz
     rw [← specializes_iff_mem_closure] at hz
     have hfz : f.base z = x := by
       have h1 : f.base y ⤳ f.base z := hz.map f.base.hom.continuous
-      rw [hy, specializes_iff_mem_closure, hx.closure_eq] at h1
-      exact h1
+      rwa [hy, specializes_iff_mem_closure, hx.closure_eq] at h1
     have hspec : (⟨y, hmemU y hy⟩ : (f ⁻¹ᵁ V).toScheme) ⤳ ⟨z, hmemU z hfz⟩ :=
       (f ⁻¹ᵁ V).ι.isOpenEmbedding.isInducing.specializes_iff.1 hz
     have hdisc := ((f ∣_ V).isDiscrete_preimage_singleton (⟨x, hxV⟩ : V.toScheme)).to_subtype
@@ -299,12 +296,10 @@ theorem sectionsOn_res_pi_bijective_of_separating {X : Scheme.{0}} (F : X.Module
       hcovV (sectionsOn.toΓ F (W i) (t i)) 0 (Subsingleton.elim _ _)
     refine ⟨(sectionsOn.toΓ F ⊤).symm s, (sectionsOn.toΓ F (W i)).injective ?_, fun j hj =>
       (sectionsOn.toΓ F (W j)).injective ?_⟩
-    · rw [sectionsOn.toΓ_res, AddEquiv.apply_symm_apply]
-      exact h₁
+    · rwa [sectionsOn.toΓ_res, AddEquiv.apply_symm_apply]
     · rw [sectionsOn.toΓ_res, AddEquiv.apply_symm_apply, map_zero]
       have e := congrArg (F.presheaf.map (homOfLE (hWV j hj)).op) h₂
-      rw [map_zero, ← ConcreteCategory.comp_apply, ← Functor.map_comp] at e
-      exact e
+      rwa [map_zero, ← ConcreteCategory.comp_apply, ← Functor.map_comp] at e
   choose s h₁ h₂ using key
   refine ⟨∑ i, s i, funext fun j => ?_⟩
 
@@ -384,8 +379,7 @@ theorem pullback_mulSecOfEq (hL : L.IsLB) (G : X.Modules) {n m k : ℤ} (σ : LB
       (Scheme.Modules.pushforward f).map (mulSecOfEq ((Scheme.Modules.pullback f).obj G) (zpull f σ) h) =
         mulSecOfEq ((Scheme.Modules.pushforward f).obj ((Scheme.Modules.pullback f).obj G)) σ h ≫
           (projZIso f hL ((Scheme.Modules.pullback f).obj G) k).inv := by
-    rw [Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]
-    exact e
+    rwa [Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]
   rw [e', ← Category.assoc, ← Category.assoc]
   congr 1
   symm

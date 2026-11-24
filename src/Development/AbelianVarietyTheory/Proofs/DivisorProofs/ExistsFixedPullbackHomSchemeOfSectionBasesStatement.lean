@@ -133,11 +133,9 @@ theorem ratio_unit_eq_one : ∀ (Rg : Type) [CommRing Rg] (A B : Over (Sp Rg)) [
     refine ⟨⟨⟨Set.mem_iInter.2 fun _ => ?_, Set.mem_iInter.2 fun _ => ?_⟩, Set.mem_iInter.2 fun _ => hiL⟩,
       Set.mem_iInter.2 fun _ => hiM⟩
     · show ((Φ'.left ≫ ψB) ≫ (snd (topS Rg) B).left) (zeroPt A' x) ∈ M.U iM
-      rw [← Scheme.Hom.comp_apply, eB', Scheme.Hom.comp_apply]
-      exact hiM
+      rwa [← Scheme.Hom.comp_apply, eB', Scheme.Hom.comp_apply]
     · show (ψA ≫ (snd (topS Rg) A).left) (zeroPt A' x) ∈ L.U iL
-      rw [← Scheme.Hom.comp_apply, eA', Scheme.Hom.comp_apply]
-      exact hiL
+      rwa [← Scheme.Hom.comp_apply, eA', Scheme.Hom.comp_apply]
   exact TopCat.Sheaf.eq_of_locally_eq' (Sp R).sheaf W ⊤ (fun p => homOfLE le_top) hcov _ 1
     (fun p => (hloc p).trans (map_one ((Sp R).presheaf.map (homOfLE le_top : W p ⟶ ⊤).op).hom).symm)
 
@@ -954,8 +952,7 @@ theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (e1 : W ≤ V) (e2 : V ≤ U)
 
 theorem preimage_comp_le {X Y Z : Scheme.{0}} (h : X ⟶ Y) (φ : Y ⟶ Z) {W : Z.Opens} {V : Y.Opens}
     (e : V ≤ φ ⁻¹ᵁ W) : h ⁻¹ᵁ V ≤ (h ≫ φ) ⁻¹ᵁ W := by
-  intro x hx
-  exact e hx
+  exact fun x hx => e hx
 
 theorem pullU_res_pullU {X Y Z : Scheme.{0}} (h : X ⟶ Y) (φ : Y ⟶ Z) {W : Z.Opens} {V : Y.Opens}
     (e : V ≤ φ ⁻¹ᵁ W) (u : Γ(Z, W)ˣ) :
@@ -997,8 +994,7 @@ theorem wchart_le_M {X Y Z : Scheme.{0}} (M : LB Z) (h : X ⟶ Y) (m : Y ⟶ Z) 
 
 theorem wchart_le_L {X Z : Scheme.{0}} (L : LB Z) (f : X ⟶ Z) (j : Fin 1 → L.ι) :
     LB.wchart L (fun _ : Fin 1 => f) j ≤ LB.wchart L (fun _ : PUnit => f) (fun _ => j 0) := by
-  intro x hx
-  exact Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hx 0
+  exact fun x hx => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hx 0
 
 theorem exists_powIso {X Y Z₁ Z₂ : Scheme.{0}} (L : LB Z₁) (M : LB Z₂) (f : X ⟶ Z₁) (h : X ⟶ Y) (m : Y ⟶ Z₂)
     (k : ℕ) (w : LB.Gen (LB.div ((M.pull m).pull h) (L.pull f))) (hw : w.IsGen) :
@@ -1687,7 +1683,6 @@ theorem lc_props {Rg : Type} [CommRing Rg] [IsNoetherianRing Rg] {N : ℕ} {X H 
     exact (quasiCompact_iff_compactSpace _).2 inferInstance
   · have : LocallyOfFiniteType (Spec.map (CommRingCat.ofHom (algebraMap Rg (MvPolynomial (Fin N) Rg)))) := by
       rw [HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]
-      show (algebraMap Rg (MvPolynomial (Fin N) Rg)).FiniteType
       exact RingHom.finiteType_algebraMap.2 inferInstance
     infer_instance
 

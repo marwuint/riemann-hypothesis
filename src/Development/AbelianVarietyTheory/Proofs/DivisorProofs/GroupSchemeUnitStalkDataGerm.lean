@@ -71,8 +71,7 @@ theorem germ_comp_of_spec {X Y : Scheme.{0}} {x : X} {y : Y} (φ : Y.presheaf.st
     (V : Y.Opens) (hy : y ∈ V) (U : X.Opens) (hx : x ∈ U) (h : U ≤ f ⁻¹ᵁ V) :
     Y.presheaf.germ V y hy ≫ φ = f.appLE V U h ≫ X.presheaf.germ U x hx := by
   have h1 : ⊤ ≤ (Spec.map φ ≫ Y.fromSpecStalk y) ⁻¹ᵁ V := by
-    intro z _
-    exact fromSpecStalk_preimage_top y V hy (Set.mem_univ _)
+    exact fun z _ => fromSpecStalk_preimage_top y V hy (Set.mem_univ _)
   have h2 : ⊤ ≤ (X.fromSpecStalk x ≫ f) ⁻¹ᵁ V := hφ ▸ h1
   have key := _root_.GlobalTheory.SS.FrobField.appLE_congr_hom hφ V ⊤ h1 h2
   have eL : (Spec.map φ ≫ Y.fromSpecStalk y).appLE V ⊤ h1 =
@@ -93,8 +92,7 @@ theorem germ_apply_of_spec {X Y : Scheme.{0}} {x : X} {y : Y} (φ : Y.presheaf.s
     (f : X ⟶ Y) (hφ : Spec.map (CommRingCat.ofHom φ) ≫ Y.fromSpecStalk y = X.fromSpecStalk x ≫ f)
     (V : Y.Opens) (hy : y ∈ V) (U : X.Opens) (hx : x ∈ U) (h : U ≤ f ⁻¹ᵁ V) (a : Γ(Y, V)) :
     φ (Y.presheaf.germ V y hy a) = X.presheaf.germ U x hx (f.appLE V U h a) := by
-  have e := congrArg (fun g => g.hom a) (germ_comp_of_spec (CommRingCat.ofHom φ) f hφ V hy U hx h)
-  exact e
+  exact congrArg (fun g => g.hom a) (germ_comp_of_spec (CommRingCat.ofHom φ) f hφ V hy U hx h)
 
 theorem stalkData_germ : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], ∀ (s : S) (π : S.presheaf.stalk s →+* G.left.presheaf.stalk (unitSec G s)) (ε : G.left.presheaf.stalk (unitSec G s) →+* S.presheaf.stalk s) (m : G.left.presheaf.stalk (unitSec G s) →+* G.left.presheaf.stalk (unitSec G s)), StalkData G s π ε m → (∀ (V : S.Opens) (hs : s ∈ V) (U : G.left.Opens) (hU : unitSec G s ∈ U) (h : U ≤ G.hom ⁻¹ᵁ V) (a : Γ(S, V)), π (S.presheaf.germ V s hs a) = G.left.presheaf.germ U _ hU (G.hom.appLE V U h a)) ∧ (∀ (U : G.left.Opens) (hU : unitSec G s ∈ U) (V : S.Opens) (hs : s ∈ V) (h : V ≤ unitSec G ⁻¹ᵁ U) (f : Γ(G.left, U)), ε (G.left.presheaf.germ U _ hU f) = S.presheaf.germ V s hs ((unitSec G).appLE U V h f)) ∧ (∀ (U : G.left.Opens) (hU : unitSec G s ∈ U) (U' : G.left.Opens) (hU' : unitSec G s ∈ U') (h : U' ≤ sqr G ⁻¹ᵁ U) (f : Γ(G.left, U)), m (G.left.presheaf.germ U _ hU f) = G.left.presheaf.germ U' _ hU' ((sqr G).appLE U U' h f)) := by
   intro S G _ s π ε m hD

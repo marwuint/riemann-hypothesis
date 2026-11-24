@@ -297,7 +297,6 @@ theorem isFinite_restrict : ∀ (S' : Scheme.{0}) [IsLocallyNoetherian S'] (G : 
     rw [e]
     apply hZ
     rintro _ ⟨y, rfl⟩
-    show (((ZB.hom ≫ t) ≫ V₀.ι).base y) ∈ V₀
     exact (Scheme.Opens.range_ι V₀).subset ⟨(ZB.hom ≫ t).base y, rfl⟩
   obtain ⟨z, hz⟩ := (hrep ZB iB).1 hmem
   haveI : IsClosedImmersion iV.left := isClosedImmersion_pullback_map _ i
@@ -425,16 +424,14 @@ theorem exists_finite_kernel_near : ∀ (S' : Scheme.{0}) [IsLocallyNoetherian S
   refine ⟨V₀, pullback h (η[D]), pullback.fst h (η[D]), hsV, inferInstance,
     GlobalTheory.T.relatively_ample_closed_immersion S' G P hG hP V₀ hV₀ (hW V₀ fun _ hx => hVW hx) _ _ hcl
       (fun T z _ => memKL_of_triv hP hs a₁ a₂ ((K _).2 (kerh z))), ?_, ?_, ?_, ?_, ?_⟩
-  · intro T _
-    exact fac 1 (MonObj.one_comp h)
+  · exact fun T _ => fac 1 (MonObj.one_comp h)
   · intro T a b _
     refine fac _ ?_
     rw [MonObj.mul_comp, kerh, kerh, _root_.mul_one]
   · intro T a _
     refine fac _ ?_
     rw [GrpObj.inv_comp, kerh, inv_one]
-  · intro T x _ hx
-    exact fac x ((K x).1 hx)
+  · exact fun T x _ hx => fac x ((K x).1 hx)
   · intro T z _ p
     refine ⟨⊤, trivial, (K _).2 ?_⟩
     rw [Category.assoc, Category.assoc, ← Category.assoc z, kerh, MonObj.comp_one]
@@ -626,8 +623,7 @@ theorem exists_uniform_notMem {A M M' : Type*} [CommRing A] [AddCommGroup M] [Mo
   refine ⟨f, hf, fun b => ?_⟩
   have hle : Submodule.span A (s : Set M) ≤ S.comap (f • D) := by
     rw [Submodule.span_le]
-    intro b hb
-    exact hfs b hb
+    exact fun b hb => hfs b hb
   have hb : b ∈ Submodule.span A (s : Set M) := hs ▸ Submodule.mem_top
   simpa using hle hb
 
@@ -659,8 +655,7 @@ theorem augmentation_agrees_after_inverting
 
   have hfαQ : ∀ x ∈ J, algebraMap A B f * α x ∈ Q := fun x hx => by
     have h := hfD x
-    rw [hDapp, (hmemJ x).mp hx, map_zero, sub_zero, Algebra.smul_def] at h
-    exact h
+    rwa [hDapp, (hmemJ x).mp hx, map_zero, sub_zero, Algebra.smul_def] at h
 
   have hL1 : ∀ y ∈ Q, y ∈ J → y ∈ P • J.restrictScalars A := fun y hyQ hyJ => by
     let φ : B →ₗ[A] B := LinearMap.id - (Algebra.linearMap A B).comp ε.toLinearMap
@@ -702,8 +697,7 @@ theorem augmentation_agrees_after_inverting
         exact Ideal.mem_map_of_mem _ hz)
     refine ⟨s, hs, fun x hx => ?_⟩
     have h0 := hs0 _ (Ideal.mem_map_of_mem (Ideal.Quotient.mk (J ^ 2)) hx)
-    rw [← hL, ← map_smul, hL, Ideal.Quotient.eq_zero_iff_mem, Algebra.smul_def] at h0
-    exact h0
+    rwa [← hL, ← map_smul, hL, Ideal.Quotient.eq_zero_iff_mem, Algebra.smul_def] at h0
   obtain ⟨s, hsP, hsJ⟩ := hs
 
   set K : Ideal B := J.map α with hKdef
@@ -950,8 +944,7 @@ theorem exists_alg [Algebra A B] (hφ : φ = CommRingCat.ofHom (algebraMap A B))
     | succ n ih =>
       intro h
       have k := key (powAlg ε Δ n) (AlgHom.id A B)
-      rw [ih (und _), hu (und _), ← pow_succ] at k
-      exact k
+      rwa [ih (und _), hu (und _), ← pow_succ] at k
 
 end GlobalTheory.FiniteKilled
 
@@ -986,8 +979,7 @@ theorem spec_eq_of_unit {X : Scheme.{0}} {B : CommRingCat.{0}} (k : X ⟶ Spec B
     ← Category.assoc, ← Category.assoc, spec_inv_appTop, spec_inv_appTop, Category.assoc, Category.assoc]
   ext b
   have e := congrArg ((Scheme.ΓSpecIso B).inv ≫ k.appTop).hom (h b)
-  rw [map_mul, map_sub, map_zero, hu.mul_right_eq_zero, sub_eq_zero] at e
-  exact e
+  rwa [map_mul, map_sub, map_zero, hu.mul_right_eq_zero, sub_eq_zero] at e
 
 theorem isUnit_of_range {X S : Scheme.{0}} {U : S.Opens} (hU : IsAffineOpen U) {B : CommRingCat.{0}}
     (k : X ⟶ Spec B) (φ : Γ(S, U) ⟶ B) (g : Γ(S, U))
@@ -1010,8 +1002,7 @@ theorem isUnit_of_range {X S : Scheme.{0}} {U : S.Opens} (hU : IsAffineOpen U) {
   rw [IsAffineOpen.fromSpec_app_self, CommRingCat.comp_apply, Scheme.basicOpen_res_eq] at e3
   change X.basicOpen ((k ≫ Spec.map φ).app ⊤ _) = ⊤
   rw [← e2, ← e3, eq_top_iff]
-  intro x _
-  exact hr x
+  exact fun x _ => hr x
 
 end GlobalTheory.FiniteKilled
 
@@ -1112,8 +1103,7 @@ theorem killed_near : ∀ (S' : Scheme.{0}) [IsLocallyNoetherian S'] (G : Over S
   have hzero : ∀ b : B, (1 : κ) ⊗ₜ[A] (α d b - algebraMap A B (ε b)) = 0 := by
     intro b
     have := congrArg (fun f => f.hom b) heq
-    rw [TensorProduct.tmul_sub, sub_eq_zero]
-    exact this
+    rwa [TensorProduct.tmul_sub, sub_eq_zero]
   let P : Ideal A := RingHom.ker (algebraMap A κ)
   have hfibP : ∀ b, ∃ f : A, f ∉ P ∧ f • (α d b - algebraMap A B (ε b)) ∈ P.map (algebraMap A B) :=
     fun b => GlobalTheory.exists_not_mem_ker_smul_mem_map_of_one_tmul_eq_zero A B κ _ (hzero b)
@@ -1123,8 +1113,7 @@ theorem killed_near : ∀ (S' : Scheme.{0}) [IsLocallyNoetherian S'] (G : Over S
   obtain ⟨g, hgP, hg⟩ := GlobalTheory.NakAug.augmentation_agrees_after_inverting A B P ε (α d) d hdP (hcot d) hfibP
   refine ⟨S'.basicOpen g, ?_, (S'.basicOpen_le g).trans hUV, ?_⟩
   · rw [Scheme.mem_basicOpen S' g s hsU, ← IsLocalRing.residue_ne_zero_iff_isUnit]
-    intro h0
-    exact hgP (RingHom.mem_ker.mpr h0)
+    exact fun h0 => hgP (RingHom.mem_ker.mpr h0)
   · intro T z hT
     have hTU : Set.range T.hom.base ⊆ (U : Set S') := hT.trans (S'.basicOpen_le g)
     obtain ⟨k, hk⟩ := hrange T z hTU
@@ -1245,8 +1234,7 @@ theorem kerKilledOn_near_of_fibre : ∀ (d : ℕ) (S' : Scheme.{0}) [IsLocallyNo
       rintro _ ⟨p, rfl⟩
       have e : (f ≫ S'.fromSpecResidueField s).base p = s :=
         Set.mem_singleton_iff.mp (Scheme.range_fromSpecResidueField s ▸ Set.mem_range_self (f.base p))
-      rw [hf, e]
-      exact hs₀
+      rwa [hf, e]
     refine eq_one_of_local T _ fun p => ?_
     obtain ⟨U, hp, c, hc⟩ := hloc T z hT p
     refine ⟨U, hp, ?_⟩

@@ -132,34 +132,21 @@ theorem _root_.GlobalTheory.AxSen.Ge.mul (h0 : ϖ ≠ 0) (h1 : A.valuation ϖ �
     _root_.GlobalTheory.AxSen.Ge A ϖ (w * w') (q + q') := by
   intro a b hb hab
   have hv : A.valuation ϖ ≠ 0 := (Valuation.ne_zero_iff _).2 h0
-  have hd : 0 < q.den := q.den_pos
-  have hd' : 0 < q'.den := q'.den_pos
   have h₁ := h (q.num * q'.den * b) (q.den * q'.den * b) (by positivity)
     (le_of_eq (by push_cast; rw [← Rat.mul_den_eq_num q]; ring))
   have h₂ := h' (q'.num * q.den * b) (q.den * q'.den * b) (by positivity)
     (le_of_eq (by push_cast; rw [← Rat.mul_den_eq_num q']; ring))
   have hexp : a * ((q.den * q'.den : ℕ) : ℤ) ≤ (q.num * q'.den * b + q'.num * q.den * b) := by
-    have hq : ((a * ((q.den * q'.den : ℕ) : ℤ) : ℤ) : ℚ)
-        ≤ ((q.num * q'.den * b + q'.num * q.den * b : ℤ) : ℚ) := by
-      push_cast
-      rw [← Rat.mul_den_eq_num q, ← Rat.mul_den_eq_num q']
-      have hdd : (0 : ℚ) ≤ q.den * q'.den := by positivity
-      calc (a : ℚ) * (q.den * q'.den) ≤ ((q + q') * b) * (q.den * q'.den) :=
-            mul_le_mul_of_nonneg_right hab hdd
-        _ = _ := by ring
-    exact_mod_cast hq
+    qify
+    rw [← Rat.mul_den_eq_num q, ← Rat.mul_den_eq_num q']
+    linarith [mul_le_mul_of_nonneg_right hab (show (0 : ℚ) ≤ q.den * q'.den by positivity)]
   have key : (A.valuation (w * w') ^ b) ^ (q.den * q'.den)
       ≤ (A.valuation ϖ ^ a) ^ (q.den * q'.den) := by
-    calc (A.valuation (w * w') ^ b) ^ (q.den * q'.den)
-        = A.valuation w ^ (q.den * q'.den * b) * A.valuation w' ^ (q.den * q'.den * b) := by
-          rw [map_mul, mul_pow, mul_pow, ← pow_mul, ← pow_mul, mul_comm b]
-      _ ≤ A.valuation ϖ ^ (q.num * q'.den * b) * A.valuation ϖ ^ (q'.num * q.den * b) :=
-          mul_le_mul' h₁ h₂
-      _ = A.valuation ϖ ^ (q.num * q'.den * b + q'.num * q.den * b) := by
-          rw [← zpow_add₀ hv]
-      _ ≤ A.valuation ϖ ^ (a * ((q.den * q'.den : ℕ) : ℤ)) :=
-          zpow_le_zpow_right_of_le_one₀ (zero_lt_iff.2 hv) h1 hexp
-      _ = (A.valuation ϖ ^ a) ^ (q.den * q'.den) := by rw [zpow_mul, zpow_natCast]
+    calc _ = _ := by rw [map_mul, mul_pow, mul_pow, ← pow_mul, ← pow_mul, mul_comm b]
+      _ ≤ _ := mul_le_mul' h₁ h₂
+      _ = _ := by rw [← zpow_add₀ hv]
+      _ ≤ _ := zpow_le_zpow_right_of_le_one₀ (zero_lt_iff.2 hv) h1 hexp
+      _ = _ := by rw [zpow_mul, zpow_natCast]
   exact (pow_le_pow_iff_left₀ zero_le' zero_le' (by positivity)).1 key
 
 variable {K : Type} [Field K] in

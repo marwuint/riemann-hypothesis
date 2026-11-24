@@ -801,8 +801,7 @@ theorem herm_endo_matrix_rat : ∀ (g n : ℕ) (e : Module.Basis (Fin n) ℝ (Fi
   refine ⟨A₁q⁻¹ * A₂q, ?_⟩
   have h3 : A₁ * (A₁q⁻¹ * A₂q).map (Rat.castHom ℝ) = A₂ := by
     have := congrArg (fun M => M.map (Rat.castHom ℝ)) (Matrix.mul_nonsing_inv_cancel_left A₁q A₂q hdetq)
-    rw [Matrix.map_mul, hA₁, hA₂] at this
-    exact this
+    rwa [Matrix.map_mul, hA₁, hA₂] at this
   have h4 : (A₁q⁻¹ * A₂q).map (Rat.castHom ℝ) = T := by
     calc (A₁q⁻¹ * A₂q).map (Rat.castHom ℝ)
         = A₁⁻¹ * (A₁ * (A₁q⁻¹ * A₂q).map (Rat.castHom ℝ)) :=
@@ -891,8 +890,7 @@ theorem herm_form_identity (g : ℕ) (H₁ H₂ : Matrix (Fin g) (Fin g) ℂ)
     have := congrArg (fun f : Module.End ℂ (Fin g → ℂ) => f w) hid
     simp only [Module.End.one_apply, LinearMap.add_apply, LinearMap.smul_apply,
       comm] at this
-    simp only [LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply] at this
-    exact this
+    simpa only [LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply] using this
   conv_lhs => rw [hw]
   rw [hadd, hsmul, hsum, ← h1]
   congr 1
@@ -1032,8 +1030,7 @@ theorem gram_posDef {g n : ℕ} (e : Module.Basis (Fin n) ℝ (Fin g → ℂ))
       intro h0
       apply hx
       apply e.equivFun.symm.injective
-      rw [map_zero, Module.Basis.equivFun_symm_apply]
-      exact h0
+      rwa [map_zero, Module.Basis.equivFun_symm_apply]
     have key : star x ⬝ᵥ (Matrix.of fun k l => (e k ⬝ᵥ H.mulVec (star (e l))).re) *ᵥ x
         = reForm H v v := by
       rw [hvdef]

@@ -119,8 +119,7 @@ theorem mem_FM (X : Tower Ω ε) (M : ℕ) (f : X.K) : f ∈ FM X M ↔ Inv X (C
   constructor
   · intro h γ hγ
     have := (IntermediateField.mem_fixedField_iff _ _).1 h (rho X γ⁻¹) ⟨γ⁻¹, inv_mem hγ, rfl⟩
-    rw [rho_apply, inv_inv] at this
-    exact this
+    rwa [rho_apply, inv_inv] at this
   · intro h
     unfold FM
     rw [IntermediateField.mem_fixedField_iff]
@@ -167,7 +166,6 @@ theorem finite_range (X : Tower Ω ε) (M : ℕ) (hM : 0 < M) : Finite (rhoF X M
     intro γ hγ
     rw [MonoidHom.mem_ker]
     ext x
-    show X.sl (ofSL γ⁻¹) x = x
     exact (mem_FM X M x).1 x.2 _ (inv_mem hγ)
   haveI := Subgroup.finiteIndex_of_le hle
   exact Finite.of_equiv _ (QuotientGroup.quotientKerEquivRange (rhoF X M)).toEquiv
@@ -193,8 +191,7 @@ theorem siegel_add_int (X : Tower Ω ε) (c : ℕ) (x : Fin 2 → ℚ) (n : Fin 
     siegel X c (fun i => x i + n i) = siegel X c x := by
   have e : sgC c (fun i => x i + n i) = sgC c x := by
     funext z
-    simp only [sgC]
-    exact GlobalTheory.Sieg.Per.sg_add_int c x n _ hx
+    simpa only [sgC] using GlobalTheory.Sieg.Per.sg_add_int c x n _ hx
   unfold siegel
   rw [e]
 
@@ -204,8 +201,7 @@ theorem admissible_of_integral_conj_le (M c : ℕ) (hc : 1 < c) (hc6 : Nat.Copri
   refine ⟨hc, hc6, ?_⟩
   have hcop : IsCoprime (M : ℤ) (c : ℤ) := by
     rw [Nat.isCoprime_iff_coprime]
-    have h := (Nat.ModEq.gcd_eq hcM).trans (Nat.gcd_one_left M)
-    exact Nat.Coprime.symm h
+    exact Nat.Coprime.symm ((Nat.ModEq.gcd_eq hcM).trans (Nat.gcd_one_left M))
   have hMq : (M : ℚ) ≠ 0 := by exact_mod_cast hM.ne'
   have key : ∀ t : ℤ, (c : ℚ) * ((t : ℚ) / M) ∈ Set.range ((↑) : ℤ → ℚ) → (M : ℤ) ∣ t := by
     rintro t ⟨m, hm⟩
@@ -278,10 +274,8 @@ theorem fracGen : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ 
       have h2 := congrArg Subtype.val h1
       have h3 : ((rhoF X M γ⁻¹ x : FM X M) : X.K) = X.sl (ofSL γ⁻¹⁻¹) x := rhoF_apply X M γ⁻¹ x
       rw [inv_inv] at h3
-      rw [← h3]
-      exact h2
+      rwa [← h3]
     have hj' := _root_.GlobalTheory.KZ.LevelOneFrac.mem_adjoin_of_sl_inv ε X hj (x : X.K) hinv
-    show (algebraMap (FM X M) X.K x) ∈ L
     exact IntermediateField.adjoin.mono Ω _ _ Set.subset_union_left hj'
   have hfix : ∀ g : (rhoF X M).range, (∀ x ∈ Lsub, g • x = x) → ∀ x : FM X M, g • x = x := by
     rintro ⟨σ, γ, rfl⟩ hg x
@@ -291,14 +285,11 @@ theorem fracGen : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ 
       have hmem : siegel X c ![(a : ℚ) / M, (b : ℚ) / M] ∈ FM X M :=
         (mem_FM X M _).2 (siegel_inv X M c hM hc hc6 hcM a b hab)
       have hin : (⟨_, hmem⟩ : FM X M) ∈ Lsub := by
-        show (siegel X c ![(a : ℚ) / M, (b : ℚ) / M]) ∈ L
         exact IntermediateField.subset_adjoin Ω _ (Or.inr ⟨a, b, hab, rfl⟩)
       have := congrArg Subtype.val (hg _ hin)
       exact this
     rcases _root_.GlobalTheory.SiegSep.fix_siegel_pm_one ε X M c γ⁻¹ hM hc hc6 hcM hs with h | h
-    · apply Subtype.ext
-      show X.sl (ofSL γ⁻¹) x = x
-      exact (mem_FM X M x).1 x.2 _ h
+    · exact Subtype.ext ((mem_FM X M x).1 x.2 _ h)
     · apply Subtype.ext
       show X.sl (ofSL γ⁻¹) x = x
       have e : γ⁻¹ = -γ⁻¹ * -1 := by simp

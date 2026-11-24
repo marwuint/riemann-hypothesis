@@ -119,8 +119,7 @@ theorem exists_exp_mul_exp {g : Mat p q} (hg : gᴴ * Jm p q * g = Jm p q) :
     apply (Matrix.reindex e e).injective
     simp only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv] at h1
     simp only [Matrix.reindex_apply]
-    rw [Matrix.submatrix_add]
-    exact h1
+    rwa [Matrix.submatrix_add]
   have hexp : ∀ Y : Mat p q, NormedSpace.exp (Matrix.reindex e e Y) = Matrix.reindex e e (NormedSpace.exp Y) := by
     intro Y
     open scoped Matrix.Norms.Operator in
@@ -159,8 +158,7 @@ theorem closure_expt_eq_top_and_cartan : ∀ (p q : ℕ), 1 ≤ p + q → ∀ T 
     set x := T.expt Z * T.expt X
     have h2 : ((T.sq g : ℂˣ) : ℂ) ^ 2 = ((T.sq x : ℂˣ) : ℂ) ^ 2 := by rw [T.sq_sq, T.sq_sq, h]
     rcases sq_eq_sq_iff_eq_or_eq_neg.1 h2 with h3 | h3
-    · rw [Cover.ext_of h (Units.ext h3)]
-      exact hx
+    · rwa [Cover.ext_of h (Units.ext h3)]
     · have : g = T.expt C * x := Cover.ext_of (by rw [map_mul, hC1, one_mul, h])
         (Units.ext (by rw [map_mul, hC2, h3]; simp))
       rw [this]
@@ -171,8 +169,7 @@ theorem closure_expt_eq_top_and_cartan : ∀ (p q : ℕ), 1 ≤ p + q → ∀ T 
     have h1 := KStabLie.expt_mem T hZ hK 1
     rw [one_smul] at h1
     change IsKC _
-    rw [map_mul, map_inv, h, mul_inv_cancel_right]
-    exact h1
+    rwa [map_mul, map_inv, h, mul_inv_cancel_right]
 
 end GlobalTheory.CoverExp
 

@@ -71,18 +71,14 @@ theorem main {R α β : Type} [AddCommMonoid R] [Fintype α] [Fintype β]
       = ∑ c : α, ∑ e : β, ∑ b : β, ∑ a : α, f a b c e := by
   calc ∑ a : α, ∑ b : β, ∑ c : α, ∑ e : β, f a b c e
       = ∑ a : α, ∑ c : α, ∑ b : β, ∑ e : β, f a b c e := by
-        refine Finset.sum_congr rfl fun a _ => ?_
-        exact Finset.sum_comm
+        exact Finset.sum_congr rfl fun a _ => Finset.sum_comm
     _ = ∑ c : α, ∑ a : α, ∑ b : β, ∑ e : β, f a b c e := Finset.sum_comm
     _ = ∑ c : α, ∑ a : α, ∑ e : β, ∑ b : β, f a b c e := by
-        refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun a _ => ?_
-        exact Finset.sum_comm
+        exact Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun a _ => Finset.sum_comm
     _ = ∑ c : α, ∑ e : β, ∑ a : α, ∑ b : β, f a b c e := by
-        refine Finset.sum_congr rfl fun c _ => ?_
-        exact Finset.sum_comm
+        exact Finset.sum_congr rfl fun c _ => Finset.sum_comm
     _ = ∑ c : α, ∑ e : β, ∑ b : β, ∑ a : α, f a b c e := by
-        refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun e _ => ?_
-        exact Finset.sum_comm
+        exact Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun e _ => Finset.sum_comm
 
 alias target := _root_.GlobalTheory.TargetEquivalence.main
 
@@ -276,8 +272,7 @@ theorem coords : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.IndefiniteRowSideF
     { toFun := fun z => (-z).map (fun p => lift2 hcm Bs.τ₁ p 0)
       map_zero' := by
         ext i j
-        simp only [neg_zero, Matrix.map_apply, Matrix.zero_apply]
-        exact lift2_zero hcm Bs.τ₁
+        simpa only [neg_zero, Matrix.map_apply, Matrix.zero_apply] using lift2_zero hcm Bs.τ₁
       map_add' := fun z z' => by
         ext i j
         simp only [neg_add, Matrix.map_apply, Matrix.add_apply]

@@ -125,16 +125,11 @@ theorem card_dvd_minkM : Formalism.HermitianLatticeCounting.S6.MinkowskiBound �
     intro g h hgh
     apply Subtype.ext
     apply LinearEquiv.toLinearMap_injective
-    apply LinearMap.ext_on hL
-    intro x hx
-    exact congrArg Subtype.val (LinearMap.congr_fun hgh ⟨x, hx⟩)
+    exact LinearMap.ext_on hL (fun x hx => congrArg Subtype.val (LinearMap.congr_fun hgh ⟨x, hx⟩))
   let φ : G →* GL (Fin (Module.finrank ℤ L)) ℤ :=
     ((LinearMap.toMatrixAlgEquiv b).toMulEquiv.toMonoidHom.comp r).toHomUnits
   have hφ : Function.Injective φ := by
-    intro g h hgh
-    apply hr
-    apply (LinearMap.toMatrixAlgEquiv b).injective
-    exact congrArg Units.val hgh
+    exact fun g h hgh => hr ((LinearMap.toMatrixAlgEquiv b).injective (congrArg Units.val hgh))
   have e := MonoidHom.ofInjective hφ
   rw [Nat.card_congr e.toEquiv]
   exact hM _ φ.range (Finite.of_equiv _ e.toEquiv)
@@ -199,8 +194,7 @@ theorem map_eq_of_fix {U : Submodule K V} {g : V ≃ₗ[K] V} (h : ∀ y ∈ U, 
   · rintro ⟨x, hx, rfl⟩
     have : (g : V →ₗ[K] V) x = x := h x hx
     rw [this]; exact hx
-  · intro hy
-    exact ⟨y, hy, h y hy⟩
+  · exact fun hy => ⟨y, hy, h y hy⟩
 
 def toQuot (H : HermSpace K V) (U : Submodule K V) (L : Submodule (𝓞 K) V) :
     fixAut H U L →* ((V ⧸ U) ≃ₗ[K] (V ⧸ U)) :=

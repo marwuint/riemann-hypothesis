@@ -447,8 +447,7 @@ theorem isConst_triMove : ∀ {D : D7} {T₀ : Type} {A A' WW B B' WW₁ : HSp D
   · obtain ⟨h, rfl⟩ := IW.kap.surjective h'
     exact ⟨(integrableOn_move IA IA' IW Y ψ θ hθ t P h).2 (hint h).1,
       (integrableOn'_move IA IA' IW Y ψ θ hθ t P' h).2 (hint h).2⟩
-  · rw [I'_move IA IA' IW Y ψ θ hθ t P' h0]
-    exact hne
+  · rwa [I'_move IA IA' IW Y ψ θ hθ t P' h0]
   · obtain ⟨h, rfl⟩ := IW.kap.surjective h'
     rw [I_move IA IA' IW Y ψ θ hθ t P h, I'_move IA IA' IW Y ψ θ hθ t P' h]
     exact heq h
@@ -596,8 +595,7 @@ theorem isThetaFunO_trH (IS : IsoMat S S') (IT : IsoMat T T') {ψ : AddChar (AF 
       rw [← homMap_symm_apply] at this
       exact ((homMap IS IT).symm_apply_eq.1 this)
     rw [e, ← map_add (f := _), symplOH_homMap]
-    simp only [trH, AddEquiv.symm_apply_apply]
-    exact hf.quasi _ _
+    simpa only [trH, AddEquiv.symm_apply_apply] using hf.quasi _ _
   · obtain ⟨U, hU, e⟩ := hf.level
     refine ⟨U.comap (homMap IS IT).symm.toAddMonoidHom, hU.preimage (continuous_homMap_symm IS IT), fun u hu h0 => ?_⟩
     obtain ⟨u, rfl⟩ := (homMap IS IT).surjective u
@@ -759,10 +757,8 @@ theorem exists_covolOne (IS : IsoMat S S') (IT : IsoMat T T') {μ : Measure (WO 
   · let g : ratL T' S' → ratL T S := fun y => ⟨(homMap IS IT).symm y, homMap_mem_ratL IS.symm IT.symm y.2⟩
     have hg : Function.Bijective g := by
       constructor
-      · intro a b hab
-        exact Subtype.ext ((homMap IS IT).symm.injective (congrArg Subtype.val hab))
-      · intro x
-        exact ⟨⟨homMap IS IT x, homMap_mem_ratL IS IT x.2⟩, Subtype.ext (by simp [g])⟩
+      · exact fun a b hab => Subtype.ext ((homMap IS IT).symm.injective (congrArg Subtype.val hab))
+      · exact fun x => ⟨⟨homMap IS IT x, homMap_mem_ratL IS IT x.2⟩, Subtype.ext (by simp [g])⟩
     refine h𝓕.preimage_of_equiv hmp'.quasiMeasurePreserving hg ?_
     intro y x
     simp [g, AddSubgroup.vadd_def]
@@ -983,8 +979,7 @@ theorem rat_iff (x : WO A T) : rS J T x ∈ ratL T A' ↔ x ∈ ratL T A := by
   · intro hx
     have := ratMx_mul hx (rat_mem J.P)
     rwa [show rat J.P = J.aP from rfl, rS_apply, Matrix.mul_assoc, J.aQ_aP, Matrix.mul_one] at this
-  · intro hx
-    exact ratMx_mul hx (rat_mem J.Q)
+  · exact fun hx => ratMx_mul hx (rat_mem J.Q)
 
 variable (T)
 
@@ -1051,8 +1046,7 @@ theorem isWeilDatumO_omS {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ �
     have e1 : (mt A (J.kap.symm g)).det = (mt A' g).det := GlobalTheory.TargetIsom.det_conj_rect J.rank_eq.symm J.aP_aQ (mt A' g)
     have hdet : IsDetAt e A (J.kap.symm g) x := by
       unfold IsDetAt at hx ⊢
-      rw [e1]
-      exact hx
+      rwa [e1]
     obtain ⟨r, hr, Hs⟩ := H.om_split e he (J.kap.symm g) h hsupp hh x y hdet hy
     refine ⟨r, hr, fun ℓ hℓ F hF => ?_⟩
     have hinv : ∀ u : WO A T, (∀ i j, cA D e * u i j = u i j) → ∀ G, IsThetaFunO ψ A T G →
@@ -1063,8 +1057,7 @@ theorem isWeilDatumO_omS {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ �
       exact hℓ _ (fun i j => GlobalTheory.WeilSrc.entries_fix_right _ hu J.aQ i j) _ (theta_trS J hG)
     have := Hs (ℓ ∘ₗ trSL J T) hinv _ (hT F hF)
     have e2 : (ℓ ∘ₗ trSL J T) (trS J.symm T F) = ℓ F := congrArg ℓ (trS_symm_trS J.symm T F)
-    rw [e2] at this
-    exact this
+    rwa [e2] at this
 
 def sgnIso (ε : Bool) {S S' : HSp D} (I : IsoMat S S') : IsoMat (GlobalTheory.Grid.sgn ε S) (GlobalTheory.Grid.sgn ε S') where
   P := I.P
@@ -1410,8 +1403,7 @@ private theorem isHalf_homMap (IS : GlobalTheory.Mem.Isom.IsoMat S S') (IT : Glo
     intro i j
     rw [hx]
     exact fixed_two e _ _ _ h i j
-  · intro h i j
-    exact fixed_two e _ _ _ h i j
+  · exact fun h i j => fixed_two e _ _ _ h i j
 
 private theorem map_aP (I : GlobalTheory.Mem.Isom.IsoMat S S') : I.aP.map (Formalism.IndefR.Datum.toEAf D) = fP I := by
   ext i j; rfl
@@ -1928,12 +1920,10 @@ theorem GlobalTheory.TriMove.transport_bottom : ∀ {D : D7} {T : Type} {Lc : Le
       expo := isY.expo
       fst := fun t => by
         have h5 := GlobalTheory.T.thetaAtIdempotent_hermitianHomIsometry_transport W.ψ true IA IW (Y.e t) Y.rA.Λ Y.rW.Λ Y.vac _ (Y.f t) (isY.fst t)
-        rw [← GlobalTheory.T.standardPairFirstMemberHalf_isometry_moved] at h5
-        exact h5
+        rwa [← GlobalTheory.T.standardPairFirstMemberHalf_isometry_moved] at h5
       snd := fun t => by
         have h5 := GlobalTheory.T.thetaAtIdempotent_hermitianHomIsometry_transport W.ψ false IA' IW _ Y.rA'.Λ Y.rW.Λ Y.vac' _ (Y.f' t) (isY.snd t)
-        rw [← GlobalTheory.T.standardPairSecondMemberHalf_isometry_moved, e1] at h5
-        exact h5
+        rwa [← GlobalTheory.T.standardPairSecondMemberHalf_isometry_moved, e1] at h5
       meas := GlobalTheory.T.haar_fundamentalDomain_map_isometry_conj IA Y.m Y.fd isY.meas
       meas' := GlobalTheory.T.haar_fundamentalDomain_map_isometry_conj IA' Y.m' Y.fd' isY.meas' }
 end -- clump:auto

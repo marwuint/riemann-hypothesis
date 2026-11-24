@@ -88,11 +88,9 @@ theorem dvd_of_residue (hirr : Irreducible (T : 𝒪[k])) (a : ℤ) :
   constructor
   · intro h
     have h1 : (a : 𝒪[k]) ∈ maximalIdeal 𝒪[k] := by
-      rw [maximalIdeal_eq hirr, Ideal.mem_span_singleton]
-      exact h
+      rwa [maximalIdeal_eq hirr, Ideal.mem_span_singleton]
     have h2 : ((a : ℤ) : ResidueField 𝒪[k]) = 0 := by
-      rw [← map_intCast (IsLocalRing.residue 𝒪[k]), IsLocalRing.residue_eq_zero_iff]
-      exact h1
+      rwa [← map_intCast (IsLocalRing.residue 𝒪[k]), IsLocalRing.residue_eq_zero_iff]
     exact (CharP.intCast_eq_zero_iff (ResidueField 𝒪[k]) T a).mp h2
   · rintro ⟨c, rfl⟩
     exact ⟨(c : 𝒪[k]), by push_cast; ring⟩
@@ -126,8 +124,7 @@ theorem exists_residue_intCast (hcard : Nat.card (ResidueField 𝒪[k]) = T)
   refine ⟨b, ?_⟩
   rw [map_intCast, ← map_intCast (IsLocalRing.residue 𝒪[k])] at hq
   have h0 : IsLocalRing.residue 𝒪[k] (y - b) = 0 := by rw [map_sub, ← hq, sub_self]
-  rw [IsLocalRing.residue_eq_zero_iff, maximalIdeal_eq hirr, Ideal.mem_span_singleton] at h0
-  exact h0
+  rwa [IsLocalRing.residue_eq_zero_iff, maximalIdeal_eq hirr, Ideal.mem_span_singleton] at h0
 
 theorem exists_intCast_sub (hcard : Nat.card (ResidueField 𝒪[k]) = T)
     (hirr : Irreducible (T : 𝒪[k])) (n : ℕ) (x : 𝒪[k]) : ∃ a : ℤ, (T : 𝒪[k]) ^ n ∣ x - a := by
@@ -185,8 +182,7 @@ theorem red_eq (hcard : Nat.card (ResidueField 𝒪[k]) = T)
     (hirr : Irreducible (T : 𝒪[k])) (n : ℕ) (x : 𝒪[k]) (a : ℤ) (h : (T : 𝒪[k]) ^ n ∣ x - a) :
     red hcard hirr n x = a := by
   have h1 : Ideal.Quotient.mk (Ideal.span {(T : 𝒪[k]) ^ n}) x = quotEquiv hcard hirr n (a : ZMod (T ^ n)) := by
-    rw [quotEquiv_intCast, Ideal.Quotient.eq, Ideal.mem_span_singleton]
-    exact h
+    rwa [quotEquiv_intCast, Ideal.Quotient.eq, Ideal.mem_span_singleton]
   show (quotEquiv hcard hirr n).symm (Ideal.Quotient.mk _ x) = _
   rw [h1, RingEquiv.symm_apply_apply]
 
@@ -269,8 +265,7 @@ theorem toPadic_surjective (hcard : Nat.card (ResidueField 𝒪[k]) = T)
           (z - (PadicInt.appr z m : ℤ_[T])) - (z - (PadicInt.appr z n : ℤ_[T])) := by
         push_cast
         ring
-      rw [h4]
-      exact h3
+      rwa [h4]
     have h2 := (pow_dvd_intCast_iff hirr m _).mpr ((padic_intCast_mem_span_iff m _).mp h1)
     push_cast at h2
     exact h2
@@ -282,8 +277,7 @@ theorem toPadic_surjective (hcard : Nat.card (ResidueField 𝒪[k]) = T)
   have hLn : (T : 𝒪[k]) ^ n ∣ L - (((PadicInt.appr z n : ℕ) : ℤ) : 𝒪[k]) := by
     have h5 := hL n
     rw [SModEq.sub_mem, hI, Ideal.mem_span_singleton] at h5
-    rw [Int.cast_natCast, dvd_sub_comm]
-    exact h5
+    rwa [Int.cast_natCast, dvd_sub_comm]
   have hz : z - (PadicInt.appr z n : ℤ_[T]) ∈
       RingHom.ker (PadicInt.toZModPow n : ℤ_[T] →+* ZMod (T ^ n)) := by
     rw [PadicInt.ker_toZModPow]
@@ -311,8 +305,7 @@ theorem valuation_T_lt_one (hirr : Irreducible (T : 𝒪[k])) : valuation k (T :
 
 theorem valuation_T_ne_zero (hirr : Irreducible (T : 𝒪[k])) : valuation k (T : k) ≠ 0 := by
   rw [ne_eq, map_eq_zero]
-  intro h
-  exact hirr.ne_zero (Subtype.ext (by simpa using h))
+  exact fun h => hirr.ne_zero (Subtype.ext (by simpa using h))
 
 theorem valuation_le_T_pow_iff (hirr : Irreducible (T : 𝒪[k])) (o : 𝒪[k]) (n : ℕ) :
     valuation k (o : k) ≤ valuation k (T : k) ^ n ↔ (T : 𝒪[k]) ^ n ∣ o := by
@@ -363,8 +356,7 @@ theorem exists_ringEquiv_padic : ∀ (k : Type) [Field k] [ValuativeRel k] [Topo
     filter_upwards [hball] with x hx
     rw [Metric.mem_closedBall, dist_zero_right] at hx
     have hy : ‖x / (T : ℚ_[T]) ^ n‖ ≤ 1 := by
-      rw [norm_div, Padic.norm_p_pow, div_le_one (zpow_pos hTpos _)]
-      exact hx
+      rwa [norm_div, Padic.norm_p_pow, div_le_one (zpow_pos hTpos _)]
     have hyO := (hmem _).mpr hy
     have hx' : x = (T : ℚ_[T]) ^ n * (x / (T : ℚ_[T]) ^ n) := by
       field_simp
@@ -388,8 +380,7 @@ theorem exists_ringEquiv_padic : ∀ (k : Type) [Field k] [ValuativeRel k] [Topo
       hy1.le.trans (pow_le_one₀ zero_le' (valuation_T_lt_one hirr).le)
     obtain ⟨w, hw⟩ := (valuation_le_T_pow_iff hirr ⟨y, hyO⟩ n).mp hy1.le
     have hy' : y = (T : k) ^ n * (w : k) := by
-      have h6 := congrArg (fun t : 𝒪[k] => (t : k)) hw
-      simpa using h6
+      simpa using congrArg (fun t : 𝒪[k] => (t : k)) hw
     have hw1 : ‖φ.symm (w : k)‖ ≤ 1 := (hmem _).mp (by rw [RingEquiv.apply_symm_apply]; exact w.2)
     rw [Metric.mem_closedBall, dist_zero_right, hy', map_mul, map_pow, map_natCast, norm_mul,
       Padic.norm_p_pow]

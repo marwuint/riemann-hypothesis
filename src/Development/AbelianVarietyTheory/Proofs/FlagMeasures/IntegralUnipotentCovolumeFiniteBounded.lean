@@ -192,8 +192,7 @@ theorem measure_eq_tsum {ι : Type} {k r : ℕ} (μ : Measure (ι → Formalism.
     filter_upwards [this] with x hx
     obtain ⟨s, hs, -⟩ := h x hx
     constructor
-    · intro hxS
-      exact Set.mem_iUnion.2 ⟨⟨s, hs.1⟩, hs.2, hxS⟩
+    · exact fun hxS => Set.mem_iUnion.2 ⟨⟨s, hs.1⟩, hs.2, hxS⟩
     · intro hxS
       obtain ⟨a, ha⟩ := Set.mem_iUnion.1 hxS
       exact ha.2
@@ -201,8 +200,7 @@ theorem measure_eq_tsum {ι : Type} {k r : ℕ} (μ : Measure (ι → Formalism.
     refine measure_mono_null ?_ hR
     rintro x ⟨ha, hb⟩ hx
     exact hab (Subtype.ext ((h x hx).unique ⟨a.2, ha.1⟩ ⟨b.2, hb.1⟩))
-  · intro a
-    exact ((measurable_mulP _ hΩ).inter hS).nullMeasurableSet
+  · exact fun a => ((measurable_mulP _ hΩ).inter hS).nullMeasurableSet
 
 def invP {ι : Type} {k r : ℕ} (m : ι → Formalism.QuantumDeterminants.Mt k r) : ι → Formalism.QuantumDeterminants.Mt k r :=
   fun v => Matrix.of.symm (Matrix.of (m v))⁻¹
@@ -668,11 +666,9 @@ theorem range_trI : Set.range (trI C) = Sg C := by
   ext x
   constructor
   · rintro ⟨a, rfl⟩ τ
-    rw [trI_of]
-    rw [conj_cancel _ _ (C.isT _).2.1]
+    rw [trI_of, conj_cancel _ _ (C.isT _).2.1]
     exact (a (vOf X τ)).2
-  · intro hx
-    exact ⟨back C x, trI_back C hx⟩
+  · exact fun hx => ⟨back C x, trI_back C hx⟩
 
 theorem cont_uMat {n : ℕ} {ε : Fin n → Bool} : Continuous (fun γ : Formalism.REAL.UJ ε => Formalism.MainNotions.S.uMat γ) :=
   Units.continuous_val.comp continuous_subtype_val
@@ -832,8 +828,7 @@ theorem covNC_holds : CovNC := by
   obtain ⟨N, hF, hF', hj, hT, h𝔡, hTerm, hRef, hist⟩ := _root_.GlobalTheory.IdNF.idNFC_holds D large₂ X Y u hS (VS D).L0 (Or.inr rfl)
   obtain ⟨hU, -, hz, -⟩ := _root_.GlobalTheory.DegCnt.InnerLat.main D.host.E (VS D).V (HV D) hCM D.R.rS N (gS D) (VS D).L0 (by omega) hTerm
   have hzL : N.F.z ∈ GlobalTheory.HermLat.latL N.F N.F' (VS D).L0 := by
-    have h := (hz 1).2 (by simp)
-    simpa using h
+    simpa using (hz 1).2 (by simp)
   have hFr := GlobalTheory.T.baseNormalForm_realFrames_at_realPlaces D large₂ X u C hS N hF hF' hj hT (hist rfl)
   have hN𝔡 : (Ideal.absNorm N.𝔡 : ℝ) = (2 * Formalism.HermitianLatticesTheory.vInv D.host.E) ^ (2 * Fintype.card D.what₂.Tau) := by
     rw [h𝔡, hnorm, hv, hcard]

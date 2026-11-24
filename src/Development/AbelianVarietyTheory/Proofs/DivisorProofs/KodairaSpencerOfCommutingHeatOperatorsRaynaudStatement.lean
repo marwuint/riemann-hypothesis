@@ -163,8 +163,7 @@ theorem exists_symm_isKS_abLocus : ∀ (E : Type) [Field E] [NumberField E] [IsC
     basicOpen_eq_of_affine (R := CommRingCat.of R) (∏ i, tt i)
   have h4 : ∀ q : Sp R, q ∈ ((U.1 : (Sp R).Opens) : Set (Sp R)) → ∏ i, tt i ∉ q.asIdeal := by
     intro q hq
-    rw [h2] at hq
-    exact hq
+    rwa [h2] at hq
   have hx : ∀ s, ∏ i, tt i ∉ ((chart U) s).asIdeal := fun s =>
     h4 _ (by rw [← U.2.range_fromSpec]; exact ⟨s, rfl⟩)
   have hne : ∏ i, tt i ≠ 0 := Finset.prod_ne_zero_iff.2 fun i _ => htt i
@@ -325,8 +324,7 @@ theorem exists_derivation_extending :
   refine ⟨Derivation.mk' L fun a b => ?_, fun y hy => ?_⟩
   · change lam (D (a * b)) = a • lam (D b) + b • lam (D a)
     rw [hmul, map_add (f := _), hsm, hsm]
-  · show lam (D y) = _
-    exact congrArg lam (hD ⟨y, hy⟩)
+  · exact congrArg lam (hD ⟨y, hy⟩)
 
 end GlobalTheory.ConormalDer
 end -- clump:auto
@@ -365,8 +363,7 @@ theorem stalk_derivation_span : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoet
     fun V hpV => (residue _).comp (G.left.presheaf.germ V p hpV).hom
   have germ_res : ∀ (V V' : G.left.Opens) (e : V' ≤ V) (hpV : p ∈ V) (hpV' : p ∈ V') (f : Γ(G.left, V)),
       G.left.presheaf.germ V' p hpV' (resG G.left e f) = G.left.presheaf.germ V p hpV f := by
-    intro V V' e hpV hpV' f
-    exact TopCat.Presheaf.germ_res_apply _ (homOfLE e) p hpV' f
+    exact fun V V' e hpV hpV' f => TopCat.Presheaf.germ_res_apply _ (homOfLE e) p hpV' f
 
   have loc : ∀ (V : G.left.Opens) (hpV : p ∈ V), IsAffineOpen V →
       ∃! c : Fin n → ResidueField (G.left.presheaf.stalk p),
@@ -759,8 +756,7 @@ noncomputable section
 namespace GlobalTheory.InvFieldSemiAb
 
 theorem exists_isInv : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] (t : SAB H (Sp R)) (v : TanM (𝟙 (Sp R)) t.G), ∃ dd : Fld t.G.left, IsInv t.G v dd := by
-  intro E _ _ _ H R _ t v
-  exact GlobalTheory.InvFieldBase.exists_isInv R t.G v
+  exact fun E _ _ _ H R _ t v => GlobalTheory.InvFieldBase.exists_isInv R t.G v
 
 end GlobalTheory.InvFieldSemiAb
 end -- clump:auto
@@ -1069,8 +1065,7 @@ theorem isIntegral_of_isGt (R : Type) [CommRing R] [IsDomain R] (E : SplitExt (S
   obtain ⟨b⟩ := hBne
   have hk : ∀ k, ∃ i, b ∈ (E.O (E.basis k)).L.U i := fun k => by
     have hb : b ∈ (⊤ : E.B.left.Opens) := trivial
-    rw [← (E.O (E.basis k)).isLB.cover, Opens.mem_iSup] at hb
-    exact hb
+    rwa [← (E.O (E.basis k)).isLB.cover, Opens.mem_iSup] at hb
   choose j hj using hk
   have hbj : b ∈ E.chart j := mem_chart_of_mem E j b hj
   obtain ⟨V, hV, hbV, hVj⟩ := (Opens.isBasis_iff_nbhd.mp E.B.left.isBasis_affineOpens) hbj
@@ -1198,8 +1193,7 @@ theorem isKS_top_of_basicOpen : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
       rw [e1, hg₀] at hV
       have h2 : (spMap φ) x ∈ (GlobalTheory.LogKS.chart (⟨⊤, isAffineOpen_top _⟩ : (Sp R).affineOpens)) ⁻¹ᵁ (Sp R).basicOpen s := hV
       change (spMap φ) x ∈ (isAffineOpen_top (Sp R)).fromSpec ⁻¹ᵁ (Sp R).basicOpen s at h2
-      rw [(isAffineOpen_top (Sp R)).fromSpec_preimage_basicOpen s] at h2
-      exact h2
+      rwa [(isAffineOpen_top (Sp R)).fromSpec_preimage_basicOpen s] at h2
     letI : Algebra Γ(Sp R, ⊤) Γ(Sp R, Wa.1) := ((Sp R).presheaf.map (homOfLE hle).op).hom.toAlgebra
     have hl : IsLocalization.Away s Γ(Sp R, Wa.1) :=
       (isAffineOpen_top (Sp R)).isLocalization_of_eq_basicOpen s (homOfLE hle) rfl

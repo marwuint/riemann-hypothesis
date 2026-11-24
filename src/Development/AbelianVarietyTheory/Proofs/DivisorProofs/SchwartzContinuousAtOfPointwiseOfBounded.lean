@@ -68,8 +68,7 @@ theorem norm_fderiv_le_of_small_of_lipschitz {V E : Type*} [NormedAddCommGroup V
     have hψd : ∀ x, DifferentiableAt ℝ (fun y => g y - fderiv ℝ g v y) x :=
       fun x => (hg x).sub (fderiv ℝ g v).differentiableAt
     have hψf : ∀ x, fderiv ℝ (fun y => g y - fderiv ℝ g v y) x = fderiv ℝ g x - fderiv ℝ g v := by
-      intro x
-      exact ((hg x).hasFDerivAt.sub (fderiv ℝ g v).hasFDerivAt).fderiv
+      exact fun x => ((hg x).hasFDerivAt.sub (fderiv ℝ g v).hasFDerivAt).fderiv
     have hb : ∀ x ∈ Metric.closedBall v t,
         ‖fderiv ℝ (fun y => g y - fderiv ℝ g v y) x‖ ≤ C * t := by
       intro x hx
@@ -105,8 +104,7 @@ theorem norm_fderiv_le_of_small_of_lipschitz {V E : Type*} [NormedAddCommGroup V
     exact mul_le_mul_of_nonneg_right hk hu'.le
   have e3 : (2 * δ / t + C * t) * ‖u‖ = (2 * δ + C * t * t) * ‖u‖ / t := by
     field_simp
-  rw [e3, le_div_iff₀ ht]
-  exact h3
+  rwa [e3, le_div_iff₀ ht]
 
 theorem norm_iteratedFDeriv_sub_le_of_bound {V E : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup E] [NormedSpace ℝ E] {f : V → E} (hf : ContDiff ℝ (⊤ : ℕ∞) f) (n : ℕ) {C : ℝ}
@@ -173,8 +171,7 @@ theorem eventually_forall_norm_iteratedFDeriv_le {X V : Type*} {l : Filter X}
     refine eventually_forall_norm_le_of_lipschitz_of_decay
       (h := fun x v => iteratedFDeriv ℝ 0 (h x) v) (C := C) (D := D) (fun v => ?_) hC0 ?_ ?_ hε
     · rw [tendsto_zero_iff_norm_tendsto_zero]
-      simp only [norm_iteratedFDeriv_zero]
-      exact tendsto_zero_iff_norm_tendsto_zero.1 (hp v)
+      simpa only [norm_iteratedFDeriv_zero] using tendsto_zero_iff_norm_tendsto_zero.1 (hp v)
     · filter_upwards [hCb] with x hx a b
       exact norm_iteratedFDeriv_sub_le_of_bound ((h x).smooth ⊤) 0 (fun w => by simpa using hx w) a b
     · filter_upwards [hDb] with x hx w
@@ -225,8 +222,7 @@ theorem schwartz_continuousAt_of_pointwise_of_bounded :
   have hp : ∀ v, Tendsto (fun x => (F x - F x0) v) (nhds x0) (𝓝 0) := by
     intro v
     have h2 := (hc v).tendsto.sub_const (F x0 v)
-    rw [sub_self] at h2
-    exact h2
+    rwa [sub_self] at h2
   rw [ContinuousAt, (schwartz_withSeminorms ℝ V ℂ).tendsto_nhds F (F x0)]
   rintro ⟨k, n⟩ ε hε
   obtain ⟨C2, hC20, hC2⟩ := hb' (2 * k) n

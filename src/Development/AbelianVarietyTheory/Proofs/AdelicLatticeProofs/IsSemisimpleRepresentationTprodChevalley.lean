@@ -266,8 +266,7 @@ theorem entries_le_of_energy_le : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] 
   have hd : ∀ k, d k ≤ √E := by
     intro k
     have h1 : ∑ k, d k ^ 2 ≤ E := by
-      rw [hHH, energy_trace_conj U hU] at hE
-      exact hE
+      rwa [hHH, energy_trace_conj U hU] at hE
     have h2 : d k ^ 2 ≤ ∑ k, d k ^ 2 :=
       Finset.single_le_sum (f := fun k => d k ^ 2) (fun _ _ => by positivity) (Finset.mem_univ k)
     exact Real.le_sqrt_of_sq_le (h2.trans h1)
@@ -322,8 +321,7 @@ theorem isCompact_box (C : ℝ) : IsCompact {x : Matrix ι ι ℂ | ∀ i j, ‖
       Set.pi Set.univ fun _ : ι => Set.pi Set.univ fun _ : ι => Metric.closedBall (0 : ℂ) C := by
     ext x
     simp [Set.mem_pi]
-  rw [← e] at h
-  exact h
+  rwa [← e] at h
 
 theorem exists_det_one (P : Matrix ι ι ℂ) (hP : IsUnit P.det) :
     ∃ Q : Matrix ι ι ℂ, Q.det = 1 ∧ ∀ x : Matrix ι ι ℂ, Q * x * Q⁻¹ = P * x * P⁻¹ := by
@@ -373,8 +371,7 @@ theorem GlobalTheory.ClassFin.exists_energy_min : ∀ (ι : Type) [Fintype ι] [
         have h2 : Continuous fun p : Matrix ι ι ℂ × (σ → Matrix ι ι ℂ) => p.1 * g s * p.1.adjugate :=
           (continuous_fst.matrix_mul continuous_const).matrix_mul continuous_fst.matrix_adjugate
         exact (_root_.GlobalTheory.ClassFin.isClosed_isLog ι).preimage (h.prodMk (h2.matrix_conjTranspose.matrix_mul h2))
-      rw [← Set.setOf_forall] at this
-      exact this
+      rwa [← Set.setOf_forall] at this
     have heq : Z = ({p | p.1.det = 1} ∩
         ({p | ∀ s, IsLog (p.2 s) ((p.1 * g s * p.1.adjugate)ᴴ * (p.1 * g s * p.1.adjugate))} ∩
           {p | En p ≤ E₀})) := by
@@ -1173,8 +1170,7 @@ theorem _root_.GlobalTheory.ClassFin.exists_conj_harm_of_span : ∀ (ι : Type) 
         rw [hconjQ s] at h1
         have he := gram_expansion_quartic_in_t (h s) N hNN t
         rw [sub_eq_iff_eq_add'] at he
-        rw [he] at h1
-        exact h1
+        rwa [he] at h1
       have hsum := Finset.sum_le_sum fun s (_ : s ∈ Finset.univ) => hbound s
       rw [Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum] at hsum
       have hm' : ∑ s, Complex.re (Matrix.trace (H s * H s)) ≤ ∑ s, Complex.re (Matrix.trace (H'' s * H'' s)) := hm
@@ -1290,8 +1286,7 @@ theorem trace_log_le_log_det : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (κ
     rw [hA]
     refine Matrix.isHermitian_mul_mul_conjTranspose _ ?_
     rw [Matrix.isHermitian_diagonal_iff]
-    intro i
-    exact Complex.conj_ofReal _
+    exact fun i => Complex.conj_ofReal _
   obtain ⟨V, m, hV, hV', hm⟩ := exists_diag _ (Matrix.isHermitian_conjTranspose_mul_mul Q hAh)
   set C : Matrix ι κ ℂ := Uᴴ * Q * V with hC
   have hCH : Cᴴ = Vᴴ * Qᴴ * U := by
@@ -1399,15 +1394,13 @@ theorem ss_of_harm : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (σ : Type) [
     refine ⟨Matrix.of fun i j => x j i, ?_⟩
     ext i j
     have h := congrFun (hx j) i
-    rw [Matrix.mulVec_mulVec, Matrix.mulVec_single_one] at h
-    exact h
+    rwa [Matrix.mulVec_mulVec, Matrix.mulVec_single_one] at h
   choose N hN using hN
   have hNinv : ∀ s, N (τ s) * N s = 1 := by
     intro s
     have h : Q * (N (τ s) * N s) = Q := by
       rw [← Matrix.mul_assoc, ← hN, Matrix.mul_assoc, ← hN, ← Matrix.mul_assoc, hτ, Matrix.one_mul]
-    have h2 := congrArg (fun X => Qᴴ * X) h
-    simpa only [← Matrix.mul_assoc, hQ, Matrix.one_mul] using h2
+    simpa only [← Matrix.mul_assoc, hQ, Matrix.one_mul] using congrArg (fun X => Qᴴ * X) h
   have hdet : ∀ s, (Qᴴ * ((g s)ᴴ * g s) * Q).det.re = Complex.normSq (N s).det := by
     intro s
     have h : Qᴴ * ((g s)ᴴ * g s) * Q = (N s)ᴴ * N s := by
@@ -1565,8 +1558,7 @@ theorem ss_transfer : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (S Γ : Set 
     refine ⟨(Submodule.orderIsoMapComap e).symm W', fun g hg v hv => ?_, ?_⟩
     · have hv' : P *ᵥ v ∈ W' := hv
       have := hW' _ ⟨g, hg, rfl⟩ _ hv'
-      rw [key] at this
-      exact this
+      rwa [key] at this
     · have := (Submodule.orderIsoMapComap e).symm.isCompl hc
       rwa [OrderIso.symm_apply_apply] at this
 
@@ -1655,8 +1647,7 @@ theorem ss_kronecker_of_span_top : ∀ (ι : Type) [Fintype ι] [DecidableEq ι]
     exact ⟨s, rfl⟩
   · intro x hx
     have : x ∈ Submodule.span ℂ (Set.range fun g => ρ g ⊗ₖ ρ' g) := Submodule.subset_span hx
-    rw [← e₃] at this
-    exact this
+    rwa [← e₃] at this
 
 end GlobalTheory.ClassFin
 end -- clump:auto
@@ -1732,8 +1723,7 @@ theorem _root_.GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom (�
     intro τ
     show τ.toSubmodule.map σ.toSubmodule.subtype ≤ σ.toSubmodule
     rw [Submodule.map_le_iff_le_comap]
-    intro w _
-    exact w.2
+    exact fun w _ => w.2
   have hF : ∀ τ, F τ = ⊥ ∨ F τ = σ := fun τ => h.le_iff.mp (hle τ)
   have hbot : ∀ τ, F τ = ⊥ → τ = ⊥ := by
     intro τ hτ
@@ -1741,8 +1731,7 @@ theorem _root_.GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom (�
     apply hinj
     have := congrArg Subrepresentation.toSubmodule hτ
     change _ = Submodule.map _ ⊥
-    rw [Submodule.map_bot]
-    exact this
+    rwa [Submodule.map_bot]
   have htop : ∀ τ, F τ = σ → τ = ⊤ := by
     intro τ hτ
     apply Subrepresentation.ext
@@ -1754,12 +1743,8 @@ theorem _root_.GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom (�
   have hne : (⊥ : Subrepresentation σ.toRepresentation) ≠ ⊤ := by
     intro he
     apply h.1
-    have h1 : F ⊤ = σ := by
-      apply Subrepresentation.ext
-      exact Submodule.map_subtype_top σ.toSubmodule
-    have h2 : F ⊥ = ⊥ := by
-      apply Subrepresentation.ext
-      exact Submodule.map_bot _
+    have h1 : F ⊤ = σ := Subrepresentation.ext (Submodule.map_subtype_top σ.toSubmodule)
+    have h2 : F ⊥ = ⊥ := Subrepresentation.ext (Submodule.map_bot _)
     rw [← h1, ← he, h2]
   haveI : Nontrivial (Subrepresentation σ.toRepresentation) := ⟨⟨⊥, ⊤, hne⟩⟩
   exact ⟨fun τ => (hF τ).imp (hbot τ) (htop τ)⟩

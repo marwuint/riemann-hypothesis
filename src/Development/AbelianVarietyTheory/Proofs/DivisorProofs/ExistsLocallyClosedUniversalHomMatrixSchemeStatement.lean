@@ -135,8 +135,7 @@ theorem θ_pullback (Rg : Type) [CommRing Rg] (A : Over (Sp Rg)) (T X' : Scheme.
   refine IsPullback.of_iso h (Iso.refl _) (asIso (θ A)) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_
   · simp
   · simp
-  · simp only [Iso.refl_hom, Category.comp_id, asIso_hom]
-    exact (θ_fA A).symm
+  · simpa only [Iso.refl_hom, Category.comp_id, asIso_hom] using (θ_fA A).symm
   · simp
 
 end GlobalTheory.HomFixUniv
@@ -264,9 +263,7 @@ theorem GlobalTheory.HomFixMat.exists_immersed_locus : ∀ (Y : Scheme.{0}) [IsN
     refine ⟨⟨w ≫ V.ι ≫ pullback.fst ι₁ ι₂, by simp [j, p]⟩,
       ⟨w ≫ V.ι ≫ pullback.snd ι₁ ι₂, by simp [j, p, pullback.condition]⟩, ?_⟩
     intro τ
-    have : V.ι (w τ) ∈ V := by
-      have h := Scheme.Opens.range_ι V
-      exact (Set.ext_iff.mp h (V.ι (w τ))).mp ⟨_, rfl⟩
+    have : V.ι (w τ) ∈ V := (Set.ext_iff.mp (Scheme.Opens.range_ι V) (V.ι (w τ))).mp ⟨_, rfl⟩
     exact this
 end -- clump:auto
 end -- clump:auto
@@ -329,12 +326,10 @@ theorem vals (Rg : Type) [CommRing Rg] (A : Over (Sp Rg)) [GrpObj A] (L : LB A.l
     constructor
     · intro h
       have h0 := Set.mem_iInter.1 h 0
-      rw [Set.mem_preimage, ← comp_base_pt, he] at h0
-      exact h0
+      rwa [Set.mem_preimage, ← comp_base_pt, he] at h0
     · intro h
       refine Set.mem_iInter.2 fun t => ?_
-      rw [Subsingleton.elim t 0, Set.mem_preimage, ← comp_base_pt, he]
-      exact h
+      rwa [Subsingleton.elim t 0, Set.mem_preimage, ← comp_base_pt, he]
   let W : L.ι → S.Opens := fun i => e ⁻¹ᵁ (LPow A L (k : ℤ) (topS Rg)).U (fun _ => i) ⊓ (L.pull (eSec A)).U (fun _ => i)
   have memW : ∀ (z : S) (i : L.ι), z ∈ W i ↔ eSec A z ∈ L.U i := by
     intro z i
@@ -494,8 +489,7 @@ theorem snd_θ {Rg : Type} [CommRing Rg] (B : Over (Sp Rg)) : (snd (topS Rg) B).
       apply Over.OverMorphism.ext
       have : Mono (topS Rg).hom := by
         show Mono ((⊤ : (Sp Rg).Opens).ι ≫ 𝟙 _); infer_instance
-      apply (cancel_mono (topS Rg).hom).1
-      exact (Over.w _).trans (Over.w _).symm
+      exact (cancel_mono (topS Rg).hom).1 ((Over.w _).trans (Over.w _).symm)
     · rw [Category.assoc, lift_snd, Category.comp_id, Category.id_comp]
   rw [θ, ← Over.comp_left, key]
   rfl
@@ -871,8 +865,7 @@ theorem GlobalTheory.HomFixUniv.isGen_of_matRel : ∀ (Rg : Type) [CommRing Rg] 
     intro j
     unfold GlobalTheory.HomFixUniv.comb
     rw [Finset.mul_sum]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    exact (congrArg (_ * ·) (tA i)).trans (mul_left_comm _ _ _)
+    exact Finset.sum_congr rfl fun i _ => (congrArg (_ * ·) (tA i)).trans (mul_left_comm _ _ _)
   have hg : gm (𝟙 A'.left) z _ ((isoLB (L := L) (M := M) k Φ' ψA ψB).g p p') =
       trF (L := M) (fun _ : Fin 1 => (snd (topS Rg) B).left) (fun _ => (k : ℤ)) (Φ'.left ≫ ψB) z p.1 p'.1 *
         (trF (L := L) (fun _ : Fin 1 => (snd (topS Rg) A).left) (fun _ => (k : ℤ)) ψA z p.2 p'.2)⁻¹ := by
@@ -1007,13 +1000,11 @@ theorem norm_at_zero : ∀ (Rg : Type) [CommRing Rg] (A B : Over (Sp Rg)) [GrpOb
   have mA : (eSec A ≫ θ A) (t z) ∈ LB.wchart L (fun _ : Fin 1 => (snd (topS Rg) A).left) p.2 := by
     refine Set.mem_iInter.2 fun i => ?_
     show (snd (topS Rg) A).left ((eSec A ≫ θ A) (t z)) ∈ L.U (p.2 i)
-    rw [← Scheme.Hom.comp_apply, Category.assoc, θ_snd, Category.comp_id, Subsingleton.elim i 0]
-    exact pA
+    rwa [← Scheme.Hom.comp_apply, Category.assoc, θ_snd, Category.comp_id, Subsingleton.elim i 0]
   have mB : (eSec B ≫ θ B) (t z) ∈ LB.wchart M (fun _ : Fin 1 => (snd (topS Rg) B).left) p.1 := by
     refine Set.mem_iInter.2 fun i => ?_
     show (snd (topS Rg) B).left ((eSec B ≫ θ B) (t z)) ∈ M.U (p.1 i)
-    rw [← Scheme.Hom.comp_apply, Category.assoc, θ_snd, Category.comp_id, Subsingleton.elim i 0]
-    exact pB
+    rwa [← Scheme.Hom.comp_apply, Category.assoc, θ_snd, Category.comp_id, Subsingleton.elim i 0]
   have sB : ∀ j, gs (zeroPt A') z ((isoLB (L := L) (M := M) k Φ' (φA' ≫ θ A) (φB' ≫ θ B)).U p)
       (((Φ'.left ≫ (φB' ≫ θ B)).appLE (LB.wchart M (fun _ : Fin 1 => (snd (topS Rg) B).left) p.1)
           ((isoLB (L := L) (M := M) k Φ' (φA' ≫ θ A) (φB' ≫ θ B)).U p)
@@ -1158,8 +1149,7 @@ theorem unit_of_proportional {X : Scheme.{0}} {V : X.Opens} {m : ℕ} (B C : Fin
   have hu : ∀ j, IsUnit (resG X (lW j) (C j)) := fun j =>
     X.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => by
       have := uC j y hy
-      rw [← gs_res (𝟙 X) y (lW j) hy, gs_eq _ y _ hy] at this
-      exact this
+      rwa [← gs_res (𝟙 X) y (lW j) hy, gs_eq _ y _ hy] at this
   let w : ∀ j, Γ(X, W j) := fun j => resG X (lW j) (B j) * ((hu j).unit⁻¹).val
   have hw : ∀ j, ∀ y ∈ W j, gs (𝟙 X) y (W j) (w j) * gs (𝟙 X) y V (C j) = gs (𝟙 X) y V (B j) := fun j y hy => by
     rw [← gs_res (𝟙 X) y (lW j) hy (C j), ← gs_mul _ y _ hy, _root_.mul_assoc]
@@ -1171,8 +1161,7 @@ theorem unit_of_proportional {X : Scheme.{0}} {V : X.Opens} {m : ℕ} (B C : Fin
       have := uB j y hy
       rw [← e] at this
       exact isUnit_of_mul_isUnit_left this
-    rw [gs_eq _ y _ hy] at h1
-    exact h1
+    rwa [gs_eq _ y _ hy] at h1
   obtain ⟨s, hs⟩ := glue_unit V W lW (fun y hy => by
       obtain ⟨j, hj⟩ := hC y hy
       exact TopologicalSpace.Opens.mem_iSup.2 ⟨j, (GlobalTheory.LBGerm.isUnit_gs_iff (𝟙 X) y V hy (C j)).1 hj⟩)
@@ -1350,8 +1339,7 @@ theorem normal_closed : ∀ (Rg : Type) [CommRing Rg] (mA mB : ℕ) (α : Fin mA
       rintro _ ⟨j, rfl⟩
       exact h j
     exact hle hx
-  · intro h j
-    exact h _ (Ideal.subset_span ⟨j, rfl⟩)
+  · exact fun h j => h _ (Ideal.subset_span ⟨j, rfl⟩)
 
 end GlobalTheory.HomFixUniv
 end -- clump:auto

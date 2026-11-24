@@ -172,8 +172,7 @@ theorem lift_open (σ : Setup) (x : Sp σ.R) {T : Scheme.{0}} (c : T ⟶ (σ.C x
   rw [Scheme.Opens.range_ι]
   refine (σ.hV x _).2 ?_
   have h1 := awayMap_notMem σ.f (d τ)
-  rw [← Scheme.Hom.comp_apply, ← e] at h1
-  exact h1
+  rwa [← Scheme.Hom.comp_apply, ← e] at h1
 
 theorem chart_mul_generic (σ : Setup) (E : Emb σ) (x : Sp σ.R) {T : Scheme.{0}} (s : T ⟶ Sp (FractionRing (σ.C x).R))
     (t₂ : T ⟶ Sp (Localization.Away σ.f)) (a b : Over.mk (s ≫ jK (σ.C x).R) ⟶ (σ.C x).G) (a' b' : Over.mk t₂ ⟶ σ.A)
@@ -245,16 +244,14 @@ theorem chart_mulAgree : ∀ (σ : Setup) (E : Emb σ) (x : Sp σ.R), MulAgree (
     obtain ⟨l, hl⟩ := lift_open σ x c.left (c'.left ≫ σ.A.hom) (by
       rw [← w, ← Category.assoc, h, Category.assoc, E.cartA.w, Category.assoc])
     refine ⟨l, hl, ?_⟩
-    rw [← cancel_mono E.ιA, Category.assoc, E.onV, ← Category.assoc, hl]
-    exact h
+    rwa [← cancel_mono E.ιA, Category.assoc, E.onV, ← Category.assoc, hl]
   obtain ⟨la, ha1, ha2⟩ := hl a a' ha
   obtain ⟨lb, hb1, hb2⟩ := hl b b' hb
   let q : (σ.V x).toScheme ⟶ Sp (σ.C x).R := (σ.V x).ι ≫ (σ.C x).G.hom
   have hq : la ≫ q = lb ≫ q := by
     have e1 : a.left ≫ (σ.C x).G.hom = t₁ := Over.w a
     have e2 : b.left ≫ (σ.C x).G.hom = t₁ := Over.w b
-    simp only [q, ← Category.assoc, ha1, hb1]
-    exact e1.trans e2.symm
+    simpa only [q, ← Category.assoc, ha1, hb1] using e1.trans e2.symm
   have hu : pullback.snd q q ≫ σ.φ x ≫ σ.A.hom = pullback.fst q q ≫ σ.φ x ≫ σ.A.hom := by
     rw [← cancel_mono (awayMap σ.f)]
     simp only [Category.assoc]
@@ -567,8 +564,7 @@ theorem exists_spread_basicOpen_agree : ∀ (R : Type) [CommRing R] [IsDomain R]
   refine ⟨k ≫ g₀, ?_, fun T t₀ t ht => ?_⟩
   · rw [Category.assoc, hg₀, pullback.lift_fst_assoc]
   · have := pullback.lift t₀ (t ≫ k) (by rw [ht, Category.assoc, pullback.lift_fst]) ≫= key
-    rw [pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.assoc] at this
-    exact this
+    rwa [pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.assoc] at this
 
 end GlobalTheory.Desc
 end -- clump:auto
@@ -764,8 +760,7 @@ theorem isPullback_of_open_part_eq_preimage :
     rintro _ ⟨g, rfl⟩
     rw [Scheme.Opens.range_ι]
     have h := (hV (l g)).mpr ⟨g, rfl⟩
-    rw [← Scheme.Hom.comp_apply, hlf] at h
-    exact h
+    rwa [← Scheme.Hom.comp_apply, hlf] at h
   have he' : IsOpenImmersion.lift V.ι e hr ≫ V.ι = e := IsOpenImmersion.lift_fac _ _ _
   generalize IsOpenImmersion.lift V.ι e hr = e' at he'
   have hcomm : e' ≫ V.ι ≫ p = c ≫ s := by rw [← Category.assoc, he', hw]
@@ -961,8 +956,7 @@ theorem exists_mul_mem_of_mul_mem {R C : Type} [CommRing R] [CommRing C] [IsDoma
   obtain ⟨d, e, hd⟩ := key ⟨x * c, hc⟩ (by
     rw [ht]
     exact Ideal.mem_comap.2 (Ideal.mem_span_singleton'.2 ⟨c, mul_comm _ _⟩))
-  rw [mul_left_cancel₀ hx e]
-  exact hd
+  rwa [mul_left_cancel₀ hx e]
 
 theorem exists_finiteType_away_of_atPrime (R C : Type) [CommRing R] [IsNoetherianRing R]
     [CommRing C] [IsDomain C] [Algebra R C] (f : R) (𝔭 : Ideal R) [𝔭.IsPrime]
@@ -1127,8 +1121,7 @@ theorem affine_case (R : Type) [CommRing R] [IsNoetherianRing R] (f : R) (P A : 
       intro hgc
       apply hg
       apply hc
-      rw [h5]
-      exact hgc
+      rwa [h5]
     obtain ⟨d, hd⟩ := this
     exact ⟨d, by rw [Scheme.Hom.comp_apply, ← hd]; rfl⟩
   · rintro _ ⟨d, rfl⟩
@@ -1317,8 +1310,7 @@ theorem smooth_of_forall {P S : Scheme.{0}} (p : P ⟶ S) (V : P.Opens)
   have := HasRingHomProperty.instIsZariskiLocalAtSource (P := @Smooth) (Q := RingHom.Smooth)
   refine IsZariskiLocalAtSource.of_iSup_eq_top (P := @Smooth) (fun z : V => V.ι ⁻¹ᵁ W z.1 z.2) ?_ fun z => ?_
   · rw [eq_top_iff]
-    intro z _
-    exact TopologicalSpace.Opens.mem_iSup.2 ⟨z, hW z.1 z.2⟩
+    exact fun z _ => TopologicalSpace.Opens.mem_iSup.2 ⟨z, hW z.1 z.2⟩
   · have := hs z.1 z.2
     rw [← Category.assoc, ← morphismRestrict_ι, Category.assoc]
     infer_instance
@@ -1443,8 +1435,7 @@ theorem Emb.exists_locGrp : ∀ (σ : Setup) (E : Emb σ), σ.Common → ∀ x :
     have hV : z ∈ V := hw ▸ hU w (hw ▸ hz)
     obtain ⟨u, hu⟩ : x ∈ Set.range (awayMap g) := by
       change x ∈ Set.range (PrimeSpectrum.comap (algebraMap σ.R (Localization.Away g)))
-      rw [PrimeSpectrum.localization_away_comap_range _ g]
-      exact hg
+      rwa [PrimeSpectrum.localization_away_comap_range _ g]
     obtain ⟨v, hv, -⟩ := Scheme.exists_preimage_of_isPullback ph (⟨z, hV⟩ : V.toScheme) u (by
       rw [hu]; exact (Scheme.Hom.comp_apply _ _ _).trans hz')
     exact ⟨v, by rw [Scheme.Hom.comp_apply, hv]; rfl⟩
@@ -1694,8 +1685,7 @@ theorem exists_point {P S₀ S : Scheme.{0}} (p : P ⟶ S₀) (s : S ⟶ S₀) (
     · rintro ⟨h, h'⟩
       apply pullback.hom_ext
       · simpa only [Category.assoc, pullback.lift_fst] using h
-      · simp only [Category.assoc, pullback.lift_snd]
-        exact e1.trans (h'.trans e2.symm)
+      · simpa only [Category.assoc, pullback.lift_snd] using e1.trans (h'.trans e2.symm)
   obtain ⟨y', hy'⟩ := GlobalTheory.OpenSubgrp.range_subset S (pullback p s) H₁ H₂ (pullback.lift h₁ H₁.hom w₁) (pullback.lift h₂ H₂.hom w₂)
     (pullback.snd p s) (pullback.lift_snd _ _ _) (pullback.lift_snd _ _ _) o₁ o₂ hs hc
     (fun T t₁ t₂ a b a' b' ha hb => (key _ _).2 ⟨hm T t₁ t₂ a b a' b' ((key _ _).1 ha).1 ((key _ _).1 hb).1, ((key _ _).1 ha).2⟩)

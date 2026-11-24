@@ -184,8 +184,7 @@ theorem latQ_isLattice {M N : Matrix (Fin k) (Fin k) D.host.E} (hMN : M * N = 1)
           exact Submodule.smul_mem _ _ ih
       have := key _ hx'
       rwa [hback] at this
-  · intro s hs hli
-    exact (LinearIndependent.iff_fractionRing _ _).mp hli
+  · exact fun s hs hli => (LinearIndependent.iff_fractionRing _ _).mp hli
 theorem localLattice_isLattice (hP : FactPrincipalDatum) (Λ : Submodule (𝓞 D.host.E) (Fin k → D.host.E))
     (hΛ : Λ.IsLattice D.host.E) : (lattice₂ D Λ).IsLattice D.host.E := by
   refine ⟨localLattice_fg D Λ hΛ.fg, ?_⟩
@@ -193,8 +192,7 @@ theorem localLattice_isLattice (hP : FactPrincipalDatum) (Λ : Submodule (𝓞 D
     inv_ne_zero (Formalism.L2.Pj.AA_ne_zero hP D)
   obtain ⟨b, hb, hb0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot
     (fun h => h0 (FractionalIdeal.coeToSubmodule_eq_bot.1 h))
-  intro s hs hli
-  exact (LinearIndependent.iff_fractionRing _ _).mp hli
+  exact fun s hs hli => (LinearIndependent.iff_fractionRing _ _).mp hli
 variable (B : Base D.host.F D.host.E) {d : ℕ} (Y : Spc D.host.F D.host.E d) {r s : ℕ}
 
 theorem det_J_ne_zero_skew (hY : Y.IsSkew D.sp.cm.sig B r s) : Y.J.det ≠ 0 := by
@@ -249,8 +247,7 @@ theorem skew_to_herm (hY : Y.IsSkew D.sp.cm.sig B r s) :
   have hM : Mᴴ * G * M = -G' := by
     rw [hMh, hGdef, hMdef, hG'def]
     simp only [Matrix.neg_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul]
-    rw [Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]
-    rw [neg_mul_neg, inv_mul_cancel₀ hξ, one_smul]
+    rw [Matrix.mul_nonsing_inv _ hu, Matrix.one_mul, neg_mul_neg, inv_mul_cancel₀ hξ, one_smul]
   have hkey : ∀ a b : Fin d → D.host.E,
       GlobalTheory.WeilSchrodinger.sesq D G (M *ᵥ star b) (M *ᵥ star a) = -ReciprocityTheory.ChartRestriction.G.FD.herm G' b a := by
     intro a b

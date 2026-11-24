@@ -217,8 +217,7 @@ theorem mem_frobKerIdeal_of_cobOne (p : ℕ) [Fact p.Prime] (K H : Type) [Field 
     rw [← map_pow]
     exact Ideal.Quotient.eq_zero_iff_mem.2 (pow_mem_frobKerIdeal hx)
   have hc' : cobOne K (H ⧸ J) (π b) = 0 := by
-    rw [← pullTwo_cobOne]
-    exact hc
+    rwa [← pullTwo_cobOne]
   have hd' : dUnit (R := K) (π b) = 0 := by
     rw [← cotMap_d, hd, map_zero]
   have h0 := _root_.GlobalTheory.PDiv.HeightOnePrim.eq_zero_of_cobOne_eq_zero_of_dUnit_eq_zero p K (H ⧸ J) hpow (π b) hc' hd'
@@ -372,10 +371,8 @@ theorem ker_rigExtMap_relFrob_le_range_rigOfOmega (p : ℕ) [Fact p.Prime] (K : 
     (LinearMap.range ((frobTwist h G).cob.prod (frobTwist h G).dFun))).2
     (LinearMap.mem_range.2 ⟨B₀, Prod.ext ?_ ?_⟩)).symm
   · show (frobTwist h G).cob B₀ = c - 0
-    rw [sub_zero]
-    exact hc0
-  · show (frobTwist h G).dFun B₀ = w - (w - (frobTwist h G).dFun B₀)
-    exact (sub_sub_cancel w _).symm
+    rwa [sub_zero]
+  · exact (sub_sub_cancel w _).symm
 
 end GlobalTheory.PDivGroup
 end -- clump:auto
@@ -425,8 +422,7 @@ theorem mulP_mem_kerIdeal_comp_of_app_eq_zero (p : ℕ) [Fact p.Prime] (R : Type
   rw [← PDivGroup.res_app] at ha
   have hb : g.app 2 b ∈ torsionIdeal (R := R) (A := H.A 2) p := by
     have : g.app 2 b ∈ torsionIdeal (R := R) (A := H.A 2) (p ^ 1) := by
-      rw [← H.ker_res 1]
-      exact ha
+      rwa [← H.ker_res 1]
     rwa [pow_one] at this
   have h1 : x (f.app 2 (g.app 2 b)) = 0 := hy hb
   have e2 : f.app 2 (g.app 2 b) = mulBy R _ p b := by

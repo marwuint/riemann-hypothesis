@@ -191,8 +191,7 @@ theorem prod_norm_gramR_le (K : Type) [Field K] [NumberField K] [StarRing K] [_r
       rw [det_gram_eq_embGramDet H X hX e]
     rw [h1, h2]
     unfold embGramDet
-    rw [Rb.Hmap_tw (cmMax K) hK0 H hR.1]
-    exact hcs
+    rwa [Rb.Hmap_tw (cmMax K) hK0 H hR.1]
   have hperm : ∏ v : InfinitePlace K, g (Rb.plc v) = ∏ v : InfinitePlace K, g v :=
     Equiv.prod_comp (Function.Involutive.toPerm _ (fun v => Rb.plc_plc v)) g
   have hsq : (∏ v : InfinitePlace K, ‖v.embedding (gramR H e)‖) ^ 2 ≤
@@ -227,8 +226,7 @@ theorem mulVec_injective_map_of_linearIndependent {K L : Type} [Field K] [Field 
     Function.Injective (((Matrix.of e)ᵀ).map σ).mulVec := by
   letI : Algebra K L := σ.toAlgebra
   rw [Matrix.mulVec_injective_iff]
-  have h := (linearIndependent_algebraMap_comp_iff (S := L) (v := e)).2 he
-  exact h
+  exact (linearIndependent_algebraMap_comp_iff (S := L) (v := e)).2 he
 
 theorem gram_eq_conjTranspose_mul {K : Type} [Field K] [NumberField K] [StarRing K] {d j : ℕ}
     (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (v : InfinitePlace K) (e : Fin j → Fin d → K) :
@@ -561,8 +559,7 @@ theorem GlobalTheory.neg_rank_mul_log_le_lcv : ∀ (K : Type) [Field K] [NumberF
       simp [Matrix.mul_apply, Matrix.mulVec, dotProduct]
     rw [hψE, hψE, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec,
       Matrix.mulVec_mulVec, Matrix.mul_assoc] at h
-    rw [hG]
-    exact h
+    rwa [hG]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.NegRankMulLogLeLogCovolumeHermitian =====

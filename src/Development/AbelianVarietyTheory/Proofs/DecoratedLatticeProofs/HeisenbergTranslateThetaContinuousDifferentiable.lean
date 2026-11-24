@@ -135,8 +135,7 @@ theorem theta_rem (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) {L : ℝ →+ 
       have e1 := congrFun (h1 u hu h0) w
       unfold heisO at e1 ⊢
       rw [Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, mul_left_comm, e1]
-    · intro k L h1 h2 w
-      exact contDiff_const.mul (hg.smooth k L h1 h2 w)
+    · exact fun k L h1 h2 w => contDiff_const.mul (hg.smooth k L h1 h2 w)
   exact theta_sub (theta_smul _ (theta_sub (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf _) hf)) (theta_dLine hθ hψ hL hf)
 
 theorem tendsto_supN_rem (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) {L : ℝ →+ WO S T} (hL : IsRealDir T S L)
@@ -147,8 +146,7 @@ theorem tendsto_supN_rem (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) {L : �
   have hd : dLine ψ S T L' f = -dLine ψ S T L f := by
     funext w
     have := deriv_comp_neg (fun t : ℝ => heisO ψ S T (L t) f w) 0
-    rw [neg_zero] at this
-    exact this
+    rwa [neg_zero] at this
   obtain ⟨C, hC⟩ := quotient_bound hθ hψ hL hf
   obtain ⟨C', hC'⟩ := quotient_bound hθ hψ hL' hf
   have hb : ∀ t : ℝ, t ≠ 0 → ∀ w, ‖rem ψ L t f w‖ ≤ (|C| + |C'|) * |t| := by
@@ -224,8 +222,7 @@ theorem cc_line (hθ : IsInfFam θ) (τ : D.what₂.Tau) (z : Matrix (Fin T.rank
     (hL : Continuous L) (t : ℝ) : cc θ τ z (L t) = t * cc θ τ z (L 1) := by
   have := map_real_smul ((AddMonoidHom.mk' (cc θ τ z : WO S T → ℂ) (cc_add τ z)).comp L)
     ((continuous_cc hθ τ z).comp hL) t 1
-  rw [smul_eq_mul, mul_one, Complex.real_smul] at this
-  exact this
+  rwa [smul_eq_mul, mul_one, Complex.real_smul] at this
 
 theorem word_smul (l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool)) (c : ℂ) (f : WO S T → ℂ) :
     wordAct (heisDer ψ θ) l (c • f) = c • wordAct (heisDer ψ θ) l f :=
@@ -270,8 +267,7 @@ theorem tendsto_word_heisO (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
       have e1 := congrFun (h1 u hu h0) w
       unfold heisO at e1 ⊢
       rw [Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, mul_left_comm, e1]
-    · intro k L h1 h2 w
-      exact contDiff_const.mul (hg.smooth k L h1 h2 w)
+    · exact fun k L h1 h2 w => contDiff_const.mul (hg.smooth k L h1 h2 w)
   have theta_add {g k : WO S T → ℂ} (hg : IsThetaFunO ψ S T g) (hk : IsThetaFunO ψ S T k) : IsThetaFunO ψ S T (g + k) := by
     simpa only [neg_one_smul, sub_neg_eq_add] using theta_sub hg (theta_smul (-1) hk)
   induction l using List.reverseRecOn with
@@ -318,8 +314,7 @@ theorem der_rem (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {L : ℝ →+ WO
       have e1 := congrFun (h1 u hu h0) w
       unfold heisO at e1 ⊢
       rw [Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, mul_left_comm, e1]
-    · intro k L h1 h2 w
-      exact contDiff_const.mul (hg.smooth k L h1 h2 w)
+    · exact fun k L h1 h2 w => contDiff_const.mul (hg.smooth k L h1 h2 w)
   have hu := GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf (L t)
   have ht' : (t : ℂ) ≠ 0 := Complex.ofReal_ne_zero.2 ht
   have e : ccA θ a (L t) = t * ccA θ a (L 1) := cc_line hθ _ _ hL.1 t
@@ -347,8 +342,7 @@ theorem tendsto_word_rem (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {L : �
       have e1 := congrFun (h1 u hu h0) w
       unfold heisO at e1 ⊢
       rw [Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, mul_left_comm, e1]
-    · intro k L h1 h2 w
-      exact contDiff_const.mul (hg.smooth k L h1 h2 w)
+    · exact fun k L h1 h2 w => contDiff_const.mul (hg.smooth k L h1 h2 w)
   have hL0 : Filter.Tendsto L (𝓝[≠] 0) (𝓝 0) := by
     have := (hL.1.tendsto 0).mono_left (nhdsWithin_le_nhds (s := {0}ᶜ))
     rwa [map_zero] at this

@@ -89,9 +89,7 @@ theorem GlobalTheory.GlobFin.fin_rep : ∀ (D : D7) (S : HSp D) (g : GA D S), �
   have hy0 : ∀ j, y j ∈ idAt D (fun _ => True) := by
     intro j
     refine Ideal.mem_inf.mpr ⟨(Ideal.mem_inf.mp (hy j)).1, ?_⟩
-    simp only [Submodule.mem_iInf]
-    intro w
-    exact absurd trivial w.2
+    simpa only [Submodule.mem_iInf] using fun w => absurd trivial w.2
   have hu1 : Formalism.L2.Theta.mt S u *ᵥ y = y := by
     funext i
     have hz : ∀ j, (Formalism.L2.Theta.mt S u i j - (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) i j) * y j = 0 := by
@@ -105,8 +103,7 @@ theorem GlobalTheory.GlobFin.fin_rep : ∀ (D : D7) (S : HSp D) (g : GA D S), �
     have hsum : ((Formalism.L2.Theta.mt S u - 1) *ᵥ y) i = 0 := by
       simp only [Matrix.mulVec, dotProduct, Matrix.sub_apply]
       exact Finset.sum_eq_zero fun j _ => hz j
-    rw [Matrix.sub_mulVec, Matrix.one_mulVec, Pi.sub_apply, sub_eq_zero] at hsum
-    exact hsum
+    rwa [Matrix.sub_mulVec, Matrix.one_mulVec, Pi.sub_apply, sub_eq_zero] at hsum
   rw [mt_mul, ← Matrix.mulVec_mulVec, hu1]
 end -- clump:auto
 end -- clump:auto
@@ -147,8 +144,7 @@ variable {D : D7}
 
 theorem mulVec_mem {I : Ideal (AE D)} {m n : ℕ} (A : Matrix (Fin m) (Fin n) (AE D)) {y : Fin n → AE D}
     (hy : ∀ i, y i ∈ I) (k : Fin m) : (A *ᵥ y) k ∈ I := by
-  simp only [Matrix.mulVec, dotProduct]
-  exact Ideal.sum_mem _ fun i _ => I.mul_mem_left _ (hy i)
+  simpa only [Matrix.mulVec, dotProduct] using Ideal.sum_mem _ fun i _ => I.mul_mem_left _ (hy i)
 
 theorem finPart_pure (α : Af D.host.F) (e : D.host.E) :
     finPart D ((pairA D.host.F 0 α) ⊗ₜ[D.host.F] e) = α ⊗ₜ[D.host.F] e := by

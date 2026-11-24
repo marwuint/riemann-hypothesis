@@ -79,8 +79,7 @@ theorem preimage_le_of_comp {X Y Z W : Scheme.{0}} {f : X ⟶ Y} {g : Y ⟶ W} {
   have e : g.base (f.base x) = g'.base (f'.base x) := by
     rw [← Scheme.Hom.comp_apply, h, Scheme.Hom.comp_apply]
   show g'.base (f'.base x) ∈ U
-  rw [← e]
-  exact hx
+  rwa [← e]
 
 theorem prodMapPairTimesIdentity_fst {A A' : Over S} (q : A ⟶ A') (T : Over S) :
     (pmap2 q T).left ≫ (lift (fst A' (A' ⊗ T)) (snd A' (A' ⊗ T) ≫ snd A' T)).left =
@@ -106,21 +105,18 @@ theorem prodMapPairTimesIdentity_mul {A A' : Over S} [MonObj A] [MonObj A'] (q :
 theorem addGen_le₁ {A A' T : Over S} [MonObj A'] (q : A ⟶ A') (M : LB (A' ⊗ T).left) (k : (addBundle M).ι) :
     (pmap2 q T).left ⁻¹ᵁ (addBundle M).U k ≤ (ptFst A T).left ⁻¹ᵁ ((pmap q T).left ⁻¹ᵁ M.U (k.1.1 PUnit.unit)) := by
   refine le_trans ?_ (preimage_le_of_comp (prodMapPairTimesIdentity_fst q T) _)
-  intro x hx
-  exact LB.wchart_le M _ k.1.1 PUnit.unit hx.1.1
+  exact fun x hx => LB.wchart_le M _ k.1.1 PUnit.unit hx.1.1
 
 theorem addGen_le₂ {A A' T : Over S} [MonObj A'] (q : A ⟶ A') (M : LB (A' ⊗ T).left) (k : (addBundle M).ι) :
     (pmap2 q T).left ⁻¹ᵁ (addBundle M).U k ≤ (ptSnd A T).left ⁻¹ᵁ ((pmap q T).left ⁻¹ᵁ M.U (k.1.2 PUnit.unit)) := by
   refine le_trans ?_ (preimage_le_of_comp (prodMapPairTimesIdentity_snd q T) _)
-  intro x hx
-  exact LB.wchart_le M _ k.1.2 PUnit.unit hx.1.2
+  exact fun x hx => LB.wchart_le M _ k.1.2 PUnit.unit hx.1.2
 
 theorem addGen_le₃ {A A' T : Over S} [MonObj A] [MonObj A'] (q : A ⟶ A') [IsMonHom q] (M : LB (A' ⊗ T).left)
     (k : (addBundle M).ι) :
     (pmap2 q T).left ⁻¹ᵁ (addBundle M).U k ≤ (ptMul A T).left ⁻¹ᵁ ((pmap q T).left ⁻¹ᵁ M.U (k.2 PUnit.unit)) := by
   refine le_trans ?_ (preimage_le_of_comp (prodMapPairTimesIdentity_mul q T) _)
-  intro x hx
-  exact LB.wchart_le M _ k.2 PUnit.unit hx.2
+  exact fun x hx => LB.wchart_le M _ k.2 PUnit.unit hx.2
 
 def addGen {A A' T : Over S} [MonObj A] [MonObj A'] (q : A ⟶ A') [IsMonHom q] (M : LB (A' ⊗ T).left)
     (e : ∀ k, Γ((A ⊗ T).left, (pmap q T).left ⁻¹ᵁ M.U k)ˣ) (k : (addBundle M).ι) :

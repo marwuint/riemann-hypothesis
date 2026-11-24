@@ -528,8 +528,7 @@ theorem iso_of_lbIso_lam : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing
     rw [φh] at this
     rw [this, Category.assoc, piB, Category.comp_id]
   · have := ht (h a) (h b) z J J' hJ hJ'
-    rw [φh, φh, one_smul, one_smul, one_smul] at this
-    exact this
+    rwa [φh, φh, one_smul, one_smul, one_smul] at this
 
 end GlobalTheory.Mum.SameLam
 end -- clump:auto
@@ -684,8 +683,7 @@ theorem unit_eq_one_of_generic (R : Type) [CommRing R] [IsDomain R] (V : (Spec (
     IsFractionRing.injective R (FractionRing R) (by rw [map_one]; exact h3.symm)
   apply Units.ext
   apply (Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.injective
-  rw [Units.val_one, map_one]
-  exact h4
+  rwa [Units.val_one, map_one]
 
 theorem val_eq_one_of_generic : ∀ (R : Type) [CommRing R] [IsDomain R] {X : Scheme.{0}} (L : LB X), L.IsLB → ∀ {K : Type} [Fintype K] (φ : K → (Spec (CommRingCat.of R) ⟶ X)) (ε : K → ℤ), FormEq φ ε (PEmpty.elim : PEmpty → (Spec (CommRingCat.of R) ⟶ X)) (PEmpty.elim : PEmpty → ℤ) → ∀ t : LB.Gen (LB.LinComb L φ ε), t.IsGen → (∀ (z : (TK R).left) (J : ((TK R).left ⟶ X) → L.ι), Good L z J → val t (jK R) z J = 1) → ∀ (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of R)) (z : Z) (J : (Z ⟶ X) → L.ι), Good L z J → val t r z J = 1 := by
   intro R _ _ X L hL K _ φ ε hF t ht hgen Z r z J hJ
@@ -859,8 +857,7 @@ theorem isPullDeg_of_primitive : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
         rw [GlobalTheory.MumBil.tau_zero D'.tau_bimult (P₁.good hJ), map_zero, GlobalTheory.MumBil.tau_zero D.tau_bimult (P₂.good hJ),
           _root_.mul_one] at v
         rw [E1g]; exact v.symm) Z r z J hJ
-    rw [val_pull hJ, vt₁ _ _ z J hJ] at key
-    exact key
+    rwa [val_pull hJ, vt₁ _ _ z J hJ] at key
   have hE : eSec D'.toPre.P.A ≫ Φ.hom.left = eSec D.toPre.P.A := by
     rw [eSec, eSec, ← Over.comp_left, IsMonHom.one_hom]
   have hT : eSec D'.toPre.P.A ≫ (toUnit D'.toPre.P.A).left = 𝟙 _ := by
@@ -918,8 +915,7 @@ theorem isPullDeg_of_primitive : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
         rw [P₁.val_gen _ _ _ hJ, val_mul hJ, val_pull hJ, vt₁ _ _ _ _ hJ, P₂.val_gen _ _ _ hJ, Category.id_comp]
         exact vΛ a b y (rr J) (rl J) (P₂.good hJ) (P₁.good hJ))
     have := val_corr hJ C r
-    rw [P₁.val_gen _ _ _ hJ, val_mul hJ, val_pull hJ, vt₁ _ _ _ _ hJ, P₂.val_gen _ _ _ hJ] at this
-    exact this
+    rwa [P₁.val_gen _ _ _ hJ, val_mul hJ, val_pull hJ, vt₁ _ _ _ _ hJ, P₂.val_gen _ _ _ hJ] at this
   have hψ : ∀ x, PMaps w₀ (K := PUnit) (fun _ => D'.toPre.xK x) (fun _ => D.toPre.xK (xe x)) (fun _ => -1)
       (D'.toPre.psi x) (D.toPre.psi (xe x)) (𝟙 _) := by
     intro x Z r z p q hp hq
@@ -1082,8 +1078,7 @@ theorem GlobalTheory.Mum.Two.isPullUnif_id_over₀_onTorus : ∀ (R : Type) [Com
           (fun k => by simp only [Category.assoc, hψk k]),
         val_of _ r z J₁ (fun k => J₁ (r ≫ D'.toPre.Oφ (U'.gt 0).pG x k)) (fun k => rfl)]
       exact e
-    rw [key] at hT
-    exact hT
+    rwa [key] at hT
 end -- clump:auto
 end -- clump:auto
 end -- clump:auto
@@ -1421,8 +1416,7 @@ theorem main : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host 
         rfl
     · rw [he2]
       have h := hoa1 x
-      rw [hoa0] at h
-      exact h
+      rwa [hoa0] at h
   obtain ⟨e', h1, h2⟩ := key P.D P.oD hPD hmod hoD
   exact ⟨t, P, e', h1, h2⟩
 

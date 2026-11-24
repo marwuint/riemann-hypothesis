@@ -123,13 +123,11 @@ theorem _root_.GlobalTheory.hasSum_tuple_prod_exp {ι : Type} (z : ι → ℂ) (
     apply Summable.of_norm
     rw [summable_sigma_of_nonneg (fun _ => norm_nonneg _)]
     refine ⟨fun n => ?_, ?_⟩
-    · simp only [norm_div, Complex.norm_natCast]
-      exact (fibr n).summable.div_const _
+    · simpa only [norm_div, Complex.norm_natCast] using (fibr n).summable.div_const _
     · simp only [norm_div, Complex.norm_natCast]
       have hn : ∀ n : ℕ, ∑' f : Fin n → ι, ‖∏ k, z (f k)‖ / (n.factorial : ℝ) =
           (∑' i, ‖z i‖) ^ n / n.factorial := fun n => ((fibr n).div_const _).tsum_eq
-      simp only [hn]
-      exact Real.summable_pow_div_factorial _
+      simpa only [hn] using Real.summable_pow_div_factorial _
   have hexp : HasSum (fun n : ℕ => g ^ n / (n.factorial : ℂ)) (Complex.exp g) := by
     rw [Complex.exp_eq_exp_ℂ]
     exact NormedSpace.expSeries_div_hasSum_exp g
@@ -165,8 +163,7 @@ theorem _root_.GlobalTheory.landau_exp_summable : ∀ (ι : Type) (a l : ι → 
       rw [Finset.prod_mul_distrib, ← Complex.exp_sum, hsum]
       simp only [b, Complex.ofReal_div, Complex.ofReal_prod, Complex.ofReal_natCast]
       ring
-    rw [heq] at H
-    exact H
+    rwa [heq] at H
   have hB : ∀ σ : ℝ, 1 < σ → Summable fun p => b p * Real.exp (-(L p * σ)) := by
     intro σ hσ
     have H := (hA σ (by simpa using hσ)).summable
@@ -196,8 +193,7 @@ theorem _root_.GlobalTheory.landau_exp_summable : ∀ (ι : Type) (a l : ι → 
   have hfib : ∀ t p, HasSum (fun n => T t (p, n)) (b p * Real.exp (-(L p * (2 - t)))) := by
     intro t p
     have H := (hexpR (L p * t)).mul_left (b p * Real.exp (-(2 * L p)))
-    rw [show -(L p * (2 - t)) = -(2 * L p) + L p * t by ring, Real.exp_add, ← mul_assoc]
-    exact H
+    rwa [show -(L p * (2 - t)) = -(2 * L p) + L p * t by ring, Real.exp_add, ← mul_assoc]
   have hK : ∀ t, 0 ≤ t → ∀ n, Summable fun p => T t (p, n) := by
     intro t ht n
     refine Summable.of_nonneg_of_le (fun p => hT t ht (p, n)) (fun p => ?_)
@@ -220,8 +216,7 @@ theorem _root_.GlobalTheory.landau_exp_summable : ∀ (ι : Type) (a l : ι → 
     intro t ht ht1
     rw [summable_prod_of_nonneg (fun q => hT t ht q)]
     refine ⟨fun p => (hfib t p).summable, ?_⟩
-    simp only [fun p => (hfib t p).tsum_eq]
-    exact hB (2 - t) (by linarith)
+    simpa only [fun p => (hfib t p).tsum_eq] using hB (2 - t) (by linarith)
   have hK2' : ∀ t, 0 ≤ t → t < 1 →
       Summable fun n => ∑' p, T t (p, n) := by
     intro t ht ht1
@@ -265,8 +260,7 @@ theorem _root_.GlobalTheory.landau_exp_summable : ∀ (ι : Type) (a l : ι → 
       rw [abs_of_nonneg (hb q.1), Real.abs_exp, abs_of_nonneg (hL q.1)]
     have hEs : Summable E := by
       refine Summable.of_norm ?_
-      simp only [hEn]
-      exact hK2 ‖y‖ (norm_nonneg _) hy1
+      simpa only [hEn] using hK2 ‖y‖ (norm_nonneg _) hy1
     have hfibE : ∀ p, HasSum (fun n => E (p, n))
         ((b p : ℂ) * Complex.exp (-(L p : ℂ) * (2 + y))) := by
       intro p
@@ -276,8 +270,7 @@ theorem _root_.GlobalTheory.landau_exp_summable : ∀ (ι : Type) (a l : ι → 
         rw [Complex.ofReal_mul, Complex.ofReal_exp, mul_assoc, ← Complex.exp_add]
         push_cast
         ring_nf
-      rw [heq] at H
-      exact H
+      rwa [heq] at H
     have hre : 1 < (2 + y).re := by
       have := Complex.abs_re_le_norm y
       rw [Complex.add_re]
@@ -303,8 +296,7 @@ theorem _root_.GlobalTheory.landau_exp_summable : ∀ (ι : Type) (a l : ι → 
       rw [tsum_mul_right, ← Complex.ofReal_tsum]
       simp only [c, r]
       ring
-    rw [hval] at H
-    exact H
+    rwa [hval] at H
 
   have hent := hF.hasFPowerSeriesOnBall 2 (R := 1) one_pos
   have hpeq := hps.hasFPowerSeriesAt.eq_formalMultilinearSeries hent.hasFPowerSeriesAt

@@ -863,8 +863,7 @@ theorem lamEq_one {ρ : 𝓞 K} (hρ : ρ ^ 2 = -(H.d : 𝓞 K)) (A A' B : PAT H
       simpa [Hom.one_def] using h2
     · have h1 := h (G ⊗ G) (fst G G) (snd G G)
       have e : lift (fst G G ≫ f) (snd G G ≫ f) = f ⊗ₘ f := by ext1 <;> simp
-      rw [Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, e] at h1
-      exact h1
+      rwa [Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, e] at h1
   haveI : IsMonHom (1 : A'.t.G ⟶ A.t.G) := mon_of_points _ fun T a b => by
     simp only [MonObj.comp_one, _root_.mul_one]
   obtain ⟨f₁, hm₁, e₁⟩ := GlobalTheory.PairingFibre.exists_hom m₁.cart mB.cart f
@@ -977,8 +976,7 @@ theorem exists_inverse : ∃ (N : ℕ) (ψ : Fin p → (X.B.pol.A ⟶ (X.A true)
       simpa [Hom.one_def] using h2
     · have h1 := h (G ⊗ G) (fst G G) (snd G G)
       have e : lift (fst G G ≫ f) (snd G G ≫ f) = f ⊗ₘ f := by ext1 <;> simp
-      rw [Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, e] at h1
-      exact h1
+      rwa [Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, e] at h1
   simp only [fun G T [GrpObj G] => (S G T).2.1, fun G T [GrpObj G] => (S G T).2.2.1,
     fun G T [GrpObj G] => (S G T).2.2.2, List.prod_ofFn] at h1 h2
   have hm : ∀ (T : Over (Sp (𝓞 K))) (x y : T ⟶ X.B.pol.A),

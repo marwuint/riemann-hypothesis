@@ -65,8 +65,7 @@ theorem det_mem_of_mem_latStab_std {g : GL n k} (hg : g ∈ latStab (stdLat k n)
     constructor
     · rintro ⟨y, rfl⟩ i
       exact (y i).2
-    · intro h
-      exact ⟨fun i => ⟨v i, h i⟩, rfl⟩
+    · exact fun h => ⟨fun i => ⟨v i, h i⟩, rfl⟩
   have hent : ∀ i j, (g : Matrix n n k) i j ∈ 𝒪[k] := by
     intro i j
     have hs : Pi.single j (1 : k) ∈ stdLat k n := by
@@ -74,10 +73,8 @@ theorem det_mem_of_mem_latStab_std {g : GL n k} (hg : g ∈ latStab (stdLat k n)
       intro i'
       by_cases h : i' = j
       · subst h
-        simp only [Pi.single_eq_same]
-        exact one_mem _
-      · simp only [Pi.single_eq_of_ne h]
-        exact zero_mem _
+        simpa only [Pi.single_eq_same] using one_mem _
+      · simpa only [Pi.single_eq_of_ne h] using zero_mem _
     have h1 : g • Pi.single j (1 : k) ∈ stdLat k n := by
       rw [← hg]
       exact Submodule.smul_mem_pointwise_smul _ _ _ hs
@@ -134,10 +131,8 @@ theorem exists_smul_stdLat_eq (L : Submodule 𝒪[k] (n → k)) [L.IsFullLattice
     simp_rw [hB']
     have hsum := congrArg Subtype.val (b.sum_repr ⟨x, hx⟩)
     simp only [Submodule.coe_sum, Submodule.coe_smul_of_tower] at hsum
-    rw [Equiv.sum_comp e.symm (fun i => ((c i : 𝒪[k]) : k) • (b i : n → k))]
-    rw [← hsum]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    exact algebraMap_smul k (c i) _
+    rw [Equiv.sum_comp e.symm (fun i => ((c i : 𝒪[k]) : k) • (b i : n → k)), ← hsum]
+    exact Finset.sum_congr rfl fun i _ => algebraMap_smul k (c i) _
 
 theorem det_mem_of_mem_latStab {L : Submodule 𝒪[k] (n → k)} [L.IsFullLattice k] {g : GL n k} (hg : g ∈ latStab L) :
     ((Matrix.GeneralLinearGroup.det g : kˣ) : k) ∈ 𝒪[k] := by

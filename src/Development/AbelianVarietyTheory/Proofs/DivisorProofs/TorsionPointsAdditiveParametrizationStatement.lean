@@ -109,8 +109,7 @@ theorem core_inj {p : ℕ} [Fact p.Prime] (D : Datum p) {R : Type} [CommRing R] 
     have hNmem : ((N : ℕ) : 𝓞 D.F) ∈ Ideal.span {c} := Ideal.absNorm_mem _
     obtain ⟨d, hd⟩ := Ideal.mem_span_singleton'.mp hNmem
     have hN0 : N ≠ 0 := by
-      rw [hNdef, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
-      exact hc0
+      rwa [hNdef, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
     obtain ⟨e, N', hN', hNe⟩ := Nat.exists_eq_pow_mul_and_not_dvd hN0 p hpr.one_lt.ne'
     have hN'u : IsUnit ((N' : ℕ) : R) := b.unit N' ((Nat.Prime.coprime_iff_not_dvd hpr).mpr hN').symm
     have hN'k : ((N' : ℕ) : k) ≠ 0 := by
@@ -142,8 +141,7 @@ theorem core_inj {p : ℕ} [Fact p.Prime] (D : Datum p) {R : Type} [CommRing R] 
     rw [← sub_eq_zero, ← h]
     abel
   have hρ : ρ1 ^ 2 - (D.tr : k) * ρ1 + (D.nm : k) = 0 := by
-    have h := congrArg β b.ρ_root
-    simpa using h
+    simpa using congrArg β b.ρ_root
   have hsum : ρ1 + ρ2 = D.tr := by rw [hρ2]; ring
   have hprod : ρ1 * ρ2 = D.nm := by rw [hρ2]; linear_combination (-1 : k) * hρ
   clear_value Tω ρ1 ρ2
@@ -371,8 +369,7 @@ theorem card_ker_place : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [
     intro c hc g
     set n := Ideal.absNorm (Ideal.span {c}) with hn
     have hn0 : 0 < n := by
-      rw [hn, Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
-      exact hc
+      rwa [hn, Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
     have hmem : ((n : ℕ) : 𝓞 D.F) ∈ Ideal.span {c} := Ideal.absNorm_mem _
     obtain ⟨c', hc'⟩ := Ideal.mem_span_singleton'.mp hmem
     obtain ⟨g', hg'⟩ := _root_.GlobalTheory.AbDivPt.exists_pow_eq_of_isAlgClosed S o.A o.ab k x n hn0 g.toMul
@@ -390,8 +387,7 @@ theorem card_ker_place : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [
     constructor
     · intro h c hc
       have := h ⟨c, hc⟩
-      rw [hsm] at this
-      exact this
+      rwa [hsm] at this
     · intro h c
       rw [hsm]
       exact congrArg Additive.ofMul (h c.1 c.2)
@@ -429,8 +425,7 @@ theorem card_ker_place : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [
   have hq : 1 < Nat.card (𝓞 D.F ⧸ w0) := by
     have hfin : Finite (𝓞 D.F ⧸ w0) := by
       apply Nat.finite_of_card_ne_zero
-      rw [← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ne, Ideal.absNorm_eq_zero_iff]
-      exact hne
+      rwa [← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ne, Ideal.absNorm_eq_zero_iff]
     letI := Ideal.Quotient.field w0
     exact Finite.one_lt_card
 
@@ -561,8 +556,7 @@ theorem free_torsion_geomPt : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Ty
     intro c hc g
     set n := Ideal.absNorm (Ideal.span {c}) with hn
     have hn0 : 0 < n := by
-      rw [hn, Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
-      exact hc
+      rwa [hn, Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
     have hmem : ((n : ℕ) : 𝓞 D.F) ∈ Ideal.span {c} := Ideal.absNorm_mem _
     obtain ⟨c', hc'⟩ := Ideal.mem_span_singleton'.mp hmem
     obtain ⟨g', hg'⟩ := _root_.GlobalTheory.AbDivPt.exists_pow_eq_of_isAlgClosed S o.A o.ab k x n hn0 g.toMul
@@ -578,8 +572,7 @@ theorem free_torsion_geomPt : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Ty
     constructor
     · intro h c hc
       have := h ⟨c, hc⟩
-      rw [hsm] at this
-      exact this
+      rwa [hsm] at this
     · intro h c
       rw [hsm]
       exact congrArg Additive.ofMul (h c.1 c.2)
@@ -592,8 +585,7 @@ theorem free_torsion_geomPt : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Ty
   · intro c a
     show Additive.toMul (f (Ideal.Quotient.mk (w0 ^ r) c • a)) = Additive.toMul (f a) ≫ _
     rw [hf1, hsm]; rfl
-  · intro a a' h
-    exact hf2 (Additive.toMul.injective h)
+  · exact fun a a' h => hf2 (Additive.toMul.injective h)
   · intro g hg
     obtain ⟨a, ha⟩ := hf3 (Additive.ofMul g) (fun c hc => by rw [hsm]; exact congrArg Additive.ofMul (hg c hc))
     exact ⟨a, by show Additive.toMul (f a) = g; rw [ha]; rfl⟩

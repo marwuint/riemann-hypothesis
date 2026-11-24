@@ -64,8 +64,7 @@ theorem exists_basis_pi {E : Type} [CommRing E] (R : Subring E) [IsPrincipalIdea
   intro m
   induction m with
   | zero =>
-    intro Q _ _
-    exact ⟨fun i => i.elim0, linearIndependent_empty_type, Subsingleton.elim _ _⟩
+    exact fun Q _ _ => ⟨fun i => i.elim0, linearIndependent_empty_type, Subsingleton.elim _ _⟩
   | succ m ih =>
     intro Q h1 h2
     let I : Ideal R :=
@@ -124,9 +123,7 @@ theorem exists_basis_pi {E : Type} [CommRing E] (R : Subring E) [IsPrincipalIdea
         funext k
         have := congrFun hg k.succ
         simpa [hg0, js, Finset.sum_apply] using this
-      intro i
-      refine Fin.cases hg0 (fun i => ?_) i
-      exact Fintype.linearIndependent_iff.mp hb _ hgs i
+      exact fun i => Fin.cases hg0 (fun i => (Fintype.linearIndependent_iff.mp hb _ hgs i)) i
     · apply le_antisymm
       · intro q hq
         obtain ⟨c, hc⟩ := hmul q hq
@@ -176,8 +173,7 @@ theorem exists_basis {E : Type} [CommRing E] (R : Subring E) [IsPrincipalIdealRi
   have hr : ∀ q ∈ Q, ∃ v, φ v = q := by
     intro q hq
     have : q ∈ Submodule.span E (Set.range y) := hs ▸ Submodule.subset_span hq
-    rw [← Fintype.range_linearCombination] at this
-    exact this
+    rwa [← Fintype.range_linearCombination] at this
   have hmap : (Q.comap (φ.restrictScalars R)).map (φ.restrictScalars R) = Q :=
     Submodule.map_comap_eq_self fun q hq => hr q hq
   have hfg : (Q.comap (φ.restrictScalars R)).FG :=

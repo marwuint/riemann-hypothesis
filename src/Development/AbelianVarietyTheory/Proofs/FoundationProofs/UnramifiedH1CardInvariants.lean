@@ -118,8 +118,7 @@ theorem zhat_lift :
     exact this (Subgroup.mem_top x)
   · show f (d φ) = e
     rw [hdφ, hf1]
-  · intro g
-    exact Subgroup.npow_mem_zpowers e _
+  · exact fun g => Subgroup.npow_mem_zpowers e _
 
 variable {R D M : Type} [CommRing R] [Group D] [TopologicalSpace D] [IsTopologicalGroup D]
   [AddCommGroup M] [Module R M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]
@@ -191,8 +190,7 @@ theorem card_vanI (ρ : Representation R D M) (I : Subgroup D) [hI : I.Normal] (
     apply Subtype.ext
     funext g
     have hg : z g = 0 := this (Subgroup.mem_top g)
-    rw [hz, Pi.sub_apply, sub_eq_zero] at hg
-    exact hg
+    rwa [hz, Pi.sub_apply, sub_eq_zero] at hg
   have hst : ∀ g : D, ∀ m : N, ρ g m ∈ N := by
     intro g m
     rw [hN]
@@ -299,8 +297,7 @@ theorem card_H1ur (ρ : Representation R D M) (I : Subgroup D) [hI : I.Normal] (
       have := hm ⟨s, hs⟩
       simp only [Submodule.coe_subtype] at this
       simp only [Pi.sub_apply, amitsur_d0_apply]
-      rw [sub_eq_zero]
-      exact this
+      rwa [sub_eq_zero]
     refine ⟨⟨_, hy⟩, Subtype.ext ?_⟩
     rw [hf, Submodule.mkQ_apply]
     apply (Submodule.Quotient.eq _).2
@@ -327,10 +324,8 @@ theorem card_H1ur (ρ : Representation R D M) (I : Subgroup D) [hI : I.Normal] (
       have hmI : m ∈ invI ρ I := by
         intro s hs
         have h1 := hm s
-        rw [y.2.2 s hs, eq_comm, sub_eq_zero] at h1
-        exact h1
-      refine ⟨⟨m, hmI⟩, Subtype.ext (funext fun s => ?_)⟩
-      exact (hm s).symm
+        rwa [y.2.2 s hs, eq_comm, sub_eq_zero] at h1
+      exact ⟨⟨m, hmI⟩, Subtype.ext (funext fun s => (hm s).symm)⟩
   have hkg : Nat.card (LinearMap.ker g) = Nat.card (H0 ρ) := by
     refine Nat.card_congr
       { toFun := fun m => ⟨m.1.1, fun s => ?_⟩

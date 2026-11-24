@@ -76,16 +76,14 @@ private lemma exists_isDiam_of_coprime (N l d : ℕ) (hNl : Nat.Coprime N l) (hd
   obtain ⟨k, hkN, hkl⟩ := Nat.chineseRemainder hNl d 1
   have hk1 : Nat.Coprime k N := by
     unfold Nat.Coprime
-    rw [Nat.ModEq.gcd_eq hkN]
-    exact hd
+    rwa [Nat.ModEq.gcd_eq hkN]
   have hk2 : Nat.Coprime k l := by
     unfold Nat.Coprime
     rw [Nat.ModEq.gcd_eq hkl]
     simp
   have hk : Nat.Coprime k (N * l) := Nat.Coprime.mul_right hk1 hk2
   have hg : Int.gcd (k : ℤ) ((N * l : ℕ) : ℤ) = 1 := by
-    rw [Int.gcd_natCast_natCast]
-    exact hk
+    rwa [Int.gcd_natCast_natCast]
   have hb := Int.gcd_eq_gcd_ab (k : ℤ) ((N * l : ℕ) : ℤ)
   rw [hg] at hb
   have hdet : (!![Int.gcdA (k : ℤ) ((N * l : ℕ) : ℤ), -Int.gcdB (k : ℤ) ((N * l : ℕ) : ℤ);
@@ -99,13 +97,11 @@ private lemma exists_isDiam_of_coprime (N l d : ℕ) (hNl : Nat.Coprime N l) (hd
   · refine CongruenceSubgroup.Gamma0_mem.2 ?_
     simp
   · simp only [en]
-    simp
-    exact (ZMod.natCast_eq_natCast_iff _ _ _).2 hkN
+    simpa using (ZMod.natCast_eq_natCast_iff _ _ _).2 hkN
 
 theorem isDiam_sgD_of_prime : ∀ (N l d : ℕ), l.Prime → 0 < N → Nat.Coprime N l → Nat.Coprime d N →
     IsDiam N l d (sgD N l d) := by
-  intro N l d _ _ hNl hd
-  exact Classical.epsilon_spec (exists_isDiam_of_coprime N l d hNl hd)
+  exact fun N l d _ _ hNl hd => Classical.epsilon_spec (exists_isDiam_of_coprime N l d hNl hd)
 
 end GlobalTheory.KZ
 end -- clump:auto
@@ -422,8 +418,7 @@ theorem map_U {N l : ℕ} (hl : l.Prime) (γ : SL(2, ℤ)) (hγ : γ ∈ Gam N l
       omega
   · have he : g * repU l ⟨k, hk⟩ = repU l j * (γ : Matrix (Fin 2) (Fin 2) ℤ) := by simpa [repU] using hg
     have hd : g.det = 1 := det_eq_one_of_mul hl.pos g _ _ he (by simp [repU, Matrix.det_fin_two]) hm
-    refine ⟨⟨k, hk⟩, ⟨g, hd⟩, ?_, he.symm⟩
-    exact mem_Gam_of_PP N l ⟨g, hd⟩ _ _ he (PP_A N l l k) hPm
+    exact ⟨⟨k, hk⟩, ⟨g, hd⟩, (mem_Gam_of_PP N l ⟨g, hd⟩ _ _ he (PP_A N l l k) hPm), he.symm⟩
 
 theorem heckeT_eq (X : Tower Ω ε) (N l : ℕ) [Fact l.Prime] (q : ℕ) (b : X.Fn l) :
     X.heckeT N l q b = ∑ o : Option (Fin q), X.act l (repT q (sgD N l q) o) b := by

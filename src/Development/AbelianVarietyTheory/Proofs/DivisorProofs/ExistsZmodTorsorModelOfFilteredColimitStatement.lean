@@ -314,8 +314,7 @@ theorem bc_prodMapOf_bijective_iff (R T A : Type) [CommRing R] [CommRing T] [Com
     have := (e2.symm.bijective.comp h).comp e1.symm.bijective
     convert this using 1
     funext y; simp
-  · intro h
-    exact e2.bijective.comp (h.comp e1.bijective)
+  · exact fun h => e2.bijective.comp (h.comp e1.bijective)
 
 theorem prodMapOf_finite (R A : Type) [CommRing R] [CommRing A] [Algebra R A] (q : ℕ) (hq : 0 < q)
     (act : Multiplicative (ZMod q) →* (A ≃ₐ[R] A)) : (prodMapOf R A q act).toRingHom.Finite := by
@@ -463,8 +462,7 @@ theorem exists_stage_rep (hc : IsColimit c) (k₁ : J) {ι : Type} [Finite ι] (
   have h1 := hx i
   have h2 := congr(($(c.w (hm i).some)).hom (x i))
   simp only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply] at h2
-  rw [h2]
-  exact h1
+  rwa [h2]
 
 end GlobalTheory.SplitColim
 
@@ -489,8 +487,7 @@ theorem exists_late_solution (hc : IsColimit c) (k₁ : J) {ι κ : Type} [Finit
   refine ⟨k₀, h ≫ f₀, fun k f => ⟨fun a => (F.map (f₀ ≫ f)).hom (u a), fun i => ?_⟩⟩
   have := h0 k f i
   rw [MvPolynomial.eval₂_comp_left, ← CommRingCat.hom_comp, ← Functor.map_comp] at this
-  rw [Category.assoc]
-  exact this
+  rwa [Category.assoc]
 
 theorem exists_late_linear (hc : IsColimit c) (k₁ : J) (M : Type) [AddCommGroup M]
     [Module (F.obj k₁) M] [Module.FinitePresentation (F.obj k₁) M] (m : M) :
@@ -948,8 +945,7 @@ theorem poly_eventually_solvable :
   refine ⟨k₀, h ≫ f₀, fun k f => ⟨fun s => (F.map (f₀ ≫ f)).hom (u s), fun i => ?_⟩⟩
   have := h0 k f i (Finset.mem_univ i)
   rw [MvPolynomial.eval₂_comp_left, ← CommRingCat.hom_comp, ← Functor.map_comp] at this
-  rw [Category.assoc]
-  exact this
+  rwa [Category.assoc]
 
 end GlobalTheory.TorsorColim
 end -- clump:auto

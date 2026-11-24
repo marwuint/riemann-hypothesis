@@ -168,8 +168,7 @@ theorem keeps_map {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (q :
     (h : (matHom _ D.sp.cm.sig T.gram (projArch D.sp.cm.sig T.gram w q)).1 * Matrix.map d.jX (compInf D.host.F D.host.E w) = Matrix.map d.jX (compInf D.host.F D.host.E w) * β) :
     (Formalism.L2.Theta.mt T q).map (GlobalTheory.AdelicU.compInf D.host.F D.host.E w) * Matrix.map d.jX (GlobalTheory.AdelicU.compInf D.host.F D.host.E w) =
       Matrix.map d.jX (GlobalTheory.AdelicU.compInf D.host.F D.host.E w) * β := by
-  rw [← mat_projArch q w]
-  exact h
+  rwa [← mat_projArch q w]
 
 theorem arch_comp {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (q : GA D T) (w : InfinitePlace D.host.F)
     (β : Matrix (Fin r) (Fin r) (TensorProduct D.host.F w.Completion D.host.E))
@@ -408,8 +407,7 @@ theorem iwasawa_stab_arch : ∀ (D : D7) (T T₀ : HSp D) (r : ℕ) (d : HypDec 
   refine ⟨y * k⁻¹, ?_, k, ?_, ?_, by group⟩
   · refine _root_.GlobalTheory.Core.Rk.IwGlob.mem_stab_of_keeps d _ ?_ fun w => ?_
     · show finHom T (y * k⁻¹) = 1
-      rw [map_mul, map_inv, hfk, inv_one, mul_one]
-      exact hy
+      rwa [map_mul, map_inv, hfk, inv_one, mul_one]
     · obtain ⟨β, h⟩ := hβ w
       refine ⟨β, ?_⟩
       rw [MonoidHom.map_mul (projArch D.sp.cm.sig T.gram w), MonoidHom.map_inv (projArch D.sp.cm.sig T.gram w), hkw w,
@@ -421,11 +419,9 @@ theorem iwasawa_stab_arch : ∀ (D : D7) (T T₀ : HSp D) (r : ℕ) (d : HypDec 
       exact one_mem _
     · refine Subgroup.mem_comap.2 ?_
       have h3 := mem_stabArch_of D.sp.cm.sig T.gram w _ ⟨kk w, hk w⟩ (hk1 w)
-      rw [← hkw w] at h3
-      exact h3
+      rwa [← hkw w] at h3
   · show finHom T (y * k⁻¹) = 1
-    rw [map_mul, map_inv, hfk, inv_one, mul_one]
-    exact hy
+    rwa [map_mul, map_inv, hfk, inv_one, mul_one]
 
 end GlobalTheory.Core.Rk.IwIso
 end -- clump:auto

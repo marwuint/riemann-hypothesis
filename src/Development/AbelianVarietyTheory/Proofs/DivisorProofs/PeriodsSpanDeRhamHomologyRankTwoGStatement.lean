@@ -365,8 +365,7 @@ theorem main : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u :
         evc u f (Charts.ptHom ((ch u).triv V) hle) - (ch u).cst V (per l) := k1
       have k2' : Charts.sh hle (eva u f U) + evc u f (Charts.ptHom ((ch u).triv V) hle) =
         valHom u V.1 ((cmpZZ (str A) f).1.1 _ _ a) + eva u f V := by
-          rw [cmpZZ_f (str A) f a]
-          exact k2
+          rwa [cmpZZ_f (str A) f a]
       simp only [H, RingHom.map_sub]
       linear_combination (norm := abel1) k1' + k2'
     have k4 := congrArg (fun x : Hol (W u V.1) => x.fn (pt z)) k3
@@ -867,8 +866,7 @@ theorem hasFDerivAt_factor {g : ℕ} (a b c : ℂ) (m z : Fin g → ℂ) :
     funext w
     rw [hℓ]
   refine ⟨a • (Complex.exp (b * ℓ z + c) • (b • ℓ)), ?_, ?_⟩
-  · rw [hfun]
-    exact H
+  · rwa [hfun]
   · intro v
     simp only [FunLike.coe_smul, Pi.smul_apply, smul_eq_mul, hℓ]
     ring
@@ -1041,8 +1039,7 @@ theorem dOne_eq_zero_of_frame_of_symm : ∀ (B : Type) [CommRing B] [Algebra ℂ
 
     simp [map_sum, hd]
   rw [dOne_eq_sum_of_frame d ω hc hf]
-  simp only [hl]
-  exact sum_symm_smul_wedge_eq_zero ω (fun b c ↦ d b (k c)) hk
+  simpa only [hl] using sum_symm_smul_wedge_eq_zero ω (fun b c ↦ d b (k c)) hk
 
 end GlobalTheory.CechPer
 end -- clump:auto
@@ -1441,8 +1438,7 @@ theorem surj_of_isAH (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (M : LB A.left) (u
   obtain ⟨hd, hr, hq⟩ := GlobalTheory.T.appell_humbert_frame_log_derivative_quasi_periodic A g M u hA hM H χ hAH v
   refine GlobalTheory.T.exists_cechClass_of_quasiPeriodic_holomorphic_cover A g M u hA M.ι M.U
     (fun i z => f z + fderiv ℂ (u.fr i) z v / u.fr i z) p hM.cover ?_ ?_ ?_
-  · intro i
-    exact f.differentiable.differentiableOn.add (hd i)
+  · exact fun i => f.differentiable.differentiableOn.add (hd i)
   · intro i j
     have : ((fun z => f z + fderiv ℂ (u.fr i) z v / u.fr i z) - fun z => f z + fderiv ℂ (u.fr j) z v / u.fr j z) =
         ((fun z => fderiv ℂ (u.fr i) z v / u.fr i z) - fun z => fderiv ℂ (u.fr j) z v / u.fr j z) := by

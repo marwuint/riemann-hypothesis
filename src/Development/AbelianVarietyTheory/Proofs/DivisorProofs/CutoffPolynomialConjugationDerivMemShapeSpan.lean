@@ -120,8 +120,7 @@ theorem sb_degdz {n : ℕ} (ε : Fin n → Bool) (Z : Mat n) (P : Poly n) :
 
   rw [map_sum]
   refine (totalDegree_finsetSum _ _).trans (Finset.sup_le fun m hm => ?_)
-  refine (sb_degmono ε Z m _).trans ?_
-  exact (totalDegree_monomial_le _ _).trans (le_totalDegree hm)
+  exact (sb_degmono ε Z m _).trans ((totalDegree_monomial_le _ _).trans (le_totalDegree hm))
 
 theorem sb_degrp {n : ℕ} (ε : Fin n → Bool) : (rP ε : Poly n).totalDegree ≤ 2 := by
   unfold rP
@@ -196,8 +195,7 @@ theorem cutoffPolynomial_conjugation_deriv_mem_shapeSpan : StBasDeriv := by
       have := (sb_degdz ε Z (rP ε)).trans (sb_degrp ε)
       exact (totalDegree_mul _ _).trans (by omega)
     have h2 : bas ε H (dZ ε Z P) ∈ ShapeM ε (P.totalDegree + 2) := by
-      refine Submodule.subset_span ⟨H, _, hH, ?_, rfl⟩
-      exact (sb_degdz ε Z P).trans (by omega)
+      exact Submodule.subset_span ⟨H, _, hH, (sb_degdz ε Z P).trans (by omega), rfl⟩
     have e : adBas ε Z H P = bas ε (deriv H) (dZ ε Z (rP ε) * P) + bas ε H (dZ ε Z P) := rfl
     rw [e]
     exact Submodule.add_mem _ h1 h2

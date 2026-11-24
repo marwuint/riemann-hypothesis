@@ -232,10 +232,7 @@ theorem connectedSpace_pullback_of_finitelyGenerated_residue :
   set ιC : R →+* A := MvPolynomial.C with hC
   set β : R →+* L := (κ.codRestrict L hL).comp (residue R) with hβ
   set φ : A →+* L := MvPolynomial.eval₂Hom β (fun j => ⟨c j, hc j⟩) with hφ
-  have hφC : φ.comp ιC = β := by
-    refine RingHom.ext fun r => ?_
-    show MvPolynomial.eval₂ β (fun j => (⟨c j, hc j⟩ : L)) (MvPolynomial.C r) = β r
-    exact MvPolynomial.eval₂_C _ _ _
+  have hφC : φ.comp ιC = β := RingHom.ext fun r => MvPolynomial.eval₂_C _ _ _
   have hx : spMap β = spMap φ ≫ spMap ιC := by
     rw [← hφC]
     show Spec.map (CommRingCat.ofHom (φ.comp ιC)) = Spec.map (CommRingCat.ofHom φ) ≫ Spec.map (CommRingCat.ofHom ιC)
@@ -274,10 +271,7 @@ theorem connectedSpace_pullback_of_finitelyGenerated_residue :
     exact Topology.IsEmbedding.of_subsingleton _
 
   set π' : pullback π (spMap ιC) ⟶ Sp A := pullback.snd π (spMap ιC) with hπ'
-  have hflat : Flat (spMap ιC) := by
-    refine Flat.SpecMap_iff.2 ?_
-    show (algebraMap R A).Flat
-    exact RingHom.flat_algebraMap_iff.2 inferInstance
+  have hflat : Flat (spMap ιC) := Flat.SpecMap_iff.2 (RingHom.flat_algebraMap_iff.2 inferInstance)
   have hbij' : ∀ V : (Sp A).Opens, Function.Bijective (π'.app V).hom :=
     GlobalTheory.Mum.app_bijective_of_flat_baseChange R S (Sp A) _ π (spMap ιC) _ _ inferInstance inferInstance
       hbij hflat (IsPullback.of_hasPullback π (spMap ιC)).flip
@@ -293,8 +287,7 @@ theorem connectedSpace_pullback_of_finitelyGenerated_residue :
     rw [hf, Scheme.Pullback.range_fst, hrange]; rfl
   have hP : PreconnectedSpace ↥(pullback π' (spMap φ)) := by
     refine ⟨?_⟩
-    rw [← f.isEmbedding.isInducing.isPreconnected_image, Set.image_univ, hfr]
-    exact hconn
+    rwa [← f.isEmbedding.isInducing.isPreconnected_image, Set.image_univ, hfr]
   have e : pullback π (spMap β) ≅ pullback π' (spMap φ) :=
     pullback.congrHom rfl hx ≪≫ (pullbackLeftPullbackSndIso π (spMap ιC) (spMap φ)).symm
   obtain ⟨z, -⟩ := (pullback.snd π (spMap β)).surjective q
@@ -360,13 +353,11 @@ def bc {K A : Type} [CommRing K] [CommRing A] (i₀ : F →+* K) (i : F →+* A)
 
 theorem bc_fst {K A : Type} [CommRing K] [CommRing A] (i₀ : F →+* K) (i : F →+* A) (j : A →+* K) (hji : j.comp i = i₀) :
     bc f i₀ i j hji ≫ pullback.fst f (spMap i) = pullback.fst f (spMap i₀) := by
-  simp only [bc, pullback.map, Category.comp_id]
-  exact pullback.lift_fst _ _ _
+  simpa only [bc, pullback.map, Category.comp_id] using pullback.lift_fst _ _ _
 
 theorem bc_snd {K A : Type} [CommRing K] [CommRing A] (i₀ : F →+* K) (i : F →+* A) (j : A →+* K) (hji : j.comp i = i₀) :
     bc f i₀ i j hji ≫ pullback.snd f (spMap i) = pullback.snd f (spMap i₀) ≫ spMap j := by
-  simp only [bc, pullback.map, Category.comp_id]
-  exact pullback.lift_snd _ _ _
+  simpa only [bc, pullback.map, Category.comp_id] using pullback.lift_snd _ _ _
 
 theorem isPullback_bc {K A : Type} [CommRing K] [CommRing A] (i₀ : F →+* K) (i : F →+* A) (j : A →+* K) (hji : j.comp i = i₀) :
     IsPullback (bc f i₀ i j hji) (pullback.snd f (spMap i₀)) (pullback.snd f (spMap i)) (spMap j) := by
@@ -758,8 +749,7 @@ theorem eq_of_comp_eq_of_connectedSpace_pullback : ∀ (P Q : Scheme.{0}) (b : P
   have hσ := section_eq_of_apply_eq (pullback.snd b ν) (pullback.lift ξ₁ (𝟙 _) e₁) (pullback.lift ξ₂ (𝟙 _) e₂)
     (pullback.lift_snd _ _ _) (pullback.lift_snd _ _ _) (hsub _ _)
   have := congrArg (fun σ => σ ≫ pullback.fst b ν) hσ
-  simp only [pullback.lift_fst] at this
-  exact this
+  simpa only [pullback.lift_fst] using this
 
 end GlobalTheory.Mum
 end -- clump:auto
@@ -982,8 +972,7 @@ theorem lfac {X P : Scheme.{0}} (j : X ⟶ P) [IsImmersion j] (Ω : Type) [Field
   haveI := isIso_of_isClosedImmersion_of_surjective (pullback.snd j.liftCoborder ν')
   have key : pullback.fst j.liftCoborder ν' ≫ j = pullback.snd j.liftCoborder ν' ≫ ν := by
     have := congrArg (· ≫ j.coborderRange.ι) (pullback.condition (f := j.liftCoborder) (g := ν'))
-    simp only [Category.assoc, Scheme.Hom.liftCoborder_ι, hν'] at this
-    exact this
+    simpa only [Category.assoc, Scheme.Hom.liftCoborder_ι, hν'] using this
   refine ⟨inv (pullback.snd j.liftCoborder ν') ≫ pullback.fst j.liftCoborder ν', ?_⟩
   rw [Category.assoc, key, IsIso.inv_hom_id_assoc]
 
@@ -1156,8 +1145,7 @@ theorem GlobalTheory.Mum.Emb.lift_closedPoint : ∀ (R : Type) [CommRing R] [IsD
     rw [← Scheme.Hom.comp_apply, E.f_over]; rfl
   have hcl : ∀ h : E.H.toScheme, E.f h ∈ Set.range (ξ ≫ b) → M.π (G'.hom (E.H.ι h)) = closedPoint R := by
     rintro h ⟨w, hw⟩
-    rw [← hfo, ← hw, ← Scheme.Hom.comp_apply, Category.assoc, Scheme.Hom.comp_apply, hxr]
-    exact hxc
+    rwa [← hfo, ← hw, ← Scheme.Hom.comp_apply, Category.assoc, Scheme.Hom.comp_apply, hxr]
   obtain ⟨z, hz⟩ := ha.surj x
   have hzx : E.f (X.ι z) = b x := by
     rw [← hz, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hab]
@@ -1259,8 +1247,7 @@ theorem Emb.chart_injective : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalR
     have h4 : r ∈ ((spMap φ) pt).asIdeal := by rw [h1]; exact hr
     rw [h2] at h4
     change φ r ∈ pt.asIdeal at h4
-    rw [h3] at h4
-    exact h4
+    rwa [h3] at h4
   let κ : ResidueField R →+* Ω := Ideal.Quotient.lift (maximalIdeal R) φ hker
   have hκ : κ.comp (residue R) = φ := by ext r; rfl
   have hx : x ≫ M.π = spMap (κ.comp (residue R)) := by rw [hκ, hφ]
@@ -1464,8 +1451,7 @@ theorem restrict_proper_sections_bijective_to_fibre_open : ∀ (Y₀ H X'' P'' :
     exact ⟨z, this, rfl⟩
   · intro w hw
     rw [hrki]
-    rw [Scheme.Opens.range_ι] at hw
-    exact hw
+    rwa [Scheme.Opens.range_ι] at hw
 
 end GlobalTheory
 end -- clump:auto
@@ -1512,8 +1498,7 @@ theorem finite_appTop_of_isProper {R : Type} [CommRing R] [IsNoetherianRing R] {
     { toFun := fun s => (GlobalTheory.sectionsOn.toΓ (GlobalTheory.structureModule X) ⊤ s : Γ(X, ⊤))
       map_add' := fun s t => map_add (GlobalTheory.sectionsOn.toΓ (GlobalTheory.structureModule X) ⊤) s t
       map_smul' := fun r s => by
-        rw [GlobalTheory.sectionsOn.toΓ_smul]
-        rw [GlobalTheory.restrictGlobal_top]
+        rw [GlobalTheory.sectionsOn.toΓ_smul, GlobalTheory.restrictGlobal_top]
         rfl }
   have hρ : Function.Bijective ρ := (GlobalTheory.sectionsOn.toΓ (GlobalTheory.structureModule X) ⊤).bijective
   exact Module.Finite.equiv (LinearEquiv.ofBijective ρ hρ)
@@ -1640,8 +1625,7 @@ theorem exists_redFibre (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRin
   have hr : Set.range (t ≫ π) ⊆ (Z₀ : Set (Sp R)) := by
     rintro _ ⟨x, rfl⟩
     have : t x ∈ Set.range t := ⟨x, rfl⟩
-    rw [hrt] at this
-    exact this
+    rwa [hrt] at this
   have h1 : Scheme.IdealSheafData.vanishingIdeal Z₀ ≤ (t ≫ π).ker :=
     GlobalTheory.ReducedSubgroup.vanishingIdeal_le_ker (t ≫ π) Z₀ hr
   have h2 : (spMap (residue R)).ker ≤ Scheme.IdealSheafData.vanishingIdeal Z₀ := by
@@ -1743,8 +1727,7 @@ theorem range_inter_fibre_closed : ∀ (R : Type) [CommRing R] [IsLocalRing R] [
       have hyp : pullback.fst E.Y.hom k (e.hom p) = y := E.j.isEmbedding.injective hpj
       obtain ⟨a, ha⟩ : e.hom p ∈ Set.range (pullback.fst (pullback.fst E.Y.hom k)
           (E.Y.left.fromSpecResidueField y)) := by
-        rw [Scheme.Pullback.range_fst, Scheme.range_fromSpecResidueField]
-        exact hyp
+        rwa [Scheme.Pullback.range_fst, Scheme.range_fromSpecResidueField]
       refine ⟨a, ?_⟩
       simp only [φ, Scheme.Hom.comp_apply]
       have h := ap e.hom_inv_id p

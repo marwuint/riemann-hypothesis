@@ -157,8 +157,7 @@ private theorem det_updateRow_last_single_eq_mul_det_submatrix {m : ℕ} (X : Ma
     rw [hsub, Matrix.updateRow_self, Pi.single_eq_same, Fin.val_last, Even.neg_one_pow ⟨m, rfl⟩, one_mul]
   · intro j _ hj
     rw [Matrix.updateRow_self, Pi.single_eq_of_ne hj, mul_zero, zero_mul]
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+  · exact fun h => absurd (Finset.mem_univ _) h
 
 theorem gram_minor_swap_columns : ∀ (N : ℕ) (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ) (n g g' : Matrix (Fin N) (Fin N) ℝ) (p q : Fin N), kᵀ * k = 1 → (∀ i, n i i = 1) → (∀ i j, j < i → n i j = 0) → (q : ℕ) = p + 1 → g = k * diagonal a * n → g' = g.submatrix id (Equiv.swap p q) → (∀ (j : ℕ) (h : j ≤ N), j ≠ q → ((g'ᵀ * g').submatrix (Fin.castLE h) (Fin.castLE h)).det = ((gᵀ * g).submatrix (Fin.castLE h) (Fin.castLE h)).det) ∧ ∀ h : (q : ℕ) ≤ N, ((g'ᵀ * g').submatrix (Fin.castLE h) (Fin.castLE h)).det = (∏ l ∈ Finset.univ.filter (· < p), a l ^ 2) * (a q ^ 2 + n p q ^ 2 * a p ^ 2) := by
   intro N k a n g g' p q hk hn1 hn0 hq hg hg'
@@ -257,8 +256,7 @@ theorem gram_minor_swap_columns : ∀ (N : ℕ) (k : Matrix (Fin N) (Fin N) ℝ)
       ext l
       simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map]
       constructor
-      · intro hl
-        exact ⟨⟨l, hl⟩, Fin.ext rfl⟩
+      · exact fun hl => ⟨⟨l, hl⟩, Fin.ext rfl⟩
       · rintro ⟨i, _, rfl⟩
         exact i.isLt
 
@@ -305,8 +303,7 @@ theorem gram_minor_swap_columns : ∀ (N : ℕ) (k : Matrix (Fin N) (Fin N) ℝ)
         exact hMl _ _ (Fin.lt_def.2 (Fin.lt_def.1 (Fin.castSucc_lt_last i)))
       rw [hz, zero_mul, add_zero]
     have hBT' : (B.submatrix Fin.castSucc Fin.castSucc).BlockTriangular id := by
-      intro s i hi
-      exact hBT (Fin.castSucc_lt_castSucc_iff.2 hi)
+      exact fun s i hi => hBT (Fin.castSucc_lt_castSucc_iff.2 hi)
     have hdB' : (B.submatrix Fin.castSucc Fin.castSucc).det = ∏ i : Fin p, a (c i.castSucc) := by
       rw [Matrix.det_of_upperTriangular hBT']
       refine Finset.prod_congr rfl fun i _ => ?_
@@ -344,8 +341,7 @@ theorem exists_orthogonal_mul_upper (N : ℕ) (g : Matrix (Fin N) (Fin N) ℝ) :
     have := orthonormal_iff_ite.mp b.orthonormal i j
     rw [Matrix.mul_apply, Matrix.one_apply, ← this, PiLp.inner_apply]
     simp [mul_comm]
-  · intro i j hij
-    exact InnerProductSpace.gramSchmidtOrthonormalBasis_inv_triangular h f hij
+  · exact fun i j hij => InnerProductSpace.gramSchmidtOrthonormalBasis_inv_triangular h f hij
   · ext i j
     have := congrArg (fun v : EuclideanSpace ℝ (Fin N) => v i) (b.sum_repr' (f j))
     simp only [WithLp.ofLp_sum, Finset.sum_apply, WithLp.ofLp_smul, Pi.smul_apply, smul_eq_mul] at this
@@ -373,8 +369,7 @@ theorem iwasawa_real : ∀ (N : ℕ) (g : Matrix (Fin N) (Fin N) ℝ), g.det ≠
     congr 1
     funext i
     rw [div_mul_div_comm, abs_mul_abs_self, div_self (mul_ne_zero (hne i) (hne i))]
-  · intro i
-    exact div_self (hne i)
+  · exact fun i => div_self (hne i)
   · intro i j hij
     simp [hr i j hij]
   · rw [Matrix.mul_assoc, Matrix.mul_assoc]
@@ -494,8 +489,7 @@ theorem prod_castLE_succ {N : ℕ} (f : Fin N → ℝ) (p q : Fin N) (hq : (q : 
   refine Finset.prod_bij (fun i _ => Fin.castLE h i.castSucc) ?_ ?_ ?_ ?_
   · intro i _
     simp [Fin.lt_def]
-  · intro i _ j _ hij
-    exact Fin.ext (by simpa using congrArg Fin.val hij)
+  · exact fun i _ j _ hij => Fin.ext (by simpa using congrArg Fin.val hij)
   · intro l hl
     have hl' : (l : ℕ) < p := by simpa [Fin.lt_def] using hl
     exact ⟨⟨l, hl'⟩, Finset.mem_univ _, Fin.ext rfl⟩
@@ -512,8 +506,7 @@ theorem mul_upper {N : ℕ} (n m : Matrix (Fin N) (Fin N) ℝ) (hn1 : ∀ i, n i
       rcases lt_or_gt_of_ne hl with h | h
       · rw [hn0 i l h, zero_mul]
       · rw [hm0 l i h, mul_zero]
-    · intro h
-      exact absurd (Finset.mem_univ i) h
+    · exact fun h => absurd (Finset.mem_univ i) h
   · rw [Matrix.mul_apply]
     refine Finset.sum_eq_zero fun l _ => ?_
     rcases lt_or_ge l i with h | h

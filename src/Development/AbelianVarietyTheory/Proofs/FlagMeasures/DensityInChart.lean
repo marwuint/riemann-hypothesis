@@ -110,8 +110,7 @@ theorem upper_of_density (l ν : Measure V) [l.IsAddHaarMeasure] [IsLocallyFinit
     le_trans (measure_mono (Metric.closedBall_subset_ball (by nlinarith))) hr
   refine h2.trans ?_
   have h3 := (ENNReal.div_le_iff (Metric.measure_ball_pos l 0 hr0).ne' measure_ball_lt_top.ne).1 hlt.le
-  rw [mul_assoc] at h3
-  exact h3
+  rwa [mul_assoc] at h3
 
 theorem lower_of_density (l ν : Measure V) [l.IsAddHaarMeasure] [IsLocallyFiniteMeasure ν] {c : ℝ≥0∞}
     (hc : Tendsto (fun r : ℝ => ν (Metric.ball 0 r) / l (Metric.ball 0 r)) (𝓝[>] 0) (𝓝 c))
@@ -137,8 +136,7 @@ theorem lower_of_density (l ν : Measure V) [l.IsAddHaarMeasure] [IsLocallyFinit
     le_trans hr (measure_mono (by rw [one_mul]; exact Metric.ball_subset_closedBall))
   refine le_trans ?_ h2
   have h3 := (ENNReal.le_div_iff_mul_le (Or.inl (Metric.measure_ball_pos l 0 hr0).ne') (Or.inl measure_ball_lt_top.ne)).1 hlt.le
-  rw [mul_assoc] at h3
-  exact h3
+  rwa [mul_assoc] at h3
 
 open scoped Pointwise in
 theorem image_ball_scale {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (l : Measure V) [l.IsAddHaarMeasure]
@@ -247,8 +245,7 @@ theorem tendsto_of_chart {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
   · intro ε h0 h1
     filter_upwards [hf ε h0 h1, eventually_image_ball_subset L hδ (show 0 < 1 - ε by linarith),
       eventually_image_ball_subset L hδ (show 0 < 1 + ε by linarith)] with r hr a b
-    rw [hνL _ a, hνL _ b]
-    exact hr
+    rwa [hνL _ a, hνL _ b]
 
 end Meas
 
@@ -317,8 +314,7 @@ theorem sandwich (S : Set A) (J : V →L[ℝ] A) (P : A →L[ℝ] V) (hP : ∀ x
       simp [Prod.dist_eq, Prod.norm_def, ha, hb, hb'])
     simpa [e0, hP, Prod.norm_def] using this
   have K2 : ∀ a b : V, ‖a‖ < δ2 → ‖b‖ < δ2 → e (Λ (e a * e b)) = e a * e b := by
-    intro a b ha hb
-    exact k2 (a, b) (by simp [Prod.norm_def, ha, hb]) (hmul _ (hexp _) _ (hexp _))
+    exact fun a b ha hb => k2 (a, b) (by simp [Prod.norm_def, ha, hb]) (hmul _ (hexp _) _ (hexp _))
   have L1 : Λ 1 = 0 := by rw [← e0]; exact hl.self_of_nhds
   have hδ : 0 < min δ1 (min δ2 δ3) := by positivity
   have m1 : min δ1 (min δ2 δ3) ≤ δ1 := min_le_left _ _
@@ -446,8 +442,7 @@ theorem density_in_chart : ∀ (m : ℕ) (S : Set (Matrix (Fin m) (Fin m) ℂ)) 
   have hexp : ∀ x, NormedSpace.exp (J x) ∈ S := by
     intro x
     have := hlie x 1
-    rw [Complex.ofReal_one, one_smul] at this
-    exact this
+    rwa [Complex.ofReal_one, one_smul] at this
   obtain ⟨Λ, hΛ, hl, hr⟩ := exists_log S J P hP (by
     intro ρ hρ
     obtain ⟨δ, hδ, h⟩ := hnb ρ hρ

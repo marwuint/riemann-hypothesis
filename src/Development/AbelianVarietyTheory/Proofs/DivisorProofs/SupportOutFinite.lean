@@ -81,8 +81,7 @@ theorem support_out_finite {G : Type} [Group G] [TopologicalSpace G] [IsTopologi
     (Function.support fun q : G ⧸ H => F q.out).Finite := by
   haveI := QuotientGroup.discreteTopology hH
   refine ((HasCompactSupport.isCompact hF).image QuotientGroup.continuous_mk).finite_of_discrete.subset ?_
-  intro q hq
-  exact ⟨q.out, subset_tsupport _ hq, QuotientGroup.out_eq' q⟩
+  exact fun q hq => ⟨q.out, subset_tsupport _ hq, QuotientGroup.out_eq' q⟩
 
 end GlobalTheory.TraceLevel
 
@@ -227,17 +226,8 @@ theorem twTr_level (ρ : Representation ℂ G V) (K K₀ K'' : Subgroup G) (F : 
   let ι : fixed ρ K₀ →ₗ[ℂ] fixed ρ K'' := Submodule.inclusion hVle
   have h1 : (levOp ρ K K'' F LinearMap.id).restrict h'' =
       ι ∘ₗ (((levOp ρ K K₀ F LinearMap.id).restrict h0) ∘ₗ Pr) := by
-    apply LinearMap.ext
-    intro v
-    apply Subtype.ext
-    show levOp ρ K K'' F LinearMap.id v = levOp ρ K K₀ F LinearMap.id (P v)
-    exact key v v.2
-  have h2 : Pr ∘ₗ ι = LinearMap.id := by
-    apply LinearMap.ext
-    intro v
-    apply Subtype.ext
-    show P v = v
-    exact hPid v v.2
+    exact LinearMap.ext (fun v => Subtype.ext (key v v.2))
+  have h2 : Pr ∘ₗ ι = LinearMap.id := LinearMap.ext (fun v => Subtype.ext (hPid v v.2))
   rw [h1, LinearMap.trace_comp_comm', LinearMap.comp_assoc, h2, LinearMap.comp_id]
 
 end GlobalTheory.TraceLevel

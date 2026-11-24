@@ -245,9 +245,7 @@ theorem bcPull_transport (w : q ≫ X.hom = X'.hom ≫ spMap σ) (u : Fn1 X) (E 
   letI := algVia σ E
   letI := algVia σ E'
   have e1 : homVia σ ψ = φ := AlgHom.ext hψ
-  have e2 : ptVia w y = z := by
-    apply Over.OverMorphism.ext
-    exact hy
+  have e2 : ptVia w y = z := Over.OverMorphism.ext hy
   rw [← e1, ← e2]
   rfl
 
@@ -625,8 +623,7 @@ theorem sum_mul_eq_zero_of_isCob : GlobalTheory.Published.AbelianHodgeDeRham →
   have h0 : y' c' = 0 := hFil c' (Submodule.mem_comap.2 (by rw [Submodule.subtype_apply, hc']; exact hF1))
   rw [← h0]
 
-  simp only [c', map_sum, map_smul, smul_eq_mul]
-  exact Finset.sum_congr rfl fun i _ ↦ by rw [hy' _]
+  simpa only [c', map_sum, map_smul, smul_eq_mul] using Finset.sum_congr rfl fun i _ ↦ by rw [hy' _]
 
 end GlobalTheory.PtExt
 end -- clump:auto
@@ -683,8 +680,7 @@ theorem sm_parCov {A B : Over (Sp R)} {K : Type} {W : K → (A ⊗ B).left.Opens
   refine ⟨i, ?_⟩
   unfold parCov at hi ⊢
   rw [comp_whiskerRight, Over.comp_left, Scheme.Hom.comp_preimage] at hi
-  rw [Over.comp_left, Scheme.Hom.comp_preimage]
-  exact hi
+  rwa [Over.comp_left, Scheme.Hom.comp_preimage]
 
 theorem sumMul_elim {B : Over (Sp R)} {D : Type} [CommRing D] [Algebra R D] {I₁ I₂ I₃ : Type} [Fintype I₁]
     [Fintype I₂] [Fintype I₃] (d₁ : I₁ → D) (d₂ : I₂ → D) (d₃ : I₃ → D)
@@ -825,8 +821,7 @@ theorem exists_pointwiseCochain_coboundary_eq_chernCocycle : ∀ (R : Type) [Com
   have hc := gen (spOver ψ ≫ spOver φ ≫ z) (by rw [← Category.assoc, spOver_comp])
     (trivMap φ z ≫ trivMap ψ (spOver φ ≫ z)) fun _ ↦ rfl
   have key := hV E E' E'' z _ _ (trivMap φ z) (trivMap ψ (spOver φ ≫ z)) ψ rfl hz
-  rw [← hc] at key
-  exact key
+  rwa [← hc] at key
 
 end GlobalTheory.PtExt
 end -- clump:auto
@@ -916,8 +911,7 @@ theorem sum_mem_F1prim {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {N :
   rw [map_sum] at hF
   simp only [map_smul, hα] at hF
 
-  rw [PrimitiveSubmodule, Submodule.mem_comap, map_sum]
-  exact hF
+  rwa [PrimitiveSubmodule, Submodule.mem_comap, map_sum]
 
 theorem fil_orthogonal : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (g : ℕ), IsAbelianScheme A → IsAbelianScheme B → SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g B.hom → ∀ P : LB (A ⊗ B).left, P.IsLB → ∀ φ : HdR A →ₗ[R] HdR B →ₗ[R] R, AbDual.IsCorrForm (dp0 R) (𝟙 _) A B P φ → ∀ x ∈ Fil A, ∀ y ∈ Fil B, φ x y = 0 := by
   intro H R _ A B _ _ g _ hB _ gB P hP φ hP' x hx y hy

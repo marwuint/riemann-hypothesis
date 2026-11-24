@@ -103,8 +103,7 @@ theorem exists_stalkDer (s : Z ⟶ X) (z : Z) (W₀ : X.Opens) (h₀ : s z ∈ W
     intro x
     obtain ⟨U, m, f, e⟩ := X.presheaf.germ_exist x
     refine ⟨U ⊓ W₀, resG X inf_le_left f, inf_le_right, ⟨m, h₀⟩, ?_⟩
-    rw [gs_res (𝟙 X) (s z) inf_le_left ⟨m, h₀⟩, gs_eq (𝟙 X) (s z) U m]
-    exact e
+    rwa [gs_res (𝟙 X) (s z) inf_le_left ⟨m, h₀⟩, gs_eq (𝟙 X) (s z) U m]
   have ex₂ : ∀ x y : X.presheaf.stalk (s z), ∃ (W : X.Opens) (f g : Γ(X, W)), W ≤ W₀ ∧ s z ∈ W ∧
       gs (𝟙 X) (s z) W f = x ∧ gs (𝟙 X) (s z) W g = y := by
     intro x y
@@ -286,8 +285,7 @@ theorem ext_lift {U : A₀.left.Opens} {f g : Γ(A₀.left, U)}
   have := (AbConst.surjective_q Y).1
   refine FunDescent.app_injective (pullback.snd Y.q.left m₀) U (fn_ext fun z hz => ?_)
   have e := H _ _ _ pullback.condition z hz
-  rw [gs_pull (𝟙 _) _ z U hz, gs_pull (𝟙 _) _ z U hz, Category.id_comp]
-  exact e
+  rwa [gs_pull (𝟙 _) _ z U hz, gs_pull (𝟙 _) _ z U hz, Category.id_comp]
 
 variable {Y h ν m₀} {φ : R →+* K} {e : ℕ} [GrpObj A₀] (hF : IsFibre Y h φ e ν A₀ m₀)
 include hF
@@ -332,11 +330,9 @@ theorem IsFibre.mem_chart (hD : IsDesc Y h ν m₀ V ed pb) (hV : ∀ i, V i ≤
   refine ⟨?_, Set.mem_iInter.2 fun k => ?_⟩
   · have := hi 0
     rw [e, show Q.famφB α 0 = 𝟙 _ from rfl, Category.comp_id] at this
-    rw [hD.1]
-    exact this
+    rwa [hD.1]
   · have := hV _ (hi (![1, 2, 0, 3] k))
-    rw [e, ← gtφT_eq] at this
-    exact this
+    rwa [e, ← gtφT_eq] at this
 
 end Ray
 

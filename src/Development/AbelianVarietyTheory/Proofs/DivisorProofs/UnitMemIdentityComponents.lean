@@ -194,8 +194,7 @@ theorem isOpen_of_stableUnderGeneralization_of_constructible_pieces :
   intro p hp
   by_contra hn
   have hne : (nhds p ⊓ Filter.principal Zᶜ).NeBot := by
-    rw [Filter.neBot_iff, Ne, Filter.inf_principal_eq_bot, compl_compl]
-    exact hn
+    rwa [Filter.neBot_iff, Ne, Filter.inf_principal_eq_bot, compl_compl]
   obtain ⟨U, hU⟩ := Ultrafilter.exists_le (nhds p ⊓ Filter.principal Zᶜ)
   have hU1 : (U : Filter (PrimeSpectrum A)) ≤ nhds p := hU.trans inf_le_left
   have hU2 : ∀ᶠ t in (U : Filter (PrimeSpectrum A)), t ∉ Z :=
@@ -251,8 +250,7 @@ theorem isOpen_of_stableUnderGeneralization_of_locallyClosed_pieces :
     exact h2
   have hopen : IsOpen (X := PrimeSpectrum Γ(X, U)) (hU.fromSpec ⁻¹' Z) := by
     refine GlobalTheory.isOpen_of_stableUnderGeneralization_of_constructible_pieces Γ(X, U) _ ?_ ?_
-    · intro p q hpq hp
-      exact hZ (hpq.map hU.fromSpec.continuous) hp
+    · exact fun p q hpq hp => hZ (hpq.map hU.fromSpec.continuous) hp
     · intro p hp
       obtain ⟨W, W', J, hWW', hpW, hpJ, hsub⟩ := hpc _ hp
       have hpU : hU.fromSpec p ∈ U := hU.range_fromSpec.le ⟨p, rfl⟩
@@ -396,15 +394,13 @@ theorem exists_mem_and_rightTranslate_mem_of_mem_identityComponent :
     rw [h2, inv_mul_cancel, Hom.one_def, toUnit_unit, Category.id_comp]
   have hιe : (ι[G]).left e = e := by
     have : η[G] ≫ ι[G] = η[G] := by simp
-    have h2 := congrArg (fun f => f.left (IsLocalRing.closedPoint k)) this
-    exact h2
+    exact congrArg (fun f => f.left (IsLocalRing.closedPoint k)) this
   have hyi : (ι[G]).left (y.left (IsLocalRing.closedPoint k)) ∈ connectedComponent e := by
     have hc := (ι[G]).left.continuous.image_connectedComponent_subset e
     rw [hιe] at hc
     exact hc ⟨_, hy, rfl⟩
   have hTy : T.left ((ι[G]).left (y.left (IsLocalRing.closedPoint k))) = e := by
-    have h2 := congrArg (fun f => f.left (IsLocalRing.closedPoint k)) hT
-    exact h2
+    exact congrArg (fun f => f.left (IsLocalRing.closedPoint k)) hT
   obtain ⟨z, -, hz1, hz2⟩ := hirr.isPreirreducible (U : Set G.left) (T.left ⁻¹' (U : Set G.left))
     U.isOpen (U.isOpen.preimage T.left.continuous) ⟨e, mem_connectedComponent, hU⟩
     ⟨_, hyi, by rw [Set.mem_preimage, hTy]; exact hU⟩
@@ -501,8 +497,7 @@ theorem mem_unitComponent_mul_mem :
     have : L ≫ P.map (snd G G) = toUnit G' ≫ y' := by
       show (lift (𝟙 G') (toUnit G' ≫ y') ≫ Functor.LaxMonoidal.μ P G G) ≫ _ = _
       rw [Category.assoc, Functor.Monoidal.μ_snd, lift_snd]
-    rw [this]
-    rw [Over.comp_left, ← Scheme.Hom.comp_apply, Category.assoc]
+    rw [this, Over.comp_left, ← Scheme.Hom.comp_apply, Category.assoc]
     show ((toUnit G').left ≫ y'.left ≫ q) z = y
     rw [hy'q]; exact hω _
 
@@ -689,15 +684,13 @@ theorem GlobalTheory.closure_generic_fibre_clopen_split : ∀ (R A : Type) [Comm
     have hxF : x ∈ Set.range φ := hF ▸ hU ▸ Or.inl hx
     obtain ⟨y, rfl⟩ := hxF
     have hy : y ∈ φ ⁻¹' C := hx
-    rw [← hpre] at hy
-    exact hy
+    rwa [← hpre] at hy
   have hC'a : C' ⊆ (PrimeSpectrum.basicOpen a : Set (PrimeSpectrum A))ᶜ := by
     intro x hx
     have hxF : x ∈ Set.range φ := hF ▸ hU ▸ Or.inr hx
     obtain ⟨y, rfl⟩ := hxF
     have hy : y ∈ (φ ⁻¹' C)ᶜ := hcompl.compl_eq ▸ hx
-    rw [← hpre] at hy
-    exact hy
+    rwa [← hpre] at hy
   have hclo : IsClopen (PrimeSpectrum.basicOpen a : Set (PrimeSpectrum A)) :=
     PrimeSpectrum.isClopen_iff.2 ⟨a, ha, rfl⟩
   refine ⟨?_, ?_⟩
@@ -741,11 +734,9 @@ theorem smooth_genericFibre_closure_partition : ∀ (R : Type) [CommRing R] [IsD
       ext r
       exact ⟨fun h => congrArg PrimeSpectrum.asIdeal h, fun h => PrimeSpectrum.ext h⟩
     · have := h1.preimage j
-      rw [hcl] at this
-      exact this
+      rwa [hcl] at this
     · have := h2.preimage j
-      rw [hcl] at this
-      exact this
+      rwa [hcl] at this
   constructor
   · rw [Set.disjoint_left]
     intro x hx hx'
@@ -790,18 +781,15 @@ theorem separated_of_isOpen_component_subtype {X : Type*} [TopologicalSpace X] (
       rintro y ⟨hyF, hy⟩ hyU
       apply hy
       refine (hmem ⟨y, hyF⟩).2 ?_
-      rw [← hUe]
-      exact hyU
+      rwa [← hUe]
     refine Set.disjoint_left.2 fun y hy hy' => h1 hy' ?_
     have := (hmem ⟨y, connectedComponentIn_subset F a hy⟩).1 hy
-    rw [← hUe] at this
-    exact this
+    rwa [← hUe] at this
   · have h1 : closure (connectedComponentIn F a) ⊆ Z := by
       refine closure_minimal ?_ hZ
       intro y hy
       have := (hmem ⟨y, connectedComponentIn_subset F a hy⟩).1 hy
-      rw [← hZe] at this
-      exact this
+      rwa [← hZe] at this
     refine Set.disjoint_left.2 fun y hy hy' => hy'.2 ?_
     refine (hmem ⟨y, hy'.1⟩).2 ?_
     rw [← hZe]
@@ -893,20 +881,17 @@ theorem stableUnderGeneralization_sectionComponents :
     (pullback.fst f p) e e' hf hpb hef he'f he'q
   have hc : σ (IsLocalRing.closedPoint V) ∈ {y : ↥(pullback f p) | y ∈ connectedComponentIn
       (pullback.snd f p ⁻¹' {pullback.snd f p y}) (e' (pullback.snd f p y))} := by
-    rw [← key]
-    rw [Set.mem_preimage]
+    rw [← key, Set.mem_preimage]
     have h1 : (pullback.fst f p) (σ (IsLocalRing.closedPoint V)) = x := by
       rw [← hgc, ← hσq]
       rfl
-    rw [h1]
-    exact hx
+    rwa [h1]
   have hb := _root_.GlobalTheory.section_mem_component_generic_of_closed V (pullback f p) (pullback.snd f p) e' σ hf' he'f hσf hc
   rw [← key] at hb
   have : (pullback.fst f p) (σ (⊥ : PrimeSpectrum V)) = x' := by
     rw [← hgb, ← hσq]
     rfl
-  rw [← this]
-  exact hb
+  rwa [← this]
 
 end GlobalTheory
 end -- clump:auto
@@ -938,8 +923,7 @@ theorem isOpen_sectionComponents_of_family (X S : Scheme.{0}) (f : X ⟶ S) (e :
   intro x hx
   obtain ⟨U, V₀, V, I, hV, hs, hU, hI, hirr⟩ := _root_.GlobalTheory.exists_open_nbhd_section_fibre_isPreirreducible X S f e hf he (f x)
   refine ⟨⟨O U, hO U⟩ ⊓ f ⁻¹ᵁ (V₀ ⊓ e ⁻¹ᵁ U), f ⁻¹ᵁ V, I.image (fun c => f.app V c), ?_, ?_, ?_, ?_⟩
-  · intro y hy
-    exact hV hy.2.1
+  · exact fun y hy => hV hy.2.1
   · exact ⟨h1 U x hU hx, hs, hU⟩
   · intro c hc
     obtain ⟨d, hd, rfl⟩ := Finset.mem_image.1 hc

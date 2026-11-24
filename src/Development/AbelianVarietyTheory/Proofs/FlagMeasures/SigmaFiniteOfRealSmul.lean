@@ -87,8 +87,7 @@ theorem IsFrame.J_B₀ (h : IsFrame ε ε₀ B B₀) (i : Fin a) : (B i)ᴴ * Jm
   rw [Matrix.mul_assoc, h.2.2.2.2.2.1, ← Matrix.mul_assoc, h.2.2.2.1 i, Matrix.zero_mul]
 
 theorem IsFrame.B₀_B (h : IsFrame ε ε₀ B B₀) (i : Fin a) : B₀ᴴ * B i = 0 := by
-  have e := congrArg Matrix.conjTranspose (h.2.2.2.1 i)
-  simpa [Matrix.conjTranspose_mul] using e
+  simpa [Matrix.conjTranspose_mul] using congrArg Matrix.conjTranspose (h.2.2.2.1 i)
 
 theorem IsFrame.B₀_J (h : IsFrame ε ε₀ B B₀) (i : Fin a) : B₀ᴴ * Jm ε * B i = 0 := by
   have e := congrArg Matrix.conjTranspose (h.J_B₀ i)
@@ -100,8 +99,7 @@ theorem IsFrame.sum_mul (h : IsFrame ε ε₀ B B₀) {m : Type} (y : ∀ i, Mat
   · rw [Matrix.mul_assoc, h.1 i, Matrix.mul_one]
   · intro k _ hk
     rw [Matrix.mul_assoc, h.2.1 k i hk, Matrix.mul_zero]
-  · intro hi
-    exact absurd (Finset.mem_univ i) hi
+  · exact fun hi => absurd (Finset.mem_univ i) hi
 
 variable (x x' : ∀ i, Matrix (Fin (j i)) (Fin (j i)) ℂ) (g g' : Matrix (Fin n₀) (Fin n₀) ℂ)
 
@@ -136,8 +134,7 @@ theorem IsFrame.lev_mul_JB (h : IsFrame ε ε₀ B B₀) (i : Fin a) :
     · simp only [Matrix.mul_assoc, hJJ, h.1 i, Matrix.mul_one]
     · intro k _ hk
       simp only [Matrix.mul_assoc, hJJ, h.2.1 k i hk, Matrix.mul_zero]
-    · intro hi
-      exact absurd (Finset.mem_univ i) hi
+    · exact fun hi => absurd (Finset.mem_univ i) hi
   have s3 : B₀ * g * B₀ᴴ * (Jm ε * B i) = 0 := by
     simp only [Matrix.mul_assoc, e₀, Matrix.mul_zero]
   unfold lev
@@ -196,8 +193,7 @@ theorem IsFrame.inUJ_lev (h : IsFrame ε ε₀ B B₀) (hx : ∀ i, (x i).det �
   have hJ₀ : ∀ {m : Type} (M : Matrix (Fin n₀) m ℂ), Jm ε * (B₀ * M) = B₀ * (Jm ε₀ * M) := fun M => by
     rw [← Matrix.mul_assoc, h.2.2.2.2.2.1, Matrix.mul_assoc]
   have hg' : gᴴ * (Jm ε₀ * g) = Jm ε₀ := by
-    rw [← Matrix.mul_assoc]
-    exact hg
+    rwa [← Matrix.mul_assoc]
   have eB : ∀ (y : ∀ i, Matrix (Fin (j i)) (Fin (j i)) ℂ) (k : Matrix (Fin n₀) (Fin n₀) ℂ) (i : Fin a)
       {m : Type} (M : Matrix (Fin (j i)) m ℂ), lev ε B B₀ y k * (B i * M) = B i * (y i * M) :=
     fun y k i {_} M => by rw [← Matrix.mul_assoc, h.lev_mul_B, Matrix.mul_assoc]
@@ -225,10 +221,8 @@ theorem IsFrame.lev_inj (h : IsFrame ε ε₀ B B₀) (e : lev ε B B₀ x g = l
   have hB₀ : B₀ * g = B₀ * g' := by
     rw [← h.lev_mul_B₀ x g, e, h.lev_mul_B₀]
   refine ⟨funext fun i => ?_, ?_⟩
-  · have e' := congrArg ((B i)ᴴ * ·) (hB i)
-    simpa [← Matrix.mul_assoc, h.1 i] using e'
-  · have e' := congrArg (B₀ᴴ * ·) hB₀
-    simpa [← Matrix.mul_assoc, h.2.2.2.2.1] using e'
+  · simpa [← Matrix.mul_assoc, h.1 i] using congrArg ((B i)ᴴ * ·) (hB i)
+  · simpa [← Matrix.mul_assoc, h.2.2.2.2.1] using congrArg (B₀ᴴ * ·) hB₀
 
 def IsLeviChart (ε : Fin n → Bool) (ε₀ : Fin n₀ → Bool) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ))
     (A : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (A₀ : Matrix (Fin n) (Fin n₀) ℂ) (τ τ₀ : ℂ →+* ℂ)

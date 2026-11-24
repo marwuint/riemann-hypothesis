@@ -64,8 +64,7 @@ theorem exists_subfamily {α : Type} (r : α → α → Prop) (hr : Equivalence 
   haveI : Fintype (Quotient s) := Fintype.ofFinite _
   let e := Fintype.equivFin (Quotient s)
   refine ⟨_, fun j => (e.symm j).out, fun g i hg => ⟨e (Quotient.mk s i), ?_, fun j hj => ?_⟩⟩
-  · simp only [Equiv.symm_apply_apply]
-    exact hr.trans hg (hr.symm (Quotient.mk_out (s := s) i))
+  · simpa only [Equiv.symm_apply_apply] using hr.trans hg (hr.symm (Quotient.mk_out (s := s) i))
   · have : Quotient.mk s (e.symm j).out = Quotient.mk s i := Quotient.sound (hr.trans (hr.symm hj) hg)
     rw [← this, Quotient.out_eq, Equiv.apply_symm_apply]
 
@@ -123,8 +122,7 @@ theorem exists_nat_bd (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG)
   have : ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] ((t : 𝓞 E) : E) : RA F E) = (t : RA F E) := by
     rw [show ((t : 𝓞 E) : E) = (t : E) from map_natCast (algebraMap (𝓞 E) E) t]
     exact map_natCast (Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E) t
-  rw [this, Nat.cast_smul_eq_nsmul, h]
-  exact hw
+  rwa [this, Nat.cast_smul_eq_nsmul, h]
 
 theorem exists_supp_bd (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG)
     (hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤) (e : FiniteAdeleRing (𝓞 F) F)

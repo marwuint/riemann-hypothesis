@@ -276,8 +276,7 @@ theorem _root_.GlobalTheory.EtC.DescZero.desc_zero : ∀ (q : ℕ) [NeZero q] (A
       _root_.GlobalTheory.EtC.Sec.res
         (Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : A' →ₐ[A] A' ⊗[A] A').toRingHom)) s := by
     apply (_root_.GlobalTheory.EtC.secClass_props (ZMod q) F _).2.1.1
-    rw [← hres, ← hres]
-    exact hb
+    rwa [← hres, ← hres]
   have hfreeY := _root_.GlobalTheory.EtC.FreeHom.main (ZMod q)
     ((_root_.GlobalTheory.EtC.sch.obj (Spec (CommRingCat.of A'))) _⦋0⦌) F
   obtain ⟨t, ht⟩ := hfreeY.2.1
@@ -310,8 +309,7 @@ theorem _root_.GlobalTheory.EtC.DescZero.desc_zero : ∀ (q : ℕ) [NeZero q] (A
       rw [hTdef, ← Functor.map_comp_assoc]
       erw [cechDiag_comp_cπ_eq_id]
       rw [CategoryTheory.Functor.map_id, Category.id_comp]
-    rw [hcomp] at h
-    exact h
+    rwa [hcomp] at h
   obtain ⟨a, ha⟩ := hbij.2 x
   refine ⟨a, ?_⟩
   change _root_.GlobalTheory.EtC.pull (ZMod q) (_root_.GlobalTheory.EtC.sch.map f) F 0 a = _
@@ -384,8 +382,7 @@ theorem eq_zero_of_pull_laurent_fst_snd (q : ℕ) (B C : Type) [CommRing B] [Com
     simp only [← pull_spMap_comp, map_zero, e, RingHom.fst_comp_prod, RingHom.snd_comp_prod]
     exact Prod.ext h1 h2
   have := pull_spMap_comp q e E.symm.toRingHom n i z
-  rw [hinv, spMap_id, pull_id, hw, map_zero] at this
-  exact this
+  rwa [hinv, spMap_id, pull_id, hw, map_zero] at this
 
 theorem surj_prod (q : ℕ) [NeZero q] (B C : Type) [CommRing B] [CommRing C] (hq : IsUnit (q : B × C)) (i : ℤ)
     (hB : Function.Surjective (gmPhi q B i)) (hC : Function.Surjective (gmPhi q C i)) :
@@ -419,13 +416,10 @@ theorem exists_factor (q : ℕ) [NeZero q] (A : Type) [CommRing A] [HenselianLoc
   have hinjΩ : Function.Injective (algebraMap D Ω) := by
     rw [IsScalarTower.algebraMap_eq D (FractionRing D) Ω]
     exact (algebraMap (FractionRing D) Ω).injective.comp (IsFractionRing.injective D (FractionRing D))
-  have hinj : Function.Injective (algebraMap D T) := by
-    intro x y h
-    exact hinjΩ (congrArg Subtype.val h)
+  have hinj : Function.Injective (algebraMap D T) := fun x y h => hinjΩ (congrArg Subtype.val h)
   rw [← Ideal.Quotient.eq_zero_iff_mem]
   apply hinj
-  rw [map_zero]
-  exact ha
+  rwa [map_zero]
 
 theorem exists_witness (q : ℕ) [NeZero q] (A : Type) [CommRing A] [HenselianLocalRing A] (hq : IsUnit (q : A)) (i : ℤ)
     (S : Finset (Ideal A)) (hS : ∀ p ∈ S, p.IsPrime) (hne : S.Nonempty) :
@@ -552,8 +546,7 @@ theorem exists_ht_zero_pull_laurent_eq (q : ℕ) [NeZero q] (R : Type) [CommRing
       exact_mod_cast (Nat.totient_pos.2 (Nat.pos_of_ne_zero (NeZero.ne q))).ne'
     obtain ⟨ζ, hζ⟩ := IsAlgClosed.exists_root _ hdeg
     refine ⟨ζ, ?_⟩
-    rw [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]
-    exact hζ
+    rwa [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]
   have hbij := GlobalTheory.EtC.h_zero_pull_bijective q K (LaurentPolynomial K) (C : K →+* LaurentPolynomial K) hqK hζ
     inferInstance (fun e he => IsIdempotentElem.iff_eq_zero_or_one.1 he) (fun e he => IsIdempotentElem.iff_eq_zero_or_one.1 he) i
   have hw : pull _ (spMap (laurentMap f₀)) _ 0 y' = 0 := by
@@ -693,13 +686,11 @@ theorem laurent_univ (R : Type) [CommRing R] (g : Fin (1 + 1) → (LaurentPolyno
       g 0 (LaurentPolynomial.C (algebraMap A A' a)) := by
     intro j a
     have := RingHom.congr_fun (hg j) (LaurentPolynomial.C a)
-    simp only [RingHom.comp_apply, hLC] at this
-    exact this
+    simpa only [RingHom.comp_apply, hLC] using this
   have hgT : ∀ j : Fin (1 + 1), g j (LaurentPolynomial.T 1) = g 0 (LaurentPolynomial.T 1) := by
     intro j
     have := RingHom.congr_fun (hg j) (LaurentPolynomial.T 1)
-    simp only [RingHom.comp_apply, GmPhiNat.laurentMap_T] at this
-    exact this
+    simpa only [RingHom.comp_apply, GmPhiNat.laurentMap_T] using this
   letI : Algebra A R := ((g 0).comp ((LaurentPolynomial.C : A' →+* LaurentPolynomial A').comp (algebraMap A A'))).toAlgebra
   let g0 : A' →ₐ[A] R := ⟨(g 0).comp LaurentPolynomial.C, fun r => rfl⟩
   let g1 : A' →ₐ[A] R := ⟨(g 1).comp LaurentPolynomial.C, fun r => by
@@ -1255,8 +1246,7 @@ def gen (u : A) (F : Finset A) : Idx A u := by
 
 theorem subset_gen (u : A) (F : Finset A) : (F : Set A) ⊆ (gen u F).1 := by
   classical
-  intro x hx
-  exact Algebra.subset_adjoin (by simp [hx])
+  exact fun x hx => Algebra.subset_adjoin (by simp [hx])
 
 instance (u : A) : Nonempty (Idx A u) := ⟨gen u ∅⟩
 

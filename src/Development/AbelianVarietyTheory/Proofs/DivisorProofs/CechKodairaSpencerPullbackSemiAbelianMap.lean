@@ -335,13 +335,11 @@ theorem GlobalTheory.LogKS.isField_glue : ∀ (Z : Scheme.{0}) (J : Type) (V : J
   · intro W hW f f'
     refine glue_eq he hc hW _ _ fun i => ?_
     rw [map_add (f := _), res_glue he hc hW f, res_glue he hc hW f']
-    simp only [loc, map_add (f := _)]
-    exact ((he i).1 _ inf_le_right _ _).symm
+    simpa only [loc, map_add (f := _)] using ((he i).1 _ inf_le_right _ _).symm
   · intro W hW f f'
     refine glue_eq he hc hW _ _ fun i => ?_
     rw [map_add (f := _), map_mul, map_mul, res_glue he hc hW f, res_glue he hc hW f']
-    simp only [loc, map_mul]
-    exact ((he i).2.1 _ inf_le_right _ _).symm
+    simpa only [loc, map_mul] using ((he i).2.1 _ inf_le_right _ _).symm
   · intro W W' h hW f
     refine glue_eq he hc (h.trans hW) _ _ fun i => ?_
     rw [resG_resG, ← resG_resG (inf_le_left : W ⊓ V i ≤ W) (inf_le_inf_right (V i) h), res_glue he hc hW f]
@@ -415,8 +413,7 @@ theorem isField_eq_basicOpen {Z : Scheme.{0}} {V : Z.Opens} (hV : IsAffineOpen V
   rw [h₁.2.1 _ hle] at e₁
   rw [h₂.2.1 _ hle] at e₂
   have key : resG Z hle (m : Γ(Z, V)) * (d₁ _ g - d₂ _ g) = 0 := by
-    rw [hres m] at e₁
-    rw [hres a] at e₁
+    rw [hres m, hres a] at e₁
     linear_combination e₁ - e₂
   exact sub_eq_zero.mp ((hu.mul_right_eq_zero).mp key)
 
@@ -714,8 +711,7 @@ theorem isKS_of_cohomologous : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
     fun i => isField_add (hF i) (isField_sum fun a => isField_smul _ (isField_mono (hWU i) (hdF a))),
     fun i h s => ?_, fun i i' O hO f S _ φ g w hg hgO hw => ?_⟩
   · beta_reduce
-    simp only [smulFld_of_le le_rfl, hd0, mul_zero, Finset.sum_const_zero, add_zero]
-    exact hD i h s
+    simpa only [smulFld_of_le le_rfl, hd0, mul_zero, Finset.sum_const_zero, add_zero] using hD i h s
   · have hi : O ≤ W i := hO.trans inf_le_left
     have hi' : O ≤ W i' := hO.trans inf_le_right
     have hred := fun b => translate_red (hv b) hg (hw b)
@@ -948,8 +944,7 @@ theorem isTranslate_push {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {g : 
     hvb hvb' hvv S φS g₀ hg₀ w hw
   obtain ⟨_, _, huniq⟩ := existsUnique_isTranslate t' φS hg₀ hvb'
   have e : w'' = w' := (huniq _ h2).trans (huniq _ hw').symm
-  rw [← e, h1]
-  exact hw
+  rwa [← e, h1]
 
 end GlobalTheory.KSBaseChange
 
@@ -1164,8 +1159,7 @@ theorem isKS_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
     have hle : W' q ≤ mu.φ ⁻¹ᵁ W q.1 ⊓ t'.G.hom ⁻¹ᵁ U'.1 := le_inf (hW'1 q) (hW'2 q)
     exact ⟨fun O hO => (he q.1).1 O (hO.trans hle), fun O hO => (he q.1).2.1 O (hO.trans hle),
       fun O O' h' hO => (he q.1).2.2 O O' h' (hO.trans hle)⟩
-  · intro q h r
-    exact hel q.1 (W' q) h (hW'1 q) r
+  · exact fun q h r => hel q.1 (W' q) h (hW'1 q) r
   · intro q q'
     exact GlobalTheory.T.bundleIsoOntoPullback_intertwines_transitions _ _ mu.φ t.PP.L t'.PP.L w hwg (j q.1) (j q'.1) q.2 q'.2 (W' q) (W' q') (hW'L q) (hW'L q')
       inf_le_right inf_le_right (hΩ q q')

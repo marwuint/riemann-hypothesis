@@ -112,8 +112,7 @@ theorem isSqIntIrr_of_uEquiv (he : UEquiv ε σ τ) (h : IsSqIntIrr ε τ) : IsS
       rw [Submodule.eq_bot_iff]
       intro v hv
       have hTv : T v ∈ S' := by
-        rw [mem', LinearIsometryEquiv.symm_apply_apply]
-        exact hv
+        rwa [mem', LinearIsometryEquiv.symm_apply_apply]
       rw [h0, Submodule.mem_bot] at hTv
       exact (LinearIsometryEquiv.map_eq_zero_iff T).mp hTv
     · right
@@ -122,8 +121,7 @@ theorem isSqIntIrr_of_uEquiv (he : UEquiv ε σ τ) (h : IsSqIntIrr ε τ) : IsS
       have hTv : T v ∈ S' := by
         rw [h0]
         exact Submodule.mem_top
-      rw [mem', LinearIsometryEquiv.symm_apply_apply] at hTv
-      exact hTv
+      rwa [mem', LinearIsometryEquiv.symm_apply_apply] at hTv
   ·
     intro v w
     have heq : coefOn (ε := ε) σ v w = coefOn (ε := ε) τ (T v) (T w) := by
@@ -166,8 +164,7 @@ theorem isZEigen_congr {χ : Fin n → ℂ} {f f' : Matrix (Fin n) (Fin n) ℂ �
   · intro m g hg
 
     have hgel : gelf ε m f g = gelf ε m f' g := by
-      simp only [gelf]
-      exact Finset.sum_congr rfl (fun a _ => Eword_congr ε h _ g hg)
+      simpa only [gelf] using Finset.sum_congr rfl (fun a _ => Eword_congr ε h _ g hg)
     rw [hgel, heig m g hg, h g hg]
 
 theorem hasInfChar_of_uEquiv {χ : Fin n → ℂ} (he : UEquiv ε σ τ) (h : HasInfChar ε χ τ) :
@@ -199,15 +196,13 @@ theorem strictLow_of_dsClass (h : DSClass) : StrictLow := by
       ext S
       simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
       constructor
-      · intro hS
-        exact lowKMultOne_of_dsClass h n ε lam H σ hl hσ S S0 hS hS0
+      · exact fun hS => lowKMultOne_of_dsClass h n ε lam H σ hl hσ S S0 hS hS0
       · rintro rfl
         exact hS0
     have hsub : lowKSub ε lam σ = S0 := by
       show sSup {S : Submodule ℂ H | IsKTypeOf ε σ (lowK ε lam) S} = S0
       rw [hset, sSup_singleton]
-    rw [hsub]
-    exact hS0
+    rwa [hsub]
   ·
     intro μ S hS hne
     obtain ⟨c, hc, hμ⟩ := kTypesAbove_of_dsClass h n ε lam H σ hl hσ μ S hS

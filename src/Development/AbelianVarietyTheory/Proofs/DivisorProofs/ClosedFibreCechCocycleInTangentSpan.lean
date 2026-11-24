@@ -148,8 +148,7 @@ theorem cechLB_triv_finite_finrank_one_le : ∀ (K : Type) [Field K] (A : Over (
     rw [Module.rank_baseChange, Cardinal.lift_id] at h1
     exact Module.rank_lt_aleph0_iff.1 h1
   refine ⟨hfinK, le_of_eq ?_⟩
-  rw [← Module.finrank_baseChange (R := L), E.finrank_eq]
-  exact hrank'
+  rwa [← Module.finrank_baseChange (R := L), E.finrank_eq]
 
 end GlobalTheory.AbCoh.FDimField
 end -- clump:auto
@@ -659,8 +658,7 @@ theorem isAbelianScheme_and_relDim : ∀ (E : Type) [Field E] [NumberField E] [I
     infer_instance
   obtain ⟨g, hg⟩ := GlobalTheory.AbelianDim.exists_relDim _ A hA
   obtain ⟨v₂, hv₂⟩ := GlobalTheory.KeyPow.exists_isLieBasis A hg
-  rw [GlobalTheory.KeyFramePoint.card_eq_of_isLieBasis hj hv₁ hv₂]
-  exact hg
+  rwa [GlobalTheory.KeyFramePoint.card_eq_of_isLieBasis hj hv₁ hv₂]
 
 end GlobalTheory.FibreAbDim
 end -- clump:auto
@@ -1246,8 +1244,7 @@ theorem fibre_indep' : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
     have h1 : s ≫ (List.ofFn u').prod = 1 := by
       rw [GlobalTheory.FirstOrderValue.comp_prod_ofFn]; simp [hs]
     have h2 : (s ≫ (List.ofFn u').prod).left = (1 : Over.mk x0 ⟶ t.G).left := by rw [h1]
-    rw [Over.comp_left, hu'P] at h2
-    exact h2
+    rwa [Over.comp_left, hu'P] at h2
 
   have hgen : ∃ c : LB.Gen (Out.translDiff t.G t.PP.L P), c.IsGen := by
     let T := tEpsG x0
@@ -1282,8 +1279,7 @@ theorem fibre_indep' : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
       · exact hρ'
     have key := GlobalTheory.KS.DlogPol.exists_gen (K := Γ(X, U.1) ⧸ m) π τ' ρ' (fun y W hy => by rwa [← hpts y]) ιA t.PP.L
       t.PP.isLB (fun a b => GlobalTheory.KS.pbT ιA (∑ c, (t.G.hom.appLE U.1 ((t.PP.L.U a ⊓ t.G.hom ⁻¹ᵁ U.1) ⊓ (t.PP.L.U b ⊓ t.G.hom ⁻¹ᵁ U.1)) (inf_le_left.trans inf_le_right)).hom (r c) * (δ c ((t.PP.L.U a ⊓ t.G.hom ⁻¹ᵁ U.1) ⊓ (t.PP.L.U b ⊓ t.G.hom ⁻¹ᵁ U.1)) (resG t.G.left (inf_le_inf inf_le_left inf_le_left) (t.PP.L.g a b).val) * resG t.G.left (inf_le_inf inf_le_left inf_le_left) (t.PP.L.g a b)⁻¹.val)) (ιA ⁻¹ᵁ t.PP.L.U a ⊓ ιA ⁻¹ᵁ t.PP.L.U b)) ?_ (_root_.GlobalTheory.ChartCob.chart_isCob E H X t U n δ hδ J W j hWa hWcov hWU hj m A ιA hι r h' hcob)
-    · rw [e] at key
-      exact key
+    · rwa [e] at key
     intro a b y ha hb
     beta_reduce
     have hτy : τ.base y = ρ.base y := by
@@ -1529,8 +1525,7 @@ theorem fibre_span : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
   have key2 : ∀ (O O' : A.left.Opens) (h : O' ≤ O) (hO : O ≤ (ι ≫ t.G.hom) ⁻¹ᵁ U.1) (x : Γ(X, U.1)),
       resG A.left h (((ι ≫ t.G.hom).appLE U.1 O hO).hom x) = ((ι ≫ t.G.hom).appLE U.1 O' (h.trans hO)).hom x := by
     intro O O' h hO x
-    have e := Scheme.Hom.appLE_map (ι ≫ t.G.hom) hO (homOfLE h).op
-    exact congrArg (fun φ => φ.hom x) e
+    exact congrArg (fun φ => φ.hom x) (Scheme.Hom.appLE_map (ι ≫ t.G.hom) hO (homOfLE h).op)
   have hle : ι ⁻¹ᵁ W i ⊓ ι ⁻¹ᵁ W i' ≤ (ι ≫ t.G.hom) ⁻¹ᵁ U.1 := fun x hx => hWU i hx.1
   have h1 := hh i i'
   have hy' : ((ι ≫ t.G.hom).appLE U.1 _ hle).hom y * ((ι ≫ t.G.hom).appLE U.1 _ hle).hom (r 0) = 1 := by
@@ -1539,8 +1534,7 @@ theorem fibre_span : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
     have h0 : ((ι ≫ t.G.hom).appLE U.1 _ hle).hom i₀ = 0 :=
       (key1 (W i ⊓ W i') (inf_le_left.trans (hWU i)) (ι ⁻¹ᵁ W i ⊓ ι ⁻¹ᵁ W i') (fun _ hx => hx) i₀).symm.trans
         (hz (W i ⊓ W i') (inf_le_left.trans (hWU i)) (ι ⁻¹ᵁ W i ⊓ ι ⁻¹ᵁ W i') (fun _ hx => hx) i₀ hi₀)
-    rw [h0, add_zero] at this
-    exact this
+    rwa [h0, add_zero] at this
   have hA1 : ∀ x : Γ(X, U.1), (ι.appLE (W i ⊓ W i') (ι ⁻¹ᵁ W i ⊓ ι ⁻¹ᵁ W i') (fun _ hx => hx)).hom ((t.G.hom.appLE U.1 (W i ⊓ W i') (inf_le_left.trans (hWU i))).hom x) =
       ((ι ≫ t.G.hom).appLE U.1 _ hle).hom x := fun x => key1 _ _ _ _ x
   have hB1 : resG A.left (inf_le_left : ι ⁻¹ᵁ W i ⊓ ι ⁻¹ᵁ W i' ≤ ι ⁻¹ᵁ W i) ((ι.appLE (W i) (ι ⁻¹ᵁ W i) le_rfl).hom ((t.G.hom.appLE U.1 (W i) (hWU i)).hom y)) = ((ι ≫ t.G.hom).appLE U.1 _ hle).hom y := by

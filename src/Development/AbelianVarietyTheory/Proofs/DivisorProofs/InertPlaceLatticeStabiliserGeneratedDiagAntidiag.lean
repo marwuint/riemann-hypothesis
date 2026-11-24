@@ -106,8 +106,7 @@ theorem lagr_functional_kills_image {k : Type} [Field k] (c : k →+* k) {n : �
     congr 1
     funext i
     exact (RingHom.map_mulVec c A w i).symm
-  rw [e1, zero_dotProduct, zero_add, e2] at h
-  exact h
+  rwa [e1, zero_dotProduct, zero_add, e2] at h
 
 def lagrRankOne {k : Type} [Field k] {n : ℕ} (S : Matrix (Fin n) (Fin n) k) (j : Fin n) :
     Matrix (Fin n) (Fin n) k :=
@@ -233,15 +232,12 @@ theorem lagrangian_transverse_field :
           apply hne
           have hmem : u ∈ LinearMap.ker A.mulVecLin := by
             simpa [LinearMap.mem_ker, mulVecLin_apply] using hu
-          rw [← heq] at hmem
-          rw [LinearMap.mem_ker, mulVecLin_apply] at hmem
-          exact hmem
+          rwa [← heq, LinearMap.mem_ker, mulVecLin_apply] at hmem
       have hfin := Submodule.finrank_lt_finrank_of_lt hlt
       have hinj' : ∀ w : Fin n → k, (A + lagrRankOne S j * C) *ᵥ w = 0 → C *ᵥ w = 0 → w = 0 := by
         intro w h1 h2
         apply hinj w _ h2
-        rw [add_mulVec, ← mulVec_mulVec, h2, mulVec_zero, add_zero] at h1
-        exact h1
+        rwa [add_mulVec, ← mulVec_mulVec, h2, mulVec_zero, add_zero] at h1
       obtain ⟨X2, hX2, hdet2⟩ := ih (A + lagrRankOne S j * C) (by omega) hinj'
         (lagr_iso_update c S A C _ hX1 hiso)
       refine ⟨lagrRankOne S j + X2, transpose_mul_add_mul_map_eq_zero_add c S _ _ hX1 hX2, ?_⟩
@@ -585,8 +581,7 @@ theorem exists_mul_valuation_eq_one {E : Type} [Field E] [NumberField E]
       refine lt_of_le_of_ne ?_ (h a ha b hb)
       rw [← hx]
       exact w.valuation_le_one x
-    · intro x y hx hy
-      exact Valuation.map_add_lt _ hx hy
+    · exact fun x y hx hy => Valuation.map_add_lt _ hx hy
   simp at key
 
 theorem mem_dual_one_iff {E : Type} [Field E] [NumberField E] (e : E) :
@@ -636,8 +631,7 @@ theorem exists_generator_different_of_isInertAt :
   · intro e he
     rw [div_mul_cancel₀ _ htE]
     have hm := FractionalIdeal.mul_mem_mul hδ ((mem_dual_one_iff e).2 he)
-    rw [inv_mul_cancel₀ hJ, FractionalIdeal.mem_one_iff] at hm
-    exact hm
+    rwa [inv_mul_cancel₀ hJ, FractionalIdeal.mem_one_iff] at hm
   · rw [mul_comm (algebraMap F E t) z, mul_inv_cancel_right₀ htE]
     exact (mem_dual_one_iff z).1 hz
 
@@ -795,8 +789,7 @@ theorem exists_frame_unimod : ∀ {F E : Type} [Field F] [NumberField F] [Field 
   · rw [key, Matrix.transpose_apply, hBC, Matrix.map_apply]
     exact (C.1 j i).2
   · rw [key, Matrix.det_transpose, hdetB]
-    intro h0
-    exact hCu.ne_zero (Subtype.ext h0)
+    exact fun h0 => hCu.ne_zero (Subtype.ext h0)
   · rw [key, Matrix.det_transpose, hdetB]
     obtain ⟨u, hu⟩ := hCu
     have : (Formalism.UG.Ov E w).subtype (C : Matrix (Fin d) (Fin d) (Formalism.UG.Ov E w)).det *
@@ -992,8 +985,7 @@ lemma int_conj_of_keeps (O : ValuationSubring K) (b : GL (Fin d) K) (h2i : (2 : 
     · subst hk; simp
     · simp [hk]
   have := int_wMi O b h2i _ (hQ _ (inLat2_wM O b _ he)) i
-  rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_single_one] at this
-  exact this
+  rwa [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_single_one] at this
 
 lemma keeps_of_int (O : ValuationSubring K) (b : GL (Fin d) K) (h2i : (2 : K)⁻¹ ∈ O) (h2 : (2 : K) ≠ 0)
     (Q : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) K) (hQ : ∀ i j, (wMi b * Q * wM b) i j ∈ O) :
@@ -1266,12 +1258,10 @@ theorem exists_bigCell : (∀ {O : Type} [CommRing O] [IsLocalRing O] (c : O →
       have hxu : x = u := funext fun i => hinj (congrFun he i)
       subst hxu
       exact (hb x).1 hu
-    · intro hx
-      exact ⟨x, (hb x).2 hx, rfl⟩
+    · exact fun hx => ⟨x, (hb x).2 hx, rfl⟩
   have hvec2 : ∀ x : Fin d ⊕ Fin d → w.adicCompletion E,
       (fun i => iotaW hw (x i)) ∈ GlobalTheory.DblVac.latD W v ↔ InLat2 (w.adicCompletionIntegers E) b x := by
-    intro x
-    exact and_congr (hvec (x ∘ Sum.inl)) (hvec (x ∘ Sum.inr))
+    exact fun x => and_congr (hvec (x ∘ Sum.inl)) (hvec (x ∘ Sum.inr))
   have hsurj2 : ∀ z ∈ GlobalTheory.DblVac.latD W v, ∃ x : Fin d ⊕ Fin d → w.adicCompletion E,
       z = fun i => iotaW hw (x i) := by
     rintro z ⟨h1, h2⟩
@@ -1346,8 +1336,7 @@ theorem exists_bigCell : (∀ {O : Type} [CommRing O] [IsLocalRing O] (c : O →
     show (glueW hw P0)ᵀ * dbl (incM F W.J) * (glueW hw P0).map (cA σ) = dbl (incM F W.J)
     rw [← e1]
     apply (hJ (dbl W.J) P0).2
-    rw [e2]
-    exact hP0U
+    rwa [e2]
   let p : GlobalTheory.DblVac.UD σ W := ⟨u, hu⟩
   have hp : GlobalTheory.DblVac.matD p = glueW hw P0 := rfl
   have hp' : GlobalTheory.DblVac.matD p⁻¹ = glueW hw P0' := rfl
@@ -1364,8 +1353,7 @@ theorem exists_bigCell : (∀ {O : Type} [CommRing O] [IsLocalRing O] (c : O →
   · rw [hp]
     exact gat P0
   · rw [hp]
-    refine (hdiag P0 hP0d).trans ?_
-    exact (Matrix.mul_one _).symm
+    exact (hdiag P0 hP0d).trans (Matrix.mul_one _).symm
   · rw [hpg]
     exact gat _
   · rw [hmul, ← Matrix.mulVec_mulVec]

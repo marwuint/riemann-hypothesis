@@ -90,20 +90,17 @@ theorem lieInt_change (T : CDVR) (io : c.F →+* T.Fr) {G : SAB H (Sp T.V)} {t' 
       obtain ⟨a, ha, hu⟩ := hbas τ w hw he
       refine ⟨a, (isComb_iff _ _ _).1 (by rw [kapI_kap_assoc]; exact ha), fun b hb => hu b ?_⟩
       have h2 := (isComb_iff (ub τ) b (kap ≫ w)).2 hb
-      rw [kapI_kap_assoc] at h2
-      exact h2
+      rwa [kapI_kap_assoc] at h2
     obtain ⟨a, ha, hu⟩ := reframe_basis _ (Ub τ) (hUb0 τ) (k τ) (hk τ) _ h1
     have e : (fun i => kap ≫ (kapI ≫ combT (𝟙 (Sp T.V)) (Ub τ) (fun j => k τ j i))) =
         fun i => combT (𝟙 (Sp T.V)) (Ub τ) (fun j => k τ j i) := funext fun i => kap_kapI_assoc _
     refine ⟨a, ?_, fun b hb => hu b ?_⟩
     · have h2 := (isComb_iff (fun i => kapI ≫ combT (𝟙 (Sp T.V)) (Ub τ) (fun j => k τ j i)) a (kap ≫ w)).2
         (by rw [e]; exact ha)
-      rw [kapI_kap_assoc] at h2
-      exact h2
+      rwa [kapI_kap_assoc] at h2
     · have h2 := (isComb_iff (fun i => kapI ≫ combT (𝟙 (Sp T.V)) (Ub τ) (fun j => k τ j i)) b (kap ≫ w)).1
         (by rw [kapI_kap_assoc]; exact hb)
-      rw [e] at h2
-      exact h2
+      rwa [e] at h2
   · intro τ i
     choose u' hu1 hu2 using hlift τ
     have hδ : spMap (Formalism.L2.Pj.dualMap (algebraMap T.V T.Fr)) ≫
@@ -115,8 +112,7 @@ theorem lieInt_change (T : CDVR) (io : c.F →+* T.Fr) {G : SAB H (Sp T.V)} {t' 
     have hov : ∀ j, u' j ≫ t'.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr)) := by
       intro j
       apply spMap_frac_cancel (V := T.V)
-      rw [Category.assoc, ← m2.cart.1.w, ← Category.assoc, hu2 j, Category.assoc, Over.w (ub τ j)]
-      exact hδ
+      rwa [Category.assoc, ← m2.cart.1.w, ← Category.assoc, hu2 j, Category.assoc, Over.w (ub τ j)]
     let T' : Over (Sp T.Fr) := Over.mk (spMap (algebraMap T.Fr (DualNumber T.Fr)))
     let cf : Fin (Dw.mult τ) → T.Fr := fun j => algebraMap T.V T.Fr (k τ j i)
     let Y : Fin (Dw.mult τ) → (T' ⟶ t'.G) := fun j => Over.homMk (spMap (epsMul (cf j)) ≫ u' j) (by

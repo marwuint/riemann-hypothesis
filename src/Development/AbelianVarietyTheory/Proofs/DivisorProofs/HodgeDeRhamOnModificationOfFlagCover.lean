@@ -120,8 +120,7 @@ theorem dualNumber_deformation_extends_away :
       apply IsLocalization.ringHom_ext (Submonoid.powers g)
       ext s
       simp [IsLocalization.Away.lift, IsLocalization.lift_eq, hψ, hd]
-    intro s
-    exact congrArg (fun F : S' →+* S' => F s) h
+    exact fun s => congrArg (fun F : S' →+* S' => F s) h
   · intro s
     simp [IsLocalization.Away.lift, IsLocalization.lift_eq, hψ]
     rw [Algebra.smul_def, mul_one]
@@ -263,8 +262,7 @@ theorem exists_derivFrame (M : Modif (str₀ X Z) (U₀ X Z) (GlobalTheory.FlagT
     (h t t.2 Γ(M.X, M.X.basicOpen (t : Γ(M.X, V))))
   have h₂ : (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX M.str (M.X.basicOpen (t : Γ(M.X, V)))).IsStandardSmoothOfRelativeDimension
       (dimFlag Dw) := by
-    rw [← resG_comp_algX M.str (M.X.basicOpen_le (t : Γ(M.X, V)))]
-    exact h₁
+    rwa [← resG_comp_algX M.str (M.X.basicOpen_le (t : Γ(M.X, V)))]
   letI := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX M.str (M.X.basicOpen (t : Γ(M.X, V)))).toAlgebra
   haveI : Algebra.IsStandardSmoothOfRelativeDimension (dimFlag Dw) c.F Γ(M.X, M.X.basicOpen (t : Γ(M.X, V))) := h₂
   obtain ⟨f, B, hB⟩ := exists_basis_kaehler_D (D := dimFlag Dw) (k := c.F) (A := Γ(M.X, M.X.basicOpen (t : Γ(M.X, V))))
@@ -337,8 +335,7 @@ theorem affineOpen_exists_field_point_basicOpen_commonDenom :
       · simp only [ψ, RingHom.comp_apply, ne_eq]
         exact IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hs'
       · rw [← he]
-        simp only [ψ, RingHom.comp_apply]
-        exact IsLocalization.mk'_spec _ _ _
+        simpa only [ψ, RingHom.comp_apply] using IsLocalization.mk'_spec _ _ _
     choose b s hs hbs using hrep
     refine ⟨fun i => b i * ∏ j ∈ Finset.univ.erase i, s j, ∏ j, s j, ?_, ?_⟩
     · rw [map_prod]
@@ -380,8 +377,7 @@ theorem GlobalTheory.HorFrame.exists_ksComb_eq_single : ∀ {E : Type} [Field E]
   have hred : spMap (GlobalTheory.FlagTan.red c K).toRingHom ≫ zv = spMap ψ ≫ tau hW₁ := by
     have hU : ⊤ ≤ ((spMap ψ ≫ tau hW₁) ≫ M.σ) ⁻¹ᵁ U₀ X Z := fun s _ => by
       have := ho (Set.mem_univ s)
-      rw [M.off_eq] at this
-      exact this
+      rwa [M.off_eq] at this
     refine (M.existsUnique_lift _ hU).unique ?_ rfl
     rw [← cancel_mono (inc₀ X Z)]
     have h1 : zv ≫ M.σ ≫ inc₀ X Z = X.ptY (v (.inl b)) := hzv
@@ -798,8 +794,7 @@ theorem IsKSValue.exists_of_isAbelianScheme_ring (P : AbelianDeRham) {K : Type} 
   apply TrivSqZeroExt.ext
   · have e := fd' x
     rw [← hd, crysToDR_apply, hx, red] at e
-    rw [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero]
-    exact e
+    rwa [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero]
   · rw [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]
     rfl
 
@@ -1112,8 +1107,7 @@ theorem GlobalTheory.HorFrame.exists_horizontal_lift : ∀ {E : Type} [Field E] 
   have hk₁ : ⊤ ≤ (tau hW₁ ≫ toFlag M) ⁻¹ᵁ X.F.U k := fun s _ => (hW (hW₁W (hτ (Set.mem_univ s)))).2
   have hF₁ : ⊤ ≤ (tau hW₁ ≫ toFlag M) ⁻¹ᵁ flagOpen X := fun s _ => by
     have := hoff (hτ (Set.mem_univ s))
-    rw [M.off_eq] at this
-    exact this
+    rwa [M.off_eq] at this
   obtain ⟨alg₁, hch⟩ := GlobalTheory.CompHS.exists_chartFr (tau hW₁ ≫ toFlag M) hF₁
   obtain ⟨Q₀, hQ₀⟩ := hch k hk₁
   have hdalg : ∀ b, (d b).comp (algebraMap c.F Γ(M.X, W₁)) = algebraMap c.F (DualNumber Γ(M.X, W₁)) :=
@@ -1150,8 +1144,7 @@ theorem GlobalTheory.HorFrame.exists_horizontal_lift : ∀ {E : Type} [Field E] 
   have hτ' : spMap ρ ≫ tau hW₁ = tau hW' := by
     have e1 := spMap_ev (tau hW') hW₁ (tau_le hW' hW'W₁)
     have e2 : ev (tau hW') W₁ (tau_le hW' hW'W₁) = ρ := RingHom.ext fun a => ev_tau hW' hW'W₁ _ a
-    rw [← e2]
-    exact e1
+    rwa [← e2]
   refine ⟨M.X.basicOpen g, hW', fun b => combDer d' hd'1 (fun a => A b a), hB, hW'W₁.trans hW₁W,
     fun b s => combDer_fst _ _ _ _, ?_⟩
   intro K _ _ ψ hk Q hQ b

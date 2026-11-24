@@ -173,8 +173,7 @@ theorem sup_le_euclidean (ι : Type) [Fintype ι] (A : AddSubgroup (EuclideanSpa
         (ZSpan.fundamentalDomain_isBounded _).isCompact_closure).mono_set subset_closure
     · intro g x
       have := hper g g.2 x
-      rw [add_comm] at this
-      exact this
+      rwa [add_comm] at this
   have := GlobalTheory.ThetaSupBall.sup_le_mean_square ι A v Fd G hv hmin hFd hvol hG hper hint z
   rwa [setAverage_eq, Measure.real, hvol, ENNReal.toReal_one, inv_one, one_smul]
 
@@ -200,8 +199,7 @@ theorem sup_le_coord {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [Norm
     constructor
     · rintro ⟨y, hy, rfl⟩
       simpa using hy
-    · intro h
-      exact ⟨_, h, by simp⟩
+    · exact fun h => ⟨_, h, by simp⟩
   obtain ⟨⟨F0, hF0⟩, hB⟩ := sup_le_euclidean ι A' v hv
     (by
       intro x hx h0
@@ -463,8 +461,7 @@ theorem mean_transport {V : Type} [NormedAddCommGroup V] [SecondCountableTopolog
     rw [he, he, map_add (f := _)]; simp
   have hi : ∫ z in S', f z ∂μ = ∫ z in S, f (P z) ∂μ := by
     rw [← hP.setIntegral_preimage_emb e.measurableEmbedding]
-    simp only [he]
-    exact h2.setIntegral_eq h (fun g z => hf g g.2 z)
+    simpa only [he] using h2.setIntegral_eq h (fun g z => hf g g.2 z)
   have hm : μ S' = μ S := by
     rw [← hP.measure_preimage_equiv S']
     have := h2.setLIntegral_eq h (fun _ => (1 : ENNReal)) (fun _ _ => rfl)
@@ -756,8 +753,7 @@ theorem jet_bound_fix (D : D7) (hI : Inp D) (cc : Ideal (𝓞 D.host.K)) (δ : �
     positivity
   · have := sup_perm D hI.g1 cc' δ' hc' (torConj D (tor0 D cc δ) Qbar ρ) π hΛ hπ a d L L' h1 h2 _
       hTh y' z
-    rw [Hf_re, ← mul_div_assoc] at this
-    exact this
+    rwa [Hf_re, ← mul_div_assoc] at this
 
 theorem vacuum_mem_thetaSpace_pair (D : D7) (hI : Inp D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (t0 : ℂ)
     (hc : Crv D cc δ) (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0) (a d : ℕ) (L L')
@@ -790,8 +786,7 @@ theorem conj_jet_bound : ∀ (D : D7), Inp D → ∀ (cc : Ideal (𝓞 D.host.K)
     have hL : lamConj Qbar (rhoBar Qbar ρ) (lamOf D cc δ) =
         (lamConj Qbar ρ (lamOf D cc δ)).map (starRingEnd ℂ).toAddMonoidHom :=
       congrArg Tor.abelian₂ htor
-    rw [cj_bar, (hbar a d L L' G).1, htor, hn2, hL, area_conj] at hle
-    exact hle
+    rwa [cj_bar, (hbar a d L L' G).1, htor, hn2, hL, area_conj] at hle
 
 end GlobalTheory.ConjJet
 end -- clump:auto

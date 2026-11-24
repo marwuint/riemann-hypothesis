@@ -105,8 +105,7 @@ theorem comap_eq_map {E : Type} [Field E] [NumberField E] {n : ℕ} (fr γ : GL 
   · intro hy
     have hy' : fr.1 *ᵥ y ∈ B := hy
     refine ⟨(γ⁻¹).1 *ᵥ (fr.1 *ᵥ y), (h _).1 ?_, ?_⟩
-    · rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
-      exact hy'
+    · rwa [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
     · show (fr⁻¹ * γ).1 *ᵥ ((γ⁻¹).1 *ᵥ (fr.1 *ᵥ y)) = y
       rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul]
       simp
@@ -273,8 +272,7 @@ theorem pullback_fin_relation {W : G.Weil} (S : GridChoice W Set.univ) (rp : Cla
   rw [topVal_eq]
   refine inLat_of_mem _ w ?_
   rcases delta_cases rp c u (finG (Xp G) x) with h0 | ⟨γ, k, hk, hx, e⟩
-  · rw [h0]
-    rw [castVV_zero, map_zero]
+  · rw [h0, castVV_zero, map_zero]
     exact zero_mem _
   · rw [e, show rhoW G γ u = rhoVr (labLL D) (LaP G) γ.1 u from rfl, castVV_rhoVr_mul, latAt_eq S rp c x γ hk hx]
     exact castVV_mem _ (nabAtr_map _ _ _ _ _ (del_le_nab _ _ _ hu))
@@ -286,8 +284,7 @@ theorem inf_aux {W : G.Weil} (S : GridChoice W Set.univ) (rp : ClassReps G) (σ 
   rw [topVal_eq]
   refine ⟨_, rfl, ?_⟩
   rcases delta_cases rp c u (finG (Xp G) x) with h0 | ⟨γ, k, hk, hx, e⟩
-  · rw [h0]
-    rw [castVV_zero, map_zero, map_zero, nrm_zero]
+  · rw [h0, castVV_zero, map_zero, map_zero, nrm_zero]
     exact nrm_nonneg σ _
   · rw [e, show rhoW G γ u = rhoVr (labLL D) (LaP G) γ.1 u from rfl, castVV_rhoVr_mul, nrm_castVV,
       nrm_transport (Xp G) _ σ _ (orth_inv S γ)]

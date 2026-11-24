@@ -187,8 +187,7 @@ theorem isHomogeneous_spec {F K : Type} [Field F] [Field K] [Algebra F K] {D N �
     · simp
   have h2 := (isHomogeneous_C (Fin 1 × Fin N) (algebraMap F K (AddMonoidAlgebra.coeff f m))).mul hprod
   rw [zero_add, hdeg] at h2
-  rw [aeval_monomial, MvPolynomial.algebraMap_apply]
-  exact h2
+  rwa [aeval_monomial, MvPolynomial.algebraMap_apply]
 
 private lemma eval_join_C_X_eq_join {K : Type} [CommRing K] {D N : ℕ} (s : Fin D → Fin N → K) (ξ : Fin N → K)
     (v : Fin (D + 1) × Fin N) :

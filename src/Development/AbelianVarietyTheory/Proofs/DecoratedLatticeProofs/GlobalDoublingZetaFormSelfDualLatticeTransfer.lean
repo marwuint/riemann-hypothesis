@@ -235,8 +235,7 @@ theorem globalFormAt_move : ∀ (D : D7) (A : HSp D) (L L' : Lat A), IsSelfDualC
       rw [e1 h, integral_descend_mul_right m (e2 h) k⁻¹]
     refine ⟨hup, fun ⟨c1, c2⟩ => ⟨fun h => ?_, hup ▸ c2⟩⟩
     have := c1 h
-    rw [e1 h, integrable_descend_mul_right_iff m (e2 h) k⁻¹] at this
-    exact this
+    rwa [e1 h, integrable_descend_mul_right_iff m (e2 h) k⁻¹] at this
 
   have hint : ∀ s y, integrand om m ν 𝓕 L a (om (k⁻¹, 1) Φ₁) (om (k⁻¹, 1) Φ₂) (rTr A k⁻¹ u₁) (rTr A k⁻¹ u₂) s y =
       integrand om m ν 𝓕 L' a Φ₁ Φ₂ u₁ u₂ s (k * y * k⁻¹) := by
@@ -260,9 +259,7 @@ theorem globalFormAt_move : ∀ (D : D7) (A : HSp D) (L L' : Lat A), IsSelfDualC
       funext s
       simp only [hint]
       rw [integral_conj m (integrand om m ν 𝓕 L' a Φ₁ Φ₂ u₁ u₂ s) k]
-    rw [e]
-    exact hz
-  · rw [← up₁, ← up₂]
-    exact hpet
+    rwa [e]
+  · rwa [← up₁, ← up₂]
 
 end GlobalTheory.Core.Rk.GlobMove

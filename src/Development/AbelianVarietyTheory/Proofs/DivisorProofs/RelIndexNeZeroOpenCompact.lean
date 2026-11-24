@@ -110,8 +110,7 @@ private lemma foldMap_bijective' (Γ' T K : Subgroup G) (hΓT : Γ' ≤ T) (y : 
     refine ⟨⟨γ, hΓT hγ⟩, by rw [Subgroup.mem_subgroupOf]; exact hγ, ⟨y * k * y⁻¹, hT⟩, ?_, ?_⟩
     · rw [Subgroup.mem_subgroupOf, Subgroup.mem_inf, mem_map_conj_iff_inv_mul_mul_mem']
       refine ⟨hT, ?_⟩
-      rw [show y⁻¹ * (y * k * y⁻¹) * y = k by group]
-      exact hk
+      rwa [show y⁻¹ * (y * k * y⁻¹) * y = k by group]
     · apply Subtype.ext
       push_cast
       rw [eq_mul_inv_of_mul_eq he]
@@ -161,8 +160,7 @@ private lemma card_subgroupOf_inf_map_conj_eq (Γ' T K : Subgroup G) (hΓT : Γ'
       rw [Subgroup.mem_inf, Subgroup.mem_subgroupOf, Subgroup.mem_map_equiv, Subgroup.mem_subgroupOf,
         Subgroup.mem_inf, mem_map_conj_iff_inv_mul_mul_mem', hconj]
       refine ⟨hx, T.mul_mem (T.mul_mem (T.inv_mem t.2) (hΓT hx)) t.2, ?_⟩
-      rw [show y⁻¹ * ((t : G)⁻¹ * x * t) * y = ((t : G) * y)⁻¹ * x * ((t : G) * y) by group]
-      exact hxK
+      rwa [show y⁻¹ * ((t : G)⁻¹ * x * t) * y = ((t : G) * y)⁻¹ * x * ((t : G) * y) by group]
   rw [← e]
   exact Nat.card_congr (Subgroup.equivMapOfInjective _ _ T.subtype_injective).toEquiv
 

@@ -174,8 +174,7 @@ theorem Pair.div_pow_mem_H_of_mul_pow : ∀ (k : Type) [CommRing k] (X : Scheme.
   have hs : P.loc 0 1 s i j ∈ O := (hO _).1 (hG.s_mem.1 x i j hi hj)
   have ht : P.loc (-1) b t i j ∈ O := (hO _).1 (hG.t_mem.1 x i j hi hj)
   have hs0 : P.loc 0 1 s i j ≠ 0 := by
-    simp only [loc, zpow_zero, zpow_one, mul_one]
-    exact mul_ne_zero hG.s_ne hrj
+    simpa only [loc, zpow_zero, zpow_one, mul_one] using mul_ne_zero hG.s_ne hrj
   have hreg : ∀ g ∈ O, g * P.loc (-1) b t i j / P.loc 0 1 s i j ∈ O → g / P.loc 0 1 s i j ∈ O :=
     fun g hg h => (hO _).1 (hG.reg x i j hi hj g ((hO _).2 hg) ((hO _).2 h))
   have hg : P.loc N m u i j ∈ O := (hO _).1 (hu x i j hi hj)
@@ -282,14 +281,12 @@ theorem encard_mul_le_at_level : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [I
     constructor
     · rintro ⟨hu, hu0⟩
       refine ⟨u * (s ^ m)⁻¹, ⟨hu0, ?_⟩, ?_⟩
-      · rw [inv_mul_cancel_right₀ hs0]
-        exact hu
+      · rwa [inv_mul_cancel_right₀ hs0]
       · exact inv_mul_cancel_right₀ hs0 u
     · rintro ⟨f, ⟨hf, hfs⟩, rfl⟩
       refine ⟨hfs, ?_⟩
       show f * s ^ m * (s ^ m)⁻¹ ∈ P.H N 0
-      rw [mul_inv_cancel_right₀ hs0]
-      exact hf
+      rwa [mul_inv_cancel_right₀ hs0]
   rw [hB, (mul_left_injective₀ hs0).injOn.encard_image] at key
   refine le_trans ?_ key
   gcongr
@@ -537,8 +534,7 @@ theorem lc_two_le_lc_one_add (hHS : GlobalTheory.Published.ArithHilbertSamuel) (
   filter_upwards [hn] with m hm
   have e1 : (((b * n + 1) * m : ℕ) : ℤ) = (b : ℤ) * ((n * m : ℕ) : ℤ) + (m : ℤ) := by push_cast; ring
   have e2 : (((b * n * m : ℕ)) : ℤ) = (b : ℤ) * ((n * m : ℕ) : ℤ) := by push_cast; ring
-  simp only [e1, e2, zero_mul, Real.exp_zero] at hm
-  exact hm
+  simpa only [e1, e2, zero_mul, Real.exp_zero] using hm
 
 end GlobalTheory.VolBr
 end -- clump:auto
@@ -649,8 +645,7 @@ theorem volGe_of_hilbertSamuel :
     (hlim.and (_root_.GlobalTheory.VolBr.lc_add_A_le hHS hAC k X p D hX P b s t hG (ε / 3) hε3))).exists
   have hRn : P.Rep (n : ℤ) 1 ((P.L.pow n).tens P.A) := by
     have h1 := _root_.GlobalTheory.VolBr.Pair.rep_pow k X p P 1 0 P.L n hRL
-    have h2 := _root_.GlobalTheory.VolBr.Pair.rep_tens k X p P _ _ 0 1 _ P.A h1 hRA
-    simpa using h2
+    simpa using _root_.GlobalTheory.VolBr.Pair.rep_tens k X p P _ _ 0 1 _ P.A h1 hRA
   obtain ⟨t₀, ht₀⟩ := _root_.GlobalTheory.VolBr.exists_isNef_shift_pow_tens hAC hNN k X p D hX P.L P.A n hSP hNF hG.ample hG.nef
   have hstep := _root_.GlobalTheory.VolBr.log_ncard_ball_one_ge_of_shift_nef hHS hAC k X p D hX P b s t hG n 1 _ (α n) t₀ hRn (hα n) ht₀ (ε / 3) hε3
   rw [Filter.frequently_atTop]

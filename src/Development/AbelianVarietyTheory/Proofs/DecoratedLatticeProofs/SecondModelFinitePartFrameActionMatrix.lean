@@ -109,9 +109,7 @@ theorem embA_cols {D : D7} {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ
     rw [← Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, Matrix.mul_assoc, o.emb_jA, Matrix.mul_assoc]
   have h2 : d.j0 ⬝ o.jA = (d.i₀ * o.iA).map (incA D) := (Matrix.map_mul (f := incA D)).symm
   rw [h2] at h1
-  have h3 := map_cols (toEAf D) _ _ _ h1 j
-  simp only [Matrix.map_apply, toEAf_incA] at h3
-  exact h3
+  simpa only [Matrix.map_apply, toEAf_incA] using map_cols (toEAf D) _ _ _ h1 j
 
 theorem transport (D : D7) (I : AutInst) (ιE : I.E ≃+* D.host.E) (hId : ∀ y, HEq (ιE y) y)
     (hI : I = Formalism.L2.SG.InstExistsPf.instOf D) (hr : (D.sp.Y 0).rank = I.n)
@@ -133,8 +131,7 @@ theorem transport (D : D7) (I : AutInst) (ιE : I.E ≃+* D.host.E) (hId : ∀ y
   simp only [hid] at H
   simp only [hA']
   change (Formalism.L2.SG.InstExistsPf.instOf D).fmat (Formalism.IndefR.RationalEmbedding.iota D g).2 *ᵥ _ = _
-  rw [fmat_iota]
-  exact H
+  rwa [fmat_iota]
 
 theorem repM_toH : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (B : SBes X h u ψ (D.sp.X 0)) (F : Formalism.L2.Forms.Forms0 D u) (tr : Formalism.L2.SG.ColDict.Transport X u F), IdE X → B.Adapted tr.wt → ∀ a : GA D (D.sp.X 0), RepM X tr.wt tr.ιA ((B.toH a).2 : X.B.I.Gf) (GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a) := by
   intro D X h u ψ B F tr hId hAd a j
@@ -144,7 +141,6 @@ theorem repM_toH : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) 
     (fun i => GlobalTheory.AdForm.finM (D.sp.X 0) hn a i j) j ?_
   have H := embA_cols B.d B.o a (Fin.cast hn.symm j)
   simp only [hAd _ _] at H
-  refine H.trans ?_
-  exact Fintype.sum_equiv (finCongr hn) _ _ fun i => rfl
+  exact H.trans (Fintype.sum_equiv (finCongr hn) _ _ fun i => rfl)
 
 end GlobalTheory.Core.Mi.FinFrame

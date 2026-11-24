@@ -437,11 +437,9 @@ theorem etale_integrallyClosed_localization : ∀ (S E : Type) [CommRing S] [IsD
     have hreg : IsSMulRegular E m := Module.Flat.isSMulRegular_of_nonZeroDivisors (hM hm)
     refine mem_nonZeroDivisors_iff.mpr ⟨fun x hx ↦ hreg ?_, fun x hx ↦ hreg ?_⟩
     · show m • x = m • (0 : E)
-      rw [smul_zero, Algebra.smul_def]
-      exact hx
+      rwa [smul_zero, Algebra.smul_def]
     · show m • x = m • (0 : E)
-      rw [smul_zero, Algebra.smul_def, mul_comm]
-      exact hx
+      rwa [smul_zero, Algebra.smul_def, mul_comm]
   refine ⟨IsLocalization.injective _ hle, fun x hx ↦ ?_⟩
   let SM := Localization M
   let T := E ⊗[S] SM
@@ -533,8 +531,7 @@ theorem exists_mul_mem_closure (A R DA : Type) [CommRing A] [CommRing R] [Algebr
     (Algebra.IsIntegral.isIntegral d)
   obtain ⟨a, ha, rfl⟩ := hm
   refine ⟨a, ha, ?_⟩
-  rw [Submonoid.smul_def, Algebra.smul_def] at hmi
-  exact hmi
+  rwa [Submonoid.smul_def, Algebra.smul_def] at hmi
 
 def denC (A R DA : Type) [CommRing A] [CommRing R] [Algebra A R] [CommRing DA]
     [Algebra (GenFib A R) DA] : Submonoid (closure A R DA) :=
@@ -1135,8 +1132,7 @@ theorem closureEtaleAt_baseChange : ∀ (T O : Type) [CommRing T] [CommRing O] [
   refine closureEtaleAt_bc A (Localization.AtPrime QA) A₁ (Loc₁ f i i₁ EA QA jA hcomp hj) f hf hA₁
     (locBC f i i₁ EA QA jA hcomp hj) hκ (fibBC f i i₁ EA QA jA hcomp hj hf) hβ DA P₁ ?_
   apply hyp
-  rw [Ideal.mem_comap, ← RingHom.comp_apply, hκ, RingHom.comp_apply]
-  exact haP₁
+  rwa [Ideal.mem_comap, ← RingHom.comp_apply, hκ, RingHom.comp_apply]
 
 end GlobalTheory.KeyOriginBCEt
 end -- clump:auto

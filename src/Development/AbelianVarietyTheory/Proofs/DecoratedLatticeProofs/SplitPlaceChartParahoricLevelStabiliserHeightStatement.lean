@@ -192,8 +192,7 @@ theorem integral_entries (hM : M ≤ latLoc F L v) (hα : ∀ y, y ∈ M ↔ ∃
     · subst e; simp only [Pi.single_eq_same]; exact one_mem _
     · rw [Pi.single_eq_of_ne e]; exact zero_mem _
   have h1 := (mem_latLoc_iff_coord hw h ha _).1 (hM ((hα _).2 ⟨y, hm, rfl⟩)) i
-  rw [coord_mulVec, hy, Matrix.mulVec_single_one] at h1
-  exact h1
+  rwa [coord_mulVec, hy, Matrix.mulVec_single_one] at h1
 
 def intMat (hM : M ≤ latLoc F L v) (hα : ∀ y, y ∈ M ↔ ∃ x ∈ latLoc F L v, y = α.1 *ᵥ x) :
     Matrix (Fin n) (Fin n) (w.adicCompletionIntegers E) :=
@@ -233,8 +232,7 @@ theorem quotMap_bijective : Function.Bijective (quotMap hw h ha hM hα) := by
   · induction q using Submodule.Quotient.induction_on with
     | H y =>
       rw [quotMap, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero] at hq
-      rw [Submodule.Quotient.mk_eq_zero, submoduleOf_eq hw h ha hM hα]
-      exact hq
+      rwa [Submodule.Quotient.mk_eq_zero, submoduleOf_eq hw h ha hM hα]
   · induction q using Submodule.Quotient.induction_on with
     | H z =>
       obtain ⟨y, rfl⟩ := phi_surjective hw h ha z
@@ -447,11 +445,9 @@ private theorem pairVec_finSumFinEquiv_injective_eq {X : Type} {n : ℕ} {a b c 
     (h : pairVec finSumFinEquiv a b = pairVec finSumFinEquiv c d) : a = c ∧ b = d := by
   constructor
   · funext i
-    have h' := congrFun h (finSumFinEquiv (.inl i))
-    simpa only [pairVec_inl] using h'
+    simpa only [pairVec_inl] using congrFun h (finSumFinEquiv (.inl i))
   · funext i
-    have h' := congrFun h (finSumFinEquiv (.inr i))
-    simpa only [pairVec_inr] using h'
+    simpa only [pairVec_inr] using congrFun h (finSumFinEquiv (.inr i))
 theorem unitaryLocalPoint_latticeGraphNorm_identity : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermND σ J) (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L] (v : HeightOneSpectrum (𝓞 F)) (g : GLoc σ J v) (p : siegelH (Fv F v) σ (dblGram finSumFinEquiv J)) (k : GLoc σ (dblGram finSumFinEquiv J) v), k ∈ KFin σ (dblGram finSumFinEquiv J) L v → ioH (Fv F v) σ rfl (g, 1) = (p : GLoc σ (dblGram finSumFinEquiv J) v) * k → ∀ y : Fin n → Fv F v ⊗[F] E, (y ∈ latLoc F L v ∧ y ∈ latMoved σ J L v g) ↔ ∃ x ∈ latLoc F L v, y = (leviOf finSumFinEquiv (matHom (Fv F v) σ (dblGram finSumFinEquiv J)) p).1 *ᵥ x := by
   intro F E _ _ _ _ _ σ h n J hJ L _ v g p k hk hpk y
   simp only [KFin] at hk
@@ -523,8 +519,7 @@ private theorem exists_isElemDiv {F : Type} [Field F] [NumberField F] {v : Heigh
     (x : GL (Fin n) (Fv F v)) : ∃ d : Fin n → (Fv F v)ˣ, IsElemDiv x d := by
   obtain ⟨π, hπ⟩ := v.valuation_exists_uniformizer F
   have hv : Valued.v ((π : F) : v.adicCompletion F) = WithZero.exp (-1 : ℤ) := by
-    rw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
-    exact hπ
+    rwa [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
   have hϖ0 : ((π : F) : v.adicCompletion F) ≠ 0 := by
     intro h0
     rw [h0, map_zero] at hv
@@ -680,8 +675,7 @@ theorem bridge : ∀ (D : D7) (s : PiLocalization₂ D) (k : ℕ) (v : HeightOne
   intro D s k v φ ι _ hfr ⟨ε, _, hε⟩ e he
   refine ⟨_, _, ε, GlobalTheory.ChartStab.isSplitBasis_frCo hfr φ, fun y => ?_⟩
   have h2 := (hε y).2
-  rw [he y, GlobalTheory.ChartStab.grpCo_emb] at h2
-  exact h2
+  rwa [he y, GlobalTheory.ChartStab.grpCo_emb] at h2
 
 theorem isHgt_chart : ∀ (D : D7) (s : PiLocalization₂ D) (k : ℕ) (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v) (ι : GL (Fin D.R.r ⊕ Blocks k D.R.t) (Fv D.host.F v) →* GA D s.V), IsSelfDualC s.V s.Λ → Formalism.L2.DIV.IsFrame s.β s.Λ → IsChart s k φ ι → ∀ e : GL (Fin D.R.r ⊕ Blocks k D.R.t) (Fv D.host.F v) → GlobalTheory.FinZeta.Gv s.V v, (∀ y, ι y = GlobalTheory.AdelicU.emb D.sp.cm.sig s.V.gram v (e y)) → ∀ x ϖ, IsLocUnif φ x ϖ → GlobalTheory.ParHecke.IsHgt ϖ fun y => GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtV s.V s.Λ v (e y) := by
   intro D s k v φ ι hΛ hβ hι e he x ϖ hϖ
@@ -810,8 +804,7 @@ theorem levChi_chart : ∀ (D : D7) (c : Com D) (w : Twist D), w.Is c → ∀ j 
     intro PP' hP' hne
     refine GlobalTheory.ChainOnto.RedOne.redFn_eq_one D s.V s.β _ PP' hS ?_
     have hu : (_root_.IsDedekindDomain.HeightOneSpectrum.under (𝓞 D.host.F) PP') ≠ v := by
-      intro h
-      exact hne (GlobalTheory.LevelPlaces.injOn_under D c hw.com hP' hPc (h.trans hv))
+      exact fun h => hne (GlobalTheory.LevelPlaces.injOn_under D c hw.com hP' hPc (h.trans hv))
     rw [he y]
     exact GlobalTheory.AdelicU.proj_emb_ne _ _ hu _
   have hsub : ∀ PP', PP' ∈ w.Pg ∨ PP' ∈ w.Q → PP' ∈ c.Pg := by
@@ -848,9 +841,7 @@ theorem levChi_chart : ∀ (D : D7) (c : Com D) (w : Twist D), w.Is c → ∀ j 
     group
   have hxm : Matrix.GeneralLinearGroup.map (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ) x =
       Matrix.GeneralLinearGroup.map (rdA φ) (Formalism.L2.Theta.matHom s.V (ι y)) := by
-    refine Units.ext (Matrix.ext fun i j => ?_)
-    show GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ (x.val i j) = rdA φ ((Formalism.L2.Theta.matHom s.V (ι y)).val i j)
-    exact GlobalTheory.SplitProjChart.rdE_toEAf φ _
+    exact Units.ext (Matrix.ext fun i j => GlobalTheory.SplitProjChart.rdE_toEAf φ _)
   have hm : Matrix.GeneralLinearGroup.map (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ) (s.β⁻¹ * x * s.β) = grpCo φ s.V (frCo φ s.β) (ι y) := by
     rw [MonoidHom.map_mul, MonoidHom.map_mul, MonoidHom.map_inv, hxm]
     rfl

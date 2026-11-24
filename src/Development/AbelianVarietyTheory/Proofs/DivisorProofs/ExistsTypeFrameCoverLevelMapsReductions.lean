@@ -124,8 +124,7 @@ theorem exists_equiv {l : Level H} (hM : l.M = D.host.g 0 * D.host.g 1) {Pg : Fi
         exact (D.host.g_prime k).ne_zero (by exact_mod_cast hg)⟩
     have he : typePrime l ⟨k, ⟨w, hg⟩⟩ = PP.asIdeal :=
       halfPrime_eq l w.isMaximal PP.isPrime (sup_le hle Ideal.map_comap_le)
-    refine ⟨⟨k, ⟨w, hg⟩⟩, Subtype.ext (IsDedekindDomain.HeightOneSpectrum.ext ?_)⟩
-    exact (hfe _).trans he
+    exact ⟨⟨k, ⟨w, hg⟩⟩, Subtype.ext (IsDedekindDomain.HeightOneSpectrum.ext ((hfe _).trans he))⟩
   exact ⟨Equiv.ofBijective _ ⟨hinj, hsurj⟩, fun v ↦ hfe v⟩
 
 theorem nonempty_iso {l₂ : Level H} (hl₂ : IsTypeLevel l₂) (v : Sq D.host) (PP : Formalism.L2.DIV.Pl D.host.E)
@@ -231,8 +230,7 @@ theorem typeFrame_cover : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 
       have h0 : (typeRed fr γ v : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g v.1))) *ᵥ
           fr v (Submodule.Quotient.mk a) = fr v (Submodule.Quotient.mk (liftLa γ a)) := by
         have h00 := GlobalTheory.LevDesc.typeRed_mulVec fr γ v (Submodule.Quotient.mk a)
-        rw [hγa] at h00
-        exact h00
+        rwa [hγa] at h00
       rw [hfr, hfr] at h0
       have h1 := GlobalTheory.LevelActionPinned.equiv_mulVec (iso v)
         (typeRed fr γ v : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g v.1)))
@@ -245,8 +243,7 @@ theorem typeFrame_cover : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 
         have h5 : R.eG g (e v) = upperLeftBlock (R.datWp i R.triv).hr (redFn (R.βW i) (e v).1 (Lev.finE (Wc D i) κ)) :=
           (congrFun hκ.2.2 (e v)).symm
         have h6 := upper_block_val_submatrix (R.datWp i R.triv).hr (blockTri_blkOf_le _ _ (parLev_g hκ.2.1 (e v).2))
-        rw [← h5, hg v] at h6
-        exact h6
+        rwa [← h5, hg v] at h6
       rw [hT] at h1
       rw [hlevφ v]
       exact mulVec_reindex (rank_Wc i) _ _ _ _ h1
@@ -258,8 +255,7 @@ theorem typeFrame_cover : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 
         funext j
         simp
       have h5 := (AddEquiv.map_eq_zero_iff (fr v)).1 h4
-      rw [Submodule.Quotient.mk_eq_zero, htp] at h5
-      exact h5
+      rwa [Submodule.Quotient.mk_eq_zero, htp] at h5
     have h3 := mem_iInf_smul_top (typePrime_coprime (l := l)) hall
     have hle' : ⨅ v, typePrime l v ≤ l.Mb := iInf_typePrime_le.trans
       (sup_le le_rfl ((Ideal.span_singleton_le_iff_mem _).2 (by rw [← hM]; exact natCast_M_mem l)))

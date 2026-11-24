@@ -76,8 +76,7 @@ theorem e_psum {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {L : Ri
   · show Φ.e z ≫ (lift (𝟙 A) (toUnit A ≫ η) ≫ μ) = _
     simp [psumL]
   · show Φ.e z ≫ (lift w (toUnit A ≫ η) ≫ μ) = _
-    simp [psumL]
-    exact h.symm
+    simpa [psumL] using h.symm
   · show Φ.e z ≫ (lift (𝟙 A) (lift w (toUnit A ≫ η) ≫ μ) ≫ μ) = _
     simp [psumL, Φ.e_add, h]
     rw [← Category.assoc, comp_lift, Category.comp_id]
@@ -168,8 +167,7 @@ theorem prim_reading : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
       rcases finset_fin_two_eq_cases I with rfl | rfl | rfl | rfl
       · rw [p0]
         exact zero_mem _
-      · rw [p1]
-        exact hgm
+      · rwa [p1]
       · rw [p2]
         exact hT gm hgm
       · rw [p3]
@@ -219,8 +217,7 @@ theorem prim_reading : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
         (Sum.elim (fun _ => 𝟙 Xo.univ.t.G.left) (cφ ![𝟙 Xo.univ.t.G, Xo.univ.t.act.act H.w0]))
         (Sum.elim (fun _ => 1) fun I => -cε 2 I) wP).2.2 1
       refine ⟨b1, fun j hj => ?_⟩
-      have b3 := b2 j hj
-      simpa [rigPow] using b3
+      simpa [rigPow] using b2 j hj
     have hsame : LB.SameSum (fun k : Fin 1 ⊕ ULift.{0} (Finset (Fin 2)) => eSec Xo.univ.t.G ≫
         (Sum.elim (fun _ => 𝟙 Xo.univ.t.G.left) (cφ ![𝟙 Xo.univ.t.G, Xo.univ.t.act.act H.w0])) k)
         (Sum.elim (fun _ => 1) fun I => -cε 2 I) (fun _ : PUnit => eSec Xo.univ.t.G) (fun _ => 1) := by
@@ -236,7 +233,6 @@ theorem prim_reading : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
     rcases k with k | I
     · rfl
     · exact hΛr I z
-  rw [hpt] at hfin
-  exact hfin
+  rwa [hpt] at hfin
 
 end GlobalTheory.AnVal.PrimRd

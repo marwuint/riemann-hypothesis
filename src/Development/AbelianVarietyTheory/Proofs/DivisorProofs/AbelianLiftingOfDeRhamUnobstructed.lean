@@ -218,8 +218,7 @@ theorem isSubDPIdeal (κ : DividedPowers I) {N : ℕ} (hN : NilExp κ (N + 2)) :
   intro n hn j hj
   rcases Nat.lt_or_ge n 2 with h | h
   · obtain rfl : n = 1 := by omega
-    rw [κ.dpow_one hj.2]
-    exact hj
+    rwa [κ.dpow_one hj.2]
   · rw [dpow_idl κ hN j hj.1 n h]
     exact Ideal.zero_mem _
 
@@ -619,8 +618,7 @@ theorem corr_crysToDR_step_iff {R R₁ R₀ : Type} [CommRing R] [CommRing R₁]
   · intro H c
     obtain ⟨c, rfl⟩ := hs c
     have := H c
-    rw [crysToDR_apply, crysToDR_apply, e1, ← e2] at this
-    exact this
+    rwa [crysToDR_apply, crysToDR_apply, e1, ← e2] at this
   · intro H c
     rw [crysToDR_apply, crysToDR_apply, e1, ← e2]
     exact H _
@@ -955,8 +953,7 @@ theorem liftHom_of_isStep : AbelianDeRham → ∀ (R R₁ R₀ : Type) [CommRing
       rw [liftFil, Submodule.mem_comap, cA]; exact he
     have hk := hf d hd
     rw [liftFil, Submodule.mem_comap, cB] at hk
-    rw [liftFil, Submodule.mem_comap, ← dualMap_push NA NB f₀ f₁ ef₁ d]
-    exact hk
+    rwa [liftFil, Submodule.mem_comap, ← dualMap_push NA NB f₀ f₁ ef₁ d]
   obtain ⟨f, ⟨_, ef⟩, uf⟩ := H₂ g A₁ A i₂ h₂ hA hg g' B₁ B j₂ k₂ hB hg' f₁ hf₂
   refine ⟨f, ⟨inferInstance, ?_⟩, ?_⟩
   · rw [← ei, ← ej, Category.assoc, ef, ← Category.assoc, ef₁, Category.assoc]
@@ -1887,8 +1884,7 @@ theorem NilExp.mono {R : Type} [CommRing R] {I : Ideal R} {κ : DividedPowers I}
 theorem NilExp.eq_zero {R : Type} [CommRing R] {I : Ideal R} {κ : DividedPowers I} (h : NilExp κ 1) {a : R}
     (ha : a ∈ I) : a = 0 := by
 
-  have h1 := h [(1, a)] (by simpa using ha) (by simp)
-  simpa [κ.dpow_one ha] using h1
+  simpa [κ.dpow_one ha] using h [(1, a)] (by simpa using ha) (by simp)
 
 theorem NilExp.eq_sqDP {R : Type} [CommRing R] {I : Ideal R} {κ : DividedPowers I} (h : NilExp κ 1) :
     ∃ hI : I ^ 2 = 0, κ = divided₂ hI := by

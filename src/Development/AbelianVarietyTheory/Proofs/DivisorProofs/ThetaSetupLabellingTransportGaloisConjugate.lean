@@ -192,8 +192,7 @@ theorem isLab_conj : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fi
     have c1 : CongMod (D.X.S.r * D.X.S.N) χ pk2.y := cm_of_mk (hb2.symm.trans e2)
     have c2 := cm_trans c1 hc12
     have c3 : CongMod (D.X.S.r * D.X.S.N) (e.symm χ) pk.y := by
-      have c4 := cm_map e.symm.toAddMonoidHom c2
-      simpa using c4
+      simpa using cm_map e.symm.toAddMonoidHom c2
     have e3 : l.yy (a bb) = QuotientAddGroup.mk (e.symm χ) := e1.trans (cm_mk (cm_symm c3))
     exact hlabl (a bb) (e.symm χ) e3
   · intro m pk pk' x x' E hm hq hq' hxx
@@ -209,12 +208,9 @@ theorem isLab_conj : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fi
       simpa only [Category.assoc] using k1
     have hm0 := hmat m pk0 pk0' x0 x0' E hm hq0 hq0' key
     have A : CongMod m (j (e.symm pk'.y)) (j pk0'.y) := by
-      have A1 := cm_map (e.symm.trans j).toAddMonoidHom hc0'
-      simpa using A1
+      simpa using cm_map (e.symm.trans j).toAddMonoidHom hc0'
     have B : CongMod m (j (e.symm pk.y)) (j pk0.y) := by
-      have B1 := cm_map (e.symm.trans j).toAddMonoidHom hc0
-      simpa using B1
-    have B2 := cm_map (matAct E) B
-    exact cm_trans A (cm_trans hm0 (cm_symm B2))
+      simpa using cm_map (e.symm.trans j).toAddMonoidHom hc0
+    exact cm_trans A (cm_trans hm0 (cm_symm (cm_map (matAct E) B)))
 
 end GlobalTheory.Poinc.GalTrans

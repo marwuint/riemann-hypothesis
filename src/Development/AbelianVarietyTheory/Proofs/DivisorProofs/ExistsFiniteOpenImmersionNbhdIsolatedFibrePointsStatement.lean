@@ -210,8 +210,7 @@ theorem exists_num {X : Scheme.{0}} (F : X.Opensᵒᵖ ⥤ CommRingCat) (α : X.
   refine ⟨a, n, ?_⟩
   have nat := congr($(α.naturality (homOfLE (X.basicOpen_le h)).op).hom h)
   simp only [CommRingCat.comp_apply] at nat
-  rw [nat]
-  exact e
+  rwa [nat]
 
 theorem mem_gen_of_eq {X : Scheme.{0}} (F : X.Opensᵒᵖ ⥤ CommRingCat) (α : X.presheaf ⟶ F)
     {U : X.Opens} (h : Γ(X, U)) (T : Set (F.obj (op U))) {a : F.obj (op U)} (ha : a ∈ T)
@@ -300,8 +299,7 @@ theorem fg_localizationAway_span_finset
     induction hy using Submodule.span_induction with
     | mem x hx =>
       refine ⟨k x, e x, Submodule.subset_span ?_, ?_⟩
-      · simp only [Finset.coe_image]
-        exact Set.mem_image_of_mem e hx
+      · simpa only [Finset.coe_image] using Set.mem_image_of_mem e hx
       · rw [← he, mul_comm]
     | zero => exact ⟨0, 0, zero_mem _, by simp⟩
     | add x y _ _ hx hy =>
@@ -431,8 +429,7 @@ theorem subMap_finite (X : Scheme.{0}) (_hX : IsNoetherian X) (F : X.Opensᵒᵖ
       (A' := F.obj (op (X.basicOpen g))) g N hN
     refine ⟨E, fun b hb ↦ hE b ?_⟩
     have := (mem_sub F α V T).mp hb j (X.basicOpen g) hD (X.basicOpen_le g) hj
-    rw [gen_eq_adjoin] at this
-    exact this
+    rwa [gen_eq_adjoin] at this
   have hfg : S.toSubmodule.FG := _root_.GlobalTheory.submodule_fg_of_locally_le_fg S.toSubmodule s hs hloc
   letI := (subMap F α V T W).toAlgebra
   have hfin : Module.Finite Γ(X, W) S.toSubmodule := Module.Finite.iff_fg.mpr hfg
@@ -517,8 +514,7 @@ theorem res_pow_mul_mem_gen
     have := congr($(α.naturality (homOfLE hDW).op).hom f)
     simp only [CommRingCat.comp_apply] at this
     exact this.symm
-  rw [map_mul, map_pow, hnat, gen_eq_adjoin]
-  exact hm
+  rwa [map_mul, map_pow, hnat, gen_eq_adjoin]
 
 end GlobalTheory.QcSub.PowerMultiple
 
@@ -635,12 +631,10 @@ theorem exists_finset_awayMap_subalgebra_bijective :
       | mem z hz =>
         obtain ⟨m, hm⟩ := (IsLocalization.sec (Submonoid.powers b) z).2.2
         refine ⟨m, (IsLocalization.sec (Submonoid.powers b) z).1, hC ?_, ?_⟩
-        · simp only [Finset.coe_image]
-          exact ⟨z, hz, rfl⟩
+        · simpa only [Finset.coe_image] using ⟨z, hz, rfl⟩
         · rw [← map_pow]
           have := IsLocalization.sec_spec (Submonoid.powers b) z
-          rw [← hm] at this
-          exact this
+          rwa [← hm] at this
       | algebraMap r =>
         exact ⟨0, algebraMap R B r, C.algebraMap_mem r, by
           rw [pow_zero, mul_one, IsScalarTower.algebraMap_apply R B]⟩
@@ -716,8 +710,7 @@ theorem normalization_basicOpen_cover (U X : Scheme.{0}) (f : U ⟶ X) [IsSepara
       rintro _ ⟨z, rfl⟩
       apply hb
       have : g z ∈ Set.range (PrimeSpectrum.comap (algebraMap B (Localization.Away b))) := ⟨z, rfl⟩
-      rw [PrimeSpectrum.localization_away_comap_range (Localization.Away b) b] at this
-      exact this
+      rwa [PrimeSpectrum.localization_away_comap_range (Localization.Away b) b] at this
     let h := IsOpenImmersion.lift j (g ≫ ι) hg
     have hh : h ≫ j = g ≫ ι := IsOpenImmersion.lift_fac _ _ _
     haveI : LocallyOfFiniteType (h ≫ j) := by rw [hh]; infer_instance
@@ -741,10 +734,8 @@ theorem normalization_basicOpen_cover (U X : Scheme.{0}) (f : U ⟶ X) [IsSepara
     have hx' : j x ∈ Set.range ι := by
       have h1 : j x ∈ f.fromNormalization ⁻¹ᵁ V.1 := by
         show f.fromNormalization (j x) ∈ V.1
-        rw [← Scheme.Hom.comp_apply, hj, f.toNormalization_fromNormalization]
-        exact hx
-      rw [f.fromNormalization_preimage V] at h1
-      exact h1
+        rwa [← Scheme.Hom.comp_apply, hj, f.toNormalization_fromNormalization]
+      rwa [f.fromNormalization_preimage V] at h1
     obtain ⟨y, hy⟩ := hx'
     have hO : IsOpen (ι ⁻¹' Set.range j) := j.isOpenEmbedding.isOpen_range.preimage ι.continuous
     obtain ⟨_, ⟨b, rfl⟩, hyb, hbO⟩ :=
@@ -873,8 +864,7 @@ theorem relSpec_map_isIso_over_basicOpen : ∀ (X : Scheme.{0}) (F F' : X.Affine
     have := ((MorphismProperty.isomorphisms Scheme).arrow_mk_iso_iff
       (morphismRestrictOpensRange g (D'.ι ≫ (relativeGluingData hα').cover.f V))).mpr
       (show IsIso _ from inferInstance)
-    rw [hr] at this
-    exact this
+    rwa [hr] at this
   · rw [← h1, hpre]
     rfl
 
@@ -917,8 +907,7 @@ theorem exists_glued_map (X : Scheme.{0}) (F F' : X.AffineZariskiSiteᵒᵖ ⥤ 
     show Spec.map (ι.app _) ≫ (Spec.map (α'.app (Opposite.op V)) ≫ (restrictIsoSpec X).inv.app V) ≫ (V.1).ι =
       (Spec.map ((α' ≫ ι).app (Opposite.op V)) ≫ (restrictIsoSpec X).inv.app V) ≫ (V.1).ι
     rw [NatTrans.comp_app, Spec.map_comp]; exact (Category.assoc _ _ _).symm
-  · intro V
-    exact ι_colimMap η V
+  · exact fun V => ι_colimMap η V
 
 theorem isIso_morphismRestrict_iSup {Z T : Scheme.{0}} (g : Z ⟶ T) {ι : Type} (W : ι → T.Opens)
     (hW : ∀ i, IsIso (g ∣_ W i)) : IsIso (g ∣_ ⨆ i, W i) := by
@@ -1119,8 +1108,7 @@ theorem quasiFiniteAt_of_isolated : ∀ (H X : Scheme.{0}) (φ : H ⟶ X), Local
   ext ⟨w, hw⟩
   simp only [Set.mem_preimage, Set.mem_singleton_iff]
   constructor
-  · intro h
-    exact Subtype.ext (hO w h hw)
+  · exact fun h => Subtype.ext (hO w h hw)
   · intro h
     have : w = z := congrArg Subtype.val h
     exact this ▸ hzO

@@ -91,15 +91,13 @@ theorem lat_span (g : GL n 𝒜) (u : n → 𝒜) :
 
 theorem incl_mem_iff (e : E) : ι e ∈ 𝒮 ↔ e ∈ (algebraMap (𝓞 E) E).range := by
   constructor
-  · intro h
-    exact ⟨⟨e, csGlob_int (F := F) e h⟩, rfl⟩
+  · exact fun h => ⟨⟨e, csGlob_int (F := F) e h⟩, rfl⟩
   · rintro ⟨b, rfl⟩
     exact adelstab_incl_int b
 
 theorem mulVec_int {M : Matrix n n 𝒜} (hM : ∀ i j, M i j ∈ 𝒮) {v : n → 𝒜} (hv : ∀ i, v i ∈ 𝒮) (i : n) :
     (M *ᵥ v) i ∈ 𝒮 := by
-  simp only [mulVec, dotProduct]
-  exact sum_mem fun j _ => mul_mem (hM i j) (hv j)
+  simpa only [mulVec, dotProduct] using sum_mem fun j _ => mul_mem (hM i j) (hv j)
 
 theorem lat_le_of_int {g g' : GL n 𝒜} (h : ∀ i j, ((g'⁻¹ * g : GL n 𝒜) : Matrix n n 𝒜) i j ∈ 𝒮) :
     lat g ≤ lat g' := by
@@ -188,8 +186,7 @@ theorem smul_mem_lat {g g' : GL n 𝒜} (s : ℕ)
   have e : (fun j => ι (((s : E) • x) j)) = (s : 𝒜) • fun j => ι (x j) := by
     funext j
     rw [Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, map_natCast]
-  rw [e]
-  exact this
+  rwa [e]
 
 theorem eq_up_to (σ : E →ₐ[F] E) (g : GL n 𝒜)
     (hg : g ∈ UPts σ (1 : Matrix n n E) (FiniteAdeleRing (𝓞 F) F)) (p : ℕ)
@@ -295,5 +292,4 @@ theorem GlobalTheory.NormSum.exists_lattice_of_adelic_point : ∀ (D : D7) (N : 
     obtain ⟨m, -, hm, s, hs, he⟩ := h i j 0
     refine ⟨m, hm, ?_⟩
     rw [pow_zero, one_mul] at he
-    rw [he]
-    exact hs
+    rwa [he]

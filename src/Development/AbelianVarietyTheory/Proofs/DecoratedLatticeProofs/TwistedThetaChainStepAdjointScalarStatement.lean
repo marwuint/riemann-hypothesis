@@ -360,13 +360,11 @@ theorem chainNS_holds : ∀ D : D7, ChainNS D := by
     simp [GlobalTheory.LFun.above, hw, hvS]
   have hpw : ((p : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal := by
     have h := hv
-    rw [← hw, HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_natCast] at h
-    exact h
+    rwa [← hw, HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_natCast] at h
   have hwc : w.under (𝓞 D.host.F) ∉ c.S := fun h => hvS (hw ▸ hS' h)
   set x := GlobalTheory.LFun.val (F := D.host.F) (c.chT (k + 1)) w with hx
   have hmem : x⁻¹ * β ∈ GlobalTheory.LFun.twist (chainPar c B k) (GlobalTheory.LFun.val (F := D.host.F) (c.chT (k + 1)))⁻¹ w := by
-    simp only [GlobalTheory.LFun.twist, Pi.inv_apply]
-    exact Multiset.mem_map_of_mem _ hβ
+    simpa only [GlobalTheory.LFun.twist, Pi.inv_apply] using Multiset.mem_map_of_mem _ hβ
   rw [chainPar_twist_chT] at hmem
   have key : ((x⁻¹ * β : ℂˣ) : ℂ) ≠ GlobalTheory.LFun.npow w ((k' : ℂ) / 2) := by
     have hN := GlobalTheory.T.small_entries_and_strings_avoid_excluded_norm_powers D.host.E w D.R.r D.R.t hrt k' hk'
@@ -379,18 +377,15 @@ theorem chainNS_holds : ∀ D : D7, ChainNS D := by
       have hb2 := (hBi w hwS).2 b⁻¹ (Multiset.mem_map_of_mem _ hb)
       have hu : ‖((GlobalTheory.LFun.val (F := D.host.F) (c.μ (k + 1)) w : ℂˣ) : ℂ)‖ = 1 := GlobalTheory.LFun.norm_val _ _
       refine hN.1 _ (Units.ne_zero _) ?_ ?_
-      · rw [Units.val_mul, norm_mul, Units.val_inv_eq_inv_val, norm_inv, hu, inv_one, one_mul]
-        exact hb1
+      · rwa [Units.val_mul, norm_mul, Units.val_inv_eq_inv_val, norm_inv, hu, inv_one, one_mul]
       · rw [Units.val_mul, mul_inv, norm_mul, Units.val_inv_eq_inv_val, inv_inv, hu, one_mul]
-        rw [Units.val_inv_eq_inv_val] at hb2
-        exact hb2
+        rwa [Units.val_inv_eq_inv_val] at hb2
     · have hi' := Finset.mem_Icc.1 hi
       exact hN.2 _ (GlobalTheory.LFun.norm_val _ _)
         (_root_.GlobalTheory.ChainOnto.QuotVal.val_quot_ne_one D c hc i (k + 1) hi'.1 (by omega) (by omega) p hp w hpw hwc) _ h
   intro he
   apply key
-  rw [Units.val_mul, Units.val_inv_eq_inv_val, mul_comm]
-  exact he
+  rwa [Units.val_mul, Units.val_inv_eq_inv_val, mul_comm]
 
 end GlobalTheory.ChainNS
 end -- clump:auto

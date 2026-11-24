@@ -62,9 +62,7 @@ theorem continuous_galoisRepRankTwoTateDual : ∀ (l : ℕ) [Fact l.Prime] (Ω :
     simp only [Matrix.GeneralLinearGroup.val_det_apply]
     exact hW.matrix_det
   have hc := cyc_cont' (Ω := Ω) l
-  have hχ : Continuous (cycBar ℚ Ω l * (dt W)⁻¹) := by
-    show Continuous fun s => cycBar ℚ Ω l s * ((dt W) s)⁻¹
-    exact hc.mul hd.inv
+  have hχ : Continuous (cycBar ℚ Ω l * (dt W)⁻¹) := hc.mul hd.inv
   apply _root_.GlobalTheory.GalChar.continuous_units
   show Continuous fun s => ((tw W (cycBar ℚ Ω l * (dt W)⁻¹) s : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l))
   simp only [tw_val]

@@ -106,11 +106,7 @@ theorem weilIs_of_spread : ∀ (Ω T : Type) [Field Ω] [CommRing T] [IsDomain T
       fun z => by simp
     rw [key, key] at e'
     rw [ea, eb, hj e']
-  have e4 : c₀ = unitOn c := by
-    apply Units.ext
-    apply ginj
-    exact (congrArg Units.val e3).trans (nat (c : T)).symm
-  rw [← e4]
-  exact hc₀
+  have e4 : c₀ = unitOn c := Units.ext (ginj ((congrArg Units.val e3).trans (nat (c : T)).symm))
+  rwa [← e4]
 
 end GlobalTheory.MumPair

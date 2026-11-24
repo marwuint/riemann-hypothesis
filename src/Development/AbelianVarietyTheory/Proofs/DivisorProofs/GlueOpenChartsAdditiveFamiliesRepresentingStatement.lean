@@ -333,16 +333,13 @@ theorem norm_cocycle : ∀ (X Y : Scheme.{0}) (p : X ⟶ Y) (e : Y ⟶ X), e ≫
     exact ⟨⟨e₁.1.1, e₁.1.2, e₁.2⟩, e₂.1.1, e₂.1.2, e₂.2⟩
   have l₁₂ : ∀ j, O j ≤ W₁₂ ⊓ (L₁.U j.1 ⊓ L₂.U j.2.1) := fun j z hz ↦ by
     rw [mO] at hz
-    simp only [TopologicalSpace.Opens.mem_inf]
-    exact ⟨(mW z hz.1).2.1, hz.2.1, hz.2.2.1⟩
+    simpa only [TopologicalSpace.Opens.mem_inf] using ⟨(mW z hz.1).2.1, hz.2.1, hz.2.2.1⟩
   have l₂₃ : ∀ j, O j ≤ W₂₃ ⊓ (L₂.U j.2.1 ⊓ L₃.U j.2.2) := fun j z hz ↦ by
     rw [mO] at hz
-    simp only [TopologicalSpace.Opens.mem_inf]
-    exact ⟨(mW z hz.1).2.2.1, hz.2.2.1, hz.2.2.2⟩
+    simpa only [TopologicalSpace.Opens.mem_inf] using ⟨(mW z hz.1).2.2.1, hz.2.2.1, hz.2.2.2⟩
   have l₁₃ : ∀ j, O j ≤ W₁₃ ⊓ (L₁.U j.1 ⊓ L₃.U j.2.2) := fun j z hz ↦ by
     rw [mO] at hz
-    simp only [TopologicalSpace.Opens.mem_inf]
-    exact ⟨(mW z hz.1).2.2.2, hz.2.1, hz.2.2.2⟩
+    simpa only [TopologicalSpace.Opens.mem_inf] using ⟨(mW z hz.1).2.2.2, hz.2.1, hz.2.2.2⟩
   let u : ∀ j, Γ(X, O j)ˣ := fun j ↦
     res (l₁₂ j) (w₁₂ j.1 j.2.1) * res (l₂₃ j) (w₂₃ j.2.1 j.2.2) * (res (l₁₃ j) (w₁₃ j.1 j.2.2))⁻¹
   have hu : ∀ {Z : Scheme.{0}} (f : Z ⟶ X) (z : Z) (j : L₁.ι × L₂.ι × L₃.ι), f z ∈ O j →
@@ -375,9 +372,7 @@ theorem norm_cocycle : ∀ (X Y : Scheme.{0}) (p : X ⟶ Y) (e : Y ⟶ X), e ≫
 
   let φ := RingEquiv.ofBijective (p.app V).hom (hp V)
   let v : Γ(Y, V)ˣ := Units.map φ.symm.toMonoidHom ρ
-  have hv : pullU p V v = ρ := by
-    apply Units.ext
-    exact φ.apply_symm_apply ρ.val
+  have hv : pullU p V v = ρ := Units.ext (φ.apply_symm_apply ρ.val)
 
   have hepy : ∀ y : Y, p (e y) = y := fun y ↦ by
     change (e ≫ p) y = y
@@ -571,8 +566,7 @@ theorem AddCls.pull_eq_zero_of_unit {T Z : Over S} (z : Z ⟶ T) {c : Pic (A ⊗
   have h4 : t' = lift (1 : Y ⟶ A) (t' ≫ snd A Z) := by
     rw [← h2, lift_comp_fst_snd]
   have h5 := h.pull_lift_one_eq_zero (t' ≫ snd A Z)
-  rw [← h4] at h5
-  exact h5
+  rwa [← h4] at h5
 
 theorem pull_eq_of_compat {T Z Z' : Over S} (z : Z ⟶ T) (z' : Z' ⟶ T) (y : (addF A).obj (op Z))
     (y' : (addF A).obj (op Z'))
@@ -586,11 +580,9 @@ theorem pull_eq_of_compat {T Z Z' : Over S} (z : Z ⟶ T) (z' : Z' ⟶ T) (y : (
   let b' : Y ⟶ A ⊗ Z' := Over.homMk b hb
   have h1 : a' ≫ A ◁ z = b' ≫ A ◁ z' := Over.OverMorphism.ext hab
   have h2 : a' ≫ fst A Z = b' ≫ fst A Z' := by
-    have h3 := congrArg (· ≫ fst A T) h1
-    simpa only [Category.assoc, whiskerLeft_fst] using h3
+    simpa only [Category.assoc, whiskerLeft_fst] using congrArg (· ≫ fst A T) h1
   have h3 : (a' ≫ snd A Z) ≫ z = (b' ≫ snd A Z') ≫ z' := by
-    have h3 := congrArg (· ≫ snd A T) h1
-    simpa only [Category.assoc, whiskerLeft_snd] using h3
+    simpa only [Category.assoc, whiskerLeft_snd] using congrArg (· ≫ snd A T) h1
   have h4 := congrArg Subtype.val (h Y _ _ h3)
   rw [addF_map_val, addF_map_val] at h4
   have ha' : a' = lift (a' ≫ fst A Z) (𝟙 Y) ≫ A ◁ (a' ≫ snd A Z) := by
@@ -598,8 +590,7 @@ theorem pull_eq_of_compat {T Z Z' : Over S} (z : Z ⟶ T) (z' : Z' ⟶ T) (y : (
   have hb' : b' = lift (a' ≫ fst A Z) (𝟙 Y) ≫ A ◁ (b' ≫ snd A Z') := by
     rw [lift_whiskerLeft, Category.id_comp, h2, lift_comp_fst_snd]
   have h5 := congrArg (CechPic.pull (lift (a' ≫ fst A Z) (𝟙 Y)).left) h4
-  rw [← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, ← ha', ← hb'] at h5
-  exact h5
+  rwa [← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, ← ha', ← hb'] at h5
 
 theorem addF_glue : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → (∀ (T : Over S) (J : Type) (Z : J → Over S) (z : ∀ i, Z i ⟶ T) (y : ∀ i, (addF A).obj (op (Z i))), (∀ i, IsOpenImmersion (z i).left) → (∀ p : T.left, ∃ i, p ∈ Set.range (z i).left) → (∀ (i k : J) (Y : Over S) (a : Y ⟶ Z i) (b : Y ⟶ Z k), a ≫ z i = b ≫ z k → (addF A).map a.op (y i) = (addF A).map b.op (y k)) → ∃ y₀ : (addF A).obj (op T), ∀ i, (addF A).map (z i).op y₀ = y i) := by
   intro S A _ hA T J Z z y hz hcov hc
@@ -808,10 +799,8 @@ theorem exists_universal_of_charts : ∀ (F : Scheme.{0}ᵒᵖ ⥤ Type), (∀ (
     refine GeneratorFunctor.isRepresentable_of_charts F hF U x W ?_ ?_ ?_
     · intro j Z y Z' a
       rw [Set.range_subset_iff]
-      refine ((hWs j Z y Z' a).symm.trans ?_)
-      exact ⟨fun ⟨u, hu⟩ => ⟨u, hu.symm⟩, fun ⟨u, hu⟩ => ⟨u, hu.symm⟩⟩
-    · intro j Z g g' h
-      exact inj j Z g g' h
+      exact ((hWs j Z y Z' a).symm.trans ⟨fun ⟨u, hu⟩ => ⟨u, hu.symm⟩, fun ⟨u, hu⟩ => ⟨u, hu.symm⟩⟩)
+    · exact fun j Z g g' h => inj j Z g g' h
     · intro Z y z
       obtain ⟨i, Y, a, u, ⟨q, rfl⟩, h⟩ := cov Z y z
       exact ⟨i, (hWs i Z y Y a).1 ⟨u, h⟩ q⟩
@@ -928,8 +917,7 @@ theorem exists_represent_of_charts_large : ∀ (F : Scheme.{0}ᵒᵖ ⥤ Type 1)
     obtain ⟨x₁, rfl⟩ := (e B).surjective x₀
     have hx' : ∀ (T : Scheme.{0}) (y : F.obj (op T)), ∃! g : T ⟶ B, F.map g.op x₁ = y := by
       intro T y
-      have h := hx T (e T y)
-      simpa only [he', Equiv.apply_eq_iff_eq] using h
+      simpa only [he', Equiv.apply_eq_iff_eq] using hx T (e T y)
     exact ⟨B, x₁, hx', GlobalTheory.T.charts_representedFunctor_openCover F Ix U x hinj hopen hcov B x₁ hx'⟩
   · intro T y y' h
     obtain ⟨y, rfl⟩ := (e T).surjective y
@@ -948,12 +936,10 @@ theorem exists_represent_of_charts_large : ∀ (F : Scheme.{0}ᵒᵖ ⥤ Type 1)
     exact hinj i Y u u' ((e Y).injective h)
   · intro i T y
     obtain ⟨y, rfl⟩ := (e T).surjective y
-    simp only [he', Equiv.apply_eq_iff_eq]
-    exact hopen i T y
+    simpa only [he', Equiv.apply_eq_iff_eq] using hopen i T y
   · intro T y p
     obtain ⟨y, rfl⟩ := (e T).surjective y
-    simp only [he', Equiv.apply_eq_iff_eq]
-    exact hcov T y p
+    simpa only [he', Equiv.apply_eq_iff_eq] using hcov T y p
 
 end GlobalTheory.PicGlue
 end -- clump:auto

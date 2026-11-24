@@ -228,8 +228,7 @@ theorem isHaarSub_map_emb {H G : Type} [Group H] [TopologicalSpace H] [IsTopolog
     refine ⟨fun K hK => ?_⟩
     rw [hme.map_apply]
     exact (hι.isCompact_preimage hK).measure_lt_top
-  · rw [hme.map_apply, Set.preimage_compl, hι.injective.preimage_image]
-    exact hcon
+  · rwa [hme.map_apply, Set.preimage_compl, hι.injective.preimage_image]
   · rintro _ ⟨n, hn, rfl⟩
     rw [Measure.map_map (measurable_const_mul (ι n)) hme.measurable]
     have hcomp : (fun y => ι n * y) ∘ ι = ι ∘ (fun y => n * y) := by
@@ -267,8 +266,7 @@ theorem constTerm_repro {G : Type} [Group G] [TopologicalSpace G] [IsTopological
   have hI1 : Integrable (fun g => (∫ m, f (m * (x * g)) ∂ν) * φ (x⁻¹ * (x * g))) μ :=
     hKi.integral_prod_right.congr (ae_of_all _ fun g => hF g)
   have hI : Integrable (fun y => (∫ m, f (m * y) ∂ν) * φ (x⁻¹ * y)) μ := by
-    have h2 := hI1.comp_mul_left x⁻¹
-    simpa only [mul_inv_cancel_left] using h2
+    simpa only [mul_inv_cancel_left] using hI1.comp_mul_left x⁻¹
   refine ⟨hI, ?_⟩
   calc ∫ m, f (m * x) ∂ν = ∫ m, ∫ g, φ g * f (m * x * g) ∂μ ∂ν := by
         congr 1
@@ -392,8 +390,7 @@ theorem cusp_of_fibre_vanish : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → �
       rw [GlobalTheory.Dec.coe_nwSub]
       exact GlobalTheory.Dec.isClosed_NW _ _
     have hν0 : IsHaarSub ((GlobalTheory.Dec.nwSub (B.I.ε v) Wv : Subgroup (UJ (B.I.ε v))) : Set (UJ (B.I.ε v))) νv := by
-      rw [GlobalTheory.Dec.coe_nwSub]
-      exact hνv
+      rwa [GlobalTheory.Dec.coe_nwSub]
     obtain ⟨hcl, hhaar⟩ := isHaarSub_map_emb (incl B.I v) (isClosedEmbedding_incl B.I v) _ hN0 νv hν0
     have hFm : Measurable (fun z : B.I.GA => ∫ m, f (m * z) ∂ν) :=
       ((hfc.comp (continuous_snd.mul continuous_fst)).stronglyMeasurable.integral_prod_right').measurable
@@ -419,8 +416,7 @@ theorem cusp_of_fibre_vanish : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → �
       simp only [hincl, mul_assoc] at h4 ⊢
       exact h4
     have h0 := _root_.GlobalTheory.Dec.weilVanish B.I.GA (B.I.muA B.μf) _ _ hcl hhaar _ _ hFm hφm hinvF hint hfibv
-    rw [heq]
-    exact h0
+    rwa [heq]
   refine ⟨part1, ?_⟩
   intro W hW ν hν
   have hn : 1 ≤ B.I.n := _root_.GlobalTheory.Dec.one_le_rank_of_isIsot B.I W hW

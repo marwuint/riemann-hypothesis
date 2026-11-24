@@ -163,12 +163,10 @@ theorem bijective_smul_of_stalk
     obtain ⟨W, hWV, hxW, a, rfl⟩ := X.presheaf.exists_le_germ_eq a hx
     have h₁ : F.presheaf.germ W x hxW (a • F.presheaf.map (homOfLE (hWV.trans hV)).op s) =
         F.presheaf.germ V x hx t := by
-      rw [germ_smul, TopCat.Presheaf.germ_res_apply]
-      exact ha
+      rwa [germ_smul, TopCat.Presheaf.germ_res_apply]
     obtain ⟨W', hxW', i₁, i₂, e⟩ := F.presheaf.germ_eq x hxW hx _ _ h₁
     refine ⟨W', hxW', i₂.le, X.presheaf.map i₁.op a, ?_⟩
-    rw [Scheme.Modules.map_smul, ← ConcreteCategory.comp_apply, ← F.presheaf.map_comp] at e
-    exact e
+    rwa [Scheme.Modules.map_smul, ← ConcreteCategory.comp_apply, ← F.presheaf.map_comp] at e
   choose W hxW hWV a ha using hloc
   have hcover : V ≤ iSup W := fun x hx ↦ Opens.mem_iSup.mpr ⟨⟨x, hx⟩, hxW ⟨x, hx⟩⟩
   have hcomp : TopCat.Presheaf.IsCompatible X.presheaf W a := by
@@ -203,8 +201,7 @@ theorem bijective_smul_stalk
     obtain ⟨W, hWV, hxW, b, rfl⟩ := X.presheaf.exists_le_germ_eq b hxV
     have h₁ : F.presheaf.germ V x hxV (a • F.presheaf.map (homOfLE hVU).op s) =
         F.presheaf.germ W x hxW (b • F.presheaf.map (homOfLE (hWV.trans hVU)).op s) := by
-      rw [germ_smul, germ_smul, TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply]
-      exact hab
+      rwa [germ_smul, germ_smul, TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply]
     obtain ⟨W', hxW', i₁, i₂, e⟩ := F.presheaf.germ_eq x hxV hxW _ _ h₁
     rw [Scheme.Modules.map_smul, ← ConcreteCategory.comp_apply, ← F.presheaf.map_comp,
       Scheme.Modules.map_smul, ← ConcreteCategory.comp_apply, ← F.presheaf.map_comp] at e

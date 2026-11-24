@@ -142,18 +142,15 @@ theorem exists_eqv_expandsF : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Idea
     · rintro ⟨p, rfl⟩
       rw [hlabf]
       exact hfN p
-  · intro p
-    exact (hSF p).1.1
-  · intro p
-    exact ((hSF p).2 (lab p) (hlab p)).1
+  · exact fun p => (hSF p).1.1
+  · exact fun p => ((hSF p).2 (lab p) (hlab p)).1
   · intro p w θ s s' hw hθ hrel
     obtain ⟨t', ht'⟩ := GlobalTheory.RootShift.exists_isActOf A.isLB θ (E s)
     obtain ⟨s'', hs'', -⟩ := b₁ t'
     have h1 := ((hSF p).2 (lab p) (hlab p)).2 θ hθ w₀ hw₀ w hw (E s) t' s s'' (hE s) hs'' ht'
     obtain rfl := GlobalTheory.ThetaTranslate.phiRel_unique gf p hw.1 hrel h1
     have e := (b₂ s').unique (hE s') hs''
-    rw [← e] at ht'
-    exact ht'
+    rwa [← e] at ht'
 
 end GlobalTheory.Mum
 end -- clump:auto
@@ -1489,10 +1486,8 @@ theorem trait_transport : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing 
   have hC2 := _root_.GlobalTheory.ThetaMove.transport_symLift R hR D C j wA hwA W T F hc f hf hfst hα w₀ hw₀
   refine ⟨lab, fun s => Tr (E' (Φ s)), Φ, hLE, ⟨?_, ?_, ?_, hon, ?_, ?_, ?_⟩, hΦP, fun s => hTv (E' (Φ s))⟩
   · exact hTb.comp (hE'.bij.comp hΦb)
-  · intro s s' s'' h i
-    exact hTa _ _ _ (hE'.add _ _ _ (hΦa s s' s'' h)) i
-  · intro c s s' h i
-    exact hTs c _ _ (hE'.smul c _ _ (hΦs c s s' h)) i
+  · exact fun s s' s'' h i => hTa _ _ _ (hE'.add _ _ _ (hΦa s s' s'' h)) i
+  · exact fun c s s' h i => hTs c _ _ (hE'.smul c _ _ (hΦs c s s' h)) i
   · intro p
     obtain ⟨p', hy, hg⟩ := hΦp p
     exact (hΦf p p' hy hg).1 (hE'.frame p')
@@ -1594,8 +1589,7 @@ theorem value_of_expands {W : Type} [CommRing W] [IsDomain W] {I : Ideal W} {D :
         pullback.fst G.hom (jK W)) z JG :=
     (sval_pullOver _ _ _ _ hG).trans (sval_pullOver _ _ _ _ hG)
   have key' := v.symm.trans key
-  rw [e₂, e₃, Category.assoc, Category.assoc] at key'
-  exact key'
+  rwa [e₂, e₃, Category.assoc, Category.assoc] at key'
 
 theorem value : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (j : ℕ) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (F : Type) [Field F] [Algebra (FractionRing R) F] [Algebra (FractionRing W) F] (w₀ : LB.Iso (T.A.L.pull T.U.gen.hom.left) (T.U.LG.L.pull (pullback.fst T.G.hom (jK W)))), w₀.IsGen → ∀ E' : Fam T.D'.toPre F (C.n ^ j) → SecK T.A.L (snd (TFK (R := W) F) T.A.A).left (C.n ^ j), (∀ s', T.U.ExpandsF F (C.n ^ j) w₀ (E' s') s') → ∀ (F₀ : IntFam (maximalIdeal R) D.toPre (C.n ^ j)) (s' : Fam T.D'.toPre F (C.n ^ j)) (σ : SecK C.P.L.L T.β (C.n ^ j)), (∀ f' : ∀ x, T.D'.toPre.SecB (C.n ^ j) x, (∀ x, PullB T.hD x (F₀.f (T.hD.xe x)) (f' x)) → ∀ x, GeneratorPullback.SecScal T.D'.toPre.P.L (DegPre.famφ T.D'.toPre F x) (DegPre.famε (C.n ^ j)) ((s').s x) (T.D'.toPre.famφB x) (DegPre.famε (C.n ^ j)) (f' x) (DegPre.prB T.D'.toPre F).left 1) → T.ExpBy 1 σ F₀ → ∀ (Z : Scheme.{0}) (p : Z ⟶ T.G.left) (q : Z ⟶ (TFK (R := W) F ⊗ T.A.A).left), p ≫ T.β = q ≫ (snd (TFK (R := W) F) T.A.A).left ≫ T.U.gen.inv.left ≫ pullback.fst T.G.hom (jK W) ≫ T.β → p ≫ T.G.hom = q ≫ (fst (TFK (R := W) F) T.A.A).left ≫ spMap ((algebraMap (FractionRing W) F).comp (algebraMap W _)) → ∀ z JP JG Jt, Good C.P.L.L z JP → Good T.U.LG.L z JG → Good T.A.L z Jt → sval σ p z JP = (gw T.ℓ p z (JP (p ≫ T.β)) (JG p) ^ (C.n ^ j)).val * (gw w₀ (q ≫ (snd (TFK (R := W) F) T.A.A).left ≫ T.U.gen.inv.left) z (JG (q ≫ (snd (TFK (R := W) F) T.A.A).left ≫ T.U.gen.inv.left ≫ pullback.fst T.G.hom (jK W))) (fun _ => Jt (q ≫ (snd (TFK (R := W) F) T.A.A).left)) ^ (C.n ^ j)).val * sval (E' s') q z Jt := by
   intro R _ _ _ _ D C j W _ _ _ T F _ _ _ w₀ _ E' hE F₀ s' σ hs ⟨σ'', f'', hc, hp, he⟩ Z p q h₁ h₂ z JP JG Jt gP gG gt

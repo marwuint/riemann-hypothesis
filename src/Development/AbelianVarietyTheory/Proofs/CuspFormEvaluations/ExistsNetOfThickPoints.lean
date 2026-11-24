@@ -494,8 +494,7 @@ theorem exists_net_card_le (v : Fin r → Fin r → E) (hv : LinearIndependent E
           isUnit_iff_ne_zero.mpr (det_ne_zero_of_ortho X hx.1 τ)
         show mat x τ * ((mat x τ)⁻¹ * mat y τ) = mat y τ
         rw [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdx, Matrix.one_mul]
-      rw [hxy']
-      exact hyN
+      rwa [hxy']
     · have hdy : IsUnit (mat y τ).det := isUnit_iff_ne_zero.mpr (det_ne_zero_of_ortho X hy.1 τ)
       have hdV : IsUnit (basisMat τ.1 v).det :=
         isUnit_iff_ne_zero.mpr (det_basisMat_ne_zero τ.1 hv)
@@ -505,10 +504,8 @@ theorem exists_net_card_le (v : Fin r → Fin r → E) (hv : LinearIndependent E
           ← Matrix.mul_assoc (basisMat τ.1 v), Matrix.mul_nonsing_inv _ hdV, Matrix.one_mul]
       have h := hxy τ a b
       beta_reduce at h
-      rw [heq] at h
-      exact h
-  · rw [← hcard]
-    exact hNcard
+      rwa [heq] at h
+  · rwa [← hcard]
 
 theorem log_le_of_card_le {n f r : ℕ} {B η : ℝ} (hB : 1 ≤ B) (hη0 : 0 < η) (hη : η ≤ 1)
     (h : (n : ℝ) ≤ (6 * (r : ℝ) ^ 2 / η * ((r : ℝ) * B) ^ r) ^ (2 * f * r ^ 2)) :
@@ -543,8 +540,7 @@ theorem log_le_of_card_le {n f r : ℕ} {B η : ℝ} (hB : 1 ≤ B) (hη0 : 0 < 
   rw [he] at h
   refine ⟨h, ?_⟩
   rcases (Nat.cast_nonneg n : (0 : ℝ) ≤ n).eq_or_lt with h0 | h0
-  · rw [← h0, Real.log_zero]
-    exact hR0
+  · rwa [← h0, Real.log_zero]
   · exact (Real.log_le_iff_le_exp h0).mpr h
 
 theorem exists_frame_net (v : Fin r → Fin r → E) (hv : LinearIndependent E v)
@@ -686,8 +682,7 @@ theorem exists_net_of_thick_points {r : ℕ} (X : DataX E r) {ε B η : ℝ} (h�
   · obtain ⟨b, hb, ho⟩ := (orthonormalFlagTranslate_holds (E := E) r X.toData).1 x hx
     obtain ⟨v, hv₁, hv₂, hv₃⟩ := exists_short_basis_at X x hx ε hε hmin
     have hv₄ : ∀ i, ∑ τ, X.maj (rmul x b) τ (Data.emb τ.1 (v i)) ≤ B := fun i => by
-      simp only [MajInv.maj_rmul X.toData hx hb]
-      exact (hv₃ i).trans hεB
+      simpa only [MajInv.maj_rmul X.toData hx hb] using (hv₃ i).trans hεB
     obtain ⟨γ, hγ, w, hw, hvw⟩ := hV₂ v hv₁ hv₂ fun σ i k =>
       norm_herm_le_of_ortho X.toData ho (hv₄ i) (hv₄ k) σ
     have hγ' := X.Γ_stab _ (X.Γ.inv_mem hγ)

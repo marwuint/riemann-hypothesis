@@ -75,8 +75,7 @@ theorem nat_of_comp (R : Type) [CommRing R] (Y : Over (Sp R)) (U : Y.left.Opens)
   let ψ : D →ₐ[R] D' := ⟨φ, fun r ↦ congrArg (fun f ↦ CommRingCat.Hom.hom f r) h3⟩
   have h4 := ht D D' ψ x hx
   have h5 : spOver ψ ≫ x = x' := Over.OverMorphism.ext h
-  rw [h5] at h4
-  exact h4
+  rwa [h5] at h4
 
 theorem fromSpecStalk_top {X : Scheme.{0}} (x : X) (U : X.Opens) (hx : x ∈ U) :
     ⊤ ≤ X.fromSpecStalk x ⁻¹ᵁ U := by
@@ -123,9 +122,7 @@ theorem exists_unique_section : ∀ (R : Type) [CommRing R] (Y : Over (Sp R)) (U
     (Spec.preimage (R := CommRingCat.of R) (x ≫ U.ι ≫ Y.hom)).hom.toAlgebra
   let pt : ∀ (D : CommRingCat.{0}) (x : Spec D ⟶ Z), @Pt R _ Y D _ (al D x) := fun D x ↦
     Over.homMk (x ≫ U.ι) (by rw [Category.assoc]; exact (Spec.map_preimage (R := CommRingCat.of R) (x ≫ U.ι ≫ Y.hom)).symm)
-  have hin : ∀ (D : CommRingCat.{0}) (x : Spec D ⟶ Z), ⊤ ≤ (x ≫ U.ι) ⁻¹ᵁ U := by
-    intro D x p _
-    exact (x p).2
+  have hin : ∀ (D : CommRingCat.{0}) (x : Spec D ⟶ Z), ⊤ ≤ (x ≫ U.ι) ⁻¹ᵁ U := fun D x p _ => (x p).2
   let κ : ∀ D : CommRingCat.{0}, (Spec D ⟶ Z) → D := fun D x ↦ @t D _ (al D x) (pt D x)
   obtain ⟨s, hs⟩ := NatConst.exists_section Z (fun _ : Unit ↦ (⊤ : Z.Opens)) (by simp) κ
     fun D D' φ x _ ↦ @NatSec.nat_of_comp R _ Y U t ht D _ (al D x) D' _ (al D' (Spec.map φ ≫ x)) φ.hom
@@ -253,8 +250,7 @@ theorem triv_pull_of_isPtGen : ∀ (R : Type) [CommRing R] (X Y : Over (Sp R)) (
     · intro E _ _ z h
       rw [hmul _ _ h, ha j E z h, hb j E z h]
       exact Ring.mul_inverse_cancel _ (hu E z _ (hch j z h))
-    · intro E _ _ z h
-      exact hone _ _ h
+    · exact fun E _ _ z h => hone _ _ h
   refine ⟨⟨fun j ↦ ⟨a j, b j, hab j, by rw [mul_comm]; exact hab j⟩⟩, ?_⟩
   intro i j
   apply Units.ext

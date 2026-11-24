@@ -376,8 +376,7 @@ theorem exists_ideal_complex_cech (hG : GlobalFnsSt) {V : Type} [CommRing V] (B 
       exact hX.w)
     have hπ : IsPullback π f' B'.hom (Spec.map (CommRingCat.ofHom φ)) := by
       refine IsPullback.of_right ?_ (pullback.lift_snd _ _ _) hpb
-      rw [pullback.lift_fst]
-      exact hX
+      rwa [pullback.lift_fst]
     have ht : Triv (F.pull π) := (test K φ X' π f' hπ).2 hy
     obtain ⟨w, hw⟩ := (CechPic.iso_triv_iff (F.pull π)).2 ht
     obtain ⟨e⟩ := c₄ K φ X' π f' hπ κ D hD hc i
@@ -581,8 +580,7 @@ theorem section_factor_iff : ∀ (K : Type) [Field K] (X : Scheme.{0}) (f : X �
     have h1 : Spec.map (CommRingCat.ofHom c ≫ r) = Spec.map (𝟙 (CommRingCat.of K)) := by
       rw [Spec.map_comp, hc, ← Category.assoc, hr, hs, Spec.map_id]
     have h2 := Spec.map_injective h1
-    intro t
-    exact congrArg (fun u : CommRingCat.of K ⟶ CommRingCat.of K => u.hom t) h2
+    exact fun t => congrArg (fun u : CommRingCat.of K ⟶ CommRingCat.of K => u.hom t) h2
   have hm : ∀ a, a ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk (s.base (IsLocalRing.closedPoint (CommRingCat.of K)))) → r.hom a = 0 := by
     intro a ha
     by_contra h
@@ -611,8 +609,7 @@ theorem section_factor_iff : ∀ (K : Type) [Field K] (X : Scheme.{0}) (f : X �
         rw [map_sub, hrc, sub_self] at this
         exact not_isUnit_zero this
       have := hφ hmem
-      rw [RingHom.mem_ker, map_sub, sub_eq_zero] at this
-      exact this
+      rwa [RingHom.mem_ker, map_sub, sub_eq_zero] at this
     rwa [hr] at e1
 
 theorem stalk_regular_of_section : ∀ (K : Type) [Field K] (X : Scheme.{0}) (f : X ⟶ Sp K) [IsSeparated f] (g : ℕ), SmoothOfRelativeDimension g f → ∀ (s : Sp K ⟶ X), s ≫ f = 𝟙 _ → ∀ x : X, x ∈ Set.range s.base → IsNoetherianRing (X.presheaf.stalk x) ∧ IsRegularLocalRing (X.presheaf.stalk x) ∧ ringKrullDim (X.presheaf.stalk x) = g := by
@@ -993,8 +990,7 @@ theorem weaklyRegular_relations_koszul :
   intro O _ g
   induction g with
   | zero =>
-    intro f _ a _
-    exact ⟨0, by simp, by simp, funext fun i => i.elim0⟩
+    exact fun f _ a _ => ⟨0, by simp, by simp, funext fun i => i.elim0⟩
   | succ g ih =>
     intro f hf a ha
     have hsplit : List.ofFn f =
@@ -1198,8 +1194,7 @@ theorem finrank_homology_succ_add (O : Type) [CommRing O] (K : Type) [Field K] [
     ((C.d n (n + 1)).hom.baseChange K) ((C.d (n + 1) (n + 2)).hom.baseChange K)
     (by rw [← LinearMap.baseChange_comp, ← ModuleCat.hom_comp, C.d_comp_d, ModuleCat.hom_zero,
       LinearMap.baseChange_zero])
-  rw [(e1.trans e2).finrank_eq]
-  exact h
+  rwa [(e1.trans e2).finrank_eq]
 
 theorem smul_eq_zero_of_algebraMap_eq_zero {O : Type} [CommRing O] {K : Type} [Field K]
     [Algebra O K] {M : Type} [AddCommGroup M] [Module O M] {r : O} (hr : algebraMap O K r = 0)
@@ -1372,8 +1367,7 @@ theorem cechLB_triv_finrank_one_two : ∀ (K : Type) [Field K] [IsAlgClosed K] (
   haveI : IsRegularLocalRing (A.left.presheaf.stalk ((η[A]).left.base p)) :=
     IsRegularLocalRing.of_ringEquiv e
   have hdim' : ringKrullDim (A.left.presheaf.stalk ((η[A]).left.base p)) = g := by
-    rw [← ringKrullDim_eq_of_ringEquiv e]
-    exact hdim
+    rwa [← ringKrullDim_eq_of_ringEquiv e]
   have hex := _root_.GlobalTheory.exact_dualMap_of_exact_fibres_of_isRegularLocalRing _ g hdim' C hfree hbdd hfib
   obtain ⟨h1, h2⟩ := GlobalTheory.T.finrank_homology_one_two_dualResolution _ g hdim' f hJt hart C hfree hex hcok K φ hφ
   haveI := hA.proper
@@ -1381,11 +1375,9 @@ theorem cechLB_triv_finrank_one_two : ∀ (K : Type) [Field K] [IsAlgClosed K] (
   · exact GlobalTheory.AbLaw.cechLB_homology_finite_of_affine_cover K A.left A.hom (LB.triv A.left) κ D
       (LB.isLB_triv _) inferInstance hproj hD hcov i
   · obtain ⟨e1⟩ := hiso κ D hD hcov 1
-    rw [← e1.finrank_eq]
-    exact h1
+    rwa [← e1.finrank_eq]
   · obtain ⟨e2⟩ := hiso κ D hD hcov 2
-    rw [← e2.finrank_eq]
-    exact h2
+    rwa [← e2.finrank_eq]
 
 end GlobalTheory.AbCoh.FDim
 end -- clump:auto

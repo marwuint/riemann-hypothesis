@@ -99,8 +99,7 @@ theorem det_block_change (F : Type) [Field F] {N : Type} [AddCommGroup N] [Modul
     intro a ha
     have h0 : (0 : N) = ∑ k, (0 : (Σ b, Fin (m b)) → F) k • ℓ k := by simp
     have := (hℓ 0).unique ha.symm h0
-    intro i
-    exact congrFun this i
+    exact fun i => congrFun this i
   have hsp : ⊤ ≤ Submodule.span F (Set.range ℓ) := by
     intro x _
     obtain ⟨a, ha, -⟩ := hℓ x
@@ -137,8 +136,7 @@ theorem det_block_change (F : Type) [Field F] {N : Type} [AddCommGroup N] [Modul
             refine Finset.sum_congr rfl (fun i _ => ?_)
             simp [Function.comp, hU]
         _ = ∑ k, (∑ i, a i * U i k) • nu k := by
-            simp only [Finset.smul_sum, smul_smul, Finset.sum_smul]
-            exact Finset.sum_comm
+            simpa only [Finset.smul_sum, smul_smul, Finset.sum_smul] using Finset.sum_comm
         _ = 0 := by simp [hcol]
     have hu := Matrix.linearIndependent_rows_iff_isUnit.mp hrows
     exact (Matrix.isUnit_iff_isUnit_det U |>.mp hu).ne_zero
@@ -147,8 +145,7 @@ theorem det_block_change (F : Type) [Field F] {N : Type} [AddCommGroup N] [Modul
   have hent : ∀ σ k, ∑ τ, blockDiagonal' g σ τ * U (e τ) k = ∑ l, C σ l * A l k := by
     rintro ⟨b, i⟩
     have h1 : ∑ τ, blockDiagonal' g ⟨b, i⟩ τ • ℓ τ = ∑ j, g b i j • ℓ ⟨b, j⟩ := by
-      rw [Fintype.sum_sigma]
-      rw [Finset.sum_eq_single b]
+      rw [Fintype.sum_sigma, Finset.sum_eq_single b]
       · refine Finset.sum_congr rfl (fun j _ => ?_)
         rw [blockDiagonal'_apply_eq]
       · intro b' _ hb'
@@ -157,15 +154,12 @@ theorem det_block_change (F : Type) [Field F] {N : Type} [AddCommGroup N] [Modul
       · intro h; exact absurd (Finset.mem_univ b) h
     have h2 : ∑ k, (∑ τ, blockDiagonal' g ⟨b, i⟩ τ * U (e τ) k) • nu k
         = ∑ τ, blockDiagonal' g ⟨b, i⟩ τ • ℓ τ := by
-      simp only [hU, Finset.smul_sum, smul_smul, Finset.sum_smul]
-      exact Finset.sum_comm
+      simpa only [hU, Finset.smul_sum, smul_smul, Finset.sum_smul] using Finset.sum_comm
     have h3 : ∑ k, (∑ l, C ⟨b, i⟩ l * A l k) • nu k = ∑ l, C ⟨b, i⟩ l • mu l := by
-      simp only [hA, Finset.smul_sum, smul_smul, Finset.sum_smul]
-      exact Finset.sum_comm
+      simpa only [hA, Finset.smul_sum, smul_smul, Finset.sum_smul] using Finset.sum_comm
     have := uniq (fun k => ∑ τ, blockDiagonal' g ⟨b, i⟩ τ * U (e τ) k)
       (fun k => ∑ l, C ⟨b, i⟩ l * A l k) (by rw [h2, h1, hg b i, ← h3])
-    intro k
-    exact congrFun this k
+    exact fun k => congrFun this k
   have key : Matrix.reindex e e (blockDiagonal' g) * U
       = (Matrix.of fun i k => C (e.symm i) k) * A := by
     ext i k
@@ -173,8 +167,7 @@ theorem det_block_change (F : Type) [Field F] {N : Type} [AddCommGroup N] [Modul
     rw [← hent (e.symm i) k]
     exact Fintype.sum_equiv e.symm _ _ (fun x => by simp)
   have := congrArg Matrix.det key
-  rw [Matrix.det_mul, Matrix.det_mul, Matrix.det_reindex_self, det_blockDiagonal'_eq_prod] at this
-  exact this
+  rwa [Matrix.det_mul, Matrix.det_mul, Matrix.det_reindex_self, det_blockDiagonal'_eq_prod] at this
 
 theorem det_block_change' : ∀ {F : Type} [Field F] {N : Type} [AddCommGroup N] [Module F N] {κ : Type} [Fintype κ]
     (m : κ → ℕ) {n : ℕ} (e : (Σ b, Fin (m b)) ≃ Fin n) (ℓ : (Σ b, Fin (m b)) → N),

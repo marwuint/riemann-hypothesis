@@ -253,8 +253,7 @@ theorem linIndep_at_of_gen_at {R M : Type} [CommRing R] [AddCommGroup M] [Module
   have hinj : Function.Injective L := by
     have h2 : Function.Surjective (b.equivFun.toLinearMap ∘ₗ L) :=
       b.equivFun.surjective.comp hL
-    have h3 := OrzechProperty.injective_of_surjective_endomorphism _ h2
-    exact fun x y hxy => h3 (by simp [hxy])
+    exact fun x y hxy => (OrzechProperty.injective_of_surjective_endomorphism _ h2) (by simp [hxy])
   have hz : L (fun i => algebraMap R Rq (c i)) = 0 := by
     simp only [L, Fintype.linearCombination_apply, n', algebraMap_smul]
     have h0 : (LocalizedModule.mkLinearMap q.asIdeal.primeCompl M) (∑ i, c i • n i) = 0 := by
@@ -556,8 +555,7 @@ theorem secs_props {T : Scheme.{0}} (y : (functor A B r).obj (op T)) (U : T.Open
   refine ⟨inferInstance, inferInstance, fun q => ?_⟩
   have e := Scheme.Hom.finrank_of_isPullback _ _ _ _ hpb q
   rw [h3] at e
-  rw [← Scheme.Hom.finrank_SpecMap_algebraMap]
-  exact e
+  rwa [← Scheme.Hom.finrank_SpecMap_algebraMap]
 
 theorem isOpen_bad_compl (e : Module.Basis (Fin N) A B) (σ : Fin r ↪ Fin N) {T : Scheme.{0}}
     (y : (functor A B r).obj (op T)) (U : T.Opens) (hU : IsAffineOpen U) :
@@ -625,8 +623,7 @@ theorem bad_nat (e : Module.Basis (Fin N) A B) (σ : Fin r ↪ Fin N) {T T' : Sc
   rw [IsAffineOpen.comap_primeIdealOf_appLE U hU U' hU' h hx] at H
   have hg : (fun i => ((pbMap a y).appLE (proj y ⁻¹ᵁ U) _ hleG).hom (gens e σ y U i)) =
       gens e σ ((functor A B r).map a.op y) U' := funext (gens_pbMap e σ a y U U' hleG)
-  rw [hg] at H
-  exact H
+  rwa [hg] at H
 
 theorem map_id_apply' {T : Scheme.{0}} (y : (functor A B r).obj (op T)) :
     (functor A B r).map (𝟙 T).op y = y := by
@@ -658,10 +655,8 @@ theorem mem_goodSet_iff (e : Module.Basis (Fin N) A B) (σ : Fin r ↪ Fin N) {T
     have hx₁ : h₁.fromSpec q ∈ (U₁ : T.Opens) := by
       rw [← SetLike.mem_coe, ← h₁.range_fromSpec]; exact ⟨q, rfl⟩
     have key : h₁.primeIdealOf ⟨h₁.fromSpec q, hx₁⟩ = q := primeIdealOf_fromSpec h₁ q hx₁
-    rw [← bad_local e σ y U₁ U h₁ hU _ hx₁ hx, key]
-    exact hq
-  · intro hq
-    exact Set.mem_iUnion.mpr ⟨⟨U, hU⟩, _, hq, hU.fromSpec_primeIdealOf _⟩
+    rwa [← bad_local e σ y U₁ U h₁ hU _ hx₁ hx, key]
+  · exact fun hq => Set.mem_iUnion.mpr ⟨⟨U, hU⟩, _, hq, hU.fromSpec_primeIdealOf _⟩
 
 theorem goodSet_map (e : Module.Basis (Fin N) A B) (σ : Fin r ↪ Fin N) {T T' : Scheme.{0}}
     (a : T' ⟶ T) (y : (functor A B r).obj (op T)) (x : T') :

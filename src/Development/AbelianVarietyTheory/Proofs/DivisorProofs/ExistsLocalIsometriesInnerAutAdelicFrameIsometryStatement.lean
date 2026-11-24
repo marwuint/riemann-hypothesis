@@ -91,12 +91,10 @@ theorem exists_inv {R : Type} [CommRing R] {m n : ℕ} (j : Matrix (Fin m) (Fin 
   refine ⟨LinearMap.toMatrix' (e.symm : (Fin m → R) →ₗ[R] (Fin n → R)), ?_, ?_⟩
   · apply Matrix.toLin'.injective
     rw [Matrix.toLin'_mul, Matrix.toLin'_one, Matrix.toLin'_toMatrix']
-    refine LinearMap.ext fun x => ?_
-    exact e.apply_symm_apply x
+    exact LinearMap.ext fun x => e.apply_symm_apply x
   · apply Matrix.toLin'.injective
     rw [Matrix.toLin'_mul, Matrix.toLin'_one, Matrix.toLin'_toMatrix']
-    refine LinearMap.ext fun x => ?_
-    exact e.symm_apply_apply x
+    exact LinearMap.ext fun x => e.symm_apply_apply x
 
 variable {D : D7}
 
@@ -163,8 +161,7 @@ theorem lift_abs {R R₁ R₂ : Type} [CommRing R] [CommRing R₁] [CommRing R�
   show Formalism.UG.cT σ (lift X) * J * lift X = J
   apply ext
   · rw [Matrix.map_mul, Matrix.map_mul, cp, lp, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]
-  · rw [Matrix.map_mul, Matrix.map_mul, cq, lq]
-    exact hX
+  · rwa [Matrix.map_mul, Matrix.map_mul, cq, lq]
 
 theorem exists_fin (V : HSp D) (X Y : Matrix (Fin V.rank) (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (hXY : X * Y = 1) (hYX : Y * X = 1)
     (hX : Formalism.UG.cT (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) X *
@@ -179,12 +176,9 @@ theorem exists_fin (V : HSp D) (X Y : Matrix (Fin V.rank) (Fin V.rank) (Formalis
     (fun x => GlobalTheory.FinIsoGrp.map_sig (fstA D.host.F) D.sp.cm.sig x) (GlobalTheory.FinIsoGrp.qFin_sig D)
     (JR (AF D.host.F) V.gram) X Y hXY hYX hX
   let b0 : GA D V := (⟨u, hu⟩ : HR (AF D.host.F) D.sp.cm.sig V.gram)
-  have hb : infHom V b0 = 1 := by
-    apply Units.ext
-    exact (infHom_val V b0).trans hup
+  have hb : infHom V b0 = 1 := Units.ext ((infHom_val V b0).trans hup)
   refine ⟨⟨b0, hb⟩, ?_⟩
-  rw [GlobalTheory.FinIsoGrp.finE_val]
-  exact huq
+  rwa [GlobalTheory.FinIsoGrp.finE_val]
 
 theorem alg {R : Type} [CommRing R] {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     (σ : R →+* R) (j j₀ : Matrix m n R) (j' k' : Matrix n m R) (G : Matrix n n R) (G' : Matrix m m R)
@@ -334,8 +328,7 @@ theorem gfc_ext : ∀ {D : D7} (V : HSp D) (x y : GfC V), (∀ u : HeightOneSpec
     have ey := congrArg (fun g : GL (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E) => g.val i j) hy
     exact ex.trans ey.symm
   · have e := eq_of_finE_map_prV_eq_forall_place V (x : GA D V) (y : GA D V) h i j
-    rw [GlobalTheory.FinIsoGrp.finE_val, GlobalTheory.FinIsoGrp.finE_val] at e
-    exact e
+    rwa [GlobalTheory.FinIsoGrp.finE_val, GlobalTheory.FinIsoGrp.finE_val] at e
 
 end GlobalTheory.TrFinExt
 end -- clump:auto
@@ -725,8 +718,7 @@ theorem locData (σ : E →ₐ[F] E) {r r' : ℕ} (J : Matrix (Fin r) (Fin r) E)
       rw [Function.comp_apply, RingHom.map_mulVec, hA]
     rw [e]
     have := injv.mem_set_image (s := (Formalism.L2.Herm.locL v Λ : Set (Fin r → E ⊗[F] Fv F v))) (a := cb ∘ y)
-    rw [hlat] at this
-    exact this
+    rwa [hlat] at this
   · show (GlobalTheory.AdelicU.matHom _ σ J' (φ g)).val.mulVec ((jv.map cm).mulVec y) =
       (jv.map cm).mulVec ((GlobalTheory.AdelicU.matHom _ σ J g).val.mulVec y)
     rw [hφ, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, hba, Matrix.mul_one]
@@ -823,8 +815,7 @@ theorem Corr.symm {φ : H ≃* H'} {A : Set G} {A' : Set G'} (h : Corr φ A A') 
 theorem Corr.lift {φ : H ≃* H'} {A : Set G} {A' : Set G'} (h : Corr φ A A') {x : G'} (hx : x ∈ A') :
     ∃ g : H, (g : G) ∈ A ∧ (φ g : G') = x := by
   refine ⟨φ.symm ⟨x, h.2.1 x hx⟩, ?_, by simp⟩
-  rw [h.2.2, MulEquiv.apply_symm_apply]
-  exact hx
+  rwa [h.2.2, MulEquiv.apply_symm_apply]
 
 theorem Corr.cosets {φ : H ≃* H'} {K R : Set G} {K' R' : Set G'} (hK : Corr φ K K') (hR : Corr φ R R') (α : H)
     (h : (∀ γ ∈ R, γ ∈ H ∧ ∃ k₁ ∈ K, ∃ k₂ ∈ K, γ = k₁ * α * k₂) ∧
@@ -1126,10 +1117,8 @@ theorem levelVL_conj {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
         K.map (Formalism.UG.inclE (F := F) (v.adicCompletion F)) := by
     intro k K
     ext a b
-    simp only [Matrix.map_apply]
-    exact Formalism.UG.P.afsplit_prV_inclE v (K a b)
-  rw [hG, hG] at h1
-  exact h1
+    simpa only [Matrix.map_apply] using Formalism.UG.P.afsplit_prV_inclE v (K a b)
+  rwa [hG, hG] at h1
 
 open GlobalTheory.HeckeTrans in
 
@@ -1165,10 +1154,8 @@ theorem link_of_isLatIsom {V V' : HSp D} (h : V.rank = V'.rank)
   · intro f hf y
     rw [(lamHat_good hB (gN f hf)).2, (lamHat_good hB' (gN' f hf)).2, hvec]
     exact himg _
-  · intro f hf y hy
-    exact (lamHat_good hB (gN f hf)).1 y hy
-  · intro f hf y hy
-    exact (lamHat_good hB' (gN' f hf)).1 y hy
+  · exact fun f hf y hy => (lamHat_good hB (gN f hf)).1 y hy
+  · exact fun f hf y hy => (lamHat_good hB' (gN' f hf)).1 y hy
 
 theorem corr_inA {V V' : HSp D} (φ : GfC V ≃ₜ* GfC V') (R : Finset (GfC V)) :
     Corr φ.toMulEquiv (inA V R : Set (GA D V)) (imA φ R : Set (GA D V')) := by
@@ -1181,8 +1168,7 @@ theorem corr_inA {V V' : HSp D} (φ : GfC V ≃ₜ* GfC V') (R : Finset (GfC V))
     simp only [imA, inA, Finset.coe_map, Function.Embedding.coe_subtype, Set.mem_image, Finset.mem_coe] at hg
     obtain ⟨a, -, rfl⟩ := hg
     exact a.2
-  · simp [inA, imA]
-    exact ⟨fun hg => ⟨g.1, g.2, hg, rfl⟩, fun ⟨a, ha, hR, hag⟩ => hag ▸ hR⟩
+  · simpa [inA, imA] using ⟨fun hg => ⟨g.1, g.2, hg, rfl⟩, fun ⟨a, ha, hR, hag⟩ => hag ▸ hR⟩
 
 theorem chi_symm {G G' : Type} [Group G] [Group G'] {H : Subgroup G} {H' : Subgroup G'} {φ : H ≃* H'} {K : Set G} {K' : Set G'}
     (hK : Corr φ K K') {χ : G → ℂ} {χ' : G' → ℂ} (hχ : ∀ g : H, (g : G) ∈ K → χ' (φ g : G') = χ g) (g : H')

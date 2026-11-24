@@ -85,14 +85,12 @@ theorem GlobalTheory.unimodular_of_isFundamentalDomain_finite : ∀ (S : Type) [
     refine hF.preimage_of_equiv (e := id) ?_ Function.bijective_id ?_
     · exact quasiMeasurePreserving_mul_right μS g
     · intro γ x
-      show (γ : S) * x * g = (γ : S) * (x * g)
       exact mul_assoc _ _ _
   have heq : μS ((fun x => x * g) ⁻¹' 𝓢) = μS 𝓢 := hF'.measure_eq hF
   have h2 : (Measure.map (fun x => x * g) μS) 𝓢 = μS 𝓢 := by
     rw [show (fun x : S => x * g) = ⇑(MeasurableEquiv.mulRight g) from rfl, MeasurableEquiv.map_apply]
     exact heq
-  rw [hmap] at h2
-  rw [Measure.smul_apply] at h2
+  rw [hmap, Measure.smul_apply] at h2
   have hc : (Measure.modularCharacterFun g : ℝ≥0∞) = 1 := by
     have h3 : (Measure.modularCharacterFun g : ℝ≥0∞) * μS 𝓢 = 1 * μS 𝓢 := by
       rw [one_mul]; simpa [ENNReal.smul_def] using h2
@@ -126,8 +124,7 @@ theorem topology_facts (E : Type) [Field E] [NumberField E] [IsCMField E] (n : �
   have hm : ∀ x : ratU E n, ((x : UA E n) : GA E n) ∈ latticeGL E n := fun x => by
     obtain ⟨δ, hδ⟩ := x.2
     have h := GlobalTheory.CuspRep.CuspidalL2GL.ratGL_mem_latticeGL (E := E) δ
-    rw [hδ] at h
-    exact h
+    rwa [hδ] at h
   let f : ratU E n → latticeGL E n := fun x => ⟨_, hm x⟩
   have hf : Continuous f := (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _
   have hi : Function.Injective f := fun x y h =>
@@ -224,8 +221,7 @@ theorem exists_invariant_pos_form : ∀ (E : Type) [Field E] [NumberField E] [Is
     obtain ⟨M, hM⟩ := hC.exists_bound_of_continuousOn hc.continuousOn
     refine Measure.integrableOn_of_bounded (M := M) hfin.ne hc.aestronglyMeasurable (ae_of_all _ fun g => ?_)
     obtain ⟨γ, hγ, c, hc, rfl⟩ := hcov g
-    simp only [hl u γ hγ, hl v γ hγ]
-    exact hM c hc
+    simpa only [hl u γ hγ, hl v γ hγ] using hM c hc
   have hright : ∀ (y : UA E n) (f : UA E n → ℂ), (∀ γ ∈ ratU E n, ∀ h, f (γ * h) = f h) →
       ∫ h in 𝓕, f (h * y) ∂μ = ∫ h in 𝓕, f h ∂μ := by
     intro y f hf
@@ -293,8 +289,7 @@ theorem exists_invariant_pos_form : ∀ (E : Type) [Field E] [NumberField E] [Is
       have e2 : (fun g => ‖star (v.1 g) * v.1 g‖) = fun g => ‖v.1 g‖ ^ 2 := by
         funext g
         rw [norm_mul, norm_star, sq]
-      rw [e2] at this
-      exact this
+      rwa [e2] at this
     have hae := (integral_eq_zero_iff_of_nonneg (fun g => by positivity) hi).1 h0
     have := GlobalTheory.eq_zero_of_ae_fundamentalDomain_of_leftInvariant (ratU E n) μ 𝓕 h𝓕 v.1 v.2.cont (hl v) (by
       filter_upwards [hae] with g hg

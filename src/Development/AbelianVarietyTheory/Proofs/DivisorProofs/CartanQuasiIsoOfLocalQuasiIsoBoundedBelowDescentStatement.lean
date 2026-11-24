@@ -228,8 +228,7 @@ theorem good_of_le (C : T ⥤ AbCx) (b : ℤ) (hb : ∀ n : ℤ, n < b → ∀ U
     change Subsingleton (((C.obj V).d i j).hom.ker)
     infer_instance
   rw [HomologicalComplex.exactAt_iff' _ k (k + 1) (k + 2) (by simp) (by simp), ShortComplex.ab_exact_iff]
-  intro x _
-  exact ⟨0, (hs _).elim _ _⟩
+  exact fun x _ => ⟨0, (hs _).elim _ _⟩
 
 theorem step (T : Type 1) [Category.{0} T] (Cov : MorphismProperty T) (C : T ⥤ AbCx)
     (hR : Refines Cov (fun U X a => ∀ n, WExact (term C n) a)) (hL : LocExact Cov C)
@@ -281,8 +280,7 @@ theorem cartan_zero : ∀ (T : Type 1) [Category.{0} T] (Cov : MorphismProperty 
     · exact good_of_le C b hb n h
     · have e : b + ((n - b).toNat : ℤ) = n := by omega
       have h2 := hall (n - b).toNat
-      rw [e] at h2
-      exact h2
+      rwa [e] at h2
   exact step T Cov C hR hL n hGn U z hz
 
 end GlobalTheory.CartanZero
@@ -480,8 +478,7 @@ theorem cartan_one : ∀ (T : Type 1) [Category.{0} T] (Cov : MorphismProperty T
       (fun i => match i with | true => p n | false => q n) ?_ ?_
     · intro W
       constructor
-      · intro x y hxy
-        exact ext n W x y (congrFun hxy true) (congrFun hxy false)
+      · exact fun x y hxy => ext n W x y (congrFun hxy true) (congrFun hxy false)
       · intro f
         obtain ⟨x, hx1, hx2⟩ := mk n W (f true) (f false)
         refine ⟨x, funext fun i => ?_⟩
@@ -528,8 +525,7 @@ theorem cartan_one : ∀ (T : Type 1) [Category.{0} T] (Cov : MorphismProperty T
       intro k n hkn
       subst hkn
       exact gen k
-    intro n U x hx
-    exact gen' (n - 1) n (by omega) U x hx
+    exact fun n U x hx => gen' (n - 1) n (by omega) U x hx
 
   have exK : ∀ (U : T) (k n : ℤ), k + 1 = n → ∀ x : (K.obj U).X n, (K.obj U).d n (n + 1) x = 0 →
       ∃ y : (K.obj U).X k, (K.obj U).d k n y = x := by
@@ -562,8 +558,7 @@ theorem cartan_one : ∀ (T : Type 1) [Category.{0} T] (Cov : MorphismProperty T
       intro k n hkn
       subst hkn
       exact sg k
-    intro n z hz
-    exact sg' (n - 1) n (by omega) z hz
+    exact fun n z hz => sg' (n - 1) n (by omega) z hz
   · have ij : ∀ (j : ℤ) (c : (C.obj U).X (j + 1 + 1)), (C.obj U).d (j + 1 + 1) (j + 1 + 1 + 1) c = 0 →
         ∀ y : (D.obj U).X (j + 1), (φ.app U).f (j + 1 + 1) c = (D.obj U).d (j + 1) (j + 1 + 1) y →
         ∃ b : (C.obj U).X (j + 1), (C.obj U).d (j + 1) (j + 1 + 1) b = c := by

@@ -61,17 +61,13 @@ theorem blockTri_le_parab (b : Fin r → Fin s) : blockTri (κ := K) (natBlocks 
   exact (inv_mem hp : p⁻¹ ∈ blockTri (κ := K) (natBlocks b)) hij
 
 theorem parab_le_blockTri (b : Fin r → Fin s) : parab K b ≤ blockTri (κ := K) (natBlocks b) := by
-  intro p hp i j hij
-  exact hp.1 i j hij
+  exact fun p hp i j hij => hp.1 i j hij
 
 theorem levi_one (b : Fin r → Fin s) (c : Fin s) : levi K b c 1 = 1 := by
-  apply Units.ext
-  exact Matrix.submatrix_one _ Subtype.val_injective
+  exact Units.ext (Matrix.submatrix_one _ Subtype.val_injective)
 
 theorem levi_mul (b : Fin r → Fin s) (c : Fin s) (p q : parab K b) :
-    levi K b c (p * q) = levi K b c p * levi K b c q := by
-  apply Units.ext
-  exact blk_mul b c p.2.1 q.2.1
+    levi K b c (p * q) = levi K b c p * levi K b c q := Units.ext (blk_mul b c p.2.1 q.2.1)
 
 variable (b : Fin r → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K))
 

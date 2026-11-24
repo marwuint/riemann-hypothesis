@@ -67,8 +67,7 @@ theorem mem_lamBar {Λ : AddSubgroup ℂ} {w : ℂ} : w ∈ lamBar Λ ↔ (starR
   constructor
   · rintro ⟨v, hv, rfl⟩
     simpa using hv
-  · intro h
-    exact ⟨_, h, by simp⟩
+  · exact fun h => ⟨_, h, by simp⟩
 
 theorem eisG_lamBar (Λ : AddSubgroup ℂ) (k : ℕ) :
     eisG (lamBar Λ) k = (starRingEnd ℂ) (eisG Λ k) := by
@@ -173,8 +172,7 @@ theorem differentiable_cBar {G : VC D N N' → ℂ} (hG : Differentiable ℂ G) 
     Differentiable ℂ (cBar D G) := by
   intro z
   have := (hG (star z)).star_star
-  rw [star_star] at this
-  exact this
+  rwa [star_star] at this
 
 theorem cBar_mem_Th {T : Tor D} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} {G : VC D N N' → ℂ} (hG : G ∈ Th D T L L') :
@@ -373,8 +371,7 @@ theorem fixK_or (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (hM : �
       exact h
     have h2 : ρ' (σM a) = σ a := DFunLike.congr_fun this a
     unfold cj TaylorLogMetric.liftM
-    rw [dite_eq_left (hm a)]
-    exact h2
+    rwa [dite_eq_left (hm a)]
   have h1 : ρ (σM b) ^ 2 = σ b ^ 2 := (hall ((ρ : M →+* ℂ).comp σM)).trans (hall σ).symm
   rcases sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h
   · exact Or.inl (key ρ h)
@@ -394,8 +391,7 @@ theorem exists_periodPair_lamConj {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : 
     have : liftM M (g2 (lamOf D cc δ)) ^ 3 - 27 * liftM M (g3 (lamOf D cc δ)) ^ 2 = 1 := by
       apply Subtype.ext
       unfold TaylorLogMetric.liftM
-      rw [dite_eq_left h2, dite_eq_left h3]
-      exact hΔ
+      rwa [dite_eq_left h2, dite_eq_left h3]
     have h := congrArg ρ this
     rw [map_sub, map_mul, map_pow, map_pow, map_ofNat, map_one] at h
     rw [h]

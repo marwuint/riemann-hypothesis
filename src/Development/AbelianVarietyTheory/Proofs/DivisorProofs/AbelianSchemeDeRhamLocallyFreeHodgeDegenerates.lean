@@ -268,8 +268,7 @@ theorem cupHH_self_eq_zero : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpO
         (clAll _ hc2 (Fin.append (fun k ↦ pF (snd A A) (w k)) (fun k ↦ pF (fst A A) (w k)) k)) = 0 := by
       rw [Fin.sum_univ_add]
       simp only [Fin.append_left, Fin.append_right]
-      rw [← Finset.sum_add_distrib]
-      exact hcross
+      rwa [← Finset.sum_add_distrib]
     have h3 := GlobalTheory.T.sum_cup_oneForms_zero_imp_coordinates_zero R _ _ hb2.1 hb2.2.1 hc2 hsur2 (n + n) _ _ h2
       (l ∘ₗ pF (lift (toUnit A ≫ η[A]) (𝟙 A)))
     rw [Fin.sum_univ_add] at h3
@@ -299,8 +298,7 @@ theorem cupHH_self_eq_zero : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpO
     simp only [hu]
     conv_lhs => enter [2, k]; rw [hL (w k)]
 
-    simp only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]
-    exact Finset.sum_comm
+    simpa only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply] using Finset.sum_comm
 
   have hwp : wsum (OAff (A ⊗ A).hom) (fun k ↦ pF μ[A] (u k)) (fun k ↦ pF μ[A] (Φ.w k)) =
       wsum (OAff (A ⊗ A).hom) (fun k ↦ pF (fst A A) (u k)) (fun k ↦ pF (fst A A) (Φ.w k)) +
@@ -466,8 +464,7 @@ theorem exists_affine_map_ne_top : ∀ (R' : Type) [CommRing R'] (X X' : Scheme.
   have hle : Ideal.map (algebraMap R' (Sec s' (φ ⁻¹ᵁ U))) m ≤
       (IsLocalRing.maximalIdeal (X'.presheaf.stalk x')).comap g := by
     rw [Ideal.map_le_iff_le_comap]
-    intro a ha
-    exact key a ha
+    exact fun a ha => key a ha
   have h1 : (1 : Sec s' (φ ⁻¹ᵁ U)) ∈ (IsLocalRing.maximalIdeal (X'.presheaf.stalk x')).comap g :=
     hle (by rw [show Ideal.map (algebraMap R' (Sec s' (φ ⁻¹ᵁ U))) m = ⊤ from htop]; trivial)
   rw [Ideal.mem_comap, map_one] at h1
@@ -511,8 +508,7 @@ theorem flat_sec (R' : Type) [CommRing R'] (X' : Scheme.{0}) (s' : X' ⟶ Sp R')
     HasRingHomProperty.appLE (P := @Flat) s' hs ⟨⊤, isAffineOpen_top _⟩ U le_top
   have h0 : (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom.Flat :=
     RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso _)
-  have h2 : (secMap s' U.1).hom.Flat := by
-    exact RingHom.Flat.comp h0 h1
+  have h2 : (secMap s' U.1).hom.Flat := RingHom.Flat.comp h0 h1
   exact h2
 
 end GlobalTheory.CechDR
@@ -914,8 +910,7 @@ theorem baseChange_HH1_globForm : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) 
   · exact (ofForm_injective_of_H0Const R' _ (OAff s') h0').comp (LinearEquiv.injective _)
   · intro x
     exact GlobalTheory.T.pull_closed_form_class R R' A.left X' A.hom s' (algebraMap R R') φ h.w hc hc' x
-  · intro x
-    exact toHO1_pullHH1 h.w x
+  · exact fun x => toHO1_pullHH1 h.w x
 
 end GlobalTheory.AbCoh
 end -- clump:auto
@@ -1400,8 +1395,7 @@ theorem exists_wedge_hyp_equiv : ∀ (R : Type) [CommRing R] (C : Type) [Categor
     exact sum_sum_ιTwo_of_symm x c hc'
   refine ⟨LinearEquiv.ofBijective e₀ ⟨hinj, hsurj⟩, fun a b ↦ ?_⟩
   have := e₀_ι a b
-  rw [ιTwo_apply] at this
-  exact this
+  rwa [ιTwo_apply] at this
 
 end GlobalTheory.AbCoh
 end -- clump:auto

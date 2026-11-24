@@ -212,8 +212,7 @@ theorem mem_colLat_dual (G : Matrix (Fin n) (Fin n) K) (B B' : GL (Fin n) K)
     | smul r y _ hy =>
       rw [pair_smul_left]
       exact Submodule.smul_mem _ _ hy
-  · intro H j
-    exact H _ (Submodule.subset_span ⟨j, rfl⟩)
+  · exact fun H j => H _ (Submodule.subset_span ⟨j, rfl⟩)
 
 theorem isBasisAt_hdual (G : Matrix (Fin n) (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) (hM : M.FG)
     (w : HeightOneSpectrum (𝓞 K)) (B B' : GL (Fin n) K) (h : IsBasisAt (conjPl w) M B)
@@ -230,8 +229,7 @@ omit [NumberField K] in
 theorem exists_dual_frame (G : Matrix (Fin n) (Fin n) K) (hG : IsUnit G.det) (B : GL (Fin n) K) :
     ∃ B' : GL (Fin n) K, (B : Matrix (Fin n) (Fin n) K)ᴴ * G * (B' : Matrix (Fin n) (Fin n) K) = 1 := by
   have hu : IsUnit ((B : Matrix (Fin n) (Fin n) K)ᴴ * G) := by
-    refine IsUnit.mul ?_ ((Matrix.isUnit_iff_isUnit_det G).2 hG)
-    exact (Units.isUnit B).star
+    exact IsUnit.mul (Units.isUnit B).star ((Matrix.isUnit_iff_isUnit_det G).2 hG)
   obtain ⟨u, hu⟩ := hu
   exact ⟨u⁻¹, by rw [← hu, Units.mul_inv]⟩
 
@@ -282,10 +280,8 @@ theorem dual_of_local (lam : ι → DomWeight n) (G : ι → Matrix (Fin n) (Fin
       constructor
       · rintro ⟨z, hz, hzx⟩
         have hzx' : actP lam B' z = x.1 := hzx
-        rw [← hzx', ← polyAction_mul, inv_mul_cancel, polyAction_one₂]
-        exact hz
-      · intro H
-        exact ⟨_, H, hx⟩
+        rwa [← hzx', ← polyAction_mul, inv_mul_cancel, polyAction_one₂]
+      · exact fun H => ⟨_, H, hx⟩
     rw [h3, mem_localization_dual (pairP lam fun _ => 1) w (VV K lam) T T' hT hD (polyAction_mem_VV lam _ x.2), e1]
     constructor
     · intro H y hy
@@ -293,8 +289,7 @@ theorem dual_of_local (lam : ι → DomWeight n) (G : ι → Matrix (Fin n) (Fin
       exact H _ ⟨y, hy, rfl⟩
     · rintro H _ ⟨y, hy, rfl⟩
       have := H y hy
-      rw [← ht] at this
-      exact this
+      rwa [← ht] at this
   rw [h1, pair_integral_iff]
   simp only [h2]
   exact ⟨fun H => mem_of_forall_locP P' x.1 H, fun H w => mem_localization_of_mem w H⟩

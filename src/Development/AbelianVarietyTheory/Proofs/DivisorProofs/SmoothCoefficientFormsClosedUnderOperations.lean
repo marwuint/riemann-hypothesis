@@ -56,12 +56,7 @@ theorem smooth_coeff_closure : ∀ (n : ℕ) (v : V n), (∀ γ : Alt n, (∀ S,
     fun γ S => contDiffAt_const
   have hs : ∀ (J : Type) (s : Finset J) (α : J → V n → Alt n), (∀ j ∈ s, ∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (α j x) S) v) → (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (∑ j ∈ s, α j x) S) v) := by
     intro J s α h S
-    have heq : (fun x => (bas n).repr (∑ j ∈ s, α j x) S) =
-        (fun x => ∑ j ∈ s, (bas n).repr (α j x) S) := by
-      funext x
-      rw [map_sum]
-      exact Finset.sum_apply' (s := s) (f := fun j => (bas n).repr (α j x)) (i := S)
-    rw [heq]
+    simp only [map_sum, Finset.sum_apply']
     exact ContDiffAt.sum fun j hj => h j hj S
   have hg : ∀ (g : V n → ℂ) (α : V n → Alt n), ContDiffAt ℝ ∞ g v → (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (α x) S) v) → (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (g x • α x) S) v) := by
     intro g α h1 h2 S
@@ -79,9 +74,9 @@ theorem smooth_coeff_closure : ∀ (n : ℕ) (v : V n), (∀ γ : Alt n, (∀ S,
     refine Finset.sum_congr rfl fun T _ => ?_
     rw [mul_smul_comm]
   simp only [key]
-  refine hs _ Finset.univ (fun S x => (bas n).repr (α x) S • ∑ T, (bas n).repr (β x) T • (bas n S * bas n T)) (fun S _ => ?_) U
+  refine hs _ Finset.univ _ (fun S _ => ?_) U
   refine hg _ _ (ha S) ?_
-  refine hs _ Finset.univ (fun T x => (bas n).repr (β x) T • (bas n S * bas n T)) (fun T _ => ?_)
-  exact hg _ (fun _ => bas n S * bas n T) (hb T) (hc _)
+  refine hs _ Finset.univ _ (fun T _ => ?_)
+  exact hg _ _ (hb T) (hc _)
 
 end GlobalTheory.ChernCalc

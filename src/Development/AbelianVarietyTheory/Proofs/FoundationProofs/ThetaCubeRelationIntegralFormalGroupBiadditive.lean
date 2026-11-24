@@ -182,8 +182,7 @@ theorem map_defect {R S : Type*} [CommRing R] [CommRing S] (h : R →+* S)
       MvPowerSeries.map h (subst a g) = subst (MvPowerSeries.map h a) (PowerSeries.map h g) :=
     fun a ha g => PowerSeries.map_subst (hasSubst_of_cc a ha) g
   unfold GlobalTheory.FrobStick.defect
-  rw [map_sub, map_mul, map_mul, map_mul, map_mul, map_ofNat]
-  rw [RingHom.map_det]
+  rw [map_sub, map_mul, map_mul, map_mul, map_mul, map_ofNat, RingHom.map_det]
   congr 1
   · congr 1
     ext i j
@@ -223,8 +222,7 @@ theorem defect_ser1_eq_zero_of_defect_tay_eq_zero (p : ℕ) [Fact p.Prime] (lam 
   have hq : GlobalTheory.FrobStick.defect (fun j => tq (f j)) (tq s) = 0 := by
     apply mvmap_injective (algebraMap (↥Qbar) ℂ) (FaithfulSMul.algebraMap_injective _ _)
     rw [map_defect, map_zero]
-    simp only [map_tq_of_algEnt _ (hf _), map_tq_of_algEnt _ hs]
-    exact h0
+    simpa only [map_tq_of_algEnt _ (hf _), map_tq_of_algEnt _ hs] using h0
   have hser : ∀ F : ℂ → ℂ, AlgEnt F → GL3Theta.ser1 lam F = PowerSeries.map lam (tq F) := fun F hF =>
     GlobalTheory.EvenTheta.Param.theta_series_map_coefficients lam F (tq F) (map_tq_of_algEnt F hF).symm
   simp only [hser _ (hf _), hser _ hs]
@@ -645,8 +643,7 @@ theorem tay_defect_eq_zero : (∀ (K : Type) [Field K] [Infinite K] (Φ : MvPowe
   let φ : entireRing →+* ℂ := (Pi.evalRingHom (fun _ : ℂ => ℂ) z).comp entireRing.subtype
   rw [ZeroMemClass.coe_zero, Pi.zero_apply]
   have hφ : ∀ x : entireRing, (x : ℂ → ℂ) z = φ x := fun x => rfl
-  rw [hφ]
-  rw [map_sub, RingHom.map_det, map_mul, map_mul, map_mul, map_mul, map_ofNat]
+  rw [hφ, map_sub, RingHom.map_det, map_mul, map_mul, map_mul, map_mul, map_ofNat]
   have hm : φ.mapMatrix (Matrix.of fun i j => scaleE (t i) (a j)) =
       Matrix.of fun i j => ![colA Λ, colB Λ v, colC Λ v] j ((fun i => t i * z) i) := by
     ext i j; fin_cases j <;> rfl
@@ -862,8 +859,7 @@ theorem frobenius_stickelberger_padic_determinant_formula : ∀ D : D7, Formalis
     fun F => (GlobalTheory.SerTransport.atU_eq g F).symm
   simp only [e, hS] at h8
   have hw0 : PowerSeries.constantCoeff g.wq = 1 := by
-    have h := congrArg PowerSeries.constantCoeff hq
-    simpa using h
+    simpa using congrArg PowerSeries.constantCoeff hq
   refine _root_.GlobalTheory.FrobStick.det_column_ops p (ePhi1 g.lam g.abelian₂ g.C g.wq) g.wq ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) g.C.r g.W.a₁ g.W.a₃ _ _ _ _ (Units.ne_zero _) hw0 c0 c1 c2 c3 ?_
   rw [← h8]
   congr 1
