@@ -180,8 +180,7 @@ theorem exists_keyPB_pair {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* 
       (fun k => Mx (i.cast hgq) (k.cast hgq)) y.v (v₁' i) ?_ (isLieComb_comp_cast' hgq (hM _))).mpr (hcomb i)
     intro k
     have h0 := hv1 k
-    rw [hF] at h0
-    exact h0
+    rwa [hF] at h0
 
   obtain ⟨e, he1, he2⟩ := ReciprocityTheory.ChartRestriction.G.Geo.Tor.grpPullback_iso hpb hpb₂
   have hv₁' : IsLieBasis v₁' := by
@@ -195,8 +194,7 @@ theorem exists_keyPB_pair {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* 
       · rw [Over.comp_left, Category.assoc, he2, hover, hv₂, hF₂]
         congr 3
       · rw [Over.w (v₁' i ≫ e.hom), Over.w (y₂.v _)]
-    rw [hfun]
-    exact hb
+    rwa [hfun]
 
   have hfa : IsUnit (f a) := (isUnit_of_sec_eq_const_mul_nonvanishing P th th' a ha hth').map f
   let th₁' : y.P.L.Sec := ⟨fun i => constFn y.P.A.hom _ (f a) * y.th.f i, fun i j => by
@@ -255,8 +253,7 @@ theorem exists_descent (g : ℕ) (ka : ∀ (K : Type) [Field K] [CharZero K] [Is
       simp
     have h2 := key _ ((σ.symm : AlgebraicClosure K →ₐ[K] AlgebraicClosure K) : AlgebraicClosure K →+* AlgebraicClosure K)
       xb (by rw [hc]; exact hxb)
-    have h3 := congrArg σ h2
-    simpa using h3
+    simpa using congrArg σ h2
   obtain ⟨y₀, hy₀⟩ := (InfiniteGalois.mem_range_algebraMap_iff_fixed (k := K)
     (ka (AlgebraicClosure K) xb : AlgebraicClosure K)).mpr hfix
   have h0 : y₀ ≠ 0 := by
@@ -303,8 +300,7 @@ theorem exists_kaRuleK : Out.PolBaseChangeSt → ∀ g c M : ℕ, KaRule g c M �
     have e3 := hS (AlgebraicClosure K) Q hg₁ rig₁ hr₁ th₁ hth₁ v₁ hv₁ th₁' hth₁' v₁' hv₁'
       (algebraMap K _ a) Mx₁ hQ ha₁ hM₁
     apply (algebraMap K (AlgebraicClosure K)).injective
-    rw [map_mul, map_mul, map_pow, map_pow, ← e1, ← e2, ← hdet]
-    exact e3
+    rwa [map_mul, map_mul, map_pow, map_pow, ← e1, ← e2, ← hdet]
   ·
     intro K K' _ _ _ _ f x x' hx hx'
     have : CharZero (AlgebraicClosure K') :=
@@ -350,8 +346,7 @@ theorem exists_kaRuleK : Out.PolBaseChangeSt → ∀ g c M : ℕ, KaRule g c M �
         refine ⟨hsu.unit⁻¹, ?_, ?_⟩
         · rw [map_units_inv, IsUnit.unit_spec, hs, inv_inv]
         · have hw : Units.map (j : R →* R') hsu.unit = u⁻¹ := Units.ext (by simpa using hjs)
-          have hw' := congrArg (fun w : R'ˣ => ((w⁻¹ : R'ˣ) : R')) hw
-          simpa using hw'
+          simpa using congrArg (fun w : R'ˣ => ((w⁻¹ : R'ˣ) : R')) hw
     refine ⟨u₀, hy₀.symm, ?_⟩
     intro k _ _ r xk hr hxk
 

@@ -65,8 +65,7 @@ theorem finite_orbits_of_finite_fibres {G A B : Type} [Group G] [MulAction G A] 
     have h : (MulAction.orbitRel G B).r (Quotient.mk (MulAction.orbitRel G B) (π a)).out (π a) :=
       Quotient.exact (Quotient.out_eq _)
     obtain ⟨g, hg⟩ := h
-    refine ⟨⟨Quotient.mk _ (π a), ⟨g • a, (hπ g a).trans hg⟩⟩, ?_⟩
-    exact Quotient.sound ⟨g, rfl⟩
+    exact ⟨⟨Quotient.mk _ (π a), ⟨g • a, (hπ g a).trans hg⟩⟩, (Quotient.sound ⟨g, rfl⟩)⟩
 
 theorem ufGL_mulVec {E : Type} [Field E] [StarRing E] {n : ℕ} (γ : UF E n) (x : Fin n → E) :
     ((ufGL E n γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ x = γ.1 x :=

@@ -88,16 +88,13 @@ theorem isOpen_value (U : X.left.Opens) (f : Γ(X.left, U)) {O : Set ℂ} (hO : 
 theorem continuousOn_value (U : X.left.Opens) (f : Γ(X.left, U)) :
     ContinuousOn (fun x : 𝟙_ (Over (Sp ℂ)) ⟶ X => valAt' x.left U f) {x | ⊤ ≤ x.left ⁻¹ᵁ U} := by
   rw [continuousOn_iff]
-  intro x hx t ht hxt
-  exact ⟨_, isOpen_value U f ht, ⟨hx, hxt⟩, fun y hy => hy.1.2⟩
+  exact fun x hx t ht hxt => ⟨_, isOpen_value U f ht, ⟨hx, hxt⟩, fun y hy => hy.1.2⟩
 
 theorem HolOn.const (hW : IsOpen W) (x : 𝟙_ (Over (Sp ℂ)) ⟶ X) : HolOn W fun _ => x := by
   intro U f
   by_cases h : ⊤ ≤ x.left ⁻¹ᵁ U
-  · simp only [h, and_true, Set.setOf_mem_eq]
-    exact ⟨hW, differentiableOn_const _⟩
-  · simp only [h, and_false, Set.setOf_false]
-    exact ⟨isOpen_empty, differentiableOn_empty⟩
+  · simpa only [h, and_true, Set.setOf_mem_eq] using ⟨hW, differentiableOn_const _⟩
+  · simpa only [h, and_false, Set.setOf_false] using ⟨isOpen_empty, differentiableOn_empty⟩
 
 theorem HolOn.comp (h : HolOn W a) {W' : Set E'} (hW' : IsOpen W') {φ : E' → E}
     (hφ : DifferentiableOn ℂ φ W') (hm : Set.MapsTo φ W' W) : HolOn W' fun w => a (φ w) := by
@@ -125,8 +122,7 @@ theorem HolOn.post
   have e2 : ∀ w, valAt' (a w ≫ q).left U f =
       valAt' (a w).left (q.left ⁻¹ᵁ U) ((q.left.app U).hom f) := fun w => by
     rw [Over.comp_left, hval]
-  simp only [e1, e2]
-  exact h (q.left ⁻¹ᵁ U) ((q.left.app U).hom f)
+  simpa only [e1, e2] using h (q.left ⁻¹ᵁ U) ((q.left.app U).hom f)
 
 theorem HolOn.continuousAt (h : HolOn W a) {w : E} (hw : w ∈ W) : ContinuousAt a w := by
   unfold ContinuousAt
@@ -217,8 +213,7 @@ theorem exists_holUnif :
   have hφ : IsAnalyticGroupChart φ' := by
     refine ⟨⟨0, h0W, hσ0⟩, ?_, ?_⟩
     · show (fun i => valAt' ((1 : 𝟙_ (Over (Sp ℂ)) ⟶ P.A)).left U (t i)) = 0
-      rw [← hσ0]
-      exact hσ00
+      rwa [← hσ0]
     · have hprod : HolOn (W ×ˢ W) fun p : (Fin P.g → ℂ) × (Fin P.g → ℂ) => σ p.1 * σ p.2 :=
         hmulHol (hσ'.comp (hW.prod hW) differentiableOn_fst (fun p hp => hp.1))
           (hσ'.comp (hW.prod hW) differentiableOn_snd (fun p hp => hp.2))
@@ -256,8 +251,7 @@ theorem exists_holUnif :
       rw [MonObj.comp_pow, Category.comp_id]
     rw [← hpow, Over.comp_left]
     refine ext_of_apply_closedPoint_eq P.A.hom ?_ hyh ?_
-    · rw [Category.assoc, Over.w (Out.mulA P.A n)]
-      exact hb'h
+    · rwa [Category.assoc, Over.w (Out.mulA P.A n)]
     · show (Out.mulA P.A n).left (pointOfClosedPoint P.A.hom q hqc (IsLocalRing.closedPoint ℂ)) = _
       have h2 := pointOfClosedPoint_apply P.A.hom q hqc (IsLocalRing.closedPoint ℂ)
       exact (congrArg (Out.mulA P.A n).left h2).trans hqZ
@@ -281,8 +275,7 @@ theorem exists_holUnif :
     refine ⟨N, hNo, hN0, ?_, ?_⟩
     · exact hσ'.comp hNo (fun v hv => (hNp v hv).1.differentiableAt.differentiableWithinAt)
         (fun v hv => (hNp v hv).2.2)
-    · intro v hv
-      exact (φ'.left_inv (hNp v hv).2.1).symm
+    · exact fun v hv => (φ'.left_inv (hNp v hv).2.1).symm
   obtain ⟨N, hNo, hN0, hNhol, hNeq⟩ := hloc
   refine ⟨{ ex := fun z => Additive.toMul (hφ.exp z)
             ex_add := fun z w => by
@@ -339,22 +332,18 @@ theorem exists_holUnif :
     have hc : AnalyticAt ℂ (fun w i => valAt' (a w).left U (t i)) 0 :=
       haH.analyticAt t (Set.mem_univ 0) hU1
     have hca : (fun i => valAt' (a 0).left U (t i)) = 0 := by
-      rw [ha0, ← hσ0]
-      exact hσ00
+      rwa [ha0, ← hσ0]
     have hlog0 : hφ.log 0 = 0 := by
       have := hφ.log_exp.self_of_nhds
-      rw [map_zero, hφ.map_zero] at this
-      exact this
+      rwa [map_zero, hφ.map_zero] at this
     refine ⟨fun w => hφ.log (φ' (Additive.ofMul (a w))), ?_, ?_, ?_⟩
     · show hφ.log (fun i => valAt' (a 0).left U (t i)) = 0
-      rw [hca]
-      exact hlog0
+      rwa [hca]
     · exact AnalyticAt.comp_of_eq hφ.isLocalCommGroupLaw.analyticAt_log hc hca
     · have hcont : Tendsto (fun w => Additive.ofMul (a w)) (𝓝 0)
           (𝓝 (0 : Additive (𝟙_ (Over (Sp ℂ)) ⟶ P.A))) := by
         have := haH.continuousAt (Set.mem_univ (0 : Fin n → ℂ))
-        rw [ContinuousAt, ha0] at this
-        exact this
+        rwa [ContinuousAt, ha0] at this
       filter_upwards [hcont.eventually hφ.exp_log] with w hw
       exact congrArg Additive.toMul hw
 

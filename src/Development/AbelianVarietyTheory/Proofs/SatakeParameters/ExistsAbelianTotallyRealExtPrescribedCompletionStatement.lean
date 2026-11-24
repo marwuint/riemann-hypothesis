@@ -93,8 +93,7 @@ theorem normal_of_commutator_le {G : Type} [Group G] (M : Subgroup G)
   intro n hn g
   have h1 : ⁅g, n⁆ ∈ M :=
     h (Subgroup.commutator_mem_commutator (Subgroup.mem_top g) (Subgroup.mem_top n))
-  have h2 := M.mul_mem h1 hn
-  simpa [commutatorElement_def] using h2
+  simpa [commutatorElement_def] using M.mul_mem h1 hn
 
 end GlobalTheory
 
@@ -303,8 +302,7 @@ theorem exists_mem_Ine_eq_on : ∀ (E Ω : Type) [Field E] [NumberField E] [Fiel
     intro r
     have hrL : ((r : IntCl E Ω) : Ω) ∈ L := by
       rw [← InfiniteGalois.fixedField_fixingSubgroup L, IntermediateField.mem_fixedField_iff]
-      intro f hf
-      exact congrArg Subtype.val (hR' r f hf)
+      exact fun f hf => congrArg Subtype.val (hR' r f hf)
     exact hL _ hrL (isIntegral_int_of_isIntegral (r : IntCl E Ω).2)
   let φ : (IntCl E Ω ⧸ Q) ≃ₐ[R' ⧸ Q.under R'] (IntCl E Ω ⧸ Q) := AlgEquiv.ofRingEquiv
     (f := Ideal.quotientEquiv Q Q (MulSemiringAction.toRingEquiv (Ω ≃ₐ[E] Ω) (IntCl E Ω) ψ)
@@ -409,8 +407,7 @@ theorem loc_char : ∀ (Ω : Type) [Field Ω] (F : Type) [Field F] [NumberField 
     obtain ⟨σ, rfl⟩ := ha.surj x
     have hm := Subgroup.pow_index_mem χ.ker (Subgroup.inclusion (Weil_le_Dec h) σ)
     rw [MonoidHom.mem_ker, map_pow] at hm
-    rw [MonoidHom.pow_apply, MonoidHom.one_apply, ← MonoidHom.comp_apply θ a, ← hθ]
-    exact hm
+    rwa [MonoidHom.pow_apply, MonoidHom.one_apply, ← MonoidHom.comp_apply θ a, ← hθ]
   · exact (DFunLike.congr_fun hθ σ).symm
 
 theorem gal_char : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (art : Ideles F →* Gab F Ω), IsGlobalArtin art → ∀ η : HChar F, (∃ n : ℕ, 0 < n ∧ η.OrderDvd n) → (∀ u : InfinitePlace F, η.locInf u = 1) → ∃ ρ : Gab F Ω →* ℂˣ, IsOpen (ρ.ker : Set (Gab F Ω)) ∧ ∀ x, ρ (art x) = η.1 x := by
@@ -448,8 +445,7 @@ theorem gal_char : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algeb
       exact ⟨x, by rw [SetLike.mem_coe, MonoidHom.mem_ker, ← hρ]; exact hg, rfl⟩
     · rintro ⟨y, hy, e'⟩
       show ρ _ = 1
-      rw [← e', hρ]
-      exact hy
+      rwa [← e', hρ]
   rw [hk]
   exact ha.quot.isOpenMap _ hko
 
@@ -498,8 +494,7 @@ theorem one_char (Ω : Type) [Field Ω] (F : Type) [Field F] [NumberField F] [Al
     obtain ⟨O, hOo, hO⟩ := isOpen_induced_iff.1 hχ
     have h1 : (1 : G F Ω) ∈ O := by
       have : (1 : Dec (F := F) A) ∈ (χ.ker : Set (Dec (F := F) A)) := χ.ker.one_mem
-      rw [← hO] at this
-      exact this
+      rwa [← hO] at this
     obtain ⟨L, hLf, hLs⟩ := (krullTopology_mem_nhds_one_iff F Ω _).1
       ((hro.inter hOo).mem_nhds ⟨r.ker.one_mem, h1⟩)
     obtain ⟨τ, hτ⟩ := GlobalTheory.ConjWD.exists_weil_eq_on (h := h) g.2 L
@@ -511,8 +506,7 @@ theorem one_char (Ω : Type) [Field Ω] (F : Type) [Field F] [NumberField F] [Al
     obtain ⟨hr1, hO1⟩ := hLs hfix
     have hk : (Subgroup.inclusion (Weil_le_Dec h) τ)⁻¹ * g ∈ χ.ker := by
       have : (Subgroup.inclusion (Weil_le_Dec h) τ)⁻¹ * g ∈ (Subtype.val ⁻¹' O : Set (Dec (F := F) A)) := hO1
-      rw [hO] at this
-      exact this
+      rwa [hO] at this
     rw [MonoidHom.mem_ker, map_mul, map_inv, inv_mul_eq_one] at hk
     have hr1' : r ((τ : G F Ω)⁻¹ * g) = 1 := hr1
     rw [map_mul, map_inv, inv_mul_eq_one] at hr1'
@@ -562,8 +556,7 @@ theorem exists_abelian_real_field : ∀ (Ω : Type) [Field Ω] (F : Type) [Field
   have hφ : ∀ σ, φ σ = 1 ↔ ∀ q, r q σ = 1 := fun σ => funext_iff
   have hker : (φ.ker : Set (G F Ω)) = ⋂ q, (r q).ker := by
     ext σ
-    simp only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_iInter]
-    exact hφ σ
+    simpa only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_iInter] using hφ σ
   have ho : IsOpen (φ.ker : Set (G F Ω)) := by
     rw [hker]
     exact isOpen_iInter_of_finite hro
@@ -597,8 +590,7 @@ theorem exists_abelian_real_field : ∀ (Ω : Type) [Field Ω] (F : Type) [Field
       exact hψ _ hq (by rw [← H (QuotientGroup.mk' V g), hrD]; rfl)
     · intro hg q
       rw [hrD, MonoidHom.comp_apply, QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff g).2 hg, map_one]
-  · intro u hu A' hA' g hg
-    exact (hmem g).2 fun q => hrT q u hu A' hA' g hg
+  · exact fun u hu A' hA' g hg => (hmem g).2 fun q => hrT q u hu A' hA' g hg
 
 end GlobalTheory.AbStep
 end -- clump:auto

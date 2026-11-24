@@ -125,8 +125,7 @@ theorem finite_placesOver (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p
     exact_mod_cast hp
   refine (Ideal.finite_factors h0).subset fun v hv => ?_
   show v.asIdeal ∣ _
-  rw [Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]
-  exact hv
+  rwa [Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]
 
 
 set_option synthInstance.maxHeartbeats 400000 in
@@ -165,7 +164,6 @@ theorem main : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (F
       exact length_quot_natCast_le (D.nbr i w hw).eO _) Finset.univ
   refine ⟨C', h₁, fun f hf w hw => h₂ ⟨w, hw⟩ (Finset.mem_univ _) hf, ?_⟩
   rw [Finset.card_univ, ← Nat.card_eq_fintype_card, Nat.card_coe_set_eq, ← mul_assoc] at h₃
-  rw [Nat.cast_mul]
-  exact h₃
+  rwa [Nat.cast_mul]
 
 end GlobalTheory.Cut.CountL

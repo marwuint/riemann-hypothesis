@@ -407,8 +407,7 @@ theorem exists_densePart {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type
     rintro _ ⟨p, rfl⟩
     have hz : Y.jQ p ∈ pullback.fst Y.s (spMap β) ⁻¹' abLocus Y.t.G := by
       rw [Y.ab_gen]; exact ⟨p, rfl⟩
-    rw [Scheme.Opens.range_ι, hU]
-    exact hz
+    rwa [Scheme.Opens.range_ι, hU]
   have e := IsOpenImmersion.lift_fac U.ι Y.j hr
   have P : IsPullback (IsOpenImmersion.lift U.ι Y.j hr) (𝟙 _) U.ι Y.j :=
     IsPullback.of_vert_isIso_mono ⟨e.trans (Category.id_comp _).symm⟩
@@ -715,8 +714,7 @@ theorem etale_of_birational_adjoin_root_of_unity (O S : Type*) [CommRing O] [IsD
     intro h
     have hmem : algebraMap O (Algebra.adjoin O {z}) π ∈
         (maximalIdeal S).comap (algebraMap (Algebra.adjoin O {z}) S) := by
-      rw [Ideal.mem_comap, ← IsScalarTower.algebraMap_apply]
-      exact hπ'
+      rwa [Ideal.mem_comap, ← IsScalarTower.algebraMap_apply]
     rw [h, Ideal.mem_bot] at hmem
     exact hπ (hinj (by rw [IsScalarTower.algebraMap_apply O (Algebra.adjoin O {z}) S, hmem,
       map_zero, map_zero]))
@@ -885,8 +883,7 @@ theorem exists_isClosedImmersion_restrict {R : Type} [CommRing R] {U Z : Scheme.
   let g := spMap (algebraMap A (Localization.Away a)) ≫ j
   refine ⟨g.opensRange, ?_, ?_⟩
   · have hy : y ∈ Set.range (PrimeSpectrum.comap (algebraMap A (Localization.Away a))) := by
-      rw [PrimeSpectrum.localization_away_comap_range (Localization.Away a) a, ← hm]
-      exact ha
+      rwa [PrimeSpectrum.localization_away_comap_range (Localization.Away a) a, ← hm]
     obtain ⟨z, rfl⟩ := hy
     exact ⟨z, Scheme.Hom.comp_apply _ _ _⟩
   · have H' := H₄.of_iso (Iso.refl _) g.isoOpensRange (Iso.refl _) (Iso.refl _)

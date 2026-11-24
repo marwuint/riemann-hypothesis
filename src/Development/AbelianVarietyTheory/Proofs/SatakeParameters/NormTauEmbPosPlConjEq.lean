@@ -68,8 +68,7 @@ theorem SamePrime.lt_one_imp {ρ ρ' : E →+* ℂ_[l]} (h : SamePrime ρ ρ') (
     have hd' : ¬ ‖ρ' ((d : 𝓞 E) : E)‖ < 1 := fun c => hd ((h _).2 c)
     have e' : x * ((d : 𝓞 E) : E) = (n : E) := e
     have hn : ‖ρ (n : E)‖ < 1 := by
-      rw [← e', map_mul, norm_mul, hone ρ _ hd, mul_one]
-      exact hx
+      rwa [← e', map_mul, norm_mul, hone ρ _ hd, mul_one]
     have hn' := (h n).1 hn
     rwa [← e', map_mul, norm_mul, hone ρ' _ hd', mul_one] at hn'
   · exfalso
@@ -97,9 +96,7 @@ theorem SamePrime.norm_eq {ρ ρ' : E →+* ℂ_[l]} (h : SamePrime ρ ρ') (x :
     have h3 : ((l : ℝ)⁻¹) ^ c = ((l : ℝ)⁻¹) ^ (1 : ℝ) := by rw [h2, Real.rpow_one]
     exact (Real.rpow_right_inj (by positivity) (by
       exact (inv_lt_one₀ (by positivity)).2 hl |>.ne)).1 h3
-  have h4 := congrFun hce x
-  simp only [hu, hw, h1, Real.rpow_one] at h4
-  exact h4
+  simpa only [hu, hw, h1, Real.rpow_one] using congrFun hce x
 
 end General
 
@@ -112,7 +109,6 @@ theorem norm_tauEmb_posPl_conj_eq : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (lam :
     change rhoH D lam (tauPl D z) (D.host.conj (D.host.conj y)) = _
     rw [hcc]
   rw [h2] at h1
-  rw [← coe_rhoH, ← coe_rhoH]
-  exact h1
+  rwa [← coe_rhoH, ← coe_rhoH]
 
 end GlobalTheory.KerStd

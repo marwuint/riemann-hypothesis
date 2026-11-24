@@ -105,8 +105,7 @@ theorem mem_iff_isUnit {L : LB Y} {n : ℕ} (s : H0 L n) (r : Z ⟶ Y) (z : Z) {
     have hu' : IsUnit (vl s (𝟙 Y) (r z) k) := hu
     rw [e] at hu'
     exact (IsUnit.mul_iff.1 hu').2
-  · intro hu
-    exact ⟨j, hjc, hu⟩
+  · exact fun hu => ⟨j, hjc, hu⟩
 
 private theorem exists_add_index_of_mul_closed {T : Type} [CommRing T] {S : ℕ → Type} (A B : ∀ n : ℕ, 1 ≤ n → S n → T)
     (hm : ∀ (n m : ℕ) (hn : 1 ≤ n) (hm : 1 ≤ m) (a : S n) (b : S m), ∃ d : S (n + m),
@@ -204,8 +203,7 @@ theorem exists_loc {L : LB X} {L' : LB X'} (Φ : X' ⟶ X) {n m : ℕ} (t : H0 L
     refine RingedSpace.isUnit_of_isUnit_germ X'.toRingedSpace W F fun x hx => ?_
     have e := gs_eq (𝟙 X') x W hx F
     have h0 := hu x hx
-    rw [← hg x hx, e] at h0
-    exact h0
+    rwa [← hg x hx, e] at h0
   refine ⟨hF.unit, fun Z r z hz => ?_⟩
   rw [← gs_unit r z W hz, IsUnit.unit_spec]
   have e1 := stalkMap_gs r (𝟙 X') z W hz F
@@ -246,8 +244,7 @@ private theorem core_lemma {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} (θ : ∀
       dsimp only at e
       simp only [vl]
       erw [e, gs_mul _ x _ hKc]
-  · intro n hn a b hu
-    exact hc n hn a b x J K ((mem_iff_isUnit b (𝟙 X') x hK).2 hu) hJ hK
+  · exact fun n hn a b hu => hc n hn a b x J K ((mem_iff_isUnit b (𝟙 X') x hK).2 hu) hJ hK
   · have h1 : x ∈ Φ ⁻¹ᵁ nonzeroLocus (θ n hn a) := by rw [hD]; exact ha
     exact (mem_iff_isUnit (θ n hn a) Φ x hJ).1 h1
   · exact (mem_iff_isUnit b (𝟙 X') x hK).1 hb
@@ -397,8 +394,7 @@ theorem core {L : LB X} {L' : LB X'} (θ : ∀ n : ℕ, 1 ≤ n → H0 L' n → 
     have e3 := stalkMap_gs r (𝟙 X') z (ch L' (fun _ => k)) (mem_ch.2 hk) (a.f (fun _ => k))
     rw [Category.comp_id] at e2 e3
     erw [e1, e2, e3] at e
-    rw [gs_unit r z _ hx] at e
-    exact e
+    rwa [gs_unit r z _ hx] at e
 
 end GlobalTheory.SectionRingIso
 
@@ -410,5 +406,4 @@ theorem GlobalTheory.exists_iso_of_sectionRing : ∀ (R : Type) [CommRing R] (X 
   obtain ⟨p0, rfl⟩ : ∃ p0, p = fun _ => p0 := ⟨p 0, funext fun κ => by rw [Fin.fin_one_eq_zero κ]⟩
   obtain ⟨q0, rfl⟩ : ∃ q0, q = fun _ => q0 := ⟨q 0, funext fun κ => by rw [Fin.fin_one_eq_zero κ]⟩
   have e := hval Z r z p0 q0 (hp 0) (hq 0) n hn a
-  simp only [Fin.prod_univ_one, Category.comp_id, zpow_natCast, Units.val_pow_eq_pow_val]
-  exact e
+  simpa only [Fin.prod_univ_one, Category.comp_id, zpow_natCast, Units.val_pow_eq_pow_val] using e

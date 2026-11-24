@@ -142,12 +142,10 @@ theorem mem_of_trace_int {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {v : Pl (F :
   have h := GlobalTheory.LatVacArith.psi_int hψ t ht (singleFin v y) fun w => by
     by_cases hw : w = v
     · subst hw
-      rw [evalV_singleFin_self]
-      exact hy
+      rwa [evalV_singleFin_self]
     · rw [evalV_singleFin_ne hw]
       exact zero_mem _
-  rw [mul_comm, ← Algebra.smul_def, ← LinearMap.map_smul, Algebra.smul_def] at h
-  exact h
+  rwa [mul_comm, ← Algebra.smul_def, ← LinearMap.map_smul, Algebra.smul_def] at h
 
 theorem form_mem {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {d r s : ℕ} {W : Spc F E d}
     (hW : W.IsSkew σ B r s) {v : Pl (F := F)} (hu : PsiUnr B.ψ v) (τ : E →ₐ[F] Fv F v) {x y : Fin d → E}
@@ -239,8 +237,7 @@ theorem exists_gram {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {d r 
     have e0 : W.J * S.map σ * Tᵀ = 1 := by
       rw [← Matrix.transpose_inj, Matrix.transpose_mul, Matrix.transpose_transpose, hTS, Matrix.transpose_one]
     have := congrArg (fun M => Matrix.map M (τ : E →+* Fv F v)) e0
-    rw [Matrix.map_mul, Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at this
-    exact this
+    rwa [Matrix.map_mul, Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at this
   have e2 : (b₁.1ᵀ * W.J.map τ * b₂.1) * (((b₂⁻¹).1 * S.map (τ.comp σ)) * ((b₁⁻¹).1 * T.map τ)ᵀ) = 1 := by
     calc _ = b₁.1ᵀ * (W.J.map τ * (b₂.1 * (b₂⁻¹).1) * S.map (τ.comp σ) * (T.map τ)ᵀ) * ((b₁⁻¹).1)ᵀ := by
           simp only [Matrix.transpose_mul, Matrix.mul_assoc]
@@ -251,8 +248,7 @@ theorem exists_gram {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {d r 
   refine Matrix.isUnit_det_of_right_inverse (B := Matrix.of fun i j => ⟨_, hH i j⟩) ?_
   refine Matrix.map_injective (v.adicCompletionIntegers F).subtype_injective ?_
   simp only
-  rw [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
-  exact e2
+  rwa [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
 
 end GlobalTheory.SplitDict
 

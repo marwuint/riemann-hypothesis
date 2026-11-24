@@ -167,23 +167,20 @@ theorem map_pow_eq (h : IsSplitPrimeOff l p P) {i : ℕ} {C : Subgroup (Pts o.t)
     have hm := card_eq_tors_mul C p
     rw [card_tors, card_inter_tors, hc p hp.pos] at c₆
     rw [c₅] at hm
-    have h₁ := mul_ne_zero_iff.1 (hm ▸ hpos.ne')
-    exact mul_left_cancel₀ h₁.1 (hm.symm.trans c₆)
+    exact mul_left_cancel₀ (mul_ne_zero_iff.1 (hm ▸ hpos.ne')).1 (hm.symm.trans c₆)
   have : Finite C₀ := h₀.2.2.1
   refine Subgroup.eq_of_le_of_card_ge ?_ (by rw [hcard, h₀.2.2.2])
   rintro _ ⟨x, hx, rfl⟩
   have hx' : x ∈ heckeKernel o.t p P C₀ := e ▸ hx
   obtain ⟨x₁, x₂, x₃, rfl, ⟨t₁, -⟩, ⟨-, k₂⟩, ⟨t₃, -⟩⟩ := hx'
   show (x₁ * x₂ * x₃) ^ p ∈ C₀
-  rw [mul_pow, mul_pow, t₁, t₃, _root_.one_mul, _root_.mul_one]
-  exact k₂
+  rwa [mul_pow, mul_pow, t₁, t₃, _root_.one_mul, _root_.mul_one]
 
 include hL in
 theorem isHeckeDatum_map_pow (h : IsSplitPrimeOff l p P) {i : ℕ} {C : Subgroup (Pts o.t)}
     (hC : o.t.HeckeKer (𝟙_ _) D P p i C) : IsHeckeDatum o.t P i (C.map (powMonoidHom p)) := by
   obtain ⟨C₀, h₀, e⟩ := (heckeKer_iff hL o h i C).1 hC
-  rw [map_pow_eq hL o h hC h₀ e]
-  exact h₀
+  rwa [map_pow_eq hL o h hC h₀ e]
 
 def heckeKerEquivDatum (h : IsSplitPrimeOff l p P) (i : ℕ) :
     {C : Subgroup (Pts o.t) // o.t.HeckeKer (𝟙_ _) D P p i C} ≃

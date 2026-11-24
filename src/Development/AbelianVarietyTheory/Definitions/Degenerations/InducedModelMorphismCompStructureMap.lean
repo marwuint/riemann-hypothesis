@@ -102,8 +102,7 @@ theorem top_le_preimage_iff {X Y : Scheme.{0}} (y : Y ⟶ X) (U : X.Opens) :
   constructor
   · rintro h _ ⟨w, rfl⟩
     exact h (show w ∈ (⊤ : Y.Opens) from trivial)
-  · intro h w _
-    exact h ⟨w, rfl⟩
+  · exact fun h w _ => h ⟨w, rfl⟩
 
 theorem top_le_preimage_of_specializes {X Y : Scheme.{0}} {y : Y ⟶ X} {z : X} (h : ∀ w, y w ⤳ z)
     {U : X.Opens} (hz : z ∈ U) : ⊤ ≤ y ⁻¹ᵁ U := fun w _ => (h w).mem_open U.isOpen hz
@@ -131,8 +130,7 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω
 
 theorem pt_apply (w : Sp Ω) : M.pt w = genericPoint M.Z := by
   have h : M.pt w ∈ Set.range M.pt := ⟨w, rfl⟩
-  rw [M.gen] at h
-  exact h
+  rwa [M.gen] at h
 
 theorem pt_specializes (w : Sp Ω) (z : M.Z) : M.pt w ⤳ z := by
   rw [M.pt_apply]
@@ -270,8 +268,7 @@ theorem mem_ringOn_iff_exists {U : M.Z.Opens} (hU : (U : Set M.Z).Nonempty) {x :
       exact M.resG_eq_of_valF_eq inf_le_left inf_le_right (M.nonempty_inf (hVne i) (hVne j))
         ((hsf i).trans (hsf j).symm)
     have hcov : U ≤ iSup V := by
-      intro y hy
-      exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨y, hy⟩, hzW ⟨y, hy⟩, hy⟩
+      exact fun y hy => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨y, hy⟩, hzW ⟨y, hy⟩, hy⟩
     obtain ⟨s, hs, -⟩ :=
       M.Z.sheaf.existsUnique_gluing' V U (fun z => homOfLE inf_le_right) hcov sf hcomp
     obtain ⟨z0, hz0⟩ := hU
@@ -395,8 +392,7 @@ theorem exists_eq_div {V : M.Z.Opens} (hV : IsAffineOpen V) (hne : (V : Set M.Z)
     rw [← hn, ← M.res_apply V hne, map_pow, M.res_apply]
     exact pow_ne_zero _ hb0
   refine ⟨a, s, hs0, ?_⟩
-  rw [← M.valF_resG hbW hD f, eq_div_iff hs0]
-  exact e
+  rwa [← M.valF_resG hbW hD f, eq_div_iff hs0]
 
 theorem isFractionRing_ringOn {V : M.Z.Opens} (hV : IsAffineOpen V) (hne : (V : Set M.Z).Nonempty) :
     IsFractionRing (M.ringOn V) Ω := by
@@ -579,8 +575,7 @@ theorem isUnit_valLoc_iff {C : Type} [CommRing C] [IsLocalRing C] (y : Sp C ⟶ 
       RingEquiv.coe_toRingHom] at ha
     have hu := (isUnit_map_iff (Scheme.stalkClosedPointTo (R := CommRingCat.of C) y).hom _).1 ha
     simpa using hu.map (M.stalkEquiv _)
-  · intro ha
-    exact ha.map _
+  · exact fun ha => ha.map _
 
 theorem val_spMap_comp {C K : Type} [CommRing C] [IsLocalRing C] [Field K] (σ : C →+* K) (y : Sp C ⟶ M.Z)
     {z : M.Z} (h : y (IsLocalRing.closedPoint C) ⤳ z) (x : M.O z) :
@@ -629,14 +624,12 @@ variable {y : Sp K ⟶ M.Z} {z : M.Z}
 theorem val_add (h : ∀ w, y w ⤳ z) {a b : Ω} (ha : a ∈ M.O z) (hb : b ∈ M.O z) :
     M.val y (a + b) = M.val y a + M.val y b := by
   have e := map_add (valHomOf y z h) ⟨a, ha⟩ ⟨b, hb⟩
-  rw [valHomOf_apply, valHomOf_apply, valHomOf_apply] at e
-  exact e
+  rwa [valHomOf_apply, valHomOf_apply, valHomOf_apply] at e
 
 theorem val_mul (h : ∀ w, y w ⤳ z) {a b : Ω} (ha : a ∈ M.O z) (hb : b ∈ M.O z) :
     M.val y (a * b) = M.val y a * M.val y b := by
   have e := map_mul (valHomOf y z h) ⟨a, ha⟩ ⟨b, hb⟩
-  rw [valHomOf_apply, valHomOf_apply, valHomOf_apply] at e
-  exact e
+  rwa [valHomOf_apply, valHomOf_apply, valHomOf_apply] at e
 
 theorem val_one (y : Sp K ⟶ M.Z) : M.val y 1 = 1 := by
   have h1 : valF M.pt ⊤ (1 : Γ(M.Z, ⊤)) = 1 := by
@@ -835,8 +828,7 @@ theorem valF_spMap_algebraMap (a : A) :
 private theorem valR_global_eq_algebraMap_gammaSpecIso {L B : Type} [Field L] [CommRing B] [Algebra B L] (y : Γ(Sp B, ⊤)) :
     valR (spMap (algebraMap B L)) ⊤ y = algebraMap B L ((Scheme.ΓSpecIso (CommRingCat.of B)).hom y) := by
   have e := valF_spMap_algebraMap L B ((Scheme.ΓSpecIso (CommRingCat.of B)).hom y)
-  rw [CategoryTheory.Iso.hom_inv_id_apply, valF_eq_valR] at e
-  exact e
+  rwa [CategoryTheory.Iso.hom_inv_id_apply, valF_eq_valR] at e
 
 private theorem valR_restrict_basicOpen_eq_valR_global {L B : Type} [Field L] [CommRing B] [Algebra B L] (r y : Γ(Sp B, ⊤))
     (h : ⊤ ≤ (spMap (algebraMap B L)) ⁻¹ᵁ (Sp B).basicOpen r) :
@@ -865,8 +857,7 @@ theorem exists_valF_basicOpen_eq_div (a b : A) (hb : algebraMap A Ω b ≠ 0) :
   dsimp only [s] at e
   rw [valR_global_eq_algebraMap_gammaSpecIso, valR_global_eq_algebraMap_gammaSpecIso, CategoryTheory.Iso.inv_hom_id_apply,
     CategoryTheory.Iso.inv_hom_id_apply] at e
-  rw [eq_div_iff hb, valF_eq_valR]
-  exact e
+  rwa [eq_div_iff hb, valF_eq_valR]
 
 private theorem exists_valF_basicOpen_eq_div_pow (g : A) (hg : algebraMap A Ω g ≠ 0)
     (f : Γ(Sp A, (Sp A).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv g))) :
@@ -879,8 +870,7 @@ private theorem exists_valF_basicOpen_eq_div_pow (g : A) (hg : algebraMap A Ω g
   dsimp only at e
   rw [valR_mul _ _ h, valR_restrict_basicOpen_eq_valR_global _ _ h, valR_restrict_basicOpen_eq_valR_global _ _ h, ← hn, valR_pow _ _ (le_preimage_top _),
     valR_global_eq_algebraMap_gammaSpecIso, valR_global_eq_algebraMap_gammaSpecIso, CategoryTheory.Iso.inv_hom_id_apply] at e
-  rw [eq_div_iff (pow_ne_zero n hg), valF_eq_valR]
-  exact e
+  rwa [eq_div_iff (pow_ne_zero n hg), valF_eq_valR]
 
 private theorem exists_valF_eq_div_of_not_mem_prime {z : PrimeSpectrum A} {U : (Sp A).Opens} (hz : z ∈ U) (f : Γ(Sp A, U)) :
     ∃ a b : A, b ∉ z.asIdeal ∧
@@ -940,8 +930,7 @@ theorem mem_O_ofAffine {z : PrimeSpectrum A} {x : Ω} :
       (map_ne_zero_iff _ (IsFractionRing.injective A Ω)).2 fun h0 => hb (h0 ▸ z.asIdeal.zero_mem)
     obtain ⟨f, hf⟩ := exists_valF_basicOpen_eq_div Ω A a b hb0
     refine mem_O.2 ⟨_, f, ?_, hf⟩
-    rw [basicOpen_eq_of_affine]
-    exact hb
+    rwa [basicOpen_eq_of_affine]
 
 theorem algebraMap_mem_O_ofAffine (z : PrimeSpectrum A) (a : A) : algebraMap A Ω a ∈ (ofAffine o Ω A).O z :=
   mem_O.2 ⟨⊤, (Scheme.ΓSpecIso (CommRingCat.of A)).inv a, trivial, valF_spMap_algebraMap Ω A a⟩
@@ -959,8 +948,7 @@ theorem inv_mem_O_ofAffine_iff {z : PrimeSpectrum A} {a : A} (ha : a ≠ 0) :
         rw [← e, mul_inv_cancel₀ had]
       rwa [mul_div_assoc', div_eq_one_iff_eq hd0, ← map_mul] at h1
     exact hd (IsFractionRing.injective A Ω key ▸ z.asIdeal.mul_mem_right c ha')
-  · intro h
-    exact mem_O_ofAffine.2 ⟨1, a, h, by rw [map_one, one_div]⟩
+  · exact fun h => mem_O_ofAffine.2 ⟨1, a, h, by rw [map_one, one_div]⟩
 
 theorem mem_ringOn_basicOpen_ofAffine {b : A} (hb : b ≠ 0) {x : Ω} :
     x ∈ (ofAffine o Ω A).ringOn {z : PrimeSpectrum A | b ∉ z.asIdeal} ↔
@@ -969,8 +957,7 @@ theorem mem_ringOn_basicOpen_ofAffine {b : A} (hb : b ≠ 0) {x : Ω} :
   · intro hx
     have hg : algebraMap A Ω b ≠ 0 := (map_ne_zero_iff _ (IsFractionRing.injective A Ω)).2 hb
     have hx' : x ∈ (ofAffine o Ω A).ringOn (((Sp A).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv b) : (Sp A).Opens) : Set (Sp A)) := by
-      rw [basicOpen_eq_of_affine]
-      exact hx
+      rwa [basicOpen_eq_of_affine]
     have hmem : (⊥ : PrimeSpectrum A) ∈ PrimeSpectrum.basicOpen b :=
       (PrimeSpectrum.mem_basicOpen b ⊥).2 (by simpa using hb)
     have hne : (((Sp A).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv b) : (Sp A).Opens) : Set (Sp A)).Nonempty := by

@@ -89,8 +89,7 @@ theorem hasSignature_of_frame {n : Type} [Fintype n] [DecidableEq n] {J : Matrix
   have hu : IsUnit (Q.submatrix e.symm id) :=
     (Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hdet)
   refine ⟨e, hu.unit, ?_⟩
-  rw [IsUnit.unit_spec, _root_.Formalism.UG.P.cT_conj_eq]
-  exact hP
+  rwa [IsUnit.unit_spec, _root_.Formalism.UG.P.cT_conj_eq]
 
 private theorem card_eq_add_and_exists_conj_eq_Jpq_of_hasSignature {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n ℂ} {p q : ℕ}
     (h : Formalism.UG.HasSignature J p q) :
@@ -333,8 +332,7 @@ theorem exists_complement (hτ : ∀ (τ : E →+* ℂ) a, τ (star a) = starRin
   have hR : ((P.map τ).map (starRingEnd ℂ)).det ≠ 0 := by
     have h1 : ((P.map τ).map (starRingEnd ℂ)).det = starRingEnd ℂ (τ P.det) := by
       rw [RingHom.map_det, RingHom.map_det]; rfl
-    rw [h1, map_ne_zero, map_ne_zero]
-    exact hP0
+    rwa [h1, map_ne_zero, map_ne_zero]
   have hK : ((Matrix.of fun i l => Y.hT (w i) (w l)).map τ).submatrix eY eY =
       ((P.map τ).map (starRingEnd ℂ))ᵀ * Y.gram.map τ *
         ((P.map τ).map (starRingEnd ℂ)).map (starRingEnd ℂ) := by
@@ -350,8 +348,7 @@ theorem exists_complement (hτ : ∀ (τ : E →+* ℂ) a, τ (star a) = starRin
   rw [hGw, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero τ), Matrix.map_zero _ (map_zero τ),
     GlobalTheory.Inertia.negIndex_fromBlocks hXh hbh] at hneg
   have hb0 : ((Matrix.of fun i l => Y.hT (b i) (b l)).map τ).det ≠ 0 := by
-    rw [← RingHom.mapMatrix_apply, ← RingHom.map_det, map_ne_zero]
-    exact hGb
+    rwa [← RingHom.mapMatrix_apply, ← RingHom.map_det, map_ne_zero]
   refine hasSignature_of_posIndex_of_negIndex hbh hb0 ?_ ?_
   · omega
   · omega
@@ -374,8 +371,7 @@ theorem exists_complement_XY : ∀ (D : D7) (j : ℕ), j < D.R.m → ∃ b : Fin
       Formalism.UG.HasSignature ((D.sp.X j).gram.map τ) (D.sp.X j).rank 0 := by
     intro τ
     have h := D.sp.X_sig j τ
-    rw [GlobalTheory.Mem.Th.X_posDef D j hj.le τ] at h
-    exact h
+    rwa [GlobalTheory.Mem.Th.X_posDef D j hj.le τ] at h
   have hY : ∀ τ : D.host.E →+* ℂ, Formalism.UG.HasSignature ((D.sp.Y j).gram.map τ)
       ((D.sp.X j).rank + (D.R.m - 1 - j) / 2) ((D.R.m - 1 - j) - (D.R.m - 1 - j) / 2) := by
     intro τ
@@ -389,8 +385,7 @@ theorem exists_complement_XY : ∀ (D : D7) (j : ℕ), j < D.R.m → ∃ b : Fin
     have e2 : (Formalism.BasicNotions.sigYD D.R j).2 = (D.R.m - 1 - j) - (D.R.m - 1 - j) / 2 := by
       show (D.R.m - j) / 2 = _
       omega
-    rw [e1, e2] at h
-    exact h
+    rwa [e1, e2] at h
   exact exists_complement hτ (D.sp.X j) (D.sp.Y j) (D.sp.iXY j) (D.sp.iXY_isom j hj) hc hX hY
 
 end GlobalTheory.FrameComplement

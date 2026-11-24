@@ -402,8 +402,7 @@ theorem right_translation_curve_sq_le_and_integral_deriv_eq_zero :
     · exact intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'
         (f := fun (x : K) (t : ℝ) => ‖f' (x * c t)‖ ^ 2)
         (by unfold Function.uncurry; fun_prop) 0 1
-    · simp only [key]
-      exact norm_intervalIntegral_unit_sq_le _ (by fun_prop)
+    · simpa only [key] using norm_intervalIntegral_unit_sq_le _ (by fun_prop)
   · rw [← integral_intervalIntegral_mul_right_curve μ c hc f' hf']
     simp_rw [← key]
     rw [integral_sub (hI _ (by fun_prop)) (hI _ hf), integral_mul_right_eq_self f, sub_self]
@@ -663,9 +662,7 @@ theorem smooth_of_finiteDimensional_translation_stable :
     rw [hev, hRapp, Φ.symm_apply_apply]
     rfl
   have hsep : ∀ v w : V, (∀ g, ev g v = ev g w) → v = w := by
-    intro v w h
-    apply Φ.symm.injective
-    exact Subtype.ext (funext h)
+    exact fun v w h => Φ.symm.injective (Subtype.ext (funext h))
   have hc0 : ∀ i, c i 0 = 1 := by
     intro i
     have := hc i 0 0
@@ -928,8 +925,7 @@ theorem isCompact_unitary (R : RealPoints θ V) (hs : V.SigOK) (hd : V.IsDefinit
   have h := isCompact_univ_pi fun τ => (frame_at hs hd τ).2
   have e : {u : AlgInf V | sigInf V u * u = 1} = Set.univ.pi fun τ => Formalism.QuantumDeterminants.UH (gramAt D V τ) :=
     Set.ext fun u => (unit_iff R u).trans ⟨fun h τ _ => h τ, fun h τ => h τ trivial⟩
-  rw [e]
-  exact h
+  rwa [e]
 
 theorem exists_secInf (hθ : IsInfFam θ) (R : RealPoints θ V) {g : GA D V} (hg : g ∈ GinfC V) :
     ∃ u : AlgInf V, sigInf V u * u = 1 ∧ secInf θ V u = g := by

@@ -87,10 +87,8 @@ private theorem charpoly_eq_of_filtration_graded_eq {k : Type} [Field k] (n : �
         (fun i j hij => Submodule.comap_mono (hmono hij)) ?_ ?_ ?_ ?_
       · rw [h0, Submodule.comap_bot, Submodule.ker_subtype]
       · exact Submodule.comap_subtype_self A
-      · intro i x hx
-        exact hf i x hx
-      · intro i x hx
-        exact hd i x hx
+      · exact fun i x hx => hf i x hx
+      · exact fun i x hx => hd i x hx
     ·
       congr 1
       ext x
@@ -99,8 +97,7 @@ private theorem charpoly_eq_of_filtration_graded_eq {k : Type} [Field k] (n : �
       rw [Submodule.Quotient.eq]
       have hx : x ∈ G (n + 1) := by rw [hn]; exact Submodule.mem_top
       have := hd n x hx
-      rw [← neg_mem_iff, neg_sub] at this
-      exact this
+      rwa [← neg_mem_iff, neg_sub] at this
 
 theorem charpoly_eq_of_filtration {k : Type} [Field k] (n : ℕ) :
     ∀ {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensional k V] (F : ℕ → Submodule k V)
@@ -113,8 +110,7 @@ theorem charpoly_eq_of_filtration {k : Type} [Field k] (n : ℕ) :
   · exact eq_top_iff.mpr (hn ▸ le_partialSups F n)
   · intro i
     have hle : partialSups F i ≤ (partialSups F i).comap f := by
-      refine partialSups_le F i _ (fun j hj x hx => ?_)
-      exact le_partialSups_of_le F hj (hf j x hx)
+      exact partialSups_le F i _ (fun j hj x hx => le_partialSups_of_le F hj (hf j x hx))
     exact fun x hx => hle hx
   · intro i
     have hle : partialSups F (i + 1) ≤ (partialSups F i).comap (g - f) := by
@@ -171,7 +167,6 @@ theorem charpoly_eq : ∀ {k Γ : Type} [Field k] [Group Γ] {W : Type} [AddComm
           (lt_of_lt_of_le (Fin.lt_def.mp (Set.mem_Iio.mp hj')) (Nat.lt_succ_iff.mp hj))
       have h1 := Submodule.map_mono (f := (e : W →ₗ[k] V)) hsub (hρ j g v hv)
       simpa [LinearEquiv.conj_apply] using h1
-    have h2 := hle hx
-    simpa using h2
+    simpa using hle hx
 
 end GlobalTheory.SemisimplificationCharpoly

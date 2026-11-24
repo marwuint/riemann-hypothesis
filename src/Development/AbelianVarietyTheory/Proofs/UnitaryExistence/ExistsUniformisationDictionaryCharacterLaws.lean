@@ -237,8 +237,7 @@ private theorem fib_cancel {R G : Type} [CommRing R] [Group G] {n : ℕ} (f : G 
       Matrix.one_mulVec]
   have e3 := congrArg (fun z => (f g⁻¹).1 *ᵥ z) e2
   simp only [Matrix.mulVec_sub, Matrix.mulVec_smul, hi] at e3
-  rw [map_mul, Units.val_mul, ← Matrix.mulVec_mulVec]
-  exact e3
+  rwa [map_mul, Units.val_mul, ← Matrix.mulVec_mulVec]
 
 theorem mem_level_of_mark_of_frame_eq : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ (Kf : Subgroup (GA D V)), IsLevelK V l.M Kf → ∀ h h' k γ γ', C.Mark h k γ → C.Mark h' k γ' → C.fr (γ * h) k = C.fr (γ' * h') k → (γ * h)⁻¹ * (γ' * h') ∈ Kf := by
   intro D H Dw l Xo c σ V r C hC Kf hK h h' k γ γ' hm hm' hfr
@@ -622,8 +621,7 @@ theorem GlobalTheory.datum_commensurable_period :
       exact ⟨j' a, by rw [p₂, ha]⟩⟩
     refine DiscreteTopology.of_continuous_injective (f := f) ?_ ?_
     · exact Continuous.subtype_mk (continuous_subtype_val.const_smul (N : ℂ)) _
-    · intro x y h
-      exact Subtype.ext (smul_right_injective _ hNC (congrArg Subtype.val h))
+    · exact fun x y h => Subtype.ext (smul_right_injective _ hNC (congrArg Subtype.val h))
   have P's : Submodule.span ℝ (Set.range P') = ⊤ := by
     rw [eq_top_iff, ← hPs, Submodule.span_le]
     rintro _ ⟨a, rfl⟩
@@ -1054,8 +1052,7 @@ theorem GlobalTheory.selfDual_lattice_occurs : GlobalTheory.Published.HasseNormS
     constructor
     · rintro ⟨a, rfl⟩
       exact (M.φ k a).2
-    · intro hv
-      exact ⟨(M.φ k).symm ⟨v, hv⟩, by rw [hψ, LinearEquiv.apply_symm_apply]⟩
+    · exact fun hv => ⟨(M.φ k).symm ⟨v, hv⟩, by rw [hψ, LinearEquiv.apply_symm_apply]⟩
   obtain ⟨γ, hγ1, hγ2⟩ := _root_.GlobalTheory.IsoExt.exists_unitary_of_isometry E H D' (F.Di k) r (-ξ₀) Gm φ' ψ gam hξ hφ'
     ⟨Subtype.val_injective.comp (M.φ k).injective, by rw [hrange]; exact (M.X k).Λ_span, hφ.2.2.1, hφ.2.2.2.1,
       fun x y => by
@@ -1253,8 +1250,7 @@ theorem GlobalTheory.Member.exists_mark : ∀ (D : D7) (H : ReciprocityTheory.Ch
   refine ⟨k, γ, (hQ γ).2 ⟨γ', hγ⟩, ?_, fun a ha => ?_⟩
   · ext v
     constructor
-    · intro hv
-      exact ⟨v, (hΛ v).1 hv, rfl⟩
+    · exact fun hv => ⟨v, (hΛ v).1 hv, rfl⟩
     · rintro ⟨v, hv, rfl⟩
       exact (hΛ v).2 hv
   · obtain ⟨w, hw, ew⟩ := hm a ha
@@ -1271,8 +1267,7 @@ theorem GlobalTheory.Member.exists_mark : ∀ (D : D7) (H : ReciprocityTheory.Ch
         (M.φ k (F.t k a) : Fin V.rank → D.host.E) + l.M • w := ew
     rw [ew2] at e1
     have e2 := mark_congr (finHom V γ).1 (finHom V h).1 e1 ew'
-    rw [← Units.val_mul, ← map_mul] at e2
-    exact e2
+    rwa [← Units.val_mul, ← map_mul] at e2
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsComponentLatticeMarkingAdelic =====
@@ -1410,8 +1405,7 @@ theorem exists_pkgLaws : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.
   · obtain ⟨Pm, h1, h2, h3, h4, -⟩ := hun.1 k x
     exact ⟨Pm, h1, h2, h3, h4⟩
   · obtain ⟨γ, ⟨h1, h2, h3⟩, h4⟩ := hd.1 h
-    refine ⟨γ, h1, h2, h3, fun τ => ?_⟩
-    exact congrFun h4 τ
+    exact ⟨γ, h1, h2, h3, fun τ => congrFun h4 τ⟩
 
 end GlobalTheory.Member
 end -- clump:auto

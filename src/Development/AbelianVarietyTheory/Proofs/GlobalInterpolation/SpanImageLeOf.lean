@@ -89,8 +89,7 @@ theorem mem_span_image (N : Submodule R M) (x : M') :
     | zero => simp
     | add y z _ _ hy hz => rw [map_add (f := _)]; exact N.add_mem hy hz
     | smul r y _ hy => rw [hsm]; exact N.smul_mem _ hy
-  · intro hx
-    exact Submodule.subset_span ⟨f.symm x, hx, by simp⟩
+  · exact fun hx => Submodule.subset_span ⟨f.symm x, hx, by simp⟩
 
 end General
 
@@ -129,8 +128,7 @@ theorem trI_one : trI e 1 = 1 := by
 theorem trI_surj (J : Submodule (𝓞 E') E') : ∃ I, trI e I = J := by
   refine ⟨Submodule.span (𝓞 E) (e.symm '' (J : Set E')), ?_⟩
   rw [trI_span, Set.image_image]
-  simp only [RingEquiv.apply_symm_apply, Set.image_id']
-  exact Submodule.span_eq J
+  simpa only [RingEquiv.apply_symm_apply, Set.image_id'] using Submodule.span_eq J
 
 theorem mem_one_iff (x : E') : x ∈ (1 : Submodule (𝓞 E') E') ↔ e.symm x ∈ (1 : Submodule (𝓞 E) E) := by
   rw [← trI_one e, mem_trI]
@@ -163,9 +161,7 @@ theorem carries_iff {n : ℕ} (N : Submodule (𝓞 E) (Fin n → E)) (A : Matrix
       rw [← mem_one_iff e]
       exact hv i hi
     have hmv : (A.map e).mulVec v = fun i => e (A.mulVec (fun i => e.symm (v i)) i) := by
-      have hk := map_mulVec' e A (fun i => e.symm (v i))
-      simp only [RingEquiv.apply_symm_apply] at hk
-      exact hk
+      simpa only [RingEquiv.apply_symm_apply] using map_mulVec' e A (fun i => e.symm (v i))
     rw [hmv, mem_trL]
     simpa using H _ hv'
 
@@ -181,8 +177,7 @@ theorem det_set {n : ℕ} (N : Submodule (𝓞 E) (Fin n → E)) :
       ext i j
       simp
     refine ⟨(A'.map e.symm).det, ⟨A'.map e.symm, ?_, rfl⟩, ?_⟩
-    · rw [← carries_iff e N, hmap]
-      exact hA'
+    · rwa [← carries_iff e N, hmap]
     · rw [← det_map', hmap]
   · rintro ⟨y, ⟨A, hA, rfl⟩, rfl⟩
     exact ⟨A.map e, (carries_iff e N A).mpr hA, (det_map' e A).symm⟩

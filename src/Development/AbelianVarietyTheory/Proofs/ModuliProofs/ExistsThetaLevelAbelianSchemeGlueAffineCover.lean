@@ -586,8 +586,7 @@ private theorem exists_bijective_monoidHom_points_of_isGrpPullback {S S' : Schem
     rw [Category.assoc, h.1.w, ← Category.assoc, Over.w z]
   refine ⟨MonoidHom.mk' (fun z => Over.homMk (z.left ≫ ψ) (hw z)) (fun a b => ?_), fun _ => rfl, ?_, ?_⟩
   · exact Over.OverMorphism.ext (h.2 T a b _ _ rfl rfl).symm
-  · intro a b hab
-    exact lift_ext h.1 (congrArg CommaMorphism.left hab)
+  · exact fun a b hab => lift_ext h.1 (congrArg CommaMorphism.left hab)
   · intro y
     obtain ⟨z, hz⟩ := exists_lift h.1 y
     exact ⟨z, Over.OverMorphism.ext hz.symm⟩
@@ -609,8 +608,7 @@ theorem torsionBasis_of_cover : ∀ (S : Scheme.{0}) (I : Type) (U : I → S.Ope
   · rw [← hc, map_linComb]
     simp only [hpt]
   · rw [map_linComb]
-    simp only [hpt]
-    exact hc'
+    simpa only [hpt] using hc'
 
 end GlobalTheory.CoverGlue
 end -- clump:auto
@@ -661,8 +659,7 @@ theorem commIsOf_of_retract (hL : L.IsLB) {T T' : Over S} (g : T' ⟶ T) (h : T 
     rw [← Over.comp_left, whiskerRight_fst, Over.comp_left, Category.assoc]
   rw [hxv _ _ _ _ hJ, hxv _ _ _ _ hJ, hyv _ _ _ _ hJ, hyv _ _ _ _ hJ, hx, hy] at e
   simp only [Category.assoc] at e
-  rw [e1, e2, e2, e3, gm_comp_global_eq_gm_units_map] at e
-  exact e
+  rwa [e1, e2, e2, e3, gm_comp_global_eq_gm_units_map] at e
 
 private theorem exists_overRes_section_image_openImmersion {T T' : Over S} (j : T' ⟶ T) [IsOpenImmersion j.left]
     (V' : T'.left.Opens) :
@@ -674,12 +671,8 @@ private theorem exists_overRes_section_image_openImmersion {T T' : Over S} (j : 
     rw [← Category.assoc, he, Category.assoc, Over.w j]
   · show (j.left.isoImage V').inv ≫ V'.ι ≫ T'.hom = (j.left ''ᵁ V').ι ≫ T.hom
     rw [← Over.w j, ← Category.assoc V'.ι, ← he, Category.assoc, Iso.inv_hom_id_assoc]
-  · apply Over.OverMorphism.ext
-    show (j.left.isoImage V').inv ≫ (j.left.isoImage V').hom = 𝟙 _
-    exact Iso.inv_hom_id _
-  · apply Over.OverMorphism.ext
-    show (j.left.isoImage V').hom ≫ (j.left ''ᵁ V').ι = V'.ι ≫ j.left
-    exact he
+  · exact Over.OverMorphism.ext (Iso.inv_hom_id _)
+  · exact Over.OverMorphism.ext he
 
 theorem local_of_openImmersion (hL : L.IsLB) {T T' : Over S} (j : T' ⟶ T) [IsOpenImmersion j.left]
     {x y : T ⟶ A} {c : Γ(T.left, ⊤)ˣ}
@@ -714,8 +707,7 @@ theorem local_of_openImmersion (hL : L.IsLB) {T T' : Over S} (j : T' ⟶ T) [IsO
       simp only [Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, Scheme.Hom.comp_app,
         Scheme.Hom.appTop]
       rfl
-    rw [hu] at key
-    exact key
+    rwa [hu] at key
 
 end GlobalTheory.WeilLocal
 
@@ -736,12 +728,10 @@ theorem GlobalTheory.weilIs_of_openCover : ∀ (S : Scheme.{0}) (I : Type) (U : 
     (hψ i) (hML i) (Out.baseOver (U i).toScheme) k (x' i) (y' i) (j ≫ x) (j ≫ y)
     (Units.map (U i).ι.appTop.hom.toMonoidHom c) hx₀ hy₀).1 (hW i)
   have H₁ : Out.WeilIs A L k (j ≫ x) (j ≫ y) (Units.map j.left.appTop.hom.toMonoidHom c) := by
-    rw [hj]
-    exact H₀
+    rwa [hj]
   obtain ⟨V, hV, hl, hc⟩ := GlobalTheory.WeilLocal.local_of_openImmersion hL j H₁ ⟨p, hi⟩
   refine ⟨V, ?_, hl, hc⟩
-  rw [hj] at hV
-  exact hV
+  rwa [hj] at hV
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsLocalOnBaseOfOpenCover =====

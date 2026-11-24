@@ -232,8 +232,7 @@ theorem triv_add (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme A) {H₀ : LB A.le
     obtain ⟨w, hw, h'⟩ := exists_over r i b h
     have := prod_fourPts F (x := w ≫ x3 A 0) (x' := w ≫ x3 A 1) (w ≫ x3 A 2)
       (hi.imp (fun e => e ▸ h') (fun e => e ▸ h')) U k
-    simp only [← comp_fourPts, hw] at this
-    exact this
+    simpa only [← comp_fourPts, hw] using this
   have cube := triv_of_faces hG hA hH hamp hM (fourPts F (x3 A 0) (x3 A 1) (x3 A 2)) ![1, -1, -1, 1]
     (fun r i b h => by
       by_cases hi : i = 0 ∨ i = 1

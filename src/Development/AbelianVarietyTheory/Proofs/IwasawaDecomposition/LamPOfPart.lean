@@ -134,8 +134,7 @@ theorem eigAt_tw {I : Type} (h : I → Module.End ℂ E) (y : I → ℂ) :
     eigAt (fun i => (Tw.map s (h i) : Module.End ℂ (Tw s E))) y = Tw.sub s (eigAt h fun i => cj s (y i)) := by
   refine SetLike.ext fun v => ?_
   rw [show v ∈ Tw.sub s (eigAt h fun i => cj s (y i)) ↔ Tw.out v ∈ eigAt h (fun i => cj s (y i)) from Iff.rfl]
-  simp only [eigAt, Submodule.mem_iInf]
-  exact forall_congr' fun i => mem_maxGen_tw (h i) (y i) v
+  simpa only [eigAt, Submodule.mem_iInf] using forall_congr' fun i => mem_maxGen_tw (h i) (y i) v
 
 theorem sub_iSup {ι : Type} (V : ι → Submodule ℂ E) : Tw.sub s (⨆ c, V c) = ⨆ c, Tw.sub s (V c) := by
   refine le_antisymm (fun x hx => ?_) (iSup_le fun c v hv => (le_iSup V c) hv)
@@ -260,17 +259,14 @@ theorem hecke_theta_lift_twisted_model_iff_untwisted (hM : R.toRealDat.IsModels)
     have e := eigSum_tw (s := twAt D.what₂.embLL A3.A.v0) (g j A3.A.fam.μ0) (SysL A3 j p)
     have e' : (fun x : (A3.liftI j A3.A.fam.μ0).OpIx → ℂ => SysL A3 j p fun i => cj (twAt D.what₂.embLL A3.A.v0) (x i)) =
         SysC A3 j p := funext fun x => propext (sysL_cj R j p x)
-    rw [e'] at e
-    exact e
+    rwa [e'] at e
   constructor
   · intro h
     refine ⟨fun j t i f => rat_of_intw hM j (hph j) t i _ (h.intw j t i) f, fun j i i' => (twE_commute j _ _).1 (h.comm j i i'), fun j p => ?_⟩
-    refine sub_inj (twAt D.what₂.embLL A3.A.v0) ?_
-    exact (h.parts j p).trans (hp j p)
+    exact sub_inj (twAt D.what₂.embLL A3.A.v0) ((h.parts j p).trans (hp j p))
   · intro h
     refine ⟨fun j t i u => intw_of_rat hM j t i _ (h.rat j t i) u, fun j i i' => (twE_commute j _ _).2 (h.comm j i i'), fun j p => ?_⟩
-    refine Eq.trans ?_ (hp j p).symm
-    exact congrArg (Tw.sub (twAt D.what₂.embLL A3.A.v0)) (h.parts j p)
+    exact Eq.trans (congrArg (Tw.sub (twAt D.what₂.embLL A3.A.v0)) (h.parts j p)) (hp j p).symm
 
 theorem phs_ne_zero (hC : R.WeakCharacterisation F) (j : Fin D.R.m) : R.phs j ≠ 0 :=
   norm_ne_zero_iff.1 (by rw [(hC.phase j).1]; exact one_ne_zero)
@@ -453,8 +449,7 @@ theorem translate_lift_linear_isometry : ∀ {D : D7} {G : Type} [Group G] [Fint
   · intro a y
     apply hinj
     funext h
-    simp only [map_smul, Pi.smul_apply, hS, RingHom.id_apply]
-    exact smul_comm _ _ _
+    simpa only [map_smul, Pi.smul_apply, hS, RingHom.id_apply] using smul_comm _ _ _
   · intro y h
     have hk : (R.cV i).ρ κ⁻¹ = 1 := (hMod.cV i).1 _ (inv_mem hκ.1)
     have hrr : (finHom (Vc D i)).rangeRestrict (h * κ) =
@@ -520,8 +515,7 @@ theorem exists_vec_ne (M : DSModel V S) : ∃ v : M.Vec, ∏ τ, ⟪(v τ : M.H 
   choose u _ hu2 using hu
   refine ⟨u, Finset.prod_ne_zero_iff.2 fun τ _ => ?_⟩
   rw [Ne, inner_self_eq_zero]
-  intro h
-  exact hu2 τ (Subtype.ext h)
+  exact fun h => hu2 τ (Subtype.ext h)
 
 theorem ipM_smul_meas (M : DSModel V S) (ν : Measure (GA D V)) (𝓕 : Set (GA D V)) (T T' : MMap M) (c : ℝ)
     (hc : 0 < c) : ipM M (ENNReal.ofReal c • ν) 𝓕 T T' = (c : ℂ) * ipM M ν 𝓕 T T' := by
@@ -625,8 +619,7 @@ theorem thetaP_read (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup �
         PiTensorProduct.lift (R.thF i (tupT μ) z)
           (PiTensorProduct.map (fun τ => (lowT (R.MW i (sg0 D A)) τ).subtype) (PiTensorProduct.tprod ℂ v)) := by
       exact e.trans rfl
-    rw [PiTensorProduct.map_tprod, PiTensorProduct.lift.tprod] at e2
-    exact e2
+    rwa [PiTensorProduct.map_tprod, PiTensorProduct.lift.tprod] at e2
   have hw0 : U - R.thF i (tupT μ) z = 0 :=
     GlobalTheory.LowTypeDetermined.eq_zero_of_lowT D _ _ (R.MW i (sg0 D A)) R.θ hM.inf
       (GlobalTheory.LowTypeRestriction.lowT_ne_bot _) _ _ _ (Submodule.sub_mem _ hU (hE.thF_mem i (tupT μ) z)) (fun v => by

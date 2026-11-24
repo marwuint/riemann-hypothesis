@@ -69,13 +69,11 @@ private theorem isIntegral_iff_spectralNorm_le_one' {p : ℕ} [Fact p.Prime] {K 
   · intro h
     have hlift : minpoly ℚ_[p] x ∈ Polynomial.lifts (algebraMap ℤ_[p] ℚ_[p]) := by
       rw [Polynomial.lifts_iff_coeff_lifts]
-      intro n
-      exact ⟨⟨(minpoly ℚ_[p] x).coeff n, h n⟩, rfl⟩
+      exact fun n => ⟨⟨(minpoly ℚ_[p] x).coeff n, h n⟩, rfl⟩
     obtain ⟨g, hg, -, hgm⟩ := Polynomial.lifts_and_natDegree_eq_and_monic hlift (minpoly.monic hx)
     refine ⟨g, hgm, ?_⟩
     have h0 := minpoly.aeval ℚ_[p] x
-    rw [← hg, Polynomial.aeval_map_algebraMap, Polynomial.aeval_def] at h0
-    exact h0
+    rwa [← hg, Polynomial.aeval_map_algebraMap, Polynomial.aeval_def] at h0
 
 private theorem spectralNorm_mul_zpadic {p : ℕ} [Fact p.Prime] {K : Type} [Field K] [Algebra ℚ_[p] K]
     [Algebra.IsAlgebraic ℚ_[p] K] (x y : K) :
@@ -138,11 +136,9 @@ private theorem isPrecomplete_maximalIdeal_of_free_finite_zpadic {p : ℕ} [Fact
     · intro hx
       refine Submodule.smul_induction_on hx ?_ ?_
       · intro r hr m _ i
-        simp only [map_smul, Pi.smul_apply, smul_eq_mul]
-        exact Ideal.mul_mem_right _ _ hr
+        simpa only [map_smul, Pi.smul_apply, smul_eq_mul] using Ideal.mul_mem_right _ _ hr
       · intro x y hx hy i
-        simp only [map_add (f := _), Pi.add_apply]
-        exact add_mem (hx i) (hy i)
+        simpa only [map_add (f := _), Pi.add_apply] using add_mem (hx i) (hy i)
     · intro h
       rw [← b.sum_equivFun x]
       exact Submodule.sum_mem _ (fun i _ => Submodule.smul_mem_smul (h i) Submodule.mem_top)
@@ -199,8 +195,7 @@ private theorem isAdicComplete_maximalIdeal_of_free_finite_zpadic {p : ℕ} [Fac
     rw [h, pow_zero, Ideal.one_eq_top] at he
     exact hpu (Ideal.span_singleton_eq_top.mp he))
   have hprec : IsPrecomplete (IsLocalRing.maximalIdeal B ^ e) B := by
-    rw [← he, ← hJ]
-    exact hprecJ
+    rwa [← he, ← hJ]
   exact { toIsHausdorff := inferInstance,
           toIsPrecomplete := isPrecomplete_of_isPrecomplete_pow _ e he0 hprec }
 

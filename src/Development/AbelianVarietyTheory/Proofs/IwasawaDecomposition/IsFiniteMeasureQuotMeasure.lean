@@ -337,8 +337,7 @@ theorem haarGL_image_mul (a : MatInf E j) (ha : 0 < detNorm E j a) (T : Set (Mat
     haarGL E j ((fun g => a * g) '' T) = haarGL E j T := by
   obtain ⟨hemb, hmp⟩ := GlobalTheory.HaarLeftInv.measurePreserving_mul_left E j a ha
   have := hemb.map_apply (haarGL E j) ((fun g => a * g) '' T)
-  rw [hmp.map_eq, Set.preimage_image_eq T hemb.injective] at this
-  exact this
+  rwa [hmp.map_eq, Set.preimage_image_eq T hemb.injective] at this
 
 variable [MeasurableSpace (GL (Fin j) (Cinf E))] [BorelSpace (GL (Fin j) (Cinf E))]
 
@@ -488,8 +487,7 @@ theorem GlobalTheory.GLInfReduction.exists_cover_of_finite_measure (E : Type) [F
   refine ⟨⋃ k ∈ Finset.range N, (fun h => c (-(k : ℝ) / N) * h) ⁻¹' S, ?_, ?_⟩
   · refine lt_of_le_of_lt (measure_biUnion_finset_le _ _) ?_
     refine ENNReal.sum_lt_top.2 fun k _ => ?_
-    rw [measure_preimage_mul]
-    exact hS'
+    rwa [measure_preimage_mul]
   · intro y
     set L := Real.log (dn (y : Matrix (Fin a) (Fin a) (Cinf E)))
     have hL : Real.exp L = dn (y : Matrix (Fin a) (Fin a) (Cinf E)) := Real.exp_log (dn_pos y)
@@ -528,8 +526,7 @@ theorem GlobalTheory.GLInfReduction.exists_cover_of_finite_measure (E : Type) [F
       rw [map_mul, hcint, ← mul_assoc, ← mul_assoc, hcomm, mul_assoc, mul_assoc]
     change entries ((c (-(k : ℝ) / N) * (GeneralLinearGroup.map (pInf E) (ratGL E a γ * splitCentre E a 1 ^ (-q)) * y) :
       GL (Fin a) (Cinf E)) : Matrix (Fin a) (Fin a) (Cinf E)) ∈ D
-    rw [e1, Units.val_mul, entries_mul, hR]
-    exact hgD
+    rwa [e1, Units.val_mul, entries_mul, hR]
 end -- clump:auto
 end -- clump:auto
 end -- clump:auto
@@ -722,8 +719,7 @@ theorem matInt_conj {n : ℕ} (s : GL (Fin n) (FiniteAdeleRing (𝓞 F) F)) (γ 
   suffices key : ∀ z, IntV z → IntV ((Si * G * S) *ᵥ z) by
     intro i j
     have := key (Pi.single j (1 : FiniteAdeleRing (𝓞 F) F)) (intV_single j) i
-    rw [Matrix.mulVec_single_one] at this
-    exact this
+    rwa [Matrix.mulVec_single_one] at this
   intro z hz
   obtain ⟨f, c, hc, hSz⟩ := exists_approx_vec (S *ᵥ z) (N * D) (Nat.mul_pos hN hD)
   set u : Fin n → FiniteAdeleRing (𝓞 F) F := (D : FiniteAdeleRing (𝓞 F) F) • (Si *ᵥ c) with hu
@@ -862,8 +858,7 @@ theorem isFiniteMeasure_quotMeasure (μ : Measure (GA E a)) [μ.IsHaarMeasure] :
   have hg : ratGL E a η * splitCentre E a 1 ^ n * ratGL E a γ⁻¹ * g =
       (ratGL E a η * splitCentre E a 1 ^ n) * (ratGL E a γ⁻¹ * g) := by simp only [mul_assoc]
   refine ⟨⟨_, hmem⟩, s, hs, ?_, ?_⟩
-  · rw [Subgroup.smul_def, smul_eq_mul, he, hg, map_mul]
-    exact hn
+  · rwa [Subgroup.smul_def, smul_eq_mul, he, hg, map_mul]
   · rw [Subgroup.smul_def, smul_eq_mul, he]
     simp only [map_mul, map_zpow, pFin_ratGL, pFin_splitCentre, _root_.one_zpow, mul_one, hx, map_inv]
     refine ⟨s⁻¹ * PIW.ClassFinD.glIncl E a η * s * k, (PIW.ClassFinD.KGL E a).mul_mem (hΛK s η hη) hk, ?_⟩

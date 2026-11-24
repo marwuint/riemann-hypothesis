@@ -100,7 +100,6 @@ private lemma unit_mul_real_mul_conj_eq_real_sq_mul (m1 m2 : ℂ) (h1 : ‖m1‖
 
 private lemma nabs_pos_twisted_operators (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (x : kˣ) : 0 < nabs k x := by
-  show (0 : ℝ) < ((distribHaarChar k x : NNReal) : ℝ)
   exact NNReal.coe_pos.2 (pos_iff_ne_zero.2 ((Group.isUnit x).map (distribHaarChar k)).ne_zero)
 
 private lemma nabs_inv_twisted_operators (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
@@ -184,15 +183,13 @@ theorem inSupp_eq_pre {A D E : Type} [Fintype A] [DecidableEq A] :
   · rintro ⟨h1, h2, h3⟩
     refine ⟨Matrix.of fun i j => ⟨x i j, h1 i j⟩, rfl, ?_, ?_⟩
     · change IsUnit (GlobalTheory.IndefiniteRowSideFullHecke.GLVolumeIndex.red (Matrix.of fun i j => (⟨x i j, h1 i j⟩ : 𝒪[k])).toBlocks₁₁)
-      rw [isUnit_red_iff, det_coe]
-      exact h2
+      rwa [isUnit_red_iff, det_coe]
     · ext i j
       exact (residue_eq_zero_iff_lt _).2 (h3 i j)
   · rintro ⟨A, rfl, hu, hz⟩
     refine ⟨fun i j => (A i j).2, ?_, fun i j => ?_⟩
     · have := (isUnit_red_iff A.toBlocks₁₁).1 hu
-      rw [det_coe] at this
-      exact this
+      rwa [det_coe] at this
     · exact (residue_eq_zero_iff_lt (A (.inr i) (.inl j))).1 (congrFun (congrFun hz i) j)
 
 def unitBar (A : Type) [Fintype A] [DecidableEq A] : Set (Matrix A A 𝓀[k]) := {U | IsUnit U}
@@ -296,8 +293,7 @@ theorem exists_GL_of_int {A : Type} [Fintype A] [DecidableEq A] (M : Matrix A A 
   have hu : IsUnit N.det := by
     rw [(Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one, RingHom.map_det, hN]
     exact hd
-  refine ⟨((Matrix.isUnit_iff_isUnit_det N).2 hu).unit, ?_⟩
-  exact hN
+  exact ⟨((Matrix.isUnit_iff_isUnit_det N).2 hu).unit, hN⟩
 
 end GlobalTheory.SuppFirstBlock
 
@@ -558,8 +554,7 @@ theorem part3 (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNona
     push_cast
     ring
   have hB : ∀ x, Φ (x * m.val) * starRingEnd ℂ (Φ x) = S.indicator (fun _ => (1 : ℂ)) (x * m'.val) := by
-    intro x
-    exact _root_.GlobalTheory.TorusIntegrand.integrand k ϖ hϖ (Fin r) D E ξ hξu e x
+    exact fun x => _root_.GlobalTheory.TorusIntegrand.integrand k ϖ hϖ (Fin r) D E ξ hξu e x
   have hC := integral_comp_mul_mul_volM ν m' (1 : GL (Fin r ⊕ E) k) (S.indicator (fun _ => (1 : ℂ)))
   simp only [Units.val_one, Matrix.one_mul, map_one, h1, Real.one_rpow, one_mul] at hC
   have hI : ∫ x, S.indicator (fun _ => (1 : ℂ)) x ∂(volM ν (Fin r ⊕ E) (Fin r ⊕ D)) =

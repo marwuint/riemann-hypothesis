@@ -111,8 +111,7 @@ theorem exists_algEquiv_of_generates {κ ι : Type} [Field κ] [Finite ι] (y : 
       rw [IntermediateField.adjoin_le_iff]
       rintro _ ⟨v, rfl⟩
       exact ⟨_, hf v⟩
-    intro x
-    exact this (htop ▸ IntermediateField.mem_top)
+    exact fun x => this (htop ▸ IntermediateField.mem_top)
   exact ⟨AlgEquiv.ofBijective f ⟨f.injective, hs⟩, hf⟩
 
 theorem minors_iff {R : Type} [CommRing R] {n : ℕ} (g : Matrix (Fin n) (Fin n) R) :
@@ -472,8 +471,7 @@ theorem exists_residue_embed {A : Type} [CommRing A] [IsDomain A] {X : Scheme.{0
   let m : Sp (FractionRing A) ⟶ X := spMap (algebraMap A (FractionRing A)) ≫ j
   have h0 : IsGenericPoint (j (⊥ : PrimeSpectrum A)) (closure (Set.range j)) := by
     have := (genericPoint_spec (Sp A)).image j.continuous
-    rw [genericPoint_eq_bot_of_affine (CommRingCat.of A), Set.image_univ] at this
-    exact this
+    rwa [genericPoint_eq_bot_of_affine (CommRingCat.of A), Set.image_univ] at this
   have h1 : x = m (IsLocalRing.closedPoint (FractionRing A)) := by
     refine (hx.eq h0).trans (Eq.trans (congrArg j ?_) (Scheme.Hom.comp_apply _ _ _).symm)
     apply PrimeSpectrum.ext
@@ -529,8 +527,7 @@ theorem exists_poly_embed {K κ A V : Type} [Field K] [Field κ] [Algebra K κ] 
     obtain ⟨q, rfl⟩ := hs q
     refine ⟨_, ⟨p, rfl⟩, _, ⟨q, rfl⟩, fun h0 => hq (e.injective (h0.trans (map_zero e).symm)), ?_⟩
     have := congrArg e hx
-    rw [map_mul, e.apply_symm_apply] at this
-    exact this
+    rwa [map_mul, e.apply_symm_apply] at this
 
 section Cells
 
@@ -630,8 +627,7 @@ theorem algHom_eq_of_point {A S : Type} [CommRing A] [Algebra c.F A] [CommRing S
   apply spMap_inj
   rw [← cancel_mono j]
   apply pullback.hom_ext
-  · rw [Category.assoc, Category.assoc]
-    exact h
+  · rwa [Category.assoc, Category.assoc]
   · rw [Category.assoc, Category.assoc, hj, spMap_comp_ring, spMap_comp_ring, f.comp_algebraMap, f'.comp_algebraMap]
 
 section Poly
@@ -801,8 +797,7 @@ theorem exists_fChart_cell : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
     refine ⟨hx, fun τ i => ?_⟩
     have := hgu τ i
     rw [hx] at this
-    rw [funext (hyΩ.2.1 τ)]
-    exact this
+    rwa [funext (hyΩ.2.1 τ)]
   have h3 := (_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c _).1 _ _ _ _ _ h1 h2
   have hc : θ.range.val.comp (cst q) = k.comp f := AlgHom.ext hθC
   have h4 := reframe_pt σ q hu₀ hu (hc ▸ frMap_trans _ _ _ _ _ _ _ _ hzκ hzΩ) hyg

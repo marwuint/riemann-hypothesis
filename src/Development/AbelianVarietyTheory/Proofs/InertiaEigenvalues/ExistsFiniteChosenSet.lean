@@ -183,8 +183,7 @@ theorem wild_of_pow {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra 
     exact mul_right_cancel₀ hy (h.symm.trans (one_mul y).symm)
   have hxN : A.valuation (x ^ (l ^ n) - 1) < 1 := by
     have h := hpk (l ^ n)
-    rw [hP, ← Valuation.map_neg, neg_sub] at h
-    exact h
+    rwa [hP, ← Valuation.map_neg, neg_sub] at h
 
   have hxA : x ∈ A := (A.valuation_le_one_iff x).1 hx1.le
   set xa : A := ⟨x, hxA⟩
@@ -239,8 +238,7 @@ theorem one_add_pow_sub_mem {l : ℕ} [Fact l.Prime] {s c : ℕ} (hs : 1 ≤ s) 
 
 theorem ex_mod {l : ℕ} (hl : l.Prime) (k : ℕ) : ex hl k % l = 1 := by
   have h := Nat.ModEq.of_dvd (dvd_pow_self l (Nat.succ_ne_zero k)) (ex_modEq hl k)
-  rw [Nat.ModEq, Nat.mod_eq_of_lt hl.one_lt] at h
-  exact h
+  rwa [Nat.ModEq, Nat.mod_eq_of_lt hl.one_lt] at h
 
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (k : Fin 2), D.nd.l i = D.host.g k → ∃ g0 : GE D.nd, (∃ w ∈ placesOver D.host.E (D.nd.l i), g0 ∈ Ine (F := D.host.E) (D.nd.plOm.1 w)) ∧ (∃ u : ℤ_[D.nd.l i]ˣ, ((cycZ (F := D.host.E) (Ω := D.nd.Om) (D.nd.l i) g0 : ℤ_[D.nd.l i]ˣ) : ℤ_[D.nd.l i]) = 1 + (D.nd.l i : ℤ_[D.nd.l i]) ^ D.nd.s0 i * (u : ℤ_[D.nd.l i])) ∧ ∀ w ∈ placesOver D.host.E (D.nd.l i), g0 ∈ Ine (F := D.host.E) (D.nd.plOm.1 w) → g0 ∈ wildSet D.nd (D.nd.plOm.1 w) := by
   intro D i k hk
@@ -255,8 +253,7 @@ theorem main : ∀ (D : D7) (i : D.nd.Loc) (k : Fin 2), D.nd.l i = D.host.g k �
     positivity
   obtain ⟨σ, hσI, hσc⟩ := GlobalTheory.PtCore.EpsAll.exists_generator (GlobalTheory.EpsInertia.epsAll D i) w hw
   obtain ⟨g0, hC, hP⟩ := exists_proL hl σ
-  have hs : 1 ≤ D.nd.s0 i := by
-    exact UpperTheory.KStar.S0.one_le_localLevel D.nd i
+  have hs : 1 ≤ D.nd.s0 i := UpperTheory.KStar.S0.one_le_localLevel D.nd i
   refine ⟨g0, ⟨w, hw, hC _ (isClosed_Ine (F := D.host.E) (D.nd.plOm.1 w)) fun k => pow_mem hσI _⟩, ?_, ?_⟩
   ·
     set L : ℤ_[D.nd.l i] := (D.nd.l i : ℤ_[D.nd.l i])
@@ -281,8 +278,7 @@ theorem main : ∀ (D : D7) (i : D.nd.Loc) (k : Fin 2), D.nd.l i = D.host.g k �
   ·
     intro w' hw' hine y hy
     have hA : (D.nd.plOm.1 w').valuation ((D.nd.l i : ℕ) : D.nd.Om) < 1 := by
-      have h := (D.nd.plOm.2 w' ((D.nd.l i : ℕ) : 𝓞 D.host.E)).2 hw'
-      simpa using h
+      simpa using (D.nd.plOm.2 w' ((D.nd.l i : ℕ) : 𝓞 D.host.E)).2 hw'
     have hfd : FiniteDimensional D.host.E (IntermediateField.adjoin D.host.E {y}) :=
       IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral y)
     have ho := IntermediateField.fixingSubgroup_isOpen (IntermediateField.adjoin D.host.E {y})
@@ -350,8 +346,7 @@ theorem exists_fin_roots {p : ℂ[X]} {t : ℕ} (hm : p.Monic) (hd : p.natDegree
   subst hlen
   refine ⟨fun c => l.get c, fun c => hl ▸ Multiset.mem_coe.2 (List.get_mem l c), ?_⟩
   conv_lhs => rw [hp, ← hl]
-  rw [Multiset.map_coe, Multiset.prod_coe]
-  rw [← List.prod_ofFn]
+  rw [Multiset.map_coe, Multiset.prod_coe, ← List.prod_ofFn]
   congr 1
   apply List.ext_get (by simp)
   intro n h1 h2

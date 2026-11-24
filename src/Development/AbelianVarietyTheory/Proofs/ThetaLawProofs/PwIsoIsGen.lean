@@ -189,9 +189,7 @@ theorem main : ∀ (R R' : Type) [CommRing R] [CommRing R'] (x : KeyIn R) (x' : 
     have e : s.f = fun j => ∑ k, cst x.P.A.hom (x.P.L.U j) (c k) * (show Γ(x.P.A.left, x.P.L.U j) from (b k).f j) :=
       funext hc
     have hs' : Via w l s'.f s.f := hs
-    have hs'' := (congrArg (Via w l s'.f) e).mp hs'
-    have e' := Via.unique x.P.isLB hs'' H
-    exact fun i => congrFun e' i
+    exact fun i => congrFun (Via.unique x.P.isLB ((congrArg (Via w l s'.f) e).mp hs') H) i
 
 end GlobalTheory.KeyVia
 end

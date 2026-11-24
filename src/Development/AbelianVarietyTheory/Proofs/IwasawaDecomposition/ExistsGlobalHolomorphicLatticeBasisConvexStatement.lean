@@ -212,8 +212,7 @@ theorem isLatBasis_act {S : Set (Fin g → ℂ)} {l : Fin r → Fin g → ℂ} (
   rw [hM]
   have hr : m.map (Int.cast : ℤ → ℝ) * n.map (Int.cast : ℤ → ℝ) = 1 := by
     have h : (m * n).map (Int.castRingHom ℝ) = 1 := by rw [h1]; simp
-    rw [Matrix.map_mul] at h
-    exact h
+    rwa [Matrix.map_mul] at h
   refine ⟨Fintype.linearIndependent_iff.2 fun c hc j => ?_, fun w => ?_⟩
   · rw [sum_act_real] at hc
     have h0 := Fintype.linearIndependent_iff.1 hl.1 _ hc
@@ -293,12 +292,8 @@ theorem isCoveringMap_proj {B : Set (Fin n → ℂ)} {K : (Fin n → ℂ) → Se
             right_inv := fun q => ?_
             continuous_toFun := ?_
             continuous_invFun := ?_ }, fun e => rfl⟩
-  · apply Subtype.ext
-    apply Subtype.ext
-    exact Prod.ext rfl (hM e).symm
-  · refine Prod.ext rfl ?_
-    apply GLZ.mat_injective
-    exact act_injective (hbas _ q.1.2).1 (hM _).symm
+  · exact Subtype.ext (Subtype.ext (Prod.ext rfl (hM e).symm))
+  · exact Prod.ext rfl (GLZ.mat_injective (act_injective (hbas _ q.1.2).1 (hM _).symm))
   · exact (Continuous.subtype_mk ((continuous_proj B K r).comp continuous_subtype_val) _).prodMk hMc
   · refine Continuous.subtype_mk (Continuous.subtype_mk ?_ _) _
     refine (continuous_subtype_val.comp continuous_fst).prodMk ?_

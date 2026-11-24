@@ -124,9 +124,7 @@ theorem lowest_least_degree : ∀ X : ProvA, DiscreteSeriesBlattner X → ∀ (t
   obtain ⟨-, hP, hP', hs, hs'⟩ := _root_.GlobalTheory.LowestTypes.lowest_types t al be ga de hA
   refine ⟨?_, ?_⟩
   · refine _root_.GlobalTheory.FlowLemma.degW_blattner_le _ _ _ _ _ 0 (coneTypes_ds X hX hP) ?_
-    intro a
-    refine ⟨(hs a).1, fun hle => (hs a).2 ?_⟩
-    exact lt_of_le_of_ne hle (lamA_ne_zero hA a)
+    exact fun a => ⟨(hs a).1, fun hle => (hs a).2 (lt_of_le_of_ne hle (lamA_ne_zero hA a))⟩
   · exact _root_.GlobalTheory.FlowLemma.degW_blattner_le _ _ _ _ _ ((t : ℚ) / 2) (coneTypes_ds X hX hP') hs'
 
 theorem lowest_least_degree_mirror : ∀ X : ProvA, DiscreteSeriesBlattner X → ∀ (t : ℕ) (al be ga de : List ℚ), HypA t al be ga de → (∀ μ v, IsHW (X.ds _ _ (lamA al be ga de)).HK.act μ v → degW (cPair (al.length + de.length) (ga.length + be.length + t)) (blattner (lamA al be ga de)) ≤ degW (cPair (al.length + de.length) (ga.length + be.length + t)) μ) ∧ (∀ μ v, IsHW (X.ds _ _ (lamM' t al be ga de)).HK.act μ v → degW (cPair (al.length + be.length) (ga.length + de.length)) (blattner (lamM' t al be ga de)) ≤ degW (cPair (al.length + be.length) (ga.length + de.length)) μ) := by
@@ -135,9 +133,7 @@ theorem lowest_least_degree_mirror : ∀ X : ProvA, DiscreteSeriesBlattner X →
   obtain ⟨-, hM, hs, hs'⟩ := _root_.GlobalTheory.TypesMirror.types_mirror t al be ga de hA
   refine ⟨?_, ?_⟩
   · refine _root_.GlobalTheory.FlowLemma.degW_blattner_le _ _ _ _ _ 0 (coneTypes_ds X hX hP) ?_
-    intro a
-    refine ⟨(hs a).1, fun hle => (hs a).2 ?_⟩
-    exact lt_of_le_of_ne hle (lamA_ne_zero hA a)
+    exact fun a => ⟨(hs a).1, fun hle => (hs a).2 (lt_of_le_of_ne hle (lamA_ne_zero hA a))⟩
   · exact _root_.GlobalTheory.FlowLemma.degW_blattner_le _ _ _ _ _ ((t : ℚ) / 2) (coneTypes_ds X hX hM) hs'
 
 end GlobalTheory.LeastDegree
@@ -326,8 +322,7 @@ theorem range_eq (M₁ : GKMod p q) (hI : IrrGK M₁) (M₂ B : GKMod r s) (hB :
     rintro _ ⟨P, rfl⟩
     have h1 : f P ∈ LinearMap.ker (LinearMap.lTensor M₁.V (LinearMap.range e).mkQ) :=
       LinearMap.congr_fun h0 P
-    rw [lTensor_mkQ] at h1
-    exact h1
+    rwa [lTensor_mkQ] at h1
   · have s1 : ∀ x : M₁.V, x ⊗ₜ[ℂ] e v' ∈ LinearMap.range f := by
       rcases hI.2 ((LinearMap.range f).comap ((TensorProduct.mk ℂ M₁.V M₂.V).flip (e v')))
         (by

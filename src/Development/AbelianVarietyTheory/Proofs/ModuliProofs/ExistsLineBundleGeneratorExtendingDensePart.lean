@@ -111,8 +111,7 @@ theorem extAt_apply {Q Y : Scheme.{0}} (J : Q ⟶ Y) [IsPreimmersion J] (W : Y.O
     ⟨⟨by rw [← SetLike.mem_coe, ← hAO] at hO; exact hO, hV⟩, hq⟩, ?_⟩
   have := congrArg (resG Q hle) hh
   rw [appLE_res_apply]
-  refine Eq.trans ?_ (this.trans (resG_resG i₂.le hle f))
-  exact (resG_resG i₁.le hle _).symm
+  exact Eq.trans (resG_resG i₁.le hle _).symm (this.trans (resG_resG i₂.le hle f))
 
 theorem exists_app_eq {Q Y : Scheme.{0}} [IsLocallyNoetherian Y] [GlobalTheory.IsNormalScheme Y]
     (J : Q ⟶ Y) [IsPreimmersion J] (hJ : ∀ V, Function.Injective (J.app V).hom) (W : Y.Opens)
@@ -182,8 +181,7 @@ theorem extAt_of_generic {Q Y H Z : Scheme.{0}} [IsLocallyNoetherian Y] [GlobalT
     rw [Scheme.basicOpen_appLE]
     refine ⟨⟨hz, show J (ψ z) ∈ V' from hw ▸ hzV⟩, ?_⟩
     change ψ z ∈ (Q.basicOpen _ : Set Q)
-    rw [← hAO]
-    exact hzA
+    rwa [← hAO]
   have e₁ := congrArg (resG Z (inf_le_left : O' ≤ O)) hs
   rw [res_appLE_apply, res_appLE_apply] at e₁
   have e₂ := congrArg (k.appLE _ O' hO').hom hs₀
@@ -211,8 +209,7 @@ theorem exists_compat {Q Y : Scheme.{0}} {N : LB Y} {J : Q ⟶ Y} (t : (N.pull J
     fun Z r z a b ha hb ↦ ?_⟩
   have := gen_trans ht r z (j := fun _ ↦ a) (j' := fun _ ↦ b) (mem_pull.2 ha) (mem_pull.2 hb)
   rw [trF, Fintype.prod_unique, zpow_one] at this
-  rw [gm_res r z _ ha, gm_res r z _ hb]
-  exact this
+  rwa [gm_res r z _ ha, gm_res r z _ hb]
 
 theorem exists_normalised {X U P Q : Scheme.{0}} {N : LB P} (hN : N.IsLB) {j : U ⟶ X} {e : X ⟶ P}
     {J : Q ⟶ P} {π : Q ⟶ U} {eU : U ⟶ Q} (w : eU ≫ J = j ≫ e) (hπ : eU ≫ π = 𝟙 U)
@@ -426,7 +423,6 @@ theorem exists_isGen_of_densePart : ∀ (X U : Scheme.{0}) [IsLocallyNoetherian 
   refine unit_ext fun q hq ↦ ?_
   have := hτ _ (𝟙 _) q a b hq.1 hq.2
   rw [← hσ, ← hσ, gm_pull _ _ q _ hq.1, gm_pull _ _ q _ hq.2] at this
-  rw [gm_pull _ _ q _ hq, gm_pull _ _ q _ hq, map_mul, gm_res _ q _ hq, gm_res _ q _ hq]
-  exact this
+  rwa [gm_pull _ _ q _ hq, gm_pull _ _ q _ hq, map_mul, gm_res _ q _ hq, gm_res _ q _ hq]
 
 end GlobalTheory.GenericExtend

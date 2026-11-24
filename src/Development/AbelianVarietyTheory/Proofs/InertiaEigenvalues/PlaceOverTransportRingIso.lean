@@ -111,16 +111,14 @@ theorem toResidue_isRoot {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Alg
   rw [AlgEquiv.commutes] at h
   have hmem : (⟨algebraMap E Ω (x : E), (A.valuation_le_one_iff _).mp hx⟩ : A) ^ q
       - ⟨algebraMap E Ω (x : E), (A.valuation_le_one_iff _).mp hx⟩ ∈ IsLocalRing.maximalIdeal A := by
-    rw [ValuationSubring.valuation_lt_one_iff]
-    rw [← Valuation.map_neg]
+    rw [ValuationSubring.valuation_lt_one_iff, ← Valuation.map_neg]
     convert h using 2
     simp
   rw [← IsLocalRing.residue_eq_zero_iff] at hmem
   simp only [IsRoot, eval_sub, eval_pow, eval_X]
   have e : toResidue A x = IsLocalRing.residue A
       ⟨algebraMap E Ω (x : E), (A.valuation_le_one_iff _).mp hx⟩ := rfl
-  rw [e, ← map_pow, ← map_sub]
-  exact hmem
+  rwa [e, ← map_pow, ← map_sub]
 
 theorem normV_le_of_isFrob : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)), IsPlaceOver A w → ∀ q : ℕ, 1 < q → ∀ σ : G E Ω, IsFrob A q σ → normV w ≤ q := by
   intro E Ω _ _ _ _ A w hw q hq σ hσ
@@ -208,8 +206,7 @@ theorem exists_notMem_mul_valuation_le_one_of_ne : ∀ {F : Type} [Field F] [Num
   have h1 : q.valuation F (algebraMap (𝓞 F) F t) = 1 :=
     (q.valuation_eq_one_iff_notMem (K := F) (r := t)).2 htq
   have h2 : q.valuation F (algebraMap (𝓞 F) F (u * a)) ≤ 1 := q.valuation_le_one (K := F) _
-  rw [← key, map_mul, h1, one_mul] at h2
-  exact h2
+  rwa [← key, map_mul, h1, one_mul] at h2
 
 end GlobalTheory
 end -- clump:auto
@@ -257,8 +254,7 @@ theorem valuationSubring_lt_one_of_placeOver {E' Ω' : Type} [Field E'] [NumberF
   have h2 : A'.valuation (algebraMap E' Ω' (s : E')) = 1 :=
     le_antisymm (valuationSubring_le_one_of_ringOfIntegers A' s) (not_lt.1 (fun h => hs ((hP s).1 h)))
   have hm' : ((m : 𝓞 E') : E') = (s : E') * t := by rw [← hm]
-  rw [hm', map_mul, map_mul, h2, one_mul] at h1
-  exact h1
+  rwa [hm', map_mul, map_mul, h2, one_mul] at h1
 
 theorem exists_int_valuationSubring_le {E' Ω' : Type} [Field E'] [NumberField E'] [Field Ω']
     [Algebra E' Ω'] [Algebra.IsAlgebraic E' Ω'] (A' : ValuationSubring Ω') {δ : Ω'} (hδ : δ ≠ 0) :
@@ -307,8 +303,7 @@ theorem approx_of_completion_equiv : ∀ (E : Type) [Field E] [NumberField E] (w
     rw [e] at hx2
     have hv : Valued.v (algebraMap E' (w'.adicCompletion E') ((j x - y) * c⁻¹)) = w'.valuation E' ((j x - y) * c⁻¹) :=
       HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w' _
-    rw [hv] at hx2
-    exact hx2
+    rwa [hv] at hx2
   have ht := valuationSubring_lt_one_of_placeOver A' w' hP _ hx'
   have e2 : algebraMap E' Ω' y - algebraMap E' Ω' (j x) = -(algebraMap E' Ω' ((j x - y) * c⁻¹) * algebraMap E' Ω' c) := by
     rw [← map_mul, ← map_sub, ← map_neg]; congr 1; field_simp; ring
@@ -354,8 +349,7 @@ theorem val_lt_map {K : Type} [Field K] (B : ValuationSubring K) (τ : K ≃+* K
     rintro rfl; simp at h
   by_cases ha : a = 0
   · subst ha
-    simp only [map_zero]
-    exact (Valuation.pos_iff _).2 (by simpa using hb)
+    simpa only [map_zero] using (Valuation.pos_iff _).2 (by simpa using hb)
   · have hta : τ a ≠ 0 := by simpa using ha
     rw [← not_le] at h ⊢
     intro h'
@@ -376,8 +370,7 @@ theorem fix_of_approx : ∀ (K : Type) [Field K] [CharZero K] (B : ValuationSubr
     intro h
     apply hne
     have h' := congrArg τ (sub_eq_zero.1 h)
-    rw [hs, RingEquiv.apply_symm_apply] at h'
-    exact h'
+    rwa [hs, RingEquiv.apply_symm_apply] at h'
   obtain ⟨u, hu, hlt⟩ := happ (if B.valuation (y - m) ≤ B.valuation (y - s) then y - m else y - s)
     (by split_ifs <;> assumption)
   have h1 : B.valuation (y - u) < B.valuation (y - m) := by
@@ -544,8 +537,7 @@ theorem smooth_comp (φ : Ω ≃+* Ω') (e : Weil h →* Weil h')
   have hO : (⟨_, hmem⟩ : Ine (F := E') A') ∈ Subtype.val ⁻¹' O' := hUO τ hτ _ (he (ineIncl h τ))
   rw [hpre] at hO
   have e1 : ineIncl h' ⟨_, hmem⟩ = e (ineIncl h τ) := Subtype.ext rfl
-  rw [Set.mem_setOf_eq, e1] at hO
-  exact hO
+  rwa [Set.mem_setOf_eq, e1] at hO
 
 end Smooth
 

@@ -206,8 +206,7 @@ theorem not_dvd_different_of_psiUnr : ∀ {F : Type} [Field F] [NumberField F] {
       · rw [map_mul, GlobalTheory.AdelicU.evalV_singleFin_ne hu, GlobalTheory.AdelicU.evalV_singleFin_ne hu,
           GlobalTheory.AdelicU.evalV_singleFin_ne hu, mul_zero]
     have := hmem _ hα
-    rw [e] at this
-    exact this
+    rwa [e] at this
   rw [HeightOneSpectrum.mem_adicCompletionIntegers, hval, ← WithZero.exp_zero, WithZero.exp_le_exp] at hint
   omega
 
@@ -389,15 +388,13 @@ theorem isTriple_of_standing : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Con
         ((G.V (.grid a b)).rank - (D.R.m - b) / 2) ((D.R.m - b) / 2) := by
       intro a b ha hb τ
       have s := (nv a b ha hb).sigOK (tauE D τ)
-      rw [(nv a b ha hb).sig, ← (nv a b ha hb).rank] at s
-      exact s
+      rwa [(nv a b ha hb).sig, ← (nv a b ha hb).rank] at s
     have sgnN : ∀ a b (ha : a ≤ D.R.m) (hb : b ≤ D.R.m) τ, Formalism.UG.HasSignature (gramAt D (negSp (G.V (.grid a b))) τ)
         ((D.R.m - b) / 2) ((G.V (.grid a b)).rank - (D.R.m - b) / 2) := by
       intro a b ha hb τ
       have s := GlobalTheory.GridWeil.sigOK_neg (nv a b ha hb).sigOK (tauE D τ)
       have e : (negSp (G.V (.grid a b))).sig (tauE D τ) = ((G.V (.grid a b)).sig (tauE D τ)).swap := rfl
-      rw [e, (nv a b ha hb).sig, ← (nv a b ha hb).rank] at s
-      exact s
+      rwa [e, (nv a b ha hb).sig, ← (nv a b ha hb).rank] at s
     obtain ⟨w⟩ : Nonempty (InfinitePlace D.host.F) := inferInstance
     obtain ⟨τ₀, hτ₀, -⟩ := hX.cart w
     have tW : Formalism.UG.HasSignature (gramAt D (G.V (.grid (↑i + 1) (↑j + 1))) τ₀)
@@ -407,8 +404,7 @@ theorem isTriple_of_standing : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Con
       rw [hX.JW, one_smul] at hs
       have hmap : (G.V (.grid (↑i + 1) (↑j + 1))).gram.map (Bs.emb w).1 = (gramAt D _ τ₀).map (starRingEnd ℂ) := by
         ext a b; simp [gramAt, hτ₀]
-      rw [hmap] at hs
-      exact hs
+      rwa [hmap] at hs
     have tW₁ : Formalism.UG.HasSignature (gramAt D (negSp (G.V (.grid ↑i ↑j))) τ₀) Γ.q
         ((G.V (.grid ↑i ↑j)).rank - Γ.q) := by
       refine GlobalTheory.FunObj.hasSignature_of_hasSig_conj ?_
@@ -417,8 +413,7 @@ theorem isTriple_of_standing : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Con
       have hmap : ((-1 : D.host.E) • (G.V (.grid ↑i ↑j)).gram).map (Bs.emb w).1 =
           (gramAt D (negSp (G.V (.grid ↑i ↑j))) τ₀).map (starRingEnd ℂ) := by
         ext a b; simp [gramAt, hτ₀, HSpace.gram]
-      rw [hmap] at hs
-      exact hs
+      rwa [hmap] at hs
     have hp : Γ.p = (D.R.m - (↑j + 1)) / 2 := by
       have r1 := sgn (↑i + 1) (↑j + 1) (by omega) (by omega) τ₀
       have c1 := hasSignature_add r1
@@ -447,8 +442,7 @@ theorem isTriple_of_standing : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Con
         rankV D ↑i (↑j + 1) - (D.R.m - (↑j + 1)) / 2 + (rankV D (↑i + 1) ↑j - (D.R.m - ↑j) / 2) := by
       show (G.V (.grid ↑i (↑j + 1))).rank + (G.V (.grid (↑i + 1) ↑j)).rank - _ = _
       omega
-    rw [e3]
-    exact s
+    rwa [e3]
   · intro τ
     refine ⟨_, _, GlobalTheory.SquareExps.alpha_exp (G := G) hL t ↑i ↑j j.2 τ, GlobalTheory.SquareExps.beta_exp (G := G) hL ↑i ↑j i.2 τ, ?_⟩
     have key := GlobalTheory.T.chiGridVertexRank_add_lt_two_exponent_add_centre sc.cGap τ ↑i ↑j i.2 j.2
@@ -583,8 +577,7 @@ theorem kerSmall_eq_thetaKO : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Cons
         fun y => d.2 (adjM (G.V (.grid i j)) (negSp (G.V (.grid (i + 1) j))) y) := by
       funext y
       exact congrArg d.2 (GlobalTheory.AdjSwap.dagger_eq_adjM (G.V (.grid i j)) (negSp (G.V (.grid (i + 1) j))) y)
-    rw [hadj] at h
-    exact h
+    rwa [hadj] at h
 
   simp only [kerSmall, GlobalTheory.SquareDict.datumB, thetaKO, Finsupp.sum, map_sum, Finset.sum_apply, map_smul,
   Pi.smul_apply, smul_eq_mul, Finset.mul_sum]

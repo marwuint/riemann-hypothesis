@@ -98,13 +98,11 @@ theorem eq_zero_of_idem (a : AF F) (h1 : ∀ v, eFin F v * a = 0) (h2 : ∀ v, e
   · funext w
     have h : (Pi.single w 1 : ∀ w : InfinitePlace F, w.Completion) w * a.1 w = 0 :=
       congrFun (congrArg Prod.fst (h2 w)) w
-    rw [Pi.single_eq_same, one_mul] at h
-    exact h
+    rwa [Pi.single_eq_same, one_mul] at h
   · refine af_ext F fun w => ?_
     have h : singleV F w 1 * sndA F a = 0 := congrArg Prod.snd (h1 w)
     have h' := congrArg (evalV F w) h
-    rw [map_mul, evalV_single_same, one_mul] at h'
-    exact h'
+    rwa [map_mul, evalV_single_same, one_mul] at h'
 
 theorem tensor_eq_zero {K E R I : Type} [Field K] [Field E] [Algebra K E] [CommRing R] [Algebra K R] (e : I → R)
     (he : ∀ a : R, (∀ i, e i * a = 0) → a = 0) (x : R ⊗[K] E)
@@ -115,8 +113,7 @@ theorem tensor_eq_zero {K E R I : Type} [Field K] [Field E] [Algebra K E] [CommR
   refine he _ fun i => ?_
   have h := hx i
   rw [← Algebra.smul_def] at h
-  have h' := congrArg (fun y => b.repr y j) h
-  simpa using h'
+  simpa using congrArg (fun y => b.repr y j) h
 
 theorem sum_single_one : (∑ v : InfinitePlace F, fstA F (eInf F v)) = 1 := by
   change (∑ v : InfinitePlace F, (Pi.single v 1 : ∀ w : InfinitePlace F, w.Completion)) = fun _ => 1
@@ -166,8 +163,7 @@ theorem idem_props : ∀ D : D7, (∀ v v' : Pl D, v ≠ v' → idem D v * idem 
       (fstA D.host.F (eInf D.host.F (plc D τ))) 1
     rw [RingHom.map_one, mul_one, ext_eInf] at h
     rw [idem_inr, infPart_algebraMap]
-    refine h.trans ?_
-    exact if_congr (hb.1.eq_iff (a := τ') (b := τ)) rfl rfl
+    exact h.trans (if_congr (hb.1.eq_iff (a := τ') (b := τ)) rfl rfl)
   · intro τ
     rw [idem_inr, finPart_algebraMap]
     exact TensorProduct.zero_tmul _ _

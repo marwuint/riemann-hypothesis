@@ -103,8 +103,7 @@ theorem exists_frob : ∃ Φ : GQ l, ∀ x : Om l, ‖x‖ ≤ 1 → ‖Φ x - x
     inferInstance
   refine ⟨σ.restrictScalars ℚ_[l], fun x hx => ?_⟩
   have h := hσ x hx
-  rw [qK_bot] at h
-  exact h
+  rwa [qK_bot] at h
 
 theorem mem_GK_qlExt (Φ : GQ l) : Φ ∈ GK (Formalism.MainNotions.ElementDenominator.qlExt l) := by
   unfold GK
@@ -232,8 +231,7 @@ theorem inertia_conj_mem : ∀ (l : ℕ) [Fact l.Prime] (g τ : Gl l), g ∈ IK 
     have h2 : ((τ⁻¹ * σ * τ : Gl l) : GQ l) x - x =
         ((τ : GQ l).symm) ((σ : GQ l) ((τ : GQ l) x) - (τ : GQ l) x) := by
       simp [map_sub]
-    rw [h2, norm_aut_eq]
-    exact h1
+    rwa [h2, norm_aut_eq]
   unfold IK at hg ⊢
   induction hg using Subgroup.closure_induction with
   | mem x hx => exact Subgroup.subset_closure (hS x hx)
@@ -372,11 +370,8 @@ theorem exists_gal_fix_Kur_map : ∀ (l : ℕ) [Fact l.Prime] (x y : Om l), Poly
     (minpoly.eq_of_irreducible_of_monic (minpoly.irreducible hx) hy (minpoly.monic hx))
   obtain ⟨τ, hτ⟩ := (Normal.minpoly_eq_iff_mem_orbit (F := ↥(MaximalUnramifiedExtension l)) (E := Om l) (x := y) (y := x)).1 hmin.symm
   refine ⟨τ.restrictScalars ℚ_[l], ?_, ?_⟩
-  · intro z hz
-    show τ z = z
-    exact τ.commutes ⟨z, hz⟩
-  · show τ x = y
-    exact hτ
+  · exact fun z hz => τ.commutes ⟨z, hz⟩
+  · exact hτ
 
 end GlobalTheory.LiftKur
 end -- clump:auto
@@ -423,8 +418,7 @@ theorem main : ∀ (l : ℕ) [Fact l.Prime] (F : FinExt l), Normal ℚ_[l] ↥F.
     have e := AlgEquiv.restrictNormal_commutes (g ^ N) (↥F.1) ⟨x, hx⟩
     have h1 : AlgEquiv.restrictNormal (g ^ N) (↥F.1) = 1 := by
       have := pow_orderOf_eq_one (r g)
-      rw [← map_pow] at this
-      exact this
+      rwa [← map_pow] at this
     rw [h1] at e
     simpa using e.symm
   obtain ⟨s, N', hN', hNe⟩ := Nat.exists_eq_pow_mul_and_not_dvd hN0 l (Fact.out : l.Prime).ne_one
@@ -459,8 +453,7 @@ theorem char_inertia_trivial_on_fixing_normal : ∀ (l : ℕ) [Fact l.Prime] (LL
     have hk : (1 : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l))) ∈ (χ.ker : Set ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l))) := χ.ker.one_mem
     rw [← ht₁e] at hk
     have hk' : ((1 : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l))) : Gl l) ∈ t₁ := hk
-    rw [← ht₂e] at hk'
-    exact hk'
+    rwa [← ht₂e] at hk'
   obtain ⟨E, hfd, hN, hE⟩ :=
     (krullTopology_mem_nhds_one_iff_of_normal ℚ_[l] (Om l) t₂).1 (ht₂.mem_nhds h1)
   refine ⟨⟨E, hfd⟩, hN, fun g hg => ?_⟩
@@ -612,8 +605,7 @@ theorem mem_IK_ql_iff : ∀ (l : ℕ) [Fact l.Prime] (g : Gl l), g ∈ IK (Forma
         rw [← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]
       rw [hx', norm_sub_rev] at h
       simpa [Subgroup.coe_inv] using h
-  · intro h
-    exact Subgroup.subset_closure h
+  · exact fun h => Subgroup.subset_closure h
 
 end GlobalTheory.IKRes
 end -- clump:auto
@@ -882,12 +874,10 @@ theorem orbit_pow {G LL : Type} [Group G] [Field LL] (I : Subgroup G) (F : G) (P
     induction n with
     | zero => exact hχ
     | succ n ih =>
-      simp only [sq, Function.iterate_succ_apply']
-      exact hτS _ ih
+      simpa only [sq, Function.iterate_succ_apply'] using hτS _ ih
   have hsq : ∀ n, ∀ g : I, P g → sq n g = sq (n + 1) g ^ l := by
     intro n g hg
-    simp only [sq, Function.iterate_succ_apply']
-    exact hτ _ (hsqS n) g hg
+    simpa only [sq, Function.iterate_succ_apply'] using hτ _ (hsqS n) g hg
   have hpow : ∀ m n, ∀ g : I, P g → sq m g = sq (m + n) g ^ (l ^ n) := by
     intro m n g hg
     induction n with
@@ -1220,8 +1210,7 @@ theorem GlobalTheory.GoodLatt.main : GlobalTheory.Published.FontaineBcris → �
       simp only [Subgroup.coe_mul, Subgroup.coe_inv, j]
       rw [hg]
       group
-    rw [e2, map_mul, map_mul, map_inv, mul_comm (χ j) (χ g), mul_inv_cancel_right] at key
-    exact key
+    rwa [e2, map_mul, map_mul, map_inv, mul_comm (χ j) (χ g), mul_inv_cancel_right] at key
 
   have hcx : ∀ χ ∈ Sig, (∀ g : (pc Pl h hN hF hS).Iner, (g : Gl l) ∈ IK (Formalism.MainNotions.ElementDenominator.qlExt l) → χ g ^ e = 1) →
       ∃ c : ZMod e, ∀ g : (pc Pl h hN hF hS).Iner, (g : Gl l) ∈ IK (Formalism.MainNotions.ElementDenominator.qlExt l) → ∀ w : ↥LL.1,
@@ -1263,8 +1252,7 @@ theorem GlobalTheory.GoodLatt.main : GlobalTheory.Published.FontaineBcris → �
       obtain ⟨c, rfl⟩ := IntermediateField.mem_bot.1 hx
       exact g'.commutes c
     have := hN.conj_mem ⟨n, hmem n⟩ (by rw [GKin, Subgroup.mem_subgroupOf]; exact hn) ⟨g, hmem g⟩
-    rw [GKin, Subgroup.mem_subgroupOf] at this
-    exact this
+    rwa [GKin, Subgroup.mem_subgroupOf] at this
   obtain ⟨hI1, hI2⟩ := _root_.GlobalTheory.CrysInertDescent.main hB l LL Pl AI hStd K' (ϖ.field a) hNK' T hcrys
   refine ⟨hI1 ?_, ?_⟩
   · intro g hg hgF x hx

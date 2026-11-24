@@ -123,8 +123,7 @@ theorem pair_zero_mem (ρ : Γ →* GL (Fin r) A) (χ : ℕ → (Γ →* Aˣ)) (
     intro M X Y hM
     obtain ⟨v, hv⟩ := exists_lift ρ χ hs X
     obtain ⟨w, hw⟩ := exists_lift ρ χ hs Y
-    have hXMY := mul_mem_span ρ χ (mul_mem_span ρ χ hv hM) hw
-    simpa using hXMY
+    simpa using mul_mem_span ρ χ (mul_mem_span ρ χ hv hM) hw
   obtain ⟨i0, i1, h01⟩ : ∃ i0 i1 : Fin r, i0 ≠ i1 :=
     ⟨⟨0, by omega⟩, ⟨1, by omega⟩, by simp [Fin.ext_iff]⟩
 
@@ -138,8 +137,7 @@ theorem pair_zero_mem (ρ : Γ →* GL (Fin r) A) (χ : ℕ → (Γ →* Aˣ)) (
 
   have key : ∀ (i j : Fin r) (c : A), (Matrix.single i j c, (0 : ℕ → A)) ∈ I := by
     intro i j c
-    have hij := sand _ (Matrix.single i i0 c) (Matrix.single i1 j 1) hE
-    simpa using hij
+    simpa using sand _ (Matrix.single i i0 c) (Matrix.single i1 j 1) hE
   let J := I.comap (LinearMap.inl A (Matrix (Fin r) (Fin r) A) (ℕ → A))
   have hPJ : P ∈ J := by
     rw [Matrix.matrix_eq_sum_single P]
@@ -156,10 +154,8 @@ theorem exists_comb_kills_chars :
   choose h hh using fun k => Set.mem_range.mp (g k).2
   have hsum : ∑ k, f k • pairOf ρ χ (h k) = (P, 0) := by simpa [hh] using hg
   refine ⟨m, f, h, ?_, fun c => ?_⟩
-  · have h1 := congrArg Prod.fst hsum
-    simpa [Prod.fst_sum, pairOf] using h1
-  · have h2 := congrFun (congrArg Prod.snd hsum) c
-    simpa [Prod.snd_sum, Finset.sum_apply, pairOf] using h2
+  · simpa [Prod.fst_sum, pairOf] using congrArg Prod.fst hsum
+  · simpa [Prod.snd_sum, Finset.sum_apply, pairOf] using congrFun (congrArg Prod.snd hsum) c
 
 end GlobalTheory.MatCorner
 end -- clump:auto
@@ -203,8 +199,7 @@ theorem map_one_sub_mulVec {k : ℕ} (M : Matrix (Fin k) (Fin k) A) (u : Fin k �
     ((1 - M).map (toFr A)).mulVec u = u - (M.map (toFr A)).mulVec u := by
   have : (1 - M).map (toFr A) = 1 - M.map (toFr A) := by
     have h := map_sub (toFr A).mapMatrix 1 M
-    rw [map_one] at h
-    exact h
+    rwa [map_one] at h
   rw [this, Matrix.sub_mulVec, Matrix.one_mulVec]
 
 theorem eq_of_mulVec {k : ℕ} {M N : Matrix (Fin k) (Fin k) A}
@@ -282,8 +277,7 @@ theorem rank_single {K : Type} [Field K] (i : Fin r) :
     ext a b
     simp only [Matrix.single_apply, Matrix.diagonal_apply, Pi.single_apply]
     grind
-  rw [this, Matrix.rank_diagonal]
-  rw [Fintype.card_eq_one_iff]
+  rw [this, Matrix.rank_diagonal, Fintype.card_eq_one_iff]
   refine ⟨⟨i, by simp⟩, ?_⟩
   rintro ⟨a, ha⟩
   apply Subtype.ext
@@ -327,8 +321,7 @@ theorem exists_orthogonal_idempotents : ∀ (l : ℕ) [Fact l.Prime] {Γ X A : T
   refine ⟨eB, e1, ⟨hB, h1R, hBB, h11, hl eB ?_, hrr eB ?_⟩, hb, Matrix.single i i 1, rank_single i, ?_⟩
   · rw [← mul_assoc, ← mul_assoc, mul_sub eB 1 eB, mul_one, hBB, sub_self, zero_mul, zero_mul]
   · rw [mul_assoc, sub_mul 1 eB eB, one_mul, hBB, sub_self, mul_zero]
-  · rw [h1π]
-    exact hb'
+  · rwa [h1π]
 
 end GlobalTheory.SpanIdem
 

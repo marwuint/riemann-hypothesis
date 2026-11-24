@@ -186,37 +186,33 @@ theorem exists_darboux_transport : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ)
     intro m n J
     ext i j
     simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]
-  have hGJ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Vs.J = -GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (sgn ε S).gram := by
-    rw [hG0]
-    ext i j
-    simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM]
-  have hG : (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (sgn ε S).gram).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) =
-      (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (sgn ε S).gram)ᵀ := by
-    rw [hmapc, hG0]
-    ext i j
-    simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, hV.herm]
   have hGH : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F ((sgn ε S).gram)⁻¹ * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (sgn ε S).gram = 1 := by
     simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM]
     rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ hdet, Matrix.map_one _ (map_zero _) (map_one _)]
-  have hW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Ws.J = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := D.host.F) (AF D.host.F) D.host.xi0 •
-      reindex e e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F X.gram)ᵀ := by
-    rw [hJW]
-    ext i j
-    simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, Matrix.reindex_apply, map_mul]
   have hT : ∀ u, cS u = uᵀ.submatrix e id * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (sgn ε S).gram := by
     intro u
     rw [hcS u, hsgn]
   obtain ⟨co0, hco0⟩ := exists_darboux_transpose_mul (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) e
     (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F X.gram) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := D.host.F) (AF D.host.F) D.host.xi0)
-    hGH hG hGJ hW rfl rfl M.co cS hT
-  obtain ⟨co, hco⟩ : ∃ co : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig)
-      (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := D.host.F) (AF D.host.F) D.host.xi0)
-      (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F X.gramᵀ) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F ((sgn ε S).gram)⁻¹))
-      (Fin S.rank × Fin d), (∀ u, co.e (cS u) = M.co.e u) ∧ ∀ w, co.e w = co0.e w := by
-    refine ⟨⟨co0.e, fun w w' => ?_⟩, hco0, fun _ => rfl⟩
-    rw [← co0.form, symp_smul_eq_symp_one_smul]
+    hGH
+    (by
+      rw [hmapc, hG0]
+      ext i j
+      simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, hV.herm])
+    (by
+      rw [hG0]
+      ext i j
+      simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM])
+    (by
+      rw [hJW]
+      ext i j
+      simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, Matrix.reindex_apply,
+        map_mul])
+    rfl rfl M.co cS hT
+  refine ⟨Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := D.host.F)
+      (AF D.host.F) D.host.xi0, ((sgn ε S).gram)⁻¹, ⟨co0.e, fun w w' => ?_⟩, ?_, ?_, ?_⟩
+  · rw [← co0.form, symp_smul_eq_symp_one_smul]
     simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, Matrix.transpose_map]
-  refine ⟨Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := D.host.F) (AF D.host.F) D.host.xi0, ((sgn ε S).gram)⁻¹, co, ?_, ?_, ?_⟩
   · ext i j
     simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, map_mul]
   · intro y
@@ -226,7 +222,7 @@ theorem exists_darboux_transport : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ)
         GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F y := by
       rw [hT]
       exact map_transpose_inv_mul _ e y hdet
-    rw [← hu, hco.1]
+    rw [← hu, hco0]
     exact hab
   · intro Φ f
     constructor
@@ -234,11 +230,11 @@ theorem exists_darboux_transport : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ)
       refine ⟨h1, funext fun w => ?_⟩
       obtain ⟨u, rfl⟩ := cS.surjective w
       rw [← h2 u]
-      simp only [GlobalTheory.WeilSchrodinger.thetaTr, GlobalTheory.WeilM.Darboux.rho, hco.1 u]
+      simp only [GlobalTheory.WeilSchrodinger.thetaTr, GlobalTheory.WeilM.Darboux.rho, hco0 u]
     · rintro ⟨h1, h2⟩
       refine ⟨h1, fun u => ?_⟩
       rw [← h2]
-      simp only [GlobalTheory.WeilSchrodinger.thetaTr, GlobalTheory.WeilM.Darboux.rho, hco.1 u]
+      simp only [GlobalTheory.WeilSchrodinger.thetaTr, GlobalTheory.WeilM.Darboux.rho, hco0 u]
 
 end GlobalTheory.SquareAgree
 

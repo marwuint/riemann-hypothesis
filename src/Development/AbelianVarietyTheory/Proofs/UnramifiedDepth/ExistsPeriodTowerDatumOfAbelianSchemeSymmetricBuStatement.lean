@@ -364,10 +364,8 @@ theorem exists_BX_of_factorSystems :
           obtain rfl := hy y' ⟨b1, b2⟩
           exact fs_sigma_eq.2 ⟨rfl, rfl, hu u' ⟨eq_div_iff_mul_eq'.2 c1, eq_div_iff_mul_eq'.2 c2⟩⟩ }
   refine ⟨B, fun R => AddEquiv.refl _, fun R _ _ => (1 : (R : Type)ˣ), fun _ _ => rfl, ?_, ?_, ?_⟩
-  · intro R x x' y
-    exact show (1 : (R : Type)ˣ) * 1 * t₁ R x x' y = t₁ R x x' y * 1 by simp
-  · intro R x y y'
-    exact show (1 : (R : Type)ˣ) * 1 * t₂ R x y y' = t₂ R x y y' * 1 by simp
+  · exact fun R x x' y => show (1 : (R : Type)ˣ) * 1 * t₁ R x x' y = t₁ R x x' y * 1 by simp
+  · exact fun R x y y' => show (1 : (R : Type)ˣ) * 1 * t₂ R x y y' = t₂ R x y y' * 1 by simp
   · intro R S f x y
     exact show Units.map (f.1 : (R : Type) →* (S : Type)) 1 * δ f x y = δ f x y * 1 by simp
 
@@ -393,8 +391,7 @@ private theorem invGenDescent_gs_appLE {Y Y' : Scheme.{0}} (τ : Y' ⟶ Y) (W : 
     (h : W' ≤ τ ⁻¹ᵁ W) (a : Γ(Y, W)) (x : Y') (hx : x ∈ W') :
     gs (𝟙 Y') x W' ((τ.appLE W W' h).hom a) = gs τ x W a := by
   have e := (gs_res (𝟙 Y') x h hx ((τ.app W).hom a)).trans (gs_pull (𝟙 Y') τ x W (h hx) a)
-  rw [Category.id_comp] at e
-  exact e
+  rwa [Category.id_comp] at e
 
 
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor in
@@ -976,8 +973,7 @@ theorem pairing_nondegenerate_integral_torsion :
         (stalkClosedPointIso (CommRingCat.of (O : Type))).commRingCatIsoToRingEquiv.injective F
       exact (mul_comm _ _).trans (inj.trans (mul_comm _ _))
     have g := ha _ j z Jc hJc
-    rw [a1, map_one, eq_comm, mul_inv_eq_one] at g
-    exact g
+    rwa [a1, map_one, eq_comm, mul_inv_eq_one] at g
   obtain ⟨w, -, hw⟩ := T 1 (one_pow _)
   exact (hb O).1 (((hw _ ⟨hxp, key⟩).trans (hw 1 ⟨one_pow _, j1⟩).symm).trans e0.symm)
 
@@ -1131,8 +1127,7 @@ theorem bxFibre_unique {Y : Scheme.{0}} {F P Q : Type} [CommRing F] [IsLocalRing
     c = c' := by
   obtain ⟨U, hU, hmem⟩ := bxFibre_affine (c (closedPoint F))
   have hmem' : c' (closedPoint F) ∈ U := by
-    rw [← bxFibre_closed p c', ← hp, bxFibre_closed p c]
-    exact hmem
+    rwa [← bxFibre_closed p c', ← hp, bxFibre_closed p c]
   obtain ⟨φ, hφ⟩ := bxFibre_exists_chart hU c hmem
   obtain ⟨ψ, hψ⟩ := bxFibre_exists_chart hU c' hmem'
   rw [hφ, hψ] at hp hq ⊢
@@ -1155,8 +1150,7 @@ theorem bxFibre_exists {Y : Scheme.{0}} {F P Q R : Type} [CommRing F] [CommRing 
       Spec.map (CommRingCat.ofHom q) ≫ c = b := by
   obtain ⟨U, hU, hmem⟩ := bxFibre_affine (a (closedPoint P))
   have hmem' : b (closedPoint Q) ∈ U := by
-    rw [← bxFibre_closed g b, ← h, bxFibre_closed f a]
-    exact hmem
+    rwa [← bxFibre_closed g b, ← h, bxFibre_closed f a]
   obtain ⟨φ, hφ⟩ := bxFibre_exists_chart hU a hmem
   obtain ⟨ψ, hψ⟩ := bxFibre_exists_chart hU b hmem'
   rw [hφ, hψ] at h ⊢
@@ -1621,8 +1615,7 @@ theorem bx_frame_pairing_adj :
       · rw [frame_nsmul2 B (b R) (t₂ R) (h₂ R), transport_right_smul_frame, frame_zero2 B (b R) (t₂ R) (h₂ R),
           ← B.mul_smul, mul_comm]
     constructor
-    · intro h
-      exact ⟨h.1, h.2.1, B.pairing_unique _ _ _ _ _ h (key h.1 h.2.1)⟩
+    · exact fun h => ⟨h.1, h.2.1, B.pairing_unique _ _ _ _ _ h (key h.1 h.2.1)⟩
     · rintro ⟨hx, hy, rfl⟩
       exact key hx hy
   · refine ⟨⟨a, a', fun {R} s x z => (frameEquiv B (b R (a.f s x) z)).symm.trans

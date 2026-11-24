@@ -176,10 +176,7 @@ theorem cocycle_mem_coboundaries_of_tate_orthogonal' : Formalism.GaloisCohomolog
       exact SModEq.top
     exact one_ne_zero h10
   have hne : Ideal.span {((l : ℕ) : O)} ≠ ⊤ := by
-    intro htop
-    apply hl
-    intro hmem
-    exact hmem (Ideal.span_singleton_eq_top.1 htop)
+    exact fun htop => hl (fun hmem => hmem (Ideal.span_singleton_eq_top.1 htop))
   haveI hfinH : Module.Finite O (LatticeCohomology LA') :=
     GlobalTheory.TateFiniteH1.tate_finH1 hT l P K LL O hO A' LA'
   let S : Submodule O ↥(latticeCocycles LA') := ((B1 A'.ρ).restrictScalars O).comap (latticeCocycles LA').subtype
@@ -433,8 +430,7 @@ theorem exists_inv : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : �
     intro z
     obtain ⟨x, hx⟩ := hspan z.1 z.2.1 z.2.2
     refine ⟨x, ?_⟩
-    rw [← map_smul, ← sub_eq_zero, ← map_sub, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
-    exact hx
+    rwa [← map_smul, ← sub_eq_zero, ← map_sub, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
   refine ⟨Z, ?_⟩
   by_cases h0 : B.mkQ z0' = 0
   · refine ⟨0, hZ, fun z => ?_⟩

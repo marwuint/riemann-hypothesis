@@ -167,9 +167,7 @@ theorem eq_smul_iff (x y : SecOnR f M ⊤) (a : R) : x = a • y ↔
   constructor
   · rintro rfl i
     exact key i
-  · intro h
-    apply (SecOnR.topEquiv f M).injective
-    exact hext _ _ (fun i => (h i).trans (key i).symm)
+  · exact fun h => (SecOnR.topEquiv f M).injective (hext _ _ (fun i => (h i).trans (key i).symm))
 
 theorem existsUnique_mul_pull [Module.Flat R R'] [CompactSpace Y] [IsSeparated f] (hM : M.IsLB)
     (H : IsPullback π f' f (Spec.map (CommRingCat.ofHom (algebraMap R R')))) (θ : LB.Sec M)
@@ -213,8 +211,7 @@ theorem existsUnique_mul_pull [Module.Flat R R'] [CompactSpace Y] [IsSeparated f
       refine ⟨a, ?_⟩
       rw [LinearMap.toSpanSingleton_apply]
       refine ((eq_smul_iff s ((SecOnR.topEquiv f M).symm θ) a).mpr ?_).symm
-      rw [LinearEquiv.apply_symm_apply]
-      exact ha
+      rwa [LinearEquiv.apply_symm_apply]
   let φL := LinearEquiv.ofBijective _ hsec
   let Φ : R' → SecOnR f' (M.pull π) ⊤ := fun c =>
     SecOnR.baseChangeHom M H.w ⊤ ⊤ e0 (LinearEquiv.lTensor R' φL ((TensorProduct.rid R R').symm c))
@@ -264,8 +261,7 @@ theorem existsUnique_mul_of_isoMaps {L' : LB Y'} (hM : M.IsLB) (hL' : L'.IsLB) {
     constructor
     · have hs := GlobalTheory.GenericGenerated.gs_secOfIso w' σ' hw' hMp hL' J k (𝟙 Y') y
         (TopologicalSpace.Opens.mem_inf.2 ⟨hJ, hk⟩)
-      rw [hinv Y' (𝟙 Y') y k J (TopologicalSpace.Opens.mem_inf.2 ⟨hk, hJ⟩), inv_inv] at hs
-      exact hs
+      rwa [hinv Y' (𝟙 Y') y k J (TopologicalSpace.Opens.mem_inf.2 ⟨hk, hJ⟩), inv_inv] at hs
     · exact (GlobalTheory.ArcQ.FrUniq.isoMaps_iff w θ' θ).mp h Y' (𝟙 Y') y (J PUnit.unit) k
         ((ReciprocityTheory.ChartRestriction.G.Geo.Tor.mem_pull).mp hJ) hk
   obtain ⟨a, ha, huniq⟩ := hθ σ
@@ -316,10 +312,8 @@ theorem exists_eigenbasis_pullback {V V' : Type} [CommRing V] [IsLocalRing V] [I
     intro R _ G _ w
     unfold ReciprocityTheory.ChartRestriction.G.Chart.IsTan IsTan
     constructor
-    · intro h
-      exact congrArg (fun q => Over.Hom.left q) h
-    · intro h
-      exact Over.OverMorphism.ext h
+    · exact fun h => congrArg (fun q => Over.Hom.left q) h
+    · exact fun h => Over.OverMorphism.ext h
   have prod_tvec : ∀ {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {n : ℕ}
       {x : ∀ k : ℕ, ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀ := R) (ReciprocityTheory.ChartRestriction.G.Chart.JetR R (Fin n) k) ⟶ G}
       (hx : ReciprocityTheory.ChartRestriction.G.Chart.IsUnivChart G n x) {m : ℕ} (c : Fin m → R) (b : Fin m → Fin n → R),
@@ -364,10 +358,8 @@ theorem exists_eigenbasis_pullback {V V' : Type} [CommRing V] [IsLocalRing V] [I
     intro R _ G _ n x hx f _ c s
     rw [← ReciprocityTheory.ChartRestriction.G.Chart.tvec_eig_iff hx f c s]
     constructor
-    · intro h
-      exact Over.OverMorphism.ext h
-    · intro h
-      exact congrArg (fun q => Over.Hom.left q) h
+    · exact fun h => Over.OverMorphism.ext h
+    · exact fun h => congrArg (fun q => Over.Hom.left q) h
   have vecMul_eq : ∀ {A S : Type} [CommRing A] [CommRing S] [Algebra A S] {d : ℕ}
       (L : (Fin d → A) →ₗ[A] (Fin d → A)) (T : (Fin d → S) →ₗ[S] (Fin d → S)),
       (∀ c, T (algebraMap A S ∘ c) = algebraMap A S ∘ L c) → ∀ (w : Fin d → S),
@@ -439,10 +431,8 @@ theorem exists_eigenbasis_pullback {V V' : Type} [CommRing V] [IsLocalRing V] [I
   refine (existsUnique_congr fun cf => ?_).2 hk
   rw [comb_iff hx' (fun i => algebraMap V V' ∘ b i) cf]
   constructor
-  · intro h
-    exact tvec_inj hx' h
-  · intro h
-    exact congrArg (fun z => tvec (x := x') z) h
+  · exact fun h => tvec_inj hx' h
+  · exact fun h => congrArg (fun z => tvec (x := x') z) h
 
 end Lie
 

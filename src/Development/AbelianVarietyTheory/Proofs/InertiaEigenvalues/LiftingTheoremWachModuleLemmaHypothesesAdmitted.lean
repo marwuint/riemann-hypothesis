@@ -127,27 +127,23 @@ theorem dss_semisimple_of_used : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf 
     obtain ⟨y, hy⟩ := hA.1.2 ⟨x, hx⟩
     have h2 := y.2.2
     have : ((y : ↥(K0 K)) : Om l) = x := congrArg Subtype.val hy
-    rw [this] at h2
-    exact h2
+    rwa [this] at h2
   haveI : FiniteDimensional ℚ_[l] ↥(K0 K) := ((D.loc l).PD K).finK₀
   haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩
   have hw1 : (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1
       ((((HW l).W K 1 LL h).χΓ ((HW l).W K 1 LL h).gam : (↥(OL LL))ˣ) : ↥(OL LL)) - 1) = 1 := by
     have := ((HW l).W K 1 LL h).gam_gen
-    rw [hA.2.1, Nat.cast_one] at this
-    exact this
+    rwa [hA.2.1, Nat.cast_one] at this
   have hug1 : ug ^ (l - 1) = (((HW l).W K 1 LL h).χΓ ((HW l).W K 1 LL h).gam) ^ (l - 1) := by
     have := hug
-    rw [hpl] at this
-    exact this
+    rwa [hpl] at this
   have hug' : ug = ((HW l).W K 1 LL h).χΓ ((HW l).W K 1 LL h).gam :=
     GlobalTheory.units_eq_of_pow_pred_eq_of_val_one l (D.loc l) LL ug _ hug1 hv hw1
   have hc' : ∀ x : ℤ, ((l : ℕ) : ↥(OL LL)) * cO x = 1 - ((((((HW l).W K 1 LL h).χΓ
       ((HW l).W K 1 LL h).gam) ^ (-x) : (↥(OL LL))ˣ) : ↥(OL LL))) := by
     intro x
     have := hc x
-    rw [hpl, hug'] at this
-    exact this
+    rwa [hpl, hug'] at this
   have hjx : ∀ (i : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (a : ℤ) (j : ℕ),
       Formalism.MainNotions.LiftingTheory.Over ((HW l).W K 1 LL h) τ i → IsJumpV ((D.loc l).PD K) T.ρ τ a → 0 < j → j ≤ Y →
       a + (j : ℤ) ∈ Formalism.MainNotions.LiftingTheory.xList ((HW l).W K 1 LL h) T (Formalism.MainNotions.LiftingTheory.Mmax _ Mi)
@@ -170,8 +166,7 @@ theorem dss_semisimple_of_used : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf 
     have hDL : Formalism.MainNotions.CrystallineLiftingInputs.DL ((HW l).W K 1 LL h) T i ((letE i : LetA ↥(OL LL) _) • seq 0) := by
       refine ⟨by rw [smul_smul, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq], fun δ hδ => ?_⟩
       rw [γD_letE_smul ((HW l).W K 1 LL h) T δ i (seq 0)]
-      have e2 := hΔ δ hδ
-      exact congrArg (fun z => (letE i : LetA ↥(OL LL) _) • z) e2
+      exact congrArg (fun z => (letE i : LetA ↥(OL LL) _) • z) (hΔ δ hδ)
     have hYi : Formalism.MainNotions.LiftingTheory.qp ((HW l).W K 1 LL h) ^ Y • ((letE i : LetA ↥(OL LL) _) • seq 0) ∈
         ((HW l).W K 1 LL h).N T := by
       exact smul_letE_mem ((HW l).W K 1 LL h) T i _ (seq 0) hy

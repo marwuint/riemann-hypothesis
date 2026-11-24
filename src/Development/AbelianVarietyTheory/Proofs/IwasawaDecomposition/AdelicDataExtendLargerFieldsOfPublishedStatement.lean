@@ -309,9 +309,7 @@ theorem exists_extend {d : ℕ} (A : Submodule (𝓞 K) (Fin d → K)) (hA : Sub
   have hspan : Submodule.span (𝓞 K) (Set.range b) ≤ P := by
     rw [Submodule.span_le]
     rintro _ ⟨i, rfl⟩
-    refine ⟨⟨b i, hbA i⟩, ?_, rfl⟩
-    show F (b i) = algebraMap (𝓞 K) K (f ⟨b i, hbA i⟩)
-    exact b.constr_basis K _ i
+    exact ⟨⟨b i, hbA i⟩, b.constr_basis K _ i, rfl⟩
   refine ⟨F, fun x => ?_⟩
   obtain ⟨z, hz, hzx⟩ := hspan (hc x x.2)
   have hz' : z = c • x := Subtype.ext (by simpa using hzx)
@@ -662,8 +660,7 @@ theorem lidx_ne_zero_iff : ∀ (K K' : Type) [Field K] [NumberField K] [Field K'
       congr 1
       funext k
       by_cases hk : k = i <;> simp [hk]
-    rw [e]
-    exact h
+    rwa [e]
   obtain ⟨e, he, h⟩ := exists_lidx_eq_mul K K' ψ hψ P P'
   have h' := h A B
   have hf : (fun x : Fin d → K => Matrix.mulVec G fun k => φ (x k)) = ψ := rfl
@@ -693,8 +690,7 @@ theorem mem_conjPl_iff {K : Type} [Field K] [StarRing K] (Q : HeightOneSpectrum 
   constructor
   · rintro ⟨x, hx, rfl⟩
     simpa using hx
-  · intro h
-    exact ⟨_, h, (Formalism.DivisionValues.cO K).apply_symm_apply y⟩
+  · exact fun h => ⟨_, h, (Formalism.DivisionValues.cO K).apply_symm_apply y⟩
 
 theorem coe_cO {K : Type} [Field K] [StarRing K] (y : 𝓞 K) : ((Formalism.DivisionValues.cO K y : 𝓞 K) : K) = star (y : K) := rfl
 
@@ -796,11 +792,9 @@ theorem extendedData_nonzero_index_places_correspond : GlobalTheory.Published.Di
   refine nzAt_iff_of z z' j j' P P' ?_ ?_
   · have k := _root_.GlobalTheory.LidxBaseChange.lidx_ne_zero_iff _ _ φ _ _ G hG1 P P' hP ((s0Of z.R z.F).M j)
       (Formalism.DivisionValues.matLat ((s0Of z.R z.F).θ j (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A.μ0) (((famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).side3 z.F.P0 z.F.ψ0 (zsOf z.R z.F)).Tl j (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A.μ0)) (hHL.mLat j).fg (hT.fg.map _)
-    rw [← hG2, ← hG3] at k
-    exact k
+    rwa [← hG2, ← hG3] at k
   · have k := _root_.GlobalTheory.LidxBaseChange.lidx_ne_zero_iff _ _ φ _ _ N hN1 P P' hP _ _ hT.fg (GlobalTheory.Mem.NonzeroPlacesOverPrimes.dual_fg _ hH _ hTfull)
-    rw [← GlobalTheory.Mem.DualBC.dual_baseChange _ _ φ _ _ N hN1 _ _ hN3 hH _ hTfull, ← hN2] at k
-    exact k
+    rwa [← GlobalTheory.Mem.DualBC.dual_baseChange _ _ φ _ _ N hN1 _ _ hN3 hH _ hTfull, ← hN2] at k
 
 end GlobalTheory.Mem.R3.TwistedPlaceExtensions
 

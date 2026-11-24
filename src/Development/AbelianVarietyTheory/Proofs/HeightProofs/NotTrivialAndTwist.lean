@@ -84,8 +84,7 @@ theorem hasDerivAt_det_exp (X : Mat p q) :
     open scoped Matrix.Norms.Operator in
     have h2 := ((Matrix.entryLinearMap ℝ ℂ a b).toContinuousLinearMap.hasFDerivAt).comp_hasDerivAt 0
       (hasDerivAt_exp_smul_const (𝕂 := ℝ) X 0)
-    rw [zero_smul, NormedSpace.exp_zero, one_mul] at h2
-    exact h2
+    rwa [zero_smul, NormedSpace.exp_zero, one_mul] at h2
   have h3 := ReciprocityTheory.GeometryOfNumbersTheory.hasDerivAt_det (fun t : ℝ => Matrix.reindex e e (NormedSpace.exp (t • X)))
     (Matrix.reindex e e X) 0 fun i j => h1 _ _
   simp only [zero_smul, NormedSpace.exp_zero, Matrix.reindex_apply,
@@ -255,8 +254,7 @@ theorem sum_weight_eq (R : DSRep T) {μ ν : Ix p q → ℚ} {v w : R.HK.V} (hv 
     intro θ x
     refine ext_of (Units.ext ?_) (by simp [mul_comm])
     simp only [map_mul, Units.val_mul, T.expt_cov _ (TorusWt.torX_mem _)]
-    refine Commute.exp_left ?_
-    exact Matrix.scalar_commute _ (fun _ => Commute.all _ _) _
+    exact Commute.exp_left (Matrix.scalar_commute _ (fun _ => Commute.all _ _) _)
   have inj : ∀ {v : R.HK.V}, v ≠ 0 → R.ι v ≠ 0 := fun h h0 => h (R.ι_inj (by rw [h0, map_zero]))
   by_contra hne
   have hd : ((∑ a, μ a - ∑ a, ν a : ℚ) : ℝ) ≠ 0 := by exact_mod_cast sub_ne_zero.2 hne

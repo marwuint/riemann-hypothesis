@@ -107,12 +107,9 @@ variable {σ} in
   letI := σ.toAlgebra
   refine TensorProduct.induction_on (R := F) (M := ℂ) (N := A) (motive := P) x ?_ ?_ ?_
   · have h := smul 0 0
-    rw [zero_smul] at h
-    exact h
-  · intro c a
-    exact (complex_smul_of_eq σ c a) ▸ smul c a
-  · intro x y hx hy
-    exact add x y hx hy
+    rwa [zero_smul] at h
+  · exact fun c a => (complex_smul_of_eq σ c a) ▸ smul c a
+  · exact fun x y hx hy => add x y hx hy
 
 
 variable {σ} in
@@ -167,8 +164,7 @@ theorem exists_components (f : A →ₐ[F] A') (x : CxExt σ A) :
     fun i y => TensorProduct.equivFinsuppOfBasisLeft (N := A') b y i, ?_, ?_, ?_⟩
   · have h2 : ∀ v : Module.Basis.ofVectorSpaceIndex F ℂ →₀ A,
         (TensorProduct.equivFinsuppOfBasisLeft (N := A) b).symm v = v.sum fun i n => b i ⊗ₜ[F] n := by
-      intro v
-      exact TensorProduct.equivFinsuppOfBasisLeft_symm_apply b v
+      exact fun v => TensorProduct.equivFinsuppOfBasisLeft_symm_apply b v
     have h3 := LinearEquiv.symm_apply_apply (TensorProduct.equivFinsuppOfBasisLeft (N := A) b) x
     rw [h2, Finsupp.sum] at h3
     simp only [complex_smul_of_eq]
@@ -380,8 +376,7 @@ theorem hasVal_cx_stalk (a : Y.X.presheaf.stalk (base y)) :
 theorem hasVal_cx_fnOf {U : Y.X.Opens} (h : base y ∈ U) (h' : genericPoint Y.X ∈ U)
     (a : Γ(Y.X, U)) : HasVal y (Y.cx σ (fnOf U h' a)) (ev Y.str σ U a y) := by
   have h₁ := hasVal_cx_stalk (y := y) (Y.X.presheaf.germ U _ h a)
-  rw [algebraMap_germ, evStalk_germ h] at h₁
-  exact h₁
+  rwa [algebraMap_germ, evStalk_germ h] at h₁
 
 theorem val_cx_fnOf {U : Y.X.Opens} (h : base y ∈ U) (h' : genericPoint Y.X ∈ U)
     (a : Γ(Y.X, U)) : val y (Y.cx σ (fnOf U h' a)) = ev Y.str σ U a y :=
@@ -396,8 +391,7 @@ theorem regC_cx_iff {g : Y.Fn} : RegC y (Y.cx σ g) ↔ RegAt (base y) g := by
       intro i
       have hi := congrArg (p' i) hab
       simp only [germIncl, Var.cx] at hi
-      rw [h₂, h₁, h₁, e₁, e₁] at hi
-      exact hi
+      rwa [h₂, h₁, h₁, e₁, e₁] at hi
     by_contra hg
     apply hb
     have hz : ∀ i, evStalk y (p i b) = 0 := by
@@ -451,8 +445,7 @@ theorem exists_spread {x : Y.X} (a : CxExt σ (Y.X.presheaf.stalk x)) :
     have s₂ : ptsIn Y.str σ (U₁ ⊓ U₂) ⊆ ptsIn Y.str σ U₂ :=
       fun z hz => Var.mem_ptsIn_iff.mpr (Var.mem_ptsIn_iff.mp hz).2
     refine ⟨U₁ ⊓ U₂, fun z => A₁ z + A₂ z, ⟨hx₁, hx₂⟩, ?_, fun z hz => ?_⟩
-    · intro i
-      exact ((hA₁.mono s₁) i).add ((hA₂.mono s₂) i)
+    · exact fun i => ((hA₁.mono s₁) i).add ((hA₂.mono s₂) i)
     · obtain ⟨b₁, f₁, g₁⟩ := e₁ z (s₁ hz)
       obtain ⟨b₂, f₂, g₂⟩ := e₂ z (s₂ hz)
       exact ⟨b₁ + b₂, by rw [map_add (f := _), map_add (f := _), f₁, f₂], by rw [map_add (f := _), g₁, g₂]⟩

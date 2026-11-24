@@ -67,11 +67,9 @@ theorem continuous_coeff_pow {Y : Type} [TopologicalSpace Y] (F : Y → MvPolyno
   induction e generalizing m with
   | zero =>
     classical
-    simp only [pow_zero, coeff_one]
-    exact continuous_const
+    simpa only [pow_zero, coeff_one] using continuous_const
   | succ e ih =>
-    simp only [pow_succ]
-    exact continuous_coeff_mul _ _ ih hF m
+    simpa only [pow_succ] using continuous_coeff_mul _ _ ih hF m
 
 theorem continuous_coeff_prod {Y κ : Type} [TopologicalSpace Y] (s : Finset κ) (f : κ → Y → MvPolynomial σ ℂ)
     (hf : ∀ q ∈ s, ∀ m, Continuous fun y => AddMonoidAlgebra.coeff (f q y) m) (m : σ →₀ ℕ) :
@@ -79,8 +77,7 @@ theorem continuous_coeff_prod {Y κ : Type} [TopologicalSpace Y] (s : Finset κ)
   classical
   induction s using Finset.induction_on generalizing m with
   | empty =>
-    simp only [Finset.prod_empty, coeff_one]
-    exact continuous_const
+    simpa only [Finset.prod_empty, coeff_one] using continuous_const
   | insert a s ha ih =>
     simp only [Finset.prod_insert ha]
     exact continuous_coeff_mul _ _ (hf a (Finset.mem_insert_self a s))

@@ -277,8 +277,7 @@ theorem toric_torsion_eq_restrict : ∀ (E : Type) [Field E] [NumberField E] [Is
     ext w
     have := congrArg (fun f => f (residue W w)) hσκ
     change σ (bW (residue W w)) = κ₀ (ResidueField.map φ (residue W w)) at this
-    rw [ResidueField.map_residue] at this
-    exact this
+    rwa [ResidueField.map_residue] at this
   have hκloc : IsLocalHom κ := by
     refine ⟨fun a ha => ?_⟩
     by_contra hna
@@ -306,15 +305,13 @@ theorem toric_torsion_eq_restrict : ∀ (E : Type) [Field E] [NumberField E] [Is
     simp only [GlobalTheory.UU.chV, zU, MulEquiv.apply_symm_apply]; rfl
   have hkU : IsUnit (k : U) := by simpa using hk.map (u.comp ψ)
   let τRU := τU.comp ρm
-  have hτRU : τRU ^ k = 1 := by
-    exact powc τU hτUk
+  have hτRU : τRU ^ k = 1 := powc τU hτUk
   have hG1 := _root_.GlobalTheory.TorSecLocal.toric_torsion_section_overLocal E H R t P k s s1 s2 s3 _ ρ V ψ tV mV j t₀ m₀ h₀ m₀' hc hd U u hUloc hkU τU τRU hτRU hτUk
     (fun χ => rfl) zU hzU
   have hG2 := _root_.GlobalTheory.ToricOverField.toric_section_eq_over_field E H W t' P' k s' s3' R t g m V ψ tV mV Ω α β hβ tΩ n n' j hb hf Ω' σ (κ.comp φ) hκ.symm
     U u U.subtype hwu τU τ'' h'' (fun χ => (hτU χ).symm) zU hzU
   let τRΩ := τ''.comp ρm
-  have hτRΩ : τRΩ ^ k = 1 := by
-    exact powc τ'' h''
+  have hτRΩ : τRΩ ^ k = 1 := powc τ'' h''
   have hgU : (κ.comp φ).comp g = U.subtype.comp (u.comp ψ) := by
     ext r
     have := congrArg (fun f => σ f) (RingHom.congr_fun he r)
@@ -325,8 +322,7 @@ theorem toric_torsion_eq_restrict : ∀ (E : Type) [Field E] [NumberField E] [Is
     s2 U Ω' _ _ U.subtype τRU hτRU τRΩ hτRΩ hgU (fun χ => (hτU (ρm χ)).symm)
 
   let τOR := τO.comp ρm
-  have hτOR : τOR ^ k = 1 := by
-    exact powc τO hτOk
+  have hτOR : τOR ^ k = 1 := powc τO hτOk
   obtain ⟨e, he'⟩ := GlobalTheory.LiePull.exists_pushEquiv m.cart (Over.mk (spMap φ)) (spMap (φ.comp g)) (spMap_comp g φ)
   have hkO : IsUnit (k : O) := by simpa using hk.map (φ.comp g)
   have hxy : s O (φ.comp g) τOR hτOR = e (s' O φ τO hτOk) := by

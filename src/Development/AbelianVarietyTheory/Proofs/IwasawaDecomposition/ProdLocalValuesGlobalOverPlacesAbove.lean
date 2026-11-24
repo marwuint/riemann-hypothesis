@@ -91,7 +91,6 @@ theorem finite_setOf_valuation_ne_one (F : Type) [Field F] [NumberField F] (x : 
 theorem valued_locUnit (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (b : Fˣ) :
     Valued.v ((Units.map (algebraMap F (v.adicCompletion F)).toMonoidHom b : (v.adicCompletion F)ˣ) :
       v.adicCompletion F) = v.valuation F (b : F) := by
-  show Valued.v ((b : F) : v.adicCompletion F) = _
   exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _
 
 theorem map_locUnit_eq_zpow {F B : Type} [Field F] [NumberField F] [CommGroup B] (ψ : Ideles F →* B)
@@ -107,8 +106,7 @@ theorem map_locUnit_eq_zpow {F B : Type} [Field F] [NumberField F] [CommGroup B]
     simp
   have h := hu _ hu'
   rw [map_mul, map_mul, map_zpow, map_zpow, zpow_neg, mul_inv_eq_one] at h
-  rw [locUnit_apply, ← hx]
-  exact h
+  rwa [locUnit_apply, ← hx]
 
 end GlobalTheory.NormCompat
 
@@ -169,8 +167,7 @@ theorem prod_locUnit_eq_prod_locUnit_norm : ∀ (E K : Type) [Field E] [NumberFi
     refine h1u _ hS' w (hcomap w) _ ?_
     unfold IsUnitAt
     rw [valued_locUnit, hval]
-  · intro v hv
-    exact ((memTE v).mp hv).1
+  · exact fun v hv => ((memTE v).mp hv).1
   · intro v hv hS
     have hval : v.valuation E (Na : E) = 1 := by
       by_contra h
@@ -188,8 +185,7 @@ theorem prod_locUnit_eq_prod_locUnit_norm : ∀ (E K : Type) [Field E] [NumberFi
       rw [map_locUnit_eq_zpow ψ1 w (h1u _ hS w (hcomap w)) _ (unif_spec w),
         h1f _ hS w (hcomap w) _ _ (unif_spec w) (unif_spec _), zpow_mul, zpow_natCast]
     have hE : ∀ v ∈ TE, ψ2 (locUnit E v Na) = c v ^ ordF v Na := by
-      intro v hv
-      exact map_locUnit_eq_zpow ψ2 v (h2u v ((memTE v).mp hv).1) _ (unif_spec v) Na
+      exact fun v hv => map_locUnit_eq_zpow ψ2 v (h2u v ((memTE v).mp hv).1) _ (unif_spec v) Na
     rw [Finset.prod_congr rfl hK, Finset.prod_congr rfl hE,
       ← Finset.prod_fiberwise_of_maps_to (g := fun w : HeightOneSpectrum (𝓞 K) => w.under (𝓞 E))
         (t := TE) (fun w hw => (memTK w).mp hw)]
@@ -205,8 +201,7 @@ theorem prod_locUnit_eq_prod_locUnit_norm : ∀ (E K : Type) [Field E] [NumberFi
       rw [Finset.mem_filter, ← under_eq_iff]
       constructor
       · exact fun h => h.2
-      · intro h
-        exact ⟨(memTK w).mpr (h ▸ hv), h⟩
+      · exact fun h => ⟨(memTK w).mpr (h ▸ hv), h⟩
     have key := _root_.GlobalTheory.NormValuation.log_valuation_norm_eq_sum E K v a _ hs
     simp only [ordF, hNa, Units.coe_map] at key ⊢
     rw [key, ← Finset.sum_neg_distrib]

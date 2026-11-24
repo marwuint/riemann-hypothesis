@@ -92,8 +92,7 @@ theorem _root_.GlobalTheory.Published.GreenModel.ev_inj :
   have h' : (x : _root_.GlobalTheory.GLq.Mt g 1) 0 0 = (y : _root_.GlobalTheory.GLq.Mt g 1) 0 0 :=
     (algebraMap (ZMod g) (_root_.Formalism.CyclotomicNorms.Fbar g)).injective h
   refine Units.ext (Matrix.ext fun i j => ?_)
-  rw [Subsingleton.elim i 0, Subsingleton.elim j 0]
-  exact h'
+  rwa [Subsingleton.elim i 0, Subsingleton.elim j 0]
 
 open Polynomial CategoryTheory in
 variable {g : ℕ} [hg : Fact g.Prime] in
@@ -245,15 +244,13 @@ theorem _root_.GlobalTheory.Published.GreenModel.green_one (L : _root_.GlobalThe
     have hPe := _root_.GlobalTheory.Published.GreenModel.lab_eq hP
     have hx' : x = algebraMap (ZMod g) (_root_.Formalism.CyclotomicNorms.Fbar g) (-P.coeff 0) := by
       unfold _root_.Formalism.CyclotomicNorms.rootsBar at hx
-      rw [hPe, Polynomial.map_sub, map_X, map_C, roots_X_sub_C, Multiset.mem_singleton] at hx
-      exact hx
+      rwa [hPe, Polynomial.map_sub, map_X, map_C, roots_X_sub_C, Multiset.mem_singleton] at hx
     have hcp : (y : Matrix (Fin 1) (Fin 1) (ZMod g)).charpoly =
         X - C ((y : Matrix (Fin 1) (Fin 1) (ZMod g)) 0 0) := by
       rw [Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply_eq]
     have hz' : z = _root_.GlobalTheory.Published.GreenModel.ev y := by
       unfold _root_.Formalism.CyclotomicNorms.rootsBar at hz
-      rw [hcp, Polynomial.map_sub, map_X, map_C, roots_X_sub_C, Multiset.mem_singleton] at hz
-      exact hz
+      rwa [hcp, Polynomial.map_sub, map_X, map_C, roots_X_sub_C, Multiset.mem_singleton] at hz
     subst hx' hz'
     simp only [Nat.sub_self, pow_zero, one_mul, Finset.sum_range_one, pow_one]
     rfl
@@ -294,8 +291,7 @@ theorem _root_.GlobalTheory.Published.GreenModel.green_one (L : _root_.GlobalThe
         rw [← map_pow, ← map_one L.teich] at h
         have := L.teich_inj _ _ (pow_ne_zero _ hgen0) one_ne_zero h
         refine pow_ne_one_of_lt_orderOf hl.ne' ?_ this
-        rw [L.gen_order 1 one_pos]
-        exact hl'
+        rwa [L.gen_order 1 one_pos]
     have hy0pow : y0 ^ (g ^ 1 - 1) = 1 := _root_.GlobalTheory.Published.GreenModel.ev_inj (by
       rw [map_pow, hy0, (isPrimitiveRoot_gen_one L).pow_eq_one, map_one])
     haveI : NeZero (g ^ 1 - 1) := ⟨pow_one_sub_one_pos.ne'⟩

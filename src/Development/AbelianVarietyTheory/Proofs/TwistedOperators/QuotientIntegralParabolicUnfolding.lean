@@ -112,8 +112,7 @@ theorem sb_of_quot (K : Subgroup G) (hKo : IsOpen (K : Set G)) (hKc : IsCompact 
     S.isCompact_biUnion fun q _ => hKc.image (by fun_prop)
   refine HasCompactSupport.intro hc fun g hg => ha _ fun hq => hg ?_
   simp only [Set.mem_iUnion]
-  refine ⟨_, hq, ((g : G ⧸ K).out)⁻¹ * g, ?_, by simp⟩
-  exact QuotientGroup.eq.1 (by simp)
+  exact ⟨_, hq, ((g : G ⧸ K).out)⁻¹ * g, QuotientGroup.eq.1 (by simp), by simp⟩
 
 theorem finite_quot (K : Subgroup G) (hKo : IsOpen (K : Set G)) {C : Set G} (hC : IsCompact C) :
     ∃ S : Finset (G ⧸ K), ∀ g ∈ C, (g : G ⧸ K) ∈ S := by
@@ -201,13 +200,11 @@ theorem integral_eq_zero_of_avg [MeasurableSpace G] [BorelSpace G] (μ : Measure
       change q = ((q.out * 1 : G) : G ⧸ K)
       simp
     rw [this]
-    simp only [hshift]
-    exact integral_mul_left_eq_self _ _
+    simpa only [hshift] using integral_mul_left_eq_self _ _
   rw [show (fun g => F g) = fun g => ∑ q ∈ S, F q.out * ind q g from funext hdec, MeasureTheory.integral_finsetSum]
   · simp only [integral_const_mul, hint]
     rw [← Finset.sum_mul, htot, zero_mul]
-  · intro q _
-    exact ((hind q).1.continuous.integrable_of_hasCompactSupport (hind q).2).const_mul _
+  · exact fun q _ => ((hind q).1.continuous.integrable_of_hasCompactSupport (hind q).2).const_mul _
 
 theorem exists_avg (K : Subgroup G) (ho : IsOpen (K : Set G)) (hc : IsCompact (K : Set G))
     (R : Subgroup G) (Λ : (G → ℂ) → ℂ)
@@ -286,8 +283,7 @@ theorem compact_preimage (hN : IsClosed (N k n c p : Set (GL (n ⊕ Fin c) k))) 
     (hC : IsCompact C) : ∃ D : Set (GL n k × N k n c p), IsCompact D ∧
       ∀ z : GL n k × N k n c p, embX c z.1 * (z.2 : GL (n ⊕ Fin c) k) ∈ C → z ∈ D := by
   have hb : Continuous (fun g : GL (n ⊕ Fin c) k => g.val.toBlocks₁₁) := by
-    refine continuous_matrix fun i j => ?_
-    exact (Units.continuous_val.matrix_elem (Sum.inl i) (Sum.inl j))
+    exact continuous_matrix fun i j => Units.continuous_val.matrix_elem (Sum.inl i) (Sum.inl j)
   haveI : T2Space k := by
     letI := IsTopologicalAddGroup.rightUniformSpace k
     haveI := isUniformAddGroup_of_addCommGroup (G := k)

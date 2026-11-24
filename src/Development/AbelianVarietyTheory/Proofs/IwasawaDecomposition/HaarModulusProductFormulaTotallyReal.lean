@@ -69,8 +69,7 @@ theorem card_residue (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum
     change _ ↔ _ ≤ Valued.v a
     rw [ha, ← GlobalTheory.HaarLatticeScale.lt_one_iff_le_exp]
     exact Valuation.mem_maximalIdeal_iff _ _
-  rw [pow_one, ← e] at h
-  exact h
+  rwa [pow_one, ← e] at h
 
 theorem modu_finite (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v)
     (hx : x ≠ 0) : (modu (Fv F v) x : ℝ) = ‖x‖ := by
@@ -161,8 +160,7 @@ theorem prod_modu_eq_one : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyRe
     refine ((FinitePlace.hasFiniteMulSupport he).preimage
       (FinitePlace.equivHeightOneSpectrum (K := F)).symm.injective.injOn).subset fun v hv h => hv ?_
     apply NNReal.coe_injective
-    rw [hf]
-    exact h
+    rwa [hf]
   refine ⟨hfin, NNReal.coe_injective ?_⟩
   have h1 : ((∏ᶠ v : HeightOneSpectrum (𝓞 F), modu (Fv F v) (algebraMap F (Fv F v) e) : ℝ≥0) : ℝ) =
       ∏ᶠ w : FinitePlace F, w e := by
@@ -172,8 +170,7 @@ theorem prod_modu_eq_one : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyRe
   rw [NNReal.coe_mul, h1, modu_infinite F _ (he.isUnit.map _), NNReal.coe_one, ← prod_abs_eq_one he]
   congr 1
   refine Finset.prod_congr rfl fun w _ => ?_
-  rw [(IsTotallyReal.isReal w).mult_eq_one, pow_one]
-  rw [InfiniteAdeleRing.algebraMap_apply]
+  rw [(IsTotallyReal.isReal w).mult_eq_one, pow_one, InfiniteAdeleRing.algebraMap_apply]
   exact InfinitePlace.Completion.norm_coe w (WithAbs.toAbs w.1 e)
 
 end GlobalTheory.GaugeProdFormula

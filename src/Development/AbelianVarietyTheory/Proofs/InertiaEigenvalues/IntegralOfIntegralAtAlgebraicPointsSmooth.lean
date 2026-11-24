@@ -263,8 +263,7 @@ theorem one_tmul_mem_nonZeroDivisors_of_flat (O A B : Type*) [CommRing O] [CommR
     | tmul a c => simp [Algebra.TensorProduct.tmul_mul_tmul]
     | add x y hx hy => rw [map_add (f := _), hx, hy, add_mul]
   rw [mem_nonZeroDivisors_iff_right]
-  intro x hx
-  exact hinj (by rw [key, map_zero, hx])
+  exact fun x hx => hinj (by rw [key, map_zero, hx])
 
 theorem tmul_one_mem_nonZeroDivisors_of_flat (O A B : Type*) [CommRing O] [CommRing A]
     [CommRing B] [IsDomain A] [Algebra O A] [Algebra O B] [Module.Flat O B] {a : A} (ha : a ≠ 0) :
@@ -278,8 +277,7 @@ theorem tmul_one_mem_nonZeroDivisors_of_flat (O A B : Type*) [CommRing O] [CommR
     | tmul c d => simp [Algebra.TensorProduct.tmul_mul_tmul]
     | add x y hx hy => rw [map_add (f := _), hx, hy, add_mul]
   rw [mem_nonZeroDivisors_iff_right]
-  intro x hx
-  exact hinj (by rw [key, map_zero, hx])
+  exact fun x hx => hinj (by rw [key, map_zero, hx])
 
 theorem exists_isMaximal_tensorProduct_of_isLocalHom (O O' B : Type*) [CommRing O] [IsLocalRing O]
     [CommRing O'] [IsLocalRing O'] [Algebra O O'] [IsLocalHom (algebraMap O O')]
@@ -410,8 +408,7 @@ theorem _root_.GlobalTheory.isIntegral_mul_of_bounded_at_points :
         Set.singleton_subset_iff]
       exact Ideal.subset_span (by simp)
     have hec : algebraMap A B (e * c) ≠ 0 := by
-      intro h
-      exact mul_ne_zero he hc0 (hinj (by simpa using congrArg Subtype.val h))
+      exact fun h => mul_ne_zero he hc0 (hinj (by simpa using congrArg Subtype.val h))
     obtain ⟨V, _, _, _, _, _, φ, hφ, hφe, hφI⟩ := hpts B hOB I hI hmI _ hec
     let ψ : A →+* V := φ.comp (algebraMap A B)
     have hψ : ψ.comp (algebraMap O A) = (algebraMap O' V).comp (algebraMap O O') := hφ
@@ -459,8 +456,7 @@ theorem _root_.GlobalTheory.isIntegral_mul_of_bounded_at_points :
     · simp [h0, isIntegral_zero]
     · have hlead : (reverse H).leadingCoeff = H.coeff 0 := by
         rw [reverse_leadingCoeff, trailingCoeff, natTrailingDegree_eq_zero.2 (Or.inr h0)]
-      rw [← hlead, ← Algebra.smul_def]
-      exact hint
+      rwa [← hlead, ← Algebra.smul_def]
 
 end GlobalTheory
 end -- clump:auto
@@ -532,8 +528,7 @@ theorem integral_of_integral_at_algebraic_points :
   have hOA : Function.Injective (algebraMap T₀.V (A j)) := by
     intro a b hab
     apply IsFractionRing.injective T₀.V T₀.Fr
-    apply χ.injective
-    exact (hφO a).symm.trans ((congrArg φ hab).trans (hφO b))
+    exact χ.injective ((hφO a).symm.trans ((congrArg φ hab).trans (hφO b)))
   obtain ⟨eb, heb⟩ : α j e ∈ Set.range (algebraMap (A j) (FractionRing (A j))) := by
     refine (Subring.closure_le (t := (algebraMap (A j) (FractionRing (A j))).range.comap (α j))).2 ?_ hemem
     rintro x (⟨a, rfl⟩ | hx)

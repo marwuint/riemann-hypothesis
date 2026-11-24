@@ -336,8 +336,7 @@ theorem valuation_apply_eq {A : ValuationSubring Ω} {σ : G E Ω} (hσ : σ ∈
     have hb' : 0 < A.valuation b := zero_lt_iff.2 (by simpa using hb)
     have hb'' : 0 < A.valuation (τ b) := zero_lt_iff.2 (by simpa using hb)
     have h1 : A.valuation (a / b) < 1 := by rw [map_div₀, div_lt_one₀ hb']; exact hab
-    rw [← valuation_apply_lt_one_iff hτ, map_div₀, map_div₀, div_lt_one₀ hb''] at h1
-    exact h1
+    rwa [← valuation_apply_lt_one_iff hτ, map_div₀, map_div₀, div_lt_one₀ hb''] at h1
   rcases lt_trichotomy (A.valuation (σ y)) (A.valuation y) with h1 | h1 | h1
   · have : StrictAnti fun i : ℕ => A.valuation ((σ ^ i) y) := strictAnti_nat_of_succ_lt fun i => by
       rw [pow_succ, AlgEquiv.mul_apply]
@@ -409,8 +408,7 @@ theorem normal_primeTo (A : ValuationSubring Ω) (l : ℕ) :
     refine ⟨by simpa using conj_mem_Ine g.2 h1, fun y hy => ?_⟩
     obtain ⟨m, hm, h⟩ := h2 ((g.1⁻¹ : G E Ω) y) (by simpa using hy)
     refine ⟨m, hm, ?_⟩
-    rw [← valuation_apply_lt_one_iff g.2, map_sub, map_pow, map_div₀, mul_inv_apply, map_one] at h
-    exact h
+    rwa [← valuation_apply_lt_one_iff g.2, map_sub, map_pow, map_div₀, mul_inv_apply, map_one] at h
 
 theorem mem_of_pow_mem {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 E)} (hA : IsPlaceOver A v)
     {l : ℕ} (hl : l.Prime) (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal) (H : Subgroup (G E Ω))
@@ -461,8 +459,7 @@ theorem exists_coprime_pow_mem {A : ValuationSubring Ω} {v : HeightOneSpectrum 
   obtain ⟨V, hV, hVU⟩ := isOpen_induced_iff.1 ho
   have h1 : (1 : G E Ω) ∈ V := by
     have : (1 : Dec (F := E) A) ∈ (U : Set (Dec (F := E) A)) := U.one_mem
-    rw [← hVU] at this
-    exact this
+    rwa [← hVU] at this
   obtain ⟨H, hH⟩ := ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hV h1
   have hf : Finite (G E Ω ⧸ H.toSubgroup) := Subgroup.quotient_finite_of_isOpen _ H.isOpen
   obtain ⟨d, hd, -, h⟩ := Subgroup.exists_pow_mem_of_index_ne_zero
@@ -524,8 +521,7 @@ theorem isUnit_sub_one_of_orderOf {O : Type} [CommRing O] [IsDomain O] [IsLocalR
   have h0 := hp.geom_sum_eq_zero hq
   by_contra hn
   have h1 : residue O ζ = 1 := by
-    rw [← residue_ne_zero_iff_isUnit, not_not, map_sub, map_one, sub_eq_zero] at hn
-    exact hn
+    rwa [← residue_ne_zero_iff_isUnit, not_not, map_sub, map_one, sub_eq_zero] at hn
   have h2 : ((q : ℕ) : ResidueField O) = 0 := by
     have := congrArg (residue O) h0
     simpa [h1] using this
@@ -581,8 +577,7 @@ theorem contAction_repOn [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Topologi
   have h2 : ∀ᶠ h in nhds g, ∀ a b, ((ρ h : GL (Fin r) O) : Matrix (Fin r) (Fin r) O) a b -
       ((ρ g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O) a b ∈ maximalIdeal O ^ n := by
     simp only [Filter.eventually_all]
-    intro a b
-    exact (hopen.preimage ((hρ.matrix_elem a b).sub continuous_const)).mem_nhds (by simp)
+    exact fun a b => (hopen.preimage ((hρ.matrix_elem a b).sub continuous_const)).mem_nhds (by simp)
   refine (continuousAt_const (y := repOn ρ κ B g m)).congr ?_
   filter_upwards [h1, h2] with h e1 e2
   funext a
@@ -642,8 +637,7 @@ theorem vanishing {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E 
     obtain ⟨n, hn⟩ := exists_pow_kill hB m
     refine ⟨n, funext fun a => ?_⟩
     have := hn _ (map_mem_pow (Λ := Λ) (Ideal.pow_mem_pow hlO n)) a
-    rw [map_pow, map_natCast, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul] at this
-    exact this
+    rwa [map_pow, map_natCast, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul] at this
   · intro m hm
     obtain ⟨j, hj, hC⟩ := exists_limit A hl hσ
     have h1 : κ j = 1 := by

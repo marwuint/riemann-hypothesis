@@ -100,8 +100,7 @@ theorem exists_coords (e : ℕ) (g : GtPt D T) {Z : Scheme.{0}} (r : Z ⟶ T.lef
   unfold Coords
   refine ⟨hx1, fun χ z J hJ => ?_⟩
   have hv := hx2 χ Z (𝟙 Z) z J hJ
-  rw [Category.id_comp, Category.id_comp] at hv
-  exact hv
+  rwa [Category.id_comp, Category.id_comp] at hv
 
 theorem Coords.succ {e : ℕ} {g : GtPt D T} {Z : Scheme.{0}} {r : Z ⟶ T.left}
     {y : Z ⟶ (thickObj R I e G).left} (h : Coords U e g r y) :
@@ -134,8 +133,7 @@ theorem comp_fstG_eq {g : GtPt D T} {x : T ⟶ G} (hx : U.Red x g) {e : ℕ} {Z 
       rw [Category.assoc, ex, hb, Category.assoc]))
   have ha' : a.left ≫ (fstG I e G).left = r ≫ x.left := congrArg CommaMorphism.left ha
   have hc : Coords U e g r a.left := hx e Z r a.left ha'
-  rw [← Coords.unique hc h]
-  exact ha'
+  rwa [← Coords.unique hc h]
 
 end Level
 
@@ -148,8 +146,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {S : Type} [CommRing
 theorem red_iff_reduction (g : GtPt D (Over.mk (spMap φ))) (x : Over.mk (spMap φ) ⟶ G) :
     U.Red x g ↔ ∀ e, Coords U e g (adicLevelι (I.map φ) (e + 1)) (reduction I x e) := by
   constructor
-  · intro hx e
-    exact hx e _ _ _ (GlobalTheory.FormalPoint.reduction_fstG I x e)
+  · exact fun hx e => hx e _ _ _ (GlobalTheory.FormalPoint.reduction_fstG I x e)
   · intro h e Z r xe hxe
     have ex : x.left ≫ G.hom = spMap φ := Over.w x
     have ef : (fstG I e G).left ≫ G.hom = (thickObj R I e G).hom ≫ thick R I e := Over.w (fstG I e G)
@@ -162,8 +159,7 @@ theorem red_iff_reduction (g : GtPt D (Over.mk (spMap φ))) (x : Over.mk (spMap 
     have hred : l ≫ GlobalTheory.FormalPoint.reduction I x e = xe := by
       rw [← cancel_mono (fstG I e G).left, Category.assoc, GlobalTheory.FormalPoint.reduction_fstG, ← Category.assoc,
         hl, hxe]
-    rw [hl, hred] at hc
-    exact hc
+    rwa [hl, hred] at hc
 
 variable [IsLocalRing S]
 

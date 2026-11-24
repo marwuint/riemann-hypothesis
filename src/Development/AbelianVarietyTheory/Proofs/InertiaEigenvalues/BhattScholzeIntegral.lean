@@ -552,8 +552,7 @@ theorem bas_map_disc {B : Obj l ↥(OL K)} (u : B.A) (h : Hom bk.prism B) (F : b
   rw [Height.bas, Matrix.map_mul]
   congr 1
   ext i j
-  simp only [Matrix.map_apply]
-  exact hF.ext _
+  simpa only [Matrix.map_apply] using hF.ext _
 
 theorem rel_exists_of {B : Obj l ↥(OL K)} (u : B.A) (f g : Hom bk.prism B)
     (Ff Fg : bk.DS bk.ρ₀ →+* Disc l u bk.ρ₀) (hF : IsDiscMap (l := _) (u := _) (ρ := _) (BK.hf f) Ff) (hG : IsDiscMap (l := _) (u := _) (ρ := _) (BK.hf g) Fg)
@@ -606,8 +605,7 @@ theorem rel_exists : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d 
   swap
   · refine ⟨0, ?_⟩
     unfold Height.Rel
-    intro Ff Fg hF hG
-    exact (hex ⟨Ff, Fg, hF, hG⟩).elim
+    exact fun Ff Fg hF hG => (hex ⟨Ff, Fg, hF, hG⟩).elim
   obtain ⟨Ff, Fg, hF, hG⟩ := hex
   obtain ⟨hreg, ⟨w, hw⟩, -⟩ := _root_.GlobalTheory.BSP.hf_E_pair l K bk B f g
   obtain ⟨k, hk⟩ := s.nopole f g
@@ -617,8 +615,7 @@ theorem rel_exists : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d 
     simp
   have hGm : BK.hf f bk.E ^ (2 * s.N) • Matrix.of G = (l : B.A) ^ k • (s.X'.map (BK.hf f) * s.X.map (BK.hf g)) := by
     ext i j
-    simp only [Matrix.smul_apply, smul_eq_mul, Matrix.of_apply]
-    exact (hGc i j).symm
+    simpa only [Matrix.smul_apply, smul_eq_mul, Matrix.of_apply] using (hGc i j).symm
   have hAG : s.X.map (BK.hf f) * Matrix.of G = (l : B.A) ^ (k + s.c₂) • s.X.map (BK.hf g) := by
     rw [pow_add]
     exact cancel _ _ _ _ _ _ _ (pow_mem hreg _) (by rw [hXX, mul_comm]) hGm
@@ -722,8 +719,7 @@ theorem comparisonMatrix_bounded : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (
   obtain ⟨k, v, hv, -⟩ := k2
   refine ⟨k, Matrix.of fun i j => v (i, j), ?_⟩
   ext i j
-  simp only [Matrix.map_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]
-  exact hv (i, j)
+  simpa only [Matrix.map_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul] using hv (i, j)
 
 end GlobalTheory.BSP
 end -- clump:auto
@@ -1255,8 +1251,7 @@ theorem bk_ev_injective : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K
   have h1 : tb.c tb.i₀ 1 = 1 := by simpa [tb.b_i₀] using tb.c_self tb.i₀
   have key : ∀ x, tb.c tb.i₀ (bk.ev x) = x := fun x => by
     have := tb.c_mul tb.i₀ x (tb.b tb.i₀)
-    rw [tb.b_i₀, mul_one, h1, mul_one] at this
-    exact this
+    rwa [tb.b_i₀, mul_one, h1, mul_one] at this
   rw [← key a, ← key a', h]
 
 end GlobalTheory.BSP

@@ -119,8 +119,7 @@ theorem decomp (z : Om l) (N : ℕ) (y : Om l) (hy : y ∈ Fz z) :
     ∃ b ∈ Fz (z ^ N), ∃ w ∈ Vz z N, y = b + w := by
   have hz : IsAlgebraic ℚ_[l] z := Algebra.IsAlgebraic.isAlgebraic z
   have hy' : y ∈ Algebra.adjoin ℚ_[l] {z} := by
-    rw [← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hz]
-    exact hy
+    rwa [← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hz]
   rw [Algebra.adjoin_singleton_eq_range_aeval] at hy'
   obtain ⟨p, rfl⟩ := hy'
   clear hy
@@ -196,8 +195,7 @@ theorem chi_eq_one (C : Core l) (g : GQ l) (hg : g ∈ (⨆ n, Fz (C.ζ n)).fixi
     have h5 := (isOfFinOrder_iff_pow_eq_one.2 ⟨_, NeZero.pos (l ^ n), (zeta_prim C n).pow_eq_one⟩).pow_eq_pow_iff_modEq.1
       (h1.symm.trans (pow_one _).symm)
     rwa [← (zeta_prim C n).eq_orderOf] at h5
-  have h4 := (ZMod.natCast_eq_natCast_iff _ _ _).2 h3
-  simpa using h4
+  simpa using (ZMod.natCast_eq_natCast_iff _ _ _).2 h3
 
 theorem le_natDegree (n m : ℕ) (z : Om l) (hn : 1 ≤ n) (hz : IsPrimitiveRoot z (l ^ (n + m))) :
     l ^ m ≤ (minpoly (Fz (z ^ l ^ m)) z).natDegree := by

@@ -123,8 +123,7 @@ theorem completed_localisation_invariants : ∀ {O A A' E E' J : Type} [CommRing
     exact (hxm m).dvd_mul_right.1 h4
   refine ⟨?_, fun y => ⟨?_, fun hy => ?_⟩⟩
   · rw [injective_iff_map_eq_zero]
-    intro z hz
-    exact eq_zero_of_dvd _ hE z fun k => sat z k (hz ▸ dvd_zero _)
+    exact fun z hz => eq_zero_of_dvd _ hE z fun k => sat z k (hz ▸ dvd_zero _)
   · rintro ⟨z, rfl⟩ d hd
     rw [← sub_eq_zero]
     refine eq_zero_of_dvd _ hE' _ fun k => ?_
@@ -302,8 +301,7 @@ theorem exists_matrix_gamma : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp 
   have hsm : ∀ (g : W.Gam) (a : LetA O n) (x : W.DD T),
       W.γD T g (a • x) = letγ (W.γ₀ g) a • W.γD T g x := fun g a x => by
     have := W.γD_smul T g (algebraMap (LetA O n) W.EE a) x
-    rw [algebraMap_smul, W.γE_ext, algebraMap_smul] at this
-    exact this
+    rwa [algebraMap_smul, W.γE_ext, algebraMap_smul] at this
   have hXj : (X : O⟦X⟧) ∣ j X := by
     have h1 : (1 : W.Gam) ∈ W.DelF := (W.DelF_def 1).2 ⟨1, one_pos, one_pow _⟩
     have h2 : R.s ≠ 0 := by rw [hs]; exact (Finset.card_pos.2 ⟨1, h1⟩).ne'
@@ -351,8 +349,7 @@ theorem exists_matrix_gamma : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp 
     ext1 m k
     simp only [Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
     rw [← hd]; ring
-  · simp only [Matrix.of_apply, hc]
-    exact hexp (z k)
+  · simpa only [Matrix.of_apply, hc] using hexp (z k)
 
 end GlobalTheory.WachTie
 end -- clump:auto
@@ -596,8 +593,7 @@ theorem sum_mulVec_smul {ι E EE D O : Type} [CommRing O] [CommRing E] [CommRing
     funext i
     simp [Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]
 
-  simp only [h, map_sum, map_mul, Finset.sum_smul, Finset.smul_sum, mul_smul]
-  exact Finset.sum_comm
+  simpa only [h, map_sum, map_mul, Finset.sum_smul, Finset.smul_sum, mul_smul] using Finset.sum_comm
 
 theorem isUnit_ι_E {l : ℕ} {O : Type} [CommRing O] (R : Fr l O) : IsUnit (R.ι R.E) := by
   have hs : R.s ≠ 0 := by
@@ -1017,8 +1013,7 @@ theorem exists_attached {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P
     have hv : P.v LL (algebraMap ℤ_[l] ↥LL.1 ((χ (H.W K 1 LL h).gam : ℤ_[l]) - 1)) = 1 := by
       rw [map_sub, map_one, IsScalarTower.algebraMap_apply ℤ_[l] ↥(OL LL) ↥LL.1, hχ]
       have hg := (H.W K 1 LL h).gam_gen
-      rw [hs, Nat.cast_one] at hg
-      exact hg
+      rwa [hs, Nat.cast_one] at hg
     have hc0 : ((χ (H.W K 1 LL h).gam : ℤ_[l]) - 1) ≠ 0 := by
       intro hc
       rw [hc, map_zero, AddValuation.map_zero] at hv

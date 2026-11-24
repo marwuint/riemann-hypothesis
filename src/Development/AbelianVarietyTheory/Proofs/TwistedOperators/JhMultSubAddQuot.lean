@@ -119,8 +119,7 @@ theorem step_iff {σ : Representation F G W} {ρ : Representation F G V} {S T : 
       exact (h3 v.1 v.2).symm
     refine ⟨.mk ((Submodule.quotEquivOfEq _ _ hk).trans
       (LinearMap.quotKerEquivOfSurjective _ hs)) fun g => ?_⟩
-    refine Submodule.linearMap_qext _ (LinearMap.ext fun v => ?_)
-    exact h2 g v.1 v.2
+    exact Submodule.linearMap_qext _ (LinearMap.ext fun v => h2 g v.1 v.2)
 
 theorem occurs_of_finset {σ : Representation F G W} {ρ : Representation F G V} {r : ℕ}
     (A : Finset (Fin r)) (S T : Fin r → Subrepresentation ρ) (h1 : ∀ i, T i ≤ S i)
@@ -165,8 +164,7 @@ theorem step_dichotomy (hσ : σ.IsIrreducible) (hker : ∀ v, p v = 0 → ∃ u
       rw [← p.isIntertwining, hk' v hv, hk' _ (S.apply_mem_toSubmodule g hv), h2 g v hv]
     · rintro _ ⟨v, hv, rfl⟩
       constructor
-      · intro h0
-        exact ⟨v, (h3 v hv).1 ((hk' v hv).symm.trans h0), rfl⟩
+      · exact fun h0 => ⟨v, (h3 v hv).1 ((hk' v hv).symm.trans h0), rfl⟩
       · rintro ⟨t, ht, h0⟩
         rw [← h0]
         exact (hk' t (hTS ht)).trans ((h3 t (hTS ht)).2 ht)
@@ -309,8 +307,7 @@ theorem jhMult_ne_top {σ : Representation F G W} {ρ : Representation F G V}
       ((h2 i j hij).trans_lt (lt_of_le_not_ge (h1 j) ((step_iff.1 (h3 j)).not_le hσ)))
   have := Order.LTSeries.length_le_krullDim (LTSeries.mk n _ hm)
   rw [← Module.coe_length] at this
-  have h' : (n : ℕ∞) ≤ Module.length (MonoidAlgebra F G) ρ.asModule := by
-    exact WithBot.coe_le_coe.1 this
+  have h' : (n : ℕ∞) ≤ Module.length (MonoidAlgebra F G) ρ.asModule := WithBot.coe_le_coe.1 this
   push_cast
   exact add_le_add h' le_rfl
 

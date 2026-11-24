@@ -129,13 +129,11 @@ noncomputable def fwd (n : ℕ) (g : Formalism.AUTREP.GAf L n) : Hf L n :=
   ⟨flipGL L n g.1, (mem_GA_iff L g.1).1 g.2⟩
 
 theorem back_fwd (n : ℕ) (g : Formalism.AUTREP.GAf L n) : back L n (fwd L n g) = g := by
-  apply Subtype.ext
-  exact MulEquiv.symm_apply_apply (flipGL L n) g.1
+  exact Subtype.ext (MulEquiv.symm_apply_apply (flipGL L n) g.1)
 
 theorem back_smul (n : ℕ) (γ : HFinIn (Af (maximalRealSubfield L)) (sig L) (Jn L n)) (h : Hf L n) :
     back L n (γ • h) = back L n γ.1 * back L n h := by
-  apply Subtype.ext
-  exact map_mul (flipGL L n).symm (γ.1.1) (HA.mat _ _ _ h)
+  exact Subtype.ext (map_mul (flipGL L n).symm (γ.1.1) (HA.mat _ _ _ h))
 
 theorem back_mem_GQ (n : ℕ) (γ : HFinIn (Af (maximalRealSubfield L)) (sig L) (Jn L n)) :
     back L n γ.1 ∈ ReciprocityTheory.Aut.GQ L n := by
@@ -145,8 +143,7 @@ theorem back_mem_GQ (n : ℕ) (γ : HFinIn (Af (maximalRealSubfield L)) (sig L) 
   · change (γ0 : Matrix (Fin n) (Fin n) L) * ReciprocityTheory.Aut.conjT _ (γ0 : Matrix (Fin n) (Fin n) L) = 1
     have h0 : Formalism.UG.cT (sig L : L →+* L) (γ0 : Matrix (Fin n) (Fin n) L) * 1 * (γ0 : Matrix (Fin n) (Fin n) L) = 1 := hγ0
     rw [mul_one] at h0
-    rw [mul_eq_one_comm]
-    exact h0
+    rwa [mul_eq_one_comm]
   · apply Units.ext
     have e' : Units.val (γ.1.1 : GL (Fin n) _) =
         Units.val (Formalism.UG.bc (inclR (F := ↥(maximalRealSubfield L)) (E := L) (Af (maximalRealSubfield L))) γ0) := by
@@ -203,8 +200,7 @@ theorem isOpen_intSet : IsOpen (intSet L) := by
     apply AddSubgroup.isOpen_of_mem_nhds H (g := 0)
     apply Filter.mem_of_superset _ hV
     apply (isOpen_set_pi Set.finite_univ fun _ _ => hW).mem_nhds
-    intro i _ v
-    exact (v.adicCompletionIntegers (maximalRealSubfield L)).zero_mem
+    exact fun i _ v => (v.adicCompletionIntegers (maximalRealSubfield L)).zero_mem
   have : intSet L = B.equivFun ⁻¹' H := by
     ext x
     simp [intSet, H]
@@ -251,7 +247,6 @@ theorem exists_finset_double_cosets_Umax (L : Type) [Field L] [NumberField L] [I
   refine ⟨⟨back L n γ.1, back_mem_GQ L n γ⟩, back L n s, back L n k,
     Finset.mem_image_of_mem _ hs, hk, ?_⟩
   have := congrArg (back L n) e
-  rw [back_fwd, back_smul, map_mul, ← mul_assoc] at this
-  exact this
+  rwa [back_fwd, back_smul, map_mul, ← mul_assoc] at this
 
 end GlobalTheory.DefiniteClassFinite

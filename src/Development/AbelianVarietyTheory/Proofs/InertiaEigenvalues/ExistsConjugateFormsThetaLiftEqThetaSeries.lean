@@ -113,10 +113,8 @@ theorem IsTraceFn.sum_eq {H Hf W : Type} [Group H] [Group Hf] [AddCommGroup W] [
   have hr : ∀ k, r k ∈ F ∧ p (r k) = y' k := fun k => by
     by_cases hk : k = c₀
     · subst hk
-      simp only [r, Function.update_self]
-      exact ⟨hh₀, e₀.symm⟩
-    · simp only [r, Function.update_of_ne hk]
-      exact ⟨hσ _, hσ' _⟩
+      simpa only [r, Function.update_self] using ⟨hh₀, e₀.symm⟩
+    · simpa only [r, Function.update_of_ne hk] using ⟨hσ _, hσ' _⟩
   have hr0 : r c₀ = h₀ := Function.update_self _ _ _
   have hyr : (fun k => p (r k)) = y' := funext fun k => (hr k).2
   have hf0 := GlobalTheory.TraceLift.finite_stab _ _ hy hfin (p h₀)
@@ -155,8 +153,7 @@ theorem IsTraceFn.sum_eq {H Hf W : Type} [Group H] [Group Hf] [AddCommGroup W] [
       obtain ⟨j, -, hu⟩ := hy' (y' k)
       refine hk ((hu k ⟨1, 1, by simp⟩).trans (hu c₀ ?_).symm)
       show ∃ (γ : Γ) (m : J), y' k = (p.comp Γ.subtype) γ * y' c₀ * m
-      rw [e₀, ← (hr k).2]
-      exact hex
+      rwa [e₀, ← (hr k).2]
 
 
 
@@ -233,10 +230,8 @@ theorem exists_conjForm_thF_eq_ser : ∀ (D : D7) (G : Type) [Group G] [Fintype 
       (congrFun hy _).trans hz.symm, (congrFun hy' _).trans ?_⟩
     exact (congrArg TW hz.symm).trans (hTc z)
   · refine thF_eq_ser_of_isTraceFn R F hCore i hPins.lift.std t h hh (c x) y ?_ u g
-    rw [hy]
-    exact hf1
+    rwa [hy]
   · refine thF_eq_ser_of_isTraceFn R F hCore i hPins.lift.std t' h hh (c x') y' ?_ u g
-    rw [hy', ← hcx]
-    exact hf2
+    rwa [hy', ← hcx]
 
 end GlobalTheory.ConjTwist

@@ -108,8 +108,7 @@ theorem box_gen_val_along (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) {K : Ty
   have E2 := congrArg (Units.map ((r.stalkMap y).hom : Y.presheaf.stalk (r y) →* Z.presheaf.stalk y)) E
   rw [map_mul, map_prod, map_prod] at E2
   simp only [map_zpow, units_map_stalkMap_bw_eq_bw_comp, units_map_stalkMap_val_eq_val_comp, Category.comp_id] at E2
-  simp only [Category.assoc]
-  exact E2
+  simpa only [Category.assoc] using E2
 
 end Box
 
@@ -134,8 +133,7 @@ theorem prod_on_torus (χ : D.X) {V : Type} [CommGroup V]
     rfl
   have k1 : (Over.map (thick R I e)).map g.i ≫ g.pG = 1 := by
     have h := GlobalTheory.TorusCoord.im_congr g k0
-    rw [GlobalTheory.TorusCoord.im_one] at h
-    exact h
+    rwa [GlobalTheory.TorusCoord.im_one] at h
   have e0 : g.i.left ≫ (padd D.P.A g.pG (toUnit ((Over.map (thick R I e)).obj (thickObj R I e G)) ≫ D.c χ)).left =
       g.i.left ≫ (toUnit ((Over.map (thick R I e)).obj (thickObj R I e G)) ≫ D.c χ).left := by
     change ((Over.map (thick R I e)).map g.i ≫ _).left = ((Over.map (thick R I e)).map g.i ≫ _).left
@@ -237,8 +235,7 @@ theorem torus_isPow : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (j 
       exact hz.symm
     · intro b _ hb
       rw [AddEquiv.apply_symm_apply, Pi.single_eq_of_ne hb, gm_char_zero]
-    · intro hi
-      exact absurd (Finset.mem_univ i) hi
+    · exact fun hi => absurd (Finset.mem_univ i) hi
   rw [← hh i, key]
 
 end GlobalTheory.PowTorus

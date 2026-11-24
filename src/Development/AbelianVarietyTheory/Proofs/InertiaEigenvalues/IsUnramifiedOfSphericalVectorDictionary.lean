@@ -241,8 +241,7 @@ theorem cLoc_entry_mem {w : HeightOneSpectrum (𝓞 L)} {x : UA L n} (hx : x ∈
       have h2 := entry_mem (inv_mem hK) j i
       rw [h1] at h2
       rw [HeightOneSpectrum.mem_adicCompletionIntegers] at h2 ⊢
-      rw [← (conjLoc_spec (GlobalTheory.SplitPts.conjE L) w).2.2]
-      exact h2
+      rwa [← (conjLoc_spec (GlobalTheory.SplitPts.conjE L) w).2.2]
   · have h := MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 u) hu)
     rw [h, Units.val_one, Matrix.one_apply]
     split_ifs

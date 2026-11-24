@@ -78,12 +78,10 @@ theorem holFamily_of_affine
     let := hVa.isLocalization_basicOpen g
     obtain ⟨⟨h, ⟨_, n, rfl⟩⟩, hh⟩ := IsLocalization.surj (Submonoid.powers g) (resG Z hgU f)
     have hh' : resG Z hgU f * resG Z hDV g ^ n = resG Z hDV h := by
-      rw [← map_pow]
-      exact hh
+      rwa [← map_pow]
     refine ⟨{w | w ∈ W ∧ ⊤ ≤ c w ⁻¹ᵁ V} ∩ (fun w => valAt' (c w) V g) ⁻¹' {0}ᶜ,
       (hVd g).continuousOn.isOpen_inter_preimage hVo isOpen_compl_singleton, ?_, ?_, ?_⟩
-    · refine ⟨⟨hw₀, hV₀⟩, ?_⟩
-      exact ((hv Z (c w₀)).2.2.2.2.1 V g).1 ((hpt _ _ _).2 hg₀)
+    · exact ⟨⟨hw₀, hV₀⟩, ((hv Z (c w₀)).2.2.2.2.1 V g).1 ((hpt _ _ _).2 hg₀)⟩
     · rintro w ⟨⟨hw, -⟩, hg⟩
       have hD : ⊤ ≤ c w ⁻¹ᵁ Z.basicOpen g := ((hv Z (c w)).2.2.2.2.1 V g).2 hg
       exact ⟨hw, (hpt _ _ _).2 (hgU ((hpt _ _ _).1 hD))⟩
@@ -94,8 +92,7 @@ theorem holFamily_of_affine
         · exact (hVd h).mono Set.inter_subset_left
         · apply DifferentiableOn.fun_inv
           · exact ((hVd g).mono Set.inter_subset_left).fun_pow n
-          · intro w hw
-            exact pow_ne_zero _ hw.2
+          · exact fun w hw => pow_ne_zero _ hw.2
       refine hq.congr fun w ⟨⟨hw, hwV⟩, hg⟩ => ?_
       have hg' : valAt' (c w) V g ≠ 0 := hg
       have hD : ⊤ ≤ c w ⁻¹ᵁ Z.basicOpen g := ((hv Z (c w)).2.2.2.2.1 V g).2 hg'
@@ -186,8 +183,7 @@ theorem holFamily_of_isPullback
     refine hm.congr fun w hw => by
       change w ∈ W ∧ ⊤ ≤ c w ⁻¹ᵁ (p ⁻¹ᵁ VX ⊓ q ⁻¹ᵁ VY) at hw
       have h1 := (hv Z (c w)).2.2.1 (p ⁻¹ᵁ VX) _ inf_le_left ((p.app VX).hom a) hw.2
-      have h2 := (hv Z (c w)).2.2.2.1 X p VX a
-      exact h1.trans h2
+      exact h1.trans ((hv Z (c w)).2.2.2.1 X p VX a)
   have hYT : ∀ b : Γ(Y, VY), (q.appLE VY (p ⁻¹ᵁ VX ⊓ q ⁻¹ᵁ VY) inf_le_right).hom b ∈ T := by
     intro b
     change DifferentiableOn ℂ
@@ -201,8 +197,7 @@ theorem holFamily_of_isPullback
     refine hm.congr fun w hw => by
       change w ∈ W ∧ ⊤ ≤ c w ⁻¹ᵁ (p ⁻¹ᵁ VX ⊓ q ⁻¹ᵁ VY) at hw
       have h1 := (hv Z (c w)).2.2.1 (q ⁻¹ᵁ VY) _ inf_le_right ((q.app VY).hom b) hw.2
-      have h2 := (hv Z (c w)).2.2.2.1 Y q VY b
-      exact h1.trans h2
+      exact h1.trans ((hv Z (c w)).2.2.2.1 Y q VY b)
 
   let φX : Γ(X, VX) ⟶ CommRingCat.of T := CommRingCat.ofHom ((p.appLE VX _ inf_le_left).hom.codRestrict T hXT)
   let φY : Γ(Y, VY) ⟶ CommRingCat.of T := CommRingCat.ofHom ((q.appLE VY _ inf_le_right).hom.codRestrict T hYT)

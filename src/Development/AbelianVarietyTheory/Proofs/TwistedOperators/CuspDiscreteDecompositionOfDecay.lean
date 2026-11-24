@@ -473,8 +473,7 @@ theorem pointwise {X : Type} [MeasurableSpace X] {ν : Measure X}
       isClosed_le (by fun_prop) (by fun_prop)
     have hsub : closure D ⊆ {c : s → ℂ | ‖∑ j : s, c j * T (e j) x‖ ≤ C * ‖w c‖} :=
       hcl.closure_subset_iff.2 fun c hc => hx c hc
-    intro c
-    exact hsub (hDd.closure_eq ▸ Set.mem_univ c)
+    exact fun c => hsub (hDd.closure_eq ▸ Set.mem_univ c)
 
   set S := ∑ j : s, ‖T (e j) x‖ ^ 2 with hS
   have key := hall fun j => (starRingEnd ℂ) (T (e j) x)
@@ -491,8 +490,7 @@ theorem pointwise {X : Type} [MeasurableSpace X] {ν : Measure X}
   have hnn := norm_nonneg (w fun j => (starRingEnd ℂ) (T (e j) x))
   have hfin : S ≤ C ^ 2 := by
     nlinarith [sq_nonneg (C - ‖w fun j => (starRingEnd ℂ) (T (e j) x)‖)]
-  rw [← Finset.sum_coe_sort s (fun i => ‖T (e i) x‖ ^ 2)]
-  exact hfin
+  rwa [← Finset.sum_coe_sort s (fun i => ‖T (e i) x‖ ^ 2)]
 
 theorem sum_le {X : Type} [MeasurableSpace X] {ν : Measure X} [IsFiniteMeasure ν]
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -570,8 +568,7 @@ theorem finite_and_ncard_le_of_fibres {α β : Type*} {S : Set α} {T : Set β} 
   have h := (hfib t (by simpa using ht)).2
   have e : (({a ∈ hS.toFinset | f a = t} : Finset α) : Set α) = S ∩ f ⁻¹' {t} := by
     ext a; simp
-  rw [← Set.ncard_coe_finset, e]
-  exact h
+  rwa [← Set.ncard_coe_finset, e]
 
 theorem finite_and_ncard_le_of_eval_eq_zero {L : Type*} [Field L] {S : Set L} {p : L[X]}
     (hp : p ≠ 0) (hS : ∀ x ∈ S, p.eval x = 0) : S.Finite ∧ S.ncard ≤ p.natDegree := by
@@ -882,8 +879,7 @@ theorem gq_count (hA : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
       φ γ ∈ {δ : GL (Fin V.rank) D.host.E | (heightGL D.host.F (bc (inclR (F := D.host.F) (AF D.host.F)) δ) : ℝ) ≤ T} := by
     intro γ hγ
     simp only [Set.mem_setOf_eq] at hγ ⊢
-    rw [hφ]
-    exact hγ
+    rwa [hφ]
   have hinj : Set.InjOn φ {γ : GQ V | GlobalTheory.Grow.height V (γ : GA D V) ≤ T} := by
     intro a _ b _ hab
     have h2 : matHom V (a : GA D V) = matHom V (b : GA D V) := by rw [← hφ, ← hφ, hab]
@@ -1281,8 +1277,7 @@ theorem norm_convR_le (hP : GlobalTheory.Published.CuspDecayBound) {f : GA D V �
     ⟨fun γ hγ x => ((leftInv_lift (Γ := GQ V) F).convR (μ := μ) f) γ hγ x, ⟨U, hU, hlev F⟩, hcont⟩
     (hlev F) (GlobalTheory.T.contDiff_rightConvolution_along_one_parameter_products μ θ hθ hf F) (fun l hl => ⟨_, hgr l hl⟩) (GlobalTheory.T.convolution_preserves_cuspidal μ hf F hF)
     (fun l => Cg * M l * ‖F‖) (fun l hl x => hgr l (hL l hl) x) g
-  rw [pow_zero, mul_one, ← Finset.sum_mul, ← mul_assoc] at key
-  exact key
+  rwa [pow_zero, mul_one, ← Finset.sum_mul, ← mul_assoc] at key
 
 theorem isHilbertSchmidt_RcuspOp (hP : GlobalTheory.Published.CuspDecayBound) {f : GA D V → ℂ} (hf : f ∈ CcGA V) :
     IsHilbertSchmidt (RcuspOp V μ f) := by

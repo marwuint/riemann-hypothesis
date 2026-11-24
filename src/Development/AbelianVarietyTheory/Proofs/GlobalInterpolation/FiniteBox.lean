@@ -90,39 +90,28 @@ theorem band_le_of_pos (f : ℂ → ℂ) (m : ℂ → ℕ) (B : ℝ → ℝ)
       ∑ᶠ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < T ∧ f ρ = 0},
         (m ρ : ℂ) * ((u : ℂ) ^ ρ / ρ)‖ ≤ (B T + B (-T)) * (u / T) := by
   classical
-  have hT0 : 0 < T := hT
   have hS' := finite_box f (fun t => (hW t).1) T'
   have hS := finite_box f (fun t => (hW t).1) T
   have hA := (hW T).1
   have hA' := (hW (-T)).1
   rw [finsum_mem_eq_finite_toFinset_sum _ hS', finsum_mem_eq_finite_toFinset_sum _ hS]
   have hsub : hS.toFinset ⊆ hS'.toFinset := by
-    intro ρ hρ
-    rw [Set.Finite.mem_toFinset] at hρ ⊢
-    obtain ⟨a, b, c, d⟩ := hρ
+    rw [Set.Finite.toFinset_subset_toFinset]
+    rintro ρ ⟨a, b, c, d⟩
     exact ⟨a, b, c.trans_le hT1, d⟩
   rw [← Finset.sum_sdiff hsub, add_sub_cancel_right]
   have hD : ∀ ρ ∈ hS'.toFinset \ hS.toFinset,
       ρ ∈ hA.toFinset ∪ hA'.toFinset ∧ ρ.re < 1 ∧ T ≤ |ρ.im| := by
     intro ρ hρ
-    obtain ⟨h1, h2⟩ := Finset.mem_sdiff.1 hρ
-    rw [Set.Finite.mem_toFinset] at h1 h2
-    obtain ⟨a, b, c, d⟩ := h1
+    rw [Finset.mem_sdiff, Set.Finite.mem_toFinset, Set.Finite.mem_toFinset] at hρ
+    obtain ⟨⟨a, b, c, d⟩, h2⟩ := hρ
     have hT' : T ≤ |ρ.im| := not_lt.1 fun h => h2 ⟨a, b, h, d⟩
     refine ⟨?_, b, hT'⟩
     rw [Finset.mem_union, Set.Finite.mem_toFinset, Set.Finite.mem_toFinset]
     rw [abs_lt] at c
-    rcases le_or_gt 0 ρ.im with h | h
-    · left
-      rw [abs_of_nonneg h] at hT'
-      refine ⟨a, b, ?_, d⟩
-      rw [abs_le]
-      constructor <;> linarith
-    · right
-      rw [abs_of_neg h] at hT'
-      refine ⟨a, b, ?_, d⟩
-      rw [abs_le]
-      constructor <;> linarith
+    rcases le_abs.1 hT' with h | h
+    · exact Or.inl ⟨a, b, abs_le.2 ⟨by linarith, by linarith⟩, d⟩
+    · exact Or.inr ⟨a, b, abs_le.2 ⟨by linarith, by linarith⟩, d⟩
   have hm : ∑ ρ ∈ hS'.toFinset \ hS.toFinset, (m ρ : ℝ) ≤ B T + B (-T) := by
     calc ∑ ρ ∈ hS'.toFinset \ hS.toFinset, (m ρ : ℝ)
         ≤ ∑ ρ ∈ hA.toFinset ∪ hA'.toFinset, (m ρ : ℝ) :=
@@ -138,9 +127,9 @@ theorem band_le_of_pos (f : ℂ → ℂ) (m : ℂ → ℕ) (B : ℝ → ℝ)
         refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun ρ hρ => ?_)
         obtain ⟨-, h1, h2⟩ := hD ρ hρ
         exact norm_term_le_of_pos (m ρ) hT hu h1 h2
-    _ = (∑ ρ ∈ hS'.toFinset \ hS.toFinset, (m ρ : ℝ)) * (u / T) := by rw [Finset.sum_mul]
-    _ ≤ (B T + B (-T)) * (u / T) :=
-        mul_le_mul_of_nonneg_right hm (div_nonneg (by linarith) hT0.le)
+    _ ≤ (B T + B (-T)) * (u / T) := by
+        rw [← Finset.sum_mul]
+        exact mul_le_mul_of_nonneg_right hm (div_nonneg (by linarith) hT.le)
 
 theorem band_le (f : ℂ → ℂ) (m : ℂ → ℕ) (B : ℝ → ℝ)
     (hW : ∀ t : ℝ, {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im - t| ≤ 1 ∧ f ρ = 0}.Finite ∧

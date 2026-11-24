@@ -109,8 +109,7 @@ theorem eq_zero_of_trace [CharZero E] (g : C) (hs : (LinearMap.mulLeft E g).char
     LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero (he.map (Algebra.lmul E C)) hte
   have he0 : e = 0 := Algebra.lmul_injective (h0.trans (map_zero _).symm)
   have hxJ : x ∈ J := hx
-  rw [hJ, he0, Ideal.mem_span_singleton, zero_dvd_iff] at hxJ
-  exact hxJ
+  rwa [hJ, he0, Ideal.mem_span_singleton, zero_dvd_iff] at hxJ
 
 end Gen
 
@@ -219,8 +218,7 @@ theorem orbSum_hom (G : Subgroup Aˣ) (θ : G →* A'ˣ) (hθ : Function.Surject
     exact congrArg Φ (Quot.out_eq o).symm
   have h1 : W' (Quot.out (Φ o)) = W' (e (Quot.out o)) :=
     (congrArg (Quot.lift W' hW') (Quot.out_eq (Φ o))).trans (congrArg (Quot.lift W' hW') e1)
-  simp only [one_mul]
-  exact congrArg (fun n : ℕ => (n : ℚ)) ((key (Quot.out o)).trans h1.symm)
+  simpa only [one_mul] using congrArg (fun n : ℕ => (n : ℚ)) ((key (Quot.out o)).trans h1.symm)
 
 theorem stable_adjoin (φ : A →ₐ[O] A') (g : A) (M : Submodule O A') (hM : ∀ y ∈ M, φ g * y ∈ M) {a : A}
     (ha : a ∈ Algebra.adjoin O ({g} : Set A)) : ∀ y ∈ M, φ a * y ∈ M := by
@@ -363,15 +361,13 @@ theorem integral (h : Half B e π) {y : B.A} (h1 : IsIntegral K.O (π y)) (h2 : 
     refine isIntegral_idempotent_mul_of_monic h.idem p hp ((h.ker _).1 ?_)
     have e1 : π (aeval y p) = aeval (π y) p :=
       (Polynomial.aeval_algHom_apply (π.restrictScalars K.O) y p).symm
-    rw [e1, aeval_def]
-    exact hpy
+    rwa [e1, aeval_def]
   have hez : IsIntegral K.O (e * B.σ y) := by
     obtain ⟨p, hp, hpy⟩ := h2
     refine isIntegral_idempotent_mul_of_monic h.idem p hp ((h.ker _).1 ?_)
     have e1 : π (aeval (B.σ y) p) = aeval (π (B.σ y)) p :=
       (Polynomial.aeval_algHom_apply (π.restrictScalars K.O) (B.σ y) p).symm
-    rw [e1, aeval_def]
-    exact hpy
+    rwa [e1, aeval_def]
   have hy : y = e * y + B.σ (e * B.σ y) := by rw [map_mul, B.σ_σ, ← add_mul, h.swap, one_mul]
   rw [hy]
   exact hey.add (sigma_integral B hez)
@@ -436,16 +432,14 @@ theorem eq_lift (h : Half B e π) (he : e ∈ Algebra.adjoin K.O ({B.g} : Set B.
     simpa [Algebra.traceForm_apply] using h1
   ext y
   constructor
-  · intro hy
-    exact mem_lift_iff'.2 ⟨⟨y, hy, rfl⟩, fwd y hy⟩
+  · exact fun hy => mem_lift_iff'.2 ⟨⟨y, hy, rfl⟩, fwd y hy⟩
   · intro hy
     obtain ⟨hy1, hy2⟩ := mem_lift_iff'.1 hy
     rw [hsd y]
     intro z hz
     rw [h.herm]
     refine add_mem ?_ ?_
-    · have h3 := mem_dual_iff_inertia_eigenvalues.1 (fwd z hz) (π y) hy1
-      simpa [Algebra.traceForm_apply] using h3
+    · simpa [Algebra.traceForm_apply] using mem_dual_iff_inertia_eigenvalues.1 (fwd z hz) (π y) hy1
     · rw [conj_mem, ← mem_range_iff]
       have h3 := mem_dual_iff_inertia_eigenvalues.1 hy2 (π z) ⟨z, hz, rfl⟩
       simpa [Algebra.traceForm_apply] using h3
@@ -586,11 +580,9 @@ theorem lift_mem (h : Half B e π) (hs : B.P.Separable) (hu : B.g * B.σ B.g = 1
       obtain ⟨hz1, hz2⟩ := mem_lift_iff'.1 hz
       rw [h.herm]
       refine add_mem ?_ ?_
-      · have h3 := mem_dual_iff_inertia_eigenvalues.1 hz2 (π y) hy1
-        simpa [Algebra.traceForm_apply] using h3
+      · simpa [Algebra.traceForm_apply] using mem_dual_iff_inertia_eigenvalues.1 hz2 (π y) hy1
       · rw [conj_mem, ← mem_range_iff]
-        have h3 := mem_dual_iff_inertia_eigenvalues.1 hy2 (π z) hz1
-        simpa [Algebra.traceForm_apply] using h3
+        simpa [Algebra.traceForm_apply] using mem_dual_iff_inertia_eigenvalues.1 hy2 (π z) hz1
     · intro H
       refine mem_lift_iff'.2 ⟨?_, ?_⟩
       · have h4 : π y ∈ dual (dual M) := by
@@ -867,8 +859,7 @@ theorem val_res (m f : K.O[X]) (hm : m.Monic) (p q : K.E[X]) (hp : p.Monic) (hq 
     rw [IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap,
       IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff]
     show resultant p₀ q₀ ∉ IsLocalRing.maximalIdeal K.O
-    rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]
-    exact hu
+    rwa [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]
   rw [hres]
   simp only [val, hv, WithZero.log_one, neg_zero]
 
@@ -881,13 +872,11 @@ theorem val_res_mul (p₁ q₁ p₂ q₂ : K.E[X]) (hp₁ : p₁.Monic) (hq₁ :
 
   have hR : ∀ f : K.E[X], resultant f (p₂ * q₂) = resultant f p₂ * resultant f q₂ := fun f => by
     have h := resultant_mul_right f p₂ q₂ f.natDegree le_rfl
-    rw [← hd2] at h
-    exact h
+    rwa [← hd2] at h
 
   have hL : resultant (p₁ * q₁) (p₂ * q₂) = resultant p₁ (p₂ * q₂) * resultant q₁ (p₂ * q₂) := by
     have h := resultant_mul_left p₁ q₁ (p₂ * q₂) (p₂ * q₂).natDegree le_rfl
-    rw [← hd1] at h
-    exact h
+    rwa [← hd1] at h
   have c11 : IsCoprime p₁ p₂ := (hc.of_mul_left_left).of_mul_right_left
   have c12 : IsCoprime p₁ q₂ := (hc.of_mul_left_left).of_mul_right_right
   have c21 : IsCoprime q₁ p₂ := (hc.of_mul_left_right).of_mul_right_left
@@ -997,11 +986,9 @@ theorem identity_of_swap : ∀ (K : UQ) (B₁ B₂ : InvAlg K), B₁.g * B₁.σ
   have hc : ((Nat.card (IsLocalRing.ResidueField K.O) : ℕ) : ℚ) = (K.q : ℚ) ^ 2 := by
     rw [K.card_res]; push_cast; ring
   have E1 : (B₁.prod B₂).N 1 = ((K.q : ℚ) ^ 2) ^ val K.O (resultant p₁ p₂) * (B₁.N 1 * B₂.N 1) := by
-    rw [NBp, N₁p, N₂p, ← hc]
-    exact Cp
+    rwa [NBp, N₁p, N₂p, ← hc]
   have E2 : (B₁.prod B₂).N 1 = ((K.q : ℚ) ^ 2) ^ val K.O (resultant q₁ q₂) * (B₁.N 1 * B₂.N 1) := by
-    rw [NBq, N₁q, N₂q, ← hc]
-    exact Cq
+    rwa [NBq, N₁q, N₂q, ← hc]
 
   obtain ⟨m₁, hm₁, hm₁'⟩ := hi₁
   obtain ⟨m₂, hm₂, hm₂'⟩ := hi₂

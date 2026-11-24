@@ -391,8 +391,7 @@ theorem tameAt_of_congr (H : Formalism.L2.Host.HChar E) (PP : HeightOneSpectrum 
     have hdiff : a - (s : 𝓞 E) ∈ PP.asIdeal := by
       apply (PP.valuation_lt_one_iff_mem (K := E) _).mp
       show PP.valuation E (algebraMap (𝓞 E) E (a - (s : 𝓞 E))) < 1
-      rw [map_sub, ← h, ← sub_one_mul, map_mul, hsv, mul_one]
-      exact hk
+      rwa [map_sub, ← h, ← sub_one_mul, map_mul, hsv, mul_one]
     let ka : Eˣ := Units.mk0 _ ha0
     let ks : Eˣ := Units.mk0 _ hs0
     have e1 : H.locK PP ka = H.locK PP ks := hc a (s : 𝓞 E) ka ks rfl rfl ha hdiff
@@ -460,9 +459,7 @@ theorem chi_locE_congr (δ : Twist D Circle) (hδ : δ.Good) {PP : Pl D.host.E} 
         Subtype.ext hv
       rw [e2, GlobalTheory.ConjTwist.map_loc, h1, resS_oToS, hcu]
       ring
-  have hb : Ideal.Quotient.mk PP.asIdeal b = (u : kP PP) := by
-    show Ideal.Quotient.mk PP.asIdeal b = Ideal.Quotient.mk PP.asIdeal a
-    exact (Ideal.Quotient.eq.mpr hab).symm
+  have hb : Ideal.Quotient.mk PP.asIdeal b = (u : kP PP) := (Ideal.Quotient.eq.mpr hab).symm
   rw [key a x hx rfl, key b y hy hb]
 
 
@@ -618,9 +615,7 @@ theorem tameAt_of_good (t : Twist D Circle) (ht : t.Good) (χ : Formalism.L2.Hos
   · by_cases hc : ∃ P' ∈ t.Q, Formalism.IndefR.Lev.IsConjPl P' v
     · obtain ⟨P', hP', hPc⟩ := hc
       exact GlobalTheory.TameConjPlace.tameAt_conj D t ht χ hχ P' hP' v hPc
-    · have hu := GlobalTheory.TwistUnrOff.unrAt_of_off D t ht χ hχ v hv hc
-      intro x hx _
-      exact hu x hx
+    · exact fun x hx _ => (GlobalTheory.TwistUnrOff.unrAt_of_off D t ht χ hχ v hv hc) x hx
 
 theorem unrAt_of_good (t : Twist D Circle) (ht : t.Good) (χ : Formalism.L2.Host.HChar D.host.E) (hχ : ChrEq t.chi χ) (pd : ℕ)
     (hpd : ∀ PP ∈ t.Q, ((pd : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) (v : Pl D.host.E)
@@ -756,8 +751,7 @@ theorem isLevDatum_flat : ∀ (D : D7) (S T : HSp D) (B : Base S T), B.Good → 
     intro s hs hk PP hPP u
     obtain ⟨x, hx⟩ := exists_isLocUnit (hs.split.isIdemAt hPP) u
     have := hk x
-    rw [hx.eq (hs.res PP hPP)] at this
-    exact this
+    rwa [hx.eq (hs.res PP hPP)] at this
   refine UnivRat.isLevDatum_vecAt hB hQ h2 N hN k hP hmu (key hB.de hde) _ fun PP y => ?_
   unfold flat
   split_ifs with h
@@ -867,8 +861,7 @@ theorem inv_smul_mem_range_of_readable {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D
       rw [Setup.eOk, RingHom.comp_apply, ← e1]
       congr 1
       have e2 := hρ.ek_e i b k d
-      rw [Setup.eOk, Setup.eO, RingHom.comp_apply, RingHom.comp_apply] at e2
-      exact e2
+      rwa [Setup.eOk, Setup.eO, RingHom.comp_apply, RingHom.comp_apply] at e2
     have h0 : ρ.e i b (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) d) ≠ 0 := by
       rw [map_ne_zero]
       exact (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hd))
@@ -1084,8 +1077,7 @@ theorem ratTwist_of_isRatScalar (hRF : GlobalTheory.NT.RayField) {T : CoreJ D} [
       · exact h2q PP h1) hPC hmuC hdeC htC
   have hdat : IsLevDatum Rl.ψ (Vc D j) (Wc D j) (Rl.ΛV j) (Rl.ΛW j) (T.Q.l.M * C.d.pd) C.σ₂.fieldRange (Rl.vacP j)
       ((ρ.B i j b).vecFlat (ρ.tw i b k Q ψ)) := by
-    rw [hpin.psi i j b, hpin.latS i j b, hpin.latT i j b, hpin.vac i j b] at hdat0
-    exact hdat0
+    rwa [hpin.psi i j b, hpin.latS i j b, hpin.latT i j b, hpin.vac i j b] at hdat0
 
   have hmuV := muVal_detChar (Vc D j) ht.real
   have hmuW := muVal_detChar (Wc D j) ht.real
@@ -1105,8 +1097,7 @@ theorem ratTwist_of_isRatScalar (hRF : GlobalTheory.NT.RayField) {T : CoreJ D} [
           ((j : ℕ) + 1)).2 := by
       simp only [Lift.chrTh, Lift.tup, Base.mu, hpin.mu0 i j b, hpin.eta i j b, mul_one]
       rw [mul_assoc, mul_assoc, mul_comm _ (ρ.tw i b k Q ψ).chi, ← mul_assoc, ← mul_assoc, mul_assoc _ (ρ.B i j b).de.chi]
-    rw [← e0, ← e1, ← e2]
-    exact hom'
+    rwa [← e0, ← e1, ← e2]
 
   obtain ⟨m, o, v, ho, hv, hcP⟩ := exists_coef v₀ hρ hpin hcore hio i j b (hti.hv₀ j _) hu hc0 hsc hd.mem
   have hgen : ∀ (P' : PolF D (Wc D j).rank (Vc D j).rank) g,

@@ -63,8 +63,7 @@ theorem mem_hat_iff_locL {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (
 
 theorem prV_eq_zero_iff_cpt (v : HeightOneSpectrum (𝓞 D.host.F)) (z : EAf D) :
     Formalism.UG.prV (E := D.host.E) v z = 0 ↔ ∀ Q : Pl D.host.E, Q.under (𝓞 D.host.F) = v → cpt Q z = 0 := by
-  refine (GlobalTheory.AdeleBaseChange.prV_eq_zero_iff (toAd_spec D) v z).trans ?_
-  exact Iff.rfl
+  exact (GlobalTheory.AdeleBaseChange.prV_eq_zero_iff (toAd_spec D) v z).trans Iff.rfl
 
 theorem mem_hat_iff_of_supp {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : Λ.FG)
     (v : HeightOneSpectrum (𝓞 D.host.F)) {y : Fin n → EAf D}
@@ -127,10 +126,8 @@ theorem locL_le {Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : �
   have hxe : (fun i => Formalism.UG.prV (E := D.host.E) v ((e • fun i => inc D (x i)) i)) =
       fun i => Formalism.UG.inclE (F := D.host.F) (v.adicCompletion D.host.F) (x i) := by
     funext i
-    rw [Pi.smul_apply, smul_eq_mul, map_mul, hpe, one_mul]
-    rw [Formalism.UG.P.afsplit_prV_inclE]
-  rw [hxe] at hm
-  exact hm
+    rw [Pi.smul_apply, smul_eq_mul, map_mul, hpe, one_mul, Formalism.UG.P.afsplit_prV_inclE]
+  rwa [hxe] at hm
 
 theorem prV_idem_smul {v : HeightOneSpectrum (𝓞 D.host.F)} {Q : Pl D.host.E} (hQ : Q.under (𝓞 D.host.F) = v)
     (y : Fin n → EAf D) : ∀ w, w ≠ v → ∀ i, Formalism.UG.prV (E := D.host.E) w ((idem Q • y) i) = 0 := by

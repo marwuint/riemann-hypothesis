@@ -158,8 +158,7 @@ theorem explicitChoice_rankK_lower_upper_bounds :
   rw [e2] at hk1 hk2
   rw [e4] at hm1 hm2
   have h := rank_k_ineqs_poly_wide C.P.CkLow _ _ _ _ _ (by positivity) hy hn1 hn2 hm1 hm2 hk1 hk2
-  simp only [R0, jG, Scale.L, hf, Real.rpow_neg hxp.le, e3]
-  exact h
+  simpa only [R0, jG, Scale.L, hf, Real.rpow_neg hxp.le, e3] using h
 
 end GlobalTheory.EX
 end -- clump:auto
@@ -685,8 +684,7 @@ theorem szRow_cloud_le : SzRow (fun C D L => (4 * L.Sc ≤ L.LaG * L.sc.b' / D.R
   have hx0 : 0 < L.sc.x := by linarith
   have hΛ : 1 ≤ L.LaG := by
     rw [hV.La_eq]
-    refine le_trans ?_ ((h1 L.sc hε hx1).2.2 C.GK hLa).1
-    exact Real.one_le_rpow hx1'.le L.sc.eps_pos.le
+    exact le_trans (Real.one_le_rpow hx1'.le L.sc.eps_pos.le) ((h1 L.sc hε hx1).2.2 C.GK hLa).1
   have hp1 : 1 ≤ L.sc.x ^ cD := Real.one_le_rpow hx1'.le hcD
   have hDel : (D.s.Del : ℝ) = (⌈L.sc.x ^ cD⌉₊ : ℝ) := by
     rw [hV.Del_eq]; simp [Delv]
@@ -1126,8 +1124,7 @@ theorem szRow_thinSize_ge : SzRow (fun C D L => ((D.R.k : ℝ) ^ C.P.Cw ≤ L.sc
           Real.rpow_le_rpow (by linarith) hk5 (abs_nonneg _)
       _ = L.sc.x ^ (5 * |(C.P.Cw : ℝ)|) := (Real.rpow_mul hx0.le _ _).symm
   refine ⟨?_, ?_⟩
-  · refine hkC.trans (le_trans ?_ hw)
-    exact le_mul_of_one_le_left (by linarith) hA
+  · exact hkC.trans (le_trans (le_mul_of_one_le_left (by linarith) hA) hw)
   · rw [hcw, show (9 / 10 : ℝ) = 1 - 1 / 10 by norm_num]
     exact le_trans (le_mul_of_one_le_right (by linarith) hB) hw
 
@@ -1210,8 +1207,7 @@ theorem szRow_tops_band_bottoms :
     have key := bandWidth_real_inequality_le_inv_sq (A := 2 * C.GK.La * CN ^ 2) (c := C.P.Crho) L.sc.one_lt_alt (le_refl (1 : ℝ))
       hn (mul_nonneg (Nat.cast_nonneg _) hδ0) V.ranks.2.2.1.1 ((Real.rpow_pos_of_pos hxp _).le.trans hlo)
       (hup.trans (le_of_eq (by ring))) (by linarith) a2 a3
-    rw [mul_one, ← mul_assoc 2] at key
-    exact key
+    rwa [mul_one, ← mul_assoc 2] at key
   · exact V.bT_le
 
 end GlobalTheory.EX
@@ -1461,8 +1457,7 @@ theorem num (h : MUQ φ e) : MU φ (fun i => (e i).num) := by
   have : (fun i => (e i).num) = a := by
     funext i
     rw [ha i, Rat.num_intCast]
-  rw [this]
-  exact hMU
+  rwa [this]
 
 end UpperTheory.MUQ
 end -- clump:auto

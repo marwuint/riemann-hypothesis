@@ -411,18 +411,15 @@ theorem res_art_eq_art_norm : ∀ (E Ω : Type) [Field E] [NumberField E] [_root
     have h := _root_.GlobalTheory.ProdLocUnit.prod_locUnit_eq_one K (Gab E Ω ⧸ U) ψ1 ho1 (fun k => by simp [ψ1, hdK]) au (TK ∪ TSK) fun w hw => by
       rw [Finset.mem_union, not_or] at hw
       refine hTK2 w hw.1 fun v' hv' e => hw.2 ((hTSK w).mpr ⟨v', hv', e⟩)
-    rw [Finset.prod_union hdisj, Finset.prod_eq_single_of_mem W hWT F3] at h
-    exact h
+    rwa [Finset.prod_union hdisj, Finset.prod_eq_single_of_mem W hWT F3] at h
   have hPE : (∏ v' ∈ TE, ψ2 (locUnit E v' (NK au))) * ψ2 (locUnit E v (NK au)) = 1 := by
     have hdisj : Disjoint TE SE := by
       rw [Finset.disjoint_left]
-      intro v' h1 h2
-      exact hTE1 v' h1 h2
+      exact fun v' h1 h2 => hTE1 v' h1 h2
     have h := _root_.GlobalTheory.ProdLocUnit.prod_locUnit_eq_one E (Gab E Ω ⧸ U) ψ2 ho2 (fun k => by simp [ψ2, hdE]) (NK au) (TE ∪ SE) fun v' hv' => by
       rw [Finset.mem_union, not_or] at hv'
       exact hTE2 v' hv'.1 hv'.2
-    rw [Finset.prod_union hdisj, Finset.prod_eq_single_of_mem v hvSE F4] at h
-    exact h
+    rwa [Finset.prod_union hdisj, Finset.prod_eq_single_of_mem v hvSE F4] at h
   have key : ψ1 (locUnit K W au) = ψ2 (locUnit E v (NK au)) := by
     rw [← hprod] at hPE
     exact mul_left_cancel (hPK.trans hPE.symm)
@@ -547,8 +544,7 @@ theorem GlobalTheory.TameRecip.exists_ine_of_unit : GlobalTheory.Published.Globa
           (algebraMap E (v.adicCompletion E) (u : E))⁻¹ := by
       simp only [Units.val_mul, Units.val_inv_eq_inv_val, uc, Units.val_mk0]
       field_simp
-    rw [e, map_mul, map_inv₀, hu1, inv_one, mul_one]
-    exact hxu
+    rwa [e, map_mul, map_inv₀, hu1, inv_one, mul_one]
   obtain ⟨z, hz1, hz⟩ := _root_.GlobalTheory.OneUnitRoot.exists_unit_pow_normV_sub_one E v (x * uc⁻¹) hy
   obtain ⟨ρ, hρ, hρz⟩ := (ha.ine v A hA _).mp ⟨z, hz1, rfl⟩
   obtain ⟨τ, hτF, hτπ, hτc⟩ := _root_.GlobalTheory.TameRecip.exists_frob_fix_of_eisenstein H E Ω art ha v A hA ϖ hϖ1 hϖ2 π hπ
@@ -606,8 +602,7 @@ theorem GlobalTheory.TameRecip.exists_ine_of_unit : GlobalTheory.Published.Globa
     rw [mul_comm x, mul_inv_cancel_left]
   · have e : (τ'⁻¹ * τ * ρ ^ (normV v - 1)) π = (τ'⁻¹ * τ) π := by
       rw [AlgEquiv.mul_apply, _root_.GlobalTheory.ine_pow_normV_sub_one_apply_of_pow_mem E Ω v A hA (ϖ : E) π hπ ρ hρ]
-    rw [e]
-    exact hval
+    rwa [e]
 
 end
 end -- clump:auto

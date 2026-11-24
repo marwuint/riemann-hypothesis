@@ -106,17 +106,14 @@ theorem exists_integral_basis_linear_coordinates :
     have := congrArg Subtype.val (b.sum_repr ⟨x, hxM⟩)
     simp only [AddSubmonoidClass.coe_finsetSum, SetLike.val_smul] at this
     rw [Fintype.linearCombination_apply]
-    simp only [algebraMap_smul]
-    exact this.symm
+    simpa only [algebraMap_smul] using this.symm
   have h2 : g x = fun j => algebraMap V K (b.repr ⟨x, hxM⟩ j) := by
     have := LinearMap.congr_fun hg (fun j => algebraMap V K (b.repr ⟨x, hxM⟩ j))
-    rw [LinearMap.comp_apply, ← h1] at this
-    exact this
+    rwa [LinearMap.comp_apply, ← h1] at this
   refine ⟨fun j => ⟨b.repr ⟨x, hxM⟩ j, ?_⟩, ?_⟩
   · simp [h2]
   · simp only [LinearMap.comp_apply, LinearMap.proj_apply, h2, ← Algebra.smul_def]
-    rw [Fintype.linearCombination_apply] at h1
-    exact h1
+    rwa [Fintype.linearCombination_apply] at h1
 
 end GlobalTheory
 end -- clump:auto
@@ -226,8 +223,7 @@ theorem mem_HHa_of_coeff_functional :
   · intro m hm
     refine h3 m ?_
     rw [MvPolynomial.mem_support_iff] at hm ⊢
-    intro h0
-    exact hm (by rw [hQ, h0, map_zero])
+    exact fun h0 => hm (by rw [hQ, h0, map_zero])
 
 end GlobalTheory.CoeffFunctional
 end -- clump:auto

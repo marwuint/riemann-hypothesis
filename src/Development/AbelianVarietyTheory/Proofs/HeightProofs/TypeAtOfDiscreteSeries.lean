@@ -125,8 +125,7 @@ theorem Expn.translate (hσ : IsURepOn (UJset ε) σ) (h : Expn ε σ S v ℓ C 
     obtain ⟨l', hl', rfl⟩ := List.mem_map.1 hl
     obtain ⟨Y, hY, rfl⟩ := List.mem_map.1 hX
     exact conj_mem_lie (isUnit_Jm ε) hg (hS' l' hl' Y hY)
-  · simp only [← sigma_mul hσ hy hg, hf y hy]
-    exact h.1.2.2.2.2 _ (mul_mem_UJ hy hg)
+  · simpa only [← sigma_mul hσ hy hg, hf y hy] using h.1.2.2.2.2 _ (mul_mem_UJ hy hg)
 
 theorem Expn.add (hσ : IsURepOn (UJset ε) σ) (h : Expn ε σ S v ℓ C f) (h' : Expn ε σ S v' ℓ C f')
     (hS : Words (lieSet ε) S) : Expn ε σ S (fun i => v i + v' i) ℓ C fun y => f y + f' y := by
@@ -135,16 +134,14 @@ theorem Expn.add (hσ : IsURepOn (UJset ε) σ) (h : Expn ε σ S v ℓ C f) (h'
       ((h.2 S' hS').add (h'.2 S' hS'))
     rw [← mul_add]
     exact mul_le_mul_of_nonneg_left (sob_add hσ hS' (h.1.1 i) (h'.1.1 i)) (h.1.2.1 i)
-  · simp only [map_add (f := _)]
-    exact (h.1.2.2.2.2 y hy).add (h'.1.2.2.2.2 y hy)
+  · simpa only [map_add (f := _)] using (h.1.2.2.2.2 y hy).add (h'.1.2.2.2.2 y hy)
 
 theorem Expn.smul (hσ : IsURepOn (UJset ε) σ) (h : Expn ε σ S v ℓ C f) (hS : Words (lieSet ε) S) (c : ℂ) :
     Expn ε σ S (fun i => c • v i) ℓ C fun y => c * f y := by
   refine h.mk' hS (fun i => (smooth (Jm ε) σ).smul_mem c (h.1.1 i)) (fun S' hS' => ?_) fun y hy => ?_
   · simp only [fun i => sob_smul hσ hS' c (h.1.1 i), mul_left_comm _ ‖c‖]
     exact (h.2 S' hS').mul_left _
-  · simp only [map_smul, smul_eq_mul]
-    exact (h.1.2.2.2.2 y hy).mul_left c
+  · simpa only [map_smul, smul_eq_mul] using (h.1.2.2.2.2 y hy).mul_left c
 
 theorem Expn.summable_norm (h : Expn ε σ S v ℓ C f) : Summable fun i => C i * ‖v i‖ := by
   simpa [sobNorm] using h.2 [[]] (by simp [Words])
@@ -164,8 +161,7 @@ theorem Expn.sobFun (h : Expn ε σ S v ℓ C f) (hS : Words (lieSet ε) S) (c :
   refine ⟨fun x y hx hy => ?_, fun z x _ => ?_, S, ∑' i, ‖c‖ * (C i * ‖v i‖), hS, fun w hw => ?_⟩
   · simp only [map_add (f := _), mul_add]
     exact (h.summable_term c hx).tsum_add (h.summable_term c hy)
-  · simp only [map_smul, smul_eq_mul, mul_left_comm _ z]
-    exact tsum_mul_left
+  · simpa only [map_smul, smul_eq_mul, mul_left_comm _ z] using tsum_mul_left
   · exact tsum_of_norm_bounded ((h.summable_norm.mul_left _).hasSum.mul_right _) (h.term_le c hw)
 
 variable [CompleteSpace H]
@@ -366,8 +362,7 @@ theorem hasTypeAt_of_isTypeAt : ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.hos
   have h3 := hap x hxK
   have h4 : φ (x * atTau θ V τ (P⁻¹ * toMK (1 : KG ε) * P)) = φ x := res_one hθ hP φ x
   simp only [Finset.sum_apply, hTv]
-  rw [← h2, ← h4]
-  exact h3
+  rwa [← h2, ← h4]
 
 end GlobalTheory.SeriesToClosure
 

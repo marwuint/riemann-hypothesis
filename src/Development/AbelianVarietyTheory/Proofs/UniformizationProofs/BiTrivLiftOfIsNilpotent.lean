@@ -931,8 +931,7 @@ theorem eq_one_affine {A : Type} [CommRing A] (J : Ideal A) (hJ : IsNilpotent J)
     obtain ⟨n, hn⟩ := hJ
     refine ⟨n, ?_⟩
     have := Ideal.pow_mem_pow hb n
-    rw [← Ideal.map_pow, hn, Ideal.zero_eq_bot, Ideal.map_bot] at this
-    exact this
+    rwa [← Ideal.map_pow, hn, Ideal.zero_eq_bot, Ideal.map_bot] at this
   have one : g = 1 := by
     refine eq_one_of_groupLike I hI g ?_ ?_
     · obtain ⟨U, s, e, -, he, -⟩ := RingPoint.exists_ringPoint W (AddMonoidAlgebra Γ(W.left, ⊤) (X × X))
@@ -1123,8 +1122,7 @@ theorem lift_unique (hJ : IsNilpotent J) {Y Y' : Over (Spec (CommRingCat.of A))}
       rw [e1, e2] at e3
       exact (mul_eq_right.mp e3.symm)
   have e := key t (pullback.lift y y' h) z I hI
-  rw [pullback.lift_fst, pullback.lift_snd, f1, map_one, _root_.one_mul] at e
-  exact e
+  rwa [pullback.lift_fst, pullback.lift_snd, f1, map_one, _root_.one_mul] at e
 
 variable (h₀ : s₀.IsGen)
   (l₀ : ∀ (Z : Over (Spec (CommRingCat.of A))) (t t' : Z ⟶ 𝕋) (x : Z ⟶ G)
@@ -1276,8 +1274,7 @@ theorem exists_affine_mem {Y : Scheme.{0}} (y : Y) : ∃ U : Y.affineOpens, y �
   exact ⟨⟨V, hV⟩, hy⟩
 
 private theorem comp_opnI_mem {S : Scheme.{0}} {Z Y : Over S} (U : Y.left.Opens) (y : Z ⟶ opn Y U) (z : Z.left) :
-    (y ≫ opnι Y U).left z ∈ U := by
-  exact (y.left z).2
+    (y ≫ opnι Y U).left z ∈ U := (y.left z).2
 
 
 include h₀ l₀ in
@@ -1475,8 +1472,7 @@ theorem exists_lift [IsMonHom i] (hJ : IsNilpotent J) :
     have E := hf₀ Z ra z I hI
     rw [vσa _ _ z I hI, vσb _ _ z I hI, v₁ _ _ z I hI, hf₀1, map_one, _root_.one_mul] at E
     have e2 : ra.left ≫ π.left = (lift t x).left := ha
-    rw [e2] at E
-    exact E
+    rwa [e2] at E
   · have E := hf Z t t' x z I hI
     rw [v₁ _ _ z I hI, v₁ _ _ z I hI, v₁ _ _ z I hI, hf1, map_one, _root_.one_mul, Category.comp_id] at E
     exact E

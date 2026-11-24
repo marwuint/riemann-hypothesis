@@ -205,10 +205,8 @@ theorem exists_mulEquiv {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullb
     apply h.1.hom_ext
     · exact h.1.lift_fst _ _ _
     · exact (h.1.lift_snd _ _ _).trans (Over.w x).symm
-  · apply Over.OverMorphism.ext
-    exact h.1.lift_fst _ _ _
-  · apply Over.OverMorphism.ext
-    exact (h.2 (Over.mk x') x y (F x) (F y) rfl rfl).symm
+  · exact Over.OverMorphism.ext (h.1.lift_fst _ _ _)
+  · exact Over.OverMorphism.ext (h.2 (Over.mk x') x y (F x) (F y) rfl rfl).symm
 
 theorem toUnit_left {T : Scheme.{0}} (x : T ⟶ S) : (toUnit (Over.mk x)).left = x := by
   have := Over.w (toUnit (Over.mk x))
@@ -336,8 +334,7 @@ theorem anFib_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
     have hq1 : (pt ≫ pm) ≫ gxFst y.x = (A.ex z).left := by
       rw [Category.assoc, gxFst, pm1, ← Category.assoc, hp1', hex]
     have hq2 : (pt ≫ pm) ≫ gxSnd y.x = 𝟙 _ := by
-      rw [Category.assoc, gxSnd, pm2]
-      exact hp2
+      rwa [Category.assoc, gxSnd, pm2]
     have h1 := hθ a z (pt ≫ pm) hq1 hq2 (hex z ▸ ha)
     have h2 := val_secMaps w _ y₂.s t hst pt a j (hp1' ▸ ha) (hp1' ▸ hj)
     have hle : (LB.LinComb (Xo.univ.t.PP.L.pull d.m.φ) (K := Fin 1)

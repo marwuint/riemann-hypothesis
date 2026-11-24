@@ -62,8 +62,7 @@ theorem prod_absNorm_divs_dvd {a : 𝓞 E} (ha : a ≠ 0) :
   rw [← map_prod]
   apply map_dvd
   refine Finset.prod_dvd_of_coprime ?_ ?_
-  · intro P _ Q _ hPQ
-    exact (HeightOneSpectrum.isCoprime_of_ne P Q hPQ)
+  · exact fun P _ Q _ hPQ => HeightOneSpectrum.isCoprime_of_ne P Q hPQ
   · intro P hP
     rw [Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]
     exact (mem_divs ha P).1 hP
@@ -97,9 +96,7 @@ theorem absNorm_eq_of_split {p : ℕ} (hp : p.Prime) (h : (divs (p : 𝓞 E)).ca
 theorem card_divs_map_le (s : 𝓞 E →+* 𝓞 E) (hs : Function.Surjective s) {a : 𝓞 E} (ha : a ≠ 0) (hsa : s a ≠ 0) :
     (divs (s a)).card ≤ (divs a).card := by
   refine Finset.card_le_card_of_injOn (fun P => HeightOneSpectrum.comap s hs P) ?_ ?_
-  · intro P hP
-    have h1 := (mem_divs hsa P).1 hP
-    exact (mem_divs ha _).2 h1
+  · exact fun P hP => (mem_divs ha _).2 ((mem_divs hsa P).1 hP)
   · intro P _ Q _ hPQ
     apply HeightOneSpectrum.ext
     exact Ideal.comap_injective_of_surjective s hs (congrArg HeightOneSpectrum.asIdeal hPQ)
@@ -174,8 +171,7 @@ end General
 
 theorem conjO_conjO (B : Base) (x : 𝓞 B.fields.E) : B.fields.conjO (B.fields.conjO x) = x := by
   letI := B.fields.starE
-  apply RingOfIntegers.ext
-  exact star_star (x : B.fields.E)
+  exact RingOfIntegers.ext (star_star (x : B.fields.E))
 
 theorem finrank_E (B : Base) : Module.finrank ℚ B.fields.E = 2 * B.fields.f := by
   rw [B.fields_f]

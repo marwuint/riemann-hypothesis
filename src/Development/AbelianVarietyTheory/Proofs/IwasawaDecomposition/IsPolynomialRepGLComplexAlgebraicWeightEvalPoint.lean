@@ -97,15 +97,11 @@ theorem isPolyRep_evPt (L : Type) [Field L] [NumberField L] [IsCMField L] (n : �
   obtain ⟨h1, hm⟩ := _root_.GlobalTheory.AlgWtMul.evM_mul L n a ι b P h
   refine ⟨?_, ?_, ?_⟩
   · show evM P (evPt τ 1) = 1
-    rw [evPt_eq_upt, tauPt_one]
-    exact h1
+    rwa [evPt_eq_upt, tauPt_one]
   · intro A B
     show evM P (evPt τ (A * B)) = evM P (evPt τ A) * evM P (evPt τ B)
     rw [evPt_eq_upt, evPt_eq_upt, evPt_eq_upt, tauPt_mul]
     exact hm _ _ (isUPt_tauPt τ A) (isUPt_tauPt τ B)
-  · intro i j
-    refine ⟨MvPolynomial.bind₁ (tauSubst τ) (P i j), fun B => ?_⟩
-    show MvPolynomial.eval (evPt τ B) (P i j) = _
-    exact eval_evPt τ (P i j) B
+  · exact fun i j => ⟨MvPolynomial.bind₁ (tauSubst τ) (P i j), fun B => eval_evPt τ (P i j) B⟩
 
 end GlobalTheory.AlgWtHW

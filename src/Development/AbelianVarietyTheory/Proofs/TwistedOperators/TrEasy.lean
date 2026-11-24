@@ -82,28 +82,23 @@ theorem trEasy : TrEasy := by
   · refine ⟨fun j => ?_, fun t => ?_, fun i h1 h2 => ?_, ?_, ?_, ?_, ?_⟩
     · have := hch.mu0 j
       rw [hLC] at this
-      rw [hLC']
-      exact this
+      rwa [hLC']
     · rw [hxi' t]
       exact hch.xi (ι t)
     · rw [hchi]
       exact hch.chi i h1 h2
     · have := hch.eta
       rw [hLC] at this
-      rw [hLC']
-      exact this
+      rwa [hLC']
     · have := hch.chiPsi
       rw [hLC] at this
-      rw [hLC']
-      exact this
+      rwa [hLC']
     · have := hch.del
       rw [hLC] at this
-      rw [hLC']
-      exact this
+      rwa [hLC']
     · have := hch.del'
       rw [hLC] at this
-      rw [hLC']
-      exact this
+      rwa [hLC']
   · refine ⟨hr.1, fun t w hwt => ?_, fun w hw' => ?_⟩
     · rw [hdep]
       rw [hloc] at hwt

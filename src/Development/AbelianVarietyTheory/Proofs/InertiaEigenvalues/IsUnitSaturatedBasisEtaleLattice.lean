@@ -66,8 +66,7 @@ theorem exists_frob_matrix {R : Type} [CommRing R] [IsDomain R] (O : Subring R) 
     ∃ B : Matrix (Fin d) (Fin d) R, (∀ i j, B i j ∈ O) ∧ Y'.map φ = Y' * B := by
   have cancel : ∀ (n : ℕ) (M N : Matrix (Fin d) (Fin d) R), p ^ n • M = p ^ n • N → M = N := by
     intro n M N h
-    refine Matrix.ext fun i j => ?_
-    exact mul_left_cancel₀ (pow_ne_zero n hp) (congrFun (congrFun h i) j)
+    exact Matrix.ext fun i j => mul_left_cancel₀ (pow_ne_zero n hp) (congrFun (congrFun h i) j)
   have h1 : p ^ m • Y'.map φ = Y.map φ * P.map φ := by
     rw [← Matrix.map_mul, ← hY']
     refine Matrix.ext fun i j => ?_
@@ -82,14 +81,11 @@ theorem exists_frob_matrix {R : Type} [CommRing R] [IsDomain R] (O : Subring R) 
     congr 1
     linear_combination (p ^ k * p ^ m) * huu
   have h3 : ∀ j, ∃ w : Fin d → R, (∀ i, w i ∈ O) ∧ p ^ m • (fun i => V i j) = p ^ (k + m) • (P *ᵥ w) := by
-    intro j
-    refine hlat _ (fun i => hVO i j) _ fun i => ⟨φ (Y' i j), ?_⟩
-    exact congrFun (congrFun h2 i) j
+    exact fun j => hlat _ (fun i => hVO i j) _ fun i => ⟨φ (Y' i j), congrFun (congrFun h2 i) j⟩
   choose w hwO hw using h3
   refine ⟨Matrix.of fun i j => w j i, fun i j => hwO j i, ?_⟩
   have h4 : p ^ m • V = p ^ (k + m) • (P * Matrix.of fun i j => w j i) := by
-    refine Matrix.ext fun i j => ?_
-    exact congrFun (hw j) i
+    exact Matrix.ext fun i j => congrFun (hw j) i
   apply cancel (k + m)
   apply cancel m
   rw [← h2, ← Matrix.mul_smul, h4, Matrix.mul_smul, ← Matrix.mul_assoc, ← hY', Matrix.smul_mul, smul_comm]
@@ -138,16 +134,13 @@ theorem isUnit_saturated_basis : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk
         (s : WCb l) ^ N • Y1.map (inclW l) := by
       have := congrArg (fun M => Matrix.map M (inclW l)) (hg g hfix)
       have e : (Y1.map (inclW l)).map (galW l (g : GQ l)) = (Y1.map (Per.σA (g : GQ l))).map (inclW l) := by
-        refine Matrix.ext fun i j => ?_
-        exact GlobalTheory.Prism.galW_inclW _ _
+        exact Matrix.ext fun i j => GlobalTheory.Prism.galW_inclW _ _
       rw [e, hZ, ← Matrix.map_mul, ht, hs]
       refine Matrix.ext fun i j => ?_
       have := congrFun (congrFun this i) j
       simpa only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, map_pow] using this
     have e2 : (l : WCb l) ^ m • Y'.map (galW l (g : GQ l)) = (Y1.map (inclW l)).map (galW l (g : GQ l)) * P := by
-      have eP : P.map (galW l (g : GQ l)) = P := by
-        refine Matrix.ext fun i j => ?_
-        exact h6 g hfix _ (hP i j)
+      have eP : P.map (galW l (g : GQ l)) = P := Matrix.ext fun i j => h6 g hfix _ (hP i j)
       rw [← eP, ← Matrix.map_mul, ← hY']
       refine Matrix.ext fun i j => ?_
       simp only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, map_pow, map_natCast]
@@ -157,7 +150,6 @@ theorem isUnit_saturated_basis : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk
           (l : WCb l) ^ m • Y' := by
         rw [← Matrix.mul_smul, e2, hY', ← Matrix.mul_assoc, Units.smul_def, Matrix.smul_mul, Units.val_pow_eq_pow_val,
           Units.val_mul, mul_pow, mul_smul, e1, smul_smul, ← mul_pow, Units.inv_mul, one_pow, one_smul]
-      refine Matrix.ext fun i j => ?_
-      exact mul_left_cancel₀ (pow_ne_zero m hl0) (congrFun (congrFun e3 i) j)
+      exact Matrix.ext fun i j => mul_left_cancel₀ (pow_ne_zero m hl0) (congrFun (congrFun e3 i) j)
 
 end GlobalTheory.EtaleLattice

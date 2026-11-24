@@ -169,8 +169,7 @@ theorem eq_one_of_mem (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {c : Γ(T.left
   obtain ⟨K, _, φ, ε, u, hu, hs, ht⟩ := h
   have key : ∀ (U : Type) [CommGroup U] (f : ((T ⊗ A).left ⟶ A.left) → U), ∏ k, f (φ k) ^ ε k = 1 := by
     intro U _ f
-    have e := congrArg (Group.Abelianization.lift (FreeGroup.lift f)) hs
-    simpa [map_prod, map_zpow] using e
+    simpa [map_prod, map_zpow] using congrArg (Group.Abelianization.lift (FreeGroup.lift f)) hs
   set p := (fst T A).left with hp_def
   set e := (lift (𝟙 T) (1 : T ⟶ A)).left with he_def
   have hl : ∀ w : T ⟶ A, (lift (𝟙 T) w).left ≫ p = 𝟙 _ := fun w => by
@@ -221,8 +220,7 @@ theorem const_mem (p₀ : T.left) (hT : ∀ p : T.left, p = p₀) (a : T ⟶ A) 
   have hψ : ∀ y, ψ y ∈ L.U j₀ := fun y => by
     have e : (fst T A).left y = p₀ := hT _
     show a.left ((fst T A).left y) ∈ L.U j₀
-    rw [e]
-    exact hj₀
+    rwa [e]
   have hle : ∀ i : PUnit → L.ι,
       (LB.LinComb L (fun _ : PUnit => ψ) (fun _ => (1 : ℤ))).U i ≤ ψ ⁻¹ᵁ (L.U (i PUnit.unit) ⊓ L.U j₀) :=
     fun i y hy => ⟨Set.mem_iInter.1 hy PUnit.unit, hψ y⟩
@@ -287,8 +285,7 @@ theorem diff_mem (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {L : RigLB A} (cb :
   have h1' : fst T A ≫ (1 : T ⟶ A) = 1 := by simp
   simp only [Prod.fst_mul, Prod.fst_inv]
   rw [AdjointOfPairing.prod_mulT n b (fst T A) (snd T A ≫ f) (h := fr), hp, h1', mul_comm (fst T A ≫ b)]
-  simp only [diff₂]
-  exact mul_right_comm _ _ _
+  simpa only [diff₂] using mul_right_comm _ _ _
 
 theorem eq_prod (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {L : RigLB A} (cb : CubicalStr A L)
     (p₀ : T.left) (hT : ∀ p : T.left, p = p₀) (n : ℕ) (hx : x ^ n = 1) (y : T ⟶ A) (hy : y ^ n = 1)
@@ -368,8 +365,7 @@ theorem eq_prod (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {L : RigLB A} (cb : 
       simp only [zpow_neg, Finset.prod_inv_distrib, zpow_mul', Finset.prod_zpow, flatP]
       exact (mul_inv_cancel _).symm
     · simp [Prod.snd_prod, Finset.prod_inv_distrib])
-  rw [inv_mul_eq_one] at h1
-  exact h1
+  rwa [inv_mul_eq_one] at h1
 
 end GlobalTheory.PairingOfForm
 
@@ -392,8 +388,7 @@ theorem weilIs_of_formIs_linComb : Out.Laws → Out.Laws2 → ∀ (K : Type) [Fi
   have hu : unitOn (∏ i, c i ^ ε i) = ∏ i, unitOn (c i) ^ ε i := by
     unfold unitOn
     simp [map_prod, map_zpow]
-  rw [hu, ← e]
-  exact hd
+  rwa [hu, ← e]
 
 end GlobalTheory
 end -- clump:auto
@@ -446,8 +441,7 @@ theorem weilIs_linComb (hW : Out.WeilSt) {K : Type} [Field K] (P : Out.PolAV (Sp
         rw [Finset.prod_insert hb, Finset.sum_insert hb, ih, zpow_add, ← zpow_natCast, ← zpow_mul,
           _root_.mul_comm (e b)]
     exact key _
-  rw [← e']
-  exact H
+  rwa [← e']
 
 theorem weilIs_symm_zpow {K : Type} [Field K] (P : Out.PolAV (Sp K)) (k : ℕ) (ζ : Kˣ)
     {x y : Out.baseOver (Sp K) ⟶ P.A} {e : ℤ} (h : Out.WeilIs P.A P.L k x y (unitOn (ζ ^ e))) :
@@ -478,8 +472,7 @@ theorem exists_matrix_form : Out.Laws → Out.Laws2 → ∀ (g N k : ℕ) (Mat :
   haveI := hs.isMonHom
   have tors : ∀ (u : P.A ⟶ P.A) [IsMonHom u] i, (pt i ≫ u) ^ k = 1 := fun u _ i => by
     have := congrArg (IsMonHom.monoidHom u _) (hB.pow_eq_one i)
-    rw [map_pow, map_one] at this
-    exact this
+    rwa [map_pow, map_one] at this
   obtain ⟨c, hc, -⟩ := hB.existsUnique (tors s j)
   rw [← hc]
   congr 1
@@ -623,8 +616,7 @@ theorem exists_sec_ne_zero {X : Scheme.{0}} [Nonempty X] {L : LB X} (hL : L.IsLB
     obtain ⟨k, hk⟩ := exists_chart_of_mem_nonzeroLocus hxv
     refine ⟨v, k, fun h0 => ?_⟩
     have hb := (mem_nonzeroLocus_iff_basicOpen v hk).1 hxv
-    rw [h0, Scheme.basicOpen_zero] at hb
-    exact hb
+    rwa [h0, Scheme.basicOpen_zero] at hb
   rcases Nat.eq_zero_or_pos N with rfl | hN
   · have hLc : (lbPow L (0 * (1 + κ))).IsLB := LB.isLB_linComb hL _ _
     have hLcn : (lbPow (lbPow L (0 * (1 + κ))) n).IsLB := LB.isLB_linComb hLc _ _

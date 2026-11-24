@@ -64,8 +64,7 @@ def cuspRadius (T : ℝ) : ℝ := Real.exp (-(2 * Real.pi * T))
 theorem cuspRadius_pos (T : ℝ) : 0 < cuspRadius T := Real.exp_pos _
 
 theorem cuspRadius_strictAnti : StrictAnti cuspRadius := by
-  intro a b h
-  exact Real.exp_lt_exp.2 (by nlinarith [Real.pi_pos])
+  exact fun a b h => Real.exp_lt_exp.2 (by nlinarith [Real.pi_pos])
 
 theorem exists_cuspRadius_eq {ε : ℝ} (hε : 0 < ε) : ∃ T, cuspRadius T = ε := by
   refine ⟨-Real.log ε / (2 * Real.pi), ?_⟩
@@ -128,8 +127,7 @@ theorem mem_halfRing_iff_puncturedRing {T : ℝ} {s : ℂ⸨X⸩} :
   · intro h v hv
     obtain ⟨w, rfl⟩ := exists_eTwoPi_eq (mem_puncturedDisc.1 hv).1
     exact h w (eTwoPi_mem_puncturedDisc.1 hv)
-  · intro h w hw
-    exact h _ (eTwoPi_mem_puncturedDisc.2 hw)
+  · exact fun h w hw => h _ (eTwoPi_mem_puncturedDisc.2 hw)
 
 theorem halfRing_eq (T : ℝ) : halfRing T = puncturedRing (cuspRadius T) :=
   Subalgebra.ext fun _ => mem_halfRing_iff_puncturedRing
@@ -222,8 +220,7 @@ theorem mem_convLaurent_iff_halfRing {s : ℂ⸨X⸩} : s ∈ convLaurent ↔ �
 
 theorem iUnion_halfRing : ⋃ T, (halfRing T : Set ℂ⸨X⸩) = convLaurent := by
   ext s
-  simp only [Set.mem_iUnion, SetLike.mem_coe]
-  exact mem_convLaurent_iff_halfRing.symm
+  simpa only [Set.mem_iUnion, SetLike.mem_coe] using mem_convLaurent_iff_halfRing.symm
 
 theorem eventually_mem_halfRing {s : ℂ⸨X⸩} (hs : s ∈ convLaurent) :
     ∀ᶠ T in atTop, s ∈ halfRing T := by
@@ -269,9 +266,7 @@ theorem exists_isUnit_halfRing {T : ℝ} {s : halfRing T} (h0 : s ≠ 0) :
     ∃ T', ∃ h : T ≤ T', IsUnit (Subalgebra.inclusion (halfRing_mono h) s) := by
   obtain ⟨T', hT', hinv⟩ := exists_inv_mem_halfRing s
   have hs0 : (s : ℂ⸨X⸩) ≠ 0 := fun h => h0 (Subtype.ext h)
-  refine ⟨T', hT', isUnit_iff_exists_inv.2 ⟨⟨_, hinv⟩, Subtype.ext ?_⟩⟩
-  show (s : ℂ⸨X⸩) * (s : ℂ⸨X⸩)⁻¹ = 1
-  exact mul_inv_cancel₀ hs0
+  exact ⟨T', hT', isUnit_iff_exists_inv.2 ⟨⟨_, hinv⟩, Subtype.ext (mul_inv_cancel₀ hs0)⟩⟩
 
 theorem exists_forall_mem_halfRing {S : Set ℂ⸨X⸩} (hS : S.Finite)
     (h : ∀ s ∈ S, s ∈ convLaurent) : ∃ T, ∀ s ∈ S, s ∈ halfRing T :=
@@ -333,8 +328,7 @@ theorem locRing_toSubring {T : ℝ} (s : halfRing T) :
     constructor
     · rintro ⟨y, rfl⟩
       exact y.2
-    · intro hx
-      exact ⟨⟨x, hx⟩, rfl⟩
+    · exact fun hx => ⟨⟨x, hx⟩, rfl⟩
   rw [locRing, Algebra.adjoin_eq_ring_closure, hr]
 
 theorem mem_locRing {T : ℝ} {s : halfRing T} (h0 : s ≠ 0) {x : ℂ⸨X⸩} :
@@ -382,8 +376,7 @@ theorem isLocalization_locRing {T : ℝ} {s : halfRing T} (h0 : s ≠ 0) :
     obtain ⟨n, f, hf⟩ := (mem_locRing h0).1 z.2
     refine ⟨⟨f, ⟨s ^ n, n, rfl⟩⟩, Subtype.ext ?_⟩
     show (z : ℂ⸨X⸩) * ((s ^ n : halfRing T) : ℂ⸨X⸩) = f
-    rw [SubmonoidClass.coe_pow]
-    exact hf
+    rwa [SubmonoidClass.coe_pow]
   · intro x y hxy
     refine ⟨1, ?_⟩
     rw [Submonoid.coe_one, one_mul, one_mul]

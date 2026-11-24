@@ -555,8 +555,7 @@ theorem good_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
   rw [hsq] at n2
   obtain ⟨n3, -⟩ := sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ mG n2
   have n4 : SABMap t' Xo.univ.t (xOf y') := by
-    rw [hx]
-    exact n1
+    rwa [hx]
   exact ⟨G', t', n4, n3, MorphismProperty.of_isPullback (P := @IsProper) mG.cart.1 hp⟩
 
 end GlobalTheory.GoodBaseChange
@@ -641,8 +640,7 @@ theorem isProper_of_ext : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     obtain ⟨z, hz⟩ := hf (q₁.isoPullback.hom y)
     obtain ⟨w, rfl⟩ := (inferInstance : Surjective p₁.isoPullback.hom).1 z
     refine ⟨w, q₁.isoPullback.hom.isOpenEmbedding.injective ?_⟩
-    rw [← Scheme.Hom.comp_apply, ← hsq, Scheme.Hom.comp_apply]
-    exact hz
+    rwa [← Scheme.Hom.comp_apply, ← hsq, Scheme.Hom.comp_apply]
   refine (GlobalTheory.isAbelianScheme_of_generically_surjective T.V T.Fr G.G G'.G hB G'.semi F ?_).proper
   rintro y ⟨s, hs⟩
   obtain ⟨z, hz, -⟩ := Scheme.exists_preimage_of_isPullback q₂ y s hs.symm
@@ -869,8 +867,7 @@ theorem smT_natCast (v : overAt x0 (DualNumber S) ⟶ G) (h0 : smT x0 0 v = 1) (
 theorem comp_id_pow {P : Over X0} (v : P ⟶ G) (n : ℕ) : v ≫ (𝟙 G ^ n) = v ^ n := by
   have h := map_pow (IntRebase.preHom (G := G) v) (𝟙 G) n
   have h2 : IntRebase.preHom (G := G) v (𝟙 G) = v := Category.comp_id v
-  rw [h2] at h
-  exact h
+  rwa [h2] at h
 
 variable [IsCommMonObj G] [IsCommMonObj G']
 
@@ -902,8 +899,7 @@ theorem mul_eq_one_of_pair {m : ℕ} (p : ℕ) (q : S) (hq : q * p = 1) (U : Fin
   rw [hk', combT_image, funext hk, combT_combT x0 U' hU'] at h1
   have h2 := congrFun (huniq i _ _ h1.symm (combT_single x0 U' hU' i).symm) j
   rw [Matrix.one_apply, Matrix.mul_apply]
-  rw [Pi.single_apply] at h2
-  exact h2
+  rwa [Pi.single_apply] at h2
 
 end Gen
 
@@ -1055,8 +1051,7 @@ theorem conj_id_pow (x : Sp K ⟶ Xo.X) (n : ℕ) :
     conj x x (𝟙 (Fib Xo x) ^ n).left = (mulT Xo.univ.t.G (Over.mk x) n).left := by
   have e : (Over.pullback x).map (𝟙 Xo.univ.t.G ^ n) = 𝟙 (Fib Xo x) ^ n := by
     have := map_pow (Over.pullback x).homMonoidHom (𝟙 Xo.univ.t.G) n
-    rw [← (Over.pullback x).map_id]
-    exact this
+    rwa [← (Over.pullback x).map_id]
   rw [← e, conj_pullback_map, MonObj.comp_pow, Category.comp_id, mulT]
 
 theorem conj_id_inv (x : Sp K ⟶ Xo.X) :

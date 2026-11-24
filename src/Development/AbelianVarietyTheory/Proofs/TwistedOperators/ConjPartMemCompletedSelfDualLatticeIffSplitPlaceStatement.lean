@@ -167,8 +167,7 @@ theorem latHat_selfDual (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank 
         simp only [GlobalTheory.AdLat.hermA, Pi.neg_apply, map_neg, mul_neg, Finset.sum_neg_distrib]
       rw [this]; exact neg_mem hu
   · intro h
-    refine (key y).1 fun x hx => h _ ?_
-    exact AddSubgroup.subset_closure ⟨1, fun v => one_mem _, x, hx, rfl⟩
+    exact (key y).1 fun x hx => h _ (AddSubgroup.subset_closure ⟨1, fun v => one_mem _, x, hx, rfl⟩)
 
 theorem mem_iff (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hΛ : IsSelfDualC V Λ) (x : Fin V.rank → AE D) :
@@ -194,8 +193,7 @@ theorem isInt_iff_le_one {v : FinPl D} (x : Fv D.host.F v) :
   constructor
   · rintro ⟨o, rfl⟩
     exact o.2
-  · intro hx
-    exact ⟨⟨x, hx⟩, rfl⟩
+  · exact fun hx => ⟨⟨x, hx⟩, rfl⟩
 
 theorem conj_mem_latHat_iff : ∀ (D : D7) (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (β : GL (Fin V.rank) (EAf D)), IsSelfDualC V Λ → Formalism.L2.DIV.IsFrame β Λ → ∀ (v : FinPl D) (φ : SplitProj D v) (e : AE D), IsIdemOf φ e → ∀ y : Fin V.rank → AE D, (fun i => finPart D (cA D e * y i)) ∈ Formalism.MainNotions.StandardLattice.latHat D.host.F D.host.E (Λ : Set (Fin V.rank → D.host.E)) ↔ ∀ j, Valued.v (((fun i => rdA φ (cA D (y i))) ᵥ* ((V.gram.map (rdQ φ)) * (frCo φ β).1)) j) ≤ 1 := by
   intro D V Λ β hΛ hβ v φ e he y

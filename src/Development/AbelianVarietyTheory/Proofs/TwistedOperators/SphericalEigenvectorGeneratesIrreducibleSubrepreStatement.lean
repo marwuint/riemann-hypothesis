@@ -114,8 +114,7 @@ theorem doset_finite (K : Subgroup G) (hc : IsCommensurated K) (g : G) :
   refine QuotientGroup.eq.2 ?_
   have : (a * g)⁻¹ * (a * g * b) = b := by group
   show (a * g)⁻¹ * (a * g * b) ∈ K
-  rw [this]
-  exact hb
+  rwa [this]
 
 theorem dosetInd_mem_hecke (K : Subgroup G) (g : G) : dosetInd ℂ K g ∈ Hecke ℂ K := by
   classical
@@ -210,8 +209,7 @@ theorem exists_open_fix [TopologicalSpace G] [IsTopologicalGroup G] (ρ : Repres
         · rintro ⟨k, hk, rfl⟩
           have : g⁻¹ * (MulAut.conj g).toMonoidHom k * g = k := by simp [mul_assoc]
           rw [this]; exact hk
-        · intro hk
-          exact ⟨_, hk, by simp [mul_assoc]⟩
+        · exact fun hk => ⟨_, hk, by simp [mul_assoc]⟩
       rw [this]
       exact hKo.preimage ((continuous_const.mul continuous_id).mul continuous_const)
     · intro h hh
@@ -381,9 +379,7 @@ theorem GlobalTheory.spherical_eigenvector_generates_irreducible :
           simp only [Set.mem_ofPred_eq] at ha ⊢
           conv_lhs => rw [← ha]
           rw [← Module.End.mul_apply, ← map_mul]; simp }
-    have hle : H ≤ S := by
-      intro h hh
-      exact Subtype.ext (hf h hh)
+    have hle : H ≤ S := fun h hh => Subtype.ext (hf h hh)
     exact Subgroup.isOpen_mono hle ho
   ·
     refine { exists_pair_ne := ⟨⊥, ⊤, fun h => ?_⟩, eq_bot_or_eq_top := ?_ }
@@ -420,12 +416,9 @@ theorem GlobalTheory.spherical_eigenvector_generates_irreducible :
     refine ⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun a b => B a b)
       (by intro a b c; simp) (by intro r a b; simp) (by intro a b c; simp)
       (by intro r a b; simp), ?_, ?_, ?_⟩
-    · intro v w
-      exact hsym v w
-    · intro v hv
-      exact hpos v (fun h => hv (Subtype.ext h))
-    · intro g v w
-      exact hB g v w
+    · exact fun v w => hsym v w
+    · exact fun v hv => hpos v (fun h => hv (Subtype.ext h))
+    · exact fun g v w => hB g v w
   · intro y hy
     have hyK : ∀ k ∈ K, ρ k y = y := fun k hk =>
       congrArg Subtype.val (mem_fixed_iff.1 hy k hk)

@@ -257,8 +257,7 @@ theorem pcBF_core_mem_latCore : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 
       (LS' := (G.Λ (.core (2 * ρ + 2)) : Set _)) (LT' := (G.Λ (.core (2 * ρ + 1)) : Set _)) _ _ hA hB _ hu1
     exact h1
   · have h2 := sandwich_hatMx _ _ (sandwich_homLat _ _ hA hB1 G.modul) (hu2 e he)
-    rw [Matrix.mul_smul, Matrix.smul_mul] at h2
-    exact h2
+    rwa [Matrix.mul_smul, Matrix.smul_mul] at h2
 
 end GlobalTheory.AscFin
 end -- clump:auto
@@ -428,8 +427,7 @@ theorem lineComp_mem_shift : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * �
       (u * (F.oB ρ h).jB) *ᵥ z := by
     simp only [Matrix.mulVec_mulVec, ← Matrix.mul_assoc, HypDec.p0_j0, Matrix.one_mul]
     rw [Matrix.mul_assoc u, HypDec.p0_j0, Matrix.mul_one]
-  rw [← e]
-  exact h4
+  rwa [← e]
 
 theorem adj_lineComp_mem_latO : OnStd fun {D} _ _ {sc} {G} W F => ∀ (h : 2 * 0 + 2 ≤ D.R.m), ∀ u ∈ (pcBF W F 0 h).Γ₀, incA D D.host.xi0⁻¹ • GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.starAdj _ _ (((F.oB 0 h).resS (G.V (.core (2 * 0 + 1))) u).2) ∈ latO (G.V (.core (2 * 0 + 1))) (negSp F.Lz) (G.Λ (.core (2 * 0 + 1)) : Set _) (Submodule.span (𝓞 D.host.E) {F.ζ 0} : Set _) fun _ => True := by
   intro D hD T L μ0 hL sc G W Mv hM F hF h u hu
@@ -501,14 +499,11 @@ theorem smul_map_mem_genGrp {D : D7} {m n : ℕ} (M : Submodule (𝓞 D.host.E) 
     obtain ⟨a, ha, rfl⟩ := hu
     exact hgen a ha
   | zero =>
-    simp only [ZeroMemClass.coe_zero, zero_smul]
-    exact zero_mem _
+    simpa only [ZeroMemClass.coe_zero, zero_smul] using zero_mem _
   | add u v _ _ hu hv =>
-    simp only [AddMemClass.coe_add, add_smul]
-    exact add_mem hu hv
+    simpa only [AddMemClass.coe_add, add_smul] using add_mem hu hv
   | smul r u _ hu =>
-    simp only [smul_eq_mul, MulMemClass.coe_mul, mul_smul]
-    exact smul_mem_genGrp _ _ r.2 _ hu
+    simpa only [smul_eq_mul, MulMemClass.coe_mul, mul_smul] using smul_mem_genGrp _ _ r.2 _ hu
 
 theorem tmul_split {R A B : Type} [CommRing R] [CommRing A] [CommRing B] [Algebra R A] [Algebra R B]
     (x : A ⊗[R] B) (b g : A) (α : B) :
@@ -544,8 +539,7 @@ theorem scalar_mem_idS {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : Gr
       exact zero_le'
   refine ⟨⟨s, hs⟩, ?_, rfl⟩
   rw [GlobalTheory.FunObj.Comparison₂.mem_idS_modul]
-  intro w hw
-  exact v_triple_le h (e1 w hw) (hy w hw) (hz' w)
+  exact fun w hw => v_triple_le h (e1 w hw) (hy w hw) (hz' w)
 
 theorem toEAf_pair {D : D7} (α : Formalism.L2.Herm.Af D.host.F) (x : D.host.E) :
     toEAf D (pairA D.host.F 0 α ⊗ₜ[D.host.F] x) = x ⊗ₜ[D.host.F] α := rfl
@@ -690,8 +684,7 @@ theorem val_le_cosExp : ∀ {D : D7}, OffQ D → ∀ {T : Type} {L : LevCh D T} 
     rw [hc] at h2
     calc _ ≤ 1 * WithZero.exp (-(cosExp G w : ℤ)) := mul_le_mul' h1 h2
       _ = _ := one_mul _
-  · intro x y hx hy
-    exact Valuation.map_add_le _ hx hy
+  · exact fun x y hx hy => Valuation.map_add_le _ hx hy
 
 end GlobalTheory.AscFin.ShiftVal
 end -- clump:auto
@@ -1166,8 +1159,7 @@ theorem lnk_simil {L : HSp D} {ζ ζ' : Fin L.rank → D.host.E} (h : IsLineVec 
   rw [Subsingleton.elim i default, Subsingleton.elim j default]
   have a : star ζ' default ≠ 0 := left_ne_zero_of_mul h2
   have b : ζ' default ≠ 0 := right_ne_zero_of_mul (right_ne_zero_of_mul h2)
-  have c := mul_left_cancel₀ a e
-  exact mul_right_cancel₀ b c
+  exact mul_right_cancel₀ b (mul_left_cancel₀ a e)
 
 theorem lnk_tau_ne {L : HSp D} {ζ ζ' : Fin L.rank → D.host.E} (h : IsLineVec L ζ') (l : Lnk L ζ L ζ') : l.τ ≠ 0 := by
   intro h0
@@ -1211,8 +1203,7 @@ theorem kap_heis (ψ : AddChar (AF D.host.F) ℂ) (hψ : ∀ x, ‖ψ x‖ = 1) 
   rw [map_mul, GlobalTheory.AdjLawPf.conj_psi ψ hψ] at e2
   simp only [starRingEnd_apply, star_star] at e2
   simp only [heisO]
-  rw [kap_sympl h l, ← kap_add h l]
-  exact e2
+  rwa [kap_sympl h l, ← kap_add h l]
 
 theorem half_mul_left {m n k : ℕ} {e : AE D} (M : Mx D m n) {x : Mx D n k} (hx : IsHalf e x) : IsHalf e (M ⬝ x) := by
   intro i j

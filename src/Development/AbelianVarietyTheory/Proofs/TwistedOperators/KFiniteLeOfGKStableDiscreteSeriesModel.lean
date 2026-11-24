@@ -250,9 +250,7 @@ theorem kFin_le_of_stable : GlobalTheory.Published.HarishChandraModules → ∀ 
     have := hK _ hm w hw
     rwa [DSModel.rep, e] at this
   have hdense := dense_of_stable hHC hU hI hW hX' hK' h0
-  have hstd := GlobalTheory.TypeSum.std_of_isDS hHC (M.ds τ)
-  intro v hv
-  exact mem_of_dense hstd hdense hW hK' hv
+  exact fun v hv => mem_of_dense (GlobalTheory.TypeSum.std_of_isDS hHC (M.ds τ)) hdense hW hK' hv
 
 end GlobalTheory.HCModIrred
 

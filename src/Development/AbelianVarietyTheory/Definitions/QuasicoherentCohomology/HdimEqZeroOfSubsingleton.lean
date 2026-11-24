@@ -139,15 +139,13 @@ private lemma addCommGroupIso_naturality {D : Type*} [Category D]
     {P Q : D ⥤ AddCommGrpCat.{w}} (e : P ≅ Q) {F G : D} (f : F ⟶ G) (x : P.obj F) :
     (e.app G).addCommGroupIsoToAddEquiv (P.map f x) =
       Q.map f ((e.app F).addCommGroupIsoToAddEquiv x) := by
-  have h := ConcreteCategory.congr_hom (e.hom.naturality f) x
-  exact h
+  exact ConcreteCategory.congr_hom (e.hom.naturality f) x
 
 lemma terminalEquiv_map {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) (n : ℕ) {T : C}
     (hT : IsTerminal T) (x : F.H' n T) :
     terminalEquiv G n hT (map f n T x) = Sheaf.H.map f n (terminalEquiv F n hT x) := by
   let e := (extFunctor.{w} n).mapIso (freeSheafIsoConst (J := J) hT).symm.op
-  have h := addCommGroupIso_naturality e f (extEquiv F n T x)
-  exact h
+  exact addCommGroupIso_naturality e f (extEquiv F n T x)
 
 private lemma ext_degree_zero_compare {D : Type*} [Category D] [Abelian D] [HasExt.{w} D]
     {X Y F : D} {A S : Type*} [Add A] [Add S] (e : X ≅ Y)

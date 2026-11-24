@@ -61,36 +61,24 @@ variable [IsNoetherianRing V] [IsAdicComplete (maximalIdeal V) V]
 theorem isAdicComplete_mvPowerSeries_finite (τ : Type) [Finite τ] :
     IsAdicComplete (maximalIdeal (MvPowerSeries τ V)) (MvPowerSeries τ V) := by
   obtain ⟨n, ⟨e⟩⟩ := Finite.exists_equiv_fin τ
-
-  have ha : MvPowerSeries.HasSubst
-      (fun i : Fin n => (MvPowerSeries.X (e.symm i) : MvPowerSeries τ V)) :=
-    MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => by simp)
-  have hb : MvPowerSeries.HasSubst
-      (fun t : τ => (MvPowerSeries.X (e t) : MvPowerSeries (Fin n) V)) :=
-    MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => by simp)
-  have hba : ∀ f : MvPowerSeries (Fin n) V,
-      MvPowerSeries.substAlgHom (R := V) hb (MvPowerSeries.substAlgHom (R := V) ha f) = f := by
-    intro f
+  have hs : ∀ {α β : Type} [Finite β] (u : β ≃ α),
+      MvPowerSeries.HasSubst (fun i : β => (MvPowerSeries.X (u i) : MvPowerSeries α V)) :=
+    fun _ => MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => by simp)
+  have comp : ∀ {α β : Type} [Finite α] [Finite β] (u : β ≃ α) (f : MvPowerSeries β V),
+      MvPowerSeries.substAlgHom (R := V) (hs u.symm)
+        (MvPowerSeries.substAlgHom (R := V) (hs u) f) = f := by
+    intro α β _ _ u f
     rw [MvPowerSeries.substAlgHom_comp_substAlgHom_apply]
-    have hX : (fun i : Fin n => MvPowerSeries.substAlgHom (R := V) hb
-        (MvPowerSeries.X (e.symm i) : MvPowerSeries τ V)) = MvPowerSeries.X := by
+    have hX : (fun i : β => MvPowerSeries.substAlgHom (R := V) (hs u.symm)
+        (MvPowerSeries.X (u i) : MvPowerSeries α V)) = MvPowerSeries.X := by
       funext i
-      rw [MvPowerSeries.substAlgHom_X, Equiv.apply_symm_apply]
-    rw [MvPowerSeries.substAlgHom_apply, hX, MvPowerSeries.subst_self, id]
-  have hab : ∀ g : MvPowerSeries τ V,
-      MvPowerSeries.substAlgHom (R := V) ha (MvPowerSeries.substAlgHom (R := V) hb g) = g := by
-    intro g
-    rw [MvPowerSeries.substAlgHom_comp_substAlgHom_apply]
-    have hX : (fun t : τ => MvPowerSeries.substAlgHom (R := V) ha
-        (MvPowerSeries.X (e t) : MvPowerSeries (Fin n) V)) = MvPowerSeries.X := by
-      funext t
       rw [MvPowerSeries.substAlgHom_X, Equiv.symm_apply_apply]
     rw [MvPowerSeries.substAlgHom_apply, hX, MvPowerSeries.subst_self, id]
   let E : MvPowerSeries (Fin n) V ≃+* MvPowerSeries τ V :=
-    { toFun := MvPowerSeries.substAlgHom (R := V) ha
-      invFun := MvPowerSeries.substAlgHom (R := V) hb
-      left_inv := hba
-      right_inv := hab
+    { toFun := MvPowerSeries.substAlgHom (R := V) (hs e.symm)
+      invFun := MvPowerSeries.substAlgHom (R := V) (hs e)
+      left_inv := comp e.symm
+      right_inv := comp e
       map_mul' := map_mul _
       map_add' := map_add _ }
   have := GlobalTheory.CohenStructure.isAdicComplete_mvPowerSeries V n

@@ -149,12 +149,9 @@ theorem main : ∀ (K : Type) [Field K] (A₀ : Over (Sp K)) [GrpObj A₀] [IsCo
   obtain ⟨dw, hdw⟩ := (_root_.GlobalTheory.KS.InvField.main K (A₀ ⊗ A₀) w hw).1
   obtain ⟨hadd, hmul, hres, hconst, -⟩ := hprop dw hdw
   refine ⟨dw, hadd, hmul, hres, hconst, ?_, ?_, ?_⟩
-  · intro W h O hO
-    exact field_pb _ hv hd hw hdw hwm W h O hO
-  · intro W h O hO
-    exact field_pb _ hv hd hw hdw hwn W h O hO
-  · intro W h O hO
-    exact field_pb_zero _ hw hdw hwn' W h O hO
+  · exact fun W h O hO => field_pb _ hv hd hw hdw hwm W h O hO
+  · exact fun W h O hO => field_pb _ hv hd hw hdw hwn W h O hO
+  · exact fun W h O hO => field_pb_zero _ hw hdw hwn' W h O hO
 
 end GlobalTheory.KS.SquareField
 end

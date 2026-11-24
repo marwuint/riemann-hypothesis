@@ -101,9 +101,7 @@ theorem dbl_line_coord {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {Y : Spc
   have hΦt : Φ = tens (evFin F v) φd Rd := dblFun_tens v φ R
   have hrest : Rest (evFin F v) φd Rd := rest_dbl v hR
   have hΦs : Φ ∈ schA F _ := hΦt ▸ hrest.2
-  have hRd0 : Rd (Sum.elim x₀ x₀) ≠ 0 := by
-    show R x₀ * star (R x₀) ≠ 0
-    exact mul_ne_zero hx₀ (star_ne_zero.mpr hx₀)
+  have hRd0 : Rd (Sum.elim x₀ x₀) ≠ 0 := mul_ne_zero hx₀ (star_ne_zero.mpr hx₀)
   have hφdSB : φd ∈ SB _ := box_mem_SB hφSB ⟨hφSB.1.comp star, hφSB.2.comp_left (star_zero ℂ)⟩
   let cf : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E) → ℂ := fun w =>
     ψ (⅟(2 : AF F) * symp (_root_.Algebra.TensorProduct.map (_root_.AlgHom.id (AF F) (AF F)) σ) (inclR (F := F) (AF F) θ) ((_root_.Matrix.map · (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (AF F))) X.J) (dbl ((_root_.Matrix.map · (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (AF F))) Y.J)) w w)
@@ -174,9 +172,7 @@ theorem dbl_line_coord {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {Y : Spc
       exact hcb γ hγ i)
   have hφd0 : φd ≠ 0 := by
     obtain ⟨t, ht⟩ := Function.ne_iff.mp hφ0
-    refine Function.ne_iff.mpr ⟨Sum.elim t t, ?_⟩
-    show φ t * star (φ t) ≠ 0
-    exact mul_ne_zero ht (star_ne_zero.mpr ht)
+    exact Function.ne_iff.mpr ⟨Sum.elim t t, mul_ne_zero ht (star_ne_zero.mpr ht)⟩
   obtain ⟨c', hc'⟩ := GlobalTheory.VacUniqInert.eq_smul_of_eigen (GlobalTheory.LatVac.psiAt ψ v)
     (fun i : Λ × Λ => GlobalTheory.LatVac.locCo dd v (Matrix.fromCols i.1.1 i.2.1))
     (fun i => cf (Matrix.fromCols i.1.1 i.2.1)) (fun u hu => by
@@ -305,8 +301,7 @@ theorem dblFun_eigen_left {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {G : 
   · have h := hvac _ (GlobalTheory.AdelMatLatRight.transpose_mem_latAtV _ _ v γ hγ)
     have e : d'.rho B.ψ γ = G.M'.co.rho B.ψ γᵀ := by
       simp only [Darboux.rho, ← hd', Matrix.transpose_transpose]
-    rw [GlobalTheory.WeilSchrodinger.symp_transpose, ← e] at h
-    exact h
+    rwa [GlobalTheory.WeilSchrodinger.symp_transpose, ← e] at h
 
 end GlobalTheory.SplitParLeft
 

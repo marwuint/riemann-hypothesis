@@ -158,22 +158,19 @@ theorem zpow_close {A : ValuationSubring Ω} {x y : Ω} (hy : A.valuation y = 1)
     (e : ℤ) : A.valuation (x ^ e - y ^ e) < 1 := by
   have hy0 : y ≠ 0 := by rintro rfl; simp at hy
   have hw : A.valuation (x / y - 1) < 1 := by
-    rw [show x / y - 1 = (x - y) / y by field_simp, map_div₀, hy, div_one]
-    exact hxy
+    rwa [show x / y - 1 = (x - y) / y by field_simp, map_div₀, hy, div_one]
   have hx0 : x ≠ 0 := by
     rintro rfl
     rw [zero_div, zero_sub, Valuation.map_neg, map_one] at hw
     exact lt_irrefl _ hw
   have hmem : Units.mk0 (x / y) (div_ne_zero hx0 hy0) ∈ A.principalUnitGroup := by
-    rw [ValuationSubring.mem_principalUnitGroup_iff]
-    exact hw
+    rwa [ValuationSubring.mem_principalUnitGroup_iff]
   have hmem' := zpow_mem hmem e
   rw [ValuationSubring.mem_principalUnitGroup_iff] at hmem'
   simp only [Units.val_zpow_eq_zpow_val, Units.val_mk0] at hmem'
   have e1 : x ^ e - y ^ e = y ^ e * ((x / y) ^ e - 1) := by
     rw [div_zpow, mul_sub, mul_div_cancel₀ _ (zpow_ne_zero e hy0), mul_one]
-  rw [e1, map_mul, map_zpow₀, hy, one_zpow, one_mul]
-  exact hmem'
+  rwa [e1, map_mul, map_zpow₀, hy, one_zpow, one_mul]
 
 end Small
 
@@ -260,8 +257,7 @@ theorem main : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E
 
   set π0 := π1 ^ (m ^ N0) with hπ0def
   have hπ0 : π0 ^ n = algebraMap E Ω (ϖ0 : E) := by
-    rw [hπ0def, ← pow_mul, mul_comm, ← hLdef]
-    exact hπ1
+    rwa [hπ0def, ← pow_mul, mul_comm, ← hLdef]
   have hπ0ne : π0 ≠ 0 := pow_ne_zero _ hπ1ne
   set ζ0 := ζ1 ^ (m ^ N0) with hζ0def
   have hζ0prim : IsPrimitiveRoot ζ0 n := hζ1prim.pow (Nat.pos_of_ne_zero hL0) (by rw [hLdef, mul_comm])
@@ -307,8 +303,7 @@ theorem main : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E
     intro u hu
     obtain ⟨a, ha⟩ := _root_.GlobalTheory.TamePowTeich.exists_zeta_pow_close P A0 ζ0 hA0 hζ0prim u e hu
     refine ⟨a, ha, A0, hA0, pow_mem hγ.1 a, ϖ0, π0, hϖ0, hϖ0', hπ0, ?_⟩
-    rw [hγpow, mul_div_cancel_right₀ _ hπ0ne]
-    exact ha
+    rwa [hγpow, mul_div_cancel_right₀ _ hπ0ne]
   have hval : ∀ u : 𝓞 E, u ∉ P.asIdeal → ∀ a : ℕ,
       A0.valuation (ζ0 ^ a - (algebraMap E Ω (u : E)) ^ e) < 1 → Formalism.L2.NX.tameVal φ P e u = φ γ ^ a := by
     intro u hu a ha
@@ -346,8 +341,7 @@ theorem main : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E
     obtain ⟨a, ha, -⟩ := hX u hu
     rw [hval u hu a ha, hval u' hu' a ?_]
     have hclose : A0.valuation (algebraMap E Ω (u : E) - algebraMap E Ω (u' : E)) < 1 := by
-      have h0 := (hA0 (u - u')).2 huu'
-      simpa [map_sub] using h0
+      simpa [map_sub] using (hA0 (u - u')).2 huu'
     have h2 := zpow_close (L_vone P A0 hA0 u' hu') hclose e
     have e1 : ζ0 ^ a - (algebraMap E Ω (u' : E)) ^ e =
         (ζ0 ^ a - (algebraMap E Ω (u : E)) ^ e) + ((algebraMap E Ω (u : E)) ^ e - (algebraMap E Ω (u' : E)) ^ e) := by

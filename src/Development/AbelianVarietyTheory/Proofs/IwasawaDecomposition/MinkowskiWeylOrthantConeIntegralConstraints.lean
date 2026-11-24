@@ -180,8 +180,7 @@ theorem fm_vecR {n : ℕ} (P : Finset ((Fin n → ℚ) × ℚ)) (x : Fin n → �
           Finset.mem_product.mpr ⟨Finset.mem_filter.mpr ⟨hp, Rat.cast_pos.mp hcp⟩,
             Finset.mem_filter.mpr ⟨hq, Rat.cast_lt_zero.mp hcq⟩⟩, rfl⟩)
       have := h _ hm
-      rw [dotR_fm] at this
-      exact this
+      rwa [dotR_fm] at this
 
 theorem mem_rcone_insert {n : ℕ} {T : Finset (Fin n → ℚ)} {w : Fin n → ℚ} (hw : w ∉ T)
     (x : Fin n → ℝ) :
@@ -258,13 +257,11 @@ theorem minkR {n : ℕ} (T : Finset (Fin n → ℚ)) :
       refine ⟨by simpa [e0] using ht, fun p hp => ?_⟩
       obtain ⟨a, ha, rfl⟩ := Finset.mem_image.mp hp
       have := hx a ha
-      rw [e] at this
-      exact this
+      rwa [e] at this
     · rintro ⟨ht, hx⟩
       refine ⟨by simpa [e0] using ht, fun a ha => ?_⟩
       have := hx _ (Finset.mem_image_of_mem (fun a => (a, -(a ⬝ᵥ w))) ha)
-      rw [e]
-      exact this
+      rwa [e]
 
 theorem farkasQ {n : ℕ} (X : Finset (Fin n → ℚ)) (f : Fin n → ℚ)
     (hf : ∀ x ∈ hcone X id, 0 ≤ f ⬝ᵥ x) : f ∈ gcone X id := by
@@ -277,12 +274,10 @@ theorem farkasQ {n : ℕ} (X : Finset (Fin n → ℚ)) (f : Fin n → ℚ)
       exact mem_gcone (f := id) hx
     have := hx' b hb
     simp only [id] at this ⊢
-    rw [dotProduct_comm]
-    exact this
+    rwa [dotProduct_comm]
   have := hf b hb'
   simp only [id]
-  rw [dotProduct_comm]
-  exact this
+  rwa [dotProduct_comm]
 
 theorem core {n : ℕ} (X : Finset (Fin n → ℚ)) :
     ∃ Y : Finset (Fin n → ℚ), hcone X id = gcone Y id ∧

@@ -70,8 +70,7 @@ theorem exists_ne_zero_lt_val_subset_of_mem_nhds {K Γ : Type} [Field K] [Linear
     rw [map_zero] at hc'
     exact γ.ne_zero hc'.symm
   · change (Valued.v : Valuation K Γ).restrict (y - x) < γ.1
-    rw [← hc', Valuation.restrict_lt_iff]
-    exact hy
+    rwa [← hc', Valuation.restrict_lt_iff]
 
 theorem exists_exp_of_nhds (v : HeightOneSpectrum (𝓞 F)) (u : Set (v.adicCompletion F)) (hu : u ∈ nhds 1) :
     ∃ M : ℕ, ∀ y : v.adicCompletion F, Valued.v (y - 1) ≤ WithZero.exp (-(M : ℤ)) → y ∈ u := by
@@ -110,8 +109,7 @@ theorem finiteSingle_mem_of_nhds (Vf : Set (FiniteAdeleRing (𝓞 F) F)) (hV : V
   have h2 : RestrictedProduct.structureMap (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F)
       (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite ⁻¹' Vf ∈ nhds 1 := by
     apply hσ.continuous.continuousAt.preimage_mem_nhds
-    rw [h1]
-    exact hV
+    rwa [h1]
   rw [nhds_pi, Filter.mem_pi] at h2
   obtain ⟨I, hI, t, ht, hsub⟩ := h2
   have hM : ∀ i : HeightOneSpectrum (𝓞 F), ∃ M : ℕ, ∀ (y : i.adicCompletion F) (hy : y ∈ i.adicCompletionIntegers F),
@@ -146,8 +144,7 @@ theorem finiteSingle_mem_of_nhds (Vf : Set (FiniteAdeleRing (𝓞 F) F)) (hV : V
       rw [Pi.mulSingle_eq_same, Pi.mulSingle_eq_same]
     · rw [Pi.mulSingle_eq_of_ne hi, Pi.mulSingle_eq_of_ne hi]
       rfl
-  rw [← e]
-  exact hg
+  rwa [← e]
 
 end GlobalTheory.OpenIdeleCongr
 
@@ -191,8 +188,7 @@ theorem localIdele_mem_of_isOpen (V : Subgroup (Ideles F)) (hV : IsOpen (V : Set
   rw [← SetLike.mem_coe, ← hWU, Set.mem_preimage, Units.embedProduct_apply]
   refine hprod ⟨h1.1, ?_⟩
   have h3 := h2.2
-  rw [map_inv] at h3
-  exact h3
+  rwa [map_inv] at h3
 
 theorem open_subgroup_contains_congr : ∀ (F : Type) [Field F] [NumberField F] (V : Subgroup (Ideles F)),
     IsOpen (V : Set (Ideles F)) → ∀ S₀ : Finset (HeightOneSpectrum (𝓞 F)),

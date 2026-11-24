@@ -80,8 +80,7 @@ theorem splitTorus_left_hom_ext {Z : Scheme.{0}} (a b : Z ⟶ (splitTorus S X).l
   have hab : a' = b' := SplitTorus.hom_ext fun χ => by
     rw [SplitTorus.val_eq, SplitTorus.val_eq]
     have hc := hχ χ
-    rw [SplitTorus.charUnit_val] at hc
-    exact hc
+    rwa [SplitTorus.charUnit_val] at hc
   exact congrArg CommaMorphism.left hab
 
 theorem eq_bcMap {f : S' ⟶ S} {τ : (splitTorus S' X).left ⟶ (splitTorus S X).left}
@@ -105,10 +104,8 @@ theorem torusCompat_iff {f : S' ⟶ S} {F : G'.left ⟶ G.left} {i' : splitTorus
     {i : splitTorus S X ⟶ G} : TorusCompat f F i' i ↔ bcMap f X ≫ i.left = i'.left ≫ F := by
   constructor
   · rintro ⟨τ, h₁, h₂, h₃⟩
-    rw [← eq_bcMap h₁ h₂]
-    exact h₃
-  · intro h
-    exact ⟨bcMap f X, bcMap_hom f X, fun χ => bcMap_charUnit f χ, h⟩
+    rwa [← eq_bcMap h₁ h₂]
+  · exact fun h => ⟨bcMap f X, bcMap_hom f X, fun χ => bcMap_charUnit f χ, h⟩
 
 theorem TorusCompat.refl (i : splitTorus S X ⟶ G) : TorusCompat (𝟙 S) (𝟙 G.left) i i := by
   rw [torusCompat_iff, bcMap_id, Category.id_comp, Category.comp_id]
@@ -188,11 +185,9 @@ theorem TorusCompat.isMonHom [GrpObj G'] [GrpObj G] {f : S' ⟶ S} {F : G'.left 
   · have he := hm (1 : 𝟙_ (Over S') ⟶ splitTorus S' X) 1
     rw [_root_.mul_one] at he
     have h1 : (1 : 𝟙_ (Over S') ⟶ splitTorus S' X) ≫ i' = 1 := by simpa using he.symm
-    rw [one_eq, one_eq] at h1
-    exact h1
+    rwa [one_eq, one_eq] at h1
   · have hμ := hm (fst (splitTorus S' X) (splitTorus S' X)) (snd _ _)
-    rw [Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, lift_fst_comp_snd_comp] at hμ
-    exact hμ
+    rwa [Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, lift_fst_comp_snd_comp] at hμ
 
 end API
 

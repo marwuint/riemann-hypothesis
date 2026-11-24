@@ -98,18 +98,14 @@ theorem ph_tensInt_onto : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [
           rw [map_zero, Polynomial.hom_eval₂] at this
           have e : (algebraMap ((A.pl v).1.adicCompletionIntegers F) ((A.pl v).1.adicCompletion F)).comp
               (Int.castRingHom ((A.pl v).1.adicCompletionIntegers F)) = f.comp (algebraMap ℤ E) := RingHom.ext_int _ _
-          rw [e]
-          exact this
+          rwa [e]
         obtain ⟨z, hz⟩ := IsIntegrallyClosed.isIntegral_iff.1 hint'
         rw [← hz]
         exact z.2
       · show A.ph v ((1 : E) ⊗ₜ[F] y) ∈ (A.pl v).1.adicCompletionIntegers F
-        rw [h1]
-        exact hy
+        rwa [h1]
     exact hle hs
-  · intro x hx
-    refine ⟨(1 : E) ⊗ₜ[F] x, ?_, h1 x⟩
-    exact Subring.subset_closure (Or.inr ⟨⟨x, hx⟩, rfl⟩)
+  · exact fun x hx => ⟨(1 : E) ⊗ₜ[F] x, (Subring.subset_closure (Or.inr ⟨⟨x, hx⟩, rfl⟩)), h1 x⟩
 
 end GlobalTheory.TwV
 end -- clump:auto
@@ -246,9 +242,7 @@ theorem latAdLoc_of : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Numb
     · have hback : Units.val ((bc (prV (E := E) (A.pl v).1) y)⁻¹ : GL (Fin n) (E ⊗[F] (A.pl v).1.adicCompletion F)) *ᵥ
           (Y *ᵥ u) = u := by
         rw [hY, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]
-      rw [GlobalTheory.LocCarry.mem_latS_latAd_iff y Lb hfin hspan]
-      rw [hback]
-      exact hu
+      rwa [GlobalTheory.LocCarry.mem_latS_latAd_iff y Lb hfin hspan, hback]
     · intro k
       have hw' : w = fun k => (A.eQ v).symm (A.ph v (u k)) := funext fun k => (huw k).symm
       subst hwz
@@ -357,8 +351,7 @@ theorem locSp_map {E : Type} [Field E] [NumberField E] (W K : Type) [CommRing W]
   unfold locSp
   rw [Submodule.map_span, Submodule.map_coe, Set.image_image, Set.image_image]
   congr 1
-  refine Set.image_congr fun x _ => ?_
-  exact map_apply_eq_mulVec ρ f x
+  exact Set.image_congr fun x _ => map_apply_eq_mulVec ρ f x
 
 end GlobalTheory.TwV
 end -- clump:auto
@@ -415,8 +408,7 @@ theorem smul_dualSet_latAd_mem {R : Ranks} {F E : Type} [Field F] [NumberField F
     Submodule.smul_mem_smul (Ideal.mem_span_singleton_self a) hz'
   have h2 := Formalism.L2.GlobalTheoryTheory.Comp.glob_mono y hle
     (Formalism.L2.GlobalTheoryTheory.Comp.smul_glob_le _ a y h1)
-  rw [hlat, ← hsm]
-  exact h2
+  rwa [hlat, ← hsm]
 
 end GlobalTheory
 end -- clump:auto

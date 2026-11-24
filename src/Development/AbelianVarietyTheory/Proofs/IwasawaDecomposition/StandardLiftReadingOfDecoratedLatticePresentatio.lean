@@ -53,8 +53,7 @@ theorem castGL_of_matEq {A : Type} [CommRing A] {a b : ℕ} (h : a = b) (x : GL 
   subst h
   ext i j
   simp only [castGL, Units.coe_mapEquiv]
-  simp
-  exact (hm.2 i j i j rfl rfl).symm
+  simpa using (hm.2 i j i j rfl rfl).symm
 
 theorem matEq_castGL {A : Type} [CommRing A] {a b : ℕ} (h : a = b) (x : GL (Fin a) A) : MatEq x (castGL h x) := by
   subst h

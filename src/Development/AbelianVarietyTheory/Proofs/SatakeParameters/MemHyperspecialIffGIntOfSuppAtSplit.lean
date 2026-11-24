@@ -199,8 +199,7 @@ theorem intM_of_stable (hπ : Chart e v π) (hβ : Frame V e π β) {g : GA D V}
   rw [h3] at h2
   have h4 := (hβ _).1 h2 i
   rw [map_mulVec', hcol, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_single_one] at h4
-  rw [rho_val]
-  exact h4
+  rwa [rho_val]
 
 theorem stable_of_intM (he : IsSplitIdem D e) (hβ : Frame V e π β)
     (hd : ∀ y : Fin V.rank → AE D, (fun i => finPart D (cA D e * y i)) ∈ LamHat V ↔ ∀ j, IsInt (Ov D v)

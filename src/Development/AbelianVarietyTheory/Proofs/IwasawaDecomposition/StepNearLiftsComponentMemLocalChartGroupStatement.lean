@@ -121,8 +121,7 @@ theorem cg_inv {N : ℕ} (hN : 1 ≤ N) (π : K) (hπ : Valued.v π = exp (-(N :
     fun i j => by simp
   have h3 := _root_.GlobalTheory.GL_inv_mul_congr_one π hπ0 hπ1 X 1 h1 h2
   simp only [mul_one] at h3
-  intro r s
-  exact (val_le_iff π _ hπ).1 (h3 r s)
+  exact fun r s => (val_le_iff π _ hπ).1 (h3 r s)
 
 theorem cg_conj {N : ℕ} (G : GL (Fin n) K) (hG : ∀ r s, Valued.v ((G : Matrix (Fin n) (Fin n) K) r s) ≤ 1)
     (hGi : ∀ r s, Valued.v (((G⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) r s) ≤ 1)
@@ -290,15 +289,13 @@ theorem core (P : HeightOneSpectrum (𝓞 E)) (hq : Valued.v ((qOf P : ℕ) : P.
     have e : loc ((kk⁻¹ * κ * kk)⁻¹ * GlobalTheory.TwU.ratA F (G g)) = AP⁻¹ * ra (G g) := by
       simp only [map_mul, map_inv, hlr, hAP]
     have := s1
-    rw [← e] at this
-    exact this
+    rwa [← e] at this
   have hy' : ∀ r s, Valued.v (adAt F P (((kk⁻¹ * κ * kk)⁻¹ * GlobalTheory.TwU.ratA F (G g') : GL (Fin n) (AfE F E)) r s) -
       (1 : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s) ≤ exp (-(D : ℤ)) := by
     have e : loc ((kk⁻¹ * κ * kk)⁻¹ * GlobalTheory.TwU.ratA F (G g')) = AP⁻¹ * ra γ := by
       simp only [map_mul, map_inv, hlr, hAP, hg'γ]
     have := cg_mono (le_max_left D N0) d1
-    rw [← e] at this
-    exact this
+    rwa [← e] at this
   have hCE : CongE P D g g' :=
     (AdTieNear.congE_of_near P D D hD le_rfl (kk⁻¹ * κ * kk) g g' (G g) (G g') (hmv g) (hmv g') hg hq hy hy').symm
 
@@ -327,8 +324,7 @@ theorem core (P : HeightOneSpectrum (𝓞 E)) (hq : Valued.v ((qOf P : ℕ) : P.
     refine (_root_.GlobalTheory.Proof.mem_integralGLAtPrime_of_congruent_one_mod_pow.glint_of_cong P D h (fun a b => ?_) (fun a b => ?_)).1
     · rw [← hG]; exact toIntAt _ e1 a b
     · have := toIntAt _ e2 a b
-      rw [hG] at this
-      exact this
+      rwa [hG] at this
   have hg'm : g' ∈ Formalism.L2.Col.GLint E n P := by
     have := mul_mem hg hhm
     rwa [hh, mul_inv_cancel_left] at this
@@ -344,8 +340,7 @@ theorem core (P : HeightOneSpectrum (𝓞 E)) (hq : Valued.v ((qOf P : ℕ) : P.
   · have e : loc (kk⁻¹ * (x * z) * kk) = ra γ := by
       rw [map_mul, map_mul, map_mul, map_inv, hlz]; group
     have := congrArg (fun X : GL (Fin n) (P.adicCompletion E) => (X : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s) e
-    rw [hg'γ]
-    exact this
+    rwa [hg'γ]
 
 end Core
 
@@ -367,8 +362,7 @@ theorem main : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins 
     exact hv.symm
   have hloc : GlobalTheory.FrameAgree.locM (GlobalTheory.TwU.seamP (sm I l Z) P.1) x = GlobalTheory.FrameAgree.locM (GlobalTheory.TwU.seamP (sm I l Z) P.1) κ := by
     apply GlobalTheory.FrameAgree.loc_agree
-    rw [hvP]
-    exact hxv
+    rwa [hvP]
   rw [hseam] at hiff hIn f1 f2 hloc ⊢
   have i1 : NumberField ↥(I.rec7 l Z).host.F := inferInstance
   have i2 : NumberField (I.rec7 l Z).host.E := inferInstance

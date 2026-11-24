@@ -77,16 +77,14 @@ theorem mem_below (w : HeightOneSpectrum (𝓞 E)) (p : ℕ) : (p : OF E) ∈ (b
 
 theorem emult_zero (w : HeightOneSpectrum (𝓞 E)) {p : ℕ} (h : (p : 𝓞 E) ∉ w.asIdeal) :
     emultiplicity (below w).asIdeal (Ideal.span {(p : OF E)}) = 0 := by
-  rw [emultiplicity_eq_zero, Ideal.dvd_span_singleton, mem_below]
-  exact h
+  rwa [emultiplicity_eq_zero, Ideal.dvd_span_singleton, mem_below]
 
 theorem emult_one (w : HeightOneSpectrum (𝓞 E)) {p : ℕ} (hp : p.Prime) (hd : ¬ (p : ℤ) ∣ discr E) (h : (p : 𝓞 E) ∈ w.asIdeal) :
     emultiplicity (below w).asIdeal (Ideal.span {(p : OF E)}) = 1 := by
   have hle : Ideal.map (algebraMap (OF E) (𝓞 E)) (below w).asIdeal ≤ w.asIdeal :=
     Ideal.map_le_iff_le_comap.mpr (fun x hx => hx)
   have hdvd : (below w).asIdeal ^ 1 ∣ Ideal.span {(p : OF E)} := by
-    rw [pow_one, Ideal.dvd_span_singleton, mem_below]
-    exact h
+    rwa [pow_one, Ideal.dvd_span_singleton, mem_below]
   have hndvd : ¬ (below w).asIdeal ^ (1 + 1) ∣ Ideal.span {(p : OF E)} := by
     intro h2
     rw [Ideal.dvd_span_singleton] at h2
@@ -128,9 +126,7 @@ theorem emult_cond (v v0 : HeightOneSpectrum (OF E)) (a b c d : ℕ) :
 
 theorem emult_ne {v v0 : HeightOneSpectrum (OF E)} (h : v ≠ v0) : emultiplicity v.asIdeal v0.asIdeal = 0 := by
   rw [emultiplicity_eq_zero, Ideal.dvd_iff_le]
-  intro hle
-  apply h
-  exact HeightOneSpectrum.ext ((v0.isMaximal.eq_of_le v.isPrime.ne_top hle).symm)
+  exact fun hle => h (HeightOneSpectrum.ext ((v0.isMaximal.eq_of_le v.isPrime.ne_top hle).symm))
 
 theorem emult_self (v : HeightOneSpectrum (OF E)) : emultiplicity v.asIdeal v.asIdeal = 1 := by
   simpa using emultiplicity_pow_self_of_prime v.prime 1

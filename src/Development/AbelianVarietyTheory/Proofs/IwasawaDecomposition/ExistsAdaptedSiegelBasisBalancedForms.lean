@@ -200,9 +200,7 @@ lemma isSiegel_glue {s m : ℕ} {e₁ : Fin s → ℝ} {u₁ : Matrix (Fin s) (F
     IsSiegel (Fin.append e₁ e₂) (siegelGlueMat u₁ u₂) := by
   refine IsSiegel.mk ?_ ?_ ?_ ?_ ?_
   · intro i
-    induction i using Fin.addCases with
-    | left a => simpa using h₁.nonneg a
-    | right a => simpa using h₂.nonneg a
+    induction i using Fin.addCases <;> simp [h₁.nonneg, h₂.nonneg]
   · intro p q h
     induction p using Fin.addCases with
     | left a =>
@@ -212,49 +210,37 @@ lemma isSiegel_glue {s m : ℕ} {e₁ : Fin s → ℝ} {u₁ : Matrix (Fin s) (F
         simpa using h₁.step a b h
       | right b =>
         simp only [Fin.val_castAdd, Fin.val_natAdd] at h
-        have := a.isLt
         simpa using hj a b (by omega)
     | right a =>
       induction q using Fin.addCases with
       | left b =>
         simp only [Fin.val_castAdd, Fin.val_natAdd] at h
-        have := b.isLt
         omega
       | right b =>
         simp only [Fin.val_natAdd] at h
         simpa using h₂.step a b (by omega)
   · intro i
-    induction i using Fin.addCases with
-    | left a => simpa using h₁.diag a
-    | right a => simpa using h₂.diag a
+    induction i using Fin.addCases <;> simp [h₁.diag, h₂.diag]
   · intro i j h
     induction i using Fin.addCases with
     | left a =>
       induction j using Fin.addCases with
-      | left b =>
-        rw [siegelGlueMat_ll]
-        exact h₁.lower a b (by rw [Fin.lt_def] at h ⊢; simpa using h)
+      | left b => simpa using h₁.lower a b h
       | right b => simp
     | right a =>
       induction j using Fin.addCases with
       | left b => simp
-      | right b =>
-        rw [siegelGlueMat_rr]
-        exact h₂.lower a b (by rw [Fin.lt_def] at h ⊢; simpa using h)
+      | right b => simpa using h₂.lower a b (by simpa using h)
   · intro i j h
     induction i using Fin.addCases with
     | left a =>
       induction j using Fin.addCases with
-      | left b =>
-        rw [siegelGlueMat_ll]
-        exact h₁.upper a b (by rw [Fin.lt_def] at h ⊢; simpa using h)
+      | left b => simpa using h₁.upper a b h
       | right b => simp
     | right a =>
       induction j using Fin.addCases with
       | left b => simp
-      | right b =>
-        rw [siegelGlueMat_rr]
-        exact h₂.upper a b (by rw [Fin.lt_def] at h ⊢; simpa using h)
+      | right b => simpa using h₂.upper a b (by simpa using h)
 
 lemma isSiegel_zero_of {n : ℕ} {d : Fin n → ℝ} {u : Matrix (Fin n) (Fin n) ℝ} (h : IsSiegel d u) :
     IsSiegel (0 : Fin n → ℝ) u :=

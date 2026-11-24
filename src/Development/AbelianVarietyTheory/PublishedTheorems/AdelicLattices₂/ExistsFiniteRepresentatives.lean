@@ -135,8 +135,7 @@ theorem exists_finite_classes {V : Type} [AddCommGroup V] [Module E V] [FiniteDi
     rw [hexp, Finset.sum_eq_single j]
     · intro i _ hij
       rw [hvo a i j hij, mul_zero]
-    · intro hj
-      exact absurd (Finset.mem_univ j) hj
+    · exact fun hj => absurd (Finset.mem_univ j) hj
   have hd0 : ∀ a j, h (v a j) (v a j) ≠ 0 := fun a j h0 => hS₀0 (h0 ▸ hvS a j)
   have hli : ∀ a, LinearIndependent E (v a) := by
     intro a
@@ -159,8 +158,7 @@ theorem exists_finite_classes {V : Type} [AddCommGroup V] [Module E V] [FiniteDi
     rw [hexp2, Finset.sum_eq_single i]
     · intro j _ hji
       rw [hvo a i j (Ne.symm hji), mul_zero]
-    · intro hi
-      exact absurd (Finset.mem_univ i) hi
+    · exact fun hi => absurd (Finset.mem_univ i) hi
   obtain ⟨M, hM0, hMT⟩ := exists_int_mul_isIntegral E (hS₀f.image fun d => d⁻¹)
   let L₀ : Submodule ℤ (Fin n → E) :=
     Submodule.pi Set.univ fun _ => Subalgebra.toSubmodule (integralClosure ℤ E)
@@ -174,8 +172,7 @@ theorem exists_finite_classes {V : Type} [AddCommGroup V] [Module E V] [FiniteDi
     constructor
     · rintro ⟨x, hx, rfl⟩
       simpa using hx
-    · intro hc
-      exact ⟨_, hc, by simp⟩
+    · exact fun hc => ⟨_, hc, by simp⟩
   have hPfg : ∀ a, (P a).FG := fun a => (hfg a).map _
   have hPB : ∀ a, P a ∈ {L : Submodule ℤ (Fin n → E) | L₀ ≤ L ∧ ∀ x ∈ L, (M : E) • x ∈ L₀} := by
     intro a
@@ -230,8 +227,7 @@ theorem exists_finite_classes {V : Type} [AddCommGroup V] [Module E V] [FiniteDi
     have e2 := hmemP s (Φ a x)
     rw [LinearEquiv.symm_apply_apply] at e1
     rw [hP] at e2
-    simp only [LinearEquiv.trans_apply]
-    exact e1.symm.trans e2
+    simpa only [LinearEquiv.trans_apply] using e1.symm.trans e2
   · intro i
     refine ⟨(Φ s).symm (y a i - y s i), (hmemP s _).1 (sub_mem (by rw [hP]; exact hyP a i) (hyP s i)), ?_⟩
     apply (Φ s).injective

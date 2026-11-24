@@ -122,8 +122,7 @@ variable {ω ν 𝓕}
 theorem thetaInt_add {Φ Ψ : WO M X → ℂ} (hΦ : Intg ω ν 𝓕 Φ) (hΨ : Intg ω ν 𝓕 Ψ) :
     thetaInt ω ν 𝓕 (Φ + Ψ) = thetaInt ω ν 𝓕 Φ + thetaInt ω ν 𝓕 Ψ := by
   funext h
-  simp only [thetaInt, thetaKO_add, Pi.add_apply]
-  exact integral_add (hΦ h) (hΨ h)
+  simpa only [thetaInt, thetaKO_add, Pi.add_apply] using integral_add (hΦ h) (hΨ h)
 
 theorem thetaInt_sub {Φ Ψ : WO M X → ℂ} (hΦ : Intg ω ν 𝓕 Φ) (hΨ : Intg ω ν 𝓕 Ψ) :
     thetaInt ω ν 𝓕 (Φ - Ψ) = thetaInt ω ν 𝓕 Φ - thetaInt ω ν 𝓕 Ψ := by
@@ -154,8 +153,7 @@ theorem setIntegral_mul_right' (V : HSp D) (ν : Measure (GA D V)) [hH : ν.IsHa
   have h1 : IntegrableOn F ((fun x : GA D V => x * k⁻¹) ⁻¹' fd) ν := (hfd.integrableOn_iff ht hinv).1 hint
   have e1 : ∫ u in fd, F (u * k) ∂ν = ∫ u in (fun x : GA D V => x * k⁻¹) ⁻¹' fd, F u ∂ν := by
     have := hmp2.setIntegral_preimage_emb hemb F ((fun x : GA D V => x * k⁻¹) ⁻¹' fd)
-    rw [hpre] at this
-    exact this
+    rwa [hpre] at this
   refine ⟨?_, ?_⟩
   · rw [← hpre]
     exact (hmp2.integrableOn_comp_preimage hemb).2 h1
@@ -179,8 +177,7 @@ theorem modInt_right {θ : InfFam D} {M X : HSp D} {ω : WRep M X} {ν : Measure
       simpa only [thetaKO_right] using Complex.ofReal_injective this
     rw [e]; exact (hC h).2
   · funext h
-    simp only [thetaInt, thetaKO_right]
-    exact (key h).2
+    simpa only [thetaInt, thetaKO_right] using (key h).2
 
 theorem wop_apply {M X : HSp D} (ω : WRep M X) (z : GA D M →₀ ℂ) (Φ : WO M X → ℂ) :
     wop ω z Φ = ∑ k ∈ z.support, z k • ω (k, 1) Φ := by

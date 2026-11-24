@@ -148,8 +148,7 @@ theorem ext_ev_loc {V : Z.Opens} {a b : Γ(Z, V)}
   have e0 := e _ (tau hW) (tau_le hW hWV) (tau_le hW fun q hq => (hle hq).2)
   rw [ev_tau hW hWV, ev_tau hW hWV] at e0
   have e1 := Z.presheaf.germ_res_apply (homOfLE hWV) p hpW a
-  have e2 := Z.presheaf.germ_res_apply (homOfLE hWV) p hpW b
-  exact e1.symm.trans ((congrArg _ e0).trans e2)
+  exact e1.symm.trans ((congrArg _ e0).trans (Z.presheaf.germ_res_apply (homOfLE hWV) p hpW b))
 
 theorem ext_ev {V : Z.Opens} {a b : Γ(Z, V)}
     (h : ∀ (S : Type) [CommRing S] (z : Sp S ⟶ Z) (hz : ⊤ ≤ z ⁻¹ᵁ V), ev z V hz a = ev z V hz b) : a = b :=
@@ -452,8 +451,7 @@ theorem exists_gChart [IsNoetherianRing O] (hP : PushInvertible Y.t.G Y.t.PP.L) 
     rw [← hm', hv']
     show spMap (dualMap (f.comp r)) ≫ _ = spMap (dualMap f) ≫ _
     rw [dualMap_comp, ← spMap_comp', Category.assoc]
-  · simp only [resG_resG]
-    exact hg W' (hW'.trans hUV) s hs
+  · simpa only [resG_resG] using hg W' (hW'.trans hUV) s hs
 
 def thRat (M M' : GChart Y) : Γ(Y.X, M.U ⊓ M'.U) :=
   (M.gen _ inf_le_left _
@@ -466,8 +464,7 @@ theorem ev_thRat (M M' : GChart Y) (g : Sp S ⟶ Y.t.G.left) (i : Y.t.PP.L.ι)
   have hg : ⊤ ≤ g ⁻¹ᵁ (Y.t.G.hom ⁻¹ᵁ (M.U ⊓ M'.U) ⊓ Y.t.PP.L.U i) := fun p hp => ⟨⟨(h hp).1, (h' hp).1⟩, (h hp).2⟩
   have e := congrArg (ev g _ hg) ((M.gen _ inf_le_left _
     (GlobalTheory.ModelChart.res_mem_secOn _ (Y.t.G.hom.preimage_mono inf_le_right) M'.θ_mem)).exists.choose_spec i)
-  rw [map_mul, ev_res g _ hg h', ev_res g _ hg h, ev_appLE g _ _ hg hh] at e
-  exact e
+  rwa [map_mul, ev_res g _ hg h', ev_res g _ hg h, ev_appLE g _ _ hg hh] at e
 
 theorem thRat_unique (M M' : GChart Y) {W : Y.X.Opens} (hW : W ≤ M.U) (hW' : W ≤ M'.U) {a b : Γ(Y.X, W)}
     (H : ∀ e ∈ ({a, b} : Set Γ(Y.X, W)), ∀ (S : Type) [CommRing S] (g : Sp S ⟶ Y.t.G.left) (i : Y.t.PP.L.ι)

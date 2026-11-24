@@ -186,8 +186,7 @@ theorem rigChart_iff {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (L : LB X) (j : (L.pull
     ⊤ ≤ (L.pull x).U j ↔ ⊤ ≤ x ⁻¹ᵁ L.U (j PUnit.unit) := by
   delta LB.pull LB.LinComb LB.wchart
   constructor
-  · intro h p _
-    exact Set.mem_iInter.mp (h trivial) PUnit.unit
+  · exact fun h p _ => Set.mem_iInter.mp (h trivial) PUnit.unit
   · intro h p hp
     exact Set.mem_iInter.mpr (fun k => by cases k; exact h hp)
 
@@ -204,12 +203,10 @@ theorem rigVal_compat (hv : ValRules) {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (L : L
     dsimp only
     rw [Fintype.prod_unique, zpow_one]
     exact ⟨_, rfl⟩
-  have hJ : ⊤ ≤ (𝟙 (Sp ℂ)) ⁻¹ᵁ ((L.pull x).U j ⊓ (L.pull x).U j') := by
-    exact le_inf hj hj'
+  have hJ : ⊤ ≤ (𝟙 (Sp ℂ)) ⁻¹ᵁ ((L.pull x).U j ⊓ (L.pull x).U j') := le_inf hj hj'
   obtain ⟨e, he⟩ := (hv (Sp ℂ) (𝟙 _)).2.1 _ hJ
   have hrj := congrArg (fun u => e (Units.val u)) (hr j j')
-  rw [hg] at hrj
-  rw [Units.val_mul, map_mul] at hrj
+  rw [hg, Units.val_mul, map_mul] at hrj
   simp only [← he] at hrj
   have eres : ∀ {U W : (Sp ℂ).Opens} (hh : W ≤ U) (u : (Γ(Sp ℂ, U))ˣ),
       ((res hh u : (Γ(Sp ℂ, W))ˣ) : Γ(Sp ℂ, W)) = resG (Sp ℂ) hh (u : Γ(Sp ℂ, U)) := fun _ _ => rfl
@@ -217,8 +214,7 @@ theorem rigVal_compat (hv : ValRules) {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (L : L
       ((pullU x W u : (Γ(Sp ℂ, x ⁻¹ᵁ W))ˣ) : Γ(Sp ℂ, x ⁻¹ᵁ W)) = (x.app W).hom (u : Γ(X, W)) := fun _ _ => rfl
   have r3 := fun U h f => (hv (Sp ℂ) (𝟙 (Sp ℂ))).2.2.1 U ((L.pull x).U j ⊓ (L.pull x).U j') h f hJ
   simp only [eres, epu, r3] at hrj
-  rw [(hv (Sp ℂ) (𝟙 _)).2.2.2.1 X x, Category.id_comp] at hrj
-  exact hrj
+  rwa [(hv (Sp ℂ) (𝟙 _)).2.2.2.1 X x, Category.id_comp] at hrj
 
 end OriginFrame
 
@@ -348,8 +344,7 @@ theorem exists_appellHumbert_frame_isRig :
   obtain ⟨i₀, h₀⟩ := hWc 0
   have hjj : ⊤ ≤ (P.L.pull (eSec P.A)).U (fun _ => i₀ : PUnit.{1} → P.L.ι) :=
     (OriginFrame.rigChart_iff (eSec P.A) P.L (fun _ => i₀ : PUnit.{1} → P.L.ι)).2 (by rw [← he0]; exact (memW _ _).1 h₀)
-  have hjj' : ⊤ ≤ (𝟙 (Sp ℂ)) ⁻¹ᵁ (P.L.pull (eSec P.A)).U (fun _ => i₀ : PUnit.{1} → P.L.ι) := by
-    exact hjj
+  have hjj' : ⊤ ≤ (𝟙 (Sp ℂ)) ⁻¹ᵁ (P.L.pull (eSec P.A)).U (fun _ => i₀ : PUnit.{1} → P.L.ι) := hjj
   have hvne := OriginFrame.rigVal_ne_zero hV (𝟙 (Sp ℂ)) _ hjj' (rig.s (fun _ => i₀ : PUnit.{1} → P.L.ι))
   clear hFrame hLoc hGlob hFact hNorm hCube hT1 hT2 hT3 hT4 hloc hTfr hcd hcn hcc hWp hcp hWo hWc hab
   have hF : fr i₀ 0 * Complex.exp (Q 0) ≠ 0 := mul_ne_zero (hfrn i₀ 0 h₀ trivial) (Complex.exp_ne_zero _)

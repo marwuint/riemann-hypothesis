@@ -303,32 +303,27 @@ theorem exists_adele_idem (D d : 𝓞 F) (hD : D ≠ 0)
     split_ifs with h
     · exact zero_mem _
     · exact inv_algebraMap_int v D h
-  refine ⟨⟨fun v => if D ∈ v.asIdeal then (1 : v.adicCompletion F) else 0, Filter.Eventually.of_forall he⟩,
-    ⟨fun v => if D ∈ v.asIdeal then (algebraMap (𝓞 F) (v.adicCompletion F) d)⁻¹ else 0,
-      Filter.Eventually.of_forall hw⟩,
-    ⟨fun v => if D ∈ v.asIdeal then 0 else (algebraMap (𝓞 F) (v.adicCompletion F) D)⁻¹,
-      Filter.Eventually.of_forall hw'⟩, he, hw, hw', ?_, ?_, ?_, ?_⟩
+  refine ⟨⟨_, Filter.Eventually.of_forall he⟩, ⟨_, Filter.Eventually.of_forall hw⟩,
+    ⟨_, Filter.Eventually.of_forall hw'⟩, he, hw, hw', ?_, ?_, ?_, ?_⟩
   · ext1 v
-    show (if D ∈ v.asIdeal then (1 : v.adicCompletion F) else 0) * (if D ∈ v.asIdeal then 1 else 0) =
-      if D ∈ v.asIdeal then 1 else 0
+    show (if D ∈ v.asIdeal then (1 : v.adicCompletion F) else _) *
+      (if D ∈ v.asIdeal then _ else _) = if D ∈ v.asIdeal then _ else _
     split_ifs <;> simp
   · ext1 v
-    show (if D ∈ v.asIdeal then (1 : v.adicCompletion F) else 0) *
-      (if D ∈ v.asIdeal then 0 else (algebraMap (𝓞 F) (v.adicCompletion F) D)⁻¹) = 0
+    show (if D ∈ v.asIdeal then (1 : v.adicCompletion F) else _) *
+      (if D ∈ v.asIdeal then _ else _) = 0
     split_ifs <;> simp
   · ext1 v
-    show algebraMap (𝓞 F) (v.adicCompletion F) d *
-      (if D ∈ v.asIdeal then (algebraMap (𝓞 F) (v.adicCompletion F) d)⁻¹ else 0) =
-      if D ∈ v.asIdeal then 1 else 0
+    show algebraMap (𝓞 F) (v.adicCompletion F) d * (if D ∈ v.asIdeal then _ else _) =
+      if D ∈ v.asIdeal then _ else _
     split_ifs with h
     · refine mul_inv_cancel₀ (Formalism.UG.P.levelaf_algebraMap_ne_zero v d ?_)
       rintro rfl
       exact hcop v h (Ideal.zero_mem _)
     · rw [mul_zero]
   · ext1 v
-    show algebraMap (𝓞 F) (v.adicCompletion F) D *
-      (if D ∈ v.asIdeal then 0 else (algebraMap (𝓞 F) (v.adicCompletion F) D)⁻¹) =
-      1 - if D ∈ v.asIdeal then 1 else 0
+    show algebraMap (𝓞 F) (v.adicCompletion F) D * (if D ∈ v.asIdeal then _ else _) =
+      1 - if D ∈ v.asIdeal then _ else _
     split_ifs with h
     · rw [mul_zero, sub_self]
     · rw [sub_zero]

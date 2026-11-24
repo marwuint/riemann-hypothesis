@@ -221,11 +221,9 @@ theorem val_t_zpow (hG : GlobalFnsSt) {n : ℤ} {χ : D.X} {u} (hu : IsCmp D n �
     exact (congrArg (fun w => val (g.t w) x.left z J) (zero_zsmul χ)).trans h'
   · exact (val_congr g χ (zpow_zero x) z J).trans (val_unit g χ hJ)
   · have h := val_t_add g x (k • χ) χ hJ
-    rw [cPoint_zsmul, ← add_one_zsmul] at h
-    exact h
+    rwa [cPoint_zsmul, ← add_one_zsmul] at h
   · have h := val_t_mul_points g hG χ (x ^ k) x z J hJ
-    rw [← zpow_add_one, cubeVal, im_zpow] at h
-    exact h
+    rwa [← zpow_add_one, cubeVal, im_zpow] at h
 
 end Coord
 
@@ -247,11 +245,9 @@ theorem charVal_zsmul {n : ℤ} {χ : D.X} {u} (hu : IsCmp D n χ u) (g : GtPtF 
   · exact (congrArg (fun w => charVal g w y J) (zero_zsmul χ)).trans (charVal_zero g hJ)
   · exact (congrArg (fun w => charVal w χ y J) (zero_zsmul g)).trans (zero_val χ hJ)
   · have h := charVal_add g hJ (k • χ) χ
-    rw [cPoint_zsmul, ← add_one_zsmul] at h
-    exact h
+    rwa [cPoint_zsmul, ← add_one_zsmul] at h
   · have h := add_val (k • g) g χ hJ
-    rw [zsmul_b, ← add_one_zsmul] at h
-    exact h
+    rwa [zsmul_b, ← add_one_zsmul] at h
 
 variable {I : Ideal R} {D : DegData R I} {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]

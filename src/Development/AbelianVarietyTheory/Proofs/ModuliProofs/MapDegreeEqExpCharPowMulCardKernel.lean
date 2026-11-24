@@ -157,8 +157,7 @@ theorem card_ker_eq {K : Type} [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpO
     rwa [Subsingleton.elim (s (IsLocalRing.closedPoint Ω)) (IsLocalRing.closedPoint K)] at h1
   refine Nat.card_congr (Equiv.ofBijective
     (fun x => ⟨t ≫ x.1, by rw [Category.assoc, x.2, comp_one]⟩) ⟨?_, ?_⟩)
-  · intro x x' h
-    exact Subtype.ext (hinj _ _ (congrArg Subtype.val h))
+  · exact fun x x' h => Subtype.ext (hinj _ _ (congrArg Subtype.val h))
   · rintro ⟨y, hy⟩
     let o : Out.baseOver (Sp K) ⟶ A := 1
     have ho : IsClosed {o.left (IsLocalRing.closedPoint K)} :=
@@ -177,8 +176,7 @@ theorem card_ker_eq {K : Type} [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpO
     have hx : t ≫ x = y := by
       ext1
       have h4 := exists_descent A.hom Ω y.left hc
-      rw [Over.w y] at h4
-      exact h4
+      rwa [Over.w y] at h4
     refine ⟨⟨x, hinj _ _ ?_⟩, Subtype.ext hx⟩
     rw [← Category.assoc, hx, hy, comp_one]
 
@@ -288,8 +286,7 @@ theorem mapDeg_eq_pow_mul_card_ker :
       Nat.card {y : Spec (CommRingCat.of Ω) ⟶ P.A.left // y ≫ α.left = z} := by
     refine Nat.card_congr (Equiv.ofBijective
       (fun y => ⟨y.1.left, congrArg CommaMorphism.left y.2⟩) ⟨?_, ?_⟩)
-    · intro y y' h
-      exact Subtype.ext (Over.OverMorphism.ext (congrArg Subtype.val h))
+    · exact fun y y' h => Subtype.ext (Over.OverMorphism.ext (congrArg Subtype.val h))
     · rintro ⟨y, hy⟩
       refine ⟨⟨Over.homMk y ?_, Over.OverMorphism.ext hy⟩, rfl⟩
       change y ≫ P.A.hom = z ≫ P.A.hom
@@ -299,8 +296,7 @@ theorem mapDeg_eq_pow_mul_card_ker :
   rw [← card_coset_eq P.A _ α z' hne,
     ← card_ker_eq P.A α Ω (z ≫ P.A.hom)] at h0 he
   refine ⟨(Nat.card_ne_zero.mp h0).2, e, ?_⟩
-  rw [← he, hD.finrank_eq U hU ⟨_, hξ⟩]
-  exact hD
+  rwa [← he, hD.finrank_eq U hU ⟨_, hξ⟩]
 
 end GlobalTheory
 end

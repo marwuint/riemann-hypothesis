@@ -187,13 +187,11 @@ theorem exists_mem_loc {q : Ideal R} (h : q ∈ objPrimes b Mat κ β v) {f : R}
   obtain ⟨K, hF, hA, x, s, t, hk, hg⟩ := mem_objPrimes.1 h
   have hu : IsUnit (x f) := by
     refine isUnit_iff_ne_zero.2 fun h0 => hf ?_
-    rw [← hk]
-    exact h0
+    rwa [← hk]
   let y : Localization.Away f →+* K := IsLocalization.Away.lift f hu
   have hy : y.comp (loc f) = x := IsLocalization.Away.lift_comp f hu
   refine ⟨RingHom.ker y, mem_objPrimes.2 ⟨K, hF, hA, y, s, t, rfl, ?_⟩, ?_⟩
-  · rw [good_comp, hy]
-    exact hg
+  · rwa [good_comp, hy]
   · rw [RingHom.comap_ker, hy, hk]
 
 theorem densePrimes_localization (h : DenseP (objPrimes b Mat κ β v)) (f : R) :
@@ -211,8 +209,7 @@ theorem densePrimes_localization (h : DenseP (objPrimes b Mat κ β v)) (f : R) 
         rw [← hc]
         exact q₁.mul_mem_right _ hgq
       have : a ∈ p := by
-        rw [← hcomap]
-        exact haq
+        rwa [← hcomap]
       exact p.mul_mem_left f this
   have hloc : algebraMap R (Localization.Away f) a = 0 := by
     have h1 := congrArg (algebraMap R (Localization.Away f)) hfa
@@ -232,16 +229,14 @@ theorem Den.loc {q₀ : Ideal R} (h : Den b Mat κ β v q₀) {f : R} (hf : f �
 theorem FibData.comp {m : ℕ} {p : Ix g (N' ^ 2) → Ix g (N' ^ 2) → R} {Hh : Type} {hh : Hh → Ix g (N' ^ 2)}
     {Q : Polynomial ℚ} {d : ℕ} (h : FibData b Mat κ β v m p hh Q d) (ρ : R →+* R') :
     FibData b Mat κ (ρ.comp β) (fun a => ρ (v a)) m (fun c a => ρ (p c a)) hh Q d := by
-  intro K _ _ x s t hg
-  exact h K (x.comp ρ) s t ((good_comp ρ x t).1 hg)
+  exact fun K _ _ x s t hg => h K (x.comp ρ) s t ((good_comp ρ x t).1 hg)
 
 theorem dense_of_denseP {P : Set (Ideal R)} (h : DenseP P) : Dense {p : Sp R | p.asIdeal ∈ P} := by
   have hv : PrimeSpectrum.vanishingIdeal {p : PrimeSpectrum R | p.asIdeal ∈ P} = ⊥ := by
     rw [eq_bot_iff]
     intro a ha
     rw [Ideal.mem_bot]
-    refine h a fun p hp hpr => ?_
-    exact (PrimeSpectrum.mem_vanishingIdeal _ _).1 ha ⟨p, hpr⟩ hp
+    exact h a fun p hp hpr => (PrimeSpectrum.mem_vanishingIdeal _ _).1 ha ⟨p, hpr⟩ hp
   have hc : closure {p : PrimeSpectrum R | p.asIdeal ∈ P} = Set.univ := by
     rw [← PrimeSpectrum.zeroLocus_vanishingIdeal_eq_closure, hv]
     simp

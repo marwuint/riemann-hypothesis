@@ -235,8 +235,7 @@ theorem isModulus_galChar (ψ : DirichletCharacter ℂ m) :
   have hm0 : ((m : ℤ) : 𝓞 ℚ) ≠ 0 := by simpa using NeZero.ne m
   unfold IsModulus
   refine ⟨?_, fun 𝔭 h𝔭 => ?_, fun α β hab => ?_⟩
-  · rw [Ne, Ideal.span_singleton_eq_bot]
-    exact hm0
+  · rwa [Ne, Ideal.span_singleton_eq_bot]
   ·
     have hpr : (Ideal.absNorm 𝔭.asIdeal).Prime := by
       rw [absNorm_eq]
@@ -270,8 +269,7 @@ theorem isModulus_galChar (ψ : DirichletCharacter ℂ m) :
       have h1 : u' * c + v' * m = 1 := by exact_mod_cast huv
       exact Int.isCoprime_iff_gcd_eq_one.mp ⟨u', v', h1⟩
     have hne : ∀ c : ℤ, (c : 𝓞 ℚ) ≠ 0 → Ideal.span {(c : 𝓞 ℚ)} ≠ 0 := fun c hc => by
-      rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
-      exact hc
+      rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
     rw [heckeIdeal_galChar m F ψ _ (hne a hα) (by rw [absNorm_span_int]; exact hcopZ a hcα),
       heckeIdeal_galChar m F ψ _ (hne b hβ) (by rw [absNorm_span_int]; exact hcopZ b hcβ),
       absNorm_span_int, absNorm_span_int]
@@ -287,8 +285,7 @@ theorem isModulus_galChar (ψ : DirichletCharacter ℂ m) :
       rcases mul_pos_iff.mp hab with ⟨ha, hb⟩ | ⟨ha, hb⟩
       · rw [Int.natAbs_of_nonneg ha.le, Int.natAbs_of_nonneg hb.le, ← neg_sub]
         exact dvd_neg.mpr hdvd
-      · rw [Int.ofNat_natAbs_of_nonpos ha.le, Int.ofNat_natAbs_of_nonpos hb.le, neg_sub_neg]
-        exact hdvd
+      · rwa [Int.ofNat_natAbs_of_nonpos ha.le, Int.ofNat_natAbs_of_nonpos hb.le, neg_sub_neg]
     have key' : ((a.natAbs : ℕ) : ZMod m) = ((b.natAbs : ℕ) : ZMod m) := by
       rwa [Int.cast_natCast, Int.cast_natCast] at key
     rw [key']
@@ -325,8 +322,7 @@ theorem eq_one_of_isModulus (ψ : DirichletCharacter ℂ m) {𝔪 : Ideal (𝓞 
     unfold RayPair
     refine ⟨hα0, one_ne_zero, hcop, ?_, ?_, fun φ => ?_⟩
     · rw [Ideal.span_singleton_one, Ideal.isCoprime_iff_sup_eq, top_sup_eq]
-    · rw [hsub]
-      exact hmem
+    · rwa [hsub]
     · have hpos : 0 < a := by omega
       simpa using hpos
   unfold IsModulus at h
@@ -334,8 +330,7 @@ theorem eq_one_of_isModulus (ψ : DirichletCharacter ℂ m) {𝔪 : Ideal (𝓞 
   have hN : Ideal.absNorm (Ideal.span {((a : ℕ) : 𝓞 ℚ)}) = a := by
     rw [Ideal.absNorm_span_natCast, NumberField.RingOfIntegers.rank, Module.finrank_self, pow_one]
   have hI : Ideal.span {((a : ℕ) : 𝓞 ℚ)} ≠ 0 := by
-    rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
-    exact hα0
+    rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
   have key := heckeIdeal_galChar m F ψ _ hI (by rw [hN]; exact hc)
   rw [hN] at key
   rw [← key, heq, Ideal.span_singleton_one, ← Ideal.one_eq_top, heckeIdeal_top]

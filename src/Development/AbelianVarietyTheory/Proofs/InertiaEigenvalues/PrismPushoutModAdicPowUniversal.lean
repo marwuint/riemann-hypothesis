@@ -168,13 +168,11 @@ theorem _root_.GlobalTheory.BSP.PoUniv.isPO_univ (l : ℕ) [Fact l.Prime] (R : T
   have hψa' : ∀ m x, ψ m (Ideal.Quotient.mk _ (k'.f x)) =
       Ideal.Quotient.mk _ (a.f x) := by
     intro m x
-    have hx := RingHom.congr_fun (hψa m) (Ideal.Quotient.mk _ x)
-    simpa [_root_.GlobalTheory.BSP.qmap_mk] using hx
+    simpa [_root_.GlobalTheory.BSP.qmap_mk] using RingHom.congr_fun (hψa m) (Ideal.Quotient.mk _ x)
   have hψb' : ∀ m y, ψ m (Ideal.Quotient.mk _ (h'.f y)) =
       Ideal.Quotient.mk _ (b.f y) := by
     intro m y
-    have hy := RingHom.congr_fun (hψb m) (Ideal.Quotient.mk _ y)
-    simpa [_root_.GlobalTheory.BSP.qmap_mk] using hy
+    simpa [_root_.GlobalTheory.BSP.qmap_mk] using RingHom.congr_fun (hψb m) (Ideal.Quotient.mk _ y)
   have hcompat : ∀ {m n : ℕ} (hle : m ≤ n),
       (Ideal.Quotient.factorPow (_root_.GlobalTheory.BSP.adI Q) hle).comp
         ((ψ n).comp (Ideal.Quotient.mk _)) = (ψ m).comp (Ideal.Quotient.mk _) := by
@@ -249,8 +247,7 @@ theorem _root_.GlobalTheory.BSP.PoUniv.isPO_univ (l : ℕ) [Fact l.Prime] (R : T
     intro z hz
     have hcb : c0.comp h'.f = b.f := RingHom.ext hh
     have hz' : z ∈ Ideal.map h'.f B'.I := by
-      rw [_root_.GlobalTheory.Prism.Rigid.map_I_eq l R B' C' h']
-      exact hz
+      rwa [_root_.GlobalTheory.Prism.Rigid.map_I_eq l R B' C' h']
     have hmem := Ideal.mem_map_of_mem c0 hz'
     rwa [Ideal.map_map, hcb, _root_.GlobalTheory.Prism.Rigid.map_I_eq l R B' Q b] at hmem
   have hstr : ∀ (r : R) (z : C'.A),
@@ -274,7 +271,6 @@ theorem _root_.GlobalTheory.BSP.PoUniv.isPO_univ (l : ℕ) [Fact l.Prime] (R : T
     refine ringHom_eq_of_isPushout_of_comp_eq (H.po n) ?_ ?_
     · rw [← _root_.GlobalTheory.BSP.qmap_comp, ← _root_.GlobalTheory.BSP.qmap_comp, hc'.1, hcomm.1]
     · rw [← _root_.GlobalTheory.BSP.qmap_comp, ← _root_.GlobalTheory.BSP.qmap_comp, hc'.2, hcomm.2]
-  have hx := RingHom.congr_fun hq (Ideal.Quotient.mk _ x)
-  simpa only [_root_.GlobalTheory.BSP.qmap_mk] using hx
+  simpa only [_root_.GlobalTheory.BSP.qmap_mk] using RingHom.congr_fun hq (Ideal.Quotient.mk _ x)
 
 end GlobalTheory.BSP.PoUniv

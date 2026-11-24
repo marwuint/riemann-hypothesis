@@ -178,8 +178,7 @@ theorem exists_fg_subalgebra_desc_away : ∀ (K : Type) [Field K] (S : Type) [Co
       intro y
       have : (⊤ : Subalgebra K (A i)) ≤ κ.range.comap (a i) := by
         rw [← hG i, Algebra.adjoin_le_iff]
-        intro g hg
-        exact hr _ (m i g) _ (hsm i g hg) (hs i g)
+        exact fun g hg => hr _ (m i g) _ (hsm i g hg) (hs i g)
       exact this Algebra.mem_top
     refine ⟨κ, (AlgEquiv.ofInjective κ hinj).symm.toAlgHom.comp ((a i).codRestrict _ hmem),
       hκ, hinj, ?_⟩
@@ -299,8 +298,7 @@ theorem coeff_compat {S A B C : Type} [CommRing S] [CommRing A] [CommRing B] [Co
     have e1 : spMap α ≫ spMap φ ≫ x = spMap χ ≫ x := by rw [← Category.assoc, spMap_comp_ring, hα]
     have e2 : (fun k => spMap (dualMap α) ≫ spMap (dualMap φ) ≫ v k) = fun k => spMap (dualMap χ) ≫ v k :=
       funext fun k => by rw [← Category.assoc, spMap_comp_ring, ← dualMap_comp, hα]
-    rw [e1, e2] at this
-    exact this
+    rwa [e1, e2] at this
   exact (hB.2 _ (tan_pull χ hw)).unique (comb_pull_comp α hα ha) (comb_pull_comp β hβ hb')
 
 theorem tanBasis_local : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X) (n : ℕ) (h : Fin n → S), Ideal.span (Set.range h) = ⊤ → ∀ (m : ℕ) (v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)), (∀ i, TanBasis (spMap (algebraMap S (Localization.Away (h i))) ≫ x) (fun k => spMap (dualMap (algebraMap S (Localization.Away (h i)))) ≫ v k)) → TanBasis x v := by
@@ -416,8 +414,7 @@ theorem secBC_transport {S S' T : Type} [CommRing S] [CommRing S'] [CommRing T] 
     (hw : w = w') {r : LB.Sec (PPx w)} (h₁ : SecBC φ 1 x w s r) (h₂ : SecBC ψ 1 x' w s' r)
     (t : LB.Sec (PPx w')) (ht : SecBC φ 1 x w' s t) : SecBC ψ 1 x' w' s' t := by
   subst hw
-  rw [secBC_unique ht h₁]
-  exact h₂
+  rwa [secBC_unique ht h₁]
 
 def algOf {K S A B : Type} [CommRing K] [CommRing S] [CommRing A] [CommRing B] [Algebra K S] [Algebra S A]
     [Algebra S B] [Algebra K A] [Algebra K B] [IsScalarTower K S A] [IsScalarTower K S B] (α : A →+* B)
@@ -488,8 +485,7 @@ theorem GlobalTheory.Frames.frPt_glue : Out.SecBaseChangeSt → ∀ (E : Type) [
     intro τ k
     have := tb.1 (e.symm ⟨τ, k⟩)
     dsimp only at this
-    rw [e.apply_symm_apply] at this
-    exact this
+    rwa [e.apply_symm_apply] at this
   have basis₀ := (_root_.GlobalTheory.Frames.eigBasis_iff_tanBasis E H Dw l Xo c S x u₀ _ e tan₀ eig₀).2 tb
 
   obtain ⟨s₀, hs₀⟩ := (_root_.GlobalTheory.SecGlue.existsUnique_glue E H Dw l Xo S x n h hh s (by
@@ -610,8 +606,7 @@ theorem exists_lift_away {K S T : Type} [Field K] [CommRing S] [CommRing T] [Alg
     ∃ ν : Localization.Away x →ₐ[K] T, ν.comp (IsScalarTower.toAlgHom K S (Localization.Away x)) = f := by
   have hf' : ∀ y : Submonoid.powers x, IsUnit (f y) := by
     rintro ⟨_, m, rfl⟩
-    simp only [map_pow]
-    exact hf.pow m
+    simpa only [map_pow] using hf.pow m
   refine ⟨IsLocalization.liftAlgHom (M := Submonoid.powers x) hf', ?_⟩
   ext s
   exact IsLocalization.lift_eq (M := Submonoid.powers x) (g := f.toRingHom) hf' s
@@ -702,8 +697,7 @@ theorem frMap_restrict {S : Type} [CommRing S] [Algebra c.F S]
     have h1 : IsUnit (algebraMap S₁ (Localization.Away h₁) h₁) :=
       IsLocalization.Away.algebraMap_isUnit _
     have h2 := (h1.map α).map θ
-    rw [hα', hθ, hh] at h2
-    exact h2
+    rwa [hα', hθ, hh] at h2
   obtain ⟨ν, hν⟩ := exists_lift_away h _ hun
   have e : ν.comp κ = θ.comp α := by
     refine away_algHom_ext _ _ _ fun s => ?_
@@ -772,8 +766,7 @@ theorem x_of_descended {R A S₀ T₁ T : Type} [CommRing R] [CommRing A] [CommR
     apply algHom_eq_of_spec
     refine (cancel_mono j).1 ?_
     rw [← hlam, spec_comp_alg _ κ, Category.assoc, hψ₁] at hψ
-    rw [spec_comp_alg _ κ, Category.assoc]
-    exact hψ
+    rwa [spec_comp_alg _ κ, Category.assoc]
   have e3 : a'.comp π = ψ₁ := by
     refine AlgHom.ext fun t => hinj ?_
     have := AlgHom.congr_fun (ha.trans e2.symm) t
@@ -843,8 +836,7 @@ theorem allTest_of_secBaseChange : Out.SecBaseChangeSt → ∀ (E : Type) [Field
   have : (S₁.val.comp (e : p.R →ₐ[c.F] S₁)).comp (e.symm : S₁ →ₐ[c.F] p.R) = S₁.val := by
     ext t
     simp
-  rw [this]
-  exact hy₁
+  rwa [this]
 
 end GlobalTheory.Frames
 end -- clump:auto

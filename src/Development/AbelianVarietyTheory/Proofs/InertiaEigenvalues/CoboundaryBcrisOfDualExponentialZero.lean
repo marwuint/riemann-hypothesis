@@ -96,8 +96,7 @@ theorem card_Z1_mul_card_H0 {R G M : Type} [CommRing R] [Group G] [TopologicalSp
     constructor
     · intro h g
       have hg := congrFun h g
-      rw [amitsur_d0_apply, Pi.zero_apply, sub_eq_zero] at hg
-      exact hg
+      rwa [amitsur_d0_apply, Pi.zero_apply, sub_eq_zero] at hg
     · intro h
       funext g
       rw [amitsur_d0_apply, Pi.zero_apply, h g, sub_self]
@@ -118,14 +117,12 @@ private theorem pow_sub_dvd_val_of_pow_mul_eq_zero {l : ℕ} (hl : 0 < l) (N r :
     exact one_dvd _
   · have h1 : ((l ^ N * a.val : ℕ) : ZMod (l ^ r)) = 0 := by
       push_cast
-      rw [ZMod.natCast_zmod_val]
-      exact ha
+      rwa [ZMod.natCast_zmod_val]
     rw [CharP.cast_eq_zero_iff (ZMod (l ^ r)) (l ^ r)] at h1
     have h2 : l ^ r = l ^ N * l ^ (r - N) := by
       rw [← pow_add, Nat.add_sub_cancel' h.le]
     have h3 : l ^ N * l ^ (r - N) ∣ l ^ N * a.val := by
-      rw [← h2]
-      exact h1
+      rwa [← h2]
     exact Nat.dvd_of_mul_dvd_mul_left (pow_pos hl N) h3
 
 private theorem card_le_pow_of_injective_of_pow_mul_eq_zero {l : ℕ} [Fact l.Prime] (N r : ℕ) {X : Type*} (f : X → ZMod (l ^ r))
@@ -145,8 +142,7 @@ private theorem card_le_pow_of_injective_of_pow_mul_eq_zero {l : ℕ} [Fact l.Pr
     have hy := pow_sub_dvd_val_of_pow_mul_eq_zero hl N r (f y) (hann y)
     have e : (f x).val / l ^ (r - N) = (f y).val / l ^ (r - N) := congrArg Fin.val hxy
     rw [← Nat.div_mul_cancel hx, ← Nat.div_mul_cancel hy, e]
-  have hc := Nat.card_le_card_of_injective g hg
-  simpa using hc
+  simpa using Nat.card_le_card_of_injective g hg
 
 variable {l : ℕ} [Fact l.Prime] {G : Type} [Group G]
 
@@ -160,8 +156,7 @@ theorem card_invariants_twistedDual_charRep_le_pow (χ ψ : G →* ℤ_[l]ˣ) (N
   have key : ∀ (φ : TDual (ZMod (l ^ r)) (ZMod (l ^ r))) (m : ZMod (l ^ r)), φ m = m * φ 1 := by
     intro φ m
     have h := LinearMap.map_smul (show Module.Dual (ZMod (l ^ r)) (ZMod (l ^ r)) from φ) m 1
-    rw [smul_eq_mul, smul_eq_mul, mul_one] at h
-    exact h
+    rwa [smul_eq_mul, smul_eq_mul, mul_one] at h
   let f : H0 ((twDual (redChar χ r) (charRep (redChar ψ r))).comp (MonoidHom.id G)) →
       ZMod (l ^ r) := fun x => x.1 1
   have hf : Function.Injective f := by
@@ -187,9 +182,7 @@ theorem card_invariants_twistedDual_charRep_le_pow (χ ψ : G →* ℤ_[l]ˣ) (N
     rw [redChar_apply, redChar_apply, e]
   have hann : ∀ x, (l : ZMod (l ^ r)) ^ N * f x = 0 := by
     intro x
-    have h0 : ∀ g, twDual (redChar χ r) (charRep (redChar ψ r)) g x.1 = x.1 := by
-      have hx := x.2
-      exact hx
+    have h0 : ∀ g, twDual (redChar χ r) (charRep (redChar ψ r)) g x.1 = x.1 := x.2
     have h1 := congrArg (fun φ : TDual (ZMod (l ^ r)) (ZMod (l ^ r)) => φ 1) (h0 g₀)
     simp only [twDual_apply, charRep_apply, mul_one] at h1
     rw [key x.1] at h1
@@ -218,12 +211,7 @@ theorem card_cocycles_charRep_modPow_le_of_duality : ∀ (l : ℕ) [Fact l.Prime
     fun c => (e.toLinearMap ∘ₗ
       (cup20 (redChar χ r) (charRep (redChar ψ r)) (MonoidHom.id G) c)).toAddMonoidHom
   have hF : Function.Injective F := by
-    intro c c' hcc
-    apply hinj
-    apply LinearMap.ext
-    intro y
-    apply e.injective
-    exact DFunLike.congr_fun hcc y
+    exact fun c c' hcc => hinj (LinearMap.ext (fun y => e.injective (DFunLike.congr_fun hcc y)))
   have : Finite (H0 ((twDual (redChar χ r) (charRep (redChar ψ r))).comp (MonoidHom.id G)) →+
       ZMod (l ^ r)) := Finite.of_injective _ DFunLike.coe_injective
   have : Finite (H2 (charRep (redChar ψ r))) := Finite.of_injective F hF
@@ -491,8 +479,7 @@ theorem cocycles_dependent (hT : Formalism.GaloisCohomology.LocalTateDualityK) (
     have h2 := map_zpow (Units.map (PadicInt.Coe.ringHom (p := l)).toMonoidHom) (χZ g) (-(e : ℤ))
     have h3 := congrArg Units.val h2
     rw [Units.val_zpow_eq_zpow_val] at h3
-    rw [h1]
-    exact h3
+    rwa [h1]
   have hψc : Continuous fun g => (ψ g : ℤ_[l]) := by
     rw [continuous_iff_coe]
     simp only [hψ, Units.val_zpow_eq_zpow_val]
@@ -583,8 +570,7 @@ theorem expStar_sum {ι : Type} (S : Finset ι) (z : ι → GQ l → ℚ_[l]) (�
   induction S using Finset.induction_on with
   | empty => simpa using expStar_zero
   | insert a S ha ih =>
-    simp only [Finset.sum_insert ha]
-    exact expStar_add (expStar_smul _ (h a)) ih
+    simpa only [Finset.sum_insert ha] using expStar_add (expStar_smul _ (h a)) ih
 
 theorem kernel_line (D : Formalism.BasicNotions.D7) (h2 : adm2 D) (h4 : ArchimedeanSignatureMatching D) (K : FinExt l) (s : ℕ)
     (hs : Lev l s) (e : ℕ) (z z₀ : GQ l → ℚ_[l]) (hz : ExpStar D.loc (Gj K s) e z 0)

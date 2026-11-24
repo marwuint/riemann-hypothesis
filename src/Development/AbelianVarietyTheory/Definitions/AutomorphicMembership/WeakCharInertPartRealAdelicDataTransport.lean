@@ -203,8 +203,7 @@ theorem normalFrames_tr (Pg : Finset (Pl a.D.host.E))
 theorem framesExist_tr (Pg : Finset (Pl a.D.host.E))
     (h : Seed.Frm.FramesExistDiagonal a.D Pg) : Seed.Frm.FramesExistDiagonal b.D Pg := by
   rcases h with ⟨ΛY, ΛX, ΛV, ΛW, βY, βX, βV, βW, hSD, hN⟩
-  refine ⟨ΛY, ΛX, ΛV, ΛW, βY, βX, βV, βW, ?_, normalFrames_tr b Pg βY βW hN⟩
-  exact hSD
+  exact ⟨ΛY, ΛX, ΛV, ΛW, βY, βX, βV, βW, hSD, normalFrames_tr b Pg βY βW hN⟩
 
 section Kept
 
@@ -219,8 +218,7 @@ theorem keep_tr (s : SameGrp a b) {cG : G0 R.Pg a.D.R.r ≃* G0g a.D.nd} (h : Ke
   case std => exact (by with_unfolding_all exact (h.std :))
   case signs => exact (by with_unfolding_all exact (h.signs :))
   case frames =>
-    intro hf
-    exact normalFrames_tr b R.Pg R.βY R.βW (h.frames (framesExist_tr a (real b R).Pg hf))
+    exact fun hf => normalFrames_tr b R.Pg R.βY R.βW (h.frames (framesExist_tr a (real b R).Pg hf))
   case beta => exact (by with_unfolding_all exact (h.beta :))
   case prX => exact (by with_unfolding_all exact (h.prX :))
   case guard => exact (by with_unfolding_all exact (h.guard :))

@@ -102,37 +102,24 @@ theorem cong_conj {N : ℕ} {a k : GAf L n} (ha : a ∈ Umax L n) (hk : NG.Cong 
   have hint : ∀ A B : Matrix (Fin n) (Fin n) (AL L), (∀ i j, A i j ∈ ALint L) → (∀ i j, B i j ∈ ALint L) →
       ∀ i j, (A * B) i j ∈ ALint L := fun A B hA hB i j => by
     rw [Matrix.mul_apply]; exact Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hA i l) (hB l j)
-  have haI : ∀ i j, ((a.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) i j ∈ ALint L := ha
-  have haiI : ∀ i j, (((a⁻¹).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) i j ∈ ALint L :=
+  have haI : ∀ i j, (a.1 : Matrix (Fin n) (Fin n) (AL L)) i j ∈ ALint L := ha
+  have haiI : ∀ i j, ((a⁻¹).1 : Matrix (Fin n) (Fin n) (AL L)) i j ∈ ALint L :=
     Subgroup.inv_mem _ ha
-  have hAiA : (((a⁻¹).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) *
-      ((a.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = 1 := by
+  have hAiA : ((a⁻¹).1 : Matrix (Fin n) (Fin n) (AL L)) *
+      (a.1 : Matrix (Fin n) (Fin n) (AL L)) = 1 := by
     rw [← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]; rfl
-  have hK : ((k.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) - 1 = (N : AL L) • Ym := by
+  have hK : (k.1 : Matrix (Fin n) (Fin n) (AL L)) - 1 = (N : AL L) • Ym := by
     ext i j; simp [Ym, hYe i j]
-  have hmat : (((a⁻¹ * k * a).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) - 1 =
-      (N : AL L) • ((((a⁻¹).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) * Ym *
-        ((a.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L))) := by
-    have e : (((a⁻¹ * k * a).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) =
-        (((a⁻¹).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) *
-          ((k.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) *
-          ((a.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) := rfl
-    rw [e]
-    calc _ = (((a⁻¹).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) *
-          ((k.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) *
-          ((a.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) -
-          (((a⁻¹).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) * 1 *
-          ((a.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) := by rw [Matrix.mul_one, hAiA]
-      _ = (((a⁻¹).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) *
-          (((k.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) - 1) *
-          ((a.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) := by
-        rw [Matrix.mul_sub, Matrix.sub_mul]
-      _ = _ := by rw [hK, Matrix.mul_smul, Matrix.smul_mul]
+  have hmat : ((a⁻¹ * k * a).1 : Matrix (Fin n) (Fin n) (AL L)) - 1 =
+      (N : AL L) • (((a⁻¹).1 : Matrix (Fin n) (Fin n) (AL L)) * Ym *
+        (a.1 : Matrix (Fin n) (Fin n) (AL L))) := by
+    simp only [Subgroup.coe_mul, Units.val_mul]
+    rw [← Matrix.smul_mul, ← Matrix.mul_smul, ← hK, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one,
+      hAiA]
   intro i j
   refine ⟨_, hint _ _ (hint _ _ haiI (fun i j => hY i j)) haI i j, ?_⟩
   have := congrFun (congrFun hmat i) j
-  rw [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul] at this
-  exact this
+  rwa [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul] at this
 
 theorem cong_factor (s : SplitPlace L) (N : ℕ) (κ : GAf L n) (hκ : NG.Cong L n N κ) :
     ∃ x y : GAf L n, TrivOutside {s.v} x ∧ NG.Cong L n N x ∧ TrivOutside {s.v}ᶜ y ∧ NG.Cong L n N y ∧
@@ -188,7 +175,6 @@ theorem cong_factor (s : SplitPlace L) (N : ℕ) (κ : GAf L n) (hκ : NG.Cong L
     rw [pr_one, Matrix.map_one _ (map_zero θ) (map_one θ)]
   have M_conj : ∀ A B, conjT (conjAL L) (M A B) = M (conjT (conjAL L) A) (conjT (conjAL L) B) := by
     intro A B; ext i j
-    show conjAL L (θ (A j i, B j i)) = θ (conjAL L (A j i), conjAL L (B j i))
     exact hθc _ _
   have M_diag : ∀ A, M A A = A := by intro A; ext i j; rw [hM]; ring
   set K : Matrix (Fin n) (Fin n) (AL L) := ((κ.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) with hK
@@ -256,7 +242,6 @@ theorem GlobalTheory.exists_irreducible_sub_trivOutside_split : ∀ (L : Type) [
   have Badd : ∀ x y z, B x (y + z) = B x y + B x z := fun x y z => by simpa using hlin x y z 1
   have Bsmul : ∀ x (c : ℂ) z, B x (c • z) = c * B x z := fun x c z => by simpa [B0r] using hlin x 0 z c
   have triv_one : TrivOutside {s.v} (1 : GAf L n) := fun w _ => by
-    show (1 : Matrix (Fin n) (Fin n) (AL L)).map (compAt L w) = 1
     exact Matrix.map_one _ (map_zero _) (map_one _)
 
   let Fix : (GAf L n → Prop) → Submodule ℂ (GAf L n → ℂ) := fun P =>
@@ -305,8 +290,7 @@ theorem GlobalTheory.exists_irreducible_sub_trivOutside_split : ∀ (L : Type) [
     exact this hf
   have hWS : Wsp ≤ π.S := hWU.trans (hU.1.trans W₀S)
   refine ⟨Wsp, hWS, ?_, Wst, ?_⟩
-  · intro h
-    exact hU.2.2 (eq_bot_iff.2 (h ▸ hXW))
+  · exact fun h => hU.2.2 (eq_bot_iff.2 (h ▸ hXW))
   intro W' hW'le hW'st
   by_cases hV : W' ⊓ VN = ⊥
   swap

@@ -98,8 +98,7 @@ theorem idemAt_mul_mem {e : AE D} {P : Pl D.host.E} (he : Formalism.L2.NTheta.Is
     exact hc ((he.2 c hc0).2 h)
   have hc' : (c : D.host.E) ≠ 0 := by exact_mod_cast hc0
   have e0 : a = ((c : D.host.E))⁻¹ * (b : D.host.E) := by
-    rw [eq_inv_mul_iff_mul_eq₀ hc']
-    exact hbc
+    rwa [eq_inv_mul_iff_mul_eq₀ hc']
   have e1 : e * incA D a = e * incA D ((c : D.host.E))⁻¹ * incA D (b : D.host.E) := by
     rw [mul_assoc, ← map_mul, ← e0]
   rw [e1, RingHom.map_mul]
@@ -148,8 +147,7 @@ theorem row_frame_mem {S : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin S.rank �
       exact GlobalTheory.PlaceDatum.tmul_mem_int ⟨b, rfl⟩ (one_mem _)
     | zero => simp
     | add x y _ _ hx hy =>
-      simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib]
-      exact add_mem hx hy
+      simpa only [Pi.add_apply, mul_add, Finset.sum_add_distrib] using add_mem hx hy
     | smul r x _ hx =>
       have e2 : ∑ j, v j * (r • x) j = (r : EAf D) * ∑ j, v j * x j := by
         rw [Finset.mul_sum]
@@ -203,11 +201,9 @@ theorem frMap_int_of_mem_lat : ∀ {D : D7} {S T : HSp D} {F : Frame S T}, F.Goo
     exact ⟨fun i j => add_mem (hu.1 i j) (hv.1 i j), fun i j => add_mem (hu.2 i j) (hv.2 i j)⟩
   have hneg : ∀ u, p u → p (-u) := by
     intro u hu
-    simp only [p, map_neg]
-    exact ⟨fun i j => neg_mem (hu.1 i j), fun i j => neg_mem (hu.2 i j)⟩
+    simpa only [p, map_neg] using ⟨fun i j => neg_mem (hu.1 i j), fun i j => neg_mem (hu.2 i j)⟩
   have hzero : p 0 := by
-    simp only [p, map_zero]
-    exact ⟨fun i j => zero_mem _, fun i j => zero_mem _⟩
+    simpa only [p, map_zero] using ⟨fun i j => zero_mem _, fun i j => zero_mem _⟩
   have hgen : ∀ α ∈ intAf D.host.F, ∀ a ∈ D.host.AA, ∀ s ∈ F.ΛS, ∀ t ∈ F.ΛT,
       p (GlobalTheory.LatVac.finTens α (GlobalTheory.LatVac.genMap S T a s t)) := by
     intro α hα a ha s hs t ht

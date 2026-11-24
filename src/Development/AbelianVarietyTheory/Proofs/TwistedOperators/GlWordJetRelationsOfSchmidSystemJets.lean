@@ -139,15 +139,13 @@ theorem leftInvariant_calculus (n : ℕ) (B : Type) [NormedAddCommGroup B] [Norm
     have hb : (RM Z) ((RM A) z) - (RM A) ((RM Z) z) = z * (A * Z - Z * A) := by
       show z * A * Z - z * Z * A = z * (A * Z - Z * A)
       rw [mul_sub, mul_assoc, mul_assoc]
-    rw [hb] at hc
-    exact hc
+    rwa [hb] at hc
   · filter_upwards [hev] with z hz
     have hc := comm_linField hz (RM Z) (LM Y)
     have hb : (RM Z) ((LM Y) z) - (LM Y) ((RM Z) z) = 0 := by
       show Y * z * Z - Y * (z * Z) = 0
       rw [mul_assoc, sub_self]
-    rw [hb, map_zero, sub_eq_zero] at hc
-    exact hc
+    rwa [hb, map_zero, sub_eq_zero] at hc
 
 end GlobalTheory.SphJetCalc
 end -- clump:auto
@@ -232,8 +230,7 @@ theorem Rw_sum [CompleteSpace B] {ι : Type} [Fintype ι] (L : ι → B →L[ℂ
 theorem Rw_clm [CompleteSpace B] (L : B →L[ℂ] B') (l : List (Fin n × Fin n))
     {g : Matrix (Fin n) (Fin n) ℂ → B} (h : AnalyticAt ℂ g 1) :
     Rw ε l (fun z => L (g z)) =ᶠ[𝓝 1] fun z => L (Rw ε l g z) := by
-  have hs := Rw_sum ε (fun _ : Unit => L) l (g := fun _ => g) fun _ => h
-  simpa using hs
+  simpa using Rw_sum ε (fun _ : Unit => L) l (g := fun _ => g) fun _ => h
 
 private lemma rz_sub_eventuallyEq_of_analyticAt [CompleteSpace B] (Z : Matrix (Fin n) (Fin n) ℂ)
     {k k' : Matrix (Fin n) (Fin n) ℂ → B} (hk : AnalyticAt ℂ k 1) (hk' : AnalyticAt ℂ k' 1) :
@@ -376,8 +373,7 @@ theorem jetRel_funJet : ∀ (V W : Type) [NormedAddCommGroup V] [InnerProductSpa
     have e1 := (hs.symm.trans (Rw_congr ε l h0)).eq_of_nhds
     rw [Rw_zero] at e1
     simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply, innerSL_apply_apply] at e1
-    simp only [funJet_apply, Rw_append, Rw_cons, rw_nil]
-    exact e1
+    simpa only [funJet_apply, Rw_append, Rw_cons, rw_nil] using e1
 
 end GlobalTheory.SphJet.FunRel
 end -- clump:auto

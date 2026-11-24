@@ -134,8 +134,7 @@ theorem mem_iSup_eigen_pow {L M ι : Type} [Field L] [AddCommGroup M] [Module L 
     have hcop : IsCoprime ((X - C (c a)) ^ m) ((∏ b ∈ t, (X - C (c b))) ^ m) := by
       refine IsCoprime.pow (IsCoprime.prod_right fun b hb => ?_)
       refine Polynomial.isCoprime_X_sub_C_of_isUnit_sub (IsUnit.mk0 _ (sub_ne_zero.2 fun e => hat ?_))
-      rw [hinj a (Finset.mem_insert_self _ _) b (Finset.mem_insert_of_mem hb) e]
-      exact hb
+      rwa [hinj a (Finset.mem_insert_self _ _) b (Finset.mem_insert_of_mem hb) e]
     obtain ⟨u, v, huv⟩ := hcop
     set Q := (∏ b ∈ t, (X - C (c b))) ^ m with hQ
     have hdec : d = Polynomial.aeval f (u * (X - C (c a)) ^ m) d + Polynomial.aeval f (v * Q) d := by
@@ -240,8 +239,7 @@ theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K K' LL : FinExt l
   haveI : CharZero ↥LL.1 := charZero_of_injective_algebraMap (algebraMap ℚ_[l] ↥LL.1).injective
   refine inertiaThrough_of_poly_pow (pc P h hN hF hS) ρ Sig h1 ?_ h3 h4
   have hp : (pc P h hN hF hS).PD.p = l := P.PD_p K
-  rw [hp]
-  exact h2
+  rwa [hp]
 
 end GlobalTheory.PassPolyPow
 
@@ -279,8 +277,7 @@ theorem exists_rootsOfUnity_character_hom : ∀ {Γ F O LL : Type} [Group Γ] [F
     intro u σ
     have hu : (((u : Fˣ) : F)) ^ n = 1 := by
       have := u.2
-      rw [mem_rootsOfUnity'] at this
-      exact this
+      rwa [mem_rootsOfUnity'] at this
     have h2 : f ((u : Fˣ) : F) σ ^ n = 1 := by
       rw [← hpow _ (Units.ne_zero _), hu, h1]
     obtain ⟨j, -, hj⟩ := (hζ.map_of_injective hι).eq_pow_of_pow_eq_one h2
@@ -329,8 +326,7 @@ private lemma char_eq_of_same_coset {G M : Type} [Group G] [CommGroup M]
       exact H.mul_mem h1 (H.inv_mem h2)
     exact h5
   have h4 := hψ _ hmem
-  rw [map_mul, map_inv, inv_mul_eq_one] at h4
-  exact h4
+  rwa [map_mul, map_inv, inv_mul_eq_one] at h4
 
 theorem exists_extend_character_trivial_on_normal {G M : Type} [Group G] [CommGroup M]
     (I Ik H : Subgroup G) (hH : H.Normal) (hdec : ∀ g ∈ I, ∃ s ∈ Ik, s⁻¹ * g ∈ H)
@@ -355,8 +351,7 @@ theorem exists_extend_character_trivial_on_normal {G M : Type} [Group G] [CommGr
     rw [key ((a * b : ↥I) : G) _ (f a a.2 * f b b.2) _ (Ik.mul_mem (hfIk a a.2) (hfIk b b.2))
       (hfH _ _) hab]
     exact map_mul ψ ⟨f a a.2, hfIk a a.2⟩ ⟨f b b.2, hfIk b b.2⟩
-  · intro g s hs hsg
-    exact key g _ s _ hs (hfH g g.2) hsg
+  · exact fun g s hs hsg => key g _ s _ hs (hfH g g.2) hsg
 
 theorem extend_characters_and_generator : ∀ {G F LL : Type} [Group G] [Field F] [Field LL] (I Ik H : Subgroup G), H.Normal → Ik ≤ I → (∀ g ∈ I, ∃ s ∈ Ik, s⁻¹ * g ∈ H) → ∀ (n : ℕ), 0 < n → ∀ (Ψ : ↥(rootsOfUnity n F) →* (↥Ik →* LLˣ)) (Y : Set F), (∀ y ∈ Y, ∃ u : ↥(rootsOfUnity n F), ((u : Fˣ) : F) = y) → (∀ u : ↥(rootsOfUnity n F), ((u : Fˣ) : F) ∈ Y → ∀ s : ↥Ik, (s : G) ∈ H → Ψ u s = 1) → ∃ ch : F → (↥I →* LLˣ), (∀ u : ↥(rootsOfUnity n F), ((u : Fˣ) : F) ∈ Y → ∀ (g : ↥I) (s : G) (hs : s ∈ Ik), s⁻¹ * (g : G) ∈ H → ch ((u : Fˣ) : F) g = Ψ u ⟨s, hs⟩) ∧ ∃ c : ↥I →* LLˣ, (∀ g, c g ^ n = 1) ∧ ∀ y ∈ Y, ∃ k : ℕ, ∀ g, ch y g = c g ^ k := by
   intro G F LL _ _ _ I Ik H hH _ hdec n hn Ψ Y hY hΨ
@@ -398,8 +393,7 @@ theorem extend_characters_and_generator : ∀ {G F LL : Type} [Group G] [Field F
   · intro g
     obtain ⟨s, hs, hsg⟩ := hdec g g.2
     rw [hc g s hs hsg, ← MonoidHom.pow_apply, ← map_pow, hpow, map_one, MonoidHom.one_apply]
-  · intro y _
-    exact ⟨kk y, fun g => MonoidHom.pow_apply c (kk y) g⟩
+  · exact fun y _ => ⟨kk y, fun g => MonoidHom.pow_apply c (kk y) g⟩
 
 end GlobalTheory
 end -- clump:auto
@@ -589,8 +583,7 @@ theorem main : ∀ (D : D7) (P : Pend D), TieInePoly D → InertEq D → ∀ (i 
   have hιg : ∀ s, ιg s = (((D.nbr i w hw).e.symm s : Gw D.nd w) : GE D.nd) := fun s => rfl
   have hIne : ∀ s ∈ IK (D.nbr i w hw).Kw, ιg s ∈ Ine (F := D.host.E) (D.nd.plOm.1 w) := by
     intro s hs
-    rw [← hIE i w hw] at hs
-    exact hs
+    rwa [← hIE i w hw] at hs
   obtain ⟨Ψ, hΨ⟩ := GlobalTheory.exists_rootsOfUnity_character_hom (Γ := ↥(IK (D.nbr i w hw).Kw)) (F := Fb (D.host.g k) (D.host.g_prime k))
     (LL := ↥(D.nbr i w hw).LL.1) D.what₂.restRowsFiniteGroupCard hn (fun x s => P.om k w x (ιg s))
     (fun x hx => by simpa using P.om_one k w x hx)
@@ -742,8 +735,7 @@ theorem exists_finExt_of_open (U : Subgroup (Ω ≃ₐ[E] Ω)) (hU : IsOpen (U :
   obtain ⟨L, hL, hLt⟩ := (krullTopology_mem_nhds_one_iff ℚ_[l] (Om l) t).1 (ht.mem_nhds h1)
   refine ⟨⟨L, hL⟩, fun g hg => ?_⟩
   have : g ∈ Subtype.val ⁻¹' t := hLt hg
-  rw [hts] at this
-  exact this
+  rwa [hts] at this
 
 theorem rep_apply {m : ℕ} (r : ↥Gw →* Matrix.GeneralLinearGroup (Fin m) O) (g : ↥(GK Bw.Kw))
     (x : Fin m → ↥Bw.LL.1) :
@@ -769,8 +761,7 @@ theorem mem_stdG_OL {LL : FinExt l} {k : ℕ} (x : Fin k → ↥LL.1) :
   constructor
   · rintro ⟨u, rfl⟩ j
     exact (u j).2
-  · intro h
-    exact ⟨fun j => ⟨x j, h j⟩, rfl⟩
+  · exact fun h => ⟨fun j => ⟨x j, h j⟩, rfl⟩
 
 
 set_option synthInstance.maxHeartbeats 400000 in
@@ -824,8 +815,7 @@ variable {l : ℕ} [Fact l.Prime]
 theorem Kur_stable (σ : GQ l) {x : Om l} (hx : x ∈ MaximalUnramifiedExtension l) : σ x ∈ MaximalUnramifiedExtension l := by
   have h : (MaximalUnramifiedExtension l).map (σ : Om l →ₐ[ℚ_[l]] Om l) ≤ MaximalUnramifiedExtension l := by
     unfold MaximalUnramifiedExtension
-    rw [IntermediateField.adjoin_map]
-    rw [IntermediateField.adjoin_le_iff]
+    rw [IntermediateField.adjoin_map, IntermediateField.adjoin_le_iff]
     rintro _ ⟨y, ⟨m, hm, hlm, hy⟩, rfl⟩
     exact IntermediateField.subset_adjoin _ _ ⟨m, hm, hlm, by rw [← map_pow, hy, map_one]⟩
   exact h ((IntermediateField.mem_map _).2 ⟨x, hx, rfl⟩)
@@ -986,7 +976,6 @@ theorem crys_one (hPH : tiePH (D := D)) (i : D.nd.Loc) (w : HeightOneSpectrum (�
   rw [mapRep_one] at h
   apply h
   haveI := (D.nbr i w hw).LL.2
-  show IsCrys _ _
   exact GlobalTheory.TrivCrys.isCrys_of_trivial _ _ (fun g x => by simp [LocBridge.rep])
 
 theorem monodromy_zero_of_deRham_character (h0 : SumRepresentations.tie0 D) (hPH : tiePH (D := D)) (i : D.nd.Loc)
@@ -1001,8 +990,7 @@ theorem monodromy_zero_of_deRham_character (h0 : SumRepresentations.tie0 D) (hPH
     D.naut.unr_mono0 _ hcr.2
   have htw := ((h0.2.2.2.2.2 i).2.2.2 1 1 χ h1c hc).2.1 w (Or.inr hcr.1) (Or.inr hdR)
   rw [twGL_one_chi] at htw
-  rw [htw, D.naut.monomial_char_iff _ _ (D.naut.wdOf_dim i χ w)]
-  exact hm1
+  rwa [htw, D.naut.monomial_char_iff _ _ (D.naut.wdOf_dim i χ w)]
 
 section Alg
 

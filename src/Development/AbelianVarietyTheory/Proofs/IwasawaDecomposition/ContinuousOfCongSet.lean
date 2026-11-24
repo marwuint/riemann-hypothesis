@@ -240,8 +240,7 @@ theorem map_toIdl_eq_one {ξ : HChar E} (ht : ∀ P, ξ.TameAt P) {y : (AfE F E)
   · refine ht P x hx1 ?_
     have h1 := h P hP
     rw [map_sub, map_one] at h1
-    rw [hx]
-    exact h1
+    rwa [hx]
 
 theorem valued_le_of_supp {v : HeightOneSpectrum (𝓞 F)} {y : (AfE F E)ˣ} (hy : y ∈ suppAt E v)
     {P : HeightOneSpectrum (𝓞 E)} (hP : P.under (𝓞 F) ≠ v) :
@@ -272,8 +271,7 @@ theorem map_wildAt {ξ : HChar E} (ht : ∀ P, ξ.TameAt P) {v : HeightOneSpectr
         rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
         exact ringChar.Nat.cast_ringChar
       subst hP
-      rw [← map_natCast (algebraMap (𝓞 F) (𝓞 E))]
-      exact h3
+      rwa [← map_natCast (algebraMap (𝓞 F) (𝓞 E))]
     · rw [← e]
       simpa using congrArg (RInt F E).subtype hc
   · exact valued_le_of_supp h2 hP
@@ -327,8 +325,7 @@ theorem toIdl_finF_local (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) :
     · refine Eq.trans ?_ (LocTriv.ev_part_not_mem _ hP).symm
       have h2 := afIso_one_tmul (P := P) (k := (1 : F)) (a := (localIdele F v (atFin v k) : AdeleRing (𝓞 F) F).2)
         ((LocTriv.ev_local_ne (fun e => hP ((hm P).2 e)) (atFin v k)).trans (map_one (algebraMap F _)).symm)
-      rw [map_one, map_one] at h2
-      exact h2
+      rwa [map_one, map_one] at h2
   rw [h1]
   refine Finset.prod_congr rfl fun P hP => congrArg _ (Units.ext ?_)
   obtain rfl := (hm P).1 hP
@@ -344,8 +341,7 @@ theorem map_idF {ξ : HChar E} (ht : ∀ P, ξ.TameAt P) (hF : ξ.TrivOn F) (b :
   · have h1 := hF.1 v k
     rw [HChar.resFin, MonoidHom.finsetProd_apply] at h1
     show ξ.1 (toIdl F E (finF F E (localIdele F v (atFin v k)))) = 1
-    rw [toIdl_finF_local, locF, map_prod]
-    exact h1
+    rwa [toIdl_finF_local, locF, map_prod]
   · rw [infDiag, MonoidHom.finsetProd_apply, map_prod]
     refine Finset.prod_eq_one fun w _ => ?_
     have h1 : finF F E (((infIdele F w).comp (atInf w)) k) = 1 := Units.ext rfl
@@ -371,8 +367,7 @@ theorem exists_reads_tup : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (
     have h1 : y ^ n ∈ μ.ker := ker_of_reads hμ (by
       rw [map_pow, map_pow]
       exact congrArg (fun χ : HChar H.E => χ.1 (toIdl H.F H.E y)) hord)
-    rw [MonoidHom.mem_ker, map_pow] at h1
-    exact h1
+    rwa [MonoidHom.mem_ker, map_pow] at h1
   · rintro _ ⟨b, rfl⟩
     exact ker_of_reads hμ (map_idF ht hF b)
   · exact Subgroup.mem_iInf.2 fun v y hy => ker_of_reads hμ (map_wildAt ht hy)

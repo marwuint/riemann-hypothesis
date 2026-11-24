@@ -95,8 +95,7 @@ theorem triv_theta_pull {S S' : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonOb
     have e₁ : r ≫ psum B (x3 B) I = psum B y I :=
       (psum_hom (preHom r) (x3 B) I).trans (congrArg (fun z => psum B z I) (funext hr))
     have e₂ := psum_push hG y (x3 A) U (fun i => Over.OverMorphism.ext (pullback.lift_fst _ _ _)) I
-    rw [← Category.assoc, ← Over.comp_left, e₁]
-    exact e₂
+    rwa [← Category.assoc, ← Over.comp_left, e₁]
   refine (CubeGen.triv_pull_iff H (thφ A (x3 A)) thε _).2 ?_
   have e : (fun k => pullback.fst (G3 A).hom g ≫ thφ A (x3 A) k) =
       fun k => r.left ≫ thφ B (x3 B) k ≫ pullback.fst A.hom g := funext fun k => (key k.down).symm
@@ -111,8 +110,7 @@ theorem exists_ne_zero {X : Scheme.{0}} [Nonempty X] {N : LB X} {I : Type} (s : 
   obtain ⟨i, hi⟩ := TopologicalSpace.Opens.mem_iSup.1 hx
   obtain ⟨k, hk⟩ := TopologicalSpace.Opens.mem_iSup.1 hi
   refine ⟨s i, k, fun e => ?_⟩
-  rw [e, Scheme.basicOpen_zero] at hk
-  exact hk
+  rwa [e, Scheme.basicOpen_zero] at hk
 
 theorem relAmple_of_fibres : Out.Laws → ∀ (O K : Type) [CommRing O] [IsDomain O] [ValuationRing O] [Ring.DimensionLEOne O] [Field K] [IsAlgClosed K] [Algebra O K] [IsFractionRing O K] (A : Over (Sp O)) [GrpObj A], IsAbelianScheme A → ∀ M : LB A.left, M.IsLB → Out.RelAmple (Over.mk (pullback.snd A.hom (spMap (algebraMap O K)))) (M.pull (pullback.fst A.hom (spMap (algebraMap O K)))) → Out.RelAmple (Over.mk (pullback.snd A.hom (spMap (IsLocalRing.residue O)))) (M.pull (pullback.fst A.hom (spMap (IsLocalRing.residue O)))) → Out.RelAmple A M := by
   intro hL O K _ _ _ _ _ _ _ _ A _ hA M hM hK hk

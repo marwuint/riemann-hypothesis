@@ -175,8 +175,7 @@ theorem exists_glue {S : Scheme.{0}} {I : Type} (V X : I → Scheme.{0}) (κ : �
     have h : IsPullback (D.f i j) (D.t i j ≫ D.f j i) (D.ι i) (D.ι j) :=
       IsPullback.of_isLimit (D.vPullbackConeIsLimit i j)
     have e : D.t i j ≫ D.f j i = b i j := ht_a i j
-    rw [e] at h
-    exact h
+    rwa [e] at h
   refine ⟨D.glued, F, fun i => D.ι i, fun i => ?_, hV⟩
   have hw : D.ι i ≫ F = g i ≫ κ i := hF i
   have hιi : IsOpenImmersion (D.ι i) := D.ι_isOpenImmersion i
@@ -189,8 +188,7 @@ theorem exists_glue {S : Scheme.{0}} {I : Type} (V X : I → Scheme.{0}) (κ : �
       have h1 := congrArg (fun φ : T ⟶ S => φ t0) huv
       have h2 := congrArg (fun φ : D.U j ⟶ S => φ y) (hF j)
       simp only [Scheme.Hom.comp_apply] at h1 h2 ⊢
-      rw [← h2, hy]
-      exact h1
+      rwa [← h2, hy]
     obtain ⟨z', hz1, -⟩ := Scheme.Pullback.exists_preimage_pullback (f := g j ≫ κ j) (g := κ i) y (v t0) e1
     refine ⟨b j i ((ha j i).isoPullback.inv z'), ?_⟩
     have h3 := congrArg (fun φ : pullback (g j ≫ κ j) (κ i) ⟶ D.glued => φ z')
@@ -199,8 +197,7 @@ theorem exists_glue {S : Scheme.{0}} {I : Type} (V X : I → Scheme.{0}) (κ : �
     rw [← h3, ← hy, ← hz1, ← IsPullback.isoPullback_inv_fst (ha j i), Scheme.Hom.comp_apply]
   refine IsPullback.of_isLimit (PullbackCone.IsLimit.mk hw
     (fun s => IsOpenImmersion.lift (D.ι i) s.fst (hr s.fst s.snd s.condition)) ?_ ?_ ?_)
-  · intro s
-    exact IsOpenImmersion.lift_fac _ _ _
+  · exact fun s => IsOpenImmersion.lift_fac _ _ _
   · intro s
     apply ext_κ i
     rw [Category.assoc, ← hw, ← Category.assoc, IsOpenImmersion.lift_fac, s.condition]
@@ -213,13 +210,11 @@ theorem glue_over_opens : ∀ (S : Scheme.{0}) (I : Type) (U : I → S.Opens) (G
   have ha : ∀ i j, IsPullback (a i j) (b i j ≫ (G j).hom) ((G i).hom ≫ (U i).ι) (U j).ι := by
     intro i j
     have h := (h1 i j).paste_vert (isPullback_opens_inf (U i) (U j))
-    rw [← (h2 i j).w] at h
-    exact h
+    rwa [← (h2 i j).w] at h
   have hb : ∀ i j, IsPullback (b i j) (a i j ≫ (G i).hom) ((G j).hom ≫ (U j).ι) (U i).ι := by
     intro i j
     have h := (h2 i j).paste_vert (isPullback_opens_inf (U i) (U j)).flip
-    rw [← (h1 i j).w] at h
-    exact h
+    rwa [← (h1 i j).w] at h
   obtain ⟨A, F, ψ, hψ, hab⟩ := exists_glue (fun i => (U i).toScheme) (fun i => (G i).left)
     (fun i => (U i).ι) (fun i => inferInstance) (fun i => (G i).hom) (fun i j => (B i j).left)
     a b ha hb h3

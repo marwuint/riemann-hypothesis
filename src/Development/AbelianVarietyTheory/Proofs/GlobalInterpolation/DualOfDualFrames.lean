@@ -104,33 +104,24 @@ theorem dual_of_dual_frames :
       (∀ x, x ∈ L₁ ↔ ∀ y ∈ L₂, hform τ J x y ∈ S) := by
   intro A _ S τ hτ hS k J hJ B C L₁ L₂ h hL₁ hL₂
 
-  have pair : ∀ u v : Fin k → A,
-      hform τ J ((B : Matrix (Fin k) (Fin k) A) *ᵥ u) ((C : Matrix (Fin k) (Fin k) A) *ᵥ v) =
-        ∑ i, τ (u i) * v i :=
-    fun u v => hform_frames τ J B C h u v
-  have flip : ∀ x y, hform τ J x y = τ (hform τ J y x) :=
-    fun x y => (hform_swap τ hτ J hJ y x).symm
+  have pair := hform_frames τ J B C h
+  have flip := fun x y => (hform_swap τ hτ J hJ y x).symm
   have memS_iff : ∀ a, τ a ∈ S ↔ a ∈ S := fun a =>
     ⟨fun ha => hτ a ▸ hS _ ha, hS a⟩
   have single_mem : ∀ i j, (Pi.single i (1 : A) : Fin k → A) j ∈ S := by
     intro i j
-    by_cases hj : j = i
-    · subst hj
-      simp
-    · simp [hj, S.zero_mem]
+    by_cases hj : j = i <;> simp [hj, S.zero_mem]
   have coord : ∀ u v : Fin k → A, (∀ i, u i ∈ S) → (∀ i, v i ∈ S) → ∑ i, τ (u i) * v i ∈ S :=
     fun u v hu hv => sum_mem fun i _ => mul_mem (hS _ (hu i)) (hv i)
   have part1 : ∀ y, y ∈ L₂ ↔ ∀ x ∈ L₁, hform τ J x y ∈ S := by
     intro y
     obtain ⟨v, rfl⟩ := exists_mulVec C y
     rw [hL₂]
-    constructor
-    · intro hv x hx
-      obtain ⟨u, rfl⟩ := exists_mulVec B x
+    refine ⟨fun hv x hx => ?_, fun hall i => ?_⟩
+    · obtain ⟨u, rfl⟩ := exists_mulVec B x
       rw [pair]
       exact coord u v ((hL₁ u).1 hx) hv
-    · intro hall i
-      have key := hall ((B : Matrix (Fin k) (Fin k) A) *ᵥ Pi.single i 1) ((hL₁ _).2 (single_mem i))
+    · have key := hall ((B : Matrix (Fin k) (Fin k) A) *ᵥ Pi.single i 1) ((hL₁ _).2 (single_mem i))
       have e : ∑ j, τ ((Pi.single i (1 : A) : Fin k → A) j) * v j = v i := by
         simp [Pi.single_apply]
       rwa [pair, e] at key
@@ -138,21 +129,16 @@ theorem dual_of_dual_frames :
     intro y
     obtain ⟨v, rfl⟩ := exists_mulVec B y
     rw [hL₁]
-    constructor
-    · intro hv x hx
-      obtain ⟨u, rfl⟩ := exists_mulVec C x
+    refine ⟨fun hv x hx => ?_, fun hall i => ?_⟩
+    · obtain ⟨u, rfl⟩ := exists_mulVec C x
       rw [flip, pair, memS_iff]
       exact coord v u hv ((hL₂ u).1 hx)
-    · intro hall i
-      have key := hall ((C : Matrix (Fin k) (Fin k) A) *ᵥ Pi.single i 1) ((hL₂ _).2 (single_mem i))
+    · have key := hall ((C : Matrix (Fin k) (Fin k) A) *ᵥ Pi.single i 1) ((hL₂ _).2 (single_mem i))
       have e : ∑ j, τ (v j) * (Pi.single i (1 : A) : Fin k → A) j = τ (v i) := by
         simp [Pi.single_apply]
       rwa [flip, pair, memS_iff, e, memS_iff] at key
-  have part3 : ∀ x, x ∈ L₁ ↔ ∀ y ∈ L₂, hform τ J x y ∈ S := by
-    intro x
-    rw [part2]
-    refine forall₂_congr fun y _ => ?_
-    rw [flip x y, memS_iff]
+  have part3 : ∀ x, x ∈ L₁ ↔ ∀ y ∈ L₂, hform τ J x y ∈ S := fun x =>
+    (part2 x).trans (forall₂_congr fun y _ => by rw [flip x y, memS_iff])
   exact ⟨part1, part2, part3⟩
 
 end GlobalTheory.DualFrames

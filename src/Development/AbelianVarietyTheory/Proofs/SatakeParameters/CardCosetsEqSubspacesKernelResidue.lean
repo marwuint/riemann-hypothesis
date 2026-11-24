@@ -119,8 +119,7 @@ theorem exists_gl_map_residue_eq (O : Type) [CommRing O] [IsLocalRing O] (n : �
   have hu : IsUnit (Matrix.of A).det := by
     rw [← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]
     change ((Matrix.of A).map (IsLocalRing.residue O)).det ≠ 0
-    rw [hAM]
-    exact hM
+    rwa [hAM]
   obtain ⟨g, hg⟩ := (Matrix.isUnit_iff_isUnit_det _).2 hu
   refine ⟨g, ?_⟩
   rw [hg, hAM, ← he]
@@ -156,8 +155,7 @@ theorem map_res_eq_zero_iff (hp : Irreducible p) {m n : ℕ} (X : Matrix (Fin m)
     have : ∀ i j, ∃ c, X i j = p * c := by
       intro i j
       have h1 : residue O (X i j) = 0 := congrFun (congrFun h i) j
-      rw [residue_eq_zero_iff, hm, Ideal.mem_span_singleton] at h1
-      exact h1
+      rwa [residue_eq_zero_iff, hm, Ideal.mem_span_singleton] at h1
     choose C hC using this
     exact ⟨Matrix.of C, Matrix.ext hC⟩
   · rintro ⟨C, rfl⟩
@@ -181,8 +179,7 @@ theorem map_smul' {m n : ℕ} (c : O) (X : Matrix (Fin m) (Fin n) O) :
 theorem intM_inv_smul_iff (hp : Irreducible p) {m n : ℕ} (X : Matrix (Fin m) (Fin n) O) :
     IntM O ((algebraMap O K p)⁻¹ • X.map (algebraMap O K)) ↔ X.map (residue O) = 0 := by
   have h0 : algebraMap O K p ≠ 0 := by
-    intro h
-    exact hp.ne_zero (IsFractionRing.injective O K (by rw [h, map_zero]))
+    exact fun h => hp.ne_zero (IsFractionRing.injective O K (by rw [h, map_zero]))
   rw [map_res_eq_zero_iff hp, intM_iff]
   constructor
   · rintro ⟨C, hC⟩
@@ -202,8 +199,7 @@ theorem exists_of_range_le (hp : Irreducible p) {n : ℕ} {A A' : Matrix (Fin n)
     choose b hb using fun i => residue_surjective (R := O) (y i)
     refine ⟨b, ?_⟩
     have : (fun i => residue O (b i)) = y := funext hb
-    rw [this]
-    exact hy
+    rwa [this]
   choose b hb using h1
   obtain ⟨C, hC⟩ := (map_res_eq_zero_iff hp (A' - A * Matrix.of fun i j => b j i)).1 (by
     ext i j
@@ -278,8 +274,7 @@ theorem cond_iff (hp : Irreducible p) {m n : ℕ} (z : Matrix (Fin m) (Fin n) O)
     rw [h, Matrix.mulVecLin_zero]
   · intro h
     apply Matrix.toLin'.injective
-    rw [map_zero]
-    exact h
+    rwa [map_zero]
 
 theorem card_cosets : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K] (p : O), Irreducible p → ∀ (m n j : ℕ) (ι : Type) (α : GL (Fin n) K) (R : Finset ι) (ρ : ι → GL (Fin n) K) (z : Matrix (Fin m) (Fin n) O), j ≤ n → Hk O p j α → Reps O α R ρ → Nat.card {γ : ι // γ ∈ R ∧ IntM O (((algebraMap O K p)⁻¹ • z.map (algebraMap O K)) * (ρ γ).1)} = Nat.card {W : Submodule (IsLocalRing.ResidueField O) (Fin n → IsLocalRing.ResidueField O) // Module.finrank (IsLocalRing.ResidueField O) W + j = n ∧ W ≤ LinearMap.ker (z.map (IsLocalRing.residue O)).mulVecLin} := by
   intro O K _ _ _ _ _ _ p hp m n j ι α R ρ z hj hα hR

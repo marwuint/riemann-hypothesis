@@ -105,8 +105,7 @@ theorem isContFamily_of_affine {X : Scheme.{0}} {e : T → (Sp ℂ ⟶ X)}
     constructor
     · intro ht
       exact ⟨le_trans ht ((e t).preimage_mono (X.basicOpen_le s)), ((hv X (e t)).2.2.2.2.1 P s).1 ht⟩
-    · intro ht
-      exact ((hv X (e t)).2.2.2.2.1 P s).2 ht.2
+    · exact fun ht => ((hv X (e t)).2.2.2.2.1 P s).2 ht.2
   have hNo : IsOpen {t | ⊤ ≤ e t ⁻¹ᵁ X.basicOpen s} := by
     rw [hN]
     exact (hcont s).isOpen_inter_preimage hopen isOpen_compl_singleton
@@ -184,8 +183,7 @@ theorem continuous_iff_isContFamily {A : Over (Sp ℂ)} (e : T → (𝟙_ (Over 
       IsContFamily (X := A.left) (fun t => (e t).left) := by
   rw [continuous_generateFrom_iff]
   constructor
-  · intro h U f O hO
-    exact h _ ⟨U, f, O, hO, rfl⟩
+  · exact fun h U f O hO => h _ ⟨U, f, O, hO, rfl⟩
   · rintro h _ ⟨U, f, O, hO, rfl⟩
     exact h U f O hO
 

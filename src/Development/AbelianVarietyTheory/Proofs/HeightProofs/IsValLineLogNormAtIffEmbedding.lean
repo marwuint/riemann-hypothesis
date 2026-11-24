@@ -117,8 +117,7 @@ theorem val_via {L : LB X} {L' : LB Y} {φ : Y ⟶ X} (w : LB.Iso L' (L.pull φ)
     valAt' (p ≫ φ) (L.U j) (s.f j) =
       valAt' p ((L.pull φ).U (fun _ => j) ⊓ L'.U i) (w.s (fun _ => j, i)).val * valAt' p (L'.U i) (s'.f i) := by
   have e := congrArg (valAt' p _) (h (fun _ => j) i (inf_le_left.trans (LB.wchart_le L (fun _ => φ) _ PUnit.unit)))
-  rw [valAt'_appLE _ _ _ _ _ _ hp, valAt'_mul, valAt'_res _ _ _ hp] at e
-  exact e
+  rwa [valAt'_appLE _ _ _ _ _ _ hp, valAt'_mul, valAt'_res _ _ _ hp] at e
 
 theorem val_rigPull {G : Over X} [GrpObj G] [IsCommMonObj G] {G' : Over (Sp ℂ)} [GrpObj G'] [IsCommMonObj G']
     {L : LB G.left} {φ : G'.left ⟶ G.left}
@@ -157,8 +156,7 @@ variable {K : Type} [Field K]
 theorem le_spMap_iff (σ : K →+* ℂ) (V : (Sp K).Opens) : ⊤ ≤ spMap σ ⁻¹ᵁ V ↔ ⊤ ≤ V := by
   rw [top_le_preimage_iff_mem]
   refine ⟨fun h p _ => ?_, fun h => h trivial⟩
-  rw [Subsingleton.elim (α := PrimeSpectrum K) p (spMap σ (default : PrimeSpectrum ℂ))]
-  exact h
+  rwa [Subsingleton.elim (α := PrimeSpectrum K) p (spMap σ (default : PrimeSpectrum ℂ))]
 
 theorem val_spMap (σ : K →+* ℂ) (V : (Sp K).Opens) (h : ⊤ ≤ V) (f : Γ(Sp K, V)) :
     valAt' (spMap σ) V f = σ (valR (A := K) (𝟙 (Sp K)) V f) := by
@@ -180,8 +178,7 @@ theorem fn_ext_spMap (σ : K →+* ℂ) (V : (Sp K).Opens) (f g : Γ(Sp K, V))
     rw [σ.injective e']
   · obtain rfl : V = ⊥ := by
       refine eq_bot_iff.2 fun p hp => (hV fun q _ => ?_).elim
-      rw [Subsingleton.elim (α := PrimeSpectrum K) q p]
-      exact hp
+      rwa [Subsingleton.elim (α := PrimeSpectrum K) q p]
     exact Subsingleton.elim _ _
 
 end Values

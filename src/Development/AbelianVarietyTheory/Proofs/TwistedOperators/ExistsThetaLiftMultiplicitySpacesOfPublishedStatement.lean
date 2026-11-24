@@ -150,8 +150,7 @@ theorem liftInt_add {G H S : Type*} [MeasurableSpace H] {ν : Measure H} {𝓕 :
     {φ φ' : H → ℂ} {g : G} (h : IntegrableOn (fun x => th g x s * φ x) 𝓕 ν)
     (h' : IntegrableOn (fun x => th g x s * φ' x) 𝓕 ν) :
     Lift.liftInt ν 𝓕 th s (φ + φ') g = Lift.liftInt ν 𝓕 th s φ g + Lift.liftInt ν 𝓕 th s φ' g := by
-  simp only [Lift.liftInt, Pi.add_apply, mul_add]
-  exact integral_add h h'
+  simpa only [Lift.liftInt, Pi.add_apply, mul_add] using integral_add h h'
 
 theorem liftInt_smul {G H S : Type*} [MeasurableSpace H] {ν : Measure H} {𝓕 : Set H} {th : G → H → S → ℂ} {s : S}
     (c : ℂ) (φ : H → ℂ) (g : G) :
@@ -188,8 +187,7 @@ theorem Good.zero : Good C ω ω' ν 𝓕 κ 𝓝 f f' g c 0 := by
   · simp
   · simp
   ·
-    simp only [liftInt_zero]
-    exact integrableOn_zero
+    simpa only [liftInt_zero] using integrableOn_zero
   · simp [liftInt_zero]
 
 theorem Good.add {φ φ' : GA D W → ℂ} (h : Good C ω ω' ν 𝓕 κ 𝓝 f f' g c φ)
@@ -337,8 +335,7 @@ theorem exists_embedding_skew_of_rapid : GlobalTheory.Published.CuspRapidDecay �
         rw [Set.mem_smul_set_iff_inv_smul_mem]
         change φ (((γ⁻¹ : GQ V) : GA D V) * g) ≠ 0 ↔ φ g ≠ 0
         rw [h.1.left _ (γ⁻¹).2]
-      · rw [← Measure.restrict_apply hm]
-        exact h2
+      · rwa [← Measure.restrict_apply hm]
     exact (Continuous.ae_eq_iff_eq μ h.1.cont continuous_zero).1 h3
   · rw [inner_eq (hE _ (mem _ hd)) (hE _ (mem _ h')), inner_eq (hE _ (mem _ h)) (hE _ (mem _ hd'))]
     obtain ⟨c0, B0, hB0⟩ := conj_mul h.1.cont h'.1.cont (bounded_of_rapid hP hθ h) (bounded_of_rapid hP hθ h')

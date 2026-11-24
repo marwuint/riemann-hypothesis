@@ -100,8 +100,7 @@ theorem charVal_eq_coord (w : Over.mk g ⟶ splitTorus S X) (x : X) :
 theorem charVal_ext {v w : Over.mk g ⟶ splitTorus S X} (h : ∀ x, charVal v x = charVal w x) :
     v = w := by
   refine hom_ext fun x => ?_
-  have e := congrArg (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom (h x)
-  simpa [charVal_eq_coord] using e
+  simpa [charVal_eq_coord] using congrArg (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom (h x)
 
 theorem charVal_one (x : X) : charVal (1 : Over.mk g ⟶ splitTorus S X) x = 1 := by
   rw [charVal_eq_coord, coord_one, map_one]
@@ -165,8 +164,7 @@ theorem left_eq_iff {A' : Type} [CommRing A'] {g' : Sp A' ⟶ S} (φ : A →+* A
     rw [h, Category.assoc]
   · intro h
     apply pullback.hom_ext
-    · rw [← Category.assoc] at h
-      exact h
+    · rwa [← Category.assoc] at h
     · have e1 := Over.w w'
       have e2 := Over.w w
       simp only [Over.mk_hom] at e1 e2
@@ -205,8 +203,7 @@ theorem charVal_epsVec (c : X →+ R) (x : X) : charVal (epsVec g c) x = 1 + inr
 theorem epsVec_injective : Function.Injective (epsVec g : (X →+ R) → _) := by
   intro c d h
   ext x
-  have e := congrArg (fun w => (charVal w x).snd) h
-  simpa [charVal_epsVec] using e
+  simpa [charVal_epsVec] using congrArg (fun w => (charVal w x).snd) h
 
 theorem epsVec_zero : epsVec g (0 : X →+ R) = 1 := by
   refine charVal_ext fun x => ?_
@@ -248,8 +245,7 @@ theorem exists_epsVec_iff (w : Over.mk g ⟶ splitTorus S X) :
   constructor
   · rintro ⟨c, rfl⟩ x
     simp [charVal_epsVec]
-  · intro h
-    exact ⟨epsCoeff w h, epsVec_epsCoeff w h⟩
+  · exact fun h => ⟨epsCoeff w h, epsVec_epsCoeff w h⟩
 
 theorem reduces_iff {t : Sp R ⟶ S} (ht : t = spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ g)
     (w : Over.mk g ⟶ splitTorus S X) :

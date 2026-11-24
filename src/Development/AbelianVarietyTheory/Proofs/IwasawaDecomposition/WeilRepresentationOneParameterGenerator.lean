@@ -82,8 +82,7 @@ theorem exists_hasDerivAt_char (s : ℝ → ℂ) (hs : ∀ t t', s (t + t') = s 
     have h2 := intervalIntegral.integral_comp_add_left (a := 0) (b := ε) s t
     rw [add_zero] at h2
     rw [← h2]
-    simp only [hs, g]
-    exact (intervalIntegral.integral_const_mul _ _).symm
+    simpa only [hs, g] using (intervalIntegral.integral_const_mul _ _).symm
   have h3 : HasDerivAt (fun t => g (t + ε)) (s (0 + ε)) 0 := HasDerivAt.comp_add_const 0 ε (hg _)
   exact ⟨_, ((h3.sub (hg 0)).div_const (g ε)).congr_of_eventuallyEq
     (Filter.Eventually.of_forall fun t => congrFun e t)⟩
@@ -157,8 +156,7 @@ theorem exists_generator : ∀ (D : D7) (θ : InfF D) (σ : (D.what₂.Tau → �
   have hth : ∀ t, IsThetaFunO ψ S T (Ω (γ t) F₀).1 := by
     intro t
     have h1 := (thetaSub ψ S T).smul_mem (s t)⁻¹ (hw.om_pres (γ t) _ hF₀)
-    rw [hs t F₀ hF₀, smul_smul, inv_mul_cancel₀ (hne t), one_smul] at h1
-    exact h1
+    rwa [hs t F₀ hF₀, smul_smul, inv_mul_cancel₀ (hne t), one_smul] at h1
   have hms : ∀ t t', s (t + t') = s t * s t' := by
     intro t t'
     have h1 := hs (t + t') F₀ hF₀
@@ -179,8 +177,7 @@ theorem exists_generator : ∀ (D : D7) (θ : InfF D) (σ : (D.what₂.Tau → �
     have h1 : ContinuousAt (fun t => ev _ _ w (Ω (γ t) F₀)) 0 :=
       (ev _ _ w).continuous.continuousAt.comp (hD F₀ hF₀).continuousAt
     have h2 : ev _ _ w (Ω (γ 0) F₀) ≠ 0 := by
-      rw [hγ0, hone _ (sm _ hF₀), ev_apply]
-      exact hw₀
+      rwa [hγ0, hone _ (sm _ hF₀), ev_apply]
     have h3 : ContinuousAt (fun t => om (γ t) F₀.1 w) 0 := ((hc _ hF₀ w).comp hγ).continuousAt
     refine (h3.div h1 h2).congr ?_
     filter_upwards [h1.eventually_ne h2] with t ht
@@ -190,8 +187,7 @@ theorem exists_generator : ∀ (D : D7) (θ : InfF D) (σ : (D.what₂.Tau → �
   refine ⟨lam + m, fun F hF => ⟨fun t => s t • Ω (γ t) F, fun t => (cs _ _).trans (hs t F hF).symm, ?_⟩⟩
   have h1 := hm.smul (hD F hF)
   rw [hs0, one_smul, hγ0, hone _ (sm _ hF)] at h1
-  rw [add_smul, ← add_assoc]
-  exact h1
+  rwa [add_smul, ← add_assoc]
 
 end GlobalTheory.Mem.Lift.GenZero
 

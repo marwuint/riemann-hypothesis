@@ -54,8 +54,7 @@ theorem FrameRing_of_algEquiv {K : Type} [Field K] {J : Type} (m : J → ℕ) {R
     FrameRing m ((e : A →ₐ[K] B).comp π) (fun τ => (X τ).map e) (Units.map (e : A →* B) s) := by
   refine ⟨fun τ => ?_, fun T _ _ ψ g a hg => ?_⟩
   · have := (h.1 τ).map (e : A →+* B)
-    rw [RingHom.map_det] at this
-    exact this
+    rwa [RingHom.map_det] at this
   · obtain ⟨k, ⟨h1, h2, h3⟩, hu⟩ := h.2 T ψ g a hg
     refine ⟨k.comp (e.symm : B →ₐ[K] A), ⟨?_, fun τ => ?_, ?_⟩, ?_⟩
     · rw [← h1]; ext x; simp
@@ -94,8 +93,7 @@ theorem exists_frameRing_reduced {K : Type} [Field K] {J : Type} [Fintype J] (m 
   refine ⟨A, inferInstance, inferInstance, IsScalarTower.toAlgHom K R A, fun τ => (Y τ).map (algebraMap P A),
     hs.unit, Algebra.FiniteType.trans hPft' hAft, inferInstance, fun τ => ?_, fun T _ _ ψ g a hg => ?_⟩
   · have := hY τ
-    rw [RingHom.map_det] at this
-    exact this
+    rwa [RingHom.map_det] at this
   · let v : σ → T := fun o => Option.elim o (a : T) (fun x => g x.1 x.2.1 x.2.2)
     let φ : P →ₐ[K] T := MvPolynomial.aevalTower ψ v
     have hφY : ∀ τ, (Y τ).map φ = g τ := by
@@ -107,8 +105,7 @@ theorem exists_frameRing_reduced {K : Type} [Field K] {J : Type} [Fintype J] (m 
       refine a.isUnit.mul (IsUnit.prod_univ_iff.2 fun τ => ?_)
       rw [AlgHom.map_det]
       have := hg τ
-      rw [← hφY τ] at this
-      exact this
+      rwa [← hφY τ] at this
     let k : A →ₐ[K] T := IsLocalization.liftAlgHom (M := Submonoid.powers d) (f := φ) (by
       rintro ⟨_, n, rfl⟩
       simpa using hφd.pow n)
@@ -130,9 +127,7 @@ theorem exists_frameRing_reduced {K : Type} [Field K] {J : Type} [Fintype J] (m 
           exact this.trans h'.symm
         · rcases o with _ | ⟨τ, i, j⟩
           · exact h3.trans hφs.symm
-          · have a1 := congrFun (congrFun (h2 τ) i) j
-            have a2 := congrFun (congrFun (hφY τ) i) j
-            exact a1.trans a2.symm
+          · exact (congrFun (congrFun (h2 τ) i) j).trans (congrFun (congrFun (hφY τ) i) j).symm
       apply AlgHom.coe_ringHom_injective
       apply IsLocalization.ringHom_ext (Submonoid.powers d)
       rw [key]

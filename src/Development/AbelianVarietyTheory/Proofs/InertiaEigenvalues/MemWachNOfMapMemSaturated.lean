@@ -144,8 +144,7 @@ theorem flat_of_levels {B E : Type} [CommRing B] [IsNoetherianRing B] [CommRing 
             (algebraMap B E (b k) - y) - (algebraMap B E (b (k + 1)) - y) := by rw [map_sub]; ring
         rw [h3]
         refine Ideal.sub_mem _ (hb k) ?_
-        refine Ideal.span_singleton_le_span_singleton.2 ?_ (hb (k + 1))
-        exact pow_dvd_pow _ (Nat.le_succ k)
+        exact Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ (Nat.le_succ k)) (hb (k + 1))
       refine ⟨AdicCompletion.mk I B (AdicCompletion.AdicCauchySequence.mk I B b hcau), ?_⟩
       rw [IsHausdorff.eq_iff_smodEq (I := I)]
       intro k
@@ -608,8 +607,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 theorem φD_smulA' (T : LocLat G Qp LL O) (a : LetA O n) (x : W.DD T) :
     W.φD T (a • x) = W.φA a • W.φD T x := by
   have h := W.φD_smul T (algebraMap (LetA O n) W.EE a) x
-  rw [algebraMap_smul, W.φE_ext, algebraMap_smul] at h
-  exact h
+  rwa [algebraMap_smul, W.φE_ext, algebraMap_smul] at h
 
 theorem map_smulA {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (a : LetA O n) (x : W.DD T) :
     W.map f (a • x) = a • W.map f x := by

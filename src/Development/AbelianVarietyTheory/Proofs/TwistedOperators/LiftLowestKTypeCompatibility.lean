@@ -102,20 +102,17 @@ theorem shift_abs {H Gf W : Type} [Group H] [Group Gf] [AddCommGroup W] [Module 
 theorem ext_left {V : HSp D} (c : CoefA V) (f : Bridge.Gf V → c.W) (J : Subgroup (Bridge.Gf V)) (χ : J →* ℂˣ)
     (hy : f ∈ Bridge.AdForms (W := c.W) (Bridge.ratF V) (c.ρ.comp (GQ V).subtype) J χ)
     (γ : GA D V) (hγ : γ ∈ GQ V) (h : GA D V) : c.ext f (γ * h) = c.ext f h := by
-  show c.ρ (γ * h)⁻¹ (f ((finHom V).rangeRestrict (γ * h))) = c.ρ h⁻¹ (f ((finHom V).rangeRestrict h))
   exact left_abs (GQ V) (finHom V).rangeRestrict c.ρ f J χ hy γ hγ h
 
 theorem ext_shift {V : HSp D} (c : CoefA V) (hc : c.Is) (κ : GA D V) (hκ : κ ∈ GfC V) (a : ℂ) (ha : a ≠ 0)
     (f f' : Bridge.Gf V → c.W) (hy : ∀ h, f' h = a⁻¹ • f (h * (finHom V).rangeRestrict κ)) (h : GA D V) :
     c.ext (a • f') h = c.ext f (h * κ) := by
-  show c.ρ h⁻¹ ((a • f') ((finHom V).rangeRestrict h)) = c.ρ (h * κ)⁻¹ (f ((finHom V).rangeRestrict (h * κ)))
   exact shift_abs (finHom V).rangeRestrict c.ρ κ (hc.1 _ (inv_mem hκ)) a ha f f' hy h
 
 theorem extV_left (R : RealDat D A Ks) (hV : R.models_HV) (i : Fin D.R.m) (t : T0) (y : (R.HV i t).H)
     (γ : GA D (Vc D i)) (hγ : γ ∈ GQ (Vc D i)) (h : GA D (Vc D i)) : R.extV i t y (γ * h) = R.extV i t y h := by
   have h3 := LinearMap.mem_range_self (R.HV i t).e y
   rw [(hV i t).2.1] at h3
-  show (R.cV i).ext ((R.HV i t).e y) (γ * h) = (R.cV i).ext ((R.HV i t).e y) h
   exact ext_left (R.cV i) _ _ _ h3 γ hγ h
 
 theorem extV_shift (R : RealDat D A Ks) (hc : R.models_cV) (i : Fin D.R.m) (t : T0) (κ : GA D (Vc D i))
@@ -195,8 +192,7 @@ theorem finiteGroup_acts_by_lift_translation_principalType (R : RealDat D A Ks) 
   rw [hchi, one_mul, ← mul_assoc, mul_inv_cancel_right] at hx
   show actG0 (Wc D i) (R.βW i) (R.datWp i R.triv) g0 f x = f (x * κ')
   unfold actG0
-  rw [dite_eq_left hex, realDatum_coeffFlagLevelCharacter_eq_one, inv_one, one_mul]
-  exact hx
+  rwa [dite_eq_left hex, realDatum_coeffFlagLevelCharacter_eq_one, inv_one, one_mul]
 
 end GlobalTheory.ThetaProjEquiv
 

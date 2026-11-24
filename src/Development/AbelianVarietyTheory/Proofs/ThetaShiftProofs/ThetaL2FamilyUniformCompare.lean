@@ -200,10 +200,8 @@ theorem isHolTo_fibLift {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (x
     (e : V → (Sp ℂ ⟶ Xo.univ.t.G.left)) (he : ∀ z, e z ≫ Xo.univ.t.G.hom = x) (hol : IsHolTo Set.univ e) :
     IsHolTo Set.univ fun z => fibLift x (e z) (he z) := by
   refine HolFibre.isHolTo_of_isPullback (isPullback_gx x) ?_ ?_
-  · simp only [fibLift_snd]
-    exact HolFibre.isHolTo_const isOpen_univ _
-  · simp only [fibLift_fst]
-    exact hol
+  · simpa only [fibLift_snd] using HolFibre.isHolTo_const isOpen_univ _
+  · simpa only [fibLift_fst] using hol
 
 theorem over_of_snd (x : Sp ℂ ⟶ Xo.X) (pt : Sp ℂ ⟶ Gx x) (h : pt ≫ gxSnd x = 𝟙 _) :
     (pt ≫ gxFst x) ≫ Xo.univ.t.G.hom = x := by
@@ -264,11 +262,9 @@ theorem theta_l2_positive_and_scaling : Out.Laws → Out.Laws2 → ∀ (E : Type
     obtain ⟨j, hj⟩ := TopologicalSpace.Opens.mem_iSup.1 this
     exact ⟨j, (top_le_preimage_iff_mem _ _).2 hj⟩
   have Up : ∀ j z a, U j z → U j (z + Pm a) := fun j z a hz => by
-    simp only [U, per]
-    exact hz
+    simpa only [U, per] using hz
   have U' : ∀ j z, U j z → ⊤ ≤ (Fu.ex i' Pm' (h z)).left ⁻¹ᵁ Xo.univ.t.PP.L.U j := fun j z hz => by
-    rw [hex]
-    exact hz
+    rwa [hex]
   have q : ∀ a j z, U j z → ‖fr j z‖ = Real.exp (Real.pi * (hermForm Hm z (Pm a)).re +
       Real.pi / 2 * (hermForm Hm (Pm a) (Pm a)).re) * ‖fr j (z + Pm a)‖ := fun a j z hz => by
     rw [(p a j z).2 hz, norm_mul, norm_mul, (p a j z).1, _root_.one_mul, norm_factor]

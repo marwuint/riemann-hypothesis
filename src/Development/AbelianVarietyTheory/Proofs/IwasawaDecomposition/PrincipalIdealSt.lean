@@ -182,8 +182,7 @@ theorem transfer_eq_one (G : Type) [Group G] [Finite G] (B : Type) [CommGroup B]
     exact sub_eq_zero.1 this
   have hc : ∀ q, μ.coeff q = μ.coeff 1 := fun q => by
     have := MonoidAlgebra.coeff_mul_single_apply μ 1 q⁻¹ 1
-    rw [show μ * MonoidAlgebra.single q⁻¹ 1 = μ from hinv q⁻¹] at this
-    rw [inv_inv, one_mul, mul_one] at this
+    rw [show μ * MonoidAlgebra.single q⁻¹ 1 = μ from hinv q⁻¹, inv_inv, one_mul, mul_one] at this
     exact this.symm
   have hε : ε μ = (Nat.card Q : ℤ) * μ.coeff 1 := by
     simp only [ε]
@@ -283,8 +282,7 @@ theorem stabilizer_eq [IsGalois K L] {𝔭 : HeightOneSpectrum (𝓞 K)} (hu : U
   have : Finite (𝓞 K ⧸ 𝔭.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ 𝔭.ne_bot
   have hF : IsArithFrobAt (𝓞 K) σ P := by
     unfold IsArithFrobAt AlgHom.IsArithFrobAt
-    rw [← hPo.over, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply]
-    exact h
+    rwa [← hPo.over, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply]
   refine Subgroup.eq_of_le_of_card_ge (Subgroup.zpowers_le.2 hF.mem_stabilizer) ?_
   rw [Ideal.card_stabilizer_eq_card_inertia_mul_finrank (G := L ≃ₐ[K] L) 𝔭.asIdeal P, card_inertia hu, one_mul,
     Nat.card_zpowers, orderOf_eq_inertiaDeg hu h]
@@ -444,11 +442,9 @@ theorem unramIn_trans : ∀ (K L N : Type) [Field K] [NumberField K] [Field L] [
     intro x
     have hx := hσ' (algebraMap (𝓞 L) (𝓞 N) x)
     have e : algebraMap (𝓞 L) (𝓞 N) ((σ.restrictNormal L) • x) = σ • algebraMap (𝓞 L) (𝓞 N) x := by
-      apply RingOfIntegers.ext
-      exact AlgEquiv.restrictNormal_commutes σ L (x : L)
+      exact RingOfIntegers.ext (AlgEquiv.restrictNormal_commutes σ L (x : L))
     show (σ.restrictNormal L) • x - x ∈ Ideal.comap (algebraMap (𝓞 L) (𝓞 N)) Q
-    rw [Ideal.mem_comap, map_sub, e]
-    exact hx
+    rwa [Ideal.mem_comap, map_sub, e]
   have hfix : ∀ y : L, σ (algebraMap L N y) = algebraMap L N y := by
     intro y
     rw [← AlgEquiv.restrictNormal_commutes σ L y, h1]
@@ -456,10 +452,7 @@ theorem unramIn_trans : ∀ (K L N : Type) [Field K] [NumberField K] [Field L] [
   let τ : N ≃ₐ[L] N := { σ.toRingEquiv with commutes' := hfix }
   let P : HeightOneSpectrum (𝓞 L) :=
     ⟨Q.under (𝓞 L), hP, Ideal.ne_bot_of_liesOver_of_ne_bot 𝔭.ne_bot _⟩
-  have h2 : τ = 1 := by
-    refine hN P τ ⟨Q, hQ, ⟨rfl⟩, ?_⟩
-    intro x
-    exact hσ' x
+  have h2 : τ = 1 := hN P τ ⟨Q, hQ, ⟨rfl⟩, fun x => hσ' x⟩
   ext y
   exact DFunLike.congr_fun h2 y
 
@@ -537,8 +530,7 @@ theorem GlobalTheory.Published.GlobalArtinReciprocity.principalIdealSt (H : Glob
       have key : ∀ (A : Subgroup (N ≃ₐ[K] N)) (_ : A = commutator _) (ψ : A →* ℂˣ), MonoidHom.transfer ψ = 1 := by
         rintro _ rfl ψ
         exact GlobalTheory.TransferCommutator.transfer_eq_one _ _ ψ
-      rw [key _ hker φ] at hv
-      exact hv
+      rwa [key _ hker φ] at hv
     obtain ⟨a, ha⟩ := hP
     obtain ⟨b, hb⟩ := ih
     rw [Ideal.map_mul, ha, hb]

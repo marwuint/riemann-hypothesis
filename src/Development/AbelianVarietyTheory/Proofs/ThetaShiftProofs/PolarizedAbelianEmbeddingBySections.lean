@@ -192,8 +192,7 @@ theorem exists_hom_spec (f : X ⟶ Y) [IsAffine Y] (D : X.Opens) (P : CommRingCa
     ∃ q : D.toScheme ⟶ Spec P, D.ι ≫ f = q ≫ Spec.map C ≫ Y.isoSpec.inv ∧
       ∀ z a, gs q z ⊤ ((Scheme.ΓSpecIso P).inv.hom a) = gs D.ι z D (ψ.hom a) := by
   refine ⟨D.toSpecΓ ≫ Spec.map ψ, ?_, fun z a => ?_⟩
-  · rw [Category.assoc, ← Spec.map_comp_assoc, h, ← Category.assoc, Iso.eq_comp_inv]
-    rw [Category.assoc]
+  · rw [Category.assoc, ← Spec.map_comp_assoc, h, ← Category.assoc, Iso.eq_comp_inv, Category.assoc]
     change D.ι ≫ f ≫ Y.toSpecΓ = D.toSpecΓ ≫ Spec.map (f.appTop ≫ X.presheaf.map (homOfLE le_top).op)
     rw [Spec.map_comp, Scheme.Opens.toSpecΓ_SpecMap_presheaf_map_top_assoc, Scheme.toSpecΓ_naturality]
   · have e : (D.toSpecΓ ≫ Spec.map ψ).appTop.hom ((Scheme.ΓSpecIso P).inv.hom a) =
@@ -202,8 +201,7 @@ theorem exists_hom_spec (f : X ⟶ Y) [IsAffine Y] (D : X.Opens) (P : CommRingCa
       rw [Scheme.Hom.comp_appTop, ← Scheme.ΓSpecIso_inv_naturality_assoc, Scheme.Opens.toSpecΓ_appTop,
         Iso.inv_hom_id_assoc]
     have hz : D.ι z ∈ D := z.2
-    have e' : D.topIso.inv = D.ι.appLE D ⊤ (fun x _ => x.2) := by
-      exact (Scheme.Opens.ι_appLE D D ⊤ _).symm
+    have e' : D.topIso.inv = D.ι.appLE D ⊤ (fun x _ => x.2) := (Scheme.Opens.ι_appLE D D ⊤ _).symm
     have e₁ := gs_appLE D.ι D ⊤ (fun x _ => x.2) (𝟙 _) z trivial (ψ.hom a)
     have e₂ := gs_pull (𝟙 _) (D.toSpecΓ ≫ Spec.map ψ) z ⊤ trivial ((Scheme.ΓSpecIso P).inv.hom a)
     rw [Category.id_comp] at e₁ e₂
@@ -228,8 +226,7 @@ theorem ker_sup_span_eq_top (f : X ⟶ Y) [IsAffine Y] [UniversallyClosed f] {H 
   let e : P →+* Γ(Spec P, ⊤) := (Scheme.ΓSpecIso P).inv.hom
   have hg : ∀ b, (g.app ⊤).hom b = e (MvPolynomial.C b) := fun b => by
     change g.appTop.hom b = (C ≫ (Scheme.ΓSpecIso P).inv).hom b
-    rw [Scheme.ΓSpecIso_inv_naturality, Scheme.Hom.comp_appTop]
-    rw [isoSpec_inv_appTop]
+    rw [Scheme.ΓSpecIso_inv_naturality, Scheme.Hom.comp_appTop, isoSpec_inv_appTop]
   let p₁ := pullback.fst f g
   let p₂ := pullback.snd f g
   let d : ∀ (k : H.ι) (l : ι), Γ(pullback f g, p₁ ⁻¹ᵁ H.U k) := fun k l =>
@@ -268,11 +265,9 @@ theorem ker_sup_span_eq_top (f : X ⟶ Y) [IsAffine Y] [UniversallyClosed f] {H 
       let z : (nonzeroLocus t₀).toScheme := ⟨y, X.basicOpen_le _ hy⟩
       have u := (isUnit_gs_iff (nonzeroLocus t₀).ι z _ z.2 _).2 hy
       rw [← hq', isUnit_gs_iff _ _ _ (mem_top' _)] at u
-      refine (hsub ?_ (h₁ z)).elim
-      exact (basicOpen_eq_of_affine (R := P) a).le u
+      exact (hsub ((basicOpen_eq_of_affine (R := P) a).le u) (h₁ z)).elim
     obtain ⟨n, hn⟩ := hn
-    refine ha (hm.isPrime.mem_of_pow_mem n (hle (Ideal.mem_sup_left ?_)))
-    exact (map_pow _ _ _).trans hn
+    exact ha (hm.isPrime.mem_of_pow_mem n (hle (Ideal.mem_sup_left ((map_pow _ _ _).trans hn))))
   obtain ⟨z, hz, hzx⟩ := hx
   obtain ⟨j, hj⟩ := Opens.mem_iSup.1 (show p₁ z ∈ ⨆ j, nonzeroLocus (s j) by rw [hcov]; trivial)
   obtain ⟨k, hk⟩ := exists_chart_of_mem _ hj
@@ -587,8 +582,7 @@ theorem EmbedsBy.secScal (hL : L.IsLB) {B B' : Scheme.{0}} [IsAffine B] [IsAffin
   refine ⟨_, _, hI'.mem φ h, hI'.mem φ' (𝟙 Y'), 1, fun i => ?_⟩
   have := SectionScalarValuation.secScal_sval (hs' i) (𝟙 Y') y hI'
   rw [Category.id_comp] at this
-  rw [Units.val_one, one_mul]
-  exact this
+  rwa [Units.val_one, one_mul]
 
 theorem formEq_const {χ χ' : Y ⟶ X} (e : χ = χ') (hε : ∑ k, ε k = ∑ k, ε' k) :
     FormEq (fun _ : K => χ) ε (fun _ : K' => χ') ε' := fun U _ v => by
@@ -628,8 +622,7 @@ theorem exists_isPullback_restrict {U : S.Opens} {φ : X' ⟶ A.left} {f' : X' �
   have P := (isPullback_morphismRestrict A.hom U).flip
   refine ⟨P.lift φ (f' ≫ g) (sq.w.trans (Category.assoc _ _ _).symm), P.lift_fst _ _ _, ?_⟩
   refine IsPullback.of_right ?_ (P.lift_snd _ _ _) P
-  rw [P.lift_fst]
-  exact sq
+  rwa [P.lift_fst]
 
 theorem sum_one_fin (N : ℕ) : ∑ _ : Fin N, (1 : ℤ) = ∑ _ : Fin 1, (N : ℤ) := by simp
 

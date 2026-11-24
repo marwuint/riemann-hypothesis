@@ -72,8 +72,7 @@ theorem gram_reS (S : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) :
   funext i j
   have hb : ∀ k, b k = ∑ l, frP S b l k • S.frame l := fun k => by
     unfold frP
-    simp only [Module.Basis.toMatrix_apply]
-    exact (S.frame.sum_repr (b k)).symm
+    simpa only [Module.Basis.toMatrix_apply] using (S.frame.sum_repr (b k)).symm
   show S.hT (b i) (b j) = ∑ l, (∑ k, star (frP S b k i) * S.hT (S.frame k) (S.frame l)) * frP S b l j
   rw [hb i, hb j]
 
@@ -262,8 +261,7 @@ theorem isFockVacAt_reF : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : In
   rw [← hJ] at h0
   have e1 := congrFun (dRho_reF ψ hθ S T b hs τ z f) x
   have e2 := congrFun (dRho_reF ψ hθ S T b hs τ (cplxO 1 sT z) f) x
-  refine (congrArg₂ (fun a c : ℂ => a + Complex.I • c) e1 e2).trans ?_
-  exact h0
+  exact (congrArg₂ (fun a c : ℂ => a + Complex.I • c) e1 e2).trans h0
 
 end GlobalTheory.AdSpan.ReVec.FockVac
 
@@ -382,8 +380,7 @@ theorem isFrame_frPinvGL_mul : ∀ (D : D7) (S : HSp D) (b : Module.Basis (Fin S
     intro y hy
     rw [mem_stdL_iff S b hO, sum_smul_frame_frP, Matrix.mulVec_mulVec, frameMatrix_mul_frameMatrixInv, Matrix.one_mulVec]
     have h1 : y ∈ (ΛS : Set (Fin S.rank → D.host.E)) := hy
-    rw [hΛ] at h1
-    exact h1
+    rwa [hΛ] at h1
   unfold Formalism.L2.DIV.IsFrame at hfr ⊢
   intro x
   have hinv : ((frPinvGL S b * βS)⁻¹ : GL (Fin S.rank) (Lev.EAf D)).val *ᵥ x =
@@ -391,8 +388,7 @@ theorem isFrame_frPinvGL_mul : ∀ (D : D7) (S : HSp D) (b : Module.Basis (Fin S
     rw [_root_.mul_inv_rev, Units.val_mul, frPinvGL_inv_val, Matrix.mulVec_mulVec]
   rw [hinv, ← hfr]
   constructor
-  · intro hx
-    exact hatL_mulVec_mem (frP S b) _ ΛS hA x hx
+  · exact fun hx => hatL_mulVec_mem (frP S b) _ ΛS hA x hx
   · intro hx
     have h2 := hatL_mulVec_mem (F := D.host.F) (frPinv S b) ΛS _ hB _ hx
     have h3 : (frPinv S b).map (eToEAf D) *ᵥ ((frP S b).map (eToEAf D) *ᵥ x) = x := by
@@ -567,8 +563,7 @@ theorem isSBHalf_comp_reW (hΛ : ∀ u, u ∈ Λ' ↔ reW S T b u ∈ Λ) (Φ : 
   obtain ⟨h1, k, hk, h2, h3⟩ := h
   refine ⟨fun t ht => (isHalf_reW_iff S T b e t).1 (h1 _ ht), k, hk, ?_, ?_⟩
   · intro u hu hh t
-    simp only [reW_add, reW_nsmul]
-    exact h2 _ ((hΛ u).1 hu) ((isHalf_reW_iff S T b e u).2 hh) _
+    simpa only [reW_add, reW_nsmul] using h2 _ ((hΛ u).1 hu) ((isHalf_reW_iff S T b e u).2 hh) _
   · intro t ht
     rw [hΛ, reW_nsmul]
     exact h3 _ ht
@@ -831,9 +826,7 @@ theorem reW_mem_ratL_iff (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S
       x ∈ ratL T S → HMul.hMul (α := Matrix (Fin T.rank) (Fin S.rank) (AE D)) (β := Matrix (Fin S.rank) (Fin S.rank) (AE D))
         (γ := Matrix (Fin T.rank) (Fin S.rank) (AE D)) x (N.map (incA D)) ∈ ratL T S := by
     rintro x N ⟨γ, rfl⟩
-    refine ⟨γ * N, ?_⟩
-    show (γ * N).map (incA D) = _
-    exact Matrix.map_mul (f := incA D)
+    exact ⟨γ * N, Matrix.map_mul (f := incA D)⟩
   constructor
   · intro h
     have h2 := key _ (frP S b) h
@@ -858,8 +851,7 @@ theorem reframeFunctionOnHoms_norm_one_covolumeOne (D : D7) (S T : HSp D) (b : M
     obtain ⟨h1, hemb⟩ := GlobalTheory.Unf.ParCont.isCovolOne_map hp (reWEquiv S T b) he he' hr
     have h2 := hall (μ.map (reWEquiv S T b), reWEquiv S T b '' 𝓕) h1
     simp only [nrm2] at h2 ⊢
-    rw [hemb.setIntegral_map, Set.preimage_image_eq _ (reWEquiv S T b).injective] at h2
-    exact h2
+    rwa [hemb.setIntegral_map, Set.preimage_image_eq _ (reWEquiv S T b).injective] at h2
   rintro ⟨μ', 𝓕'⟩ hp
   exact aux μ' 𝓕' hp
 
@@ -928,8 +920,7 @@ theorem gram_reS (S : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) :
     (show Matrix (Fin S.rank) (Fin S.rank) D.host.E from HSpace.gram (reS S b))
       = (frP S b)ᴴ * HSpace.gram S * frP S b := by
   have hb : ∀ k, b k = ∑ l, frP S b l k • S.frame l := fun k => by
-    simp only [frP, Module.Basis.toMatrix_apply]
-    exact (S.frame.sum_repr (b k)).symm
+    simpa only [frP, Module.Basis.toMatrix_apply] using (S.frame.sum_repr (b k)).symm
   ext i j
   change S.hT (b i) (b j) = _
   rw [hb i, hb j]

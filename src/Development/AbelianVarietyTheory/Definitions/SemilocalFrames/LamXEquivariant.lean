@@ -123,9 +123,6 @@ theorem embedding_cases (w : InfinitePlace I.E) :
   have hF : ∀ a : I.F, w.embedding (algebraMap I.F I.E a) =
       I.φ (w.comap (algebraMap I.F I.E)) (algebraMap I.F I.E a) := by
     have := I.cm.totReal
-    have hv : w.comap (algebraMap I.F I.E) =
-        InfinitePlace.mk (w.embedding.comp (algebraMap I.F I.E)) := by
-      rw [← InfinitePlace.comap_mk, InfinitePlace.mk_embedding]
     have hψ : (I.φ (w.comap (algebraMap I.F I.E))).comp (algebraMap I.F I.E) =
         (w.comap (algebraMap I.F I.E)).embedding := RingHom.ext (I.φ_over _)
     have hreal : ComplexEmbedding.conjugate (w.embedding.comp (algebraMap I.F I.E)) =
@@ -133,14 +130,8 @@ theorem embedding_cases (w : InfinitePlace I.E) :
       ComplexEmbedding.isReal_iff.mp (InfinitePlace.isReal_mk_iff.mp (IsTotallyReal.isReal _))
     have hmk : InfinitePlace.mk (w.embedding.comp (algebraMap I.F I.E)) =
         InfinitePlace.mk ((I.φ (w.comap (algebraMap I.F I.E))).comp (algebraMap I.F I.E)) := by
-      rw [hψ, InfinitePlace.mk_embedding, hv]
-    have key : w.embedding.comp (algebraMap I.F I.E) =
-        (I.φ (w.comap (algebraMap I.F I.E))).comp (algebraMap I.F I.E) := by
-      rcases InfinitePlace.mk_eq_iff.mp hmk with h | h
-      · exact h
-      · rwa [hreal] at h
-    intro a
-    exact RingHom.congr_fun key a
+      rw [hψ, InfinitePlace.mk_embedding, ← InfinitePlace.comap_mk, InfinitePlace.mk_embedding]
+    exact RingHom.congr_fun ((InfinitePlace.mk_eq_iff.mp hmk).elim id hreal.symm.trans)
   set ψ := I.φ (w.comap (algebraMap I.F I.E)) with hψdef
   have hpt : ∀ e : I.E, w.embedding e = ψ e ∨ w.embedding e = starRingEnd ℂ (ψ e) := by
     intro e
@@ -152,16 +143,10 @@ theorem embedding_cases (w : InfinitePlace I.E) :
       rw [← hcm w.embedding, ← hcm ψ, ← map_mul, ← map_mul, ← ht, hF]
     have h3 : (w.embedding e - ψ e) * (w.embedding e - starRingEnd ℂ (ψ e)) = 0 := by
       linear_combination (w.embedding e) * h1 - h2
-    rcases mul_eq_zero.mp h3 with h | h
-    · exact Or.inl (sub_eq_zero.mp h)
-    · exact Or.inr (sub_eq_zero.mp h)
+    exact (mul_eq_zero.mp h3).imp sub_eq_zero.mp sub_eq_zero.mp
   by_contra hne
-  push Not at hne
-  obtain ⟨hne1, hne2⟩ := hne
-  obtain ⟨a, ha⟩ : ∃ a, w.embedding a ≠ ψ a := by
-    by_contra hc
-    push Not at hc
-    exact hne1 (RingHom.ext hc)
+  obtain ⟨hne1, hne2⟩ := not_or.1 hne
+  obtain ⟨a, ha⟩ := not_forall.1 fun h => hne1 (RingHom.ext h)
   obtain ⟨b, hb⟩ : ∃ b, w.embedding b ≠ starRingEnd ℂ (ψ b) := by
     by_contra hc
     push Not at hc

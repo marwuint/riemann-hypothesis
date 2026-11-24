@@ -194,8 +194,7 @@ theorem const_eq_zero_of_mem_Fil_one {P : LocPrime l} {AI : LocAinf l P} {T : Lo
   have hz' : z = C.o (c : Om l) := (GlobalTheory.MemLoc.BdRField.bdR_isField l).2.1 hze
   have h0 : Per.θD l z = 0 := by
     have := (GlobalTheory.MemLoc.thetaD_onto_ker l).2
-    rw [← this] at hz
-    exact hz
+    rwa [← this] at hz
   rw [hz', C.o_sec.th] at h0
   have : (c : Om l) = 0 := (algebraMap (Om l) ℂ_[l]).injective (by simpa using h0)
   exact Subtype.ext this
@@ -282,8 +281,7 @@ theorem GlobalTheory.LogFlatLam.exists_lam : ∀ (l : ℕ) [Fact l.Prime] (K : F
   have h := (T.fil K _ _).1 hc'm
   rw [hxA'] at h
   obtain ⟨z, hz, hze⟩ := (GlobalTheory.BdRQuot.mem_FilD_nat m _).1 h
-  rw [← hinj hze]
-  exact hz
+  rwa [← hinj hze]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLogUniformizerTiltBdRPlusCocycle =====
@@ -594,8 +592,7 @@ theorem exists_twisted_modification : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l
         (fun _ _ => (N : ℤ)) h1 hU' (fun _ _ _ => by push_cast; omega) r j
     obtain ⟨v, hv⟩ := ((isUnit_l_BdRp l).pow k).exists_left_inv
     have key2 := Submodule.smul_mem _ v hfin
-    rw [Algebra.smul_def, ← mul_assoc, ← map_mul, hv, map_one, one_mul] at key2
-    exact key2
+    rwa [Algebra.smul_def, ← mul_assoc, ← map_mul, hv, map_one, one_mul] at key2
 
 end GlobalTheory.BKTwist
 end -- clump:auto
@@ -768,8 +765,7 @@ theorem cocycle_cob : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (P
     have hj : ∀ x : Ainf l, C.j (algebraMap (Ainf l) (Per.Acris l) x) = aDp l x :=
       fun x => by
         have h := C.j_cris.on0 (algebraMap (Per.Ainf l) (Per.Acris0 l) x)
-        rw [← GlobalTheory.RingIface.tower, Subalgebra.coe_algebraMap] at h
-        exact h
+        rwa [← GlobalTheory.RingIface.tower, Subalgebra.coe_algebraMap] at h
     have hσ : ∀ x : Ainf l, sigA (g : GQ l) (algebraMap (Ainf l) (Per.Acris l) x) =
         algebraMap (Ainf l) (Per.Acris l) (Per.σA (g : GQ l) x) :=
       fun x => (GlobalTheory.CrisMaps.sigA_extends (g : GQ l)).alg x
@@ -838,8 +834,7 @@ theorem cocycle_cob : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (P
     have hpv : lam ^ (k' + k) * (l : Per.BdRp l ⧸ I) ^ k' = lam ^ k := by
       have hl : lam * (l : Per.BdRp l ⧸ I) = 1 := by
         have h := congrArg ψ (inv_mul_cancel₀ (by exact_mod_cast (Fact.out : l.Prime).ne_zero : (l : ℚ) ≠ 0))
-        rw [map_mul, map_natCast, map_one] at h
-        exact h
+        rwa [map_mul, map_natCast, map_one] at h
       rw [pow_add, mul_comm (lam ^ k'), mul_assoc, ← mul_pow, hl, one_pow, mul_one]
     have hz : (kap C bk k₀ k Mn (c g) * (Λ.map φ).map (sigA (g : GQ l)) -
         (l : Per.Acris l) ^ k₀ • Λ.map φ).map Θ = 0 := by
@@ -923,8 +918,7 @@ theorem texp_zero {R : Type} [CommRing R] (q : ℚ →+* R) {d : ℕ} (N : Matri
   · simp
   · intro i _ hi
     simp [zero_pow hi]
-  · intro h
-    exact absurd (Finset.mem_range.2 hd) h
+  · exact fun h => absurd (Finset.mem_range.2 hd) h
 
 theorem texp_sub_mem {R : Type} [CommRing R] (q : ℚ →+* R) {d : ℕ} (N : Matrix (Fin d) (Fin d) R) (I : Ideal R)
     {x y : R} (h : x - y ∈ I) (i j : Fin d) : (texp q N x - texp q N y) i j ∈ I := by
@@ -1209,8 +1203,7 @@ theorem pow_eq_zero_field {k : Type} [Field k] (x : Matrix (Fin d) (Fin d) k) (h
   have h := Matrix.isNilpotent_charpoly_sub_pow_of_isNilpotent hx
   have h2 : x.charpoly = Polynomial.X ^ Fintype.card (Fin d) := sub_eq_zero.1 h.eq_zero
   have h3 := Matrix.aeval_self_charpoly x
-  rw [h2, map_pow, Polynomial.aeval_X, Fintype.card_fin] at h3
-  exact h3
+  rwa [h2, map_pow, Polynomial.aeval_X, Fintype.card_fin] at h3
 
 end Gen
 
@@ -1266,9 +1259,7 @@ theorem Phi_fixed (hQQ : Qm * Qi = 1)
       (A.map (phiSt P)).map (actSt P (g : GQ l)) = (A.map (actSt P (g : GQ l))).map (phiSt P) := by
     intro A; ext i j; simp [phiSt_actSt]
   have hRφ : ((R g).map (algebraMap ℚ_[l] (Bst P))).map (phiSt P) = (R g).map (algebraMap ℚ_[l] (Bst P)) := by
-    apply Matrix.ext
-    intro i j
-    exact (phiSt P).commutes (R g i j)
+    exact Matrix.ext (fun i j => (phiSt P).commutes (R g i j))
   constructor
   · rw [mmap_mul, hc, inv_act P R Qm Qi hQQ hQ g, Matrix.mul_assoc, ← hRφ, ← mmap_mul, hQ g]
   · rw [mmap_mul, hc, inv_act P R Qm Qi hQQ hQ g, mmap_mul, hRφ, Matrix.mul_assoc, hQ g]
@@ -1286,9 +1277,7 @@ theorem const_of_fixed {K : FinExt l}
       simpa using congrFun (congrFun (hY ⟨g, hg⟩) i) j
   choose y hy using h
   refine ⟨Matrix.of y, ?_, ?_⟩
-  · apply Matrix.ext
-    intro i j
-    exact (hy i j).symm
+  · exact Matrix.ext (fun i j => (hy i j).symm)
   · intro g; ext i j
     have h1 := congrFun (congrFun (hY g) i) j
     simp only [Matrix.map_apply] at h1
@@ -1413,17 +1402,14 @@ theorem period_matrix_at_zero : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk 
     intro z; ext i j; simp only [Matrix.map_apply, hev0, Polynomial.coe_evalRingHom, eval_kur]
   have hevφ : ∀ A : Matrix (Fin d) (Fin d) (Bst P), (A.map (phiSt P)).map ev0 = (A.map ev0).map P.φB := by
     intro A; ext i j
-    simp only [Matrix.map_apply, hev0, Polynomial.coe_evalRingHom]
-    exact ev_phiSt P b hphi _
+    simpa only [Matrix.map_apply, hev0, Polynomial.coe_evalRingHom] using ev_phiSt P b hphi _
   have hφ : U₀.map P.φB = U₀ * f := by
     have e : Qm.map (phiSt P) = Qm * (Qi * Qm.map (phiSt P)) := by rw [← Matrix.mul_assoc, hQQ, Matrix.one_mul]
     have := congrArg (fun A => Matrix.map A ev0) e
-    rw [hevφ, hyF, mmap_mul, hevk] at this
-    exact this
+    rwa [hevφ, hyF, mmap_mul, hevk] at this
   have hφ' : U₀'.map P.φB * U₀ = f' := by
     have := congrArg (fun A => Matrix.map A ev0) hyF'
-    rw [mmap_mul, hevφ, hevk] at this
-    exact this
+    rwa [mmap_mul, hevφ, hevk] at this
   have hff : f * f' = 1 := by
     have e : f = U₀' * U₀.map P.φB := by rw [hφ, ← Matrix.mul_assoc, hU', Matrix.one_mul]
     rw [e, ← hφ']
@@ -1452,8 +1438,7 @@ theorem period_matrix_at_zero : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk 
   have hyN : y ^ N = 0 := by
     apply Matrix.map_injective hinj
     show (y ^ N).map (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B) = (0 : Matrix (Fin d) (Fin d) ↥(MaximalUnramifiedExtension l)).map (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B)
-    rw [mmap_pow, Matrix.map_zero _ (map_zero _)]
-    exact hmN
+    rwa [mmap_pow, Matrix.map_zero _ (map_zero _)]
   have hyd : y ^ d = 0 := pow_eq_zero_field y ⟨N, hyN⟩
   have hmd : (m.map e) ^ d = 0 := by
     rw [← mmap_pow, hm, ← mmap_pow, hyd, Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _)]

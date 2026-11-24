@@ -227,9 +227,7 @@ theorem normInf_cases : (∀ g, normInf θ V g = 0) ∨ ∀ g, 1 ≤ normInf θ 
     unfold normInf
     apply Finset.sum_eq_zero
     intro τ _
-    apply Finset.sum_eq_zero
-    intro i _
-    exact absurd ⟨⟨τ⟩, Nat.zero_lt_of_lt i.2⟩ h
+    exact Finset.sum_eq_zero (fun i _ => absurd ⟨⟨τ⟩, Nat.zero_lt_of_lt i.2⟩ h)
 
 theorem exists_exponent (N N' : ℕ) :
     ∃ K : ℕ, ∀ g, normInf θ V g ^ N ≤ normInf θ V g ^ K ∧ normInf θ V g ^ N' ≤ normInf θ V g ^ K := by
@@ -244,8 +242,7 @@ theorem mem_smFun {φ : GA D V → ℂ} (h : IsAutFunSm θ V φ) : φ ∈ smFun 
 theorem linOn_word (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)) (hl : ∀ p ∈ l, p.2 ∈ lieAt V p.1) :
     LinOn (smFun θ V) fun φ => l.foldr (fun p f => Rder θ V p.1 p.2 f) φ := by
   refine LinOn.foldr (S := smFun θ V) (fun (p : D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ) f => Rder θ V p.1 p.2 f) l ?_
-  intro p hp
-  exact linOn_Rder (hl p hp)
+  exact fun p hp => linOn_Rder (hl p hp)
 
 theorem isAutFunSm_add {φ ψ : GA D V → ℂ} (h : IsAutFunSm θ V φ) (h' : IsAutFunSm θ V ψ) :
     IsAutFunSm θ V (φ + ψ) := {
@@ -406,8 +403,7 @@ theorem isMultMap_zero : IsMultMap θ M J χ 0 := by
 theorem isMultMap_add {T T' : MMap M} (h : IsMultMap θ M J χ T) (h' : IsMultMap θ M J χ T') :
     IsMultMap θ M J χ (T + T') := by
   refine ⟨fun v => isAutFunSm_add (h.aut v) (h'.aut v), ?_, ?_, ?_, ?_⟩
-  · intro v
-    exact isCuspFun_add (h.aut v).toIsAutFun (h'.aut v).toIsAutFun (h.cusp v) (h'.cusp v)
+  · exact fun v => isCuspFun_add (h.aut v).toIsAutFun (h'.aut v).toIsAutFun (h.cusp v) (h'.cusp v)
   · intro v k hk g
     simp only [_root_.add_apply, Pi.add_apply, h.lev v k hk g, h'.lev v k hk g, mul_add]
   · intro τ g hg v w hw
@@ -443,8 +439,7 @@ theorem mem_mult_iff : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.T
     | zero => exact isMultMap_zero
     | add x y _ _ hx hy => exact isMultMap_add hx hy
     | smul a x _ hx => exact isMultMap_smul a hx
-  · intro hT
-    exact Submodule.subset_span hT
+  · exact fun hT => Submodule.subset_span hT
 
 end GlobalTheory.MultMem
 

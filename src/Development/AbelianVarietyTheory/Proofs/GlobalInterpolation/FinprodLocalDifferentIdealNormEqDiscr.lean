@@ -161,8 +161,7 @@ private lemma exists_integer_valuation_sub_le_exp_neg (k : K) (hk : v.valuation 
   obtain ⟨b, c, hc, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 K) k
   have hc0 : c ≠ 0 := nonZeroDivisors.ne_zero hc
   have hspan : Ideal.span {c} ≠ 0 := by
-    rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
-    exact hc0
+    rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
   obtain ⟨s, hsv, hs⟩ := exists_notMem_mul_mem_of_pow_count v hspan
   have hcK : algebraMap (𝓞 K) K c ≠ 0 := by
     simpa using hc0
@@ -422,8 +421,7 @@ theorem _root_.GlobalTheory.LocalDifferentProduct.prod_normDifferentV : ∀ (F E
         hD1, Ideal.absNorm_top, one_mul, hrank]
     have hE : |(discr E : ℝ)| = |(discr F : ℝ)| ^ 2 := by
       have h' : ((discr E).natAbs : ℝ) = ((discr F).natAbs : ℝ) ^ 2 := by exact_mod_cast hnat
-      rw [Nat.cast_natAbs, Nat.cast_natAbs, Int.cast_abs, Int.cast_abs] at h'
-      exact h'
+      rwa [Nat.cast_natAbs, Nat.cast_natAbs, Int.cast_abs, Int.cast_abs] at h'
     have hN : (0 : ℝ) < Fintype.card (InfinitePlace E) := by
       exact_mod_cast Fintype.card_pos
     unfold _root_.GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.absDiscr _root_.Formalism.HermitianLatticesTheory.vInv _root_.Formalism.HermitianLatticesTheory.fDeg

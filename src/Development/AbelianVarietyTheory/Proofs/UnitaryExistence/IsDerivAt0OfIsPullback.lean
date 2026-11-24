@@ -120,8 +120,7 @@ theorem evEps_spMap (a : Γ(Sp ℂ, ⊤)) (h) :
   have := congrArg (fun k => k.hom a)
     (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap ℂ (DualNumber ℂ))))
   simp only [CommRingCat.hom_comp, RingHom.comp_apply] at this
-  rw [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE] at this
-  exact this
+  rwa [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE] at this
 
 theorem top_le_preimage_eps (v : Sp (DualNumber ℂ) ⟶ X) (x : Sp ℂ ⟶ X)
     (hx : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = x) (U : X.Opens) :
@@ -174,8 +173,7 @@ theorem isDerivAt0_of_affine {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)} {w : Fin g
     refine ((H a).1.mul ((H (h ^ n)).1.inv hb₀)).congr_of_eventuallyEq ?_
     filter_upwards [hmul, (H (h ^ n)).1.continuousAt.eventually_ne hb₀] with z h1 h2
     simp only [Pi.mul_apply, Pi.inv_apply]
-    rw [eq_mul_inv_iff_mul_eq₀ h2]
-    exact h1
+    rwa [eq_mul_inv_iff_mul_eq₀ h2]
   have hu : IsUnit (jet w fun z => valAt' (e z) V (h ^ n)) := by
     rw [TrivSqZeroExt.isUnit_iff_isUnit_fst, fst_jet]
     exact hb₀.isUnit
@@ -246,11 +244,9 @@ theorem isDerivAt0_of_isPullback {Z : Scheme.{0}} {φ : Y ⟶ Z} {s : Y ⟶ Sp �
     simp only [valAt'_add]
     exact ⟨hx.1.add hy.1, by rw [jet_add w hx.1 hy.1, map_add (f := _), hx.2, hy.2]⟩
   | neg x _ hx =>
-    simp only [valAt'_neg]
-    exact ⟨hx.1.neg, by rw [jet_neg w, map_neg, hx.2]⟩
+    simpa only [valAt'_neg] using ⟨hx.1.neg, by rw [jet_neg w, map_neg, hx.2]⟩
   | mul x y _ _ hx hy =>
-    simp only [valAt'_mul]
-    exact ⟨hx.1.mul hy.1, by rw [jet_mul w hx.1 hy.1, map_mul, hx.2, hy.2]⟩
+    simpa only [valAt'_mul] using ⟨hx.1.mul hy.1, by rw [jet_mul w hx.1 hy.1, map_mul, hx.2, hy.2]⟩
 
 end FibreDeriv
 
@@ -266,8 +262,7 @@ theorem isDerivAt0_fibre :
     constructor
     · intro h
       have := isDerivAt0_comp h φ
-      rw [← hee] at this
-      exact this
+      rwa [← hee] at this
     · intro h
       refine isDerivAt0_of_isPullback H hs ?_ hv ?_
       · rw [← hee]; exact hol

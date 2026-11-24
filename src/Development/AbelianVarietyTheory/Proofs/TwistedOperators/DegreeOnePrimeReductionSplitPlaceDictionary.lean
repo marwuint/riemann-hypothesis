@@ -79,8 +79,7 @@ theorem exists_red {A : Type} [CommRing A] (I : Ideal A) (ψ : A →+* v.adicCom
       obtain ⟨x, hx⟩ := hs a
       refine ⟨Ideal.Quotient.mk I x, ?_⟩
       show IsLocalRing.residue _ (ψ x) = _
-      rw [eq_comm, ← sub_eq_zero, ← map_sub, mem_max_iff]
-      exact hx
+      rwa [eq_comm, ← sub_eq_zero, ← map_sub, mem_max_iff]
   let e := RingEquiv.ofBijective q hq
   refine ⟨(e.symm : _ →+* A ⧸ I).comp (IsLocalRing.residue _), fun x => ?_, fun a => ?_⟩
   · show e.symm _ = _
@@ -155,8 +154,7 @@ theorem rdO_dense (a : v.adicCompletionIntegers D.host.F) :
       algebraMap D.host.F D.host.E (algebraMap (𝓞 D.host.F) D.host.F y) := by
     show algebraMap (𝓞 D.host.E) D.host.E _ = _
     rw [← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]
-  rw [rdO_coe, h1, rdQ_alg]
-  exact hy
+  rwa [rdO_coe, h1, rdQ_alg]
 
 theorem rdE_tmul (x : D.host.E) (y : Af D.host.F) :
     rdE φ (x ⊗ₜ[D.host.F] y) = φ (y v ⊗ₜ[D.host.F] x) := rfl
@@ -216,13 +214,11 @@ theorem red_dict : ∀ (D : D7) (v : FinPl D) (φ : SplitProj D v) (PP : Formali
         rw [e]
         exact add_mem ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 hx.le) (rdQ_int φ x)
       refine ⟨ha, ?_⟩
-      rw [← hr, ← sub_eq_zero, ← map_sub, hr0]
-      exact hx
+      rwa [← hr, ← sub_eq_zero, ← map_sub, hr0]
     · rintro ⟨h, rfl⟩
       obtain ⟨x, hx⟩ := rdO_dense φ ⟨a, h⟩
       refine ⟨x, ?_, hx⟩
-      rw [← hr, eq_comm, ← sub_eq_zero, ← map_sub, hr0]
-      exact hx
+      rwa [← hr, eq_comm, ← sub_eq_zero, ← map_sub, hr0]
   refine ⟨⟨r, fun b => ?_, hr0, hrel, fun N hN => ⟨rdE_int φ N hN, ?_⟩⟩, fun ξ => ?_⟩
   · obtain ⟨x, rfl⟩ := Ideal.Quotient.mk_surjective b
     exact ⟨_, hr x⟩

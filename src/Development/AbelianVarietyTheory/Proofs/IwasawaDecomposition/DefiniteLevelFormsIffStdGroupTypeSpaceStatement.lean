@@ -195,8 +195,7 @@ theorem red_J (red : (levEnv V 1 (datV D V.rank hr Pg Q (LevelP.triv _ _ _) chi 
     red ⟨k, (levEnv V 1 (datV D V.rank hr Pg Q (LevelP.triv _ _ _) chi xi)).J_le hk⟩ = 1 := by
   apply eG.injective
   rw [map_one, hred]
-  have h2 := ((mem_twoBlockLevelJ_iff_swap hr Pg Q chi xi k).1 hk).2
-  exact Subgroup.mem_bot.1 h2
+  exact Subgroup.mem_bot.1 (((mem_twoBlockLevelJ_iff_swap hr Pg Q chi xi k).1 hk).2)
 
 end Jlev
 
@@ -214,8 +213,7 @@ theorem fwd_rat (hR : RatIso P e) {F : Bridge.Gf V → c.W} (hA : F ∈ Bridge.A
     F (toGf P (↑γ * g)) = c.coef.ρ (e γ) (F (toGf P g)) := by
   have h1 := hA (e γ) (toGf P g) 1
   simp only [OneMemClass.coe_one, mul_one, map_one, Units.val_one, one_smul] at h1
-  rw [(hR γ).1, ← map_mul] at h1
-  exact h1
+  rwa [(hR γ).1, ← map_mul] at h1
 
 
 theorem bwd_ad (hg : V.gram = 1) (hU : UnitFr P) (hR : RatIso P e)
@@ -247,8 +245,7 @@ theorem bwd_ad (hg : V.gram = 1) (hU : UnitFr P) (hR : RatIso P e)
         _ = _ := by rw [mul_assoc]
     have h1' : (⟨red ⟨_, hQk⟩, hP⟩ : P₀) = 1 := Subtype.ext hr1
     have hval : stdX (LP) ⟨k', hJ⟩ = (LE).χ ⟨_, hkJ⟩ := by
-      rw [hX, h1', map_one, mul_one]
-      exact hch
+      rwa [hX, h1', map_one, mul_one]
     refine (congrArg F e1).trans (h1.trans ((congrArg (c.coef.ρ (e γ')) h2).trans ((map_smul _ _ _).trans ?_)))
     rw [hval]
   have hgh : toGf P (Function.surjInv hs h) = h := Function.surjInv_eq hs h
@@ -256,8 +253,7 @@ theorem bwd_ad (hg : V.gram = 1) (hU : UnitFr P) (hR : RatIso P e)
   have hkJ : toGf P (Function.surjInv hs k.1) ∈ (LE).J := by rw [hk']; exact k.2
   have hk2 : (⟨_, hkJ⟩ : (LE).J) = k := Subtype.ext hk'
   have hmain := key (e.symm γ) (Function.surjInv hs h) (Function.surjInv hs k.1) hkJ
-  rw [hk2, e.apply_symm_apply γ, hgh, hk'] at hmain
-  exact hmain
+  rwa [hk2, e.apply_symm_apply γ, hgh, hk'] at hmain
 
 
 theorem bwd_q (hg : V.gram = 1) (hU : UnitFr P)
@@ -287,8 +283,7 @@ theorem bwd_q (hg : V.gram = 1) (hU : UnitFr P)
   revert hP
   rw [hk2]
   intro hP hmain
-  rw [hgh, hk'] at hmain
-  exact hmain
+  rwa [hgh, hk'] at hmain
 
 
 theorem fwd_law (hg : V.gram = 1) (hU : UnitFr P)

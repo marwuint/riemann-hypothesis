@@ -136,8 +136,7 @@ theorem away_of_vanishing {R σ : Type} [CommRing R] [Finite σ]
     exact (hK b _ _ _ (awayUnit_inv_mul _)).1 (sc _ _ _ _ (bc _ _ _ _ _ ht))
   suffices h : P (Localization.Away (v a)) ((algebraMap R' _).comp β)
       (fun j => ((awayUnit (v a))⁻¹ : (Localization.Away (v a))ˣ) * algebraMap R' _ (v j)) by
-    have h2 := sc _ (awayUnit (v a)) _ _ h
-    simpa only [Units.mul_inv_cancel_left] using h2
+    simpa only [Units.mul_inv_cancel_left] using sc _ (awayUnit (v a)) _ _ h
   refine (hK a _ _ _ (awayUnit_inv_mul _)).2 fun F hF => ?_
   obtain ⟨d, G, hG, hGF⟩ := exists_homogenisation a F
   have step : ∀ b, ∃ n : ℕ, X a ^ n * G ∈ K b := by
@@ -146,8 +145,7 @@ theorem away_of_vanishing {R σ : Type} [CommRing R] [Finite σ]
       refine (hK b _ _ _ ?_).2 fun F' hF' => ?_
       · rw [← map_one (Ideal.Quotient.mk (K b)), Ideal.Quotient.eq]; exact hK1 b
       · have := (eval₂_comp_left (Ideal.Quotient.mk (K b)) C X F').symm
-        rw [eval₂_eta, Ideal.Quotient.eq_zero_iff_mem.2 hF'] at this
-        exact this
+        rwa [eval₂_eta, Ideal.Quotient.eq_zero_iff_mem.2 hF'] at this
     have h1 := nrm _ _ _ a hP F hF
     rw [← hGF _ _ _ (awayUnit_inv_mul _), hG, (Units.isUnit _).pow d |>.mul_right_eq_zero] at h1
     have h2 := eval₂_comp_left (algebraMap _ (Localization.Away (Ideal.Quotient.mk (K b) (X a))))
@@ -171,8 +169,7 @@ theorem away_of_vanishing {R σ : Type} [CommRing R] [Finite σ]
     rw [eval₂_comp_left]
     rw [eval₂_mul, eval₂_pow, eval₂_X, hG, mul_pow, _root_.mul_mul_mul_comm, ← pow_add,
       (Units.isUnit _).pow _ |>.mul_right_eq_zero] at h1
-    rw [eval₂_mul, eval₂_pow, eval₂_X]
-    exact h1
+    rwa [eval₂_mul, eval₂_pow, eval₂_X]
   have h5 := congrArg (algebraMap R' (Localization.Away (v a))) hH
   rw [eval₂_mul, eval₂_pow, eval₂_X, map_mul, map_pow, map_zero, ← awayUnit_coe,
     (Units.isUnit _).pow _ |>.mul_right_eq_zero, eval₂_comp_left] at h5
@@ -217,8 +214,7 @@ theorem projRep_closed : ∀ (R σ : Type) [CommRing R] [Finite σ] (I : Ideal (
           (fun j => Ideal.Quotient.mk _ (X j)) F = Ideal.Quotient.mk (I ⊔ Ideal.span {X a - 1}) F := by
         intro F
         have := (eval₂_comp_left (Ideal.Quotient.mk (I ⊔ Ideal.span {X a - 1})) C X F).symm
-        rw [eval₂_eta] at this
-        exact this
+        rwa [eval₂_eta] at this
       have ha : X a - 1 ∈ I ⊔ Ideal.span {X a - 1} := Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)
       obtain ⟨xa, ⟨hxa1, hxa2⟩, -⟩ := hpts (MvPolynomial σ R ⧸ (I ⊔ Ideal.span {X a - 1}))
         ((Ideal.Quotient.mk _).comp C) (fun j => Ideal.Quotient.mk _ (X j))
@@ -253,8 +249,7 @@ theorem projRep_closed : ∀ (R σ : Type) [CommRing R] [Finite σ] (I : Ideal (
             rw [Ideal.span_singleton_le_iff_mem, RingHom.mem_ker]
             simp [hw]
           exact hle' hF
-        have e := huniq A β' w _ _ (by simpa using h1) h2 (main h).1 (main h).2
-        exact (hJ A _).1 ⟨y, e⟩ _ hF
+        exact (hJ A _).1 ⟨y, (huniq A β' w _ _ (by simpa using h1) h2 (main h).1 (main h).2)⟩ _ hF
       · intro hF
         have h : ∀ F ∈ I ⊔ Ideal.span {X a - 1}, eval₂Hom β' w F = 0 := fun F h => hF F (hle F h)
         obtain ⟨y, hy⟩ := (hJ A (Ideal.Quotient.lift _ _ h)).2 (by

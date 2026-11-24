@@ -69,10 +69,8 @@ private theorem valR_ne_zero_of_mem_basicOpen {A : Type} [CommRing A] {X : Schem
     first
       | exact Scheme.basicOpen_res _ _ _
   have h2 : z ∈ (Sp A).basicOpen ((w.appLE V ⊤ h).hom s) := by
-    rw [e1, top_inf_eq]
-    exact h4
-  rw [h1, Scheme.basicOpen_zero] at h2
-  exact h2
+    rwa [e1, top_inf_eq]
+  rwa [h1, Scheme.basicOpen_zero] at h2
 
 private theorem valR_sub_iwasawa_decomposition {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) (V : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ V) (s t : Γ(X, V)) : valR x V (s - t) = valR x V s - valR x V t := by
@@ -89,8 +87,7 @@ theorem eq_of_valR {Y : Scheme.{0}} [IsReduced Y] {V : Y.Opens} {f g : Γ(Y, V)}
   have hw : ⊤ ≤ Y.fromSpecResidueField y ⁻¹ᵁ V := by
     intro z _
     show Y.fromSpecResidueField y z ∈ V
-    rw [Scheme.fromSpecResidueField_apply]
-    exact hyV
+    rwa [Scheme.fromSpecResidueField_apply]
   have hfg := H (Y.residueField y) (Y.fromSpecResidueField y) hw
   have hsub : valR (Y.fromSpecResidueField y) V (f - g) = 0 :=
     (valR_sub_iwasawa_decomposition (Y.fromSpecResidueField y) V hw f g).trans (sub_eq_zero.mpr hfg)
@@ -119,8 +116,7 @@ theorem exists_form {O : Type} [CommRing O] {N : ℕ} {U : (PSpace O N).Opens} {
   obtain ⟨_, ⟨r, rfl⟩, hqr, hrU⟩ :=
     TopologicalSpace.Opens.isBasis_iff_nbhd.mp (Proj.isBasis_basicOpen (grading O N)) hq
   have hqr' : q ∈ ⨆ i : ℕ, Proj.basicOpen (grading O N) (GradedRing.proj (grading O N) i r) := by
-    rw [← Proj.basicOpen_eq_iSup_proj]
-    exact hqr
+    rwa [← Proj.basicOpen_eq_iSup_proj]
   obtain ⟨i, hi⟩ := TopologicalSpace.Opens.mem_iSup.mp hqr'
   obtain ⟨j, hj⟩ := exists_mem_chart O N q
   have hle : Proj.basicOpen (grading O N) (GradedRing.proj (grading O N) i r) ≤ U := by
@@ -154,8 +150,7 @@ theorem exists_forms {O : Type} [CommRing O] {N : ℕ} {X : Scheme.{0}} (e : X �
     obtain ⟨n, hn, F, hF, hxF, hFW⟩ := exists_form (U := (⟨W, hWo⟩ : (PSpace O N).Opens)) (q := e x) hj'
     refine ⟨n, F, j, hn, hF, hxF, fun y hy => ?_⟩
     have hyW : y ∈ e ⁻¹' W := hFW hy
-    rw [hW] at hyW
-    exact hyW
+    rwa [hW] at hyW
   choose n F j hn hF hxF hFU using step
   have hcpt : IsCompact (Set.univ : Set (PSpace O N)) := by
     have h1 : (Set.univ : Set (PSpace O N)) = ⋃ i, (chart O N i : Set (PSpace O N)) := by
@@ -185,8 +180,7 @@ theorem exists_forms {O : Type} [CommRing O] {N : ℕ} {X : Scheme.{0}} (e : X �
     simp only [Set.mem_iUnion] at hx
     obtain ⟨y, hy, hxy⟩ := hx
     refine ⟨t.equivFin ⟨y, hy⟩, ?_⟩
-    rw [hbo, Equiv.symm_apply_apply]
-    exact hxy
+    rwa [hbo, Equiv.symm_apply_apply]
 
 private theorem valR_app_eq_valR_comp {A : Type} [CommRing A] {X Y : Scheme.{0}} (w : Sp A ⟶ X) (e : X ⟶ Y) (D : Y.Opens)
     (h : ⊤ ≤ w ⁻¹ᵁ (e ⁻¹ᵁ D)) (r : Γ(Y, D)) : valR w (e ⁻¹ᵁ D) ((e.app D).hom r) = valR (w ≫ e) D r := by

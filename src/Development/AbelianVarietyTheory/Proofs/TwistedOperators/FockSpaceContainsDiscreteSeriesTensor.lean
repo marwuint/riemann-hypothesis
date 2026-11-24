@@ -293,8 +293,7 @@ private theorem J_pi_expt_iota_eq {p q : ℕ} {T : GrpData p q} (D : DSRep T) (�
       have hsucc : g (k + 1) s = πU.π (T.expt (s • Y)) (E (A ((A ^ k) y))) -
           J (D.U.π (T.expt (s • Y)) (D.ι (A ((A ^ k) y)))) := by
         simp only [g, hpow]
-      rw [hsucc]
-      exact h4
+      rwa [hsucc]
     · intro k s
       have e1 : ‖πU.π (T.expt (s • Y)) (E ((A ^ k) y))‖ = ‖D.ι ((A ^ k) y)‖ := by
         rw [πU.6, hn]
@@ -366,9 +365,7 @@ theorem exists_isometry_intertwiner_of_derived :
     exact hexp Y hY
   have hall : ∀ a : T.G, a ∈ S := fun a =>
     hle ((_root_.GlobalTheory.CoverExp.closure_expt_eq_top_and_cartan p q hpq T).1 ▸ Subgroup.mem_top a)
-  refine ⟨{ toLinearMap := J.toLinearMap, norm_map' := hJn }, hJ, ?_⟩
-  intro a x
-  exact hall a x
+  exact ⟨{ toLinearMap := J.toLinearMap, norm_map' := hJn }, hJ, fun a x => hall a x⟩
 
 end GlobalTheory.FockTensor
 end -- clump:auto
@@ -494,8 +491,7 @@ theorem norm_proportional_of_irreducible (p q : ℕ) (M : GKMod p q) (Λ : Ix p 
     have hEa : E₁ a = 0 := by
       have h1 := ha a haW
       have h2 : ψ v₀ a = 0 := by rw [hat, map_smul, hψ00, smul_zero]
-      rw [h2, inner_self_eq_zero] at h1
-      exact h1
+      rwa [h2, inner_self_eq_zero] at h1
     rw [← ha y (Submodule.mem_sup_left hyW₁), hEa, inner_zero_left]
 
   have hall : ∀ x y, ψ x y = 0 := by
@@ -697,8 +693,7 @@ theorem exists_embedding₂ (F : FockData T0 T1 T2) (hF : Continuous F.emb) (hrs
     exact this.symm
   have hcu : casimir A.M.act (f Φ) = (((normSq lam' - rhoSq (r + s) : ℚ)) : ℂ) • f Φ := by
     apply hEb
-    rw [← map_casimir f hf, map_smul, hEf, hEf]
-    exact hcasΦ
+    rwa [← map_casimir f hf, map_smul, hEf, hEf]
   obtain ⟨v', hv'⟩ := exists_isHW hone
   obtain ⟨⟨M, ip, hi1, hi2, hi3⟩, hB⟩ := _root_.GlobalTheory.DiscreteSeriesUnitary.exists_unitary r s T2 D'
   dsimp only at hB

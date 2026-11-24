@@ -709,8 +709,7 @@ theorem mem_closure_iff_map_mem_homLat {E : Type} [Field E] [NumberField E] (P :
     have hU : IsOpen U := isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j =>
       (hop N).preimage (continuous_id.matrix_elem i j)
     have h0 : (0 : Matrix (Fin k') (Fin k) (P.adicCompletion E)) ∈ U := by
-      simp only [U, Set.mem_iInter]
-      exact fun i j => ⟨0, by simp⟩
+      simpa only [U, Set.mem_iInter] using fun i j => ⟨0, by simp⟩
     have hUS : U ⊆ S := by
       intro d hd
       simp only [U, Set.mem_iInter, Set.mem_preimage, Set.mem_setOf_eq] at hd
@@ -1013,8 +1012,7 @@ theorem completion_ringEquiv_of_dense : ∀ {E : Type} [Field E] [NumberField E]
       (x := MonoidWithZeroHom.ValueGroup₀.embedding γ.1) (by simp)
     refine ⟨n, fun z hz => hγ ?_⟩
     have hz' := (hS n z).1 hz
-    simp only [Set.mem_setOf_eq, Valuation.restrict_lt_iff_lt_embedding]
-    exact hz'.trans_lt hn
+    simpa only [Set.mem_setOf_eq, Valuation.restrict_lt_iff_lt_embedding] using hz'.trans_lt hn
 
 end GlobalTheory.DenseCompl
 end -- clump:auto
@@ -1072,8 +1070,7 @@ theorem mem_movLat_iff {N N' : ℕ} (k : GL (Fin N) Qq) (k' : GL (Fin N') Qq) (y
         (k : Matrix (Fin N) (Fin N) Qq) = X := by
       simp only [UnitaryThetaMoves.movHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.mul_assoc]
       rw [Units.inv_mul, Matrix.mul_one, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]
-    rw [e]
-    exact hX
+    rwa [e]
   · intro h
     refine ⟨_, h, ?_⟩
     simp only [UnitaryThetaMoves.movHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.mul_assoc]
@@ -1151,8 +1148,7 @@ theorem relIndex_movLat (p n' : ℕ) (hp : Irreducible (p : W))
     exact AddSubgroup.map_mono hle
   have hQ : Nat.card (IsLocalRing.ResidueField W) = p ^ n' := by
     show Nat.card (W ⧸ IsLocalRing.maximalIdeal W) = _
-    rw [hp.maximalIdeal_eq]
-    exact hcard
+    rwa [hp.maximalIdeal_eq]
   obtain ⟨w, hw⟩ := det_inv_mul_eq p hp k₁ k₂
   obtain ⟨w', hw'⟩ := det_inv_mul_eq p hp k₁' k₂'
   obtain ⟨hnn, hidx⟩ := UnitaryThetaMoves.relIndexFormula W Qq (p : W) hp (p ^ n') hQ N N' (k₁⁻¹ * k₂) (k₁'⁻¹ * k₂') _ _ w w' hw hw'
@@ -1315,8 +1311,7 @@ theorem homLat_conj {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq] {k k' :
       rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]
       have : z *ᵥ (M *ᵥ y) = M' *ᵥ u := hu'.symm
       rw [this, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]
-    rw [e]
-    exact hu
+    rwa [e]
   · rintro h _ ⟨y, hy, rfl⟩
     have e : z *ᵥ ((M.mulVecLin.restrictScalars W) y) = M' *ᵥ ((M'⁻¹ * z * M) *ᵥ y) := by
       change z *ᵥ (M *ᵥ y) = _

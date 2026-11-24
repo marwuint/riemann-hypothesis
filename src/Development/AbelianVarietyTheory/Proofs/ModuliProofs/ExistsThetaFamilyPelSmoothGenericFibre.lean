@@ -152,8 +152,7 @@ theorem le_ringKrullDim_of_mem_minimalPrimes (o k R S : Type) [CommRing o] [IsDo
     refine ⟨a, b, hb, ?_⟩
     rw [eq_div_iff hb]
     have := congrArg ψ hab
-    rw [map_mul] at this
-    exact this
+    rwa [map_mul] at this
   have hsurj : ∀ z : K, ∃ a b, z = φ a / φ b := fun z ↦ by
     obtain ⟨x, y, -, rfl⟩ := IsFractionRing.div_surjective (A := S ⧸ q) z
     obtain ⟨x, rfl⟩ := Ideal.Quotient.mk_surjective x
@@ -296,8 +295,7 @@ theorem exists_local_domain {A K : Type} [CommRing A] [Field K] (e : A →+* K) 
     rw [IsLocalization.AtPrime.isUnit_mk'_iff R' (RingHom.ker e')]
     intro ha
     apply hr
-    rw [IsLocalization.lift_mk']
-    rw [show e' a = 0 from ha, zero_mul]
+    rw [IsLocalization.lift_mk', show e' a = 0 from ha, zero_mul]
 
 theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (f' : R' →+* R'') :
     spMap f' ≫ spMap f = spMap (f'.comp f) := by
@@ -364,12 +362,10 @@ theorem exists_algebraicIndependent : Out.Laws → Out.Laws2 → ∀ (n : ℕ), 
   have hI' : InMM n N' (thIdeal em C) β' v' := by
     refine ⟨fun G hG => ?_, fun q hq i => ?_⟩
     · have : ρ G = 0 := by rw [← RingHom.mem_ker, hρ]; exact hIP hG
-      rw [← hev] at this
-      exact this
+      rwa [← hev] at this
     · obtain ⟨c, hc⟩ := hvI.2 ⊥ Ideal.isPrime_bot i
       refine ⟨c, fun hm => hq.ne_top (Ideal.eq_top_of_isUnit_mem _ hm (hψ _ ?_))⟩
-      rw [congrFun hψv]
-      exact hc
+      rwa [congrFun hψv]
   obtain ⟨x', ⟨hx's, hx'v⟩, -⟩ := F.pts R' β' v' hI'
   have hcl : spMap ψ ≫ x' = spMap φ.toRingHom ≫ x := by
     refine (F.pts K (algebraMap o K) v hvI).unique ⟨?_, ?_⟩ ⟨hη, hv⟩
@@ -806,8 +802,7 @@ theorem tangent_eq_constPt_of_tMap : Out.Laws → Out.Laws2 → ∀ (o : Type) [
     rw [Category.assoc]; exact hβ.symm
   have e2 : (j ≫ constPt x) ≫ Y.s = spMap β.hom := by
     rw [Category.assoc, ← hs]; exact hβ.symm
-  have h := (Y.pts R β.hom v (Y.loc R β.hom _ v e1 c1)).unique ⟨e1, c1⟩ ⟨e2, c2⟩
-  exact (cancel_epi j).1 h
+  exact (cancel_epi j).1 ((Y.pts R β.hom v (Y.loc R β.hom _ v e1 c1)).unique ⟨e1, c1⟩ ⟨e2, c2⟩)
 
 end GlobalTheory.ZM
 end -- clump:auto

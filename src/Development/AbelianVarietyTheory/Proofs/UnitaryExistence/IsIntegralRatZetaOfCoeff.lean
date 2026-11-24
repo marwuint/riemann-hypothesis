@@ -57,8 +57,7 @@ theorem isIntegral_rat_zeta_of_coeff (n : ℕ) : IsIntegral ℚ (zeta n) := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · have : zeta 0 = 1 := by simp [zeta]
     rw [this]; exact isIntegral_one
-  · have h := Complex.isPrimitiveRoot_exp n hn.ne'
-    exact (h.isIntegral hn).tower_top
+  · exact ((Complex.isPrimitiveRoot_exp n hn.ne').isIntegral hn).tower_top
 
 theorem exists_coeff_containing :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : Level H) (s : Finset ℂ), (∀ z ∈ s, IsAlgebraic ℚ z) → ∃ c : Coeff l, ∀ z ∈ s, z ∈ c.F := by
@@ -88,10 +87,7 @@ theorem exists_coeff_containing :
     rw [map_rat_smul]
     exact IntermediateField.smul_mem _ (hsub (Or.inl (Or.inr ⟨(τ, i), rfl⟩)))
   · exact hsub (Or.inr (by simp))
-  · refine IntermediateField.adjoin.mono _ _ _ ?_
-    intro x hx
-    exact Or.inr (Or.inr hx)
-  · intro z hz
-    exact hsub (Or.inl (Or.inl hz))
+  · exact IntermediateField.adjoin.mono _ _ _ (fun x hx => Or.inr (Or.inr hx))
+  · exact fun z hz => hsub (Or.inl (Or.inl hz))
 
 end GlobalTheory

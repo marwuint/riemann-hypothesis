@@ -169,8 +169,7 @@ theorem valR_point_ratio {i : Fin (r + 1)} (hi : t i ≠ 0) (j : Fin (r + 1)) :
     set e := Proj.basicOpenIsoSpec (grading o r) (X i) (X_mem o r i) Nat.one_pos
     have : IsIso (Proj.awayToSection (grading o r) (X i)) :=
       (Proj.basicOpenIsoAway (grading o r) (X i) (X_mem o r i) Nat.one_pos).isIso_hom
-    have hι : e.hom ≫ A = (chart o r i).ι := by
-      exact Iso.hom_inv_id_assoc e _
+    have hι : e.hom ≫ A = (chart o r i).ι := Iso.hom_inv_id_assoc e _
     have gen : ∀ (g : (chart o r i).toScheme ⟶ Proj (grading o r)) (_ : e.hom ≫ A = g)
         (hle : ⊤ ≤ g ⁻¹ᵁ chart o r i),
         g.appLE (chart o r i) ⊤ hle = A.appLE (chart o r i) ⊤ hpre ≫ e.hom.appLE ⊤ ⊤ le_rfl := by
@@ -255,13 +254,11 @@ include hπ
 theorem ne_zero_of_le {W : X.Opens} (hW : ⊤ ≤ η ⁻¹ᵁ W) {i : Fin (r + 1)}
     (hi : W ≤ π ⁻¹ᵁ chart o r i) : t i ≠ 0 := by
   have key := le_preimage_comp η π hi hW
-  rw [hπ, le_point_preimage_iff] at key
-  exact key
+  rwa [hπ, le_point_preimage_iff] at key
 
 theorem le_preimage_chart {i : Fin (r + 1)} (hi : t i ≠ 0) : ⊤ ≤ η ⁻¹ᵁ (π ⁻¹ᵁ chart o r i) := by
   have key := (le_point_preimage_iff (o := o) (ht := ht) i).mpr hi
-  rw [← hπ] at key
-  exact key
+  rwa [← hπ] at key
 
 theorem valR_pullRatio {W : X.Opens} (hW : ⊤ ≤ η ⁻¹ᵁ W) {i : Fin (r + 1)}
     (hi : W ≤ π ⁻¹ᵁ chart o r i) (j : Fin (r + 1)) :
@@ -303,8 +300,7 @@ theorem exists_hom_of_coords [IsReduced X] (η : Sp L ⟶ X) [IsDominant η] (f 
         ((p ≫ (U a).ι).appLE (U a) ⊤ hA).hom (u a (c b)) *
           ((q ≫ (U b).ι).appLE (U b) ⊤ hB).hom (u b k) := fun k => by
       have e := congrArg ((p ≫ (U a).ι).appLE (U a ⊓ U b) ⊤ hAB).hom (hrel a b k)
-      rw [map_mul, pb, appLE_resG, appLE_resG] at e
-      exact e
+      rwa [map_mul, pb, appLE_resG, appLE_resG] at e
     have inv1 : ((p ≫ (U a).ι).appLE (U a) ⊤ hA).hom (u a (c b)) *
         ((q ≫ (U b).ι).appLE (U b) ⊤ hB).hom (u b (c a)) = 1 := by
       rw [← rel, hone a, map_one]
@@ -344,8 +340,7 @@ theorem exists_hom_of_coords [IsReduced X] (η : Sp L ⟶ X) [IsDominant η] (f 
   have hpre : ∀ a, U a ≤ g ⁻¹ᵁ chart o M (c a) := fun a x hx => by
     have h := ofCoords_preimage_top f (U a) (c a) (u a)
       (show (⟨x, hx⟩ : (U a).toScheme) ∈ (⊤ : (U a).toScheme.Opens) from trivial)
-    rw [← hg a] at h
-    exact h
+    rwa [← hg a] at h
   have hratio : ∀ a j, pullRatio g (U a) (c a) (hpre a) j = u a j := by
     intro a j
     apply (ConcreteCategory.bijective_of_isIso ((U a).ι.appLE (U a) ⊤ (U a).ι_preimage_self.ge)).1
@@ -449,8 +444,7 @@ theorem valR_pullback_twistingSheaf_transition {η : Sp L ⟶ X} {π : X ⟶ PSp
       (inf_le_right.trans (LB.wchart_le (O1 o r) (fun _ => π) j PUnit.unit))) h
   have hi : t (i PUnit.unit) ≠ 0 := by
     have key := le_preimage_mono (η ≫ π) inf_le_left hU
-    rw [hπ, le_point_preimage_iff] at key
-    exact key
+    rwa [hπ, le_point_preimage_iff] at key
   refine (valR_linComb_g η (O1 o r) π 1 i j h).trans ?_
   show valR (η ≫ π) (chart o r (i PUnit.unit) ⊓ chart o r (j PUnit.unit)) _ ^ _ = _
   simp only [zpow_one]
@@ -484,8 +478,7 @@ theorem exists_iso_lbPow [IsReduced X] {η : Sp L ⟶ X} [IsDominant η] {π : X
       le_preimage_comp η φ e1 hV
     have hk : z (k PUnit.unit) ≠ 0 := by
       have hh := le_preimage_mono (η ≫ φ) inf_le_left hU'
-      rw [hφ, le_point_preimage_iff] at hh
-      exact hh
+      rwa [hφ, le_point_preimage_iff] at hh
     rw [valR_res_unit η e1 hV, valR_pullU, val_ratioUnit, ← resG_ratioOn (hi := le_rfl) inf_le_left,
       valR_res (η ≫ φ) inf_le_left hU', hφ, valR_point_ratio hk, hc]
   refine ⟨{ s := fun i => res (hsub i.1 i.2) (pullU φ _ (ratioUnit _ (i.1 PUnit.unit)

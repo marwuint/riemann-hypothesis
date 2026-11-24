@@ -136,25 +136,16 @@ theorem scale_add_comp (hy : ptMap (TrivSqZeroExt.fstHom O R R) ≫ y = 1) (a b 
         (?_ : ofTwo O (LinearMap.fst R R R) ≫ _ = ofTwo O (LinearMap.fst R R R) ≫ _)
       rw [comp_mul]
       simp only [← Category.assoc, ofTwo_toTwo]
-      have e₁ : LinearMap.fst R R R ((i₁ + i₂) 1) = 1 := by simp [i₁, i₂]
-      have e₂ : LinearMap.fst R R R (i₁ 1) = 1 := rfl
-      have e₃ : LinearMap.fst R R R (i₂ 1) = 0 := rfl
-      rw [e₁, e₂, e₃, scale_zero_comp hy, _root_.mul_one]
+      simp [i₁, i₂, scale_zero_comp hy]
     · refine congrArg Over.Hom.left
         (?_ : ofTwo O (LinearMap.snd R R R) ≫ _ = ofTwo O (LinearMap.snd R R R) ≫ _)
       rw [comp_mul]
       simp only [← Category.assoc, ofTwo_toTwo]
-      have e₁ : LinearMap.snd R R R ((i₁ + i₂) 1) = 1 := by simp [i₁, i₂]
-      have e₂ : LinearMap.snd R R R (i₁ 1) = 0 := rfl
-      have e₃ : LinearMap.snd R R R (i₂ 1) = 1 := rfl
-      rw [e₁, e₂, e₃, scale_zero_comp hy, _root_.one_mul]
+      simp [i₁, i₂, scale_zero_comp hy]
   let l := a • LinearMap.fst R R R + b • LinearMap.snd R R R
   have := congrArg (ofTwo O l ≫ ·) key
   simp only [comp_mul, ← Category.assoc, ofTwo_toTwo] at this
-  have e₁ : l ((i₁ + i₂) 1) = a + b := by simp [l, i₁, i₂]
-  have e₂ : l (i₁ 1) = a := by simp [l, i₁]
-  have e₃ : l (i₂ 1) = b := by simp [l, i₂]
-  rwa [e₁, e₂, e₃] at this
+  simpa [l, i₁, i₂] using this
 
 theorem pow_eq_scale_comp (hy : ptMap (TrivSqZeroExt.fstHom O R R) ≫ y = 1) (N : ℕ) :
     y ^ N = scale O (N : R) ≫ y := by

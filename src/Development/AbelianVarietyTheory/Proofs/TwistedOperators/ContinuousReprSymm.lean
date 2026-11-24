@@ -232,12 +232,10 @@ theorem RCh_eq_zero_iff {m n : ℕ} (u : Mx D m n) : RCh D m n u = 0 ↔ u.map (
     intro k
     have h1 := congrFun (congrFun (congrFun h i) j) k
     apply (GroundTheory.Global.homeomorphMixedSpace D.host.F).injective
-    rw [hms_zero]
-    exact h1
+    rwa [hms_zero]
   · intro h
     funext i j k
-    have h1 : infPart D (u i j) = 0 := by
-      exact congrFun (congrFun h i) j
+    have h1 : infPart D (u i j) = 0 := congrFun (congrFun h i) j
     rw [infPart_eq_zero_iff] at h1
     show GroundTheory.Global.homeomorphMixedSpace D.host.F (fstA D.host.F ((bAE D).repr (u i j) k)) = 0
     rw [h1 k, hms_zero]
@@ -247,12 +245,10 @@ theorem FCh_eq_zero_iff {m n : ℕ} (u : Mx D m n) : FCh D m n u = 0 ↔ u.map (
   · intro h
     ext i j
     rw [Matrix.map_apply, Matrix.zero_apply, finPart_eq_zero_iff]
-    intro k
-    exact congrFun (congrFun (congrFun h i) j) k
+    exact fun k => congrFun (congrFun (congrFun h i) j) k
   · intro h
     funext i j k
-    have h1 : finPart D (u i j) = 0 := by
-      exact congrFun (congrFun h i) j
+    have h1 : finPart D (u i j) = 0 := congrFun (congrFun h i) j
     rw [finPart_eq_zero_iff] at h1
     exact h1 k
 

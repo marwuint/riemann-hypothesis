@@ -74,8 +74,7 @@ theorem _root_.GlobalTheory.sqrtNeg_not_mem_range {K : Type*} [Field K] [CharZer
   rintro ⟨r, rfl⟩
   have hr : r ^ 2 = -(q : ℚ) := by
     apply (algebraMap ℚ K).injective
-    rw [map_pow, map_neg, map_natCast]
-    exact hx
+    rwa [map_pow, map_neg, map_natCast]
   have hq' : (0 : ℚ) < q := by exact_mod_cast hq
   nlinarith [sq_nonneg r]
 
@@ -159,8 +158,7 @@ theorem _root_.GlobalTheory.natAbs_discr_of_sq_eq_neg_prime (K : Type*) [Field K
   rw [Int.natAbs_mul, Int.natAbs_pow, Int.natAbs_neg, Int.natAbs_natCast] at hN
   have hdvd : e.natAbs ^ 2 ∣ q := ⟨_, hN.symm⟩
   rcases hq.eq_one_or_self_of_dvd _ hdvd with h | h
-  · rw [h, one_mul] at hN
-    exact hN
+  · rwa [h, one_mul] at hN
   · exfalso
     have hp : (e.natAbs * e.natAbs).Prime := by rw [← sq, h]; exact hq
     rcases Nat.prime_mul_iff.1 hp with ⟨hp', he1⟩ | ⟨hp', he1⟩ <;>
@@ -177,8 +175,7 @@ theorem isGalois_finrank_discr_adjoin_sqrt_neg_prime :
     (sqrtNeg_not_mem_range q hq.pos x hx)
   have hfin : Module.finrank ℚ ℚ⟮x⟯ = 2 := by
     have := IntermediateField.adjoin.finrank (K := ℚ) (x := x) ⟨_, hpm, h0⟩
-    rw [← hmin, hpd] at this
-    exact this
+    rwa [← hmin, hpd] at this
   have : Algebra.IsQuadraticExtension ℚ ℚ⟮x⟯ := ⟨hfin⟩
   refine ⟨Algebra.IsQuadraticExtension.isGalois _ _, hfin, ?_⟩
   refine natAbs_discr_of_sq_eq_neg_prime ℚ⟮x⟯ q hq h4 (AdjoinSimple.gen ℚ x) ?_ hfin
@@ -300,8 +297,7 @@ theorem isRayFieldIn_hilbertField : WeberRayFieldSt → ∀ (d : ℕ) (F : Inter
   have hEq : (ℚ⟮x⟯⟮(latticeCurve L).j⟯).restrictScalars ℚ = hilbertField d F := by
     rw [hilbertField_eq hG' hL]
     exact IntermediateField.adjoin_simple_adjoin_simple ℚ (latticeCurve L).j (α := x)
-  rw [← hEq]
-  exact hIn
+  rwa [← hEq]
 
 end GlobalTheory.Mem.Fld
 end -- clump:auto

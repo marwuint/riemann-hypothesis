@@ -133,8 +133,7 @@ theorem zl_unique (f g : ℤ_[l] →+* ℂ_[l]) (hf : ∀ x, ‖f x‖ ≤ 1) (h
     exact mul_le_of_le_one_left (by positivity)
       ((nsub_max _ _).trans (max_le (hf u) (hg u)))
   have ht := tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) (GlobalTheory.RingBasics.norm_p_lt (p := l))
-  have h0 := ge_of_tendsto' ht key
-  exact sub_eq_zero.1 (norm_le_zero_iff.1 h0)
+  exact sub_eq_zero.1 (norm_le_zero_iff.1 (ge_of_tendsto' ht key))
 
 theorem th_zl (z : ℤ_[l]) :
     ((Per.θD l).comp (aDp l)) (algebraMap ℤ_[l] (Ainf l) z) = algebraMap (Om l) ℂ_[l] (zOm l z) :=
@@ -203,8 +202,7 @@ theorem bounded_compat : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K)
     intro i j
     apply pow_dvd_of_inclW
     have e1 : (Pi.map (algebraMap ℤ_[l] (Ainf l))).map (inclW l) = zW Pi := by
-      refine Matrix.ext fun a b => ?_
-      exact (inclWA l).commutes _
+      exact Matrix.ext fun a b => (inclWA l).commutes _
     have e2 : (R.map bk.ev).map (inclW l) = R.map bk.evW := by
       rw [Matrix.map_map]; rfl
     have e : (Pi.map (algebraMap ℤ_[l] (Ainf l)) * Y' - Y * R.map bk.ev).map (inclW l) =
@@ -218,12 +216,10 @@ theorem bounded_compat : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K)
   have hD2 := GlobalTheory.T.breuilKisinLatticeFrame_cocycles_linked l K bk N N d d' n ρ ρ' F F' Pi R hequi hlink g
   have hP : Pi.map (fun x => algebraMap (Om l) ℂ_[l] (zOm l x)) = (Pi.map (algebraMap ℤ_[l] (Ainf l))).map θ' := by
     refine Matrix.ext fun i j => ?_
-    simp only [Matrix.map_apply]
-    exact (th_zl _).symm
+    simpa only [Matrix.map_apply] using (th_zl _).symm
   have hR : ((R.map bk.ev).map (Per.σA (g : GQ l))).map θ' = (R.map bk.ev).map θ' := by
     refine Matrix.ext fun i j => ?_
-    simp only [Matrix.map_apply]
-    exact th_gal bk g _
+    simpa only [Matrix.map_apply] using th_gal bk g _
   rw [hP]
   set P := (Pi.map (algebraMap ℤ_[l] (Ainf l))).map θ' with hPdef
   set y := Y.map θ' with hy

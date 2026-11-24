@@ -75,8 +75,7 @@ theorem exists_basis (hdeg : Module.finrank F E = 2) (θ : E) (hθ : θ ∉ (alg
     ∃ b : Module.Basis (Fin 2) F E, b 0 = 1 ∧ b 1 = θ := by
   have hli : LinearIndependent F ![(1 : E), θ] := by
     rw [LinearIndependent.pair_iff' one_ne_zero]
-    intro a ha
-    exact hθ ⟨a, by rw [← ha, Algebra.algebraMap_eq_smul_one]⟩
+    exact fun a ha => hθ ⟨a, by rw [← ha, Algebra.algebraMap_eq_smul_one]⟩
   refine ⟨basisOfLinearIndependentOfCardEqFinrank hli (by simp [hdeg]), ?_, ?_⟩ <;> simp
 
 theorem exists_coord (b : Module.Basis (Fin 2) F E) {θ : E} (h0 : b 0 = 1) (h1 : b 1 = θ) (x : E) :
@@ -300,9 +299,7 @@ theorem exists_inclO_eq (v : HeightOneSpectrum (𝓞 F)) (x : 𝓞 E)
     rw [← isIntegral_algebraMap_iff (B := E) , hb]
     exact x.isIntegral_coe
   let b' : 𝓞 F := ⟨b, hi⟩
-  have hx' : x = algebraMap (𝓞 F) (𝓞 E) b' := by
-    apply Subtype.ext
-    exact hb.symm
+  have hx' : x = algebraMap (𝓞 F) (𝓞 E) b' := Subtype.ext hb.symm
   refine ⟨algebraMap (𝓞 F) _ b', Subtype.ext ?_⟩
   rw [coe_inclO, GlobalTheory.OverCompare.coe_toIntV, hx', GlobalTheory.OverCompare.tmul_algebraMap]
   rfl
@@ -346,8 +343,7 @@ theorem GlobalTheory.OverSplit.exists_splitting_of_character :
     have h1 : a₁ ∈ IsLocalRing.maximalIdeal _ :=
       (ValuationSubring.valuation_lt_one_iff _ _).2
         ((Valuation.isEquiv_valuation_valuationSubring _).lt_one_iff_lt_one.1 ha)
-    rw [← IsLocalRing.eq_maximalIdeal (ker_isMaximal (χ.comp (inclO E v)))] at h1
-    exact h1
+    rwa [← IsLocalRing.eq_maximalIdeal (ker_isMaximal (χ.comp (inclO E v)))] at h1
   have key : (ι θ - inclO E v r') * a = (ι θ - inclO E v r') * inclO E v a₁ := by
     apply Subtype.ext
     apply s.injective

@@ -66,11 +66,12 @@ theorem exists_compact_entries {F E : Type} [Field F] [NumberField F] [Field E] 
   obtain ⟨-, C0, hC0, hC0m⟩ := GlobalTheory.Mass.intTens_open_compact F E
   let s := GlobalTheory.Mass.swapTens F E (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)
 
-  let b : Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E) := (β : Matrix (Fin n) (Fin n) _).map s.symm
-  let c : Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E) :=
-    ((β⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _).map s.symm
+  let b := (β : Matrix (Fin n) (Fin n) _).map s.symm
+  let c := ((β⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _).map s.symm
 
-  let f : Fin n → Fin n → (Fin n → Fin n → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E) → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E :=
+  let f : Fin n → Fin n →
+      (Fin n → Fin n → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E) →
+        _ :=
     fun i j a => ∑ l, (∑ k, b i k * a k l) * c l j
   have hf : ∀ i j, Continuous (f i j) := fun i j =>
     continuous_finsetSum _ fun l _ =>
@@ -83,19 +84,16 @@ theorem exists_compact_entries {F E : Type} [Field F] [NumberField F] [Field E] 
   intro x hx i j
   obtain ⟨y, hy⟩ := hx
   refine Set.mem_iUnion.2 ⟨i, Set.mem_iUnion.2 ⟨j,
-    ⟨fun k l => s.symm ((y : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)) k l), ?_, ?_⟩⟩⟩
+    ⟨fun k l => s.symm (y.1 k l), ?_, ?_⟩⟩⟩
   · intro k _ l _
     apply hC0m
-    change (s : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E →+* E ⊗[F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) (s.symm _) ∈ Formalism.L2.Herm.intAf F E
-    rw [RingEquiv.coe_toRingHom, RingEquiv.apply_symm_apply]
-    exact ((y : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)) k l).2
-  · have hx' : (x : Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E)) i j =
-        s.symm (((Formalism.UG.bc (s : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E →+* E ⊗[F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) x :
-          GL (Fin n) (E ⊗[F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)) i j) := by
+    change s (s.symm _) ∈ Formalism.L2.Herm.intAf F E
+    rw [RingEquiv.apply_symm_apply]
+    exact (y.1 k l).2
+  · have hx' : x.1 i j = s.symm ((Formalism.UG.bc (s : _ →+* _) x).1 i j) := by
       rw [Formalism.UG.P.bc_coe]
       simp
-    have hy' : Formalism.UG.bc (s : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E →+* E ⊗[F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) x =
-        β * Formalism.L2.DIV.intGL F E n y * β⁻¹ := by
+    have hy' : Formalism.UG.bc (s : _ →+* _) x = β * Formalism.L2.DIV.intGL F E n y * β⁻¹ := by
       rw [← hy]
       rfl
 

@@ -180,8 +180,7 @@ theorem Through.zeroAlong_iff {f : Sp R' ⟶ Sp R} (gp : IsPullback Φ D'.P.A.ho
     have p := prod_gtφT ρ' g.b (e x) (fun q => ConstFam.wVal w z J J' (r ≫ q))
     rw [hb, _root_.mul_one, inv_mul_cancel, _root_.one_mul, mul_inv_cancel] at p
     simp only [Category.assoc] at v ⊢
-    rw [p, _root_.one_mul, hc] at v
-    exact v
+    rwa [p, _root_.one_mul, hc] at v
   constructor
   · rintro ⟨h₁, h₂⟩
     have hb : ρ' ≫ g.b = 1 := Over.OverMorphism.ext (gp.hom_ext (by rw [b₁, b₂, h₁])
@@ -210,8 +209,7 @@ theorem Through.genRelR {A : Type} [CommRing A] [IsLocalRing A] (hw : w.IsGen) {
   refine ConstPoint.genRelR_of_val hw D'.P.isLB D.P.isLB ht (pullGen_isGen _ _ _ _ (g₀.isGen x) _)
     (fun k => by rw [hp, Category.assoc, (H x).1, Category.assoc]) fun J J' hJ hJ' => ?_
   rw [val_pull hJ, Category.id_comp, hv J' hJ']
-  simp only [Category.id_comp, hp]
-  exact (H x).2 _ r _ J J' hJ hJ'
+  simpa only [Category.id_comp, hp] using (H x).2 _ r _ J J' hJ hJ'
 
 end Through
 
@@ -274,8 +272,7 @@ theorem eq_of_lieImg [IsHausdorff ((Ideal.span {(X : A⟦X⟧)}).map (algebraMap
     · refine (Category.assoc _ _ _).trans (((Category.assoc _ _ _).symm.trans ((h' 0).1 2)).trans ?_)
       exact (congrArg (· ≫ _) hκ.symm).trans ((Category.assoc _ _ _).trans
         ((congrArg (spMap ρ ≫ ·) ((hT 0).1 2).symm).trans (Category.assoc _ _ _).symm))
-    · rw [Category.assoc, Category.assoc, Over.w, Over.w]
-      exact hx'
+    · rwa [Category.assoc, Category.assoc, Over.w, Over.w]
   have hg : ∀ x, GenRelR W.w (g.s (W.e x)) (LB.pullGen _ _ _ (ν.s x) (𝟙 _ ≫ spMap (dualMapR (C (R := A))))) :=
     fun x => hT.genRelR W.spec.2.1 (𝟙 _) x (g.isGen _) (fun k => (Category.id_comp _).symm) fun _ _ => rfl
   have hC : HasCoords W.P.U.toUnifPre e g (spMap ρ) xe := ⟨hb, fun y => by
@@ -311,8 +308,7 @@ theorem main : Out.GlobalFnsSt → ∀ (E : Type) [Field E] [NumberField E] [IsC
   have hT : Through W.w W.e (spMap (dualMapR (PowerSeries.C (R := A)))) ν g := fun x => by
     have := hg (W.e x)
     have e : W.e.symm.toAddEquiv.toAddMonoidHom (W.e x) = x := W.e.symm_apply_apply x
-    rw [e] at this
-    exact this
+    rwa [e] at this
   obtain ⟨v, hv, -⟩ := existsUnique_isPointOf W.P.U.toUnifPre g
   refine ⟨⟨v, lieImg_of_isPointOf hT hv, fun v' h => eq_of_lieImg hT hv h⟩, fun v' h => ?_⟩
   obtain rfl := eq_of_lieImg hT hv h

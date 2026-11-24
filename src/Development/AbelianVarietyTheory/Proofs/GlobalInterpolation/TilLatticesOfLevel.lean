@@ -83,18 +83,14 @@ theorem isBlock_of_mulVec {E : Type} [Field E] {N n : ℕ} (hN : N = n + 1) {A' 
   · have h := congrFun (h1 (Pi.single (Br.iC hN b) 1)) a
     have e : iniH hN (Pi.single (Br.iC hN b) (1 : E)) = Pi.single b 1 := funext fun i => by
       simp only [iniH, Pi.single_apply, hinj.eq_iff]
-    rw [e, Matrix.mulVec_single_one, Matrix.mulVec_single_one] at h
-    exact h
+    rwa [e, Matrix.mulVec_single_one, Matrix.mulVec_single_one] at h
   · have h := congrFun (h1 (Pi.single (Br.iL hN) 1)) a
     have e : iniH hN (Pi.single (Br.iL hN) (1 : E)) = 0 := funext fun i => Pi.single_eq_of_ne (hne i) _
-    rw [e, Matrix.mulVec_single_one, Matrix.mulVec_zero] at h
-    exact h
+    rwa [e, Matrix.mulVec_single_one, Matrix.mulVec_zero] at h
   · have h := h2 (Pi.single (Br.iC hN a) 1)
-    rw [Matrix.mulVec_single_one, Pi.single_eq_of_ne (hne a).symm] at h
-    exact h
+    rwa [Matrix.mulVec_single_one, Pi.single_eq_of_ne (hne a).symm] at h
   · have h := h2 (Pi.single (Br.iL hN) 1)
-    rw [Matrix.mulVec_single_one, Pi.single_eq_same] at h
-    exact h
+    rwa [Matrix.mulVec_single_one, Pi.single_eq_same] at h
 
 theorem brStd_rhoVr {E K ι : Type} [Field E] [Field K] [CharZero K] [Fintype ι] {N n : ℕ} (hN : N = n + 1) (e : ι → E →+* K)
     {lam : ι → DomWeight N} {sg : ι → DomWeight n} (hI : ∀ τ, Br.Interlace hN (lam τ) (sg τ))
@@ -119,8 +115,7 @@ theorem mem_ValC_iff (f : Fr emb σ n → ℂ) :
   constructor
   · intro hf
     have h : f ∈ Submodule.span ℂ (Set.range (evV (embAt σ emb) (1 : Matrix (Fin n) (Fin n) E) lam (RingHom.id ℂ))) := by
-      rw [span_evV]
-      exact hf
+      rwa [span_evV]
     rw [← LinearMap.coe_range, Submodule.span_eq] at h
     obtain ⟨F, rfl⟩ := h
     exact ⟨F, (e F).symm⟩

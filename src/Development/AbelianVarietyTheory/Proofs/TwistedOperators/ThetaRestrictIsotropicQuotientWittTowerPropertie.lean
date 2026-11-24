@@ -191,8 +191,7 @@ theorem coef_mid_mid (hs : IsIsoSplit V V' C B) :
 
 theorem trace_swap {m n : ℕ} (Z : Mx D m m) (A : Mx D m n) (Y : Mx D n n) (X : Mx D n m) :
     Matrix.trace (Z * A * Y * X) = Matrix.trace (A * Y * X * Z) := by
-  have key := Matrix.trace_mul_comm Z (A * Y * X)
-  simpa only [Matrix.mul_assoc] using key
+  simpa only [Matrix.mul_assoc] using Matrix.trace_mul_comm Z (A * Y * X)
 
 theorem hO_isoPart_add_midPart (hs : IsIsoSplit V V' C B) (y y' : Mx D W.rank r) (x x' : WO V' W) :
     hO V W (isoPart V W C y + midPart V V' W B x) (isoPart V W C y' + midPart V V' W B x') = hO V' W x x' := by
@@ -379,8 +378,7 @@ theorem contDiff_integral (hψ : IsStdChar D ψ (-1)) {X : Type} [MeasurableSpac
     have hF' : ∀ y t, HasFDerivAt (fun t => h (q y + M t)) (F' t y) t := by
       intro y t
       have := hasFDerivAt_coord hψ hM hM0 hh hl hlam (q y) t
-      simp only [ha] at this
-      exact this
+      simpa only [ha] using this
     have hbd : ∀ y, ∀ t ∈ Metric.ball t₀ 1, ‖F' t y‖ ≤ ∑ i, (Cd i + A i * C0) * ‖coordC (k := k) i‖ := by
       intro y t ht
       refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)
@@ -596,8 +594,7 @@ theorem res_heis_mid (hs : IsIsoSplit V V' C B) (μ : Measure (Mx D W.rank r)) (
     res V V' W C B μ 𝓨 (heisO ψ V W (midPart V V' W B x₀) f) = heisO ψ V' W x₀ (res V V' W C B μ 𝓨 f) := by
   funext x
   simp only [res, heisO]
-  simp only [sympl_mid hs, add_assoc, ← midPart_add]
-  exact integral_const_mul _ _
+  simpa only [sympl_mid hs, add_assoc, ← midPart_add] using integral_const_mul _ _
 
 theorem res_heis_iso (hs : IsIsoSplit V V' C B) {μ : Measure (Mx D W.rank r)} {𝓨 : Set (Mx D W.rank r)}
     (h : IsCovolOne (ratMx D W.rank r) μ 𝓨) {f : WO V W → ℂ} (hf : IsThetaFunO ψ V W f) (y₀ : Mx D W.rank r) :

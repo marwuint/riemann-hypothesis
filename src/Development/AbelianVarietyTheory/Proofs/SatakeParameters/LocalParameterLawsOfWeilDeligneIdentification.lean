@@ -177,16 +177,11 @@ theorem lpChar_laws (a b c : WD h) (s : ℝ) :
   induction c using ind with
   | hP k c =>
   refine ⟨?_, ?_, ?_, ?_, ?_, fun hu hd he => ?_⟩
-  · simp only [lpSum_mk, lpChar_mk]
-    exact sound (a.iso_sum_tensor b c)
-  · simp only [lpTw_mk, lpChar_mk]
-    exact sound (a.iso_tw_tensor c s)
-  · simp only [lpTw_mk, lpChar_mk]
-    exact sound (a.iso_tensor_tw c s)
-  · simp only [lpChar_mk]
-    exact sound (a.iso_tensor_assoc b c)
-  · simp only [lpZero, lpChar_mk]
-    exact sound (WDRep.iso_zero_tensor _ c _)
+  · simpa only [lpSum_mk, lpChar_mk] using sound (a.iso_sum_tensor b c)
+  · simpa only [lpTw_mk, lpChar_mk] using sound (a.iso_tw_tensor c s)
+  · simpa only [lpTw_mk, lpChar_mk] using sound (a.iso_tensor_tw c s)
+  · simpa only [lpChar_mk] using sound (a.iso_tensor_assoc b c)
+  · simpa only [lpZero, lpChar_mk] using sound (WDRep.iso_zero_tensor _ c _)
   · rw [unr_mk] at hu
     rw [lpDim_mk] at hd
     rw [frobEig_mk] at he

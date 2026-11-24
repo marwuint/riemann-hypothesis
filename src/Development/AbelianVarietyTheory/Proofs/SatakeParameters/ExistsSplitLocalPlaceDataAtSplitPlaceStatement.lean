@@ -85,8 +85,7 @@ theorem conjPl_ne {D : D7} (s : SplitPlace D.host.E) : Formalism.DivisionValues.
       s.w.valuation D.host.E x := by
     intro x
     have h1 := PI.CompAtExist.muV_eq (GlobalTheory.SplitConjPlace.conjSP s) x
-    rw [hw] at h1
-    exact h1
+    rwa [hw] at h1
   obtain ⟨φ, hφc, hφ, -⟩ := _root_.GlobalTheory.ValuationExtensionContinuous.exists_extension s.w s.v _ hv
   obtain ⟨c, hc, -, hci⟩ := GlobalTheory.SplitCompl.exists_ringEquiv D.host.E s
   have hg : ∀ y, φ (c y) = y := by
@@ -100,8 +99,7 @@ theorem conjPl_ne {D : D7} (s : SplitPlace D.host.E) : Formalism.DivisionValues.
   apply IsCMField.complexConj_ne_one D.host.E
   refine AlgEquiv.ext fun x => s.i.toRingHom.injective ?_
   have h2 := hg (s.i x)
-  rw [hci, hφ] at h2
-  exact h2
+  rwa [hci, hφ] at h2
 
 theorem exists_transport {E : Type} [Field E] [NumberField E] {F1 F2 : Subfield E} (h : F1 = F2)
     (v1 : HeightOneSpectrum (𝓞 F1)) (w : HeightOneSpectrum (𝓞 F2))
@@ -183,11 +181,7 @@ theorem exists_place : ∀ (D : D7) (s : SplitPlace D.host.E) (hF : D.host.F = m
     have h2 : algebraMap (maximalRealSubfield D.host.E) (s.v.adicCompletion (maximalRealSubfield D.host.E))
         ⟨a, hF.le a.2⟩ = s.i (algebraMap (maximalRealSubfield D.host.E) D.host.E ⟨a, hF.le a.2⟩) :=
       (s.i.commutes _).symm
-    rw [hκa]
-    rw [h2]
-    rw [hci]
-    rw [h1]
-    rw [hΦ]
+    rw [hκa, h2, hci, h1, hΦ]
   let p : GlobalTheory.LocMod.Place D (s.w.adicCompletion D.host.E) :=
     { e := e
       split := he.1

@@ -87,8 +87,7 @@ theorem evalPt'_eq (x : Sp R ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (f 
 
 private theorem preimage_whole_comp_of_preimage_whole {Z W V : Scheme.{0}} (f : Z ⟶ W) (x : W ⟶ V) {U : V.Opens}
     (h : ⊤ ≤ x ⁻¹ᵁ U) : ⊤ ≤ (f ≫ x) ⁻¹ᵁ U := by
-  intro p _
-  exact h (show f.base p ∈ (⊤ : W.Opens) from trivial)
+  exact fun p _ => h (show f.base p ∈ (⊤ : W.Opens) from trivial)
 
 theorem top_le_iff_residue [Subsingleton (PrimeSpectrum R)] (ρ : R →+* ℂ) (x : Sp R ⟶ X) (y : Sp ℂ ⟶ X)
     (hy : spMap ρ ≫ x = y) (W : X.Opens) : ⊤ ≤ x ⁻¹ᵁ W ↔ ⊤ ≤ y ⁻¹ᵁ W := by
@@ -97,8 +96,7 @@ theorem top_le_iff_residue [Subsingleton (PrimeSpectrum R)] (ρ : R →+* ℂ) (
   obtain ⟨q⟩ : Nonempty (PrimeSpectrum ℂ) := inferInstance
   have hq : (spMap ρ).base q ∈ x ⁻¹ᵁ W := h (show q ∈ (⊤ : (Sp ℂ).Opens) from trivial)
   have e : (spMap ρ).base q = p := Subsingleton.elim (α := PrimeSpectrum R) _ _
-  rw [e] at hq
-  exact hq
+  rwa [e] at hq
 
 theorem residue_evalPt (ρ : R →+* ℂ) (x : Sp R ⟶ X) (y : Sp ℂ ⟶ X)
     (hy : spMap ρ ≫ x = y) (W : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ W) (f : Γ(X, W)) :
@@ -237,8 +235,7 @@ theorem famPt_mem (z : Fin g → ℂ) {U : A.left.Opens} (h : ⊤ ≤ (u.ex z).l
     ⊤ ≤ (famPt u R z).left ⁻¹ᵁ ((snd (spO R) A).left ⁻¹ᵁ U) := by
   intro p _
   have hp := top_le_const (R := R) (u.ex z) U h (show p ∈ (⊤ : (Sp R).Opens) from trivial)
-  rw [← famPt_snd u z] at hp
-  exact hp
+  rwa [← famPt_snd u z] at hp
 
 private lemma appLE_comp_presheaf_map {X Y : Scheme.{0}} (f : X ⟶ Y) (W : Y.Opens) (V V' : X.Opens)
     (e : V ≤ f ⁻¹ᵁ W) (i : Opposite.op V ⟶ Opposite.op V') (e' : V' ≤ f ⁻¹ᵁ W) :
@@ -286,8 +283,7 @@ theorem differentiableOn_famPt_affine {U : A.left.Opens} (hU : IsAffineOpen U)
     refine (((u.hol W s).2.mono hW).mul_const (lam 1)).congr fun z hz => ?_
     have h1 : ⊤ ≤ (toUnit (spO R) ≫ u.ex z).left ⁻¹ᵁ W := top_le_const (u.ex z) W (hW z hz)
     have h2 : ⊤ ≤ ((famPt u R z).left ≫ (snd (spO R) A).left) ⁻¹ᵁ W := by
-      rw [famPt_snd]
-      exact h1
+      rwa [famPt_snd]
     simp only [evalPt'_eq _ (hE z hz), evalPt_appLE _ _ _ rfl W _ e (hE z hz) h2,
       evalPt_congr (famPt_snd u z) W h2 h1, evalPt_const (u.ex z) W h1 (hW z hz),
       Algebra.algebraMap_eq_smul_one, map_smul, smul_eq_mul]
@@ -359,8 +355,7 @@ theorem differentiableOn_famPt {U : A.left.Opens} {V : (spO R ⊗ A).left.Opens}
   obtain ⟨U', hU'aff, hpU', hU'U⟩ := TopologicalSpace.Opens.isBasis_iff_nbhd.mp A.left.isBasis_affineOpens hp
   refine ⟨{w | ⊤ ≤ (u.ex w).left ⁻¹ᵁ U'}, (u.hol U' 1).1, ?_, ?_⟩
   · intro q _
-    rw [Subsingleton.elim (α := PrimeSpectrum ℂ) q q0]
-    exact hpU'
+    rwa [Subsingleton.elim (α := PrimeSpectrum ℂ) q q0]
   · have hle : (snd (spO R) A).left ⁻¹ᵁ U' ≤ V := ((snd (spO R) A).left.preimage_mono hU'U).trans hV
     refine ((differentiableOn_famPt_affine u hU'aff (resG _ hle f) lam).mono Set.inter_subset_right).congr ?_
     intro w hw

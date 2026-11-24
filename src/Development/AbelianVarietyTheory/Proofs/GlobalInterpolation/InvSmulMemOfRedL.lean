@@ -300,8 +300,7 @@ theorem exists_glue {L L' : Submodule (𝓞 E) (Sp E n)} (hL : Submodule.IsFullL
       have hy' : s • y ∈ Submodule.span E (L'' : Set (Sp E n)) := Submodule.subset_span (hA y hy)
       rw [← IsScalarTower.algebraMap_smul E s y] at hy'
       have := (Submodule.span E (L'' : Set (Sp E n))).smul_mem (algebraMap (𝓞 E) E s)⁻¹ hy'
-      rw [← mul_smul, inv_mul_cancel₀ hsE, one_smul] at this
-      exact this
+      rwa [← mul_smul, inv_mul_cancel₀ hsE, one_smul] at this
     exact (Submodule.span_le.mpr hspan) hx' 
   · obtain ⟨t, htP, htQ⟩ := exists_mem_notMem hQ.symm
     have ht : t ^ k ∈ P.asIdeal ^ k := Ideal.pow_mem_pow htP k
@@ -807,8 +806,7 @@ theorem pair_up (h : TAt T ST) {d : Deco E n ST ∅} (hd : d.Ok) (P : ST) {x x' 
     rw [mem_pair_ker _ (h.ne P), hd.dnN_up P (h.move P) (h.unif P).mem (h.unif P).nsq hx' hf]
     rfl
   · have := hd.up_f_inv P (h.move P) (h.unif P).mem (h.unif P).nsq hx' hf
-    rw [map_natCast] at this
-    exact this
+    rwa [map_natCast] at this
   · have hneg : (-1 : valO P.1) • x ∈ localization₂ P.1.asIdeal d.N := (locO P.1 d.N).smul_mem _ hx
     have h0 : redL d.N P.1 (x' + (-1 : valO P.1) • x) = 0 := by
       rw [redL_add hx'' hneg, redL_smul _ hx, hr, map_neg, map_one, neg_one_smul, add_neg_cancel]
@@ -817,8 +815,7 @@ theorem pair_up (h : TAt T ST) {d : Deco E n ST ∅} (hd : d.Ok) (P : ST) {x x' 
       exact inv_smul_mem_of_redL (h.unif P) ((localization₂ _ _).add_mem hx'' hneg) h0
     have e : (T : E)⁻¹ • x' = (T : E)⁻¹ • (x' + (-1 : valO P.1) • x) + (T : E)⁻¹ • x := by
       rw [neg_one_smul, ← smul_add]; congr 1; abel
-    rw [e, p₁.2.add _ h2.1 _ (mem_of_f_ne p₁ (h1 ▸ one_ne_zero)), h2.2, zero_add]
-    exact h1
+    rwa [e, p₁.2.add _ h2.1 _ (mem_of_f_ne p₁ (h1 ▸ one_ne_zero)), h2.2, zero_add]
 
 theorem pair_up_ne (h : TAt T ST) {d : Deco E n ST ∅} (hd : d.Ok) {P Q : ST} (hQ : Q ≠ P) {x' : Sp E n} (hx' : x' ∈ d.N)
     (hu : (d.up P (T : 𝓞 E) x').Ok) : pair (h.unif Q) _ hu = pair (h.unif Q) d hd :=

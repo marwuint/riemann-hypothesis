@@ -56,8 +56,7 @@ theorem intAt_iff_val (P : HeightOneSpectrum (𝓞 E)) (a : E) : IntAt P a ↔ P
   constructor
   · rintro ⟨r, s, hs, h⟩
     have h1 : P.valuation E (algebraMap (𝓞 E) E s) = 1 := by
-      rw [HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]
-      exact hs
+      rwa [HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]
     have h2 := congrArg (P.valuation E) h
     rw [map_mul, h1, one_mul] at h2
     rw [h2]
@@ -83,9 +82,7 @@ theorem val_q {P : HeightOneSpectrum (𝓞 E)} (hP : DegOneUnram P) :
   have h2 : ¬ P.intValuation (qOf P : 𝓞 E) ≤ WithZero.exp (-((2 : ℕ) : ℤ)) := by
     rw [HeightOneSpectrum.intValuation_le_pow_iff_mem]
     exact hP.2
-  have hx : P.intValuation (qOf P : 𝓞 E) ≠ 0 := by
-    intro h0
-    exact h2 (h0 ▸ zero_le)
+  have hx : P.intValuation (qOf P : 𝓞 E) ≠ 0 := fun h0 => h2 (h0 ▸ zero_le)
   rw [← WithZero.exp_log hx] at h1 h2 ⊢
   rw [← WithZero.exp_zero, WithZero.exp_lt_exp] at h1
   rw [WithZero.exp_le_exp] at h2
@@ -106,8 +103,7 @@ theorem exists_int_add_q_mul {P : HeightOneSpectrum (𝓞 E)} (hP : DegOneUnram 
   have hm : r - k * s ∈ P.asIdeal := by
     rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, map_intCast, ← hk, zsmul_eq_mul, sub_self]
   have h1 : P.valuation E (algebraMap (𝓞 E) E s) = 1 := by
-    rw [HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]
-    exact hs
+    rwa [HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]
   have h2 : algebraMap (𝓞 E) E s * (u - k) = algebraMap (𝓞 E) E (r - k * s) := by
     rw [map_sub, map_mul, map_intCast, ← h]; ring
   have h3 : P.valuation E (u - k) < 1 := by

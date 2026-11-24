@@ -80,34 +80,20 @@ theorem mul_aux {b c z b' c' z' : S} (h31 : e₃ * e₁ = 0)
     (h1 : b * e₃ = b) (h2 : z * e₃ = z) (h3 : e₃ * b' = 0) (h4 : e₁ * c' = c')
     (h5 : e₁ * z' = z') (h6 : c * e₁ = 0) :
     (1 - c + b + z) * (1 - c' + b' + z') = 1 - (c + c') + (b + b') + (z + z' - c * b') := by
-  have k1 : c * c' = 0 := by
-    calc c * c' = c * e₁ * c' := by rw [mul_assoc, h4]
-      _ = 0 := by rw [h6, zero_mul]
-  have k2 : c * z' = 0 := by
-    calc c * z' = c * e₁ * z' := by rw [mul_assoc, h5]
-      _ = 0 := by rw [h6, zero_mul]
-  have k3 : b * c' = 0 := by
-    calc b * c' = b * e₃ * (e₁ * c') := by rw [h1, h4]
-      _ = b * (e₃ * e₁) * c' := by simp only [mul_assoc]
-      _ = 0 := by rw [h31, mul_zero, zero_mul]
-  have k4 : b * b' = 0 := by
-    calc b * b' = b * e₃ * b' := by rw [h1]
-      _ = 0 := by rw [mul_assoc, h3, mul_zero]
-  have k5 : b * z' = 0 := by
-    calc b * z' = b * e₃ * (e₁ * z') := by rw [h1, h5]
-      _ = b * (e₃ * e₁) * z' := by simp only [mul_assoc]
-      _ = 0 := by rw [h31, mul_zero, zero_mul]
-  have k6 : z * c' = 0 := by
-    calc z * c' = z * e₃ * (e₁ * c') := by rw [h2, h4]
-      _ = z * (e₃ * e₁) * c' := by simp only [mul_assoc]
-      _ = 0 := by rw [h31, mul_zero, zero_mul]
-  have k7 : z * b' = 0 := by
-    calc z * b' = z * e₃ * b' := by rw [h2]
-      _ = 0 := by rw [mul_assoc, h3, mul_zero]
-  have k8 : z * z' = 0 := by
-    calc z * z' = z * e₃ * (e₁ * z') := by rw [h2, h5]
-      _ = z * (e₃ * e₁) * z' := by simp only [mul_assoc]
-      _ = 0 := by rw [h31, mul_zero, zero_mul]
+  have hA : ∀ x y : S, x * e₁ = 0 → e₁ * y = y → x * y = 0 := fun x y hx hy => by
+    rw [← hy, ← mul_assoc, hx, zero_mul]
+  have hB : ∀ x y : S, x * e₃ = x → e₃ * y = 0 → x * y = 0 := fun x y hx hy => by
+    rw [← hx, mul_assoc, hy, mul_zero]
+  have hC : ∀ x y : S, x * e₃ = x → e₁ * y = y → x * y = 0 := fun x y hx hy => by
+    rw [← hx, ← hy, mul_assoc x, ← mul_assoc e₃, h31, zero_mul, mul_zero]
+  have k1 := hA c c' h6 h4
+  have k2 := hA c z' h6 h5
+  have k3 := hC b c' h1 h4
+  have k4 := hB b b' h1 h3
+  have k5 := hC b z' h1 h5
+  have k6 := hC z c' h2 h4
+  have k7 := hB z b' h2 h3
+  have k8 := hC z z' h2 h5
   simp only [mul_add, add_mul, mul_sub, sub_mul, one_mul, mul_one, k1, k2, k3, k4, k5, k6, k7, k8]
   abel
 

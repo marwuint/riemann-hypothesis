@@ -109,8 +109,7 @@ theorem cusp : ∀ (D : D7) (W : HSp D) (s : ℕ) (L : Matrix (Fin W.rank) (Fin 
     ext n
     exact ⟨fun h => hle h, fun h => hin _ n.2 h⟩
   have h𝓝' : IsFundamentalDomain (Γ.subgroupOf (NI W L)) 𝓝 κ := by
-    rw [e]
-    exact h𝓝
+    rwa [e]
   exact _root_.GlobalTheory.UnfoldNormal.unfold_zero_mean (GA D W) ν Γ (NI W L) hΓ hcl hnorm κ 𝓝 hκ h𝓝' (vol D W s L hL κ 𝓝 hκ h𝓝) K F hKm
     hF.2.1.measurable hKn hKγ (fun γ hγ h => hF.1 γ (hle hγ) h) (fun h => hcusp s L hL κ 𝓝 hκ h𝓝 h) 𝓖 h𝓖 hint
 
@@ -154,14 +153,12 @@ theorem rankFacGen {K : Type} [Field K] {a b : ℕ} (y : Matrix (Fin a) (Fin b) 
     rw [← LinearMap.range_eq_top]
     apply Submodule.eq_top_of_finrank_eq
     have : Module.finrank K (LinearMap.range m.mulVecLin) = s := by
-      rw [Matrix.finrank_range_mulVecLin]
-      exact hm
+      rwa [Matrix.finrank_range_mulVecLin]
     simpa using this
   obtain ⟨g, hg⟩ := m.mulVecLin.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hsurj)
   refine ⟨s, L, m, LinearMap.toMatrix' g, hs, hLi, hm, ?_, hym⟩
   have : Matrix.toLin' (m * LinearMap.toMatrix' g) = LinearMap.id := by
-    rw [Matrix.toLin'_mul, Matrix.toLin'_toMatrix']
-    exact hg
+    rwa [Matrix.toLin'_mul, Matrix.toLin'_toMatrix']
   apply Matrix.toLin'.injective
   rw [this, Matrix.toLin'_one]
 
@@ -216,8 +213,7 @@ theorem fub {N H Y : Type} [MeasurableSpace N] [MeasurableSpace H] [Countable Y]
   have hnorm : Summable fun y => ∫ p, ‖G y p‖ ∂P := by
     have e : ∀ y, ∫ p, ‖G y p‖ ∂P = (∫⁻ p, ‖G y p‖ₑ ∂P).toReal := fun y => by
       rw [integral_norm_eq_lintegral_enorm (hGm y).aestronglyMeasurable]
-    simp only [e]
-    exact ENNReal.summable_toReal hsum
+    simpa only [e] using ENNReal.summable_toReal hsum
   have hS := hasSum_integral_of_summable_integral_norm hGi hnorm
   have eT : (fun p => ∑' y, G y p) = fun p : N × H => Θ p.1 p.2 * F p.2 := funext fun p => (hsp p).tsum_eq
   rw [eT, hP, integral_prod _ (by rw [← hP]; exact hΘi)] at hS
@@ -234,8 +230,7 @@ theorem fub {N H Y : Type} [MeasurableSpace N] [MeasurableSpace H] [Countable Y]
       refine integral_congr_ae (.of_forall fun h => ?_)
       simp only [G]
       rw [integral_mul_const]
-    rw [e]
-    exact hS
+    rwa [e]
 
 end GlobalTheory.TowerCT
 

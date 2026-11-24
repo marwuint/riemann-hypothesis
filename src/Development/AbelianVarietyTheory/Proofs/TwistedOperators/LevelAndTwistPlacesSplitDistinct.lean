@@ -84,8 +84,7 @@ theorem card_quot_of_two {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
     (IsDedekindDomain.mem_primesOverFinset_iff hp0 (𝓞 E)).2 ⟨P.isPrime, inferInstance⟩
   have hf : p.inertiaDeg' P.asIdeal = 1 := Nat.eq_one_of_mul_eq_one_left (heq _ hPm).symm
   have hn := Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver P.asIdeal p (P.under (𝓞 F)).isPrime hp0
-  rw [hf, pow_one, Ideal.absNorm_apply, Submodule.cardQuot_apply] at hn
-  exact hn
+  rwa [hf, pow_one, Ideal.absNorm_apply, Submodule.cardQuot_apply] at hn
 
 end GlobalTheory.TwistTypePlaces
 
@@ -95,10 +94,7 @@ theorem under_conjPl {D : D7} (P : Pl D.host.E) :
     (conjPl P).under (𝓞 D.host.F) = P.under (𝓞 D.host.F) := by
   have hfix : ∀ x : 𝓞 D.host.F,
       Formalism.DivisionValues.cO D.host.E (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x := by
-    intro x
-    apply RingOfIntegers.ext
-    show star ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x : 𝓞 D.host.E) : D.host.E) = _
-    exact (D.sp.cm.fixed _).2 ⟨(x : D.host.F), rfl⟩
+    exact fun x => RingOfIntegers.ext ((D.sp.cm.fixed _).2 ⟨(x : D.host.F), rfl⟩)
   have hinv : ∀ z, Formalism.DivisionValues.cO D.host.E (Formalism.DivisionValues.cO D.host.E z) = z :=
     fun z => RingOfIntegers.ext (star_star (z : D.host.E))
   apply HeightOneSpectrum.ext
@@ -110,8 +106,7 @@ theorem under_conjPl {D : D7} (P : Pl D.host.E) :
   · rintro ⟨z, hz, hzx⟩
     have e : z = algebraMap _ _ x := by rw [← hinv z, hzx, hfix]
     rwa [← e]
-  · intro h
-    exact ⟨_, h, hfix x⟩
+  · exact fun h => ⟨_, h, hfix x⟩
 
 theorem natCast_mem_conjPl {D : D7} (P : Pl D.host.E) (n : ℕ) (h : (n : 𝓞 D.host.E) ∈ P.asIdeal) :
     (n : 𝓞 D.host.E) ∈ (conjPl P).asIdeal := by
@@ -139,8 +134,7 @@ theorem natCast_not_mem_of_card {E : Type} [Field E] [NumberField E] (PP : Pl E)
     have := card_nsmul_eq_zero' (G := kP PP) (x := 1)
     rwa [hc, nsmul_one] at this
   have hg0 : ((g : ℕ) : kP PP) = 0 := by
-    rw [← map_natCast (Ideal.Quotient.mk PP.asIdeal), Ideal.Quotient.eq_zero_iff_mem]
-    exact hm
+    rwa [← map_natCast (Ideal.Quotient.mk PP.asIdeal), Ideal.Quotient.eq_zero_iff_mem]
   obtain ⟨a, b, hab⟩ : IsCoprime (q : ℤ) (g : ℤ) :=
     Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hq hg).2 hne)
   have h1 : ((a * q + b * g : ℤ) : kP PP) = 1 := by rw [hab, Int.cast_one]

@@ -77,12 +77,8 @@ theorem mem_maximalIdeal_iff_norm_lt_one : ∀ (l : ℕ) [Fact l.Prime] (K : Loc
       rw [IntermediateField.coe_inv, norm_inv, h1, inv_one]
     apply hnu
     refine ⟨⟨y, ⟨_, hinv⟩, ?_, ?_⟩, rfl⟩
-    · apply Subtype.ext
-      show (y : ↥K.1) * (y : ↥K.1)⁻¹ = 1
-      exact mul_inv_cancel₀ hy0
-    · apply Subtype.ext
-      show (y : ↥K.1)⁻¹ * (y : ↥K.1) = 1
-      exact inv_mul_cancel₀ hy0
+    · exact Subtype.ext (mul_inv_cancel₀ hy0)
+    · exact Subtype.ext (inv_mul_cancel₀ hy0)
   · intro hlt hu
     obtain ⟨u, rfl⟩ := hu
     have hm : ((((u : ↥(Loc.OL K)) : ↥K.1) : PadicAlgCl l)) * ((((u⁻¹ : (↥(Loc.OL K))ˣ) : ↥(Loc.OL K)) : ↥K.1) : PadicAlgCl l) = 1 := by

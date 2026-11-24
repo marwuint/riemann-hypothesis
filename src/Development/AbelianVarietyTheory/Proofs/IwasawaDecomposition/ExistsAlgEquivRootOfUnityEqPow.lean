@@ -96,8 +96,7 @@ theorem exists_algEquiv_rootOfUnity_eq_pow (V K : Type) [CommRing V] [IsDomain V
     exact (algebraMap K Ω).injective.comp (IsFractionRing.injective V K)
   have : FaithfulSMul V (integralClosure V Ω) := by
     rw [faithfulSMul_iff_algebraMap_injective]
-    intro a b hab
-    exact hinj (congrArg Subtype.val hab)
+    exact fun a b hab => hinj (congrArg Subtype.val hab)
   obtain ⟨Q, hQ, hQo⟩ := Ideal.exists_maximal_ideal_liesOver_of_isIntegral
     (S := integralClosure V Ω) (maximalIdeal V)
   let : Field (V ⧸ maximalIdeal V) := Ideal.Quotient.field _
@@ -114,16 +113,14 @@ theorem exists_algEquiv_rootOfUnity_eq_pow (V K : Type) [CommRing V] [IsDomain V
   have hF : IsArithFrobAt V σ.1 Q := by
     intro x
     have h := DFunLike.congr_fun hσ (Ideal.Quotient.mk _ x)
-    rw [← Ideal.Quotient.eq, map_pow, hu, Nat.card_eq_fintype_card]
-    exact h
+    rwa [← Ideal.Quotient.eq, map_pow, hu, Nat.card_eq_fintype_card]
   refine ⟨σ.1, fun x m hm hx => ?_⟩
   have hm0 : 0 < m := Nat.pos_of_ne_zero (by rintro rfl; exact hm (by simp))
   have hxi : IsIntegral V x := IsIntegral.of_pow hm0 (by rw [hx]; exact isIntegral_one)
   have hmQ : ((m : ℕ) : integralClosure V Ω) ∉ Q := by
     intro h
     apply hm
-    rw [← hu, Ideal.under_def, Ideal.mem_comap, map_natCast]
-    exact h
+    rwa [← hu, Ideal.under_def, Ideal.mem_comap, map_natCast]
   have h := AlgHom.IsArithFrobAt.apply_of_pow_eq_one hF (ζ := ⟨x, hxi⟩) (m := m)
     (Subtype.ext hx) hmQ
   rw [hu] at h
@@ -142,8 +139,7 @@ theorem exists_frobenius_Kur (l : ℕ) [Fact l.Prime] :
   have hφ' : ∀ (x : Om l) (m : ℕ), ¬ l ∣ m → x ^ m = 1 → φ x = x ^ l := by
     intro x m hm hx
     refine hφ x m (fun h => hm ?_) hx
-    rw [← PadicInt.ker_toZMod, RingHom.mem_ker, map_natCast, ZMod.natCast_eq_zero_iff] at h
-    exact h
+    rwa [← PadicInt.ker_toZMod, RingHom.mem_ker, map_natCast, ZMod.natCast_eq_zero_iff] at h
   have hle : (MaximalUnramifiedExtension l).map (φ : Om l →ₐ[ℚ_[l]] Om l) ≤ MaximalUnramifiedExtension l := by
     unfold MaximalUnramifiedExtension
     rw [IntermediateField.adjoin_map]

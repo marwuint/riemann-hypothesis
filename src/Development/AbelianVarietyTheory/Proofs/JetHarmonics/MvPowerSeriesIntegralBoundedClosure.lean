@@ -282,10 +282,8 @@ theorem _root_.GlobalTheory.BddAlg.bdd_alg : ∀ (K : Type) [NormedField K] [IsU
     obtain ⟨c, hc⟩ := bdd_iff_exists_le.mp hS
     exact bdd_iff_exists_le.mpr ⟨c, le_subst_of_le_one_of_constantCoeff_zero ha h0 hc⟩
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, hsubst, ?_, ?_, ?_⟩
-  · intro S T hS hT
-    exact ⟨le_add' hS hT, le_sub' hS hT, le_one_mul_of_le_one hS hT⟩
-  · intro S T hS hT
-    exact ⟨bdd_add_jet_harmonics hS hT, bdd_sub' hS hT, bdd_mul_of_bdd hS hT⟩
+  · exact fun S T hS hT => ⟨le_add' hS hT, le_sub' hS hT, le_one_mul_of_le_one hS hT⟩
+  · exact fun S T hS hT => ⟨bdd_add_jet_harmonics hS hT, bdd_sub' hS hT, bdd_mul_of_bdd hS hT⟩
   · intro S n
     refine ⟨fun hS => ?_, fun hS => ?_, fun hS => bdd_iff_exists_le.mpr ⟨1, hS⟩⟩
     · have := le_pow' (c := 1) hS n
@@ -296,8 +294,7 @@ theorem _root_.GlobalTheory.BddAlg.bdd_alg : ∀ (K : Type) [NormedField K] [IsU
     refine ⟨bdd_iff_exists_le.mpr ⟨‖a‖, _root_.GlobalTheory.BddAlg.le_C a⟩,
       fun ha => le_mono (_root_.GlobalTheory.BddAlg.le_C a) ha, fun ha => ?_⟩
     refine ⟨le_mono (_root_.GlobalTheory.BddAlg.le_C a) ha.le, ?_⟩
-    rw [MvPowerSeries.constantCoeff_C]
-    exact ha
+    rwa [MvPowerSeries.constantCoeff_C]
   · intro i
     refine ⟨le_one_X i, ?_⟩
     rw [MvPowerSeries.constantCoeff_X, norm_zero]
@@ -322,8 +319,7 @@ theorem _root_.GlobalTheory.BddAlg.bdd_alg : ∀ (K : Type) [NormedField K] [IsU
         rw [Finset.sum_insert hb]
         exact bdd_add_jet_harmonics (h b (Finset.mem_insert_self _ _))
           (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
-  · intro a f ha h0
-    exact hsubst Unit (fun _ => a) f (fun _ => ha) (fun _ => h0)
+  · exact fun a f ha h0 => hsubst Unit (fun _ => a) f (fun _ => ha) (fun _ => h0)
   · intro k ι _ φ a A ha
     induction A using MvPolynomial.induction_on with
     | C r =>

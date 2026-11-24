@@ -233,8 +233,7 @@ theorem inertia_q : ∃ g : R.GG, g ≠ 1 ∧ ∀ (P : Ideal (𝓞 H.E)) [P.IsPr
   have hfq : H.condN.factorization H.q = 1 := by
     rw [hN, Nat.factorization_mul (Nat.mul_pos H.QS_pos hd.pos).ne' hq.ne_zero, Finsupp.add_apply,
       Nat.Prime.factorization_self hq, Nat.factorization_eq_zero_of_not_dvd]
-    intro h
-    exact hq.one_lt.ne' (Nat.Coprime.eq_one_of_dvd (Nat.Coprime.symm hcop) h)
+    exact fun h => hq.one_lt.ne' (Nat.Coprime.eq_one_of_dvd (Nat.Coprime.symm hcop) h)
   have hfac : H.condN / H.q ^ H.condN.factorization H.q = H.QS * H.d := by
     rw [hfq, pow_one, hN, Nat.mul_div_cancel _ hq.pos]
   have hmN : H.QS * H.d ∣ H.condN := ⟨H.q, hN⟩
@@ -261,8 +260,7 @@ theorem inertia_q : ∃ g : R.GG, g ≠ 1 ∧ ∀ (P : Ideal (𝓞 H.E)) [P.IsPr
       have h0 := (Nat.modEq_and_modEq_iff_modEq_mul hcop).1 ⟨ha.trans hb.symm, hab'⟩
       rwa [← hN] at h0
     apply Subtype.ext; apply Units.ext
-    rw [← ZMod.natCast_eq_natCast_iff, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val] at hall
-    exact hall
+    rwa [← ZMod.natCast_eq_natCast_iff, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val] at hall
   haveI : IsCyclic f.ker := isCyclic_of_injective fq hinj
   obtain ⟨c, hc⟩ := IsCyclic.exists_generator (α := f.ker)
   have hc2 : H.art (c : (ZMod H.condN)ˣ) ^ 2 = 1 := H.art_q _ ((hmem _).1 c.2)
@@ -396,8 +394,7 @@ theorem ramification_two_and_conjugation_at_q_and_d : ∀ D : D7, EmbeddingTypeJ
       exact ramIdx_eq_two D hlp v hv g hg fun σ => (hmemI σ).trans (hin v.asIdeal σ)
     · refine ramIdx_eq_two D hlp v hv D.R.iod (fun h => ?_)
         fun σ => (hmemI σ).trans (D.host.der.inertia_d v.asIdeal σ)
-      have h' := congrArg (fun g : D.R.GG => g.1.2) h
-      exact absurd (show (-1 : ℤˣ) = 1 from h') (by decide)
+      exact absurd (show (-1 : ℤˣ) = 1 from (congrArg (fun g : D.R.GG => g.1.2) h)) (by decide)
   ·
     intro h
     refine D.host.der.decompConj l hlp ?_ v.asIdeal (MulAction.mem_stabilizer_iff.mpr h)
@@ -575,9 +572,7 @@ theorem structure_sqrt_neg : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (K : 
     obtain ⟨k, hk⟩ := hodd
     exact ⟨k, by omega⟩
   obtain ⟨k, hk⟩ := hev
-  rw [hk]
-  rw [Nat.sub_self, pow_zero, one_mul]
-  rw [Nat.mul_div_cancel_left k two_pos]
+  rw [hk, Nat.sub_self, pow_zero, one_mul, Nat.mul_div_cancel_left k two_pos]
   ring
 
 end GlobalTheory.SqrtNegL

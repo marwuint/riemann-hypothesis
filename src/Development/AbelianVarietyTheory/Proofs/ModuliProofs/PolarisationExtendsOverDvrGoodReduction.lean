@@ -149,8 +149,7 @@ theorem triv_comp {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T T'
       rw [comp_lift_assoc, whiskerRight_fst_assoc, whiskerRight_snd]
     · change (g ▷ A ≫ snd T A).left = (snd T' A).left
       rw [whiskerRight_snd]
-  rw [h3] at h4
-  exact h4
+  rwa [h3] at h4
 
 theorem cubWeil_generic (hG : GlobalFnsSt) {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
     (hA : IsAbelianScheme A) {L : RigLB A} (c : CubicalStr A L) {O F k : Type} [CommRing O] [IsDomain O]
@@ -173,8 +172,7 @@ theorem cubWeil_generic (hG : GlobalFnsSt) {S : Scheme.{0}} {A : Over S} [GrpObj
     refine over_points_ext_of_injective S A O F _ (IsFractionRing.injective O F) p _ _ ?_
     have e : ρF ≫ Y ^ n = ρF ≫ 1 := by rw [MonObj.comp_pow, hYy, hy, MonObj.comp_one]
     have e' : ρF.left ≫ (Y ^ n).left = ρF.left ≫ (1 : Over.mk p ⟶ A).left := congrArg (fun q => q.left) e
-    rw [hF] at e'
-    exact e'
+    rwa [hF] at e'
   obtain ⟨ζ, hζ, -⟩ := existsUnique_cubWeil c hX hY
   have h₁ := hζ.comp ρk
   have h₂ := KerPair.cubWeil_of_gen hG S A hA L c n _ _ _ h₁.1 h₁.2.1 ht
@@ -258,8 +256,7 @@ theorem torsion_eq_one_of_triv : Laws → Laws2 → ∀ (V K : Type) [CommRing V
     have e₁ : (ρF ≫ σ) ≫ X = (ρF ≫ σ) ≫ 1 := by rw [Category.assoc, key, MonObj.comp_one]
     have e₂ : (spMap (algebraMap O (AlgebraicClosure K)) ≫ spMap j) ≫ X.left =
         (spMap (algebraMap O (AlgebraicClosure K)) ≫ spMap j) ≫ (1 : TW ⟶ B).left := congrArg (fun q => q.left) e₁
-    rw [← sp, hj] at e₂
-    exact e₂
+    rwa [← sp, hj] at e₂
   let ρ : Over.mk (spMap f) ⟶ TW := Over.homMk (spMap f') (by
     show spMap f' ≫ spMap (algebraMap V W) = spMap f
     rw [← sp, hf'])
@@ -354,8 +351,7 @@ theorem exists_sec_pow {K : Type} [Field K] (P : PolAV (Sp K)) :
   obtain ⟨i, hi⟩ := TopologicalSpace.Opens.mem_iSup.1 hy
   obtain ⟨j, hj⟩ := TopologicalSpace.Opens.mem_iSup.1 hi
   refine ⟨d, hd, a i, j, fun e => ?_⟩
-  rw [e, Scheme.basicOpen_zero] at hj
-  exact hj
+  rwa [e, Scheme.basicOpen_zero] at hj
 
 theorem exists_prime (Ω : Type) [Field Ω] (m : ℕ) (hm : 0 < m) : ∃ n : ℕ, n.Prime ∧ (n : Ω) ≠ 0 ∧ ¬ n ∣ m := by
   obtain ⟨n, hn, hp⟩ := Nat.exists_infinite_primes (m + ringChar Ω + 1)

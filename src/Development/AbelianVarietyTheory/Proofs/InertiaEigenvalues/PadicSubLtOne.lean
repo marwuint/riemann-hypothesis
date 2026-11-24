@@ -118,8 +118,7 @@ theorem res_eq {F1 : Subfield E} (h : F1 = maximalRealSubfield E) (s : SplitPlac
           rw [e, Formalism.L2.DIV.resS_oToS]
       · obtain ⟨D0, hD0, hD0ne⟩ := Submodule.exists_mem_ne_zero_of_ne_bot s.v.ne_bot
         obtain ⟨r, hr⟩ := Formalism.UG.P.csApprox_local s.v D0 hD0ne (a s.v) (ha s.v)
-        have hlt : s.v.intValuation D0 < 1 := by
-          exact (s.v.intValuation_lt_one_iff_mem D0).mpr hD0
+        have hlt : s.v.intValuation D0 < 1 := (s.v.intValuation_lt_one_iff_mem D0).mpr hD0
         have hi : s.i (((algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) r : 𝓞 E)) : E) =
             algebraMap (𝓞 (maximalRealSubfield E)) (s.v.adicCompletion (maximalRealSubfield E)) r := by
           rw [ReciprocityTheory.Aut.split_coe_algebraMap, AlgHom.commutes,
@@ -138,7 +137,6 @@ theorem res_eq {F1 : Subfield E} (h : F1 = maximalRealSubfield E) (s : SplitPlac
             rw [← Formalism.L2.DIV.adS_oToAd, ← map_add (f := _), sub_add_cancel]
             exact Subtype.ext (Formalism.L2.DIV.adS_coe (E := E) ⟨a, ha⟩).symm
           rw [hsplit, map_add (f := _), Formalism.L2.DIV.resS_oToS, Formalism.L2.DIV.resS_adS_eq_zero s.w s.v s.w_under.symm, zero_add]
-          show Valued.v (a s.v - algebraMap (𝓞 (maximalRealSubfield E)) (s.v.adicCompletion (maximalRealSubfield E)) r) < 1
           exact hr.trans hlt
     · refine ⟨0, by simp, ?_⟩
       change resS (maximalRealSubfield E) s.w 0 = _
@@ -162,8 +160,7 @@ theorem res_eq {F1 : Subfield E} (h : F1 = maximalRealSubfield E) (s : SplitPlac
           push_cast
           rw [map_neg, map_neg]
           ring
-        rw [this, Valuation.map_neg]
-        exact h1
+        rwa [this, Valuation.map_neg]
       · change resS (maximalRealSubfield E) s.w (-⟨x, hx⟩) = _
         rw [map_neg, e1, map_neg]
     · rintro x y hx hy ⟨c1, h1, e1⟩ ⟨c2, h2, e2⟩

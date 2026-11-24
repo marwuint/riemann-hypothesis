@@ -145,8 +145,7 @@ theorem exists_matrix_of_saturated {O : Type} [CommRing O] [IsDomain O] [IsPrinc
     simp only [LinearMap.comp_apply, Submodule.subtype_apply, LinearEquiv.coe_coe,
       LinearEquiv.symm_apply_apply]
     constructor
-    · intro hv
-      exact congrArg Subtype.val (hp ⟨v, hv⟩)
+    · exact fun hv => congrArg Subtype.val (hp ⟨v, hv⟩)
     · intro hv
       rw [← hv]
       exact (p v).2
@@ -190,9 +189,7 @@ theorem exists_integral_model (O Γ : Type) [CommRing O] [IsDomain O] [IsPrincip
     have h1 : (r g : Matrix (Fin n) (Fin n) O).mulVec (B.mulVec (Pi.single j 1)) ∈ L := by
       rw [hLm, hmv, ← hfr]
       exact hW g _ ((hLm _).1 (hBL _))
-    have h2 := (hL _).1 h1
-    simp only [← Matrix.mulVec_mulVec]
-    exact h2
+    simpa only [← Matrix.mulVec_mulVec] using (hL _).1 h1
   let k : (Fin m → FractionRing O) →ₗ[FractionRing O] (Fin n → FractionRing O) :=
     (B.map φ).mulVecLin
   have hk : ∀ v, k v = (B.map φ).mulVec v := fun v => rfl
@@ -206,8 +203,7 @@ theorem exists_integral_model (O Γ : Type) [CommRing O] [IsDomain O] [IsPrincip
     · rw [Matrix.range_mulVecLin, Submodule.span_le]
       rintro _ ⟨j, rfl⟩
       have := (hLm _).1 (hBL (Pi.single j 1))
-      rw [Matrix.mulVec_single_one] at this
-      exact this
+      rwa [Matrix.mulVec_single_one] at this
     · intro w hw
       obtain ⟨d, hd⟩ := IsLocalization.exist_integer_multiples_of_finite
         (nonZeroDivisors O) (S := FractionRing O) w
@@ -498,8 +494,7 @@ theorem eventually_out (i : N.Loc) : ∀ᶠ w in Filter.cofinite, IsSplitPl H w 
   have hl : (N.l i).Prime := Fact.out
   have hfin : (placesOver H.E (N.l i)).Finite := by
     have h0 : Ideal.span {((N.l i : ℕ) : 𝓞 H.E)} ≠ 0 := by simpa using hl.ne_zero
-    refine (Ideal.finite_factors h0).subset fun v hv => ?_
-    exact Ideal.dvd_span_singleton.2 hv
+    exact (Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.2 hv
   filter_upwards [hfin.eventually_cofinite_notMem, (N.S i).eventually_cofinite_notMem,
     (N.Q i).eventually_cofinite_notMem] with w h1 h2 h3 hw using ⟨hw, h1, h2, h3⟩
 

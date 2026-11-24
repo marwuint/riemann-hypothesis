@@ -149,14 +149,12 @@ theorem finite_case (h1 : LocalFiniteness) (h2 : LocalTateDuality) (h3 : LocalEu
     Subsingleton (H1 rho) ∧ Subsingleton (H2 rho) := by
   have hq : ((cycMod F Ω l r φ : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) = normV v := by
     have := cycZ_toZModPow_eq hv hA hφ.2 r
-    rw [map_natCast] at this
-    exact this
+    rwa [map_natCast] at this
   have hsurj : Function.Surjective (rho φ - (normV v : ZMod (l ^ r)) • LinearMap.id : M →ₗ[ZMod (l ^ r)] M) := by
     rw [← Finite.injective_iff_surjective, injective_iff_map_eq_zero]
     intro m hm
     refine hb m ?_
-    rw [LinearMap.sub_apply, sub_eq_zero, LinearMap.smul_apply, Nat.cast_smul_eq_nsmul] at hm
-    exact hm
+    rwa [LinearMap.sub_apply, sub_eq_zero, LinearMap.smul_apply, Nat.cast_smul_eq_nsmul] at hm
   have hd : Subsingleton (H0 ((twDual ((cycMod F Ω l r).comp (Dec (F := F) A).subtype) rho).comp (MonoidHom.id _))) := by
     refine subsingleton_of_forall_eq 0 fun f => Subtype.ext (LinearMap.ext fun m => ?_)
     obtain ⟨y, rfl⟩ := hsurj m
@@ -301,8 +299,7 @@ theorem frob_scalar (bkP : BKPh X) (h : GalHyp bkP i s) {M R : ℕ} {P : Fin R �
   obtain ⟨e, he, -, hu, -⟩ := _root_.GlobalTheory.TwSys.TameScalar.exists_scalar_tmat_of_tame_inertia D N X bkP i s z h.1 hz
   have c0 : residue (X.O0 i) e ≠ 0 := (residue_ne_zero_iff_isUnit _).2 e.isUnit
   have c1 : residue (X.O0 i) e ≠ 1 := by
-    rw [← residue_ne_zero_iff_isUnit, map_sub, map_one, sub_ne_zero] at hu
-    exact hu
+    rwa [← residue_ne_zero_iff_isUnit, map_sub, map_one, sub_ne_zero] at hu
   have key : ∀ τ : GE N, IsFrob (N.plOm.1 (P (.inl a))) (normV (P (.inl a))) τ →
       resT i s τ = residue (X.O0 i) e • 1 := by
     intro τ hτ
@@ -357,8 +354,7 @@ theorem firstHalf : LocalFiniteness → LocalTateDuality → LocalEulerChar → 
   · obtain ⟨n, hn⟩ := exists_pow_kill hB m
     refine ⟨n, funext fun a => ?_⟩
     have := hn _ (map_mem_pow (Λ := Λ) (Ideal.pow_mem_pow (l_mem i) n)) a
-    rw [map_pow, map_natCast, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul] at this
-    exact this
+    rwa [map_pow, map_natCast, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul] at this
   · exact eq_zero_of_scalar Fact.out (l_mem i) ρ κ (hκl σ) c1' hc' (q := 1) Nat.cast_one m (by rw [one_smul]; exact hm)
   · exact eq_zero_of_scalar Fact.out (l_mem i) ρ κ (hκl σ) c1' hc' hq m hm
 

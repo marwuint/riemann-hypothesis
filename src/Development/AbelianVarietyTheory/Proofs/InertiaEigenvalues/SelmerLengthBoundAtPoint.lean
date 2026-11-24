@@ -258,8 +258,7 @@ theorem padicInt_coeff {p : ℕ} [Fact p.Prime] : PadicCoeff p ℤ_[p] := by
       rw [mem_closedBall_zero_iff] at hx
       rw [mem_ball_zero_iff]
       refine lt_of_le_of_lt hx ?_
-      rw [zpow_neg, zpow_natCast, ← inv_pow]
-      exact hn
+      rwa [zpow_neg, zpow_natCast, ← inv_pow]
   · rw [PadicInt.maximalIdeal_eq_span_p]; exact Ideal.subset_span rfl
   · exact_mod_cast (Fact.out : p.Prime).ne_zero
 
@@ -275,7 +274,6 @@ theorem mulSub_open {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteVa
 
   let f : (s → O) →ₗ[O] M := Fintype.linearCombination O (fun i : s => (i : M))
   have hfc : Continuous f := by
-    show Continuous fun v : s → O => ∑ i, v i • (i : M)
     exact continuous_finsetSum _ fun i _ => (continuous_apply i).smul continuous_const
   have hfs : Function.Surjective f := by
     rw [← LinearMap.range_eq_top, Fintype.range_linearCombination, Subtype.range_coe_subtype,
@@ -304,10 +302,8 @@ theorem mulSub_open {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteVa
       congr 1
       funext i
       exact hw i
-    · show IsOpen (Set.univ.pi fun _ => ((Ideal.span {a} : Ideal O) : Set O))
-      exact isOpen_set_pi Set.finite_univ fun _ _ => haO
-  rw [← hq.isOpen_preimage]
-  exact hopen
+    · exact isOpen_set_pi Set.finite_univ fun _ _ => haO
+  rwa [← hq.isOpen_preimage]
 
 theorem contAction_quotient {O G V : Type} [CommRing O] [Group G] [TopologicalSpace G] [AddCommGroup V] [Module O V]
     [TopologicalSpace V] [IsTopologicalAddGroup V] {ρ : Representation O G V} (h : ReciprocityTheory.Gal.ContAction ρ)
@@ -559,9 +555,7 @@ theorem perfectRight_flip {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuat
     exact ⟨f, LinearMap.ext fun x => (he f x).trans (hf x)⟩
   have hinj : Function.Injective e := fun f₁ f₂ h => by
     obtain ⟨f, -, hu⟩ := hb (e f₁)
-    have h1 := hu f₁ (fun x => (he f₁ x).symm)
-    have h2 := hu f₂ (fun x => by rw [← he, ← h])
-    exact h1.trans h2.symm
+    exact (hu f₁ (fun x => (he f₁ x).symm)).trans (hu f₂ (fun x => by rw [← he, ← h])).symm
   let E := LinearEquiv.ofBijective e ⟨hinj, hsurj⟩
   intro φ
   let x := (Module.evalEquiv (FractionRing O) V).symm (φ ∘ₗ E.symm.toLinearMap)
@@ -915,8 +909,7 @@ theorem ringHom_apply_eq_pow {k : Type} [Field k] (p : ℕ) [Fact (Nat.Prime p)]
       pow_one]
   have hcoef : ∀ i, (g.coeff i) ^ p = g.coeff i := by
     intro i
-    have h := congrArg (fun q : k[X] => q.coeff i) hg
-    simpa [Polynomial.coeff_map, frobenius_def] using h
+    simpa [Polynomial.coeff_map, frobenius_def] using congrArg (fun q : k[X] => q.coeff i) hg
   have hτ : g.map τ = g := by
     ext i
     rw [Polynomial.coeff_map]

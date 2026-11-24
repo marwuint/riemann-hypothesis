@@ -88,8 +88,7 @@ theorem existsUnique_upts {F E : Type} [Field F] [Field E] [Algebra F E] {n : Ty
   obtain ⟨g, hg, hg'⟩ := Formalism.UG.P.split_surjective (J.map ρ) hd' g'
   refine ⟨e.symm ⟨g, hsp ▸ hg⟩, ?_, ?_⟩
   · show bc _ _ = _
-    rw [hbc, ← he, MulEquiv.apply_symm_apply]
-    exact hg'
+    rwa [hbc, ← he, MulEquiv.apply_symm_apply]
   · intro y hy
     apply e.injective
     rw [MulEquiv.apply_symm_apply]
@@ -301,8 +300,7 @@ theorem map_eq_primeOf (p : E ⊗[F] v.adicCompletion F →+* v.adicCompletion F
     P.asIdeal.map (GlobalTheory.IndefiniteRowSideFullHecke.OverPlaceIntegralForm.toIntV E v) = GlobalTheory.IndefiniteRowSideFullHecke.SplittingProjection.primeOf p := by
   apply le_antisymm
   · rw [Ideal.map_le_iff_le_comap]
-    intro a ha
-    exact Ideal.subset_span ((hP a).1 ha)
+    exact fun a ha => Ideal.subset_span ((hP a).1 ha)
   · rw [GlobalTheory.IndefiniteRowSideFullHecke.SplittingProjection.primeOf, Ideal.span_le]
     intro x hx
     have hx' : Valued.v (p x) < 1 := hx
@@ -401,8 +399,7 @@ theorem isFrame_iff (Λ : Submodule O (n → K)) (b : GL n K) :
       have := congrArg (fun w => ((b⁻¹ : GL n K) : Matrix n n K) *ᵥ w) hz
       simp only [inv_mul_mulVec] at this
       rw [← this]; exact (z i).2
-    · intro hy
-      exact ⟨fun i => ⟨y i, hy i⟩, rfl⟩
+    · exact fun hy => ⟨fun i => ⟨y i, hy i⟩, rfl⟩
 
 theorem IsFrame.exists_coord {Λ : Submodule O (n → K)} {b : GL n K} (h : IsFrame Λ b) (x : Λ) :
     ∃ z : n → O, (x : n → K) = (b : Matrix n n K) *ᵥ fun i => (z i : K) := by
@@ -466,8 +463,7 @@ theorem IsFrame.exists_fun {Λ : Submodule O (n → K)} {b : GL n K} (h : IsFram
   · show f0 (x + y) = f0 x + f0 y
     simp only [f0, cadd, map_add (f := _), mul_add, Finset.sum_add_distrib]
   · show f0 (a • x) = Ideal.Quotient.mk _ a * f0 x
-    simp only [f0, csmul, map_mul, Finset.mul_sum]
-    exact Finset.sum_congr rfl fun i _ => by ring
+    simpa only [f0, csmul, map_mul, Finset.mul_sum] using Finset.sum_congr rfl fun i _ => by ring
   · show f0 y = rowEval φ z
     have : c y = z := by
       funext i; apply Subtype.ext

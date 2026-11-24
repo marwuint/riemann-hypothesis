@@ -97,8 +97,7 @@ theorem jet_surjective {x : Fam G (Fin d)} (hu : IsUnivChart G d x) (C : Chart G
     rw [h1, eq_bot_iff]
     refine (Ideal.le_comap_pow _ _).trans' le_rfl |>.trans ?_
     rw [ker_jetAug_pow]
-    intro a ha
-    exact Subtype.ext ha
+    exact fun a ha => Subtype.ext ha
   have hv : h.range.val.comp h.rangeRestrict = h := rfl
   obtain ⟨ψ, ⟨h1, h2⟩, -⟩ := hu.2.2 h.range _ m hk (pt C h.rangeRestrict) (by
     rw [spMap_pt, AlgHom.comp_assoc, hv, ← spMap_pt, ← hx, spMap_jetAug_alt hu])
@@ -227,8 +226,7 @@ theorem exists_completion [IsLocalRing V] {x : Fam G (Fin d)} (hu : IsUnivChart 
     have h3 : ∀ m, spMap (T m) ≫ (pt C ((subA _ hp).comp τ) ≫ f) = pt C ((T m).comp ((subA φ hφ.1).comp τ)) :=
       fun m => by
         obtain ⟨ψ, hψ, e⟩ := h2.2 m
-        rw [← Category.assoc, spMap_pt, ← key φ hφ.1 m ψ hψ]
-        exact e
+        rwa [← Category.assoc, spMap_pt, ← key φ hφ.1 m ψ hψ]
     have hs : Function.Surjective ((jetAug V (Fin 1 × Fin d) 0).comp (T 0)) := fun c =>
       ⟨algebraMap V _ c, AlgHom.commutes _ c⟩
     obtain ⟨h', hh'⟩ := exists_pt C (pt C ((subA _ hp).comp τ) ≫ f) (le_preimage_of_local C _ hs _ _ (by
@@ -251,8 +249,7 @@ theorem exists_completion [IsLocalRing V] {x : Fam G (Fin d)} (hu : IsUnivChart 
     have h7 : constantCoeff (τ s) = eps C s := by
       rw [← ((jetAlg V (Fin d)).2.1 0 (τ s)).2, hτ]
       exact DFunLike.congr_fun h5 s
-    rw [h7] at h6
-    exact h6
+    rwa [h7] at h6
 
 theorem range_le_of_descends (C : Chart G) {Ω K : Type} [Field Ω] [Algebra V Ω] [Field K] (ψ : K →+* Ω)
     (h : Γ(G.left, C.U) →ₐ[V] Ω) (a : Spec (CommRingCat.of K) ⟶ G.left)
@@ -392,8 +389,7 @@ theorem kills_of_unit_mul [IsLocalRing V] (B : FB V d O) (N M : ℕ) (hN : IsUni
     rintro _ ⟨j, rfl⟩
     have := h j
     rw [Nat.cast_mul, B.A.mul_act] at this
-    rw [SetLike.mem_coe, RingHom.mem_ker, AlgHom.comp_apply, substAlgHom_apply]
-    exact this
+    rwa [SetLike.mem_coe, RingHom.mem_ker, AlgHom.comp_apply, substAlgHom_apply]
   have := hk (span_X_le_span_act B N hN (Ideal.subset_span ⟨(0, i), rfl⟩))
   rwa [RingHom.mem_ker, AlgHom.comp_apply, substAlgHom_X] at this
 
@@ -439,8 +435,7 @@ theorem pow_eq_one_iff_of_push {S S' W : Scheme.{0}} {g : S' ⟶ S} {t : W ⟶ S
   have e : pushHom hp (Over.mk t') x' = x := Over.OverMorphism.ext hx
   refine ⟨fun h => ?_, fun h => ?_⟩
   · have := congrArg (pushHom hp (Over.mk t')) h
-    rw [map_pow, map_one, e] at this
-    exact this
+    rwa [map_pow, map_one, e] at this
   · have e₂ : pushHom hp (Over.mk t') (x' ^ k) = pushHom hp (Over.mk t') 1 := by
       rw [map_pow, map_one, e]; exact h
     exact Over.OverMorphism.ext (hp.1.hom_ext (congrArg (fun q => q.left) e₂) (by rw [Over.w, Over.w]))

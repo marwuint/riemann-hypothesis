@@ -111,8 +111,7 @@ theorem theta_smul (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (w : Matrix (Fi
 theorem good_zero (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (T : ℝ → Module.End ℂ ((Fin n × Fin d → AF F) → ℂ)) :
     Good M ψ T 0 := by
   refine ⟨Submodule.zero_mem _, 0, Submodule.zero_mem _, fun x => ?_, fun w => ?_⟩
-  · simp only [map_zero, Pi.zero_apply]
-    exact hasDerivAt_const _ _
+  · simpa only [map_zero, Pi.zero_apply] using hasDerivAt_const _ _
   · simp only [map_zero, rho_zero, GlobalTheory.WeilM.thetaSum, Pi.zero_apply, tsum_zero]
     exact hasDerivAt_const (0 : ℝ) (0 : ℂ)
 
@@ -136,10 +135,8 @@ theorem good_smul (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ)
     {a : (Fin n × Fin d → AF F) → ℂ} (ha : Good M ψ T a) : Good M ψ T (c • a) := by
   obtain ⟨ha, a', ha', hpa, hta⟩ := ha
   refine ⟨Submodule.smul_mem _ c ha, c • a', Submodule.smul_mem _ c ha', fun x => ?_, fun w => ?_⟩
-  · simp only [map_smul, Pi.smul_apply, smul_eq_mul]
-    exact (hpa x).const_mul c
-  · simp only [map_smul, theta_smul]
-    exact (hta w).const_mul c
+  · simpa only [map_smul, Pi.smul_apply, smul_eq_mul] using (hpa x).const_mul c
+  · simpa only [map_smul, theta_smul] using (hta w).const_mul c
 
 theorem schA_le_of_pure {κ : Type} [Fintype κ] {N : Submodule ℂ ((κ → AF F) → ℂ)}
     (h : ∀ (f : SInf F κ) (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl (F := F), (κ → Fv F v) → ℂ), (∀ v, φ v ∈ SB (κ → Fv F v)) →

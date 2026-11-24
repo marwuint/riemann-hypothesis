@@ -106,8 +106,7 @@ theorem congAt_local {D : D7} {X : Fields} (s : Seam D X) (P : HeightOneSpectrum
     rw [show ι (iA D.host.F D.host.E (s.iE ((((qOf P : ℕ) : X.E) ^ n)⁻¹ * (k (Pi.single b 1) a - (if a = b then (1 : X.E) else 0))))) =
       algebraMap D.host.E _ (s.iE ((((qOf P : ℕ) : X.E) ^ n)⁻¹ * (k (Pi.single b 1) a - (if a = b then (1 : X.E) else 0)))) from hι.1 _] at h1
     refine intAt_of_seam s P ((qth_intAt_iff _ _).2 ?_)
-    rw [← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
-    exact h1
+    rwa [← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
   intro x hx
   rw [mem_stdAt']
   intro l
@@ -163,8 +162,7 @@ theorem cong_inv {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOn
       push_cast
       field_simp
       ring
-    rw [e1]
-    exact h2
+    rwa [e1]
   have hred : redP P M.det = 1 := by
     have e3 : M = Matrix.of fun a b : Fin N => (if a = b then (1 : E) else 0) +
         ((qOf P : ℕ) : E) * (((qOf P : ℕ) : E)⁻¹ * (M a b - (if a = b then (1 : E) else 0))) := by
@@ -240,8 +238,7 @@ theorem muAt_det_cong {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr 
       push_cast
       field_simp
       ring
-    rw [e1]
-    exact h2
+    rwa [e1]
   have hdet : ((LinearEquiv.det κ : X.Eˣ) : X.E) = Matrix.det (Matrix.of fun a b : Fin N =>
       (if a = b then (1 : X.E) else 0) + ((qOf P.1 : ℕ) : X.E) * (((qOf P.1 : ℕ) : X.E)⁻¹ *
         (κ (Pi.single b 1) a - (Pi.single b (1 : X.E) : Sp X.E N) a))) := by
@@ -307,8 +304,7 @@ theorem extE_cong_mem {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr 
   refine ⟨⟨GlobalTheory.CongLevel.extendByIdOnLastCoordsLinearEquiv_mem_firstRowGroup _ κ, ?_⟩, ?_⟩
   · show (MulAut.conj h⁻¹).toMonoidHom (GlobalTheory.CongLevel.extE (cOf R j) κ) ∈ Jat (Pr := Pr) cst.sharp j P.1
     have e : (MulAut.conj h⁻¹).toMonoidHom (GlobalTheory.CongLevel.extE (cOf R j) κ) = h⁻¹ * GlobalTheory.CongLevel.extE (cOf R j) κ * h := by simp
-    rw [e]
-    exact hJ
+    rwa [e]
   · unfold chiInv
     rw [GlobalTheory.Mem.Col2.LevMod.unipotentArg_extendByIdOnLastCoords, hL.cst_ok.psi_int P 0 intAt_zero, inv_one, one_mul]
     have eq : ((h⁻¹ * GlobalTheory.CongLevel.extE (cOf R j) κ * h : AutY X R j)).toLinearMap = LinearMap.id + ((qOf P.1 : ℕ) : X.E) •

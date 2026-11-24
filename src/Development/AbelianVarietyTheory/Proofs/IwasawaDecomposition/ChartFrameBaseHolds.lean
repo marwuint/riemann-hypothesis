@@ -82,8 +82,7 @@ theorem lieBasis_iff {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRing S] (x :
     · exact (Category.assoc _ _ _).symm.trans ((congrArg (fun q => q ≫ φ) h).trans e)
     · exact (Category.assoc _ _ _).trans (h.2.trans e.symm)
     · refine (Category.assoc _ _ _).trans ?_
-      rw [Over.w w, Over.w η[G']]
-      exact zs
+      rwa [Over.w w, Over.w η[G']]
   have pr : ∀ {n} (u : Fin n → (epsR S ⟶ G')), (List.ofFn u).prod.left ≫ φ =
       (List.ofFn fun i => (pushPt hp.1.w (u i) : tEpsG x ⟶ t.G)).prod.left := fun u =>
     congrArg (fun q => q.left) ((map_list_prod (pushHom hp (epsR S)) _).trans (by rw [List.map_ofFn]; rfl))
@@ -105,11 +104,8 @@ theorem lieBasis_iff {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRing S] (x :
   refine ⟨fun w hw => ⟨up w hw.1, hup _ _⟩, fun n v => ⟨fun hB => ⟨fun i => (tan _).1 (hB.1 i), fun w hw => ?_⟩,
     fun hB => ⟨fun i => (tan _).2 (hB.1 i), fun w hw => ?_⟩⟩⟩
   · have h := hB.2 (up w hw.1) ((tan _).2 (by rw [hup]; exact hw))
-    simp only [comb, hup] at h
-    exact h
-  · have h := hB.2 _ ((tan _).1 hw)
-    simp only [comb]
-    exact h
+    simpa only [comb, hup] using h
+  · simpa only [comb] using hB.2 _ ((tan _).1 hw)
 
 theorem tanBasis_baseChange {X : Scheme.{0}} (t : SAB H X) {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T)
     (x : Sp S ⟶ X) (n : ℕ) (v : Fin n → (Sp (DualNumber S) ⟶ t.G.left)) (hv : ∀ i, IsTanAtG t x (v i))

@@ -91,8 +91,7 @@ theorem not_dvd_card_of_injective {E : Type} [Field E] [NumberField E] {n : ℕ}
     simpa [sub_eq_zero] using h4
   have h5 : f g = f 1 := by
     rw [map_one]
-    refine LinearEquiv.ext fun x => ?_
-    exact LinearMap.congr_fun h3 x
+    exact LinearEquiv.ext fun x => LinearMap.congr_fun h3 x
   rw [hf h5, orderOf_one] at hg
   exact hp.one_lt.ne hg
 
@@ -145,16 +144,14 @@ theorem pairBK_mem_one (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K)
   simp only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply] at hx
   have h2 := hx y hy
   rw [pairK_apply, pairP_trivial, pairingBSymm_holds] at h2
-  rw [pairBK_apply]
-  exact h2
+  rwa [pairBK_apply]
 
 omit [Fintype ι] in
 theorem mem_dualFr_tauLat {E : Type} [Field E] [NumberField E] (emb : ι → E →+* K) (τ : ι)
     (L : Submodule (𝓞 E) (Fin n → E)) (φ : Fin n → K) :
     φ ∈ dualFr (tauLat emb τ L) ↔ ∀ y ∈ L, φ ⬝ᵥ (fun a => emb τ (y a)) ∈ (1 : Submodule (𝓞 K) K) := by
   constructor
-  · intro h y hy
-    exact h _ (Submodule.subset_span ⟨y, hy, rfl⟩)
+  · exact fun h y hy => h _ (Submodule.subset_span ⟨y, hy, rfl⟩)
   · intro h x hx
     induction hx using Submodule.span_induction with
     | mem z hz => obtain ⟨y, hy, rfl⟩ := hz; exact h y hy
@@ -234,8 +231,7 @@ theorem valuation_pair_br_le_one {X : Fields} {N n : ℕ} (hN : N = n + 1) (lam 
   rw [h3, LinearMap.map_smul_of_tower, LinearMap.map_smul_of_tower, LinearMap.smul_apply] at h2
   have h4 := valuation_le_one_of_smul w hs h2
   rw [Br.brAt, LinearMap.smul_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, map_mul, map_prod]
-  simp only [map_zpow₀, ht, one_zpow, Finset.prod_const_one, one_mul]
-  exact h4
+  simpa only [map_zpow₀, ht, one_zpow, Finset.prod_const_one, one_mul] using h4
 
 section Period
 

@@ -92,8 +92,7 @@ private lemma pull_germ_eq_pull_germ (V : X.Opens) (s : Γ(X, V)) (y z : Y)
     change algebraMap (Y.presheaf.stalk w) Y.functionField
       (j.stalkMap w (X.presheaf.germ V (j w) hw s)) = _
     rw [Scheme.Hom.germ_stalkMap_apply]
-    simp only [RingHom.algebraMap_toAlgebra]
-    exact Y.presheaf.germ_stalkSpecializes_apply hw _ _
+    simpa only [RingHom.algebraMap_toAlgebra] using Y.presheaf.germ_stalkSpecializes_apply hw _ _
   rw [e y hy, e z hz]
 
 set_option autoImplicit false in
@@ -109,8 +108,7 @@ private lemma mem_closed_iff_not_isUnit_germ (T : Closeds X) (U : X.affineOpens)
   rw [← key, Scheme.IdealSheafData.mem_support_iff_of_mem hz, hI, Scheme.mem_zeroLocus_iff,
     ← X.mem_basicOpen h z hz]
   constructor
-  · intro H
-    exact H h (Ideal.mem_span_singleton_self h)
+  · exact fun H => H h (Ideal.mem_span_singleton_self h)
   · intro H f hf hzf
     obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.1 hf
     rw [X.basicOpen_mul] at hzf
@@ -152,8 +150,7 @@ private lemma exists_germ_eq_mul_of_not_isUnit_on_closed (T : Closeds X) (U : X.
     apply mem_vanishingIdeal_of_not_isUnit_germ
     intro z hz hzT hu
     apply hs z (hWV hz) hzT
-    rw [← X.presheaf.germ_res_apply (homOfLE hWV) z hz s]
-    exact hu
+    rwa [← X.presheaf.germ_res_apply (homOfLE hWV) z hz s]
   rw [← Scheme.IdealSheafData.map_ideal_basicOpen, hI, Ideal.map_span, Set.image_singleton] at hmem
   obtain ⟨c, hc⟩ := Ideal.mem_span_singleton'.1 hmem
   refine ⟨X.presheaf.germ _ x hxW c, ?_⟩
@@ -257,8 +254,7 @@ theorem _root_.GlobalTheory.BoundaryDivisor.exists_reduced_cartierDiv :
     unfold _root_.GlobalTheory.Cartier.UnitAt
     refine ⟨(j.stalkMap z).hom c, isUnit_iff_exists_inv.2 ⟨(j.stalkMap z).hom d, ?_⟩, rfl⟩
     apply IsFractionRing.injective (Y.presheaf.stalk z) Y.functionField
-    rw [map_mul, map_one]
-    exact hcd
+    rwa [map_mul, map_one]
   let F : (y : Y) → _root_.GlobalTheory.Cartier.Germ y := fun y => _root_.GlobalTheory.Cartier.germOf y (g y)
   have hF : F ∈ _root_.GlobalTheory.Cartier.cartierGroup Y := by
     unfold _root_.GlobalTheory.Cartier.cartierGroup

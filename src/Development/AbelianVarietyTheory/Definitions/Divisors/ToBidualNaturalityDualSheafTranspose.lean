@@ -172,8 +172,7 @@ theorem isSheaf_homPresheaf : (homPresheaf F G).IsSheaf := by
   · change @Eq ↥(homGroup F G (U i)) (homRes F G (le_iSup U i) ψ) (φ i)
     refine Subtype.ext (funext fun T => LinearMap.ext fun s => ?_)
     have := key T.1 (T.2.trans (le_iSup U i)) s i T.1 le_rfl T.2
-    rw [resM_self, resM_self] at this
-    exact this
+    rwa [resM_self, resM_self] at this
   · change homGroup F G (iSup U) at ψ'
     change @Eq ↥(homGroup F G (iSup U)) ψ' ψ
     refine Subtype.ext (funext fun W => LinearMap.ext fun s => ?_)
@@ -265,8 +264,7 @@ def dual : X.Modules := homMod F (structureModule X)
 def dualApp (l : Γ(dual F, V)) (h : W ≤ V) : Γ(F, W) →ₗ[Γ(X, W)] Γ(X, W) := homApp l h
 
 theorem dualApp_resM (l : Γ(dual F, V)) (h : W ≤ V) {T : X.Opens} (h' : T ≤ W) (s : Γ(F, W)) :
-    dualApp l (h'.trans h) (resM F h' s) = resG X h' (dualApp l h s) := by
-  exact homApp_resM l h h' s
+    dualApp l (h'.trans h) (resM F h' s) = resG X h' (dualApp l h s) := homApp_resM l h h' s
 
 def dualMk (l : ∀ W : X.Opens, W ≤ V → (Γ(F, W) →ₗ[Γ(X, W)] Γ(X, W)))
     (hl : ∀ (W W' : X.Opens) (h : W ≤ V) (h' : W' ≤ W) (s : Γ(F, W)),
@@ -286,8 +284,7 @@ def dualMk (l : ∀ W : X.Opens, W ≤ V → (Γ(F, W) →ₗ[Γ(X, W)] Γ(X, W)
     dualApp (a • l) h = resG X h a • dualApp l h := rfl
 
 theorem dualApp_sum {κ : Type*} (t : Finset κ) (l : κ → Γ(dual F, V)) (h : W ≤ V) :
-    dualApp (∑ k ∈ t, l k) h = ∑ k ∈ t, dualApp (l k) h := by
-  exact homApp_sum t l h
+    dualApp (∑ k ∈ t, l k) h = ∑ k ∈ t, dualApp (l k) h := homApp_sum t l h
 
 @[simp] theorem dualApp_res (l : Γ(dual F, V)) (h : W ≤ V) {T : X.Opens} (h' : T ≤ W) :
     dualApp (resM (dual F) h l) h' = dualApp l (h'.trans h) := rfl
@@ -416,8 +413,7 @@ theorem dual (he : IsFrame e) : IsFrame he.coord := by
   · intro c c' hcc
     funext j
     have hj := congrArg (fun l => dualApp l le_rfl (resM F h (e j))) hcc
-    simp only [Fintype.linearCombination_apply, dualApp_sum_smul_coord_eq] at hj
-    exact hj
+    simpa only [Fintype.linearCombination_apply, dualApp_sum_smul_coord_eq] using hj
   · intro l
     refine ⟨fun i => dualApp l le_rfl (resM F h (e i)), ?_⟩
     rw [Fintype.linearCombination_apply]
@@ -467,8 +463,7 @@ theorem IsVB.isIso_toBidual_of_local_frames (h : IsVB F r) : IsIso (cartierDualT
   refine isIso_of_frames (ι := Fin r) _ fun x => ?_
   obtain ⟨U, e, hx, he⟩ := h x
   refine ⟨U, e, hx, he, ?_⟩
-  simp only [he.toBidual_app]
-  exact he.dual.dual
+  simpa only [he.toBidual_app] using he.dual.dual
 
 
 namespace IsFrame
@@ -547,8 +542,7 @@ theorem detUnit_map_iso (he : IsFrame e) (he' : IsFrame e') (φ : F ⟶ G) [IsIs
   rw [val_detUnit, val_detUnit, Module.Basis.det_apply, Module.Basis.det_apply]
   congr 1
   ext i j
-  simp only [Module.Basis.toMatrix_apply, ← app_resM]
-  exact repr_map_iso_app_eq_repr he φ h _ i
+  simpa only [Module.Basis.toMatrix_apply, ← app_resM] using repr_map_iso_app_eq_repr he φ h _ i
 
 private theorem pullbackSections_resM [F.IsQuasicoherent] (f : Y ⟶ X) (h : V ≤ U) {T : Y.Opens}
     (hT : T ≤ f ⁻¹ᵁ V) (x : Γ(F, U)) :
@@ -614,8 +608,7 @@ theorem isLB_det_iff : (det F r).IsLB ↔ IsVB F r := by
       intro x _
       obtain ⟨U, e, hx, he⟩ := h x
       exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨U, e, he⟩, hx⟩
-    · intro c
-      exact (IsFrame.res_detUnit _ _ _ _ _).trans (IsFrame.detUnit_self _ _ _)
+    · exact fun c => (IsFrame.res_detUnit _ _ _ _ _).trans (IsFrame.detUnit_self _ _ _)
     · intro i j k
       exact (congrArg₂ (· * ·) (IsFrame.res_detUnit _ _ _ _ _) (IsFrame.res_detUnit _ _ _ _ _)).trans
         ((IsFrame.detUnit_mul _ _ _ _ _ _).trans (IsFrame.res_detUnit _ _ _ _ _).symm)
@@ -632,8 +625,7 @@ theorem lbIso_det_of_frames {L : LB X} (hL : L.IsLB) (e : ∀ i, Fin r → Γ(F,
     obtain ⟨i, hi⟩ := TopologicalSpace.Opens.mem_iSup.1 hx
     exact ⟨L.U i, e i, hi, he i⟩
   refine ⟨hVB, CechPic.iso_of_chart hVB.isLB_det ⟨fun i => ⟨L.U i, e i, he i⟩, ?_, ?_⟩⟩
-  · intro i
-    exact fun x hx => hx
+  · exact fun i => fun x hx => hx
   · intro y i j _ _
     rw [hg i j]
     rfl

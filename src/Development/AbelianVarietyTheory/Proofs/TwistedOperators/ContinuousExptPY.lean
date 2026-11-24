@@ -161,7 +161,6 @@ theorem continuous_expt_pY (T : GrpData p q) :
     (fun B => (show pY B ∈ upq p q ∧ IsPC (pY B) from pY_mem B).1)
 
 theorem continuous_matG (T : GrpData p q) : Continuous (matG T) := by
-  show Continuous fun x => ((T.cov x : GL (Ix p q) ℂ) : Mat p q)
   exact Units.continuous_val.comp (continuous_fst.comp T.emb.continuous)
 
 theorem matG_J (T : GrpData p q) (x : T.G) : (matG T x)ᴴ * Jm p q * matG T x = Jm p q := by
@@ -170,8 +169,7 @@ theorem matG_J (T : GrpData p q) (x : T.G) : (matG T x)ᴴ * Jm p q * matG T x =
   have hc : Formalism.UG.cT (starRingEnd ℂ) (matG T x) = (matG T x)ᴴ := by
     ext i j
     simp [Formalism.UG.cT]
-  rw [hc] at h
-  exact h
+  rwa [hc] at h
 
 theorem matG_one (T : GrpData p q) : matG T 1 = 1 := by
   simp [matG]
@@ -201,10 +199,8 @@ theorem exists_blocks (T : GrpData p q) {k : T.G} (hk : k ∈ T.Kset) :
   simp [Matrix.fromBlocks_inj] at hJ
   obtain ⟨hA, hD⟩ := hJ
   refine ⟨A, ?_, D, ?_, hMe⟩
-  · rw [Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]
-    exact hA
-  · rw [Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]
-    exact hD
+  · rwa [Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]
+  · rwa [Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]
 
 theorem matG_star_mul (T : GrpData p q) {k : T.G} (hk : k ∈ T.Kset) :
     (matG T k)ᴴ * matG T k = 1 := by

@@ -74,8 +74,7 @@ namespace TeichmullerAction
 section
 
 theorem Bridge.sigA_teich : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (y : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))), (Reformulated.AutPerF.Ainf.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) (WittVector.teichmuller l y) = WittVector.teichmuller l ((Reformulated.AutPerF.Tilt.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) y) := by
-  intro l _ g y
-  exact WittVector.map_teichmuller l _ y
+  exact fun l _ g y => WittVector.map_teichmuller l _ y
 
 end
 end TeichmullerAction
@@ -123,8 +122,7 @@ theorem isUnit_general {p : ℕ} [Fact p.Prime] {R : Type*} [CommRing R] [Fact �
 end Bridge.IsUnitOfGeneratorLemmas
 
 theorem Bridge.isUnit_of_generator : ∀ (l : ℕ) [Fact l.Prime] {a : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))} (h : (Reformulated.AutPerF.AinfInv.kerTheta l ↥(PadicComplexInt l)) = Ideal.span {a}), IsUnit (((algebraMap (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)))) a) := by
-  intro l _ a h
-  exact Bridge.IsUnitOfGeneratorLemmas.isUnit_general h
+  exact fun l _ a h => Bridge.IsUnitOfGeneratorLemmas.isUnit_general h
 
 end
 end IsUnitOfGenerator
@@ -132,8 +130,7 @@ namespace ContinuousGalois
 section
 
 theorem Bridge.sigC_cont : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)), Continuous ((MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ℂ_[l] g)) := by
-  intro l _ g
-  exact (isometry_smul ℂ_[l] g).continuous
+  exact fun l _ g => (isometry_smul ℂ_[l] g).continuous
 
 end
 end ContinuousGalois
@@ -180,8 +177,7 @@ namespace DeRhamFiltrationNat
 section
 
 theorem Bridge.alg_mem_FilD_nat : ∀ (l : ℕ) [Fact l.Prime] {n : ℕ} {z : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))} (h : z ∈ Reformulated.AutPerF.BdRPlus.fil l ↥(PadicComplexInt l) n), algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) z ∈ Reformulated.AutPerF.BdR.fil l ↥(PadicComplexInt l) (n : ℤ) := by
-  intro l _ n z h
-  exact (Reformulated.AutPerF.BdR.algebraMap_mem_fil_iff n z).2 h
+  exact fun l _ n z h => (Reformulated.AutPerF.BdR.algebraMap_mem_fil_iff n z).2 h
 
 end
 end DeRhamFiltrationNat
@@ -318,8 +314,7 @@ namespace FrobeniusCoeffA
 section
 
 theorem Bridge.phiA_coeff : ∀ (l : ℕ) [Fact l.Prime] (w : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) (n : ℕ), ((Reformulated.AutPerF.Ainf.frob l ↥(PadicComplexInt l)) w).coeff n = w.coeff n ^ l := by
-  intro l _ w n
-  exact WittVector.coeff_frobenius_charP l w n
+  exact fun l _ w n => WittVector.coeff_frobenius_charP l w n
 
 end
 end FrobeniusCoeffA
@@ -504,8 +499,7 @@ namespace FrobeniusPeriodAlgebraMap
 section
 
 theorem Bridge.CrisMaps.φB_algebraMap : ∀ (l : ℕ) [Fact l.Prime] (x : (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))), (Reformulated.AutPerF.Bcris.frob l ↥(PadicComplexInt l)) (algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) x) = algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris.frob l ↥(PadicComplexInt l)) x) := by
-  intro l _ x
-  exact Reformulated.AutPerF.Bcris.frob_algebraMap_acris x
+  exact fun l _ x => Reformulated.AutPerF.Bcris.frob_algebraMap_acris x
 
 end
 end FrobeniusPeriodAlgebraMap
@@ -650,8 +644,7 @@ namespace NormGaloisComplex
 section
 
 theorem Bridge.RingBasics.norm_σC : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (x : ℂ_[l]), ‖(MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ℂ_[l] g) x‖ = ‖x‖ := by
-  intro l _ g x
-  exact Reformulated.AutPerF.IsUnitBall.norm_smul_eq _ g x
+  exact fun l _ g x => Reformulated.AutPerF.IsUnitBall.norm_smul_eq _ g x
 
 end
 end NormGaloisComplex
@@ -680,8 +673,7 @@ namespace ExtensionAlgebra
 section
 
 theorem Bridge.RingBasics.awayMap_algebraMap₂ : ∀ (l : ℕ) [Fact l.Prime] (f : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) →+* (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) (x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), Reformulated.AutPerF.AinfInv.extend l f (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) x) = algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) (f x) := by
-  intro l _ f x
-  exact Reformulated.AutPerF.AinfInv.extend_algebraMap f x
+  exact fun l _ f x => Reformulated.AutPerF.AinfInv.extend_algebraMap f x
 
 end
 end ExtensionAlgebra
@@ -694,8 +686,7 @@ namespace UntiltFrobenius
 section
 
 theorem Bridge.RingBasics.untilt_σF : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (x : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))), ((Reformulated.AutPerF.Tilt.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) x).untilt = (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g) x.untilt := by
-  intro l _ g x
-  exact Reformulated.AutPerF.Tilt.untilt_map _ x
+  exact fun l _ g x => Reformulated.AutPerF.Tilt.untilt_map _ x
 
 end
 end UntiltFrobenius
@@ -729,8 +720,7 @@ namespace PrimeNeZero
 section
 
 theorem Bridge.RingBasics.p_ne_zero : ∀ (l : ℕ) [Fact l.Prime] , ((l : ℕ) : ℂ_[l]) ≠ 0 := by
-  intro l hl
-  exact Nat.cast_ne_zero.mpr hl.out.ne_zero
+  exact fun l hl => Nat.cast_ne_zero.mpr hl.out.ne_zero
 
 end
 end PrimeNeZero
@@ -798,8 +788,7 @@ namespace FrobeniusComplexOne
 section
 
 theorem Bridge.RingBasics.σC_one : ∀ (l : ℕ) [Fact l.Prime] (x : ℂ_[l]), (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ℂ_[l] 1) x = x := by
-  intro l _ x
-  exact one_smul _ x
+  exact fun l _ x => one_smul _ x
 
 end
 end FrobeniusComplexOne
@@ -972,8 +961,7 @@ theorem witt_frobenius_lift (p : ℕ) [Fact p.Prime] (k : Type*) [CommRing k] [C
 end Bridge.RingBasics.WittFrobeniusLiftLemmas
 
 theorem Bridge.RingBasics.frob_lift : ∀ (l : ℕ) [Fact l.Prime] (x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), ∃ z : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)), (Reformulated.AutPerF.Ainf.frob l ↥(PadicComplexInt l)) x = x ^ l + (l : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) * z := by
-  intro l _ x
-  exact Bridge.RingBasics.WittFrobeniusLiftLemmas.witt_frobenius_lift l _ x
+  exact fun l _ x => Bridge.RingBasics.WittFrobeniusLiftLemmas.witt_frobenius_lift l _ x
 
 end
 end WittFrobeniusLift

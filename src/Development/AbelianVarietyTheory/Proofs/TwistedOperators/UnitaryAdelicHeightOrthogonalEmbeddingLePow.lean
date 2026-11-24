@@ -154,11 +154,8 @@ theorem exists_heightGL_le (J : Matrix n m (AF F ⊗[F] E)) (P : Matrix m n (AF 
         J * ((x⁻¹ : GL m (AF F ⊗[F] E)) : Matrix m m (AF F ⊗[F] E)) * P + K →
       heightGL F X ≤ C * heightGL F x := by
   classical
-  have hinf : ∀ w : InfinitePlace F, ∃ c : ℝ≥0, 1 ≤ c ∧ ∀ (x : Matrix m m (w.Completion ⊗[F] E)) (h : ℝ≥0),
-      1 ≤ h → normInf F w x ≤ h →
-        normInf F w (J.map (compInf F E w) * x * P.map (compInf F E w) + K.map (compInf F E w)) ≤ c * h :=
-    fun w => GlobalTheory.EmbHeight.exists_normInf_le F w _ _ _
-  choose c hc1 hc using hinf
+  choose c hc1 hc using fun w => GlobalTheory.EmbHeight.exists_normInf_le F w
+    (J.map (compInf F E w)) (P.map (compInf F E w)) (K.map (compInf F E w))
   let M : HeightOneSpectrum (𝓞 F) → ℝ≥0 := fun v =>
     max 1 (max (normFin F v (J.map (compFin F E v)) * normFin F v (P.map (compFin F E v)))
       (normFin F v (K.map (compFin F E v))))
@@ -166,29 +163,24 @@ theorem exists_heightGL_le (J : Matrix n m (AF F ⊗[F] E)) (P : Matrix m n (AF 
   have hMfin : (Function.mulSupport M).Finite := by
     have h3 := (GlobalTheory.EmbHeight.eventually_normFin_le F J).and
       ((GlobalTheory.EmbHeight.eventually_normFin_le F P).and (GlobalTheory.EmbHeight.eventually_normFin_le F K))
-    refine (Filter.eventually_cofinite.1 h3).subset ?_
-    intro v hv hv3
-    exact hv (max_eq_left (max_le (mul_le_one' hv3.1 hv3.2.1) hv3.2.2))
+    exact (Filter.eventually_cofinite.1 h3).subset fun v hv hv3 =>
+      hv (max_eq_left (max_le (mul_le_one' hv3.1 hv3.2.1) hv3.2.2))
   refine ⟨(∏ w, c w) * ∏ᶠ v, M v, fun X x hX hXi => ?_⟩
-  have key_inf : ∀ w, htInf F w (Formalism.UG.bc (compInf F E w) X) ≤ c w * htInf F w (Formalism.UG.bc (compInf F E w) x) :=
-    fun w => GlobalTheory.EmbHeight.htOf_le (hc1 w) (hc w) _ _ (matrix_map_eq_of_eq _ _ _ _ _ _ hX) (matrix_map_eq_of_eq _ _ _ _ _ _ hXi)
   have key_fin : ∀ v, htFin F v (Formalism.UG.bc (compFin F E v) X) ≤ M v * htFin F v (Formalism.UG.bc (compFin F E v) x) :=
     fun v => GlobalTheory.EmbHeight.htOf_le (hM1 v) (fun y h h1 hy => GlobalTheory.EmbHeight.normFin_le F v _ _ _ y h h1 hy) _ _
       (matrix_map_eq_of_eq _ _ _ _ _ _ hX) (matrix_map_eq_of_eq _ _ _ _ _ _ hXi)
-  have hfinX := finite_mulSupport_htFin F X
-  have hfinx := finite_mulSupport_htFin F x
   have hI : ∏ w, htInf F w (Formalism.UG.bc (compInf F E w) X) ≤
       (∏ w, c w) * ∏ w, htInf F w (Formalism.UG.bc (compInf F E w) x) := by
     rw [← Finset.prod_mul_distrib]
-    exact Finset.prod_le_prod' fun w _ => key_inf w
+    exact Finset.prod_le_prod' fun w _ => GlobalTheory.EmbHeight.htOf_le (hc1 w) (hc w) _ _
+      (matrix_map_eq_of_eq _ _ _ _ _ _ hX) (matrix_map_eq_of_eq _ _ _ _ _ _ hXi)
   have hF : ∏ᶠ v, htFin F v (Formalism.UG.bc (compFin F E v) X) ≤
       (∏ᶠ v, M v) * ∏ᶠ v, htFin F v (Formalism.UG.bc (compFin F E v) x) := by
-    rw [← finprod_mul_distrib hMfin hfinx]
-    exact finprod_le_finprod' hfinX ((hMfin.union hfinx).subset (Function.mulSupport_mul _ _)) fun v => key_fin v
+    rw [← finprod_mul_distrib hMfin (finite_mulSupport_htFin F x)]
+    exact finprod_le_finprod' (finite_mulSupport_htFin F X)
+      ((hMfin.union (finite_mulSupport_htFin F x)).subset (Function.mulSupport_mul _ _)) key_fin
   unfold heightGL
-  calc _ ≤ ((∏ w, c w) * ∏ w, htInf F w (Formalism.UG.bc (compInf F E w) x)) *
-        ((∏ᶠ v, M v) * ∏ᶠ v, htFin F v (Formalism.UG.bc (compFin F E v) x)) := mul_le_mul' hI hF
-    _ = _ := by ring
+  exact (mul_le_mul' hI hF).trans_eq (by ring)
 
 theorem height_emb_le : ∀ (D : D7) (S A B : HSp D) (o : GlobalTheory.MixModel.OrthDec S A B), ∃ (C : ℝ) (a : ℕ),
     ∀ g : GA D A, GlobalTheory.Grow.height S (o.emb (g, 1)) ≤ C * GlobalTheory.Grow.height A g ^ a := by

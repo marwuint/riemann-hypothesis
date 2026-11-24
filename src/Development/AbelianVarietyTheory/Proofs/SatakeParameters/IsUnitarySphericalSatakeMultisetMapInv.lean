@@ -130,8 +130,7 @@ theorem card_quot_range (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuatio
     · rintro ⟨y, rfl⟩
       show R.mkQ (π (A.mulVec y)) = 0
       rw [hπA]
-      simp only [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
-      exact ⟨π y, rfl⟩
+      simpa only [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] using ⟨π y, rfl⟩
   have e : ((Fin r → O) ⧸ LinearMap.range A.mulVecLin) ≃ ((Fin r → F) ⧸ R) :=
     ((Submodule.quotEquivOfEq _ _ hker.symm).trans
       (φ.quotKerEquivOfSurjective hφs)).toEquiv
@@ -337,8 +336,7 @@ variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Fie
 theorem glMap_tinv_inv_le_iff (A : GL (Fin r) K) :
     glMap (tinv A)⁻¹ (std O K r).1 ≤ (std O K r).1 ↔ glMap A (std O K r).1 ≤ (std O K r).1 := by
   rw [glMap_std_le_iff O K r, glMap_std_le_iff O K r]
-  simp only [tinv_inv_val, transpose_apply]
-  exact forall_comm
+  simpa only [tinv_inv_val, transpose_apply] using forall_comm
 
 theorem glMap_tinv_std (X : GL (Fin r) K) (h : glMap X (std O K r).1 = (std O K r).1) :
     glMap (tinv X) (std O K r).1 = (std O K r).1 := by
@@ -414,8 +412,7 @@ theorem dual_mem_subElem {k : ℕ} (hk : k ≤ r) (ϖ : O) (u : Kˣ) (hϖ : Irre
   rw [hidx1, hmax] at hmul
   refine ⟨⟨ha, ?_⟩, hz ▸ hb⟩
   have hq : 0 < qRes O ^ k := pow_pos (lt_of_lt_of_le two_pos two_le_qRes) _
-  refine Nat.eq_of_mul_eq_mul_left hq ?_
-  exact hmul.trans (by rw [← pow_add, Nat.add_sub_cancel' hk])
+  exact Nat.eq_of_mul_eq_mul_left hq (hmul.trans (by rw [← pow_add, Nat.add_sub_cancel' hk]))
 
 theorem bijOn_dual [DecidableEq (GL (Fin r) K)] {k : ℕ} (hk : k ≤ r) (ϖ : O) (u : Kˣ)
     (hϖ : Irreducible ϖ) (hu : (u : K) = algebraMap O K ϖ) (s : Finset (GL (Fin r) K))
@@ -481,7 +478,6 @@ theorem isUnitarySatake_map_inv : ∀ (O K : Type) [CommRing O] [IsDomain O] [Is
         · rintro ⟨M, hM, rfl⟩
           have hM' : M = maxMul (std O K r) := hM
           subst hM'
-          show IsLocalRing.maximalIdeal O • (std O K r).1 = glMap (scalGL u) (std O K r).1
           exact hz.symm
         · intro hx
           have hx' : x = glMap (scalGL u) (std O K r).1 := hx

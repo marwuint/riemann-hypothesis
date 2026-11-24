@@ -107,8 +107,7 @@ private theorem mul_add_mul_add_mul_eq_one_of_dual_blocks {K : Type*} [Field K] 
       Matrix.fromBlocks_one]
   have hMN := (Matrix.mul_eq_one_comm_of_equiv e.symm).1 hNM
   rw [Matrix.fromCols_mul_fromRows, Matrix.fromCols_mul_fromRows] at hMN
-  rw [← add_assoc]
-  exact hMN
+  rwa [← add_assoc]
 
 theorem frame_identity {V V' : HSp D} {r : ℕ} {C C' : Matrix (Fin V.rank) (Fin r) D.host.E}
     {B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E} (hs : IsIsoSplit V V' C B)
@@ -206,11 +205,9 @@ theorem ni_fix {V : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E} 
     obtain ⟨h1, h2, -⟩ := hg
     constructor
     · have e : (Formalism.L2.Theta.mt V g - 1) * C.map (incA D) = 0 := h1
-      rw [Matrix.sub_mul, Matrix.one_mul, sub_eq_zero] at e
-      exact e
+      rwa [Matrix.sub_mul, Matrix.one_mul, sub_eq_zero] at e
     · have e : (adj D C * V.gram).map (incA D) * (Formalism.L2.Theta.mt V g - 1) = 0 := h2
-      rw [Matrix.mul_sub, Matrix.mul_one, sub_eq_zero] at e
-      exact e
+      rwa [Matrix.mul_sub, Matrix.mul_one, sub_eq_zero] at e
   | one => simp only [mt_one, Matrix.one_mul, Matrix.mul_one, and_self]
   | mul g h _ _ ihg ihh =>
     refine ⟨?_, ?_⟩
@@ -229,8 +226,7 @@ variable {V V' W : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E}
 
 theorem res_smul (c : ℂ) (f : WO V W → ℂ) (x : WO V' W) :
     res V V' W C B μ 𝓨 (c • f) x = c * res V V' W C B μ 𝓨 f x := by
-  simp only [res, Pi.smul_apply, smul_eq_mul]
-  exact MeasureTheory.integral_const_mul c _
+  simpa only [res, Pi.smul_apply, smul_eq_mul] using MeasureTheory.integral_const_mul c _
 
 theorem res_om_heis (hs : IsIsoSplit V V' C B) {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
     {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} (hω : IsWeilDatumO ψ V W χS χT ω)
@@ -368,8 +364,7 @@ theorem exists_central (V : HSp D) (X : Matrix (Fin V.rank) (Fin V.rank) D.host.
   have h3 : Xᴴ * V.gram * X = 0 := by
     have h := congrArg (· * X) hsk
     simp only [Matrix.add_mul, Matrix.zero_mul, Matrix.mul_assoc, hXX, Matrix.mul_zero, add_zero] at h
-    rw [Matrix.mul_assoc]
-    exact h
+    rwa [Matrix.mul_assoc]
   have hmem : u ∈ HR (AF D.host.F) D.sp.cm.sig V.gram := by
     show Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (1 + Y) * JR (AF D.host.F) V.gram * (1 + Y) =
       JR (AF D.host.F) V.gram
@@ -483,8 +478,7 @@ theorem central_mem_NI {V : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.
   · intro x hx
     refine ⟨0, ?_⟩
     have h0 : (C * S₀ * (adj D C * V.gram)).mulVec x = 0 := by
-      rw [← Matrix.mulVec_mulVec]
-      rw [show (adj D C * V.gram).mulVec x = 0 from hx, Matrix.mulVec_zero]
+      rw [← Matrix.mulVec_mulVec, show (adj D C * V.gram).mulVec x = 0 from hx, Matrix.mulVec_zero]
     have key : ((C * S₀ * (adj D C * V.gram)).map (incA D)).mulVec (fun i => incA D (x i)) = 0 := by
       ext i
       have := congrFun h0 i

@@ -197,8 +197,7 @@ theorem kT_move {B : Base} {X : PreX B.toPre} (hPr : (B.primes X).Ok) (u : B.Wor
       rw [← hPr.piT_norm u]
       exact P.1.asIdeal.mul_mem_right _ h1
     show algebraMap (𝓞 B.host.F) (𝓞 B.host.E) (B.T u : 𝓞 B.host.F) ∈ P.1.asIdeal
-    rw [map_natCast]
-    exact h2
+    rwa [map_natCast]
   rw [GlobalTheory.TwU.MoveOff.adAt_move P.1 k k' (hone _ hTP) r j]
   exact h P r j hr
 
@@ -258,8 +257,7 @@ theorem readsMove_holds : ReadsMove := by
   have hB : BasePi ((B.primes X).vT u) (X.piT u) := by
     refine ⟨fun r => ?_, hPr.piT_cop u⟩
     constructor
-    · intro hr
-      exact piT_dvd_of_mem hX hPr u r fun P => hr P.1 P.2
+    · exact fun hr => piT_dvd_of_mem hX hPr u r fun P => hr P.1 P.2
     · rintro ⟨q, rfl⟩ P hP
       exact Ideal.mul_mem_right _ _ ((rls_vT_iff hX hPr u P).1 hP)
   have hLb : ∀ β, (K β).lev.Lb = baseLb B.fields.E (B.R.N i) ((B.primes X).vT u) := fun β => by
@@ -286,8 +284,7 @@ theorem readsMove_holds : ReadsMove := by
       bc (prV (E := B.host.E) v) k'.1 = bc (prV (E := B.host.E) v) (k β) := fun β => by
     obtain ⟨hkU, hkV, -, -⟩ := hkf β
     refine GlobalTheory.TwU.MoveOff.exists_basePt (K β).lev hT0 (k β) ?_ fun v _ => ?_
-    · rw [hgr]
-      exact hkU
+    · rwa [hgr]
     · rw [hLb β, hgr]
       exact hkV v
   choose k' hk' using hk'

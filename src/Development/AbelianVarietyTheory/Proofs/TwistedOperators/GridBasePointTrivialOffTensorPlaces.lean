@@ -74,10 +74,7 @@ theorem base_mt_mulVec_off : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Const
     apply (GlobalTheory.FinPl.placeIdem_acts D v' ε hε).2
     rw [GlobalTheory.FinPl.mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere] at ha ⊢
     refine ⟨ha.1, fun w hw => ha.2 w ?_⟩
-    intro h
-    apply hw
-    intro hwv'
-    exact hv PP hPP (hv'.symm.trans (hwv'.symm.trans h))
+    exact fun h => hw (fun hwv' => hv PP hPP (hv'.symm.trans (hwv'.symm.trans h)))
   have hz : ∀ i, ((Formalism.L2.Theta.mt _ (b 0) - 1) *ᵥ y) i ∈ idAt D (· = v) := fun i => by
     simp only [Matrix.mulVec, dotProduct]
     exact Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)
@@ -92,7 +89,6 @@ theorem base_mt_mulVec_off : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Const
 
     rw [hE i, map_sum, ← Finset.sum_add_distrib, Finset.sum_mul]
     exact Finset.sum_eq_zero fun PP hPP => hkill PP hPP _ (hz i)
-  rw [Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero] at h0
-  exact h0
+  rwa [Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero] at h0
 
 end GlobalTheory.RowVal

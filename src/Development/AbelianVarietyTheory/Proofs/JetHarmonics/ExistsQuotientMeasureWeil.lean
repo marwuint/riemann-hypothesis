@@ -80,18 +80,12 @@ theorem unfold_abstract {X : Type} [MeasurableSpace X] (mu : X → X → X) (iv 
     (φ : X → ℝ≥0∞) (hφ : Measurable φ) (hφ1 : ∀ᵐ x ∂μG, ∫⁻ s, φ (mu s x) ∂μS = 1)
     (f : X → ℝ≥0∞) (hf : Measurable f) :
     ∫⁻ x, f x ∂μG = ∫⁻ x, (∫⁻ s, f (mu s x) ∂μS) ∂(μG.withDensity φ) := by
-  have hl : ∀ s, Measurable (mu s) := fun s => hmu.comp (measurable_const.prodMk measurable_id)
-  have hr : ∀ x, Measurable (fun s => mu s x) := fun x =>
-    hmu.comp (measurable_id.prodMk measurable_const)
+  have hl : ∀ s, Measurable (mu s) := fun s => hmu.of_uncurry_left
+  have hr : ∀ x, Measurable (fun s => mu s x) := fun x => hmu.of_uncurry_right
   have h1 : Measurable (fun p : X × X => f (mu p.2 p.1)) := hf.comp (hmu.comp measurable_swap)
-  have h2 : Measurable (fun p : X × X => φ (mu (iv p.1) p.2) * f p.2) :=
-    (hφ.comp (hmu.comp ((hiv.comp measurable_fst).prodMk measurable_snd))).mul
-      (hf.comp measurable_snd)
-  have hF : Measurable (fun x : X => ∫⁻ s, f (mu s x) ∂μS) := h1.lintegral_prod_right'
-  rw [lintegral_withDensity_eq_lintegral_mul _ hφ hF]
+  rw [lintegral_withDensity_eq_lintegral_mul _ hφ h1.lintegral_prod_right']
   symm
-  calc ∫⁻ x, (φ * fun x : X => ∫⁻ s, f (mu s x) ∂μS) x ∂μG
-      = ∫⁻ x, ∫⁻ s, φ x * f (mu s x) ∂μS ∂μG := by
+  calc _ = ∫⁻ x, ∫⁻ s, φ x * f (mu s x) ∂μS ∂μG := by
         refine lintegral_congr fun x => ?_
         rw [Pi.mul_apply, lintegral_const_mul]
         exact hf.comp (hr x)
@@ -99,20 +93,19 @@ theorem unfold_abstract {X : Type} [MeasurableSpace X] (mu : X → X → X) (iv 
         lintegral_lintegral_swap ((hφ.comp measurable_fst).mul h1).aemeasurable
     _ = ∫⁻ s, ∫⁻ y, φ (mu (iv s) y) * f y ∂μG ∂μS := by
         refine lintegral_congr_ae (hleft.mono fun s hs => ?_)
-        have hm : Measurable (fun y : X => φ (mu (iv s) y) * f y) :=
-          (hφ.comp (hl _)).mul hf
+        have hm : Measurable (fun y : X => φ (mu (iv s) y) * f y) := (hφ.comp (hl _)).mul hf
         beta_reduce
         conv_rhs => rw [← hs.1, lintegral_map hm (hl s)]
-        refine lintegral_congr fun x => ?_
-        rw [hs.2]
-    _ = ∫⁻ y, ∫⁻ s, φ (mu (iv s) y) * f y ∂μS ∂μG := lintegral_lintegral_swap h2.aemeasurable
+        simp only [hs.2]
+    _ = ∫⁻ y, ∫⁻ s, φ (mu (iv s) y) * f y ∂μS ∂μG := lintegral_lintegral_swap
+        ((hφ.comp (hmu.comp ((hiv.comp measurable_fst).prodMk measurable_snd))).mul
+          (hf.comp measurable_snd)).aemeasurable
     _ = ∫⁻ y, f y ∂μG := by
         refine lintegral_congr_ae (hφ1.mono fun y hy => ?_)
         have hm : Measurable (fun s : X => φ (mu s y)) := hφ.comp (hr y)
         have hm' : Measurable (fun s : X => φ (mu (iv s) y)) := hm.comp hiv
-        have := hinv _ hm
-        beta_reduce at this ⊢
-        rw [lintegral_mul_const _ hm', this, hy, one_mul]
+        beta_reduce
+        rw [lintegral_mul_const _ hm', hinv _ hm, hy, one_mul]
 
 theorem exists_isQuotM : ∀ (m : ℕ) (G S : Set (Matrix (Fin m) (Fin m) ℂ)) (μG μS : Measure (PI.MtM m)),
     PI.IsMatGroup G → PI.IsMatGroup S → S ⊆ G → PI.IsHaarOnM G μG → PI.IsHaarOnM S μS →

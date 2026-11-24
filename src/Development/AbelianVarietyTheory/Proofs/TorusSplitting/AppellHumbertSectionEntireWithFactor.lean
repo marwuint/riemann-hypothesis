@@ -92,10 +92,8 @@ theorem isFnOf_entire_factor :
   have hpt : IsHolTo Set.univ pt := by
     refine GlobalTheory.HolFibre.isHolTo_of_isPullback (p := gxSnd (Fu.u i Pm)) (q := gxFst (Fu.u i Pm))
       (IsPullback.of_hasPullback (Fu.u i Pm) Xo.univ.t.G.hom) ?_ ?_
-    · simp only [h2]
-      exact GlobalTheory.HolFibre.isHolTo_const isOpen_univ _
-    · simp only [h1]
-      exact hex
+    · simpa only [h2] using GlobalTheory.HolFibre.isHolTo_const isOpen_univ _
+    · simpa only [h1] using hex
   have hch : ∀ z, ∃ j, ⊤ ≤ (Fu.ex i Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j := fun z => by
     have hm : (Fu.ex i Pm z).left (default : PrimeSpectrum ℂ) ∈ ⨆ j, Xo.univ.t.PP.L.U j := by
       rw [Xo.univ.t.PP.isLB.cover]; trivial
@@ -109,9 +107,7 @@ theorem isFnOf_entire_factor :
   refine ⟨fun z₀ => ?_, fun a z => ?_⟩
   · obtain ⟨j, hj⟩ := hch z₀
     have ho : IsOpen {z | ⊤ ≤ (Fu.ex i Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j} := by
-      have h0 := (hex (Xo.univ.t.PP.L.U j) 0).1
-      simp only [Set.mem_univ, true_and] at h0
-      exact h0
+      simpa only [Set.mem_univ, true_and] using (hex (Xo.univ.t.PP.L.U j) 0).1
     have hv : DifferentiableOn ℂ (fun z => valAt' (pt z) ((PPx (Fu.u i Pm)).U fun _ => j) (s.f fun _ => j))
         {z | ⊤ ≤ (Fu.ex i Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j} :=
       (hpt _ (s.f (fun _ => j))).2.mono (fun z hz => ⟨trivial, hU j z hz⟩)

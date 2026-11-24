@@ -311,9 +311,7 @@ theorem finrank_map_fst (Y : Submodule E ((Fin r → E) × (Fin r → E))) :
     LinearMap.codRestrict Y ((LinearMap.inr E (Fin r → E) (Fin r → E)).comp (Submodule.subtype _))
       (fun w => w.2) with hg
   have hinj : Function.Injective g := by
-    intro u w huw
-    have h := congrArg (fun y : Y => (y : (Fin r → E) × (Fin r → E)).2) huw
-    exact Subtype.ext h
+    exact fun u w huw => Subtype.ext (congrArg (fun y : Y => (y : (Fin r → E) × (Fin r → E)).2) huw)
   have hrange : LinearMap.range g = LinearMap.ker f := by
     ext y
     constructor
@@ -329,8 +327,7 @@ theorem finrank_map_fst (Y : Submodule E ((Fin r → E) × (Fin r → E))) :
         exact y.2
       · exact Subtype.ext hy'
   have key := LinearMap.finrank_range_add_finrank_ker f
-  rw [LinearMap.range_domRestrict, ← hrange, LinearMap.finrank_range_of_inj hinj] at key
-  exact key
+  rwa [LinearMap.range_domRestrict, ← hrange, LinearMap.finrank_range_of_inj hinj] at key
 
 theorem finrank_map_snd (Y : Submodule E ((Fin r → E) × (Fin r → E))) :
     Module.finrank E (Y.map (LinearMap.snd E _ _)) +
@@ -340,9 +337,7 @@ theorem finrank_map_snd (Y : Submodule E ((Fin r → E) × (Fin r → E))) :
     LinearMap.codRestrict Y ((LinearMap.inl E (Fin r → E) (Fin r → E)).comp (Submodule.subtype _))
       (fun w => w.2) with hg
   have hinj : Function.Injective g := by
-    intro u w huw
-    have h := congrArg (fun y : Y => (y : (Fin r → E) × (Fin r → E)).1) huw
-    exact Subtype.ext h
+    exact fun u w huw => Subtype.ext (congrArg (fun y : Y => (y : (Fin r → E) × (Fin r → E)).1) huw)
   have hrange : LinearMap.range g = LinearMap.ker f := by
     ext y
     constructor
@@ -358,8 +353,7 @@ theorem finrank_map_snd (Y : Submodule E ((Fin r → E) × (Fin r → E))) :
         exact y.2
       · exact Subtype.ext hy'
   have key := LinearMap.finrank_range_add_finrank_ker f
-  rw [LinearMap.range_domRestrict, ← hrange, LinearMap.finrank_range_of_inj hinj] at key
-  exact key
+  rwa [LinearMap.range_domRestrict, ← hrange, LinearMap.finrank_range_of_inj hinj] at key
 
 private theorem conj_single_lemma (c : E ≃+* E) (i : Fin r) :
     (fun k => c ((Pi.single i (1 : E) : Fin r → E) k)) = (Pi.single i (1 : E) : Fin r → E) := by
@@ -476,8 +470,7 @@ theorem maximal_isotropic_doubled (E : Type) [Field E] (c : E ≃+* E) (r : ℕ)
       have hv0 : (v, (0 : Fin r → E)) ∈ Y := by
         rw [hgraph, ← hM, hMv]
       have hvA : v ∈ A := (memA v).2 hv0
-      rw [hA0, Submodule.mem_bot] at hvA
-      exact hvA
+      rwa [hA0, Submodule.mem_bot] at hvA
     refine ⟨Matrix.nonsingInvUnit M (isUnit_iff_ne_zero.mpr hdet), ?_, ?_⟩
     · show (M.map c).transpose * J * M = J
       apply isometry_matrix
@@ -485,8 +478,7 @@ theorem maximal_isotropic_doubled (E : Type) [Field E] (c : E ≃+* E) (r : ℕ)
       have hx := (hgraph (x, T x)).2 rfl
       have hx' := (hgraph (x', T x')).2 rfl
       have := hiso _ hx _ hx'
-      rw [hM, hM]
-      exact this
+      rwa [hM, hM]
     · intro y
       show y ∈ Y ↔ y.2 = M.mulVec y.1
       rw [hM]
@@ -533,8 +525,7 @@ theorem mem_graphSub {W : HSp D} {c : Matrix (Fin W.rank) (Fin W.rank) D.host.E}
   constructor
   · rintro ⟨x, rfl⟩
     simp
-  · intro h
-    exact ⟨y.1, Prod.ext rfl (by simp [h])⟩
+  · exact fun h => ⟨y.1, Prod.ext rfl (by simp [h])⟩
 
 theorem cT_eq (W : HSp D) (c : Matrix (Fin W.rank) (Fin W.rank) D.host.E) :
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) c = cᴴ := by
@@ -811,8 +802,7 @@ theorem unfold_tsum_fundamentalDomain (ν : Measure G) [ν.IsHaarMeasure]
         rw [← lintegral_tsum (f := fun γ y => ‖f γ (x, y)‖ₑ)
           (fun γ => ((hfm γ).comp measurable_prodMk_left).enorm.aemeasurable)]
         simp only [hfe]
-      rw [lintegral_congr hx]
-      exact hfin
+      rwa [lintegral_congr hx]
     have hfi : ∀ γ, Integrable (f γ) (μ.prod μ) := fun γ =>
       ⟨(hfm γ).aestronglyMeasurable, by
         unfold HasFiniteIntegral
@@ -1111,8 +1101,7 @@ theorem exists_isoFrame_comap_inl : ∀ (D : D7) (W : HSp D) (Y : Lag W), Y.1.co
   let b := Module.finBasisOfFinrankEq D.host.E I₁ rfl
   have hsp : Submodule.span D.host.E (Set.range (I₁.subtype ∘ b)) = I₁ := by
     have h := congrArg (Submodule.map I₁.subtype) b.span_eq
-    rw [Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp] at h
-    exact h
+    rwa [Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp] at h
   let I : Matrix (Fin W.rank) (Fin (Module.finrank D.host.E I₁)) D.host.E :=
     Matrix.of fun a j => (b j : Fin W.rank → D.host.E) a
   have hT : I.transpose = I₁.subtype ∘ b := by
@@ -1129,8 +1118,7 @@ theorem exists_isoFrame_comap_inl : ∀ (D : D7) (W : HSp D) (Y : Lag W), Y.1.co
     have h := Y.2.2 _ ha _ hc
     simp only [LinearMap.inl_apply, star_zero, Matrix.mulVec_zero, dotProduct_zero] at h
     exact h
-  · rw [hT]
-    exact hsp
+  · rwa [hT]
 
 end GlobalTheory.RawLift
 end -- clump:auto
@@ -1338,8 +1326,7 @@ theorem ni_prop (W : HSp D) {s : ℕ} (I : Matrix (Fin W.rank) (Fin s) D.host.E)
   | mem g hg =>
     refine ⟨?_, fun x hx => hg.2.2 x hx⟩
     have h1 : (Formalism.L2.Theta.mt W g - 1) ⬝ I.map (incA D) = 0 := hg.1
-    rw [Matrix.sub_mul, Matrix.one_mul, sub_eq_zero] at h1
-    exact h1
+    rwa [Matrix.sub_mul, Matrix.one_mul, sub_eq_zero] at h1
   | one =>
     refine ⟨by rw [GlobalTheory.MixModel.mt_one, Matrix.one_mul], fun x _ => ⟨0, ?_⟩⟩
     rw [GlobalTheory.MixModel.mt_one, sub_self, Matrix.zero_mulVec, Matrix.mulVec_zero]
@@ -1363,12 +1350,10 @@ theorem ni_prop (W : HSp D) {s : ℕ} (I : Matrix (Fin W.rank) (Fin s) D.host.E)
 theorem exists_leftInv {m s : ℕ} (I : Matrix (Fin m) (Fin s) D.host.E) (hI : LinearIndependent D.host.E I.transpose) :
     ∃ L : Matrix (Fin s) (Fin m) D.host.E, L * I = 1 := by
   have hB : Function.Injective I.mulVec := by
-    rw [Matrix.mulVec_injective_iff]
-    exact hI
+    rwa [Matrix.mulVec_injective_iff]
   have hker : LinearMap.ker (Matrix.toLin' I) = ⊥ := by
     rw [LinearMap.ker_eq_bot]
-    intro x y h
-    exact hB (by simpa [Matrix.toLin'_apply] using h)
+    exact fun x y h => hB (by simpa [Matrix.toLin'_apply] using h)
   obtain ⟨g, hg⟩ := LinearMap.exists_leftInverse_of_injective (Matrix.toLin' I) hker
   exact ⟨LinearMap.toMatrix' g, by
     rw [← LinearMap.toMatrix'_toLin' I, ← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]⟩
@@ -1428,8 +1413,7 @@ theorem lagAct_eq_of_mem_NI : ∀ (D : D7) (W : HSp D) (Y : Lag W) (s : ℕ) (I 
         rw [← Matrix.range_mulVecLin]
         exact ⟨b, rfl⟩
       have h' : I *ᵥ b ∈ Y.1.comap (LinearMap.inl D.host.E _ _) := by
-        rw [← hY]
-        exact h
+        rwa [← hY]
       exact h'
     have e : ((gqMat W n⁻¹ *ᵥ y.1, y.2) : (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)) =
         y + (I *ᵥ b, 0) := by
@@ -1585,13 +1569,10 @@ theorem tsum_setIntegral_eq_zero_of_stabilizer :
       conv_lhs => rw [← QuotientGroup.out_eq' q]
       rfl
     have hinj : Function.Injective fun q : Λ ⧸ S => q.out • x₀ := by
-      intro q r hqr
-      exact injective_ofQuotientStabilizer Λ x₀ (by simpa only [hofq] using hqr)
+      exact fun q r hqr => injective_ofQuotientStabilizer Λ x₀ (by simpa only [hofq] using hqr)
     have hD := isFundamentalDomain_iUnion_inv_smul h𝓖 S
     have hdisj : Pairwise (Function.onFun (AEDisjoint ν) fun q : Λ ⧸ S => (q.out)⁻¹ • 𝓖) := by
-      intro q r hqr
-      refine h𝓖.aedisjoint fun e => hqr ?_
-      exact Quotient.out_injective (inv_injective e)
+      exact fun q r hqr => h𝓖.aedisjoint fun e => hqr (Quotient.out_injective (inv_injective e))
     have hint : IntegrableOn (F x₀) (⋃ q : Λ ⧸ S, (q.out)⁻¹ • 𝓖) ν := by
       refine ⟨(hmeas x₀).restrict, ?_⟩
       show ∫⁻ g in ⋃ q : Λ ⧸ S, (q.out)⁻¹ • 𝓖, ‖F x₀ g‖ₑ ∂ν < ⊤
@@ -1781,8 +1762,7 @@ theorem nonGraph_sum_eq_zero : ∀ D : D7, EisAbs D → TermMove D → TermInv D
       · have e : (fun g => lagTerm μ 𝓕 (fr Y.1) (om (1, g) f₁) (om (1, g₂) f₂) * star (φ₁ g)) =
             fun g => star (φ₁ g) * lagTerm μ 𝓕 (fr Y.1) (om (1, g) f₁) (om (1, g₂) f₂) := funext fun g => mul_comm _ _
         show IntegrableOn (fun g => lagTerm μ 𝓕 (fr Y.1) (om (1, g) f₁) (om (1, g₂) f₂) * star (φ₁ g)) 𝓓 νW
-        rw [e]
-        exact hint
+        rwa [e]
   have hφ₁c : Continuous φ₁ := ha₁.cont
   refine _root_.GlobalTheory.tsum_setIntegral_prod_eq_zero_of_inner (X := NGLag W) inferInstance νW inferInstance 𝓖
     (fun Y p => star (φ₁ p.1) * φ₂ p.2 * lagTerm μ 𝓕 (fr Y.1) (om (1, p.1) f₁) (om (1, p.2) f₂)) ?_ ?_ ?_

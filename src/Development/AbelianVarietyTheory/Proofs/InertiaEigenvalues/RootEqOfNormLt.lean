@@ -115,8 +115,7 @@ theorem eq_of_pow_eq_one_of_norm_sub_lt_one {l : ℕ} [Fact l.Prime] {m : ℕ} (
   by_contra hne
   have hne1 : a / b - 1 ≠ 0 := by
     rw [sub_ne_zero]
-    intro h
-    exact hne ((div_eq_one_iff_eq hb0).mp h)
+    exact fun h => hne ((div_eq_one_iff_eq hb0).mp h)
   have hs : (∑ i ∈ Finset.range m, (a / b) ^ i) = 0 := by
     have h := geom_sum_mul (a / b) m
     rw [hzm, sub_self] at h
@@ -157,8 +156,7 @@ theorem mem_of_mem_Ks (K : FinExt l) (j : ℕ) (hj : 1 ≤ j) (ζ : Om l) (hζ :
   have hint : IsIntegral ↥(K0 K) ζ := Algebra.IsIntegral.isIntegral ζ
   rw [Ks_eq_restrictScalars K j ζ hζ, IntermediateField.mem_restrictScalars] at hx
   have hx' : x ∈ Algebra.adjoin ↥(K0 K) {ζ} := by
-    rw [← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic]
-    exact hx
+    rwa [← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic]
   rw [Algebra.adjoin_singleton_eq_range_aeval] at hx'
   obtain ⟨q, hq⟩ := hx'
   have hcast : ((Nat.totient (l ^ j) : ℕ) : ℝ) = (l : ℝ) ^ (j - 1) * ((l : ℝ) - 1) := by
@@ -173,8 +171,7 @@ theorem mem_of_mem_Ks (K : FinExt l) (j : ℕ) (hj : 1 ≤ j) (ζ : Om l) (hζ :
     exact (map_sub (algebraMap (Om l) (PadicComplex l)) ζ 1).trans (by rw [map_one]; rfl)
   set r := q %ₘ minpoly ↥(K0 K) ζ with hr
   have hrx : aeval ζ r = x := by
-    rw [hr, aeval_modByMonic_eq_self_of_root (minpoly.aeval _ _)]
-    exact hq
+    rwa [hr, aeval_modByMonic_eq_self_of_root (minpoly.aeval _ _)]
   have hr0 : r ≠ 0 := by
     intro h
     rw [h, map_zero] at hrx
@@ -390,8 +387,7 @@ theorem exists_tilt (ω : Om l) (m : ℕ) (hm : 0 < m) (hl : ¬ l ∣ m) (hc : �
       PreTilt.coeff N xb = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) y := by
   have hcC : (ω : PadicComplex l) ^ m = 1 := by
     have := congrArg (algebraMap (Om l) (PadicComplex l)) hc
-    rw [map_pow, map_one] at this
-    exact this
+    rwa [map_pow, map_one] at this
   have hn : ‖(ω : PadicComplex l)‖ = 1 := by
     have := congrArg norm hcC
     rw [norm_pow, norm_one] at this
@@ -506,8 +502,7 @@ theorem Ohat_mem (K : FinExt l) (N : ℕ) (z : PadicComplex l) (hz : z ∈ Ohat 
     ((lifts (gen AI K) N).comap (algebraMap (Om l) (PadicComplex l))) ?_
     (fun c hc h1 => K0_mem AI K N c hc h1) x hxj (by simpa using hx1)
   have := zeta_mem AI K N (j + 1)
-  rw [AI.ζ_eq] at this
-  exact this
+  rwa [AI.ζ_eq] at this
 
 theorem eps_ne_one : AI.ε - 1 ≠ 0 := by
   intro h

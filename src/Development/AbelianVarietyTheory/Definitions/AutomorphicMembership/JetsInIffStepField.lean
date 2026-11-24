@@ -69,8 +69,7 @@ theorem monoDeg_eq_sum [Fintype T] (e : DVar T a b →₀ ℕ) (τ : T) : monoDe
   · simp [Fintype.sum_prod_type]
   · intro t _ ht
     simp [ht]
-  · intro h
-    exact absurd (Finset.mem_univ τ) h
+  · exact fun h => absurd (Finset.mem_univ τ) h
 
 end Deg
 
@@ -120,14 +119,12 @@ theorem jetsIn_iff : I.JetsIn ↔ ∀ (a : I.ι) (u : B.Word) (i : ℕ), i < B.R
   · intro h a u i hi N N' c x hx e he
     obtain ⟨y, hy⟩ := h a u i hi N N' c x hx e (fun τ => by rw [← monoDeg_eq_sum_filter]; exact he τ)
     refine RingHom.mem_fieldRange.mpr ⟨y, ?_⟩
-    rw [← I.A_σ₀]
-    exact hy
+    rwa [← I.A_σ₀]
   · intro h a u i hi N N' c x hx e he
     obtain ⟨y, hy⟩ := RingHom.mem_fieldRange.mp
       (h a u i hi N N' c x hx e (fun τ => by rw [monoDeg_eq_sum_filter]; exact he τ))
     refine ⟨y, ?_⟩
-    rw [I.A_σ₀]
-    exact hy
+    rwa [I.A_σ₀]
 
 variable {I} {a : I.ι} {u : B.Word} {i : ℕ} {N : Submodule (𝓞 B.fields.E) (Sp B.fields.E (B.R.N i))}
   {N' : Submodule (𝓞 B.fields.E) (Sp B.fields.E (B.R.N (i + 1)))} {c : ℕ} {x : HomE B.fields.E (B.R.N i) (B.R.N (i + 1))}

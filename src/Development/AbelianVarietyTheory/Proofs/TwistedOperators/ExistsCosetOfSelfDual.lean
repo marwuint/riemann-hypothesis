@@ -372,8 +372,7 @@ theorem mem_range_iff {F : Type} [Field F] [NumberField F] {v : HeightOneSpectru
     intro c
     funext i
     have := RingHom.map_mulVec (Formalism.UG.Ov F v).subtype (intMat Z hZ) c i
-    rw [intMat_map] at this
-    exact this
+    rwa [intMat_map] at this
   constructor
   · rintro ⟨c, rfl⟩ i
     rw [Matrix.toLin'_apply, key, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]
@@ -398,16 +397,14 @@ theorem exists_index_pow {F : Type} [Field F] [NumberField F] {v : HeightOneSpec
   have hirr := Formalism.IndefR.Fin.HCount.irreducible_of_unif F v ⟨w, hwO⟩ hw
   have hdet : (((intMat Z hZ).det : Formalism.UG.Ov F v) : v.adicCompletion F) = Z.1.det := by
     have := RingHom.map_det (Formalism.UG.Ov F v).subtype (intMat Z hZ)
-    rw [RingHom.mapMatrix_apply, intMat_map] at this
-    exact this
+    rwa [RingHom.mapMatrix_apply, intMat_map] at this
   have hne : (intMat Z hZ).det ≠ 0 := by
     intro h
     rw [h] at hdet
     exact (Matrix.isUnits_det_units Z).ne_zero (by rw [← hdet]; rfl)
   have hinj : Function.Injective (Matrix.toLin' (intMat Z hZ)) := by
     rw [← LinearMap.ker_eq_bot, Matrix.ker_toLin'_eq_bot_iff]
-    intro c hc
-    exact Matrix.eq_zero_of_mulVec_eq_zero hne hc
+    exact fun c hc => Matrix.eq_zero_of_mulVec_eq_zero hne hc
   obtain ⟨m, ⟨u, hu⟩, hc⟩ := _root_.GlobalTheory.CardQuotientPow.main (Pi.basisFun (Formalism.UG.Ov F v) (Fin n)) hirr _ hinj
   rw [LinearMap.det_toLin'] at hu
   refine ⟨m, ?_, ?_⟩
@@ -423,10 +420,8 @@ theorem exists_index_pow {F : Type} [Field F] [NumberField F] {v : HeightOneSpec
     rw [map_mul, map_one] at hv
     have hu1 : Valued.v (((u : Formalism.UG.Ov F v)) : v.adicCompletion F) = 1 :=
       le_antisymm ha (by rw [← hv]; exact mul_le_of_le_one_right' hb)
-    rw [hu1, mul_one] at h1
-    exact h1
-  · rw [← hirr.maximalIdeal_eq] at hc
-    exact hc
+    rwa [hu1, mul_one] at h1
+  · rwa [← hirr.maximalIdeal_eq] at hc
 
 theorem smul_mem_hat (D : D7) {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     {a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E} (ha : a ∈ intAE D)
@@ -459,8 +454,7 @@ theorem span_smul_top {D : D7} {n : ℕ} (P : Formalism.L2.DIV.Pl D.host.E) (L :
   intro w hw
   have hm : x • w ∈ (P.asIdeal • L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) := Submodule.smul_mem_smul hx hw
   have : w = (x : D.host.E)⁻¹ • (x • w) := by
-    rw [← algebraMap_smul D.host.E x w]
-    rw [smul_smul, inv_mul_cancel₀ (by simpa using hx0'), one_smul]
+    rw [← algebraMap_smul D.host.E x w, smul_smul, inv_mul_cancel₀ (by simpa using hx0'), one_smul]
   rw [this]
   exact Submodule.smul_mem _ _ (Submodule.subset_span hm)
 
@@ -479,8 +473,7 @@ theorem mem_iff_ePart (D : D7) (P : Formalism.L2.DIV.Pl D.host.E) (e : AE D) {n 
   have hrat := (GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E n M hMfg hMsp).1
   have hint : finPart D e ∈ intAE D := GlobalTheory.SplitPlace.idem_mem he.1.1
   constructor
-  · intro hm
-    exact smul_mem_hat D M hint ((hrat x).2 hm)
+  · exact fun hm => smul_mem_hat D M hint ((hrat x).2 hm)
   · intro h
     refine (hrat x).1 ?_
     have hΛ : GlobalTheory.AdLat.fv D.host.F x ∈ GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin n → D.host.E)) :=
@@ -595,8 +588,7 @@ theorem exists_local_matrix : ∀ (D : D7) (P : Formalism.L2.DIV.Pl D.host.E) (e
     have e3 : (Z⁻¹).1 i j = (((C⁻¹).1 * (t⁻¹ • (T⁻¹).1)) *ᵥ (Pi.single j (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v))) i := by
       rw [e4, ← hZi, Matrix.mulVec_single_one]
       rfl
-    rw [Pi.smul_apply, smul_eq_mul, ← e3] at h6
-    exact h6
+    rwa [Pi.smul_apply, smul_eq_mul, ← e3] at h6
   refine ⟨Z, hZint, hwZ, ?_, fun y => by rw [hZC]; exact hM y⟩
 
   have hint : finPart D e ∈ intAE D := GlobalTheory.SplitPlace.idem_mem he.1.1
@@ -664,8 +656,7 @@ theorem exists_local_matrix : ∀ (D : D7) (P : Formalism.L2.DIV.Pl D.host.E) (e
     show Valued.v (((Ideal.absNorm P.asIdeal : ℕ) : v.adicCompletion D.host.F) / w) ≤ 1
     rw [map_div₀]
     refine div_le_one_of_le₀ ?_ zero_le
-    rw [hu]
-    exact h6
+    rwa [hu]
   obtain ⟨c, hc, hcN⟩ := hNw
   have hsurj : ∀ b : Fin n → Formalism.UG.Ov D.host.F v, ∃ x : Λ.toAddSubgroup,
       b - Ψ x ∈ (LinearMap.range (Matrix.toLin' (intMat Z hZint))).toAddSubgroup := by
@@ -927,8 +918,7 @@ theorem exists_chart : ∀ (D : D7) (e : AE D) (v : HeightOneSpectrum (𝓞 D.ho
   · rintro ⟨r, hr⟩
     rw [← hr]
     exact r.2
-  · intro h
-    exact ⟨⟨_, h⟩, rfl⟩
+  · exact fun h => ⟨⟨_, h⟩, rfl⟩
 
 end GlobalTheory.HatLocalChart
 end -- clump:auto
@@ -1379,8 +1369,7 @@ theorem inv_part_mem {D : D7} {e : AE D} (he : IsSplitIdem D e) {V : HSp D} {ϖ 
   have m1 : finPart D e • z ∈ Formalism.L2.NTheta.LamHat V := smul_mem V hi hz
   have m2 : cf D (finPart D e) • z ∈ Formalism.L2.NTheta.LamHat V := smul_mem V hci hz
   have m3 := (Formalism.L2.NTheta.LamHat V).add_mem hadj hz
-  have m4 := (Formalism.L2.NTheta.LamHat V).sub_mem m3 m1
-  exact (Formalism.L2.NTheta.LamHat V).sub_mem m4 m2
+  exact (Formalism.L2.NTheta.LamHat V).sub_mem ((Formalism.L2.NTheta.LamHat V).sub_mem m3 m1) m2
 
 open GlobalTheory.SplitPlace in
 theorem hat_one_mem {D : D7} {e : AE D} (he : IsSplitIdem D e) {V : HSp D} {ϖ : D.host.E} {k : ℕ} {a₀ : GA D V}
@@ -1398,8 +1387,7 @@ theorem hat_one_mem {D : D7} {e : AE D} (he : IsSplitIdem D e) {V : HSp D} {ϖ :
   · have hx'' : x' ∈ Formalism.L2.NTheta.LamHat V := by
       rw [← GlobalTheory.LatReflection.latHat_eq_lamHat]; exact hx'
     have := inv_part_mem he ha x' hx''
-    rw [← GlobalTheory.LatReflection.latHat_eq_lamHat] at this
-    exact this
+    rwa [← GlobalTheory.LatReflection.latHat_eq_lamHat] at this
   · simp only [map_one, Units.val_one, Matrix.one_mulVec]
     change fm V a₀⁻¹ *ᵥ ((1 - finPart D e) • (((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] a) • x')) =
       ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] a) • (fm V a₀⁻¹ *ᵥ ((1 - finPart D e) • x'))
@@ -1505,8 +1493,7 @@ theorem mem_iff_ePart : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D.host
   have hvM : ∀ {w}, w ∈ M → GlobalTheory.AdLat.fv D.host.F w ∈ GlobalTheory.AdLat.hat D.host.F (M : Set (Fin V.rank → D.host.E)) :=
     fun hw => (hrat _).2 hw
   constructor
-  · intro hm
-    exact _root_.GlobalTheory.HeckeLocMatrix.smul_mem_hat D M hint (hvM hm)
+  · exact fun hm => _root_.GlobalTheory.HeckeLocMatrix.smul_mem_hat D M hint (hvM hm)
   · intro h
     refine (hrat v).1 ?_
     have hΛ : GlobalTheory.AdLat.fv D.host.F v ∈ GlobalTheory.AdLat.hat D.host.F ((latG V g : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) : Set (Fin V.rank → D.host.E)) :=
@@ -1599,14 +1586,9 @@ theorem selfDual_eq : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D.host.E
   intro D V P X Y hP hX hY hXY hYX
   have hcc : ∀ s : 𝓞 D.host.E,
       ReciprocityTheory.ChartRestriction.G.FD.cc ((Formalism.L2.Col.cO D.host.E s : 𝓞 D.host.E) : D.host.E) = (s : D.host.E) := by
-    intro s
-    show IsCMField.complexConj D.host.E (star (s : D.host.E)) = (s : D.host.E)
-    exact star_star (s : D.host.E)
+    exact fun s => star_star (s : D.host.E)
   have hcO : ∀ s : 𝓞 D.host.E, Formalism.L2.Col.cO D.host.E (Formalism.L2.Col.cO D.host.E s) = s := by
-    intro s
-    apply RingOfIntegers.ext
-    show star (star (s : D.host.E)) = (s : D.host.E)
-    exact star_star _
+    exact fun s => RingOfIntegers.ext (star_star _)
   have key : ∀ (s : 𝓞 D.host.E) (v y : Fin V.rank → D.host.E),
       ReciprocityTheory.ChartRestriction.G.FD.herm (-(V).gram.transpose) (s • v) y =
         ReciprocityTheory.ChartRestriction.G.FD.herm (-(V).gram.transpose) v (Formalism.L2.Col.cO D.host.E s • y) := by
@@ -1627,8 +1609,7 @@ theorem selfDual_eq : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D.host.E
     Ideal.IsMaximal.coprime_of_ne P.isMaximal (Formalism.L2.Col.conjPrime₂ P).isMaximal hne
   obtain ⟨s, hs, t, ht, hst⟩ := Submodule.mem_sup.1 (hcop ▸ Submodule.mem_top : (1 : 𝓞 D.host.E) ∈ P.asIdeal ⊔ (Formalism.L2.Col.conjPrime₂ P).asIdeal)
   have hsc : Formalism.L2.Col.cO D.host.E s ∈ (Formalism.L2.Col.conjPrime₂ P).asIdeal := by
-    rw [Formalism.L2.Col.mem_conjP, hcO]
-    exact hs
+    rwa [Formalism.L2.Col.mem_conjP, hcO]
   have incl : ∀ X Y : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E),
       (∀ v : Fin (V).rank → D.host.E, (∀ y ∈ X, ∃ n : ℤ, Algebra.trace ℚ D.host.E (-(-D.host.xi0) * ReciprocityTheory.ChartRestriction.G.FD.herm (-(V).gram.transpose) v y) = n) ↔ v ∈ X) → (∀ v : Fin (V).rank → D.host.E, (∀ y ∈ Y, ∃ n : ℤ, Algebra.trace ℚ D.host.E (-(-D.host.xi0) * ReciprocityTheory.ChartRestriction.G.FD.herm (-(V).gram.transpose) v y) = n) ↔ v ∈ Y) →
       (Formalism.L2.Col.conjPrime₂ P).asIdeal • X ≤ Y → (Formalism.L2.Col.conjPrime₂ P).asIdeal • Y ≤ X → Y ≤ X := by

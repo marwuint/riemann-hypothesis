@@ -81,8 +81,7 @@ theorem exists_lifts_mul_mem (A : ValuationSubring Ω) (w : HeightOneSpectrum (�
     exact H.one_mem
   obtain ⟨t, ht, hts⟩ := isOpen_induced_iff.mp hS
   have hdt : (d : G E Ω) ∈ t := by
-    rw [← hts] at hdS
-    exact hdS
+    rwa [← hts] at hdS
   have hnhds : {x : G E Ω | (d : G E Ω) * x ∈ t} ∈ nhds (1 : G E Ω) := by
     apply (continuous_const_mul (d : G E Ω)).continuousAt.preimage_mem_nhds
     simpa using ht.mem_nhds hdt
@@ -103,8 +102,7 @@ theorem exists_lifts_mul_mem (A : ValuationSubring Ω) (w : HeightOneSpectrum (�
     simpa using this
   let σ : Dec (F := E) A := ⟨τ, Weil_le_Dec h hτW⟩
   have hσS : σ ∈ S := by
-    rw [← hts]
-    exact hτt
+    rwa [← hts]
   exact ⟨⟨τ, hτW⟩, θ σ, hl σ, hσS⟩
 
 end GlobalTheory.LocDec
@@ -160,8 +158,7 @@ theorem eq_adjoin_of_fixing_iff (E K Ω : Type) [Field E] [NumberField E] [Field
       rw [hg', AlgEquiv.mul_apply, hmemz _ _ (Subgroup.mem_inf.1 hk).2, hga]
     have h2 := hprim σ ((hfx σ g' hlift pb.gen).1 h1)
     have h3 := (hfix σ g' hlift).2 h2 z hz
-    rw [hg', AlgEquiv.mul_apply, hLfix _ (Subgroup.mem_inf.1 hk).1 z hz] at h3
-    exact h3
+    rwa [hg', AlgEquiv.mul_apply, hLfix _ (Subgroup.mem_inf.1 hk).1 z hz] at h3
   · rw [IntermediateField.adjoin_le_iff]
     rintro _ ⟨x, rfl⟩
     rw [← InfiniteGalois.fixedField_fixingSubgroup L]
@@ -174,8 +171,7 @@ theorem eq_adjoin_of_fixing_iff (E K Ω : Type) [Field E] [NumberField E] [Field
     have h1 : ∀ z ∈ L, g' z = z := fun z hz => by
       rw [hg', AlgEquiv.mul_apply, hLfix _ (Subgroup.mem_inf.1 hk).1 z hz, hLfix g hg z hz]
     have h2 := (hfx σ g' hlift x).2 ((hfix σ g' hlift).1 h1 x)
-    rw [hg', AlgEquiv.mul_apply, hmemz _ _ (Subgroup.mem_inf.1 hk).2] at h2
-    exact h2
+    rwa [hg', AlgEquiv.mul_apply, hmemz _ _ (Subgroup.mem_inf.1 hk).2] at h2
 
 theorem eq_adjoin_of_fixing_iff_weil : ∀ (E K Ω : Type) [Field E] [NumberField E] [Field K] [NumberField K] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] [Algebra K Ω] [IsAlgClosure K Ω] [Algebra E K] [IsScalarTower E K Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (ι : Ω →ₐ[E] Kbar w), IsLocEmb A w ι → ∀ L : IntermediateField (w.adicCompletion E) (Kbar w), FiniteDimensional (w.adicCompletion E) L → (∀ (σ : Weil h) (g : GalLoc w), Lifts ι g σ → ((∀ z ∈ L, g z = z) ↔ ∀ x : K, (σ : G E Ω) (algebraMap K Ω x) = algebraMap K Ω x)) → L = IntermediateField.adjoin (w.adicCompletion E) (Set.range fun x : K => ι (algebraMap K Ω x)) := by
   intro E K Ω _ _ _ _ _ _ _ _ _ _ _ A w h ι hι L _ hfix

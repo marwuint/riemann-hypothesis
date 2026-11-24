@@ -98,8 +98,7 @@ theorem val_detH {J : Matrix (Fin m) (Fin m) E} (g : HA R σ J) : (detH R σ J g
 theorem matHom_ioH (g g' : HA R σ J) :
     matHom R σ Q (ioH R σ h (g, g')) = blkGL finSumFinEquiv (matHom R σ J g, matHom R σ J g') := rfl
 
-theorem ioH_one : ioH R σ h (1, 1) = 1 := by
-  exact map_one (ioH R σ h)
+theorem ioH_one : ioH R σ h (1, 1) = 1 := map_one (ioH R σ h)
 
 theorem continuous_ioH [TopologicalSpace R] : Continuous (ioH R σ h) := by
   rw [(isEmbedding_matHom R σ Q).continuous_iff]
@@ -113,8 +112,7 @@ theorem continuous_ioH [TopologicalSpace R] : Continuous (ioH R σ h) := by
 theorem ioH_mem_siegelH {g g' : HA R σ J} : ioH R σ h (g, g') ∈ siegelH R σ Q ↔ g = g' := by
   rw [mem_siegelOf, matHom_ioH, val_blkGL, keepsDiag_blkMat]
   constructor
-  · intro e1
-    exact (matHom_injective R σ J (Units.ext e1)).symm
+  · exact fun e1 => (matHom_injective R σ J (Units.ext e1)).symm
   · rintro rfl
     rfl
 
@@ -143,8 +141,7 @@ theorem sigR_det_quot_mul_aH (hJ : J.det ≠ 0) (p : siegelH R σ Q) :
     rw [← JR_dblGram, ← h]
     exact Subtype.prop (p : HA R σ Q)
   have e1 := det_quot_mul_det_levi finSumFinEquiv (isUnit_det_JR (R := R) hJ) hM (mem_siegelOf.1 p.2)
-  rw [val_aOf]
-  exact e1
+  rwa [val_aOf]
 
 theorem sigR_invol (hσ : ∀ x, σ (σ x) = x) (y : R ⊗[F] E) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ y) = y := by
@@ -266,20 +263,17 @@ def projArchP (w : InfinitePlace F) : siegelH (AF F) σ Q →* siegelH w.Complet
     (projArchP w p : GArch σ Q w) = projArch σ Q w p := rfl
 
 theorem aH_projP (v : HeightOneSpectrum (𝓞 F)) (p : siegelH (AF F) σ Q) :
-    aH _ σ Q (projP v p) = unitFin F E v (aH _ σ Q p) := by
-  exact aH_mapH (evFin F v) p
+    aH _ σ Q (projP v p) = unitFin F E v (aH _ σ Q p) := aH_mapH (evFin F v) p
 
 theorem aH_projArchP (w : InfinitePlace F) (p : siegelH (AF F) σ Q) :
-    aH _ σ Q (projArchP w p) = unitInf F E w (aH _ σ Q p) := by
-  exact aH_mapH (evInf F w) p
+    aH _ σ Q (projArchP w p) = unitInf F E w (aH _ σ Q p) := aH_mapH (evInf F w) p
 
 end
 
 theorem mem_siegelH_adelic {g : GAd σ Q} : g ∈ siegelH (AF F) σ Q ↔
     (∀ w, projArch σ Q w g ∈ siegelH _ σ Q) ∧ ∀ v, proj σ Q v g ∈ siegelH _ σ Q := by
   constructor
-  · intro hg
-    exact ⟨fun w => mapH_mem_siegelH _ hg, fun v => mapH_mem_siegelH _ hg⟩
+  · exact fun hg => ⟨fun w => mapH_mem_siegelH _ hg, fun v => mapH_mem_siegelH _ hg⟩
   · rintro ⟨h1, h2⟩
     rw [mem_siegelOf, keepsDiag_iff]
     intro i j
@@ -287,13 +281,11 @@ theorem mem_siegelH_adelic {g : GAd σ Q} : g ∈ siegelH (AF F) σ Q ↔
     · intro w
       have e1 := (keepsDiag_iff _).1 (mem_siegelOf.1 (h1 w)) i j
       rw [matHom_projArch] at e1
-      rw [map_add (f := _), map_add (f := _)]
-      exact e1
+      rwa [map_add (f := _), map_add (f := _)]
     · intro v
       have e1 := (keepsDiag_iff _).1 (mem_siegelOf.1 (h2 v)) i j
       rw [matHom_proj] at e1
-      rw [map_add (f := _), map_add (f := _)]
-      exact e1
+      rwa [map_add (f := _), map_add (f := _)]
 
 def embP (v : HeightOneSpectrum (𝓞 F)) : siegelH (Fv F v) σ Q →* siegelH (AF F) σ Q :=
   ((emb σ Q v).comp (Subgroup.subtype _)).codRestrict _ fun p => mem_siegelH_adelic.2
@@ -468,8 +460,7 @@ variable (h : Q = dblGram finSumFinEquiv J)
 
 theorem ioH_mem_KFin {v : HeightOneSpectrum (𝓞 F)} {g g' : GLoc σ J v} :
     ioH _ σ h (g, g') ∈ KFin σ Q L v ↔ g ∈ stabLoc σ J L v ∧ g' ∈ stabLoc σ J L v := by
-  simp only [KFin, stabLoc, Subgroup.mem_comap, matHom_ioH, latLoc_sumLat]
-  exact blkGL_mem_stabGL _
+  simpa only [KFin, stabLoc, Subgroup.mem_comap, matHom_ioH, latLoc_sumLat] using blkGL_mem_stabGL _
 
 theorem ioH_mem_KArch {w : InfinitePlace F} {b : GL (Fin n) (w.Completion ⊗[F] E)} {g g' : GArch σ J w} :
     ioH _ σ h (g, g') ∈ KArch σ Q w b ↔ g ∈ stabArch σ J w b ∧ g' ∈ stabArch σ J w b := by
@@ -533,8 +524,7 @@ theorem isSelfDualAt_dbl {v : HeightOneSpectrum (𝓞 F)} (hL : IsSelfDualAt σ 
     simp [Formalism.UG.hform]
   unfold IsSelfDualAt at hL ⊢
   ext w
-  rw [← pairVec_eta finSumFinEquiv w]
-  rw [latLoc_sumLat, pairVec_mem_sumLat, hL]
+  rw [← pairVec_eta finSumFinEquiv w, latLoc_sumLat, pairVec_mem_sumLat, hL]
   constructor
   · rintro ⟨h1, h2⟩ x hx
     rw [latLoc_sumLat, mem_sumLat] at hx
@@ -549,8 +539,7 @@ theorem isSelfDualAt_dbl {v : HeightOneSpectrum (𝓞 F)} (hL : IsSelfDualAt σ 
     · have e1 := hw (pairVec finSumFinEquiv x 0)
         (by rw [latLoc_sumLat, pairVec_mem_sumLat]; exact ⟨hx, zero_mem _⟩)
       change Formalism.UG.hform _ (JR _ Q) _ _ ∈ intLoc F E v at e1
-      rw [h, JR_dblGram, hform_dblGram, hz, sub_zero] at e1
-      exact e1
+      rwa [h, JR_dblGram, hform_dblGram, hz, sub_zero] at e1
     · have e1 := hw (pairVec finSumFinEquiv 0 x)
         (by rw [latLoc_sumLat, pairVec_mem_sumLat]; exact ⟨zero_mem _, hx⟩)
       change Formalism.UG.hform _ (JR _ Q) _ _ ∈ intLoc F E v at e1
@@ -587,8 +576,7 @@ theorem isCompact_levelAll (h : IsCMExt F E σ) (J : Matrix (Fin m) (Fin m) E) (
     rw [SetLike.mem_coe] at hy ⊢
     rw [mem_levelFin] at hy
     refine mul_mem (mem_levelAll.2 ⟨fun v => ?_, fun w => ?_⟩) (mem_levelAll.2 ⟨hy.2, fun w => ?_⟩)
-    · simp only [Function.comp_apply, proj_ofInf]
-      exact one_mem _
+    · simpa only [Function.comp_apply, proj_ofInf] using one_mem _
     · simp only [Function.comp_apply, projArch_ofInf, projInfArch_embArchPi]
       exact hk w (Set.mem_univ w)
     · rw [mem_finPts_iff_forall.1 hy.1 w]

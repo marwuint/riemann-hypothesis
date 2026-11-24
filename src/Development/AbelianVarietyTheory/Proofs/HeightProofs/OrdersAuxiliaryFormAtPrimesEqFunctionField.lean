@@ -728,8 +728,7 @@ theorem exists_equiv_pts_places_baseChange : ∀ (R R' F F' : Type) [CommRing R]
       rcases key (algebraMap R' (As R' A) ϖ) with ⟨_, h2⟩ | ⟨n, h2, h3⟩
       · exact absurd h2 hϖtop
       · rw [← coe_ep ζ hϖ, Nat.cast_inj] at h2
-        rw [h2]
-        exact h3
+        rwa [h2]
     have hmtop : u (π : A) ≠ ⊤ := by
       intro ht
       apply hϖtop
@@ -789,8 +788,7 @@ theorem exists_equiv_pts_places_baseChange : ∀ (R R' F F' : Type) [CommRing R]
       ∀ a, ord ϖ ζ a = w' t.1 t.2 (Ψ t.1 a) := by
     rintro ⟨c, w⟩
     refine existsPoint ((w' c w).comap (Ψ c).toRingHom) ?_ ?_ ?_
-    · intro a ha
-      exact (hw2 c _).1 (IsIntegral.map (Ψ c) ha) w
+    · exact fun a ha => (hw2 c _).1 (IsIntegral.map (Ψ c) ha) w
     · have hm : ϖ ∈ Ideal.span {algebraMap R R' π} := by
         rw [← PlaceExt.maximalIdeal_eq_span hmax hπ]
         exact hϖ.irreducible.not_isUnit
@@ -958,8 +956,7 @@ theorem exists_equiv_pts_places_baseChange : ∀ (R R' F F' : Type) [CommRing R]
   refine residueDegree _ w.1 w.2 (w' c w) (Ψ c).toRingHom
     (Algebra.TensorProduct.includeRight : L c →ₐ[F] F' ⊗[F] L c).toRingHom (hsurj c) ?_
     (hw1 c w) (hZ ⟨c, w⟩) (hw3 c w)
-  intro r
-  exact ((Ψ c).commutes _).trans (PlaceExt.algebraMap_eq_one_tmul r)
+  exact fun r => ((Ψ c).commutes _).trans (PlaceExt.algebraMap_eq_one_tmul r)
 
 end GlobalTheory
 end -- clump:auto

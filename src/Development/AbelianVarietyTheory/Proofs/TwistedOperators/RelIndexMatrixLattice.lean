@@ -248,8 +248,7 @@ theorem relIndex_matrix_lattice : ∀ (F : Type) [Field F] [NumberField F] (v : 
   set pK : Fv F v := algebraMap F (Fv F v) (π0 : F) with hpK
   have hpv : Valued.v pK = WithZero.exp (-1) := by
     have h1 : Valued.v pK = v.valuation F (π0 : F) := v.valuedAdicCompletion_eq_valuation' (π0 : F)
-    rw [h1]
-    exact hπ0
+    rwa [h1]
   have hpmem : pK ∈ v.adicCompletionIntegers F := by
     rw [IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, hpv]
     exact le_of_lt (by decide)
@@ -285,8 +284,7 @@ theorem relIndex_matrix_lattice : ∀ (F : Type) [Field F] [NumberField F] (v : 
   have hunits : x ^ b * y ^ a * U = Pu ^ m := by
     apply Units.ext
     simp only [Units.val_mul, Units.val_pow_eq_pow_val, U, Pu, Units.val_mk0]
-    rw [← hG, ← hH, ← hBdet]
-    exact hdu
+    rwa [← hG, ← hH, ← hBdet]
   have hU1 : absV F v U = 1 := by
     have hle1 : Valued.v ((U : Fv F v)) ≤ 1 := (u : v.adicCompletionIntegers F).2
     have hnot : ¬ Valued.v ((U : Fv F v)) < 1 := fun hlt =>
@@ -297,8 +295,7 @@ theorem relIndex_matrix_lattice : ∀ (F : Type) [Field F] [NumberField F] (v : 
     rw [absV, hPu, Units.val_mk0, hpv, WithZero.log_exp, _root_.zpow_neg_one]
   have hkey : absV F v x ^ b * absV F v y ^ a = ((Ideal.absNorm v.asIdeal : ℕ) : ℝ)⁻¹ ^ m := by
     have h1 := congrArg (absV F v) hunits
-    rw [absV_mul, absV_mul, absV_pow, absV_pow, absV_pow, hU1, mul_one, hP1] at h1
-    exact h1
+    rwa [absV_mul, absV_mul, absV_pow, absV_pow, absV_pow, hU1, mul_one, hP1] at h1
   rw [hidx, hkey, inv_pow, inv_inv, Nat.cast_pow]
 
 theorem off_norm {R : Type} [CommRing R] {e c x y : R} (hx : (1 - e) * x = 1 - e) (hy : (1 - c) * y = 1 - c)
@@ -308,13 +305,11 @@ theorem off_norm {R : Type} [CommRing R] {e c x y : R} (hx : (1 - e) * x = 1 - e
 theorem off_norm' {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) (hf : Function.Injective f) {ε n : A} {b z : R}
     (h1 : b = f ε) (h2 : f n = z) (h : (1 - b) * z = 1 - b) : (1 - ε) * n = 1 - ε := by
   apply hf
-  rw [map_mul, map_sub, map_one, h2, ← h1]
-  exact h
+  rwa [map_mul, map_sub, map_one, h2, ← h1]
 
 theorem off_norm'' {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) {ε n : A} (h1 : f ε = 0)
     (h : (1 - ε) * n = 1 - ε) : f n = 1 := by
-  have h' := congrArg f h
-  simpa [map_mul, map_sub, map_one, h1] using h'
+  simpa [map_mul, map_sub, map_one, h1] using congrArg f h
 
 section Chart
 
@@ -327,16 +322,14 @@ theorem chart_e (he : e * e = e) (hπ : GlobalTheory.SplitHecke.Chart e v π) : 
   exact h0.symm
 
 theorem conj_off {x : AE D} (hx : (1 - e) * x = 1 - e) : (1 - cA D e) * cA D x = 1 - cA D e := by
-  have h' := congrArg (cA D) hx
-  simpa only [map_mul, map_sub, map_one] using h'
+  simpa only [map_mul, map_sub, map_one] using congrArg (cA D) hx
 
 theorem norm_at (h2 : e * cA D e = 0) (hπ : GlobalTheory.SplitHecke.Chart e v π) {x : AE D} (hx : (1 - e) * x = 1 - e) :
     evalV D.host.F v (sndA D.host.F (Algebra.norm (AF D.host.F) x)) = π x := by
   obtain ⟨-, hz, halg, -⟩ := hπ
   have hc : π (cA D e) = 0 := (hz _).2 h2
   have hcx : π (cA D x) = 1 := by
-    have h' := congrArg π (conj_off hx)
-    simpa [map_mul, map_sub, map_one, hc] using h'
+    simpa [map_mul, map_sub, map_one, hc] using congrArg π (conj_off hx)
   rw [← halg, GlobalTheory.SplitDetCharacter.algebraMap_norm, map_mul, hcx, mul_one]
 
 theorem norm_off (he : IsSplitIdem D e) (hπ : GlobalTheory.SplitHecke.Chart e v π) {x : AE D} (hx : (1 - e) * x = 1 - e)

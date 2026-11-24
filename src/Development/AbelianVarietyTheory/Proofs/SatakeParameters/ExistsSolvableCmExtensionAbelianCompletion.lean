@@ -101,13 +101,9 @@ theorem isOpen_map [FiniteDimensional F E] (V : Subgroup (Dec (F := E) A)) (hV :
   intro k hk
   obtain ⟨g, rfl⟩ := resHom_surjective (E := E) A hfix k
   refine ⟨g, ?_, rfl⟩
-  have hgU : (g : G E Ω) ∈ U := by
-    apply hKU
-    intro z
-    exact hk ⟨z.1, z.2⟩
+  have hgU : (g : G E Ω) ∈ U := hKU (fun z => hk ⟨z.1, z.2⟩)
   have : g ∈ Subtype.val ⁻¹' U := hgU
-  rw [hUV] at this
-  exact this
+  rwa [hUV] at this
 
 theorem commutator_le_map (V : Subgroup (Dec (F := E) A)) (hc : commutator (Dec (F := E) A) ≤ V) :
     commutator (Dec (F := F) A) ≤ V.map (resHom (F := F) (E := E) A) := by

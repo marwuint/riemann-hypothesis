@@ -221,9 +221,7 @@ theorem map_mem (τ : E →+* ℂ) {γ : M2 E N} (h : γ ∈ UU E N) :
     ext i j
     rcases i with i | i <;> rcases j with j | j <;> by_cases hij : i = j <;>
       simp [Matrix.J, hij]
-  have h2 := congrArg (fun X => X.map τ) h1
-  simp only [Matrix.map_mul, map_ccT, hJ] at h2
-  exact h2
+  simpa only [Matrix.map_mul, map_ccT, hJ] using congrArg (fun X => X.map τ) h1
 
 theorem norm_det (τ : E →+* ℂ) {γ : M2 E N} (h : γ ∈ UU E N) : ‖τ γ.det‖ = 1 := by
   have h2 := congrArg det (map_mem τ h)
@@ -248,8 +246,7 @@ theorem mul_blocks (τ : E →+* ℂ) (γ γ' : M2 E N) :
     (γ' * γ).toBlocks₂₂.map τ = γ'.toBlocks₂₁.map τ * γ.toBlocks₁₂.map τ +
         γ'.toBlocks₂₂.map τ * γ.toBlocks₂₂.map τ := by
   have h : (γ' * γ).map τ = γ'.map τ * γ.map τ := Matrix.map_mul
-  rw [map_blocks, map_blocks τ γ, map_blocks τ γ', fromBlocks_multiply, fromBlocks_inj] at h
-  exact h
+  rwa [map_blocks, map_blocks τ γ, map_blocks τ γ', fromBlocks_multiply, fromBlocks_inj] at h
 
 end GlobalTheory.SW.HAct
 
@@ -268,8 +265,7 @@ theorem GlobalTheory.SW.unitary_act_halfSpace : ∀ (E : Type) [Field E] [Number
     fun γ' h' => ?_⟩
   · have := det_den' (hb τ).1 (hb τ).2.1 (hb τ).2.2.1 (hb τ).2.2.2 (hQ τ)
     rw [← map_blocks τ.1 γ] at this
-    rw [RingHom.map_det]
-    exact this
+    rwa [RingHom.map_det]
   · rw [detIm, detIm, ← Finset.prod_mul_distrib]
     exact Finset.prod_congr rfl fun τ _ => det_re (hI τ)
   · have hW : ∀ τ, hAct Ψ γ Z τ * hDen Ψ γ Z τ =

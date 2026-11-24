@@ -167,16 +167,14 @@ theorem isWtOn_conjRep_iff (ε : Fin k → Bool) (σ : Matrix (Fin k) (Fin k) �
     rw [map_star_diag] at h1
     have h2 : σ ((Matrix.diagonal fun a => Complex.exp ((((-θ) a : ℝ) : ℂ) * Complex.I)).map star) (ConjSp.out v) =
         starRingEnd ℂ (Complex.exp (((∑ a, μ a * (-θ) a : ℝ) : ℂ) * Complex.I)) • ConjSp.out v := h (-θ) h1
-    rw [map_star_diag, star_exp_mul_I, sum_neg, neg_neg, neg_neg] at h2
-    exact h2
+    rwa [map_star_diag, star_exp_mul_I, sum_neg, neg_neg, neg_neg] at h2
   · intro h θ hθ
     have h1 := map_star_mem_K hθ
     rw [map_star_diag] at h1
     have h2 := h (-θ) h1
     show σ ((Matrix.diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I)).map star) (ConjSp.out v) =
         starRingEnd ℂ (Complex.exp (((∑ a, μ a * θ a : ℝ) : ℂ) * Complex.I)) • ConjSp.out v
-    rw [map_star_diag, star_exp_mul_I, ← sum_neg]
-    exact h2
+    rwa [map_star_diag, star_exp_mul_I, ← sum_neg]
 
 theorem isURepOn_conjRep {ε : Fin k → Bool} {σ : Matrix (Fin k) (Fin k) ℂ → (H →L[ℂ] H)}
     (h : IsURepOn (UJset ε) σ) : IsURepOn (UJset ε) (conjRep σ) := by
@@ -201,15 +199,13 @@ theorem isKTypeOf_conjRep [FiniteDimensional ℂ H] {ε : Fin k → Bool} {σ : 
   have hst : IsKStableOn ε σ (ConjSp.unsub S) := by
     intro g hg w hw
     have h1 : ConjSp.mk (σ ((g.map star).map star) w) ∈ S := hS _ (map_star_mem_K hg) (ConjSp.mk w) hw
-    rw [map_star_star] at h1
-    exact h1
+    rwa [map_star_star] at h1
   rcases h3 _ le_top hst with h0 | h0
   · left
     rw [eq_bot_iff]
     intro w hw
     have : ConjSp.out w ∈ ConjSp.unsub S := hw
-    rw [h0] at this
-    exact this
+    rwa [h0] at this
   · right
     rw [eq_top_iff]
     intro w _

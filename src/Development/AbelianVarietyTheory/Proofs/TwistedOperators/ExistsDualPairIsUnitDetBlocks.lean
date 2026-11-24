@@ -220,21 +220,10 @@ private lemma H_affine_combination_eq_of_quadratic_relation {R : Type} [CommRing
           (S * (b11 + b12 + b21 + b22 + X₂ * (b11 + b12 - b21 - b22))) = S + S + S + S := by
   simp only [Matrix.transpose_add, Matrix.transpose_sub, Matrix.transpose_mul]
   constructor
-  · calc _ = ((a11ᵀ * S * b11 - a21ᵀ * S * b21 - S) + (a11ᵀ * S * b12 - a21ᵀ * S * b22) +
-            (a12ᵀ * S * b11 - a22ᵀ * S * b21) + (a12ᵀ * S * b12 - a22ᵀ * S * b22 + S)) +
-          ((a11ᵀ * S * b11 - a21ᵀ * S * b21 - S) + (a11ᵀ * S * b12 - a21ᵀ * S * b22) +
-            (a12ᵀ * S * b11 - a22ᵀ * S * b21) + (a12ᵀ * S * b12 - a22ᵀ * S * b22 + S)) +
-          (a11ᵀ + a12ᵀ - a21ᵀ - a22ᵀ) * (X₁ᵀ * S + S * X₂) * (b11 + b12 - b21 - b22) := by
-          noncomm_ring
-      _ = 0 := by rw [E11, E12, E21, E22, hX]; noncomm_ring
-  · calc _ = ((a11ᵀ * S * b11 - a21ᵀ * S * b21 - S) + (a11ᵀ * S * b12 - a21ᵀ * S * b22) -
-            (a12ᵀ * S * b11 - a22ᵀ * S * b21) - (a12ᵀ * S * b12 - a22ᵀ * S * b22 + S)) +
-          ((a11ᵀ * S * b11 - a21ᵀ * S * b21 - S) + (a11ᵀ * S * b12 - a21ᵀ * S * b22) -
-            (a12ᵀ * S * b11 - a22ᵀ * S * b21) - (a12ᵀ * S * b12 - a22ᵀ * S * b22 + S)) +
-          (a11ᵀ - a12ᵀ - a21ᵀ + a22ᵀ) * (X₁ᵀ * S + S * X₂) * (b11 + b12 - b21 - b22) +
-          (S + S + S + S) := by
-          noncomm_ring
-      _ = S + S + S + S := by rw [E11, E12, E21, E22, hX]; noncomm_ring
+  · linear_combination (norm := noncomm_ring) 2 * (E11 + E12 + E21 + E22) +
+      (a11ᵀ + a12ᵀ - a21ᵀ - a22ᵀ) * hX * (b11 + b12 - b21 - b22)
+  · linear_combination (norm := noncomm_ring) 2 * (E11 + E12 - E21 - E22) +
+      (a11ᵀ - a12ᵀ - a21ᵀ + a22ᵀ) * hX * (b11 + b12 - b21 - b22)
 
 theorem exists_dual_pair_isUnit_det_blocks :
     ∀ {R : Type} [CommRing R] [IsLocalRing R], IsUnit (2 : R) → ∀ {n : ℕ} (S : Matrix (Fin n) (Fin n) R), IsUnit S.det →

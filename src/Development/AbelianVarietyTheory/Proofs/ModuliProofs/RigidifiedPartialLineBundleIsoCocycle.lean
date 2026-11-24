@@ -137,8 +137,7 @@ theorem cocycle_of_rigid : ∀ (X S : Scheme.{0}) (p : X ⟶ S) (e : S ⟶ X) (V
   have hV : V₁ ⊓ V₂ ⊓ V₃ ≤ e ⁻¹ᵁ (p ⁻¹ᵁ (V₁ ⊓ V₂ ⊓ V₃)) := by
     intro x hx
     show (e ≫ p) x ∈ V₁ ⊓ V₂ ⊓ V₃
-    rw [hep]
-    exact hx
+    rwa [hep]
   let u : Γ(X, p ⁻¹ᵁ (V₁ ⊓ V₂ ⊓ V₃)) := X.presheaf.map (homOfLE hcov).op s
   have hsT : ∀ i (z : X) (hz : z ∈ T i) (hz' : z ∈ iSup T),
       X.presheaf.germ (iSup T) z hz' s = X.presheaf.germ (T i) z hz (t i).val := by
@@ -176,14 +175,11 @@ theorem cocycle_of_rigid : ∀ (X S : Scheme.{0}) (p : X ⟶ S) (e : S ⟶ X) (V
     have hyV : y ∈ p ⁻¹ᵁ (V₁ ⊓ V₂ ⊓ V₃) := by
       refine ⟨⟨?_, ?_⟩, ?_⟩
       · have := (le_iSup M₁.U a) hya
-        rw [hU₁] at this
-        exact this
+        rwa [hU₁] at this
       · have := (le_iSup M₂.U b) hyb
-        rw [hU₂] at this
-        exact this
+        rwa [hU₂] at this
       · have := (le_iSup M₃.U c) hyc
-        rw [hU₃] at this
-        exact this
+        rwa [hU₃] at this
     have k3 := congrArg (X.presheaf.germ (p ⁻¹ᵁ (V₁ ⊓ V₂ ⊓ V₃)) y hyV) hu
     simp only [u, map_one] at k3
     erw [TopCat.Presheaf.germ_res_apply] at k3

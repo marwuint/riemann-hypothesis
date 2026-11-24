@@ -67,10 +67,7 @@ theorem fullObj_of_obj {D : Datum H} {l : Level H} {n : ℕ} {S : Scheme.{0}} (s
     show ((β (RZ.rt H n l.A) : ℂ)) = H.rt0
     rw [← RZ.rt_coe (H := H) n l.A]
     exact hβ (RZ.rt H n l.A)
-  have hze : β (RZ.ze H n l.A) = (baseKA l).ζ := by
-    apply Subtype.ext
-    show ((β (RZ.ze H n l.A) : ℂ)) = zeta l.A
-    exact hβ (RZ.ze H n l.A)
+  have hze : β (RZ.ze H n l.A) = (baseKA l).ζ := Subtype.ext (hβ (RZ.ze H n l.A))
   refine ⟨o.proper, o.ample, o.ktriv, o.etaA_add, o.etaA_ker, ?_⟩
   intro k _ _ _ x β' hx
   obtain ⟨g0, hg0⟩ : ∃ g0 : KA l →+* k, x ≫ s = spMap g0 := by
@@ -85,9 +82,7 @@ theorem fullObj_of_obj {D : Datum H} {l : Level H} {n : ℕ} {S : Scheme.{0}} (s
   subst hb
   obtain ⟨hdet, I, hI1, hI2, -⟩ := o.geom k x g0 hg0
   refine ⟨?_, I, ?_, hI2⟩
-  · rw [RingHom.comp_apply, hρ]
-    exact hdet
-  · rw [RingHom.comp_apply, hze]
-    exact hI1
+  · rwa [RingHom.comp_apply, hρ]
+  · rwa [RingHom.comp_apply, hze]
 
 end GlobalTheory.Models

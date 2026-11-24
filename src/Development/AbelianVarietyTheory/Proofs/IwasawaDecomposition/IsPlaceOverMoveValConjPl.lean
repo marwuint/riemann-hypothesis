@@ -224,8 +224,7 @@ theorem _root_.GlobalTheory.AntiLAdic.val_mul_val_conj {F : Type} [Field F] [Num
   · have hset : _root_.Formalism.L2.Host.aboveF (L := E) F u = {v, v'} := by
       ext P
       rw [hmem, Finset.mem_insert, Finset.mem_singleton]
-    rw [hset, Finset.prod_pair hvv, hloc v hvu hu, hloc v' hv'u hu'] at hprod
-    exact hprod
+    rwa [hset, Finset.prod_pair hvv, hloc v hvu hu, hloc v' hv'u hu'] at hprod
 
 end Places
 
@@ -252,11 +251,9 @@ theorem _root_.GlobalTheory.AntiLAdic.antiHom_of_trivOn : ∀ (F E : Type) [Fiel
   set T := hfin.toFinset with hT
   have hgood : ∀ w ∉ T, χ.UnrAt w ∧ (l : 𝓞 E) ∉ w.asIdeal := by
     intro w hw
-    rw [hT, Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_or, not_not] at hw
-    exact hw
+    rwa [hT, Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_or, not_not] at hw
   let φ : _root_.Formalism.ConjugateSelfDual.G E Ω →* (_root_.Formalism.ConjugateSelfDual.Qbar l)ˣ := (r.comp (_root_.GlobalTheory.AntiLAdic.conjHom cc hc)) * r
   have hφc : Continuous φ := by
-    show Continuous (fun g => r (_root_.GlobalTheory.AntiLAdic.conjHom cc hc g) * r g)
     exact (hrc.comp (_root_.GlobalTheory.AntiLAdic.continuous_conjHom cc hc)).mul hrc
   have hφ : φ = 1 := by
     refine _root_.GlobalTheory.FrobDense.eq_one_of_frob E Ω art hart _ φ hφc
@@ -264,8 +261,7 @@ theorem _root_.GlobalTheory.AntiLAdic.antiHom_of_trivOn : ∀ (F E : Type) [Fiel
     intro v hv A hA σ hσ
     rw [Finset.mem_union, not_or] at hv
     have hv' : conjPrime₂ v ∉ T := by
-      intro hmemT
-      exact hv.2 (Finset.mem_image.mpr ⟨conjPrime₂ v, hmemT, hconj2 v⟩)
+      exact fun hmemT => hv.2 (Finset.mem_image.mpr ⟨conjPrime₂ v, hmemT, hconj2 v⟩)
     obtain ⟨hU, hl⟩ := hgood v hv.1
     obtain ⟨hU', hl'⟩ := hgood (conjPrime₂ v) hv'
     have hA' := _root_.GlobalTheory.AntiLAdic.isPlaceOver_moveVal_conjPl hcc (hconjP v) hA

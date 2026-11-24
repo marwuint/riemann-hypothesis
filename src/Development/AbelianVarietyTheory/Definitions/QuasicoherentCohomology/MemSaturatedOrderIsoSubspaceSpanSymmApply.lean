@@ -70,12 +70,10 @@ theorem mem_saturation_iff' {N : Submodule R M} {x : M} :
   constructor
   · rintro ⟨⟨a, ha⟩, h⟩
     refine ⟨a, ha, ?_⟩
-    rw [← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul]
-    exact h
+    rwa [← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul]
   · rintro ⟨a, ha, h⟩
     refine ⟨⟨a, ha⟩, ?_⟩
-    rw [← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul] at h
-    exact h
+    rwa [← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul] at h
 
 theorem mem_saturation_iff [IsDomain R] {N : Submodule R M} {x : M} :
     x ∈ saturation N ↔ ∃ a : R, a ≠ 0 ∧ a • x ∈ N := by
@@ -112,8 +110,7 @@ theorem isSaturatedSubmodule_iff' {N : Submodule R M} :
     IsSaturatedSubmodule N ↔ ∀ a ∈ R⁰, ∀ x : M, a • x ∈ N → x ∈ N := by
   rw [isSaturatedSubmodule_iff_le]
   constructor
-  · intro h a ha x hx
-    exact h (mem_saturation_iff'.2 ⟨a, ha, hx⟩)
+  · exact fun h a ha x hx => h (mem_saturation_iff'.2 ⟨a, ha, hx⟩)
   · intro h x hx
     obtain ⟨a, ha, hax⟩ := mem_saturation_iff'.1 hx
     exact h a ha x hax
@@ -130,8 +127,7 @@ theorem isSaturatedSubmodule_iff_torsion_eq_bot {N : Submodule R M} :
   · intro h y hy
     obtain ⟨x, rfl⟩ := Submodule.mkQ_surjective N y
     exact (Submodule.Quotient.mk_eq_zero N).2 (h (show x ∈ saturation N from hy))
-  · intro h x hx
-    exact (Submodule.Quotient.mk_eq_zero N).1 (h (N.mkQ x) hx)
+  · exact fun h x hx => (Submodule.Quotient.mk_eq_zero N).1 (h (N.mkQ x) hx)
 
 theorem isSaturatedSubmodule_iff_isTorsionFree [IsDomain R] {N : Submodule R M} :
     IsSaturatedSubmodule N ↔ Module.IsTorsionFree R (M ⧸ N) := by

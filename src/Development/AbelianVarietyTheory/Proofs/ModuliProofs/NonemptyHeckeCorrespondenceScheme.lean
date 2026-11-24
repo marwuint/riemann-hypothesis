@@ -176,8 +176,7 @@ theorem eq_of_mem_range {S : Scheme.{0}} {G : Over S} (τ : 𝟙_ (Over S) ⟶ G
   have r : Set.range (pullback.fst z.left τ.left) = Set.univ := by
     rw [Scheme.Pullback.range_fst]
     refine Set.eq_univ_of_forall fun v => ?_
-    rw [show v = u from Subsingleton.elim (α := PrimeSpectrum k) _ _]
-    exact hu
+    rwa [show v = u from Subsingleton.elim (α := PrimeSpectrum k) _ _]
   have i₂ : IsClosedImmersion (pullback.fst z.left τ.left) :=
     IsClosedImmersion.of_isPreimmersion _ (by rw [r]; exact isClosed_univ)
   have i₃ : Surjective (pullback.fst z.left τ.left) := ⟨Set.range_eq_univ.1 r⟩
@@ -200,8 +199,7 @@ theorem range_subset_iff {S : Scheme.{0}} {G : Over S} {n : ℕ} (τ : Fin n →
     obtain ⟨j, hj⟩ := Set.mem_iUnion.1 (h ⟨(default : PrimeSpectrum k), rfl⟩)
     exact ⟨j, (eq_of_mem_range (τ j) z _ hj).symm⟩
   · rintro ⟨j, rfl⟩ _ ⟨u, rfl⟩
-    refine Set.mem_iUnion.2 ⟨j, (toUnit (Over.mk x)).left u, ?_⟩
-    exact (Scheme.Hom.comp_apply _ _ _).symm
+    exact Set.mem_iUnion.2 ⟨j, (toUnit (Over.mk x)).left u, (Scheme.Hom.comp_apply _ _ _).symm⟩
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
@@ -779,8 +777,7 @@ theorem exists_quotient_by_finite_group_of_sections :
       apply e.symm.injective
       rw [← div_eq_one]
       apply hi k t
-      rw [map_div, GrpObj.comp_div, div_eq_one]
-      exact h
+      rwa [map_div, GrpObj.comp_div, div_eq_one]
     obtain ⟨_, hhom⟩ := exists_grpObj_constObj x i.range hr
     have hs : FinEt.IsSplitOfRank (constObj (Sp R) (Fin n)).hom n :=
       (FinEt.isSplitOfRank_iff_exists_iso _ _).mpr ⟨Iso.refl _, Category.id_comp _⟩
@@ -1255,8 +1252,7 @@ theorem weilIs_one {S : Scheme.{0}} [ConnectedSpace S] {s : S ⟶ Sp (KA l)} (o 
   have hc : IsClopen (U : Set (𝟙_ (Over S)).left) := ⟨hU, U.isOpen⟩
   have h₂ : (U : Set (𝟙_ (Over S)).left) = Set.univ := hc.eq_univ ⟨_, h₁ ⟨q, rfl⟩⟩
   have h₃ := (hW (𝟙_ (Over S)) (𝟙 _)).2 (by rw [h₂]; exact Set.subset_univ _)
-  rw [map_one, Category.id_comp, Category.id_comp] at h₃
-  exact h₃
+  rwa [map_one, Category.id_comp, Category.id_comp] at h₃
 
 theorem hasQuot_of_linearisation {R : Type} [CommRing R] [IsNoetherianRing R] [_root_.IsReduced R]
     {s : Sp R ⟶ Sp (KA l)} (o : Ob D l s) {𝔓 : Ideal (𝓞 E)} {p i n : ℕ}
@@ -1439,8 +1435,7 @@ theorem mul_comp (hc : ∀ x, ∃ i y, f i y = x) (h₁ : ∀ i, IsGrpPullback (
   rw [← MonObj.mul_comp (l x) (l y) (ψ' i)] at e₂
   replace e₂ : _ = (l x * l y).left ≫ (ψ' i).left ≫ φ₂ i := e₂.trans (Category.assoc _ _ _)
   rw [hψ, ← Category.assoc, ← e₁] at e₂
-  refine Eq.trans ?_ e₂.symm
-  exact (Category.assoc _ _ _).symm
+  exact Eq.trans (Category.assoc _ _ _).symm e₂.symm
 
 theorem isMonHom (hc : ∀ x, ∃ i y, f i y = x) (h₁ : ∀ i, IsGrpPullback (G₁' i) G₁ (f i) (φ₁ i))
     (h₂ : ∀ i, IsGrpPullback (G₂' i) G₂ (f i) (φ₂ i)) (ψ : G₁ ⟶ G₂) (ψ' : ∀ i, G₁' i ⟶ G₂' i) [∀ i, IsMonHom (ψ' i)]
@@ -1739,8 +1734,7 @@ theorem hasQuot_image (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ) {S S
     exact ⟨x, U.ι.isOpenEmbedding.injective (by simpa using hx)⟩⟩
   refine ⟨U, o₁, m₁, hqU, _root_.GlobalTheory.HkFam.hasQuot_descend E H D l Xo 𝔓 p i _ _ _ g' o₁ o' m' _ hA
     (GlobalTheory.HkSetPull.heckeSet_pull D 𝔓 p i m₁.toSABMap K hK) he hsur inferInstance ?_⟩
-  rw [hm', Scheme.Hom.comp_base, TopCat.coe_comp, Set.preimage_comp] at hQ
-  exact hQ
+  rwa [hm', Scheme.Hom.comp_base, TopCat.coe_comp, Set.preimage_comp] at hQ
 
 end GlobalTheory.HkSplit
 
@@ -1763,8 +1757,7 @@ theorem GlobalTheory.hasQuot_of_lists_of_smooth : ∀ (E : Type) [Field E] [Numb
   have : IsNoetherian (Sp R') := {}
   refine GlobalTheory.HkSplit.hasQuot_image Xo 𝔓 p i s (π ≫ j) o _ (Category.assoc _ _ _).symm o' m' K hA hK ?_ q
     ⟨y, by rw [Scheme.Hom.comp_apply, hy, hx]⟩
-  rw [hm', Scheme.Hom.comp_base, TopCat.coe_comp, Set.preimage_comp]
-  exact hQ
+  rwa [hm', Scheme.Hom.comp_base, TopCat.coe_comp, Set.preimage_comp]
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeQuotientExistsListedKernelsSmoothBase =====

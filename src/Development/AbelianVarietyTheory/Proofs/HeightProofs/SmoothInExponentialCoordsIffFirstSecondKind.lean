@@ -276,8 +276,7 @@ theorem _root_.GlobalTheory.SmoothForms.SecondKind.sm_iff (H : _root_.GlobalTheo
     let B : Module.Basis b ℝ L := Module.Basis.mk hbli (by rw [Subtype.range_coe, hbspan, hT])
     let Y : Fin (Fintype.card b) → L := B.reindex (Fintype.equivFin b)
     have hYT : ∀ i, Y i ∈ T := fun i => by
-      simp only [Y, Module.Basis.reindex_apply, B, Module.Basis.mk_apply]
-      exact hbT (Subtype.mem _)
+      simpa only [Y, Module.Basis.reindex_apply, B, Module.Basis.mk_apply] using hbT (Subtype.mem _)
     let Φ : (Fin (Fintype.card b) → ℝ) → 𝔸 := fun t => (List.ofFn fun i => exp (j (t i • Y i))).prod
     have hΦ : ContDiff ℝ ∞ Φ := contDiff_list_prod_ofFn_exp_smul Y
     have hΦ0 : Φ 0 = 1 := by
@@ -328,8 +327,7 @@ theorem _root_.GlobalTheory.SmoothForms.SecondKind.sm_iff (H : _root_.GlobalTheo
 
         rw [← Finset.univ_sum_single v, map_sum, map_sum]
         simp only [ContinuousLinearEquiv.coe_coe, he, hsingle]
-      rw [heq]
-      exact hd
+      rwa [heq]
     have hs := hΨ.hasStrictFDerivAt' hd (by simp)
     let Ψinv := hs.localInverse Ψ e 0
     have hinv0 : Ψinv 0 = 0 := by
@@ -337,8 +335,7 @@ theorem _root_.GlobalTheory.SmoothForms.SecondKind.sm_iff (H : _root_.GlobalTheo
       rwa [hΨ0] at this
     have hinv : ContDiffAt ℝ ∞ Ψinv 0 := by
       have := hΨ.to_localInverse hd (by simp)
-      rw [hΨ0] at this
-      exact this
+      rwa [hΨ0] at this
     have hright : ∀ᶠ X in 𝓝 (0 : L), Ψ (Ψinv X) = X := by
       have := hs.eventually_right_inverse
       rwa [hΨ0] at this
@@ -349,16 +346,14 @@ theorem _root_.GlobalTheory.SmoothForms.SecondKind.sm_iff (H : _root_.GlobalTheo
         rwa [hΨ0] at this
       have ht : Filter.Tendsto (fun X => Φ (Ψinv X)) (𝓝 0) (𝓝 1) := by
         have := hΦ.continuous.continuousAt.comp hc
-        rw [ContinuousAt, Function.comp_apply, hinv0, hΦ0] at this
-        exact this
+        rwa [ContinuousAt, Function.comp_apply, hinv0, hΦ0] at this
       exact ht.eventually hexpΛ
     unfold _root_.GlobalTheory.SmoothForms.Sm
     have h0 : ∀ g, ContDiffAt ℝ ∞ (fun X => φ (g * _root_.GlobalTheory.SmoothForms.expMap j s X)) 0 := by
       intro g
       have hF : ContDiff ℝ ∞ fun t => φ (g * s (Φ t)) := by
         have := h _ Y hYT g
-        rw [hfun] at this
-        exact this
+        rwa [hfun] at this
       have hcomp : ContDiffAt ℝ ∞ (fun X => φ (g * s (Φ (Ψinv X)))) 0 := by
         have h2 : ContDiffAt ℝ ∞ (fun t => φ (g * s (Φ t))) (Ψinv 0) := hF.contDiffAt
         exact h2.comp 0 hinv

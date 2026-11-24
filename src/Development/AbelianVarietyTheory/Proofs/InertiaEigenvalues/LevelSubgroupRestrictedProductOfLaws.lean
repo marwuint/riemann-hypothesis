@@ -404,12 +404,10 @@ theorem mem_of_cmp_mem (hH : L.P.H = ⊥) {g : GA D V} (hf : g ∈ GfC V) (h : �
     refine mem_St_of_int (fun i j => ?_) (fun i j => ?_)
     · refine int_of_local hι _ ((1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) i j) fun v => ?_
       have := int_of_mem_St (hSt v) i j
-      rw [piece_conj'] at this
-      exact this
+      rwa [piece_conj'] at this
     · refine int_of_local hι _ ((1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) i j) fun v => ?_
       have := int_of_mem_St ((St β).inv_mem (hSt v)) i j
-      rw [piece_inv', piece_conj'] at this
-      exact this
+      rwa [piece_inv', piece_conj'] at this
   have hr : ∀ PP : Pl D.host.E, redFn β PP (finE V g) =
       redFn β PP (piece (phi_idem' ((_root_.IsDedekindDomain.HeightOneSpectrum.under (𝓞 D.host.F) PP))) (finE V g)) := fun PP =>
     (redFn_piece (phi_idem _) _ hS PP (resS_phi_pos rfl)).symm
@@ -466,10 +464,8 @@ theorem levProd_of_laws : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T :
       unfold ext1
       split_ifs <;> rfl
     rw [h1, one_mul, Finset.prod_eq_one, Finset.prod_eq_one, one_mul, Units.val_one]
-    · intro PP hP
-      exact absurd hP (Finset.notMem_empty _)
-    · intro PP _
-      exact Finset.prod_eq_one fun c hc => absurd hc (Finset.notMem_empty _)
+    · exact fun PP hP => absurd hP (Finset.notMem_empty _)
+    · exact fun PP _ => Finset.prod_eq_one fun c hc => absurd hc (Finset.notMem_empty _)
   · obtain ⟨ε, hε, rfl⟩ := hf
     obtain rfl := placeIdem_unique hε (epsF_spec v)
     exact ⟨cmp_supp _ v g, cmp_triv _ v g⟩

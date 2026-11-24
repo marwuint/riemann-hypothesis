@@ -99,8 +99,7 @@ theorem card_orb (x : ZMod e) : (orb u x).card = minimalPeriod (fun y => u * y) 
   rw [coe_range]
   intro i hi j hj h
   refine iterate_injOn_Iio_minimalPeriod hi hj ?_
-  simp only [iter_mul]
-  exact h
+  simpa only [iter_mul] using h
 
 theorem mem_orb (x : ZMod e) (n : ℕ) : u ^ n * x ∈ orb u x := by
   refine mem_image.2 ⟨n % minimalPeriod (fun y => u * y) x, mem_range.2 (Nat.mod_lt _ (mp_pos u ha hu x)), ?_⟩

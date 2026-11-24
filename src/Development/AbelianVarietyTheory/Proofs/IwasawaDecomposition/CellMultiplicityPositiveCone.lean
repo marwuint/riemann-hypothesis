@@ -165,68 +165,42 @@ theorem card_torsion_cons_mul {p : ℕ} (v β : M) (w : Fin p → M) (k a : ℤ)
       abel
     have h3 := hli (Fin.cons (g 0 * a) fun i => g 0 * b i + k * g i.succ) (by
       rw [Fin.sum_univ_succ]; simpa using h2)
-    have hg0 : g 0 = 0 := by
-      have := h3 0
-      simp only [Fin.cons_zero, mul_eq_zero] at this
-      tauto
+    have hg0 : g 0 = 0 := by simpa [ha] using h3 0
     intro i
     refine Fin.cases hg0 (fun i => ?_) i
-    have := h3 i.succ
-    simp only [Fin.cons_succ, hg0, zero_mul, zero_add, mul_eq_zero] at this
-    tauto
+    simpa [hg0, hk] using h3 i.succ
   set D := Submodule.span ℤ (Set.range (Fin.cons v w : Fin (p + 1) → M)) with hD
   set N := Submodule.span ℤ (Set.range (Fin.cons β w : Fin (p + 1) → M)) with hN
   set E := Submodule.span ℤ (Set.range (Fin.cons (k • β) w : Fin (p + 1) → M)) with hE
   have hw : ∀ P : Submodule ℤ M, (∀ i, w i ∈ P) → ∑ i, b i • w i ∈ P := fun P h =>
     Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h i)
-  have hwE : ∀ i, w i ∈ E := fun i => Submodule.subset_span ⟨i.succ, by simp⟩
-  have hkE : k • β ∈ E := Submodule.subset_span ⟨0, by simp⟩
+  have key : ∀ (P : Submodule ℤ M) (x : M), x ∈ P → (∀ i, w i ∈ P) →
+      Submodule.span ℤ (Set.range (Fin.cons x w : Fin (p + 1) → M)) ≤ P := by
+    intro P x hx hw'
+    rw [Submodule.span_le]
+    rintro _ ⟨i, rfl⟩
+    refine Fin.cases ?_ (fun i => ?_) i
+    · simpa using hx
+    · simpa using hw' i
+  have sub : ∀ x : M, x ∈ Submodule.span ℤ (Set.range (Fin.cons x w : Fin (p + 1) → M)) :=
+    fun x => Submodule.subset_span ⟨0, by simp⟩
+  have subw : ∀ (x : M) (i : Fin p),
+      w i ∈ Submodule.span ℤ (Set.range (Fin.cons x w : Fin (p + 1) → M)) :=
+    fun x i => Submodule.subset_span ⟨i.succ, by simp⟩
+  have hwE : ∀ i, w i ∈ E := subw _
+  have hkE : k • β ∈ E := sub _
   have haE : a • v ∈ E := by
     have : a • v = k • β - ∑ i, b i • w i := by rw [hrel]; abel
     rw [this]; exact sub_mem hkE (hw _ hwE)
-  have hE' : E = Submodule.span ℤ (Set.range (Fin.cons (a • v) w : Fin (p + 1) → M)) := by
-    apply le_antisymm
-    · rw [Submodule.span_le]
-      rintro _ ⟨i, rfl⟩
-      refine Fin.cases ?_ (fun i => ?_) i
-      · simp only [Fin.cons_zero, SetLike.mem_coe]
-        rw [hrel]
-        exact add_mem (Submodule.subset_span ⟨0, by simp⟩) (hw _ fun i => Submodule.subset_span ⟨i.succ, by simp⟩)
-      · exact Submodule.subset_span ⟨i.succ, by simp⟩
-    · rw [Submodule.span_le]
-      rintro _ ⟨i, rfl⟩
-      refine Fin.cases ?_ (fun i => ?_) i
-      · simpa using haE
-      · simpa using hwE i
-  have hED : E ≤ D := by
-    rw [hE', Submodule.span_le]
-    rintro _ ⟨i, rfl⟩
-    refine Fin.cases ?_ (fun i => ?_) i
-    · simpa using Submodule.smul_mem D a (Submodule.subset_span ⟨0, by simp⟩)
-    · exact Submodule.subset_span ⟨i.succ, by simp⟩
-  have hEN : E ≤ N := by
-    rw [Submodule.span_le]
-    rintro _ ⟨i, rfl⟩
-    refine Fin.cases ?_ (fun i => ?_) i
-    · simpa using Submodule.smul_mem N k (Submodule.subset_span ⟨0, by simp⟩)
-    · exact Submodule.subset_span ⟨i.succ, by simp⟩
-  have hDs : D ≤ sat E := by
-    rw [Submodule.span_le]
-    rintro _ ⟨i, rfl⟩
-    refine Fin.cases ?_ (fun i => ?_) i
-    · exact mem_sat.2 ⟨a, ha, by simpa using haE⟩
-    · exact le_sat E (by simpa using hwE i)
-  have hNs : N ≤ sat E := by
-    rw [Submodule.span_le]
-    rintro _ ⟨i, rfl⟩
-    refine Fin.cases ?_ (fun i => ?_) i
-    · exact mem_sat.2 ⟨k, hk, by simpa using hkE⟩
-    · exact le_sat E (by simpa using hwE i)
-  have h1 := card_torsion_eq_relIndex D
-  rw [sat_eq hED hDs] at h1
-  have h2 := card_torsion_eq_relIndex N
-  rw [sat_eq hEN hNs] at h2
-  rw [h1, h2, ← relIndex_cons_smul β w k hli', ← relIndex_cons_smul v w a hli, ← hE']
+  have hE' : E = Submodule.span ℤ (Set.range (Fin.cons (a • v) w : Fin (p + 1) → M)) :=
+    le_antisymm (key _ (k • β) (by rw [hrel]; exact add_mem (sub _) (hw _ (subw _))) (subw _))
+      (key E _ haE hwE)
+  have hED : E ≤ D := hE'.le.trans (key D (a • v) (D.smul_mem a (sub v)) (subw v))
+  have hEN : E ≤ N := key N (k • β) (N.smul_mem k (sub β)) (subw β)
+  have hDs : D ≤ sat E := key _ v (mem_sat.2 ⟨a, ha, haE⟩) fun i => le_sat E (hwE i)
+  have hNs : N ≤ sat E := key _ β (mem_sat.2 ⟨k, hk, hkE⟩) fun i => le_sat E (hwE i)
+  rw [card_torsion_eq_relIndex D, sat_eq hED hDs, card_torsion_eq_relIndex N, sat_eq hEN hNs,
+    ← relIndex_cons_smul β w k hli', ← relIndex_cons_smul v w a hli, ← hE']
   change E.toAddSubgroup.relIndex N.toAddSubgroup * _ = E.toAddSubgroup.relIndex D.toAddSubgroup * _
   rw [AddSubgroup.relIndex_mul_relIndex _ _ _ ((Submodule.toAddSubgroup_le _ _).2 hEN) ((Submodule.toAddSubgroup_le _ _).2 hNs),
     AddSubgroup.relIndex_mul_relIndex _ _ _ ((Submodule.toAddSubgroup_le _ _).2 hED) ((Submodule.toAddSubgroup_le _ _).2 hDs)]
@@ -275,8 +249,7 @@ theorem exists_int_rel {O : Type} [CommRing O] {bar : O → O} {X : Type} [AddCo
       have h3 : ((g 0 * (β : LinearMap.BilinForm ℤ X) x y + ∑ i, g i.succ * (δ i : LinearMap.BilinForm ℤ X) x y : ℤ) : ℝ) = 0 := by
         exact_mod_cast h2
       push_cast at h3
-      rw [h1] at h3
-      rw [Finset.mul_sum, ← Finset.sum_add_distrib] at h3
+      rw [h1, Finset.mul_sum, ← Finset.sum_add_distrib] at h3
       rw [← h3]
       refine Finset.sum_congr rfl fun i _ => ?_
       ring)

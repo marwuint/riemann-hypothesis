@@ -300,8 +300,7 @@ theorem coords_surj (he : IsSplitIdem D e) (hπ : Chart e v π) (hβ : Frame W e
   have hGN : G * N = 1 := by
     have := congrArg (Matrix.map · π) (GlobalTheory.OrientedAdjoint.gram_mul_inv W)
     simp only [Matrix.map_mul, Matrix.map_map] at this
-    rw [Matrix.map_one _ (map_zero _) (map_one _)] at this
-    exact this
+    rwa [Matrix.map_one _ (map_zero _) (map_one _)] at this
   have hNG : N * G = 1 := mul_eq_one_comm.1 hGN
   choose y₁ hy₁ using fun k => hπ.1 ((β.1 *ᵥ a) k)
   set x := b ᵥ* ((β⁻¹).1 * N) with hx
@@ -352,8 +351,7 @@ theorem coordA_move (g' : GA D W) (y : Fin W.rank → AE D) :
 theorem coordB_move (g' : GA D W) (y : Fin W.rank → AE D) :
     coordB W π β (mt W g' *ᵥ y) = coordB W π β y ᵥ* (rho W π β g'⁻¹).1 := by
   have h := dual_move (cA D) π (W.gram.map (incA D)) (mt W g') (mt W g'⁻¹) β (gram_mul_inv W g') y
-  rw [rho_val]
-  exact h
+  rwa [rho_val]
 
 theorem mem_iff_coords (he : IsSplitIdem D e) (hβ : Frame W e π β)
     (hd : ∀ y : Fin W.rank → AE D, (fun i => finPart D (cA D e * y i)) ∈ LamHat W ↔ ∀ j, IsInt (Ov D v)
@@ -399,10 +397,8 @@ theorem latIndex_split_local : ∀ {D : D7} (e : AE D) (v : HeightOneSpectrum (�
         rw [← hzy]
         have := finMat_mul_inv g⁻¹ z
         rw [inv_inv] at this
-        rw [this]
-        exact hz
-      · intro h
-        exact ⟨_, h, finMat_mul_inv g _⟩
+        rwa [this]
+      · exact fun h => ⟨_, h, finMat_mul_inv g _⟩
     refine AddSubgroup.mem_comap.trans (hstep.trans ((mem_iff_coords he hβ hd (suppAt_inv hg) hy').trans ?_))
     have hA : coordA π β (mt W g⁻¹ *ᵥ y) = (rho W π β g⁻¹).1 *ᵥ coordA π β y := coordA_move g⁻¹ y
     have hB : coordB W π β (mt W g⁻¹ *ᵥ y) = coordB W π β y ᵥ* (rho W π β g).1 := by rw [coordB_move, inv_inv]
@@ -485,8 +481,7 @@ theorem latOf_one : latOf O (1 : Matrix (Fin r) (Fin r) K) = stdLat O K r := by
 theorem map_mulVec_mem (N : Matrix (Fin r) (Fin r) O) {v : Fin r → K} (hv : v ∈ stdLat O K r) :
     (N.map (algebraMap O K)) *ᵥ v ∈ stdLat O K r := by
   obtain ⟨w, rfl⟩ := mem_stdLat.1 hv
-  refine mem_stdLat.2 ⟨N *ᵥ w, funext fun i => ?_⟩
-  exact (RingHom.map_mulVec (algebraMap O K) N w i).symm
+  exact mem_stdLat.2 ⟨N *ᵥ w, funext fun i => (RingHom.map_mulVec (algebraMap O K) N w i).symm⟩
 
 theorem latOf_unimod (N : Matrix (Fin r) (Fin r) O) (hN : IsUnit N.det) :
     latOf O (N.map (algebraMap O K)) = stdLat O K r := by
@@ -934,8 +929,7 @@ theorem index_range_eq_pow {r : ℕ} (A : Matrix (Fin r) (Fin r) O) (hA : A.det 
         Nat.card (IsLocalRing.ResidueField O) ^ n := by
   have hl := GlobalTheory.length_quotient_range_mulVecLin_eq_addVal_det A
   have hne : Module.length O ((Fin r → O) ⧸ LinearMap.range A.mulVecLin) ≠ ⊤ := by
-    rw [hl, ne_eq, IsDiscreteValuationRing.addVal_eq_top_iff]
-    exact hA
+    rwa [hl, ne_eq, IsDiscreteValuationRing.addVal_eq_top_iff]
   have hfl := Module.length_ne_top_iff.mp hne
   obtain ⟨n, hn, hc⟩ := GlobalTheory.exists_length_eq_and_card_eq_pow_of_isFiniteLength O _ hfl
   exact ⟨n, by rw [← hl, hn], hc⟩
@@ -1065,8 +1059,7 @@ theorem exists_int_matrix (X : Matrix (Fin r) (Fin r) K) (h : lat O K X ≤ stdL
       · subst hij; simp
       · simp [Pi.single_eq_of_ne hij]
     have h2 := h h1
-    rw [stdLat_eq_range] at h2
-    exact h2
+    rwa [stdLat_eq_range] at h2
   choose y hy using hc
   refine ⟨Matrix.of fun i j => y j i, ?_⟩
   ext i j
@@ -1476,8 +1469,7 @@ theorem indexSum_split : ∀ (D : D7) (W : HSp D) (n : ℕ), 2 * W.rank + 5 ≤ 
   rw [hq] at hbig
   rw [hsum]
   change Φ 1 + ∑ h ∈ C.image (rho W π β), Φ h ≤ _ at hbig
-  rw [hΦ1] at hbig
-  rw [hσ] at hbig
+  rw [hΦ1, hσ] at hbig
   linarith
 
 end GlobalTheory.SplitIndexSum

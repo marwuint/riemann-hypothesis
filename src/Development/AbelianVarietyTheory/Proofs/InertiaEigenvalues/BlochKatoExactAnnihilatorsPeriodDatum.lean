@@ -70,8 +70,7 @@ theorem mem_rorth (β : Z →ₗ[k] Z' →ₗ[k] k) (W : Submodule k Z) (b : Z')
   unfold rorth
   rw [Submodule.mem_dualCoannihilator]
   constructor
-  · intro h a ha
-    exact h _ ⟨a, ha, rfl⟩
+  · exact fun h a ha => h _ ⟨a, ha, rfl⟩
   · rintro h _ ⟨a, ha, rfl⟩
     exact h a ha
 
@@ -180,8 +179,7 @@ theorem finrank_H1fV (A : GRep G Qp LL O) [FiniteDimensional LL (continuousCocyc
   haveI : FiniteDimensional LL (finiteCocycles PD A.ρ) := Module.Finite.equiv eW
   have e := Submodule.finrank_quotient_add_finrank ((B1 A.ρ).comap (finiteCocycles PD A.ρ).subtype)
   rw [(Submodule.comapSubtypeEquivOfLe (B1_le_Z1f PD A)).finrank_eq] at e
-  rw [eW.finrank_eq]
-  exact e
+  rwa [eW.finrank_eq]
 
 end Concrete
 
@@ -197,8 +195,7 @@ theorem bkA_exact_annihilators : Formalism.GaloisCohomology.LocalTateDualityK �
   have hdual' : IsDual1 (P.PD K) A'.ρ A.ρ m.flip := by
     obtain ⟨h1, h2, h3, h4⟩ := hdual
     refine ⟨fun g y x => ?_, fun y hy => h3 y hy, fun x hx => h2 x hx, h4.symm⟩
-    simp only [LinearMap.flip_apply]
-    exact h1 g x y
+    simpa only [LinearMap.flip_apply] using h1 g x y
   obtain ⟨hdrd, hfd⟩ := _root_.GlobalTheory.TateDualTied.main l P AI hT K
   have hdr' : IsDR (P.PD K) A'.ρ := hdrd LL O hO A A' m hdr hdual
   have hfil := hfd LL O hO A A' m hdr hdual
@@ -267,8 +264,7 @@ theorem bkA_exact_annihilators : Formalism.GaloisCohomology.LocalTateDualityK �
     constructor
     · intro h b hb
       have := h ⟨b, hb.1⟩ hb
-      rw [LinearMap.flip_apply, hβ] at this
-      exact this
+      rwa [LinearMap.flip_apply, hβ] at this
     · intro h b hb
       rw [LinearMap.flip_apply, hβ]
       exact h b.1 hb
@@ -278,8 +274,7 @@ theorem bkA_exact_annihilators : Formalism.GaloisCohomology.LocalTateDualityK �
     constructor
     · intro h a ha
       have := h ⟨a, ha.1⟩ ha
-      rw [hβ] at this
-      exact this
+      rwa [hβ] at this
     · intro h a ha
       rw [hβ]
       exact h a.1 ha

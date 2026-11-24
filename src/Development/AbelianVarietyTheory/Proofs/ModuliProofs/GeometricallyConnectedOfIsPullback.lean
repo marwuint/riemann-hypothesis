@@ -173,11 +173,9 @@ theorem main : ∀ (X X' : Scheme.{0}) (π : X ⟶ X') (G : Over X) [GrpObj G] (
       constructor
       · intro hy
         refine ⟨x, ?_, rfl⟩
-        rw [Set.mem_compl_iff, hU, ← hloc]
-        exact hy
+        rwa [Set.mem_compl_iff, hU, ← hloc]
       · rintro ⟨x', hx', hxx⟩
-        rw [Set.mem_compl_iff, ← hxx, hloc, ← hU]
-        exact hx'
+        rwa [Set.mem_compl_iff, ← hxx, hloc, ← hU]
     rw [← isClosed_compl_iff, hc]
     exact π.isClosedMap _ U.isOpen.isClosed_compl
   let V' : X'.Opens := ⟨abLocus G', hV⟩
@@ -192,8 +190,7 @@ theorem main : ∀ (X X' : Scheme.{0}) (π : X ⟶ X') (G : Over X) [GrpObj G] (
   have hle : G.hom ⁻¹ᵁ (π ⁻¹ᵁ V') ≤ φ ⁻¹ᵁ (G'.hom ⁻¹ᵁ V') := by
     intro x hx
     change G'.hom (φ x) ∈ V'
-    rw [← Scheme.Hom.comp_apply, hw, Scheme.Hom.comp_apply]
-    exact hx
+    rwa [← Scheme.Hom.comp_apply, hw, Scheme.Hom.comp_apply]
   let a := φ.resLE (G'.hom ⁻¹ᵁ V') (G.hom ⁻¹ᵁ (π ⁻¹ᵁ V')) hle
   have heq : a ≫ (G'.hom ∣_ V') = (G.hom ∣_ (π ⁻¹ᵁ V')) ≫ (π ∣_ V') := by
     rw [← cancel_mono V'.ι]
@@ -209,8 +206,7 @@ theorem main : ∀ (X X' : Scheme.{0}) (π : X ⟶ X') (G : Over X) [GrpObj G] (
     have hm : w ∈ Set.range (G.hom ⁻¹ᵁ (π ⁻¹ᵁ V')).ι := by
       rw [Scheme.Opens.range_ι]
       change π (G.hom w) ∈ V'
-      rw [← Scheme.Hom.comp_apply, ← hw, Scheme.Hom.comp_apply, hw']
-      exact hz
+      rwa [← Scheme.Hom.comp_apply, ← hw, Scheme.Hom.comp_apply, hw']
     obtain ⟨w', rfl⟩ := hm
     refine ⟨w', (G'.hom ⁻¹ᵁ V').ι.isOpenEmbedding.injective ?_⟩
     rw [← Scheme.Hom.comp_apply, Scheme.Hom.resLE_comp_ι, Scheme.Hom.comp_apply, hw']

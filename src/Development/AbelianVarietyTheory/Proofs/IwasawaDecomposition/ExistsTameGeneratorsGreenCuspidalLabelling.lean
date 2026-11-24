@@ -265,8 +265,7 @@ theorem cob_lt_one_of_tame : ∀ (E Ω : Type) [Field E] [NumberField E] [Field 
     rw [zero_pow hN] at hr
     exact hg.out.ne_zero (by exact_mod_cast hr.symm)
   have hR : cob τ (Units.mk0 r hr0) ∈ A.principalUnitGroup := by
-    rw [ValuationSubring.mem_principalUnitGroup_iff, coe_cob, Units.val_mk0]
-    exact hrτ
+    rwa [ValuationSubring.mem_principalUnitGroup_iff, coe_cob, Units.val_mk0]
   have hval : A.valuation ((Units.mk0 (y ^ g ^ a) (pow_ne_zero _ hy) : Ωˣ) : Ω) =
       A.valuation ((Units.mk0 r hr0 : Ωˣ) : Ω) ^ ((c : ℤ) * k) := by
     rw [Units.val_mk0, Units.val_mk0, ← pow_left_inj₀ zero_le zero_le hm'0, map_pow, ← pow_mul, ← hM', hM, ← hr,
@@ -310,8 +309,7 @@ theorem isAlgClosed_residueField {Ω : Type} [Field Ω] [IsAlgClosed Ω] (A : Va
   obtain ⟨a, rfl⟩ := IsIntegrallyClosed.isIntegral_iff.mp hint
   have h0 : P.eval a = 0 := by
     apply hinj
-    rw [map_zero, ← Polynomial.eval₂_hom, ← Polynomial.eval_map]
-    exact hα
+    rwa [map_zero, ← Polynomial.eval₂_hom, ← Polynomial.eval_map]
   refine ⟨IsLocalRing.residue A a, ?_⟩
   rw [← hPmap, Polynomial.eval_map, Polynomial.eval₂_hom, h0, map_zero]
 
@@ -351,8 +349,7 @@ theorem isAlgebraic_residueField {Ω : Type} [Field Ω] [CharZero Ω] (A : Valua
   rw [Polynomial.aeval_def] at h2
   have hφ : (algebraMap (ZMod g) (IsLocalRing.ResidueField A)).comp (Int.castRingHom (ZMod g)) =
       algebraMap ℤ (IsLocalRing.ResidueField A) := RingHom.ext_int _ _
-  rw [hφ]
-  exact h2
+  rwa [hφ]
 
 theorem residueField_equiv (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (A : ValuationSubring Ω) (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E))
@@ -511,8 +508,7 @@ theorem GlobalTheory.TameCoupledEx.exists_coupled_of (hK : ∀ (E Ω : Type) [Fi
       exact zpow_mem (Subgroup.subset_closure (Set.mem_insert _ _) : σ ∈ C) k
     have h2 : h⁻¹ * τ ∈ C := Subgroup.subset_closure (Set.mem_insert_of_mem _ hρW)
     have h3 := C.topologicalClosure.mul_mem h1 (C.le_topologicalClosure h2)
-    rw [mul_inv_cancel_left] at h3
-    exact h3
+    rwa [mul_inv_cancel_left] at h3
   · intro d hd y hy
     rw [ratio_descent hgp hgv hσI hd (hdD d hd) hy (hr d),
       redThrough_pow A κ (hmem σ (hNpos _ (hDpos d)) (hr d)), hσv d]
@@ -832,8 +828,7 @@ theorem galAlgClosure_exists_pos_pow_apply_eq :
     rw [Polynomial.mem_rootSet]
     refine ⟨minpoly.ne_zero hint, ?_⟩
     have h := Polynomial.aeval_algHom_apply ((σ ^ i : Ω ≃ₐ[E] Ω) : Ω →ₐ[E] Ω) t (minpoly E t)
-    rw [minpoly.aeval, map_zero] at h
-    exact h
+    rwa [minpoly.aeval, map_zero] at h
   haveI : Finite ((minpoly E t).rootSet Ω) := ((minpoly E t).rootSet_finite Ω).to_subtype
   obtain ⟨i, j, hij, heq⟩ := Finite.exists_ne_map_eq_of_infinite
     (fun i : ℕ => (⟨(σ ^ i) t, hmem i⟩ : (minpoly E t).rootSet Ω))
@@ -904,8 +899,7 @@ theorem exists_fixed_of_separating :
         rw [← hshift i]; ring
       rw [e]
       refine Valuation.map_add_lt _ ih ?_
-      rw [Valuation.map_neg]
-      exact hmove
+      rwa [Valuation.map_neg]
   refine ⟨∏ i ∈ Finset.range (m + 1), f i, ?_, ?_, ?_, ?_⟩
   · exact IsIntegral.prod _ (fun i _ => hfint i)
   · rw [map_prod]
@@ -1112,8 +1106,7 @@ theorem exists_nat_of_isPlaceOver (E : Type) [Field E] [NumberField E] [Algebra 
     have ha0 : a = 0 := Int.natAbs_eq_zero.mp h0
     have hN := Ideal.absNorm_mem P.asIdeal
     have hNv : A.valuation (((Ideal.absNorm P.asIdeal : ℕ) : ℤ) : Ω) < 1 := by
-      have h1 := (hP ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E)).mpr hN
-      simpa using h1
+      simpa using (hP ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E)).mpr hN
     rw [hmem, ha0, zero_dvd_iff] at hNv
     have : Ideal.absNorm P.asIdeal = 0 := by exact_mod_cast hNv
     exact P.ne_bot (Ideal.absNorm_eq_zero_iff.mp this)
@@ -1283,8 +1276,7 @@ theorem exists_deep_one_sub :
       have := congrArg (fun z : IntCl E Ω => (z : Ω)) hyi
       simp only [AddMemClass.coe_add, OneMemClass.coe_one] at this
       rw [← this]; ring
-    rw [e1]
-    exact hi
+    rwa [e1]
 
 end GlobalTheory.TwoPlaces
 end -- clump:auto
@@ -1397,8 +1389,7 @@ theorem locK_eq_of_sub_mem : ∀ {R : Ranks} {H : Host R} (P : PiBar H) (W : Omg
   intro R H P W e j χ hχ k w hw u hu a ha hua
   have hg : ((H.g k : ℕ) : 𝓞 H.E) ∈ w.asIdeal := by
     have h1 := P.pb_over k
-    rw [← hw, HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_natCast] at h1
-    exact h1
+    rwa [← hw, HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_natCast] at h1
   have ha_nm : ((a : ℕ) : 𝓞 H.E) ∉ w.asIdeal := by
     intro haw
     apply w.isPrime.ne_top
@@ -1439,8 +1430,7 @@ theorem locK_eq_of_sub_mem : ∀ {R : Ranks} {H : Host R} (P : PiBar H) (W : Omg
   have hva : w.intValuation ((a : ℕ) : 𝓞 H.E) = 1 :=
     (w.intValuation_eq_one_iff_mem_primeCompl _).mpr ha_nm
   have hvd : w.intValuation (u - ((a : ℕ) : 𝓞 H.E)) ≤ WithZero.exp (-((1 : ℕ) : ℤ)) := by
-    rw [w.intValuation_le_pow_iff_mem, pow_one]
-    exact hua
+    rwa [w.intValuation_le_pow_iff_mem, pow_one]
   have hacoe : (((a : ℕ) : 𝓞 H.E) : H.E) = ((a : ℕ) : H.E) := by push_cast; rfl
   have hv' : ∀ x : H.E, Valued.v (algebraMap H.E (w.adicCompletion H.E) x) = w.valuation H.E x :=
     fun x => w.valuedAdicCompletion_eq_valuation' x

@@ -156,8 +156,7 @@ theorem free_of_X_regular_quotient_torsionFree_scalarTower (O M : Type) [CommRin
       have h2 : m - ∑ i, c i • e i ∈ p := by
 
         rw [← Submodule.Quotient.eq, ← Submodule.mkQ_apply p (∑ i, c i • e i), map_sum]
-        simp only [Submodule.mkQ_apply, Submodule.Quotient.mk_smul, he]
-        exact (b.sum_repr _).symm
+        simpa only [Submodule.mkQ_apply, Submodule.Quotient.mk_smul, he] using (b.sum_repr _).symm
       rw [Submodule.mem_sup]
       refine ⟨∑ i, c i • e i, ?_, m - ∑ i, c i • e i, h2, by abel⟩
       refine Submodule.sum_mem _ fun i _ => ?_
@@ -180,8 +179,7 @@ theorem free_of_X_regular_quotient_torsionFree_scalarTower (O M : Type) [CommRin
           have h0 : ∑ j, (PowerSeries.constantCoeff (g j)) • b j = 0 := by
             have h1 := congrArg p.mkQ hg
 
-            simp only [map_sum, map_smul, Submodule.mkQ_apply, he, hN, map_zero] at h1
-            exact h1
+            simpa only [map_sum, map_smul, Submodule.mkQ_apply, he, hN, map_zero] using h1
           exact (Fintype.linearIndependent_iff.mp b.linearIndependent) _ h0
         have hgX : ∀ j, g j = PowerSeries.X * s j := by
           intro j
@@ -195,8 +193,7 @@ theorem free_of_X_regular_quotient_torsionFree_scalarTower (O M : Type) [CommRin
         exact ⟨t, by rw [hgX i, ht]; ring⟩
     intro g hg i
     ext n
-    have h := PowerSeries.X_pow_dvd_iff.mp (key (n + 1) g hg i) n (Nat.lt_succ_self n)
-    simpa using h
+    simpa using PowerSeries.X_pow_dvd_iff.mp (key (n + 1) g hg i) n (Nat.lt_succ_self n)
   exact Module.Free.of_basis (Module.Basis.mk hli hspan)
 
 theorem free_of_X_regular_of_quotient_torsionFree (O M : Type) [CommRing O] [IsDomain O]
@@ -462,8 +459,7 @@ theorem exists_frobMat_eq {n : ℕ} (X Y : Fin n → Fin n → ZMod a → invE l
       rw [map_sum, apply_ite (ϖ.iW t K), map_one, map_zero, ← h]
       simp only [map_mul])
     have h2 := congrFun h1 τ
-    rw [Finset.sum_apply, ite_apply] at h2
-    exact h2
+    rwa [Finset.sum_apply, ite_apply] at h2
   exact ⟨⟨fun τ => ⟨_, _, hτ τ, mul_eq_one_comm.1 (hτ τ)⟩⟩, fun _ _ => rfl⟩
 
 theorem exists_ident {V : Type} [AddCommGroup V] [Module (OW l O) V] (F : V →+ V)
@@ -508,8 +504,7 @@ theorem exists_ident {V : Type} [AddCommGroup V] [Module (OW l O) V] (F : V →+
     rw [← one_smul (OW l O) (b j), ← hv, mul_comm, mul_smul, hk]
 
     simp only [hy, h4, map_sum, map_mul, mul_smul, Finset.sum_smul, ← Finset.smul_sum]
-    simp only [Finset.smul_sum]
-    exact Finset.sum_comm
+    simpa only [Finset.smul_sum] using Finset.sum_comm
   choose Y hY using hY
   obtain ⟨P, hP⟩ := exists_frobMat_eq t ϖ X (fun m j => Y j m) fun i j => by
     have h3 := congrArg (b.repr · i) (hY j)

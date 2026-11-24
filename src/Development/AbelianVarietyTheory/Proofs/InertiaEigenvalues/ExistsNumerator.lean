@@ -103,12 +103,10 @@ theorem index_coprime {n p : ℕ} (hp : p.Prime) (Λ : GenLat E n) (h : Λ.TrivA
     rw [hc]
     have h1 : (k : 𝓞 E) • (y : Fin n → E) ∈ Ideal.span {(k : 𝓞 E)} • Λ.La :=
       Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) y.2
-    show (k : 𝓞 E) • (y : Fin n → E) ∈ Λ.La ⊓ stdLat E n
     exact Submodule.mem_inf.mpr ⟨Λ.La.smul_mem _ y.2, hk1 h1⟩
   have hz : k • (QuotientAddGroup.mk y :
       Λ.La.toAddSubgroup ⧸ Λ.Ln.toAddSubgroup.addSubgroupOf Λ.La.toAddSubgroup) = 0 := by
-    rw [← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]
-    exact hmem
+    rwa [← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]
   have hpk : p ∣ k := hx ▸ addOrderOf_dvd_of_nsmul_eq_zero hz
   exact hp.ne_one (Nat.Coprime.eq_one_of_dvd hk.symm hpk)
 
@@ -180,8 +178,7 @@ theorem exists_numerator (H : Host E) {n : ℕ} (Λ : GenLat E n) (h : Λ.Unimod
     rw [hA]
     exact Ideal.mul_le_right
   refine ⟨A.map (H.bar : 𝓞 E →+* 𝓞 E), ?_, ?_, ?_⟩
-  · rw [map_bar_bar, sup_comm]
-    exact hcop
+  · rwa [map_bar_bar, sup_comm]
   · rw [map_bar_bar, mul_comm]
     apply idlE_cancel hG0
     rw [← mul_assoc, ← idlE_mul, ← hA, hrel]

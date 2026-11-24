@@ -333,10 +333,8 @@ theorem nonempty_prod₂_equiv_multiProd {d : Fin 2 → ℕ} (hd : ∑ a, d a = 
     apply Fin.ext
     rw [stdBlocks_val, two_true, stdSum_inr, Finset.sum_eq_single (⟨0, by simp⟩ : Fin (1 : Fin 2))]
     · rfl
-    · intro b _ hb
-      exact absurd (Fin.ext (by simpa using b.2)) hb
-    · intro h
-      exact absurd (Finset.mem_univ _) h
+    · exact fun b _ hb => absurd (Fin.ext (by simpa using b.2)) hb
+    · exact fun h => absurd (Finset.mem_univ _) h
   have e0' : ∀ (h : 0 < 2) (i : Fin (d ⟨0, h⟩)),
       stdBlocks d hd ⟨⟨0, h⟩, i⟩ = two (stdSum (rfl : d 0 + d 1 = d 0 + d 1)) ⟨false, i⟩ := fun _ i => e0 i
   have e1' : ∀ (h : 1 < 2) (i : Fin (d ⟨1, h⟩)),
@@ -361,8 +359,7 @@ theorem nonempty_prod₂_equiv_multiProd {d : Fin 2 → ℕ} (hd : ∑ a, d a = 
     obtain rfl : a = 1 := by omega
     obtain rfl : b = 0 := by omega
     have := hg true false i j (by decide)
-    rw [e1' ha i, e0' hb j]
-    exact this
+    rwa [e1' ha i, e0' hb j]
   have b0 : ∀ q : parab k (stdBlocks d hd), leviProj k (stdBlocks d hd) q 0 =
       (leviProj k (two (stdSum (rfl : d 0 + d 1 = d 0 + d 1))) ⟨q, hQP q.2⟩ false : GL (Fin (d 0)) k) := by
     intro q

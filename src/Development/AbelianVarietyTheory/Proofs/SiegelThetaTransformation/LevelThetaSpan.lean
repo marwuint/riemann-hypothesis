@@ -197,8 +197,7 @@ theorem exists_common_denominator {E : Type} [Field E] [NumberField E] {r : ℕ}
     push_cast
     linear_combination (-(e : E)) * h
   | zero =>
-    intro a
-    exact ⟨0, by simp⟩
+    exact fun a => ⟨0, by simp⟩
   | add x y _ _ hx hy =>
     intro a
     obtain ⟨c1, h1⟩ := hx a
@@ -458,8 +457,7 @@ theorem hasSum_setIntegral_of_ae_existsUnique {ι Y E : Type} [Countable ι] [Me
   have hdisj : Pairwise fun i j => AEDisjoint μ (S i) (S j) := by
     intro i j hij
     refine measure_mono_null (t := {y | ¬ ∃! k, y ∈ S k}) ?_ (ae_iff.1 hu)
-    intro y hy h
-    exact hij (ExistsUnique.unique h hy.1 hy.2)
+    exact fun y hy h => hij (ExistsUnique.unique h hy.1 hy.2)
 
   have hcover : (⋃ i, S i : Set Y) =ᵐ[μ] (Set.univ : Set Y) := by
     filter_upwards [hu] with y ⟨i, hi, _⟩
@@ -480,8 +478,7 @@ theorem setIntegral_smul_of_measurePreserving {Γ Y E : Type} [Group Γ] [Measur
     ext y
     simp
   have key := (hν γ).setIntegral_preimage_emb hemb g ((fun y : Y => γ⁻¹ • y) ⁻¹' D)
-  rw [← hD] at key
-  exact key
+  rwa [← hD] at key
 
 theorem unfolding_abstract : ∀ (Γ I Y : Type) [Group Γ] [Countable Γ] [Countable I] [MeasurableSpace Y] [MulAction Γ I] [MulAction Γ Y] (ν : Measure Y) [SFinite ν], (∀ γ : Γ, MeasurePreserving (fun y : Y => γ • y) ν ν) → ∀ D : I → Set Y, (∀ i, MeasurableSet (D i)) → (∀ i, ∀ᵐ y ∂ν, ∃! γ : Γ, γ • y ∈ D (γ • i)) → ∀ f : I → Y → ℂ, (∀ i, Integrable (f i) ν) → Summable (fun i => ∫ y, ‖f i y‖ ∂ν) → (∀ i, IntegrableOn (fun y => ∑' γ : Γ, f (γ • i) (γ • y)) (D i) ν) ∧ Summable (fun i => ∫ y in D i, ‖∑' γ : Γ, f (γ • i) (γ • y)‖ ∂ν) ∧ ∑' i, ∫ y in D i, ∑' γ : Γ, f (γ • i) (γ • y) ∂ν = ∑' i, ∫ y, f i y ∂ν := by
   intro Γ I Y _ _ _ _ _ _ ν _ hν D hD hcov f hf hs
@@ -515,15 +512,13 @@ theorem unfolding_abstract : ∀ (Γ I Y : Type) [Group Γ] [Countable Γ] [Coun
     rintro ⟨j, δ⟩
     rw [he, hc]
     dsimp only
-    simp only [inv_smul_smul]
-    exact hmove j δ (f j)
+    simpa only [inv_smul_smul] using hmove j δ (f j)
   have hae : ∀ p : I × Γ,
       a (e p) = ∫ y in (fun y : Y => p.2 • y) ⁻¹' D (p.2 • p.1), ‖f p.1 y‖ ∂ν := by
     rintro ⟨j, δ⟩
     rw [he, ha]
     dsimp only
-    simp only [inv_smul_smul]
-    exact hmove j δ (fun y => ‖f j y‖)
+    simpa only [inv_smul_smul] using hmove j δ (fun y => ‖f j y‖)
   have hnorm_int : ∀ j, Integrable (fun y => ‖f j y‖) ν := fun j => (hf j).norm
 
   have ha0 : 0 ≤ a := fun p => by
@@ -532,8 +527,7 @@ theorem unfolding_abstract : ∀ (Γ I Y : Type) [Group Γ] [Countable Γ] [Coun
   have hb_sum : Summable (a ∘ e) := by
     have h0 : 0 ≤ a ∘ e := fun p => ha0 (e p)
     refine (summable_prod_of_nonneg h0).2 ⟨fun j => ?_, ?_⟩
-    · simp only [Function.comp_apply, hae]
-      exact (hP j _ (hnorm_int j)).summable
+    · simpa only [Function.comp_apply, hae] using (hP j _ (hnorm_int j)).summable
     · simp only [Function.comp_apply, hae]
       have h1 : ∀ j : I, ∑' δ : Γ, ∫ y in (fun y : Y => δ • y) ⁻¹' D (δ • j), ‖f j y‖ ∂ν =
           ∫ y, ‖f j y‖ ∂ν := fun j => (hP j _ (hnorm_int j)).tsum_eq
@@ -558,8 +552,7 @@ theorem unfolding_abstract : ∀ (Γ I Y : Type) [Group Γ] [Countable Γ] [Coun
         (tsum_congr fun γ => (hc (i, γ)).symm)
     have hd : Summable fun p : I × Γ =>
         ∫ y in (fun y : Y => p.2 • y) ⁻¹' D (p.2 • p.1), f p.1 y ∂ν := by
-      have h1 := e.summable_iff.2 hc_sum
-      simpa only [Function.comp_def, hce] using h1
+      simpa only [Function.comp_def, hce] using e.summable_iff.2 hc_sum
     calc ∑' i, ∫ y in D i, ∑' γ : Γ, f (γ • i) (γ • y) ∂ν = ∑' i, ∑' γ : Γ, c (i, γ) :=
           tsum_congr hrow
       _ = ∑' p, c p := (hc_sum.tsum_prod' hc_sum.prod_factor).symm
@@ -805,8 +798,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) 
       have h := hp.prod.hasSum
       simp only at h
       rw [← hcomm] at h
-      simp only [hterm, hk, tsum_neg] at h
-      exact h
+      simpa only [hterm, hk, tsum_neg] using h
     have hall : ∀ s : Set (Lt E r), s = {L} ∪ {L' | L' ∈ 𝓛 ∧ L' ≠ L} →
         HasSum (fun L' : s => C L L'.1 * ((a : ℂ)⁻¹ * ∑' k, G k L'.1 x))
           (C L L * ((a : ℂ)⁻¹ * ∑' k, G k L x) + -∑' k, G (k + 1) L x) := by
@@ -865,8 +857,7 @@ theorem exists_mass {M : ℕ} (hM : 0 < M) : ∃ m : ℝ, 0 < m ∧
   let _ : Fintype (Cls E n M) := Fintype.ofFinite _
   refine ⟨∑ c : Cls E n M, wt M (Quot.out c).1, ?_, ?_, ?_⟩
   · apply Finset.sum_pos
-    · intro c _
-      exact (hwt _ (Quot.out c).2).2
+    · exact fun c _ => (hwt _ (Quot.out c).2).2
     · exact ⟨(Quot.mk _ ⟨stdL E n, hstd⟩ : Cls E n M), Finset.mem_univ _⟩
   · intro f a hf
     rw [classSum_eq_sum, Complex.ofReal_sum, Finset.sum_mul]

@@ -285,8 +285,7 @@ theorem exists_comp [NeZero e] (F : Hom P Q) (G : Hom Q T) (hFG : IsExactTriple 
     have : (F.mat (τ - 1) * W + Xm * G.mat (τ - 1)).map (frob K l).toRingHom =
         ((l : K) ^ n • (1 : Matrix κ κ K⟦X⟧)).map (frob K l).toRingHom := by rw [hsplit]
     rw [Matrix.map_add _ (map_add _), Matrix.map_mul, Matrix.map_mul] at this
-    rw [← map_frob_smul_one]
-    exact this
+    rwa [← map_frob_smul_one]
   have hc2 : (l : K) ^ n • c = (F.mat (τ - 1)).map (frob K l) *ᵥ (W.map (frob K l) *ᵥ c) := by
     have := congrArg (· *ᵥ c) hs
     rw [Matrix.add_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hGc, Matrix.mulVec_zero,
@@ -870,8 +869,7 @@ theorem extLat_isGood : GlobalTheory.Published.FontaineBcris → ∀ (l : ℕ) [
     exact ⟨fun h0 => ⟨x.1, Prod.ext rfl h0.symm⟩, fun ⟨y, hy⟩ => by rw [← hy]⟩
   · exact hy.1
   · change ((T.ρ h 0 + (1 : ↥LL.1) • (z : Gl l → T.V) h, (1 : ↥LL.1)) : T.V × ↥LL.1) - (0, 1) = (c h, 0)
-    simp only [map_zero, zero_add, one_smul]
-    exact Prod.ext (sub_zero _) (sub_self _)
+    simpa only [map_zero, zero_add, one_smul] using Prod.ext (sub_zero _) (sub_self _)
 
 end GlobalTheory.ExtGood
 end -- clump:auto
@@ -1046,11 +1044,9 @@ theorem lift_phi_sub {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDis
     rw [hy₀def, smul_smul, E_pow_mul_Ezpow_neg, one_smul]
   have hFy₀ : F.app y₀ = D₁.phi x - x := by
     refine (hu.smul_left_cancel).1 ?_
-    rw [← map_smul, hE]
-    exact hFw
+    rwa [← map_smul, hE]
   have hy₀ : y₀ ∈ D₀.EM η := by
-    rw [mem_divE, hE]
-    exact hw
+    rwa [mem_divE, hE]
   have hinj : ∀ v ∈ D₀.EM η, F.app v = 0 → v = 0 := fun v hv h =>
     (hu.smul_left_cancel).1 (by
       rw [smul_zero]

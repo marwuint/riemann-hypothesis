@@ -112,30 +112,24 @@ theorem wClauses (S : LocalSituation.Sit) (E : S.Comparison₂) (h1 : DeltaInvar
     rw [hf.1] at hx
     refine Submodule.iSup_induction (fun j => S.W.Nl Y j)
       (motive := fun x => S.W.Q ^ M0 • S.W.φD Y x ∈ S.W.N Y) hx ?_ ?_ ?_
-    · intro j y hy
-      exact hp.1 (j + 1) y (by simpa using hy)
+    · exact fun j y hy => hp.1 (j + 1) y (by simpa using hy)
     · simp
     · intro y z hy hz
-      simp only [map_add (f := _), smul_add]
-      exact add_mem hy hz
+      simpa only [map_add (f := _), smul_add] using add_mem hy hz
   · intro y hy
     rw [hf.1] at hy
     refine Submodule.iSup_induction (fun j => S.W.Nl Y j)
       (motive := fun y => S.W.Q ^ h0 • y ∈ LocalSituation.phiSpan S Y (S.W.N Y)) hy ?_ ?_ ?_
-    · intro j y hy
-      exact Submodule.span_mono (Set.image_mono (hNl (j - 1))) (hp.2.1 j y hy)
+    · exact fun j y hy => Submodule.span_mono (Set.image_mono (hNl (j - 1))) (hp.2.1 j y hy)
     · simp
     · intro y z hy hz
-      simp only [smul_add]
-      exact add_mem hy hz
-  · intro g _ x hx
-    exact S.W.N_Γ Y _ x hx
+      simpa only [smul_add] using add_mem hy hz
+  · exact fun g _ x hx => S.W.N_Γ Y _ x hx
   · intro g _ x hx
     obtain ⟨y, hy, e⟩ := S.W.N_π Y (S.W.resΓ g) x hx
     rw [e]
     exact Submodule.smul_mem_smul (Ideal.subset_span rfl) hy
-  · intro f x hx
-    exact S.W.map_N f hY hY x hx
+  · exact fun f x hx => S.W.map_N f hY hY x hx
 
 theorem hypW_crystalline : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F), DeltaInvariantLattices.UsedLocalConclusion D HW F Cm → DeltaInvariantLattices.ConclusionE D HW F → CrysOnCond D HW F → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), EmbeddingTypeJumps.WachHypothesisLocal (LocalSituation.sit D.loc HW l (D.locA l) K s LL h) ((F l).E K s LL h).tie := by
   intro D HW F Cm hU hE hC l _ K s LL h Y M0 h0 hY hj

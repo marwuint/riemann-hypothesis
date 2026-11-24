@@ -132,9 +132,7 @@ theorem dbl_line_co {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {Y : Spc F 
   have hΦt : Φ = tens (evFin F v) φd Rd := dblFun_tens v φ R
   have hrest : Rest (evFin F v) φd Rd := rest_dbl v hR
   have hΦs : Φ ∈ schA F _ := hΦt ▸ hrest.2
-  have hRd0 : Rd (Sum.elim x₀ x₀) ≠ 0 := by
-    show R x₀ * star (R x₀) ≠ 0
-    exact mul_ne_zero hx₀ (star_ne_zero.mpr hx₀)
+  have hRd0 : Rd (Sum.elim x₀ x₀) ≠ 0 := mul_ne_zero hx₀ (star_ne_zero.mpr hx₀)
   have hφdSB : φd ∈ SB _ := box_mem_SB hφSB ⟨hφSB.1.comp star, hφSB.2.comp_left (star_zero ℂ)⟩
   let cf : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E) → ℂ := fun w =>
     ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X.J) (dbl (incM F Y.J)) w w)
@@ -197,9 +195,7 @@ theorem dbl_line_co {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {Y : Spc F 
       exact hcb γ hγ i)
   have hφd0 : φd ≠ 0 := by
     obtain ⟨t, ht⟩ := Function.ne_iff.mp hφ0
-    refine Function.ne_iff.mpr ⟨Sum.elim t t, ?_⟩
-    show φ t * star (φ t) ≠ 0
-    exact mul_ne_zero ht (star_ne_zero.mpr ht)
+    exact Function.ne_iff.mpr ⟨Sum.elim t t, mul_ne_zero ht (star_ne_zero.mpr ht)⟩
   obtain ⟨c', hc'⟩ := GlobalTheory.VacUniqInert.eq_smul_of_eigen (GlobalTheory.LatVac.psiAt ψ v)
     (fun i : Λ × Λ => GlobalTheory.LatVac.locCo dd v (Matrix.fromCols i.1.1 i.2.1))
     (fun i => cf (Matrix.fromCols i.1.1 i.2.1)) (fun u hu => by

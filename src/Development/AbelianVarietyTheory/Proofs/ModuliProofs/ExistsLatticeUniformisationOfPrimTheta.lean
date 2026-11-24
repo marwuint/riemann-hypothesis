@@ -114,8 +114,7 @@ theorem exists_unif_of_prim :
   · have hs : Set.range (fun x : u.Λ => (x : Fin t.pol.g → ℂ)) = (u.Λ : Set (Fin t.pol.g → ℂ)) :=
       Subtype.range_coe
     have hfull := u.full
-    rw [← hs] at hfull
-    exact hfull
+    rwa [← hs] at hfull
   · intro i₁ i₂
     have hkpos : 0 < k := Nat.pos_of_ne_zero (fun h => hk (by simp [h]))
     have hW := hWeil k ⟨_, hlam i₁⟩ ⟨_, hlam i₂⟩
@@ -130,8 +129,7 @@ theorem exists_unif_of_prim :
       unfold unitOn
       rw [map_zpow]
     rw [hpow] at hu
-    have hc := congrArg Units.val (unitOn_inj' hu)
-    simpa [Units.val_zpow_eq_zpow_val] using hc
+    simpa [Units.val_zpow_eq_zpow_val] using congrArg Units.val (unitOn_inj' hu)
   · intro x
     refine ⟨fun h => AddMonoidHom.mem_range.2 ⟨⟨x, h⟩, rfl⟩, fun h => ?_⟩
     obtain ⟨y, rfl⟩ := AddMonoidHom.mem_range.1 h
@@ -143,10 +141,8 @@ theorem exists_unif_of_prim :
       ⟨hAH.1, hAH.2.2.1, fun a c => hEf a c, hAH.2.2.2⟩ (t.act w) (F w) (fun m hm => hFm w ⟨m, hm⟩) (hF w) hP.2.2
     obtain rfl : l = x := Subtype.ext hl
     exact hAHd.2 l
-  · intro i
-    exact congrArg (fun p => p.left) (hlev i).symm
-  · intro j
-    exact ⟨F j, fun x => rfl, hF j⟩
+  · exact fun i => congrArg (fun p => p.left) (hlev i).symm
+  · exact fun j => ⟨F j, fun x => rfl, hF j⟩
 
 end GlobalTheory.PrimUnif
 

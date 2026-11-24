@@ -77,11 +77,9 @@ variable {B M : Type} [CommRing B] [Algebra R B] [AddCommGroup M]
     [Module B M] [Module Bᵐᵒᵖ M] [IsCentralScalar B M] [Module R M] [IsScalarTower R B M]
     [IsScalarTower R Bᵐᵒᵖ M] (D : Derivation R B M) (b : B)
 
-@[simp] theorem fst_derSec : (derSec D b).fst = b := by
-  exact add_zero b
+@[simp] theorem fst_derSec : (derSec D b).fst = b := add_zero b
 
-@[simp] theorem snd_derSec : (derSec D b).snd = D b := by
-  exact zero_add (D b)
+@[simp] theorem snd_derSec : (derSec D b).snd = D b := zero_add (D b)
 
 end
 
@@ -120,14 +118,12 @@ def diagMap [Algebra B B'] [IsScalarTower R B B'] :
 
 variable {B B'} in
 theorem fst_diagMap [Algebra B B'] [IsScalarTower R B B'] (c : TrivSqZeroExt B Ω[B⁄R]) :
-    (diagMap R B B' c).fst = algebraMap B B' c.fst := by
-  exact add_zero _
+    (diagMap R B B' c).fst = algebraMap B B' c.fst := add_zero _
 
 
 variable {B B'} in
 theorem snd_diagMap [Algebra B B'] [IsScalarTower R B B'] (c : TrivSqZeroExt B Ω[B⁄R]) :
-    (diagMap R B B' c).snd = KaehlerDifferential.map R R B B' c.snd := by
-  exact zero_add _
+    (diagMap R B B' c).snd = KaehlerDifferential.map R R B B' c.snd := zero_add _
 
 variable {R B B'} {s : X ⟶ Sp R}
 

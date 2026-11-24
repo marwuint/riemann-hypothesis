@@ -203,8 +203,7 @@ theorem main : ∀ (F : Type) [Field F] (v : AddValuation F (WithTop ℚ)) (π :
     · haveI := hac
       obtain ⟨t, ht, htv⟩ := exists_val_eq_rat v hπ q
       refine ⟨t, ht, htv.ge, fun a ha => ?_⟩
-      rw [htv]
-      exact ha
+      rwa [htv]
     · exact exists_least_of_discrete v hπ hd hdisc q
   obtain ⟨t, ht, hqt, hmin⟩ := key
   exact ⟨t, ht, hqt, fun a ha => exists_eq_mul_of_le v ht (hmin a ha)⟩
@@ -249,8 +248,7 @@ theorem exists_basis_of_coord {F : Type} [Field F] (v : AddValuation F (WithTop 
     · intro i _ hi
       have hne : p ≠ e i := fun h => hi (by rw [h, Equiv.symm_apply_apply])
       simp [hne]
-    · intro h
-      exact absurd (Finset.mem_univ _) h
+    · exact fun h => absurd (Finset.mem_univ _) h
   refine ⟨fun i => t (e i) • B (e i), ?_, ?_, ?_⟩
   · rw [Fintype.linearIndependent_iff]
     intro g hg i
@@ -342,8 +340,7 @@ theorem main : GlobalFnsSt → TwistBaseChangeStatement → UUStatement := by
         · intro b _ hb
           rw [constBF_eq]
           simp [resTop, hb]
-        · intro h
-          exact absurd (Finset.mem_univ _) h
+        · exact fun h => absurd (Finset.mem_univ _) h
       rw [h1]
       by_cases hc : c' = c
       · subst hc
@@ -351,8 +348,7 @@ theorem main : GlobalFnsSt → TwistBaseChangeStatement → UUStatement := by
       · have hne : (i', c') ≠ (i', c) := fun h => hc (Prod.ext_iff.1 h).2
         simp [hc, hne]
     · have hz : ∀ j, ((B (i, c)).s (e0 i')).f j = 0 := by
-        refine hB2 (i, c) (e0 i') fun mu h => hi ?_
-        exact ((he0 (e0 i')).unique ⟨0, by simp⟩ ⟨mu, h.symm⟩)
+        exact hB2 (i, c) (e0 i') fun mu h => hi ((he0 (e0 i')).unique ⟨0, by simp⟩ ⟨mu, h.symm⟩)
       have h1 : crd (B (i, c)) i' = 0 := by
         refine ((hbb i').1 _).unique (crd_spec _ i') ?_
         intro j
@@ -366,8 +362,7 @@ theorem main : GlobalFnsSt → TwistBaseChangeStatement → UUStatement := by
       simp [hne]
 
   have hπ : v (algebraMap (FractionRing V) F (algebraMap V (FractionRing V) ϖ)) = ((1 : ℚ) : WithTop ℚ) := by
-    have h1 := hv (algebraMap V (FractionRing V) ϖ) 1 ⟨1, by simp⟩
-    simpa using h1
+    simpa using hv (algebraMap V (FractionRing V) ϖ) 1 ⟨1, by simp⟩
   let q : Fin (k ^ Module.finrank ℤ D.toPre.X) × Fin (k ^ D.toPre.P.g) → ℚ :=
     fun p => 0 + (Q (e0 p.1) : ℚ) / k
   have ht := fun p => GlobalTheory.ValuedPrincipal.main F v _ hπ hF (q p)
@@ -387,8 +382,7 @@ theorem main : GlobalFnsSt → TwistBaseChangeStatement → UUStatement := by
     · intro h α hα
       obtain ⟨i, -, rfl⟩ := Finset.mem_image.1 hα
       rw [(hbb i).2 _ _ (crd_spec s i)]
-      intro c
-      exact h (i, c)
+      exact fun c => h (i, c)
   have hr : D.toPre.rank = Module.finrank ℤ D.toPre.X := Nat.add_zero _
   exact exists_basis_of_coord v φ hφ B hB q ht (fun s => NuGe D Q F v k s 0) hP
     ((finCongr (by rw [pow_add, hr])).trans finProdFinEquiv.symm)

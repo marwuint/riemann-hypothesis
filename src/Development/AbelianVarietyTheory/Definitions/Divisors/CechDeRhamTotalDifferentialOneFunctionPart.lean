@@ -228,11 +228,9 @@ theorem mem_cechDeRhamTotalCocyclesOne_iff {c : Tot1 F} : c ∈ cechDeRhamTotalC
   · intro h
     refine ⟨congrArg Prod.fst h, fun T T' φ ↦ ?_, fun T ↦ ?_⟩
     · have e : (dTot1 F c).2.1 T T' φ = 0 := congrFun (congrFun (congrFun (congrArg (fun x ↦ x.2.1) h) T) T') φ
-      rw [dTot1_a, sub_sub, sub_eq_zero] at e
-      exact e
+      rwa [dTot1_a, sub_sub, sub_eq_zero] at e
     · have e : (dTot1 F c).2.2 T = 0 := congrFun (congrArg (fun x ↦ x.2.2) h) T
-      rw [dTot1_η] at e
-      exact e
+      rwa [dTot1_η] at e
   · rintro ⟨h1, h2, h3⟩
     refine Prod.ext h1 (Prod.ext ?_ ?_)
     · funext T T' φ
@@ -263,12 +261,10 @@ theorem mem_cechDeRhamTotalCocyclesTwo_iff {c : Tot2 F} : c ∈ cechDeRhamTotalC
       have e' : c.2.1 T T'' (φ ≫ ψ) - (p1 F ψ (c.2.1 T T' φ) + c.2.1 T' T'' ψ +
           D R _ (c.1 T T' T'' φ ψ)) = -(p1 F ψ (c.2.1 T T' φ) - c.2.1 T T'' (φ ≫ ψ) + c.2.1 T' T'' ψ +
           D R _ (c.1 T T' T'' φ ψ)) := by abel
-      rw [e, neg_zero, sub_eq_zero] at e'
-      exact e'
+      rwa [e, neg_zero, sub_eq_zero] at e'
     · have e : c.2.2 T' - pOm F 2 φ (c.2.2 T) - dOne R _ (c.2.1 T T' φ) = 0 :=
         congrFun (congrFun (congrFun (congrArg (fun x ↦ x.2.2.1) h) T) T') φ
-      rw [sub_sub, sub_eq_zero] at e
-      exact e
+      rwa [sub_sub, sub_eq_zero] at e
     · exact congrFun (congrArg (fun x ↦ x.2.2.2) h) T
   · rintro ⟨h1, h2, h3, h4⟩
     refine Prod.ext ?_ (Prod.ext ?_ (Prod.ext ?_ ?_))
@@ -302,8 +298,7 @@ theorem cechDeRhamTotalCocyclesOne.closed (c : cechDeRhamTotalCocyclesOne F) (T 
 theorem cechDeRhamTotalCocyclesTwo.comp (c : cechDeRhamTotalCocyclesTwo F) (φ : T ⟶ T') (ψ : T' ⟶ T'') (χ : T'' ⟶ T''') :
     mp F χ (c.1.1 T T' T'' φ ψ) + c.1.1 T T'' T''' (φ ≫ ψ) χ =
       c.1.1 T T' T''' φ (ψ ≫ χ) + c.1.1 T' T'' T''' ψ χ := by
-  have h := (mem_cechDeRhamTotalCocyclesTwo_iff.1 c.2).1
-  exact h φ ψ χ
+  exact ((mem_cechDeRhamTotalCocyclesTwo_iff.1 c.2).1) φ ψ χ
 
 theorem cechDeRhamTotalCocyclesTwo.one (c : cechDeRhamTotalCocyclesTwo F) (φ : T ⟶ T') (ψ : T' ⟶ T'') : c.1.2.1 T T'' (φ ≫ ψ) =
     p1 F ψ (c.1.2.1 T T' φ) + c.1.2.1 T' T'' ψ + D R _ (c.1.1 T T' T'' φ ψ) := (mem_cechDeRhamTotalCocyclesTwo_iff.1 c.2).2.1 φ ψ
@@ -550,8 +545,7 @@ theorem ofForm_eq_zero {ω : Closed1 F} : ofForm F ω = 0 ↔
       rw [dTot0_f] at e
       exact sub_eq_zero.1 e
     · have e : (dTot0 F g).2 T = ω.1.1 T := congrFun (congrArg Prod.snd hg) T
-      rw [dTot0_ω] at e
-      exact e
+      rwa [dTot0_ω] at e
   · rintro ⟨g, h1, h2⟩
     refine ⟨g, Prod.ext ?_ ?_⟩
     · funext T T' φ

@@ -101,12 +101,8 @@ theorem _root_.GlobalTheory.Mem.Col2.ColIn.Ok.chIn_ok (h : I.Ok) (u : B.Word) (a
       rho'_norm := ?_
       DG_pos := DGam_pos (posStar_of_ok (base_fields_primes_ok B X).1) B.R
       dvd_DG := ?_ }
-  · intro i _ c
-    show ‖((rhoAt I.SQ I.C (I.xi a) i _ : ℂˣ) : ℂ)‖ = 1
-    exact norm_rhoAt I.SQ I.C (h.xi_unitary a) i _
-  · intro i _ c
-    show ‖((rhoAt' I.SQ I.C (I.xi a) i _ : ℂˣ) : ℂ)‖ = 1
-    exact norm_rhoAt' I.SQ I.C (h.xi_unitary a) i _
+  · exact fun i _ c => norm_rhoAt I.SQ I.C (h.xi_unitary a) i _
+  · exact fun i _ c => norm_rhoAt' I.SQ I.C (h.xi_unitary a) i _
   · intro i hi c
     rcases Nat.eq_zero_or_pos i with rfl | hpos
     · have hf := h.stp_zero_free u a

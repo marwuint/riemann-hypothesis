@@ -481,11 +481,8 @@ theorem genval (K : Type) [Field K] [IsAlgClosed K] : ∃ (L : Type) (_ : Field 
       have hsaL' : s - ι a ∈ ((↑) : V → L) '' (maximalIdeal V : Set V) := by
         rw [ValuationSubring.image_maximalIdeal]; exact hsaL
       obtain ⟨w, hw, hw'⟩ := hsaL'
-      have heq : sV - ιV a = w := by
-        apply Subtype.ext
-        exact hw'.symm
-      rw [heq]
-      exact hw
+      have heq : sV - ιV a = w := Subtype.ext hw'.symm
+      rwa [heq]
     have hne : sV - ιV a ≠ 0 := by
       intro h
       have h1 := congrArg Subtype.val h
@@ -503,8 +500,7 @@ theorem genval (K : Type) [Field K] [IsAlgClosed K] : ∃ (L : Type) (_ : Field 
       obtain ⟨p, hp, hpv⟩ := h1
       refine ⟨p, hp, ?_⟩
       apply IsFractionRing.injective V L
-      rw [hom_eval₂, hcomp, map_zero]
-      exact hpv
+      rwa [hom_eval₂, hcomp, map_zero]
     have hbij := genval_residue_bij V ιV sV a hsa hne halg
     let E := RingEquiv.ofBijective _ hbij
     have hres : residue V sV = E a := by
@@ -639,8 +635,7 @@ theorem exists_co_eq {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.
       obtain ⟨b, hb, hbu⟩ := f.existsUnique_sum τ w hw
       refine ⟨(T τ)⁻¹ *ᵥ b, ?_, fun a ha => ?_⟩
       · show w = ∑ i, ((T τ)⁻¹ *ᵥ b) i • ∑ j, T τ j i • f.vec τ j
-        rw [hsum, mulVec_mulVec, mul_nonsing_inv _ (hT τ), one_mulVec]
-        exact hb
+        rwa [hsum, mulVec_mulVec, mul_nonsing_inv _ (hT τ), one_mulVec]
       · have h1 : T τ *ᵥ a = b := hbu _ (ha.trans (hsum τ a))
         rw [← h1, mulVec_mulVec, nonsing_inv_mul _ (hT τ), one_mulVec])
   refine ⟨g, fun τ => EigFrame.co_eq fun i => ?_⟩

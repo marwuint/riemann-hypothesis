@@ -109,8 +109,7 @@ theorem exists_finite_galois_mem_of_pow_eq_unit : ∀ (E F Ω : Type) [Field E] 
     refine Finset.prod_eq_zero hs ?_
     simp [hw, hφc]
   | one =>
-    intro w hw
-    exact hroot w (by rw [hw, map_one])
+    exact fun w hw => hroot w (by rw [hw, map_one])
   | mul a b _ _ ha hb =>
     intro w hw
     obtain ⟨x, hx⟩ := IsAlgClosed.exists_pow_nat_eq (φ a) hM
@@ -195,9 +194,7 @@ theorem core (E : Type) [Field E] [NumberField E] (l r b : ℕ) (hl : l.Prime) (
     have hne : Ideal.span {((M * b : ℕ) : 𝓞 K)} ≠ 0 := by
       rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
       exact_mod_cast (Nat.mul_pos hM0 hb).ne'
-    refine (Ideal.finite_factors hne).subset ?_
-    intro v hv
-    exact Ideal.dvd_span_singleton.2 hv
+    exact (Ideal.finite_factors hne).subset (fun v hv => Ideal.dvd_span_singleton.2 hv)
   have hchoice : ∀ g : L ≃ₐ[K] L, ∃ v : HeightOneSpectrum (𝓞 K), v ∉ S ∧ ∃ B : ValuationSubring Ω,
       IsPlaceOver B v ∧ ∃ σ : G K Ω, IsFrob B (normV v) σ ∧ AlgEquiv.restrictNormalHom L σ = g := by
     intro g
@@ -222,8 +219,7 @@ theorem core (E : Type) [Field E] [NumberField E] (l r b : ℕ) (hl : l.Prime) (
     have hxc : x - 1 = ((a : ℕ) : 𝓞 K) * c' := by
       apply RingOfIntegers.ext
       change algebraMap E K ((u : 𝓞 E) : E) - 1 = ((a : ℕ) : K) * algebraMap E K ((c : 𝓞 E) : E)
-      have h2 := congrArg (fun t : 𝓞 E => algebraMap E K (t : E)) hc
-      simpa using h2
+      simpa using congrArg (fun t : 𝓞 E => algebraMap E K (t : E)) hc
     rw [hxc]
     apply Ideal.mul_mem_right
     have hdvd : normV (v g) ∣ a := Finset.dvd_prod_of_mem _ (Finset.mem_univ g)
@@ -237,8 +233,7 @@ theorem core (E : Type) [Field E] [NumberField E] (l r b : ℕ) (hl : l.Prime) (
     have h1 := _root_.GlobalTheory.frob_fixes_root_of_one_mod K Ω M ζK hζK (v g) (hvM g) (B g) (hB g) (σ g) (hσ g) x (hx1 g) w hwx
     rw [← hg g]
     apply Subtype.ext
-    rw [AlgEquiv.restrictNormalHom_apply]
-    exact h1
+    rwa [AlgEquiv.restrictNormalHom_apply]
   have hwK : (⟨w, hwL⟩ : L) ∈ (⊥ : IntermediateField K L) := (IsGalois.mem_bot_iff_fixed _).2 hfix
   obtain ⟨k, hk⟩ := IntermediateField.mem_bot.1 hwK
   have hwK' : w ∈ K := by
@@ -256,8 +251,7 @@ theorem core (E : Type) [Field E] [NumberField E] (l r b : ℕ) (hl : l.Prime) (
     rw [inv_pow, hy]
     have : (((u⁻¹ : (𝓞 E)ˣ) : 𝓞 E) : E) = ((u : 𝓞 E) : E)⁻¹ := by
       apply eq_inv_of_mul_eq_one_left
-      have h3 := congrArg (fun t : 𝓞 E => (t : E)) u.inv_mul
-      simpa using h3
+      simpa using congrArg (fun t : 𝓞 E => (t : E)) u.inv_mul
     rw [← this]; exact ((u⁻¹ : (𝓞 E)ˣ) : 𝓞 E).2)
   refine ⟨⟨⟨y, hyi⟩, ⟨y⁻¹, hyi'⟩, RingOfIntegers.ext (by change y * y⁻¹ = 1; exact mul_inv_cancel₀ hy0), RingOfIntegers.ext (by change y⁻¹ * y = 1; exact inv_mul_cancel₀ hy0)⟩, ?_⟩
   apply Units.ext

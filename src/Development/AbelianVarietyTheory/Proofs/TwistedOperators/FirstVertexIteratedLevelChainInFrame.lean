@@ -331,8 +331,7 @@ theorem _root_.GlobalTheory.FirstVertexFrame.firstVertex_typeChain : ∀ (k : Ty
       obtain ⟨gb, hr, hup⟩ := h1 _ ((read_mem_N_iff t ϖ H u).2 hu) _ hJ
       refine ⟨_root_.GlobalTheory.StepData.reGL (_root_.GlobalTheory.FirstVertexFrame.epsEquiv κ t) gb, ?_, ?_⟩
       · simpa using reduces_reGL_of_reduces (_root_.GlobalTheory.FirstVertexFrame.epsEquiv κ t) hr
-      · rw [isUpperUnip_reGL_iff]
-        exact hup
+      · rwa [isUpperUnip_reGL_iff]
     · rintro ⟨gb, hr, hup⟩
       refine ⟨1, one_mem _, ?_, ?_⟩
       · rw [one_mul]
@@ -342,8 +341,7 @@ theorem _root_.GlobalTheory.FirstVertexFrame.firstVertex_typeChain : ∀ (k : Ty
         refine (h2 _ ((_root_.GlobalTheory.StepData.reGL (_root_.GlobalTheory.FirstVertexFrame.epsEquiv κ t)).symm gb) ?_ ?_).1
         · rw [reGL_symm_apply, reGL_symm_apply]
           exact reduces_reGL_of_reduces _ hr
-        · rw [reGL_symm_apply, isUpperUnip_reGL_iff, val_comp_epsEquiv_symm_eq_colPos]
-          exact hup
+        · rwa [reGL_symm_apply, isUpperUnip_reGL_iff, val_comp_epsEquiv_symm_eq_colPos]
   · rintro γ ⟨gb, hr, hup⟩
     have hr' : _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.Reduces
         ((_root_.GlobalTheory.StepData.reGL (_root_.GlobalTheory.FirstVertexFrame.epsEquiv κ t)).symm γ)
@@ -352,13 +350,11 @@ theorem _root_.GlobalTheory.FirstVertexFrame.firstVertex_typeChain : ∀ (k : Ty
       exact reduces_reGL_of_reduces _ hr
     have hup' : _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUpperUnip Fin.val
         ((_root_.GlobalTheory.StepData.reGL (_root_.GlobalTheory.FirstVertexFrame.epsEquiv κ t)).symm gb).val := by
-      rw [reGL_symm_apply, isUpperUnip_reGL_iff, val_comp_epsEquiv_symm_eq_colPos]
-      exact hup
+      rwa [reGL_symm_apply, isUpperUnip_reGL_iff, val_comp_epsEquiv_symm_eq_colPos]
     obtain ⟨hm, hv⟩ := h2 _ _ hr' hup'
     have hm' : _root_.GlobalTheory.RootEx.embX (s + 1) γ ∈ ((_root_.GlobalTheory.StepData.typeChain t ϖ P μ hμ).lev 0 (s + 1)
         H).J := by
-      rw [hmem, read_embX_eq_embX_reGL_symm]
-      exact hm
+      rwa [hmem, read_embX_eq_embX_reGL_symm]
     refine ⟨hm', ?_⟩
     rw [hlam]
     have he : (⟨_, (hmem _).1 hm'⟩ : P.J) = ⟨_, hm⟩ :=

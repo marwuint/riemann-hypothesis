@@ -95,8 +95,7 @@ theorem sum_mul_left_transversal {G M : Type} [Group G] [AddCommMonoid M] (H N :
     group
   · intro s hs
     have e := hf (σ s) ((σ s)⁻¹ * (h * s)) (hσ s hs).2
-    rw [mul_inv_cancel_left] at e
-    exact e
+    rwa [mul_inv_cancel_left] at e
 
 end GlobalTheory.LeftTransversalSum
 end -- clump:auto
@@ -124,8 +123,7 @@ theorem exists_reps {G : Type} [Group G] (H N : Subgroup G) [(N.subgroupOf H).Fi
     refine ⟨((QuotientGroup.mk (⟨h, hh⟩ : H) : H ⧸ N.subgroupOf H).out : H),
       ⟨Finset.mem_image.2 ⟨_, Finset.mem_univ _, rfl⟩, ?_⟩, ?_⟩
     · have h1 := QuotientGroup.out_eq' (QuotientGroup.mk (⟨h, hh⟩ : H) : H ⧸ N.subgroupOf H)
-      have h2 := QuotientGroup.eq.1 h1
-      simpa [Subgroup.mem_subgroupOf] using h2
+      simpa [Subgroup.mem_subgroupOf] using QuotientGroup.eq.1 h1
     · rintro s ⟨hs, hsN⟩
       obtain ⟨q, -, rfl⟩ := Finset.mem_image.1 hs
       have : (QuotientGroup.mk q.out : H ⧸ N.subgroupOf H) = QuotientGroup.mk (⟨h, hh⟩ : H) :=
@@ -160,13 +158,11 @@ theorem exists_field (F : IntermediateField ℚ_[l] (Om l)) (x : Om l) :
     (IntermediateField.le_iff_le _ _).1 le_rfl
   have hfi : (L.fixingSubgroup.subgroupOf F.fixingSubgroup).FiniteIndex := by
     refine Subgroup.finiteIndex_of_le (H := N.subgroupOf F.fixingSubgroup) ?_
-    intro g hg
-    exact hle ⟨g.2, hg⟩
+    exact fun g hg => hle ⟨g.2, hg⟩
   obtain ⟨S, hS, hu⟩ := exists_reps F.fixingSubgroup L.fixingSubgroup
   refine ⟨L, S, ?_, ?_, ?_, hS, hu⟩
   · rw [hL, IntermediateField.mem_fixedField_iff]
-    intro g hg
-    exact Subgroup.normalCore_le _ hg.2
+    exact fun g hg => Subgroup.normalCore_le _ hg.2
   · exact (IntermediateField.le_iff_le _ _).2 inf_le_left
   · intro h hh y hy
     rw [hL, IntermediateField.mem_fixedField_iff] at hy ⊢
@@ -174,8 +170,7 @@ theorem exists_field (F : IntermediateField ℚ_[l] (Om l)) (x : Om l) :
     have h1 : h⁻¹ * g * h ∈ F.fixingSubgroup ⊓ N :=
       ⟨Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ hh) hg.1) hh,
         by simpa using (Subgroup.normalCore_normal _).conj_mem g hg.2 h⁻¹⟩
-    have h2 := congrArg h (hy _ h1)
-    simpa using h2
+    simpa using congrArg h (hy _ h1)
 
 theorem fixed_iff_mem_Ohat : ∀ (l : ℕ) [Fact l.Prime]
     (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)), IsActC act →

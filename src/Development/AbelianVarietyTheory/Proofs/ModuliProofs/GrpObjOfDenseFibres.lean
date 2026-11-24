@@ -109,8 +109,6 @@ open GrpDense FibreGrp
 theorem grpObj_of_dense_fibres :
     ∀ (R : Type) [CommRing R] [IsReduced R] (Z : Over (Sp R)) (m : Z ⊗ Z ⟶ Z) (i : Z ⟶ Z) (e : 𝟙_ (Over (Sp R)) ⟶ Z) (Sg : Set (Sp R)), Dense Sg → Smooth Z.hom → IsProper Z.hom → GeometricallyConnected Z.hom → (∀ p ∈ Sg, ∃ (K : Type) (_ : Field K) (x : Sp K ⟶ Sp R) (A : Over (Sp K)) (_ : GrpObj A) (φ : A.left ⟶ Z.left), p ∈ Set.range x ∧ IsCommMonObj A ∧ IsPullback φ A.hom Z.hom x ∧ (∀ φ₂ : (A ⊗ A).left ⟶ (Z ⊗ Z).left, IsSquare φ φ₂ → φ₂ ≫ m.left = (μ[A]).left ≫ φ) ∧ φ ≫ i.left = (ι[A]).left ≫ φ ∧ x ≫ e.left = (η[A]).left ≫ φ) → ∃ _ : GrpObj Z, μ[Z] = m ∧ η[Z] = e ∧ ι[Z] = i ∧ IsAbelianScheme Z ∧ ∀ (S' : Scheme.{0}) (x : S' ⟶ Sp R) (A : Over S') [GrpObj A] (φ : A.left ⟶ Z.left), IsPullback φ A.hom Z.hom x → (∀ φ₂ : (A ⊗ A).left ⟶ (Z ⊗ Z).left, IsSquare φ φ₂ → φ₂ ≫ m.left = (μ[A]).left ≫ φ) → IsGrpPullback A Z x φ := by
   intro R _ _ Z m i e Sg hSg hsm hpr hgc hfib
-  have : Smooth Z.hom := hsm
-  have : IsProper Z.hom := hpr
   have : Smooth (𝟙_ (Over (Sp R))).hom := smooth_tensorUnit_hom (Sp R)
   have : Smooth (Z ⊗ Z).hom := smooth_tensor_hom Z Z
   have : Smooth (𝟙_ (Over (Sp R)) ⊗ Z).hom := smooth_tensor_hom _ _
@@ -123,13 +121,16 @@ theorem grpObj_of_dense_fibres :
     rw [← lift_comp_fst_snd t, toUnit_unique (t ≫ fst (𝟙_ (Over (Sp R))) Z) (toUnit _),
       lift_whiskerRight_assoc, lift_leftUnitor_hom, ← hc, GrpDense.pushPt_one pb.w he T,
       GrpDense.pushPt_mul pb.w hm, _root_.one_mul]
-  have mul_one' : Z ◁ e ≫ m = (ρ_ Z).hom := by
+  have comm' : (β_ Z Z).hom ≫ m = m := by
     refine eq_of_points_lemma_3 hSg hfib ?_
     intro K _ x A _ _ φ pb hm hi he T t
-    obtain ⟨c, hc⟩ := GrpDense.pushPt_surjective pb T (t ≫ fst Z (𝟙_ (Over (Sp R))))
-    rw [← lift_comp_fst_snd t, toUnit_unique (t ≫ snd Z (𝟙_ (Over (Sp R)))) (toUnit _),
-      lift_whiskerLeft_assoc, lift_rightUnitor_hom, ← hc, GrpDense.pushPt_one pb.w he T,
-      GrpDense.pushPt_mul pb.w hm, _root_.mul_one]
+    obtain ⟨a, ha⟩ := GrpDense.pushPt_surjective pb T (t ≫ fst Z Z)
+    obtain ⟨b, hb⟩ := GrpDense.pushPt_surjective pb T (t ≫ snd Z Z)
+    have ht : t = lift (pushPt pb.w a) (pushPt pb.w b) := by rw [ha, hb, lift_comp_fst_snd]
+    rw [ht, lift_braiding_hom_assoc, GrpDense.pushPt_mul pb.w hm, GrpDense.pushPt_mul pb.w hm, _root_.mul_comm]
+  have mul_one' : Z ◁ e ≫ m = (ρ_ Z).hom := by
+    rw [← comm', ← Category.assoc, BraidedCategory.braiding_naturality_right, Category.assoc,
+      one_mul', braiding_leftUnitor]
   have mul_assoc' : m ▷ Z ≫ m = (α_ Z Z Z).hom ≫ Z ◁ m ≫ m := by
     refine eq_of_points_lemma_3 hSg hfib ?_
     intro K _ x A _ _ φ pb hm hi he T t
@@ -150,19 +151,7 @@ theorem grpObj_of_dense_fibres :
       ← Category.assoc (pushPt pb.w c) (toUnit Z) e, toUnit_unique (pushPt pb.w c ≫ toUnit Z) (toUnit _),
       GrpDense.pushPt_one pb.w he T, _root_.inv_mul_cancel]
   have right_inv' : lift (𝟙 Z) i ≫ m = toUnit Z ≫ e := by
-    refine eq_of_points_lemma_3 hSg hfib ?_
-    intro K _ x A _ _ φ pb hm hi he T t
-    obtain ⟨c, rfl⟩ := GrpDense.pushPt_surjective pb T t
-    rw [comp_lift_assoc, Category.comp_id, GrpDense.pushPt_inv pb.w hi, GrpDense.pushPt_mul pb.w hm,
-      ← Category.assoc (pushPt pb.w c) (toUnit Z) e, toUnit_unique (pushPt pb.w c ≫ toUnit Z) (toUnit _),
-      GrpDense.pushPt_one pb.w he T, _root_.mul_inv_cancel]
-  have comm' : (β_ Z Z).hom ≫ m = m := by
-    refine eq_of_points_lemma_3 hSg hfib ?_
-    intro K _ x A _ _ φ pb hm hi he T t
-    obtain ⟨a, ha⟩ := GrpDense.pushPt_surjective pb T (t ≫ fst Z Z)
-    obtain ⟨b, hb⟩ := GrpDense.pushPt_surjective pb T (t ≫ snd Z Z)
-    have ht : t = lift (pushPt pb.w a) (pushPt pb.w b) := by rw [ha, hb, lift_comp_fst_snd]
-    rw [ht, lift_braiding_hom_assoc, GrpDense.pushPt_mul pb.w hm, GrpDense.pushPt_mul pb.w hm, _root_.mul_comm]
+    rw [← lift_braiding_hom_assoc, comm', left_inv']
   let G : GrpObj Z :=
     { one := e, mul := m, one_mul := one_mul', mul_one := mul_one', mul_assoc := mul_assoc',
       inv := i, left_inv := left_inv', right_inv := right_inv' }
@@ -170,9 +159,8 @@ theorem grpObj_of_dense_fibres :
   · exact { comm := ⟨comm'⟩, smooth := hsm, proper := hpr, geomConnected := hgc }
   · intro S' x A _ φ pb hm'
     refine ⟨pb, fun T a b a₀ b₀ ha hb => ?_⟩
-    have ea : a₀ = pushPt pb.w a := Over.OverMorphism.ext ha
-    have eb : b₀ = pushPt pb.w b := Over.OverMorphism.ext hb
-    subst ea eb
+    obtain rfl : a₀ = pushPt pb.w a := Over.OverMorphism.ext ha
+    obtain rfl : b₀ = pushPt pb.w b := Over.OverMorphism.ext hb
     exact congrArg CommaMorphism.left (GrpDense.pushPt_mul pb.w hm' a b)
 
 end GlobalTheory

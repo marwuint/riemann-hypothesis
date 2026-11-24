@@ -395,8 +395,7 @@ theorem hasSum_qMap (hl : I.lam = 1) {m : ℕ} (hm : Odd m) (p : N.QT (m ^ 2)) (
   rw [← I.e.toEquiv.hasSum_iff]
   refine iff_of_eq (congrArg (HasSum · v) (funext fun χ => ?_))
   have := ((NumD.hom_transport C C _ N M I).2.2.2.2 m hm p (qMap I _ p) rfl ((rel_iff I).2 rfl) χ).1
-  rw [hl, Units.val_one, one_mul] at this
-  exact this
+  rwa [hl, Units.val_one, one_mul] at this
 
 theorem summable_evT_of_qMap {m j : ℕ} (hm : Odd m) (p : N.QT (m ^ 2)) (r : N.QT j)
     (h : Summable (M.evT m (qMap I _ p) (qMap I _ r).1.2)) : Summable (N.evT m p r.1.2) := by
@@ -1117,8 +1116,7 @@ theorem existsUnique_desc : ∀ (K C : Type) [Field K] [CharZero K] [Field C] [I
   have H : IsPullback (κ ▷ X).left (fst _ X).left (fst (Over.mk b) X).left
       (Spec.map (CommRingCat.ofHom (algebraMap K C))) := by
     have := (SemiRigid.isPullback_whiskerRight κ X).flip
-    rw [hκ] at this
-    exact this
+    rwa [hκ] at this
   have key := fst_comp_eq_snd_comp (fun σ : C ≃ₐ[K] C => σ.toAlgHom)
     GaloisDescent.mem_range_algebraMap_of_forall_algEquiv H Y.hom f.left (Over.mk b ⊗ X).hom
     ((Over.w f).trans (Over.w (κ ▷ X)).symm) fun σ => by
@@ -1547,8 +1545,7 @@ theorem inducedBy_of_onQ (hn : 2 ≤ n) (h : SameMatch mt w) {j : ℕ} (hj : 1 �
     exact fun q => hQ _ _ _ rfl ((qMap_iff (TateInh.homOfIso J)).2 rfl).2
   have E : Equivalence (N'.QEq (k := (n ^ j) ^ 2)) := by
     constructor
-    · intro p
-      exact ⟨0, by simp, by simp⟩
+    · exact fun p => ⟨0, by simp, by simp⟩
     ·
       rintro p p' ⟨z, hz, hz'⟩
       exact ⟨-z, by rw [hz, smul_neg, add_neg_cancel_right],
@@ -1582,8 +1579,7 @@ theorem onQ_of_inducedBy (hn : n ≠ 0) (h : SameMatch mt w)
   have b₁ := (qMap_iff (TateInh.homOfIso J)).1 (hc _ r r' _ q' a₁ a₂ a₃)
   have b₂ := (qMap_iff (TateInh.homOfIso J) (p := up (sq (n ^ j)) p) (p' := up (sq (n ^ j)) p')).1
     ⟨(congrArg (n ^ j • ·) h₁).trans (map_nsmul J.e _ _).symm, h₂⟩
-  rw [b₂, ← b₁]
-  exact a₄
+  rwa [b₂, ← b₁]
 end Conclusions
 
 def RationalRel {V : Type} [CommRing V] [IsDomain V] {D D' : DegPre V} {C : Type} [NormedField C]

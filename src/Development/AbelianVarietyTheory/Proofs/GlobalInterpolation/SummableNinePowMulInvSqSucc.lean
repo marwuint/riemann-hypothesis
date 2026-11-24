@@ -72,8 +72,7 @@ theorem hasDerivAt_diffPow (k : ℕ) (s : ℂ) : ∀ x : ℝ, 0 < x →
       simpa using hasDerivAt_const x (1 : ℂ)
     · have h := hasDerivAt_ofReal_cpow_const hx.ne' (r := -s) (neg_ne_zero.mpr hs)
       have e : -s - 1 = -(s + 1) := by ring
-      rw [e] at h
-      exact h
+      rwa [e] at h
   | succ k ih =>
     intro x hx
     have h1 := ih x hx
@@ -82,8 +81,7 @@ theorem hasDerivAt_diffPow (k : ℕ) (s : ℂ) : ∀ x : ℝ, 0 < x →
     have e : -s * diffPow (k + 1) (s + 1) x
         = -s * diffPow k (s + 1) x - -s * diffPow k (s + 1) (x + 1) := by
       simp only [diffPow]; ring
-    rw [e]
-    exact h3
+    rwa [e]
 
 theorem norm_diffPow_le (k : ℕ) : ∀ (s : ℂ) (x : ℝ), 0 < x → 0 ≤ s.re + k →
     ‖diffPow k s x‖ ≤ (‖s‖ + k) ^ k * x ^ (-(s.re + k)) := by

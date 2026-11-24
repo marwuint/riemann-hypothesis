@@ -487,8 +487,7 @@ private theorem labE_heq (hP : B'.toPre = B.toPre) (ι : a.D.what₂.LL →+* a'
   subst hP
   have ht' := eq_of_heq ht
   refine heq_of_eq (funext fun τ => RingHom.ext fun x => ?_)
-  have k := DFunLike.congr_fun (congrFun ht' τ) x
-  exact congrArg σ' (j'.injective (k.trans (hι _).symm))
+  exact congrArg σ' (j'.injective ((DFunLike.congr_fun (congrFun ht' τ) x).trans (hι _).symm))
 
 private theorem dim_eq (hP : B'.toPre = B.toPre) {W : HSp a.D} {W' : HSp a'.D} (hW : HEq W' W) {σ : a.D.what₂.LL →+* ℂ}
     {σ' : a'.D.what₂.LL →+* ℂ} (hl : HEq (labE (D := a'.D) σ') (labE (D := a.D) σ)) :
@@ -543,8 +542,7 @@ private theorem nu_of (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D
     (h0 : R.models_νW) :
     IsMeasFD (Wc a'.D i') (lev a'.D.sp.cm (Wc a'.D i').gram (R'.βW i') (R'.datWp i' R'.triv)) (R'.νW i') (R'.fdW i') := by
   have f0 : IsMeasFD (Wc a.D i) (lev a.D.sp.cm (Wc a.D i).gram (R.βW i) (LiftExt.datW i R.Pg)) (R.νW i) (R.fdW i) := (by with_unfolding_all exact ((h0 i) :))
-  have k := meas_of hP h hβ hPg hν hfd f0
-  exact (by with_unfolding_all exact (k :))
+  exact (by with_unfolding_all exact ((meas_of hP h hβ hPg hν hfd f0) :))
 
 private theorem modW_of (hP : B'.toPre = B.toPre) (hG : G' = G) (hi : HEq iG' iG)
     (hθ : HEq R'.θ R.θ) (hβ : HEq R'.βW R.βW) (hPg : HEq R'.Pg R.Pg) (he : HEq R'.eG R.eG) (ι : a.D.what₂.LL →+* a'.D.what₂.LL)
@@ -1358,8 +1356,7 @@ private theorem thPVec_empty {D : D7} {ψ θ} {S T : HSp D} {sS sT ΛS ΛT βS �
   have e : ∀ y : ∀ PP : Pl D.host.E, Matrix (Fin S.rank) (Fin T.rank) (kP PP),
       omegaQ ∅ T.rank ξ' (-1) y = omegaQ ∅ T.rank ξ (-1) y := fun y => by simp [omegaQ]
   unfold IsThPVecOf at h ⊢
-  simp only [e]
-  exact h
+  simpa only [e] using h
 
 private theorem thPVec_of (hP : B'.toPre = B.toPre) (hV : HEq V' V) (hW : HEq W' W)
     {ψ : AddChar (AF a.D.host.F) ℂ} {ψ' : AddChar (AF a'.D.host.F) ℂ} (hψ : HEq ψ' ψ)
@@ -1509,9 +1506,7 @@ private theorem delta_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin 
   rcases B' with ⟨P'⟩
   change P' = B.toPre at hP
   subst hP
-  have hi : i' = i := by
-    apply Fin.ext
-    exact h.symm
+  have hi : i' = i := Fin.ext h.symm
   subst i'
   exact (by with_unfolding_all exact ((HEq.refl (RealDat.Delta i)) :))
 
@@ -1526,9 +1521,7 @@ private theorem frames_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin
   rcases B' with ⟨P'⟩
   change P' = B.toPre at hP
   subst hP
-  have hi : i' = i := by
-    apply Fin.ext
-    exact h.symm
+  have hi : i' = i := Fin.ext h.symm
   subst i'
   have : ΛV' = ΛV := by with_unfolding_all exact eq_of_heq hΛV
   subst ΛV'

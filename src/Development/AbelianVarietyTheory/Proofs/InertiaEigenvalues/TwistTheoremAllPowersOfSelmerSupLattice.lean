@@ -428,8 +428,7 @@ theorem GlobalTheory.TwSys.exists_tameInertiaElementAtAuxiliaryPrime : ∀ (D : 
       · exact D.host.pde_prime
     obtain ⟨v, hv⟩ := exists_place_mem D.host.E hp
     refine ⟨v, ?_⟩
-    rw [← Finset.mem_coe, X.pD_eq i]
-    exact hv
+    rwa [← Finset.mem_coe, X.pD_eq i]
   obtain ⟨A, hA⟩ := exists_isPlaceOver N.Om v
 
   obtain ⟨p, hp, hp15, hp2, hpl⟩ : ∃ p : ℕ, p.Prime ∧ p ∣ 15 ∧ p ≠ 2 ∧ p ≠ X.l i := by
@@ -448,8 +447,7 @@ theorem GlobalTheory.TwSys.exists_tameInertiaElementAtAuxiliaryPrime : ∀ (D : 
   refine ⟨z, v, hv, A, hA, hz1 _ (isClosed_Ine A) hσ, ?_, hz3⟩
   obtain ⟨k, hk⟩ := hz2 _ (X.delta_open i)
   have hz : X.delta i z = X.delta i σ ^ ((X.l i * Ideal.absNorm v.asIdeal) ^ k) := by
-    rw [MonoidHom.mem_ker, map_mul, map_inv, map_pow, inv_mul_eq_one] at hk
-    exact hk
+    rwa [MonoidHom.mem_ker, map_mul, map_inv, map_pow, inv_mul_eq_one] at hk
   have hpl' : Nat.Coprime p (X.l i) := (Nat.coprime_primes hp hl).2 hpl
   have hpq : Nat.Coprime p (Ideal.absNorm v.asIdeal) := by
     refine Nat.Coprime.coprime_dvd_left hp15 ?_
@@ -795,8 +793,7 @@ theorem isIntegral_card_mul_coeff {G K : Type} [Group G] [Fintype G] [Field K] [
   have hM := isIntegral_trace
     (LinearMap.toMatrixAlgEquiv (MonoidAlgebra.basis G K) (Algebra.lmul K (MonoidAlgebra K G) y))
     (n := Fintype.card G) Fintype.card_ne_zero (by rw [← map_pow, ← map_pow, hypow])
-  rw [trace_leftMulMatrix, hcoeff] at hM
-  exact hM
+  rwa [trace_leftMulMatrix, hcoeff] at hM
 
 theorem card_mul_coeff_mem :
     ∀ (G O K : Type) [Group G] [Fintype G] [CommRing O] [IsDomain O] [IsIntegrallyClosed O] [Field K] [CharZero K] [Algebra O K] [IsFractionRing O K] (e : MonoidAlgebra K G), e * e = e → (∀ x, e * x = x * e) → ∀ g, ∃ c : O, algebraMap O K c = (Fintype.card G : K) * e.coeff g := by
@@ -1041,8 +1038,7 @@ theorem isLatIn_of_index_le {R W : Type} [CommRing R] [IsDomain R] [IsDiscreteVa
     have h1 : P n ≤ T := by
       refine Submodule.le_of_le_smul_of_le_jacobson_bot (I := Ideal.span {(l : R)}) (hP n).1 ?_
         (le_sup_right.trans (h.trans (sup_le_sup_left (hstep n) _)))
-      rw [IsLocalRing.jacobson_eq_maximalIdeal _ bot_ne_top, Ideal.span_singleton_le_iff_mem]
-      exact hl
+      rwa [IsLocalRing.jacobson_eq_maximalIdeal _ bot_ne_top, Ideal.span_singleton_le_iff_mem]
     exact hT ⟨hfg, hle, fun x hx => ((hP n).2.2 x hx).imp fun c hc => ⟨hc.1, h1 hc.2⟩⟩
   set e : ℝ := ((IsDiscreteValuationRing.addVal R (l : R)).toNat : ℝ) with he
   have hepos : 0 < e := by
@@ -1300,8 +1296,7 @@ theorem export_at (E : ExpDat Y) (i : X.Tw) (hi : X.NonzeroIndexPlace i) (j : �
     hmap, hmap, map_baseChange] at hbound
   have hfin := index_unscale htf (X.l i) hBk hYk hX hck hbound
   refine ⟨?_, hX, hincl⟩
-  intro O' _ _ _ _ _ _ hinj hfin' M hM
-  exact index_extend hinj (X.l i) hYk hX hfin M hM
+  exact fun O' _ _ _ _ _ _ hinj hfin' M hM => index_extend hinj (X.l i) hYk hX hfin M hM
 
 theorem psiAt_comp {Γ Δ A : Type} [Group Γ] [Group Δ] [CommGroup A] (b : Bool) (χ : Δ →* A) (f : Γ →* Δ) :
     psiAt b (χ.comp f) = (psiAt b χ).comp f := by
@@ -1361,8 +1356,7 @@ theorem twistModule_all_character_powers_of_admissible (bkP : BKPh X) (E : ExpDa
       have hlev : Disjoint Q (Y.lev i j b a) := by
         refine hdis.mono_right (le_trans ?_ Finset.subset_union_left)
         intro v hv
-        simp only [levs, Finset.mem_biUnion]
-        exact ⟨j, hj, b, Finset.mem_univ _, a, ha', hv⟩
+        simpa only [levs, Finset.mem_biUnion] using ⟨j, hj, b, Finset.mem_univ _, a, ha', hv⟩
       rw [hA]
       refine hle ⟨_, ?_, rfl⟩
       refine Submodule.span_mono ?_ (h10 i hi j hj b k Q M _ htw a hlev)

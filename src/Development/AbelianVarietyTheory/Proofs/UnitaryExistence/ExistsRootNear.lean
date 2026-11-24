@@ -96,8 +96,7 @@ theorem inv_near {A R ι : Type} [CommRing A] [CommRing R] [Algebra A R] [Topolo
       have := hi.tendsto
       rw [hi1] at this
       exact this.comp hdt
-    have h2 := h1.smul (hadj.tendsto 1)
-    simpa [hadj1] using h2
+    simpa [hadj1] using h1.smul (hadj.tendsto 1)
   filter_upwards [hy hV, hdt hii] with x h1 h2
   refine ⟨_, h1, ?_⟩
   rw [mul_smul_comm, key, smul_smul, mul_comm, h2, one_smul]
@@ -133,8 +132,7 @@ theorem exists_idem {ι : Type} (O : ι → Type) [∀ v, CommRing (O v)] [∀ v
     by_cases h : IsUnit (n : O v)
     · simp [h]
     · have h2 : -((n : O v) * a v) ∈ nonunits (O v) := by
-        intro h3
-        exact h (isUnit_of_mul_isUnit_left ((IsUnit.neg_iff _).1 h3))
+        exact fun h3 => h (isUnit_of_mul_isUnit_left ((IsUnit.neg_iff _).1 h3))
       simpa [h] using IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ h2
 
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]

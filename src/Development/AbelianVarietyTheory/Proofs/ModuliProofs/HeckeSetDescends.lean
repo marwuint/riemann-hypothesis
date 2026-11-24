@@ -159,8 +159,7 @@ theorem card_preimage {Q Q' : Type} (r : Q → Q') (hr : Function.Injective r) (
     (hA : ∀ y ∈ A, ∃ x, r x = y) : Nat.card (r ⁻¹' A) = Nat.card A := by
   apply Nat.card_congr
   refine Equiv.ofBijective (fun x => ⟨r x.1, x.2⟩) ⟨?_, ?_⟩
-  · intro a b hab
-    exact Subtype.ext (hr (congrArg Subtype.val hab))
+  · exact fun a b hab => Subtype.ext (hr (congrArg Subtype.val hab))
   · rintro ⟨y, hy⟩
     obtain ⟨x, rfl⟩ := hA y hy
     exact ⟨⟨x, hy⟩, rfl⟩
@@ -204,10 +203,8 @@ theorem heckeKer_comap (D : Datum H) (P : Ideal (𝓞 E)) (p i : ℕ) (t : SAB H
   · intro x hx a
     rw [Subgroup.mem_comap, hcomm]
     exact c1 _ hx a
-  · intro J hJ x hx
-    exact c2 J hJ ((htors J x).1 hx)
-  · intro x hx
-    exact (htors _ x).2 (c3 hx)
+  · exact fun J hJ x hx => c2 J hJ ((htors J x).1 hx)
+  · exact fun x hx => (htors _ x).2 (c3 hx)
   · intro x hx y hy
     exact hw x y (hpow x (hkill _ _ hmem (c3 hx))) (hpow y (hkill _ _ hmem (c3 hy))) (c4 _ hx _ hy)
   · rw [← c5]
@@ -245,8 +242,7 @@ theorem GlobalTheory.heckeSet_descends : ∀ (E : Type) [Field E] [NumberField E
   have hr : Function.Injective r := by
     intro a b hab
     apply Over.OverMorphism.ext
-    apply (cancel_epi (spMap β)).1
-    exact congrArg (fun z => CommaMorphism.left z) hab
+    exact (cancel_epi (spMap β)).1 (congrArg (fun z => CommaMorphism.left z) hab)
   have hs : ∀ y : Over.mk (x' ≫ f) ⟶ o.t.G, y ^ (p ^ 2) = 1 → ∃ z, r z = y :=
     fun y hy => torsion_onto I I' r hr hn y hy
   have hAb : IsAbelianScheme o.t.G := by
@@ -280,8 +276,7 @@ theorem GlobalTheory.heckeSet_descends : ∀ (E : Type) [Field E] [NumberField E
     simp only [hpp] at h1
     have h2 := GlobalTheory.CommPairing.weilIs_pull GlobalTheory.globalFns_holds hAb o.t.PP.isLB e h1
     have h3 := GlobalTheory.CommutatorPairing.weilIs_unique GlobalTheory.globalFns_holds hAb o.t.PP.isLB h2 hab
-    rw [hinj (h3.trans (map_one _).symm)] at h1
-    exact h1
+    rwa [hinj (h3.trans (map_one _).symm)] at h1
   obtain ⟨C', hC'K, hC'⟩ := hK k' x'
   obtain ⟨ρ, hρ⟩ := GlobalTheory.HkSetPull.exists_equiv m.toSABMap.cart (Over.mk x')
   let C2 : Subgroup (Over.mk (x' ≫ f) ⟶ o.t.G) := C'.map ρ.toMonoidHom
@@ -300,8 +295,7 @@ theorem GlobalTheory.heckeSet_descends : ∀ (E : Type) [Field E] [NumberField E
   · intro h w
     obtain ⟨y, rfl⟩ := Surjective.surj (f := spMap β) w
     have := h y
-    rw [← Scheme.Hom.comp_apply, ← hu] at this
-    exact this
+    rwa [← Scheme.Hom.comp_apply, ← hu] at this
   · intro h y
     rw [← Scheme.Hom.comp_apply, ← hu]
     exact h _

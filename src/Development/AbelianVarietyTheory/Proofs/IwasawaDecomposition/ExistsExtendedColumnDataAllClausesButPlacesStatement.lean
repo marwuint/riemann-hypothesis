@@ -350,13 +350,11 @@ theorem seed_at_enl : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheor
     have hab : ∀ v, (w'.I.sel v).under (𝓞 B'.host.F) = v := fun v => by
       have h := pin.above v
       unfold Formalism.L2.Host.aboveF at h
-      rw [Set.Finite.mem_toFinset] at h
-      exact h
+      rwa [Set.Finite.mem_toFinset] at h
     have hmem : ∀ v, ((q : 𝓞 B'.host.E) ∈ (w'.I.sel v).asIdeal) → (q : 𝓞 B'.host.F) ∈ v.asIdeal := fun v h => by
       rw [← hab v]
       show (q : 𝓞 B'.host.F) ∈ (w'.I.sel v).asIdeal.comap (algebraMap _ _)
-      rw [Ideal.mem_comap, map_natCast]
-      exact h
+      rwa [Ideal.mem_comap, map_natCast]
     have := pin.half v v' q hq (hmem v hqP) (hmem v' hqP')
     exact congrArg HeightOneSpectrum.asIdeal this
   have hfin : Wt'.Finite := GlobalTheory.Mem.Top.TwFin.finite_pl B' T'.pl
@@ -888,8 +886,7 @@ theorem forms_crdOver {L L' Ks : Type} [Field L] [NumberField L] [Field L'] [Num
     · rintro ⟨y, hy, hyx⟩
       obtain rfl : x = y := funext fun k => ι₂.injective (congrFun hyx k)
       exact hy
-    · intro h
-      exact ⟨x, h, rfl⟩
+    · exact fun h => ⟨x, h, rfl⟩
   · intro x' hx'
     obtain ⟨x, -, e⟩ := (h2 x').1 hx'
     exact ⟨x, (hc _ _).2 e⟩
@@ -957,9 +954,7 @@ theorem resetW : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDa
   choose ioP' hioP using hio
   letI := z.alg
   have halgι : ∀ y : z.core.Q.c.F, ι (algebraMap z.core.Q.c.F D.what₂.LL y) = algebraMap z.core.Q.c.F D'.what₂.LL y := by
-    intro y
-    apply D'.what₂.embLL.injective
-    exact (hι _).trans ((z.alg_eq y).trans (halg y).symm)
+    exact fun y => D'.what₂.embLL.injective ((hι _).trans ((z.alg_eq y).trans (halg y).symm))
   have hfw := fun i : Fin D.R.m => GlobalTheory.formsL_exists_baseChange_coordinates (L := D.what₂.LL) (L' := D'.what₂.LL) ι halgι (z.R.nW i) (fun σ => (z.R.HW i σ).H) _ (z.R.FW i)
   choose FW' hFW using hfw
   let R₁ : RealDat3 D' _ z.core.Q.c.F :=
@@ -985,24 +980,21 @@ theorem resetW : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDa
       { k10 with frameKs := ⟨?hfk1, ?hfk2⟩ }, k11⟩
     case hord =>
       intro i τ a
-      have e := z.pins.char.base.models.order i τ a
-      exact (congrArg (fun s => (z.R.MW i s).ε τ a) hs).trans e
+      exact (congrArg (fun s => (z.R.MW i s).ε τ a) hs).trans (z.pins.char.base.models.order i τ a)
     case hfk1 =>
       intro i σ σ' h ρ
       have h' : (σ.comp ι).comp (algebraMap z.core.Q.c.F D.what₂.LL) = (σ'.comp ι).comp (algebraMap z.core.Q.c.F D.what₂.LL) := by
         ext y
         have := RingHom.congr_fun h y
         show σ (ι (algebraMap _ D.what₂.LL y)) = σ' (ι (algebraMap _ D.what₂.LL y))
-        rw [halgι]
-        exact this
+        rwa [halgι]
       exact z.pins.keep.frameKs.1 i (σ.comp ι) (σ'.comp ι) h' ρ
     case hfk2 =>
       intro i σ h τ a
       have h'' : ∀ ρ, labE (σ.comp ι) (lab (σ.comp ι) ρ) = tauE D ρ := by
         intro ρ
         have e : labEE (D := D') (σ.comp D'.embE) (labX (D := D') (σ.comp D'.embE) ρ) = tauE D' ρ := h ρ
-        rw [hE'] at e
-        exact e
+        rwa [hE'] at e
       exact z.pins.keep.frameKs.2 i (σ.comp ι) h'' τ a
   · obtain ⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, -, -⟩ := hA0
     have hinj : Function.Injective ι := ι.injective
@@ -1228,8 +1220,7 @@ theorem GlobalTheory.Mem.R3.Rw.RSideW.wk_image {B B' : Base} {f : Fr B.toPre} {f
     obtain ⟨x, hx⟩ := b x' hx'
     refine ⟨x, (a x x' hx).1 hx', fun ι' hι' => ?_⟩
     have e : ι' = ι := RingHom.ext fun y => (w'.st Z').toD7.what₂.embLL.injective ((hι' y).trans (hι y).symm)
-    rw [e]
-    exact hx
+    rwa [e]
   · exact ⟨0, Submodule.zero_mem _, fun ι hι => absurd ⟨ι, hι⟩ hex⟩
 
 

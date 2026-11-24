@@ -92,8 +92,7 @@ theorem chain_eq_zero (f : ℕ → ℝ → ℂ) (hf : ∀ k t, HasDerivAt (f k) 
       have := (tendsto_self_mul_const_pow_of_lt_one hρ0 hρ1).comp (Filter.tendsto_add_atTop_nat 1)
       simpa using this.const_mul C
     have h1 := ge_of_tendsto' hlim hb
-    have h2 := norm_le_zero_iff.mp h1
-    simpa using h2
+    simpa using norm_le_zero_iff.mp h1
   have := hA.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ 0) hloc (Set.mem_univ t)
   simpa using this
 
@@ -111,8 +110,7 @@ theorem family_eq_zero {p q : ℕ} (T : GrpData p q) (hgen : Subgroup.closure (T
       have h1 := hder Y hY (g * T.expt (s • Y)) ((a Y)^[k] u)
       have h1' : HasDerivAt (fun x : ℝ => D (g * T.expt (s • Y) * T.expt (x • Y)) ((a Y)^[k] u))
           (D (g * T.expt (s • Y)) (a Y ((a Y)^[k] u))) (s - s) := by
-        rw [sub_self]
-        exact h1
+        rwa [sub_self]
       have h2 := h1'.comp_sub_const s s
       have hfun : (fun x : ℝ => D (g * T.expt (x • Y)) ((a Y)^[k] u)) =
           fun x => D (g * T.expt (s • Y) * T.expt ((x - s) • Y)) ((a Y)^[k] u) := by
@@ -121,8 +119,7 @@ theorem family_eq_zero {p q : ℕ} (T : GrpData p q) (hgen : Subgroup.closure (T
         rw [mul_assoc, ← hadd, hx]
       show HasDerivAt (fun x : ℝ => D (g * T.expt (x • Y)) ((a Y)^[k] u))
         (D (g * T.expt (s • Y)) ((a Y)^[k + 1] u)) s
-      rw [hfun, Function.iterate_succ_apply']
-      exact h2
+      rwa [hfun, Function.iterate_succ_apply']
     · intro k
       show D (g * T.expt ((0 : ℝ) • Y)) ((a Y)^[k] u) = 0
       rw [zero_smul, T.expt_zero, mul_one]
@@ -366,8 +363,7 @@ private theorem hasDerivAt_fockData_expt_smul {p q r s : ℕ} {T₀ : GrpData (p
     funext x
     have hx : t + (x - t) = x := by ring
     rw [← ContinuousLinearMap.mul_apply, ← hmul, hx]
-  rw [hfun]
-  exact h2
+  rwa [hfun]
 
 end Hilbert
 
@@ -500,8 +496,7 @@ theorem coef_of_side : ∀ (p q r s n : ℕ) (T₀ : GrpData (p * r + q * s) (p 
             (Complex.ofRealCLM.analyticAt 0).mul analyticAt_const
           exact (analyticAt_cexp.restrictScalars).comp h1
         have h2 : AnalyticAt ℝ (fun t : ℝ => F.π (T₁.expt (t • Y), 1) (F.ι (κ P'))) 0 := by
-          rw [hfun]
-          exact h
+          rwa [hfun]
         exact hexpA.smul h2
       obtain ⟨C, ρ, hρ, hb0⟩ := GlobalTheory.OrbitAnalytic.bound_of_analyticAt f hf 0 hA
       refine ⟨C, ρ, hρ, fun k => ?_⟩

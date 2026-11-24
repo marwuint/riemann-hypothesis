@@ -239,8 +239,7 @@ theorem crys_pass (T : LocTied l P AI) (K L : FinExt l) {V : Type} [AddCommGroup
       (Submodule.span P.R.B (DcrisK₀ (P.PD K) R : Set (P.R.B ⊗[ℚ_[l]] (Fin a → ↥L.1)))).comap
         (F.baseChange P.R.B) :=
     Submodule.span_le.2 fun y hy => Submodule.subset_span (hm y hy)
-  have h2 := h1 (h ▸ Submodule.mem_top : c ⊗ₜ[ℚ_[l]] x ∈ _)
-  simpa using h2
+  simpa using h1 (h ▸ Submodule.mem_top : c ⊗ₜ[ℚ_[l]] x ∈ _)
 
 theorem dr_pass (T : LocTied l P AI) (K L : FinExt l) {LL0 : Type} [Field LL0] [Algebra ℚ_[l] LL0]
     {V : Type} [AddCommGroup V] [Module LL0 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL0 V] {a : ℕ}
@@ -373,8 +372,7 @@ theorem card_eq_of_indep_spans_dR : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l
   haveI : Nontrivial P.R.BdR := (GlobalTheory.DRFil.isField_dR T).nontrivial
   have hli : LinearIndependent P.R.BdR w := by
     rw [Fintype.linearIndependent_iff]
-    intro g hg i
-    exact congrFun (hind g hg) i
+    exact fun g hg i => congrFun (hind g hg) i
   have h1 : m ≤ a := by
     have := hli.fintype_card_le_finrank
     simpa [Module.finrank_fin_fun] using this
@@ -621,8 +619,7 @@ theorem PhiS_act : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K L : FinExt l
     simp only [map_zero, PhiS_zero, Pi.zero_apply]
     exact (Matrix.mulVec_zero _).symm
   | add x y hx hy =>
-    rw [map_add (f := _), PhiS_add, hx, hy, PhiS_add]
-    rw [← Matrix.mulVec_add]
+    rw [map_add (f := _), PhiS_add, hx, hy, PhiS_add, ← Matrix.mulVec_add]
     congr 1
     ext i
     simp only [Pi.add_apply, map_add]
@@ -784,13 +781,11 @@ theorem htOp_pow_eq_sum : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (C : Core 
         simpa [Matrix.mul_apply, Matrix.sum_apply, map_sum, map_mul, hσz] using h1
       have e2 : ∀ s, ∑ i, algebraMap (Per.BdRp l) (Per.BdR l) (C.o (zOm l ((ρ g).val s i))) * Per.σD (g : GQ l) (H.Q i j) = H.Q s j := by
         intro s
-        have h1 := congrFun (congrFun (H.inv g g.2) s) j
-        simpa [Matrix.mul_apply] using h1
+        simpa [Matrix.mul_apply] using congrFun (congrFun (H.inv g g.2) s) j
       simp only [Matrix.mulVec, dotProduct, Matrix.map_apply, RingHom.comp_apply, hσD]
       calc ∑ m, algebraMap (Per.BdRp l) (Per.BdR l) (C.o (σ ((r g).val m' m))) * ∑ i, algebraMap (Per.BdRp l) (Per.BdR l) (C.o (σ (b i m k))) * Per.σD (g : GQ l) (H.Q i j)
           = ∑ i, (∑ m, algebraMap (Per.BdRp l) (Per.BdR l) (C.o (σ ((r g).val m' m))) * algebraMap (Per.BdRp l) (Per.BdR l) (C.o (σ (b i m k)))) * Per.σD (g : GQ l) (H.Q i j) := by
-            simp only [Finset.mul_sum, Finset.sum_mul, mul_assoc]
-            exact Finset.sum_comm
+            simpa only [Finset.mul_sum, Finset.sum_mul, mul_assoc] using Finset.sum_comm
         _ = ∑ i, (∑ s, algebraMap (Per.BdRp l) (Per.BdR l) (C.o (zOm l ((ρ g).val s i))) * algebraMap (Per.BdRp l) (Per.BdR l) (C.o (σ (b s m' k)))) * Per.σD (g : GQ l) (H.Q i j) := by
             simp only [e1]
         _ = ∑ s, algebraMap (Per.BdRp l) (Per.BdR l) (C.o (σ (b s m' k))) * ∑ i, algebraMap (Per.BdRp l) (Per.BdR l) (C.o (zOm l ((ρ g).val s i))) * Per.σD (g : GQ l) (H.Q i j) := by
@@ -827,8 +822,7 @@ theorem htOp_pow_eq_sum : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (C : Core 
     refine (Finset.sum_congr rfl fun x1 _ => ?_).trans (h.trans (Finset.sum_congr rfl fun c _ => ?_))
     · congr 1
       exact Finset.sum_congr rfl fun c _ => mul_comm _ _
-    · simp only [Matrix.mulVec, dotProduct]
-      exact mul_comm _ _
+    · simpa only [Matrix.mulVec, dotProduct] using mul_comm _ _
   have one : ∑ i, (fun s => algebraMap (Om l) ℂ_[l] (zOm l (e s))) i • (b i).map (fun w => algebraMap (Om l) ℂ_[l] (σ w)) = 1 := by
     ext m k
     have h := congrArg (fun M : Matrix (Fin a) (Fin a) (Om l) => algebraMap (Om l) ℂ_[l] (σ (M m k))) hR.one
@@ -1014,8 +1008,7 @@ theorem GlobalTheory.BKLim.isHT_iff_diag : ∀ (l : ℕ) [Fact l.Prime] (K K' : 
         calc av = Qi *ᵥ x := hav
           _ = Qi *ᵥ (H.Q *ᵥ (fun k => Per.σD (g' : GQ l) (av k))) := by rw [h1]
           _ = _ := by rw [Matrix.mulVec_mulVec, hQiQ, Matrix.one_mulVec]
-      intro j
-      exact (congrFun h4 j).symm
+      exact fun j => (congrFun h4 j).symm
     choose c hcK hc using fun j => hI K3 (av j) (fun g hg => hinv g hg j)
 
     have hWx : ∀ k, e ^ q * (W.map ι *ᵥ x) k = e ^ p * (W.map ι *ᵥ (fun i => ι (y i))) k := by
@@ -1398,8 +1391,7 @@ theorem trace_pow_eq : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [Topo
     have h0 := hC 0
     rw [hX0, hS0] at h0
     have hC1 : ‖C - 1‖ * ‖(a : ℂ_[l])‖ ≤ (B ^ 0 * τ + B ^ 0 * B * τ + B ^ 0) * ((l : ℝ) ^ N)⁻¹ := by
-      rw [← norm_mul, show (C - 1) * (a : ℂ_[l]) = -((a : ℂ_[l]) - C * a) by ring, norm_neg]
-      exact h0
+      rwa [← norm_mul, show (C - 1) * (a : ℂ_[l]) = -((a : ℂ_[l]) - C * a) by ring, norm_neg]
     have hCb : ‖C - 1‖ ≤ (B ^ 0 * τ + B ^ 0 * B * τ + B ^ 0) * ((l : ℝ) ^ N)⁻¹ / ‖(a : ℂ_[l])‖ := by
       rw [le_div_iff₀ hapos]; exact hC1
     rw [show (U ^ n *ᵥ v) ⬝ᵥ t - S n = ((U ^ n *ᵥ v) ⬝ᵥ t - C * S n) + (C - 1) * S n by ring]
@@ -1898,8 +1890,7 @@ theorem closedAtL : ClosedAtL := by
     refine ⟨hmod, ?_, hmu, fun hc => hcy (hcr hc)⟩
     have h := hdr
     unfold Formalism.MainNotions.N.IsDR at h
-    rw [Module.finrank_fin_fun] at h
-    exact h
+    rwa [Module.finrank_fin_fun] at h
   refine ⟨⟨?_, fun τ LL' τ' hi => ?_⟩, fun hc => ?_⟩
   · obtain ⟨L, r₁, -, hle, hr₁⟩ := model Bw.LL
     obtain ⟨hmod, hdr, -, -⟩ := top L r₁ hle hr₁

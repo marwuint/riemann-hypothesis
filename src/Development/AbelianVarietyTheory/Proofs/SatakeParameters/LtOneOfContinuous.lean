@@ -97,8 +97,7 @@ theorem over_of_continuous (e : K ≃+* M) {v : HeightOneSpectrum (𝓞 K)} {w :
     rw [ringEquivPlaceCorrespondence_placeUnder e w x, mem_iff_lt_one]
     rw [mem_iff_lt_one] at hx
     have := lt_one_of_continuous i hi hx
-    rw [he] at this
-    exact this
+    rwa [he] at this
   have h2 : v = src e w := HeightOneSpectrum.ext (v.isMaximal.eq_of_le (src e w).isPrime.ne_top h1)
   rw [h2]
   exact ringEquivPlaceCorrespondence_placeUnder e w
@@ -132,8 +131,7 @@ theorem pullSub_pullSub (e : K ≃+* M) (π : CuspSub K a) : pullSub e (pullSub 
   change (π.V.map (pull a e.symm).toLinearMap).map (pull a e).toLinearMap = π.V
   rw [← Submodule.map_comp]
   convert Submodule.map_id π.V
-  refine LinearMap.ext fun φ => ?_
-  exact pull_pull e φ
+  exact LinearMap.ext fun φ => pull_pull e φ
 
 def SmIrr.comap {G H : Type} [Group G] [TopologicalSpace G] [Group H] [TopologicalSpace H] (σ : SmIrr H)
     (f : G →* H) (hf : Continuous f) (hs : Function.Surjective f) : SmIrr G where
@@ -180,8 +178,7 @@ theorem isLift : ∀ (K M : Type) [Field K] [NumberField K] [_root_.NumberField.
       change normV (w.under (𝓞 K)) ^ f = normV (w.under (𝓞 K)) ^ 1
       rw [pow_one, ← hf, hq])
     subst hf1
-    simp only [pow_one, Multiset.map_id']
-    exact hasSat_pullSub e.symm hO hB
+    simpa only [pow_one, Multiset.map_id'] using hasSat_pullSub e.symm hO hB
   · intro τ
     have hτ : (τ.comp e.toRingHom).comp e.symm.toRingHom = τ := by
       ext x
@@ -190,13 +187,11 @@ theorem isLift : ∀ (K M : Type) [Field K] [NumberField K] [_root_.NumberField.
         (CG.mk (pullSub e.symm π)).HasInfChar τ m := by
       intro m
       constructor
-      · intro h
-        exact hasInfChar_pullSub e.symm (π := π) (σ := τ) h
+      · exact fun h => hasInfChar_pullSub e.symm (π := π) (σ := τ) h
       · intro h
         have h3 : (pullSub e (pullSub e.symm π)).HasInfChar (τ.comp e.toRingHom) m :=
           hasInfChar_pullSub e (σ := τ.comp e.toRingHom) (by rw [hτ]; exact h)
-        rw [pullSub_pullSub] at h3
-        exact h3
+        rwa [pullSub_pullSub] at h3
     by_cases h : ∃ m, (CG.mk π).HasInfChar (τ.comp (algebraMap K M)) m
     · obtain ⟨m, hm⟩ := h
       rw [((key m).1 hm).infChar_eq, hm.infChar_eq]
@@ -223,8 +218,7 @@ theorem isLift : ∀ (K M : Type) [Field K] [NumberField K] [_root_.NumberField.
             T (π.locRep v g (T.symm (f x))) := locRep_pullSub e hO π g (T.symm (f x))
         have e3 : (pullSub e.symm π).locRep w (GeneralLinearGroup.map (cLoc hO) g) (f x) =
             T (π.locRep v g (T.symm (f x))) := by
-          refine Eq.trans ?_ e2
-          exact congrArg _ (T.apply_symm_apply (f x)).symm
+          exact Eq.trans (congrArg _ (T.apply_symm_apply (f x)).symm) e2
         exact (congrArg T.symm (e1.trans e3)).trans (T.symm_apply_apply _)
     obtain ⟨E⟩ := GlobalTheory.CuspRep.LocUniq.isLocComp_unique π v σ σ'' hσ h''
     refine ⟨E.toLinearEquiv, fun g x => ?_⟩

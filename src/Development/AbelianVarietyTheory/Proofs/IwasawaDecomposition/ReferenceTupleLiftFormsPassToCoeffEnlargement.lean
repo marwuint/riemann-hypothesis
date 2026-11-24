@@ -88,8 +88,7 @@ theorem levelFamily_coefficientChange_liftRound (X : Formalism.L2.Col.Fields) {L
   have hg : g.2.1 ∈ Λ₁.grp := by
     intro w _
     have h' : (g.2.1 w) ∈ (Λ₂ w).H := g.2.2 w (Set.mem_univ _)
-    rw [hH w] at h'
-    exact h'
+    rwa [hH w] at h'
   have h1 : φ₁.1 (g • d) = (((Λ₁.chr ⟨g.2.1, hg⟩ : X.Kˣ)) : X.K) •
       Formalism.L2.DIV.rhoVr X.emb lam (Formalism.L2.Col.ufGL X.E n g.1) (φ₁.1 d) := φ₁.2 (g.1, ⟨g.2.1, hg⟩) d
   have he' : e = fun τ => ι.comp (X.emb τ) := funext fun τ => (he τ).symm
@@ -131,8 +130,7 @@ theorem liftRound_reidx (X : Formalism.L2.Col.Fields) {L : Type} [Field L] [Numb
 theorem twistRamifiedPrimes_empty_colTuples {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (W : Set B.places.Pl) :
     Formalism.L2.Col.QE w.I.sel ((mu0F (X := B.fields) (tuOf w.I (usedOf w.I T W))).1 : Chr B.fields.F B.fields.E B.fields.K) = ∅ := by
   have e : Formalism.L2.Col.QE w.I.sel (w.I.tup w.I.mu0 : Chr B.fields.F B.fields.E B.fields.K) = ∅ := ColIn.twistPrimes_reference_tuple_eq_empty w.I
-  rw [w.I.trueColumn_tuple_trivial_eq_one] at e
-  exact e
+  rwa [w.I.trueColumn_tuple_trivial_eq_one] at e
 
 theorem rowLevelPrimes_colTuples_eq_vGs {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (W : Set B.places.Pl) :
     Formalism.L2.Col.rowSG (B.primes w.px) w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T W))).1 = (B.primes w.px).vGs := by
@@ -151,12 +149,10 @@ theorem glue_inv_coefMap_of_empty {E K L : Type} [Field E] [NumberField E] [Fiel
   intro w hw
   have h1 : w.1 ∈ SG₁ := by
     have := w.2
-    simp only [Formalism.L2.Col.uSG, hQ₁, Finset.union_empty] at this
-    exact this
+    simpa only [Formalism.L2.Col.uSG, hQ₁, Finset.union_empty] using this
   have h2 : w.1 ∈ SG₂ := by
     have := hw
-    simp only [Formalism.L2.Col.uSG, hQ₂, Finset.union_empty] at this
-    exact this
+    simpa only [Formalism.L2.Col.uSG, hQ₂, Finset.union_empty] using this
   show ((A₂.glue B₂) ⟨w.1, hw⟩).inv = (((A₁.glue B₁) w).inv).coefMap ι
   rw [Formalism.L2.Col.LevFam.glue_of_mem _ _ _ h2, Formalism.L2.Col.LevFam.glue_of_mem _ _ _ h1, ← Formalism.L2.Col.Lev.coefMap_inv,
     hA ⟨w.1, h1⟩ h2]

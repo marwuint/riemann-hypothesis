@@ -140,8 +140,7 @@ theorem exists_summable_decay {κ : Type} [Fintype κ] {R : (κ → FiniteAdeleR
     rw [Real.norm_of_nonneg (div_nonneg (norm_nonneg _) hX.le), inv_pow, div_eq_mul_inv, mul_assoc]
     exact mul_le_mul (le_max_of_le_left (hB _)) hinv (inv_nonneg.2 hX.le) (le_max_right _ _)
   have h := key _ (hzn ▸ norm_pos_iff.2 hz) (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ.1 i))
-  rw [← hzn] at h
-  exact h
+  rwa [← hzn] at h
 
 theorem bound_aux {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (h : V → ℂ) (C : ℝ) (m : ℕ)
     (hC : ∀ p, (1 + ‖p‖) ^ m * ‖h p‖ ≤ C) (p X : V) (t : ℝ) (ht : |t| ≤ 1) (b : ℝ) (hb : 0 ≤ b) :
@@ -316,8 +315,7 @@ theorem hasDerivAt_thetaSum_heisLine : ∀ {F E : Type} [Field F] [NumberField F
       HasDerivAt (fun t => M.co.rho ψ u' (M.heisLine ψ u t (pure g φ)) (fun i => algebraMap F (AF F) (ξ i)))
         (M.co.rho ψ u' (M.heisLine ψ u y (pure g₁ φ)) (fun i => algebraMap F (AF F) (ξ i))) y := by
     intro ξ y _
-    simp only [rho_apply]
-    exact (hasDerivAt_heisLine M ψ u hD y _).const_mul _
+    simpa only [rho_apply] using (hasDerivAt_heisLine M ψ u hD y _).const_mul _
   have hbd : ∀ (ξ : Fin n × Fin d → F), ∀ y ∈ Set.Ioo (-1 : ℝ) 1,
       ‖M.co.rho ψ u' (M.heisLine ψ u y (pure g₁ φ)) (fun i => algebraMap F (AF F) (ξ i))‖ ≤
         C₁ * (1 + ‖X‖) ^ m * (‖R' (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i))‖ /
@@ -329,8 +327,7 @@ theorem hasDerivAt_thetaSum_heisLine : ∀ {F E : Type} [Field F] [NumberField F
   have h0 : (0 : ℝ) ∈ Set.Ioo (-1 : ℝ) 1 := by norm_num
   have := hasDerivAt_tsum_of_isPreconnected (hsum.mul_left (C₁ * (1 + ‖X‖) ^ m)) isOpen_Ioo isPreconnected_Ioo
     hderiv hbd h0 hs0 h0
-  rw [heisLine_zero] at this
-  exact this
+  rwa [heisLine_zero] at this
 
 end GlobalTheory.ThetaLinePure
 end -- clump:auto

@@ -150,9 +150,8 @@ theorem secTrace_restrict {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X ⟶
     isIso_ι_app V U hUV
   haveI : IsIso (CommRingCat.ofHom (algebraMap (Sec s' (f ⁻¹ᵁ U))
       (Sec ((f ⁻¹ᵁ V).ι ≫ s') ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U))))) := by
-    have : IsIso ((f ⁻¹ᵁ V).ι.app (f ⁻¹ᵁ U)) := isIso_ι_app _ _ (f.preimage_mono hUV)
-    have : IsIso ((f ⁻¹ᵁ V : Scheme.{0}).presheaf.map (homOfLE h).op) :=
-      isIso_map_homOfLE h (preimage_square hw U)
+    have := isIso_ι_app (f ⁻¹ᵁ V) (f ⁻¹ᵁ U) (f.preimage_mono hUV)
+    have := isIso_map_homOfLE h (preimage_square hw U)
     change IsIso ((f ⁻¹ᵁ V).ι.app (f ⁻¹ᵁ U) ≫ (f ⁻¹ᵁ V : Scheme.{0}).presheaf.map (homOfLE h).op)
     infer_instance
   haveI : Algebra.IsPushout (Sec s U) (Sec s' (f ⁻¹ᵁ U)) (Sec (V.ι ≫ s) (V.ι ⁻¹ᵁ U))
@@ -166,11 +165,7 @@ theorem secTrace_restrict {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X ⟶
   haveI := projective_of_etale (Sec s U) (Sec s' (f ⁻¹ᵁ U))
   haveI := projective_of_etale (Sec (V.ι ≫ s) (V.ι ⁻¹ᵁ U))
     (Sec ((f ⁻¹ᵁ V).ι ≫ s') ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U)))
-  change algTrace (Sec (V.ι ≫ s) (V.ι ⁻¹ᵁ U)) (Sec ((f ⁻¹ᵁ V).ι ≫ s') ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U)))
-      (algebraMap (Sec s' (f ⁻¹ᵁ U)) (Sec ((f ⁻¹ᵁ V).ι ≫ s') ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U))) b') =
-    algebraMap (Sec s U) (Sec (V.ι ≫ s) (V.ι ⁻¹ᵁ U)) (algTrace (Sec s U) (Sec s' (f ⁻¹ᵁ U)) b')
-  exact algTrace_of_isPushout (C := Sec (V.ι ≫ s) (V.ι ⁻¹ᵁ U))
-    (C' := Sec ((f ⁻¹ᵁ V).ι ≫ s') ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U))) b'
+  exact algTrace_of_isPushout b'
 
 theorem formPull_restrict {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X ⟶ Sp k}
     {s' : X' ⟶ Sp k} {f : X' ⟶ X} (hf : f ≫ s = s') (V : X.Opens)

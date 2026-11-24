@@ -112,8 +112,7 @@ theorem apply_eq_of_isHom_id {M : RatModel F Ω} {χ : Ω →ₐ[F] Ω} (h : M.I
   exact h2.symm
 
 theorem iso_genericPoint {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (e : X ≅ Y) :
-    e.hom (genericPoint X) = genericPoint Y := by
-  exact genericPoint_eq_of_isOpenImmersion e.hom
+    e.hom (genericPoint X) = genericPoint Y := genericPoint_eq_of_isOpenImmersion e.hom
 
 private theorem mat_map_mul_inv {ι : Type} {m : ι → ℕ} {K K' : Type} [Field K] [Field K'] (σ : K →+* K')
     (X Y : Mat m K) : (X * Y⁻¹).map σ = X.map σ * (Y.map σ)⁻¹ := by
@@ -188,11 +187,9 @@ theorem exists_refines_of_iso {ι : Type} {m k : ι → ℕ} (M : RatModel F Ω)
     have hx' : ψ x ∈ M.O (e.hom z') := memψ hx
     have hxn' : ψ x ^ n / g ∈ M.O (e.hom z') := by
       have h1 := memψ hxn
-      rw [map_div₀, map_pow, hψφ] at h1
-      exact h1
+      rwa [map_div₀, map_pow, hψφ] at h1
     have h2 := memφ (hgr (ψ x) n hx' hxn')
-    rw [map_div₀, hφψ] at h2
-    exact h2
+    rwa [map_div₀, hφψ] at h2
   · intro K _ x A hA h hh
     refine ⟨x ≫ e.inv, ⟨by simp, ?_⟩, fun p hp => ?_⟩
     · have hx1 : e.hom ((x ≫ e.inv) (IsLocalRing.closedPoint K)) = x (IsLocalRing.closedPoint K) := by
@@ -212,10 +209,8 @@ theorem exists_refines_of_iso {ι : Type} {m k : ι → ℕ} (M : RatModel F Ω)
       unfold Bears
       refine ⟨A.map φ, ?_, ?_⟩
       · show (A.map φ).map ψ ∈ S.S (e.hom ((x ≫ e.inv) (IsLocalRing.closedPoint K)))
-        rw [mm1, hx1]
-        exact hA
-      · rw [Mat.mul_inv hd, hone, hinv, mul_one]
-        exact hh
+        rwa [mm1, hx1]
+      · rwa [Mat.mul_inv hd, hone, hinv, mul_one]
     · rw [← hp.1, Category.assoc, e.hom_inv_id, Category.comp_id]
 
 theorem exists_var_refines (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] (M : RatModel F Ω) (d : ℕ) (ι : Type)

@@ -91,8 +91,7 @@ theorem finite_points_detect : ∀ {X : Type} (W : Submodule ℂ (X → ℂ)) [F
     have hle : K (insert y s) ≤ K s := by
       intro w hw
       simp only [K, Submodule.mem_iInf] at hw ⊢
-      intro x hx
-      exact hw x (Finset.mem_insert_of_mem hx)
+      exact fun x hx => hw x (Finset.mem_insert_of_mem hx)
     have heq : K (insert y s) = K s := eq_of_le_of_not_lt hle (hs _ ⟨_, rfl⟩)
     rw [← heq] at hv
     simp only [K, Submodule.mem_iInf] at hv
@@ -129,8 +128,7 @@ theorem exists_interpolation_of_finiteDimensional {X : Type} (W : Submodule ℂ 
   let r : W →ₗ[ℂ] (s → ℂ) := LinearMap.pi fun x : s => (LinearMap.proj (x : X)) ∘ₗ W.subtype
   have hr : LinearMap.ker r = ⊥ := by
     rw [LinearMap.ker_eq_bot']
-    intro v hv
-    exact hs v fun x hx => congrFun hv ⟨x, hx⟩
+    exact fun v hv => hs v fun x hx => congrFun hv ⟨x, hx⟩
   obtain ⟨L, hL⟩ := r.exists_leftInverse_of_injective hr
   refine ⟨s, fun x => (L fun j => if x = j then 1 else 0 : W), fun v hv y => ?_⟩
   have h1 : L (r ⟨v, hv⟩) = ⟨v, hv⟩ := LinearMap.congr_fun hL ⟨v, hv⟩
@@ -212,8 +210,7 @@ theorem mem_of_finiteDimensional_span_rightTranslates :
         congr 1
         funext k
         ring
-      · intro i _
-        exact hint _ (hf.mul (continuous_const.mul (hab i).2))
+      · exact fun i _ => hint _ (hf.mul (continuous_const.mul (hab i).2))
     rw [this]
     exact R.sum_mem fun i _ => R.smul_mem (hab i).1 _
   let T : R →ₗ[ℂ] (s → ℂ) :=
@@ -252,8 +249,7 @@ theorem mem_of_finiteDimensional_span_rightTranslates :
         congr 1
         funext k
         ring
-      · intro x _
-        exact hint _ (((hfx x).mul continuous_const).mul (hc p hp))
+      · exact fun x _ => hint _ (((hfx x).mul continuous_const).mul (hc p hp))
     apply hl1
     rw [hl]
     simpa using congrFun hg 1
@@ -273,8 +269,7 @@ theorem mem_of_finiteDimensional_span_rightTranslates :
       rw [integral_mul_const]
       congr 1
       exact (congrFun hp x).symm
-    · intro x _
-      exact hint _ (((hfx x).mul (hc _ p.2)).mul continuous_const)
+    · exact fun x _ => hint _ (((hfx x).mul (hc _ p.2)).mul continuous_const)
   rw [hfeq]
   exact hconv _ p.2
 
@@ -303,8 +298,7 @@ theorem rightFinite_mem_poly : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
   intro p hp
   obtain ⟨m, a, b, hab, heq⟩ := hcop p hp
   refine ⟨m, fun i x => a i x⁻¹, b, fun i => ⟨hinv _ (hab i).1, hc _ (hab i).2⟩, ?_⟩
-  intro x k
-  exact heq x⁻¹ k
+  exact fun x k => heq x⁻¹ k
 
 end GlobalTheory.UnitaryBC
 end -- clump:auto

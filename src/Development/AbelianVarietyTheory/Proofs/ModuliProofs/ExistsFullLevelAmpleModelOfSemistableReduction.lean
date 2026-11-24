@@ -244,8 +244,7 @@ theorem direct : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Hos
       (LBIso.trans hΛ₂ hO hU₂ s3 (LBIso.trans hO hU₁ hU₂ s4 s5)))
   · intro u
     rw [← hlev u]
-    simp only [Category.assoc, reassoc_of% hφF]
-    exact hlev' u
+    simpa only [Category.assoc, reassoc_of% hφF] using hlev' u
 
 end GlobalTheory.SiegelDirect
 
@@ -989,8 +988,7 @@ theorem existsUnique_coeff {A : Type} [CommGroup A] (bas : (Fin (2 * g) → ℤ)
       congr 1
       funext i
       simpa using hw i
-  simp only [key]
-  exact existsUnique_eq
+  simpa only [key] using existsUnique_eq
 
 theorem coe_rt (n N : ℕ) : ((RZ.rt H n N : RZ H n N) : ℂ) = H.rt0 := by
   show ((2 : RZ H n N) : ℂ) * ((1 + H.rt0) / 2) - 1 = H.rt0
@@ -1042,9 +1040,7 @@ theorem exists_under (hL : Out.Laws) {n N : ℕ} (hN : 0 < N) (a : J → 𝓞 E)
     have := b.unit.map (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of (RZ H n N))).inv.hom)
     rwa [map_natCast] at this
   have hζ : b.ζ ^ N = 1 := by
-    apply Units.ext
-    apply Subtype.val_injective
-    exact (b.prim ℂ (RZ H n N).subtype).pow_eq_one
+    exact Units.ext (Subtype.val_injective (b.prim ℂ (RZ H n N).subtype).pow_eq_one)
   let P : Out.PolAV S :=
     { A := t.G, isAb := hab, g := g, smoothDim := hdim, L := t.PP.L, isLB := t.PP.isLB, rigid := ObjDim.rigidified,
       sym := ObjDim.sym, ample := h.ample, ktriv := h.ktriv }
@@ -1279,8 +1275,7 @@ theorem exists_tBase_RZ (H : Host E) {n N e : ℕ} (hn : 0 < n) (hN : N = n ^ e)
     show (RZ H n N).subtype _ = (RZ H n N).subtype 0
     rw [map_zero, ← key]
     have hr := ((Polynomial.isRoot_cyclotomic_iff_charZero (R := ℂ) (Nat.pos_of_ne_zero hN0)).mpr hζ).eq_zero
-    rw [← Polynomial.map_cyclotomic_int, Polynomial.eval_map] at hr
-    exact hr
+    rwa [← Polynomial.map_cyclotomic_int, Polynomial.eval_map] at hr
   refine ⟨⟨Units.ofPowEqOne _ N hpow hN0, hunit, ?_⟩, rfl⟩
   intro K _ β
   have : NeZero ((N : ℕ) : K) := ⟨by simpa [map_natCast] using (hunit.map β).ne_zero⟩
@@ -1606,8 +1601,7 @@ theorem subsingleton_characters (h₁ : Out.Laws) (h₂ : Out.Laws2) (hT : Globa
     exact this.ne_zero
   have hc₁ : t.HasTh (spMap (algebraMap (FractionRing W) F)) (fun a => (q a).2) := by
     have := isThetaPt_of_normalised h₁.globalFns t.pol hρ hm hF hth 0 x (fun a => (q a).2) fun a => ⟨_, hq a⟩
-    rw [← hx] at this
-    exact this
+    rwa [← hx] at this
   have hc₂ := GlobalTheory.hasTh_baseChange h₂ o g _ J b _ s t _ F (algebraMap (FractionRing W) F) _ _ hv
   rw [Category.comp_id] at hc₂
   have unit : ∀ a, v a ∉ IsLocalRing.maximalIdeal W →

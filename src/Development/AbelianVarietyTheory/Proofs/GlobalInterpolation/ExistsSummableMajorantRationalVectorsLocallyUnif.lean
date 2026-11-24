@@ -91,18 +91,14 @@ theorem sz_sub_le (u y : Fin N → AF F) : sz u - sz y ≤ sz (u + y) := by
 theorem continuous_sz : Continuous (sz : (Fin N → AF F) → ℝ) := by
   unfold sz
   refine continuous_finsetSum _ fun l _ => continuous_finsetSum _ fun w _ => ?_
-  have h1 : Continuous fun u : Fin N → AF F => inf u l := by
-    show Continuous fun u : Fin N → AF F => (u l).1
-    exact continuous_fst.comp (continuous_apply l)
+  have h1 : Continuous fun u : Fin N → AF F => inf u l := continuous_fst.comp (continuous_apply l)
   have h2 : Continuous fun x : Ainf F => re x w :=
     Complex.continuous_re.comp ((InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp
       (continuous_apply w))
   exact continuous_abs.comp (h2.comp h1)
 
 theorem continuous_fin : Continuous (fin : (Fin N → AF F) → Fin N → Af F) := by
-  refine continuous_pi fun l => ?_
-  show Continuous fun u : Fin N → AF F => (u l).2
-  exact continuous_snd.comp (continuous_apply l)
+  exact continuous_pi fun l => continuous_snd.comp (continuous_apply l)
 
 theorem fin_add (u y : Fin N → AF F) : fin (u + y) = fin u + fin y := by
   funext l; simp [fin, map_add (f := _)]

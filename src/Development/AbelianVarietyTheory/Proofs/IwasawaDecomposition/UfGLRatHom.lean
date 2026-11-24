@@ -138,8 +138,7 @@ theorem mem_FiC_iff (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ) 
     simp only [fnOf, Frames.tr, LinearMap.coe_mk, AddHom.coe_mk, Pi.one_apply, Matrix.mul_one, Matrix.one_mul]
   · funext c z
     have := key (y c) c 1 (one_mem _) 1 (by simp) z z fun τ => by rw [atInf_one, Matrix.one_mul]
-    rw [map_one, Units.val_one, one_mul] at this
-    exact this
+    rwa [map_one, Units.val_one, one_mul] at this
 
 end Ext
 
@@ -217,8 +216,7 @@ theorem exists_cls (hQ : Q = ∅) (hs : ∀ P ∈ uSG SG ∅, conjPrime₂ P ∉
       (by rw [h, hd]; exact StepZero.deco_smul pref (fun _ => rfl) c.1 κ _)
     refine ⟨k, h2, ?_⟩
     have e : ufGL X.E n κ.1 = γ.1 := by rw [← show ratHom hc n γ = κ.1 from h1, ufGL_ratHom]
-    rw [e]
-    exact h3
+    rwa [e]
   have hchi : ∀ (x : (lev hc Λ σ f).U) (k : levU hc n ∅ SG Λ.grp) b (κ : (stp Λ Θ pref).G b), Formalism.L2.Col.levRed hc n ∅ SG Λ.grp k = κ.2.1 → x.1 = k.1⁻¹ →
       (((lev hc Λ σ f).chi x : ℂˣ) : ℂ) = σ (((stp Λ Θ pref).chr b κ : X.Kˣ) : X.K) := by
     intro x k b κ h1 h2
@@ -245,16 +243,14 @@ theorem exists_cls (hQ : Q = ∅) (hs : ∀ P ∈ uSG SG ∅, conjPrime₂ P ∉
       obtain ⟨c, e⟩ := h2.2 (adToCls hc n ∅ SG Λ.grp a)
       exact ⟨c, adToCls_injective hc n ∅ SG Λ.grp e⟩⟩
   · have := (hy c).lat x
-    rw [← hLb] at this
-    exact this
+    rwa [← hLb] at this
   · rw [injective_iff_map_eq_one]
     intro s h
     have h1 : s.1.1 = 1 := hinj ((congrArg Subtype.val h).trans (map_one _).symm)
     have h2 : stabRat hc n ∅ SG Λ.grp ((stp Λ Θ pref).rep c).1.1.deco
         ⟨(s.1.1, s.1.2.1), (StepZero.deco_smul pref (fun _ => rfl) c.1 s.1 _).symm.trans (congrArg (fun q => q.1.1.deco) s.2)⟩ = 1 := by
       apply (ratHom_bijective hc n).1
-      rw [rlc_ratHom_stabRat, map_one]
-      exact h1
+      rwa [rlc_ratHom_stabRat, map_one]
     have h3 := (injective_iff_map_eq_one _).1 (stabRat_injective hc n ∅ SG Λ.grp _) _ h2
     refine Subtype.ext (Prod.ext h1 (Prod.ext (congrArg (fun a => a.1.2) h3) (Subtype.ext (funext fun P => ?_))))
     exact absurd P.2 (Finset.notMem_empty _)
@@ -266,8 +262,7 @@ theorem exists_cls (hQ : Q = ∅) (hs : ∀ P ∈ uSG SG ∅, conjPrime₂ P ∉
       rw [e'] at h2
       show y c * k.1 * (y c)⁻¹ = _
       have h3 : y c = bc (iA X.F X.E) γ * y c * k.1⁻¹ := h2
-      rw [mul_inv_eq_iff_eq_mul, ← eq_mul_inv_iff_mul_eq]
-      exact h3
+      rwa [mul_inv_eq_iff_eq_mul, ← eq_mul_inv_iff_mul_eq]
     · rintro ⟨k, hk, e⟩
       have e' : y c * k * (y c)⁻¹ = bc (iA X.F X.E) γ := e
       have h1 := sm ⟨γ, hγ⟩ ⟨k, hk⟩ (Y c)

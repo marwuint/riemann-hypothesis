@@ -110,8 +110,7 @@ theorem exists_appLE_ne_zero_of_sv_ne_zero : ∀ {E : Type} [Field E] [NumberFie
       subst hy
       exact hz
     rw [← TopCat.Presheaf.germ_res_apply (Sp Ω).presheaf (homOfLE hle) z trivial]
-    refine (congrArg ((Sp Ω).presheaf.germ ⊤ z trivial).hom ?_).trans (map_zero _)
-    exact hi
+    exact (congrArg ((Sp Ω).presheaf.germ ⊤ z trivial).hom hi).trans (map_zero _)
 
 end GlobalTheory.HeckeEx
 end -- clump:auto
@@ -614,8 +613,7 @@ theorem ne_zero_of_mem {Ω : Type} [CommRing Ω] {Y : Scheme.{0}} (w : Sp Ω ⟶
   have e := Scheme.basicOpen_appLE w ⊤ U h s
   rw [h0, Scheme.basicOpen_zero] at e
   have : x ∈ (⊤ ⊓ w ⁻¹ᵁ Y.basicOpen s : (Sp Ω).Opens) := ⟨trivial, hx⟩
-  rw [← e] at this
-  exact this
+  rwa [← e] at this
 
 theorem mem_of_ne_zero {Ω : Type} [Field Ω] {Y : Scheme.{0}} (w : Sp Ω ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ w ⁻¹ᵁ U)
     (s : Γ(Y, U)) (hs : (w.appLE U ⊤ h).hom s ≠ 0) (x : Sp Ω) : w x ∈ Y.basicOpen s := by
@@ -625,11 +623,9 @@ theorem mem_of_ne_zero {Ω : Type} [Field Ω] {Y : Scheme.{0}} (w : Sp Ω ⟶ Y)
       intro e0
       apply hs
       have := congrArg (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom e0
-      rw [← CommRingCat.comp_apply, Iso.hom_inv_id, map_zero] at this
-      exact this
+      rwa [← CommRingCat.comp_apply, Iso.hom_inv_id, map_zero] at this
     have := (IsUnit.mk0 _ e0).map (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom
-    rw [← CommRingCat.comp_apply, Iso.hom_inv_id] at this
-    exact this
+    rwa [← CommRingCat.comp_apply, Iso.hom_inv_id] at this
   have e := Scheme.basicOpen_appLE w ⊤ U h s
   rw [Scheme.basicOpen_of_isUnit _ hu] at e
   have : x ∈ (⊤ : (Sp Ω).Opens) := trivial
@@ -643,8 +639,7 @@ theorem exists_geom (Y : Scheme.{0}) (y : Y) :
       Y.fromSpecResidueField y, fun x => ?_⟩
   have : (Y.fromSpecResidueField y) ((Spec.map (CommRingCat.ofHom (algebraMap (Y.residueField y)
       (AlgebraicClosure (Y.residueField y))))) x) ∈ Set.range (Y.fromSpecResidueField y) := ⟨_, rfl⟩
-  rw [Scheme.range_fromSpecResidueField] at this
-  exact this
+  rwa [Scheme.range_fromSpecResidueField] at this
 
 end GlobalTheory.GlobalSectionsBijection
 
@@ -773,8 +768,7 @@ theorem GlobalTheory.ratio_descends : ∀ (T : Type) [CommRing T] [IsReduced T] 
     have e1 := hF Ω χ.toIntAlgHom j w h hχ
     have e2 := ha Ω χ.toIntAlgHom
     apply ne_zero_of_mem w (U j) h _ default (by rw [hw]; exact hy)
-    rw [map_sub, map_mul, compat q χ w (U j) h hχ a, e1]
-    rw [← e2]
+    rw [map_sub, map_mul, compat q χ w (U j) h hχ a, e1, ← e2]
     simp
 end -- clump:auto
 end -- clump:auto
@@ -803,8 +797,7 @@ theorem sv_pull_eq : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
       (Xo.univ.t.PP.L.U (J (r ≫ (snd (Over.mk x₁) Xo.univ.t.G).left)) : Set _))
     refine Set.mem_iInter.2 fun _ => ?_
     simp only [Set.mem_preimage] at h1 ⊢
-    rw [← Scheme.Hom.comp_apply, hsnd]
-    exact h1
+    rwa [← Scheme.Hom.comp_apply, hsnd]
   have hz : r z ∈ (PPx x₁).U (fun _ => J (r ≫ (snd (Over.mk x₁) Xo.univ.t.G).left)) :=
     hJ.mem (fun _ : Fin 1 => (snd (Over.mk x₁) Xo.univ.t.G).left) r
   dsimp only [sv]

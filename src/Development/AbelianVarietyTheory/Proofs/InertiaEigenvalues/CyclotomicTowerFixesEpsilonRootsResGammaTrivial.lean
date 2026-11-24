@@ -60,8 +60,7 @@ theorem resΓ_eq_one_of_chi {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K LL : Fi
   apply Units.ext
   apply Subtype.ext
   have h3 := W.χΓ_res g
-  rw [P.PD_χ, h1, Units.val_one, map_one] at h3
-  exact h3
+  rwa [P.PD_χ, h1, Units.val_one, map_one] at h3
 
 theorem hinf_fixes_εroot_and_resΓ_eq_one : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l),
     (∀ g ∈ Hinf K, ∀ j : ℕ, AI.actT g (AI.εroot j) = AI.εroot j) ∧

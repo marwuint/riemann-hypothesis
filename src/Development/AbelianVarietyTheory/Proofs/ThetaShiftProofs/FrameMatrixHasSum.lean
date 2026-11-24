@@ -141,8 +141,7 @@ theorem cv_coeff {F : Type} {m : ℕ} {A : F → Fin m → ℂ⸨X⸩} {B : F �
       congr 3
       ext j
       simp [Pi.single_apply, eq_comm]
-    refine hL (LinearMap.pi_ext' fun k => LinearMap.ext_ring ?_)
-    exact Subtype.ext (congrFun h0 k)
+    exact hL (LinearMap.pi_ext' fun k => LinearMap.ext_ring (Subtype.ext (congrFun h0 k)))
   obtain ⟨cf, hcf⟩ := (Finsupp.mem_span_range_iff_exists_finsupp).1
     (hspan.ge (Submodule.mem_top (x := (Pi.single k 1 : Fin m → convLaurent))))
   have hδ : ∀ j, ∑ f ∈ cf.support, (cf f : ℂ⸨X⸩) * A f j = algebraMap ℂ ℂ⸨X⸩ (if j = k then 1 else 0) := by
@@ -229,8 +228,7 @@ theorem dualMap_comp_algebraMap {R S : Type} [CommRing R] [CommRing S] (φ : R �
 theorem le_iff_fst {S : Type} [CommRing S] (v : Sp (DualNumber S) ⟶ X) (U : X.Opens) :
     ⊤ ≤ v ⁻¹ᵁ U ↔ ⊤ ≤ (spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ v) ⁻¹ᵁ U := by
   refine ⟨TanDeriv.comp_top_le _ _ _, TanDeriv.top_le_of_comp _ ?_ ?_ _ _⟩
-  · intro y
-    exact ⟨TrivSqZeroExt.inl y, rfl⟩
+  · exact fun y => ⟨TrivSqZeroExt.inl y, rfl⟩
   · intro x hx
     have h1 : x.fst = 0 := hx
     ext <;> simp [h1]
@@ -593,13 +591,11 @@ theorem frame_matrix_hasSum : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E
     filter_upwards [high_iff.2 ⟨T, fun _ h => h⟩, high_iff.2 ⟨Ha.T, fun _ h => h⟩, hwV] with ω h1 h2 h3
     obtain ⟨xF, hx, hd⟩ := exists_exp_lift Y Fu Ha.i _ (Ha.period _ h2) _ z ω.2.2.2.1
     have h4 : ⊤ ≤ (lf Y ω.1.2.2.2.1 _ (ω.1.2.2.2.1.tan τ i) ≫ Y.m.φ) ⁻¹ᵁ V := by
-      rw [lf_le_iff, ptF_congr ω.2.2.2.2.1]
-      exact h3
+      rwa [lf_le_iff, ptF_congr ω.2.2.2.2.1]
     have h5 := (FibreDeriv.isDerivAt0_comp (hd τ i) Y.m.φ).2 V h4 f
     have h6 := Conv.sumsAt_iff.1 (hT _ h1 xF hx)
     rw [← h5] at h6
-    rw [HolHom.valR_eq _ _ h4]
-    exact h6
+    rwa [HolHom.valR_eq _ _ h4]
   · filter_upwards [hwV] with ω h3
     have hGw := ω.2.2.2.2
     rw [lf_congr Y hGw.1 _ (hGw.1 ▸ ω.1.2.2.2.1.tan τ i)]

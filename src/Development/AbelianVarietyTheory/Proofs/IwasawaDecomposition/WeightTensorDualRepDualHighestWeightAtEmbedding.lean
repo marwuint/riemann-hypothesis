@@ -81,8 +81,7 @@ theorem rowAct_lpMinor (n : ℕ) (M : Matrix (Fin n) (Fin n) K) (hM : ∀ i j, i
     · intro b _ hb
       have hbs : s ≤ b.val := by
         by_contra hlt
-        apply hb
-        exact Finset.mem_map.mpr ⟨⟨b.val, by omega⟩, Finset.mem_univ _, Fin.ext (by simp)⟩
+        exact hb (Finset.mem_map.mpr ⟨⟨b.val, by omega⟩, Finset.mem_univ _, Fin.ext (by simp)⟩)
       simp only
       rw [hM _ _ (by rw [Fin.lt_def]; simp; omega), map_zero, zero_mul]
   have hL : (Matrix.of fun p b : Fin s => (C (M (Fin.castLE hs p) (Fin.castLE hs b)) :
@@ -106,8 +105,7 @@ theorem det_unitri (n : ℕ) (g : GL (Fin n) K) (hl : ∀ i j, j < i → g i j =
   ext
   rw [Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_of_isUpperTriangular]
   · simp [hd]
-  · intro i j hij
-    exact hl i j hij
+  · exact fun i j hij => hl i j hij
 
 theorem sqAct_unitri (n : ℕ) (mu : DomWeight n) (g : GL (Fin n) K) (hl : ∀ i j, j < i → g i j = 0)
     (hd : ∀ i, g i i = 1) : sqAct K n mu g (extremal K n mu) = extremal K n mu := by
@@ -115,11 +113,9 @@ theorem sqAct_unitri (n : ℕ) (mu : DomWeight n) (g : GL (Fin n) K) (hl : ∀ i
   rw [det_unitri K n g hl hd, one_zpow, Units.val_one, one_smul]
   apply rowAct_hw
   · intro i j hij
-    simp only [Matrix.transpose_apply]
-    exact hl j i hij
+    simpa only [Matrix.transpose_apply] using hl j i hij
   · intro i
-    simp only [Matrix.transpose_apply]
-    exact hd i
+    simpa only [Matrix.transpose_apply] using hd i
 
 theorem sqAct_diag (n : ℕ) (mu : DomWeight n) (t : Fin n → Kˣ) :
     sqAct K n mu (diagGL K n t) (extremal K n mu) = ((∏ j, t j ^ mu.w j : Kˣ) : K) • extremal K n mu := by
@@ -414,8 +410,7 @@ theorem detTwistPolynomial_eval_embeddingPoint (emb : ι → L →+* K) (hd : CM
     split_ifs
     · rw [map_pow, eval_genericDeterminant, evPtF_other _ _ _ _ h1 (hcm τ τ₀), Matrix.det_one, one_pow]
     · rw [map_pow, eval_genericDeterminant, evPtF_other _ _ _ _ (hc τ) (hc' τ hτ), Matrix.det_one, one_pow]
-  · intro h'
-    exact absurd (Finset.mem_univ τ₀) h'
+  · exact fun h' => absurd (Finset.mem_univ τ₀) h'
 
 end HW
 
@@ -469,8 +464,7 @@ theorem dd_hwAt : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : �
     have hsum : (∑ j, ((bVV K lam).repr (hwV (K := K) lam) j) • bVVfun K lam j) = ((hwV (K := K) lam : VV K lam) : Pol K ι n) := by
       have := congrArg Subtype.val ((bVV K lam).sum_repr (hwV lam))
       rw [Submodule.coe_sum] at this
-      simp only [Submodule.coe_smul, bVV_coe] at this
-      exact this
+      simpa only [Submodule.coe_smul, bVV_coe] using this
     funext i
     simp only [Matrix.mulVec, dotProduct, Matrix.of_apply, tenPF_eval, detTwistPolynomial_eval_embeddingPoint emb hd lam τ₀ B, hM,
       Pi.smul_apply, smul_eq_mul]

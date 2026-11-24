@@ -142,10 +142,7 @@ theorem cmp_semilinear_pair : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a
     simp only [Pr] at hv ⊢
     have : (fun i => σB ((r • v) i)) = σB r • fun i => σB (v i) := by
       funext i; simp [map_mul]
-    rw [this]
-    rw [Matrix.mulVec_smul]
-    rw [map_smul, hv, map_smul, hmapB]
-    rw [smul_smul, smul_smul, mul_comm]
+    rw [this, Matrix.mulVec_smul, map_smul, hv, map_smul, hmapB, smul_smul, smul_smul, mul_comm]
   have hbas : ∀ i, Pr (Pi.single i 1) := by
     intro i
     simp only [Pr]
@@ -160,8 +157,7 @@ theorem cmp_semilinear_pair : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a
     funext k; simp [Finset.sum_apply, Pi.single_apply]
   have := Finset.sum_induction (s := Finset.univ) (fun i => v i • (Pi.single i 1 : ι → OB l O)) Pr hadd h0
     (fun i _ => hsm _ _ (hbas i))
-  rw [← hv] at this
-  exact this
+  rwa [← hv] at this
 
 end GlobalTheory.BKGal
 end -- clump:auto
@@ -482,8 +478,7 @@ theorem exists_Y : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e
         · subst hk; simp only [Pi.single_eq_same]; exact one_mem _
         · rw [Pi.single_eq_of_ne hk]; exact zero_mem _, by
         ext1 k; simp [Matrix.mulVec_single]⟩
-    have h := hα _ hv
-    exact ⟨fun τ => ⟨E K l e ^ α * P.mx τ i j, mem_tot.1 h τ i⟩, fun τ => rfl⟩
+    exact ⟨fun τ => ⟨E K l e ^ α * P.mx τ i j, mem_tot.1 (hα _ hv) τ i⟩, fun τ => rfl⟩
   choose f hf using key
   exact ⟨fun i j => ϖ.iTot t K (f i j), fun i j => ⟨f i j, hf i j, rfl⟩⟩
 

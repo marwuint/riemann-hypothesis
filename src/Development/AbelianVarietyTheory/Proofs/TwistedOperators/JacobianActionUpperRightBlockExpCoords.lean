@@ -176,8 +176,7 @@ theorem hasFDerivAt_of_comp_immersion : ∀ (E F : Type) [NormedAddCommGroup E] 
       abel
     rw [← hdiff]
     exact ((L.isBigO_comp _ _).trans_isLittleO hs).sub (hLr.trans_isBigO hu)
-  refine ⟨L.comp D, hP, ?_⟩
-  exact (hA.hasFDerivAt.comp x hP).unique hD
+  exact ⟨L.comp D, hP, (hA.hasFDerivAt.comp x hP).unique hD⟩
 
 end GlobalTheory
 end -- clump:auto
@@ -229,13 +228,11 @@ theorem of_jacMul {m n : Type} [Fintype m] [Fintype n] (U : Matrix m m ℂ) (V :
 private theorem pow_two_pow_eq_neg_one_of_isPrimitiveRoot_two_pow_succ {E : Type*} [AddCommGroup E] [Module ℝ E] (X Z : E)
     (h : X + X = Z + Z) : X = Z := by
   have h2 : (2 : ℝ) • X = (2 : ℝ) • Z := by rw [two_smul, two_smul]; exact h
-  have h3 := congrArg (fun W => (1 / 2 : ℝ) • W) h2
-  simpa [smul_smul] using h3
+  simpa [smul_smul] using congrArg (fun W => (1 / 2 : ℝ) • W) h2
 
 private theorem pY_injective {p q : ℕ} (X Z : Fin p → Fin q → ℂ) (h : pY X = pY Z) : X = Z := by
   funext i j
-  have h1 := congrFun (congrFun (congrArg Matrix.toBlocks₁₂ h) i) j
-  simpa [pY, pOf] using h1
+  simpa [pY, pOf] using congrFun (congrFun (congrArg Matrix.toBlocks₁₂ h) i) j
 
 private theorem conjTranspose_mul_mul_mul_eq_of_mul_eq {n : Type*} [Fintype n] [DecidableEq n] (g E F k X : Matrix n n ℂ)
     (hE : Eᴴ = E) (hF : Fᴴ = F) (h : E * g = k * F) :
@@ -259,8 +256,7 @@ private theorem injective_of_det_ne_zero {E : Type*} [AddCommGroup E] [Module �
 private theorem conjTranspose_mem_unitaryGroup {n : Type*} [Fintype n] [DecidableEq n] {U : Matrix n n ℂ}
     (hU : U ∈ Matrix.unitaryGroup n ℂ) : Uᴴ ∈ Matrix.unitaryGroup n ℂ := by
   rw [Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]
-  rw [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose] at hU
-  exact hU
+  rwa [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose] at hU
 
 theorem jacobian_action_p : ∀ (p q : ℕ) (g : Mat p q) (ψ : (Fin p → Fin q → ℂ) → (Fin p → Fin q → ℂ)), Continuous ψ → (∀ B, ∃ U ∈ Matrix.unitaryGroup (Fin p) ℂ, ∃ V ∈ Matrix.unitaryGroup (Fin q) ℂ, NormedSpace.exp (pY B) * g = Matrix.fromBlocks U 0 0 V * NormedSpace.exp (pY (ψ B))) → (∀ B : Fin p → Fin q → ℂ, 0 < LinearMap.det (sP (pY B))) → (∀ B C : Fin p → Fin q → ℂ, sAd (pY B) (pY C) = pY (sP (pY B) C)) → (∀ B : Fin p → Fin q → ℂ, ∃ A : (Fin p → Fin q → ℂ) →L[ℝ] (Ix p q → Ix p q → ℂ), HasStrictFDerivAt (fun (C : Fin p → Fin q → ℂ) (a b : Ix p q) => NormedSpace.exp (pY C + pY C) a b) A B ∧ ∀ C, Matrix.of (A C) = NormedSpace.exp (pY B) * sAd (pY B) (pY C + pY C) * NormedSpace.exp (pY B)) → ∀ B, ∃ P : (Fin p → Fin q → ℂ) →L[ℝ] (Fin p → Fin q → ℂ), HasFDerivAt ψ P B ∧ |P.det| * LinearMap.det (sP (pY (ψ B))) = LinearMap.det (sP (pY B)) := by
   intro p q g ψ hψ hK hdet hsAd hdiff B
@@ -279,8 +275,7 @@ theorem jacobian_action_p : ∀ (p q : ℕ) (g : Mat p q) (ψ : (Fin p → Fin q
       rw [Matrix.mul_one, Matrix.mul_one, fromBlocks_unitary_conjTranspose_mul_self U' V' hU' hV', Matrix.mul_one] at hs
       rw [jac_exp_two, jac_exp_two, hs]
     apply Matrix.of.injective
-    rw [hLapp]
-    exact hmat
+    rwa [hLapp]
   have hLd : HasFDerivAt (fun y => (fun C (a b : Ix p q) => NormedSpace.exp (pY C + pY C) a b) (ψ y))
       (L.comp A0) B := by
     rw [hcomp]
@@ -316,8 +311,7 @@ theorem jacobian_action_p : ∀ (p q : ℕ) (g : Mat p q) (ψ : (Fin p → Fin q
   rw [abs_det_unitary_mul_mul p q Uᴴ (conjTranspose_mem_unitaryGroup hU) V hV _ (of_jacMul Uᴴ V), one_mul,
     abs_of_pos (hdet (ψ B)), abs_of_pos (hdet B)] at hd
   show |LinearMap.det (P : (Fin p → Fin q → ℂ) →ₗ[ℝ] (Fin p → Fin q → ℂ))| * _ = _
-  rw [mul_comm]
-  exact hd
+  rwa [mul_comm]
 
 end GlobalTheory.PolarU
 end -- clump:auto

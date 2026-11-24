@@ -66,8 +66,7 @@ theorem kill_or {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] {T : ℕ
   · left
     intro m
     have h1 : φ m ∈ φ.range := ⟨m, rfl⟩
-    rw [h] at h1
-    exact h1
+    rwa [h] at h1
   · right
     intro m
     have h1 : m ∈ φ.range := by rw [h]; trivial
@@ -135,8 +134,7 @@ theorem mem_dual (z : Fin n → Rv) : z ∈ baseDualV hc n ST v ↔
 theorem mem_base (z : Fin n → Rv) : z ∈ latS (F := F) (v.adicCompletion F) 𝒪v (baseLb E n ST) ↔
     (∀ i, i ≠ lastIdx n → z i ∈ 𝒪v) ∧ ιv pE⁻¹ * z (lastIdx n) ∈ 𝒪v := by
   have e := rll_mem_loc_dLat n v pE⁻¹ (inv_ne_zero h.coe_ne_zero) z
-  rw [← rll_baseLb_eq n h] at e
-  exact e
+  rwa [← rll_baseLb_eq n h] at e
 
 variable {M : Type} [AddCommGroup M] [Module (Formalism.BasicNotions.intV E v) M] (fT : baseDualV hc n ST v →ₗ[Formalism.BasicNotions.intV E v] M)
   (hL : ∀ x : baseDualV hc n ST v, x.1 ∈ latS (F := F) (v.adicCompletion F) (Formalism.BasicNotions.intV E v) (baseLb E n ST) → fT x = 0)
@@ -217,8 +215,7 @@ include hL
 theorem fT_of_last (hq : ∀ m : M, (⟨ιv (star pE), rll_incl_int v (cO E π)⟩ : 𝒪v) • m = 0) (x : baseDualV hc n ST v)
     (hx : x.1 (lastIdx n) ∈ 𝒪v) : fT x = 0 := by
   refine fT_last hc n v h fT hL ⟨ιv (star pE), rll_incl_int v (cO E π)⟩ hq x (ιv (star pE)⁻¹ * x.1 (lastIdx n)) ?_ ?_
-  · rw [incl_mul_inv_mul v h.star_ne_zero]
-    exact hx
+  · rwa [incl_mul_inv_mul v h.star_ne_zero]
   · exact (incl_mul_inv_mul v h.star_ne_zero _).symm
 
 theorem last_of_fT {P : Pl E} (hcardP : (Nat.card (𝓞 E ⧸ P.asIdeal)).Prime) (huniq : ∀ Q ∈ ST, IsOver v Q → Q = P)
@@ -346,8 +343,7 @@ theorem fixes_of_row (hq : ∀ m : M, (⟨ιv (star pE), rll_incl_int v (cO E π
       rw [Matrix.one_apply_eq, e3, mul_right_comm, mul_comm]
       exact mul_mem (rll_sigV_mem hc v hs) hx.2
     · exact mul_mem (sub_mem (h1.1 _ _) (by rw [Matrix.one_apply_ne (Ne.symm hj)]; exact zero_mem _)) (hx.1 j hj)
-  rw [map_sub, sub_eq_zero] at h0
-  exact h0
+  rwa [map_sub, sub_eq_zero] at h0
 
 
 omit hL in

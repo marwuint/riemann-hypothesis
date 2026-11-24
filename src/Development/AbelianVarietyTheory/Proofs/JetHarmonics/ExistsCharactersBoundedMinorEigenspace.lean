@@ -193,8 +193,7 @@ theorem comap_eq {p : ℕ} [Fact p.Prime] {OE : Type} [CommRing OE] [IsDedekindD
       (IsLocalRing.maximalIdeal R).comap φ := by
     rw [Ideal.map_le_iff_le_comap]
     intro a ha
-    rw [Ideal.mem_comap, Ideal.mem_comap, hφ]
-    exact ha
+    rwa [Ideal.mem_comap, Ideal.mem_comap, hφ]
   rw [hP _ hQ hne, top_le_iff] at hle
   exact Ideal.comap_ne_top φ (IsLocalRing.maximalIdeal.isMaximal R).ne_top hle
 
@@ -219,8 +218,7 @@ theorem exists_frobenius_pow : ∀ (p : ℕ) [Fact p.Prime] (OE : Type) [CommRin
   letI : Field (OE ⧸ P) := Ideal.Quotient.field P
   haveI : CharP (IsLocalRing.ResidueField R) p := by
     refine (CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).2 ?_
-    rw [← map_natCast (IsLocalRing.residue R), IsLocalRing.residue_eq_zero_iff]
-    exact hp
+    rwa [← map_natCast (IsLocalRing.residue R), IsLocalRing.residue_eq_zero_iff]
   obtain ⟨i, hi⟩ := exists_pow_of_finite_field p (k := IsLocalRing.ResidueField R)
     (Ideal.quotientMap (IsLocalRing.maximalIdeal R) σ h1.ge)
     (Ideal.quotientMap (IsLocalRing.maximalIdeal R) τ h2.ge)
@@ -418,8 +416,7 @@ theorem det_ne_zero {k A O : Type} [CommRing k] [CommRing A] [Algebra k A] [Comm
     simp only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply] at this
     simpa [LinearMap.sum_apply, mul_comm] using this
   ext a
-  have h2 := LinearMap.congr_fun h1 ⟨e * a, a, rfl⟩
-  simpa [LinearMap.sum_apply, hTe] using h2
+  simpa [LinearMap.sum_apply, hTe] using LinearMap.congr_fun h1 ⟨e * a, a, rfl⟩
 
 end GlobalTheory.UnitDeterminantBasis
 end -- clump:auto
@@ -461,8 +458,7 @@ theorem exists_basis_isUnit_det : ∀ (p : ℕ) [Fact p.Prime] (OE : Type) [Comm
     have h1 : tauExt (t j) w.e = 1 := ht j
     simp only [T, AlgHom.comp_apply, h1, map_one]
   · have h1 := Ideal.Quotient.eq_zero_iff_mem.2 hxM
-    rw [RingHom.map_det] at h1
-    exact h1
+    rwa [RingHom.map_det] at h1
 
 end GlobalTheory.tau_basis_unit_determinant
 end -- clump:auto
@@ -534,8 +530,7 @@ theorem exists_placeU_of_frobenius_orbit : ∀ (E : Type) [Field E] [NumberField
     obtain ⟨i, hi⟩ := GlobalTheory.EmbFrob.exists_frobenius_pow p (𝓞 E) C v O hv hp w (τ 0) σ hw hσ
     refine ⟨(i : ZMod d), hsep _ _ fun x => ?_⟩
     have h1 : σ x - τ 0 x ^ (p ^ i) ∈ IsLocalRing.maximalIdeal O := by
-      intro hu
-      exact (hi x).ne (hv.one_of_isUnit hu)
+      exact fun hu => (hi x).ne (hv.one_of_isUnit hu)
     have := (IsLocalRing.residue_eq_zero_iff _).2 h1
     rw [map_sub, map_pow, sub_eq_zero] at this
     rw [← IsLocalRing.residue_eq_zero_iff, map_sub, hpow, this, sub_self]
@@ -551,8 +546,7 @@ theorem exists_placeU_of_frobenius_orbit : ∀ (E : Type) [Field E] [NumberField
   obtain ⟨⟨t₀⟩, -⟩ := GlobalTheory.EmbCount.card_emb E p C v O hv w.e w.idem
   have hn : w.n = d := by
     have h1 := Nat.card_congr (t₀.trans (Equiv.ofBijective _ hbij).symm)
-    rw [Nat.card_zmod, Nat.card_eq_fintype_card, Fintype.card_fin] at h1
-    exact h1
+    rwa [Nat.card_zmod, Nat.card_eq_fintype_card, Fintype.card_fin] at h1
   have hcast : Function.Bijective (fun j : Fin w.n => ((j.val : ℕ) : ZMod d)) := by
     refine ⟨fun a b h => ?_, fun s => ⟨⟨s.val, hn ▸ ZMod.val_lt s⟩, ZMod.natCast_zmod_val s⟩⟩
     have h' := congrArg ZMod.val h
@@ -914,8 +908,7 @@ theorem exists_chars_minor_le : (∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory
     refine isCh_map _ _ (fun i => ?_) _ (hu (g ρ))
     apply Subtype.ext
     have := Y.B.G.const i
-    rw [hF] at this
-    exact this
+    rwa [hF] at this
   · refine le_of_eq_of_le ?_ hg
     congr 2
     ext ρ q

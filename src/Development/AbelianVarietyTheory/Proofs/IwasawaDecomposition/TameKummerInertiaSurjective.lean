@@ -141,8 +141,7 @@ theorem exists_unit_denominator {E : Type u_1} {Ω : Type u_2} [inst : Field E] 
     rw [mul_one] at hy1
     obtain ⟨s, rfl⟩ := (FractionalIdeal.mem_one_iff _).mp hy1
     obtain ⟨t, ht⟩ := (FractionalIdeal.mem_one_iff _).mp hyx
-    refine lt_of_le_of_ne (valuation_integer_le_one ι A s) fun h => hne s t h ?_
-    exact ht.symm
+    exact lt_of_le_of_ne (valuation_integer_le_one ι A s) fun h => hne s t h ht.symm
   have hle : ((J * J⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) ≤ P := by
     rw [FractionalIdeal.coe_mul]
     refine Submodule.mul_le.mpr fun z hz y hy => ?_
@@ -228,10 +227,7 @@ theorem unram_of_fixed : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] 
         _ < 1 := by rw [one_mul]; exact hτ' s
     rwa [Valuation.map_mul, hτs, one_mul] at hv
   obtain ⟨σ, hσ, hσx⟩ := GlobalTheory.InertiaLift.exists_mem_Ine_lift A L τ hlift
-  apply Subtype.ext
-  have h1 := hσx (algebraMap K L y)
-  have h2 := hfix σ hσ y
-  exact (h1.symm.trans h2 : _)
+  exact Subtype.ext ((hσx (algebraMap K L y)).symm.trans (hfix σ hσ y) : _)
 
 theorem index_one_root : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K] (v : HeightOneSpectrum (𝓞 E)) (P : Ideal (𝓞 K)) [P.IsPrime], P.under (𝓞 E) = v.asIdeal → P.ramificationIdx (𝓞 E) = 1 → ∀ (g : ℕ), ((g : ℕ) : 𝓞 E) ∈ v.asIdeal → ((g : ℕ) : 𝓞 E) ∉ v.asIdeal ^ 2 → ∀ (k : ℕ) (Z : K), Z ^ k = ((g : ℕ) : K) → k ≤ 1 := by
   intro E K _ _ _ _ _ v P _ hPv he g hgv hgv2 k Z hZ
@@ -255,8 +251,7 @@ theorem index_one_root : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [N
     exact hZ
   have hgP : ((g : ℕ) : 𝓞 K) ∈ P := by
     have h0 : ((g : ℕ) : 𝓞 E) ∈ P.under (𝓞 E) := hPv ▸ hgv
-    rw [Ideal.under, Ideal.mem_comap, map_natCast] at h0
-    exact h0
+    rwa [Ideal.under, Ideal.mem_comap, map_natCast] at h0
   have hzP : z ∈ P := Ideal.IsPrime.mem_of_pow_mem ‹_› k (hz ▸ hgP)
   have hgP2 : ((g : ℕ) : 𝓞 K) ∈ P ^ 2 := by
     rw [← hz, show k = 2 + (k - 2) by omega, pow_add]
@@ -319,8 +314,7 @@ theorem tame_kummer_surj : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω
       have := congrArg Subtype.val hj
       simp only [Subgroup.coe_zpow] at this
       rw [← this, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hd, pow_orderOf_eq_one, one_zpow]
-    have h2 := congrArg (fun u : rootsOfUnity m Ω => ((u : Ωˣ) : Ω)) h1
-    simpa [hχ] using h2
+    simpa [hχ] using congrArg (fun u : rootsOfUnity m Ω => ((u : Ωˣ) : Ω)) h1
   set Z := Y ^ d with hZ
   have hZfix : ∀ σ : G E Ω, σ ∈ Ine (F := E) A → σ Z = Z := by
     intro σ hσ

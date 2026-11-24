@@ -195,9 +195,7 @@ theorem hasInfExp_of_chrEq : ∀ (D : D7) (c : (AE D)ˣ →* Circle) (χ : Forma
   have hP : Continuous fun z => (∏ ρ, h ρ) z := by
     simp_rw [MonoidHom.finsetProd_apply]
     exact continuous_finsetProd _ fun ρ _ => hcont_h ρ
-  have hg_cont : Continuous g := by
-    show Continuous fun z => c (A z) * ((∏ ρ, h ρ) z)⁻¹
-    exact (hc.1.1.comp hA).mul hP.inv
+  have hg_cont : Continuous g := (hc.1.1.comp hA).mul hP.inv
   have hg_E : ∀ k : D.host.Eˣ, g (Units.map (incA D).toMonoidHom k) = 1 := by
     intro k
     have hAu : ((c (A (Units.map (incA D).toMonoidHom k)) : Circle) : ℂ) = ((χ.inf k : ℂˣ) : ℂ) := by
@@ -230,8 +228,7 @@ theorem hasInfExp_of_chrEq : ∀ (D : D7) (c : (AE D)ˣ →* Circle) (χ : Forma
     (by rw [(hBparts x).1, Units.val_one, map_one]) (by rw [(hBparts x).2, hx1, Units.val_one, map_one]))
   have hxA : x = A x := by
     have hx := hAB x
-    rw [hB1, mul_one] at hx
-    exact hx
+    rwa [hB1, mul_one] at hx
   have hcx : ((c x : Circle) : ℂ) = (((∏ ρ, h ρ) x : Circle) : ℂ) := by
     have hgx : c (A x) * ((∏ ρ, h ρ) x)⁻¹ = 1 := hg1 x
     rw [← hxA] at hgx
@@ -240,7 +237,6 @@ theorem hasInfExp_of_chrEq : ∀ (D : D7) (c : (AE D)ˣ →* Circle) (χ : Forma
   · exact hcoe x τ
   · intro ρ _ hρ
     rw [hcoe, hx2 ρ hρ, norm_one, Complex.ofReal_one, div_one, one_zpow]
-  · intro hτ
-    exact absurd (Finset.mem_univ τ) hτ
+  · exact fun hτ => absurd (Finset.mem_univ τ) hτ
 
 end GlobalTheory.HeckeInfExp

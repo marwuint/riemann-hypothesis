@@ -153,8 +153,7 @@ theorem surjective_cube {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : 
   have s₂ := surj_comp (RigidIsoCube.surjective_snd_of_generic hG (jK R) G A.isAb hg G) s₁
   rw [Over.w (snd G G)] at s₂
   have s₃ := surj_comp (RigidIsoCube.surjective_snd_of_generic hG (jK R) G A.isAb hg (G ⊗ G)) s₂
-  rw [Over.w (snd G (G ⊗ G))] at s₃
-  exact s₃
+  rwa [Over.w (snd G (G ⊗ G))] at s₃
 
 theorem cubical_unique {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
     (sj : Function.Surjective (G ⊗ G ⊗ G).hom.appTop.hom) {L : RigLB G} (c c' : CubicalStr G L) : c = c' := by
@@ -1138,8 +1137,7 @@ theorem GlobalTheory.AlphaPair.exists_jetPt : ∀ (E : Type) [Field E] [NumberFi
     have h3 := ((GlobalTheory.AlphaPair.JetEv.jet_hom_spec V Ω A β (Fin 2 × Fin d) m).2 ψ h).2.2 (F j)
     simp only [e] at h3
     simp only [co, RingHom.comp_apply, RingHom.coe_coe, jetSubstP, jetMap_X]
-    rw [Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdPh.cc_psTrunc, hF, map_zero, sub_zero]
-    exact h3
+    rwa [Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdPh.cc_psTrunc, hF, map_zero, sub_zero]
 
 end
 end -- clump:auto
@@ -1498,14 +1496,12 @@ theorem exists_root_character :
     have : (MonoidHom.toAdditiveRight φ).toIntLinearMap =
         (MonoidHom.toAdditiveRight ψ).toIntLinearMap :=
       b.ext fun i => congrArg Additive.ofMul (h i)
-    refine MonoidHom.ext fun x => ?_
-    exact congrArg Additive.toMul (LinearMap.congr_fun this x.toAdd)
+    exact MonoidHom.ext fun x => congrArg Additive.toMul (LinearMap.congr_fun this x.toAdd)
   refine ⟨B, inferInstance, inferInstance, f, ρ, χ', hf, hρ, hρn, ?_, ?_⟩
   · have : (Units.map (ρ : B →* Ω)).comp χ' = 1 := key _ _ fun i => by
       ext
       simpa [hχ'] using hs1 i
-    intro x
-    exact congrArg Units.val (DFunLike.congr_fun this x)
+    exact fun x => congrArg Units.val (DFunLike.congr_fun this x)
   · exact key _ _ fun i => by
       rw [MonoidHom.pow_apply, hχ', hs]; rfl
 
@@ -1588,8 +1584,7 @@ theorem embOK_exists_ringHom :
     rw [h _ h0]
     have h2 : valV T.V (algebraMap T.V T.Fr x) < 1 := by
       unfold valV
-      rw [IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem]
-      exact hx
+      rwa [IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem]
     have h3 := (WithZero.log_lt_log (valV_ne_zero h0) one_ne_zero).2 h2
     have h4 : 0 < vV T.V (algebraMap T.V T.Fr x) := by
       simp at h3
@@ -1843,8 +1838,7 @@ theorem ev_map_eq_one {R R' : Type} [CommRing R] [CommRing R'] (β : R →+* R')
     (MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => ha q.1 q.2) (h := β) f
   rw [show MvPowerSeries.subst (fun q : Fin 3 × Fin d => a q.1 q.2) f = 1 from h, map_one] at this
   unfold ev
-  simp only [h']
-  exact this.symm
+  simpa only [h'] using this.symm
 
 theorem ndg_at_chart : ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) [StarRing (NumberField.RingOfIntegers E)], NondegenerateCharts Xo c := by
   intro E _ _ _ H Dw l Xo c inst hstar T io y C3 C _ _ V ι' hι k Y hY

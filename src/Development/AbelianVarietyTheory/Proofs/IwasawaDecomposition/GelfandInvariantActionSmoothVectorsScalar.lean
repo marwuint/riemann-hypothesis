@@ -320,21 +320,17 @@ theorem linAdjOn_sum {ι : Type} (s : Finset ι) {f : ι → H → H} (hf : ∀ 
     LinAdjOn D fun w => ∑ i ∈ s, f i w := by
   classical
   refine Finset.induction_on s ?_ ?_
-  · simp only [Finset.sum_empty]
-    exact linAdjOn_zero
+  · simpa only [Finset.sum_empty] using linAdjOn_zero
   · intro i s hi ih
-    simp only [Finset.sum_insert hi]
-    exact (hf i).add ih
+    simpa only [Finset.sum_insert hi] using (hf i).add ih
 
 theorem linAdjOn_foldr (l : List (H → H)) (hl : ∀ f ∈ l, LinAdjOn D f) :
     LinAdjOn D fun w => l.foldr (fun f acc => f acc) w := by
   induction l with
   | nil =>
-    simp only [List.foldr_nil]
-    exact linAdjOn_id
+    simpa only [List.foldr_nil] using linAdjOn_id
   | cons f l ih =>
-    simp only [List.foldr_cons]
-    exact (hl f (by simp)).comp (ih fun g hg => hl g (by simp [hg]))
+    simpa only [List.foldr_cons] using (hl f (by simp)).comp (ih fun g hg => hl g (by simp [hg]))
 
 theorem LinAdjOn.exists_extend {f : H → H} (hf : LinAdjOn D f) : ∃ A : H →ₗ[ℂ] H, ∀ w ∈ D, A w = f w := by
   obtain ⟨-, hf2, hf3, -⟩ := hf
@@ -406,8 +402,7 @@ theorem gelfH_scalar : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAdd
   have h₆ : ∀ i : Formalism.QuantumDeterminants.UH G, ∀ w ∈ smSub G (trRep σ P),
       ‖(LinearMap.id : H →ₗ[ℂ] H) (trRep σ P i.1 w)‖ = ‖(LinearMap.id : H →ₗ[ℂ] H) w‖ := by
     intro i w _
-    simp only [LinearMap.id_apply]
-    exact hnorm i.1 i.2 w
+    simpa only [LinearMap.id_apply] using hnorm i.1 i.2 w
   have h₇ : ∀ i : Formalism.QuantumDeterminants.UH G, ∀ w ∈ smSub G (trRep σ P),
       ⟪A (trRep σ P i.1 w), (LinearMap.id : H →ₗ[ℂ] H) (trRep σ P i.1 w)⟫_ℂ =
         ⟪A w, (LinearMap.id : H →ₗ[ℂ] H) w⟫_ℂ := by

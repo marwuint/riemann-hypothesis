@@ -108,8 +108,7 @@ theorem sum_mul_reps (ρ : Γ →* Module.End ℂ W) {J L : Subgroup G} {χ : J 
     refine (hB.2 _ hg).unique ⟨hφB _ (hψA b hb), hφJ _ (hψA b hb)⟩ ⟨hb, ?_⟩
     rw [show b⁻¹ * (k * ψ b) = ((ψ b)⁻¹ * (k⁻¹ * b))⁻¹ by group]
     exact J.inv_mem (hψJ b hb)
-  · intro a ha
-    exact hterm a ha (φ a) (hφB a ha) (hφJ a ha)
+  · exact fun a ha => hterm a ha (φ a) (hφB a ha) (hφJ a ha)
 
 theorem dcOp_eq_of_isDC (ρ : Γ →* Module.End ℂ W) {J L : Subgroup G} {χ : J →* ℂˣ}
     (hχ : ∀ k : J, (k : G) ∈ L → χ k = 1) {x : G} {A B : Finset G} (hA : IsDC J x A) (hB : IsDC J x B)
@@ -177,8 +176,7 @@ theorem dcOp_eq_and_level {G W : Type} [Group G] [NormedAddCommGroup W] [InnerPr
     intro γ h k
     simpa using hF k h
   refine ⟨dcOp_eq_of_isDC _ _ hχ hA (isDC_of_mem_doubleCoset hA' hx) hAL hAL' hF', fun k h => ?_⟩
-  have h1 := LocSplit.dcOp_mem (1 : G →* G) (1 : G →* Module.End ℂ W) hs hχ hA hAL hF' 1 h k
-  simpa using h1
+  simpa using LocSplit.dcOp_mem (1 : G →* G) (1 : G →* Module.End ℂ W) hs hχ hA hAL hF' 1 h k
 
 end GlobalTheory.HkB
 end -- clump:auto

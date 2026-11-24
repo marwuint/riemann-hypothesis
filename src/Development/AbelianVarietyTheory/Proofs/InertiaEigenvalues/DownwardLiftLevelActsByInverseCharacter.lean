@@ -73,8 +73,7 @@ theorem setIntegral_mul_right_of_fd {G : Type} [Group G] [MeasurableSpace G] [Me
     simp only [id, Subgroup.smul_def, smul_eq_mul, mul_assoc]
   have hinv : ∀ (γ : Γ) (g : G), (fun g : G => f (g * k)) (γ • g) = (fun g : G => f (g * k)) g := by
     intro γ g
-    simp only [Subgroup.smul_def, smul_eq_mul, mul_assoc]
-    exact hf γ γ.2 _
+    simpa only [Subgroup.smul_def, smul_eq_mul, mul_assoc] using hf γ γ.2 _
   rw [h𝓕.setIntegral_eq h2 hinv]
   exact hmp.setIntegral_preimage_emb hemb f 𝓕
 
@@ -88,21 +87,17 @@ theorem adForms_right {G Γ W : Type} [Group G] [Group Γ] (ι : Γ →* G) [Nor
     (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ) (F : G → W)
     (hF : F ∈ Formalism.IndefR.Bridge.AdForms ι ρ J χ) (x : G) (k : J) : F (x * k) = (χ k : ℂ) • F x := by
   have h1 := hF 1 x k
-  rw [map_one, one_mul, map_one, Module.End.one_apply] at h1
-  exact h1
+  rwa [map_one, one_mul, map_one, Module.End.one_apply] at h1
 
 theorem adForm_type (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (c : CoefA V)
     (F : Formalism.IndefR.Bridge.Gf V → c.W)
     (hF : F ∈ Formalism.IndefR.Bridge.AdForms (Formalism.IndefR.Bridge.ratF V) c.coef.ρ (levEnv V β L).J (levEnv V β L).χ)
     (κ : GA D V) (hκ : κ ∈ levG V β (flag1L L)) (x : Formalism.IndefR.Bridge.Gf V) :
     F (x * (finHom V).rangeRestrict κ) = levChi V β (flag1L L) κ • F x := by
-  have hmem : (finHom V).rangeRestrict κ ∈ (levEnv V β L).J := by
-    show finE V κ ∈ Formalism.L2.DIV.lev D.sp.cm V.gram β (flag1L L)
-    exact hκ.2
+  have hmem : (finHom V).rangeRestrict κ ∈ (levEnv V β L).J := hκ.2
   have h1 := adForms_right (W := c.W) (Formalism.IndefR.Bridge.ratF V) c.coef.ρ (levEnv V β L).J (levEnv V β L).χ F hF x ⟨_, hmem⟩
   have hχ : (((levEnv V β L).χ ⟨_, hmem⟩ : ℂˣ) : ℂ) = levChi V β (flag1L L) κ := rfl
-  rw [hχ] at h1
-  exact h1
+  rwa [hχ] at h1
 
 end GlobalTheory.DownLift.TypeLaw
 
@@ -158,8 +153,7 @@ theorem downInt_level : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : T
   have hM := hG.core.models
   have hc0 : levChi (Vc D i) (R.βV i) (R.datVt i t) κ ≠ 0 := levChi_ne_zero _ κ
   have hFn : ∀ h, l (R.extV i t y (h * κ)) = levChi (Vc D i) (R.βV i) (R.datVt i t) κ * l (R.extV i t y h) := by
-    intro h
-    exact (congrArg l (extV_type R hM i t y κ hκ h)).trans (l.map_smul _ _)
+    exact fun h => (congrArg l (extV_type R hM i t y κ hκ h)).trans (l.map_smul _ _)
 
   have hth : ∀ h, thetaKO (R.ωP i t) h g (R.ωP i t (κ, 1) f) = thetaKO (R.ωP i t) (h * κ) g f := by
     intro h

@@ -131,8 +131,7 @@ private theorem mul_left_eq_lift_comp_mu {X : Scheme.{0}} {G : Over X} [GrpObj G
 theorem of_hom {u : S ⟶ Sp R'} {B : Over S} [GrpObj B] (hσ : IsDPMorphism κ κ' σ)
     (hb : t = u ≫ spMap σ) (f : B ⟶ A) [IsMonHom f] : GrpMor κ t A κ' u B σ (𝟙 S) f.left := by
   refine { dp := hσ, base := ?_, w := ?_, mul := ?_ }
-  · rw [Category.id_comp]
-    exact hb
+  · rwa [Category.id_comp]
   · rw [Category.comp_id]
     exact Over.w f
   · intro T x y x₀ y₀ hx hy
@@ -227,7 +226,6 @@ theorem push_apply (f : A ⟶ B) [IsMonHom f] (h : Crys κ t A) (c : prim κ t B
 
 theorem push_id : push κ t (𝟙 A) = LinearMap.id := by
   ext h c
-  show h (primPull κ t (𝟙 A) c) = h c
   exact congrArg h (Subtype.ext (IsMor.pullCohomologyOne_id (homMor κ t (𝟙 A)).isMor c.1))
 
 theorem push_comp (f : A ⟶ B) (g : B ⟶ C) [IsMonHom f] [IsMonHom g] :
@@ -591,8 +589,7 @@ theorem IsLieImage.smul {h : HdR A} {v : epsR R ⟶ A} (e : IsLieImage h v) (r :
   unfold IsLieImage
   refine ⟨?_, fun f hf ↦ ?_⟩
   · show spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ (epsScale r ≫ v).left = η[A].left
-    rw [Over.comp_left, hl, ← Category.assoc, ← Cris.spMap_comp, ee]
-    exact t1
+    rwa [Over.comp_left, hl, ← Category.assoc, ← Cris.spMap_comp, ee]
   · rw [LinearMap.smul_apply, e.2 f hf, tanVal_epsScale, smul_eq_mul]
 
 theorem IsLieImage.push {h : HdR A} {v : epsR R ⟶ A} (e : IsLieImage h v) (g : A ⟶ B) [IsMonHom g] :
@@ -836,8 +833,7 @@ theorem isChern_pull {X X' : Scheme.{0}} {κ : DividedPowers I} {κ' : DividedPo
   · exact (h1 (F.obj T) (F.obj T') (F.map f)).trans
       (evalAt_pull_g L φ T'.obj.x (fun _ ↦ i (F.obj T')) (fun _ ↦ i (F.obj T)) _ _)
   · have h := h2 (F.obj T) (F.obj T') (F.obj T'') (F.map f) (F.map g)
-    rw [← F.map_comp] at h
-    exact h
+    rwa [← F.map_comp] at h
   · have a1 := CatCoh.CoefMap.pullCohomologyTwo_comp m.coef
       (CatCoh.CoefMap.restrict (Cris.O κ' s') (Cris.IsSmall κ' s' (L.pull φ).U).ι) z
     have a2 := CatCoh.CoefMap.pullCohomologyTwo_comp

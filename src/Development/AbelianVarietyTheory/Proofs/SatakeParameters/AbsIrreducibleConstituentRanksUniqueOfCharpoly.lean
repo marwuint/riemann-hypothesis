@@ -112,10 +112,8 @@ theorem isSSRep_matRep {n : ℕ} (b : Module.Basis (Fin n) K V) (ρ : Representa
         codisjoint_iff.2 (congrArg Subrepresentation.toSubmodule hC.sup_eq_top)⟩
     have h2 := (Submodule.orderIsoMapComap e).isCompl_iff.1 h1
     have h3 : (Submodule.orderIsoMapComap e) S.toSubmodule = W := by
-      show Submodule.map (e : V →ₗ[K] Fin n → K) (W.comap (e : V →ₗ[K] Fin n → K)) = W
       exact Submodule.map_comap_eq_of_surjective e.surjective W
-    rw [h3] at h2
-    exact h2
+    rwa [h3] at h2
 
 theorem bn_gen {W : Type} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
     (ρ : Representation K Γ V) (σ : Representation K Γ W)
@@ -261,8 +259,7 @@ theorem exists_summand (p : Σ m : ℕ, Γ →* GL (Fin m) K) (hp : IsIrrSub p.2
     exfalso
     have : Subsingleton (sumRep ([] : List (Σ m : ℕ, Γ →* GL (Fin m) K))).V :=
       inferInstanceAs (Subsingleton (Fin 0 → K))
-    have hex := (Submodule.ne_bot_iff _).1 hp.1
-    exact hex.elim fun v hv => hv.2 (hF (Subsingleton.elim _ _))
+    exact ((Submodule.ne_bot_iff _).1 hp.1).elim fun v hv => hv.2 (hF (Subsingleton.elim _ _))
   | cons q L'' ih =>
     intro F hF hint
     let F1 : (Fin p.1 → K) →ₗ[K] (Fin q.1 → K) := LinearMap.fst K _ _ ∘ₗ F
@@ -413,8 +410,7 @@ theorem irr_liftL (L : List (Σ m : ℕ, Γ →* GL (Fin m) k)) (hL : ∀ p ∈ 
   refine ⟨(hL a ha.1).1, ?_⟩
   have h := (hL a ha.1).2
   unfold AbsIrrSub at h
-  rw [span_image_top] at h
-  exact h
+  rwa [span_image_top] at h
 
 end Closure
 

@@ -285,8 +285,7 @@ theorem cocycle_eq_val : Laws → Laws2 → ∀ (R O' : Type) [CommRing R] [IsDo
   apply (stalkConst z).injective
   have e := congrArg Units.val (hΩ x)
   rw [I.h_one, map_one, _root_.one_mul, Units.val_mul, stalkUnits_val] at e
-  rw [map_mul, hW, hW, ← map_one I.φ]
-  exact e
+  rwa [map_mul, hW, hW, ← map_one I.φ]
 
 end GlobalTheory.IsoValCocycle
 end
@@ -488,8 +487,7 @@ theorem level_clause : GlobalTheory.UT.LL → BrGtSt → AllS fun {_} _ _ _ {_} 
       have g₆ : s₀.1.2.s (J.e χ) * J.h (A.N.c χ * v₀.1.2.b) =
           v₀.1.2.s χ * r k ^ A.be.be v₀.1.1.toAdd χ * J.h (A.N.c χ) * J.h v₀.1.2.b := by
         have := hs₀'.2 χ
-        rw [ht₀.2.1, ht₀.2.2] at this
-        exact this
+        rwa [ht₀.2.1, ht₀.2.2] at this
       have g₇ := congrArg Units.val g₆
       simp only [Units.val_mul] at g₇
       refine (congrArg₂ (· * ·) (Finset.prod_congr rfl fun i _ => congrArg (· ^ _) (g₂ i)) g₃).trans
@@ -616,8 +614,7 @@ theorem c_of_field (hf : Along f C) {ψ : D'.P.A.left ⟶ D.P.A.left} (gp : IsGr
     D.P.A.hom ?_ ?_
   · rw [Category.assoc, gp.1.w, ← Category.assoc, Over.w, Category.assoc]
     exact (Category.id_comp _).trans ((Category.comp_id _).symm.trans (congrArg _ (Over.w (D.c y)).symm))
-  · rw [e, ← Category.assoc _ (spMap f), tf_comp hf, ← Category.assoc]
-    exact h
+  · rwa [e, ← Category.assoc _ (spMap f), tf_comp hf, ← Category.assoc]
 
 theorem genRel_field (hf : Along f C) {N N' : NumD C} (ν : NumOf D C N) (ν' : NumOf D' C N')
     {ψ : D'.P.A.left ⟶ D.P.A.left} (he : eSec D'.P.A ≫ ψ = spMap f ≫ eSec D.P.A) {w : LB.Iso D'.P.L (D.P.L.pull ψ)}
@@ -687,8 +684,7 @@ theorem match_of_fit : GlobalTheory.UT.LL → AllS fun {_} _ _ _ {H} {_} {_} {_}
         (algebraMap M.W _ u₀ ^ (A.be.be χ χ / 2))
     rw [Units.val_zpow_eq_zpow_val, hu, ← map_zpow₀] at k
     have k' := (t F fun x => (hF x).symm).2 ((t C hf).1 k)
-    rw [hx, huF, ← A.be_eq, ← map_zpow₀]
-    exact k'
+    rwa [hx, huF, ← A.be_eq, ← map_zpow₀]
 
 end GlobalTheory.FitMatch
 end -- clump:auto
@@ -863,8 +859,7 @@ theorem qEq_twist {j k m : ℕ} (β : N.Form j) {u r r' : Oˣ} (h₁ : r' ^ m = 
   obtain ⟨ty, tb, ts⟩ := t
   refine ⟨z, ?_, ?_⟩
   · have e1 : (lower p').1.1 = (lower q').1.1 := ty'
-    rw [ty, e1]
-    exact hy
+    rwa [ty, e1]
   · show p.1.2 = p'.1.2 ^ m * (N.twist β u).io z
     have hg' : q.1.2 = q'.1.2 ^ m * N.io z := hg
     apply NumD.Gt.ext
@@ -877,8 +872,7 @@ theorem qEq_twist {j k m : ℕ} (β : N.Form j) {u r r' : Oˣ} (h₁ : r' ^ m = 
       have A3 := NumD.Gt.pow_s q'.1.2 m χ
       have A4 : (p'.1.2 ^ m).s χ * cubN N.θ m 1 q'.1.2.b (N.c χ) = p'.1.2.s χ ^ m := by
         have A4' := NumD.Gt.pow_s p'.1.2 m χ
-        rw [tb'] at A4'
-        exact A4'
+        rwa [tb'] at A4'
       have Bq : (p'.1.2 ^ m).b = (q'.1.2 ^ m).b := by
         rw [NumD.Gt.pow_b, NumD.Gt.pow_b, tb'] <;> rfl
       have A5 := ts' χ
@@ -1014,8 +1008,7 @@ theorem labels_of_four_le : GlobalTheory.UT.LL → BrGtSt → AllS fun {_} _ _ _
   have hQP : A.ν.QPt q₀ (lower (A.q (k * 4) x)) := by
     refine ⟨hqA.1.trans hq₀y.symm, ?_⟩
     show A.ν.Pt q₀.g ((A.q (k * 4) x).1.2 ^ 4)
-    rw [← hc]
-    exact hc₀
+    rwa [← hc]
   have hE1 : A.N.QEq (lower (A.q (k * 4) x)) (A.q k x) :=
     ((hQA k).2.2 q₀ (A.I.ev k x) _ _ hQP (A.hq k x)).1 hq₀e
   have hE0 := qEq_twist A.be (hR.2 k 4 hk (by norm_num)) (hR.pow hk) hp₁ hTw hE1
@@ -1441,8 +1434,7 @@ theorem eq_of_generic {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c
     ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot ((algebraMap (FractionRing R) C).comp (algebraMap R _))).1
       ((algebraMap (FractionRing R) C).injective.comp (IsFractionRing.injective R (FractionRing R)))).trans_le bot_le)⟩
   refine ext_of_isDominant (spMap ((algebraMap (FractionRing R) C).comp (algebraMap R _))) ?_
-  rw [spMap_comp, Category.assoc, Category.assoc]
-  exact h
+  rwa [spMap_comp, Category.assoc, Category.assoc]
 
 theorem hasArcData_at_trait : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.LN.HomExtSt → ThetaPtDeterminesSt → EndDeterminedOnTorsionSt → ThetaUnifAV → AllA fun {E} _ _ _ {H} {D} {l} {Xo} {c} {W₀} Y {O'} _ _ {b} a => ∀ (R₁ : Type) [CommRing R₁] [IsDomain R₁] (g : PowerSeries O' →+* R₁) (y₁ : Sp (FractionRing R₁) ⟶ Xo.XF c), Function.Injective g → g.Finite → IsIntegrallyClosed R₁ → RealAt Y a g y₁ → y₁ ≫ Y.j ≫ Y.s = jK R₁ ≫ spMap g ≫ spMap (PowerSeries.C (R := O')) ≫ spMap b → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → ∀ (φ : R₁ →+* W) (gam : FractionRing R₁ →+* FractionRing W), (∀ r, gam (algebraMap R₁ _ r) = algebraMap W _ (φ r)) → ∀ χ : Sp W ⟶ Y.X, spMap gam ≫ y₁ ≫ Y.j = jK W ≫ χ → ¬ IsUnit (φ (g PowerSeries.X)) → ∃ (W' : Type) (_ : CommRing W') (_ : IsDomain W') (_ : IsLocalRing W') (io : W →+* W'), GlobalTheory.LN.CDvr W' ∧ Function.Injective io ∧ io.Finite ∧ Y.HasArcData a (IsLocalRing.maximalIdeal W') (io.comp (φ.comp (g.comp (PowerSeries.C (R := O'))))) (io (φ (g PowerSeries.X))) (spMap io ≫ χ) := by
   intro hV h6 hU hH hT hE hTU E _ _ _ H D l Xo c W₀ Y O' _ _ _ b ϖ a hB R₁ _ _ g y₁ hg _ _ hR hs W _ _ _ hW φ gam hgam χ hχ hu
@@ -1652,8 +1644,7 @@ theorem range_subset_abLocus : HV → Laws6 → GlobalTheory.LN.UDvrSt → Globa
   rintro _ ⟨x, rfl⟩
   obtain ⟨x', rfl⟩ := hf.to_isIntegral.comap_surjective hfi x
   have h := (abLocus_pullback abLocusOne Y.t.semi mp.cart.1 x').2 fun K _ _ t _ => inferInstance
-  rw [e₃] at h
-  exact h
+  rwa [e₃] at h
 
 end GlobalTheory.Ex.GoodTrait
 end -- clump:auto

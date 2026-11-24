@@ -73,8 +73,7 @@ theorem exists_move_of_sim (hpq : 1 ≤ D.p + D.q) (Xo : Moduli D l) (f : D.La �
   refine ⟨ρ.hom, ν, inferInstance, hs, fun a => ?_, fun a => ?_⟩
   · rw [← eta_congr Xo (h1 a)]; exact hM a
   · have e := hAA a
-    rw [etaA_congr Xo (h2 a)] at e
-    exact e
+    rwa [etaA_congr Xo (h2 a)] at e
 
 theorem frMove_transfer' (hpq : 1 ≤ D.p + D.q) (Xo : Moduli D l) (c : Coeff l) (f : D.La →ₗ[𝓞 E] D.La)
     (hs : ∃ g : Sim D, (∀ a, g.f l.M a - f a ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La)) ∧
@@ -180,8 +179,7 @@ theorem mem_idS_prod (Pg : Finset (Pl E)) (s : Formalism.L2.Herm.intAf F E) (h :
     map_prod (Ideal.mapHom (oToS F E)) _ _
   rw [e, Ideal.prod_eq_iInf_of_pairwise_isCoprime (J := fun PP : Pl E => idS F PP.asIdeal)
     (fun a _ b _ hab => (HeightOneSpectrum.isCoprime_of_ne a b hab).map (Ideal.mapHom (oToS F E)))]
-  simp only [Submodule.mem_iInf]
-  exact fun PP hP => mem_idS_of_resS PP s (h PP hP)
+  simpa only [Submodule.mem_iInf] using fun PP hP => mem_idS_of_resS PP s (h PP hP)
 
 theorem exists_div {I J : Ideal (𝓞 E)} {M : ℕ} (hIJ : I * J = Ideal.span {(M : 𝓞 E)}) {b : 𝓞 E} (hb : b ∈ J)
     {s : Formalism.L2.Herm.intAf F E} (hs : s ∈ idS F I) : ∃ t, oToS F E b * s = (M : Formalism.L2.Herm.intAf F E) * t := by
@@ -285,8 +283,7 @@ theorem mem_latHat_frame {V : HSp D} {β : GL (Fin V.rank) (EAf D)}
     · rintro ⟨v, hv, rfl⟩
       refine h1 _ ?_
       show ∑ i, V.frame.equivFun v i • V.frame i ∈ V.L0
-      rw [V.frame.sum_equivFun]
-      exact hv
+      rwa [V.frame.sum_equivFun]
   rw [← latHat_iff Λ z, AALev.latHat_eq, e]
   rfl
 
@@ -334,8 +331,7 @@ theorem exists_div_lat {V : HSp D} {La : Type} [AddCommGroup La] [Module (𝓞 D
         (A := FiniteAdeleRing (𝓞 D.host.F) D.host.F) (B := D.host.E)) M).symm
     rw [this, ← AALev.one_tmul_mul, inv_mul_cancel₀ hM', ← Algebra.TensorProduct.one_def, one_smul]
   have hm : (M : D.host.E)⁻¹ • ι a ∈ LinearMap.range ι := by
-    rw [hι.2, LatMove.mem_lat_iff, e2]
-    exact hw
+    rwa [hι.2, LatMove.mem_lat_iff, e2]
   obtain ⟨b, hb⟩ := hm
   refine ⟨b, hι.1 ?_⟩
   rw [map_nsmul, hb, ← Nat.cast_smul_eq_nsmul D.host.E, smul_smul, mul_inv_cancel₀ hM', one_smul]

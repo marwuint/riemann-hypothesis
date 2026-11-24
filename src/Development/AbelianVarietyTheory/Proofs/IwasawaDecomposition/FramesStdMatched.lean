@@ -101,8 +101,7 @@ theorem intM_of {A : Matrix (Fin n) (Fin n) R} (h : ∀ z : Fin n → R, (∀ i,
     split_ifs
     · exact S.one_mem
     · exact S.zero_mem) i
-  rw [Matrix.mulVec_single_one] at this
-  exact this
+  rwa [Matrix.mulVec_single_one] at this
 
 end Int
 
@@ -114,7 +113,6 @@ theorem kmat_inv {n : ℕ} (a : Formalism.AUTREP.GAf D.host.E n) : kmat a⁻¹ =
 
 theorem mem_Umax_iff {n : ℕ} (κ : Formalism.AUTREP.GAf D.host.E n) :
     κ ∈ ReciprocityTheory.Aut.Umax D.host.E n ↔ IntM (SI D) (kmat κ).1 := by
-  show (∀ i j, (κ.1 : Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL D.host.E)) i j ∈ ReciprocityTheory.Aut.ALint D.host.E) ↔ _
   exact forall_congr' fun i => forall_congr' fun j => mem_ALint_iff _
 
 theorem umax_iff {n : ℕ} (γ : GL (Fin n) (Lev.EAf D)) (hγ : IntM (SI D) γ.1) (hγ' : IntM (SI D) (γ⁻¹).1)
@@ -245,13 +243,11 @@ theorem ksph_iff (hV : Seed.FrmC.StdLat V) {g : GA D V} (hg : g ∈ GfC V) :
   · rintro ⟨-, h, -⟩ z
     have := h (fun j => GlobalTheory.HeckeTrans.unswap D (z j))
     rw [← GlobalTheory.HeckeTrans.finE_unswap] at this
-    simp only [latHat_iff hV, swap_mulVec, GlobalTheory.HeckeTrans.swap_unswap] at this
-    exact this
+    simpa only [latHat_iff hV, swap_mulVec, GlobalTheory.HeckeTrans.swap_unswap] using this
   · intro h
     refine ⟨hg, fun y => ?_, fun v hv => absurd hv (Finset.notMem_empty v)⟩
     rw [← GlobalTheory.HeckeTrans.finE_unswap]
-    simp only [latHat_iff hV, swap_mulVec]
-    exact h _
+    simpa only [latHat_iff hV, swap_mulVec] using h _
 
 end Lat
 
@@ -285,8 +281,7 @@ theorem unswap_mem (x : GL (Fin V.rank) (Lev.EAf D)) (hx : x ∈ Formalism.L2.DI
       JR (F := D.host.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) V.gram := by
     ext i j
     rfl
-  rw [e1, e2] at h2
-  exact h2
+  rwa [e1, e2] at h2
 
 def liftF (x : GL (Fin V.rank) (Lev.EAf D)) (hx : x ∈ Formalism.L2.DIV.UA D.sp.cm V.gram) : GA D V :=
   (GlobalTheory.UnitarySplit.ga_glue V 1 (Formalism.UG.bc (GlobalTheory.HeckeTrans.unswap D) x) (one_mem _) (unswap_mem V x hx)).choose

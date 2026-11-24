@@ -76,16 +76,14 @@ theorem mem_K_iff (x : H.E) : x ∈ H.K ↔ ∀ τ : R.Psi, H.sigmaOf τ x = x :
     intro σ
     rw [H.galE_mem_Psi_iff, IntermediateField.mem_fixingSubgroup_iff]
     constructor
-    · intro h
-      exact h _ (IntermediateField.mem_adjoin_simple_self ℚ _)
+    · exact fun h => h _ (IntermediateField.mem_adjoin_simple_self ℚ _)
     · intro h y hy
       have hle : H.K ≤ IntermediateField.fixedField (Subgroup.zpowers σ) := by
         refine IntermediateField.adjoin_simple_le_iff.2 ?_
         rw [IntermediateField.mem_fixedField_iff]
         intro f hf
         have : Subgroup.zpowers σ ≤ MulAction.stabilizer _ (H.sqd) := by
-          rw [Subgroup.zpowers_le]
-          exact h
+          rwa [Subgroup.zpowers_le]
         exact this hf
       exact (IntermediateField.mem_fixedField_iff _ _).1 (hle hy) σ (Subgroup.mem_zpowers σ)
   constructor
@@ -130,8 +128,7 @@ variable (B : Base)
 theorem embLL_comp_embBar (τ : Tau B.R) :
     B.embLL.comp (B.fields.embBar τ) = B.host.emb ((τ : B.R.GG) * B.R.cc) := by
   rw [Formalism.L2.Geo.emb_mul_cc_comp, ← B.fields_embC]
-  refine RingHom.ext fun x => ?_
-  exact congrArg (fun y => B.embLL (B.tauLL τ y)) (B.fields_sig x)
+  exact RingHom.ext fun x => congrArg (fun y => B.embLL (B.tauLL τ y)) (B.fields_sig x)
 
 theorem embLL_comp_emb (τ : Tau B.R) : B.embLL.comp (B.fields.emb τ) = B.host.emb (τ : B.R.GG) :=
   B.fields_embC τ
@@ -187,8 +184,7 @@ theorem fields_ok : B.fields.Ok := by
     · exact ⟨⟨g, h⟩, Or.inl (hinj (by rw [← hg]; exact (embLL_comp_emb B ⟨g, h⟩).symm))⟩
     · have hcc : B.R.cc * B.R.cc = 1 := B.R.cc_mul_cc
       have h' : g * B.R.cc ∈ B.R.Psi := by
-        rw [Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem, mul_assoc, hcc, mul_one]
-        exact h
+        rwa [Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem, mul_assoc, hcc, mul_one]
       refine ⟨⟨_, h'⟩, Or.inr (hinj ?_)⟩
       rw [← hg, embLL_comp_embBar B ⟨_, h'⟩]
       show _ = B.host.emb (g * B.R.cc * B.R.cc)

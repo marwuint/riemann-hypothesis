@@ -240,8 +240,7 @@ lemma isGen_iff_symCompat (sy : SymGen L f) : sy.IsGen ↔ SymCompat L f sy := b
   rw [isGen_iff]
   refine ⟨fun H a b a' b' W h₁ h₂ h₃ h₄ => ?_, fun H i j => ?_⟩
   · have key := congrArg (res (le_inf h₃ h₄)) (H ![a, b] ![a', b'])
-    rw [map_mul, res_res, res_res, res_lcg_two L f _ _ _ h₁ h₂] at key
-    exact key
+    rwa [map_mul, res_res, res_res, res_lcg_two L f _ _ _ h₁ h₂] at key
   · obtain ⟨a, b, rfl⟩ : ∃ a b, i = ![a, b] := ⟨i 0, i 1, by funext k; fin_cases k <;> rfl⟩
     obtain ⟨a', b', rfl⟩ : ∃ a b, j = ![a, b] := ⟨j 0, j 1, by funext k; fin_cases k <;> rfl⟩
     have h₁ := wchart_inter_le L (K := Fin 2) ![f, 𝟙 X] ![a, b] ![a', b'] 0
@@ -358,8 +357,7 @@ lemma maps_iff_fixesRig (L : LB G.left) (r : LB.Gen (L.pull (eSec G)))
     intro a b W hW h
     refine (congrArg (res hW) ((prod_punit _).trans
       (zpow_one _))).trans ?_
-    refine (res_res _ _ _).trans ?_
-    exact (res_pullU_eq (eSec G) (toIso_le L _ (fun _ => a, b)) h _ _).symm
+    exact (res_res _ _ _).trans (res_pullU_eq (eSec G) (toIso_le L _ (fun _ => a, b)) h _ _).symm
   have main₂ : ∀ (a : L.ι) (W : (𝟙_ (Over S)).left.Opens)
       (hW : W ≤ wchart (L.pull (ι[G]).left) (fun _ : PUnit.{1} => eSec G) (fun _ _ => a))
       (ha : W ≤ wchart L (fun _ : PUnit.{1} => eSec G) (fun _ => a)),
@@ -494,12 +492,9 @@ end Generators
 theorem isCub_prod {B U J : Type} [CommGroup B] [CommGroup U] [Fintype J] (θ : J → B → B → B → U)
     (h : ∀ i, IsCub (θ i)) (δ : J → ℤ) : IsCub (fun x y z => ∏ i, θ i x y z ^ δ i) := by
   constructor
-  · intro x y
-    exact Finset.prod_eq_one fun i _ => by rw [(h i).face, one_zpow]
-  · intro x y z
-    exact Finset.prod_congr rfl fun i _ => by rw [(h i).s01]
-  · intro x y z
-    exact Finset.prod_congr rfl fun i _ => by rw [(h i).s12]
+  · exact fun x y => Finset.prod_eq_one fun i _ => by rw [(h i).face, one_zpow]
+  · exact fun x y z => Finset.prod_congr rfl fun i _ => by rw [(h i).s01]
+  · exact fun x y z => Finset.prod_congr rfl fun i _ => by rw [(h i).s12]
   · intro x x' x'' y
     simp only [← Finset.prod_mul_distrib, ← mul_zpow]
     exact Finset.prod_congr rfl fun i _ => by rw [(h i).coc]

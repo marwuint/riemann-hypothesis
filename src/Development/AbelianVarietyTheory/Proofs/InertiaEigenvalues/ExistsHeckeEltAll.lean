@@ -142,8 +142,7 @@ theorem hkFR_bsup (i : D.ntw.Tw) (j : ℕ) (b : Bool) (hL : ℕ → PlE D.host �
     have := Submodule.smul_mem _ ((u⁻¹ : (D.ntw.O i)ˣ) : D.ntw.O i) hgen
     have e4 : ιK S i b s⁻¹ • tm S i j b ⟨_, hwk⟩ = ((u⁻¹ : (D.ntw.O i)ˣ) : D.ntw.O i) • tm S i j b ⟨_, hwk⟩ := by
       rw [e3]; rfl
-    rw [← e4, ← key] at this
-    exact this
+    rwa [← e4, ← key] at this
   · simp
   · intro x y _ _ hx hy; rw [map_add]; exact add_mem hx hy
   · intro a x _ hx
@@ -164,8 +163,7 @@ theorem hkFR_act (i : D.ntw.Tw) (j : ℕ) (b : Bool) (hL : ℕ → PlE D.host �
     (hc : ∀ g x, hL k P ((S.A j).ρ g x) = (S.A j).ρ g (hL k P x)) (g : G0g D.nd) (z : Fm S i j b) :
     hkFR S i j b hL hs k P (actG S i j b hst hχ g z) = actG S i j b hst hχ g (hkFR S i j b hL hs k P z) := by
   have hcomm : hLr S j hL hs k P * rhoKG S j hst (S.eG.symm g) = rhoKG S j hst (S.eG.symm g) * hLr S j hL hs k P := by
-    refine LinearMap.ext fun x => Subtype.ext ?_
-    exact hc (S.eG.symm g) (show ↥(S.A j).WK from x).1
+    exact LinearMap.ext fun x => Subtype.ext (hc (S.eG.symm g) (show ↥(S.A j).WK from x).1)
   have h2 := LinearMap.congr_fun (congrArg (Module.End.baseChangeHom S.Ks (KB S i b) (FmK S j)) hcomm) z
   rw [map_mul, map_mul] at h2
   change Module.End.baseChangeHom S.Ks (KB S i b) (FmK S j) (hLr S j hL hs k P) ((readLL0 S i b (chiL S j hχ (S.eG.symm g)))⁻¹ •
@@ -188,8 +186,7 @@ theorem hW_of (i' : Fin D.R.m) (k : ℕ) (P : PlE D.host) :
   have h1 : (Y.fi i').e.symm x ∈ (S.A ((i' : ℕ) + 1)).WK := by
     rw [(Y.fi i').wk, LinearEquiv.apply_symm_apply]; exact hx
   have h2 := H.hs ((i' : ℕ) + 1) (by omega) (by have := i'.2; omega) k P _ h1
-  simp only [LinearMap.comp_apply, LinearEquiv.coe_coe]
-  exact ((Y.fi i').wk _).1 h2
+  simpa only [LinearMap.comp_apply, LinearEquiv.coe_coe] using ((Y.fi i').wk _).1 h2
 
 theorem rho_comm (i' : Fin D.R.m) (k : ℕ) (P : PlE D.host) (la : HeightOneSpectrum (𝓞 T.Q.c.F))
     (hK : GlobalTheory.IndefiniteRowSideFullHecke.LatticesOverBalls.Keeps (R.FW i') la ((Y.fi i').e.toLinearMap ∘ₗ H.hL ((i' : ℕ) + 1) k P ∘ₗ (Y.fi i').e.symm.toLinearMap)
@@ -230,8 +227,7 @@ theorem mk_smul (i : D.ntw.Tw) (b : Bool) (i' : Fin D.R.m) (k : ℕ) (P : PlE D.
       have h1 : ((ιK S i b).comp (Y.fi i').eK.symm.toRingHom) ((s' : T.Q.c.F) * (s' : T.Q.c.F)⁻¹) = 1 := by
         rw [mul_inv_cancel₀ hs0, map_one]
       rw [map_mul] at h1
-      rw [map_mul, ha, ha', map_one]
-      exact h1
+      rwa [map_mul, ha, ha', map_one]
     refine ⟨⟨a, a', hmul, by rw [mul_comm]; exact hmul⟩, ?_⟩
     exact ha.symm
   · rw [(Y.fi i').mkK]
@@ -239,8 +235,7 @@ theorem mk_smul (i : D.ntw.Tw) (b : Bool) (i' : Fin D.R.m) (k : ℕ) (P : PlE D.
         s' • (Y.fi i').e (H.hL ((i' : ℕ) + 1) k P x) := by
       rw [← algebraMap_smul D.what₂.LL, map_smul, ← (Y.fi i').eK_LL, RingEquiv.apply_symm_apply, algebraMap_smul,
         algebraMap_smul]
-    rw [e2, ← e1]
-    exact hs'mk
+    rwa [e2, ← e1]
 
 end
 

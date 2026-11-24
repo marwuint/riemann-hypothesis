@@ -91,8 +91,7 @@ variable {O C : Type} [CommRing O] [Field C] [Algebra O C]
 variable {ι : Type} [DecidableEq ι] {σ : ι → Λ →+* C} (h : _root_.GlobalTheory.EigenSplit.IsSplitting σ) in
 theorem _root_.GlobalTheory.HTLat.eigSubLat_le_eigQuotLat (i : ι) (X : Submodule O V) :
     _root_.GlobalTheory.HTLat.eigSubLat ρ (σ i) X ≤ _root_.GlobalTheory.HTLat.eigQuotLat ρ h i X := by
-  intro x hx
-  exact ⟨x, hx.1, _root_.GlobalTheory.EigenSplit.proj_of_mem h hx.2⟩
+  exact fun x hx => ⟨x, hx.1, _root_.GlobalTheory.EigenSplit.proj_of_mem h hx.2⟩
 
 set_option autoImplicit false in
 open scoped TensorProduct NNReal NumberField Pointwise in
@@ -206,9 +205,7 @@ theorem _root_.GlobalTheory.HTLat.fg_inf (hv : v.Integers O) {La : Submodule O U
   haveI : Module.Finite O La := Module.Finite.iff_fg.mpr hfg
   have key : ∀ (o : O) (u : U), o ≠ 0 → o • u ∈ F → u ∈ F := by
     intro o u ho hu
-    have h0 : algebraMap O C o ≠ 0 := by
-      intro h
-      exact ho (hinj (by rw [h, map_zero]))
+    have h0 : algebraMap O C o ≠ 0 := fun h => ho (hinj (by rw [h, map_zero]))
     rw [← algebraMap_smul C o u] at hu
     have := F.smul_mem (algebraMap O C o)⁻¹ hu
     rwa [smul_smul, inv_mul_cancel₀ h0, one_smul] at this
@@ -267,10 +264,7 @@ variable {O C : Type} [CommRing O] [Field C] [Algebra O C]
   {U : Type} [AddCommGroup U] [Module C U] [Module O U] [IsScalarTower O C U] {N : ℕ} in
 theorem _root_.GlobalTheory.HTLat.step_mono (f : Fin N → U) :
     Monotone (_root_.GlobalTheory.HTLat.step C f) := by
-  intro i j hij
-  refine Submodule.span_mono (Set.image_mono ?_)
-  intro k hk
-  exact lt_of_lt_of_le hk hij
+  exact fun i j hij => Submodule.span_mono (Set.image_mono (fun k hk => lt_of_lt_of_le hk hij))
 
 set_option autoImplicit false in
 open scoped TensorProduct NNReal NumberField Pointwise in
@@ -305,8 +299,7 @@ theorem _root_.GlobalTheory.HTLat.exists_grAt_eq {v : Valuation C ℝ≥0} (hv :
   set S' := _root_.GlobalTheory.HTLat.step C f (i + 1) with hS'
   set xb := S.mkQ (f i) with hxb
   have hxb0 : xb ≠ 0 := by
-    rw [hxb, Submodule.mkQ_apply, Ne, Submodule.Quotient.mk_eq_zero]
-    exact hf
+    rwa [hxb, Submodule.mkQ_apply, Ne, Submodule.Quotient.mk_eq_zero]
   have hSS' : S ≤ S' := _root_.GlobalTheory.HTLat.step_mono f (Nat.le_succ _)
   have hfi : f i ∈ S' := _root_.GlobalTheory.HTLat.mem_step_succ f i
   have hS'le : S' ≤ S ⊔ C ∙ f i := by
@@ -352,8 +345,7 @@ theorem _root_.GlobalTheory.HTLat.exists_grAt_eq {v : Valuation C ℝ≥0} (hv :
       rw [hc0, map_zero, nonpos_iff_eq_zero, Valuation.zero_iff] at h1
       rw [hcoef q (hsG q hq), h1, zero_smul]
     have hbot : _root_.GlobalTheory.HTLat.grAt C La f i = ⊥ := by
-      rw [← hs, Submodule.span_eq_bot]
-      exact hzero
+      rwa [← hs, Submodule.span_eq_bot]
     rw [hbot, Submodule.mem_bot] at hmem
     exact smul_ne_zero ha hxb0 hmem
   have hspan : _root_.GlobalTheory.HTLat.grAt C La f i = Submodule.span O {coef q₀ • xb} := by

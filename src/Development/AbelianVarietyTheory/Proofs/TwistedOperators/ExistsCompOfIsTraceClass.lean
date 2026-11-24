@@ -240,32 +240,25 @@ theorem norm_mean_sub_le {F : X → X → ℂ} (hF : StronglyMeasurable (Functio
     (hε : ∀ x ∈ A, ∀ y ∈ A, ‖F x y - F x x‖ ≤ ε) :
     ‖(ν.real A : ℂ)⁻¹ * ∫ x in A, ∫ y in A, F x y ∂ν ∂ν - ∫ x in A, F x x ∂ν‖ ≤ ε * ν.real A := by
   have hfin : ν A < ⊤ := measure_lt_top ν A
-  have hsec : ∀ x, StronglyMeasurable (fun y => F x y) := fun x =>
-    hF.comp_measurable measurable_prodMk_left
-  have hdiagm : StronglyMeasurable (fun x => F x x) :=
-    hF.comp_measurable (measurable_id.prodMk measurable_id)
-  have hgm : StronglyMeasurable (fun x => ∫ y in A, F x y ∂ν) :=
-    StronglyMeasurable.integral_prod_right (f := F) hF
+  have hI {f : X → ℂ} {C : ℝ} (hf : StronglyMeasurable f) (hC : ∀ x ∈ A, ‖f x‖ ≤ C) :
+      IntegrableOn f A ν :=
+    Measure.integrableOn_of_bounded hfin.ne hf.aestronglyMeasurable
+      ((ae_restrict_iff' hA).2 (Filter.Eventually.of_forall hC))
   rcases (measureReal_nonneg : 0 ≤ ν.real A).eq_or_lt with h0 | hpos
   · have hA0 : ν A = 0 := (measureReal_eq_zero_iff).1 h0.symm
     have hr : ν.restrict A = 0 := Measure.restrict_eq_zero.mpr hA0
     simp [hr, ← h0]
   · have hsecI : ∀ x ∈ A, IntegrableOn (fun y => F x y) A ν := fun x hx =>
-      Measure.integrableOn_of_bounded hfin.ne (hsec x).aestronglyMeasurable (M := M)
-        ((ae_restrict_iff' hA).2 (Filter.Eventually.of_forall fun y hy => hM x hx y hy))
+      hI (hF.comp_measurable measurable_prodMk_left) (hM x hx)
     have hdiagI : IntegrableOn (fun x => F x x) A ν :=
-      Measure.integrableOn_of_bounded hfin.ne hdiagm.aestronglyMeasurable (M := M)
-        ((ae_restrict_iff' hA).2 (Filter.Eventually.of_forall fun x hx => hM x hx x hx))
+      hI (hF.comp_measurable (measurable_id.prodMk measurable_id)) fun x hx => hM x hx x hx
     have hgI : IntegrableOn (fun x => ∫ y in A, F x y ∂ν) A ν :=
-      Measure.integrableOn_of_bounded hfin.ne hgm.aestronglyMeasurable (M := M * ν.real A)
-        ((ae_restrict_iff' hA).2 (Filter.Eventually.of_forall fun x hx =>
-          norm_setIntegral_le_of_norm_le_const hfin (fun y hy => hM x hx y hy)))
+      hI (StronglyMeasurable.integral_prod_right (f := F) hF) fun x hx =>
+        norm_setIntegral_le_of_norm_le_const hfin (hM x hx)
     have hc0 : ((ν.real A : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hpos.ne'
-    have e1 : ((ν.real A : ℝ) : ℂ)⁻¹ * ∫ x in A, ∫ y in A, F x y ∂ν ∂ν
-        = ∫ x in A, ((ν.real A : ℝ) : ℂ)⁻¹ * ∫ y in A, F x y ∂ν ∂ν := (integral_const_mul _ _).symm
     have key : ((ν.real A : ℝ) : ℂ)⁻¹ * ∫ x in A, ∫ y in A, F x y ∂ν ∂ν - ∫ x in A, F x x ∂ν
         = ∫ x in A, ((ν.real A : ℝ) : ℂ)⁻¹ * ∫ y in A, (F x y - F x x) ∂ν ∂ν := by
-      rw [e1, ← integral_sub (hgI.const_mul _) hdiagI]
+      rw [← integral_const_mul, ← integral_sub (hgI.const_mul _) hdiagI]
       refine setIntegral_congr_fun hA (fun x hx => ?_)
       rw [integral_sub (hsecI x hx) (integrableOn_const hfin.ne), setIntegral_const,
         Complex.real_smul, mul_sub, ← mul_assoc, inv_mul_cancel₀ hc0, one_mul]

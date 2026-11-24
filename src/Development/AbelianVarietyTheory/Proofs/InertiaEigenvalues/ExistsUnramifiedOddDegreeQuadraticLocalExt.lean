@@ -102,8 +102,7 @@ theorem invol_eq_pow {k : Type} [Field k] [Finite k] (p : ℕ) [Fact p.Prime] [C
   refine ⟨⟨j, hqp⟩, fun x => ?_⟩
   have h3 : σ x = (FiniteField.frobeniusAlgEquivOfAlgebraic (ZMod p) k ^ j) x := by rw [e]
   rw [AlgEquiv.coe_pow, FiniteField.coe_frobeniusAlgEquivOfAlgebraic_iterate, ZMod.card] at h3
-  rw [hqp]
-  exact h3
+  rwa [hqp]
 
 section Hensel
 
@@ -128,8 +127,7 @@ theorem exists_root [IsAdicComplete (maximalIdeal W) W] (hv : Function.Surjectiv
   obtain ⟨w, hw, hw'⟩ := (IsAdicComplete.henselianRing W (maximalIdeal W)).is_henselian f hf a₀ h1
     ((isUnit_of_ne v hker h2).map _)
   refine ⟨w, hw, ?_⟩
-  rw [← hker, RingHom.mem_ker, map_sub, sub_eq_zero] at hw'
-  exact hw'
+  rwa [← hker, RingHom.mem_ker, map_sub, sub_eq_zero] at hw'
 
 theorem root_unique (f : W[X]) (hsep : (f.map v).Separable) {a b : W} (ha : f.eval a = 0) (hb : f.eval b = 0)
     (hab : v a = v b) : a = b := by
@@ -214,8 +212,7 @@ theorem exists_ring (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRin
     rw [← eval_map, hgu, eval_map]; exact minpoly.aeval k α
   let v : W →+* k' := AdjoinRoot.lift u α hev
   have hvr : v (AdjoinRoot.root g) = α := AdjoinRoot.lift_root hev
-  have hva : v.comp (AdjoinRoot.of g) = u := by
-    exact RingHom.ext fun x => AdjoinRoot.lift_of hev
+  have hva : v.comp (AdjoinRoot.of g) = u := RingHom.ext fun x => AdjoinRoot.lift_of hev
   have hmax : maximalIdeal W = (maximalIdeal O).map (algebraMap O W) := Nb.maxEq g hg hirr
   have hker : RingHom.ker v = maximalIdeal W := by
     apply le_antisymm
@@ -301,8 +298,7 @@ theorem exists_ring (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRin
       refine Submodule.le_of_le_smul_of_le_jacobson (I := maximalIdeal O) Module.Finite.fg_top
         (by simpa only [Ideal.jacobson_bot] using maximalIdeal_le_jacobson (⊥ : Ideal O)) fun y _ => ?_
       have hm : ∀ t : W, v t = 0 → t ∈ (maximalIdeal O • ⊤ : Submodule O W) := fun t ht => by
-        rw [Ideal.smul_top_eq_map, Submodule.restrictScalars_mem, ← hmax, ← hker]
-        exact ht
+        rwa [Ideal.smul_top_eq_map, Submodule.restrictScalars_mem, ← hmax, ← hker]
       by_cases hy : v y = 0
       · exact Submodule.mem_sup_right (hm y hy)
       · obtain ⟨i, hi⟩ := hgen _ hy

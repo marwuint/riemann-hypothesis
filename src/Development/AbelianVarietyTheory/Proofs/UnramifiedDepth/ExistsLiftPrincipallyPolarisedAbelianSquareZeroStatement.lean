@@ -166,11 +166,8 @@ private theorem levInt_bij {O C : Type} [CommRing O] [Field C] [Algebra O C]
     exact hu.1
   have huq : ValuativeCriterion.Uniqueness X.hom := IsSeparated.valuativeCriterion X.hom
   have he : e.left = Geo.Tor.spMap (algebraMap O C) := by
-    have hw := Over.w e
-    simpa using hw
-  have hsec : ∀ x : 𝟙_ (Over (Sp O)) ⟶ X, x.left ≫ X.hom = 𝟙 _ := by
-    intro x
-    exact Over.w x
+    simpa using Over.w e
+  have hsec : ∀ x : 𝟙_ (Over (Sp O)) ⟶ X, x.left ≫ X.hom = 𝟙 _ := fun x => Over.w x
   constructor
   · intro x y hxy
     have hxy' : (e ≫ x).left = (e ≫ y).left := congrArg CommaMorphism.left hxy
@@ -192,8 +189,7 @@ private theorem levInt_bij {O C : Type} [CommRing O] [Field C] [Algebra O C]
     have hl := hex S
     refine ⟨Over.homMk S.commSq.lift S.commSq.fac_right, ?_⟩
     ext
-    simp only [Over.comp_left, Over.homMk_left, he]
-    exact S.commSq.fac_left
+    simpa only [Over.comp_left, Over.homMk_left, he] using S.commSq.fac_left
 
 private theorem bijective_comp_of_isProper_integers {O C : Type} [CommRing O] [Field C] [Algebra O C]
     {v : Valuation C NNReal} (hv : v.Integers O) (X : Over (Sp O)) [IsProper X.hom]
@@ -214,16 +210,14 @@ private theorem levInt_secHom {O C : Type} [CommRing O] [Field C] [Algebra O C]
       f ≫ (x * y) = f ≫ x * f ≫ y := fun x y _ f => comp_mul f x y
   have p2 : ∀ (x : 𝟙_ (Over (Sp O)) ⟶ Q.A) (Z : Over (Sp O)) (f : Z ⟶ 𝟙_ (Over (Sp O))) (n : ℕ),
       f ≫ (x ^ n) = (f ≫ x) ^ n := fun x _ f n => SymLiftOdd.comp_pow' f x n
-  have hprop : IsProper Q.A.hom := by
-    exact Q.isAb.proper
+  have hprop : IsProper Q.A.hom := Q.isAb.proper
   have hcomm : IsCommMonObj Q.A := Q.isAb.comm
   have hsecO : ∀ x : 𝟙_ (Over (Sp O)) ⟶ Q.A, x.left ≫ Q.A.hom = 𝟙 _ := fun x => Over.w x
   have hsecC : ∀ x : 𝟙_ (Over (Sp C)) ⟶ Q'.A, x.left ≫ Q'.A.hom = 𝟙 _ := fun x => Over.w x
   let f := Geo.Tor.spMap (algebraMap O C)
   let e : Over.mk ((𝟙_ (Over (Sp C))).hom ≫ f) ⟶ 𝟙_ (Over (Sp O)) := toUnit _
   have he : e.left = f := by
-    have hw := Over.w e
-    simpa using hw
+    simpa using Over.w e
   let r : (𝟙_ (Over (Sp O)) ⟶ Q.A) → (𝟙_ (Over (Sp C)) ⟶ Q'.A) := fun x =>
     Over.homMk (H.1.lift (f ≫ x.left) (𝟙 _) (by rw [Category.assoc, hsecO x]; simp [f])) (H.1.lift_snd _ _ _)
   have hr : ∀ x, (r x).left ≫ ψ = (e ≫ x).left := by
@@ -291,8 +285,7 @@ private theorem levInt_secHom {O C : Type} [CommRing O] [Field C] [Algebra O C]
       rw [hv.hom_inj this]
     have hcu : c = Geo.Tor.unitOn u :=
       Units.map_injective (f := e.left.appTop.hom.toMonoidHom) hinjA (by rw [hmapu]; exact h1.symm)
-    rw [← hcu]
-    exact hc
+    rwa [← hcu]
 
 theorem exists_level_over_integers : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (T : Type) [CommRing T] [IsNoetherianRing T] (P₀ : Out.PolAV (Geo.Tor.Sp T)) (io : T →+* O) (P : Out.PolAV (Geo.Tor.Sp O)) (φ : P.A.left ⟶ P₀.A.left), Geo.Tor.IsGrpPullback P.A P₀.A (Geo.Tor.spMap io) φ → Geo.Tor.LBIso P.L (P₀.L.pull φ) → P.g = P₀.g → ∀ (h M : ℕ) (ze : Oˣ), P.g = h → IsUnit (M : O) → IsPrimitiveRoot (algebraMap O C ze) M → ∃ lev : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over (Geo.Tor.Sp O)) ⟶ P.A), (∀ x y, lev (x + y) = lev x * lev y) ∧ (∀ x, lev x ^ M = 1) ∧ ∀ x y, Out.WeilIs P.A P.L M (lev x) (lev y) (Geo.Tor.unitOn (ze ^ Geo.Tor.omegaStd x y)) := by
   intro p _ C _ _ _ v O _ _ hv _ _ T _ _ P₀ io P φ hφ hL hg h M ze hh hM hze
@@ -595,8 +588,7 @@ private theorem point_lift {B O R' : Type} [CommRing B] [CommRing O] [IsLocalRin
   refine ⟨Spec.map (CommRingCat.ofHom χ') ≫ X.fromSpecStalk _, ?_, ?_⟩
   · rw [Category.assoc, ← e, ← Spec.map_comp, ← h₂]
     rfl
-  · rw [← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, h₁]
-    exact hχ
+  · rwa [← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, h₁]
 
 theorem exists_principal_lift : ∀ (h p M : ℕ) (Ag : Geo.Tor.SiegelFamily h p M), GlobalTheory.ZM.SRep Ag → M.Coprime p → M ≠ 0 → ∀ (O R' : Type) [CommRing O] [IsDomain O] [IsLocalRing O] [CommRing R'] (π : R' →+* O), Function.Surjective π → RingHom.ker π ^ 2 = ⊥ → ∀ β : Geo.Tor.ZP p M →+* O, Function.Injective β → ∀ c : Geo.Tor.SiegPre h M (Geo.Tor.zetaZP p M) (Geo.Tor.spMap β), c.Principal → ∃ (β' : Geo.Tor.ZP p M →+* R') (c' : Geo.Tor.SiegPre h M (Geo.Tor.zetaZP p M) (Geo.Tor.spMap β')), c'.Principal ∧ Geo.Tor.SiegPB c c' (Geo.Tor.spMap π) := by
   intro h p M Ag hA hMp hM O R' _ _ _ _ π hs hk β hβ c hc
@@ -786,8 +778,7 @@ private theorem zpMap_main (p : ℕ) (C : Type) [Field C] [IsAlgClosed C] [CharZ
 end
 
 theorem exists_zp_ringHom_integers : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (M : ℕ), M ≠ 0 → M.Coprime p → ∃ β : Geo.Tor.ZP p M →+* O, Function.Injective β ∧ IsUnit (M : O) ∧ ∀ (k : Type) [Field k] (gk : O →+* k), IsPrimitiveRoot (gk (β (Geo.Tor.zetaZP p M))) M := by
-  intro p _ C _ _ _ v O _ _ hv _ _ M hM hMp
-  exact zpMap_main p C v O hv M hM hMp
+  exact fun p _ C _ _ _ v O _ _ hv _ _ M hM hMp => zpMap_main p C v O hv M hM hMp
 
 end GlobalTheory
 end -- clump:auto

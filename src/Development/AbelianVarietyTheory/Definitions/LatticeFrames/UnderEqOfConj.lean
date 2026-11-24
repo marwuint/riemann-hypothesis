@@ -82,8 +82,7 @@ theorem g_mem_of_div (C : Formalism.L2.Host.CharFrame D) {k : Fin 2} {PP : Pl D.
   have h0 := C.P.pb_over k
   rw [← h] at h0
   have h2 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ PP.asIdeal := h0
-  rw [map_natCast] at h2
-  exact h2
+  rwa [map_natCast] at h2
 
 theorem disjoint_Pg_Q (L : LevCh D T) {μ0 : T} (hL : L.Is μ0) (t : T) : Disjoint L.Pg (L.Q t) := by
   rw [Finset.disjoint_left]
@@ -104,8 +103,7 @@ theorem mem_S (hL : R.toLevCh.Is A.μ0) (t : T) (k : Fin 2) (P : Pl D.host.E)
     show algebraMap _ _ x ∈ P'.asIdeal ↔ algebraMap _ _ x ∈ P.asIdeal
     rw [hc, Formalism.L2.Col.mem_conjIdeal]
     have : Formalism.L2.Col.cO D.host.E (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) = algebraMap _ _ x := by
-      apply RingOfIntegers.ext
-      exact (D.sp.cm.fixed _).2 ⟨x, rfl⟩
+      exact RingOfIntegers.ext ((D.sp.cm.fixed _).2 ⟨x, rfl⟩)
     rw [this]
 
 theorem stages (hL : R.toLevCh.Is A.μ0) (hM : R.IsModels) (t : T) :
@@ -180,8 +178,7 @@ theorem under_eq_of_conj {P P' : Pl D.host.E} (h : Lev.IsConjPl (D := D) P' P) :
   refine HeightOneSpectrum.ext ((P'.under (𝓞 D.host.F)).isMaximal.eq_of_le (P.under (𝓞 D.host.F)).isPrime.ne_top fun x hx => ?_)
   obtain ⟨c', hc', e⟩ := h _ hx
   have : c' = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x := by
-    apply RingOfIntegers.ext
-    exact e.trans ((D.sp.cm.fixed _).2 ⟨x, rfl⟩)
+    exact RingOfIntegers.ext (e.trans ((D.sp.cm.fixed _).2 ⟨x, rfl⟩))
   show algebraMap _ _ x ∈ P.asIdeal
   rw [← this]; exact hc'
 
@@ -301,8 +298,7 @@ theorem xiR_ne (hL : R.toLevCh.Is A.μ0) (t : T) : ∀ PP ∈ R.Q t, R.xiR t PP 
       push_cast
       omega)
   have hk2 : (R.xiH t).loc PP y = 1 := hk1
-  rw [map_mul, hk2, one_mul, map_inv, inv_eq_one] at ht
-  exact ht
+  rwa [map_mul, hk2, one_mul, map_inv, inv_eq_one] at ht
 
 theorem rChain (hL : R.toLevCh.Is A.μ0) (hM : R.IsModels) (hC : R.IsChain) (h : RangeX R) : RChain R h := fun t =>
   ⟨twist_of R hL t (com_is R hL hM hC t) (xiR_ne R hL t), (stages R hL hM t).1, (stages R hL hM t).2, (steps R hC h t).1, (steps R hC h t).2⟩

@@ -94,8 +94,7 @@ theorem exists_frob_pow_eq_one [IsGalois K L] (𝔭 : HeightOneSpectrum (𝓞 K)
   obtain ⟨σ, hσ⟩ := IsArithFrobAt.exists_of_isInvariant (𝓞 K) (L ≃ₐ[K] L) P.asIdeal
   have hσ' : ∀ x : 𝓞 L, σ • x - x ^ Ideal.absNorm 𝔭.asIdeal ∈ P.asIdeal := fun x => by
     have h1 := hσ x
-    rw [hq] at h1
-    exact h1
+    rwa [hq] at h1
   refine ⟨σ, ⟨P.asIdeal, P.isPrime, hPo, hσ'⟩, ?_⟩
   have hfix : ∀ x : 𝓞 L, σ ^ f • x - x ∈ P.asIdeal := fun x => by
     have h1 := pow_smul_sub_mem P.asIdeal hσ' f x
@@ -105,8 +104,7 @@ theorem exists_frob_pow_eq_one [IsGalois K L] (𝔭 : HeightOneSpectrum (𝓞 K)
       rw [← hf, ← Ideal.Quotient.eq, map_pow, Ideal.absNorm_apply, Submodule.cardQuot_apply,
         Nat.card_eq_fintype_card, FiniteField.pow_card]
     have h3 := P.asIdeal.add_mem h1 h2
-    rw [sub_add_sub_cancel] at h3
-    exact h3
+    rwa [sub_add_sub_cancel] at h3
   apply hu
   exact ⟨P.asIdeal, P.isPrime, hPo, hfix⟩
 
@@ -121,8 +119,7 @@ theorem exists_gen_of_ray {𝔮 I : Ideal (𝓞 K)}
     exact Ideal.mem_span_singleton_self α
   obtain ⟨π, -, hπ⟩ := Submodule.mem_mul_span_singleton.mp hα
   have hb0 : Ideal.span {β} ≠ 0 := by
-    rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
-    exact hβ
+    rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
   refine ⟨π, ?_, ?_⟩
   · apply mul_right_cancel₀ hb0
     rw [hI, Ideal.span_singleton_mul_span_singleton, hπ]
@@ -130,8 +127,7 @@ theorem exists_gen_of_ray {𝔮 I : Ideal (𝓞 K)}
       have e : β * (π - 1) = α - β := by
         rw [← hπ]
         ring
-      rw [e]
-      exact hαβ
+      rwa [e]
     have h1 : (1 : 𝓞 K) ∈ Ideal.span {β} ⊔ 𝔮 := by
       rw [Ideal.isCoprime_iff_sup_eq.mp hβc]
       exact Submodule.mem_top
@@ -162,8 +158,7 @@ private theorem pow_residue_degree_eq_one_of_isFrobenius [IsGalois K L] (𝔭 : 
       rw [← hQf, ← Ideal.Quotient.eq, map_pow, Ideal.absNorm_apply, Submodule.cardQuot_apply,
         Nat.card_eq_fintype_card, FiniteField.pow_card]
     have h3 := Q.add_mem h1 h2
-    rw [sub_add_sub_cancel] at h3
-    exact h3
+    rwa [sub_add_sub_cancel] at h3
   exact hu _ ⟨Q, hQ, hQo, hfix⟩
 
 theorem containsRayField_of_ray [IsGalois K L] (n : ℕ)

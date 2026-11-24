@@ -466,10 +466,8 @@ theorem isUnit_jacobian_iff (i : K.bundle.ι) (hV : IsAffineOpen V) (h : V ≤ K
     (x : Fin D → Γ(Y, V)) : IsUnit (K.jacobian i h x) ↔ IsFrame (dOn p x) := by
   rw [← K.jacobian_smul_om i hV h x]
   constructor
-  · intro hu
-    exact ⟨hV, ((K.isFrame i).res hV h).gen.smul_iff.2 hu⟩
-  · intro hf
-    exact ((K.isFrame i).res hV h).gen.smul_iff.1 hf.gen
+  · exact fun hu => ⟨hV, ((K.isFrame i).res hV h).gen.smul_iff.2 hu⟩
+  · exact fun hf => ((K.isFrame i).res hV h).gen.smul_iff.1 hf.gen
 
 end CanonLB
 
@@ -512,8 +510,7 @@ theorem vanishesAlong_iff_evalPt {R : Type} [CommRing R] (s : LB.Sec L) (y : Sp 
     rw [Scheme.Hom.app_eq_appLE, e1, sec_rel s j' j inf_le_left inf_le_right le_rfl, map_mul, e2, mul_zero]
 
 theorem lbPow_U_le (n : ℕ) (j : (lbPow L n).ι) : (lbPow L n).U j ≤ L.U (j PUnit.unit) := by
-  intro x hx
-  exact Set.mem_iInter.1 hx PUnit.unit
+  exact fun x hx => Set.mem_iInter.1 hx PUnit.unit
 
 private theorem lbPow_g_res_eq_pow (L : LB Y) (n : ℕ) (j j' : (lbPow L n).ι) {W : Y.Opens}
     (h : W ≤ (lbPow L n).U j ⊓ (lbPow L n).U j') (h₂ : W ≤ L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit)) :
@@ -590,8 +587,7 @@ theorem map_jacFun_change {R : Type*} [CommRing R] (s : Fin D → LB.Sec L) (i i
       ψ (resG Y h₁ (K.bundle.g i i').val) * ψ (resG Y h₂ (L.g j j').val) ^ D *
         ψ (resG Y h' (K.jacFun s i' j')) := by
   have := K.jacFun_change_sub_mem s i i' j j' h h' h₁ h₂ (RingHom.ker ψ) fun a => RingHom.mem_ker.2 (hψ a)
-  rw [RingHom.mem_ker, map_sub, sub_eq_zero, map_mul, map_mul, map_pow] at this
-  exact this
+  rwa [RingHom.mem_ker, map_sub, sub_eq_zero, map_mul, map_mul, map_pow] at this
 
 theorem adj_U_le (n : ℕ) (a : (K.adj L n).ι) :
     (K.adj L n).U a ≤ K.bundle.U a.1 ⊓ L.U (a.2 PUnit.unit) := le_inf inf_le_left (inf_le_right.trans (lbPow_U_le n a.2))
@@ -782,8 +778,7 @@ theorem isFrame_dX : IsFrame (dOn (affStr k D) fun a => polyFn (X a)) := by
   have hρ : (polyFn (k := k) (D := D)).Etale := RingHom.Etale.of_bijective
     (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (Fin D) k))).commRingCatIsoToRingEquiv.symm.bijective
   have := hfg.formMap hρ (polyFn_comp k D)
-  rw [formMap_dForm] at this
-  exact this
+  rwa [formMap_dForm] at this
 
 def affineSpace : CanonLB (affStr k D) D :=
   ofFrames (ι := PUnit) (fun _ => ⊤) (fun _ => dOn _ fun a => polyFn (X a))

@@ -82,8 +82,7 @@ theorem mem_toStd (J : Matrix (Fin N) (Fin N) E) (M : Submodule (𝓞 E) (Fin N 
     have : (Formalism.L2.PairingIndexBounds.F.stdCo (sp.cm.sig : E →+* E) J).symm (Formalism.L2.PairingIndexBounds.F.stdCo (sp.cm.sig : E →+* E) J x) = x :=
       LinearEquiv.symm_apply_apply _ x
     simpa using (this ▸ hx)
-  · intro h
-    exact ⟨_, h, by simp⟩
+  · exact fun h => ⟨_, h, by simp⟩
 
 theorem isSD_toStd (J : Matrix (Fin N) (Fin N) E)
     (hco : ∃ co, Formalism.L2.PairingIndexBounds.F.IsOrthCo (sp.cm.sig : E →+* E) J co)
@@ -97,21 +96,18 @@ theorem isSD_toStd (J : Matrix (Fin N) (Fin N) E)
   · rw [Formalism.L2.PairingIndexBounds.F.toStd, Submodule.map_coe, LinearMap.coe_restrictScalars, ← hco_def, eq_top_iff]
     rintro v -
     have hv : co.symm v ∈ Submodule.span E (M : Set (Fin N → E)) := by rw [hM.2]; trivial
-    have h1 := Submodule.apply_mem_span_image_of_mem_span (co : (Fin N → E) →ₗ[E] (Fin N → E)) hv
-    simpa using h1
+    simpa using Submodule.apply_mem_span_image_of_mem_span (co : (Fin N → E) →ₗ[E] (Fin N → E)) hv
   · rw [mem_toStd (sp := sp), ← hco_def]
     constructor
     · intro hy x hx
       rw [mem_toStd (sp := sp), ← hco_def] at hx
       have h1 := (mem_dl sp.cm.sig J M (co.symm y)).1 (hsd.symm ▸ hy) (co.symm x) hx
-      rw [← key, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply] at h1
-      exact h1
+      rwa [← key, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply] at h1
     · intro h
       rw [← hsd, mem_dl]
       intro x hx
       have h1 := h (co x) ((mem_toStd (sp := sp) J M (co x)).2 (by rw [← hco_def, LinearEquiv.symm_apply_apply]; exact hx))
-      rw [← LinearEquiv.apply_symm_apply co y, key] at h1
-      exact h1
+      rwa [← LinearEquiv.apply_symm_apply co y, key] at h1
 
 theorem isSD_core (J : Matrix (Fin N) (Fin N) E)
     (hJ : ∀ M : Submodule (𝓞 E) (Fin N → E), IsLat M → IsLat (dl sp.cm.sig J M))

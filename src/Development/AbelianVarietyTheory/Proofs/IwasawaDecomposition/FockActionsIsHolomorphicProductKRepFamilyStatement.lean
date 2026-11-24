@@ -206,8 +206,7 @@ theorem entryDiff_mulSingle {ι : Type} [DecidableEq ι] (τ τ' : ι) (z : Fin 
     intro i j
     simp only [Pi.mulSingle_eq_same, Matrix.of_apply]
     fun_prop
-  · simp only [Pi.mulSingle_eq_of_ne h]
-    exact EntryDiff.const _
+  · simpa only [Pi.mulSingle_eq_of_ne h] using EntryDiff.const _
 
 
 open scoped Classical in
@@ -222,8 +221,7 @@ theorem isHolFam_of {ι P : Type} [AddCommGroup P] [Module ℂ P] {ε : ι → F
     IsHolFam ε B ϖ := by
   refine ⟨h0, h1, hm, fun τ => ⟨h0, ?_, fun a ha' b hb => ?_, fun g hg x y => ?_, fun x y z hz => ?_⟩⟩
   · simp only [Pi.mulSingle_one, h1]
-  · simp only [Pi.mulSingle_mul]
-    exact hm _ _ (mulSingle_mem_KC ha') (mulSingle_mem_KC hb)
+  · simpa only [Pi.mulSingle_mul] using hm _ _ (mulSingle_mem_KC ha') (mulSingle_mem_KC hb)
   · rw [ha _ (mulSingle_mem_KC hg)]
     simp only [mulSingle_conjTranspose]
   · exact (hd (fun g => Pi.mulSingle τ (Matrix.of g)) z (mulSingle_mem_KC hz)

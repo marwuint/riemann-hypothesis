@@ -73,8 +73,7 @@ theorem exists_equiv {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] 
               · exact h.1.lift_fst _ _ _
               · exact (h.1.lift_snd _ _ _).trans (Over.w x).symm
             right_inv := fun y => by
-              apply Over.OverMorphism.ext
-              exact h.1.lift_fst _ _ _
+              exact Over.OverMorphism.ext (h.1.lift_fst _ _ _)
             map_mul' := fun x y => by
               apply Over.OverMorphism.ext
               exact (h.2 T x y _ _ rfl rfl).symm }, fun x => rfl⟩
@@ -127,25 +126,18 @@ theorem heckeKer_iff (D : Datum H) (P : Ideal (𝓞 E)) (p i : ℕ) (m : SABMap 
       obtain ⟨u, rfl⟩ := ρ.surjective x
       obtain ⟨v, rfl⟩ := ρ.surjective y
       exact (hW u v).mp (h4 u ((hC u).mpr hx) v ((hC v).mpr hy))
-    · rw [← cC]
-      exact h5
-    · rw [← cT, ← cI]
-      exact h6
+    · rwa [← cC]
+    · rwa [← cT, ← cI]
   · rintro ⟨h1, h2, h3, h4, h5, h6⟩
     refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
     · intro u hu a
       rw [hC, hact]
       exact h1 _ ((hC u).mp hu) a
-    · intro J hJ u hu
-      exact (hC u).mpr (h2 J hJ ((htors J u).mp hu))
-    · intro u hu
-      exact (htors _ u).mpr (h3 ((hC u).mp hu))
-    · intro u hu v hv
-      exact (hW u v).mpr (h4 _ ((hC u).mp hu) _ ((hC v).mp hv))
-    · rw [cC]
-      exact h5
-    · rw [cT, cI]
-      exact h6
+    · exact fun J hJ u hu => (hC u).mpr (h2 J hJ ((htors J u).mp hu))
+    · exact fun u hu => (htors _ u).mpr (h3 ((hC u).mp hu))
+    · exact fun u hu v hv => (hW u v).mpr (h4 _ ((hC u).mp hu) _ ((hC v).mp hv))
+    · rwa [cC]
+    · rwa [cT, cI]
 
 theorem heckeSet_pull (D : Datum H) (P : Ideal (𝓞 E)) (p i : ℕ) (m : SABMap t' t f) (K : Set t.G.left)
     (hK : HeckeSet D t P p i K) : HeckeSet D t' P p i (m.φ ⁻¹' K) := by
@@ -195,8 +187,7 @@ theorem lists_pull {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {φ : G'.l
     intro j
     refine (IsPullback.of_bot (v₂₁ := G'.hom) (v₂₂ := G.hom) (h₃₁ := f) ?_ (key j).symm h.1).flip
     rw [Over.w (σ' j), Over.w (σ j)]
-    simp only [Over.tensorUnit_hom]
-    exact IsPullback.of_vert_isIso ⟨by simp⟩
+    simpa only [Over.tensorUnit_hom] using IsPullback.of_vert_isIso ⟨by simp⟩
   refine ⟨σ', key, ?_, ?_, ?_⟩
   · intro j
     apply ρ.injective

@@ -134,22 +134,19 @@ theorem kerEquiv_eq_iff (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥)
   constructor
   · rintro rfl
     have := kerEquiv_symm_apply hv hJ (kerEquiv hv hJ (Additive.ofMul y))
-    rw [AddEquiv.symm_apply_apply] at this
-    exact this
+    rwa [AddEquiv.symm_apply_apply] at this
   · intro h
     rw [← AddEquiv.eq_symm_apply]
     apply Additive.toMul.injective
     apply Subtype.ext
-    rw [kerEquiv_symm_apply]
-    exact h
+    rwa [kerEquiv_symm_apply]
 
 theorem eq_lieExp_kerEquiv (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥)
     (y : redKer (R := R) G J) : (y : sp A ⟶ G) =
       lieExp v (fun i => (kerEquiv hv hJ (Additive.ofMul y) i : A))
         (fun _ => mul_eq_zero_of_sq hJ (Subtype.prop _) (Subtype.prop _)) := by
   have := kerEquiv_symm_apply hv hJ (kerEquiv hv hJ (Additive.ofMul y))
-  rw [AddEquiv.symm_apply_apply] at this
-  exact this
+  rwa [AddEquiv.symm_apply_apply] at this
 
 theorem kerEquiv_map (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥) {J' : Ideal A'}
     (hJ' : J' ^ 2 = ⊥) (φ : A →ₐ[R] A') (hφ : ∀ a ∈ J, φ a ∈ J') (y : redKer (R := R) G J)
@@ -162,8 +159,7 @@ theorem kerEquiv_map (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥) {J' : 
     rw [kerEquiv_eq_iff]
     show spMap φ ≫ (y : sp A ⟶ G) = _
     rw [hy]
-    refine (comp_lieExp v φ _ _).trans ?_
-    exact lieExp_congr v (fun _ => rfl) _ _
+    exact (comp_lieExp v φ _ _).trans (lieExp_congr v (fun _ => rfl) _ _)
   rw [key]
 
 theorem zpow_eq_one_of_mem_redKer (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥) {k : ℤ}
@@ -174,10 +170,8 @@ theorem zpow_eq_one_of_mem_redKer (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 
     simp [hk _ (kerEquiv hv hJ (Additive.ofMul (⟨y, hy⟩ : redKer (R := R) G J)) i).2]
   have h1 : k • Additive.ofMul (⟨y, hy⟩ : redKer (R := R) G J) = 0 := by
     apply (kerEquiv hv hJ).injective
-    rw [map_zsmul, map_zero]
-    exact hc
-  have h2 := congrArg (fun z => ((Additive.toMul z : redKer (R := R) G J) : sp A ⟶ G)) h1
-  simpa using h2
+    rwa [map_zsmul, map_zero]
+  simpa using congrArg (fun z => ((Additive.toMul z : redKer (R := R) G J) : sp A ⟶ G)) h1
 
 theorem pow_eq_one_of_mem_redKer (hv : IsLieBasis v) {J : Ideal A} (hJ : J ^ 2 = ⊥) {k : ℕ}
     (hk : ∀ a ∈ J, k • a = 0) {y : sp A ⟶ G} (hy : y ∈ redKer G J) : y ^ k = 1 := by

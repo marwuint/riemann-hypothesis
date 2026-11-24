@@ -217,11 +217,8 @@ theorem core (E : Type) [Field E] [NumberField E] (Γ : Subgroup Eˣ) [Group.FG 
   set MainNotions : Set (HeightOneSpectrum (𝓞 K)) := {w | N' ∈ w.asIdeal} with hSK
   have hSKfin : MainNotions.Finite := by
     have hI : Ideal.span {N'} ≠ 0 := by
-      rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
-      exact hN'0
-    refine (Ideal.finite_factors hI).subset ?_
-    intro w hw
-    exact Ideal.dvd_span_singleton.mpr hw
+      rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
+    exact (Ideal.finite_factors hI).subset (fun w hw => Ideal.dvd_span_singleton.mpr hw)
   have hcheb := fun τ : L ≃ₐ[K] L =>
     GlobalTheory.Published.chebotarevDegreeOne' K (AlgebraicClosure E) L τ MainNotions hSKfin
   choose v hvS _ B hB _ σ hσ hres using hcheb
@@ -247,8 +244,7 @@ theorem core (E : Type) [Field E] [NumberField E] (Γ : Subgroup Eˣ) [Group.FG 
       obtain ⟨d, z, hd0, hz, hz1⟩ := exists_integral_mul t (x : E) (hxT t htT) M hM
       have hzK : algebraMap (𝓞 E) (𝓞 K) z - 1 ∈ (v τ).asIdeal := by
         have h1 : z - 1 ∈ (v τ).asIdeal.comap (algebraMap (𝓞 E) (𝓞 K)) := hz1
-        rw [Ideal.mem_comap, map_sub, map_one] at h1
-        exact h1
+        rwa [Ideal.mem_comap, map_sub, map_one] at h1
       have hMv : ((M : ℕ) : 𝓞 K) ∉ (v τ).asIdeal := by
         intro hMin
         apply hvS τ
@@ -270,8 +266,7 @@ theorem core (E : Type) [Field E] [NumberField E] (Γ : Subgroup Eˣ) [Group.FG 
       apply Subtype.ext
       rw [← hres τ]
       change ((σ τ).restrictNormal L ⟨w, hwL⟩ : AlgebraicClosure E) = w
-      have hc := AlgEquiv.restrictNormal_commutes (σ τ) L ⟨w, hwL⟩
-      exact hc.trans hσw'
+      exact (AlgEquiv.restrictNormal_commutes (σ τ) L ⟨w, hwL⟩).trans hσw'
     have hbot : (⟨w, hwL⟩ : L) ∈ (⊥ : IntermediateField K L) := (IsGalois.mem_bot_iff_fixed _).mpr hfix
     rw [IntermediateField.mem_bot] at hbot
     obtain ⟨k, hk⟩ := hbot

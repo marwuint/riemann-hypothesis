@@ -119,9 +119,7 @@ theorem GlobalTheory.ArchFactorPair.exists_archOperator_pair :
   funext y
   set T0 := om (1, h) with hT0
   set u : AF F := ((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F)) with hudef
-  have hu : evI F u = 0 := by
-    show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : InfiniteAdeleRing F) = 0
-    exact map_zero _
+  have hu : evI F u = 0 := map_zero _
   set p : Fin n × Fin d → AF F := liftI (fun i => evI F (y i)) with hpdef
   have hyp : y + u • (-y) = p := by
     funext i
@@ -166,8 +164,7 @@ theorem GlobalTheory.ArchFactorPair.exists_archOperator_pair :
   rw [map_sub, Pi.sub_apply, sub_eq_zero] at h0
   have htr : T0 (fun w => Φ₀ (w + u • (-y))) = fun w => T0 Φ₀ (w + u • (-y)) := by
     have h := hcomm u hu (-y) 0 Φ₀ hm₀
-    rw [smul_zero, schr_trans', schr_trans'] at h
-    exact h
+    rwa [smul_zero, schr_trans', schr_trans'] at h
   have h2 : T0 Φ₂ y = (r y / R 0) * T0 Φ₀ p := by
     rw [hΦ₂, map_smul, htr, Pi.smul_apply, smul_eq_mul, hyp]
   show T0 Φ₁ y = tens (evI F) (⇑(Tf f)) r y
@@ -396,7 +393,6 @@ theorem continuous_apply : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
     exact (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply (x i)
   have hg0 : g₀ (fun i => (xh i).2) = 1 := by
     have hm : (fun i => (xh i).2) ∈ GlobalTheory.SchANonzero.intPts F κ := fun i _ v => by
-      show (0 : FiniteAdeleRing (𝓞 F) F) v ∈ v.adicCompletionIntegers F
       exact zero_mem (v.adicCompletionIntegers F)
     simp only [g₀, Set.indicator_of_mem hm, Pi.one_apply]
   have hl : l ∈ (adeleClass F).adm κ := by

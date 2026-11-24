@@ -117,8 +117,7 @@ theorem quotient_lattice_torsion
   obtain ⟨b, hb, hbv⟩ :=
     exists_ne_zero_smul_mem_of_span_eq_top (K := LL) T.L.T T.L.span v
   refine ⟨b, hb, ?_⟩
-  rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
-  exact hbv
+  rwa [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
 
 end GlobalTheory.QuotientLatticeTorsion
 end -- clump:auto
@@ -172,8 +171,7 @@ theorem length_torsionBy_quotient_divisible_le (O : Type) [CommRing O] [IsDomain
   obtain ⟨x, hx0, hxK, b, hb0, hbx⟩ := htor
   obtain ⟨m, u, rfl⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 hϖ
   have hxm : ϖ ^ m • x = 0 := by
-    rw [mul_smul, ← Units.smul_def, smul_eq_zero_iff_eq] at hbx
-    exact hbx
+    rwa [mul_smul, ← Units.smul_def, smul_eq_zero_iff_eq] at hbx
   have hex : ∃ j, ϖ ^ j • x = 0 := ⟨m, hxm⟩
   have hj : ϖ ^ Nat.find hex • x = 0 := Nat.find_spec hex
   have hj0 : Nat.find hex ≠ 0 := by
@@ -187,8 +185,7 @@ theorem length_torsionBy_quotient_divisible_le (O : Type) [CommRing O] [IsDomain
     rw [smul_smul, ← pow_succ']; exact hj
   have heK : π (ϖ ^ i • x) = 0 := by rw [map_smul, hxK, smul_zero]
   have hunit_e : ∀ w : O, IsUnit w → w • (ϖ ^ i • x) ≠ 0 := by
-    intro w hw h
-    exact he0 ((hw.smul_eq_zero).mp h)
+    exact fun w hw h => he0 ((hw.smul_eq_zero).mp h)
   obtain ⟨n, v, hav⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ
   have hadvd : ∀ c : O, a ∣ c ↔ ϖ ^ n ∣ c := by
     intro c; rw [hav, Units.mul_left_dvd]
@@ -278,8 +275,7 @@ theorem lc_mk (T : LocLat G Qp LL O) (hT : IsOpen (T.L.T : Set T.V)) {f : G → 
   intro g
   refine ⟨(fun h => f h + (-f g)) ⁻¹' (T.L.T : Set T.V),
     hT.preimage (hf.add continuous_const), by simp, fun h hh => ?_⟩
-  rw [Submodule.Quotient.eq, sub_eq_add_neg]
-  exact hh
+  rwa [Submodule.Quotient.eq, sub_eq_add_neg]
 
 omit [TopologicalSpace Qp] in
 theorem lc_act (T : LocLat G Qp LL O) (hT : IsOpen (T.L.T : Set T.V)) (w : T.V ⧸ T.L.T) :
@@ -439,8 +435,7 @@ theorem len_part [CompactSpace G] (hO : GoodO (Qp := Qp) LL O) (T : LocLat G Qp 
       have h3 : c'.1 - c.1 ∈ HfD PD T.L := Submodule.mem_sup_right h2
       have := Submodule.sub_mem _ (show c'.1 ∈ HfD PD T.L from hc') h3
       rwa [sub_sub_cancel] at this
-    · intro hc
-      exact ⟨c, hc, rfl⟩
+    · exact fun hc => ⟨c, hc, rfl⟩
   refine GlobalTheory.length_torsionBy_quotient_divisible_le O _ _ π
     ((Submodule.mkQ_surjective _).comp (Submodule.mkQ_surjective _)) ?_ ?_ _ ha (d + 1) ?_
   · intro b hb x hx
@@ -521,8 +516,7 @@ theorem tbe_of (S : Sit) [TopologicalSpace S.Qp] [CompactSpace S.G] [IsTopologic
     intro he
     obtain ⟨g, hg1⟩ := hchi e he
     have hu : ((algebraMap S.Qp S.LL (S.PD.χ g : S.Qp))⁻¹) ^ e ≠ 1 := by
-      rw [inv_pow, Ne, inv_eq_one, ← map_pow, map_eq_one_iff _ (algebraMap S.Qp S.LL).injective]
-      exact hg1
+      rwa [inv_pow, Ne, inv_eq_one, ← map_pow, map_eq_one_iff _ (algebraMap S.Qp S.LL).injective]
     exact ⟨HfD_eq_BD S.PD Ve (GlobalTheory.HfZero.z1f_le_b1 S.PD h5 h7 hO (toG Ve) hDR hFil
       (fixed_points_trivial_of_scalar_action_ne_one Ve _ _ hu (hχ _))), BD_ne_bot hO Ve h1 _ _ hu (hχ _)⟩
   have hzero : e = 0 → HfD S.PD Ve.L ≠ ⊥ ∧ ∀ c : S.G → Ve.V ⧸ Ve.L.T, c ∈ HfD S.PD Ve.L ↔
@@ -553,8 +547,7 @@ theorem tbe_of (S : Sit) [TopologicalSpace S.Qp] [CompactSpace S.G] [IsTopologic
       n • Module.length S.O (S.O ⧸ Ideal.span {((S.PD.p : ℕ) : S.O)}) :=
     Ring.ord_pow (mem_nonZeroDivisors_of_ne_zero hp) n
   unfold lenOl
-  rw [Nat.cast_mul, mul_assoc, ← nsmul_eq_mul n, ← hord]
-  exact key
+  rwa [Nat.cast_mul, mul_assoc, ← nsmul_eq_mul n, ← hord]
 
 theorem exists_unr (D : Formalism.BasicNotions.D7) (l : ℕ) [Fact l.Prime] (K LL : FinExt l) :
     ∃ δ : ↥(GK K) → ↥LL.1,
@@ -572,8 +565,7 @@ theorem exists_unr (D : Formalism.BasicNotions.D7) (l : ℕ) [Fact l.Prime] (K L
   · intro g hg
     beta_reduce
     rw [hδI g hg, map_zero]
-  · intro h0
-    exact hg₀ ((map_eq_zero_iff _ (algebraMap ℚ_[l] ↥LL.1).injective).1 (congrFun h0 g₀))
+  · exact fun h0 => hg₀ ((map_eq_zero_iff _ (algebraMap ℚ_[l] ↥LL.1).injective).1 (congrFun h0 g₀))
 
 theorem twist_torsion_facts : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), admitted D HW F → Conclusion5 D → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let S := sit D.loc HW l (D.locA l) K s LL h; let E : S.Comparison₂ := ((F l).E K s LL h).tie; TBeAt S := by
   intro D HW F hA hB l _ K s LL h S E

@@ -131,8 +131,7 @@ theorem redFn_eq_one (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (PP : P
     have e5 : (((y.1 - 1) i j : Formalism.L2.Herm.intAf F E) : E ⊗[F] Formalism.L2.Herm.Af F) = (Y - 1) i j := by
       rw [Matrix.sub_apply, Matrix.sub_apply, Matrix.one_apply, Matrix.one_apply]
       split_ifs <;> rfl
-    rw [Subring.coe_mul, e5]
-    exact this
+    rwa [Subring.coe_mul, e5]
   have e6 : resS F PP ((y.1 - 1) i j) = 0 := by rw [← e4, map_mul, hφ, zero_mul]
   show resS F PP (y.1 i j) = (1 : Matrix (Fin n) (Fin n) (kP PP)) i j
   rw [Matrix.sub_apply, map_sub, sub_eq_zero] at e6
@@ -165,8 +164,7 @@ theorem mem_St_iff (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (Λ : Sub
       · exact Subring.one_mem _
       · exact Subring.zero_mem _
     have h2 := (hβ _).1 (h _ h1) i
-    rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_single_one] at h2
-    exact h2
+    rwa [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_single_one] at h2
   constructor
   · exact fun h => ⟨key x h, key _ ((St β).inv_mem h)⟩
   · rintro ⟨h1, h2⟩
@@ -381,8 +379,7 @@ theorem finE_mem_UA (V : HSp D) (g : GA D V) : finE V g ∈ UA D.sp.cm V.gram :=
       Formalism.UG.cT (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) ((Formalism.L2.Theta.mt V g).map (finSw D)) := by
     ext i j
     exact finSw_cA _
-  rw [e1] at h2
-  exact h2
+  rwa [e1] at h2
 
 theorem exists_conj (y : 𝓞 D.host.E) : ∃ y' : 𝓞 D.host.E, (y' : D.host.E) = star (y : D.host.E) :=
   ⟨⟨D.sp.cm.sig (y : D.host.E), (y.isIntegral_coe).map ((D.sp.cm.sig : D.host.E →+* D.host.E).toIntAlgHom)⟩, rfl⟩
@@ -419,8 +416,7 @@ theorem idem_div_int {P : HeightOneSpectrum (𝓞 D.host.E)} {e f : Formalism.L2
         congr 1
         show _ = incA D (star ((y' : D.host.E)⁻¹))
         rw [hy', star_inv₀, star_star]
-      rw [this, finSw_cA]
-      exact a2
+      rwa [this, finSw_cA]
     · exact swapAE_int (not_not.1 fun hn => h1 ((h y y0).2 hn))
   refine ⟨⟨_, hm⟩, ?_⟩
   show finSw D (f * incA D ((y : D.host.E)⁻¹)) * finSw D (incA D (y : D.host.E)) = _

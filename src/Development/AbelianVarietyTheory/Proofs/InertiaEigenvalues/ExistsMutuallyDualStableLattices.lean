@@ -100,17 +100,14 @@ theorem exists_dual (m : V →ₗ[LL] W →ₗ[LL] LL)
   let φ : W →ₗ[LL] Module.Dual LL V := m.flip
   have hφ : Function.Injective φ := by
     rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
-    intro y hy
-    exact h3 y (fun x => by simpa [φ] using LinearMap.congr_fun hy x)
+    exact fun y hy => h3 y (fun x => by simpa [φ] using LinearMap.congr_fun hy x)
   have hdim : finrank LL W = finrank LL (Module.Dual LL V) := by
     rw [Subspace.dual_finrank_eq, h4]
   let e : W ≃ₗ[LL] Module.Dual LL V := LinearMap.linearEquivOfInjective φ hφ hdim
   let f' := bV.dualBasis.map e.symm
   have key1 : ∀ x j, m x (f' j) = bV.repr x j := by
     intro x j
-    have h : φ (f' j) = bV.dualBasis j := by
-      show e (e.symm (bV.dualBasis j)) = bV.dualBasis j
-      exact e.apply_symm_apply _
+    have h : φ (f' j) = bV.dualBasis j := e.apply_symm_apply _
     calc m x (f' j) = φ (f' j) x := rfl
       _ = bV.dualBasis j x := by rw [h]
       _ = bV.repr x j := Basis.dualBasis_apply _ _ _
@@ -183,12 +180,9 @@ theorem dualLattice_exists : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : 
     { T := T', stable := hstab, fg := hfg, free := hfree, span := hspan }
   refine ⟨LA', ⟨⟨h1, h2, h3, h4⟩, hmem1⟩, ⟨⟨?_, ?_, ?_, h4.symm⟩, ?_⟩⟩
   · intro g y x
-    simp only [LinearMap.flip_apply]
-    exact h1 g x y
-  · intro y hy
-    exact h3 y (fun x => by simpa only [LinearMap.flip_apply] using hy x)
-  · intro x hx
-    exact h2 x (fun y => by simpa only [LinearMap.flip_apply] using hx y)
+    simpa only [LinearMap.flip_apply] using h1 g x y
+  · exact fun y hy => h3 y (fun x => by simpa only [LinearMap.flip_apply] using hy x)
+  · exact fun x hx => h2 x (fun y => by simpa only [LinearMap.flip_apply] using hx y)
   · intro y
     simpa only [LinearMap.flip_apply] using hmem2 y
 
@@ -272,8 +266,7 @@ theorem exists_lattice : ∀ {G : Type} [Group G] [TopologicalSpace G] [CompactS
 
   let f : A.V →ₗ[O] A.V := b • LinearMap.id
   have hbne : algebraMap O LL b ≠ 0 := by
-    intro h
-    exact nonZeroDivisors.ne_zero hb0 (hinj (by rw [h, map_zero]))
+    exact fun h => nonZeroDivisors.ne_zero hb0 (hinj (by rw [h, map_zero]))
   have hf : Function.Injective f := by
     intro x y hxy
     have : algebraMap O LL b • x = algebraMap O LL b • y := by

@@ -143,8 +143,7 @@ theorem ptOf_const_left : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteVa
         (J := (maximalIdeal V).map (Ideal.Quotient.mk (maximalIdeal V ^ (m + 1))))
         (fun p => hv p ▸ Ideal.mem_map_of_mem _ (hα p.2)) (fun p => hv' p ▸ Ideal.mem_map_of_mem _ (hα p.2))
         (n := m + 1) (fun p => by rw [hv, hv', sub_self]; exact zero_mem _) f
-      rw [← Ideal.map_pow, Ideal.map_quotient_self, Ideal.mem_bot, sub_eq_zero] at this
-      exact this
+      rwa [← Ideal.map_pow, Ideal.map_quotient_self, Ideal.mem_bot, sub_eq_zero] at this
     have k2 := GlobalTheory.PlaceFormPt.spMap_homAt (jetA (Fin 1 × Fin d) m) ψ X.left
     rw [k] at k2
     have k3 : (x m).left = (Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetA (Fin 1 × Fin d) m)).left ≫ X.left :=
@@ -647,10 +646,8 @@ theorem exists_symLift (hs : Function.Surjective (fst T A).left.appTop.hom) (hL 
     refine defect_pow (fun m => thetaVal θ y J m) (fun m => negVal nu y J m) (fst T A ≫ x) n ?_ _ _ ?_ ?_
     · rw [← comp_pow', hx]
       simp
-    · intro m
-      exact (val_symGen θ nu hθ hJ m).symm.trans (hα m y J hJ)
-    · have e := (val_powGen θ n hθ hJ 1).symm.trans (hβ 1 y J hJ)
-      simpa only [_root_.mul_one] using e
+    · exact fun m => (val_symGen θ nu hθ hJ m).symm.trans (hα m y J hJ)
+    · simpa only [_root_.mul_one] using (val_powGen θ n hθ hJ 1).symm.trans (hβ 1 y J hJ)
   obtain ⟨θ', hpt, hsc⟩ := exists_scale hL θ (α ^ ((n - 1) / 2) * β⁻¹)
   have hpt' : θ'.pt = x := hpt.trans hθ
   have hc : ∀ y, gm (fst T A).left y ⊤ (α ^ ((n - 1) / 2) * β⁻¹) =
@@ -687,8 +684,7 @@ theorem exists_gen_neg (L : RigLB A) (h : L.IsSymmetric) (k : ℤ) (T : Over S) 
   intro U _ hh
   simp only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Over.comp_left,
     _root_.mul_one, mul_neg, neg_neg]
-  simp only [Category.comp_id]
-  exact _root_.mul_comm _ _
+  simpa only [Category.comp_id] using _root_.mul_comm _ _
 
 theorem exists_symLift_local : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsLocalRing V] (t : SAB H (Sp V)), Function.Surjective (t.G ⊗ t.G).hom.appTop.hom → ∀ (k : ℕ), Odd k → ∀ a : baseOver (Sp V) ⟶ t.G, a ^ k = 1 → ∃ U : ThetaGrp t.G t.PP.L (k : ℤ) (baseOver (Sp V)), SymLift t.G t.PP.L (k : ℤ) k a U := by
   intro E _ _ _ H V _ _ t hsurj k hk a ha
@@ -837,8 +833,7 @@ theorem exists_rel (C : IntegralChartA3 Xo c T io y) {k : ℕ} {F : SecN Xo (xOf
         ((Over.w (fst (baseOver (Sp T.Fr)) C.I.t'.G)).trans (Over.w (snd (baseOver (Sp T.Fr)) C.I.t'.G)).symm))).trans
           (Category.assoc _ _ _).symm)) z J J' hJ hJ'
     rw [Category.comp_id, ← hs Z r z J' hJ'] at q
-    rw [zpow_natCast, Units.val_pow_eq_pow_val]
-    exact q
+    rwa [zpow_natCast, Units.val_pow_eq_pow_val]
   · have q := hT2 Z (r ≫ (snd (baseOver (Sp T.Fr)) C.I.t'.G).left) z J J' hJ hJ'
     rw [Category.comp_id, ← hs Z r z J' hJ'] at q
     rw [zpow_natCast, Units.val_pow_eq_pow_val]
@@ -1302,13 +1297,11 @@ theorem LiftLaws.pull {I : Type*} {U' : I → Type*} [∀ i, CommGroup (U' i)] (
     rw [map_prod, this, map_one]
   · have := (h i).2.1
     rw [← map_one P, ← map_inv P, hφ, hφ, hρ, hρ, quadN_map P (g i) hw (hθ i) (hθ i)] at this
-    simp only [map_mul, map_pow, map_div, map_one]
-    exact this
+    simpa only [map_mul, map_pow, map_div, map_one] using this
   · have := (h i).2.2 (P x) (P y)
     rw [← map_one P, ← map_mul P, hφ, hφ, hφ, hφ, hρ, map_lineCoeffCubic P (g i) (hρ i),
       quadQ_map P (g i) hw (hθ i) (hθ i)] at this
-    simp only [map_mul, map_pow, map_div]
-    exact this
+    simpa only [map_mul, map_pow, map_div] using this
 
 def trU (ρ φ : Γ → U) (e : Γ → Γ → U) (w : Γ → Γ) (a : Γ) (k : ℕ) (x : Γ) : U :=
   φ x * (ρ (a * x) * e (a * x) (w (a * x)) / (ρ x * e x (w x))) ^ k
@@ -1688,8 +1681,7 @@ theorem germ_read {ε : (PS V 2 d)ˣ} (h : ε.val = ε₀) {wP : PrimTyG t} {ρ 
       (Units.map (jetA (V := V) (Fin 1 × Fin d) m : PS V 1 d →* _) (u1 ρ (Sm.gen B 0) * u2 ε (Sm.gen B 0) (Sm.act B H.w0 (Sm.gen B 0)))) := by
     rw [map_mul, map_mul]
     refine (val_mul hJ.1 _ _ _).trans (congrArg₂ (· * ·) ((val_pull hJ.1 _ _ _).trans ?_) c)
-    rw [Category.id_comp]
-    exact b
+    rwa [Category.id_comp]
   rw [i, v, ← map_pow, ← map_pow] at q
   rw [VV_mul, VV_eq, ← a, q, VV_eq m y (Units.val _)]
   rfl

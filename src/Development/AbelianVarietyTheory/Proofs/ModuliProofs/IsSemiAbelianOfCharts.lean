@@ -124,8 +124,7 @@ theorem exists_endo (hψ : ∀ i, IsPullback (ψ i) (H i).hom G.hom (𝒰.f i)) 
   have hzG : z ≫ G.hom = G.hom := by
     refine ext_small 𝒰 G.hom fun i S g u hu => ?_
     obtain ⟨a, ha⟩ := exists_lift hψ i u g hu
-    rw [← Category.assoc, hz S g _ ⟨i, u, a, ha, rfl⟩, ← base_eq hψ (a ≫ e i)]
-    exact hu
+    rwa [← Category.assoc, hz S g _ ⟨i, u, a, ha, rfl⟩, ← base_eq hψ (a ≫ e i)]
   refine ⟨Over.homMk z hzG, fun i => ?_⟩
   have e1 := hz _ (ψ i) _ ⟨i, (H i).hom, Over.homMk (𝟙 _) (by simp), by simp, rfl⟩
   simpa using e1.symm
@@ -178,8 +177,7 @@ theorem exists_mul (hm : MulCompat ψ) (hψ : ∀ i, IsPullback (ψ i) (H i).hom
     refine ext_small 𝒰 (G ⊗ G).hom fun i S g u hu => ?_
     obtain ⟨a, ha⟩ := exists_lift hψ i u (g ≫ (fst G G).left) (by simp [hu, pullback.condition])
     obtain ⟨b, hb⟩ := exists_lift hψ i u (g ≫ (snd G G).left) (by simp [hu, pullback.condition])
-    rw [← Category.assoc, hz S g _ ⟨i, u, a, b, ha, hb, rfl⟩, ← base_eq hψ (a * b)]
-    exact hu
+    rwa [← Category.assoc, hz S g _ ⟨i, u, a, b, ha, hb, rfl⟩, ← base_eq hψ (a * b)]
   refine ⟨Over.homMk z hzG, fun i S u a b T x y g ha hb => ?_⟩
   have e1 := hz S (g ≫ (lift x y).left) _ ⟨i, u, a, b,
     by rw [Category.assoc, ← Over.comp_left, lift_fst]; exact ha,
@@ -204,8 +202,7 @@ theorem exists_one (hm : MulCompat ψ) (hψ : ∀ i, IsPullback (ψ i) (H i).hom
       exact MulCompat.one hm hψ u v (hu.trans hv.symm))
   have hzG : z ≫ G.hom = (𝟙_ (Over X)).hom := by
     refine ext_small 𝒰 (𝟙_ (Over X)).hom fun i S g u hu => ?_
-    rw [← Category.assoc, hz S g _ ⟨i, u, hu, rfl⟩, ← base_eq hψ (1 : Over.mk u ⟶ H i)]
-    exact hu
+    rwa [← Category.assoc, hz S g _ ⟨i, u, hu, rfl⟩, ← base_eq hψ (1 : Over.mk u ⟶ H i)]
   refine ⟨Over.homMk z hzG, fun i S u T g hg => ?_⟩
   have e1 := hz S (g ≫ (toUnit T).left) _ ⟨i, u, by rw [hg, Category.assoc, Over.w], rfl⟩
   rw [← e1]
@@ -303,8 +300,7 @@ theorem isMonHom_of_points {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B]
   refine ⟨?_, ?_⟩
   · have h1 := mul (𝟙_ _) 1 1
     rw [_root_.mul_one, eq_comm, _root_.mul_eq_left] at h1
-    simp only [MonObj.one_eq_one]
-    exact h1
+    simpa only [MonObj.one_eq_one] using h1
   · have h2 := mul (A ⊗ A) (fst A A) (snd A A)
     rw [← MonObj.mul_eq_mul] at h2
     rw [h2, Hom.mul_def]

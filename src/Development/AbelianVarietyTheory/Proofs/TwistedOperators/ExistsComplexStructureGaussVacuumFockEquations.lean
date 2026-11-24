@@ -86,7 +86,6 @@ def evIHom : AF F →+* mixedEmbedding.mixedSpace F :=
 theorem evIHom_apply (a : AF F) : evIHom a = evI F a := rfl
 
 theorem evI_zero_c : evI F (((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F)) : AF F) = 0 := by
-  show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0
   exact map_zero _
 
 theorem eq_liftA_of_mul {a : AF F} (ha : ∀ c : AF F, evI F c = 0 → c * a = 0) : a = liftA (evI F a) := by
@@ -184,8 +183,7 @@ theorem exists_mat_at (hcm : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, Glob
   choose a ha using hex
   refine ⟨Matrix.of a, fun x hx => ?_, fun w => ?_⟩
   · ext i j
-    simp only [Matrix.smul_apply, Matrix.of_apply, Matrix.zero_apply]
-    exact (ha i j).1 x hx
+    simpa only [Matrix.smul_apply, Matrix.of_apply, Matrix.zero_apply] using (ha i j).1 x hx
   · ext i j
     simp [(ha i j).2 w]
 

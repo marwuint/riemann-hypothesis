@@ -98,14 +98,12 @@ private lemma exists_unit_on_open_of_gm_agree_on_cover (V : X.Opens) {κ : Type}
       (X.presheaf.germ (O a) x ha).hom (u a).1 = (X.presheaf.germ (O b) x hb).hom (u b).1 := by
     intro a b x ha hb
     have hv := congrArg Units.val (hu a b x ha hb)
-    rw [gm_id_val_eq_germ _ x ha, gm_id_val_eq_germ _ x hb] at hv
-    exact hv
+    rwa [gm_id_val_eq_germ _ x ha, gm_id_val_eq_germ _ x hb] at hv
   have hinv : ∀ a b x (ha : x ∈ O a) (hb : x ∈ O b),
       (X.presheaf.germ (O a) x ha).hom (u a)⁻¹.1 = (X.presheaf.germ (O b) x hb).hom (u b)⁻¹.1 := by
     intro a b x ha hb
     have hv := congrArg Units.val (congrArg (·⁻¹) (hu a b x ha hb))
-    rw [← map_inv, ← map_inv, gm_id_val_eq_germ _ x ha, gm_id_val_eq_germ _ x hb] at hv
-    exact hv
+    rwa [← map_inv, ← map_inv, gm_id_val_eq_germ _ x ha, gm_id_val_eq_germ _ x hb] at hv
   obtain ⟨d0, hd0, -⟩ := TopCat.Sheaf.existsUnique_gluing' X.sheaf O V (fun a => homOfLE (hO a)) hcover
     (fun a => (u a).1) (compat _ hval)
   obtain ⟨d1, hd1, -⟩ := TopCat.Sheaf.existsUnique_gluing' X.sheaf O V (fun a => homOfLE (hO a)) hcover
@@ -160,8 +158,7 @@ theorem pull_gen {N : LB Y} {F : Z ⟶ Y} {t : (N.pull F).Gen} (ht : t.IsGen) (z
       (Z.presheaf.germ (F ⁻¹ᵁ (N.U i ⊓ N.U j)) z hij).hom (F.app _ (N.g i j).1) := by
     simp only [LB.pull, LB.LinComb, Fintype.prod_unique, zpow_one]
     exact TopCat.Presheaf.germ_res_apply ..
-  rw [hg] at H
-  exact H
+  rwa [hg] at H
 
 def LocGen (N : LB Y) (W : Y.Opens) (s : ∀ i, Γ(Y, W ⊓ N.U i)ˣ) : Prop :=
   ∀ (Z : Scheme.{0}) (f : Z ⟶ Y) (z : Z) (i j : N.ι), f z ∈ W → f z ∈ N.U i → f z ∈ N.U j →

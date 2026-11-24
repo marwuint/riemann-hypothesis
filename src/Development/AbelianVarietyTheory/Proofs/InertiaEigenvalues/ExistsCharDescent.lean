@@ -223,11 +223,9 @@ theorem exists_intMap (e : L →+* FractionRing O) :
   choose f hf using hint
   refine ⟨{ toFun := f, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, hf⟩
   · exact hinj (by simp [hf])
-  · intro a b
-    exact hinj (by simp [hf])
+  · exact fun a b => hinj (by simp [hf])
   · exact hinj (by simp [hf])
-  · intro a b
-    exact hinj (by simp [hf])
+  · exact fun a b => hinj (by simp [hf])
 
 theorem induces_of_ideal (e : L →+* FractionRing O) (v : HeightOneSpectrum (𝓞 L))
     (h : ∀ x : 𝓞 L, x ∈ v.asIdeal ↔ ∃ y ∈ IsLocalRing.maximalIdeal O, algebraMap O (FractionRing O) y = e (x : L))
@@ -240,8 +238,7 @@ theorem induces_of_ideal (e : L →+* FractionRing O) (v : HeightOneSpectrum (�
     constructor
     · rintro ⟨y, hy, hye⟩
       rwa [← hinj (hye.trans (hφ a).symm)]
-    · intro ha
-      exact ⟨φ a, ha, hφ a⟩
+    · exact fun ha => ⟨φ a, ha, hφ a⟩
   have he : ∀ a : 𝓞 L, e (algebraMap (𝓞 L) L a) = algebraMap O (FractionRing O) (φ a) := fun a => (hφ a).symm
   constructor
   · intro hx
@@ -330,8 +327,7 @@ theorem exists_coeff_ext (L : Type) [Field L] [NumberField L] [IsGalois ℚ L] (
     simp only [Ideal.mem_comap, P', p]
     rw [hφψ, hjmem, h x]
     constructor
-    · intro hx
-      exact ⟨ψ x, hx, hψ x⟩
+    · exact fun hx => ⟨ψ x, hx, hψ x⟩
     · rintro ⟨y, hy, hyx⟩
       rwa [← hWinj (hyx.trans (hψ x).symm)]
   have hv1 : v.asIdeal ∈ Ideal.primesOver p (𝓞 L) := ⟨v.isPrime, ⟨rfl⟩⟩
@@ -351,8 +347,7 @@ theorem exists_coeff_ext (L : Type) [Field L] [NumberField L] [IsGalois ℚ L] (
     simp only [P', Ideal.mem_comap]
     rw [he_int]
     constructor
-    · intro hx
-      exact ⟨_, hx, rfl⟩
+    · exact fun hx => ⟨_, hx, rfl⟩
     · rintro ⟨y, hy, hyx⟩
       rwa [← hOinj hyx]
   refine ⟨O, inferInstance, inferInstance, inferInstance, j.toAlgebra, e, hjinj, hjfin, hjloc,
@@ -387,8 +382,7 @@ theorem exists_char_descent {L K G : Type} [Field L] [Field K] [Group G] (e : L 
   choose f hf using key
   refine ⟨{ toFun := f, map_one' := ?_, map_mul' := ?_ }, hf⟩
   · exact Units.ext (hinj (by simp [hf]))
-  · intro a b
-    exact Units.ext (hinj (by simp [hf]))
+  · exact fun a b => Units.ext (hinj (by simp [hf]))
 
 end GlobalTheory.TwistChoice
 

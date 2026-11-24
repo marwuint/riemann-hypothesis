@@ -105,8 +105,7 @@ theorem spMap_frac_cancel {V K A : Type} [CommRing V] [CommRing K] [Algebra V K]
   have e1 := Spec.map_injective e
   congr 1
   apply CommRingCat.hom_ext
-  apply IsLocalization.ringHom_ext (nonZeroDivisors V)
-  exact congrArg CommRingCat.Hom.hom e1
+  exact IsLocalization.ringHom_ext (nonZeroDivisors V) (congrArg CommRingCat.Hom.hom e1)
 
 theorem dualMap_alg {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     (dualMap f).comp (algebraMap A (DualNumber A)) = (algebraMap B (DualNumber B)).comp f := by
@@ -147,8 +146,7 @@ theorem comb_generic {V K : Type} [CommRing V] [CommRing K] [Algebra V K] [IsFra
       z' ≫ t.G.hom = spMap (algebraMap K (DualNumber K)) := by
     intro z z' hz
     apply spMap_frac_cancel (V := V)
-    rw [Category.assoc, ← m₂.cart.1.w, ← Category.assoc, hz, Category.assoc, Over.w z]
-    exact hδ
+    rwa [Category.assoc, ← m₂.cart.1.w, ← Category.assoc, hz, Category.assoc, Over.w z]
   let T' : Over (Sp K) := Over.mk (spMap (algebraMap K (DualNumber K)))
   let Y : Fin m → (T' ⟶ t.G) := fun j => Over.homMk (spMap (epsMul (algebraMap V K (a j))) ≫ u' j) (by
     show (spMap (epsMul (algebraMap V K (a j))) ≫ u' j) ≫ t.G.hom = spMap (algebraMap K (DualNumber K))
@@ -200,8 +198,7 @@ theorem mul_eq_one_of_comb {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) {m : ℕ}
   have h1 := (hcomb _ (fun i => ∑ j, A i j • b j) _ _).1 (hB i)
   have h2 : IsCombAt x (fun i => v (b i)) ((B * A) i) (v (b i)) := by
     refine (hcomb _ b _ _).2 (h1.trans (congrArg v ?_))
-    simp only [Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]
-    exact Finset.sum_comm
+    simpa only [Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul] using Finset.sum_comm
   have h3 : IsCombAt x (fun i => v (b i)) ((1 : Matrix (Fin m) (Fin m) S) i) (v (b i)) := by
     refine (hcomb _ b _ _).2 (congrArg v ?_)
     simp [Matrix.one_apply]

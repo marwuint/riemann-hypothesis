@@ -95,8 +95,7 @@ theorem eq_zero_of_isProGen {F Ω : Type} [Field F] [NumberField F] [Field Ω] [
       Set (G F Ω))) hle (hγ.2 hσ)
   have h3 : (⟨σ, hσ⟩ : Ine (F := F) A) ∈ closure (ψ.ker : Set (Ine (F := F) A)) :=
     closure_subtype.2 h2
-  rw [hclosed.closure_eq, hker] at h3
-  exact h3
+  rwa [hclosed.closure_eq, hker] at h3
 
 open NumberField IsDedekindDomain in
 open scoped Pointwise in
@@ -192,8 +191,7 @@ private theorem isClosed_setOf_pred_map_apply_of_isOpen_ker {F Ω : Type} [Field
       inv_mul_eq_one] at hσ
     apply hτ
     simp only [Set.mem_setOf_eq] at hσx hPσ ⊢
-    rw [hσ, ← hσx]
-    exact hPσ
+    rwa [hσ, ← hσx]
   · rw [mem_leftCoset_iff, inv_mul_cancel]
     exact one_mem _
 
@@ -249,8 +247,7 @@ theorem _root_.GlobalTheory.TamePairing.tame_pairing : _root_.GlobalTheory.Publi
       have := hχ0 (Subgroup.inclusion (_root_.ReciprocityTheory.Gal.Ine_le_Dec (F := F) A) σ)
       rw [h] at this
       simpa using this
-    · intro h
-      exact hχuniq _ 0 (by simpa using h)
+    · exact fun h => hχuniq _ 0 (by simpa using h)
   have hKχ : ∀ σ : _root_.Formalism.ConjugateSelfDual.G F Ω, σ ∈ _root_.GlobalTheory.TameQuot.ineKer F A l → σ x = x := by
     intro σ hσ
     have hσI := _root_.GlobalTheory.TameQuot.ineKer_le_Ine A l hσ
@@ -258,8 +255,7 @@ theorem _root_.GlobalTheory.TamePairing.tame_pairing : _root_.GlobalTheory.Publi
       (χ.comp (Subgroup.inclusion (_root_.ReciprocityTheory.Gal.Ine_le_Dec (F := F) A)))
       (by rw [hkerχ]; exact (_root_.ReciprocityTheory.Gal.isOpen_setOf_apply x (· = x)).preimage continuous_subtype_val) hσ
     have hmem : (⟨σ, hσI⟩ : _root_.ReciprocityTheory.Gal.Ine (F := F) A) ∈ (χ.comp (Subgroup.inclusion (_root_.ReciprocityTheory.Gal.Ine_le_Dec (F := F) A))).ker := h1
-    rw [← SetLike.mem_coe, hkerχ] at hmem
-    exact hmem
+    rwa [← SetLike.mem_coe, hkerχ] at hmem
   have hγcl : (γ : _root_.Formalism.ConjugateSelfDual.G F Ω) ∈ closure ((Subgroup.zpowers γ0 ⊔ _root_.GlobalTheory.TameQuot.ineKer F A l :
       Subgroup (_root_.Formalism.ConjugateSelfDual.G F Ω)) : Set (_root_.Formalism.ConjugateSelfDual.G F Ω)) := by
     rw [← Subgroup.topologicalClosure_coe]

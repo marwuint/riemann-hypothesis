@@ -133,8 +133,7 @@ theorem comb_transfer {X A B M : Type} [AddCommGroup M] [Module ℂ M] (vac : M 
     rw [hsub, ← hA _ hv, ← hB _ hv, heq, sub_self]
   intro s hs
   have h := hmodel (CA - CB) s0 h0 hv h0' s hs
-  rw [hsub, sub_eq_zero, ← hA s hs, ← hB s hs] at h
-  exact h
+  rwa [hsub, sub_eq_zero, ← hA s hs, ← hB s hs] at h
 
 theorem howe_on_span (hH : HoweUnram) {L : Type} [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L]
     {ϖ : L} {σ : L →+* L} {q : ℕ} {δ : L} {n n' : ℕ} {JS : GL (Fin n) L} {JT : GL (Fin n') L} {ψ : AddChar L ℂ}
@@ -218,8 +217,7 @@ theorem howe_on_span (hH : HoweUnram) {L : Type} [Field L] [CharZero L] [Valued 
       rho_mul := by
         intro x y
         ext m
-        have h := congrArg (fun T : Module.End ℂ M => T (m : M)) (hp.rho_mul x y)
-        exact h
+        exact congrArg (fun T : Module.End ℂ M => T (m : M)) (hp.rho_mul x y)
       span := by
         rw [eq_top_iff, ← hspan]
         refine Submodule.span_mono ?_
@@ -228,8 +226,7 @@ theorem howe_on_span (hH : HoweUnram) {L : Type} [Field L] [CharZero L] [Valued 
       norm := by
         intro g h x
         ext m
-        have e := congrArg (fun T : Module.End ℂ M => T (m : M)) (hp.norm g h x)
-        exact e
+        exact congrArg (fun T : Module.End ℂ M => T (m : M)) (hp.norm g h x)
       fix := by
         intro g h hg hh s hs
         exact Subtype.ext (hp.fix g h hg hh s (fun u hu => congrArg Subtype.val (hs u hu))) }
@@ -237,12 +234,10 @@ theorem howe_on_span (hH : HoweUnram) {L : Type} [Field L] [CharZero L] [Valued 
   constructor
   · intro w hw hfix
     have h := Submodule.mem_map_of_mem (f := M0.subtype) (h1 ⟨w, hw⟩ (fun g hg => Subtype.ext (hfix g hg)))
-    rw [Submodule.map_span, ← Set.range_comp] at h
-    exact h
+    rwa [Submodule.map_span, ← Set.range_comp] at h
   · intro w hw hfix
     have h := Submodule.mem_map_of_mem (f := M0.subtype) (h2 ⟨w, hw⟩ (fun g hg => Subtype.ext (hfix g hg)))
-    rw [Submodule.map_span, ← Set.range_comp] at h
-    exact h
+    rwa [Submodule.map_span, ← Set.range_comp] at h
 
 theorem howe_all_vacua : HoweUnram → ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L) (ψ : AddChar L ℂ) (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M) (ω : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L) × Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L) →* Module.End ℂ M), LocPair ϖ σ q δ JS JT ψ ρ ω → (∀ cT : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L) →₀ ℂ, (∀ s, LocVac ρ s → ∀ k : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L), (k : GL (Fin n') L) ∈ Formalism.UG.GLint (Fin n') (Formalism.UG.intL L) → ω (1, k) (cT.sum fun b z => z • ω (1, b) s) = cT.sum fun b z => z • ω (1, b) s) → ∃ cS : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L) →₀ ℂ, ∀ s, LocVac ρ s → (cT.sum fun b z => z • ω (1, b) s) = cS.sum fun a z => z • ω (a, 1) s) ∧ ∀ cS : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L) →₀ ℂ, (∀ s, LocVac ρ s → ∀ k : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L), (k : GL (Fin n) L) ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L) → ω (k, 1) (cS.sum fun a z => z • ω (a, 1) s) = cS.sum fun a z => z • ω (a, 1) s) → ∃ cT : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L) →₀ ℂ, ∀ s, LocVac ρ s → (cS.sum fun a z => z • ω (a, 1) s) = cT.sum fun b z => z • ω (1, b) s := by
   intro hH L _ _ _ _ ϖ σ q δ n n' JS JT ψ M _ _ ρ ω hp

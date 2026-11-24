@@ -79,8 +79,7 @@ theorem frob_fix_of_ncard_primes_eq_finrank (K N : Type) [Field K] [NumberField 
     refine hPm.eq_of_le (Ideal.IsPrime.ne_top inferInstance) fun x hxP => ?_
     rw [Ideal.mem_inv_pointwise_smul_iff]
     have h1 := P.add_mem (hx x) (P.pow_mem_of_mem hxP _ (Nat.pos_of_ne_zero hq))
-    rw [sub_add_cancel] at h1
-    exact h1
+    rwa [sub_add_cancel] at h1
   let f : (N ≃ₐ[K] N) → Ideal (𝓞 M) := fun σ => (σ⁻¹ • P).under (𝓞 M)
   have hker : ∀ σ τ, σ⁻¹ * τ ∈ M.fixingSubgroup → f σ = f τ := by
     intro σ τ e
@@ -88,8 +87,7 @@ theorem frob_fix_of_ncard_primes_eq_finrank (K N : Type) [Field K] [NumberField 
     ext x
     simp only [f, Ideal.under, Ideal.mem_comap, Ideal.mem_inv_pointwise_smul_iff]
     have : (σ⁻¹ * τ) • algebraMap (𝓞 M) (𝓞 N) x = algebraMap (𝓞 M) (𝓞 N) x := by
-      apply RingOfIntegers.ext
-      exact e' _ (x : M).2
+      exact RingOfIntegers.ext (e' _ (x : M).2)
     rw [mul_smul, inv_smul_eq_iff] at this
     rw [this]
   have hr : Set.range f = 𝔭.asIdeal.primesOver (𝓞 M) := by
@@ -175,8 +173,7 @@ theorem ncard_over_congr {K M M' : Type} [Field K] [NumberField K] [Field M] [Nu
     rw [hcomp, hQ]
   · intro Q₁ Q₂ _ _ h
     apply HeightOneSpectrum.ext
-    have h' := congrArg HeightOneSpectrum.asIdeal h
-    exact Ideal.comap_injective_of_surjective φ φ.surjective h'
+    exact Ideal.comap_injective_of_surjective φ φ.surjective (congrArg HeightOneSpectrum.asIdeal h)
   · intro Q hQ
     refine ⟨⟨Q.asIdeal.comap φ.symm, Ideal.comap_isPrime φ.symm Q.asIdeal, fun h => Q.ne_bot (by
       have h' := congrArg (Ideal.map φ.symm) h
@@ -265,8 +262,7 @@ theorem ncard_eq_finrank_adjoin : ∀ (K L : IntermediateField ℚ ℂ) [NumberF
       (∀ x, g (f x) = g' (f x)) → g = g' := by
     intro N _ _ g g' hgg
     apply IntermediateField.adjoin_algHom_ext
-    intro x hx
-    exact hgg ⟨x, IntermediateField.subset_adjoin K S hx⟩
+    exact fun x hx => hgg ⟨x, IntermediateField.subset_adjoin K S hx⟩
   have hover' : 𝔓.asIdeal.comap (algebraMap (𝓞 K) (𝓞 L)) = 𝔭.asIdeal := by
     rw [← hover]
     rfl

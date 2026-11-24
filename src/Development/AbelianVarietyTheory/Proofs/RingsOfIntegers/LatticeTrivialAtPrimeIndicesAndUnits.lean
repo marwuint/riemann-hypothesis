@@ -93,8 +93,7 @@ theorem fg_of_nsmul_mem (A : Submodule (𝓞 E) (Fin n → E)) {k : ℕ} (hk : k
     · exact sub_eq_zero.1 h0
   let T : Submodule ℤ (Fin n → E) := LinearMap.range ((GlobalTheory.LatticeIndex.incl E n).restrictScalars ℤ)
   have hT : T.FG := by
-    simp only [T, LinearMap.range_eq_map]
-    exact Module.Finite.fg_top.map _
+    simpa only [T, LinearMap.range_eq_map] using Module.Finite.fg_top.map _
   haveI := isNoetherian_of_fg_of_noetherian T hT
   have hle : (A.restrictScalars ℤ).map f ≤ T := by
     rintro _ ⟨v, hv, rfl⟩
@@ -177,8 +176,7 @@ private theorem valuation_beta_of_lattice_commensurable {E : Type} [Field E] [Nu
     have hwE : ∀ r : 𝓞 E, wτ (algebraMap (𝓞 E) E r) ≤ 1 := fun r =>
       hint _ ((NumberField.RingOfIntegers.isIntegral_coe r).map (io.comp (embF c τ)).toIntAlgHom)
     have hkE : wτ (k : E) = 1 := by
-      simp only [wτ, w, Valuation.comap_apply, map_natCast]
-      exact hnat
+      simpa only [wτ, w, Valuation.comap_apply, map_natCast] using hnat
     have hm := detSet_max wτ hwE A hkE hA1 hA2
     unfold idealAt
     refine GlobalTheory.LatticeIndex.hasMax_span hwR ?_ ?_
@@ -204,8 +202,7 @@ private theorem valuation_beta_of_lattice_commensurable {E : Type} [Field E] [Nu
   unfold BetaIs at hB
   rw [hB] at hm
   have hu := hm.unique hLn
-  rw [_root_.mul_one] at hu
-  exact hu
+  rwa [_root_.mul_one] at hu
 
 end
 
@@ -248,8 +245,7 @@ theorem trivAt_units : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
       · simp [Matrix.one_apply]
       · intro b _ hb
         simp [Matrix.one_apply_ne hb]
-      · intro h
-        exact absurd (Finset.mem_univ i) h
+      · exact fun h => absurd (Finset.mem_univ i) h
     obtain ⟨hmem, hone, -⟩ := GlobalTheory.PushIntegral.map_pushL_mem_FFV E H Dw l c n Λ w P hP T io k 1 hunit hunitary
       (fun v hv => by rw [Matrix.one_mulVec, Nat.cast_smul_eq_nsmul]; exact h1 v hv)
     rwa [hone] at hmem

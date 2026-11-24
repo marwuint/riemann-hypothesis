@@ -125,8 +125,7 @@ theorem eq_one_of_gam_bot {F E : Type} [Field F] [NumberField F] [Field E] [Numb
     (Formalism.L2.DIV.UR hc J).mul_mem ((Formalism.L2.DIV.UR hc J).mul_mem ((Formalism.L2.DIV.UR hc J).inv_mem hgq) hg) hgq
   have hx : ((x : UA hc J) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) =
       (q : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * (Formalism.L2.DIV.rep (Quotient.mk'' x : Cl hc J K) : UA hc J) * k₁ := by
-    have h3 := congrArg Subtype.val e3
-    simpa only [Subgroup.coe_mul] using h3
+    simpa only [Subgroup.coe_mul] using congrArg Subtype.val e3
   have hk0 : (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))⁻¹ * u * x ∈ K := by
     simpa only [Subgroup.coe_mul, Subgroup.coe_inv] using hk
   have hin : (⟨gq⁻¹ * g * gq, hmem⟩ : Formalism.L2.DIV.UR hc J) ∈ Formalism.L2.DIV.Gam (Quotient.mk'' x : Cl hc J K) := by
@@ -145,8 +144,7 @@ theorem eq_one_of_gam_bot {F E : Type} [Field F] [NumberField F] [Field E] [Numb
     rw [e4]
     exact K.mul_mem (K.mul_mem hk₁ hk0) (K.inv_mem hk₁)
   have hb : (⟨gq⁻¹ * g * gq, hmem⟩ : Formalism.L2.DIV.UR hc J) ∈ (⊥ : Subgroup (Formalism.L2.DIV.UR hc J)) := by
-    rw [← hG (Quotient.mk'' x)]
-    exact hin
+    rwa [← hG (Quotient.mk'' x)]
   have h1 : gq⁻¹ * g * gq = 1 := congrArg Subtype.val (Subgroup.mem_bot.1 hb)
   have hg1 : g = 1 := by
     calc g = gq * (gq⁻¹ * g * gq) * gq⁻¹ := by group
@@ -170,8 +168,7 @@ theorem finE_of_eq {γ : GQ V} {h h' κ : GA D V} {k : Formalism.IndefR.Bridge.G
 
 theorem finE_mem_lev {κ : GA D V} {k : Formalism.IndefR.Bridge.Gf V} (hk : finHom V κ = k.1) (h : k ∈ (levEnv V β L).J) :
     finE V κ ∈ lev D.sp.cm V.gram β (flag1L L) := by
-  rw [finE_eq, hk]
-  exact h
+  rwa [finE_eq, hk]
 
 theorem stab_trivial (hG : ∀ c₀ : Cl D.sp.cm V.gram (lev D.sp.cm V.gram β (flag1L L)), Gam c₀ = ⊥) (h : GA D V)
     (γ : GQ V) (k : Formalism.IndefR.Bridge.Gf V) (hk : k ∈ (levEnv V β L).J)
@@ -198,8 +195,7 @@ private theorem clsA_eq_of_ratF_mul {h h' : GA D V} {γ : GQ V} {k : Formalism.I
   obtain ⟨κ', hκ'G, hκ'⟩ := AdelCls.exists_fin V (finU V κ)
   refine (((AdelCls.adelic_classes D V).2.2.2.2 _ h h').2 ⟨γ, γ.2, κ', ?_, (↑γ * h * κ')⁻¹ * h', ?_, by group⟩).symm
   · refine Formalism.IndefR.Lev.mem_levA.2 ⟨hκ'G, ?_⟩
-    rw [← coe_finU, hκ', coe_finU]
-    exact h2
+    rwa [← coe_finU, hκ', coe_finU]
   · refine (AdelCls.finU_eq_one_iff V _).1 ?_
     apply Subtype.ext
     have h1' : finE V h' = finE V ↑γ * finE V h * finE V κ := by
@@ -235,13 +231,11 @@ private theorem apply_rangeRestrict_mul_eq_of_mem_adForms_of_mem_levS {c : CoefA
   have hk' : finE V k ∈ lev D.sp.cm V.gram β (flag1L L) := (Formalism.IndefR.Lev.mem_levA.1 hk0).2
   have hJ : (finHom V).rangeRestrict k ∈ (levEnv V β L).J := by
     show Formalism.UG.bc (swapAE D) (finHom V k) ∈ lev D.sp.cm V.gram β (flag1L L)
-    rw [← finE_eq]
-    exact hk'
+    rwa [← finE_eq]
   have e1 := hf' 1 ((finHom V).rangeRestrict g) ⟨_, hJ⟩
   have hc1 : (levEnv V β L).χ ⟨_, hJ⟩ = 1 := hχ (Formalism.UG.bc (swapAE D) (finHom V k))
   rw [map_one, one_mul, map_one, hc1, Units.val_one, one_smul] at e1
-  rw [map_mul]
-  exact e1
+  rwa [map_mul]
 
 theorem toMap_apply {S : D.what₂.Tau → SPar} {M : DSModel V S} (c : CoefA V) (pr : c.W →ₗ[ℂ] SmT M →ₗ[ℂ] ℂ)
     (f : Formalism.IndefR.Bridge.Gf V → c.W) (v : M.Vec) (g : GA D V) : PiTensorProduct.lift.symm (c.toMap pr f) v g =

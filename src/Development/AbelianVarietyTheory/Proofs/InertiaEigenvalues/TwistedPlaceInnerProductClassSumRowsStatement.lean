@@ -159,8 +159,7 @@ theorem rat_unit {V : HSp D} (hg : V.gram = 1) (h : Formalism.AUTREP.GAf D.host.
       change (sndA D.host.F 1) ⊗ₜ[D.host.F] (x.1 i j) = _
       rw [map_one]
     simp only [e4] at e3
-    apply (GlobalTheory.StdFrameModel.sw D).symm.injective
-    exact e3
+    exact (GlobalTheory.StdFrameModel.sw D).symm.injective e3
 
 variable {V : HSp D} (c : CoefA V)
 
@@ -384,8 +383,7 @@ theorem exists_form [Finite ι] {K Γ₁ Γ₂ : Subgroup G} (hK : ∀ x, (cj K 
   have hpos : 0 < ∑ k, c k := Finset.sum_pos (fun k _ => hc k) ⟨⟨_, hk₀⟩, Finset.mem_univ _⟩
   refine ⟨∑ k, B k, c₂ * c₁ / ∑ k, c k, ⟨fun x y => ?_, fun x hx => ?_⟩, by positivity, fun γ hγ => hβinv γ (h₁ hγ), fun x x' => ?_⟩
 
-  · simp only [LinearMap.sum_apply, map_sum]
-    exact Finset.sum_congr rfl fun k _ => (hB k).1 x y
+  · simpa only [LinearMap.sum_apply, map_sum] using Finset.sum_congr rfl fun k _ => (hB k).1 x y
   · simp only [LinearMap.sum_apply, Complex.re_sum]
     exact Finset.sum_pos (fun k _ => (hB k).2 x hx) ⟨⟨_, hk₀⟩, Finset.mem_univ _⟩
   · have e₃ := e₁ (fun g => (∑ k, B k) (f x g) (f x' g)) (fun a ha g => hβinv a ha x x' g g) (hr₀ _ x x')
@@ -536,8 +534,7 @@ theorem span_values (a : NG.AlgWt L n) {f : GAf L n → a.W} (hf : f ∈ NG.AFal
     refine (eq_bot_or_eq_top U).resolve_left fun hb => h₀ ?_
     funext g
     have : f g ∈ U.toSubmodule := Submodule.subset_span ⟨g, rfl⟩
-    rw [hb] at this
-    exact this
+    rwa [hb] at this
   exact congrArg Subrepresentation.toSubmodule hU
 
 theorem span_finite_values (a : NG.AlgWt L n) {f : GAf L n → a.W} (hf : f ∈ NG.AFall L n a.ρ) (h₀ : f ≠ 0) :

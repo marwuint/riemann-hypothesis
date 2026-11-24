@@ -143,8 +143,7 @@ theorem hom_ext_of_points (j : U ⟶ Z) [QuasiCompact j] [IsSchemeTheoreticallyD
   have ht : t ≫ f = t ≫ g := h _ t
   have hdom : IsSchemeTheoreticallyDominant
       ((equalizer.lift t ht).left ≫ (equalizer.ι f g).left) := by
-    rw [← Over.comp_left, equalizer.lift_ι]
-    exact hsd
+    rwa [← Over.comp_left, equalizer.lift_ι]
   have hker : (equalizer.ι f g).left.ker = ⊥ :=
     le_bot_iff.mp ((Scheme.Hom.le_ker_comp _ _).trans hdom.ker_eq_bot.le)
   have : IsIso (equalizer.ι f g).left := IsClosedImmersion.isIso_iff_ker_eq_bot.mpr hker
@@ -284,12 +283,9 @@ theorem exists_grpObj (j : U ⟶ Z) [QuasiCompact j] [IsSchemeTheoreticallyDomin
         have ht : t = lift (lift (pushPt h.w x) (pushPt h.w y)) (pushPt h.w z) := by
           apply CartesianMonoidalCategory.hom_ext
           · apply CartesianMonoidalCategory.hom_ext
-            · simp only [Category.assoc, lift_fst]
-              exact hx.symm
-            · simp only [Category.assoc, lift_fst_assoc, lift_snd]
-              exact hy.symm
-          · simp only [lift_snd]
-            exact hz.symm
+            · simpa only [Category.assoc, lift_fst] using hx.symm
+            · simpa only [Category.assoc, lift_fst_assoc, lift_snd] using hy.symm
+          · simpa only [lift_snd] using hz.symm
         rw [ht, lift_whiskerRight_assoc, pmul, pmul, lift_lift_associator_hom_assoc, lift_whiskerLeft_assoc,
           pmul, pmul, _root_.mul_assoc]
       left_inv := by
@@ -417,8 +413,7 @@ theorem grpObj_descends_to_fg_subalgebra :
       h₀.lift_fst _ _ _, h₀.lift_snd _ _ _⟩
   have hψ : IsPullback ψ A.hom A₀.hom (spMap R.val.toRingHom) := by
     refine IsPullback.of_right ?_ hψ₂ h₀
-    rw [hψ₁, eV]
-    exact hA
+    rwa [hψ₁, eV]
 
   have c₂ : sq hψ.w ≫ sq h₀G.w = sq hAG.w := by
     apply sq_ext
@@ -510,8 +505,7 @@ theorem comp_eq_id_of_models [Flat p] [IsSeparated p]
         IsPullback.isoPullback_hom_snd]
 
   have hfst : bcMap p R.val ≫ f ≫ g ≫ pullback.fst _ _ = pullback.fst _ _ := by
-    rw [← cancel_epi hτ.isoPullback.hom, reassoc_of% hu, IsPullback.isoPullback_hom_fst]
-    exact hg'
+    rwa [← cancel_epi hτ.isoPullback.hom, reassoc_of% hu, IsPullback.isoPullback_hom_fst]
 
   refine hom_ext_bcMap p R.val Subtype.val_injective (pullback.snd p (spMap (algebraMap k R)))
     ?_ ?_
@@ -567,8 +561,7 @@ theorem smooth_models_iso_over_fg_subalgebra :
   refine ⟨R, ⟨f, g, comp_eq_id_of_models hτ hτ' R f g hf₂ hg₂ hf' hg',
     comp_eq_id_of_models hτ' hτ R g f hg₂ hf₂ hg' hf'⟩, hR, hf₂, ?_⟩
   intro σ h₁ h₂
-  rw [eq_isoPullback_hom_comp_bcMap hτ R σ h₁ h₂, Category.assoc]
-  exact hf'
+  rwa [eq_isoPullback_hom_comp_bcMap hτ R σ h₁ h₂, Category.assoc]
 
 end GlobalTheory
 end -- clump:auto
@@ -626,8 +619,7 @@ theorem isPullback_lift {X X₀ : Scheme.{0}} {q : X ⟶ S} {q₀ : X₀ ⟶ S�
     IsPullback (pullback.lift φ (q ≫ σ) (by rw [Category.assoc, e, h.w])) q (pullback.snd q₀ g) σ := by
   refine IsPullback.of_right (h₁₂ := pullback.fst q₀ g) (v₁₃ := q₀) (h₂₂ := g) ?_ (pullback.lift_snd _ _ _)
     (.of_hasPullback _ _)
-  rw [pullback.lift_fst, e]
-  exact h
+  rwa [pullback.lift_fst, e]
 
 def PairModel.baseChange (M : PairModel f p a) (σ : S ⟶ S₁) (g : S₁ ⟶ S₀) (e : σ ≫ g = f) : PairModel σ p a :=
   have w : M.τ ≫ M.a₀ ≫ M.p₀ = ((a ≫ p) ≫ σ) ≫ g := by

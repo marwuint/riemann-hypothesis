@@ -87,8 +87,7 @@ theorem exists_restrict {A B : Over S} (q : A ⟶ B) (U : S.Opens) :
       n ≫ (B.hom ⁻¹ᵁ U).ι = (A.hom ⁻¹ᵁ U).ι ≫ q.left := by
   refine ⟨q.left.resLE (B.hom ⁻¹ᵁ U) (A.hom ⁻¹ᵁ U) ?_, Scheme.Hom.resLE_comp_ι _ _⟩
   intro x hx
-  rw [← Over.w q] at hx
-  exact hx
+  rwa [← Over.w q] at hx
 
 private theorem exists_isGen_of_isGen_iso_of_isGen {X : Scheme.{0}} {A B : LB X} (hA : A.IsLB) (hB : B.IsLB)
     (u : LB.Iso A B) (hu : u.IsGen) (t : LB.Gen B) (ht : t.IsGen) : ∃ t' : LB.Gen A, t'.IsGen := by
@@ -110,12 +109,10 @@ private theorem exists_isGen_of_isGen_iso_of_isGen {X : Scheme.{0}} {A B : LB X}
     change IsUnit (X.presheaf.germ (A.U a) x hx ((secOfIso tS hu hA hB).f a))
     rw [e1, hsp, isoCand, map_mul]
     refine IsUnit.mul ((Units.isUnit _).map _) ?_
-    simp only [rs, TopCat.Presheaf.germ_res_apply]
-    exact (Units.isUnit (t.s b)).map _
+    simpa only [rs, TopCat.Presheaf.germ_res_apply] using (Units.isUnit (t.s b)).map _
   refine ⟨⟨fun a => (hunit a).unit⟩, fun i j => ?_⟩
   apply Units.ext
-  have e := (secOfIso tS hu hA hB).compat i j
-  simpa [res] using e
+  simpa [res] using (secOfIso tS hu hA hB).compat i j
 
 end GlobalTheory.RosatiPower
 
@@ -142,8 +139,7 @@ theorem GlobalTheory.rosatiAdj_pow : ∀ (S : Scheme.{0}) (G' G : Over S) [GrpOb
       (fun k => ((G' ⊗ G').hom ⁻¹ᵁ U).ι ≫ rosatiφ G' f' g' k) rosatiε).Gen :=
     fun i => GeneratorPullback.pullAlong L (p.pr i).left (n i) _ rosatiε _ (hc i) t
   have ht' : ∀ i, (t' i).IsGen := by
-    intro i
-    exact LBxP.isGen_pullAlong L (Over.Hom.left (p.pr i)) (n i) _ rosatiε _ (hc i) t ht
+    exact fun i => LBxP.isGen_pullAlong L (Over.Hom.left (p.pr i)) (n i) _ rosatiε _ (hc i) t ht
   have hb := GlobalTheory.BoxSymmetry.isGen_boxGen L (fun i => (p.pr i).left) _ rosatiε t' ht'
   have hwi := linCombIso_isGen w hw (fun k => ((G' ⊗ G').hom ⁻¹ᵁ U).ι ≫ rosatiφ G' f' g' k) rosatiε
   exact exists_isGen_of_isGen_iso_of_isGen (linComb_isLB _ hL' _ _) (linComb_isLB _ (linComb_isLB _ hL _ _) _ _) _ hwi _ hb

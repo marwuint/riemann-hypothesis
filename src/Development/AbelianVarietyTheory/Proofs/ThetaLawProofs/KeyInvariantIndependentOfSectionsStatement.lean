@@ -361,8 +361,7 @@ theorem GlobalTheory.KeyKa.finZ_of_line_towards_generic : Out.Laws → ∀ (k K 
     by_contra h
     refine hZ₁ fun i => ?_
     by_cases e : i = i₀
-    · rw [e, ← p₁ q₀]
-      exact h
+    · rwa [e, ← p₁ q₀]
     · exact hX₁ i e
   obtain ⟨σ, hσ₁, hσ₂⟩ := (GlobalTheory.KeyKa.sections_separate_points_and_tangents hL k x n hn).2 z₁ z₂ d₁ d₂
     (fun e => hne ((p₁ q₀).symm.trans (e ▸ p₂ q₀))) h₁ h₂
@@ -658,8 +657,7 @@ theorem etZ_pull {R R' : Type} [CommRing R] [CommRing R'] [IsLocalRing R'] {x : 
   · exact isUnit_of_mul_isUnit_left (hjac a (hzero a) ▸ (hz₃ a).map f)
   · refine hz₄ a a' h (spMap f p) ?_
     have e₁ := congrArg (fun q => q p) (hz' a)
-    have e₂ := congrArg (fun q => q p) (hz' a')
-    exact e₁.symm.trans ((congrArg φ e).trans e₂)
+    exact e₁.symm.trans ((congrArg φ e).trans (congrArg (fun q => q p) (hz' a')))
   · obtain ⟨a, p, hp'⟩ := hz₅ (φ y) fun i h =>
       hy (i.cast hg.symm) (EtBaseChange.mem_nonzeroLocus_via (hs (i.cast hg.symm)) y h)
     have sq : IsPullback (spMap f) (z' a).left (z a).left φ := by
@@ -690,8 +688,7 @@ theorem torsSq_kosD_mul {R F : Type} [CommRing R] [Field F] (f : R →+* F) {g d
     (fun j => (ev j).map f) ev' (fun _ => 1) P⁻¹ (Units.map f.toMonoidHom t) (fun i j _ => by simp)
     (by rw [hev, ← Matrix.mul_assoc, Units.inv_mul]; simp) hC' H'
   simp only [map_one, one_zpow, Finset.prod_const_one, _root_.mul_one, map_inv, inv_pow, mul_inv_eq_iff_eq_mul] at h₂
-  rw [h₂] at h₁
-  exact h₁
+  rwa [h₂] at h₁
 
 theorem exists_unit_kaVal (laws : Out.Laws) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] {F : Type} [Field F] {f : O →+* F} {x : KeyIn O} {x' : KeyIn F}
@@ -797,8 +794,7 @@ theorem exists_unit_kaVal (laws : Out.Laws) {O : Type} [CommRing O] [IsDomain O]
             (hval a _ (b 0 i) (b' 0 i) (hb' 0 i)))) h₂ h₃
       have e₁ : (∏ a, u a) ^ (-2 * (k : ℤ)) = ((∏ a, u a) ^ (-(k : ℤ))) ^ 2 := by group
       rw [hdet, mul_pow, ← _root_.mul_assoc] at H
-      rw [e₁]
-      exact H
+      rwa [e₁]
     · change f _ = f e * f Pm.det ^ 2
       rw [← h₄, map_mul, map_pow, _root_.mul_comm]
   obtain ⟨c, lam, t, e, dl, hc, hct, hJ⟩ := key l (Or.inl rfl) hadm.2.1
@@ -1192,8 +1188,7 @@ theorem secVia_iff_onLine {y : KeyIn R} {y' : KeyIn R'} {g : R →+* R'} {φ w} 
   constructor
   · intro h
     exact KeyVia.Via.unique (L := y.P.L) (L' := y'.P.L) (w := w) (l := n) (a := s.f) (a' := s'.f) y.P.isLB h e'
-  · intro h
-    exact (congrArg (fun q => KeyVia.Via (L := y.P.L) (L' := y'.P.L) w n q s.f) h).mpr e'
+  · exact fun h => (congrArg (fun q => KeyVia.Via (L := y.P.L) (L' := y'.P.L) w n q s.f) h).mpr e'
 
 theorem lineFn_zero {X : Scheme.{0}} {L : LB X} (p : X ⟶ Sp R) (a b : ∀ i, Γ(X, L.U i)) : a = lineFn p 0 a b := by
   funext i
@@ -1313,8 +1308,7 @@ theorem kaVal_eq_of_line : Out.Laws → ∀ (K : Type) [Field K] [CharZero K] [I
     obtain ⟨y, s, hy⟩ := exists_isLinePt s₀ s₁ (RingHom.id K) a
     obtain ⟨φ, w, hg, H, hs⟩ := IsLinePt.via (t := a) hy hr
     refine ⟨y, s, ?_, GlobalTheory.T.keyInvariant_baseChange hL K K x y _ φ w n l l' al hg r s κ hA H hs hκ⟩
-    rw [hev, show evalRingHom a X = a from eval_X]
-    exact hy
+    rwa [hev, show evalRingHom a X = a from eval_X]
   refine eq_of_line V ?_ ?_ ?_ ?_ (hpt 0 s₀ κ₀ (fun i => onLine_zero x _ _) h₀)
     (hpt 1 s₁ κ₁ (fun i => onLine_one x _ _) h₁)
   · rintro R R' _ _ _ _ _ ψ g κ ⟨y, s, hy, hκ⟩
@@ -1679,8 +1673,7 @@ theorem Framed.via {R R' : Type} [CommRing R] [CommRing R'] {f : K →+* R} {j :
   have e : (i.cast hg).cast hg1 = i.cast hg2 := Fin.ext rfl
   rw [e] at hc
   have ht' : t = s' i := eq_of_coords hc (hs2 i)
-  rw [← ht']
-  exact ht
+  rwa [← ht']
 
 variable {l l' : ℕ} {al : ℕ → Matrix (Fin 4) (Fin 4) ℤ}
 
@@ -1833,8 +1826,7 @@ theorem kaVal_independent : Out.Laws → ∀ (K : Type) [Field K] [CharZero K] [
       refine ⟨φ, w, hg, b', H, hb', fun i => ?_⟩
       have e : (i.cast hg).cast hg.symm = i := Fin.ext rfl
       have h1 := hc (i.cast hg)
-      rw [e] at h1
-      exact h1
+      rwa [e] at h1
     have h2 := hall K' (fun p => c p.1 p.2) κ' ⟨x', s', κ', hf, hk', rfl⟩
     rw [h2, Units.val_mk0]
     rfl

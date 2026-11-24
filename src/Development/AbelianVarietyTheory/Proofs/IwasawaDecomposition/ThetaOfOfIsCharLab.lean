@@ -96,12 +96,9 @@ theorem isConjPl_iff (H : Host R) (w w' : PlE H) :
   · intro h
     ext y
     have := h (H.conj⁻¹ • y) y (by rw [← Formalism.TwoAdicCyclotomicDecomposition.odd_coe_smul, smul_inv_smul])
-    rw [Ideal.mem_pointwise_smul_iff_inv_smul_mem]
-    exact this
+    rwa [Ideal.mem_pointwise_smul_iff_inv_smul_mem]
   · intro h x y hxy
-    have hy : y = H.conj • x := by
-      apply Subtype.ext
-      exact hxy
+    have hy : y = H.conj • x := Subtype.ext hxy
     rw [← h, hy, Ideal.smul_mem_pointwise_smul_iff]
 
 theorem exists_places_cover (H : Host R) {p : ℕ} (hp : p.Prime)
@@ -142,8 +139,7 @@ theorem exists_places_cover (H : Host R) {p : ℕ} (hp : p.Prime)
       rw [← Ideal.over_def (e i • P) (Ideal.span {(p : ℤ)})]
       exact Ideal.mem_span_singleton_self _
     have h4 : algebraMap ℤ (𝓞 H.E) ((p : ℕ) : ℤ) ∈ e i • P := h3
-    rw [map_natCast] at h4
-    exact h4
+    rwa [map_natCast] at h4
   · show (H.conj * e i) • P = e j • P
     rw [mul_smul]
     have h' := (isConjPl_iff H _ _).1 h
@@ -156,8 +152,7 @@ theorem exists_places_cover (H : Host R) {p : ℕ} (hp : p.Prime)
       refine ⟨hwp, ⟨hmax.eq_of_le (Ideal.IsPrime.ne_top inferInstance) ?_⟩⟩
       rw [Ideal.span_singleton_le_iff_mem]
       show algebraMap ℤ (𝓞 H.E) ((p : ℕ) : ℤ) ∈ w.asIdeal
-      rw [map_natCast]
-      exact hw
+      rwa [map_natCast]
     rw [← hr] at hw'
     obtain ⟨σ, hσ⟩ := hw'
     have hσ' : σ • P = w.asIdeal := hσ

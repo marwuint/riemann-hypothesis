@@ -141,9 +141,7 @@ private theorem exists_unit_ord_eq_one_and_nabs_eq_inv_resCard :
     ∃ ϖ : kˣ, _root_.GlobalTheory.SmGL.ord k ϖ = 1 ∧
       _root_.GlobalTheory.SplitWeil.nabs k ϖ = (_root_.GlobalTheory.SplitWeil.resCard k : ℝ)⁻¹ := by
   obtain ⟨p, hp⟩ := IsDiscreteValuationRing.exists_irreducible (valuation k).integer
-  have hp0 : (p : k) ≠ 0 := by
-    intro h
-    exact hp.ne_zero (Subtype.ext h)
+  have hp0 : (p : k) ≠ 0 := fun h => hp.ne_zero (Subtype.ext h)
   obtain ⟨y, hy⟩ : ∃ y : k, valuation k y = uniformizer k := valuation_surjective _
   have hy0 : y ≠ 0 := by
     intro h
@@ -154,9 +152,7 @@ private theorem exists_unit_ord_eq_one_and_nabs_eq_inv_resCard :
     exact uniformizer_lt_one.le
   obtain ⟨m, u, hu⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible
     (x := (⟨y, hyint⟩ : (valuation k).integer)) (fun h => hy0 (congrArg Subtype.val h)) hp
-  have hu0 : ((u : (valuation k).integer) : k) ≠ 0 := by
-    intro h
-    exact u.ne_zero (Subtype.ext h)
+  have hu0 : ((u : (valuation k).integer) : k) ≠ 0 := fun h => u.ne_zero (Subtype.ext h)
   refine ⟨Units.mk0 (p : k) hp0, ?_, _root_.GlobalTheory.SplitWeil.nabs_uniformiser hp rfl⟩
   have hyo : _root_.GlobalTheory.SmGL.ord k (Units.mk0 y hy0) = 1 :=
     _root_.GlobalTheory.SmGL.ord_eq_one hy

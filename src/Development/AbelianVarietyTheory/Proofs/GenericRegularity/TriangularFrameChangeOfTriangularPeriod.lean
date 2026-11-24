@@ -70,16 +70,14 @@ theorem mulVec_single_of_support {T : Type} {m : T → ℕ} {g : ℕ} (e : Fin g
   · subst hτ
     rw [Finset.sum_eq_single a (fun b _ hb => ?_) (by simp), Pi.single_eq_same, mul_one]
     rw [Pi.single_eq_of_ne, mul_zero]
-    intro hh
-    exact hb (eq_of_heq (Sigma.mk.inj (e.symm.injective hh)).2).symm
+    exact fun hh => hb (eq_of_heq (Sigma.mk.inj (e.symm.injective hh)).2).symm
   · rw [Finset.sum_eq_zero fun b _ => ?_]
     · by_contra hne
       have := hs _ _ hne
       rw [Equiv.apply_symm_apply, Equiv.apply_symm_apply] at this
       exact hτ this
     · rw [Pi.single_eq_of_ne, mul_zero]
-      intro hh
-      exact hτ (Sigma.mk.inj (e.symm.injective hh)).1
+      exact fun hh => hτ (Sigma.mk.inj (e.symm.injective hh)).1
 
 
 
@@ -89,9 +87,7 @@ theorem frBor_of_triangular_period : ∀ (E : Type) [Field E] [NumberField E] [I
   obtain ⟨hdet, hpt, hex⟩ := GlobalTheory.FamRigid.ex_eq_of_level_group GlobalTheory.latMinkowski E H Dw l Xo _ g _ F k P P₀
     (LinearEquiv.refl _ _) h₀ hP hP₀ (fun _ _ => rfl) (fun a _ => ⟨0, by simp⟩) (fun a => ⟨0, by simp⟩) hh
   have hinj : ∀ j j', (e j).1 = (e j').1 → ((e j).2 : ℕ) = (e j').2 → j = j' := by
-    intro j j' h1 h2
-    apply e.injective
-    exact Sigma.ext h1 ((Fin.heq_ext_iff (by rw [h1])).2 h2)
+    exact fun j j' h1 h2 => e.injective (Sigma.ext h1 ((Fin.heq_ext_iff (by rw [h1])).2 h2))
   have hdiag : ∀ j, h₀ j j ≠ 0 := by
     rw [GlobalTheory.PerBor.det_of_support (fun j => (e j).1) (fun j => ((e j).2 : ℕ)) hinj h₀ hs] at hdet
     exact fun j => Finset.prod_ne_zero_iff.1 hdet.ne_zero j (Finset.mem_univ j)
@@ -105,8 +101,7 @@ theorem frBor_of_triangular_period : ∀ (E : Type) [Field E] [NumberField E] [I
     rw [Matrix.mulVecLin_apply, mulVec_single_of_support e h₀ (fun j j' h => (hs j j' h).1)] at d1
     have d2 := (GlobalTheory.DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ g _ F k P₀ hP₀ _ (y₀.u τ)
       (fun i => Pi.single (e.symm ⟨τ, i⟩) 1) (hu₀ τ) _ (y.u τ i)).2 d1
-    rw [hy₀]
-    exact d2
+    rwa [hy₀]
   obtain ⟨t, ht⟩ := (frBor_calculus E H Dw l Xo c (CAt σ) y₀ y y).2.1 hx fun τ i =>
     ⟨cf τ i, isUnit_iff_ne_zero.2 (hdiag _), fun j hj => by
       by_contra hne

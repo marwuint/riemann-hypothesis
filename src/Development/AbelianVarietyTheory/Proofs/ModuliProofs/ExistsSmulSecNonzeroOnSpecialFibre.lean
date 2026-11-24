@@ -102,16 +102,14 @@ theorem app_cst {g : R →+* R'} {f : X ⟶ Spec (CommRingCat.of R)} {π : X' �
 theorem mem_basicOpen_rs {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)) {x : X} (hx : x ∈ V) :
     x ∈ X.basicOpen (rs X h a) ↔ x ∈ X.basicOpen a := by
   have := X.basicOpen_res a (homOfLE h).op
-  refine (congrArg (x ∈ ·) this).to_iff.trans ?_
-  exact ⟨fun h => h.2, fun h => ⟨hx, h⟩⟩
+  exact (congrArg (x ∈ ·) this).to_iff.trans ⟨fun h => h.2, fun h => ⟨hx, h⟩⟩
 
 theorem mem_basicOpen_cst (f : X ⟶ Spec (CommRingCat.of R)) (W : X.Opens) (r : R) {x : X} (hx : x ∈ W) :
     x ∈ X.basicOpen (AbLaw.cst f W r) ↔ r ∉ (f x).asIdeal := by
   refine (mem_basicOpen_rs le_top _ hx).trans ?_
   have e₁ := f.preimage_basicOpen_top ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)
   have e₂ := basicOpen_eq_of_affine (R := CommRingCat.of R) r
-  refine (congrArg (x ∈ ·) e₁).to_iff.symm.trans ?_
-  exact (congrArg (f x ∈ ·) e₂).to_iff
+  exact (congrArg (x ∈ ·) e₁).to_iff.symm.trans (congrArg (f x ∈ ·) e₂).to_iff
 
 theorem mem_basicOpen_iff {U : X.Opens} (hU : IsAffineOpen U) (x : U) (s : Γ(X, U)) :
     x.1 ∈ X.basicOpen s ↔ s ∉ (hU.primeIdealOf x).asIdeal := by
@@ -140,8 +138,7 @@ theorem exists_etale_chart (f : X ⟶ Spec (CommRingCat.of R)) [Smooth f] {U : X
   letI := (AbLaw.cst f W).toAlgebra
   haveI : Algebra.Smooth R Γ(X, W) := cst_smooth f hW
   obtain ⟨g, hg, hs⟩ := Algebra.IsSmoothAt.exists_notMem_isStandardSmooth R (hW.primeIdealOf ⟨x, hxW⟩).asIdeal
-  have hxg : x ∈ X.basicOpen g := by
-    exact (mem_basicOpen_iff hW ⟨x, hxW⟩ g).2 hg
+  have hxg : x ∈ X.basicOpen g := (mem_basicOpen_iff hW ⟨x, hxW⟩ g).2 hg
   haveI := hW.isLocalization_basicOpen g
   letI := (AbLaw.cst f (X.basicOpen g)).toAlgebra
   haveI : IsScalarTower R Γ(X, W) Γ(X, X.basicOpen g) :=
@@ -252,8 +249,7 @@ theorem exists_extension [Smooth f] {U : X.Opens} (t : Γ(XK, j ⁻¹ᵁ U))
       exact (rs_rs _ _ _).trans (rs_rs _ _ _).symm)
   refine ⟨s, XK.sheaf.eq_of_locally_eq' (fun x : U => j ⁻¹ᵁ V x.1 x.2) (j ⁻¹ᵁ U)
     (fun x => homOfLE fun _ hy => hV x.1 x.2 hy) ?_ _ _ fun x => ?_⟩
-  · intro y hy
-    exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨j y, hy⟩, hx _ hy⟩
+  · exact fun y hy => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨j y, hy⟩, hx _ hy⟩
   · exact (app_rs j (hV x.1 x.2) s).symm.trans ((congrArg _ (hs x)).trans (hb x.1 x.2))
 
 end Generic

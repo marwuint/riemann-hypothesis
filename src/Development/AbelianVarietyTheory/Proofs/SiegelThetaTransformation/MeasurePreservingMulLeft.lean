@@ -84,8 +84,7 @@ theorem _root_.GlobalTheory.SW.Slab.exists_lminor_near {r : ℕ} (S : Matrix (Fi
     rw [dist_eq_norm]
     exact (hG a b).trans_le (min_le_left _ _)
   have h2 := (dist_pi_lt_iff (by norm_num : (0 : ℝ) < 1 / 2)).mp (h _ hd) i
-  rw [dist_eq_norm] at h2
-  exact h2
+  rwa [dist_eq_norm] at h2
 
 
 open Matrix Complex NumberField MeasureTheory in
@@ -370,8 +369,7 @@ theorem _root_.GlobalTheory.SW.thin_slab : ∀ (E : Type) [Field E] [NumberField
       intro τ
       refine ⟨?_, fun a c hca => ?_⟩
       · show ((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x) τ)⁻¹).det ≠ 0
-        rw [Matrix.det_nonsing_inv]
-        rw [Ring.inverse_eq_inv']
+        rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv']
         exact inv_ne_zero (hBdet τ)
       · haveI : Invertible (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x) τ) :=
           Matrix.invertibleOfIsUnitDet _ (isUnit_iff_ne_zero.mpr (hBdet τ))
@@ -390,8 +388,7 @@ theorem _root_.GlobalTheory.SW.thin_slab : ∀ (E : Type) [Field E] [NumberField
   · have hset : _root_.GlobalTheory.SW.slab X δ = ⋂ τ : X.Ψ, ⋂ a : Fin r, ⋂ b : Fin r,
         {x | ‖_root_.ReciprocityTheory.ChartRestriction.G.FD.gram τ.1 X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ) a b - _root_.GlobalTheory.SW.sgnM X a b‖ < δ} := by
       ext x
-      simp only [Set.mem_iInter, Set.mem_setOf_eq]
-      exact mem_slab_iff_norm_gram_sub_sgnM_lt X
+      simpa only [Set.mem_iInter, Set.mem_setOf_eq] using mem_slab_iff_norm_gram_sub_sgnM_lt X
     rw [hset]
     exact isOpen_iInter_of_finite fun τ => isOpen_iInter_of_finite fun a =>
       isOpen_iInter_of_finite fun b =>
@@ -422,8 +419,7 @@ theorem _root_.GlobalTheory.SW.thin_slab : ∀ (E : Type) [Field E] [NumberField
           ∑ k, u τ i k * x τ k j := by
         funext x τ i j
         rfl
-      rw [heq]
-      exact hp
+      rwa [heq]
     · rw [mem_slab_iff_norm_gram_sub_sgnM_lt, mem_slab_iff_norm_gram_sub_sgnM_lt]
       simp only [mat_lmulC', _root_.GlobalTheory.SW.Slab.gram_lmulC X hu]
     · rw [mem_dom_iff_det_ne_zero_and_sign_dmin, mem_dom_iff_det_ne_zero_and_sign_dmin]

@@ -322,7 +322,6 @@ theorem latS_to_latHat (hL : ∀ x, x ∈ L ↔ ∀ i, x i ∈ Set.range (algebr
     apply AddSubgroup.subset_closure
     refine ⟨1, intAd_mem (one_mem _), fun i => x (e i), (hL _).2 fun i => (mem_stdLat_iff x).1 hx _, ?_⟩
     funext i
-    show swi F E (x (e i) ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) = (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x (e i)
     exact swi_tmul _ _
   | zero =>
     have : (fun i => swi F E ((0 : Fin m → E ⊗[F] FiniteAdeleRing (𝓞 F) F) (e i))) = 0 := by
@@ -796,8 +795,7 @@ theorem exists_coef : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B
   have hInter : ∀ (γ : GQ X.toD7.sp.X') (γE : GL (Fin X.toD7.sp.X'.rank) X.toD7.host.E) (g : GL (Fin (X.B.R.N X.B.R.m - 1)) X.B.fields.E),
       Bridge.IsRatMat X.toD7.sp.X' γ γE → MatEq γE g → ∀ v, c (rhoV X.B.fields.emb X.B.wts.sgTrue g v) = cX.coef.ρ γ (c v) := by
     intro γ γE g hγ hm v
-    have key := vvCast_rhoV (labLL X.toD7) _ _ _ hw g γE hm v
-    exact (congrArg c0R key).trans (hM.1 γ γE hγ _)
+    exact (congrArg c0R (vvCast_rhoV (labLL X.toD7) _ _ _ hw g γE hm v)).trans (hM.1 γ γE hγ _)
   obtain ⟨f, hf⟩ := vvCast_bVV (K := X.toD7.what₂.LL) (RowAd.rank_X' X).symm _ _ hw
   have hcf : (fun i => c (bVV X.B.fields.K X.B.wts.sgTrue i)) =
       (fun j => c0R (bVV X.toD7.what₂.LL (fun τ => Bridge.lamRdef (Ptw X.toD7) τ) j)) ∘ f := by
@@ -809,18 +807,13 @@ theorem exists_coef : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B
   have hsp : Submodule.span ℂ (Set.range fun i => c (bVV X.B.fields.K X.B.wts.sgTrue i)) = ⊤ := by
     have h2 := f.surjective.range_comp (fun j => c0R (bVV X.toD7.what₂.LL (fun τ => Bridge.lamRdef (Ptw X.toD7) τ) j))
     rw [hcf]
-    refine Eq.trans ?_ hM.2.2
-    exact congrArg (Submodule.span ℂ) h2
+    exact Eq.trans (congrArg (Submodule.span ℂ) h2) hM.2.2
   have hinn : ∀ x y, inner ℂ (c x) (c y) = X.B.embLL (pairV X.B.fields.emb X.B.wts.sgTrue 1 x y) := by
-    intro x y
-    exact (hin _ _).trans (congrArg X.toD7.what₂.embLL (hpair x y))
+    exact fun x y => (hin _ _).trans (congrArg X.toD7.what₂.embLL (hpair x y))
   refine ⟨c, fun v => rfl, hInter, hli, hsp, hinn, fun t P hPc hPy => ⟨e0, ?_, ?_, ?_, ?_, ?_⟩⟩
-  · intro i j
-    exact vvCast_bVV_repr _ _ _ hw i j
-  · intro x
-    exact hPc x
-  · intro x x'
-    exact hpair x x'
+  · exact fun i j => vvCast_bVV_repr _ _ _ hw i j
+  · exact fun x => hPc x
+  · exact fun x x' => hpair x x'
   · intro c'
     rw [RowLat.hLat_eq_decoAd_N X px I hX hI U t (P.y c'), hPy c']
     exact vvCast_nabAt (labLL X.toD7) _ _ _ hw _
@@ -1121,8 +1114,7 @@ theorem psiX_surjective (X : Stages) (hg : X.toD7.sp.X'.gram = 1) : Function.Sur
   refine ⟨⟨_, hγ⟩, Subtype.ext (Subtype.ext ?_)⟩
   change Formalism.UG.bc (inclR (F := X.toD7.host.F) (AF X.toD7.host.F))
     (LiftBrg.castGL (rank_X' X).symm (LiftBrg.castGL (rank_X' X) γE)) = _
-  rw [castGL_symm_castGL' (rank_X' X) γE]
-  exact e
+  rwa [castGL_symm_castGL' (rank_X' X) γE]
 
 theorem matEq_castGL {A : Type} [CommRing A] {m n : ℕ} (h : m = n) (x : GL (Fin m) A) : MatEq (LiftBrg.castGL h x) x := by
   subst h
@@ -1213,8 +1205,7 @@ theorem of_reindex_mem_HK {κ : Type} [CommRing κ] {a n r t m : ℕ} (h : a = n
   have hb : y ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf r t) := by
     intro i j hij
     refine hUT (show Formalism.L2.Col.coarse r (List.replicate m t) j.val < Formalism.L2.Col.coarse r (List.replicate m t) i.val from ?_)
-    rw [coarse_eq_blkOf hn, coarse_eq_blkOf hn]
-    exact hij
+    rwa [coarse_eq_blkOf hn, coarse_eq_blkOf hn]
   refine ⟨hb, ?_⟩
   apply Units.ext
   rw [Formalism.L2.DIV.upper_block_val_submatrix hra (Formalism.L2.DIV.blockTri_blkOf_le r t hb), Units.val_one]
@@ -1229,8 +1220,7 @@ theorem of_reindex_mem_HQ {κ : Type} [CommRing κ] {a n r b : ℕ} (h : a = n) 
   rw [reindex_finCongr_rfl] at hy
   intro i j hij
   refine hy (show Formalism.L2.Col.coarse r [b] j.val < Formalism.L2.Col.coarse r [b] i.val from ?_)
-  rw [coarseBlockIndex_eq_twoBlock hn, coarseBlockIndex_eq_twoBlock hn]
-  exact hij
+  rwa [coarseBlockIndex_eq_twoBlock hn, coarseBlockIndex_eq_twoBlock hn]
 
 theorem redG_ptE_of (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) {U : Set I.ι}
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (hL : LevOf X I U L) (t : TupU I U) (h : Bridge.Gf X.toD7.sp.X')
@@ -1278,8 +1268,7 @@ theorem mem_J_of_redG_mem_grp : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2
     intro PP hPP
     have hP : PP ∈ (X.B.primes px).vGs := by
       have hP' : PP ∈ L.Pg := hPP
-      rw [hL.Pg] at hP'
-      exact hP'
+      rwa [hL.Pg] at hP'
     have hm := hw ⟨PP, by classical exact Finset.mem_union_left _ hP⟩
     rw [Formalism.L2.Col.rowTyKK, Formalism.L2.Col.LevFam.glue_of_mem _ _ _ hP] at hm
     exact of_reindex_mem_HK (rank_X' X) (Formalism.L2.Col.rank_X'_eq X.B.R) (L.datXt t).hr _ hm
@@ -1291,8 +1280,7 @@ theorem mem_J_of_redG_mem_grp : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2
       have hP' : PP ∈ L.Q t := hPP
       have e : I.Q (ixOf I U t) = Formalism.L2.Col.QE I.sel (t.1 : Formalism.L2.DIV.Chr _ _ _) := by
         simp only [ColIn.Q, tup_ixOf]
-      rw [hL.Q t, e] at hP'
-      exact hP'
+      rwa [hL.Q t, e] at hP'
     have hm := hw ⟨PP, by classical exact Finset.mem_union_right _ hq⟩
     by_cases hP : PP ∈ (X.B.primes px).vGs
     · rw [Formalism.L2.Col.rowTyKK, Formalism.L2.Col.LevFam.glue_of_mem _ _ _ hP] at hm
@@ -1509,8 +1497,7 @@ theorem exists_pres : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B
     have h3 := chi_eq X px I U L eG hI hV hL hG t (levE e _ _ hJ k) hz hg
     have e3 : Formalism.L2.Col.redH X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp ((colJEquiv X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp).symm k) = ⟨_, hg⟩ :=
       Subtype.ext (congrArg (Formalism.L2.Col.redG X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1)) e2.symm)
-    rw [e3]
-    exact h3
+    rwa [e3]
   have hK1 : ∀ k : colJ X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp,
       (k : Formalism.L2.Col.UAd X.toD7.sp.cm (X.B.R.N X.B.R.m - 1)) ∈ principalCongruenceSubgroup X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) → χ' k = 1 := by
     intro k hk

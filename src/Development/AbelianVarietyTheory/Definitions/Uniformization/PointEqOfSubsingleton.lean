@@ -388,8 +388,7 @@ theorem IsCPMap.id (P : CP G) : IsCPMap P P (𝟙 S) (𝟙 G.left) (by simp) (id
 theorem one_left_comp (mul : ∀ (T : Over S') (x y : T ⟶ G'), toBase hw (x * y) = toBase hw x * toBase hw y)
     (T : Over S') : (1 : T ⟶ G').left ≫ F = (T.hom ≫ f) ≫ eSec G := by
   have h1 : toBase hw (1 : T ⟶ G') = 1 := map_one (toBaseHom mul T)
-  have h2 := congrArg (fun a => a.left) h1
-  simpa [toBase, one_left] using h2
+  simpa [toBase, one_left] using congrArg (fun a => a.left) h1
 
 theorem inv_left_comp (mul : ∀ (T : Over S') (x y : T ⟶ G'), toBase hw (x * y) = toBase hw x * toBase hw y)
     {T : Over S'} (x : T ⟶ G') : (x⁻¹).left ≫ F = (x.left ≫ F) ≫ (ι[G]).left := by
@@ -797,8 +796,7 @@ theorem sym_cub_of_surjective (h3 : Function.Surjective (G3 G).hom.appTop.hom) {
     apply Additive.ofMul.injective
     simp only [ofMul_mul, ofMul_inv]
     abel
-  rw [(vals3 x y u z J hJ).1, (vals3 x y u z J hJ).2] at key
-  exact key
+  rwa [(vals3 x y u z J hJ).1, (vals3 x y u z J hJ).2] at key
 
 def CP.ofSurjective (h3 : Function.Surjective (G3 G).hom.appTop.hom) (L : RigLB G) (c : CubicalStr G L)
     (sym : LB.Gen (LB.LinComb L.L (K := Fin 2) ![(ι[G]).left, 𝟙 G.left] ![1, -1])) (hs : sym.IsGen)
@@ -961,8 +959,7 @@ def chV {Z : Over S} (t : Z ⟶ splitTorus S X) (χ : X) : Γ(Z.left, ⊤)ˣ :=
   splitTorusPointsEquiv S X Z t (Multiplicative.ofAdd χ)
 
 theorem chV_val {Z : Over S} (t : Z ⟶ splitTorus S X) (χ : X) :
-    (chV t χ).val = t.left.appTop.hom (charUnit S X χ).val := by
-  exact splitTorusPointsEquiv_val S X Z t χ
+    (chV t χ).val = t.left.appTop.hom (charUnit S X χ).val := splitTorusPointsEquiv_val S X Z t χ
 
 theorem chV_mul {Z : Over S} (t t' : Z ⟶ splitTorus S X) (χ : X) : chV (t * t') χ = chV t χ * chV t' χ := by
   simp only [chV, map_mul, MonoidHom.mul_apply]
@@ -1090,8 +1087,7 @@ theorem IsWt.res {u : Γ(G.left, V)} {χ : X} (hu : IsWt i V u χ) (h : V' ≤ V
   have k : ∀ (f : Z.left ⟶ G.left) (e : ⊤ ≤ f ⁻¹ᵁ V'),
       (f.appLE V' ⊤ e).hom ((G.left.presheaf.map (homOfLE h).op).hom u) =
         (f.appLE V ⊤ (e.trans (f.preimage_mono h))).hom u := by
-    intro f e
-    exact congrArg (fun φ => φ.hom u) (Scheme.Hom.map_appLE f e (homOfLE h).op)
+    exact fun f e => congrArg (fun φ => φ.hom u) (Scheme.Hom.map_appLE f e (homOfLE h).op)
   rw [k, k]
   exact hu Z t g _ _
 

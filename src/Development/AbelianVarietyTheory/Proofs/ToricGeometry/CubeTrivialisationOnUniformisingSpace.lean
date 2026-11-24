@@ -114,10 +114,8 @@ lemma le_preimage_wchart {Y : Scheme.{0}} (L : LB Y) {K : Type} [Fintype K] (φ 
     show x q ∈ L.wchart φ j ↔ ∀ k, φ k (x q) ∈ L.U (j k)
     simp [LB.wchart]
   constructor
-  · intro h k q _
-    exact (key q).1 (h trivial) k
-  · intro h q _
-    exact (key q).2 (fun k => h k trivial)
+  · exact fun h k q _ => (key q).1 (h trivial) k
+  · exact fun h q _ => (key q).2 (fun k => h k trivial)
 
 lemma val_gen (hv : ValueRules) {L : LB X} (t : L.Gen) (ht : t.IsGen) (i j : L.ι)
     (hi : ⊤ ≤ x ⁻¹ᵁ L.U i) (hj : ⊤ ≤ x ⁻¹ᵁ L.U j) :
@@ -125,8 +123,7 @@ lemma val_gen (hv : ValueRules) {L : LB X} (t : L.Gen) (ht : t.IsGen) (i j : L.�
       valAt' x (L.U i ⊓ L.U j) (L.g i j).val * valAt' x (L.U j) (t.s j).val := by
   have hij : ⊤ ≤ x ⁻¹ᵁ (L.U i ⊓ L.U j) := (le_preimage_inf x _ _).2 ⟨hi, hj⟩
   have e := congrArg (fun w : Γ(X, L.U i ⊓ L.U j)ˣ => valAt' x (L.U i ⊓ L.U j) w.val) (ht i j)
-  rw [val_unit_mul x hv hij, val_res x hv _ hij, val_res x hv _ hij] at e
-  exact e
+  rwa [val_unit_mul x hv hij, val_res x hv _ hij, val_res x hv _ hij] at e
 
 lemma val_linComb (hv : ValueRules) {Y : Scheme.{0}} (L : LB Y) {K : Type} [Fintype K]
     (φ : K → (X ⟶ Y)) (ε : K → ℤ) (j j' : K → L.ι)
@@ -149,8 +146,7 @@ lemma val_cocycle (hv : ValueRules) {L : LB X} (hL : L.IsLB) (i j k : L.ι)
   have hij : ⊤ ≤ x ⁻¹ᵁ (L.U i ⊓ L.U j) := (le_preimage_inf x _ _).2 ⟨hi, hj⟩
   have hijk : ⊤ ≤ x ⁻¹ᵁ (L.U i ⊓ L.U j ⊓ L.U k) := (le_preimage_inf x _ _).2 ⟨hij, hk⟩
   have e := congrArg (fun w : Γ(X, L.U i ⊓ L.U j ⊓ L.U k)ˣ => valAt' x _ w.val) (hc i j k)
-  rw [val_unit_mul x hv hijk, val_res x hv _ hijk, val_res x hv _ hijk, val_res x hv _ hijk] at e
-  exact e
+  rwa [val_unit_mul x hv hijk, val_res x hv _ hijk, val_res x hv _ hijk, val_res x hv _ hijk] at e
 
 end Values
 
@@ -221,8 +217,7 @@ private theorem pt3_preimage_theta_whole_iff {A : Over (Sp ℂ)} [GrpObj A] {L�
   show ⊤ ≤ (pt3 u x).left ⁻¹ᵁ
       L.wchart (fun I : ULift (Finset (Fin 3)) => (psum A (x3 A) I.down).left) (fun I => j I.down) ↔ _
   rw [le_preimage_wchart]
-  simp only [tripleProductPoint_comp_partialSum]
-  exact ⟨fun h I => h ⟨I⟩, fun h I => h I.down⟩
+  simpa only [tripleProductPoint_comp_partialSum] using ⟨fun h I => h ⟨I⟩, fun h I => h I.down⟩
 
 private theorem valAt_theta_transition_eq_prod_zpow (hv : ValueRules) {A : Over (Sp ℂ)} [GrpObj A] {L₀ : LB A.left}
     {g : ℕ} (u : HolUnif A L₀ g) (L : LB A.left) (j j' : Finset (Fin 3) → L.ι) (x : Fin 3 → Fin g → ℂ)
@@ -236,8 +231,7 @@ private theorem valAt_theta_transition_eq_prod_zpow (hv : ValueRules) {A : Over 
     (fun I : ULift (Finset (Fin 3)) => (psum A (x3 A) I.down).left)
     (fun I : ULift (Finset (Fin 3)) => (-1 : ℤ) ^ (3 - I.down.card)) (fun I => j I.down) (fun I => j' I.down) hj hj'
   simp only [tripleProductPoint_comp_partialSum] at e
-  refine e.trans ?_
-  exact Fintype.prod_equiv Equiv.ulift _ _ (fun _ => rfl)
+  exact e.trans (Fintype.prod_equiv Equiv.ulift _ _ (fun _ => rfl))
 
 end Points
 
@@ -251,8 +245,7 @@ theorem GlobalTheory.cube_trivialisation_on_uniformising_space :
   have hv : ValueRules := hv0
   subst hW hc
   refine ⟨⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, ?_⟩
-  · intro i
-    exact (u.hol (L.U i) 0).1
+  · exact fun i => (u.hol (L.U i) 0).1
   · intro z
     have hq : (u.ex z).left (default : PrimeSpectrum ℂ) ∈ ⨆ i, L.U i := by
       rw [hL.cover]; trivial
@@ -267,10 +260,8 @@ theorem GlobalTheory.cube_trivialisation_on_uniformising_space :
       ({z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U i} ∩ {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U j})
     rw [hset]
     exact (u.hol _ _).2
-  · intro i j z hi hj
-    exact val_unit_ne_zero _ hv ((le_preimage_inf _ _ _).2 ⟨hi, hj⟩) _
-  · intro i j k z hi hj hk
-    exact val_cocycle _ hv hL i j k hi hj hk
+  · exact fun i j z hi hj => val_unit_ne_zero _ hv ((le_preimage_inf _ _ _).2 ⟨hi, hj⟩) _
+  · exact fun i j k z hi hj hk => val_cocycle _ hv hL i j k hi hj hk
   · intro i z l hl
     show ⊤ ≤ (u.ex (z + l)).left ⁻¹ᵁ L.U i ↔ ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U i
     rw [ex_add_period u z l hl]
@@ -293,8 +284,7 @@ theorem GlobalTheory.cube_trivialisation_on_uniformising_space :
       have hi := (GlobalTheory.CubeValues.pt3_preimage_theta_whole_iff u L j x).2 hx
       have hi' := (GlobalTheory.CubeValues.pt3_preimage_theta_whole_iff u L j' x).2 hx'
       have e := val_gen (pt3 u x).left hv t ht _ _ hi hi'
-      rw [GlobalTheory.CubeValues.valAt_theta_transition_eq_prod_zpow hv u L j j' x hi hi'] at e
-      exact e
+      rwa [GlobalTheory.CubeValues.valAt_theta_transition_eq_prod_zpow hv u L j j' x hi hi'] at e
     · intro j x l hl
       show valAt' (pt3 u (x + l)).left _ _ = valAt' (pt3 u x).left _ _
       rw [tripleProductPoint_add_period u x l hl]

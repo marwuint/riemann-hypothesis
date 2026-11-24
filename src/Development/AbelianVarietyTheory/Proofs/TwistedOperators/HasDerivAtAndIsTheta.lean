@@ -444,16 +444,14 @@ theorem isTheta_scale (b : D.host.F) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S
     have h'' : ratW T S γ' = algebraMap D.host.F (AF D.host.F) b • ratW T S γ := h'
     have := hf.quasi γ' (algebraMap D.host.F (AF D.host.F) b • w)
     rw [h'', key] at this
-    rw [smul_add, AddChar.mulShift_apply, mul_neg]
-    exact this
+    rwa [smul_add, AddChar.mulShift_apply, mul_neg]
   · obtain ⟨U, hU, h1⟩ := hf.level
     refine ⟨U.comap (DistribSMul.toAddMonoidHom (WO S T) (algebraMap D.host.F (AF D.host.F) b)),
       hU.preimage (continuous_smul' _), fun u hu h0 => ?_⟩
     funext w
     have := congrFun (h1 _ hu (smul_fin' _ h0)) (algebraMap D.host.F (AF D.host.F) b • w)
     rw [heisO] at this ⊢
-    rw [smul_add, AddChar.mulShift_apply, ← key]
-    exact this
+    rwa [smul_add, AddChar.mulShift_apply, ← key]
   · have := hf.smooth k ((DistribSMul.toAddMonoidHom (WO S T) (algebraMap D.host.F (AF D.host.F) b)).comp L)
       ((continuous_smul' _).comp hL) (fun t => smul_real' _ (h0 t)) (algebraMap D.host.F (AF D.host.F) b • w)
     simp only [smul_add]
@@ -479,8 +477,7 @@ theorem exists_theta_zero_ne (hψ : IsCharAF D.host.F ψ) (S T : HSp D) : ∃ g,
     ring
   rw [e] at h
   refine ⟨_, h, ?_⟩
-  simp only [Pi.mul_apply, Pi.star_apply, smul_zero]
-  exact mul_ne_zero h0 (star_ne_zero.2 h0)
+  simpa only [Pi.mul_apply, Pi.star_apply, smul_zero] using mul_ne_zero h0 (star_ne_zero.2 h0)
 
 end GlobalTheory.ThetaAllChar
 

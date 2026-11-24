@@ -73,8 +73,7 @@ theorem kur_sub_wfrac (l : ℕ) [Fact l.Prime] : ∀ x ∈ MaximalUnramifiedExte
         (IntermediateField.adjoin ℚ_[l] (product_zeroth_first_parts.rootsPrimeTo l)).toSubfield :=
       Subfield.closure_le.mpr (IntermediateField.subset_adjoin _ _)
     have h2 := h1 hx
-    rw [← IntermediateField.adjoin_toSubalgebra_of_isAlgebraic halg]
-    exact h2
+    rwa [← IntermediateField.adjoin_toSubalgebra_of_isAlgebraic halg]
   intro x hx
   unfold MaximalUnramifiedExtension at hx
   rw [hS] at hx
@@ -95,11 +94,7 @@ theorem b3_of_noLowBidegree (l d : ℕ) [Fact l.Prime] [NeZero d] (be : MvPowerS
     simp only [Nat.even_iff]
     exact Finsupp.sum_fintype _ _ (by intro s; split_ifs <;> rfl)
   refine ⟨by rw [e1]; exact h1.ne', by rw [e2]; exact h2.ne', ?_⟩
-  intro hb
-  apply h3
-  have a := congrArg Prod.fst hb
-  have b := congrArg Prod.snd hb
-  exact ⟨e1 ▸ a, e2 ▸ b⟩
+  exact fun hb => h3 ⟨e1 ▸ (congrArg Prod.fst hb), e2 ▸ (congrArg Prod.snd hb)⟩
 
 theorem b2_of_subst_torus_eq (l d : ℕ) [Fact l.Prime] [NeZero d] (ζ : ℂ_[l]) (hζ : IsPrimitiveRoot ζ (l ^ d - 1))
     (be : MvPowerSeries (ZMod d) ℂ_[l]) (h : MvPowerSeries.subst (torus l ζ) be = be) : product_zeroth_first_parts.B2 l d be := by

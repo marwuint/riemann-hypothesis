@@ -95,8 +95,7 @@ private theorem exists_pivot_unipotent_mul_triangular {L : Type} [Field L] (W : 
       | last => simp [x]
       | cast i => simp [cols']
     have hg2 : LinearIndependent L (Fin.snoc cols' x : Fin (r + 1) → Fin n → L) := by
-      rw [hsplit]
-      exact hg
+      rwa [hsplit]
     rw [linearIndependent_finSnoc] at hg2
     obtain ⟨hg'ind, hxspan⟩ := hg2
     obtain ⟨ι', u', b', hu'W, hu'zero, hu'one, hb'tri, hb'diag, hgub⟩ := ih g' hg'ind
@@ -132,8 +131,7 @@ private theorem exists_pivot_unipotent_mul_triangular {L : Type} [Field L] (W : 
         exact sub_eq_zero.1 hxv
       have hmem := LinearMap.mem_range_self g'.mulVecLin (b'⁻¹ *ᵥ c)
       rw [Matrix.range_mulVecLin] at hmem
-      rw [hxe]
-      exact hmem
+      rwa [hxe]
     obtain ⟨k, hvk, hkW⟩ := exists_pivot_entry W v hv0
     have hk : ∀ l, ι' l ≠ k := fun l hl => hvk (hl ▸ hvpiv l)
     let ιf : Fin (r + 1) → Fin n := Fin.lastCases (motive := fun _ => Fin n) k (fun i => ι' i)
@@ -217,8 +215,7 @@ private theorem exists_pivot_unipotent_mul_triangular {L : Type} [Field L] (W : 
       | cast j =>
         simp only [u, b, Matrix.of_apply, Fin.snoc_castSucc, Fin.lastCases_last,
           Fin.lastCases_castSucc, mul_zero, add_zero]
-        have hentry := congrFun (congrFun hgub a) j
-        simpa [g', cols', Matrix.mul_apply] using hentry
+        simpa [g', cols', Matrix.mul_apply] using congrFun (congrFun hgub a) j
 
 theorem exists_integral_pivot_decomposition :
     ∀ (L : Type) [Field L] (W : ValuationSubring L) (n r : ℕ) (g : Matrix (Fin n) (Fin r) L),
@@ -226,7 +223,6 @@ theorem exists_integral_pivot_decomposition :
       ∃ (ι : Fin r ↪ Fin n) (u : Matrix (Fin n) (Fin r) L) (b : Matrix (Fin r) (Fin r) L),
         (∀ i j, u i j ∈ W) ∧ (∀ i j : Fin r, i < j → u (ι i) j = 0) ∧
         (∀ i : Fin r, u (ι i) i = 1) ∧ b.BlockTriangular id ∧ (∀ i, b i i ≠ 0) ∧ g = u * b := by
-  intro L _ W n r g hg
-  exact exists_pivot_unipotent_mul_triangular W r g hg
+  exact fun L _ W n r g hg => exists_pivot_unipotent_mul_triangular W r g hg
 
 end GlobalTheory

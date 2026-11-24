@@ -148,8 +148,7 @@ theorem joint_pow_of_tameGen : ∀ {E Ω : Type} [Field E] [NumberField E] [Fiel
           congr 2
           have hd := orderOf_dvd_of_pow_eq_one hc
           rw [Nat.mod_mod_of_dvd _ hd]
-        · rw [← pow_mod_orderOf, ← div_eq_iff hπ, h₁']
-          rw [← pow_mod_orderOf q n]
+        · rw [← pow_mod_orderOf, ← div_eq_iff hπ, h₁', ← pow_mod_orderOf q n]
           congr 1
           rw [Nat.mod_mod_of_dvd _ (orderOf_dvd_of_pow_eq_one hq)]
       · rintro ⟨hσ, n, -, h₁, h₁'⟩
@@ -169,8 +168,7 @@ theorem joint_pow_of_tameGen : ∀ {E Ω : Type} [Field E] [NumberField E] [Fiel
         exact GlobalTheory.WildSetSQ.char_eq_one_of_wild A had χ hχ τ hτ m hm (hI τ hτI)
       · rw [pow_zero]
         exact eq_one_of_pow_eq_one A hm (hroot τ) (hτ π hπ)
-  have hmem := closure_minimal (SetLike.coe_subset_coe.2 hle) hclosed (hγ.2 hσ)
-  exact hmem.2
+  exact (closure_minimal (SetLike.coe_subset_coe.2 hle) hclosed (hγ.2 hσ)).2
 
 end GlobalTheory.TameTau
 end -- clump:auto
@@ -218,8 +216,7 @@ theorem char_eq_of_apply_root_eq : ∀ {E Ω : Type} [Field E] [NumberField E] [
   have hmod : n ≡ n' [MOD m] := by
     have hζ0 : ζ ≠ 0 := hζ.ne_zero hm0
     have hu : (Units.mk0 ζ hζ0) ^ n = (Units.mk0 ζ hζ0) ^ n' := Units.ext (by simpa using hζn)
-    rw [pow_eq_pow_iff_modEq, ← orderOf_units, Units.val_mk0, ← hζ.eq_orderOf] at hu
-    exact hu
+    rwa [pow_eq_pow_iff_modEq, ← orderOf_units, Units.val_mk0, ← hζ.eq_orderOf] at hu
   have hγI : γ ∈ Ine (F := E) A := hγ.1
   have hord : orderOf (χ γ) ∣ m := orderOf_dvd_of_pow_eq_one (hχm γ hγI)
   rw [hn1, hn1', pow_eq_pow_iff_modEq]
@@ -353,8 +350,7 @@ theorem conj_mem_Ine_of_mem_Ine_smul [IsAlgClosure E Ω] {A : ValuationSubring �
       show (g⁻¹ : G E Ω) (g x) = x
       show (g⁻¹ * g) x = x
       simp
-    rw [e] at h
-    exact h
+    rwa [e] at h
 
 end GlobalTheory.TameTauConj
 
@@ -412,9 +408,7 @@ theorem char_eq_of_tameRep_congr : ∀ {E Ω : Type} [Field E] [NumberField E] [
   have hroot : ∀ t : G E Ω, (t π / π) ^ m = 1 := by
     intro t
     rw [div_pow, ← map_pow, hπ, AlgEquiv.commutes, ← hπ, div_self (pow_ne_zero _ hπ0)]
-  have hlt : ∀ x : 𝓞 E, A.valuation (algebraMap E Ω (x : E)) < 1 ↔ x ∈ P.asIdeal := by
-    intro x
-    exact hA x
+  have hlt : ∀ x : 𝓞 E, A.valuation (algebraMap E Ω (x : E)) < 1 ↔ x ∈ P.asIdeal := fun x => hA x
   have hmv : ¬ A.valuation (m : Ω) < 1 := by
     intro h
     apply hmP

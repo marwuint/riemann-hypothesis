@@ -194,8 +194,7 @@ theorem isArtinianRing_fib_quot : ∀ (k K : Type) [Field k] [Field K] [Algebra 
     obtain ⟨p, hm, hp⟩ := s.2
     refine ⟨p, hm, Subtype.val_injective ?_⟩
     have e := Polynomial.hom_eval₂ p (f : rA k x {0} →+* rB k K x {0}) (rB k K x {0}).val.toRingHom s
-    refine e.trans ?_
-    exact hp
+    exact e.trans hp
   have hc : ∀ r, ∃ c : k, f r - algebraMap k _ c ∈ I := by
     rintro ⟨r, hr⟩
     induction hr using Algebra.adjoin_induction with
@@ -298,8 +297,7 @@ theorem isReduced_quotient_of_artinian_of_maximal_le (A : Type) [CommRing A] (I 
   have hJinf : J = ⨅ M ∈ (Finset.univ : Finset (MaximalSpectrum R)), M.asIdeal := by
     rw [hJ]
     apply Ideal.prod_eq_iInf_of_pairwise_isCoprime
-    intro a _ b _ hab
-    exact Ideal.isCoprime_of_isMaximal (fun e => hab (MaximalSpectrum.ext e))
+    exact fun a _ b _ hab => Ideal.isCoprime_of_isMaximal (fun e => hab (MaximalSpectrum.ext e))
   have hpow : ∀ k : ℕ, J ^ (k + 1) = J := by
     intro k
     rw [hJ, ← Finset.prod_pow]
@@ -958,8 +956,7 @@ theorem exists_finCover_of_isFinite {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S
   have hrat := _root_.GlobalTheory.PD.XCover.rat_overlap d X φ
   have h00 : rat φ 0 0 = 1 := by
     obtain ⟨h1, h2⟩ := hrat 0 0 0 (hgen 0) (hgen 0)
-    rw [div_self h1] at h2
-    exact h2
+    rwa [div_self h1] at h2
   have hch := _root_.GlobalTheory.PD.XCover.preimage_chart_cover d X φ
   have hne : ∀ I : Finset (Fin (d + 1)), genericPoint X ∈ I.inf fun i => φ ⁻¹ᵁ XCover.chart d i := by
     intro I
@@ -1091,11 +1088,9 @@ theorem exists_finCover_fibre_reduced : ∀ (X : Scheme.{0}) [IsIntegral X] (p :
     rw [hAC.ring {0} (Finset.singleton_nonempty 0) y]
     constructor
     · rintro ⟨g, rfl⟩
-      refine ⟨X.presheaf.map (homOfLE hle.ge).op g, ?_⟩
-      exact X.presheaf.germ_res_apply (homOfLE hle.ge) _ _ g
+      exact ⟨X.presheaf.map (homOfLE hle.ge).op g, X.presheaf.germ_res_apply (homOfLE hle.ge) _ _ g⟩
     · rintro ⟨g, rfl⟩
-      refine ⟨X.presheaf.map (homOfLE hle.le).op g, ?_⟩
-      exact X.presheaf.germ_res_apply (homOfLE hle.le) _ _ g
+      exact ⟨X.presheaf.map (homOfLE hle.le).op g, X.presheaf.germ_res_apply (homOfLE hle.le) _ _ g⟩
   obtain ⟨E⟩ := quotEquiv_of_germ x U0 (hgen 0) t hring ht
   have hU0aff : IsAffineOpen U0 := by
     simpa [hU0] using hAC.affine {0} (Finset.singleton_nonempty 0)
@@ -1106,15 +1101,12 @@ theorem exists_finCover_fibre_reduced : ∀ (X : Scheme.{0}) [IsIntegral X] (p :
   have hred : IsReduced (Γ(X, U0) ⧸ Ideal.span (Set.range t)) := by
     refine _root_.GlobalTheory.isReduced_quotient_of_artinian_of_maximal_le _ _ hart fun m hm hIm => ?_
     obtain ⟨y, hy, rfl⟩ := _root_.GlobalTheory.MaxPt.exists_cxPts_ker_eq X p U0 hU0aff m hm
-    refine htr y hy fun j => ?_
-    exact hIm (Ideal.subset_span ⟨j, rfl⟩)
+    exact htr y hy fun j => hIm (Ideal.subset_span ⟨j, rfl⟩)
   refine ⟨F, x, fun i => GlobalTheory.EtProj.fOpen ι (f i), hFC, hAC, ?_, fun y hyS => ⟨(hS y hyS).1, ?_⟩⟩
   · haveI := hred
     exact isReduced_of_injective E.symm E.symm.injective
   · intro j hg g hgj
-    have : g = t j := by
-      apply germ_injective_of_isIntegral X _ hg
-      exact hgj.trans (ht j).symm
+    have : g = t j := germ_injective_of_isIntegral X _ hg (hgj.trans (ht j).symm)
     rw [this]
     exact (hS y hyS).2 j
 

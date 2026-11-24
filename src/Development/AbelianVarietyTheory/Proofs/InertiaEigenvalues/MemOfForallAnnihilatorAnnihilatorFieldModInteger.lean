@@ -217,8 +217,7 @@ theorem mem_of_forall_annihilator_annihilator :
     apply hU
     have h1 := hc (∑ i, a i • v i) (fun s hs => by
       rw [hexp, mk_eq_zero_iff]; exact hT ⟨s, hs⟩)
-    rw [hexp, mk_eq_zero_iff] at h1
-    exact h1
+    rwa [hexp, mk_eq_zero_iff] at h1
   obtain ⟨F, hF⟩ := (hKc.diff hUo).elim_finite_subfamily_closed T hTcl
     (Set.disjoint_iff_inter_eq_empty.mpr hempty)
   have hfin : ∀ d : M, (∀ s ∈ F, β d s.1 = 0) → β d c = 0 := by
@@ -231,10 +230,8 @@ theorem mem_of_forall_annihilator_annihilator :
       · simp only [Set.mem_iInter]
         intro s hs
         have h2 := hd s hs
-        rw [hexp, mk_eq_zero_iff] at h2
-        exact h2
-    rw [Set.disjoint_iff_inter_eq_empty.mp hF] at hx
-    exact hx
+        rwa [hexp, mk_eq_zero_iff] at h2
+    rwa [Set.disjoint_iff_inter_eq_empty.mp hF] at hx
 
   let τ : M →ₗ[O] (F → LL ⧸ LinearMap.range (Algebra.linearMap O LL)) :=
     LinearMap.pi (fun s : F => β.flip s.1.1)
@@ -246,8 +243,7 @@ theorem mem_of_forall_annihilator_annihilator :
     apply hfin d
     intro s hs
     have h3 := congr_fun hd ⟨s, hs⟩
-    rw [hτ] at h3
-    exact h3
+    rwa [hτ] at h3
   obtain ⟨G, hG⟩ := (baer hinj).extension_property ((LinearMap.ker τ).liftQ τ le_rfl)
     (LinearMap.ker_eq_bot.mp (Submodule.ker_liftQ_eq_bot _ _ _ le_rfl))
     ((LinearMap.ker τ).liftQ (β.flip c) hker')

@@ -290,8 +290,7 @@ theorem root_le {a S J v : ℝ≥0∞} {K k : ℝ} (hJ : J < ⊤) (hv : v ≠ 0)
   have hJv : J / v ≠ ⊤ := ENNReal.div_ne_top hJ.ne hv
   have ht0 : 0 ≤ (J / v).toReal := ENNReal.toReal_nonneg
   have h1 : a ^ 2 ≤ J / v * (ENNReal.ofReal (K * k) * S ^ 2) := by
-    rw [← ENNReal.mul_div_right_comm, ENNReal.le_div_iff_mul_le (Or.inl hv) (Or.inl hvt)]
-    exact h
+    rwa [← ENNReal.mul_div_right_comm, ENNReal.le_div_iff_mul_le (Or.inl hv) (Or.inl hvt)]
   have e1 : (Real.sqrt ((J / v).toReal * K) * Real.sqrt k) ^ 2 = (J / v).toReal * (K * k) := by
     rw [mul_pow, Real.sq_sqrt (mul_nonneg ht0 hK), Real.sq_sqrt hk]; ring
   have h2 : a ^ 2 ≤ (ENNReal.ofReal (Real.sqrt ((J / v).toReal * K) * Real.sqrt k) * S) ^ 2 := by
@@ -339,8 +338,7 @@ theorem pointSup : (MeasInvStatement (E := E)) → (∀ (r : ℕ) (X : Data E r)
   have hRpos : 0 < R := by rw [hR]; exact lt_min hρ (lt_min hρ0 hρ1)
   have hball : ∀ z ∈ Metric.ball (0 : V (nd X)) R, ‖z‖ < ρ ∧ ‖z‖ < ρ0 ∧ ‖z‖ < ρ1 := by
     intro z hz
-    rw [Metric.mem_ball, dist_zero_right] at hz
-    rw [hR] at hz
+    rw [Metric.mem_ball, dist_zero_right, hR] at hz
     exact ⟨hz.trans_le (min_le_left _ _), hz.trans_le ((min_le_right _ _).trans (min_le_left _ _)),
       hz.trans_le ((min_le_right _ _).trans (min_le_right _ _))⟩
   obtain ⟨J, hJ⟩ : ∃ J : ℝ≥0∞, J = (ENNReal.ofReal c0)⁻¹ * ∫⁻ z, φ (cpt X x0 z) ∂muF X x0 :=
@@ -441,8 +439,7 @@ theorem norm_le_sqrt_of_lintegral_ball_le (n : ℕ) (z : V n) {R a : ℝ} (hR : 
       ENNReal.toReal_ofReal ha] at this
   have hvr : 0 < (volume (Metric.ball (0 : V n) R)).toReal := ENNReal.toReal_pos hpos.ne' hfin.ne
   have hsq : ‖u z‖ ^ 2 ≤ I.toReal / (volume (Metric.ball (0 : V n) R)).toReal * a := by
-    rw [div_mul_eq_mul_div, le_div_iff₀ hvr, mul_comm I.toReal]
-    exact hreal
+    rwa [div_mul_eq_mul_div, le_div_iff₀ hvr, mul_comm I.toReal]
   rw [← Real.sqrt_mul (div_nonneg ENNReal.toReal_nonneg hvr.le), ← Real.sqrt_sq (norm_nonneg (u z))]
   exact Real.sqrt_le_sqrt hsq
 
@@ -590,8 +587,7 @@ theorem norm_le_sqrt_weight_near_orthonormal :
           exact setLIntegral_le_lintegral _ _
   have hfin := norm_le_sqrt_of_lintegral_ball_le (nd X) z hρ (mul_pos hA hκx).le
     (fun w => P (cpt X x w)) hu hI hint
-  rw [Real.sqrt_mul hA.le, ← mul_assoc] at hfin
-  exact hfin
+  rwa [Real.sqrt_mul hA.le, ← mul_assoc] at hfin
 
 end GlobalTheory
 end -- clump:auto
@@ -624,8 +620,7 @@ theorem ofReal_tsum_sq_le_tsum_div_mul_tsum {ι : Type*} (a k : ι → ℝ) (hs 
     have e1 : ∀ i, a i / Real.sqrt (k i) * Real.sqrt (k i) = a i := fun i =>
       div_mul_cancel₀ _ (Real.sqrt_pos.2 (hk i)).ne'
     have e2 : ∀ i, Real.sqrt (k i) ^ 2 = k i := fun i => Real.sq_sqrt (hk i).le
-    simp only [e1, div_pow, e2] at h0
-    exact h0
+    simpa only [e1, div_pow, e2] using h0
   have hd : ∀ i, 0 ≤ a i ^ 2 / k i := fun i => div_nonneg (sq_nonneg _) (hk i).le
   calc ENNReal.ofReal ((∑ i ∈ s, a i) ^ 2)
       ≤ ENNReal.ofReal ((∑ i ∈ s, a i ^ 2 / k i) * ∑ i ∈ s, k i) := ENNReal.ofReal_le_ofReal h1

@@ -101,8 +101,7 @@ theorem mem_ratPts_iff {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type)
       have hu : IsUnit (k.map (inclR (F := F) R)).det := by
         rw [hk]; exact (Matrix.isUnits_det_units _)
       have h1 := (inclR (F := F) (E := E) R).map_det k
-      rw [h0, map_zero] at h1
-      rw [RingHom.mapMatrix_apply] at h1
+      rw [h0, map_zero, RingHom.mapMatrix_apply] at h1
       rw [← h1] at hu
       exact not_isUnit_zero hu
     refine ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero k hdet, ?_, Units.ext hk⟩
@@ -110,8 +109,7 @@ theorem mem_ratPts_iff {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type)
     apply Matrix.map_injective hinj
     have hg : cT (sigR R σ) (HA.mat R σ J g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * JR R J *
       (HA.mat R σ J g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = JR R J := g.2
-    rw [← hk, cT_map, JR, ← Matrix.map_mul, ← Matrix.map_mul] at hg
-    exact hg
+    rwa [← hk, cT_map, JR, ← Matrix.map_mul, ← Matrix.map_mul] at hg
 
 theorem exists_hom_range_stabiliser : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M M' : ℕ) (J : Matrix (Fin M) (Fin M) E) (J' : Matrix (Fin M') (Fin M') E) (B : Matrix (Fin M) (Fin M') E) (x : Fin 1 → Fin M → E), M' + 1 = M → IsHermND σ J → IsHermND σ J' → Formalism.UG.cT (σ : E →+* E) B * J * B = J' → (∀ j, hE σ J (x 0) (fun i => B i j) = 0) → hE σ J (x 0) (x 0) ≠ 0 → ∃ φ : HA (AF F) σ J' →* HA (AF F) σ J, Continuous φ ∧ Function.Injective φ ∧ φ.range = Hstab (AF F) σ J x ∧ (∀ g, FrameRel J J' B (φ g) g) ∧ ∀ g, φ g ∈ ratPts (AF F) σ J ↔ g ∈ ratPts (AF F) σ J' := by
   intro F E _ _ _ _ _ σ hCM M M' J J' B x hM hJ hJ' hBB hxB hxx
@@ -206,14 +204,12 @@ theorem exists_hom_range_stabiliser : ∀ (F E : Type) [Field F] [NumberField F]
     exact continuous_const.add ((continuous_const.matrix_mul hf).matrix_mul continuous_const)
   refine ⟨φ, ?_, Subtype.val_injective.comp e.symm.injective, ?_, hrel, fun g => ?_⟩
   · refine continuous_into (AF F) σ J _ (cφ id (Units.continuous_val.comp cm)) ?_
-    simp only [← map_inv]
-    exact cφ (fun g => g⁻¹) (Units.continuous_coe_inv.comp cm)
+    simpa only [← map_inv] using cφ (fun g => g⁻¹) (Units.continuous_coe_inv.comp cm)
   · ext h
     constructor
     · rintro ⟨g, rfl⟩
       exact (e.symm g).2
-    · intro hh
-      exact ⟨e ⟨h, hh⟩, by rw [hφ, MulEquiv.symm_apply_apply]⟩
+    · exact fun hh => ⟨e ⟨h, hh⟩, by rw [hφ, MulEquiv.symm_apply_apply]⟩
   · rw [mem_ratPts_iff, mem_ratPts_iff]
     constructor
     · rintro ⟨k, hk⟩

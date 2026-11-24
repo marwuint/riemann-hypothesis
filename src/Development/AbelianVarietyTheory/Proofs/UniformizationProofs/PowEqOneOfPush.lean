@@ -109,8 +109,7 @@ theorem exists_side (hL : L.IsLB) (hL' : L'.IsLB) (hM : M.IsLB) (hM' : M'.IsLB)
   intro Z f z j j' i i' hj hj' hi hi'
   have m₁ : (n ≫ q) (Φ (f z)) ∈ M.U j := by
     have m₀ : (Φ ≫ n ≫ q) (f z) ∈ M.U j := by
-      rw [hΦ]
-      exact hj
+      rwa [hΦ]
     exact m₀
   have e₂ := T₂ Z f z j i (fun _ => i') m₁ hi (mem_pull.mpr hi')
   have e₁ := T₁' Z f z j j' (fun _ => i') hj hj' (mem_pull.mpr hi')
@@ -254,8 +253,7 @@ theorem translPt_cmp (ht : t' ≫ g = t) (hp : IsGrpPullback A' A g Φ) {x : Ove
     rw [← Category.assoc, h₁]
   have h2 : e ≫ y₀ = snd (Over.mk (t' ≫ g)) A := by
     apply Over.OverMorphism.ext
-    simp only [Over.comp_left, Over.homMk_left, e, y₀]
-    exact h₂
+    simpa only [Over.comp_left, Over.homMk_left, e, y₀] using h₂
   have h3 : e ≫ (x₀ * y₀) = (fst (Over.mk (t' ≫ g)) A ≫ x) * snd (Over.mk (t' ≫ g)) A := by
     rw [← h1, ← h2]
     show e ≫ (lift x₀ y₀ ≫ μ) = lift (e ≫ x₀) (e ≫ y₀) ≫ μ
@@ -384,11 +382,9 @@ theorem exists_moved (hL : L.IsLB) (hL' : L'.IsLB) (h₂ : ω ≫ (snd (Over.mk 
   obtain ⟨b, hb⟩ := exists_move hL' hL hv₂ (ω ≫ (snd (Over.mk t') A').left ≫ n₁) k ω e₁ e₂ s'
   refine ⟨b, fun Z r z i i' hi hi' => ?_⟩
   have hΦ : Φ (((r ≫ ω) ≫ (snd (Over.mk t') A').left) z) ∈ L.U i := by
-    rw [← h₂] at hi
-    exact hi
+    rwa [← h₂] at hi
   have m₂ : (c₁ ≫ Φ) ((ω ≫ (snd (Over.mk t') A').left ≫ n₁) (r z)) ∈ L.U i := by
-    rw [e₂] at hi
-    exact hi
+    rwa [e₂] at hi
   have m₁ : (ω ≫ (snd (Over.mk t') A').left) (r z) ∈ L'.U i' := hi'
   rw [e₁] at m₁
   rw [hv _ _ _ _ _ hΦ hi', hb Z r z i i' m₂ m₁]
@@ -439,20 +435,15 @@ theorem moved_sec (hL : L.IsLB) (hL' : L'.IsLB)
     rw [eq_q]
     exact hp 0
   have m_snd : (h ≫ (snd (Over.mk t) A).left) (Ξ (r z)) ∈ L.U i₁ := by
-    rw [H₀.1]
-    exact hi₁
+    rwa [H₀.1]
   have m_h' : (h' ≫ (snd (Over.mk t') A').left) (r z) ∈ L'.U i' := by
-    rw [H₀'.1]
-    exact hi'
+    rwa [H₀'.1]
   have m_snd' : ((((r ≫ Ξ) ≫ h) ≫ ω) ≫ (snd (Over.mk t') A').left) z ∈ L'.U i' := by
-    rw [eq_R, Category.assoc]
-    exact m_h'
+    rwa [eq_R, Category.assoc]
   have m_c : (m' ≫ c₁ ≫ Φ) (r z) ∈ L.U i₁ := by
-    rw [← eq_c]
-    exact hi₁
+    rwa [← eq_c]
   have m_v1 : (h' ≫ (snd (Over.mk t') A').left ≫ Φ) (r z) ∈ L.U i₁ := by
-    rw [← Category.assoc, H₀'.1, Category.assoc]
-    exact m_c
+    rwa [← Category.assoc, H₀'.1, Category.assoc]
   have E1 := PH Z (r ≫ Ξ) z (p 0) i₁ m_q hi₁
   have E2 := hs Z ((r ≫ Ξ) ≫ h) z i₁ i' m_snd m_snd'
   rw [eq_R] at E2

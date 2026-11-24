@@ -300,19 +300,16 @@ theorem reorderClaim_succ_first {s : ℕ} (ih : ReorderClaim k s) (d : Fin (s + 
       (extTensor (multiProd e₁ fun i => (σ (ι₁ i)).π) (multiProd e₂ fun j => (σ (ι₂ j)).π)))) := by
   have hc' : ∀ i j, Commutes (σ (f i).succ) (σ (g j).succ) := fun i j => by
     have := hc i.succ j
-    rw [hf i, hg j] at this
-    exact this
+    rwa [hf i, hg j] at this
   have Hr : ∃ (r' : ℕ) (_ : (Σ i : Fin s₁, Fin (d (f i).succ)) ≃ Fin r'), d 0 + r' = r := by
     refine ⟨_, finSigmaFinEquiv, ?_⟩
     have := Fintype.card_congr e₁
-    simp only [Fintype.card_sigma, Fintype.card_fin, Fin.sum_univ_succ, h0, hf] at this
-    exact this
+    simpa only [Fintype.card_sigma, Fintype.card_fin, Fin.sum_univ_succ, h0, hf] using this
   obtain ⟨r', e₁', hr⟩ := Hr
   have Ht : Nonempty ((Σ j : Fin s₂, Fin (d (g j).succ)) ≃ Fin t) := by
     refine ⟨(finSigmaFinEquiv).trans (finCongr ?_)⟩
     have := Fintype.card_congr e₂
-    simp only [Fintype.card_sigma, Fintype.card_fin, hg] at this
-    exact this
+    simpa only [Fintype.card_sigma, Fintype.card_fin, hg] using this
   obtain ⟨e₂'⟩ := Ht
   have HT : Nonempty ((Σ a : Fin s, Fin (d a.succ)) ≃ Fin (r' + t)) :=
     ⟨(sigmaPart (fun a => d a.succ) f g hb).trans ((e₁'.sumCongr e₂').trans finSumFinEquiv)⟩
@@ -341,23 +338,19 @@ theorem reorderClaim_succ_second {s : ℕ} (ih : ReorderClaim k s) (d : Fin (s +
       (extTensor (multiProd e₁ fun i => (σ (ι₁ i)).π) (multiProd e₂ fun j => (σ (ι₂ j)).π)))) := by
   have hc' : ∀ i j, Commutes (σ (f i).succ) (σ (g j).succ) := fun i j => by
     have := hc i j.succ
-    rw [hf i, hg j] at this
-    exact this
+    rwa [hf i, hg j] at this
   have hcomm : ∀ i, Commutes (σ 0) (σ (f i).succ) := fun i => by
     have := (hc i 0).symm
-    rw [h0, hf i] at this
-    exact this
+    rwa [h0, hf i] at this
   have Ht : ∃ (t' : ℕ) (_ : (Σ j : Fin s₂, Fin (d (g j).succ)) ≃ Fin t'), d 0 + t' = t := by
     refine ⟨_, finSigmaFinEquiv, ?_⟩
     have := Fintype.card_congr e₂
-    simp only [Fintype.card_sigma, Fintype.card_fin, Fin.sum_univ_succ, h0, hg] at this
-    exact this
+    simpa only [Fintype.card_sigma, Fintype.card_fin, Fin.sum_univ_succ, h0, hg] using this
   obtain ⟨t', e₂', ht⟩ := Ht
   have Hr : Nonempty ((Σ i : Fin s₁, Fin (d (f i).succ)) ≃ Fin r) := by
     refine ⟨(finSigmaFinEquiv).trans (finCongr ?_)⟩
     have := Fintype.card_congr e₁
-    simp only [Fintype.card_sigma, Fintype.card_fin, hf] at this
-    exact this
+    simpa only [Fintype.card_sigma, Fintype.card_fin, hf] using this
   obtain ⟨e₁'⟩ := Hr
   have HT : Nonempty ((Σ a : Fin s, Fin (d a.succ)) ≃ Fin (r + t')) :=
     ⟨(sigmaPart (fun a => d a.succ) f g hb).trans ((e₁'.sumCongr e₂').trans finSumFinEquiv)⟩
@@ -504,8 +497,7 @@ theorem commutes_of_pair {s : ℕ} {d : Fin s → ℕ} (σ : ∀ a, Irr k (d a))
   have K1 := multiProd_two_eqv (fun i => (σ (![a, b] i)).π) f₁ h₁'
   have K2 := multiProd_two_eqv (fun i => (σ (![a, b] (Equiv.swap 0 1 i))).π) f₂ h₂'
   have K3 := H (Fin N) f₁ f₂
-  have K4 := ind₂_index_congr σ hD0 hD1 h₂' h₂
-  exact eqvT (eqvS K0) (eqvT (eqvS K1) (eqvT K3 (eqvT K2 K4)))
+  exact eqvT (eqvS K0) (eqvT (eqvS K1) (eqvT K3 (eqvT K2 (ind₂_index_congr σ hD0 hD1 h₂' h₂))))
 
 theorem reorder_split : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (s : ℕ) (d : Fin s → ℕ) (σ : ∀ a, Irr k (d a)) (S : Finset (Fin s)) (r t : ℕ) (e : (Σ a, Fin (d a)) ≃ Fin (r + t)) (e₁ : (Σ a : Fin Sᶜ.card, Fin (d (Sᶜ.orderEmbOfFin rfl a))) ≃ Fin r) (e₂ : (Σ b : Fin S.card, Fin (d (S.orderEmbOfFin rfl b))) ≃ Fin t), (∀ a b, a ∉ S → b ∈ S → ∀ (n : Type) [Fintype n] [DecidableEq n] (f : (Σ i : Fin 2, Fin (d (![a, b] i))) ≃ n) (f' : (Σ i : Fin 2, Fin (d (![a, b] (Equiv.swap 0 1 i)))) ≃ n), Nonempty ((multiProd f fun i => (σ (![a, b] i)).π).Equiv (multiProd f' fun i => (σ (![a, b] (Equiv.swap 0 1 i))).π))) → Nonempty ((multiProd e fun a => (σ a).π).Equiv (prod₂ (multiProd e₁ fun a => (σ (Sᶜ.orderEmbOfFin rfl a)).π) (multiProd e₂ fun b => (σ (S.orderEmbOfFin rfl b)).π))) := by
   intro k _ _ _ _ s d σ S r t e e₁ e₂ hyp

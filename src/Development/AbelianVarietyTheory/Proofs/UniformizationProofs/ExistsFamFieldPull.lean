@@ -225,8 +225,7 @@ theorem famMult_pr (k : ℕ) (α mu : D'.X) (y : Sp F) {J J'} (hJ : Good D.P.L y
       have := cPoint_left_pr hD (T' := TF (R := R') F) (T := TF (R := R) F) (𝟙 (Sp F)) hh χ
       exact (congrArg (· ≫ prA hD) (Category.assoc _ _ _).symm).trans
         (this.trans (congrArg (𝟙 (Sp F) ≫ ·) (Category.assoc _ _ _)))) (𝟙 _) y hJ hJ'
-    rw [Fintype.prod_unique, zpow_neg_one, a₁, val_pull hJ, val_pull hJ', Category.comp_id] at e
-    exact e
+    rwa [Fintype.prod_unique, zpow_neg_one, a₁, val_pull hJ, val_pull hJ', Category.comp_id] at e
   have vρ : vK D.rigK y J = wGerm hD.w y J J' (1 : TF (R := R') F ⟶ D'.P.A).left * vK D'.rigK y J' := by
     have pm := (maps_iff hD.w _ (fun _ => eSec D.P.A) _ D'.rig D.rig (specOf φ) _
       (rigPull_le (prA hD) (specOf φ) hD.he D.P.L) (fun _ => rfl)).1 hD.w_rig
@@ -235,8 +234,7 @@ theorem famMult_pr (k : ℕ) (α mu : D'.X) (y : Sp F) {J J'} (hJ : Good D.P.L y
     have b₁ : (𝟙 _ ≫ jFK (R := R) F) ≫ (toUnit (TK R)).left = (TF (R := R) F).hom := by rw [Category.id_comp]; rfl
     have b₂ : (𝟙 _ ≫ jFK (R := R') F) ≫ (toUnit (TK R')).left = (TF (R := R') F).hom := by rw [Category.id_comp]; rfl
     refine (val_pull hJ _ _ _).trans (Eq.trans ?_ (congrArg₂ (· * ·) rfl (val_pull hJ' _ _ _).symm))
-    rw [b₁, b₂]
-    exact e
+    rwa [b₁, b₂]
   have m : val (Z := Sp F) (DegPre.famMult D F k (hD.xe mu) (hD.xe α)) (𝟙 _) y J = vK (D.psi (hD.xe mu)) y J ^ k *
       (vK (D.psi (hD.xe mu + hD.xe α)) y J * (vK (D.psi (hD.xe mu)) y J)⁻¹ * (vK (D.psi (hD.xe α)) y J)⁻¹ *
         (vK D.rigK y J)⁻¹) * vK D.rigK y J ^ k := BoxFamily.famMult_val F hJ k _ _ _

@@ -154,8 +154,7 @@ theorem transport : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [F
   have hT' : ∀ t h, T' t h = toE (T t (toV h)) := fun t h => rfl
   obtain ⟨k, hk, hint⟩ := haar_coords μ C
   have c1 : ∀ w, Continuous fun t => A' t w := by
-    intro w
-    exact (φ.toLinearMap.continuous_of_finiteDimensional).comp (hAc (φ.symm w))
+    exact fun w => (φ.toLinearMap.continuous_of_finiteDimensional).comp (hAc (φ.symm w))
   have c2 : ∀ s t f, T' (s + t) f = T' s (T' t f) := by
     intro s t h
     simp only [hT', hVE, hTadd]
@@ -168,8 +167,7 @@ theorem transport : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [F
       funext x
       have := congrFun (hS (φ.symm w) ⇑f) x
       simp only [Function.comp_apply, LinearEquiv.apply_symm_apply] at this
-      simp only [htoV, Function.comp_apply, hf]
-      exact this.symm
+      simpa only [htoV, Function.comp_apply, hf] using this.symm
     have e2 := hTi t _ _ _ e1
     rw [hT' t f₁, hT' t f, htoE, htoE, e2]
     obtain ⟨G, hG⟩ : ∃ G : EuclideanSpace ℝ (Fin n) → ℂ, ⇑(T t (toV f)) = G ∘ ⇑C :=
@@ -184,9 +182,7 @@ theorem transport : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [F
     rw [hint, hint] at e
     simp only [htoV, Function.comp_apply, ContinuousLinearEquiv.apply_symm_apply] at e
     exact mul_left_cancel₀ hk.ne' e
-  have c6 : ∀ f y, Continuous fun t => T' t f y := by
-    intro h y
-    exact hTc (toV h) (C.symm y)
+  have c6 : ∀ f y, Continuous fun t => T' t f y := fun h y => hTc (toV h) (C.symm y)
   obtain ⟨X, c, hX⟩ := H A' T' c1 c2 c3 c4 c5 c6
   let eq := (Fintype.equivFin ((Fin n ⊕ Fin n) × (Fin n ⊕ Fin n))).symm
   let S := X * Matrix.J (Fin n) ℝ

@@ -226,12 +226,10 @@ theorem isProjOver_descends_to_subring :
     rw [← ProjSpace.baseChange_comp, hsub]
   have hleft : IsPullback j f f₀' (spMap R₀'.subtype) := by
     refine IsPullback.of_right ?_ hjf hX₀'
-    rw [hjπ, hsp h₀]
-    exact hX
+    rwa [hjπ, hsp h₀]
   have hsq : IsPullback j i g₀ (ProjSpace.baseChange M R₀'.subtype) := by
     refine IsPullback.of_bot ?_ ?_ hY
-    · rw [hif, hg₀q]
-      exact hleft
+    · rwa [hif, hg₀q]
     · apply hbc₀.hom_ext
       · rw [Category.assoc, hg₀b, hjψ, Category.assoc, hbc]
       · rw [Category.assoc, hg₀q, hjf, Category.assoc, ProjSpace.baseChange_str, ← Category.assoc, hif]
@@ -248,8 +246,7 @@ theorem isProjOver_descends_to_subring :
       hX₀'.lift_fst _ _ _, hX₀'.lift_snd _ _ _⟩
   have hleft₁ : IsPullback πX₁ f₁ f₀' (spMap (Subring.inclusion h')) := by
     refine IsPullback.of_right ?_ hf₁ hX₀'
-    rw [hπ₁, hsp2 h₀ h' h]
-    exact hX₁
+    rwa [hπ₁, hsp2 h₀ h' h]
   have hY₁ := ProjSpace.isPullback_baseChange M (Subring.inclusion h')
   obtain ⟨g₁, hg₁b, hg₁q⟩ : ∃ g₁ : X₁ ⟶ PSpace R₁ M,
       g₁ ≫ ProjSpace.baseChange M (Subring.inclusion h') = πX₁ ≫ g₀ ∧ g₁ ≫ PSpace.str R₁ M = f₁ :=
@@ -257,8 +254,7 @@ theorem isProjOver_descends_to_subring :
       hY₁.lift_snd _ _ _⟩
   have hsq₁ : IsPullback πX₁ g₁ g₀ (ProjSpace.baseChange M (Subring.inclusion h')) := by
     refine IsPullback.of_bot ?_ hg₁b.symm hY₁
-    rw [hg₁q, hg₀q]
-    exact hleft₁
+    rwa [hg₁q, hg₀q]
   have := hF₂ R₁ h' hF₂' X₁ (PSpace R₁ M) g₁ πX₁ (ProjSpace.baseChange M (Subring.inclusion h'))
     (PSpace.str R₁ M) hY₁ hsq₁
   rw [← hg₁q]

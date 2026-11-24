@@ -117,8 +117,7 @@ theorem _root_.GlobalTheory.SmGL.mem_parab_iff {e : (Σ a, m a) ≃ n} {g : GL n
       (g : Matrix n n R) (e ⟨a, i⟩) (e ⟨b, j⟩) = 0 := by
   rw [_root_.GlobalTheory.SmGL.mem_parab]
   constructor
-  · intro h a b i j hab
-    exact h _ _ (by simpa using hab)
+  · exact fun h a b i j hab => h _ _ (by simpa using hab)
   · intro h i j hij
     simpa using h (e.symm i).1 (e.symm j).1 (e.symm i).2 (e.symm j).2 hij
 
@@ -231,8 +230,7 @@ private lemma bijective_blockPosition_of_equiv_sigma (e : (Σ a, m a) ≃ n) (a 
         {k : n // _root_.GlobalTheory.SmGL.blk e k = a}) := by
   constructor
   · intro i j hij
-    have h := e.injective (Subtype.ext_iff.1 hij)
-    simpa using h
+    simpa using e.injective (Subtype.ext_iff.1 hij)
   · rintro ⟨k, hk⟩
     obtain ⟨⟨b, i⟩, rfl⟩ := e.surjective k
     simp only [_root_.GlobalTheory.SmGL.blk_apply] at hk
@@ -467,10 +465,8 @@ theorem _root_.GlobalTheory.SmGL.mem_parabLower_iff {e : (Σ a, m a) ≃ n} {g :
   unfold _root_.GlobalTheory.SmGL.parabLower
   rw [_root_.GlobalTheory.SmGL.mem_parab_iff]
   constructor
-  · intro h a b i j hab
-    exact h (OrderDual.toDual a) (OrderDual.toDual b) i j hab
-  · intro h a b i j hab
-    exact h (OrderDual.ofDual a) (OrderDual.ofDual b) i j hab
+  · exact fun h a b i j hab => h (OrderDual.toDual a) (OrderDual.toDual b) i j hab
+  · exact fun h a b i j hab => h (OrderDual.ofDual a) (OrderDual.ofDual b) i j hab
 
 def leviProjLower (e : (Σ a, m a) ≃ n) : parabLower R e →* Levi R m := leviProj R (opp e)
 
@@ -691,8 +687,7 @@ theorem _root_.GlobalTheory.SmGL.mem_parab_two {e : a ⊕ b ≃ n} {g : GL n R} 
       ∀ (j : b) (i : a), (g : Matrix n n R) (e (.inr j)) (e (.inl i)) = 0 := by
   rw [_root_.GlobalTheory.SmGL.mem_parab_iff]
   constructor
-  · intro h j i
-    exact h true false j i (by decide)
+  · exact fun h j i => h true false j i (by decide)
   · intro h x y i j hxy
     rcases x with _ | _ <;> rcases y with _ | _
     · exact absurd hxy (by decide)
@@ -716,8 +711,7 @@ theorem _root_.GlobalTheory.SmGL.mem_parabLower_two {e : a ⊕ b ≃ n} {g : GL 
       ∀ (i : a) (j : b), (g : Matrix n n R) (e (.inl i)) (e (.inr j)) = 0 := by
   rw [_root_.GlobalTheory.SmGL.mem_parabLower_iff]
   constructor
-  · intro h i j
-    exact h false true i j (by decide)
+  · exact fun h i j => h false true i j (by decide)
   · intro h x y i j hxy
     rcases x with _ | _ <;> rcases y with _ | _
     · exact absurd hxy (by decide)

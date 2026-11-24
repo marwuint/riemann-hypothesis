@@ -430,8 +430,7 @@ theorem unramOver {S : Set ℕ} (mu : Tup X.F X.E X.K S) {l : ℕ} (hl : l.Prime
   rcases (Nat.dvd_prime hl).1 h6 with h7 | h7
   · exact absurd h7 CharP.ringChar_ne_one
   · change ringChar (𝓞 X.F ⧸ v.asIdeal) ∈ S
-    rw [h7]
-    exact hS
+    rwa [h7]
 
 theorem stdOver (hPr : Pr.Ok) {u : Pr.Word} {n : ℕ} {SG : Finset (HeightOneSpectrum (𝓞 X.E))}
     (d : DecoSet (E := X.E) (n := n) (ST := Pr.vT u) (SG := SG)) (h : StdAtT d.1) : GlobalTheory.IndefiniteRowSideFullHecke.CharacterValuation.StdOver (Pr.T u) d.1.N := by
@@ -572,8 +571,7 @@ theorem mem_homAt_gmap (S : Finset (HeightOneSpectrum (𝓞 E))) (g : Sp E a ≃
 
 theorem conj_osmul (g : Sp E a ≃ₗ[E] Sp E a) (g' : Sp E b ≃ₗ[E] Sp E b) (c : 𝓞 E) (x : HomE E a b) :
     g'.symm.toLinearMap ∘ₗ (c • x) ∘ₗ g.toLinearMap = c • (g'.symm.toLinearMap ∘ₗ x ∘ₗ g.toLinearMap) := by
-  refine LinearMap.ext fun y => ?_
-  exact equiv_osmul g'.symm c (x (g y))
+  exact LinearMap.ext fun y => equiv_osmul g'.symm c (x (g y))
 
 theorem inBox_gmap {K : Type} [Field K] {S : Finset (HeightOneSpectrum (𝓞 E))} {cA cB : ℕ}
     {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E) (Sp E b)} {Ξ : HomE E a b → K} (h : InBox S cA cB N N' Ξ)
@@ -582,13 +580,11 @@ theorem inBox_gmap {K : Type} [Field K] {S : Finset (HeightOneSpectrum (𝓞 E))
   refine ⟨fun x hx => ?_, ?_⟩
   · have h1 : (cA : 𝓞 E) • (g'.symm.toLinearMap ∘ₗ x ∘ₗ g.toLinearMap) ∈ homAt S N N' := h.1 _ hx
     change (cA : 𝓞 E) • x ∈ homAt S (gmap g N) (gmap g' N')
-    rw [mem_homAt_gmap, conj_osmul]
-    exact h1
+    rwa [mem_homAt_gmap, conj_osmul]
   · rintro x _ ⟨z, hz, rfl⟩
     have h1 := h.2 (g'.symm.toLinearMap ∘ₗ x ∘ₗ g.toLinearMap) _ ⟨_, (mem_homAt_gmap S g g' N N' z).1 hz, rfl⟩
     change Ξ (g'.symm.toLinearMap ∘ₗ (x + (cB : 𝓞 E) • z) ∘ₗ g.toLinearMap) = _
-    rw [LinearMap.add_comp, LinearMap.comp_add, conj_osmul]
-    exact h1
+    rwa [LinearMap.add_comp, LinearMap.comp_add, conj_osmul]
 
 end Box
 
@@ -673,8 +669,7 @@ theorem kerBar : GlobalTheory.IndefiniteRowSideFullHecke.JetSumTable.JetMoments 
   unfold OverT at hw
   have hw' : (((B.primes X).T u : ℕ) : 𝓞 B.fields.K) ∈ ((I.rec7 l Z).plEq w).asIdeal := by
     have h0 := Formalism.L2.Col.att_resChar_mem (I.rec7 l Z).what₂.places (I.rec7 l Z).plEq (I.rec7 l Z).val_eq w
-    rw [hw] at h0
-    exact h0
+    rwa [hw] at h0
   have hs : ¬ seenC (B.primes X) u ((I.rec7 l Z).plEq w) := fun hc => by
     have h0 : decide (seenC (B.primes X) u ((I.rec7 l Z).plEq w)) = false := hseen
     simp [hc] at h0

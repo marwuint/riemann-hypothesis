@@ -69,8 +69,7 @@ theorem snd_eq_zero_of_at {F : Type} [Field F] [NumberField F] {κ : Type} {z : 
     (z i).2 = 0 := by
   have := congrArg Prod.snd (congrFun (hz (0, 1) evI_fin) i)
   change (((0, 1) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F).2 * (z i).2) = (0 : AF F).2 at this
-  rw [one_mul] at this
-  exact this
+  rwa [one_mul] at this
 
 def intInd {F : Type} [Field F] [NumberField F] (κ : Type) : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ :=
   (Set.pi Set.univ fun _ : κ => (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F))).indicator 1
@@ -150,9 +149,7 @@ theorem comm_fin {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
     rw [h0, Matrix.transpose_zero, Matrix.mul_zero, sub_eq_zero] at h1
     simp only [actAB]
     simpa [mat] using h1
-  have h2 := hS.impl (1, h) (u • w) Φ hΦ
-  simp only [Darboux.rho, he, hact] at h2
-  exact h2
+  simpa only [Darboux.rho, he, hact] using hS.impl (1, h) (u • w) Φ hΦ
 
 theorem fibre {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ)
     (T : Module.End ℂ ((κ → AF F) → ℂ))
@@ -177,8 +174,7 @@ theorem fibre {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (ψ 
     have e := hcomm u hu0 0 q Φ hΦ
     have hs0 : ∀ G : (κ → AF F) → ℂ, schr ψ (u • (0 : κ → AF F), u • q) G = fun x => ψ (x ⬝ᵥ q) * G x := by
       intro G; funext x; simp [schr, huq]
-    rw [hs0, hs0] at e
-    exact e
+    rwa [hs0, hs0] at e
   have hsum : ∀ G : (κ → AF F) → ℂ, (fun x => (∑ q ∈ s, c q * ψ (x ⬝ᵥ q)) * G x) =
       ∑ q ∈ s, c q • (fun x => ψ (x ⬝ᵥ q) * G x) := by
     intro G; funext x; simp [Finset.sum_mul, mul_assoc]

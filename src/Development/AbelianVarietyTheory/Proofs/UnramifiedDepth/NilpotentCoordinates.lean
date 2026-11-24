@@ -68,10 +68,7 @@ theorem ext_of_nil (π : MvPolynomial (Fin n) R →ₐ[R] B) (hπ : π.toRingHom
   letI : Algebra (MvPolynomial (Fin n) R) B := π.toRingHom.toAlgebra
   haveI : Algebra.Etale (MvPolynomial (Fin n) R) B := hπ
   let ρ : MvPolynomial (Fin n) R →ₐ[R] A := φ₁.comp π
-  have hρ2 : φ₂.comp π = ρ := by
-    apply MvPolynomial.algHom_ext
-    intro j
-    exact (hs j).symm
+  have hρ2 : φ₂.comp π = ρ := MvPolynomial.algHom_ext (fun j => (hs j).symm)
   letI : Algebra (MvPolynomial (Fin n) R) A := ρ.toRingHom.toAlgebra
   let ψ₁ : B →ₐ[MvPolynomial (Fin n) R] A :=
     { φ₁.toRingHom with commutes' := fun p => rfl }
@@ -124,8 +121,7 @@ theorem exists_of_nil (π : MvPolynomial (Fin n) R →ₐ[R] B) (hπ : π.toRing
   have hmk : Function.Surjective mk := Ideal.Quotient.mk_surjective
   have hker : IsNilpotent (RingHom.ker (mk : A →+* A ⧸ J)) := by
     have : RingHom.ker (mk : A →+* A ⧸ J) = J := Ideal.mk_ker
-    rw [this]
-    exact hJ
+    rwa [this]
   let φ' := Algebra.FormallySmooth.liftOfSurjective f₀ mk hmk hker
   have hφ' : mk.comp φ' = f₀ := Algebra.FormallySmooth.comp_liftOfSurjective f₀ mk hmk hker
   have hc : ∀ p, φ' (π p) = ρ p := fun p => φ'.commutes p
@@ -137,8 +133,7 @@ theorem exists_of_nil (π : MvPolynomial (Fin n) R →ₐ[R] B) (hπ : π.toRing
     obtain ⟨N, hN⟩ := hJ
     refine ⟨N, ?_⟩
     have := Ideal.pow_mem_pow e1 N
-    rw [hN, Ideal.zero_eq_bot, Ideal.mem_bot] at this
-    exact this
+    rwa [hN, Ideal.zero_eq_bot, Ideal.mem_bot] at this
   · show φ' (π _) = _
     rw [hc]
     exact MvPolynomial.aeval_X _ j
@@ -161,8 +156,7 @@ theorem exists_etale_chart {R₀ : Type} [CommRing R₀] (G : Over (Spec (CommRi
     refine (hsp p).mem_open U.isOpen ?_
     have h1 : (e0 ≫ G.hom) (IsLocalRing.closedPoint R₀) ∈ U := by
       exact (Scheme.Hom.comp_apply e0 G.hom (IsLocalRing.closedPoint R₀)).symm ▸ e hx
-    rw [hw] at h1
-    exact h1
+    rwa [hw] at h1
   subst hU'
   let C : Chart G := ⟨V, hV, fun p _ => (hsp p).mem_open (e0 ⁻¹ᵁ V).isOpen hx⟩
   have h2 : RingHom.IsStandardSmoothOfRelativeDimension g (alg0 C) :=

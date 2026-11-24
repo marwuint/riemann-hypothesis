@@ -60,9 +60,7 @@ namespace GlobalTheory.ClosableSchur
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 lemma inner_of_norm_eq (R : H →L[ℂ] H) (hR : ∀ v, ‖R v‖ = ‖v‖) (v w : H) :
-    ⟪R v, R w⟫_ℂ = ⟪v, w⟫_ℂ := by
-  have h := (LinearMap.norm_map_iff_inner_map_map R).mp hR
-  exact h v w
+    ⟪R v, R w⟫_ℂ = ⟪v, w⟫_ℂ := ((LinearMap.norm_map_iff_inner_map_map R).mp hR) v w
 
 private lemma exists_isometry_extension_of_dense_of_norm_eq {K : Type} [NormedAddCommGroup K] [NormedSpace ℂ K] [CompleteSpace K]
     (V : Submodule ℂ K) (hV : Dense (V : Set K)) (u : V →ₗ[ℂ] K) (hu : ∀ v, ‖u v‖ = ‖v‖) :
@@ -72,8 +70,7 @@ private lemma exists_isometry_extension_of_dense_of_norm_eq {K : Type} [NormedAd
     have hr : Set.range (V.subtypeL : V → K) = (V : Set K) := by
       ext x
       simp
-    rw [DenseRange, hr]
-    exact hV
+    rwa [DenseRange, hr]
   have hi : IsUniformInducing V.subtypeL := isUniformEmbedding_subtype_val.isUniformInducing
   have heq : ∀ v : V, uc.extend V.subtypeL v = u v := fun v => by
     have := ContinuousLinearMap.extend_eq uc hd hi v
@@ -112,8 +109,7 @@ lemma abstract {ι K : Type} [CompleteSpace H] [NormedAddCommGroup K] [InnerProd
     apply Subtype.ext
     simp [e, sl]
   have hVd : Dense ((LinearMap.range sl : Submodule ℂ K) : Set K) := by
-    rw [LinearMap.coe_range]
-    exact hs
+    rwa [LinearMap.coe_range]
   have hU : ∀ i, ∃ U : K →L[ℂ] K, (∀ w : D, U (s w) = s ⟨ρ i w, hD i w w.2⟩) ∧
       ∀ γ, ‖U γ‖ = ‖γ‖ := by
     intro i
@@ -130,8 +126,7 @@ lemma abstract {ι K : Type} [CompleteSpace H] [NormedAddCommGroup K] [InnerProd
       rfl)
     refine ⟨U, fun w => ?_, hUn⟩
     have := hUeq ⟨s w, LinearMap.mem_range_self sl w⟩
-    rw [hu] at this
-    exact this
+    rwa [hu] at this
   choose U hUs hUn using hU
   have hUinv : ∀ i j, (∀ v, ρ i (ρ j v) = v) → ∀ γ, U i (U j γ) = γ := by
     intro i j hij γ

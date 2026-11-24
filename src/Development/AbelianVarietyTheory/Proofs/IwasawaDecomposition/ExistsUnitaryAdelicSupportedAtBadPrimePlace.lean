@@ -60,13 +60,11 @@ def sng (P : HeightOneSpectrum (𝓞 E)) (x : P.adicCompletion E) : AfE F E := (
 
 theorem adAt_sng_self (P : HeightOneSpectrum (𝓞 E)) (x : P.adicCompletion E) : adAt F P (sng F P x) = x := by
   rw [adAt_apply, sng]
-  simp only [RingEquiv.apply_symm_apply]
-  exact Formalism.UG.P.afsplitF_self P x
+  simpa only [RingEquiv.apply_symm_apply] using Formalism.UG.P.afsplitF_self P x
 
 theorem adAt_sng_ne {P w : HeightOneSpectrum (𝓞 E)} (h : w ≠ P) (x : P.adicCompletion E) : adAt F w (sng F P x) = 0 := by
   rw [adAt_apply, sng]
-  simp only [RingEquiv.apply_symm_apply]
-  exact Formalism.UG.P.afsplitF_ne P w h x
+  simpa only [RingEquiv.apply_symm_apply] using Formalism.UG.P.afsplitF_ne P w h x
 
 def dev {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (A : Matrix (Fin n) (Fin n) (P.adicCompletion E)) :
     Matrix (Fin n) (Fin n) (AfE F E) := (A - 1).map (sng F P)
@@ -134,8 +132,7 @@ theorem exists_unitary {n : ℕ} {P : HeightOneSpectrum (𝓞 E)} (hP : conjPrim
   · have e : (g * cT σ g').map (adAt F w) = 1 := by
       rw [Matrix.map_mul, map_dev_ne F hw, map_cT_dev hc (fun e => hw' (by rw [← e, CharValCompare.conjP_conjP])), mul_one]
     have := congrFun (congrFun e i) j
-    rw [Matrix.map_apply, Matrix.one_apply] at this
-    exact this
+    rwa [Matrix.map_apply, Matrix.one_apply] at this
   · have e : (g * cT σ g').map (adAt F P) = A.1 := by
       rw [Matrix.map_mul, map_dev_self, map_cT_dev hc hP, mul_one]
     exact congrFun (congrFun e i) j
@@ -149,8 +146,7 @@ theorem exists_lift : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → T
     GlobalTheory.Proof.NarrowJetMoments.conjP_notMem_rowSG (base_fields_primes_ok B X).1 (base_fields_primes_ok B X).2.1 hI.sel_ok hI.g_mem P.2
       (by rw [e]; exact P.2)
   have hs : GlobalTheory.TwU.seamP (sm I l Z) P.1 = P.1 := by
-    refine HeightOneSpectrum.ext (Ideal.ext fun x => ?_)
-    exact GlobalTheory.TwU.mem_seamP (sm I l Z) P.1 x
+    exact HeightOneSpectrum.ext (Ideal.ext fun x => GlobalTheory.TwU.mem_seamP (sm I l Z) P.1 x)
   have hu : P.1.under (𝓞 B.host.F) = v := by
     rw [hs] at hv
     exact HeightOneSpectrum.ext (Eq.symm hv)
@@ -162,8 +158,7 @@ theorem exists_lift : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → T
       exact h1 w (fun e => this (Or.inl e)) fun e => this (Or.inr e)
     exact e0
   refine ⟨z, ?_, fun v' hv' => key v' fun e => hv' (e.trans hu), h2⟩
-  rw [hJ]
-  exact hz
+  rwa [hJ]
 
 end GlobalTheory.Mem.Col2.AdLift
 

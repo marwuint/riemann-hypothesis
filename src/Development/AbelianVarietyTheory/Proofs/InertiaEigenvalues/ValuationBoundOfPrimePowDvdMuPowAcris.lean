@@ -135,8 +135,7 @@ theorem mem_of_l_pow_mul {ϖ : OCb l} (hϖ : ϖ ≠ 0) (m : ℕ) : ∀ (n : ℕ)
   | succ m ih =>
     intro n y h
     refine mem_of_l_mul hϖ n (ih (n + 1) ?_)
-    rw [← mul_assoc, ← pow_succ, show n + 1 + m = n + (m + 1) by omega]
-    exact h
+    rwa [← mul_assoc, ← pow_succ, show n + 1 + m = n + (m + 1) by omega]
 
 end GlobalTheory.AcrisMuBound
 
@@ -230,8 +229,7 @@ theorem exists_of_dvd {n : ℕ} {y : Ainf l}
     rw [← Ideal.Quotient.eq_zero_iff_mem]
     change AdicCompletion.evalₐ _ n (AdicCompletion.of (Ideal.span {(l : Per.Acris0 l)}) _
       (algebraMap (Per.Ainf l) (Per.Acris0 l) y)) = _ at h1
-    rw [h0, zero_mul, AdicCompletion.evalₐ_of] at h1
-    exact h1
+    rwa [h0, zero_mul, AdicCompletion.evalₐ_of] at h1
   rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton'] at h2
   obtain ⟨z, hz⟩ := h2
   refine ⟨z, z.2, ?_⟩
@@ -275,8 +273,7 @@ theorem pow_dvd_cc (hl2 : 2 ≤ l) {ϖ : OCb l} (hϖ : ϖ.untilt = (l : Per.OC l
       cc_natCast_l, map_pow, cc_teich, Ideal.span_singleton_eq_bot.2 rfl, bot_sup_eq]
   rw [Ideal.map_pow] at h3
   have h5 := Ideal.pow_right_mono h4 n h3
-  rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton, ← pow_mul] at h5
-  exact h5
+  rwa [Ideal.span_singleton_pow, Ideal.mem_span_singleton, ← pow_mul] at h5
 
 end GlobalTheory.AcrisMuBound
 
@@ -332,8 +329,7 @@ theorem tilt_bound (hl2 : l ≠ 2) {ε ϖ : OCb l} (hε : IsEps ε) (hϖ : ϖ.un
       exact lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) (GlobalTheory.TiltAbs.norm_le_one t)) hba
     have h3 : a ≤ max ‖d‖ ‖(l : ℂ_[l]) * ((t : Per.OC l) : ℂ_[l])‖ := by
       have := IsUltrametricDist.norm_add_le_max d ((l : ℂ_[l]) * ((t : Per.OC l) : ℂ_[l]))
-      rw [← h1] at this
-      exact this
+      rwa [← h1] at this
     rcases le_max_iff.1 h3 with h | h
     · exact h
     · exact absurd h (not_le.2 h2)
@@ -345,8 +341,7 @@ theorem tilt_bound (hl2 : l ≠ 2) {ε ϖ : OCb l} (hε : IsEps ε) (hϖ : ϖ.un
   push_cast at hc'
   rw [norm_mul, norm_pow, norm_pow, norm_pow] at hc'
   have h4 : ‖d‖ ^ (l * j) ≤ b ^ N := by
-    rw [pow_mul]
-    rw [hc']
+    rw [pow_mul, hc']
     exact mul_le_of_le_one_right (pow_nonneg (norm_nonneg _) _) (GlobalTheory.TiltAbs.norm_le_one c)
   have h5 : a ^ (l * j) ≤ b ^ N := (pow_le_pow_left₀ ha0 hd _).trans h4
   have h6 : b ^ (l * j) ≤ b ^ ((l - 1) * N) := by

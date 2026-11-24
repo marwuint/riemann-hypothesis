@@ -89,11 +89,9 @@ theorem rho_eq_of_ne (hpq : Dw.p ≠ Dw.q) {l₂ : Geo.Tor.Level H} {Xo₂ : Mod
     β (baseKA l).ρ = β₂ (baseKA l₂).ρ := by
   have : CharZero k := (RingHom.charZero_iff β.injective).mp inferInstance
   have hsq1 : (β (baseKA l).ρ) ^ 2 = -(H.d : k) := by
-    have e := congrArg β (baseKA l).ρ_sq
-    simpa using e
+    simpa using congrArg β (baseKA l).ρ_sq
   have hsq2 : (β₂ (baseKA l₂).ρ) ^ 2 = -(H.d : k) := by
-    have e := congrArg β₂ (baseKA l₂).ρ_sq
-    simpa using e
+    simpa using congrArg β₂ (baseKA l₂).ρ_sq
   let τE : E →ₐ[ℚ] k := (by
     refine @_root_.IsAlgClosed.lift _ _ _ _ _ _ _ _ _ _ _ ?_ ?_ ?_
     solve_by_elim* (maxDepth := 2) only [*,
@@ -101,8 +99,7 @@ theorem rho_eq_of_ne (hpq : Dw.p ≠ Dw.q) {l₂ : Geo.Tor.Level H} {Xo₂ : Mod
       @_root_.Algebra.IsIntegral.isAlgebraic, @_root_.inferInstance])
   let τ : 𝓞 E →+* k := (τE : E →+* k).comp (algebraMap (𝓞 E) E)
   have ht : (τ H.rt) ^ 2 = -(H.d : k) := by
-    have e := congrArg τ H.rt_sq
-    simpa using e
+    simpa using congrArg τ H.rt_sq
   have D1 := (Xo.univ.geom k (x ≫ π) β h).1
   have D2 := (Xo₂.univ.geom k x β₂ h₂).1
   have P : ∀ n, LieMult Xo₂.univ.t.act x τ n ↔ LieMult Xo.univ.t.act (x ≫ π) τ n := fun n =>
@@ -125,8 +122,7 @@ theorem rho_eq_of_ne (hpq : Dw.p ≠ Dw.q) {l₂ : Geo.Tor.Level H} {Xo₂ : Mod
     have hn2' := (P' n').mpr (by rw [Category.id_comp]; exact hn')
     obtain ⟨bn⟩ := (GlobalTheory.Serre.Lie.lieMult_id_iff o'.t.act τ n).mp hn2
     obtain ⟨bn'⟩ := (GlobalTheory.Serre.Lie.lieMult_id_iff o'.t.act τ n').mp hn2'
-    have e := (Module.finrank_eq_card_basis bn).symm.trans (Module.finrank_eq_card_basis bn')
-    simpa using e
+    simpa using (Module.finrank_eq_card_basis bn).symm.trans (Module.finrank_eq_card_basis bn')
   by_contra hne
   have h21 : β₂ (baseKA l₂).ρ = -(β (baseKA l).ρ) := by
     rcases sq_eq_sq_iff_eq_or_eq_neg.mp (hsq2.trans hsq1.symm) with e | e
@@ -174,8 +170,7 @@ private theorem ringHom_KA_ext_of_A_eq_one (hA : l.A = 1) {R : Type} [CommRing R
         _ = β' (⟨x, hx⟩⁻¹) := by rw [e1, one_mul]
 
 theorem emb_ext_of_one (hA : l.A = 1) {k : Type} [Field k] {β β' : KA l →+* k}
-    (h : β (baseKA l).ρ = β' (baseKA l).ρ) : β = β' := by
-  exact ringHom_KA_ext_of_A_eq_one hA h
+    (h : β (baseKA l).ρ = β' (baseKA l).ρ) : β = β' := ringHom_KA_ext_of_A_eq_one hA h
 
 def OverBase (d : DeltaDat Xo c n) : Prop :=
   ∀ h : KA l ≤ KA d.l₂, d.r ≫ Xo.s = d.Xo₂.s ≫ spMap (IntermediateField.inclusion h).toRingHom
@@ -215,8 +210,7 @@ theorem overBase_of_ne (hpq : Dw.p ≠ Dw.q) (hA : l.A = 1) (d : DeltaDat Xo c n
     rw [e2, Scheme.basicOpen_zero] at e3
     obtain ⟨q⟩ : Nonempty ↥(Spec (d.Xo₂.X.residueField p)) := ⟨IsLocalRing.closedPoint _⟩
     have hq : q ∈ t ⁻¹ᵁ d.Xo₂.X.basicOpen (φf (baseKA l).ρ - φg (baseKA l).ρ) := by
-      rw [Scheme.Hom.mem_preimage, Scheme.fromSpecResidueField_apply]
-      exact hp
+      rwa [Scheme.Hom.mem_preimage, Scheme.fromSpecResidueField_apply]
     rw [e3] at hq
     simp at hq
   have hφ : φf = φg := by
@@ -224,8 +218,7 @@ theorem overBase_of_ne (hpq : Dw.p ≠ Dw.q) (hA : l.A = 1) (d : DeltaDat Xo c n
     rw [← sub_eq_zero]
     apply eq_zero_of_basicOpen_eq_bot
     rw [eq_bot_iff]
-    intro p hp
-    exact (key p hp).elim
+    exact fun p hp => (key p hp).elim
   have h1 : (Scheme.ΓSpecIso (CommRingCat.of (KA l))).inv ≫ f.appTop =
       (Scheme.ΓSpecIso (CommRingCat.of (KA l))).inv ≫ g.appTop := CommRingCat.hom_ext hφ
   rw [cancel_epi] at h1

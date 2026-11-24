@@ -179,9 +179,7 @@ theorem map_sub' {T : (GA D V → ℂ) → GA D V → ℂ} (hT : LinOnSm θ V T)
 theorem IsCauchy.size (h : IsCauchy θ N ψ) :
     Tendsto (fun p : ℕ × ℕ => growthSize V N (ψ p.1 - ψ p.2)) atTop (𝓝 0) := by
   obtain ⟨-, hB⟩ := id h
-  have h0 := hB 0
-  simp only [growthSob, wordSum_zero] at h0
-  exact h0
+  simpa only [growthSob, wordSum_zero] using hB 0
 
 theorem IsCauchy.exists_lim (h : IsCauchy θ N ψ) :
     ∃ f : GA D V → ℂ, ∀ g, Tendsto (fun n => ψ n g) atTop (𝓝 (f g)) := GlobalTheory.GrowthComplete.exists_lim h.size
@@ -320,11 +318,9 @@ theorem IsCauchy.word (hθ : IsInfFam θ) (h : IsCauchy θ N ψ) (hf : ∀ g, Te
       ∀ g, Tendsto (fun n => wordAct (glDer θ V) l (ψ n) g) atTop (𝓝 (wordAct (glDer θ V) l f g)) := by
   induction l with
   | nil =>
-    simp only [wordAct_nil]
-    exact ⟨h, hf⟩
+    simpa only [wordAct_nil] using ⟨h, hf⟩
   | cons a l ih =>
-    simp only [wordAct_cons]
-    exact ih.1.letter hθ ih.2 a
+    simpa only [wordAct_cons] using ih.1.letter hθ ih.2 a
 
 theorem complete : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (N : ℕ) (ψ : ℕ → GA D V → ℂ), (∀ n, Continuous (ψ n) ∧ ψ n ∈ GlobalTheory.Mem.AutSpace.SmFun θ V ∧ ∀ d, GlobalTheory.Size.growthSob θ V d N (ψ n) ≠ ⊤) → (∀ d, Filter.Tendsto (fun p : ℕ × ℕ => GlobalTheory.Size.growthSob θ V d N (ψ p.1 - ψ p.2)) Filter.atTop (nhds 0)) → ∃ f : GA D V → ℂ, Continuous f ∧ f ∈ GlobalTheory.Mem.AutSpace.SmFun θ V ∧ ∀ d, Filter.Tendsto (fun n => GlobalTheory.Size.growthSob θ V d N (ψ n - f)) Filter.atTop (nhds 0) := by
   intro D θ hθ V N ψ h1 h2
@@ -553,8 +549,7 @@ theorem exists_log (V : HSp D) (τ : D.what₂.Tau) :
   obtain ⟨L, hL, hexp, hlog⟩ := GlobalTheory.ConjMult.hasLogAt (V := V) τ
   have hJ := GlobalTheory.SmoothAutCheck.gramAt_unit V τ
   have h0 : L 1 = 0 := by
-    have h := hlog.self_of_nhds
-    simpa using h
+    simpa using hlog.self_of_nhds
   refine ⟨fun u => (L u).1, fun u => (L u).2, ?_, ?_⟩
   · have hc : Filter.Tendsto L (𝓝 1) (𝓝 0) := h0 ▸ hL.continuousAt.tendsto
     exact (continuous_subtype_val.tendsto _).comp hc
@@ -614,8 +609,7 @@ theorem growthSize_sub_le (hθ : IsInfFam θ) {τ : D.what₂.Tau} {N : ℕ} {φ
       have h0 := le_wordSum (A := glDer θ V) (p := growthSize V N) (d := 1) (l := [(τ, a)]) (by simp) φ
       simpa [wordAct, growthSob] using h0
     have h2 : growthSize V N (glDer θ V (τ, a) φ) ≤ ENNReal.ofReal S := by
-      rw [hS, ENNReal.ofReal_toReal hf]
-      exact h1
+      rwa [hS, ENNReal.ofReal_toReal hf]
     exact (growthSize_le_iff hS0).1 h2
   have hder : ∀ h, ‖Rder θ V τ X φ h‖ ≤ s * S * height V h ^ N := by
     intro h
@@ -646,8 +640,7 @@ theorem growthSize_sub_le (hθ : IsInfFam θ) {τ : D.what₂.Tau} {N : ℕ} {φ
   have key := norm_image_sub_le_of_norm_deriv_le_segment' (f := fun r : ℝ => φ (g * oneP θ V τ X r))
     (a := 0) (b := 1) (fun t _ => (hφd t).hasDerivWithinAt) hb 1 (by simp)
   simp only [sub_zero, mul_one] at key
-  rw [GlobalTheory.Mem.Lift.oneP_zero hθ, mul_one] at key
-  exact key
+  rwa [GlobalTheory.Mem.Lift.oneP_zero hθ, mul_one] at key
 
 theorem tendsto_growthSize_translate : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (τ : D.what₂.Tau) (N : ℕ), ∀ φ ∈ GlobalTheory.Mem.AutSpace.SmFun θ V, GlobalTheory.Size.growthSob θ V 1 N φ ≠ ⊤ → Filter.Tendsto (fun u : Matrix (Fin V.rank) (Fin V.rank) ℂ => GlobalTheory.Size.growthSize V N (rTr V (atTau θ V τ u) φ - φ)) (nhdsWithin 1 (Formalism.QuantumDeterminants.UH (gramAt D V τ))) (nhds 0) := by
   intro D θ hθ V τ N φ hs hf
@@ -665,8 +658,7 @@ theorem tendsto_growthSize_translate : ∀ (D : D7) (θ : InfFam D), IsInfFam θ
           (𝓝 ((0 : Matrix (Fin V.rank) (Fin V.rank) ℂ) a.1 a.2)) :=
         (hce.tendsto _).comp h1
       simpa using h5.norm
-    have h4 := tendsto_finsetSum (Finset.univ : Finset (Fin V.rank × Fin V.rank)) fun a _ => h3 a
-    simpa using h4
+    simpa using tendsto_finsetSum (Finset.univ : Finset (Fin V.rank × Fin V.rank)) fun a _ => h3 a
   have hc : Filter.Tendsto (fun u => ENNReal.ofReal ((∑ a : Fin V.rank × Fin V.rank, ‖Λ u a.1 a.2‖) *
       (growthSob θ V 1 N φ).toReal * 2 ^ N)) (nhdsWithin 1 (Formalism.QuantumDeterminants.UH (gramAt D V τ))) (𝓝 0) := by
     have h4 := ENNReal.tendsto_ofReal ((h2.mul_const ((growthSob θ V 1 N φ).toReal)).mul_const ((2 : ℝ) ^ N))

@@ -94,32 +94,24 @@ theorem algebraMap_mem_iff {A : ValuationSubring Ω} {v : HeightOneSpectrum (�
       (A.valuation_le_one_iff _).2 (algebraMap_int_mem A n)
     have h2 : v.valuation K (algebraMap (𝓞 K) K n) ≤ 1 := v.valuation_le_one n
     have h3 : A.valuation (algebraMap K Ω (algebraMap (𝓞 K) K n)) < 1 ↔ n ∈ v.asIdeal := h n
-    have h4 : v.valuation K (algebraMap (𝓞 K) K n) < 1 ↔ n ∈ v.asIdeal := v.valuation_lt_one_iff_mem n
+    have h4 : v.valuation K (algebraMap (𝓞 K) K n) < 1 ↔ n ∈ v.asIdeal :=
+      v.valuation_lt_one_iff_mem n
     refine ⟨h1, h2, ?_⟩
-    have e1 : A.valuation (algebraMap K Ω (algebraMap (𝓞 K) K n)) = 1 ↔ n ∉ v.asIdeal := by
-      rw [← h3, not_lt]; exact ⟨fun e => e.ge, fun e => le_antisymm h1 e⟩
-    have e2 : v.valuation K (algebraMap (𝓞 K) K n) = 1 ↔ n ∉ v.asIdeal := by
-      rw [← h4, not_lt]; exact ⟨fun e => e.ge, fun e => le_antisymm h2 e⟩
-    exact e1.trans e2.symm
+    rw [eq_iff_le_not_lt, eq_iff_le_not_lt, h3, h4]
+    simp only [h1, h2]
   obtain ⟨n, d, hd | hd⟩ := v.exists_primeCompl_mul_eq_or_mul_eq (K := K) x
-  · have hd1 : v.valuation K (algebraMap (𝓞 K) K d) = 1 := by
-      have := (v.valuation_lt_one_iff_mem (K := K) (d : 𝓞 K)).not.2 d.2
-      exact le_antisymm (v.valuation_le_one _) (not_lt.1 this)
-    have hA1 : A.valuation (algebraMap K Ω (algebraMap (𝓞 K) K d)) = 1 := ((key d).2.2).2 hd1
+  all_goals
+    have hd1 : v.valuation K (algebraMap (𝓞 K) K d) = 1 :=
+      eq_iff_le_not_lt.2
+        ⟨v.valuation_le_one _, (v.valuation_lt_one_iff_mem (K := K) (d : 𝓞 K)).not.2 d.2⟩
+    have hA1 := (key d).2.2.2 hd1
     have e1 := congrArg (fun y => A.valuation (algebraMap K Ω y)) hd
     have e2 := congrArg (v.valuation K) hd
     simp only [map_mul, hA1, hd1, mul_one] at e1 e2
-    rw [← A.valuation_le_one_iff, e1, e2]
+    rw [← A.valuation_le_one_iff]
+  · rw [e1, e2]
     exact iff_of_true (key n).1 (key n).2.1
-  · have hd1 : v.valuation K (algebraMap (𝓞 K) K d) = 1 := by
-      have := (v.valuation_lt_one_iff_mem (K := K) (d : 𝓞 K)).not.2 d.2
-      exact le_antisymm (v.valuation_le_one _) (not_lt.1 this)
-    have hA1 : A.valuation (algebraMap K Ω (algebraMap (𝓞 K) K d)) = 1 := ((key d).2.2).2 hd1
-    have e1 := congrArg (fun y => A.valuation (algebraMap K Ω y)) hd
-    have e2 := congrArg (v.valuation K) hd
-    simp only [map_mul, hA1, hd1] at e1 e2
-    rw [← A.valuation_le_one_iff, le_one_iff_of_mul_eq_one e1 (key n).1,
-      le_one_iff_of_mul_eq_one e2 (key n).2.1]
+  · rw [le_one_iff_of_mul_eq_one e1 (key n).1, le_one_iff_of_mul_eq_one e2 (key n).2.1]
     exact (key n).2.2
 
 end GlobalTheory.LocLanglands.TraceCompl

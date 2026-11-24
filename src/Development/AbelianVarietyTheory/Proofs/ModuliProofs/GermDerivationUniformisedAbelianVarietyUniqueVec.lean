@@ -98,8 +98,7 @@ private theorem mem_prime_dualNumber_iff_fst_eq_zero (p : Ideal (DualNumber ℂ)
 theorem top_le_iff_dual {X : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ X) (U : X.Opens) :
     ⊤ ≤ v ⁻¹ᵁ U ↔ ⊤ ≤ (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v) ⁻¹ᵁ U := by
   constructor
-  · intro hv x _
-    exact hv (Set.mem_univ ((spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom).base x))
+  · exact fun hv x _ => hv (Set.mem_univ ((spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom).base x))
   · intro hv y _
     let x : ↥(Sp ℂ) := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)
     have e : (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom).base x = y := by
@@ -108,8 +107,7 @@ theorem top_le_iff_dual {X : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ X) (U : X.
       exact (mem_prime_dualNumber_iff_fst_eq_zero _ (PrimeSpectrum.isPrime _) a).trans
         (mem_prime_dualNumber_iff_fst_eq_zero _ (show PrimeSpectrum (DualNumber ℂ) from y).isPrime a).symm
     have hx : v.base ((spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom).base x) ∈ U := hv (Set.mem_univ x)
-    rw [e] at hx
-    exact hx
+    rwa [e] at hx
 
 private theorem top_le_preimage_top' {X Y : Scheme.{0}} (f : X ⟶ Y) : (⊤ : X.Opens) ≤ f ⁻¹ᵁ ⊤ :=
   fun _ _ => trivial
@@ -180,8 +178,7 @@ theorem DiffAt.tr {v : Sp (DualNumber ℂ) ⟶ A.left} {z w : Fin g → ℂ} (h 
     by_cases hz : ⊤ ≤ (u.ex z').left ⁻¹ᵁ ((TangentAt.tr u a).left ⁻¹ᵁ U)
     · rw [nat _ _ _ _ _ hz, ← Over.comp_left, ex_tr]
     · have hz' : ¬ ⊤ ≤ (u.ex (a + z')).left ⁻¹ᵁ U := by
-        rw [← ex_tr, Over.comp_left]
-        exact hz
+        rwa [← ex_tr, Over.comp_left]
       rw [valAt', dite_eq_right hz, valAt', dite_eq_right hz']
   rw [hfun]
   exact congrArg (fun L => L w) (fderiv_comp_add_left (𝕜 := ℂ) (f := fun y => valAt' (u.ex y).left U f) a)
@@ -204,8 +201,7 @@ theorem existsUnique_vector (htan : ∀ v, IsTangent v → ∃! w, u.IsDiff w v)
   have hv0' : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = (u.ex z).left := hv0
   have hvd' : ∀ (W : A.left.Opens) (h : ⊤ ≤ v ⁻¹ᵁ W) (f : Γ(A.left, W)), (dval v W h f).snd = δ W f := hvd
   have hone : (u.ex 0).left = (η : 𝟙_ (Over (Sp ℂ)) ⟶ A).left := by
-    rw [ex_zero]
-    rw [Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]
+    rw [ex_zero, Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]
   have h0 : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v ≫ (tr u (-z)).left =
       (η : 𝟙_ (Over (Sp ℂ)) ⟶ A).left := by
     rw [← Category.assoc, hv0', ← Over.comp_left, ex_tr, neg_add_cancel, hone]

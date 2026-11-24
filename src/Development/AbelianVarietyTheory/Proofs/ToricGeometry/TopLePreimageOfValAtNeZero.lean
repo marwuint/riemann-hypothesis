@@ -63,8 +63,7 @@ variable {X Y : Scheme.{0}}
 theorem top_le_preimage_iff_mem (x : Sp ℂ ⟶ X) (U : X.Opens) :
     ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U := by
   constructor
-  · intro h
-    exact h (Set.mem_univ (default : PrimeSpectrum ℂ))
+  · exact fun h => h (Set.mem_univ (default : PrimeSpectrum ℂ))
   · intro h p _
     have : p = (default : PrimeSpectrum ℂ) := Subsingleton.elim (α := PrimeSpectrum ℂ) _ _
     subst this
@@ -164,8 +163,7 @@ theorem valAt'_units_zpow (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹�
     valAt' x U (u ^ n).val = valAt' x U u.val ^ n := by
   simp only [valAt'_eq_valAtHom x h]
   have := congrArg Units.val (map_zpow (Units.map (valAtHom x U h : Γ(X, U) →* ℂ)) u n)
-  rw [Units.val_zpow_eq_zpow_val] at this
-  exact this
+  rwa [Units.val_zpow_eq_zpow_val] at this
 
 theorem valAt'_units_inv (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (u : Γ(X, U)ˣ) :
     valAt' x U (u⁻¹).val = (valAt' x U u.val)⁻¹ := by
@@ -203,8 +201,7 @@ theorem top_le_preimage_basicOpen_iff (x : Sp ℂ ⟶ X) (U : X.Opens) (f : Γ(X
   by_cases h : ⊤ ≤ x ⁻¹ᵁ U
   · have h1 : (Sp ℂ).basicOpen ((x.appLE U ⊤ h).hom f) = x ⁻¹ᵁ X.basicOpen f := by
       have := Scheme.basicOpen_appLE x ⊤ U h f
-      rw [top_inf_eq] at this
-      exact this
+      rwa [top_inf_eq] at this
     rw [← h1, valAt'_eq_valAt x h, valAt, top_le_iff]
     generalize (x.appLE U ⊤ h).hom f = g
     rw [← isUnit_iff_ne_zero]
@@ -215,8 +212,7 @@ theorem top_le_preimage_basicOpen_iff (x : Sp ℂ ⟶ X) (U : X.Opens) (f : Γ(X
       exact this.map _
     · intro hg
       have : IsUnit g := by
-        have h2 := hg.map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom
-        simpa using h2
+        simpa using hg.map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom
       exact (Sp ℂ).basicOpen_of_isUnit this
   · refine ⟨fun h' => (h (top_le_preimage_mono x (X.basicOpen_le f) h')).elim, fun h' => ?_⟩
     exact (h' (valAt'_of_not_le x h f)).elim

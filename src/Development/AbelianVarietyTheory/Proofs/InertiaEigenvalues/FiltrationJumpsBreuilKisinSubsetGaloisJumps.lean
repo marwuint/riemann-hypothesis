@@ -237,8 +237,7 @@ theorem exists_uhat_eq : ∃ w : Ahat O K l e, uhat O K l e = piHat O K + Ehat O
   have h1 : AhatEq.equivAhat O K l e (AhatEq.taylor (Polynomial.X ^ e + Polynomial.C (l : K)) Polynomial.X) =
       uhat O K l e := by
     have := AhatEq.toAhat_taylor O K l e Polynomial.X
-    rw [AhatEq.incl, Polynomial.aeval_X] at this
-    exact this
+    rwa [AhatEq.incl, Polynomial.aeval_X] at this
   have h2 : AhatEq.equivAhat O K l e (AhatEq.taylor (Polynomial.X ^ e + Polynomial.C (l : K))
       (Polynomial.X ^ e + Polynomial.C (l : K))) = Ehat O K l e := by
     have := AhatEq.toAhat_taylor O K l e (Polynomial.X ^ e + Polynomial.C (l : K))
@@ -500,7 +499,6 @@ theorem crisTensorDRLiftFromCoeffBcris_smul_comm (o : ↥(OL LL)) :
   | zero => exact (map_zero _).trans (map_zero _).symm
   | tmul o' b =>
     refine AddMonoidHom.ext fun x => ?_
-    show g Td T (o * o') b x = g Td T o' b (o • x)
     exact congrArg (fun v => v ⊗ₜ[ℚ_[l]] GlobalTheory.BKGal.JumpDR.cB Td b) (mul_smul_lat T o o' x)
   | add u v hu hv => exact (map_add _ u v).trans ((congrArg₂ (· + ·) hu hv).trans (map_add _ u v).symm)
 
@@ -904,8 +902,7 @@ variable (O K l e) in
 theorem isUnit_uhat : IsUnit (uhat O K l e) := by
   have h1 : AhatEq.equivAhat O K l e (C (AdjoinRoot.root _) + X) = uhat O K l e := by
     have := AhatEq.toAhat_taylor O K l e Polynomial.X
-    rw [AhatEq.taylor, AhatEq.incl, Polynomial.aeval_X, Polynomial.aeval_X] at this
-    exact this
+    rwa [AhatEq.taylor, AhatEq.incl, Polynomial.aeval_X, Polynomial.aeval_X] at this
   rw [← h1]
   refine IsUnit.map _ ?_
   rw [isUnit_iff_constantCoeff, map_add (f := _), constantCoeff_C, constantCoeff_X, add_zero]
@@ -913,8 +910,7 @@ theorem isUnit_uhat : IsUnit (uhat O K l e) := by
       algebraMap K _ (-(l : K)) := by
     have := AdjoinRoot.mk_self (f := Polynomial.X ^ e + Polynomial.C (l : K))
     rw [map_add (f := _), map_pow, AdjoinRoot.mk_X, AdjoinRoot.mk_C] at this
-    rw [map_neg, eq_neg_iff_add_eq_zero]
-    exact this
+    rwa [map_neg, eq_neg_iff_add_eq_zero]
   refine (isUnit_pow_iff (NeZero.ne e)).1 ?_
   rw [h2]
   exact IsUnit.map _ (IsUnit.mk0 _ (neg_ne_zero.2 (l_ne_zero l)))

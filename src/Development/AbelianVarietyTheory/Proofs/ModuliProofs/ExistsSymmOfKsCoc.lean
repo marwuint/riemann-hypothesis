@@ -188,8 +188,7 @@ theorem Der.eq_zero {h : Z ⟶ X} {T : Z.Opens} {δ : ∀ O : X.Opens, Γ(X, O) 
     have := hW.isLocalization_basicOpen b
     obtain ⟨⟨c, ⟨_, k, rfl⟩⟩, hc⟩ := IsLocalization.surj (Submonoid.powers b) (rsT f (X.basicOpen b))
     have hc' : rsT f (X.basicOpen b) * rsT (b ^ k) (X.basicOpen b) = rsT c (X.basicOpen b) := by
-      rw [rsT_eq_resG_of_le_moduli (b ^ k) hbW, rsT_eq_resG_of_le_moduli c hbW]
-      exact hc
+      rwa [rsT_eq_resG_of_le_moduli (b ^ k) hbW, rsT_eq_resG_of_le_moduli c hbW]
     have e1 : δ (X.basicOpen b) (rsT f (X.basicOpen b) * rsT (b ^ k) (X.basicOpen b)) (h ⁻¹ᵁ X.basicOpen b ⊓ O') =
         δ (X.basicOpen b) (rsT c (X.basicOpen b)) (h ⁻¹ᵁ X.basicOpen b ⊓ O') := by
       rw [hc']
@@ -209,8 +208,7 @@ theorem Der.eq_zero {h : Z ⟶ X} {T : Z.Opens} {δ : ∀ O : X.Opens, Γ(X, O) 
   have := hV0 z
   rw [rsT_eq_resG_of_le_moduli _ (hVO z)] at this
   change resG Z (hVO z) (δ O f O') = resG Z (hVO z) 0
-  rw [map_zero]
-  exact this
+  rwa [map_zero]
 
 def dl (h : Z ⟶ X) (L : LB X) (δ : ∀ O : X.Opens, Γ(X, O) → ∀ O' : Z.Opens, Γ(Z, O')) (a b : L.ι) (O' : Z.Opens) :
     Γ(Z, O') := δ _ (L.g a b).val O' * pbT h (L.g a b).inv O'
@@ -243,8 +241,7 @@ theorem Der.dl_coc {h : Z ⟶ X} {T : Z.Opens} {δ : ∀ O : X.Opens, Γ(X, O) �
   have ci : resG X hij (L.g i j)⁻¹.val * resG X hjk (L.g j k)⁻¹.val = resG X hik (L.g i k)⁻¹.val := by
     have := congrArg (fun u => (u⁻¹).val) c
     simp only [mul_inv_rev, Units.val_mul, ← map_inv] at this
-    rw [mul_comm]
-    exact this
+    rwa [mul_comm]
   have unit : ∀ (u : (Γ(X, L.U i ⊓ L.U j ⊓ L.U k))ˣ), pbT h u.val O' * pbT h u⁻¹.val O' = 1 := fun u => by
     rw [← _root_.GlobalTheory.KS.pbT_mul, Units.mul_inv, _root_.GlobalTheory.KS.pbT_one h hV]
   unfold dl
@@ -311,12 +308,10 @@ theorem compat_of_affine {q : Y ⟶ Sp K} {s : X ⟶ Sp R} {m : Y ⟶ X} {D : R 
     simpa using congrArg (fun φ : Z ⟶ X => φ.base x) sq
   have hTW : m₂ ⁻¹ᵁ Q ≤ p ⁻¹ᵁ m ⁻¹ᵁ W := fun x hx => by
     have b1 : π.base (m₂.base x) ∈ W := hQ hx
-    rw [key] at b1
-    exact b1
+    rwa [key] at b1
   have hp : m₂ ⁻¹ᵁ O₂ ≤ p ⁻¹ᵁ m ⁻¹ᵁ O := fun x hx => by
     have b1 : π.base (m₂.base x) ∈ O := h₂ hx
-    rw [key] at b1
-    exact b1
+    rwa [key] at b1
   have D₂ := der_tr hd₂ (𝟙 Z) π (h := m₂ ≫ π) (Category.id_comp _).symm (T := m₂ ⁻¹ᵁ Q) (fun x hx => hx)
   have D₁ := der_tr hd p (𝟙 X) (h := m₂ ≫ π) (by rw [Category.comp_id, sq]) (T := m₂ ⁻¹ᵁ Q) hTW
   have h0' : ∀ g : Γ(X, W),
@@ -399,8 +394,7 @@ theorem diff_prod {g : ℕ} (x₀ : R →+* K) {q : Y ⟶ Sp K} {s : X ⟶ Sp R}
     exact ⟨b1, b2⟩
   have hpe' : m₂ ⁻¹ᵁ Q₀ ≤ p' ⁻¹ᵁ m ⁻¹ᵁ W'' := fun x hx => by
     have b1 : π'.base (m₂.base x) ∈ W'' := kQ (l hx)
-    rw [key'] at b1
-    exact b1
+    rwa [key'] at b1
   have hQ₀ : Q₀ ≤ π ⁻¹ᵁ (W ⊓ W') := fun x hx => ⟨hQ (l hx), hQ' (l' hx)⟩
   have hb := LocDerK_add_field x₀ sq₂ (LocDerK_mono hd₂ l) (fun a => pbT p (θ a) (m₂ ⁻¹ᵁ Q₀)) hw
   have agree1 : ∀ f : Γ(X, W ⊓ W'), d₂' Q₀ (pbT π f Q₀) = d₂ Q₀ (pbT π f Q₀) +
@@ -426,8 +420,7 @@ theorem diff_prod {g : ℕ} (x₀ : R →+* K) {q : Y ⟶ Sp K} {s : X ⟶ Sp R}
   have hU := uniq d₂' (fun O f => d₂ O f + ∑ a, rsT (pbT p (θ a) (m₂ ⁻¹ᵁ Q₀)) (m₂ ⁻¹ᵁ O) *
       w a (m₂ ⁻¹ᵁ O) (pbT m₂ f (m₂ ⁻¹ᵁ O))) (LocDerK_mono hd₂' l') hb agree1 agree2 O hO
   have := congrFun hU f
-  rw [this]
-  rw [add_sub_cancel_left]
+  rw [this, add_sub_cancel_left]
   refine Finset.sum_congr rfl (fun a _ => ?_)
   rw [rsT_pbT_of_le_of_le_preimage p (θ a) (fun x hx => hO hx) hpe]
 
@@ -500,9 +493,7 @@ private lemma pbT_add_pbT_eq_pbT_add {Y Z : Scheme.{0}} (n : Z ⟶ Y) {O₀ : Y.
 theorem pbT_coc {Y Z : Scheme.{0}} {I : Type} {U : I → Y.Opens} {c : C1 U} (hc : IsCoc U c) (n : Z ⟶ Y) (i j k : I)
     {O : Z.Opens} (hi : O ≤ n ⁻¹ᵁ U i) (hj : O ≤ n ⁻¹ᵁ U j) (hk : O ≤ n ⁻¹ᵁ U k) :
     pbT n (c i j) O + pbT n (c j k) O = pbT n (c i k) O := by
-  have hT : O ≤ n ⁻¹ᵁ (U i ⊓ U j ⊓ U k) := by
-    intro x hx
-    exact ⟨⟨hi hx, hj hx⟩, hk hx⟩
+  have hT : O ≤ n ⁻¹ᵁ (U i ⊓ U j ⊓ U k) := fun x hx => ⟨⟨hi hx, hj hx⟩, hk hx⟩
   rw [← pbT_rsT_eq_pbT_of_le_preimage n (c i j) (inf_le_left) hT, ← pbT_rsT_eq_pbT_of_le_preimage n (c j k) (le_trans (le_of_eq (by ac_rfl)) inf_le_right) hT,
     ← pbT_rsT_eq_pbT_of_le_preimage n (c i k) (le_inf (le_trans inf_le_left inf_le_left) inf_le_right) hT, pbT_add_pbT_eq_pbT_add, hc i j k]
 
@@ -665,8 +656,7 @@ theorem exists_square_data {K R : Type} [Field K] [CommRing R] {g : ℕ} {X X₂
     have hT : m₂ ⁻¹ᵁ (π₁ ⁻¹ᵁ (L.U i ⊓ L.U i') ⊓ π₂ ⁻¹ᵁ L.U j) ≤ p₁ ⁻¹ᵁ (m ⁻¹ᵁ L.U i ⊓ m ⁻¹ᵁ L.U i') := by
       intro x hx
       have h1 : x ∈ (m₂ ≫ π₁) ⁻¹ᵁ (L.U i ⊓ L.U i') := hx.1
-      rw [sq₁] at h1
-      exact h1
+      rwa [sq₁] at h1
     have hOQ : O ≤ m₂ ⁻¹ᵁ (π₁ ⁻¹ᵁ (L.U i ⊓ L.U i') ⊓ π₂ ⁻¹ᵁ L.U j) := by
       intro x hx
       have h1 : x ∈ (p₁ ≫ m) ⁻¹ᵁ (L.U i ⊓ L.U i') := (hO hx).1.1.1
@@ -722,8 +712,7 @@ theorem exists_square_data {K R : Type} [Field K] [CommRing R] {g : ℕ} {X X₂
     have hT : m₂ ⁻¹ᵁ (π₁ ⁻¹ᵁ L.U i ⊓ π₂ ⁻¹ᵁ (L.U j ⊓ L.U j')) ≤ p₂ ⁻¹ᵁ (m ⁻¹ᵁ L.U j ⊓ m ⁻¹ᵁ L.U j') := by
       intro x hx
       have h1 : x ∈ (m₂ ≫ π₂) ⁻¹ᵁ (L.U j ⊓ L.U j') := hx.2
-      rw [sq₂] at h1
-      exact h1
+      rwa [sq₂] at h1
     have hOQ : O ≤ m₂ ⁻¹ᵁ (π₁ ⁻¹ᵁ L.U i ⊓ π₂ ⁻¹ᵁ (L.U j ⊓ L.U j')) := by
       intro x hx
       have h1 : x ∈ (p₁ ≫ m) ⁻¹ᵁ L.U i := (hO hx).1.1.1

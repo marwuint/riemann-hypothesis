@@ -69,8 +69,7 @@ theorem small_mul_mem (T : LocTied l P AI) {M n k : ℕ} {c : ℚ_[l]} {b : P.R.
     have := (Fact.out : l.Prime).pos
     positivity
   have hz : ‖c / (l : ℚ_[l]) ^ k‖ ≤ 1 := by
-    rw [norm_div, Padic.norm_p_pow, div_le_one h0]
-    exact hc
+    rwa [norm_div, Padic.norm_p_pow, div_le_one h0]
   have := qB_mul_mem_Lat AI T ⟨_, hz⟩ hb
   convert this using 1
   rw [← mul_assoc, ← map_natCast (qB P), ← map_pow, ← map_mul]
@@ -139,8 +138,7 @@ theorem LatCont.sum {ι : Type} (s : Finset ι) (h : ι → X → P.R.BdR) (H : 
   induction s using Finset.induction_on with
   | empty => simpa using latCont_const AI 0
   | insert i s hi ih =>
-    simp only [Finset.sum_insert hi]
-    exact (H i).add AI ih
+    simpa only [Finset.sum_insert hi] using (H i).add AI ih
 
 theorem continuous_chi : Continuous fun g : GQ l => (P.χQ g : ℚ_[l]) := by
   obtain ⟨χ, h1, h2, -⟩ := exists_integral_cyclotomicChar l P
@@ -240,8 +238,7 @@ theorem contCore_of_tied (T : LocTied l P AI) (K : FinExt l) : contCore (P.PD K)
         simpa using latCont_orbit AI T (P.ιB b) ((hLL φ v).comp (hβ i))
           (γ := fun _ => 1) continuous_const
       | add y y' ih ih' =>
-        simp only [smul_add, map_add (f := _)]
-        exact ih.add AI ih'
+        simpa only [smul_add, map_add (f := _)] using ih.add AI ih'
     have h2 : ∀ y : A.V ⊗[ℚ_[l]] P.R.B, LatCont AI fun g => Φ (actVB (P.PD K) A.ρ g y) := by
       intro y
       induction y using TensorProduct.induction_on with
@@ -255,8 +252,7 @@ theorem contCore_of_tied (T : LocTied l P AI) (K : FinExt l) : contCore (P.PD K)
         simp only [e]
         exact latCont_orbit AI T (P.ιB b) ((hV φ).comp (A.cont v)) continuous_subtype_val
       | add y y' ih ih' =>
-        simp only [map_add (f := _)]
-        exact ih.add AI ih'
+        simpa only [map_add (f := _)] using ih.add AI ih'
     apply continuous_of_latCont AI T
     have e : ∀ g, qB P (φ (f g)) =
         ∑ i, Φ (β i g • x i) + (Φ (actVB (P.PD K) A.ρ g x') + -Φ x') := by

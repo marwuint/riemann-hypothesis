@@ -190,8 +190,7 @@ theorem exists_growthSob_rTr_le (hθ : IsInfFam θ) (V : HSp D) (N d : ℕ) : �
     obtain ⟨C, hC⟩ := ih
     refine ⟨1 + (Fintype.card (D.what₂.Tau × Fin V.rank × Fin V.rank) : ℝ≥0) * C *
       (Fintype.card (Fin V.rank × Fin V.rank) : ℝ≥0) * C₁, fun h hh φ hs => ?_⟩
-    have hT : 1 ≤ ENNReal.ofReal (height V h) := by
-      rw [← ENNReal.ofReal_one]; exact ENNReal.ofReal_le_ofReal ((height_laws V).1 h)
+    have hT : 1 ≤ ENNReal.ofReal (height V h) := ENNReal.one_le_ofReal.2 ((height_laws V).1 h)
     have hS0 : growthSize V N φ ≤ growthSob θ V (d + 1) N φ :=
       le_wordSum (A := glDer θ V) (p := growthSize V N) (l := []) (Nat.zero_le _) φ
     have hterm : ∀ a : D.what₂.Tau × Fin V.rank × Fin V.rank,
@@ -213,17 +212,11 @@ theorem exists_growthSob_rTr_le (hθ : IsInfFam θ) (V : HSp D) (N d : ℕ) : �
         growthSize V N (rTr V h φ) + ∑ a, growthSob θ V d N (glDer θ V a (rTr V h φ)) :=
       wordSum_succ _ _ _ _
     rw [e0]
-    calc growthSize V N (rTr V h φ) + ∑ a, growthSob θ V d N (glDer θ V a (rTr V h φ))
-        ≤ ENNReal.ofReal (height V h) ^ (N + 2 * (d + 1)) * growthSob θ V (d + 1) N φ +
-          ∑ _a : D.what₂.Tau × Fin V.rank × Fin V.rank, C * ENNReal.ofReal (height V h) ^ (N + 2 * d) *
-            ((Fintype.card (Fin V.rank × Fin V.rank) : ℝ≥0∞) *
-              ((C₁ * ENNReal.ofReal (height V h) ^ 2) * growthSob θ V (d + 1) N φ)) :=
-          add_le_add ((growthSize_rTr_le h N φ).trans (mul_le_mul' hpow hS0))
-            (Finset.sum_le_sum fun a _ => hterm a)
-      _ = _ := by
-          rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
-          push_cast
-          ring
+    refine (add_le_add ((growthSize_rTr_le h N φ).trans (mul_le_mul' hpow hS0))
+      (Finset.sum_le_sum fun a _ => hterm a)).trans_eq ?_
+    rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+    push_cast
+    ring
 
 theorem growthSob_rTr_le : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (d N : ℕ), ∃ (C : NNReal) (m : ℕ),
     ∀ h ∈ GinfC V, ∀ φ ∈ GlobalTheory.Mem.AutSpace.SmFun θ V, GlobalTheory.Size.growthSob θ V d N (rTr V h φ) ≤

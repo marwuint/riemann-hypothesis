@@ -73,8 +73,7 @@ theorem dense_of_denseP {R : Type} [CommRing R] {P : Set (Ideal R)} (h : DenseP 
     rw [eq_bot_iff]
     intro f hf
     rw [Ideal.mem_bot]
-    refine h f fun p hp hpp => ?_
-    exact (PrimeSpectrum.mem_vanishingIdeal _ _).1 hf ⟨p, hpp⟩ hp
+    exact h f fun p hp hpp => (PrimeSpectrum.mem_vanishingIdeal _ _).1 hf ⟨p, hpp⟩ hp
   rw [hv, PrimeSpectrum.zeroLocus_bot]
 
 theorem mem_range_spMap {R K : Type} [CommRing R] [Field K] (x : R →+* K) (p : PrimeSpectrum R)
@@ -123,9 +122,7 @@ private theorem eq_inv_of_left_eq_inv_comp_of_isGrpPullback (h : IsGrpPullback G
   apply eq_inv_of_mul_eq_one_left
   ext1
   rw [h.2 T x⁻¹ x y₀ x₀ hy hx, inv_mul_cancel]
-  have e := pow_left_comp_eq_of_isGrpPullback h x x₀ hx 0
-  simp only [pow_zero] at e
-  exact e
+  simpa only [pow_zero] using pow_left_comp_eq_of_isGrpPullback h x x₀ hx 0
 
 theorem inv_left_comp (h : IsGrpPullback G' G f φ) :
     (GrpObj.inv : G' ⟶ G').left ≫ φ = φ ≫ (GrpObj.inv : G ⟶ G).left := by
@@ -143,8 +140,7 @@ private theorem pic_eq_zero_of_pull_ι_eq_zero_of_opens_eq_whole {X : Scheme.{0}
     (c : CechPic.Pic X) (h : CechPic.pull V.ι c = 0) : c = 0 := by
   subst hV
   have e := congrArg (CechPic.pull X.topIso.inv) h
-  rw [← CechPic.pull_comp, Scheme.toIso_inv_ι, CechPic.pull_id, map_zero] at e
-  exact e
+  rwa [← CechPic.pull_comp, Scheme.toIso_inv_ι, CechPic.pull_id, map_zero] at e
 
 end Pull
 
@@ -154,8 +150,7 @@ theorem pull_inv_cls_of_sym {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] {L
   have hpt : ∀ a b : ↥(Sp K), a = b := fun a b => @Subsingleton.elim (PrimeSpectrum K) _ a b
   have hV : A.hom ⁻¹ᵁ U = ⊤ := by
     refine eq_top_iff.2 fun y _ => ?_
-    rw [Scheme.Hom.mem_preimage, hpt (A.hom y) (Classical.arbitrary _)]
-    exact hU
+    rwa [Scheme.Hom.mem_preimage, hpt (A.hom y) (Classical.arbitrary _)]
   have hN := LB.isLB_linComb hL ![(A.hom ⁻¹ᵁ U).ι ≫ (GrpObj.inv : A ⟶ A).left, (A.hom ⁻¹ᵁ U).ι] ![1, -1]
   have h0 := (cls_eq_zero_iff hN).2 ⟨t, ht⟩
   rw [cls_linComb hL] at h0

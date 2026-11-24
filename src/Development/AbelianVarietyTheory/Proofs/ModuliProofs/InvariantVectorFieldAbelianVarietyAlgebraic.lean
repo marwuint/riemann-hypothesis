@@ -223,11 +223,9 @@ theorem exists_locDer : ∀ (Y Y' : Scheme.{0}) (q : Y ⟶ Sp ℂ) (π : Y' ⟶ 
       have hs : (spMap (algebraMap ℂ (DualNumber ℂ))) ((spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) s) = s :=
         Subsingleton.elim _ _
       show y s ∈ m ⁻¹ᵁ W
-      rw [← hs, ← e]
-      exact ht
+      rwa [← hs, ← e]
     have h' : ⊤ ≤ yt ⁻¹ᵁ (ρ ⁻¹ᵁ (m ⁻¹ᵁ W)) := by
-      rw [hW W]
-      exact h
+      rwa [hW W]
     have e1 : ((yt ≫ Φ).appLE W ⊤ h).hom f = (yt.appLE _ ⊤ h').hom ((Φ.appLE W _ (hW W).le).hom f) :=
       (pull_pull yt Φ (yt ≫ Φ) rfl (hW W).le h' h f).symm
     have e2 : ∀ a : Γ(Y, m ⁻¹ᵁ W), (yt.appLE _ ⊤ h').hom ((ρ.app (m ⁻¹ᵁ W)).hom a) =
@@ -333,9 +331,7 @@ theorem exists_locDer_of_isDiff {g : ℕ} (A : Over (Sp ℂ)) [GrpObj A] {L : LB
   let j' : A ⟶ B := Over.homMk j (by
     change j ≫ π ≫ _ = _
     rw [pullback.lift_snd_assoc, Category.assoc, hse, Category.comp_id])
-  have hj1 : j' ≫ ρ' = 𝟙 A := by
-    apply Over.OverMorphism.ext
-    exact pullback.lift_fst _ _ _
+  have hj1 : j' ≫ ρ' = 𝟙 A := Over.OverMorphism.ext (pullback.lift_fst _ _ _)
   have hj2 : j' ≫ v' = 1 := by
     apply Over.OverMorphism.ext
     change j ≫ π ≫ v.left = (toUnit A ≫ η).left
@@ -350,8 +346,7 @@ theorem exists_locDer_of_isDiff {g : ℕ} (A : Over (Sp ℂ)) [GrpObj A] {L : LB
   refine ⟨d, ?_, ?_⟩
   · have hD : (fun r : ℂ => (algebraMap ℂ (DualNumber ℂ) r).snd) = fun _ => 0 :=
       funext fun r => rfl
-    rw [hD] at hd1
-    exact hd1
+    rwa [hD] at hd1
   · intro O f z hz
 
     let τ : A ⟶ A := (toUnit A ≫ u.ex z) * 𝟙 A
@@ -395,8 +390,7 @@ theorem exists_locDer_of_isDiff {g : ℕ} (A : Over (Sp ℂ)) [GrpObj A] {L : LB
     have h0 : ⊤ ≤ (yt ≫ Φ) ⁻¹ᵁ O := by
       rw [hVz]
       apply top_le_preimage_of_dualFst_comp
-      rw [hfib]
-      exact hz
+      rwa [hfib]
     rw [← hd2 (u.ex z).left yt (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _) O h0 f]
     have hmain : ∀ (G : Sp (DualNumber ℂ) ⟶ A.left) (hG : G = v.left ≫ τ.left) (hG0 : ⊤ ≤ G ⁻¹ᵁ O),
         TrivSqZeroExt.snd (show DualNumber ℂ from
@@ -413,8 +407,7 @@ theorem exists_locDer_of_isDiff {g : ℕ} (A : Over (Sp ℂ)) [GrpObj A] {L : LB
         simpa using fderiv_comp_add_left (𝕜 := ℂ) (f := fun y : Fin g → ℂ => valAt' (u.ex y).left O f)
           (x := (0 : Fin g → ℂ)) z
       rw [hfun, hshift] at key
-      rw [← key]
-      rw [Scheme.Hom.comp_appLE]
+      rw [← key, Scheme.Hom.comp_appLE]
       rfl
     exact hmain _ hVz h0
 

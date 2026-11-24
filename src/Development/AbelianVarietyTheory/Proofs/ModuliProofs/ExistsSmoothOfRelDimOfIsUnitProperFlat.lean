@@ -126,8 +126,7 @@ theorem smoothOfRelativeDimension_pullback_snd {Z S T : Scheme.{0}} (s : Z ⟶ S
   choose U hU hP using key
   refine IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension g) U ?_ hP
   rw [eq_top_iff]
-  intro p _
-  exact TopologicalSpace.Opens.mem_iSup.mpr ⟨p, hU p⟩
+  exact fun p _ => TopologicalSpace.Opens.mem_iSup.mpr ⟨p, hU p⟩
 
 theorem exists_smoothOfRelativeDimension_of_isUnit :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (Z : Scheme.{0}) (s : Z ⟶ Sp R) (g : ℕ) (K : Type) [Field K] (x : R →+* K), IsProper s → Flat s → SmoothOfRelativeDimension g (pullback.snd s (spMap x)) → ∃ f : R, x f ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (φ : R →+* R'), IsUnit (φ f) → SmoothOfRelativeDimension g (pullback.snd s (spMap φ)) := by
@@ -154,8 +153,7 @@ theorem exists_smoothOfRelativeDimension_of_isUnit :
   · intro hf0
     apply hpf
     show f ∈ (spMap x w₀).asIdeal
-    rw [spMap_apply_asIdeal]
-    exact hf0
+    rwa [spMap_apply_asIdeal]
   · intro R' _ φ hφ
     apply smoothOfRelativeDimension_pullback_snd
     intro z w hzw
@@ -164,9 +162,7 @@ theorem exists_smoothOfRelativeDimension_of_isUnit :
       have hmem : s z ∈ C := ⟨z, hzU, rfl⟩
       apply hfC (PrimeSpectrum.mem_basicOpen _ _ |>.mpr ?_) hmem
       rw [hzw]
-      show f ∉ (PrimeSpectrum.comap (CommRingCat.ofHom φ).hom w).asIdeal
-      intro hfw
-      exact w.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hfw hφ)
+      exact fun hfw => w.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hfw hφ)
     obtain ⟨W, hW, hzW⟩ := TopologicalSpace.Opens.mem_sSup.mp hzU
     exact ⟨W, hzW, hW⟩
 

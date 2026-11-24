@@ -253,8 +253,7 @@ theorem laurentConst_div_pow (k : ℕ) : ∀ {g : ℂ → ℂ} {p : FormalMultil
     apply laurentConst_of_tendsto
     have hp0 : p.coeff 0 = g s₀ := hp.coeff_zero 1
     rw [hp0]
-    simp only [pow_zero, div_one]
-    exact hp.continuousAt.tendsto.mono_left nhdsWithin_le_nhds
+    simpa only [pow_zero, div_one] using hp.continuousAt.tendsto.mono_left nhdsWithin_le_nhds
   | succ k ih =>
     intro g p hp
     have h1 := ih hp.has_fpower_series_dslope_fslope
@@ -277,8 +276,7 @@ theorem exists_laurentConst (a : MeromorphicAt H s₀) : ∃ c, LaurentConst H s
   refine ⟨_, laurentConst_congr (laurentConst_div_pow n hp) ?_⟩
   filter_upwards [self_mem_nhdsWithin] with s hs
   have hd : s - s₀ ≠ 0 := sub_ne_zero.mpr hs
-  simp only [smul_eq_mul]
-  exact mul_div_cancel_left₀ _ (pow_ne_zero _ hd)
+  simpa only [smul_eq_mul] using mul_div_cancel_left₀ _ (pow_ne_zero _ hd)
 
 theorem exists_laurentCoeff (a : MeromorphicAt H s₀) (n : ℤ) : ∃ c, LaurentCoeff H s₀ n c := by
   have hm : MeromorphicAt (fun s => (s - s₀) ^ (-n) * H s) s₀ :=
@@ -387,8 +385,7 @@ private theorem isOpen_setOf_meromorphicAt (H : ℂ → ℂ) : IsOpen {x | Merom
   rw [eventually_nhdsWithin_iff] at h1
   filter_upwards [h1] with y hy
   by_cases hyx : y = x
-  · rw [hyx]
-    exact hx
+  · rwa [hyx]
   · exact (hy hyx).meromorphicAt
 
 private theorem isOpen_setOf_add_nonneg_real_mem {W : Set ℂ} {σ : ℝ} (hW : IsOpen W) (hσ : rightOf σ ⊆ W) :
@@ -444,15 +441,13 @@ theorem IsExtAt.coeffAt_iff (a : IsExtAt h s₀ H) : CoeffAt h s₀ n c ↔ Laur
   constructor
   · rintro ⟨H', b, hc⟩
     exact hc.congr (b.eventuallyEq a)
-  · intro hc
-    exact ⟨H, a, hc⟩
+  · exact fun hc => ⟨H, a, hc⟩
 
 theorem IsExtAt.valueAt_iff (a : IsExtAt h s₀ H) : ValueAt h s₀ c ↔ LaurentConst H s₀ c := by
   constructor
   · rintro ⟨H', b, hc⟩
     exact laurentConst_congr hc (b.eventuallyEq a)
-  · intro hc
-    exact ⟨H, a, hc⟩
+  · exact fun hc => ⟨H, a, hc⟩
 
 theorem IsExtAt.holValueAt_iff (a : IsExtAt h s₀ H) : HolValueAt h s₀ c ↔ Tendsto H (𝓝[≠] s₀) (𝓝 c) := by
   constructor
@@ -487,8 +482,7 @@ theorem IsExtAt.poleLE_iff (a : IsExtAt h s₀ H) :
   constructor
   · rintro ⟨H', b, hb⟩
     rwa [meromorphicOrderAt_congr (a.eventuallyEq b)]
-  · intro hk
-    exact ⟨H, a, hk⟩
+  · exact fun hk => ⟨H, a, hk⟩
 
 theorem IsExtAt.coeffAt_of_tendsto (a : IsExtAt h s₀ H) (e : Tendsto (fun s => (s - s₀) ^ k * H s) (𝓝[≠] s₀) (𝓝 c)) :
     CoeffAt h s₀ (-k) c := ⟨H, a, laurentConst_of_tendsto (by simpa using e)⟩
@@ -498,8 +492,7 @@ theorem IsExtAt.tendsto_of_poleLE (a : IsExtAt h s₀ H) (b : PoleLE h s₀ k) (
   obtain ⟨c', hc'⟩ := a.poleLE_iff.mp b
   have h1 := a.coeffAt_iff.mp e
   have h2 := a.coeffAt_iff.mp (a.coeffAt_of_tendsto hc')
-  rw [laurentConst_unique h1 h2]
-  exact hc'
+  rwa [laurentConst_unique h1 h2]
 
 @[simp] theorem coeffAt_zero : CoeffAt h s₀ 0 c ↔ ValueAt h s₀ c := by
   simp only [CoeffAt, ValueAt, laurentCoeff_zero]
@@ -625,8 +618,7 @@ theorem coeffAt_laurent (hs : s₀ ∈ contDom h) (n : ℤ) : CoeffAt h s₀ n (
   obtain ⟨H, ha⟩ := hs
   obtain ⟨c, hc⟩ := exists_laurentCoeff ha.meromorphicAt n
   have hC : CoeffAt h s₀ n c := ⟨H, ha, hc⟩
-  rw [hC.laurent_eq]
-  exact hC
+  rwa [hC.laurent_eq]
 
 theorem coeffAt_iff : CoeffAt h s₀ n c ↔ s₀ ∈ contDom h ∧ laurent h s₀ n = c := by
   constructor

@@ -95,15 +95,13 @@ theorem det_stab_loc (v : HeightOneSpectrum (𝓞 F)) (Lb : Submodule (𝓞 E) (
         exact zero_mem _
     have h3 := (mem_latS_latB v B _).1 ((hg _).1 h1) a
     rw [← hBv, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_single_one] at h3
-    rw [Units.val_mul, Units.val_mul]
-    exact h3
+    rwa [Units.val_mul, Units.val_mul]
   have hd := det_mem_sub (intV E v) _ hent
   have e3 : Matrix.GeneralLinearGroup.det (Bv⁻¹ * g * Bv) = Matrix.GeneralLinearGroup.det g := by
     rw [map_mul, map_mul, map_inv, mul_comm, ← mul_assoc, mul_inv_cancel, one_mul]
   have e4 : ((Bv⁻¹ * g * Bv : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)).det =
       (g : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)).det := congrArg Units.val e3
-  rw [← e4]
-  exact hd
+  rwa [← e4]
 
 variable {σ : E →ₐ[F] E} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
 
@@ -114,8 +112,7 @@ theorem det_int_of_level (S : StepLevel F E σ J T f bad) (x : GL (Fin n) (E ⊗
   refine Formalism.L2.Col.rll_int_of_loc _ fun v => ?_
   have h2 := (S.Uloc_lev v (((S.U_eq x).1 hx).2 v)).2
   have h3 := det_stab_loc v S.Lb (Module.Finite.iff_fg.1 S.Lb_fin) S.Lb_span _ h2
-  rw [RingHom.map_det]
-  exact h3
+  rwa [RingHom.map_det]
 
 theorem det_norm_one (hJ : IsUnit J.det) (x : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (hx : x ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F)) :
@@ -135,8 +132,7 @@ theorem det_norm_one (hJ : IsUnit J.det) (x : GL (Fin n) (E ⊗[F] FiniteAdeleRi
     (RingHom.map_det _ _).symm
   rw [e2] at h
   refine hu.mul_right_cancel ?_
-  rw [one_mul, mul_right_comm]
-  exact h
+  rwa [one_mul, mul_right_comm]
 
 end Gen
 
@@ -160,8 +156,7 @@ theorem scalar_stab {A : Type} [CommRing A] (R : Subring A) (d : Aˣ) (h1 : (d :
       obtain ⟨r, hr⟩ := hy a trivial
       rw [← hr]
       exact r.2
-    · intro hy a _
-      exact ⟨⟨y a, hy a⟩, rfl⟩
+    · exact fun hy a _ => ⟨⟨y a, hy a⟩, rfl⟩
   have hsm : ∀ a, ((Matrix.GeneralLinearGroup.scalar (Fin 1) d : GL (Fin 1) A) : Matrix (Fin 1) (Fin 1) A).mulVec y a = d * y a := by
     intro a
     fin_cases a
@@ -173,8 +168,7 @@ theorem scalar_stab {A : Type} [CommRing A] (R : Subring A) (d : Aˣ) (h1 : (d :
     exact mul_mem h1 (hy a)
   · intro hy a
     have h3 := mul_mem h2 (hy a)
-    rw [hsm, ← mul_assoc, Units.inv_mul, one_mul] at h3
-    exact h3
+    rwa [hsm, ← mul_assoc, Units.inv_mul, one_mul] at h3
 
 
 

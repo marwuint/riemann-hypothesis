@@ -210,8 +210,7 @@ theorem card_commMaps_eq_card_homQuot : ∀ (O : Type) [CommRing O] [IsDomain O]
       right
       rw [← algebraMap_smul E r m] at h
       have hr' : algebraMap O E r ≠ 0 := by
-        intro h0
-        exact hr ((IsFractionRing.injective O E) (by rw [h0, map_zero]))
+        exact fun h0 => hr ((IsFractionRing.injective O E) (by rw [h0, map_zero]))
       exact (smul_eq_zero.1 h).resolve_left hr'
     haveI : Module.Free O M₂ := Module.free_of_finite_type_torsion_free'
     let b := Module.Free.chooseBasis O M₂
@@ -242,8 +241,7 @@ theorem card_commMaps_eq_card_homQuot : ∀ (O : Type) [CommRing O] [IsDomain O]
     constructor
     · intro h x hx
       have := congrArg (fun f => f ⟨x, hx⟩) h
-      simp only [hF, LinearMap.zero_apply, Submodule.Quotient.mk_eq_zero] at this
-      exact this
+      simpa only [hF, LinearMap.zero_apply, Submodule.Quotient.mk_eq_zero] using this
     · intro h
       ext x
       rw [hF, LinearMap.zero_apply, Submodule.Quotient.mk_eq_zero]
@@ -309,14 +307,12 @@ theorem card_kernel_quot_of_bijective (O : Type) [CommRing O] (P : Type) [AddCom
     rw [LinearMap.mem_ker, hg, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap,
       Submodule.subtype_apply, Submodule.mem_map]
     constructor
-    · intro h
-      exact ⟨e.symm y, h, he1 y⟩
+    · exact fun h => ⟨e.symm y, h, he1 y⟩
     · rintro ⟨x, hx, hxy⟩
       simp only at hxy
       subst hxy
       show e.symm (T x) ∈ N
-      rw [he2]
-      exact hx
+      rwa [he2]
   have hrange : ∀ z : P ⧸ N,
       z ∈ LinearMap.range g ↔ ∀ x : P, Submodule.Quotient.mk x = z → T x ∈ N := by
     intro z
@@ -427,13 +423,11 @@ theorem graph_comap (φ : M₂ →ₗ[O] A₁ ⧸ M₁) : (graph φ).comap (Line
     constructor
     · rintro ⟨h, e⟩
       have e0 : (⟨0, h⟩ : M₂) = 0 := rfl
-      rw [e0, map_zero, Submodule.Quotient.mk_eq_zero] at e
-      exact e
+      rwa [e0, map_zero, Submodule.Quotient.mk_eq_zero] at e
     · intro ha
       refine ⟨M₂.zero_mem, ?_⟩
       have e0 : (⟨0, M₂.zero_mem⟩ : M₂) = 0 := rfl
-      rw [e0, map_zero, Submodule.Quotient.mk_eq_zero]
-      exact ha
+      rwa [e0, map_zero, Submodule.Quotient.mk_eq_zero]
 
 theorem graph_map (φ : M₂ →ₗ[O] A₁ ⧸ M₁) : (graph φ).map (LinearMap.snd O A₁ A₂) = M₂ := by
     ext x
@@ -499,8 +493,7 @@ end GlobalTheory.StableGraph
 
 open GlobalTheory.StableGraph in
 theorem GlobalTheory.StableGraph.card_stable_eq_card_hom : ∀ (O : Type) [CommRing O] (A₁ A₂ : Type) [CommRing A₁] [CommRing A₂] [Algebra O A₁] [Algebra O A₂] (g₁ : A₁) (g₂ : A₂) (M₁ : Submodule O A₁) (M₂ : Submodule O A₂), (∀ y ∈ M₂, g₂ * y ∈ M₂) → Nat.card {M : Submodule O (A₁ × A₂) // (∀ y ∈ M, (g₁, g₂) * y ∈ M) ∧ M.comap (LinearMap.inl O A₁ A₂) = M₁ ∧ M.map (LinearMap.snd O A₁ A₂) = M₂} = Nat.card {φ : M₂ →ₗ[O] A₁ ⧸ M₁ // ∀ x y : M₂, (y : A₂) = g₂ * x → ∀ a : A₁, φ x = Submodule.Quotient.mk a → φ y = Submodule.Quotient.mk (g₁ * a)} := by
-  intro O _ A₁ A₂ _ _ _ _ g₁ g₂ M₁ M₂ hM₂
-  exact Nat.card_congr (stableEquiv g₁ g₂ hM₂)
+  exact fun O _ A₁ A₂ _ _ _ _ g₁ g₂ M₁ M₂ hM₂ => Nat.card_congr (stableEquiv g₁ g₂ hM₂)
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardStableEqCardHom =====
@@ -578,9 +571,7 @@ theorem homLat_fg_and_span_eq_top (O : Type) [CommRing O] [IsDomain O] [IsDiscre
     have hf : Function.Injective f := by
       intro ψ φ h
       apply Subtype.ext
-      apply LinearMap.ext_on hsE
-      intro x hx
-      exact congrArg Subtype.val (congrFun h ⟨x, hx⟩)
+      exact LinearMap.ext_on hsE (fun x hx => congrArg Subtype.val (congrFun h ⟨x, hx⟩))
     haveI := Module.Finite.of_injective f hf
     exact Module.Finite.iff_fg.mp this
   · rw [eq_top_iff]

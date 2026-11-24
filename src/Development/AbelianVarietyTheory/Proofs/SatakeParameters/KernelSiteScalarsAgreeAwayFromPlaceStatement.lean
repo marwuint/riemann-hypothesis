@@ -120,8 +120,7 @@ theorem mem_RInt_of_quad (z : AfE F E) (w : HeightOneSpectrum (𝓞 F)) (a b : w
     rw [map_mul, map_sub, map_sub, afsplit_prV_tmul, afsplit_prV_tmul]
     by_cases h : w' = w
     · subst h
-      rw [oneExc_self, oneExc_self]
-      exact hv
+      rwa [oneExc_self, oneExc_self]
     · rw [oneExc_ne w w' h, oneExc_ne w w' h, hoff w' h, ← Algebra.TensorProduct.one_def, sub_self, zero_mul]
   rw [hι.2]
   intro P
@@ -143,8 +142,7 @@ theorem mem_intU_of_oneOff_ordA : ∀ (F E : Type) [Field F] [NumberField F] [Fi
   set w := (A.pl v).1 with hw
   set s := A.spl v (prV (E := E) w (y : AfE F E)) with hs_def
   have hy1 : (y : AfE F E) * sigR σ (FiniteAdeleRing (𝓞 F) F) (y : AfE F E) = 1 := by
-    have h := congrArg Units.val (MonoidHom.mem_ker.1 hy)
-    exact h
+    exact congrArg Units.val (MonoidHom.mem_ker.1 hy)
   have hprod : prV (E := E) w (y : AfE F E) * sigR σ (w.adicCompletion F) (prV (E := E) w (y : AfE F E)) = 1 := by
     have h := congrArg (prV (E := E) w) hy1
     rw [map_mul, map_one] at h
@@ -169,8 +167,7 @@ theorem mem_intU_of_oneOff_ordA : ∀ (F E : Type) [Field F] [NumberField F] [Fi
   obtain ⟨k, u, hu⟩ := exists_eq_unit_mul_zpow₂ hp hx0
   have hk : k = 0 := by
     have h1 : ordA A v y = ordP (G.P.W v) p x := rfl
-    rw [h1, hu, ordP_eq hp] at hord
-    exact hord
+    rwa [h1, hu, ordP_eq hp] at hord
   subst hk
   rw [zpow_zero, mul_one] at hu
   have ha : s.1 ∈ w.adicCompletionIntegers F := by
@@ -328,8 +325,7 @@ theorem latCo_eq_latAd_compan : ∀ (D : D7) (i : ℕ) (hi : i ≤ D.R.m) (co : 
         ∑ b, (D.sp.cm.sig : D.host.E →+* D.host.E) ((co.1 *ᵥ u) b) * (co.1 *ᵥ v) b := by
       simp only [hform, Matrix.one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq,
         Finset.mem_univ, ite_true]
-    rw [e1] at h
-    exact h
+    rwa [e1] at h
   have hJ : ∀ M : Submodule (𝓞 D.host.E) (Fin (D.R.N i) → D.host.E), IsLat M → IsLat (dl D.sp.cm.sig (gramN D i hi) M) :=
     fun M hM => GlobalTheory.OrthDual.isLat_dl D.sp.cm.sig (gramN D i hi) (toLE co) horth M hM
   have hLb : IsLat Lb := ⟨hfin, hspan⟩
@@ -389,8 +385,7 @@ theorem mem_hatL_latAd_iff {F E : Type} [Field F] [NumberField F] [Field E] [Num
       ((x⁻¹ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) _) *ᵥ u ∈ Formalism.L2.Herm.hatL (F := F) Lb := by
   have hrec := Formalism.UG.P.span_recovery_of_integral_adelic_approx Formalism.UG.P.integral_adele_approximation_holds F E (Fin N) Lb hfin hspan x u
   have hlat : latAd x Lb = Formalism.UG.CS.globLat x Lb := Submodule.span_eq (Formalism.UG.CS.globLat x Lb)
-  rw [hlat]
-  exact hrec
+  rwa [hlat]
 
 theorem carries_conj {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {N : ℕ}
     (C y : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (M : Submodule (𝓞 E) (Fin N → E))
@@ -512,8 +507,7 @@ theorem conj_crd_unitary_carries : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ
   have e1' : latCo D.sp (gramN D i hi) (A.crd i hi) a 1 ((St i hi).K β).lev.Lb =
       latAd (ratA D.host.F (A.crd i hi)) (compan (sp := D.sp) (gramN D i hi) a ((St i hi).K β).lev.Lb) := by
     have := e1
-    simp only [OneMemClass.coe_one, mul_one] at this
-    exact this
+    simpa only [OneMemClass.coe_one, mul_one] using this
   refine ⟨conj_mem_std (sigD D) (gramN D i hi) (A.crd i hi) hco y.1 y.2, ?_, ?_⟩
   · rw [e1', e2]
     exact carries_conj _ _ _ hCf hCs

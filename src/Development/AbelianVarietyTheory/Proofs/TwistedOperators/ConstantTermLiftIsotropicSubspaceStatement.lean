@@ -249,13 +249,11 @@ theorem mem_NI_prop (V : HSp D) {r k : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.h
       rw [← Matrix.mul_assoc, GlobalTheory.MixModel.mt_inv_mul, Matrix.one_mul]
     have hc : mt V x ⬝ (C.map (incA D) : Matrix (Fin V.rank) (Fin r) (AE D)) = C.map (incA D) := by
       have h := hx1
-      rw [Matrix.sub_mul] at h
-      rw [Matrix.one_mul] at h
+      rw [Matrix.sub_mul, Matrix.one_mul] at h
       exact sub_eq_zero.1 h
     have hb : mt V x ⬝ (B.map (incA D) : Matrix (Fin V.rank) (Fin k) (AE D)) = B.map (incA D) + (C.map (incA D) : Matrix (Fin V.rank) (Fin r) (AE D)) ⬝ Y := by
       have h := hx2
-      rw [Matrix.sub_mul] at h
-      rw [Matrix.one_mul] at h
+      rw [Matrix.sub_mul, Matrix.one_mul] at h
       exact sub_eq_iff_eq_add'.1 h
     have h2 : mt V x⁻¹ ⬝ (C.map (incA D) : Matrix (Fin V.rank) (Fin r) (AE D)) = C.map (incA D) := by
       conv_lhs => rw [← hc]
@@ -299,8 +297,7 @@ theorem exists_right_inv {K : Type*} [Field K] {s r : ℕ} (m : Matrix (Fin s) (
     ∃ m' : Matrix (Fin r) (Fin s) K, m * m' = 1 := by
   have htop : LinearMap.range m.mulVecLin = ⊤ := by
     apply Submodule.eq_top_of_finrank_eq
-    rw [Module.finrank_fin_fun, Matrix.finrank_range_mulVecLin]
-    exact hm
+    rwa [Module.finrank_fin_fun, Matrix.finrank_range_mulVecLin]
   have hs : ∀ i, ∃ v, m.mulVec v = Pi.single i 1 := fun i => by
     have : (Pi.single i (1 : K) : Fin s → K) ∈ LinearMap.range m.mulVecLin := htop ▸ Submodule.mem_top
     obtain ⟨v, hv⟩ := this
@@ -427,8 +424,7 @@ theorem coord_surj (V V' : HSp D) {r s : ℕ} (C C' : Matrix (Fin V.rank) (Fin r
         rw [Matrix.mulVec_mulVec, ← he]
         funext i
         have := congrArg (incA D) (congrFun hx i)
-        rw [RingHom.map_mulVec, Pi.zero_apply, map_zero] at this
-        exact this
+        rwa [RingHom.map_mulVec, Pi.zero_apply, map_zero] at this
       refine ⟨(Z ⬝ (GlobalTheory.MixModel.adj b ⬝ G)) *ᵥ xA, ?_⟩
       change (mt V n - 1) *ᵥ xA = _
       rw [hN1, Matrix.sub_mulVec, Matrix.smul_mulVec]
@@ -541,8 +537,7 @@ theorem mean_target : ∀ (D : D7) (V W : HSp D) (s : ℕ) (L : Matrix (Fin W.ra
       simp only [Matrix.mul_one] at hx
       obtain ⟨y, hy⟩ := hg2 x (adj_eq_zero_of_symplO (C := GlobalTheory.MixModel.rat L) hx)
       refine ⟨y, ?_⟩
-      rw [e1, Matrix.mul_one, hact]
-      exact hy
+      rwa [e1, Matrix.mul_one, hact]
     obtain ⟨c, hc⟩ := GlobalTheory.T.isotropicMean_changes_by_scalar_of_trivial_action D V W s V.rank L 1 hrk (Matrix.rank_one.trans (Fintype.card_fin _)) hsym ψ χS χT ω hω μ 𝓐 hcov 1 g hfix hmov
     refine ⟨c, Circle.coe_ne_zero c, ?_⟩
     intro f' hf'
@@ -551,8 +546,7 @@ theorem mean_target : ∀ (D : D7) (V W : HSp D) (s : ℕ) (L : Matrix (Fin W.ra
     exact h0
   have key := mean_unip hL hω hcov hsc n.2 f hf
   unfold meanL at key
-  rw [one_mul] at key
-  exact key
+  rwa [one_mul] at key
 
 end GlobalTheory.UnipMean
 
@@ -672,8 +666,7 @@ theorem hO_iso (S T : HSp D) {s : ℕ} (L : Matrix (Fin T.rank) (Fin s) D.host.E
     have h := congrFun (congrFun hM b) a
     simp only [Matrix.mul_apply (M := _ * _), Matrix.mul_apply (M := Matrix.transpose _), Matrix.transpose_apply,
       Matrix.map_apply, Matrix.zero_apply, Finset.sum_mul] at h
-    rw [Finset.sum_comm]
-    exact h
+    rwa [Finset.sum_comm]
   unfold hO
   refine Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => ?_
   calc _ = incA D (S.gram⁻¹ a b) * ∑ c, ∑ d, cA D (((L.map (incA D) : Matrix (Fin T.rank) (Fin s) (AE D)) * β) c b) * incA D (T.gram c d) *
@@ -1026,8 +1019,7 @@ theorem hO_eq_trace (S T : HSp D) (x y : WO S T) :
     Finset.sum_mul]
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [Finset.sum_comm]
-  refine (Finset.sum_congr rfl fun c _ => Finset.sum_comm).trans ?_
-  exact Finset.sum_comm
+  exact (Finset.sum_congr rfl fun c _ => Finset.sum_comm).trans Finset.sum_comm
 
 theorem symplOH_isoPart_eq_zero (V W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E) (t : Mx D W.rank r)
     (δ : WO V W) (hδ : δ * C.map (incA D) = 0) : symplOH V W (isoPart V W C t) δ = 0 := by
@@ -1295,8 +1287,7 @@ theorem GlobalTheory.TowerCT.towerConstTermOfCompatible_holds : ∀ D : D7, Glob
   obtain ⟨c, hcb⟩ := hA f hf
   have hcont : ∀ y, Continuous fun p : GA D V × GA D W => tm y (ω p f) := by
     intro y
-    simp only [htm]
-    exact (hcb 1 1).1 y
+    simpa only [htm] using (hcb 1 1).1 y
   have hTm : ∀ y, Measurable (Function.uncurry fun (n : NI V C) (h : GA D W) => tm y (ω ((n : GA D V) * g, h) f)) := by
     intro y
     exact ((hcont y).comp (by fun_prop : Continuous fun q : NI V C × GA D W => ((q.1 : GA D V) * g, q.2))).measurable
@@ -1382,8 +1373,7 @@ theorem GlobalTheory.TowerCT.towerConstTermOfCompatible_holds : ∀ D : D7, Glob
         have hLy : ∀ k : GQ W, ratM W k * y.1 = y.1 → ratM W k * L = L := by
           intro k hk
           rw [hy, ← Matrix.mul_assoc] at hk
-          have hk' := congrArg (· * m') hk
-          simpa only [Matrix.mul_assoc, hmm', Matrix.mul_one] using hk'
+          simpa only [Matrix.mul_assoc, hmm', Matrix.mul_one] using congrArg (· * m') hk
         refine cusp D W s L hLf ν hν F hFd hFc ((MulAction.stabilizer (GQ W) y).map (GQ W).subtype)
           (Subgroup.map_subtype_le _) ?_ ?_ (fun h => ∫ n in 𝓝, tm y.1 (ω ((n : GA D V) * g, h) f) ∂κ)
           (hKm y.1) ?_ ?_ 𝓖 h𝓖 hint
@@ -1425,8 +1415,7 @@ theorem GlobalTheory.TowerCT.towerConstTermOfCompatible_holds : ∀ D : D7, Glob
   have hbsum : HasSum (Set.indicator {y | y ≠ 0} a) 0 := by
     have hs := hHas.summable.indicator {y | y ≠ 0}
     have ht : ∑' y, Set.indicator {y | y ≠ 0} a y = 0 := by
-      rw [← tsum_subtype]
-      exact hvanish
+      rwa [← tsum_subtype]
     rw [← ht]
     exact hs.hasSum
   have hfull : HasSum a (a 0 + 0) := by

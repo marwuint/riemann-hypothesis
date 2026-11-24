@@ -75,16 +75,11 @@ theorem isIntegrallyClosed_quotient_of_mem_minimalPrimes {S : Type*} [CommRing S
   refine IsIntegrallyClosed.of_localization_maximal (fun M _ _ => ?_)
   let m : Ideal S := M.comap (Ideal.Quotient.mk q)
   have : m.IsPrime := Ideal.comap_isPrime _ _
-  have hqm : q ≤ m := by
-    intro x hx
-    show Ideal.Quotient.mk q x ∈ M
-    rw [Ideal.Quotient.eq_zero_iff_mem.2 hx]
-    exact M.zero_mem
+  have hqm : q ≤ m := Ideal.mk_ker.ge.trans (Ideal.comap_mono bot_le)
   obtain ⟨hdom, hic⟩ := hS m
-  have hker : ∀ x ∈ q, algebraMap S (Localization.AtPrime m) x = 0 := by
-    intro x hx
-    obtain ⟨s, hs⟩ := exists_mul_eq_zero_of_mem_minimalPrimes_of_isDomain_atPrime hq m hqm hx
-    exact (IsLocalization.map_eq_zero_iff m.primeCompl _ x).2 ⟨s, hs⟩
+  have hker : ∀ x ∈ q, algebraMap S (Localization.AtPrime m) x = 0 := fun x hx =>
+    (IsLocalization.map_eq_zero_iff m.primeCompl _ x).2
+      (exists_mul_eq_zero_of_mem_minimalPrimes_of_isDomain_atPrime hq m hqm hx)
   let : Algebra (S ⧸ q) (Localization.AtPrime m) :=
     (Ideal.Quotient.lift q (algebraMap S (Localization.AtPrime m)) hker).toAlgebra
   have hmk : ∀ a : S, algebraMap (S ⧸ q) (Localization.AtPrime m) (Ideal.Quotient.mk q a) =
@@ -93,24 +88,16 @@ theorem isIntegrallyClosed_quotient_of_mem_minimalPrimes {S : Type*} [CommRing S
     refine (isLocalization_iff _ _).2 ⟨?_, ?_, ?_⟩
     · rintro ⟨y, hy⟩
       obtain ⟨s, rfl⟩ := Ideal.Quotient.mk_surjective y
-      show IsUnit (algebraMap (S ⧸ q) (Localization.AtPrime m) (Ideal.Quotient.mk q s))
-      rw [hmk]
-      exact IsLocalization.map_units (Localization.AtPrime m) (⟨s, hy⟩ : m.primeCompl)
+      exact hmk s ▸ IsLocalization.map_units (Localization.AtPrime m) (⟨s, hy⟩ : m.primeCompl)
     · intro z
       obtain ⟨⟨a, s⟩, h⟩ := IsLocalization.surj m.primeCompl z
-      refine ⟨⟨Ideal.Quotient.mk q a, ⟨Ideal.Quotient.mk q s, s.2⟩⟩, ?_⟩
-      show z * algebraMap (S ⧸ q) _ (Ideal.Quotient.mk q s) =
-        algebraMap (S ⧸ q) _ (Ideal.Quotient.mk q a)
-      rw [hmk, hmk]
-      exact h
+      exact ⟨⟨Ideal.Quotient.mk q a, ⟨Ideal.Quotient.mk q s, s.2⟩⟩, by simpa only [hmk] using h⟩
     · intro a b hab
       obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective a
       obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective b
       rw [hmk, hmk] at hab
       obtain ⟨c, hc⟩ := (IsLocalization.eq_iff_exists m.primeCompl _).1 hab
       refine ⟨⟨Ideal.Quotient.mk q c, c.2⟩, ?_⟩
-      show Ideal.Quotient.mk q c * Ideal.Quotient.mk q a =
-        Ideal.Quotient.mk q c * Ideal.Quotient.mk q b
       rw [← map_mul, ← map_mul, hc]
   exact hic.of_equiv (IsLocalization.algEquiv M.primeCompl (Localization.AtPrime M)
     (Localization.AtPrime m)).toRingEquiv.symm

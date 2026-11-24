@@ -121,8 +121,7 @@ private theorem eq_of_left_comp_sabMap_phi_eq {S : Scheme.{0}} {t₁ : SAB H (Sp
   obtain ⟨β, hβ⟩ := exists_pointEquiv m.cart
   apply β.injective
   apply Over.OverMorphism.ext
-  rw [hβ, hβ]
-  exact h
+  rwa [hβ, hβ]
 
 private theorem comp_left_eq_toUnit_comp_left {X : Scheme.{0}} (y : Sp ℂ ⟶ X) {G : Over X} (s : 𝟙_ (Over X) ⟶ G) :
     y ≫ s.left = (toUnit (Over.mk y) ≫ s).left := by

@@ -179,8 +179,7 @@ theorem pow_mul_mem_integers (K : FinExt l) (a : ↥K.1) : ∃ k : ℕ, (l : ↥
     (PadicInt.irreducible_p (p := l))
   refine ⟨k, ?_⟩
   have h3 := hi.smul ((u⁻¹ : ℤ_[l]ˣ) : ℤ_[l])
-  rw [smul_smul, ← mul_assoc, Units.inv_mul, one_mul, Algebra.smul_def, map_pow, map_natCast] at h3
-  exact h3
+  rwa [smul_smul, ← mul_assoc, Units.inv_mul, one_mul, Algebra.smul_def, map_pow, map_natCast] at h3
 
 theorem lift_one (K : FinExt l) (bk : BK K) (C : Core l) (x : Om l) (hx : x ∈ K.1) (n : ℕ) :
     ∃ (m : ℕ) (s : bk.S), aDp l (bk.ev s) - (l : Per.BdRp l) ^ m * C.o x ∈ Per.FilP l n := by
@@ -189,8 +188,7 @@ theorem lift_one (K : FinExt l) (bk : BK K) (C : Core l) (x : Om l) (hx : x ∈ 
   refine ⟨k + a, s, ?_⟩
   have e : ((((⟨_, ha⟩ : ↥(OL K)) : ↥K.1)) : Om l) = (l : Om l) ^ a * x := by
     simp
-  rw [e, map_mul, map_pow, map_natCast, ← mul_assoc, ← pow_add] at hs
-  exact hs
+  rwa [e, map_mul, map_pow, map_natCast, ← mul_assoc, ← pow_add] at hs
 
 theorem lift_matrix : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (C : Core l) (d : ℕ) (c : Matrix (Fin d) (Fin d) (Om l)), (∀ i j, c i j ∈ K.1) → ∀ n : ℕ, ∃ (k : ℕ) (s : Matrix (Fin d) (Fin d) bk.S), ∀ i j, aDp l (bk.ev (s i j)) - (l : Per.BdRp l) ^ k * C.o (c i j) ∈ Per.FilP l n := by
   intro l _ K bk C d c hc n
@@ -505,8 +503,7 @@ theorem GlobalTheory.BKLim.invMatrix_ratio : ∀ (l : ℕ) [Fact l.Prime] (K : F
     refine IsUnit.mul ?_ ?_
     · exact H.unit.map (ι.mapMatrix)
     · rw [Matrix.isUnit_diagonal, Pi.isUnit_iff]
-      intro k
-      exact (Units.isUnit _).mul ((Units.isUnit u).pow _)
+      exact fun k => (Units.isUnit _).mul ((Units.isUnit u).pow _)
 
   obtain ⟨Qi, hQi⟩ : ∃ Qi, Q * Qi = 1 := ⟨_, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hQu)⟩
   obtain ⟨Hi, hHi⟩ : ∃ Hi, H.Q * Hi = 1 := ⟨_, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hHu)⟩
@@ -687,8 +684,7 @@ theorem GlobalTheory.BKLim.theta_gal_fixed_of_congr : ∀ (l : ℕ) [Fact l.Prim
   have hl : ((l : ℂ_[l]) ^ k) ≠ 0 := pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)
   apply mul_left_cancel₀ hl
   have e2 := congrArg (Per.σC (g : GQ l)) hdiff
-  rw [map_mul, map_pow, map_natCast, hfix, ← hdiff] at e2
-  exact e2
+  rwa [map_mul, map_pow, map_natCast, hfix, ← hdiff] at e2
 end -- clump:auto
 end -- clump:auto
 -- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaGaloisFixedOfCongrBreuilKisin =====
@@ -822,16 +818,14 @@ theorem GlobalTheory.BKLim.adaptedBasis_theta_and_poles : ∀ (l : ℕ) [Fact l.
         -(aDp l (bk.ev bk.E) ^ H.q) * (aDp l (bk.ev (s i j)) - (l : Per.BdRp l) ^ k * ((F.A.map bk.ev).map (aDp l) * B * c.map C.o) i j) := by
       rw [map_mul, map_mul, map_pow, map_pow]
       linear_combination -((l : Per.BdRp l) ^ k) * e
-    rw [key]
-    exact hm
+    rwa [key]
   refine ⟨fun g z hz => ?_, fun N₀ hN₀ hp => ?_⟩
   · obtain ⟨w, hw, hzw⟩ := hz
     have hG1 := _root_.GlobalTheory.BKLim.gal_tauPow_frame l K bk τ N d ρ F Y hY g
     have hG2 := _root_.GlobalTheory.BKLim.GalAdapted.gal_V l K bk C d ρ H g w hw
     have hb : Per.θD l (aDp l (Per.σA (g : GQ l) τ)) ≠ 0 := by
       rw [← GlobalTheory.MemLoc.ActLaws.σDp_aDp, (GlobalTheory.MemLoc.thetaD_props l).2.2.2.2]
-      intro h0
-      exact hθt ((Per.σC (g : GQ l)).injective (h0.trans (map_zero _).symm))
+      exact fun h0 => hθt ((Per.σC (g : GQ l)).injective (h0.trans (map_zero _).symm))
     refine _root_.GlobalTheory.ht_operator_of_galois_relations d N H.q H.p (Per.θD l (aDp l τ)) (Per.θD l (aDp l (Per.σA (g : GQ l) τ))) z (Per.θD l (aDp l w))
       _ (Y'.map ((Per.θD l).comp (aDp l))) _ (V₀.map (Per.θD l)) _ (((ρ g).map ((aDp l).comp (Per.zA l))).map (Per.θD l))
       ((Y.map (Per.σA (g : GQ l))).map ((Per.θD l).comp (aDp l))) ((H.V.map (Per.σDp (g : GQ l))).map (Per.θD l))
@@ -855,8 +849,7 @@ theorem GlobalTheory.BKLim.adaptedBasis_theta_and_poles : ∀ (l : ℕ) [Fact l.
         ext i j; simp [GlobalTheory.MemLoc.ActLaws.σDp_aDp]
       have e2 : (V₀.map (Per.σDp (g : GQ l))).map (Per.θD l) = V₀.map (Per.θD l) := by
         ext i j; simp only [Matrix.map_apply]; rw [(GlobalTheory.MemLoc.thetaD_props l).2.2.2.2, h4]
-      rw [e1, e2, GlobalTheory.MemLoc.ActLaws.σDp_aDp] at e
-      exact e
+      rwa [e1, e2, GlobalTheory.MemLoc.ActLaws.σDp_aDp] at e
   · obtain ⟨B', hBB'⟩ := hBu.exists_right_inv
     obtain ⟨Vu, hVu⟩ := H.unit
     have hcp : c.map C.o * c'.map C.o = 1 := by

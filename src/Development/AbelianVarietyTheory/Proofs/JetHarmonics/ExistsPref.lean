@@ -109,8 +109,7 @@ theorem aug_surj {κ : Type} (m : ℕ) (y : Sp (Jet V κ m)) :
     refine PrimeSpectrum.isPrime y |>.mem_of_pow_mem (m + 1) ?_
     rw [← map_pow, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_pow h1 _)]
     exact Ideal.zero_mem _
-  rw [← range_comap_of_surjective _ _ hs] at hy
-  exact hy
+  rwa [← range_comap_of_surjective _ _ hs] at hy
 
 theorem mem_of_aug {G : Over (Sp V)} [GrpObj G] {κ : Type} {m : ℕ} (p : overAt (𝟙 (Sp V)) (Jet V κ m) ⟶ G)
     (hp : Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetAug : Jet V κ m →ₐ[V] V) ≫ p = 1) (U : G.left.Opens)
@@ -119,8 +118,7 @@ theorem mem_of_aug {G : Over (Sp V)} [GrpObj G] {κ : Type} {m : ℕ} (p : overA
   have e : spMap ((jetAug : Jet V κ m →ₐ[V] V) : Jet V κ m →+* V) ≫ p.left =
       (toUnit (overAt (𝟙 (Sp V)) V)).left ≫ η[G].left := congrArg (fun q => q.left) hp
   have h : ((toUnit (overAt (𝟙 (Sp V)) V)).left ≫ η[G].left) y₀ ∈ U := hU trivial
-  rw [← e] at h
-  exact h
+  rwa [← e] at h
 
 theorem comp_psum {S : Scheme.{0}} {G T T' : Over S} [GrpObj G] [IsCommMonObj G] {n : ℕ} (ρ : T' ⟶ T)
     (xs : Fin n → (T ⟶ G)) (h : ∀ i, ρ ≫ xs i = 1) (I : Finset (Fin n)) : ρ ≫ psum G xs I = 1 := by
@@ -129,8 +127,7 @@ theorem comp_psum {S : Scheme.{0}} {G T T' : Over S} [GrpObj G] [IsCommMonObj G]
   | nil => exact MonObj.comp_one ρ
   | cons a l ih =>
     refine (MonObj.comp_mul _ _ _).trans ?_
-    rw [h a, _root_.one_mul]
-    exact ih
+    rwa [h a, _root_.one_mul]
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {t : SAB H (Sp V)} {d : ℕ}
   {xT : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G} {j : t.PP.L.ι}
@@ -182,11 +179,9 @@ theorem rep_PP {x : JetSer.Fam t.G (Fin d)} (hM : Match (oneCol d) xT x) {n : �
     rw [he1, jQ_X]
     exact psJet_eq m _
   · have hid : Formalism.L2.Pj.homAt (𝟙 (Sp V)) (AlgHom.id V (Jet V (Fin n × Fin d) m)) = 𝟙 _ := by
-      apply Over.OverMorphism.ext
-      exact Spec.map_id _
+      exact Over.OverMorphism.ext (Spec.map_id _)
     have := LinkLaw.read_match (xT m) (x m) e he2 (jQ m ![u]) (AlgHom.id V _)
-    rw [hid, Category.comp_id] at this
-    exact this
+    rwa [hid, Category.comp_id] at this
 
 theorem cub_ser {x : JetSer.Fam t.G (Fin d)} (hM : Match (oneCol d) xT x) {f : PS V 3 d}
     (hf : JetSer.IsSer3 x _ (t.cub.t.s (fun _ => j)).val f) {n m : ℕ} {y : (jOG (𝟙 (Sp V)) d m n).left} {J}
@@ -318,8 +313,7 @@ theorem linkRel : LinkRelSt := by
         have k : ∀ p q : jOG (𝟙 (Sp V)) d m 2 ⟶ t.G, (val₂ wL y J p q * val₂ (u a) y J p q).val =
             gs (jOG (𝟙 (Sp V)) d m 2).hom y ⊤ c₀ := fun p q => by
           have := hc₀ _ (lift p q).left y J hJ.1
-          rw [val_mul hJ.1, Over.w] at this
-          exact this
+          rwa [val_mul hJ.1, Over.w] at this
         have a₀ := dA 0 0
         have b₀ := dB 0 0
         rw [z2 _ (BT.adjoint_zero_fst a), VV_one, ac0, ac0, mul_inv_cancel_right] at a₀

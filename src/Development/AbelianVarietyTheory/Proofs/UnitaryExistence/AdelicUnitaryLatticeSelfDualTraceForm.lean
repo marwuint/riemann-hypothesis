@@ -145,8 +145,7 @@ theorem selfDual_one (V : HSp D) (v : Fin V.rank → D.host.E) :
         rw [FractionalIdeal.spanSingleton_mul_le_iff]
         intro b hb
         have := h (D.host.conj b • y0) (Submodule.subset_span ⟨_, conj_mem_AA D hb, y0, hy0, rfl⟩)
-        rw [frameForm_smul_right, conj_conj, mul_comm b] at this
-        exact this
+        rwa [frameForm_smul_right, conj_conj, mul_comm b] at this
       have hle2 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) (frameForm V v y0) ≤
           D.host.AA := by
         calc FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) (frameForm V v y0)
@@ -199,8 +198,7 @@ theorem selfDual (V : HSp D) (g : GA D V) (v : Fin V.rank → D.host.E) :
     (D.host.AA * D.host.AAbar) (finHom V g) hfg hspan hcc hG hdet
     (mul_ne_zero (AA_ne_zero Formalism.IndefR.Fin.factPrincipalDatum D) (AAbar_ne_zero D))
     (selfDual_one V) (GlobalTheory.T.finitePart_preserves_form_det_norm_one D V g).1 v
-  rw [← hlat] at key
-  exact key
+  rwa [← hlat] at key
 
 end GlobalTheory.Member.LatSelfDual
 
@@ -228,9 +226,7 @@ theorem latG_selfDual : ∀ (D : D7) (V : HSp D), ∀ (g : GA D V) (J : Fraction
   · intro h y hy
     refine (mem_iff_trace D _).2 fun a => ?_
     have h1 := h _ ((latG V g).smul_mem (D.host.conj⁻¹ • a) hy)
-    rw [frameForm_int_smul_right, smul_inv_smul, Algebra.smul_def] at h1
-    exact h1
-  · intro h y hy
-    exact trace_int_of_mem Formalism.IndefR.Fin.factPrincipalDatum D (h y hy)
+    rwa [frameForm_int_smul_right, smul_inv_smul, Algebra.smul_def] at h1
+  · exact fun h y hy => trace_int_of_mem Formalism.IndefR.Fin.factPrincipalDatum D (h y hy)
 
 end GlobalTheory.Member

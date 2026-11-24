@@ -257,8 +257,7 @@ theorem units_zpow_bilin_comm {R M₁ M₂ M₃ : Type} [CommRing R] [AddCommGro
     rw [Module.End.mul_apply, Module.End.one_apply] at e₁ e₂
     conv_lhs => rw [← e₁, ← e₂, ← h]
     have e₃ := LinearMap.congr_fun (Units.inv_mul u₃) (B (((u₁⁻¹ : (Module.End R M₁)ˣ) : Module.End R M₁) x) (((u₂⁻¹ : (Module.End R M₂)ˣ) : Module.End R M₂) y))
-    rw [Module.End.mul_apply, Module.End.one_apply] at e₃
-    exact e₃
+    rwa [Module.End.mul_apply, Module.End.one_apply] at e₃
   induction n using Int.induction_on generalizing x y with
   | zero => simp
   | succ n ih =>
@@ -339,8 +338,7 @@ theorem wdSpace_twist_equiv : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI 
       rintro _ ⟨z, rfl⟩
       obtain ⟨x, hx⟩ := h2 z
       exact ⟨_, (hΦ' x y₀).trans (by rw [hx])⟩
-    intro z
-    exact LinearMap.mem_range.mp (hle (Submodule.eq_top_iff'.mp hspan z))
+    exact fun z => LinearMap.mem_range.mp (hle (Submodule.eq_top_iff'.mp hspan z))
   have hdim : Module.finrank ℂ (WDSpace P ι (Bw.repE L s) ⊗[ℂ] WDSpace P ι (Bw.repE L m)) =
       Module.finrank ℂ (WDSpace P ι (Bw.repE L (Formalism.MainNotions.SumRepresentations.At.twGL s (Matrix.GeneralLinearGroup.det.comp m)))) := by
     rw [Module.finrank_tensorProduct, GlobalTheory.Pst.LetterDim.finrank_wdSpace l P ι _ L _ _ hs,
@@ -354,10 +352,7 @@ theorem wdSpace_twist_equiv : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI 
     intro f g H
     apply TensorProduct.ext
     apply LinearMap.ext_on_range (span_wdMk P ι (Bw.repE L s))
-    intro x
-    apply LinearMap.ext_on_range (span_wdMk P ι (Bw.repE L m))
-    intro y
-    exact H x y
+    exact fun x => LinearMap.ext_on_range (span_wdMk P ι (Bw.repE L m)) (fun y => H x y)
   have hW : ∀ σ x y, weilD Bw h P (Bw.repE L (Formalism.MainNotions.SumRepresentations.At.twGL s (Matrix.GeneralLinearGroup.det.comp m))) σ ((dmul P (Bw.repE L s) (Bw.repE L (Formalism.MainNotions.SumRepresentations.At.twGL s (Matrix.GeneralLinearGroup.det.comp m))) (Bw.repE L m) χ hχm hχt) x y) =
       (dmul P (Bw.repE L s) (Bw.repE L (Formalism.MainNotions.SumRepresentations.At.twGL s (Matrix.GeneralLinearGroup.det.comp m))) (Bw.repE L m) χ hχm hχt) (weilD Bw h P (Bw.repE L s) σ x) (weilD Bw h P (Bw.repE L m) σ y) := by
     intro σ x y

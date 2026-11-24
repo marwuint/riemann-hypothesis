@@ -302,8 +302,7 @@ theorem lattice_basis (l : ℕ) [Fact l.Prime] (LL : Type) [Field LL] [Algebra �
   haveI : IsIntegralClosure S ℤ_[l] LL := integralClosure.isIntegralClosure _ _
   haveI : Module.Finite ℤ_[l] S := IsIntegralClosure.finite ℤ_[l] ℚ_[l] LL S
   have hinj : Function.Injective (algebraMap ℤ_[l] LL) := by
-    intro a c h
-    exact IsFractionRing.injective ℤ_[l] ℚ_[l] ((algebraMap ℚ_[l] LL).injective h)
+    exact fun a c h => IsFractionRing.injective ℤ_[l] ℚ_[l] ((algebraMap ℚ_[l] LL).injective h)
   haveI : Module.IsTorsionFree ℤ_[l] S := ⟨fun r hr a c hac => by
     have hr0 : algebraMap ℤ_[l] LL r ≠ 0 := by
       intro h0; exact hr.ne_zero (hinj (h0.trans (map_zero _).symm))
@@ -370,8 +369,7 @@ theorem intDual_coef : ∀ (l : ℕ) [Fact l.Prime] (LL : Type) [Field LL] [Alge
     (Finset.univ : Finset (Fin n)) f'
   let D := ι c
   have hD : D ≠ 0 := by
-    intro h0
-    exact nonZeroDivisors.coe_ne_zero ⟨c, hc⟩ (hιinj (h0.trans (map_zero ι).symm))
+    exact fun h0 => nonZeroDivisors.coe_ne_zero ⟨c, hc⟩ (hιinj (h0.trans (map_zero ι).symm))
   have ho : ∀ i, ∃ o : O, ι o = D * f' i := by
     intro i
     obtain ⟨o, ho⟩ := hcint i (Finset.mem_univ i)
@@ -509,8 +507,7 @@ theorem latticeZl_of_latticeO : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL 
     have hq : (z : ℚ_[l]) ≠ 0 := fun h0 => hz0 (PadicInt.coe_eq_zero.1 h0)
     exact Subtype.ext ((smul_eq_zero.1 h').resolve_left hq)
   refine ⟨{ T := TZ, stable := ?_, fg := hfg, free := ?_, span := ?_ }, hmem⟩
-  · intro g x hx
-    exact L.stable g x hx
+  · exact fun g x hx => L.stable g x hx
   · exact Module.free_of_finite_type_torsion_free'
   · let W : Submodule LL V :=
       { carrier := (Submodule.span ℚ_[l] (TZ : Set V) : Set V)
@@ -534,8 +531,7 @@ theorem latticeZl_of_latticeO : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL 
             exact Submodule.smul_mem _ q hx }
     have hW : W = ⊤ := by
       rw [eq_top_iff, ← L.span, Submodule.span_le]
-      intro t ht
-      exact Submodule.subset_span ht
+      exact fun t ht => Submodule.subset_span ht
     rw [eq_top_iff]
     intro v _
     have : v ∈ W := hW ▸ Submodule.mem_top
@@ -920,8 +916,7 @@ theorem hfQ_of_ioL_mem_HfD : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : 
   have hπ : π ≠ 0 := by
     obtain ⟨⟨hDom, hDVR, hFr⟩, -, -, -, -⟩ := hO
     haveI := hDom; haveI := hDVR; haveI := hFr
-    intro h
-    exact hϖ.ne_zero (IsFractionRing.injective O LL (by rw [← hπdef, h, map_zero]))
+    exact fun h => hϖ.ne_zero (IsFractionRing.injective O LL (by rw [← hπdef, h, map_zero]))
   clear hO
 
   obtain ⟨_, ⟨z, hz, rfl⟩, _, ⟨xq, rfl⟩, hsum⟩ := Submodule.mem_sup.1 hc
@@ -1554,8 +1549,7 @@ theorem tate_double_annihilator : Formalism.GaloisCohomology.LocalTateDualityK �
   let β₁ : ↥(latticeCocycles LA) →ₗ[O] ↥(divisibleCocycles LA') →ₗ[O] (LL ⧸ LinearMap.range (Algebra.linearMap O LL)) :=
     β.compr₂ e.toLinearMap
   have hβ₁ : ∀ d c, β₁ d c = 0 ↔ β d c = 0 := fun d c => by
-    simp only [β₁, LinearMap.compr₂_apply, LinearEquiv.coe_coe]
-    exact e.map_eq_zero_iff
+    simpa only [β₁, LinearMap.compr₂_apply, LinearEquiv.coe_coe] using e.map_eq_zero_iff
   have hker : (latticeCoboundaries LA).comap (latticeCocycles LA).subtype ≤ LinearMap.ker β₁ := by
     intro d hd
     rw [LinearMap.mem_ker]

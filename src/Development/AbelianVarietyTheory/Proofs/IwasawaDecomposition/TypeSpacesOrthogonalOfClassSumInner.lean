@@ -126,9 +126,7 @@ theorem isoTyp_orth (hB : GlobalTheory.TypeOrthogonality.Good ρ B) (hfin : ∀ 
         (fun h3 => hne ((h1.trans h3).trans (hU'.2.symm hS'.1.stable))) a ha c hc
     exact hle hb
   have hle : NG.isoTyp ρ S ≤ LinearMap.ker (B.flip y) := by
-    refine sSup_le fun U hU => ?_
-    intro a ha
-    exact step U hU.1 hU.2 a ha _ hy
+    exact sSup_le fun U hU => fun a ha => step U hU.1 hU.2 a ha _ hy
   exact hle hx
 
 theorem proj_typeSp (hB : GlobalTheory.TypeOrthogonality.Good ρ B) {J : Subgroup (GAf L n)} {χ : J →* ℂˣ}
@@ -229,8 +227,7 @@ theorem mem_sSup_irrRep : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L]
         intro c hc
         obtain ⟨w, hw, e⟩ := hW'W hc
         have : w = c := Subtype.ext e
-        rw [← this]
-        exact hw
+        rwa [← this]
       rcases hWi _ hle' hs with h | h
       · left
         rw [eq_bot_iff]
@@ -360,7 +357,6 @@ theorem typeSp_decomp : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (
   have hle : sSup {S | NG.IsIrrRep a.ρ S} ≤ LinearMap.ker (B y) := sSup_le fun U hU w hw => hy2 U hU w hw
   have hy0 : y = 0 := pos_zero hG hyA (hle hyS)
   have : x = ∑ i, p i := by rw [← sub_eq_zero]; exact hy0
-  rw [this]
-  exact hsum
+  rwa [this]
 
 end GlobalTheory.CompRed

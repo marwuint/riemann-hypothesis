@@ -60,9 +60,7 @@ theorem frDiv_mem_GLint (p p' : DecoF E n ST SG Q) (hN : p.deco.1.N = p'.deco.1.
   intro v
   have h1 := p.2 P (((p.fr P)⁻¹ * p'.fr P) v)
   have h2 := p'.2 P v
-  have e : p.1.2 P (((p.fr P)⁻¹ * p'.fr P) v) = p'.fr P v := by
-    show p.fr P ((p.fr P).symm (p'.fr P v)) = p'.fr P v
-    exact LinearEquiv.apply_symm_apply _ _
+  have e : p.1.2 P (((p.fr P)⁻¹ * p'.fr P) v) = p'.fr P v := LinearEquiv.apply_symm_apply _ _
   rw [e] at h1
   rw [← h1, ← h2]
   show p'.fr P v ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal p.deco.1.N ↔ p'.fr P v ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal p'.deco.1.N
@@ -107,8 +105,7 @@ theorem mem_topU_iff : ∀ (F E K : Type) [Field F] [NumberField F] [Field E] [N
       have h2 := mul_mem (mul_mem (inv_mem htL) h) htL
       have e2 : t⁻¹ * (t * z * t⁻¹) * t = z := by group
       rwa [e2] at h2
-    · intro h
-      exact mul_mem (mul_mem htL h) (inv_mem htL)
+    · exact fun h => mul_mem (mul_mem htL h) (inv_mem htL)
   have hT : ∀ P : Q, rhoT F P.1 t x = rhoP F P.1 z := by
     intro P
     show rhoP F P.1 (t⁻¹ * x * t⁻¹⁻¹) = rhoP F P.1 z
@@ -130,7 +127,6 @@ theorem mem_topU_iff : ∀ (F E K : Type) [Field F] [NumberField F] [Field E] [N
   have hNs : ∀ h : GLG (E := E) (n := n) (SG := SG), p'.deco = ((1, h) : UF E n × GLG (E := E) (n := n) (SG := SG)) • p.deco → p.deco.1.N = p'.deco.1.N := by
     intro h e
     rw [e]
-    show p.deco.1.N = Formalism.HermitianLatticesTheory.gmap (1 : Sp E n ≃ₗ[E] Sp E n) p.deco.1.N
     exact (Formalism.L2.Col.gmap_one _).symm
   constructor
   · intro hx

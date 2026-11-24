@@ -169,8 +169,7 @@ theorem map_mem_nabAtr (f : K₀ →+* K) (emb : ι → E →+* K₀) (lam : ι 
     have h4 : (MvPolynomial.map (RingHom.id K) '' (nabStd K lam : Set (Pol K ι n))) = (nabStd K lam : Set (Pol K ι n)) := by
       ext y
       simp [MvPolynomial.map_id]
-    rw [h4, Submodule.span_eq] at h3
-    exact h3
+    rwa [h4, Submodule.span_eq] at h3
   · change actP lam (fun τ => Formalism.UG.bc f (B₀ τ)) (MvPolynomial.map f g) = MvPolynomial.map f x.1
     rw [← GlobalTheory.ValCmp.use₂]
     exact congrArg (MvPolynomial.map f) hg
@@ -200,8 +199,7 @@ theorem coefLat_eq_small : ∀ (D : D7) (S T : HSp D) (B : Base S T), B.Good →
     (harmLat_le D.LL0.val.toRingHom D.what₂.embLL (labLL0 D) O B.w B.F.BS hM)
   have h1 := GlobalTheory.SmallSpan.harmLat_le_span D.LL0.val.toRingHom D.what₂.embLL (labLL0 D) O O (fun a => hO ⟨a, rfl⟩)
     B.w B.F.BS hB.wt hm hM hP
-  rw [Submodule.span_eq] at h1
-  exact h1
+  rwa [Submodule.span_eq] at h1
 
 end GlobalTheory.PlaceSmall
 
@@ -344,8 +342,7 @@ theorem coefLat_mul {B : Base S T} (hF : B.F.Good) {K : Type} [Field K] [NumberF
         have hz : (∑ i, ∑ j, x i * S.gram i j * y j) = 0 :=
           congrArg (fun f : Module.Dual D.host.E W => f ⟨y, Submodule.subset_span hy⟩) (LinearMap.mem_ker.mp hx)
         have hzy : (∑ i, ∑ j, star (y i) * S.gram i j * v j) = 0 := by
-          have hg (i j : Fin S.rank) : star (S.gram i j) = S.gram j i := by
-            exact S.herm.eq _ _
+          have hg (i j : Fin S.rank) : star (S.gram i j) = S.gram j i := S.herm.eq _ _
           have hs : (starRingEnd D.host.E) (∑ i, ∑ j, x i * S.gram i j * y j) = 0 := by rw [hz, map_zero]
           simp only [map_sum, map_mul] at hs
           change (∑ i, ∑ j, star (x i) * star (S.gram i j) * star (y j)) = 0 at hs
@@ -365,8 +362,7 @@ theorem coefLat_mul {B : Base S T} (hF : B.F.Good) {K : Type} [Field K] [NumberF
       let coord := (LinearMap.proj i : (Fin S.rank → D.host.E) →ₗ[D.host.E] D.host.E).restrictScalars (𝓞 D.host.E)
       have htop : B.F.ΛS.map coord = ⊤ := by
         rw [eq_top_iff]
-        intro a _
-        exact ⟨(a / v i) • v, hline _, div_mul_cancel₀ _ hi⟩
+        exact fun a _ => ⟨(a / v i) • v, hline _, div_mul_cancel₀ _ hi⟩
       have : Module.Finite (𝓞 D.host.E) D.host.E := Module.finite_def.mpr (htop ▸ hF.sdS.1.fg.map coord)
       exact RingOfIntegers.not_isField D.host.E
         (isField_of_isIntegral_of_isField (IsFractionRing.injective (𝓞 D.host.E) D.host.E) (Field.toIsField D.host.E))
@@ -384,8 +380,7 @@ theorem translate_mem_formsC {B : Base S T} {ψ : Twist D Circle} {c : Bridge.Gf
   rw [Base.mem_formsC] at hf ⊢
   refine ⟨fun h => hf.1 _, fun γ h k => ?_⟩
   have := hf.2 γ (h * c) k
-  rw [← mul_assoc, mul_assoc _ c, ← hc, ← mul_assoc] at this
-  exact this
+  rwa [← mul_assoc, mul_assoc _ c, ← hc, ← mul_assoc] at this
 
 theorem mem_mtLat_iff_translate : ∀ (D : D7) (j : Fin D.R.m) (B : Base (Vc D j) (Wc D j)), B.Good → ∀ (ψ : Twist D Circle) (K : Type) [Field K] [NumberField K] (σ : K →+* ℂ) (emb : D.what₂.Tau → (D.host.E →+* K)) (O : Subring ℂ), IsCoefRing σ emb O →
   ∀ (Q : Finset (Pl D.host.E)) (z : GA D (Vc D j)), IsCentAt j Q z → ∀ N : ℕ, N ≠ 0 → (∀ P ∈ Q, (N : 𝓞 D.host.E) ∈ P.asIdeal) → (N : ℂ)⁻¹ ∈ O →
@@ -408,12 +403,10 @@ theorem mem_mtLat_iff_translate : ∀ (D : D7) (j : Fin D.R.m) (B : Base (Vc D j
   · rintro ⟨h1, h2⟩
     refine ⟨?_, fun h => ?_⟩
     · have := translate_mem_formsC hc' h1
-      simp only [inv_mul_cancel_right] at this
-      exact this
+      simpa only [inv_mul_cancel_right] using this
     · have := h2 (h * (finPt (Vc D j) z)⁻¹)
       rw [← hl] at this
-      simp only [inv_mul_cancel_right] at this
-      exact this
+      simpa only [inv_mul_cancel_right] using this
 
 end GlobalTheory.CentralTranslate
 
@@ -505,8 +498,7 @@ theorem idem_fix (hH : GlobalTheory.Mem.R3.Holds X.R X.F) (j : Fin D.R.m) (t : X
   refine Y.hinj j t ?_
   refine (Y.mtRead j t hμ c).symm.trans ?_
   refine (congrArg (fun y => (Y.IL.jMt (Y.tup t) hμ j y).1) e3).trans ?_
-  refine (Y.mtRead j t hμ _).trans ?_
-  exact congrArg (fun v => X.R.toRealDat.extV j t (X.R.jV j t v)) e2
+  exact (Y.mtRead j t hμ _).trans (congrArg (fun v => X.R.toRealDat.extV j t (X.R.jV j t v)) e2)
 
 theorem isAlgV_self (j : Fin D.R.m) (t : X.T) (u : (X.A3.A.fam.L j t).S.Forms)
     (hu : X.R.jV j t u = X.R.jV j t (∑ g, (idemOf X.A3.A.X).coeff g • (X.A3.A.fam.L j t).r g u))
@@ -1065,8 +1057,7 @@ theorem span_conj (H : AtPlace Y Z c w j) {ι ε : KE c w →+* ℂ} (hι : ∀ 
     (by rw [← RingHom.map_range, Subring.range_subtype, e1]) C.toAddMonoidHom (fun r v => C.map_smulₛₗ (r : ℂ) v)
     ((fun x => trOf H u κ z (D.what₂.jMt (D.what₂.muTw w) (j.1 + 1) x)) '' latS w (j.1 + 1))
   rw [Set.image_image] at e3
-  rw [← hC, span_translate H hι hu hκ hs hz]
-  exact e3
+  rwa [← hC, span_translate H hι hu hκ hs hz]
 
 theorem exists_lift {L K V W A : Type} [Field L] [Field K] [AddCommGroup V] [Module L V] [AddCommGroup W] [Module K W] [AddCommGroup A]
     [Module ℂ A] (φ : L →+* K) (ε : K →+* ℂ) (r : W →ₛₗ[ε] A) (hr : Function.Injective r) (Ψ : V →ₛₗ[ε.comp φ] A) {s : Set V}

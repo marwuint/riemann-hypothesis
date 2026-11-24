@@ -85,8 +85,7 @@ theorem hform_eq_sum (x y : Fin M → A) :
     intro j
     simp [Formalism.UG.hform, Pi.single_apply]
   simp_rw [key]
-  simp only [Formalism.UG.hform, Finset.sum_mul]
-  exact Finset.sum_comm
+  simpa only [Formalism.UG.hform, Finset.sum_mul] using Finset.sum_comm
 
 theorem exists_mem_UJ (hdet : IsUnit J.det) (g : Matrix (Fin M) (Fin M) A)
     (hg : ∀ y z, hform c J (g *ᵥ y) (g *ᵥ z) = hform c J y z) :
@@ -137,19 +136,15 @@ theorem exists_norm_one (hc : ∀ a, c (c a) = a) (hf : ∀ a, c a = a → a ≠
     (h2 : IsUnit (2 : A)) (h3 : (3 : A) ≠ 0) (hθ : ∃ θ, IsUnit (θ - c θ))
     (b t : A) (hcb : c b = b) (hb : IsUnit b) :
     ∃ u : A, u * c u = 1 ∧ IsUnit (b - c u * t) := by
-  have hN : ∀ a : A, a * c a ≠ 0 → IsUnit (a * c a) := by
-    intro a ha
-    exact hf _ (by rw [map_mul, hc, mul_comm]) ha
+  have hN : ∀ a : A, a * c a ≠ 0 → IsUnit (a * c a) := fun a ha =>
+    hf _ (by rw [map_mul, hc, mul_comm]) ha
   by_cases h1 : (b - t) * c (b - t) = 0
   · by_cases h1' : (b + t) * c (b + t) = 0
     · rw [map_sub, hcb] at h1
       rw [map_add (f := _), hcb] at h1'
-      have h4 : (2 * b) * (t + c t) = (2 * b) * 0 := by linear_combination h1' - h1
-      have htc : t + c t = 0 := (h2.mul hb).mul_left_cancel h4
-      have hct : c t = -t := by linear_combination htc
-      rw [hct] at h1 h1'
-      have h5 : (2 : A) * (b * b - t * t) = 2 * 0 := by linear_combination h1 + h1'
-      have hb2 : b * b = t * t := sub_eq_zero.mp (h2.mul_left_cancel h5)
+      have htc : t + c t = 0 := (h2.mul hb).mul_left_cancel (by linear_combination h1' - h1)
+      have hb2 : b * b = t * t :=
+        sub_eq_zero.mp (h2.mul_left_cancel (by linear_combination h1 + h1' - 2 * t * htc))
       have ht : IsUnit t := isUnit_of_mul_isUnit_left (by rw [← hb2]; exact hb.mul hb)
       have key : ∀ w : A, IsUnit (w * c w) → IsUnit (w - c w) → IsUnit (w + c w) →
           ∃ u : A, u * c u = 1 ∧ IsUnit (b - c u * t) := by
@@ -157,16 +152,13 @@ theorem exists_norm_one (hc : ∀ a, c (c a) = a) (hf : ∀ a, c a = a → a ≠
         obtain ⟨e, he⟩ := isUnit_of_mul_isUnit_right hw
         have h0 : c (↑e⁻¹ : A) * w = 1 := by
           have h6 := congrArg c (Units.inv_mul e)
-          rw [map_mul, he, hc, map_one] at h6
-          exact h6
+          rwa [map_mul, he, hc, map_one] at h6
         refine ⟨w * ↑e⁻¹, ?_, ?_⟩
-        · calc w * ↑e⁻¹ * c (w * ↑e⁻¹) = (↑e⁻¹ * c w) * (c ↑e⁻¹ * w) := by rw [map_mul]; ring
-            _ = 1 := by rw [← he, Units.inv_mul, h0, one_mul]
+        · rw [map_mul]
+          linear_combination ((↑e⁻¹ : A) * c w) * h0 - (↑e⁻¹ : A) * he + Units.inv_mul e
         · have hprod : IsUnit ((w * b - c w * t) * (c w * b + w * t)) := by
-            have e1 : (w * b - c w * t) * (c w * b + w * t) = b * t * (w - c w) * (w + c w) := by
-              linear_combination (w * c w) * hb2
-            rw [e1]
-            exact ((hb.mul ht).mul hm).mul hp
+            convert ((hb.mul ht).mul hm).mul hp using 1
+            linear_combination (w * c w) * hb2
           have e2 : b - c (w * ↑e⁻¹) * t = c ↑e⁻¹ * (w * b - c w * t) := by
             rw [map_mul]
             linear_combination (-b) * h0
@@ -178,40 +170,29 @@ theorem exists_norm_one (hc : ∀ a, c (c a) = a) (hf : ∀ a, c a = a → a ≠
       by_cases hd : (1 + (θ - c θ)) * c (1 + (θ - c θ)) = 0
       · rw [map_add (f := _), map_one, hcδ] at hd
         apply key (2 + (θ - c θ))
-        · have e : (2 + (θ - c θ)) * c (2 + (θ - c θ)) = 3 := by
-            rw [map_add (f := _), map_ofNat, hcδ]
-            linear_combination hd
-          rw [e]
-          exact hf 3 (map_ofNat c 3) h3
-        · have e : 2 + (θ - c θ) - c (2 + (θ - c θ)) = 2 * (θ - c θ) := by
-            rw [map_add (f := _), map_ofNat, hcδ]
-            ring
-          rw [e]
-          exact h2.mul hθu
-        · have e : 2 + (θ - c θ) + c (2 + (θ - c θ)) = 2 * 2 := by
-            rw [map_add (f := _), map_ofNat, hcδ]
-            ring
-          rw [e]
-          exact h2.mul h2
+        · convert hf 3 (map_ofNat c 3) h3 using 1
+          rw [map_add (f := _), map_ofNat, hcδ]
+          linear_combination hd
+        · convert h2.mul hθu using 1
+          rw [map_add (f := _), map_ofNat, hcδ]
+          ring
+        · convert h2.mul h2 using 1
+          rw [map_add (f := _), map_ofNat, hcδ]
+          ring
       · apply key (1 + (θ - c θ)) (hN _ hd)
-        · have e : 1 + (θ - c θ) - c (1 + (θ - c θ)) = 2 * (θ - c θ) := by
-            rw [map_add (f := _), map_one, hcδ]
-            ring
-          rw [e]
-          exact h2.mul hθu
-        · have e : 1 + (θ - c θ) + c (1 + (θ - c θ)) = 2 := by
-            rw [map_add (f := _), map_one, hcδ]
-            ring
-          rw [e]
-          exact h2
+        · convert h2.mul hθu using 1
+          rw [map_add (f := _), map_one, hcδ]
+          ring
+        · convert h2 using 1
+          rw [map_add (f := _), map_one, hcδ]
+          ring
     · refine ⟨-1, by rw [map_neg, map_one]; ring, ?_⟩
-      have e : b - c (-1) * t = b + t := by rw [map_neg, map_one]; ring
-      rw [e]
-      exact isUnit_of_mul_isUnit_left (hN _ h1')
+      convert isUnit_of_mul_isUnit_left (hN _ h1') using 1
+      rw [map_neg, map_one]
+      ring
   · refine ⟨1, by rw [map_one, one_mul], ?_⟩
-    have e : b - c 1 * t = b - t := by rw [map_one, one_mul]
-    rw [e]
-    exact isUnit_of_mul_isUnit_left (hN _ h1)
+    convert isUnit_of_mul_isUnit_left (hN _ h1) using 1
+    rw [map_one, one_mul]
 
 theorem witt_transitive (A : Type) [CommRing A] (c : A →+* A) (hc : ∀ a, c (c a) = a)
     (hf : ∀ a, c a = a → a ≠ 0 → IsUnit a) (h2 : IsUnit (2 : A)) (h3 : (3 : A) ≠ 0)

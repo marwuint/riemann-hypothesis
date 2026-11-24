@@ -94,12 +94,10 @@ theorem invariant_descends (r : X ⟶ Y) [Etale r] [QuasiCompact r] [Surjective 
     rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, pullback.condition]
   have hgW : pullback.fst r r ⁻¹ᵁ r ⁻¹ᵁ V ≤ pullback.snd r r ⁻¹ᵁ r ⁻¹ᵁ V := fun x hx => by
     change r (pullback.snd r r x) ∈ V
-    rw [hsame]
-    exact hx
+    rwa [hsame]
   have hinvle : ∀ g, r ⁻¹ᵁ V ≤ (ρ g) ⁻¹ᵁ (r ⁻¹ᵁ V) := fun g y hy => by
     change r (ρ g y) ∈ V
-    rw [← Scheme.Hom.comp_apply, hρ g]
-    exact hy
+    rwa [← Scheme.Hom.comp_apply, hρ g]
   have key := fun s => GlobalTheory.FlatDescent.existsUnique_app_eq_iff r hpb V
     (pullback.fst r r ⁻¹ᵁ r ⁻¹ᵁ V) rfl le_rfl hgW s
   have hcompat : r.app V ≫ (pullback.fst r r).appLE _ _ le_rfl =
@@ -132,8 +130,7 @@ theorem invariant_descends (r : X ⟶ Y) [Etale r] [QuasiCompact r] [Surjective 
       rfl
     have hle : ι ⁻¹ᵁ (pullback.fst r r ⁻¹ᵁ r ⁻¹ᵁ V) ≤ r ⁻¹ᵁ V := fun y hy => by
       change r (pullback.fst r r (ι y)) ∈ V at hy
-      rw [hfi] at hy
-      exact hy
+      rwa [hfi] at hy
     have e1 : (pullback.fst r r).appLE (r ⁻¹ᵁ V) _ le_rfl ≫ ι.app _ =
         X.presheaf.map (homOfLE hle).op := by
       rw [Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, appLE_congr_hom hιfst _ _ _ hle]

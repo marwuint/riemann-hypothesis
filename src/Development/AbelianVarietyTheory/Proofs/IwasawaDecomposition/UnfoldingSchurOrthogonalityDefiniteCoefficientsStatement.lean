@@ -227,8 +227,7 @@ theorem integral_fundamentalDomain_eq_sum_unfold : ∀ (G : Type) [Group G] [Top
     obtain ⟨i, hi, hu⟩ := huniq x
     rw [Finset.sum_eq_single i]
     · rw [Set.indicator_of_mem (show x ∈ C i from hi)]
-    · intro j _ hj
-      exact Set.indicator_of_notMem (s := C j) (fun hx => hj (hu j hx)) f
+    · exact fun j _ hj => Set.indicator_of_notMem (s := C j) (fun hx => hj (hu j hx)) f
     · intro hi; exact absurd (Finset.mem_univ i) hi
   have hint : ∀ i, Integrable ((C i).indicator f) (ν.restrict 𝓖) := fun i =>
     (integrable_indicator_iff (hC i)).2 (hU i).1
@@ -465,8 +464,7 @@ theorem schurW : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A
   have hΩ1 : R.νX t (Ω : Set (GA D D.sp.X')) = 1 := GlobalTheory.Mass.Levels.measure_comap_finE hμ.1
   have hF : ∀ x, (R.HX t).e x ∈ Bridge.AdForms (Bridge.ratF D.sp.X') R.cX.coef.ρ J χ := fun x => by
     have := LinearMap.mem_range_self (R.HX t).e x
-    rw [hH.2.1] at this
-    exact this
+    rwa [hH.2.1] at this
   have hinv : ∀ (u : GA D D.sp.X') v, R.cX.ρ u⁻¹ (R.cX.ρ u v) = v := fun u v => by
     have := congrArg (fun T : Module.End ℂ R.cX.W => T v) (show R.cX.ρ u⁻¹ * R.cX.ρ u = 1 by rw [← map_mul, inv_mul_cancel, map_one])
     exact this
@@ -493,8 +491,7 @@ theorem schurW : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A
       rw [_root_.mul_inv_rev, map_mul, hc.1 _ (inv_mem (hy'1 c)), mul_one]
     show R.cX.ρ (y' c * k)⁻¹ (f ((finHom D.sp.X').rangeRestrict (y' c * k))) = _
     refine (congrArg (R.cX.ρ (y' c * k)⁻¹) ((congrArg f e1).trans e2)).trans ?_
-    refine (map_smul _ _ _).trans ?_
-    exact congrArg (_ • ·) (LinearMap.congr_fun e3 _)
+    exact (map_smul _ _ _).trans (congrArg (_ • ·) (LinearMap.congr_fun e3 _))
   let φ : GA D D.sp.X' → ℂ := fun g =>
     star ⟪a, R.cX.ext ((R.HX t).e h) g⟫_ℂ * ⟪a', R.cX.ext ((R.HX t).e h') g⟫_ℂ
   have hpt : ∀ c, ∀ k ∈ Ω, φ (y' c * k) = star ⟪a, R.cX.ρ k⁻¹ ((R.HX t).e h ((R.B.R t).pres.y c))⟫_ℂ *

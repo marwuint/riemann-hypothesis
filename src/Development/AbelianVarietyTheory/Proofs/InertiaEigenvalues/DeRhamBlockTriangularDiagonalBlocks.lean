@@ -112,34 +112,32 @@ theorem subQuot : SubQuot := by
     intro m g i j; simp [matD, hblk g]
   refine ⟨fun m => ?_, fun m => ?_⟩
   · obtain ⟨Q, hQ⟩ := hdr m
-    have hQQi : (Q : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR) * ((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR) = 1 :=
-      Units.mul_inv Q
-    have hQiQ : ((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR) * (Q : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR) = 1 :=
-      Units.inv_mul Q
-    have hinv : ∀ g : ↥(GK K), ((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR (g : GQ l)) =
-        ((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR) * matD P ρ m g := by
+    have hQQi := Units.mul_inv Q
+    have hQiQ := Units.inv_mul Q
+    have hinv : ∀ g : ↥(GK K), (↑(Q⁻¹) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR g) =
+        (↑(Q⁻¹) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR) * matD P ρ m g := by
       intro g
-      have hs : (Q : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR (g : GQ l)) *
-          ((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR (g : GQ l)) = 1 := by
+      have hs : (Q : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR g) *
+          (↑(Q⁻¹) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR g) = 1 := by
         rw [← map_mul_algEquiv, hQQi, map_one_algEquiv]
-      calc ((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR (g : GQ l))
-          = (((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR) * (Q : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR)) *
-              ((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR (g : GQ l)) := by
+      calc (↑(Q⁻¹) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR g)
+          = ((↑(Q⁻¹) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR) * (Q : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR)) *
+              (↑(Q⁻¹) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR g) := by
             rw [hQiQ, Matrix.one_mul]
-        _ = ((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR) *
-              (matD P ρ m g * (Q : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR (g : GQ l))) *
-              ((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR (g : GQ l)) := by
+        _ = (↑(Q⁻¹) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR) *
+              (matD P ρ m g * (Q : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR g)) *
+              (↑(Q⁻¹) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR g) := by
             rw [hQ g]
-        _ = ((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR) * matD P ρ m g *
-              ((Q : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR (g : GQ l)) *
-              ((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR (g : GQ l))) := by
+        _ = (↑(Q⁻¹) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR) * matD P ρ m g *
+              ((Q : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR g) *
+              (↑(Q⁻¹) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).map (P.actQdR g)) := by
             simp only [Matrix.mul_assoc]
         _ = _ := by rw [hs, Matrix.mul_one]
-    let Y : Matrix (a ⊕ b) a P.R.BdR := ((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).submatrix id Sum.inl
+    let Y := (↑(Q⁻¹) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).submatrix id Sum.inl
     let W : Matrix a (a ⊕ b) P.R.BdR := (Q : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).submatrix Sum.inl id
     have hWY : W * Y = 1 := by
       rw [show W * Y = ((Q : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR) *
-          ((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR)).submatrix Sum.inl Sum.inl from
+          (↑(Q⁻¹) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR)).submatrix Sum.inl Sum.inl from
         (Matrix.submatrix_mul _ _ Sum.inl id Sum.inl Function.bijective_id).symm, hQQi]
       exact Matrix.submatrix_one _ Sum.inl_injective
     have hYW : Yᵀ * Wᵀ = 1 := by rw [← Matrix.transpose_mul, hWY, Matrix.transpose_one]
@@ -147,38 +145,37 @@ theorem subQuot : SubQuot := by
     have hY' : IsUnit (Y.submatrix e id) := by
       have := (Matrix.isUnit_transpose _).2 he
       simpa [Matrix.transpose_submatrix] using this
-    have hσY : ∀ g : ↥(GK K), (Y.submatrix e id).map (P.actQdR (g : GQ l)) = Y.submatrix e id * matD P ρ₁ m g := by
+    have hσY : ∀ g : ↥(GK K),
+        (Y.submatrix e id).map (P.actQdR g) = Y.submatrix e id * matD P ρ₁ m g := by
       intro g; ext i j
       have := congrFun (congrFun (hinv g) (e i)) (Sum.inl j)
       simp only [Matrix.map_apply, Matrix.mul_apply, Fintype.sum_sum_type, e11, e21, mul_zero,
         Finset.sum_const_zero, add_zero] at this
       simpa [Y, Matrix.mul_apply] using this
     refine ⟨hY'.unit⁻¹, fun g => ?_⟩
-    have hu : ((hY'.unit : GL a P.R.BdR) : Matrix a a P.R.BdR) = Y.submatrix e id := hY'.unit_spec
-    have hs : ((hY'.unit : GL a P.R.BdR) : Matrix a a P.R.BdR).map (P.actQdR (g : GQ l)) *
-        ((hY'.unit⁻¹ : GL a P.R.BdR) : Matrix a a P.R.BdR).map (P.actQdR (g : GQ l)) = 1 := by
+    have hs : (↑hY'.unit : Matrix a a P.R.BdR).map (P.actQdR g) *
+        (↑(hY'.unit⁻¹) : Matrix a a P.R.BdR).map (P.actQdR g) = 1 := by
       rw [← map_mul_algEquiv, Units.mul_inv, map_one_algEquiv]
-    calc matD P ρ₁ m g * ((hY'.unit⁻¹ : GL a P.R.BdR) : Matrix a a P.R.BdR).map (P.actQdR (g : GQ l))
-        = (((hY'.unit⁻¹ : GL a P.R.BdR) : Matrix a a P.R.BdR) * ((hY'.unit : GL a P.R.BdR) : Matrix a a P.R.BdR)) *
-            matD P ρ₁ m g * ((hY'.unit⁻¹ : GL a P.R.BdR) : Matrix a a P.R.BdR).map (P.actQdR (g : GQ l)) := by
+    calc matD P ρ₁ m g * (↑(hY'.unit⁻¹) : Matrix a a P.R.BdR).map (P.actQdR g)
+        = ((↑(hY'.unit⁻¹) : Matrix a a P.R.BdR) * (↑hY'.unit : Matrix a a P.R.BdR)) *
+            matD P ρ₁ m g * (↑(hY'.unit⁻¹) : Matrix a a P.R.BdR).map (P.actQdR g) := by
           rw [Units.inv_mul, Matrix.one_mul]
-      _ = ((hY'.unit⁻¹ : GL a P.R.BdR) : Matrix a a P.R.BdR) *
-            (((hY'.unit : GL a P.R.BdR) : Matrix a a P.R.BdR) * matD P ρ₁ m g) *
-            ((hY'.unit⁻¹ : GL a P.R.BdR) : Matrix a a P.R.BdR).map (P.actQdR (g : GQ l)) := by
+      _ = (↑(hY'.unit⁻¹) : Matrix a a P.R.BdR) *
+            ((↑hY'.unit : Matrix a a P.R.BdR) * matD P ρ₁ m g) *
+            (↑(hY'.unit⁻¹) : Matrix a a P.R.BdR).map (P.actQdR g) := by
           simp only [Matrix.mul_assoc]
-      _ = ((hY'.unit⁻¹ : GL a P.R.BdR) : Matrix a a P.R.BdR) *
-            ((hY'.unit : GL a P.R.BdR) : Matrix a a P.R.BdR).map (P.actQdR (g : GQ l)) *
-            ((hY'.unit⁻¹ : GL a P.R.BdR) : Matrix a a P.R.BdR).map (P.actQdR (g : GQ l)) := by
-          rw [hu, hσY g]
+      _ = (↑(hY'.unit⁻¹) : Matrix a a P.R.BdR) *
+            (↑hY'.unit : Matrix a a P.R.BdR).map (P.actQdR g) *
+            (↑(hY'.unit⁻¹) : Matrix a a P.R.BdR).map (P.actQdR g) := by
+          rw [hY'.unit_spec, hσY g]
       _ = _ := by rw [Matrix.mul_assoc, hs, Matrix.mul_one]
   · obtain ⟨Q, hQ⟩ := hdr m
-    have hQQi : (Q : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR) * ((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR) = 1 :=
-      Units.mul_inv Q
+    have hQQi := Units.mul_inv Q
     let X : Matrix b (a ⊕ b) P.R.BdR := (Q : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).submatrix Sum.inr id
-    let Z : Matrix (a ⊕ b) b P.R.BdR := ((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).submatrix id Sum.inr
+    let Z := (↑(Q⁻¹) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR).submatrix id Sum.inr
     have hXZ : X * Z = 1 := by
       rw [show X * Z = ((Q : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR) *
-          ((Q⁻¹ : GL (a ⊕ b) P.R.BdR) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR)).submatrix Sum.inr Sum.inr from
+          (↑(Q⁻¹) : Matrix (a ⊕ b) (a ⊕ b) P.R.BdR)).submatrix Sum.inr Sum.inr from
         (Matrix.submatrix_mul _ _ Sum.inr id Sum.inr Function.bijective_id).symm, hQQi]
       exact Matrix.submatrix_one _ Sum.inr_injective
     obtain ⟨e, he⟩ := exists_cols_isUnit hF X Z hXZ

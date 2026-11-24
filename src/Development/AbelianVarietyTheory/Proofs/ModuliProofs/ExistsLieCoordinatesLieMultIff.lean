@@ -136,13 +136,11 @@ private theorem lieMult_of_finrank_eigenSub_eq {O K : Type} [CommRing O] [Field 
     have e2 := congrArg (fun t => spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ t) e1
     have hf1 : spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ spMap (algebraMap K (DualNumber K)) = 𝟙 (Sp K) :=
       spMap_fstHom_comp_epsR_hom K
-    simp only [← Category.assoc, hf1, Category.id_comp] at e2
-    exact e2
+    simpa only [← Category.assoc, hf1, Category.id_comp] using e2
   have hfstw : ∀ y : epsR K ⟶ G', (spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ y.left) ≫ G'.hom = 𝟙 _ := by
     intro y
     rw [Category.assoc, Over.w, spMap_fstHom_comp_epsR_hom]
-  have hηw : η[G'].left ≫ G'.hom = 𝟙 _ := by
-    exact Over.w η[G']
+  have hηw : η[G'].left ≫ G'.hom = 𝟙 _ := Over.w η[G']
   have htan : ∀ y : epsR K ⟶ G', IsTangent y ↔
       spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ (P y).left = (1 : Over.mk x ⟶ G).left := by
     intro y
@@ -180,8 +178,7 @@ private theorem lieMult_of_finrank_eigenSub_eq {O K : Type} [CommRing O] [Field 
   have hlift : ∀ w : epsPt x ⟶ G, ∃ y, P y = w := by
     intro w
     refine ⟨Over.homMk (h.1.lift w.left (epsR K).hom (Over.w w)) (h.1.lift_snd _ _ _), ?_⟩
-    apply Over.OverMorphism.ext
-    exact h.1.lift_fst _ _ _
+    exact Over.OverMorphism.ext (h.1.lift_fst _ _ _)
   have hsc : ∀ (d : K) (i : Fin N),
       (P (Chart.spMap (Chart.scaleD d) ≫ e i)).left = spMap (epsScale d) ≫ (P (e i)).left := by
     intro d i
@@ -229,8 +226,7 @@ private theorem lieMult_of_finrank_eigenSub_eq {O K : Type} [CommRing O] [Field 
         have h3 : cc = ∑ i, d i • B i := by
           apply Subtype.ext
           rw [Submodule.coe_sum]
-          simp only [Submodule.coe_smul]
-          exact h2
+          simpa only [Submodule.coe_smul] using h2
         rw [h3, Module.Basis.repr_sum_self]
       · intro hd
         subst hd

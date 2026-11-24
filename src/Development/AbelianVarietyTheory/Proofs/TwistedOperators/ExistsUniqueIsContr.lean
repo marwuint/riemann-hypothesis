@@ -86,14 +86,10 @@ theorem existsUnique_isContr [CompleteSpace H₁] {Tm : H₁ →ₗ[ℂ] H₂ �
     ∃! It : FF →ₗ[ℂ] H₂ →ₛₗ[starRingEnd ℂ] H₁, IsContr Tm It := by
   choose w hw using exists_riesz hI
   refine ⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) w ?_ ?_ ?_ ?_, fun φ y x => hw φ y x, ?_⟩
-  · intro a b y
-    exact ext_inner_left ℂ fun x => by simp [hw, inner_add_right]
-  · intro c a y
-    exact ext_inner_left ℂ fun x => by simp [hw, inner_smul_right]
-  · intro a y z
-    exact ext_inner_left ℂ fun x => by simp [hw, inner_add_right]
-  · intro c a y
-    exact ext_inner_left ℂ fun x => by simp [hw, inner_smul_right, mul_comm]
+  · exact fun a b y => ext_inner_left ℂ fun x => by simp [hw, inner_add_right]
+  · exact fun c a y => ext_inner_left ℂ fun x => by simp [hw, inner_smul_right]
+  · exact fun a y z => ext_inner_left ℂ fun x => by simp [hw, inner_add_right]
+  · exact fun c a y => ext_inner_left ℂ fun x => by simp [hw, inner_smul_right, mul_comm]
   · intro It hIt
     ext φ y
     exact ext_inner_left ℂ fun x => (hIt φ y x).trans (hw φ y x).symm
@@ -154,8 +150,7 @@ theorem tens_prod (I : ∀ i, MvPolynomial (σ i) ℂ →ₗ[ℂ] A i →ₗ[ℂ
     have := (basisMonomials Var ℂ).constr_basis ℂ
       (fun α => PiTensorProduct.map fun i => I i (monomial (res e α i) 1))
       (∑ i, Finsupp.mapDomain (fun s : σ i => e ⟨i, s⟩) (a i))
-    rw [res_sum, coe_basisMonomials] at this
-    exact this
+    rwa [res_sum, coe_basisMonomials] at this
   have := congrArg (fun f => f P) key
   simpa [hpr] using this
 

@@ -63,8 +63,7 @@ variable {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup 
   {π₁ : Representation ℂ G V} {π : Representation ℂ G W}
 
 theorem map_apply' (f : π₁.IntertwiningMap π) (g : G) (v : V) : f (π₁ g v) = π g (f v) := by
-  have h := LinearMap.congr_fun (f.isIntertwining' g) v
-  simpa using h
+  simpa using LinearMap.congr_fun (f.isIntertwining' g) v
 
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
@@ -75,8 +74,7 @@ theorem mem_twKer_of_map (f : π₁.IntertwiningMap π) (hπ : IsSmooth π) (hf 
     intro w
     have hset : {g : G | π₁ g w = w} = {g : G | π g (f w) = f w} := by
       ext g
-      simp only [Set.mem_ofPred_eq, ← map_apply' f g w]
-      exact hf.eq_iff.symm
+      simpa only [Set.mem_ofPred_eq, ← map_apply' f g w] using hf.eq_iff.symm
     rw [hset]
     exact hπ (f w)
   obtain ⟨U, -, hU, hUv⟩ := GlobalTheory.LocGL.exists_normal_fix h₁ hH v
@@ -110,8 +108,7 @@ private theorem eventually_valuation_le_uniformizer_pow_of_mem_unipRad (e : (Σ 
   obtain ⟨hP, hD⟩ := mem_unipRad.1 hg
   rw [mem_parab] at hP
   have hmono : ∀ a b : ℤ, a ≤ b → uniformizer k ^ b ≤ uniformizer k ^ a := by
-    intro a b hab
-    exact zpow_le_zpow_right_of_le_one₀ uniformizer_pos uniformizer_lt_one.le hab
+    exact fun a b hab => zpow_le_zpow_right_of_le_one₀ uniformizer_pos uniformizer_lt_one.le hab
   rcases lt_trichotomy (blk e i) (blk e j) with h | h | h
   ·
     obtain ⟨N, hN⟩ := MulArchimedean.arch (valuation k ((g : Matrix n n k) i j))

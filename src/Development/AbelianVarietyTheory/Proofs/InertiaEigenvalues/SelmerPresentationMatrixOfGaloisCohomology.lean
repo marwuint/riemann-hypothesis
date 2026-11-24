@@ -251,8 +251,7 @@ theorem maxLam_le (i : X.Tw) (M : ℕ) (ι : Type) [Fintype ι] (m : Ideal (abel
   refine hm.isPrime.mem_of_pow_mem (X.l i ^ M) ?_
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_pow]
   simp only [toLam, MvPolynomial.aeval_X, map_sub, map_one]
-  rw [sub_pow_char_pow, ← map_pow, ← map_pow]
-  rw [one_pow, sub_eq_zero]
+  rw [sub_pow_char_pow, ← map_pow, ← map_pow, one_pow, sub_eq_zero]
   convert map_one (Ideal.Quotient.mk m) using 2
   convert map_one (MonoidAlgebra.of (X.O0 i) (Del X i M ι)) using 2
 
@@ -486,8 +485,7 @@ theorem selF_obs (h : SelObs bkP i s κ Q) (K B B'' : ModuleCat.{0} Λ) (hK : Is
       exact ⟨⟨x, hx⟩, Subtype.ext e⟩
     · rintro ⟨x, e⟩
       exact ⟨x.1, x.2, congrArg Subtype.val e⟩
-  rw [e] at h1
-  exact h1
+  rwa [e] at h1
 
 
 include hM in
@@ -609,10 +607,8 @@ theorem mem_ideal_smul_top_pi_fin_iff {Λ : Type} [CommRing Λ] (J : Ideal Λ) {
   constructor
   · intro h
     refine Submodule.smul_induction_on h ?_ ?_
-    · intro r hr m _ i
-      exact J.mul_mem_right _ hr
-    · intro x z hx hz i
-      exact J.add_mem (hx i) (hz i)
+    · exact fun r hr m _ i => J.mul_mem_right _ hr
+    · exact fun x z hx hz i => J.add_mem (hx i) (hz i)
   · intro h
     rw [pi_eq_sum_univ y]
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (h i) Submodule.mem_top
@@ -646,8 +642,7 @@ theorem chain_le_iInf_sup_pow_smul_top :
     | succ k hk ih =>
       have h1 := (mem_ideal_smul_top_pi_fin_iff _ _).1 (hus k) i
       have h2 : I ^ (n + k + 1) ≤ I ^ (n + j + 1) := Ideal.pow_le_pow_right (by omega)
-      have h3 := Ideal.add_mem _ ih (h2 h1)
-      simpa using h3
+      simpa using Ideal.add_mem _ ih (h2 h1)
   have hlim : ∀ i, ∃ L : Λ, ∀ j, (u j : Fin a → Λ) i - L ∈ I ^ j := by
     intro i
     obtain ⟨L, hL⟩ := IsPrecomplete.prec hI (f := fun j => (u j : Fin a → Λ) i) (by
@@ -663,8 +658,7 @@ theorem chain_le_iInf_sup_pow_smul_top :
     intro j
     rw [mem_ideal_smul_top_pi_fin_iff]
     intro i
-    have h3 := Ideal.add_mem _ (htel j (n + j + 1) (by omega) i) (hL i (n + j + 1))
-    simpa using h3
+    simpa using Ideal.add_mem _ (htel j (n + j + 1) (by omega) i) (hL i (n + j + 1))
   have hLmem : L ∈ ⨅ k, N k := by
     rw [Submodule.mem_iInf]
     intro k
@@ -803,8 +797,7 @@ theorem exists_torsion_extension (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [IsN
   refine ⟨ModuleCat.of Λ (powTorsion m J), ι.codRestrict _ hmem, ?_, ?_, ?_⟩
   · rintro ⟨b, n, hn⟩
     exact ⟨n, fun x hx => Subtype.ext (hn x hx)⟩
-  · intro a b hab
-    exact hι (congrArg Subtype.val hab)
+  · exact fun a b hab => hι (congrArg Subtype.val hab)
   · intro φ
     obtain ⟨n, hn⟩ := Ideal.exists_pow_inf_eq_pow_smul m N
     have h1 := hn (n + 1) (Nat.le_succ n)
@@ -1410,8 +1403,7 @@ theorem kernelRep : KernelRep := by
       exact hkill (n + 1) r hr _
     · intro n c hc
       have h1 : (t n).hom (p (n + 1) c) = 0 := by
-        rw [← LinearMap.comp_apply, hpt n]
-        exact hc
+        rwa [← LinearMap.comp_apply, hpt n]
       have h2 := hkerT n (LinearMap.mem_ker.mpr h1)
       have h3 : maximalIdeal Λ ^ (n + 1) • (⊤ : Submodule Λ (M0 (n + 1 + 1))) =
           (maximalIdeal Λ ^ (n + 1) • (⊤ : Submodule Λ (Fin a → Λ))).map (p (n + 1)) := by

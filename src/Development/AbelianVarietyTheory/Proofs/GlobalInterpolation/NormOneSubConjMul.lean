@@ -76,9 +76,7 @@ theorem exists_factor_order {U : Set ℂ} {g : ℂ → ℂ} (hg : AnalyticOnNhd 
     ∃ h : ℂ → ℂ, AnalyticOnNhd ℂ h U ∧
       (∀ z : ℂ, g z = (z - w) ^ analyticOrderNatAt g w * h z) ∧ h w ≠ (0 : ℂ) := by
   obtain ⟨p, hp⟩ := hg w hw
-  have hp0 : p ≠ 0 := by
-    intro h
-    exact hord (analyticOrderAt_eq_top.mpr (hp.locally_zero_iff.mpr h))
+  have hp0 : p ≠ 0 := fun h => hord (analyticOrderAt_eq_top.mpr (hp.locally_zero_iff.mpr h))
   have ha : ∀ n : ℕ, AnalyticOnNhd ℂ ((Function.swap dslope w)^[n] g) U := by
     intro n
     induction n with
@@ -123,8 +121,7 @@ theorem exists_factor {U : Set ℂ} {f : ℂ → ℂ} (hf : AnalyticOnNhd ℂ f 
     have hord : analyticOrderAt f a = analyticOrderAt g a := by
       have e : f = (fun z : ℂ => ∏ w ∈ S, (z - w) ^ (analyticOrderNatAt f w)) * g := funext hfg
       have := analyticOrderAt_mul hP (hg a haU)
-      rw [← e, hP.analyticOrderAt_eq_zero.2 hP0, zero_add] at this
-      exact this
+      rwa [← e, hP.analyticOrderAt_eq_zero.2 hP0, zero_add] at this
     have hordn : analyticOrderNatAt g a = analyticOrderNatAt f a := by
       simp [analyticOrderNatAt, hord]
     obtain ⟨h, hh, hgh, hh0⟩ := _root_.GlobalTheory.FactorOrderExistence.exists_factor_order hg haU (hord ▸ ho a (Finset.mem_insert_self _ _))
@@ -132,8 +129,7 @@ theorem exists_factor {U : Set ℂ} {f : ℂ → ℂ} (hf : AnalyticOnNhd ℂ f 
     · rw [Finset.prod_insert ha, hfg z, hgh z, hordn]; ring
     · rcases Finset.mem_insert.1 hw with rfl | hw
       · exact hh0
-      · intro h0
-        exact hg0 w hw (by rw [hgh w, h0, mul_zero])
+      · exact fun h0 => hg0 w hw (by rw [hgh w, h0, mul_zero])
 
 theorem norm_logDeriv_le {r R K : ℝ} (hr : 0 < r) (hrR : r < R) (hK : 0 < K) {g : ℂ → ℂ}
     (hg : DifferentiableOn ℂ g (Metric.ball 0 R)) (h0 : ∀ z ∈ Metric.ball (0 : ℂ) R, g z ≠ 0)

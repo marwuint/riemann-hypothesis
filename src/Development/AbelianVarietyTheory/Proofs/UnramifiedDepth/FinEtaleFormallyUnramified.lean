@@ -213,8 +213,7 @@ theorem _root_.GlobalTheory.finEtale_main :
       have h1 := congrArg TrivSqZeroExt.snd (DFunLike.congr_fun hχ a)
       change (L ((1 : C) ⊗ₜ[O] a)).snd =
         (algebraMap C (DualNumber C) (φ ((1 : C) ⊗ₜ[O] a))).snd at h1
-      rw [hLsnd, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.snd_inl] at h1
-      exact h1
+      rwa [hLsnd, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.snd_inl] at h1
     refine LinearMap.ext fun x => ?_
     induction x using TensorProduct.induction_on with
     | zero => simp
@@ -243,9 +242,7 @@ theorem _root_.GlobalTheory.finEtale_main :
     refine AlgHom.ext fun a => ?_
     show Ψ _ ((1 : C) ⊗ₜ[O] a) = φ ((1 : C) ⊗ₜ[O] a)
     rw [hΨapp]
-    show algebraMap O C (eO.symm ⟨φA a, hmem a⟩) = φA a
-    have h1 := congrArg Subtype.val (eO.apply_symm_apply ⟨φA a, hmem a⟩)
-    exact h1
+    exact congrArg Subtype.val (eO.apply_symm_apply ⟨φA a, hmem a⟩)
   haveI hfinA : Finite (A →ₐ[O] O) := Finite.of_injective Ψ hΨ.1
   refine ⟨hfinA, fun f hf => ?_, ?_⟩
   · have h1 : (1 : C) ⊗ₜ[O] f = 0 := by
@@ -257,8 +254,7 @@ theorem _root_.GlobalTheory.finEtale_main :
     have hflat : Function.Injective ((Algebra.linearMap O C).rTensor A) :=
       Module.Flat.rTensor_preserves_injective_linearMap _ hinj
     have h2 : ((Algebra.linearMap O C).rTensor A) ((1 : O) ⊗ₜ[O] f) = 0 := by
-      rw [LinearMap.rTensor_tmul, Algebra.linearMap_apply, map_one]
-      exact h1
+      rwa [LinearMap.rTensor_tmul, Algebra.linearMap_apply, map_one]
     have h3 : (1 : O) ⊗ₜ[O] f = 0 := hflat (by rw [h2, map_zero])
     simpa using congrArg (TensorProduct.lid O A) h3
   · haveI : Nontrivial O := (algebraMap O C).domain_nontrivial

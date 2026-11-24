@@ -98,8 +98,7 @@ theorem mem_map_of_mul_mem_map {R A : Type*} [CommRing R] [CommRing A] (φ : R �
     (h : φ a * x ∈ I.map φ) : x ∈ J.map φ := by
   algebraize [φ]
   refine mem_map_of_tmul_eq_zero x (Ideal.Quotient.mk I a) J (fun r hr ↦ hJ r ?_) ?_
-  · rw [← Ideal.Quotient.eq_zero_iff_mem, map_mul]
-    exact hr
+  · rwa [← Ideal.Quotient.eq_zero_iff_mem, map_mul]
   · have h1 : ∀ y ∈ I.map φ, ∀ z : A, (z * y) ⊗ₜ[R] (1 : R ⧸ I) = 0 := by
       intro y hy
       induction hy using Submodule.span_induction with
@@ -117,8 +116,7 @@ theorem mem_map_of_mul_mem_map {R A : Type*} [CommRing R] [CommRing A] (φ : R �
       | smul c y _ hy => intro z; rw [smul_eq_mul, ← mul_assoc, hy]
     have h2 := h1 _ h 1
     have h3 : (1 : A) * (φ a * x) = a • x := by rw [one_mul]; rfl
-    rw [h3, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one] at h2
-    exact h2
+    rwa [h3, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one] at h2
 
 theorem mem_map_ker_of_isPushout {R A K P : CommRingCat.{u}} {φ : R ⟶ A} {ψ : R ⟶ K}
     {inl : A ⟶ P} {inr : K ⟶ P} (H : IsPushout φ ψ inl inr) (hφ : φ.hom.Flat) (x : A)
@@ -371,8 +369,7 @@ theorem exists_ker_fromSpecResidueField [IsAffine S] (𝔭 : Ideal Γ(S, ⊤)) (
     have : (default : Spec (S.residueField s)) ∈ S.fromSpecResidueField s ⁻¹ᵁ S.basicOpen r := by
       change S.fromSpecResidueField s default ∈ S.basicOpen r
       rwa [Scheme.fromSpecResidueField_apply]
-    rw [h'] at this
-    exact this
+    rwa [h'] at this
 
 theorem mem_map_of_compatible {p : X ⟶ S} [IsAffine S] [IsLocallyNoetherian S] [Flat p]
     (hq : ∀ s : S, Function.Surjective (p.fiberToSpecResidueField s).appTop)
@@ -552,8 +549,7 @@ theorem isIso_appTop_of_isIntegrallyClosed {R K : Type u} [CommRing R] [IsDomain
         obtain ⟨P, hP, hPx⟩ := hF x
         refine ⟨P, hP, ?_⟩
         have := congr(G.hom $hPx)
-        rw [Polynomial.hom_eval₂, map_zero, ← CommRingCat.hom_comp, hFG] at this
-        exact this
+        rwa [Polynomial.hom_eval₂, map_zero, ← CommRingCat.hom_comp, hFG] at this
       obtain ⟨r, hr⟩ := IsIntegrallyClosed.algebraMap_eq_of_integral hx
       exact ⟨r, hG ((hFG' r).trans hr)⟩
   exact IsIso.of_isIso_comp_left (Scheme.ΓSpecIso (.of R)).inv p.appTop
@@ -652,8 +648,7 @@ theorem surjective_appTop_of_forall_finiteType {R A : Type u} [CommRing R] [Comm
   have hπ (s : (Finset A)ᵒᵖ) : IsPullback (π s) q (pullback.snd p (ι s)) (cG.π.app s) := by
     refine IsPullback.of_right (h₁₂ := pullback.fst p (ι s)) (v₁₃ := p) (h₂₂ := ι s) ?_
       (pullback.lift_snd _ _ _) (.of_hasPullback _ _)
-    rw [hι', pullback.lift_fst]
-    exact H
+    rwa [hι', pullback.lift_fst]
   have hcD : IsLimit cD := isLimitOfIsPullbackOfIsConnected α cD cG
     { hom := q, w s := (pullback.lift_snd _ _ _).symm } hπ hcG
   have hG (s : (Finset A)ᵒᵖ) : IsAffine (G.obj s) := inferInstanceAs (IsAffine (Spec _))

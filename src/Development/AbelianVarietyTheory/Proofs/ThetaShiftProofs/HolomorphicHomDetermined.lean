@@ -145,8 +145,7 @@ theorem le_preimage_dual_iff {v : Sp (DualNumber ℂ) ⟶ X} {x : Sp ℂ ⟶ X}
     ⟨fun a ha => TrivSqZeroExt.isUnit_iff_isUnit_fst.2 ha⟩
   refine (Scheme.preimage_eq_top_of_closedPoint_mem (R := CommRingCat.of (DualNumber ℂ)) v ?_).ge
   have := hx (x := IsLocalRing.closedPoint ℂ) trivial
-  rw [← Spec_closedPoint (f := CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom)]
-  exact this
+  rwa [← Spec_closedPoint (f := CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom)]
 
 end Values
 
@@ -179,8 +178,7 @@ theorem HolAt.comp {Y : Scheme.{0}} {c : V → (Sp ℂ ⟶ X)} {z : V} (h : HolA
     HolAt (fun t => c t ≫ φ) z := by
   intro U hU
   refine ⟨(h (φ ⁻¹ᵁ U) hU).1, fun f => ?_⟩
-  simp only [valAt'_eq_valR, valR_comp]
-  exact (h (φ ⁻¹ᵁ U) hU).2 _
+  simpa only [valAt'_eq_valR, valR_comp] using (h (φ ⁻¹ᵁ U) hU).2 _
 
 theorem HolAt.precomp {V' : Type} [NormedAddCommGroup V'] [NormedSpace ℂ V'] {c : V → (Sp ℂ ⟶ X)} {k : V' → V} {z : V'}
     (h : HolAt c (k z)) (hk : DifferentiableAt ℂ k z) : HolAt (fun t => c (k t)) z :=
@@ -273,8 +271,7 @@ theorem isDerivAt0_iff {g : ℕ} (e : (Fin g → ℂ) → (Sp ℂ ⟶ X)) (w : F
     exact H hv f
   · intro H hv f
     have := H ((le_preimage_dual_iff h U).1 hv) f
-    rw [valR_eq _ _ hv] at this
-    exact this
+    rwa [valR_eq _ _ hv] at this
 
 theorem fst_valR {v : Sp (DualNumber ℂ) ⟶ X} {x : Sp ℂ ⟶ X}
     (h : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = x) {U : X.Opens} (hU : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
@@ -299,8 +296,7 @@ theorem IsDerivAt.unique {c : V → (Sp ℂ ⟶ X)} {z w : V} {v v' : Sp (DualNu
 theorem IsDerivAt.comp {Y : Scheme.{0}} {c : V → (Sp ℂ ⟶ X)} {z w : V} {v : Sp (DualNumber ℂ) ⟶ X}
     (h : IsDerivAt c z w v) (φ : X ⟶ Y) : IsDerivAt (fun t => c t ≫ φ) z w (v ≫ φ) := by
   refine ⟨by rw [← Category.assoc, h.1], fun U hU f => ?_⟩
-  simp only [valAt'_eq_valR, valR_comp]
-  exact h.2 (φ ⁻¹ᵁ U) hU _
+  simpa only [valAt'_eq_valR, valR_comp] using h.2 (φ ⁻¹ᵁ U) hU _
 
 abbrev constVec (x : Sp ℂ ⟶ X) : Sp (DualNumber ℂ) ⟶ X := spMap (algebraMap ℂ (DualNumber ℂ)) ≫ x
 

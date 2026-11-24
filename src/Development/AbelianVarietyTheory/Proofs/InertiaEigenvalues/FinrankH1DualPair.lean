@@ -466,8 +466,7 @@ theorem actQ_pow_isLocallyConstant : ∀ (l : ℕ) [Fact l.Prime] (G : Type) [Gr
     refine ⟨⟨w, hw⟩, Submodule.mem_top, ?_⟩
     apply Subtype.ext
     simp only [Submodule.coe_smul, Submodule.coe_sub, actT]
-    rw [← algebraMap_smul LL ((l : O) ^ r) w, map_pow, map_natCast]
-    exact hwe
+    rwa [← algebraMap_smul LL ((l : O) ^ r) w, map_pow, map_natCast]
 
 end GlobalTheory.InertiaEigenvalues
 end -- clump:auto
@@ -489,8 +488,7 @@ theorem toZModPow_eq_of_norm_sub_le {l : ℕ} [Fact l.Prime] (u : ℤ_[l]) (a : 
   have h1 : ‖u - (a : ℤ_[l])‖ ≤ (l : ℝ) ^ (-(r : ℤ)) := by
     rw [PadicInt.norm_def]; push_cast; exact h
   have h2 := (PadicInt.norm_le_pow_iff_mem_span_pow (u - (a : ℤ_[l])) r).mp h1
-  rw [← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, sub_eq_zero] at h2
-  exact h2
+  rwa [← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, sub_eq_zero] at h2
 
 theorem chi_reduces (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (r : ℕ) (g : ↥(GK K)) :
     ∃ u : ℤ_[l], (((P.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) = (u : ℚ_[l]) ∧
@@ -951,8 +949,7 @@ theorem core_pos (hT : Formalism.GaloisCohomology.LocalTateDualityK) (hE : Forma
     refine Nat.card_congr ((Equiv.ofBijective _ hΨb).subtypeEquiv fun y => ?_)
     rw [Equiv.ofBijective_apply, ReciprocityTheory.Gal.mem_riemannRochSpace_iff_regularAt_everywhere]
     constructor
-    · intro hy g
-      exact (hΨe g y).symm.trans (congrArg Ψ (hy _))
+    · exact fun hy g => (hΨe g y).symm.trans (congrArg Ψ (hy _))
     · intro hy g
       have h := hΨe (φ g) y
       have h2 : (IntermediateField.fixingSubgroupEquiv K.1).symm (φ g) = g := φ.symm_apply_apply g
@@ -1110,8 +1107,7 @@ theorem not_isUnit_l : ∀ (l : ℕ) [Fact l.Prime] (LL : Type) [Field LL] [Alge
   obtain ⟨p, hpm, hp⟩ := hint
   have hp' : Polynomial.eval₂ (algebraMap ℤ_[l] ℚ_[l]) ((l : ℚ_[l])⁻¹) p = 0 := by
     apply (algebraMap ℚ_[l] LL).injective
-    rw [map_zero, Polynomial.hom_eval₂]
-    exact hp
+    rwa [map_zero, Polynomial.hom_eval₂]
   have hI : IsIntegral ℤ_[l] ((l : ℚ_[l])⁻¹) := ⟨p, hpm, hp'⟩
   obtain ⟨z, hz⟩ := IsIntegrallyClosed.isIntegral_iff.1 hI
   have h1 : ‖(z : ℚ_[l])‖ ≤ 1 := PadicInt.norm_le_one z
@@ -1255,8 +1251,7 @@ theorem growth_H1T_dim_H1V : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL : T
     rw [toH1V_mk, Submodule.Quotient.mk_eq_zero] at hx
     obtain ⟨n, hn⟩ := pow_smul_mem_B1T l K LL O hG A LA c.1 c.2 hx
     refine ⟨n, ?_⟩
-    rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
-    exact hn
+    rwa [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
   obtain ⟨hF, hr⟩ := finite_finrank_of_localizes O LL (LatticeCohomology LA) (H1V A.ρ) (toH1V LA) _ hl0 hsurj hker
   refine ⟨hF, ?_⟩
   rw [hr]

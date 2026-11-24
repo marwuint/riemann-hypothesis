@@ -72,8 +72,7 @@ theorem evAt_comp {R A : Type} [CommRing R] [CommRing A] (φ : R →+* A) {Y : S
   have h2 := Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ)
   have h3 := congrArg (fun ψ => ψ.hom ((W.appLE U ⊤ h).hom f)) h2
   unfold evAt
-  rw [h1]
-  exact h3
+  rwa [h1]
 
 theorem top_le_of_comp {R A : Type} [CommRing R] [CommRing A] (p : R →+* A)
     (hs : Function.Surjective p) (hn : ∀ x, p x = 0 → x * x = 0) {Y : Scheme.{0}} (W : Sp R ⟶ Y)
@@ -88,8 +87,7 @@ theorem top_le_of_comp {R A : Type} [CommRing R] [CommRing A] (p : R →+* A)
   obtain ⟨y, hy⟩ := hx
   have h4 : (show Sp A from y) ∈ (spMap p ≫ W) ⁻¹ᵁ U := h trivial
   have h5 : spMap p (show Sp A from y) = x := hy
-  rw [← h5]
-  exact h4
+  rwa [← h5]
 
 theorem comp_top_le {R A : Type} [CommRing R] [CommRing A] (p : R →+* A) {Y : Scheme.{0}} (W : Sp R ⟶ Y)
     (U : Y.Opens) (h : ⊤ ≤ W ⁻¹ᵁ U) : ⊤ ≤ (spMap p ≫ W) ⁻¹ᵁ U :=
@@ -149,8 +147,7 @@ theorem tan_top_le (U : G.left.Opens)
     (h1 : ⊤ ≤ (show Sp S ⟶ G.left from (1 : Over.mk x0 ⟶ G).left) ⁻¹ᵁ U) (m : TanSp x0 G) :
     ⊤ ≤ (show Sp (DualNumber S) ⟶ G.left from m.pt.left) ⁻¹ᵁ U := by
   refine top_le_of_comp (TrivSqZeroExt.fstHom S S S).toRingHom ?_ ?_ _ U ?_
-  · intro y
-    exact ⟨TrivSqZeroExt.inl y, rfl⟩
+  · exact fun y => ⟨TrivSqZeroExt.inl y, rfl⟩
   · intro x hx
     have h1 : x.fst = 0 := hx
     ext <;> simp [h1]

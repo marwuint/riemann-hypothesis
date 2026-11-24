@@ -111,8 +111,7 @@ theorem exists_unitary {A : Type} [CommRing A] {M : ℕ} (s : A →+* A) (hs : �
       ∀ i j, ((g⁻¹ : GL (Fin M) A) : Matrix (Fin M) (Fin M) A) i j ∈ O := by
   have hf : ∀ p q : Fin M → A, Formalism.UG.hform s J p q = (Matrix.vecMul (fun i => s (p i)) J) ⬝ᵥ q := by
     intro p q
-    simp only [Formalism.UG.hform, Matrix.vecMul, dotProduct, Finset.sum_mul]
-    exact Finset.sum_comm
+    simpa only [Formalism.UG.hform, Matrix.vecMul, dotProduct, Finset.sum_mul] using Finset.sum_comm
   have hsym : ∀ p q : Fin M → A, s (Formalism.UG.hform s J p q) = Formalism.UG.hform s J q p := by
     intro p q
 
@@ -186,10 +185,8 @@ theorem exists_unitary {A : Type} [CommRing A] {M : ℕ} (s : A →+* A) (hs : �
     simp only [Pi.smul_apply, Pi.sub_apply, smul_eq_mul, hw, MulOpposite.smul_eq_mul_unop,
       MulOpposite.unop_op]
     linear_combination (y i) * hu - s u * (x i - u * y i) * hc
-  · intro i j
-    exact O.mul_mem (hO _ huO) (O.sub_mem (h1O i j) (O.mul_mem hcO (hPO i j)))
-  · intro i j
-    exact O.mul_mem huO (O.sub_mem (h1O i j) (O.mul_mem (hO _ hcO) (hPO i j)))
+  · exact fun i j => O.mul_mem (hO _ huO) (O.sub_mem (h1O i j) (O.mul_mem hcO (hPO i j)))
+  · exact fun i j => O.mul_mem huO (O.sub_mem (h1O i j) (O.mul_mem (hO _ hcO) (hPO i j)))
 
 theorem exists_three {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) :
@@ -367,7 +364,6 @@ theorem witt_integral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
     (by rw [hsi, ← map_mul, hu, map_one]) c c.2 (congrArg Subtype.val hc)
   refine ⟨(⟨g, hg⟩ : HR (Fv F v) σ J), ?_, fun i j => ⟨hgO i j, hgO' i j⟩⟩
   funext a
-  rw [Subsingleton.elim a 0]
-  exact hgx
+  rwa [Subsingleton.elim a 0]
 
 end GlobalTheory.WittIntegral

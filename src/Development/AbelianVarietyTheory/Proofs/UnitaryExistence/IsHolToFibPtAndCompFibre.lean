@@ -59,8 +59,7 @@ theorem isHolTo_comp {W : Set E} {X Y : Scheme.{0}} {c : E → (Sp ℂ ⟶ X)} (
     IsHolTo W (fun w => c w ≫ ψ) := by
   intro U f
   have := hc (ψ ⁻¹ᵁ U) ((ψ.app U).hom f)
-  simp only [valAt'_comp, ← top_le_preimage_comp] at this
-  exact this
+  simpa only [valAt'_comp, ← top_le_preimage_comp] using this
 
 theorem isHolTo_const {W : Set E} (hW : IsOpen W) {X : Scheme.{0}} (x : Sp ℂ ⟶ X) :
     IsHolTo W (fun _ => x) := by
@@ -80,10 +79,8 @@ theorem isHolTo_fibPt {W : Set E} (hW : IsOpen W) {X : Scheme.{0}} (G : Over X) 
     (e : E → (Over.mk y ⟶ G)) (he : IsHolTo W (fun z => (e z).left)) :
     IsHolTo W (fun z => fibPt G (e z)) := by
   refine isHolTo_of_isPullback (IsPullback.of_hasPullback G.hom y) ?_ ?_
-  · simp only [fibPt, pullback.lift_fst]
-    exact he
-  · simp only [fibPt, pullback.lift_snd]
-    exact isHolTo_const hW _
+  · simpa only [fibPt, pullback.lift_fst] using he
+  · simpa only [fibPt, pullback.lift_snd] using isHolTo_const hW _
 
 theorem isHolTo_fibPt_and_comp :
     ∀ (X : Scheme.{0}) (G : Over X) (y : Sp ℂ ⟶ X) (g : ℕ) (e : (Fin g → ℂ) → (Over.mk y ⟶ G)), IsHolTo Set.univ (fun z => (e z).left) → IsHolTo Set.univ (fun z => fibPt G (e z)) ∧ ∀ (Y : Scheme.{0}) (ψ : pullback G.hom y ⟶ Y), IsHolTo Set.univ (fun z => fibPt G (e z) ≫ ψ) :=

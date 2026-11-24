@@ -211,8 +211,7 @@ theorem finite_compG_re {F E : Type} [Field F] [NumberField F] [Field E] [Number
     funext v
     ext g
     exact Iff.rfl
-  rw [hU]
-  exact hf
+  rwa [hU]
 
 variable {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A : ColumnsAtT D.R C} {P : PeriodMap D.R C}
   {M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P} {i : ℕ} {hi : i + 1 ≤ D.R.m}
@@ -390,8 +389,7 @@ variable {D : D7} {Tw : TwForms D} {u : D.what₂.Word} {μ : D.what₂.Tup} {w 
 def FillOK (μ : D.what₂.Tup) (Lv : Levels Fl) : Prop := ∀ j, D.R.m < j → Lv.comp j → Nonempty ((D.chTw u μ).cls j)
 
 theorem fillOK_of_empty (hE : ∀ j, D.R.m < j → IsEmpty (Lv.comp j)) : FillOK μ Lv := by
-  intro j hj a
-  exact ((hE j hj).false a).elim
+  exact fun j hj a => ((hE j hj).false a).elim
 
 def fillOf (hF : FillOK μ Lv) : ∀ j, D.R.m < j → Lv.comp j → (D.chTw u μ).cls j := fun j hj a => (hF j hj a).some
 
@@ -481,8 +479,7 @@ theorem reL_symm {a b : ℕ} (h : a = b) {E : Type} [Field E] [NumberField E] (L
   constructor
   · rintro ⟨y, ⟨z, hz, rfl⟩, rfl⟩
     exact hz
-  · intro hx
-    exact ⟨x, ⟨x, hx, rfl⟩, rfl⟩
+  · exact fun hx => ⟨x, ⟨x, hx, rfl⟩, rfl⟩
 
 variable {D : D7} {X0 : Formalism.L2.Herm.Herm0 D} {u : D.what₂.Word} {w : D.what₂.places.Pl}
   {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)}

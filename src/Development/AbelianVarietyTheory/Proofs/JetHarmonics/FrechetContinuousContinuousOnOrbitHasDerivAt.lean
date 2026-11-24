@@ -119,8 +119,7 @@ theorem left_smooth {H : Matrix (Fin n) (Fin n) ℂ} (hH : AAInvW.HInvol H)
       have h2 : ContDiffOn ℝ ∞ (fun k : Matrix (Fin n) (Fin n) ℂ => X * k) U :=
         (LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ X)).contDiff.contDiffOn
       exact h1.clm_apply h2
-    · intro k hk hkH
-      exact (hf' k hkH _ (left_hasDerivAt hH hU hk hkH hF hfF hX)).symm
+    · exact fun k hk hkH => (hf' k hkH _ (left_hasDerivAt hH hU hk hkH hF hfF hX)).symm
   · intro g hg
     obtain ⟨U, F, hU, hgU, hF, hfF⟩ := hf g hg
     have h := left_hasDerivAt hH hU hgU hg hF hfF hX
@@ -146,8 +145,7 @@ theorem dsigW_mem {R : Rep k r} (hD : DerFacts R) (W : List (Mx k r)) (hW : ∀ 
   induction W with
   | nil => intro u hu; exact hu
   | cons X W ih =>
-    intro u hu
-    exact ((hD X (hW X (by simp))).1 _ (ih (fun Y hY => hW Y (by simp [hY])) u hu)).1
+    exact fun u hu => ((hD X (hW X (by simp))).1 _ (ih (fun Y hY => hW Y (by simp [hY])) u hu)).1
 
 theorem dsigW_append {R : Rep k r} (W : List (Mx k r)) (Y : Mx k r) (u : R.H) :
     dsigW (k := k) (r := r) R.σ (W ++ [Y]) u =
@@ -203,8 +201,7 @@ theorem dsigW_deriv_eq {R : Rep k r} (hD : DerFacts R) (W : List (Mx k r)) (hW :
   · have h1 := (hasDerivAt_iff_tendsto_slope.mp hD').sub_const (dsigW (k := k) (r := r) R.σ W c')
     refine mem_closure_of_tendsto h1 (Eventually.of_forall fun t => ?_)
     have := sm_comb (((t - 0)⁻¹ : ℝ) : ℂ) (hm _ (hc t)) (hm _ (hc 0)) (hm _ hc')
-    rw [Complex.coe_smul] at this
-    exact this
+    rwa [Complex.coe_smul] at this
   · intro w hw
     obtain ⟨w', hw'⟩ := dsigW_adjoint hD W hW w hw
     have h1 : HasDerivAt (fun t => ⟪w, dsigW (k := k) (r := r) R.σ W (c t)⟫_ℂ) ⟪w, D⟫_ℂ 0 :=
@@ -245,8 +242,7 @@ theorem dsigW_orbit_smooth {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r 
   | nil => exact hv
   | append_singleton W Y ih =>
     have hW' : ∀ X ∈ W, InLieHpk k r X := fun X hX => hW X (by simp [hX])
-    simp only [dsigW_append]
-    exact (dsigW_orbit hR hD hv W hW' (ih hW') Y (hW Y (by simp))).1
+    simpa only [dsigW_append] using (dsigW_orbit hR hD hv W hW' (ih hW') Y (hW Y (by simp))).1
 
 theorem cw_tendsto {R : Rep k r} {V : Type} [NormedAddCommGroup V] {Bm : R.H → V}
     (hB : PI.BesselMapUniq.IsCWCont (k := k) (r := r) R.σ Bm) {α : Type} {l : Filter α} {u : α → R.H}

@@ -102,8 +102,7 @@ theorem exists_aeval_eq : ∀ (E A : Type) [Field E] [CommRing A] [Algebra E A] 
   intro E A _ _ _ _ g hs x
   have hx : x ∈ Algebra.adjoin E ({g} : Set A) := by
     rw [GlobalTheory.SepGen.adjoin_eq_top g hs]; trivial
-  rw [Algebra.adjoin_singleton_eq_range_aeval] at hx
-  exact hx
+  rwa [Algebra.adjoin_singleton_eq_range_aeval] at hx
 
 end GlobalTheory.SepGenElt
 end -- clump:auto
@@ -205,13 +204,10 @@ theorem finite_submodules_between_smul_and_self :
         obtain ⟨a, rfl⟩ := Ideal.mem_span_singleton'.mp hr
         rw [Submodule.coe_smul, mul_smul]
         exact M.smul_mem a (hM.2 n n.2)
-      · intro a b ha hb
-        exact M.add_mem ha hb
-    have h4 := M.sub_mem hy (h3 _ h2)
-    simpa using h4
+      · exact fun a b ha hb => M.add_mem ha hb
+    simpa using M.sub_mem hy (h3 _ h2)
   refine Set.Finite.of_finite_image (f := f) (Set.toFinite _) ?_
-  intro N hN M hM h
-  exact le_antisymm (key N M hN hM h) (key M N hM hN h.symm)
+  exact fun N hN M hM h => le_antisymm (key N M hN hM h) (key M N hM hN h.symm)
 
 end GlobalTheory
 end -- clump:auto
@@ -314,14 +310,12 @@ theorem integralClosure_fg_of_separable_charpoly : ∀ (O E A : Type) [CommRing 
     have hT : LinearMap.BilinForm.toMatrix e (Algebra.traceForm E A) = Algebra.traceMatrix E e := by
       ext i j
       rw [Algebra.traceForm_toMatrix, Algebra.traceMatrix_apply, Algebra.traceForm_apply]
-    rw [LinearMap.BilinForm.nondegenerate_iff_det_ne_zero e, hT]
-    exact hdisc
+    rwa [LinearMap.BilinForm.nondegenerate_iff_det_ne_zero e, hT]
   have htr : ∀ x : A, IsIntegral O x → ∃ r : O, algebraMap O E r = Algebra.trace E A x := by
     intro x hx
     have h1 : IsIntegral O (algebraMap E L (Algebra.trace E A x)) := by
       rw [GlobalTheory.algebraMap_trace_eq_sum_algHom_of_card hcard hP x]
-      refine IsIntegral.sum _ fun j _ => ?_
-      exact hx.map ((P j).restrictScalars O)
+      exact IsIntegral.sum _ fun j _ => hx.map ((P j).restrictScalars O)
     have h2 : IsIntegral O (Algebra.trace E A x) :=
       (isIntegral_algHom_iff ((Algebra.ofId E L).restrictScalars O)
         (algebraMap E L).injective).mp h1
@@ -647,8 +641,7 @@ theorem ncard_fibre_latProj (O E A₁ A₂ : Type) [CommRing O] [IsDomain O] [Is
         M.map (LinearMap.snd O A₁ A₂) = y.2.1} := by
     rw [← Nat.card_coe_set_eq]
     exact Nat.card_congr e
-  rw [hc]
-  exact key
+  rwa [hc]
 
 end GlobalTheory.UnitLemma
 end -- clump:auto
@@ -693,8 +686,7 @@ theorem mem_stabilizer_of {g : A} (L : stLat O E g) (t : Aˣ)
   · intro hx
     have := h1 _ hx
     rwa [← mul_assoc, Units.mul_inv, one_mul] at this
-  · intro hx
-    exact h2 _ hx
+  · exact fun hx => h2 _ hx
 
 theorem finite_quotient_span [IsDomain O] [IsDiscreteValuationRing O]
     [Finite (IsLocalRing.ResidueField O)] {c : O} (hc : c ≠ 0) : Finite (O ⧸ Ideal.span {c}) := by
@@ -949,12 +941,10 @@ theorem stabLat_eq_stabilizer (g : A) (L : stLat O E g) :
     ext x
     rw [mem_mulLat_iff]
     have := h (((t⁻¹ : Aˣ) : A) * x)
-    rw [← mul_assoc, Units.mul_inv, one_mul] at this
-    exact this
+    rwa [← mul_assoc, Units.mul_inv, one_mul] at this
   · intro h y
     have := SetLike.ext_iff.mp h ((t : A) * y)
-    rw [mem_mulLat_iff, ← mul_assoc, Units.inv_mul, one_mul] at this
-    exact this
+    rwa [mem_mulLat_iff, ← mul_assoc, Units.inv_mul, one_mul] at this
 
 def orbEquiv (g : A) : Orb O (⊤ : Subgroup Aˣ) (stLat O E g) ≃ MulAction.orbitRel.Quotient Aˣ (stLat O E g) where
   toFun := Quot.lift (fun L => (Quotient.mk _ L : MulAction.orbitRel.Quotient Aˣ (stLat O E g)))

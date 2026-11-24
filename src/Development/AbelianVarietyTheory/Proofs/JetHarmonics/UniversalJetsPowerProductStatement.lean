@@ -133,8 +133,7 @@ theorem univPow : UnivPowSt := by
     have ha : ∀ p, aug (a p) = 0 := fun p => by
       have := congrArg (fun f : Jet V (Fin 1 × Fin d) m →ₐ[V] V =>
         f (Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), p.2)))) (hψ p.1).1
-      simp only [AlgHom.comp_apply, jetAug_X] at this
-      exact this
+      simpa only [AlgHom.comp_apply, jetAug_X] using this
     have hsp : Ideal.span (Set.range fun p => (MvPolynomial.aeval a : MvPolynomial (Fin n × Fin d) V →ₐ[V] A)
         (MvPolynomial.X p)) ^ (m + 1) = ⊥ := by
       apply le_bot_iff.1

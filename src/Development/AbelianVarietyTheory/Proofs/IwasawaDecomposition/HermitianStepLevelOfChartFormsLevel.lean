@@ -171,10 +171,7 @@ theorem uloc_acts_trivially_on_dual_quotient {F E : Type} [Field F] [NumberField
     obtain ⟨r, hr, hu⟩ := hdec z hz
     refine ⟨r, hr, ?_⟩
     have h1 := S.fT_L v hv ((⟨z, hz⟩ : (latS (F := F) (v.adicCompletion F) (intV E v) (Submodule.span (𝓞 E) (dualSet (σ : E →+* E) (1 : Matrix (Fin n) (Fin n) E) S.Lb)))) - r • (⟨w, hw⟩ : (latS (F := F) (v.adicCompletion F) (intV E v) (Submodule.span (𝓞 E) (dualSet (σ : E →+* E) (1 : Matrix (Fin n) (Fin n) E) S.Lb))))) hu
-    rw [map_sub] at h1
-    rw [LinearMap.map_smul] at h1
-    rw [sub_eq_zero] at h1
-    exact h1
+    rwa [map_sub, LinearMap.map_smul, sub_eq_zero] at h1
   have hm0 : m ≠ 0 := by
     intro h0
     apply S.fT_ne v hv
@@ -191,13 +188,11 @@ theorem uloc_acts_trivially_on_dual_quotient {F E : Type} [Field F] [NumberField
   have hb : ∀ i, i ≠ ℓ → X i ℓ * ι ((q : E)⁻¹) ∈ intV E v := by
     intro i hi
     have h1 := ((hΛ' _).1 hxw).1 i hi
-    rw [congrFun hXw i] at h1
-    exact h1
+    rwa [congrFun hXw i] at h1
   have hXwi : ∀ i, (X *ᵥ w) i = X i ℓ * ι ((q : E)⁻¹) := fun i => congrFun hXw i
   have hd : X ℓ ℓ ∈ intV E v := by
     have h1 := ((hΛ' _).1 hxw).2
-    rw [hXwi ℓ, mul_left_comm, hQQ, mul_one] at h1
-    exact h1
+    rwa [hXwi ℓ, mul_left_comm, hQQ, mul_one] at h1
   have h2 : ((⟨X ℓ ℓ, hd⟩ : intV E v) - 1) • m = 0 := by
     obtain ⟨r, hr, hrm⟩ := hf ⟨X *ᵥ w, hxw⟩
     have hr' : r = ⟨X ℓ ℓ, hd⟩ := by
@@ -206,8 +201,7 @@ theorem uloc_acts_trivially_on_dual_quotient {F E : Type} [Field F] [NumberField
       show ι (q : E) * (X *ᵥ w) ℓ = X ℓ ℓ
       rw [hXwi ℓ, mul_left_comm, hQQ, mul_one]
     have hfx := hfix ⟨w, hw⟩
-    rw [sub_smul, one_smul, ← hr', ← hrm, sub_eq_zero]
-    exact hfx
+    rwa [sub_smul, one_smul, ← hr', ← hrm, sub_eq_zero]
   have hU' : cT (sigR σ (v.adicCompletion F)) X * X = 1 := by
     have h1 : cT (sigR σ (v.adicCompletion F)) X * (1 : Matrix (Fin n) (Fin n) E).map ι * X =
         (1 : Matrix (Fin n) (Fin n) E).map ι := hU
@@ -380,12 +374,9 @@ theorem exists_herm_level (hc : CMData F E) (S : HSpace E) {n : ℕ} (h : S.rank
     | zero => simp
     | add a b _ _ ha hb => rw [smul_add]; exact add_mem ha hb
     | smul s a _ ha => rw [smul_comm]; exact Submodule.smul_mem _ _ ha
-  · intro v h0 h1 h2
-    exact K.Uloc_hyp v (hbad v h0 h1) h2
-  · intro a v h x hx
-    exact hg a v h x hx.1 hx.2
-  · intro v h x
-    exact hT v h x
+  · exact fun v h0 h1 h2 => K.Uloc_hyp v (hbad v h0 h1) h2
+  · exact fun a v h x hx => hg a v h x hx.1 hx.2
+  · exact fun v h x => hT v h x
   · exact (reL_rfl _).symm
   · intro v; exact (reGL_rfl_map _).symm
   · exact (reGL_rfl_map _).symm

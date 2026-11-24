@@ -66,37 +66,30 @@ theorem int_of_pts {g m : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} {h : GLG
       ((m⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) r s ∈ Formalism.L2.Herm.intAf F E := by
   have L1 := h1.lat
   have L2 := h2.lat
-  have hN : (((1, h, c) : UF E n × GLG (E := E) (n := n) (SG := SG) × GLQ E n Q) • p).deco.1.N = p.deco.1.N := LevRead.smul_N p h c
-  rw [hN] at L2
-  have hstd : ∀ z : Fin n → AfE F E, z ∈ Formalism.L2.Herm.hatL (F := F) (stdLat E n) ↔ ∀ i, z i ∈ Formalism.L2.Herm.intAf F E :=
+  rw [LevRead.smul_N p h c] at L2
+  have hstd : ∀ z : Fin n → AfE F E, z ∈ Formalism.L2.Herm.hatL (F := F) (stdLat E n) ↔
+      ∀ i, z i ∈ Formalism.L2.Herm.intAf F E :=
     fun z => Formalism.L2.Col.mem_latS_std z
-  have he : (Pi.single s 1 : Fin n → AfE F E) ∈ Formalism.L2.Herm.hatL (F := F) (stdLat E n) := (hstd _).2 fun i => by
+  have he : (Pi.single s 1 : Fin n → AfE F E) ∈
+      Formalism.L2.Herm.hatL (F := F) (stdLat E n) := (hstd _).2 fun i => by
     rw [Pi.single_apply]
     split_ifs
     exacts [one_mem _, zero_mem _]
-  constructor
-  · have hx : ((g * m : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single s 1 ∈
+  have key : ∀ a b : GL (Fin n) (AfE F E),
+      Formalism.L2.Herm.Carries a (stdLat E n) p.deco.1.N →
+      Formalism.L2.Herm.Carries b (stdLat E n) p.deco.1.N →
+      ((a⁻¹ * b : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) r s ∈
+        Formalism.L2.Herm.intAf F E := by
+    intro a b ha hb
+    have hx : (b : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single s 1 ∈
         Formalism.L2.Herm.hatL (F := F) p.deco.1.N := by
-      refine (L2 _).2 ?_
+      refine (hb _).2 ?_
       rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
       exact he
-    have e : ((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ
-        (((g * m : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single s 1) =
-        (m : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single s 1 := by
-      rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel_left]
-    have := (hstd _).1 (e ▸ (L1 _).1 hx) r
-    simpa [Matrix.mulVec_single_one] using this
-  · have hx : ((g : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single s 1 ∈
-        Formalism.L2.Herm.hatL (F := F) p.deco.1.N := by
-      refine (L1 _).2 ?_
-      rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
-      exact he
-    have e : (((g * m)⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ
-        (((g : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single s 1) =
-        ((m⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single s 1 := by
-      rw [Matrix.mulVec_mulVec, ← Units.val_mul, _root_.mul_inv_rev, inv_mul_cancel_right]
-    have := (hstd _).1 (e ▸ (L2 _).1 hx) r
-    simpa [Matrix.mulVec_single_one] using this
+    have := (hstd _).1 ((ha _).1 hx) r
+    rw [Matrix.mulVec_mulVec, Matrix.mulVec_single_one] at this
+    simpa using this
+  exact ⟨by simpa using key g (g * m) L1 L2, by simpa using key (g * m) g L2 L1⟩
 
 end Gen
 

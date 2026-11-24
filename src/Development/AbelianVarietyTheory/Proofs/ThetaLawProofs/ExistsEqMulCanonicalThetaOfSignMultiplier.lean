@@ -122,10 +122,7 @@ theorem classical_law_of_canonical {τ : Matrix (Fin g) (Fin g) ℂ} (hs : τ.Is
       apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im] <;> ring
   have hMstar : M *ᵥ star l = M *ᵥ l - (2 * I) • nC := by
     rw [hstar, mulVec_sub, mulVec_smul, hY]
-  have hH1 : hermForm M z l = z ⬝ᵥ M *ᵥ l - 2 * I * (z ⬝ᵥ nC) := by
-    unfold hermForm
-    rw [hMstar, dotProduct_sub, dotProduct_smul, smul_eq_mul]
-  have hH2 : hermForm M l l = l ⬝ᵥ M *ᵥ l - 2 * I * (l ⬝ᵥ nC) := by
+  have hH : ∀ v, hermForm M v l = v ⬝ᵥ M *ᵥ l - 2 * I * (v ⬝ᵥ nC) := fun v => by
     unfold hermForm
     rw [hMstar, dotProduct_sub, dotProduct_smul, smul_eq_mul]
   have hquad : (z + l) ⬝ᵥ M *ᵥ (z + l) = z ⬝ᵥ M *ᵥ z + 2 * (z ⬝ᵥ M *ᵥ l) + l ⬝ᵥ M *ᵥ l := by
@@ -145,23 +142,14 @@ theorem classical_law_of_canonical {τ : Matrix (Fin g) (Fin g) ℂ} (hs : τ.Is
       -(π * I * ((m ⬝ᵥ n : ℤ) : ℂ)) +
         2 * π * I * (-((1 : ℕ) : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) +
         -(π / 2 * (z ⬝ᵥ M *ᵥ z)) := by
-    rw [hquad, hH1, hH2, hln, hzn]
+    rw [hquad, hH z, hH l, hln, hzn]
     push_cast
     ring
   rw [h]
-  calc cexp (-(π / 2 * ((z + l) ⬝ᵥ M *ᵥ (z + l)))) *
-        (c * cexp (π * hermForm M z l + π / 2 * hermForm M l l) * f z)
-      = c * f z * cexp (-(π / 2 * ((z + l) ⬝ᵥ M *ᵥ (z + l))) +
-          (π * hermForm M z l + π / 2 * hermForm M l l)) := by
-        simp only [Complex.exp_add]
-        ring
-    _ = c * f z * cexp (-(π * I * ((m ⬝ᵥ n : ℤ) : ℂ)) +
-        2 * π * I * (-((1 : ℕ) : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) +
-        -(π / 2 * (z ⬝ᵥ M *ᵥ z))) := by rw [E]
-    _ = _ := by
-        unfold eC
-        rw [Complex.exp_add, Complex.exp_add]
-        ring
+  unfold eC
+  have e := congrArg cexp E
+  simp only [Complex.exp_add] at e ⊢
+  linear_combination c * f z * e
 
 end SlopeTestRemainingChoices
 

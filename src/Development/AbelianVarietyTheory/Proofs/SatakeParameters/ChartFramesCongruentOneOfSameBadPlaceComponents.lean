@@ -198,8 +198,7 @@ theorem congAt_loc (Q : HeightOneSpectrum (𝓞 E)) (n : ℕ) (k : GL (Fin N) (E
     rw [Matrix.one_apply, Matrix.one_apply]
     split_ifs <;> simp
   rw [e2] at h1
-  rw [Matrix.sub_apply]
-  exact h1
+  rwa [Matrix.sub_apply]
 
 theorem loc_agree (Q : HeightOneSpectrum (𝓞 E)) {x x₁ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)}
     (h : bc (prV (E := E) (Q.under (𝓞 F))) x₁ = bc (prV (E := E) (Q.under (𝓞 F))) x) : locM Q x₁ = locM Q x := by
@@ -211,8 +210,7 @@ theorem loc_agree (Q : HeightOneSpectrum (𝓞 E)) {x x₁ : GL (Fin N) (E ⊗[F
   have h0 : prV (E := E) (Q.under (𝓞 F)) ((x₁ : Matrix (Fin N) (Fin N) _) a b - (x : Matrix (Fin N) (Fin N) _) a b) = 0 := by
     rw [map_sub, sub_eq_zero]; exact h1
   have h2 := (GlobalTheory.Mem.Col2.AdComp.prV_zero_int_iff F E _ _).1.1 h0 Q rfl
-  rw [map_sub, sub_eq_zero] at h2
-  exact h2
+  rwa [map_sub, sub_eq_zero] at h2
 
 theorem intAt_of_val (Q : HeightOneSpectrum (𝓞 E)) (c m o : E)
     (h : Valued.v ((algebraMap E (Q.adicCompletion E) c)⁻¹ * (algebraMap E (Q.adicCompletion E) m - algebraMap E (Q.adicCompletion E) o)) ≤ 1) :
@@ -238,8 +236,7 @@ theorem qOf_seamP {D : D7} {X : Fields} (s : Seam D X) (P : HeightOneSpectrum (�
     constructor
     · intro hy; exact ⟨_, hy, rfl⟩
     · rintro ⟨z, hz, e⟩
-      rw [(RingOfIntegers.mapRingEquiv s.iE).injective e] at hz
-      exact hz
+      rwa [(RingOfIntegers.mapRingEquiv s.iE).injective e] at hz
   unfold qOf
   rw [Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]
   exact (Nat.card_congr (Ideal.quotientEquiv P.asIdeal (seamP s P).asIdeal (RingOfIntegers.mapRingEquiv s.iE) hI).toEquiv).symm
@@ -253,8 +250,7 @@ theorem intAt_seamP {D : D7} {X : Fields} (s : Seam D X) (P : HeightOneSpectrum 
     refine ⟨(RingOfIntegers.mapRingEquiv s.iE).symm r, (RingOfIntegers.mapRingEquiv s.iE).symm c, ?_, ?_⟩
     · rw [← mem_seamP s, RingEquiv.apply_symm_apply]; exact hc'
     · apply s.iE.injective
-      rw [map_mul, ← hc, ← hc, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]
-      exact h
+      rwa [map_mul, ← hc, ← hc, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]
   · rintro ⟨r, c, hc', h⟩
     refine ⟨RingOfIntegers.mapRingEquiv s.iE r, RingOfIntegers.mapRingEquiv s.iE c, ?_, ?_⟩
     · rw [mem_seamP s]; exact hc'

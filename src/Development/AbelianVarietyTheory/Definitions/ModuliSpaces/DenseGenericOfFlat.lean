@@ -65,16 +65,14 @@ theorem dense_generic_of_flat [IsDomain o] (s : S ⟶ Sp o) [Flat s] : Dense {x 
     MorphismProperty.comp_mem _ _ _ inferInstance ‹Flat s›
   obtain ⟨φ, hφ⟩ := Spec.map_surjective (S.affineCover.f (S.affineCover.idx x) ≫ s)
   have hfl : φ.hom.Flat := by
-    rw [← HasRingHomProperty.Spec_iff (P := @Flat), hφ]
-    exact hcomp
+    rwa [← HasRingHomProperty.Spec_iff (P := @Flat), hφ]
   have hsp : (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum o) ⤳ PrimeSpectrum.comap φ.hom y :=
     (PrimeSpectrum.le_iff_specializes _ _).1 (show (⊥ : Ideal o) ≤ _ from bot_le)
   obtain ⟨y', hy'1, hy'2⟩ := RingHom.Flat.generalizingMap_comap hfl hsp
   have hφy := congrArg (fun m => (m y').asIdeal) hφ
   have hmem : S.affineCover.f (S.affineCover.idx x) y' ∈ {x : S | (s x).asIdeal = ⊥} := by
     change ((S.affineCover.f (S.affineCover.idx x) ≫ s) y').asIdeal = ⊥
-    refine Eq.trans ?_ (congrArg PrimeSpectrum.asIdeal hy'2)
-    exact hφy.symm
+    exact Eq.trans hφy.symm (congrArg PrimeSpectrum.asIdeal hy'2)
   have h₁ : S.affineCover.f (S.affineCover.idx x) y' ⤳ S.affineCover.f (S.affineCover.idx x) y :=
     hy'1.map (S.affineCover.f (S.affineCover.idx x)).continuous
   have h₂ : S.affineCover.f (S.affineCover.idx x) y ⤳ x := by rw [hy]
@@ -154,8 +152,7 @@ theorem exists_baseChange (F : SFam h k ζ) {B : Type} [CommRing B] {ζ' : B} (j
     obtain ⟨f₀, hf₀, hpb⟩ := F.rep T (t ≫ spMap j) (down j hj c) hr hd' hc
     refine ⟨pullback.lift f₀ t hf₀, pullback.lift_snd _ _ _, ?_⟩
     have hpb' : SiegPB c F.univ (pullback.lift f₀ t hf₀ ≫ pullback.fst F.s (spMap j)) := by
-      rw [pullback.lift_fst]
-      exact hpb
+      rwa [pullback.lift_fst]
     exact pb_cancel hu hpb'
   · intro R _ _ x y t c hxy hx hy
     refine pullback.hom_ext ?_ hxy

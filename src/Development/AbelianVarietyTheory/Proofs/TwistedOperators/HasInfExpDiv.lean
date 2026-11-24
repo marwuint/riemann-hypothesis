@@ -70,9 +70,7 @@ def rad (ρ : ι → Module.End ℂ Q) (C : Submodule ℂ Q) : Submodule ℂ Q :
 theorem isStab_rad (ρ : ι → Module.End ℂ Q) (C : Submodule ℂ Q) : IsStab ρ (rad ρ C) := by
   intro i
   have h : rad ρ C ≤ (rad ρ C).comap (ρ i) := by
-    refine sSup_le fun N hN => ?_
-    intro x hx
-    exact le_sSup hN (hN.1 i x hx)
+    exact sSup_le fun N hN => fun x hx => le_sSup hN (hN.1 i x hx)
   exact fun x hx => h hx
 
 def radAct (ρ : ι → Module.End ℂ Q) (C : Submodule ℂ Q) (i : ι) : Module.End ℂ (Q ⧸ rad ρ C) :=
@@ -166,8 +164,7 @@ theorem rad_le_ker : ∀ (ι Q Pi : Type) [AddCommGroup Q] [Module ℂ Q] [AddCo
     obtain ⟨r, hr, rfl⟩ := ht
     have h2 : x - r ∈ N'.comap β := by
       show β (x - r) ∈ N'
-      rw [map_sub, ← htn, add_sub_cancel_left]
-      exact hn
+      rwa [map_sub, ← htn, add_sub_cancel_left]
     have h3 := Submodule.add_mem_sup hr h2
     rwa [add_sub_cancel] at h3
   by_cases hU : N'.comap β = ⊤
@@ -178,8 +175,7 @@ theorem rad_le_ker : ∀ (ι Q Pi : Type) [AddCommGroup Q] [Module ℂ Q] [AddCo
       have : x ∈ N'.comap β := hU ▸ Submodule.mem_top
       exact this
     have h3 : β x ∈ (rad ρ C).map β ⊓ N' := Submodule.mem_inf.2 ⟨h1, h2⟩
-    rw [hc.inf_eq_bot, Submodule.mem_bot] at h3
-    exact h3
+    rwa [hc.inf_eq_bot, Submodule.mem_bot] at h3
   · exact hrad (eq_top_iff.2 (hsup ▸ sup_le le_rfl (le_sSup ⟨hUs, hCU, hU⟩)))
 
 end LALemmas

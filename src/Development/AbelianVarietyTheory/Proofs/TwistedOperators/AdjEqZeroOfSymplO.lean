@@ -249,10 +249,8 @@ theorem mean_smul {μ : Measure (Mx D m n)} {𝓕 : Set (Mx D m n)} (h : IsCovol
     let f : ratMx D m n → ratMx D m n := fun y => ⟨e.symm y, (hΓ _).1 (by simp)⟩
     have hf : Function.Bijective f := by
       constructor
-      · intro a b hab
-        exact Subtype.ext (e.symm.injective (congrArg Subtype.val hab))
-      · intro x
-        exact ⟨⟨e x, (hΓ _).2 x.2⟩, Subtype.ext (by simp [f])⟩
+      · exact fun a b hab => Subtype.ext (e.symm.injective (congrArg Subtype.val hab))
+      · exact fun x => ⟨⟨e x, (hΓ _).2 x.2⟩, Subtype.ext (by simp [f])⟩
     refine hF.preimage_of_equiv hmp'.quasiMeasurePreserving hf ?_
     intro y x
     simp [f, AddSubgroup.vadd_def]
@@ -338,8 +336,7 @@ theorem IsDualPair.exists_levi (h : IsDualPair W C C' L B) {t t' : D.host.E} (ht
     (htt : t * t' = 1) : ∃ a : GA D W, a ∈ GQ W ∧ mt W a = rat (levi t t' (C * L) (C' * B)) := by
   have hu : adj (rat (levi t t' (C * L) (C' * B))) * (gA W * rat (levi t t' (C * L) (C' * B))) = gA W := by
     have := congrArg rat (h.levi_unitary ht ht' htt)
-    rw [rat_mul, rat_mul, rat_conjTranspose] at this
-    exact this
+    rwa [rat_mul, rat_mul, rat_conjTranspose] at this
   exact ⟨ofMat W _ hu, (mem_GQ_iff W _).2 ⟨_, (mt_ofMat W _ hu).symm⟩, mt_ofMat W _ hu⟩
 
 theorem IsDualPair.levi_mul (h : IsDualPair W C C' L B) (t t' : D.host.E) :
@@ -553,8 +550,7 @@ theorem adj_eq_zero_of_symplO {C : Mx D W.rank s} {x : WO V W}
       simp only [Matrix.mul_assoc, giA_gA_cancel]
     have e2 : ((Matrix.single j i w : Mx D V.rank s) ⬝ u).trace = u i j * w := by
       exact trace_single_mul' i j w u
-    rw [hO_eq_trace, e, e2, ← mul_assoc] at this
-    exact this
+    rwa [hO_eq_trace, e, e2, ← mul_assoc] at this
   have hz := eq_zero_of_trace_mul (F := D.host.F) (E := D.host.E) (R := AF D.host.F) _ key
   have hξ : incA D D.host.xi0⁻¹ * incA D D.host.xi0 = 1 := by
     rw [← map_mul, inv_mul_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one]
@@ -564,8 +560,7 @@ theorem adj_eq_zero_of_symplO {C : Mx D W.rank s} {x : WO V W}
 theorem iso_rat {C : Matrix (Fin W.rank) (Fin s) D.host.E} (hC : IsIsoFrame W C) : adj (rat C) ⬝ (gA W ⬝ rat C) = 0 := by
   have h : Cᴴ * (W.gram * C) = 0 := by rw [← Matrix.mul_assoc]; exact hC.2.2
   have := congrArg rat h
-  rw [rat_mul, rat_mul, rat_zero] at this
-  exact this
+  rwa [rat_mul, rat_mul, rat_zero] at this
 
 theorem mean_unip {C : Matrix (Fin W.rank) (Fin s) D.host.E} (hC : IsIsoFrame W C)
     (hω : IsWeilDatumO ψ V W χS χT ω) (hcov : IsCovolOne (ratMx D s V.rank) μ 𝓐)
@@ -591,8 +586,7 @@ theorem mean_unip {C : Matrix (Fin W.rank) (Fin s) D.host.E} (hC : IsIsoFrame W 
         rw [← Matrix.mul_assoc, e])
       (fun x' hx' => by
         have hB : rat B ⬝ x' = 0 := by
-          rw [h.hB, rat_mul, rat_conjTranspose, Matrix.mul_assoc]
-          exact hx'
+          rwa [h.hB, rat_mul, rat_conjTranspose, Matrix.mul_assoc]
         have hq : rat (C' * B) ⬝ x' = 0 := by rw [rat_mul, Matrix.mul_assoc, hB, Matrix.mul_zero]
         refine ⟨rat L ⬝ ((mt W g - 1) ⬝ x'), ?_⟩
         rw [← gen_apply r3 hq, Matrix.sub_mul, Matrix.one_mul, add_sub_cancel])

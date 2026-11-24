@@ -161,8 +161,7 @@ theorem valued_pow_sub_one_lt_one {x : v.adicCompletion L} (hx : Valued.v x = 1)
   have hy1 : Valued.v (algebraMap (𝓞 L) (v.adicCompletion L) y) = 1 := by
     rw [← hx]
     apply Valuation.map_eq_of_sub_lt
-    rw [Valuation.map_sub_swap, hx]
-    exact hy
+    rwa [Valuation.map_sub_swap, hx]
   have hnot : y ∉ v.asIdeal := by
     rw [← valued_algebraMap_lt_one, hy1]; exact lt_irrefl _
   have hmem : y ^ (Ideal.absNorm v.asIdeal - 1) - 1 ∈ v.asIdeal := by
@@ -216,11 +215,9 @@ theorem exists_rootOfUnity_congr {x : v.adicCompletion L} (hx : Valued.v x = 1) 
   · have h4 : ζ ^ (Ideal.absNorm v.asIdeal - 1) = 1 := by
       simpa [sub_eq_zero] using h1
     have h5 := congrArg (algebraMap (v.adicCompletionIntegers L) (v.adicCompletion L)) h4
-    rw [map_pow, map_one] at h5
-    exact h5
+    rwa [map_pow, map_one] at h5
   · have h6 := (mem_maximalIdeal_iff v _).1 h2
-    rw [AddSubgroupClass.coe_sub] at h6
-    exact h6
+    rwa [AddSubgroupClass.coe_sub] at h6
 
 theorem orders_on_units : ∀ (L : Type) [Field L] [NumberField L] (χ : HChar L) (v : HeightOneSpectrum (𝓞 L)), (χ.TameAt v → ∀ x, IsUnitAt v x → χ.loc v x ^ (Ideal.absNorm v.asIdeal - 1) = 1) ∧ ((∀ x : (v.adicCompletion L)ˣ, x ^ (Ideal.absNorm v.asIdeal - 1) = 1 → χ.loc v x = 1) → ∀ x, IsUnitAt v x → ∃ n : ℕ, χ.loc v x ^ (Ideal.absNorm v.asIdeal ^ n) = 1) := by
   intro L _ _ χ v
@@ -246,8 +243,7 @@ theorem orders_on_units : ∀ (L : Type) [Field L] [NumberField L] (χ : HChar L
     have hu1 : Valued.v (((x * z⁻¹ : (v.adicCompletion L)ˣ) : v.adicCompletion L) - 1) < 1 := by
       have e : ((x * z⁻¹ : (v.adicCompletion L)ˣ) : v.adicCompletion L) - 1 = (x - ζ) * ζ⁻¹ := by
         simp [z, sub_mul, h0]
-      rw [e, map_mul, map_inv₀, hζ, inv_one, mul_one, Valuation.map_sub_swap]
-      exact h2
+      rwa [e, map_mul, map_inv₀, hζ, inv_one, mul_one, Valuation.map_sub_swap]
     refine ⟨n, ?_⟩
     have h3 := hn _ (GlobalTheory.Mem.UnrAe.isUnitAt_pow hu (Ideal.absNorm v.asIdeal ^ n)) (by
       rw [Units.val_pow_eq_pow_val]

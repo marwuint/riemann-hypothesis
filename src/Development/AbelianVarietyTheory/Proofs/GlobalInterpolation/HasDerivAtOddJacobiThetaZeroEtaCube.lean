@@ -148,45 +148,39 @@ theorem hasDerivAt_oddTheta_zero :
     TripleProduct → ∀ τ : UpperHalfPlane,
       HasDerivAt (oddTheta τ) (-2 * (Real.pi : ℂ) * ModularForm.eta (τ : ℂ) ^ 3) 0 := by
   intro hT τ
-  set F : ℂ → ℂ := fun z => cexp (π * I * (τ : ℂ) / 4 + π * I * (z + 1 / 2)) *
-    (1 - cexp (-(2 * π * I * z))) with hFdef
+  set F : ℂ → ℂ := fun z => cexp (π * I * τ / 4 + π * I * (z + 1 / 2)) *
+    (1 - cexp (-(2 * π * I * z)))
   set R : ℂ → ℂ := fun z => tailProd τ 1 * tailProd τ (cexp (2 * π * I * z)) *
-    tailProd τ (cexp (-(2 * π * I * z))) with hRdef
+    tailProd τ (cexp (-(2 * π * I * z)))
   have hfun : oddTheta τ = fun z => F z * R z := by
     funext z
     simp only [oddTheta, F, R]
     rw [jacobiTheta₂_shift hT]
     ring
   have hF0 : F 0 = 0 := by simp [F]
-  have h1 : HasDerivAt (fun z : ℂ => cexp (π * I * (τ : ℂ) / 4 + π * I * (z + 1 / 2)))
-      (cexp (π * I * (τ : ℂ) / 4 + π * I * (0 + 1 / 2)) * (π * I * 1)) 0 :=
+  have h1 : HasDerivAt (fun z : ℂ => cexp (π * I * τ / 4 + π * I * (z + 1 / 2))) _ 0 :=
     ((((hasDerivAt_id (0 : ℂ)).add_const (1 / 2)).const_mul (π * I)).const_add _).cexp
   have h2 : HasDerivAt (fun z : ℂ => 1 - cexp (-(2 * π * I * z)))
       (-(cexp (-(2 * π * I * 0)) * -(2 * π * I * 1))) 0 :=
     (((hasDerivAt_id (0 : ℂ)).const_mul (2 * π * I)).neg.cexp).const_sub 1
-  have hF : HasDerivAt F (cexp (π * I * (τ : ℂ) / 4 + π * I * (0 + 1 / 2)) * (π * I * 1) *
-      (1 - cexp (-(2 * π * I * 0))) + cexp (π * I * (τ : ℂ) / 4 + π * I * (0 + 1 / 2)) *
-      (-(cexp (-(2 * π * I * 0)) * -(2 * π * I * 1)))) 0 := h1.mul h2
+  have hF : HasDerivAt F _ 0 := h1.mul h2
   have hR : ContinuousAt R 0 := by
-    have hu : Continuous fun z : ℂ => cexp (2 * π * I * z) := by fun_prop
-    have hv : Continuous fun z : ℂ => cexp (-(2 * π * I * z)) := by fun_prop
-    exact (continuousAt_const.mul ((continuousAt_tailProd τ _).comp hu.continuousAt)).mul
-      ((continuousAt_tailProd τ _).comp hv.continuousAt)
+    exact (continuousAt_const.mul
+      ((continuousAt_tailProd τ _).comp (Continuous.continuousAt (by fun_prop)))).mul
+      ((continuousAt_tailProd τ _).comp (Continuous.continuousAt (by fun_prop)))
   rw [hfun]
-  have key := hasDerivAt_mul_of_eq_zero hF hF0 hR
-  convert key using 1
-  have hT1 : tailProd τ 1 = ∏' n : ℕ, (1 - ModularForm.eta_q n (τ : ℂ)) := by
-    simp [tailProd]
-  have hq : (Function.Periodic.qParam 24 (τ : ℂ)) ^ 3 = cexp (π * I * (τ : ℂ) / 4) := by
+  convert hasDerivAt_mul_of_eq_zero hF hF0 hR using 1
+  have hT1 : tailProd τ 1 = ∏' n : ℕ, (1 - ModularForm.eta_q n τ) := by simp [tailProd]
+  have hq : (Function.Periodic.qParam 24 τ) ^ 3 = cexp (π * I * τ / 4) := by
     rw [Function.Periodic.qParam, ← Complex.exp_nat_mul]
     congr 1; push_cast; ring
-  have hI : cexp (π * I * (τ : ℂ) / 4 + π * I * (0 + 1 / 2)) = cexp (π * I * (τ : ℂ) / 4) * I := by
+  have hI : cexp (π * I * τ / 4 + π * I * (0 + 1 / 2)) = cexp (π * I * τ / 4) * I := by
     rw [Complex.exp_add]
     congr 1
     rw [show π * I * (0 + 1 / 2) = ((π / 2 : ℝ) : ℂ) * I by push_cast; ring, Complex.exp_mul_I]
     rw [← Complex.ofReal_cos, ← Complex.ofReal_sin, Real.cos_pi_div_two, Real.sin_pi_div_two]
     simp
-  simp only [R, mul_zero, neg_zero, Complex.exp_zero, hT1, hI]
+  simp only [R, id_eq, mul_zero, neg_zero, Complex.exp_zero, hT1, hI]
   unfold ModularForm.eta
   rw [mul_pow, hq]
   ring_nf

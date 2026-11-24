@@ -126,8 +126,7 @@ theorem cong_conj {M : ℕ} {κ l : GAf L n} (hκ : κ ∈ Umax L n) (hl : NG.Co
   · rw [hprod]
     have : Ki * (1 + (M : AL L) • Matrix.of Y) * K - 1 = (M : AL L) • (Ki * Matrix.of Y * K) := by
       rw [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, hKK, add_sub_cancel_left, Matrix.mul_smul, Matrix.smul_mul]
-    have h2 := congrFun (congrFun this i) j
-    simpa [Matrix.sub_apply, Matrix.smul_apply] using h2
+    simpa [Matrix.sub_apply, Matrix.smul_apply] using congrFun (congrFun this i) j
 
 variable {W : Type} [AddCommGroup W] [Module ℂ W]
 
@@ -346,8 +345,7 @@ theorem orth_of_not_iso (hB : Good ρ B) (hfin : ∀ N : ℕ, 0 < N → FiniteDi
       · obtain ⟨y, -, rfl⟩ := hx
         exact hU'.1.le y.2
       · obtain ⟨y, ⟨f, rfl⟩, rfl⟩ := hx
-        refine ⟨φ ⟨NG.rt L n h f, hU.1.stable h _ f.2⟩, ⟨_, rfl⟩, ?_⟩
-        exact heq h f _ rfl
+        exact ⟨φ ⟨NG.rt L n h f, hU.1.stable h _ f.2⟩, ⟨_, rfl⟩, heq h f _ rfl⟩
     have hRle : R ≤ U' := fun x hx => by
       obtain ⟨y, -, rfl⟩ := hx
       exact y.2
@@ -397,9 +395,7 @@ theorem typeOrth_of_avTied : ∀ (D : D7) (M : Formalism.L2.MtFam D) (V : Formal
       exact GlobalTheory.TypeOrthogonality.orth_of_not_iso hgood hfin hU hU'.1 (hni U U' hU h1 hU'.1 hU'.2) a ha c hc
     exact hle hb
   have hle : Formalism.L2.NG.isoTyp (M.loc i).wt.ρ (V.S i P) ≤ LinearMap.ker (B.flip ((M.loc i).real y)) := by
-    refine sSup_le fun U hU => ?_
-    intro a ha
-    exact step U hU.1 hU.2 a ha _ hy
+    exact sSup_le fun U hU => fun a ha => step U hU.1 hU.2 a ha _ hy
   exact hle hx
 
 end GlobalTheory.ThetaExh

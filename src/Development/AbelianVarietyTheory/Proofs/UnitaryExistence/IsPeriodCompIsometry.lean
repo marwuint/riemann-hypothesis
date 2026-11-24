@@ -105,16 +105,12 @@ lemma isPeriod_comp_isometry {E : Type} [Field E] [NumberField E] [IsCMField E]
     show P' (gam (a • x)) i = (ty i) (a : E) * P' (gam x) i
     rw [map_smul]
     exact hlin a (gam x) i
-  · intro a b hab
-    exact gam.injective (hinj hab)
-  · rw [hrange]
-    exact hdisc
-  · rw [hr2]
-    exact hspan
+  · exact fun a b hab => gam.injective (hinj hab)
+  · rwa [hrange]
+  · rwa [hr2]
   · intro x y
     have h := him (gam x) (gam y)
-    rw [hg] at h
-    exact h
+    rwa [hg] at h
 
 theorem eq_of_matched : ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (σ' : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ' ty) (r : ℕ) (M : ModelsOf F r) (k k' : Fin F.n) (γ : GL (Fin r) E), 1 ≤ Dw.p + Dw.q → σ' (baseKA l).ρ = H.rt0 → IsTypeFn H Dw.p Dw.q ty → ModelBase M → (M.X k').Gm = (M.X k).Gm → (M.X k').ξ0 = (M.X k).ξ0 → (∀ u v, herm (M.X k).Gm ((γ : Matrix (Fin r) (Fin r) E) *ᵥ u) ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v) = herm (M.X k).Gm u v) → (∀ v, v ∈ (M.X k).Λ ↔ (γ : Matrix (Fin r) (Fin r) E) *ᵥ v ∈ (M.X k').Λ) → (∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) Dw.La), ∃ w ∈ (M.X k').Λ, (γ : Matrix (Fin r) (Fin r) E) *ᵥ (M.φ k (F.t k a) : Fin r → E) = (M.φ k' (F.t k' a) : Fin r → E) + l.M • w) → (∀ a, ∃ w ∈ (M.X k').Λ, (γ : Matrix (Fin r) (Fin r) E) *ᵥ (M.φ k (F.t k a) : Fin r → E) = (M.φ k' (F.t k' a) : Fin r → E) + l.A • w) → k = k' := by
   intro hT hL E _ _ _ H Dw l Xo σ' g ty F r M k k' γ hpq hρ hty hMB hGm hξ hunit hΛ hcM hcA
@@ -153,8 +149,7 @@ theorem eq_of_matched : ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [N
     refine ⟨(M.φ k).symm ⟨_, hvmem⟩, ?_⟩
     apply (M.φ k').injective
     apply Subtype.ext
-    rw [hgmap, LinearEquiv.apply_symm_apply]
-    exact hAv
+    rwa [hgmap, LinearEquiv.apply_symm_apply]
   let gam : (F.Di k).La ≃ₗ[𝓞 E] (F.Di k').La := LinearEquiv.ofBijective gmap ⟨hinj, hsurj⟩
   have hgam : ∀ a, ((M.φ k' (gam a) : (M.X k').Λ) : Fin r → E) =
       (γ : Matrix (Fin r) (Fin r) E) *ᵥ (M.φ k a : Fin r → E) := fun a => hgmap a
@@ -182,8 +177,7 @@ theorem eq_of_matched : ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [N
     rw [hgam, hweq]
     simp
   have htyk' : IsTypeFn H (F.Di k').p (F.Di k').q ty := by
-    rw [(F.sig k').1, (F.sig k').2]
-    exact hty
+    rwa [(F.sig k').1, (F.sig k').2]
   obtain ⟨P', hP'⟩ := (GlobalTheory.PeriodExists.period_of_isTypeFn H (F.Di k') g ty htyk').2
   have hP := isPeriod_comp_isometry gam hiso hP'
   have key := GlobalTheory.UnifPoint.point_eq_iff_isometry_closed hT hL E H Dw l Xo σ' g ty hpq hρ hty
@@ -196,7 +190,6 @@ theorem eq_of_matched : ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [N
     ⟨F.over_σ k' _ hP', hP', ⟨F.ex_add k' _ hP', F.ex_onto k' _ hP', isHolTo_ex F k' _ hP',
       (F.ex_diff k' _ hP').1, (F.ex_diff k' _ hP').2⟩, F.ex_ker k' _ hP', F.ex_lin k' _ hP',
       F.ex_weil k' _ hP', F.ex_eta k' _ hP', F.ex_etaA k' _ hP'⟩
-  have hu := key.2 ⟨gam, LinearEquiv.refl ℂ _, hiso, hcM', hcA', fun a => rfl⟩
-  exact F.disj k k' _ _ hP hP' hu
+  exact F.disj k k' _ _ hP hP' (key.2 ⟨gam, LinearEquiv.refl ℂ _, hiso, hcM', hcA', fun a => rfl⟩)
 
 end GlobalTheory.ClassUniq

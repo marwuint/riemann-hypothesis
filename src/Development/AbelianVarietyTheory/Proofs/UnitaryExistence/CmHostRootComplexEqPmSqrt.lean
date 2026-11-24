@@ -205,11 +205,9 @@ theorem exists_coord_eq : ∀ (R : Type) [CommRing R] (W : WeierstrassCurve R) (
   · have h1 : ⊤ ≤ ptHom W ((algebraMap ℂ (DualNumber ℂ)).comp f) ![DualNumber.eps, -1, 0] h ⁻¹ᵁ
         coordOpen W 1 := by
       rw [ptHom_preimage_coordOpen]
-      intro p _ hp
-      exact p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hp isUnit_one.neg)
+      exact fun p _ hp => p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hp isUnit_one.neg)
     have h2 : ⊤ ≤ v.left ⁻¹ᵁ (φ ⁻¹ᵁ coordOpen W 1) := by
-      rw [← Scheme.Hom.comp_preimage, hv]
-      exact h1
+      rwa [← Scheme.Hom.comp_preimage, hv]
     rw [← hw _ h2]
     have e := hc 1 0 _ _ _ h h1
     have e2 : ∀ (k : Sp (DualNumber ℂ) ⟶ scheme W) (hk : ⊤ ≤ k ⁻¹ᵁ coordOpen W 1),
@@ -336,11 +334,9 @@ theorem exists_model (R : Type) [CommRing R] (f : R →+* ℂ) (W : WeierstrassC
   refine ⟨P₀, PC, ψ, ψ₀, u, m * w i, hg1, hψ, hu, mul_ne_zero hm0 hwi, fun z => ⟨fun hz => ?_, ?_⟩, fun z => ?_⟩
   · have ez : z = fun _ => m * w i * (z i / (m * w i)) := funext fun j => by rw [hi j]; field_simp
     refine ⟨_, ?_, ez⟩
-    rw [← H, hL', ← hc, ← ez]
-    exact hz
+    rwa [← H, hL', ← hc, ← ez]
   · rintro ⟨l, hl, rfl⟩
-    rw [hc, ← hL', H]
-    exact hl
+    rwa [hc, ← hL', H]
   · obtain ⟨P, hP, e1, e2, e3⟩ := hP (m * z)
     refine ⟨P, hP, by rw [hc]; exact e1, by rw [e2, ← hL', H], fun h2 => ?_⟩
     rw [← e3 h2, kx _ fun hz => h2 (e2.2 ((hL' _).1 hz)), H.weierstrassP_mul, hm, inv_inv]
@@ -462,8 +458,7 @@ theorem exists_conj (H : Host E) (L : PeriodPair) (hL : ∀ x, x ∈ L.lattice �
   have e2 : (u.ex fun _ => c * z).left ≫ ψ ≫ ψ₀ = spMap (τ : ℂ →+* ℂ) ≫ (u.ex fun _ => c * z').left ≫ ψ ≫ ψ₀ := by
     have e3 := congrArg (· ≫ ψ ≫ ψ₀) e
     simp only [Category.assoc] at e3
-    rw [reassoc_of% e1] at e3
-    exact e3
+    rwa [reassoc_of% e1] at e3
   have hQ2 := hQ1.map_comp (τ : ℂ →+* ℂ)
   rw [hτ] at hQ2
   rw [a1, b1, SpecMap_ptHom, ptHom_congr W _ _ _ hτ rfl hQ2, ptHom_eq_ptHom_iff] at e2
@@ -571,8 +566,7 @@ theorem fixesCurve_of_weber : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
     by_cases ha : wC H a / n ∈ L.lattice
     · have e' : C.pt (wC H a / n) = C.pt 0 := by simpa [hpt] using ha
       left
-      simp only [T, e']
-      exact h0
+      simpa only [T, e'] using h0
     · obtain ⟨z, hz⟩ := exists_conj_pt h (wC H a / n)
       obtain ⟨hz', e⟩ := hc _ _ hz ha
       rw [hW a ha] at e
@@ -594,7 +588,6 @@ theorem fixesCurve_of_weber : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
     exact absurd ((congrArg (· ≫ io) e').trans ha') ha
   · have e' : C.pt (-(wC H b / n)) = C.pt (wC H b / n) := by
       rw [hpt]; convert (hpt _ _).1 (conj_inj h e) using 1; ring
-    rw [e']
-    exact hb
+    rwa [e']
 
 end GlobalTheory.CompRat.Weber

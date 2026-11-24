@@ -148,8 +148,7 @@ theorem sub_one_iff_entries (Λ : Submodule (𝓞 E) (Fin n → E)) (β : GL (Fi
     set M' : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F) := fun i j => ((t i j : intAf F E) : E ⊗[F] Formalism.L2.Herm.Af F) with hM'
     have hYM : Y - 1 = (g : E ⊗[F] Formalism.L2.Herm.Af F) • M' := by
       ext i j
-      rw [Matrix.sub_apply, hYe, ht i j]
-      rw [Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul]
+      rw [Matrix.sub_apply, hYe, ht i j, Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul]
       rfl
     refine fun v hv => ⟨B *ᵥ (M' *ᵥ (Bi *ᵥ v)), lc_frame_mem hβ _ fun i => ?_, ?_⟩
     · have hc := (hβ v).1 hv
@@ -179,8 +178,7 @@ theorem mem_Kg_iff_redFn : ∀ (D : D7) (β : GL (Fin (Yc D 0).rank) (EAf D)) (x
   intro D β x g hβ hx hg hr
   have hLf := Lf_eq D
   have hSt : x.1 ∈ St β := by
-    rw [stabilizer_eq_stabilizer_lattice _ _ _ _ β hβ, ← hLf]
-    exact hx
+    rwa [stabilizer_eq_stabilizer_lattice _ _ _ _ β hβ, ← hLf]
   obtain ⟨y, hy⟩ := hSt
   have hred : ∀ PP : Pl D.host.E, redFn β PP x.1 = bc (resS D.host.F PP) y := fun PP => by
     rw [← hy, redFn_frGL]
@@ -195,13 +193,11 @@ theorem mem_Kg_iff_redFn : ∀ (D : D7) (β : GL (Fin (Yc D 0).rank) (EAf D)) (x
     refine (hred PP).trans (key.1 (fun v hv => ?_) PP hP)
     obtain ⟨z, hz, e⟩ := hk.2 v ((hv1 v).2 hv)
     refine ⟨z, (hv1 z).1 hz, ?_⟩
-    rw [← hfm]
-    exact e
+    rwa [← hfm]
   · intro h
     refine ⟨hx, fun v hv => ?_⟩
     obtain ⟨z, hz, e⟩ := key.2 (fun PP hP => (hred PP).symm.trans (h PP hP)) v ((hv1 v).1 hv)
     refine ⟨z, (hv1 z).2 hz, ?_⟩
-    rw [hfm]
-    exact e
+    rwa [hfm]
 
 end GlobalTheory.KgFrame

@@ -125,7 +125,6 @@ theorem mem_closure_finRat {z : AE D} (hz : infPart D z = 0) : z ∈ closure (Se
       rw [he]
       exact Continuous.smul (M := AF D.host.F) (X := AE D) continuous_id continuous_const
     have h2 : Continuous fun y : Fin (Module.finrank D.host.F D.host.E) → Af D.host.F => pairA D.host.F 0 (y i) := by
-      show Continuous fun y : Fin (Module.finrank D.host.F D.host.E) → Af D.host.F => ((0 : Ainf D.host.F), y i)
       exact continuous_const.prodMk (continuous_apply i)
     exact h1.comp h2
   have hm : Set.MapsTo (fun y : Fin (Module.finrank D.host.F D.host.E) → Af D.host.F =>
@@ -141,8 +140,7 @@ theorem mem_closure_finRat {z : AE D} (hz : infPart D z = 0) : z ∈ closure (Se
     congr 1
     exact Prod.ext (smul_zero (q i)) ((Algebra.smul_def (q i) (1 : Af D.host.F)).trans (mul_one _))
   have hz' := map_mem_closure hc (hd fun i => sndA D.host.F ((Algebra.TensorProduct.basis (AF D.host.F) (Module.finBasis D.host.F D.host.E)).repr z i)) hm
-  rw [eq_sum_pairA_zero_tmul_finBasis_of_infPart_eq_zero hz]
-  exact hz'
+  rwa [eq_sum_pairA_zero_tmul_finBasis_of_infPart_eq_zero hz]
 
 theorem mem_closure_mat {m n : ℕ} {y : Mx D m n} (hy : y.map (infPart D) = 0) :
     y ∈ closure (Set.range fun ℓ : Matrix (Fin m) (Fin n) D.host.E => (ℓ.map (finRat D) : Mx D m n)) := by
@@ -150,9 +148,7 @@ theorem mem_closure_mat {m n : ℕ} {y : Mx D m n} (hy : y.map (infPart D) = 0) 
     mem_closure_finRat (by simpa using congrFun (congrFun hy i) j)
   have h2 : (y : Fin m → Fin n → AE D) ∈
       closure (Set.univ.pi fun _ : Fin m => Set.univ.pi fun _ : Fin n => Set.range (finRat D)) := by
-    refine mem_closure_pi.mpr fun i _ => ?_
-    refine mem_closure_pi.mpr fun j _ => ?_
-    exact h1 i j
+    exact mem_closure_pi.mpr fun i _ => mem_closure_pi.mpr fun j _ => h1 i j
   refine closure_mono ?_ h2
   intro x hx
   have hx' : ∀ i j, ∃ a, finRat D a = x i j := fun i j => hx i (Set.mem_univ i) j (Set.mem_univ j)
@@ -202,7 +198,6 @@ theorem exists_rat_approx : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T
     x.map (infPart D) = 0 → ∃ (ℓ : Matrix (Fin (Wc D i).rank) (Fin (Vc D i).rank) D.host.E) (w : WO (Vc D i) (Wc D i)),
       w.map (infPart D) = 0 ∧ heisO R.ψ (Vc D i) (Wc D i) w (R.vacP i) = R.vacP i ∧
       x = actO (Vc D i) (Wc D i) 1 g⁻¹ (ratW (Wc D i) (Vc D i) ℓ - GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt (Vc D i) (Wc D i) ℓ) + w := by
-  intro D G _ _ Pl0 T0 A T _ R _ _ hP i g x hx
-  exact exists_approx (hP.vP i A.μ0).1.2.theta g hx
+  exact fun D G _ _ Pl0 T0 A T _ R _ _ hP i g x hx => exists_approx (hP.vP i A.μ0).1.2.theta g hx
 
 end GlobalTheory.FinApprox

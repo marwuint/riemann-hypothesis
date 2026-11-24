@@ -175,8 +175,7 @@ theorem IsAffineQuotient.of_forall_exists_isOpenImmersion [Finite G] {ρ : G →
         congr 1
         exact hequiv g
       have := congr($k2 s)
-      rw [CommRingCat.comp_apply, CommRingCat.comp_apply, he] at this
-      exact this
+      rwa [CommRingCat.comp_apply, CommRingCat.comp_apply, he] at this
     obtain ⟨u, hu⟩ := h'.mem_range_app (j ⁻¹ᵁ j ''ᵁ W') _ hΦinv
     obtain ⟨v, rfl⟩ := (ConcreteCategory.bijective_of_isIso (j.app (j ''ᵁ W'))).2 u
     refine ⟨v, ?_⟩
@@ -497,8 +496,7 @@ theorem π_preimage_opensRange_chart (U : StableAffineOpens ρ) :
       exact (StableAffineOpens.range_map fV r hr).le ⟨w, rfl⟩
     have h2 : x' ∈ PrimeSpectrum.basicOpen (r : Γ(X, V)) := h1
     have h3 : x ∈ X.basicOpen (r : Γ(X, V)) := by
-      rw [← hx', ← Scheme.Hom.mem_preimage, hV.fromSpec_preimage_basicOpen]
-      exact h2
+      rwa [← hx', ← Scheme.Hom.mem_preimage, hV.fromSpec_preimage_basicOpen]
     rw [hr] at h3
     exact StableAffineOpens.toOpens_le fU h3
   · intro hx
@@ -609,8 +607,7 @@ theorem exists_isAffineQuotient_iff [Finite G] (ρ : G →* Aut X) :
   constructor
   · rintro ⟨Y, π, h⟩
     exact h.orbitsInAffineOpens
-  · intro _
-    exact ⟨_, _, finiteQuotient.isAffineQuotient ρ⟩
+  · exact fun _ => ⟨_, _, finiteQuotient.isAffineQuotient ρ⟩
 
 theorem IsAffineQuotient.isAffineOpen_of_preimage [Finite G] {ρ : G →* Aut X} {π : X ⟶ Y}
     (h : IsAffineQuotient ρ π) {W : Y.Opens} (hW : IsAffineOpen (π ⁻¹ᵁ W)) : IsAffineOpen W := by
@@ -633,8 +630,7 @@ theorem IsAffineQuotient.isAffineOpen_of_preimage [Finite G] {ρ : G →* Aut X}
     (U := W) hxW
   have hO : ∀ g, (ρ g).asIso.hom (hW.fromSpec ⟨Q, hQ⟩) ∈ π ⁻¹ᵁ W0 := fun g ↦ by
     show π ((ρ g).asIso.hom (hW.fromSpec ⟨Q, hQ⟩)) ∈ W0
-    rw [← Scheme.Hom.comp_apply, h.comp_eq g]
-    exact hyW0
+    rwa [← Scheme.Hom.comp_apply, h.comp_eq g]
   obtain ⟨t, ht, hxt, htO⟩ :=
     exists_isInvariantSection_basicOpen_le hW (h.preimage_le W) hxW (π ⁻¹ᵁ W0) hO
   obtain ⟨b, rfl⟩ := h.mem_range_app W t ht
@@ -650,8 +646,7 @@ theorem IsAffineQuotient.isAffineOpen_of_preimage [Finite G] {ρ : G →* Aut X}
     rwa [Scheme.basicOpen_res, inf_eq_right.mpr hbW0] at this
   have hbP : b ∈ P := hsP (Ideal.subset_span hbs)
   have hbQ : algebraMap Γ(Y, W) Γ(X, π ⁻¹ᵁ W) b ∈ Q := by
-    rw [← Ideal.mem_under, hQP]
-    exact hbP
+    rwa [← Ideal.mem_under, hQP]
   have hx2 : hW.fromSpec ⟨Q, hQ⟩ ∈ X.basicOpen (π.app W b) := hxt
   have hx3 : (⟨Q, hQ⟩ : PrimeSpectrum Γ(X, π ⁻¹ᵁ W)) ∈
       hW.fromSpec ⁻¹ᵁ X.basicOpen (π.app W b) := hx2
@@ -671,10 +666,7 @@ theorem IsAffineQuotient.comp (h : IsAffineQuotient (ρ.comp φ) π) {τ : G →
   · have := h.isAffineHom
     have := h'.isAffineHom
     infer_instance
-  · intro W a b e
-    apply h'.app_injective W
-    apply h.app_injective (π' ⁻¹ᵁ W)
-    exact e
+  · exact fun W a b e => h'.app_injective W (h.app_injective (π' ⁻¹ᵁ W) e)
   · intro W s hs
     obtain ⟨s₁, rfl⟩ := h.mem_range_app (π' ⁻¹ᵁ W) s fun k ↦ hs (φ k)
     have hs₁ : IsInvariantSection τ (π' ⁻¹ᵁ W) s₁ := by

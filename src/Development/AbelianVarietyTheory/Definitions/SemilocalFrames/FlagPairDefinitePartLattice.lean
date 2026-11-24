@@ -108,8 +108,7 @@ variable {R K V : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K] [AddCo
 theorem _root_.GlobalTheory.HermLat.flip_isSymm (H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V) : H.B.flip.IsSymm := by
   rw [LinearMap.isSymm_def]
   intro x y
-  simp only [LinearMap.flip_apply, starRingEnd_apply]
-  exact H.herm y x
+  simpa only [LinearMap.flip_apply, starRingEnd_apply] using H.herm y x
 
 def IsLatMod (M : Submodule R V) (S I : Submodule K V) : Prop :=
   (∃ N : Submodule R V, N.FG ∧ M = N ⊔ rs R I) ∧ Submodule.span K (M : Set V) = S
@@ -234,8 +233,7 @@ theorem _root_.GlobalTheory.HermLat.mem_isomGrp (H : _root_.Formalism.HermitianL
     s ∈ _root_.GlobalTheory.HermLat.isomGrp H ↔ ∀ x y, H.B (s x) (s y) = H.B x y := by
   unfold _root_.GlobalTheory.HermLat.isomGrp _root_.Formalism.HermitianLatticesTheory.isom
   change (∀ x y : V, H.B.flip (s x) (s y) = H.B.flip x y) ↔ _
-  simp only [LinearMap.flip_apply]
-  exact forall_comm
+  simpa only [LinearMap.flip_apply] using forall_comm
 
 def imLat (s : V ≃ₗ[K] V) (M : Submodule R V) : Submodule R V := Formalism.HermitianLatticesTheory.gmap s M
 
@@ -257,8 +255,7 @@ def genusMean (H : HermSpace K V) (L : Submodule R V) (φ : Submodule R V → EN
 
 theorem isometric_equivalence (H : HermSpace K V) : Equivalence (Isometric (R := R) H) := by
   constructor
-  · intro M
-    exact ⟨1, (isomGrp H).one_mem, Formalism.HermitianLatticesTheory.genusBasic_gmap_one M⟩
+  · exact fun M => ⟨1, (isomGrp H).one_mem, Formalism.HermitianLatticesTheory.genusBasic_gmap_one M⟩
   · rintro M _ ⟨s, hs, rfl⟩
     exact ⟨s⁻¹, (isomGrp H).inv_mem hs, Formalism.HermitianLatticesTheory.genusBasic_gmap_inv s M⟩
   · rintro M _ _ ⟨s, hs, rfl⟩ ⟨t, ht, rfl⟩
@@ -394,8 +391,7 @@ theorem ratLine_isTraceDef : IsTraceDef ratLine := by
     have := Algebra.trace_algebraMap (R := ℚ) (S := ℚ) (x * x)
     simpa using this
   have h2 := mul_self_pos.2 hx
-  rw [← h] at h2
-  exact h2
+  rwa [← h] at h2
 
 theorem ratLine_isLattice :
     Submodule.IsFullLattice ℚ (1 : Submodule (NumberField.RingOfIntegers ℚ) ℚ) := by

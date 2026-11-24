@@ -93,8 +93,7 @@ theorem crd_pt (M : Model σ X W) (x) : crd M (pt M x) = x := by
 
 theorem liftA_evI {c : AF F} (h : c.2 = 0) : liftA (evI F c) = c := by
   refine Prod.ext ?_ ?_
-  · show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (InfiniteAdeleRing.ringEquiv_mixedSpace F c.1) = c.1
-    exact RingEquiv.symm_apply_apply _ _
+  · exact RingEquiv.symm_apply_apply _ _
   · rw [h]; rfl
 
 theorem at_coords (M : Model σ X W) {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : At (evI F) u) :
@@ -195,8 +194,7 @@ theorem realAd_mul_liftA (t : ℝ) (a : mixedEmbedding.mixedSpace F) : realAd F 
   · show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ t) *
       (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm a = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (t • a)
     rw [← map_mul, Algebra.smul_def]
-  · show (0 : Af F) * 0 = 0
-    exact mul_zero _
+  · exact mul_zero _
 
 theorem evI_realAd_mul (t : ℝ) (c : AF F) : evI F (realAd F t * c) = t • evI F c := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F ((realAd F t).1 * c.1) = _
@@ -231,8 +229,7 @@ theorem crd_smul (M : Model σ X W) (t : ℝ) (u : Matrix (Fin n) (Fin d) (AE F 
     crd M (realAd F t • u) = t • crd M u := by
   simp only [crd, map_smul]
   refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;>
-  · show evI F (realAd F t * _) = t • evI F _
-    exact evI_realAd_mul t _
+  · exact evI_realAd_mul t _
 
 end GlobalTheory.FockPair
 
@@ -310,5 +307,4 @@ theorem GlobalTheory.FockPair.exists_fock_cx : ∀ (F E : Type) [Field F] [Numbe
   have e2 := congrArg (fun g : SInf F (Fin n × Fin d) => g x) e
   simp only [SchwartzMap.smul_apply, smul_eq_mul, dOp_apply, lin] at e2
   show GlobalTheory.GaussLine.dHeis _ (jF M τ ξ ε w) _ x = _
-  simp only [GlobalTheory.GaussLine.dHeis, GlobalTheory.GaussLine.pairInf_apply]
-  exact e2
+  simpa only [GlobalTheory.GaussLine.dHeis, GlobalTheory.GaussLine.pairInf_apply] using e2

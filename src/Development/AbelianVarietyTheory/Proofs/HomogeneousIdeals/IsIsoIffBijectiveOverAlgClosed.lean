@@ -103,8 +103,7 @@ theorem isIso_iff_bijective_algClosed {X Y : Scheme.{u}} (f : X ⟶ Y) [IsFinite
     IsIso f ↔ ∀ (k : Type u) [Field k] [IsAlgClosed k],
       Function.Bijective fun x : Spec (.of k) ⟶ X ↦ x ≫ f := by
   constructor
-  · intro _ k _ _
-    exact ⟨fun a b h ↦ (cancel_mono f).mp h, fun y ↦ ⟨y ≫ inv f, by simp⟩⟩
+  · exact fun _ k _ _ => ⟨fun a b h ↦ (cancel_mono f).mp h, fun y ↦ ⟨y ≫ inv f, by simp⟩⟩
   intro h
   have hsurj : Function.Surjective f := by
     intro y
@@ -142,8 +141,7 @@ theorem isIso_iff_bijective_over_algClosed (f : X ⟶ Y)
   have := isFinite_left f
   have := etale_left f
   constructor
-  · intro _ k _ _ s
-    exact ⟨fun a b h ↦ (cancel_mono f).mp h, fun y ↦ ⟨y ≫ inv f, by simp⟩⟩
+  · exact fun _ k _ _ s => ⟨fun a b h ↦ (cancel_mono f).mp h, fun y ↦ ⟨y ≫ inv f, by simp⟩⟩
   intro h
   rw [isIso_iff_isIso_left, isIso_iff_bijective_algClosed]
   intro k _ _
@@ -196,8 +194,7 @@ theorem comp_eq_comp_iff_range (f g : X ⟶ Y) [LocallyOfFiniteType Y.hom]
 theorem range_subset_iff_factors {T : Scheme.{u}} (t : T ⟶ S) (U : S.Opens) :
     Set.range t ⊆ U ↔ ∃ t' : T ⟶ U, t' ≫ U.ι = t := by
   constructor
-  · intro h
-    exact ⟨IsOpenImmersion.lift U.ι t (by simpa using h), IsOpenImmersion.lift_fac _ _ _⟩
+  · exact fun h => ⟨IsOpenImmersion.lift U.ι t (by simpa using h), IsOpenImmersion.lift_fac _ _ _⟩
   · rintro ⟨t', rfl⟩ _ ⟨x, rfl⟩
     rw [Scheme.Hom.comp_apply, ← Scheme.Opens.range_ι]
     exact ⟨_, rfl⟩
@@ -341,8 +338,7 @@ theorem IsSplitOfRank.of_isPullback {X S X' S' : Scheme.{u}} {a : X' ⟶ X} {q :
   refine ⟨fun i ↦ H.lift (t ≫ s i) (𝟙 S') (by simp [hs]), fun i ↦ H.lift_snd _ _ _,
     fun i ↦ MorphismProperty.of_isPullback (P := @IsOpenImmersion)
       (isPullback_section H (s i) (hs i)).flip (ho i), fun x ↦ ?_⟩
-  simp only [range_of_isPullback (isPullback_section H _ (hs _)), Set.mem_preimage]
-  exact hx (a x)
+  simpa only [range_of_isPullback (isPullback_section H _ (hs _)), Set.mem_preimage] using hx (a x)
 
 theorem IsSplitOfRank.pullback_snd {X S S' : Scheme.{u}} {p : X ⟶ S} {n : ℕ}
     (h : IsSplitOfRank p n) (t : S' ⟶ S) : IsSplitOfRank (pullback.snd p t) n :=
@@ -361,8 +357,7 @@ theorem isSplitOfRank_zero_iff {X S : Scheme.{u}} (p : X ⟶ S) :
   constructor
   · rintro ⟨s, -, -, hx⟩
     exact ⟨fun x ↦ (hx x).exists.choose.elim0⟩
-  · intro h
-    exact ⟨Fin.elim0, fun i ↦ i.elim0, fun i ↦ i.elim0, fun x ↦ h.elim x⟩
+  · exact fun h => ⟨Fin.elim0, fun i ↦ i.elim0, fun i ↦ i.elim0, fun x ↦ h.elim x⟩
 
 theorem IsSplitOfRank.succ {X V S : Scheme.{u}} {p : X ⟶ S} (σ : S ⟶ X) (hσ : σ ≫ p = 𝟙 S)
     [IsOpenImmersion σ] (j : V ⟶ X) [IsOpenImmersion j] (hj : Set.range j = (Set.range σ)ᶜ)
@@ -385,8 +380,7 @@ theorem IsSplitOfRank.succ {X V S : Scheme.{u}} {p : X ⟶ S} (σ : S ⟶ X) (h�
   · obtain ⟨v, rfl⟩ := hj.ge hxσ
     obtain ⟨i, ⟨y, rfl⟩, hi⟩ := hx v
     refine ⟨i.succ, ?_, fun k hk ↦ ?_⟩
-    · simp only [Fin.cons_succ]
-      exact ⟨y, Scheme.Hom.comp_apply _ _ _⟩
+    · simpa only [Fin.cons_succ] using ⟨y, Scheme.Hom.comp_apply _ _ _⟩
     induction k using Fin.cases
     · exact (hxσ (by simpa using hk)).elim
     · simp only [Fin.cons_succ] at hk

@@ -78,8 +78,7 @@ theorem entire_hom_eq_cexp_fderiv {V : Type*} [NormedAddCommGroup V] [NormedSpac
       have := HasFDerivAt.comp (f := fun u => u - w) w h1 ((hasFDerivAt_id w).sub_const w)
       simpa [Function.comp_def] using this
     have h3 := h2.const_mul (h w)
-    rw [← e] at h3
-    exact h3
+    rwa [← e] at h3
   have hφ : ∀ w, HasFDerivAt (fun u => h u * cexp (-(B u))) (0 : V →L[ℂ] ℂ) w := by
     intro w
     have h1 : HasFDerivAt (fun u => cexp (-(B u))) (cexp (-(B w)) • (-B)) w :=
@@ -87,8 +86,7 @@ theorem entire_hom_eq_cexp_fderiv {V : Type*} [NormedAddCommGroup V] [NormedSpac
     have h2 := (hder w).mul h1
     have e : h w • cexp (-B w) • -B + cexp (-B w) • h w • B = 0 := by
       rw [smul_comm (h w) (cexp (-B w)), smul_neg, smul_neg, neg_add_cancel]
-    rw [e] at h2
-    exact h2
+    rwa [e] at h2
   have hc := is_const_of_fderiv_eq_zero (𝕜 := ℂ) (f := fun u => h u * cexp (-(B u)))
     (fun w => (hφ w).differentiableAt) (fun w => (hφ w).fderiv) z 0
   simp only [h0, map_zero, neg_zero, Complex.exp_zero, mul_one] at hc
@@ -256,7 +254,6 @@ theorem automorphyFactor_exp_linear_of_cube :
     rw [hBadd]; rfl
   · intro l i z hz
     have e := hexp l z
-    rw [hα l i z hz, div_eq_iff (hf0' _ _ ((hWp _ z l l.2).2 hz))] at e
-    exact e
+    rwa [hα l i z hz, div_eq_iff (hf0' _ _ ((hWp _ z l l.2).2 hz))] at e
 
 end GlobalTheory

@@ -78,12 +78,10 @@ theorem mem_nhds_iff_lt {s : Set K} {x : K} :
       rw [map_zero] at hc'
       exact γ.ne_zero hc'.symm
     · change (Valued.v : Valuation K Γ).restrict (y - x) < γ.1
-      rw [← hc', Valuation.restrict_lt_iff]
-      exact hy
+      rwa [← hc', Valuation.restrict_lt_iff]
   · rintro ⟨c, hc, h⟩
     have h' : (Valued.v : Valuation K Γ).restrict c ≠ 0 := by simp [hc]
-    refine ⟨Units.mk0 _ h', fun y hy => h ?_⟩
-    exact (Valuation.restrict_lt_iff _).1 hy
+    exact ⟨Units.mk0 _ h', fun y hy => h ((Valuation.restrict_lt_iff _).1 hy)⟩
 
 theorem continuous_act_of_orbits {G : Type} [TopologicalSpace G] (σ : G → (K ≃+* K))
     (hσ : ∀ g x y, Valued.v x < Valued.v y → Valued.v (σ g x) < Valued.v (σ g y))
@@ -97,8 +95,7 @@ theorem continuous_act_of_orbits {G : Type} [TopologicalSpace G] (σ : G → (K 
   have hcb : σ g₀ b = c := by simp [hb]
   have h1 : ∀ᶠ g in 𝓝 g₀, Valued.v (σ g b) = Valued.v c := by
     have := (ho b).continuousAt (x := g₀) (hcb ▸ Valued.locally_const (x := c) (by simpa using hc))
-    rw [← hcb]
-    exact this
+    rwa [← hcb]
   have h2 : ∀ᶠ g in 𝓝 g₀, Valued.v (σ g x₀ - σ g₀ x₀) < Valued.v c :=
     (ho x₀).continuousAt (x := g₀) (mem_nhds_iff_lt.2 ⟨c, hc, subset_rfl⟩)
   have h3 : ∀ᶠ x in 𝓝 x₀, Valued.v (x - x₀) < Valued.v b :=

@@ -69,8 +69,7 @@ theorem ext_orbit {p q : ℕ} {T : GrpData p q} (D : DSRep T) (u : D.U.H) (hu : 
   have hinv : ∀ g, ∀ x ∈ S, D.U.π g x ∈ S := by
     intro g x hx g'
     have := hx (g' * g)
-    rw [map_mul] at this
-    exact this
+    rwa [map_mul] at this
   rcases D.irred S hcl hinv with h0 | h1
   · have : u ∈ S := h
     rw [h0] at this
@@ -78,8 +77,7 @@ theorem ext_orbit {p q : ℕ} {T : GrpData p q} (D : DSRep T) (u : D.U.H) (hu : 
   · ext x
     have hx : x ∈ S := by rw [h1]; trivial
     have := hx 1
-    rw [map_one] at this
-    exact this
+    rwa [map_one] at this
 
 theorem isHomG_ext {p q : ℕ} {T : GrpData p q} (D : DSRep T) (πU : URep T) (u : D.U.H)
     (hu : u ≠ 0) (A B : D.U.H →L[ℂ] πU.H) (hA : ∀ g x, A (D.U.π g x) = πU.π g (A x))
@@ -102,8 +100,7 @@ theorem exists_tensor_embedding :
           inner ℂ y y' * inner ℂ (D.ι v) (D.U.π g (D.ι v))
         rw [hG, hiov, hj, mcoef, mul_comm])
     have h2 := congrArg (fun f : D.U.H →L[ℂ] ℂ => f x') this
-    rw [mul_comm]
-    exact h2
+    rwa [mul_comm]
   have key2 : ∀ y y' g x', inner ℂ (io y (D.U.π g (D.ι v))) (io y' x') =
       inner ℂ (D.U.π g (D.ι v)) x' * inner ℂ y y' := by
     intro y y' g x'
@@ -116,8 +113,7 @@ theorem exists_tensor_embedding :
           inner ℂ y y' * inner ℂ x (D.U.π g (D.ι v))
         rw [← inner_conj_symm, key2, map_mul, inner_conj_symm, inner_conj_symm, mul_comm])
     have h2 := congrArg (fun f : D.U.H →L[ℂ] ℂ => f x') this
-    rw [mul_comm]
-    exact h2
+    rwa [mul_comm]
   have hnorm : ∀ x y, ‖io y x‖ ≤ 1 * ‖x‖ * ‖y‖ := by
     intro x y
     have h := key x x y y

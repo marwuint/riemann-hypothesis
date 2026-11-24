@@ -180,8 +180,7 @@ theorem coord (S : Strat bk d) {B C Q Q' : Obj l ↥(OL K)} {N : Type} [AddCommG
       a'.f c ^ S.a • (S.A.map (BK.hf (a'.comp f))).mulVec fun j => Q'.D.φ (V.v (a'.comp h) (a'.comp f) x j) := by
     have e := push S a' f c (V.v h f x)
     rw [← hw] at e
-    simp only [natC] at e
-    exact e
+    simpa only [natC] using e
   have e3 := push S h' g (a.f t) (V.v a g x)
   simp only [nat', ht] at e3
   have hF := frob_change S (h'.comp g) (a'.comp f) _ _ (V.v_ε (a'.comp h) (h'.comp g) (a'.comp f) x)
@@ -470,8 +469,7 @@ theorem lift_solution_of_step {A B : Type} [CommRing A] [CommRing B] (I : Ideal 
       exact this)
     refine ⟨Classical.choose h, fun n => ?_⟩
     have := Classical.choose_spec h n
-    rw [SModEq.sub_mem, pow_smul_top_eq] at this
-    exact this
+    rwa [SModEq.sub_mem, pow_smul_top_eq] at this
   let z' : Fin d → A := fun i => Classical.choose (hlim i)
   have hz' : ∀ i n, g n i - z' i ∈ I ^ n := fun i => Classical.choose_spec (hlim i)
   refine ⟨z', fun i => ?_, ?_⟩
@@ -486,8 +484,7 @@ theorem lift_solution_of_step {A B : Type} [CommRing A] [CommRing B] (I : Ideal 
     rw [SModEq.sub_mem, sub_zero, pow_smul_top_eq]
     have hd : res (g k) i - res z' i ∈ J ^ k := by
       rw [hres_sub]
-      refine Ideal.sub_mem _ (hp k (hz' i k)) ?_
-      exact mulVec_mem_of_mem E _ _ (fun j => hq k (hz' j k)) i
+      exact Ideal.sub_mem _ (hp k (hz' i k)) (mulVec_mem_of_mem E _ _ (fun j => hq k (hz' j k)) i)
     have hr : res (g k) i ∈ J ^ k := Ideal.pow_le_pow_right (by omega) (hgres k i)
     have := Ideal.sub_mem _ hr hd
     simpa [res] using this
@@ -673,8 +670,7 @@ theorem exists_lift : ∀ (A : Type) [CommRing A] (𝔞 : Ideal A) [IsAdicComple
     have h1 : E y = y := congrArg Subtype.val (hq y)
     rw [hu, LinearMap.comp_apply, ← hred, h1]
     have := LinearMap.congr_fun hw0 (y : Fin n → A)
-    rw [LinearMap.comp_apply, LinearMap.comp_apply, hq] at this
-    exact this
+    rwa [LinearMap.comp_apply, LinearMap.comp_apply, hq] at this
   refine ⟨w0 ∘ₗ s, key, fun w hw => ?_⟩
   ext z
   obtain ⟨y, rfl⟩ := u_surj z
@@ -1265,8 +1261,7 @@ theorem isLocalizedModule_fracMap {A : Type} [CommRing A] (t : A) {N P : Type} [
     have h1 := hk (((c : A) * s) • (x - y)) (by
       rw [map_smul, map_sub, smul_sub, sub_eq_zero, mul_smul, mul_smul]
       exact h)
-    rw [smul_smul, smul_sub, sub_eq_zero] at h1
-    exact h1
+    rwa [smul_smul, smul_sub, sub_eq_zero] at h1
 
 theorem semiBC_localized (A : Type) [CommRing A] (φ : A →+* A) (t : A) (N : Type) [AddCommGroup N] [Module A N]
     (P : Type) [AddCommGroup P] [Module A P] (u : N →ₛₗ[φ] P) (hu : SemiBC u) (L : P →ₗ[A] N) (n a : ℕ)
@@ -1827,8 +1822,7 @@ theorem eq_sum_of_coord {B : Obj l ↥(OL K)} {N : Type} [AddCommGroup N] [Modul
   change _ = w _
 
   rw [h, map_sum]
-  simp only [map_smul, he']
-  exact (sum_single c).symm
+  simpa only [map_smul, he'] using (sum_single c).symm
 
 theorem coord_psi {B : Obj l ↥(OL K)} {N : Type} [AddCommGroup N] [Module B.A N] (V : Eval S B N)
     (f : Hom bk.prism B) (t : B.A) (ht : t = BK.hf f bk.E) (Ψ : N →ₛₗ[B.D.φ] N) (hΨ : IsPsi V t Ψ) (x : N)
@@ -1848,8 +1842,7 @@ theorem exists_framed (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : �
     fun g j => by
       ext i
       have := (V bk.prism).v_nat g (Hom.id _) (Hom.id _) (e j) i
-      rw [he, map_single] at this
-      exact this
+      rwa [he, map_single] at this
   refine ⟨M, e, ⟨fun {B} f g j => ?_, fun j => ?_⟩⟩
   · have h1 : ∀ (g : Hom bk.prism B) x, (V B).v (Hom.id B) f (M.tr g x) = (V bk.prism).v g f x :=
       fun g x => htr _ _ B g (Hom.id B) f x

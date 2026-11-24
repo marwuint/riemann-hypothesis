@@ -65,18 +65,15 @@ theorem gram_of_orth {E : Type} [Field E] [StarRing E] (σ : E →+* E) (hσ : �
     intro a
     rw [Matrix.star_apply, LinearMap.toMatrix'_apply, LinearMap.toMatrix'_apply, hσ]
     rfl
-  rw [Finset.sum_congr rfl fun a _ => hl a, h]
-  rw [Finset.sum_eq_single i, Finset.sum_eq_single k]
+  rw [Finset.sum_congr rfl fun a _ => hl a, h, Finset.sum_eq_single i, Finset.sum_eq_single k]
   · simp
   · intro b _ hb
     simp [hb]
-  · intro hh
-    exact absurd (Finset.mem_univ _) hh
+  · exact fun hh => absurd (Finset.mem_univ _) hh
   · intro b _ hb
     refine Finset.sum_eq_zero fun b' _ => ?_
     simp [Pi.single_apply, hb]
-  · intro hh
-    exact absurd (Finset.mem_univ _) hh
+  · exact fun hh => absurd (Finset.mem_univ _) hh
 
 theorem toMatrix_toLE {E : Type} [Field E] {N : ℕ} (γ : GL (Fin N) E) :
     LinearMap.toMatrix' ((toLE γ : (Fin N → E) ≃ₗ[E] (Fin N → E)) : (Fin N → E) →ₗ[E] (Fin N → E)) = γ := by
@@ -140,12 +137,10 @@ theorem GlobalTheory.TwV.Xc.eMat_unitary_det : ∀ (E : Type) [Field E] [NumberF
   have hco : IsOrthCo σ J (stdCo σ J) := by
     refine Classical.epsilon_spec (p := IsOrthCo σ J) ⟨toLE crd, ?_⟩
     refine orth_of_gram σ J _ ?_
-    rw [toMatrix_toLE]
-    exact hcrd
+    rwa [toMatrix_toLE]
   refine ⟨hco, fun g hg => ?_⟩
   have hg' : star (g : Matrix (Fin a) (Fin a) E) * J * (g : Matrix (Fin a) (Fin a) E) = J := by
-    rw [star_eq_cT σ hσ]
-    exact hg
+    rwa [star_eq_cT σ hσ]
   unfold eMat
   rw [toMatrix_stdG]
   refine ⟨unit_mat' rfl _ _ _ J (gram_of_orth σ hσ J _ hco) hg' (toMatrix_co_mul_symm _), ?_⟩

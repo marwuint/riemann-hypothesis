@@ -102,8 +102,7 @@ theorem exists_gl_adapted_chain : ∀ {K : Type} [Field K] {n m : ℕ} (Y : Fin 
   let d : Fin m → ℕ := fun j => r j.succ - r j.castSucc
   let R : ℕ → ℕ := fun k => r ⟨min k m, by omega⟩
   have hRmono : Monotone R := by
-    intro a b hab
-    exact Submodule.finrank_mono (hmono (Fin.mk_le_mk.2 (min_le_min_right m hab)))
+    exact fun a b hab => Submodule.finrank_mono (hmono (Fin.mk_le_mk.2 (min_le_min_right m hab)))
   have hsum : ∑ j, d j = n := by
     have e1 : ∑ j, d j = ∑ k ∈ Finset.range m, (R (k + 1) - R k) := by
       rw [← Fin.sum_univ_eq_sum_range]
@@ -179,8 +178,7 @@ theorem exists_gl_adapted_chain : ∀ {K : Type} [Field K] {n m : ℕ} (Y : Fin 
     intro y
     have := Module.Basis.toMatrix_mulVec_repr pf Bas y
     have hy : ⇑(pf.repr y) = y := funext fun i => by simp [pf]
-    rw [hy] at this
-    exact this
+    rwa [hy] at this
   refine ⟨d, hsum, g, fun j y => ?_⟩
   have hYj : Y j = Submodule.span K (Bas '' {i | ((GlobalTheory.SmGL.blk (GlobalTheory.SmGL.stdBlocks d hsum) i : Fin m) : ℕ) < j}) := by
     rw [hBas, ← hsub, ← hspan j (by omega)]
@@ -544,11 +542,9 @@ theorem blk_two_stdSum {a b r : ℕ} (h : a + b = r) (i : Fin r) :
   obtain ⟨x | x, rfl⟩ := (stdSum h).surjective i
   · rw [show blk (two (stdSum h)) (stdSum h (Sum.inl x)) = false from blk_apply (two (stdSum h)) false x]
     have := x.isLt
-    simp only [stdSum_inl]
-    exact (decide_eq_false (by omega)).symm
+    simpa only [stdSum_inl] using (decide_eq_false (by omega)).symm
   · rw [show blk (two (stdSum h)) (stdSum h (Sum.inr x)) = true from blk_apply (two (stdSum h)) true x]
-    simp only [stdSum_inr]
-    exact (decide_eq_true (by omega)).symm
+    simpa only [stdSum_inr] using (decide_eq_true (by omega)).symm
 
 theorem decide_lt_decide (p q : Prop) [Decidable p] [Decidable q] : decide p < decide q ↔ ¬ p ∧ q := by
   by_cases hp : p <;> by_cases hq : q <;> simp [hp, hq]
@@ -711,8 +707,7 @@ theorem mem_map_iff (e : G ≃ₜ* H) (N : Subgroup G) (u : H) : u ∈ N.map (e 
   constructor
   · rintro ⟨n, hn, rfl⟩
     simpa using hn
-  · intro hu
-    exact ⟨_, hu, e.apply_symm_apply u⟩
+  · exact fun hu => ⟨_, hu, e.apply_symm_apply u⟩
 
 def mapSubgroupEquiv (e : G ≃ₜ* H) (N : Subgroup G) : N ≃ₜ* N.map (e : G →* H) where
   toFun := fun n => ⟨e n, Subgroup.mem_map_of_mem _ n.2⟩

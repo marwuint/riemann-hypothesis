@@ -115,8 +115,7 @@ theorem isFinite_lift_restrict {Y Z U V A A' : Scheme.{0}} {g : Y ⟶ Z} {gU : U
     · rw [pullback.lift_fst, pullback.lift_fst]
       exact p.flip
     · apply pullback.hom_ext
-      · simp only [pullback.lift_fst, pullback.lift_fst_assoc, Category.assoc]
-        exact p.w.symm
+      · simpa only [pullback.lift_fst, pullback.lift_fst_assoc, Category.assoc] using p.w.symm
       · simp only [Category.assoc, pullback.lift_snd]
   exact MorphismProperty.of_isPullback (P := @IsFinite) htop h
 
@@ -161,8 +160,7 @@ theorem exists_isInc {O : Type} [CommRing O] (i : O →+* ℂ) (hi : Function.In
   let e := RingEquiv.ofBijective i.rangeRestrict
     ⟨fun a b hab => hi (congrArg Subtype.val hab), i.rangeRestrict_surjective⟩
   refine ⟨e.symm.toRingHom.comp (Subring.inclusion hle), fun x => ?_⟩
-  have hx := congrArg Subtype.val (e.apply_symm_apply (Subring.inclusion hle x))
-  exact hx
+  exact congrArg Subtype.val (e.apply_symm_apply (Subring.inclusion hle x))
 
 theorem exists_map_top (L₁ : Out.Laws) (L₂ : Out.Laws2) (L₃ : Out.Laws3) {D : Datum H} {Xo : ∀ l : Level H, Moduli D l}
     {n N : ℕ} {T : Top Xo n N} (hN : ToroidalLevelCompatibility (H := H) (D := D)) {l₀ : Level H} (B : BaseModel T l₀) {l : Level H}

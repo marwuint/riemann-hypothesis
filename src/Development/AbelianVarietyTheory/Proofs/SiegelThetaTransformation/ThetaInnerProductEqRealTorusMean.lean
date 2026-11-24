@@ -108,10 +108,7 @@ theorem discrete_image [T2Space G] [T2Space V] [LocallyCompactSpace V] (hR : Con
   constructor
   · rintro ⟨hvK, hvB⟩
     by_contra hne
-    apply hvB
-    refine ⟨⟨hv, interior_subset hvK⟩, ?_⟩
-    intro h0
-    exact hne (Subtype.ext h0)
+    exact hvB ⟨⟨hv, interior_subset hvK⟩, fun h0 => hne (Subtype.ext h0)⟩
   · intro h0
     have hv0 : v = 0 := congrArg Subtype.val h0
     subst hv0
@@ -171,8 +168,7 @@ theorem integral_eq_mean [LocallyCompactSpace V] [SecondCountableTopology V] [T2
     intro w hw
     have hu : w - R (p w) ∈ U := (mem_tube p R U w).mp hw
     have h1 := hhU _ hu (R (p w))
-    rw [show R (p w) + (w - R (p w)) = w by abel] at h1
-    exact h1
+    rwa [show R (p w) + (w - R (p w)) = w by abel] at h1
   have hΓT : ∀ γ ∈ Γ, γ ∈ tube p R U → p γ = 0 → γ = 0 := by
     intro γ hγ hγt h0
     apply hinj γ hγ
@@ -213,8 +209,7 @@ theorem integral_eq_mean [LocallyCompactSpace V] [SecondCountableTopology V] [T2
         rw [add_assoc]
         exact (tube p R U).add_mem hγ't hγw
       · show p (γ' + γ + w) ∈ Fd
-        rw [add_assoc, map_add (f := _), hpl]
-        exact hl
+        rwa [add_assoc, map_add (f := _), hpl]
     · intro γ₁ γ₂ hne
       show μ ((γ₁ +ᵥ ((tube p R U : Set G) ∩ p ⁻¹' Fd)) ∩ (γ₂ +ᵥ ((tube p R U : Set G) ∩ p ⁻¹' Fd))) = 0
       have hδΓ : (γ₁ : G) - γ₂ ∈ Γ := Γ.sub_mem γ₁.2 γ₂.2
@@ -225,8 +220,7 @@ theorem integral_eq_mean [LocallyCompactSpace V] [SecondCountableTopology V] [T2
         have hN : ν (Fd ∩ ((⟨p ((γ₁ : G) - γ₂), hlL⟩ : L) +ᵥ Fd)) = 0 := by
           have := hFd.aedisjoint
             (show (0 : L) ≠ ⟨p ((γ₁ : G) - γ₂), hlL⟩ from fun h => hl0 (congrArg Subtype.val h).symm)
-          rw [Function.onFun, zero_vadd] at this
-          exact this
+          rwa [Function.onFun, zero_vadd] at this
         refine measure_mono_null ?_ (show μ ((fun w => -(γ₂ : G) + w) ⁻¹' ((tube p R U : Set G) ∩
             p ⁻¹' (Fd ∩ ((⟨p ((γ₁ : G) - γ₂), hlL⟩ : L) +ᵥ Fd)))) = 0 by
           rw [measure_preimage_add]
@@ -262,9 +256,7 @@ theorem integral_eq_mean [LocallyCompactSpace V] [SecondCountableTopology V] [T2
     rw [setIntegral_map (f := fun v => h (R v)) hFd₀m
       (show Continuous (fun v => h (R v)) from hc.comp hR).aestronglyMeasurable hpm.aemeasurable,
       Measure.restrict_restrict (hpm hFd₀m), Set.inter_comm]
-    apply setIntegral_congr_fun ((hpm hFd₀m).inter hTm)
-    intro w hw
-    exact hfac w hw.2
+    exact setIntegral_congr_fun ((hpm hFd₀m).inter hTm) (fun w hw => hfac w hw.2)
   have hmass : (c : ENNReal) * ν Fd = 1 := by
     have e2 : μ ((tube p R U : Set G) ∩ p ⁻¹' toMeasurable ν Fd) = (c : ENNReal) * ν Fd := by
       rw [Set.inter_comm, ← Measure.restrict_apply (hpm hFd₀m), ← Measure.map_apply hpm hFd₀m, hcν]
@@ -338,8 +330,7 @@ theorem nsmul_cancel_tensor {F A B : Type} [Field F] [CharZero F] [CommRing A] [
     {m n N : ℕ} (hN : 0 < N) {w w' : Matrix (Fin m) (Fin n) (A ⊗[F] B)} (h : N • w = N • w') : w = w' := by
   have hN' : (N : F) ≠ 0 := by exact_mod_cast hN.ne'
   have h' : (N : F) • w = (N : F) • w' := by
-    rw [Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]
-    exact h
+    rwa [Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]
   exact smul_right_injective _ hN' h'
 
 theorem nsmul_cancel {N : ℕ} (hN : 0 < N) {w w' : WO S T} (h : N • w = N • w') : w = w' := nsmul_cancel_tensor (F := D.host.F) hN h
@@ -352,13 +343,11 @@ theorem eq_zero_of_embR {y : Matrix (Fin n) (Fin r) E} (h : embR X y = 0) : y = 
   ext k a
   obtain ⟨τ0⟩ : Nonempty (E →+* ℂ) := inferInstance
   by_cases hτ : τ0 ∈ X.Ψ
-  · have h1 := congrFun (congrFun (congrFun h ⟨τ0, hτ⟩) k) a
-    simpa [embR] using h1
+  · simpa [embR] using congrFun (congrFun (congrFun h ⟨τ0, hτ⟩) k) a
   · have hc : ComplexEmbedding.conjugate τ0 ∈ X.Ψ := by
       by_contra hc
       exact hτ ((X.cmType τ0).mpr hc)
-    have h1 := congrFun (congrFun (congrFun h ⟨_, hc⟩) k) a
-    simpa [embR] using h1
+    simpa [embR] using congrFun (congrFun (congrFun h ⟨_, hc⟩) k) a
 
 theorem embR_smul (N : ℕ) (y : Matrix (Fin n) (Fin r) E) : embR X (N • y) = N • embR X y := by
   funext τ k a
@@ -576,8 +565,7 @@ theorem ipO_eq_mean : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ (μ : Measur
   have hFR : (fun v => h (R v)) = F := by
     funext v
     have := hF (R v) (hRv v).1
-    rw [(hRv v).2] at this
-    exact this
+    rwa [(hRv v).2] at this
   show ∫ w in 𝓕, h w ∂μ = _
   rw [key, hFR]
 

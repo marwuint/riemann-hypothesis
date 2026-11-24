@@ -133,8 +133,7 @@ theorem charpoly_dvd_map_of_aeval_eq_zero (B : InvAlg K) (hs : B.P.Separable) (f
     B.P ∣ f.map (algebraMap K.O K.E) := by
   have h0 : aeval (LinearMap.mulLeft K.E B.g) (f.map (algebraMap K.O K.E)) = 0 := by
     have := Polynomial.aeval_algHom_apply (Algebra.lmul K.E B.A) B.g (f.map (algebraMap K.O K.E))
-    rw [aeval_map_algebraMap K.E B.g f, hf, map_zero] at this
-    exact this
+    rwa [aeval_map_algebraMap K.E B.g f, hf, map_zero] at this
   by_cases hz : f.map (algebraMap K.O K.E) = 0
   · rw [hz]; exact dvd_zero _
   classical
@@ -195,8 +194,7 @@ theorem valuation_conj (x : K.E) : (IsDiscreteValuationRing.maximalIdeal K.O).va
     have h1 : v (a / b) ≤ 1 := by
       rw [map_div₀]; exact div_le_one_of_le₀ h zero_le
     have h2 := val_conj_le _ h1
-    rw [map_div₀, map_div₀, div_le_one₀ (zero_lt_iff.2 (by simpa using hb))] at h2
-    exact h2
+    rwa [map_div₀, map_div₀, div_le_one₀ (zero_lt_iff.2 (by simpa using hb))] at h2
   obtain ⟨π, hπ⟩ := (IsDiscreteValuationRing.maximalIdeal K.O).valuation_exists_uniformizer K.E
   rw [← hv] at hπ
   have hπ0 : π ≠ 0 := by
@@ -270,8 +268,7 @@ theorem mem_mulLat (t : Aˣ) (L : Submodule O A) (y : A) : y ∈ mulLat O (t : A
   constructor
   · rintro ⟨z, hz, rfl⟩
     simpa using hz
-  · intro h
-    exact ⟨_, h, by simp⟩
+  · exact fun h => ⟨_, h, by simp⟩
 
 theorem stabLat_mulLat (t : Aˣ) (L : Submodule O A) : stabLat O (mulLat O (t : A) L) = stabLat O L := by
   ext s
@@ -437,8 +434,7 @@ theorem prod_P (B₁ B₂ : InvAlg K) : (B₁.prod B₂).P = B₁.P * B₂.P := 
       (LinearMap.mulLeft K.E B₁.g).prodMap (LinearMap.mulLeft K.E B₂.g) := by
     ext <;> simp
   have h2 := LinearMap.charpoly_prodMap (LinearMap.mulLeft K.E B₁.g) (LinearMap.mulLeft K.E B₂.g)
-  rw [← this] at h2
-  exact h2
+  rwa [← this] at h2
 
 theorem one_sub_fixed (B : InvAlg K) {e : B.A} (he : B.σ e = e) : B.σ (1 - e) = 1 - e := by
   rw [map_sub, map_one, he]

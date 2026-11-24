@@ -200,9 +200,7 @@ theorem locPair_swap : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero
     fun x hx => intMat_cT hv (intMat_mul (intMat_mul hT1 hx) hS2)
   have hvac : ∀ s, LocVac ρ s → LocVac (fun X => ρ (adj σ JS JT X)) s := fun s hs u hu => hs _ (hai u hu)
   have hvac' : ∀ s, LocVac (fun X => ρ (adj σ JS JT X)) s → LocVac ρ s := fun s hs u hu => by
-    have h1 := hs _ (hprei u hu)
-    simp only [adj_pre hσ] at h1
-    exact h1
+    simpa only [adj_pre hσ] using hs _ (hprei u hu)
   have hrange : ∀ s : M, Set.range (fun x => ρ x s) ⊆ Set.range (fun X => ρ (adj σ JS JT X) s) := by
     rintro s _ ⟨x, rfl⟩
     exact ⟨(Formalism.UG.cT σ ((JT : Matrix (Fin n') (Fin n') L) * x * ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L))), by simp only [adj_pre hσ]⟩
@@ -228,8 +226,7 @@ theorem locPair_swap : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero
     · intro g h x
       show ω (h, g) * ρ (adj σ JS JT _) = ρ (adj σ JS JT _) * ω (h, g)
       rw [hp.norm h g, adj_norm σ JS JT (h : GL (Fin n) L) (g : GL (Fin n') L) h.2 ((Formalism.UG.UJ σ _).inv_mem g.2)]
-    · intro g h hg hh s hs
-      exact hp.fix h g hh hg s (hvac' s hs)
+    · exact fun g h hg hh s hs => hp.fix h g hh hg s (hvac' s hs)
   · rw [eq_top_iff, ← hs]
     exact Submodule.span_mono (hrange s)
 

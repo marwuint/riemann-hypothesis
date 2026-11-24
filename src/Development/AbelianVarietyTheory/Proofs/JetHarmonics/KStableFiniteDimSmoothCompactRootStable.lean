@@ -82,8 +82,7 @@ private lemma exp_real_smul_mem_UJset_of_inG {n : ℕ} (M Y : Matrix (Fin n) (Fi
   refine ⟨?_, ?_⟩
   · show (NormedSpace.exp Y)ᴴ * M * NormedSpace.exp Y = M
     rw [Matrix.mul_assoc, hcm.eq, ← Matrix.mul_assoc, hu, Matrix.one_mul]
-  · rw [SetLike.mem_coe, Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]
-    exact hu
+  · rwa [SetLike.mem_coe, Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]
 
 theorem dsig_mem (R : Rep k r) (S : Submodule ℂ R.H) [FiniteDimensional ℂ S]
     (hS : ∀ g ∈ UH (Hpk k r) ∩ (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set _), ∀ x ∈ S, R.σ g x ∈ S)
@@ -147,15 +146,9 @@ private lemma unitary_conj_mem_and_commute_Jmat {n : ℕ} (Jmat M Q g : Matrix (
       Qᴴ * (Q * g * Qᴴ) * Q = g := by
   obtain ⟨hgM, hgU⟩ := hg
   have hgM' : gᴴ * M * g = M := hgM
-  have q1 : Qᴴ * Q = 1 := by
-    have h0 := Matrix.mem_unitaryGroup_iff'.mp hQ
-    rwa [Matrix.star_eq_conjTranspose] at h0
-  have q2 : Q * Qᴴ = 1 := by
-    have h0 := Matrix.mem_unitaryGroup_iff.mp hQ
-    rwa [Matrix.star_eq_conjTranspose] at h0
-  have g2 : g * gᴴ = 1 := by
-    have h0 := Matrix.mem_unitaryGroup_iff.mp hgU
-    rwa [Matrix.star_eq_conjTranspose] at h0
+  have q1 : Qᴴ * Q = 1 := Matrix.mem_unitaryGroup_iff'.mp hQ
+  have q2 : Q * Qᴴ = 1 := Matrix.mem_unitaryGroup_iff.mp hQ
+  have g2 : g * gᴴ = 1 := Matrix.mem_unitaryGroup_iff.mp hgU
   have hJ : Jmat = Q * M * Qᴴ := by
     rw [← hcay]
     calc Jmat = (Q * Qᴴ) * Jmat * (Q * Qᴴ) := by rw [q2, Matrix.one_mul, Matrix.mul_one]
@@ -165,11 +158,7 @@ private lemma unitary_conj_mem_and_commute_Jmat {n : ℕ} (Jmat M Q g : Matrix (
       _ = g * (gᴴ * M * g) := by simp only [Matrix.mul_assoc]
       _ = g * M := by rw [hgM']
   refine ⟨?_, ?_, ?_⟩
-  · have hs : Qᴴ ∈ Matrix.unitaryGroup (Fin n) ℂ := by
-      rw [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose,
-        Matrix.conjTranspose_conjTranspose]
-      exact q1
-    exact Submonoid.mul_mem _ (Submonoid.mul_mem _ hQ hgU) hs
+  · exact Submonoid.mul_mem _ (Submonoid.mul_mem _ hQ hgU) (Unitary.star_mem hQ)
   · rw [hJ]
     calc Q * g * Qᴴ * (Q * M * Qᴴ) = Q * g * (Qᴴ * Q) * M * Qᴴ := by simp only [Matrix.mul_assoc]
       _ = Q * (M * g) * Qᴴ := by
@@ -198,16 +187,12 @@ theorem kStable_smooth_and_stable : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin 
     intro g hg x hx
     obtain ⟨hu, hc, he⟩ := unitary_conj_mem_and_commute_Jmat _ _ Q g hQU hcay hg
     have hk : Q * g * Qᴴ ∈ Kset ε := by
-      simp only [Kset, Set.mem_ofPred_eq]
-      exact ⟨hu, hc⟩
-    have h0 := hKS (Q * g * Qᴴ) hk x hx
-    simp only [hinv, he] at h0
-    exact h0
+      simpa only [Kset, Set.mem_ofPred_eq] using ⟨hu, hc⟩
+    simpa only [hinv, he] using hKS (Q * g * Qᴴ) hk x hx
   have hsm : ∀ v ∈ S, R.KFin v ∧ v ∈ R.sm := by
     intro v hv
     have hkf : R.KFin v := by
-      simp only [BranchingSupport.Rep.KFin, PI.UpqRep.IsKFinHpk]
-      exact ⟨S, hfin, hv, hS'⟩
+      simpa only [BranchingSupport.Rep.KFin, PI.UpqRep.IsKFinHpk] using ⟨S, hfin, hv, hS'⟩
     exact ⟨hkf, hTKsm v (hKTK v hkf)⟩
   refine ⟨hsm, fun a b hab v hv => ?_⟩
   have h1 : (Hpk k r)ᴴ = Hpk k r := by

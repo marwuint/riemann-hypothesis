@@ -85,10 +85,8 @@ private theorem fractionRing_conj (x : E) :
 theorem mem_conjFrac {a : FractionalIdeal (𝓞 E)⁰ E} {x : E} : x ∈ conjFrac a ↔ cc x ∈ a := by
   constructor
   · rintro ⟨y, hy, rfl⟩
-    have h := (congrArg cc (fractionRing_conj y)).trans (cc_cc y)
-    exact h.symm ▸ hy
-  · intro h
-    exact ⟨cc x, h, (fractionRing_conj (cc x)).trans (cc_cc x)⟩
+    exact ((congrArg cc (fractionRing_conj y)).trans (cc_cc y)).symm ▸ hy
+  · exact fun h => ⟨cc x, h, (fractionRing_conj (cc x)).trans (cc_cc x)⟩
 
 theorem cc_mem_conjFrac {a : FractionalIdeal (𝓞 E)⁰ E} {x : E} : cc x ∈ conjFrac a ↔ x ∈ a := by
   rw [mem_conjFrac, cc_cc]
@@ -391,8 +389,7 @@ theorem exists_rat_basis_of_isLattice (hΛ : ReciprocityTheory.MultiplicativeHei
     · have : Module.Finite (𝓞 E) Λ := Module.Finite.iff_fg.2 hΛ.1
       have : Module.Finite ℤ Λ := Module.Finite.trans (𝓞 E) Λ
       exact Module.Finite.iff_fg.1 this
-    · intro s hs hli
-      exact (LinearIndependent.iff_fractionRing _ _).mp hli
+    · exact fun s hs hli => (LinearIndependent.iff_fractionRing _ _).mp hli
   have hsmul (a : E) {x : Fin r → E}
       (hx : x ∈ Submodule.span ℚ ((Λ.restrictScalars ℤ : Submodule ℤ (Fin r → E)) : Set (Fin r → E))) :
       a • x ∈ Submodule.span ℚ ((Λ.restrictScalars ℤ : Submodule ℤ (Fin r → E)) : Set (Fin r → E)) := by
@@ -475,8 +472,7 @@ theorem perfect_iff_traceFormDual_eq {ξ : E} (hξ : ξ ≠ 0) (hG : G.det ≠ 0
       rw [Int.cast_add, ← hk, ← hk, ← hk]
       exact map_add (traceFormBilin ξ G x) _ _
     obtain ⟨x', hx', h⟩ := hperf φ
-    rw [eq_of_EFf_eq hξ hG hΛ (x := x) (x' := x') fun y hy => (hk y hy).trans (h ⟨y, hy⟩)]
-    exact hx'
+    rwa [eq_of_EFf_eq hξ hG hΛ (x := x) (x' := x') fun y hy => (hk y hy).trans (h ⟨y, hy⟩)]
   · intro h
     refine ⟨fun x hx => ?_, fun φ => ?_⟩
     · rw [← h] at hx; exact hx

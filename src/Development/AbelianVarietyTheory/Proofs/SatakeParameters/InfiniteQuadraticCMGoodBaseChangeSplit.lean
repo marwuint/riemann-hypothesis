@@ -233,8 +233,7 @@ theorem GlobalTheory.exists_nat_unramified_over_real_of_cm_subfield :
     exact zero_mem _
   have h2d : (2 * d : 𝓞 (maximalRealSubfield E)) ≠ 0 := mul_ne_zero two_ne_zero hd0
   refine ⟨Ideal.absNorm (Ideal.span {2 * d}), ?_, ?_⟩
-  · rw [Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
-    exact h2d
+  · rwa [Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
   intro K _ _ _ _ w hw
   obtain ⟨c, hc⟩ := Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {2 * d}))
   haveI : Algebra.IsAlgebraic E K := Algebra.IsAlgebraic.tower_top (K := ℚ) E
@@ -343,8 +342,7 @@ theorem exists_valuation_lt_one {F : Type} [Field F] [NumberField F] (u : Height
     norm_num
   have hkey : algebraMap F (u.adicCompletion F) (1 / 4 - c ^ 2 * a) = -z * (1 + z) := by
     have e1 : (1 / 4 : F) = 2⁻¹ * 2⁻¹ := by norm_num
-    rw [e1, map_sub, map_mul, map_mul, map_pow, hs, ← hh2]
-    rw [hz_def]
+    rw [e1, map_sub, map_mul, map_mul, map_pow, hs, ← hh2, hz_def]
     linear_combination (h2 - y * s) * hhalf
   rw [← _root_.Formalism.UG.P.levelaf_valued_algebraMap, hkey]
   have h1z : Valued.v (1 + z) ≤ 1 := by
@@ -367,8 +365,7 @@ theorem valuation_complexConj_of_not_split {L : Type} [Field L] [NumberField L] 
     intro x hx
     have hx' : (RingOfIntegers.mapRingEquiv σ).symm x ∈
         w.asIdeal.comap (RingOfIntegers.mapRingEquiv σ) := by
-      rw [Ideal.mem_comap, RingEquiv.apply_symm_apply]
-      exact hx
+      rwa [Ideal.mem_comap, RingEquiv.apply_symm_apply]
     have h0 := hbot hx'
     rw [Ideal.mem_bot] at h0 ⊢
     simpa using h0
@@ -476,8 +473,7 @@ theorem isSplitAt : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (p q 
   set z : 𝓞 Lp := -(2 * (q : 𝓞 Lp) * (k : 𝓞 Lp)) with hz
   have hq : (q : 𝓞 Lp) ∈ u.asIdeal := by
     change _ ∈ Ideal.comap _ _
-    rw [Ideal.mem_comap, map_natCast]
-    exact hw
+    rwa [Ideal.mem_comap, map_natCast]
   have hzu : z ∈ u.asIdeal := by
     rw [hz]
     exact u.asIdeal.neg_mem_iff.2 (Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hq))
@@ -591,8 +587,7 @@ theorem not_isUnramifiedAt_of_sq_eq_neg :
     change δ ^ 2 = _
     rw [hδ]; ring
   have hu : (-1 : 𝓞 K) ∉ w.asIdeal := by
-    intro h
-    exact hmax.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using w.asIdeal.neg_mem h))
+    exact fun h => hmax.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using w.asIdeal.neg_mem h))
   exact GlobalTheory.UnramSquare.not_sq_mul_unit K w.asIdeal hZ p hp hpw y (-1) hu hy2
 
 end GlobalTheory.SqrtNegRam
@@ -746,8 +741,7 @@ theorem GlobalTheory.GalCut.infinite_qcm_split_good : AutomorphicFormsFiniteGL �
         (by push_cast; exact hδ p)
         (by push_cast; exact GlobalTheory.RealGal.PrimesNegSquare.isSquare_neg_of_dvd q₀ p (h8 p hp q₀ hTq₀)) s hs
     · refine hsplit q₀ hTq₀ w ?_
-      rw [← natCast_mem_under (E := E), hw]
-      exact hq₀w
+      rwa [← natCast_mem_under (E := E), hw]
     · obtain ⟨w, hw⟩ := exists_mem_of_prime (F := ↥Q.K) hp.1
       refine ⟨w, not_isUnramifiedAt E ↥Q.K p hp.1 (hdisc p hp) y hy2 w hw, ?_⟩
       by_contra hB

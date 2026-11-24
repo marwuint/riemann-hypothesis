@@ -216,8 +216,7 @@ theorem sO_comp_oToS : (sO D).comp (Formalism.L2.DIV.oToS D.host.F D.host.E) = (
 
 theorem map_cO_le_conjI (J : Ideal (𝓞 D.host.E)) : J.map (cO D) ≤ conjI J := by
   rw [Ideal.map_le_iff_le_comap]
-  intro b hb
-  exact Ideal.subset_span ⟨b, hb, rfl⟩
+  exact fun b hb => Ideal.subset_span ⟨b, hb, rfl⟩
 
 theorem map_cO_conjI_le (J : Ideal (𝓞 D.host.E)) : (conjI J).map (cO D) ≤ J := by
   unfold conjI
@@ -227,8 +226,7 @@ theorem map_cO_conjI_le (J : Ideal (𝓞 D.host.E)) : (conjI J).map (cO D) ≤ J
     apply RingOfIntegers.ext
     rw [cO_coe, hab]
     exact star_star _
-  rw [e]
-  exact hb
+  rwa [e]
 
 theorem inId_sigR {I K : Ideal (𝓞 D.host.E)} (hIK : I.map (cO D) ≤ K) {x : Lev.EAf D} (hx : InId (F := D.host.F) I x) :
     InId (F := D.host.F) K (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) x) := by
@@ -292,11 +290,9 @@ theorem frameGram_det (T : HSp D) (β : GL (Fin T.rank) (Lev.EAf D)) : IsUnit (f
   rw [Matrix.det_mul, Matrix.det_mul, Formalism.UG.cT, Matrix.det_transpose]
   refine IsUnit.mul (IsUnit.mul ?_ ?_) hb
   · have h3 := hb.map σA
-    rw [RingHom.map_det] at h3
-    exact h3
+    rwa [RingHom.map_det] at h3
   · have h3 := (GlobalTheory.LatVac.gram_det_isUnit T).map ιA
-    rw [RingHom.map_det] at h3
-    exact h3
+    rwa [RingHom.map_det] at h3
 
 private theorem selfDual_isFullLattice {D : D7} : ∀ (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)),
     IsSelfDualC V Λ → Submodule.IsFullLattice D.host.E Λ := by

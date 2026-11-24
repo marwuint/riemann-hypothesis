@@ -216,10 +216,8 @@ def mjIds_noEta (Xd : DivX D) (h : Xd.MjH = mjH_noEta Z) : MjHIds D A3.A Xd (A3.
 theorem mjHTie_of_eq_noEta (Xd : DivX D) (h : Xd.MjH = mjH_noEta Z) (hj : HEq Xd.jM (jM_noEta Z)) :
     MjHTie D A3.A Xd (A3.indefDown (s0Of R F)) Z.jW (mjIds_noEta Z Xd h) := by
   constructor
-  · intro i x
-    exact map_castV _ _ D.what₂.Mj Z.jW h hj i _ x
-  · intro i
-    exact hLatTie_castV ((mjH_succ_noEta Z i).symm.trans (congrFun h _).symm)
+  · exact fun i x => map_castV _ _ D.what₂.Mj Z.jW h hj i _ x
+  · exact fun i => hLatTie_castV ((mjH_succ_noEta Z i).symm.trans (congrFun h _).symm)
 
 end GlobalTheory.Mem.R3
 
@@ -277,8 +275,7 @@ theorem thetaP_read_noEta : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I
     have e2 : w' (PiTensorProduct.map (fun τ => (lowT (R.MW i (sg0 D A3.A)) τ).subtype) (PiTensorProduct.tprod ℂ v)) =
         PiTensorProduct.lift (R.thF i u z')
           (PiTensorProduct.map (fun τ => (lowT (R.MW i (sg0 D A3.A)) τ).subtype) (PiTensorProduct.tprod ℂ v)) := e
-    rw [PiTensorProduct.map_tprod, PiTensorProduct.lift.tprod] at e2
-    exact e2
+    rwa [PiTensorProduct.map_tprod, PiTensorProduct.lift.tprod] at e2
   have hw0 : U - R.thF i t zt = 0 :=
     GlobalTheory.LowTypeDetermined.eq_zero_of_lowT D _ _ (R.MW i (sg0 D A3.A)) R.θ hM.inf
       (GlobalTheory.LowTypeRestriction.lowT_ne_bot _) _ _ _ (Submodule.sub_mem _ hU (hE.thF_mem i t zt)) (fun v => by
@@ -374,8 +371,7 @@ theorem thG_eq_zero_of_orth_noEta : ∀ (D : D7) (G : Type) [Group G] [Fintype G
   have key := theta_eq_zero_of_orth H (hRZ.2 i t) (goodAt ℓ.X ℓ.P ℓ.ψ) (idemOf A3.A.X)
     (opF_goodAt_idem _ _ hok.ok2.irr _ _) hfix f0 hea horth
   have h2 := congrArg (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H)) key
-  rw [hθ, hP.phs i, map_one, one_smul] at h2
-  exact h2
+  rwa [hθ, hP.phs i, map_one, one_smul] at h2
 
 end GlobalTheory.Mem.ThOrth
 

@@ -117,9 +117,7 @@ theorem free_hom_glue_of_covering (R : Type) [CommRing R] {S : Scheme.{0}} (F : 
     change Sec.map (σ v hv) (Sec.map ((GlobalTheory.EtC.free R).map (yoneda.map g)) (freeGen R (yoneda.obj W) W (𝟙 W))) = _
     rw [freeGen_map]
     congr 2
-  have hx : x.SieveCompatible := by
-    intro V W v g hv
-    exact (hcomp v hv g).trans (hres v hv g).symm
+  have hx : x.SieveCompatible := fun V W v g hv => (hcomp v hv g).trans (hres v hv g).symm
   have hF : Presieve.IsSheaf Scheme.etaleTopology (F.obj ⋙ forget _) :=
     (isSheaf_iff_isSheaf_of_type _ _).1 ((Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget _)).1 F.property)
   obtain ⟨s, hs, -⟩ := hF T hT x ((Presieve.compatible_iff_sieveCompatible x).2 hx)
@@ -213,8 +211,7 @@ private lemma index_eq_of_pullback_lift_apply_eq {Z X V : Scheme.{0}} {f : Z ⟶
       (∐ fun _ : Fin m => V) ⟶ pullback f y) (Sigma.ι (fun _ : Fin m => V) j a) =
       (Sigma.desc fun j => pullback.lift (s j) (𝟙 V) (by simp [hc j]) :
       (∐ fun _ : Fin m => V) ⟶ pullback f y) (Sigma.ι (fun _ : Fin m => V) j' b) := by
-    rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, Sigma.ι_desc, Sigma.ι_desc]
-    exact h
+    rwa [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, Sigma.ι_desc, Sigma.ι_desc]
   have h2 : (Sigma.ι (fun _ : Fin m => V) j) a = (Sigma.ι (fun _ : Fin m => V) j') b :=
     Scheme.Hom.injective _ h1
   exact congrArg Sigma.fst ((sigmaι_eq_iff (fun _ : Fin m => V) j j' a b).mp (by convert h2))
@@ -288,8 +285,7 @@ theorem _root_.GlobalTheory.EtC.Tr.sum_sections_eq_of_two_splittings : ∀ (R : 
       have hg := IsOpenImmersion.lift_fac _ _ hr
       have hgι : IsOpenImmersion.lift _ _ hr = (U x).ι := by
         have := congrArg (· ≫ pullback.snd f y) hg
-        simp only [Category.assoc, pullback.lift_snd, Category.comp_id] at this
-        exact this
+        simpa only [Category.assoc, pullback.lift_snd, Category.comp_id] using this
       rw [hgι] at hg
       have := congrArg (· ≫ pullback.fst f y) hg
       simp only [Category.assoc, pullback.lift_fst] at this
@@ -567,8 +563,7 @@ theorem mem_etaleTopology_of_pullback_finite : ∀ {Z X : Scheme.{0}} (f : Z ⟶
       rw [pullback.condition]
     have h2 : (pullback.snd f U.ι ≫ U.ι).base p ∈ U := by
       rw [Scheme.Hom.comp_base, TopCat.comp_app]
-      have hr := U.range_ι
-      exact (Set.ext_iff.1 hr _).1 ⟨_, rfl⟩
+      exact (Set.ext_iff.1 U.range_ι _).1 ⟨_, rfl⟩
     rw [h1, Scheme.Hom.comp_base, TopCat.comp_app] at h2
     exact h2 ⟨_, rfl⟩
   have hTU : T U.ι := hE U.ι hU
@@ -826,8 +821,7 @@ theorem splits_pullbackSnd_of_splits_diagComplHom {Z X V : Scheme.{0}} (f : Z �
     · have hpU : p ∈ Set.range eU := by
         rw [Scheme.Pullback.range_map]
         refine ⟨?_, ⟨pullback.snd (pullback.snd f f) v p, rfl⟩⟩
-        rw [Set.mem_preimage, Scheme.Opens.range_ι]
-        exact hp
+        rwa [Set.mem_preimage, Scheme.Opens.range_ι]
       obtain ⟨q, rfl⟩ := hpU
       obtain ⟨⟨k, x⟩, hkx⟩ := (sigmaMk (fun _ : Fin m => V)).surjective (inv Φ q)
       rw [sigmaMk_mk] at hkx

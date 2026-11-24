@@ -132,8 +132,7 @@ theorem exists_ptOf_mul_K1 : ∀ {B : Base} (n : ℕ) [NeZero n] (ST SG : Finset
       simp
     rw [e] at h
     have hr : (redG B.sp.cm n ∅ ∅ ⟨t, hz⟩)⁻¹ = 1 := Subsingleton.elim _ _
-    rw [hr] at h
-    rw [(near_of_isPtOf hp 0).deco] at h
+    rw [hr, (near_of_isPtOf hp 0).deco] at h
     simp only at h
     change decoRaw ∅ ∅ (k * t) = Deco.act 1 1 p.deco.1 at h
     rw [Deco.act_one] at h
@@ -422,11 +421,9 @@ theorem localComponent_congr (P : HeightOneSpectrum (𝓞 E)) {v : HeightOneSpec
   refine Units.ext (Matrix.ext fun i j => ?_)
   have h1 : prV (E := E) v (x.1 i j - x'.1 i j) = 0 := by
     have := congrArg (fun g : GL (Fin n) _ => g.1 i j) h
-    rw [map_sub, sub_eq_zero]
-    exact this
+    rwa [map_sub, sub_eq_zero]
   have h2 := ((_root_.GlobalTheory.Mem.Col2.AdComp.prV_zero_int_iff F E v _).1.1 h1) P hv
-  rw [map_sub, sub_eq_zero] at h2
-  exact h2
+  rwa [map_sub, sub_eq_zero] at h2
 
 theorem bc_prV_eq_one {v : HeightOneSpectrum (𝓞 F)} {x : GL (Fin n) (AfE F E)}
     (h : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → ∀ i j : Fin n, adAt F w (x.1 i j) = if i = j then 1 else 0) :
@@ -481,8 +478,7 @@ variable {B : Base} {X : PreX B.toPre} (I : TC B X)
 theorem cosetIn_top (u : B.Word) (a : I.ι) (c : (I.stp u a B.R.m).Cl) : cosetIn ((I.stp u a B.R.m).rep c) = fun _ => ∅ := by
   have h : ((I.stp u a B.R.m).rep c).1.2 = ∅ := by
     have h1 := ((I.stp u a B.R.m).rep c).2
-    rw [ysAt_ys_of_ne I.sel (I.tup a) (I.cst a) (by omega)] at h1
-    exact h1
+    rwa [ysAt_ys_of_ne I.sel (I.tup a) (I.cst a) (by omega)] at h1
   funext P
   ext z
   simp [cosetIn, h]
@@ -719,13 +715,11 @@ theorem chart_twm : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.
   have hkT := hk.k_T ()
   have hUle : (K.lev.U : Subgroup (GA B (B.R.N B.R.m))) ≤ UAd B.sp.cm (B.R.N B.R.m) := fun x hx => by
     have h0 := ((K.lev.U_eq x).1 hx).1
-    rw [hgram] at h0
-    exact h0
+    rwa [hgram] at h0
   have hyChart : ∀ c, (C.y ⟨c, rfl⟩).1 = y c := fun c => hChartY ⟨c, rfl⟩
   have hlb : ∀ x, x ∈ (C.lev.Lb : Submodule (𝓞 B.host.E) (Fin (B.R.N B.R.m) → B.host.E)) ↔ x ∈ baseL B (B.R.N B.R.m) (X.piT u) := fun x => by
     have := hk.lb () x
-    rw [← hChartLb] at this
-    exact this
+    rwa [← hChartLb] at this
   have hoff' : ∀ v : HeightOneSpectrum (𝓞 B.host.F), (B.T u : 𝓞 B.host.F) ∉ v.asIdeal → ¬ I.UnderQ a v → bc (prV (E := B.host.E) v) (k () * t) = 1 := fun v hT hnQ => by
     rw [map_mul, hoff v hT, one_mul]
     refine bc_prV_eq_one fun w hw i j => htw w (fun hwQ => hnQ ⟨w, hwQ, hw⟩) (fun hwQ => hnQ ⟨conjPrime₂ w, hwQ, ?_⟩) i j
@@ -748,8 +742,7 @@ theorem chart_twm : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.
     have hp2 : PtOf (y c * (k () * t)) (tilF I.sel (I.tup a) u d) := hrep ▸ hpt c
     have := top_base I u a N hdN hΘ U0 (k ()) t hkU hkQ ht hU _ (y c) g₂ hp hp2
     show g₂⁻¹ * (C.y ⟨c, rfl⟩).1 ∈ C.lev.U
-    rw [hChartU, hyChart]
-    exact this
+    rwa [hChartU, hyChart]
   · exact root_top I u a N hdN hΘ U0 K.lev.chi (k ()) t hU hχ hUle C.lev.U C.lev.chi hChartU hChartChi
   · intro κ κ' e hv
     have hx : κ.1 ∈ U1 :=
@@ -760,8 +753,7 @@ theorem chart_twm : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.
       have := TwTop.localComponent_congr (F := B.host.F) P.1 (v := P.1.under (𝓞 B.host.F)) rfl (x := κ.1) (x' := 1)
         ((hv _ ((hQ _).2 ⟨P.1, P.2, rfl⟩)).trans (map_one _).symm)
       exact this.trans (map_one _))
-    have hprod := congrArg (fun w => K.lev.chi κ' * w) hψ
-    exact hchiκ.trans (hprod.trans (mul_one _))
+    exact hchiκ.trans ((congrArg (fun w => K.lev.chi κ' * w) hψ).trans (mul_one _))
 
 end GlobalTheory.Mem.Col2.TC
 end -- clump:auto

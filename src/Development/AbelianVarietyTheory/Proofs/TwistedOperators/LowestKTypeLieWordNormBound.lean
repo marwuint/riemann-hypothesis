@@ -366,8 +366,7 @@ theorem chart (G : Matrix (Fin n) (Fin n) ℂ) (hG : IsUnit G) :
   have he0 : e.symm 0 = 0 := by
     have h2 := e.left_inv h0s
     have h3 : e 0 = 0 := hf0
-    rw [h3] at h2
-    exact h2
+    rwa [h3] at h2
   let T : Set (Fin d → ℝ) := e.target ∩ e.symm ⁻¹' Gd
   have hT : IsOpen T := e.isOpen_inter_preimage_symm hGd
   have h0T : (0 : Fin d → ℝ) ∈ T := by
@@ -376,8 +375,7 @@ theorem chart (G : Matrix (Fin n) (Fin n) ℂ) (hG : IsUnit G) :
       rwa [hf0] at this
     · show e.symm 0 ∈ Gd
       rw [he0]
-      refine ⟨h0W, ?_⟩
-      exact ⟨ContinuousLinearEquiv.refl ℝ (Fin d → ℝ), hf'.hasFDerivAt.fderiv.symm⟩
+      exact ⟨h0W, ⟨ContinuousLinearEquiv.refl ℝ (Fin d → ℝ), hf'.hasFDerivAt.fderiv.symm⟩⟩
   have hsymm : ∀ a ∈ T, ContDiffAt ℝ ∞ e.symm a := by
     intro a ha
     obtain ⟨haT, haW, L', hL'⟩ := ha
@@ -393,10 +391,8 @@ theorem chart (G : Matrix (Fin n) (Fin n) ℂ) (hG : IsUnit G) :
   have hKc : ContinuousOn K V := fun g hg => (hK g hg).continuousAt.continuousWithinAt
   refine ⟨V ∩ K ⁻¹' T, fun g => e.symm (K g), hKc.isOpen_inter_preimage hV hT, ⟨isUnit_two, ?_⟩, ?_, ?_⟩
   · show Q (cay 1) ∈ T
-    rw [cay_one, map_zero]
-    exact h0T
-  · intro g hg
-    exact ((hsymm _ hg.2).comp g (hK g hg.1)).contDiffWithinAt
+    rwa [cay_one, map_zero]
+  · exact fun g hg => ((hsymm _ hg.2).comp g (hK g hg.1)).contDiffWithinAt
   · intro g hg hgG
     have haT : K g ∈ T := hg.2
     have h1 : e (e.symm (K g)) = K g := e.right_inv haT.1
@@ -461,11 +457,9 @@ theorem smV_iff_smoothOnH {G : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G)
     have hLm : ∀ g, Lm g = g₀⁻¹ * g := fun g => rfl
     refine ⟨Lm ⁻¹' U, fun g => ρ g₀ (ρ (oneProd Y (φ (Lm g))) x), hU.preimage Lm.continuous, ?_, ?_, ?_⟩
     · show Lm g₀ ∈ U
-      rw [hLm, Matrix.nonsing_inv_mul _ hd]
-      exact h1U
+      rwa [hLm, Matrix.nonsing_inv_mul _ hd]
     · have h1 : ContDiffOn ℝ ∞ (φ ∘ Lm) (Lm ⁻¹' U) := hφ'.comp_continuousLinearMap Lm
-      have h2 := hΦ.comp_contDiffOn h1
-      exact ((ρ g₀).restrictScalars ℝ).contDiff.comp_contDiffOn h2
+      exact ((ρ g₀).restrictScalars ℝ).contDiff.comp_contDiffOn (hΦ.comp_contDiffOn h1)
     · intro g hgU hgG
       have hgG' : g ∈ Formalism.QuantumDeterminants.UH G := hgG
       have hm : Lm g ∈ Formalism.QuantumDeterminants.UH G := by

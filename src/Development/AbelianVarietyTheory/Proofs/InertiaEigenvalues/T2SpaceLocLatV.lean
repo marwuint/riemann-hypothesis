@@ -140,8 +140,7 @@ theorem generic [T2Space LL] [IsTopologicalRing LL] (E : EtTie W RA RW inclR φR
     rw [LinearMap.lTensor_tmul] at h
     have h' := congrArg Subtype.val (hone h)
     apply hS.1
-    rw [hc, ← ht]
-    exact h'
+    rwa [hc, ← ht]
   let M : Submonoid ↥W.GKs :=
     { carrier := {g | (c' : ↥W.GKs → T.V) g = (c : ↥W.GKs → T.V) g}
       mul_mem' := fun {a a'} ha ha' => by
@@ -196,8 +195,7 @@ theorem mem_OL_iff (LL : FinExt l) (x : ℚ_[l]) : algebraMap ℚ_[l] ↥LL.1 x 
   constructor
   · rintro ⟨y, rfl⟩
     exact y.2
-  · intro h
-    exact ⟨⟨x, h⟩, rfl⟩
+  · exact fun h => ⟨⟨x, h⟩, rfl⟩
 
 theorem le_v_iff (P : LocPrime l) (LL : FinExt l) (x : ℚ_[l]) (k : ℕ) :
     (k : WithTop ℚ) ≤ P.v LL (algebraMap ℚ_[l] ↥LL.1 x) ↔ ‖x‖ ≤ (l : ℝ) ^ (-(k : ℤ)) := by
@@ -220,8 +218,7 @@ theorem norm_eq_of_v (P : LocPrime l) (LL : FinExt l) (x : ℚ_[l]) (k : ℕ)
     have e : -((k + 1 : ℕ) : ℤ) + 1 = -(k : ℤ) := by
       push_cast
       ring
-    rw [e]
-    exact hlt
+    rwa [e]
   rw [← le_v_iff P LL, h] at h2
   have h3 : (((k + 1 : ℕ) : ℚ) : WithTop ℚ) ≤ ((k : ℚ) : WithTop ℚ) := by exact_mod_cast h2
   rw [WithTop.coe_le_coe] at h3
@@ -249,8 +246,7 @@ theorem dense_gen (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ) (
     apply norm_eq_of_v P LL
     have := W.gam_gen
     rw [← hγ, W.χΓ_res, hs, P.PD_χ] at this
-    rw [map_sub, map_one]
-    exact this
+    rwa [map_sub, map_one]
   have hγj : (γ : GQ l) ∈ Gj K s := ((hcb γ (hK0 γ)).1 s).2 hγv.le
   have hd := ((gen_dense l AI.actC P.χQ hact hχ K s ⟨h.1, h.2.1⟩).2 γ ⟨hγj, hγv⟩).2.2
     ((hmem g).1 g.2)
@@ -274,12 +270,10 @@ theorem dense_gen (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ) (
     have := W.χΓ_res η'
     rw [P.PD_χ] at this
     change _ = algebraMap ℚ_[l] ↥LL.1 (P.χQ η : ℚ_[l]) at this
-    rw [hη1, Units.val_one, map_one] at this
-    exact this
+    rwa [hη1, Units.val_one, map_one] at this
   have := closure_mono hsub hd
   have h3 : g ∈ closure (M : Set ↥W.GKs) := by
-    rw [hj.closure_eq_preimage_closure_image]
-    exact this
+    rwa [hj.closure_eq_preimage_closure_image]
   rwa [hM.closure_eq] at h3
 
 end GlobalTheory.Cyc.DictKs

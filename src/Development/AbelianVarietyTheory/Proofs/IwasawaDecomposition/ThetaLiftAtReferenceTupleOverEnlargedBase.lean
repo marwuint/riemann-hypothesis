@@ -326,9 +326,7 @@ theorem wc_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (
   rcases B' with ⟨P'⟩
   change P' = B.toPre at hP
   subst hP
-  have hi : i' = i := by
-    apply Fin.ext
-    exact h.symm
+  have hi : i' = i := Fin.ext h.symm
   subst i'
   exact (by with_unfolding_all exact ((HEq.refl (Wc a.D i)) :))
 
@@ -336,9 +334,7 @@ theorem vc_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (
   rcases B' with ⟨P'⟩
   change P' = B.toPre at hP
   subst hP
-  have hi : i' = i := by
-    apply Fin.ext
-    exact h.symm
+  have hi : i' = i := Fin.ext h.symm
   subst i'
   exact (by with_unfolding_all exact ((HEq.refl (Vc a.D i)) :))
 
@@ -349,9 +345,7 @@ theorem lev_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} 
   rcases B' with ⟨P'⟩
   change P' = B.toPre at hP
   subst hP
-  have hi : i' = i := by
-    apply Fin.ext
-    exact h.symm
+  have hi : i' = i := Fin.ext h.symm
   subst i'
   have : β' = β := by with_unfolding_all exact eq_of_heq hβ
   subst β'
@@ -374,9 +368,7 @@ theorem gaL_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} 
   rcases B' with ⟨P'⟩
   change P' = B.toPre at hP
   subst hP
-  have hi : i' = i := by
-    apply Fin.ext
-    exact h.symm
+  have hi : i' = i := Fin.ext h.symm
   subst i'
   have : β' = β := by with_unfolding_all exact eq_of_heq hβ
   subst β'

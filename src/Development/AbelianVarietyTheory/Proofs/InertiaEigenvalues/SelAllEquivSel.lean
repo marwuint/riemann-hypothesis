@@ -82,8 +82,7 @@ theorem conj_Ine {A : ValuationSubring Ω} {g σ : G F Ω} (hσ : σ ∈ Ine (F 
       rw [ValuationSubring.valuation_le_one_iff, m, c]
       exact (A.valuation_le_one_iff x).1 hx
     have h := (m' _).1 (hσ.2 _ hx')
-    rw [map_sub, c] at h
-    exact h
+    rwa [map_sub, c] at h
 
 variable {R R' : Type} [CommRing R] [CommRing R'] {M : Type} [AddCommGroup M] [Module R M] [TopologicalSpace M]
   [DiscreteTopology M] {M' : Type} [AddCommGroup M'] [Module R' M'] [TopologicalSpace M'] [DiscreteTopology M']
@@ -118,15 +117,13 @@ theorem mk_infZ_eq_iff (z z' : Z1 ρS) :
     obtain ⟨g, rfl⟩ : ∃ g', toGS Ω S g' = g := QuotientGroup.mk'_surjective _ g
     have h1 : e.symm (z.1 (toGS Ω S g)) - e.symm (z'.1 (toGS Ω S g)) = ρ g m - m := hm g
     have h2 := congrArg e h1
-    rw [map_sub, map_sub, he, e.apply_symm_apply, e.apply_symm_apply] at h2
-    exact h2
+    rwa [map_sub, map_sub, he, e.apply_symm_apply, e.apply_symm_apply] at h2
   · rintro ⟨m, hm⟩
     refine ⟨e.symm m, fun g => ?_⟩
     have h1 : z.1 (toGS Ω S g) - z'.1 (toGS Ω S g) = ρS (toGS Ω S g) m - m := hm (toGS Ω S g)
     change e.symm (z.1 (toGS Ω S g)) - e.symm (z'.1 (toGS Ω S g)) = _
     apply e.injective
-    rw [map_sub, map_sub, he, e.apply_symm_apply, e.apply_symm_apply, e.apply_symm_apply]
-    exact h1
+    rwa [map_sub, map_sub, he, e.apply_symm_apply, e.apply_symm_apply, e.apply_symm_apply]
 
 def infH : H1 ρS → H1 ρ := fun x => Submodule.Quotient.mk (infZ e he x.out)
 
@@ -144,8 +141,7 @@ theorem Ine_le_NS {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S) {A : Valuation
     {σ : G F Ω} (hσ : σ ∈ Ine (F := F) A) : σ ∈ NS Ω S := by
   apply Subgroup.le_topologicalClosure
   apply Subgroup.subset_normalClosure
-  simp only [Set.mem_iUnion]
-  exact ⟨v, hv, A, hA, hσ⟩
+  simpa only [Set.mem_iUnion] using ⟨v, hv, A, hA, hσ⟩
 
 theorem z_one {Γ : Type} [Group Γ] [TopologicalSpace Γ] {π : Representation R Γ M} (z : Z1 π) : z.1 1 = 0 := by
   have := z.2.2 1 1
@@ -252,12 +248,10 @@ theorem selAll_equiv_sel : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω
         have : toGS Ω (S : Set (HeightOneSpectrum (𝓞 F))) σ = 1 :=
           (QuotientGroup.eq_one_iff σ).2 (Ine_le_NS (by simpa using hv) (A.2 v) hσ)
         rw [infZ_apply, this, z_one, map_zero]
-    · intro h v
-      exact (key z v).1 (h v.1)
+    · exact fun h v => (key z v).1 (h v.1)
   refine ⟨(Equiv.ofBijective (fun x : Sel ρS (locFam S (fun v => A.1 v.1)) (continuous_locFam S _) LS =>
     (⟨infH e he x.1, (hmem _).1 x.2⟩ : Formalism.GaloisCohomology.SelAll ρ A L)) ⟨?_, ?_⟩).symm⟩
-  · intro x y h
-    exact Subtype.ext (infH_injective e he (congrArg Subtype.val h))
+  · exact fun x y h => Subtype.ext (infH_injective e he (congrArg Subtype.val h))
   · rintro ⟨y, hy⟩
     obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ y
     have hy' := (hall _).1 hy

@@ -82,8 +82,7 @@ theorem _root_.GlobalTheory.nonempty_padicInt_ringHom_of_isAdicComplete {V : Typ
       (g m).comp (ZMod.castHom (pow_dvd_pow p hle) _) := Subsingleton.elim _ _
   ext x
   have hx := RingHom.congr_fun hg (PadicInt.toZModPow n x)
-  rw [← PadicInt.zmod_cast_comp_toZModPow m n hle]
-  exact hx
+  rwa [← PadicInt.zmod_cast_comp_toZModPow m n hle]
 
 
 open IsLocalRing in
@@ -106,8 +105,7 @@ theorem _root_.GlobalTheory.exists_padicInt_algebra_finite (V : Type*) [CommRing
   refine _root_.GlobalTheory.finite_of_forall_prime_mem hne ?_ ?_ ?_
   · intro P hP hPne
     have hmax : P.IsMaximal := hP.isMaximal hPne
-    rw [IsLocalRing.eq_maximalIdeal hmax]
-    exact hmem
+    rwa [IsLocalRing.eq_maximalIdeal hmax]
   · intro hbot
     apply hne
     rw [← himage, ← Ideal.mem_bot, ← hbot]
@@ -118,8 +116,7 @@ theorem _root_.GlobalTheory.exists_padicInt_algebra_finite (V : Type*) [CommRing
     rw [Ideal.map_le_iff_le_comap, PadicInt.maximalIdeal_eq_span_p, Ideal.span_le,
       Set.singleton_subset_iff]
     change algebraMap ℤ_[q] V (q : ℤ_[q]) ∈ maximalIdeal V
-    rw [himage]
-    exact hmem
+    rwa [himage]
 
 
 open IsLocalRing in
@@ -230,8 +227,7 @@ private theorem isAdicComplete_integralClosure_padicInt (p : ℕ) [Fact p.Prime]
       norm_nonneg (((((u⁻¹ : Oˣ) : O) : K)) : PadicAlgCl p)]
   have hπ0 : π ≠ 0 := hπ.ne_zero
   have hpos : 0 < nm π := by
-    simp only [nm, norm_pos_iff, ne_eq, ZeroMemClass.coe_eq_zero]
-    exact hπ0
+    simpa only [nm, norm_pos_iff, ne_eq, ZeroMemClass.coe_eq_zero] using hπ0
   have hr : nm π < 1 := (_root_.GlobalTheory.mem_maximalIdeal_integralClosure_iff K π).mp
     ((mem_maximalIdeal _).mpr hπ.not_isUnit)
   have hmax : maximalIdeal O = Ideal.span {π} := hπ.maximalIdeal_eq
@@ -289,8 +285,7 @@ private theorem isAdicComplete_integralClosure_padicInt (p : ℕ) [Fact p.Prime]
       refine Filter.eventually_atTop.mpr ⟨n, fun k hk => ?_⟩
       rw [← dist_eq_norm, hdist]
       exact (hsmod n _ _).mp (hf hk)
-    have hfin := le_of_tendsto hlim' hbound
-    simpa [nm, g, L] using hfin
+    simpa [nm, g, L] using le_of_tendsto hlim' hbound
 
 
 open IsLocalRing in

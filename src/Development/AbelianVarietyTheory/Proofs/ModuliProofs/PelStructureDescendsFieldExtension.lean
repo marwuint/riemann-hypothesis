@@ -110,8 +110,7 @@ theorem tate_pull {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [Gr
       (hΦ z) (hΦ z')
   refine ⟨fun I' => ⟨tateAlong Φ hA (fun n z z' c hz => (hW n z z' c).1 hz) I', rfl, fun n v => hΦ _⟩,
     fun I => ⟨tateAlong Φ.symm hA' (fun n z z' c hz => ?_) I, rfl, fun n v => ?_⟩⟩
-  · rw [hW, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]
-    exact hz
+  · rwa [hW, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]
   · show _ = (Φ.symm (I.ev n v)).left ≫ φ
     rw [← hΦ, MulEquiv.apply_symm_apply]
 
@@ -183,8 +182,7 @@ theorem isPEL_descends : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [
     rw [CommRingCat.ofHom_hom, Spec.map_preimage]
   have hβ : κ.comp β₀ = β := by
     have h1 : spMap (κ.comp β₀) = spMap β := by rw [← spMap_comp_var2, ← hxκ, hx']
-    have h2 := Spec.map_injective h1
-    exact congrArg CommRingCat.Hom.hom h2
+    exact congrArg CommRingCat.Hom.hom (Spec.map_injective h1)
   have hk : 0 < k := by
     rcases Nat.eq_zero_or_pos k with h0 | h0
     · exfalso
@@ -209,8 +207,7 @@ theorem isPEL_descends : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [
     have d1 := (detCond_pull hpb r τ.act hr2 (spMap iK) (spMap iK' ≫ x') hsq
       ((iK.comp (i.comp β₀)) ρ)).1 hdet
     have d2 : DetCond D r (spMap iK' ≫ x') (iK' (β ρ)) := by
-      rw [← hbr ρ]
-      exact d1
+      rwa [← hbr ρ]
     have d3 := (GlobalTheory.detCond_iff_of_field_extension E H D (Sp K₀) t₀.A K' Ω iK' x' r (β ρ) inferInstance).1 d2
     exact (detCond_pull hpe r τ₀.act hel x' x' (Category.comp_id _).symm (β ρ)).2 d3
   ·
@@ -223,8 +220,7 @@ theorem isPEL_descends : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [
     · rw [hI'ζ]
       apply iK'.injective
       rw [← (hI k hk).1, hI₁ζ, hI₀ζ]
-      simp only [RingHom.comp_apply]
-      exact hbr _
+      simpa only [RingHom.comp_apply] using hbr _
     · apply Over.OverMorphism.ext
       rw [Over.comp_left, ← hI'ev]
       show (I.ev k (bas (Pi.single j 1))).left = x' ≫ (t₀.pt j).left
